@@ -118,84 +118,44 @@ export class HideoutHelper
         return (productive as Production).Progress !== undefined || (productive as Production).RecipeId !== undefined;
     }
 
-    // BALIST0N, I got bad news for you
-    // we do need to implement these after all
-    // ...
-    // with that I mean manual implementation
-    // RIP, GL whoever is going to do this
+    /**
+     * Apply bonus to player profile given after completing hideout upgrades
+     * @param pmcData Profile to add bonus to
+     * @param bonus Bonus to add to profile
+     */
     public applyPlayerUpgradesBonuses(pmcData: IPmcData, bonus: StageBonus): void
     {
+        // Handle additional changes some bonuses need before being added
         switch (bonus.type)
         {
-            case "StashSize":
-                // TODO: bonus should only have type/templateId
-                for (const item in pmcData.Inventory.items)
+            case "StashSize": {
+                // Find stash item and adjust tpl to new tpl from bonus
+                const stashItem = pmcData.Inventory.items.find(x => x._id === pmcData.Inventory.stash);
+                if (!stashItem)
                 {
-                    if (pmcData.Inventory.items[item]._id === pmcData.Inventory.stash)
-                    {
-                        pmcData.Inventory.items[item]._tpl = bonus.templateId;
-                    }
+                    this.logger.warning(`Unable to apply StashSize bonus, stash with id: ${pmcData.Inventory.stash} not found`);
                 }
-                break;
-            case "MaximumEnergyReserve":
-                pmcData.Health.Energy.Maximum += 10;
-                break;
-            case "EnergyRegeneration":
-            case "HydrationRegeneration":
-            case "HealthRegeneration":
-            case "DebuffEndDelay":
-            case "QuestMoneyReward":
-            case "ExperienceRate":
-            case "SkillGroupLevelingBoost":
-                this.applySkillXPBoost(pmcData, bonus);
-                break;
-            case "ScavCooldownTimer":
-            case "InsuranceReturnTime":
-            case "RagfairCommission":
-            case "FuelConsumption":
-                // These skill is being applied automatically on the RagfairController, InsuranceController, ProfileController, HideoutController
-                // ScavCooldownTimer, InsuranceReturnTime, RagfairCommission, FuelConsumption
-                break;
-            case "AdditionalSlots":
-                // Some of these are also implemented on the HideoutController
-                break;
-            case "UnlockWeaponModification":
-            case "RepairArmorBonus":
-            case "RepairWeaponBonus":
-            case "UnlockArmorRepair":
-            case "UnlockWeaponRepair":
-            case "TextBonus":
-                // TODO: remove properties, only needs id/icon/type
-                break;
-        }
 
-        pmcData.Bonuses.push(bonus);
-    }
-
-    /**
-     * TODO:
-     * After looking at the skills there doesnt seem to be a configuration per skill to boost
-     * the XP gain PER skill. I THINK you should be able to put the variable "SkillProgress" (just like health has it)
-     * and be able to tune the skill gain PER skill, but I havent tested it and Im not sure!
-     * @param pmcData 
-     * @param bonus 
-     */
-    protected applySkillXPBoost(pmcData: IPmcData, bonus: StageBonus): void
-    {
-        const skillGroupType = bonus.skillType;
-        if (skillGroupType)
-        {
-            switch (skillGroupType)
-            {
-                case "Physical":
-                case "Mental":
-                case "Combat":
-                case "Practical":
-                case "Special":
-                default:
-                    break;
+                stashItem._tpl = bonus.templateId;
+                break;
             }
+            case "MaximumEnergyReserve":
+                // Amend max energy in profile
+                pmcData.Health.Energy.Maximum += bonus.value;
+                break;
+            case "TextBonus":
+                //Delete values before they're added to profile
+                delete bonus.value;
+                delete bonus.passive;
+                delete bonus.production;
+                delete bonus.visible;
+                break;
         }
+
+        // Add bonus to player bonuses array in profile
+        // EnergyRegeneration, HealthRegeneration, RagfairCommission, ScavCooldownTimer, SkillGroupLevelingBoost, ExperienceRate, QuestMoneyReward etc
+        this.logger.debug(`Adding bonus: ${bonus.type} to profile, value: ${bonus.value}`);
+        pmcData.Bonuses.push(bonus);
     }
 
     /**
