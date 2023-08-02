@@ -692,13 +692,13 @@ export class QuestHelper
         const hideoutProductions = this.databaseServer.getTables().hideout.production;
         const matchingProductions = hideoutProductions.filter(x => 
             x.areaType === Number.parseInt(craftUnlockReward.traderId) 
-            //&& x.requirements[0].requiredLevel === craftUnlockReward.loyaltyLevel
+            && x.requirements.some(x => x.requiredLevel === craftUnlockReward.loyaltyLevel)
             && x.endProduct === craftUnlockReward.items[0]._tpl);
 
-        // More than 1 match, above filtering wasn't strict enough
+        // More/less than 1 match, above filtering wasn't strict enough
         if (matchingProductions.length !== 1)
         {
-            this.logger.error(this.localisationService.getText(`QUEST ${questDetails.QuestName} ${matchingProductions.length} PRODUCTIONS MATCHES, OH NO`));
+            this.logger.error(this.localisationService.getText("quest-unable_to_find_matching_hideout_production", {questName: questDetails.QuestName, matchCount: matchingProductions.length}));
 
             return;
         }
