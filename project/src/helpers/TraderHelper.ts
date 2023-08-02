@@ -91,7 +91,7 @@ export class TraderHelper
             disabled: false,
             loyaltyLevel: rawProfileTemplate.initialLoyaltyLevel,
             salesSum: rawProfileTemplate.initialSalesSum,
-            standing: rawProfileTemplate.initialStanding,
+            standing: traderID === "638f541a29ffd1183d187f57" ? 0.01 : rawProfileTemplate.initialStanding, // edge case for Lightkeeper, 0 means seeing `Make Amends - Buyout` quest
             nextResupply: this.databaseServer.getTables().traders[traderID].base.nextResupply,
             unlocked: this.databaseServer.getTables().traders[traderID].base.unlockedByDefault
         };
