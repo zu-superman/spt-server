@@ -145,23 +145,7 @@ export class PreAkiModLoader implements IModLoader
 
         // sort mod order
         const missingFromOrderJSON = {};
-        const sortedMods = mods.sort((prev, next) => 
-        {
-            const previndex = this.order[prev];
-            const nextindex = this.order[next];
-            // mod is not on the list, move the mod to last
-            if (previndex === undefined) 
-            {
-                missingFromOrderJSON[prev] = true;
-                return 1;
-            }
-            else if (nextindex === undefined) 
-            {
-                missingFromOrderJSON[next] = true;
-                return -1;
-            }
-            return previndex - nextindex;
-        });
+        const sortedMods = mods.sort((prev, next) => this.sortMods(prev, next, missingFromOrderJSON));
 
         // log the missing mods from order.json
         Object.keys(missingFromOrderJSON).forEach((missingMod) => (this.logger.debug(this.localisationService.getText("modloader-mod_order_missing_from_json", missingMod))));
@@ -171,6 +155,28 @@ export class PreAkiModLoader implements IModLoader
         {
             await this.addMod(mod);
         }
+    }
+
+    protected sortMods(prev: string, next: string, missingFromOrderJSON: Record<string, boolean>): number
+    {
+        const previndex = this.order[prev];
+        const nextindex = this.order[next];
+        
+        // mod is not on the list, move the mod to last
+        if (previndex === undefined) 
+        {
+            missingFromOrderJSON[prev] = true;
+
+            return 1;
+        }
+        else if (nextindex === undefined) 
+        {
+            missingFromOrderJSON[next] = true;
+
+            return -1;
+        }
+
+        return previndex - nextindex;
     }
 
     /**
