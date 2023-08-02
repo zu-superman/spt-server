@@ -91,7 +91,7 @@ export class TraderHelper
             disabled: false,
             loyaltyLevel: rawProfileTemplate.initialLoyaltyLevel,
             salesSum: rawProfileTemplate.initialSalesSum,
-            standing: traderID === "638f541a29ffd1183d187f57" ? 0.01 : rawProfileTemplate.initialStanding, // edge case for Lightkeeper, 0 means seeing `Make Amends - Buyout` quest
+            standing: this.getStartingStanding(traderID, rawProfileTemplate), 
             nextResupply: this.databaseServer.getTables().traders[traderID].base.nextResupply,
             unlocked: this.databaseServer.getTables().traders[traderID].base.unlockedByDefault
         };
@@ -100,6 +100,17 @@ export class TraderHelper
         {
             pmcData.TradersInfo[traderID].unlocked = rawProfileTemplate.jaegerUnlocked;
         }
+    }
+
+    protected getStartingStanding(traderId: string, rawProfileTemplate: ProfileTraderTemplate): number
+    {
+        // Edge case for Lightkeeper, 0 standing means seeing `Make Amends - Buyout` quest
+        if (traderId === "638f541a29ffd1183d187f57" && rawProfileTemplate.initialStanding === 0)
+        {
+            return 0.01;
+        }
+
+        return rawProfileTemplate.initialStanding;
     }
 
     /**
