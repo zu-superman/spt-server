@@ -43,6 +43,13 @@ export class MailSendService
      */
     public sendDirectNpcMessageToPlayer(playerId: string, sender: Traders, messageType: MessageType, message: string, items: Item[] = [], maxStorageTimeSeconds = null): void
     {
+        if (!sender)
+        {
+            this.logger.error(`Unable to send message type: ${messageType} to player: ${playerId}, provided trader enum was null`);
+
+            return;
+        }
+
         const details: ISendMessageDetails = {
             recipientId: playerId,
             sender: messageType,
@@ -72,6 +79,13 @@ export class MailSendService
      */
     public sendLocalisedNpcMessageToPlayer(playerId: string, sender: Traders, messageType: MessageType, messageLocaleId: string, items: Item[] = [], maxStorageTimeSeconds = null): void
     {
+        if (!sender)
+        {
+            this.logger.error(`Unable to send message type: ${messageType} to player: ${playerId}, provided trader enum was null`);
+
+            return;
+        }
+
         const details: ISendMessageDetails = {
             recipientId: playerId,
             sender: messageType,

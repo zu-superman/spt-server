@@ -396,6 +396,13 @@ export class TraderHelper
     {
         const keys = Object.keys(Traders).filter(x => Traders[x] === traderId);
 
-        return keys.length > 0 ? keys[0] as Traders : null;
+        if (keys.length === 0)
+        {
+            this.logger.error(`Unable to find trader: ${traderId} in Traders enum`);
+
+            return null;
+        }
+
+        return keys[0] as Traders;
     }
 }
