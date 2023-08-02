@@ -1740,6 +1740,15 @@
         "BuyRestrictionMax": 2,
         "BuyRestrictionCurrent": 0
       }
+    },
+    {
+      "_id": "64c6dd515c456ec7c80d65f4",
+      "_tpl": "5aa7e4a4e5b5b000137b76f2",
+      "parentId": "hideout",
+      "slotId": "hideout",
+      "upd": {
+        "StackObjectsCount": 10
+      }
     }
   ],
   "barter_scheme": {
@@ -1919,9 +1928,9 @@
       [
         {
           "count": 10,
+          "_tpl": "59f32c3b86f77472a31742f0",
           "level": 20,
-          "side": "Any",
-          "_tpl": "59f32c3b86f77472a31742f0"
+          "side": "Any"
         }
       ]
     ],
@@ -1953,9 +1962,9 @@
       [
         {
           "count": 6,
+          "_tpl": "59f32c3b86f77472a31742f0",
           "level": 20,
-          "side": "Any",
-          "_tpl": "59f32c3b86f77472a31742f0"
+          "side": "Any"
         }
       ]
     ],
@@ -1979,9 +1988,9 @@
       [
         {
           "count": 7,
+          "_tpl": "59f32c3b86f77472a31742f0",
           "level": 10,
-          "side": "Any",
-          "_tpl": "59f32c3b86f77472a31742f0"
+          "side": "Any"
         }
       ]
     ],
@@ -3224,6 +3233,14 @@
           "_tpl": "5449016a4bdc2d6f028b456f"
         }
       ]
+    ],
+    "64c6dd515c456ec7c80d65f4": [
+      [
+        {
+          "count": 25000,
+          "_tpl": "5449016a4bdc2d6f028b456f"
+        }
+      ]
     ]
   },
   "loyal_level_items": {
@@ -3391,6 +3408,7 @@
     "64806247470acaccd803acd5": 2,
     "64806247470acaccd803acd7": 1,
     "64806247470acaccd803acd9": 1,
-    "64806247470acaccd803acdb": 3
+    "64806247470acaccd803acdb": 3,
+    "64c6dd515c456ec7c80d65f4": 3
   }
 }
