@@ -187,8 +187,8 @@
                 "minLimitPercent": 15
             },
             "weapon": {
-                "lowestMax": 35,
-                "highestMax": 65,
+                "lowestMax": 85,
+                "highestMax": 100,
                 "maxDelta": 45,
                 "minDelta": 30,
                 "minLimitPercent": 15
@@ -1263,7 +1263,7 @@
                     "exUsec": 5,
                     "arenafighter": 0,
                     "arenafighterevent": 0,
-                    "crazyassaultevent": 0,
+                    "crazyassaultevent": 3,
                     "pmcBot": 5
                 },
                 "factory4_night": {
@@ -1282,7 +1282,7 @@
                     "exUsec": 5,
                     "arenafighter": 0,
                     "arenafighterevent": 0,
-                    "crazyassaultevent": 0,
+                    "crazyassaultevent": 3,
                     "pmcBot": 5
                 },
                 "bigmap": {
@@ -1300,7 +1300,7 @@
                     "exUsec": 5,
                     "arenafighter": 0,
                     "arenafighterevent": 0,
-                    "crazyassaultevent": 0,
+                    "crazyassaultevent": 3,
                     "pmcBot": 5
                 },
                 "laboratory": {
@@ -1318,7 +1318,7 @@
                     "exUsec": 5,
                     "arenafighter": 0,
                     "arenafighterevent": 0,
-                    "crazyassaultevent": 0,
+                    "crazyassaultevent": 3,
                     "pmcBot": 5
                 },
                 "woods": {
@@ -1337,7 +1337,7 @@
                     "exUsec": 5,
                     "arenafighter": 0,
                     "arenafighterevent": 0,
-                    "crazyassaultevent": 0,
+                    "crazyassaultevent": 3,
                     "pmcBot": 5
                 },
                 "interchange": {
@@ -1355,7 +1355,7 @@
                     "exUsec": 5,
                     "arenafighter": 0,
                     "arenafighterevent": 0,
-                    "crazyassaultevent": 0,
+                    "crazyassaultevent": 3,
                     "pmcBot": 5
                 },
                 "lighthouse": {
@@ -1373,7 +1373,7 @@
                     "exUsec": 5,
                     "arenafighter": 0,
                     "arenafighterevent": 0,
-                    "crazyassaultevent": 0,
+                    "crazyassaultevent": 3,
                     "pmcBot": 5
                 },
                 "rezervbase": {
@@ -1391,7 +1391,7 @@
                     "exUsec": 5,
                     "arenafighter": 0,
                     "arenafighterevent": 0,
-                    "crazyassaultevent": 0,
+                    "crazyassaultevent": 3,
                     "pmcBot": 5
                 },
                 "shoreline": {
@@ -1409,7 +1409,7 @@
                     "exUsec": 5,
                     "arenafighter": 0,
                     "arenafighterevent": 0,
-                    "crazyassaultevent": 0,
+                    "crazyassaultevent": 3,
                     "pmcBot": 5
                 },
                 "tarkovstreets": {
@@ -1427,7 +1427,7 @@
                     "exUsec": 5,
                     "arenafighter": 0,
                     "arenafighterevent": 0,
-                    "crazyassaultevent": 0,
+                    "crazyassaultevent": 3,
                     "pmcBot": 5
                 }
             },
@@ -1447,7 +1447,7 @@
                     "exUsec": 5,
                     "arenafighter": 0,
                     "arenafighterevent": 0,
-                    "crazyassaultevent": 0,
+                    "crazyassaultevent": 3,
                     "pmcBot": 5
                 },
                 "factory4_night": {
@@ -1465,7 +1465,7 @@
                     "exUsec": 5,
                     "arenafighter": 0,
                     "arenafighterevent": 0,
-                    "crazyassaultevent": 0,
+                    "crazyassaultevent": 3,
                     "pmcBot": 5
                 },
                 "bigmap": {
@@ -1483,7 +1483,7 @@
                     "exUsec": 5,
                     "arenafighter": 0,
                     "arenafighterevent": 0,
-                    "crazyassaultevent": 0,
+                    "crazyassaultevent": 3,
                     "pmcBot": 5
                 },
                 "laboratory": {
@@ -1501,7 +1501,7 @@
                     "exUsec": 5,
                     "arenafighter": 0,
                     "arenafighterevent": 0,
-                    "crazyassaultevent": 0,
+                    "crazyassaultevent": 3,
                     "pmcBot": 5
                 },
                 "woods": {
@@ -1520,7 +1520,7 @@
                     "exUsec": 5,
                     "arenafighter": 0,
                     "arenafighterevent": 0,
-                    "crazyassaultevent": 0,
+                    "crazyassaultevent": 3,
                     "pmcBot": 5
                 },
                 "interchange": {
@@ -1538,7 +1538,7 @@
                     "exUsec": 5,
                     "arenafighter": 0,
                     "arenafighterevent": 0,
-                    "crazyassaultevent": 0,
+                    "crazyassaultevent": 3,
                     "pmcBot": 5
                 },
                 "lighthouse": {
@@ -1556,7 +1556,7 @@
                     "exUsec": 5,
                     "arenafighter": 0,
                     "arenafighterevent": 0,
-                    "crazyassaultevent": 0,
+                    "crazyassaultevent": 3,
                     "pmcBot": 5
                 },
                 "rezervbase": {
@@ -1574,7 +1574,7 @@
                     "exUsec": 5,
                     "arenafighter": 0,
                     "arenafighterevent": 0,
-                    "crazyassaultevent": 0,
+                    "crazyassaultevent": 3,
                     "pmcBot": 5
                 },
                 "shoreline": {
@@ -1592,7 +1592,7 @@
                     "exUsec": 5,
                     "arenafighter": 0,
                     "arenafighterevent": 0,
-                    "crazyassaultevent": 0,
+                    "crazyassaultevent": 3,
                     "pmcBot": 5
                 },
                 "tarkovstreets": {
@@ -1610,7 +1610,7 @@
                     "exUsec": 5,
                     "arenafighter": 0,
                     "arenafighterevent": 0,
-                    "crazyassaultevent": 0,
+                    "crazyassaultevent": 3,
                     "pmcBot": 5
                 }
             }
@@ -1652,7 +1652,7 @@
             },
             "crazyassaultevent": {
                 "min": 5,
-                "max": 10
+                "max": 5
             }
         },
         "enemyTypes": ["assault", "marksman", "pmcBot", "bossBully", "bossKilla", "bossKojaniy", "bossGluhar", "bossSanitar", "bossTagilla", "bossKnight", "bossZryachiy", "followerBully", "followerKojaniy", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "followerBirdEye", "followerBigPipe", "followerZryachiy", "sectantWarrior", "sectantPriest"],
