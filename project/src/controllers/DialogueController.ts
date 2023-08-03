@@ -72,7 +72,7 @@ export class DialogueController
     public generateDialogueList(sessionID: string): DialogueInfo[]
     {
         const data: DialogueInfo[] = [];
-        for (const dialogueId in this.saveServer.getProfile(sessionID).dialogues)
+        for (const dialogueId in this.dialogueHelper.getDialogsForProfile(sessionID).dialogues)
         {
             data.push(this.getDialogueInfo(dialogueId, sessionID));
         }
@@ -88,7 +88,7 @@ export class DialogueController
      */
     public getDialogueInfo(dialogueID: string, sessionID: string): DialogueInfo
     {
-        const dialogue = this.saveServer.getProfile(sessionID).dialogues[dialogueID];
+        const dialogue = this.dialogueHelper.getDialogsForProfile(sessionID).dialogues[dialogueID];
 
         const result: DialogueInfo = {
             _id: dialogueID,
@@ -277,8 +277,7 @@ export class DialogueController
     /** Handle client/mail/dialog/pin && Handle client/mail/dialog/unpin */
     public setDialoguePin(dialogueId: string, shouldPin: boolean, sessionId: string): void
     {
-        const profile = this.saveServer.getProfile(sessionId);
-        const dialog = profile.dialogues[dialogueId];
+        const dialog = this.dialogueHelper.getDialogsForProfile(sessionId)[dialogueId];
         if (!dialog)
         {
             this.logger.error(`No dialog in profile: ${sessionId} found with id: ${dialogueId}`);
@@ -297,8 +296,7 @@ export class DialogueController
      */
     public setRead(dialogueIds: string[], sessionId: string): void
     {
-        const profile = this.saveServer.getProfile(sessionId);
-        const dialogs = profile.dialogues;
+        const dialogs = this.dialogueHelper.getDialogsForProfile(sessionId);
         if (!dialogs)
         {
             this.logger.error(`No dialog object in profile: ${sessionId}`);
@@ -322,8 +320,8 @@ export class DialogueController
      */
     public getAllAttachments(dialogueId: string, sessionId: string): IGetAllAttachmentsResponse
     {
-        const profile = this.saveServer.getProfile(sessionId);
-        const dialog = profile.dialogues[dialogueId];
+        const dialogs = this.dialogueHelper.getDialogsForProfile(sessionId);
+        const dialog = dialogs[dialogueId];
         if (!dialog)
         {
             this.logger.error(`No dialog in profile: ${sessionId} found with id: ${dialogueId}`);
@@ -434,7 +432,8 @@ export class DialogueController
     protected getActiveMessagesFromDialog(sessionId: string, dialogueId: string): Message[]
     {
         const timeNow = this.timeUtil.getTimestamp();
-        return this.saveServer.getProfile(sessionId).dialogues[dialogueId].messages.filter(x => timeNow < (x.dt + x.maxStorageTime));
+        const dialogs = this.dialogueHelper.getDialogsForProfile(sessionId);
+        return dialogs[dialogueId].messages.filter(x => timeNow < (x.dt + x.maxStorageTime));
     }
 
     /**
@@ -453,7 +452,7 @@ export class DialogueController
      */
     protected removeExpiredItemsFromMessages(sessionId: string): void
     {
-        for (const dialogueId in this.saveServer.getProfile(sessionId).dialogues)
+        for (const dialogueId in this.dialogueHelper.getDialogsForProfile(sessionId))
         {
             this.removeExpiredItemsFromMessage(sessionId, dialogueId);
         }
@@ -466,7 +465,14 @@ export class DialogueController
      */
     protected removeExpiredItemsFromMessage(sessionId: string, dialogueId: string): void
     {
-        for (const message of this.saveServer.getProfile(sessionId).dialogues[dialogueId].messages)
+        const dialogs = this.dialogueHelper.getDialogsForProfile(sessionId);
+        const dialog = dialogs[dialogueId];
+        if (!dialog.messages)
+        {
+            return;
+        }
+
+        for (const message of dialog.messages)
         {
             if (this.messageHasExpired(message))
             {

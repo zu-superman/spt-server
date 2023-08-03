@@ -223,4 +223,20 @@ export class DialogueHelper
 
         return [];
     }
+
+    /**
+     * Get the dialogs dictionary for a profile, create if doesnt exist
+     * @param sessionId Session/player id
+     * @returns Dialog dictionary
+     */
+    public getDialogsForProfile(sessionId: string): Record<string, Dialogue>
+    {
+        const profile = this.saveServer.getProfile(sessionId);
+        if (!profile.dialogues)
+        {
+            profile.dialogues = {};
+        }
+
+        return profile.dialogues;
+    }
 }

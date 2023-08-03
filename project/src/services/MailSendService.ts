@@ -1,4 +1,5 @@
 import { inject, injectable } from "tsyringe";
+import { DialogueHelper } from "../helpers/DialogueHelper";
 import { ItemHelper } from "../helpers/ItemHelper";
 import { NotificationSendHelper } from "../helpers/NotificationSendHelper";
 import { NotifierHelper } from "../helpers/NotifierHelper";
@@ -26,6 +27,7 @@ export class MailSendService
         @inject("SaveServer") protected saveServer: SaveServer,
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("NotifierHelper") protected notifierHelper: NotifierHelper,
+        @inject("DialogueHelper") protected dialogueHelper: DialogueHelper,
         @inject("NotificationSendHelper") protected notificationSendHelper: NotificationSendHelper,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("ItemHelper") protected itemHelper: ItemHelper
@@ -361,7 +363,7 @@ export class MailSendService
      */
     protected getDialog(messageDetails: ISendMessageDetails): Dialogue
     {
-        const dialogsInProfile = this.saveServer.getProfile(messageDetails.recipientId).dialogues;
+        const dialogsInProfile = this.dialogueHelper.getDialogsForProfile(messageDetails.recipientId);
         const senderId = this.getMessageSenderIdByType(messageDetails);
 
         // Does dialog exist

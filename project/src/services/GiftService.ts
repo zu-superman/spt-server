@@ -61,6 +61,11 @@ export class GiftService
             return GiftSentResult.FAILED_GIFT_ALREADY_RECEIVED;
         }
 
+        if (giftData.items?.length > 0 && !giftData.collectionTimeHours)
+        {
+            this.logger.warning(`Gift ${giftId} has items but no collection time limit, defaulting to 48 hours`);
+        }
+
         // Handle system messsages
         if (giftData.sender === GiftSenderType.SYSTEM)
         {
