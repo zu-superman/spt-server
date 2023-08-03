@@ -259,6 +259,7 @@
         "pmcbot": 4,
         "sectantpriest": 4,
         "sectantwarrior": 4,
+		"crazyassaultevent": 4
         "test": 4
     },
     "chanceAssaultScavHasPlayerScavName": 10,
