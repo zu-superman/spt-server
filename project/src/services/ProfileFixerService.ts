@@ -634,9 +634,10 @@ export class ProfileFixerService
      * @param sessionId Session id
      * @param pmcProfile Profile to check inventory of
      */
-    public checkForOrphanedModdedItems(sessionId: string, pmcProfile: IPmcData): void
+    public checkForOrphanedModdedItems(sessionId: string, fullProfile: IAkiProfile): void
     {
         const itemsDb = this.databaseServer.getTables().templates.items;
+        const pmcProfile = fullProfile.characters.pmc;
 
         // Get items placed in root of stash
         // TODO: extend to other areas / sub items
@@ -659,8 +660,64 @@ export class ProfileFixerService
 
                     // Also deletes from insured array
                     this.inventoryHelper.removeItem(pmcProfile, item._id, sessionId);
+                }
+            }
+        }
 
-                    // TODO: delete item from mail
+        // Iterate over player-made weapon builds, look for missing items and remove weapon preset if found
+        for (const buildId in fullProfile.weaponbuilds)
+        {
+            for (const item of fullProfile.weaponbuilds[buildId].items)
+            {
+                // Check item exists in itemsDb
+                if (!itemsDb[item._tpl])
+                {
+                    this.logger.error(this.localisationService.getText("fixer-mod_item_found", item._tpl));
+
+                    if (this.coreConfig.fixes.removeModItemsFromProfile)
+                    {
+                        delete fullProfile.weaponbuilds[buildId];
+                        this.logger.warning(`Item: ${item._tpl} has resulted in the deletion of weapon build: ${buildId}`);
+                    }
+
+                    break;
+                }
+            }
+        }
+
+        // Iterate over dialogs, looking for messages with items not found in item db, remove message if item found
+        for (const dialogId in fullProfile.dialogues)
+        {
+            const dialog = fullProfile.dialogues[dialogId];
+            if (!dialog?.messages)
+            {
+                continue; // Skip dialog with no messages
+            }
+
+            // Iterate over all messages in dialog
+            for (const message of dialog.messages)
+            {
+                if (!message.items?.data)
+                {
+                    continue; // Skip message with no items
+                }
+
+                // Iterate over all items in message
+                for (const item of message.items.data)
+                {
+                    // Check item exists in itemsDb
+                    if (!itemsDb[item._tpl])
+                    {
+                        this.logger.error(this.localisationService.getText("fixer-mod_item_found", item._tpl));
+
+                        if (this.coreConfig.fixes.removeModItemsFromProfile)
+                        {
+                            dialog.messages.splice(dialog.messages.findIndex(x => x._id === message._id), 1);
+                            this.logger.warning(`Item: ${item._tpl} has resulted in the deletion of message: ${message._id} from dialog ${dialogId}`);
+                        }
+
+                        break;
+                    }
                 }
             }
         }

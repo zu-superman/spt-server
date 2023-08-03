@@ -154,7 +154,7 @@ export class GameController
             {
                 this.sendPraporGiftsToNewProfiles(pmcProfile);
 
-                this.profileFixerService.checkForOrphanedModdedItems(sessionID, pmcProfile);
+                this.profileFixerService.checkForOrphanedModdedItems(sessionID, fullProfile);
             }
             
             this.logProfileDetails(fullProfile);
