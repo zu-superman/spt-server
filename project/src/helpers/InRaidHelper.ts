@@ -176,11 +176,17 @@ export class InRaidHelper
      */
     protected processFailedQuests(sessionId: string, pmcData: IPmcData, preRaidQuests: Quest[], postRaidQuests: Quest[]): void
     {
+        if (!preRaidQuests)
+        {
+            // No quests to compare against, skip
+            return;
+        }
+
         // Loop over all quests from post-raid profile
         for (const postRaidQuest of postRaidQuests)
         {
             // Find matching pre-raid quest
-            const preRaidQuest = preRaidQuests.find(x => x.qid === postRaidQuest.qid);
+            const preRaidQuest = preRaidQuests?.find(x => x.qid === postRaidQuest.qid);
             if (preRaidQuest)
             {
                 // Post-raid quest is failed but wasn't pre-raid
