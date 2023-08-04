@@ -546,6 +546,13 @@ export class FenceService
      */
     protected randomiseItemUpdProperties(itemDetails: ITemplateItem, itemToAdjust: Item): void
     {
+        if (!itemDetails._props)
+        {
+            this.logger.error(`Item ${itemDetails._name} lacks a _props field, unable to randomise item: ${itemToAdjust._id}`);
+
+            return;
+        }
+
         // Randomise hp resource of med items
         if ("MaxHpResource" in itemDetails._props && itemDetails._props.MaxHpResource > 0)
         {
