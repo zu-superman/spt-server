@@ -72,7 +72,7 @@ export class DialogueController
     public generateDialogueList(sessionID: string): DialogueInfo[]
     {
         const data: DialogueInfo[] = [];
-        for (const dialogueId in this.dialogueHelper.getDialogsForProfile(sessionID).dialogues)
+        for (const dialogueId in this.dialogueHelper.getDialogsForProfile(sessionID))
         {
             data.push(this.getDialogueInfo(dialogueId, sessionID));
         }
@@ -88,7 +88,8 @@ export class DialogueController
      */
     public getDialogueInfo(dialogueID: string, sessionID: string): DialogueInfo
     {
-        const dialogue = this.dialogueHelper.getDialogsForProfile(sessionID).dialogues[dialogueID];
+        const dialogs = this.dialogueHelper.getDialogsForProfile(sessionID);
+        const dialogue = dialogs[dialogueID];
 
         const result: DialogueInfo = {
             _id: dialogueID,
