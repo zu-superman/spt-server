@@ -59,7 +59,7 @@
       "Headwear": 80,
       "Holster": 25,
       "Scabbard": 100,
-      "SecondPrimaryWeapon": 0,
+      "SecondPrimaryWeapon": 5,
       "TacticalVest": 100
     },
     "mods": {
@@ -3003,7 +3003,15 @@
         "5c07df7f0db834001b73588a": 5,
         "601948682627df266209af05": 5
       },
-      "SecondPrimaryWeapon": {},
+      "SecondPrimaryWeapon": {
+        "5926bb2186f7744b1c6c6e60": 10,
+        "5ba26383d4351e00334c93d9": 10,
+        "5bd70322209c4d00d7167b8f": 10,
+        "5d2f0d8048f0356c925bc3b0": 10,
+        "5de7bd7bfd6b4e6e2276dc25": 10,
+        "5e00903ae9dc277128008b87": 10,
+        "5e81ebcd8e146c7080625e15": 1
+      },
       "SecuredContainer": {
         "5c0a794586f77461c458f892": 1
       },
@@ -10894,6 +10902,29 @@
           "5efb0fc6aeb21837e749c801",
           "5efb0d4f4bc50b58e81710f3",
           "5ea2a8e200685063ec28c05a"
+        ]
+      },
+      "5e81ebcd8e146c7080625e15": {
+        "mod_pistol_grip": [
+          "55d4b9964bdc2d1d4e8b456e"
+        ],
+        "mod_scope": [
+          "6284bd5f95250a29bc628a30"
+        ],
+        "mod_sight_front": [
+          "5ba26b01d4351e0085325a51"
+        ],
+        "mod_sight_rear": [
+          "5bb20e49d4351e3bac1212de"
+        ],
+        "mod_tactical_000": [
+          "57fd23e32459772d0805bcf1"
+        ],
+        "mod_tactical_001": [
+          "5a800961159bd4315e3a1657"
+        ],
+        "mod_tactical_002": [
+          "5a800961159bd4315e3a1657"
         ]
       },
       "5e81edc13397a21db957f6a1": {
