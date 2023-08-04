@@ -67,36 +67,52 @@ export class LocationController
     {
         const location: ILocation = this.databaseServer.getTables().locations[name];
         const output: ILocationBase = this.jsonUtil.clone(location.base);
-        // const ids = {};
 
         output.UnixDateTime = this.timeUtil.getTimestamp();
 
-        // don't generate loot on hideout
+        // Don't generate loot for hideout
         if (name === "hideout")
         {
             return output;
         }
 
         const locationName = location.base.Name;
+        const db = this.databaseServer.getTables();
 
-        // Copy loot data
-        const staticWeapons = this.jsonUtil.clone(this.databaseServer.getTables().loot.staticContainers[locationName].staticWeapons);
-        const staticContainers = this.jsonUtil.clone(this.databaseServer.getTables().loot.staticContainers[locationName].staticContainers);
-        const staticForced = this.jsonUtil.clone(this.databaseServer.getTables().loot.staticContainers[locationName].staticForced);
-        const staticLootDist = this.jsonUtil.clone(this.databaseServer.getTables().loot.staticLoot);
-        const staticAmmoDist = this.jsonUtil.clone(this.databaseServer.getTables().loot.staticAmmo);
+        // Copy loot data to local properties
+        const staticWeapons = this.jsonUtil.clone(db.loot.staticContainers[locationName]?.staticWeapons);
+        if (!staticWeapons)
+        {
+            this.logger.error(`Unable to find static weapon data for map: ${locationName}`);
+        }
 
+        const staticContainers = this.jsonUtil.clone(db.loot.staticContainers[locationName]?.staticContainers);
+        if (!staticContainers)
+        {
+            this.logger.error(`Unable to find static container data for map: ${locationName}`);
+        }
+
+        const staticForced = this.jsonUtil.clone(db.loot.staticContainers[locationName]?.staticForced);
+        if (!staticForced)
+        {
+            this.logger.error(`Unable to find forced static data for map: ${locationName}`);
+        }
+
+        const staticLootDist = this.jsonUtil.clone(db.loot.staticLoot);
+        const staticAmmoDist = this.jsonUtil.clone(db.loot.staticAmmo);
+
+        // Init loot array for map
         output.Loot = [];
 
-        // Mounted weapons
-        for (const mi of staticWeapons)
+        // Add mounted weapons to output loot
+        for (const mi of staticWeapons ?? [])
         {
             output.Loot.push(mi);
         }
 
+        // Add static loot to output loot + pass in forced static loot as param
         let staticContainerCount = 0;
-        // static loot
-        for (const staticContainer of staticContainers)
+        for (const staticContainer of staticContainers ?? [])
         {
             const container = this.locationGenerator.generateContainerLoot(staticContainer, staticForced, staticLootDist, staticAmmoDist, name);
             output.Loot.push(container);
@@ -105,7 +121,7 @@ export class LocationController
 
         this.logger.success(this.localisationService.getText("location-containers_generated_success", staticContainerCount));
 
-        // Dyanmic loot
+        // Add dyanmic loot to output loot
         const dynamicLootDist: ILooseLoot = this.jsonUtil.clone(location.looseLoot);
         const dynamicLoot: SpawnpointTemplate[] = this.locationGenerator.generateDynamicLoot(dynamicLootDist, staticAmmoDist, name);
         for (const dli of dynamicLoot)
@@ -113,7 +129,7 @@ export class LocationController
             output.Loot.push(dli);
         }
 
-        // Done generating
+        // Done generating, log results
         this.logger.success(this.localisationService.getText("location-dynamic_items_spawned_success", dynamicLoot.length));
         this.logger.success(this.localisationService.getText("location-generated_success", name));
 
