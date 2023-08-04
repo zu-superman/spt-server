@@ -3,6 +3,7 @@ import { inject, injectable } from "tsyringe";
 import { HideoutHelper } from "../helpers/HideoutHelper";
 import { InventoryHelper } from "../helpers/InventoryHelper";
 import { ItemHelper } from "../helpers/ItemHelper";
+import { TraderHelper } from "../helpers/TraderHelper";
 import { IPmcData } from "../models/eft/common/IPmcData";
 import { Bonus, HideoutSlot } from "../models/eft/common/tables/IBotBase";
 import {
@@ -35,6 +36,7 @@ export class ProfileFixerService
         @inject("Watermark") protected watermark: Watermark,
         @inject("HideoutHelper") protected hideoutHelper: HideoutHelper,
         @inject("InventoryHelper") protected inventoryHelper: InventoryHelper,
+        @inject("TraderHelper") protected traderHelper: TraderHelper,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
@@ -740,7 +742,7 @@ export class ProfileFixerService
         {
             for (const activeQuest of repeatable.activeQuests ?? [])
             {
-                if (!Object.values(Traders).some((x) => x === activeQuest.traderId))
+                if (!this.traderHelper.traderEnumHasValue(activeQuest.traderId))
                 {
                     this.logger.error(this.localisationService.getText("fixer-mod_item_found", activeQuest.traderId));
                     if (this.coreConfig.fixes.removeModItemsFromProfile)
@@ -779,7 +781,7 @@ export class ProfileFixerService
 
         for (const traderId in fullProfile.traderPurchases)
         {
-            if (!Object.values(Traders).some((x) => x === traderId))
+            if (!this.traderHelper.traderEnumHasValue(traderId))
             {
                 this.logger.error(this.localisationService.getText("fixer-mod_item_found", traderId));
                 if (this.coreConfig.fixes.removeModItemsFromProfile)

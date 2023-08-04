@@ -416,4 +416,14 @@ export class TraderHelper
 
         return keys[0] as Traders;
     }
+
+    /**
+     * Does the 'Traders' enum has a value that matches the passed in parameter
+     * @param value Value to check for
+     * @returns True, values exists in Traders enum as a value
+     */
+    public traderEnumHasValue(value: string): boolean
+    {
+        return Object.values(Traders).some((x) => x === value);
+    }
 }
