@@ -86152,5 +86152,224 @@
     "templateId": "64b907dc9ff61a79b10fab9e",
     "traderId": "54cb50c76803fa8b248b4571",
     "type": "Completion"
+  },
+  "64bd4f1d4c2e9f141400bf07": {
+    "QuestName": "TerraGroup Trail Part 19-Event",
+    "_id": "64bd4f1d4c2e9f141400bf07",
+    "acceptPlayerMessage": "64bd4f1d4c2e9f141400bf07 acceptPlayerMessage",
+    "canShowNotificationsInGame": true,
+    "changeQuestMessageText": "64bd4f1d4c2e9f141400bf07 changeQuestMessageText",
+    "completePlayerMessage": "64bd4f1d4c2e9f141400bf07 completePlayerMessage",
+    "conditions": {
+      "AvailableForFinish": [
+        {
+          "_parent": "CounterCreator",
+          "_props": {
+            "counter": {
+              "conditions": [
+                {
+                  "_parent": "Location",
+                  "_props": {
+                    "dynamicLocale": false,
+                    "id": "64bd5c64f2dec80e000e5dff",
+                    "target": [
+                      "Shoreline"
+                    ]
+                  }
+                },
+                {
+                  "_parent": "Kills",
+                  "_props": {
+                    "compareMethod": ">=",
+                    "daytime": {
+                      "from": 22,
+                      "to": 10
+                    },
+                    "id": "64bd5c804c2e9f141400bf11",
+                    "target": "Any",
+                    "value": "1"
+                  }
+                }
+              ],
+              "id": "64bd4f1d4c2e9f141400bf0b"
+            },
+            "doNotResetIfCounterCompleted": false,
+            "dynamicLocale": false,
+            "id": "64bd4f1d4c2e9f141400bf0a",
+            "index": 0,
+            "oneSessionOnly": true,
+            "parentId": "",
+            "type": "Elimination",
+            "value": "7",
+            "visibilityConditions": []
+          },
+          "dynamicLocale": false
+        },
+        {
+          "_parent": "CounterCreator",
+          "_props": {
+            "counter": {
+              "conditions": [
+                {
+                  "_parent": "LaunchFlare",
+                  "_props": {
+                    "dynamicLocale": false,
+                    "id": "64bd5d2d4c2e9f141400bf12",
+                    "target": "quest_st_19_flare2"
+                  }
+                }
+              ],
+              "id": "64bd5d1a014d9a495e09a793"
+            },
+            "doNotResetIfCounterCompleted": false,
+            "dynamicLocale": false,
+            "id": "64bd5d1a014d9a495e09a792",
+            "index": 2,
+            "oneSessionOnly": true,
+            "parentId": "",
+            "type": "Completion",
+            "value": "1",
+            "visibilityConditions": [
+              {
+                "_parent": "CompleteCondition",
+                "_props": {
+                  "id": "64bd5d478f3a947a990aa496",
+                  "target": "64bd4f1d4c2e9f141400bf0a"
+                }
+              }
+            ]
+          },
+          "dynamicLocale": false
+        },
+        {
+          "_parent": "CounterCreator",
+          "_props": {
+            "counter": {
+              "conditions": [
+                {
+                  "_parent": "ExitStatus",
+                  "_props": {
+                    "dynamicLocale": false,
+                    "id": "64bd5d6f807321a9b905f069",
+                    "status": [
+                      "Survived",
+                      "Runner"
+                    ]
+                  }
+                },
+                {
+                  "_parent": "Location",
+                  "_props": {
+                    "dynamicLocale": false,
+                    "id": "64bd5d804c2e9f141400bf13",
+                    "target": [
+                      "Shoreline"
+                    ]
+                  }
+                }
+              ],
+              "id": "64bd5d4cf3a668f08805ce62"
+            },
+            "doNotResetIfCounterCompleted": false,
+            "dynamicLocale": false,
+            "id": "64bd5d4cf3a668f08805ce61",
+            "index": 3,
+            "oneSessionOnly": true,
+            "parentId": "",
+            "type": "Completion",
+            "value": "1",
+            "visibilityConditions": [
+              {
+                "_parent": "CompleteCondition",
+                "_props": {
+                  "id": "64bd5db4e2ca8c5236002da4",
+                  "target": "64bd5d1a014d9a495e09a792"
+                }
+              }
+            ]
+          },
+          "dynamicLocale": false
+        }
+      ],
+      "AvailableForStart": [],
+      "Fail": []
+    },
+    "description": "64bd4f1d4c2e9f141400bf07 description",
+    "failMessageText": "64bd4f1d4c2e9f141400bf07 failMessageText",
+    "image": "/files/quest/icon/64c3cd095b03dccf8800271f.jpg",
+    "instantComplete": false,
+    "isKey": false,
+    "location": "5704e554d2720bac5b8b456e",
+    "name": "64bd4f1d4c2e9f141400bf07 name",
+    "note": "64bd4f1d4c2e9f141400bf07 note",
+    "questStatus": {},
+    "restartable": false,
+    "rewards": {
+      "Fail": [],
+      "Started": [
+        {
+          "findInRaid": true,
+          "id": "64c15a65f2dec80e000e69f2",
+          "index": 0,
+          "items": [
+            {
+              "_id": "64cac5c1d45ace5bc90c7522",
+              "_tpl": "620109578d82e67e7911abf2",
+              "upd": {
+                "StackObjectsCount": 1
+              }
+            }
+          ],
+          "target": "64cac5c1d45ace5bc90c7522",
+          "type": "Item",
+          "value": "1"
+        },
+        {
+          "findInRaid": true,
+          "id": "64c15a6f524553b2500ee66e",
+          "index": 1,
+          "items": [
+            {
+              "_id": "64cac5c1d45ace5bc90c7523",
+              "_tpl": "62389be94d5d474bf712e709",
+              "upd": {
+                "StackObjectsCount": 1
+              }
+            }
+          ],
+          "target": "64cac5c1d45ace5bc90c7523",
+          "type": "Item",
+          "value": "1"
+        }
+      ],
+      "Success": [
+        {
+          "id": "64bd4f1d4c2e9f141400bf0c",
+          "index": 0,
+          "type": "Experience",
+          "value": 50000
+        },
+        {
+          "id": "64bd4f1d4c2e9f141400bf0d",
+          "index": 1,
+          "target": "579dc571d53a0658a154fbec",
+          "type": "TraderStanding",
+          "value": "0.5"
+        },
+        {
+          "id": "64ca5edb7c0a75378c0cc92b",
+          "index": 2,
+          "type": "StashRows",
+          "value": "2"
+        }
+      ]
+    },
+    "secretQuest": false,
+    "side": "Pmc",
+    "startedMessageText": "64bd4f1d4c2e9f141400bf07 startedMessageText",
+    "successMessageText": "64bd4f1d4c2e9f141400bf07 successMessageText",
+    "templateId": "64bd4f1d4c2e9f141400bf07",
+    "traderId": "579dc571d53a0658a154fbec",
+    "type": "Completion"
   }
 }
