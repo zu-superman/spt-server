@@ -172,6 +172,11 @@
             "name": "TerraGroup Trail Part 9",
             "season": "None",
             "yearly": false
+        },,
+        "64b907bae1ed4f11f209e8de": {
+            "name": "TerraGroup Trail Part 10",
+            "season": "None",
+            "yearly": false
         },
         "64b907bd55f4156df8007d14": {
             "name": "TerraGroup Trail Part 11",
@@ -183,16 +188,41 @@
             "season": "None",
             "yearly": false
         },
-        "64b907c4e87866541c0d747e": {
-            "name": "TerraGroup Trail Part 13",
-            "season": "None",
-            "yearly": false
-        },
-        "64b907cabbf5bf2b460ad984": {
-            "name": "TerraGroup Trail Part 14",
-            "season": "None",
-            "yearly": false
-        }
+		"64b907c4e87866541c0d747e": {
+			"name": "TerraGroup Trial Part 13",
+			"season": "None",
+			"yearly": false
+		},
+		"64b907cabbf5bf2b460ad984": {
+			"name": "TerraGroup Trial Part 14",
+			"season": "None",
+			"yearly": false
+		},
+		"64b907cef43eebce7c01e7b1": {
+			"name": "TerraGroup Trial Part 15",
+			"season": "None",
+			"yearly": false
+		},
+		"64b907d18d327e5bf9085bdb": {
+			"name": "TerraGroup Trial Part 16",
+			"season": "None",
+			"yearly": false
+		},
+		"64b907d7dd13d43b9d01d6cf": {
+			"name": "TerraGroup Trial Part 17",
+			"season": "None",
+			"yearly": false
+		},
+		"64b907dc9ff61a79b10fab9e": {
+			"name": "TerraGroup Trial Part 18",
+			"season": "None",
+			"yearly": false
+		},
+		"64bd4f1d4c2e9f141400bf07": {
+			"name": "TerraGroup Trial Part 19",
+			"season": "None",
+			"yearly": false
+		}
     },
     "repeatableQuests": [{
             "name": "Daily",
