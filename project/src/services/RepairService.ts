@@ -297,6 +297,15 @@ export class RepairService
     protected addMaxResourceToKitIfMissing(repairKitDetails: ITemplateItem, repairKitInInventory: Item): void
     {
         const maxRepairAmount = repairKitDetails._props.MaxRepairResource;
+        if (!repairKitInInventory.upd)
+        {
+            this.logger.debug(`Repair kit: ${repairKitInInventory._id} in inventory lacks upd object, adding`);
+            repairKitInInventory.upd = {
+                RepairKit: {
+                    Resource: maxRepairAmount
+                }
+            };
+        }
         if (!repairKitInInventory.upd.RepairKit?.Resource)
         {
             repairKitInInventory.upd.RepairKit = {
