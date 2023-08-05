@@ -218,7 +218,20 @@ export class LootGenerator
     {
         // Choose random preset and get details from item.json using encyclopedia value (encyclopedia === tplId)
         const randomPreset = this.randomUtil.getArrayValue(globalDefaultPresets)[1];
-        const itemDetails = this.databaseServer.getTables().templates.items[randomPreset._encyclopedia];
+        if (!randomPreset?._encyclopedia)
+        {
+            this.logger.error(`Airdrop - preset with id: ${randomPreset._id} lacks encyclopedia property`);
+
+            return false;
+        }
+
+        const itemDetails = this.itemHelper.getItem(randomPreset._encyclopedia);
+        if (!itemDetails[0])
+        {
+            this.logger.error(`Airdrop - Unable to find preset with tpl: ${randomPreset._encyclopedia}`);
+
+            return false;
+        }
 
         // Skip blacklisted items
         if (itemBlacklist.includes(randomPreset._items[0]._tpl))
@@ -227,15 +240,15 @@ export class LootGenerator
         }
 
         // Some custom mod items are lacking a parent property
-        if (!itemDetails._parent)
+        if (!itemDetails[1]._parent)
         {
-            this.logger.error(this.localisationService.getText("loot-item_missing_parentid", itemDetails._name));
+            this.logger.error(this.localisationService.getText("loot-item_missing_parentid", itemDetails[1]?._name));
 
             return false;
         }
 
         // Check picked preset hasn't exceeded spawn limit
-        const itemLimitCount = itemTypeCounts[itemDetails._parent];
+        const itemLimitCount = itemTypeCounts[itemDetails[1]._parent];
         if (itemLimitCount && itemLimitCount.current > itemLimitCount.max)
         {
             return false;

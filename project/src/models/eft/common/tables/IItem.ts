@@ -16,7 +16,8 @@ export interface Upd
     Togglable?: Togglable
     Map?: Map
     Tag?: Tag
-    sptPresetId?: string // SPT specific property, not made by BSG
+    /** SPT specific property, not made by BSG */
+    sptPresetId?: string
     FaceShield?: FaceShield
     StackObjectsCount?: number
     UnlimitedCount?: boolean
