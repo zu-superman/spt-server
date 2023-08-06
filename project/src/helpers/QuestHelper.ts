@@ -665,6 +665,9 @@ export class QuestHelper
                 case QuestRewardType.ASSORTMENT_UNLOCK:
                     // Handled elsewhere, TODO: find and say here
                     break;
+                case QuestRewardType.STASH_ROWS:
+                    this.logger.debug("Not implemented stash rows reward yet");
+                    break;
                 case QuestRewardType.PRODUCTIONS_SCHEME:
                     this.findAndAddHideoutProductionIdToProfile(pmcData, reward, questDetails, sessionId, questResponse);
                     break;
