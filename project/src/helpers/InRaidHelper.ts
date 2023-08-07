@@ -139,6 +139,21 @@ export class InRaidHelper
         profileData.Encyclopedia = saveProgressRequest.profile.Encyclopedia;
         profileData.ConditionCounters = saveProgressRequest.profile.ConditionCounters;
 
+        for (const backendCounterKey in saveProgressRequest.profile.BackendCounters)
+        {
+            const matchingPreRaidCounter = profileData.BackendCounters[backendCounterKey];
+            if (!matchingPreRaidCounter)
+            {
+                this.logger.error(`Backendcounter: ${backendCounterKey} cannot be found in pre-raid data`);
+
+                continue;
+            }
+            if (matchingPreRaidCounter.value !== saveProgressRequest.profile.BackendCounters[backendCounterKey].value)
+            {
+                this.logger.error(`Backendcounter: ${backendCounterKey} value is different post raid, old: ${matchingPreRaidCounter.value} new: saveProgressRequest.profile.BackendCounters[backendCounterKey].value`);
+            }
+        }
+
         this.processFailedQuests(sessionID, profileData, profileData.Quests, saveProgressRequest.profile.Quests);
         profileData.Quests = saveProgressRequest.profile.Quests;
 
