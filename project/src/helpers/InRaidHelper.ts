@@ -141,6 +141,11 @@ export class InRaidHelper
 
         for (const backendCounterKey in saveProgressRequest.profile.BackendCounters)
         {
+            if (!saveProgressRequest.profile.BackendCounters[backendCounterKey].id)
+            {
+                continue;
+            }
+
             const matchingPreRaidCounter = profileData.BackendCounters[backendCounterKey];
             if (!matchingPreRaidCounter)
             {
@@ -148,6 +153,7 @@ export class InRaidHelper
 
                 continue;
             }
+
             if (matchingPreRaidCounter.value !== saveProgressRequest.profile.BackendCounters[backendCounterKey].value)
             {
                 this.logger.error(`Backendcounter: ${backendCounterKey} value is different post raid, old: ${matchingPreRaidCounter.value} new: saveProgressRequest.profile.BackendCounters[backendCounterKey].value`);

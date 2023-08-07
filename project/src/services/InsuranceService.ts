@@ -244,7 +244,7 @@ export class InsuranceService
             {
                 equipmentToSendToPlayer.push({
                     pmcData: pmcData,
-                    itemToReturnToPlayer: this.getInsuredItemDetails(pmcData, preRaidItem, offraidData.insurance.find(x => x.id === insuredItem.itemId)),
+                    itemToReturnToPlayer: this.getInsuredItemDetails(pmcData, preRaidItem, offraidData.insurance?.find(x => x.id === insuredItem.itemId)),
                     traderId: insuredItem.tid,
                     sessionID: sessionID
                 });
@@ -293,7 +293,7 @@ export class InsuranceService
         }
 
         // Client item has durability values, Ensure values persist into server data
-        if (insuredItemFromClient.durability)
+        if (insuredItemFromClient?.durability)
         {
             // Item didnt have Repairable object pre-raid, add it
             if (!itemToReturn.upd.Repairable)
