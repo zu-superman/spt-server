@@ -4,16 +4,13 @@ import { ITraderBase } from "../models/eft/common/tables/ITrader";
 import { DialogueHelper } from "../helpers/DialogueHelper";
 import { HandbookHelper } from "../helpers/HandbookHelper";
 import { ItemHelper } from "../helpers/ItemHelper";
-import { NotificationSendHelper } from "../helpers/NotificationSendHelper";
 import { SecureContainerHelper } from "../helpers/SecureContainerHelper";
 import { TraderHelper } from "../helpers/TraderHelper";
 import { IPmcData } from "../models/eft/common/IPmcData";
 import { Item } from "../models/eft/common/tables/IItem";
 import { IInsuredItemsData } from "../models/eft/inRaid/IInsuredItemsData";
 import { ISaveProgressRequestData } from "../models/eft/inRaid/ISaveProgressRequestData";
-import { IUserDialogInfo } from "../models/eft/profile/IAkiProfile";
 import { ConfigTypes } from "../models/enums/ConfigTypes";
-import { MemberCategory } from "../models/enums/MemberCategory";
 import { MessageType } from "../models/enums/MessageType";
 import { Traders } from "../models/enums/Traders";
 import { IInsuranceConfig } from "../models/spt/config/IInsuranceConfig";
@@ -26,6 +23,7 @@ import { RandomUtil } from "../utils/RandomUtil";
 import { TimeUtil } from "../utils/TimeUtil";
 import { LocaleService } from "./LocaleService";
 import { LocalisationService } from "./LocalisationService";
+import { MailSendService } from "./MailSendService";
 
 @injectable()
 export class InsuranceService
@@ -47,7 +45,7 @@ export class InsuranceService
         @inject("HandbookHelper") protected handbookHelper: HandbookHelper,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("LocaleService") protected localeService: LocaleService,
-        @inject("NotificationSendHelper") protected notificationSendHelper: NotificationSendHelper,
+        @inject("MailSendService") protected mailSendService: MailSendService,
         @inject("ConfigServer") protected configServer: ConfigServer
     )
     {
@@ -139,24 +137,24 @@ export class InsuranceService
 
     /**
      * Send a message to player informing them gear was lost
-     * @param sessionID Session id
+     * @param sessionId Session id
+     * @param locationName name of map insurance was lost on
      */
-    public sendLostInsuranceMessage(sessionID: string): void
+    public sendLostInsuranceMessage(sessionId: string, locationName = ""): void
     {
-        const localeDb = this.localeService.getLocaleDb();
         const dialogueTemplates = this.databaseServer.getTables().traders[Traders.PRAPOR].dialogue; // todo: get trader id instead of hard coded prapor
-        const failedText = localeDb[this.randomUtil.getArrayValue(dialogueTemplates.insuranceFailed)];
-        const senderDetails: IUserDialogInfo = {
-            _id: Traders.PRAPOR,
-            info: {
-                Nickname: "Prapor",
-                Level: 1,
-                Side: "Bear",
-                MemberCategory: MemberCategory.TRADER
-            }
-        };
+        const randomResponseId = locationName?.toLowerCase() === "laboratory"
+            ? this.randomUtil.getArrayValue(dialogueTemplates["insuranceFailedLabs"])
+            : this.randomUtil.getArrayValue(dialogueTemplates["insuranceFailed"]);
 
-        this.notificationSendHelper.sendMessageToPlayer(sessionID, senderDetails, failedText, MessageType.NPC_TRADER);
+        this.mailSendService.sendLocalisedNpcMessageToPlayer(
+            sessionId,
+            Traders.PRAPOR,
+            MessageType.NPC_TRADER,
+            randomResponseId,
+            [],
+            null,
+            {location: locationName});
     }
 
     /**

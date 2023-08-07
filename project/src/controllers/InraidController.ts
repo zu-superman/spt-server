@@ -134,10 +134,7 @@ export class InraidController
         }
         else
         {
-            if (locationName.toLowerCase() === "laboratory")
-            {
-                this.insuranceService.sendLostInsuranceMessage(sessionID);
-            }
+            this.insuranceService.sendLostInsuranceMessage(sessionID, locationName);
         }
 
         if (isDead)
