@@ -79,7 +79,7 @@ export class MailSendService
      * @param items Optional items to send to player
      * @param maxStorageTimeSeconds Optional time to collect items before they expire
      */
-    public sendLocalisedNpcMessageToPlayer(playerId: string, sender: Traders, messageType: MessageType, messageLocaleId: string, items: Item[] = [], maxStorageTimeSeconds = null): void
+    public sendLocalisedNpcMessageToPlayer(playerId: string, sender: Traders, messageType: MessageType, messageLocaleId: string, items: Item[] = [], maxStorageTimeSeconds = null, systemData = null): void
     {
         if (!sender)
         {
@@ -101,6 +101,11 @@ export class MailSendService
         {
             details.items = items;
             details.itemsMaxStorageLifetimeSeconds = maxStorageTimeSeconds;
+        }
+
+        if (systemData)
+        {
+            details.systemData = systemData;
         }
 
         this.sendMessageToPlayer(details);
@@ -248,7 +253,7 @@ export class MailSendService
             templateId: messageDetails.templateId, // used by traders to send localised text from database\locales\global
             hasRewards: false, // The default dialog message has no rewards, can be added later via addRewardItemsToMessage()
             rewardCollected: false, // The default dialog message has no rewards, can be added later via addRewardItemsToMessage()
-            systemData: messageDetails.systemData ? messageDetails.systemData : undefined, // Used by ragfair
+            systemData: messageDetails.systemData ? messageDetails.systemData : undefined, // Used by ragfair / localised messages that need "location" or "time"
             profileChangeEvents: (messageDetails.profileChangeEvents?.length === 0) ? messageDetails.profileChangeEvents : undefined // no one knows, its never been used in any dumps
         };
 
