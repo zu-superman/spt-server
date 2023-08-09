@@ -4203,8 +4203,12 @@
     "64c6dd515c456ec7c80d6aed": [
       [
         {
-          "_tpl": "5449016a4bdc2d6f028b456f",
-          "count": 45000
+          "_tpl": "5d403f9186f7743cac3f229b",
+          "count": 1
+        },
+        {
+          "_tpl": "62a0a0bb621468534a797ad5",
+          "count": 1
         }
       ]
     ],
@@ -12188,7 +12192,7 @@
           "Durability": 100,
           "MaxDurability": 100
         },
-        "StackObjectsCount": 20
+        "StackObjectsCount": 40000
       }
     },
     {
