@@ -28,6 +28,7 @@ import { ConfigServer } from "../servers/ConfigServer";
 import { DatabaseServer } from "../servers/DatabaseServer";
 import { CustomLocationWaveService } from "../services/CustomLocationWaveService";
 import { GiftService } from "../services/GiftService";
+import { ItemBaseClassService } from "../services/ItemBaseClassService";
 import { LocalisationService } from "../services/LocalisationService";
 import { OpenZoneService } from "../services/OpenZoneService";
 import { ProfileFixerService } from "../services/ProfileFixerService";
@@ -64,6 +65,7 @@ export class GameController
         @inject("CustomLocationWaveService") protected customLocationWaveService: CustomLocationWaveService,
         @inject("OpenZoneService") protected openZoneService: OpenZoneService,
         @inject("SeasonalEventService") protected seasonalEventService: SeasonalEventService,
+        @inject("ItemBaseClassService") protected itemBaseClassService: ItemBaseClassService,
         @inject("GiftService") protected giftService: GiftService,
         @inject("ApplicationContext") protected applicationContext: ApplicationContext,
         @inject("ConfigServer") protected configServer: ConfigServer
@@ -83,6 +85,10 @@ export class GameController
     {
         // Store start time in app context
         this.applicationContext.addValue(ContextVariableType.CLIENT_START_TIMESTAMP, startTimeStampMS);
+
+        // Regenerate basecache now mods are loaded and game is starting
+        // Mods that add items and use the baseclass service generate the cache including their items, the next mod that add items gets left out,causing warnings
+        this.itemBaseClassService.hydrateItemBaseClassCache();
 
         if (this.coreConfig.fixes.fixShotgunDispersion)
         {
