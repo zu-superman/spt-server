@@ -3898,6 +3898,10 @@
       "upd": {
         "BuyRestrictionCurrent": 0,
         "BuyRestrictionMax": 3,
+        "Repairable": {
+          "Durability": 100,
+          "MaxDurability": 100
+        },
         "StackObjectsCount": 1994
       }
     },

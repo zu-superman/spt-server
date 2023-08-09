@@ -4200,6 +4200,14 @@
         }
       ]
     ],
+    "64c6dd515c456ec7c80d6aed": [
+      [
+        {
+          "_tpl": "5449016a4bdc2d6f028b456f",
+          "count": 45000
+        }
+      ]
+    ],
     "64c6dd515c456ec7c80d6afd": [
       [
         {
@@ -5288,6 +5296,10 @@
       "upd": {
         "BuyRestrictionCurrent": 0,
         "BuyRestrictionMax": 1,
+        "Repairable": {
+          "Durability": 100,
+          "MaxDurability": 100
+        },
         "StackObjectsCount": 291
       }
     },
@@ -5377,6 +5389,10 @@
       "upd": {
         "BuyRestrictionCurrent": 0,
         "BuyRestrictionMax": 2,
+        "Repairable": {
+          "Durability": 100,
+          "MaxDurability": 100
+        },
         "StackObjectsCount": 1954
       }
     },
@@ -6272,6 +6288,10 @@
       "upd": {
         "BuyRestrictionCurrent": 0,
         "BuyRestrictionMax": 5,
+        "Repairable": {
+          "Durability": 100,
+          "MaxDurability": 100
+        },
         "StackObjectsCount": 885
       }
     },
@@ -9826,6 +9846,10 @@
       "upd": {
         "BuyRestrictionCurrent": 0,
         "BuyRestrictionMax": 1,
+        "Repairable": {
+          "Durability": 100,
+          "MaxDurability": 100
+        },
         "StackObjectsCount": 1964
       }
     },
@@ -10263,6 +10287,10 @@
       "upd": {
         "BuyRestrictionCurrent": 0,
         "BuyRestrictionMax": 1,
+        "Repairable": {
+          "Durability": 100,
+          "MaxDurability": 100
+        },
         "StackObjectsCount": 1996
       }
     },
@@ -11977,6 +12005,10 @@
         "FireMode": {
           "FireMode": "single"
         },
+        "Repairable": {
+          "Durability": 100,
+          "MaxDurability": 100
+        },
         "StackObjectsCount": 2000
       }
     },
@@ -12143,6 +12175,87 @@
         "BuyRestrictionMax": 10,
         "StackObjectsCount": 60
       }
+    },
+    {
+      "_id": "64c6dd515c456ec7c80d6aed",
+      "_tpl": "5ac4cd105acfc40016339859",
+      "parentId": "hideout",
+      "slotId": "hideout",
+      "upd": {
+        "BuyRestrictionCurrent": 0,
+        "BuyRestrictionMax": 2,
+        "Repairable": {
+          "Durability": 100,
+          "MaxDurability": 100
+        },
+        "StackObjectsCount": 20
+      }
+    },
+    {
+      "_id": "64c6dd515c456ec7c80d6aee",
+      "_tpl": "59c6633186f7740cf0493bb9",
+      "parentId": "64c6dd515c456ec7c80d6aed",
+      "slotId": "mod_gas_block"
+    },
+    {
+      "_id": "64c6dd515c456ec7c80d6aef",
+      "_tpl": "5cbda392ae92155f3c17c39f",
+      "parentId": "64c6dd515c456ec7c80d6aee",
+      "slotId": "mod_handguard"
+    },
+    {
+      "_id": "64c6dd515c456ec7c80d6af0",
+      "_tpl": "5c1bc4812e22164bef5cfde7",
+      "parentId": "64c6dd515c456ec7c80d6aef",
+      "slotId": "mod_foregrip"
+    },
+    {
+      "_id": "64c6dd515c456ec7c80d6af1",
+      "_tpl": "5c5952732e2216398b5abda2",
+      "parentId": "64c6dd515c456ec7c80d6aef",
+      "slotId": "mod_tactical_000"
+    },
+    {
+      "_id": "64c6dd515c456ec7c80d6af2",
+      "_tpl": "5beec8ea0db834001a6f9dbf",
+      "parentId": "64c6dd515c456ec7c80d6aed",
+      "slotId": "mod_pistol_grip"
+    },
+    {
+      "_id": "64c6dd515c456ec7c80d6af3",
+      "_tpl": "564caa3d4bdc2d17108b458e",
+      "parentId": "64c6dd515c456ec7c80d6aed",
+      "slotId": "mod_muzzle"
+    },
+    {
+      "_id": "64c6dd515c456ec7c80d6af4",
+      "_tpl": "5d2c76ed48f03532f2136169",
+      "parentId": "64c6dd515c456ec7c80d6aed",
+      "slotId": "mod_reciever"
+    },
+    {
+      "_id": "64c6dd515c456ec7c80d6af5",
+      "_tpl": "609a63b6e2ff132951242d09",
+      "parentId": "64c6dd515c456ec7c80d6af4",
+      "slotId": "mod_scope"
+    },
+    {
+      "_id": "64c6dd515c456ec7c80d6af6",
+      "_tpl": "5bed61680db834001d2c45ab",
+      "parentId": "64c6dd515c456ec7c80d6aed",
+      "slotId": "mod_magazine"
+    },
+    {
+      "_id": "64c6dd515c456ec7c80d6af7",
+      "_tpl": "5beec8b20db834001961942a",
+      "parentId": "64c6dd515c456ec7c80d6aed",
+      "slotId": "mod_stock"
+    },
+    {
+      "_id": "64c6dd515c456ec7c80d6af8",
+      "_tpl": "5beec8c20db834001d2c465c",
+      "parentId": "64c6dd515c456ec7c80d6af7",
+      "slotId": "mod_stock"
     },
     {
       "_id": "64c6dd515c456ec7c80d6afd",
@@ -12656,6 +12769,7 @@
     "64c6dd515c456ec7c80d6a75": 1,
     "64c6dd515c456ec7c80d6a76": 1,
     "64c6dd515c456ec7c80d6a77": 1,
+    "64c6dd515c456ec7c80d6aed": 1,
     "64c6dd515c456ec7c80d6afd": 1
   }
 }

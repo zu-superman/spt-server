@@ -3068,6 +3068,10 @@
       "upd": {
         "BuyRestrictionCurrent": 0,
         "BuyRestrictionMax": 5,
+        "Repairable": {
+          "Durability": 100,
+          "MaxDurability": 100
+        },
         "StackObjectsCount": 149983
       }
     },
@@ -3125,6 +3129,10 @@
       "parentId": "hideout",
       "slotId": "hideout",
       "upd": {
+        "Repairable": {
+          "Durability": 100,
+          "MaxDurability": 100
+        },
         "StackObjectsCount": 99973
       }
     },
@@ -3408,6 +3416,10 @@
       "upd": {
         "BuyRestrictionCurrent": 0,
         "BuyRestrictionMax": 3,
+        "Repairable": {
+          "Durability": 100,
+          "MaxDurability": 100
+        },
         "StackObjectsCount": 19999
       }
     },
@@ -6574,6 +6586,10 @@
       "upd": {
         "BuyRestrictionCurrent": 0,
         "BuyRestrictionMax": 5,
+        "Repairable": {
+          "Durability": 100,
+          "MaxDurability": 100
+        },
         "StackObjectsCount": 19989
       }
     },
@@ -6740,7 +6756,8 @@
       "parentId": "hideout",
       "slotId": "hideout",
       "upd": {
-        "StackObjectsCount": 10
+        "BuyRestrictionMax": 10,
+        "StackObjectsCount": 20
       }
     },
     {
@@ -6749,7 +6766,8 @@
       "parentId": "hideout",
       "slotId": "hideout",
       "upd": {
-        "StackObjectsCount": 10
+        "BuyRestrictionMax": 10,
+        "StackObjectsCount": 20
       }
     },
     {
@@ -6758,7 +6776,8 @@
       "parentId": "hideout",
       "slotId": "hideout",
       "upd": {
-        "StackObjectsCount": 10
+        "BuyRestrictionMax": 2,
+        "StackObjectsCount": 20
       }
     },
     {
@@ -6767,7 +6786,8 @@
       "parentId": "hideout",
       "slotId": "hideout",
       "upd": {
-        "StackObjectsCount": 10
+        "BuyRestrictionMax": 2,
+        "StackObjectsCount": 20
       }
     }
   ],
