@@ -201,17 +201,24 @@ export class FenceService
         let itemCountToReplace = this.getCountOfItemsToReplace(this.traderConfig.fence.assortSize);
         const discountItemCountToReplace = this.getCountOfItemsToReplace(this.traderConfig.fence.discountOptions.assortSize);
 
-        // Iterate x times to remove items
-        for (let index = 0; index < itemCountToReplace; index++)
+        // Iterate x times to remove items (only remove if assort has items)
+        if (this.fenceAssort?.items?.length > 0)
         {
-            this.removeRandomItemFromAssorts(this.fenceAssort);
+            for (let index = 0; index < itemCountToReplace; index++)
+            {
+                this.removeRandomItemFromAssorts(this.fenceAssort);
+            }
         }
 
-        // Iterate x times to remove items
-        for (let index = 0; index < discountItemCountToReplace; index++)
+        // Iterate x times to remove items (only remove if assort has items)
+        if (this.fenceDiscountAssort?.items?.length > 0)
         {
-            this.removeRandomItemFromAssorts(this.fenceDiscountAssort);
+            for (let index = 0; index < discountItemCountToReplace; index++)
+            {
+                this.removeRandomItemFromAssorts(this.fenceDiscountAssort);
+            }
         }
+
 
         itemCountToReplace = this.getCountOfItemsToGenerate(itemCountToReplace);
 
@@ -286,6 +293,14 @@ export class FenceService
      */
     protected removeRandomItemFromAssorts(assort: ITraderAssort): void
     {
+        // Only remove if assort has items
+        if (!assort.items.some(x => x.slotId === "hideout"))
+        {
+            this.logger.warning("Unable to remove random assort from trader as they have no assorts with a slotid of `hideout`");
+
+            return;
+        }
+
         let itemToRemove: Item;
         while (!itemToRemove || itemToRemove.slotId !== "hideout")
         {
@@ -296,6 +311,7 @@ export class FenceService
         assort.items.splice(indexOfItemToRemove, 1);
 
         // Clean up any mods if item removed was a weapon
+        // TODO: also check for mods attached down the item chain
         assort.items = assort.items.filter(x => x.parentId !== itemToRemove._id);
 
         delete assort.barter_scheme[itemToRemove._id];
