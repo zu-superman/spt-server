@@ -1077,8 +1077,7 @@ export class RepeatableQuestController
                 }
                 else if (this.itemHelper.isOfBaseclass(itemSelected[0], BaseClasses.WEAPON))
                 {
-                    const presets = this.presetHelper.getPresets(itemSelected[0]);
-                    const defaultPreset = presets.find(x => x._encyclopedia);
+                    const defaultPreset = this.presetHelper.getDefaultPreset(itemSelected[0]);
                     if (defaultPreset)
                     {
                         children = this.ragfairServerHelper.reparentPresets(defaultPreset._items[0], defaultPreset._items);

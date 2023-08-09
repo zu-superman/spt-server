@@ -69,6 +69,11 @@ export class PresetHelper
         return presets;
     }
 
+    /**
+     * Get the default preset for passed in weapon id
+     * @param templateId Weapon id to get preset for
+     * @returns Null if no default preset, otherwise IPreset
+     */
     public getDefaultPreset(templateId: string): IPreset
     {
         if (!this.hasPreset(templateId))
