@@ -137,6 +137,31 @@ export class MailSendService
     }
 
     /**
+     * Send a message from SYSTEM to the player with or without items with loalised text
+     * @param playerId Players id to send message to
+     * @param messageLocaleId Id of key from locale file to send to player
+     * @param items Optional items to send to player
+     * @param maxStorageTimeSeconds Optional time to collect items before they expire
+     */
+    public sendLocalisedSystemMessageToPlayer(playerId: string, messageLocaleId: string, items: Item[] = [], maxStorageTimeSeconds = null): void
+    {
+        const details: ISendMessageDetails = {
+            recipientId: playerId,
+            sender: MessageType.SYSTEM_MESSAGE,
+            templateId: messageLocaleId
+        };
+
+        // Add items to message
+        if (items.length > 0)
+        {
+            details.items = items;
+            details.itemsMaxStorageLifetimeSeconds = maxStorageTimeSeconds;
+        }
+
+        this.sendMessageToPlayer(details);
+    }
+
+    /**
      * Send a USER message to a player with or without items
      * @param playerId Players id to send message to
      * @param senderId Who is sending the message

@@ -216,7 +216,7 @@
             "messageText": "Merry christmas!",
             "timestampToSend": 42069,
             "associatedEvent": "Christmas",
-			"collectionTimeHours": 48
+            "collectionTimeHours": 48
         },
         "1CLICKDRESSUP": {
             "items": [{
@@ -715,6 +715,26 @@
             "messageText": "Easy Kappa",
             "collectionTimeHours": 48,
             "associatedEvent": "Promo"
+        },
+        "ENDOFWIPE": {
+            "items": [{
+                    "_id": "a89275c1b18274ef7432a6d7",
+                    "_tpl": "5449016a4bdc2d6f028b456f",
+                    "upd": {
+                        "StackObjectsCount": 500000
+                    }
+                },{
+                    "_id": "a89275c1b18274e27432a6d7",
+                    "_tpl": "5449016a4bdc2d6f028b456f",
+                    "upd": {
+                        "StackObjectsCount": 500000
+                    }
+                }
+            ],
+            "sender": "System",
+            "localeTextId": "626e5d63bc92c87fd22a943f 0",
+            "collectionTimeHours": 48,
+			"associatedEvent": "Promo"
         }
     }
 }

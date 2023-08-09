@@ -69,11 +69,25 @@ export class GiftService
         // Handle system messsages
         if (giftData.sender === GiftSenderType.SYSTEM)
         {
-            this.mailSendService.sendSystemMessageToPlayer(
-                playerId,
-                giftData.messageText,
-                giftData.items,
-                this.timeUtil.getHoursAsSeconds(giftData.collectionTimeHours));
+            // Has a localisable text id to send to player
+            if (giftData.localeTextId)
+            {
+                this.mailSendService.sendLocalisedSystemMessageToPlayer(
+                    playerId,
+                    giftData.localeTextId,
+                    giftData.items,
+                    this.timeUtil.getHoursAsSeconds(giftData.collectionTimeHours));
+            }
+            else
+            {
+                this.mailSendService.sendSystemMessageToPlayer(
+                    playerId,
+                    giftData.messageText,
+                    giftData.items,
+                    this.timeUtil.getHoursAsSeconds(giftData.collectionTimeHours));
+            }
+
+
         }
         // Handle user messages
         else if (giftData.sender === GiftSenderType.USER)
@@ -106,9 +120,7 @@ export class GiftService
                     giftData.messageText,
                     giftData.items,
                     this.timeUtil.getHoursAsSeconds(giftData.collectionTimeHours));
-            }
-
-            
+            }            
         }
         else
         {
