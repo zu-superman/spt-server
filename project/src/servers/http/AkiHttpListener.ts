@@ -123,16 +123,7 @@ export class AkiHttpListener implements IHttpListener
 
         if (globalThis.G_LOG_REQUESTS)
         {
-            let data: any;
-            try
-            {
-                data = this.jsonUtil.deserialize(output);
-            }
-            catch (e)
-            {
-                data = output;
-            }
-            const log = new Response(req.method, data);
+            const log = new Response(req.method, output);
             this.requestsLogger.info(`RESPONSE=${this.jsonUtil.serialize(log)}`);
         }
     }
