@@ -126,14 +126,14 @@ export class AkiHttpListener implements IHttpListener
             let data: any;
             try
             {
-                data = JSON.parse(output);
+                data = this.jsonUtil.deserialize(output);
             }
             catch (e)
             {
                 data = output;
             }
             const log = new Response(req.method, data);
-            this.requestsLogger.info(`RESPONSE=${JSON.stringify(log)}`);
+            this.requestsLogger.info(`RESPONSE=${this.jsonUtil.serialize(log)}`);
         }
     }
     
@@ -145,10 +145,10 @@ export class AkiHttpListener implements IHttpListener
             // Parse quest info into object
             const data = (typeof info === "object")
                 ? info
-                : JSON.parse(info);
+                : this.jsonUtil.deserialize(info);
 
             const log = new Request(req.method, new RequestData(req.url, req.headers, data));
-            this.requestsLogger.info(`REQUEST=${JSON.stringify(log)}`);
+            this.requestsLogger.info(`REQUEST=${this.jsonUtil.serialize(log)}`);
         }
         
         let output = this.httpRouter.getResponse(req, info, sessionID);

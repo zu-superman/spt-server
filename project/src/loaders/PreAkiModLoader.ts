@@ -87,14 +87,16 @@ export class PreAkiModLoader implements IModLoader
         if (!this.vfs.exists(this.modOrderPath)) 
         {
             this.logger.info(this.localisationService.getText("modloader-mod_order_missing"));
-            this.vfs.writeFile(this.modOrderPath, JSON.stringify({order: []}, null, 4));
+
+            // Write file with empty order array to disk
+            this.vfs.writeFile(this.modOrderPath, this.jsonUtil.serializeAdvanced({order: []}, null, 4));
         }
         else 
         {
             const modOrder = this.vfs.readFile(this.modOrderPath, { encoding: "utf8" });
             try 
             {
-                JSON.parse(modOrder).order.forEach((mod: string, index: number) => 
+                this.jsonUtil.deserialize<any>(modOrder).order.forEach((mod: string, index: number) => 
                 {
                     this.order[mod] = index;
                 });

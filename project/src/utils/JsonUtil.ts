@@ -1,6 +1,7 @@
 import fixJson from "json-fixer";
+import { jsonc } from "jsonc";
+import { IParseOptions, IStringifyOptions, Reviver } from "jsonc/lib/interfaces";
 import { inject, injectable } from "tsyringe";
-
 import { ILogger } from "../models/spt/utils/ILogger";
 import { HashUtil } from "./HashUtil";
 import { VFS } from "./VFS";
@@ -10,6 +11,7 @@ export class JsonUtil
 {
     protected fileHashes = null;
     protected jsonCacheExists = false;
+    protected jsonCachePath = "./user/cache/jsonCache.json";
 
     constructor(
         @inject("VFS") protected vfs: VFS,
@@ -21,10 +23,10 @@ export class JsonUtil
     /**
      * From object to string
      * @param data object to turn into JSON
-     * @param prettify Should output be prettified?
+     * @param prettify Should output be prettified
      * @returns string
      */
-    public serialize<T>(data: T, prettify = false): string
+    public serialize(data: any, prettify = false): string
     {
         if (prettify)
         {
@@ -37,19 +39,77 @@ export class JsonUtil
     }
 
     /**
+     * From object to string
+     * @param data object to turn into JSON
+     * @param replacer An array of strings and numbers that acts as an approved list for selecting the object properties that will be stringified.
+     * @param space Adds indentation, white space, and line break characters to the return-value JSON text to make it easier to read.
+     * @returns string
+     */
+    public serializeAdvanced(data: any, replacer?: (this: any, key: string, value: any) => any, space?: string | number): string
+    {
+
+        return JSON.stringify(data, replacer, space);
+    }
+
+    /**
+     * From object to string
+     * @param data object to turn into JSON
+    * @param filename Name of file being serialized
+    * @param options Stringify options or a replacer.
+    * @returns The string converted from the JavaScript value
+     */
+    public serializeJsonC(
+        data: any,
+        filename?: string | null,
+        options?: IStringifyOptions | Reviver): string
+    {
+        try
+        {
+            return jsonc.stringify(data, options);
+        }
+        catch (error)
+        {
+            this.logger.error(`unable to stringify jsonC file: ${filename} message: ${error.message}, stack: ${error.stack}`);
+        }
+        
+    }
+
+    /**
      * From string to object
      * @param jsonString json string to turn into object
+     * @param filename Name of file being deserialized
      * @returns object
      */
     public deserialize<T>(jsonString: string, filename = ""): T
     {
-        const { data, changed } = fixJson(`${jsonString}`);
-        if (changed)
+        try
         {
-            this.logger.error(`Invalid JSON ${filename} was detected and automatically fixed, please ensure any edits performed recently are valid, always run your JSON through an online JSON validator prior to starting the server`);
+            return JSON.parse(jsonString);
         }
+        catch (error)
+        {
+            this.logger.error(`unable to parse json file: ${filename} message: ${error.message}, stack: ${error.stack}`);
+        }
+    }
 
-        return data;
+    /**
+     * From string to object
+     * @param jsonString json string to turn into object
+     * @param filename Name of file being deserialized
+     * @param options Parsing options
+     * @returns object
+     */
+    public deserializeJsonC<T>(jsonString: string, filename = "", options?: IParseOptions): T
+    {
+        try
+        {
+            return jsonc.parse(jsonString, options);
+        }
+        catch (error)
+        {
+            this.logger.error(`unable to parse jsonC file: ${filename} message: ${error.message}, stack: ${error.stack}`);
+        }
+        
     }
 
     public async deserializeWithCacheCheckAsync<T>(jsonString: string, filePath: string): Promise<T>
@@ -60,29 +120,19 @@ export class JsonUtil
         });
     }
 
+    /**
+     * From json string to object
+     * @param jsonString String to turn into object
+     * @param filePath Path to json file being processed
+     * @returns Object
+     */
     public deserializeWithCacheCheck<T>(jsonString: string, filePath: string): T
     {
-        // get json cache file and ensure it exists, create if it doesnt
-        const jsonCachePath = "./user/cache/jsonCache.json";
-        if (!this.jsonCacheExists)
-        {
-            
-            if (!this.vfs.exists(jsonCachePath))
-            {
-                this.vfs.writeFile(jsonCachePath, "{}");
-            }
-            this.jsonCacheExists = true;
-        }
-
+        this.ensureJsonCacheExists(this.jsonCachePath);
+        this.hydrateJsonCache(this.jsonCachePath);
 
         // Generate hash of string
         const generatedHash = this.hashUtil.generateSha1ForData(jsonString);
-
-        // Get all file hashes
-        if (!this.fileHashes)
-        {
-            this.fileHashes = this.deserialize(this.vfs.readFile(`${jsonCachePath}`));
-        }
 
         // Get hash of file and check if missing or hash mismatch
         let savedHash = this.fileHashes[filePath];
@@ -99,7 +149,7 @@ export class JsonUtil
                 {
                     // data valid, save hash and call function again
                     this.fileHashes[filePath] = generatedHash;
-                    this.vfs.writeFile(jsonCachePath, this.serialize(this.fileHashes, true));
+                    this.vfs.writeFile(this.jsonCachePath, this.serialize(this.fileHashes, true));
                     savedHash = generatedHash;
                 }
                 return data as T;
@@ -119,11 +169,47 @@ export class JsonUtil
         }
 
         // Match!
-        return JSON.parse(jsonString) as T;
+        return this.deserialize<T>(jsonString);
     }
 
-    public clone<T>(data: T): T
+    
+    /**
+     * Create file if nothing found
+     * @param jsonCachePath path to cache
+     */
+    protected ensureJsonCacheExists(jsonCachePath: string): void
     {
-        return JSON.parse(JSON.stringify(data));
+        if (!this.jsonCacheExists)
+        {
+            if (!this.vfs.exists(jsonCachePath))
+            {
+                // Create empty object at path
+                this.vfs.writeFile(jsonCachePath, "{}");
+            }
+            this.jsonCacheExists = true;
+        }
+    }
+
+    /**
+     * Read contents of json cache and add to class field
+     * @param jsonCachePath Path to cache
+     */
+    protected hydrateJsonCache(jsonCachePath: string) : void
+    {
+        // Get all file hashes
+        if (!this.fileHashes)
+        {
+            this.fileHashes = this.deserialize(this.vfs.readFile(`${jsonCachePath}`));
+        }
+    }
+
+    /**
+     * Convert into string and back into object to clone object
+     * @param objectToClone Item to clone
+     * @returns Cloned parameter
+     */
+    public clone<T>(objectToClone: T): T
+    {
+        return this.deserialize<T>(this.serialize(objectToClone));
     }
 }
