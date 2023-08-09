@@ -76,33 +76,7 @@ export class WebSocketServer
     {
         if (this.randomUtil.getInt(1, 1000) > 999) 
         {
-            const messages = [
-                this.localisationService.getText("server_start_meme_1"),
-                this.localisationService.getText("server_start_meme_2"),
-                this.localisationService.getText("server_start_meme_3"),
-                this.localisationService.getText("server_start_meme_4"),
-                this.localisationService.getText("server_start_meme_5"),
-                this.localisationService.getText("server_start_meme_6"),
-                this.localisationService.getText("server_start_meme_7"),
-                this.localisationService.getText("server_start_meme_8"),
-                this.localisationService.getText("server_start_meme_9"),
-                this.localisationService.getText("server_start_meme_10"),
-                this.localisationService.getText("server_start_meme_11"),
-                this.localisationService.getText("server_start_meme_12"),
-                this.localisationService.getText("server_start_meme_13"),
-                this.localisationService.getText("server_start_meme_14"),
-                this.localisationService.getText("server_start_meme_15"),
-                this.localisationService.getText("server_start_meme_16"),
-                this.localisationService.getText("server_start_meme_17"),
-                this.localisationService.getText("server_start_meme_18"),
-                this.localisationService.getText("server_start_meme_19"),
-                this.localisationService.getText("server_start_meme_20"),
-                this.localisationService.getText("server_start_meme_21"),
-                this.localisationService.getText("server_start_meme_22"),
-                this.localisationService.getText("server_start_meme_23"),
-                this.localisationService.getText("server_start_meme_24")
-            ];
-            return messages[this.randomUtil.getInt(0, messages.length - 1)];
+            return this.localisationService.getRandomTextThatMatchesPartialKey("server_start_meme_");
         }
 
         return (globalThis.G_RELEASE_CONFIGURATION)
