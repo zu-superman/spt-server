@@ -8,6 +8,7 @@ export interface ICoreConfig extends IBaseConfig
     compatibleTarkovVersion: string
     serverName: string
     profileSaveIntervalSeconds: number
+    sptFriendNickname: string;
     fixes: IGameFixes
     commit: string
 }

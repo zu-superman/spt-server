@@ -10,10 +10,13 @@ import {
 } from "../models/eft/dialog/IGetMailDialogViewResponseData";
 import { ISendMessageRequest } from "../models/eft/dialog/ISendMessageRequest";
 import { Dialogue, DialogueInfo, IAkiProfile, IUserDialogInfo, Message } from "../models/eft/profile/IAkiProfile";
+import { ConfigTypes } from "../models/enums/ConfigTypes";
 import { GiftSentResult } from "../models/enums/GiftSentResult";
 import { MemberCategory } from "../models/enums/MemberCategory";
 import { MessageType } from "../models/enums/MessageType";
+import { ICoreConfig } from "../models/spt/config/ICoreConfig";
 import { ILogger } from "../models/spt/utils/ILogger";
+import { ConfigServer } from "../servers/ConfigServer";
 import { SaveServer } from "../servers/SaveServer";
 import { GiftService } from "../services/GiftService";
 import { MailSendService } from "../services/MailSendService";
@@ -24,6 +27,8 @@ import { TimeUtil } from "../utils/TimeUtil";
 @injectable()
 export class DialogueController
 {
+    protected coreConfig: ICoreConfig;
+
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("SaveServer") protected saveServer: SaveServer,
@@ -33,9 +38,12 @@ export class DialogueController
         @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("MailSendService") protected mailSendService: MailSendService,
         @inject("GiftService") protected giftService: GiftService,
-        @inject("HashUtil") protected hashUtil: HashUtil
+        @inject("HashUtil") protected hashUtil: HashUtil,
+        @inject("ConfigServer") protected configServer: ConfigServer
     )
-    {}
+    {
+        this.coreConfig = this.configServer.getConfig(ConfigTypes.CORE);
+    }
 
     /** Handle onUpdate spt event */
     public update(): void
@@ -418,7 +426,7 @@ export class DialogueController
             info: {
                 Level: 1,
                 MemberCategory: MemberCategory.DEVELOPER,
-                Nickname: "SPT",
+                Nickname: this.coreConfig.sptFriendNickname,
                 Side: "Usec"
             }
         };
