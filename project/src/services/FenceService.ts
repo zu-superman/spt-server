@@ -59,7 +59,7 @@ export class FenceService
      * Replace main fence assort with new assort
      * @param assort New assorts to replace old with
      */
-    protected setFenceAssort(assort: ITraderAssort): void
+    public setFenceAssort(assort: ITraderAssort): void
     {
         this.fenceAssort = assort;
     }
@@ -68,7 +68,7 @@ export class FenceService
      * Replace high rep level fence assort with new assort
      * @param assort New assorts to replace old with
      */
-    protected setFenceDiscountAssort(assort: ITraderAssort): void
+    public setFenceDiscountAssort(assort: ITraderAssort): void
     {
         this.fenceDiscountAssort = assort;
     }
