@@ -12,7 +12,8 @@
       "5fd22d311add82653b5a704c": 1,
       "618d1af10a5a59657e5f56f3": 1,
       "619238266c614e6d15792bca": 1,
-      "637df28ac22da5bb8d046935": 1
+      "637df28ac22da5bb8d046935": 1,
+      "64a2edba08d26f8d62049c06": 1
     },
     "feet": {
       "5cc2e5d014c02e15d53d9c03": 1,
@@ -24,7 +25,8 @@
       "5f5e41576760b4138443b344": 1,
       "61922589bb2cea6f7a22d964": 1,
       "6193be546e5968395b260157": 1,
-      "637df25a1e688345e1097bd4": 1
+      "637df25a1e688345e1097bd4": 1,
+      "64a2e970a74bb33d140e6dc5": 1
     },
     "hands": [
       "6391c6205dbbdb3b1b049840",
@@ -500,6 +502,7 @@
         "CUT_WAY_MAX_0_1": 0.65,
         "CUT_WAY_MIN_0_1": 0.4,
         "DEAD_BODY_LOOK_PERIOD": 8,
+        "DO_RANDOM_DROP_ITEM": true,
         "FRIEND_SEARCH_SEC": 12,
         "LOOK_TIME_BASE": 12,
         "MAX_YDIST_TO_START_WARN_REQUEST_TO_REQUESTER": 5,
@@ -991,6 +994,7 @@
         "CUT_WAY_MAX_0_1": 0.65,
         "CUT_WAY_MIN_0_1": 0.4,
         "DEAD_BODY_LOOK_PERIOD": 8,
+        "DO_RANDOM_DROP_ITEM": true,
         "FRIEND_SEARCH_SEC": 12,
         "LOOK_TIME_BASE": 12,
         "MAX_YDIST_TO_START_WARN_REQUEST_TO_REQUESTER": 5,
@@ -1971,6 +1975,7 @@
         "CUT_WAY_MAX_0_1": 0.65,
         "CUT_WAY_MIN_0_1": 0.4,
         "DEAD_BODY_LOOK_PERIOD": 8,
+        "DO_RANDOM_DROP_ITEM": true,
         "FRIEND_SEARCH_SEC": 12,
         "LOOK_TIME_BASE": 12,
         "MAX_YDIST_TO_START_WARN_REQUEST_TO_REQUESTER": 5,
