@@ -88,6 +88,17 @@ class LauncherCallbacks
     {
         return this.httpResponse.noBody(this.launcherController.getCompatibleTarkovVersion());
     }
+
+    public getLoadedServerMods(): string
+    {
+        return this.httpResponse.noBody(this.launcherController.getLoadedServerMods());
+    }
+
+    public getServerModsProfileUsed(url: string, info: IEmptyRequestData, sessionId: string): string
+    {
+        return this.httpResponse.noBody(this.launcherController.getServerModsProfileUsed(sessionId));
+    }
 }
 
 export { LauncherCallbacks };
+

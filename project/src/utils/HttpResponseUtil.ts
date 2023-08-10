@@ -27,6 +27,11 @@ export class HttpResponseUtil
             .replace(/[\\]/g, "");
     }
 
+    /**
+     * Return passed in data as JSON string
+     * @param data 
+     * @returns 
+     */
     public noBody(data: any): any
     {
         return this.clearString(this.jsonUtil.serialize(data));

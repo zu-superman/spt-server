@@ -99,6 +99,22 @@ export class LauncherStaticRouter extends StaticRouter
                     {
                         return this.launcherCallbacks.getServerVersion();
                     }
+                ),
+                new RouteAction(
+                    "/launcher/server/loadedServerMods",
+                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                    (url: string, info: any, sessionID: string, output: string): any => 
+                    {
+                        return this.launcherCallbacks.getLoadedServerMods();
+                    }
+                ),
+                new RouteAction(
+                    "/launcher/server/serverModsUsedByProfile",
+                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                    (url: string, info: any, sessionID: string, output: string): any => 
+                    {
+                        return this.launcherCallbacks.getServerModsProfileUsed(url, info, sessionID);
+                    }
                 )
             ]
         );

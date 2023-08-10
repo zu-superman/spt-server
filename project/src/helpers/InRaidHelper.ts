@@ -52,7 +52,7 @@ export class InRaidHelper
     }
 
     /**
-     * Check an array of items and add an upd object to money items with a stack count of 1
+     * Check items array and add an upd object to money with a stack count of 1
      * Single stack money items have no upd object and thus no StackObjectsCount, causing issues
      * @param items Items array to check
      */
