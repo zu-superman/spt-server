@@ -31,13 +31,6 @@
         "path": "CONTENT/banners/banner_scavraider.jpg",
         "rcid": ""
       }
-    },
-    {
-      "id": "64c0ad6af99768b777048f4e",
-      "pic": {
-        "path": "CONTENT/banners/banner_emissary.jpg",
-        "rcid": ""
-      }
     }
   ],
   "BossLocationSpawn": [
@@ -90,14 +83,14 @@
       "Time": -1
     },
     {
-      "BossChance": 10,
+      "BossChance": 35,
       "BossDifficult": "normal",
       "BossEscortAmount": "2,3",
       "BossEscortDifficult": "normal",
       "BossEscortType": "followerSanitar",
       "BossName": "bossSanitar",
       "BossPlayer": false,
-      "BossZone": "ZoneGreenHouses,ZoneSanatorium1,ZoneGreenHouses,ZoneSanatorium2,ZonePort",
+      "BossZone": "ZoneGreenHouses",
       "RandomTimeSpawn": false,
       "Supports": null,
       "Time": -1
@@ -163,14 +156,11 @@
   "BotMaxPlayer": 9,
   "BotMaxTimePlayer": 1000,
   "BotNormal": 50,
-  "BotSpawnCountStep": 4,
-  "BotSpawnPeriodCheck": 15,
   "BotSpawnTimeOffMax": 30,
   "BotSpawnTimeOffMin": 20,
   "BotSpawnTimeOnMax": 320,
   "BotSpawnTimeOnMin": 260,
-  "BotStart": 10,
-  "BotStartPlayer": 220,
+  "BotStart": 20,
   "BotStop": 2700,
   "Description": "The coastline that leads to the port.",
   "DisabledForScav": false,
@@ -180,7 +170,6 @@
   "EscapeTimeLimit": 45,
   "EscapeTimeLimitCoop": 35,
   "GenerateLocalLootCache": true,
-  "GlobalContainerChanceModifier": 1,
   "GlobalLootChanceModifier": 0.3,
   "IconX": 238,
   "IconY": 85,
@@ -230,12 +219,6 @@
   "MinPlayers": 10,
   "Name": "Shoreline",
   "NewSpawn": true,
-  "NonWaveGroupScenario": {
-    "Chance": 50,
-    "Enabled": true,
-    "MaxToBeGroup": 3,
-    "MinToBeGroup": 2
-  },
   "OcculsionCullingEnabled": true,
   "OfflineNewSpawn": true,
   "OfflineOldSpawn": false,
@@ -283,7 +266,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -341,7 +325,8 @@
       },
       "Rotation": 28.5099983,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -457,7 +442,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -486,7 +472,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -515,7 +502,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -544,7 +532,8 @@
       },
       "Rotation": 230.53,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -573,7 +562,8 @@
       },
       "Rotation": 328.7,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -602,7 +592,8 @@
       },
       "Rotation": 349.17,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -660,7 +651,8 @@
       },
       "Rotation": 349.17,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -689,7 +681,8 @@
       },
       "Rotation": 319.98,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -778,7 +771,8 @@
       },
       "Rotation": 316.25,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -808,7 +802,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -837,7 +832,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -866,7 +862,8 @@
       },
       "Rotation": 212.59,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -924,7 +921,8 @@
       },
       "Rotation": 305.82,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -953,7 +951,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -982,7 +981,8 @@
       },
       "Rotation": 198.48,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -1041,7 +1041,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -1070,7 +1071,8 @@
       },
       "Rotation": 12.65,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -1187,7 +1189,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -1216,7 +1219,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -1245,7 +1249,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -1334,7 +1339,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -1364,7 +1370,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -1480,7 +1487,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -1568,7 +1576,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -1597,7 +1606,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -1627,7 +1637,8 @@
       },
       "Rotation": 83.38443,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -1656,7 +1667,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -1715,7 +1727,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -1744,7 +1757,8 @@
       },
       "Rotation": 30.89,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -1774,7 +1788,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -1832,7 +1847,8 @@
       },
       "Rotation": 88.89,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -1861,7 +1877,8 @@
       },
       "Rotation": 307.1,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -1890,7 +1907,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -1919,7 +1937,8 @@
       },
       "Rotation": 33.26,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -2006,7 +2025,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -2064,7 +2084,8 @@
       },
       "Rotation": 349.17,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -2093,7 +2114,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -2151,7 +2173,8 @@
       },
       "Rotation": 108.770004,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -2209,7 +2232,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -2238,7 +2262,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -2267,7 +2292,8 @@
       },
       "Rotation": 17.1399956,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -2355,7 +2381,8 @@
       },
       "Rotation": 3.259948,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -2384,7 +2411,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -2413,7 +2441,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -2472,7 +2501,8 @@
       },
       "Rotation": 199.92,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -2501,7 +2531,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -2618,7 +2649,8 @@
       },
       "Rotation": 83.38443,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -2648,7 +2680,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -2707,7 +2740,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -2736,7 +2770,8 @@
       },
       "Rotation": 218.2,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -2794,7 +2829,8 @@
       },
       "Rotation": 123.109993,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -2823,7 +2859,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -2852,7 +2889,8 @@
       },
       "Rotation": 9.06,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -2882,7 +2920,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -2941,7 +2980,8 @@
       },
       "Rotation": 83.38443,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -2971,7 +3011,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -3000,7 +3041,8 @@
       },
       "Rotation": 22.96,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -3058,7 +3100,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -3087,7 +3130,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -3117,7 +3161,8 @@
       },
       "Rotation": 83.38443,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -3147,7 +3192,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -3205,7 +3251,8 @@
       },
       "Rotation": 199.74,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -3235,7 +3282,8 @@
       },
       "Rotation": 83.38443,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -3264,7 +3312,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -3293,7 +3342,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -3322,7 +3372,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -3351,7 +3402,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -3380,7 +3432,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -3439,7 +3492,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -3468,7 +3522,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -3497,7 +3552,8 @@
       },
       "Rotation": 358.53,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -3526,7 +3582,8 @@
       },
       "Rotation": 336.94,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -3555,7 +3612,8 @@
       },
       "Rotation": 340.76,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -3584,7 +3642,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -3672,7 +3731,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -3701,7 +3761,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -3730,7 +3791,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -3788,7 +3850,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -3847,7 +3910,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -3877,7 +3941,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -3906,7 +3971,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -3935,7 +4001,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -3964,7 +4031,8 @@
       },
       "Rotation": 305.88,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -3993,7 +4061,8 @@
       },
       "Rotation": 94.42,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -4022,7 +4091,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -4109,7 +4179,8 @@
       },
       "Rotation": 162.78,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -4138,7 +4209,8 @@
       },
       "Rotation": 209.65,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -4167,7 +4239,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -4196,7 +4269,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -4225,7 +4299,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -4255,7 +4330,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -4284,7 +4360,8 @@
       },
       "Rotation": 341.800049,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -4458,7 +4535,8 @@
       },
       "Rotation": 328.44,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -4516,7 +4594,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -4546,7 +4625,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -4576,7 +4656,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -4605,7 +4686,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -4664,7 +4746,8 @@
       },
       "Rotation": 42.29,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -4693,7 +4776,8 @@
       },
       "Rotation": 26.4700012,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -4753,7 +4837,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -4811,7 +4896,8 @@
       },
       "Rotation": 309.41,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -4841,7 +4927,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -4870,7 +4957,8 @@
       },
       "Rotation": 342.3,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -4928,7 +5016,8 @@
       },
       "Rotation": 208.52,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -4957,7 +5046,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -4986,7 +5076,8 @@
       },
       "Rotation": 189.35,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -5015,7 +5106,8 @@
       },
       "Rotation": 349.17,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -5044,7 +5136,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -5073,7 +5166,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -5189,7 +5283,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -5218,7 +5313,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -5247,7 +5343,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -5276,7 +5373,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -5305,7 +5403,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -5334,7 +5433,8 @@
       },
       "Rotation": 181.54,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -5363,7 +5463,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -5451,7 +5552,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -5480,7 +5582,8 @@
       },
       "Rotation": 192.16,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -5509,7 +5612,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -5539,7 +5643,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -5627,7 +5732,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -5656,7 +5762,8 @@
       },
       "Rotation": 10.1100016,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -5685,7 +5792,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -5744,7 +5852,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -5773,7 +5882,8 @@
       },
       "Rotation": 79.99,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -5831,7 +5941,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -5976,7 +6087,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -6005,7 +6117,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -6034,7 +6147,8 @@
       },
       "Rotation": 39.11,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -6063,7 +6177,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -6092,7 +6207,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -6180,7 +6296,8 @@
       },
       "Rotation": 248.009979,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -6238,7 +6355,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -6297,7 +6415,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -6355,7 +6474,8 @@
       },
       "Rotation": 33.75,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -6384,7 +6504,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -6414,7 +6535,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -6472,7 +6594,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -6501,7 +6624,8 @@
       },
       "Rotation": 220.55,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -6530,7 +6654,8 @@
       },
       "Rotation": 32.49001,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -6588,7 +6713,8 @@
       },
       "Rotation": 319.63,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -6646,7 +6772,8 @@
       },
       "Rotation": 30.3,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -6676,7 +6803,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -6705,7 +6833,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -6735,7 +6864,8 @@
       },
       "Rotation": 83.38443,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -6852,7 +6982,8 @@
       },
       "Rotation": 83.38443,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -6911,7 +7042,8 @@
       },
       "Rotation": 96.22,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -6969,7 +7101,8 @@
       },
       "Rotation": 339.76,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -7086,7 +7219,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -7203,7 +7337,8 @@
       },
       "Rotation": 83.38443,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -7261,7 +7396,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -7348,7 +7484,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -7378,7 +7515,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -7407,7 +7545,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -7465,7 +7604,8 @@
       },
       "Rotation": 1.4,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -7495,7 +7635,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -7584,7 +7725,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -7613,7 +7755,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -7643,7 +7786,8 @@
       },
       "Rotation": 83.38443,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -7672,7 +7816,8 @@
       },
       "Rotation": 6.340001,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -7730,7 +7875,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -7760,7 +7906,8 @@
       },
       "Rotation": 83.38443,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -7906,7 +8053,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -7935,7 +8083,8 @@
       },
       "Rotation": 302.84,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -7965,7 +8114,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -8112,7 +8262,8 @@
       },
       "Rotation": 349.17,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -8141,7 +8292,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -8170,7 +8322,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -8200,7 +8353,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -8229,7 +8383,8 @@
       },
       "Rotation": 111.609993,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -8258,7 +8413,8 @@
       },
       "Rotation": 312.9,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -8287,7 +8443,8 @@
       },
       "Rotation": 15.250001,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -8316,7 +8473,8 @@
       },
       "Rotation": 7.29,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -8404,7 +8562,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -8434,7 +8593,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -8463,7 +8623,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -8492,7 +8653,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -8521,7 +8683,8 @@
       },
       "Rotation": 271.08,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
@@ -8550,7 +8713,8 @@
       },
       "Rotation": 41.13,
       "Sides": [
-        "Pmc"
+        "Usec",
+        "Bear"
       ]
     },
     {
