@@ -6,7 +6,7 @@ import { IItemEventRouterResponse } from "../models/eft/itemEvent/IItemEventRout
 import {
     IPresetBuildActionRequestData
 } from "../models/eft/presetBuild/IPresetBuildActionRequestData";
-import { WeaponBuild } from "../models/eft/profile/IAkiProfile";
+import { IUserBuildsResponse } from "../models/eft/presetBuild/IUserBuildsResponse";
 import { EventOutputHolder } from "../routers/EventOutputHolder";
 import { SaveServer } from "../servers/SaveServer";
 import { HashUtil } from "../utils/HashUtil";
@@ -23,8 +23,9 @@ export class PresetBuildController
     { }
 
     /** Handle client/handbook/builds/my/list */
-    public getUserBuilds(sessionID: string): WeaponBuild[]
+    public getUserBuilds(sessionID: string): IUserBuildsResponse
     {
+        // TODO, fully implement
         return Object.values(this.saveServer.getProfile(sessionID).weaponbuilds);
     }
 
