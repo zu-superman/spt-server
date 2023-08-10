@@ -2522,7 +2522,8 @@
                 "initialStanding": 0,
                 "jaegerUnlocked": false
             },
-            "weaponbuilds": {}
+            "weaponbuilds": {},
+			"equipmentBuilds": {}
         },
         "usec": {
             "character": {
@@ -5239,7 +5240,8 @@
                 "initialStanding": 0,
                 "jaegerUnlocked": false
             },
-            "weaponbuilds": {}
+            "weaponbuilds": {},
+			"equipmentBuilds": {}
         }
     },
     "Left Behind": {
@@ -8323,7 +8325,8 @@
                 "initialStanding": 0,
                 "jaegerUnlocked": false
             },
-            "weaponbuilds": {}
+            "weaponbuilds": {},
+			"equipmentBuilds": {}
         },
         "usec": {
             "character": {
@@ -11508,7 +11511,8 @@
                 "initialStanding": 0,
                 "jaegerUnlocked": false
             },
-            "weaponbuilds": {}
+            "weaponbuilds": {},
+			"equipmentBuilds": {}
         }
     },
     "Prepare To Escape": {
@@ -14995,7 +14999,8 @@
                 "initialStanding": 0.2,
                 "jaegerUnlocked": false
             },
-            "weaponbuilds": {}
+            "weaponbuilds": {},
+			"equipmentBuilds": {}
         },
         "usec": {
             "character": {
@@ -18685,7 +18690,8 @@
                 "initialStanding": 0.2,
                 "jaegerUnlocked": false
             },
-            "weaponbuilds": {}
+            "weaponbuilds": {},
+			"equipmentBuilds": {}
         }
     },
     "Edge Of Darkness": {
@@ -22775,7 +22781,8 @@
                 "initialStanding": 0.2,
                 "jaegerUnlocked": false
             },
-            "weaponbuilds": {}
+            "weaponbuilds": {},
+			"equipmentBuilds": {}
         },
         "usec": {
             "character": {
@@ -27009,7 +27016,8 @@
                 "initialStanding": 0.2,
                 "jaegerUnlocked": false
             },
-            "weaponbuilds": {}
+            "weaponbuilds": {},
+			"equipmentBuilds": {}
         }
     },
     "SPT Zero to hero": {
@@ -27876,7 +27884,8 @@
                 "initialStanding": 0,
                 "jaegerUnlocked": false
             },
-            "weaponbuilds": {}
+            "weaponbuilds": {},
+			"equipmentBuilds": {}
         },
         "usec": {
             "character": {
@@ -28762,7 +28771,8 @@
                 "initialStanding": 0,
                 "jaegerUnlocked": false
             },
-            "weaponbuilds": {}
+            "weaponbuilds": {},
+			"equipmentBuilds": {}
         }
     },
     "SPT Easy start": {
@@ -32067,7 +32077,8 @@
                 "jaegerUnlocked": true,
                 "setQuestsAvailableForStart": false
             },
-            "weaponbuilds": {}
+            "weaponbuilds": {},
+			"equipmentBuilds": {}
         },
         "usec": {
             "character": {
@@ -35369,7 +35380,8 @@
                 "jaegerUnlocked": true,
                 "setQuestsAvailableForStart": false
             },
-            "weaponbuilds": {}
+            "weaponbuilds": {},
+			"equipmentBuilds": {}
         }
     },
     "SPT Developer": {
@@ -38313,7 +38325,8 @@
                 "setQuestsAvailableForFinish": true,
                 "setQuestsAvailableForStart": false
             },
-            "weaponbuilds": {}
+            "weaponbuilds": {},
+			"equipmentBuilds": {}
         },
         "usec": {
             "character": {
@@ -41254,7 +41267,8 @@
                 "jaegerUnlocked": true,
                 "setQuestsAvailableForStart": true
             },
-            "weaponbuilds": {}
+            "weaponbuilds": {},
+			"equipmentBuilds": {}
         }
     }
 }

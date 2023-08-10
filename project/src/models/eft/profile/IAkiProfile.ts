@@ -1,7 +1,9 @@
+import { EquipmentBuildType } from "../../../models/enums/EquipmentBuildType";
 import { MemberCategory } from "../../../models/enums/MemberCategory";
 import { MessageType } from "../../enums/MessageType";
 import { IPmcData } from "../common/IPmcData";
 import { Item } from "../common/tables/IItem";
+import { ITemplateItem } from "../common/tables/ITemplateItem";
 
 export interface IAkiProfile
 {
@@ -56,8 +58,13 @@ export interface IWeaponBuild
 
 export interface IEquipmentBuild
 {
-    id: string
-    name: string
+    id: string,
+    name: string,
+    root: string,
+    items: ITemplateItem[], // same as PMC inventory items
+    type: string,
+    fastPanel: Record<string, string>
+    buildType: EquipmentBuildType
 }
 
 export interface Dialogue

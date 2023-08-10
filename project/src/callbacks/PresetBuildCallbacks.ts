@@ -8,7 +8,7 @@ import { IItemEventRouterResponse } from "../models/eft/itemEvent/IItemEventRout
 import {
     IPresetBuildActionRequestData
 } from "../models/eft/presetBuild/IPresetBuildActionRequestData";
-import { IUserBuildsResponse } from "../models/eft/presetBuild/IUserBuildsResponse";
+import { IUserBuilds } from "../models/eft/profile/IAkiProfile";
 import { HttpResponseUtil } from "../utils/HttpResponseUtil";
 
 @injectable()
@@ -20,7 +20,7 @@ export class PresetBuildCallbacks
     { }
 
     /** Handle client/handbook/builds/my/list */
-    public getHandbookUserlist(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<IUserBuildsResponse>
+    public getHandbookUserlist(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<IUserBuilds>
     {
         return this.httpResponse.getBody(this.presetBuildController.getUserBuilds(sessionID));
     }
