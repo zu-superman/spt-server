@@ -184,6 +184,11 @@ export interface Mastering extends IBaseSkill
 
 export interface Stats 
 {
+    Eft: IEftStats
+}
+
+export interface IEftStats
+{
     CarriedQuestItems: string[]
     Victims: Victim[]
     TotalSessionExperience: number

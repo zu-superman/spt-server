@@ -29,6 +29,7 @@ export interface IStaticWeaponProps
     randomRotation: boolean
     Position: Ixyz
     Rotation: Ixyz
+    IsAlwaysSpawn: boolean
     IsGroupPosition: boolean
     GroupPositions: any[]
     Root: string
