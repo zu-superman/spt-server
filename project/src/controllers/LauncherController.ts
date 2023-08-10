@@ -166,11 +166,20 @@ export class LauncherController
         return this.coreConfig.compatibleTarkovVersion;
     }
 
+    /**
+     * Get the mods the server has currently loaded
+     * @returns Dictionary of mod name and mod details
+     */
     public getLoadedServerMods(): Record<string, IPackageJsonData>
     {
         return this.preAkiModLoader.getImportedModDetails();
     }
 
+    /**
+     * Get the mods a profile has ever loaded into game with
+     * @param sessionId Player id
+     * @returns Array of mod details
+     */
     public getServerModsProfileUsed(sessionId: string): ModDetails[]
     {
         const profile = this.profileHelper.getFullProfile(sessionId);
