@@ -148,7 +148,7 @@ export interface Inventory
     sortingTable: string
     questRaidItems: string
     questStashItems: string
-    hideoutAreaStashes: Record<string, any>
+    hideoutAreaStashes: Record<string, string>
     fastPanel: Record<string, string>
 }
 

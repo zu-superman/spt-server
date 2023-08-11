@@ -9,6 +9,7 @@ export interface IHideoutArea
     craftGivesExp: boolean
     displayLevel: boolean
     enableAreaRequirements: boolean
+    parentArea?: string
     stages: Record<string, Stage>
 }
 

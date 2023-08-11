@@ -402,6 +402,9 @@
                             "_id": "5fe4977574f15b4ad31b6631",
                             "_tpl": "55d7217a4bdc2d86028b456d"
                         }, {
+                            "_id": "63db64cbf9963741dc0d741f",
+                            "_tpl": "6401c7b213d9b818bf0e7dd7"
+                        }, {
                             "_id": "5fe4977574f15b4ad31b661a",
                             "_tpl": "5ac4cd105acfc40016339859",
                             "parentId": "5fe4977574f15b4ad31b6631",
@@ -2192,7 +2195,7 @@
                     "questStashItems": "5fe4977574f15b4ad31b66b8",
                     "sortingTable": "60dca3da42ad9b706b369aca",
                     "stash": "5fe4977574f15b4ad31b66b6",
-					"hideoutAreaStashes": {}
+                    "hideoutAreaStashes": {}
                 },
                 "Notes": {
                     "Notes": []
@@ -2524,7 +2527,7 @@
                 "jaegerUnlocked": false
             },
             "weaponbuilds": {},
-			"equipmentBuilds": {}
+            "equipmentBuilds": {}
         },
         "usec": {
             "character": {
@@ -2947,6 +2950,9 @@
                     "items": [{
                             "_id": "5fe49cdfa19cac3fa905407f",
                             "_tpl": "55d7217a4bdc2d86028b456d"
+                        }, {
+                            "_id": "63db64cbf9963741dc0d741f",
+                            "_tpl": "6401c7b213d9b818bf0e7dd7"
                         }, {
                             "_id": "5fe49cdfa19cac3fa9054068",
                             "_tpl": "5447a9cd4bdc2dbd208b4567",
@@ -4913,7 +4919,7 @@
                     "questStashItems": "5fe49cdfa19cac3fa9054117",
                     "sortingTable": "60dca3da42ad9b706b369aca",
                     "stash": "5fe49cdfa19cac3fa9054115",
-					"hideoutAreaStashes": {}
+                    "hideoutAreaStashes": {}
                 },
                 "Notes": {
                     "Notes": []
@@ -5243,7 +5249,7 @@
                 "jaegerUnlocked": false
             },
             "weaponbuilds": {},
-			"equipmentBuilds": {}
+            "equipmentBuilds": {}
         }
     },
     "Left Behind": {
@@ -5672,6 +5678,9 @@
                     "items": [{
                             "_id": "5fe4a9285a72d07b66302933",
                             "_tpl": "55d7217a4bdc2d86028b456d"
+                        }, {
+                            "_id": "63db64cbf9963741dc0d741f",
+                            "_tpl": "6401c7b213d9b818bf0e7dd7"
                         }, {
                             "_id": "5fe4a9285a72d07b6630291c",
                             "_tpl": "5ac4cd105acfc40016339859",
@@ -7999,7 +8008,7 @@
                     "questStashItems": "5fe4a9285a72d07b663029e4",
                     "sortingTable": "60dca3da42ad9b706b369aca",
                     "stash": "5fe4a9285a72d07b663029e2",
-					"hideoutAreaStashes": {}
+                    "hideoutAreaStashes": {}
                 },
                 "Notes": {
                     "Notes": []
@@ -8329,7 +8338,7 @@
                 "jaegerUnlocked": false
             },
             "weaponbuilds": {},
-			"equipmentBuilds": {}
+            "equipmentBuilds": {}
         },
         "usec": {
             "character": {
@@ -8776,6 +8785,9 @@
                     "items": [{
                             "_id": "5fe4a9fcf5aec236ec38363c",
                             "_tpl": "55d7217a4bdc2d86028b456d"
+                        }, {
+                            "_id": "63db64cbf9963741dc0d741f",
+                            "_tpl": "6401c7b213d9b818bf0e7dd7"
                         }, {
                             "_id": "5fe4a9fcf5aec236ec383625",
                             "_tpl": "5447a9cd4bdc2dbd208b4567",
@@ -11185,7 +11197,7 @@
                     "questStashItems": "5fe4a9fcf5aec236ec3836f9",
                     "sortingTable": "60dca3da42ad9b706b369aca",
                     "stash": "5fe4a9fcf5aec236ec3836f7",
-					"hideoutAreaStashes": {}
+                    "hideoutAreaStashes": {}
                 },
                 "Notes": {
                     "Notes": []
@@ -11516,7 +11528,7 @@
                 "jaegerUnlocked": false
             },
             "weaponbuilds": {},
-			"equipmentBuilds": {}
+            "equipmentBuilds": {}
         }
     },
     "Prepare To Escape": {
@@ -11969,6 +11981,9 @@
                     "items": [{
                             "_id": "5fe4a66e40ca750fd72b5886",
                             "_tpl": "55d7217a4bdc2d86028b456d"
+                        }, {
+                            "_id": "63db64cbf9963741dc0d741f",
+                            "_tpl": "6401c7b213d9b818bf0e7dd7"
                         }, {
                             "_id": "5fe4a66e40ca750fd72b586f",
                             "_tpl": "5ac4cd105acfc40016339859",
@@ -14674,7 +14689,7 @@
                     "questStashItems": "5fe4a66e40ca750fd72b595c",
                     "sortingTable": "60dca3da42ad9b706b369aca",
                     "stash": "5fe4a66e40ca750fd72b595a",
-					"hideoutAreaStashes": {}
+                    "hideoutAreaStashes": {}
                 },
                 "Notes": {
                     "Notes": []
@@ -15005,7 +15020,7 @@
                 "jaegerUnlocked": false
             },
             "weaponbuilds": {},
-			"equipmentBuilds": {}
+            "equipmentBuilds": {}
         },
         "usec": {
             "character": {
@@ -15488,6 +15503,9 @@
                     "items": [{
                             "_id": "5fe4ab2240ca750fd72bbd3a",
                             "_tpl": "55d7217a4bdc2d86028b456d"
+                        }, {
+                            "_id": "63db64cbf9963741dc0d741f",
+                            "_tpl": "6401c7b213d9b818bf0e7dd7"
                         }, {
                             "_id": "5fe4ab2240ca750fd72bbd23",
                             "_tpl": "5447a9cd4bdc2dbd208b4567",
@@ -18366,7 +18384,7 @@
                     "questStashItems": "5fe4ab2240ca750fd72bbe1e",
                     "sortingTable": "60dca3da42ad9b706b369aca",
                     "stash": "5fe4ab2240ca750fd72bbe1c",
-					"hideoutAreaStashes": {}
+                    "hideoutAreaStashes": {}
                 },
                 "Notes": {
                     "Notes": []
@@ -18697,7 +18715,7 @@
                 "jaegerUnlocked": false
             },
             "weaponbuilds": {},
-			"equipmentBuilds": {}
+            "equipmentBuilds": {}
         }
     },
     "Edge Of Darkness": {
@@ -19206,6 +19224,9 @@
                     "items": [{
                             "_id": "5fe49444ae6628187a2e77b8",
                             "_tpl": "55d7217a4bdc2d86028b456d"
+                        }, {
+                            "_id": "63db64cbf9963741dc0d741f",
+                            "_tpl": "6401c7b213d9b818bf0e7dd7"
                         }, {
                             "_id": "a797e819df958aad39cdbd3c",
                             "_tpl": "5ac4cd105acfc40016339859",
@@ -22459,7 +22480,7 @@
                     "questStashItems": "5fe49444ae6628187a2e78ba",
                     "sortingTable": "60dca3da42ad9b706b369aca",
                     "stash": "5fe49444ae6628187a2e78b8",
-					"hideoutAreaStashes": {}
+                    "hideoutAreaStashes": {}
                 },
                 "Notes": {
                     "Notes": []
@@ -22789,7 +22810,7 @@
                 "jaegerUnlocked": false
             },
             "weaponbuilds": {},
-			"equipmentBuilds": {}
+            "equipmentBuilds": {}
         },
         "usec": {
             "character": {
@@ -23307,6 +23328,9 @@
                     "items": [{
                             "_id": "5fe49a0e2694b0755a50476c",
                             "_tpl": "55d7217a4bdc2d86028b456d"
+                        }, {
+                            "_id": "63db64cbf9963741dc0d741f",
+                            "_tpl": "6401c7b213d9b818bf0e7dd7"
                         }, {
                             "_id": "5fe49a0e2694b0755a504755",
                             "_tpl": "5447a9cd4bdc2dbd208b4567",
@@ -26695,7 +26719,7 @@
                     "questStashItems": "5fe49a0e2694b0755a504878",
                     "sortingTable": "60dca3da42ad9b706b369aca",
                     "stash": "5fe49a0e2694b0755a504876",
-					"hideoutAreaStashes": {}
+                    "hideoutAreaStashes": {}
                 },
                 "Notes": {
                     "Notes": []
@@ -27025,7 +27049,7 @@
                 "jaegerUnlocked": false
             },
             "weaponbuilds": {},
-			"equipmentBuilds": {}
+            "equipmentBuilds": {}
         }
     },
     "SPT Zero to hero": {
@@ -27526,6 +27550,9 @@
                             "_id": "5fe49444ae6628187a2e77b8",
                             "_tpl": "55d7217a4bdc2d86028b456d"
                         }, {
+                            "_id": "63db64cbf9963741dc0d741f",
+                            "_tpl": "6401c7b213d9b818bf0e7dd7"
+                        }, {
                             "_id": "f5e6bdac05e699d687993249",
                             "_tpl": "544a11ac4bdc2d470e8b456a",
                             "parentId": "5fe49444ae6628187a2e77b8",
@@ -27564,7 +27591,7 @@
                     "questStashItems": "5fe49444ae6628187a2e78ba",
                     "sortingTable": "60dca3da42ad9b706b369aca",
                     "stash": "5fe49444ae6628187a2e78b8",
-					"hideoutAreaStashes": {}
+                    "hideoutAreaStashes": {}
                 },
                 "Notes": {
                     "Notes": []
@@ -27894,7 +27921,7 @@
                 "jaegerUnlocked": false
             },
             "weaponbuilds": {},
-			"equipmentBuilds": {}
+            "equipmentBuilds": {}
         },
         "usec": {
             "character": {
@@ -28413,6 +28440,9 @@
                             "_id": "5fe49444ae6628187a2e77b8",
                             "_tpl": "55d7217a4bdc2d86028b456d"
                         }, {
+                            "_id": "63db64cbf9963741dc0d741f",
+                            "_tpl": "6401c7b213d9b818bf0e7dd7"
+                        }, {
                             "_id": "f5e6bdac05e699d687993249",
                             "_tpl": "544a11ac4bdc2d470e8b456a",
                             "parentId": "5fe49444ae6628187a2e77b8",
@@ -28451,7 +28481,7 @@
                     "questStashItems": "5fe49444ae6628187a2e78ba",
                     "sortingTable": "60dca3da42ad9b706b369aca",
                     "stash": "5fe49444ae6628187a2e78b8",
-					"hideoutAreaStashes": {}
+                    "hideoutAreaStashes": {}
                 },
                 "Notes": {
                     "Notes": []
@@ -28782,7 +28812,7 @@
                 "jaegerUnlocked": false
             },
             "weaponbuilds": {},
-			"equipmentBuilds": {}
+            "equipmentBuilds": {}
         }
     },
     "SPT Easy start": {
@@ -31306,6 +31336,9 @@
                             "_id": "5fe49444ae6628187a2e77b8",
                             "_tpl": "55d7217a4bdc2d86028b456d"
                         }, {
+                            "_id": "63db64cbf9963741dc0d741f",
+                            "_tpl": "6401c7b213d9b818bf0e7dd7"
+                        }, {
                             "_id": "f5e6bdac05e699d687993249",
                             "_tpl": "5857a8bc2459772bad15db29",
                             "parentId": "5fe49444ae6628187a2e77b8",
@@ -31757,7 +31790,7 @@
                     "questStashItems": "5fe49444ae6628187a2e78ba",
                     "sortingTable": "60dca3da42ad9b706b369aca",
                     "stash": "5fe49444ae6628187a2e78b8",
-					"hideoutAreaStashes": {}
+                    "hideoutAreaStashes": {}
                 },
                 "Notes": {
                     "Notes": []
@@ -32089,7 +32122,7 @@
                 "setQuestsAvailableForStart": false
             },
             "weaponbuilds": {},
-			"equipmentBuilds": {}
+            "equipmentBuilds": {}
         },
         "usec": {
             "character": {
@@ -34611,6 +34644,9 @@
                             "_id": "5fe49444ae6628187a2e77b8",
                             "_tpl": "55d7217a4bdc2d86028b456d"
                         }, {
+                            "_id": "63db64cbf9963741dc0d741f",
+                            "_tpl": "6401c7b213d9b818bf0e7dd7"
+                        }, {
                             "_id": "f5e6bdac05e699d687993249",
                             "_tpl": "5857a8bc2459772bad15db29",
                             "parentId": "5fe49444ae6628187a2e77b8",
@@ -35062,7 +35098,7 @@
                     "questStashItems": "5fe49444ae6628187a2e78ba",
                     "sortingTable": "60dca3da42ad9b706b369aca",
                     "stash": "5fe49444ae6628187a2e78b8",
-					"hideoutAreaStashes": {}
+                    "hideoutAreaStashes": {}
                 },
                 "Notes": {
                     "Notes": []
@@ -35393,7 +35429,7 @@
                 "setQuestsAvailableForStart": false
             },
             "weaponbuilds": {},
-			"equipmentBuilds": {}
+            "equipmentBuilds": {}
         }
     },
     "SPT Developer": {
@@ -37935,6 +37971,9 @@
                             "_id": "5fe49444ae6628187a2e77b8",
                             "_tpl": "55d7217a4bdc2d86028b456d"
                         }, {
+                            "_id": "63db64cbf9963741dc0d741f",
+                            "_tpl": "6401c7b213d9b818bf0e7dd7"
+                        }, {
                             "_id": "f5e6bdac05e699d687993249",
                             "_tpl": "5857a8bc2459772bad15db29",
                             "parentId": "5fe49444ae6628187a2e77b8",
@@ -38025,7 +38064,7 @@
                     "questStashItems": "5fe49444ae6628187a2e78ba",
                     "sortingTable": "60dca3da42ad9b706b369aca",
                     "stash": "5fe49444ae6628187a2e78b8",
-					"hideoutAreaStashes": {}
+                    "hideoutAreaStashes": {}
                 },
                 "Notes": {
                     "Notes": []
@@ -38357,7 +38396,7 @@
                 "setQuestsAvailableForStart": false
             },
             "weaponbuilds": {},
-			"equipmentBuilds": {}
+            "equipmentBuilds": {}
         },
         "usec": {
             "character": {
@@ -40897,6 +40936,9 @@
                             "_id": "5fe49444ae6628187a2e77b8",
                             "_tpl": "55d7217a4bdc2d86028b456d"
                         }, {
+                            "_id": "63db64cbf9963741dc0d741f",
+                            "_tpl": "6401c7b213d9b818bf0e7dd7"
+                        }, {
                             "_id": "f5e6bdac05e699d687993249",
                             "_tpl": "5857a8bc2459772bad15db29",
                             "parentId": "5fe49444ae6628187a2e77b8",
@@ -40987,7 +41029,7 @@
                     "questStashItems": "5fe49444ae6628187a2e78ba",
                     "sortingTable": "60dca3da42ad9b706b369aca",
                     "stash": "5fe49444ae6628187a2e78b8",
-					"hideoutAreaStashes": {}
+                    "hideoutAreaStashes": {}
                 },
                 "Notes": {
                     "Notes": []
@@ -41318,7 +41360,7 @@
                 "setQuestsAvailableForStart": true
             },
             "weaponbuilds": {},
-			"equipmentBuilds": {}
+            "equipmentBuilds": {}
         }
     }
 }

@@ -13,6 +13,7 @@ import {
     HideoutUpgradeCompleteRequestData
 } from "../models/eft/hideout/HideoutUpgradeCompleteRequestData";
 import { IHandleQTEEventRequestData } from "../models/eft/hideout/IHandleQTEEventRequestData";
+import { IHideoutArea, Stage } from "../models/eft/hideout/IHideoutArea";
 import {
     IHideoutContinuousProductionStartRequestData
 } from "../models/eft/hideout/IHideoutContinuousProductionStartRequestData";
@@ -190,7 +191,8 @@ export class HideoutController
         }
 
         // Apply bonuses
-        const bonuses = hideoutData.stages[hideoutArea.level].bonuses;
+        const hideoutStage = hideoutData.stages[hideoutArea.level];
+        const bonuses = hideoutStage.bonuses;
         if (bonuses?.length > 0)
         {
             for (const bonus of bonuses)
@@ -199,26 +201,50 @@ export class HideoutController
             }
         }
 
-        if (hideoutData.stages[hideoutArea.level].container)
+        // Upgrade includes a container improvement/addition
+        if (hideoutStage?.container)
         {
-            if (!output.profileChanges[sessionID].changedHideoutStashes)
-            {
-                output.profileChanges[sessionID].changedHideoutStashes = {};
-            }
+            this.addOrUpgradeContainerImprovementToProfile(pmcData, hideoutArea, hideoutData, hideoutStage);
 
-            output.profileChanges[sessionID].changedHideoutStashes[hideoutArea.type] =
-            {
-                Id: hideoutData._id,
-                Tpl: hideoutData.stages[hideoutArea.level].container
-            };
+            this.addContainerUpgradeToClientOutput(output, sessionID, hideoutArea, hideoutData, hideoutStage);
         }
-
-
 
         // Add Skill Points Per Area Upgrade
         this.playerService.incrementSkillLevel(pmcData, SkillTypes.HIDEOUT_MANAGEMENT, this.databaseServer.getTables().globals.config.SkillsSettings.HideoutManagement.SkillPointsPerAreaUpgrade);
 
         return output;
+    }
+
+    protected addOrUpgradeContainerImprovementToProfile(pmcData: IPmcData, hideoutArea: HideoutArea, hideoutData: IHideoutArea, hideoutStage: Stage): void
+    {
+        pmcData.Inventory.hideoutAreaStashes[hideoutArea.type] = hideoutData._id;
+
+        // Look for existing stash object in items
+        const weaponWall = pmcData.Inventory.items.find(x => x._id === hideoutData._id);
+        if (weaponWall) 
+        {
+            // Update existing items container tpl to point to item with more space
+            weaponWall._tpl = hideoutStage.container;
+
+            return;
+        }
+
+        // Add new item as none exist
+        pmcData.Inventory.items.push({ _id: hideoutData._id, _tpl: hideoutStage.container });
+    }
+
+    protected addContainerUpgradeToClientOutput(output: IItemEventRouterResponse, sessionID: string, hideoutArea: HideoutArea, hideoutData: IHideoutArea, hideoutStage: Stage): void
+    {
+        if (!output.profileChanges[sessionID].changedHideoutStashes)
+        {
+            output.profileChanges[sessionID].changedHideoutStashes = {};
+        }
+
+        output.profileChanges[sessionID].changedHideoutStashes[hideoutArea.type] =
+        {
+            Id: hideoutData._id,
+            Tpl: hideoutStage.container
+        };
     }
 
     /**

@@ -68,6 +68,7 @@ export class EventOutputHolder
             },
             health: this.jsonUtil.clone(pmcData.Health),
             traderRelations: {},
+            //changedHideoutStashes: {},
             recipeUnlocked: {},
             questsStatus: []
         };
