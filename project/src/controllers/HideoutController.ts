@@ -201,6 +201,11 @@ export class HideoutController
 
         if (hideoutData.stages[hideoutArea.level].container)
         {
+            if (!output.profileChanges[sessionID].changedHideoutStashes)
+            {
+                output.profileChanges[sessionID].changedHideoutStashes = {};
+            }
+
             output.profileChanges[sessionID].changedHideoutStashes[hideoutArea.type] =
             {
                 Id: hideoutData._id,
