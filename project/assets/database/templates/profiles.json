@@ -2191,7 +2191,8 @@
                     "questRaidItems": "5fe4977574f15b4ad31b66b7",
                     "questStashItems": "5fe4977574f15b4ad31b66b8",
                     "sortingTable": "60dca3da42ad9b706b369aca",
-                    "stash": "5fe4977574f15b4ad31b66b6"
+                    "stash": "5fe4977574f15b4ad31b66b6",
+					"hideoutAreaStashes": {}
                 },
                 "Notes": {
                     "Notes": []
@@ -4911,7 +4912,8 @@
                     "questRaidItems": "5fe49cdfa19cac3fa9054116",
                     "questStashItems": "5fe49cdfa19cac3fa9054117",
                     "sortingTable": "60dca3da42ad9b706b369aca",
-                    "stash": "5fe49cdfa19cac3fa9054115"
+                    "stash": "5fe49cdfa19cac3fa9054115",
+					"hideoutAreaStashes": {}
                 },
                 "Notes": {
                     "Notes": []
@@ -7996,7 +7998,8 @@
                     "questRaidItems": "5fe4a9285a72d07b663029e3",
                     "questStashItems": "5fe4a9285a72d07b663029e4",
                     "sortingTable": "60dca3da42ad9b706b369aca",
-                    "stash": "5fe4a9285a72d07b663029e2"
+                    "stash": "5fe4a9285a72d07b663029e2",
+					"hideoutAreaStashes": {}
                 },
                 "Notes": {
                     "Notes": []
@@ -11181,7 +11184,8 @@
                     "questRaidItems": "5fe4a9fcf5aec236ec3836f8",
                     "questStashItems": "5fe4a9fcf5aec236ec3836f9",
                     "sortingTable": "60dca3da42ad9b706b369aca",
-                    "stash": "5fe4a9fcf5aec236ec3836f7"
+                    "stash": "5fe4a9fcf5aec236ec3836f7",
+					"hideoutAreaStashes": {}
                 },
                 "Notes": {
                     "Notes": []
@@ -14669,7 +14673,8 @@
                     "questRaidItems": "5fe4a66e40ca750fd72b595b",
                     "questStashItems": "5fe4a66e40ca750fd72b595c",
                     "sortingTable": "60dca3da42ad9b706b369aca",
-                    "stash": "5fe4a66e40ca750fd72b595a"
+                    "stash": "5fe4a66e40ca750fd72b595a",
+					"hideoutAreaStashes": {}
                 },
                 "Notes": {
                     "Notes": []
@@ -18360,7 +18365,8 @@
                     "questRaidItems": "5fe4ab2240ca750fd72bbe1d",
                     "questStashItems": "5fe4ab2240ca750fd72bbe1e",
                     "sortingTable": "60dca3da42ad9b706b369aca",
-                    "stash": "5fe4ab2240ca750fd72bbe1c"
+                    "stash": "5fe4ab2240ca750fd72bbe1c",
+					"hideoutAreaStashes": {}
                 },
                 "Notes": {
                     "Notes": []
@@ -22452,7 +22458,8 @@
                     "questRaidItems": "5fe49444ae6628187a2e78b9",
                     "questStashItems": "5fe49444ae6628187a2e78ba",
                     "sortingTable": "60dca3da42ad9b706b369aca",
-                    "stash": "5fe49444ae6628187a2e78b8"
+                    "stash": "5fe49444ae6628187a2e78b8",
+					"hideoutAreaStashes": {}
                 },
                 "Notes": {
                     "Notes": []
@@ -26687,7 +26694,8 @@
                     "questRaidItems": "5fe49a0e2694b0755a504877",
                     "questStashItems": "5fe49a0e2694b0755a504878",
                     "sortingTable": "60dca3da42ad9b706b369aca",
-                    "stash": "5fe49a0e2694b0755a504876"
+                    "stash": "5fe49a0e2694b0755a504876",
+					"hideoutAreaStashes": {}
                 },
                 "Notes": {
                     "Notes": []
@@ -27555,7 +27563,8 @@
                     "questRaidItems": "5fe49444ae6628187a2e78b9",
                     "questStashItems": "5fe49444ae6628187a2e78ba",
                     "sortingTable": "60dca3da42ad9b706b369aca",
-                    "stash": "5fe49444ae6628187a2e78b8"
+                    "stash": "5fe49444ae6628187a2e78b8",
+					"hideoutAreaStashes": {}
                 },
                 "Notes": {
                     "Notes": []
@@ -28441,7 +28450,8 @@
                     "questRaidItems": "5fe49444ae6628187a2e78b9",
                     "questStashItems": "5fe49444ae6628187a2e78ba",
                     "sortingTable": "60dca3da42ad9b706b369aca",
-                    "stash": "5fe49444ae6628187a2e78b8"
+                    "stash": "5fe49444ae6628187a2e78b8",
+					"hideoutAreaStashes": {}
                 },
                 "Notes": {
                     "Notes": []
@@ -31746,7 +31756,8 @@
                     "questRaidItems": "5fe49444ae6628187a2e78b9",
                     "questStashItems": "5fe49444ae6628187a2e78ba",
                     "sortingTable": "60dca3da42ad9b706b369aca",
-                    "stash": "5fe49444ae6628187a2e78b8"
+                    "stash": "5fe49444ae6628187a2e78b8",
+					"hideoutAreaStashes": {}
                 },
                 "Notes": {
                     "Notes": []
@@ -35050,7 +35061,8 @@
                     "questRaidItems": "5fe49444ae6628187a2e78b9",
                     "questStashItems": "5fe49444ae6628187a2e78ba",
                     "sortingTable": "60dca3da42ad9b706b369aca",
-                    "stash": "5fe49444ae6628187a2e78b8"
+                    "stash": "5fe49444ae6628187a2e78b8",
+					"hideoutAreaStashes": {}
                 },
                 "Notes": {
                     "Notes": []
@@ -38012,7 +38024,8 @@
                     "questRaidItems": "5fe49444ae6628187a2e78b9",
                     "questStashItems": "5fe49444ae6628187a2e78ba",
                     "sortingTable": "60dca3da42ad9b706b369aca",
-                    "stash": "5fe49444ae6628187a2e78b8"
+                    "stash": "5fe49444ae6628187a2e78b8",
+					"hideoutAreaStashes": {}
                 },
                 "Notes": {
                     "Notes": []
@@ -40973,7 +40986,8 @@
                     "questRaidItems": "5fe49444ae6628187a2e78b9",
                     "questStashItems": "5fe49444ae6628187a2e78ba",
                     "sortingTable": "60dca3da42ad9b706b369aca",
-                    "stash": "5fe49444ae6628187a2e78b8"
+                    "stash": "5fe49444ae6628187a2e78b8",
+					"hideoutAreaStashes": {}
                 },
                 "Notes": {
                     "Notes": []

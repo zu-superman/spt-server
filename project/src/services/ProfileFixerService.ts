@@ -59,12 +59,18 @@ export class ProfileFixerService
         this.addLighthouseKeeperIfMissing(pmcProfile);
         this.addUnlockedInfoObjectIfMissing(pmcProfile);
 
+        if (pmcProfile.Inventory)
+        {
+            this.addHideoutAreaStashes(pmcProfile);
+        }
+
         if (pmcProfile.Hideout)
         {
             this.addMissingBonusesProperty(pmcProfile);
             this.addMissingArmorRepairSkill(pmcProfile);
             this.addMissingWorkbenchWeaponSkills(pmcProfile);
             this.addMissingWallImprovements(pmcProfile);
+            this.addMissingEquipmentBuildProperty(pmcProfile);
 
             this.removeResourcesFromSlotsInHideoutWithoutLocationIndexValue(pmcProfile);
 
@@ -104,6 +110,14 @@ export class ProfileFixerService
         if (Object.keys(this.ragfairConfig.dynamic.unreasonableModPrices).length > 0)
         {
             this.adjustUnreasonableModFleaPrices();
+        }
+    }
+    
+    protected addHideoutAreaStashes(pmcProfile: IPmcData): void
+    {
+        if (!pmcProfile?.Inventory?.hideoutAreaStashes)
+        {
+            pmcProfile.Inventory.hideoutAreaStashes = {};
         }
     }
 
