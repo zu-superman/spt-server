@@ -4,7 +4,7 @@ import { PresetBuildCallbacks } from "../../callbacks/PresetBuildCallbacks";
 import { HandledRoute, ItemEventRouterDefinition } from "../../di/Router";
 import { IPmcData } from "../../models/eft/common/IPmcData";
 import { IItemEventRouterResponse } from "../../models/eft/itemEvent/IItemEventRouterResponse";
-import { ItemEventActions } from "@spt-aki/models/enums/ItemEventActions";
+import { ItemEventActions } from "../../models/enums/ItemEventActions";
 
 @injectable()
 export class PresetBuildItemEventRouter extends ItemEventRouterDefinition 

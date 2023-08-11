@@ -4,7 +4,6 @@ import { TradeCallbacks } from "../../callbacks/TradeCallbacks";
 import { HandledRoute, ItemEventRouterDefinition } from "../../di/Router";
 import { IPmcData } from "../../models/eft/common/IPmcData";
 import { IItemEventRouterResponse } from "../../models/eft/itemEvent/IItemEventRouterResponse";
-import { ItemEventActions } from "@spt-aki/models/enums/ItemEventActions";
 
 @injectable()
 export class TradeItemEventRouter extends ItemEventRouterDefinition 
