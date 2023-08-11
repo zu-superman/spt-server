@@ -149,6 +149,7 @@ export class ProfileController
 
         // change item id's to be unique
         pmcData.Inventory.items = this.itemHelper.replaceIDs(pmcData, pmcData.Inventory.items, null, pmcData.Inventory.fastPanel);
+        pmcData.Inventory.hideoutAreaStashes = {};
 
         // Create profile
         const profileDetails: IAkiProfile = {
