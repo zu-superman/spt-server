@@ -121,6 +121,14 @@ export class ProfileFixerService
         }
     }
 
+    protected addMissingEquipmentBuildProperty(pmcProfile: IPmcData)
+    {
+        if (pmcProfile)
+        {
+
+        }
+    }
+
     protected adjustUnreasonableModFleaPrices(): void
     {
         const db = this.databaseServer.getTables();
