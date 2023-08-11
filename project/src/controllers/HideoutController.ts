@@ -199,6 +199,17 @@ export class HideoutController
             }
         }
 
+        if (hideoutData.stages[hideoutArea.level].container)
+        {
+            output.profileChanges[sessionID].changedHideoutStashes[hideoutArea.type] =
+            {
+                Id: hideoutData._id,
+                Tpl: hideoutData.stages[hideoutArea.level].container
+            };
+        }
+
+
+
         // Add Skill Points Per Area Upgrade
         this.playerService.incrementSkillLevel(pmcData, SkillTypes.HIDEOUT_MANAGEMENT, this.databaseServer.getTables().globals.config.SkillsSettings.HideoutManagement.SkillPointsPerAreaUpgrade);
 

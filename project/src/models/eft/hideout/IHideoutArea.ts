@@ -24,7 +24,7 @@ export interface Stage
     autoUpgrade: boolean
     bonuses: StageBonus[]
     constructionTime: number
-    container: string
+    container?: string
     description: string
     displayInterface: boolean
     improvements: IStageImprovement[]

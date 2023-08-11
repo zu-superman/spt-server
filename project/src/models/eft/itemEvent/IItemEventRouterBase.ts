@@ -39,7 +39,14 @@ export interface ProfileChange
     traderRelations: Record<string, TraderInfo>
     repeatableQuests?: IPmcDataRepeatableQuest[]
     recipeUnlocked: Record<string, boolean>
+    changedHideoutStashes?: Record<string, IHideoutStashItem>
     questsStatus: QuestStatusChange[]
+}
+
+export interface IHideoutStashItem
+{
+    Id: string
+    Tpl: string
 }
 
 export interface QuestStatusChange
