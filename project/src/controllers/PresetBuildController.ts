@@ -66,6 +66,7 @@ export class PresetBuildController
         this.saveServer.getProfile(sessionID).userbuilds[buildType] = savedBuilds;
 
         output.profileChanges[sessionID][buildType].push(body);
+
         return output;
     }
 
