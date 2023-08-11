@@ -37867,6 +37867,24 @@
                             "passiveBonusesEnabled": true,
                             "slots": [],
                             "type": 23
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 1,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 24
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 1,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 25
                         }
                     ],
                     "Improvements": {},
@@ -40810,6 +40828,24 @@
                             "passiveBonusesEnabled": true,
                             "slots": [],
                             "type": 23
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 1,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 24
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 1,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 25
                         }
                     ],
                     "Improvements": {},
