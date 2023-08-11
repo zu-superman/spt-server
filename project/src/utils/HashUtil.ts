@@ -45,4 +45,11 @@ export class HashUtil
         hashSum.update(data);
         return hashSum.digest("hex");
     }
+
+    public generateAccountId(): number
+    {
+        const min = 1;
+        const max = 1000;
+        return (max > min) ? Math.floor(Math.random() * (max - min + 1) + min) : min;
+    }
 }

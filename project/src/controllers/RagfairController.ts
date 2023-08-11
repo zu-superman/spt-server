@@ -523,7 +523,7 @@ export class RagfairController
         });
 
         return this.ragfairOfferGenerator.createFleaOffer(
-            profile.characters.pmc.aid,
+            profile.characters.pmc.sessionId,
             this.timeUtil.getTimestamp(),
             formattedItems,
             formattedRequirements,

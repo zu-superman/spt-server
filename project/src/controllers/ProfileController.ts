@@ -31,6 +31,7 @@ import { LocalisationService } from "../services/LocalisationService";
 import { MailSendService } from "../services/MailSendService";
 import { ProfileFixerService } from "../services/ProfileFixerService";
 import { HashUtil } from "../utils/HashUtil";
+import { RandomUtil } from "../utils/RandomUtil";
 import { TimeUtil } from "../utils/TimeUtil";
 
 @injectable()
@@ -50,6 +51,7 @@ export class ProfileController
         @inject("EventOutputHolder") protected eventOutputHolder: EventOutputHolder,
         @inject("TraderHelper") protected traderHelper: TraderHelper,
         @inject("DialogueHelper") protected dialogueHelper: DialogueHelper,
+        @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("QuestHelper") protected questHelper: QuestHelper,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper
     )
@@ -134,8 +136,9 @@ export class ProfileController
 
         // PMC
         pmcData._id = `pmc${sessionID}`;
-        pmcData.aid = sessionID;
+        pmcData.aid = this.hashUtil.generateAccountId();
         pmcData.savage = `scav${sessionID}`;
+        pmcData.sessionId = sessionID;
         pmcData.Info.Nickname = info.nickname;
         pmcData.Info.LowerNickname = info.nickname.toLowerCase();
         pmcData.Info.RegistrationDate = this.timeUtil.getTimestamp();

@@ -34,6 +34,7 @@ import { OpenZoneService } from "../services/OpenZoneService";
 import { ProfileFixerService } from "../services/ProfileFixerService";
 import { SeasonalEventService } from "../services/SeasonalEventService";
 import { EncodingUtil } from "../utils/EncodingUtil";
+import { HashUtil } from "../utils/HashUtil";
 import { JsonUtil } from "../utils/JsonUtil";
 import { RandomUtil } from "../utils/RandomUtil";
 import { TimeUtil } from "../utils/TimeUtil";
@@ -54,6 +55,7 @@ export class GameController
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
+        @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("PreAkiModLoader") protected preAkiModLoader: PreAkiModLoader,
         @inject("HttpServerHelper") protected httpServerHelper: HttpServerHelper,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
@@ -158,6 +160,8 @@ export class GameController
 
             if (pmcProfile.Inventory)
             {
+                this.fixIncorrectAidValue(fullProfile);
+                
                 this.sendPraporGiftsToNewProfiles(pmcProfile);
 
                 this.profileFixerService.checkForOrphanedModdedItems(sessionID, fullProfile);
@@ -205,6 +209,24 @@ export class GameController
             {
                 this.flagAllItemsInDbAsSellableOnFlea();
             }
+        }
+    }
+    
+    /**
+     * 3.7.0 moved AIDs to be numeric, old profiles need to be migrated
+     * We store the old AID value in new field `sessionId`
+     * @param fullProfile Profile to update
+     */
+    protected fixIncorrectAidValue(fullProfile: IAkiProfile): void
+    {
+        // Not a number, regenerate
+        if (isNaN(fullProfile.characters.pmc.aid))
+        {
+            fullProfile.characters.pmc.sessionId = <string><unknown>fullProfile.characters.pmc.aid;
+            fullProfile.characters.pmc.aid = this.hashUtil.generateAccountId();
+
+            fullProfile.characters.scav.sessionId = <string><unknown>fullProfile.characters.pmc.sessionId;
+            fullProfile.characters.scav.aid = fullProfile.characters.pmc.aid;
         }
     }
 
@@ -523,13 +545,13 @@ export class GameController
         // One day post-profile creation
         if (currentTimeStamp > (timeStampProfileCreated + oneDaySeconds))
         {
-            this.giftService.sendPraporStartingGift(pmcProfile.aid, 1);
+            this.giftService.sendPraporStartingGift(pmcProfile.sessionId, 1);
         }
 
         // Two day post-profile creation
         if (currentTimeStamp > (timeStampProfileCreated + (oneDaySeconds * 2)))
         {
-            this.giftService.sendPraporStartingGift(pmcProfile.aid, 2);
+            this.giftService.sendPraporStartingGift(pmcProfile.sessionId, 2);
         }
     }
 

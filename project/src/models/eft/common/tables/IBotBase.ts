@@ -9,7 +9,9 @@ export interface IBotBase
 {
     
     _id: string
-    aid: string
+    aid: number
+    /** SPT property - use to store player id - TODO - move to AID ( account id as guid of choice) */
+    sessionId: string
     savage?: string
     Info: Info
     Customization: Customization

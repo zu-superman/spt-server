@@ -86,7 +86,9 @@ export class PlayerScavGenerator
 
         // add scav metadata
         scavData._id = pmcData.savage;
-        scavData.aid = sessionID;
+        scavData.savage = null;
+        scavData.sessionId = pmcData.sessionId;
+        scavData.aid = pmcData.aid;
         scavData.Info.Settings = {} as Settings;
         scavData.TradersInfo = this.jsonUtil.clone(pmcData.TradersInfo);
         scavData.Skills = this.getScavSkills(existingScavData);

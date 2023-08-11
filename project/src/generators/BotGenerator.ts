@@ -388,7 +388,7 @@ export class BotGenerator
         const botId = this.hashUtil.generate();
 
         bot._id = botId;
-        bot.aid = botId;
+        bot.aid = this.hashUtil.generateAccountId();
 
         return bot;
     }
@@ -471,7 +471,7 @@ export class BotGenerator
         const upd: Upd = {
             SpawnedInSession: true,
             Dogtag: {
-                AccountId: bot.aid,
+                AccountId: bot.sessionId,
                 ProfileId: bot._id,
                 Nickname: bot.Info.Nickname,
                 Side: bot.Info.Side,
