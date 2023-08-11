@@ -71,6 +71,7 @@ export class ProfileFixerService
             this.addMissingWorkbenchWeaponSkills(pmcProfile);
             this.addMissingWallImprovements(pmcProfile);
             this.addMissingEquipmentBuildProperty(pmcProfile);
+            this.addMissingHideoutWallAreas(pmcProfile);
 
             this.removeResourcesFromSlotsInHideoutWithoutLocationIndexValue(pmcProfile);
 
@@ -126,6 +127,41 @@ export class ProfileFixerService
         if (pmcProfile)
         {
 
+        }
+    }
+
+    protected addMissingHideoutWallAreas(pmcProfile: IPmcData): void
+    {
+        if (!pmcProfile.Hideout.Areas.find(x => x.type === HideoutAreas.WEAPON_STAND))
+        {
+            pmcProfile.Hideout.Areas.push(
+                {
+                    type: 24,
+                    level: 0,
+                    active: true,
+                    passiveBonusesEnabled: true,
+                    completeTime: 0,
+                    constructing: false,
+                    slots: [],
+                    lastRecipe: ""
+                }
+            );
+        }
+
+        if (!pmcProfile.Hideout.Areas.find(x => x.type === HideoutAreas.WEAPON_STAND_SECONDARY))
+        {
+            pmcProfile.Hideout.Areas.push(
+                {
+                    type: 25,
+                    level: 0,
+                    active: true,
+                    passiveBonusesEnabled: true,
+                    completeTime: 0,
+                    constructing: false,
+                    slots: [],
+                    lastRecipe: ""
+                }
+            );
         }
     }
 
