@@ -2929,31 +2929,139 @@
             ],
             "Buffs_Obdolbos": [
               {
-                "BuffType": "DamageModifier",
-                "Chance": 1,
-                "Delay": 1,
-                "Duration": 1800,
-                "Value": 10,
-                "AbsoluteValue": false,
-                "SkillName": ""
-              },
-              {
                 "BuffType": "SkillRate",
-                "Chance": 1,
-                "Delay": 1,
-                "Duration": 1800,
-                "Value": 50,
+                "Chance": 0.25,
+                "Delay": 0,
+                "Duration": 600,
+                "Value": 10,
                 "AbsoluteValue": true,
                 "SkillName": "Endurance"
               },
               {
                 "BuffType": "SkillRate",
-                "Chance": 1,
-                "Delay": 1,
-                "Duration": 1800,
-                "Value": 50,
+                "Chance": 0.25,
+                "Delay": 0,
+                "Duration": 600,
+                "Value": 10,
                 "AbsoluteValue": true,
                 "SkillName": "Strength"
+              },
+              {
+                "BuffType": "SkillRate",
+                "Chance": 0.25,
+                "Delay": 0,
+                "Duration": 600,
+                "Value": 10,
+                "AbsoluteValue": true,
+                "SkillName": "Intellect"
+              },
+              {
+                "BuffType": "SkillRate",
+                "Chance": 0.25,
+                "Delay": 0,
+                "Duration": 600,
+                "Value": 10,
+                "AbsoluteValue": true,
+                "SkillName": "Attention"
+              },
+              {
+                "BuffType": "SkillRate",
+                "Chance": 0.25,
+                "Delay": 0,
+                "Duration": 600,
+                "Value": 10,
+                "AbsoluteValue": true,
+                "SkillName": "StressResistance"
+              },
+              {
+                "BuffType": "SkillRate",
+                "Chance": 0.25,
+                "Delay": 0,
+                "Duration": 600,
+                "Value": 10,
+                "AbsoluteValue": true,
+                "SkillName": "Charisma"
+              },
+              {
+                "BuffType": "MaxStamina",
+                "Chance": 0.25,
+                "Delay": 0,
+                "Duration": 600,
+                "Value": 20,
+                "AbsoluteValue": true,
+                "SkillName": ""
+              },
+              {
+                "BuffType": "HealthRate",
+                "Chance": 0.25,
+                "Delay": 0,
+                "Duration": 600,
+                "Value": 1,
+                "AbsoluteValue": true,
+                "SkillName": ""
+              },
+              {
+                "BuffType": "StaminaRate",
+                "Chance": 0.25,
+                "Delay": 0,
+                "Duration": 600,
+                "Value": 1,
+                "AbsoluteValue": true,
+                "SkillName": ""
+              },
+              {
+                "BuffType": "WeightLimit",
+                "Chance": 0.25,
+                "Delay": 0,
+                "Duration": 600,
+                "Value": 0.1,
+                "AbsoluteValue": true,
+                "SkillName": ""
+              },
+              {
+                "BuffType": "DamageModifier",
+                "Chance": 0.25,
+                "Delay": 0,
+                "Duration": 600,
+                "Value": 0.2,
+                "AbsoluteValue": false,
+                "SkillName": ""
+              },
+              {
+                "BuffType": "HandsTremor",
+                "Chance": 0.25,
+                "Delay": 0,
+                "Duration": 600,
+                "Value": 0,
+                "AbsoluteValue": false,
+                "SkillName": ""
+              },
+              {
+                "BuffType": "HydrationRate",
+                "Chance": 0.25,
+                "Delay": 0,
+                "Duration": 600,
+                "Value": -1,
+                "AbsoluteValue": true,
+                "SkillName": ""
+              },
+              {
+                "BuffType": "EnergyRate",
+                "Chance": 0.25,
+                "Delay": 0,
+                "Duration": 600,
+                "Value": -1,
+                "AbsoluteValue": true,
+                "SkillName": ""
+              },
+              {
+                "BuffType": "HealthRate",
+                "Chance": 0.25,
+                "Delay": 0,
+                "Duration": 600,
+                "Value": -600,
+                "AbsoluteValue": true,
+                "SkillName": ""
               }
             ],
             "Buffs_P22": [
@@ -3443,7 +3551,7 @@
               {
                 "BuffType": "SkillRate",
                 "Chance": 1,
-                "Delay": 1,
+                "Delay": 0,
                 "Duration": 1800,
                 "Value": 20,
                 "AbsoluteValue": true,
@@ -3452,7 +3560,7 @@
               {
                 "BuffType": "SkillRate",
                 "Chance": 1,
-                "Delay": 1,
+                "Delay": 0,
                 "Duration": 1800,
                 "Value": 20,
                 "AbsoluteValue": true,
@@ -3461,7 +3569,7 @@
               {
                 "BuffType": "SkillRate",
                 "Chance": 1,
-                "Delay": 1,
+                "Delay": 0,
                 "Duration": 1800,
                 "Value": 20,
                 "AbsoluteValue": true,
@@ -3470,46 +3578,46 @@
               {
                 "BuffType": "SkillRate",
                 "Chance": 1,
-                "Delay": 1,
+                "Delay": 0,
                 "Duration": 1800,
                 "Value": 20,
                 "AbsoluteValue": true,
                 "SkillName": "Perception"
               },
               {
+                "BuffType": "WeightLimit",
+                "Chance": 1,
+                "Delay": 0,
+                "Duration": 1800,
+                "Value": 0.45,
+                "AbsoluteValue": false,
+                "SkillName": ""
+              },
+              {
                 "BuffType": "MaxStamina",
                 "Chance": 1,
-                "Delay": 1,
+                "Delay": 0,
                 "Duration": 1800,
-                "Value": 20,
+                "Value": -20,
                 "AbsoluteValue": true,
                 "SkillName": ""
               },
               {
                 "BuffType": "StaminaRate",
                 "Chance": 1,
-                "Delay": 1,
+                "Delay": 0,
                 "Duration": 1800,
-                "Value": 2,
+                "Value": -1,
                 "AbsoluteValue": true,
                 "SkillName": ""
               },
               {
                 "BuffType": "HealthRate",
                 "Chance": 1,
-                "Delay": 1,
+                "Delay": 0,
                 "Duration": 1800,
-                "Value": 2,
+                "Value": -1,
                 "AbsoluteValue": true,
-                "SkillName": ""
-              },
-              {
-                "BuffType": "WeightLimit",
-                "Chance": 1,
-                "Delay": 1,
-                "Duration": 1800,
-                "Value": 0.45,
-                "AbsoluteValue": false,
                 "SkillName": ""
               }
             ],
@@ -5863,7 +5971,7 @@
       "WeaponPistolFastSwitchMinSpeedMult": 1.5
     },
     "GraphicSettings": {
-      "ExperimentalFogInCity": true
+      "ExperimentalFogInCity": false
     }
   },
   "bot_presets": [
@@ -14842,61 +14950,6 @@
           "_tpl": "5d270b3c8abbc3105335cfb8",
           "parentId": "5d38512f86f77479f81e48ea",
           "slotId": "mod_muzzle"
-        }
-      ]
-    },
-    "64cbe0525b78c2021172b340": {
-      "_id": "64cbe0525b78c2021172b340",
-      "_type": "Preset",
-      "_changeWeaponName": true,
-      "_name": "PKM_Pecheneg",
-      "_parent": "64cf81028b48ea38c5030fb0",
-      "_items": [
-        {
-          "_id": "64cf81028b48ea38c5030fb0",
-          "_tpl": "64637076203536ad5600c990",
-          "upd": {
-            "Repairable": {
-              "Durability": 100,
-              "MaxDurability": 100
-            }
-          }
-        },
-        {
-          "_id": "64cf81028b48ea38c5030fb1",
-          "_tpl": "64cbad529f7cf7f75c077fd5",
-          "parentId": "64cf81028b48ea38c5030fb0",
-          "slotId": "mod_pistolgrip"
-        },
-        {
-          "_id": "64cf81028b48ea38c5030fb2",
-          "_tpl": "64639a9aab86f8fd4300146c",
-          "parentId": "64cf81028b48ea38c5030fb0",
-          "slotId": "mod_barrel"
-        },
-        {
-          "_id": "64cf81028b48ea38c5030fb3",
-          "_tpl": "646372518610c40fc20204e8",
-          "parentId": "64cf81028b48ea38c5030fb0",
-          "slotId": "mod_magazine"
-        },
-        {
-          "_id": "64cf81028b48ea38c5030fb4",
-          "_tpl": "6492e3a97df7d749100e29ee",
-          "parentId": "64cf81028b48ea38c5030fb0",
-          "slotId": "mod_stock"
-        },
-        {
-          "_id": "64cf81028b48ea38c5030fb5",
-          "_tpl": "6464d870bb2c580352070cc4",
-          "parentId": "64cf81028b48ea38c5030fb0",
-          "slotId": "mod_bipod"
-        },
-        {
-          "_id": "64cf81028b48ea38c5030fb6",
-          "_tpl": "6492fb8253acae0af00a29b6",
-          "parentId": "64cf81028b48ea38c5030fb0",
-          "slotId": "mod_sight_rear"
         }
       ]
     },

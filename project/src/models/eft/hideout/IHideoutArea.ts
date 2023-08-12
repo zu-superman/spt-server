@@ -84,6 +84,7 @@ export interface StageBonus
     type: string
     filter?: string[]
     icon?: string
+    /** CHANGES PER DUMP */
     id?: string
     templateId?: string
 }
