@@ -137,7 +137,8 @@
         "5ac4cd105acfc40016339859": 1,
         "59984ab886f7743e98271174": 1,
         "59ff346386f77477562ff5e2": 1,
-        "5447a9cd4bdc2dbd208b4567": 1
+        "5447a9cd4bdc2dbd208b4567": 1,
+        "6499849fc93611967b034949": 1
       },
       "SecondPrimaryWeapon": {},
       "Holster": {
@@ -426,6 +427,40 @@
         "mod_sight_rear": [
           "63c6adcfb4ba094317063742"
         ]
+      },
+      "6499849fc93611967b034949": {
+        "mod_gas_block": [
+          "649ec107961514b22506b10c"
+        ],
+        "mod_pistol_grip": [
+          "5beec8ea0db834001a6f9dbf"
+        ],
+        "mod_handguard": [
+          "649ec127c93611967b034957"
+        ],
+        "mod_muzzle": [
+          "649ec2af961514b22506b10f"
+        ],
+        "mod_stock_001": [
+          "649ec87d8007560a9001ab36"
+        ],
+        "mod_reciever": [
+          "649ec2f3961514b22506b111"
+        ],
+        "mod_magazine": [
+          "5bed61680db834001d2c45ab"
+        ]
+      },
+      "649ec87d8007560a9001ab36": {
+        "mod_stock": [
+          "5beec8c20db834001d2c465c"
+        ]
+      },
+      "649ec2f3961514b22506b111": {
+        "mod_scope": [
+          "609a63b6e2ff132951242d09",
+          "5c0505e00db834001b735073"
+        ]
       }
     },
     "items": {
@@ -435,7 +470,8 @@
         "5aaa4194e5b5b055d06310a5",
         "599860ac86f77436b225ed1a",
         "59d6272486f77466146386ff",
-        "59c1383d86f774290a37e0ca"
+        "59c1383d86f774290a37e0ca",
+        "5bed61680db834001d2c45ab"
       ],
       "Pockets": [
         "576a5ed62459771e9c2096cb",
@@ -2576,7 +2612,7 @@
       "Earpiece": 19,
       "FaceCover": 11,
       "ArmorVest": 98,
-      "Eyewear": 62,
+      "Eyewear": 61,
       "ArmBand": 0,
       "TacticalVest": 100,
       "Backpack": 30,
@@ -2602,17 +2638,18 @@
       "mod_charge": 0,
       "mod_nvg": 0,
       "mod_equipment": 0,
-      "mod_scope": 33,
+      "mod_scope": 34,
       "mod_tactical": 61,
       "mod_stock_akms": 100,
       "mod_sight_front": 35,
-      "mod_mount_001": 100,
+      "mod_mount_001": 99,
       "mod_mount_002": 0,
       "mod_stock_000": 100,
       "mod_tactical_2": 0,
       "mod_tactical_003": 100,
       "mod_handguard": 100,
-      "mod_flashlight": 100
+      "mod_flashlight": 100,
+      "mod_stock_001": 100
     }
   },
   "generation": {
