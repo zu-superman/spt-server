@@ -259,6 +259,8 @@
         "bosstagilla": 3,
         "bosstest": 4,
         "bosszryachiy": 3,
+		"bossboar": 3,
+		"bossboarsniper": 3
         "cursedassault": 4,
         "exusec": 4,
         "followerbigpipe": 4,
@@ -273,14 +275,12 @@
         "followertagilla": 4,
         "followertest": 4,
         "followerzryachiy": 4,
-		"followerBoar": 4,
+		"followerboar": 4,
         "gifter": 4,
         "pmcbot": 4,
         "sectantpriest": 4,
         "sectantwarrior": 4,
-        "test": 4,
-		"bossBoar": 3,
-		"bossBoarSniper": 3
+        "test": 4
     },
     "chanceAssaultScavHasPlayerScavName": 10,
     "secureContainerAmmoStackCount": 20,
