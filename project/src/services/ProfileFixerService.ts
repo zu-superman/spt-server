@@ -132,7 +132,7 @@ export class ProfileFixerService
         if (!hideoutStashId && stageCurrentAt)
         {
             // Value is missing, add it
-            pmcProfile.Inventory.hideoutAreaStashes[HideoutAreas.WEAPON_STAND] = stageCurrentAt.container;
+            pmcProfile.Inventory.hideoutAreaStashes[HideoutAreas.WEAPON_STAND] = hideoutAreaDb._id;
 
             // Add stash item to profile
             const gunWallStashItem = pmcProfile.Inventory.items.find(x => x._id === hideoutAreaDb._id);

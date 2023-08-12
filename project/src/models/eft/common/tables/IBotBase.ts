@@ -150,6 +150,7 @@ export interface Inventory
     sortingTable: string
     questRaidItems: string
     questStashItems: string
+    /** Key is hideout area enum numeric as string e.g. "24", value is area _id  */
     hideoutAreaStashes: Record<string, string>
     fastPanel: Record<string, string>
 }

@@ -217,6 +217,7 @@ export class HideoutController
 
     protected addOrUpgradeContainerImprovementToProfile(pmcData: IPmcData, hideoutArea: HideoutArea, hideoutData: IHideoutArea, hideoutStage: Stage): void
     {
+        // Set value to be _id of hideout area
         pmcData.Inventory.hideoutAreaStashes[hideoutArea.type] = hideoutData._id;
 
         // Look for existing stash object in items
