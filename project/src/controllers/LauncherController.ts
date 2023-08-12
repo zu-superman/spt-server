@@ -184,6 +184,7 @@ export class LauncherController
     public getServerModsProfileUsed(sessionId: string): ModDetails[]
     {
         const profile = this.profileHelper.getFullProfile(sessionId);
-        return profile?.aki?.mods;
+
+        return profile?.aki?.mods ?? [];
     }
 }
