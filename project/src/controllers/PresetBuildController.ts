@@ -8,8 +8,10 @@ import {
 } from "../models/eft/presetBuild/IPresetBuildActionRequestData";
 import { IUserBuilds } from "../models/eft/profile/IAkiProfile";
 import { EventOutputHolder } from "../routers/EventOutputHolder";
+import { DatabaseServer } from "../servers/DatabaseServer";
 import { SaveServer } from "../servers/SaveServer";
 import { HashUtil } from "../utils/HashUtil";
+import { JsonUtil } from "../utils/JsonUtil";
 
 @injectable()
 export class PresetBuildController
@@ -17,6 +19,8 @@ export class PresetBuildController
     constructor(
         @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("EventOutputHolder") protected eventOutputHolder: EventOutputHolder,
+        @inject("JsonUtil") protected jsonUtil: JsonUtil,
+        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("SaveServer") protected saveServer: SaveServer
     )
@@ -34,7 +38,11 @@ export class PresetBuildController
             };
         }
 
-        return profile.userbuilds;
+        // Clone data from profile and append the defaults onto end, then return
+        const result = this.jsonUtil.clone(profile.userbuilds);
+        result.equipmentBuilds.push(...this.databaseServer.getTables().templates.defaultEquipmentPresets);
+
+        return result;
     }
 
     /** Handle SaveWeaponBuild event */
