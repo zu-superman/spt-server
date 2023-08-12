@@ -115,7 +115,7 @@ export class LocationController
         for (const staticContainer of staticContainers ?? [])
         {
             const container = this.locationGenerator.generateContainerLoot(staticContainer, staticForced, staticLootDist, staticAmmoDist, name);
-            output.Loot.push(container);
+            output.Loot.push(container.template);
             staticContainerCount++;
         }
 

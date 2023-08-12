@@ -17,8 +17,14 @@ export interface IStaticAmmoDetails
 export interface IStaticContainerDetails 
 {
     staticWeapons: IStaticWeaponProps[]
-    staticContainers: IStaticContainerProps[]
+    staticContainers: IStaticContainerData[]
     staticForced: IStaticForcedProps[]
+}
+
+export interface IStaticContainerData
+{
+    probability: number
+    template: IStaticContainerProps
 }
 
 export interface IStaticPropsBase
