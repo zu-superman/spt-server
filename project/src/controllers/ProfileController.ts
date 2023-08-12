@@ -134,7 +134,7 @@ export class ProfileController
 
         // PMC
         pmcData._id = `pmc${sessionID}`;
-        pmcData.aid = this.hashUtil.generateAccountId();
+        pmcData.aid = account.aid;
         pmcData.savage = `scav${sessionID}`;
         pmcData.sessionId = sessionID;
         pmcData.Info.Nickname = info.nickname;
@@ -168,8 +168,6 @@ export class ProfileController
             insurance: [],
             traderPurchases: {}
         };
-
-        account.aid = pmcData.aid;
 
         this.profileFixerService.checkForAndFixPmcProfileIssues(profileDetails.characters.pmc);
         this.profileFixerService.addMissingHideoutBonusesToProfile(profileDetails.characters.pmc);

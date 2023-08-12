@@ -111,6 +111,7 @@ export class LauncherController
         const sessionID = this.hashUtil.generate();
         const newProfileDetails: Info = {
             id: sessionID,
+            aid: this.hashUtil.generateAccountId(),
             username: info.username,
             password: info.password,
             wipe: true,
