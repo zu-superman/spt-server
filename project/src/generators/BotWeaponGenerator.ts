@@ -483,16 +483,15 @@ export class BotWeaponGenerator
             return weaponTemplate._props.ammoCaliber;
         }
 
-        // UBGLs use a linked weapon that contains caliber info
         if (weaponTemplate._props.LinkedWeapon)
         {
-            const linkedWeaponItem = this.itemHelper.getItem(weaponTemplate._props.LinkedWeapon)[1];
-            if (!linkedWeaponItem)
+            const ammoInChamber = this.itemHelper.getItem(weaponTemplate._props.Chambers[0]._props.filters[0].Filter[0]);
+            if (!ammoInChamber[0])
             {
                 return;
             }
 
-            return linkedWeaponItem._props.ammoCaliber;
+            return ammoInChamber[1]._props.Caliber;
         }
     }
 
