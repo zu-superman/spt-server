@@ -13,6 +13,7 @@ import { IAirdropLootResult } from "../models/eft/location/IAirdropLootResult";
 import { AirdropTypeEnum } from "../models/enums/AirdropType";
 import { ConfigTypes } from "../models/enums/ConfigTypes";
 import { IAirdropConfig } from "../models/spt/config/IAirdropConfig";
+import { IMatchConfig } from "../models/spt/config/IMatchConfig";
 import { ILocations } from "../models/spt/server/ILocations";
 import { LootRequest } from "../models/spt/services/LootRequest";
 import { ILogger } from "../models/spt/utils/ILogger";
@@ -21,16 +22,19 @@ import { DatabaseServer } from "../servers/DatabaseServer";
 import { LocalisationService } from "../services/LocalisationService";
 import { HashUtil } from "../utils/HashUtil";
 import { JsonUtil } from "../utils/JsonUtil";
+import { RandomUtil } from "../utils/RandomUtil";
 import { TimeUtil } from "../utils/TimeUtil";
 
 @injectable()
 export class LocationController
 {
     protected airdropConfig: IAirdropConfig;
+    protected matchConfig: IMatchConfig;
 
     constructor(
         @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("HashUtil") protected hashUtil: HashUtil,
+        @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("WeightedRandomHelper") protected weightedRandomHelper: WeightedRandomHelper,
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("LocationGenerator") protected locationGenerator: LocationGenerator,
@@ -42,6 +46,7 @@ export class LocationController
     )
     {
         this.airdropConfig = this.configServer.getConfig(ConfigTypes.AIRDROP);
+        this.matchConfig = this.configServer.getConfig(ConfigTypes.MATCH);
     }
 
     /*  */
@@ -114,6 +119,17 @@ export class LocationController
         let staticContainerCount = 0;
         for (const staticContainer of staticContainers ?? [])
         {
+            // not 100% chance, roll chance to be added to map
+            if (staticContainer.probability < 1 && this.matchConfig.randomiseMapContainers)
+            {
+                // Chance is between 0 and 1
+                if (!this.randomUtil.getChance100(staticContainer.probability * 100))
+                {
+                    // Skip container
+                    continue;
+                }
+            }
+
             const container = this.locationGenerator.generateContainerLoot(staticContainer, staticForced, staticLootDist, staticAmmoDist, name);
             output.Loot.push(container.template);
             staticContainerCount++;
