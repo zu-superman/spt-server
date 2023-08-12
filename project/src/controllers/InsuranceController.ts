@@ -208,11 +208,11 @@ export class InsuranceController
     /**
      * Handle client/insurance/items/list/cost
      * Calculate insurance cost
-     * @param info request object
+     * @param request request object
      * @param sessionID session id
      * @returns IGetInsuranceCostResponseData object to send to client
      */
-    public cost(info: IGetInsuranceCostRequestData, sessionID: string): IGetInsuranceCostResponseData
+    public cost(request: IGetInsuranceCostRequestData, sessionID: string): IGetInsuranceCostResponseData
     {
         const output: IGetInsuranceCostResponseData = {};
         const pmcData = this.profileHelper.getPmcProfile(sessionID);
@@ -223,13 +223,20 @@ export class InsuranceController
             inventoryItemsHash[item._id] = item;
         }
 
-        for (const trader of info.traders)
+        // Loop over each trader in request
+        for (const trader of request.traders)
         {
-            const items = {};
+            const items: Record<string, number> = {};
 
-            for (const key of info.items)
+            for (const itemId of request.items)
             {
-                items[inventoryItemsHash[key]._tpl] = Math.round(this.insuranceService.getPremium(pmcData, inventoryItemsHash[key], trader));
+                // Ensure hash has item in it
+                if (!inventoryItemsHash[itemId])
+                {
+                    this.logger.debug(`Item with id: ${itemId} missing from player inventory, skipping`);
+                    continue;
+                }
+                items[inventoryItemsHash[itemId]._tpl] = Math.round(this.insuranceService.getPremium(pmcData, inventoryItemsHash[itemId], trader));
             }
 
             output[trader] = items;
