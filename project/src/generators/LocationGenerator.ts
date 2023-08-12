@@ -9,7 +9,8 @@ import {
 } from "../models/eft/common/ILooseLoot";
 import { Item } from "../models/eft/common/tables/IItem";
 import {
-    IStaticAmmoDetails, IStaticContainerProps, IStaticForcedProps, IStaticLootDetails
+    IStaticAmmoDetails, IStaticContainerData,
+    IStaticForcedProps, IStaticLootDetails
 } from "../models/eft/common/tables/ILootBase";
 import { BaseClasses } from "../models/enums/BaseClasses";
 import { ConfigTypes } from "../models/enums/ConfigTypes";
@@ -65,19 +66,19 @@ export class LocationGenerator
      * @returns IStaticContainerProps
      */
     public generateContainerLoot(
-        staticContainer: IStaticContainerProps,
+        staticContainer: IStaticContainerData,
         staticForced: IStaticForcedProps[],
         staticLootDist: Record<string, IStaticLootDetails>,
         staticAmmoDist: Record<string, IStaticAmmoDetails[]>,
-        locationName: string): IStaticContainerProps
+        locationName: string): IStaticContainerData
     {
         const container = this.jsonUtil.clone(staticContainer);
-        const containerTpl = container.Items[0]._tpl;
+        const containerTpl = container.template.Items[0]._tpl;
 
         // Create new unique parent id to prevent any collisions
         const parentId = this.objectId.generate();
-        container.Root = parentId;
-        container.Items[0]._id = parentId;
+        container.template.Root = parentId;
+        container.template.Items[0]._id = parentId;
 
         let containerMap = this.getContainerMapping(containerTpl);
 
@@ -88,7 +89,7 @@ export class LocationGenerator
         const containerLootPool = this.getPossibleLootItemsForContainer(containerTpl, staticLootDist);
 
         // Some containers need to have items forced into it (quest keys etc)
-        const tplsForced = staticForced.filter(x => x.containerId === container.Id).map(x => x.itemTpl);
+        const tplsForced = staticForced.filter(x => x.containerId === container.template.Id).map(x => x.itemTpl);
 
         // Draw random loot
         // Money spawn more than once in container
@@ -132,7 +133,7 @@ export class LocationGenerator
             // Add loot to container before returning
             for (const item of items)
             {
-                container.Items.push(item);
+                container.template.Items.push(item);
             }
         }
 
