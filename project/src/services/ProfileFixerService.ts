@@ -154,8 +154,9 @@ export class ProfileFixerService
         // `hideoutAreaStashes` has value related stash inventory items tpl doesnt match what's expected
         if (hideoutStashId && stashItem?._tpl !== stageCurrentAt.container)
         {
-            stashItem._tpl = stageCurrentAt.container;
+            this.logger.debug(`stash id was: ${stashItem._tpl}, but should be ${stageCurrentAt.container}, updating`);
             // The id inside the profile does not match what the hideout db value is, out of sync, adjust
+            stashItem._tpl = stageCurrentAt.container;
 
         }
     }
@@ -164,6 +165,7 @@ export class ProfileFixerService
     {
         if (!pmcProfile?.Inventory?.hideoutAreaStashes)
         {
+            this.logger.debug("Added missing hideoutAreaStashes to inventory");
             pmcProfile.Inventory.hideoutAreaStashes = {};
         }
     }
