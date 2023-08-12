@@ -6,6 +6,7 @@ import { IItemEventRouterResponse } from "../models/eft/itemEvent/IItemEventRout
 import {
     IPresetBuildActionRequestData
 } from "../models/eft/presetBuild/IPresetBuildActionRequestData";
+import { IRemoveBuildRequestData } from "../models/eft/presetBuild/IRemoveBuildRequestData";
 import { IUserBuilds } from "../models/eft/profile/IAkiProfile";
 import { EventOutputHolder } from "../routers/EventOutputHolder";
 import { DatabaseServer } from "../servers/DatabaseServer";
@@ -59,49 +60,66 @@ export class PresetBuildController
 
     protected saveBuild(pmcData: IPmcData, body: IPresetBuildActionRequestData, sessionID: string, buildType: string): IItemEventRouterResponse
     {
-        delete body.Action;
-        body.id = this.hashUtil.generate();
-
         const output = this.eventOutputHolder.getOutput(sessionID);
-        const savedBuilds = this.saveServer.getProfile(sessionID).userbuilds[buildType];
+        const existingSavedBuilds: any[] = this.saveServer.getProfile(sessionID).userbuilds[buildType];
 
         // replace duplicate ID's. The first item is the base item.
         // The root ID and the base item ID need to match.
         body.items = this.itemHelper.replaceIDs(pmcData, body.items);
-        body.root = body.items[0]._id;
 
-        savedBuilds[body.name] = body;
-        this.saveServer.getProfile(sessionID).userbuilds[buildType] = savedBuilds;
+        const newBuild = {
+            id: this.hashUtil.generate(),
+            name: body.name,
+            buildType: "Custom",
+            root: body.root,
+            fastPanel: [],
+            items: body.items
+        };
 
-        output.profileChanges[sessionID][buildType].push(body);
+        const existingBuild = existingSavedBuilds.find(x => x.name === body.name);
+        if (existingBuild)
+        {
+            // Already exists, replace
+            this.saveServer.getProfile(sessionID).userbuilds[buildType].splice(existingSavedBuilds.indexOf(existingBuild), 1, newBuild);
+        }
+        else
+        {
+            // Fresh, add new
+            this.saveServer.getProfile(sessionID).userbuilds[buildType].push(newBuild);
+        }
+
+        output.profileChanges[sessionID][buildType].push(newBuild);
 
         return output;
     }
 
     /** Handle RemoveWeaponBuild event*/
+    public removeBuild(pmcData: IPmcData, body: IRemoveBuildRequestData, sessionID: string): IItemEventRouterResponse
+    {
+        return this.removePlayerBuild(pmcData, body.id, sessionID, "equipmentBuilds");
+    }
+
+    /** Handle RemoveWeaponBuild event*/
     public removeWeaponBuild(pmcData: IPmcData, body: IPresetBuildActionRequestData, sessionID: string): IItemEventRouterResponse
     {
-        return this.removeBuild(pmcData, body, sessionID, "weaponBuilds");
+        return this.removePlayerBuild(pmcData, body.id, sessionID, "weaponBuilds");
     }
 
     /** Handle RemoveEquipmentBuild event*/
     public removeEquipmentBuild(pmcData: IPmcData, body: IPresetBuildActionRequestData, sessionID: string): IItemEventRouterResponse
     {
-        return this.removeBuild(pmcData, body, sessionID, "equipmentBuilds");
+        return this.removePlayerBuild(pmcData, body.id, sessionID, "equipmentBuilds");
     }
     
-    protected removeBuild(pmcData: IPmcData, body: IPresetBuildActionRequestData, sessionID: string, buildType: string): IItemEventRouterResponse
+    protected removePlayerBuild(pmcData: IPmcData, id: string, sessionID: string, buildType: string): IItemEventRouterResponse
     {
-        const savedBuilds = this.saveServer.getProfile(sessionID).userbuilds[buildType];
+        const savedBuilds: any[] = this.saveServer.getProfile(sessionID).userbuilds[buildType];
 
-        for (const name in savedBuilds)
+        const matchingBuild = savedBuilds.find(x => x.id === id);
+        if (matchingBuild)
         {
-            if (savedBuilds[name].id === body.id)
-            {
-                delete savedBuilds[name];
-                this.saveServer.getProfile(sessionID).userbuilds[buildType] = savedBuilds;
-                break;
-            }
+            savedBuilds.splice(savedBuilds.indexOf(matchingBuild), 1);
+            this.saveServer.getProfile(sessionID).userbuilds[buildType] = savedBuilds;
         }
 
         return this.eventOutputHolder.getOutput(sessionID);

@@ -8,6 +8,7 @@ import { IItemEventRouterResponse } from "../models/eft/itemEvent/IItemEventRout
 import {
     IPresetBuildActionRequestData
 } from "../models/eft/presetBuild/IPresetBuildActionRequestData";
+import { IRemoveBuildRequestData } from "../models/eft/presetBuild/IRemoveBuildRequestData";
 import { IUserBuilds } from "../models/eft/profile/IAkiProfile";
 import { HttpResponseUtil } from "../utils/HttpResponseUtil";
 
@@ -29,6 +30,12 @@ export class PresetBuildCallbacks
     public saveWeaponBuild(pmcData: IPmcData, body: IPresetBuildActionRequestData, sessionID: string): IItemEventRouterResponse
     {
         return this.presetBuildController.saveWeaponBuild(pmcData, body, sessionID);
+    }
+
+    /** Handle removeBuild event*/
+    public removeBuild(pmcData: IPmcData, body: IRemoveBuildRequestData, sessionID: string): IItemEventRouterResponse
+    {
+        return this.presetBuildController.removeBuild(pmcData, body, sessionID);
     }
 
     /** Handle RemoveWeaponBuild event*/

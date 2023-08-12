@@ -22,7 +22,8 @@ export class PresetBuildItemEventRouter extends ItemEventRouterDefinition
             new HandledRoute(ItemEventActions.SAVE_WEAPON_BUILD, false),
             new HandledRoute(ItemEventActions.REMOVE_WEAPON_BUILD, false),
             new HandledRoute(ItemEventActions.SAVE_EQUIPMENT_BUILD, false),
-            new HandledRoute(ItemEventActions.REMOVE_EQUIPMENT_BUILD, false)
+            new HandledRoute(ItemEventActions.REMOVE_EQUIPMENT_BUILD, false),
+            new HandledRoute(ItemEventActions.REMOVE_BUILD, false)
         ];
     }
 
@@ -34,6 +35,8 @@ export class PresetBuildItemEventRouter extends ItemEventRouterDefinition
                 return this.presetBuildCallbacks.saveWeaponBuild(pmcData, body, sessionID);
             case ItemEventActions.REMOVE_WEAPON_BUILD:
                 return this.presetBuildCallbacks.removeWeaponBuild(pmcData, body, sessionID);
+            case ItemEventActions.REMOVE_BUILD:
+                return this.presetBuildCallbacks.removeBuild(pmcData, body, sessionID);
             case ItemEventActions.SAVE_EQUIPMENT_BUILD:
                 return this.presetBuildCallbacks.saveEquipmentBuild(pmcData, body, sessionID);
             case ItemEventActions.REMOVE_EQUIPMENT_BUILD:
