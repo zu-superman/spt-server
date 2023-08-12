@@ -30,6 +30,7 @@ export class TraderPurchaseData
 export interface Info
 {
     id: string
+    aid: number
     username: string
     password: string
     wipe: boolean
