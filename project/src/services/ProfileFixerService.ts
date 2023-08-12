@@ -118,7 +118,7 @@ export class ProfileFixerService
     protected addMissingGunWallContainerImprovements(pmcProfile: IPmcData): void
     {
         const weaponStandArea = pmcProfile.Hideout.Areas.find(x => x.type === HideoutAreas.WEAPON_STAND);
-        if (weaponStandArea || weaponStandArea.level === 0)
+        if (!weaponStandArea || weaponStandArea.level === 0)
         {
             // No stand in profile or its level 0, skip
             return;
