@@ -169,6 +169,8 @@ export class ProfileController
             traderPurchases: {}
         };
 
+        account.aid = pmcData.aid;
+
         this.profileFixerService.checkForAndFixPmcProfileIssues(profileDetails.characters.pmc);
         this.profileFixerService.addMissingHideoutBonusesToProfile(profileDetails.characters.pmc);
 
