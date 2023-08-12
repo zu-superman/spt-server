@@ -551,6 +551,30 @@
             "lightIsActiveNightChancePercent": 85,
             "laserIsActiveChancePercent": 85
         },
+		"followerBoar": {
+            "nvgIsActiveChanceDayPercent": 20,
+            "nvgIsActiveChanceNightPercent": 85,
+            "faceShieldIsActiveChancePercent": 80,
+            "lightIsActiveDayChancePercent": 25,
+            "lightIsActiveNightChancePercent": 75,
+            "laserIsActiveChancePercent": 75,
+            "weaponModLimits": {
+                "scopeLimit": 2,
+                "lightLaserLimit": 1
+            }
+        },
+		"bossBoarSniper": {
+            "nvgIsActiveChanceDayPercent": 20,
+            "nvgIsActiveChanceNightPercent": 85,
+            "faceShieldIsActiveChancePercent": 80,
+            "lightIsActiveDayChancePercent": 25,
+            "lightIsActiveNightChancePercent": 75,
+            "laserIsActiveChancePercent": 75,
+            "weaponModLimits": {
+                "scopeLimit": 2,
+                "lightLaserLimit": 1
+            }
+        },
         "followertest": {},
         "sectantpriest": {
             "nvgIsActiveChanceDayPercent": 10,
