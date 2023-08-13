@@ -90,12 +90,12 @@ export class SaveServer
     {
         if (!sessionId)
         {
-            throw new Error("session id provided was empty");
+            throw new Error("session id provided was empty, did you restart the server while the game was running?");
         }
 
         if (this.profiles === null)
         {
-            throw new Error("no profiles found in saveServer");
+            throw new Error(`no profiles found in saveServer with id: ${sessionId}`);
         }
 
         if (this.profiles[sessionId] === null)
