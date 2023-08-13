@@ -655,5 +655,17 @@
         "tarkovstreets": [{"type": "marksman", "min": 2, "max": 4}],
         "woods": [{"type": "marksman", "min": 2, "max": 5}],
         "bigmap": [{"type": "marksman", "min": 2, "max": 4}]
+    },
+	"randomiseMapContainers": {
+        "tarkovstreets": true,
+        "factory4_day": true,
+        "factory4_night": true,
+        "bigmap": true,
+        "woods": true,
+        "shoreline": true,
+        "interchange": true,
+        "lighthouse": true,
+        "laboratory": true,
+        "rezervbase": true
     }
 }
