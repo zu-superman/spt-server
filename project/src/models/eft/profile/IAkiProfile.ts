@@ -55,6 +55,7 @@ export interface IWeaponBuild
     name: string
     root: string
     items: Item[]
+    type: string
 }
 
 export interface IEquipmentBuild

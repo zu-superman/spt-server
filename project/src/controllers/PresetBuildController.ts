@@ -7,7 +7,8 @@ import {
     IPresetBuildActionRequestData
 } from "../models/eft/presetBuild/IPresetBuildActionRequestData";
 import { IRemoveBuildRequestData } from "../models/eft/presetBuild/IRemoveBuildRequestData";
-import { IUserBuilds } from "../models/eft/profile/IAkiProfile";
+import { IUserBuilds, IWeaponBuild } from "../models/eft/profile/IAkiProfile";
+import { ILogger } from "../models/spt/utils/ILogger";
 import { EventOutputHolder } from "../routers/EventOutputHolder";
 import { DatabaseServer } from "../servers/DatabaseServer";
 import { SaveServer } from "../servers/SaveServer";
@@ -18,6 +19,7 @@ import { JsonUtil } from "../utils/JsonUtil";
 export class PresetBuildController
 {
     constructor(
+        @inject("WinstonLogger") protected logger: ILogger,
         @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("EventOutputHolder") protected eventOutputHolder: EventOutputHolder,
         @inject("JsonUtil") protected jsonUtil: JsonUtil,
@@ -47,9 +49,43 @@ export class PresetBuildController
     }
 
     /** Handle SaveWeaponBuild event */
-    public saveWeaponBuild(pmcData: IPmcData, body: IPresetBuildActionRequestData, sessionID: string): IItemEventRouterResponse
+    public saveWeaponBuild(pmcData: IPmcData, body: IPresetBuildActionRequestData, sessionId: string): IItemEventRouterResponse
     {
-        return this.saveBuild(pmcData, body, sessionID, "weaponBuilds");
+        // TODO - could be merged into saveBuild, maybe
+        const output = this.eventOutputHolder.getOutput(sessionId);
+
+        // Replace duplicate Id's. The first item is the base item.
+        // The root ID and the base item ID need to match.
+        body.items = this.itemHelper.replaceIDs(pmcData, body.items);
+        body.root = body.items[0]._id;
+
+        // Create new object ready to save into profile userbuilds.weaponBuilds
+        const newId = this.hashUtil.generate(); // Id is empty, generate it
+        const newBuild: IWeaponBuild = {
+            id: newId,
+            name: body.name,
+            root: body.root,
+            items: body.items,
+            type: "weapon"
+        };
+
+        const savedWeaponBuilds = this.saveServer.getProfile(sessionId).userbuilds.weaponBuilds;
+        const existingBuild = savedWeaponBuilds.find(x => x.id === body.id);
+        if (existingBuild)
+        {
+            // exists, replace
+            this.saveServer.getProfile(sessionId).userbuilds.weaponBuilds.splice(savedWeaponBuilds.indexOf(existingBuild), 1, newBuild);
+        }
+        else
+        {
+            // Add fresh
+            this.saveServer.getProfile(sessionId).userbuilds.weaponBuilds.push(newBuild);
+        }
+
+        // Inform client of new weapon preset
+        output.profileChanges[sessionId].weaponBuilds.push(newBuild);
+
+        return output;
     }
 
     /** Handle SaveEquipmentBuild event */
@@ -96,31 +132,50 @@ export class PresetBuildController
     /** Handle RemoveWeaponBuild event*/
     public removeBuild(pmcData: IPmcData, body: IRemoveBuildRequestData, sessionID: string): IItemEventRouterResponse
     {
-        return this.removePlayerBuild(pmcData, body.id, sessionID, "equipmentBuilds");
+        return this.removePlayerBuild(pmcData, body.id, sessionID);
     }
 
     /** Handle RemoveWeaponBuild event*/
     public removeWeaponBuild(pmcData: IPmcData, body: IPresetBuildActionRequestData, sessionID: string): IItemEventRouterResponse
     {
-        return this.removePlayerBuild(pmcData, body.id, sessionID, "weaponBuilds");
+        // todo - does this get called?
+        return this.removePlayerBuild(pmcData, body.id, sessionID);
     }
 
     /** Handle RemoveEquipmentBuild event*/
     public removeEquipmentBuild(pmcData: IPmcData, body: IPresetBuildActionRequestData, sessionID: string): IItemEventRouterResponse
     {
-        return this.removePlayerBuild(pmcData, body.id, sessionID, "equipmentBuilds");
+        // todo - does this get called?
+        return this.removePlayerBuild(pmcData, body.id, sessionID);
     }
     
-    protected removePlayerBuild(pmcData: IPmcData, id: string, sessionID: string, buildType: string): IItemEventRouterResponse
+    protected removePlayerBuild(pmcData: IPmcData, id: string, sessionID: string): IItemEventRouterResponse
     {
-        const savedBuilds: any[] = this.saveServer.getProfile(sessionID).userbuilds[buildType];
+        const weaponBuilds = this.saveServer.getProfile(sessionID).userbuilds.weaponBuilds;
+        const equipmentBuilds = this.saveServer.getProfile(sessionID).userbuilds.equipmentBuilds;
 
-        const matchingBuild = savedBuilds.find(x => x.id === id);
-        if (matchingBuild)
+        // Check for id in weapon array first
+        const matchingWeaponBuild = weaponBuilds.find(x => x.id === id);
+        if (matchingWeaponBuild)
         {
-            savedBuilds.splice(savedBuilds.indexOf(matchingBuild), 1);
-            this.saveServer.getProfile(sessionID).userbuilds[buildType] = savedBuilds;
+            weaponBuilds.splice(weaponBuilds.indexOf(matchingWeaponBuild), 1);
+
+            return this.eventOutputHolder.getOutput(sessionID);
         }
+
+        // Id not found in weapons, try equipment
+        const matchingEquipmentBuild = equipmentBuilds.find(x => x.id === id);
+        if (matchingEquipmentBuild)
+        {
+            equipmentBuilds.splice(equipmentBuilds.indexOf(matchingEquipmentBuild), 1);
+        }
+
+        // Not found in weapons or equipment, not good
+        if (!(matchingWeaponBuild || matchingEquipmentBuild))
+        {
+            this.logger.error(`Unable to delete preset, cannot find ${id} in weapon or equipment presets`);
+        }
+        
 
         return this.eventOutputHolder.getOutput(sessionID);
     }
