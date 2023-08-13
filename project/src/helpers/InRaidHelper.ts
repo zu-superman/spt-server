@@ -1,6 +1,6 @@
 import { inject, injectable } from "tsyringe";
 
-import { IPmcData } from "../models/eft/common/IPmcData";
+import { IPmcData, IPostRaidPmcData } from "../models/eft/common/IPmcData";
 import { Quest, TraderInfo, Victim } from "../models/eft/common/tables/IBotBase";
 import { Item } from "../models/eft/common/tables/IItem";
 import { ISaveProgressRequestData } from "../models/eft/inRaid/ISaveProgressRequestData";
@@ -135,7 +135,7 @@ export class InRaidHelper
         // set profile data
         profileData.Info.Level = saveProgressRequest.profile.Info.Level;
         profileData.Skills = saveProgressRequest.profile.Skills;
-        profileData.Stats = saveProgressRequest.profile.Stats;
+        profileData.Stats = saveProgressRequest.profile.EftStats;
         profileData.Encyclopedia = saveProgressRequest.profile.Encyclopedia;
         profileData.ConditionCounters = saveProgressRequest.profile.ConditionCounters;
 
@@ -332,7 +332,7 @@ export class InRaidHelper
      * @param isPlayerScav Was this a p scav raid
      * @returns profile with FiR items properly tagged
      */
-    public addSpawnedInSessionPropertyToItems(preRaidProfile: IPmcData, postRaidProfile: IPmcData, isPlayerScav: boolean): IPmcData
+    public addSpawnedInSessionPropertyToItems(preRaidProfile: IPmcData, postRaidProfile: IPostRaidPmcData, isPlayerScav: boolean): IPostRaidPmcData
     {
         for (const item of postRaidProfile.Inventory.items)
         {
@@ -361,7 +361,7 @@ export class InRaidHelper
      * @param postRaidProfile profile to update items for
      * @returns Updated profile with SpawnedInSession removed
      */
-    public removeSpawnedInSessionPropertyFromItems(postRaidProfile: IPmcData): IPmcData
+    public removeSpawnedInSessionPropertyFromItems(postRaidProfile: IPostRaidPmcData): IPostRaidPmcData
     {
         const dbItems = this.databaseServer.getTables().templates.items;
         const itemsToRemovePropertyFrom = postRaidProfile.Inventory.items.filter(x =>
