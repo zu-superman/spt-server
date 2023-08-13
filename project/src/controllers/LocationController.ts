@@ -120,7 +120,7 @@ export class LocationController
         for (const staticContainer of staticContainers ?? [])
         {
             // not 100% chance, roll chance to be added to map
-            if (staticContainer.probability < 1 && this.matchConfig.randomiseMapContainers)
+            if (staticContainer.probability < 1 && this.matchConfig.randomiseMapContainers[name])
             {
                 // Chance is between 0 and 1
                 if (!this.randomUtil.getChance100(staticContainer.probability * 100))
