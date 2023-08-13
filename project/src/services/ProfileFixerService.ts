@@ -70,9 +70,8 @@ export class ProfileFixerService
             this.addMissingArmorRepairSkill(pmcProfile);
             this.addMissingWorkbenchWeaponSkills(pmcProfile);
             this.addMissingWallImprovements(pmcProfile);
-            this.addMissingEquipmentBuildProperty(pmcProfile);
             this.addMissingHideoutWallAreas(pmcProfile);
-            this.addMissingGunWallContainerImprovements(pmcProfile);
+            this.addMissingGunStandContainerImprovements(pmcProfile);
 
             this.removeResourcesFromSlotsInHideoutWithoutLocationIndexValue(pmcProfile);
 
@@ -115,7 +114,7 @@ export class ProfileFixerService
         }
     }
 
-    protected addMissingGunWallContainerImprovements(pmcProfile: IPmcData): void
+    protected addMissingGunStandContainerImprovements(pmcProfile: IPmcData): void
     {
         const weaponStandArea = pmcProfile.Hideout.Areas.find(x => x.type === HideoutAreas.WEAPON_STAND);
         if (!weaponStandArea || weaponStandArea.level === 0)
@@ -124,40 +123,65 @@ export class ProfileFixerService
             return;
         }
 
-        const hideoutAreaDb = this.databaseServer.getTables().hideout.areas.find(x => x.type === HideoutAreas.WEAPON_STAND);
-        const stageCurrentAt = hideoutAreaDb.stages[weaponStandArea.level];
-        const hideoutStashId = pmcProfile.Inventory.hideoutAreaStashes[HideoutAreas.WEAPON_STAND];
+        const db = this.databaseServer.getTables();
+        const hideoutStandAreaDb = db.hideout.areas.find(x => x.type === HideoutAreas.WEAPON_STAND);
+        const hideoutStandSecondaryAreaDb = db.hideout.areas.find(x => x.parentArea === hideoutStandAreaDb._id);
+        const stageCurrentAt = hideoutStandAreaDb.stages[weaponStandArea.level];
+        const hideoutStandStashId = pmcProfile.Inventory.hideoutAreaStashes[HideoutAreas.WEAPON_STAND];
+        const hideoutSecondaryStashId = pmcProfile.Inventory.hideoutAreaStashes[HideoutAreas.WEAPON_STAND_SECONDARY];
 
-        // `hideoutAreaStashes` empty but profile has built gunwall
-        if (!hideoutStashId && stageCurrentAt)
+        // `hideoutAreaStashes` empty but profile has built gun stand
+        if (!hideoutStandStashId && stageCurrentAt)
         {
             // Value is missing, add it
-            pmcProfile.Inventory.hideoutAreaStashes[HideoutAreas.WEAPON_STAND] = hideoutAreaDb._id;
+            pmcProfile.Inventory.hideoutAreaStashes[HideoutAreas.WEAPON_STAND] = hideoutStandAreaDb._id;
+            pmcProfile.Inventory.hideoutAreaStashes[HideoutAreas.WEAPON_STAND_SECONDARY] = hideoutStandSecondaryAreaDb._id;
 
             // Add stash item to profile
-            const gunWallStashItem = pmcProfile.Inventory.items.find(x => x._id === hideoutAreaDb._id);
-            if (gunWallStashItem)
+            const gunStandStashItem = pmcProfile.Inventory.items.find(x => x._id === hideoutStandAreaDb._id);
+            if (gunStandStashItem)
             {
-                gunWallStashItem._tpl = stageCurrentAt.container;
-                this.logger.debug(`Updated existing inventory stash: ${gunWallStashItem._id} tpl to ${stageCurrentAt.container}`);
+                gunStandStashItem._tpl = stageCurrentAt.container;
+                this.logger.debug(`Updated existing gun stand inventory stash: ${gunStandStashItem._id} tpl to ${stageCurrentAt.container}`);
             }
             else
             {
-                pmcProfile.Inventory.items.push({ _id: hideoutAreaDb._id, _tpl: stageCurrentAt.container });
-                this.logger.debug(`Added missing inventory stash: ${hideoutAreaDb._id} tpl to ${stageCurrentAt.container}`);
+                pmcProfile.Inventory.items.push({ _id: hideoutStandAreaDb._id, _tpl: stageCurrentAt.container });
+                this.logger.debug(`Added missing gun stand inventory stash: ${hideoutStandAreaDb._id} tpl to ${stageCurrentAt.container}`);
+            }
+
+            // Add secondary stash item to profile
+            const gunStandStashSecondaryItem = pmcProfile.Inventory.items.find(x => x._id === hideoutStandSecondaryAreaDb._id);
+            if (gunStandStashItem)
+            {
+                gunStandStashSecondaryItem._tpl = stageCurrentAt.container;
+                this.logger.debug(`Updated gun stand existing inventory secondary stash: ${gunStandStashSecondaryItem._id} tpl to ${stageCurrentAt.container}`);
+            }
+            else
+            {
+                pmcProfile.Inventory.items.push({ _id: hideoutStandSecondaryAreaDb._id, _tpl: stageCurrentAt.container });
+                this.logger.debug(`Added missing gun stand inventory secondary stash: ${hideoutStandSecondaryAreaDb._id} tpl to ${stageCurrentAt.container}`);
             }
 
             return;
         }
 
-        const stashItem = pmcProfile.Inventory.items?.find(x => x._id === hideoutAreaDb._id);
+        const stashItem = pmcProfile.Inventory.items?.find(x => x._id === hideoutStandAreaDb._id);
         // `hideoutAreaStashes` has value related stash inventory items tpl doesnt match what's expected
-        if (hideoutStashId && stashItem?._tpl !== stageCurrentAt.container)
+        if (hideoutStandStashId && stashItem?._tpl !== stageCurrentAt.container)
         {
-            this.logger.debug(`stash id was: ${stashItem._tpl}, but should be ${stageCurrentAt.container}, updating`);
+            this.logger.debug(`primary Stash tpl was: ${stashItem._tpl}, but should be ${stageCurrentAt.container}, updating`);
             // The id inside the profile does not match what the hideout db value is, out of sync, adjust
             stashItem._tpl = stageCurrentAt.container;
+        }
 
+        const stashSecondaryItem = pmcProfile.Inventory.items?.find(x => x._id === hideoutStandSecondaryAreaDb._id);
+        // `hideoutAreaStashes` has value related stash inventory items tpl doesnt match what's expected
+        if (hideoutSecondaryStashId && stashSecondaryItem?._tpl !== stageCurrentAt.container)
+        {
+            this.logger.debug(`Secondary stash tpl was: ${stashSecondaryItem._tpl}, but should be ${stageCurrentAt.container}, updating`);
+            // The id inside the profile does not match what the hideout db value is, out of sync, adjust
+            stashSecondaryItem._tpl = stageCurrentAt.container;
         }
     }
     
@@ -167,14 +191,6 @@ export class ProfileFixerService
         {
             this.logger.debug("Added missing hideoutAreaStashes to inventory");
             pmcProfile.Inventory.hideoutAreaStashes = {};
-        }
-    }
-
-    protected addMissingEquipmentBuildProperty(pmcProfile: IPmcData)
-    {
-        if (pmcProfile)
-        {
-
         }
     }
 

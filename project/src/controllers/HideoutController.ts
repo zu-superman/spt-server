@@ -170,20 +170,21 @@ export class HideoutController
     public upgradeComplete(pmcData: IPmcData, request: HideoutUpgradeCompleteRequestData, sessionID: string): IItemEventRouterResponse
     {
         const output = this.eventOutputHolder.getOutput(sessionID);
+        const db = this.databaseServer.getTables();
 
-        const hideoutArea = pmcData.Hideout.Areas.find(area => area.type === request.areaType);
-        if (!hideoutArea)
+        const profileHideoutArea = pmcData.Hideout.Areas.find(area => area.type === request.areaType);
+        if (!profileHideoutArea)
         {
             this.logger.error(this.localisationService.getText("hideout-unable_to_find_area", request.areaType));
             return this.httpResponse.appendErrorToOutput(output);
         }
 
-        // Upgrade area
-        hideoutArea.level++;
-        hideoutArea.completeTime = 0;
-        hideoutArea.constructing = false;
+        // Upgrade profile values
+        profileHideoutArea.level++;
+        profileHideoutArea.completeTime = 0;
+        profileHideoutArea.constructing = false;
 
-        const hideoutData = this.databaseServer.getTables().hideout.areas.find(area => area.type === hideoutArea.type);
+        const hideoutData = db.hideout.areas.find(area => area.type === profileHideoutArea.type);
         if (!hideoutData)
         {
             this.logger.error(this.localisationService.getText("hideout-unable_to_find_area_in_database", request.areaType));
@@ -191,7 +192,7 @@ export class HideoutController
         }
 
         // Apply bonuses
-        const hideoutStage = hideoutData.stages[hideoutArea.level];
+        const hideoutStage = hideoutData.stages[profileHideoutArea.level];
         const bonuses = hideoutStage.bonuses;
         if (bonuses?.length > 0)
         {
@@ -204,34 +205,57 @@ export class HideoutController
         // Upgrade includes a container improvement/addition
         if (hideoutStage?.container)
         {
-            this.addOrUpgradeContainerImprovementToProfile(pmcData, hideoutArea, hideoutData, hideoutStage);
+            this.addContainerImprovementToProfile(pmcData, profileHideoutArea, hideoutData, hideoutStage);
 
-            this.addContainerUpgradeToClientOutput(output, sessionID, hideoutArea, hideoutData, hideoutStage);
+            this.addContainerUpgradeToClientOutput(output, sessionID, profileHideoutArea, hideoutData, hideoutStage);
         }
 
         // Add Skill Points Per Area Upgrade
-        this.playerService.incrementSkillLevel(pmcData, SkillTypes.HIDEOUT_MANAGEMENT, this.databaseServer.getTables().globals.config.SkillsSettings.HideoutManagement.SkillPointsPerAreaUpgrade);
+        this.playerService.incrementSkillLevel(pmcData, SkillTypes.HIDEOUT_MANAGEMENT, db.globals.config.SkillsSettings.HideoutManagement.SkillPointsPerAreaUpgrade);
 
         return output;
     }
 
-    protected addOrUpgradeContainerImprovementToProfile(pmcData: IPmcData, hideoutArea: HideoutArea, hideoutData: IHideoutArea, hideoutStage: Stage): void
+    protected addContainerImprovementToProfile(pmcData: IPmcData, profileHideoutArea: HideoutArea, dbHideoutData: IHideoutArea, hideoutStage: Stage): void
     {
         // Set value to be _id of hideout area
-        pmcData.Inventory.hideoutAreaStashes[hideoutArea.type] = hideoutData._id;
+        pmcData.Inventory.hideoutAreaStashes[profileHideoutArea.type] = dbHideoutData._id;
 
-        // Look for existing stash object in items
-        const weaponWall = pmcData.Inventory.items.find(x => x._id === hideoutData._id);
-        if (weaponWall) 
+        // Some areas like the gun stand have a child area linked to it
+        const childDbArea = this.databaseServer.getTables().hideout.areas.find(x => x.parentArea === dbHideoutData._id);
+
+        // Look for existing stash object in items and update/add
+        this.addUpdateInventoryItemToProfile(pmcData, dbHideoutData, hideoutStage);
+
+        // Upgrade child area
+        if (childDbArea)
         {
-            // Update existing items container tpl to point to item with more space
-            weaponWall._tpl = hideoutStage.container;
+            const childAreaStage = childDbArea.stages[profileHideoutArea.level];
+            this.addUpdateInventoryItemToProfile(pmcData, childDbArea, childAreaStage);
+        }
+    }
+
+    /**
+     * Add an inventory item to profile from a hideout area stage data
+     * @param pmcData Profile to update
+     * @param dbHideoutData Hideout area from db being upgraded
+     * @param hideoutStage Stage area upgraded to
+     */
+    protected addUpdateInventoryItemToProfile(pmcData: IPmcData, dbHideoutData: IHideoutArea, hideoutStage: Stage): void
+    {
+        const existingInventoryItem = pmcData.Inventory.items.find(x => x._id === dbHideoutData._id);
+        if (existingInventoryItem) 
+        {
+            // Update existing items container tpl to point to new id (tpl)
+            existingInventoryItem._tpl = hideoutStage.container;
 
             return;
         }
-
-        // Add new item as none exist
-        pmcData.Inventory.items.push({ _id: hideoutData._id, _tpl: hideoutStage.container });
+        else
+        {
+            // Add new item as none exists
+            pmcData.Inventory.items.push({ _id: dbHideoutData._id, _tpl: hideoutStage.container });
+        }
     }
 
     protected addContainerUpgradeToClientOutput(output: IItemEventRouterResponse, sessionID: string, hideoutArea: HideoutArea, hideoutData: IHideoutArea, hideoutStage: Stage): void
