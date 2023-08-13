@@ -29,6 +29,8 @@ export interface ILocationConfig extends IBaseConfig
     enableBotTypeLimits: boolean
     /** Add limits to a locations base.MinMaxBots array if enableBotTypeLimits is true*/
     botTypeLimits: Record<string, IBotTypeLimit[]>
+    /** What maps can use the container randomisation feature */
+    randomiseMapContainers: Record<string, boolean>;
 }
 
 export interface IFixEmptyBotWavesSettings

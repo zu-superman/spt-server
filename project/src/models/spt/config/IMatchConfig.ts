@@ -4,5 +4,4 @@ export interface IMatchConfig extends IBaseConfig
 {
     kind: "aki-match"
     enabled: boolean
-    randomiseMapContainers: Record<string, boolean>;
 }

@@ -13,7 +13,7 @@ import { IAirdropLootResult } from "../models/eft/location/IAirdropLootResult";
 import { AirdropTypeEnum } from "../models/enums/AirdropType";
 import { ConfigTypes } from "../models/enums/ConfigTypes";
 import { IAirdropConfig } from "../models/spt/config/IAirdropConfig";
-import { IMatchConfig } from "../models/spt/config/IMatchConfig";
+import { ILocationConfig } from "../models/spt/config/ILocationConfig";
 import { ILocations } from "../models/spt/server/ILocations";
 import { LootRequest } from "../models/spt/services/LootRequest";
 import { ILogger } from "../models/spt/utils/ILogger";
@@ -29,7 +29,7 @@ import { TimeUtil } from "../utils/TimeUtil";
 export class LocationController
 {
     protected airdropConfig: IAirdropConfig;
-    protected matchConfig: IMatchConfig;
+    protected locationConfig: ILocationConfig;
 
     constructor(
         @inject("JsonUtil") protected jsonUtil: JsonUtil,
@@ -46,7 +46,7 @@ export class LocationController
     )
     {
         this.airdropConfig = this.configServer.getConfig(ConfigTypes.AIRDROP);
-        this.matchConfig = this.configServer.getConfig(ConfigTypes.MATCH);
+        this.locationConfig = this.configServer.getConfig(ConfigTypes.LOCATION);
     }
 
     /*  */
@@ -120,7 +120,7 @@ export class LocationController
         for (const staticContainer of staticContainers ?? [])
         {
             // not 100% chance, roll chance to be added to map
-            if (staticContainer.probability < 1 && this.matchConfig.randomiseMapContainers[name])
+            if (staticContainer.probability < 1 && this.locationConfig.randomiseMapContainers[name])
             {
                 // Chance is between 0 and 1
                 if (!this.randomUtil.getChance100(staticContainer.probability * 100))
