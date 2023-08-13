@@ -152,7 +152,7 @@ export class EventOutputHolder
             // Only return integer for progress, ignore the decimal progress gained when generator is off
             if (production.Progress > 0)
             {
-                Math.round(production.Progress);
+                production.Progress = Math.round(production.Progress);
             }
         }
 
