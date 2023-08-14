@@ -38,7 +38,7 @@
         ],
         "bonuses": [
           {
-            "id": "64d4d343047c8159cc0e0f70",
+            "id": "64d4d33e0ae15b371f011e10",
             "value": 4,
             "passive": true,
             "production": false,
@@ -101,7 +101,7 @@
         ],
         "bonuses": [
           {
-            "id": "64d4d343047c8159cc0e0f72",
+            "id": "64d4d33e0ae15b371f011e12",
             "value": 8,
             "passive": true,
             "production": false,
@@ -110,7 +110,7 @@
           }
         ],
         "slots": 0,
-        "constructionTime": 33,
+        "constructionTime": 7200,
         "description": "",
         "autoUpgrade": false,
         "displayInterface": true,
@@ -169,7 +169,7 @@
         ],
         "bonuses": [
           {
-            "id": "64d4d343047c8159cc0e0f75",
+            "id": "64d4d33e0ae15b371f011e15",
             "value": 12,
             "passive": true,
             "production": false,
@@ -177,7 +177,7 @@
             "type": "EnergyRegeneration"
           },
           {
-            "id": "64d4d343047c8159cc0e0f76",
+            "id": "64d4d33e0ae15b371f011e16",
             "value": -50,
             "passive": true,
             "production": false,
@@ -186,7 +186,7 @@
           }
         ],
         "slots": 0,
-        "constructionTime": 33,
+        "constructionTime": 28800,
         "description": "",
         "autoUpgrade": false,
         "displayInterface": true,
@@ -239,7 +239,7 @@
         ],
         "bonuses": [
           {
-            "id": "64d4d343047c8159cc0e0f78",
+            "id": "64d4d33e0ae15b371f011e18",
             "value": 2,
             "passive": true,
             "production": false,
@@ -307,7 +307,7 @@
         ],
         "bonuses": [
           {
-            "id": "64d4d343047c8159cc0e0f7a",
+            "id": "64d4d33e0ae15b371f011e1a",
             "value": 2,
             "passive": true,
             "production": false,
@@ -321,7 +321,7 @@
           }
         ],
         "slots": 0,
-        "constructionTime": 33,
+        "constructionTime": 18000,
         "description": "",
         "autoUpgrade": false,
         "displayInterface": true,
@@ -387,7 +387,7 @@
         ],
         "bonuses": [
           {
-            "id": "64d4d343047c8159cc0e0f7c",
+            "id": "64d4d33e0ae15b371f011e1c",
             "value": 2,
             "passive": true,
             "production": false,
@@ -401,7 +401,7 @@
           }
         ],
         "slots": 0,
-        "constructionTime": 33,
+        "constructionTime": 57600,
         "description": "",
         "autoUpgrade": false,
         "displayInterface": true,
@@ -486,7 +486,7 @@
         ],
         "bonuses": [],
         "slots": 0,
-        "constructionTime": 33,
+        "constructionTime": 10800,
         "description": "",
         "autoUpgrade": false,
         "displayInterface": true,
@@ -547,7 +547,7 @@
         ],
         "bonuses": [],
         "slots": 0,
-        "constructionTime": 33,
+        "constructionTime": 36000,
         "description": "",
         "autoUpgrade": false,
         "displayInterface": true,
@@ -649,7 +649,7 @@
         ],
         "bonuses": [],
         "slots": 0,
-        "constructionTime": 33,
+        "constructionTime": 10800,
         "description": "",
         "autoUpgrade": false,
         "displayInterface": true,
@@ -703,7 +703,7 @@
         ],
         "bonuses": [],
         "slots": 0,
-        "constructionTime": 33,
+        "constructionTime": 61200,
         "description": "",
         "autoUpgrade": false,
         "displayInterface": true,
@@ -772,7 +772,7 @@
         ],
         "bonuses": [
           {
-            "id": "64d4d343047c8159cc0e0f7e",
+            "id": "64d4d33e0ae15b371f011e1e",
             "value": 1,
             "passive": true,
             "production": false,
@@ -842,7 +842,7 @@
         ],
         "bonuses": [
           {
-            "id": "64d4d343047c8159cc0e0f80",
+            "id": "64d4d33e0ae15b371f011e20",
             "value": 3,
             "passive": true,
             "production": false,
@@ -851,7 +851,7 @@
           }
         ],
         "slots": 0,
-        "constructionTime": 33,
+        "constructionTime": 10800,
         "description": "",
         "autoUpgrade": false,
         "displayInterface": true,
@@ -905,7 +905,7 @@
         ],
         "bonuses": [
           {
-            "id": "64d4d343047c8159cc0e0f82",
+            "id": "64d4d33e0ae15b371f011e22",
             "value": 6,
             "passive": true,
             "production": false,
@@ -914,7 +914,7 @@
           }
         ],
         "slots": 0,
-        "constructionTime": 33,
+        "constructionTime": 25200,
         "description": "",
         "autoUpgrade": false,
         "displayInterface": true,
@@ -947,7 +947,7 @@
         "requirements": [],
         "bonuses": [
           {
-            "id": "64d4d343047c8159cc0e0f84",
+            "id": "64d4d33e0ae15b371f011e24",
             "value": 0,
             "passive": true,
             "production": false,
@@ -1013,7 +1013,7 @@
         ],
         "bonuses": [
           {
-            "id": "64d4d343047c8159cc0e0f86",
+            "id": "64d4d33e0ae15b371f011e26",
             "value": 0,
             "passive": true,
             "production": false,
@@ -1023,7 +1023,7 @@
           }
         ],
         "slots": 0,
-        "constructionTime": 33,
+        "constructionTime": 86400,
         "description": "",
         "autoUpgrade": false,
         "displayInterface": true,
@@ -1087,7 +1087,7 @@
         ],
         "bonuses": [
           {
-            "id": "64d4d343047c8159cc0e0f88",
+            "id": "64d4d33e0ae15b371f011e28",
             "value": 0,
             "passive": true,
             "production": false,
@@ -1097,7 +1097,7 @@
           }
         ],
         "slots": 0,
-        "constructionTime": 33,
+        "constructionTime": 172800,
         "description": "",
         "autoUpgrade": false,
         "displayInterface": true,
@@ -1178,7 +1178,7 @@
         ],
         "bonuses": [
           {
-            "id": "64d4d343047c8159cc0e0f8a",
+            "id": "64d4d33e0ae15b371f011e2a",
             "value": 0,
             "passive": true,
             "production": false,
@@ -1188,7 +1188,7 @@
           }
         ],
         "slots": 0,
-        "constructionTime": 33,
+        "constructionTime": 345600,
         "description": "",
         "autoUpgrade": false,
         "displayInterface": true,
@@ -1255,7 +1255,7 @@
         ],
         "bonuses": [
           {
-            "id": "64d4d343047c8159cc0e0f8c",
+            "id": "64d4d33e0ae15b371f011e2c",
             "value": 10,
             "passive": true,
             "production": false,
@@ -1264,7 +1264,7 @@
           }
         ],
         "slots": 0,
-        "constructionTime": 33,
+        "constructionTime": 7200,
         "description": "",
         "autoUpgrade": false,
         "displayInterface": true,
@@ -1323,7 +1323,7 @@
         ],
         "bonuses": [
           {
-            "id": "64d4d343047c8159cc0e0f8e",
+            "id": "64d4d33e0ae15b371f011e2e",
             "value": 20,
             "passive": true,
             "production": false,
@@ -1332,7 +1332,7 @@
           }
         ],
         "slots": 0,
-        "constructionTime": 33,
+        "constructionTime": 28800,
         "description": "",
         "autoUpgrade": false,
         "displayInterface": true,
@@ -1391,7 +1391,7 @@
         ],
         "bonuses": [
           {
-            "id": "64d4d343047c8159cc0e0f91",
+            "id": "64d4d33e0ae15b371f011e31",
             "value": 30,
             "passive": true,
             "production": false,
@@ -1399,7 +1399,7 @@
             "type": "HydrationRegeneration"
           },
           {
-            "id": "64d4d343047c8159cc0e0f92",
+            "id": "64d4d33e0ae15b371f011e32",
             "value": 1,
             "passive": true,
             "production": false,
@@ -1420,7 +1420,7 @@
           }
         ],
         "slots": 0,
-        "constructionTime": 33,
+        "constructionTime": 57600,
         "description": "",
         "autoUpgrade": false,
         "displayInterface": true,
@@ -1489,7 +1489,7 @@
         ],
         "bonuses": [
           {
-            "id": "64d4d343047c8159cc0e0f94",
+            "id": "64d4d33e0ae15b371f011e34",
             "value": 6,
             "passive": true,
             "production": false,
@@ -1573,7 +1573,7 @@
         ],
         "bonuses": [
           {
-            "id": "64d4d343047c8159cc0e0f96",
+            "id": "64d4d33e0ae15b371f011e36",
             "value": 12,
             "passive": true,
             "production": false,
@@ -1582,7 +1582,7 @@
           }
         ],
         "slots": 0,
-        "constructionTime": 33,
+        "constructionTime": 10800,
         "description": "",
         "autoUpgrade": false,
         "displayInterface": true,
@@ -1651,7 +1651,7 @@
         ],
         "bonuses": [
           {
-            "id": "64d4d343047c8159cc0e0f98",
+            "id": "64d4d33e0ae15b371f011e38",
             "value": 20,
             "passive": true,
             "production": false,
@@ -1660,7 +1660,7 @@
           }
         ],
         "slots": 0,
-        "constructionTime": 33,
+        "constructionTime": 43200,
         "description": "",
         "autoUpgrade": false,
         "displayInterface": true,
@@ -1727,7 +1727,7 @@
         ],
         "bonuses": [
           {
-            "id": "64d4d343047c8159cc0e0f9a",
+            "id": "64d4d33e0ae15b371f011e3a",
             "value": 10,
             "passive": true,
             "production": false,
@@ -1785,7 +1785,7 @@
         ],
         "bonuses": [
           {
-            "id": "64d4d343047c8159cc0e0f9d",
+            "id": "64d4d33e0ae15b371f011e3d",
             "value": 20,
             "passive": true,
             "production": false,
@@ -1793,7 +1793,7 @@
             "type": "EnergyRegeneration"
           },
           {
-            "id": "64d4d343047c8159cc0e0f9e",
+            "id": "64d4d33e0ae15b371f011e3e",
             "value": 7,
             "passive": true,
             "production": false,
@@ -1802,7 +1802,7 @@
           }
         ],
         "slots": 0,
-        "constructionTime": 33,
+        "constructionTime": 14400,
         "description": "",
         "autoUpgrade": false,
         "displayInterface": true,
@@ -1866,7 +1866,7 @@
         ],
         "bonuses": [
           {
-            "id": "64d4d343047c8159cc0e0fa1",
+            "id": "64d4d33e0ae15b371f011e41",
             "value": 30,
             "passive": true,
             "production": false,
@@ -1874,7 +1874,7 @@
             "type": "EnergyRegeneration"
           },
           {
-            "id": "64d4d343047c8159cc0e0fa2",
+            "id": "64d4d33e0ae15b371f011e42",
             "value": 20,
             "passive": true,
             "production": false,
@@ -1943,7 +1943,7 @@
         ],
         "bonuses": [
           {
-            "id": "64d4d343047c8159cc0e0fa4",
+            "id": "64d4d33e0ae15b371f011e44",
             "value": -10,
             "passive": true,
             "production": false,
@@ -2011,7 +2011,7 @@
         ],
         "bonuses": [
           {
-            "id": "64d4d343047c8159cc0e0fa7",
+            "id": "64d4d33e0ae15b371f011e47",
             "value": 5,
             "passive": true,
             "production": false,
@@ -2019,7 +2019,7 @@
             "type": "EnergyRegeneration"
           },
           {
-            "id": "64d4d343047c8159cc0e0fa8",
+            "id": "64d4d33e0ae15b371f011e48",
             "value": 5,
             "passive": true,
             "production": false,
@@ -2028,7 +2028,7 @@
           }
         ],
         "slots": 0,
-        "constructionTime": 33,
+        "constructionTime": 7200,
         "description": "",
         "autoUpgrade": false,
         "displayInterface": true,
@@ -2087,7 +2087,7 @@
         ],
         "bonuses": [
           {
-            "id": "64d4d343047c8159cc0e0fab",
+            "id": "64d4d33e0ae15b371f011e4b",
             "value": 10,
             "passive": true,
             "production": false,
@@ -2095,7 +2095,7 @@
             "type": "HealthRegeneration"
           },
           {
-            "id": "64d4d343047c8159cc0e0fac",
+            "id": "64d4d33e0ae15b371f011e4c",
             "value": 10,
             "passive": true,
             "production": false,
@@ -2169,7 +2169,7 @@
         ],
         "bonuses": [
           {
-            "id": "64d4d343047c8159cc0e0faf",
+            "id": "64d4d33e0ae15b371f011e4f",
             "value": -15,
             "passive": true,
             "production": false,
@@ -2177,7 +2177,7 @@
             "type": "ScavCooldownTimer"
           },
           {
-            "id": "64d4d343047c8159cc0e0fb0",
+            "id": "64d4d33e0ae15b371f011e50",
             "value": 5,
             "passive": true,
             "production": false,
@@ -2255,7 +2255,7 @@
         ],
         "bonuses": [
           {
-            "id": "64d4d343047c8159cc0e0fb3",
+            "id": "64d4d33e0ae15b371f011e53",
             "value": 10,
             "passive": true,
             "production": false,
@@ -2263,7 +2263,7 @@
             "type": "QuestMoneyReward"
           },
           {
-            "id": "64d4d343047c8159cc0e0fb4",
+            "id": "64d4d33e0ae15b371f011e54",
             "value": -20,
             "passive": true,
             "production": false,
@@ -2272,7 +2272,7 @@
           }
         ],
         "slots": 0,
-        "constructionTime": 33,
+        "constructionTime": 21600,
         "description": "",
         "autoUpgrade": false,
         "displayInterface": true,
@@ -2345,7 +2345,7 @@
         ],
         "bonuses": [
           {
-            "id": "64d4d343047c8159cc0e0fb7",
+            "id": "64d4d33e0ae15b371f011e57",
             "value": -20,
             "passive": true,
             "production": false,
@@ -2353,7 +2353,7 @@
             "type": "ScavCooldownTimer"
           },
           {
-            "id": "64d4d343047c8159cc0e0fb8",
+            "id": "64d4d33e0ae15b371f011e58",
             "value": -30,
             "passive": true,
             "production": false,
@@ -2362,7 +2362,7 @@
           }
         ],
         "slots": 0,
-        "constructionTime": 33,
+        "constructionTime": 86400,
         "description": "",
         "autoUpgrade": false,
         "displayInterface": true,
@@ -2455,7 +2455,7 @@
         ],
         "bonuses": [
           {
-            "id": "64d4d343047c8159cc0e0fbb",
+            "id": "64d4d33e0ae15b371f011e5b",
             "value": 15,
             "passive": true,
             "production": false,
@@ -2463,7 +2463,7 @@
             "type": "ExperienceRate"
           },
           {
-            "id": "64d4d343047c8159cc0e0fbc",
+            "id": "64d4d33e0ae15b371f011e5c",
             "value": 30,
             "passive": true,
             "production": false,
@@ -2790,7 +2790,7 @@
         ],
         "bonuses": [
           {
-            "id": "64d4d343047c8159cc0e0fbf",
+            "id": "64d4d33e0ae15b371f011e5f",
             "value": 40,
             "passive": false,
             "production": true,
@@ -2799,7 +2799,7 @@
             "type": "SkillGroupLevelingBoost"
           },
           {
-            "id": "64d4d343047c8159cc0e0fc0",
+            "id": "64d4d33e0ae15b371f011e60",
             "value": 3,
             "passive": true,
             "production": false,
@@ -2902,7 +2902,7 @@
         ],
         "bonuses": [
           {
-            "id": "64d4d343047c8159cc0e0fc2",
+            "id": "64d4d33e0ae15b371f011e62",
             "value": -50,
             "passive": true,
             "production": false,
@@ -3088,7 +3088,7 @@
         ],
         "bonuses": [
           {
-            "id": "64d4d343047c8159cc0e0fc4",
+            "id": "64d4d33e0ae15b371f011e64",
             "value": 10,
             "passive": true,
             "production": false,
@@ -3166,7 +3166,7 @@
         ],
         "bonuses": [
           {
-            "id": "64d4d343047c8159cc0e0fc6",
+            "id": "64d4d33e0ae15b371f011e66",
             "value": 15,
             "passive": true,
             "production": false,
@@ -3240,7 +3240,7 @@
         ],
         "bonuses": [
           {
-            "id": "64d4d343047c8159cc0e0fc8",
+            "id": "64d4d33e0ae15b371f011e68",
             "value": 25,
             "passive": true,
             "production": false,
@@ -3376,7 +3376,7 @@
         ],
         "bonuses": [
           {
-            "id": "64d4d343047c8159cc0e0fcb",
+            "id": "64d4d33e0ae15b371f011e6b",
             "value": 1,
             "passive": true,
             "production": false,
@@ -3393,7 +3393,7 @@
             "type": "TextBonus"
           },
           {
-            "id": "64d4d343047c8159cc0e0fcc",
+            "id": "64d4d33e0ae15b371f011e6c",
             "value": 1,
             "passive": true,
             "production": false,
@@ -3464,7 +3464,7 @@
         ],
         "bonuses": [
           {
-            "id": "64d4d343047c8159cc0e0fce",
+            "id": "64d4d33e0ae15b371f011e6e",
             "value": 3,
             "passive": true,
             "production": false,
@@ -3473,7 +3473,7 @@
           }
         ],
         "slots": 0,
-        "constructionTime": 33,
+        "constructionTime": 10800,
         "description": "",
         "container": "",
         "autoUpgrade": false,
@@ -3533,7 +3533,7 @@
         ],
         "bonuses": [
           {
-            "id": "64d4d343047c8159cc0e0fd0",
+            "id": "64d4d33e0ae15b371f011e70",
             "value": 6,
             "passive": true,
             "production": false,
@@ -3621,7 +3621,7 @@
           }
         ],
         "slots": 0,
-        "constructionTime": 33,
+        "constructionTime": 3600,
         "description": "",
         "container": "",
         "autoUpgrade": false,
@@ -3713,7 +3713,7 @@
         ],
         "bonuses": [],
         "slots": 0,
-        "constructionTime": 33,
+        "constructionTime": 86400,
         "description": "",
         "container": "",
         "autoUpgrade": false,
@@ -3788,7 +3788,7 @@
         ],
         "bonuses": [
           {
-            "id": "64d4d343047c8159cc0e0fd2",
+            "id": "64d4d33e0ae15b371f011e72",
             "value": 10,
             "passive": true,
             "production": false,
@@ -3899,7 +3899,7 @@
         ],
         "bonuses": [],
         "slots": 0,
-        "constructionTime": 33,
+        "constructionTime": 14400,
         "description": "",
         "container": "",
         "autoUpgrade": false,
@@ -3956,7 +3956,7 @@
         "requirements": [],
         "bonuses": [
           {
-            "id": "64d4d343047c8159cc0e0fe2",
+            "id": "64d4d33e0ae15b371f011e82",
             "value": 5,
             "passive": true,
             "production": false,
@@ -3964,7 +3964,7 @@
             "type": "FuelConsumption"
           },
           {
-            "id": "64d4d343047c8159cc0e0fe3",
+            "id": "64d4d33e0ae15b371f011e83",
             "value": -5,
             "passive": true,
             "production": false,
@@ -3972,7 +3972,7 @@
             "type": "EnergyRegeneration"
           },
           {
-            "id": "64d4d343047c8159cc0e0fe4",
+            "id": "64d4d33e0ae15b371f011e84",
             "value": -5,
             "passive": true,
             "production": false,
@@ -3980,7 +3980,7 @@
             "type": "HealthRegeneration"
           },
           {
-            "id": "64d4d343047c8159cc0e0fe5",
+            "id": "64d4d33e0ae15b371f011e85",
             "value": -3,
             "passive": true,
             "production": false,
@@ -3988,7 +3988,7 @@
             "type": "ExperienceRate"
           },
           {
-            "id": "64d4d343047c8159cc0e0fe6",
+            "id": "64d4d33e0ae15b371f011e86",
             "value": -3,
             "passive": true,
             "production": false,
@@ -3998,7 +3998,7 @@
           }
         ],
         "slots": 0,
-        "constructionTime": 33,
+        "constructionTime": 43200,
         "description": "",
         "container": "",
         "autoUpgrade": true,
@@ -4017,7 +4017,7 @@
             ],
             "bonuses": [
               {
-                "id": "64d4d343047c8159cc0e0fdd",
+                "id": "64d4d33e0ae15b371f011e7d",
                 "value": -2,
                 "passive": true,
                 "production": false,
@@ -4025,7 +4025,7 @@
                 "type": "FuelConsumption"
               },
               {
-                "id": "64d4d343047c8159cc0e0fde",
+                "id": "64d4d33e0ae15b371f011e7e",
                 "value": 2,
                 "passive": true,
                 "production": false,
@@ -4033,7 +4033,7 @@
                 "type": "EnergyRegeneration"
               },
               {
-                "id": "64d4d343047c8159cc0e0fdf",
+                "id": "64d4d33e0ae15b371f011e7f",
                 "value": 2,
                 "passive": true,
                 "production": false,
@@ -4041,7 +4041,7 @@
                 "type": "HealthRegeneration"
               },
               {
-                "id": "64d4d343047c8159cc0e0fe0",
+                "id": "64d4d33e0ae15b371f011e80",
                 "value": 2,
                 "passive": true,
                 "production": false,
@@ -4049,7 +4049,7 @@
                 "type": "ExperienceRate"
               },
               {
-                "id": "64d4d343047c8159cc0e0fe1",
+                "id": "64d4d33e0ae15b371f011e81",
                 "value": 2,
                 "passive": true,
                 "production": false,
@@ -4066,7 +4066,7 @@
         "requirements": [],
         "bonuses": [
           {
-            "id": "64d4d343047c8159cc0e0ff6",
+            "id": "64d4d33e0ae15b371f011e96",
             "value": 5,
             "passive": true,
             "production": false,
@@ -4074,7 +4074,7 @@
             "type": "FuelConsumption"
           },
           {
-            "id": "64d4d343047c8159cc0e0ff7",
+            "id": "64d4d33e0ae15b371f011e97",
             "value": -5,
             "passive": true,
             "production": false,
@@ -4082,7 +4082,7 @@
             "type": "EnergyRegeneration"
           },
           {
-            "id": "64d4d343047c8159cc0e0ff8",
+            "id": "64d4d33e0ae15b371f011e98",
             "value": -5,
             "passive": true,
             "production": false,
@@ -4090,7 +4090,7 @@
             "type": "HealthRegeneration"
           },
           {
-            "id": "64d4d343047c8159cc0e0ff9",
+            "id": "64d4d33e0ae15b371f011e99",
             "value": -3,
             "passive": true,
             "production": false,
@@ -4098,7 +4098,7 @@
             "type": "ExperienceRate"
           },
           {
-            "id": "64d4d343047c8159cc0e0ffa",
+            "id": "64d4d33e0ae15b371f011e9a",
             "value": -3,
             "passive": true,
             "production": false,
@@ -4108,7 +4108,7 @@
           }
         ],
         "slots": 0,
-        "constructionTime": 33,
+        "constructionTime": 86400,
         "description": "",
         "container": "",
         "autoUpgrade": true,
@@ -4127,7 +4127,7 @@
             ],
             "bonuses": [
               {
-                "id": "64d4d343047c8159cc0e0ff1",
+                "id": "64d4d33e0ae15b371f011e91",
                 "value": -5,
                 "passive": true,
                 "production": false,
@@ -4135,7 +4135,7 @@
                 "type": "FuelConsumption"
               },
               {
-                "id": "64d4d343047c8159cc0e0ff2",
+                "id": "64d4d33e0ae15b371f011e92",
                 "value": 5,
                 "passive": true,
                 "production": false,
@@ -4143,7 +4143,7 @@
                 "type": "EnergyRegeneration"
               },
               {
-                "id": "64d4d343047c8159cc0e0ff3",
+                "id": "64d4d33e0ae15b371f011e93",
                 "value": 5,
                 "passive": true,
                 "production": false,
@@ -4151,7 +4151,7 @@
                 "type": "HealthRegeneration"
               },
               {
-                "id": "64d4d343047c8159cc0e0ff4",
+                "id": "64d4d33e0ae15b371f011e94",
                 "value": 3,
                 "passive": true,
                 "production": false,
@@ -4159,7 +4159,7 @@
                 "type": "ExperienceRate"
               },
               {
-                "id": "64d4d343047c8159cc0e0ff5",
+                "id": "64d4d33e0ae15b371f011e95",
                 "value": 3,
                 "passive": true,
                 "production": false,
@@ -4184,7 +4184,7 @@
         ],
         "bonuses": [
           {
-            "id": "64d4d343047c8159cc0e100a",
+            "id": "64d4d33e0ae15b371f011eaa",
             "value": 5,
             "passive": true,
             "production": false,
@@ -4192,7 +4192,7 @@
             "type": "FuelConsumption"
           },
           {
-            "id": "64d4d343047c8159cc0e100b",
+            "id": "64d4d33e0ae15b371f011eab",
             "value": -5,
             "passive": true,
             "production": false,
@@ -4200,7 +4200,7 @@
             "type": "EnergyRegeneration"
           },
           {
-            "id": "64d4d343047c8159cc0e100c",
+            "id": "64d4d33e0ae15b371f011eac",
             "value": -5,
             "passive": true,
             "production": false,
@@ -4208,7 +4208,7 @@
             "type": "HealthRegeneration"
           },
           {
-            "id": "64d4d343047c8159cc0e100d",
+            "id": "64d4d33e0ae15b371f011ead",
             "value": -3,
             "passive": true,
             "production": false,
@@ -4216,7 +4216,7 @@
             "type": "ExperienceRate"
           },
           {
-            "id": "64d4d343047c8159cc0e100e",
+            "id": "64d4d33e0ae15b371f011eae",
             "value": -3,
             "passive": true,
             "production": false,
@@ -4226,7 +4226,7 @@
           }
         ],
         "slots": 0,
-        "constructionTime": 33,
+        "constructionTime": 10800,
         "description": "",
         "container": "",
         "autoUpgrade": false,
@@ -4245,7 +4245,7 @@
             ],
             "bonuses": [
               {
-                "id": "64d4d343047c8159cc0e1005",
+                "id": "64d4d33e0ae15b371f011ea5",
                 "value": -8,
                 "passive": true,
                 "production": false,
@@ -4253,7 +4253,7 @@
                 "type": "FuelConsumption"
               },
               {
-                "id": "64d4d343047c8159cc0e1006",
+                "id": "64d4d33e0ae15b371f011ea6",
                 "value": 8,
                 "passive": true,
                 "production": false,
@@ -4261,7 +4261,7 @@
                 "type": "EnergyRegeneration"
               },
               {
-                "id": "64d4d343047c8159cc0e1007",
+                "id": "64d4d33e0ae15b371f011ea7",
                 "value": 8,
                 "passive": true,
                 "production": false,
@@ -4269,7 +4269,7 @@
                 "type": "HealthRegeneration"
               },
               {
-                "id": "64d4d343047c8159cc0e1008",
+                "id": "64d4d33e0ae15b371f011ea8",
                 "value": 5,
                 "passive": true,
                 "production": false,
@@ -4277,7 +4277,7 @@
                 "type": "ExperienceRate"
               },
               {
-                "id": "64d4d343047c8159cc0e1009",
+                "id": "64d4d33e0ae15b371f011ea9",
                 "value": 5,
                 "passive": true,
                 "production": false,
@@ -4309,7 +4309,7 @@
         ],
         "bonuses": [
           {
-            "id": "64d4d343047c8159cc0e101e",
+            "id": "64d4d33e0ae15b371f011ebe",
             "value": 5,
             "passive": true,
             "production": false,
@@ -4317,7 +4317,7 @@
             "type": "FuelConsumption"
           },
           {
-            "id": "64d4d343047c8159cc0e101f",
+            "id": "64d4d33e0ae15b371f011ebf",
             "value": -5,
             "passive": true,
             "production": false,
@@ -4325,7 +4325,7 @@
             "type": "EnergyRegeneration"
           },
           {
-            "id": "64d4d343047c8159cc0e1020",
+            "id": "64d4d33e0ae15b371f011ec0",
             "value": -5,
             "passive": true,
             "production": false,
@@ -4333,7 +4333,7 @@
             "type": "HealthRegeneration"
           },
           {
-            "id": "64d4d343047c8159cc0e1021",
+            "id": "64d4d33e0ae15b371f011ec1",
             "value": -3,
             "passive": true,
             "production": false,
@@ -4341,7 +4341,7 @@
             "type": "ExperienceRate"
           },
           {
-            "id": "64d4d343047c8159cc0e1022",
+            "id": "64d4d33e0ae15b371f011ec2",
             "value": -3,
             "passive": true,
             "production": false,
@@ -4351,7 +4351,7 @@
           }
         ],
         "slots": 0,
-        "constructionTime": 33,
+        "constructionTime": 10800,
         "description": "",
         "container": "",
         "autoUpgrade": false,
@@ -4370,7 +4370,7 @@
             ],
             "bonuses": [
               {
-                "id": "64d4d343047c8159cc0e1019",
+                "id": "64d4d33e0ae15b371f011eb9",
                 "value": -10,
                 "passive": true,
                 "production": false,
@@ -4378,7 +4378,7 @@
                 "type": "FuelConsumption"
               },
               {
-                "id": "64d4d343047c8159cc0e101a",
+                "id": "64d4d33e0ae15b371f011eba",
                 "value": 10,
                 "passive": true,
                 "production": false,
@@ -4386,7 +4386,7 @@
                 "type": "EnergyRegeneration"
               },
               {
-                "id": "64d4d343047c8159cc0e101b",
+                "id": "64d4d33e0ae15b371f011ebb",
                 "value": 10,
                 "passive": true,
                 "production": false,
@@ -4394,7 +4394,7 @@
                 "type": "HealthRegeneration"
               },
               {
-                "id": "64d4d343047c8159cc0e101c",
+                "id": "64d4d33e0ae15b371f011ebc",
                 "value": 6,
                 "passive": true,
                 "production": false,
@@ -4402,7 +4402,7 @@
                 "type": "ExperienceRate"
               },
               {
-                "id": "64d4d343047c8159cc0e101d",
+                "id": "64d4d33e0ae15b371f011ebd",
                 "value": 6,
                 "passive": true,
                 "production": false,
@@ -4475,7 +4475,7 @@
         ],
         "bonuses": [
           {
-            "id": "64d4d343047c8159cc0e1028",
+            "id": "64d4d33e0ae15b371f011ec8",
             "value": -20,
             "passive": true,
             "production": false,
@@ -4483,7 +4483,7 @@
             "type": "FuelConsumption"
           },
           {
-            "id": "64d4d343047c8159cc0e1029",
+            "id": "64d4d33e0ae15b371f011ec9",
             "value": 20,
             "passive": true,
             "production": false,
@@ -4491,7 +4491,7 @@
             "type": "EnergyRegeneration"
           },
           {
-            "id": "64d4d343047c8159cc0e102a",
+            "id": "64d4d33e0ae15b371f011eca",
             "value": 20,
             "passive": true,
             "production": false,
@@ -4499,7 +4499,7 @@
             "type": "HealthRegeneration"
           },
           {
-            "id": "64d4d343047c8159cc0e102b",
+            "id": "64d4d33e0ae15b371f011ecb",
             "value": 12,
             "passive": true,
             "production": false,
@@ -4507,7 +4507,7 @@
             "type": "ExperienceRate"
           },
           {
-            "id": "64d4d343047c8159cc0e102c",
+            "id": "64d4d33e0ae15b371f011ecc",
             "value": 12,
             "passive": true,
             "production": false,
@@ -4517,7 +4517,7 @@
           }
         ],
         "slots": 0,
-        "constructionTime": 33,
+        "constructionTime": 43200,
         "description": "",
         "container": "",
         "autoUpgrade": false,
