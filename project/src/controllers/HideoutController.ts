@@ -210,10 +210,34 @@ export class HideoutController
             this.addContainerUpgradeToClientOutput(output, sessionID, profileHideoutArea, hideoutData, hideoutStage);
         }
 
+        // Upgrading water collector / med station
+        if (profileHideoutArea.type === HideoutAreas.WATER_COLLECTOR || profileHideoutArea.type === HideoutAreas.MEDSTATION)
+        {
+            this.checkAndUpgradeWall(pmcData);
+        }
+
         // Add Skill Points Per Area Upgrade
         this.playerService.incrementSkillLevel(pmcData, SkillTypes.HIDEOUT_MANAGEMENT, db.globals.config.SkillsSettings.HideoutManagement.SkillPointsPerAreaUpgrade);
-
+        
         return output;
+    }
+
+    /**
+     * Upgrade wall status to visible in profile if medstation/water collector are both level 1
+     * @param pmcData Player profile
+     */
+    private checkAndUpgradeWall(pmcData: IPmcData)
+    {
+        const medStation = pmcData.Hideout.Areas.find(area => area.type === HideoutAreas.MEDSTATION);
+        const waterCollector = pmcData.Hideout.Areas.find(area => area.type === HideoutAreas.WATER_COLLECTOR);
+        if (medStation.level >= 1 && waterCollector.level >= 1)
+        {
+            const wall = pmcData.Hideout.Areas.find(area => area.type === HideoutAreas.EMERGENCY_WALL);
+            if (wall.level === 0)
+            {
+                wall.level = 1;
+            }
+        }
     }
 
     protected addContainerImprovementToProfile(pmcData: IPmcData, profileHideoutArea: HideoutArea, dbHideoutData: IHideoutArea, hideoutStage: Stage): void

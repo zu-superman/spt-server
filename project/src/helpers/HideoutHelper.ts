@@ -905,60 +905,20 @@ export class HideoutHelper
      */
     public unlockHideoutWallInProfile(pmcProfile: IPmcData): void
     {
-        // Sufficient time has passed since account created, upgrade wall to next level to be interactable
-        const wallUnlockTimestamp = this.hideoutConfig.hideoutWallAppearTimeSeconds + pmcProfile.Info.RegistrationDate;
-        if (wallUnlockTimestamp < this.timeUtil.getTimestamp())
+        const waterCollector = pmcProfile.Hideout.Areas.find(x => x.type === HideoutAreas.WATER_COLLECTOR);
+        const medStation = pmcProfile.Hideout.Areas.find(x => x.type === HideoutAreas.MEDSTATION);
+        const wall = pmcProfile.Hideout.Areas.find(x => x.type === HideoutAreas.EMERGENCY_WALL);
+
+        // No collector or med station, skip
+        if (!(waterCollector && medStation))
         {
-            // Get wall area
-            const wall = pmcProfile.Hideout.Areas.find(x => x.type === HideoutAreas.EMERGENCY_WALL);
-            if (!wall)
-            {
-                return;
-            }
+            return;
+        }
 
-            if (wall.level === 0)
-            {
-                wall.level++;
-                wall.constructing = true;
-
-                return;
-            }
-
-            if (wall.level === 1)
-            {
-                if (this.hideoutImprovementIsComplete(pmcProfile.Hideout.Improvements["639199277a9178252d38c98f"]))
-                {
-                    this.logger.debug("Improvement 639199277a9178252d38c98f found, upgrading hideout wall from level: 1 to 3");
-                    wall.level = 3;
-                    wall.constructing = false;
-                    // 0 = no wall | Idle State
-                    // 1 - EATS EVERYTHING without areas.json change to include improvements
-                    // 2 - Should be Moppable wall / Interactable wall While Constructing = true Sledgehammer is Smashable 
-                    // 2 - While false UI is broken. While true mimics level 3 hideout
-                    // 3 - Smashable wall / Sledgehammer
-                    // 4 - Installable door
-                }
-                
-                return;
-            }
-
-            // Workaround for old profiles that have the wall at level 2
-            if (wall.level === 2)
-            {
-                this.logger.debug("Old wall level 2 found, fixing");
-                if (this.hideoutImprovementIsComplete(pmcProfile.Hideout.Improvements["639199277a9178252d38c98f"]))
-                {
-                    this.logger.debug("Wall level adjusted to 3");
-                    wall.level++;
-                }
-                else
-                {
-                    this.logger.debug("Wall level adjusted to 1");
-                    wall.level--;
-                }
-            }
-
-
+        // If medstation > level 1 AND water collector > level 1 AND wall is level 0
+        if (waterCollector?.level >= 1 && medStation?.level >= 1 && wall.level <= 0)
+        {
+            wall.level = 1;
         }
     }
 
