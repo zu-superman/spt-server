@@ -230,10 +230,10 @@ export class HideoutController
     {
         const medStation = pmcData.Hideout.Areas.find(area => area.type === HideoutAreas.MEDSTATION);
         const waterCollector = pmcData.Hideout.Areas.find(area => area.type === HideoutAreas.WATER_COLLECTOR);
-        if (medStation.level >= 1 && waterCollector.level >= 1)
+        if (medStation?.level >= 1 && waterCollector?.level >= 1)
         {
             const wall = pmcData.Hideout.Areas.find(area => area.type === HideoutAreas.EMERGENCY_WALL);
-            if (wall.level === 0)
+            if (wall?.level === 0)
             {
                 wall.level = 1;
             }
