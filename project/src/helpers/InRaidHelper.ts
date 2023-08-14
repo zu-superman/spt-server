@@ -135,7 +135,7 @@ export class InRaidHelper
         // set profile data
         profileData.Info.Level = saveProgressRequest.profile.Info.Level;
         profileData.Skills = saveProgressRequest.profile.Skills;
-        profileData.Stats.Eft = saveProgressRequest.profile.EftStats.Eft;
+        profileData.Stats.Eft = saveProgressRequest.profile.EftStats;
         profileData.Encyclopedia = saveProgressRequest.profile.Encyclopedia;
         profileData.ConditionCounters = saveProgressRequest.profile.ConditionCounters;
 
