@@ -900,7 +900,7 @@ export class HideoutHelper
     }
 
     /**
-     * Upgrade hideout wall from starting level to interactable level if enough time has passed
+     * Upgrade hideout wall from starting level to interactable level if necessary stations have been upgraded
      * @param pmcProfile Profile to upgrade wall in
      */
     public unlockHideoutWallInProfile(pmcProfile: IPmcData): void
@@ -916,7 +916,7 @@ export class HideoutHelper
         }
 
         // If medstation > level 1 AND water collector > level 1 AND wall is level 0
-        if (waterCollector?.level >= 1 && medStation?.level >= 1 && wall.level <= 0)
+        if (waterCollector?.level >= 1 && medStation?.level >= 1 && wall?.level <= 0)
         {
             wall.level = 1;
         }
