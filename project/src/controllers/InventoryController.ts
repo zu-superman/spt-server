@@ -337,28 +337,51 @@ export class InventoryController
     /**
     * Swap Item
     * its used for "reload" if you have weapon in hands and magazine is somewhere else in rig or backpack in equipment
+    * Also used to swap items using quick selection on character screen
     */
-    public swapItem(pmcData: IPmcData, body: IInventorySwapRequestData, sessionID: string): IItemEventRouterResponse
+    public swapItem(pmcData: IPmcData, request: IInventorySwapRequestData, sessionID: string): IItemEventRouterResponse
     {
-        const output = this.eventOutputHolder.getOutput(sessionID);
-
-        for (const iterItem of pmcData.Inventory.items)
+        const itemOne = pmcData.Inventory.items.find(x => x._id === request.item);
+        if (!itemOne)
         {
-            if (iterItem._id === body.item)
-            {
-                iterItem.parentId = body.to.id;         // parentId
-                iterItem.slotId = body.to.container;    // slotId
-                iterItem.location = body.to.location;    // location
-            }
-
-            if (iterItem._id === body.item2)
-            {
-                iterItem.parentId = body.to2.id;
-                iterItem.slotId = body.to2.container;
-                delete iterItem.location;
-            }
+            this.logger.error(`Unable to find item: ${request.item} to swap positions with: ${request.item2}`);
         }
-        return output;
+
+        const itemTwo = pmcData.Inventory.items.find(x => x._id === request.item2);
+        if (!itemTwo)
+        {
+            this.logger.error(`Unable to find item: ${request.item2} to swap positions with: ${request.item}`);
+        }
+
+        // to.id is the parentid
+        itemOne.parentId = request.to.id;
+        
+        // to.container is the slotid
+        itemOne.slotId = request.to.container;
+
+        // Request object has location data, add it in, otherwise remove existing location from object
+        if (request.to.location)
+        {
+            itemOne.location = request.to.location;
+        }
+        else
+        {
+            delete itemOne.location;
+        }
+
+        itemTwo.parentId = request.to2.id;
+        itemTwo.slotId = request.to2.container;
+        if (request.to2.location)
+        {
+            itemTwo.location = request.to2.location;
+        }
+        else
+        {
+            delete itemTwo.location;
+        }
+
+        // Client already informed of inventory locations, nothing for us to do
+        return this.eventOutputHolder.getOutput(sessionID);
     }
 
     /**

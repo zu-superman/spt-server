@@ -10,6 +10,7 @@ export interface To
     id: string
     container: string
     location?: ToLocation | number // Hack
+    isSearched?: boolean
 }
 
 export interface ToLocation 
