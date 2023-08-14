@@ -29,7 +29,9 @@ import { TraderAssortHelper } from "./TraderAssortHelper";
 
 export interface OwnerInventoryItems
 {
+    /** Inventory items from source */
     from: Item[]
+    /** Inventory items at destination */
     to: Item[]
     sameInventory: boolean,
     isMail: boolean
@@ -760,25 +762,32 @@ export class InventoryHelper
 
     /**
      * Based on the item action, determine whose inventories we should be looking at for from and to.
+     * @param request Item interaction request
+     * @param sessionId Session id / playerid
+     * @returns OwnerInventoryItems with inventory of player/scav to adjust
      */
-    public getOwnerInventoryItems(body: IInventoryMoveRequestData | IInventorySplitRequestData | IInventoryMergeRequestData, sessionID: string): OwnerInventoryItems
+    public getOwnerInventoryItems(request: IInventoryMoveRequestData | IInventorySplitRequestData | IInventoryMergeRequestData, sessionId: string): OwnerInventoryItems
     {
         let isSameInventory = false;
-        const pmcItems = this.profileHelper.getPmcProfile(sessionID).Inventory.items;
-        const scavData = this.profileHelper.getScavProfile(sessionID);
+        const pmcItems = this.profileHelper.getPmcProfile(sessionId).Inventory.items;
+        const scavData = this.profileHelper.getScavProfile(sessionId);
         let fromInventoryItems = pmcItems;
         let fromType = "pmc";
 
-        if ("fromOwner" in body)
+        if (request.fromOwner)
         {
-            if (body.fromOwner.id === scavData._id)
+            if (request.fromOwner.id === scavData._id)
             {
                 fromInventoryItems = scavData.Inventory.items;
                 fromType = "scav";
             }
-            else if (body.fromOwner.type.toLocaleLowerCase() === "mail")
+            else if (request.fromOwner.type.toLocaleLowerCase() === "mail")
             {
-                fromInventoryItems = this.dialogueHelper.getMessageItemContents(body.fromOwner.id, sessionID, body.item);
+                // Split requests dont use 'use' but 'splitItem' property
+                const item = "splitItem" in request
+                    ? request.splitItem
+                    : request.item;
+                fromInventoryItems = this.dialogueHelper.getMessageItemContents(request.fromOwner.id, sessionId, item);
                 fromType = "mail";
             }
         }
@@ -788,12 +797,14 @@ export class InventoryHelper
         let toInventoryItems = pmcItems;
         let toType = "pmc";
 
-        if ("toOwner" in body && body.toOwner.id === scavData._id)
+        // Destination is scav inventory, update values
+        if (request.toOwner && request.toOwner.id === scavData._id)
         {
             toInventoryItems = scavData.Inventory.items;
             toType = "scav";
         }
 
+        // From and To types match, same inventory
         if (fromType === toType)
         {
             isSameInventory = true;
