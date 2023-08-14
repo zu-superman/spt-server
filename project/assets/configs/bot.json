@@ -318,7 +318,7 @@
         "followerbigpipe": {},
         "followerzryachiy": {},
         "followertest": {},
-		"followerBoar": {},
+		"followerboar": {},
         "sectantpriest": {},
         "sectantwarrior": {},
         "test": {},
@@ -328,8 +328,8 @@
         "crazyassaultevent": {},
         "assaultgroup": {},
         "gifter": {},
-		"bossBoar": {},
-		"bossBoarSniper": {},
+		"bossboar": {},
+		"bossboarsniper": {},
         "pmc": {
             "5c99f98d86f7745c314214b3": 1,
             "5c164d2286f774194c5e69fa": 1,
@@ -469,7 +469,7 @@
             "lightIsActiveNightChancePercent": 85,
             "laserIsActiveChancePercent": 85
         },
-		"bossBoar": {
+		"bossboar": {
             "nvgIsActiveChanceDayPercent": 10,
             "nvgIsActiveChanceNightPercent": 90,
             "lightIsActiveDayChancePercent": 25,
@@ -551,7 +551,7 @@
             "lightIsActiveNightChancePercent": 85,
             "laserIsActiveChancePercent": 85
         },
-		"followerBoar": {
+		"followerboar": {
             "nvgIsActiveChanceDayPercent": 20,
             "nvgIsActiveChanceNightPercent": 85,
             "faceShieldIsActiveChancePercent": 80,
@@ -563,7 +563,7 @@
                 "lightLaserLimit": 1
             }
         },
-		"bossBoarSniper": {
+		"bossboarsniper": {
             "nvgIsActiveChanceDayPercent": 20,
             "nvgIsActiveChanceNightPercent": 85,
             "faceShieldIsActiveChancePercent": 80,
