@@ -38,7 +38,7 @@ export class ExternalInventoryMagGen implements IInventoryMagGen
         const randomizedMagazineCount = this.botWeaponGeneratorHelper.getRandomizedMagazineCount(inventoryMagGen.getMagCount());
         for (let i = 0; i < randomizedMagazineCount; i++)
         {
-            const magazineWithAmmo = this.botWeaponGeneratorHelper.createMagazine(magazineTpl, inventoryMagGen.getAmmoTemplate()._id, magTemplate);
+            const magazineWithAmmo = this.botWeaponGeneratorHelper.createMagazineWithAmmo(magazineTpl, inventoryMagGen.getAmmoTemplate()._id, magTemplate);
 
             const ableToFitMagazinesIntoBotInventory = this.botWeaponGeneratorHelper.addItemWithChildrenToEquipmentSlot(
                 [EquipmentSlots.TACTICAL_VEST, EquipmentSlots.POCKETS],

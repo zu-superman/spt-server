@@ -90,22 +90,16 @@ export class BotWeaponGeneratorHelper
      * @param magTemplate template object of magazine
      * @returns Item array
      */
-    public createMagazine(magazineTpl: string, ammoTpl: string, magTemplate: ITemplateItem): Item[]
+    public createMagazineWithAmmo(magazineTpl: string, ammoTpl: string, magTemplate: ITemplateItem): Item[]
     {
-        const magazineId = this.hashUtil.generate();
-        return [
-            {
-                "_id": magazineId,
-                "_tpl": magazineTpl
-            },
-            {
-                "_id": this.hashUtil.generate(),
-                "_tpl": ammoTpl,
-                "parentId": magazineId,
-                "slotId": "cartridges",
-                "upd": { "StackObjectsCount": magTemplate._props.Cartridges[0]._max_count }
-            }
-        ];
+        const magazine: Item[] = [{
+            _id: this.hashUtil.generate(),
+            _tpl: magazineTpl
+        }];
+
+        this.itemHelper.fillMagazineWithCartridge(magazine, magTemplate, ammoTpl, 1);
+
+        return magazine;
     }
 
     /**
