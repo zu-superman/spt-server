@@ -850,7 +850,9 @@
         "5737330a2459776af32363a1",
         "64aceaecc4eda9354b0226b6",
         "64ccc24de61ea448b507d34d",
-        "64ccc2111779ad6ba200a139"
+        "64ccc2111779ad6ba200a139",
+        "64aceafcb5bf5e95f50a4c20",
+        "5da46e3886f774653b7a83fe"
       ],
       "SecuredContainer": [
         "5a6086ea4f39f99cd479502f",
@@ -2895,7 +2897,7 @@
       "mod_muzzle": 78,
       "mod_scope": 75,
       "mod_sight_rear": 78,
-      "mod_tactical": 90,
+      "mod_tactical": 89,
       "mod_mount_003": 0,
       "mod_mount_004": 0,
       "mod_scope_000": 100,

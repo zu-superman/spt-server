@@ -578,7 +578,9 @@
         "5d80ca9086f774403a401e40",
         "591382d986f774465a6413a7",
         "5c1d0d6d86f7744bb2683e1f",
-        "5ad5d7d286f77450166e0a89"
+        "5ad5d7d286f77450166e0a89",
+        "5c0e533786f7747fa23f4d47",
+        "64ccc24de61ea448b507d34d"
       ],
       "Backpack": [],
       "SecuredContainer": [
@@ -2630,7 +2632,7 @@
       "mod_magazine": 100,
       "mod_muzzle": 100,
       "mod_reciever": 100,
-      "mod_mount_000": 20,
+      "mod_mount_000": 19,
       "mod_mount": 92,
       "mod_tactical_000": 0,
       "mod_tactical_001": 0,

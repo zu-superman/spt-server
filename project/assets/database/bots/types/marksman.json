@@ -151,7 +151,8 @@
         "5d5d8ca986f7742798716522": 1,
         "5e4abc1f86f774069619fbaa": 1,
         "5ca20abf86f77418567a43f2": 1,
-        "5fd4c60f875c30179f5d04c2": 1
+        "5fd4c60f875c30179f5d04c2": 1,
+        "60a6220e953894617404b00a": 1
       },
       "Backpack": {
         "56e335e4d2720b6c058b456d": 1
@@ -171,7 +172,8 @@
         "57838ad32459774a17445cd2": 12,
         "643ea5b23db6f9f57107d9fd": 1,
         "5df8ce05b11454561e39243b": 1,
-        "5aafa857e5b5b00018480968": 1
+        "5aafa857e5b5b00018480968": 1,
+        "5f2a9575926fd9352339381f": 1
       },
       "SecondPrimaryWeapon": {},
       "Holster": {},
@@ -322,7 +324,8 @@
           "576fd4ec2459777f0b518431",
           "5c82343a2e221644f31c0611",
           "5c82342f2e221644f31c060e",
-          "5cf638cbd7f00c06595bc936"
+          "5cf638cbd7f00c06595bc936",
+          "5a7c74b3e899ef0014332c29"
         ],
         "mod_magazine": [
           "55d480c04bdc2d1d4e8b456a",
@@ -824,6 +827,35 @@
         "mod_tactical": [
           "5ba36f85d4351e0085325c81"
         ]
+      },
+      "5f2a9575926fd9352339381f": {
+        "mod_barrel": [
+          "5f2aa46b878ef416f538b567"
+        ],
+        "mod_handguard": [
+          "5f2aa47a200e2c0ee46efa71"
+        ],
+        "mod_mount": [
+          "5f2aa49f9b44de6b1b4e68d4"
+        ],
+        "mod_magazine": [
+          "5b7bef1e5acfc43d82528402"
+        ]
+      },
+      "5f2aa46b878ef416f538b567": {
+        "mod_muzzle": [
+          "5f2aa4464b50c14bcf07acdb"
+        ]
+      },
+      "5f2aa47a200e2c0ee46efa71": {
+        "mod_mount_000": [
+          "5f2aa493cd375f14e15eea72"
+        ]
+      },
+      "5f2aa49f9b44de6b1b4e68d4": {
+        "mod_scope": [
+          "5dff77c759400025ea5150cf"
+        ]
       }
     },
     "items": {
@@ -851,7 +883,8 @@
         "64b8f7c241772715af0f9c3d",
         "59e6542b86f77411dc52a77a",
         "5bfeaa0f0db834001b734927",
-        "64b9e2037fdfb81df81e3c25"
+        "64b9e2037fdfb81df81e3c25",
+        "5b7bef1e5acfc43d82528402"
       ],
       "Pockets": [
         "5783c43d2459774bbe137486",
@@ -1923,7 +1956,8 @@
     "Флоу",
     "Овальный",
     "Глиттершайн",
-    "Вертолёт"
+    "Вертолёт",
+    "Пельмень"
   ],
   "difficulty": {
     "easy": {
@@ -3815,18 +3849,18 @@
   },
   "chances": {
     "equipment": {
-      "Headwear": 41,
+      "Headwear": 40,
       "Earpiece": 21,
-      "FaceCover": 36,
-      "ArmorVest": 50,
+      "FaceCover": 34,
+      "ArmorVest": 51,
       "Eyewear": 0,
       "ArmBand": 0,
       "TacticalVest": 100,
-      "Backpack": 18,
+      "Backpack": 17,
       "FirstPrimaryWeapon": 100,
       "SecondPrimaryWeapon": 0,
       "Holster": 0,
-      "Scabbard": 3,
+      "Scabbard": 4,
       "Pockets": 100,
       "SecuredContainer": 100
     },
@@ -3841,12 +3875,12 @@
       "mod_tactical_000": 0,
       "mod_tactical_001": 0,
       "mod_tactical_002": 0,
-      "mod_mount": 87,
+      "mod_mount": 86,
       "mod_mount_000": 81,
-      "mod_mount_002": 57,
-      "mod_sight_front": 34,
+      "mod_mount_002": 55,
+      "mod_sight_front": 36,
       "mod_sight_rear": 40,
-      "mod_tactical": 39,
+      "mod_tactical": 40,
       "mod_launcher": 0,
       "mod_pistol_grip": 0,
       "mod_mount_001": 0,

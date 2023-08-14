@@ -232,7 +232,8 @@
         "5a3c16fe86f77452b62de32a": 1,
         "5efb0e16aeb21837e749c7ff": 1,
         "5efb0da7a29a85116f6ea05f": 1,
-        "56d59d3ad2720bdb418b4577": 1
+        "56d59d3ad2720bdb418b4577": 1,
+        "64b7bbb74b75259c590fa897": 1
       },
       "Caliber762x54R": {
         "560d61e84bdc2da74d8b4571": 1
@@ -1314,7 +1315,13 @@
         "64ccc1d4a0f13c24561edf27",
         "5d80ca9086f774403a401e40",
         "5d80cb3886f77440556dbf09",
-        "591ae8f986f77406f854be45"
+        "591ae8f986f77406f854be45",
+        "63a3a93f8a56922e82001f5d",
+        "5d80c6fc86f774403a401e3c",
+        "62a09ec84f842e1bd12da3f2",
+        "64ccc268c41e91416064ebc7",
+        "5a0eec9686f77402ac5c39f2",
+        "63a39c69af870e651d58e6aa"
       ],
       "SecuredContainer": [
         "59e0d99486f7744a32234762",
@@ -1335,7 +1342,8 @@
         "56d59d3ad2720bdb418b4577",
         "57a0dfb82459774d3078b56c",
         "5a608bf24f39f98ffc77720e",
-        "5a26ac0ec4a28200741e1e18"
+        "5a26ac0ec4a28200741e1e18",
+        "64b7bbb74b75259c590fa897"
       ],
       "SpecialLoot": []
     }
@@ -3362,7 +3370,7 @@
     "equipment": {
       "Headwear": 0,
       "Earpiece": 0,
-      "FaceCover": 79,
+      "FaceCover": 78,
       "ArmorVest": 76,
       "Eyewear": 0,
       "ArmBand": 0,
@@ -3380,10 +3388,10 @@
       "mod_magazine": 100,
       "mod_muzzle": 100,
       "mod_stock": 100,
-      "mod_foregrip": 13,
+      "mod_foregrip": 14,
       "mod_scope": 11,
       "mod_sight_front": 49,
-      "mod_tactical_000": 9,
+      "mod_tactical_000": 10,
       "mod_mount": 9,
       "mod_mount_001": 45,
       "mod_mount_002": 23,
