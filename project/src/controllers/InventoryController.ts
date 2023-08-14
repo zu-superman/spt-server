@@ -641,67 +641,29 @@ export class InventoryController
      */
     public sortInventory(pmcData: IPmcData, request: IInventorySortRequestData, sessionID: string): IItemEventRouterResponse
     {
-        let items = pmcData.Inventory.items;
 
-        // handle changed items
-        if (request.changedItems)
+        for (const change of request.changedItems)
         {
-            for (const target of request.changedItems)
+            const inventoryItem = pmcData.Inventory.items.find(x => x._id === change._id);
+            if (!inventoryItem)
             {
-                // remove unsorted items
-                let updatedItem: Item = undefined;
+                this.logger.error(`Unable to find inventory item: ${change._id} to auto-sort, YOU MUST RELOAD YOUR GAME`);
 
-                items = items.filter((item) =>
-                {
-                    if (item._id === target._id)
-                    {
-                        updatedItem = this.jsonUtil.clone(item);
-                    }
-                    return item._id !== target._id;
-                });
+                continue;
+            }
 
-                if (typeof (updatedItem._tpl) !== "string")
-                {
-                    updatedItem = target;
-                }
-                else if (typeof (target.location) !== "undefined")
-                {
-                    updatedItem.location = target.location;
-                    updatedItem.slotId = target.slotId;
-                }
-
-                // fix currency StackObjectsCount when single stack
-                if (this.paymentHelper.isMoneyTpl(updatedItem._tpl))
-                {
-                    updatedItem.upd = (updatedItem.upd || {});
-                    if (!updatedItem.upd.StackObjectsCount)
-                    {
-                        updatedItem.upd.StackObjectsCount = 1;
-                    }
-                }
-
-                // add sorted items
-                items.push(updatedItem);
+            inventoryItem.parentId = change.parentId;
+            inventoryItem.slotId = change.slotId;
+            if (change.location)
+            {
+                inventoryItem.location = change.location;
+            }
+            else
+            {
+                delete inventoryItem.location;
             }
         }
 
-        // handle deleted items
-        if ("deletedItems" in request)
-        {
-            // This data is not found inside client 17566 - ApplyInventoryChangesCommand.cs
-            throw new Error("looks like this data is used, uh oh");
-
-            // for (const target of body.deletedItems)
-            // {
-            //     // remove items
-            //     items = items.filter((item) =>
-            //     {
-            //         return item._id !== target._id;
-            //     });
-            // }
-        }
-
-        pmcData.Inventory.items = items;
         return this.eventOutputHolder.getOutput(sessionID);
     }
 
