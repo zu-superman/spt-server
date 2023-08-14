@@ -761,6 +761,8 @@ export class InventoryHelper
     }
 
     /**
+     * Return the inventory that needs to be modified (scav/pmc etc)
+     * Changes made to result apply to character inventory
      * Based on the item action, determine whose inventories we should be looking at for from and to.
      * @param request Item interaction request
      * @param sessionId Session id / playerid

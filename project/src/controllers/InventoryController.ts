@@ -97,6 +97,7 @@ export class InventoryController
             return output;
         }
 
+        // Changes made to result apply to character inventory
         const items = this.inventoryHelper.getOwnerInventoryItems(moveRequest, sessionID);
         if (items.sameInventory)
         {
@@ -162,6 +163,8 @@ export class InventoryController
     public splitItem(pmcData: IPmcData, request: IInventorySplitRequestData, sessionID: string): IItemEventRouterResponse
     {
         const output = this.eventOutputHolder.getOutput(sessionID);
+
+        // Changes made to result apply to character inventory
         const inventoryItems = this.inventoryHelper.getOwnerInventoryItems(request, sessionID);
 
         // handle cartridge edge-case
@@ -204,7 +207,7 @@ export class InventoryController
     /**
      * Fully merge 2 inventory stacks together into one stack (merging where both stacks remain is called 'transfer')
      * Deletes item from `body.item` and adding number of stacks into `body.with`
-     * @param pmcData Player profile (UNUSED)
+     * @param pmcData Player profile (unused, getOwnerInventoryItems() gets profile)
      * @param body Merge request
      * @param sessionID Player id
      * @returns IItemEventRouterResponse
@@ -212,6 +215,8 @@ export class InventoryController
     public mergeItem(pmcData: IPmcData, body: IInventoryMergeRequestData, sessionID: string): IItemEventRouterResponse
     {
         const output = this.eventOutputHolder.getOutput(sessionID);
+
+        // Changes made to result apply to character inventory
         const inventoryItems = this.inventoryHelper.getOwnerInventoryItems(body, sessionID);
 
         // Get source item
@@ -254,6 +259,7 @@ export class InventoryController
 
     /**
      * TODO: Adds no data to output to send to client, is this by design?
+     * TODO: should make use of getOwnerInventoryItems(), stack being transferred may not always be on pmc
      * Transfer items from one stack into another while keeping original stack
      * Used to take items from scav inventory into stash or to insert ammo into mags (shotgun ones) and reloading weapon by clicking "Reload"
      * @param pmcData Player profile
