@@ -31,6 +31,10 @@ export interface ILocationConfig extends IBaseConfig
     botTypeLimits: Record<string, IBotTypeLimit[]>
     /** What maps can use the container randomisation feature */
     randomiseMapContainers: Record<string, boolean>;
+    /** How full must a random loose magazine be %*/
+    minFillLooseMagazinePercent: number;
+    /** How full must a random static magazine be %*/
+    minFillStaticMagazinePercent: number;
 }
 
 export interface IFixEmptyBotWavesSettings

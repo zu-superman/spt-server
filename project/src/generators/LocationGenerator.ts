@@ -286,7 +286,7 @@ export class LocationGenerator
 
             // Draw a random item from spawn points possible items
             const chosenComposedKey = itemArray.draw(1)[0];
-            const createItemResult = this.createDynamicLootItem(chosenComposedKey, spawnPoint);
+            const createItemResult = this.createDynamicLootItem(chosenComposedKey, spawnPoint, staticAmmoDist);
 
             // Root id can change when generating a weapon
             spawnPoint.template.Root = createItemResult.items[0]._id;
@@ -370,9 +370,10 @@ export class LocationGenerator
      * Create array of item (with child items) and return
      * @param chosenComposedKey Key we want to look up items for
      * @param spawnPoint Dynamic spawn point item we want will be placed in
+     * @param staticAmmoDist ammo distributions
      * @returns IContainerItem
      */
-    protected createDynamicLootItem(chosenComposedKey: string, spawnPoint: Spawnpoint): IContainerItem
+    protected createDynamicLootItem(chosenComposedKey: string, spawnPoint: Spawnpoint, staticAmmoDist: Record<string, IStaticAmmoDetails[]>): IContainerItem
     {
         const chosenItem = spawnPoint.template.Items.find(x => x._id === chosenComposedKey);
         const chosenTpl = chosenItem._tpl;
@@ -402,6 +403,17 @@ export class LocationGenerator
             }];
             this.itemHelper.addCartridgesToAmmoBox(ammoBoxItem, ammoBoxTemplate);
             itemWithMods.push(...ammoBoxItem);
+        }
+        else if (this.itemHelper.isOfBaseclass(chosenTpl, BaseClasses.MAGAZINE))
+        {
+            // Create array with just magazine
+            const magazineTemplate = this.itemHelper.getItem(chosenTpl)[1];
+            const magazineItem: Item[] = [{
+                _id: this.objectId.generate(),
+                _tpl: chosenTpl
+            }];
+            this.itemHelper.fillMagazineWithRandomCartridge(magazineItem, magazineTemplate, staticAmmoDist, null, this.locationConfig.minFillLooseMagazinePercent / 100);
+            itemWithMods.push(...magazineItem);
         }
         else
         {
@@ -569,7 +581,7 @@ export class LocationGenerator
         {
             // Create array with just magazine
             const magazineWithCartridges = [items[0]];
-            this.itemHelper.fillMagazineWithRandomCartridge(magazineWithCartridges, itemTemplate, staticAmmoDist);
+            this.itemHelper.fillMagazineWithRandomCartridge(magazineWithCartridges, itemTemplate, staticAmmoDist, null, this.locationConfig.minFillStaticMagazinePercent / 100);
 
             // Replace existing magazine with above array
             items.splice(items.indexOf(items[0]), 1, ...magazineWithCartridges);
