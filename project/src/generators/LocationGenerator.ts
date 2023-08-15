@@ -393,6 +393,16 @@ export class LocationGenerator
                 }
             );
         }
+        else if (this.itemHelper.isOfBaseclass(chosenTpl, BaseClasses.AMMO_BOX))
+        {
+            const ammoBoxTemplate = this.itemHelper.getItem(chosenTpl)[1];
+            const ammoBoxItem: Item[] = [{
+                _id: this.objectId.generate(),
+                _tpl: chosenTpl
+            }];
+            this.itemHelper.addCartridgesToAmmoBox(ammoBoxItem, ammoBoxTemplate);
+            itemWithMods.push(...ammoBoxItem);
+        }
         else
         {
             // Get item + children and add into array we return
