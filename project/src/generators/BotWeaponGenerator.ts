@@ -539,7 +539,10 @@ export class BotWeaponGenerator
                 _id: this.hashUtil.generate(),
                 _tpl: ubglAmmoTpl,
                 parentId: ubglMod._id,
-                slotId: "patron_in_weapon"
+                slotId: "patron_in_weapon",
+                upd: {
+                    StackObjectsCount: 1
+                }
             }
         );
     }
