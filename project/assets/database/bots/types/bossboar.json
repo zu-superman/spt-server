@@ -995,7 +995,9 @@
         "DEFAULT_USEC_BEHAVIOUR": "Attack",
         "FRIENDLY_BOT_TYPES": [],
         "WARN_BOT_TYPES": [],
-        "ENEMY_BOT_TYPES": []
+        "ENEMY_BOT_TYPES": [],
+        "DEFAULT_ENEMY_USEC": true,
+        "DEFAULT_ENEMY_BEAR": true
       },
       "Boss": {
         "BOSS_DIST_TO_WARNING": 34,
@@ -1546,7 +1548,9 @@
         "DEFAULT_USEC_BEHAVIOUR": "Attack",
         "FRIENDLY_BOT_TYPES": [],
         "WARN_BOT_TYPES": [],
-        "ENEMY_BOT_TYPES": []
+        "ENEMY_BOT_TYPES": [],
+        "DEFAULT_ENEMY_USEC": true,
+        "DEFAULT_ENEMY_BEAR": true
       },
       "Boss": {
         "BOSS_DIST_TO_WARNING": 34,
@@ -2097,7 +2101,9 @@
         "DEFAULT_USEC_BEHAVIOUR": "Attack",
         "FRIENDLY_BOT_TYPES": [],
         "WARN_BOT_TYPES": [],
-        "ENEMY_BOT_TYPES": []
+        "ENEMY_BOT_TYPES": [],
+        "DEFAULT_ENEMY_USEC": true,
+        "DEFAULT_ENEMY_BEAR": true
       },
       "Boss": {
         "BOSS_DIST_TO_WARNING": 34,
@@ -2648,7 +2654,9 @@
         "DEFAULT_USEC_BEHAVIOUR": "Attack",
         "FRIENDLY_BOT_TYPES": [],
         "WARN_BOT_TYPES": [],
-        "ENEMY_BOT_TYPES": []
+        "ENEMY_BOT_TYPES": [],
+        "DEFAULT_ENEMY_USEC": true,
+        "DEFAULT_ENEMY_BEAR": true
       },
       "Boss": {
         "BOSS_DIST_TO_WARNING": 34,
