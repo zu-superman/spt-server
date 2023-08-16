@@ -191,6 +191,11 @@ export class MatchController
      */
     protected extractWasViaCar(extractName: string): boolean
     {
+        if (extractName.toLowerCase().includes("v-ex"))
+        {
+            return true;
+        }
+
         return this.inraidConfig.carExtracts.includes(extractName);
     }
 
