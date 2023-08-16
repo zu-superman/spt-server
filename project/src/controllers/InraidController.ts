@@ -119,7 +119,7 @@ export class InraidController
         pmcData = this.inRaidHelper.updateProfileBaseStats(pmcData, offraidData, sessionID);
 
         // Check for exit status
-        this.markOrRemoveFoundInRaidItems(offraidData, pmcData, false);
+        this.markOrRemoveFoundInRaidItems(offraidData);
 
         offraidData.profile.Inventory.items = this.itemHelper.replaceIDs(offraidData.profile, offraidData.profile.Inventory.items, pmcData.InsuredItems, offraidData.profile.Inventory.fastPanel);
         this.inRaidHelper.addUpdToMoneyFromRaid(offraidData.profile.Inventory.items);
@@ -239,7 +239,7 @@ export class InraidController
         scavData = this.inRaidHelper.updateProfileBaseStats(scavData, offraidData, sessionID);
 
         // Check for exit status
-        this.markOrRemoveFoundInRaidItems(offraidData, pmcData, true);
+        this.markOrRemoveFoundInRaidItems(offraidData);
 
         offraidData.profile.Inventory.items = this.itemHelper.replaceIDs(offraidData.profile, offraidData.profile.Inventory.items, pmcData.InsuredItems, offraidData.profile.Inventory.fastPanel);
         this.inRaidHelper.addUpdToMoneyFromRaid(offraidData.profile.Inventory.items);
@@ -260,17 +260,10 @@ export class InraidController
     /**
      * Mark inventory items as FiR if player survived raid, otherwise remove FiR from them
      * @param offraidData Save Progress Request
-     * @param pmcData player profile
-     * @param isPlayerScav Was the player a pScav
      */
-    protected markOrRemoveFoundInRaidItems(offraidData: ISaveProgressRequestData, pmcData: IPmcData, isPlayerScav: boolean): void
+    protected markOrRemoveFoundInRaidItems(offraidData: ISaveProgressRequestData): void
     {
-        if (offraidData.exit === PlayerRaidEndState.SURVIVED)
-        {
-            // Mark found items and replace item ID's if the player survived
-            offraidData.profile = this.inRaidHelper.addSpawnedInSessionPropertyToItems(pmcData, offraidData.profile, isPlayerScav);
-        }
-        else
+        if (offraidData.exit !== PlayerRaidEndState.SURVIVED)
         {
             // Remove FIR status if the player havn't survived
             offraidData.profile = this.inRaidHelper.removeSpawnedInSessionPropertyFromItems(offraidData.profile);
