@@ -240,6 +240,14 @@ export class InventoryHelper
                 {
                     upd[updID] = itemToAdd.itemRef.upd[updID];
                 }
+
+                if (addUpd)
+                {
+                    for (const updID in addUpd)
+                    {
+                        upd[updID] = addUpd[updID];
+                    }
+                }
             }
 
             // Item has buff, add to item being sent to player
