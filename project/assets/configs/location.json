@@ -668,4 +668,6 @@
         "laboratory": true,
         "rezervbase": true
     }
+	"minFillLooseMagazinePercent": 50,
+	"minFillStaticMagazinePercent": 50
 }
