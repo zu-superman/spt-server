@@ -534,7 +534,8 @@
       },
       "5827272a24597748c74bdeea": {
         "mod_tactical_001": [
-          "5b3a337e5acfc4704b4a19a0"
+          "5b3a337e5acfc4704b4a19a0",
+          "644a3df63b0b6f03e101e065"
         ],
         "mod_scope": [
           "584984812459776a704a82a6"
@@ -1638,7 +1639,8 @@
           "6259c2c1d714855d182bad85"
         ],
         "mod_stock": [
-          "625eb0faa6e3a82193267ad9"
+          "625eb0faa6e3a82193267ad9",
+          "6259c3387d6aab70bc23a18d"
         ],
         "mod_mount": [
           "625ed7c64d9b6612df732146"
@@ -1804,6 +1806,11 @@
       "6388c4ac8d895f557a0c6515": {
         "mod_foregrip": [
           "5fce0cf655375d18a253eff0"
+        ]
+      },
+      "6259c3387d6aab70bc23a18d": {
+        "mod_pistol_grip": [
+          "6259c3d8012d6678ec38eeb8"
         ]
       }
     },
@@ -2131,7 +2138,17 @@
         "5c1a1cc52e221602b3136e3d",
         "5cc9ad73d7f00c000e2579d4",
         "5ac78eaf5acfc4001926317a",
-        "618ba27d9008e4636a67f61d"
+        "618ba27d9008e4636a67f61d",
+        "6040de02647ad86262233012",
+        "64b9e265c94d0d15c5027e35",
+        "5dfa3d950dee1b22f862eae0",
+        "5a78832ec5856700155a6ca3",
+        "5cdeac42d7f00c000d36ba73",
+        "5fca13ca637ee0341a484f46",
+        "62ff9920fe938a24c90c10d2",
+        "5c90c3622e221601da359851",
+        "56ea7293d2720b8d4b8b45ba",
+        "5c0125fc0db834001a669aa3"
       ],
       "SecuredContainer": [
         "5a3c16fe86f77452b62de32a",
@@ -4191,7 +4208,7 @@
       "Eyewear": 77,
       "ArmBand": 0,
       "TacticalVest": 100,
-      "Backpack": 46,
+      "Backpack": 47,
       "FirstPrimaryWeapon": 100,
       "SecondPrimaryWeapon": 0,
       "Holster": 100,
@@ -4208,7 +4225,7 @@
       "mod_sight_front": 85,
       "mod_mount_000": 17,
       "mod_mount_001": 48,
-      "mod_mount_002": 16,
+      "mod_mount_002": 15,
       "mod_foregrip": 28,
       "mod_muzzle": 36,
       "mod_mount": 36,
@@ -4227,8 +4244,8 @@
       "mod_tactical_2": 100,
       "mod_tactical_003": 0,
       "mod_handguard": 100,
-      "mod_mount_004": 65,
-      "mod_equipment": 12,
+      "mod_mount_004": 66,
+      "mod_equipment": 11,
       "mod_muzzle_000": 53,
       "mod_muzzle_001": 0,
       "mod_pistol_grip": 0,
@@ -4239,32 +4256,91 @@
   "generation": {
     "items": {
       "specialItems": {
-        "min": 0,
-        "max": 0
+        "weights": {
+          "0": 1,
+          "1": 0
+        },
+        "whitelist": []
       },
       "healing": {
-        "min": 1,
-        "max": 2
+        "weights": {
+          "0": 1,
+          "1": 2,
+          "2": 1
+        },
+        "whitelist": []
       },
       "drugs": {
-        "min": 0,
-        "max": 1
+        "weights": {
+          "0": 1,
+          "1": 2,
+          "2": 0
+        },
+        "whitelist": []
       },
       "stims": {
-        "min": 0,
-        "max": 1
+        "weights": {
+          "0": 2,
+          "1": 1,
+          "2": 0
+        },
+        "whitelist": []
       },
-      "looseLoot": {
-        "min": 1,
-        "max": 4
+      "backpackLoot": {
+        "weights": {
+          "0": 1,
+          "1": 1,
+          "2": 2,
+          "3": 1,
+          "4": 1,
+          "5": 1,
+          "6": 1,
+          "7": 0
+        },
+        "whitelist": []
+      },
+      "pocketLoot": {
+        "weights": {
+          "0": 1,
+          "1": 6,
+          "2": 3,
+          "3": 1,
+          "4": 1
+        },
+        "whitelist": []
+      },
+      "vestLoot": {
+        "weights": {
+          "0": 1,
+          "1": 3,
+          "2": 5,
+          "3": 1,
+          "4": 1,
+          "5": 1,
+          "6": 1
+        },
+        "whitelist": []
       },
       "magazines": {
-        "min": 2,
-        "max": 4
+        "weights": {
+          "0": 0,
+          "1": 0,
+          "2": 1,
+          "3": 3,
+          "4": 2
+        },
+        "whitelist": []
       },
       "grenades": {
-        "min": 0,
-        "max": 5
+        "weights": {
+          "0": 1,
+          "1": 1,
+          "2": 5,
+          "3": 2,
+          "4": 1,
+          "5": 1
+        },
+        "whitelist": []
       }
     }
   }

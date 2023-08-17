@@ -334,7 +334,7 @@ export class BotInventoryGenerator
      * @param equipmentChances Chances bot can have equipment equipped
      * @param botRole assault/pmcBot/bossTagilla etc
      * @param isPmc Is the bot being generated as a pmc
-     * @param itemGenerationLimitsMinMax 
+     * @param itemGenerationWeights 
      */
     protected addWeaponAndMagazinesToInventory(
         sessionId: string,
@@ -344,7 +344,7 @@ export class BotInventoryGenerator
         equipmentChances: Chances,
         botRole: string,
         isPmc: boolean,
-        itemGenerationLimitsMinMax: Generation,
+        itemGenerationWeights: Generation,
         botLevel: number): void
     {
         const generatedWeapon = this.botWeaponGenerator.generateRandomWeapon(
@@ -359,6 +359,6 @@ export class BotInventoryGenerator
 
         botInventory.items.push(...generatedWeapon.weapon);
 
-        this.botWeaponGenerator.addExtraMagazinesToInventory(generatedWeapon, itemGenerationLimitsMinMax.items.magazines, botInventory, botRole);
+        this.botWeaponGenerator.addExtraMagazinesToInventory(generatedWeapon, itemGenerationWeights.items.magazines, botInventory, botRole);
     }
 }

@@ -1,7 +1,7 @@
 import { inject, injectable } from "tsyringe";
 
-import { MinMax } from "../models/common/MinMax";
 import { Inventory } from "../models/eft/common/tables/IBotBase";
+import { GenerationData } from "../models/eft/common/tables/IBotType";
 import { Item } from "../models/eft/common/tables/IItem";
 import { Grid, ITemplateItem } from "../models/eft/common/tables/ITemplateItem";
 import { BaseClasses } from "../models/enums/BaseClasses";
@@ -15,6 +15,7 @@ import { RandomUtil } from "../utils/RandomUtil";
 import { ContainerHelper } from "./ContainerHelper";
 import { InventoryHelper } from "./InventoryHelper";
 import { ItemHelper } from "./ItemHelper";
+import { WeightedRandomHelper } from "./WeightedRandomHelper";
 
 @injectable()
 export class BotWeaponGeneratorHelper
@@ -26,6 +27,7 @@ export class BotWeaponGeneratorHelper
         @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("InventoryHelper") protected inventoryHelper: InventoryHelper,
+        @inject("WeightedRandomHelper") protected weightedRandomHelper: WeightedRandomHelper,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("ContainerHelper") protected containerHelper: ContainerHelper
     )
@@ -33,11 +35,11 @@ export class BotWeaponGeneratorHelper
 
     /**
      * Get a randomized number of bullets for a specific magazine
-     * @param magCounts min and max count of magazines
+     * @param magCounts Weights of magazines
      * @param magTemplate magazine to generate bullet count for
      * @returns bullet count number
      */
-    public getRandomizedBulletCount(magCounts: MinMax, magTemplate: ITemplateItem): number
+    public getRandomizedBulletCount(magCounts: GenerationData, magTemplate: ITemplateItem): number
     {
         const randomizedMagazineCount = this.getRandomizedMagazineCount(magCounts);
         const parentItem = this.itemHelper.getItem(magTemplate._parent)[1];
@@ -67,10 +69,12 @@ export class BotWeaponGeneratorHelper
      * @param magCounts min and max value returned value can be between
      * @returns numerical value of magazine count
      */
-    public getRandomizedMagazineCount(magCounts: MinMax): number
+    public getRandomizedMagazineCount(magCounts: GenerationData): number
     {
-        const range = magCounts.max - magCounts.min;
-        return this.randomUtil.getBiasedRandomNumber(magCounts.min, magCounts.max, Math.round(range * 0.75), 4);
+        //const range = magCounts.max - magCounts.min;
+        //return this.randomUtil.getBiasedRandomNumber(magCounts.min, magCounts.max, Math.round(range * 0.75), 4);
+
+        return this.weightedRandomHelper.getWeightedValue(magCounts.weights);
     }
 
     /**

@@ -47,7 +47,7 @@ export class ExternalInventoryMagGen implements IInventoryMagGen
                 magazineWithAmmo,
                 inventoryMagGen.getPmcInventory());
 
-            if (!ableToFitMagazinesIntoBotInventory && i < inventoryMagGen.getMagCount().min)
+            if (!ableToFitMagazinesIntoBotInventory && i < randomizedMagazineCount)
             {
                 /* We were unable to fit at least the minimum amount of magazines,
                      * so we fallback to default magazine and try again.

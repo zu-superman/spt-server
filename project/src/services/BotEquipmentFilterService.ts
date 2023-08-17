@@ -2,7 +2,10 @@ import { inject, injectable } from "tsyringe";
 
 import { BotHelper } from "../helpers/BotHelper";
 import {
-    EquipmentChances, Generation, IBotType, MinMaxWithWhitelist, ModsChances
+    EquipmentChances, Generation,
+    GenerationData,
+    IBotType,
+    ModsChances
 } from "../models/eft/common/tables/IBotType";
 import { ConfigTypes } from "../models/enums/ConfigTypes";
 import { BotGenerationDetails } from "../models/spt/bots/BotGenerationDetails";
@@ -82,7 +85,7 @@ export class BotEquipmentFilterService
      * @param generationChanges Changes to apply
      * @param baseBotGeneration dictionary to update
      */
-    protected adjustGenerationChances(generationChanges: Record<string, MinMaxWithWhitelist>, baseBotGeneration: Generation): void
+    protected adjustGenerationChances(generationChanges: Record<string, GenerationData>, baseBotGeneration: Generation): void
     {
         if (!generationChanges)
         {
@@ -91,9 +94,7 @@ export class BotEquipmentFilterService
 
         for (const itemKey in generationChanges)
         {
-            baseBotGeneration.items[itemKey].min = generationChanges[itemKey].min;
-            baseBotGeneration.items[itemKey].max = generationChanges[itemKey].max;
-
+            baseBotGeneration.items[itemKey].weights = generationChanges[itemKey].weights;
             baseBotGeneration.items[itemKey].whitelist = generationChanges[itemKey].whitelist;
         }
     }

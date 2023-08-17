@@ -1,9 +1,11 @@
 import { inject, injectable } from "tsyringe";
 
 import { BotGeneratorHelper } from "../helpers/BotGeneratorHelper";
+import { BotHelper } from "../helpers/BotHelper";
 import { BotWeaponGeneratorHelper } from "../helpers/BotWeaponGeneratorHelper";
 import { HandbookHelper } from "../helpers/HandbookHelper";
 import { ItemHelper } from "../helpers/ItemHelper";
+import { WeightedRandomHelper } from "../helpers/WeightedRandomHelper";
 import { Inventory as PmcInventory } from "../models/eft/common/tables/IBotBase";
 import { IBotType, Inventory, ModsChances } from "../models/eft/common/tables/IBotType";
 import { Item } from "../models/eft/common/tables/IItem";
@@ -33,11 +35,13 @@ export class BotLootGenerator
         @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
+        @inject("BotHelper") protected botHelper: BotHelper,
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("HandbookHelper") protected handbookHelper: HandbookHelper,
         @inject("BotGeneratorHelper") protected botGeneratorHelper: BotGeneratorHelper,
         @inject("BotWeaponGenerator") protected botWeaponGenerator: BotWeaponGenerator,
         @inject("BotWeaponGeneratorHelper") protected botWeaponGeneratorHelper: BotWeaponGeneratorHelper,
+        @inject("WeightedRandomHelper") protected weightedRandomHelper: WeightedRandomHelper,
         @inject("BotLootCacheService") protected botLootCacheService: BotLootCacheService,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("ConfigServer") protected configServer: ConfigServer
@@ -59,20 +63,15 @@ export class BotLootGenerator
     {
         // Limits on item types to be added as loot
         const itemCounts = botJsonTemplate.generation.items;
-        
-        const nValue =  this.getBotLootNValueByRole(botRole);
-        const looseLootMin = itemCounts.looseLoot.min;
-        const looseLootMax = itemCounts.looseLoot.max;
-
-        const lootItemCount = this.getRandomisedCount(looseLootMin, looseLootMax, nValue);
-        const pocketLootCount = this.getRandomisedCount(1, 4, nValue);
-        const vestLootCount = this.getRandomisedCount(Math.round(looseLootMin / 2), Math.round(looseLootMax / 2), nValue); // Count is half what loose loot min/max is
-        const specialLootItemCount = this.getRandomisedCount(itemCounts.specialItems.min, itemCounts.specialItems.max, nValue);
-
-        const healingItemCount = this.getRandomisedCount(itemCounts.healing.min, itemCounts.healing.max, 3);
-        const drugItemCount = this.getRandomisedCount(itemCounts.drugs.min, itemCounts.drugs.max, 3);
-        const stimItemCount = this.getRandomisedCount(itemCounts.stims.min, itemCounts.stims.max, 3);
-        const grenadeCount = this.getRandomisedCount(itemCounts.grenades.min, itemCounts.grenades.max, 4);
+    
+        const backpackLootCount = this.weightedRandomHelper.getWeightedValue<number>(itemCounts.backpackLoot.weights);
+        const pocketLootCount = this.weightedRandomHelper.getWeightedValue<number>(itemCounts.pocketLoot.weights);
+        const vestLootCount = this.weightedRandomHelper.getWeightedValue<number>(itemCounts.vestLoot.weights);
+        const specialLootItemCount = this.weightedRandomHelper.getWeightedValue<number>(itemCounts.specialItems.weights);
+        const healingItemCount = this.weightedRandomHelper.getWeightedValue<number>(itemCounts.healing.weights);
+        const drugItemCount = this.weightedRandomHelper.getWeightedValue<number>(itemCounts.drugs.weights);
+        const stimItemCount = this.weightedRandomHelper.getWeightedValue<number>(itemCounts.stims.weights);
+        const grenadeCount = this.weightedRandomHelper.getWeightedValue<number>(itemCounts.grenades.weights);
 
         // Forced pmc healing loot
         if (isPmc && this.botConfig.pmc.forceHealingItemsIntoSecure)
@@ -145,7 +144,7 @@ export class BotLootGenerator
             this.addLootFromPool(
                 this.botLootCacheService.getLootFromCache(botRole, isPmc, LootCacheType.BACKPACK, botJsonTemplate),
                 [EquipmentSlots.BACKPACK],
-                lootItemCount,
+                backpackLootCount,
                 botInventory,
                 botRole,
                 true,

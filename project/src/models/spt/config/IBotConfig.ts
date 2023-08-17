@@ -1,4 +1,4 @@
-import { MinMaxWithWhitelist } from "../../../models/eft/common/tables/IBotType";
+import { GenerationData } from "../../../models/eft/common/tables/IBotType";
 import { MinMax } from "../../common/MinMax";
 import { IBaseConfig } from "./IBaseConfig";
 import { IBotDurability } from "./IBotDurability";
@@ -117,7 +117,7 @@ export interface RandomisationDetails
 {
     /** Between what levels do these randomisation setting apply to */
     levelRange: MinMax
-    generation?: Record<string, MinMaxWithWhitelist>
+    generation?: Record<string, GenerationData>
     /** Mod slots that should be fully randomisate -ignores mods from bottype.json */
     randomisedWeaponModSlots?: string[]
     /** Armor slots that should be randomised e.g. 'Headwear, Armband' */

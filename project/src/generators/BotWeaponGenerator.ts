@@ -4,10 +4,9 @@ import { BotGeneratorHelper } from "../helpers/BotGeneratorHelper";
 import { BotWeaponGeneratorHelper } from "../helpers/BotWeaponGeneratorHelper";
 import { ItemHelper } from "../helpers/ItemHelper";
 import { WeightedRandomHelper } from "../helpers/WeightedRandomHelper";
-import { MinMax } from "../models/common/MinMax";
 import { IPreset } from "../models/eft/common/IGlobals";
 import { Inventory as PmcInventory } from "../models/eft/common/tables/IBotBase";
-import { Inventory, ModsChances } from "../models/eft/common/tables/IBotType";
+import { GenerationData, Inventory, ModsChances } from "../models/eft/common/tables/IBotType";
 import { Item } from "../models/eft/common/tables/IItem";
 import { ITemplateItem } from "../models/eft/common/tables/ITemplateItem";
 import { ConfigTypes } from "../models/enums/ConfigTypes";
@@ -314,11 +313,11 @@ export class BotWeaponGenerator
      * Generates extra magazines or bullets (if magazine is internal) and adds them to TacticalVest and Pockets.
      * Additionally, adds extra bullets to SecuredContainer
      * @param generatedWeaponResult object with properties for generated weapon (weapon mods pool / weapon template / ammo tpl)
-     * @param magCounts Magazine count to add to inventory
+     * @param magWeights Magazine weights for count to add to inventory
      * @param inventory Inventory to add magazines to
      * @param botRole The bot type we're getting generating extra mags for
      */
-    public addExtraMagazinesToInventory(generatedWeaponResult: GenerateWeaponResult, magCounts: MinMax, inventory: PmcInventory, botRole: string): void
+    public addExtraMagazinesToInventory(generatedWeaponResult: GenerateWeaponResult, magWeights: GenerationData, inventory: PmcInventory, botRole: string): void
     {
         const weaponAndMods = generatedWeaponResult.weapon;
         const weaponTemplate = generatedWeaponResult.weaponTemplate;
@@ -346,7 +345,7 @@ export class BotWeaponGenerator
             this.addUbglGrenadesToBotInventory(weaponAndMods, generatedWeaponResult, inventory);
         }
 
-        const inventoryMagGenModel = new InventoryMagGen(magCounts, magTemplate, weaponTemplate, ammoTemplate, inventory);
+        const inventoryMagGenModel = new InventoryMagGen(magWeights, magTemplate, weaponTemplate, ammoTemplate, inventory);
         this.inventoryMagGenComponents.find(v => v.canHandleInventoryMagGen(inventoryMagGenModel)).process(inventoryMagGenModel);
 
         // Add x stacks of bullets to SecuredContainer (bots use a magic mag packing skill to reload instantly)
@@ -366,7 +365,11 @@ export class BotWeaponGenerator
         const ubglDbTemplate = this.itemHelper.getItem(ubglMod._tpl)[1];
 
         // Define min/max of how many grenades bot will have
-        const ubglMinMax = { min: 1, max: 2 };
+        const ubglMinMax:GenerationData = {
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            weights: {"1": 1, "2": 1},
+            whitelist: []
+        };
 
         // get ammo template from db
         const ubglAmmoDbTemplate = this.itemHelper.getItem(generatedWeaponResult.chosenUbglAmmoTpl)[1];
