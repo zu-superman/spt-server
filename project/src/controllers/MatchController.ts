@@ -191,6 +191,12 @@ export class MatchController
      */
     protected extractWasViaCar(extractName: string): boolean
     {
+        // exit name is null on death
+        if (!extractName)
+        {
+            return false;
+        }
+
         if (extractName.toLowerCase().includes("v-ex"))
         {
             return true;
