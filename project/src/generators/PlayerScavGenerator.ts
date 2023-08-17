@@ -204,8 +204,8 @@ export class PlayerScavGenerator
         // Adjust item spawn quantity values
         for (const itemLimitkey in karmaSettings.itemLimits)
         {
-            baseBotNode.generation.items[itemLimitkey].min = karmaSettings.itemLimits[itemLimitkey].min;
-            baseBotNode.generation.items[itemLimitkey].max = karmaSettings.itemLimits[itemLimitkey].max;
+            baseBotNode.generation.items[itemLimitkey] = karmaSettings.itemLimits[itemLimitkey];
+            baseBotNode.generation.items[itemLimitkey] = karmaSettings.itemLimits[itemLimitkey];
         }
 
         // Blacklist equipment

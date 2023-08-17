@@ -1,4 +1,4 @@
-import { MinMax } from "../../common/MinMax";
+import { GenerationData } from "../../../models/eft/common/tables/IBotType";
 import { IBaseConfig } from "./IBaseConfig";
 
 
@@ -25,10 +25,10 @@ export interface Modifiers
 
 export interface ItemLimits
 {
-    healing: MinMax
-    drugs: MinMax
-    stims: MinMax
-    looseLoot: MinMax
-    magazines: MinMax
-    grenades: MinMax
+    healing: GenerationData
+    drugs: GenerationData
+    stims: GenerationData
+    looseLoot: GenerationData
+    magazines: GenerationData
+    grenades: GenerationData
 }
