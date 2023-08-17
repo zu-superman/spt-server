@@ -3740,6 +3740,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 0,
@@ -3899,6 +3900,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 0,
@@ -4089,6 +4091,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 1,
@@ -4288,6 +4291,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 0,
@@ -4791,6 +4795,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 1,
@@ -5102,6 +5107,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "65352a07b534b4bc1e2af177",
             "index": 1,
@@ -5320,6 +5326,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 1,
@@ -7583,6 +7590,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 1,
@@ -7795,6 +7803,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 1,
@@ -10200,7 +10209,8 @@
                       "5e870397991fd70db46995c8",
                       "5a7828548dc32e5a9c28b516",
                       "60db29ce99594040e04c4a27",
-                      "6259b864ebedf17603599e88"
+                      "6259b864ebedf17603599e88",
+                      "64748cb8de82c85eaf0a273a"
                     ]
                   }
                 },
@@ -10578,6 +10588,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 1,
@@ -10878,6 +10889,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 1,
@@ -11781,12 +11793,18 @@
           "items": [
             {
               "_id": "6492e44bf4287b13040fc92f",
-              "_tpl": "5aafa857e5b5b00018480968"
+              "_tpl": "5aafa857e5b5b00018480968",
+              "upd": {
+                "Repairable": {
+                  "Durability": 100,
+                  "MaxDurability": 100
+                }
+              }
             },
             {
-              "_id": "6492e44bf4287b13040fc930",
-              "_tpl": "5aaf8a0be5b5b00015693243",
-              "parentId": "6492e44bf4287b13040fc92f",
+              "_id": "64de07e5f0cd00695501d4fa",
+              "_tpl": "64b9e2037fdfb81df81e3c25",
+              "parentId": "64de07e5f0cd00695501d4f9",
               "slotId": "mod_magazine"
             },
             {
@@ -11989,6 +12007,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 1,
@@ -12290,6 +12309,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 1,
@@ -12682,6 +12702,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 1,
@@ -13154,6 +13175,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 1,
@@ -13357,6 +13379,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 1,
@@ -13373,6 +13396,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "b7029e8ace70a24f70043483",
             "index": 2,
@@ -13569,6 +13593,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 1,
@@ -16389,6 +16414,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "750da1ec1325fc586ba05d07",
             "index": 1,
@@ -16616,6 +16642,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 1,
@@ -16897,6 +16924,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 0,
@@ -17108,6 +17136,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 0,
@@ -17333,6 +17362,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 0,
@@ -17479,6 +17509,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 0,
@@ -17656,6 +17687,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 0,
@@ -18043,6 +18075,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "bbe2a04bf91da66142710bc5",
             "index": 1,
@@ -18335,6 +18368,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "ee59634c7d8fa6d7b80de7b9",
             "index": 1,
@@ -19107,6 +19141,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "44e557d8e06a59d218094e4a",
             "index": 1,
@@ -19351,6 +19386,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 1,
@@ -19607,6 +19643,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 1,
@@ -19856,6 +19893,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 1,
@@ -20008,7 +20046,7 @@
             "target": [
               "5734779624597737e04bf329"
             ],
-            "value": "8",
+            "value": "15",
             "visibilityConditions": []
           },
           "dynamicLocale": false
@@ -20028,7 +20066,7 @@
             "target": [
               "5734779624597737e04bf329"
             ],
-            "value": "8",
+            "value": "15",
             "visibilityConditions": []
           },
           "dynamicLocale": false
@@ -20052,6 +20090,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 1,
@@ -20086,23 +20125,6 @@
           "index": 0,
           "type": "Experience",
           "value": "8000"
-        },
-        {
-          "findInRaid": true,
-          "id": "5acb7f3886f77417d079739a",
-          "index": 1,
-          "items": [
-            {
-              "_id": "6492e44af4287b13040fc668",
-              "_tpl": "569668774bdc2da2298b4568",
-              "upd": {
-                "StackObjectsCount": 300
-              }
-            }
-          ],
-          "target": "6492e44af4287b13040fc668",
-          "type": "Item",
-          "value": "300"
         },
         {
           "findInRaid": true,
@@ -20178,7 +20200,7 @@
           ],
           "target": "6492e44af4287b13040fc671",
           "type": "Item",
-          "unknown": true,
+          "unknown": false,
           "value": "1"
         },
         {
@@ -20186,8 +20208,8 @@
           "index": 4,
           "target": "Attention",
           "type": "Skill",
-          "unknown": true,
-          "value": "100"
+          "unknown": false,
+          "value": "300"
         },
         {
           "id": "60cc7aff179f8541b8469273",
@@ -20195,6 +20217,42 @@
           "target": "5a7c2eca46aef81a7ca2145d",
           "type": "TraderStanding",
           "value": "0.02"
+        },
+        {
+          "findInRaid": true,
+          "id": "64b6aa18dafd274049412d85",
+          "index": 6,
+          "items": [
+            {
+              "_id": "64de07e5f0cd00695501d456",
+              "_tpl": "59faff1d86f7746c51718c9c",
+              "upd": {
+                "StackObjectsCount": 2
+              }
+            }
+          ],
+          "target": "64de07e5f0cd00695501d456",
+          "type": "Item",
+          "unknown": true,
+          "value": "2"
+        },
+        {
+          "findInRaid": true,
+          "id": "64b6aa2425251516d768542a",
+          "index": 7,
+          "items": [
+            {
+              "_id": "64de07e5f0cd00695501d457",
+              "_tpl": "5c12620d86f7743f8b198b72",
+              "upd": {
+                "StackObjectsCount": 4
+              }
+            }
+          ],
+          "target": "64de07e5f0cd00695501d457",
+          "type": "Item",
+          "unknown": true,
+          "value": "4"
         }
       ]
     },
@@ -20344,6 +20402,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 1,
@@ -20622,6 +20681,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 1,
@@ -20831,6 +20891,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 1,
@@ -21064,6 +21125,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 1,
@@ -21301,6 +21363,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 1,
@@ -21659,6 +21722,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 1,
@@ -21788,6 +21852,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 1,
@@ -21804,6 +21869,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 2,
@@ -21984,6 +22050,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "d3f7f183f095b4c588d2a528",
             "index": 1,
@@ -22177,10 +22244,11 @@
         {
           "_parent": "Quest",
           "_props": {
-            "availableAfter": 0,
+            "availableAfter": 75600,
+            "dispersion": 0,
             "dynamicLocale": false,
-            "id": "51d33b2d4fad9e61441772c0",
-            "index": 1,
+            "id": "5af4136586f774551341dc75",
+            "index": 0,
             "parentId": "",
             "status": [
               4
@@ -22411,6 +22479,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "354387f784f51806bba1f17e",
             "index": 1,
@@ -23081,6 +23150,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 0,
@@ -23404,6 +23474,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 0,
@@ -30111,6 +30182,18 @@
                       ],
                       [
                         "626bb8532c923541184624b4"
+                      ],
+                      [
+                        "6478641c19d732620e045e17"
+                      ],
+                      [
+                        "64785e7c19d732620e045e15"
+                      ],
+                      [
+                        "6477772ea8a38bb2050ed4db"
+                      ],
+                      [
+                        "63fc44e2429a8a166c7f61e6"
                       ]
                     ]
                   }
@@ -30136,6 +30219,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "371c6985bbfee864186cd1b3",
             "index": 0,
@@ -30366,6 +30450,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 0,
@@ -33045,13 +33130,20 @@
                       "Head"
                     ],
                     "compareMethod": ">=",
-                    "distance": {
-                      "compareMethod": ">=",
-                      "value": 100
-                    },
                     "id": "5c0bdf4286f77454f5264f06",
                     "target": "AnyPmc",
-                    "value": "1"
+                    "value": "1",
+                    "weapon": [
+                      "627e14b21713922ded6f2c15",
+                      "5ae08f0a5acfc408fb1398a1",
+                      "55801eed4bdc2d89578b4588",
+                      "588892092459774ac91d4b11",
+                      "5df24cf80dee1b22f862e9bc",
+                      "5bfea6e90db834001b7347f3",
+                      "61f7c9e189e6fb1a5e3ea78d",
+                      "5bfd297f0db834001a669119",
+                      "5de652c31b7e3716273428be"
+                    ]
                   }
                 },
                 {
@@ -33073,7 +33165,7 @@
             "oneSessionOnly": false,
             "parentId": "",
             "type": "Elimination",
-            "value": "3",
+            "value": "5",
             "visibilityConditions": []
           },
           "dynamicLocale": false
@@ -33090,13 +33182,20 @@
                       "Head"
                     ],
                     "compareMethod": ">=",
-                    "distance": {
-                      "compareMethod": ">=",
-                      "value": 100
-                    },
                     "id": "5c137baa86f774288427ab60",
                     "target": "AnyPmc",
-                    "value": "1"
+                    "value": "1",
+                    "weapon": [
+                      "627e14b21713922ded6f2c15",
+                      "5ae08f0a5acfc408fb1398a1",
+                      "55801eed4bdc2d89578b4588",
+                      "588892092459774ac91d4b11",
+                      "5df24cf80dee1b22f862e9bc",
+                      "5bfea6e90db834001b7347f3",
+                      "61f7c9e189e6fb1a5e3ea78d",
+                      "5bfd297f0db834001a669119",
+                      "5de652c31b7e3716273428be"
+                    ]
                   }
                 },
                 {
@@ -33118,7 +33217,7 @@
             "oneSessionOnly": false,
             "parentId": "",
             "type": "Elimination",
-            "value": "3",
+            "value": "5",
             "visibilityConditions": []
           },
           "dynamicLocale": false
@@ -33135,13 +33234,20 @@
                       "Head"
                     ],
                     "compareMethod": ">=",
-                    "distance": {
-                      "compareMethod": ">=",
-                      "value": 100
-                    },
                     "id": "5c137f1086f7747ae43f97bc",
                     "target": "AnyPmc",
-                    "value": "1"
+                    "value": "1",
+                    "weapon": [
+                      "627e14b21713922ded6f2c15",
+                      "5ae08f0a5acfc408fb1398a1",
+                      "55801eed4bdc2d89578b4588",
+                      "588892092459774ac91d4b11",
+                      "5df24cf80dee1b22f862e9bc",
+                      "5bfea6e90db834001b7347f3",
+                      "61f7c9e189e6fb1a5e3ea78d",
+                      "5bfd297f0db834001a669119",
+                      "5de652c31b7e3716273428be"
+                    ]
                   }
                 },
                 {
@@ -33163,7 +33269,7 @@
             "oneSessionOnly": false,
             "parentId": "",
             "type": "Elimination",
-            "value": "3",
+            "value": "5",
             "visibilityConditions": []
           },
           "dynamicLocale": false
@@ -33180,13 +33286,20 @@
                       "Head"
                     ],
                     "compareMethod": ">=",
-                    "distance": {
-                      "compareMethod": ">=",
-                      "value": 100
-                    },
                     "id": "5c137f7c86f7747ae07c5491",
                     "target": "AnyPmc",
-                    "value": "1"
+                    "value": "1",
+                    "weapon": [
+                      "627e14b21713922ded6f2c15",
+                      "5ae08f0a5acfc408fb1398a1",
+                      "55801eed4bdc2d89578b4588",
+                      "588892092459774ac91d4b11",
+                      "5df24cf80dee1b22f862e9bc",
+                      "5bfea6e90db834001b7347f3",
+                      "61f7c9e189e6fb1a5e3ea78d",
+                      "5bfd297f0db834001a669119",
+                      "5de652c31b7e3716273428be"
+                    ]
                   }
                 },
                 {
@@ -33208,7 +33321,7 @@
             "oneSessionOnly": false,
             "parentId": "",
             "type": "Elimination",
-            "value": "3",
+            "value": "5",
             "visibilityConditions": []
           },
           "dynamicLocale": false
@@ -33225,13 +33338,20 @@
                       "Head"
                     ],
                     "compareMethod": ">=",
-                    "distance": {
-                      "compareMethod": ">=",
-                      "value": 100
-                    },
                     "id": "629f10cd90948017ee17c2c0",
                     "target": "AnyPmc",
-                    "value": "1"
+                    "value": "1",
+                    "weapon": [
+                      "627e14b21713922ded6f2c15",
+                      "5ae08f0a5acfc408fb1398a1",
+                      "55801eed4bdc2d89578b4588",
+                      "588892092459774ac91d4b11",
+                      "5df24cf80dee1b22f862e9bc",
+                      "5bfea6e90db834001b7347f3",
+                      "61f7c9e189e6fb1a5e3ea78d",
+                      "5bfd297f0db834001a669119",
+                      "5de652c31b7e3716273428be"
+                    ]
                   }
                 },
                 {
@@ -33254,7 +33374,7 @@
             "oneSessionOnly": false,
             "parentId": "",
             "type": "Elimination",
-            "value": "3",
+            "value": "5",
             "visibilityConditions": []
           },
           "dynamicLocale": false
@@ -33271,13 +33391,20 @@
                       "Head"
                     ],
                     "compareMethod": ">=",
-                    "distance": {
-                      "compareMethod": ">=",
-                      "value": 100
-                    },
                     "id": "63aec70a4666ee24a345670c",
                     "target": "AnyPmc",
-                    "value": "1"
+                    "value": "1",
+                    "weapon": [
+                      "627e14b21713922ded6f2c15",
+                      "5ae08f0a5acfc408fb1398a1",
+                      "55801eed4bdc2d89578b4588",
+                      "588892092459774ac91d4b11",
+                      "5df24cf80dee1b22f862e9bc",
+                      "5bfea6e90db834001b7347f3",
+                      "61f7c9e189e6fb1a5e3ea78d",
+                      "5bfd297f0db834001a669119",
+                      "5de652c31b7e3716273428be"
+                    ]
                   }
                 },
                 {
@@ -33300,7 +33427,60 @@
             "oneSessionOnly": false,
             "parentId": "",
             "type": "Elimination",
-            "value": "3",
+            "value": "5",
+            "visibilityConditions": []
+          },
+          "dynamicLocale": false
+        },
+        {
+          "_parent": "CounterCreator",
+          "_props": {
+            "counter": {
+              "conditions": [
+                {
+                  "_parent": "Kills",
+                  "_props": {
+                    "bodyPart": [
+                      "Head"
+                    ],
+                    "compareMethod": ">=",
+                    "id": "64b69506d5887c2ce9561158",
+                    "target": "AnyPmc",
+                    "value": "1",
+                    "weapon": [
+                      "627e14b21713922ded6f2c15",
+                      "5ae08f0a5acfc408fb1398a1",
+                      "55801eed4bdc2d89578b4588",
+                      "588892092459774ac91d4b11",
+                      "5df24cf80dee1b22f862e9bc",
+                      "5bfea6e90db834001b7347f3",
+                      "61f7c9e189e6fb1a5e3ea78d",
+                      "5bfd297f0db834001a669119",
+                      "5de652c31b7e3716273428be"
+                    ]
+                  }
+                },
+                {
+                  "_parent": "Location",
+                  "_props": {
+                    "dynamicLocale": false,
+                    "id": "64b69518f83adb775979f8bb",
+                    "target": [
+                      "Interchange"
+                    ]
+                  }
+                }
+              ],
+              "id": "64b694c8a857ea477002a409"
+            },
+            "doNotResetIfCounterCompleted": false,
+            "dynamicLocale": false,
+            "id": "64b694c8a857ea477002a408",
+            "index": 6,
+            "oneSessionOnly": false,
+            "parentId": "",
+            "type": "Elimination",
+            "value": "5",
             "visibilityConditions": []
           },
           "dynamicLocale": false
@@ -33345,7 +33525,7 @@
           "id": "60cc7faf3e4e974efa345d77",
           "index": 0,
           "type": "Experience",
-          "value": "11600"
+          "value": 12500
         },
         {
           "findInRaid": true,
@@ -33356,115 +33536,13 @@
               "_id": "6492e44af4287b13040fc8e5",
               "_tpl": "5449016a4bdc2d6f028b456f",
               "upd": {
-                "StackObjectsCount": 100000
+                "StackObjectsCount": 150000
               }
             }
           ],
           "target": "6492e44af4287b13040fc8e5",
           "type": "Item",
-          "value": "100000"
-        },
-        {
-          "findInRaid": true,
-          "id": "5c18d5e886f774397f043e99",
-          "index": 2,
-          "items": [
-            {
-              "_id": "6492e44af4287b13040fc8e6",
-              "_tpl": "5bae13ded4351e44f824bf38",
-              "upd": {
-                "StackObjectsCount": 4
-              }
-            }
-          ],
-          "target": "6492e44af4287b13040fc8e6",
-          "type": "Item",
-          "value": "4"
-        },
-        {
-          "findInRaid": true,
-          "id": "60d47476401d874962160b84",
-          "index": 3,
-          "items": [
-            {
-              "_id": "6492e44af4287b13040fc8e7",
-              "_tpl": "560d61e84bdc2da74d8b4571",
-              "upd": {
-                "StackObjectsCount": 50
-              }
-            }
-          ],
-          "target": "6492e44af4287b13040fc8e7",
-          "type": "Item",
-          "value": "50"
-        },
-        {
-          "findInRaid": true,
-          "id": "5c18dc5c86f77467c259d53b",
-          "index": 4,
-          "items": [
-            {
-              "_id": "6492e44af4287b13040fc8e8",
-              "_tpl": "5ae08f0a5acfc408fb1398a1",
-              "upd": {
-                "FireMode": {
-                  "FireMode": "single"
-                },
-                "StackObjectsCount": 1
-              }
-            },
-            {
-              "_id": "6492e44af4287b13040fc8e9",
-              "_tpl": "5bae13ded4351e44f824bf38",
-              "parentId": "6492e44af4287b13040fc8e8",
-              "slotId": "mod_magazine"
-            },
-            {
-              "_id": "6492e44af4287b13040fc8ea",
-              "_tpl": "5bae13bad4351e00320204af",
-              "parentId": "6492e44af4287b13040fc8e8",
-              "slotId": "mod_stock"
-            },
-            {
-              "_id": "6492e44af4287b13040fc8eb",
-              "_tpl": "5ae09bff5acfc4001562219d",
-              "parentId": "6492e44af4287b13040fc8e8",
-              "slotId": "mod_barrel"
-            },
-            {
-              "_id": "6492e44af4287b13040fc8ec",
-              "_tpl": "5ae099875acfc4001714e593",
-              "parentId": "6492e44af4287b13040fc8eb",
-              "slotId": "mod_sight_front"
-            },
-            {
-              "_id": "6492e44af4287b13040fc8ed",
-              "_tpl": "5bbdb811d4351e45020113c7",
-              "parentId": "6492e44af4287b13040fc8eb",
-              "slotId": "mod_sight_rear"
-            },
-            {
-              "_id": "6492e44af4287b13040fc8ee",
-              "_tpl": "5aa66a9be5b5b0214e506e89",
-              "parentId": "6492e44af4287b13040fc8ed",
-              "slotId": "mod_scope"
-            },
-            {
-              "_id": "6492e44af4287b13040fc8ef",
-              "_tpl": "5aa66be6e5b5b0214e506e97",
-              "parentId": "6492e44af4287b13040fc8ee",
-              "slotId": "mod_scope"
-            },
-            {
-              "_id": "6492e44af4287b13040fc8f0",
-              "_tpl": "5b86a0e586f7745b600ccb23",
-              "parentId": "6492e44af4287b13040fc8eb",
-              "slotId": "mod_muzzle"
-            }
-          ],
-          "target": "6492e44af4287b13040fc8e8",
-          "type": "Item",
-          "value": "1"
+          "value": "150000"
         },
         {
           "id": "5c20cc1086f7740cfb37b111",
@@ -33478,14 +33556,323 @@
           "loyaltyLevel": 3,
           "target": "6492e44af4287b13040fc8f1",
           "traderId": "5a7c2eca46aef81a7ca2145d",
-          "type": "AssortmentUnlock"
+          "type": "AssortmentUnlock",
+          "unknown": false
+        },
+        {
+          "id": "64b69a71d5887c2ce956115a",
+          "index": 6,
+          "items": [
+            {
+              "_id": "64de07e5f0cd00695501d49e",
+              "_tpl": "6176aca650224f204c1da3fb",
+              "upd": {
+                "FireMode": {
+                  "FireMode": "single"
+                }
+              }
+            },
+            {
+              "_id": "64de07e5f0cd00695501d49f",
+              "_tpl": "6193dcd0f8ee7e52e4210a28",
+              "parentId": "64de07e5f0cd00695501d49e",
+              "slotId": "mod_pistol_grip"
+            },
+            {
+              "_id": "64de07e5f0cd00695501d4a0",
+              "_tpl": "617131a4568c120fdd29482d",
+              "parentId": "64de07e5f0cd00695501d49e",
+              "slotId": "mod_magazine"
+            },
+            {
+              "_id": "64de07e5f0cd00695501d4a1",
+              "_tpl": "617153016c780c1e710c9a2f",
+              "parentId": "64de07e5f0cd00695501d49e",
+              "slotId": "mod_stock"
+            },
+            {
+              "_id": "64de07e5f0cd00695501d4a2",
+              "_tpl": "617155ee50224f204c1da3cd",
+              "parentId": "64de07e5f0cd00695501d4a1",
+              "slotId": "mod_stock_000"
+            },
+            {
+              "_id": "64de07e5f0cd00695501d4a3",
+              "_tpl": "61715e7e67085e45ef140b33",
+              "parentId": "64de07e5f0cd00695501d4a2",
+              "slotId": "mod_stock_000"
+            },
+            {
+              "_id": "64de07e5f0cd00695501d4a4",
+              "_tpl": "61713a8fd92c473c770214a4",
+              "parentId": "64de07e5f0cd00695501d49e",
+              "slotId": "mod_reciever"
+            },
+            {
+              "_id": "64de07e5f0cd00695501d4a5",
+              "_tpl": "61713cc4d8e3106d9806c109",
+              "parentId": "64de07e5f0cd00695501d4a4",
+              "slotId": "mod_scope"
+            },
+            {
+              "_id": "64de07e5f0cd00695501d4a6",
+              "_tpl": "61714eec290d254f5e6b2ffc",
+              "parentId": "64de07e5f0cd00695501d4a5",
+              "slotId": "mod_scope_000"
+            },
+            {
+              "_id": "64de07e5f0cd00695501d4a7",
+              "_tpl": "61714b2467085e45ef140b2c",
+              "parentId": "64de07e5f0cd00695501d4a5",
+              "slotId": "mod_scope_001"
+            },
+            {
+              "_id": "64de07e5f0cd00695501d4a8",
+              "_tpl": "58d399e486f77442e0016fe7",
+              "parentId": "64de07e5f0cd00695501d4a7",
+              "slotId": "mod_scope"
+            },
+            {
+              "_id": "64de07e5f0cd00695501d4a9",
+              "_tpl": "61702be9faa1272e431522c3",
+              "parentId": "64de07e5f0cd00695501d4a4",
+              "slotId": "mod_barrel"
+            },
+            {
+              "_id": "64de07e5f0cd00695501d4aa",
+              "_tpl": "61713308d92c473c770214a0",
+              "parentId": "64de07e5f0cd00695501d4a9",
+              "slotId": "mod_muzzle"
+            },
+            {
+              "_id": "64de07e5f0cd00695501d4ab",
+              "_tpl": "6171367e1cb55961fa0fdb36",
+              "parentId": "64de07e5f0cd00695501d4aa",
+              "slotId": "mod_muzzle"
+            },
+            {
+              "_id": "64de07e5f0cd00695501d4ac",
+              "_tpl": "61702f1b67085e45ef140b26",
+              "parentId": "64de07e5f0cd00695501d4a9",
+              "slotId": "mod_gas_block"
+            },
+            {
+              "_id": "64de07e5f0cd00695501d4ad",
+              "_tpl": "61703001d92c473c77021497",
+              "parentId": "64de07e5f0cd00695501d4a4",
+              "slotId": "mod_handguard"
+            },
+            {
+              "_id": "64de07e5f0cd00695501d4ae",
+              "_tpl": "619386379fb0c665d5490dbe",
+              "parentId": "64de07e5f0cd00695501d4ad",
+              "slotId": "mod_foregrip"
+            },
+            {
+              "_id": "64de07e5f0cd00695501d4af",
+              "_tpl": "5bb20e49d4351e3bac1212de",
+              "parentId": "64de07e5f0cd00695501d4a4",
+              "slotId": "mod_sight_rear"
+            },
+            {
+              "_id": "64de07e5f0cd00695501d4b0",
+              "_tpl": "61702d8a67085e45ef140b24",
+              "parentId": "64de07e5f0cd00695501d49e",
+              "slotId": "mod_charge"
+            }
+          ],
+          "loyaltyLevel": 4,
+          "target": "64de07e5f0cd00695501d49e",
+          "traderId": "5c0647fdd443bc2504c2d371",
+          "type": "AssortmentUnlock",
+          "unknown": false
+        },
+        {
+          "findInRaid": true,
+          "id": "64b697ebc3abf20a9660daaa",
+          "index": 7,
+          "items": [
+            {
+              "_id": "64de07e5f0cd00695501d4b1",
+              "_tpl": "6176aca650224f204c1da3fb",
+              "upd": {
+                "FireMode": {
+                  "FireMode": "single"
+                },
+                "StackObjectsCount": 1
+              }
+            },
+            {
+              "_id": "64de07e5f0cd00695501d4b2",
+              "_tpl": "6193dcd0f8ee7e52e4210a28",
+              "parentId": "64de07e5f0cd00695501d4b1",
+              "slotId": "mod_pistol_grip"
+            },
+            {
+              "_id": "64de07e5f0cd00695501d4b3",
+              "_tpl": "617131a4568c120fdd29482d",
+              "parentId": "64de07e5f0cd00695501d4b1",
+              "slotId": "mod_magazine"
+            },
+            {
+              "_id": "64de07e5f0cd00695501d4b4",
+              "_tpl": "617153016c780c1e710c9a2f",
+              "parentId": "64de07e5f0cd00695501d4b1",
+              "slotId": "mod_stock"
+            },
+            {
+              "_id": "64de07e5f0cd00695501d4b5",
+              "_tpl": "617155ee50224f204c1da3cd",
+              "parentId": "64de07e5f0cd00695501d4b4",
+              "slotId": "mod_stock_000"
+            },
+            {
+              "_id": "64de07e5f0cd00695501d4b6",
+              "_tpl": "61715e7e67085e45ef140b33",
+              "parentId": "64de07e5f0cd00695501d4b5",
+              "slotId": "mod_stock_000"
+            },
+            {
+              "_id": "64de07e5f0cd00695501d4b7",
+              "_tpl": "61713a8fd92c473c770214a4",
+              "parentId": "64de07e5f0cd00695501d4b1",
+              "slotId": "mod_reciever"
+            },
+            {
+              "_id": "64de07e5f0cd00695501d4b8",
+              "_tpl": "61713cc4d8e3106d9806c109",
+              "parentId": "64de07e5f0cd00695501d4b7",
+              "slotId": "mod_scope"
+            },
+            {
+              "_id": "64de07e5f0cd00695501d4b9",
+              "_tpl": "61714eec290d254f5e6b2ffc",
+              "parentId": "64de07e5f0cd00695501d4b8",
+              "slotId": "mod_scope_000"
+            },
+            {
+              "_id": "64de07e5f0cd00695501d4ba",
+              "_tpl": "61714b2467085e45ef140b2c",
+              "parentId": "64de07e5f0cd00695501d4b8",
+              "slotId": "mod_scope_001"
+            },
+            {
+              "_id": "64de07e5f0cd00695501d4bb",
+              "_tpl": "58d399e486f77442e0016fe7",
+              "parentId": "64de07e5f0cd00695501d4ba",
+              "slotId": "mod_scope"
+            },
+            {
+              "_id": "64de07e5f0cd00695501d4bc",
+              "_tpl": "61702be9faa1272e431522c3",
+              "parentId": "64de07e5f0cd00695501d4b7",
+              "slotId": "mod_barrel"
+            },
+            {
+              "_id": "64de07e5f0cd00695501d4bd",
+              "_tpl": "61713308d92c473c770214a0",
+              "parentId": "64de07e5f0cd00695501d4bc",
+              "slotId": "mod_muzzle"
+            },
+            {
+              "_id": "64de07e5f0cd00695501d4be",
+              "_tpl": "6171367e1cb55961fa0fdb36",
+              "parentId": "64de07e5f0cd00695501d4bd",
+              "slotId": "mod_muzzle"
+            },
+            {
+              "_id": "64de07e5f0cd00695501d4bf",
+              "_tpl": "61702f1b67085e45ef140b26",
+              "parentId": "64de07e5f0cd00695501d4bc",
+              "slotId": "mod_gas_block"
+            },
+            {
+              "_id": "64de07e5f0cd00695501d4c0",
+              "_tpl": "61703001d92c473c77021497",
+              "parentId": "64de07e5f0cd00695501d4b7",
+              "slotId": "mod_handguard"
+            },
+            {
+              "_id": "64de07e5f0cd00695501d4c1",
+              "_tpl": "619386379fb0c665d5490dbe",
+              "parentId": "64de07e5f0cd00695501d4c0",
+              "slotId": "mod_foregrip"
+            },
+            {
+              "_id": "64de07e5f0cd00695501d4c2",
+              "_tpl": "5bb20e49d4351e3bac1212de",
+              "parentId": "64de07e5f0cd00695501d4b7",
+              "slotId": "mod_sight_rear"
+            },
+            {
+              "_id": "64de07e5f0cd00695501d4c3",
+              "_tpl": "61702d8a67085e45ef140b24",
+              "parentId": "64de07e5f0cd00695501d4b1",
+              "slotId": "mod_charge"
+            }
+          ],
+          "target": "64de07e5f0cd00695501d4b1",
+          "type": "Item",
+          "value": "1"
+        },
+        {
+          "findInRaid": true,
+          "id": "64b697fd3e349c7dbd06bd18",
+          "index": 8,
+          "items": [
+            {
+              "_id": "64de07e5f0cd00695501d4c4",
+              "_tpl": "617131a4568c120fdd29482d",
+              "upd": {
+                "StackObjectsCount": 2
+              }
+            }
+          ],
+          "target": "64de07e5f0cd00695501d4c4",
+          "type": "Item",
+          "value": "2"
+        },
+        {
+          "findInRaid": true,
+          "id": "64b6980ed5dd0711c53a8157",
+          "index": 9,
+          "items": [
+            {
+              "_id": "64de07e5f0cd00695501d4c5",
+              "_tpl": "5efb0c1bd79ff02a1f5e68d9",
+              "upd": {
+                "StackObjectsCount": 40
+              }
+            }
+          ],
+          "target": "64de07e5f0cd00695501d4c5",
+          "type": "Item",
+          "value": "40"
+        },
+        {
+          "findInRaid": true,
+          "id": "64b69820b24b672b97795057",
+          "index": 10,
+          "items": [
+            {
+              "_id": "64de07e5f0cd00695501d4c6",
+              "_tpl": "5d235b4d86f7742e017bc88a",
+              "upd": {
+                "StackObjectsCount": 3
+              }
+            }
+          ],
+          "target": "64de07e5f0cd00695501d4c6",
+          "type": "Item",
+          "unknown": true,
+          "value": "3"
         },
         {
           "id": "5f2480ecef1e594955237bfe",
           "index": 6,
           "target": "Sniper",
           "type": "Skill",
-          "value": "100"
+          "value": "500"
         },
         {
           "id": "60cc7fc46a2a1958fc523219",
@@ -34756,6 +35143,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 1,
@@ -43076,6 +43464,21 @@
                       ],
                       [
                         "63737f448b28897f2802b874"
+                      ],
+                      [
+                        "64be79c487d1510151095552"
+                      ],
+                      [
+                        "64be79e2bf8412471d0d9bcc"
+                      ],
+                      [
+                        "64abd93857958b4249003418"
+                      ],
+                      [
+                        "64a5366719bab53bd203bf33"
+                      ],
+                      [
+                        "64a536392d2c4e6e970f4121"
                       ]
                     ],
                     "id": "5d25af8586f77443fe4569c4"
@@ -44370,6 +44773,12 @@
                       ],
                       [
                         "609bab8b455afd752b2e6138"
+                      ],
+                      [
+                        "6478641c19d732620e045e17"
+                      ],
+                      [
+                        "63fc44e2429a8a166c7f61e6"
                       ]
                     ],
                     "id": "5d2f573986f7745e043a808d"
@@ -50909,6 +51318,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 0,
@@ -51154,6 +51564,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 0,
@@ -51640,6 +52051,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 0,
@@ -51656,6 +52068,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "702db2643a782e64eac4a279",
             "index": 1,
@@ -53291,6 +53704,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 1,
@@ -53562,6 +53976,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 1,
@@ -54239,6 +54654,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "c38640ea56b0c11903d4808d",
             "index": 1,
@@ -54255,6 +54671,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "839fc28d74585723007f9d71",
             "index": 2,
@@ -54418,6 +54835,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 1,
@@ -54865,6 +55283,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 1,
@@ -55159,6 +55578,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 1,
@@ -57672,6 +58092,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 1,
@@ -61323,6 +61744,19 @@
             "visibilityConditions": []
           },
           "dynamicLocale": false
+        },
+        {
+          "_parent": "Level",
+          "_props": {
+            "compareMethod": ">=",
+            "dynamicLocale": false,
+            "id": "61ad5cdc118c386d912fd9b7",
+            "index": 1,
+            "parentId": "",
+            "value": 17,
+            "visibilityConditions": []
+          },
+          "dynamicLocale": false
         }
       ],
       "Fail": []
@@ -61457,6 +61891,19 @@
               4
             ],
             "target": "5a03153686f77442d90e2171",
+            "visibilityConditions": []
+          },
+          "dynamicLocale": false
+        },
+        {
+          "_parent": "Level",
+          "_props": {
+            "compareMethod": ">=",
+            "dynamicLocale": false,
+            "id": "61b24f9104363f7b1215529d",
+            "index": 1,
+            "parentId": "",
+            "value": 15,
             "visibilityConditions": []
           },
           "dynamicLocale": false
@@ -63097,6 +63544,19 @@
               4
             ],
             "target": "5d25e48186f77443e625e386",
+            "visibilityConditions": []
+          },
+          "dynamicLocale": false
+        },
+        {
+          "_parent": "Level",
+          "_props": {
+            "compareMethod": ">=",
+            "dynamicLocale": false,
+            "id": "61ad52a14cce5e7e040ad758",
+            "index": 1,
+            "parentId": "",
+            "value": 20,
             "visibilityConditions": []
           },
           "dynamicLocale": false
@@ -77018,6 +77478,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "7d84be70caa37a9c95eaccc9",
             "index": 1,
@@ -80594,5 +81055,5 @@
     "templateId": "649af47d717cb30e7e4b5e26",
     "traderId": "58330581ace78e27b8b10cee",
     "type": "Elimination"
-                  }
-                }
+  }
+}
