@@ -255,10 +255,16 @@ export class InventoryController
             // No stackcount on destination, add one
             destinationItem.upd = { StackObjectsCount: 1 };
         }
-        else if (!(sourceItem.upd?.StackObjectsCount))
+
+        if (!sourceItem.upd)
         {
-            // No stackcount on source, add one
-            sourceItem.upd = { StackObjectsCount: 1 };
+            sourceItem.upd = {
+                StackObjectsCount: 1
+            };
+        }
+        else if (!sourceItem.upd.StackObjectsCount)
+        {
+            sourceItem.upd.StackObjectsCount = 1;
         }
 
         destinationItem.upd.StackObjectsCount += sourceItem.upd.StackObjectsCount; // Add source stackcount to destination
