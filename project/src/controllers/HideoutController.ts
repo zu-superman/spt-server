@@ -205,9 +205,7 @@ export class HideoutController
         // Upgrade includes a container improvement/addition
         if (hideoutStage?.container)
         {
-            this.addContainerImprovementToProfile(pmcData, profileHideoutArea, hideoutData, hideoutStage);
-
-            this.addContainerUpgradeToClientOutput(output, sessionID, profileHideoutArea, hideoutData, hideoutStage);
+            this.addContainerImprovementToProfile(output, sessionID, pmcData, profileHideoutArea, hideoutData, hideoutStage);
         }
 
         // Upgrading water collector / med station
@@ -240,22 +238,45 @@ export class HideoutController
         }
     }
 
-    protected addContainerImprovementToProfile(pmcData: IPmcData, profileHideoutArea: HideoutArea, dbHideoutData: IHideoutArea, hideoutStage: Stage): void
+    /**
+     * 
+     * @param pmcData Profile to edit
+     * @param output Object to send back to client
+     * @param sessionID Session/player id
+     * @param profileHideoutArea Current hideout data for profile
+     * @param dbHideoutArea Hideout area being upgraded
+     * @param hideoutStage Stage hideout area is being upgraded to
+     */
+    protected addContainerImprovementToProfile(output: IItemEventRouterResponse, sessionID: string, pmcData: IPmcData, profileHideoutArea: HideoutArea, dbHideoutArea: IHideoutArea, hideoutStage: Stage): void
     {
-        // Set value to be _id of hideout area
-        pmcData.Inventory.hideoutAreaStashes[profileHideoutArea.type] = dbHideoutData._id;
+        // Add key/value to `hideoutAreaStashes` dictionary - used to link hideout area to inventory stash by its id
+        if (!pmcData.Inventory.hideoutAreaStashes[dbHideoutArea.type])
+        {
+            pmcData.Inventory.hideoutAreaStashes[dbHideoutArea.type] = dbHideoutArea._id;
+        }
 
-        // Some areas like the gun stand have a child area linked to it
-        const childDbArea = this.databaseServer.getTables().hideout.areas.find(x => x.parentArea === dbHideoutData._id);
+        // Add/upgrade stash item in player inventory
+        this.addUpdateInventoryItemToProfile(pmcData, dbHideoutArea, hideoutStage);
 
-        // Look for existing stash object in items and update/add
-        this.addUpdateInventoryItemToProfile(pmcData, dbHideoutData, hideoutStage);
+        // Inform client of changes
+        this.addContainerUpgradeToClientOutput(output, sessionID, dbHideoutArea.type, dbHideoutArea, hideoutStage);
 
-        // Upgrade child area
+        // Some areas like gun stand have a child area linked to it, it needs to do the same as above
+        const childDbArea = this.databaseServer.getTables().hideout.areas.find(x => x.parentArea === dbHideoutArea._id);
         if (childDbArea)
         {
+            // Add key/value to `hideoutAreaStashes` dictionary - used to link hideout area to inventory stash by its id
+            if (!pmcData.Inventory.hideoutAreaStashes[childDbArea.type])
+            {
+                pmcData.Inventory.hideoutAreaStashes[childDbArea.type] = childDbArea._id;
+            }
+
+            // Add/upgrade stash item in player inventory
             const childAreaStage = childDbArea.stages[profileHideoutArea.level];
             this.addUpdateInventoryItemToProfile(pmcData, childDbArea, childAreaStage);
+
+            // Inform client of the changes
+            this.addContainerUpgradeToClientOutput(output, sessionID, childDbArea.type, dbHideoutArea, hideoutStage);
         }
     }
 
@@ -275,23 +296,29 @@ export class HideoutController
 
             return;
         }
-        else
-        {
-            // Add new item as none exists
-            pmcData.Inventory.items.push({ _id: dbHideoutData._id, _tpl: hideoutStage.container });
-        }
+
+        // Add new item as none exists
+        pmcData.Inventory.items.push({ _id: dbHideoutData._id, _tpl: hideoutStage.container });
     }
 
-    protected addContainerUpgradeToClientOutput(output: IItemEventRouterResponse, sessionID: string, hideoutArea: HideoutArea, hideoutData: IHideoutArea, hideoutStage: Stage): void
+    /**
+     * 
+     * @param output Objet to send to client
+     * @param sessionID Session/player id
+     * @param areaType Hideout area that had stash added
+     * @param hideoutDbData Hideout area that caused addition of stash
+     * @param hideoutStage Hideout area upgraded to this
+     */
+    protected addContainerUpgradeToClientOutput(output: IItemEventRouterResponse, sessionID: string, areaType: HideoutAreas, hideoutDbData: IHideoutArea, hideoutStage: Stage): void
     {
         if (!output.profileChanges[sessionID].changedHideoutStashes)
         {
             output.profileChanges[sessionID].changedHideoutStashes = {};
         }
 
-        output.profileChanges[sessionID].changedHideoutStashes[hideoutArea.type] =
+        output.profileChanges[sessionID].changedHideoutStashes[areaType] =
         {
-            Id: hideoutData._id,
+            Id: hideoutDbData._id,
             Tpl: hideoutStage.container
         };
     }
