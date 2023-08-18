@@ -247,10 +247,10 @@ export class InventoryController
             const errorMessage = (`Unable to merge stacks as destination item: ${body.with} cannot be found`);
             this.logger.error(errorMessage);
 
-            return this.httpResponseUtil.appendErrorToOutput(output, errorMessage);
+            //return this.httpResponseUtil.appendErrorToOutput(output, errorMessage);
         }
 
-        if (!(destinationItem.upd?.StackObjectsCount))
+        if (destinationItem && !(destinationItem.upd?.StackObjectsCount))
         {
             // No stackcount on destination, add one
             destinationItem.upd = { StackObjectsCount: 1 };
@@ -261,7 +261,11 @@ export class InventoryController
             sourceItem.upd = { StackObjectsCount: 1 };
         }
 
-        destinationItem.upd.StackObjectsCount += sourceItem.upd.StackObjectsCount; // Add source stackcount to destination
+        if (destinationItem)
+        {
+            destinationItem.upd.StackObjectsCount += sourceItem.upd.StackObjectsCount; // Add source stackcount to destination
+        }
+        
         output.profileChanges[sessionID].items.del.push({ _id: sourceItem._id }); // Inform client source item being deleted
         inventoryItems.to.splice(inventoryItems.to.findIndex(x => x._id === sourceItem._id), 1); // remove source item from pmc inventory
 
