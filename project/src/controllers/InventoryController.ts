@@ -167,11 +167,11 @@ export class InventoryController
         // Changes made to result apply to character inventory
         const inventoryItems = this.inventoryHelper.getOwnerInventoryItems(request, sessionID);
 
-        // handle cartridge edge-case
+        // Handle cartridge edge-case
         if (!request.container.location && request.container.container === "cartridges")
         {
             const matchingItems = inventoryItems.to.filter(x => x.parentId === request.container.id);
-            request.container.location = matchingItems.length; // wrong location for first cartridge
+            request.container.location = matchingItems.length; // Wrong location for first cartridge
         }
 
         // The item being merged has three possible sources: pmc, scav or mail, getOwnerInventoryItems() handles getting correct one
@@ -184,21 +184,28 @@ export class InventoryController
             return this.httpResponseUtil.appendErrorToOutput(output, errorMessage);
         }
 
+        // Create new upd object that retains properties of original upd + new stack count size
+        const updatedUpd = this.jsonUtil.clone(itemToSplit.upd);
+        updatedUpd.StackObjectsCount = request.count;
+
+        // Remove split item count from source stack
         itemToSplit.upd.StackObjectsCount -= request.count;
 
+        // Inform client of change
         output.profileChanges[sessionID].items.new.push({
             _id: request.newItem,
             _tpl: itemToSplit._tpl,
-            upd: { StackObjectsCount: request.count }
+            upd: updatedUpd
         });
 
+        // Update player inventory
         inventoryItems.to.push({
             _id: request.newItem,
             _tpl: itemToSplit._tpl,
             parentId: request.container.id,
             slotId: request.container.container,
             location: request.container.location,
-            upd: { StackObjectsCount: request.count }
+            upd: updatedUpd
         });
 
         return output;
