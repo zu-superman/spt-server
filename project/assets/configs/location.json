@@ -56,7 +56,8 @@
                             "BossEscortAmount": "1"
                         }
                     ],
-                    "RandomTimeSpawn": false
+                    "RandomTimeSpawn": false,
+					"ChanceGroup": 0
                 }, {
                     "sptId": "sptUsecFactoryDayBossSpawn",
                     "BossName": "sptUsec",
@@ -76,7 +77,8 @@
                             "BossEscortAmount": "1"
                         }
                     ],
-                    "RandomTimeSpawn": false
+                    "RandomTimeSpawn": false,
+					"ChanceGroup": 0
                 }
             ],
             "bigmap": [{
@@ -98,7 +100,8 @@
                             "BossEscortAmount": "2"
                         }
                     ],
-                    "RandomTimeSpawn": false
+                    "RandomTimeSpawn": false,
+					"ChanceGroup": 0
                 }, {
                     "sptId": "sptUsecCustomsScavBaseNormalSpawn",
                     "BossName": "sptUsec",
@@ -118,7 +121,8 @@
                             "BossEscortAmount": "2"
                         }
                     ],
-                    "RandomTimeSpawn": false
+                    "RandomTimeSpawn": false,
+					"ChanceGroup": 0
                 }
             ],
             "woods": [{
@@ -140,7 +144,8 @@
                             "BossEscortAmount": "2"
                         }
                     ],
-                    "RandomTimeSpawn": false
+                    "RandomTimeSpawn": false,
+					"ChanceGroup": 0
                 }, {
                     "sptId": "sptUsecWoodScavBaseNormalSpawn",
                     "BossName": "sptUsec",
@@ -160,7 +165,8 @@
                             "BossEscortAmount": "2"
                         }
                     ],
-                    "RandomTimeSpawn": false
+                    "RandomTimeSpawn": false,
+					"ChanceGroup": 0
                 }
             ],
             "shoreline": [{
@@ -182,7 +188,8 @@
                             "BossEscortAmount": "1"
                         }
                     ],
-                    "RandomTimeSpawn": false
+                    "RandomTimeSpawn": false,
+					"ChanceGroup": 0
                 }, {
                     "sptId": "sptUsecShorelinePortNormalSpawn",
                     "BossName": "sptUsec",
@@ -202,7 +209,8 @@
                             "BossEscortAmount": "1"
                         }
                     ],
-                    "RandomTimeSpawn": false
+                    "RandomTimeSpawn": false,
+					"ChanceGroup": 0
                 }, {
                     "sptId": "sptUsecShorelineSanatorium1NormalSpawn",
                     "BossName": "sptUsec",
@@ -222,7 +230,8 @@
                             "BossEscortAmount": "1"
                         }
                     ],
-                    "RandomTimeSpawn": false
+                    "RandomTimeSpawn": false,
+					"ChanceGroup": 0
                 }, {
                     "sptId": "sptBearShorelineSanatorium1NormalSpawn",
                     "BossName": "sptBear",
@@ -242,7 +251,8 @@
                             "BossEscortAmount": "1"
                         }
                     ],
-                    "RandomTimeSpawn": false
+                    "RandomTimeSpawn": false,
+					"ChanceGroup": 0
                 }, {
                     "sptId": "sptUsecShorelineSanatorium2NormalSpawn",
                     "BossName": "sptUsec",
@@ -262,7 +272,8 @@
                             "BossEscortAmount": "1"
                         }
                     ],
-                    "RandomTimeSpawn": false
+                    "RandomTimeSpawn": false,
+					"ChanceGroup": 0
                 }, {
                     "sptId": "sptBearShorelineSanatorium2NormalSpawn",
                     "BossName": "sptBear",
@@ -282,7 +293,8 @@
                             "BossEscortAmount": "1"
                         }
                     ],
-                    "RandomTimeSpawn": false
+                    "RandomTimeSpawn": false,
+					"ChanceGroup": 0
                 }
             ],
             "laboratory": [{
@@ -304,7 +316,8 @@
                             "BossEscortAmount": "1"
                         }
                     ],
-                    "RandomTimeSpawn": false
+                    "RandomTimeSpawn": false,
+					"ChanceGroup": 0
                 }, {
                     "sptId": "sptBearLabsZoneFloor2NormalSpawn",
                     "BossChance": 15,
@@ -324,7 +337,8 @@
                             "BossEscortAmount": "1"
                         }
                     ],
-                    "RandomTimeSpawn": false
+                    "RandomTimeSpawn": false,
+					"ChanceGroup": 0
                 }, {
                     "sptId": "sptBearLabsZoneBasementNormalSpawn",
                     "BossChance": 15,
@@ -344,7 +358,8 @@
                             "BossEscortAmount": "0"
                         }
                     ],
-                    "RandomTimeSpawn": false
+                    "RandomTimeSpawn": false,
+					"ChanceGroup": 0
                 }, {
                     "sptId": "sptUsecLabsZoneFloor1NormalSpawn",
                     "BossChance": 15,
@@ -364,7 +379,8 @@
                             "BossEscortAmount": "1"
                         }
                     ],
-                    "RandomTimeSpawn": false
+                    "RandomTimeSpawn": false,
+					"ChanceGroup": 0
                 }, {
                     "sptId": "sptUsecLabsZoneFloor2NormalSpawn",
                     "BossChance": 15,
@@ -384,7 +400,8 @@
                             "BossEscortAmount": "1"
                         }
                     ],
-                    "RandomTimeSpawn": false
+                    "RandomTimeSpawn": false,
+					"ChanceGroup": 0
                 }, {
                     "sptId": "sptUsecLabsZoneBasementNormalSpawn",
                     "BossChance": 15,
@@ -404,7 +421,8 @@
                             "BossEscortAmount": "0"
                         }
                     ],
-                    "RandomTimeSpawn": false
+                    "RandomTimeSpawn": false,
+					"ChanceGroup": 0
                 }
             ],
             "interchange": [{
@@ -426,7 +444,8 @@
                             "BossEscortAmount": "1"
                         }
                     ],
-                    "RandomTimeSpawn": false
+                    "RandomTimeSpawn": false,
+					"ChanceGroup": 0
                 }, {
                     "sptId": "sptUsecInterchangeNormalSpawn",
                     "BossName": "sptUsec",
@@ -446,9 +465,54 @@
                             "BossEscortAmount": "1"
                         }
                     ],
-                    "RandomTimeSpawn": false
+                    "RandomTimeSpawn": false,
+					"ChanceGroup": 0
                 }
-            ]
+            ],
+			"lighthouse": [{
+                    "sptId": "sptBearLighthouseNormalSpawn",
+                    "BossName": "sptBear",
+                    "BossChance": 15,
+                    "BossZone": "Zone_Village,Zone_Chalet,Zone_DestroyedHouse,Zone_Rocks,Zone_OldHouse",
+                    "BossPlayer": false,
+                    "BossDifficult": "normal",
+                    "BossEscortType": "sptBear",
+                    "BossEscortDifficult": "normal",
+                    "BossEscortAmount": "1",
+                    "Time": -1,
+                    "Supports": [{
+                            "BossEscortType": "sptBear",
+                            "BossEscortDifficult": [
+                                "normal"
+                            ],
+                            "BossEscortAmount": "1"
+                        }
+                    ],
+                    "RandomTimeSpawn": false,
+					"ChanceGroup": 0
+                },
+				{
+                    "sptId": "sptUsecLighthouseNormalSpawn",
+                    "BossName": "sptUsec",
+                    "BossChance": 15,
+                    "BossZone": "Zone_Village,Zone_Chalet,Zone_DestroyedHouse,Zone_Rocks,Zone_OldHouse",
+                    "BossPlayer": false,
+                    "BossDifficult": "normal",
+                    "BossEscortType": "sptUsec",
+                    "BossEscortDifficult": "normal",
+                    "BossEscortAmount": "1",
+                    "Time": -1,
+                    "Supports": [{
+                            "BossEscortType": "sptUsec",
+                            "BossEscortDifficult": [
+                                "normal"
+                            ],
+                            "BossEscortAmount": "1"
+                        }
+                    ],
+                    "RandomTimeSpawn": false,
+					"ChanceGroup": 0
+                }]
         },
         "normal": {
             "factory4_day": [{
@@ -658,15 +722,15 @@
     },
 	"randomiseMapContainers": {
         "tarkovstreets": true,
-        "factory4_day": true,
-        "factory4_night": true,
-        "bigmap": true,
-        "woods": true,
-        "shoreline": true,
-        "interchange": true,
-        "lighthouse": true,
-        "laboratory": true,
-        "rezervbase": true
+        "factory4_day": false,
+        "factory4_night": false,
+        "bigmap": false,
+        "woods": false,
+        "shoreline": false,
+        "interchange": false,
+        "lighthouse": false,
+        "laboratory": false,
+        "rezervbase": false
     },
 	"minFillLooseMagazinePercent": 50,
 	"minFillStaticMagazinePercent": 50

@@ -258,6 +258,7 @@ export interface Wave
     time_max: number
     time_min: number
     sptId?: string
+    ChanceGroup?: number
 }
 
 export enum WildSpawnType
