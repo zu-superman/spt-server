@@ -111,11 +111,15 @@ export class InventoryController
             const originalItemLocation = items.from.find(x => x._id === moveRequest.item);
             if (!originalItemLocation)
             {
-                // Internal item move but item never existed, likely a dupe glitch
+                // Internal item move but item never existed, possible dupe glitch
                 return this.getTraderExploitErrorResponse(output);
             }
 
-            this.inventoryHelper.moveItemInternal(pmcData, items.from, moveRequest);
+            const moveResult = this.inventoryHelper.moveItemInternal(pmcData, items.from, moveRequest);
+            if (!moveResult.success)
+            {
+                return this.httpResponseUtil.appendErrorToOutput(output, moveResult.errorMessage);
+            }
         }
         else
         {

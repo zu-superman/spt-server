@@ -918,44 +918,56 @@ export class InventoryHelper
     }
 
     /**
-    * Internal helper function to move item within the same profile_f.
-    */
-    public moveItemInternal(pmcData: IPmcData, inventoryItems: Item[], moveRequest: IInventoryMoveRequestData): void
+     * Internal helper function to move item within the same profile_f.
+     * @param pmcData profile to edit
+     * @param inventoryItems 
+     * @param moveRequest 
+     * @returns True if move was successful
+     */
+    public moveItemInternal(pmcData: IPmcData, inventoryItems: Item[], moveRequest: IInventoryMoveRequestData): {success: boolean, errorMessage?: string}
     {
         this.handleCartridges(inventoryItems, moveRequest);
 
         // Find item we want to 'move'
         const matchingInventoryItem = inventoryItems.find(x => x._id === moveRequest.item);
-        if (matchingInventoryItem)
+        if (!matchingInventoryItem)
         {
-            this.logger.debug(`${moveRequest.Action} item: ${moveRequest.item} from slotid: ${matchingInventoryItem.slotId} to container: ${moveRequest.to.container}`);
+            const errorMesage = `Unable to move item: ${moveRequest.item}, cannot find in inventory`;
+            this.logger.error(errorMesage);
 
-            // don't move shells from camora to cartridges (happens when loading shells into mts-255 revolver shotgun)
-            if (matchingInventoryItem.slotId.includes("camora_") && moveRequest.to.container === "cartridges")
+            return {success: false, errorMessage: errorMesage};
+        }
+
+        this.logger.debug(`${moveRequest.Action} item: ${moveRequest.item} from slotid: ${matchingInventoryItem.slotId} to container: ${moveRequest.to.container}`);
+
+        // don't move shells from camora to cartridges (happens when loading shells into mts-255 revolver shotgun)
+        if (matchingInventoryItem.slotId.includes("camora_") && moveRequest.to.container === "cartridges")
+        {
+            this.logger.warning(this.localisationService.getText("inventory-invalid_move_to_container", {slotId: matchingInventoryItem.slotId, container: moveRequest.to.container}));
+
+            return {success: true};
+        }
+
+        // Edit items details to match its new location
+        matchingInventoryItem.parentId = moveRequest.to.id;
+        matchingInventoryItem.slotId = moveRequest.to.container;
+
+        this.updateFastPanelBinding(pmcData, matchingInventoryItem);
+
+        if ("location" in moveRequest.to)
+        {
+            matchingInventoryItem.location = moveRequest.to.location;
+            
+        }
+        else
+        {
+            if (matchingInventoryItem.location)
             {
-                this.logger.warning(this.localisationService.getText("inventory-invalid_move_to_container", {slotId: matchingInventoryItem.slotId, container: moveRequest.to.container}));
-                return;
-            }
-
-            // Edit items details to match its new location
-            matchingInventoryItem.parentId = moveRequest.to.id;
-            matchingInventoryItem.slotId = moveRequest.to.container;
-
-            this.updateFastPanelBinding(pmcData, matchingInventoryItem);
-
-            if ("location" in moveRequest.to)
-            {
-                matchingInventoryItem.location = moveRequest.to.location;
-                
-            }
-            else
-            {
-                if (matchingInventoryItem.location)
-                {
-                    delete matchingInventoryItem.location;
-                }
+                delete matchingInventoryItem.location;
             }
         }
+
+        return {success: true};
     }
 
     /**
