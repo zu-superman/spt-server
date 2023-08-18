@@ -1,0 +1,1487 @@
+[
+  {
+    "probability": 1.0,
+    "name": "weapon_box_cover",
+    "template": {
+      "Id": "00158",
+      "Enabled": true,
+      "useGravity": true,
+      "randomRotation": false,
+      "ChanceModifier": 0.0,
+      "IsAlwaysSpawn": false,
+      "isAlwaysTrySpawnLoot": false,
+      "Rarity": "Common",
+      "FilterInclusive": [
+        "578f87ad245977356274f2cc"
+      ],
+      "FilterExclusive": [],
+      "FilterExtended": [],
+      "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "IsStatic": true,
+      "IsContainer": true,
+      "SpawnChance": 100,
+      "LootableContainersGroupId": ""
+    }
+  },
+  {
+    "probability": 1.0,
+    "name": "lootable",
+    "template": {
+      "Id": "00170",
+      "Enabled": true,
+      "useGravity": true,
+      "randomRotation": false,
+      "ChanceModifier": 0.0,
+      "IsAlwaysSpawn": false,
+      "isAlwaysTrySpawnLoot": false,
+      "Rarity": "Common",
+      "FilterInclusive": [
+        "578f8778245977358849a9b5"
+      ],
+      "FilterExclusive": [],
+      "FilterExtended": [],
+      "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "IsStatic": true,
+      "IsContainer": true,
+      "SpawnChance": 100,
+      "LootableContainersGroupId": ""
+    }
+  },
+  {
+    "probability": 1.0,
+    "name": "lootable",
+    "template": {
+      "Id": "00174",
+      "Enabled": true,
+      "useGravity": true,
+      "randomRotation": false,
+      "ChanceModifier": 0.0,
+      "IsAlwaysSpawn": false,
+      "isAlwaysTrySpawnLoot": false,
+      "Rarity": "Common",
+      "FilterInclusive": [
+        "578f8778245977358849a9b5"
+      ],
+      "FilterExclusive": [],
+      "FilterExtended": [],
+      "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "IsStatic": true,
+      "IsContainer": true,
+      "SpawnChance": 100,
+      "LootableContainersGroupId": ""
+    }
+  },
+  {
+    "probability": 1.0,
+    "name": "weapon_box_cover",
+    "template": {
+      "Id": "00156",
+      "Enabled": true,
+      "useGravity": true,
+      "randomRotation": false,
+      "ChanceModifier": 0.0,
+      "IsAlwaysSpawn": false,
+      "isAlwaysTrySpawnLoot": false,
+      "Rarity": "Common",
+      "FilterInclusive": [
+        "578f87ad245977356274f2cc"
+      ],
+      "FilterExclusive": [],
+      "FilterExtended": [],
+      "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "IsStatic": true,
+      "IsContainer": true,
+      "SpawnChance": 100,
+      "LootableContainersGroupId": ""
+    }
+  },
+  {
+    "probability": 1.0,
+    "name": "lootable",
+    "template": {
+      "Id": "00190",
+      "Enabled": true,
+      "useGravity": true,
+      "randomRotation": false,
+      "ChanceModifier": 0.0,
+      "IsAlwaysSpawn": false,
+      "isAlwaysTrySpawnLoot": false,
+      "Rarity": "Common",
+      "FilterInclusive": [
+        "578f8778245977358849a9b5"
+      ],
+      "FilterExclusive": [],
+      "FilterExtended": [],
+      "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "IsStatic": true,
+      "IsContainer": true,
+      "SpawnChance": 100,
+      "LootableContainersGroupId": ""
+    }
+  },
+  {
+    "probability": 1.0,
+    "name": "lootable",
+    "template": {
+      "Id": "00176",
+      "Enabled": true,
+      "useGravity": true,
+      "randomRotation": false,
+      "ChanceModifier": 0.0,
+      "IsAlwaysSpawn": false,
+      "isAlwaysTrySpawnLoot": false,
+      "Rarity": "Common",
+      "FilterInclusive": [
+        "578f8778245977358849a9b5"
+      ],
+      "FilterExclusive": [],
+      "FilterExtended": [],
+      "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "IsStatic": true,
+      "IsContainer": true,
+      "SpawnChance": 100,
+      "LootableContainersGroupId": ""
+    }
+  },
+  {
+    "probability": 1.0,
+    "name": "weapon_box_cover",
+    "template": {
+      "Id": "00149",
+      "Enabled": true,
+      "useGravity": true,
+      "randomRotation": false,
+      "ChanceModifier": 0.0,
+      "IsAlwaysSpawn": false,
+      "isAlwaysTrySpawnLoot": false,
+      "Rarity": "Common",
+      "FilterInclusive": [
+        "578f87ad245977356274f2cc"
+      ],
+      "FilterExclusive": [],
+      "FilterExtended": [],
+      "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "IsStatic": true,
+      "IsContainer": true,
+      "SpawnChance": 100,
+      "LootableContainersGroupId": "WoodenBoxN1_3_factory"
+    }
+  },
+  {
+    "probability": 1.0,
+    "name": "weapon_box_cover",
+    "template": {
+      "Id": "00157",
+      "Enabled": true,
+      "useGravity": true,
+      "randomRotation": false,
+      "ChanceModifier": 0.0,
+      "IsAlwaysSpawn": false,
+      "isAlwaysTrySpawnLoot": false,
+      "Rarity": "Common",
+      "FilterInclusive": [
+        "578f87ad245977356274f2cc"
+      ],
+      "FilterExclusive": [],
+      "FilterExtended": [],
+      "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "IsStatic": true,
+      "IsContainer": true,
+      "SpawnChance": 100,
+      "LootableContainersGroupId": ""
+    }
+  },
+  {
+    "probability": 1.0,
+    "name": "weapon_box_cover",
+    "template": {
+      "Id": "container_Factory_DesignStuff_00012",
+      "Enabled": true,
+      "useGravity": true,
+      "randomRotation": false,
+      "ChanceModifier": 0.0,
+      "IsAlwaysSpawn": false,
+      "isAlwaysTrySpawnLoot": false,
+      "Rarity": "Common",
+      "FilterInclusive": [
+        "578f87ad245977356274f2cc"
+      ],
+      "FilterExclusive": [],
+      "FilterExtended": [],
+      "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "IsStatic": true,
+      "IsContainer": true,
+      "SpawnChance": 100,
+      "LootableContainersGroupId": ""
+    }
+  },
+  {
+    "probability": 1.0,
+    "name": "weapon_box_cover",
+    "template": {
+      "Id": "00159",
+      "Enabled": true,
+      "useGravity": true,
+      "randomRotation": false,
+      "ChanceModifier": 0.0,
+      "IsAlwaysSpawn": false,
+      "isAlwaysTrySpawnLoot": false,
+      "Rarity": "Common",
+      "FilterInclusive": [
+        "578f87ad245977356274f2cc"
+      ],
+      "FilterExclusive": [],
+      "FilterExtended": [],
+      "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "IsStatic": true,
+      "IsContainer": true,
+      "SpawnChance": 100,
+      "LootableContainersGroupId": ""
+    }
+  },
+  {
+    "probability": 1.0,
+    "name": "container_supplyBox_opened_Cap",
+    "template": {
+      "Id": "00185",
+      "Enabled": true,
+      "useGravity": true,
+      "randomRotation": false,
+      "ChanceModifier": 0.0,
+      "IsAlwaysSpawn": true,
+      "isAlwaysTrySpawnLoot": false,
+      "Rarity": "Common",
+      "FilterInclusive": [
+        "5d6fd45b86f774317075ed43"
+      ],
+      "FilterExclusive": [],
+      "FilterExtended": [],
+      "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "IsStatic": true,
+      "IsContainer": true,
+      "SpawnChance": 100,
+      "LootableContainersGroupId": ""
+    }
+  },
+  {
+    "probability": 1.0,
+    "name": "weapon_box_cover",
+    "template": {
+      "Id": "container_Factory_DesignStuff_00011",
+      "Enabled": true,
+      "useGravity": true,
+      "randomRotation": false,
+      "ChanceModifier": 0.0,
+      "IsAlwaysSpawn": false,
+      "isAlwaysTrySpawnLoot": false,
+      "Rarity": "Common",
+      "FilterInclusive": [
+        "578f87ad245977356274f2cc"
+      ],
+      "FilterExclusive": [],
+      "FilterExtended": [],
+      "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "IsStatic": true,
+      "IsContainer": true,
+      "SpawnChance": 100,
+      "LootableContainersGroupId": ""
+    }
+  },
+  {
+    "probability": 1.0,
+    "name": "weapon_box_cover",
+    "template": {
+      "Id": "00151",
+      "Enabled": true,
+      "useGravity": true,
+      "randomRotation": false,
+      "ChanceModifier": 0.0,
+      "IsAlwaysSpawn": false,
+      "isAlwaysTrySpawnLoot": false,
+      "Rarity": "Common",
+      "FilterInclusive": [
+        "578f87ad245977356274f2cc"
+      ],
+      "FilterExclusive": [],
+      "FilterExtended": [],
+      "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "IsStatic": true,
+      "IsContainer": true,
+      "SpawnChance": 100,
+      "LootableContainersGroupId": ""
+    }
+  },
+  {
+    "probability": 1.0,
+    "name": "weapon_box_cover",
+    "template": {
+      "Id": "container_Factory_DesignStuff_00015",
+      "Enabled": true,
+      "useGravity": true,
+      "randomRotation": false,
+      "ChanceModifier": 0.0,
+      "IsAlwaysSpawn": false,
+      "isAlwaysTrySpawnLoot": false,
+      "Rarity": "Common",
+      "FilterInclusive": [
+        "578f87ad245977356274f2cc"
+      ],
+      "FilterExclusive": [],
+      "FilterExtended": [],
+      "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "IsStatic": true,
+      "IsContainer": true,
+      "SpawnChance": 100,
+      "LootableContainersGroupId": ""
+    }
+  },
+  {
+    "probability": 1.0,
+    "name": "weapon_box_cover",
+    "template": {
+      "Id": "container_Factory_DesignStuff_00010",
+      "Enabled": true,
+      "useGravity": true,
+      "randomRotation": false,
+      "ChanceModifier": 0.0,
+      "IsAlwaysSpawn": false,
+      "isAlwaysTrySpawnLoot": false,
+      "Rarity": "Common",
+      "FilterInclusive": [
+        "578f87ad245977356274f2cc"
+      ],
+      "FilterExclusive": [],
+      "FilterExtended": [],
+      "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "IsStatic": true,
+      "IsContainer": true,
+      "SpawnChance": 100,
+      "LootableContainersGroupId": ""
+    }
+  },
+  {
+    "probability": 1.0,
+    "name": "card_file_box_Anim1",
+    "template": {
+      "Id": "00165",
+      "Enabled": true,
+      "useGravity": true,
+      "randomRotation": false,
+      "ChanceModifier": 0.0,
+      "IsAlwaysSpawn": true,
+      "isAlwaysTrySpawnLoot": false,
+      "Rarity": "Common",
+      "FilterInclusive": [
+        "578f87b7245977356274f2cd"
+      ],
+      "FilterExclusive": [],
+      "FilterExtended": [],
+      "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "IsStatic": true,
+      "IsContainer": true,
+      "SpawnChance": 100,
+      "LootableContainersGroupId": ""
+    }
+  },
+  {
+    "probability": 1.0,
+    "name": "card_file_box_Anim2",
+    "template": {
+      "Id": "00166",
+      "Enabled": true,
+      "useGravity": true,
+      "randomRotation": false,
+      "ChanceModifier": 0.0,
+      "IsAlwaysSpawn": true,
+      "isAlwaysTrySpawnLoot": false,
+      "Rarity": "Common",
+      "FilterInclusive": [
+        "578f87b7245977356274f2cd"
+      ],
+      "FilterExclusive": [],
+      "FilterExtended": [],
+      "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "IsStatic": true,
+      "IsContainer": true,
+      "SpawnChance": 100,
+      "LootableContainersGroupId": ""
+    }
+  },
+  {
+    "probability": 1.0,
+    "name": "card_file_box_Anim4",
+    "template": {
+      "Id": "00168",
+      "Enabled": true,
+      "useGravity": true,
+      "randomRotation": false,
+      "ChanceModifier": 0.0,
+      "IsAlwaysSpawn": true,
+      "isAlwaysTrySpawnLoot": false,
+      "Rarity": "Common",
+      "FilterInclusive": [
+        "578f87b7245977356274f2cd"
+      ],
+      "FilterExclusive": [],
+      "FilterExtended": [],
+      "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "IsStatic": true,
+      "IsContainer": true,
+      "SpawnChance": 100,
+      "LootableContainersGroupId": ""
+    }
+  },
+  {
+    "probability": 1.0,
+    "name": "card_file_box_Anim3",
+    "template": {
+      "Id": "00167",
+      "Enabled": true,
+      "useGravity": true,
+      "randomRotation": false,
+      "ChanceModifier": 0.0,
+      "IsAlwaysSpawn": true,
+      "isAlwaysTrySpawnLoot": false,
+      "Rarity": "Common",
+      "FilterInclusive": [
+        "578f87b7245977356274f2cd"
+      ],
+      "FilterExclusive": [],
+      "FilterExtended": [],
+      "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "IsStatic": true,
+      "IsContainer": true,
+      "SpawnChance": 100,
+      "LootableContainersGroupId": ""
+    }
+  },
+  {
+    "probability": 1.0,
+    "name": "lootable",
+    "template": {
+      "Id": "00169",
+      "Enabled": true,
+      "useGravity": true,
+      "randomRotation": false,
+      "ChanceModifier": 0.0,
+      "IsAlwaysSpawn": false,
+      "isAlwaysTrySpawnLoot": false,
+      "Rarity": "Common",
+      "FilterInclusive": [
+        "578f8778245977358849a9b5"
+      ],
+      "FilterExclusive": [],
+      "FilterExtended": [],
+      "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "IsStatic": true,
+      "IsContainer": true,
+      "SpawnChance": 100,
+      "LootableContainersGroupId": ""
+    }
+  },
+  {
+    "probability": 1.0,
+    "name": "boor_safe",
+    "template": {
+      "Id": "00160",
+      "Enabled": true,
+      "useGravity": true,
+      "randomRotation": false,
+      "ChanceModifier": 0.0,
+      "IsAlwaysSpawn": true,
+      "isAlwaysTrySpawnLoot": false,
+      "Rarity": "Common",
+      "FilterInclusive": [
+        "578f8782245977354405a1e3"
+      ],
+      "FilterExclusive": [],
+      "FilterExtended": [],
+      "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "IsStatic": true,
+      "IsContainer": true,
+      "SpawnChance": 100,
+      "LootableContainersGroupId": ""
+    }
+  },
+  {
+    "probability": 1.0,
+    "name": "lootable",
+    "template": {
+      "Id": "00171",
+      "Enabled": true,
+      "useGravity": true,
+      "randomRotation": false,
+      "ChanceModifier": 0.0,
+      "IsAlwaysSpawn": false,
+      "isAlwaysTrySpawnLoot": false,
+      "Rarity": "Common",
+      "FilterInclusive": [
+        "578f8778245977358849a9b5"
+      ],
+      "FilterExclusive": [],
+      "FilterExtended": [],
+      "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "IsStatic": true,
+      "IsContainer": true,
+      "SpawnChance": 100,
+      "LootableContainersGroupId": ""
+    }
+  },
+  {
+    "probability": 1.0,
+    "name": "weapon_box_cover",
+    "template": {
+      "Id": "00152",
+      "Enabled": true,
+      "useGravity": true,
+      "randomRotation": false,
+      "ChanceModifier": 0.0,
+      "IsAlwaysSpawn": false,
+      "isAlwaysTrySpawnLoot": false,
+      "Rarity": "Common",
+      "FilterInclusive": [
+        "578f87ad245977356274f2cc"
+      ],
+      "FilterExclusive": [],
+      "FilterExtended": [],
+      "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "IsStatic": true,
+      "IsContainer": true,
+      "SpawnChance": 100,
+      "LootableContainersGroupId": ""
+    }
+  },
+  {
+    "probability": 1.0,
+    "name": "weapon_box_cover",
+    "template": {
+      "Id": "00154",
+      "Enabled": true,
+      "useGravity": true,
+      "randomRotation": false,
+      "ChanceModifier": 0.0,
+      "IsAlwaysSpawn": false,
+      "isAlwaysTrySpawnLoot": false,
+      "Rarity": "Common",
+      "FilterInclusive": [
+        "578f87ad245977356274f2cc"
+      ],
+      "FilterExclusive": [],
+      "FilterExtended": [],
+      "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "IsStatic": true,
+      "IsContainer": true,
+      "SpawnChance": 100,
+      "LootableContainersGroupId": ""
+    }
+  },
+  {
+    "probability": 1.0,
+    "name": "lootable",
+    "template": {
+      "Id": "00172",
+      "Enabled": true,
+      "useGravity": true,
+      "randomRotation": false,
+      "ChanceModifier": 0.0,
+      "IsAlwaysSpawn": false,
+      "isAlwaysTrySpawnLoot": false,
+      "Rarity": "Common",
+      "FilterInclusive": [
+        "578f8778245977358849a9b5"
+      ],
+      "FilterExclusive": [],
+      "FilterExtended": [],
+      "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "IsStatic": true,
+      "IsContainer": true,
+      "SpawnChance": 100,
+      "LootableContainersGroupId": ""
+    }
+  },
+  {
+    "probability": 1.0,
+    "name": "weapon_box_cover",
+    "template": {
+      "Id": "container_Factory_DesignStuff_00014",
+      "Enabled": true,
+      "useGravity": true,
+      "randomRotation": false,
+      "ChanceModifier": 0.0,
+      "IsAlwaysSpawn": false,
+      "isAlwaysTrySpawnLoot": false,
+      "Rarity": "Common",
+      "FilterInclusive": [
+        "578f87ad245977356274f2cc"
+      ],
+      "FilterExclusive": [],
+      "FilterExtended": [],
+      "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "IsStatic": true,
+      "IsContainer": true,
+      "SpawnChance": 100,
+      "LootableContainersGroupId": ""
+    }
+  },
+  {
+    "probability": 1.0,
+    "name": "weapon_box_cover",
+    "template": {
+      "Id": "00153",
+      "Enabled": true,
+      "useGravity": true,
+      "randomRotation": false,
+      "ChanceModifier": 0.0,
+      "IsAlwaysSpawn": false,
+      "isAlwaysTrySpawnLoot": false,
+      "Rarity": "Common",
+      "FilterInclusive": [
+        "578f87ad245977356274f2cc"
+      ],
+      "FilterExclusive": [],
+      "FilterExtended": [],
+      "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "IsStatic": true,
+      "IsContainer": true,
+      "SpawnChance": 100,
+      "LootableContainersGroupId": ""
+    }
+  },
+  {
+    "probability": 1.0,
+    "name": "weapon_box_cover",
+    "template": {
+      "Id": "00187",
+      "Enabled": true,
+      "useGravity": true,
+      "randomRotation": false,
+      "ChanceModifier": 0.0,
+      "IsAlwaysSpawn": false,
+      "isAlwaysTrySpawnLoot": false,
+      "Rarity": "Common",
+      "FilterInclusive": [
+        "578f87ad245977356274f2cc"
+      ],
+      "FilterExclusive": [],
+      "FilterExtended": [],
+      "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "IsStatic": true,
+      "IsContainer": true,
+      "SpawnChance": 100,
+      "LootableContainersGroupId": ""
+    }
+  },
+  {
+    "probability": 1.0,
+    "name": "weapon_box_cover",
+    "template": {
+      "Id": "container_Factory_DesignStuff_00009",
+      "Enabled": true,
+      "useGravity": true,
+      "randomRotation": false,
+      "ChanceModifier": 0.0,
+      "IsAlwaysSpawn": false,
+      "isAlwaysTrySpawnLoot": false,
+      "Rarity": "Common",
+      "FilterInclusive": [
+        "578f87ad245977356274f2cc"
+      ],
+      "FilterExclusive": [],
+      "FilterExtended": [],
+      "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "IsStatic": true,
+      "IsContainer": true,
+      "SpawnChance": 100,
+      "LootableContainersGroupId": ""
+    }
+  },
+  {
+    "probability": 1.0,
+    "name": "lootable",
+    "template": {
+      "Id": "00173",
+      "Enabled": true,
+      "useGravity": true,
+      "randomRotation": false,
+      "ChanceModifier": 0.0,
+      "IsAlwaysSpawn": false,
+      "isAlwaysTrySpawnLoot": false,
+      "Rarity": "Common",
+      "FilterInclusive": [
+        "578f8778245977358849a9b5"
+      ],
+      "FilterExclusive": [],
+      "FilterExtended": [],
+      "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "IsStatic": true,
+      "IsContainer": true,
+      "SpawnChance": 100,
+      "LootableContainersGroupId": ""
+    }
+  },
+  {
+    "probability": 1.0,
+    "name": "lootable",
+    "template": {
+      "Id": "00189",
+      "Enabled": true,
+      "useGravity": true,
+      "randomRotation": false,
+      "ChanceModifier": 0.0,
+      "IsAlwaysSpawn": false,
+      "isAlwaysTrySpawnLoot": false,
+      "Rarity": "Common",
+      "FilterInclusive": [
+        "578f8778245977358849a9b5"
+      ],
+      "FilterExclusive": [],
+      "FilterExtended": [],
+      "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "IsStatic": true,
+      "IsContainer": true,
+      "SpawnChance": 100,
+      "LootableContainersGroupId": ""
+    }
+  },
+  {
+    "probability": 1.0,
+    "name": "container_supplyBox_opened_Cap",
+    "template": {
+      "Id": "00186",
+      "Enabled": true,
+      "useGravity": true,
+      "randomRotation": false,
+      "ChanceModifier": 0.0,
+      "IsAlwaysSpawn": true,
+      "isAlwaysTrySpawnLoot": false,
+      "Rarity": "Common",
+      "FilterInclusive": [
+        "5d6fe50986f77449d97f7463"
+      ],
+      "FilterExclusive": [],
+      "FilterExtended": [],
+      "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "IsStatic": true,
+      "IsContainer": true,
+      "SpawnChance": 100,
+      "LootableContainersGroupId": ""
+    }
+  },
+  {
+    "probability": 1.0,
+    "name": "weapon_box_cover",
+    "template": {
+      "Id": "container_Factory_DesignStuff_00013",
+      "Enabled": true,
+      "useGravity": true,
+      "randomRotation": false,
+      "ChanceModifier": 0.0,
+      "IsAlwaysSpawn": false,
+      "isAlwaysTrySpawnLoot": false,
+      "Rarity": "Common",
+      "FilterInclusive": [
+        "578f87ad245977356274f2cc"
+      ],
+      "FilterExclusive": [],
+      "FilterExtended": [],
+      "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "IsStatic": true,
+      "IsContainer": true,
+      "SpawnChance": 100,
+      "LootableContainersGroupId": ""
+    }
+  },
+  {
+    "probability": 1.0,
+    "name": "weapon_box_cover",
+    "template": {
+      "Id": "00155",
+      "Enabled": true,
+      "useGravity": true,
+      "randomRotation": false,
+      "ChanceModifier": 0.0,
+      "IsAlwaysSpawn": false,
+      "isAlwaysTrySpawnLoot": false,
+      "Rarity": "Common",
+      "FilterInclusive": [
+        "578f87ad245977356274f2cc"
+      ],
+      "FilterExclusive": [],
+      "FilterExtended": [],
+      "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "IsStatic": true,
+      "IsContainer": true,
+      "SpawnChance": 100,
+      "LootableContainersGroupId": ""
+    }
+  },
+  {
+    "probability": 1.0,
+    "name": "weapon_box_cover",
+    "template": {
+      "Id": "container_Factory_DesignStuff_00021",
+      "Enabled": true,
+      "useGravity": true,
+      "randomRotation": false,
+      "ChanceModifier": 0.0,
+      "IsAlwaysSpawn": false,
+      "isAlwaysTrySpawnLoot": false,
+      "Rarity": "Common",
+      "FilterInclusive": [
+        "578f87ad245977356274f2cc"
+      ],
+      "FilterExclusive": [],
+      "FilterExtended": [],
+      "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "IsStatic": true,
+      "IsContainer": true,
+      "SpawnChance": 100,
+      "LootableContainersGroupId": "WoodeenBoxN2_2"
+    }
+  },
+  {
+    "probability": 1.0,
+    "name": "card_file_box_Anim3",
+    "template": {
+      "Id": "00163",
+      "Enabled": true,
+      "useGravity": true,
+      "randomRotation": false,
+      "ChanceModifier": 0.0,
+      "IsAlwaysSpawn": true,
+      "isAlwaysTrySpawnLoot": false,
+      "Rarity": "Common",
+      "FilterInclusive": [
+        "578f87b7245977356274f2cd"
+      ],
+      "FilterExclusive": [],
+      "FilterExtended": [],
+      "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "IsStatic": true,
+      "IsContainer": true,
+      "SpawnChance": 100,
+      "LootableContainersGroupId": ""
+    }
+  },
+  {
+    "probability": 1.0,
+    "name": "card_file_box_Anim4",
+    "template": {
+      "Id": "00164",
+      "Enabled": true,
+      "useGravity": true,
+      "randomRotation": false,
+      "ChanceModifier": 0.0,
+      "IsAlwaysSpawn": true,
+      "isAlwaysTrySpawnLoot": false,
+      "Rarity": "Common",
+      "FilterInclusive": [
+        "578f87b7245977356274f2cd"
+      ],
+      "FilterExclusive": [],
+      "FilterExtended": [],
+      "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "IsStatic": true,
+      "IsContainer": true,
+      "SpawnChance": 100,
+      "LootableContainersGroupId": ""
+    }
+  },
+  {
+    "probability": 1.0,
+    "name": "card_file_box_Anim2",
+    "template": {
+      "Id": "00162",
+      "Enabled": true,
+      "useGravity": true,
+      "randomRotation": false,
+      "ChanceModifier": 0.0,
+      "IsAlwaysSpawn": true,
+      "isAlwaysTrySpawnLoot": false,
+      "Rarity": "Common",
+      "FilterInclusive": [
+        "578f87b7245977356274f2cd"
+      ],
+      "FilterExclusive": [],
+      "FilterExtended": [],
+      "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "IsStatic": true,
+      "IsContainer": true,
+      "SpawnChance": 100,
+      "LootableContainersGroupId": ""
+    }
+  },
+  {
+    "probability": 1.0,
+    "name": "card_file_box_Anim1",
+    "template": {
+      "Id": "00161",
+      "Enabled": true,
+      "useGravity": true,
+      "randomRotation": false,
+      "ChanceModifier": 0.0,
+      "IsAlwaysSpawn": true,
+      "isAlwaysTrySpawnLoot": false,
+      "Rarity": "Common",
+      "FilterInclusive": [
+        "578f87b7245977356274f2cd"
+      ],
+      "FilterExclusive": [],
+      "FilterExtended": [],
+      "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "IsStatic": true,
+      "IsContainer": true,
+      "SpawnChance": 100,
+      "LootableContainersGroupId": ""
+    }
+  },
+  {
+    "probability": 1.0,
+    "name": "lootable",
+    "template": {
+      "Id": "00175",
+      "Enabled": true,
+      "useGravity": true,
+      "randomRotation": false,
+      "ChanceModifier": 0.0,
+      "IsAlwaysSpawn": false,
+      "isAlwaysTrySpawnLoot": false,
+      "Rarity": "Common",
+      "FilterInclusive": [
+        "5909e4b686f7747f5b744fa4"
+      ],
+      "FilterExclusive": [],
+      "FilterExtended": [],
+      "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "IsStatic": true,
+      "IsContainer": true,
+      "SpawnChance": 100,
+      "LootableContainersGroupId": ""
+    }
+  },
+  {
+    "probability": 1.0,
+    "name": "Grenade_box_Door",
+    "template": {
+      "Id": "00188",
+      "Enabled": true,
+      "useGravity": true,
+      "randomRotation": false,
+      "ChanceModifier": 0.0,
+      "IsAlwaysSpawn": false,
+      "isAlwaysTrySpawnLoot": false,
+      "Rarity": "Common",
+      "FilterInclusive": [
+        "5909d36d86f774660f0bb900"
+      ],
+      "FilterExclusive": [],
+      "FilterExtended": [],
+      "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "IsStatic": true,
+      "IsContainer": true,
+      "SpawnChance": 100,
+      "LootableContainersGroupId": ""
+    }
+  },
+  {
+    "probability": 1.0,
+    "name": "Toolbox_Door",
+    "template": {
+      "Id": "00183",
+      "Enabled": true,
+      "useGravity": true,
+      "randomRotation": false,
+      "ChanceModifier": 0.0,
+      "IsAlwaysSpawn": false,
+      "isAlwaysTrySpawnLoot": false,
+      "Rarity": "Common",
+      "FilterInclusive": [
+        "5909d50c86f774659e6aaebe"
+      ],
+      "FilterExclusive": [],
+      "FilterExtended": [],
+      "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "IsStatic": true,
+      "IsContainer": true,
+      "SpawnChance": 100,
+      "LootableContainersGroupId": ""
+    }
+  },
+  {
+    "probability": 1.0,
+    "name": "cover_140",
+    "template": {
+      "Id": "container_Factory_DesignStuff_00004",
+      "Enabled": true,
+      "useGravity": true,
+      "randomRotation": false,
+      "ChanceModifier": 0.0,
+      "IsAlwaysSpawn": true,
+      "isAlwaysTrySpawnLoot": false,
+      "Rarity": "Common",
+      "FilterInclusive": [
+        "5909d76c86f77471e53d2adf"
+      ],
+      "FilterExclusive": [],
+      "FilterExtended": [],
+      "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "IsStatic": true,
+      "IsContainer": true,
+      "SpawnChance": 100,
+      "LootableContainersGroupId": "CaseN3"
+    }
+  },
+  {
+    "probability": 1.0,
+    "name": "cover_140",
+    "template": {
+      "Id": "00148",
+      "Enabled": true,
+      "useGravity": true,
+      "randomRotation": false,
+      "ChanceModifier": 0.0,
+      "IsAlwaysSpawn": true,
+      "isAlwaysTrySpawnLoot": false,
+      "Rarity": "Common",
+      "FilterInclusive": [
+        "5909d76c86f77471e53d2adf"
+      ],
+      "FilterExclusive": [],
+      "FilterExtended": [],
+      "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "IsStatic": true,
+      "IsContainer": true,
+      "SpawnChance": 100,
+      "LootableContainersGroupId": "CaseN3"
+    }
+  },
+  {
+    "probability": 1.0,
+    "name": "cover_110x45",
+    "template": {
+      "Id": "00182",
+      "Enabled": true,
+      "useGravity": true,
+      "randomRotation": false,
+      "ChanceModifier": 0.0,
+      "IsAlwaysSpawn": false,
+      "isAlwaysTrySpawnLoot": false,
+      "Rarity": "Common",
+      "FilterInclusive": [
+        "5909d5ef86f77467974efbd8"
+      ],
+      "FilterExclusive": [],
+      "FilterExtended": [],
+      "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "IsStatic": true,
+      "IsContainer": true,
+      "SpawnChance": 100,
+      "LootableContainersGroupId": ""
+    }
+  }
+]

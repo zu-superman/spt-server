@@ -3,7 +3,7 @@ import { inject, injectable } from "tsyringe";
 import { LocationGenerator } from "../generators/LocationGenerator";
 import { LootGenerator } from "../generators/LootGenerator";
 import { WeightedRandomHelper } from "../helpers/WeightedRandomHelper";
-import { ILocation } from "../models/eft/common/ILocation";
+import { ILocation, IStaticContainer } from "../models/eft/common/ILocation";
 import { ILocationBase } from "../models/eft/common/ILocationBase";
 import {
     ILocationsGenerateAllResponse
@@ -115,19 +115,34 @@ export class LocationController
             output.Loot.push(mi);
         }
 
-        // Add static loot to output loot + pass in forced static loot as param
+        // Add static loot to output + pass in forced statics as param
         let staticContainerCount = 0;
-        for (const staticContainer of staticContainers ?? [])
+        const staticContainerGroupMap = this.getStaticContainerGroupLimits(name);
+        for (const staticContainer of this.randomUtil.shuffle(staticContainers ?? []) ) // Shuffle containers so we dont always add the first ones in the list
         {
             // not 100% chance, roll chance to be added to map
             if (staticContainer.probability < 1 && this.locationConfig.randomiseMapContainers[name])
             {
-                // Chance is between 0 and 1
-                if (!this.randomUtil.getChance100(staticContainer.probability * 100))
+                // Find matching static containers 
+                const containerGroupDetails: IStaticContainer = db.locations[name].statics.find(x => x.template.Id === staticContainer.template.Id);
+                if (containerGroupDetails?.template.LootableContainersGroupId.length > 0)
                 {
-                    // Skip container
-                    continue;
+                    // get container group limit values
+                    const settings = staticContainerGroupMap[containerGroupDetails.template.LootableContainersGroupId];
+                    settings.current += 1;
+                    if (settings.current >= settings.max)
+                    {
+                        this.logger.warning(`Skipped adding container ${staticContainer.template.Id} as its group: ${containerGroupDetails.template.LootableContainersGroupId} is already maxed at ${settings.max}`);
+                        continue;
+                    }
                 }
+
+                // // Chance is between 0 and 1
+                // if (!this.randomUtil.getChance100(staticContainer.probability * 100))
+                // {
+                //     // Skip container
+                //     continue;
+                // }
             }
 
             const container = this.locationGenerator.generateContainerLoot(staticContainer, staticForced, staticLootDist, staticAmmoDist, name);
@@ -150,6 +165,30 @@ export class LocationController
         this.logger.success(this.localisationService.getText("location-generated_success", name));
 
         return output;
+    }
+
+    protected getStaticContainerGroupLimits(mapName: string): Record<string, any>
+    {
+        const result: Record<string, any> = {};
+
+        // Get statics group data
+        const containersForMap: IStaticContainer[] = this.databaseServer.getTables().locations[mapName].statics;
+        if (!containersForMap)
+        {
+            this.logger.warning(`Map ${mapName} has no container group data`);
+            return result;
+        }
+
+        for (const staticContainer of containersForMap.filter(x => x.template.LootableContainersGroupId.length > 0))
+        {
+            // Add group id to dict with randomised max
+            if (!result[staticContainer.template.LootableContainersGroupId])
+            {
+                result[staticContainer.template.LootableContainersGroupId] = { current: 0, max: this.randomUtil.getInt(0,2) };
+            }
+        }
+
+        return result;
     }
 
     /**

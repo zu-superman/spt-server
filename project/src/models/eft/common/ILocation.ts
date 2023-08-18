@@ -5,4 +5,19 @@ export interface ILocation
 {
     base: ILocationBase
     looseLoot: ILooseLoot;
+    statics: IStaticContainer[]
+}
+
+export interface IStaticContainer
+{
+    name: string
+    template: IStaticContainerTemplate
+    
+}
+
+export interface IStaticContainerTemplate
+{
+    Id: string
+    LootableContainersGroupId: string
+    IsAlwaysSpawn: boolean
 }

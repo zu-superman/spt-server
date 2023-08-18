@@ -722,7 +722,7 @@
     },
 	"randomiseMapContainers": {
         "tarkovstreets": true,
-        "factory4_day": false,
+        "factory4_day": true,
         "factory4_night": false,
         "bigmap": false,
         "woods": false,
