@@ -808,7 +808,7 @@ export class InventoryHelper
         let toType = "pmc";
 
         // Destination is scav inventory, update values
-        if (request.toOwner && request.toOwner.id === scavData._id)
+        if (request.toOwner?.id === scavData._id)
         {
             toInventoryItems = scavData.Inventory.items;
             toType = "scav";
@@ -876,44 +876,42 @@ export class InventoryHelper
     }
 
     /**
-    * Internal helper function to transfer an item from one profile to another.
-    * fromProfileData: Profile of the source.
-    * toProfileData: Profile of the destination.
-    * body: Move request
-    */
+     * Internal helper function to transfer an item from one profile to another.
+     * @param fromItems Inventory of the source (can be non-player)
+     * @param toItems Inventory of the destination
+     * @param body Move request
+     */
     public moveItemToProfile(fromItems: Item[], toItems: Item[], body: IInventoryMoveRequestData): void
     {
         this.handleCartridges(fromItems, body);
 
         const idsToMove = this.itemHelper.findAndReturnChildrenByItems(fromItems, body.item);
-
         for (const itemId of idsToMove)
         {
-            for (const itemIndex in fromItems)
+            const itemToMove = fromItems.find(x => x._id === itemId);
+            if (!itemToMove)
             {
-                if (fromItems[itemIndex]._id && fromItems[itemIndex]._id === itemId)
-                {
-                    if (itemId === body.item)
-                    {
-                        fromItems[itemIndex].parentId = body.to.id;
-                        fromItems[itemIndex].slotId = body.to.container;
+                this.logger.error(`Unable to find item to move: ${itemId}`);
+            }
 
-                        if ("location" in body.to)
-                        {
-                            fromItems[itemIndex].location = body.to.location;
-                        }
-                        else
-                        {
-                            if (fromItems[itemIndex].location)
-                            {
-                                delete fromItems[itemIndex].location;
-                            }
-                        }
-                    }
-                    toItems.push(fromItems[itemIndex]);
-                    fromItems.splice(parseInt(itemIndex), 1);
+            itemToMove.parentId = body.to.id;
+            itemToMove.slotId = body.to.container;
+            if (body.to.location)
+            {
+                // Update location object
+                itemToMove.location = body.to.location;
+            }
+            else
+            {
+                // No location in request, delete it
+                if (itemToMove.location)
+                {
+                    delete itemToMove.location;
                 }
             }
+
+            toItems.push(itemToMove);
+            fromItems.splice(fromItems.indexOf(itemToMove), 1);
         }
     }
 
