@@ -304,9 +304,17 @@ export class InventoryController
             }
         }
 
-        if (sourceItem === null || destinationItem === null)
+        if (sourceItem === null)
         {
-            const errorMessage = `Unable to transfer stack, cannot find source: ${body.item} or destination: ${body.with} `;
+            const errorMessage = `Unable to transfer stack, cannot find source: ${body.item}`;
+            this.logger.error(errorMessage);
+
+            return this.httpResponseUtil.appendErrorToOutput(output, errorMessage);
+        }
+
+        if (destinationItem === null)
+        {
+            const errorMessage = `Unable to transfer stack, cannot find destination: ${body.with} `;
             this.logger.error(errorMessage);
 
             return this.httpResponseUtil.appendErrorToOutput(output, errorMessage);
