@@ -230,7 +230,7 @@ export class InventoryController
         // Changes made to result apply to character inventory
         const inventoryItems = this.inventoryHelper.getOwnerInventoryItems(body, sessionID);
 
-        // Get source item
+        // Get source item (can be from player or trader or mail)
         const sourceItem = inventoryItems.from.find(x => x._id === body.item);
         if (!sourceItem)
         {
@@ -247,10 +247,10 @@ export class InventoryController
             const errorMessage = (`Unable to merge stacks as destination item: ${body.with} cannot be found`);
             this.logger.error(errorMessage);
 
-            //return this.httpResponseUtil.appendErrorToOutput(output, errorMessage);
+            return this.httpResponseUtil.appendErrorToOutput(output, errorMessage);
         }
 
-        if (destinationItem && !(destinationItem.upd?.StackObjectsCount))
+        if (!(destinationItem.upd?.StackObjectsCount))
         {
             // No stackcount on destination, add one
             destinationItem.upd = { StackObjectsCount: 1 };
@@ -261,13 +261,9 @@ export class InventoryController
             sourceItem.upd = { StackObjectsCount: 1 };
         }
 
-        if (destinationItem)
-        {
-            destinationItem.upd.StackObjectsCount += sourceItem.upd.StackObjectsCount; // Add source stackcount to destination
-        }
-        
+        destinationItem.upd.StackObjectsCount += sourceItem.upd.StackObjectsCount; // Add source stackcount to destination
         output.profileChanges[sessionID].items.del.push({ _id: sourceItem._id }); // Inform client source item being deleted
-        inventoryItems.to.splice(inventoryItems.to.findIndex(x => x._id === sourceItem._id), 1); // remove source item from pmc inventory
+        inventoryItems.from.splice(inventoryItems.to.findIndex(x => x._id === sourceItem._id), 1); // remove source item from to inventory
 
         return output;
     }
