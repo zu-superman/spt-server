@@ -14394,6 +14394,18 @@
       "slots_min": 1,
       "time_max": 400,
       "time_min": 150
+    },
+	{
+      "BotPreset": "normal",
+      "BotSide": "Savage",
+      "SpawnPoints": "ZoneCard1",
+      "WildSpawnType": "assault",
+      "isPlayers": false,
+      "number": 36,
+      "slots_max": 4,
+      "slots_min": 2,
+      "time_max": -1,
+      "time_min": -1
     }
   ]
 }
