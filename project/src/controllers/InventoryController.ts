@@ -264,6 +264,7 @@ export class InventoryController
         }
         else if (!sourceItem.upd.StackObjectsCount)
         {
+            // Items pulled out of raid can have no stackcount if the stack should be 1
             sourceItem.upd.StackObjectsCount = 1;
         }
 
