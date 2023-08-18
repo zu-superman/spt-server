@@ -178,6 +178,7 @@ export class BotGenerator
         {
             this.getRandomisedGameVersionAndCategory(bot.Info);
             bot = this.generateDogtag(bot);
+            bot.Info.IsStreamerModeAvailable = true; // Set to true so client patches can pick it up later - client sometimes alters botrole to assaultGroup
         }
 
         // generate new bot ID
