@@ -98,24 +98,24 @@ export class InventoryController
         }
 
         // Changes made to result apply to character inventory
-        const items = this.inventoryHelper.getOwnerInventoryItems(moveRequest, sessionID);
-        if (items.sameInventory)
+        const ownerInventoryItems = this.inventoryHelper.getOwnerInventoryItems(moveRequest, sessionID);
+        if (ownerInventoryItems.sameInventory)
         {
             // Dont move items from trader to profile, this can happen when editing a traders preset weapons
-            if (moveRequest.fromOwner?.type === "Trader" && !items.isMail)
+            if (moveRequest.fromOwner?.type === "Trader" && !ownerInventoryItems.isMail)
             {
                 return this.getTraderExploitErrorResponse(output);
             }
 
             // Check for item in inventory before allowing internal transfer
-            const originalItemLocation = items.from.find(x => x._id === moveRequest.item);
+            const originalItemLocation = ownerInventoryItems.from.find(x => x._id === moveRequest.item);
             if (!originalItemLocation)
             {
                 // Internal item move but item never existed, possible dupe glitch
                 return this.getTraderExploitErrorResponse(output);
             }
 
-            const moveResult = this.inventoryHelper.moveItemInternal(pmcData, items.from, moveRequest);
+            const moveResult = this.inventoryHelper.moveItemInternal(pmcData, ownerInventoryItems.from, moveRequest);
             if (!moveResult.success)
             {
                 return this.httpResponseUtil.appendErrorToOutput(output, moveResult.errorMessage);
@@ -123,7 +123,7 @@ export class InventoryController
         }
         else
         {
-            this.inventoryHelper.moveItemToProfile(items.from, items.to, moveRequest);
+            this.inventoryHelper.moveItemToProfile(ownerInventoryItems.from, ownerInventoryItems.to, moveRequest);
         }
         return output;
     }
