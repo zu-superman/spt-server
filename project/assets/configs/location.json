@@ -723,14 +723,14 @@
 	"randomiseMapContainers": {
         "tarkovstreets": true,
         "factory4_day": true,
-        "factory4_night": false,
-        "bigmap": false,
-        "woods": false,
-        "shoreline": false,
-        "interchange": false,
-        "lighthouse": false,
-        "laboratory": false,
-        "rezervbase": false
+        "factory4_night": true,
+        "bigmap": true,
+        "woods": true,
+        "shoreline": true,
+        "interchange": true,
+        "lighthouse": true,
+        "laboratory": true,
+        "rezervbase": true
     },
 	"minFillLooseMagazinePercent": 50,
 	"minFillStaticMagazinePercent": 50
