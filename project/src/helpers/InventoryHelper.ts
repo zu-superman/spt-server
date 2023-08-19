@@ -903,19 +903,24 @@ export class InventoryHelper
                 this.logger.error(`Unable to find item to move: ${itemId}`);
             }
 
-            itemToMove.parentId = body.to.id;
-            itemToMove.slotId = body.to.container;
-            if (body.to.location)
+            // Only adjust the values for parent item, not children (their values are correctly tied to parent)
+            if (itemId === body.item)
             {
-                // Update location object
-                itemToMove.location = body.to.location;
-            }
-            else
-            {
-                // No location in request, delete it
-                if (itemToMove.location)
+                itemToMove.parentId = body.to.id;
+                itemToMove.slotId = body.to.container;
+
+                if (body.to.location)
                 {
-                    delete itemToMove.location;
+                    // Update location object
+                    itemToMove.location = body.to.location;
+                }
+                else
+                {
+                    // No location in request, delete it
+                    if (itemToMove.location)
+                    {
+                        delete itemToMove.location;
+                    }
                 }
             }
 
