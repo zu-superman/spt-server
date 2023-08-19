@@ -785,13 +785,26 @@ export class QuestHelper
 
             const questRecordToAdd: Quest = {
                 qid: questKey,
-                startTime: 0,
+                startTime: this.timeUtil.getTimestamp(),
                 status: statuses[statuses.length - 1],
                 statusTimers: statusesDict,
                 completedConditions: [],
                 availableAfter: 0
             };
-            pmcProfile.Quests.push(questRecordToAdd);
+
+            if (pmcProfile.Quests.some(x => x.qid === questKey))
+            {
+                // Update existing
+                const existingQuest = pmcProfile.Quests.find(x => x.qid === questKey);
+                existingQuest.status = questRecordToAdd.status;
+                existingQuest.statusTimers = questRecordToAdd.statusTimers;
+            }
+            else
+            {
+                // Add new
+                pmcProfile.Quests.push(questRecordToAdd);
+            }
+            
         }
     }
 }

@@ -182,7 +182,7 @@ export class ProfileController
         // Profile is flagged as wanting quests set to ready to hand in and collect rewards
         if (profile.trader.setQuestsAvailableForFinish)
         {
-            this.questHelper.addAllQuestsToProfile(profileDetails.characters.pmc, [QuestStatus.AvailableForFinish]);
+            this.questHelper.addAllQuestsToProfile(profileDetails.characters.pmc, [QuestStatus.AvailableForStart, QuestStatus.Started, QuestStatus.AvailableForFinish]);
 
             // Make unused response so applyQuestReward works
             const response = this.eventOutputHolder.getOutput(sessionID);
