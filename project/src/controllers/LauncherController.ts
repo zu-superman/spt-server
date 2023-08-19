@@ -114,7 +114,7 @@ export class LauncherController
             aid: this.hashUtil.generateAccountId(),
             username: info.username,
             password: info.password,
-            wipe: true,
+            wipe: false,
             edition: info.edition
         };
         this.saveServer.createProfile(newProfileDetails);
