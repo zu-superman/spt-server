@@ -499,6 +499,7 @@ export class InventoryHelper
 
     /**
      * Remove item from player inventory + insured items array
+     * Also deletes child items
      * @param pmcData Profile to remove item from
      * @param itemId Items id to remove
      * @param sessionID Session id
@@ -508,14 +509,22 @@ export class InventoryHelper
     public removeItem(pmcData: IPmcData, itemId: string, sessionID: string, output: IItemEventRouterResponse = undefined): IItemEventRouterResponse
     {
         if (!itemId)
-            return output;
+        {
+            this.logger.warning("No itemId supplied, unable to remove item from inventory");
 
+            return output;
+        }
+
+        // Get children of item, they get deleted too
         const childIds = this.itemHelper.findAndReturnChildrenByItems(pmcData.Inventory.items, itemId);
         const inventoryItems = pmcData.Inventory.items;
         const insuredItems = pmcData.InsuredItems;
 
+        // We have output object, inform client of item deletion
         if (output)
+        {
             output.profileChanges[sessionID].items.del.push({ "_id": itemId });
+        }
 
         for (const childId of childIds)
         {
@@ -884,7 +893,7 @@ export class InventoryHelper
     public moveItemToProfile(fromItems: Item[], toItems: Item[], body: IInventoryMoveRequestData): void
     {
         this.handleCartridges(fromItems, body);
-
+        // Get all children item has, they need to move with item
         const idsToMove = this.itemHelper.findAndReturnChildrenByItems(fromItems, body.item);
         for (const itemId of idsToMove)
         {
