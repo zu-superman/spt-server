@@ -3,7 +3,7 @@ import { inject, injectable } from "tsyringe";
 import { LocationGenerator } from "../generators/LocationGenerator";
 import { LootGenerator } from "../generators/LootGenerator";
 import { WeightedRandomHelper } from "../helpers/WeightedRandomHelper";
-import { ILocation, IStaticContainer } from "../models/eft/common/ILocation";
+import { IContainerMinMax, ILocation, IStaticContainer } from "../models/eft/common/ILocation";
 import { ILocationBase } from "../models/eft/common/ILocationBase";
 import {
     ILocationsGenerateAllResponse
@@ -117,32 +117,29 @@ export class LocationController
 
         // Add static loot to output + pass in forced statics as param
         let staticContainerCount = 0;
-        const staticContainerGroupMap = this.getStaticContainerGroupLimits(name);
+        const staticContainerGroupData: IStaticContainer  = db.locations[name].statics;
+        const containerGroupLimits = this.prepareContainerGroupLimitData(staticContainerGroupData.containersGroups);
         for (const staticContainer of this.randomUtil.shuffle(staticContainers ?? []) ) // Shuffle containers so we dont always add the first ones in the list
         {
-            // not 100% chance, roll chance to be added to map
+            // Only randomise containers with a less than 100% chance of spawning
             if (staticContainer.probability < 1 && this.locationConfig.randomiseMapContainers[name])
             {
-                // Find matching static containers 
-                const containerGroupDetails: IStaticContainer = db.locations[name].statics.find(x => x.template.Id === staticContainer.template.Id);
-                if (containerGroupDetails?.template.LootableContainersGroupId.length > 0)
+                // Find matching static container group data
+                const containerGroupData = staticContainerGroupData.containers[staticContainer.template.Id];
+                if (containerGroupData?.groupId.length > 0) // Check has a group id, some are empty strings
                 {
-                    // get container group limit values
-                    const settings = staticContainerGroupMap[containerGroupDetails.template.LootableContainersGroupId];
-                    settings.current += 1;
-                    if (settings.current >= settings.max)
+                    // Get container group limit values and check we're not at limit
+                    const containerGroup = containerGroupLimits[containerGroupData.groupId];
+                    if (containerGroup.current >= containerGroup.maxContainers)
                     {
-                        this.logger.warning(`Skipped adding container ${staticContainer.template.Id} as its group: ${containerGroupDetails.template.LootableContainersGroupId} is already maxed at ${settings.max}`);
+                        // Already at max for this container group, skip
+                        this.logger.warning(`Skipped adding container ${staticContainer.template.Id} as its group: ${containerGroupData.groupId} is already maxed at ${containerGroup.maxContainers}`);
                         continue;
                     }
+                    
+                    // Increment counter
+                    containerGroup.current ++;
                 }
-
-                // // Chance is between 0 and 1
-                // if (!this.randomUtil.getChance100(staticContainer.probability * 100))
-                // {
-                //     // Skip container
-                //     continue;
-                // }
             }
 
             const container = this.locationGenerator.generateContainerLoot(staticContainer, staticForced, staticLootDist, staticAmmoDist, name);
@@ -167,28 +164,23 @@ export class LocationController
         return output;
     }
 
-    protected getStaticContainerGroupLimits(mapName: string): Record<string, any>
+    /**
+     * Keyed by containerGroup key
+     * Iterate over all container groups for a map and choose a random count between min and max to spawn for each container grouping
+     * @param containersGroups Container group values
+     * @returns Same as input
+     */
+    protected prepareContainerGroupLimitData(containersGroups: Record<string, IContainerMinMax>): Record<string, IContainerMinMax>
     {
-        const result: Record<string, any> = {};
-
-        // Get statics group data
-        const containersForMap: IStaticContainer[] = this.databaseServer.getTables().locations[mapName].statics;
-        if (!containersForMap)
+        const groupData = this.jsonUtil.clone(containersGroups);
+        for (const groupKey in groupData)
         {
-            this.logger.warning(`Map ${mapName} has no container group data`);
-            return result;
+            const data = groupData[groupKey];
+            data.current = 0;
+            data.chosenCount = this.randomUtil.getInt(data.minContainers, data.maxContainers);
         }
 
-        for (const staticContainer of containersForMap.filter(x => x.template.LootableContainersGroupId.length > 0))
-        {
-            // Add group id to dict with randomised max
-            if (!result[staticContainer.template.LootableContainersGroupId])
-            {
-                result[staticContainer.template.LootableContainersGroupId] = { current: 0, max: this.randomUtil.getInt(0,2) };
-            }
-        }
-
-        return result;
+        return groupData;
     }
 
     /**

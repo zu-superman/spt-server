@@ -5,19 +5,24 @@ export interface ILocation
 {
     base: ILocationBase
     looseLoot: ILooseLoot;
-    statics: IStaticContainer[]
+    statics: IStaticContainer
 }
 
 export interface IStaticContainer
 {
-    name: string
-    template: IStaticContainerTemplate
-    
+    containersGroups: Record<string, IContainerMinMax>
+    containers: Record< string, IContainerData>
 }
 
-export interface IStaticContainerTemplate
+export interface IContainerMinMax
 {
-    Id: string
-    LootableContainersGroupId: string
-    IsAlwaysSpawn: boolean
+    minContainers: number
+    maxContainers: number
+    current?: number
+    chosenCount?: number
+}
+
+export interface IContainerData
+{
+    groupId: string
 }
