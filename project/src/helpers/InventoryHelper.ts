@@ -903,7 +903,7 @@ export class InventoryHelper
                 this.logger.error(`Unable to find item to move: ${itemId}`);
             }
 
-            // Only adjust the values for parent item, not children (their values are correctly tied to parent)
+            // Only adjust the values for parent item, not children (their values are already correctly tied to parent)
             if (itemId === body.item)
             {
                 itemToMove.parentId = body.to.id;
