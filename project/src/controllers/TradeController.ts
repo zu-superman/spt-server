@@ -5,7 +5,8 @@ import { ProfileHelper } from "../helpers/ProfileHelper";
 import { TradeHelper } from "../helpers/TradeHelper";
 import { TraderHelper } from "../helpers/TraderHelper";
 import { IPmcData } from "../models/eft/common/IPmcData";
-import { Upd } from "../models/eft/common/tables/IItem";
+import { Item, Upd } from "../models/eft/common/tables/IItem";
+import { ITraderBase } from "../models/eft/common/tables/ITrader";
 import { IItemEventRouterResponse } from "../models/eft/itemEvent/IItemEventRouterResponse";
 import { IProcessBaseTradeRequestData } from "../models/eft/trade/IProcessBaseTradeRequestData";
 import { IProcessBuyTradeRequestData } from "../models/eft/trade/IProcessBuyTradeRequestData";
@@ -119,7 +120,7 @@ class TradeController
 
     /**
      * Sell all sellable items to a trader from inventory
-     * DOES NOT DELETE ITEMS FROM INVENTORY
+     * WILL DELETE ITEMS FROM INVENTORY + CHILDREN OF ITEMS SOLD
      * @param sessionId Session id
      * @param profileWithItemsToSell Profile with items to be sold to trader 
      * @param profileThatGetsMoney Profile that gets the money after selling items
@@ -128,9 +129,6 @@ class TradeController
      */
     protected sellInventoryToTrader(sessionId: string, profileWithItemsToSell: IPmcData, profileThatGetsMoney: IPmcData, trader: Traders): IItemEventRouterResponse
     {
-        // Move to more permanent location
-        const inventoryContainerTpls = ["55d7217a4bdc2d86028b456d", "5963866286f7747bf429b572", "602543c13fee350cd564d032", "566abbc34bdc2d92178b4576", "5963866b86f7747bfa1c4462"];
-        const inventoryContainerIds = profileWithItemsToSell.Inventory.items.filter(x => inventoryContainerTpls.includes(x._tpl)).map(x => x._id);
         const handbookPrices = this.ragfairPriceService.getAllStaticPrices();
         // TODO, apply trader sell bonuses?
         const traderDetails = this.traderHelper.getTrader(trader, sessionId);
@@ -144,39 +142,49 @@ class TradeController
             items: []
         };
 
+        // Get all base items that scav has (primaryweapon/backpack/pockets etc)
         // Add items that trader will buy (only sell items that have the container as parent) to request object
-        for (const itemToSell of profileWithItemsToSell.Inventory.items.filter(x => inventoryContainerIds.includes(x.parentId))) // Only get 'root' items
+        const containerAndEquipmentItems = profileWithItemsToSell.Inventory.items.filter(x => x.parentId === profileWithItemsToSell.Inventory.equipment);
+        for (const itemToSell of containerAndEquipmentItems)
         {
-            // Skip default items (stashes/inventory object etc)
-            if (inventoryContainerTpls.includes(itemToSell._tpl))
-            {
-                continue;
-            }
-
-            // Get item details to check later
-            const itemDetails = this.itemHelper.getItem(itemToSell._tpl);
-            // Skip if tpl isnt item OR item doesnt fulfill one of the traders buy categories
-            if (!(itemDetails[0] && this.itemHelper.isOfBaseclasses(itemDetails[1]._id, traderDetails.items_buy.category)))
-            {
-                continue;
-            }
-
-            // Skip item if no price
-            const handbookPrice = handbookPrices[itemToSell._tpl];
-            if (!handbookPrice)
-            {
-                continue;
-            }
-
             // Increment sell price in request
-            sellRequest.price += handbookPrice;
+            sellRequest.price += this.getPriceOfItemAndChildren(itemToSell._id, profileWithItemsToSell.Inventory.items, handbookPrices, traderDetails);
 
             // Add item details to request
             // eslint-disable-next-line @typescript-eslint/naming-convention
-            sellRequest.items.push({id: itemToSell._id, count: 1, scheme_id: 0});
+            sellRequest.items.push({id: itemToSell._id, count: itemToSell?.upd?.StackObjectsCount ?? 1, scheme_id: 0});
         }
 
         return this.tradeHelper.sellItem(profileWithItemsToSell, profileThatGetsMoney, sellRequest, sessionId);
+    }
+
+    /**
+     * Looks up an items children and gets total handbook price for them
+     * @param parentItemId parent item that has children we want to sum price of
+     * @param items All items (parent + children)
+     * @param handbookPrices Prices of items from handbook
+     * @param traderDetails Trader being sold to to perform buy category check against
+     * @returns Rouble price
+     */
+    protected getPriceOfItemAndChildren(parentItemId: string, items: Item[], handbookPrices: Record<string, number>, traderDetails: ITraderBase): number
+    {
+        const itemWithChildren = this.itemHelper.findAndReturnChildrenAsItems(items, parentItemId);
+
+        let totalPrice = 0;
+        for (const itemToSell of itemWithChildren)
+        {
+            const itemDetails = this.itemHelper.getItem(itemToSell._tpl);
+            if (!(itemDetails[0] && this.itemHelper.isOfBaseclasses(itemDetails[1]._id, traderDetails.items_buy.category)))
+            {
+                // Skip if tpl isnt item OR item doesn't fulfill match traders buy categories
+                continue;
+            }
+
+            // Get price of item multiplied by how many are in stack
+            totalPrice += (handbookPrices[itemToSell._tpl] ?? 0) * itemToSell.upd?.StackObjectsCount ?? 1;
+        }
+
+        return totalPrice;
     }
 
     protected confirmTradingInternal(pmcData: IPmcData, body: IProcessBaseTradeRequestData, sessionID: string, foundInRaid = false, upd: Upd = null): IItemEventRouterResponse
