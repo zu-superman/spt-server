@@ -13,11 +13,13 @@ import { ConfigTypes } from "../models/enums/ConfigTypes";
 import { EquipmentSlots } from "../models/enums/EquipmentSlots";
 import { GenerateWeaponResult } from "../models/spt/bots/GenerateWeaponResult";
 import { IBotConfig } from "../models/spt/config/IBotConfig";
+import { IRepairConfig } from "../models/spt/config/IRepairConfig";
 import { ILogger } from "../models/spt/utils/ILogger";
 import { ConfigServer } from "../servers/ConfigServer";
 import { DatabaseServer } from "../servers/DatabaseServer";
 import { BotWeaponModLimitService } from "../services/BotWeaponModLimitService";
 import { LocalisationService } from "../services/LocalisationService";
+import { RepairService } from "../services/RepairService";
 import { HashUtil } from "../utils/HashUtil";
 import { JsonUtil } from "../utils/JsonUtil";
 import { RandomUtil } from "../utils/RandomUtil";
@@ -30,6 +32,7 @@ export class BotWeaponGenerator
 {
     protected readonly modMagazineSlotId = "mod_magazine";
     protected botConfig: IBotConfig;
+    protected repairConfig: IRepairConfig;
 
     constructor(
         @inject("JsonUtil") protected jsonUtil: JsonUtil,
@@ -45,10 +48,12 @@ export class BotWeaponGenerator
         @inject("BotWeaponModLimitService") protected botWeaponModLimitService: BotWeaponModLimitService,
         @inject("BotEquipmentModGenerator") protected botEquipmentModGenerator: BotEquipmentModGenerator,
         @inject("LocalisationService") protected localisationService: LocalisationService,
+        @inject("RepairService") protected repairService: RepairService,
         @injectAll("InventoryMagGen") protected inventoryMagGenComponents: IInventoryMagGen[]
     )
     {
         this.botConfig = this.configServer.getConfig(ConfigTypes.BOT);
+        this.repairConfig = this.configServer.getConfig(ConfigTypes.REPAIR);
         this.inventoryMagGenComponents.sort((a, b) => a.getPriority() - b.getPriority());
     }
 
@@ -88,7 +93,7 @@ export class BotWeaponGenerator
      * @param weaponParentId ParentId of the weapon being generated
      * @param modChances Dictionary of item types and % chance weapon will have that mod
      * @param botRole e.g. assault/exusec
-     * @param isPmc 
+     * @param isPmc Is weapon being generated for a pmc
      * @returns GenerateWeaponResult object
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -116,6 +121,13 @@ export class BotWeaponGenerator
 
         // Create with just base weapon item
         let weaponWithModsArray = this.constructWeaponBaseArray(weaponTpl, weaponParentId, equipmentSlot, weaponItemTemplate, botRole);
+
+        // Chance to add randomised weapon enhancement
+        if (isPmc && this.randomUtil.getChance100(this.botConfig.pmc.weaponHasEnhancementChancePercent))
+        {
+            const weaponConfig = this.repairConfig.repairKit.weapon;
+            this.repairService.addBuff(weaponConfig, weaponWithModsArray[0]);
+        }
 
         // Add mods to weapon base
         if (Object.keys(modPool).includes(weaponTpl))

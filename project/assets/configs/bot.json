@@ -1755,6 +1755,7 @@
         "usecType": "sptUsec",
         "bearType": "sptBear",
         "looseWeaponInBackpackChancePercent": 15,
+        "weaponHasEnhancementChancePercent": 15,
         "looseWeaponInBackpackLootMinMax": {
             "min": 1,
             "max": 1

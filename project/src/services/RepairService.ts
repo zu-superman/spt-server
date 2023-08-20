@@ -333,23 +333,23 @@ export class RepairService
             if (this.itemHelper.isOfBaseclasses(repairDetails.repairedItem._tpl, [BaseClasses.ARMOR, BaseClasses.VEST]))
             {
                 const armorConfig = this.repairConfig.repairKit.armor;
-                this.addBuff(armorConfig, repairDetails);
+                this.addBuff(armorConfig, repairDetails.repairedItem);
             }
             else if (this.itemHelper.isOfBaseclass(repairDetails.repairedItem._tpl, BaseClasses.WEAPON))
             {
                 const weaponConfig = this.repairConfig.repairKit.weapon;
-                this.addBuff(weaponConfig, repairDetails);
+                this.addBuff(weaponConfig, repairDetails.repairedItem);
             }
             // TODO: Knife repair kits may be added at some point, a bracket needs to be added here
         }
     }
 
     /**
-     * Add buff to item
+     * Add random buff to item
      * @param itemConfig weapon/armor config 
      * @param repairDetails Details for item to repair
      */
-    protected addBuff(itemConfig: BonusSettings, repairDetails: RepairDetails): void
+    public addBuff(itemConfig: BonusSettings, item: Item): void
     {
         const bonusRarity = this.weightedRandomHelper.getWeightedInventoryItem(itemConfig.rarityWeight);
         const bonusType = this.weightedRandomHelper.getWeightedInventoryItem(itemConfig.bonusTypeWeight);
@@ -360,11 +360,11 @@ export class RepairService
         const bonusThresholdPercents = itemConfig[bonusRarity][bonusType].activeDurabilityPercentMinMax;
         const bonusThresholdPercent = this.randomUtil.getInt(bonusThresholdPercents.min, bonusThresholdPercents.max);
 
-        repairDetails.repairedItem.upd.Buff = {
+        item.upd.Buff = {
             rarity: bonusRarity,
             buffType: bonusType,
             value: bonusValue,
-            thresholdDurability: this.randomUtil.getPercentOfValue(bonusThresholdPercent, repairDetails.repairedItem.upd.Repairable.Durability)
+            thresholdDurability: this.randomUtil.getPercentOfValue(bonusThresholdPercent, item.upd.Repairable.Durability)
         };
     }
 

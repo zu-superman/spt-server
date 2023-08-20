@@ -20,6 +20,8 @@ export interface IPmcConfig
     difficulty: string
     /** Chance out of 100 to have a complete gun in backpack */
     looseWeaponInBackpackChancePercent: number
+    /** Chance out of 100 to have an enhancement applied to PMC weapon */
+    weaponHasEnhancementChancePercent: number
     /** MinMax count of weapons to have in backpack */
     looseWeaponInBackpackLootMinMax: MinMax
     /** Percentage chance PMC will be USEC */
