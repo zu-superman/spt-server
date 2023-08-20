@@ -57,7 +57,7 @@
                         }
                     ],
                     "RandomTimeSpawn": false,
-					"ChanceGroup": 0
+                    "ChanceGroup": 0
                 }, {
                     "sptId": "sptUsecFactoryDayBossSpawn",
                     "BossName": "sptUsec",
@@ -78,7 +78,7 @@
                         }
                     ],
                     "RandomTimeSpawn": false,
-					"ChanceGroup": 0
+                    "ChanceGroup": 0
                 }
             ],
             "bigmap": [{
@@ -101,7 +101,7 @@
                         }
                     ],
                     "RandomTimeSpawn": false,
-					"ChanceGroup": 0
+                    "ChanceGroup": 0
                 }, {
                     "sptId": "sptUsecCustomsScavBaseNormalSpawn",
                     "BossName": "sptUsec",
@@ -122,7 +122,7 @@
                         }
                     ],
                     "RandomTimeSpawn": false,
-					"ChanceGroup": 0
+                    "ChanceGroup": 0
                 }
             ],
             "woods": [{
@@ -145,7 +145,7 @@
                         }
                     ],
                     "RandomTimeSpawn": false,
-					"ChanceGroup": 0
+                    "ChanceGroup": 0
                 }, {
                     "sptId": "sptUsecWoodScavBaseNormalSpawn",
                     "BossName": "sptUsec",
@@ -166,7 +166,7 @@
                         }
                     ],
                     "RandomTimeSpawn": false,
-					"ChanceGroup": 0
+                    "ChanceGroup": 0
                 }
             ],
             "shoreline": [{
@@ -189,7 +189,7 @@
                         }
                     ],
                     "RandomTimeSpawn": false,
-					"ChanceGroup": 0
+                    "ChanceGroup": 0
                 }, {
                     "sptId": "sptUsecShorelinePortNormalSpawn",
                     "BossName": "sptUsec",
@@ -210,7 +210,7 @@
                         }
                     ],
                     "RandomTimeSpawn": false,
-					"ChanceGroup": 0
+                    "ChanceGroup": 0
                 }, {
                     "sptId": "sptUsecShorelineSanatorium1NormalSpawn",
                     "BossName": "sptUsec",
@@ -231,7 +231,7 @@
                         }
                     ],
                     "RandomTimeSpawn": false,
-					"ChanceGroup": 0
+                    "ChanceGroup": 0
                 }, {
                     "sptId": "sptBearShorelineSanatorium1NormalSpawn",
                     "BossName": "sptBear",
@@ -252,7 +252,7 @@
                         }
                     ],
                     "RandomTimeSpawn": false,
-					"ChanceGroup": 0
+                    "ChanceGroup": 0
                 }, {
                     "sptId": "sptUsecShorelineSanatorium2NormalSpawn",
                     "BossName": "sptUsec",
@@ -273,7 +273,7 @@
                         }
                     ],
                     "RandomTimeSpawn": false,
-					"ChanceGroup": 0
+                    "ChanceGroup": 0
                 }, {
                     "sptId": "sptBearShorelineSanatorium2NormalSpawn",
                     "BossName": "sptBear",
@@ -294,7 +294,7 @@
                         }
                     ],
                     "RandomTimeSpawn": false,
-					"ChanceGroup": 0
+                    "ChanceGroup": 0
                 }
             ],
             "laboratory": [{
@@ -317,7 +317,7 @@
                         }
                     ],
                     "RandomTimeSpawn": false,
-					"ChanceGroup": 0
+                    "ChanceGroup": 0
                 }, {
                     "sptId": "sptBearLabsZoneFloor2NormalSpawn",
                     "BossChance": 15,
@@ -338,7 +338,7 @@
                         }
                     ],
                     "RandomTimeSpawn": false,
-					"ChanceGroup": 0
+                    "ChanceGroup": 0
                 }, {
                     "sptId": "sptBearLabsZoneBasementNormalSpawn",
                     "BossChance": 15,
@@ -359,7 +359,7 @@
                         }
                     ],
                     "RandomTimeSpawn": false,
-					"ChanceGroup": 0
+                    "ChanceGroup": 0
                 }, {
                     "sptId": "sptUsecLabsZoneFloor1NormalSpawn",
                     "BossChance": 15,
@@ -380,7 +380,7 @@
                         }
                     ],
                     "RandomTimeSpawn": false,
-					"ChanceGroup": 0
+                    "ChanceGroup": 0
                 }, {
                     "sptId": "sptUsecLabsZoneFloor2NormalSpawn",
                     "BossChance": 15,
@@ -401,7 +401,7 @@
                         }
                     ],
                     "RandomTimeSpawn": false,
-					"ChanceGroup": 0
+                    "ChanceGroup": 0
                 }, {
                     "sptId": "sptUsecLabsZoneBasementNormalSpawn",
                     "BossChance": 15,
@@ -422,7 +422,7 @@
                         }
                     ],
                     "RandomTimeSpawn": false,
-					"ChanceGroup": 0
+                    "ChanceGroup": 0
                 }
             ],
             "interchange": [{
@@ -445,7 +445,7 @@
                         }
                     ],
                     "RandomTimeSpawn": false,
-					"ChanceGroup": 0
+                    "ChanceGroup": 0
                 }, {
                     "sptId": "sptUsecInterchangeNormalSpawn",
                     "BossName": "sptUsec",
@@ -466,10 +466,10 @@
                         }
                     ],
                     "RandomTimeSpawn": false,
-					"ChanceGroup": 0
+                    "ChanceGroup": 0
                 }
             ],
-			"lighthouse": [{
+            "lighthouse": [{
                     "sptId": "sptBearLighthouseNormalSpawn",
                     "BossName": "sptBear",
                     "BossChance": 15,
@@ -489,9 +489,8 @@
                         }
                     ],
                     "RandomTimeSpawn": false,
-					"ChanceGroup": 0
-                },
-				{
+                    "ChanceGroup": 0
+                }, {
                     "sptId": "sptUsecLighthouseNormalSpawn",
                     "BossName": "sptUsec",
                     "BossChance": 15,
@@ -511,8 +510,9 @@
                         }
                     ],
                     "RandomTimeSpawn": false,
-					"ChanceGroup": 0
-                }]
+                    "ChanceGroup": 0
+                }
+            ]
         },
         "normal": {
             "factory4_day": [{
@@ -679,7 +679,9 @@
         "bigmap": ["ZoneScavBase"]
     },
     "forcedLootSingleSpawnById": {
-        "bigmap": ["5ac620eb86f7743a8e6e0da0", "5939e5a786f77461f11c0098"],
+        "bigmap": [
+            "5ac620eb86f7743a8e6e0da0",
+            "5939e5a786f77461f11c0098"],
         "lighthouse": [
             "6331bb0d1aa9f42b804997a6",
             "6398a072e301557ae24cec92",
@@ -696,6 +698,9 @@
             "6393262086e646067c176aa2",
             "63989ced706b793c7d60cfef",
             "63a39e1d234195315d4020bd"
+        ],
+        "laboratory": [
+            "6398a4cfb5992f573c6562b3"
         ]
     },
     "splitWaveIntoSingleSpawnsSettings": {
@@ -712,15 +717,30 @@
         "ignoreMaps": ["base", "develop", "hideout", "privatearea", "suburbs", "terminal", "town"]
     },
     "fitLootIntoContainerAttempts": 2,
-	"addOpenZonesToAllMaps": true,
-	"addCustomBotWavesToMaps": true,
+    "addOpenZonesToAllMaps": true,
+    "addCustomBotWavesToMaps": true,
     "enableBotTypeLimits": true,
     "botTypeLimits": {
-        "tarkovstreets": [{"type": "marksman", "min": 2, "max": 4}],
-        "woods": [{"type": "marksman", "min": 2, "max": 5}],
-        "bigmap": [{"type": "marksman", "min": 2, "max": 4}]
+        "tarkovstreets": [{
+                "type": "marksman",
+                "min": 2,
+                "max": 4
+            }
+        ],
+        "woods": [{
+                "type": "marksman",
+                "min": 2,
+                "max": 5
+            }
+        ],
+        "bigmap": [{
+                "type": "marksman",
+                "min": 2,
+                "max": 4
+            }
+        ]
     },
-	"randomiseMapContainers": {
+    "randomiseMapContainers": {
         "tarkovstreets": true,
         "factory4_day": true,
         "factory4_night": true,
@@ -732,6 +752,6 @@
         "laboratory": true,
         "rezervbase": true
     },
-	"minFillLooseMagazinePercent": 50,
-	"minFillStaticMagazinePercent": 50
+    "minFillLooseMagazinePercent": 50,
+    "minFillStaticMagazinePercent": 50
 }
