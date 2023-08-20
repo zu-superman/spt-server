@@ -270,7 +270,7 @@ export class InventoryController
 
         destinationItem.upd.StackObjectsCount += sourceItem.upd.StackObjectsCount; // Add source stackcount to destination
         output.profileChanges[sessionID].items.del.push({ _id: sourceItem._id }); // Inform client source item being deleted
-        inventoryItems.from.splice(inventoryItems.to.findIndex(x => x._id === sourceItem._id), 1); // remove source item from to inventory
+        inventoryItems.from.splice(inventoryItems.from.findIndex(x => x._id === sourceItem._id), 1); // remove source item from 'from' inventory
 
         return output;
     }
