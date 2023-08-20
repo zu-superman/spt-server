@@ -227,6 +227,8 @@ export class MatchController
         
         this.traderHelper.lvlUp(fenceId, sessionId);
         pmcData.TradersInfo[fenceId].loyaltyLevel = Math.max(pmcData.TradersInfo[fenceId].loyaltyLevel, 1);
+
+        this.logger.debug(`Car extract: ${extractName} used, total times taken: ${pmcData.CarExtractCounts[extractName]}`);
     }
 
     /**
@@ -247,6 +249,8 @@ export class MatchController
         fenceStanding += Math.max(baseGain / extractCount, 0.01);
 
         // Ensure fence loyalty level is not above/below the range -7 - 15
-        pmcData.TradersInfo[fenceId].standing = Math.min(Math.max(fenceStanding, -7), 15);
+        const newFenceStanding = Math.min(Math.max(fenceStanding, -7), 15);
+        this.logger.debug(`Old vs new fence standing: ${pmcData.TradersInfo[fenceId].standing}, ${newFenceStanding}`);
+        pmcData.TradersInfo[fenceId].standing = newFenceStanding;
     }
 }
