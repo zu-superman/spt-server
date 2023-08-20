@@ -35040,7 +35040,8 @@
           "target": "64de07e5f0cd00695501d617",
           "type": "Item",
           "value": "5"
-        },{
+        },
+        {
           "index": 4,
           "items": [
             {
@@ -35053,7 +35054,7 @@
           "traderId": "54cb50c76803fa8b248b4571",
           "type": "AssortmentUnlock"
         },
-		{
+        {
           "findInRaid": true,
           "id": "64b6aaaf58b5637e2d71a65d",
           "index": 7,
@@ -35071,7 +35072,7 @@
           "unknown": false,
           "value": "5"
         },
-		{
+        {
           "findInRaid": true,
           "id": "64b6aab73e349c7dbd06bd1a",
           "index": 8,
@@ -66069,7 +66070,27 @@
           "value": "-0.10"
         }
       ],
-      "Started": [],
+      "Started": [
+        {
+          "id": "6399f098dbf1d842d260ccc1",
+          "index": 0,
+          "items": [
+            {
+              "_id": "6492e44bf4287b13040fccd0",
+              "_tpl": "62e910aaf957f2915e0a5e36",
+              "upd": {
+                "SpawnedInSession": true,
+                "StackObjectsCount": 1
+              }
+            }
+          ],
+          "loyaltyLevel": 2,
+          "target": "6492e44bf4287b13040fccd0",
+          "traderId": "11",
+          "type": "ProductionScheme",
+          "unknown": true
+        }
+      ],
       "Success": [
         {
           "id": "63a5d5c60530a47cb931854e",
