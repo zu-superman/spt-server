@@ -128,7 +128,7 @@ export class TraderController
 
             if (pmcData.Info)
             {
-                this.traderHelper.lvlUp(traderID, sessionID);
+                this.traderHelper.lvlUp(traderID, pmcData);
             }
         }
 

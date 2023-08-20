@@ -62,7 +62,7 @@ export class TraderHelper
         {
             // trader doesn't exist in profile
             this.resetTrader(sessionID, traderID);
-            this.lvlUp(traderID, sessionID);
+            this.lvlUp(traderID, pmcData);
         }
 
         return trader;
@@ -139,7 +139,7 @@ export class TraderHelper
         // Add standing to trader
         traderInfo.standing = this.addStandingValuesTogether(traderInfo.standing, standingToAdd);
 
-        this.lvlUp(traderId, sessionId);
+        this.lvlUp(traderId, pmcData);
     }
 
     /**
@@ -159,21 +159,20 @@ export class TraderHelper
 
     /**
      * Calculate traders level based on exp amount and increments level if over threshold
-     * @param traderID trader to process
-     * @param sessionID session id
+     * @param traderID trader to check standing of
+     * @param pmcData profile to update trader in
      */
-    public lvlUp(traderID: string, sessionID: string): void
+    public lvlUp(traderID: string, pmcData: IPmcData): void
     {
         const loyaltyLevels = this.databaseServer.getTables().traders[traderID].base.loyaltyLevels;
-        const pmcData = this.profileHelper.getPmcProfile(sessionID);
 
-        // level up player
+        // Level up player
         pmcData.Info.Level = this.playerService.calculateLevel(pmcData);
 
-        // level up traders
+        // Level up traders
         let targetLevel = 0;
 
-        // round standing to 2 decimal places to address floating point inaccuracies
+        // Round standing to 2 decimal places to address floating point inaccuracies
         pmcData.TradersInfo[traderID].standing = Math.round(pmcData.TradersInfo[traderID].standing * 100) / 100;
 
         for (const level in loyaltyLevels)

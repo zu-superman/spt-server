@@ -225,7 +225,7 @@ export class MatchController
         const fenceId: string = Traders.FENCE;
         this.updateFenceStandingInProfile(pmcData, fenceId, extractName);
         
-        this.traderHelper.lvlUp(fenceId, sessionId);
+        this.traderHelper.lvlUp(fenceId, pmcData);
         pmcData.TradersInfo[fenceId].loyaltyLevel = Math.max(pmcData.TradersInfo[fenceId].loyaltyLevel, 1);
 
         this.logger.debug(`Car extract: ${extractName} used, total times taken: ${pmcData.CarExtractCounts[extractName]}`);

@@ -88,7 +88,7 @@ export class PaymentService
         const saleSum = pmcData.TradersInfo[request.tid].salesSum += this.handbookHelper.fromRUB(this.handbookHelper.inRUB(barterPrice, currencyTpl), this.paymentHelper.getCurrency(trader.currency));
 
         pmcData.TradersInfo[request.tid].salesSum = saleSum;
-        this.traderHelper.lvlUp(request.tid, sessionID);
+        this.traderHelper.lvlUp(request.tid, pmcData);
         Object.assign(output.profileChanges[sessionID].traderRelations, { [request.tid]: pmcData.TradersInfo[request.tid] });
 
         this.logger.debug("Items taken. Status OK.");
@@ -168,7 +168,7 @@ export class PaymentService
         const saleSum = pmcData.TradersInfo[body.tid].salesSum + amount;
 
         pmcData.TradersInfo[body.tid].salesSum = saleSum;
-        this.traderHelper.lvlUp(body.tid, sessionID);
+        this.traderHelper.lvlUp(body.tid, pmcData);
         Object.assign(output.profileChanges[sessionID].traderRelations, { [body.tid]: { "salesSum": saleSum } });
 
         return output;

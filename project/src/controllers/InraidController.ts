@@ -335,7 +335,7 @@ export class InraidController
 
         // Make standing changes to pmc profile
         pmcData.TradersInfo[fenceId].standing = scavData.TradersInfo[fenceId].standing;
-        this.traderHelper.lvlUp(fenceId, sessionID);
+        this.traderHelper.lvlUp(fenceId, pmcData);
         pmcData.TradersInfo[fenceId].loyaltyLevel = Math.max(pmcData.TradersInfo[fenceId].loyaltyLevel, 1);
     }
 
