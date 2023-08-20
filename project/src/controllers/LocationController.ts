@@ -121,8 +121,10 @@ export class LocationController
         const containerGroupLimits = this.prepareContainerGroupLimitData(staticContainerGroupData.containersGroups);
         for (const staticContainer of this.randomUtil.shuffle(staticContainers ?? []) ) // Shuffle containers so we dont always add the first ones in the list
         {
-            // Only randomise containers with a less than 100% chance of spawning
-            if (staticContainer.probability < 1 && this.locationConfig.randomiseMapContainers[name])
+            // Only randomise containers with a less than 100% chance of spawning OR its a drawer + randomistion is enabled for them
+            const isDrawer = staticContainer.template.Items[0]._tpl === "578f87b7245977356274f2cd";
+            if (staticContainer.probability < 1 && this.locationConfig.containerRandomisationSettings.maps[name] ||
+                isDrawer && this.locationConfig.containerRandomisationSettings.randomiseCabinetDrawers)
             {
                 // Find matching static container group data
                 const containerGroupData = staticContainerGroupData.containers[staticContainer.template.Id];

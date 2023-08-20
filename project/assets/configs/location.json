@@ -740,7 +740,8 @@
             }
         ]
     },
-    "randomiseMapContainers": {
+    "containerRandomisationSettings": {
+		"maps": {
         "tarkovstreets": true,
         "factory4_day": true,
         "factory4_night": true,
@@ -751,6 +752,8 @@
         "lighthouse": true,
         "laboratory": true,
         "rezervbase": true
+    },
+	"randomiseCabinetDrawers": false
     },
     "minFillLooseMagazinePercent": 50,
     "minFillStaticMagazinePercent": 50

@@ -29,12 +29,20 @@ export interface ILocationConfig extends IBaseConfig
     enableBotTypeLimits: boolean
     /** Add limits to a locations base.MinMaxBots array if enableBotTypeLimits is true*/
     botTypeLimits: Record<string, IBotTypeLimit[]>
-    /** What maps can use the container randomisation feature */
-    randomiseMapContainers: Record<string, boolean>;
+    /** container randomisation settings */
+    containerRandomisationSettings: IContainerRandomistionSettings;
     /** How full must a random loose magazine be %*/
     minFillLooseMagazinePercent: number;
     /** How full must a random static magazine be %*/
     minFillStaticMagazinePercent: number;
+}
+
+export interface IContainerRandomistionSettings
+{
+    /** What maps can use the container randomisation feature */
+    maps: Record<string, boolean>
+    /** Cabinet drawers can be randomised, but there's no ability to group them by cabinet, results in some drawers interactive/some not */
+    randomiseCabinetDrawers: false
 }
 
 export interface IFixEmptyBotWavesSettings
