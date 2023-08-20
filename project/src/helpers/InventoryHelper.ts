@@ -295,7 +295,7 @@ export class InventoryHelper
 
             if (this.itemHelper.isOfBaseclass(itemToAdd.itemRef._tpl, BaseClasses.AMMO_BOX))
             {
-                this.hydrateAmmoBoxWithAmmo(pmcData, itemToAdd, toDo[0][1], sessionID, output);
+                this.hydrateAmmoBoxWithAmmo(pmcData, itemToAdd, toDo[0][1], sessionID, output, foundInRaid);
             }
 
             while (toDo.length > 0)
@@ -398,8 +398,10 @@ export class InventoryHelper
      * @param output IItemEventRouterResponse object
      * @param sessionID Session id
      * @param pmcData Profile to add ammobox to
+     * @param output object to send to client
+     * @param foundInRaid should ammo be FiR
      */
-    protected hydrateAmmoBoxWithAmmo(pmcData: IPmcData, itemToAdd: IAddItemTempObject, parentId: string, sessionID: string, output: IItemEventRouterResponse): void
+    protected hydrateAmmoBoxWithAmmo(pmcData: IPmcData, itemToAdd: IAddItemTempObject, parentId: string, sessionID: string, output: IItemEventRouterResponse, foundInRaid: boolean): void
     {
         const itemInfo = this.itemHelper.getItem(itemToAdd.itemRef._tpl)[1];
         const stackSlots = itemInfo._props.StackSlots;
@@ -416,14 +418,21 @@ export class InventoryHelper
             while (maxCount > 0)
             {
                 const ammoStackSize = maxCount <= ammoStackMaxSize ? maxCount : ammoStackMaxSize;
-                ammos.push({
+                const ammoItem: Item = {
                     _id: this.hashUtil.generate(),
                     _tpl: ammoTpl,
                     parentId: parentId,
                     slotId: "cartridges",
                     location: location,
-                    upd: { "StackObjectsCount": ammoStackSize }
-                });
+                    upd: { StackObjectsCount: ammoStackSize }
+                };
+
+                if (foundInRaid)
+                {
+                    ammoItem.upd.SpawnedInSession = true;
+                }
+
+                ammos.push(ammoItem);
 
                 location++;
                 maxCount -= ammoStackMaxSize;
