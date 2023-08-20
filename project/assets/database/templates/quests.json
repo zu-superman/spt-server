@@ -344,6 +344,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 1,
@@ -534,6 +535,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 1,
@@ -877,6 +879,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 1,
@@ -1226,6 +1229,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 1,
@@ -1501,6 +1505,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 1,
@@ -1819,6 +1824,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 1,
@@ -1958,6 +1964,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 0,
@@ -2148,6 +2155,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "b7027ac0e72c973cf47278b4",
             "index": 1,
@@ -2518,6 +2526,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 1,
@@ -2721,6 +2730,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 1,
@@ -2897,6 +2907,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 1,
@@ -3090,6 +3101,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 1,
@@ -3360,6 +3372,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 1,
@@ -3601,6 +3614,7 @@
           "_parent": "Quest",
           "_props": {
             "availableAfter": 0,
+            "dispersion": 0,
             "dynamicLocale": false,
             "id": "51d33b2d4fad9e61441772c0",
             "index": 1,
@@ -72920,23 +72934,6 @@
             "visibilityConditions": []
           },
           "dynamicLocale": false
-        },
-        {
-          "_parent": "Quest",
-          "_props": {
-            "availableAfter": 0,
-            "dispersion": 0,
-            "dynamicLocale": false,
-            "id": "64bd0e3ab0bf3baa6702f34e",
-            "index": 1,
-            "parentId": "",
-            "status": [
-              4
-            ],
-            "target": "64b907cabbf5bf2b460ad984",
-            "visibilityConditions": []
-          },
-          "dynamicLocale": false
         }
       ],
       "Fail": []
@@ -73209,23 +73206,6 @@
             "visibilityConditions": []
           },
           "dynamicLocale": false
-        },
-        {
-          "_parent": "Quest",
-          "_props": {
-            "availableAfter": 0,
-            "dispersion": 0,
-            "dynamicLocale": false,
-            "id": "64bd0e6c014d9a495e09a77b",
-            "index": 1,
-            "parentId": "",
-            "status": [
-              4
-            ],
-            "target": "64b907cabbf5bf2b460ad984",
-            "visibilityConditions": []
-          },
-          "dynamicLocale": false
         }
       ],
       "Fail": []
@@ -73478,23 +73458,6 @@
             "visibilityConditions": []
           },
           "dynamicLocale": false
-        },
-        {
-          "_parent": "Quest",
-          "_props": {
-            "availableAfter": 0,
-            "dispersion": 0,
-            "dynamicLocale": false,
-            "id": "64bd0e2739a321a6480fc6d9",
-            "index": 1,
-            "parentId": "",
-            "status": [
-              4
-            ],
-            "target": "64b907cabbf5bf2b460ad984",
-            "visibilityConditions": []
-          },
-          "dynamicLocale": false
         }
       ],
       "Fail": []
@@ -73724,23 +73687,6 @@
               4
             ],
             "target": "63966fccac6f8f3c677b9d89",
-            "visibilityConditions": []
-          },
-          "dynamicLocale": false
-        },
-        {
-          "_parent": "Quest",
-          "_props": {
-            "availableAfter": 0,
-            "dispersion": 0,
-            "dynamicLocale": false,
-            "id": "64bd0e31329b780ddf02523b",
-            "index": 1,
-            "parentId": "",
-            "status": [
-              4
-            ],
-            "target": "64b907cabbf5bf2b460ad984",
             "visibilityConditions": []
           },
           "dynamicLocale": false
@@ -74032,23 +73978,6 @@
             "visibilityConditions": []
           },
           "dynamicLocale": false
-        },
-        {
-          "_parent": "Quest",
-          "_props": {
-            "availableAfter": 0,
-            "dispersion": 0,
-            "dynamicLocale": false,
-            "id": "64bd0e1d014d9a495e09a77a",
-            "index": 1,
-            "parentId": "",
-            "status": [
-              4
-            ],
-            "target": "64b907cabbf5bf2b460ad984",
-            "visibilityConditions": []
-          },
-          "dynamicLocale": false
         }
       ],
       "Fail": []
@@ -74312,23 +74241,6 @@
               4
             ],
             "target": "63966ff54c3ef01b6f3ffad8",
-            "visibilityConditions": []
-          },
-          "dynamicLocale": false
-        },
-        {
-          "_parent": "Quest",
-          "_props": {
-            "availableAfter": 0,
-            "dispersion": 0,
-            "dynamicLocale": false,
-            "id": "64bd0e634c2e9f141400bed1",
-            "index": 1,
-            "parentId": "",
-            "status": [
-              4
-            ],
-            "target": "64b907cabbf5bf2b460ad984",
             "visibilityConditions": []
           },
           "dynamicLocale": false
@@ -74598,23 +74510,6 @@
             "visibilityConditions": []
           },
           "dynamicLocale": false
-        },
-        {
-          "_parent": "Quest",
-          "_props": {
-            "availableAfter": 0,
-            "dispersion": 0,
-            "dynamicLocale": false,
-            "id": "64bd0e59e2ca8c5236002d91",
-            "index": 1,
-            "parentId": "",
-            "status": [
-              4
-            ],
-            "target": "64b907cabbf5bf2b460ad984",
-            "visibilityConditions": []
-          },
-          "dynamicLocale": false
         }
       ],
       "Fail": []
@@ -74759,23 +74654,6 @@
               4
             ],
             "target": "6396700fea19ac7ed845db32",
-            "visibilityConditions": []
-          },
-          "dynamicLocale": false
-        },
-        {
-          "_parent": "Quest",
-          "_props": {
-            "availableAfter": 0,
-            "dispersion": 0,
-            "dynamicLocale": false,
-            "id": "64bd0df6014d9a495e09a779",
-            "index": 1,
-            "parentId": "",
-            "status": [
-              4
-            ],
-            "target": "64b907cabbf5bf2b460ad984",
             "visibilityConditions": []
           },
           "dynamicLocale": false
@@ -75057,23 +74935,6 @@
               4
             ],
             "target": "6396701b9113f06a7c3b2379",
-            "visibilityConditions": []
-          },
-          "dynamicLocale": false
-        },
-        {
-          "_parent": "Quest",
-          "_props": {
-            "availableAfter": 0,
-            "dispersion": 0,
-            "dynamicLocale": false,
-            "id": "64bd0e43d10c5f769405b84c",
-            "index": 1,
-            "parentId": "",
-            "status": [
-              4
-            ],
-            "target": "64b907cabbf5bf2b460ad984",
             "visibilityConditions": []
           },
           "dynamicLocale": false
