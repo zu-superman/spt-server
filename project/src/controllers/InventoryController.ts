@@ -270,7 +270,16 @@ export class InventoryController
 
         destinationItem.upd.StackObjectsCount += sourceItem.upd.StackObjectsCount; // Add source stackcount to destination
         output.profileChanges[sessionID].items.del.push({ _id: sourceItem._id }); // Inform client source item being deleted
-        inventoryItems.from.splice(inventoryItems.from.findIndex(x => x._id === sourceItem._id), 1); // remove source item from 'from' inventory
+
+        const indexOfItemToRemove = inventoryItems.from.findIndex(x => x._id === sourceItem._id);
+        if (indexOfItemToRemove === -1)
+        {
+            const errorMessage = (`Unable to find item: ${sourceItem._id} to remove from sender inventory`);
+            this.logger.error(errorMessage);
+
+            return this.httpResponseUtil.appendErrorToOutput(output, errorMessage);
+        }
+        inventoryItems.from.splice(indexOfItemToRemove, 1); // remove source item from 'from' inventory
 
         return output;
     }
