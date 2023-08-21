@@ -121,27 +121,29 @@ export class LocationController
         const containerGroupLimits = this.prepareContainerGroupLimitData(staticContainerGroupData.containersGroups);
         for (const staticContainer of this.randomUtil.shuffle(staticContainers ?? []) ) // Shuffle containers so we dont always add the first ones in the list
         {
-            // Only randomise containers with a less than 100% chance of spawning OR its a drawer + randomistion is enabled for them
-            const isDrawer = staticContainer.template.Items[0]._tpl === "578f87b7245977356274f2cd";
-            if (staticContainer.probability < 1 && this.locationConfig.containerRandomisationSettings.maps[name] ||
-                isDrawer && this.locationConfig.containerRandomisationSettings.randomiseCabinetDrawers)
+            // Container type can be randomised
+            if (!this.locationConfig.containerRandomisationSettings.containerTypesToNotRandomise.includes(staticContainer.template.Items[0]._tpl))
             {
-                // Find matching static container group data
-                const containerGroupData = staticContainerGroupData.containers[staticContainer.template.Id];
-                if (containerGroupData?.groupId.length > 0) // Check has a group id, some are empty strings
+                // Only randomise containers with a less than 100% chance of spawning OR container has type we dont want to randomise
+                if (staticContainer.probability < 1 && this.locationConfig.containerRandomisationSettings.maps[name])
                 {
-                    // Get container group limit values and check we're not at limit
-                    const containerGroup = containerGroupLimits[containerGroupData.groupId];
-                    if (containerGroup.current >= containerGroup.maxContainers)
+                    // Find matching static container group data
+                    const containerGroupData = staticContainerGroupData.containers[staticContainer.template.Id];
+                    if (containerGroupData?.groupId.length > 0) // Check has a group id, some are empty strings
                     {
-                        // At max for this container group, skip
-                        this.logger.warning(`Skipped adding container ${staticContainer.template.Id} as its group: ${containerGroupData.groupId} is already maxed at ${containerGroup.maxContainers}`);
-                        continue;
+                        // Get container group limit values and check we're not at limit
+                        const containerGroup = containerGroupLimits[containerGroupData.groupId];
+                        if (containerGroup.current >= containerGroup.maxContainers)
+                        {
+                            // At max for this container group, skip
+                            this.logger.warning(`Skipped adding container ${staticContainer.template.Id} as its group: ${containerGroupData.groupId} is already maxed at ${containerGroup.maxContainers}`);
+                            continue;
+                        }
+                        
+                        // Increment counter
+                        containerGroup.current ++;
                     }
-                    
-                    // Increment counter
-                    containerGroup.current ++;
-                }
+                }  
             }
 
             const container = this.locationGenerator.generateContainerLoot(staticContainer, staticForced, staticLootDist, staticAmmoDist, name);

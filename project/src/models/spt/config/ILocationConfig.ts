@@ -41,8 +41,8 @@ export interface IContainerRandomistionSettings
 {
     /** What maps can use the container randomisation feature */
     maps: Record<string, boolean>
-    /** Cabinet drawers can be randomised, but there's no ability to group them by cabinet, results in some drawers interactive/some not */
-    randomiseCabinetDrawers: false
+    /** Some container types don't work when randomised */
+    containerTypesToNotRandomise: string[]
 }
 
 export interface IFixEmptyBotWavesSettings
