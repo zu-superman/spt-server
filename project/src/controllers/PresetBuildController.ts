@@ -45,12 +45,12 @@ export class PresetBuildController
         const defaultEquipmentPresets = this.jsonUtil.clone(this.databaseServer.getTables().templates.defaultEquipmentPresets);
         const playerSecureContainer = profile.characters.pmc.Inventory.items?.find(x => x.slotId === "SecuredContainer");
         const firstDefaultItemsSecureContainer = defaultEquipmentPresets[0]?.items?.find(x => x.slotId === "SecuredContainer");
-        if (playerSecureContainer?._tpl !== firstDefaultItemsSecureContainer?._tpl)
+        if (playerSecureContainer && playerSecureContainer?._tpl !== firstDefaultItemsSecureContainer?._tpl)
         {
             // Default equipment presets' secure container tpl doesnt match players secure container tpl
             for (const defaultPreset of defaultEquipmentPresets)
             {
-                // Find default
+                // Find presets secure container
                 const secureContainer = defaultPreset.items.find(x => x.slotId === "SecuredContainer");
                 if (secureContainer)
                 {
