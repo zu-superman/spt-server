@@ -233,7 +233,7 @@ export class HideoutController
             const wall = pmcData.Hideout.Areas.find(area => area.type === HideoutAreas.EMERGENCY_WALL);
             if (wall?.level === 0)
             {
-                wall.level = 1;
+                wall.level = 3;
             }
         }
     }

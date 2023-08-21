@@ -918,7 +918,7 @@ export class HideoutHelper
         // If medstation > level 1 AND water collector > level 1 AND wall is level 0
         if (waterCollector?.level >= 1 && medStation?.level >= 1 && wall?.level <= 0)
         {
-            wall.level = 1;
+            wall.level = 3;
         }
     }
 
