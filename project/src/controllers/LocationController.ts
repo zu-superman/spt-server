@@ -134,11 +134,9 @@ export class LocationController
                     const containerGroup = containerGroupLimits[containerGroupData.groupId];
                     if (containerGroup.current >= containerGroup.maxContainers)
                     {
-                        // Already at max for this container group, skip
+                        // At max for this container group, skip
                         this.logger.warning(`Skipped adding container ${staticContainer.template.Id} as its group: ${containerGroupData.groupId} is already maxed at ${containerGroup.maxContainers}`);
-                        
-                        staticContainer.template.IsAlwaysSpawn = false;
-                        output.Loot.push(staticContainer.template);
+                        continue;
                     }
                     
                     // Increment counter
