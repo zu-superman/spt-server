@@ -36,6 +36,7 @@ export interface IStaticPropsBase
     Position: Ixyz
     Rotation: Ixyz
     IsGroupPosition: boolean
+    IsAlwaysSpawn: boolean
     GroupPositions: any[]
     Root: string
     Items: any[]

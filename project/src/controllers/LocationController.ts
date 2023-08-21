@@ -136,7 +136,9 @@ export class LocationController
                     {
                         // Already at max for this container group, skip
                         this.logger.warning(`Skipped adding container ${staticContainer.template.Id} as its group: ${containerGroupData.groupId} is already maxed at ${containerGroup.maxContainers}`);
-                        continue;
+                        
+                        staticContainer.template.IsAlwaysSpawn = false;
+                        output.Loot.push(staticContainer.template);
                     }
                     
                     // Increment counter
