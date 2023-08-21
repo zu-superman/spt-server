@@ -152,16 +152,20 @@ export class BotLootGenerator
                 isPmc);
         }
         
-        // Vest
-        this.addLootFromPool(
-            this.botLootCacheService.getLootFromCache(botRole, isPmc, LootCacheType.VEST, botJsonTemplate),
-            [EquipmentSlots.TACTICAL_VEST],
-            vestLootCount,
-            botInventory,
-            botRole,
-            true,
-            this.botConfig.pmc.maxVestLootTotalRub,
-            isPmc);
+        if (botInventory.items.find(x => x.slotId === EquipmentSlots.TACTICAL_VEST))
+        {
+            // Vest
+            this.addLootFromPool(
+                this.botLootCacheService.getLootFromCache(botRole, isPmc, LootCacheType.VEST, botJsonTemplate),
+                [EquipmentSlots.TACTICAL_VEST],
+                vestLootCount,
+                botInventory,
+                botRole,
+                true,
+                this.botConfig.pmc.maxVestLootTotalRub,
+                isPmc);
+        }
+
 
         // Pockets
         this.addLootFromPool(
