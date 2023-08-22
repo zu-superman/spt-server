@@ -35,6 +35,14 @@ export interface IContainerItem
     height: number
 }
 
+export interface IContainerGroupCount
+{
+    /** Containers this group has */
+    containerIds: string[]
+    /** How many containers the map should spawn with this group id */
+    chosenCount: number
+}
+
 @injectable()
 export class LocationGenerator
 {
@@ -67,91 +75,184 @@ export class LocationGenerator
         const db = this.databaseServer.getTables();
 
         // Copy loot data to local properties
-        const staticWeapons = this.jsonUtil.clone(db.loot.staticContainers[locationBase.Name]?.staticWeapons);
-        if (!staticWeapons)
+        const staticWeaponsOnMap = this.jsonUtil.clone(db.loot.staticContainers[locationBase.Name]?.staticWeapons);
+        if (!staticWeaponsOnMap)
         {
             this.logger.error(`Unable to find static weapon data for map: ${locationBase.Name}`);
         }
 
-        const staticContainers = this.jsonUtil.clone(db.loot.staticContainers[locationBase.Name]?.staticContainers);
-        if (!staticContainers)
+        // Add mounted weapons to output loot
+        result.push(...staticWeaponsOnMap ?? []);
+
+        const staticContainersOnMap = this.jsonUtil.clone(db.loot.staticContainers[locationBase.Name]?.staticContainers);
+        if (!staticContainersOnMap)
         {
             this.logger.error(`Unable to find static container data for map: ${locationBase.Name}`);
         }
 
-        const staticForced = this.jsonUtil.clone(db.loot.staticContainers[locationBase.Name]?.staticForced);
-        if (!staticForced)
+        // Containers that MUST be added to map (quest containers etc)
+        const staticForcedOnMap = this.jsonUtil.clone(db.loot.staticContainers[locationBase.Name]?.staticForced);
+        if (!staticForcedOnMap)
         {
             this.logger.error(`Unable to find forced static data for map: ${locationBase.Name}`);
         }
 
         const staticLootDist = this.jsonUtil.clone(db.loot.staticLoot);
 
-        // Add mounted weapons to output loot
-        for (const mi of staticWeapons ?? [])
-        {
-            result.push(mi);
-        }
 
         // Add static loot to output + pass in forced statics as param
         let staticContainerCount = 0;
-        const staticContainerGroupData: IStaticContainer  = db.locations[locationId].statics;
-        const containerGroupLimits = this.prepareContainerGroupLimitData(staticContainerGroupData.containersGroups);
-        
-        for (const staticContainer of this.randomUtil.shuffle(staticContainers ?? []) ) // Shuffle containers so we dont always add the first ones in the list
+
+        // Find all 100% spawn containers
+        const guaranteedContainers = staticContainersOnMap.filter(x => x.probability === 1);
+        this.logger.success(`Added ${guaranteedContainers.length} guaranteed containers`);
+        staticContainerCount += guaranteedContainers.length;
+
+        // Add loot to guaranteed containers and add to result
+        for (const container of guaranteedContainers)
         {
-            // Container type can be randomised + randomisation is enabled
-            if (this.locationConfig.containerRandomisationSettings.enabled
-                && !this.locationConfig.containerRandomisationSettings.containerTypesToNotRandomise.includes(staticContainer.template.Items[0]._tpl))
+            const containerWithLoot = this.addLootToContainer(container, staticForcedOnMap, staticLootDist, staticAmmoDist, locationBase.Name);
+            result.push(containerWithLoot);
+        }
+
+        // Group containers by their groupId
+        const staticContainerGroupData: IStaticContainer  = db.locations[locationId].statics;
+        const mapping = this.getGroupIdToContainerMappings(staticContainerGroupData, staticContainersOnMap);
+
+        // For each of the groups, choose from the pool of containers, hydrate container with loot and add to result
+        for (const groupId in mapping)
+        {
+            const data = mapping[groupId];
+            if (data.containerIds.length === 0)
             {
-                // Only randomise containers with a less than 100% chance of spawning OR container has type we dont want to randomise
-                if (staticContainer.probability < 1 && this.locationConfig.containerRandomisationSettings.maps[locationId])
-                {
-                    // Find matching static container group data
-                    const containerGroupData = staticContainerGroupData.containers[staticContainer.template.Id];
-                    if (containerGroupData?.groupId.length > 0) // Check has a group id, some are empty strings
-                    {
-                        // Get container group limit values and check we're not at limit
-                        const containerGroup = containerGroupLimits[containerGroupData.groupId];
-                        if (containerGroup.current >= containerGroup.maxContainers)
-                        {
-                            // At max for this container group, skip
-                            this.logger.warning(`Skipped adding container ${staticContainer.template.Id} as its group: ${containerGroupData.groupId} is already maxed at ${containerGroup.maxContainers}`);
-                            continue;
-                        }
-                        
-                        // Increment counter
-                        containerGroup.current ++;
-                    }
-                }  
+                this.logger.warning(`Group ${groupId} has no containers to choose from, skipping`);
+                continue;
             }
 
-            const container = this.generateContainerLoot(staticContainer, staticForced, staticLootDist, staticAmmoDist, locationBase.Name);
-            result.push(container.template);
-            staticContainerCount++;
+            // Count chosen was 0, skip
+            if (data.chosenCount === 0)
+            {
+                continue;
+            }
+
+            // EDGE CASE
+            // These are containers without a group and have a probability < 100%
+            if (groupId === "")
+            {
+                // Roll each containers probability, if it passes, it gets added
+                const randomisedContainers: string[] = [];
+                for (const containerid of data.containerIds)
+                {
+                    const containerData = staticContainersOnMap.find(x => x.template.Id === containerid);
+                    if (this.randomUtil.getChance100(containerData.probability * 100))
+                    {
+                        randomisedContainers.push(containerid);
+                    }
+                }
+
+                // Reassign container Ids to the ones we rolled above
+                data.containerIds = randomisedContainers;
+
+                // Set desired count to size of array (we want all of them)
+                data.chosenCount = data.containerIds.length;
+            }
+
+            const chosenContainerIds = this.randomUtil.drawRandomFromList(data.containerIds, data.chosenCount);
+
+            for (const chosenContainerId of chosenContainerIds)
+            {
+                const containerObject = staticContainersOnMap.find(x => x.template.Id === chosenContainerId);
+                if (!containerObject)
+                {
+                    this.logger.error(`Container ${chosenContainerId} not found in staticContainersOnMap`);
+                }
+                const containerWithLoot = this.addLootToContainer(containerObject, staticForcedOnMap, staticLootDist, staticAmmoDist, locationBase.Name);
+                result.push(containerWithLoot);
+                staticContainerCount++;
+            }
         }
 
         this.logger.success(this.localisationService.getText("location-containers_generated_success", staticContainerCount));
+
         return result;
+
+        // for (const staticContainer of this.randomUtil.shuffle(staticContainersOnMap ?? []) ) // Shuffle containers so we dont always add the first ones in the list
+        // {
+        //     // Container type can be randomised + randomisation is enabled
+        //     if (this.locationConfig.containerRandomisationSettings.enabled
+        //         && !this.locationConfig.containerRandomisationSettings.containerTypesToNotRandomise.includes(staticContainer.template.Items[0]._tpl))
+        //     {
+        //         // Only randomise containers with a less than 100% chance of spawning OR container has type we dont want to randomise
+        //         if (staticContainer.probability < 1 && this.locationConfig.containerRandomisationSettings.maps[locationId])
+        //         {
+        //             // Find matching static container group data
+        //             const containerGroupData = staticContainerGroupData.containers[staticContainer.template.Id];
+        //             if (containerGroupData?.groupId.length > 0) // Check has a group id, some are empty strings
+        //             {
+        //                 // Get container group limit values and check we're not at limit
+        //                 const containerGroup = containerGroupLimits[containerGroupData.groupId];
+        //                 if (containerGroup.current >= containerGroup.maxContainers)
+        //                 {
+        //                     // At max for this container group, skip
+        //                     this.logger.warning(`Skipped adding container ${staticContainer.template.Id} as its group: ${containerGroupData.groupId} is already maxed at ${containerGroup.maxContainers}`);
+        //                     continue;
+        //                 }
+                        
+        //                 // Increment counter
+        //                 containerGroup.current ++;
+        //             }
+        //         }  
+        //     }
+
+        //     const container = this.generateContainerLoot(staticContainer, staticForcedOnMap, staticLootDist, staticAmmoDist, locationBase.Name);
+        //     result.push(container.template);
+        //     staticContainerCount++;
+        // }
+
+        //this.logger.success(this.localisationService.getText("location-containers_generated_success", staticContainerCount));
+        //return result;
     }
 
     /**
-     * Keyed by containerGroup key
-     * Iterate over all container groups for a map and choose a random count between min and max to spawn for each container grouping
+     * Get a mapping of each groupid and the containers in that group + count of containers to spawn on map
      * @param containersGroups Container group values
-     * @returns Same as input
+     * @returns dictionary keyed by groupId
      */
-    protected prepareContainerGroupLimitData(containersGroups: Record<string, IContainerMinMax>): Record<string, IContainerMinMax>
+    protected getGroupIdToContainerMappings(
+        staticContainerGroupData: IStaticContainer | Record<string, IContainerMinMax>,
+        staticContainersOnMap: IStaticContainerData[]): Record<string, IContainerGroupCount>
     {
-        const groupData = this.jsonUtil.clone(containersGroups);
-        for (const groupKey in groupData)
+        // Create dictionary of all group ids and choose a count of containers the map will spawn of that group
+        const mapping: Record<string, IContainerGroupCount> = {};
+        for (const groupId in staticContainerGroupData.containersGroups)
         {
-            const data = groupData[groupKey];
-            data.current = 0;
-            data.chosenCount = this.randomUtil.getInt(data.minContainers, data.maxContainers);
+            const groupData = staticContainerGroupData.containersGroups[groupId];
+            if (!mapping[groupId])
+            {
+                mapping[groupId] = {
+                    containerIds: [],
+                    chosenCount: this.randomUtil.getInt(groupData.minContainers, groupData.maxContainers)
+                };
+            }
         }
 
-        return groupData;
+        // Add an empty group for those containers without a group id
+        mapping[""] = {containerIds: [], chosenCount: -1};
+
+        // Iterate over all containers and add to group keyed by groupId
+        // Containers without a group go into a group with empty key ""
+        for (const container of staticContainersOnMap)
+        {
+            const groupData = staticContainerGroupData.containers[container.template.Id];
+            if (container.probability === 1)
+            {
+                this.logger.warning(`Container ${container.template.Id} with group ${groupData.groupId} had 100% chance to spawn was picked as random container, skipping`);
+                continue;
+            }
+            mapping[groupData.groupId].containerIds.push(container.template.Id);
+        }
+
+        return mapping;
     }
 
     /**
@@ -164,7 +265,7 @@ export class LocationGenerator
      * @param locationName Name of the map to generate static loot for
      * @returns IStaticContainerProps
      */
-    protected generateContainerLoot(
+    protected addLootToContainer(
         staticContainer: IStaticContainerData,
         staticForced: IStaticForcedProps[],
         staticLootDist: Record<string, IStaticLootDetails>,
