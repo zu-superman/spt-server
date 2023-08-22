@@ -799,6 +799,12 @@ export class HideoutHelper
         return pmcData.Skills.Common.find(x => x.Id === SkillTypes.HIDEOUT_MANAGEMENT);
     }
 
+    /**
+     * HideoutManagement skill gives a consumption bonus the higher the level
+     * 0.5% per level per 1-51, (25.5% at max)
+     * @param pmcData Profile to get hideout consumption level level from
+     * @returns consumption bonus
+     */
     protected getHideoutManagementConsumptionBonus(pmcData: IPmcData): number
     {
         const hideoutManagementSkill = this.getHideoutManagementSkill(pmcData);
@@ -806,11 +812,14 @@ export class HideoutHelper
         {
             return 0;
         }
-        let roundedLevel = Math.floor(hideoutManagementSkill.Progress / 100);
+
         // If the level is 51 we need to round it at 50 so on elite you dont get 25.5%
         // at level 1 you already get 0.5%, so it goes up until level 50. For some reason the wiki
         // says that it caps at level 51 with 25% but as per dump data that is incorrect apparently
-        roundedLevel = (roundedLevel === 51) ? roundedLevel - 1 : roundedLevel;
+        let roundedLevel = Math.floor(hideoutManagementSkill.Progress / 100);
+        roundedLevel = (roundedLevel === 51)
+            ? roundedLevel - 1
+            : roundedLevel;
 
         return (roundedLevel * this.databaseServer.getTables().globals.config.SkillsSettings.HideoutManagement.ConsumptionReductionPerLevel) / 100;
     }
