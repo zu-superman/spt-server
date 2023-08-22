@@ -3,7 +3,7 @@ import { inject, injectable } from "tsyringe";
 import { LocationGenerator } from "../generators/LocationGenerator";
 import { LootGenerator } from "../generators/LootGenerator";
 import { WeightedRandomHelper } from "../helpers/WeightedRandomHelper";
-import { IContainerMinMax, ILocation, IStaticContainer } from "../models/eft/common/ILocation";
+import { ILocation } from "../models/eft/common/ILocation";
 import { ILocationBase } from "../models/eft/common/ILocationBase";
 import {
     ILocationsGenerateAllResponse
@@ -81,80 +81,12 @@ export class LocationController
             return output;
         }
 
-        const locationName = location.base.Name;
-        const db = this.databaseServer.getTables();
+        const staticAmmoDist = this.jsonUtil.clone(this.databaseServer.getTables().loot.staticAmmo);
 
-        // Copy loot data to local properties
-        const staticWeapons = this.jsonUtil.clone(db.loot.staticContainers[locationName]?.staticWeapons);
-        if (!staticWeapons)
-        {
-            this.logger.error(`Unable to find static weapon data for map: ${locationName}`);
-        }
-
-        const staticContainers = this.jsonUtil.clone(db.loot.staticContainers[locationName]?.staticContainers);
-        if (!staticContainers)
-        {
-            this.logger.error(`Unable to find static container data for map: ${locationName}`);
-        }
-
-        const staticForced = this.jsonUtil.clone(db.loot.staticContainers[locationName]?.staticForced);
-        if (!staticForced)
-        {
-            this.logger.error(`Unable to find forced static data for map: ${locationName}`);
-        }
-
-        const staticLootDist = this.jsonUtil.clone(db.loot.staticLoot);
-        const staticAmmoDist = this.jsonUtil.clone(db.loot.staticAmmo);
-
-        // Init loot array for map
-        output.Loot = [];
-
-        // Add mounted weapons to output loot
-        for (const mi of staticWeapons ?? [])
-        {
-            output.Loot.push(mi);
-        }
-
-        // Add static loot to output + pass in forced statics as param
-        let staticContainerCount = 0;
-        const staticContainerGroupData: IStaticContainer  = db.locations[name].statics;
-        const containerGroupLimits = this.prepareContainerGroupLimitData(staticContainerGroupData.containersGroups);
+        // Create containers and add loot to them
+        const staticLoot = this.locationGenerator.generateStaticContainers(location.base, staticAmmoDist);
+        output.Loot.push(...staticLoot);
         
-        for (const staticContainer of this.randomUtil.shuffle(staticContainers ?? []) ) // Shuffle containers so we dont always add the first ones in the list
-        {
-            // Container type can be randomised + randomisation is enabled
-            if (this.locationConfig.containerRandomisationSettings.enabled
-                && !this.locationConfig.containerRandomisationSettings.containerTypesToNotRandomise.includes(staticContainer.template.Items[0]._tpl))
-            {
-                // Only randomise containers with a less than 100% chance of spawning OR container has type we dont want to randomise
-                if (staticContainer.probability < 1 && this.locationConfig.containerRandomisationSettings.maps[name])
-                {
-                    // Find matching static container group data
-                    const containerGroupData = staticContainerGroupData.containers[staticContainer.template.Id];
-                    if (containerGroupData?.groupId.length > 0) // Check has a group id, some are empty strings
-                    {
-                        // Get container group limit values and check we're not at limit
-                        const containerGroup = containerGroupLimits[containerGroupData.groupId];
-                        if (containerGroup.current >= containerGroup.maxContainers)
-                        {
-                            // At max for this container group, skip
-                            this.logger.warning(`Skipped adding container ${staticContainer.template.Id} as its group: ${containerGroupData.groupId} is already maxed at ${containerGroup.maxContainers}`);
-                            continue;
-                        }
-                        
-                        // Increment counter
-                        containerGroup.current ++;
-                    }
-                }  
-            }
-
-            const container = this.locationGenerator.generateContainerLoot(staticContainer, staticForced, staticLootDist, staticAmmoDist, name);
-            output.Loot.push(container.template);
-            staticContainerCount++;
-        }
-
-        this.logger.success(this.localisationService.getText("location-containers_generated_success", staticContainerCount));
-
         // Add dyanmic loot to output loot
         const dynamicLootDist: ILooseLoot = this.jsonUtil.clone(location.looseLoot);
         const dynamicLoot: SpawnpointTemplate[] = this.locationGenerator.generateDynamicLoot(dynamicLootDist, staticAmmoDist, name);
@@ -168,25 +100,6 @@ export class LocationController
         this.logger.success(this.localisationService.getText("location-generated_success", name));
 
         return output;
-    }
-
-    /**
-     * Keyed by containerGroup key
-     * Iterate over all container groups for a map and choose a random count between min and max to spawn for each container grouping
-     * @param containersGroups Container group values
-     * @returns Same as input
-     */
-    protected prepareContainerGroupLimitData(containersGroups: Record<string, IContainerMinMax>): Record<string, IContainerMinMax>
-    {
-        const groupData = this.jsonUtil.clone(containersGroups);
-        for (const groupKey in groupData)
-        {
-            const data = groupData[groupKey];
-            data.current = 0;
-            data.chosenCount = this.randomUtil.getInt(data.minContainers, data.maxContainers);
-        }
-
-        return groupData;
     }
 
     /**
