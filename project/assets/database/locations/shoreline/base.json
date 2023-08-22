@@ -42,7 +42,7 @@
   ],
   "BossLocationSpawn": [
     {
-      "BossChance": 25,
+      "BossChance": 5,
       "BossDifficult": "normal",
       "BossEscortAmount": "2",
       "BossEscortDifficult": "normal",
@@ -55,7 +55,7 @@
       "Time": -1
     },
     {
-      "BossChance": 35,
+      "BossChance": 5,
       "BossDifficult": "normal",
       "BossEscortAmount": "2",
       "BossEscortDifficult": "normal",
@@ -129,7 +129,7 @@
       "Time": -1
     },
     {
-      "BossChance": 30,
+      "BossChance": 5,
       "BossDifficult": "normal",
       "BossEscortAmount": "3,4",
       "BossEscortDifficult": "normal",
