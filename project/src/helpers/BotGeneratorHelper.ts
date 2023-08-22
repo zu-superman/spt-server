@@ -227,12 +227,12 @@ export class BotGeneratorHelper
         const equippedItems = items.map(i => this.databaseServer.getTables().templates.items[i._tpl]);
         const itemToEquip = this.itemHelper.getItem(tplToCheck);
 
-        if (!itemToEquip[0]) 
+        if (!itemToEquip[0])
         {
             this.logger.warning(this.localisationService.getText("bot-invalid_item_compatibility_check", {itemTpl: tplToCheck, slot: equipmentSlot}));
         }
 
-        if (!itemToEquip[1]._props) 
+        if (!itemToEquip[1]?._props)
         {
             this.logger.warning(this.localisationService.getText("bot-compatibility_check_missing_props", {id: itemToEquip[1]._id, name: itemToEquip[1]._name, slot: equipmentSlot}));
         }
