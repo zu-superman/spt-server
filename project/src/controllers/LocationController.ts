@@ -119,10 +119,12 @@ export class LocationController
         let staticContainerCount = 0;
         const staticContainerGroupData: IStaticContainer  = db.locations[name].statics;
         const containerGroupLimits = this.prepareContainerGroupLimitData(staticContainerGroupData.containersGroups);
+        
         for (const staticContainer of this.randomUtil.shuffle(staticContainers ?? []) ) // Shuffle containers so we dont always add the first ones in the list
         {
-            // Container type can be randomised
-            if (!this.locationConfig.containerRandomisationSettings.containerTypesToNotRandomise.includes(staticContainer.template.Items[0]._tpl))
+            // Container type can be randomised + randomisation is enabled
+            if (this.locationConfig.containerRandomisationSettings.enabled
+                && !this.locationConfig.containerRandomisationSettings.containerTypesToNotRandomise.includes(staticContainer.template.Items[0]._tpl))
             {
                 // Only randomise containers with a less than 100% chance of spawning OR container has type we dont want to randomise
                 if (staticContainer.probability < 1 && this.locationConfig.containerRandomisationSettings.maps[name])

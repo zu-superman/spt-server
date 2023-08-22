@@ -39,6 +39,7 @@ export interface ILocationConfig extends IBaseConfig
 
 export interface IContainerRandomistionSettings
 {
+    enabled: boolean
     /** What maps can use the container randomisation feature */
     maps: Record<string, boolean>
     /** Some container types don't work when randomised */

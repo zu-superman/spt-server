@@ -741,6 +741,7 @@
         ]
     },
     "containerRandomisationSettings": {
+        "enabled": true,
         "maps": {
             "tarkovstreets": true,
             "factory4_day": true,
