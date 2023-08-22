@@ -142,7 +142,7 @@ export class RagfairController
     /**
      * Get offers for the client based on type of search being performed
      * @param searchRequest Client search request data
-     * @param itemsToAdd 
+     * @param itemsToAdd comes from ragfairHelper.filterCategories()
      * @param traderAssorts Trader assorts
      * @param pmcProfile Player profile
      * @returns array of offers

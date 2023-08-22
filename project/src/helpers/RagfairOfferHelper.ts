@@ -69,8 +69,8 @@ export class RagfairOfferHelper
 
     /**
      * Passthrough to ragfairOfferService.getOffers(), get flea offers a player should see
-     * @param searchRequest 
-     * @param itemsToAdd 
+     * @param searchRequest Data from client
+     * @param itemsToAdd ragfairHelper.filterCategories()
      * @param traderAssorts Trader assorts
      * @param pmcProfile Player profile
      * @returns Offers the player should see
@@ -450,14 +450,14 @@ export class RagfairOfferHelper
 
     /**
      * Should a ragfair offer be visible to the player
-     * @param info Search request
+     * @param searchRequest Search request
      * @param itemsToAdd ?
      * @param traderAssorts Trader assort items
      * @param offer The flea offer
      * @param pmcProfile Player profile
      * @returns True = should be shown to player
      */
-    public isDisplayableOffer(info: ISearchRequestData, itemsToAdd: string[], traderAssorts: Record<string, ITraderAssort>, offer: IRagfairOffer, pmcProfile: IPmcData): boolean
+    public isDisplayableOffer(searchRequest: ISearchRequestData, itemsToAdd: string[], traderAssorts: Record<string, ITraderAssort>, offer: IRagfairOffer, pmcProfile: IPmcData): boolean
     {
         const item = offer.items[0];
         const money = offer.requirements[0]._tpl;
@@ -476,43 +476,49 @@ export class RagfairOfferHelper
             return false;
         }
 
-        if (info.offerOwnerType === OfferOwnerType.TRADEROWNERTYPE && !isTraderOffer)
+        // Performing a required search and offer doesn't have requirement for item
+        if (searchRequest.neededSearchId && !offer.requirements.some(x => x._tpl === searchRequest.neededSearchId))
+        {
+            return false;
+        }
+
+        if (searchRequest.offerOwnerType === OfferOwnerType.TRADEROWNERTYPE && !isTraderOffer)
         {
             // don't include player offers
             return false;
         }
 
-        if (info.offerOwnerType === OfferOwnerType.PLAYEROWNERTYPE && isTraderOffer)
+        if (searchRequest.offerOwnerType === OfferOwnerType.PLAYEROWNERTYPE && isTraderOffer)
         {
             // don't include trader offers
             return false;
         }
 
-        if (info.oneHourExpiration && offer.endTime - this.timeUtil.getTimestamp() > TimeUtil.oneHourAsSeconds)
+        if (searchRequest.oneHourExpiration && offer.endTime - this.timeUtil.getTimestamp() > TimeUtil.oneHourAsSeconds)
         {
             // offer doesnt expire within an hour
             return false;
         }
 
-        if (info.quantityFrom > 0 && info.quantityFrom >= item.upd.StackObjectsCount)
+        if (searchRequest.quantityFrom > 0 && searchRequest.quantityFrom >= item.upd.StackObjectsCount)
         {
             // too little items to offer
             return false;
         }
 
-        if (info.quantityTo > 0 && info.quantityTo <= item.upd.StackObjectsCount)
+        if (searchRequest.quantityTo > 0 && searchRequest.quantityTo <= item.upd.StackObjectsCount)
         {
             // too many items to offer
             return false;
         }
 
-        if (info.onlyFunctional && this.presetHelper.hasPreset(item._tpl) && offer.items.length === 1)
+        if (searchRequest.onlyFunctional && this.presetHelper.hasPreset(item._tpl) && offer.items.length === 1)
         {
             // don't include non-functional items
             return false;
         }
 
-        if (info.buildCount && this.presetHelper.hasPreset(item._tpl) && offer.items.length > 1)
+        if (searchRequest.buildCount && this.presetHelper.hasPreset(item._tpl) && offer.items.length > 1)
         {
             // don't include preset items
             return false;
@@ -522,13 +528,13 @@ export class RagfairOfferHelper
         {
             const itemQualityPercentage = 100 * this.itemHelper.getItemQualityModifier(item);
 
-            if (info.conditionFrom > 0 && info.conditionFrom > itemQualityPercentage)
+            if (searchRequest.conditionFrom > 0 && searchRequest.conditionFrom > itemQualityPercentage)
             {
                 // item condition is too low
                 return false;
             }
 
-            if (info.conditionTo < 100 && info.conditionTo <= itemQualityPercentage)
+            if (searchRequest.conditionTo < 100 && searchRequest.conditionTo <= itemQualityPercentage)
             {
                 // item condition is too high
                 return false;
@@ -537,30 +543,30 @@ export class RagfairOfferHelper
 
         // commented out as required search "which is for checking offers that are barters"
         // has info.removeBartering as true, this if statement removed barter items.
-        if (info.removeBartering && !this.paymentHelper.isMoneyTpl(money))
+        if (searchRequest.removeBartering && !this.paymentHelper.isMoneyTpl(money))
         {
             // don't include barter offers
             return false;
         }
 
-        if (info.currency > 0 && this.paymentHelper.isMoneyTpl(money))
+        if (searchRequest.currency > 0 && this.paymentHelper.isMoneyTpl(money))
         {
             const currencies = ["all", "RUB", "USD", "EUR"];
 
-            if (this.ragfairHelper.getCurrencyTag(money) !== currencies[info.currency])
+            if (this.ragfairHelper.getCurrencyTag(money) !== currencies[searchRequest.currency])
             {
                 // don't include item paid in wrong currency
                 return false;
             }
         }
 
-        if (info.priceFrom > 0 && info.priceFrom >= offer.requirementsCost)
+        if (searchRequest.priceFrom > 0 && searchRequest.priceFrom >= offer.requirementsCost)
         {
             // price is too low
             return false;
         }
 
-        if (info.priceTo > 0 && info.priceTo <= offer.requirementsCost)
+        if (searchRequest.priceTo > 0 && searchRequest.priceTo <= offer.requirementsCost)
         {
             // price is too high
             return false;
