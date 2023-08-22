@@ -125,7 +125,7 @@ export class LocationGenerator
             const data = mapping[groupId];
             if (data.containerIds.length === 0)
             {
-                this.logger.warning(`Group ${groupId} has no containers to choose from, skipping`);
+                this.logger.warning(`Group: ${groupId} has no containers with < 100% spawn chance to choose from, skipping`);
                 continue;
             }
 
@@ -164,7 +164,8 @@ export class LocationGenerator
                 const containerObject = staticContainersOnMap.find(x => x.template.Id === chosenContainerId);
                 if (!containerObject)
                 {
-                    this.logger.error(`Container ${chosenContainerId} not found in staticContainersOnMap`);
+                    this.logger.error(`Container: ${chosenContainerId} not found in staticContainersOnMap, this is bad`);
+                    continue;
                 }
                 const containerWithLoot = this.addLootToContainer(containerObject, staticForcedOnMap, staticLootDist, staticAmmoDist, locationBase.Name);
                 result.push(containerWithLoot);
@@ -236,7 +237,8 @@ export class LocationGenerator
             }
         }
 
-        // Add an empty group for those containers without a group id
+        // Add an empty group for containers without a group id but still have a < 100% chance to spawn
+        // Likely bad BSG data, will be fixed...eventually, example of the groupids: `NEED_TO_BE_FIXED1`,`NEED_TO_BE_FIXED_SE02`, `NEED_TO_BE_FIXED_NW_01`
         mapping[""] = {containerIds: [], chosenCount: -1};
 
         // Iterate over all containers and add to group keyed by groupId

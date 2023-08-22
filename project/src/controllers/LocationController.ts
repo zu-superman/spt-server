@@ -64,7 +64,7 @@ export class LocationController
     }
 
     /**
-     * Generate a maps base location without loot
+     * Generate a maps base location with loot
      * @param name Map name
      * @returns ILocationBase
      */
