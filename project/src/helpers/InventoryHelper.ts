@@ -863,23 +863,39 @@ export class InventoryHelper
         return this.getContainerMap(10, 45, pmcData.Inventory.items, pmcData.Inventory.sortingTable);
     }
 
-    /* Get Player Stash Proper Size
-        * input: null
-        * output: [stashSizeWidth, stashSizeHeight]
-        * */
+    /**
+     * Get Player Stash Proper Size
+     * @param sessionID Playerid
+     * @returns Array of 2 values, x and y stash size
+     */
     protected getPlayerStashSize(sessionID: string): Record<number, number>
     {
         //this sets automatically a stash size from items.json (its not added anywhere yet cause we still use base stash)
         const stashTPL = this.getStashType(sessionID);
-        const stashX = this.databaseServer.getTables().templates.items[stashTPL]._props.Grids[0]._props.cellsH !== 0
-            ? this.databaseServer.getTables().templates.items[stashTPL]._props.Grids[0]._props.cellsH
+        if (!stashTPL)
+        {
+            this.logger.error("No stash found in player inventory");
+        }
+        const stashItemDetails = this.itemHelper.getItem(stashTPL);
+        if (!stashItemDetails[0])
+        {
+            this.logger.error(`Stash with id: ${stashTPL} not found in db`);
+        }
+
+        const stashX = stashItemDetails[1]._props.Grids[0]._props.cellsH !== 0
+            ? stashItemDetails[1]._props.Grids[0]._props.cellsH
             : 10;
-        const stashY = this.databaseServer.getTables().templates.items[stashTPL]._props.Grids[0]._props.cellsV !== 0
-            ? this.databaseServer.getTables().templates.items[stashTPL]._props.Grids[0]._props.cellsV
+        const stashY = stashItemDetails[1]._props.Grids[0]._props.cellsV !== 0
+            ? stashItemDetails[1]._props.Grids[0]._props.cellsV
             : 66;
         return [stashX, stashY];
     }
 
+    /**
+     * Get the players stash items tpl
+     * @param sessionID Player id
+     * @returns Stash tpl
+     */
     protected getStashType(sessionID: string): string
     {
         const pmcData = this.profileHelper.getPmcProfile(sessionID);
@@ -887,10 +903,9 @@ export class InventoryHelper
         if (!stashObj)
         {
             this.logger.error(this.localisationService.getText("inventory-unable_to_find_stash"));
-
-            return "";
         }
-        return stashObj._tpl;
+
+        return stashObj?._tpl;
     }
 
     /**

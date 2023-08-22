@@ -2,6 +2,7 @@ import { inject, injectable } from "tsyringe";
 
 import { BotGeneratorHelper } from "../helpers/BotGeneratorHelper";
 import { BotHelper } from "../helpers/BotHelper";
+import { ItemHelper } from "../helpers/ItemHelper";
 import { WeightedRandomHelper } from "../helpers/WeightedRandomHelper";
 import { Inventory as PmcInventory } from "../models/eft/common/tables/IBotBase";
 import {
@@ -38,6 +39,7 @@ export class BotInventoryGenerator
         @inject("BotGeneratorHelper") protected botGeneratorHelper: BotGeneratorHelper,
         @inject("BotHelper") protected botHelper: BotHelper,
         @inject("WeightedRandomHelper") protected weightedRandomHelper: WeightedRandomHelper,
+        @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("BotEquipmentModPoolService") protected botEquipmentModPoolService: BotEquipmentModPoolService,
         @inject("BotEquipmentModGenerator") protected botEquipmentModGenerator: BotEquipmentModGenerator,
@@ -207,9 +209,9 @@ export class BotInventoryGenerator
         {
             const id = this.hashUtil.generate();
             const equipmentItemTpl = this.weightedRandomHelper.getWeightedInventoryItem(equipmentPool);
-            const itemTemplate = this.databaseServer.getTables().templates.items[equipmentItemTpl];
+            const itemTemplate = this.itemHelper.getItem(equipmentItemTpl);
 
-            if (!itemTemplate)
+            if (!itemTemplate[0])
             {
                 this.logger.error(this.localisationService.getText("bot-missing_item_template", equipmentItemTpl));
                 this.logger.info(`EquipmentSlot -> ${equipmentSlot}`);
@@ -228,7 +230,7 @@ export class BotInventoryGenerator
                 "_tpl": equipmentItemTpl,
                 "parentId": inventory.equipment,
                 "slotId": equipmentSlot,
-                ...this.botGeneratorHelper.generateExtraPropertiesForItem(itemTemplate, botRole)
+                ...this.botGeneratorHelper.generateExtraPropertiesForItem(itemTemplate[1], botRole)
             };
 
             // use dynamic mod pool if enabled in config
@@ -240,7 +242,7 @@ export class BotInventoryGenerator
 
             if (typeof(modPool[equipmentItemTpl]) !== "undefined" || Object.keys(modPool[equipmentItemTpl] || {}).length > 0)
             {
-                const items = this.botEquipmentModGenerator.generateModsForEquipment([item], modPool, id, itemTemplate, spawnChances.mods, botRole);
+                const items = this.botEquipmentModGenerator.generateModsForEquipment([item], modPool, id, itemTemplate[1], spawnChances.mods, botRole);
                 inventory.items.push(...items);
             }
             else

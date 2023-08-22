@@ -72,7 +72,7 @@ export class BotEquipmentModPoolService
             for (const slot of item._props.Slots)
             {
                 const itemsThatFit = slot._props.filters[0].Filter;
-                for (const itemToAdd of itemsThatFit)
+                for (const itemToAddTpl of itemsThatFit)
                 {
                     if (!pool[item._id][slot._name])
                     {
@@ -80,18 +80,25 @@ export class BotEquipmentModPoolService
                     }
     
                     // only add item to pool if it doesnt already exist
-                    if (!pool[item._id][slot._name].some(x => x === itemToAdd))
+                    if (!pool[item._id][slot._name].some(x => x === itemToAddTpl))
                     {
-                        pool[item._id][slot._name].push(itemToAdd);
+                        pool[item._id][slot._name].push(itemToAddTpl);
                     }
                     
                     // Check item added into array for slots, need to iterate over those
-                    const subItemDetails = this.databaseServer.getTables().templates.items[itemToAdd];
-                    const hasSubItemsToAdd = subItemDetails?._props?.Slots?.length > 0;
+                    const subItemDetails = this.itemHelper.getItem(itemToAddTpl);
+                    if (!subItemDetails[0])
+                    {
+                        this.logger.error(`Unable to add item with tpl: ${itemToAddTpl} as it cannot be found in db`);
+
+                        continue;
+                    }
+
+                    const hasSubItemsToAdd = subItemDetails[1]?._props?.Slots?.length > 0;
                     if (hasSubItemsToAdd)
                     {
                         // Recursive call
-                        this.generatePool([subItemDetails], poolType);
+                        this.generatePool([subItemDetails[1]], poolType);
                     }
                 }
             }

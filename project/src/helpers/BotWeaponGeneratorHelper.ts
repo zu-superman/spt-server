@@ -166,15 +166,15 @@ export class BotWeaponGeneratorHelper
             }
 
             // Get container details from db
-            const containerTemplate = this.databaseServer.getTables().templates.items[container._tpl];
-            if (!containerTemplate)
+            const containerTemplate = this.itemHelper.getItem(container._tpl);
+            if (!containerTemplate[0])
             {
                 this.logger.error(this.localisationService.getText("bot-missing_container_with_tpl", container._tpl));
 
                 continue;
             }
 
-            if (!containerTemplate._props.Grids?.length)
+            if (!containerTemplate[1]._props.Grids?.length)
             {
                 // Container has no slots to hold items
                 continue;
@@ -182,7 +182,7 @@ export class BotWeaponGeneratorHelper
 
             const itemSize = this.inventoryHelper.getItemSize(parentTpl, parentId, itemWithChildren);
 
-            for (const slotGrid of containerTemplate._props.Grids)
+            for (const slotGrid of containerTemplate[1]._props.Grids)
             {
                 // Grid is empty, skip
                 if (slotGrid._props.cellsH === 0 || slotGrid._props.cellsV === 0)
