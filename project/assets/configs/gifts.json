@@ -723,7 +723,7 @@
                     "upd": {
                         "StackObjectsCount": 500000
                     }
-                },{
+                }, {
                     "_id": "a89275c1b18274e27432a6d7",
                     "_tpl": "5449016a4bdc2d6f028b456f",
                     "upd": {
@@ -734,7 +734,21 @@
             "sender": "System",
             "localeTextId": "626e5d63bc92c87fd22a943f 0",
             "collectionTimeHours": 48,
-			"associatedEvent": "Promo"
+            "associatedEvent": "Promo"
+        },
+        "IAMADIRTYLITTLEGOBLIN": {
+            "items": [{
+                    "_id": "a89275c1b18274ef7432a6d8",
+                    "_tpl": "58ac60eb86f77401897560ff",
+                    "upd": {
+                        "StackObjectsCount": 1
+                    }
+                }
+            ],
+            "sender": "System",
+            "messageText": "You dirty little cheating goblin",
+            "collectionTimeHours": 48,
+            "associatedEvent": "Promo"
         }
     }
 }
