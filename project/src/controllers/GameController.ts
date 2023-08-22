@@ -127,6 +127,12 @@ export class GameController
                 this.updateProfileHealthValues(pmcProfile);
             }
 
+            if (fullProfile.info.edition.toLowerCase().startsWith("spt developer"))
+            {
+                // Set all hideout crafts to 30secs
+                this.setHideoutAreasAndCraftsTo30Secs();
+            }
+
             if (this.locationConfig.fixEmptyBotWavesSettings.enabled)
             {
                 this.fixBrokenOfflineMapWaves();
@@ -212,6 +218,31 @@ export class GameController
         }
     }
     
+    protected setHideoutAreasAndCraftsTo30Secs(): void
+    {
+        for (const hideoutProd of this.databaseServer.getTables().hideout.production) 
+        {
+            if (hideoutProd.productionTime > 30) 
+            {
+                hideoutProd.productionTime = 30;
+            }
+        }
+        this.logger.warning("DEVELOPER: SETTING ALL HIDEOUT PRODUCTIONS TO 30 SECONDS");
+
+        for (const hideoutArea of this.databaseServer.getTables().hideout.areas) 
+        {
+            for (const stageKey in hideoutArea.stages) 
+            {
+                const stage = hideoutArea.stages[stageKey];
+                if (stage.constructionTime > 30) 
+                {
+                    stage.constructionTime = 30;
+                }
+            }
+        }
+        this.logger.warning("DEVELOPER: SETTING ALL HIDEOUT AREAS TO 30 SECOND UPGRADES");
+    }
+
     /**
      * 3.7.0 moved AIDs to be numeric, old profiles need to be migrated
      * We store the old AID value in new field `sessionId`
