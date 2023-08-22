@@ -6,7 +6,7 @@
 	"baseclass-missing_db_no_cache": "Database was empty, unable to generate an item base cache",
 	"bleeding_edge_build": "BLEEDINGEDGE",
 	"bot-bot-cache_has_zero_bots_of_requested_type": "WARNING - Bot cache does not have a pre-generated bot of type %s, will need to be generated, configure server to make more",
-	"bot-compatibility_check_missing_props": "Unable to validate item: {{id}} {{name}} in slot {{slot}} can be equipped, it is missing a _props value",
+	"bot-compatibility_check_missing_props": "Unable to validate item: {{id}} {{name}} in slot: {{slot}} can be equipped, it is missing a _props value",
 	"bot-generation_failed": "bot generation failed see server log for further details",
 	"bot-incompatible_ammo_for_weapon_falling_back_to_default": "Incompatible ammo {{chosenAmmo}} was found for {{weaponId}} - {{weaponName}}, falling back to default: {{defaultAmmo}}",
 	"bot-invalid_item_compatibility_check": "Unable to check item compatibility with equipped items, desired item: {{itemTpl}} in slot: {{slot}} is not a valid item",
