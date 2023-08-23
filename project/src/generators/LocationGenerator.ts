@@ -305,6 +305,12 @@ export class LocationGenerator
         for (const container of staticContainersOnMap)
         {
             const groupData = staticContainerGroupData.containers[container.template.Id];
+            if (!groupData)
+            {
+                this.logger.error(`Container ${container.template.Id} not found in statics.json, this is bad`);
+                continue;
+            }
+
             if (container.probability === 1)
             {
                 this.logger.warning(`Container ${container.template.Id} with group ${groupData.groupId} had 100% chance to spawn was picked as random container, skipping`);
