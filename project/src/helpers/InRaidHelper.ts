@@ -270,20 +270,26 @@ export class InRaidHelper
         }
     }
 
-    protected applyTraderStandingAdjustments(preRaid: Record<string, TraderInfo>, postRaid: Record<string, TraderInfo>): void
+    /**
+     * Adjust server trader settings if they differ from data sent by client
+     * @param tradersServerProfile Server
+     * @param tradersClientProfile Client
+     */
+    protected applyTraderStandingAdjustments(tradersServerProfile: Record<string, TraderInfo>, tradersClientProfile: Record<string, TraderInfo>): void
     {
-        for (const traderId in postRaid)
+        for (const traderId in tradersClientProfile)
         {
-            const preRaidTrader = preRaid[traderId];
-            const postRaidTrader = postRaid[traderId];
-            if (!(preRaidTrader && postRaidTrader))
+            const serverProfileTrader = tradersServerProfile[traderId];
+            const clientProfileTrader = tradersClientProfile[traderId];
+            if (!(serverProfileTrader && clientProfileTrader))
             {
                 continue;
             }
 
-            if (postRaidTrader.standing > preRaidTrader.standing)
+            if (clientProfileTrader.standing !== serverProfileTrader.standing)
             {
-                preRaid[traderId].standing = postRaidTrader.standing;
+                // Difference found, update server profile with values from client profile
+                tradersServerProfile[traderId].standing = clientProfileTrader.standing;
             }
         }
     }
