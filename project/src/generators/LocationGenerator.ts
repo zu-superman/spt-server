@@ -90,11 +90,12 @@ export class LocationGenerator
         // Add mounted weapons to output loot
         result.push(...staticWeaponsOnMap ?? []);
 
-        const staticContainersOnMap = this.jsonUtil.clone(db.loot.staticContainers[locationBase.Name]?.staticContainers);
-        if (!staticContainersOnMap)
+        const allStaticContainersOnMap = this.jsonUtil.clone(db.loot.staticContainers[locationBase.Name]?.staticContainers);
+        if (!allStaticContainersOnMap)
         {
             this.logger.error(`Unable to find static container data for map: ${locationBase.Name}`);
         }
+        const staticRandomisableContainersOnMap = this.getRandomisableContainersOnMap(this.jsonUtil.clone(allStaticContainersOnMap));
 
         // Containers that MUST be added to map (quest containers etc)
         const staticForcedOnMap = this.jsonUtil.clone(db.loot.staticContainers[locationBase.Name]?.staticForced);
@@ -107,7 +108,7 @@ export class LocationGenerator
         let staticContainerCount = 0;
 
         // Find all 100% spawn containers
-        const guaranteedContainers = staticContainersOnMap.filter(x => x.probability === 1);
+        const guaranteedContainers = this.getGuaranteedContainers(allStaticContainersOnMap);
         staticContainerCount += guaranteedContainers.length;
         
         // Add loot to guaranteed containers and add to result
@@ -120,9 +121,23 @@ export class LocationGenerator
 
         this.logger.success(`Added ${guaranteedContainers.length} guaranteed containers`);
 
+        // randomisation is turned off globally or just turned off for this map
+        if (!this.locationConfig.containerRandomisationSettings.enabled || !this.locationConfig.containerRandomisationSettings.maps[locationId])
+        {
+            this.logger.debug(`Container randomisation disabled, Adding all containers to ${locationBase.Name}`);
+            const allRandomContainers = staticRandomisableContainersOnMap.filter(x => x.probability !== 1);
+            for (const container of allRandomContainers)
+            {
+                const containerWithLoot = this.addLootToContainer(container, staticForcedOnMap, staticLootDist, staticAmmoDist, locationBase.Name);
+                result.push(containerWithLoot.template);
+
+                return result;
+            }
+        }
+
         // Group containers by their groupId
         const staticContainerGroupData: IStaticContainer  = db.locations[locationId].statics;
-        const mapping = this.getGroupIdToContainerMappings(staticContainerGroupData, staticContainersOnMap);
+        const mapping = this.getGroupIdToContainerMappings(staticContainerGroupData, staticRandomisableContainersOnMap);
 
         // For each of the groups, choose from the pool of containers, hydrate container with loot and add to result array
         for (const groupId in mapping)
@@ -170,10 +185,10 @@ export class LocationGenerator
             for (const chosenContainerId of chosenContainerIds)
             {
                 // Look up container object from full list of containers on map
-                const containerObject = staticContainersOnMap.find(x => x.template.Id === chosenContainerId);
+                const containerObject = staticRandomisableContainersOnMap.find(x => x.template.Id === chosenContainerId);
                 if (!containerObject)
                 {
-                    this.logger.error(`Container: ${chosenContainerIds[chosenContainerId]} not found in staticContainersOnMap, this is bad`);
+                    this.logger.error(`Container: ${chosenContainerIds[chosenContainerId]} not found in staticRandomisableContainersOnMap, this is bad`);
                     continue;
                 }
 
@@ -185,6 +200,29 @@ export class LocationGenerator
         }
 
         this.logger.success(this.localisationService.getText("location-containers_generated_success", staticContainerCount));
+
+        return result;
+    }
+
+    /**
+     * Get containers with a non-100% chance to spawn OR are NOT on the container type randomistion blacklist
+     * @param staticContainers 
+     * @returns IStaticContainerData array
+     */
+    protected getRandomisableContainersOnMap(staticContainers: IStaticContainerData[]): IStaticContainerData[]
+    {
+        return staticContainers
+            .filter(x => x.probability !== 1 && !this.locationConfig.containerRandomisationSettings.containerTypesToNotRandomise.includes(x.template.Items[0]._tpl));
+    }
+
+    /**
+     * Get containers with 100% spawn rate or have a type on the randomistion ignore list
+     * @param staticContainersOnMap 
+     * @returns IStaticContainerData array
+     */
+    protected getGuaranteedContainers(staticContainersOnMap: IStaticContainerData[]): IStaticContainerData[]
+    {
+        const result = staticContainersOnMap.filter(x => x.probability === 1 || this.locationConfig.containerRandomisationSettings.containerTypesToNotRandomise.includes(x.template.Items[0]._tpl));
 
         return result;
     }
