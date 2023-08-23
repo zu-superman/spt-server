@@ -73,9 +73,9 @@ export class LocationGenerator
      * @param staticAmmoDist Static ammo distribution - database.loot.staticAmmo
      * @returns Array of container objects
      */
-    public generateStaticContainers(locationBase: ILocationBase, staticAmmoDist: Record<string, IStaticAmmoDetails[]>): any[]
+    public generateStaticContainers(locationBase: ILocationBase, staticAmmoDist: Record<string, IStaticAmmoDetails[]>): SpawnpointTemplate[]
     {
-        const result: any[] = [];
+        const result: SpawnpointTemplate[] = [];
         const locationId = locationBase.Id.toLowerCase();
 
         const db = this.databaseServer.getTables();
@@ -115,7 +115,7 @@ export class LocationGenerator
         const staticLootDist = this.jsonUtil.clone(db.loot.staticLoot);
         for (const container of guaranteedContainers)
         {
-            const containerWithLoot = this.addLootToContainer(container, staticForcedOnMap, staticLootDist, staticAmmoDist, locationBase.Name);
+            const containerWithLoot = this.addLootToContainer(container, staticForcedOnMap, staticLootDist, staticAmmoDist, locationId);
             result.push(containerWithLoot.template);
         }
 
@@ -128,7 +128,7 @@ export class LocationGenerator
             const allRandomContainers = staticRandomisableContainersOnMap.filter(x => x.probability !== 1);
             for (const container of allRandomContainers)
             {
-                const containerWithLoot = this.addLootToContainer(container, staticForcedOnMap, staticLootDist, staticAmmoDist, locationBase.Name);
+                const containerWithLoot = this.addLootToContainer(container, staticForcedOnMap, staticLootDist, staticAmmoDist, locationId);
                 result.push(containerWithLoot.template);
 
                 return result;
@@ -139,7 +139,7 @@ export class LocationGenerator
         const staticContainerGroupData: IStaticContainer  = db.locations[locationId].statics;
         const mapping = this.getGroupIdToContainerMappings(staticContainerGroupData, staticRandomisableContainersOnMap);
 
-        // For each of the groups, choose from the pool of containers, hydrate container with loot and add to result array
+        // For each of the container groups, choose from the pool of containers, hydrate container with loot and add to result array
         for (const groupId in mapping)
         {
             const data = mapping[groupId];
@@ -193,7 +193,7 @@ export class LocationGenerator
                 }
 
                 // Add loot to container and push into result object
-                const containerWithLoot = this.addLootToContainer(containerObject, staticForcedOnMap, staticLootDist, staticAmmoDist, locationBase.Name);
+                const containerWithLoot = this.addLootToContainer(containerObject, staticForcedOnMap, staticLootDist, staticAmmoDist, locationId);
                 result.push(containerWithLoot.template);
                 staticContainerCount++;
             }
@@ -222,9 +222,7 @@ export class LocationGenerator
      */
     protected getGuaranteedContainers(staticContainersOnMap: IStaticContainerData[]): IStaticContainerData[]
     {
-        const result = staticContainersOnMap.filter(x => x.probability === 1 || this.locationConfig.containerRandomisationSettings.containerTypesToNotRandomise.includes(x.template.Items[0]._tpl));
-
-        return result;
+        return staticContainersOnMap.filter(x => x.probability === 1 || this.locationConfig.containerRandomisationSettings.containerTypesToNotRandomise.includes(x.template.Items[0]._tpl));
     }
 
     /**
