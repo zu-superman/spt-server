@@ -124,9 +124,8 @@ export class LocationGenerator
         // randomisation is turned off globally or just turned off for this map
         if (!this.locationConfig.containerRandomisationSettings.enabled || !this.locationConfig.containerRandomisationSettings.maps[locationId])
         {
-            this.logger.debug(`Container randomisation disabled, Adding all containers to ${locationBase.Name}`);
-            const allRandomContainers = staticRandomisableContainersOnMap.filter(x => x.probability !== 1);
-            for (const container of allRandomContainers)
+            this.logger.debug(`Container randomisation disabled, Adding ${staticRandomisableContainersOnMap.length} all containers to ${locationBase.Name}`);
+            for (const container of staticRandomisableContainersOnMap)
             {
                 const containerWithLoot = this.addLootToContainer(container, staticForcedOnMap, staticLootDist, staticAmmoDist, locationId);
                 result.push(containerWithLoot.template);
