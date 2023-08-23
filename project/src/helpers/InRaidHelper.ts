@@ -281,11 +281,10 @@ export class InRaidHelper
                 continue;
             }
 
-            if (postRaidTrader.standing !== preRaidTrader.standing)
+            if (postRaidTrader.standing > preRaidTrader.standing)
             {
-                preRaidTrader.standing = postRaidTrader.standing;
+                preRaid[traderId].standing = postRaidTrader.standing;
             }
-
         }
     }
 
