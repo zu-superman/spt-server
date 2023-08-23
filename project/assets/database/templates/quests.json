@@ -35291,22 +35291,6 @@
             "visibilityConditions": []
           },
           "dynamicLocale": false
-        },
-        {
-          "_parent": "Quest",
-          "_props": {
-            "availableAfter": 0,
-            "dynamicLocale": false,
-            "id": "51d33b2d4fad9e61441772c0",
-            "index": 1,
-            "parentId": "",
-            "status": [
-              4
-            ],
-            "target": "5967725e86f774601a446662",
-            "visibilityConditions": []
-          },
-          "dynamicLocale": false
         }
       ],
       "Fail": []
