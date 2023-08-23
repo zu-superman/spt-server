@@ -107,21 +107,8 @@ export class LocationGenerator
         //keep track of static loot count
         let staticContainerCount = 0;
 
-        // Find all 100% spawn containers
-        const guaranteedContainers = this.getGuaranteedContainers(allStaticContainersOnMap);
-        staticContainerCount += guaranteedContainers.length;
-        
-        // Add loot to guaranteed containers and add to result
-        const staticLootDist = this.jsonUtil.clone(db.loot.staticLoot);
-        for (const container of guaranteedContainers)
-        {
-            const containerWithLoot = this.addLootToContainer(container, staticForcedOnMap, staticLootDist, staticAmmoDist, locationId);
-            result.push(containerWithLoot.template);
-        }
-
-        this.logger.success(`Added ${guaranteedContainers.length} guaranteed containers`);
-
         // randomisation is turned off globally or just turned off for this map
+        const staticLootDist = this.jsonUtil.clone(db.loot.staticLoot);
         if (!this.locationConfig.containerRandomisationSettings.enabled || !this.locationConfig.containerRandomisationSettings.maps[locationId])
         {
             this.logger.debug(`Container randomisation disabled, Adding ${staticRandomisableContainersOnMap.length} all containers to ${locationBase.Name}`);
@@ -133,6 +120,19 @@ export class LocationGenerator
                 return result;
             }
         }
+
+        // Find all 100% spawn containers
+        const guaranteedContainers = this.getGuaranteedContainers(allStaticContainersOnMap);
+        staticContainerCount += guaranteedContainers.length;
+        
+        // Add loot to guaranteed containers and add to result
+        for (const container of guaranteedContainers)
+        {
+            const containerWithLoot = this.addLootToContainer(container, staticForcedOnMap, staticLootDist, staticAmmoDist, locationId);
+            result.push(containerWithLoot.template);
+        }
+
+        this.logger.success(`Added ${guaranteedContainers.length} guaranteed containers`);
 
         // Group containers by their groupId
         const staticContainerGroupData: IStaticContainer  = db.locations[locationId].statics;
