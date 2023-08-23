@@ -44,6 +44,8 @@ export interface IContainerRandomistionSettings
     maps: Record<string, boolean>
     /** Some container types don't work when randomised */
     containerTypesToNotRandomise: string[]
+    containerGroupMinSizeMultiplier: number
+    containerGroupMaxSizeMultiplier: number
 }
 
 export interface IFixEmptyBotWavesSettings

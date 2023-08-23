@@ -275,7 +275,10 @@ export class LocationGenerator
             {
                 mapping[groupId] = {
                     containerIdsWithProbability: {},
-                    chosenCount: this.randomUtil.getInt(groupData.minContainers, groupData.maxContainers)
+                    chosenCount: this.randomUtil.getInt(
+                        Math.round(groupData.minContainers * this.locationConfig.containerRandomisationSettings.containerGroupMinSizeMultiplier),
+                        Math.round(groupData.maxContainers * this.locationConfig.containerRandomisationSettings.containerGroupMaxSizeMultiplier)
+                    )
                 };
             }
         }

@@ -763,7 +763,9 @@
             "5d6fe50986f77449d97f7463",
             "578f879c24597735401e6bc6",
             "578f8782245977354405a1e3"
-        ]
+        ],
+		"containerGroupMinSizeMultiplier": 1,
+		"containerGroupMaxSizeMultiplier": 1
     },
     "minFillLooseMagazinePercent": 50,
     "minFillStaticMagazinePercent": 50
