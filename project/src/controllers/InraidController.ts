@@ -322,19 +322,10 @@ export class InraidController
         {
             fenceStanding += this.inraidConfig.scavExtractGain;
         }
-
-        // no fence trader info, copy from pmc profile
-        if (!scavData.TradersInfo[fenceId])
-        {
-            scavData.TradersInfo[fenceId] = this.jsonUtil.clone(pmcData.TradersInfo[fenceId]);
-        }
-
-        // Make standing changes to scav profile
-        scavData.TradersInfo[fenceId].standing = Math.min(Math.max(fenceStanding, -7), 15);
-        this.logger.debug(`New fence standing: ${scavData.TradersInfo[fenceId].standing}`);
-
+        
         // Make standing changes to pmc profile
-        pmcData.TradersInfo[fenceId].standing = scavData.TradersInfo[fenceId].standing;
+        pmcData.TradersInfo[fenceId].standing = Math.min(Math.max(fenceStanding, -7), 15); // Ensure it stays between -7 and 15
+        this.logger.debug(`New fence standing: ${pmcData.TradersInfo[fenceId].standing}`);
         this.traderHelper.lvlUp(fenceId, pmcData);
         pmcData.TradersInfo[fenceId].loyaltyLevel = Math.max(pmcData.TradersInfo[fenceId].loyaltyLevel, 1);
     }
