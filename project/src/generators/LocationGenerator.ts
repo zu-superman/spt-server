@@ -234,13 +234,26 @@ export class LocationGenerator
     {
         const chosenContainerIds = [];
         let attempts = 0;
-        const shuffledContainerIds = this.randomUtil.shuffle(Object.keys(containerData.containerIdsWithProbability));
+
+        // pull keys out of dictionary into array for easy access
+        const containerIds = Object.keys(containerData.containerIdsWithProbability);
+
+        // Shuffle so we dont always start iterations from same container, biasing the containers chosen
+        const shuffledContainerIds = this.randomUtil.shuffle(containerIds);
         while (chosenContainerIds.length !== containerData.chosenCount)
         {
-            const randomPossibleContainerId = this.randomUtil.getArrayValue(shuffledContainerIds);
+            // We want more than what's available, return whole list of possible containers
+            if (containerData.chosenCount >= containerIds.length)
+            {
+                this.logger.warning(`Group wants ${containerData.chosenCount} containers but pool only has ${containerIds.length}, returning what's available`);
+                return shuffledContainerIds;
+            }
+
+            const randomPossibleContainerId = this.randomUtil.drawRandomFromList(shuffledContainerIds)[0];
             if (this.randomUtil.getChance100(containerData.containerIdsWithProbability[randomPossibleContainerId] * 100))
             {
                 chosenContainerIds.push(randomPossibleContainerId);
+                delete containerData.containerIdsWithProbability[randomPossibleContainerId];
             }
 
             if (attempts > containerData.chosenCount * 5)
