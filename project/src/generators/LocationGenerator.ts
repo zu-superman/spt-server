@@ -231,42 +231,25 @@ export class LocationGenerator
      */
     protected getContainersByProbabilty(containerData: IContainerGroupCount): string[]
     {
-        const chosenContainerIds = [];
-        let attempts = 0;
+        const chosenContainerIds: string[] = [];
 
-        // pull keys out of dictionary into array for easy access
         const containerIds = Object.keys(containerData.containerIdsWithProbability);
-
-        // Shuffle so we dont always start iterations from same container, biasing the containers chosen
-        const shuffledContainerIds = this.randomUtil.shuffle(containerIds);
-        while (chosenContainerIds.length !== containerData.chosenCount)
+        if (containerData.chosenCount >= containerIds.length)
         {
-            // We want more than what's available, return whole list of possible containers
-            if (containerData.chosenCount >= containerIds.length)
-            {
-                this.logger.warning(`Group wants ${containerData.chosenCount} containers but pool only has ${containerIds.length}, returning what's available`);
-                return shuffledContainerIds;
-            }
-
-            const randomPossibleContainerId = this.randomUtil.drawRandomFromList(shuffledContainerIds)[0];
-            if (this.randomUtil.getChance100(containerData.containerIdsWithProbability[randomPossibleContainerId] * 100))
-            {
-                chosenContainerIds.push(randomPossibleContainerId);
-                delete containerData.containerIdsWithProbability[randomPossibleContainerId];
-            }
-
-            if (attempts > containerData.chosenCount * 5)
-            {
-                this.logger.warning(`Tried to get ${containerData.chosenCount} containers after ${attempts} attempts, taking random values instead`);
-                chosenContainerIds.push(...this.randomUtil.drawRandomFromList(shuffledContainerIds, containerData.chosenCount));
-
-                break;
-            }
-
-            attempts++;
+            this.logger.warning(`Group wants ${containerData.chosenCount} containers but pool only has ${containerIds.length}, returning what's available`);
+            return containerIds;
         }
 
+        // Create probability array with all possible container ids in this group and their relataive probability of spawning
+        const containerDistribution = new ProbabilityObjectArray<string>(this.mathUtil, this.jsonUtil);
+        containerIds.forEach(x => containerDistribution.push(new ProbabilityObject(x, containerData.containerIdsWithProbability[x])));
+
+        chosenContainerIds.push(...containerDistribution.draw(containerData.chosenCount));
+
         return chosenContainerIds;
+
+        // Shuffle so we dont always start iterations from same container, biasing the containers chosen
+        
     }
 
     /**
