@@ -138,25 +138,29 @@ export class ProbabilityObjectArray<K, V=undefined> extends Array<ProbabilityObj
      */
     public draw(count = 1, replacement = true, locklist: Array<K> = []): K[]
     {
-        const probArray = this.map(x => x.relativeProbability);
-        const keyArray = this.map(x => x.key);
+        const {probArray, keyArray} = this.reduce((acc, x) =>
+        {
+            acc.probArray.push(x.relativeProbability);
+            acc.keyArray.push(x.key);
+            return acc;
+        }, {probArray: [], keyArray: []});
         let probCumsum = this.cumulativeProbability(probArray);
 
         const randomKeys = [];
         for (let i = 0; i < count; i++) 
         {
             const rand = Math.random();
-            const idx = probCumsum.findIndex(x => x > rand);
+            const randomIndex = probCumsum.findIndex(x => x > rand);
             // we cannot put Math.random() directly in the findIndex because then it draws anew for each of its iteration
-            if (replacement || locklist.includes(keyArray[idx])) 
+            if (replacement || locklist.includes(keyArray[randomIndex])) 
             {
-                randomKeys.push(keyArray[idx]);
+                randomKeys.push(keyArray[randomIndex]);
             }
             else 
             {
                 // we draw without replacement -> remove the key and its probability from array
-                const key = keyArray.splice(idx, 1)[0];
-                probArray.splice(idx, 1);
+                const key = keyArray.splice(randomIndex, 1)[0];
+                probArray.splice(randomIndex, 1);
                 randomKeys.push(key);
                 probCumsum = this.cumulativeProbability(probArray);
                 // if we draw without replacement and the ProbabilityObjectArray is exhausted we need to break
