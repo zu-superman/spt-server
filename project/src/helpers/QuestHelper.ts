@@ -179,7 +179,12 @@ export class QuestHelper
     public traderStandingRequirementCheck(questProperties: AvailableForProps, profile: IPmcData): boolean
     {
         const requiredLoyaltyStanding = Number(questProperties.value);
-        const currentTraderStanding = profile.TradersInfo[<string>questProperties.target].loyaltyLevel; // Cast target as string as 'traderLoyalty' target prop is always string
+        const trader = profile.TradersInfo[<string>questProperties.target];
+        if (!trader)
+        {
+            this.logger.error(`Unable to find trader: ${questProperties.target} in profile`);
+        }
+        const currentTraderStanding = trader.loyaltyLevel; // Cast target as string as 'traderLoyalty' target prop is always string
 
         switch (questProperties.compareMethod)
         {
