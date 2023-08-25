@@ -224,7 +224,7 @@ export class HideoutController
      * Upgrade wall status to visible in profile if medstation/water collector are both level 1
      * @param pmcData Player profile
      */
-    private checkAndUpgradeWall(pmcData: IPmcData)
+    protected checkAndUpgradeWall(pmcData: IPmcData): void
     {
         const medStation = pmcData.Hideout.Areas.find(area => area.type === HideoutAreas.MEDSTATION);
         const waterCollector = pmcData.Hideout.Areas.find(area => area.type === HideoutAreas.WATER_COLLECTOR);
