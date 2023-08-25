@@ -410,7 +410,7 @@ export class HideoutHelper
                 {
                     generatorArea.slots[i].item[0].upd = this.getAreaUpdObject(1, resourceValue, pointsConsumed);
 
-                    this.logger.debug(`Generator: ${resourceValue} fuel left in slot ${i + 1}`);
+                    this.logger.debug(`${pmcData._id} Generator: ${resourceValue} fuel left in slot ${i + 1}`);
                     hasFuelRemaining = true;
 
                     break; // Break here to avoid updating all the fuel tanks
