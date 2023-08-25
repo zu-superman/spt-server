@@ -7,6 +7,7 @@ import { ISaveProgressRequestData } from "../models/eft/inRaid/ISaveProgressRequ
 import { IFailQuestRequestData } from "../models/eft/quests/IFailQuestRequestData";
 import { ConfigTypes } from "../models/enums/ConfigTypes";
 import { QuestStatus } from "../models/enums/QuestStatus";
+import { Traders } from "../models/enums/Traders";
 import { ILostOnDeathConfig } from "../models/spt/config/ILostOnDeathConfig";
 import { ILogger } from "../models/spt/utils/ILogger";
 import { ConfigServer } from "../servers/ConfigServer";
@@ -279,6 +280,12 @@ export class InRaidHelper
     {
         for (const traderId in tradersClientProfile)
         {
+            if (traderId === Traders.FENCE)
+            {
+                // Taking a car extract adjusts fence rep values via client/match/offline/end, skip fence for this check
+                continue;
+            }
+
             const serverProfileTrader = tradersServerProfile[traderId];
             const clientProfileTrader = tradersClientProfile[traderId];
             if (!(serverProfileTrader && clientProfileTrader))

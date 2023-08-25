@@ -105,32 +105,32 @@ export class InraidController
      */
     protected savePmcProgress(sessionID: string, offraidData: ISaveProgressRequestData): void
     {
-        const currentProfile = this.saveServer.getProfile(sessionID);
-        const locationName = currentProfile.inraid.location.toLowerCase();
+        const preRaidProfile = this.saveServer.getProfile(sessionID);
+        const locationName = preRaidProfile.inraid.location.toLowerCase();
 
         const map: ILocationBase = this.databaseServer.getTables().locations[locationName].base;
         const insuranceEnabled = map.Insurance;
-        let pmcData = currentProfile.characters.pmc;
+        let preRaidPmcData = preRaidProfile.characters.pmc;
         const isDead = this.isPlayerDead(offraidData.exit);
-        const preRaidGear = this.inRaidHelper.getPlayerGear(pmcData.Inventory.items);
+        const preRaidGear = this.inRaidHelper.getPlayerGear(preRaidPmcData.Inventory.items);
 
-        currentProfile.inraid.character = "pmc";
+        preRaidProfile.inraid.character = "pmc";
 
-        pmcData = this.inRaidHelper.updateProfileBaseStats(pmcData, offraidData, sessionID);
+        preRaidPmcData = this.inRaidHelper.updateProfileBaseStats(preRaidPmcData, offraidData, sessionID);
 
         // Check for exit status
         this.markOrRemoveFoundInRaidItems(offraidData);
 
-        offraidData.profile.Inventory.items = this.itemHelper.replaceIDs(offraidData.profile, offraidData.profile.Inventory.items, pmcData.InsuredItems, offraidData.profile.Inventory.fastPanel);
+        offraidData.profile.Inventory.items = this.itemHelper.replaceIDs(offraidData.profile, offraidData.profile.Inventory.items, preRaidPmcData.InsuredItems, offraidData.profile.Inventory.fastPanel);
         this.inRaidHelper.addUpdToMoneyFromRaid(offraidData.profile.Inventory.items);
 
-        pmcData = this.inRaidHelper.setInventory(sessionID, pmcData, offraidData.profile);
-        this.healthHelper.saveVitality(pmcData, offraidData.health, sessionID);
+        preRaidPmcData = this.inRaidHelper.setInventory(sessionID, preRaidPmcData, offraidData.profile);
+        this.healthHelper.saveVitality(preRaidPmcData, offraidData.health, sessionID);
 
         // Remove inventory if player died and send insurance items
         if (insuranceEnabled)
         {
-            this.insuranceService.storeLostGear(pmcData, offraidData, preRaidGear, sessionID, isDead);
+            this.insuranceService.storeLostGear(preRaidPmcData, offraidData, preRaidGear, sessionID, isDead);
         }
         else
         {
@@ -139,21 +139,21 @@ export class InraidController
 
         if (isDead)
         {
-            this.pmcChatResponseService.sendKillerResponse(sessionID, pmcData, offraidData.profile.Stats.Eft.Aggressor);
+            this.pmcChatResponseService.sendKillerResponse(sessionID, preRaidPmcData, offraidData.profile.Stats.Eft.Aggressor);
             this.matchBotDetailsCacheService.clearCache();
 
-            pmcData = this.performPostRaidActionsWhenDead(offraidData, pmcData, insuranceEnabled, preRaidGear, sessionID);
+            preRaidPmcData = this.performPostRaidActionsWhenDead(offraidData, preRaidPmcData, insuranceEnabled, preRaidGear, sessionID);
         }
 
         const victims = offraidData.profile.Stats.Eft.Victims.filter(x => x.Role === "sptBear" || x.Role === "sptUsec");
         if (victims?.length > 0)
         {
-            this.pmcChatResponseService.sendVictimResponse(sessionID, victims, pmcData);
+            this.pmcChatResponseService.sendVictimResponse(sessionID, victims, preRaidPmcData);
         }
 
         if (insuranceEnabled)
         {
-            this.insuranceService.sendInsuredItems(pmcData, sessionID, map.Id);
+            this.insuranceService.sendInsuredItems(preRaidPmcData, sessionID, map.Id);
         }
     }
 
