@@ -21,7 +21,7 @@
         "followerTagilla": 5,
         "followerBirdEye": 5,
         "followerBigPipe": 5,
-        "followerZryachiy": 15,
+        "followerZryachiy": 10,
         "followerTest": 10,
         "followerBoar": 15,
         "marksman": 30,
@@ -36,8 +36,8 @@
         "crazyAssaultEvent": 15,
         "bossBoar": 5,
         "bossBoarSniper": 5,
-        "sptUsec": 20,
-        "sptBear": 20
+        "sptUsec": 30,
+        "sptBear": 30
     },
     "bosses": ["bossbully", "bossgluhar", "bosskilla", "bosskojaniy", "bosssanitar", "bosstagilla", "bossknight", "bossZryachiy", "bossBoar", "bossBoarSniper"],
     "durability": {
@@ -1811,6 +1811,5 @@
         "laboratory": 16,
         "tarkovstreets": 18,
         "default": 15
-    },
-    "botGenerationBatchSizePerType": 15
+    }
 }

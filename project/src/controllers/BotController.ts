@@ -136,7 +136,7 @@ export class BotController
                 role: condition.Role,
                 playerLevel: pmcProfile.Info.Level,
                 botRelativeLevelDeltaMax: this.botConfig.pmc.botRelativeLevelDeltaMax,
-                botCountToGenerate: this.botConfig.botGenerationBatchSizePerType,
+                botCountToGenerate: this.botConfig.presetBatch[condition.Role],
                 botDifficulty: condition.Difficulty,
                 isPlayerScav: false
             };
