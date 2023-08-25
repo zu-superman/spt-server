@@ -223,25 +223,25 @@ export class GameController
     {
         for (const hideoutProd of this.databaseServer.getTables().hideout.production) 
         {
-            if (hideoutProd.productionTime > 30) 
+            if (hideoutProd.productionTime > 40) 
             {
-                hideoutProd.productionTime = 30;
+                hideoutProd.productionTime = 40;
             }
         }
-        this.logger.warning("DEVELOPER: SETTING ALL HIDEOUT PRODUCTIONS TO 30 SECONDS");
+        this.logger.warning("DEVELOPER: SETTING ALL HIDEOUT PRODUCTIONS TO 40 SECONDS");
 
         for (const hideoutArea of this.databaseServer.getTables().hideout.areas) 
         {
             for (const stageKey in hideoutArea.stages) 
             {
                 const stage = hideoutArea.stages[stageKey];
-                if (stage.constructionTime > 30) 
+                if (stage.constructionTime > 40) 
                 {
-                    stage.constructionTime = 30;
+                    stage.constructionTime = 40;
                 }
             }
         }
-        this.logger.warning("DEVELOPER: SETTING ALL HIDEOUT AREAS TO 30 SECOND UPGRADES");
+        this.logger.warning("DEVELOPER: SETTING ALL HIDEOUT AREAS TO 40 SECOND UPGRADES");
     }
 
     /**
