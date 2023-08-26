@@ -79,6 +79,13 @@ class TradeController
                 return this.httpResponse.appendErrorToOutput(output, errorMessage);
             }
 
+            // Skip buying items when player doesn't have necessary loyalty
+            if (fleaOffer.user.memberType === MemberCategory.TRADER && fleaOffer.loyaltyLevel > pmcData.TradersInfo[fleaOffer.user.id].loyaltyLevel)
+            {
+                this.logger.debug(`Unable to buy item: ${fleaOffer.items[0]._tpl} from trader: ${fleaOffer.user.id} as loyalty level too low, skipping`);
+                continue;
+            }
+
             this.logger.debug(this.jsonUtil.serializeAdvanced(offer, null, 2));
 
             const buyData: IProcessBuyTradeRequestData = {
