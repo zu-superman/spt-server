@@ -32,9 +32,10 @@ export interface ILocationConfig extends IBaseConfig
     /** container randomisation settings */
     containerRandomisationSettings: IContainerRandomistionSettings;
     /** How full must a random loose magazine be %*/
-    minFillLooseMagazinePercent: number;
+    minFillLooseMagazinePercent: number
     /** How full must a random static magazine be %*/
-    minFillStaticMagazinePercent: number;
+    minFillStaticMagazinePercent: number
+    makeWishingTreeAlwaysGiveGift: boolean
 }
 
 export interface IContainerRandomistionSettings

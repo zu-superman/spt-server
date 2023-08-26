@@ -113,6 +113,11 @@ export class GameController
             this.adjustMapBotLimits();
         }
 
+        if (this.locationConfig.makeWishingTreeAlwaysGiveGift)
+        {
+            this.makeCustomsWishingTreeLootGuaranteed();
+        }
+
         // repeatableQuests are stored by in profile.Quests due to the responses of the client (e.g. Quests in offraidData)
         // Since we don't want to clutter the Quests list, we need to remove all completed (failed / successful) repeatable quests.
         // We also have to remove the Counters from the repeatableQuests
@@ -216,6 +221,17 @@ export class GameController
             {
                 this.flagAllItemsInDbAsSellableOnFlea();
             }
+        }
+    }
+
+    protected makeCustomsWishingTreeLootGuaranteed(): void
+    {
+        const customsLooseLoot = this.databaseServer.getTables().locations.bigmap.looseLoot;
+        const lootPointId = this.randomUtil.getChance100(50) ? "Loot 19 (9)566090" : "Loot 55565364";
+        const wishingTreeSpawnPoint = customsLooseLoot.spawnpoints.find(x => x.template.Id === lootPointId);
+        if (wishingTreeSpawnPoint)
+        {
+            wishingTreeSpawnPoint.probability = 1;
         }
     }
     
