@@ -286,7 +286,8 @@
     "secureContainerAmmoStackCount": 20,
     "revenge": {
         "assault": ["assault", "marksman", "gifter"],
-        "marksman": ["assault", "marksman", "gifter"]
+        "marksman": ["assault", "marksman", "gifter"],
+        "pmcBot": ["pmcBot", "gifter"]
     },
     "itemSpawnLimits": {
         "default": {},
