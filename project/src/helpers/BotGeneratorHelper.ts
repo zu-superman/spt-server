@@ -11,6 +11,7 @@ import {
 import { BaseClasses } from "../models/enums/BaseClasses";
 import { ConfigTypes } from "../models/enums/ConfigTypes";
 import { EquipmentFilters, IBotConfig } from "../models/spt/config/IBotConfig";
+import { IPmcConfig } from "../models/spt/config/IPmcConfig";
 import { ILogger } from "../models/spt/utils/ILogger";
 import { ConfigServer } from "../servers/ConfigServer";
 import { DatabaseServer } from "../servers/DatabaseServer";
@@ -23,6 +24,7 @@ import { ItemHelper } from "./ItemHelper";
 export class BotGeneratorHelper 
 {
     protected botConfig: IBotConfig;
+    protected pmcConfig: IPmcConfig;
 
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
@@ -36,6 +38,7 @@ export class BotGeneratorHelper
     ) 
     {
         this.botConfig = this.configServer.getConfig(ConfigTypes.BOT);
+        this.pmcConfig = this.configServer.getConfig(ConfigTypes.PMC);
     }
 
     /**
@@ -271,7 +274,7 @@ export class BotGeneratorHelper
      */
     public getBotEquipmentRole(botRole: string): string 
     {
-        return ([this.botConfig.pmc.usecType.toLowerCase(), this.botConfig.pmc.bearType.toLowerCase()].includes(botRole.toLowerCase()))
+        return ([this.pmcConfig.usecType.toLowerCase(), this.pmcConfig.bearType.toLowerCase()].includes(botRole.toLowerCase()))
             ? "pmc"
             : botRole;
     }

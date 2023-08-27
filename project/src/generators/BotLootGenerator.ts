@@ -16,6 +16,7 @@ import { EquipmentSlots } from "../models/enums/EquipmentSlots";
 import { ItemAddedResult } from "../models/enums/ItemAddedResult";
 import { LootCacheType } from "../models/spt/bots/IBotLootCache";
 import { IBotConfig } from "../models/spt/config/IBotConfig";
+import { IPmcConfig } from "../models/spt/config/IPmcConfig";
 import { ILogger } from "../models/spt/utils/ILogger";
 import { ConfigServer } from "../servers/ConfigServer";
 import { DatabaseServer } from "../servers/DatabaseServer";
@@ -29,6 +30,7 @@ import { BotWeaponGenerator } from "./BotWeaponGenerator";
 export class BotLootGenerator
 {
     protected botConfig: IBotConfig;
+    protected pmcConfig: IPmcConfig;
     
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
@@ -48,6 +50,7 @@ export class BotLootGenerator
     )
     {
         this.botConfig = this.configServer.getConfig(ConfigTypes.BOT);
+        this.pmcConfig = this.configServer.getConfig(ConfigTypes.PMC);
     }
 
     /**
@@ -74,7 +77,7 @@ export class BotLootGenerator
         const grenadeCount = this.weightedRandomHelper.getWeightedValue<number>(itemCounts.grenades.weights);
 
         // Forced pmc healing loot
-        if (isPmc && this.botConfig.pmc.forceHealingItemsIntoSecure)
+        if (isPmc && this.pmcConfig.forceHealingItemsIntoSecure)
         {
             this.addForcedMedicalItemsToPmcSecure(botInventory, botRole);
         }
@@ -136,7 +139,7 @@ export class BotLootGenerator
         if (botInventory.items.find(x => x.slotId === EquipmentSlots.BACKPACK))
         {
             // Add randomly generated weapon to PMC backpacks
-            if (isPmc && this.randomUtil.getChance100(this.botConfig.pmc.looseWeaponInBackpackChancePercent))
+            if (isPmc && this.randomUtil.getChance100(this.pmcConfig.looseWeaponInBackpackChancePercent))
             {
                 this.addLooseWeaponsToInventorySlot(sessionId, botInventory, EquipmentSlots.BACKPACK, botJsonTemplate.inventory, botJsonTemplate.chances.mods, botRole, isPmc, botLevel);
             }
@@ -148,7 +151,7 @@ export class BotLootGenerator
                 botInventory,
                 botRole,
                 true,
-                this.botConfig.pmc.maxBackpackLootTotalRub,
+                this.pmcConfig.maxBackpackLootTotalRub,
                 isPmc);
         }
         
@@ -162,7 +165,7 @@ export class BotLootGenerator
                 botInventory,
                 botRole,
                 true,
-                this.botConfig.pmc.maxVestLootTotalRub,
+                this.pmcConfig.maxVestLootTotalRub,
                 isPmc);
         }
 
@@ -175,7 +178,7 @@ export class BotLootGenerator
             botInventory,
             botRole,
             true,
-            this.botConfig.pmc.maxPocketLootTotalRub,
+            this.pmcConfig.maxPocketLootTotalRub,
             isPmc);
     }
 
@@ -353,7 +356,7 @@ export class BotLootGenerator
     protected addLooseWeaponsToInventorySlot(sessionId: string, botInventory: PmcInventory, equipmentSlot: string, templateInventory: Inventory, modChances: ModsChances, botRole: string, isPmc: boolean, botLevel: number): void
     {
         const chosenWeaponType = this.randomUtil.getArrayValue([EquipmentSlots.FIRST_PRIMARY_WEAPON, EquipmentSlots.FIRST_PRIMARY_WEAPON, EquipmentSlots.FIRST_PRIMARY_WEAPON, EquipmentSlots.HOLSTER]);
-        const randomisedWeaponCount = this.randomUtil.getInt(this.botConfig.pmc.looseWeaponInBackpackLootMinMax.min, this.botConfig.pmc.looseWeaponInBackpackLootMinMax.max);
+        const randomisedWeaponCount = this.randomUtil.getInt(this.pmcConfig.looseWeaponInBackpackLootMinMax.min, this.pmcConfig.looseWeaponInBackpackLootMinMax.max);
         if (randomisedWeaponCount > 0)
         {
             for (let i = 0; i < randomisedWeaponCount; i++)
@@ -505,7 +508,7 @@ export class BotLootGenerator
             // PMCs have a different stack max size
             const minStackSize = itemTemplate._props.StackMinRandom;
             const maxStackSize = (isPmc)
-                ? this.botConfig.pmc.dynamicLoot.moneyStackLimits[itemTemplate._id]
+                ? this.pmcConfig.dynamicLoot.moneyStackLimits[itemTemplate._id]
                 : itemTemplate._props.StackMaxRandom;
 
             moneyItem.upd = { "StackObjectsCount":  this.randomUtil.getInt(minStackSize, maxStackSize) };

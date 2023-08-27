@@ -2,7 +2,6 @@ import { GenerationData } from "../../../models/eft/common/tables/IBotType";
 import { MinMax } from "../../common/MinMax";
 import { IBaseConfig } from "./IBaseConfig";
 import { IBotDurability } from "./IBotDurability";
-import { IPmcConfig } from "./IPmcConfig";
 
 export interface IBotConfig extends IBaseConfig
 {
@@ -17,8 +16,6 @@ export interface IBotConfig extends IBaseConfig
     lootNValue: LootNvalue
     /** Control what bots are added to a bots revenge list key: bottype, value: bottypes to revenge on seeing their death */
     revenge: Record<string, string[]>
-    /** PMC bot specific config settings */
-    pmc: IPmcConfig
     /** Control how many items are allowed to spawn on a bot
      * key: bottype, value: <key: itemTpl: value: max item count> */
     itemSpawnLimits: Record<string, Record<string, number>>

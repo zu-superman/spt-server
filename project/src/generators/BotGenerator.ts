@@ -17,6 +17,7 @@ import { ConfigTypes } from "../models/enums/ConfigTypes";
 import { MemberCategory } from "../models/enums/MemberCategory";
 import { BotGenerationDetails } from "../models/spt/bots/BotGenerationDetails";
 import { IBotConfig } from "../models/spt/config/IBotConfig";
+import { IPmcConfig } from "../models/spt/config/IPmcConfig";
 import { ILogger } from "../models/spt/utils/ILogger";
 import { ConfigServer } from "../servers/ConfigServer";
 import { DatabaseServer } from "../servers/DatabaseServer";
@@ -34,6 +35,7 @@ import { BotLevelGenerator } from "./BotLevelGenerator";
 export class BotGenerator
 {
     protected botConfig: IBotConfig;
+    protected pmcConfig: IPmcConfig;
 
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
@@ -55,6 +57,7 @@ export class BotGenerator
     )
     {
         this.botConfig = this.configServer.getConfig(ConfigTypes.BOT);
+        this.pmcConfig = this.configServer.getConfig(ConfigTypes.PMC);
     }
 
     /**
@@ -228,7 +231,7 @@ export class BotGenerator
         // If bot name matches current players name, chance to add localised prefix to name
         if (name.toLowerCase() === playerProfile.Info.Nickname.toLowerCase())
         {
-            if (this.randomUtil.getChance100(this.botConfig.pmc.addPrefixToSameNamePMCAsPlayerChance))
+            if (this.randomUtil.getChance100(this.pmcConfig.addPrefixToSameNamePMCAsPlayerChance))
             {
 
                 const prefix = this.localisationService.getRandomTextThatMatchesPartialKey("pmc-name_prefix_");
@@ -458,8 +461,8 @@ export class BotGenerator
             return;
         }
 
-        botInfo.GameVersion = this.weightedRandomHelper.getWeightedValue(this.botConfig.pmc.gameVersionWeight);
-        botInfo.MemberCategory = Number.parseInt(this.weightedRandomHelper.getWeightedValue(this.botConfig.pmc.accountTypeWeight));
+        botInfo.GameVersion = this.weightedRandomHelper.getWeightedValue(this.pmcConfig.gameVersionWeight);
+        botInfo.MemberCategory = Number.parseInt(this.weightedRandomHelper.getWeightedValue(this.pmcConfig.accountTypeWeight));
     }
 
     /**

@@ -1,8 +1,10 @@
 import { MemberCategory } from "../../../models/enums/MemberCategory";
 import { MinMax } from "../../common/MinMax";
+import { IBaseConfig } from "./IBaseConfig";
 
-export interface IPmcConfig 
+export interface IPmcConfig extends IBaseConfig
 {
+    kind: "aki-pmc"
     /** What game version should the PMC have */
     gameVersionWeight: Record<string, number>
     /** What account type should the PMC have */

@@ -13,6 +13,7 @@ import { ConfigTypes } from "../models/enums/ConfigTypes";
 import { EquipmentSlots } from "../models/enums/EquipmentSlots";
 import { GenerateWeaponResult } from "../models/spt/bots/GenerateWeaponResult";
 import { IBotConfig } from "../models/spt/config/IBotConfig";
+import { IPmcConfig } from "../models/spt/config/IPmcConfig";
 import { IRepairConfig } from "../models/spt/config/IRepairConfig";
 import { ILogger } from "../models/spt/utils/ILogger";
 import { ConfigServer } from "../servers/ConfigServer";
@@ -32,6 +33,7 @@ export class BotWeaponGenerator
 {
     protected readonly modMagazineSlotId = "mod_magazine";
     protected botConfig: IBotConfig;
+    protected pmcConfig: IPmcConfig;
     protected repairConfig: IRepairConfig;
 
     constructor(
@@ -53,6 +55,7 @@ export class BotWeaponGenerator
     )
     {
         this.botConfig = this.configServer.getConfig(ConfigTypes.BOT);
+        this.pmcConfig = this.configServer.getConfig(ConfigTypes.PMC);
         this.repairConfig = this.configServer.getConfig(ConfigTypes.REPAIR);
         this.inventoryMagGenComponents.sort((a, b) => a.getPriority() - b.getPriority());
     }
@@ -123,7 +126,7 @@ export class BotWeaponGenerator
         let weaponWithModsArray = this.constructWeaponBaseArray(weaponTpl, weaponParentId, equipmentSlot, weaponItemTemplate, botRole);
 
         // Chance to add randomised weapon enhancement
-        if (isPmc && this.randomUtil.getChance100(this.botConfig.pmc.weaponHasEnhancementChancePercent))
+        if (isPmc && this.randomUtil.getChance100(this.pmcConfig.weaponHasEnhancementChancePercent))
         {
             const weaponConfig = this.repairConfig.repairKit.weapon;
             this.repairService.addBuff(weaponConfig, weaponWithModsArray[0]);

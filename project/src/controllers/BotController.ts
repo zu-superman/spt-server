@@ -16,6 +16,7 @@ import {
 import { ConfigTypes } from "../models/enums/ConfigTypes";
 import { BotGenerationDetails } from "../models/spt/bots/BotGenerationDetails";
 import { IBotConfig } from "../models/spt/config/IBotConfig";
+import { IPmcConfig } from "../models/spt/config/IPmcConfig";
 import { ILogger } from "../models/spt/utils/ILogger";
 import { ConfigServer } from "../servers/ConfigServer";
 import { DatabaseServer } from "../servers/DatabaseServer";
@@ -28,6 +29,7 @@ import { JsonUtil } from "../utils/JsonUtil";
 export class BotController
 {
     protected botConfig: IBotConfig;
+    protected pmcConfig: IPmcConfig;
     public static readonly pmcTypeLabel = "PMC";
 
     constructor(
@@ -46,6 +48,7 @@ export class BotController
     )
     {
         this.botConfig = this.configServer.getConfig(ConfigTypes.BOT);
+        this.pmcConfig = this.configServer.getConfig(ConfigTypes.PMC);
     }
 
     /**
@@ -97,18 +100,18 @@ export class BotController
         const lowercasedBotType = type.toLowerCase();
         switch (lowercasedBotType)
         {
-            case this.botConfig.pmc.bearType.toLowerCase():
-                difficultySettings = this.botDifficultyHelper.getPmcDifficultySettings("bear", difficulty, this.botConfig.pmc.usecType, this.botConfig.pmc.bearType);
+            case this.pmcConfig.bearType.toLowerCase():
+                difficultySettings = this.botDifficultyHelper.getPmcDifficultySettings("bear", difficulty, this.pmcConfig.usecType, this.pmcConfig.bearType);
                 break;
-            case this.botConfig.pmc.usecType.toLowerCase():
-                difficultySettings = this.botDifficultyHelper.getPmcDifficultySettings("usec", difficulty, this.botConfig.pmc.usecType, this.botConfig.pmc.bearType);
+            case this.pmcConfig.usecType.toLowerCase():
+                difficultySettings = this.botDifficultyHelper.getPmcDifficultySettings("usec", difficulty, this.pmcConfig.usecType, this.pmcConfig.bearType);
                 break;
             default:
                 difficultySettings = this.botDifficultyHelper.getBotDifficultySettings(type, difficulty);
                 // Don't add pmcs to gifter enemy list
                 if (type.toLowerCase() !== "gifter")
                 {
-                    this.botHelper.addBotToEnemyList(difficultySettings, [this.botConfig.pmc.bearType, this.botConfig.pmc.usecType], lowercasedBotType);
+                    this.botHelper.addBotToEnemyList(difficultySettings, [this.pmcConfig.bearType, this.pmcConfig.usecType], lowercasedBotType);
                 }
                 
                 break;
@@ -135,7 +138,7 @@ export class BotController
                 side: "Savage",
                 role: condition.Role,
                 playerLevel: pmcProfile.Info.Level,
-                botRelativeLevelDeltaMax: this.botConfig.pmc.botRelativeLevelDeltaMax,
+                botRelativeLevelDeltaMax: this.pmcConfig.botRelativeLevelDeltaMax,
                 botCountToGenerate: this.botConfig.presetBatch[condition.Role],
                 botDifficulty: condition.Difficulty,
                 isPlayerScav: false
@@ -156,7 +159,7 @@ export class BotController
                 const details = this.jsonUtil.clone(botGenerationDetails);
 
                 // If ispmc not true, roll chance to be pmc if type is allowed to be one
-                const botConvertRateMinMax = this.botConfig.pmc.convertIntoPmcChance[details.role.toLowerCase()];
+                const botConvertRateMinMax = this.pmcConfig.convertIntoPmcChance[details.role.toLowerCase()];
                 if (botConvertRateMinMax)
                 {
                     // Should bot become PMC
@@ -202,17 +205,17 @@ export class BotController
     public getPMCDifficulty(requestedDifficulty: string): string
     {
         // maybe retrun a random difficulty...
-        if (this.botConfig.pmc.difficulty.toLowerCase() === "asonline")
+        if (this.pmcConfig.difficulty.toLowerCase() === "asonline")
         {
             return requestedDifficulty;
         }
 
-        if (this.botConfig.pmc.difficulty.toLowerCase() === "random")
+        if (this.pmcConfig.difficulty.toLowerCase() === "random")
         {
             return this.botDifficultyHelper.chooseRandomDifficulty();
         }
 
-        return this.botConfig.pmc.difficulty;
+        return this.pmcConfig.difficulty;
     }
 
     /**
@@ -245,6 +248,6 @@ export class BotController
 
     public getPmcBotTypes(): Record<string, Record<string, Record<string, number>>>
     {
-        return this.botConfig.pmc.pmcType;
+        return this.pmcConfig.pmcType;
     }
 }

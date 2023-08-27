@@ -18,10 +18,10 @@ import { IAkiProfile } from "../models/eft/profile/IAkiProfile";
 import { AccountTypes } from "../models/enums/AccountTypes";
 import { ConfigTypes } from "../models/enums/ConfigTypes";
 import { Traders } from "../models/enums/Traders";
-import { IBotConfig } from "../models/spt/config/IBotConfig";
 import { ICoreConfig } from "../models/spt/config/ICoreConfig";
 import { IHttpConfig } from "../models/spt/config/IHttpConfig";
 import { ILocationConfig } from "../models/spt/config/ILocationConfig";
+import { IPmcConfig } from "../models/spt/config/IPmcConfig";
 import { IRagfairConfig } from "../models/spt/config/IRagfairConfig";
 import { ILocationData } from "../models/spt/server/ILocations";
 import { ILogger } from "../models/spt/utils/ILogger";
@@ -49,7 +49,7 @@ export class GameController
     protected coreConfig: ICoreConfig;
     protected locationConfig: ILocationConfig;
     protected ragfairConfig: IRagfairConfig;
-    protected botConfig: IBotConfig;
+    protected pmcConfig: IPmcConfig;
 
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
@@ -78,7 +78,7 @@ export class GameController
         this.coreConfig = this.configServer.getConfig(ConfigTypes.CORE);
         this.locationConfig = this.configServer.getConfig(ConfigTypes.LOCATION);
         this.ragfairConfig = this.configServer.getConfig(ConfigTypes.RAGFAIR);
-        this.botConfig = this.configServer.getConfig(ConfigTypes.BOT);
+        this.pmcConfig = this.configServer.getConfig(ConfigTypes.PMC);
     }
 
     /**
@@ -193,9 +193,9 @@ export class GameController
             {
                 this.addPlayerToPMCNames(pmcProfile);
 
-                if (this.randomUtil.getChance100(this.botConfig.pmc.allPMCsHavePlayerNameWithRandomPrefixChance))
+                if (this.randomUtil.getChance100(this.pmcConfig.allPMCsHavePlayerNameWithRandomPrefixChance))
                 {
-                    this.botConfig.pmc.addPrefixToSameNamePMCAsPlayerChance = 100;
+                    this.pmcConfig.addPrefixToSameNamePMCAsPlayerChance = 100;
                     if (pmcProfile?.Info?.Nickname)
                     {
                         this.databaseServer.getTables().bots.types.bear.firstName = [pmcProfile.Info.Nickname];
