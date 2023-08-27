@@ -115,8 +115,8 @@ export class InventoryHelper
             {
                 // Only grab the relevant trader items and add unique values
                 const traderItems = this.traderAssortHelper.getAssort(sessionID, request.tid).items;
-                const purchasedItemWithChildren = this.itemHelper.findAndReturnChildrenAsItems(traderItems, requestItem.item_id);
-                const toAdd = purchasedItemWithChildren.filter(traderItem => !itemLib.some(item => traderItem._id === item._id)); // what's this
+                const relevantItems = this.itemHelper.findAndReturnChildrenAsItems(traderItems, requestItem.item_id);
+                const toAdd = relevantItems.filter(traderItem => !itemLib.some(item => traderItem._id === item._id)); // what's this
                 itemLib.push(...toAdd);
             }
 
