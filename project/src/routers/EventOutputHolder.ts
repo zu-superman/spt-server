@@ -87,7 +87,7 @@ export class EventOutputHolder
         profileChanges.health = this.jsonUtil.clone(pmcData.Health);
         profileChanges.skills.Common = this.jsonUtil.clone(pmcData.Skills.Common);
         profileChanges.skills.Mastering = this.jsonUtil.clone(pmcData.Skills.Mastering);
-        // Clone produtions to ensure we preseve the profile jsons data
+        // Clone productions to ensure we preseve the profile jsons data
         profileChanges.production = this.getProductionsFromProfileAndFlagComplete(this.jsonUtil.clone(pmcData.Hideout.Production));
         profileChanges.improvements = this.jsonUtil.clone(this.getImprovementsFromProfileAndFlagComplete(pmcData));
         profileChanges.traderRelations = this.jsonUtil.clone(pmcData.TradersInfo);
@@ -135,7 +135,7 @@ export class EventOutputHolder
                 continue;
             }
 
-            // client already informed this session of craft, remove from data returned
+            // Client informed of craft, remove from data returned
             if (this.clientActiveSessionStorage[productionKey]?.clientInformed)
             {
                 delete productions[productionKey];
@@ -143,16 +143,10 @@ export class EventOutputHolder
                 continue;
             }
 
-            // Flag craft as client being informed of it
-            if (production.Progress >= production.ProductionTime && !this.clientActiveSessionStorage[productionKey]?.clientInformed)
+            // Flag started craft as having been seen by client
+            if (production.Progress > 0 && !this.clientActiveSessionStorage[productionKey]?.clientInformed)
             {
                 this.clientActiveSessionStorage[productionKey] = {clientInformed: true};
-            }
-
-            // Only return integer for progress, ignore the decimal progress gained when generator is off
-            if (production.Progress > 0)
-            {
-                production.Progress = Math.round(production.Progress);
             }
         }
 
