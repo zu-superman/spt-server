@@ -518,6 +518,7 @@ export class FenceService
             
             // Construct weapon + mods
             const weaponAndMods: Item[] = this.itemHelper.replaceIDs(null, this.jsonUtil.clone(defaultWeaponPresets[preset._id]._items));
+            this.removeRandomPartsOfWeapon(weaponAndMods);
             for (let i = 0; i < weaponAndMods.length; i++)
             {
                 const mod = weaponAndMods[i];
@@ -561,6 +562,70 @@ export class FenceService
 
             presetCount++;
         }
+    }
+
+    /**
+     * Remove parts of a weapon prior to being listed on flea
+     * @param weaponAndMods Weapon to remove parts from
+     */
+    protected removeRandomPartsOfWeapon(weaponAndMods: Item[]): void
+    {
+        // Items to be removed from inventory
+        const toDelete: string[] = [];
+
+        // Loop over insurance items, find items to delete from player inventory
+        for (const weaponMod of weaponAndMods)
+        {
+            if (this.presetModItemWillBeRemoved(weaponMod, toDelete))
+            {
+                // Skip if not an item
+                const itemDbDetails = this.itemHelper.getItem(weaponMod._tpl);
+                if (!itemDbDetails[0])
+                {
+                    continue;
+                }
+
+                // Is a mod and can't be edited in-raid
+                if (weaponMod.slotId !== "hideout" && !itemDbDetails[1]._props.RaidModdable)
+                {
+                    continue;
+                }
+
+                // Remove item and its sub-items to prevent orphans
+                toDelete.push(...this.itemHelper.findAndReturnChildrenByItems(weaponAndMods, weaponMod._id));
+            }
+        }
+
+        // Reverse loop and remove items
+        for (let index = weaponAndMods.length - 1; index >= 0; --index)
+        {
+            if (toDelete.includes(weaponAndMods[index]._id))
+            {
+                weaponAndMods.splice(index, 1);
+            }
+        }
+    }
+
+    /**
+     * Roll % chance check to see if item should be removed
+     * @param weaponMod Weapon mod being checked
+     * @param itemsBeingDeleted Current list of items on weapon being deleted
+     * @returns True if item will be removed
+     */
+    protected presetModItemWillBeRemoved(weaponMod: Item, itemsBeingDeleted: string[]): boolean
+    {
+        const slotIdsThatCanFail = this.traderConfig.fence.presetSlotsToRemoveChancePercent;
+        const removalChance = slotIdsThatCanFail[weaponMod.slotId];
+        if (!removalChance)
+        {
+            return false;
+        }
+
+        // Roll from 0 to 9999, then divide it by 100: 9999 =  99.99%
+        const randomChance = this.randomUtil.getInt(0, 9999) / 100;
+        
+        return randomChance > removalChance
+            && !itemsBeingDeleted.includes(weaponMod._id);
     }
 
     /**

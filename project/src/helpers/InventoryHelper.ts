@@ -96,29 +96,16 @@ export class InventoryHelper
             {
                 const fenceItems = this.fenceService.getRawFenceAssorts().items;
                 const itemIndex = fenceItems.findIndex(i => i._id === requestItem.item_id);
-
                 if (itemIndex === -1)
                 {
                     this.logger.debug(`Tried to buy item ${requestItem.item_id} from fence that no longer exists`);
                     const message = this.localisationService.getText("ragfair-offer_no_longer_exists");
                     return this.httpResponse.appendErrorToOutput(output, message);
                 }
-                
-                // Handle when item being bought is a preset
-                const item = fenceItems[itemIndex];
-                if (item.upd?.sptPresetId)
-                {
-                    const presetItems = this.jsonUtil.clone(this.databaseServer.getTables().globals.ItemPresets[item.upd.sptPresetId]._items);
-                    itemLib.push(...presetItems);
-                    requestItem.isPreset = true;
-                    requestItem.item_id = presetItems[0]._id;
-                    addUpd = item.upd; // Must persist the fence upd properties (e.g. durability/currentHp)
-                }
-                else
-                {
-                    addUpd = item.upd; // Must persist the fence upd properties (e.g. durability/currentHp)
-                    itemLib.push({ _id: requestItem.item_id, _tpl: item._tpl });
-                }
+
+                const purchasedItemWithChildren = this.itemHelper.findAndReturnChildrenAsItems(fenceItems, requestItem.item_id);
+                addUpd = purchasedItemWithChildren[0].upd; // Must persist the fence upd properties (e.g. durability/currentHp)
+                itemLib.push(...purchasedItemWithChildren);
             }
             else if (request.tid === "RandomLootContainer")
             {
@@ -128,8 +115,8 @@ export class InventoryHelper
             {
                 // Only grab the relevant trader items and add unique values
                 const traderItems = this.traderAssortHelper.getAssort(sessionID, request.tid).items;
-                const relevantItems = this.itemHelper.findAndReturnChildrenAsItems(traderItems, requestItem.item_id);
-                const toAdd = relevantItems.filter(traderItem => !itemLib.some(item => traderItem._id === item._id));
+                const purchasedItemWithChildren = this.itemHelper.findAndReturnChildrenAsItems(traderItems, requestItem.item_id);
+                const toAdd = purchasedItemWithChildren.filter(traderItem => !itemLib.some(item => traderItem._id === item._id)); // what's this
                 itemLib.push(...toAdd);
             }
 
