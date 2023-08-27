@@ -28,6 +28,7 @@ export interface IBotConfig extends IBaseConfig
     showTypeInNickname: boolean
     /** Max number of bots that can be spawned in a raid at any one time */
     maxBotCap: Record<string, number>
+    /** Chance scav has fake pscav name e.g. Scav name (player name) */
     chanceAssaultScavHasPlayerScavName: number;
     /** How many stacks of secret ammo should a bot have in its bot secure container */
     secureContainerAmmoStackCount: number

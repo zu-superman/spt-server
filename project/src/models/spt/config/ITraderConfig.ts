@@ -34,6 +34,7 @@ export interface FenceConfig
     itemStackSizeOverrideMinMax: Record<string, MinMax>
     itemTypeLimits: Record<string, number>
     regenerateAssortsOnRefresh: boolean
+    itemCategoryRoublePriceLimit: Record<string, number>
     /** Block seasonal items from appearing when season is inactive */
     blacklistSeasonalItems: boolean;
     blacklist: string[]

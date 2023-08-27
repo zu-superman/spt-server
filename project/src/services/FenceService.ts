@@ -401,16 +401,17 @@ export class FenceService
 
     protected addItemAssorts(assortCount: number, fenceAssortIds: string[], assorts: ITraderAssort, fenceAssort: ITraderAssort, itemTypeCounts: Record<string, { current: number; max: number; }>, loyaltyLevel: number): void
     {
+        const priceLimits = this.traderConfig.fence.itemCategoryRoublePriceLimit;
         for (let i = 0; i < assortCount; i++)
         {
-            const itemId = fenceAssortIds[this.randomUtil.getInt(0, fenceAssortIds.length - 1)];
+            const itemTpl = fenceAssortIds[this.randomUtil.getInt(0, fenceAssortIds.length - 1)];
 
-            const price = this.handbookHelper.getTemplatePrice(itemId);
-            const itemIsPreset = this.presetHelper.isPreset(itemId);
+            const price = this.handbookHelper.getTemplatePrice(itemTpl);
+            const itemIsPreset = this.presetHelper.isPreset(itemTpl);
 
             if (price === 0 || (price === 1 && !itemIsPreset) || price === 100)
             {
-                // don't allow "special" items
+                // Don't allow "special" items
                 i--;
                 continue;
             }
@@ -418,10 +419,10 @@ export class FenceService
             // It's a normal non-preset item
             if (!itemIsPreset)
             {
-                const desiredAssort = fenceAssort.items[fenceAssort.items.findIndex(i => i._id === itemId)];
+                const desiredAssort = fenceAssort.items[fenceAssort.items.findIndex(i => i._id === itemTpl)];
                 if (!desiredAssort)
                 {
-                    this.logger.error(this.localisationService.getText("fence-unable_to_find_assort_by_id", itemId));
+                    this.logger.error(this.localisationService.getText("fence-unable_to_find_assort_by_id", itemTpl));
                 }
 
                 const itemDbDetails = this.itemHelper.getItem(desiredAssort._tpl)[1];
@@ -440,6 +441,13 @@ export class FenceService
                     itemLimitCount.current++;
                 }
 
+                if (price > priceLimits[itemDbDetails._parent])
+                {
+                    this.logger.debug(`Skipped adding: ${itemDbDetails._name} ${itemDbDetails._id} as price: ${price} was above limit`);
+                    i--;
+                    continue;
+                }
+
                 const toPush = this.jsonUtil.clone(desiredAssort);
 
                 this.randomiseItemUpdProperties(itemDbDetails, toPush);
@@ -450,7 +458,7 @@ export class FenceService
 
                 toPush._id = this.hashUtil.generate();
                 assorts.items.push(toPush);
-                assorts.barter_scheme[toPush._id] = fenceAssort.barter_scheme[itemId];
+                assorts.barter_scheme[toPush._id] = fenceAssort.barter_scheme[itemTpl];
                 assorts.loyal_level_items[toPush._id] = loyaltyLevel;
             }
         }
