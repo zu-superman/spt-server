@@ -113,6 +113,11 @@ export class RagfairOfferHelper
                     continue;
                 }
 
+                if (isTraderOffer && this.traderOfferLockedBehindLoyaltyLevel(offer, pmcProfile))
+                {
+                    continue;
+                }
+
                 const key = offer.items[0]._tpl;
                 if (!offersMap.has(key))
                 {
@@ -146,6 +151,19 @@ export class RagfairOfferHelper
         }
 
         return offers;
+    }
+
+    /**
+     * Check if offer is from trader standing the player does not have
+     * @param offer Offer to check
+     * @param pmcProfile Player profile
+     * @returns True if item is locked, false if item is purchaseable
+     */
+    protected traderOfferLockedBehindLoyaltyLevel(offer: IRagfairOffer, pmcProfile: IPmcData): boolean
+    {
+        const userTraderSettings = pmcProfile.TradersInfo[offer.user.id];
+
+        return userTraderSettings.loyaltyLevel < offer.loyaltyLevel;
     }
 
     /**

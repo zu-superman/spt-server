@@ -223,12 +223,13 @@ export class RagfairController
      */
     protected setTraderOfferPurchaseLimits(offer: IRagfairOffer, profile: IAkiProfile): void
     {
+        // pre 3.6.x profiles lack this object, create it
         if (!profile.traderPurchases)
         {
             profile.traderPurchases = {};
         }
 
-        // Does trader exist
+        // No trader found, create a blank record for them
         if (!profile.traderPurchases[offer.user.id])
         {
             profile.traderPurchases[offer.user.id] = {};
