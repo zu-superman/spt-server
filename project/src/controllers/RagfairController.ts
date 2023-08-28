@@ -355,7 +355,8 @@ export class RagfairController
 
         // Preparations are done, create the offer
         const requirementsPriceInRub = this.calculateRequirementsPriceInRub(offerRequest.requirements);
-        const offer = this.createPlayerOffer(this.saveServer.getProfile(sessionID), offerRequest.requirements, this.ragfairHelper.mergeStackable(itemsInInventoryToList), offerRequest.sellInOnePiece, requirementsPriceInRub);
+        const fullProfile = this.saveServer.getProfile(sessionID);
+        const offer = this.createPlayerOffer(fullProfile, offerRequest.requirements, this.ragfairHelper.mergeStackable(itemsInInventoryToList), offerRequest.sellInOnePiece, requirementsPriceInRub);
         const rootItem = offer.items[0];
         const qualityMultiplier = this.itemHelper.getItemQualityModifier(rootItem);
         const averageOfferPrice = this.ragfairPriceService.getFleaPriceForItem(rootItem._tpl) * rootItem.upd.StackObjectsCount * qualityMultiplier;
@@ -396,7 +397,7 @@ export class RagfairController
             }
         }
 
-        this.saveServer.getProfile(sessionID).characters.pmc.RagfairInfo.offers.push(offer);
+        fullProfile.characters.pmc.RagfairInfo.offers.push(offer);
         output.profileChanges[sessionID].ragFairOffers.push(offer);
 
         // Remove items from inventory after creating offer
