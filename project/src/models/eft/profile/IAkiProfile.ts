@@ -115,7 +115,7 @@ export interface Message
     Member?: IUpdatableChatMember
     templateId?: string
     text?: string
-    hasRewards: boolean
+    hasRewards?: boolean
     rewardCollected: boolean
     items?: MessageItems
     maxStorageTime?: number

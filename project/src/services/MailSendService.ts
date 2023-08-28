@@ -253,7 +253,6 @@ export class MailSendService
             _id: this.hashUtil.generate(),
             dt: this.timeUtil.getTimestamp(),
             hasRewards: false,
-            items: {},
             uid: playerProfile.characters.pmc._id,
             type: MessageType.USER_MESSAGE,
             rewardCollected: false,
