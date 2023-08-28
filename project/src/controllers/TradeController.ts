@@ -15,6 +15,7 @@ import {
 } from "../models/eft/trade/IProcessRagfairTradeRequestData";
 import { IProcessSellTradeRequestData } from "../models/eft/trade/IProcessSellTradeRequestData";
 import { ISellScavItemsToFenceRequestData } from "../models/eft/trade/ISellScavItemsToFenceRequestData";
+import { BackendErrorCodes } from "../models/enums/BackendErrorCodes";
 import { ConfigTypes } from "../models/enums/ConfigTypes";
 import { MemberCategory } from "../models/enums/MemberCategory";
 import { Traders } from "../models/enums/Traders";
@@ -70,13 +71,13 @@ class TradeController
             const fleaOffer = this.ragfairServer.getOffer(offer.id);
             if (!fleaOffer) 
             {
-                return this.httpResponse.appendErrorToOutput(output, `Offer with ID ${offer.id} not found`);
+                return this.httpResponse.appendErrorToOutput(output, `Offer with ID ${offer.id} not found`, BackendErrorCodes.OFFERNOTFOUND);
             }
 
             if (offer.count === 0)
             {
                 const errorMessage = this.localisationService.getText("ragfair-unable_to_purchase_0_count_item", this.itemHelper.getItem(fleaOffer.items[0]._tpl)[1]._name);
-                return this.httpResponse.appendErrorToOutput(output, errorMessage);
+                return this.httpResponse.appendErrorToOutput(output, errorMessage, BackendErrorCodes.OFFEROUTOFSTOCK);
             }
 
             // Skip buying items when player doesn't have necessary loyalty
