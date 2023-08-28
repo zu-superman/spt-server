@@ -291,11 +291,11 @@ export class HideoutHelper
         }
 
         // Get seconds since last hideout update + now
-        const timeElapsed = this.getTimeElapsedSinceLastServerTick(pmcData, hideoutProperties.isGeneratorOn);
+        const timeElapsed = this.getTimeElapsedSinceLastServerTick(pmcData, hideoutProperties.isGeneratorOn, recipe);
 
         // Increment progress by time passed
         const production = pmcData.Hideout.Production[prodId];
-        production.Progress += production.needFuelForAllProductionTime ? 0 : timeElapsed; // Some items NEEd power to craft (e.g. DSP)
+        production.Progress += production.needFuelForAllProductionTime ? 0 : timeElapsed; // Some items NEED power to craft (e.g. DSP)
 
         // Limit progress to total production time if progress is over (dont run for continious crafts))
         if (!recipe.continuous)
@@ -745,13 +745,20 @@ export class HideoutHelper
     /**
      * Get number of ticks that have passed since hideout areas were last processed, reduced when generator is off
      * @param pmcData Player profile
+     * @param recipe Hideout production recipie being crafted we need the ticks for
      * @param isGeneratorOn Is the generator on for the duration of elapsed time
      * @returns Amount of time elapsed in seconds
      */
-    protected getTimeElapsedSinceLastServerTick(pmcData: IPmcData, isGeneratorOn: boolean): number
+    protected getTimeElapsedSinceLastServerTick(pmcData: IPmcData, isGeneratorOn: boolean, recipe: IHideoutProduction = null): number
     {
         // Reduce time elapsed (and progress) when generator is off
         let timeElapsed = this.timeUtil.getTimestamp() - pmcData.Hideout.sptUpdateLastRunTimestamp;
+
+        if (recipe?.areaType !== HideoutAreas.LAVATORY) // Lavatory works at 100% when power is on or off
+        {
+            return timeElapsed;
+        }
+
         if (!isGeneratorOn)
         {
             timeElapsed *= this.databaseServer.getTables().hideout.settings.generatorSpeedWithoutFuel;
