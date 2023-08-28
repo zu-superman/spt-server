@@ -120,7 +120,7 @@ export class EventOutputHolder
     }
 
     /**
-     * Return  productions from player profile except those completed crafts the client has already seen
+     * Return productions from player profile except those completed crafts the client has already seen
      * @param pmcData Player profile
      * @returns dictionary of hideout productions
      */
@@ -146,7 +146,7 @@ export class EventOutputHolder
             // Flag started craft as having been seen by client
             if (production.Progress > 0 && !this.clientActiveSessionStorage[productionKey]?.clientInformed)
             {
-                this.clientActiveSessionStorage[productionKey] = {clientInformed: true};
+                this.clientActiveSessionStorage[productionKey] = { clientInformed: true };
             }
         }
 

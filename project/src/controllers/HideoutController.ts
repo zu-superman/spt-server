@@ -465,6 +465,9 @@ export class HideoutController
     {
         const output = this.eventOutputHolder.getOutput(sessionID);
 
+        // Force a production update (occur before area is toggled as it could be generator and doing it after generator enabled would cause incorrect calculaton of production progress)
+        this.hideoutHelper.updatePlayerHideout(sessionID);
+
         const hideoutArea = pmcData.Hideout.Areas.find(area => area.type === request.areaType);
         if (!hideoutArea)
         {
