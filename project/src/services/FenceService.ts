@@ -443,7 +443,6 @@ export class FenceService
 
                 if (price > priceLimits[itemDbDetails._parent])
                 {
-                    this.logger.debug(`Skipped adding: ${itemDbDetails._name} ${itemDbDetails._id} as price: ${price} was above limit`);
                     i--;
                     continue;
                 }
