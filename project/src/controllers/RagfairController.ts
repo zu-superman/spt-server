@@ -577,7 +577,8 @@ export class RagfairController
     public extendOffer(info: IExtendOfferRequestData, sessionID: string): IItemEventRouterResponse
     {
         let output = this.eventOutputHolder.getOutput(sessionID);
-        const offers = this.saveServer.getProfile(sessionID).characters.pmc.RagfairInfo.offers;
+        const pmcData = this.saveServer.getProfile(sessionID).characters.pmc;
+        const offers = pmcData.RagfairInfo.offers;
         const index = offers.findIndex(offer => offer._id === info.offerId);
         const secondsToAdd = info.renewalTime * TimeUtil.oneHourAsSeconds;
 
@@ -611,7 +612,7 @@ export class RagfairController
                 scheme_id: 0
             };
 
-            output = this.paymentService.payMoney(this.saveServer.getProfile(sessionID).characters.pmc, request, sessionID, output);
+            output = this.paymentService.payMoney(pmcData, request, sessionID, output);
             if (output.warnings.length > 0)
             {
                 return this.httpResponse.appendErrorToOutput(output, this.localisationService.getText("ragfair-unable_to_pay_commission_fee"));
