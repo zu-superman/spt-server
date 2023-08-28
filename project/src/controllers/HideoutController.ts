@@ -561,7 +561,7 @@ export class HideoutController
         // - scav case recipe: Production time value is stored in attribute "ProductionType" with capital "P"
         const modifiedScavCaseTime = this.getScavCaseTime(pmcData, recipe.ProductionTime);
 
-        pmcData.Hideout.Production[body.recipeId] = this.hideoutHelper.initProduction(body.recipeId, modifiedScavCaseTime);
+        pmcData.Hideout.Production[body.recipeId] = this.hideoutHelper.initProduction(body.recipeId, modifiedScavCaseTime, false);
         pmcData.Hideout.Production[body.recipeId].sptIsScavCase = true;
 
         return output;

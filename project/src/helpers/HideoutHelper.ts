@@ -88,23 +88,27 @@ export class HideoutHelper
         {
             pmcData.Hideout.Production = {};
         }
-        pmcData.Hideout.Production[body.recipeId] = this.initProduction(body.recipeId, modifiedProductionTime);
+        pmcData.Hideout.Production[body.recipeId] = this.initProduction(body.recipeId, modifiedProductionTime, recipe.needFuelForAllProductionTime);
     }
 
     /**
      * This convenience function initializes new Production Object
      * with all the constants.
      */
-    public initProduction(recipeId: string, productionTime: number): Production
+    public initProduction(recipeId: string, productionTime: number, needFuelForAllProductionTime: boolean): Production
     {
         return {
             Progress: 0,
             inProgress: true,
             RecipeId: recipeId,
-            Products: [],
-            SkipTime: 0,
+            StartTimestamp: this.timeUtil.getTimestamp(),
             ProductionTime: productionTime,
-            StartTimestamp: this.timeUtil.getTimestamp()
+            Products: [],
+            GivenItemsInStart: [],
+            Interrupted: false,
+            NeedFuelForAllProductionTime: needFuelForAllProductionTime, // Used when sending to client
+            needFuelForAllProductionTime: needFuelForAllProductionTime, // used when stored in production.json
+            SkipTime: 0
         };
     }
 
@@ -291,7 +295,7 @@ export class HideoutHelper
 
         // Increment progress by time passed
         const production = pmcData.Hideout.Production[prodId];
-        production.Progress += timeElapsed;
+        production.Progress += production.needFuelForAllProductionTime ? 0 : timeElapsed; // Some items NEEd power to craft (e.g. DSP)
 
         // Limit progress to total production time if progress is over (dont run for continious crafts))
         if (!recipe.continuous)

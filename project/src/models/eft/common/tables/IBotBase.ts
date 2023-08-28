@@ -381,7 +381,13 @@ export interface Productive
     SkipTime?: number
     /** Seconds needed to fully craft */
     ProductionTime?: number
-    sptIsScavCase?: boolean;
+    GivenItemsInStart?: string[]
+    Interrupted?: boolean
+    /** Used in hideout prodiction.json */
+    needFuelForAllProductionTime?: boolean
+    /** Used when sending data to client */
+    NeedFuelForAllProductionTime?: boolean
+    sptIsScavCase?: boolean
 }
 
 export interface Production extends Productive 
