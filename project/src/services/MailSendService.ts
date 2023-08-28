@@ -250,7 +250,7 @@ export class MailSendService
         }
 
         dialogWithNpc.messages.push({
-            _id: sessionId, // players id
+            _id: this.hashUtil.generate(),
             dt: this.timeUtil.getTimestamp(),
             hasRewards: false,
             items: {},
