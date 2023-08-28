@@ -550,12 +550,13 @@ export class RagfairController
      */
     public removeOffer(offerId: string, sessionID: string): IItemEventRouterResponse
     {
-        const offers = this.saveServer.getProfile(sessionID).characters.pmc.RagfairInfo.offers;
+        const pmcData = this.saveServer.getProfile(sessionID).characters.pmc;
+        const offers = pmcData.RagfairInfo.offers;
         if (!offers)
         {
             this.logger.warning(this.localisationService.getText("ragfair-unable_to_remove_offer_not_found_in_profile", {profileId: sessionID, offerId: offerId}));
 
-            this.saveServer.getProfile(sessionID).characters.pmc.RagfairInfo.offers = [];
+            pmcData.RagfairInfo.offers = [];
         }
 
         const index = offers.findIndex(offer => offer._id === offerId);
