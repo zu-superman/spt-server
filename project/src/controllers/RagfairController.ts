@@ -544,9 +544,12 @@ export class RagfairController
         return this.ragfairPriceService.getAllStaticPrices();
     }
 
-    /*
-     *  User requested removal of the offer, actually reduces the time to 71 seconds,
-     *  allowing for the possibility of extending the auction before it's end time
+    /**
+     * User requested removal of the offer, actually reduces the time to 71 seconds,
+     * allowing for the possibility of extending the auction before it's end time
+     * @param offerId offer to 'remove'
+     * @param sessionID Players id
+     * @returns IItemEventRouterResponse
      */
     public removeOffer(offerId: string, sessionID: string): IItemEventRouterResponse
     {
