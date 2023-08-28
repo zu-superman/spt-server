@@ -745,8 +745,8 @@ export class HideoutHelper
     /**
      * Get number of ticks that have passed since hideout areas were last processed, reduced when generator is off
      * @param pmcData Player profile
-     * @param recipe Hideout production recipie being crafted we need the ticks for
      * @param isGeneratorOn Is the generator on for the duration of elapsed time
+     * @param recipe Hideout production recipe being crafted we need the ticks for
      * @returns Amount of time elapsed in seconds
      */
     protected getTimeElapsedSinceLastServerTick(pmcData: IPmcData, isGeneratorOn: boolean, recipe: IHideoutProduction = null): number
