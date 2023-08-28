@@ -547,7 +547,14 @@
         "5ede7a8229445733cb4c18e2",
         "64ccc1fe088064307e14a6f7",
         "5a0ee30786f774023b6ee08f",
-        "5780cda02459777b272ede61"
+        "5780cda02459777b272ede61",
+        "64ccc1ec1779ad6ba200a137",
+        "64ccc1f4ff54fb38131acf27",
+        "5d947d3886f774447b415893",
+        "61aa81fcb225ac1ead7957c3",
+        "64ccc1d4a0f13c24561edf27",
+        "5ad5db3786f7743568421cce",
+        "64ccc206793ca11c8f450a38"
       ],
       "Backpack": [],
       "SecuredContainer": [
@@ -2643,9 +2650,9 @@
       "mod_foregrip": 100,
       "mod_stock_002": 100,
       "mod_stock": 39,
-      "mod_pistol_grip": 38,
+      "mod_pistol_grip": 37,
       "mod_tactical": 61,
-      "mod_mount_000": 57,
+      "mod_mount_000": 56,
       "mod_flashlight": 100
     }
   },

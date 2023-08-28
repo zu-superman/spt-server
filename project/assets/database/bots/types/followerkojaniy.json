@@ -526,7 +526,8 @@
       },
       "5addbf175acfc408fb13965b": {
         "mod_mount": [
-          "5addbfd15acfc40015621bde"
+          "5addbfd15acfc40015621bde",
+          "5addbfbb5acfc400194dbcf7"
         ]
       },
       "5addbfef5acfc400185c2857": {
@@ -765,7 +766,10 @@
         "5d4042a986f7743185265463",
         "590de7e986f7741b096e5f32",
         "637b6251104668754b72f8f9",
-        "62a0a0bb621468534a797ad5"
+        "62a0a0bb621468534a797ad5",
+        "5ed5166ad380ab312177c100",
+        "5d1b385e86f774252167b98a",
+        "5af04b6486f774195a3ebb49"
       ],
       "SecuredContainer": [
         "5e023e88277cce2b522ff2b1",
@@ -2784,9 +2788,9 @@
   "chances": {
     "equipment": {
       "Headwear": 81,
-      "Earpiece": 31,
+      "Earpiece": 30,
       "FaceCover": 100,
-      "ArmorVest": 91,
+      "ArmorVest": 92,
       "Eyewear": 0,
       "ArmBand": 0,
       "TacticalVest": 100,
@@ -2800,13 +2804,13 @@
     },
     "mods": {
       "mod_reciever": 100,
-      "mod_sight_rear": 78,
+      "mod_sight_rear": 77,
       "mod_magazine": 100,
       "mod_mount": 50,
       "mod_muzzle": 28,
-      "mod_tactical": 27,
+      "mod_tactical": 26,
       "mod_mount_000": 55,
-      "mod_tactical_001": 49,
+      "mod_tactical_001": 48,
       "mod_tactical_002": 16,
       "mod_tactical_003": 0,
       "mod_scope": 56,
@@ -2818,7 +2822,7 @@
       "mod_sight_front": 57,
       "mod_foregrip": 0,
       "mod_charge": 0,
-      "mod_mount_004": 73,
+      "mod_mount_004": 72,
       "mod_pistol_grip": 0,
       "mod_stock_000": 100
     }

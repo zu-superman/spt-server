@@ -501,7 +501,11 @@
         "63a71ed21031ac76fe773c7f",
         "5ed5166ad380ab312177c100",
         "64ccc206793ca11c8f450a38",
-        "63a39fd1c9b3aa4b61683efb"
+        "63a39fd1c9b3aa4b61683efb",
+        "5ad5db3786f7743568421cce",
+        "61aa5b518f5e7a39b41416e2",
+        "61aa5ba8018e9821b7368da9",
+        "5a0ee34586f774023b6ee092"
       ],
       "Backpack": [
         "5c1d0d6d86f7744bb2683e1f",
@@ -2620,9 +2624,9 @@
       "mod_sight_rear": 83,
       "mod_stock": 100,
       "mod_magazine": 100,
-      "mod_charge": 34,
+      "mod_charge": 33,
       "mod_scope": 87,
-      "mod_foregrip": 47,
+      "mod_foregrip": 46,
       "mod_tactical_000": 36,
       "mod_tactical_001": 43,
       "mod_tactical_002": 0,
