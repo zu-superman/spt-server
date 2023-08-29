@@ -215,6 +215,7 @@ export class DialogueHelper
                 if (rewardItemCount.length === 0)
                 {
                     message.rewardCollected = true;
+                    message.hasRewards = false;
                 }
 
                 return message.items.data;
