@@ -13848,7 +13848,7 @@
       "RequirementTip": ""
     },
     {
-      "Chance": 100,
+      "Chance": 0,
       "Count": 0,
       "EntryPoints": "E6_1,E5_6",
       "ExfiltrationTime": 8,
@@ -14395,7 +14395,7 @@
       "time_max": 400,
       "time_min": 150
     },
-	{
+    {
       "BotPreset": "normal",
       "BotSide": "Savage",
       "SpawnPoints": "ZoneCard1",
