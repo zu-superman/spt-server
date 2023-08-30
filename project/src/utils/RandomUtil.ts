@@ -130,11 +130,10 @@ export class ProbabilityObjectArray<K, V=undefined> extends Array<ProbabilityObj
     /**
      * Draw random element of the ProbabilityObject N times to return an array of N keys.
      * Drawing can be with or without replacement
-     *
-     * @param       {integer}                       count                   The number of times we want to draw
-     * @param       {boolean}                       replacement             Draw with or without replacement from the input dict
-     * @param       {array}                         locklist                list keys which shall be replaced even if drawing without replacement
-     * @return      {array}                                                 Array consisting of N random keys for this ProbabilityObjectArray
+     * @param count The number of times we want to draw
+     * @param replacement Draw with or without replacement from the input dict (true = dont remove after drawing)
+     * @param locklist list keys which shall be replaced even if drawing without replacement
+     * @returns Array consisting of N random keys for this ProbabilityObjectArray
      */
     public draw(count = 1, replacement = true, locklist: Array<K> = []): K[]
     {
@@ -146,31 +145,33 @@ export class ProbabilityObjectArray<K, V=undefined> extends Array<ProbabilityObj
         }, {probArray: [], keyArray: []});
         let probCumsum = this.cumulativeProbability(probArray);
 
-        const randomKeys = [];
+        const drawnKeys = [];
         for (let i = 0; i < count; i++) 
         {
             const rand = Math.random();
             const randomIndex = probCumsum.findIndex(x => x > rand);
-            // we cannot put Math.random() directly in the findIndex because then it draws anew for each of its iteration
+            // We cannot put Math.random() directly in the findIndex because then it draws anew for each of its iteration
             if (replacement || locklist.includes(keyArray[randomIndex])) 
             {
-                randomKeys.push(keyArray[randomIndex]);
+                // Add random item from possible value into return array
+                drawnKeys.push(keyArray[randomIndex]);
             }
             else 
             {
-                // we draw without replacement -> remove the key and its probability from array
+                // We draw without replacement -> remove the key and its probability from array
                 const key = keyArray.splice(randomIndex, 1)[0];
                 probArray.splice(randomIndex, 1);
-                randomKeys.push(key);
+                drawnKeys.push(key);
                 probCumsum = this.cumulativeProbability(probArray);
-                // if we draw without replacement and the ProbabilityObjectArray is exhausted we need to break
+                // If we draw without replacement and the ProbabilityObjectArray is exhausted we need to break
                 if (keyArray.length < 1) 
                 {
                     break;
                 }
             }
         }
-        return randomKeys;
+
+        return drawnKeys;
     }
 }
 
