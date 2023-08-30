@@ -771,5 +771,6 @@
     },
     "minFillLooseMagazinePercent": 50,
     "minFillStaticMagazinePercent": 50,
-    "makeWishingTreeAlwaysGiveGift": true
+    "makeWishingTreeAlwaysGiveGift": true,
+    "allowDuplicateItemsInStaticContainers": true
 }

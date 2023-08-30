@@ -36,6 +36,7 @@ export interface ILocationConfig extends IBaseConfig
     /** How full must a random static magazine be %*/
     minFillStaticMagazinePercent: number
     makeWishingTreeAlwaysGiveGift: boolean
+    allowDuplicateItemsInStaticContainers: boolean
 }
 
 export interface IContainerRandomistionSettings
