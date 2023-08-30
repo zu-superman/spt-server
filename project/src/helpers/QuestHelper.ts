@@ -303,6 +303,7 @@ export class QuestHelper
             existingQuest.startTime = this.timeUtil.getTimestamp();
             existingQuest.status = newState;
             existingQuest.statusTimers[newState] = this.timeUtil.getTimestamp();
+            existingQuest.completedConditions = [];
 
             return existingQuest;
         }
