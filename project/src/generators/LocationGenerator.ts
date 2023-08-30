@@ -501,7 +501,7 @@ export class LocationGenerator
 
         // Select a number of spawn points to add loot to
         let spawnPoints: Spawnpoint[] = [];
-        for (const si of spawnpointArray.draw(numSpawnpoints, true)) // Containers can have multiple of the same loot item, replacement = true
+        for (const si of spawnpointArray.draw(numSpawnpoints, false))
         {
             spawnPoints.push(spawnpointArray.data(si));
         }
