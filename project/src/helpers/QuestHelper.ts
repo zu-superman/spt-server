@@ -413,11 +413,13 @@ export class QuestHelper
      * Adjust quest money rewards by passed in multiplier
      * @param quest Quest to multiple money rewards
      * @param multiplier Value to adjust money rewards by
+     * @param questStatus Status of quest to apply money boost to rewards of
      * @returns Updated quest
      */
-    public applyMoneyBoost(quest: IQuest, multiplier: number): IQuest
+    public applyMoneyBoost(quest: IQuest, multiplier: number, questStatus: QuestStatus): IQuest
     {
-        for (const reward of quest.rewards.Success)
+        const rewards: Reward[] = quest.rewards?.[questStatus] ?? [];
+        for (const reward of rewards)
         {
             if (reward.type === "Item")
             {
@@ -644,7 +646,7 @@ export class QuestHelper
         const intelCenterBonus = this.getIntelCenterRewardBonus(pmcData);
         if (intelCenterBonus > 0)
         {
-            questDetails = this.applyMoneyBoost(questDetails, intelCenterBonus); // money = money + (money * intelCenterBonus / 100)
+            questDetails = this.applyMoneyBoost(questDetails, intelCenterBonus, state); // money = money + (money * intelCenterBonus / 100)
         }
 
         // e.g. 'Success' or 'AvailableForFinish'
