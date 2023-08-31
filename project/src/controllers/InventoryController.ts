@@ -154,7 +154,7 @@ export class InventoryController
      */
     public discardItem(pmcData: IPmcData, body: IInventoryRemoveRequestData, sessionID: string): IItemEventRouterResponse
     {
-        if (body.fromOwner.type === "Mail")
+        if (body.fromOwner?.type === "Mail")
         {
             return this.inventoryHelper.removeItemAndChildrenFromMailRewards(sessionID, body, this.eventOutputHolder.getOutput(sessionID));
         }
