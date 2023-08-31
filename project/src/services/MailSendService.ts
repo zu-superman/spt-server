@@ -64,7 +64,7 @@ export class MailSendService
         if (items.length > 0)
         {
             details.items = items;
-            details.itemsMaxStorageLifetimeSeconds = maxStorageTimeSeconds;
+            details.itemsMaxStorageLifetimeSeconds = maxStorageTimeSeconds ?? 172800; // 48 hours if no value supplied
         }
 
         this.sendMessageToPlayer(details);
@@ -100,7 +100,7 @@ export class MailSendService
         if (items.length > 0)
         {
             details.items = items;
-            details.itemsMaxStorageLifetimeSeconds = maxStorageTimeSeconds;
+            details.itemsMaxStorageLifetimeSeconds = maxStorageTimeSeconds ?? 172800; // 48 hours if no value supplied
         }
 
         if (systemData)
@@ -130,7 +130,7 @@ export class MailSendService
         if (items.length > 0)
         {
             details.items = items;
-            details.itemsMaxStorageLifetimeSeconds = maxStorageTimeSeconds;
+            details.itemsMaxStorageLifetimeSeconds = maxStorageTimeSeconds ?? 172800; // 48 hours if no value supplied
         }
 
         this.sendMessageToPlayer(details);
@@ -155,7 +155,7 @@ export class MailSendService
         if (items.length > 0)
         {
             details.items = items;
-            details.itemsMaxStorageLifetimeSeconds = maxStorageTimeSeconds;
+            details.itemsMaxStorageLifetimeSeconds = maxStorageTimeSeconds ?? 172800; // 48 hours if no value supplied
         }
 
         this.sendMessageToPlayer(details);
@@ -182,7 +182,7 @@ export class MailSendService
         if (items.length > 0)
         {
             details.items = items;
-            details.itemsMaxStorageLifetimeSeconds = maxStorageTimeSeconds;
+            details.itemsMaxStorageLifetimeSeconds = maxStorageTimeSeconds ?? 172800; // 48 hours if no value supplied
         }
 
         this.sendMessageToPlayer(details);
