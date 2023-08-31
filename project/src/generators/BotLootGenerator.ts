@@ -1,7 +1,6 @@
 import { inject, injectable } from "tsyringe";
 
 import { BotGeneratorHelper } from "../helpers/BotGeneratorHelper";
-import { BotHelper } from "../helpers/BotHelper";
 import { BotWeaponGeneratorHelper } from "../helpers/BotWeaponGeneratorHelper";
 import { HandbookHelper } from "../helpers/HandbookHelper";
 import { ItemHelper } from "../helpers/ItemHelper";
@@ -37,7 +36,6 @@ export class BotLootGenerator
         @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
-        @inject("BotHelper") protected botHelper: BotHelper,
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("HandbookHelper") protected handbookHelper: HandbookHelper,
         @inject("BotGeneratorHelper") protected botGeneratorHelper: BotGeneratorHelper,
@@ -155,6 +153,7 @@ export class BotLootGenerator
                 isPmc);
         }
         
+        // TacticalVest - generate loot if they have one
         if (botInventory.items.find(x => x.slotId === EquipmentSlots.TACTICAL_VEST))
         {
             // Vest
@@ -234,6 +233,13 @@ export class BotLootGenerator
             true);
     }
 
+    /**
+     * Get a biased random number
+     * @param min Smallest size
+     * @param max Biggest size
+     * @param nValue Value to bias choice
+     * @returns Chosen number
+     */
     protected getRandomisedCount(min: number, max: number, nValue: number): number
     {
         const range = max - min;
@@ -242,14 +248,14 @@ export class BotLootGenerator
 
     /**
      * Take random items from a pool and add to an inventory until totalItemCount or totalValueLimit is reached
-     * @param pool pool of items to pick from
-     * @param equipmentSlots What equality slot will the loot items be added to
+     * @param pool Pool of items to pick from
+     * @param equipmentSlots What equipment slot will the loot items be added to
      * @param totalItemCount Max count of items to add
-     * @param inventoryToAddItemsTo bot inventory loot will be added to
-     * @param botRole role of the bot loot is being generated for (assault/pmcbot)
-     * @param useLimits should item limit counts be used as defined in config/bot.json
-     * @param totalValueLimitRub total value of loot allowed in roubles
-     * @param isPmc is the bot being generated for a pmc
+     * @param inventoryToAddItemsTo Bot inventory loot will be added to
+     * @param botRole Role of the bot loot is being generated for (assault/pmcbot)
+     * @param useLimits Should item limit counts be used as defined in config/bot.json
+     * @param totalValueLimitRub Total value of loot allowed in roubles
+     * @param isPmc Is bot being generated for a pmc
      */
     protected addLootFromPool(
         pool: ITemplateItem[],
@@ -368,22 +374,9 @@ export class BotLootGenerator
     }
 
     /**
-     * @deprecated replaced by getRandomItemFromPoolByRole()
      * Get a random item from the pool parameter using the biasedRandomNumber system
-     * @param pool pool of items to pick an item from
-     * @param isPmc is the bot being created a pmc
-     * @returns ITemplateItem object
-     */
-    protected getRandomItemFromPool(pool: ITemplateItem[], isPmc: boolean): ITemplateItem
-    {
-        const itemIndex = this.randomUtil.getBiasedRandomNumber(0, pool.length - 1, pool.length - 1, this.getBotLootNValue(isPmc));
-        return pool[itemIndex];
-    }
-
-    /**
-     * Get a random item from the pool parameter using the biasedRandomNumber system
-     * @param pool pool of items to pick an item from
-     * @param isPmc is the bot being created a pmc
+     * @param pool Pool of items to pick an item from
+     * @param isPmc Is the bot being created a pmc
      * @returns ITemplateItem object
      */
     protected getRandomItemFromPoolByRole(pool: ITemplateItem[], botRole: string): ITemplateItem
@@ -393,24 +386,8 @@ export class BotLootGenerator
     }
 
     /**
-     * @deprecated Replaced by getBotLootNValueByRole()
      * Get the loot nvalue from botconfig
-     * @param isPmc if true the pmc nvalue is returned
-     * @returns nvalue as number
-     */
-    protected getBotLootNValue(isPmc: boolean): number
-    {
-        if (isPmc)
-        {
-            return this.botConfig.lootNValue["pmc"];
-        }
-
-        return this.botConfig.lootNValue["scav"];
-    }
-
-    /**
-     * Get the loot nvalue from botconfig
-     * @param botRole role of bot e.g. assault/sptBear
+     * @param botRole Role of bot e.g. assault/bosstagilla/sptBear
      * @returns nvalue as number
      */
     protected getBotLootNValueByRole(botRole: string): number
@@ -427,10 +404,10 @@ export class BotLootGenerator
     }
 
     /**
-     * Update item limit array to contain items that have a limit
+     * Hydrate item limit array to contain items that have a limit for a specific bot type
      * All values are set to 0
-     * @param isPmc is the bot a pmc
-     * @param botRole role the bot has
+     * @param isPmc Is the bot a pmc
+     * @param botRole Role the bot has
      * @param limitCount 
      */
     protected initItemLimitArray(isPmc: boolean, botRole: string, limitCount: Record<string, number>): void
@@ -448,8 +425,8 @@ export class BotLootGenerator
      * @param itemTemplate Item we check to see if its reached spawn limit
      * @param botRole Bot type
      * @param isPmc Is bot we're working with a pmc
-     * @param limitCount spawn limits for items on bot
-     * @param itemSpawnLimits the limits this bot is allowed to have
+     * @param limitCount Spawn limits for items on bot
+     * @param itemSpawnLimits The limits this bot is allowed to have
      * @returns true if item has reached spawn limit
      */
     protected itemHasReachedSpawnLimit(itemTemplate: ITemplateItem, botRole: string, isPmc: boolean, limitCount: Record<string, number>, itemSpawnLimits: Record<string, number>): boolean
