@@ -1,11 +1,11 @@
 import { inject, injectable } from "tsyringe";
 
-import { ILocationBase } from "@spt-aki/models/eft/common/ILocationBase";
 import { ContainerHelper } from "../helpers/ContainerHelper";
 import { ItemHelper } from "../helpers/ItemHelper";
 import { PresetHelper } from "../helpers/PresetHelper";
 import { RagfairServerHelper } from "../helpers/RagfairServerHelper";
 import { IContainerMinMax, IStaticContainer } from "../models/eft/common/ILocation";
+import { ILocationBase } from "../models/eft/common/ILocationBase";
 import {
     ILooseLoot, Spawnpoint, SpawnpointTemplate, SpawnpointsForced
 } from "../models/eft/common/ILooseLoot";

@@ -69,9 +69,10 @@ export class BotInventoryGenerator
 
         this.generateAndAddEquipmentToBot(templateInventory, equipmentChances, botRole, botInventory, botLevel);
 
-        // Roll weapon spawns and generate a weapon for each roll that passed
+        // Roll weapon spawns (primary/secondary/holster) and generate a weapon for each roll that passed
         this.generateAndAddWeaponsToBot(templateInventory, equipmentChances, sessionId, botInventory, botRole, isPmc, itemGenerationLimitsMinMax, botLevel);
 
+        // Pick loot and add to bots containers (rig/backpack/pockets/secure)
         this.botLootGenerator.generateLoot(sessionId, botJsonTemplate, isPmc, botRole, botInventory, botLevel);
 
         return botInventory;
