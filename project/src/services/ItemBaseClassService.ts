@@ -27,6 +27,9 @@ export class ItemBaseClassService
      */
     public hydrateItemBaseClassCache(): void
     {
+        // Clear existing cache
+        this.itemBaseClassesCache = {};
+
         const allDbItems = this.databaseServer.getTables().templates.items;
         if (!allDbItems)
         {
