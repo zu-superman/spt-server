@@ -6,6 +6,7 @@ import { AddItem, IAddItemRequestData } from "../models/eft/inventory/IAddItemRe
 import { IAddItemTempObject } from "../models/eft/inventory/IAddItemTempObject";
 import { IInventoryMergeRequestData } from "../models/eft/inventory/IInventoryMergeRequestData";
 import { IInventoryMoveRequestData } from "../models/eft/inventory/IInventoryMoveRequestData";
+import { IInventoryRemoveRequestData } from "../models/eft/inventory/IInventoryRemoveRequestData";
 import { IInventorySplitRequestData } from "../models/eft/inventory/IInventorySplitRequestData";
 import { IItemEventRouterResponse } from "../models/eft/itemEvent/IItemEventRouterResponse";
 import { BaseClasses } from "../models/enums/BaseClasses";
@@ -494,6 +495,7 @@ export class InventoryHelper
     }
 
     /**
+     * Handle Remove event
      * Remove item from player inventory + insured items array
      * Also deletes child items
      * @param pmcData Profile to remove item from
@@ -536,6 +538,36 @@ export class InventoryHelper
             if (insuredIndex > -1)
             {
                 insuredItems.splice(insuredIndex, 1);
+            }
+        }
+
+        return output;
+    }
+
+    public removeItemAndChildrenFromMailRewards(sessionId: string, removeRequest: IInventoryRemoveRequestData, output: IItemEventRouterResponse): IItemEventRouterResponse
+    {
+        const fullProfile = this.profileHelper.getFullProfile(sessionId);
+
+        // Iterate over all dialogs and look for mesasage with key from request, that has item (and maybe its children) we want to remove
+        const dialogs = Object.values(fullProfile.dialogues);
+        for (const dialog of dialogs)
+        {
+            const messageWithReward = dialog.messages.find(x => x._id === removeRequest.fromOwner.id);
+            if (messageWithReward)
+            {
+                // Find item + any possible children and remove them from mails items array
+                const itemWithChildern = this.itemHelper.findAndReturnChildrenAsItems(messageWithReward.items.data, removeRequest.item);
+                for (const itemToDelete of itemWithChildern)
+                {
+                    // Get index of item to remove from reward array + remove it
+                    const indexOfItemToRemove = messageWithReward.items.data.indexOf(itemToDelete);
+                    if (indexOfItemToRemove === -1)
+                    {
+                        this.logger.error(`Unable to remove item: ${removeRequest.item} from mail: ${removeRequest.fromOwner.id} as item could not be found, restart client immediately to prevent data corruption`);
+                        continue;
+                    }
+                    messageWithReward.items.data.splice(indexOfItemToRemove, 1);
+                }
             }
         }
 

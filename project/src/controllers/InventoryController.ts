@@ -148,11 +148,17 @@ export class InventoryController
     }
 
     /**
+     * Handle Remove event
      * Implements functionality "Discard" from Main menu (Stash etc.)
      * Removes item from PMC Profile
      */
     public discardItem(pmcData: IPmcData, body: IInventoryRemoveRequestData, sessionID: string): IItemEventRouterResponse
     {
+        if (body.fromOwner.type === "Mail")
+        {
+            return this.inventoryHelper.removeItemAndChildrenFromMailRewards(sessionID, body, this.eventOutputHolder.getOutput(sessionID));
+        }
+
         return this.inventoryHelper.removeItem(pmcData, body.item, sessionID, this.eventOutputHolder.getOutput(sessionID));
     }
 
