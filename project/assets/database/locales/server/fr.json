@@ -1,7 +1,7 @@
 {
     "assort-missing_loyalty_level_object": "stripQuestAssort(): Assort de Trader {{traderId}} ne contient pas loyal_level_items data, ignore la supression des quest assorts",
     "assort-missing_questassort": "stripQuestAssort(): Assort for Trader: %s ne contient pas de questassort json, ignore la supression des quest assorts",
-	"assort-missing_quest_assort_unlock": "Impossible de trouver le questassort unlock de {{traderName}} pour la quête : {{questName}}. Compléter cette quête ne donnera pas la récompense de disponibilité d'un item de vendeur",    
+	"assort-missing_quest_assort_unlock": "Impossible de trouver le questassort unlock de {{traderName}} pour la quête : {{questName}}. Cette quête ne débloquera pas l'offre d'objets lié à la récompense au vendeur",    
     "baseclass-item_not_found": "Item %s non trouvé dans le cache base des items",
     "baseclass-missing_db_no_cache": "Base de données vide, impossible de générer un item base cache",
     "bleeding_edge_build": "BLEEDINGEDGE",
@@ -48,7 +48,7 @@
 	"bot-unable_to_fill_camora_slot_mod_pool_empty": "Impossible de remplir l'emplacement d'arme pour {{weaponId}} {{weaponName}}; le pool de mods pour cet item est vide",
 	"bot-unable_to_edit_limits_of_unknown_map": "Impossible d'éditer les limites de bot pour la carte: %s car elle est introuvable",
 	"bot-unable_to_find_loot_n_value_for_bot": "Impossible de trouver la valeur de loot N pour le bot: %s, la valeur de scav n sera utilisée comme remplacement",
-	"bot-unable_to_find_bot_in_cache": "Impossible de trouver un bot dans la cache ayant le nom: %s",
+	"bot-unable_to_find_bot_in_cache": "Impossible de trouver un bot dans le cache ayant le nom: %s",
     "client_request": "[Requete Client] %s",
     "customisation-item_already_purchased": "Tenue {{itemId}} {{itemName}} déjà achetée",
     "customisation-unable_to_find_suit_by_id": "Impossible de trouver l'offre de tenue de vendeur avec l'id: %s",
