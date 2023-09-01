@@ -143,7 +143,8 @@
             "543be5e94bdc2df1348b4568",
             "5448f39d4bdc2d0a728b4568",
             "62e910aaf957f2915e0a5e36",
-            "5447e1d04bdc2dff2f8b4567"
+            "5447e1d04bdc2dff2f8b4567",
+            "57bef4c42459772e8d35a53b"
         ],
         "removeSeasonalItemsWhenNotInEvent": true,
         "blacklist": {
