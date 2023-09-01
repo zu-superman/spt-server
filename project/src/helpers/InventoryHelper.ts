@@ -568,6 +568,11 @@ export class InventoryHelper
                     }
                     messageWithReward.items.data.splice(indexOfItemToRemove, 1);
                 }
+
+                // Flag message as having no rewards if all removed
+                const hasRewardItemsRemaining = messageWithReward?.items.data?.length > 0;
+                messageWithReward.hasRewards = hasRewardItemsRemaining;
+                messageWithReward.rewardCollected = !hasRewardItemsRemaining;
             }
         }
 
