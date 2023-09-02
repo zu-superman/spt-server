@@ -475,14 +475,10 @@ export class HideoutHelper
     protected updateWaterFilters(waterFilterArea: HideoutArea, production: Production, isGeneratorOn: boolean, pmcData: IPmcData): HideoutArea
     {
         let filterDrainRate = this.getWaterFilterDrainRate(pmcData);
-        const productionTime = this.getProductionTimeSeconds(HideoutHelper.waterCollector);
+        const productionTime = this.getTotalProductionTimeSeconds(HideoutHelper.waterCollector);
+        const secondsSinceServerTick = this.getTimeElapsedSinceLastServerTick(pmcData, isGeneratorOn);
         
-        const timeElapsed = this.getTimeElapsedSinceLastServerTick(pmcData, isGeneratorOn);
-        
-        // Adjust filter drain rate based on elapsed time, handle edge case when craft time has gone on longer than total production time
-        filterDrainRate *= timeElapsed > productionTime
-            ? (productionTime - production.Progress)
-            : timeElapsed;
+        filterDrainRate = this.adjustWaterFilterDrainRate(secondsSinceServerTick, productionTime, production.Progress, filterDrainRate);
         
         // Production hasn't completed
         let pointsConsumed = 0;
@@ -495,11 +491,13 @@ export class HideoutHelper
                 // Has a water filter installed into slot
                 if (waterFilterArea.slots[i].item)
                 {
+                    // How many units of filter are left
                     let resourceValue = (waterFilterArea.slots[i].item[0].upd?.Resource)
                         ? waterFilterArea.slots[i].item[0].upd.Resource.Value
                         : null;
                     if (!resourceValue)
                     {
+                        // None left
                         resourceValue = 100 - filterDrainRate;
                         pointsConsumed = filterDrainRate;
                     }
@@ -508,22 +506,24 @@ export class HideoutHelper
                         pointsConsumed = (waterFilterArea.slots[i].item[0].upd.Resource.UnitsConsumed || 0) + filterDrainRate;
                         resourceValue -= filterDrainRate;
                     }
+
+                    // Round to get values to 3dp
                     resourceValue = Math.round(resourceValue * 10000) / 10000;
                     pointsConsumed = Math.round(pointsConsumed * 10000) / 10000;
 
-                    //check unit consumed for increment skill point
+                    // Check amount of units consumed for possible increment of hideout mgmt skill point
                     if (pmcData && Math.floor(pointsConsumed / 10) >= 1)
                     {
                         this.playerService.incrementSkillLevel(pmcData, SkillTypes.HIDEOUT_MANAGEMENT, 1);
                         pointsConsumed -= 10;
                     }
 
-                    // Filter has some juice left in it
+                    // Filter has some juice left in it after we adjusted it
                     if (resourceValue > 0)
                     {
                         // Set filter consumed amount
                         waterFilterArea.slots[i].item[0].upd = this.getAreaUpdObject(1, resourceValue, pointsConsumed);
-                        this.logger.debug(`Water filter: ${resourceValue} filter left on slot ${i + 1}`);
+                        this.logger.debug(`Water filter has: ${resourceValue} units left in slot ${i + 1}`);
 
                         break; // Break here to avoid updating all filters
                     }
@@ -537,6 +537,27 @@ export class HideoutHelper
         }
 
         return waterFilterArea;
+    }
+
+    /**
+     * Get an adjusted water filter drain rate based on time elapsed since last run, 
+     * handle edge case when craft time has gone on longer than total production time
+     * @param secondsSinceServerTick Time passed
+     * @param totalProductionTime Total time collecting water
+     * @param productionProgress how far water collector has progressed 
+     * @param baseFilterDrainRate Base drain rate 
+     * @returns 
+     */
+    protected adjustWaterFilterDrainRate(secondsSinceServerTick: number, totalProductionTime: number, productionProgress: number, baseFilterDrainRate: number): number
+    {
+        const drainRateMultiplier = secondsSinceServerTick > totalProductionTime
+            ? (totalProductionTime - productionProgress) // more time passed than prod time, get total minus the current progress
+            : secondsSinceServerTick;
+
+        // Multiply drain rate by calculated multiplier
+        baseFilterDrainRate *= drainRateMultiplier;
+
+        return baseFilterDrainRate;
     }
 
     /**
@@ -558,7 +579,7 @@ export class HideoutHelper
      * @param prodId Id, e.g. Water collector id
      * @returns seconds to produce item
      */
-    protected getProductionTimeSeconds(prodId: string): number
+    protected getTotalProductionTimeSeconds(prodId: string): number
     {
         const recipe = this.databaseServer.getTables().hideout.production.find(prod => prod._id === prodId);
 
