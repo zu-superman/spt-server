@@ -754,7 +754,7 @@ export class HideoutHelper
         // Reduce time elapsed (and progress) when generator is off
         let timeElapsed = this.timeUtil.getTimestamp() - pmcData.Hideout.sptUpdateLastRunTimestamp;
 
-        if (recipe?.areaType !== HideoutAreas.LAVATORY) // Lavatory works at 100% when power is on or off
+        if (recipe?.areaType === HideoutAreas.LAVATORY) // Lavatory works at 100% when power is on / off
         {
             return timeElapsed;
         }
