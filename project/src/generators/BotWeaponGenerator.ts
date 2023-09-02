@@ -203,7 +203,7 @@ export class BotWeaponGenerator
         }
         else
         {
-            // ALready exists, update values
+            // Already exists, update values
             existingItemWithSlot.upd = {
                 StackObjectsCount: 1
             };
