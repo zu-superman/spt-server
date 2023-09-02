@@ -109,7 +109,7 @@ export class InraidController
         const locationName = preRaidProfile.inraid.location.toLowerCase();
 
         const map: ILocationBase = this.databaseServer.getTables().locations[locationName].base;
-        const insuranceEnabled = map.Insurance;
+        const mapHasInsuranceEnabled = map.Insurance;
         let preRaidPmcData = preRaidProfile.characters.pmc;
         const isDead = this.isPlayerDead(offraidData.exit);
         const preRaidGear = this.inRaidHelper.getPlayerGear(preRaidPmcData.Inventory.items);
@@ -128,7 +128,7 @@ export class InraidController
         this.healthHelper.saveVitality(preRaidPmcData, offraidData.health, sessionID);
 
         // Remove inventory if player died and send insurance items
-        if (insuranceEnabled)
+        if (mapHasInsuranceEnabled)
         {
             this.insuranceService.storeLostGear(preRaidPmcData, offraidData, preRaidGear, sessionID, isDead);
         }
@@ -142,7 +142,7 @@ export class InraidController
             this.pmcChatResponseService.sendKillerResponse(sessionID, preRaidPmcData, offraidData.profile.Stats.Eft.Aggressor);
             this.matchBotDetailsCacheService.clearCache();
 
-            preRaidPmcData = this.performPostRaidActionsWhenDead(offraidData, preRaidPmcData, insuranceEnabled, preRaidGear, sessionID);
+            preRaidPmcData = this.performPostRaidActionsWhenDead(offraidData, preRaidPmcData, mapHasInsuranceEnabled, preRaidGear, sessionID);
         }
 
         const victims = offraidData.profile.Stats.Eft.Victims.filter(x => x.Role === "sptBear" || x.Role === "sptUsec");
@@ -151,7 +151,7 @@ export class InraidController
             this.pmcChatResponseService.sendVictimResponse(sessionID, victims, preRaidPmcData);
         }
 
-        if (insuranceEnabled)
+        if (mapHasInsuranceEnabled)
         {
             this.insuranceService.sendInsuredItems(preRaidPmcData, sessionID, map.Id);
         }

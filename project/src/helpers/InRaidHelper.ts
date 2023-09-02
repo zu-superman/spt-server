@@ -8,6 +8,7 @@ import { IFailQuestRequestData } from "../models/eft/quests/IFailQuestRequestDat
 import { ConfigTypes } from "../models/enums/ConfigTypes";
 import { QuestStatus } from "../models/enums/QuestStatus";
 import { Traders } from "../models/enums/Traders";
+import { IInRaidConfig } from "../models/spt/config/IInRaidConfig";
 import { ILostOnDeathConfig } from "../models/spt/config/ILostOnDeathConfig";
 import { ILogger } from "../models/spt/utils/ILogger";
 import { ConfigServer } from "../servers/ConfigServer";
@@ -25,6 +26,7 @@ import { QuestHelper } from "./QuestHelper";
 export class InRaidHelper
 {
     protected lostOnDeathConfig: ILostOnDeathConfig;
+    protected inRaidConfig: IInRaidConfig;
 
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
@@ -41,6 +43,7 @@ export class InRaidHelper
     )
     {
         this.lostOnDeathConfig = this.configServer.getConfig(ConfigTypes.LOST_ON_DEATH);
+        this.inRaidConfig = this.configServer.getConfig(ConfigTypes.IN_RAID);
     }
 
     /**
@@ -348,7 +351,9 @@ export class InRaidHelper
         const itemsToRemovePropertyFrom = postRaidProfile.Inventory.items.filter(x =>
         {
             // Has upd object + upd.SpawnedInSession property + not a quest item
-            return "upd" in x && "SpawnedInSession" in x.upd && !dbItems[x._tpl]._props.QuestItem;
+            return "upd" in x && "SpawnedInSession" in x.upd
+                && !dbItems[x._tpl]._props.QuestItem
+                && !(this.inRaidConfig.keepFiRSecureContainerOnDeath && this.itemIsInsideContainer(x, "SecuredContainer", postRaidProfile.Inventory.items));
         });
 
         itemsToRemovePropertyFrom.forEach(item =>
@@ -357,6 +362,33 @@ export class InRaidHelper
         });
 
         return postRaidProfile;
+    }
+
+    /**
+     * Check if item is stored inside of a container
+     * @param item Item to check is inside of container
+     * @param desiredContainerSlotId Name of slot to check item is in e.g. SecuredContainer/Backpack
+     * @param items Inventory with child parent items to check
+     * @returns True when item is in container
+     */
+    protected itemIsInsideContainer(item: Item, desiredContainerSlotId: string, items: Item[]): boolean
+    {
+        // Get items parent
+        const parent = items.find(x => x._id === item.parentId);
+        if (!parent)
+        {
+            // No parent, end of line, not inside container
+            return false;
+        }
+
+        if (parent.slotId === desiredContainerSlotId)
+        {
+            return true;
+        }
+        else
+        {
+            return this.itemIsInsideContainer(parent, desiredContainerSlotId, items);
+        }
     }
 
     /**

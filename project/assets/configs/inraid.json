@@ -20,5 +20,6 @@
         "E7_car"
     ],
     "carExtractBaseStandingGain": 0.4,
-    "scavExtractGain": 0.01
+    "scavExtractGain": 0.01,
+    "keepFiRSecureContainerOnDeath": false
 }
