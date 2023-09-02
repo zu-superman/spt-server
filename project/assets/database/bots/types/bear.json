@@ -125,7 +125,7 @@
     "difficulty": {
         "easy": {
             "Aiming": {
-                "AIMING_TYPE": 4,
+                "AIMING_TYPE": 5,
                 "ANYTIME_LIGHT_WHEN_AIM_100": 70,
                 "ANY_PART_SHOOT_TIME": 0.8,
                 "BAD_SHOOTS_MAX": 6,
@@ -1632,7 +1632,7 @@
         },
         "normal": {
             "Aiming": {
-                "AIMING_TYPE": 4,
+                "AIMING_TYPE": 5,
                 "ANYTIME_LIGHT_WHEN_AIM_100": 70,
                 "ANY_PART_SHOOT_TIME": 0.4,
                 "BAD_SHOOTS_MAX": 3,
