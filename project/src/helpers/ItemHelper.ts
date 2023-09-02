@@ -858,6 +858,33 @@ class ItemHelper
     }
 
     /**
+     * Check if item is stored inside of a container
+     * @param item Item to check is inside of container
+     * @param desiredContainerSlotId Name of slot to check item is in e.g. SecuredContainer/Backpack
+     * @param items Inventory with child parent items to check
+     * @returns True when item is in container
+     */
+    public itemIsInsideContainer(item: Item, desiredContainerSlotId: string, items: Item[]): boolean
+    {
+        // Get items parent
+        const parent = items.find(x => x._id === item.parentId);
+        if (!parent)
+        {
+            // No parent, end of line, not inside container
+            return false;
+        }
+
+        if (parent.slotId === desiredContainerSlotId)
+        {
+            return true;
+        }
+        else
+        {
+            return this.itemIsInsideContainer(parent, desiredContainerSlotId, items);
+        }
+    }
+
+    /**
      * Add child items (cartridges) to a magazine
      * @param magazine Magazine to add child items to
      * @param magTemplate Db template of magazine
