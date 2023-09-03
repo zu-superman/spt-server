@@ -491,9 +491,16 @@ export class LocationGenerator
             )
         );
 
+        const blacklistedPoints = this.locationConfig.looseLootBlacklist[locationName];
         const spawnpointArray = new ProbabilityObjectArray<string, Spawnpoint>(this.mathUtil, this.jsonUtil);
         for (const si of dynamicSpawnPoints)
         {
+            if (blacklistedPoints?.includes(si.template.Id))
+            {
+                this.logger.debug(`Ignoring loose loot location: ${si.template.Id}`);
+                continue;
+            }
+
             spawnpointArray.push(
                 new ProbabilityObject(si.template.Id, si.probability, si)
             );

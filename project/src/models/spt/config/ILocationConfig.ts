@@ -37,6 +37,8 @@ export interface ILocationConfig extends IBaseConfig
     minFillStaticMagazinePercent: number
     makeWishingTreeAlwaysGiveGift: boolean
     allowDuplicateItemsInStaticContainers: boolean
+    /** Key: map, value: loose loot ids to ignore */
+    looseLootBlacklist: Record<string, string[]>
 }
 
 export interface IContainerRandomistionSettings
