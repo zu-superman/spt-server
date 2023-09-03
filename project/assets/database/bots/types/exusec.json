@@ -1466,7 +1466,8 @@
         "5943ee5a86f77413872d25ec",
         "58d2947e86f77447aa070d53",
         "5f2aa4559b44de6b1b4e68d1",
-        "5aaa5e60e5b5b000140293d6"
+        "5aaa5e60e5b5b000140293d6",
+        "5d024f5cd7ad1a04a067e91a"
       ],
       "SecuredContainer": [
         "59e0d99486f7744a32234762",
@@ -3644,7 +3645,7 @@
       "mod_charge": 31,
       "mod_tactical_000": 26,
       "mod_mount_001": 68,
-      "mod_foregrip": 58,
+      "mod_foregrip": 59,
       "mod_stock": 100,
       "mod_scope": 68,
       "mod_pistol_grip": 0,
@@ -3661,7 +3662,7 @@
       "mod_tactical_003": 29,
       "mod_handguard": 100,
       "mod_mount_003": 0,
-      "mod_tactical_002": 55,
+      "mod_tactical_002": 56,
       "mod_flashlight": 100,
       "mod_equipment_001": 0,
       "mod_equipment_002": 0,

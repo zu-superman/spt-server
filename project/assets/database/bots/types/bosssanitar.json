@@ -472,7 +472,8 @@
         "573476f124597737e04bf328",
         "5d1b317c86f7742523398392",
         "5c13cef886f774072e618e82",
-        "577e1c9d2459773cd707c525"
+        "577e1c9d2459773cd707c525",
+        "5672cb304bdc2dc2088b456a"
       ],
       "SecuredContainer": [
         "5e99711486f7744bfc4af328",
@@ -2556,9 +2557,9 @@
     "equipment": {
       "Headwear": 0,
       "Earpiece": 25,
-      "FaceCover": 25,
+      "FaceCover": 26,
       "ArmorVest": 0,
-      "Eyewear": 30,
+      "Eyewear": 29,
       "ArmBand": 0,
       "TacticalVest": 0,
       "Backpack": 100,
@@ -2579,7 +2580,7 @@
       "mod_scope": 100,
       "mod_stock": 0,
       "mod_sight_front": 100,
-      "mod_mount": 52,
+      "mod_mount": 53,
       "mod_muzzle": 0,
       "mod_foregrip": 0,
       "mod_mount_001": 0,

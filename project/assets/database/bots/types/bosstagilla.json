@@ -505,7 +505,8 @@
         "5ad5db3786f7743568421cce",
         "61aa5b518f5e7a39b41416e2",
         "61aa5ba8018e9821b7368da9",
-        "5a0ee34586f774023b6ee092"
+        "5a0ee34586f774023b6ee092",
+        "5ad5d7d286f77450166e0a89"
       ],
       "Backpack": [
         "5c1d0d6d86f7744bb2683e1f",
@@ -2619,9 +2620,9 @@
     },
     "mods": {
       "mod_mount_000": 31,
-      "mod_muzzle": 96,
+      "mod_muzzle": 95,
       "mod_reciever": 100,
-      "mod_sight_rear": 83,
+      "mod_sight_rear": 84,
       "mod_stock": 100,
       "mod_magazine": 100,
       "mod_charge": 33,
