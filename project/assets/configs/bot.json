@@ -364,7 +364,7 @@
             "lightIsActiveDayChancePercent": 25,
             "lightIsActiveNightChancePercent": 85,
             "laserIsActiveChancePercent": 75,
-            "weightingAdjustments": [{
+            "weightingAdjustmentsByPlayerLevel": [{
                     "levelRange": {
                         "min": 1,
                         "max": 6
@@ -849,7 +849,7 @@
                     }
                 }
             ],
-            "weightingAdjustments": [{
+            "weightingAdjustmentsByBotLevel": [{
                     "levelRange": {
                         "min": 1,
                         "max": 14
@@ -993,7 +993,19 @@
                                 "5b432b965acfc47a8774094e": 50,
                                 "6033fa48ffd42c541047f728": 45
                             }
-
+                        },
+                        "clothing": {
+                            "add": {},
+                            "edit": {
+                                "body": {
+                                    "5cc0858d14c02e000c6bea66": 10,
+                                    "5cde95d97d6c8b647a3769b0": 10
+                                },
+                                "feet": {
+                                    "5cc085bb14c02e000e67a5c5": 10,
+                                    "5cde95ef7d6c8b04713c4f2d": 10
+                                }
+                            }
                         }
                     }
                 }, {
@@ -1150,26 +1162,6 @@
                     },
                     "equipment": {},
                     "cartridge": {}
-                }
-            ],
-            "clothing": [{
-                    "levelRange": {
-                        "min": 1,
-                        "max": 20
-                    },
-                    "clothing": {
-                        "add": {},
-                        "edit": {
-                            "body": {
-                                "5cc0858d14c02e000c6bea66": 10,
-                                "5cde95d97d6c8b647a3769b0": 10
-                            },
-                            "feet": {
-                                "5cc085bb14c02e000e67a5c5": 10,
-                                "5cde95ef7d6c8b04713c4f2d": 10
-                            }
-                        }
-                    }
                 }
             ]
         }

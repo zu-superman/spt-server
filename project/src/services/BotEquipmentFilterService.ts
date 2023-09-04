@@ -1,6 +1,7 @@
 import { inject, injectable } from "tsyringe";
 
 import { BotHelper } from "../helpers/BotHelper";
+import { ProfileHelper } from "../helpers/ProfileHelper";
 import {
     EquipmentChances, Generation,
     GenerationData,
@@ -25,6 +26,7 @@ export class BotEquipmentFilterService
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("BotHelper") protected botHelper: BotHelper,
+        @inject("ProfileHelper") protected profileHelper: ProfileHelper,
         @inject("ConfigServer") protected configServer: ConfigServer
     )
     {
@@ -34,32 +36,52 @@ export class BotEquipmentFilterService
 
     /**
      * Filter a bots data to exclude equipment and cartridges defines in the botConfig
+     * @param sessionId Players id
      * @param baseBotNode bots json data to filter
      * @param botLevel Level of the bot
      * @param botGenerationDetails details on how to generate a bot
      */
-    public filterBotEquipment(baseBotNode: IBotType, botLevel: number, botGenerationDetails: BotGenerationDetails): void
+    public filterBotEquipment(sessionId: string, baseBotNode: IBotType, botLevel: number, botGenerationDetails: BotGenerationDetails): void
     {
+        const pmcProfile = this.profileHelper.getPmcProfile(sessionId);
+
         const botRole = (botGenerationDetails.isPmc)
             ? "pmc"
             : botGenerationDetails.role;
         const botEquipmentBlacklist = this.getBotEquipmentBlacklist(botRole, botLevel);
         const botEquipmentWhitelist = this.getBotEquipmentWhitelist(botRole, botLevel);
-        const botClothingAdjustments = this.getBotClothingAdjustments(botRole, botLevel);
         const botWeightingAdjustments = this.getBotWeightingAdjustments(botRole, botLevel);
+        const botWeightingAdjustmentsByPlayerLevel = this.getBotWeightingAdjustmentsByPlayerLevel(botRole, pmcProfile.Info.Level);
 
         const botEquipConfig = this.botConfig.equipment[botRole];
         const randomisationDetails = this.botHelper.getBotRandomizationDetails(botLevel, botEquipConfig);
         
-        this.filterEquipment(baseBotNode, botEquipmentBlacklist, botEquipmentWhitelist);
-        this.filterCartridges(baseBotNode, botEquipmentBlacklist, botEquipmentWhitelist);
-        this.adjustWeighting(botClothingAdjustments?.clothing, baseBotNode.appearance, false);
-        this.adjustWeighting(botWeightingAdjustments?.equipment, baseBotNode.inventory.equipment);
-        this.adjustWeighting(botWeightingAdjustments?.ammo, baseBotNode.inventory.Ammo);
+        if (botEquipmentBlacklist)
+        {
+            this.filterEquipment(baseBotNode, botEquipmentBlacklist, botEquipmentWhitelist);
+            this.filterCartridges(baseBotNode, botEquipmentBlacklist, botEquipmentWhitelist);
+        }
+        
+        if (botWeightingAdjustments)
+        {
+            this.adjustWeighting(botWeightingAdjustments?.equipment, baseBotNode.inventory.equipment);
+            this.adjustWeighting(botWeightingAdjustments?.ammo, baseBotNode.inventory.Ammo);
+            // Dont warn when edited item not found, we're editing usec/bear clothing and they dont have each others clothing
+            this.adjustWeighting(botWeightingAdjustments?.clothing, baseBotNode.appearance, false);
+        }
 
-        this.adjustChances(randomisationDetails?.equipment, baseBotNode.chances.equipment);
-        this.adjustChances(randomisationDetails?.mods, baseBotNode.chances.mods);
-        this.adjustGenerationChances(randomisationDetails?.generation, baseBotNode.generation);
+        if (botWeightingAdjustmentsByPlayerLevel)
+        {
+            this.adjustWeighting(botWeightingAdjustmentsByPlayerLevel?.equipment, baseBotNode.inventory.equipment);
+            this.adjustWeighting(botWeightingAdjustmentsByPlayerLevel?.ammo, baseBotNode.inventory.Ammo);
+        }
+
+        if (randomisationDetails)
+        {
+            this.adjustChances(randomisationDetails?.equipment, baseBotNode.chances.equipment);
+            this.adjustChances(randomisationDetails?.mods, baseBotNode.chances.mods);
+            this.adjustGenerationChances(randomisationDetails?.generation, baseBotNode.generation);
+        }
     }
 
     /**
@@ -165,41 +187,41 @@ export class BotEquipmentFilterService
     }
 
     /**
-     * Retrieve clothing weighting adjustments from bot.json config
+     * Retrieve item weighting adjustments from bot.json config based on bot level
      * @param botRole Bot type to get adjustments for
-     * @param playerLevel level of player
-     * @returns Weighting adjustments for bots clothing
+     * @param botLevel Level of bot
+     * @returns Weighting adjustments for bot items
      */
-    protected getBotClothingAdjustments(botRole: string, playerLevel: number): WeightingAdjustmentDetails
+    protected getBotWeightingAdjustments(botRole: string, botLevel: number): WeightingAdjustmentDetails
     {
         const botEquipmentConfig = this.botEquipmentConfig[botRole];
 
         // No config found, skip
-        if (!botEquipmentConfig || Object.keys(botEquipmentConfig).length === 0 || !botEquipmentConfig.clothing)
+        if (!botEquipmentConfig || Object.keys(botEquipmentConfig).length === 0 || !botEquipmentConfig.weightingAdjustmentsByBotLevel)
         {
             return null;
         }
 
-        return botEquipmentConfig.clothing.find(x => playerLevel >= x.levelRange.min && playerLevel <= x.levelRange.max);
+        return botEquipmentConfig.weightingAdjustmentsByBotLevel.find(x => botLevel >= x.levelRange.min && botLevel <= x.levelRange.max);
     }
 
     /**
-     * Retrieve item weighting adjustments from bot.json config
+     * Retrieve item weighting adjustments from bot.json config based on player level
      * @param botRole Bot type to get adjustments for
-     * @param playerLevel level of player
+     * @param playerlevel Level of bot
      * @returns Weighting adjustments for bot items
      */
-    protected getBotWeightingAdjustments(botRole: string, playerLevel: number): WeightingAdjustmentDetails
+    protected getBotWeightingAdjustmentsByPlayerLevel(botRole: string, playerlevel: number): WeightingAdjustmentDetails
     {
         const botEquipmentConfig = this.botEquipmentConfig[botRole];
 
         // No config found, skip
-        if (!botEquipmentConfig || Object.keys(botEquipmentConfig).length === 0 || !botEquipmentConfig.weightingAdjustments)
+        if (!botEquipmentConfig || Object.keys(botEquipmentConfig).length === 0 || !botEquipmentConfig.weightingAdjustmentsByPlayerLevel)
         {
             return null;
         }
 
-        return botEquipmentConfig.weightingAdjustments.find(x => playerLevel >= x.levelRange.min && playerLevel <= x.levelRange.max);
+        return botEquipmentConfig.weightingAdjustmentsByPlayerLevel.find(x => playerlevel >= x.levelRange.min && playerlevel <= x.levelRange.max);
     }
 
     /**

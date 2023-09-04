@@ -82,13 +82,19 @@ export interface EquipmentFilters
 {
     /** Limits for mod types per weapon .e.g. scopes */
     weaponModLimits: ModLimits
-    /** Whitelsit for weapons allowed per gun */
+    /** Whitelist for weapon sight types allowed per gun */
     weaponSightWhitelist: Record<string, string[]>
+    /** Chance face shield is down/active */
     faceShieldIsActiveChancePercent?: number;
+    /** Chance gun flashlight is active during the day */
     lightIsActiveDayChancePercent?: number;
+    /** Chance gun flashlight is active during the night */
     lightIsActiveNightChancePercent?: number;
+    /** Chance gun laser is active during the day */
     laserIsActiveChancePercent?: number;
+    /** Chance NODS are down/active during the day */
     nvgIsActiveChanceDayPercent?: number;
+    /** Chance NODS are down/active during the night */
     nvgIsActiveChanceNightPercent?: number;
     /** Adjust weighting/chances of items on bot by level of bot */
     randomisation: RandomisationDetails[]
@@ -96,9 +102,10 @@ export interface EquipmentFilters
     blacklist: EquipmentFilterDetails[]
     /** Whitelist equipment by level of bot */
     whitelist: EquipmentFilterDetails[]
-    clothing: WeightingAdjustmentDetails[]
-    /** Adjust clothing choice weighting by level of bot */
-    weightingAdjustments: WeightingAdjustmentDetails[]
+    /** Adjust equipment/ammo */
+    weightingAdjustmentsByBotLevel: WeightingAdjustmentDetails[]
+    /** Same as weightingAdjustments but based on player level instead of bot level */
+    weightingAdjustmentsByPlayerLevel?: WeightingAdjustmentDetails[]
 }
 
 export interface ModLimits
