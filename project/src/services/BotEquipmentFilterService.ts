@@ -316,9 +316,9 @@ export class BotEquipmentFilterService
             for (const poolAdjustmentKey in weightingAdjustments.add)
             {
                 const locationToUpdate = botItemPool[poolAdjustmentKey];
-                for (const itemToAddKey in weightingAdjustments.edit[poolAdjustmentKey])
+                for (const itemToAddKey in weightingAdjustments.add[poolAdjustmentKey])
                 {
-                    locationToUpdate[itemToAddKey] = weightingAdjustments.edit[poolAdjustmentKey][itemToAddKey];
+                    locationToUpdate[itemToAddKey] = weightingAdjustments.add[poolAdjustmentKey][itemToAddKey];
                 }
             }
         }
