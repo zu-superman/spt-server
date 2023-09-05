@@ -620,8 +620,8 @@
             "max": 0
         },
         "crazyassaultevent": {
-            "min": 5,
-            "max": 5
+            "min": 0,
+            "max": 0
         }
     },
     "enemyTypes": ["assault", "marksman", "pmcBot", "bossBully", "bossKilla", "bossKojaniy", "bossGluhar", "bossSanitar", "bossTagilla", "bossKnight", "bossZryachiy", "bossBoar", "bossBoarSniper", "followerBully", "followerKojaniy", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "followerBirdEye", "followerBigPipe", "followerZryachiy", "followerBoar", "arenafighter", "arenafighterevent", "crazyassaultevent", "sectantWarrior", "sectantPriest"],
