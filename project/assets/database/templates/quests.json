@@ -46880,22 +46880,6 @@
             "visibilityConditions": []
           },
           "dynamicLocale": false
-        },
-        {
-          "_parent": "Quest",
-          "_props": {
-            "availableAfter": 0,
-            "dynamicLocale": false,
-            "id": "046651ed06d99d51c9631281",
-            "index": 2,
-            "parentId": "",
-            "status": [
-              4
-            ],
-            "target": "5a0327ba86f77456b9154236",
-            "visibilityConditions": []
-          },
-          "dynamicLocale": false
         }
       ],
       "Fail": []
