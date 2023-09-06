@@ -11,7 +11,9 @@ import {
 } from "../models/eft/insurance/IGetInsuranceCostResponseData";
 import { IInsureRequestData } from "../models/eft/insurance/IInsureRequestData";
 import { IItemEventRouterResponse } from "../models/eft/itemEvent/IItemEventRouterResponse";
+import { Insurance } from "../models/eft/profile/IAkiProfile";
 import { IProcessBuyTradeRequestData } from "../models/eft/trade/IProcessBuyTradeRequestData";
+import { BaseClasses } from "../models/enums/BaseClasses";
 import { ConfigTypes } from "../models/enums/ConfigTypes";
 import { IInsuranceConfig } from "../models/spt/config/IInsuranceConfig";
 import { ILogger } from "../models/spt/utils/ILogger";
@@ -102,6 +104,8 @@ export class InsuranceController
                         toDelete.push(...this.itemHelper.findAndReturnChildrenByItems(insured.items, insuredItem._id));
                     }
                 }
+                
+                this.reparentItemsInsideRigs(insured);
 
                 for (let index = insured.items.length - 1; index >= 0; --index)
                 {
@@ -125,6 +129,38 @@ export class InsuranceController
             }
 
             this.saveServer.getProfile(sessionID).insurance = insuranceDetails;
+        }
+    }
+
+    /**
+     * Reparent children inside rigs to be a root item
+     * @param insured Insured Items
+     */
+    protected reparentItemsInsideRigs(insured: Insurance): void
+    {
+        for (const itemCheck of insured.items) 
+        {
+            const confirmedItem = this.itemHelper.isOfBaseclass(itemCheck._tpl, BaseClasses.VEST);
+            if (confirmedItem) 
+            {
+                const itemWithChildren = this.itemHelper.findAndReturnChildrenByItems(insured.items, itemCheck._id);
+
+                for (const item of insured.items) 
+                {
+                    // Skips root item only want its children
+                    if (item._id === itemCheck._id) 
+                    {
+                        continue;
+                    }
+                    
+                    if (itemWithChildren.includes(item._id)) 
+                    {
+                        item.slotId = "hideout";
+                        delete item.location;
+                        item.parentId = itemCheck.parentId;
+                    }
+                }
+            }
         }
     }
 
