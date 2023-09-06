@@ -105,8 +105,6 @@ export class InsuranceController
                     }
                 }
                 
-                this.reparentItemsInsideRigs(insured);
-
                 for (let index = insured.items.length - 1; index >= 0; --index)
                 {
                     if (toDelete.includes(insured.items[index]._id))
@@ -114,6 +112,8 @@ export class InsuranceController
                         insured.items.splice(index, 1);
                     }
                 }
+                
+                this.updateSlotIdOfContainersChildren(insured);
 
                 // No items to return as they all failed the above check, adjust insurance mail template
                 if (insured.items.length === 0)
@@ -133,14 +133,14 @@ export class InsuranceController
     }
 
     /**
-     * Reparent children inside rigs to be a root item
+     * Change SlotId of children inside Containers to be a root item
      * @param insured Insured Items
      */
-    protected reparentItemsInsideRigs(insured: Insurance): void
+    protected updateSlotIdOfContainersChildren(insured: Insurance): void
     {
         for (const itemCheck of insured.items) 
         {
-            const confirmedItem = this.itemHelper.isOfBaseclass(itemCheck._tpl, BaseClasses.VEST);
+            const confirmedItem = this.itemHelper.isOfBaseclasses(itemCheck._tpl, [BaseClasses.VEST, BaseClasses.BACKPACK]);
             if (confirmedItem) 
             {
                 const itemWithChildren = this.itemHelper.findAndReturnChildrenByItems(insured.items, itemCheck._id);
@@ -157,7 +157,6 @@ export class InsuranceController
                     {
                         item.slotId = "hideout";
                         delete item.location;
-                        item.parentId = itemCheck.parentId;
                     }
                 }
             }
