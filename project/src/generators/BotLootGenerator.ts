@@ -281,7 +281,7 @@ export class BotLootGenerator
                 const itemsToAdd: Item[] = [{
                     _id: id,
                     _tpl: itemToAddTemplate._id,
-                    ...this.botGeneratorHelper.generateExtraPropertiesForItem(itemToAddTemplate)
+                    ...this.botGeneratorHelper.generateExtraPropertiesForItem(itemToAddTemplate, botRole)
                 }];
 
                 if (useLimits)

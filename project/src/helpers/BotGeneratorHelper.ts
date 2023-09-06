@@ -92,7 +92,7 @@ export class BotGeneratorHelper
 
         if (itemTemplate._props.MaxHpResource) 
         {
-            itemProperties.MedKit = { HpResource: itemTemplate._props.MaxHpResource };
+            itemProperties.MedKit = { HpResource: this.getRandomizedMedkitHpResource(itemTemplate._props.MaxHpResource, botRole) };
         }
 
         if (itemTemplate._props.MaxResource && itemTemplate._props.foodUseTime) 
@@ -135,6 +135,28 @@ export class BotGeneratorHelper
         return Object.keys(itemProperties).length
             ? { upd: itemProperties }
             : {};
+    }
+
+    /**
+     * Randomize the HpResource for bots e.g (245/400 resources)
+     * @param maxHpResource Max resource value of medical items
+     * @param botRole Type of Bot (assault/bossBoar)
+     * @returns Randomized value from maxHpResource
+     */
+    protected getRandomizedMedkitHpResource(maxHpResource: number, botRole: string): number
+    {
+        if (botRole != "assault")
+        {
+            return maxHpResource;
+        }
+
+        if (this.randomUtil.getChance100(30))
+        {
+            return maxHpResource;
+        }
+
+        return this.randomUtil.getInt(this.randomUtil.getPercentOfValue(60, maxHpResource, 0), maxHpResource);
+        
     }
 
     /**
