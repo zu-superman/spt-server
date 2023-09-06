@@ -10,7 +10,7 @@ import {
 } from "../models/eft/match/IGetRaidConfigurationRequestData";
 import { BaseClasses } from "../models/enums/BaseClasses";
 import { ConfigTypes } from "../models/enums/ConfigTypes";
-import { EquipmentFilters, IBotConfig } from "../models/spt/config/IBotConfig";
+import { EquipmentFilters, IBotConfig, IRandomisedResourceValues } from "../models/spt/config/IBotConfig";
 import { IPmcConfig } from "../models/spt/config/IPmcConfig";
 import { ILogger } from "../models/spt/utils/ILogger";
 import { ConfigServer } from "../servers/ConfigServer";
@@ -92,12 +92,12 @@ export class BotGeneratorHelper
 
         if (itemTemplate._props.MaxHpResource) 
         {
-            itemProperties.MedKit = { HpResource: this.getRandomizedMedkitHpResource(itemTemplate._props.MaxHpResource, botRole) };
+            itemProperties.MedKit = { HpResource: this.getRandomizedResourceValue(itemTemplate._props.MaxHpResource, this.botConfig.lootItemResourceRandomization[botRole]?.meds) };
         }
 
         if (itemTemplate._props.MaxResource && itemTemplate._props.foodUseTime) 
         {
-            itemProperties.FoodDrink = { HpPercent: itemTemplate._props.MaxResource };
+            itemProperties.FoodDrink = { HpPercent: this.getRandomizedResourceValue(itemTemplate._props.MaxResource, this.botConfig.lootItemResourceRandomization[botRole]?.food) };
         }
 
         if (itemTemplate._parent === BaseClasses.FLASHLIGHT)
@@ -139,23 +139,23 @@ export class BotGeneratorHelper
 
     /**
      * Randomize the HpResource for bots e.g (245/400 resources)
-     * @param maxHpResource Max resource value of medical items
-     * @param botRole Type of Bot (assault/bossBoar)
+     * @param maxResource Max resource value of medical items
+     * @param randomizationValues Value provided from config
      * @returns Randomized value from maxHpResource
      */
-    protected getRandomizedMedkitHpResource(maxHpResource: number, botRole: string): number
+    protected getRandomizedResourceValue(maxResource: number, randomizationValues: IRandomisedResourceValues): number
     {
-        if (botRole != "assault")
+        if (!randomizationValues)
         {
-            return maxHpResource;
+            return maxResource;
         }
 
-        if (this.randomUtil.getChance100(30))
+        if (this.randomUtil.getChance100(randomizationValues.chanceMaxResourcePercent))
         {
-            return maxHpResource;
+            return maxResource;
         }
 
-        return this.randomUtil.getInt(this.randomUtil.getPercentOfValue(60, maxHpResource, 0), maxHpResource);
+        return this.randomUtil.getInt(this.randomUtil.getPercentOfValue(randomizationValues.resourcePercent, maxResource, 0), maxResource);
         
     }
 

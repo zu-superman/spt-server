@@ -240,6 +240,21 @@
             }
         }
     },
+    "lootItemResourceRandomization": {
+        "assault": 
+        {
+            "food":
+            {
+                "resourcePercent": 65,
+                "chanceMaxResourcePercent": 30
+            },
+            "meds":
+            {
+                "resourcePercent": 50,
+                "chanceMaxResourcePercent": 40
+            }
+        }
+    },
     "lootNValue": {
         "scav": 4,
         "pmc": 3,
