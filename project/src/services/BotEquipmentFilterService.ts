@@ -56,7 +56,7 @@ export class BotEquipmentFilterService
         const botEquipConfig = this.botConfig.equipment[botRole];
         const randomisationDetails = this.botHelper.getBotRandomizationDetails(botLevel, botEquipConfig);
         
-        if (botEquipmentBlacklist)
+        if (botEquipmentBlacklist || botEquipmentWhitelist)
         {
             this.filterEquipment(baseBotNode, botEquipmentBlacklist, botEquipmentWhitelist);
             this.filterCartridges(baseBotNode, botEquipmentBlacklist, botEquipmentWhitelist);
