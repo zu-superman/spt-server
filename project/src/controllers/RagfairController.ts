@@ -132,7 +132,8 @@ export class RagfairController
 
         result.offersCount = result.offers.length;
         // Handle paging before returning results only if searching for general items, not preset items
-        if (searchRequest.buildCount === 0) {
+        if (searchRequest.buildCount === 0) 
+        {
             const start = searchRequest.page * searchRequest.limit;
             const end = Math.min(((searchRequest.page + 1) * searchRequest.limit), result.offers.length);
             result.offers = result.offers.slice(start, end);
@@ -395,7 +396,7 @@ export class RagfairController
             output = this.paymentService.payMoney(pmcData, request, sessionID, output);
             if (output.warnings.length > 0)
             {
-                return this.httpResponse.appendErrorToOutput(output, this.localisationService.getText("ragfair-unable_to_pay_commission_fee"));
+                return this.httpResponse.appendErrorToOutput(output, this.localisationService.getText("ragfair-unable_to_pay_commission_fee", tax));
             }
         }
 

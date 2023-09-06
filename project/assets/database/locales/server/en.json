@@ -167,7 +167,7 @@
 	"ragfair-tpl_not_a_valid_item": "generateFleaOffersForTrader() tpl: %s not a valid item, skipping",
 	"ragfair-unable_to_find_item_in_inventory": "Unable to find item with id: {{id}} in inventory",
 	"ragfair-unable_to_find_requested_items_in_inventory": "Unable to find any requested items in the inventory",
-	"ragfair-unable_to_pay_commission_fee": "Unable to pay commission fee",
+	"ragfair-unable_to_pay_commission_fee": "Unable to pay commission fee: %s roubles",
 	"ragfair-offer_no_longer_exists": "Offer no longer exists",
 	"ragfair-unable_to_purchase_0_count_item": "Unable to purchase item: %s with a count of 0",
 	"ragfair-unable_to_place_offer_with_no_requirements": "Unable to place offer with no requirements",
