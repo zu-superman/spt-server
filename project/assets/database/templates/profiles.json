@@ -4,6 +4,7 @@
             "character": {
                 "BackendCounters": {},
                 "Bonuses": [{
+                        "id": "64f5b9e5fa34f11b380756c0",
                         "templateId": "566abbc34bdc2d92178b4576",
                         "type": "StashSize"
                     }
@@ -2533,6 +2534,7 @@
             "character": {
                 "BackendCounters": {},
                 "Bonuses": [{
+                        "id": "64f5b9e5fa34f11b380756c0",
                         "templateId": "566abbc34bdc2d92178b4576",
                         "type": "StashSize"
                     }
@@ -5257,9 +5259,11 @@
             "character": {
                 "BackendCounters": {},
                 "Bonuses": [{
+                        "id": "64f5b9e5fa34f11b380756c0",
                         "templateId": "566abbc34bdc2d92178b4576",
                         "type": "StashSize"
                     }, {
+                        "id": "64f5b9e5fa34f11b380756c2",
                         "templateId": "5811ce572459770cba1a34ea",
                         "type": "StashSize"
                     }
@@ -8344,9 +8348,11 @@
             "character": {
                 "BackendCounters": {},
                 "Bonuses": [{
+                        "id": "64f5b9e5fa34f11b380756c0",
                         "templateId": "566abbc34bdc2d92178b4576",
                         "type": "StashSize"
                     }, {
+                        "id": "64f5b9e5fa34f11b380756c2",
                         "templateId": "5811ce572459770cba1a34ea",
                         "type": "StashSize"
                     }
@@ -11536,12 +11542,15 @@
             "character": {
                 "BackendCounters": {},
                 "Bonuses": [{
+                        "id": "64f5b9e5fa34f11b380756c0",
                         "templateId": "566abbc34bdc2d92178b4576",
                         "type": "StashSize"
                     }, {
+                        "id": "64f5b9e5fa34f11b380756c2",
                         "templateId": "5811ce572459770cba1a34ea",
                         "type": "StashSize"
                     }, {
+                        "id": "64f5b9e5fa34f11b380756c4",
                         "templateId": "5811ce662459770f6f490f32",
                         "type": "StashSize"
                     }
@@ -15026,12 +15035,15 @@
             "character": {
                 "BackendCounters": {},
                 "Bonuses": [{
+                        "id": "64f5b9e5fa34f11b380756c0",
                         "templateId": "566abbc34bdc2d92178b4576",
                         "type": "StashSize"
                     }, {
+                        "id": "64f5b9e5fa34f11b380756c2",
                         "templateId": "5811ce572459770cba1a34ea",
                         "type": "StashSize"
                     }, {
+                        "id": "64f5b9e5fa34f11b380756c4",
                         "templateId": "5811ce662459770f6f490f32",
                         "type": "StashSize"
                     }
@@ -18723,15 +18735,19 @@
             "character": {
                 "BackendCounters": {},
                 "Bonuses": [{
+                        "id": "64f5b9e5fa34f11b380756c0",
                         "templateId": "566abbc34bdc2d92178b4576",
                         "type": "StashSize"
                     }, {
+                        "id": "64f5b9e5fa34f11b380756c2",
                         "templateId": "5811ce572459770cba1a34ea",
                         "type": "StashSize"
                     }, {
+                        "id": "64f5b9e5fa34f11b380756c4",
                         "templateId": "5811ce662459770f6f490f32",
                         "type": "StashSize"
                     }, {
+                        "id": "64f5b9e5fa34f11b380756c6",
                         "templateId": "5811ce772459770e9e5f9532",
                         "type": "StashSize"
                     }
@@ -22816,15 +22832,19 @@
             "character": {
                 "BackendCounters": {},
                 "Bonuses": [{
+                        "id": "64f5b9e5fa34f11b380756c0",
                         "templateId": "566abbc34bdc2d92178b4576",
                         "type": "StashSize"
                     }, {
+                        "id": "64f5b9e5fa34f11b380756c2",
                         "templateId": "5811ce572459770cba1a34ea",
                         "type": "StashSize"
                     }, {
+                        "id": "64f5b9e5fa34f11b380756c4",
                         "templateId": "5811ce662459770f6f490f32",
                         "type": "StashSize"
                     }, {
+                        "id": "64f5b9e5fa34f11b380756c6",
                         "templateId": "5811ce772459770e9e5f9532",
                         "type": "StashSize"
                     }
@@ -27057,6 +27077,7 @@
             "character": {
                 "BackendCounters": {},
                 "Bonuses": [{
+                        "id": "64f5b9e5fa34f11b380756c0",
                         "templateId": "566abbc34bdc2d92178b4576",
                         "type": "StashSize"
                     }
@@ -27927,15 +27948,19 @@
             "character": {
                 "BackendCounters": {},
                 "Bonuses": [{
+                        "id": "64f5b9e5fa34f11b380756c0",
                         "templateId": "566abbc34bdc2d92178b4576",
                         "type": "StashSize"
                     }, {
+                        "id": "64f5b9e5fa34f11b380756c2",
                         "templateId": "5811ce572459770cba1a34ea",
                         "type": "StashSize"
                     }, {
+                        "id": "64f5b9e5fa34f11b380756c4",
                         "templateId": "5811ce662459770f6f490f32",
                         "type": "StashSize"
                     }, {
+                        "id": "64f5b9e5fa34f11b380756c6",
                         "templateId": "5811ce772459770e9e5f9532",
                         "type": "StashSize"
                     }
@@ -28820,15 +28845,19 @@
             "character": {
                 "BackendCounters": {},
                 "Bonuses": [{
+                        "id": "64f5b9e5fa34f11b380756c0",
                         "templateId": "566abbc34bdc2d92178b4576",
                         "type": "StashSize"
                     }, {
+                        "id": "64f5b9e5fa34f11b380756c2",
                         "templateId": "5811ce572459770cba1a34ea",
                         "type": "StashSize"
                     }, {
+                        "id": "64f5b9e5fa34f11b380756c4",
                         "templateId": "5811ce662459770f6f490f32",
                         "type": "StashSize"
                     }, {
+                        "id": "64f5b9e5fa34f11b380756c6",
                         "templateId": "5811ce772459770e9e5f9532",
                         "type": "StashSize"
                     }
@@ -32128,15 +32157,19 @@
             "character": {
                 "BackendCounters": {},
                 "Bonuses": [{
+                        "id": "64f5b9e5fa34f11b380756c0",
                         "templateId": "566abbc34bdc2d92178b4576",
                         "type": "StashSize"
                     }, {
+                        "id": "64f5b9e5fa34f11b380756c2",
                         "templateId": "5811ce572459770cba1a34ea",
                         "type": "StashSize"
                     }, {
+                        "id": "64f5b9e5fa34f11b380756c4",
                         "templateId": "5811ce662459770f6f490f32",
                         "type": "StashSize"
                     }, {
+                        "id": "64f5b9e5fa34f11b380756c6",
                         "templateId": "5811ce772459770e9e5f9532",
                         "type": "StashSize"
                     }
@@ -35437,15 +35470,19 @@
             "character": {
                 "BackendCounters": {},
                 "Bonuses": [{
+                        "id": "64f5b9e5fa34f11b380756c0",
                         "templateId": "566abbc34bdc2d92178b4576",
                         "type": "StashSize"
                     }, {
+                        "id": "64f5b9e5fa34f11b380756c2",
                         "templateId": "5811ce572459770cba1a34ea",
                         "type": "StashSize"
                     }, {
+                        "id": "64f5b9e5fa34f11b380756c4",
                         "templateId": "5811ce662459770f6f490f32",
                         "type": "StashSize"
                     }, {
+                        "id": "64f5b9e5fa34f11b380756c6",
                         "templateId": "5811ce772459770e9e5f9532",
                         "type": "StashSize"
                     }
@@ -38402,15 +38439,19 @@
             "character": {
                 "BackendCounters": {},
                 "Bonuses": [{
+                        "id": "64f5b9e5fa34f11b380756c0",
                         "templateId": "566abbc34bdc2d92178b4576",
                         "type": "StashSize"
                     }, {
+                        "id": "64f5b9e5fa34f11b380756c2",
                         "templateId": "5811ce572459770cba1a34ea",
                         "type": "StashSize"
                     }, {
+                        "id": "64f5b9e5fa34f11b380756c4",
                         "templateId": "5811ce662459770f6f490f32",
                         "type": "StashSize"
                     }, {
+                        "id": "64f5b9e5fa34f11b380756c6",
                         "templateId": "5811ce772459770e9e5f9532",
                         "type": "StashSize"
                     }
