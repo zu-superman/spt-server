@@ -42,7 +42,7 @@
   ],
   "BossLocationSpawn": [
     {
-      "BossChance": 22,
+      "BossChance": 27,
       "BossDifficult": "normal",
       "BossEscortAmount": "0",
       "BossEscortDifficult": "normal",
@@ -94,7 +94,7 @@
       "TriggerName": ""
     },
     {
-      "BossChance": 45,
+      "BossChance": 40,
       "BossDifficult": "normal",
       "BossEscortAmount": "2,2,2,2,3",
       "BossEscortDifficult": "normal",
@@ -109,7 +109,7 @@
       "TriggerName": "interactObject"
     },
     {
-      "BossChance": 35,
+      "BossChance": 40,
       "BossDifficult": "normal",
       "BossEscortAmount": "2,2,2,2,3",
       "BossEscortDifficult": "normal",
@@ -124,7 +124,7 @@
       "TriggerName": "interactObject"
     },
     {
-      "BossChance": 25,
+      "BossChance": 40,
       "BossDifficult": "normal",
       "BossEscortAmount": "2,2,2,2,3",
       "BossEscortDifficult": "normal",
@@ -431,36 +431,6 @@
       ]
     },
     {
-      "BotZoneName": "ZoneSubCommand",
-      "Categories": [
-        "Bot",
-        "Boss"
-      ],
-      "ColliderParams": {
-        "_parent": "SpawnSphereParams",
-        "_props": {
-          "Center": {
-            "x": 0,
-            "y": 0,
-            "z": 0
-          },
-          "Radius": 15
-        }
-      },
-      "DelayToCanSpawnSec": 4,
-      "Id": "08f2256d-4fd7-4ece-bf91-6928a0410f95",
-      "Infiltration": "",
-      "Position": {
-        "x": -94.91,
-        "y": -14.75,
-        "z": 3.42
-      },
-      "Rotation": 96.64535,
-      "Sides": [
-        "Savage"
-      ]
-    },
-    {
       "BotZoneName": "",
       "Categories": [
         "Player"
@@ -752,35 +722,6 @@
       "Rotation": 28.0800037,
       "Sides": [
         "Pmc"
-      ]
-    },
-    {
-      "BotZoneName": "ZoneBarrack",
-      "Categories": [
-        "Bot"
-      ],
-      "ColliderParams": {
-        "_parent": "SpawnSphereParams",
-        "_props": {
-          "Center": {
-            "x": 0,
-            "y": 0,
-            "z": 0
-          },
-          "Radius": 100
-        }
-      },
-      "DelayToCanSpawnSec": 4,
-      "Id": "162cd326-c355-446a-bf62-e2a76e76d743",
-      "Infiltration": "",
-      "Position": {
-        "x": -140.161,
-        "y": -6.963005,
-        "z": -35.536
-      },
-      "Rotation": 130.028351,
-      "Sides": [
-        "Savage"
       ]
     },
     {
@@ -1983,35 +1924,6 @@
       "Rotation": 264.97,
       "Sides": [
         "All"
-      ]
-    },
-    {
-      "BotZoneName": "ZoneBarrack",
-      "Categories": [
-        "Bot"
-      ],
-      "ColliderParams": {
-        "_parent": "SpawnSphereParams",
-        "_props": {
-          "Center": {
-            "x": 0,
-            "y": 0,
-            "z": 0
-          },
-          "Radius": 150
-        }
-      },
-      "DelayToCanSpawnSec": 4,
-      "Id": "4b04a014-b605-46c4-905e-c5f31f652b77",
-      "Infiltration": "",
-      "Position": {
-        "x": -266.77,
-        "y": -6.24500275,
-        "z": 23.06
-      },
-      "Rotation": 84.70626,
-      "Sides": [
-        "Savage"
       ]
     },
     {
@@ -6015,7 +5927,7 @@
       ]
     }
   ],
-  "UnixDateTime": 1634148599,
+  "UnixDateTime": 1636384172,
   "_Id": "5704e5fad2720bc05b8b4567",
   "doors": [],
   "exit_access_time": 50,

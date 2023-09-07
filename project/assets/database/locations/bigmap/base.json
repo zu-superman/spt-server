@@ -84,7 +84,7 @@
   ],
   "BossLocationSpawn": [
     {
-      "BossChance": 22,
+      "BossChance": 25,
       "BossDifficult": "normal",
       "BossEscortAmount": "2",
       "BossEscortDifficult": "normal",
@@ -119,7 +119,7 @@
       "Time": -1
     },
     {
-      "BossChance": 22,
+      "BossChance": 25,
       "BossDifficult": "normal",
       "BossEscortAmount": "4",
       "BossEscortDifficult": "normal",
@@ -132,7 +132,7 @@
       "Time": -1
     },
     {
-      "BossChance": 5,
+      "BossChance": 7,
       "BossDifficult": "normal",
       "BossEscortAmount": "4",
       "BossEscortDifficult": "normal",
@@ -7310,35 +7310,6 @@
         "z": -119.5414
       },
       "Rotation": 4.26114464,
-      "Sides": [
-        "Savage"
-      ]
-    },
-    {
-      "BotZoneName": "ZoneFactoryCenter",
-      "Categories": [
-        "Bot"
-      ],
-      "ColliderParams": {
-        "_parent": "SpawnSphereParams",
-        "_props": {
-          "Center": {
-            "x": 0,
-            "y": 0,
-            "z": 0
-          },
-          "Radius": 50
-        }
-      },
-      "DelayToCanSpawnSec": 5,
-      "Id": "e269db37-96ee-48a1-9ed8-0938be9f9cf4",
-      "Infiltration": "",
-      "Position": {
-        "x": 454.29303,
-        "y": 2.67591476,
-        "z": -81.5390244
-      },
-      "Rotation": 89.51053,
       "Sides": [
         "Savage"
       ]
