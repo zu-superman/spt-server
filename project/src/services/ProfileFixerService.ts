@@ -989,4 +989,43 @@ export class ProfileFixerService
             }
         }
     }
+
+    /**
+     * 26126 (7th August) requires bonuses to have an ID, these were not included in the default profile presets
+     * @param pmcProfile Profile to add missing IDs to
+     */
+    public addMissingIdsToBonuses(pmcProfile: IPmcData): void
+    {
+        let foundBonus = false;
+        for (const bonus of pmcProfile.Bonuses)
+        {
+            // Bonus lacks id, find matching hideout area / stage / bonus
+            if (!bonus.id)
+            {
+                for (const area of this.databaseServer.getTables().hideout.areas)
+                { // TODO: skip if no stages
+                    for (const stageIndex in area.stages)
+                    {
+                        const stageInfo = area.stages[stageIndex];
+                        const matchingBonus = stageInfo.bonuses.find(x => x.templateId === bonus.templateId && x.type === bonus.type);
+                        if (matchingBonus)
+                        {
+                            // Add id to bonus, flag bonus as found and exit stage loop
+                            bonus.id = matchingBonus.id;
+                            this.logger.warning(`Added missing Id: ${bonus.id} to bonus: ${bonus.type}`);
+                            foundBonus = true;
+                            break;
+                        }
+                    }
+
+                    // We've found the bonus we're after, break out of area loop
+                    if (foundBonus)
+                    {
+                        foundBonus = false;
+                        break;
+                    }
+                }
+            }
+        }
+    }
 }

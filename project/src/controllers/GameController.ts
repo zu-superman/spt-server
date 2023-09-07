@@ -168,6 +168,7 @@ export class GameController
                 this.profileFixerService.addMissingUpgradesPropertyToHideout(pmcProfile);
                 this.hideoutHelper.setHideoutImprovementsToCompleted(pmcProfile);
                 this.hideoutHelper.unlockHideoutWallInProfile(pmcProfile);
+                this.profileFixerService.addMissingIdsToBonuses(pmcProfile);
             }
 
             if (pmcProfile.Inventory)
