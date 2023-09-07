@@ -16,10 +16,12 @@ import { IGetOffersResult } from "../models/eft/ragfair/IGetOffersResult";
 import { IRemoveOfferRequestData } from "../models/eft/ragfair/IRemoveOfferRequestData";
 import { ISearchRequestData } from "../models/eft/ragfair/ISearchRequestData";
 import { ISendRagfairReportRequestData } from "../models/eft/ragfair/ISendRagfairReportRequestData";
+import { IStorePlayerOfferTaxAmountRequestData } from "../models/eft/ragfair/IStorePlayerOfferTaxAmountRequestData";
 import { ConfigTypes } from "../models/enums/ConfigTypes";
 import { IRagfairConfig } from "../models/spt/config/IRagfairConfig";
 import { ConfigServer } from "../servers/ConfigServer";
 import { RagfairServer } from "../servers/RagfairServer";
+import { RagfairTaxService } from "../services/RagfairTaxService";
 import { HttpResponseUtil } from "../utils/HttpResponseUtil";
 import { JsonUtil } from "../utils/JsonUtil";
 
@@ -36,6 +38,7 @@ export class RagfairCallbacks implements OnLoad, OnUpdate
         @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("RagfairServer") protected ragfairServer: RagfairServer,
         @inject("RagfairController") protected ragfairController: RagfairController,
+        @inject("RagfairTaxService") protected ragfairTaxService: RagfairTaxService,
         @inject("ConfigServer") protected configServer: ConfigServer
     )
     {
@@ -116,6 +119,12 @@ export class RagfairCallbacks implements OnLoad, OnUpdate
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public sendReport(url: string, info: ISendRagfairReportRequestData, sessionID: string): INullResponseData
     {
+        return this.httpResponse.nullResponse();
+    }
+
+    public storePlayerOfferTaxAmount(url: string, request: IStorePlayerOfferTaxAmountRequestData, sessionId: string): INullResponseData
+    {
+        this.ragfairTaxService.storeClientOfferTaxValue(sessionId, request);
         return this.httpResponse.nullResponse();
     }
 

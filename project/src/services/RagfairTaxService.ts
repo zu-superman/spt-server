@@ -1,15 +1,17 @@
 import { inject, injectable } from "tsyringe";
+import { ItemHelper } from "../helpers/ItemHelper";
 import { IPmcData } from "../models/eft/common/IPmcData";
 import { Item } from "../models/eft/common/tables/IItem";
 import { ITemplateItem } from "../models/eft/common/tables/ITemplateItem";
+import { IStorePlayerOfferTaxAmountRequestData } from "../models/eft/ragfair/IStorePlayerOfferTaxAmountRequestData";
 import { ILogger } from "../models/spt/utils/ILogger";
 import { DatabaseServer } from "../servers/DatabaseServer";
 import { RagfairPriceService } from "../services/RagfairPriceService";
-import { ItemHelper } from "./ItemHelper";
 
 @injectable()
-export class RagfairTaxHelper
+export class RagfairTaxService
 {
+    protected playerOfferTaxCache: Record<string, IStorePlayerOfferTaxAmountRequestData> = {};
 
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
@@ -18,6 +20,21 @@ export class RagfairTaxHelper
         @inject("ItemHelper") protected itemHelper: ItemHelper
     )
     { }
+
+    public storeClientOfferTaxValue(sessionId: string, offer: IStorePlayerOfferTaxAmountRequestData): void
+    {
+        this.playerOfferTaxCache[offer.id] = offer;
+    }
+
+    public clearStoredOfferTaxById(offerIdToRemove: string): void
+    {
+        delete this.playerOfferTaxCache[offerIdToRemove];
+    }
+
+    public getStoredClientOfferTaxValueById(offerIdToGet: string): IStorePlayerOfferTaxAmountRequestData
+    {
+        return this.playerOfferTaxCache[offerIdToGet];
+    }
 
     // This method, along with calculateItemWorth, is trying to mirror the client-side code found in the method "CalculateTaxPrice".
     // It's structured to resemble the client-side code as closely as possible - avoid making any big structure changes if it's not necessary.
@@ -61,6 +78,11 @@ export class RagfairTaxHelper
         const tax = itemWorth * itemTaxMult * itemPriceMult + requirementsPrice * requirementTaxMult * requirementPriceMult;
         const discountedTax = tax * (1.0 - taxDiscountPercent / 100.0);
         const itemComissionMult = itemTemplate._props.RagFairCommissionModifier ? itemTemplate._props.RagFairCommissionModifier : 1;
+
+        if (item.upd.Buff)
+        {
+            // TODO: enhance tax calc with client implementation from GClass1932/CalculateTaxPrice()
+        }
 
         const taxValue = Math.round(discountedTax * itemComissionMult);
         this.logger.debug(`Tax Calculated to be: ${taxValue}`);

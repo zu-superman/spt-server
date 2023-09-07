@@ -10,7 +10,6 @@ import { RagfairHelper } from "../helpers/RagfairHelper";
 import { RagfairOfferHelper } from "../helpers/RagfairOfferHelper";
 import { RagfairSellHelper } from "../helpers/RagfairSellHelper";
 import { RagfairSortHelper } from "../helpers/RagfairSortHelper";
-import { RagfairTaxHelper } from "../helpers/RagfairTaxHelper";
 import { TraderHelper } from "../helpers/TraderHelper";
 import { IPmcData } from "../models/eft/common/IPmcData";
 import { Item } from "../models/eft/common/tables/IItem";
@@ -40,6 +39,7 @@ import { PaymentService } from "../services/PaymentService";
 import { RagfairOfferService } from "../services/RagfairOfferService";
 import { RagfairPriceService } from "../services/RagfairPriceService";
 import { RagfairRequiredItemsService } from "../services/RagfairRequiredItemsService";
+import { RagfairTaxService } from "../services/RagfairTaxService";
 import { HttpResponseUtil } from "../utils/HttpResponseUtil";
 import { TimeUtil } from "../utils/TimeUtil";
 
@@ -62,7 +62,7 @@ export class RagfairController
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("SaveServer") protected saveServer: SaveServer,
         @inject("RagfairSellHelper") protected ragfairSellHelper: RagfairSellHelper,
-        @inject("RagfairTaxHelper") protected ragfairTaxHelper: RagfairTaxHelper,
+        @inject("RagfairTaxService") protected ragfairTaxService: RagfairTaxService,
         @inject("RagfairSortHelper") protected ragfairSortHelper: RagfairSortHelper,
         @inject("RagfairOfferHelper") protected ragfairOfferHelper: RagfairOfferHelper,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
@@ -373,7 +373,14 @@ export class RagfairController
         // Subtract flea market fee from stash
         if (this.ragfairConfig.sell.fees)
         {
-            const tax = this.ragfairTaxHelper.calculateTax(rootItem, pmcData, requirementsPriceInRub, itemStackCount, offerRequest.sellInOnePiece);
+            // Get tax from cache hydrated by client, if that's missing fall back to server calculation (inaccurate)
+            const storedClientTaxValue = this.ragfairTaxService.getStoredClientOfferTaxValueById(offerRequest.items[0]);
+            const tax = storedClientTaxValue
+                ? storedClientTaxValue.fee
+                : this.ragfairTaxService.calculateTax(rootItem, pmcData, requirementsPriceInRub, itemStackCount, offerRequest.sellInOnePiece);
+
+            //cleanup of cache now we've used the tax value from it
+            this.ragfairTaxService.clearStoredOfferTaxById(offerRequest.items[0]);
 
             const request: IProcessBuyTradeRequestData = {
                 tid: "ragfair",
@@ -600,7 +607,7 @@ export class RagfairController
         if (this.ragfairConfig.sell.fees)
         {
             const count = offers[index].sellInOnePiece ? 1 : offers[index].items.reduce((sum, item) => sum += item.upd.StackObjectsCount, 0);
-            const tax = this.ragfairTaxHelper.calculateTax(offers[index].items[0], this.profileHelper.getPmcProfile(sessionID), offers[index].requirementsCost, count, offers[index].sellInOnePiece);
+            const tax = this.ragfairTaxService.calculateTax(offers[index].items[0], this.profileHelper.getPmcProfile(sessionID), offers[index].requirementsCost, count, offers[index].sellInOnePiece);
 
             const request: IProcessBuyTradeRequestData = {
                 tid: "ragfair",
