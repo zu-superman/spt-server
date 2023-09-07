@@ -67,7 +67,6 @@ export class ProfileFixerService
         if (pmcProfile.Hideout)
         {
             this.addMissingBonusesProperty(pmcProfile);
-            this.addMissingArmorRepairSkill(pmcProfile);
             this.addMissingWallImprovements(pmcProfile);
             this.addMissingHideoutWallAreas(pmcProfile);
             this.addMissingGunStandContainerImprovements(pmcProfile);
@@ -597,29 +596,6 @@ export class ProfileFixerService
             {
                 this.logger.success(this.localisationService.getText("fixer-updated_pockets"));
                 pocketItem._tpl = "627a4e6b255f7527fb05a0f6";
-            }
-        }
-    }
-
-    public addMissingArmorRepairSkill(pmcProfile: IPmcData): void
-    {
-        const lavatory = pmcProfile.Hideout.Areas.find(x => x.type === HideoutAreas.LAVATORY);
-        if (lavatory)
-        {
-            if (lavatory.level > 0)
-            {
-                const hasBonus = pmcProfile.Bonuses.find(x => x.type === "UnlockArmorRepair");
-                if (!hasBonus)
-                {
-                    const hideoutAreas = this.databaseServer.getTables().hideout.areas;
-                    const lavArea = hideoutAreas.find(x => x.type === HideoutAreas.LAVATORY);
-                    const unlockArmorRepairBonus = lavArea.stages[1].bonuses[0];
-
-
-                    pmcProfile.Bonuses.push(unlockArmorRepairBonus);
-
-                    this.logger.debug("Missing UnlockArmorRepair bonus added to profile");
-                }
             }
         }
     }
