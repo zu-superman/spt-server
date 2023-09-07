@@ -339,7 +339,7 @@ export class GameController
             reportAvailable: false,
             twitchEventMember: false,
             lang: "en",
-            aid: sessionID,
+            aid: profile.aid,
             taxonomy: 6,
             activeProfileId: `pmc${sessionID}`,
             backend: {
