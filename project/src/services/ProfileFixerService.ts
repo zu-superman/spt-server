@@ -68,7 +68,6 @@ export class ProfileFixerService
         {
             this.addMissingBonusesProperty(pmcProfile);
             this.addMissingArmorRepairSkill(pmcProfile);
-            this.addMissingWorkbenchWeaponSkills(pmcProfile);
             this.addMissingWallImprovements(pmcProfile);
             this.addMissingHideoutWallAreas(pmcProfile);
             this.addMissingGunStandContainerImprovements(pmcProfile);
@@ -463,48 +462,6 @@ export class ProfileFixerService
         }
     }
 
-    protected addMissingWorkbenchWeaponSkills(pmcProfile: IPmcData): void
-    {
-        const workbench = pmcProfile.Hideout.Areas.find(x => x.type === HideoutAreas.WORKBENCH);
-        if (workbench)
-        {
-            if (workbench.level > 0)
-            {
-                const weaponRepairBonus = pmcProfile.Bonuses.find(x => x.type === "UnlockWeaponRepair");
-                if (!weaponRepairBonus) 
-                {
-                    pmcProfile.Bonuses.push(
-                        {
-                            type: "UnlockWeaponRepair",
-                            value: 1,
-                            passive: true,
-                            production: false,
-                            visible: true
-                        }
-                    );
-
-                    this.logger.debug("Missing UnlockWeaponRepair bonus added to profile");
-                }
-
-                const weaponModificationBonus = pmcProfile.Bonuses.find(x => x.type === "UnlockWeaponModification");
-                if (!weaponModificationBonus) 
-                {
-                    pmcProfile.Bonuses.push(
-                        {
-                            type: "UnlockWeaponModification",
-                            value: 1,
-                            passive: true,
-                            production: false,
-                            visible: false
-                        }
-                    );
-
-                    this.logger.debug("Missing UnlockWeaponModification bonus added to profile");
-                }
-            }
-        }
-    }
-
     /**
      * Some profiles have hideout maxed and therefore no improvements
      * @param pmcProfile Profile to add improvement data to
@@ -654,15 +611,12 @@ export class ProfileFixerService
                 const hasBonus = pmcProfile.Bonuses.find(x => x.type === "UnlockArmorRepair");
                 if (!hasBonus)
                 {
-                    pmcProfile.Bonuses.push(
-                        {
-                            type: "UnlockArmorRepair",
-                            value: 1,
-                            passive: true,
-                            production: false,
-                            visible: true
-                        }
-                    );
+                    const hideoutAreas = this.databaseServer.getTables().hideout.areas;
+                    const lavArea = hideoutAreas.find(x => x.type === HideoutAreas.LAVATORY);
+                    const unlockArmorRepairBonus = lavArea.stages[1].bonuses[0];
+
+
+                    pmcProfile.Bonuses.push(unlockArmorRepairBonus);
 
                     this.logger.debug("Missing UnlockArmorRepair bonus added to profile");
                 }
