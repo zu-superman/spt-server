@@ -840,7 +840,7 @@ export class BotEquipmentModGenerator
      * Filter out non-whitelisted weapon scopes
      * @param weapon Weapon scopes will be added to
      * @param scopes Full scope pool
-     * @param botWeaponSightWhitelist whitelist of scope types by weapon base type 
+     * @param botWeaponSightWhitelist Whitelist of scope types by weapon base type 
      * @returns array of scope tpls that have been filtered
      */
     protected filterSightsByWeaponType(weapon: Item, scopes: string[], botWeaponSightWhitelist: Record<string, string[]>): string[]
@@ -865,16 +865,21 @@ export class BotEquipmentModGenerator
                 continue;
             }
 
-            // Check item is mount, then check if it allows whitelisted mods
+            // Check item is mount + has child items, then check if it allows whitelisted mods
             const itemDetails = this.itemHelper.getItem(item)[1];
             if (this.itemHelper.isOfBaseclass(item, BaseClasses.MOUNT) && itemDetails._props.Slots.length > 0 )
             {
-                const scopeSlot = itemDetails._props.Slots.find(x => x._name.includes("mod_scope"));
-                if (scopeSlot?._props.filters[0].Filter.some(x => this.itemHelper.isOfBaseclasses(x, whitelistedSightTypes)))
+                // Check to see if mount has a scope inside its possible slots (includes mod_scope_001 etc)
+                const scopeSlot = itemDetails._props.Slots.filter(x => x._name.startsWith("mod_scope"));
+
+                // Mods scope slot has child items that have a non-whitelisted item in list, skip
+                // We do this to prevent mounts with scopes appearing on weapons like SMGs
+                if (scopeSlot?.some(x => x._props.filters[0].Filter.some(x => !this.itemHelper.isOfBaseclasses(x, whitelistedSightTypes))))
                 {
-                    filteredScopesAndMods.push(item);
+                    continue;
                 }
-                
+
+                filteredScopesAndMods.push(item);
             }
         }
 
