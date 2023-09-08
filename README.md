@@ -133,7 +133,7 @@ Player profile is stored in SPT folder as a JSON file, allowing for changes to p
 		 - Randomised attachments with percentage based chance to appear
 			 - Face shields
 			 - Flashlights
-	- Randomsied AI brains
+	- Randomised AI brains
 		- Chooses random AI behaviour from pool of possible bot types (e.g. raider/rogue/killa)
 	 - Dogtags
 		 - Random level
