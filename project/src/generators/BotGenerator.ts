@@ -222,7 +222,6 @@ export class BotGenerator
             return `${name} (${this.randomUtil.getArrayValue(pmcNames)})`;
         }
 
-
         if (this.botConfig.showTypeInNickname && !isPlayerScav)
         {
             name += ` ${botRole}`;
