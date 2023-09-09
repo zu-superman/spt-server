@@ -681,12 +681,24 @@
     "forcedLootSingleSpawnById": {
         "bigmap": [
             "5ac620eb86f7743a8e6e0da0",
-            "5939e5a786f77461f11c0098"],
+            "5939e5a786f77461f11c0098",
+            "64e74a3d4d49d23b2c39d319"
+        ],
+        "interchange": [
+            "64e74a5ac2b4f829615ec336"
+        ],
         "lighthouse": [
             "6331bb0d1aa9f42b804997a6",
             "6398a072e301557ae24cec92",
             "6398a0861c712b1e1d4dadf1",
-            "6399f54b0a36db13c823ad21"
+            "6399f54b0a36db13c823ad21",
+            "64e74a64aac4cd0a7264ecdf"
+        ],
+        "rezervbase": [
+            "64e74a4baac4cd0a7264ecdd"
+        ],
+        "shoreline": [
+            "64e74a534d49d23b2c39d31b"
         ],
         "tarkovstreets": [
             "638df4cc7b560b03794a18d2",
@@ -698,10 +710,17 @@
             "638e9d5536b3b72c944e2fc7",
             "6393262086e646067c176aa2",
             "63989ced706b793c7d60cfef",
-            "63a39e1d234195315d4020bd"
+            "63a39e1d234195315d4020bd",
+            "64e74a35aac4cd0a7264ecdb",
+            "64e74a186393886f74114a96",
+            "64e74a1faac4cd0a7264ecd9",
+            "64e73909cd54ef0580746af3",
+            "64e74a2fc2b4f829615ec332",
+            "64e74a274d49d23b2c39d317"
         ],
         "laboratory": [
-            "6398a4cfb5992f573c6562b3"
+            "6398a4cfb5992f573c6562b3",
+            "64e74a44c2b4f829615ec334"
         ]
     },
     "splitWaveIntoSingleSpawnsSettings": {
