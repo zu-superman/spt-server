@@ -73,7 +73,7 @@ export class PaymentService
         // Nothing to do here, since we dont need to pay money.
         if (barterPrice === 0)
         {
-            this.logger.success(this.localisationService.getText("payment-zero_price_no_payment"));
+            this.logger.debug(this.localisationService.getText("payment-zero_price_no_payment"));
             return output;
         }
 
