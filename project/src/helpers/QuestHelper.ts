@@ -641,6 +641,12 @@ export class QuestHelper
     public applyQuestReward(pmcData: IPmcData, questId: string, state: QuestStatus, sessionId: string, questResponse: IItemEventRouterResponse): Reward[]
     {        
         let questDetails = this.getQuestFromDb(questId, pmcData);
+        if (!questDetails)
+        {
+            this.logger.warning(`Unable to find quest: ${questId} from db, unable to give quest rewards`);
+
+            return;
+        }
         
         // Check for and apply intel center money bonus if it exists
         const intelCenterBonus = this.getIntelCenterRewardBonus(pmcData);
