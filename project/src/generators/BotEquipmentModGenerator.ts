@@ -187,9 +187,8 @@ export class BotEquipmentModGenerator
         const botWeaponSightWhitelist = this.botEquipmentFilterService.getBotWeaponSightWhitelist(botEquipmentRole);
         const randomisationSettings = this.botHelper.getBotRandomizationDetails(botLevel, botEquipConfig);
 
-        const sortedModKeys = this.sortModKeys(Object.keys(compatibleModsPool));
-
         // Iterate over mod pool and choose mods to add to item
+        const sortedModKeys = this.sortModKeys(Object.keys(compatibleModsPool));
         for (const modSlot of sortedModKeys)
         {
             // Check weapon has slot for mod to fit in
@@ -233,7 +232,14 @@ export class BotEquipmentModGenerator
             if (this.modSlotCanHoldScope(modSlot, modToAddTemplate._parent))
             {
                 // mod_mount was picked to be added to weapon, force scope chance to ensure its filled
-                this.setScopeSpawnChancesToFull(modSpawnChances);
+                const scopeSlots = [
+                    "mod_scope",
+                    "mod_scope_000",
+                    "mod_scope_001",
+                    "mod_scope_002",
+                    "mod_scope_003"
+                ];
+                this.adjustSlotSpawnChances(modSpawnChances, scopeSlots, 100);
 
                 // Hydrate pool of mods that fit into mount as its a randomisable slot
                 if (isRandomisableSlot)
@@ -241,6 +247,18 @@ export class BotEquipmentModGenerator
                     // Add scope mods to modPool dictionary to ensure the mount has a scope in the pool to pick
                     this.addCompatibleModsForProvidedMod("mod_scope", modToAddTemplate, modPool, botEquipBlacklist);
                 }
+            }
+
+            // If picked item is muzzle adapter that can hold a child, adjust spawn chance
+            if (this.modSlotCanHoldMuzzleDevices(modSlot, modToAddTemplate._parent))
+            {
+                const muzzleSlots = [
+                    "mod_muzzle",
+                    "mod_muzzle_000",
+                    "mod_muzzle_001"
+                ];
+                // Make chance of muzzle devices 95%, nearly certain but not guaranteed
+                this.adjustSlotSpawnChances(modSpawnChances, muzzleSlots, 95);
             }
 
             // If front/rear sight are to be added, set opposite to 100% chance
@@ -319,10 +337,10 @@ export class BotEquipmentModGenerator
     }
 
     /**
-     * Set all scope mod chances to 100%
-     * @param modSpawnChances Chances objet to update
+     * Set mod spawn chances to defined amount
+     * @param modSpawnChances Chance dictionary to update
      */
-    protected setScopeSpawnChancesToFull(modSpawnChances: ModsChances): void
+    protected adjustSlotSpawnChances(modSpawnChances: ModsChances, modSlotsToAdjust: string[], newChancePercent: number): void
     {
         if (!modSpawnChances)
         {
@@ -331,19 +349,20 @@ export class BotEquipmentModGenerator
             return;
         }
 
-        const fullSpawnChancePercent = 100;
-        const scopeMods = [
-            "mod_scope",
-            "mod_scope_000",
-            "mod_scope_001",
-            "mod_scope_002",
-            "mod_scope_003"
-        ];
-
-        for (const modName of scopeMods)
+        if (!modSlotsToAdjust)
         {
-            modSpawnChances[modName] = fullSpawnChancePercent;
+            return;
         }
+
+        for (const modName of modSlotsToAdjust)
+        {
+            modSpawnChances[modName] = newChancePercent;
+        }
+    }
+
+    protected modSlotCanHoldMuzzleDevices(modSlot: string, modsParentId: string): boolean
+    {
+        return ["mod_muzzle", "mod_muzzle_000", "mod_muzzle_001"].includes(modSlot.toLowerCase());
     }
 
     protected sortModKeys(unsortedKeys: string[]): string[]
