@@ -699,6 +699,16 @@ export class FenceService
             return;
         }
 
+        // Mechanical key + has limited uses
+        if (this.itemHelper.isOfBaseclass(itemDetails._id, BaseClasses.KEY_MECHANICAL) && itemDetails._props.MaximumNumberOfUsage > 1)
+        {
+            itemToAdjust.upd.Key = {
+                NumberOfUsages: this.randomUtil.getInt(0, itemDetails._props.MaximumNumberOfUsage - 1)
+            };
+
+            return;
+        }
+
         // Randomise items that use resources (e.g. fuel)
         if (itemDetails._props.MaxResource > 0)
         {
