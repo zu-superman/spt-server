@@ -362,7 +362,7 @@ export class ProfileFixerService
     protected getActiveRepeatableQuests(repeatableQuests: IPmcDataRepeatableQuest[]): IRepeatableQuest[]
     {
         let activeQuests = [];
-        repeatableQuests.forEach(x =>
+        repeatableQuests?.forEach(x =>
         {
             if (x.activeQuests.length > 0)
             {
