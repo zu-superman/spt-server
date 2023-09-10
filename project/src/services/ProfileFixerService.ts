@@ -768,6 +768,14 @@ export class ProfileFixerService
                     continue; // Skip message with no items
                 }
 
+                // Fix message that have no items but have the flags to indicate items to collect
+                if (message.items.data.length === 0)
+                {
+                    message.hasRewards = false;
+                    message.rewardCollected = true;
+                    continue;
+                }
+
                 // Iterate over all items in message
                 for (const item of message.items.data)
                 {
