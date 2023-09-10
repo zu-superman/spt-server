@@ -690,7 +690,16 @@ export class FenceService
             return;
         }
 
-        // Randomise items that use resources
+        if (this.itemHelper.isOfBaseclass(itemDetails._id, BaseClasses.REPAIR_KITS))
+        {
+            itemToAdjust.upd.RepairKit = {
+                Resource: this.randomUtil.getInt(1, itemDetails._props.MaxRepairResource)
+            };
+
+            return;
+        }
+
+        // Randomise items that use resources (e.g. fuel)
         if (itemDetails._props.MaxResource > 0)
         {
             const resourceMax = itemDetails._props.MaxResource;
