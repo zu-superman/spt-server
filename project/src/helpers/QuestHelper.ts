@@ -645,7 +645,7 @@ export class QuestHelper
         {
             this.logger.warning(`Unable to find quest: ${questId} from db, unable to give quest rewards`);
 
-            return;
+            return [];
         }
         
         // Check for and apply intel center money bonus if it exists
