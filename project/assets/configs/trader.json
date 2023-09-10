@@ -115,8 +115,7 @@
             "55818add4bdc2d5b648b456f": 35000,
             "590c745b86f7743cc433c5f2": 64000,
             "57864bb7245977548b3b66c2": 90000,
-            "5c99f98d86f7745c314214b3": 15000,
-            "5c164d2286f774194c5e69fa": 1
+            "5c99f98d86f7745c314214b3": 15000
         },
         "presetSlotsToRemoveChancePercent": {
             "mod_scope": 70,
@@ -144,6 +143,7 @@
         },
         "blacklistSeasonalItems": true,
         "blacklist": [
+            "5c164d2286f774194c5e69fa",
             "543be5cb4bdc2deb348b4568",
             "543be6674bdc2df1348b4569",
             "5448bf274bdc2dfc2f8b456a",
