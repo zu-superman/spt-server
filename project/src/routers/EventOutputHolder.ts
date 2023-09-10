@@ -2,7 +2,7 @@ import { inject, injectable } from "tsyringe";
 
 import { ProfileHelper } from "../helpers/ProfileHelper";
 import { IPmcData } from "../models/eft/common/IPmcData";
-import { IHideoutImprovement, Productive } from "../models/eft/common/tables/IBotBase";
+import { IHideoutImprovement, Productive, TraderData, TraderInfo } from "../models/eft/common/tables/IBotBase";
 import { ProfileChange } from "../models/eft/itemEvent/IItemEventRouterBase";
 import { IItemEventRouterResponse } from "../models/eft/itemEvent/IItemEventRouterResponse";
 import { JsonUtil } from "../utils/JsonUtil";
@@ -90,7 +90,31 @@ export class EventOutputHolder
         // Clone productions to ensure we preseve the profile jsons data
         profileChanges.production = this.getProductionsFromProfileAndFlagComplete(this.jsonUtil.clone(pmcData.Hideout.Production));
         profileChanges.improvements = this.jsonUtil.clone(this.getImprovementsFromProfileAndFlagComplete(pmcData));
-        profileChanges.traderRelations = this.jsonUtil.clone(pmcData.TradersInfo);
+        profileChanges.traderRelations = this.constructTraderRelations(pmcData.TradersInfo);
+    }
+
+    /**
+     * Convert the internal trader data object into an object we can send to the client
+     * @param traderData server data for traders
+     * @returns 
+     */
+    protected constructTraderRelations(traderData: Record<string, TraderInfo>): Record<string, TraderData>
+    {
+        const result: Record<string, TraderData> = {};
+
+        for (const traderId in traderData)
+        {
+            const baseData = traderData[traderId];
+            result[traderId] = {
+                salesSum: baseData.salesSum,
+                disabled: baseData.disabled,
+                loyalty: baseData.loyaltyLevel,
+                standing: baseData.standing,
+                unlocked: baseData.unlocked
+            };
+        }
+
+        return result;
     }
     
     /**

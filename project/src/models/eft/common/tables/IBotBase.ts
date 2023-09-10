@@ -474,10 +474,20 @@ export interface TraderInfo
 {
     loyaltyLevel: number
     salesSum: number
-    disabled: boolean
     standing: number
     nextResupply: number
     unlocked: boolean
+    disabled: boolean
+}
+
+/** This object is sent to the client as part of traderRelations */
+export interface TraderData
+{
+    salesSum: number
+    standing: number
+    loyalty: number
+    unlocked: boolean
+    disabled: boolean
 }
 
 export interface RagfairInfo 
