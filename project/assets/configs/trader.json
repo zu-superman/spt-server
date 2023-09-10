@@ -76,7 +76,8 @@
             "57864a3d24597754843f8721": 2,
             "5448e54d4bdc2dcc718b4568": 4,
             "5448f39d4bdc2d0a728b4568": 5,
-            "5795f317245977243854e041": 3
+            "5795f317245977243854e041": 3,
+            "543be5e94bdc2df1348b4568": 2
         },
         "presetMaxDurabilityPercentMinMax": {
             "min": 35,
@@ -112,7 +113,8 @@
             "55818ae44bdc2dde698b456c": 45000,
             "55818add4bdc2d5b648b456f": 35000,
             "590c745b86f7743cc433c5f2": 64000,
-            "57864bb7245977548b3b66c2": 90000
+            "57864bb7245977548b3b66c2": 90000,
+            "543be5e94bdc2df1348b4568": 45000
         },
         "presetSlotsToRemoveChancePercent": {
             "mod_scope": 70,
@@ -141,7 +143,6 @@
         "blacklistSeasonalItems": true,
         "blacklist": [
             "543be5cb4bdc2deb348b4568",
-            "543be5e94bdc2df1348b4568",
             "543be6674bdc2df1348b4569",
             "5448bf274bdc2dfc2f8b456a",
             "5447bedf4bdc2d87278b4568",
