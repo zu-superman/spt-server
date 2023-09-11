@@ -22,6 +22,7 @@ import { Traders } from "../models/enums/Traders";
 import { ICoreConfig } from "../models/spt/config/ICoreConfig";
 import { IHttpConfig } from "../models/spt/config/IHttpConfig";
 import { ILocationConfig } from "../models/spt/config/ILocationConfig";
+import { ILootConfig } from "../models/spt/config/ILootConfig";
 import { IPmcConfig } from "../models/spt/config/IPmcConfig";
 import { IRagfairConfig } from "../models/spt/config/IRagfairConfig";
 import { ILocationData } from "../models/spt/server/ILocations";
@@ -51,6 +52,7 @@ export class GameController
     protected locationConfig: ILocationConfig;
     protected ragfairConfig: IRagfairConfig;
     protected pmcConfig: IPmcConfig;
+    protected lootConfig: ILootConfig;
 
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
@@ -80,6 +82,7 @@ export class GameController
         this.locationConfig = this.configServer.getConfig(ConfigTypes.LOCATION);
         this.ragfairConfig = this.configServer.getConfig(ConfigTypes.RAGFAIR);
         this.pmcConfig = this.configServer.getConfig(ConfigTypes.PMC);
+        this.lootConfig = this.configServer.getConfig(ConfigTypes.LOOT);
     }
 
     /**
@@ -113,6 +116,8 @@ export class GameController
         {
             this.adjustMapBotLimits();
         }
+
+        this.addCustomLooseLootPositions();
 
         this.adjustLooseLootSpawnProbabilities();
 
@@ -219,6 +224,44 @@ export class GameController
             if (!this.ragfairConfig.dynamic.blacklist.enableBsgList)
             {
                 this.flagAllItemsInDbAsSellableOnFlea();
+            }
+        }
+    }
+
+    protected addCustomLooseLootPositions(): void
+    {
+        const looseLootPositionsToAdd = this.lootConfig.looseLoot;
+        for (const mapId in looseLootPositionsToAdd)
+        {
+            if (!mapId)
+            {
+                this.logger.warning(`Unable to add loot positions to map: ${mapId}, skipping`);
+                continue;
+            }
+            const mapLooseLoot: ILooseLoot = this.databaseServer.getTables().locations[mapId]?.looseLoot;
+            if (!mapLooseLoot)
+            {
+                this.logger.warning(` map: ${mapId} has no loose loot, skipping`);
+                continue;
+            }
+            const positionsToAdd = looseLootPositionsToAdd[mapId];
+            for (const positionToAdd of positionsToAdd)
+            {
+                // Exists already, add new items to existing positions pool
+                const existingLootPosition = mapLooseLoot.spawnpoints.find(x => x.template.Id === positionToAdd.template.Id);
+                if (existingLootPosition)
+                {
+                    for (const positionToAdd of positionsToAdd)
+                    {
+                        existingLootPosition.template.Items.push(...positionToAdd.template.Items);
+                        existingLootPosition.itemDistribution.push(...positionToAdd.itemDistribution);
+
+                        continue;
+                    }
+                }
+
+                // new postion, add entire object
+                mapLooseLoot.spawnpoints.push(positionToAdd);
             }
         }
     }

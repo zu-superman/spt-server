@@ -13,6 +13,7 @@ export enum ConfigTypes
     ITEM = "aki-item",
     LOCALE = "aki-locale",
     LOCATION = "aki-location",
+    LOOT = "aki-loot",
     MATCH = "aki-match",
     PLAYERSCAV = "aki-playerscav",
     PMC_CHAT_RESPONSE = "aki-pmcchatresponse",
