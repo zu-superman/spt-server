@@ -14080,8 +14080,8 @@
       "number": 9,
       "slots_max": 5,
       "slots_min": 1,
-      "time_max": 10,
-      "time_min": 5
+      "time_max": 25,
+      "time_min": 15
     },
     {
       "BotPreset": "hard",
@@ -14092,8 +14092,8 @@
       "number": 10,
       "slots_max": 5,
       "slots_min": 1,
-      "time_max": 5,
-      "time_min": 1
+      "time_max": 25,
+      "time_min": 15
     },
     {
       "BotPreset": "hard",
