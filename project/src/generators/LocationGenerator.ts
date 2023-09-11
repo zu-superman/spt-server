@@ -508,9 +508,31 @@ export class LocationGenerator
 
         // Select a number of spawn points to add loot to
         let spawnPoints: Spawnpoint[] = [];
-        for (const si of spawnpointArray.draw(numSpawnpoints, false))
+        // for (const si of spawnpointArray.draw(numSpawnpoints, false))
+        // {
+        //     spawnPoints.push(spawnpointArray.data(si));
+        // }
+
+        // Select a number of spawn points to add loot to
+        // Don't count 100% chance items in the total amount
+        for (let index = 1; index < numSpawnpoints; index++)
         {
-            spawnPoints.push(spawnpointArray.data(si));
+            const itemToAdd: Spawnpoint = spawnpointArray.data(spawnpointArray.draw(1, false)[0]);
+            if (!itemToAdd)
+            {
+                continue;
+            }
+            spawnPoints.push(itemToAdd);
+            
+            if (itemToAdd.probability === 1)
+            {
+                this.logger.warning(`Found item with probability of 100%: ${itemToAdd.template.Id}, not counted in loose total`);
+                index--;
+            }
+            else
+            {
+                index++;
+            }
         }
 
         // Filter out duplicate locationIds
