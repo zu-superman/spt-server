@@ -251,13 +251,10 @@ export class GameController
                 const existingLootPosition = mapLooseLoot.spawnpoints.find(x => x.template.Id === positionToAdd.template.Id);
                 if (existingLootPosition)
                 {
-                    for (const positionToAdd of positionsToAdd)
-                    {
-                        existingLootPosition.template.Items.push(...positionToAdd.template.Items);
-                        existingLootPosition.itemDistribution.push(...positionToAdd.itemDistribution);
+                    existingLootPosition.template.Items.push(...positionToAdd.template.Items);
+                    existingLootPosition.itemDistribution.push(...positionToAdd.itemDistribution);
 
-                        continue;
-                    }
+                    continue;
                 }
 
                 // new postion, add entire object
