@@ -479,11 +479,13 @@ export class LocationGenerator
     {
         const loot: SpawnpointTemplate[] = [];
 
+        // Add all forced loot to return array
         this.addForcedLoot(loot, this.jsonUtil.clone(dynamicLootDist.spawnpointsForced), locationName);
 
-        const dynamicSpawnPoints = this.jsonUtil.clone(dynamicLootDist.spawnpoints);
-        //draw from random distribution
-        const numSpawnpoints = Math.round(
+        const allDynamicSpawnpoints = this.jsonUtil.clone(dynamicLootDist.spawnpoints);
+        
+        //Draw from random distribution
+        const desiredSpawnpointCount = Math.round(
             this.getLooseLootMultiplerForLocation(locationName) *
             this.randomUtil.randn(
                 dynamicLootDist.spawnpointCount.mean,
@@ -491,65 +493,53 @@ export class LocationGenerator
             )
         );
 
+        // Positions not in forced but have 100% chance to spawn
+        const guaranteedLoosePoints: Spawnpoint[] = [];
+
         const blacklistedPoints = this.locationConfig.looseLootBlacklist[locationName];
         const spawnpointArray = new ProbabilityObjectArray<string, Spawnpoint>(this.mathUtil, this.jsonUtil);
-        for (const si of dynamicSpawnPoints)
+
+        for (const spawnpoint of allDynamicSpawnpoints)
         {
-            if (blacklistedPoints?.includes(si.template.Id))
+            // Point is blacklsited, skip
+            if (blacklistedPoints?.includes(spawnpoint.template.Id))
             {
-                this.logger.debug(`Ignoring loose loot location: ${si.template.Id}`);
+                this.logger.debug(`Ignoring loose loot location: ${spawnpoint.template.Id}`);
+                continue;
+            }
+
+            if (spawnpoint.probability === 1)
+            {
+                guaranteedLoosePoints.push(spawnpoint);
                 continue;
             }
 
             spawnpointArray.push(
-                new ProbabilityObject(si.template.Id, si.probability, si)
+                new ProbabilityObject(spawnpoint.template.Id, spawnpoint.probability, spawnpoint)
             );
         }
 
         // Select a number of spawn points to add loot to
-        let spawnPoints: Spawnpoint[] = [];
-        // for (const si of spawnpointArray.draw(numSpawnpoints, false))
-        // {
-        //     spawnPoints.push(spawnpointArray.data(si));
-        // }
-
-        // Select a number of spawn points to add loot to
-        // Don't count 100% chance items in the total amount
-        let drawn = 0;
-        for (let index = 1; index < numSpawnpoints; index++)
+        let chosenSpawnpoints: Spawnpoint[] = [];
+        // Add ALL loose loot with 100% chance to pool
+        chosenSpawnpoints.push(...guaranteedLoosePoints);
+        for (const si of spawnpointArray.draw(desiredSpawnpointCount, false))
         {
-            const itemToAdd: Spawnpoint = spawnpointArray.data(spawnpointArray.draw(1, false)[0]);
-            if (!itemToAdd)
-            {
-                continue;
-            }
-            spawnPoints.push(itemToAdd);
-            
-            if (itemToAdd.probability === 1)
-            {
-                this.logger.warning(`Found item with probability of 100%: ${itemToAdd.template.Id}, not counted in loose total`);
-                index--;
-            }
-            else
-            {
-                index++;
-            }
-
-            drawn++;
+            chosenSpawnpoints.push(spawnpointArray.data(si));
         }
 
         // Filter out duplicate locationIds
-        spawnPoints = [...new Map(spawnPoints.map(x => [x.locationId, x])).values()];
-        const numberTooManyRequested = numSpawnpoints - spawnPoints.length;
+        chosenSpawnpoints = [...new Map(chosenSpawnpoints.map(x => [x.locationId, x])).values()];
+        const numberTooManyRequested = desiredSpawnpointCount - chosenSpawnpoints.length;
         if (numberTooManyRequested > 0)
         {
-            this.logger.info(this.localisationService.getText("location-spawn_point_count_requested_vs_found", {requested: drawn, found: spawnPoints.length, mapName: locationName}));
+            this.logger.info(this.localisationService.getText("location-spawn_point_count_requested_vs_found", {requested: desiredSpawnpointCount+guaranteedLoosePoints.length, found: chosenSpawnpoints.length, mapName: locationName}));
         }
 
-        // iterate over spawnpoints
+        // Iterate over spawnpoints
         const seasonalEventActive = this.seasonalEventService.seasonalEventEnabled();
         const seasonalItemTplBlacklist = this.seasonalEventService.getSeasonalEventItemsToBlock();
-        for (const spawnPoint of spawnPoints)
+        for (const spawnPoint of chosenSpawnpoints)
         {
             const itemArray = new ProbabilityObjectArray<string>(this.mathUtil, this.jsonUtil);
             for (const itemDist of spawnPoint.itemDistribution)
