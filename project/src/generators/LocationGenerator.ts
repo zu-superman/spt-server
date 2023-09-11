@@ -515,6 +515,7 @@ export class LocationGenerator
 
         // Select a number of spawn points to add loot to
         // Don't count 100% chance items in the total amount
+        let drawn = 0;
         for (let index = 1; index < numSpawnpoints; index++)
         {
             const itemToAdd: Spawnpoint = spawnpointArray.data(spawnpointArray.draw(1, false)[0]);
@@ -533,6 +534,8 @@ export class LocationGenerator
             {
                 index++;
             }
+
+            drawn++;
         }
 
         // Filter out duplicate locationIds
@@ -540,7 +543,7 @@ export class LocationGenerator
         const numberTooManyRequested = numSpawnpoints - spawnPoints.length;
         if (numberTooManyRequested > 0)
         {
-            this.logger.info(this.localisationService.getText("location-spawn_point_count_requested_vs_found", {requested: numSpawnpoints, found: spawnPoints.length, mapName: locationName}));
+            this.logger.info(this.localisationService.getText("location-spawn_point_count_requested_vs_found", {requested: drawn, found: spawnPoints.length, mapName: locationName}));
         }
 
         // iterate over spawnpoints
