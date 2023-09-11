@@ -183,7 +183,7 @@
   "OfflineNewSpawn": true,
   "OfflineOldSpawn": true,
   "OldSpawn": true,
-  "OpenZones": "ZoneSW01,ZoneConstruction,ZoneCarShowroom,ZoneCinema,ZoneFactory,ZoneHotel_1,ZoneHotel_2,ZoneConcordia_1,ZoneConcordiaParking,ZoneSnipeCinema,ZoneSnipeCarShowroom,ZoneSnipeBuilding,ZoneSnipeSW01",
+  "OpenZones": "ZoneSW01,ZoneConstruction,ZoneCarShowroom,ZoneCinema,ZoneFactory,ZoneHotel_1,ZoneHotel_2,ZoneConcordia_1,ZoneConcordiaParking,ZoneCard1,ZoneSW00,ZoneStilo",
   "PlayersRequestCount": -1,
   "PmcMaxPlayersInGroup": 5,
   "Preview": {
@@ -14038,11 +14038,11 @@
     {
       "BotPreset": "normal",
       "BotSide": "Savage",
-      "SpawnPoints": "ZoneCarShowroom",
+      "SpawnPoints": "ZoneStilo",
       "WildSpawnType": "assault",
       "isPlayers": false,
       "number": 6,
-      "slots_max": 3,
+      "slots_max": 4,
       "slots_min": 1,
       "time_max": -1,
       "time_min": -1
@@ -14110,7 +14110,7 @@
     {
       "BotPreset": "normal",
       "BotSide": "Savage",
-      "SpawnPoints": "ZoneSnipeCarShowroom",
+      "SpawnPoints": "ZoneSnipeStilo",
       "WildSpawnType": "marksman",
       "isPlayers": false,
       "number": 12,
@@ -14266,14 +14266,14 @@
     {
       "BotPreset": "normal",
       "BotSide": "Savage",
-      "SpawnPoints": "ZoneCarShowroom",
+      "SpawnPoints": "ZoneSW00",
       "WildSpawnType": "assault",
       "isPlayers": false,
       "number": 25,
-      "slots_max": 3,
+      "slots_max": 5,
       "slots_min": 1,
       "time_max": 300,
-      "time_min": 50
+      "time_min": 40
     },
     {
       "BotPreset": "normal",
@@ -14402,7 +14402,7 @@
       "WildSpawnType": "assault",
       "isPlayers": false,
       "number": 36,
-      "slots_max": 4,
+      "slots_max": 5,
       "slots_min": 2,
       "time_max": -1,
       "time_min": -1
