@@ -241,7 +241,7 @@ export class GameController
             const mapLooseLoot: ILooseLoot = this.databaseServer.getTables().locations[mapId]?.looseLoot;
             if (!mapLooseLoot)
             {
-                this.logger.warning(` map: ${mapId} has no loose loot, skipping`);
+                this.logger.warning(`Map: ${mapId} has no loose loot data, skipping`);
                 continue;
             }
             const positionsToAdd = looseLootPositionsToAdd[mapId];
