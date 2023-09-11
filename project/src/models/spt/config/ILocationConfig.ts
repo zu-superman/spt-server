@@ -29,13 +29,14 @@ export interface ILocationConfig extends IBaseConfig
     enableBotTypeLimits: boolean
     /** Add limits to a locations base.MinMaxBots array if enableBotTypeLimits is true*/
     botTypeLimits: Record<string, IBotTypeLimit[]>
+    /** Loose loot probability adjustments to apply on game start */
+    looseLootSpawnPointAdjustments: Record<string, Record<string, number>>;
     /** container randomisation settings */
     containerRandomisationSettings: IContainerRandomistionSettings;
     /** How full must a random loose magazine be %*/
     minFillLooseMagazinePercent: number
     /** How full must a random static magazine be %*/
     minFillStaticMagazinePercent: number
-    makeWishingTreeAlwaysGiveGift: boolean
     allowDuplicateItemsInStaticContainers: boolean
     /** Key: map, value: loose loot ids to ignore */
     looseLootBlacklist: Record<string, string[]>

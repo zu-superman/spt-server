@@ -7,6 +7,7 @@ import { HttpServerHelper } from "../helpers/HttpServerHelper";
 import { ProfileHelper } from "../helpers/ProfileHelper";
 import { PreAkiModLoader } from "../loaders/PreAkiModLoader";
 import { IEmptyRequestData } from "../models/eft/common/IEmptyRequestData";
+import { ILooseLoot } from "../models/eft/common/ILooseLoot";
 import { IPmcData } from "../models/eft/common/IPmcData";
 import { BodyPartHealth } from "../models/eft/common/tables/IBotBase";
 import { ICheckVersionResponse } from "../models/eft/game/ICheckVersionResponse";
@@ -113,10 +114,7 @@ export class GameController
             this.adjustMapBotLimits();
         }
 
-        if (this.locationConfig.makeWishingTreeAlwaysGiveGift)
-        {
-            this.makeCustomsWishingTreeLootGuaranteed();
-        }
+        this.adjustLooseLootSpawnProbabilities();
 
         // repeatableQuests are stored by in profile.Quests due to the responses of the client (e.g. Quests in offraidData)
         // Since we don't want to clutter the Quests list, we need to remove all completed (failed / successful) repeatable quests.
@@ -225,14 +223,29 @@ export class GameController
         }
     }
 
-    protected makeCustomsWishingTreeLootGuaranteed(): void
+    protected adjustLooseLootSpawnProbabilities(): void
     {
-        const customsLooseLoot = this.databaseServer.getTables().locations.bigmap.looseLoot;
-        const lootPointId = this.randomUtil.getChance100(50) ? "Loot 19 (9)566090" : "Loot 55565364";
-        const wishingTreeSpawnPoint = customsLooseLoot.spawnpoints.find(x => x.template.Id === lootPointId);
-        if (wishingTreeSpawnPoint)
+        const adjustments = this.locationConfig.looseLootSpawnPointAdjustments;
+        for (const mapId in adjustments)
         {
-            wishingTreeSpawnPoint.probability = 1;
+            const mapLooseLootData: ILooseLoot = this.databaseServer.getTables().locations[mapId]?.looseLoot;
+            if (!mapLooseLootData)
+            {
+                this.logger.warning(`Unable to adjust loot positions on map: ${mapId}`);
+                continue;
+            }
+            const mapLootAdjustmentsDict = adjustments[mapId];
+            for (const lootKey in mapLootAdjustmentsDict)
+            {
+                const lootPostionToAdjust = mapLooseLootData.spawnpoints.find(x => x.template.Id === lootKey);
+                if (!lootPostionToAdjust)
+                {
+                    this.logger.warning(`Unable to adjust loot position: ${lootKey} on map: ${mapId}`);
+                    continue;
+                }
+
+                lootPostionToAdjust.probability = mapLootAdjustmentsDict[lootKey];
+            }
         }
     }
     
