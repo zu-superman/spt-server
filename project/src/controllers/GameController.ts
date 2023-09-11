@@ -265,7 +265,7 @@ export class GameController
 
     protected adjustLooseLootSpawnProbabilities(): void
     {
-        const adjustments = this.locationConfig.looseLootSpawnPointAdjustments;
+        const adjustments = this.lootConfig.looseLootSpawnPointAdjustments;
         for (const mapId in adjustments)
         {
             const mapLooseLootData: ILooseLoot = this.databaseServer.getTables().locations[mapId]?.looseLoot;
