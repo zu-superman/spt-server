@@ -424,22 +424,24 @@ export class PreAkiModLoader implements IModLoader
         const modPath = this.getModPath(modName);
 
         const modIsCalledBepinEx = modName.toLowerCase() === "bepinex";
+        const modIsCalledSrc = modName.toLowerCase() === "src";
+        const modIsCalledDb = modName.toLowerCase() === "db";
         const hasBepinExFolderStructure = this.vfs.exists(`${modPath}/plugins`);
         const containsDll = this.vfs.getFiles(`${modPath}`).find(x => x.includes(".dll"));
-        if (modIsCalledBepinEx || hasBepinExFolderStructure || containsDll)
+        if (modIsCalledBepinEx || modIsCalledSrc || modIsCalledDb || hasBepinExFolderStructure || containsDll)
         {
             this.logger.error(this.localisationService.getText("modloader-is_client_mod", modName));
             return false;
         }
 
-        // check if config exists
+        // Check if config exists
         if (!this.vfs.exists(`${modPath}/package.json`))
         {
             this.logger.error(this.localisationService.getText("modloader-missing_package_json", modName));
             return false;
         }
 
-        // validate mod
+        // Validate mod
         const config = this.jsonUtil.deserialize<IPackageJsonData>(this.vfs.readFile(`${modPath}/package.json`));
         const checks = ["name", "author", "version", "license"];
         let issue = false;
