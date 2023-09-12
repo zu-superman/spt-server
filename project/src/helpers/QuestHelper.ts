@@ -519,15 +519,19 @@ export class QuestHelper
      * @param pmcData Player profile
      * @param failRequest Fail quest request data
      * @param sessionID Session id
+     * @param output Client output
      * @returns Item event router response
      */
-    public failQuest(pmcData: IPmcData, failRequest: IFailQuestRequestData, sessionID: string): IItemEventRouterResponse
+    public failQuest(pmcData: IPmcData, failRequest: IFailQuestRequestData, sessionID: string, output: IItemEventRouterResponse = null): IItemEventRouterResponse
     {
         // Prepare response to send back client
-        const failedQuestResponse = this.eventOutputHolder.getOutput(sessionID);
+        if (!output)
+        {
+            output = this.eventOutputHolder.getOutput(sessionID);
+        }
 
         this.updateQuestState(pmcData, QuestStatus.Fail, failRequest.qid);
-        const questRewards = this.applyQuestReward(pmcData, failRequest.qid, QuestStatus.Fail, sessionID, failedQuestResponse);
+        const questRewards = this.applyQuestReward(pmcData, failRequest.qid, QuestStatus.Fail, sessionID, output);
 
         // Create a dialog message for completing the quest.
         const quest = this.getQuestFromDb(failRequest.qid, pmcData);
@@ -541,9 +545,9 @@ export class QuestHelper
             this.timeUtil.getHoursAsSeconds(this.questConfig.redeemTime)
         );
 
-        failedQuestResponse.profileChanges[sessionID].quests = this.failedUnlocked(failRequest.qid, sessionID);
+        output.profileChanges[sessionID].quests = this.failedUnlocked(failRequest.qid, sessionID);
 
-        return failedQuestResponse;
+        return output;
     }
 
     /**

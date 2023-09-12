@@ -399,7 +399,7 @@ export class QuestController
         const questsToFail = this.getQuestsFailedByCompletingQuest(completedQuestId);
         if (questsToFail?.length > 0)
         {
-            this.failQuests(sessionID, pmcData, questsToFail);
+            this.failQuests(sessionID, pmcData, questsToFail, completeQuestResponse);
         }
 
         // Show modal on player screen
@@ -517,8 +517,9 @@ export class QuestController
      * @param sessionID session id
      * @param pmcData player profile
      * @param questsToFail quests to fail
+     * @param output Client output
      */
-    protected failQuests(sessionID: string, pmcData: IPmcData, questsToFail: IQuest[]): void
+    protected failQuests(sessionID: string, pmcData: IPmcData, questsToFail: IQuest[], output: IItemEventRouterResponse): void
     {
         for (const questToFail of questsToFail)
         {
@@ -536,7 +537,7 @@ export class QuestController
                     qid: questToFail._id,
                     removeExcessItems: true
                 };
-                this.questHelper.failQuest(pmcData, failBody, sessionID);
+                this.questHelper.failQuest(pmcData, failBody, sessionID, output);
             }
             else
             {
