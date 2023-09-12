@@ -424,7 +424,7 @@ export class QuestController
         const questStatusChanges = this.getUpdatedQuestStatus(questDelta, pmcData);
         if (questStatusChanges)
         {
-            completeQuestResponse.profileChanges[sessionID].questsStatus = questStatusChanges;
+            completeQuestResponse.profileChanges[sessionID].questsStatus.push(...questStatusChanges);
         }
 
         // Update trader info data on response
