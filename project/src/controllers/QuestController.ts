@@ -540,9 +540,12 @@ export class QuestController
             }
             else
             {
+                const statusTimers = {};
+                statusTimers[QuestStatus.Fail] = this.timeUtil.getTimestamp();
                 const questData: Quest = {
                     qid: questToFail._id,
                     startTime: this.timeUtil.getTimestamp(),
+                    statusTimers: statusTimers,
                     status: QuestStatus.Fail
                 };
                 pmcData.Quests.push(questData);
