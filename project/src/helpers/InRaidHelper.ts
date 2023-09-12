@@ -1,7 +1,7 @@
 import { inject, injectable } from "tsyringe";
 
 import { IPmcData, IPostRaidPmcData } from "../models/eft/common/IPmcData";
-import { Quest, TraderInfo, Victim } from "../models/eft/common/tables/IBotBase";
+import { IQuestStatus, TraderInfo, Victim } from "../models/eft/common/tables/IBotBase";
 import { Item } from "../models/eft/common/tables/IItem";
 import { ISaveProgressRequestData } from "../models/eft/inRaid/ISaveProgressRequestData";
 import { IFailQuestRequestData } from "../models/eft/quests/IFailQuestRequestData";
@@ -199,7 +199,7 @@ export class InRaidHelper
      * @param preRaidQuests Quests prior to starting raid
      * @param postRaidQuests Quest after raid
      */
-    protected processFailedQuests(sessionId: string, pmcData: IPmcData, preRaidQuests: Quest[], postRaidQuests: Quest[]): void
+    protected processFailedQuests(sessionId: string, pmcData: IPmcData, preRaidQuests: IQuestStatus[], postRaidQuests: IQuestStatus[]): void
     {
         if (!preRaidQuests)
         {

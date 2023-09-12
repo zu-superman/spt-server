@@ -1,7 +1,7 @@
 import { inject, injectable } from "tsyringe";
 
 import { IPmcData } from "../models/eft/common/IPmcData";
-import { Quest } from "../models/eft/common/tables/IBotBase";
+import { IQuestStatus } from "../models/eft/common/tables/IBotBase";
 import { Item } from "../models/eft/common/tables/IItem";
 import {
     AvailableForConditions, AvailableForProps, IQuest, Reward
@@ -294,7 +294,7 @@ export class QuestHelper
      * @param newState State the new quest should be in when returned
      * @param acceptedQuest Details of accepted quest from client
      */
-    public getQuestReadyForProfile(pmcData: IPmcData, newState: QuestStatus, acceptedQuest: IAcceptQuestRequestData): Quest
+    public getQuestReadyForProfile(pmcData: IPmcData, newState: QuestStatus, acceptedQuest: IAcceptQuestRequestData): IQuestStatus
     {
         const existingQuest = pmcData.Quests.find(q => q.qid === acceptedQuest.qid);
         if (existingQuest)
@@ -309,7 +309,7 @@ export class QuestHelper
         }
 
         // Quest doesn't exists, add it
-        const newQuest: Quest = {
+        const newQuest: IQuestStatus = {
             qid: acceptedQuest.qid,
             startTime: this.timeUtil.getTimestamp(),
             status: newState,
@@ -545,7 +545,7 @@ export class QuestHelper
             this.timeUtil.getHoursAsSeconds(this.questConfig.redeemTime)
         );
 
-        output.profileChanges[sessionID].quests = this.failedUnlocked(failRequest.qid, sessionID);
+        output.profileChanges[sessionID].quests.push(this.failedUnlocked(failRequest.qid, sessionID));
 
         return output;
     }
@@ -801,7 +801,7 @@ export class QuestHelper
                 statusesDict[status] = this.timeUtil.getTimestamp();
             }
 
-            const questRecordToAdd: Quest = {
+            const questRecordToAdd: IQuestStatus = {
                 qid: questKey,
                 startTime: this.timeUtil.getTimestamp(),
                 status: statuses[statuses.length - 1],

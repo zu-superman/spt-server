@@ -7,7 +7,7 @@ import { QuestConditionHelper } from "../helpers/QuestConditionHelper";
 import { QuestHelper } from "../helpers/QuestHelper";
 import { TraderHelper } from "../helpers/TraderHelper";
 import { IPmcData } from "../models/eft/common/IPmcData";
-import { Quest } from "../models/eft/common/tables/IBotBase";
+import { IQuestStatus } from "../models/eft/common/tables/IBotBase";
 import { Item } from "../models/eft/common/tables/IItem";
 import { AvailableForConditions, IQuest, Reward } from "../models/eft/common/tables/IQuest";
 import { IRepeatableQuest } from "../models/eft/common/tables/IRepeatableQuests";
@@ -31,6 +31,7 @@ import { MailSendService } from "../services/MailSendService";
 import { PlayerService } from "../services/PlayerService";
 import { SeasonalEventService } from "../services/SeasonalEventService";
 import { HttpResponseUtil } from "../utils/HttpResponseUtil";
+import { JsonUtil } from "../utils/JsonUtil";
 import { TimeUtil } from "../utils/TimeUtil";
 
 @injectable()
@@ -41,6 +42,7 @@ export class QuestController
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
+        @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("HttpResponseUtil") protected httpResponseUtil: HttpResponseUtil,
         @inject("EventOutputHolder") protected eventOutputHolder: EventOutputHolder,
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
@@ -77,8 +79,10 @@ export class QuestController
         for (const quest of allQuests)
         {
             // Player already accepted the quest, show it regardless of status
-            if (profile.Quests.some(x => x.qid === quest._id))
+            const questInProfile = profile.Quests.find(x => x.qid === quest._id);
+            if (questInProfile)
             {
+                quest.sptStatus = questInProfile.status;
                 questsToShowPlayer.push(quest);
                 continue;
             }
@@ -106,6 +110,7 @@ export class QuestController
             // Quest has no conditions or loyalty conditions, add to visible quest list
             if (questRequirements.length === 0 && loyaltyRequirements.length === 0)
             {
+                quest.sptStatus = QuestStatus.AvailableForStart;
                 questsToShowPlayer.push(quest);
                 continue;
             }
@@ -155,6 +160,7 @@ export class QuestController
 
             if (haveCompletedPreviousQuest && passesLoyaltyRequirements)
             {
+                quest.sptStatus = QuestStatus.AvailableForStart;
                 questsToShowPlayer.push(quest);
             }
         }
@@ -388,14 +394,16 @@ export class QuestController
     {
         const completeQuestResponse = this.eventOutputHolder.getOutput(sessionID);
 
+        const completedQuest = this.questHelper.getQuestFromDb(body.qid, pmcData);
+
         const completedQuestId = body.qid;
-        const beforeQuests = this.getClientQuests(sessionID); // Must be gathered prior to applyQuestReward() & failQuests()
+        const beforeQuests = this.jsonUtil.clone(this.getClientQuests(sessionID)); // Must be gathered prior to applyQuestReward() & failQuests()
 
         const newQuestState = QuestStatus.Success;
         this.questHelper.updateQuestState(pmcData, newQuestState, completedQuestId);
         const questRewards = this.questHelper.applyQuestReward(pmcData, body.qid, newQuestState, sessionID, completeQuestResponse);
 
-        // Check if any of linked quest is failed, and that is unrestartable.
+        // Check for linked failed + unrestartable quests
         const questsToFail = this.getQuestsFailedByCompletingQuest(completedQuestId);
         if (questsToFail?.length > 0)
         {
@@ -405,16 +413,24 @@ export class QuestController
         // Show modal on player screen
         this.sendSuccessDialogMessageOnQuestComplete(sessionID, pmcData, completedQuestId, questRewards);
 
-        // Add diff of quests before completion vs after to client response
+        // Send completed + failed quests into function
+        this.addTimeLockedQuestsToProfile(pmcData, [completedQuest, ...questsToFail], body.qid);
+
+        // Add diff of quests before completion vs after for client response
         const questDelta = this.questHelper.getDeltaQuests(beforeQuests, this.getClientQuests(sessionID));
         completeQuestResponse.profileChanges[sessionID].quests = questDelta;
 
-        this.addTimeLockedQuestsToProfile(pmcData, questDelta, body.qid);
+        // Hydrate client response questsStatus array with data
+        const questStatusChanges = this.getUpdatedQuestStatus(questDelta, pmcData);
+        if (questStatusChanges)
+        {
+            completeQuestResponse.profileChanges[sessionID].questsStatus = questStatusChanges;
+        }
 
         // Update trader info data on response
         Object.assign(completeQuestResponse.profileChanges[sessionID].traderRelations, pmcData.TradersInfo);
 
-        // Check if it's a repeatable quest. If so remove from Quests and repeatable.activeQuests list to repeatable.inactiveQuests
+        // Check if it's a repeatable quest. If so, remove from Quests and repeatable.activeQuests list + move to repeatable.inactiveQuests
         for (const currentRepeatable of pmcData.RepeatableQuests)
         {
             const repeatableQuest = currentRepeatable.activeQuests.find(x => x._id === completedQuestId);
@@ -429,6 +445,34 @@ export class QuestController
         pmcData.Info.Level = this.playerService.calculateLevel(pmcData);
 
         return completeQuestResponse;
+    }
+
+    /**
+     * Check for changes to quest status, return array of updated status for client response
+     * Only get data for quests that already exist in profile
+     * @param quests Quests with new status
+     * @param pmcData Player profile
+     * @returns QuestStatusChange array
+     */
+    protected getUpdatedQuestStatus(quests: IQuest[], pmcData: IPmcData): IQuestStatus[]
+    {
+        const result: IQuestStatus[] = [];
+
+        for (const quest of quests)
+        {
+            const questInProfile = pmcData.Quests.find(x => x.qid === quest._id);
+            if (questInProfile && questInProfile.status !== quest.sptStatus)
+            {
+                result.push(questInProfile);
+            }
+        }
+
+        if (result.length === 0)
+        {
+            return null;
+        }
+
+        return result;
     }
 
     /**
@@ -543,7 +587,7 @@ export class QuestController
             {
                 const statusTimers = {};
                 statusTimers[QuestStatus.Fail] = this.timeUtil.getTimestamp();
-                const questData: Quest = {
+                const questData: IQuestStatus = {
                     qid: questToFail._id,
                     startTime: this.timeUtil.getTimestamp(),
                     statusTimers: statusTimers,
