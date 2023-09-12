@@ -6123,7 +6123,7 @@
       }
     },
     {
-      "_id": "64f9c4d2bf50026687012fb9",
+      "_id": "65005ef818f686ea940c6287",
       "_tpl": "62e7e7bbe6da9612f743f1e0",
       "parentId": "hideout",
       "slotId": "hideout",
@@ -6132,7 +6132,7 @@
       }
     },
     {
-      "_id": "64f9c4d2bf50026687012fba",
+      "_id": "65005ef818f686ea940c6288",
       "_tpl": "5656eb674bdc2d35148b457c",
       "parentId": "hideout",
       "slotId": "hideout",
@@ -6141,7 +6141,7 @@
       }
     },
     {
-      "_id": "64f9c4d2bf50026687012fde",
+      "_id": "65005ef818f686ea940c62c0",
       "_tpl": "59f98b4986f7746f546d2cef",
       "parentId": "hideout",
       "slotId": "hideout",
@@ -6150,27 +6150,27 @@
       }
     },
     {
-      "_id": "64f9c4d2bf50026687012fdf",
+      "_id": "65005ef818f686ea940c62c1",
       "_tpl": "5a27bad7c4a282000b15184b",
-      "parentId": "64f9c4d2bf50026687012fde",
+      "parentId": "65005ef818f686ea940c62c0",
       "slotId": "mod_mount"
     },
     {
-      "_id": "64f9c4d2bf50026687012fe0",
+      "_id": "65005ef818f686ea940c62c2",
       "_tpl": "5a27b3d0c4a282000d721ec1",
-      "parentId": "64f9c4d2bf50026687012fdf",
+      "parentId": "65005ef818f686ea940c62c1",
       "slotId": "mod_mount"
     },
     {
-      "_id": "64f9c4d2bf50026687012fe1",
+      "_id": "65005ef818f686ea940c62c3",
       "_tpl": "5a27b6bec4a282000e496f78",
-      "parentId": "64f9c4d2bf50026687012fe0",
+      "parentId": "65005ef818f686ea940c62c2",
       "slotId": "mod_muzzle"
     },
     {
-      "_id": "64f9c4d2bf50026687012fe2",
+      "_id": "65005ef818f686ea940c62c4",
       "_tpl": "59f99a7d86f7745b134aa97b",
-      "parentId": "64f9c4d2bf50026687012fde",
+      "parentId": "65005ef818f686ea940c62c0",
       "slotId": "mod_magazine"
     }
   ],
@@ -9049,7 +9049,7 @@
         }
       ]
     ],
-    "64f9c4d2bf50026687012fb9": [
+    "65005ef818f686ea940c6287": [
       [
         {
           "count": 6969,
@@ -9057,7 +9057,7 @@
         }
       ]
     ],
-    "64f9c4d2bf50026687012fba": [
+    "65005ef818f686ea940c6288": [
       [
         {
           "count": 6969,
@@ -9065,7 +9065,7 @@
         }
       ]
     ],
-    "64f9c4d2bf50026687012fde": [
+    "65005ef818f686ea940c62c0": [
       [
         {
           "count": 6969,
@@ -9424,8 +9424,8 @@
     "64d52514c06f9028d80eb687": 3,
     "64d52514c06f9028d80eb689": 3,
     "64d52514c06f9028d80eb695": 4,
-    "64f9c4d2bf50026687012fb9": 3,
-    "64f9c4d2bf50026687012fba": 3,
-    "64f9c4d2bf50026687012fde": 4
+    "65005ef818f686ea940c6287": 3,
+    "65005ef818f686ea940c6288": 3,
+    "65005ef818f686ea940c62c0": 4
   }
 }
