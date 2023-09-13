@@ -395,6 +395,7 @@ export class QuestController
         const completeQuestResponse = this.eventOutputHolder.getOutput(sessionID);
 
         const completedQuest = this.questHelper.getQuestFromDb(body.qid, pmcData);
+        const preCompleteProfileQuests = this.jsonUtil.clone(pmcData.Quests);
 
         const completedQuestId = body.qid;
         const beforeQuests = this.jsonUtil.clone(this.getClientQuests(sessionID)); // Must be gathered prior to applyQuestReward() & failQuests()
@@ -420,13 +421,6 @@ export class QuestController
         const questDelta = this.questHelper.getDeltaQuests(beforeQuests, this.getClientQuests(sessionID));
         completeQuestResponse.profileChanges[sessionID].quests = questDelta;
 
-        // Hydrate client response questsStatus array with data
-        const questStatusChanges = this.getUpdatedQuestStatus(questDelta, pmcData);
-        if (questStatusChanges)
-        {
-            completeQuestResponse.profileChanges[sessionID].questsStatus.push(...questStatusChanges);
-        }
-
         // Update trader info data on response
         Object.assign(completeQuestResponse.profileChanges[sessionID].traderRelations, pmcData.TradersInfo);
 
@@ -441,6 +435,13 @@ export class QuestController
             }
         }
 
+        // Hydrate client response questsStatus array with data
+        const questStatusChanges = this.getQuestsWithDifferentStatuses(preCompleteProfileQuests, pmcData.Quests);
+        if (questStatusChanges)
+        {
+            completeQuestResponse.profileChanges[sessionID].questsStatus.push(...questStatusChanges);
+        }
+
         // Recalculate level in event player leveled up
         pmcData.Info.Level = this.playerService.calculateLevel(pmcData);
 
@@ -448,22 +449,22 @@ export class QuestController
     }
 
     /**
-     * Check for changes to quest status, return array of updated status for client response
-     * Only get data for quests that already exist in profile
-     * @param quests Quests with new status
-     * @param pmcData Player profile
+     * Return quests that have different statuses
+     * @param preQuestStatusus Quests before
+     * @param postQuestStatuses Quests after
      * @returns QuestStatusChange array
      */
-    protected getUpdatedQuestStatus(quests: IQuest[], pmcData: IPmcData): IQuestStatus[]
+    protected getQuestsWithDifferentStatuses(preQuestStatusus: IQuestStatus[], postQuestStatuses: IQuestStatus[]): IQuestStatus[]
     {
         const result: IQuestStatus[] = [];
 
-        for (const quest of quests)
+        for (const quest of postQuestStatuses)
         {
-            const questInProfile = pmcData.Quests.find(x => x.qid === quest._id);
-            if (questInProfile && questInProfile.status !== quest.sptStatus)
+            // Add quest if status differs or quest not found
+            const preQuest = preQuestStatusus.find(x => x.qid === quest.qid);
+            if (!preQuest || preQuest.status !== quest.status)
             {
-                result.push(questInProfile);
+                result.push(quest);
             }
         }
 
