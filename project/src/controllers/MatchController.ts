@@ -202,7 +202,7 @@ export class MatchController
             return true;
         }
 
-        return this.inraidConfig.carExtracts.includes(extractName);
+        return this.inraidConfig.carExtracts.includes(extractName.trim());
     }
 
     /**

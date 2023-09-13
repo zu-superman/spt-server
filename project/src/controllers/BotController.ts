@@ -158,7 +158,7 @@ export class BotController
             {
                 const details = this.jsonUtil.clone(botGenerationDetails);
 
-                // If ispmc not true, roll chance to be pmc if type is allowed to be one
+                // If is pmc not true, roll chance to be pmc if type is allowed to be one
                 const botConvertRateMinMax = this.pmcConfig.convertIntoPmcChance[details.role.toLowerCase()];
                 if (botConvertRateMinMax)
                 {
