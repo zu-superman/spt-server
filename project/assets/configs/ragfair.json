@@ -93,8 +93,8 @@
             },
             "543be5e94bdc2df1348b4568": {
                 "_name": "KEY",
-                "conditionChance": 0.02,
-                "min": 0.97,
+                "conditionChance": 0.04,
+                "min": 0.96,
                 "max": 1
             },
             "5448e5284bdc2dcb718b4567": {
@@ -117,8 +117,8 @@
             },
             "5d650c3e815116009f6201d2": {
                 "_name": "FUEL",
-                "conditionChance": 0.07,
-                "min": 0.00,
+                "conditionChance": 0.06,
+                "min": 0.01,
                 "max": 0.15
             }
         },
