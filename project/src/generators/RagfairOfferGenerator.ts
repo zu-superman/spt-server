@@ -525,30 +525,50 @@ export class RagfairOfferGenerator
             {
                 this.randomiseDurabilityValues(item, multiplier);
             }
+
+            return;
         }
 
         if ("MedKit" in item.upd)
         {
             // randomize health
             item.upd.MedKit.HpResource = Math.round(item.upd.MedKit.HpResource * multiplier) || 1;
+
+            return;
         }
 
         if ("Key" in item.upd && itemDetails._props.MaximumNumberOfUsage > 1)
         {
             // randomize key uses
             item.upd.Key.NumberOfUsages = Math.round(itemDetails._props.MaximumNumberOfUsage * (1 - multiplier)) || 0;
+
+            return;
         }
 
         if ("FoodDrink" in item.upd)
         {
             // randomize food/drink value
             item.upd.FoodDrink.HpPercent = Math.round(itemDetails._props.MaxResource * multiplier) || 1;
+
+            return;
         }
 
         if ("RepairKit" in item.upd) 
         {
             // randomize repair kit (armor/weapon) uses
             item.upd.RepairKit.Resource = Math.round(itemDetails._props.MaxRepairResource * multiplier) || 1;
+
+            return;
+        }
+
+        if (this.itemHelper.isOfBaseclass(itemDetails._id, BaseClasses.FUEL))
+        {
+            const totalCapacity = itemDetails._props.MaxResource;
+            const remainingFuel = Math.round(totalCapacity * multiplier);
+            item.upd.Resource = {
+                UnitsConsumed: totalCapacity - remainingFuel,
+                Value: remainingFuel
+            };
         }
     }
 

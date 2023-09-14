@@ -114,6 +114,12 @@
                 "conditionChance": 0.05,
                 "min": 0.05,
                 "max": 1
+            },
+            "5d650c3e815116009f6201d2": {
+                "_name": "FUEL",
+                "conditionChance": 0.07,
+                "min": 0.00,
+                "max": 0.15
             }
         },
         "stackablePercent": {
