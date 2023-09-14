@@ -317,7 +317,7 @@ class ItemHelper
             else if (resource && resource.UnitsConsumed > 0)
             {
                 // Things like fuel tank
-                result = resource.UnitsConsumed / itemDetails._props.MaxResource;
+                result = resource.Value / itemDetails._props.MaxResource;
             }
             else if (repairKit)
             {
