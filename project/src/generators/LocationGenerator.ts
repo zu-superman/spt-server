@@ -236,7 +236,7 @@ export class LocationGenerator
         const containerIds = Object.keys(containerData.containerIdsWithProbability);
         if (containerData.chosenCount >= containerIds.length)
         {
-            this.logger.warning(`Group wants ${containerData.chosenCount} containers but pool only has ${containerIds.length}, returning what's available`);
+            this.logger.debug(`Group wants ${containerData.chosenCount} containers but pool only has ${containerIds.length}, returning what's available`);
             return containerIds;
         }
 
@@ -247,9 +247,6 @@ export class LocationGenerator
         chosenContainerIds.push(...containerDistribution.draw(containerData.chosenCount));
 
         return chosenContainerIds;
-
-        // Shuffle so we dont always start iterations from same container, biasing the containers chosen
-        
     }
 
     /**
@@ -295,7 +292,7 @@ export class LocationGenerator
 
             if (container.probability === 1)
             {
-                this.logger.warning(`Container ${container.template.Id} with group ${groupData.groupId} had 100% chance to spawn was picked as random container, skipping`);
+                this.logger.debug(`Container ${container.template.Id} with group ${groupData.groupId} had 100% chance to spawn was picked as random container, skipping`);
                 continue;
             }
             mapping[groupData.groupId].containerIdsWithProbability[container.template.Id] = container.probability;
