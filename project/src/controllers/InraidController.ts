@@ -17,6 +17,7 @@ import { IRegisterPlayerRequestData } from "../models/eft/inRaid/IRegisterPlayer
 import { ISaveProgressRequestData } from "../models/eft/inRaid/ISaveProgressRequestData";
 import { ConfigTypes } from "../models/enums/ConfigTypes";
 import { PlayerRaidEndState } from "../models/enums/PlayerRaidEndState";
+import { QuestStatus } from "../models/enums/QuestStatus";
 import { Traders } from "../models/enums/Traders";
 import { IAirdropConfig } from "../models/spt/config/IAirdropConfig";
 import { IInRaidConfig } from "../models/spt/config/IInRaidConfig";
@@ -175,10 +176,12 @@ export class InraidController
         // Remove quest items
         if (this.inRaidHelper.removeQuestItemsOnDeath())
         {
+            const allQuests = this.questHelper.getQuestsFromDb();
+            const activeQuestIdsInProfile = pmcData.Quests.filter(x => ![QuestStatus.Success, QuestStatus.Expired].includes(x.status)).map(x => x.qid);
             for (const questItem of postRaidSaveRequest.profile.Stats.Eft.CarriedQuestItems)
             {
-                const findItemConditionIds = this.questHelper.getFindItemIdForQuestHandIn(questItem);
-                this.profileHelper.resetProfileQuestCondition(sessionID, findItemConditionIds);
+                const findItemConditionIds = this.questHelper.getFindItemConditionByQuestItem(questItem, activeQuestIdsInProfile, allQuests);
+                this.profileHelper.removeCompletedQuestConditionFromProfile(pmcData, findItemConditionIds);
             }
 
             pmcData.Stats.Eft.CarriedQuestItems = [];

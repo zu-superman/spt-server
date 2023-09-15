@@ -4,7 +4,6 @@ import { IPmcData } from "../models/eft/common/IPmcData";
 import { CounterKeyValue, Stats } from "../models/eft/common/tables/IBotBase";
 import { IAkiProfile } from "../models/eft/profile/IAkiProfile";
 import { IValidateNicknameRequestData } from "../models/eft/profile/IValidateNicknameRequestData";
-import { QuestStatus } from "../models/enums/QuestStatus";
 import { ILogger } from "../models/spt/utils/ILogger";
 import { DatabaseServer } from "../servers/DatabaseServer";
 import { SaveServer } from "../servers/SaveServer";
@@ -30,32 +29,23 @@ export class ProfileHelper
     { }
 
     /**
-     * Remove/reset started quest condtions in player profile
+     * Remove/reset a completed quest condtion from players profile quest data
      * @param sessionID Session id
-     * @param conditionIds Condition ids that need to be reset/removed
+     * @param questConditionId Quest with condition to remove
      */
-    public resetProfileQuestCondition(sessionID: string, conditionIds: string[]): void
+    public removeCompletedQuestConditionFromProfile(pmcData: IPmcData, questConditionId: Record<string, string>): void
     {
-        // Get all quests in progress
-        const startedQuests = this.getPmcProfile(sessionID).Quests.filter(q => q.status === QuestStatus.Started);
-        for (const quest of startedQuests)
+        for (const questId in questConditionId)
         {
-            let matchingConditionId: string;
-            for (const conditionId of conditionIds)
-            {
-                if (quest.completedConditions.includes(conditionId))
-                {
-                    matchingConditionId = conditionId;
-                    break;
-                }
-            }
-            
+            const conditionId = questConditionId[questId];
+            const profileQuest = pmcData.Quests.find(x => x.qid === questId);
+
             // Find index of condition in array
-            const index = quest.completedConditions.indexOf(matchingConditionId);
+            const index = profileQuest.completedConditions.indexOf(conditionId);
             if (index > -1)
             {
                 // Remove condition
-                quest.completedConditions.splice(index, 1);
+                profileQuest.completedConditions.splice(index, 1);
             }
         }
     } 

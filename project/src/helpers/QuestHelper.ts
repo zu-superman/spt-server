@@ -758,19 +758,23 @@ export class QuestHelper
     }
 
     /**
-     * Find quest with 'findItem' requirement that needs the item tpl be handed in
+     * Find quest with 'findItem' condition that needs the item tpl be handed in
      * @param itemTpl item tpl to look for
-     * @returns 'FindItem' condition id
+     * @param questIds Quests to search through for the findItem condition
+     * @returns quest id with 'FindItem' condition id
      */
-    public getFindItemIdForQuestHandIn(itemTpl: string): string[]
+    public getFindItemConditionByQuestItem(itemTpl: string, questIds: string[], allQuests: IQuest[]): Record<string, string>
     {
-        const result: string[] = [];
-        for (const quest of this.getQuestsFromDb())
+        const result: Record<string, string> = {};
+        for (const questId of questIds)
         {
-            const condition = quest.conditions.AvailableForFinish.find(c => c._parent === "FindItem" && c._props?.target?.includes(itemTpl));
+            const questInDb = allQuests.find(x => x._id === questId);
+            const condition = questInDb.conditions.AvailableForFinish.find(c => c._parent === "FindItem" && c._props?.target?.includes(itemTpl));
             if (condition)
             {
-                result.push(condition._props.id);
+                result[questId] = condition._props.id;
+
+                break;
             }
         }
 
