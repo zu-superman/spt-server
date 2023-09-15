@@ -111,7 +111,7 @@ export class LocationController
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public generateAll(sessionId: string): ILocationsGenerateAllResponse
     {
-        const locationsFromDb = this.jsonUtil.clone(this.databaseServer.getTables().locations);
+        const locationsFromDb = this.databaseServer.getTables().locations;
         const locations: ILocations = {};
         for (const mapName in locationsFromDb)
         {
