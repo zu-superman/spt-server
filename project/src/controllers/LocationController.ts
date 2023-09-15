@@ -70,7 +70,8 @@ export class LocationController
      */
     protected generate(name: string): ILocationBase
     {
-        const location: ILocation = this.databaseServer.getTables().locations[name];
+        const db = this.databaseServer.getTables();
+        const location: ILocation = db.locations[name];
         const output: ILocationBase = this.jsonUtil.clone(location.base);
 
         output.UnixDateTime = this.timeUtil.getTimestamp();
@@ -81,7 +82,7 @@ export class LocationController
             return output;
         }
 
-        const staticAmmoDist = this.jsonUtil.clone(this.databaseServer.getTables().loot.staticAmmo);
+        const staticAmmoDist = this.jsonUtil.clone(db.loot.staticAmmo);
 
         // Create containers and add loot to them
         const staticLoot = this.locationGenerator.generateStaticContainers(location.base, staticAmmoDist);
@@ -89,14 +90,14 @@ export class LocationController
         
         // Add dyanmic loot to output loot
         const dynamicLootDist: ILooseLoot = this.jsonUtil.clone(location.looseLoot);
-        const dynamicLoot: SpawnpointTemplate[] = this.locationGenerator.generateDynamicLoot(dynamicLootDist, staticAmmoDist, name);
-        for (const dli of dynamicLoot)
+        const dynamicSpawnPoints: SpawnpointTemplate[] = this.locationGenerator.generateDynamicLoot(dynamicLootDist, staticAmmoDist, name);
+        for (const spawnPoint of dynamicSpawnPoints)
         {
-            output.Loot.push(dli);
+            output.Loot.push(spawnPoint);
         }
 
         // Done generating, log results
-        this.logger.success(this.localisationService.getText("location-dynamic_items_spawned_success", dynamicLoot.length));
+        this.logger.success(this.localisationService.getText("location-dynamic_items_spawned_success", dynamicSpawnPoints.length));
         this.logger.success(this.localisationService.getText("location-generated_success", name));
 
         return output;

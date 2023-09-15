@@ -95,7 +95,7 @@ export class LocationGenerator
         {
             this.logger.error(`Unable to find static container data for map: ${locationBase.Name}`);
         }
-        const staticRandomisableContainersOnMap = this.getRandomisableContainersOnMap(this.jsonUtil.clone(allStaticContainersOnMap));
+        const staticRandomisableContainersOnMap = this.getRandomisableContainersOnMap(allStaticContainersOnMap);
 
         // Containers that MUST be added to map (quest containers etc)
         const staticForcedOnMap = this.jsonUtil.clone(db.loot.staticContainers[locationBase.Name]?.staticForced);
@@ -108,7 +108,7 @@ export class LocationGenerator
         let staticContainerCount = 0;
 
         // Find all 100% spawn containers
-        const staticLootDist = this.jsonUtil.clone(db.loot.staticLoot);
+        const staticLootDist = db.loot.staticLoot;
         const guaranteedContainers = this.getGuaranteedContainers(allStaticContainersOnMap);
         staticContainerCount += guaranteedContainers.length;
         
@@ -477,9 +477,9 @@ export class LocationGenerator
         const loot: SpawnpointTemplate[] = [];
 
         // Add all forced loot to return array
-        this.addForcedLoot(loot, this.jsonUtil.clone(dynamicLootDist.spawnpointsForced), locationName);
+        this.addForcedLoot(loot, dynamicLootDist.spawnpointsForced, locationName);
 
-        const allDynamicSpawnpoints = this.jsonUtil.clone(dynamicLootDist.spawnpoints);
+        const allDynamicSpawnpoints = dynamicLootDist.spawnpoints;
         
         //Draw from random distribution
         const desiredSpawnpointCount = Math.round(
