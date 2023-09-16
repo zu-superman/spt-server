@@ -173,17 +173,22 @@ export class InraidController
         this.updatePmcHealthPostRaid(postRaidSaveRequest, pmcData);
         this.inRaidHelper.deleteInventory(pmcData, sessionID);
 
-        // Remove quest items
         if (this.inRaidHelper.removeQuestItemsOnDeath())
         {
+            // Find and remove the completed condition from profile if player died, otherwise quest is stuck in limbo and quest items cannot be picked up again
             const allQuests = this.questHelper.getQuestsFromDb();
-            const activeQuestIdsInProfile = pmcData.Quests.filter(x => ![QuestStatus.Success, QuestStatus.Expired].includes(x.status)).map(x => x.qid);
+            const activeQuestIdsInProfile = pmcData.Quests.filter(x => ![QuestStatus.AvailableForStart, QuestStatus.Success, QuestStatus.Expired].includes(x.status)).map(x => x.qid);
             for (const questItem of postRaidSaveRequest.profile.Stats.Eft.CarriedQuestItems)
             {
-                const findItemConditionIds = this.questHelper.getFindItemConditionByQuestItem(questItem, activeQuestIdsInProfile, allQuests);
-                this.profileHelper.removeCompletedQuestConditionFromProfile(pmcData, findItemConditionIds);
+                // Get quest/find condition for carried quest item
+                const questAndFindItemConditionId = this.questHelper.getFindItemConditionByQuestItem(questItem, activeQuestIdsInProfile, allQuests);
+                if (questAndFindItemConditionId)
+                {
+                    this.profileHelper.removeCompletedQuestConditionFromProfile(pmcData, questAndFindItemConditionId);
+                }
             }
 
+            // Empty out stored quest items from player inventory
             pmcData.Stats.Eft.CarriedQuestItems = [];
         }
 
