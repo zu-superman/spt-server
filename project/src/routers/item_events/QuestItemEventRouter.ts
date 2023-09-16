@@ -29,7 +29,7 @@ export class QuestItemEventRouter extends ItemEventRouterDefinition
 
     public override handleItemEvent(eventAction: string, pmcData: IPmcData, body: any, sessionID: string): IItemEventRouterResponse 
     {
-        this.logger.debug(eventAction);
+        this.logger.debug(`${eventAction} ${body.qid}`);
         switch (eventAction)
         {
             case "QuestAccept":
