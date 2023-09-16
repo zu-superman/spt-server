@@ -766,7 +766,7 @@ export class HideoutController
     }
 
     /**
-     * Handles giving rewards stored in player profile to player after clicking 'get rewards'
+     * Handles generating case rewards and sending to player inventory
      * @param sessionID Session id
      * @param pmcData Player profile
      * @param request Get rewards from scavcase craft request
@@ -777,13 +777,13 @@ export class HideoutController
     {
         const ongoingProductions = Object.entries(pmcData.Hideout.Production);
         let prodId: string;
-        for (const x of ongoingProductions)
+        for (const production of ongoingProductions)
         {
-            if (this.hideoutHelper.isProductionType(x[1])) // Production or ScavCase
+            if (this.hideoutHelper.isProductionType(production[1])) // Production or ScavCase
             {
-                if ((x[1] as ScavCase).RecipeId === request.recipeId)
+                if ((production[1] as ScavCase).RecipeId === request.recipeId)
                 {
-                    prodId = x[0]; // set to objects key
+                    prodId = production[0]; // Set to objects key
                     break;
                 }
             }
