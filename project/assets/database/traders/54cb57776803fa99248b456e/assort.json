@@ -864,7 +864,7 @@
       "parentId": "hideout",
       "slotId": "hideout",
       "upd": {
-        "StackObjectsCount": 10
+        "StackObjectsCount": 2000
       }
     }
   ],
@@ -1672,8 +1672,8 @@
     "65005ef818f686ea940c62ae": [
       [
         {
-          "count": 6969,
-          "_tpl": "5449016a4bdc2d6f028b456f"
+          "count": 33897,
+          "_tpl": "590de7e986f7741b096e5f32"
         }
       ]
     ]
