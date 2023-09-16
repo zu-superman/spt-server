@@ -84,6 +84,8 @@ export class InraidController
      */
     public savePostRaidProgress(offraidData: ISaveProgressRequestData, sessionID: string): void
     {
+        this.logger.debug(`Raid was a: ${offraidData.exit}`);
+
         if (!this.inraidConfig.save.loot)
         {
             return;
