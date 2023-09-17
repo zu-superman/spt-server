@@ -70,6 +70,6 @@ export class BotCallbacks
      */
     public getBotBehaviours(): string
     {
-        return this.httpResponse.noBody(this.botController.getPmcBotTypes());
+        return this.httpResponse.noBody(this.botController.getAiBotBrainTypes());
     }
 }

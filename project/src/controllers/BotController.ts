@@ -246,8 +246,11 @@ export class BotController
         return botCap;
     }
 
-    public getPmcBotTypes(): Record<string, Record<string, Record<string, number>>>
+    public getAiBotBrainTypes(): any
     {
-        return this.pmcConfig.pmcType;
+        return {
+            pmc: this.pmcConfig.pmcType,
+            assault: this.botConfig.assaultBrainType
+        };
     }
 }
