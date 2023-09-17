@@ -127,11 +127,6 @@ export class MatchCallbacks
     {
         const output = this.matchController.getEnabled();
 
-        if (output === false)
-        {
-            return this.httpResponse.getBody(null, 420, "Please play as PMC and go through the offline settings screen before pressing ready");
-        }
-
         return this.httpResponse.getBody(output);
     }
 
