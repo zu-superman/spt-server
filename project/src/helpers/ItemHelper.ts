@@ -842,12 +842,13 @@ class ItemHelper
         let currentStoredCartridgeCount = 0;
         // Location in ammoBox cartridges will be placed
         let location = 0;
+        const maxPerStack = Math.min(ammoBoxMaxCartridgeCount, cartridgeMaxStackSize);
         while (currentStoredCartridgeCount < ammoBoxMaxCartridgeCount)
         {
-            // Get stack size of cartridges
-            const cartridgeCountToAdd = (ammoBoxMaxCartridgeCount <= cartridgeMaxStackSize)
-                ? ammoBoxMaxCartridgeCount
-                : cartridgeMaxStackSize;
+            const remainingSpace = ammoBoxMaxCartridgeCount - currentStoredCartridgeCount;
+            const cartridgeCountToAdd = (remainingSpace < maxPerStack)
+                ? remainingSpace
+                : maxPerStack;
 
             // Add cartridge item into items array
             ammoBox.push(this.createCartridges(ammoBox[0]._id, cartridgeTpl, cartridgeCountToAdd, location));
