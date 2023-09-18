@@ -55,7 +55,7 @@
       "Time": -1
     },
     {
-      "BossChance": 25,
+      "BossChance": 30,
       "BossDifficult": "normal",
       "BossEscortAmount": "2",
       "BossEscortDifficult": "normal",
@@ -90,7 +90,7 @@
       "Time": -1
     },
     {
-      "BossChance": 25,
+      "BossChance": 30,
       "BossDifficult": "normal",
       "BossEscortAmount": "2,3",
       "BossEscortDifficult": "normal",

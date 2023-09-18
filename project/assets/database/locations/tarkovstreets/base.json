@@ -42,7 +42,7 @@
   ],
   "BossLocationSpawn": [
     {
-      "BossChance": 25,
+      "BossChance": 30,
       "BossDifficult": "normal",
       "BossEscortAmount": "6",
       "BossEscortDifficult": "normal",
@@ -99,7 +99,7 @@
     "VisibleDistance": 1
   },
   "BotMarksman": 20,
-  "BotMax": 35,
+  "BotMax": 30,
   "BotMaxPlayer": 10,
   "BotMaxTimePlayer": 1000,
   "BotNormal": 40,
@@ -124,7 +124,7 @@
   },
   "GenerateLocalLootCache": true,
   "GlobalContainerChanceModifier": 1,
-  "GlobalLootChanceModifier": 0.1,
+  "GlobalLootChanceModifier": 0.35,
   "IconX": 600,
   "IconY": 600,
   "Id": "TarkovStreets",
@@ -165,12 +165,12 @@
   "MaxBotPerZone": 5,
   "MaxCoopGroup": 20,
   "MaxDistToFreePoint": 220,
-  "MaxPlayers": 20,
+  "MaxPlayers": 16,
   "MinDistToExitPoint": 10,
   "MinDistToFreePoint": 60,
   "MinMaxBots": [],
   "MinPlayerLvlAccessKeys": 0,
-  "MinPlayers": 15,
+  "MinPlayers": 12,
   "Name": "Streets of Tarkov",
   "NewSpawn": true,
   "NonWaveGroupScenario": {
@@ -13954,7 +13954,15 @@
     }
   ],
   "filter_ex": [],
-  "limits": [],
+  "limits": [
+    {
+      "items": [
+        "64d4b23dc1b37504b41ac2b6"
+      ],
+      "max": 1,
+      "min": 1
+    }
+  ],
   "matching_min_seconds": 60,
   "sav_summon_seconds": 60,
   "tmp_location_field_remove_me": 0,
