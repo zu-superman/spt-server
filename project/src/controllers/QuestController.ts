@@ -128,7 +128,7 @@ export class QuestController
                     break;
                 }
 
-                // If previous is in user profile, check condition requirement and current status
+                // If previous quest is in user profile, check condition requirement and current status
                 if (condition._props.status.includes(previousQuest.status))
                 {
                     continue;
@@ -518,7 +518,7 @@ export class QuestController
                 if (existingQuestInProfile)
                 {
                     existingQuestInProfile.availableAfter = availableAfterTimestamp;
-                    existingQuestInProfile.status = QuestStatus.Locked;
+                    existingQuestInProfile.status = QuestStatus.AvailableAfter;
                     existingQuestInProfile.startTime = 0;
                     existingQuestInProfile.statusTimers = {};
 
@@ -528,7 +528,7 @@ export class QuestController
                 pmcData.Quests.push({
                     qid: quest._id,
                     startTime: 0,
-                    status: QuestStatus.Locked,
+                    status: QuestStatus.AvailableAfter,
                     statusTimers: {},
                     availableAfter: availableAfterTimestamp
                 });
