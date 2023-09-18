@@ -106,7 +106,7 @@ export class QuestController
 
             const questRequirements = this.questConditionHelper.getQuestConditions(quest.conditions.AvailableForStart);
             const loyaltyRequirements = this.questConditionHelper.getLoyaltyConditions(quest.conditions.AvailableForStart);
-            const standingRequirements = this.questConditionHelper.getLoyaltyConditions(quest.conditions.AvailableForStart);
+            const standingRequirements = this.questConditionHelper.getStandingConditions(quest.conditions.AvailableForStart);
 
             // Quest has no conditions or loyalty conditions, add to visible quest list
             if (questRequirements.length === 0 && loyaltyRequirements.length === 0 && standingRequirements.length === 0)
@@ -166,7 +166,7 @@ export class QuestController
             }
 
             let passesStandingRequirements = true;
-            for (const condition of loyaltyRequirements)
+            for (const condition of standingRequirements)
             {
                 if (!this.questHelper.traderStandingRequirementCheck(condition._props, profile))
                 {
