@@ -148,6 +148,12 @@ export class QuestController
                 break;
             }
 
+            // Previous quest not completed, skip
+            if (!haveCompletedPreviousQuest)
+            {
+                continue;
+            }
+
             let passesLoyaltyRequirements = true;
             for (const condition of loyaltyRequirements)
             {
