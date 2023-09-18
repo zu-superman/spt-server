@@ -4062,7 +4062,24 @@
         "5ea16acdfadf1d18c87b0784",
         "5cc86832d7f00c000d3a6e6c",
         "5f633ff5c444ce7e3c30a006",
-        "57adff4f24597737f373b6e6"
+        "57adff4f24597737f373b6e6",
+        "5d25d0ac8abbc3054f3e61f7",
+        "5addbb6e5acfc408fb1393fd",
+        "5d2c770c48f0354b4a07c100",
+        "623c2f652febb22c2777d8d7",
+        "5cadf6eeae921500134b2799",
+        "5cf6935bd7f00c06585fb791",
+        "627bce33f21bc425b06ab967",
+        "5c6c2c9c2e2216000f2002e4",
+        "630f2982cdb9e392db0cbcc7",
+        "5cf79389d7f00c10941a0c4d",
+        "6357c98711fb55120211f7e1",
+        "5d1b198cd7ad1a604869ad72",
+        "544a3a774bdc2d3a388b4567",
+        "64ccc1d4a0f13c24561edf27",
+        "5c6bf4aa2e2216001219b0ae",
+        "615d8f5dd92c473c770212ef",
+        "5b222d335acfc4771e1be099"
       ],
       "Pockets": [
         "637b6251104668754b72f8f9",
@@ -4213,7 +4230,8 @@
         "5bc9c377d4351e3bac12251b",
         "6389c70ca33d8c4cdf4932c6",
         "5d0376a486f7747d8050965c",
-        "5af04b6486f774195a3ebb49"
+        "5af04b6486f774195a3ebb49",
+        "62a0a043cf4a99369e2624a5"
       ],
       "SecuredContainer": [
         "560d5e524bdc2d25448b4571",
@@ -5612,6 +5630,9 @@
         ],
         "mod_sight_rear": [
           "5aba637ad8ce87001773e17f"
+        ],
+        "mod_stock": [
+          "5a17fb9dfcdbcbcae6687291"
         ],
         "patron_in_weapon": [
           "573719762459775a626ccbc1",
