@@ -106,9 +106,10 @@ export class QuestController
 
             const questRequirements = this.questConditionHelper.getQuestConditions(quest.conditions.AvailableForStart);
             const loyaltyRequirements = this.questConditionHelper.getLoyaltyConditions(quest.conditions.AvailableForStart);
+            const standingRequirements = this.questConditionHelper.getLoyaltyConditions(quest.conditions.AvailableForStart);
 
             // Quest has no conditions or loyalty conditions, add to visible quest list
-            if (questRequirements.length === 0 && loyaltyRequirements.length === 0)
+            if (questRequirements.length === 0 && loyaltyRequirements.length === 0 && standingRequirements.length === 0)
             {
                 quest.sptStatus = QuestStatus.AvailableForStart;
                 questsToShowPlayer.push(quest);
@@ -157,14 +158,24 @@ export class QuestController
             let passesLoyaltyRequirements = true;
             for (const condition of loyaltyRequirements)
             {
-                if (!this.questHelper.traderStandingRequirementCheck(condition._props, profile))
+                if (!this.questHelper.traderLoyaltyLevelRequirementCheck(condition._props, profile))
                 {
                     passesLoyaltyRequirements = false;
                     break;
                 }
             }
 
-            if (haveCompletedPreviousQuest && passesLoyaltyRequirements)
+            let passesStandingRequirements = true;
+            for (const condition of loyaltyRequirements)
+            {
+                if (!this.questHelper.traderStandingRequirementCheck(condition._props, profile))
+                {
+                    passesStandingRequirements = false;
+                    break;
+                }
+            }
+
+            if (haveCompletedPreviousQuest && passesLoyaltyRequirements && passesStandingRequirements)
             {
                 quest.sptStatus = QuestStatus.AvailableForStart;
                 questsToShowPlayer.push(quest);

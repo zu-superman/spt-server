@@ -176,33 +176,55 @@ export class QuestHelper
      * @param profile Player profile
      * @returns true if loyalty is high enough to fulfill quest requirement
      */
-    public traderStandingRequirementCheck(questProperties: AvailableForProps, profile: IPmcData): boolean
+    public traderLoyaltyLevelRequirementCheck(questProperties: AvailableForProps, profile: IPmcData): boolean
     {
-        const requiredLoyaltyStanding = Number(questProperties.value);
+        const requiredLoyaltyLevel = Number(questProperties.value);
         const trader = profile.TradersInfo[<string>questProperties.target];
         if (!trader)
         {
             this.logger.error(`Unable to find trader: ${questProperties.target} in profile`);
         }
-        const currentTraderStanding = trader.loyaltyLevel; // Cast target as string as 'traderLoyalty' target prop is always string
 
-        switch (questProperties.compareMethod)
+        return this.compareAvailableForValues(trader.loyaltyLevel, requiredLoyaltyLevel, questProperties.compareMethod);
+    }
+
+    /**
+     * Check if trader has sufficient standing to fulfill quest requirement
+     * @param questProperties Quest props
+     * @param profile Player profile
+     * @returns true if standing is high enough to fulfill quest requirement
+     */
+    public traderStandingRequirementCheck(questProperties: AvailableForProps, profile: IPmcData): boolean
+    {
+        const requiredStanding = Number(questProperties.value);
+        const trader = profile.TradersInfo[<string>questProperties.target];
+        if (!trader)
+        {
+            this.logger.error(`Unable to find trader: ${questProperties.target} in profile`);
+        }
+
+        return this.compareAvailableForValues(trader.standing, requiredStanding, questProperties.compareMethod);
+    }
+
+    protected compareAvailableForValues(current: number, required: number, compareMethod: string): boolean
+    {
+        switch (compareMethod)
         {
             case ">=":
-                return currentTraderStanding >= requiredLoyaltyStanding;
+                return current >= required;
             case ">":
-                return currentTraderStanding > requiredLoyaltyStanding;
+                return current > required;
             case "<=":
-                return currentTraderStanding <= requiredLoyaltyStanding;
+                return current <= required;
             case "<":
-                return currentTraderStanding < requiredLoyaltyStanding;
+                return current < required;
             case "!=":
-                return currentTraderStanding !== requiredLoyaltyStanding;
+                return current !== required;
             case "==":
-                return currentTraderStanding === requiredLoyaltyStanding;
+                return current === required;
         
             default:
-                this.logger.error(this.localisationService.getText("quest-compare_operator_unhandled", questProperties.compareMethod));
+                this.logger.error(this.localisationService.getText("quest-compare_operator_unhandled", compareMethod));
 
                 return false;
         }

@@ -20,6 +20,11 @@ export class QuestConditionHelper
         return this.filterConditions(q, "TraderLoyalty", furtherFilter);
     }
 
+    public getStandingConditions(q: AvailableForConditions[], furtherFilter: (a: AvailableForConditions) => AvailableForConditions[] = null): AvailableForConditions[]
+    {
+        return this.filterConditions(q, "TraderStanding", furtherFilter);
+    }
+
     protected filterConditions(q: AvailableForConditions[], questType: string, furtherFilter: (a: AvailableForConditions) => AvailableForConditions[] = null): AvailableForConditions[]
     {
         const filteredQuests = q.filter(c =>
