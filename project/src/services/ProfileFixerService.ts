@@ -3,9 +3,10 @@ import { inject, injectable } from "tsyringe";
 import { HideoutHelper } from "../helpers/HideoutHelper";
 import { InventoryHelper } from "../helpers/InventoryHelper";
 import { ItemHelper } from "../helpers/ItemHelper";
+import { ProfileHelper } from "../helpers/ProfileHelper";
 import { TraderHelper } from "../helpers/TraderHelper";
 import { IPmcData } from "../models/eft/common/IPmcData";
-import { Bonus, HideoutSlot } from "../models/eft/common/tables/IBotBase";
+import { Bonus, HideoutSlot, IQuestStatus } from "../models/eft/common/tables/IBotBase";
 import {
     IPmcDataRepeatableQuest, IRepeatableQuest
 } from "../models/eft/common/tables/IRepeatableQuests";
@@ -36,6 +37,7 @@ export class ProfileFixerService
         @inject("HideoutHelper") protected hideoutHelper: HideoutHelper,
         @inject("InventoryHelper") protected inventoryHelper: InventoryHelper,
         @inject("TraderHelper") protected traderHelper: TraderHelper,
+        @inject("ProfileHelper") protected profileHelper: ProfileHelper,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
@@ -408,9 +410,22 @@ export class ProfileFixerService
         {
             return;
         }
-        const  fixes = new Map<any, number>(); 
+
+        const fixes = new Map<any, number>(); 
+        const questsToDelete: IQuestStatus[] = [];
+        const fullProfile = this.profileHelper.getFullProfile(pmcProfile.sessionId);
+        const isDevProfile = fullProfile?.info.edition.toLowerCase() === "spt developer";
         for (const quest of pmcProfile.Quests)
         {
+            // Old profiles had quests with a bad status of 0 (invalid) added to profile, remove them
+            // E.g. compensation for damage showing before standing check was added to getClientQuests()
+            if (quest.status === 0 && !isDevProfile)
+            {
+                questsToDelete.push(quest);
+
+                continue;
+            }
+
             if (quest.status && !Number(quest.status))
             {
                 if (fixes.has(quest.status))
@@ -431,6 +446,11 @@ export class ProfileFixerService
                     }
                 }
             }
+        }
+
+        for (const questToDelete of questsToDelete)
+        {
+            pmcProfile.Quests.splice(pmcProfile.Quests.indexOf(questToDelete), 1);
         }
 
         if (fixes.size > 0)
