@@ -299,6 +299,7 @@ export class Container
         depContainer.registerType("OnLoad", "RagfairPriceService");
         depContainer.registerType("OnLoad", "RagfairCallbacks");
         depContainer.registerType("OnLoad", "ModCallbacks");
+        depContainer.registerType("OnLoad", "GameCallbacks");
         depContainer.registerType("OnUpdate", "DialogueCallbacks");
         depContainer.registerType("OnUpdate", "HideoutCallbacks");
         depContainer.registerType("OnUpdate", "TraderCallbacks");
