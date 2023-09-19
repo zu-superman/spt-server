@@ -130,8 +130,9 @@ export class LocationGenerator
                 const containerWithLoot = this.addLootToContainer(container, staticForcedOnMap, staticLootDist, staticAmmoDist, locationId);
                 result.push(containerWithLoot.template);
 
-                return result;
             }
+
+            return result;
         }
 
         // Group containers by their groupId
