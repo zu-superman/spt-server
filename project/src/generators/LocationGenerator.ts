@@ -80,7 +80,6 @@ export class LocationGenerator
 
         const db = this.databaseServer.getTables();
 
-        // Copy loot data to local properties
         const staticWeaponsOnMap = this.jsonUtil.clone(db.loot.staticContainers[locationBase.Name]?.staticWeapons);
         if (!staticWeaponsOnMap)
         {
@@ -104,7 +103,7 @@ export class LocationGenerator
             this.logger.error(`Unable to find forced static data for map: ${locationBase.Name}`);
         }
 
-        //keep track of static loot count
+        // Keep track of static loot count
         let staticContainerCount = 0;
 
         // Find all 100% spawn containers
@@ -129,7 +128,6 @@ export class LocationGenerator
             {
                 const containerWithLoot = this.addLootToContainer(container, staticForcedOnMap, staticLootDist, staticAmmoDist, locationId);
                 result.push(containerWithLoot.template);
-
             }
 
             return result;
