@@ -18,7 +18,6 @@ import { DatabaseServer } from "../servers/DatabaseServer";
 import { BotEquipmentFilterService } from "../services/BotEquipmentFilterService";
 import { BotEquipmentModPoolService } from "../services/BotEquipmentModPoolService";
 import { BotModLimits, BotWeaponModLimitService } from "../services/BotWeaponModLimitService";
-import { ItemBaseClassService } from "../services/ItemBaseClassService";
 import { ItemFilterService } from "../services/ItemFilterService";
 import { LocalisationService } from "../services/LocalisationService";
 import { HashUtil } from "../utils/HashUtil";
@@ -39,7 +38,6 @@ export class BotEquipmentModGenerator
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("BotEquipmentFilterService") protected botEquipmentFilterService: BotEquipmentFilterService,
-        @inject("ItemBaseClassService") protected itemBaseClassService: ItemBaseClassService,
         @inject("ItemFilterService") protected itemFilterService: ItemFilterService,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
         @inject("BotWeaponModLimitService") protected botWeaponModLimitService: BotWeaponModLimitService,
@@ -673,7 +671,7 @@ export class BotEquipmentModGenerator
         }
 
         // If mod id doesnt exist in slots filter list and mod id doesnt have any of the slots filters as a base class, mod isn't valid for the slot
-        if (!(itemSlot._props.filters[0].Filter.includes(modToAdd[1]._id) || this.itemBaseClassService.itemHasBaseClass(modToAdd[1]._id, itemSlot._props.filters[0].Filter)))
+        if (!(itemSlot._props.filters[0].Filter.includes(modToAdd[1]._id) || this.itemHelper.isOfBaseclasses(modToAdd[1]._id, itemSlot._props.filters[0].Filter)))
         {
             this.logger.warning(this.localisationService.getText("bot-mod_not_in_slot_filter_list", {modId: modToAdd[1]._id, modSlot: modSlot, parentName: parentTemplate._name}));
 
