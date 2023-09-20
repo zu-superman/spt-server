@@ -186,7 +186,8 @@
         "560d61e84bdc2da74d8b4571": 1,
         "64b8f7c241772715af0f9c3d": 1,
         "64b8f7968532cf95ee0a0dbf": 1,
-        "64b8f7b5389d7ffd620ccba2": 1
+        "64b8f7b5389d7ffd620ccba2": 1,
+        "5887431f2459777e1612938f": 1
       },
       "Caliber9x39": {
         "57a0e5022459774d1673f889": 1
@@ -772,7 +773,11 @@
         "5af04b6486f774195a3ebb49",
         "61bf83814088ec1a363d7097",
         "59fafb5d86f774067a6f2084",
-        "5d0375ff86f774186372f685"
+        "5d0375ff86f774186372f685",
+        "590c678286f77426c9660122",
+        "59faf7ca86f7740dbe19f6c2",
+        "59e358a886f7741776641ac3",
+        "5ed51652f6c34d2cc26336a1"
       ],
       "SecuredContainer": [
         "5e023e88277cce2b522ff2b1",
@@ -788,7 +793,8 @@
         "64b8f7c241772715af0f9c3d",
         "64b8f7968532cf95ee0a0dbf",
         "64b8f7b5389d7ffd620ccba2",
-        "58dd3ad986f77403051cba8f"
+        "58dd3ad986f77403051cba8f",
+        "5887431f2459777e1612938f"
       ],
       "SpecialLoot": []
     }
@@ -2809,7 +2815,7 @@
       "mod_reciever": 100,
       "mod_sight_rear": 77,
       "mod_magazine": 100,
-      "mod_mount": 50,
+      "mod_mount": 51,
       "mod_muzzle": 28,
       "mod_tactical": 26,
       "mod_mount_000": 55,
@@ -2821,11 +2827,11 @@
       "mod_nvg": 100,
       "mod_mount_001": 9,
       "mod_stock": 100,
-      "mod_mount_002": 71,
+      "mod_mount_002": 70,
       "mod_sight_front": 57,
       "mod_foregrip": 0,
       "mod_charge": 0,
-      "mod_mount_004": 73,
+      "mod_mount_004": 72,
       "mod_pistol_grip": 0,
       "mod_stock_000": 100
     }
