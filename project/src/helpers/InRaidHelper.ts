@@ -90,7 +90,7 @@ export class InRaidHelper
         // Run callback on every victim, adding up the standings gained/lossed, starting value is existing fence standing
         const newFenceStanding = victims.reduce((acc, victim) =>
         {
-            const standingForKill = this.getStandingChangeForKill(victim);
+            const standingForKill = this.getFenceStandingChangeForKillAsScav(victim);
             if (standingForKill)
             {
                 return acc + standingForKill;
@@ -108,7 +108,7 @@ export class InRaidHelper
      * @param victim Who was killed by player
      * @returns a numerical standing gain or loss
      */
-    protected getStandingChangeForKill(victim: Victim): number
+    protected getFenceStandingChangeForKillAsScav(victim: Victim): number
     {
         const botTypes = this.databaseServer.getTables().bots.types;
         if (victim.Side.toLowerCase() === "savage")
@@ -117,7 +117,7 @@ export class InRaidHelper
             return botTypes[victim.Role.toLowerCase()]?.experience?.standingForKill;
         }
         
-        // PMCs
+        // PMCs - get by bear/usec
         return botTypes[victim.Side.toLowerCase()]?.experience?.standingForKill;
     }
 
