@@ -418,11 +418,11 @@ export class LootGenerator
                 continue;
             }
 
-            // Get items that fulfil reward type criteral from items that fit on gun
-            const relatedItems = linkedItemsToWeapon.filter(x => x._parent === rewardTypeId);
+            // Get items that fulfil reward type critera from items that fit on gun
+            const relatedItems = linkedItemsToWeapon.filter(x => x._parent === rewardTypeId && !this.itemFilterService.isItemBlacklisted(x._id));
             if (!relatedItems || relatedItems.length === 0)
             {
-                this.logger.debug(`no items found to fulfil reward type ${rewardTypeId} for weapon: ${chosenWeaponPreset._name}, skipping`);
+                this.logger.debug(`No items found to fulfil reward type ${rewardTypeId} for weapon: ${chosenWeaponPreset._name}, skipping type`);
                 continue;
             }
 
