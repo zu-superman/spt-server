@@ -53,8 +53,6 @@ export class RagfairPriceService implements OnLoad
      */
     public async onLoad(): Promise<void> 
     {
-        this.addMissingHandbookPrices();
-
         if (!this.generatedStaticPrices)
         {
             this.generateStaticPrices();
@@ -66,27 +64,6 @@ export class RagfairPriceService implements OnLoad
             this.generateDynamicPrices();
             this.generatedDynamicPrices = true;
         }
-    }
-
-    /**
-     * Add placeholder values for items missing from handbook
-     */
-    protected addMissingHandbookPrices(): void
-    {
-        const db = this.databaseServer.getTables();
-        const sealedWeaponContainers = Object.values(db.templates.items).filter(x => x._name.includes("event_container_airdrop"));
-
-        for (const container of sealedWeaponContainers)
-        {
-            // doesnt have a handbook value
-            if (db.templates.handbook.Items.findIndex(x => x.Id === container._id)  === -1)
-            {
-                db.templates.handbook.Items.push({Id: container._id, ParentId: container._parent, Price: 100});
-            }
-        }
-
-        // Add handbook record for: Primorsky Ave apartment key
-        db.templates.handbook.Items.push({Id: "6391fcf5744e45201147080f", ParentId: "5c99f98d86f7745c314214b3", Price: 1});
     }
 
     public getRoute(): string 
