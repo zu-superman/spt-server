@@ -81,6 +81,12 @@ export class ScavCaseRewardGenerator
     {
         return Object.entries(this.databaseServer.getTables().templates.items).filter((item) =>
         {
+            // Base "Item" item has no parent, ignore it
+            if (item[1]._parent === "")
+            {
+                return false;
+            }
+
             // Skip item if item id is on blacklist
             if ((item[1]._type !== "Item")
                 || this.scavCaseConfig.rewardItemBlacklist.includes(item[1]._id)
@@ -169,7 +175,8 @@ export class ScavCaseRewardGenerator
     protected getRandomAmmo(rarity: string): ITemplateItem
     {
         // Get ammo from items.json not in the blacklist
-        const ammoItems = Object.entries(this.databaseServer.getTables().templates.items).filter((item) =>
+        const dbItems = this.getDbItems();
+        const ammoItems = dbItems.filter((item) =>
         {
             // Not ammo, skip
             if (!this.itemHelper.isOfBaseclass(item[1]._id, BaseClasses.AMMO))

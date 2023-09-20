@@ -1294,7 +1294,16 @@ export class RepeatableQuestController
         // those are not in the game yet (e.g. AGS grenade launcher)
         return Object.entries(this.databaseServer.getTables().templates.items).filter(
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            ([tpl, itemTemplate]) => this.isValidRewardItem(tpl, repeatableQuestConfig)
+            ([tpl, itemTemplate]) =>
+            {
+                // Base "Item" item has no parent, ignore it
+                if (itemTemplate._parent === "")
+                {
+                    return false;
+                }
+
+                return this.isValidRewardItem(tpl, repeatableQuestConfig);
+            }
         );
     }
 
