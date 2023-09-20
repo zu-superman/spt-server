@@ -2144,7 +2144,7 @@
       "max": 1000,
       "min": 250
     },
-    "standingForKill": 0.01
+    "standingForKill": 0.02
   },
   "firstName": [
     "Bingus",
