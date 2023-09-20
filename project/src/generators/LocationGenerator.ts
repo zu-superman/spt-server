@@ -179,7 +179,7 @@ export class LocationGenerator
             }
 
             // Pass possible containers into function to choose some
-            const chosenContainerIds = this.getContainersByProbabilty(data);
+            const chosenContainerIds = this.getContainersByProbabilty(groupId, data);
             for (const chosenContainerId of chosenContainerIds)
             {
                 // Look up container object from full list of containers on map
@@ -225,17 +225,18 @@ export class LocationGenerator
 
     /**
      * Choose a number of containers based on their probabilty value to fulfil the desired count in containerData.chosenCount
+     * @param groupId Name of the group the containers are being collected for
      * @param containerData Containers and probability values for a groupId
      * @returns List of chosen container Ids
      */
-    protected getContainersByProbabilty(containerData: IContainerGroupCount): string[]
+    protected getContainersByProbabilty(groupId: string, containerData: IContainerGroupCount): string[]
     {
         const chosenContainerIds: string[] = [];
 
         const containerIds = Object.keys(containerData.containerIdsWithProbability);
-        if (containerData.chosenCount >= containerIds.length)
+        if (containerData.chosenCount > containerIds.length)
         {
-            this.logger.debug(`Group wants ${containerData.chosenCount} containers but pool only has ${containerIds.length}, returning what's available`);
+            this.logger.debug(`Group: ${groupId} wants ${containerData.chosenCount} containers but pool only has ${containerIds.length}, add what's available`);
             return containerIds;
         }
 
