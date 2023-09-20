@@ -140,6 +140,17 @@ export class InraidController
             this.insuranceService.sendLostInsuranceMessage(sessionID, locationName);
         }
 
+        // Edge case - Handle usec players leaving lighthouse with Rogues angry at them
+        if (locationName === "lighthouse" && offraidData.profile.Info.Side.toLowerCase() === "usec")
+        {
+            // Decrement counter if it exists, don't go below 0
+            const remainingCounter = preRaidPmcData?.Stats.Eft.OverallCounters.Items.find(x => x.Key.includes("UsecRaidRemainKills"));
+            if (remainingCounter?.Value > 0)
+            {
+                remainingCounter.Value --;
+            }
+        }
+
         if (isDead)
         {
             this.pmcChatResponseService.sendKillerResponse(sessionID, preRaidPmcData, offraidData.profile.Stats.Eft.Aggressor);
