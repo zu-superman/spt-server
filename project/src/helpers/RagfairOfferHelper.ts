@@ -433,6 +433,33 @@ export class RagfairOfferHelper
             }
         }
 
+        const ragfairDetails = {
+            offerId: offer._id,
+            count: offer.sellInOnePiece ? offerStackCount : boughtAmount, // pack-offers NEED to the full item count otherwise it only removes 1 from the pack, leaving phantom offer on client ui
+            handbookId: itemTpl
+        };
+
+        this.mailSendService.sendDirectNpcMessageToPlayer(
+            sessionID,
+            this.traderHelper.getTraderById(Traders.RAGMAN),
+            MessageType.FLEAMARKET_MESSAGE,
+            this.getLocalisedOfferSoldMessage(itemTpl, boughtAmount),
+            itemsToSend,
+            this.timeUtil.getHoursAsSeconds(this.questConfig.redeemTime),
+            null,
+            ragfairDetails);
+
+        return this.eventOutputHolder.getOutput(sessionID);
+    }
+
+    /**
+     * Get a localised message for when players offer has sold on flea
+     * @param itemTpl Item sold
+     * @param boughtAmount How many were purchased
+     * @returns Localised message text
+     */
+    protected getLocalisedOfferSoldMessage(itemTpl: string, boughtAmount: number): string
+    {
         // Generate a message to inform that item was sold
         const globalLocales = this.localeService.getLocaleDb();
         const soldMessageLocaleGuid = globalLocales[RagfairOfferHelper.goodSoldTemplate];
@@ -447,45 +474,13 @@ export class RagfairOfferHelper
             buyerNickname: this.ragfairServerHelper.getNickname(this.hashUtil.generate()),
             itemCount: boughtAmount
         };
-        // const messageText = soldMessageLocaleGuid.replace(/{\w+}/g, (matched) =>
-        // {
-        //     return tplVars[matched.replace(/{|}/g, "")];
-        // });
 
-        // const messageContent = this.dialogueHelper.createMessageContext(undefined, MessageType.FLEAMARKET_MESSAGE, this.questConfig.redeemTime);
-        // messageContent.text = messageText.replace(/"/g, "");
-        // messageContent.ragfair = {
-        //     offerId: offer._id,
-        //     count: offer.sellInOnePiece ? offerStackCount : boughtAmount,
-        //     handbookId: itemTpl
-        // };
-
-        const messageText2 = soldMessageLocaleGuid.replace(/{\w+}/g, (matched) =>
+        const offerSoldMessageText = soldMessageLocaleGuid.replace(/{\w+}/g, (matched) =>
         {
             return tplVars[matched.replace(/{|}/g, "")];
         });
 
-        const ragfairDetails = {
-            offerId: offer._id,
-            count: offer.sellInOnePiece ? offerStackCount : boughtAmount,
-            handbookId: itemTpl
-        };
-
-        this.mailSendService.sendDirectNpcMessageToPlayer(
-            sessionID,
-            this.traderHelper.getTraderById(Traders.RAGMAN),
-            MessageType.FLEAMARKET_MESSAGE,
-            messageText2.replace(/"/g, ""),
-            itemsToSend,
-            this.timeUtil.getHoursAsSeconds(this.questConfig.redeemTime),
-            null,
-            ragfairDetails);
-
-
-
-        //this.dialogueHelper.addDialogueMessage(Traders.RAGMAN, messageContent, sessionID, itemsToSend);
-
-        return this.eventOutputHolder.getOutput(sessionID);
+        return offerSoldMessageText.replace(/"/g, "");
     }
 
     /**
