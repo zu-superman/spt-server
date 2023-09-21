@@ -283,8 +283,6 @@ export class RagfairOfferHelper
 
                 this.completeOffer(sessionID, offer, boughtAmount);
                 offer.sellResult.splice(0, 1);
-
-                // TODO: Send a mail to player informing them offer was sold, text comes from locale with id: "5b55a1f786f77469803bca61 0" (Your offer was sold {buyerNickname})
             }
         }
 
@@ -326,16 +324,16 @@ export class RagfairOfferHelper
     }
 
     /**
-     * Delete an offer from a desired profile
+     * Delete an offer from a desired profile and from ragfair offers
      * @param sessionID Session id of profile to delete offer from
-     * @param offerId Offer id to delete
+     * @param offerId Id of offer to delete
      */
-    protected deleteOfferByOfferId(sessionID: string, offerId: string): void
+    protected deleteOfferById(sessionID: string, offerId: string): void
     {
         const profileRagfairInfo = this.saveServer.getProfile(sessionID).characters.pmc.RagfairInfo;
         const index = profileRagfairInfo.offers.findIndex(o => o._id === offerId);
         profileRagfairInfo.offers.splice(index, 1);
-
+        // Also delete from ragfair
         this.ragfairOfferService.removeOfferById(offerId);
     }
 
@@ -344,7 +342,7 @@ export class RagfairOfferHelper
      * @param sessionID Session id
      * @param offer Sold offer details
      * @param boughtAmount Amount item was purchased for
-     * @returns Client response
+     * @returns IItemEventRouterResponse
      */
     protected completeOffer(sessionID: string, offer: IRagfairOffer, boughtAmount: number): IItemEventRouterResponse
     {
@@ -353,7 +351,7 @@ export class RagfairOfferHelper
 
         if (offer.sellInOnePiece || boughtAmount === offer.items[0].upd.StackObjectsCount)
         {
-            this.deleteOfferByOfferId(sessionID, offer._id);
+            this.deleteOfferById(sessionID, offer._id);
         }
         else
         {

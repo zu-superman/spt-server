@@ -340,7 +340,7 @@ export class RagfairController
      */
     public addPlayerOffer(pmcData: IPmcData, offerRequest: IAddOfferRequestData, sessionID: string): IItemEventRouterResponse
     {
-        let output = this.eventOutputHolder.getOutput(sessionID);
+        const output = this.eventOutputHolder.getOutput(sessionID);
 
         const validationMessage = "";
         if (!this.isValidPlayerOfferRequest(offerRequest, validationMessage))
@@ -363,7 +363,9 @@ export class RagfairController
         const rootItem = offer.items[0];
         const qualityMultiplier = this.itemHelper.getItemQualityModifier(rootItem);
         const averageOfferPrice = this.ragfairPriceService.getFleaPriceForItem(rootItem._tpl) * rootItem.upd.StackObjectsCount * qualityMultiplier;
-        const itemStackCount = (!offerRequest.sellInOnePiece) ? offer.items[0].upd.StackObjectsCount : 1;
+        const itemStackCount = (offerRequest.sellInOnePiece)
+            ? 1
+            : offer.items[0].upd.StackObjectsCount;
         const singleOfferValue = averageOfferPrice / itemStackCount;
         let sellChance = this.ragfairConfig.sell.chance.base * qualityMultiplier;
 
@@ -373,37 +375,10 @@ export class RagfairController
         // Subtract flea market fee from stash
         if (this.ragfairConfig.sell.fees)
         {
-            // Get tax from cache hydrated by client, if that's missing fall back to server calculation (inaccurate)
-            const storedClientTaxValue = this.ragfairTaxService.getStoredClientOfferTaxValueById(offerRequest.items[0]);
-            const tax = storedClientTaxValue
-                ? storedClientTaxValue.fee
-                : this.ragfairTaxService.calculateTax(rootItem, pmcData, requirementsPriceInRub, itemStackCount, offerRequest.sellInOnePiece);
-
-            //cleanup of cache now we've used the tax value from it
-            this.ragfairTaxService.clearStoredOfferTaxById(offerRequest.items[0]);
-
-            const request: IProcessBuyTradeRequestData = {
-                tid: "ragfair",
-                Action: "TradingConfirm",
-                // eslint-disable-next-line @typescript-eslint/naming-convention
-                scheme_items: [
-                    {
-                        id: this.paymentHelper.getCurrency("RUB"),
-                        count: Math.round(tax)
-                    }
-                ],
-                type: "",
-                // eslint-disable-next-line @typescript-eslint/naming-convention
-                item_id: "",
-                count: 0,
-                // eslint-disable-next-line @typescript-eslint/naming-convention
-                scheme_id: 0
-            };
-
-            output = this.paymentService.payMoney(pmcData, request, sessionID, output);
-            if (output.warnings.length > 0)
+            const taxFeeChargeFailed = this.chargePlayerTaxFee(sessionID, rootItem, pmcData, requirementsPriceInRub, itemStackCount, offerRequest, output);
+            if (taxFeeChargeFailed)
             {
-                return this.httpResponse.appendErrorToOutput(output, this.localisationService.getText("ragfair-unable_to_pay_commission_fee", tax));
+                return output;
             }
         }
 
@@ -417,6 +392,28 @@ export class RagfairController
         }
 
         return output;
+    }
+
+    protected chargePlayerTaxFee(sessionID: string, rootItem: Item, pmcData: IPmcData, requirementsPriceInRub: number, itemStackCount: number, offerRequest: IAddOfferRequestData, output: IItemEventRouterResponse): boolean
+    {
+        // Get tax from cache hydrated earlier by client, if that's missing fall back to server calculation (inaccurate)
+        const storedClientTaxValue = this.ragfairTaxService.getStoredClientOfferTaxValueById(offerRequest.items[0]);
+        const tax = storedClientTaxValue
+            ? storedClientTaxValue.fee
+            : this.ragfairTaxService.calculateTax(rootItem, pmcData, requirementsPriceInRub, itemStackCount, offerRequest.sellInOnePiece);
+
+        //cleanup of cache now we've used the tax value from it
+        this.ragfairTaxService.clearStoredOfferTaxById(offerRequest.items[0]);
+
+        const request = this.createBuyTradeRequestObject("RUB", tax);
+        output = this.paymentService.payMoney(pmcData, request, sessionID, output);
+        if (output.warnings.length > 0)
+        {
+            output = this.httpResponse.appendErrorToOutput(output, this.localisationService.getText("ragfair-unable_to_pay_commission_fee", tax));
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -609,24 +606,7 @@ export class RagfairController
             const count = offers[index].sellInOnePiece ? 1 : offers[index].items.reduce((sum, item) => sum += item.upd.StackObjectsCount, 0);
             const tax = this.ragfairTaxService.calculateTax(offers[index].items[0], this.profileHelper.getPmcProfile(sessionID), offers[index].requirementsCost, count, offers[index].sellInOnePiece);
 
-            const request: IProcessBuyTradeRequestData = {
-                tid: "ragfair",
-                Action: "TradingConfirm",
-                // eslint-disable-next-line @typescript-eslint/naming-convention
-                scheme_items: [
-                    {
-                        id: this.paymentHelper.getCurrency("RUB"),
-                        count: Math.round(tax)
-                    }
-                ],
-                type: "",
-                // eslint-disable-next-line @typescript-eslint/naming-convention
-                item_id: "",
-                count: 0,
-                // eslint-disable-next-line @typescript-eslint/naming-convention
-                scheme_id: 0
-            };
-
+            const request = this.createBuyTradeRequestObject("RUB", tax);
             output = this.paymentService.payMoney(pmcData, request, sessionID, output);
             if (output.warnings.length > 0)
             {
@@ -637,5 +617,32 @@ export class RagfairController
         offers[index].endTime += Math.round(secondsToAdd);
 
         return this.eventOutputHolder.getOutput(sessionID);
+    }
+
+    /**
+     * Create a basic trader request object with price and currency type
+     * @param currency What currency: RUB, EURO, USD
+     * @param value Amount of currency
+     * @returns IProcessBuyTradeRequestData
+     */
+    protected createBuyTradeRequestObject(currency: string, value: number): IProcessBuyTradeRequestData
+    {
+        return {
+            tid: "ragfair",
+            Action: "TradingConfirm",
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            scheme_items: [
+                {
+                    id: this.paymentHelper.getCurrency(currency),
+                    count: Math.round(value)
+                }
+            ],
+            type: "",
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            item_id: "",
+            count: 0,
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            scheme_id: 0
+        };
     }
 }
