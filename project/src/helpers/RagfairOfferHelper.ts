@@ -348,8 +348,9 @@ export class RagfairOfferHelper
     {
         const itemTpl = offer.items[0]._tpl;
         let itemsToSend = [];
+        const offerStackCount = offer.items[0].upd.StackObjectsCount;
 
-        if (offer.sellInOnePiece || boughtAmount === offer.items[0].upd.StackObjectsCount)
+        if (offer.sellInOnePiece || boughtAmount === offerStackCount)
         {
             this.deleteOfferById(sessionID, offer._id);
         }
@@ -455,7 +456,7 @@ export class RagfairOfferHelper
         messageContent.text = messageText.replace(/"/g, "");
         messageContent.ragfair = {
             offerId: offer._id,
-            count: boughtAmount,
+            count: offer.sellInOnePiece ? offerStackCount : boughtAmount,
             handbookId: itemTpl
         };
 
