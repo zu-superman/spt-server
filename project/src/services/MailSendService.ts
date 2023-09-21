@@ -43,7 +43,7 @@ export class MailSendService
      * @param items Optional items to send to player
      * @param maxStorageTimeSeconds Optional time to collect items before they expire
      */
-    public sendDirectNpcMessageToPlayer(playerId: string, sender: Traders, messageType: MessageType, message: string, items: Item[] = [], maxStorageTimeSeconds = null): void
+    public sendDirectNpcMessageToPlayer(playerId: string, sender: Traders, messageType: MessageType, message: string, items: Item[] = [], maxStorageTimeSeconds = null, systemData = null, ragfair = null): void
     {
         if (!sender)
         {
@@ -61,10 +61,20 @@ export class MailSendService
         };
 
         // Add items to message
-        if (items.length > 0)
+        if (items?.length > 0)
         {
             details.items = items;
             details.itemsMaxStorageLifetimeSeconds = maxStorageTimeSeconds ?? 172800; // 48 hours if no value supplied
+        }
+
+        if (systemData)
+        {
+            details.systemData = systemData;
+        }
+
+        if (ragfair)
+        {
+            details.ragfairDetails = ragfair;
         }
 
         this.sendMessageToPlayer(details);
@@ -79,7 +89,7 @@ export class MailSendService
      * @param items Optional items to send to player
      * @param maxStorageTimeSeconds Optional time to collect items before they expire
      */
-    public sendLocalisedNpcMessageToPlayer(playerId: string, sender: Traders, messageType: MessageType, messageLocaleId: string, items: Item[] = [], maxStorageTimeSeconds = null, systemData = null): void
+    public sendLocalisedNpcMessageToPlayer(playerId: string, sender: Traders, messageType: MessageType, messageLocaleId: string, items: Item[] = [], maxStorageTimeSeconds = null, systemData = null, ragfair = null): void
     {
         if (!sender)
         {
@@ -97,7 +107,7 @@ export class MailSendService
         };
 
         // Add items to message
-        if (items.length > 0)
+        if (items?.length > 0)
         {
             details.items = items;
             details.itemsMaxStorageLifetimeSeconds = maxStorageTimeSeconds ?? 172800; // 48 hours if no value supplied
@@ -106,6 +116,11 @@ export class MailSendService
         if (systemData)
         {
             details.systemData = systemData;
+        }
+
+        if (ragfair)
+        {
+            details.ragfairDetails = ragfair;
         }
 
         this.sendMessageToPlayer(details);
@@ -152,7 +167,7 @@ export class MailSendService
         };
 
         // Add items to message
-        if (items.length > 0)
+        if (items?.length > 0)
         {
             details.items = items;
             details.itemsMaxStorageLifetimeSeconds = maxStorageTimeSeconds ?? 172800; // 48 hours if no value supplied
@@ -179,7 +194,7 @@ export class MailSendService
         };
 
         // Add items to message
-        if (items.length > 0)
+        if (items?.length > 0)
         {
             details.items = items;
             details.itemsMaxStorageLifetimeSeconds = maxStorageTimeSeconds ?? 172800; // 48 hours if no value supplied

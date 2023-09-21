@@ -21,10 +21,10 @@ import { DatabaseServer } from "../servers/DatabaseServer";
 import { SaveServer } from "../servers/SaveServer";
 import { LocaleService } from "../services/LocaleService";
 import { LocalisationService } from "../services/LocalisationService";
+import { MailSendService } from "../services/MailSendService";
 import { RagfairOfferService } from "../services/RagfairOfferService";
 import { HashUtil } from "../utils/HashUtil";
 import { TimeUtil } from "../utils/TimeUtil";
-import { DialogueHelper } from "./DialogueHelper";
 import { ItemHelper } from "./ItemHelper";
 import { PaymentHelper } from "./PaymentHelper";
 import { PresetHelper } from "./PresetHelper";
@@ -49,7 +49,6 @@ export class RagfairOfferHelper
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("TraderHelper") protected traderHelper: TraderHelper,
         @inject("SaveServer") protected saveServer: SaveServer,
-        @inject("DialogueHelper") protected dialogueHelper: DialogueHelper,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("PaymentHelper") protected paymentHelper: PaymentHelper,
         @inject("PresetHelper") protected presetHelper: PresetHelper,
@@ -60,6 +59,7 @@ export class RagfairOfferHelper
         @inject("RagfairOfferService") protected ragfairOfferService: RagfairOfferService,
         @inject("LocaleService") protected localeService: LocaleService,
         @inject("LocalisationService") protected localisationService: LocalisationService,
+        @inject("MailSendService") protected mailSendService: MailSendService,
         @inject("ConfigServer") protected configServer: ConfigServer
     )
     {
@@ -447,20 +447,43 @@ export class RagfairOfferHelper
             buyerNickname: this.ragfairServerHelper.getNickname(this.hashUtil.generate()),
             itemCount: boughtAmount
         };
-        const messageText = soldMessageLocaleGuid.replace(/{\w+}/g, (matched) =>
+        // const messageText = soldMessageLocaleGuid.replace(/{\w+}/g, (matched) =>
+        // {
+        //     return tplVars[matched.replace(/{|}/g, "")];
+        // });
+
+        // const messageContent = this.dialogueHelper.createMessageContext(undefined, MessageType.FLEAMARKET_MESSAGE, this.questConfig.redeemTime);
+        // messageContent.text = messageText.replace(/"/g, "");
+        // messageContent.ragfair = {
+        //     offerId: offer._id,
+        //     count: offer.sellInOnePiece ? offerStackCount : boughtAmount,
+        //     handbookId: itemTpl
+        // };
+
+        const messageText2 = soldMessageLocaleGuid.replace(/{\w+}/g, (matched) =>
         {
             return tplVars[matched.replace(/{|}/g, "")];
         });
 
-        const messageContent = this.dialogueHelper.createMessageContext(undefined, MessageType.FLEAMARKET_MESSAGE, this.questConfig.redeemTime);
-        messageContent.text = messageText.replace(/"/g, "");
-        messageContent.ragfair = {
+        const ragfairDetails = {
             offerId: offer._id,
             count: offer.sellInOnePiece ? offerStackCount : boughtAmount,
             handbookId: itemTpl
         };
 
-        this.dialogueHelper.addDialogueMessage(Traders.RAGMAN, messageContent, sessionID, itemsToSend);
+        this.mailSendService.sendDirectNpcMessageToPlayer(
+            sessionID,
+            this.traderHelper.getTraderById(Traders.RAGMAN),
+            MessageType.FLEAMARKET_MESSAGE,
+            messageText2.replace(/"/g, ""),
+            itemsToSend,
+            this.timeUtil.getHoursAsSeconds(this.questConfig.redeemTime),
+            null,
+            ragfairDetails);
+
+
+
+        //this.dialogueHelper.addDialogueMessage(Traders.RAGMAN, messageContent, sessionID, itemsToSend);
 
         return this.eventOutputHolder.getOutput(sessionID);
     }
