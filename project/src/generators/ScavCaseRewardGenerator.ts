@@ -179,25 +179,25 @@ export class ScavCaseRewardGenerator
         const ammoItems = dbItems.filter((item) =>
         {
             // Not ammo, skip
-            if (!this.itemHelper.isOfBaseclass(item[1]._id, BaseClasses.AMMO))
+            if (!this.itemHelper.isOfBaseclass(item._id, BaseClasses.AMMO))
             {
                 return false;
             }
 
             // Fail if on blacklist
-            if (this.scavCaseConfig.ammoRewards.ammoRewardBlacklist[rarity].includes(item[1]._id))
+            if (this.scavCaseConfig.ammoRewards.ammoRewardBlacklist[rarity].includes(item._id))
             {
                 return false;
             }
 
             // Skip ammo that doesn't stack as high as value in config
-            if (item[1]._props.StackMaxSize < this.scavCaseConfig.ammoRewards.minStackSize)
+            if (item._props.StackMaxSize < this.scavCaseConfig.ammoRewards.minStackSize)
             {
                 return false;
             }
 
             // Is ammo handbook price between desired range
-            const handbookPrice = this.ragfairPriceService.getStaticPriceForItem(item[1]._id);
+            const handbookPrice = this.ragfairPriceService.getStaticPriceForItem(item._id);
             if (handbookPrice >= this.scavCaseConfig.ammoRewards.ammoRewardValueRangeRub[rarity].min 
                 && handbookPrice <= this.scavCaseConfig.ammoRewards.ammoRewardValueRangeRub[rarity].max)
             {
