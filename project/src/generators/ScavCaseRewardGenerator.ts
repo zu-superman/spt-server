@@ -74,35 +74,35 @@ export class ScavCaseRewardGenerator
     }
 
     /**
-     * Get all db items that are not blacklisted in scavcase config
+     * Get all db items that are not blacklisted in scavcase config or global blacklist
      * @returns filtered array of db items
      */
     protected getDbItems(): ITemplateItem[]
     {
-        return Object.entries(this.databaseServer.getTables().templates.items).filter((item) =>
+        return Object.values(this.databaseServer.getTables().templates.items).filter((item) =>
         {
             // Base "Item" item has no parent, ignore it
-            if (item[1]._parent === "")
+            if (item._parent === "")
             {
                 return false;
             }
 
             // Skip item if item id is on blacklist
-            if ((item[1]._type !== "Item")
-                || this.scavCaseConfig.rewardItemBlacklist.includes(item[1]._id)
-                || this.itemFilterService.isItemBlacklisted(item[1]._id))
+            if ((item._type !== "Item")
+                || this.scavCaseConfig.rewardItemBlacklist.includes(item._id)
+                || this.itemFilterService.isItemBlacklisted(item._id))
             {
                 return false;
             }
 
             // Skip item if parent id is blacklisted
-            if (this.itemHelper.isOfBaseclasses(item[1]._id, this.scavCaseConfig.rewardItemParentBlacklist))
+            if (this.itemHelper.isOfBaseclasses(item._id, this.scavCaseConfig.rewardItemParentBlacklist))
             {
                 return false;
             }
 
             return true;
-        }).map(x => x[1]);
+        });
     }
 
     /**
