@@ -139,13 +139,13 @@
         "5d5e7d28a4b936645d161203": 1,
         "5aa2ba19e5b5b00014028f4e": 1,
         "5b4327aa5acfc400175496e0": 1,
-        "5b40e61f5acfc4001a599bec": 1,
         "5e4bfc1586f774264f7582d3": 1,
         "5ea17ca01412a1425304d1c0": 1,
-        "5ac8d6885acfc400180ae7b0": 1,
-        "5aa2b9ede5b5b000137b758b": 1,
-        "5f60e6403b85f6263c14558c": 1,
         "603618feffd42c541047f771": 1,
+        "5f60e6403b85f6263c14558c": 1,
+        "5b40e61f5acfc4001a599bec": 1,
+        "5aa2b9ede5b5b000137b758b": 1,
+        "5ac8d6885acfc400180ae7b0": 1,
         "5b43271c5acfc432ff4dce65": 1,
         "5f60b34a41e30a4ab12a6947": 1
       },
@@ -191,8 +191,8 @@
         "5b44c8ea86f7742d1627baf1": 1,
         "5d5d85c586f774279a21cbdb": 1,
         "544a5caa4bdc2d1a388b4568": 1,
-        "5df8a42886f77412640e2e75": 1,
         "5f5f41f56760b4138443b352": 1,
+        "5df8a42886f77412640e2e75": 1,
         "5b44cad286f77402a54ae7e5": 1,
         "60a3c68c37ea821725773ef5": 1,
         "64a5366719bab53bd203bf33": 1,
@@ -203,8 +203,8 @@
         "618cfae774bb2d036a049e7c": 1,
         "5f5e467b0bc58666c37e7821": 1,
         "5e9dcf5986f7746c417435b3": 1,
-        "60a272cc93ef783291411d8e": 1,
-        "619cf0335771dd3c390269ae": 1
+        "619cf0335771dd3c390269ae": 1,
+        "60a272cc93ef783291411d8e": 1
       },
       "FirstPrimaryWeapon": {
         "5447a9cd4bdc2dbd208b4567": 31,
@@ -295,8 +295,8 @@
           "55d4887d4bdc2d962f8b4570",
           "5c6d46132e221601da357d56",
           "5d1340b3d7ad1a0b52682ed7",
-          "5448c1d04bdc2dff2f8b4569",
-          "544a37c44bdc2d25388b4567"
+          "544a37c44bdc2d25388b4567",
+          "5448c1d04bdc2dff2f8b4569"
         ]
       },
       "55d355e64bdc2d962f8b4569": {
@@ -756,6 +756,19 @@
           "5c87ca002e221600114cb150"
         ]
       },
+      "5e4bfc1586f774264f7582d3": {
+        "mod_nvg": [
+          "5a16b8a9fcdbcb00165aa6ca"
+        ],
+        "mod_equipment_000": [
+          "5a16b672fcdbcb001912fa83"
+        ]
+      },
+      "5c066ef40db834001966a595": {
+        "mod_nvg": [
+          "5c066e3a0db834001b7353f0"
+        ]
+      },
       "6184055050224f204c1da540": {
         "mod_pistol_grip": [
           "55d4b9964bdc2d1d4e8b456e"
@@ -829,19 +842,6 @@
       "618167528004cc50514c34f9": {
         "mod_stock": [
           "618167616ef05c2ce828f1a8"
-        ]
-      },
-      "5e4bfc1586f774264f7582d3": {
-        "mod_nvg": [
-          "5a16b8a9fcdbcb00165aa6ca"
-        ],
-        "mod_equipment_000": [
-          "5a16b672fcdbcb001912fa83"
-        ]
-      },
-      "5c066ef40db834001966a595": {
-        "mod_nvg": [
-          "5c066e3a0db834001b7353f0"
         ]
       },
       "59ccfdba86f7747f2109a587": {
@@ -952,6 +952,11 @@
           "5d120a28d7ad1a1c8962e295"
         ]
       },
+      "5c064c400db834001d23f468": {
+        "mod_scope": [
+          "570fd721d2720bc5458b4596"
+        ]
+      },
       "5fbcc1d9016cce60e8341ab3": {
         "mod_pistol_grip": [
           "5fbcbd6c187fea44d52eda14"
@@ -986,11 +991,6 @@
         ],
         "mod_muzzle": [
           "5fbc22ccf24b94483f726483"
-        ]
-      },
-      "5c064c400db834001d23f468": {
-        "mod_scope": [
-          "570fd721d2720bc5458b4596"
         ]
       },
       "5fbc22ccf24b94483f726483": {
@@ -1228,8 +1228,8 @@
         "5c6d46132e221601da357d56",
         "5cadc2e0ae9215051e1c21e7",
         "5d1340b3d7ad1a0b52682ed7",
-        "5aaa5dfee5b5b000140293d3",
         "544a37c44bdc2d25388b4567",
+        "5aaa5dfee5b5b000140293d3",
         "5c05413a0db834001c390617",
         "6193d3149fb0c665d5490e32",
         "5b7bef9c5acfc43d102852ec",
@@ -1269,25 +1269,25 @@
         "59faf7ca86f7740dbe19f6c2",
         "5d0a29ead7ad1a0026013f27",
         "56ea6fafd2720b844b8b4593",
-        "5d2da1e948f035477b1ce2ba",
         "5c10c8fd86f7743d7d706df3",
+        "5d2da1e948f035477b1ce2ba",
         "5ba26acdd4351e003562908e",
         "5a34fd2bc4a282329a73b4c5",
         "5e54f62086f774219b0f1937",
+        "5c0e533786f7747fa23f4d47",
+        "58d2946c86f7744e271174b5",
+        "5926c3b286f774640d189b6b",
+        "5f745ee30acaeb0d490d8c5b",
+        "5ed515e03a40a50460332579",
         "5de653abf76fdc1ce94a5a2a",
         "5c0e531d86f7747fa23f4d42",
         "5894a42086f77426d2590762",
-        "5c0e533786f7747fa23f4d47",
         "55d480c04bdc2d1d4e8b456a",
         "6130c3dffaa1272e43151c7d",
         "5d235a5986f77443f6329bc6",
         "5f647d9f8499b57dc40ddb93",
-        "5f745ee30acaeb0d490d8c5b",
-        "58d2946c86f7744e271174b5",
-        "5926c3b286f774640d189b6b",
-        "5ed515e03a40a50460332579",
-        "5c0e530286f7747fa1419862",
         "59e3658a86f7741776641ac4",
+        "5c0e530286f7747fa1419862",
         "61840d85568c120fdd2962a5",
         "5addc7ac5acfc400194dbd90",
         "59985a8086f77414ec448d1a",
@@ -1436,10 +1436,10 @@
         "5a33cae9c4a28232980eb086",
         "544a37c44bdc2d25388b4567",
         "5cdd7685d7f00c000f260ed2",
-        "55d35ee94bdc2d61338b4568",
-        "5c0fafb6d174af02a96260ba",
         "57c9a89124597704ee6faec1",
         "612e0d3767085e45ef14057f",
+        "55d35ee94bdc2d61338b4568",
+        "5c0fafb6d174af02a96260ba",
         "5cde739cd7f00c0010373bd3",
         "5b07dd285acfc4001754240d",
         "5b3b6dc75acfc47a8773fb1e",
@@ -1495,7 +1495,13 @@
         "57d17c5e2459775a5c57d17d",
         "6113cce3d92c473c770200c7",
         "56ea7293d2720b8d4b8b45ba",
-        "5a9e81fba2750c00164f6b11"
+        "5a9e81fba2750c00164f6b11",
+        "5b7be4575acfc400161d0832",
+        "62e7e7bbe6da9612f743f1e0",
+        "618b9682a3884f56c957ca78",
+        "5649d9a14bdc2d79388b4580",
+        "55d3632e4bdc2d972f8b4569",
+        "5943eeeb86f77412d6384f6b"
       ],
       "SecuredContainer": [
         "59e68f6f86f7746c9f75e846",
@@ -1509,8 +1515,8 @@
         "5e81f423763d9f754677bf2e",
         "58dd3ad986f77403051cba8f",
         "54527ac44bdc2d36668b4567",
-        "5fbe3ffdf8b6a877a729ea82",
         "59e6906286f7746c9f75e847",
+        "5fbe3ffdf8b6a877a729ea82",
         "5e023e53d4353e3302577c4c",
         "5e023e88277cce2b522ff2b1",
         "59e690b686f7746c9f75e848",
@@ -1539,29 +1545,28 @@
     "Andresto",
     "Noisy",
     "Sneaky",
-    "Dawg",
-    "Oskar",
     "Spectator-6",
     "Condor",
-    "Walker",
-    "Three-Teeth",
-    "Dakota",
-    "Blackbird",
-    "Blade",
-    "Browski",
-    "Applejuice",
-    "Blakemore",
-    "Texas",
-    "Coyote",
-    "Melo",
-    "Sherman",
     "Hypno",
+    "Three-Teeth",
     "Handsome",
-    "Afraid",
-    "Meldon",
     "Juggernaut",
+    "Blackbird",
     "Nine-hole",
     "Boogerman",
+    "Afraid",
+    "Blade",
+    "Browski",
+    "Texas",
+    "Meldon",
+    "Coyote",
+    "Dawg",
+    "Oskar",
+    "Melo",
+    "Sherman",
+    "Dakota",
+    "Applejuice",
+    "Blakemore",
     "Мike",
     "Jersey",
     "Auron",
@@ -1576,6 +1581,17 @@
     "OneEye",
     "Jeff",
     "Nevada",
+    "Walker",
+    "Cougar",
+    "Woodrow",
+    "Rage",
+    "Hellshrimp",
+    "Golden",
+    "Garandthumb",
+    "Solidus",
+    "Victor",
+    "SharkBait",
+    "Mamba",
     "Vicious",
     "Riot",
     "Quebec",
@@ -1585,17 +1601,6 @@
     "Ironfists",
     "Lee",
     "Chester",
-    "Cougar",
-    "Woodrow",
-    "Sly",
-    "Rage",
-    "Butcher",
-    "Hellshrimp",
-    "Garandthumb",
-    "Solidus",
-    "Victor",
-    "Esquilo",
-    "Cliffhanger",
     "Momma",
     "Panther",
     "Mortal",
@@ -1604,31 +1609,32 @@
     "Father",
     "Stamper",
     "Weasel",
-    "Golden",
-    "SharkBait",
-    "Mamba",
+    "Esquilo",
     "Striker",
     "RoughDog",
     "Iowa",
     "Enzo",
     "Whitemane",
     "Zero-zero",
+    "Cliffhanger",
     "Trickster",
     "Justkilo",
+    "Sly",
+    "Butcher",
     "Shifty",
     "Nukem",
     "Rib-eye",
     "Trent",
-    "Cross",
-    "Brockley",
-    "Lunar",
-    "Honorable",
-    "Grandpa",
-    "Churchill",
-    "Rocket",
     "Dustin",
     "Boatswain",
+    "Brockley",
+    "Lunar",
+    "Grandpa",
     "Oklahoma",
+    "Churchill",
+    "Rocket",
+    "Cross",
+    "Honorable",
     "Ronflex",
     "Michigan",
     "Firion",
@@ -1651,23 +1657,23 @@
     "Duke",
     "Frenzy",
     "Diggi",
-    "Kanzas",
-    "Solem",
-    "Legia",
-    "Scottsdale",
     "Aimbotkin",
     "Kentucky",
-    "Corsair",
-    "Whale-Eye",
+    "Arizona",
+    "Solem",
     "Marooner",
     "Baddie",
-    "Arizona",
+    "Kanzas",
+    "Legia",
+    "Scottsdale",
+    "Corsair",
+    "Whale-Eye",
+    "Grim",
     "Shadow",
     "Instructor",
     "Bullet",
-    "Grim",
-    "Foxy",
     "Sniperlife",
+    "Foxy",
     "Lost",
     "Seafarer"
   ],

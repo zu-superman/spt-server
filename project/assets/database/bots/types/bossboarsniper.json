@@ -157,9 +157,9 @@
         "5fd4c60f875c30179f5d04c2": 1,
         "59e7643b86f7742cbf2c109a": 1,
         "5e4abfed86f77406a2713cf7": 1,
-        "5929a2a086f7744f4b234d43": 1,
         "64be7110bf597ba84a0a41ea": 1,
         "5ca20abf86f77418567a43f2": 1,
+        "5929a2a086f7744f4b234d43": 1,
         "592c2d1a86f7746dbe2af32a": 1
       },
       "Backpack": {},
@@ -538,18 +538,6 @@
           "5dff772da3651922b360bf91"
         ]
       },
-      "6197b229af1f5202c57a9bea": {
-        "mod_stock": [
-          "5947eab886f77475961d96c5",
-          "5b0800175acfc400153aebd4",
-          "5d120a10d7ad1a4e1026ba85",
-          "591af10186f774139d495f0e",
-          "591aef7986f774139d495f03",
-          "5c0faeddd174af02a962601f",
-          "5947e98b86f774778f1448bc",
-          "57ade1442459771557167e15"
-        ]
-      },
       "5c501a4d2e221602b412b540": {
         "mod_gas_block": [
           "5c5039be2e221602b177c9ff"
@@ -572,6 +560,18 @@
         ],
         "mod_magazine": [
           "5c503ad32e2216398b5aada2"
+        ]
+      },
+      "6197b229af1f5202c57a9bea": {
+        "mod_stock": [
+          "5947eab886f77475961d96c5",
+          "5b0800175acfc400153aebd4",
+          "5d120a10d7ad1a4e1026ba85",
+          "591af10186f774139d495f0e",
+          "591aef7986f774139d495f03",
+          "5c0faeddd174af02a962601f",
+          "5947e98b86f774778f1448bc",
+          "57ade1442459771557167e15"
         ]
       },
       "643ea5b23db6f9f57107d9fd": {
@@ -835,8 +835,8 @@
         ],
         "mod_muzzle": [
           "560e620e4bdc2d724b8b456b",
-          "5c4ee3d62e2216152006f302",
-          "5c4eec9b2e2216398b5aaba2"
+          "5c4eec9b2e2216398b5aaba2",
+          "5c4ee3d62e2216152006f302"
         ],
         "mod_magazine": [
           "559ba5b34bdc2d1f1a8b4582"
@@ -1126,7 +1126,8 @@
         ],
         "mod_scope": [
           "5c0517910db83400232ffee5",
-          "5c07dd120db834001c39092d"
+          "5c07dd120db834001c39092d",
+          "544a3a774bdc2d3a388b4567"
         ]
       },
       "5df917564a9f347bc92edca3": {
@@ -1221,9 +1222,9 @@
     "Петрович",
     "Доня",
     "Мышь",
+    "Бастурма",
     "Наперсточник",
     "Угон",
-    "Бастурма",
     "Зевака",
     "Капрал",
     "Бешеный",
@@ -1238,10 +1239,10 @@
     "Мазевый",
     "Хэтчкок",
     "Верхний",
-    "Симо",
     "Ползучий",
-    "Огурец",
-    "Кальянщик"
+    "Симо",
+    "Кальянщик",
+    "Огурец"
   ],
   "lastName": [],
   "difficulty": {
@@ -3145,10 +3146,10 @@
   "chances": {
     "equipment": {
       "Headwear": 98,
-      "Earpiece": 77,
-      "FaceCover": 57,
+      "Earpiece": 76,
+      "FaceCover": 56,
       "ArmorVest": 80,
-      "Eyewear": 47,
+      "Eyewear": 46,
       "ArmBand": 0,
       "TacticalVest": 100,
       "Backpack": 0,
@@ -3160,25 +3161,25 @@
       "SecuredContainer": 100
     },
     "mods": {
-      "mod_sight_rear": 87,
+      "mod_sight_rear": 86,
       "mod_magazine": 100,
-      "mod_mount": 62,
-      "mod_muzzle": 81,
-      "mod_stock": 74,
+      "mod_mount": 63,
+      "mod_muzzle": 80,
+      "mod_stock": 73,
       "mod_foregrip": 95,
       "mod_scope": 84,
       "mod_tactical": 16,
-      "mod_tactical_000": 51,
+      "mod_tactical_000": 50,
       "mod_tactical_001": 0,
       "mod_tactical_002": 0,
       "mod_mount_000": 89,
       "mod_reciever": 100,
-      "mod_charge": 12,
+      "mod_charge": 11,
       "mod_mount_004": 0,
-      "mod_mount_002": 20,
+      "mod_mount_002": 19,
       "mod_sight_front": 73,
       "mod_launcher": 0,
-      "mod_mount_001": 91,
+      "mod_mount_001": 88,
       "mod_mount_003": 100,
       "mod_stock_000": 100,
       "mod_bipod": 0,
