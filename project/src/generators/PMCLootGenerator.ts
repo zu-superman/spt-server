@@ -112,17 +112,7 @@ export class PMCLootGenerator
      */
     protected itemFitsInto2By2Slot(item: ITemplateItem): boolean
     {
-        switch (`${item._props.Width}x${item._props.Height}`)
-        {
-            case "1x1":
-            case "1x2":
-            case "2x1":
-            case "2x2":
-                return true;
-
-            default:
-                return false;
-        }
+        return item._props.Width <= 2 && item._props.Height <= 2;
     }
 
     /**
