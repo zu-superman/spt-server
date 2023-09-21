@@ -559,21 +559,9 @@ export class RagfairOfferHelper
             return false;
         }
 
-        if (item.upd.MedKit || item.upd.Repairable)
+        if (( item.upd.MedKit || item.upd.Repairable ) && !this.itemQualityInRange(item, searchRequest.conditionFrom, searchRequest.conditionTo))
         {
-            const itemQualityPercentage = 100 * this.itemHelper.getItemQualityModifier(item);
-
-            if (searchRequest.conditionFrom > 0 && searchRequest.conditionFrom > itemQualityPercentage)
-            {
-                // item condition is too low
-                return false;
-            }
-
-            if (searchRequest.conditionTo < 100 && searchRequest.conditionTo <= itemQualityPercentage)
-            {
-                // item condition is too high
-                return false;
-            }
+            return false;
         }
 
         // commented out as required search "which is for checking offers that are barters"
@@ -632,6 +620,31 @@ export class RagfairOfferHelper
                 // skip (quest) locked items
                 return false;
             }
+        }
+
+        return true;
+    }
+
+    /**
+     * Is items quality value within desired range
+     * @param item Item to check quality of
+     * @param min Desired minimum quality
+     * @param max Desired maximum quality
+     * @returns True if in range
+     */
+    protected itemQualityInRange(item: Item, min: number, max: number): boolean
+    {
+        const itemQualityPercentage = 100 * this.itemHelper.getItemQualityModifier(item);
+        if (min > 0 && min > itemQualityPercentage)
+        {
+            // Item condition too low
+            return false;
+        }
+
+        if (max < 100 && max <= itemQualityPercentage)
+        {
+            // Item condition too high
+            return false;
         }
 
         return true;
