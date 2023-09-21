@@ -96,7 +96,7 @@ export class PMCLootGenerator
                                                             && this.itemHelper.isValidItem(item._id)
                                                             && !pmcItemBlacklist.includes(item._id)
                                                             && !itemBlacklist.includes(item._id)
-                                                            && this.itemFitsInto1By2Slot(item));
+                                                            && this.itemFitsInto2By2Slot(item));
 
             this.vestLootPool = itemsToAdd.map(x => x._id);
         }
@@ -105,18 +105,19 @@ export class PMCLootGenerator
     }
 
     /**
-     * Check if item has a width/height that lets it fit into a 1x2/2x1 slot
-     * 1x1 / 1x2 / 2x1
+     * Check if item has a width/height that lets it fit into a 2x2 slot
+     * 1x1 / 1x2 / 2x1 / 2x2
      * @param item Item to check size of
      * @returns true if it fits
      */
-    protected itemFitsInto1By2Slot(item: ITemplateItem): boolean
+    protected itemFitsInto2By2Slot(item: ITemplateItem): boolean
     {
-        switch (`{${item._props.Width}x${item._props.Height}}`)
+        switch (`${item._props.Width}x${item._props.Height}`)
         {
             case "1x1":
             case "1x2":
             case "2x1":
+            case "2x2":
                 return true;
 
             default:
