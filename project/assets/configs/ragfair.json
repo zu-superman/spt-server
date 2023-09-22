@@ -48,6 +48,13 @@
                 "5a74651486f7744e73386dd1"
             ]
         },
+        "pack": {
+            "enable": true,
+            "chancePercent": 20,
+            "itemCountMin": 4,
+            "itemCountMax": 12,
+            "itemTypeWhitelist": ["5448eb774bdc2d0a728b4567", "5448e8d64bdc2dce718b4568", "5448f3ac4bdc2dce718b4569", "543be6674bdc2df1348b4569", "57864a3d24597754843f8721", "57864a66245977548f04a81f", "57864ada245977548638de91", "57864ada245977548638de91"]
+        },
         "offerAdjustment": {
             "adjustPriceWhenBelowHandbookPrice": false,
             "maxPriceDifferenceBelowHandbookPercent": 64,
@@ -59,13 +66,19 @@
             "min": 7,
             "max": 30
         },
-        "price": {
-            "min": 0.8,
-            "max": 1.2
-        },
-        "presetPrice": {
-            "min": 0.95,
-            "max": 1.05
+        "priceRanges": {
+            "default": {
+                "min": 0.8,
+                "max": 1.2
+            },
+            "preset": {
+                "min": 0.95,
+                "max": 1.05
+            },
+            "pack": {
+                "min": 0.75,
+                "max": 0.96
+            }
         },
         "showDefaultPresetsOnly": true,
         "endTimeSeconds": {

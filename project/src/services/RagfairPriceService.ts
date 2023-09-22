@@ -5,6 +5,7 @@ import { HandbookHelper } from "../helpers/HandbookHelper";
 import { ItemHelper } from "../helpers/ItemHelper";
 import { PresetHelper } from "../helpers/PresetHelper";
 import { TraderHelper } from "../helpers/TraderHelper";
+import { MinMax } from "../models/common/MinMax";
 import { IPreset } from "../models/eft/common/IGlobals";
 import { Item } from "../models/eft/common/tables/IItem";
 import { IBarterScheme } from "../models/eft/common/tables/ITrader";
@@ -189,9 +190,10 @@ export class RagfairPriceService implements OnLoad
      * Generate a currency cost for an item and its mods
      * @param items Item with mods to get price for
      * @param desiredCurrency Currency price desired in
+     * @param isPackOffer Price is for a pack type offer
      * @returns cost of item in desired currency
      */
-    public getDynamicOfferPrice(items: Item[], desiredCurrency: string): number
+    public getDynamicOfferPriceForOffer(items: Item[], desiredCurrency: string, isPackOffer: boolean): number
     {
         // Price to return
         let price = 0;
@@ -244,8 +246,8 @@ export class RagfairPriceService implements OnLoad
             }
         }
 
-        // Use different min/max values if the item is a preset
-        price = this.randomisePrice(price, isPreset);
+        const rangeValues = this.getOfferTypeRangeValues(isPreset, isPackOffer);
+        price = this.randomiseOfferPrice(price, rangeValues);
         
         if (price < 1)
         {
@@ -253,6 +255,28 @@ export class RagfairPriceService implements OnLoad
         }
 
         return price;
+    }
+
+    /**
+     * Get different min/max price multipliers for different offer types (preset/pack/default)
+     * @param isPreset Offer is a preset
+     * @param isPack Offer is a pack
+     * @returns MinMax values
+     */
+    protected getOfferTypeRangeValues(isPreset: boolean, isPack: boolean): MinMax
+    {
+        // Use different min/max values if the item is a preset or pack
+        const priceRanges = this.ragfairConfig.dynamic.priceRanges;
+        if (isPreset)
+        {
+            return priceRanges.preset;
+        }
+        else if (isPack)
+        {
+            return priceRanges.pack;
+        }
+
+        return priceRanges.default;
     }
 
     /**
@@ -281,21 +305,13 @@ export class RagfairPriceService implements OnLoad
     /**
      * Multiply the price by a randomised curve where n = 2, shift = 2
      * @param existingPrice price to alter
-     * @param isPreset is the item we're multiplying a preset
+     * @param rangeValues min and max to adjust price by
      * @returns multiplied price
      */
-    protected randomisePrice(existingPrice: number, isPreset: boolean): number
+    protected randomiseOfferPrice(existingPrice: number, rangeValues: MinMax): number
     {
-        const min = (isPreset)
-            ? this.ragfairConfig.dynamic.presetPrice.min
-            : this.ragfairConfig.dynamic.price.min;
-
-        const max = (isPreset)
-            ? this.ragfairConfig.dynamic.presetPrice.max
-            : this.ragfairConfig.dynamic.price.max;
-    
         // Multiply by 100 to get 2 decimal places of precision
-        const multiplier = this.randomUtil.getBiasedRandomNumber(min * 100, max * 100, 2, 2);
+        const multiplier = this.randomUtil.getBiasedRandomNumber(rangeValues.min * 100, rangeValues.max * 100, 2, 2);
 
         // return multiplier back to its original decimal place location
         return existingPrice * (multiplier / 100);

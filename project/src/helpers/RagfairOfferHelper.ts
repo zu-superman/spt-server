@@ -199,8 +199,8 @@ export class RagfairOfferHelper
      */
     protected traderBuyRestrictionReached(offer: IRagfairOffer): boolean
     {
-        const traderAssorts = this.traderHelper.getTraderAssortsById(offer.user.id).items;
-        const assortData = traderAssorts.find(x => x._id === offer._id);
+        const traderAssorts = this.traderHelper.getTraderAssortsByTraderId(offer.user.id).items;
+        const assortData = traderAssorts.find(x => x._id === offer.items[0]._id);
 
         // No trader assort data
         if (!assortData)

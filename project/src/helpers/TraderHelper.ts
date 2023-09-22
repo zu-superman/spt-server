@@ -68,7 +68,7 @@ export class TraderHelper
         return trader;
     }
 
-    public getTraderAssortsById(traderId: string): ITraderAssort
+    public getTraderAssortsByTraderId(traderId: string): ITraderAssort
     {
         return traderId === Traders.FENCE
             ? this.fenceService.getRawFenceAssorts()

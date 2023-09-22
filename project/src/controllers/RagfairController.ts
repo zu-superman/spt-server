@@ -237,11 +237,12 @@ export class RagfairController
             profile.traderPurchases[offer.user.id] = {};
         }
 
-        const traderAssorts = this.traderHelper.getTraderAssortsById(offer.user.id).items;
-        const assortData = traderAssorts.find(x => x._id === offer._id);
+        const traderAssorts = this.traderHelper.getTraderAssortsByTraderId(offer.user.id).items;
+        const assortId = offer.items[0]._id;
+        const assortData = traderAssorts.find(x => x._id === assortId);
 
         // Use value stored in profile, otherwise use value directly from in-memory trader assort data
-        offer.buyRestrictionCurrent = profile.traderPurchases[offer.user.id][offer._id]
+        offer.buyRestrictionCurrent = profile.traderPurchases[offer.user.id][assortId]
             ? profile.traderPurchases[offer.user.id][offer._id].count
             : assortData.upd.BuyRestrictionCurrent;
 
@@ -255,12 +256,12 @@ export class RagfairController
     protected setTraderOfferStackSize(offer: IRagfairOffer): void
     {
         const firstItem = offer.items[0];
-        const traderAssorts = this.traderHelper.getTraderAssortsById(offer.user.id).items;
+        const traderAssorts = this.traderHelper.getTraderAssortsByTraderId(offer.user.id).items;
 
-        const assortPurchased = traderAssorts.find(x => x._id === offer._id);
+        const assortPurchased = traderAssorts.find(x => x._id === offer.items[0]._id);
         if (!assortPurchased)
         {
-            this.logger.warning(this.localisationService.getText("ragfair-unable_to_adjust_stack_count_assort_not_found", {offerId: offer._id, traderId: offer.user.id}));
+            this.logger.warning(this.localisationService.getText("ragfair-unable_to_adjust_stack_count_assort_not_found", {offerId: offer.items[0]._id, traderId: offer.user.id}));
 
             return;
         }
@@ -536,7 +537,6 @@ export class RagfairController
             formattedItems,
             formattedRequirements,
             loyalLevel,
-            amountToSend,
             sellInOnePiece
         );
     }

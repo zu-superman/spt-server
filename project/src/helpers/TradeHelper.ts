@@ -76,7 +76,7 @@ export class TradeHelper
             }
             else
             {
-                const traderAssorts = this.traderHelper.getTraderAssortsById(buyRequestData.tid).items;
+                const traderAssorts = this.traderHelper.getTraderAssortsByTraderId(buyRequestData.tid).items;
                 itemPurchased = traderAssorts.find(x => x._id === buyRequestData.item_id);
             }
 
