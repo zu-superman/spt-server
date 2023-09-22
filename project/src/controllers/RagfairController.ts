@@ -243,7 +243,7 @@ export class RagfairController
 
         // Use value stored in profile, otherwise use value directly from in-memory trader assort data
         offer.buyRestrictionCurrent = profile.traderPurchases[offer.user.id][assortId]
-            ? profile.traderPurchases[offer.user.id][offer._id].count
+            ? profile.traderPurchases[offer.user.id][assortId].count
             : assortData.upd.BuyRestrictionCurrent;
 
         offer.buyRestrictionMax = assortData.upd.BuyRestrictionMax;
