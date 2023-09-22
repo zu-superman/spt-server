@@ -237,7 +237,7 @@ export class MailSendService
 
         // TODO: clean up old code here
         // Offer Sold notifications are now separate from the main notification
-        if (senderDialog.type === MessageType.FLEAMARKET_MESSAGE && messageDetails.ragfairDetails)
+        if ([MessageType.NPC_TRADER, MessageType.FLEAMARKET_MESSAGE].includes(senderDialog.type) && messageDetails.ragfairDetails)
         {
             const offerSoldMessage = this.notifierHelper.createRagfairOfferSoldNotification(message, messageDetails.ragfairDetails);
             this.notificationSendHelper.sendMessage(messageDetails.recipientId, offerSoldMessage);

@@ -1000,6 +1000,7 @@ export class ProfileFixerService
         {
             pmcProfile.Hideout.Improvement = this.jsonUtil.clone(pmcProfile.Hideout["Improvements"]);
             delete pmcProfile.Hideout["Improvements"];
+            this.logger.success("Successfully migrated hideout Improvements data to new location, deleted old data");
         }
     }
 }
