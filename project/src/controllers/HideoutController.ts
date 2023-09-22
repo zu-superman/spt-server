@@ -985,7 +985,7 @@ export class HideoutController
 
             const improvementDetails = {completed: false, improveCompleteTimestamp: timestamp + improvement.improvementTime};
             output.profileChanges[sessionId].improvements[improvement.id] = improvementDetails;
-            pmcData.Hideout.Improvements[improvement.id] = improvementDetails;
+            pmcData.Hideout.Improvement[improvement.id] = improvementDetails;
         }        
 
         return output;

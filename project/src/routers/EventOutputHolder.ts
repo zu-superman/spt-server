@@ -124,9 +124,9 @@ export class EventOutputHolder
      */
     protected getImprovementsFromProfileAndFlagComplete(pmcData: IPmcData): Record<string, IHideoutImprovement>
     {
-        for (const improvementKey in pmcData.Hideout.Improvements)
+        for (const improvementKey in pmcData.Hideout.Improvement)
         {
-            const improvement = pmcData.Hideout.Improvements[improvementKey];
+            const improvement = pmcData.Hideout.Improvement[improvementKey];
 
             // Skip completed
             if (improvement.completed)
@@ -140,7 +140,7 @@ export class EventOutputHolder
             }
         }
 
-        return pmcData.Hideout.Improvements;
+        return pmcData.Hideout.Improvement;
     }
 
     /**

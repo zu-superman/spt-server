@@ -149,7 +149,12 @@ export class ProfileController
         pmcData.RepeatableQuests = [];
         pmcData.CarExtractCounts = {};
 
-        // change item id's to be unique
+        if (!pmcData.UnlockedInfo)
+        {
+            pmcData.UnlockedInfo = { unlockedProductionRecipe: [] };
+        }
+
+        // Change item id's to be unique
         pmcData.Inventory.items = this.itemHelper.replaceIDs(pmcData, pmcData.Inventory.items, null, pmcData.Inventory.fastPanel);
         pmcData.Inventory.hideoutAreaStashes = {};
 

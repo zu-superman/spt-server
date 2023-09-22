@@ -21,6 +21,7 @@ import { IRagfairConfig } from "../models/spt/config/IRagfairConfig";
 import { ILogger } from "../models/spt/utils/ILogger";
 import { ConfigServer } from "../servers/ConfigServer";
 import { DatabaseServer } from "../servers/DatabaseServer";
+import { JsonUtil } from "../utils/JsonUtil";
 import { TimeUtil } from "../utils/TimeUtil";
 import { Watermark } from "../utils/Watermark";
 import { LocalisationService } from "./LocalisationService";
@@ -41,6 +42,7 @@ export class ProfileFixerService
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
+        @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("ConfigServer") protected configServer: ConfigServer
     )
@@ -68,6 +70,7 @@ export class ProfileFixerService
 
         if (pmcProfile.Hideout)
         {
+            this.migrateImprovements(pmcProfile);
             this.addMissingBonusesProperty(pmcProfile);
             this.addMissingWallImprovements(pmcProfile);
             this.addMissingHideoutWallAreas(pmcProfile);
@@ -505,12 +508,12 @@ export class ProfileFixerService
                 for (const improvement of wallStageDb.improvements)
                 {
                     // Don't overwrite existing improvement
-                    if (pmcProfile.Hideout.Improvements[improvement.id])
+                    if (pmcProfile.Hideout.Improvement[improvement.id])
                     {
                         continue;
                     }
 
-                    pmcProfile.Hideout.Improvements[improvement.id] = {
+                    pmcProfile.Hideout.Improvement[improvement.id] = {
                         completed: true,
                         improveCompleteTimestamp: this.timeUtil.getTimestamp() + i // add some variability
                     };
@@ -891,9 +894,9 @@ export class ProfileFixerService
      */
     public addMissingUpgradesPropertyToHideout(pmcProfile: IPmcData): void
     {
-        if (!pmcProfile.Hideout.Improvements)
+        if (!pmcProfile.Hideout.Improvement)
         {
-            pmcProfile.Hideout.Improvements = {};
+            pmcProfile.Hideout.Improvement = {};
         }
     }
 
@@ -984,6 +987,19 @@ export class ProfileFixerService
                     }
                 }
             }
+        }
+    }
+
+    /**
+     * At some point the property name was changed,migrate data across to new name
+     * @param pmcProfile 
+     */
+    protected migrateImprovements(pmcProfile: IPmcData): void
+    {
+        if (pmcProfile.Hideout["Improvements"])
+        {
+            pmcProfile.Hideout.Improvement = this.jsonUtil.clone(pmcProfile.Hideout["Improvements"]);
+            delete pmcProfile.Hideout["Improvements"];
         }
     }
 }

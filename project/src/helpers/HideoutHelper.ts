@@ -981,9 +981,9 @@ export class HideoutHelper
      */
     public setHideoutImprovementsToCompleted(pmcProfile: IPmcData): void
     {
-        for (const improvementId in pmcProfile.Hideout.Improvements)
+        for (const improvementId in pmcProfile.Hideout.Improvement)
         {
-            const improvementDetails = pmcProfile.Hideout.Improvements[improvementId];
+            const improvementDetails = pmcProfile.Hideout.Improvement[improvementId];
             if (improvementDetails.completed === false && improvementDetails.improveCompleteTimestamp < this.timeUtil.getTimestamp())
             {
                 improvementDetails.completed = true;
