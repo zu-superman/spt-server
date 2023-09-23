@@ -458,7 +458,7 @@ export class RagfairOfferGenerator
             const barterSchemeItems = assorts.barter_scheme[item._id][0];
             const loyalLevel = assorts.loyal_level_items[item._id];
 
-            const offer = this.createFleaOffer(traderID, time, items, barterSchemeItems, loyalLevel, true);
+            const offer = this.createFleaOffer(traderID, time, items, barterSchemeItems, loyalLevel, false);
 
             this.ragfairCategoriesService.incrementCategory(offer);
 
