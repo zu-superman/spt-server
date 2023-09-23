@@ -10,6 +10,7 @@ import {
 } from "../models/eft/common/ILocationsSourceDestinationBase";
 import { ILooseLoot, SpawnpointTemplate } from "../models/eft/common/ILooseLoot";
 import { IAirdropLootResult } from "../models/eft/location/IAirdropLootResult";
+import { IGetLocationRequestData } from "../models/eft/location/IGetLocationRequestData";
 import { AirdropTypeEnum } from "../models/enums/AirdropType";
 import { ConfigTypes } from "../models/enums/ConfigTypes";
 import { IAirdropConfig } from "../models/spt/config/IAirdropConfig";
@@ -54,12 +55,14 @@ export class LocationController
     /**
      * Handle client/location/getLocalloot
      * Get a location (map) with generated loot data
-     * @param location Map to generate loot for
+     * @param sessionId Player id
+     * @param request Map request to generate
      * @returns ILocationBase
      */
-    public get(location: string): ILocationBase
+    public get(sessionId: string, request: IGetLocationRequestData): ILocationBase
     {
-        const name = location.toLowerCase().replace(" ", "");
+        this.logger.debug(`Generating data for: ${request.locationId}, variant: ${request.variantId}`);
+        const name = request.locationId.toLowerCase().replace(" ", "");
         return this.generate(name);
     }
 
