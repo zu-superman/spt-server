@@ -99,7 +99,7 @@ export class QuestController
             }
 
             // Don't add quests that have a level higher than the user's
-            if (!this.playerLevelFulfillsQuestRequrement(quest, profile.Info.Level))
+            if (!this.playerLevelFulfillsQuestRequirement(quest, profile.Info.Level))
             {
                 continue;
             }
@@ -108,7 +108,7 @@ export class QuestController
             const loyaltyRequirements = this.questConditionHelper.getLoyaltyConditions(quest.conditions.AvailableForStart);
             const standingRequirements = this.questConditionHelper.getStandingConditions(quest.conditions.AvailableForStart);
 
-            // Quest has no conditions or loyalty conditions, add to visible quest list
+            // Quest has no conditions, standing or loyalty conditions, add to visible quest list
             if (questRequirements.length === 0 && loyaltyRequirements.length === 0 && standingRequirements.length === 0)
             {
                 quest.sptStatus = QuestStatus.AvailableForStart;
@@ -119,34 +119,22 @@ export class QuestController
             // Check the status of each quest condition, if any are not completed
             // then this quest should not be visible
             let haveCompletedPreviousQuest = true;
-            for (const condition of questRequirements)
+            for (const conditionToFulfil of questRequirements)
             {
                 // If the previous quest isn't in the user profile, it hasn't been completed or started
-                const previousQuest = profile.Quests.find(pq => pq.qid === condition._props.target);
-                if (!previousQuest)
+                const prerequisiteQuest = profile.Quests.find(pq => pq.qid === conditionToFulfil._props.target);
+                if (!prerequisiteQuest)
                 {
                     haveCompletedPreviousQuest = false;
                     break;
                 }
 
-                // If previous quest is in user profile, check condition requirement and current status
-                if (condition._props.status.includes(previousQuest.status))
+                // Prereq does not have its status requirement fulfilled
+                if (!conditionToFulfil._props.status.includes(prerequisiteQuest.status))
                 {
-                    continue;
+                    haveCompletedPreviousQuest = false;
+                    break;
                 }
-
-                // Chemical fix: "Started" Status is catered for above. This will include it just if it's started.
-                // but maybe this is better:
-                // if ((condition._props.status[0] === QuestStatus.Started)
-                // && (previousQuest.status === "AvailableForFinish" || previousQuest.status ===  "Success")
-                if ((condition._props.status[0] === QuestStatus.Started))
-                {
-                    const statusName = Object.keys(QuestStatus)[condition._props.status[0]];
-                    this.logger.debug(`[QUESTS]: fix for polikhim bug: ${quest._id} (${this.questHelper.getQuestNameFromLocale(quest._id)}) ${condition._props.status[0]}, ${statusName} != ${previousQuest.status}`);
-                    continue;
-                }
-                haveCompletedPreviousQuest = false;
-                break;
             }
 
             // Previous quest not completed, skip
@@ -191,7 +179,7 @@ export class QuestController
      * @param playerLevel level of player to test against quest
      * @returns true if quest can be seen/accepted by player of defined level
      */
-    protected playerLevelFulfillsQuestRequrement(quest: IQuest, playerLevel: number): boolean
+    protected playerLevelFulfillsQuestRequirement(quest: IQuest, playerLevel: number): boolean
     {
         const levelConditions = this.questConditionHelper.getLevelConditions(quest.conditions.AvailableForStart);
         if (levelConditions.length)
