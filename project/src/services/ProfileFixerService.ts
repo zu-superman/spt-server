@@ -75,6 +75,7 @@ export class ProfileFixerService
             this.addMissingWallImprovements(pmcProfile);
             this.addMissingHideoutWallAreas(pmcProfile);
             this.addMissingGunStandContainerImprovements(pmcProfile);
+            this.ensureGunStandLevelsMatch(pmcProfile);
 
             this.removeResourcesFromSlotsInHideoutWithoutLocationIndexValue(pmcProfile);
 
@@ -185,6 +186,21 @@ export class ProfileFixerService
             this.logger.debug(`Secondary stash tpl was: ${stashSecondaryItem._tpl}, but should be ${stageCurrentAt.container}, updating`);
             // The id inside the profile does not match what the hideout db value is, out of sync, adjust
             stashSecondaryItem._tpl = stageCurrentAt.container;
+        }
+    }
+
+    protected ensureGunStandLevelsMatch(pmcProfile: IPmcData): void
+    {
+        // only proceed if stand is level 1 or above
+        const gunStandParent = pmcProfile.Hideout.Areas.find(x => x.type === HideoutAreas.WEAPON_STAND);
+        if (gunStandParent && gunStandParent.level > 0)
+        {
+            const gunStandChild = pmcProfile.Hideout.Areas.find(x => x.type === HideoutAreas.WEAPON_STAND_SECONDARY);
+            if (gunStandChild && gunStandParent.level !== gunStandChild.level)
+            {
+                this.logger.success("Upgraded gun stand levels to match");
+                gunStandParent.level = gunStandChild.level;
+            }
         }
     }
     
