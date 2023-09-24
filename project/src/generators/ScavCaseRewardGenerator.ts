@@ -28,6 +28,7 @@ export class ScavCaseRewardGenerator
 {
     protected scavCaseConfig: IScavCaseConfig;
     protected dbItemsCache: ITemplateItem[];
+    protected dbAmmoItemsCache: ITemplateItem[];
 
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
@@ -50,16 +51,16 @@ export class ScavCaseRewardGenerator
      */
     public generate(recipeId: string): Product[]
     {
+        this.cacheDbItems();
+
         // Get scavcase details from hideout/scavcase.json
         const scavCaseDetails = this.databaseServer.getTables().hideout.scavcase.find(r => r._id === recipeId);
         const rewardItemCounts = this.getScavCaseRewardCountsAndPrices(scavCaseDetails);
 
-        const dbItems = this.getDbItems();
-
         // Get items that fit the price criteria as set by the scavCase config
-        const commonPricedItems = this.getFilteredItemsByPrice(dbItems, rewardItemCounts.Common);
-        const rarePricedItems = this.getFilteredItemsByPrice(dbItems, rewardItemCounts.Rare);
-        const superRarePricedItems = this.getFilteredItemsByPrice(dbItems, rewardItemCounts.Superrare);
+        const commonPricedItems = this.getFilteredItemsByPrice(this.dbItemsCache, rewardItemCounts.Common);
+        const rarePricedItems = this.getFilteredItemsByPrice(this.dbItemsCache, rewardItemCounts.Rare);
+        const superRarePricedItems = this.getFilteredItemsByPrice(this.dbItemsCache, rewardItemCounts.Superrare);
 
         // Get randomly picked items from each item collction, the count range of which is defined in hideout/scavcase.json
         const randomlyPickedCommonRewards = this.pickRandomRewards(commonPricedItems, rewardItemCounts.Common, "common");
@@ -76,9 +77,9 @@ export class ScavCaseRewardGenerator
 
     /**
      * Get all db items that are not blacklisted in scavcase config or global blacklist
-     * @returns filtered array of db items
+     * Store in class field
      */
-    protected getDbItems(): ITemplateItem[]
+    protected cacheDbItems(): void
     {
         if (!this.dbItemsCache)
         {
@@ -108,7 +109,36 @@ export class ScavCaseRewardGenerator
             });
         }
 
-        return this.dbItemsCache;
+        if (!this.dbAmmoItemsCache)
+        {
+            this.dbAmmoItemsCache = Object.values(this.databaseServer.getTables().templates.items).filter((item) =>
+            {
+                // Base "Item" item has no parent, ignore it
+                if (item._parent === "")
+                {
+                    return false;
+                }
+
+                if (item._type !== "Item")
+                {
+                    return false;
+                }
+
+                // Not ammo, skip
+                if (!this.itemHelper.isOfBaseclass(item._id, BaseClasses.AMMO))
+                {
+                    return false;
+                }
+    
+                // Skip ammo that doesn't stack as high as value in config
+                if (item._props.StackMaxSize < this.scavCaseConfig.ammoRewards.minStackSize)
+                {
+                    return false;
+                }
+    
+                return true;
+            });
+        }
     }
 
     /**
@@ -130,7 +160,7 @@ export class ScavCaseRewardGenerator
             }
             else if (this.rewardShouldBeAmmo())
             {
-                result.push(this.getRandomAmmo(this.getDbItems(), rarity));
+                result.push(this.getRandomAmmo(rarity));
             }
             else
             {
@@ -175,34 +205,15 @@ export class ScavCaseRewardGenerator
 
     /**
      * Get a random ammo from items.json that is not in the ammo blacklist AND inside the price rage defined in scavcase.json config
-     * @param All Items in db
      * @param rarity The rarity this ammo reward is for
      * @returns random ammo item from items.json
      */
-    protected getRandomAmmo(dbItems: ITemplateItem[], rarity: string): ITemplateItem
+    protected getRandomAmmo(rarity: string): ITemplateItem
     {
-        const ammoItems = dbItems.filter((item) =>
+        const possibleAmmoPool = this.dbAmmoItemsCache.filter((ammo) =>
         {
-            // Not ammo, skip
-            if (!this.itemHelper.isOfBaseclass(item._id, BaseClasses.AMMO))
-            {
-                return false;
-            }
-
-            // Fail if on blacklist
-            if (this.scavCaseConfig.ammoRewards.ammoRewardBlacklist[rarity].includes(item._id))
-            {
-                return false;
-            }
-
-            // Skip ammo that doesn't stack as high as value in config
-            if (item._props.StackMaxSize < this.scavCaseConfig.ammoRewards.minStackSize)
-            {
-                return false;
-            }
-
             // Is ammo handbook price between desired range
-            const handbookPrice = this.ragfairPriceService.getStaticPriceForItem(item._id);
+            const handbookPrice = this.ragfairPriceService.getStaticPriceForItem(ammo._id);
             if (handbookPrice >= this.scavCaseConfig.ammoRewards.ammoRewardValueRangeRub[rarity].min 
                 && handbookPrice <= this.scavCaseConfig.ammoRewards.ammoRewardValueRangeRub[rarity].max)
             {
@@ -212,13 +223,13 @@ export class ScavCaseRewardGenerator
             return false;
         });
 
-        if (ammoItems.length === 0)
+        if (possibleAmmoPool.length === 0)
         {
             this.logger.warning("Unable to get a list of ammo that matches desired criteria for scav case reward");
         }
 
         // Get a random ammo and return it
-        return this.randomUtil.getArrayValue(ammoItems);
+        return this.randomUtil.getArrayValue(possibleAmmoPool);
     }
 
     /**
