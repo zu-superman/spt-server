@@ -27,6 +27,7 @@ import { RandomUtil } from "../utils/RandomUtil";
 export class ScavCaseRewardGenerator
 {
     protected scavCaseConfig: IScavCaseConfig;
+    protected dbItemsCache: ITemplateItem[];
 
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
@@ -79,30 +80,35 @@ export class ScavCaseRewardGenerator
      */
     protected getDbItems(): ITemplateItem[]
     {
-        return Object.values(this.databaseServer.getTables().templates.items).filter((item) =>
+        if (!this.dbItemsCache)
         {
-            // Base "Item" item has no parent, ignore it
-            if (item._parent === "")
+            this.dbItemsCache = Object.values(this.databaseServer.getTables().templates.items).filter((item) =>
             {
-                return false;
-            }
+                // Base "Item" item has no parent, ignore it
+                if (item._parent === "")
+                {
+                    return false;
+                }
+    
+                // Skip item if item id is on blacklist
+                if ((item._type !== "Item")
+                    || this.scavCaseConfig.rewardItemBlacklist.includes(item._id)
+                    || this.itemFilterService.isItemBlacklisted(item._id))
+                {
+                    return false;
+                }
+    
+                // Skip item if parent id is blacklisted
+                if (this.itemHelper.isOfBaseclasses(item._id, this.scavCaseConfig.rewardItemParentBlacklist))
+                {
+                    return false;
+                }
+    
+                return true;
+            });
+        }
 
-            // Skip item if item id is on blacklist
-            if ((item._type !== "Item")
-                || this.scavCaseConfig.rewardItemBlacklist.includes(item._id)
-                || this.itemFilterService.isItemBlacklisted(item._id))
-            {
-                return false;
-            }
-
-            // Skip item if parent id is blacklisted
-            if (this.itemHelper.isOfBaseclasses(item._id, this.scavCaseConfig.rewardItemParentBlacklist))
-            {
-                return false;
-            }
-
-            return true;
-        });
+        return this.dbItemsCache;
     }
 
     /**
@@ -114,7 +120,7 @@ export class ScavCaseRewardGenerator
     protected pickRandomRewards(items: ITemplateItem[], itemFilters: RewardCountAndPriceDetails, rarity: string): ITemplateItem[]
     {
         const result: ITemplateItem[] = [];
-
+        
         const randomCount = this.randomUtil.getInt(itemFilters.minCount, itemFilters.maxCount);
         for (let i = 0; i < randomCount; i++)
         {
@@ -124,7 +130,7 @@ export class ScavCaseRewardGenerator
             }
             else if (this.rewardShouldBeAmmo())
             {
-                result.push(this.getRandomAmmo(rarity));
+                result.push(this.getRandomAmmo(this.getDbItems(), rarity));
             }
             else
             {
@@ -169,13 +175,12 @@ export class ScavCaseRewardGenerator
 
     /**
      * Get a random ammo from items.json that is not in the ammo blacklist AND inside the price rage defined in scavcase.json config
+     * @param All Items in db
      * @param rarity The rarity this ammo reward is for
      * @returns random ammo item from items.json
      */
-    protected getRandomAmmo(rarity: string): ITemplateItem
+    protected getRandomAmmo(dbItems: ITemplateItem[], rarity: string): ITemplateItem
     {
-        // Get ammo from items.json not in the blacklist
-        const dbItems = this.getDbItems();
         const ammoItems = dbItems.filter((item) =>
         {
             // Not ammo, skip
@@ -205,7 +210,12 @@ export class ScavCaseRewardGenerator
             }
 
             return false;
-        }).map(x => x[1]);
+        });
+
+        if (ammoItems.length === 0)
+        {
+            this.logger.warning("Unable to get a list of ammo that matches desired criteria for scav case reward");
+        }
 
         // Get a random ammo and return it
         return this.randomUtil.getArrayValue(ammoItems);
