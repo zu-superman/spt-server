@@ -141,8 +141,7 @@ export class GameController
 
             if (fullProfile.info.edition.toLowerCase().startsWith(AccountTypes.SPT_DEVELOPER))
             {
-                // Set all hideout crafts to 30secs
-                this.setHideoutAreasAndCraftsTo30Secs();
+                this.setHideoutAreasAndCraftsTo40Secs();
             }
 
             if (this.locationConfig.fixEmptyBotWavesSettings.enabled)
@@ -292,7 +291,7 @@ export class GameController
         }
     }
     
-    protected setHideoutAreasAndCraftsTo30Secs(): void
+    protected setHideoutAreasAndCraftsTo40Secs(): void
     {
         for (const hideoutProd of this.databaseServer.getTables().hideout.production) 
         {
@@ -315,6 +314,15 @@ export class GameController
             }
         }
         this.logger.warning("DEVELOPER: SETTING ALL HIDEOUT AREAS TO 40 SECOND UPGRADES");
+
+        for (const scavCaseCraft of this.databaseServer.getTables().hideout.scavcase) 
+        {
+            if (scavCaseCraft.ProductionTime > 40) 
+            {
+                scavCaseCraft.ProductionTime = 40;
+            }
+        }
+        this.logger.warning("DEVELOPER: SETTING ALL SCAV CASES TO 40 SECONDS");
     }
 
     /**
