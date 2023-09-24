@@ -275,13 +275,13 @@ export class PaymentService
      */
     protected prioritiseStashSort(a: Item, b: Item, inventoryItems: Item[], playerStashId: string): number
     {
-        // a is stash, prioritise
+        // a in stash, prioritise
         if (a.slotId === "hideout" && b.slotId !== "hideout")
         {
             return -1;
         }
 
-        // b is stash, prioritise
+        // b in stash, prioritise
         if (a.slotId !== "hideout" && b.slotId === "hideout")
         {
             return 1;
@@ -291,17 +291,17 @@ export class PaymentService
         if (a.slotId === "main" && b.slotId === "main")
         {
             // Item is in inventory, not stash, deprioritise
-            const aIsInInventory = this.isInInventory(a.parentId, inventoryItems, playerStashId);
-            const bIsInInventory = this.isInInventory(b.parentId, inventoryItems, playerStashId);
+            const aInStash = this.isInStash(a.parentId, inventoryItems, playerStashId);
+            const bInStash = this.isInStash(b.parentId, inventoryItems, playerStashId);
 
-            // Lower a as its in inventory, not stash
-            if (!aIsInInventory && bIsInInventory)
+            // a in stash, prioritise
+            if (aInStash && !bInStash)
             {
                 return -1;
             }
 
-            // Raise a as its in stash, not inventory
-            if (aIsInInventory && !bIsInInventory)
+            // b in stash, prioritise
+            if (!aInStash && bInStash)
             {
                 return 1;
             }
@@ -318,7 +318,7 @@ export class PaymentService
      * @param playerStashId Players stash id
      * @returns true if its in inventory
      */
-    protected isInInventory(itemId: string, inventoryItems: Item[], playerStashId: string): boolean
+    protected isInStash(itemId: string, inventoryItems: Item[], playerStashId: string): boolean
     {
         const itemParent = inventoryItems.find(x => x._id === itemId);
 
@@ -334,7 +334,7 @@ export class PaymentService
                 return true;
             }
 
-            return this.isInInventory(itemParent.parentId, inventoryItems, playerStashId);
+            return this.isInStash(itemParent.parentId, inventoryItems, playerStashId);
         }
 
         return false;
