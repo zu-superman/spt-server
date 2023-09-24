@@ -199,7 +199,7 @@ export class ProfileFixerService
             if (gunStandChild && gunStandParent.level !== gunStandChild.level)
             {
                 this.logger.success("Upgraded gun stand levels to match");
-                gunStandParent.level = gunStandChild.level;
+                gunStandChild.level = gunStandParent.level;
             }
         }
     }
