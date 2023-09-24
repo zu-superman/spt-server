@@ -279,7 +279,7 @@ export class HideoutController
             this.addUpdateInventoryItemToProfile(pmcData, childDbArea, childDbAreaStage);
 
             // Inform client of the changes
-            this.addContainerUpgradeToClientOutput(output, sessionID, childDbArea.type, dbHideoutArea, hideoutStage);
+            this.addContainerUpgradeToClientOutput(output, sessionID, childDbArea.type, childDbArea, childDbAreaStage);
         }
     }
 
