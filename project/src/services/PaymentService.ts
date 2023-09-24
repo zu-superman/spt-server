@@ -321,8 +321,14 @@ export class PaymentService
     protected isInInventory(itemId: string, inventoryItems: Item[], playerStashId: string): boolean
     {
         const itemParent = inventoryItems.find(x => x._id === itemId);
+
         if (itemParent)
         {
+            if (itemParent.slotId === "hideout")
+            {
+                return true;
+            }
+
             if (itemParent._id === playerStashId)
             {
                 return true;
