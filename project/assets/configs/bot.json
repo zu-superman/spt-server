@@ -1393,7 +1393,7 @@
         "rezervbase": 20,
         "interchange": 20,
         "laboratory": 18,
-        "tarkovstreets": 24,
-        "default": 15
+        "tarkovstreets": 26,
+        "default": 16
     }
 }
