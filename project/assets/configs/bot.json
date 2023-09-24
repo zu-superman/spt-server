@@ -1388,12 +1388,12 @@
         "factory4_night": 13,
         "bigmap": 20,
         "woods": 20,
-        "shoreline": 20,
-        "lighthouse": 20,
+        "shoreline": 22,
+        "lighthouse": 22,
         "rezervbase": 20,
         "interchange": 20,
         "laboratory": 18,
-        "tarkovstreets": 20,
+        "tarkovstreets": 24,
         "default": 15
     }
 }
