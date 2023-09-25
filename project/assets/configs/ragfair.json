@@ -5,7 +5,7 @@
         "fees": true,
         "chance": {
             "base": 50,
-            "overpriced": 0.5,
+            "overpriced": 1.7,
             "underpriced": 2
         },
         "time": {
