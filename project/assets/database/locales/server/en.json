@@ -194,7 +194,7 @@
 	"scheduled_event_failed_to_run": "Scheduled event: '%s' failed to run successfully.",
 	"seasonal-missing_equipment_slot_on_bot": "Unable to remove christmas equipment from slot: {{equipmentSlot}} as it cannot be found on bot: {{botRole}}",
 	"seasonal-missing_loot_container_slot_on_bot": "Unable to remove christmas loot from slot: {{lootContainer}} as it cannot be found on bot: {{botRole}}",
-	"server_running": "Server is running",
+	"server_running": "Server is running, do not close while playing SPT",
 	"server_start_meme_1": "Live laugh love",
 	"server_start_meme_2": "Anime :(",
 	"server_start_meme_3": "If you can hear me, you need to wake up",
