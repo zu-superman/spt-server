@@ -62,8 +62,8 @@ export class EventOutputHolder
             production: {},
             improvements: {},
             skills: {
-                Common: {},
-                Mastering: {},
+                Common: [],
+                Mastering: [],
                 Points: 0
             },
             health: this.jsonUtil.clone(pmcData.Health),
