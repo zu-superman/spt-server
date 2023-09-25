@@ -94,7 +94,7 @@ export class InsuranceController
                             continue;
                         }
 
-                        // Is a mod and can't be edited in-raid
+                        // Keep if not base item + not raid moddable
                         if (insuredItem.slotId !== "hideout" && !itemDbDetails[1]._props.RaidModdable)
                         {
                             continue;
