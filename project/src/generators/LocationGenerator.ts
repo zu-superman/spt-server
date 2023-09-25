@@ -210,7 +210,7 @@ export class LocationGenerator
     protected getRandomisableContainersOnMap(staticContainers: IStaticContainerData[]): IStaticContainerData[]
     {
         return staticContainers
-            .filter(x => x.probability !== 1 && !this.locationConfig.containerRandomisationSettings.containerTypesToNotRandomise.includes(x.template.Items[0]._tpl));
+            .filter(x => x.probability !== 1 && !x.template.IsAlwaysSpawn && !this.locationConfig.containerRandomisationSettings.containerTypesToNotRandomise.includes(x.template.Items[0]._tpl));
     }
 
     /**
@@ -220,7 +220,7 @@ export class LocationGenerator
      */
     protected getGuaranteedContainers(staticContainersOnMap: IStaticContainerData[]): IStaticContainerData[]
     {
-        return staticContainersOnMap.filter(x => x.probability === 1 || this.locationConfig.containerRandomisationSettings.containerTypesToNotRandomise.includes(x.template.Items[0]._tpl));
+        return staticContainersOnMap.filter(x => x.probability === 1 || x.template.IsAlwaysSpawn || this.locationConfig.containerRandomisationSettings.containerTypesToNotRandomise.includes(x.template.Items[0]._tpl));
     }
 
     /**
