@@ -41,7 +41,7 @@ export class HealthController
      * stores in-raid player health
      * @param pmcData Player profile
      * @param info Request data
-     * @param sessionID 
+     * @param sessionID Player id
      * @param addEffects Should effects found be added or removed from profile
      */
     public saveVitality(pmcData: IPmcData, info: ISyncHealthRequestData, sessionID: string, addEffects = true, deleteExistingEffects = true): void
@@ -51,43 +51,46 @@ export class HealthController
 
     /**
      * When healing in menu
-     * @param pmcData 
-     * @param body 
-     * @param sessionID 
-     * @returns 
+     * @param pmcData Player profile
+     * @param request Healing request
+     * @param sessionID Player id
+     * @returns IItemEventRouterResponse
      */
-    public offraidHeal(pmcData: IPmcData, body: IOffraidHealRequestData, sessionID: string): IItemEventRouterResponse
+    public offraidHeal(pmcData: IPmcData, request: IOffraidHealRequestData, sessionID: string): IItemEventRouterResponse
     {
         const output = this.eventOutputHolder.getOutput(sessionID);
 
-        // update medkit used (hpresource)
-        const inventoryItem = pmcData.Inventory.items.find(item => item._id === body.item);
-        if (!inventoryItem)
+        // Update medkit used (hpresource)
+        const healingItemToUse = pmcData.Inventory.items.find(item => item._id === request.item);
+        if (!healingItemToUse)
         {
-            this.logger.error(this.localisationService.getText("health-healing_item_not_found", inventoryItem._id));
+            const errorMessage = this.localisationService.getText("health-healing_item_not_found", healingItemToUse._id);
+            this.logger.error(errorMessage);
 
-            // For now we just return nothing
-            return;
+            return this.httpResponse.appendErrorToOutput(output, errorMessage);
         }
 
-        if (!("upd" in inventoryItem))
+        // Ensure item has a upd object
+        if (!healingItemToUse.upd)
         {
-            inventoryItem.upd = {};
+            healingItemToUse.upd = {};
         }
 
-        if ("MedKit" in inventoryItem.upd)
+        if (healingItemToUse.upd.MedKit)
         {
-            inventoryItem.upd.MedKit.HpResource -= body.count;
+            healingItemToUse.upd.MedKit.HpResource -= request.count;
         }
         else
         {
-            const maxhp = this.itemHelper.getItem(inventoryItem._tpl)[1]._props.MaxHpResource;
-            inventoryItem.upd.MedKit = { "HpResource": maxhp - body.count };
+            // Get max healing from db
+            const maxhp = this.itemHelper.getItem(healingItemToUse._tpl)[1]._props.MaxHpResource;
+            healingItemToUse.upd.MedKit = { HpResource: maxhp - request.count }; // Subtract amout used from max
         }
 
-        if (inventoryItem.upd.MedKit.HpResource <= 0)
+        // Resource in medkit is spent, delete it
+        if (healingItemToUse.upd.MedKit.HpResource <= 0)
         {
-            this.inventoryHelper.removeItem(pmcData, body.item, sessionID, output);
+            this.inventoryHelper.removeItem(pmcData, request.item, sessionID, output);
         }
 
         return output;
@@ -97,34 +100,32 @@ export class HealthController
      * Handle Eat event
      * Consume food/water outside of a raid
      * @param pmcData Player profile
-     * @param body request Object
+     * @param request Eat request
      * @param sessionID Session id
      * @returns IItemEventRouterResponse
      */
-    public offraidEat(pmcData: IPmcData, body: IOffraidEatRequestData, sessionID: string): IItemEventRouterResponse
+    public offraidEat(pmcData: IPmcData, request: IOffraidEatRequestData, sessionID: string): IItemEventRouterResponse
     {
         let output = this.eventOutputHolder.getOutput(sessionID);
         let resourceLeft = 0;
-        let consumedItemMaxResource = 0;
 
-        const itemToConsume = pmcData.Inventory.items.find(x => x._id === body.item);
+        const itemToConsume = pmcData.Inventory.items.find(x => x._id === request.item);
         if (!itemToConsume)
         {
             // Item not found, very bad
-            return this.httpResponse.appendErrorToOutput(output, this.localisationService.getText("health-unable_to_find_item_to_consume", body.item));
+            return this.httpResponse.appendErrorToOutput(output, this.localisationService.getText("health-unable_to_find_item_to_consume", request.item));
         }
 
-        consumedItemMaxResource = this.itemHelper.getItem(itemToConsume._tpl)[1]._props.MaxResource;
+        const consumedItemMaxResource = this.itemHelper.getItem(itemToConsume._tpl)[1]._props.MaxResource;
         if (consumedItemMaxResource > 1)
         {
             if (itemToConsume.upd.FoodDrink === undefined)
             {
-                itemToConsume.upd.FoodDrink = {
-                    "HpPercent": consumedItemMaxResource - body.count };
+                itemToConsume.upd.FoodDrink = { HpPercent: consumedItemMaxResource - request.count };
             }
             else
             {
-                itemToConsume.upd.FoodDrink.HpPercent -= body.count;
+                itemToConsume.upd.FoodDrink.HpPercent -= request.count;
             }
 
             resourceLeft = itemToConsume.upd.FoodDrink.HpPercent;
@@ -133,7 +134,7 @@ export class HealthController
         // Remove item from inventory if resource has dropped below threshold
         if (consumedItemMaxResource === 1 || resourceLeft < 1)
         {
-            output = this.inventoryHelper.removeItem(pmcData, body.item, sessionID, output);
+            output = this.inventoryHelper.removeItem(pmcData, request.item, sessionID, output);
         }
 
         return output;

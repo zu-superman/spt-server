@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { TranspileOptions, ScriptTarget, ModuleKind, CompilerOptions, transpileModule } from "typescript";
-import { inject, injectable } from "tsyringe";
-import path from "path";
 import fs from "fs";
+import path from "path";
+import { inject, injectable } from "tsyringe";
+import { CompilerOptions, ModuleKind, ScriptTarget, TranspileOptions, transpileModule } from "typescript";
 import type { ILogger } from "../models/spt/utils/ILogger";
-import { HashCacheService } from "./HashCacheService";
 import { VFS } from "../utils/VFS";
+import { HashCacheService } from "./HashCacheService";
 
 @injectable()
 export class ModCompilerService
@@ -17,6 +17,13 @@ export class ModCompilerService
     )
     { }
 
+    /**
+     * Convert a mods TS into JS
+     * @param modName Name of mod
+     * @param modPath Dir path to mod
+     * @param modTypeScriptFiles 
+     * @returns 
+     */
     public async compileMod(modName: string, modPath: string, modTypeScriptFiles: string[]): Promise<void>
     {
         // Concatenate TS files into one string
@@ -65,6 +72,11 @@ export class ModCompilerService
             });
     }
 
+    /**
+     * Convert a TS file into JS
+     * @param fileNames Paths to TS files
+     * @param options Compiler options
+     */
     protected async compile(fileNames: string[], options: CompilerOptions): Promise<void>
     {
         const tranOptions: TranspileOptions = {
@@ -76,7 +88,7 @@ export class ModCompilerService
             const readFile = fs.readFileSync(filePath);
             const text = readFile.toString();
 
-            let replacedText;
+            let replacedText: string;
             if (globalThis.G_RELEASE_CONFIGURATION)
             {
                 // The path is hardcoded here since it references node_modules in PKG's internal virtual file system
@@ -98,11 +110,21 @@ export class ModCompilerService
         }
     }
 
+    /**
+     * Do the files at the provided paths exist
+     * @param fileNames 
+     * @returns 
+     */
     protected areFilesReady(fileNames: string[]): boolean
     {
         return fileNames.filter(x => !this.vfs.exists(x.replace(".ts", ".js"))).length === 0;
     }
 
+    /**
+     * Wait the provided number of milliseconds
+     * @param ms Milliseconds
+     * @returns 
+     */
     protected delay(ms: number): Promise<unknown>
     {
         return new Promise( resolve => setTimeout(resolve, ms) );

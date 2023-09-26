@@ -30,11 +30,22 @@ export class HashCacheService
         }
     }
 
+    /**
+     * Return a stored hash by key
+     * @param modName Name of mod to get hash for
+     * @returns Mod hash
+     */
     public getStoredModHash(modName: string): string
     {
         return this.modHashes[modName];
     }
 
+    /**
+     * Does the generated hash match the stored hash
+     * @param modName name of mod
+     * @param modContent 
+     * @returns True if they match
+     */
     public modContentMatchesStoredHash(modName: string, modContent: string): boolean
     {
         const storedModHash = this.getStoredModHash(modName);

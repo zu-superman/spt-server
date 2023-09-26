@@ -32,8 +32,9 @@ export class RagfairSellHelper
      */
     public calculateSellChance(baseChancePercent: number, averageOfferPriceRub: number, playerListedPriceRub: number): number
     {
+        const listedPriceAboveAverage = playerListedPriceRub > averageOfferPriceRub;
         // Get sell chance multiplier
-        const multiplier = (playerListedPriceRub > averageOfferPriceRub)
+        const multiplier = (listedPriceAboveAverage)
             ? this.ragfairConfig.sell.chance.overpriced // Player price is over average listing price
             : this.getSellMultiplierWhenPlayerPriceIsBelowAverageListingPrice(averageOfferPriceRub, playerListedPriceRub);
 
@@ -66,7 +67,7 @@ export class RagfairSellHelper
         // Get a time in future to stop simulating sell chances at
         const endTime = startTime + this.timeUtil.getHoursAsSeconds(this.ragfairConfig.sell.simulatedSellHours);
 
-        // TODO - what is going on here
+        // TODO - Write comment - what is going on here
         const chance = 100 - Math.min(Math.max(sellChancePercent, 0), 100);
 
         let sellTime = startTime;

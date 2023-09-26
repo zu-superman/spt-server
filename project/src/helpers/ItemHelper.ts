@@ -6,7 +6,6 @@ import { Item, Location, Repairable } from "../models/eft/common/tables/IItem";
 import { IStaticAmmoDetails } from "../models/eft/common/tables/ILootBase";
 import { ITemplateItem } from "../models/eft/common/tables/ITemplateItem";
 import { BaseClasses } from "../models/enums/BaseClasses";
-import { Money } from "../models/enums/Money";
 import { ILogger } from "../models/spt/utils/ILogger";
 import { DatabaseServer } from "../servers/DatabaseServer";
 import { ItemBaseClassService } from "../services/ItemBaseClassService";
@@ -22,6 +21,16 @@ import { HandbookHelper } from "./HandbookHelper";
 @injectable()
 class ItemHelper
 {
+    protected readonly defaultInvalidBaseTypes: string[] = [
+        BaseClasses.LOOT_CONTAINER,
+        BaseClasses.MOB_CONTAINER,
+        BaseClasses.STASH,
+        BaseClasses.SORTING_TABLE,
+        BaseClasses.INVENTORY,
+        BaseClasses.STATIONARY_CONTAINER,
+        BaseClasses.POCKETS
+    ];
+
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("HashUtil") protected hashUtil: HashUtil,
@@ -44,19 +53,9 @@ class ItemHelper
      */
     public isValidItem(tpl: string, invalidBaseTypes: string[] = null): boolean
     {
-        const defaultInvalidBaseTypes: string[] = [
-            BaseClasses.LOOT_CONTAINER,
-            BaseClasses.MOB_CONTAINER,
-            BaseClasses.STASH,
-            BaseClasses.SORTING_TABLE,
-            BaseClasses.INVENTORY,
-            BaseClasses.STATIONARY_CONTAINER,
-            BaseClasses.POCKETS
-        ];
-
         if (invalidBaseTypes === null)
         {
-            invalidBaseTypes = defaultInvalidBaseTypes;
+            invalidBaseTypes = this.defaultInvalidBaseTypes;
         }
 
         const blacklist = [
@@ -155,6 +154,11 @@ class ItemHelper
         return 0;
     }  
 
+    /**
+     * Update items upd.StackObjectsCount to be 1 if its upd is missing or StackObjectsCount is undefined
+     * @param item Item to update
+     * @returns Fixed item
+     */
     public fixItemStackCount(item: Item): Item
     {
         if (item.upd === undefined)
@@ -338,10 +342,10 @@ class ItemHelper
 
     /**
      * Get a quality value based on a repairable items (weapon/armor) current state between current and max durability
-     * @param itemDetails 
-     * @param repairable repairable object
-     * @param item 
-     * @returns a number between 0 and 1
+     * @param itemDetails Db details for item we want quality value for
+     * @param repairable Repairable properties
+     * @param item Item quality value is for
+     * @returns A number between 0 and 1
      */
     protected getRepairableItemQualityValue(itemDetails: ITemplateItem, repairable: Repairable, item: Item): number
     {
@@ -372,23 +376,24 @@ class ItemHelper
 
     /**
      * Recursive function that looks at every item from parameter and gets their childrens Ids + includes parent item in results
-     * @param items 
-     * @param itemID 
+     * @param items Array of items (item + possible children)
+     * @param itemId Parent items id
      * @returns an array of strings
      */
-    public findAndReturnChildrenByItems(items: Item[], itemID: string): string[]
+    public findAndReturnChildrenByItems(items: Item[], itemId: string): string[]
     {
         const list: string[] = [];
 
         for (const childitem of items)
         {
-            if (childitem.parentId === itemID)
+            if (childitem.parentId === itemId)
             {
                 list.push(...this.findAndReturnChildrenByItems(items, childitem._id));
             }
         }
 
-        list.push(itemID); // required
+        list.push(itemId); // Required, push original item id onto array
+
         return list;
     }
 
@@ -404,7 +409,7 @@ class ItemHelper
 
         for (const childItem of items)
         {
-            // Include itself.
+            // Include itself
             if (childItem._id === baseItemId)
             {
                 list.unshift(childItem);
@@ -416,6 +421,7 @@ class ItemHelper
                 list.push(...this.findAndReturnChildrenAsItems(items, childItem._id));
             }
         }
+
         return list;
     }
 
@@ -509,8 +515,8 @@ class ItemHelper
     }
 
     /**
-     * split item stack if it exceeds its StackMaxSize property
-     * @param itemToSplit item being split into smaller stacks
+     * split item stack if it exceeds its items StackMaxSize property
+     * @param itemToSplit Item to split into smaller stacks
      * @returns Array of split items
      */
     public splitStack(itemToSplit: Item): Item[]
@@ -548,13 +554,13 @@ class ItemHelper
     }
 
     /**
-     * Find Barter items in the inventory
+     * Find Barter items from array of items
      * @param {string} by tpl or id
-     * @param {Object} pmcData
+     * @param {Item[]} items Array of items to iterate over
      * @param {string} barterItemId
      * @returns Array of Item objects
      */
-    public findBarterItems(by: "tpl" | "id", pmcData: IPmcData, barterItemId: string): Item[]
+    public findBarterItems(by: "tpl" | "id", items: Item[], barterItemId: string): Item[]
     { 
         // find required items to take after buying (handles multiple items)
         const barterIDs = typeof barterItemId === "string"
@@ -564,7 +570,7 @@ class ItemHelper
         let barterItems: Item[] = [];
         for (const barterID of barterIDs)
         {
-            const filterResult = pmcData.Inventory.items.filter(item =>
+            const filterResult = items.filter(item =>
             {
                 return by === "tpl"
                     ? (item._tpl === barterID)
@@ -965,6 +971,11 @@ class ItemHelper
         }
     }
 
+    /**
+     * Choose a random bullet type from the list of possible a magazine has
+     * @param magTemplate Magazine template from Db
+     * @returns Tpl of cartridge
+     */
     protected getRandomValidCaliber(magTemplate: ITemplateItem): string
     {
         const ammoTpls = magTemplate._props.Cartridges[0]._props.filters[0].Filter;
@@ -980,6 +991,12 @@ class ItemHelper
         return this.randomUtil.drawRandomFromList(calibers)[0];
     }
 
+    /**
+     * Chose a randomly weighted cartridge that fits
+     * @param caliber Desired caliber
+     * @param staticAmmoDist Cartridges and thier weights
+     * @returns Tpl of cartrdige
+     */
     protected drawAmmoTpl(caliber: string, staticAmmoDist: Record<string, IStaticAmmoDetails[]>): string
     {
         const ammoArray = new ProbabilityObjectArray<string>(this.mathUtil, this.jsonUtil);
@@ -993,7 +1010,7 @@ class ItemHelper
     }
 
     /**
-     * 
+     * Create a basic cartrige object
      * @param parentId container cartridges will be placed in
      * @param ammoTpl Cartridge to insert
      * @param stackCount Count of cartridges inside parent 
