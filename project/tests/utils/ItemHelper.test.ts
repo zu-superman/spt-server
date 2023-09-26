@@ -4,16 +4,16 @@ import { beforeEach, describe, expect, it } from "@jest/globals";
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { Item } from "@spt-aki/models/eft/common/tables/IItem";
 import { BaseClasses } from "@spt-aki/models/enums/BaseClasses";
-import { Money } from "@spt-aki/models/enums/Money";
 import { TestHelper } from "../common/TestHelper";
 
 let testHelper: TestHelper;
 
 describe("test text", () =>
 {
-    beforeAll(async () => {
+    beforeAll(async () => 
+    {
         testHelper = await TestHelper.fetchTestHelper();
-    })
+    });
     
     let itemHelper: ItemHelper;
     beforeEach(() =>
@@ -96,16 +96,6 @@ describe("test text", () =>
         };
         const result = itemHelper.fixItemStackCount(itemWithUpdAndStack);
         expect(result.upd?.StackObjectsCount).toBe(2);
-    });
-
-    it("isNotSellable() non-sellable item (dollars money tpl)", () =>
-    {
-        expect(itemHelper.isNotSellable(Money.DOLLARS)).toBe(true);
-    });
-
-    it("isNotSellable() sellable item (screwdriver)", () =>
-    {
-        expect(itemHelper.isNotSellable("590c2d8786f774245b1f03f3")).toBe(false); // screwdriver
     });
 
     it("getItemStackSize() stack size of 4", () =>

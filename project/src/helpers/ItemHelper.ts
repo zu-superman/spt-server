@@ -473,23 +473,6 @@ class ItemHelper
     }
 
     /**
-     * Can the item passed in be sold to a trader because it is raw money
-     * @param tpl Item template id to check
-     * @returns true if unsellable
-     */
-    public isNotSellable(tpl: string): boolean
-    {
-        const items = [
-            "544901bf4bdc2ddf018b456d", //wad of rubles
-            Money.ROUBLES,
-            Money.EUROS,
-            Money.DOLLARS
-        ];
-
-        return items.includes(tpl);
-    }
-
-    /**
      * Gets the identifier for a child using slotId, locationX and locationY.
      * @param item 
      * @returns "slotId OR slotid,locationX,locationY"
