@@ -43,6 +43,7 @@ export class HealthController
      * @param info Request data
      * @param sessionID Player id
      * @param addEffects Should effects found be added or removed from profile
+     * @param deleteExistingEffects Should all prior effects be removed before apply new ones
      */
     public saveVitality(pmcData: IPmcData, info: ISyncHealthRequestData, sessionID: string, addEffects = true, deleteExistingEffects = true): void
     {
@@ -146,7 +147,7 @@ export class HealthController
      * @param pmcData player profile
      * @param healthTreatmentRequest Request data from client
      * @param sessionID Session id
-     * @returns 
+     * @returns IItemEventRouterResponse
      */
     public healthTreatment(pmcData: IPmcData, healthTreatmentRequest: IHealthTreatmentRequestData, sessionID: string): IItemEventRouterResponse
     {
@@ -170,45 +171,34 @@ export class HealthController
             return output;
         }
 
-        const bodyPartsRequest = healthTreatmentRequest.difference.BodyParts;
-        const healthRequest: ISyncHealthRequestData = {
-            IsAlive: true,
-            Health: {}
-        };
-
-        // Iterate over body parts in health Treatment request and add health values + effects to above health request object
-        for (const bodyPartKey in bodyPartsRequest)
+        for (const bodyPartKey in healthTreatmentRequest.difference.BodyParts)
         {
-            const bodyPart: BodyPart = healthTreatmentRequest.difference.BodyParts[bodyPartKey];
+            // Get body part from request + from pmc profile
+            const partRequest: BodyPart = healthTreatmentRequest.difference.BodyParts[bodyPartKey];
+            const profilePart = pmcData.Health.BodyParts[bodyPartKey];
 
-            healthRequest.Health[bodyPartKey] = {};
-            healthRequest.Health[bodyPartKey].Current = Math.round(pmcData.Health.BodyParts[bodyPartKey].Health.Current + bodyPart.Health);
+            // Set profile bodypart to max
+            profilePart.Health.Current = profilePart.Health.Maximum;
 
-            // Check for effects that have been removed as part of therapist treatment
-            if ("Effects" in bodyPart && bodyPart.Effects)
+            // Check for effects to remove
+            if (partRequest.Effects?.length > 0)
             {
-                // Iterate over effects array and add as properties to dict
-                for (const effect of bodyPart.Effects)
+                // Found some, loop over them and remove from pmc profile
+                for (const effect of partRequest.Effects)
                 {
-                    if (!healthRequest.Health[bodyPartKey].Effects)
-                    {
-                        healthRequest.Health[bodyPartKey].Effects = {};
-                    }
+                    delete pmcData.Health.BodyParts[bodyPartKey].Effects[effect];
+                }
 
-                    healthRequest.Health[bodyPartKey].Effects[effect] = -1;
+                // Remove empty effect object
+                if (Object.keys(pmcData.Health.BodyParts[bodyPartKey].Effects).length === 0)
+                {
+                    delete pmcData.Health.BodyParts[bodyPartKey].Effects;
                 }
             }
         }
 
-        healthRequest.Hydration = pmcData.Health.Hydration.Current + healthTreatmentRequest.difference.Hydration;
-        healthRequest.Energy = pmcData.Health.Energy.Current + healthTreatmentRequest.difference.Energy;
-        healthRequest.Temperature = pmcData.Health.Temperature.Current;
-
-        // Update health values, persist effects on limbs
-        this.saveVitality(pmcData, healthRequest, sessionID, true, false);
-
-        // Remove effects on limbs that were treated
-        this.removeEffectsAfterPostRaidHeal(sessionID, pmcData, healthTreatmentRequest, output);
+        // Inform client of new post-raid, post-therapist heal values
+        output.profileChanges[sessionID].health = this.jsonUtil.clone(pmcData.Health);
 
         return output;
     }
@@ -226,46 +216,5 @@ export class HealthController
         // TODO:
         // Health effects (fractures etc) are handled in /player/health/sync.
         pmcData.Skills.Common = info.skills.Common;
-    }
-
-    /**
-     * Iterate over treatment request diff and find effects to remove from player limbs
-     * @param sessionId 
-     * @param profile Profile to update
-     * @param treatmentRequest client request
-     * @param output response to send to client
-     */
-    protected removeEffectsAfterPostRaidHeal(sessionId: string, profile: IPmcData, treatmentRequest: IHealthTreatmentRequestData, output: IItemEventRouterResponse): void
-    {
-        // Get body parts with effects we should remove from treatment object
-        const bodyPartsWithEffectsToRemove = {};
-        for (const partId in treatmentRequest.difference.BodyParts)
-        {
-            const effects = treatmentRequest.difference.BodyParts[partId].Effects;
-            if (effects && effects.length > 0)
-            {
-                bodyPartsWithEffectsToRemove[partId] = treatmentRequest.difference.BodyParts[partId];
-            }
-        }
-
-        // Iterate over body parts with effects to remove
-        for (const bodyPartId in bodyPartsWithEffectsToRemove)
-        {
-            // Get effects to remove
-            const effectsToRemove = bodyPartsWithEffectsToRemove[bodyPartId].Effects;
-            const profileBodyPartEffects = profile.Health.BodyParts[bodyPartId].Effects;
-            if (profileBodyPartEffects)
-            {
-                // Profile bodypart has effects
-                for (const effectToRemove of effectsToRemove)
-                {
-                    // Remove effect from profile
-                    delete profileBodyPartEffects[effectToRemove];
-                }
-            }
-        }
-
-        // Inform client of new post-raid, post-therapist heal values
-        output.profileChanges[sessionId].health = this.jsonUtil.clone(profile.Health);
     }
 }
