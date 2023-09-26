@@ -29,6 +29,7 @@ import { DialogueHelper } from "./DialogueHelper";
 import { ItemHelper } from "./ItemHelper";
 import { PaymentHelper } from "./PaymentHelper";
 import { ProfileHelper } from "./ProfileHelper";
+import { QuestConditionHelper } from "./QuestConditionHelper";
 import { RagfairServerHelper } from "./RagfairServerHelper";
 import { TraderHelper } from "./TraderHelper";
 
@@ -43,6 +44,7 @@ export class QuestHelper
         @inject("TimeUtil") protected timeUtil: TimeUtil,
         @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
+        @inject("QuestConditionHelper") protected questConditionHelper: QuestConditionHelper,
         @inject("EventOutputHolder") protected eventOutputHolder: EventOutputHolder,
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("LocaleService") protected localeService: LocaleService,
@@ -363,7 +365,7 @@ export class QuestHelper
      * @param sessionID Session id
      * @returns Quests accessible to player incuding newly unlocked quests now quest (startedQuestId) was started
      */
-    public acceptedUnlocked(startedQuestId: string, sessionID: string): IQuest[]
+    public getNewlyAccessibleQuestsWhenStartingQuest(startedQuestId: string, sessionID: string): IQuest[]
     {
         const profile: IPmcData = this.profileHelper.getPmcProfile(sessionID);
         // Get quest acceptance data from profile
@@ -385,6 +387,24 @@ export class QuestHelper
             if (!acceptedQuestCondition)
             {
                 return false;
+            }
+
+            const standingRequirements = this.questConditionHelper.getStandingConditions(quest.conditions.AvailableForStart);
+            for (const condition of standingRequirements)
+            {
+                if (!this.traderStandingRequirementCheck(condition._props, profile))
+                {
+                    return false;
+                }
+            }
+
+            const loyaltyRequirements = this.questConditionHelper.getLoyaltyConditions(quest.conditions.AvailableForStart);
+            for (const condition of loyaltyRequirements)
+            {
+                if (!this.traderLoyaltyLevelRequirementCheck(condition._props, profile))
+                {
+                    return false;
+                }
             }
 
             // Include if quest found in profile and is started or ready to hand in

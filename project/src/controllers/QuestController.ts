@@ -296,7 +296,7 @@ export class QuestController
             startedQuestRewards,
             this.timeUtil.getHoursAsSeconds(this.questConfig.redeemTime));
 
-        acceptQuestResponse.profileChanges[sessionID].quests = this.questHelper.acceptedUnlocked(acceptedQuest.qid, sessionID);
+        acceptQuestResponse.profileChanges[sessionID].quests = this.questHelper.getNewlyAccessibleQuestsWhenStartingQuest(acceptedQuest.qid, sessionID);
 
         return acceptQuestResponse;
     }
@@ -359,7 +359,7 @@ export class QuestController
             questRewards,
             this.timeUtil.getHoursAsSeconds(this.questConfig.redeemTime));
 
-        acceptQuestResponse.profileChanges[sessionID].quests = this.questHelper.acceptedUnlocked(acceptedQuest.qid, sessionID);
+        acceptQuestResponse.profileChanges[sessionID].quests = this.questHelper.getNewlyAccessibleQuestsWhenStartingQuest(acceptedQuest.qid, sessionID);
         return acceptQuestResponse;
     }
 
