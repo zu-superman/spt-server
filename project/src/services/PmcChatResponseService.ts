@@ -75,7 +75,7 @@ export class PmcChatResponseService
         }
 
         // find bot by name in cache
-        const killerDetailsInCache = this.matchBotDetailsCacheService.getBotByName(killer.Name.trim());
+        const killerDetailsInCache = this.matchBotDetailsCacheService.getBotByNameAndSide(killer.Name.trim(), killer.Side);
         if (!killerDetailsInCache)
         {
             return;

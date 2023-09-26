@@ -158,7 +158,7 @@ export class BotController
             {
                 const details = this.jsonUtil.clone(botGenerationDetails);
 
-                // If is pmc not true, roll chance to be pmc if type is allowed to be one
+                // Roll chance to be pmc if type is allowed to be one
                 const botConvertRateMinMax = this.pmcConfig.convertIntoPmcChance[details.role.toLowerCase()];
                 if (botConvertRateMinMax)
                 {
@@ -188,6 +188,7 @@ export class BotController
             if (info.conditions.length === 1)
             {
                 // Cache bot when we're returning 1 bot, this indicated the bot is being requested to be spawned
+                // Used by PMC response text system
                 this.matchBotDetailsCacheService.cacheBot(botToReturn);
             }
 
