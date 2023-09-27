@@ -357,26 +357,31 @@ export class RagfairController
             this.httpResponse.appendErrorToOutput(output, getItemsFromInventoryErrorMessage);
         }
 
-        // Preparations are done, create the offer
-        const requirementsPriceInRub = this.calculateRequirementsPriceInRub(offerRequest.requirements);
+        // Checks are done, create the offer
+        const playerListedPriceInRub = this.calculateRequirementsPriceInRub(offerRequest.requirements);
         const fullProfile = this.saveServer.getProfile(sessionID);
-        const offer = this.createPlayerOffer(fullProfile, offerRequest.requirements, this.ragfairHelper.mergeStackable(itemsInInventoryToList), offerRequest.sellInOnePiece, requirementsPriceInRub);
+        const offer = this.createPlayerOffer(fullProfile, offerRequest.requirements, this.ragfairHelper.mergeStackable(itemsInInventoryToList), offerRequest.sellInOnePiece, playerListedPriceInRub);
         const rootItem = offer.items[0];
         const qualityMultiplier = this.itemHelper.getItemQualityModifier(rootItem);
         const averageOfferPrice = this.ragfairPriceService.getFleaPriceForItem(rootItem._tpl) * rootItem.upd.StackObjectsCount * qualityMultiplier;
         const itemStackCount = (offerRequest.sellInOnePiece)
             ? 1
-            : offer.items[0].upd.StackObjectsCount;
-        const singleOfferValue = averageOfferPrice / itemStackCount;
+            : rootItem.upd.StackObjectsCount;
+        const singleOfferValue = (offerRequest.sellInOnePiece)
+            ? averageOfferPrice / rootItem.upd.StackObjectsCount
+            : averageOfferPrice / itemStackCount;
+        const singleOfferPlayerListedPriceRub = (offerRequest.sellInOnePiece)
+            ? playerListedPriceInRub / rootItem.upd.StackObjectsCount
+            : playerListedPriceInRub;
         let sellChance = this.ragfairConfig.sell.chance.base * qualityMultiplier;
 
-        sellChance = this.ragfairSellHelper.calculateSellChance(sellChance, singleOfferValue, requirementsPriceInRub);
+        sellChance = this.ragfairSellHelper.calculateSellChance(sellChance, singleOfferValue, singleOfferPlayerListedPriceRub);
         offer.sellResult = this.ragfairSellHelper.rollForSale(sellChance, itemStackCount);
 
         // Subtract flea market fee from stash
         if (this.ragfairConfig.sell.fees)
         {
-            const taxFeeChargeFailed = this.chargePlayerTaxFee(sessionID, rootItem, pmcData, requirementsPriceInRub, itemStackCount, offerRequest, output);
+            const taxFeeChargeFailed = this.chargePlayerTaxFee(sessionID, rootItem, pmcData, playerListedPriceInRub, itemStackCount, offerRequest, output);
             if (taxFeeChargeFailed)
             {
                 return output;
@@ -402,6 +407,8 @@ export class RagfairController
         const tax = storedClientTaxValue
             ? storedClientTaxValue.fee
             : this.ragfairTaxService.calculateTax(rootItem, pmcData, requirementsPriceInRub, itemStackCount, offerRequest.sellInOnePiece);
+
+        this.logger.debug(`Offer tax to charge: ${tax}, pulled from client: ${(!!storedClientTaxValue)}`);
 
         //cleanup of cache now we've used the tax value from it
         this.ragfairTaxService.clearStoredOfferTaxById(offerRequest.items[0]);
