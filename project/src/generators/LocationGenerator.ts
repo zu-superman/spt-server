@@ -150,7 +150,7 @@ export class LocationGenerator
 
             if (Object.keys(data.containerIdsWithProbability).length === 0)
             {
-                this.logger.warning(`Group: ${groupId} has no containers with < 100% spawn chance to choose from, skipping`);
+                this.logger.debug(`Group: ${groupId} has no containers with < 100% spawn chance to choose from, skipping`);
                 continue;
             }
 
@@ -186,7 +186,7 @@ export class LocationGenerator
                 const containerObject = staticRandomisableContainersOnMap.find(x => x.template.Id === chosenContainerId);
                 if (!containerObject)
                 {
-                    this.logger.error(`Container: ${chosenContainerIds[chosenContainerId]} not found in staticRandomisableContainersOnMap, this is bad`);
+                    this.logger.debug(`Container: ${chosenContainerIds[chosenContainerId]} not found in staticRandomisableContainersOnMap, this is bad`);
                     continue;
                 }
 

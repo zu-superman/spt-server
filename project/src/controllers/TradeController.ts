@@ -162,7 +162,7 @@ class TradeController
             // eslint-disable-next-line @typescript-eslint/naming-convention
             sellRequest.items.push({id: itemToSell._id, count: itemToSell?.upd?.StackObjectsCount ?? 1, scheme_id: 0});
         }
-
+        this.logger.debug(`Selling scav items to fence for ${sellRequest.price} roubles`);
         return this.tradeHelper.sellItem(profileWithItemsToSell, profileThatGetsMoney, sellRequest, sessionId);
     }
 
