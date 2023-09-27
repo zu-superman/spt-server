@@ -47,10 +47,7 @@ export class PostDBModLoader implements OnLoad
             const modpath = `${process.cwd()}/${filepath}`;
             // eslint-disable-next-line @typescript-eslint/no-var-requires
             const mod = require(modpath);
-            if (this.modTypeCheck.isPostDBAkiLoad(mod.mod))
-            {
-                (mod.mod as IPostDBLoadMod).postDBLoad(container);
-            }
+
             if (this.modTypeCheck.isPostDBAkiLoadAsync(mod.mod))
             {
                 try 
@@ -61,6 +58,11 @@ export class PostDBModLoader implements OnLoad
                 {
                     this.logger.error(this.localisationService.getText("modloader-async_mod_error", `${err?.message ?? ""}\n${err.stack ?? ""}`));
                 }
+            }
+
+            if (this.modTypeCheck.isPostDBAkiLoad(mod.mod))
+            {
+                (mod.mod as IPostDBLoadMod).postDBLoad(container);
             }
         }
     }

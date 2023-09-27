@@ -300,11 +300,6 @@ export class PreAkiModLoader implements IModLoader
                     return;
                 }
 
-                if (this.modTypeCheck.isPreAkiLoad(requiredMod.mod))
-                {
-                    (requiredMod.mod as IPreAkiLoadMod).preAkiLoad(container);
-                    globalThis[mod] = requiredMod;
-                }
                 if (this.modTypeCheck.isPreAkiLoadAsync(requiredMod.mod))
                 {
                     try 
@@ -316,6 +311,12 @@ export class PreAkiModLoader implements IModLoader
                     {
                         this.logger.error(this.localisationService.getText("modloader-async_mod_error", `${err?.message ?? ""}\n${err.stack ?? ""}`));
                     }
+                }
+
+                if (this.modTypeCheck.isPreAkiLoad(requiredMod.mod))
+                {
+                    (requiredMod.mod as IPreAkiLoadMod).preAkiLoad(container);
+                    globalThis[mod] = requiredMod;
                 }
             }
         }

@@ -46,10 +46,7 @@ export class PostAkiModLoader implements IModLoader
             const modpath = `${process.cwd()}/${filepath}`;
             // eslint-disable-next-line @typescript-eslint/no-var-requires
             const mod = require(modpath);
-            if (this.modTypeCheck.isPostAkiLoad(mod.mod))
-            {
-                (mod.mod as IPostAkiLoadMod).postAkiLoad(container);
-            }
+
             if (this.modTypeCheck.isPostAkiLoadAsync(mod.mod))
             {
                 try 
@@ -60,6 +57,11 @@ export class PostAkiModLoader implements IModLoader
                 {
                     this.logger.error(this.localisationService.getText("modloader-async_mod_error", `${err?.message ?? ""}\n${err.stack ?? ""}`));
                 }
+            }
+
+            if (this.modTypeCheck.isPostAkiLoad(mod.mod))
+            {
+                (mod.mod as IPostAkiLoadMod).postAkiLoad(container);
             }
         }
     }
