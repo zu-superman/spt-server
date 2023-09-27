@@ -367,9 +367,9 @@ export class QuestHelper
      */
     public getNewlyAccessibleQuestsWhenStartingQuest(startedQuestId: string, sessionID: string): IQuest[]
     {
-        const profile: IPmcData = this.profileHelper.getPmcProfile(sessionID);
         // Get quest acceptance data from profile
-        const profileQuest = profile.Quests.find(x => x.qid === startedQuestId);
+        const profile: IPmcData = this.profileHelper.getPmcProfile(sessionID);
+        const startedQuestInProfile = profile.Quests.find(x => x.qid === startedQuestId);
 
         // Get quests that 
         const eligibleQuests = this.getQuestsFromDb().filter((quest) =>
@@ -408,7 +408,7 @@ export class QuestHelper
             }
 
             // Include if quest found in profile and is started or ready to hand in
-            return profileQuest && ([QuestStatus.Started, QuestStatus.AvailableForFinish].includes(profileQuest.status));
+            return startedQuestInProfile && ([QuestStatus.Started, QuestStatus.AvailableForFinish].includes(startedQuestInProfile.status));
         });
 
         return this.getQuestsWithOnlyLevelRequirementStartCondition(eligibleQuests);
