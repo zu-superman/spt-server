@@ -367,16 +367,20 @@ export class RagfairController
         const itemStackCount = (offerRequest.sellInOnePiece)
             ? 1
             : rootItem.upd.StackObjectsCount;
-        const singleOfferValue = (offerRequest.sellInOnePiece)
-            ? averageOfferPrice / rootItem.upd.StackObjectsCount
+
+        // Get averaged price of a single item being listed
+        const averageSingleItemPrice = (offerRequest.sellInOnePiece)
+            ? averageOfferPrice / rootItem.upd.StackObjectsCount // Packs are a single offer made of many items
             : averageOfferPrice / itemStackCount;
-        const singleOfferPlayerListedPriceRub = (offerRequest.sellInOnePiece)
+        
+        // Get averaged price of listing
+        const averagePlayerListedPriceInRub = (offerRequest.sellInOnePiece)
             ? playerListedPriceInRub / rootItem.upd.StackObjectsCount
             : playerListedPriceInRub;
-        let sellChance = this.ragfairConfig.sell.chance.base * qualityMultiplier;
 
-        sellChance = this.ragfairSellHelper.calculateSellChance(sellChance, singleOfferValue, singleOfferPlayerListedPriceRub);
-        offer.sellResult = this.ragfairSellHelper.rollForSale(sellChance, itemStackCount);
+        // Packs are reduced to the average price of a single item in the pack vs the averaged single price of an item
+        const sellChancePercent = this.ragfairSellHelper.calculateSellChance(averageSingleItemPrice, averagePlayerListedPriceInRub, qualityMultiplier);
+        offer.sellResult = this.ragfairSellHelper.rollForSale(sellChancePercent, itemStackCount);
 
         // Subtract flea market fee from stash
         if (this.ragfairConfig.sell.fees)
@@ -400,6 +404,17 @@ export class RagfairController
         return output;
     }
 
+    /**
+     * Charge player a listing fee for using flea, pulls charge from data previously sent by client
+     * @param sessionID Player id
+     * @param rootItem Base item being listed (used when client tax cost not found and must be done on server)
+     * @param pmcData Player profile
+     * @param requirementsPriceInRub Rouble cost player chose for listing (used when client tax cost not found and must be done on server)
+     * @param itemStackCount How many items were listed in player (used when client tax cost not found and must be done on server)
+     * @param offerRequest Add offer request object from client
+     * @param output IItemEventRouterResponse
+     * @returns True if charging tax to player failed
+     */
     protected chargePlayerTaxFee(sessionID: string, rootItem: Item, pmcData: IPmcData, requirementsPriceInRub: number, itemStackCount: number, offerRequest: IAddOfferRequestData, output: IItemEventRouterResponse): boolean
     {
         // Get tax from cache hydrated earlier by client, if that's missing fall back to server calculation (inaccurate)
@@ -413,8 +428,8 @@ export class RagfairController
         //cleanup of cache now we've used the tax value from it
         this.ragfairTaxService.clearStoredOfferTaxById(offerRequest.items[0]);
 
-        const request = this.createBuyTradeRequestObject("RUB", tax);
-        output = this.paymentService.payMoney(pmcData, request, sessionID, output);
+        const buyTradeRequest = this.createBuyTradeRequestObject("RUB", tax);
+        output = this.paymentService.payMoney(pmcData, buyTradeRequest, sessionID, output);
         if (output.warnings.length > 0)
         {
             output = this.httpResponse.appendErrorToOutput(output, this.localisationService.getText("ragfair-unable_to_pay_commission_fee", tax));
