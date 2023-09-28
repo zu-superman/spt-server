@@ -220,7 +220,7 @@ export class LootGenerator
         const randomPreset = this.randomUtil.getArrayValue(globalDefaultPresets)[1];
         if (!randomPreset?._encyclopedia)
         {
-            this.logger.error(`Airdrop - preset with id: ${randomPreset._id} lacks encyclopedia property`);
+            this.logger.debug(`Airdrop - preset with id: ${randomPreset._id} lacks encyclopedia property, skipping`);
 
             return false;
         }
@@ -228,7 +228,7 @@ export class LootGenerator
         const itemDetails = this.itemHelper.getItem(randomPreset._encyclopedia);
         if (!itemDetails[0])
         {
-            this.logger.error(`Airdrop - Unable to find preset with tpl: ${randomPreset._encyclopedia}`);
+            this.logger.debug(`Airdrop - Unable to find preset with tpl: ${randomPreset._encyclopedia}, skipping`);
 
             return false;
         }
