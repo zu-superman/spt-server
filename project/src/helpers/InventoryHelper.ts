@@ -498,13 +498,13 @@ export class InventoryHelper
      * Handle Remove event
      * Remove item from player inventory + insured items array
      * Also deletes child items
-     * @param pmcData Profile to remove item from
+     * @param profile Profile to remove item from (pmc or scav)
      * @param itemId Items id to remove
      * @param sessionID Session id
      * @param output Existing IItemEventRouterResponse object to append data to, creates new one by default if not supplied
      * @returns IItemEventRouterResponse
      */
-    public removeItem(pmcData: IPmcData, itemId: string, sessionID: string, output: IItemEventRouterResponse = undefined): IItemEventRouterResponse
+    public removeItem(profile: IPmcData, itemId: string, sessionID: string, output: IItemEventRouterResponse = undefined): IItemEventRouterResponse
     {
         if (!itemId)
         {
@@ -514,9 +514,9 @@ export class InventoryHelper
         }
 
         // Get children of item, they get deleted too
-        const childIds = this.itemHelper.findAndReturnChildrenByItems(pmcData.Inventory.items, itemId);
-        const inventoryItems = pmcData.Inventory.items;
-        const insuredItems = pmcData.InsuredItems;
+        const itemToRemoveWithChildren = this.itemHelper.findAndReturnChildrenByItems(profile.Inventory.items, itemId);
+        const inventoryItems = profile.Inventory.items;
+        const insuredItems = profile.InsuredItems;
 
         // We have output object, inform client of item deletion
         if (output)
@@ -524,7 +524,7 @@ export class InventoryHelper
             output.profileChanges[sessionID].items.del.push({ _id: itemId });
         }
 
-        for (const childId of childIds)
+        for (const childId of itemToRemoveWithChildren)
         {
             // We expect that each inventory item and each insured item has unique "_id", respective "itemId".
             // Therefore we want to use a NON-Greedy function and escape the iteration as soon as we find requested item.
@@ -536,7 +536,7 @@ export class InventoryHelper
 
             if (inventoryIndex === -1)
             {
-                this.logger.warning(`Unable to remove item with Id: ${childId} as it was not found in inventory ${pmcData._id}`);
+                this.logger.warning(`Unable to remove item with Id: ${childId} as it was not found in inventory ${profile._id}`);
             }
 
             const insuredIndex = insuredItems.findIndex(item => item.itemId === childId);
