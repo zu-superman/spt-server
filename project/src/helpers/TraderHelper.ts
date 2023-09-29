@@ -432,7 +432,7 @@ export class TraderHelper
      */
     public getValidTraderIdByEnumValue(traderEnumValue: Traders): string
     {
-        if (!this.traderEnumHasValue(traderEnumValue))
+        if (!this.traderEnumHasKey(traderEnumValue))
         {
             this.logger.error(`Unable to find trader value: ${traderEnumValue} in Traders enum`);
 
@@ -444,11 +444,21 @@ export class TraderHelper
 
     /**
      * Does the 'Traders' enum has a value that matches the passed in parameter
-     * @param value Value to check for
+     * @param key Value to check for
      * @returns True, values exists in Traders enum as a value
      */
-    public traderEnumHasValue(value: string): boolean
+    public traderEnumHasKey(key: string): boolean
     {
-        return Object.keys(Traders).some((x) => x === value);
+        return Object.keys(Traders).some((x) => x === key);
+    }
+
+    /**
+     * Accepts a trader id
+     * @param traderId Trader id
+     * @returns Ttrue if Traders enum has the param as a value
+     */
+    public traderEnumHasValue(traderId: string): boolean
+    {
+        return Object.values(Traders).some((x) => x === traderId);
     }
 }
