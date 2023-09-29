@@ -439,7 +439,7 @@ export class TraderHelper
             return "";
         }
         
-        return traderEnumValue;
+        return Traders[traderEnumValue];
     }
 
     /**
@@ -449,6 +449,6 @@ export class TraderHelper
      */
     public traderEnumHasValue(value: string): boolean
     {
-        return Object.values(Traders).some((x) => x === value);
+        return Object.keys(Traders).some((x) => x === value);
     }
 }
