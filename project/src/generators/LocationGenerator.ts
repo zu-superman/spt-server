@@ -530,7 +530,7 @@ export class LocationGenerator
         const numberTooManyRequested = desiredSpawnpointCount - chosenSpawnpoints.length;
         if (numberTooManyRequested > 0)
         {
-            this.logger.info(this.localisationService.getText("location-spawn_point_count_requested_vs_found", {requested: desiredSpawnpointCount+guaranteedLoosePoints.length, found: chosenSpawnpoints.length, mapName: locationName}));
+            this.logger.debug(this.localisationService.getText("location-spawn_point_count_requested_vs_found", {requested: desiredSpawnpointCount+guaranteedLoosePoints.length, found: chosenSpawnpoints.length, mapName: locationName}));
         }
 
         // Iterate over spawnpoints
