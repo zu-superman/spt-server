@@ -46,7 +46,7 @@ export class WebSocketServer
         webSocketServer.addListener("listening", () => 
         {
             this.logger.success(this.localisationService.getText("websocket-started", this.httpServerHelper.getWebsocketUrl()));
-            this.logger.success(`${this.localisationService.getText("server_running")} ${this.getRandomisedMessage()}!`);
+            this.logger.success(`${this.localisationService.getText("server_running")}, ${this.getRandomisedMessage()}!`);
         });
 
         webSocketServer.addListener("connection", this.wsOnConnection.bind(this));
