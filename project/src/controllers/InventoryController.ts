@@ -158,8 +158,12 @@ export class InventoryController
         {
             return this.inventoryHelper.removeItemAndChildrenFromMailRewards(sessionID, body, this.eventOutputHolder.getOutput(sessionID));
         }
+        
+        const profileToRemoveItemFrom = (body.fromOwner.id === pmcData._id)
+            ? pmcData
+            : this.profileHelper.getFullProfile(sessionID).characters.scav;
 
-        return this.inventoryHelper.removeItem(pmcData, body.item, sessionID, this.eventOutputHolder.getOutput(sessionID));
+        return this.inventoryHelper.removeItem(profileToRemoveItemFrom, body.item, sessionID, this.eventOutputHolder.getOutput(sessionID));
     }
 
     /**

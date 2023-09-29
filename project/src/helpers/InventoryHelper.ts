@@ -521,7 +521,7 @@ export class InventoryHelper
         // We have output object, inform client of item deletion
         if (output)
         {
-            output.profileChanges[sessionID].items.del.push({ "_id": itemId });
+            output.profileChanges[sessionID].items.del.push({ _id: itemId });
         }
 
         for (const childId of childIds)
@@ -532,6 +532,11 @@ export class InventoryHelper
             if (inventoryIndex > -1)
             {
                 inventoryItems.splice(inventoryIndex, 1);
+            }
+
+            if (inventoryIndex === -1)
+            {
+                this.logger.warning(`Unable to remove item with Id: ${childId} as it was not found in inventory ${pmcData._id}`);
             }
 
             const insuredIndex = insuredItems.findIndex(item => item.itemId === childId);
