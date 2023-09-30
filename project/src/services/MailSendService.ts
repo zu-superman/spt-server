@@ -344,7 +344,7 @@ export class MailSendService
         if (messageDetails.items?.length > 0)
         {
             // Find base item and update check its parentid value exists
-            const parentItem = messageDetails.items.find(x => x.slotId === "hideout");
+            const parentItem = messageDetails.items.find(x => ["hideout", "main"].includes(x.slotId));
             if (!parentItem)
             {
                 this.logger.error(`unable to find an item with slotId of: hideout for message to: ${messageDetails.trader} sender: ${messageDetails.sender}`);
