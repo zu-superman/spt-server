@@ -201,15 +201,19 @@
             "items": [{
                     "_id": "a89075c1a18874dd6404a6d7",
                     "_tpl": "5aafbde786f774389d0cbc0f",
+                    "slotId": "main",
                     "upd": {
                         "StackObjectsCount": 1
-                    }
+                    },
+                    "parentId": "64b996c9d0de4697180359b6"
                 }, {
                     "_id": "a89075c1b188g4dd6404a3d7",
                     "_tpl": "6389c6463485cf0eeb260715",
+                    "slotId": "main",
                     "upd": {
                         "StackObjectsCount": 1
-                    }
+                    },
+                    "parentId": "64b996c9d0de4697180359b6"
                 }
             ],
             "sender": "System",
@@ -654,21 +658,27 @@
             "items": [{
                     "_id": "a89275c1b18874ed6402a6d7",
                     "_tpl": "544fb45d4bdc2dee738b4568",
+                    "slotId": "main",
                     "upd": {
                         "StackObjectsCount": 1
-                    }
+                    },
+                    "parentId": "64b996c9d0de4697180359b6"
                 }, {
                     "_id": "a8927tryb15624ed6d02a6d7",
                     "_tpl": "5d02778e86f774203e7dedbe",
+                    "slotId": "main",
                     "upd": {
                         "StackObjectsCount": 1
-                    }
+                    },
+                    "parentId": "64b996c9d0de4697180359b6"
                 }, {
                     "_id": "a8927tgyg55674ed6d02a6d7",
                     "_tpl": "6034d0230ca681766b6a0fb5",
+                    "slotId": "main",
                     "upd": {
                         "StackObjectsCount": 1
-                    }
+                    },
+                    "parentId": "64b996c9d0de4697180359b6"
                 }
             ],
             "sender": "Trader",
@@ -680,21 +690,27 @@
             "items": [{
                     "_id": "a89275c1b18874ed7452a6d7",
                     "_tpl": "5751a25924597722c463c472",
+                    "slotId": "main",
                     "upd": {
                         "StackObjectsCount": 2
-                    }
+                    },
+                    "parentId": "64b996c9d0de4697180359b6"
                 }, {
                     "_id": "a8927tgyb15674ed6d02a6d7",
                     "_tpl": "5ca20d5986f774331e7c9602",
+                    "slotId": "main",
                     "upd": {
                         "StackObjectsCount": 1
-                    }
+                    },
+                    "parentId": "64b996c9d0de4697180359b6"
                 }, {
                     "_id": "a8927tgyb15674ed6d02oyj7",
                     "_tpl": "5755356824597772cb798962",
+                    "slotId": "main",
                     "upd": {
                         "StackObjectsCount": 3
-                    }
+                    },
+                    "parentId": "64b996c9d0de4697180359b6"
                 }
             ],
             "sender": "Trader",
@@ -706,9 +722,11 @@
             "items": [{
                     "_id": "a89275c1b18274ed7432a6d7",
                     "_tpl": "5c093ca986f7740a1867ab12",
+                    "slotId": "main",
                     "upd": {
                         "StackObjectsCount": 1
-                    }
+                    },
+                    "parentId": "64b996c9d0de4697180359b6"
                 }
             ],
             "sender": "System",
@@ -720,15 +738,19 @@
             "items": [{
                     "_id": "a89275c1b18274ef7432a6d7",
                     "_tpl": "5449016a4bdc2d6f028b456f",
+                    "slotId": "main",
                     "upd": {
                         "StackObjectsCount": 500000
-                    }
+                    },
+                    "parentId": "64b996c9d0de4697180359b6"
                 }, {
                     "_id": "a89275c1b18274e27432a6d7",
                     "_tpl": "5449016a4bdc2d6f028b456f",
+                    "slotId": "main",
                     "upd": {
                         "StackObjectsCount": 500000
-                    }
+                    },
+                    "parentId": "64b996c9d0de4697180359b6"
                 }
             ],
             "sender": "System",
@@ -740,9 +762,11 @@
             "items": [{
                     "_id": "a89275c1b18274ef7432a6d8",
                     "_tpl": "58ac60eb86f77401897560ff",
+                    "slotId": "main",
                     "upd": {
                         "StackObjectsCount": 1
-                    }
+                    },
+                    "parentId": "64b996c9d0de4697180359b6"
                 }
             ],
             "sender": "System",
@@ -754,9 +778,11 @@
             "items": [{
                     "_id": "a89275c1b18274ef7432a6d9",
                     "_tpl": "5e54f62086f774219b0f1937",
+                    "slotId": "main",
                     "upd": {
                         "StackObjectsCount": 1
-                    }
+                    },
+                    "parentId": "64b996c9d0de4697180359b6"
                 }
             ],
             "sender": "System",
