@@ -150,7 +150,7 @@ Player profile is stored in SPT folder as a JSON file, allowing for changes to p
  - Move/split/delete stacks
  - Tags (add/modify/remove)
  - Armor/weapon kit item repair
- - ~~Auto-sort~~ (SEMI-BROKEN - MOVES ITEMS OUT OF VISIBLE INVENTORY SPACE)
+ - Auto-sort
  - Out of raid healing
  - Out of raid eating
  - Special slots (compass etc)
