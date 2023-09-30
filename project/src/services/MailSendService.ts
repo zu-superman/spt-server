@@ -343,10 +343,8 @@ export class MailSendService
         let itemsToSendToPlayer: MessageItems = {};
         if (messageDetails.items?.length > 0)
         {
-            // Find base item and update check its parentid value exists
-            const parentItem = (messageDetails.items.length === 1)
-                ? messageDetails.items[0]
-                : messageDetails.items.find(x => ["hideout", "main"].includes(x.slotId));
+            // Find base item that should be the 'primary' + have its parent id be used as the dialogs 'stash' value
+            const parentItem = this.getBaseItemFromRewards(messageDetails.items);
             if (!parentItem)
             {
                 this.logger.error(`unable to find an item with slotId of: hideout for message to: ${messageDetails.trader} sender: ${messageDetails.sender}`);
@@ -409,6 +407,38 @@ export class MailSendService
         }
 
         return itemsToSendToPlayer;
+    }
+
+    /**
+     * Try to find the most correct item to be the 'primary' item in a reward mail
+     * @param items Possible items to choose from
+     * @returns Chosen 'primary' item
+     */
+    protected getBaseItemFromRewards(items: Item[]): Item
+    {
+        // Only one item in reward, return it
+        if (items?.length === 1)
+        {
+            return items[0];
+        }
+
+        // Find first item with slotId that indicates its a 'base' item
+        let item = items.find(x => ["hideout", "main"].includes(x.slotId));
+        if (item)
+        {
+            return item;
+        }
+
+        // Not a singlular item + no items have a hideout/main slotid
+        // Look for first item without parent id
+        item = items.find(x => !x.parentId);
+        if (item)
+        {
+            return item;
+        }
+
+        // Just return first item in array
+        return items[0];
     }
 
     /**
