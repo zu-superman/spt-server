@@ -466,7 +466,7 @@ export class BotWeaponGenerator
         const compatibleCartridges = ammo[desiredCaliber];
         if (!compatibleCartridges || compatibleCartridges?.length === 0)
         {
-            this.logger.warning(this.localisationService.getText("bot-no_caliber_data_for_weapon_falling_back_to_default", {weaponId: weaponTemplate._id, weaponName: weaponTemplate._name, defaultAmmo: weaponTemplate._props.defAmmo}));
+            this.logger.debug(this.localisationService.getText("bot-no_caliber_data_for_weapon_falling_back_to_default", {weaponId: weaponTemplate._id, weaponName: weaponTemplate._name, defaultAmmo: weaponTemplate._props.defAmmo}));
 
             // Immediately returns, as default ammo is guaranteed to be compatible
             return weaponTemplate._props.defAmmo;
@@ -475,7 +475,7 @@ export class BotWeaponGenerator
         const chosenAmmoTpl = this.weightedRandomHelper.getWeightedInventoryItem(compatibleCartridges);
         if (weaponTemplate._props.Chambers[0] && !weaponTemplate._props.Chambers[0]._props.filters[0].Filter.includes(chosenAmmoTpl))
         {
-            this.logger.warning(this.localisationService.getText("bot-incompatible_ammo_for_weapon_falling_back_to_default", {chosenAmmo: chosenAmmoTpl, weaponId: weaponTemplate._id, weaponName: weaponTemplate._name, defaultAmmo: weaponTemplate._props.defAmmo}));
+            this.logger.debug(this.localisationService.getText("bot-incompatible_ammo_for_weapon_falling_back_to_default", {chosenAmmo: chosenAmmoTpl, weaponId: weaponTemplate._id, weaponName: weaponTemplate._name, defaultAmmo: weaponTemplate._props.defAmmo}));
 
             // Incompatible ammo found, return default (can happen with .366 and 7.62x39 weapons)
             return weaponTemplate._props.defAmmo;
