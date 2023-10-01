@@ -90,10 +90,14 @@ export class HandbookHelper
         }
 
         const handbookItem = this.databaseServer.getTables().templates.handbook.Items.find(x => x.Id === tpl);
+        if (!handbookItem)
+        {
+            this.handbookPriceCache.items.byId.set(tpl, 1);
 
-        return handbookItem
-            ? handbookItem.Price
-            : 1;
+            return 1;
+        }
+
+        return handbookItem.Price;
     }
 
     /**
