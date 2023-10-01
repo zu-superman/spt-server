@@ -538,9 +538,9 @@ export class GameController
             let hpRegenPerHour = 456.6;
 
             // Set new values, whatever is smallest
-            energyRegenPerHour += pmcProfile.Bonuses.filter(x => x.type === "EnergyRegeneration").reduce((sum, curr) => sum += curr.value, 0);
-            hydrationRegenPerHour += pmcProfile.Bonuses.filter(x => x.type === "HydrationRegeneration").reduce((sum, curr) => sum += curr.value, 0);
-            hpRegenPerHour += pmcProfile.Bonuses.filter(x => x.type === "HealthRegeneration").reduce((sum, curr) => sum += curr.value, 0);
+            energyRegenPerHour += pmcProfile.Bonuses.filter(x => x.type === "EnergyRegeneration").reduce((sum, curr) => sum + curr.value, 0);
+            hydrationRegenPerHour += pmcProfile.Bonuses.filter(x => x.type === "HydrationRegeneration").reduce((sum, curr) => sum + curr.value, 0);
+            hpRegenPerHour += pmcProfile.Bonuses.filter(x => x.type === "HealthRegeneration").reduce((sum, curr) => sum + curr.value, 0);
 
             if (pmcProfile.Health.Energy.Current !== pmcProfile.Health.Energy.Maximum)
             {
