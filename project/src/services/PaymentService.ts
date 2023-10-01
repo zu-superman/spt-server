@@ -37,7 +37,7 @@ export class PaymentService
      * @param {IPmcData} pmcData Player profile
      * @param {IProcessBuyTradeRequestData} request
      * @param {string} sessionID
-     * @returns Object
+     * @returns IItemEventRouterResponse
      */
     public payMoney(pmcData: IPmcData, request: IProcessBuyTradeRequestData, sessionID: string, output: IItemEventRouterResponse):  IItemEventRouterResponse
     {
@@ -74,25 +74,56 @@ export class PaymentService
         if (barterPrice === 0)
         {
             this.logger.debug(this.localisationService.getText("payment-zero_price_no_payment"));
-            return output;
         }
 
-        output = this.addPaymentToOutput(pmcData, currencyTpl, barterPrice, sessionID, output);
-        if (output.warnings.length > 0)
+        // Only perform if paying with currency (not barters)
+        if (barterPrice > 0)
         {
-            return output;
+            output = this.addPaymentToOutput(pmcData, currencyTpl, barterPrice, sessionID, output);
+            if (output.warnings.length > 0)
+            {
+                // Something failed
+                return output;
+            }
         }
 
         // set current sale sum
         // convert barterPrice itemTpl into RUB then convert RUB into trader currency
-        const saleSum = pmcData.TradersInfo[request.tid].salesSum += this.handbookHelper.fromRUB(this.handbookHelper.inRUB(barterPrice, currencyTpl), this.paymentHelper.getCurrency(trader.currency));
+        const costOfPurchaseInRoubles = (barterPrice === 0)
+            ? this.getTraderItemHandbookPrice(request.item_id, request.tid)
+            : this.handbookHelper.fromRUB(this.handbookHelper.inRUB(barterPrice, currencyTpl), this.paymentHelper.getCurrency(trader.currency));
 
-        pmcData.TradersInfo[request.tid].salesSum = saleSum;
+        pmcData.TradersInfo[request.tid].salesSum += costOfPurchaseInRoubles;
         this.traderHelper.lvlUp(request.tid, pmcData);
         Object.assign(output.profileChanges[sessionID].traderRelations, { [request.tid]: pmcData.TradersInfo[request.tid] });
 
-        this.logger.debug("Items taken. Status OK.");
+        this.logger.debug("Item(s) taken. Status OK.");
         return output;
+    }
+
+    /**
+     * Get the item price of a specific traders assort
+     * @param traderAssortId Id of assort to look up
+     * @param traderId Id of trader with assort
+     * @returns Handbook rouble price of item
+     */
+    protected getTraderItemHandbookPrice(traderAssortId: string, traderId: string): number
+    {
+        const purchasedAssortItem = this.traderHelper.getTraderAssortItemByAssortId(traderId, traderAssortId);
+        if (!purchasedAssortItem)
+        {
+            return 1;
+        }
+
+        const assortItemPriceRouble = this.handbookHelper.getTemplatePrice(purchasedAssortItem._tpl);
+        if (!assortItemPriceRouble)
+        {
+            this.logger.debug(`No item price found for ${purchasedAssortItem._tpl} on trader: ${traderId} in assort: ${traderAssortId}`);
+            
+            return 1;
+        }
+
+        return assortItemPriceRouble;
     }
 
     /**

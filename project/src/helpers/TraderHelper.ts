@@ -1,6 +1,7 @@
 import { inject, injectable } from "tsyringe";
 
 import { IPmcData } from "../models/eft/common/IPmcData";
+import { Item } from "../models/eft/common/tables/IItem";
 import { ProfileTraderTemplate } from "../models/eft/common/tables/IProfileTemplate";
 import { ITraderAssort, ITraderBase, LoyaltyLevel } from "../models/eft/common/tables/ITrader";
 import { ConfigTypes } from "../models/enums/ConfigTypes";
@@ -68,11 +69,44 @@ export class TraderHelper
         return trader;
     }
 
+    /**
+     * Get all assort data for a particular trader
+     * @param traderId Trader to get assorts for
+     * @returns ITraderAssort
+     */
     public getTraderAssortsByTraderId(traderId: string): ITraderAssort
     {
         return traderId === Traders.FENCE
             ? this.fenceService.getRawFenceAssorts()
             : this.databaseServer.getTables().traders[traderId].assort;
+    }
+
+    /**
+     * Retrieve the Item from a traders assort data by its id
+     * @param traderId Trader to get assorts for
+     * @param assortId Id of assort to find
+     * @returns Item object
+     */
+    public getTraderAssortItemByAssortId(traderId: string, assortId: string): Item
+    {
+        const traderAssorts = this.getTraderAssortsByTraderId(traderId);
+        if (!traderAssorts)
+        {
+            this.logger.debug(`No assorts on trader: ${traderId} found`);
+
+            return null;
+        }
+
+        // Find specific assort in traders data
+        const purchasedAssort = traderAssorts.items.find(x => x._id === assortId);
+        if (!purchasedAssort)
+        {
+            this.logger.debug(`No assort ${assortId} on trader: ${traderId} found`);
+
+            return null;
+        }
+
+        return purchasedAssort;
     }
 
     /**
