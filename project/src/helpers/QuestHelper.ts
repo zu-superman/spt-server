@@ -10,7 +10,6 @@ import { IItemEventRouterResponse } from "../models/eft/itemEvent/IItemEventRout
 import { IAcceptQuestRequestData } from "../models/eft/quests/IAcceptQuestRequestData";
 import { IFailQuestRequestData } from "../models/eft/quests/IFailQuestRequestData";
 import { ConfigTypes } from "../models/enums/ConfigTypes";
-import { HideoutAreas } from "../models/enums/HideoutAreas";
 import { MessageType } from "../models/enums/MessageType";
 import { QuestRewardType } from "../models/enums/QuestRewardType";
 import { QuestStatus } from "../models/enums/QuestStatus";
@@ -460,7 +459,7 @@ export class QuestHelper
      */
     public applyMoneyBoost(quest: IQuest, multiplier: number, questStatus: QuestStatus): IQuest
     {
-        const rewards: Reward[] = quest.rewards?.[questStatus] ?? [];
+        const rewards: Reward[] = quest.rewards?.[QuestStatus[questStatus]] ?? [];
         for (const reward of rewards)
         {
             if (reward.type === "Item")
@@ -695,10 +694,11 @@ export class QuestHelper
         }
         
         // Check for and apply intel center money bonus if it exists
-        const intelCenterBonus = this.getIntelCenterRewardBonus(pmcData);
-        if (intelCenterBonus > 0)
+        const questMoneyRewardBonus = this.getQuestMoneyRewardBonus(pmcData);
+        if (questMoneyRewardBonus > 0)
         {
-            questDetails = this.applyMoneyBoost(questDetails, intelCenterBonus, state); // money = money + (money * intelCenterBonus / 100)
+            // Apply additional bonus from hideout skill
+            questDetails = this.applyMoneyBoost(questDetails, questMoneyRewardBonus, state); // money = money + (money * intelCenterBonus / 100)
         }
 
         // e.g. 'Success' or 'AvailableForFinish'
@@ -773,30 +773,30 @@ export class QuestHelper
     }
 
     /**
-     * Get players intel center bonus from profile
+     * Get players money reward bonus from profile
      * @param pmcData player profile
      * @returns bonus as a percent
      */
-    protected getIntelCenterRewardBonus(pmcData: IPmcData): number
+    protected getQuestMoneyRewardBonus(pmcData: IPmcData): number
     {
-        let intelCenterBonus = 0;
-
         // Check player has intel center
-        const intelCenter = pmcData.Hideout.Areas.find(area => area.type === HideoutAreas.INTEL_CENTER);
-        if (intelCenter)
+        const moneyRewardBonuses = pmcData.Bonuses.filter(x => x.type === "QuestMoneyReward");
+        if (!moneyRewardBonuses)
         {
-            if (intelCenter.level === 1)
-            {
-                intelCenterBonus = 5;
-            }
-
-            if (intelCenter.level > 1)
-            {
-                intelCenterBonus = 15;
-            }
+            return 0;
         }
 
-        return intelCenterBonus;
+        // Get a total of the quest money rewards
+        let moneyRewardBonus = moneyRewardBonuses.reduce((acc, cur) => acc + cur.value, 0);
+
+        // Apply hideout management bonus to money reward (up to 51% bonus)
+        const hideoutManagementSkill = pmcData.Skills.Common.find(x => x.Id === "HideoutManagement");
+        if (hideoutManagementSkill)
+        {
+            moneyRewardBonus *= (1 + (hideoutManagementSkill.Progress / 10000)); // 5100 becomes 0.51, add 1 to it, 1.51, multiply the moneyreward bonus by it (e.g. 15 x 51)
+        }
+
+        return moneyRewardBonus;
     }
 
     /**
