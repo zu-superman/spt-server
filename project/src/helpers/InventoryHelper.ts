@@ -279,7 +279,7 @@ export class InventoryHelper
                 parentId: itemToAdd.containerId,
                 slotId: "hideout",
                 location: { x: itemToAdd.location.x, y: itemToAdd.location.y, r: itemToAdd.location.rotation ? 1 : 0 },
-                upd: upd
+                upd: this.jsonUtil.clone(upd)
             });
 
             pmcData.Inventory.items.push({
@@ -333,7 +333,7 @@ export class InventoryHelper
                                     x: itemToAdd.location.x,
                                     y: itemToAdd.location.y,
                                     r: "Horizontal" },
-                                upd: upd
+                                upd: this.jsonUtil.clone(upd)
                             });
 
                             pmcData.Inventory.items.push({
@@ -345,7 +345,7 @@ export class InventoryHelper
                                     x: itemToAdd.location.x,
                                     y: itemToAdd.location.y,
                                     r: "Horizontal" },
-                                upd: upd
+                                upd: this.jsonUtil.clone(upd)
                             });
                         }
                         else
@@ -364,7 +364,7 @@ export class InventoryHelper
                                 parentId: toDo[0][1],
                                 slotId: slotID,
                                 ...itemLocation,
-                                upd: upd
+                                upd: this.jsonUtil.clone(upd)
                             });
 
                             pmcData.Inventory.items.push({
@@ -373,7 +373,7 @@ export class InventoryHelper
                                 parentId: toDo[0][1],
                                 slotId: itemLib[tmpKey].slotId,
                                 ...itemLocation,
-                                upd: upd
+                                upd: this.jsonUtil.clone(upd)
                             });
                             this.logger.debug(`Added ${itemLib[tmpKey]._tpl} with id: ${idForItemToAdd} to inventory`);
                         }
