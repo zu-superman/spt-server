@@ -165,6 +165,16 @@ export class GameController
 
             this.profileFixerService.addMissingHideoutAreasToProfile(fullProfile);
 
+            if (pmcProfile.Inventory)
+            {
+                // MUST occur prior to `profileFixerService.checkForAndFixPmcProfileIssues()`
+                this.fixIncorrectAidValue(fullProfile);
+                
+                this.sendPraporGiftsToNewProfiles(pmcProfile);
+
+                this.profileFixerService.checkForOrphanedModdedItems(sessionID, fullProfile);
+            }
+
             this.profileFixerService.checkForAndFixPmcProfileIssues(pmcProfile);
 
             this.profileFixerService.addMissingAkiVersionTagToProfile(fullProfile);
@@ -176,15 +186,6 @@ export class GameController
                 this.hideoutHelper.setHideoutImprovementsToCompleted(pmcProfile);
                 this.hideoutHelper.unlockHideoutWallInProfile(pmcProfile);
                 this.profileFixerService.addMissingIdsToBonuses(pmcProfile);
-            }
-
-            if (pmcProfile.Inventory)
-            {
-                this.fixIncorrectAidValue(fullProfile);
-                
-                this.sendPraporGiftsToNewProfiles(pmcProfile);
-
-                this.profileFixerService.checkForOrphanedModdedItems(sessionID, fullProfile);
             }
             
             this.logProfileDetails(fullProfile);
