@@ -282,7 +282,7 @@ export class LootGenerator
         const itemsToReturn: AddItem[] = [];
 
         // choose a weapon to give to the player (weighted)
-        const chosenWeaponTpl = this.weightedRandomHelper.getWeightedInventoryItem(containerSettings.weaponRewardWeight);
+        const chosenWeaponTpl = this.weightedRandomHelper.getWeightedValue<string>(containerSettings.weaponRewardWeight);
         const weaponDetailsDb = this.itemHelper.getItem(chosenWeaponTpl);
         if (!weaponDetailsDb[0])
         {
@@ -450,7 +450,7 @@ export class LootGenerator
         for (let index = 0; index < rewardContainerDetails.rewardCount; index++)
         {
             // Pick random reward from pool, add to request object
-            const chosenRewardItemTpl = this.weightedRandomHelper.getWeightedInventoryItem(rewardContainerDetails.rewardTplPool);
+            const chosenRewardItemTpl = this.weightedRandomHelper.getWeightedValue<string>(rewardContainerDetails.rewardTplPool);
             this.addOrIncrementItemToArray(chosenRewardItemTpl, itemsToReturn);
         }
 

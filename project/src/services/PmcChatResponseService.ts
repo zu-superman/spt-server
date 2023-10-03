@@ -201,7 +201,7 @@ export class PmcChatResponseService
             ? this.pmcResponsesConfig.victim.responseTypeWeights
             : this.pmcResponsesConfig.killer.responseTypeWeights;
 
-        return this.weightedRandomHelper.getWeightedInventoryItem(responseWeights);
+        return this.weightedRandomHelper.getWeightedValue<string>(responseWeights);
     }
 
     /**

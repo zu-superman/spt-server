@@ -209,7 +209,7 @@ export class BotInventoryGenerator
         if (Object.keys(equipmentPool).length && shouldSpawn)
         {
             const id = this.hashUtil.generate();
-            const equipmentItemTpl = this.weightedRandomHelper.getWeightedInventoryItem(equipmentPool);
+            const equipmentItemTpl = this.weightedRandomHelper.getWeightedValue<string>(equipmentPool);
             const itemTemplate = this.itemHelper.getItem(equipmentItemTpl);
 
             if (!itemTemplate[0])

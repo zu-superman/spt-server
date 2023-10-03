@@ -172,8 +172,8 @@ export class BotGenerator
         bot.Health = this.generateHealth(botJsonTemplate.health, bot.Info.Side === "Savage");
         bot.Skills = this.generateSkills(<any>botJsonTemplate.skills); // TODO: fix bad type, bot jsons store skills in dict, output needs to be array
         bot.Customization.Head = this.randomUtil.getArrayValue(botJsonTemplate.appearance.head);
-        bot.Customization.Body = this.weightedRandomHelper.getWeightedInventoryItem(botJsonTemplate.appearance.body);
-        bot.Customization.Feet = this.weightedRandomHelper.getWeightedInventoryItem(botJsonTemplate.appearance.feet);
+        bot.Customization.Body = this.weightedRandomHelper.getWeightedValue<string>(botJsonTemplate.appearance.body);
+        bot.Customization.Feet = this.weightedRandomHelper.getWeightedValue<string>(botJsonTemplate.appearance.feet);
         bot.Customization.Hands = this.randomUtil.getArrayValue(botJsonTemplate.appearance.hands);
         bot.Inventory = this.botInventoryGenerator.generateInventory(sessionId, botJsonTemplate, botRole, botGenerationDetails.isPmc, botLevel.level);
 

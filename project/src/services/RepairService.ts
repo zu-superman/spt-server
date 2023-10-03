@@ -351,8 +351,8 @@ export class RepairService
      */
     public addBuff(itemConfig: BonusSettings, item: Item): void
     {
-        const bonusRarity = this.weightedRandomHelper.getWeightedInventoryItem(itemConfig.rarityWeight);
-        const bonusType = this.weightedRandomHelper.getWeightedInventoryItem(itemConfig.bonusTypeWeight);
+        const bonusRarity = this.weightedRandomHelper.getWeightedValue<string>(itemConfig.rarityWeight);
+        const bonusType = this.weightedRandomHelper.getWeightedValue<string>(itemConfig.bonusTypeWeight);
 
         const bonusValues = itemConfig[bonusRarity][bonusType].valuesMinMax;
         const bonusValue = this.randomUtil.getFloat(bonusValues.min, bonusValues.max);

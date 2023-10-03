@@ -85,7 +85,7 @@ export class BotWeaponGenerator
     public pickWeightedWeaponTplFromPool(equipmentSlot: string, botTemplateInventory: Inventory): string
     {
         const weaponPool = botTemplateInventory.equipment[equipmentSlot];
-        return this.weightedRandomHelper.getWeightedInventoryItem(weaponPool);
+        return this.weightedRandomHelper.getWeightedValue<string>(weaponPool);
     }
 
     /**
@@ -472,7 +472,7 @@ export class BotWeaponGenerator
             return weaponTemplate._props.defAmmo;
         }
 
-        const chosenAmmoTpl = this.weightedRandomHelper.getWeightedInventoryItem(compatibleCartridges);
+        const chosenAmmoTpl = this.weightedRandomHelper.getWeightedValue<string>(compatibleCartridges);
         if (weaponTemplate._props.Chambers[0] && !weaponTemplate._props.Chambers[0]._props.filters[0].Filter.includes(chosenAmmoTpl))
         {
             this.logger.debug(this.localisationService.getText("bot-incompatible_ammo_for_weapon_falling_back_to_default", {chosenAmmo: chosenAmmoTpl, weaponId: weaponTemplate._id, weaponName: weaponTemplate._name, defaultAmmo: weaponTemplate._props.defAmmo}));
