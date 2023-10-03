@@ -257,10 +257,20 @@ export class InventoryHelper
                 upd.SpawnedInSession = true;
             }
             
-            // Remove invalid property prior to adding to inventory
-            if (upd.UnlimitedCount)
+            // Remove invalid properties prior to adding to inventory
+            if (upd.UnlimitedCount !== undefined)
             {
                 delete upd.UnlimitedCount;
+            }
+
+            if (upd.BuyRestrictionCurrent !== undefined)
+            {
+                delete upd.BuyRestrictionCurrent;
+            }
+
+            if (upd.BuyRestrictionMax !== undefined)
+            {
+                delete upd.BuyRestrictionMax;
             }
 
             output.profileChanges[sessionID].items.new.push({
