@@ -110,13 +110,10 @@ export class TradeHelper
                 // Bought fence offer, remove from listing
                 this.fenceService.removeFenceOffer(buyRequestData.item_id);
             }
-            else
+            else if (hasBuyRestrictions)
             {
-                if (hasBuyRestrictions)
-                {
-                    // Increment non-fence trader item buy count
-                    this.incrementAssortBuyCount(itemPurchased, buyRequestData.count);
-                }
+                // Increment non-fence trader item buy count
+                this.incrementAssortBuyCount(itemPurchased, buyRequestData.count);
             }
 
             this.logger.debug(`Bought item: ${buyRequestData.item_id} from ${buyRequestData.tid}`);
