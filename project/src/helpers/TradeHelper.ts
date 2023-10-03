@@ -174,7 +174,7 @@ export class TradeHelper
 
         if (assortBeingPurchased.upd.BuyRestrictionCurrent > assortBeingPurchased.upd.BuyRestrictionMax)
         {
-            throw "Unable to purchase item, Purchase limit reached";
+            throw new Error("Unable to purchase item, Purchase limit reached");
         }
     }
 
@@ -182,7 +182,7 @@ export class TradeHelper
     {
         if ((assortBeingPurchased.upd.BuyRestrictionCurrent + count) > assortBeingPurchased.upd?.BuyRestrictionMax)
         {
-            throw `Unable to purchase ${count} items, this would exceed your purchase limit of ${assortBeingPurchased.upd.BuyRestrictionMax} from the trader this refresh`;
+            throw new Error(`Unable to purchase ${count} items, this would exceed your purchase limit of ${assortBeingPurchased.upd.BuyRestrictionMax} from the trader this refresh`);
         }
     }
 }
