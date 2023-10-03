@@ -372,7 +372,7 @@ export class RagfairPriceService implements OnLoad
         }
 
         // return extra mods price + base gun price
-        return existingPrice += extraModsPrice;
+        return existingPrice + extraModsPrice;
     }
 
     /**
