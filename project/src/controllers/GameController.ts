@@ -791,7 +791,7 @@ export class GameController
             }
 
             // Merge started/success/fail quest assorts into one dictionary
-            const mergedQuestAssorts = Object.assign({}, traderData.questassort["started"], traderData.questassort["success"], traderData.questassort["fail"]);
+            const mergedQuestAssorts = { ...traderData.questassort["started"], ...traderData.questassort["success"], ...traderData.questassort["fail"]};
 
             // loop over all assorts for trader
             for (const [assortKey, questKey] of Object.entries(mergedQuestAssorts))
