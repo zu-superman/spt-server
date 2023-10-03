@@ -166,12 +166,13 @@ export class FenceService
                 assort.barter_scheme[item._id][0][0].count *= (modifier + presetModifier);
             }
         }
+        else if (assort.barter_scheme[item._id])
+        {
+            assort.barter_scheme[item._id][0][0].count *= modifier;
+        }
         else
         {
-            if (assort.barter_scheme[item._id])
-            {
-                assort.barter_scheme[item._id][0][0].count *= modifier;
-            }
+            this.logger.warning(`adjustItemPriceByModifier() - no action taken for item: ${item._tpl}`);
         }
     }
 
