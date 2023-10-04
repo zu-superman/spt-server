@@ -244,86 +244,87 @@ export class InventoryHelper
             {
                 for (const tmpKey in itemLib)
                 {
-                    if (itemLib[tmpKey].parentId && itemLib[tmpKey].parentId === toDo[0][0])
+                    if (itemLib[tmpKey]?.parentId !== toDo[0][0])
                     {
-                        idForItemToAdd = this.hashUtil.generate();
-
-                        const slotID = itemLib[tmpKey].slotId;
-
-                        // if it is from ItemPreset, load preset's upd data too.
-                        if (itemToAdd.isPreset)
-                        {
-                            upd = { "StackObjectsCount": itemToAdd.count };
-
-                            for (const updID in itemLib[tmpKey].upd)
-                            {
-                                upd[updID] = itemLib[tmpKey].upd[updID];
-                            }
-
-                            if (foundInRaid || this.inventoryConfig.newItemsMarkedFound)
-                            {
-                                upd.SpawnedInSession = true;
-                            }
-                        }
-
-                        if (slotID === "hideout")
-                        {
-                            output.profileChanges[sessionID].items.new.push({
-                                _id: idForItemToAdd,
-                                _tpl: itemLib[tmpKey]._tpl,
-                                parentId: toDo[0][1],
-                                slotId: slotID,
-                                location: {
-                                    x: itemToAdd.location.x,
-                                    y: itemToAdd.location.y,
-                                    r: "Horizontal" },
-                                upd: this.jsonUtil.clone(upd)
-                            });
-
-                            pmcData.Inventory.items.push({
-                                _id: idForItemToAdd,
-                                _tpl: itemLib[tmpKey]._tpl,
-                                parentId: toDo[0][1],
-                                slotId: itemLib[tmpKey].slotId,
-                                location: {
-                                    x: itemToAdd.location.x,
-                                    y: itemToAdd.location.y,
-                                    r: "Horizontal" },
-                                upd: this.jsonUtil.clone(upd)
-                            });
-                        }
-                        else
-                        {
-                            const itemLocation = {};
-
-                            // Item already has location property, use it
-                            if (itemLib[tmpKey]["location"] !== undefined)
-                            {
-                                itemLocation["location"] = itemLib[tmpKey]["location"];
-                            }
-
-                            output.profileChanges[sessionID].items.new.push({
-                                _id: idForItemToAdd,
-                                _tpl: itemLib[tmpKey]._tpl,
-                                parentId: toDo[0][1],
-                                slotId: slotID,
-                                ...itemLocation,
-                                upd: this.jsonUtil.clone(upd)
-                            });
-
-                            pmcData.Inventory.items.push({
-                                _id: idForItemToAdd,
-                                _tpl: itemLib[tmpKey]._tpl,
-                                parentId: toDo[0][1],
-                                slotId: itemLib[tmpKey].slotId,
-                                ...itemLocation,
-                                upd: this.jsonUtil.clone(upd)
-                            });
-                            this.logger.debug(`Added ${itemLib[tmpKey]._tpl} with id: ${idForItemToAdd} to inventory`);
-                        }
-
-                        toDo.push([itemLib[tmpKey]._id, idForItemToAdd]);
+                        continue;
                     }
+
+                    idForItemToAdd = this.hashUtil.generate();
+                    const slotID = itemLib[tmpKey].slotId;
+
+                    // If its from ItemPreset, load preset's upd data too.
+                    if (itemToAdd.isPreset)
+                    {
+                        upd = { StackObjectsCount: itemToAdd.count };
+
+                        for (const updID in itemLib[tmpKey].upd)
+                        {
+                            upd[updID] = itemLib[tmpKey].upd[updID];
+                        }
+
+                        if (foundInRaid || this.inventoryConfig.newItemsMarkedFound)
+                        {
+                            upd.SpawnedInSession = true;
+                        }
+                    }
+
+                    if (slotID === "hideout")
+                    {
+                        output.profileChanges[sessionID].items.new.push({
+                            _id: idForItemToAdd,
+                            _tpl: itemLib[tmpKey]._tpl,
+                            parentId: toDo[0][1],
+                            slotId: slotID,
+                            location: {
+                                x: itemToAdd.location.x,
+                                y: itemToAdd.location.y,
+                                r: "Horizontal" },
+                            upd: this.jsonUtil.clone(upd)
+                        });
+
+                        pmcData.Inventory.items.push({
+                            _id: idForItemToAdd,
+                            _tpl: itemLib[tmpKey]._tpl,
+                            parentId: toDo[0][1],
+                            slotId: itemLib[tmpKey].slotId,
+                            location: {
+                                x: itemToAdd.location.x,
+                                y: itemToAdd.location.y,
+                                r: "Horizontal" },
+                            upd: this.jsonUtil.clone(upd)
+                        });
+                    }
+                    else
+                    {
+                        const itemLocation = {};
+
+                        // Item already has location property, use it
+                        if (itemLib[tmpKey]["location"] !== undefined)
+                        {
+                            itemLocation["location"] = itemLib[tmpKey]["location"];
+                        }
+
+                        output.profileChanges[sessionID].items.new.push({
+                            _id: idForItemToAdd,
+                            _tpl: itemLib[tmpKey]._tpl,
+                            parentId: toDo[0][1],
+                            slotId: slotID,
+                            ...itemLocation,
+                            upd: this.jsonUtil.clone(upd)
+                        });
+
+                        pmcData.Inventory.items.push({
+                            _id: idForItemToAdd,
+                            _tpl: itemLib[tmpKey]._tpl,
+                            parentId: toDo[0][1],
+                            slotId: itemLib[tmpKey].slotId,
+                            ...itemLocation,
+                            upd: this.jsonUtil.clone(upd)
+                        });
+                        this.logger.debug(`Added ${itemLib[tmpKey]._tpl} with id: ${idForItemToAdd} to inventory`);
+                    }
+
+                    toDo.push([itemLib[tmpKey]._id, idForItemToAdd]);
                 }
 
                 toDo.splice(0, 1);
