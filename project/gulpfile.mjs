@@ -79,7 +79,7 @@ const packagingBleeding = async () => pkg.exec([entries.bleeding, "--compress", 
 const addAssets = async (cb) =>
 {
     await gulp.src(["assets/**/*.json", "assets/**/*.json5", "assets/**/*.png", "assets/**/*.jpg", "assets/**/*.ico"]).pipe(gulp.dest(dataDir));
-    await gulp.src(["node_modules/@pnpm/**/*"]).pipe(gulp.dest(`${dataDir}\\@pnpm`));
+    await gulp.src(["node_modules/@pnpm/exe/**/*"]).pipe(gulp.dest(`${dataDir}\\@pnpm\\exe`));
     await gulp.src([licenseFile]).pipe(rename("LICENSE-Server.txt")).pipe(gulp.dest(buildDir));
     // Write dynamic hashed of asset files for the build 
     const hashFileDir = path.resolve(dataDir, "checks.dat");
