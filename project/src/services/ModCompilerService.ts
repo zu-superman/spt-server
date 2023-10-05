@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import fs from "fs";
-import path from "path";
 import os from "os";
+import path from "path";
 import { inject, injectable } from "tsyringe";
 import { CompilerOptions, ModuleKind, ScriptTarget, TranspileOptions, transpileModule } from "typescript";
 import type { ILogger } from "../models/spt/utils/ILogger";
@@ -11,12 +11,17 @@ import { HashCacheService } from "./HashCacheService";
 @injectable()
 export class ModCompilerService
 {
+    protected serverDependencies: string[];
+
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("HashCacheService") protected hashCacheService: HashCacheService,
         @inject("VFS") protected vfs: VFS
     )
-    { }
+    {
+        const packageJsonPath: string = path.join(__dirname, "../../package.json");
+        this.serverDependencies = Object.keys(JSON.parse(this.vfs.readFile(packageJsonPath)).dependencies);
+    }
 
     /**
      * Convert a mods TS into JS
@@ -92,16 +97,10 @@ export class ModCompilerService
             let replacedText: string;
             if (globalThis.G_RELEASE_CONFIGURATION)
             {
-                // The path is hardcoded here since it references node_modules in PKG's internal virtual file system
-                if (os.platform() === "win32")
+                replacedText = text.replace(/(@spt-aki)/g, path.join(__dirname, "obj"));
+                for (const dependency of this.serverDependencies) 
                 {
-                    replacedText = text.replace(/(@spt-aki)/g, "C:/snapshot/project/obj");
-                    replacedText = replacedText.replace("\"tsyringe\"", "\"C:/snapshot/project/node_modules/tsyringe\"");
-                }
-                else
-                {
-                    replacedText = text.replace(/(@spt-aki)/g, "/snapshot/project/obj");
-                    replacedText = replacedText.replace("\"tsyringe\"", "\"/snapshot/project/node_modules/tsyringe\"");
+                    replacedText = replacedText.replace(`"${dependency}"`, path.join(__dirname, "node_modules", dependency));
                 }
             }
             else

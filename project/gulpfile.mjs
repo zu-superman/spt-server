@@ -39,9 +39,7 @@ const rceditOptions = {
 };
 
 // Compilation
-const compileTest = async () => exec("swc src -d obj", {
-    stdio
-});
+const compileTest = async () => exec("swc src -d obj", { stdio });
 
 // Packaging
 const fetchAndPatchPackageImage = async () =>
@@ -72,15 +70,16 @@ const fetchAndPatchPackageImage = async () =>
         console.error(e);
     }
 };
-const packagingRelease = async () => pkg.exec([entries.release, "--compression", "GZip", "--target", `${nodeVersion}-${process.platform}`, "--output", serverExe, "--config", pkgConfig]);
-const packagingDebug = async () => pkg.exec([entries.debug, "--compression", "GZip", "--target", `${nodeVersion}-${process.platform}`, "--output", serverExe, "--config", pkgConfig]);
-const packagingBleeding = async () => pkg.exec([entries.bleeding, "--compression", "GZip", "--target", `${nodeVersion}-${process.platform}`, "--output", serverExe, "--config", pkgConfig]);
+const packagingRelease = async () => pkg.exec([entries.release, "--compress", "GZip", "--target", `${nodeVersion}-${process.platform}`, "--output", serverExe, "--config", pkgConfig]);
+const packagingDebug = async () => pkg.exec([entries.debug, "--compress", "GZip", "--target", `${nodeVersion}-${process.platform}`, "--output", serverExe, "--config", pkgConfig]);
+const packagingBleeding = async () => pkg.exec([entries.bleeding, "--compress", "GZip", "--target", `${nodeVersion}-${process.platform}`, "--output", serverExe, "--config", pkgConfig]);
 
 
 // Assets
 const addAssets = async (cb) =>
 {
     await gulp.src(["assets/**/*.json", "assets/**/*.json5", "assets/**/*.png", "assets/**/*.jpg", "assets/**/*.ico"]).pipe(gulp.dest(dataDir));
+    await gulp.src(["node_modules/@pnpm/**/*"]).pipe(gulp.dest(`${dataDir}\\@pnpm`));
     await gulp.src([licenseFile]).pipe(rename("LICENSE-Server.txt")).pipe(gulp.dest(buildDir));
     // Write dynamic hashed of asset files for the build 
     const hashFileDir = path.resolve(dataDir, "checks.dat");
