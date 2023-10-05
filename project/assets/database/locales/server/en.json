@@ -136,7 +136,7 @@
 	"modloader-missing_dependency": "Mod {{mod}} requires {{modDependency}} to be installed.",
 	"modloader-missing_package_json": "Mod (%s) is missing package.json",
 	"modloader-missing_package_json_property": "Mod {{modName}} package.json requires {{prop}} property",
-	"modloader-mod_incompatible": "ModLoader: Mod (%s) is incompatible. It must implement at least one of IPostAkiLoadMod, IPostDBLoadMod, IpreAkiLoadMod",
+	"modloader-mod_incompatible": "ModLoader: Mod (%s) is incompatible. It must implement at least one of IPostAkiLoadMod, IPostDBLoadMod, IPreAkiLoadMod",
 	"modloader-async_mod_error": "ModLoader: Error when loading async mod: %s",
 	"modloader-no_mods_loaded": "Errors were found with mods, NO MODS WILL BE LOADED",
 	"modloader-outdated_akiversion_field": "Mod %s is not compatible with the current version of AKI. You may encounter issues - no support will be provided!",
