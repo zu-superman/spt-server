@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
+
 import crypto from "crypto";
 import { deleteSync } from "del";
 import fs from "fs-extra";
@@ -8,10 +9,10 @@ import rename from "gulp-rename";
 import path from "path";
 import pkg from "pkg";
 import pkgfetch from "pkg-fetch";
-import rcedit from "rcedit";
+import * as ResEdit from "resedit";
 import manifest from "./package.json" assert { type: "json" };
 
-const nodeVersion = "node16";
+const nodeVersion = "node18"; // As of pkg-fetch v3.5, it's v18.15.0
 const stdio = "inherit";
 const buildDir = "build/";
 const dataDir = path.join(buildDir, "Aki_Data", "Server");
@@ -24,29 +25,16 @@ const entries = {
     bleeding: path.join("obj", "ide", "BleedingEdgeEntry.js")
 };
 const licenseFile = "../LICENSE.md";
-const rceditOptions = {
-    icon: manifest.icon,
-    "product-version": manifest.version,
-    "file-version": manifest.version,
-    "version-string": {
-        ProductName: manifest.name,
-        CompanyName: manifest.author,
-        LegalCopyright: licenseFile,
-        OriginalFilename: serverExeName,
-        InternalFilename: "Aki.Server",
-        FileDescription: manifest.description
-    }
-};
 
 // Compilation
 const compileTest = async () => exec("swc src -d obj", { stdio });
 
 // Packaging
-const fetchAndPatchPackageImage = async () =>
+const fetchPackageImage = async () =>
 {
     try
     {
-        const output = "./.pkg-cache/v3.4";
+        const output = "./.pkg-cache/v3.5";
         const fetchedPkg = await pkgfetch.need({ arch: process.arch, nodeRange: nodeVersion, platform: process.platform, output });
         console.log(`fetched node binary at ${fetchedPkg}`);
         const builtPkg = fetchedPkg.replace("node", "built");
@@ -63,17 +51,50 @@ const fetchAndPatchPackageImage = async () =>
                 stdio
             });
         }
-        await rcedit(builtPkg, rceditOptions);
     }
-    catch (e)
+    catch (e) 
     {
-        console.error(e);
+        console.error(`Error while fetching and patching package image: ${e.message}`);
+        console.error(e.stack);
     }
 };
-const packagingRelease = async () => pkg.exec([entries.release, "--compress", "GZip", "--target", `${nodeVersion}-${process.platform}`, "--output", serverExe, "--config", pkgConfig]);
-const packagingDebug = async () => pkg.exec([entries.debug, "--compress", "GZip", "--target", `${nodeVersion}-${process.platform}`, "--output", serverExe, "--config", pkgConfig]);
-const packagingBleeding = async () => pkg.exec([entries.bleeding, "--compress", "GZip", "--target", `${nodeVersion}-${process.platform}`, "--output", serverExe, "--config", pkgConfig]);
 
+const updateBuildProperties = async (cb) =>
+{
+    const exe = ResEdit.NtExecutable.from(fs.readFileSync(serverExe));
+    const res = ResEdit.NtExecutableResource.from(exe);
+    
+    const iconPath = path.resolve(manifest.icon);
+    const iconFile = ResEdit.Data.IconFile.from(fs.readFileSync(iconPath));
+
+    ResEdit.Resource.IconGroupEntry.replaceIconsForResource(
+        res.entries,
+        1,
+        1033,
+        iconFile.icons.map(item => item.data)
+    );
+
+    const vi = ResEdit.Resource.VersionInfo.fromEntries(res.entries)[0];
+
+    vi.setStringValues(
+        {lang: 1033, codepage: 1200},
+        {
+            ProductName: manifest.author,
+            FileDescription: manifest.description,
+            CompanyName: manifest.name,
+            LegalCopyright:  manifest.license
+        }
+    );
+    vi.removeStringValue({lang: 1033, codepage: 1200}, "OriginalFilename");
+    vi.removeStringValue({lang: 1033, codepage: 1200}, "InternalName");
+    vi.setFileVersion(...manifest.version.split(".").map(Number));
+    vi.setProductVersion(...manifest.version.split(".").map(Number));
+    vi.outputToResourceEntries(res.entries);
+    res.outputResource(exe, true);
+    fs.writeFileSync(serverExe, Buffer.from(exe.generate()));
+
+    cb();
+};
 
 // Assets
 const addAssets = async (cb) =>
@@ -136,29 +157,21 @@ const validateJSONs = (cb) =>
     }
 };
 
-
-
 // Versioning
 const writeCommitHashToCoreJSON = async (cb) => 
 {
     const coreJSONPath = path.resolve(dataDir, "configs", "core.json");
-    const watcher = gulp.watch([coreJSONPath]);
-    watcher.on("add", async () => 
+    if (fs.existsSync(coreJSONPath)) 
     {
-        if (fs.existsSync(coreJSONPath)) 
-        {
-            // Read the core.json and execute git command
-            const coreJSON = fs.readFileSync(coreJSONPath).toString();
-            const parsed = JSON.parse(coreJSON);
-            const gitResult = await exec("git rev-parse HEAD", { stdout: "pipe" });
-            parsed.commit = gitResult.stdout || "";
-            
-            // Write the commit hash to core.json
-            fs.writeFileSync(coreJSONPath, JSON.stringify(parsed, null, 4));
-        }
-        watcher.close();
-    });
-        
+        // Read the core.json and execute git command
+        const coreJSON = fs.readFileSync(coreJSONPath).toString();
+        const parsed = JSON.parse(coreJSON);
+        const gitResult = await exec("git rev-parse HEAD", { stdout: "pipe" });
+        parsed.commit = gitResult.stdout || "";
+
+        // Write the commit hash to core.json
+        fs.writeFileSync(coreJSONPath, JSON.stringify(parsed, null, 4));
+    }
     cb();
 };
 
@@ -217,15 +230,29 @@ const loadRecursiveAsync = async (filepath) =>
 // Testing
 gulp.task("test:debug", async () => exec("ts-node-dev -r tsconfig-paths/register src/ide/TestEntry.ts", { stdio }));
 
-// Generation
-const generate = (packaging) => 
+// Main Tasks Generation
+const build = (packagingType) => 
 {
-    const tasks = [clean, validateJSONs, compileTest, fetchAndPatchPackageImage, packaging, addAssets, writeCommitHashToCoreJSON, removeCompiled];
+    const anonPackaging = () => packaging(entries[packagingType]);
+    anonPackaging.displayName = `packaging-${packagingType}`;
+    const tasks = [clean, validateJSONs, compileTest, fetchPackageImage, anonPackaging, addAssets, updateBuildProperties, writeCommitHashToCoreJSON, removeCompiled];
     return gulp.series(tasks);
 };
-gulp.task("gen:debug", generate(packagingDebug));
-gulp.task("gen:release", generate(packagingRelease));
-gulp.task("gen:bleeding", generate(packagingBleeding));
+
+// Packaging Arguments
+const packaging = async (entry) => 
+{
+    const target = `${nodeVersion}-${process.platform}-${process.arch}`;
+    const args = [entry, "--compress", "GZip", "--target", target, "--output", serverExe, "--config", pkgConfig];
+    try 
+    {
+        await pkg.exec(args);
+    }
+    catch (error) 
+    {
+        console.error(`Error occurred during packaging: ${error}`);
+    }
+};
 
 // Run server
 const runSrv = async (cb) =>
@@ -233,4 +260,8 @@ const runSrv = async (cb) =>
     await exec("Aki.Server.exe", { stdio, cwd: buildDir });
     cb();
 };
+
+gulp.task("build:debug", build("debug"));
+gulp.task("build:release", build("release"));
+gulp.task("build:bleeding", build("bleeding"));
 gulp.task("run:server", runSrv);
