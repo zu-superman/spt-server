@@ -19,9 +19,9 @@
         "test:debug": "gulp test:debug",
         "test:run": "jest --colors --runInBand",
         "test:coverage": "jest --coverage --maxWorkers=1 --no-cache",
-        "build:release": "cross-env PKG_CACHE_PATH=\"./.pkg-cache\" gulp gen:release",
-        "build:debug": "cross-env PKG_CACHE_PATH=\"./.pkg-cache\" gulp gen:debug",
-        "build:bleeding": "cross-env PKG_CACHE_PATH=\"./.pkg-cache\" gulp gen:bleeding",
+        "build:release": "cross-env PKG_CACHE_PATH=\"./.pkg-cache\" gulp build:release",
+        "build:debug": "cross-env PKG_CACHE_PATH=\"./.pkg-cache\" gulp build:debug",
+        "build:bleeding": "cross-env PKG_CACHE_PATH=\"./.pkg-cache\" gulp build:bleeding",
         "gen:types": "tsc -p typedef_tsconfig.json",
         "gen:docs": "typedoc --options ./typedoc.json --entryPointStrategy expand ./src",
         "run:server": "gulp run:server"
