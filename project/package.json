@@ -8,7 +8,7 @@
     "description": "Modding framework for Escape From Tarkov",
     "icon": "assets/images/icon.ico",
     "engines": {
-        "node": "16.17.1"
+        "node": "18.18.0"
     },
     "scripts": {
         "profilerCompile": "tsc -p test_tsconfig.json",
