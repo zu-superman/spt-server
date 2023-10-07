@@ -123,7 +123,7 @@
 	"modloader-incompatible_mod_found": "Mod {{author}}-{{name}} is incompatible with {{incompatibleModName}}",
 	"modloader-invalid_akiversion_field": "Mod %s contains an invalid semver string in the akiVersion field. Examples of valid values: https://github.com/npm/node-semver#versions",
 	"modloader-invalid_version_property": "Mod %s package.json contains an invalid version string",
-	"modloader-not_correct_mod_folder": "A folder called (%s) exists in your mods folder. You incorrectly installed a mod. You may have extracted the contents of a mod directly into the mod folder by mistake. Refer to the websites FAQ on how to install mods correctly",
+	"modloader-not_correct_mod_folder": "A folder called (%s) exists in your mods folder. You incorrectly installed a mod. You may have extracted the contents of a mod directly into the mod folder by mistake. Refer to the websites FAQ and the mods hub page on how to install mods correctly",
 	"modloader-is_client_mod": "Mod (%s) is a client mod and should be placed in the following folder: /spt/bepinex/plugins",
 	"modloader-installing_external_dependencies": "Installing dependencies for Mod: {{name}} by: {{author}}",
 	"modloader-installing_external_dependencies_disabled": "Mod: {{name}} by: {{author}} requires external dependencies but the feature is currently disabled, go to \"{{configPath}}\", set \"{{configOption}}\" to true and restart the server.\nBy enabling this you accept all responsibility for what {{name}} downloads to your machine.",

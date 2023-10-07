@@ -501,12 +501,13 @@ export class PreAkiModLoader implements IModLoader
         const modPath = this.getModPath(modName);
 
         const modIsCalledBepinEx = modName.toLowerCase() === "bepinex";
+        const modIsCalledUser = modName.toLowerCase() === "user";
         const modIsCalledSrc = modName.toLowerCase() === "src";
         const modIsCalledDb = modName.toLowerCase() === "db";
         const hasBepinExFolderStructure = this.vfs.exists(`${modPath}/plugins`);
         const containsDll = this.vfs.getFiles(`${modPath}`).find(x => x.includes(".dll"));
 
-        if (modIsCalledSrc || modIsCalledDb)
+        if (modIsCalledSrc || modIsCalledDb || modIsCalledUser)
         {
             this.logger.error(this.localisationService.getText("modloader-not_correct_mod_folder", modName));
             return false;
