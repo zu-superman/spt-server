@@ -118,10 +118,13 @@ function copyLicense()
         .pipe(gulp.dest(buildDir));
 }
 
-// Writes the latest Git commit hash to the core.json configuration file.
+/**
+ * Writes the latest Git commit hash to the core.json configuration file.
+ * @param {*} cb Callback to run after completion of function
+ */
 async function writeCommitHashToCoreJSON(cb) 
 {
-    const coreJSONPath = path.resolve("build", "Aki_Data", "Server", "configs", "core.json");
+    const coreJSONPath = path.resolve(dataDir, "configs", "core.json");
     if (fs.existsSync(coreJSONPath)) 
     {
         try 
