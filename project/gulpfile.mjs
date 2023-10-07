@@ -137,6 +137,9 @@ async function writeCommitHashToCoreJSON(cb)
             
             // Update the commit hash in the core.json object
             parsed.commit = gitResult.stdout.trim() || "";
+
+            // Add build timestamp
+            parsed.buildTime = new Date().getTime();
             
             // Write the updated object back to core.json
             fs.writeFileSync(coreJSONPath, JSON.stringify(parsed, null, 4));
