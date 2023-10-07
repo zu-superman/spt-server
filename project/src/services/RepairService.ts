@@ -205,8 +205,9 @@ export class RepairService
             itemToRepairDetails,
             repairItemIsArmor,
             repairKits[0].count / this.getKitDivisor(itemToRepairDetails, repairItemIsArmor, pmcData),
-            this.repairConfig.applyRandomizeDurabilityLoss,
-            1);
+            true,
+            1,
+            this.repairConfig.applyRandomizeDurabilityLoss);
 
         // Find and use repair kit defined in body
         for (const repairKit of repairKits)
