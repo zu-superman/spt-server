@@ -142,7 +142,7 @@ export class ScavCaseRewardGenerator
     }
 
     /**
-     * Pick a number of items to be rewards, the count is defined by the values in 
+     * Pick a number of items to be rewards, the count is defined by the values in `itemFilters` param
      * @param items item pool to pick rewards from
      * @param itemFilters how the rewards should be filtered down (by item count)
      * @returns 
@@ -151,16 +151,26 @@ export class ScavCaseRewardGenerator
     {
         const result: ITemplateItem[] = [];
         
+        let rewardWasMoney = false;
+        let rewardWasAmmo = false;
         const randomCount = this.randomUtil.getInt(itemFilters.minCount, itemFilters.maxCount);
         for (let i = 0; i < randomCount; i++)
         {
-            if (this.rewardShouldBeMoney())
+            if (this.rewardShouldBeMoney() && !rewardWasMoney) // Only allow one reward to be money
             {
                 result.push(this.getRandomMoney());
+                if (!this.scavCaseConfig.allowMultipleMoneyRewardsPerRarity)
+                {
+                    rewardWasMoney = true;
+                }
             }
-            else if (this.rewardShouldBeAmmo())
+            else if (this.rewardShouldBeAmmo() && !rewardWasAmmo) // Only allow one reward to be ammo
             {
                 result.push(this.getRandomAmmo(rarity));
+                if (!this.scavCaseConfig.allowMultipleAmmoRewardsPerRarity)
+                {
+                    rewardWasAmmo = true;
+                }
             }
             else
             {

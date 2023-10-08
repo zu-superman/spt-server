@@ -111,5 +111,7 @@
                 "max": 50000
             }
         }
-    }
+    },
+	"allowMultipleMoneyRewardsPerRarity": false,
+	"allowMultipleAmmoRewardsPerRarity": true
 }
