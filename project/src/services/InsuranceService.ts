@@ -149,7 +149,7 @@ export class InsuranceService
 
         this.mailSendService.sendLocalisedNpcMessageToPlayer(
             sessionId,
-            Traders.PRAPOR,
+            this.traderHelper.getTraderById(Traders.PRAPOR),
             MessageType.NPC_TRADER,
             randomResponseId,
             [],
