@@ -36,7 +36,6 @@ import { LocalisationService } from "../services/LocalisationService";
 import { OpenZoneService } from "../services/OpenZoneService";
 import { ProfileFixerService } from "../services/ProfileFixerService";
 import { SeasonalEventService } from "../services/SeasonalEventService";
-import { EncodingUtil } from "../utils/EncodingUtil";
 import { HashUtil } from "../utils/HashUtil";
 import { JsonUtil } from "../utils/JsonUtil";
 import { RandomUtil } from "../utils/RandomUtil";
@@ -63,7 +62,6 @@ export class GameController
         @inject("PreAkiModLoader") protected preAkiModLoader: PreAkiModLoader,
         @inject("HttpServerHelper") protected httpServerHelper: HttpServerHelper,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
-        @inject("EncodingUtil") protected encodingUtil: EncodingUtil,
         @inject("HideoutHelper") protected hideoutHelper: HideoutHelper,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
         @inject("ProfileFixerService") protected profileFixerService: ProfileFixerService,
@@ -877,10 +875,5 @@ export class GameController
         this.logger.debug(`Server version: ${this.coreConfig.akiVersion}`);
         this.logger.debug(`Debug enabled: ${globalThis.G_DEBUG_CONFIGURATION}`);
         this.logger.debug(`Mods enabled: ${globalThis.G_MODS_ENABLED}`);
-        this.logger.debug(`OS: ${this.os.arch()} | ${this.os.version()} | ${process.platform}`);
-        this.logger.debug(`CPU: ${this.os?.cpus()[0]?.model}`);
-        this.logger.debug(`RAM: ${this.os.totalmem() / 1024 / 1024 / 1024}GB`);
-        this.logger.debug(`PATH: ${this.encodingUtil.toBase64(process.argv[0])}`);
-        this.logger.debug(`PATH: ${this.encodingUtil.toBase64(process.execPath)}`);
     }
 }
