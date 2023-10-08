@@ -85,8 +85,9 @@ export class EventOutputHolder
 
         profileChanges.experience = pmcData.Info.Experience;
         profileChanges.health = this.jsonUtil.clone(pmcData.Health);
-        profileChanges.skills.Common = this.jsonUtil.clone(pmcData.Skills.Common);
+        profileChanges.skills.Common = this.jsonUtil.clone(pmcData.Skills.Common); // Always send skills for Item event route response
         profileChanges.skills.Mastering = this.jsonUtil.clone(pmcData.Skills.Mastering);
+
         // Clone productions to ensure we preseve the profile jsons data
         profileChanges.production = this.getProductionsFromProfileAndFlagComplete(this.jsonUtil.clone(pmcData.Hideout.Production));
         profileChanges.improvements = this.jsonUtil.clone(this.getImprovementsFromProfileAndFlagComplete(pmcData));

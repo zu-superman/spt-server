@@ -9093,18 +9093,18 @@
         "Usec"
       ],
       "WatchPosition": {
-        "x": -0.06419,
-        "y": 0.00369,
-        "z": 0.03807
+        "x": -0.08181,
+        "y": -0.00469,
+        "z": -0.04067
       },
       "WatchPrefab": {
-        "path": "assets/content/hands/bear/bear_watch.bundle",
+        "path": "assets/content/hands/usec/usec_watch_garmintactix.bundle",
         "rcid": ""
       },
       "WatchRotation": {
-        "x": -9.273621,
-        "y": -0.4027405,
-        "z": -1.121033
+        "x": 178.442,
+        "y": 9.906,
+        "z": -0.028
       }
     },
     "_proto": "5cc0876314c02e000c6bea6b",
