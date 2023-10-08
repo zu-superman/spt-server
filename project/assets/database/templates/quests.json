@@ -32665,13 +32665,12 @@
                     "id": "629f104e274d12190d18841d",
                     "target": [
                       "Interchange",
-                      "Shoreline",
-                      "TarkovStreets",
-                      "Lighthouse",
-                      "Woods",
                       "bigmap",
+                      "TarkovStreets",
+                      "Woods",
+                      "Lighthouse",
                       "RezervBase",
-                      "laboratory"
+                      "Shoreline"
                     ]
                   }
                 }
@@ -81797,7 +81796,7 @@
             "dynamicLocale": false,
             "id": "64f4fdfa67e11a7c6206de72",
             "index": 1,
-            "oneSessionOnly": true,
+            "oneSessionOnly": false,
             "parentId": "",
             "type": "Completion",
             "value": "1",
