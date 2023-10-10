@@ -3,6 +3,7 @@ import { DialogueHelper } from "../helpers/DialogueHelper";
 import { ItemHelper } from "../helpers/ItemHelper";
 import { NotificationSendHelper } from "../helpers/NotificationSendHelper";
 import { NotifierHelper } from "../helpers/NotifierHelper";
+import { TraderHelper } from "../helpers/TraderHelper";
 import { Item } from "../models/eft/common/tables/IItem";
 import { Dialogue, IUserDialogInfo, Message, MessageItems } from "../models/eft/profile/IAkiProfile";
 import { MessageType } from "../models/enums/MessageType";
@@ -30,77 +31,42 @@ export class MailSendService
         @inject("DialogueHelper") protected dialogueHelper: DialogueHelper,
         @inject("NotificationSendHelper") protected notificationSendHelper: NotificationSendHelper,
         @inject("LocalisationService") protected localisationService: LocalisationService,
-        @inject("ItemHelper") protected itemHelper: ItemHelper
+        @inject("ItemHelper") protected itemHelper: ItemHelper,
+        @inject("TraderHelper") protected traderHelper: TraderHelper
     )
     { }
 
     /**
      * Send a message from an NPC (e.g. prapor) to the player with or without items using direct message text, do not look up any locale
-     * @param playerId Players id to send message to
-     * @param sender The trader sending the message
+     * @param sessionId The session ID to send the message to
+     * @param trader The trader sending the message
      * @param messageType What type the message will assume (e.g. QUEST_SUCCESS)
      * @param message Text to send to the player
      * @param items Optional items to send to player
      * @param maxStorageTimeSeconds Optional time to collect items before they expire
      */
-    public sendDirectNpcMessageToPlayer(playerId: string, sender: Traders, messageType: MessageType, message: string, items: Item[] = [], maxStorageTimeSeconds = null): void
+    public sendDirectNpcMessageToPlayer(sessionId: string, trader: Traders, messageType: MessageType, message: string, items: Item[] = [], maxStorageTimeSeconds = null, systemData = null, ragfair = null): void
     {
-        if (!sender)
+        if (!trader)
         {
-            this.logger.error(`Unable to send message type: ${messageType} to player: ${playerId}, provided trader enum was null`);
+            this.logger.error(`Unable to send message type: ${messageType} to player: ${sessionId}, provided trader enum was null`);
 
             return;
         }
 
         const details: ISendMessageDetails = {
-            recipientId: playerId,
+            recipientId: sessionId,
             sender: messageType,
             dialogType: MessageType.NPC_TRADER,
-            trader: sender,
+            trader: trader,
             messageText: message
         };
 
         // Add items to message
-        if (items.length > 0)
+        if (items?.length > 0)
         {
             details.items = items;
-            details.itemsMaxStorageLifetimeSeconds = maxStorageTimeSeconds;
-        }
-
-        this.sendMessageToPlayer(details);
-    }
-
-    /**
-     * Send a message from an NPC (e.g. prapor) to the player with or without items
-     * @param playerId Players id to send message to
-     * @param sender The trader sending the message
-     * @param messageType What type the message will assume (e.g. QUEST_SUCCESS)
-     * @param messageLocaleId The localised text to send to player
-     * @param items Optional items to send to player
-     * @param maxStorageTimeSeconds Optional time to collect items before they expire
-     */
-    public sendLocalisedNpcMessageToPlayer(playerId: string, sender: Traders, messageType: MessageType, messageLocaleId: string, items: Item[] = [], maxStorageTimeSeconds = null, systemData = null): void
-    {
-        if (!sender)
-        {
-            this.logger.error(`Unable to send message type: ${messageType} to player: ${playerId}, provided trader enum was null`);
-
-            return;
-        }
-
-        const details: ISendMessageDetails = {
-            recipientId: playerId,
-            sender: messageType,
-            dialogType: MessageType.NPC_TRADER,
-            trader: sender,
-            templateId: messageLocaleId
-        };
-
-        // Add items to message
-        if (items.length > 0)
-        {
-            details.items = items;
-            details.itemsMaxStorageLifetimeSeconds = maxStorageTimeSeconds;
+            details.itemsMaxStorageLifetimeSeconds = maxStorageTimeSeconds ?? 172800; // 48 hours if no value supplied
         }
 
         if (systemData)
@@ -108,20 +74,71 @@ export class MailSendService
             details.systemData = systemData;
         }
 
+        if (ragfair)
+        {
+            details.ragfairDetails = ragfair;
+        }
+
+        this.sendMessageToPlayer(details);
+    }
+
+    /**
+     * Send a message from an NPC (e.g. prapor) to the player with or without items
+     * @param sessionId The session ID to send the message to
+     * @param trader The trader sending the message
+     * @param messageType What type the message will assume (e.g. QUEST_SUCCESS)
+     * @param messageLocaleId The localised text to send to player
+     * @param items Optional items to send to player
+     * @param maxStorageTimeSeconds Optional time to collect items before they expire
+     */
+    public sendLocalisedNpcMessageToPlayer(sessionId: string, trader: Traders, messageType: MessageType, messageLocaleId: string, items: Item[] = [], maxStorageTimeSeconds = null, systemData = null, ragfair = null): void
+    {
+        if (!trader)
+        {
+            this.logger.error(`Unable to send message type: ${messageType} to player: ${sessionId}, provided trader enum was null`);
+
+            return;
+        }
+
+        const details: ISendMessageDetails = {
+            recipientId: sessionId,
+            sender: messageType,
+            dialogType: MessageType.NPC_TRADER,
+            trader: trader,
+            templateId: messageLocaleId
+        };
+
+        // Add items to message
+        if (items?.length > 0)
+        {
+            details.items = items;
+            details.itemsMaxStorageLifetimeSeconds = maxStorageTimeSeconds ?? 172800; // 48 hours if no value supplied
+        }
+
+        if (systemData)
+        {
+            details.systemData = systemData;
+        }
+
+        if (ragfair)
+        {
+            details.ragfairDetails = ragfair;
+        }
+
         this.sendMessageToPlayer(details);
     }
 
     /**
      * Send a message from SYSTEM to the player with or without items
-     * @param playerId Players id to send message to
+     * @param sessionId The session ID to send the message to
      * @param message The text to send to player
      * @param items Optional items to send to player
      * @param maxStorageTimeSeconds Optional time to collect items before they expire
      */
-    public sendSystemMessageToPlayer(playerId: string, message: string, items: Item[] = [], maxStorageTimeSeconds = null): void
+    public sendSystemMessageToPlayer(sessionId: string, message: string, items: Item[] = [], maxStorageTimeSeconds = null): void
     {
         const details: ISendMessageDetails = {
-            recipientId: playerId,
+            recipientId: sessionId,
             sender: MessageType.SYSTEM_MESSAGE,
             messageText: message
         };
@@ -130,32 +147,32 @@ export class MailSendService
         if (items.length > 0)
         {
             details.items = items;
-            details.itemsMaxStorageLifetimeSeconds = maxStorageTimeSeconds;
+            details.itemsMaxStorageLifetimeSeconds = maxStorageTimeSeconds ?? 172800; // 48 hours if no value supplied
         }
 
         this.sendMessageToPlayer(details);
     }
 
     /**
-     * Send a message from SYSTEM to the player with or without items with loalised text
-     * @param playerId Players id to send message to
+     * Send a message from SYSTEM to the player with or without items with localised text
+     * @param sessionId The session ID to send the message to
      * @param messageLocaleId Id of key from locale file to send to player
      * @param items Optional items to send to player
      * @param maxStorageTimeSeconds Optional time to collect items before they expire
      */
-    public sendLocalisedSystemMessageToPlayer(playerId: string, messageLocaleId: string, items: Item[] = [], maxStorageTimeSeconds = null): void
+    public sendLocalisedSystemMessageToPlayer(sessionId: string, messageLocaleId: string, items: Item[] = [], maxStorageTimeSeconds = null): void
     {
         const details: ISendMessageDetails = {
-            recipientId: playerId,
+            recipientId: sessionId,
             sender: MessageType.SYSTEM_MESSAGE,
             templateId: messageLocaleId
         };
 
         // Add items to message
-        if (items.length > 0)
+        if (items?.length > 0)
         {
             details.items = items;
-            details.itemsMaxStorageLifetimeSeconds = maxStorageTimeSeconds;
+            details.itemsMaxStorageLifetimeSeconds = maxStorageTimeSeconds ?? 172800; // 48 hours if no value supplied
         }
 
         this.sendMessageToPlayer(details);
@@ -163,26 +180,26 @@ export class MailSendService
 
     /**
      * Send a USER message to a player with or without items
-     * @param playerId Players id to send message to
+     * @param sessionId The session ID to send the message to
      * @param senderId Who is sending the message
      * @param message The text to send to player
      * @param items Optional items to send to player
      * @param maxStorageTimeSeconds Optional time to collect items before they expire
      */
-    public sendUserMessageToPlayer(playerId: string, senderDetails: IUserDialogInfo, message: string, items: Item[] = [], maxStorageTimeSeconds = null): void
+    public sendUserMessageToPlayer(sessionId: string, senderDetails: IUserDialogInfo, message: string, items: Item[] = [], maxStorageTimeSeconds = null): void
     {
         const details: ISendMessageDetails = {
-            recipientId: playerId,
+            recipientId: sessionId,
             sender: MessageType.USER_MESSAGE,
             senderDetails: senderDetails,
             messageText: message
         };
 
         // Add items to message
-        if (items.length > 0)
+        if (items?.length > 0)
         {
             details.items = items;
-            details.itemsMaxStorageLifetimeSeconds = maxStorageTimeSeconds;
+            details.itemsMaxStorageLifetimeSeconds = maxStorageTimeSeconds ?? 172800; // 48 hours if no value supplied
         }
 
         this.sendMessageToPlayer(details);
@@ -190,7 +207,7 @@ export class MailSendService
 
     /**
      * Large function to send messages to players from a variety of sources (SYSTEM/NPC/USER)
-     * Helper functions in this class are availble to simplify common actions
+     * Helper functions in this class are available to simplify common actions
      * @param messageDetails Details needed to send a message to the player
      */
     public sendMessageToPlayer(messageDetails: ISendMessageDetails): void
@@ -222,7 +239,7 @@ export class MailSendService
 
         // TODO: clean up old code here
         // Offer Sold notifications are now separate from the main notification
-        if (senderDialog.type === MessageType.FLEAMARKET_MESSAGE && messageDetails.ragfairDetails)
+        if ([MessageType.NPC_TRADER, MessageType.FLEAMARKET_MESSAGE].includes(senderDialog.type) && messageDetails.ragfairDetails)
         {
             const offerSoldMessage = this.notifierHelper.createRagfairOfferSoldNotification(message, messageDetails.ragfairDetails);
             this.notificationSendHelper.sendMessage(messageDetails.recipientId, offerSoldMessage);
@@ -250,10 +267,9 @@ export class MailSendService
         }
 
         dialogWithNpc.messages.push({
-            _id: sessionId, // players id
+            _id: this.hashUtil.generate(),
             dt: this.timeUtil.getTimestamp(),
             hasRewards: false,
-            items: {},
             uid: playerProfile.characters.pmc._id,
             type: MessageType.USER_MESSAGE,
             rewardCollected: false,
@@ -327,18 +343,26 @@ export class MailSendService
         let itemsToSendToPlayer: MessageItems = {};
         if (messageDetails.items?.length > 0)
         {
-            // No parent id, generate random id and add (doesnt need to be actual parentId from db, only unique)
-            if (!messageDetails.items[0]?.parentId)
+            // Find base item that should be the 'primary' + have its parent id be used as the dialogs 'stash' value
+            const parentItem = this.getBaseItemFromRewards(messageDetails.items);
+            if (!parentItem)
             {
-                messageDetails.items[0].parentId = this.hashUtil.generate();
+                this.logger.error(`unable to find an item with slotId of: hideout for message to: ${messageDetails.trader} sender: ${messageDetails.sender}`);
+                return itemsToSendToPlayer;
+            }
+
+            // No parent id, generate random id and add (doesn't need to be actual parentId from db, only unique)
+            if (!parentItem?.parentId)
+            {
+                parentItem.parentId = this.hashUtil.generate();
             }
 
             itemsToSendToPlayer = {
-                stash: messageDetails.items[0].parentId,
+                stash: parentItem.parentId,
                 data: []
             };
             
-            // Ensure Ids are unique and cont collide with items in player invenory later
+            // Ensure Ids are unique and cont collide with items in player inventory later
             messageDetails.items = this.itemHelper.replaceIDs(null, messageDetails.items);
 
             for (const reward of messageDetails.items)
@@ -357,7 +381,7 @@ export class MailSendService
                 if (!("slotId" in reward) || reward.slotId === "hideout")
                 {
                     // Reward items NEED a parent id + slotid
-                    reward.parentId = messageDetails.items[0].parentId;
+                    reward.parentId = parentItem.parentId;
                     reward.slotId = "main";
                 }
 
@@ -365,7 +389,7 @@ export class MailSendService
                 itemsToSendToPlayer.data.push(reward);
 
                 // Item can contain sub-items, add those to array e.g. ammo boxes
-                if ("StackSlots" in itemTemplate._props)
+                if (itemTemplate._props.StackSlots)
                 {
                     const stackSlotItems = this.itemHelper.generateItemsFromStackSlot(itemTemplate, reward._id);
                     for (const itemToAdd of stackSlotItems)
@@ -386,6 +410,38 @@ export class MailSendService
     }
 
     /**
+     * Try to find the most correct item to be the 'primary' item in a reward mail
+     * @param items Possible items to choose from
+     * @returns Chosen 'primary' item
+     */
+    protected getBaseItemFromRewards(items: Item[]): Item
+    {
+        // Only one item in reward, return it
+        if (items?.length === 1)
+        {
+            return items[0];
+        }
+
+        // Find first item with slotId that indicates its a 'base' item
+        let item = items.find(x => ["hideout", "main"].includes(x.slotId));
+        if (item)
+        {
+            return item;
+        }
+
+        // Not a singlular item + no items have a hideout/main slotid
+        // Look for first item without parent id
+        item = items.find(x => !x.parentId);
+        if (item)
+        {
+            return item;
+        }
+
+        // Just return first item in array
+        return items[0];
+    }
+
+    /**
      * Get a dialog with a specified entity (user/trader)
      * Create and store empty dialog if none exists in profile
      * @param messageDetails Data on what message should do
@@ -400,7 +456,7 @@ export class MailSendService
         let senderDialog = dialogsInProfile[senderId];
         if (!senderDialog)
         {
-            // Create if doesnt
+            // Create if doesn't
             dialogsInProfile[senderId] = {
                 _id: senderId,
                 type: messageDetails.dialogType ? messageDetails.dialogType : messageDetails.sender,
@@ -430,7 +486,7 @@ export class MailSendService
 
         if (messageDetails.sender === MessageType.NPC_TRADER || messageDetails.dialogType === MessageType.NPC_TRADER)
         {
-            return Traders[messageDetails.trader];
+            return this.traderHelper.getValidTraderIdByEnumValue(messageDetails.trader);
         }
 
         if (messageDetails.sender === MessageType.USER_MESSAGE)
@@ -445,7 +501,7 @@ export class MailSendService
 
         if (messageDetails.trader)
         {
-            return Traders[messageDetails.trader];
+            return this.traderHelper.getValidTraderIdByEnumValue(messageDetails.trader);
         }
 
         this.logger.warning(`Unable to handle message of type: ${messageDetails.sender}`);

@@ -96,7 +96,7 @@ export class WeatherGenerator
         const rain = this.getWeightedRain();
 
         const result: IWeather = {
-            cloud: this.getRandomFloat("clouds"),
+            cloud: this.getWeightedClouds(),
             // eslint-disable-next-line @typescript-eslint/naming-convention
             wind_speed: this.getWeightedWindSpeed(),
             // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -140,6 +140,11 @@ export class WeatherGenerator
     protected getWeightedWindDirection(): WindDirection
     {
         return this.weightedRandomHelper.weightedRandom(this.weatherConfig.weather.windDirection.values, this.weatherConfig.weather.windDirection.weights).item;
+    }
+
+    protected getWeightedClouds(): number
+    {
+        return this.weightedRandomHelper.weightedRandom(this.weatherConfig.weather.clouds.values, this.weatherConfig.weather.clouds.weights).item;
     }
 
     protected getWeightedWindSpeed(): number

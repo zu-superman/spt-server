@@ -1,6 +1,7 @@
 import { inject, injectable } from "tsyringe";
 
 import { IPmcData } from "../models/eft/common/IPmcData";
+import { Item } from "../models/eft/common/tables/IItem";
 import { ProfileTraderTemplate } from "../models/eft/common/tables/IProfileTemplate";
 import { ITraderAssort, ITraderBase, LoyaltyLevel } from "../models/eft/common/tables/ITrader";
 import { ConfigTypes } from "../models/enums/ConfigTypes";
@@ -62,17 +63,50 @@ export class TraderHelper
         {
             // trader doesn't exist in profile
             this.resetTrader(sessionID, traderID);
-            this.lvlUp(traderID, sessionID);
+            this.lvlUp(traderID, pmcData);
         }
 
         return trader;
     }
 
-    public getTraderAssortsById(traderId: string): ITraderAssort
+    /**
+     * Get all assort data for a particular trader
+     * @param traderId Trader to get assorts for
+     * @returns ITraderAssort
+     */
+    public getTraderAssortsByTraderId(traderId: string): ITraderAssort
     {
         return traderId === Traders.FENCE
             ? this.fenceService.getRawFenceAssorts()
             : this.databaseServer.getTables().traders[traderId].assort;
+    }
+
+    /**
+     * Retrieve the Item from a traders assort data by its id
+     * @param traderId Trader to get assorts for
+     * @param assortId Id of assort to find
+     * @returns Item object
+     */
+    public getTraderAssortItemByAssortId(traderId: string, assortId: string): Item
+    {
+        const traderAssorts = this.getTraderAssortsByTraderId(traderId);
+        if (!traderAssorts)
+        {
+            this.logger.debug(`No assorts on trader: ${traderId} found`);
+
+            return null;
+        }
+
+        // Find specific assort in traders data
+        const purchasedAssort = traderAssorts.items.find(x => x._id === assortId);
+        if (!purchasedAssort)
+        {
+            this.logger.debug(`No assort ${assortId} on trader: ${traderId} found`);
+
+            return null;
+        }
+
+        return purchasedAssort;
     }
 
     /**
@@ -139,7 +173,7 @@ export class TraderHelper
         // Add standing to trader
         traderInfo.standing = this.addStandingValuesTogether(traderInfo.standing, standingToAdd);
 
-        this.lvlUp(traderId, sessionId);
+        this.lvlUp(traderId, pmcData);
     }
 
     /**
@@ -159,21 +193,20 @@ export class TraderHelper
 
     /**
      * Calculate traders level based on exp amount and increments level if over threshold
-     * @param traderID trader to process
-     * @param sessionID session id
+     * @param traderID trader to check standing of
+     * @param pmcData profile to update trader in
      */
-    public lvlUp(traderID: string, sessionID: string): void
+    public lvlUp(traderID: string, pmcData: IPmcData): void
     {
         const loyaltyLevels = this.databaseServer.getTables().traders[traderID].base.loyaltyLevels;
-        const pmcData = this.profileHelper.getPmcProfile(sessionID);
 
-        // level up player
+        // Level up player
         pmcData.Info.Level = this.playerService.calculateLevel(pmcData);
 
-        // level up traders
+        // Level up traders
         let targetLevel = 0;
 
-        // round standing to 2 decimal places to address floating point inaccuracies
+        // Round standing to 2 decimal places to address floating point inaccuracies
         pmcData.TradersInfo[traderID].standing = Math.round(pmcData.TradersInfo[traderID].standing * 100) / 100;
 
         for (const level in loyaltyLevels)
@@ -418,12 +451,48 @@ export class TraderHelper
     }
 
     /**
+     * Validates that the provided traderEnumValue exists in the Traders enum. If the value is valid, it returns the 
+     * same enum value, effectively serving as a trader ID; otherwise, it logs an error and returns an empty string. 
+     * This method provides a runtime check to prevent undefined behavior when using the enum as a dictionary key.
+     * 
+     * For example, instead of this:
+     * `const traderId = Traders[Traders.PRAPOR];`
+     * 
+     * You can use safely use this:
+     * `const traderId = this.traderHelper.getValidTraderIdByEnumValue(Traders.PRAPOR);`
+     * 
+     * @param traderEnumValue The trader enum value to validate
+     * @returns The validated trader enum value as a string, or an empty string if invalid
+     */
+    public getValidTraderIdByEnumValue(traderEnumValue: Traders): string
+    {
+        if (!this.traderEnumHasKey(traderEnumValue))
+        {
+            this.logger.error(`Unable to find trader value: ${traderEnumValue} in Traders enum`);
+
+            return "";
+        }
+        
+        return Traders[traderEnumValue];
+    }
+
+    /**
      * Does the 'Traders' enum has a value that matches the passed in parameter
-     * @param value Value to check for
+     * @param key Value to check for
      * @returns True, values exists in Traders enum as a value
      */
-    public traderEnumHasValue(value: string): boolean
+    public traderEnumHasKey(key: string): boolean
     {
-        return Object.values(Traders).some((x) => x === value);
+        return Object.keys(Traders).some((x) => x === key);
+    }
+
+    /**
+     * Accepts a trader id
+     * @param traderId Trader id
+     * @returns Ttrue if Traders enum has the param as a value
+     */
+    public traderEnumHasValue(traderId: string): boolean
+    {
+        return Object.values(Traders).some((x) => x === traderId);
     }
 }

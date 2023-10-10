@@ -1,7 +1,7 @@
 import { inject, injectable } from "tsyringe";
 
-import { MinMax } from "../models/common/MinMax";
 import { Inventory } from "../models/eft/common/tables/IBotBase";
+import { GenerationData } from "../models/eft/common/tables/IBotType";
 import { Item } from "../models/eft/common/tables/IItem";
 import { Grid, ITemplateItem } from "../models/eft/common/tables/ITemplateItem";
 import { BaseClasses } from "../models/enums/BaseClasses";
@@ -15,6 +15,7 @@ import { RandomUtil } from "../utils/RandomUtil";
 import { ContainerHelper } from "./ContainerHelper";
 import { InventoryHelper } from "./InventoryHelper";
 import { ItemHelper } from "./ItemHelper";
+import { WeightedRandomHelper } from "./WeightedRandomHelper";
 
 @injectable()
 export class BotWeaponGeneratorHelper
@@ -26,6 +27,7 @@ export class BotWeaponGeneratorHelper
         @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("InventoryHelper") protected inventoryHelper: InventoryHelper,
+        @inject("WeightedRandomHelper") protected weightedRandomHelper: WeightedRandomHelper,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("ContainerHelper") protected containerHelper: ContainerHelper
     )
@@ -33,11 +35,11 @@ export class BotWeaponGeneratorHelper
 
     /**
      * Get a randomized number of bullets for a specific magazine
-     * @param magCounts min and max count of magazines
+     * @param magCounts Weights of magazines
      * @param magTemplate magazine to generate bullet count for
      * @returns bullet count number
      */
-    public getRandomizedBulletCount(magCounts: MinMax, magTemplate: ITemplateItem): number
+    public getRandomizedBulletCount(magCounts: GenerationData, magTemplate: ITemplateItem): number
     {
         const randomizedMagazineCount = this.getRandomizedMagazineCount(magCounts);
         const parentItem = this.itemHelper.getItem(magTemplate._parent)[1];
@@ -67,10 +69,12 @@ export class BotWeaponGeneratorHelper
      * @param magCounts min and max value returned value can be between
      * @returns numerical value of magazine count
      */
-    public getRandomizedMagazineCount(magCounts: MinMax): number
+    public getRandomizedMagazineCount(magCounts: GenerationData): number
     {
-        const range = magCounts.max - magCounts.min;
-        return this.randomUtil.getBiasedRandomNumber(magCounts.min, magCounts.max, Math.round(range * 0.75), 4);
+        //const range = magCounts.max - magCounts.min;
+        //return this.randomUtil.getBiasedRandomNumber(magCounts.min, magCounts.max, Math.round(range * 0.75), 4);
+
+        return this.weightedRandomHelper.getWeightedValue(magCounts.weights);
     }
 
     /**
@@ -90,22 +94,16 @@ export class BotWeaponGeneratorHelper
      * @param magTemplate template object of magazine
      * @returns Item array
      */
-    public createMagazine(magazineTpl: string, ammoTpl: string, magTemplate: ITemplateItem): Item[]
+    public createMagazineWithAmmo(magazineTpl: string, ammoTpl: string, magTemplate: ITemplateItem): Item[]
     {
-        const magazineId = this.hashUtil.generate();
-        return [
-            {
-                "_id": magazineId,
-                "_tpl": magazineTpl
-            },
-            {
-                "_id": this.hashUtil.generate(),
-                "_tpl": ammoTpl,
-                "parentId": magazineId,
-                "slotId": "cartridges",
-                "upd": { "StackObjectsCount": magTemplate._props.Cartridges[0]._max_count }
-            }
-        ];
+        const magazine: Item[] = [{
+            _id: this.hashUtil.generate(),
+            _tpl: magazineTpl
+        }];
+
+        this.itemHelper.fillMagazineWithCartridge(magazine, magTemplate, ammoTpl, 1);
+
+        return magazine;
     }
 
     /**
@@ -125,12 +123,17 @@ export class BotWeaponGeneratorHelper
 
         for (const ammoItem of ammoItems)
         {
-            this.addItemWithChildrenToEquipmentSlot(
+            const result = this.addItemWithChildrenToEquipmentSlot(
                 equipmentSlotsToAddTo,
                 ammoItem._id,
                 ammoItem._tpl,
                 [ammoItem],
                 inventory);
+
+            if (result === ItemAddedResult.NO_SPACE)
+            {
+                this.logger.debug(`Unable to add ammo: ${ammoItem._tpl} to bot equipment`);
+            }
         }
     }
 
@@ -168,15 +171,15 @@ export class BotWeaponGeneratorHelper
             }
 
             // Get container details from db
-            const containerTemplate = this.databaseServer.getTables().templates.items[container._tpl];
-            if (!containerTemplate)
+            const containerTemplate = this.itemHelper.getItem(container._tpl);
+            if (!containerTemplate[0])
             {
                 this.logger.error(this.localisationService.getText("bot-missing_container_with_tpl", container._tpl));
 
                 continue;
             }
 
-            if (!containerTemplate._props.Grids?.length)
+            if (!containerTemplate[1]._props.Grids?.length)
             {
                 // Container has no slots to hold items
                 continue;
@@ -184,7 +187,7 @@ export class BotWeaponGeneratorHelper
 
             const itemSize = this.inventoryHelper.getItemSize(parentTpl, parentId, itemWithChildren);
 
-            for (const slotGrid of containerTemplate._props.Grids)
+            for (const slotGrid of containerTemplate[1]._props.Grids)
             {
                 // Grid is empty, skip
                 if (slotGrid._props.cellsH === 0 || slotGrid._props.cellsV === 0)

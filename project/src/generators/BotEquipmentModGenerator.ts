@@ -18,7 +18,6 @@ import { DatabaseServer } from "../servers/DatabaseServer";
 import { BotEquipmentFilterService } from "../services/BotEquipmentFilterService";
 import { BotEquipmentModPoolService } from "../services/BotEquipmentModPoolService";
 import { BotModLimits, BotWeaponModLimitService } from "../services/BotWeaponModLimitService";
-import { ItemBaseClassService } from "../services/ItemBaseClassService";
 import { ItemFilterService } from "../services/ItemFilterService";
 import { LocalisationService } from "../services/LocalisationService";
 import { HashUtil } from "../utils/HashUtil";
@@ -39,7 +38,6 @@ export class BotEquipmentModGenerator
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("BotEquipmentFilterService") protected botEquipmentFilterService: BotEquipmentFilterService,
-        @inject("ItemBaseClassService") protected itemBaseClassService: ItemBaseClassService,
         @inject("ItemFilterService") protected itemFilterService: ItemFilterService,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
         @inject("BotWeaponModLimitService") protected botWeaponModLimitService: BotWeaponModLimitService,
@@ -187,9 +185,8 @@ export class BotEquipmentModGenerator
         const botWeaponSightWhitelist = this.botEquipmentFilterService.getBotWeaponSightWhitelist(botEquipmentRole);
         const randomisationSettings = this.botHelper.getBotRandomizationDetails(botLevel, botEquipConfig);
 
-        const sortedModKeys = this.sortModKeys(Object.keys(compatibleModsPool));
-
         // Iterate over mod pool and choose mods to add to item
+        const sortedModKeys = this.sortModKeys(Object.keys(compatibleModsPool));
         for (const modSlot of sortedModKeys)
         {
             // Check weapon has slot for mod to fit in
@@ -233,7 +230,14 @@ export class BotEquipmentModGenerator
             if (this.modSlotCanHoldScope(modSlot, modToAddTemplate._parent))
             {
                 // mod_mount was picked to be added to weapon, force scope chance to ensure its filled
-                this.setScopeSpawnChancesToFull(modSpawnChances);
+                const scopeSlots = [
+                    "mod_scope",
+                    "mod_scope_000",
+                    "mod_scope_001",
+                    "mod_scope_002",
+                    "mod_scope_003"
+                ];
+                this.adjustSlotSpawnChances(modSpawnChances, scopeSlots, 100);
 
                 // Hydrate pool of mods that fit into mount as its a randomisable slot
                 if (isRandomisableSlot)
@@ -241,6 +245,18 @@ export class BotEquipmentModGenerator
                     // Add scope mods to modPool dictionary to ensure the mount has a scope in the pool to pick
                     this.addCompatibleModsForProvidedMod("mod_scope", modToAddTemplate, modPool, botEquipBlacklist);
                 }
+            }
+
+            // If picked item is muzzle adapter that can hold a child, adjust spawn chance
+            if (this.modSlotCanHoldMuzzleDevices(modSlot, modToAddTemplate._parent))
+            {
+                const muzzleSlots = [
+                    "mod_muzzle",
+                    "mod_muzzle_000",
+                    "mod_muzzle_001"
+                ];
+                // Make chance of muzzle devices 95%, nearly certain but not guaranteed
+                this.adjustSlotSpawnChances(modSpawnChances, muzzleSlots, 95);
             }
 
             // If front/rear sight are to be added, set opposite to 100% chance
@@ -319,10 +335,10 @@ export class BotEquipmentModGenerator
     }
 
     /**
-     * Set all scope mod chances to 100%
-     * @param modSpawnChances Chances objet to update
+     * Set mod spawn chances to defined amount
+     * @param modSpawnChances Chance dictionary to update
      */
-    protected setScopeSpawnChancesToFull(modSpawnChances: ModsChances): void
+    protected adjustSlotSpawnChances(modSpawnChances: ModsChances, modSlotsToAdjust: string[], newChancePercent: number): void
     {
         if (!modSpawnChances)
         {
@@ -331,19 +347,20 @@ export class BotEquipmentModGenerator
             return;
         }
 
-        const fullSpawnChancePercent = 100;
-        const scopeMods = [
-            "mod_scope",
-            "mod_scope_000",
-            "mod_scope_001",
-            "mod_scope_002",
-            "mod_scope_003"
-        ];
-
-        for (const modName of scopeMods)
+        if (!modSlotsToAdjust)
         {
-            modSpawnChances[modName] = fullSpawnChancePercent;
+            return;
         }
+
+        for (const modName of modSlotsToAdjust)
+        {
+            modSpawnChances[modName] = newChancePercent;
+        }
+    }
+
+    protected modSlotCanHoldMuzzleDevices(modSlot: string, modsParentId: string): boolean
+    {
+        return ["mod_muzzle", "mod_muzzle_000", "mod_muzzle_001"].includes(modSlot.toLowerCase());
     }
 
     protected sortModKeys(unsortedKeys: string[]): string[]
@@ -654,7 +671,7 @@ export class BotEquipmentModGenerator
         }
 
         // If mod id doesnt exist in slots filter list and mod id doesnt have any of the slots filters as a base class, mod isn't valid for the slot
-        if (!(itemSlot._props.filters[0].Filter.includes(modToAdd[1]._id) || this.itemBaseClassService.itemHasBaseClass(modToAdd[1]._id, itemSlot._props.filters[0].Filter)))
+        if (!(itemSlot._props.filters[0].Filter.includes(modToAdd[1]._id) || this.itemHelper.isOfBaseclasses(modToAdd[1]._id, itemSlot._props.filters[0].Filter)))
         {
             this.logger.warning(this.localisationService.getText("bot-mod_not_in_slot_filter_list", {modId: modToAdd[1]._id, modSlot: modSlot, parentName: parentTemplate._name}));
 
@@ -838,10 +855,12 @@ export class BotEquipmentModGenerator
 
     /**
      * Filter out non-whitelisted weapon scopes
+     * Controlled by bot.json weaponSightWhitelist
+     * e.g. filter out rifle scopes from SMGs
      * @param weapon Weapon scopes will be added to
      * @param scopes Full scope pool
-     * @param botWeaponSightWhitelist whitelist of scope types by weapon base type 
-     * @returns array of scope tpls that have been filtered
+     * @param botWeaponSightWhitelist Whitelist of scope types by weapon base type 
+     * @returns Array of scope tpls that have been filtered to just ones allowed for that weapon type
      */
     protected filterSightsByWeaponType(weapon: Item, scopes: string[], botWeaponSightWhitelist: Record<string, string[]>): string[]
     {
@@ -851,6 +870,8 @@ export class BotEquipmentModGenerator
         const whitelistedSightTypes = botWeaponSightWhitelist[weaponDetails[1]._parent];
         if (!whitelistedSightTypes)
         {
+            this.logger.debug(`Unable to find whitelist for weapon type: ${weaponDetails[1]._parent} ${weaponDetails[1]._name}, skipping sight filtering`);
+
             return scopes;
         }
 
@@ -861,27 +882,33 @@ export class BotEquipmentModGenerator
             // Mods is a scope, check base class is allowed
             if (this.itemHelper.isOfBaseclasses(item, whitelistedSightTypes))
             {
+                // Add mod to allowed list
                 filteredScopesAndMods.push(item);
                 continue;
             }
 
-            // Check item is mount, then check if it allows whitelisted mods
+            // Edge case, what if item is a mount for a scope and not directly a scope?
+            // Check item is mount + has child items
             const itemDetails = this.itemHelper.getItem(item)[1];
             if (this.itemHelper.isOfBaseclass(item, BaseClasses.MOUNT) && itemDetails._props.Slots.length > 0 )
             {
-                const scopeSlot = itemDetails._props.Slots.find(x => x._name.includes("mod_scope"));
-                if (scopeSlot?._props.filters[0].Filter.some(x => this.itemHelper.isOfBaseclasses(x, whitelistedSightTypes)))
+                // Check to see if mount has a scope slot (only include primary slot, ignore the rest like the backup sight slots)
+                // Should only find 1 as there's currently no items with a mod_scope AND a mod_scope_000
+                const scopeSlot = itemDetails._props.Slots.filter(x => ["mod_scope", "mod_scope_000"].includes(x._name));
+
+                // Mods scope slot found must allow ALL whitelisted scope types OR be a mount
+                if (scopeSlot?.every(x => x._props.filters[0].Filter.every(x => this.itemHelper.isOfBaseclasses(x, whitelistedSightTypes) || this.itemHelper.isOfBaseclass(x, BaseClasses.MOUNT))))
                 {
+                    // Add mod to allowed list
                     filteredScopesAndMods.push(item);
                 }
-                
             }
         }
 
-        // If no mods left after filtering has occured, send back the original mod list
+        // No mods added to return list after filtering has occured, send back the original mod list
         if (!filteredScopesAndMods || filteredScopesAndMods.length === 0)
         {
-            this.logger.debug(`Scope whitelist was too restrictive for: ${weapon._tpl} ${weaponDetails[1]._name}, skipping filter`);
+            this.logger.debug(`Scope whitelist too restrictive for: ${weapon._tpl} ${weaponDetails[1]._name}, skipping filter`);
 
             return scopes;
         }

@@ -10,13 +10,14 @@ import {
     Health as PmcHealth,
     Skills as botSkills
 } from "../models/eft/common/tables/IBotBase";
-import { Health, IBotType } from "../models/eft/common/tables/IBotType";
+import { Appearance, Health, IBotType } from "../models/eft/common/tables/IBotType";
 import { Item, Upd } from "../models/eft/common/tables/IItem";
 import { BaseClasses } from "../models/enums/BaseClasses";
 import { ConfigTypes } from "../models/enums/ConfigTypes";
 import { MemberCategory } from "../models/enums/MemberCategory";
 import { BotGenerationDetails } from "../models/spt/bots/BotGenerationDetails";
 import { IBotConfig } from "../models/spt/config/IBotConfig";
+import { IPmcConfig } from "../models/spt/config/IPmcConfig";
 import { ILogger } from "../models/spt/utils/ILogger";
 import { ConfigServer } from "../servers/ConfigServer";
 import { DatabaseServer } from "../servers/DatabaseServer";
@@ -34,6 +35,7 @@ import { BotLevelGenerator } from "./BotLevelGenerator";
 export class BotGenerator
 {
     protected botConfig: IBotConfig;
+    protected pmcConfig: IPmcConfig;
 
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
@@ -55,6 +57,7 @@ export class BotGenerator
     )
     {
         this.botConfig = this.configServer.getConfig(ConfigTypes.BOT);
+        this.pmcConfig = this.configServer.getConfig(ConfigTypes.PMC);
     }
 
     /**
@@ -144,7 +147,7 @@ export class BotGenerator
 
         if (!botGenerationDetails.isPlayerScav)
         {
-            this.botEquipmentFilterService.filterBotEquipment(botJsonTemplate, botLevel.level, botGenerationDetails);
+            this.botEquipmentFilterService.filterBotEquipment(sessionId, botJsonTemplate, botLevel.level, botGenerationDetails);
         }
 
         bot.Info.Nickname = this.generateBotNickname(botJsonTemplate, botGenerationDetails.isPlayerScav, botRole, sessionId);
@@ -168,16 +171,16 @@ export class BotGenerator
         bot.Info.Voice = this.randomUtil.getArrayValue(botJsonTemplate.appearance.voice);
         bot.Health = this.generateHealth(botJsonTemplate.health, bot.Info.Side === "Savage");
         bot.Skills = this.generateSkills(<any>botJsonTemplate.skills); // TODO: fix bad type, bot jsons store skills in dict, output needs to be array
-        bot.Customization.Head = this.randomUtil.getArrayValue(botJsonTemplate.appearance.head);
-        bot.Customization.Body = this.weightedRandomHelper.getWeightedInventoryItem(botJsonTemplate.appearance.body);
-        bot.Customization.Feet = this.weightedRandomHelper.getWeightedInventoryItem(botJsonTemplate.appearance.feet);
-        bot.Customization.Hands = this.randomUtil.getArrayValue(botJsonTemplate.appearance.hands);
+
+        this.setBotAppearance(bot, botJsonTemplate.appearance, botGenerationDetails);
+
         bot.Inventory = this.botInventoryGenerator.generateInventory(sessionId, botJsonTemplate, botRole, botGenerationDetails.isPmc, botLevel.level);
 
         if (this.botHelper.isBotPmc(botRole))
         {
             this.getRandomisedGameVersionAndCategory(bot.Info);
             bot = this.generateDogtag(bot);
+            bot.Info.IsStreamerModeAvailable = true; // Set to true so client patches can pick it up later - client sometimes alters botrole to assaultGroup
         }
 
         // generate new bot ID
@@ -187,6 +190,21 @@ export class BotGenerator
         bot = this.generateInventoryID(bot);
 
         return bot;
+    }
+
+    /**
+     * Choose various appearance settings for a bot using weights
+     * @param bot Bot to adjust
+     * @param appearance Appearance settings to choose from
+     * @param botGenerationDetails Generation details
+     */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    protected setBotAppearance(bot: IBotBase, appearance: Appearance, botGenerationDetails: BotGenerationDetails): void
+    {
+        bot.Customization.Head = this.randomUtil.getArrayValue(appearance.head);
+        bot.Customization.Body = this.weightedRandomHelper.getWeightedValue<string>(appearance.body);
+        bot.Customization.Feet = this.weightedRandomHelper.getWeightedValue<string>(appearance.feet);
+        bot.Customization.Hands = this.randomUtil.getArrayValue(appearance.hands);
     }
 
     /**
@@ -218,7 +236,6 @@ export class BotGenerator
             return `${name} (${this.randomUtil.getArrayValue(pmcNames)})`;
         }
 
-
         if (this.botConfig.showTypeInNickname && !isPlayerScav)
         {
             name += ` ${botRole}`;
@@ -227,7 +244,7 @@ export class BotGenerator
         // If bot name matches current players name, chance to add localised prefix to name
         if (name.toLowerCase() === playerProfile.Info.Nickname.toLowerCase())
         {
-            if (this.randomUtil.getChance100(this.botConfig.pmc.addPrefixToSameNamePMCAsPlayerChance))
+            if (this.randomUtil.getChance100(this.pmcConfig.addPrefixToSameNamePMCAsPlayerChance))
             {
 
                 const prefix = this.localisationService.getRandomTextThatMatchesPartialKey("pmc-name_prefix_");
@@ -388,7 +405,7 @@ export class BotGenerator
         const botId = this.hashUtil.generate();
 
         bot._id = botId;
-        bot.aid = botId;
+        bot.aid = this.hashUtil.generateAccountId();
 
         return bot;
     }
@@ -457,8 +474,8 @@ export class BotGenerator
             return;
         }
 
-        botInfo.GameVersion = this.weightedRandomHelper.getWeightedValue(this.botConfig.pmc.gameVersionWeight);
-        botInfo.MemberCategory = Number.parseInt(this.weightedRandomHelper.getWeightedValue(this.botConfig.pmc.accountTypeWeight));
+        botInfo.GameVersion = this.weightedRandomHelper.getWeightedValue(this.pmcConfig.gameVersionWeight);
+        botInfo.MemberCategory = Number.parseInt(this.weightedRandomHelper.getWeightedValue(this.pmcConfig.accountTypeWeight));
     }
 
     /**
@@ -471,7 +488,7 @@ export class BotGenerator
         const upd: Upd = {
             SpawnedInSession: true,
             Dogtag: {
-                AccountId: bot.aid,
+                AccountId: bot.sessionId,
                 ProfileId: bot._id,
                 Nickname: bot.Info.Nickname,
                 Side: bot.Info.Side,

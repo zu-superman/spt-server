@@ -1,11 +1,11 @@
-import { MinMax } from "../../models/common/MinMax";
 import { Inventory } from "../../models/eft/common/tables/IBotBase";
+import { GenerationData } from "../../models/eft/common/tables/IBotType";
 import { ITemplateItem } from "../../models/eft/common/tables/ITemplateItem";
 
 export class InventoryMagGen 
 {
     constructor(
-        private magCounts: MinMax,
+        private magCounts: GenerationData,
         private magazineTemplate: ITemplateItem,
         private weaponTemplate: ITemplateItem,
         private ammoTemplate: ITemplateItem,
@@ -14,7 +14,7 @@ export class InventoryMagGen
     {
     }
 
-    public getMagCount(): MinMax 
+    public getMagCount(): GenerationData 
     {
         return this.magCounts;
     }

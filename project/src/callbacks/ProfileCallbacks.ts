@@ -105,12 +105,12 @@ export class ProfileCallbacks
 
         if (output === "taken")
         {
-            return this.httpResponse.getBody(null, 255, "The nickname is already in use");
+            return this.httpResponse.getBody(null, 255, "225 - ");
         }
 
         if (output === "tooshort")
         {
-            return this.httpResponse.getBody(null, 256, "The nickname is too short");
+            return this.httpResponse.getBody(null, 256, "256 - ");
         }
 
         return this.httpResponse.getBody({ "status": "ok" });

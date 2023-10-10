@@ -7,6 +7,7 @@ import { HttpServerHelper } from "../helpers/HttpServerHelper";
 import { ProfileHelper } from "../helpers/ProfileHelper";
 import { PreAkiModLoader } from "../loaders/PreAkiModLoader";
 import { IEmptyRequestData } from "../models/eft/common/IEmptyRequestData";
+import { ILooseLoot } from "../models/eft/common/ILooseLoot";
 import { IPmcData } from "../models/eft/common/IPmcData";
 import { BodyPartHealth } from "../models/eft/common/tables/IBotBase";
 import { ICheckVersionResponse } from "../models/eft/game/ICheckVersionResponse";
@@ -15,12 +16,14 @@ import { IGameConfigResponse } from "../models/eft/game/IGameConfigResponse";
 import { IGameKeepAliveResponse } from "../models/eft/game/IGameKeepAliveResponse";
 import { IServerDetails } from "../models/eft/game/IServerDetails";
 import { IAkiProfile } from "../models/eft/profile/IAkiProfile";
+import { AccountTypes } from "../models/enums/AccountTypes";
 import { ConfigTypes } from "../models/enums/ConfigTypes";
 import { Traders } from "../models/enums/Traders";
-import { IBotConfig } from "../models/spt/config/IBotConfig";
 import { ICoreConfig } from "../models/spt/config/ICoreConfig";
 import { IHttpConfig } from "../models/spt/config/IHttpConfig";
 import { ILocationConfig } from "../models/spt/config/ILocationConfig";
+import { ILootConfig } from "../models/spt/config/ILootConfig";
+import { IPmcConfig } from "../models/spt/config/IPmcConfig";
 import { IRagfairConfig } from "../models/spt/config/IRagfairConfig";
 import { ILocationData } from "../models/spt/server/ILocations";
 import { ILogger } from "../models/spt/utils/ILogger";
@@ -33,7 +36,6 @@ import { LocalisationService } from "../services/LocalisationService";
 import { OpenZoneService } from "../services/OpenZoneService";
 import { ProfileFixerService } from "../services/ProfileFixerService";
 import { SeasonalEventService } from "../services/SeasonalEventService";
-import { EncodingUtil } from "../utils/EncodingUtil";
 import { JsonUtil } from "../utils/JsonUtil";
 import { RandomUtil } from "../utils/RandomUtil";
 import { TimeUtil } from "../utils/TimeUtil";
@@ -47,7 +49,8 @@ export class GameController
     protected coreConfig: ICoreConfig;
     protected locationConfig: ILocationConfig;
     protected ragfairConfig: IRagfairConfig;
-    protected botConfig: IBotConfig;
+    protected pmcConfig: IPmcConfig;
+    protected lootConfig: ILootConfig;
 
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
@@ -57,7 +60,6 @@ export class GameController
         @inject("PreAkiModLoader") protected preAkiModLoader: PreAkiModLoader,
         @inject("HttpServerHelper") protected httpServerHelper: HttpServerHelper,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
-        @inject("EncodingUtil") protected encodingUtil: EncodingUtil,
         @inject("HideoutHelper") protected hideoutHelper: HideoutHelper,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
         @inject("ProfileFixerService") protected profileFixerService: ProfileFixerService,
@@ -75,7 +77,17 @@ export class GameController
         this.coreConfig = this.configServer.getConfig(ConfigTypes.CORE);
         this.locationConfig = this.configServer.getConfig(ConfigTypes.LOCATION);
         this.ragfairConfig = this.configServer.getConfig(ConfigTypes.RAGFAIR);
-        this.botConfig = this.configServer.getConfig(ConfigTypes.BOT);
+        this.pmcConfig = this.configServer.getConfig(ConfigTypes.PMC);
+        this.lootConfig = this.configServer.getConfig(ConfigTypes.LOOT);
+    }
+
+    public load(): void
+    {
+        // Regenerate basecache now mods are loaded and game is starting
+        // Mods that add items and use the baseclass service generate the cache including their items, the next mod that add items gets left out,causing warnings
+        this.itemBaseClassService.hydrateItemBaseClassCache();
+
+        this.addCustomLooseLootPositions();
     }
 
     /**
@@ -85,10 +97,6 @@ export class GameController
     {
         // Store start time in app context
         this.applicationContext.addValue(ContextVariableType.CLIENT_START_TIMESTAMP, startTimeStampMS);
-
-        // Regenerate basecache now mods are loaded and game is starting
-        // Mods that add items and use the baseclass service generate the cache including their items, the next mod that add items gets left out,causing warnings
-        this.itemBaseClassService.hydrateItemBaseClassCache();
 
         if (this.coreConfig.fixes.fixShotgunDispersion)
         {
@@ -110,6 +118,8 @@ export class GameController
             this.adjustMapBotLimits();
         }
 
+        this.adjustLooseLootSpawnProbabilities();
+
         // repeatableQuests are stored by in profile.Quests due to the responses of the client (e.g. Quests in offraidData)
         // Since we don't want to clutter the Quests list, we need to remove all completed (failed / successful) repeatable quests.
         // We also have to remove the Counters from the repeatableQuests
@@ -123,6 +133,11 @@ export class GameController
             if (pmcProfile.Health)
             {
                 this.updateProfileHealthValues(pmcProfile);
+            }
+
+            if (fullProfile.info.edition.toLowerCase().startsWith(AccountTypes.SPT_DEVELOPER))
+            {
+                this.setHideoutAreasAndCraftsTo40Secs();
             }
 
             if (this.locationConfig.fixEmptyBotWavesSettings.enabled)
@@ -144,6 +159,18 @@ export class GameController
 
             this.profileFixerService.addMissingHideoutAreasToProfile(fullProfile);
 
+            if (pmcProfile.Inventory)
+            {
+                // MUST occur prior to `profileFixerService.checkForAndFixPmcProfileIssues()`
+                this.profileFixerService.fixIncorrectAidValue(fullProfile);
+
+                this.profileFixerService.migrateStatsToNewStructure(fullProfile);
+                
+                this.sendPraporGiftsToNewProfiles(pmcProfile);
+
+                this.profileFixerService.checkForOrphanedModdedItems(sessionID, fullProfile);
+            }
+
             this.profileFixerService.checkForAndFixPmcProfileIssues(pmcProfile);
 
             this.profileFixerService.addMissingAkiVersionTagToProfile(fullProfile);
@@ -154,13 +181,7 @@ export class GameController
                 this.profileFixerService.addMissingUpgradesPropertyToHideout(pmcProfile);
                 this.hideoutHelper.setHideoutImprovementsToCompleted(pmcProfile);
                 this.hideoutHelper.unlockHideoutWallInProfile(pmcProfile);
-            }
-
-            if (pmcProfile.Inventory)
-            {
-                this.sendPraporGiftsToNewProfiles(pmcProfile);
-
-                this.profileFixerService.checkForOrphanedModdedItems(sessionID, fullProfile);
+                this.profileFixerService.addMissingIdsToBonuses(pmcProfile);
             }
             
             this.logProfileDetails(fullProfile);
@@ -177,9 +198,9 @@ export class GameController
             {
                 this.addPlayerToPMCNames(pmcProfile);
 
-                if (this.randomUtil.getChance100(this.botConfig.pmc.allPMCsHavePlayerNameWithRandomPrefixChance))
+                if (this.randomUtil.getChance100(this.pmcConfig.allPMCsHavePlayerNameWithRandomPrefixChance))
                 {
-                    this.botConfig.pmc.addPrefixToSameNamePMCAsPlayerChance = 100;
+                    this.pmcConfig.addPrefixToSameNamePMCAsPlayerChance = 100;
                     if (pmcProfile?.Info?.Nickname)
                     {
                         this.databaseServer.getTables().bots.types.bear.firstName = [pmcProfile.Info.Nickname];
@@ -206,6 +227,101 @@ export class GameController
                 this.flagAllItemsInDbAsSellableOnFlea();
             }
         }
+    }
+
+    protected addCustomLooseLootPositions(): void
+    {
+        const looseLootPositionsToAdd = this.lootConfig.looseLoot;
+        for (const mapId in looseLootPositionsToAdd)
+        {
+            if (!mapId)
+            {
+                this.logger.warning(`Unable to add loot positions to map: ${mapId}, skipping`);
+                continue;
+            }
+            const mapLooseLoot: ILooseLoot = this.databaseServer.getTables().locations[mapId]?.looseLoot;
+            if (!mapLooseLoot)
+            {
+                this.logger.warning(`Map: ${mapId} has no loose loot data, skipping`);
+                continue;
+            }
+            const positionsToAdd = looseLootPositionsToAdd[mapId];
+            for (const positionToAdd of positionsToAdd)
+            {
+                // Exists already, add new items to existing positions pool
+                const existingLootPosition = mapLooseLoot.spawnpoints.find(x => x.template.Id === positionToAdd.template.Id);
+                if (existingLootPosition)
+                {
+                    existingLootPosition.template.Items.push(...positionToAdd.template.Items);
+                    existingLootPosition.itemDistribution.push(...positionToAdd.itemDistribution);
+
+                    continue;
+                }
+
+                // new postion, add entire object
+                mapLooseLoot.spawnpoints.push(positionToAdd);
+            }
+        }
+    }
+
+    protected adjustLooseLootSpawnProbabilities(): void
+    {
+        const adjustments = this.lootConfig.looseLootSpawnPointAdjustments;
+        for (const mapId in adjustments)
+        {
+            const mapLooseLootData: ILooseLoot = this.databaseServer.getTables().locations[mapId]?.looseLoot;
+            if (!mapLooseLootData)
+            {
+                this.logger.warning(`Unable to adjust loot positions on map: ${mapId}`);
+                continue;
+            }
+            const mapLootAdjustmentsDict = adjustments[mapId];
+            for (const lootKey in mapLootAdjustmentsDict)
+            {
+                const lootPostionToAdjust = mapLooseLootData.spawnpoints.find(x => x.template.Id === lootKey);
+                if (!lootPostionToAdjust)
+                {
+                    this.logger.warning(`Unable to adjust loot position: ${lootKey} on map: ${mapId}`);
+                    continue;
+                }
+
+                lootPostionToAdjust.probability = mapLootAdjustmentsDict[lootKey];
+            }
+        }
+    }
+    
+    protected setHideoutAreasAndCraftsTo40Secs(): void
+    {
+        for (const hideoutProd of this.databaseServer.getTables().hideout.production) 
+        {
+            if (hideoutProd.productionTime > 40) 
+            {
+                hideoutProd.productionTime = 40;
+            }
+        }
+        this.logger.warning("DEVELOPER: SETTING ALL HIDEOUT PRODUCTIONS TO 40 SECONDS");
+
+        for (const hideoutArea of this.databaseServer.getTables().hideout.areas) 
+        {
+            for (const stageKey in hideoutArea.stages) 
+            {
+                const stage = hideoutArea.stages[stageKey];
+                if (stage.constructionTime > 40) 
+                {
+                    stage.constructionTime = 40;
+                }
+            }
+        }
+        this.logger.warning("DEVELOPER: SETTING ALL HIDEOUT AREAS TO 40 SECOND UPGRADES");
+
+        for (const scavCaseCraft of this.databaseServer.getTables().hideout.scavcase) 
+        {
+            if (scavCaseCraft.ProductionTime > 40) 
+            {
+                scavCaseCraft.ProductionTime = 40;
+            }
+        }
+        this.logger.warning("DEVELOPER: SETTING ALL SCAV CASES TO 40 SECONDS");
     }
 
     /** Apply custom limits on bot types as defined in configs/location.json/botTypeLimits */
@@ -246,9 +362,7 @@ export class GameController
                         }
                     );
                 }
-                
             }
-            
         }
     }
 
@@ -265,7 +379,7 @@ export class GameController
             reportAvailable: false,
             twitchEventMember: false,
             lang: "en",
-            aid: sessionID,
+            aid: profile.aid,
             taxonomy: 6,
             activeProfileId: `pmc${sessionID}`,
             backend: {
@@ -275,9 +389,10 @@ export class GameController
                 Main: this.httpServerHelper.getBackendUrl(),
                 RagFair: this.httpServerHelper.getBackendUrl()
             },
+            useProtobuf: false,
             // eslint-disable-next-line @typescript-eslint/naming-convention
             utc_time: new Date().getTime() / 1000,
-            totalInGame: profile.Stats?.TotalInGameTime ?? 0
+            totalInGame: profile.Stats?.Eft?.TotalInGameTime ?? 0
         };
 
         return config;
@@ -398,9 +513,9 @@ export class GameController
             let hpRegenPerHour = 456.6;
 
             // Set new values, whatever is smallest
-            energyRegenPerHour += pmcProfile.Bonuses.filter(x => x.type === "EnergyRegeneration").reduce((sum, curr) => sum += curr.value, 0);
-            hydrationRegenPerHour += pmcProfile.Bonuses.filter(x => x.type === "HydrationRegeneration").reduce((sum, curr) => sum += curr.value, 0);
-            hpRegenPerHour += pmcProfile.Bonuses.filter(x => x.type === "HealthRegeneration").reduce((sum, curr) => sum += curr.value, 0);
+            energyRegenPerHour += pmcProfile.Bonuses.filter(x => x.type === "EnergyRegeneration").reduce((sum, curr) => sum + curr.value, 0);
+            hydrationRegenPerHour += pmcProfile.Bonuses.filter(x => x.type === "HydrationRegeneration").reduce((sum, curr) => sum + curr.value, 0);
+            hpRegenPerHour += pmcProfile.Bonuses.filter(x => x.type === "HealthRegeneration").reduce((sum, curr) => sum + curr.value, 0);
 
             if (pmcProfile.Health.Energy.Current !== pmcProfile.Health.Energy.Maximum)
             {
@@ -522,13 +637,13 @@ export class GameController
         // One day post-profile creation
         if (currentTimeStamp > (timeStampProfileCreated + oneDaySeconds))
         {
-            this.giftService.sendPraporStartingGift(pmcProfile.aid, 1);
+            this.giftService.sendPraporStartingGift(pmcProfile.sessionId, 1);
         }
 
         // Two day post-profile creation
         if (currentTimeStamp > (timeStampProfileCreated + (oneDaySeconds * 2)))
         {
-            this.giftService.sendPraporStartingGift(pmcProfile.aid, 2);
+            this.giftService.sendPraporStartingGift(pmcProfile.sessionId, 2);
         }
     }
 
@@ -648,7 +763,7 @@ export class GameController
             }
 
             // Merge started/success/fail quest assorts into one dictionary
-            const mergedQuestAssorts = Object.assign({}, traderData.questassort["started"], traderData.questassort["success"], traderData.questassort["fail"]);
+            const mergedQuestAssorts = { ...traderData.questassort["started"], ...traderData.questassort["success"], ...traderData.questassort["fail"]};
 
             // loop over all assorts for trader
             for (const [assortKey, questKey] of Object.entries(mergedQuestAssorts))
@@ -734,10 +849,5 @@ export class GameController
         this.logger.debug(`Server version: ${this.coreConfig.akiVersion}`);
         this.logger.debug(`Debug enabled: ${globalThis.G_DEBUG_CONFIGURATION}`);
         this.logger.debug(`Mods enabled: ${globalThis.G_MODS_ENABLED}`);
-        this.logger.debug(`OS: ${this.os.arch()} | ${this.os.version()} | ${process.platform}`);
-        this.logger.debug(`CPU: ${this.os?.cpus()[0]?.model}`);
-        this.logger.debug(`RAM: ${this.os.totalmem() / 1024 / 1024 / 1024}GB`);
-        this.logger.debug(`PATH: ${this.encodingUtil.toBase64(process.argv[0])}`);
-        this.logger.debug(`PATH: ${this.encodingUtil.toBase64(process.execPath)}`);
     }
 }

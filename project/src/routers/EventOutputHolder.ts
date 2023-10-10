@@ -2,7 +2,7 @@ import { inject, injectable } from "tsyringe";
 
 import { ProfileHelper } from "../helpers/ProfileHelper";
 import { IPmcData } from "../models/eft/common/IPmcData";
-import { IHideoutImprovement, Productive } from "../models/eft/common/tables/IBotBase";
+import { IHideoutImprovement, Productive, TraderData, TraderInfo } from "../models/eft/common/tables/IBotBase";
 import { ProfileChange } from "../models/eft/itemEvent/IItemEventRouterBase";
 import { IItemEventRouterResponse } from "../models/eft/itemEvent/IItemEventRouterResponse";
 import { JsonUtil } from "../utils/JsonUtil";
@@ -52,7 +52,8 @@ export class EventOutputHolder
             experience: pmcData.Info.Experience,
             quests: [],
             ragFairOffers: [],
-            builds: [],
+            weaponBuilds: [],
+            equipmentBuilds: [],
             items: {
                 new: [],
                 change: [],
@@ -61,12 +62,13 @@ export class EventOutputHolder
             production: {},
             improvements: {},
             skills: {
-                Common: {},
-                Mastering: {},
+                Common: [],
+                Mastering: [],
                 Points: 0
             },
             health: this.jsonUtil.clone(pmcData.Health),
             traderRelations: {},
+            //changedHideoutStashes: {},
             recipeUnlocked: {},
             questsStatus: []
         };
@@ -83,12 +85,37 @@ export class EventOutputHolder
 
         profileChanges.experience = pmcData.Info.Experience;
         profileChanges.health = this.jsonUtil.clone(pmcData.Health);
-        profileChanges.skills.Common = this.jsonUtil.clone(pmcData.Skills.Common);
+        profileChanges.skills.Common = this.jsonUtil.clone(pmcData.Skills.Common); // Always send skills for Item event route response
         profileChanges.skills.Mastering = this.jsonUtil.clone(pmcData.Skills.Mastering);
-        // Clone produtions to ensure we preseve the profile jsons data
+
+        // Clone productions to ensure we preseve the profile jsons data
         profileChanges.production = this.getProductionsFromProfileAndFlagComplete(this.jsonUtil.clone(pmcData.Hideout.Production));
         profileChanges.improvements = this.jsonUtil.clone(this.getImprovementsFromProfileAndFlagComplete(pmcData));
-        profileChanges.traderRelations = this.jsonUtil.clone(pmcData.TradersInfo);
+        profileChanges.traderRelations = this.constructTraderRelations(pmcData.TradersInfo);
+    }
+
+    /**
+     * Convert the internal trader data object into an object we can send to the client
+     * @param traderData server data for traders
+     * @returns dict of trader id + TraderData
+     */
+    protected constructTraderRelations(traderData: Record<string, TraderInfo>): Record<string, TraderData>
+    {
+        const result: Record<string, TraderData> = {};
+
+        for (const traderId in traderData)
+        {
+            const baseData = traderData[traderId];
+            result[traderId] = {
+                salesSum: baseData.salesSum,
+                disabled: baseData.disabled,
+                loyalty: baseData.loyaltyLevel,
+                standing: baseData.standing,
+                unlocked: baseData.unlocked
+            };
+        }
+
+        return result;
     }
     
     /**
@@ -98,9 +125,9 @@ export class EventOutputHolder
      */
     protected getImprovementsFromProfileAndFlagComplete(pmcData: IPmcData): Record<string, IHideoutImprovement>
     {
-        for (const improvementKey in pmcData.Hideout.Improvements)
+        for (const improvementKey in pmcData.Hideout.Improvement)
         {
-            const improvement = pmcData.Hideout.Improvements[improvementKey];
+            const improvement = pmcData.Hideout.Improvement[improvementKey];
 
             // Skip completed
             if (improvement.completed)
@@ -114,11 +141,11 @@ export class EventOutputHolder
             }
         }
 
-        return pmcData.Hideout.Improvements;
+        return pmcData.Hideout.Improvement;
     }
 
     /**
-     * Return  productions from player profile except those completed crafts the client has already seen
+     * Return productions from player profile except those completed crafts the client has already seen
      * @param pmcData Player profile
      * @returns dictionary of hideout productions
      */
@@ -133,7 +160,7 @@ export class EventOutputHolder
                 continue;
             }
 
-            // client already informed this session of craft, remove from data returned
+            // Client informed of craft, remove from data returned
             if (this.clientActiveSessionStorage[productionKey]?.clientInformed)
             {
                 delete productions[productionKey];
@@ -141,16 +168,10 @@ export class EventOutputHolder
                 continue;
             }
 
-            // Flag craft as client being informed of it
-            if (production.Progress >= production.ProductionTime && !this.clientActiveSessionStorage[productionKey]?.clientInformed)
+            // Flag started craft as having been seen by client
+            if (production.Progress > 0 && !this.clientActiveSessionStorage[productionKey]?.clientInformed)
             {
-                this.clientActiveSessionStorage[productionKey] = {clientInformed: true};
-            }
-
-            // Only return integer for progress, ignore the decimal progress gained when generator is off
-            if (production.Progress > 0)
-            {
-                Math.round(production.Progress);
+                this.clientActiveSessionStorage[productionKey] = { clientInformed: true };
             }
         }
 

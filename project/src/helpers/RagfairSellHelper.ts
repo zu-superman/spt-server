@@ -25,19 +25,22 @@ export class RagfairSellHelper
 
     /**
      * Get the percent chance to sell an item based on its average listed price vs player chosen listing price
-     * @param baseChancePercent Base chance to sell item
      * @param averageOfferPriceRub Price of average offer in roubles
      * @param playerListedPriceRub Price player listed item for in roubles
+     * @param qualityMultiplier Quality multipler of item being sold
      * @returns percent value
      */
-    public calculateSellChance(baseChancePercent: number, averageOfferPriceRub: number, playerListedPriceRub: number): number
+    public calculateSellChance(averageOfferPriceRub: number, playerListedPriceRub: number, qualityMultiplier: number): number
     {
+        const baseSellChancePercent = this.ragfairConfig.sell.chance.base * qualityMultiplier;
+
+        const listedPriceAboveAverage = playerListedPriceRub > averageOfferPriceRub;
         // Get sell chance multiplier
-        const multiplier = (playerListedPriceRub > averageOfferPriceRub)
+        const multiplier = (listedPriceAboveAverage)
             ? this.ragfairConfig.sell.chance.overpriced // Player price is over average listing price
             : this.getSellMultiplierWhenPlayerPriceIsBelowAverageListingPrice(averageOfferPriceRub, playerListedPriceRub);
 
-        return Math.round(baseChancePercent * (averageOfferPriceRub / playerListedPriceRub * multiplier));
+        return Math.round(baseSellChancePercent * (averageOfferPriceRub / playerListedPriceRub * multiplier));
     }
 
     /**
@@ -66,7 +69,7 @@ export class RagfairSellHelper
         // Get a time in future to stop simulating sell chances at
         const endTime = startTime + this.timeUtil.getHoursAsSeconds(this.ragfairConfig.sell.simulatedSellHours);
 
-        // TODO - what is going on here
+        // TODO - Write comment - what is going on here
         const chance = 100 - Math.min(Math.max(sellChancePercent, 0), 100);
 
         let sellTime = startTime;

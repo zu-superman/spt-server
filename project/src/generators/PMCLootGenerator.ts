@@ -3,7 +3,7 @@ import { inject, injectable } from "tsyringe";
 import { ItemHelper } from "../helpers/ItemHelper";
 import { ITemplateItem } from "../models/eft/common/tables/ITemplateItem";
 import { ConfigTypes } from "../models/enums/ConfigTypes";
-import { IBotConfig } from "../models/spt/config/IBotConfig";
+import { IPmcConfig } from "../models/spt/config/IPmcConfig";
 import { ConfigServer } from "../servers/ConfigServer";
 import { DatabaseServer } from "../servers/DatabaseServer";
 import { ItemFilterService } from "../services/ItemFilterService";
@@ -20,7 +20,7 @@ export class PMCLootGenerator
     protected pocketLootPool: string[] = [];
     protected vestLootPool: string[] = [];
     protected backpackLootPool: string[] = [];
-    protected botConfig: IBotConfig;
+    protected pmcConfig: IPmcConfig;
 
     constructor(
         @inject("ItemHelper") protected itemHelper: ItemHelper,
@@ -30,7 +30,7 @@ export class PMCLootGenerator
         @inject("SeasonalEventService") protected seasonalEventService: SeasonalEventService
     )
     {
-        this.botConfig = this.configServer.getConfig(ConfigTypes.BOT);
+        this.pmcConfig = this.configServer.getConfig(ConfigTypes.PMC);
     }
 
     /**
@@ -44,8 +44,8 @@ export class PMCLootGenerator
         {
             const items = this.databaseServer.getTables().templates.items;
 
-            const allowedItemTypes = this.botConfig.pmc.pocketLoot.whitelist;
-            const pmcItemBlacklist = this.botConfig.pmc.pocketLoot.blacklist;
+            const allowedItemTypes = this.pmcConfig.pocketLoot.whitelist;
+            const pmcItemBlacklist = this.pmcConfig.pocketLoot.blacklist;
             const itemBlacklist = this.itemFilterService.getBlacklistedItems();
     
             // Blacklist seasonal items if not inside seasonal event
@@ -80,8 +80,8 @@ export class PMCLootGenerator
         {
             const items = this.databaseServer.getTables().templates.items;
 
-            const allowedItemTypes = this.botConfig.pmc.vestLoot.whitelist;
-            const pmcItemBlacklist = this.botConfig.pmc.vestLoot.blacklist;
+            const allowedItemTypes = this.pmcConfig.vestLoot.whitelist;
+            const pmcItemBlacklist = this.pmcConfig.vestLoot.blacklist;
             const itemBlacklist = this.itemFilterService.getBlacklistedItems();
     
             // Blacklist seasonal items if not inside seasonal event
@@ -96,7 +96,7 @@ export class PMCLootGenerator
                                                             && this.itemHelper.isValidItem(item._id)
                                                             && !pmcItemBlacklist.includes(item._id)
                                                             && !itemBlacklist.includes(item._id)
-                                                            && this.itemFitsInto1By2Slot(item));
+                                                            && this.itemFitsInto2By2Slot(item));
 
             this.vestLootPool = itemsToAdd.map(x => x._id);
         }
@@ -105,23 +105,14 @@ export class PMCLootGenerator
     }
 
     /**
-     * Check if item has a width/height that lets it fit into a 1x2/2x1 slot
-     * 1x1 / 1x2 / 2x1
+     * Check if item has a width/height that lets it fit into a 2x2 slot
+     * 1x1 / 1x2 / 2x1 / 2x2
      * @param item Item to check size of
      * @returns true if it fits
      */
-    protected itemFitsInto1By2Slot(item: ITemplateItem): boolean
+    protected itemFitsInto2By2Slot(item: ITemplateItem): boolean
     {
-        switch (`{${item._props.Width}x${item._props.Height}}`)
-        {
-            case "1x1":
-            case "1x2":
-            case "2x1":
-                return true;
-
-            default:
-                return false;
-        }
+        return item._props.Width <= 2 && item._props.Height <= 2;
     }
 
     /**
@@ -135,8 +126,8 @@ export class PMCLootGenerator
         {
             const items = this.databaseServer.getTables().templates.items;
 
-            const allowedItemTypes = this.botConfig.pmc.backpackLoot.whitelist;
-            const pmcItemBlacklist = this.botConfig.pmc.backpackLoot.blacklist;
+            const allowedItemTypes = this.pmcConfig.backpackLoot.whitelist;
+            const pmcItemBlacklist = this.pmcConfig.backpackLoot.blacklist;
             const itemBlacklist = this.itemFilterService.getBlacklistedItems();
     
             // blacklist event items if not inside seasonal event

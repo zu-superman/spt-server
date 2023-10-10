@@ -233,7 +233,7 @@ export class RagfairOfferService
     {
         const pmcID = String(offer.user.id);
         const profile = this.profileHelper.getProfileByPmcId(pmcID);
-        const sessionID = profile.aid;
+        const sessionID = profile.sessionId;
         const offerIndex = profile.RagfairInfo.offers.findIndex(o => o._id === offer._id);
 
         profile.RagfairInfo.rating -= this.ragfairConfig.sell.reputation.loss;
@@ -251,7 +251,7 @@ export class RagfairOfferService
         }
         delete offer.items[0].upd.OriginalStackObjectsCount;
 
-        this.ragfairServerHelper.returnItems(profile.aid, offer.items);
+        this.ragfairServerHelper.returnItems(profile.sessionId, offer.items);
         profile.RagfairInfo.offers.splice(offerIndex, 1);
 
         return this.eventOutputHolder.getOutput(sessionID);

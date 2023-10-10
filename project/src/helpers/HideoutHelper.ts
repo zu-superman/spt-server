@@ -88,23 +88,27 @@ export class HideoutHelper
         {
             pmcData.Hideout.Production = {};
         }
-        pmcData.Hideout.Production[body.recipeId] = this.initProduction(body.recipeId, modifiedProductionTime);
+        pmcData.Hideout.Production[body.recipeId] = this.initProduction(body.recipeId, modifiedProductionTime, recipe.needFuelForAllProductionTime);
     }
 
     /**
      * This convenience function initializes new Production Object
      * with all the constants.
      */
-    public initProduction(recipeId: string, productionTime: number): Production
+    public initProduction(recipeId: string, productionTime: number, needFuelForAllProductionTime: boolean): Production
     {
         return {
             Progress: 0,
             inProgress: true,
             RecipeId: recipeId,
-            Products: [],
-            SkipTime: 0,
+            StartTimestamp: this.timeUtil.getTimestamp(),
             ProductionTime: productionTime,
-            StartTimestamp: this.timeUtil.getTimestamp()
+            Products: [],
+            GivenItemsInStart: [],
+            Interrupted: false,
+            NeedFuelForAllProductionTime: needFuelForAllProductionTime, // Used when sending to client
+            needFuelForAllProductionTime: needFuelForAllProductionTime, // used when stored in production.json
+            SkipTime: 0
         };
     }
 
@@ -287,11 +291,11 @@ export class HideoutHelper
         }
 
         // Get seconds since last hideout update + now
-        const timeElapsed = this.getTimeElapsedSinceLastServerTick(pmcData, hideoutProperties.isGeneratorOn);
+        const timeElapsed = this.getTimeElapsedSinceLastServerTick(pmcData, hideoutProperties.isGeneratorOn, recipe);
 
         // Increment progress by time passed
         const production = pmcData.Hideout.Production[prodId];
-        production.Progress += timeElapsed;
+        production.Progress += production.needFuelForAllProductionTime ? 0 : timeElapsed; // Some items NEED power to craft (e.g. DSP)
 
         // Limit progress to total production time if progress is over (dont run for continious crafts))
         if (!recipe.continuous)
@@ -410,7 +414,7 @@ export class HideoutHelper
                 {
                     generatorArea.slots[i].item[0].upd = this.getAreaUpdObject(1, resourceValue, pointsConsumed);
 
-                    this.logger.debug(`Generator: ${resourceValue} fuel left in slot ${i + 1}`);
+                    this.logger.debug(`${pmcData._id} Generator: ${resourceValue} fuel left in slot ${i + 1}`);
                     hasFuelRemaining = true;
 
                     break; // Break here to avoid updating all the fuel tanks
@@ -471,14 +475,10 @@ export class HideoutHelper
     protected updateWaterFilters(waterFilterArea: HideoutArea, production: Production, isGeneratorOn: boolean, pmcData: IPmcData): HideoutArea
     {
         let filterDrainRate = this.getWaterFilterDrainRate(pmcData);
-        const productionTime = this.getProductionTimeSeconds(HideoutHelper.waterCollector);
+        const productionTime = this.getTotalProductionTimeSeconds(HideoutHelper.waterCollector);
+        const secondsSinceServerTick = this.getTimeElapsedSinceLastServerTick(pmcData, isGeneratorOn);
         
-        const timeElapsed = this.getTimeElapsedSinceLastServerTick(pmcData, isGeneratorOn);
-        
-        // Adjust filter drain rate based on elapsed time, handle edge case when craft time has gone on longer than total production time
-        filterDrainRate *= timeElapsed > productionTime
-            ? (productionTime - production.Progress)
-            : timeElapsed;
+        filterDrainRate = this.adjustWaterFilterDrainRate(secondsSinceServerTick, productionTime, production.Progress, filterDrainRate);
         
         // Production hasn't completed
         let pointsConsumed = 0;
@@ -491,11 +491,13 @@ export class HideoutHelper
                 // Has a water filter installed into slot
                 if (waterFilterArea.slots[i].item)
                 {
+                    // How many units of filter are left
                     let resourceValue = (waterFilterArea.slots[i].item[0].upd?.Resource)
                         ? waterFilterArea.slots[i].item[0].upd.Resource.Value
                         : null;
                     if (!resourceValue)
                     {
+                        // None left
                         resourceValue = 100 - filterDrainRate;
                         pointsConsumed = filterDrainRate;
                     }
@@ -504,22 +506,24 @@ export class HideoutHelper
                         pointsConsumed = (waterFilterArea.slots[i].item[0].upd.Resource.UnitsConsumed || 0) + filterDrainRate;
                         resourceValue -= filterDrainRate;
                     }
+
+                    // Round to get values to 3dp
                     resourceValue = Math.round(resourceValue * 10000) / 10000;
                     pointsConsumed = Math.round(pointsConsumed * 10000) / 10000;
 
-                    //check unit consumed for increment skill point
+                    // Check amount of units consumed for possible increment of hideout mgmt skill point
                     if (pmcData && Math.floor(pointsConsumed / 10) >= 1)
                     {
                         this.playerService.incrementSkillLevel(pmcData, SkillTypes.HIDEOUT_MANAGEMENT, 1);
                         pointsConsumed -= 10;
                     }
 
-                    // Filter has some juice left in it
+                    // Filter has some juice left in it after we adjusted it
                     if (resourceValue > 0)
                     {
                         // Set filter consumed amount
                         waterFilterArea.slots[i].item[0].upd = this.getAreaUpdObject(1, resourceValue, pointsConsumed);
-                        this.logger.debug(`Water filter: ${resourceValue} filter left on slot ${i + 1}`);
+                        this.logger.debug(`Water filter has: ${resourceValue} units left in slot ${i + 1}`);
 
                         break; // Break here to avoid updating all filters
                     }
@@ -533,6 +537,27 @@ export class HideoutHelper
         }
 
         return waterFilterArea;
+    }
+
+    /**
+     * Get an adjusted water filter drain rate based on time elapsed since last run, 
+     * handle edge case when craft time has gone on longer than total production time
+     * @param secondsSinceServerTick Time passed
+     * @param totalProductionTime Total time collecting water
+     * @param productionProgress how far water collector has progressed 
+     * @param baseFilterDrainRate Base drain rate 
+     * @returns 
+     */
+    protected adjustWaterFilterDrainRate(secondsSinceServerTick: number, totalProductionTime: number, productionProgress: number, baseFilterDrainRate: number): number
+    {
+        const drainRateMultiplier = secondsSinceServerTick > totalProductionTime
+            ? (totalProductionTime - productionProgress) // more time passed than prod time, get total minus the current progress
+            : secondsSinceServerTick;
+
+        // Multiply drain rate by calculated multiplier
+        baseFilterDrainRate *= drainRateMultiplier;
+
+        return baseFilterDrainRate;
     }
 
     /**
@@ -554,7 +579,7 @@ export class HideoutHelper
      * @param prodId Id, e.g. Water collector id
      * @returns seconds to produce item
      */
-    protected getProductionTimeSeconds(prodId: string): number
+    protected getTotalProductionTimeSeconds(prodId: string): number
     {
         const recipe = this.databaseServer.getTables().hideout.production.find(prod => prod._id === prodId);
 
@@ -742,12 +767,19 @@ export class HideoutHelper
      * Get number of ticks that have passed since hideout areas were last processed, reduced when generator is off
      * @param pmcData Player profile
      * @param isGeneratorOn Is the generator on for the duration of elapsed time
+     * @param recipe Hideout production recipe being crafted we need the ticks for
      * @returns Amount of time elapsed in seconds
      */
-    protected getTimeElapsedSinceLastServerTick(pmcData: IPmcData, isGeneratorOn: boolean): number
+    protected getTimeElapsedSinceLastServerTick(pmcData: IPmcData, isGeneratorOn: boolean, recipe: IHideoutProduction = null): number
     {
         // Reduce time elapsed (and progress) when generator is off
         let timeElapsed = this.timeUtil.getTimestamp() - pmcData.Hideout.sptUpdateLastRunTimestamp;
+
+        if (recipe?.areaType === HideoutAreas.LAVATORY) // Lavatory works at 100% when power is on / off
+        {
+            return timeElapsed;
+        }
+
         if (!isGeneratorOn)
         {
             timeElapsed *= this.databaseServer.getTables().hideout.settings.generatorSpeedWithoutFuel;
@@ -799,6 +831,12 @@ export class HideoutHelper
         return pmcData.Skills.Common.find(x => x.Id === SkillTypes.HIDEOUT_MANAGEMENT);
     }
 
+    /**
+     * HideoutManagement skill gives a consumption bonus the higher the level
+     * 0.5% per level per 1-51, (25.5% at max)
+     * @param pmcData Profile to get hideout consumption level level from
+     * @returns consumption bonus
+     */
     protected getHideoutManagementConsumptionBonus(pmcData: IPmcData): number
     {
         const hideoutManagementSkill = this.getHideoutManagementSkill(pmcData);
@@ -806,11 +844,14 @@ export class HideoutHelper
         {
             return 0;
         }
-        let roundedLevel = Math.floor(hideoutManagementSkill.Progress / 100);
+
         // If the level is 51 we need to round it at 50 so on elite you dont get 25.5%
         // at level 1 you already get 0.5%, so it goes up until level 50. For some reason the wiki
         // says that it caps at level 51 with 25% but as per dump data that is incorrect apparently
-        roundedLevel = (roundedLevel === 51) ? roundedLevel - 1 : roundedLevel;
+        let roundedLevel = Math.floor(hideoutManagementSkill.Progress / 100);
+        roundedLevel = (roundedLevel === 51)
+            ? roundedLevel - 1
+            : roundedLevel;
 
         return (roundedLevel * this.databaseServer.getTables().globals.config.SkillsSettings.HideoutManagement.ConsumptionReductionPerLevel) / 100;
     }
@@ -900,65 +941,25 @@ export class HideoutHelper
     }
 
     /**
-     * Upgrade hideout wall from starting level to interactable level if enough time has passed
+     * Upgrade hideout wall from starting level to interactable level if necessary stations have been upgraded
      * @param pmcProfile Profile to upgrade wall in
      */
     public unlockHideoutWallInProfile(pmcProfile: IPmcData): void
     {
-        // Sufficient time has passed since account created, upgrade wall to next level to be interactable
-        const wallUnlockTimestamp = this.hideoutConfig.hideoutWallAppearTimeSeconds + pmcProfile.Info.RegistrationDate;
-        if (wallUnlockTimestamp < this.timeUtil.getTimestamp())
+        const waterCollector = pmcProfile.Hideout.Areas.find(x => x.type === HideoutAreas.WATER_COLLECTOR);
+        const medStation = pmcProfile.Hideout.Areas.find(x => x.type === HideoutAreas.MEDSTATION);
+        const wall = pmcProfile.Hideout.Areas.find(x => x.type === HideoutAreas.EMERGENCY_WALL);
+
+        // No collector or med station, skip
+        if (!(waterCollector && medStation))
         {
-            // Get wall area
-            const wall = pmcProfile.Hideout.Areas.find(x => x.type === HideoutAreas.EMERGENCY_WALL);
-            if (!wall)
-            {
-                return;
-            }
+            return;
+        }
 
-            if (wall.level === 0)
-            {
-                wall.level++;
-                wall.constructing = true;
-
-                return;
-            }
-
-            if (wall.level === 1)
-            {
-                if (this.hideoutImprovementIsComplete(pmcProfile.Hideout.Improvements["639199277a9178252d38c98f"]))
-                {
-                    this.logger.debug("Improvement 639199277a9178252d38c98f found, upgrading hideout wall from level: 1 to 3");
-                    wall.level = 3;
-                    wall.constructing = false;
-                    // 0 = no wall | Idle State
-                    // 1 - EATS EVERYTHING without areas.json change to include improvements
-                    // 2 - Should be Moppable wall / Interactable wall While Constructing = true Sledgehammer is Smashable 
-                    // 2 - While false UI is broken. While true mimics level 3 hideout
-                    // 3 - Smashable wall / Sledgehammer
-                    // 4 - Installable door
-                }
-                
-                return;
-            }
-
-            // Workaround for old profiles that have the wall at level 2
-            if (wall.level === 2)
-            {
-                this.logger.debug("Old wall level 2 found, fixing");
-                if (this.hideoutImprovementIsComplete(pmcProfile.Hideout.Improvements["639199277a9178252d38c98f"]))
-                {
-                    this.logger.debug("Wall level adjusted to 3");
-                    wall.level++;
-                }
-                else
-                {
-                    this.logger.debug("Wall level adjusted to 1");
-                    wall.level--;
-                }
-            }
-
-
+        // If medstation > level 1 AND water collector > level 1 AND wall is level 0
+        if (waterCollector?.level >= 1 && medStation?.level >= 1 && wall?.level <= 0)
+        {
+            wall.level = 3;
         }
     }
 
@@ -980,9 +981,9 @@ export class HideoutHelper
      */
     public setHideoutImprovementsToCompleted(pmcProfile: IPmcData): void
     {
-        for (const improvementId in pmcProfile.Hideout.Improvements)
+        for (const improvementId in pmcProfile.Hideout.Improvement)
         {
-            const improvementDetails = pmcProfile.Hideout.Improvements[improvementId];
+            const improvementDetails = pmcProfile.Hideout.Improvement[improvementId];
             if (improvementDetails.completed === false && improvementDetails.improveCompleteTimestamp < this.timeUtil.getTimestamp())
             {
                 improvementDetails.completed = true;

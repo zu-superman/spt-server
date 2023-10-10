@@ -1,7 +1,7 @@
 import { inject, injectable } from "tsyringe";
 
 import { IPmcData } from "../models/eft/common/IPmcData";
-import { Quest } from "../models/eft/common/tables/IBotBase";
+import { IQuestStatus } from "../models/eft/common/tables/IBotBase";
 import { Item } from "../models/eft/common/tables/IItem";
 import {
     AvailableForConditions, AvailableForProps, IQuest, Reward
@@ -10,7 +10,6 @@ import { IItemEventRouterResponse } from "../models/eft/itemEvent/IItemEventRout
 import { IAcceptQuestRequestData } from "../models/eft/quests/IAcceptQuestRequestData";
 import { IFailQuestRequestData } from "../models/eft/quests/IFailQuestRequestData";
 import { ConfigTypes } from "../models/enums/ConfigTypes";
-import { HideoutAreas } from "../models/enums/HideoutAreas";
 import { MessageType } from "../models/enums/MessageType";
 import { QuestRewardType } from "../models/enums/QuestRewardType";
 import { QuestStatus } from "../models/enums/QuestStatus";
@@ -29,6 +28,7 @@ import { DialogueHelper } from "./DialogueHelper";
 import { ItemHelper } from "./ItemHelper";
 import { PaymentHelper } from "./PaymentHelper";
 import { ProfileHelper } from "./ProfileHelper";
+import { QuestConditionHelper } from "./QuestConditionHelper";
 import { RagfairServerHelper } from "./RagfairServerHelper";
 import { TraderHelper } from "./TraderHelper";
 
@@ -43,6 +43,7 @@ export class QuestHelper
         @inject("TimeUtil") protected timeUtil: TimeUtil,
         @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
+        @inject("QuestConditionHelper") protected questConditionHelper: QuestConditionHelper,
         @inject("EventOutputHolder") protected eventOutputHolder: EventOutputHolder,
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("LocaleService") protected localeService: LocaleService,
@@ -176,28 +177,55 @@ export class QuestHelper
      * @param profile Player profile
      * @returns true if loyalty is high enough to fulfill quest requirement
      */
+    public traderLoyaltyLevelRequirementCheck(questProperties: AvailableForProps, profile: IPmcData): boolean
+    {
+        const requiredLoyaltyLevel = Number(questProperties.value);
+        const trader = profile.TradersInfo[<string>questProperties.target];
+        if (!trader)
+        {
+            this.logger.error(`Unable to find trader: ${questProperties.target} in profile`);
+        }
+
+        return this.compareAvailableForValues(trader.loyaltyLevel, requiredLoyaltyLevel, questProperties.compareMethod);
+    }
+
+    /**
+     * Check if trader has sufficient standing to fulfill quest requirement
+     * @param questProperties Quest props
+     * @param profile Player profile
+     * @returns true if standing is high enough to fulfill quest requirement
+     */
     public traderStandingRequirementCheck(questProperties: AvailableForProps, profile: IPmcData): boolean
     {
-        const requiredLoyaltyStanding = Number(questProperties.value);
-        const currentTraderStanding = profile.TradersInfo[<string>questProperties.target].loyaltyLevel; // Cast target as string as 'traderLoyalty' target prop is always string
+        const requiredStanding = Number(questProperties.value);
+        const trader = profile.TradersInfo[<string>questProperties.target];
+        if (!trader)
+        {
+            this.logger.error(`Unable to find trader: ${questProperties.target} in profile`);
+        }
 
-        switch (questProperties.compareMethod)
+        return this.compareAvailableForValues(trader.standing, requiredStanding, questProperties.compareMethod);
+    }
+
+    protected compareAvailableForValues(current: number, required: number, compareMethod: string): boolean
+    {
+        switch (compareMethod)
         {
             case ">=":
-                return currentTraderStanding >= requiredLoyaltyStanding;
+                return current >= required;
             case ">":
-                return currentTraderStanding > requiredLoyaltyStanding;
+                return current > required;
             case "<=":
-                return currentTraderStanding <= requiredLoyaltyStanding;
+                return current <= required;
             case "<":
-                return currentTraderStanding < requiredLoyaltyStanding;
+                return current < required;
             case "!=":
-                return currentTraderStanding !== requiredLoyaltyStanding;
+                return current !== required;
             case "==":
-                return currentTraderStanding === requiredLoyaltyStanding;
+                return current === required;
         
             default:
-                this.logger.error(this.localisationService.getText("quest-compare_operator_unhandled", questProperties.compareMethod));
+                this.logger.error(this.localisationService.getText("quest-compare_operator_unhandled", compareMethod));
 
                 return false;
         }
@@ -289,7 +317,7 @@ export class QuestHelper
      * @param newState State the new quest should be in when returned
      * @param acceptedQuest Details of accepted quest from client
      */
-    public getQuestReadyForProfile(pmcData: IPmcData, newState: QuestStatus, acceptedQuest: IAcceptQuestRequestData): Quest
+    public getQuestReadyForProfile(pmcData: IPmcData, newState: QuestStatus, acceptedQuest: IAcceptQuestRequestData): IQuestStatus
     {
         const existingQuest = pmcData.Quests.find(q => q.qid === acceptedQuest.qid);
         if (existingQuest)
@@ -298,12 +326,13 @@ export class QuestHelper
             existingQuest.startTime = this.timeUtil.getTimestamp();
             existingQuest.status = newState;
             existingQuest.statusTimers[newState] = this.timeUtil.getTimestamp();
+            existingQuest.completedConditions = [];
 
             return existingQuest;
         }
 
         // Quest doesn't exists, add it
-        const newQuest: Quest = {
+        const newQuest: IQuestStatus = {
             qid: acceptedQuest.qid,
             startTime: this.timeUtil.getTimestamp(),
             status: newState,
@@ -335,11 +364,11 @@ export class QuestHelper
      * @param sessionID Session id
      * @returns Quests accessible to player incuding newly unlocked quests now quest (startedQuestId) was started
      */
-    public acceptedUnlocked(startedQuestId: string, sessionID: string): IQuest[]
+    public getNewlyAccessibleQuestsWhenStartingQuest(startedQuestId: string, sessionID: string): IQuest[]
     {
-        const profile: IPmcData = this.profileHelper.getPmcProfile(sessionID);
         // Get quest acceptance data from profile
-        const profileQuest = profile.Quests.find(x => x.qid === startedQuestId);
+        const profile: IPmcData = this.profileHelper.getPmcProfile(sessionID);
+        const startedQuestInProfile = profile.Quests.find(x => x.qid === startedQuestId);
 
         // Get quests that 
         const eligibleQuests = this.getQuestsFromDb().filter((quest) =>
@@ -359,8 +388,26 @@ export class QuestHelper
                 return false;
             }
 
+            const standingRequirements = this.questConditionHelper.getStandingConditions(quest.conditions.AvailableForStart);
+            for (const condition of standingRequirements)
+            {
+                if (!this.traderStandingRequirementCheck(condition._props, profile))
+                {
+                    return false;
+                }
+            }
+
+            const loyaltyRequirements = this.questConditionHelper.getLoyaltyConditions(quest.conditions.AvailableForStart);
+            for (const condition of loyaltyRequirements)
+            {
+                if (!this.traderLoyaltyLevelRequirementCheck(condition._props, profile))
+                {
+                    return false;
+                }
+            }
+
             // Include if quest found in profile and is started or ready to hand in
-            return profileQuest && ([QuestStatus.Started, QuestStatus.AvailableForFinish].includes(profileQuest.status));
+            return startedQuestInProfile && ([QuestStatus.Started, QuestStatus.AvailableForFinish].includes(startedQuestInProfile.status));
         });
 
         return this.getQuestsWithOnlyLevelRequirementStartCondition(eligibleQuests);
@@ -407,11 +454,13 @@ export class QuestHelper
      * Adjust quest money rewards by passed in multiplier
      * @param quest Quest to multiple money rewards
      * @param multiplier Value to adjust money rewards by
+     * @param questStatus Status of quest to apply money boost to rewards of
      * @returns Updated quest
      */
-    public applyMoneyBoost(quest: IQuest, multiplier: number): IQuest
+    public applyMoneyBoost(quest: IQuest, multiplier: number, questStatus: QuestStatus): IQuest
     {
-        for (const reward of quest.rewards.Success)
+        const rewards: Reward[] = quest.rewards?.[QuestStatus[questStatus]] ?? [];
+        for (const reward of rewards)
         {
             if (reward.type === "Item")
             {
@@ -511,15 +560,19 @@ export class QuestHelper
      * @param pmcData Player profile
      * @param failRequest Fail quest request data
      * @param sessionID Session id
+     * @param output Client output
      * @returns Item event router response
      */
-    public failQuest(pmcData: IPmcData, failRequest: IFailQuestRequestData, sessionID: string): IItemEventRouterResponse
+    public failQuest(pmcData: IPmcData, failRequest: IFailQuestRequestData, sessionID: string, output: IItemEventRouterResponse = null): IItemEventRouterResponse
     {
         // Prepare response to send back client
-        const failedQuestResponse = this.eventOutputHolder.getOutput(sessionID);
+        if (!output)
+        {
+            output = this.eventOutputHolder.getOutput(sessionID);
+        }
 
         this.updateQuestState(pmcData, QuestStatus.Fail, failRequest.qid);
-        const questRewards = this.applyQuestReward(pmcData, failRequest.qid, QuestStatus.Fail, sessionID, failedQuestResponse);
+        const questRewards = this.applyQuestReward(pmcData, failRequest.qid, QuestStatus.Fail, sessionID, output);
 
         // Create a dialog message for completing the quest.
         const quest = this.getQuestFromDb(failRequest.qid, pmcData);
@@ -533,9 +586,9 @@ export class QuestHelper
             this.timeUtil.getHoursAsSeconds(this.questConfig.redeemTime)
         );
 
-        failedQuestResponse.profileChanges[sessionID].quests = this.failedUnlocked(failRequest.qid, sessionID);
+        output.profileChanges[sessionID].quests.push(this.failedUnlocked(failRequest.qid, sessionID));
 
-        return failedQuestResponse;
+        return output;
     }
 
     /**
@@ -633,12 +686,19 @@ export class QuestHelper
     public applyQuestReward(pmcData: IPmcData, questId: string, state: QuestStatus, sessionId: string, questResponse: IItemEventRouterResponse): Reward[]
     {        
         let questDetails = this.getQuestFromDb(questId, pmcData);
+        if (!questDetails)
+        {
+            this.logger.warning(`Unable to find quest: ${questId} from db, unable to give quest rewards`);
+
+            return [];
+        }
         
         // Check for and apply intel center money bonus if it exists
-        const intelCenterBonus = this.getIntelCenterRewardBonus(pmcData);
-        if (intelCenterBonus > 0)
+        const questMoneyRewardBonus = this.getQuestMoneyRewardBonus(pmcData);
+        if (questMoneyRewardBonus > 0)
         {
-            questDetails = this.applyMoneyBoost(questDetails, intelCenterBonus); // money = money + (money * intelCenterBonus / 100)
+            // Apply additional bonus from hideout skill
+            questDetails = this.applyMoneyBoost(questDetails, questMoneyRewardBonus, state); // money = money + (money * intelCenterBonus / 100)
         }
 
         // e.g. 'Success' or 'AvailableForFinish'
@@ -713,46 +773,56 @@ export class QuestHelper
     }
 
     /**
-     * Get players intel center bonus from profile
+     * Get players money reward bonus from profile
      * @param pmcData player profile
      * @returns bonus as a percent
      */
-    protected getIntelCenterRewardBonus(pmcData: IPmcData): number
+    protected getQuestMoneyRewardBonus(pmcData: IPmcData): number
     {
-        let intelCenterBonus = 0;
-
         // Check player has intel center
-        const intelCenter = pmcData.Hideout.Areas.find(area => area.type === HideoutAreas.INTEL_CENTER);
-        if (intelCenter)
+        const moneyRewardBonuses = pmcData.Bonuses.filter(x => x.type === "QuestMoneyReward");
+        if (!moneyRewardBonuses)
         {
-            if (intelCenter.level === 1)
-            {
-                intelCenterBonus = 5;
-            }
-
-            if (intelCenter.level > 1)
-            {
-                intelCenterBonus = 15;
-            }
+            return 0;
         }
 
-        return intelCenterBonus;
+        // Get a total of the quest money rewards
+        let moneyRewardBonus = moneyRewardBonuses.reduce((acc, cur) => acc + cur.value, 0);
+
+        // Apply hideout management bonus to money reward (up to 51% bonus)
+        const hideoutManagementSkill = pmcData.Skills.Common.find(x => x.Id === "HideoutManagement");
+        if (hideoutManagementSkill)
+        {
+            moneyRewardBonus *= (1 + (hideoutManagementSkill.Progress / 10000)); // 5100 becomes 0.51, add 1 to it, 1.51, multiply the moneyreward bonus by it (e.g. 15 x 51)
+        }
+
+        return moneyRewardBonus;
     }
 
     /**
-     * Find quest with 'findItem' requirement that needs the item tpl be handed in
+     * Find quest with 'findItem' condition that needs the item tpl be handed in
      * @param itemTpl item tpl to look for
-     * @returns 'FindItem' condition id
+     * @param questIds Quests to search through for the findItem condition
+     * @returns quest id with 'FindItem' condition id
      */
-    public getFindItemIdForQuestHandIn(itemTpl: string): string[]
+    public getFindItemConditionByQuestItem(itemTpl: string, questIds: string[], allQuests: IQuest[]): Record<string, string>
     {
-        const result: string[] = [];
-        for (const quest of this.getQuestsFromDb())
+        const result: Record<string, string> = {};
+        for (const questId of questIds)
         {
-            const condition = quest.conditions.AvailableForFinish.find(c => c._parent === "FindItem" && c._props?.target?.includes(itemTpl));
+            const questInDb = allQuests.find(x => x._id === questId);
+            if (!questInDb)
+            {
+                this.logger.warning(`Unable to find quest: ${questId} in db, cannot get 'FindItem' condition, skipping`);
+                continue;
+            }
+
+            const condition = questInDb.conditions.AvailableForFinish.find(c => c._parent === "FindItem" && c._props?.target?.includes(itemTpl));
             if (condition)
             {
-                result.push(condition._props.id);
+                result[questId] = condition._props.id;
+
+                break;
             }
         }
 
@@ -783,15 +853,28 @@ export class QuestHelper
                 statusesDict[status] = this.timeUtil.getTimestamp();
             }
 
-            const questRecordToAdd: Quest = {
+            const questRecordToAdd: IQuestStatus = {
                 qid: questKey,
-                startTime: 0,
+                startTime: this.timeUtil.getTimestamp(),
                 status: statuses[statuses.length - 1],
                 statusTimers: statusesDict,
                 completedConditions: [],
                 availableAfter: 0
             };
-            pmcProfile.Quests.push(questRecordToAdd);
+
+            if (pmcProfile.Quests.some(x => x.qid === questKey))
+            {
+                // Update existing
+                const existingQuest = pmcProfile.Quests.find(x => x.qid === questKey);
+                existingQuest.status = questRecordToAdd.status;
+                existingQuest.statusTimers = questRecordToAdd.statusTimers;
+            }
+            else
+            {
+                // Add new
+                pmcProfile.Quests.push(questRecordToAdd);
+            }
+            
         }
     }
 }

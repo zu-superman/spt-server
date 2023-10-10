@@ -30,7 +30,7 @@ export class LocationCallbacks
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public getLocation(url: string, info: IGetLocationRequestData, sessionID: string): IGetBodyResponseData<ILocationBase>
     {
-        return this.httpResponse.getBody(this.locationController.get(info.locationId));
+        return this.httpResponse.getBody(this.locationController.get(sessionID, info));
     }
     
     /** Handle client/location/getAirdropLoot */

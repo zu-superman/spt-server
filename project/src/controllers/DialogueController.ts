@@ -403,9 +403,9 @@ export class DialogueController
             this.mailSendService.sendUserMessageToPlayer(sessionId, sptFriendUser, this.randomUtil.getArrayValue(["Its me!!", "spt? i've heard of that project"]));
         }
 
-        if (request.text.toLowerCase() === "hello") 
+        if (["hello", "hi", "sup", "yo", "hey"].includes(request.text.toLowerCase())) 
         {
-            this.mailSendService.sendUserMessageToPlayer(sessionId, sptFriendUser, this.randomUtil.getArrayValue(["Howdy", "Hi", "Greetings", "Hello", "bonjoy", "Yo", "Sup", "Heyyyyy", "Hey there", `Hello ${sender?.Info?.Nickname}`]));
+            this.mailSendService.sendUserMessageToPlayer(sessionId, sptFriendUser, this.randomUtil.getArrayValue(["Howdy", "Hi", "Greetings", "Hello", "bonjor", "Yo", "Sup", "Heyyyyy", "Hey there", `Hello ${sender?.Info?.Nickname}`]));
         }
 
         if (request.text.toLowerCase() === "nikita") 

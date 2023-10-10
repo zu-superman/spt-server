@@ -166,12 +166,13 @@ export class FenceService
                 assort.barter_scheme[item._id][0][0].count *= (modifier + presetModifier);
             }
         }
+        else if (assort.barter_scheme[item._id])
+        {
+            assort.barter_scheme[item._id][0][0].count *= modifier;
+        }
         else
         {
-            if (assort.barter_scheme[item._id])
-            {
-                assort.barter_scheme[item._id][0][0].count *= modifier;
-            }
+            this.logger.warning(`adjustItemPriceByModifier() - no action taken for item: ${item._tpl}`);
         }
     }
 
@@ -401,16 +402,17 @@ export class FenceService
 
     protected addItemAssorts(assortCount: number, fenceAssortIds: string[], assorts: ITraderAssort, fenceAssort: ITraderAssort, itemTypeCounts: Record<string, { current: number; max: number; }>, loyaltyLevel: number): void
     {
+        const priceLimits = this.traderConfig.fence.itemCategoryRoublePriceLimit;
         for (let i = 0; i < assortCount; i++)
         {
-            const itemId = fenceAssortIds[this.randomUtil.getInt(0, fenceAssortIds.length - 1)];
+            const itemTpl = fenceAssortIds[this.randomUtil.getInt(0, fenceAssortIds.length - 1)];
 
-            const price = this.handbookHelper.getTemplatePrice(itemId);
-            const itemIsPreset = this.presetHelper.isPreset(itemId);
+            const price = this.handbookHelper.getTemplatePrice(itemTpl);
+            const itemIsPreset = this.presetHelper.isPreset(itemTpl);
 
             if (price === 0 || (price === 1 && !itemIsPreset) || price === 100)
             {
-                // don't allow "special" items
+                // Don't allow "special" items
                 i--;
                 continue;
             }
@@ -418,10 +420,10 @@ export class FenceService
             // It's a normal non-preset item
             if (!itemIsPreset)
             {
-                const desiredAssort = fenceAssort.items[fenceAssort.items.findIndex(i => i._id === itemId)];
+                const desiredAssort = fenceAssort.items[fenceAssort.items.findIndex(i => i._id === itemTpl)];
                 if (!desiredAssort)
                 {
-                    this.logger.error(this.localisationService.getText("fence-unable_to_find_assort_by_id", itemId));
+                    this.logger.error(this.localisationService.getText("fence-unable_to_find_assort_by_id", itemTpl));
                 }
 
                 const itemDbDetails = this.itemHelper.getItem(desiredAssort._tpl)[1];
@@ -440,6 +442,12 @@ export class FenceService
                     itemLimitCount.current++;
                 }
 
+                if (price > priceLimits[itemDbDetails._parent])
+                {
+                    i--;
+                    continue;
+                }
+
                 const toPush = this.jsonUtil.clone(desiredAssort);
 
                 this.randomiseItemUpdProperties(itemDbDetails, toPush);
@@ -450,7 +458,7 @@ export class FenceService
 
                 toPush._id = this.hashUtil.generate();
                 assorts.items.push(toPush);
-                assorts.barter_scheme[toPush._id] = fenceAssort.barter_scheme[itemId];
+                assorts.barter_scheme[toPush._id] = fenceAssort.barter_scheme[itemTpl];
                 assorts.loyal_level_items[toPush._id] = loyaltyLevel;
             }
         }
@@ -510,6 +518,7 @@ export class FenceService
             
             // Construct weapon + mods
             const weaponAndMods: Item[] = this.itemHelper.replaceIDs(null, this.jsonUtil.clone(defaultWeaponPresets[preset._id]._items));
+            this.removeRandomPartsOfWeapon(weaponAndMods);
             for (let i = 0; i < weaponAndMods.length; i++)
             {
                 const mod = weaponAndMods[i];
@@ -553,6 +562,70 @@ export class FenceService
 
             presetCount++;
         }
+    }
+
+    /**
+     * Remove parts of a weapon prior to being listed on flea
+     * @param weaponAndMods Weapon to remove parts from
+     */
+    protected removeRandomPartsOfWeapon(weaponAndMods: Item[]): void
+    {
+        // Items to be removed from inventory
+        const toDelete: string[] = [];
+
+        // Loop over insurance items, find items to delete from player inventory
+        for (const weaponMod of weaponAndMods)
+        {
+            if (this.presetModItemWillBeRemoved(weaponMod, toDelete))
+            {
+                // Skip if not an item
+                const itemDbDetails = this.itemHelper.getItem(weaponMod._tpl);
+                if (!itemDbDetails[0])
+                {
+                    continue;
+                }
+
+                // Is a mod and can't be edited in-raid
+                if (weaponMod.slotId !== "hideout" && !itemDbDetails[1]._props.RaidModdable)
+                {
+                    continue;
+                }
+
+                // Remove item and its sub-items to prevent orphans
+                toDelete.push(...this.itemHelper.findAndReturnChildrenByItems(weaponAndMods, weaponMod._id));
+            }
+        }
+
+        // Reverse loop and remove items
+        for (let index = weaponAndMods.length - 1; index >= 0; --index)
+        {
+            if (toDelete.includes(weaponAndMods[index]._id))
+            {
+                weaponAndMods.splice(index, 1);
+            }
+        }
+    }
+
+    /**
+     * Roll % chance check to see if item should be removed
+     * @param weaponMod Weapon mod being checked
+     * @param itemsBeingDeleted Current list of items on weapon being deleted
+     * @returns True if item will be removed
+     */
+    protected presetModItemWillBeRemoved(weaponMod: Item, itemsBeingDeleted: string[]): boolean
+    {
+        const slotIdsThatCanFail = this.traderConfig.fence.presetSlotsToRemoveChancePercent;
+        const removalChance = slotIdsThatCanFail[weaponMod.slotId];
+        if (!removalChance)
+        {
+            return false;
+        }
+
+        // Roll from 0 to 9999, then divide it by 100: 9999 =  99.99%
+        const randomChance = this.randomUtil.getInt(0, 9999) / 100;
+        
+        return randomChance > removalChance
+            && !itemsBeingDeleted.includes(weaponMod._id);
     }
 
     /**
@@ -618,7 +691,26 @@ export class FenceService
             return;
         }
 
-        // Randomise items that use resources
+        if (this.itemHelper.isOfBaseclass(itemDetails._id, BaseClasses.REPAIR_KITS))
+        {
+            itemToAdjust.upd.RepairKit = {
+                Resource: this.randomUtil.getInt(1, itemDetails._props.MaxRepairResource)
+            };
+
+            return;
+        }
+
+        // Mechanical key + has limited uses
+        if (this.itemHelper.isOfBaseclass(itemDetails._id, BaseClasses.KEY_MECHANICAL) && itemDetails._props.MaximumNumberOfUsage > 1)
+        {
+            itemToAdjust.upd.Key = {
+                NumberOfUsages: this.randomUtil.getInt(0, itemDetails._props.MaximumNumberOfUsage - 1)
+            };
+
+            return;
+        }
+
+        // Randomise items that use resources (e.g. fuel)
         if (itemDetails._props.MaxResource > 0)
         {
             const resourceMax = itemDetails._props.MaxResource;

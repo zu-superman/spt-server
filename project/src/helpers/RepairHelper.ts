@@ -34,6 +34,7 @@ export class RepairHelper
      * @param isArmor Is item being repaired a piece of armor
      * @param amountToRepair how many unit of durability to repair
      * @param useRepairKit Is item being repaired with a repair kit
+     * @param traderQualityMultipler Trader quality value from traders base json
      * @param applyMaxDurabilityDegradation should item have max durability reduced
      */
     public updateItemDurability(

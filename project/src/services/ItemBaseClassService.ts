@@ -27,6 +27,9 @@ export class ItemBaseClassService
      */
     public hydrateItemBaseClassCache(): void
     {
+        // Clear existing cache
+        this.itemBaseClassesCache = {};
+
         const allDbItems = this.databaseServer.getTables().templates.items;
         if (!allDbItems)
         {
@@ -83,8 +86,15 @@ export class ItemBaseClassService
         // No item in cache
         if (!this.itemBaseClassesCache[itemTpl])
         {
+            // Hydrate again
             this.logger.warning(this.localisationService.getText("baseclass-item_not_found", itemTpl));
-            return false;
+            this.hydrateItemBaseClassCache();
+
+            // Check for item again, throw exception if not found
+            if (!this.itemBaseClassesCache[itemTpl])
+            {
+                throw new Error(this.localisationService.getText("baseclass-item_not_found_failed", itemTpl));
+            }
         }
 
         return this.itemBaseClassesCache[itemTpl].some(x => baseClasses.includes(x));

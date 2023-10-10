@@ -21,12 +21,12 @@
     "planeVolume": 0.5,
     "planeSpeed": 65,
     "crateFallSpeed": 3,
-	"containerIds": {
-		"mixed": "6223349b3136504a544d1608",
-		"weaponArmor": "6223349b3136504a544d1608",
-		"foodMedical": "6223349b3136504a544d1608",
-		"barter": "6223349b3136504a544d1608"
-	},
+    "containerIds": {
+        "mixed": "6223349b3136504a544d1608",
+        "weaponArmor": "6223349b3136504a544d1608",
+        "foodMedical": "6223349b3136504a544d1608",
+        "barter": "6223349b3136504a544d1608"
+    },
     "loot": {
         "mixed": {
             "presetCount": {
@@ -53,7 +53,26 @@
                 "5cde8864d7f00c0010373be1",
                 "5b3b713c5acfc4330140bd8d",
                 "60c080eb991ac167ad1c3ad4",
-                "6389c88b33a719183c7f63b6"
+                "57cd379a24597778e7682ecf",
+                "5fc64ea372b0dd78d51159dc",
+                "628e4dd1f477aa12234918aa",
+                "62a61bbf8ec41a51b34758d2",
+                "5c0e842486f77443a74d2976",
+                "5c0e874186f7745dc7616606",
+                "5c0e541586f7747fa54205c9",
+                "628b9784bcf6e2659e09b8a2",
+                "62963c18dbc8ab5f0d382d0b",
+                "628b9c7d45122232a872358f",
+                "628baf0b967de16aab5a4f36",
+                "636270263f2495c26f00b007",
+                "63626d904aa74b8fe30ab426",
+                "60a7ad2a2198820d95707a2e",
+                "60a7ad3a0c5cb24b0134664a",
+                "60a7acf20c5cb24b01346648",
+                "609e860ebd219504d8507525",
+                "6275303a9f372d6ea97f9ec7",
+                "628bc7fb408e2b2e9c0801b1",
+                "6389c7f115805221fb410466"
             ],
             "itemTypeWhitelist": [
                 "543be5dd4bdc2deb348b4569",
@@ -157,7 +176,26 @@
                 "63495c500c297e20065a08b1",
                 "5cde8864d7f00c0010373be1",
                 "5b3b713c5acfc4330140bd8d",
-                "60c080eb991ac167ad1c3ad4"
+                "60c080eb991ac167ad1c3ad4",
+                "57cd379a24597778e7682ecf",
+                "5fc64ea372b0dd78d51159dc",
+                "628e4dd1f477aa12234918aa",
+                "62a61bbf8ec41a51b34758d2",
+                "5c0e842486f77443a74d2976",
+                "5c0e874186f7745dc7616606",
+                "5c0e541586f7747fa54205c9",
+                "628b9784bcf6e2659e09b8a2",
+                "62963c18dbc8ab5f0d382d0b",
+                "628b9c7d45122232a872358f",
+                "628baf0b967de16aab5a4f36",
+                "636270263f2495c26f00b007",
+                "63626d904aa74b8fe30ab426",
+                "60a7ad2a2198820d95707a2e",
+                "60a7ad3a0c5cb24b0134664a",
+                "60a7acf20c5cb24b01346648",
+                "609e860ebd219504d8507525",
+                "6275303a9f372d6ea97f9ec7",
+                "628bc7fb408e2b2e9c0801b1"
             ],
             "itemTypeWhitelist": [
                 "5485a8684bdc2da71d8b4567",
@@ -316,7 +354,7 @@
                 "5cde8864d7f00c0010373be1",
                 "5b3b713c5acfc4330140bd8d",
                 "60c080eb991ac167ad1c3ad4",
-                "6389c88b33a719183c7f63b6"
+                "6389c7f115805221fb410466"
             ],
             "itemTypeWhitelist": [
                 "5d650c3e815116009f6201d2",

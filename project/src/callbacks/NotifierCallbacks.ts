@@ -59,12 +59,11 @@ export class NotifierCallbacks
      * Handle client/game/profile/select
      * @returns ISelectProfileResponse
      */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public selectProfile(url: string, info: ISelectProfileRequestData, sessionID: string): IGetBodyResponseData<ISelectProfileResponse>
     {
         return this.httpResponse.getBody({
-            status: "ok",
-            notifier: this.notifierController.getChannel(sessionID),
-            notifierServer: this.notifierController.getServer(sessionID)
+            status: "ok"
         });
     }
 

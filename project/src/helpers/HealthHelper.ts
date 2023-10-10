@@ -75,6 +75,7 @@ export class HealthHelper
      * @param request Heal request
      * @param sessionID Session id
      * @param addEffects Should effects be added or removed (default - add)
+     * @param deleteExistingEffects Should all prior effects be removed before apply new ones
      */
     public saveVitality(pmcData: IPmcData, request: ISyncHealthRequestData, sessionID: string, addEffects = true, deleteExistingEffects = true): void
     {

@@ -16,9 +16,9 @@ import { IJoinMatchRequestData } from "../models/eft/match/IJoinMatchRequestData
 import { IJoinMatchResult } from "../models/eft/match/IJoinMatchResult";
 import { ConfigTypes } from "../models/enums/ConfigTypes";
 import { Traders } from "../models/enums/Traders";
-import { IBotConfig } from "../models/spt/config/IBotConfig";
 import { IInRaidConfig } from "../models/spt/config/IInRaidConfig";
 import { IMatchConfig } from "../models/spt/config/IMatchConfig";
+import { IPmcConfig } from "../models/spt/config/IPmcConfig";
 import { ILogger } from "../models/spt/utils/ILogger";
 import { ConfigServer } from "../servers/ConfigServer";
 import { SaveServer } from "../servers/SaveServer";
@@ -32,7 +32,7 @@ export class MatchController
 {
     protected matchConfig: IMatchConfig;
     protected inraidConfig: IInRaidConfig;
-    protected botConfig: IBotConfig;
+    protected pmcConfig: IPmcConfig;
 
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
@@ -49,7 +49,7 @@ export class MatchController
     {
         this.matchConfig = this.configServer.getConfig(ConfigTypes.MATCH);
         this.inraidConfig = this.configServer.getConfig(ConfigTypes.IN_RAID);
-        this.botConfig = this.configServer.getConfig(ConfigTypes.BOT);
+        this.pmcConfig = this.configServer.getConfig(ConfigTypes.PMC);
     }
 
     public getEnabled(): boolean
@@ -137,9 +137,9 @@ export class MatchController
         //TODO: add code to strip PMC of equipment now they've started the raid
 
         // Set pmcs to difficulty set in pre-raid screen if override in bot config isnt enabled
-        if (!this.botConfig.pmc.useDifficultyOverride)
+        if (!this.pmcConfig.useDifficultyOverride)
         {
-            this.botConfig.pmc.difficulty = this.convertDifficultyDropdownIntoBotDifficulty(request.wavesSettings.botDifficulty);
+            this.pmcConfig.difficulty = this.convertDifficultyDropdownIntoBotDifficulty(request.wavesSettings.botDifficulty);
         }
 
         // Store the profile as-is for later use on the post-raid exp screen 
@@ -170,7 +170,7 @@ export class MatchController
         const extractName = info.exitName;
 
         // Save time spent in raid
-        pmcData.Stats.TotalInGameTime += info.raidSeconds;
+        pmcData.Stats.Eft.TotalInGameTime += info.raidSeconds;
 
         // clean up cached bots now raid is over
         this.botGenerationCacheService.clearStoredBots();
@@ -191,7 +191,18 @@ export class MatchController
      */
     protected extractWasViaCar(extractName: string): boolean
     {
-        return this.inraidConfig.carExtracts.includes(extractName);
+        // exit name is null on death
+        if (!extractName)
+        {
+            return false;
+        }
+
+        if (extractName.toLowerCase().includes("v-ex"))
+        {
+            return true;
+        }
+
+        return this.inraidConfig.carExtracts.includes(extractName.trim());
     }
 
     /**
@@ -214,8 +225,10 @@ export class MatchController
         const fenceId: string = Traders.FENCE;
         this.updateFenceStandingInProfile(pmcData, fenceId, extractName);
         
-        this.traderHelper.lvlUp(fenceId, sessionId);
+        this.traderHelper.lvlUp(fenceId, pmcData);
         pmcData.TradersInfo[fenceId].loyaltyLevel = Math.max(pmcData.TradersInfo[fenceId].loyaltyLevel, 1);
+
+        this.logger.debug(`Car extract: ${extractName} used, total times taken: ${pmcData.CarExtractCounts[extractName]}`);
     }
 
     /**
@@ -236,6 +249,8 @@ export class MatchController
         fenceStanding += Math.max(baseGain / extractCount, 0.01);
 
         // Ensure fence loyalty level is not above/below the range -7 - 15
-        pmcData.TradersInfo[fenceId].standing = Math.min(Math.max(fenceStanding, -7), 15);
+        const newFenceStanding = Math.min(Math.max(fenceStanding, -7), 15);
+        this.logger.debug(`Old vs new fence standing: ${pmcData.TradersInfo[fenceId].standing}, ${newFenceStanding}`);
+        pmcData.TradersInfo[fenceId].standing = newFenceStanding;
     }
 }

@@ -1,12 +1,13 @@
 export interface IGameConfigResponse
 {
-    aid: string
+    aid: number
     lang: string
     languages: Record<string, string>
     ndaFree: boolean
     taxonomy: number
     activeProfileId: string
     backend: Backend
+    useProtobuf: boolean
     // eslint-disable-next-line @typescript-eslint/naming-convention
     utc_time: number
     /** Total in game time */

@@ -1,9 +1,9 @@
 {
     "acceleration": 7,
     "weather": {
-        "clouds": {
-            "min": -1.5,
-            "max": 1.5
+		"clouds": {
+            "values": [-1.5, -1, 0, 0.5, 1, 1.5],
+            "weights": [60, 50, 15, 5, 4, 3]
         },
         "windSpeed": {
 			"values": [0, 1, 2, 3],

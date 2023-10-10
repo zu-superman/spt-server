@@ -139,7 +139,7 @@ export class ContainerHelper
                 }
                 else
                 {
-                    throw `Slot at (${x}, ${y}) is already filled`;
+                    throw new Error(`Slot at (${x}, ${y}) is already filled`);
                 }
             }
         }

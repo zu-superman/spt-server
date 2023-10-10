@@ -2,6 +2,7 @@ export enum ConfigTypes
     {
     AIRDROP = "aki-airdrop",
     BOT = "aki-bot",
+    PMC = "aki-pmc",
     CORE = "aki-core",
     HEALTH = "aki-health",
     HIDEOUT = "aki-hideout",
@@ -12,6 +13,7 @@ export enum ConfigTypes
     ITEM = "aki-item",
     LOCALE = "aki-locale",
     LOCATION = "aki-location",
+    LOOT = "aki-loot",
     MATCH = "aki-match",
     PLAYERSCAV = "aki-playerscav",
     PMC_CHAT_RESPONSE = "aki-pmcchatresponse",

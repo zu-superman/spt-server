@@ -103,6 +103,7 @@ export class AssortHelper
             return assort;
         }
 
+        // Remove items not unlocked from quest status change (ASSORTMENT_UNLOCK)
         for (const itemId in assort.loyal_level_items)
         {
             if (assort.loyal_level_items[itemId] > pmcProfile.TradersInfo[traderId].loyaltyLevel)

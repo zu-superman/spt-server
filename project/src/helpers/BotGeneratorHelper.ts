@@ -10,7 +10,8 @@ import {
 } from "../models/eft/match/IGetRaidConfigurationRequestData";
 import { BaseClasses } from "../models/enums/BaseClasses";
 import { ConfigTypes } from "../models/enums/ConfigTypes";
-import { EquipmentFilters, IBotConfig } from "../models/spt/config/IBotConfig";
+import { EquipmentFilters, IBotConfig, IRandomisedResourceValues } from "../models/spt/config/IBotConfig";
+import { IPmcConfig } from "../models/spt/config/IPmcConfig";
 import { ILogger } from "../models/spt/utils/ILogger";
 import { ConfigServer } from "../servers/ConfigServer";
 import { DatabaseServer } from "../servers/DatabaseServer";
@@ -23,6 +24,7 @@ import { ItemHelper } from "./ItemHelper";
 export class BotGeneratorHelper 
 {
     protected botConfig: IBotConfig;
+    protected pmcConfig: IPmcConfig;
 
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
@@ -36,6 +38,7 @@ export class BotGeneratorHelper
     ) 
     {
         this.botConfig = this.configServer.getConfig(ConfigTypes.BOT);
+        this.pmcConfig = this.configServer.getConfig(ConfigTypes.PMC);
     }
 
     /**
@@ -89,12 +92,12 @@ export class BotGeneratorHelper
 
         if (itemTemplate._props.MaxHpResource) 
         {
-            itemProperties.MedKit = { HpResource: itemTemplate._props.MaxHpResource };
+            itemProperties.MedKit = { HpResource: this.getRandomizedResourceValue(itemTemplate._props.MaxHpResource, this.botConfig.lootItemResourceRandomization[botRole]?.meds) };
         }
 
         if (itemTemplate._props.MaxResource && itemTemplate._props.foodUseTime) 
         {
-            itemProperties.FoodDrink = { HpPercent: itemTemplate._props.MaxResource };
+            itemProperties.FoodDrink = { HpPercent: this.getRandomizedResourceValue(itemTemplate._props.MaxResource, this.botConfig.lootItemResourceRandomization[botRole]?.food) };
         }
 
         if (itemTemplate._parent === BaseClasses.FLASHLIGHT)
@@ -132,6 +135,28 @@ export class BotGeneratorHelper
         return Object.keys(itemProperties).length
             ? { upd: itemProperties }
             : {};
+    }
+
+    /**
+     * Randomize the HpResource for bots e.g (245/400 resources)
+     * @param maxResource Max resource value of medical items
+     * @param randomizationValues Value provided from config
+     * @returns Randomized value from maxHpResource
+     */
+    protected getRandomizedResourceValue(maxResource: number, randomizationValues: IRandomisedResourceValues): number
+    {
+        if (!randomizationValues)
+        {
+            return maxResource;
+        }
+
+        if (this.randomUtil.getChance100(randomizationValues.chanceMaxResourcePercent))
+        {
+            return maxResource;
+        }
+
+        return this.randomUtil.getInt(this.randomUtil.getPercentOfValue(randomizationValues.resourcePercent, maxResource, 0), maxResource);
+        
     }
 
     /**
@@ -227,12 +252,12 @@ export class BotGeneratorHelper
         const equippedItems = items.map(i => this.databaseServer.getTables().templates.items[i._tpl]);
         const itemToEquip = this.itemHelper.getItem(tplToCheck);
 
-        if (!itemToEquip[0]) 
+        if (!itemToEquip[0])
         {
             this.logger.warning(this.localisationService.getText("bot-invalid_item_compatibility_check", {itemTpl: tplToCheck, slot: equipmentSlot}));
         }
 
-        if (!itemToEquip[1]._props) 
+        if (!itemToEquip[1]?._props)
         {
             this.logger.warning(this.localisationService.getText("bot-compatibility_check_missing_props", {id: itemToEquip[1]._id, name: itemToEquip[1]._name, slot: equipmentSlot}));
         }
@@ -271,7 +296,7 @@ export class BotGeneratorHelper
      */
     public getBotEquipmentRole(botRole: string): string 
     {
-        return ([this.botConfig.pmc.usecType.toLowerCase(), this.botConfig.pmc.bearType.toLowerCase()].includes(botRole.toLowerCase()))
+        return ([this.pmcConfig.usecType.toLowerCase(), this.pmcConfig.bearType.toLowerCase()].includes(botRole.toLowerCase()))
             ? "pmc"
             : botRole;
     }

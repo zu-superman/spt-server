@@ -1,12 +1,14 @@
 import { inject, injectable } from "tsyringe";
 
-import { IPmcData } from "../models/eft/common/IPmcData";
-import { Quest, TraderInfo, Victim } from "../models/eft/common/tables/IBotBase";
+import { IPmcData, IPostRaidPmcData } from "../models/eft/common/IPmcData";
+import { IQuestStatus, TraderInfo, Victim } from "../models/eft/common/tables/IBotBase";
 import { Item } from "../models/eft/common/tables/IItem";
 import { ISaveProgressRequestData } from "../models/eft/inRaid/ISaveProgressRequestData";
 import { IFailQuestRequestData } from "../models/eft/quests/IFailQuestRequestData";
 import { ConfigTypes } from "../models/enums/ConfigTypes";
 import { QuestStatus } from "../models/enums/QuestStatus";
+import { Traders } from "../models/enums/Traders";
+import { IInRaidConfig } from "../models/spt/config/IInRaidConfig";
 import { ILostOnDeathConfig } from "../models/spt/config/ILostOnDeathConfig";
 import { ILogger } from "../models/spt/utils/ILogger";
 import { ConfigServer } from "../servers/ConfigServer";
@@ -24,6 +26,7 @@ import { QuestHelper } from "./QuestHelper";
 export class InRaidHelper
 {
     protected lostOnDeathConfig: ILostOnDeathConfig;
+    protected inRaidConfig: IInRaidConfig;
 
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
@@ -40,6 +43,7 @@ export class InRaidHelper
     )
     {
         this.lostOnDeathConfig = this.configServer.getConfig(ConfigTypes.LOST_ON_DEATH);
+        this.inRaidConfig = this.configServer.getConfig(ConfigTypes.IN_RAID);
     }
 
     /**
@@ -86,7 +90,7 @@ export class InRaidHelper
         // Run callback on every victim, adding up the standings gained/lossed, starting value is existing fence standing
         const newFenceStanding = victims.reduce((acc, victim) =>
         {
-            const standingForKill = this.getStandingChangeForKill(victim);
+            const standingForKill = this.getFenceStandingChangeForKillAsScav(victim);
             if (standingForKill)
             {
                 return acc + standingForKill;
@@ -104,7 +108,7 @@ export class InRaidHelper
      * @param victim Who was killed by player
      * @returns a numerical standing gain or loss
      */
-    protected getStandingChangeForKill(victim: Victim): number
+    protected getFenceStandingChangeForKillAsScav(victim: Victim): number
     {
         const botTypes = this.databaseServer.getTables().bots.types;
         if (victim.Side.toLowerCase() === "savage")
@@ -113,7 +117,7 @@ export class InRaidHelper
             return botTypes[victim.Role.toLowerCase()]?.experience?.standingForKill;
         }
         
-        // PMCs
+        // PMCs - get by bear/usec
         return botTypes[victim.Side.toLowerCase()]?.experience?.standingForKill;
     }
 
@@ -135,7 +139,7 @@ export class InRaidHelper
         // set profile data
         profileData.Info.Level = saveProgressRequest.profile.Info.Level;
         profileData.Skills = saveProgressRequest.profile.Skills;
-        profileData.Stats = saveProgressRequest.profile.Stats;
+        profileData.Stats.Eft = saveProgressRequest.profile.Stats.Eft;
         profileData.Encyclopedia = saveProgressRequest.profile.Encyclopedia;
         profileData.ConditionCounters = saveProgressRequest.profile.ConditionCounters;
 
@@ -171,8 +175,8 @@ export class InRaidHelper
         profileData.SurvivorClass = saveProgressRequest.profile.SurvivorClass;
 
         // add experience points
-        profileData.Info.Experience += profileData.Stats.TotalSessionExperience;
-        profileData.Stats.TotalSessionExperience = 0;
+        profileData.Info.Experience += profileData.Stats.Eft.TotalSessionExperience;
+        profileData.Stats.Eft.TotalSessionExperience = 0;
 
         // Remove the Lab card
         this.removeMapAccessKey(saveProgressRequest, sessionID);
@@ -195,7 +199,7 @@ export class InRaidHelper
      * @param preRaidQuests Quests prior to starting raid
      * @param postRaidQuests Quest after raid
      */
-    protected processFailedQuests(sessionId: string, pmcData: IPmcData, preRaidQuests: Quest[], postRaidQuests: Quest[]): void
+    protected processFailedQuests(sessionId: string, pmcData: IPmcData, preRaidQuests: IQuestStatus[], postRaidQuests: IQuestStatus[]): void
     {
         if (!preRaidQuests)
         {
@@ -270,22 +274,33 @@ export class InRaidHelper
         }
     }
 
-    protected applyTraderStandingAdjustments(preRaid: Record<string, TraderInfo>, postRaid: Record<string, TraderInfo>): void
+    /**
+     * Adjust server trader settings if they differ from data sent by client
+     * @param tradersServerProfile Server
+     * @param tradersClientProfile Client
+     */
+    protected applyTraderStandingAdjustments(tradersServerProfile: Record<string, TraderInfo>, tradersClientProfile: Record<string, TraderInfo>): void
     {
-        for (const traderId in postRaid)
+        for (const traderId in tradersClientProfile)
         {
-            const preRaidTrader = preRaid[traderId];
-            const postRaidTrader = postRaid[traderId];
-            if (!(preRaidTrader && postRaidTrader))
+            if (traderId === Traders.FENCE)
+            {
+                // Taking a car extract adjusts fence rep values via client/match/offline/end, skip fence for this check
+                continue;
+            }
+
+            const serverProfileTrader = tradersServerProfile[traderId];
+            const clientProfileTrader = tradersClientProfile[traderId];
+            if (!(serverProfileTrader && clientProfileTrader))
             {
                 continue;
             }
 
-            if (postRaidTrader.standing !== preRaidTrader.standing)
+            if (clientProfileTrader.standing !== serverProfileTrader.standing)
             {
-                preRaidTrader.standing = postRaidTrader.standing;
+                // Difference found, update server profile with values from client profile
+                tradersServerProfile[traderId].standing = clientProfileTrader.standing;
             }
-
         }
     }
 
@@ -325,49 +340,20 @@ export class InRaidHelper
     }
 
     /**
-     * Adds SpawnedInSession property to items found in a raid
-     * Removes SpawnedInSession for non-scav players if item was taken into raid with SpawnedInSession = true
-     * @param preRaidProfile profile to update
-     * @param postRaidProfile profile to update inventory contents of
-     * @param isPlayerScav Was this a p scav raid
-     * @returns profile with FiR items properly tagged
-     */
-    public addSpawnedInSessionPropertyToItems(preRaidProfile: IPmcData, postRaidProfile: IPmcData, isPlayerScav: boolean): IPmcData
-    {
-        for (const item of postRaidProfile.Inventory.items)
-        {
-            if (!isPlayerScav)
-            {
-                const itemExistsInProfile = preRaidProfile.Inventory.items.find((itemData) => item._id === itemData._id);
-                if (itemExistsInProfile)
-                {
-                    // if the item exists and is taken inside the raid, remove the taken in raid status
-                    delete item.upd?.SpawnedInSession;
-
-                    continue;
-                }
-            }
-
-            item.upd = item.upd ?? {};
-            item.upd.SpawnedInSession = true;
-        }
-
-        return postRaidProfile;
-    }
-
-    /**
      * Iterate over inventory items and remove the property that defines an item as Found in Raid
      * Only removes property if item had FiR when entering raid
      * @param postRaidProfile profile to update items for
      * @returns Updated profile with SpawnedInSession removed
      */
-    public removeSpawnedInSessionPropertyFromItems(postRaidProfile: IPmcData): IPmcData
+    public removeSpawnedInSessionPropertyFromItems(postRaidProfile: IPostRaidPmcData): IPostRaidPmcData
     {
         const dbItems = this.databaseServer.getTables().templates.items;
         const itemsToRemovePropertyFrom = postRaidProfile.Inventory.items.filter(x =>
         {
             // Has upd object + upd.SpawnedInSession property + not a quest item
-            return "upd" in x && "SpawnedInSession" in x.upd && !dbItems[x._tpl]._props.QuestItem;
+            return "upd" in x && "SpawnedInSession" in x.upd
+                && !dbItems[x._tpl]._props.QuestItem
+                && !(this.inRaidConfig.keepFiRSecureContainerOnDeath && this.itemHelper.itemIsInsideContainer(x, "SecuredContainer", postRaidProfile.Inventory.items));
         });
 
         itemsToRemovePropertyFrom.forEach(item =>

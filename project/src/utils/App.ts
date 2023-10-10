@@ -5,17 +5,20 @@ import { OnLoad } from "../di/OnLoad";
 import { OnUpdate } from "../di/OnUpdate";
 import { ILogger } from "../models/spt/utils/ILogger";
 import { LocalisationService } from "../services/LocalisationService";
+import { EncodingUtil } from "./EncodingUtil";
 import { TimeUtil } from "./TimeUtil";
 
 @injectable()
 export class App
 {
     protected onUpdateLastRun = {};
+    protected os = require("os");
 
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
         @inject("LocalisationService") protected localisationService: LocalisationService,
+        @inject("EncodingUtil") protected encodingUtil: EncodingUtil,
         @injectAll("OnLoad") protected onLoadComponents: OnLoad[],
         @injectAll("OnUpdate") protected onUpdateComponents: OnUpdate[]
     )
@@ -28,6 +31,12 @@ export class App
 
         // execute onLoad callbacks
         this.logger.info(this.localisationService.getText("executing_startup_callbacks"));
+
+        this.logger.debug(`OS: ${this.os.arch()} | ${this.os.version()} | ${process.platform}`);
+        this.logger.debug(`CPU: ${this.os?.cpus()[0]?.model} cores: ${this.os.availableParallelism()}`);
+        this.logger.debug(`RAM: ${(this.os.totalmem() / 1024 / 1024 / 1024).toFixed(2)}GB`);
+        this.logger.debug(`PATH: ${this.encodingUtil.toBase64(process.argv[0])}`);
+        this.logger.debug(`PATH: ${this.encodingUtil.toBase64(process.execPath)}`);
 
         for (const onLoad of this.onLoadComponents)
         {

@@ -4,12 +4,15 @@ import { ContainerHelper } from "../helpers/ContainerHelper";
 import { ItemHelper } from "../helpers/ItemHelper";
 import { PresetHelper } from "../helpers/PresetHelper";
 import { RagfairServerHelper } from "../helpers/RagfairServerHelper";
+import { IContainerMinMax, IStaticContainer } from "../models/eft/common/ILocation";
+import { ILocationBase } from "../models/eft/common/ILocationBase";
 import {
     ILooseLoot, Spawnpoint, SpawnpointTemplate, SpawnpointsForced
 } from "../models/eft/common/ILooseLoot";
 import { Item } from "../models/eft/common/tables/IItem";
 import {
-    IStaticAmmoDetails, IStaticContainerProps, IStaticForcedProps, IStaticLootDetails
+    IStaticAmmoDetails, IStaticContainerData,
+    IStaticForcedProps, IStaticLootDetails
 } from "../models/eft/common/tables/ILootBase";
 import { BaseClasses } from "../models/enums/BaseClasses";
 import { ConfigTypes } from "../models/enums/ConfigTypes";
@@ -17,6 +20,7 @@ import { Money } from "../models/enums/Money";
 import { ILocationConfig } from "../models/spt/config/ILocationConfig";
 import { ILogger } from "../models/spt/utils/ILogger";
 import { ConfigServer } from "../servers/ConfigServer";
+import { DatabaseServer } from "../servers/DatabaseServer";
 import { LocalisationService } from "../services/LocalisationService";
 import { SeasonalEventService } from "../services/SeasonalEventService";
 import { JsonUtil } from "../utils/JsonUtil";
@@ -31,6 +35,14 @@ export interface IContainerItem
     height: number
 }
 
+export interface IContainerGroupCount
+{
+    /** Containers this group has + probabilty to spawn */
+    containerIdsWithProbability: Record<string, number>
+    /** How many containers the map should spawn with this group id */
+    chosenCount: number
+}
+
 @injectable()
 export class LocationGenerator
 {
@@ -38,6 +50,7 @@ export class LocationGenerator
 
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
+        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("ObjectId") protected objectId: ObjectId,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
@@ -55,6 +68,240 @@ export class LocationGenerator
     }
 
     /**
+     * Create an array of container objects with randomised loot
+     * @param locationBase Map base to generate containers for
+     * @param staticAmmoDist Static ammo distribution - database.loot.staticAmmo
+     * @returns Array of container objects
+     */
+    public generateStaticContainers(locationBase: ILocationBase, staticAmmoDist: Record<string, IStaticAmmoDetails[]>): SpawnpointTemplate[]
+    {
+        const result: SpawnpointTemplate[] = [];
+        const locationId = locationBase.Id.toLowerCase();
+
+        const db = this.databaseServer.getTables();
+
+        const staticWeaponsOnMap = this.jsonUtil.clone(db.loot.staticContainers[locationBase.Name]?.staticWeapons);
+        if (!staticWeaponsOnMap)
+        {
+            this.logger.error(`Unable to find static weapon data for map: ${locationBase.Name}`);
+        }
+
+        // Add mounted weapons to output loot
+        result.push(...staticWeaponsOnMap ?? []);
+
+        const allStaticContainersOnMap = this.jsonUtil.clone(db.loot.staticContainers[locationBase.Name]?.staticContainers);
+        if (!allStaticContainersOnMap)
+        {
+            this.logger.error(`Unable to find static container data for map: ${locationBase.Name}`);
+        }
+        const staticRandomisableContainersOnMap = this.getRandomisableContainersOnMap(allStaticContainersOnMap);
+
+        // Containers that MUST be added to map (quest containers etc)
+        const staticForcedOnMap = this.jsonUtil.clone(db.loot.staticContainers[locationBase.Name]?.staticForced);
+        if (!staticForcedOnMap)
+        {
+            this.logger.error(`Unable to find forced static data for map: ${locationBase.Name}`);
+        }
+
+        // Keep track of static loot count
+        let staticContainerCount = 0;
+
+        // Find all 100% spawn containers
+        const staticLootDist = db.loot.staticLoot;
+        const guaranteedContainers = this.getGuaranteedContainers(allStaticContainersOnMap);
+        staticContainerCount += guaranteedContainers.length;
+        
+        // Add loot to guaranteed containers and add to result
+        for (const container of guaranteedContainers)
+        {
+            const containerWithLoot = this.addLootToContainer(container, staticForcedOnMap, staticLootDist, staticAmmoDist, locationId);
+            result.push(containerWithLoot.template);
+        }
+
+        this.logger.success(`Added ${guaranteedContainers.length} guaranteed containers`);
+
+        // randomisation is turned off globally or just turned off for this map
+        if (!this.locationConfig.containerRandomisationSettings.enabled || !this.locationConfig.containerRandomisationSettings.maps[locationId])
+        {
+            this.logger.debug(`Container randomisation disabled, Adding ${staticRandomisableContainersOnMap.length} containers to ${locationBase.Name}`);
+            for (const container of staticRandomisableContainersOnMap)
+            {
+                const containerWithLoot = this.addLootToContainer(container, staticForcedOnMap, staticLootDist, staticAmmoDist, locationId);
+                result.push(containerWithLoot.template);
+            }
+
+            return result;
+        }
+
+        // Group containers by their groupId
+        const staticContainerGroupData: IStaticContainer  = db.locations[locationId].statics;
+        const mapping = this.getGroupIdToContainerMappings(staticContainerGroupData, staticRandomisableContainersOnMap);
+
+        // For each of the container groups, choose from the pool of containers, hydrate container with loot and add to result array
+        for (const groupId in mapping)
+        {
+            const data = mapping[groupId];
+
+            // Count chosen was 0, skip
+            if (data.chosenCount === 0)
+            {
+                continue;
+            }
+
+            if (Object.keys(data.containerIdsWithProbability).length === 0)
+            {
+                this.logger.debug(`Group: ${groupId} has no containers with < 100% spawn chance to choose from, skipping`);
+                continue;
+            }
+
+            // EDGE CASE: These are containers without a group and have a probability < 100%
+            if (groupId === "")
+            {
+                const containerIdsCopy = this.jsonUtil.clone(data.containerIdsWithProbability);
+                // Roll each containers probability, if it passes, it gets added
+                data.containerIdsWithProbability = {};
+                for (const containerId in containerIdsCopy)
+                {
+                    if (this.randomUtil.getChance100(containerIdsCopy[containerId] * 100))
+                    {
+                        data.containerIdsWithProbability[containerId] = containerIdsCopy[containerId];
+                    }
+                }
+
+                // Set desired count to size of array (we want all containers chosen)
+                data.chosenCount = Object.keys(data.containerIdsWithProbability).length;
+
+                // EDGE CASE: chosen container count could be 0
+                if (data.chosenCount === 0)
+                {
+                    continue;
+                }
+            }
+
+            // Pass possible containers into function to choose some
+            const chosenContainerIds = this.getContainersByProbabilty(groupId, data);
+            for (const chosenContainerId of chosenContainerIds)
+            {
+                // Look up container object from full list of containers on map
+                const containerObject = staticRandomisableContainersOnMap.find(x => x.template.Id === chosenContainerId);
+                if (!containerObject)
+                {
+                    this.logger.debug(`Container: ${chosenContainerIds[chosenContainerId]} not found in staticRandomisableContainersOnMap, this is bad`);
+                    continue;
+                }
+
+                // Add loot to container and push into result object
+                const containerWithLoot = this.addLootToContainer(containerObject, staticForcedOnMap, staticLootDist, staticAmmoDist, locationId);
+                result.push(containerWithLoot.template);
+                staticContainerCount++;
+            }
+        }
+
+        this.logger.success(this.localisationService.getText("location-containers_generated_success", staticContainerCount));
+
+        return result;
+    }
+
+    /**
+     * Get containers with a non-100% chance to spawn OR are NOT on the container type randomistion blacklist
+     * @param staticContainers 
+     * @returns IStaticContainerData array
+     */
+    protected getRandomisableContainersOnMap(staticContainers: IStaticContainerData[]): IStaticContainerData[]
+    {
+        return staticContainers
+            .filter(x => x.probability !== 1 && !x.template.IsAlwaysSpawn && !this.locationConfig.containerRandomisationSettings.containerTypesToNotRandomise.includes(x.template.Items[0]._tpl));
+    }
+
+    /**
+     * Get containers with 100% spawn rate or have a type on the randomistion ignore list
+     * @param staticContainersOnMap 
+     * @returns IStaticContainerData array
+     */
+    protected getGuaranteedContainers(staticContainersOnMap: IStaticContainerData[]): IStaticContainerData[]
+    {
+        return staticContainersOnMap.filter(x => x.probability === 1 || x.template.IsAlwaysSpawn || this.locationConfig.containerRandomisationSettings.containerTypesToNotRandomise.includes(x.template.Items[0]._tpl));
+    }
+
+    /**
+     * Choose a number of containers based on their probabilty value to fulfil the desired count in containerData.chosenCount
+     * @param groupId Name of the group the containers are being collected for
+     * @param containerData Containers and probability values for a groupId
+     * @returns List of chosen container Ids
+     */
+    protected getContainersByProbabilty(groupId: string, containerData: IContainerGroupCount): string[]
+    {
+        const chosenContainerIds: string[] = [];
+
+        const containerIds = Object.keys(containerData.containerIdsWithProbability);
+        if (containerData.chosenCount > containerIds.length)
+        {
+            this.logger.debug(`Group: ${groupId} wants ${containerData.chosenCount} containers but pool only has ${containerIds.length}, add what's available`);
+            return containerIds;
+        }
+
+        // Create probability array with all possible container ids in this group and their relataive probability of spawning
+        const containerDistribution = new ProbabilityObjectArray<string>(this.mathUtil, this.jsonUtil);
+        containerIds.forEach(x => containerDistribution.push(new ProbabilityObject(x, containerData.containerIdsWithProbability[x])));
+
+        chosenContainerIds.push(...containerDistribution.draw(containerData.chosenCount));
+
+        return chosenContainerIds;
+    }
+
+    /**
+     * Get a mapping of each groupid and the containers in that group + count of containers to spawn on map
+     * @param containersGroups Container group values
+     * @returns dictionary keyed by groupId
+     */
+    protected getGroupIdToContainerMappings(
+        staticContainerGroupData: IStaticContainer | Record<string, IContainerMinMax>,
+        staticContainersOnMap: IStaticContainerData[]): Record<string, IContainerGroupCount>
+    {
+        // Create dictionary of all group ids and choose a count of containers the map will spawn of that group
+        const mapping: Record<string, IContainerGroupCount> = {};
+        for (const groupId in staticContainerGroupData.containersGroups)
+        {
+            const groupData = staticContainerGroupData.containersGroups[groupId];
+            if (!mapping[groupId])
+            {
+                mapping[groupId] = {
+                    containerIdsWithProbability: {},
+                    chosenCount: this.randomUtil.getInt(
+                        Math.round(groupData.minContainers * this.locationConfig.containerRandomisationSettings.containerGroupMinSizeMultiplier),
+                        Math.round(groupData.maxContainers * this.locationConfig.containerRandomisationSettings.containerGroupMaxSizeMultiplier)
+                    )
+                };
+            }
+        }
+
+        // Add an empty group for containers without a group id but still have a < 100% chance to spawn
+        // Likely bad BSG data, will be fixed...eventually, example of the groupids: `NEED_TO_BE_FIXED1`,`NEED_TO_BE_FIXED_SE02`, `NEED_TO_BE_FIXED_NW_01`
+        mapping[""] = {containerIdsWithProbability: {}, chosenCount: -1};
+
+        // Iterate over all containers and add to group keyed by groupId
+        // Containers without a group go into a group with empty key ""
+        for (const container of staticContainersOnMap)
+        {
+            const groupData = staticContainerGroupData.containers[container.template.Id];
+            if (!groupData)
+            {
+                this.logger.error(`Container ${container.template.Id} not found in statics.json, this is bad`);
+                continue;
+            }
+
+            if (container.probability === 1)
+            {
+                this.logger.debug(`Container ${container.template.Id} with group ${groupData.groupId} had 100% chance to spawn was picked as random container, skipping`);
+                continue;
+            }
+            mapping[groupData.groupId].containerIdsWithProbability[container.template.Id] = container.probability;
+        }
+
+        return mapping;
+    }
+
+    /**
      * Choose loot to put into a static container based on weighting
      * Handle forced items + seasonal item removal when not in season
      * @param staticContainer The container itself we will add loot to
@@ -64,20 +311,20 @@ export class LocationGenerator
      * @param locationName Name of the map to generate static loot for
      * @returns IStaticContainerProps
      */
-    public generateContainerLoot(
-        staticContainer: IStaticContainerProps,
+    protected addLootToContainer(
+        staticContainer: IStaticContainerData,
         staticForced: IStaticForcedProps[],
         staticLootDist: Record<string, IStaticLootDetails>,
         staticAmmoDist: Record<string, IStaticAmmoDetails[]>,
-        locationName: string): IStaticContainerProps
+        locationName: string): IStaticContainerData
     {
         const container = this.jsonUtil.clone(staticContainer);
-        const containerTpl = container.Items[0]._tpl;
+        const containerTpl = container.template.Items[0]._tpl;
 
         // Create new unique parent id to prevent any collisions
         const parentId = this.objectId.generate();
-        container.Root = parentId;
-        container.Items[0]._id = parentId;
+        container.template.Root = parentId;
+        container.template.Items[0]._id = parentId;
 
         let containerMap = this.getContainerMapping(containerTpl);
 
@@ -88,7 +335,7 @@ export class LocationGenerator
         const containerLootPool = this.getPossibleLootItemsForContainer(containerTpl, staticLootDist);
 
         // Some containers need to have items forced into it (quest keys etc)
-        const tplsForced = staticForced.filter(x => x.containerId === container.Id).map(x => x.itemTpl);
+        const tplsForced = staticForced.filter(x => x.containerId === container.template.Id).map(x => x.itemTpl);
 
         // Draw random loot
         // Money spawn more than once in container
@@ -96,7 +343,7 @@ export class LocationGenerator
         const locklist = [Money.ROUBLES, Money.DOLLARS, Money.EUROS];
 
         // Choose items to add to container, factor in weighting + lock money down
-        const chosenTpls = containerLootPool.draw(itemCountToAdd, false, locklist);
+        const chosenTpls = containerLootPool.draw(itemCountToAdd, this.locationConfig.allowDuplicateItemsInStaticContainers, locklist);
 
         // Add forced loot to chosen item pool
         const tplsToAddToContainer = tplsForced.concat(chosenTpls);
@@ -132,7 +379,7 @@ export class LocationGenerator
             // Add loot to container before returning
             for (const item of items)
             {
-                container.Items.push(item);
+                container.template.Items.push(item);
             }
         }
 
@@ -229,11 +476,13 @@ export class LocationGenerator
     {
         const loot: SpawnpointTemplate[] = [];
 
-        this.addForcedLoot(loot, this.jsonUtil.clone(dynamicLootDist.spawnpointsForced), locationName);
+        // Add all forced loot to return array
+        this.addForcedLoot(loot, dynamicLootDist.spawnpointsForced, locationName);
 
-        const dynamicSpawnPoints = this.jsonUtil.clone(dynamicLootDist.spawnpoints);
-        //draw from random distribution
-        const numSpawnpoints = Math.round(
+        const allDynamicSpawnpoints = dynamicLootDist.spawnpoints;
+        
+        //Draw from random distribution
+        const desiredSpawnpointCount = Math.round(
             this.getLooseLootMultiplerForLocation(locationName) *
             this.randomUtil.randn(
                 dynamicLootDist.spawnpointCount.mean,
@@ -241,33 +490,53 @@ export class LocationGenerator
             )
         );
 
+        // Positions not in forced but have 100% chance to spawn
+        const guaranteedLoosePoints: Spawnpoint[] = [];
+
+        const blacklistedPoints = this.locationConfig.looseLootBlacklist[locationName];
         const spawnpointArray = new ProbabilityObjectArray<string, Spawnpoint>(this.mathUtil, this.jsonUtil);
-        for (const si of dynamicSpawnPoints)
+
+        for (const spawnpoint of allDynamicSpawnpoints)
         {
+            // Point is blacklsited, skip
+            if (blacklistedPoints?.includes(spawnpoint.template.Id))
+            {
+                this.logger.debug(`Ignoring loose loot location: ${spawnpoint.template.Id}`);
+                continue;
+            }
+
+            if (spawnpoint.probability === 1)
+            {
+                guaranteedLoosePoints.push(spawnpoint);
+                continue;
+            }
+
             spawnpointArray.push(
-                new ProbabilityObject(si.template.Id, si.probability, si)
+                new ProbabilityObject(spawnpoint.template.Id, spawnpoint.probability, spawnpoint)
             );
         }
 
         // Select a number of spawn points to add loot to
-        let spawnPoints: Spawnpoint[] = [];
-        for (const si of spawnpointArray.draw(numSpawnpoints, false))
+        let chosenSpawnpoints: Spawnpoint[] = [];
+        // Add ALL loose loot with 100% chance to pool
+        chosenSpawnpoints.push(...guaranteedLoosePoints);
+        for (const si of spawnpointArray.draw(desiredSpawnpointCount, false))
         {
-            spawnPoints.push(spawnpointArray.data(si));
+            chosenSpawnpoints.push(spawnpointArray.data(si));
         }
 
         // Filter out duplicate locationIds
-        spawnPoints = [...new Map(spawnPoints.map(x => [x.locationId, x])).values()];
-        const numberTooManyRequested = numSpawnpoints - spawnPoints.length;
+        chosenSpawnpoints = [...new Map(chosenSpawnpoints.map(x => [x.locationId, x])).values()];
+        const numberTooManyRequested = desiredSpawnpointCount - chosenSpawnpoints.length;
         if (numberTooManyRequested > 0)
         {
-            this.logger.info(this.localisationService.getText("location-spawn_point_count_requested_vs_found", {requested: numSpawnpoints, found: spawnPoints.length, mapName: locationName}));
+            this.logger.debug(this.localisationService.getText("location-spawn_point_count_requested_vs_found", {requested: desiredSpawnpointCount+guaranteedLoosePoints.length, found: chosenSpawnpoints.length, mapName: locationName}));
         }
 
-        // iterate over spawnpoints
+        // Iterate over spawnpoints
         const seasonalEventActive = this.seasonalEventService.seasonalEventEnabled();
         const seasonalItemTplBlacklist = this.seasonalEventService.getSeasonalEventItemsToBlock();
-        for (const spawnPoint of spawnPoints)
+        for (const spawnPoint of chosenSpawnpoints)
         {
             const itemArray = new ProbabilityObjectArray<string>(this.mathUtil, this.jsonUtil);
             for (const itemDist of spawnPoint.itemDistribution)
@@ -285,7 +554,7 @@ export class LocationGenerator
 
             // Draw a random item from spawn points possible items
             const chosenComposedKey = itemArray.draw(1)[0];
-            const createItemResult = this.createDynamicLootItem(chosenComposedKey, spawnPoint);
+            const createItemResult = this.createDynamicLootItem(chosenComposedKey, spawnPoint, staticAmmoDist);
 
             // Root id can change when generating a weapon
             spawnPoint.template.Root = createItemResult.items[0]._id;
@@ -369,9 +638,10 @@ export class LocationGenerator
      * Create array of item (with child items) and return
      * @param chosenComposedKey Key we want to look up items for
      * @param spawnPoint Dynamic spawn point item we want will be placed in
+     * @param staticAmmoDist ammo distributions
      * @returns IContainerItem
      */
-    protected createDynamicLootItem(chosenComposedKey: string, spawnPoint: Spawnpoint): IContainerItem
+    protected createDynamicLootItem(chosenComposedKey: string, spawnPoint: Spawnpoint, staticAmmoDist: Record<string, IStaticAmmoDetails[]>): IContainerItem
     {
         const chosenItem = spawnPoint.template.Items.find(x => x._id === chosenComposedKey);
         const chosenTpl = chosenItem._tpl;
@@ -391,6 +661,27 @@ export class LocationGenerator
                     upd: { "StackObjectsCount": stackCount }
                 }
             );
+        }
+        else if (this.itemHelper.isOfBaseclass(chosenTpl, BaseClasses.AMMO_BOX))
+        {
+            const ammoBoxTemplate = this.itemHelper.getItem(chosenTpl)[1];
+            const ammoBoxItem: Item[] = [{
+                _id: this.objectId.generate(),
+                _tpl: chosenTpl
+            }];
+            this.itemHelper.addCartridgesToAmmoBox(ammoBoxItem, ammoBoxTemplate);
+            itemWithMods.push(...ammoBoxItem);
+        }
+        else if (this.itemHelper.isOfBaseclass(chosenTpl, BaseClasses.MAGAZINE))
+        {
+            // Create array with just magazine
+            const magazineTemplate = this.itemHelper.getItem(chosenTpl)[1];
+            const magazineItem: Item[] = [{
+                _id: this.objectId.generate(),
+                _tpl: chosenTpl
+            }];
+            this.itemHelper.fillMagazineWithRandomCartridge(magazineItem, magazineTemplate, staticAmmoDist, null, this.locationConfig.minFillLooseMagazinePercent / 100);
+            itemWithMods.push(...magazineItem);
         }
         else
         {
@@ -499,7 +790,7 @@ export class LocationGenerator
             }
             else
             {
-                // RSP30 (62178be9d0050232da3485d9/624c0b3340357b5f566e8766) doesnt have any default presets and kills this code below as it has no chidren to reparent
+                // RSP30 (62178be9d0050232da3485d9/624c0b3340357b5f566e8766/6217726288ed9f0845317459) doesnt have any default presets and kills this code below as it has no chidren to reparent
                 this.logger.debug(`createItem() No preset found for weapon: ${tpl}`);
             }
 
@@ -558,7 +849,7 @@ export class LocationGenerator
         {
             // Create array with just magazine
             const magazineWithCartridges = [items[0]];
-            this.itemHelper.fillMagazineWithRandomCartridge(magazineWithCartridges, itemTemplate, staticAmmoDist);
+            this.itemHelper.fillMagazineWithRandomCartridge(magazineWithCartridges, itemTemplate, staticAmmoDist, null, this.locationConfig.minFillStaticMagazinePercent / 100);
 
             // Replace existing magazine with above array
             items.splice(items.indexOf(items[0]), 1, ...magazineWithCartridges);

@@ -4,21 +4,23 @@ import { BotGeneratorHelper } from "../helpers/BotGeneratorHelper";
 import { BotWeaponGeneratorHelper } from "../helpers/BotWeaponGeneratorHelper";
 import { ItemHelper } from "../helpers/ItemHelper";
 import { WeightedRandomHelper } from "../helpers/WeightedRandomHelper";
-import { MinMax } from "../models/common/MinMax";
 import { IPreset } from "../models/eft/common/IGlobals";
 import { Inventory as PmcInventory } from "../models/eft/common/tables/IBotBase";
-import { Inventory, ModsChances } from "../models/eft/common/tables/IBotType";
+import { GenerationData, Inventory, ModsChances } from "../models/eft/common/tables/IBotType";
 import { Item } from "../models/eft/common/tables/IItem";
 import { ITemplateItem } from "../models/eft/common/tables/ITemplateItem";
 import { ConfigTypes } from "../models/enums/ConfigTypes";
 import { EquipmentSlots } from "../models/enums/EquipmentSlots";
 import { GenerateWeaponResult } from "../models/spt/bots/GenerateWeaponResult";
 import { IBotConfig } from "../models/spt/config/IBotConfig";
+import { IPmcConfig } from "../models/spt/config/IPmcConfig";
+import { IRepairConfig } from "../models/spt/config/IRepairConfig";
 import { ILogger } from "../models/spt/utils/ILogger";
 import { ConfigServer } from "../servers/ConfigServer";
 import { DatabaseServer } from "../servers/DatabaseServer";
 import { BotWeaponModLimitService } from "../services/BotWeaponModLimitService";
 import { LocalisationService } from "../services/LocalisationService";
+import { RepairService } from "../services/RepairService";
 import { HashUtil } from "../utils/HashUtil";
 import { JsonUtil } from "../utils/JsonUtil";
 import { RandomUtil } from "../utils/RandomUtil";
@@ -31,6 +33,8 @@ export class BotWeaponGenerator
 {
     protected readonly modMagazineSlotId = "mod_magazine";
     protected botConfig: IBotConfig;
+    protected pmcConfig: IPmcConfig;
+    protected repairConfig: IRepairConfig;
 
     constructor(
         @inject("JsonUtil") protected jsonUtil: JsonUtil,
@@ -46,10 +50,13 @@ export class BotWeaponGenerator
         @inject("BotWeaponModLimitService") protected botWeaponModLimitService: BotWeaponModLimitService,
         @inject("BotEquipmentModGenerator") protected botEquipmentModGenerator: BotEquipmentModGenerator,
         @inject("LocalisationService") protected localisationService: LocalisationService,
+        @inject("RepairService") protected repairService: RepairService,
         @injectAll("InventoryMagGen") protected inventoryMagGenComponents: IInventoryMagGen[]
     )
     {
         this.botConfig = this.configServer.getConfig(ConfigTypes.BOT);
+        this.pmcConfig = this.configServer.getConfig(ConfigTypes.PMC);
+        this.repairConfig = this.configServer.getConfig(ConfigTypes.REPAIR);
         this.inventoryMagGenComponents.sort((a, b) => a.getPriority() - b.getPriority());
     }
 
@@ -78,7 +85,7 @@ export class BotWeaponGenerator
     public pickWeightedWeaponTplFromPool(equipmentSlot: string, botTemplateInventory: Inventory): string
     {
         const weaponPool = botTemplateInventory.equipment[equipmentSlot];
-        return this.weightedRandomHelper.getWeightedInventoryItem(weaponPool);
+        return this.weightedRandomHelper.getWeightedValue<string>(weaponPool);
     }
 
     /**
@@ -89,7 +96,7 @@ export class BotWeaponGenerator
      * @param weaponParentId ParentId of the weapon being generated
      * @param modChances Dictionary of item types and % chance weapon will have that mod
      * @param botRole e.g. assault/exusec
-     * @param isPmc 
+     * @param isPmc Is weapon being generated for a pmc
      * @returns GenerateWeaponResult object
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -117,6 +124,13 @@ export class BotWeaponGenerator
 
         // Create with just base weapon item
         let weaponWithModsArray = this.constructWeaponBaseArray(weaponTpl, weaponParentId, equipmentSlot, weaponItemTemplate, botRole);
+
+        // Chance to add randomised weapon enhancement
+        if (isPmc && this.randomUtil.getChance100(this.pmcConfig.weaponHasEnhancementChancePercent))
+        {
+            const weaponConfig = this.repairConfig.repairKit.weapon;
+            this.repairService.addBuff(weaponConfig, weaponWithModsArray[0]);
+        }
 
         // Add mods to weapon base
         if (Object.keys(modPool).includes(weaponTpl))
@@ -189,7 +203,7 @@ export class BotWeaponGenerator
         }
         else
         {
-            // ALready exists, update values
+            // Already exists, update values
             existingItemWithSlot.upd = {
                 StackObjectsCount: 1
             };
@@ -314,11 +328,11 @@ export class BotWeaponGenerator
      * Generates extra magazines or bullets (if magazine is internal) and adds them to TacticalVest and Pockets.
      * Additionally, adds extra bullets to SecuredContainer
      * @param generatedWeaponResult object with properties for generated weapon (weapon mods pool / weapon template / ammo tpl)
-     * @param magCounts Magazine count to add to inventory
+     * @param magWeights Magazine weights for count to add to inventory
      * @param inventory Inventory to add magazines to
      * @param botRole The bot type we're getting generating extra mags for
      */
-    public addExtraMagazinesToInventory(generatedWeaponResult: GenerateWeaponResult, magCounts: MinMax, inventory: PmcInventory, botRole: string): void
+    public addExtraMagazinesToInventory(generatedWeaponResult: GenerateWeaponResult, magWeights: GenerationData, inventory: PmcInventory, botRole: string): void
     {
         const weaponAndMods = generatedWeaponResult.weapon;
         const weaponTemplate = generatedWeaponResult.weaponTemplate;
@@ -346,7 +360,7 @@ export class BotWeaponGenerator
             this.addUbglGrenadesToBotInventory(weaponAndMods, generatedWeaponResult, inventory);
         }
 
-        const inventoryMagGenModel = new InventoryMagGen(magCounts, magTemplate, weaponTemplate, ammoTemplate, inventory);
+        const inventoryMagGenModel = new InventoryMagGen(magWeights, magTemplate, weaponTemplate, ammoTemplate, inventory);
         this.inventoryMagGenComponents.find(v => v.canHandleInventoryMagGen(inventoryMagGenModel)).process(inventoryMagGenModel);
 
         // Add x stacks of bullets to SecuredContainer (bots use a magic mag packing skill to reload instantly)
@@ -366,7 +380,11 @@ export class BotWeaponGenerator
         const ubglDbTemplate = this.itemHelper.getItem(ubglMod._tpl)[1];
 
         // Define min/max of how many grenades bot will have
-        const ubglMinMax = { min: 1, max: 2 };
+        const ubglMinMax:GenerationData = {
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            weights: {"1": 1, "2": 1},
+            whitelist: []
+        };
 
         // get ammo template from db
         const ubglAmmoDbTemplate = this.itemHelper.getItem(generatedWeaponResult.chosenUbglAmmoTpl)[1];
@@ -448,16 +466,16 @@ export class BotWeaponGenerator
         const compatibleCartridges = ammo[desiredCaliber];
         if (!compatibleCartridges || compatibleCartridges?.length === 0)
         {
-            this.logger.warning(this.localisationService.getText("bot-no_caliber_data_for_weapon_falling_back_to_default", {weaponId: weaponTemplate._id, weaponName: weaponTemplate._name, defaultAmmo: weaponTemplate._props.defAmmo}));
+            this.logger.debug(this.localisationService.getText("bot-no_caliber_data_for_weapon_falling_back_to_default", {weaponId: weaponTemplate._id, weaponName: weaponTemplate._name, defaultAmmo: weaponTemplate._props.defAmmo}));
 
             // Immediately returns, as default ammo is guaranteed to be compatible
             return weaponTemplate._props.defAmmo;
         }
 
-        const chosenAmmoTpl = this.weightedRandomHelper.getWeightedInventoryItem(compatibleCartridges);
+        const chosenAmmoTpl = this.weightedRandomHelper.getWeightedValue<string>(compatibleCartridges);
         if (weaponTemplate._props.Chambers[0] && !weaponTemplate._props.Chambers[0]._props.filters[0].Filter.includes(chosenAmmoTpl))
         {
-            this.logger.warning(this.localisationService.getText("bot-incompatible_ammo_for_weapon_falling_back_to_default", {chosenAmmo: chosenAmmoTpl, weaponId: weaponTemplate._id, weaponName: weaponTemplate._name, defaultAmmo: weaponTemplate._props.defAmmo}));
+            this.logger.debug(this.localisationService.getText("bot-incompatible_ammo_for_weapon_falling_back_to_default", {chosenAmmo: chosenAmmoTpl, weaponId: weaponTemplate._id, weaponName: weaponTemplate._name, defaultAmmo: weaponTemplate._props.defAmmo}));
 
             // Incompatible ammo found, return default (can happen with .366 and 7.62x39 weapons)
             return weaponTemplate._props.defAmmo;
@@ -483,16 +501,15 @@ export class BotWeaponGenerator
             return weaponTemplate._props.ammoCaliber;
         }
 
-        // UBGLs use a linked weapon that contains caliber info
         if (weaponTemplate._props.LinkedWeapon)
         {
-            const linkedWeaponItem = this.itemHelper.getItem(weaponTemplate._props.LinkedWeapon)[1];
-            if (!linkedWeaponItem)
+            const ammoInChamber = this.itemHelper.getItem(weaponTemplate._props.Chambers[0]._props.filters[0].Filter[0]);
+            if (!ammoInChamber[0])
             {
                 return;
             }
 
-            return linkedWeaponItem._props.ammoCaliber;
+            return ammoInChamber[1]._props.Caliber;
         }
     }
 
@@ -540,7 +557,10 @@ export class BotWeaponGenerator
                 _id: this.hashUtil.generate(),
                 _tpl: ubglAmmoTpl,
                 parentId: ubglMod._id,
-                slotId: "patron_in_weapon"
+                slotId: "patron_in_weapon",
+                upd: {
+                    StackObjectsCount: 1
+                }
             }
         );
     }

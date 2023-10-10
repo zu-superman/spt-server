@@ -19,7 +19,8 @@ export class TradeItemEventRouter extends ItemEventRouterDefinition
     {
         return [
             new HandledRoute("TradingConfirm", false),
-            new HandledRoute("RagFairBuyOffer", false)
+            new HandledRoute("RagFairBuyOffer", false),
+            new HandledRoute("SellAllFromSavage", false)
         ];
     }
 
@@ -31,6 +32,8 @@ export class TradeItemEventRouter extends ItemEventRouterDefinition
                 return this.tradeCallbacks.processTrade(pmcData, body, sessionID);
             case "RagFairBuyOffer":
                 return this.tradeCallbacks.processRagfairTrade(pmcData, body, sessionID);
+            case "SellAllFromSavage":
+                return this.tradeCallbacks.sellAllFromSavage(pmcData, body, sessionID);
         }
     }
 }

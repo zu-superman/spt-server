@@ -4,9 +4,8 @@ import { TradeController } from "../controllers/TradeController";
 import { IPmcData } from "../models/eft/common/IPmcData";
 import { IItemEventRouterResponse } from "../models/eft/itemEvent/IItemEventRouterResponse";
 import { IProcessBaseTradeRequestData } from "../models/eft/trade/IProcessBaseTradeRequestData";
-import {
-    IProcessRagfairTradeRequestData
-} from "../models/eft/trade/IProcessRagfairTradeRequestData";
+import { IProcessRagfairTradeRequestData } from "../models/eft/trade/IProcessRagfairTradeRequestData";
+import { ISellScavItemsToFenceRequestData } from "../models/eft/trade/ISellScavItemsToFenceRequestData";
 
 @injectable()
 export class TradeCallbacks
@@ -29,5 +28,11 @@ export class TradeCallbacks
     public processRagfairTrade(pmcData: IPmcData, body: IProcessRagfairTradeRequestData, sessionID: string): IItemEventRouterResponse
     {
         return this.tradeController.confirmRagfairTrading(pmcData, body, sessionID);
+    }
+
+    /** Handle SellAllFromSavage event */
+    public sellAllFromSavage(pmcData: IPmcData, body: ISellScavItemsToFenceRequestData, sessionID: string): IItemEventRouterResponse
+    {
+        return this.tradeController.sellScavItemsToFence(pmcData, body, sessionID);
     }
 }

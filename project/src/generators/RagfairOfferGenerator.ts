@@ -67,13 +67,12 @@ export class RagfairOfferGenerator
      * @param items Items in the offer
      * @param barterScheme Cost of item (currency or barter)
      * @param loyalLevel Loyalty level needed to buy item
-     * @param price Price of offer
-     * @param sellInOnePiece Set StackObjectsCount to 1
+     * @param sellInOnePiece Flags sellInOnePiece to be true
      * @returns IRagfairOffer
      */
-    public createFleaOffer(userID: string, time: number, items: Item[], barterScheme: IBarterScheme[], loyalLevel: number, price: number, sellInOnePiece = false): IRagfairOffer
+    public createFleaOffer(userID: string, time: number, items: Item[], barterScheme: IBarterScheme[], loyalLevel: number, sellInOnePiece = false): IRagfairOffer
     {
-        const offer = this.createOffer(userID, time, items, barterScheme, loyalLevel, price, sellInOnePiece);
+        const offer = this.createOffer(userID, time, items, barterScheme, loyalLevel, sellInOnePiece);
         this.ragfairOfferService.addOffer(offer);
 
         return offer;
@@ -86,11 +85,10 @@ export class RagfairOfferGenerator
      * @param items Items in the offer
      * @param barterScheme Cost of item (currency or barter)
      * @param loyalLevel Loyalty level needed to buy item
-     * @param price Price of offer
      * @param sellInOnePiece Set StackObjectsCount to 1
      * @returns IRagfairOffer
      */
-    protected createOffer(userID: string, time: number, items: Item[], barterScheme: IBarterScheme[], loyalLevel: number, price: number, sellInOnePiece = false): IRagfairOffer
+    protected createOffer(userID: string, time: number, items: Item[], barterScheme: IBarterScheme[], loyalLevel: number, sellInOnePiece = false): IRagfairOffer
     {
         const isTrader = this.ragfairServerHelper.isTrader(userID);
 
@@ -99,17 +97,18 @@ export class RagfairOfferGenerator
         {
             const requirement: OfferRequirement = {
                 _tpl: barter._tpl,
-                count: barter.count,
+                count: +barter.count.toFixed(2),
                 onlyFunctional: barter.onlyFunctional ?? false
             };
 
             offerRequirements.push(requirement);
         }
 
-        const roublePrice = Math.round(this.calculateOfferListingPrice(offerRequirements));
+        const itemCount = items.filter(x => x.slotId === "hideout").length;
+        const roublePrice = Math.round(this.convertOfferRequirementsIntoRoubles(offerRequirements));
 
         const offer: IRagfairOffer = {
-            _id: (isTrader) ? items[0]._id : this.hashUtil.generate(),
+            _id: this.hashUtil.generate(),
             intId: 0,
             user: {
                 id: this.getTraderId(userID),
@@ -125,7 +124,7 @@ export class RagfairOfferGenerator
             items: this.jsonUtil.clone(items),
             requirements: offerRequirements,
             requirementsCost: roublePrice,
-            itemsCost: Math.round(this.handbookHelper.getTemplatePrice(items[0]._tpl)), // handbook price
+            itemsCost: Math.round(this.handbookHelper.getTemplatePrice(items[0]._tpl)), // Handbook price
             summaryCost: roublePrice,
             startTime: time,
             endTime: this.getOfferEndTime(userID, time),
@@ -135,7 +134,7 @@ export class RagfairOfferGenerator
             locked: false,
             unlimitedCount: false,
             notAvailable: false,
-            CurrentItemCount: 0
+            CurrentItemCount: itemCount
         };
 
         return offer;
@@ -146,7 +145,7 @@ export class RagfairOfferGenerator
      * @param offerRequirements barter requirements for offer
      * @returns rouble cost of offer
      */
-    protected calculateOfferListingPrice(offerRequirements: OfferRequirement[]): number
+    protected convertOfferRequirementsIntoRoubles(offerRequirements: OfferRequirement[]): number
     {
         let roublePrice = 0;
         for (const requirement of offerRequirements)
@@ -351,31 +350,50 @@ export class RagfairOfferGenerator
      * @param itemDetails raw db item details
      * @returns Item array
      */
-    protected async createSingleOfferForItem(items: Item[], isPreset: boolean, itemDetails: [boolean, ITemplateItem]): Promise<Item[]>
+    protected async createSingleOfferForItem(items: Item[], isPreset: boolean, itemDetails: [boolean, ITemplateItem]): Promise<void>
     {
+        // Set stack size to random value
         items[0].upd.StackObjectsCount = this.ragfairServerHelper.calculateDynamicStackCount(items[0]._tpl, isPreset);
+        
         const isBarterOffer = this.randomUtil.getChance100(this.ragfairConfig.dynamic.barter.chancePercent);
+        const isPackOffer =  this.randomUtil.getChance100(this.ragfairConfig.dynamic.pack.chancePercent)
+            && !isBarterOffer
+            && items.length === 1
+            && this.itemHelper.isOfBaseclasses(items[0]._tpl, this.ragfairConfig.dynamic.pack.itemTypeWhitelist);
+        const randomUserId = this.hashUtil.generate();
 
-        const userID = this.hashUtil.generate();
+        let barterScheme: IBarterScheme[];
+        if (isPackOffer)
+        {
+            // Set pack size
+            const stackSize = this.randomUtil.getInt(this.ragfairConfig.dynamic.pack.itemCountMin, this.ragfairConfig.dynamic.pack.itemCountMax);
+            items[0].upd.StackObjectsCount = stackSize;
 
-        // Get properties
-        items = this.getItemCondition(userID, items, itemDetails[1]);
-        const barterScheme = isBarterOffer
-            ? this.createBarterRequirement(items)
-            : this.createCurrencyRequirement(items);
-        const price = this.ragfairPriceService.getBarterPrice(barterScheme);
+            // Don't randomise pack items
+            barterScheme = this.createCurrencyBarterScheme(items, isPackOffer, stackSize);
+        }
+        else if (isBarterOffer)
+        {
+            // Apply randomised properties
+            items = this.randomiseItemUpdProperties(randomUserId, items, itemDetails[1]);
+            barterScheme = this.createBarterBarterScheme(items);
+        }
+        else
+        {
+            // Apply randomised properties
+            items = this.randomiseItemUpdProperties(randomUserId, items, itemDetails[1]);
+            barterScheme = this.createCurrencyBarterScheme(items, isPackOffer);
+        }
 
         const offer = this.createFleaOffer(
-            userID,
+            randomUserId,
             this.timeUtil.getTimestamp(),
             items,
             barterScheme,
             1,
-            price,
-            isPreset); // sellAsOnePiece
+            isPreset || isPackOffer); // sellAsOnePiece
 
         this.ragfairCategoriesService.incrementCategory(offer);
-        return items;
     }
 
     /**
@@ -401,13 +419,14 @@ export class RagfairOfferGenerator
 
         for (const item of assorts.items)
         {
+            // We only want to process 'base' items, no children
             if (item.slotId !== "hideout")
             {
                 // skip mod items
                 continue;
             }
 
-            // run blacklist check on trader offers
+            // Run blacklist check on trader offers
             if (this.ragfairConfig.dynamic.blacklist.traderItems)
             {
                 const itemDetails = this.itemHelper.getItem(item._tpl);
@@ -438,9 +457,8 @@ export class RagfairOfferGenerator
 
             const barterSchemeItems = assorts.barter_scheme[item._id][0];
             const loyalLevel = assorts.loyal_level_items[item._id];
-            const price = this.ragfairPriceService.getBarterPrice(barterSchemeItems);
 
-            const offer = this.createFleaOffer(traderID, time, items, barterSchemeItems, loyalLevel, price);
+            const offer = this.createFleaOffer(traderID, time, items, barterSchemeItems, loyalLevel, false);
 
             this.ragfairCategoriesService.incrementCategory(offer);
 
@@ -457,7 +475,7 @@ export class RagfairOfferGenerator
      * @param itemDetails db details of first item
      * @returns 
      */
-    protected getItemCondition(userID: string, itemWithMods: Item[], itemDetails: ITemplateItem): Item[]
+    protected randomiseItemUpdProperties(userID: string, itemWithMods: Item[], itemDetails: ITemplateItem): Item[]
     {
         // Add any missing properties to first item in array 
         itemWithMods[0] = this.addMissingConditions(itemWithMods[0]);
@@ -512,7 +530,7 @@ export class RagfairOfferGenerator
         const multiplier = this.randomUtil.getFloat(this.ragfairConfig.dynamic.condition[conditionSettingsId].min, this.ragfairConfig.dynamic.condition[conditionSettingsId].max);
 
         // Armor or weapons
-        if ("Repairable" in item.upd)
+        if (item.upd.Repairable)
         {
             // Randomise non-0 class armor
             if (itemDetails._props.armorClass && <number>itemDetails._props.armorClass >= 1)
@@ -525,30 +543,50 @@ export class RagfairOfferGenerator
             {
                 this.randomiseDurabilityValues(item, multiplier);
             }
+
+            return;
         }
 
-        if ("MedKit" in item.upd)
+        if (item.upd.MedKit)
         {
             // randomize health
             item.upd.MedKit.HpResource = Math.round(item.upd.MedKit.HpResource * multiplier) || 1;
+
+            return;
         }
 
-        if ("Key" in item.upd && itemDetails._props.MaximumNumberOfUsage > 1)
+        if (item.upd.Key && itemDetails._props.MaximumNumberOfUsage > 1)
         {
             // randomize key uses
             item.upd.Key.NumberOfUsages = Math.round(itemDetails._props.MaximumNumberOfUsage * (1 - multiplier)) || 0;
+
+            return;
         }
 
-        if ("FoodDrink" in item.upd)
+        if (item.upd.FoodDrink)
         {
             // randomize food/drink value
             item.upd.FoodDrink.HpPercent = Math.round(itemDetails._props.MaxResource * multiplier) || 1;
+
+            return;
         }
 
-        if ("RepairKit" in item.upd) 
+        if (item.upd.RepairKit) 
         {
             // randomize repair kit (armor/weapon) uses
             item.upd.RepairKit.Resource = Math.round(itemDetails._props.MaxRepairResource * multiplier) || 1;
+
+            return;
+        }
+
+        if (this.itemHelper.isOfBaseclass(itemDetails._id, BaseClasses.FUEL))
+        {
+            const totalCapacity = itemDetails._props.MaxResource;
+            const remainingFuel = Math.round(totalCapacity * multiplier);
+            item.upd.Resource = {
+                UnitsConsumed: totalCapacity - remainingFuel,
+                Value: remainingFuel
+            };
         }
     }
 
@@ -638,15 +676,15 @@ export class RagfairOfferGenerator
      * @param offerItems Items for sale in offer
      * @returns Barter scheme
      */
-    protected createBarterRequirement(offerItems: Item[]): IBarterScheme[]
+    protected createBarterBarterScheme(offerItems: Item[]): IBarterScheme[]
     {
-        // get flea price of item bein sold
-        const priceOfItemOffer = this.ragfairPriceService.getDynamicOfferPrice(offerItems, Money.ROUBLES);
+        // get flea price of item being sold
+        const priceOfItemOffer = this.ragfairPriceService.getDynamicOfferPriceForOffer(offerItems, Money.ROUBLES, false);
 
         // Dont make items under a designated rouble value into barter offers
         if (priceOfItemOffer < this.ragfairConfig.dynamic.barter.minRoubleCostToBecomeBarter)
         {
-            return this.createCurrencyRequirement(offerItems);
+            return this.createCurrencyBarterScheme(offerItems, false);
         }
 
         // Get a randomised number of barter items to list offer for
@@ -666,7 +704,7 @@ export class RagfairOfferGenerator
         // No items on flea have a matching price, fall back to currency
         if (filtered.length === 0)
         {
-            return this.createCurrencyRequirement(offerItems);
+            return this.createCurrencyBarterScheme(offerItems, false);
         }
 
         // Choose random item from price-filtered flea items
@@ -704,12 +742,14 @@ export class RagfairOfferGenerator
     /**
      * Create a random currency-based barter scheme for an array of items
      * @param offerItems Items on offer
+     * @param isPackOffer Is the barter scheme being created for a pack offer
+     * @param multipler What to multiply the resulting price by
      * @returns Barter scheme for offer
      */
-    protected createCurrencyRequirement(offerItems: Item[]): IBarterScheme[]
+    protected createCurrencyBarterScheme(offerItems: Item[], isPackOffer: boolean, multipler = 1): IBarterScheme[]
     {
         const currency = this.ragfairServerHelper.getDynamicOfferCurrency();
-        const price = this.ragfairPriceService.getDynamicOfferPrice(offerItems, currency);
+        const price = this.ragfairPriceService.getDynamicOfferPriceForOffer(offerItems, currency, isPackOffer) * multipler;
 
         return [
             {

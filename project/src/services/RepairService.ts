@@ -142,7 +142,8 @@ export class RepairService
      * @param repairDetails details of item repaired, cost/item
      * @param pmcData Profile to add points to
      */
-    public addRepairSkillPoints(sessionId: string,
+    public addRepairSkillPoints(
+        sessionId: string,
         repairDetails: RepairDetails,
         pmcData: IPmcData): void
     {
@@ -158,6 +159,7 @@ export class RepairService
             const itemDetails = this.itemHelper.getItem(repairDetails.repairedItem._tpl);
             if (!itemDetails[0])
             {
+                // No item found
                 this.logger.error(this.localisationService.getText("repair-unable_to_find_item_in_db", repairDetails.repairedItem._tpl));
 
                 return;
@@ -170,7 +172,24 @@ export class RepairService
             this.questHelper.rewardSkillPoints(sessionId, pmcData, vestSkillToLevel, pointsToAddToVestSkill);
         }
 
-        this.questHelper.rewardSkillPoints(sessionId, pmcData, SkillTypes.INTELLECT, repairDetails.repairAmount / 10);
+        // Handle giving INT to player - differs if using kit/trader and weapon vs armor
+        let intellectGainedFromRepair: number;
+        if (repairDetails.repairedByKit)
+        {
+            const intRepairMultiplier = (this.itemHelper.isOfBaseclass(repairDetails.repairedItem._tpl, BaseClasses.WEAPON))
+                ? this.repairConfig.repairKitIntellectGainMultiplier.weapon
+                : this.repairConfig.repairKitIntellectGainMultiplier.armor;
+
+            // limit gain to a max value defined in config.maxIntellectGainPerRepair
+            intellectGainedFromRepair = Math.min(repairDetails.repairAmount * intRepairMultiplier, this.repairConfig.maxIntellectGainPerRepair.kit);
+        }
+        else
+        {
+            // Trader repair - Not as accurate as kit, needs data from live
+            intellectGainedFromRepair = Math.min(repairDetails.repairAmount / 10, this.repairConfig.maxIntellectGainPerRepair.trader);
+        }
+
+        this.questHelper.rewardSkillPoints(sessionId, pmcData, SkillTypes.INTELLECT, intellectGainedFromRepair);
     }
     
     /**
@@ -205,8 +224,9 @@ export class RepairService
             itemToRepairDetails,
             repairItemIsArmor,
             repairKits[0].count / this.getKitDivisor(itemToRepairDetails, repairItemIsArmor, pmcData),
-            this.repairConfig.applyRandomizeDurabilityLoss,
-            1);
+            true,
+            1,
+            this.repairConfig.applyRandomizeDurabilityLoss);
 
         // Find and use repair kit defined in body
         for (const repairKit of repairKits)
@@ -333,26 +353,26 @@ export class RepairService
             if (this.itemHelper.isOfBaseclasses(repairDetails.repairedItem._tpl, [BaseClasses.ARMOR, BaseClasses.VEST]))
             {
                 const armorConfig = this.repairConfig.repairKit.armor;
-                this.addBuff(armorConfig, repairDetails);
+                this.addBuff(armorConfig, repairDetails.repairedItem);
             }
             else if (this.itemHelper.isOfBaseclass(repairDetails.repairedItem._tpl, BaseClasses.WEAPON))
             {
                 const weaponConfig = this.repairConfig.repairKit.weapon;
-                this.addBuff(weaponConfig, repairDetails);
+                this.addBuff(weaponConfig, repairDetails.repairedItem);
             }
             // TODO: Knife repair kits may be added at some point, a bracket needs to be added here
         }
     }
 
     /**
-     * Add buff to item
+     * Add random buff to item
      * @param itemConfig weapon/armor config 
      * @param repairDetails Details for item to repair
      */
-    protected addBuff(itemConfig: BonusSettings, repairDetails: RepairDetails): void
+    public addBuff(itemConfig: BonusSettings, item: Item): void
     {
-        const bonusRarity = this.weightedRandomHelper.getWeightedInventoryItem(itemConfig.rarityWeight);
-        const bonusType = this.weightedRandomHelper.getWeightedInventoryItem(itemConfig.bonusTypeWeight);
+        const bonusRarity = this.weightedRandomHelper.getWeightedValue<string>(itemConfig.rarityWeight);
+        const bonusType = this.weightedRandomHelper.getWeightedValue<string>(itemConfig.bonusTypeWeight);
 
         const bonusValues = itemConfig[bonusRarity][bonusType].valuesMinMax;
         const bonusValue = this.randomUtil.getFloat(bonusValues.min, bonusValues.max);
@@ -360,11 +380,11 @@ export class RepairService
         const bonusThresholdPercents = itemConfig[bonusRarity][bonusType].activeDurabilityPercentMinMax;
         const bonusThresholdPercent = this.randomUtil.getInt(bonusThresholdPercents.min, bonusThresholdPercents.max);
 
-        repairDetails.repairedItem.upd.Buff = {
+        item.upd.Buff = {
             rarity: bonusRarity,
             buffType: bonusType,
             value: bonusValue,
-            thresholdDurability: this.randomUtil.getPercentOfValue(bonusThresholdPercent, repairDetails.repairedItem.upd.Repairable.Durability)
+            thresholdDurability: this.randomUtil.getPercentOfValue(bonusThresholdPercent, item.upd.Repairable.Durability)
         };
     }
 

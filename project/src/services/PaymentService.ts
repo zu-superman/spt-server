@@ -37,7 +37,7 @@ export class PaymentService
      * @param {IPmcData} pmcData Player profile
      * @param {IProcessBuyTradeRequestData} request
      * @param {string} sessionID
-     * @returns Object
+     * @returns IItemEventRouterResponse
      */
     public payMoney(pmcData: IPmcData, request: IProcessBuyTradeRequestData, sessionID: string, output: IItemEventRouterResponse):  IItemEventRouterResponse
     {
@@ -73,26 +73,57 @@ export class PaymentService
         // Nothing to do here, since we dont need to pay money.
         if (barterPrice === 0)
         {
-            this.logger.success(this.localisationService.getText("payment-zero_price_no_payment"));
-            return output;
+            this.logger.debug(this.localisationService.getText("payment-zero_price_no_payment"));
         }
 
-        output = this.addPaymentToOutput(pmcData, currencyTpl, barterPrice, sessionID, output);
-        if (output.warnings.length > 0)
+        // Only perform if paying with currency (not barters)
+        if (barterPrice > 0)
         {
-            return output;
+            output = this.addPaymentToOutput(pmcData, currencyTpl, barterPrice, sessionID, output);
+            if (output.warnings.length > 0)
+            {
+                // Something failed
+                return output;
+            }
         }
 
         // set current sale sum
         // convert barterPrice itemTpl into RUB then convert RUB into trader currency
-        const saleSum = pmcData.TradersInfo[request.tid].salesSum += this.handbookHelper.fromRUB(this.handbookHelper.inRUB(barterPrice, currencyTpl), this.paymentHelper.getCurrency(trader.currency));
+        const costOfPurchaseInCurrency = (barterPrice === 0)
+            ? this.handbookHelper.fromRUB(this.getTraderItemHandbookPriceRouble(request.item_id, request.tid), this.paymentHelper.getCurrency(trader.currency))
+            : this.handbookHelper.fromRUB(this.handbookHelper.inRUB(barterPrice, currencyTpl), this.paymentHelper.getCurrency(trader.currency));
 
-        pmcData.TradersInfo[request.tid].salesSum = saleSum;
-        this.traderHelper.lvlUp(request.tid, sessionID);
-        Object.assign(output.profileChanges[sessionID].traderRelations, { [request.tid]: pmcData.TradersInfo[request.tid] });
+        pmcData.TradersInfo[request.tid].salesSum += costOfPurchaseInCurrency;
+        this.traderHelper.lvlUp(request.tid, pmcData);
+        
+        this.logger.debug("Item(s) taken. Status OK.");
 
-        this.logger.debug("Items taken. Status OK.");
         return output;
+    }
+
+    /**
+     * Get the item price of a specific traders assort
+     * @param traderAssortId Id of assort to look up
+     * @param traderId Id of trader with assort
+     * @returns Handbook rouble price of item
+     */
+    protected getTraderItemHandbookPriceRouble(traderAssortId: string, traderId: string): number
+    {
+        const purchasedAssortItem = this.traderHelper.getTraderAssortItemByAssortId(traderId, traderAssortId);
+        if (!purchasedAssortItem)
+        {
+            return 1;
+        }
+
+        const assortItemPriceRouble = this.handbookHelper.getTemplatePrice(purchasedAssortItem._tpl);
+        if (!assortItemPriceRouble)
+        {
+            this.logger.debug(`No item price found for ${purchasedAssortItem._tpl} on trader: ${traderId} in assort: ${traderAssortId}`);
+            
+            return 1;
+        }
+
+        return assortItemPriceRouble;
     }
 
     /**
@@ -168,8 +199,7 @@ export class PaymentService
         const saleSum = pmcData.TradersInfo[body.tid].salesSum + amount;
 
         pmcData.TradersInfo[body.tid].salesSum = saleSum;
-        this.traderHelper.lvlUp(body.tid, sessionID);
-        Object.assign(output.profileChanges[sessionID].traderRelations, { [body.tid]: { "salesSum": saleSum } });
+        this.traderHelper.lvlUp(body.tid, pmcData);
 
         return output;
     }
@@ -210,7 +240,7 @@ export class PaymentService
      */
     public addPaymentToOutput(pmcData: IPmcData, currencyTpl: string, amountToPay: number, sessionID: string, output: IItemEventRouterResponse): IItemEventRouterResponse
     {
-        const moneyItemsInInventory = this.getSortedMoneyItemsInInventory(pmcData, currencyTpl);
+        const moneyItemsInInventory = this.getSortedMoneyItemsInInventory(pmcData, currencyTpl, pmcData.Inventory.stash);
         const amountAvailable = moneyItemsInInventory.reduce((accumulator, item) => accumulator + item.upd.StackObjectsCount, 0);
 
         // If no money in inventory or amount is not enough we return false
@@ -251,14 +281,15 @@ export class PaymentService
      * Get all money stacks in inventory and prioritse items in stash
      * @param pmcData 
      * @param currencyTpl 
+     * @param playerStashId Players stash id
      * @returns Sorting money items
      */
-    protected getSortedMoneyItemsInInventory(pmcData: IPmcData, currencyTpl: string): Item[]
+    protected getSortedMoneyItemsInInventory(pmcData: IPmcData, currencyTpl: string, playerStashId: string): Item[]
     {
-        const moneyItemsInInventory = this.itemHelper.findBarterItems("tpl", pmcData, currencyTpl);
+        const moneyItemsInInventory = this.itemHelper.findBarterItems("tpl", pmcData.Inventory.items, currencyTpl);
 
         // Prioritise items in stash to top of array
-        moneyItemsInInventory.sort((a, b) => this.prioritiseStashSort(a, b, pmcData.Inventory.items));
+        moneyItemsInInventory.sort((a, b) => this.prioritiseStashSort(a, b, pmcData.Inventory.items, playerStashId));
 
         return moneyItemsInInventory;
     }
@@ -269,17 +300,18 @@ export class PaymentService
      * @param a First money stack item
      * @param b Second money stack item
      * @param inventoryItems players inventory items
+     * @param playerStashId Players stash id
      * @returns sort order
      */
-    protected prioritiseStashSort(a: Item, b: Item, inventoryItems: Item[]): number
+    protected prioritiseStashSort(a: Item, b: Item, inventoryItems: Item[], playerStashId: string): number
     {
-        // a is stash, prioritise
+        // a in stash, prioritise
         if (a.slotId === "hideout" && b.slotId !== "hideout")
         {
             return -1;
         }
 
-        // b is stash, prioritise
+        // b in stash, prioritise
         if (a.slotId !== "hideout" && b.slotId === "hideout")
         {
             return 1;
@@ -289,17 +321,17 @@ export class PaymentService
         if (a.slotId === "main" && b.slotId === "main")
         {
             // Item is in inventory, not stash, deprioritise
-            const aIsInInventory = this.isInInventory(a.parentId, inventoryItems);
-            const bIsInInventory = this.isInInventory(b.parentId, inventoryItems);
+            const aInStash = this.isInStash(a.parentId, inventoryItems, playerStashId);
+            const bInStash = this.isInStash(b.parentId, inventoryItems, playerStashId);
 
-            // Lower a as its in inventory, not stash
-            if (!aIsInInventory && bIsInInventory)
+            // a in stash, prioritise
+            if (aInStash && !bInStash)
             {
                 return -1;
             }
 
-            // Raise a as its in stash, not inventory
-            if (aIsInInventory && !bIsInInventory)
+            // b in stash, prioritise
+            if (!aInStash && bInStash)
             {
                 return 1;
             }
@@ -313,19 +345,26 @@ export class PaymentService
      * Recursivly check items parents to see if it is inside the players inventory, not stash
      * @param itemId item id to check
      * @param inventoryItems player inventory
+     * @param playerStashId Players stash id
      * @returns true if its in inventory
      */
-    protected isInInventory(itemId: string, inventoryItems: Item[]): boolean
+    protected isInStash(itemId: string, inventoryItems: Item[], playerStashId: string): boolean
     {
         const itemParent = inventoryItems.find(x => x._id === itemId);
+
         if (itemParent)
         {
-            if (itemParent._id === "5fe49a0e2694b0755a50476c") // Default inventory tpl
+            if (itemParent.slotId === "hideout")
             {
                 return true;
             }
 
-            return this.isInInventory(itemParent.parentId, inventoryItems);
+            if (itemParent._id === playerStashId)
+            {
+                return true;
+            }
+
+            return this.isInStash(itemParent.parentId, inventoryItems, playerStashId);
         }
 
         return false;

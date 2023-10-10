@@ -39,7 +39,6 @@ export class PostAkiModLoader implements IModLoader
     protected async executeMods(container: DependencyContainer): Promise<void>
     {
         const mods = this.preAkiModLoader.sortModsLoadOrder();
-        const promises = new Array<Promise<any>>();
         for (const modName of mods)
         {
             // // import class
@@ -47,19 +46,24 @@ export class PostAkiModLoader implements IModLoader
             const modpath = `${process.cwd()}/${filepath}`;
             // eslint-disable-next-line @typescript-eslint/no-var-requires
             const mod = require(modpath);
+
+            if (this.modTypeCheck.isPostAkiLoadAsync(mod.mod))
+            {
+                try 
+                {
+                    await (mod.mod as IPostAkiLoadModAsync).postAkiLoadAsync(container);
+                }
+                catch (err) 
+                {
+                    this.logger.error(this.localisationService.getText("modloader-async_mod_error", `${err?.message ?? ""}\n${err.stack ?? ""}`));
+                }
+            }
+
             if (this.modTypeCheck.isPostAkiLoad(mod.mod))
             {
                 (mod.mod as IPostAkiLoadMod).postAkiLoad(container);
             }
-            if (this.modTypeCheck.isPostAkiLoadAsync(mod.mod))
-            {
-                promises.push(
-                    (mod.mod as IPostAkiLoadModAsync).postAkiLoadAsync(container)
-                        .catch((err) => this.logger.error(this.localisationService.getText("modloader-async_mod_error", `${err?.message ?? ""}\n${err.stack ?? ""}`)))
-                );
-            }
         }
-        await Promise.all(promises);
     }
 
     protected addBundles(): void

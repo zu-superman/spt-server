@@ -2,7 +2,7 @@ import { inject, injectable } from "tsyringe";
 
 import { Difficulty } from "../models/eft/common/tables/IBotType";
 import { ConfigTypes } from "../models/enums/ConfigTypes";
-import { IBotConfig } from "../models/spt/config/IBotConfig";
+import { IPmcConfig } from "../models/spt/config/IPmcConfig";
 import { ILogger } from "../models/spt/utils/ILogger";
 import { ConfigServer } from "../servers/ConfigServer";
 import { DatabaseServer } from "../servers/DatabaseServer";
@@ -14,7 +14,7 @@ import { BotHelper } from "./BotHelper";
 @injectable()
 export class BotDifficultyHelper
 {
-    protected botConfig: IBotConfig;
+    protected pmcConfig: IPmcConfig;
 
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
@@ -26,7 +26,7 @@ export class BotDifficultyHelper
         @inject("ConfigServer") protected configServer: ConfigServer
     )
     {
-        this.botConfig = this.configServer.getConfig(ConfigTypes.BOT);
+        this.pmcConfig = this.configServer.getConfig(ConfigTypes.PMC);
     }
 
     public getPmcDifficultySettings(pmcType: "bear"|"usec", difficulty: string, usecType: string, bearType: string): Difficulty
@@ -40,7 +40,7 @@ export class BotDifficultyHelper
             ? usecType
             : bearType;
 
-        this.botHelper.addBotToEnemyList(difficultySettings, this.botConfig.pmc.enemyTypes, friendlyType); // Add generic bot types to enemy list
+        this.botHelper.addBotToEnemyList(difficultySettings, this.pmcConfig.enemyTypes, friendlyType); // Add generic bot types to enemy list
         this.botHelper.addBotToEnemyList(difficultySettings, [enemyType, friendlyType], ""); // add same/opposite side to enemy list
 
         this.botHelper.randomizePmcHostility(difficultySettings);
@@ -82,9 +82,9 @@ export class BotDifficultyHelper
      */
     protected getDifficultySettings(type: string, difficulty: string): Difficulty
     {
-        let difficultySetting = this.botConfig.pmc.difficulty.toLowerCase() === "asonline"
+        let difficultySetting = this.pmcConfig.difficulty.toLowerCase() === "asonline"
             ? difficulty
-            : this.botConfig.pmc.difficulty.toLowerCase();
+            : this.pmcConfig.difficulty.toLowerCase();
 
         difficultySetting = this.convertBotDifficultyDropdownToBotDifficulty(difficultySetting);
 

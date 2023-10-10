@@ -111,6 +111,7 @@ export class LauncherController
         const sessionID = this.hashUtil.generate();
         const newProfileDetails: Info = {
             id: sessionID,
+            aid: this.hashUtil.generateAccountId(),
             username: info.username,
             password: info.password,
             wipe: true,
@@ -183,6 +184,7 @@ export class LauncherController
     public getServerModsProfileUsed(sessionId: string): ModDetails[]
     {
         const profile = this.profileHelper.getFullProfile(sessionId);
-        return profile?.aki?.mods;
+
+        return profile?.aki?.mods ?? [];
     }
 }

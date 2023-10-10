@@ -41,16 +41,19 @@ export class InventoryCallbacks
     )
     { }
 
+    /** Handle Move event */
     public moveItem(pmcData: IPmcData, body: IInventoryMoveRequestData, sessionID: string): IItemEventRouterResponse
     {
         return this.inventoryController.moveItem(pmcData, body, sessionID);
     }
 
+    /** Handle Remove event */
     public removeItem(pmcData: IPmcData, body: IInventoryRemoveRequestData, sessionID: string): IItemEventRouterResponse
     {
         return this.inventoryController.discardItem(pmcData, body, sessionID);
     }
 
+    /** Handle Split event */
     public splitItem(pmcData: IPmcData, body: IInventorySplitRequestData, sessionID: string): IItemEventRouterResponse
     {
         return this.inventoryController.splitItem(pmcData, body, sessionID);

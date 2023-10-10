@@ -21,10 +21,10 @@ import { DatabaseServer } from "../servers/DatabaseServer";
 import { SaveServer } from "../servers/SaveServer";
 import { LocaleService } from "../services/LocaleService";
 import { LocalisationService } from "../services/LocalisationService";
+import { MailSendService } from "../services/MailSendService";
 import { RagfairOfferService } from "../services/RagfairOfferService";
 import { HashUtil } from "../utils/HashUtil";
 import { TimeUtil } from "../utils/TimeUtil";
-import { DialogueHelper } from "./DialogueHelper";
 import { ItemHelper } from "./ItemHelper";
 import { PaymentHelper } from "./PaymentHelper";
 import { PresetHelper } from "./PresetHelper";
@@ -49,7 +49,6 @@ export class RagfairOfferHelper
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("TraderHelper") protected traderHelper: TraderHelper,
         @inject("SaveServer") protected saveServer: SaveServer,
-        @inject("DialogueHelper") protected dialogueHelper: DialogueHelper,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("PaymentHelper") protected paymentHelper: PaymentHelper,
         @inject("PresetHelper") protected presetHelper: PresetHelper,
@@ -60,6 +59,7 @@ export class RagfairOfferHelper
         @inject("RagfairOfferService") protected ragfairOfferService: RagfairOfferService,
         @inject("LocaleService") protected localeService: LocaleService,
         @inject("LocalisationService") protected localisationService: LocalisationService,
+        @inject("MailSendService") protected mailSendService: MailSendService,
         @inject("ConfigServer") protected configServer: ConfigServer
     )
     {
@@ -69,8 +69,8 @@ export class RagfairOfferHelper
 
     /**
      * Passthrough to ragfairOfferService.getOffers(), get flea offers a player should see
-     * @param searchRequest 
-     * @param itemsToAdd 
+     * @param searchRequest Data from client
+     * @param itemsToAdd ragfairHelper.filterCategories()
      * @param traderAssorts Trader assorts
      * @param pmcProfile Player profile
      * @returns Offers the player should see
@@ -113,6 +113,11 @@ export class RagfairOfferHelper
                     continue;
                 }
 
+                if (isTraderOffer && this.traderOfferLockedBehindLoyaltyLevel(offer, pmcProfile))
+                {
+                    continue;
+                }
+
                 const key = offer.items[0]._tpl;
                 if (!offersMap.has(key))
                 {
@@ -149,6 +154,19 @@ export class RagfairOfferHelper
     }
 
     /**
+     * Check if offer is from trader standing the player does not have
+     * @param offer Offer to check
+     * @param pmcProfile Player profile
+     * @returns True if item is locked, false if item is purchaseable
+     */
+    protected traderOfferLockedBehindLoyaltyLevel(offer: IRagfairOffer, pmcProfile: IPmcData): boolean
+    {
+        const userTraderSettings = pmcProfile.TradersInfo[offer.user.id];
+
+        return userTraderSettings.loyaltyLevel < offer.loyaltyLevel;
+    }
+
+    /**
      * Check if offer item is quest locked for current player by looking at sptQuestLocked property in traders barter_scheme
      * @param offer Offer to check is quest locked
      * @param traderAssorts all trader assorts for player
@@ -181,8 +199,8 @@ export class RagfairOfferHelper
      */
     protected traderBuyRestrictionReached(offer: IRagfairOffer): boolean
     {
-        const traderAssorts = this.traderHelper.getTraderAssortsById(offer.user.id).items;
-        const assortData = traderAssorts.find(x => x._id === offer._id);
+        const traderAssorts = this.traderHelper.getTraderAssortsByTraderId(offer.user.id).items;
+        const assortData = traderAssorts.find(x => x._id === offer.items[0]._id);
 
         // No trader assort data
         if (!assortData)
@@ -265,8 +283,6 @@ export class RagfairOfferHelper
 
                 this.completeOffer(sessionID, offer, boughtAmount);
                 offer.sellResult.splice(0, 1);
-
-                // TODO: Send a mail to player informing them offer was sold, text comes from locale with id: "5b55a1f786f77469803bca61 0" (Your offer was sold {buyerNickname})
             }
         }
 
@@ -308,16 +324,16 @@ export class RagfairOfferHelper
     }
 
     /**
-     * Delete an offer from a desired profile
+     * Delete an offer from a desired profile and from ragfair offers
      * @param sessionID Session id of profile to delete offer from
-     * @param offerId Offer id to delete
+     * @param offerId Id of offer to delete
      */
-    protected deleteOfferByOfferId(sessionID: string, offerId: string): void
+    protected deleteOfferById(sessionID: string, offerId: string): void
     {
         const profileRagfairInfo = this.saveServer.getProfile(sessionID).characters.pmc.RagfairInfo;
         const index = profileRagfairInfo.offers.findIndex(o => o._id === offerId);
         profileRagfairInfo.offers.splice(index, 1);
-
+        // Also delete from ragfair
         this.ragfairOfferService.removeOfferById(offerId);
     }
 
@@ -326,16 +342,17 @@ export class RagfairOfferHelper
      * @param sessionID Session id
      * @param offer Sold offer details
      * @param boughtAmount Amount item was purchased for
-     * @returns Client response
+     * @returns IItemEventRouterResponse
      */
     protected completeOffer(sessionID: string, offer: IRagfairOffer, boughtAmount: number): IItemEventRouterResponse
     {
         const itemTpl = offer.items[0]._tpl;
         let itemsToSend = [];
+        const offerStackCount = offer.items[0].upd.StackObjectsCount;
 
-        if (offer.sellInOnePiece || boughtAmount === offer.items[0].upd.StackObjectsCount)
+        if (offer.sellInOnePiece || boughtAmount === offerStackCount)
         {
-            this.deleteOfferByOfferId(sessionID, offer._id);
+            this.deleteOfferById(sessionID, offer._id);
         }
         else
         {
@@ -416,6 +433,33 @@ export class RagfairOfferHelper
             }
         }
 
+        const ragfairDetails = {
+            offerId: offer._id,
+            count: offer.sellInOnePiece ? offerStackCount : boughtAmount, // pack-offers NEED to the full item count otherwise it only removes 1 from the pack, leaving phantom offer on client ui
+            handbookId: itemTpl
+        };
+
+        this.mailSendService.sendDirectNpcMessageToPlayer(
+            sessionID,
+            this.traderHelper.getTraderById(Traders.RAGMAN),
+            MessageType.FLEAMARKET_MESSAGE,
+            this.getLocalisedOfferSoldMessage(itemTpl, boughtAmount),
+            itemsToSend,
+            this.timeUtil.getHoursAsSeconds(this.questConfig.redeemTime),
+            null,
+            ragfairDetails);
+
+        return this.eventOutputHolder.getOutput(sessionID);
+    }
+
+    /**
+     * Get a localised message for when players offer has sold on flea
+     * @param itemTpl Item sold
+     * @param boughtAmount How many were purchased
+     * @returns Localised message text
+     */
+    protected getLocalisedOfferSoldMessage(itemTpl: string, boughtAmount: number): string
+    {
         // Generate a message to inform that item was sold
         const globalLocales = this.localeService.getLocaleDb();
         const soldMessageLocaleGuid = globalLocales[RagfairOfferHelper.goodSoldTemplate];
@@ -430,34 +474,25 @@ export class RagfairOfferHelper
             buyerNickname: this.ragfairServerHelper.getNickname(this.hashUtil.generate()),
             itemCount: boughtAmount
         };
-        const messageText = soldMessageLocaleGuid.replace(/{\w+}/g, (matched) =>
+
+        const offerSoldMessageText = soldMessageLocaleGuid.replace(/{\w+}/g, (matched) =>
         {
             return tplVars[matched.replace(/{|}/g, "")];
         });
 
-        const messageContent = this.dialogueHelper.createMessageContext(undefined, MessageType.FLEAMARKET_MESSAGE, this.questConfig.redeemTime);
-        messageContent.text = messageText.replace(/"/g, "");
-        messageContent.ragfair = {
-            offerId: offer._id,
-            count: boughtAmount,
-            handbookId: itemTpl
-        };
-
-        this.dialogueHelper.addDialogueMessage(Traders.RAGMAN, messageContent, sessionID, itemsToSend);
-
-        return this.eventOutputHolder.getOutput(sessionID);
+        return offerSoldMessageText.replace(/"/g, "");
     }
 
     /**
      * Should a ragfair offer be visible to the player
-     * @param info Search request
+     * @param searchRequest Search request
      * @param itemsToAdd ?
      * @param traderAssorts Trader assort items
      * @param offer The flea offer
      * @param pmcProfile Player profile
      * @returns True = should be shown to player
      */
-    public isDisplayableOffer(info: ISearchRequestData, itemsToAdd: string[], traderAssorts: Record<string, ITraderAssort>, offer: IRagfairOffer, pmcProfile: IPmcData): boolean
+    public isDisplayableOffer(searchRequest: ISearchRequestData, itemsToAdd: string[], traderAssorts: Record<string, ITraderAssort>, offer: IRagfairOffer, pmcProfile: IPmcData): boolean
     {
         const item = offer.items[0];
         const money = offer.requirements[0]._tpl;
@@ -476,91 +511,85 @@ export class RagfairOfferHelper
             return false;
         }
 
-        if (info.offerOwnerType === OfferOwnerType.TRADEROWNERTYPE && !isTraderOffer)
+        // Performing a required search and offer doesn't have requirement for item
+        if (searchRequest.neededSearchId && !offer.requirements.some(x => x._tpl === searchRequest.neededSearchId))
+        {
+            return false;
+        }
+
+        if (searchRequest.offerOwnerType === OfferOwnerType.TRADEROWNERTYPE && !isTraderOffer)
         {
             // don't include player offers
             return false;
         }
 
-        if (info.offerOwnerType === OfferOwnerType.PLAYEROWNERTYPE && isTraderOffer)
+        if (searchRequest.offerOwnerType === OfferOwnerType.PLAYEROWNERTYPE && isTraderOffer)
         {
             // don't include trader offers
             return false;
         }
 
-        if (info.oneHourExpiration && offer.endTime - this.timeUtil.getTimestamp() > TimeUtil.oneHourAsSeconds)
+        if (searchRequest.oneHourExpiration && offer.endTime - this.timeUtil.getTimestamp() > TimeUtil.oneHourAsSeconds)
         {
             // offer doesnt expire within an hour
             return false;
         }
 
-        if (info.quantityFrom > 0 && info.quantityFrom >= item.upd.StackObjectsCount)
+        if (searchRequest.quantityFrom > 0 && searchRequest.quantityFrom >= item.upd.StackObjectsCount)
         {
             // too little items to offer
             return false;
         }
 
-        if (info.quantityTo > 0 && info.quantityTo <= item.upd.StackObjectsCount)
+        if (searchRequest.quantityTo > 0 && searchRequest.quantityTo <= item.upd.StackObjectsCount)
         {
             // too many items to offer
             return false;
         }
 
-        if (info.onlyFunctional && this.presetHelper.hasPreset(item._tpl) && offer.items.length === 1)
+        if (searchRequest.onlyFunctional && this.presetHelper.hasPreset(item._tpl) && offer.items.length === 1)
         {
             // don't include non-functional items
             return false;
         }
 
-        if (info.buildCount && this.presetHelper.hasPreset(item._tpl) && offer.items.length > 1)
+        if (searchRequest.buildCount && this.presetHelper.hasPreset(item._tpl) && offer.items.length > 1)
         {
             // don't include preset items
             return false;
         }
 
-        if (item.upd.MedKit || item.upd.Repairable)
+        if (( item.upd.MedKit || item.upd.Repairable ) && !this.itemQualityInRange(item, searchRequest.conditionFrom, searchRequest.conditionTo))
         {
-            const itemQualityPercentage = 100 * this.itemHelper.getItemQualityModifier(item);
-
-            if (info.conditionFrom > 0 && info.conditionFrom > itemQualityPercentage)
-            {
-                // item condition is too low
-                return false;
-            }
-
-            if (info.conditionTo < 100 && info.conditionTo <= itemQualityPercentage)
-            {
-                // item condition is too high
-                return false;
-            }
+            return false;
         }
 
         // commented out as required search "which is for checking offers that are barters"
         // has info.removeBartering as true, this if statement removed barter items.
-        if (info.removeBartering && !this.paymentHelper.isMoneyTpl(money))
+        if (searchRequest.removeBartering && !this.paymentHelper.isMoneyTpl(money))
         {
             // don't include barter offers
             return false;
         }
 
-        if (info.currency > 0 && this.paymentHelper.isMoneyTpl(money))
+        if (searchRequest.currency > 0 && this.paymentHelper.isMoneyTpl(money))
         {
             const currencies = ["all", "RUB", "USD", "EUR"];
 
-            if (this.ragfairHelper.getCurrencyTag(money) !== currencies[info.currency])
+            if (this.ragfairHelper.getCurrencyTag(money) !== currencies[searchRequest.currency])
             {
                 // don't include item paid in wrong currency
                 return false;
             }
         }
 
-        if (info.priceFrom > 0 && info.priceFrom >= offer.requirementsCost)
+        if (searchRequest.priceFrom > 0 && searchRequest.priceFrom >= offer.requirementsCost)
         {
             // price is too low
             return false;
         }
 
-        if (info.priceTo > 0 && info.priceTo <= offer.requirementsCost)
+        if (searchRequest.priceTo > 0 && searchRequest.priceTo <= offer.requirementsCost)
         {
             // price is too high
             return false;
@@ -591,6 +620,31 @@ export class RagfairOfferHelper
                 // skip (quest) locked items
                 return false;
             }
+        }
+
+        return true;
+    }
+
+    /**
+     * Is items quality value within desired range
+     * @param item Item to check quality of
+     * @param min Desired minimum quality
+     * @param max Desired maximum quality
+     * @returns True if in range
+     */
+    protected itemQualityInRange(item: Item, min: number, max: number): boolean
+    {
+        const itemQualityPercentage = 100 * this.itemHelper.getItemQualityModifier(item);
+        if (min > 0 && min > itemQualityPercentage)
+        {
+            // Item condition too low
+            return false;
+        }
+
+        if (max < 100 && max <= itemQualityPercentage)
+        {
+            // Item condition too high
+            return false;
         }
 
         return true;

@@ -40,7 +40,6 @@ export class PostDBModLoader implements OnLoad
     protected async executeMods(container: DependencyContainer): Promise<void>
     {
         const mods = this.preAkiModLoader.sortModsLoadOrder();
-        const promises = new Array<Promise<void>>();
         for (const modName of mods)
         {
             // // import class
@@ -48,18 +47,23 @@ export class PostDBModLoader implements OnLoad
             const modpath = `${process.cwd()}/${filepath}`;
             // eslint-disable-next-line @typescript-eslint/no-var-requires
             const mod = require(modpath);
+
+            if (this.modTypeCheck.isPostDBAkiLoadAsync(mod.mod))
+            {
+                try 
+                {
+                    await (mod.mod as IPostDBLoadModAsync).postDBLoadAsync(container);
+                }
+                catch (err) 
+                {
+                    this.logger.error(this.localisationService.getText("modloader-async_mod_error", `${err?.message ?? ""}\n${err.stack ?? ""}`));
+                }
+            }
+
             if (this.modTypeCheck.isPostDBAkiLoad(mod.mod))
             {
                 (mod.mod as IPostDBLoadMod).postDBLoad(container);
             }
-            if (this.modTypeCheck.isPostDBAkiLoadAsync(mod.mod))
-            {
-                promises.push(
-                    (mod.mod as IPostDBLoadModAsync).postDBLoadAsync(container)
-                        .catch((err) => this.logger.error(this.localisationService.getText("modloader-async_mod_error", `${err?.message ?? ""}\n${err.stack ?? ""}`)))
-                );
-            }
         }
-        await Promise.all(promises);
     }
 }

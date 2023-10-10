@@ -130,43 +130,48 @@ export class ProbabilityObjectArray<K, V=undefined> extends Array<ProbabilityObj
     /**
      * Draw random element of the ProbabilityObject N times to return an array of N keys.
      * Drawing can be with or without replacement
-     *
-     * @param       {integer}                       count                   The number of times we want to draw
-     * @param       {boolean}                       replacement             Draw with or without replacement from the input dict
-     * @param       {array}                         locklist                list keys which shall be replaced even if drawing without replacement
-     * @return      {array}                                                 Array consisting of N random keys for this ProbabilityObjectArray
+     * @param count The number of times we want to draw
+     * @param replacement Draw with or without replacement from the input dict (true = dont remove after drawing)
+     * @param locklist list keys which shall be replaced even if drawing without replacement
+     * @returns Array consisting of N random keys for this ProbabilityObjectArray
      */
     public draw(count = 1, replacement = true, locklist: Array<K> = []): K[]
     {
-        const probArray = this.map(x => x.relativeProbability);
-        const keyArray = this.map(x => x.key);
+        const {probArray, keyArray} = this.reduce((acc, x) =>
+        {
+            acc.probArray.push(x.relativeProbability);
+            acc.keyArray.push(x.key);
+            return acc;
+        }, {probArray: [], keyArray: []});
         let probCumsum = this.cumulativeProbability(probArray);
 
-        const randomKeys = [];
+        const drawnKeys = [];
         for (let i = 0; i < count; i++) 
         {
             const rand = Math.random();
-            const idx = probCumsum.findIndex(x => x > rand);
-            // we cannot put Math.random() directly in the findIndex because then it draws anew for each of its iteration
-            if (replacement || locklist.includes(keyArray[idx])) 
+            const randomIndex = probCumsum.findIndex(x => x > rand);
+            // We cannot put Math.random() directly in the findIndex because then it draws anew for each of its iteration
+            if (replacement || locklist.includes(keyArray[randomIndex])) 
             {
-                randomKeys.push(keyArray[idx]);
+                // Add random item from possible value into return array
+                drawnKeys.push(keyArray[randomIndex]);
             }
             else 
             {
-                // we draw without replacement -> remove the key and its probability from array
-                const key = keyArray.splice(idx, 1)[0];
-                probArray.splice(idx, 1);
-                randomKeys.push(key);
+                // We draw without replacement -> remove the key and its probability from array
+                const key = keyArray.splice(randomIndex, 1)[0];
+                probArray.splice(randomIndex, 1);
+                drawnKeys.push(key);
                 probCumsum = this.cumulativeProbability(probArray);
-                // if we draw without replacement and the ProbabilityObjectArray is exhausted we need to break
+                // If we draw without replacement and the ProbabilityObjectArray is exhausted we need to break
                 if (keyArray.length < 1) 
                 {
                     break;
                 }
             }
         }
-        return randomKeys;
+
+        return drawnKeys;
     }
 }
 

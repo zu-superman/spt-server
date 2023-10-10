@@ -1,6 +1,7 @@
 import { inject, injectable } from "tsyringe";
 
 import { GameController } from "../controllers/GameController";
+import { OnLoad } from "../di/OnLoad";
 import { IEmptyRequestData } from "../models/eft/common/IEmptyRequestData";
 import { ICheckVersionResponse } from "../models/eft/game/ICheckVersionResponse";
 import { ICurrentGroupResponse } from "../models/eft/game/ICurrentGroupResponse";
@@ -19,7 +20,7 @@ import { HttpResponseUtil } from "../utils/HttpResponseUtil";
 import { Watermark } from "../utils/Watermark";
 
 @injectable()
-class GameCallbacks
+class GameCallbacks implements OnLoad
 {
     constructor(
         @inject("HttpResponseUtil") protected httpResponse: HttpResponseUtil,
@@ -28,6 +29,16 @@ class GameCallbacks
         @inject("GameController") protected gameController: GameController
     )
     {}
+
+    public async onLoad(): Promise<void>
+    {
+        this.gameController.load();
+    }
+
+    public getRoute(): string
+    {
+        return "aki-game";
+    }
 
     /**
      * Handle client/game/version/validate

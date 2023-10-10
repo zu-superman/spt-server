@@ -123,7 +123,7 @@ export class RagfairServer
 
     public removeOfferStack(offerID: string, amount: number): void
     {
-        return this.ragfairOfferService.removeOfferStack(offerID, amount);
+        this.ragfairOfferService.removeOfferStack(offerID, amount);
     }
 
     public doesOfferExist(offerId: string): boolean

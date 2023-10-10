@@ -6,6 +6,7 @@ import { ConfigTypes } from "../models/enums/ConfigTypes";
 import {
     EquipmentFilters, IBotConfig, RandomisationDetails
 } from "../models/spt/config/IBotConfig";
+import { IPmcConfig } from "../models/spt/config/IPmcConfig";
 import { ILogger } from "../models/spt/utils/ILogger";
 import { ConfigServer } from "../servers/ConfigServer";
 import { DatabaseServer } from "../servers/DatabaseServer";
@@ -17,6 +18,7 @@ import { RandomUtil } from "../utils/RandomUtil";
 export class BotHelper
 {
     protected botConfig: IBotConfig;
+    protected pmcConfig: IPmcConfig;
 
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
@@ -28,6 +30,7 @@ export class BotHelper
     )
     {
         this.botConfig = this.configServer.getConfig(ConfigTypes.BOT);
+        this.pmcConfig = this.configServer.getConfig(ConfigTypes.PMC);
     }
 
 
@@ -49,7 +52,7 @@ export class BotHelper
      */
     public randomizePmcHostility(difficultySettings: Difficulty): void
     {
-        if (this.randomUtil.getChance100(this.botConfig.pmc.chanceSameSideIsHostilePercent))
+        if (this.randomUtil.getChance100(this.pmcConfig.chanceSameSideIsHostilePercent))
         {
             difficultySettings.Mind["CAN_RECEIVE_PLAYER_REQUESTS_BEAR"] = false;
             difficultySettings.Mind["CAN_RECEIVE_PLAYER_REQUESTS_USEC"] = false;
@@ -173,7 +176,7 @@ export class BotHelper
             return true;
         }
 
-        const botConvertMinMax = this.botConfig.pmc.convertIntoPmcChance[botRoleLowered];
+        const botConvertMinMax = this.pmcConfig.convertIntoPmcChance[botRoleLowered];
 
         // no bot type defined in config, default to false
         if (!botConvertMinMax)
@@ -186,13 +189,13 @@ export class BotHelper
 
     public rollChanceToBePmc(role: string, botConvertMinMax: MinMax): boolean
     {
-        return role.toLowerCase() in this.botConfig.pmc.convertIntoPmcChance
+        return role.toLowerCase() in this.pmcConfig.convertIntoPmcChance
             && this.randomUtil.getChance100(this.randomUtil.getInt(botConvertMinMax.min, botConvertMinMax.max));
     }
 
     public botRoleIsPmc(botRole: string): boolean
     {
-        return [this.botConfig.pmc.usecType.toLowerCase(), this.botConfig.pmc.bearType.toLowerCase()].includes(botRole.toLowerCase());
+        return [this.pmcConfig.usecType.toLowerCase(), this.pmcConfig.bearType.toLowerCase()].includes(botRole.toLowerCase());
     }
 
     /**
@@ -213,14 +216,14 @@ export class BotHelper
     }
 
     /**
-     * Choose between sptBear and sptUsec at random based on the % defined in botConfig.pmc.isUsec
+     * Choose between sptBear and sptUsec at random based on the % defined in pmcConfig.isUsec
      * @returns pmc role
      */
     public getRandomizedPmcRole(): string
     {
-        return (this.randomUtil.getChance100(this.botConfig.pmc.isUsec))
-            ? this.botConfig.pmc.usecType
-            : this.botConfig.pmc.bearType;
+        return (this.randomUtil.getChance100(this.pmcConfig.isUsec))
+            ? this.pmcConfig.usecType
+            : this.pmcConfig.bearType;
     }
 
     /**
@@ -232,9 +235,9 @@ export class BotHelper
     {
         switch (botRole.toLowerCase())
         {
-            case this.botConfig.pmc.bearType.toLowerCase():
+            case this.pmcConfig.bearType.toLowerCase():
                 return "Bear";
-            case this.botConfig.pmc.usecType.toLowerCase():
+            case this.pmcConfig.usecType.toLowerCase():
                 return "Usec";
             default:
                 return this.getRandomizedPmcSide();
@@ -247,7 +250,7 @@ export class BotHelper
      */
     protected getRandomizedPmcSide(): string
     {
-        return (this.randomUtil.getChance100(this.botConfig.pmc.isUsec))
+        return (this.randomUtil.getChance100(this.pmcConfig.isUsec))
             ? "Usec"
             : "Bear";
     }

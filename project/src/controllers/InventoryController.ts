@@ -97,28 +97,33 @@ export class InventoryController
             return output;
         }
 
-        const items = this.inventoryHelper.getOwnerInventoryItems(moveRequest, sessionID);
-        if (items.sameInventory)
+        // Changes made to result apply to character inventory
+        const ownerInventoryItems = this.inventoryHelper.getOwnerInventoryItems(moveRequest, sessionID);
+        if (ownerInventoryItems.sameInventory)
         {
             // Dont move items from trader to profile, this can happen when editing a traders preset weapons
-            if (moveRequest.fromOwner?.type === "Trader" && !items.isMail)
+            if (moveRequest.fromOwner?.type === "Trader" && !ownerInventoryItems.isMail)
             {
                 return this.getTraderExploitErrorResponse(output);
             }
 
             // Check for item in inventory before allowing internal transfer
-            const originalItemLocation = items.from.find(x => x._id === moveRequest.item);
+            const originalItemLocation = ownerInventoryItems.from.find(x => x._id === moveRequest.item);
             if (!originalItemLocation)
             {
-                // Internal item move but item never existed, likely a dupe glitch
+                // Internal item move but item never existed, possible dupe glitch
                 return this.getTraderExploitErrorResponse(output);
             }
 
-            this.inventoryHelper.moveItemInternal(pmcData, items.from, moveRequest);
+            const moveResult = this.inventoryHelper.moveItemInternal(pmcData, ownerInventoryItems.from, moveRequest);
+            if (!moveResult.success)
+            {
+                return this.httpResponseUtil.appendErrorToOutput(output, moveResult.errorMessage);
+            }
         }
         else
         {
-            this.inventoryHelper.moveItemToProfile(items.from, items.to, moveRequest);
+            this.inventoryHelper.moveItemToProfile(ownerInventoryItems.from, ownerInventoryItems.to, moveRequest);
         }
         return output;
     }
@@ -143,196 +148,233 @@ export class InventoryController
     }
 
     /**
+     * Handle Remove event
      * Implements functionality "Discard" from Main menu (Stash etc.)
      * Removes item from PMC Profile
      */
     public discardItem(pmcData: IPmcData, body: IInventoryRemoveRequestData, sessionID: string): IItemEventRouterResponse
     {
-        return this.inventoryHelper.removeItem(pmcData, body.item, sessionID, this.eventOutputHolder.getOutput(sessionID));
+        if (body.fromOwner?.type === "Mail")
+        {
+            return this.inventoryHelper.removeItemAndChildrenFromMailRewards(sessionID, body, this.eventOutputHolder.getOutput(sessionID));
+        }
+        
+        const profileToRemoveItemFrom = (!body.fromOwner || body.fromOwner.id === pmcData._id)
+            ? pmcData
+            : this.profileHelper.getFullProfile(sessionID).characters.scav;
+
+        return this.inventoryHelper.removeItem(profileToRemoveItemFrom, body.item, sessionID, this.eventOutputHolder.getOutput(sessionID));
     }
 
     /**
-    * Split Item
-    * spliting 1 item-stack into 2 separate items ...
-    */
-    public splitItem(pmcData: IPmcData, body: IInventorySplitRequestData, sessionID: string): IItemEventRouterResponse
+     * Split Item
+     * spliting 1 stack into 2
+     * @param pmcData Player profile (unused, getOwnerInventoryItems() gets profile)
+     * @param request Split request
+     * @param sessionID Session/player id
+     * @returns IItemEventRouterResponse
+     */
+    public splitItem(pmcData: IPmcData, request: IInventorySplitRequestData, sessionID: string): IItemEventRouterResponse
     {
         const output = this.eventOutputHolder.getOutput(sessionID);
-        let location = body.container.location;
 
-        const items = this.inventoryHelper.getOwnerInventoryItems(body, sessionID);
+        // Changes made to result apply to character inventory
+        const inventoryItems = this.inventoryHelper.getOwnerInventoryItems(request, sessionID);
 
-        if (!("location" in body.container) && body.container.container === "cartridges")
+        // Handle cartridge edge-case
+        if (!request.container.location && request.container.container === "cartridges")
         {
-            let tmpCounter = 0;
-
-            for (const itemAmmo in items.to)
-            {
-                if (items.to[itemAmmo].parentId === body.container.id)
-                {
-                    tmpCounter++;
-                }
-            }
-
-            location = tmpCounter; // wrong location for first cartrige
+            const matchingItems = inventoryItems.to.filter(x => x.parentId === request.container.id);
+            request.container.location = matchingItems.length; // Wrong location for first cartridge
         }
 
-        // The item being merged is possible from three different sources: pmc, scav, or mail.
-        for (const item of items.from)
+        // The item being merged has three possible sources: pmc, scav or mail, getOwnerInventoryItems() handles getting correct one
+        const itemToSplit = inventoryItems.from.find(x => x._id === request.splitItem);
+        if (!itemToSplit)
         {
-            if (item._id && item._id === body.item)
-            {
-                item.upd.StackObjectsCount -= body.count;
+            const errorMessage = (`Unable to split stack as source item: ${request.splitItem} cannot be found`);
+            this.logger.error(errorMessage);
 
-                const newItemId = this.hashUtil.generate();
-
-                output.profileChanges[sessionID].items.new.push({
-                    "_id": newItemId,
-                    "_tpl": item._tpl,
-                    "upd": { "StackObjectsCount": body.count }
-                });
-
-                items.to.push({
-                    "_id": newItemId,
-                    "_tpl": item._tpl,
-                    "parentId": body.container.id,
-                    "slotId": body.container.container,
-                    "location": location,
-                    "upd": { "StackObjectsCount": body.count }
-                });
-
-                return output;
-            }
+            return this.httpResponseUtil.appendErrorToOutput(output, errorMessage);
         }
 
-        return {
-            warnings: [],
-            profileChanges: {}
-        };
+        // Create new upd object that retains properties of original upd + new stack count size
+        const updatedUpd = this.jsonUtil.clone(itemToSplit.upd);
+        updatedUpd.StackObjectsCount = request.count;
+
+        // Remove split item count from source stack
+        itemToSplit.upd.StackObjectsCount -= request.count;
+
+        // Inform client of change
+        output.profileChanges[sessionID].items.new.push({
+            _id: request.newItem,
+            _tpl: itemToSplit._tpl,
+            upd: updatedUpd
+        });
+
+        // Update player inventory
+        inventoryItems.to.push({
+            _id: request.newItem,
+            _tpl: itemToSplit._tpl,
+            parentId: request.container.id,
+            slotId: request.container.container,
+            location: request.container.location,
+            upd: updatedUpd
+        });
+
+        return output;
     }
 
     /**
-     * Merge Item
-     * merges 2 items into one, deletes item from `body.item` and adding number of stacks into `body.with`
+     * Fully merge 2 inventory stacks together into one stack (merging where both stacks remain is called 'transfer')
+     * Deletes item from `body.item` and adding number of stacks into `body.with`
+     * @param pmcData Player profile (unused, getOwnerInventoryItems() gets profile)
+     * @param body Merge request
+     * @param sessionID Player id
+     * @returns IItemEventRouterResponse
      */
     public mergeItem(pmcData: IPmcData, body: IInventoryMergeRequestData, sessionID: string): IItemEventRouterResponse
     {
         const output = this.eventOutputHolder.getOutput(sessionID);
-        const items = this.inventoryHelper.getOwnerInventoryItems(body, sessionID);
 
-        for (const key in items.to)
+        // Changes made to result apply to character inventory
+        const inventoryItems = this.inventoryHelper.getOwnerInventoryItems(body, sessionID);
+
+        // Get source item (can be from player or trader or mail)
+        const sourceItem = inventoryItems.from.find(x => x._id === body.item);
+        if (!sourceItem)
         {
-            if (items.to[key]._id === body.with)
-            {
-                for (const key2 in items.from)
-                {
-                    if (items.from[key2]._id && items.from[key2]._id === body.item)
-                    {
-                        let stackItem0 = 1;
-                        let stackItem1 = 1;
+            const errorMessage = (`Unable to merge stacks as source item: ${body.with} cannot be found`);
+            this.logger.error(errorMessage);
 
-                        if (!(items.to[key].upd?.StackObjectsCount))
-                        {
-                            items.to[key].upd = { "StackObjectsCount": 1 };
-                        }
-                        else if (!(items.from[key2].upd?.StackObjectsCount))
-                        {
-                            items.from[key2].upd = { "StackObjectsCount": 1 };
-                        }
-
-                        if (items.to[key].upd !== undefined)
-                        {
-                            stackItem0 = items.to[key].upd.StackObjectsCount;
-                        }
-
-                        if ("upd" in items.from[key2])
-                        {
-                            stackItem1 = items.from[key2].upd.StackObjectsCount;
-                        }
-
-                        if (stackItem0 === 1)
-                        {
-                            Object.assign(items.to[key], { "upd": { "StackObjectsCount": 1 } });
-                        }
-
-                        items.to[key].upd.StackObjectsCount = stackItem0 + stackItem1;
-                        output.profileChanges[sessionID].items.del.push({ _id: items.from[key2]._id });
-                        items.from.splice(parseInt(key2), 1);
-                        return output;
-                    }
-                }
-            }
+            return this.httpResponseUtil.appendErrorToOutput(output, errorMessage);
         }
 
-        return {
-            warnings: [],
-            profileChanges: {}
-        };
+        // Get item being merged into
+        const destinationItem = inventoryItems.to.find(x => x._id === body.with);
+        if (!destinationItem)
+        {
+            const errorMessage = (`Unable to merge stacks as destination item: ${body.with} cannot be found`);
+            this.logger.error(errorMessage);
+
+            return this.httpResponseUtil.appendErrorToOutput(output, errorMessage);
+        }
+
+        if (!(destinationItem.upd?.StackObjectsCount))
+        {
+            // No stackcount on destination, add one
+            destinationItem.upd = { StackObjectsCount: 1 };
+        }
+
+        if (!sourceItem.upd)
+        {
+            sourceItem.upd = {
+                StackObjectsCount: 1
+            };
+        }
+        else if (!sourceItem.upd.StackObjectsCount)
+        {
+            // Items pulled out of raid can have no stackcount if the stack should be 1
+            sourceItem.upd.StackObjectsCount = 1;
+        }
+
+        destinationItem.upd.StackObjectsCount += sourceItem.upd.StackObjectsCount; // Add source stackcount to destination
+        output.profileChanges[sessionID].items.del.push({ _id: sourceItem._id }); // Inform client source item being deleted
+
+        const indexOfItemToRemove = inventoryItems.from.findIndex(x => x._id === sourceItem._id);
+        if (indexOfItemToRemove === -1)
+        {
+            const errorMessage = (`Unable to find item: ${sourceItem._id} to remove from sender inventory`);
+            this.logger.error(errorMessage);
+
+            return this.httpResponseUtil.appendErrorToOutput(output, errorMessage);
+        }
+        inventoryItems.from.splice(indexOfItemToRemove, 1); // remove source item from 'from' inventory
+
+        return output;
     }
 
     /**
-    * Transfer item
-    * Used to take items from scav inventory into stash or to insert ammo into mags (shotgun ones) and reloading weapon by clicking "Reload"
-    */
+     * TODO: Adds no data to output to send to client, is this by design?
+     * TODO: should make use of getOwnerInventoryItems(), stack being transferred may not always be on pmc
+     * Transfer items from one stack into another while keeping original stack
+     * Used to take items from scav inventory into stash or to insert ammo into mags (shotgun ones) and reloading weapon by clicking "Reload"
+     * @param pmcData Player profile
+     * @param body Transfer request
+     * @param sessionID Session id
+     * @returns IItemEventRouterResponse
+     */
     public transferItem(pmcData: IPmcData, body: IInventoryTransferRequestData, sessionID: string): IItemEventRouterResponse
     {
         const output = this.eventOutputHolder.getOutput(sessionID);
-        let itemFrom = null;
-        let itemTo = null;
 
+        let sourceItem: Item = null;
+        let destinationItem: Item = null;
         for (const iterItem of pmcData.Inventory.items)
         {
             if (iterItem._id === body.item)
             {
-                itemFrom = iterItem;
+                // Found source item
+                sourceItem = iterItem;
             }
             else if (iterItem._id === body.with)
             {
-                itemTo = iterItem;
+                // Found destination item
+                destinationItem = iterItem;
             }
 
-            if (itemFrom !== null && itemTo !== null)
+            if (sourceItem !== null && destinationItem !== null)
             {
-                break;
+                // Both items found, exit loop
+                break; 
             }
         }
 
-        if (itemFrom !== null && itemTo !== null)
+        if (sourceItem === null)
         {
-            let stackFrom = 1;
+            const errorMessage = `Unable to transfer stack, cannot find source: ${body.item}`;
+            this.logger.error(errorMessage);
 
-            if ("upd" in itemFrom)
-            {
-                stackFrom = itemFrom.upd.StackObjectsCount;
-            }
-            else
-            {
-                Object.assign(itemFrom, { "upd": { "StackObjectsCount": 1 } });
-            }
-
-            if (stackFrom > body.count)
-            {
-                itemFrom.upd.StackObjectsCount = stackFrom - body.count;
-            }
-            else
-            {
-                // Moving a full stack onto a smaller stack
-                itemFrom.upd.StackObjectsCount = stackFrom - 1;
-            }
-
-            let stackTo = 1;
-
-            if ("upd" in itemTo)
-            {
-                stackTo = itemTo.upd.StackObjectsCount;
-            }
-            else
-            {
-                Object.assign(itemTo, { "upd": { "StackObjectsCount": 1 } });
-            }
-
-            itemTo.upd.StackObjectsCount = stackTo + body.count;
+            return this.httpResponseUtil.appendErrorToOutput(output, errorMessage);
         }
+
+        if (destinationItem === null)
+        {
+            const errorMessage = `Unable to transfer stack, cannot find destination: ${body.with} `;
+            this.logger.error(errorMessage);
+
+            return this.httpResponseUtil.appendErrorToOutput(output, errorMessage);
+        }
+
+        let sourceStackCount = 1;
+        if (!sourceItem.upd)
+        {
+            sourceItem.upd = {StackObjectsCount: 1};
+        }
+        sourceStackCount = sourceItem.upd.StackObjectsCount;
+
+        if (sourceStackCount > body.count)
+        {
+            // Source items stack count greater than new desired count
+            sourceItem.upd.StackObjectsCount = sourceStackCount - body.count;
+        }
+        else
+        {
+            // Moving a full stack onto a smaller stack
+            sourceItem.upd.StackObjectsCount = sourceStackCount - 1;
+        }
+
+        let destinationStackCount = 1;
+        if (destinationItem.upd)
+        {
+            destinationStackCount = destinationItem.upd.StackObjectsCount;
+        }
+        else
+        {
+            Object.assign(destinationItem, { upd: { StackObjectsCount: 1 } });
+        }
+
+        destinationItem.upd.StackObjectsCount = destinationStackCount + body.count;
 
         return output;
     }
@@ -340,28 +382,51 @@ export class InventoryController
     /**
     * Swap Item
     * its used for "reload" if you have weapon in hands and magazine is somewhere else in rig or backpack in equipment
+    * Also used to swap items using quick selection on character screen
     */
-    public swapItem(pmcData: IPmcData, body: IInventorySwapRequestData, sessionID: string): IItemEventRouterResponse
+    public swapItem(pmcData: IPmcData, request: IInventorySwapRequestData, sessionID: string): IItemEventRouterResponse
     {
-        const output = this.eventOutputHolder.getOutput(sessionID);
-
-        for (const iterItem of pmcData.Inventory.items)
+        const itemOne = pmcData.Inventory.items.find(x => x._id === request.item);
+        if (!itemOne)
         {
-            if (iterItem._id === body.item)
-            {
-                iterItem.parentId = body.to.id;         // parentId
-                iterItem.slotId = body.to.container;    // slotId
-                iterItem.location = body.to.location;    // location
-            }
-
-            if (iterItem._id === body.item2)
-            {
-                iterItem.parentId = body.to2.id;
-                iterItem.slotId = body.to2.container;
-                delete iterItem.location;
-            }
+            this.logger.error(`Unable to find item: ${request.item} to swap positions with: ${request.item2}`);
         }
-        return output;
+
+        const itemTwo = pmcData.Inventory.items.find(x => x._id === request.item2);
+        if (!itemTwo)
+        {
+            this.logger.error(`Unable to find item: ${request.item2} to swap positions with: ${request.item}`);
+        }
+
+        // to.id is the parentid
+        itemOne.parentId = request.to.id;
+        
+        // to.container is the slotid
+        itemOne.slotId = request.to.container;
+
+        // Request object has location data, add it in, otherwise remove existing location from object
+        if (request.to.location)
+        {
+            itemOne.location = request.to.location;
+        }
+        else
+        {
+            delete itemOne.location;
+        }
+
+        itemTwo.parentId = request.to2.id;
+        itemTwo.slotId = request.to2.container;
+        if (request.to2.location)
+        {
+            itemTwo.location = request.to2.location;
+        }
+        else
+        {
+            delete itemTwo.location;
+        }
+
+        // Client already informed of inventory locations, nothing for us to do
+        return this.eventOutputHolder.getOutput(sessionID);
     }
 
     /**
@@ -621,67 +686,29 @@ export class InventoryController
      */
     public sortInventory(pmcData: IPmcData, request: IInventorySortRequestData, sessionID: string): IItemEventRouterResponse
     {
-        let items = pmcData.Inventory.items;
 
-        // handle changed items
-        if (request.changedItems)
+        for (const change of request.changedItems)
         {
-            for (const target of request.changedItems)
+            const inventoryItem = pmcData.Inventory.items.find(x => x._id === change._id);
+            if (!inventoryItem)
             {
-                // remove unsorted items
-                let updatedItem: Item = undefined;
+                this.logger.error(`Unable to find inventory item: ${change._id} to auto-sort, YOU MUST RELOAD YOUR GAME`);
 
-                items = items.filter((item) =>
-                {
-                    if (item._id === target._id)
-                    {
-                        updatedItem = this.jsonUtil.clone(item);
-                    }
-                    return item._id !== target._id;
-                });
+                continue;
+            }
 
-                if (typeof (updatedItem._tpl) !== "string")
-                {
-                    updatedItem = target;
-                }
-                else if (typeof (target.location) !== "undefined")
-                {
-                    updatedItem.location = target.location;
-                    updatedItem.slotId = target.slotId;
-                }
-
-                // fix currency StackObjectsCount when single stack
-                if (this.paymentHelper.isMoneyTpl(updatedItem._tpl))
-                {
-                    updatedItem.upd = (updatedItem.upd || {});
-                    if (!updatedItem.upd.StackObjectsCount)
-                    {
-                        updatedItem.upd.StackObjectsCount = 1;
-                    }
-                }
-
-                // add sorted items
-                items.push(updatedItem);
+            inventoryItem.parentId = change.parentId;
+            inventoryItem.slotId = change.slotId;
+            if (change.location)
+            {
+                inventoryItem.location = change.location;
+            }
+            else
+            {
+                delete inventoryItem.location;
             }
         }
 
-        // handle deleted items
-        if ("deletedItems" in request)
-        {
-            // This data is not found inside client 17566 - ApplyInventoryChangesCommand.cs
-            throw new Error("looks like this data is used, uh oh");
-
-            // for (const target of body.deletedItems)
-            // {
-            //     // remove items
-            //     items = items.filter((item) =>
-            //     {
-            //         return item._id !== target._id;
-            //     });
-            // }
-        }
-
-        pmcData.Inventory.items = items;
         return this.eventOutputHolder.getOutput(sessionID);
     }
 

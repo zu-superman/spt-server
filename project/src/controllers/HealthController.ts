@@ -41,8 +41,9 @@ export class HealthController
      * stores in-raid player health
      * @param pmcData Player profile
      * @param info Request data
-     * @param sessionID 
+     * @param sessionID Player id
      * @param addEffects Should effects found be added or removed from profile
+     * @param deleteExistingEffects Should all prior effects be removed before apply new ones
      */
     public saveVitality(pmcData: IPmcData, info: ISyncHealthRequestData, sessionID: string, addEffects = true, deleteExistingEffects = true): void
     {
@@ -51,43 +52,46 @@ export class HealthController
 
     /**
      * When healing in menu
-     * @param pmcData 
-     * @param body 
-     * @param sessionID 
-     * @returns 
+     * @param pmcData Player profile
+     * @param request Healing request
+     * @param sessionID Player id
+     * @returns IItemEventRouterResponse
      */
-    public offraidHeal(pmcData: IPmcData, body: IOffraidHealRequestData, sessionID: string): IItemEventRouterResponse
+    public offraidHeal(pmcData: IPmcData, request: IOffraidHealRequestData, sessionID: string): IItemEventRouterResponse
     {
         const output = this.eventOutputHolder.getOutput(sessionID);
 
-        // update medkit used (hpresource)
-        const inventoryItem = pmcData.Inventory.items.find(item => item._id === body.item);
-        if (!inventoryItem)
+        // Update medkit used (hpresource)
+        const healingItemToUse = pmcData.Inventory.items.find(item => item._id === request.item);
+        if (!healingItemToUse)
         {
-            this.logger.error(this.localisationService.getText("health-healing_item_not_found", inventoryItem._id));
+            const errorMessage = this.localisationService.getText("health-healing_item_not_found", healingItemToUse._id);
+            this.logger.error(errorMessage);
 
-            // For now we just return nothing
-            return;
+            return this.httpResponse.appendErrorToOutput(output, errorMessage);
         }
 
-        if (!("upd" in inventoryItem))
+        // Ensure item has a upd object
+        if (!healingItemToUse.upd)
         {
-            inventoryItem.upd = {};
+            healingItemToUse.upd = {};
         }
 
-        if ("MedKit" in inventoryItem.upd)
+        if (healingItemToUse.upd.MedKit)
         {
-            inventoryItem.upd.MedKit.HpResource -= body.count;
+            healingItemToUse.upd.MedKit.HpResource -= request.count;
         }
         else
         {
-            const maxhp = this.itemHelper.getItem(inventoryItem._tpl)[1]._props.MaxHpResource;
-            inventoryItem.upd.MedKit = { "HpResource": maxhp - body.count };
+            // Get max healing from db
+            const maxhp = this.itemHelper.getItem(healingItemToUse._tpl)[1]._props.MaxHpResource;
+            healingItemToUse.upd.MedKit = { HpResource: maxhp - request.count }; // Subtract amout used from max
         }
 
-        if (inventoryItem.upd.MedKit.HpResource <= 0)
+        // Resource in medkit is spent, delete it
+        if (healingItemToUse.upd.MedKit.HpResource <= 0)
         {
-            this.inventoryHelper.removeItem(pmcData, body.item, sessionID, output);
+            this.inventoryHelper.removeItem(pmcData, request.item, sessionID, output);
         }
 
         return output;
@@ -97,34 +101,32 @@ export class HealthController
      * Handle Eat event
      * Consume food/water outside of a raid
      * @param pmcData Player profile
-     * @param body request Object
+     * @param request Eat request
      * @param sessionID Session id
      * @returns IItemEventRouterResponse
      */
-    public offraidEat(pmcData: IPmcData, body: IOffraidEatRequestData, sessionID: string): IItemEventRouterResponse
+    public offraidEat(pmcData: IPmcData, request: IOffraidEatRequestData, sessionID: string): IItemEventRouterResponse
     {
         let output = this.eventOutputHolder.getOutput(sessionID);
         let resourceLeft = 0;
-        let consumedItemMaxResource = 0;
 
-        const itemToConsume = pmcData.Inventory.items.find(x => x._id === body.item);
+        const itemToConsume = pmcData.Inventory.items.find(x => x._id === request.item);
         if (!itemToConsume)
         {
             // Item not found, very bad
-            return this.httpResponse.appendErrorToOutput(output, this.localisationService.getText("health-unable_to_find_item_to_consume", body.item));
+            return this.httpResponse.appendErrorToOutput(output, this.localisationService.getText("health-unable_to_find_item_to_consume", request.item));
         }
 
-        consumedItemMaxResource = this.itemHelper.getItem(itemToConsume._tpl)[1]._props.MaxResource;
+        const consumedItemMaxResource = this.itemHelper.getItem(itemToConsume._tpl)[1]._props.MaxResource;
         if (consumedItemMaxResource > 1)
         {
             if (itemToConsume.upd.FoodDrink === undefined)
             {
-                itemToConsume.upd.FoodDrink = {
-                    "HpPercent": consumedItemMaxResource - body.count };
+                itemToConsume.upd.FoodDrink = { HpPercent: consumedItemMaxResource - request.count };
             }
             else
             {
-                itemToConsume.upd.FoodDrink.HpPercent -= body.count;
+                itemToConsume.upd.FoodDrink.HpPercent -= request.count;
             }
 
             resourceLeft = itemToConsume.upd.FoodDrink.HpPercent;
@@ -133,7 +135,7 @@ export class HealthController
         // Remove item from inventory if resource has dropped below threshold
         if (consumedItemMaxResource === 1 || resourceLeft < 1)
         {
-            output = this.inventoryHelper.removeItem(pmcData, body.item, sessionID, output);
+            output = this.inventoryHelper.removeItem(pmcData, request.item, sessionID, output);
         }
 
         return output;
@@ -145,7 +147,7 @@ export class HealthController
      * @param pmcData player profile
      * @param healthTreatmentRequest Request data from client
      * @param sessionID Session id
-     * @returns 
+     * @returns IItemEventRouterResponse
      */
     public healthTreatment(pmcData: IPmcData, healthTreatmentRequest: IHealthTreatmentRequestData, sessionID: string): IItemEventRouterResponse
     {
@@ -169,45 +171,34 @@ export class HealthController
             return output;
         }
 
-        const bodyPartsRequest = healthTreatmentRequest.difference.BodyParts;
-        const healthRequest: ISyncHealthRequestData = {
-            IsAlive: true,
-            Health: {}
-        };
-
-        // Iterate over body parts in health Treatment request and add health values + effects to above health request object
-        for (const bodyPartKey in bodyPartsRequest)
+        for (const bodyPartKey in healthTreatmentRequest.difference.BodyParts)
         {
-            const bodyPart: BodyPart = healthTreatmentRequest.difference.BodyParts[bodyPartKey];
+            // Get body part from request + from pmc profile
+            const partRequest: BodyPart = healthTreatmentRequest.difference.BodyParts[bodyPartKey];
+            const profilePart = pmcData.Health.BodyParts[bodyPartKey];
 
-            healthRequest.Health[bodyPartKey] = {};
-            healthRequest.Health[bodyPartKey].Current = Math.round(pmcData.Health.BodyParts[bodyPartKey].Health.Current + bodyPart.Health);
+            // Set profile bodypart to max
+            profilePart.Health.Current = profilePart.Health.Maximum;
 
-            // Check for effects that have been removed as part of therapist treatment
-            if ("Effects" in bodyPart && bodyPart.Effects)
+            // Check for effects to remove
+            if (partRequest.Effects?.length > 0)
             {
-                // Iterate over effects array and add as properties to dict
-                for (const effect of bodyPart.Effects)
+                // Found some, loop over them and remove from pmc profile
+                for (const effect of partRequest.Effects)
                 {
-                    if (!healthRequest.Health[bodyPartKey].Effects)
-                    {
-                        healthRequest.Health[bodyPartKey].Effects = {};
-                    }
+                    delete pmcData.Health.BodyParts[bodyPartKey].Effects[effect];
+                }
 
-                    healthRequest.Health[bodyPartKey].Effects[effect] = -1;
+                // Remove empty effect object
+                if (Object.keys(pmcData.Health.BodyParts[bodyPartKey].Effects).length === 0)
+                {
+                    delete pmcData.Health.BodyParts[bodyPartKey].Effects;
                 }
             }
         }
 
-        healthRequest.Hydration = pmcData.Health.Hydration.Current + healthTreatmentRequest.difference.Hydration;
-        healthRequest.Energy = pmcData.Health.Energy.Current + healthTreatmentRequest.difference.Energy;
-        healthRequest.Temperature = pmcData.Health.Temperature.Current;
-
-        // Update health values, persist effects on limbs
-        this.saveVitality(pmcData, healthRequest, sessionID, true, false);
-
-        // Remove effects on limbs that were treated
-        this.removeEffectsAfterPostRaidHeal(sessionID, pmcData, healthTreatmentRequest, output);
+        // Inform client of new post-raid, post-therapist heal values
+        output.profileChanges[sessionID].health = this.jsonUtil.clone(pmcData.Health);
 
         return output;
     }
@@ -225,46 +216,5 @@ export class HealthController
         // TODO:
         // Health effects (fractures etc) are handled in /player/health/sync.
         pmcData.Skills.Common = info.skills.Common;
-    }
-
-    /**
-     * Iterate over treatment request diff and find effects to remove from player limbs
-     * @param sessionId 
-     * @param profile Profile to update
-     * @param treatmentRequest client request
-     * @param output response to send to client
-     */
-    protected removeEffectsAfterPostRaidHeal(sessionId: string, profile: IPmcData, treatmentRequest: IHealthTreatmentRequestData, output: IItemEventRouterResponse): void
-    {
-        // Get body parts with effects we should remove from treatment object
-        const bodyPartsWithEffectsToRemove = {};
-        for (const partId in treatmentRequest.difference.BodyParts)
-        {
-            const effects = treatmentRequest.difference.BodyParts[partId].Effects;
-            if (effects && effects.length > 0)
-            {
-                bodyPartsWithEffectsToRemove[partId] = treatmentRequest.difference.BodyParts[partId];
-            }
-        }
-
-        // Iterate over body parts with effects to remove
-        for (const bodyPartId in bodyPartsWithEffectsToRemove)
-        {
-            // Get effects to remove
-            const effectsToRemove = bodyPartsWithEffectsToRemove[bodyPartId].Effects;
-            const profileBodyPartEffects = profile.Health.BodyParts[bodyPartId].Effects;
-            if (profileBodyPartEffects)
-            {
-                // Profile bodypart has effects
-                for (const effectToRemove of effectsToRemove)
-                {
-                    // Remove effect from profile
-                    delete profileBodyPartEffects[effectToRemove];
-                }
-            }
-        }
-
-        // Inform client of new post-raid, post-therapist heal values
-        output.profileChanges[sessionId].health = this.jsonUtil.clone(profile.Health);
     }
 }

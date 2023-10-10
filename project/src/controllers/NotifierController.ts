@@ -85,7 +85,7 @@ export class NotifierController
             server: this.httpServerHelper.buildUrl(),
             // eslint-disable-next-line @typescript-eslint/naming-convention
             channel_id: sessionID,
-            url: this.getServer(sessionID),
+            url: "",
             notifierServer: this.getServer(sessionID),
             ws: this.notifierHelper.getWebSocketServer(sessionID)
         };

@@ -1,3 +1,6 @@
+import { execSync } from "child_process";
+import os from "os";
+import path from "path";
 import semver from "semver";
 import { DependencyContainer, inject, injectable } from "tsyringe";
 import { ConfigTypes } from "../models/enums/ConfigTypes";
@@ -25,6 +28,8 @@ export class PreAkiModLoader implements IModLoader
     protected order: Record<string, number> = {};
     protected imported: Record<string, IPackageJsonData> = {};
     protected akiConfig: ICoreConfig;
+    protected serverDependencies: Record<string, string>;
+    protected skippedMods: string[] = [];
 
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
@@ -38,6 +43,9 @@ export class PreAkiModLoader implements IModLoader
     )
     {
         this.akiConfig = this.configServer.getConfig<ICoreConfig>(ConfigTypes.CORE);
+
+        const packageJsonPath: string = path.join(__dirname, "../../package.json");
+        this.serverDependencies = JSON.parse(this.vfs.readFile(packageJsonPath)).dependencies;
     }
 
     public async load(container: DependencyContainer): Promise<void>
@@ -119,6 +127,12 @@ export class PreAkiModLoader implements IModLoader
         for (const modFolderName in modPackageData)
         {
             const modToValidate = modPackageData[modFolderName];
+
+            // if the mod has library dependencies check if these dependencies are bundled in the server, if not install them
+            if (modToValidate.dependencies && Object.keys(modToValidate.dependencies).length > 0 && !this.vfs.exists(`${this.basepath}${modFolderName}/node_modules`)) 
+            {
+                this.autoInstallDependencies(`${this.basepath}${modFolderName}`, modToValidate);
+            }
 
             // Returns if any mod dependency is not satisfied
             if (!this.areModDependenciesFulfilled(modToValidate, modPackageData))
@@ -280,7 +294,6 @@ export class PreAkiModLoader implements IModLoader
         // sort mods load order
         const source = this.sortModsLoadOrder();
 
-        const promiseLoad = new Array<Promise<void>>();
         // import mod classes
         for (const mod of source)
         {
@@ -301,22 +314,26 @@ export class PreAkiModLoader implements IModLoader
                     return;
                 }
 
+                if (this.modTypeCheck.isPreAkiLoadAsync(requiredMod.mod))
+                {
+                    try 
+                    {
+                        await (requiredMod.mod as IPreAkiLoadModAsync).preAkiLoadAsync(container);
+                        globalThis[mod] = requiredMod;
+                    }
+                    catch (err) 
+                    {
+                        this.logger.error(this.localisationService.getText("modloader-async_mod_error", `${err?.message ?? ""}\n${err.stack ?? ""}`));
+                    }
+                }
+
                 if (this.modTypeCheck.isPreAkiLoad(requiredMod.mod))
                 {
                     (requiredMod.mod as IPreAkiLoadMod).preAkiLoad(container);
                     globalThis[mod] = requiredMod;
                 }
-                if (this.modTypeCheck.isPreAkiLoadAsync(requiredMod.mod))
-                {
-                    promiseLoad.push(
-                        (requiredMod.mod as IPreAkiLoadModAsync).preAkiLoadAsync(container)
-                            .then(() => globalThis[mod] = requiredMod)
-                            .catch((err) => this.logger.error(this.localisationService.getText("modloader-async_mod_error", `${err?.message ?? ""}\n${err.stack ?? ""}`)))
-                    );
-                }
             }
         }
-        await Promise.all(promiseLoad);
     }
 
     public sortModsLoadOrder(): string[]
@@ -336,6 +353,12 @@ export class PreAkiModLoader implements IModLoader
     {
         const modPath = this.getModPath(mod);
         const packageData = this.jsonUtil.deserialize<IPackageJsonData>(this.vfs.readFile(`${modPath}/package.json`));
+
+        if (this.skippedMods.includes(packageData.name))
+        {
+            this.logger.warning(this.localisationService.getText("modloader-skipped_mod", {name: packageData.name, author: packageData.author}));
+            return;
+        }
 
         const isBundleMod = packageData.isBundleMod ?? false;
 
@@ -363,6 +386,62 @@ export class PreAkiModLoader implements IModLoader
         // add mod to imported list
         this.imported[mod] = {...packageData, dependencies: packageData.modDependencies};
         this.logger.info(this.localisationService.getText("modloader-loaded_mod", {name: packageData.name, version: packageData.version, author: packageData.author}));
+    }
+
+    protected autoInstallDependencies(modPath: string, pkg: IPackageJsonData): void
+    {
+        const dependenciesToInstall: [string, string][] = Object.entries(pkg.dependencies);
+
+        let depIdx = 0;
+        for (const [depName, depVersion] of dependenciesToInstall)
+        {
+            // currently not checking for version mismatches, but we could check it, just don't know what we would do afterwards, some options would be:
+            // 1 - throw an error
+            // 2 - use the server's version (which is what's currently happening by not checking the version)
+            // 3 - use the mod's version (don't know the reprecursions this would have, or if it would even work)
+
+            // if a dependency from the mod exists in the server dependencies we can safely remove it from the list of dependencies to install since it already comes bundled in the server.
+            if (this.serverDependencies[depName])
+            {
+                dependenciesToInstall.splice(depIdx, 1);
+            }
+            depIdx++;
+        }
+
+        //if the mod has no extra dependencies return as there's nothing that needs to be done.
+        if (dependenciesToInstall.length === 0)
+        {
+            return;
+        }
+
+        //if this feature flag is set to false, we warn the user he has a mod that requires extra dependencies and might not work, point them in the right direction on how to enable this feature.
+        if (!this.akiConfig.features.autoInstallModDependencies)
+        {
+            this.logger.warning(this.localisationService.getText("modloader-installing_external_dependencies_disabled", {
+                name: pkg.name,
+                author: pkg.author,
+                configPath: path.join(globalThis.G_RELEASE_CONFIGURATION ? "Aki_Data/Server/configs" : "assets/configs", "core.json"),
+                configOption: "autoInstallModDependencies"
+            }));
+
+            this.skippedMods.push(pkg.name);
+            return;
+        }
+
+        //temporarily rename package.json because otherwise npm, pnpm and any other package manager will forcefully download all packages in dependencies without any way of disabling this behavior
+        this.vfs.rename(`${modPath}/package.json`, `${modPath}/package.json.bak`);
+        this.vfs.writeFile(`${modPath}/package.json`, "{}");
+
+        this.logger.info(this.localisationService.getText("modloader-installing_external_dependencies", {name: pkg.name, author: pkg.author}));
+
+        const pnpmPath = path.join(process.cwd(), (globalThis.G_RELEASE_CONFIGURATION ? "Aki_Data/Server/@pnpm/exe" : "node_modules/@pnpm/exe"), (os.platform() === "win32" ? "pnpm.exe" : "pnpm"));
+        let command: string = `${pnpmPath} install `;
+        command += dependenciesToInstall.map(([depName, depVersion]) => `${depName}@${depVersion}`).join(" ");
+        execSync(command, { cwd: modPath });
+
+        // delete the new blank package.json then rename the backup back to the original name
+        this.vfs.removeFile(`${modPath}/package.json`);
+        this.vfs.rename(`${modPath}/package.json.bak`, `${modPath}/package.json`);
     }
 
     protected areModDependenciesFulfilled(pkg: IPackageJsonData, loadedMods: Record<string, IPackageJsonData>): boolean
@@ -424,22 +503,32 @@ export class PreAkiModLoader implements IModLoader
         const modPath = this.getModPath(modName);
 
         const modIsCalledBepinEx = modName.toLowerCase() === "bepinex";
+        const modIsCalledUser = modName.toLowerCase() === "user";
+        const modIsCalledSrc = modName.toLowerCase() === "src";
+        const modIsCalledDb = modName.toLowerCase() === "db";
         const hasBepinExFolderStructure = this.vfs.exists(`${modPath}/plugins`);
         const containsDll = this.vfs.getFiles(`${modPath}`).find(x => x.includes(".dll"));
+
+        if (modIsCalledSrc || modIsCalledDb || modIsCalledUser)
+        {
+            this.logger.error(this.localisationService.getText("modloader-not_correct_mod_folder", modName));
+            return false;
+        }
+
         if (modIsCalledBepinEx || hasBepinExFolderStructure || containsDll)
         {
             this.logger.error(this.localisationService.getText("modloader-is_client_mod", modName));
             return false;
         }
 
-        // check if config exists
+        // Check if config exists
         if (!this.vfs.exists(`${modPath}/package.json`))
         {
             this.logger.error(this.localisationService.getText("modloader-missing_package_json", modName));
             return false;
         }
 
-        // validate mod
+        // Validate mod
         const config = this.jsonUtil.deserialize<IPackageJsonData>(this.vfs.readFile(`${modPath}/package.json`));
         const checks = ["name", "author", "version", "license"];
         let issue = false;

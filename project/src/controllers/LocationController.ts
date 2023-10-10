@@ -10,9 +10,11 @@ import {
 } from "../models/eft/common/ILocationsSourceDestinationBase";
 import { ILooseLoot, SpawnpointTemplate } from "../models/eft/common/ILooseLoot";
 import { IAirdropLootResult } from "../models/eft/location/IAirdropLootResult";
+import { IGetLocationRequestData } from "../models/eft/location/IGetLocationRequestData";
 import { AirdropTypeEnum } from "../models/enums/AirdropType";
 import { ConfigTypes } from "../models/enums/ConfigTypes";
 import { IAirdropConfig } from "../models/spt/config/IAirdropConfig";
+import { ILocationConfig } from "../models/spt/config/ILocationConfig";
 import { ILocations } from "../models/spt/server/ILocations";
 import { LootRequest } from "../models/spt/services/LootRequest";
 import { ILogger } from "../models/spt/utils/ILogger";
@@ -21,16 +23,19 @@ import { DatabaseServer } from "../servers/DatabaseServer";
 import { LocalisationService } from "../services/LocalisationService";
 import { HashUtil } from "../utils/HashUtil";
 import { JsonUtil } from "../utils/JsonUtil";
+import { RandomUtil } from "../utils/RandomUtil";
 import { TimeUtil } from "../utils/TimeUtil";
 
 @injectable()
 export class LocationController
 {
     protected airdropConfig: IAirdropConfig;
+    protected locationConfig: ILocationConfig;
 
     constructor(
         @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("HashUtil") protected hashUtil: HashUtil,
+        @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("WeightedRandomHelper") protected weightedRandomHelper: WeightedRandomHelper,
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("LocationGenerator") protected locationGenerator: LocationGenerator,
@@ -42,6 +47,7 @@ export class LocationController
     )
     {
         this.airdropConfig = this.configServer.getConfig(ConfigTypes.AIRDROP);
+        this.locationConfig = this.configServer.getConfig(ConfigTypes.LOCATION);
     }
 
     /*  */
@@ -49,23 +55,26 @@ export class LocationController
     /**
      * Handle client/location/getLocalloot
      * Get a location (map) with generated loot data
-     * @param location Map to generate loot for
+     * @param sessionId Player id
+     * @param request Map request to generate
      * @returns ILocationBase
      */
-    public get(location: string): ILocationBase
+    public get(sessionId: string, request: IGetLocationRequestData): ILocationBase
     {
-        const name = location.toLowerCase().replace(" ", "");
+        this.logger.debug(`Generating data for: ${request.locationId}, variant: ${request.variantId}`);
+        const name = request.locationId.toLowerCase().replace(" ", "");
         return this.generate(name);
     }
 
     /**
-     * Generate a maps base location without loot
+     * Generate a maps base location with loot
      * @param name Map name
      * @returns ILocationBase
      */
     protected generate(name: string): ILocationBase
     {
-        const location: ILocation = this.databaseServer.getTables().locations[name];
+        const db = this.databaseServer.getTables();
+        const location: ILocation = db.locations[name];
         const output: ILocationBase = this.jsonUtil.clone(location.base);
 
         output.UnixDateTime = this.timeUtil.getTimestamp();
@@ -76,61 +85,22 @@ export class LocationController
             return output;
         }
 
-        const locationName = location.base.Name;
-        const db = this.databaseServer.getTables();
-
-        // Copy loot data to local properties
-        const staticWeapons = this.jsonUtil.clone(db.loot.staticContainers[locationName]?.staticWeapons);
-        if (!staticWeapons)
-        {
-            this.logger.error(`Unable to find static weapon data for map: ${locationName}`);
-        }
-
-        const staticContainers = this.jsonUtil.clone(db.loot.staticContainers[locationName]?.staticContainers);
-        if (!staticContainers)
-        {
-            this.logger.error(`Unable to find static container data for map: ${locationName}`);
-        }
-
-        const staticForced = this.jsonUtil.clone(db.loot.staticContainers[locationName]?.staticForced);
-        if (!staticForced)
-        {
-            this.logger.error(`Unable to find forced static data for map: ${locationName}`);
-        }
-
-        const staticLootDist = this.jsonUtil.clone(db.loot.staticLoot);
         const staticAmmoDist = this.jsonUtil.clone(db.loot.staticAmmo);
 
-        // Init loot array for map
-        output.Loot = [];
-
-        // Add mounted weapons to output loot
-        for (const mi of staticWeapons ?? [])
-        {
-            output.Loot.push(mi);
-        }
-
-        // Add static loot to output loot + pass in forced static loot as param
-        let staticContainerCount = 0;
-        for (const staticContainer of staticContainers ?? [])
-        {
-            const container = this.locationGenerator.generateContainerLoot(staticContainer, staticForced, staticLootDist, staticAmmoDist, name);
-            output.Loot.push(container);
-            staticContainerCount++;
-        }
-
-        this.logger.success(this.localisationService.getText("location-containers_generated_success", staticContainerCount));
-
+        // Create containers and add loot to them
+        const staticLoot = this.locationGenerator.generateStaticContainers(location.base, staticAmmoDist);
+        output.Loot.push(...staticLoot);
+        
         // Add dyanmic loot to output loot
         const dynamicLootDist: ILooseLoot = this.jsonUtil.clone(location.looseLoot);
-        const dynamicLoot: SpawnpointTemplate[] = this.locationGenerator.generateDynamicLoot(dynamicLootDist, staticAmmoDist, name);
-        for (const dli of dynamicLoot)
+        const dynamicSpawnPoints: SpawnpointTemplate[] = this.locationGenerator.generateDynamicLoot(dynamicLootDist, staticAmmoDist, name);
+        for (const spawnPoint of dynamicSpawnPoints)
         {
-            output.Loot.push(dli);
+            output.Loot.push(spawnPoint);
         }
 
         // Done generating, log results
-        this.logger.success(this.localisationService.getText("location-dynamic_items_spawned_success", dynamicLoot.length));
+        this.logger.success(this.localisationService.getText("location-dynamic_items_spawned_success", dynamicSpawnPoints.length));
         this.logger.success(this.localisationService.getText("location-generated_success", name));
 
         return output;
@@ -145,7 +115,7 @@ export class LocationController
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public generateAll(sessionId: string): ILocationsGenerateAllResponse
     {
-        const locationsFromDb = this.jsonUtil.clone(this.databaseServer.getTables().locations);
+        const locationsFromDb = this.databaseServer.getTables().locations;
         const locations: ILocations = {};
         for (const mapName in locationsFromDb)
         {

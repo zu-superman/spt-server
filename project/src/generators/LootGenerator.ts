@@ -220,7 +220,7 @@ export class LootGenerator
         const randomPreset = this.randomUtil.getArrayValue(globalDefaultPresets)[1];
         if (!randomPreset?._encyclopedia)
         {
-            this.logger.error(`Airdrop - preset with id: ${randomPreset._id} lacks encyclopedia property`);
+            this.logger.debug(`Airdrop - preset with id: ${randomPreset._id} lacks encyclopedia property, skipping`);
 
             return false;
         }
@@ -228,7 +228,7 @@ export class LootGenerator
         const itemDetails = this.itemHelper.getItem(randomPreset._encyclopedia);
         if (!itemDetails[0])
         {
-            this.logger.error(`Airdrop - Unable to find preset with tpl: ${randomPreset._encyclopedia}`);
+            this.logger.debug(`Airdrop - Unable to find preset with tpl: ${randomPreset._encyclopedia}, skipping`);
 
             return false;
         }
@@ -282,7 +282,7 @@ export class LootGenerator
         const itemsToReturn: AddItem[] = [];
 
         // choose a weapon to give to the player (weighted)
-        const chosenWeaponTpl = this.weightedRandomHelper.getWeightedInventoryItem(containerSettings.weaponRewardWeight);
+        const chosenWeaponTpl = this.weightedRandomHelper.getWeightedValue<string>(containerSettings.weaponRewardWeight);
         const weaponDetailsDb = this.itemHelper.getItem(chosenWeaponTpl);
         if (!weaponDetailsDb[0])
         {
@@ -418,11 +418,11 @@ export class LootGenerator
                 continue;
             }
 
-            // Get items that fulfil reward type criteral from items that fit on gun
-            const relatedItems = linkedItemsToWeapon.filter(x => x._parent === rewardTypeId);
+            // Get items that fulfil reward type critera from items that fit on gun
+            const relatedItems = linkedItemsToWeapon.filter(x => x._parent === rewardTypeId && !this.itemFilterService.isItemBlacklisted(x._id));
             if (!relatedItems || relatedItems.length === 0)
             {
-                this.logger.debug(`no items found to fulfil reward type ${rewardTypeId} for weapon: ${chosenWeaponPreset._name}, skipping`);
+                this.logger.debug(`No items found to fulfil reward type ${rewardTypeId} for weapon: ${chosenWeaponPreset._name}, skipping type`);
                 continue;
             }
 
@@ -450,7 +450,7 @@ export class LootGenerator
         for (let index = 0; index < rewardContainerDetails.rewardCount; index++)
         {
             // Pick random reward from pool, add to request object
-            const chosenRewardItemTpl = this.weightedRandomHelper.getWeightedInventoryItem(rewardContainerDetails.rewardTplPool);
+            const chosenRewardItemTpl = this.weightedRandomHelper.getWeightedValue<string>(rewardContainerDetails.rewardTplPool);
             this.addOrIncrementItemToArray(chosenRewardItemTpl, itemsToReturn);
         }
 

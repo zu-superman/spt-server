@@ -34,6 +34,13 @@ export class RagfairStaticRouter extends StaticRouter
                         return this.ragfairCallbacks.getMarketPrice(url, info, sessionID);
                     }),
                 new RouteAction(
+                    "/client/ragfair/offerfees", 
+                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                    (url: string, info: any, sessionID: string, output: string): any => 
+                    {
+                        return this.ragfairCallbacks.storePlayerOfferTaxAmount(url, info, sessionID);
+                    }),
+                new RouteAction(
                     "/client/reports/ragfair/send", 
                     // eslint-disable-next-line @typescript-eslint/no-unused-vars
                     (url: string, info: any, sessionID: string, output: string): any => 

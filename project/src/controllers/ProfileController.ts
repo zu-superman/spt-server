@@ -134,8 +134,9 @@ export class ProfileController
 
         // PMC
         pmcData._id = `pmc${sessionID}`;
-        pmcData.aid = sessionID;
+        pmcData.aid = account.aid;
         pmcData.savage = `scav${sessionID}`;
+        pmcData.sessionId = sessionID;
         pmcData.Info.Nickname = info.nickname;
         pmcData.Info.LowerNickname = info.nickname.toLowerCase();
         pmcData.Info.RegistrationDate = this.timeUtil.getTimestamp();
@@ -144,11 +145,18 @@ export class ProfileController
         pmcData.Customization.Head = info.headId;
         pmcData.Health.UpdateTime = this.timeUtil.getTimestamp();
         pmcData.Quests = [];
+        pmcData.Hideout.Seed = this.timeUtil.getTimestamp() + (8 * 60 * 60 * 24 * 365); // 8 years in future why? who knows, we saw it in live
         pmcData.RepeatableQuests = [];
         pmcData.CarExtractCounts = {};
 
-        // change item id's to be unique
+        if (!pmcData.UnlockedInfo)
+        {
+            pmcData.UnlockedInfo = { unlockedProductionRecipe: [] };
+        }
+
+        // Change item id's to be unique
         pmcData.Inventory.items = this.itemHelper.replaceIDs(pmcData, pmcData.Inventory.items, null, pmcData.Inventory.fastPanel);
+        pmcData.Inventory.hideoutAreaStashes = {};
 
         // Create profile
         const profileDetails: IAkiProfile = {
@@ -158,7 +166,7 @@ export class ProfileController
                 scav: {} as IPmcData
             },
             suits: profile.suits,
-            weaponbuilds: profile.weaponbuilds,
+            userbuilds: profile.userbuilds,
             dialogues: profile.dialogues,
             aki: this.profileHelper.getDefaultAkiDataObject(),
             vitality: {} as Vitality,
@@ -180,7 +188,7 @@ export class ProfileController
         // Profile is flagged as wanting quests set to ready to hand in and collect rewards
         if (profile.trader.setQuestsAvailableForFinish)
         {
-            this.questHelper.addAllQuestsToProfile(profileDetails.characters.pmc, [QuestStatus.AvailableForFinish]);
+            this.questHelper.addAllQuestsToProfile(profileDetails.characters.pmc, [QuestStatus.AvailableForStart, QuestStatus.Started, QuestStatus.AvailableForFinish]);
 
             // Make unused response so applyQuestReward works
             const response = this.eventOutputHolder.getOutput(sessionID);

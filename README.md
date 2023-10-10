@@ -89,12 +89,15 @@ Player profile is stored in SPT folder as a JSON file, allowing for changes to p
 	 - bossKojainy (Shturman)
 	 - bossSanitar
 	 - bossTagilla
-	 - bosszryachiy
+	 - bossZryachiy
+	 - bossBoar (Kaban)
+	 - bossBoarSniper
 	 - curedAssault
 	 - exUsec (Rogue)
 	 - followerBigPipe
 		 - Grenade launcher
 	 - followerBirdEye
+	 - followerBoar
 	 - followerBully
 	 - followerGluharAssault
 	 - followerGluharScout
@@ -103,7 +106,7 @@ Player profile is stored in SPT folder as a JSON file, allowing for changes to p
 	 - followerKojaniy
 	 - followerSanitar
 	 - followerzryachiy
-	 - gifter
+	 - gifter (santa)
 		 - ~~Gives gifts~~ NOT IMPLEMENTED
 	 - marksman
 	 - pmcBot (raider)
@@ -113,7 +116,7 @@ Player profile is stored in SPT folder as a JSON file, allowing for changes to p
 	- Semi-randomised gear chosen with weighting system
 	- Randomised durability of gear
 - Ammo
-	- Ammo weighting system
+	- Ammo weighting system to mimic live
 - Loot
 	- Semi-randomised loot
 	- Item type spawn limit system
@@ -130,20 +133,24 @@ Player profile is stored in SPT folder as a JSON file, allowing for changes to p
 		 - Randomised attachments with percentage based chance to appear
 			 - Face shields
 			 - Flashlights
+	- Randomised AI brains
+		- Chooses random AI behaviour from pool of possible bot types (e.g. raider/rogue/killa)
 	 - Dogtags
 		 - Random level
 		 - Random name
 	 - Voices
 		 - Bear/usec voices for each faction
-	 - Item blacklist/whitelist
-	 - Item
+	 - Loot item blacklist/whitelist
 	 - Highly configurable in config
+	 - Level-relative gear for PMCs from levels 1-15 and 15+
+	 	- 1-15 bots have lower-tier items
+		- 15+ bots have access to anything
 
 ## Inventory
  - Move/split/delete stacks
  - Tags (add/modify/remove)
  - Armor/weapon kit item repair
- - ~~Auto-sort~~ (SEMI-BROKEN - MOVES ITEMS OUT OF VISIBLE INVENTORY SPACE)
+ - Auto-sort
  - Out of raid healing
  - Out of raid eating
  - Special slots (compass etc)

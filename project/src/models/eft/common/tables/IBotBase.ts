@@ -9,7 +9,9 @@ export interface IBotBase
 {
     
     _id: string
-    aid: string
+    aid: number
+    /** SPT property - use to store player id - TODO - move to AID ( account id as guid of choice) */
+    sessionId: string
     savage?: string
     Info: Info
     Customization: Customization
@@ -22,7 +24,7 @@ export interface IBotBase
     BackendCounters: Record<string, BackendCounter>
     InsuredItems: InsuredItem[]
     Hideout: Hideout
-    Quests: Quest[]
+    Quests: IQuestStatus[]
     TradersInfo: Record<string, TraderInfo>
     UnlockedInfo: IUnlockedInfo
     RagfairInfo: RagfairInfo
@@ -148,6 +150,8 @@ export interface Inventory
     sortingTable: string
     questRaidItems: string
     questStashItems: string
+    /** Key is hideout area enum numeric as string e.g. "24", value is area _id  */
+    hideoutAreaStashes: Record<string, string>
     fastPanel: Record<string, string>
 }
 
@@ -183,6 +187,11 @@ export interface Mastering extends IBaseSkill
 {}
 
 export interface Stats 
+{
+    Eft: IEftStats
+}
+
+export interface IEftStats
 {
     CarriedQuestItems: string[]
     Victims: Victim[]
@@ -350,7 +359,7 @@ export interface Hideout
 {
     Production: Record<string, Productive>
     Areas: HideoutArea[]
-    Improvements: Record<string, IHideoutImprovement>
+    Improvement: Record<string, IHideoutImprovement>
     Seed: number
     sptUpdateLastRunTimestamp: number
 }
@@ -372,7 +381,13 @@ export interface Productive
     SkipTime?: number
     /** Seconds needed to fully craft */
     ProductionTime?: number
-    sptIsScavCase?: boolean;
+    GivenItemsInStart?: string[]
+    Interrupted?: boolean
+    /** Used in hideout prodiction.json */
+    needFuelForAllProductionTime?: boolean
+    /** Used when sending data to client */
+    NeedFuelForAllProductionTime?: boolean
+    sptIsScavCase?: boolean
 }
 
 export interface Production extends Productive 
@@ -444,7 +459,7 @@ export enum SurvivorClass
     SURVIVOR = 4
 }
 
-export interface Quest 
+export interface IQuestStatus 
 {
     qid: string
     startTime: number
@@ -459,10 +474,20 @@ export interface TraderInfo
 {
     loyaltyLevel: number
     salesSum: number
-    disabled: boolean
     standing: number
     nextResupply: number
     unlocked: boolean
+    disabled: boolean
+}
+
+/** This object is sent to the client as part of traderRelations */
+export interface TraderData
+{
+    salesSum: number
+    standing: number
+    loyalty: number
+    unlocked: boolean
+    disabled: boolean
 }
 
 export interface RagfairInfo 

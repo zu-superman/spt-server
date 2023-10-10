@@ -4,8 +4,7 @@ import { IBotBase } from "../models/eft/common/tables/IBotBase";
 import { ILogger } from "../models/spt/utils/ILogger";
 import { LocalisationService } from "./LocalisationService";
 
-/** Cache bots in a dictionary, keyed by the bots name, keying by name isnt idea as its not unique but this is used by the post-raid system which doesnt have any bot ids, only name */
-
+/** Cache bots in a dictionary, keyed by the bots name, keying by name isnt ideal as its not unique but this is used by the post-raid system which doesnt have any bot ids, only name */
 @injectable()
 export class MatchBotDetailsCacheService
 {
@@ -23,7 +22,7 @@ export class MatchBotDetailsCacheService
      */
     public cacheBot(botToCache: IBotBase): void
     {
-        this.botDetailsCache[botToCache.Info.Nickname.trim()] = botToCache;
+        this.botDetailsCache[`${botToCache.Info.Nickname.trim()}${botToCache.Info.Side}`] = botToCache;
     }
 
     /**
@@ -35,16 +34,16 @@ export class MatchBotDetailsCacheService
     }
 
     /**
-     * Find a bot in the cache by its name
+     * Find a bot in the cache by its name and side
      * @param botName Name of bot to find
      * @returns Bot details
      */
-    public getBotByName(botName: string): IBotBase
+    public getBotByNameAndSide(botName: string, botSide: string): IBotBase
     {
-        const botInCache = this.botDetailsCache[botName];
+        const botInCache = this.botDetailsCache[`${botName}${botSide}`];
         if (!botInCache)
         {
-            this.logger.warning(this.localisationService.getText("", botName));
+            this.logger.warning(`bot not found in match bot cache: ${botName} ${botSide}`);
         }
 
         return botInCache;

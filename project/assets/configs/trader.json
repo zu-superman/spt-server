@@ -29,7 +29,7 @@
         }
     ],
     "updateTimeDefault": 3600,
-	"purchasesAreFoundInRaid": false,
+    "purchasesAreFoundInRaid": false,
     "traderPriceMultipler": 1,
     "persistPurchaseDataInProfile": true,
     "fence": {
@@ -40,10 +40,10 @@
         },
         "partialRefreshTimeSeconds": 240,
         "partialRefreshChangePercent": 15,
-        "assortSize": 120,
-        "maxPresetsPercent": 5,
+        "assortSize": 140,
+        "maxPresetsPercent": 10,
         "itemPriceMult": 1.2,
-        "presetPriceMult": 2.3,
+        "presetPriceMult": 2.0,
         "regenerateAssortsOnRefresh": false,
         "itemTypeLimits": {
             "550aa4bf4bdc2dd6348b456b": 3,
@@ -76,7 +76,9 @@
             "57864a3d24597754843f8721": 2,
             "5448e54d4bdc2dcc718b4568": 4,
             "5448f39d4bdc2d0a728b4568": 5,
-            "5795f317245977243854e041": 3
+            "5795f317245977243854e041": 3,
+            "5c99f98d86f7745c314214b3": 2,
+            "5c164d2286f774194c5e69fa": 0
         },
         "presetMaxDurabilityPercentMinMax": {
             "min": 35,
@@ -86,14 +88,63 @@
             "min": 35,
             "max": 60
         },
-		"itemStackSizeOverrideMinMax":
-		{
-			"59e690b686f7746c9f75e848": {"min": 5, "max": 15}
-		},
-		"blacklistSeasonalItems": true,
+        "itemStackSizeOverrideMinMax": {
+            "59e690b686f7746c9f75e848": {
+                "min": 5,
+                "max": 15
+            }
+        },
+        "itemCategoryRoublePriceLimit": {
+            "5485a8684bdc2da71d8b4567": 230,
+            "5795f317245977243854e041": 30000,
+            "5448ecbe4bdc2d60728b4568": 40000,
+            "57864a3d24597754843f8721": 50000,
+            "5447e1d04bdc2dff2f8b4567": 50000,
+            "5448e53e4bdc2d60728b4567": 90000,
+            "5a341c4686f77469e155819e": 75000,
+            "57864a66245977548f04a81f": 71000,
+            "5448e54d4bdc2dcc718b4568": 200000,
+            "5a2c3a9486f774688b05e574": 70000,
+            "5a341c4086f77401f2541505": 125000,
+            "5448f3a64bdc2d60728b456a": 70000,
+            "5447b6194bdc2d67278b4567": 500000,
+            "550aa4cd4bdc2dd8348b456c": 70000,
+            "57864ee62459775490116fc1": 95000,
+            "5448bc234bdc2d3c308b4569": 29000,
+            "55818ae44bdc2dde698b456c": 45000,
+            "55818add4bdc2d5b648b456f": 35000,
+            "590c745b86f7743cc433c5f2": 64000,
+            "57864bb7245977548b3b66c2": 90000,
+            "5c99f98d86f7745c314214b3": 15000
+        },
+        "presetSlotsToRemoveChancePercent": {
+            "mod_scope": 70,
+            "mod_magazine": 60,
+            "mod_sight_rear": 20,
+            "mod_sight_front": 20,
+            "mod_muzzle": 70,
+            "mod_pistol_grip": 40,
+            "mod_stock": 50,
+            "mod_stock_000": 20,
+            "mod_tactical_2": 40,
+            "mod_foregrip": 20,
+            "mod_mount": 20,
+            "mod_reciever": 10,
+            "mod_charge": 20,
+            "mod_mount_000": 20,
+            "mod_mount_002": 20,
+            "mod_mount_003": 20,
+            "mod_mount_004": 20,
+            "mod_tactical": 40,
+            "mod_tactical_000": 40,
+            "mod_tactical_001": 40,
+            "mod_tactical_002": 40,
+            "mod_tactical_003": 40
+        },
+        "blacklistSeasonalItems": true,
         "blacklist": [
-            "5661632d4bdc2d903d8b456b",
-            "543be5e94bdc2df1348b4568",
+            "5c164d2286f774194c5e69fa",
+            "543be5cb4bdc2deb348b4568",
             "543be6674bdc2df1348b4569",
             "5448bf274bdc2dfc2f8b456a",
             "5447bedf4bdc2d87278b4568",
@@ -101,7 +152,14 @@
             "62e9103049c018f425059f38",
             "59f32bb586f774757e1e8442",
             "59f32c3b86f77472a31742f0",
-			"627bce33f21bc425b06ab967"
+            "627bce33f21bc425b06ab967",
+            "62f109593b54472778797866",
+            "5d52cc5ba4b9367408500062",
+            "5d52d479a4b936793d58c76b",
+            "5e99711486f7744bfc4af328",
+            "62f10b79e7ee985f386b2f47",
+			"633ffb5d419dbf4bea7004c6",
+			"543be5dd4bdc2deb348b4569"
         ]
     }
 

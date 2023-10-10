@@ -76,7 +76,7 @@ export class TradeHelper
             }
             else
             {
-                const traderAssorts = this.traderHelper.getTraderAssortsById(buyRequestData.tid).items;
+                const traderAssorts = this.traderHelper.getTraderAssortsByTraderId(buyRequestData.tid).items;
                 itemPurchased = traderAssorts.find(x => x._id === buyRequestData.item_id);
             }
 
@@ -110,13 +110,10 @@ export class TradeHelper
                 // Bought fence offer, remove from listing
                 this.fenceService.removeFenceOffer(buyRequestData.item_id);
             }
-            else
+            else if (hasBuyRestrictions)
             {
-                if (hasBuyRestrictions)
-                {
-                    // Increment non-fence trader item buy count
-                    this.incrementAssortBuyCount(itemPurchased, buyRequestData.count);
-                }
+                // Increment non-fence trader item buy count
+                this.incrementAssortBuyCount(itemPurchased, buyRequestData.count);
             }
 
             this.logger.debug(`Bought item: ${buyRequestData.item_id} from ${buyRequestData.tid}`);
@@ -127,12 +124,13 @@ export class TradeHelper
 
     /**
      * Sell item to trader
-     * @param pmcData Profile to update
+     * @param profileWithItemsToSell Profile to remove items from
+     * @param profileToReceiveMoney Profile to accept the money for selling item
      * @param sellRequest Request data
      * @param sessionID Session id
      * @returns IItemEventRouterResponse
      */
-    public sellItem(pmcData: IPmcData, sellRequest: IProcessSellTradeRequestData, sessionID: string): IItemEventRouterResponse
+    public sellItem(profileWithItemsToSell: IPmcData, profileToReceiveMoney: IPmcData, sellRequest: IProcessSellTradeRequestData, sessionID: string): IItemEventRouterResponse
     {
         let output = this.eventOutputHolder.getOutput(sessionID);
 
@@ -142,7 +140,7 @@ export class TradeHelper
             const itemIdToFind = itemToBeRemoved.id.replace(/\s+/g, ""); // Strip out whitespace
 
             // Find item in player inventory, or show error to player if not found
-            const matchingItemInInventory = pmcData.Inventory.items.find(x => x._id === itemIdToFind);
+            const matchingItemInInventory = profileWithItemsToSell.Inventory.items.find(x => x._id === itemIdToFind);
             if (!matchingItemInInventory)
             {
                 const errorMessage = `Unable to sell item ${itemToBeRemoved.id}, cannot be found in player inventory`;
@@ -152,11 +150,13 @@ export class TradeHelper
             }
 
             this.logger.debug(`Selling: id: ${matchingItemInInventory._id} tpl: ${matchingItemInInventory._tpl}`);
-            output = this.inventoryHelper.removeItem(pmcData, itemToBeRemoved.id, sessionID, output);
+
+            // Also removes children
+            output = this.inventoryHelper.removeItem(profileWithItemsToSell, itemToBeRemoved.id, sessionID, output);
         }
 
         // Give player money for sold item(s)
-        return this.paymentService.getMoney(pmcData, sellRequest.price, sellRequest, output, sessionID);
+        return this.paymentService.getMoney(profileToReceiveMoney, sellRequest.price, sellRequest, output, sessionID);
     }
 
     /**
@@ -171,7 +171,7 @@ export class TradeHelper
 
         if (assortBeingPurchased.upd.BuyRestrictionCurrent > assortBeingPurchased.upd.BuyRestrictionMax)
         {
-            throw "Unable to purchase item, Purchase limit reached";
+            throw new Error("Unable to purchase item, Purchase limit reached");
         }
     }
 
@@ -179,7 +179,7 @@ export class TradeHelper
     {
         if ((assortBeingPurchased.upd.BuyRestrictionCurrent + count) > assortBeingPurchased.upd?.BuyRestrictionMax)
         {
-            throw `Unable to purchase ${count} items, this would exceed your purchase limit of ${assortBeingPurchased.upd.BuyRestrictionMax} from the trader this refresh`;
+            throw new Error(`Unable to purchase ${count} items, this would exceed your purchase limit of ${assortBeingPurchased.upd.BuyRestrictionMax} from the trader this refresh`);
         }
     }
 }

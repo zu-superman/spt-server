@@ -75,7 +75,7 @@ export class PmcChatResponseService
         }
 
         // find bot by name in cache
-        const killerDetailsInCache = this.matchBotDetailsCacheService.getBotByName(killer.Name.trim());
+        const killerDetailsInCache = this.matchBotDetailsCacheService.getBotByNameAndSide(killer.Name.trim(), killer.Side);
         if (!killerDetailsInCache)
         {
             return;
@@ -201,7 +201,7 @@ export class PmcChatResponseService
             ? this.pmcResponsesConfig.victim.responseTypeWeights
             : this.pmcResponsesConfig.killer.responseTypeWeights;
 
-        return this.weightedRandomHelper.getWeightedInventoryItem(responseWeights);
+        return this.weightedRandomHelper.getWeightedValue<string>(responseWeights);
     }
 
     /**
