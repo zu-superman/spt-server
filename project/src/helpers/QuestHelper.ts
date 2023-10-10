@@ -501,6 +501,10 @@ export class QuestHelper
         if (newStackSize > 0)
         {
             const item = pmcData.Inventory.items[inventoryItemIndex];
+            if (!item.upd)
+            {
+                item.upd = {};
+            }
             item.upd.StackObjectsCount = newStackSize;
 
             this.addItemStackSizeChangeIntoEventResponse(output, sessionID, item);
