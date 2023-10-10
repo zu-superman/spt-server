@@ -135,6 +135,20 @@ export class QuestController
                     haveCompletedPreviousQuest = false;
                     break;
                 }
+
+                // Has a wait timer
+                if (conditionToFulfil._props.availableAfter > 0)
+                {
+                    // Compare current time to unlock time for previous quest
+                    const previousQuestCompleteTime = prerequisiteQuest.statusTimers[prerequisiteQuest.status];
+                    const unlockTime = previousQuestCompleteTime + conditionToFulfil._props.availableAfter;
+                    if (unlockTime > this.timeUtil.getTimestamp())
+                    {
+                        this.logger.debug(`Quest ${quest.QuestName} is locked for another ${unlockTime - this.timeUtil.getTimestamp()} seconds`);
+                        haveCompletedPreviousQuest = false;
+                        break;
+                    }
+                }
             }
 
             // Previous quest not completed, skip
