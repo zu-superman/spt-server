@@ -492,7 +492,8 @@
           "588226e62459776e3e094af7",
           "588226ef24597767af46e39c",
           "588226dd24597767ad33f789",
-          "5c791e872e2216001219c40a"
+          "5c791e872e2216001219c40a",
+          "588226d124597767ad33f787"
         ]
       },
       "5f2aa49f9b44de6b1b4e68d4": {
@@ -572,8 +573,8 @@
           "5d120a10d7ad1a4e1026ba85",
           "591af10186f774139d495f0e",
           "591aef7986f774139d495f03",
-          "5947e98b86f774778f1448bc",
           "5c0faeddd174af02a962601f",
+          "5947e98b86f774778f1448bc",
           "57ade1442459771557167e15"
         ]
       },
@@ -944,8 +945,9 @@
           "5a37cb10c4a282329a73b4e7",
           "617151c1d92c473c770214ab",
           "5b2388675acfc4771e1be0be",
+          "57c5ac0824597754771e88a9",
           "618ba27d9008e4636a67f61d",
-          "57c5ac0824597754771e88a9"
+          "5b3b99475acfc432ff4dcbee"
         ]
       },
       "5d43021ca4b9362eab4b5e25": {
@@ -1251,11 +1253,11 @@
     "Мастак",
     "Дэн",
     "Тихий",
-    "Верхний",
     "Мазевый",
     "Хэтчкок",
-    "Симо",
+    "Верхний",
     "Ползучий",
+    "Симо",
     "Огурец",
     "Кальянщик"
   ],
@@ -3164,7 +3166,7 @@
       "Earpiece": 77,
       "FaceCover": 54,
       "ArmorVest": 79,
-      "Eyewear": 46,
+      "Eyewear": 45,
       "ArmBand": 0,
       "TacticalVest": 100,
       "Backpack": 0,
@@ -3178,23 +3180,23 @@
     "mods": {
       "mod_sight_rear": 85,
       "mod_magazine": 100,
-      "mod_mount": 63,
+      "mod_mount": 64,
       "mod_muzzle": 81,
-      "mod_stock": 72,
+      "mod_stock": 71,
       "mod_foregrip": 91,
-      "mod_scope": 83,
-      "mod_tactical": 17,
-      "mod_tactical_000": 58,
+      "mod_scope": 82,
+      "mod_tactical": 15,
+      "mod_tactical_000": 60,
       "mod_tactical_001": 0,
       "mod_tactical_002": 0,
-      "mod_mount_000": 87,
+      "mod_mount_000": 86,
       "mod_reciever": 100,
-      "mod_charge": 8,
+      "mod_charge": 9,
       "mod_mount_004": 0,
-      "mod_mount_002": 18,
-      "mod_sight_front": 70,
+      "mod_mount_002": 21,
+      "mod_sight_front": 71,
       "mod_launcher": 0,
-      "mod_mount_001": 80,
+      "mod_mount_001": 82,
       "mod_mount_003": 100,
       "mod_stock_000": 100,
       "mod_bipod": 0,
