@@ -328,6 +328,11 @@ export class QuestHelper
             existingQuest.statusTimers[newState] = this.timeUtil.getTimestamp();
             existingQuest.completedConditions = [];
 
+            if (existingQuest.availableAfter)
+            {
+                delete existingQuest.availableAfter;
+            }
+
             return existingQuest;
         }
 

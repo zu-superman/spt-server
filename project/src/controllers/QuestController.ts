@@ -145,8 +145,6 @@ export class QuestController
                     if (unlockTime > this.timeUtil.getTimestamp())
                     {
                         this.logger.debug(`Quest ${quest.QuestName} is locked for another ${unlockTime - this.timeUtil.getTimestamp()} seconds`);
-                        haveCompletedPreviousQuest = false;
-                        break;
                     }
                 }
             }
@@ -435,10 +433,12 @@ export class QuestController
 
         // Add diff of quests before completion vs after for client response
         const questDelta = this.questHelper.getDeltaQuests(beforeQuests, this.getClientQuests(sessionID));
-        completeQuestResponse.profileChanges[sessionID].quests = questDelta;
-
-        // Send newly available + failed quests into function
+        
+        // Check newly available + failed quests for timegates and add them to profile
         this.addTimeLockedQuestsToProfile(pmcData, [...questDelta, ...questsToFail], body.qid);
+
+        // Inform client of quest changes
+        completeQuestResponse.profileChanges[sessionID].quests = questDelta;
 
         // Check if it's a repeatable quest. If so, remove from Quests and repeatable.activeQuests list + move to repeatable.inactiveQuests
         for (const currentRepeatable of pmcData.RepeatableQuests)
@@ -546,7 +546,10 @@ export class QuestController
                     qid: quest._id,
                     startTime: 0,
                     status: QuestStatus.AvailableAfter,
-                    statusTimers: {},
+                    statusTimers: {
+                        // eslint-disable-next-line @typescript-eslint/naming-convention
+                        "9": this.timeUtil.getTimestamp()
+                    },
                     availableAfter: availableAfterTimestamp
                 });
             }
