@@ -78,7 +78,7 @@
             "mod_gas_block": 100,
             "mod_hammer": 25,
             "mod_handguard": 100,
-            "mod_launcher": 20,
+            "mod_launcher": 15,
             "mod_magazine": 100,
             "mod_mount": 85,
             "mod_mount_000": 75,
@@ -5659,6 +5659,9 @@
                     "5649af884bdc2d1b2b8b4589",
                     "628a665a86cbd9750d2ff5e5"
                 ],
+                "mod_launcher": [
+                    "62e7e7bbe6da9612f743f1e0"
+                ],
                 "mod_sight_front": [
                     "5a0f096dfcdbcb0176308b15"
                 ],
@@ -5771,6 +5774,9 @@
                 ],
                 "mod_sight_front": [
                     "5a0f096dfcdbcb0176308b15"
+                ],
+                "mod_launcher": [
+                    "62e7e7bbe6da9612f743f1e0"
                 ],
                 "mod_sight_rear": [
                     "59d650cf86f7741b846413a4"
@@ -8484,6 +8490,9 @@
                     "5ac50da15acfc4001718d287",
                     "5d2c76ed48f03532f2136169",
                     "5d2c76ed48f03532f2136169"
+                ],
+                "mod_launcher": [
+                    "62e7e7bbe6da9612f743f1e0"
                 ],
                 "mod_sight_rear": [
                     "5649b0544bdc2d1b2b8b458a"
@@ -13977,7 +13986,6 @@
                     "649ec127c93611967b034957"
                 ],
                 "mod_launcher": [
-                    "5648b62b4bdc2d9d488b4585",
                     "62e7e7bbe6da9612f743f1e0"
                 ],
                 "mod_magazine": [
