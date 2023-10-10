@@ -185,6 +185,11 @@ export class LauncherController
     {
         const profile = this.profileHelper.getFullProfile(sessionId);
 
-        return profile?.aki?.mods ?? [];
+        if (profile?.aki?.mods)
+        {
+            return this.preAkiModLoader.getProfileModsGroupedByModName(profile?.aki?.mods);
+        }
+
+        return [];
     }
 }

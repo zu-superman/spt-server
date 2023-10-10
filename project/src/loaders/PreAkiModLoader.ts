@@ -3,6 +3,7 @@ import os from "os";
 import path from "path";
 import semver from "semver";
 import { DependencyContainer, inject, injectable } from "tsyringe";
+import { ModDetails } from "../models/eft/profile/IAkiProfile";
 import { ConfigTypes } from "../models/enums/ConfigTypes";
 import { IPreAkiLoadMod } from "../models/external/IPreAkiLoadMod";
 import { IPreAkiLoadModAsync } from "../models/external/IPreAkiLoadModAsync";
@@ -70,6 +71,40 @@ export class PreAkiModLoader implements IModLoader
     public getImportedModDetails(): Record<string, IPackageJsonData>
     {
         return this.imported;
+    }
+
+    public getProfileModsGroupedByModName(profileMods: ModDetails[]): ModDetails[]
+    {
+        // Group all mods used by profile by name
+        const modsGroupedByName: Record<string, ModDetails[]> = {};
+        for (const mod of profileMods)
+        {
+            if (!modsGroupedByName[mod.name])
+            {
+                modsGroupedByName[mod.name] = [];
+            }
+
+            modsGroupedByName[mod.name].push(mod);
+        }
+
+        // Find the highest versioned mod and add to results array
+        const result = [];
+        for (const modName in modsGroupedByName)
+        {
+            const modDatas = modsGroupedByName[modName];
+            const modVersions = modDatas.map(x => x.version);
+            const highestVersion = semver.maxSatisfying(modVersions, "*");
+
+            const chosenVersion = modDatas.find(x => x.name === modName && x.version === highestVersion);
+            if (!chosenVersion)
+            {
+                continue;
+            }
+
+            result.push(chosenVersion);
+        }
+
+        return result;
     }
 
     public getModPath(mod: string): string
