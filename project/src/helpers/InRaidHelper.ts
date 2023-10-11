@@ -370,26 +370,26 @@ export class InRaidHelper
      * Add new items found in raid to profile
      * Store insurance items in profile
      * @param sessionID Session id
-     * @param pmcData Profile to update
+     * @param serverProfile Profile to update
      * @param postRaidProfile Profile returned by client after a raid
      * @returns Updated profile
      */
-    public setInventory(sessionID: string, pmcData: IPmcData, postRaidProfile: IPmcData): IPmcData
+    public setInventory(sessionID: string, serverProfile: IPmcData, postRaidProfile: IPmcData): IPmcData
     {
-        // store insurance (as removeItem removes insurance also)
-        const insured = this.jsonUtil.clone(pmcData.InsuredItems);
+        // Store insurance (as removeItem() removes insurance also)
+        const insured = this.jsonUtil.clone(serverProfile.InsuredItems);
 
-        // remove possible equipped items from before the raid
-        this.inventoryHelper.removeItem(pmcData, pmcData.Inventory.equipment, sessionID);
-        this.inventoryHelper.removeItem(pmcData, pmcData.Inventory.questRaidItems, sessionID);
-        this.inventoryHelper.removeItem(pmcData, pmcData.Inventory.sortingTable, sessionID);
+        // Remove possible equipped items from before the raid
+        this.inventoryHelper.removeItem(serverProfile, serverProfile.Inventory.equipment, sessionID);
+        this.inventoryHelper.removeItem(serverProfile, serverProfile.Inventory.questRaidItems, sessionID);
+        this.inventoryHelper.removeItem(serverProfile, serverProfile.Inventory.sortingTable, sessionID);
 
-        // add the new items
-        pmcData.Inventory.items = [...postRaidProfile.Inventory.items, ...pmcData.Inventory.items];
-        pmcData.Inventory.fastPanel = postRaidProfile.Inventory.fastPanel;
-        pmcData.InsuredItems = insured;
+        // Add the new items
+        serverProfile.Inventory.items = [...postRaidProfile.Inventory.items, ...serverProfile.Inventory.items];
+        serverProfile.Inventory.fastPanel = postRaidProfile.Inventory.fastPanel;
+        serverProfile.InsuredItems = insured;
 
-        return pmcData;
+        return serverProfile;
     }
 
     /**

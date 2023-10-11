@@ -172,10 +172,10 @@ export class MatchController
         // Save time spent in raid
         pmcData.Stats.Eft.TotalInGameTime += info.raidSeconds;
 
-        // clean up cached bots now raid is over
+        // Clean up cached bots now raid is over
         this.botGenerationCacheService.clearStoredBots();
 
-        // clear bot loot cache
+        // Clear bot loot cache
         this.botLootCacheService.clearCache();
 
         if (this.extractWasViaCar(extractName))
