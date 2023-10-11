@@ -71,6 +71,7 @@ import { PMCLootGenerator } from "../generators/PMCLootGenerator";
 import { PlayerScavGenerator } from "../generators/PlayerScavGenerator";
 import { RagfairAssortGenerator } from "../generators/RagfairAssortGenerator";
 import { RagfairOfferGenerator } from "../generators/RagfairOfferGenerator";
+import { RepeatableQuestGenerator } from "../generators/RepeatableQuestGenerator";
 import { ScavCaseRewardGenerator } from "../generators/ScavCaseRewardGenerator";
 import { WeatherGenerator } from "../generators/WeatherGenerator";
 import {
@@ -113,6 +114,7 @@ import { RagfairSellHelper } from "../helpers/RagfairSellHelper";
 import { RagfairServerHelper } from "../helpers/RagfairServerHelper";
 import { RagfairSortHelper } from "../helpers/RagfairSortHelper";
 import { RepairHelper } from "../helpers/RepairHelper";
+import { RepeatableQuestHelper } from "../helpers/RepeatableQuestHelper";
 import { SecureContainerHelper } from "../helpers/SecureContainerHelper";
 import { TradeHelper } from "../helpers/TradeHelper";
 import { TraderAssortHelper } from "../helpers/TraderAssortHelper";
@@ -469,6 +471,7 @@ export class Container
         depContainer.register<FenceBaseAssortGenerator>("FenceBaseAssortGenerator", { useClass: FenceBaseAssortGenerator });
         depContainer.register<BotLevelGenerator>("BotLevelGenerator", { useClass: BotLevelGenerator });
         depContainer.register<BotEquipmentModGenerator>("BotEquipmentModGenerator", { useClass: BotEquipmentModGenerator });
+        depContainer.register<RepeatableQuestGenerator>("RepeatableQuestGenerator", { useClass: RepeatableQuestGenerator });
         
         
         depContainer.register<BarrelInventoryMagGen>("BarrelInventoryMagGen", { useClass: BarrelInventoryMagGen });
@@ -523,6 +526,7 @@ export class Container
         depContainer.register<ProbabilityHelper>("ProbabilityHelper", { useClass: ProbabilityHelper });
         depContainer.register<BotWeaponGeneratorHelper>("BotWeaponGeneratorHelper", { useClass: BotWeaponGeneratorHelper });
         depContainer.register<BotDifficultyHelper>("BotDifficultyHelper", { useClass: BotDifficultyHelper });
+        depContainer.register<RepeatableQuestHelper>("RepeatableQuestHelper", { useClass: RepeatableQuestHelper });
     }
 
     private static registerLoaders(depContainer: DependencyContainer): void 
