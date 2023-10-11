@@ -682,7 +682,6 @@ export class ProfileFixerService
                 const levelBonuses = dbArea.stages[level]?.bonuses;
                 if (!levelBonuses || levelBonuses.length === 0)
                 {
-                    this.logger.debug(`Unable to get bonuses for hideout area: ${area.type} stage: ${level}`);
                     continue;
                 }
 
