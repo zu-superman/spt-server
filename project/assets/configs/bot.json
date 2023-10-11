@@ -148,10 +148,10 @@
                 "minLimitPercent": 15
             },
             "weapon": {
-                "lowestMax": 80,
+                "lowestMax": 50,
                 "highestMax": 100,
-                "maxDelta": 10,
-                "minDelta": 0,
+                "maxDelta": 45,
+                "minDelta": 10,
                 "minLimitPercent": 15
             }
         },
