@@ -141,10 +141,10 @@
             "numQuests": 3,
             "minPlayerLevel": 5,
             "rewardScaling": {
-                "levels": [1, 20, 45, 100],
+                "levels": [1, 20, 46, 100],
                 "experience": [2000, 4000, 20000, 80000],
-                "roubles": [6000, 10000, 100000, 250000],
-                "items": [1, 2, 4, 4],
+                "roubles": [12000, 20000, 200000, 350000],
+                "items": [2, 3, 6, 8],
                 "reputation": [0.01, 0.01, 0.01, 0.01],
                 "rewardSpread": 0.5
             },
@@ -256,7 +256,7 @@
                         },
                         "targets": [{
                                 "key": "Savage",
-                                "relativeProbability": 7,
+                                "relativeProbability": 9,
                                 "data": {
                                     "isBoss": false
                                 }
@@ -321,7 +321,7 @@
                                 "data": ["Stomach"]
                             }, {
                                 "key": "Chest",
-                                "relativeProbability": 5,
+                                "relativeProbability": 8,
                                 "data": ["Chest"]
                             }, {
                                 "key": "Arms",
@@ -358,10 +358,10 @@
             "numQuests": 1,
             "minPlayerLevel": 15,
             "rewardScaling": {
-                "levels": [1, 20, 45, 100],
-                "experience": [4000, 8000, 40000, 160000],
+                "levels": [1, 20, 46, 100],
+                "experience": [8000, 16000, 80000, 320000],
                 "roubles": [12000, 20000, 200000, 500000],
-                "items": [3, 3, 4, 4],
+                "items": [4, 4, 6, 8],
                 "reputation": [0.02, 0.03, 0.03, 0.03],
                 "rewardSpread": 0.5
             },
@@ -430,7 +430,7 @@
                         },
                         "targets": [{
                                 "key": "Savage",
-                                "relativeProbability": 7,
+                                "relativeProbability": 8,
                                 "data": {
                                     "isBoss": false
                                 }
@@ -478,6 +478,30 @@
                                 }
                             }, {
                                 "key": "bossKnight",
+                                "relativeProbability": 0,
+                                "data": {
+                                    "isBoss": true
+                                }
+                            }, {
+                                "key": "bossTagilla",
+                                "relativeProbability": 0,
+                                "data": {
+                                    "isBoss": true
+                                }
+                            }, {
+                                "key": "bossZryachiy",
+                                "relativeProbability": 0,
+                                "data": {
+                                    "isBoss": true
+                                }
+                            }, {
+                                "key": "bossBoar",
+                                "relativeProbability": 0,
+                                "data": {
+                                    "isBoss": true
+                                }
+                            }, {
+                                "key": "bossBoarSniper",
                                 "relativeProbability": 0,
                                 "data": {
                                     "isBoss": true
@@ -570,6 +594,30 @@
                             }, {
                                 "key": "bossKnight",
                                 "relativeProbability": 0.5,
+                                "data": {
+                                    "isBoss": true
+                                }
+                            }, {
+                                "key": "bossTagilla",
+                                "relativeProbability": 0.5,
+                                "data": {
+                                    "isBoss": true
+                                }
+                            }, {
+                                "key": "bossZryachiy",
+                                "relativeProbability": 0,
+                                "data": {
+                                    "isBoss": true
+                                }
+                            }, {
+                                "key": "bossBoar",
+                                "relativeProbability": 0.5,
+                                "data": {
+                                    "isBoss": true
+                                }
+                            }, {
+                                "key": "bossBoarSniper",
+                                "relativeProbability": 0,
                                 "data": {
                                     "isBoss": true
                                 }
@@ -675,7 +723,7 @@
                         "targets":
                         [{
                                 "key": "AnyPmc",
-                                "relativeProbability": 2,
+                                "relativeProbability": 1,
                                 "data": {
                                     "isBoss": false
                                 }
@@ -773,6 +821,7 @@
         "Interchange": "5714dbc024597771384a510d",
         "Lighthouse": "5704e4dad2720bb55b8b4567",
         "laboratory": "5b0fc42d86f7744a585f9105",
-        "RezervBase": "5704e5fad2720bc05b8b4567"
+        "RezervBase": "5704e5fad2720bc05b8b4567",
+		"TarkovStreets": "5714dc692459777137212e12"
     }
 }
