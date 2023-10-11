@@ -117,6 +117,10 @@ export interface IEliminationConfig
     minDist: number
     maxKills: number
     minKills: number
+    weaponCategoryRequirementProb: number
+    weaponCategoryRequirements: IWeaponRequirement[]
+    weaponRequirementProb: number
+    weaponRequirements: IWeaponRequirement[]
 }
 
 export interface ITarget extends IProbabilityObject
@@ -130,6 +134,11 @@ export interface IBossInfo
 }
 
 export interface IBodyPart extends IProbabilityObject 
+{
+    data: string[]
+}
+
+export interface IWeaponRequirement extends IProbabilityObject 
 {
     data: string[]
 }

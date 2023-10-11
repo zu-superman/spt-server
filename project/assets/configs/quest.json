@@ -219,7 +219,7 @@
                                 }
                             }
                         ],
-                        "bodyPartProb": 0.4,
+                        "bodyPartProb": 0.2,
                         "bodyParts": [{
                                 "key": "Head",
                                 "relativeProbability": 1,
@@ -244,7 +244,77 @@
                         "maxDist": 100,
                         "minDist": 20,
                         "maxKills": 3,
-                        "minKills": 2
+                        "minKills": 2,
+                        "weaponRequirementProb": 0.9,
+                        "weaponCategoryRequirementProb": 0.2,
+                        "weaponCategoryRequirements": [{
+                                "key": "Shotgun",
+                                "relativeProbability": 15,
+                                "data": ["5b5f794b86f77409407a7f92"]
+                            }, {
+                                "key": "Pistol",
+                                "relativeProbability": 10,
+                                "data": ["5b5f792486f77447ed5636b3"]
+                            }, {
+                                "key": "AssaultRifle",
+                                "relativeProbability": 3,
+                                "data": ["5b5f78fc86f77409407a7f90"]
+                            }, {
+                                "key": "AssaultCarbine",
+                                "relativeProbability": 15,
+                                "data": ["5b5f78e986f77447ed5636b1"]
+                            }, {
+                                "key": "MarksmanRifle",
+                                "relativeProbability": 1,
+                                "data": ["5447b6194bdc2d67278b4567"]
+                            }, {
+                                "key": "SniperRifle",
+                                "relativeProbability": 1,
+                                "data": ["5447b6254bdc2dc3278b4568"]
+                            }, {
+                                "key": "SMG",
+                                "relativeProbability": 1,
+                                "data": ["5b5f796a86f774093f2ed3c0"]
+                            }, {
+                                "key": "Melee",
+                                "relativeProbability": 0,
+                                "data": ["5b5f7a0886f77409407a7f96"]
+                            }, {
+                                "key": "DMR",
+                                "relativeProbability": 1,
+                                "data": ["5b5f791486f774093f2ed3be"]
+                            }
+                        ],
+                        "weaponRequirements": [{
+                                "key": "Shotgun",
+                                "relativeProbability": 10,
+                                "data": ["5447b6094bdc2dc3278b4567"]
+                            }, {
+                                "key": "Pistol",
+                                "relativeProbability": 10,
+                                "data": ["5447b5cf4bdc2d65278b4567"]
+                            }, {
+                                "key": "AssaultRifle",
+                                "relativeProbability": 3,
+                                "data": ["5447b5f14bdc2d61278b4567"]
+                            }, {
+                                "key": "AssaultCarbine",
+                                "relativeProbability": 10,
+                                "data": ["5447b5fc4bdc2d87278b4567"]
+                            }, {
+                                "key": "MarksmanRifle",
+                                "relativeProbability": 1,
+                                "data": ["5447b6194bdc2d67278b4567"]
+                            }, {
+                                "key": "SniperRifle",
+                                "relativeProbability": 1,
+                                "data": ["5447b6254bdc2dc3278b4568"]
+                            }, {
+                                "key": "SMG",
+                                "relativeProbability": 1,
+                                "data": ["5447b5e04bdc2d62278b4567"]
+                            }
+                        ]
                     }, {
                         "levelRange": {
                             "min": 16,
@@ -312,7 +382,7 @@
                                 }
                             }, {
                                 "key": "bossBoar",
-                                "relativeProbability": 0.5,
+                                "relativeProbability": 0,
                                 "data": {
                                     "isBoss": true
                                 }
@@ -349,7 +419,77 @@
                         "maxDist": 200,
                         "minDist": 20,
                         "maxKills": 5,
-                        "minKills": 2
+                        "minKills": 2,
+                        "weaponRequirementProb": 0.9,
+                        "weaponCategoryRequirementProb": 0.2,
+                        "weaponCategoryRequirements": [{
+                                "key": "Shotgun",
+                                "relativeProbability": 10,
+                                "data": ["5b5f794b86f77409407a7f92"]
+                            }, {
+                                "key": "Pistol",
+                                "relativeProbability": 10,
+                                "data": ["5b5f792486f77447ed5636b3"]
+                            }, {
+                                "key": "AssaultRifle",
+                                "relativeProbability": 10,
+                                "data": ["5b5f78fc86f77409407a7f90"]
+                            }, {
+                                "key": "AssaultCarbine",
+                                "relativeProbability": 15,
+                                "data": ["5b5f78e986f77447ed5636b1"]
+                            }, {
+                                "key": "MarksmanRifle",
+                                "relativeProbability": 8,
+                                "data": ["5447b6194bdc2d67278b4567"]
+                            }, {
+                                "key": "SniperRifle",
+                                "relativeProbability": 8,
+                                "data": ["5447b6254bdc2dc3278b4568"]
+                            }, {
+                                "key": "SMG",
+                                "relativeProbability": 8,
+                                "data": ["5b5f796a86f774093f2ed3c0"]
+                            }, {
+                                "key": "Melee",
+                                "relativeProbability": 1,
+                                "data": ["5b5f7a0886f77409407a7f96"]
+                            }, {
+                                "key": "DMR",
+                                "relativeProbability": 8,
+                                "data": ["5b5f791486f774093f2ed3be"]
+                            }
+                        ],
+                        "weaponRequirements": [{
+                                "key": "Shotgun",
+                                "relativeProbability": 10,
+                                "data": ["5447b6094bdc2dc3278b4567"]
+                            }, {
+                                "key": "Pistol",
+                                "relativeProbability": 10,
+                                "data": ["5447b5cf4bdc2d65278b4567"]
+                            }, {
+                                "key": "AssaultRifle",
+                                "relativeProbability": 3,
+                                "data": ["5447b5f14bdc2d61278b4567"]
+                            }, {
+                                "key": "AssaultCarbine",
+                                "relativeProbability": 5,
+                                "data": ["5447b5fc4bdc2d87278b4567"]
+                            }, {
+                                "key": "MarksmanRifle",
+                                "relativeProbability": 1,
+                                "data": ["5447b6194bdc2d67278b4567"]
+                            }, {
+                                "key": "SniperRifle",
+                                "relativeProbability": 1,
+                                "data": ["5447b6254bdc2dc3278b4568"]
+                            }, {
+                                "key": "SMG",
+                                "relativeProbability": 1,
+                                "data": ["5447b5e04bdc2d62278b4567"]
+                            }
+                        ]
                     }
                 ]
             },
@@ -512,7 +652,7 @@
                                 }
                             }
                         ],
-                        "bodyPartProb": 0.3,
+                        "bodyPartProb": 0.2,
                         "bodyParts": [{
                                 "key": "Head",
                                 "relativeProbability": 1,
@@ -537,7 +677,77 @@
                         "maxDist": 100,
                         "minDist": 20,
                         "maxKills": 10,
-                        "minKills": 5
+                        "minKills": 5,
+                        "weaponRequirementProb": 0.9,
+                        "weaponCategoryRequirementProb": 0.2,
+                        "weaponCategoryRequirements": [{
+                                "key": "Shotgun",
+                                "relativeProbability": 10,
+                                "data": ["5b5f794b86f77409407a7f92"]
+                            }, {
+                                "key": "Pistol",
+                                "relativeProbability": 10,
+                                "data": ["5b5f792486f77447ed5636b3"]
+                            }, {
+                                "key": "AssaultRifle",
+                                "relativeProbability": 3,
+                                "data": ["5b5f78fc86f77409407a7f90"]
+                            }, {
+                                "key": "AssaultCarbine",
+                                "relativeProbability": 5,
+                                "data": ["5b5f78e986f77447ed5636b1"]
+                            }, {
+                                "key": "MarksmanRifle",
+                                "relativeProbability": 1,
+                                "data": ["5447b6194bdc2d67278b4567"]
+                            }, {
+                                "key": "SniperRifle",
+                                "relativeProbability": 1,
+                                "data": ["5447b6254bdc2dc3278b4568"]
+                            }, {
+                                "key": "SMG",
+                                "relativeProbability": 1,
+                                "data": ["5b5f796a86f774093f2ed3c0"]
+                            }, {
+                                "key": "Melee",
+                                "relativeProbability": 1,
+                                "data": ["5b5f7a0886f77409407a7f96"]
+                            }, {
+                                "key": "DMR",
+                                "relativeProbability": 1,
+                                "data": ["5b5f791486f774093f2ed3be"]
+                            }
+                        ],
+                        "weaponRequirements": [{
+                                "key": "Shotgun",
+                                "relativeProbability": 10,
+                                "data": ["5447b6094bdc2dc3278b4567"]
+                            }, {
+                                "key": "Pistol",
+                                "relativeProbability": 10,
+                                "data": ["5447b5cf4bdc2d65278b4567"]
+                            }, {
+                                "key": "AssaultRifle",
+                                "relativeProbability": 3,
+                                "data": ["5447b5f14bdc2d61278b4567"]
+                            }, {
+                                "key": "AssaultCarbine",
+                                "relativeProbability": 5,
+                                "data": ["5447b5fc4bdc2d87278b4567"]
+                            }, {
+                                "key": "MarksmanRifle",
+                                "relativeProbability": 1,
+                                "data": ["5447b6194bdc2d67278b4567"]
+                            }, {
+                                "key": "SniperRifle",
+                                "relativeProbability": 1,
+                                "data": ["5447b6254bdc2dc3278b4568"]
+                            }, {
+                                "key": "SMG",
+                                "relativeProbability": 1,
+                                "data": ["5447b5e04bdc2d62278b4567"]
+                            }
+                        ]
                     }, {
                         "levelRange": {
                             "min": 16,
@@ -605,7 +815,7 @@
                                 }
                             }, {
                                 "key": "bossBoar",
-                                "relativeProbability": 0.5,
+                                "relativeProbability": 0,
                                 "data": {
                                     "isBoss": true
                                 }
@@ -642,7 +852,77 @@
                         "maxDist": 200,
                         "minDist": 20,
                         "maxKills": 15,
-                        "minKills": 5
+                        "minKills": 5,
+                        "weaponRequirementProb": 0.9,
+                        "weaponCategoryRequirementProb": 0.2,
+                        "weaponCategoryRequirements": [{
+                                "key": "Shotgun",
+                                "relativeProbability": 10,
+                                "data": ["5b5f794b86f77409407a7f92"]
+                            }, {
+                                "key": "Pistol",
+                                "relativeProbability": 10,
+                                "data": ["5b5f792486f77447ed5636b3"]
+                            }, {
+                                "key": "AssaultRifle",
+                                "relativeProbability": 3,
+                                "data": ["5b5f78fc86f77409407a7f90"]
+                            }, {
+                                "key": "AssaultCarbine",
+                                "relativeProbability": 5,
+                                "data": ["5b5f78e986f77447ed5636b1"]
+                            }, {
+                                "key": "MarksmanRifle",
+                                "relativeProbability": 1,
+                                "data": ["5447b6194bdc2d67278b4567"]
+                            }, {
+                                "key": "SniperRifle",
+                                "relativeProbability": 1,
+                                "data": ["5447b6254bdc2dc3278b4568"]
+                            }, {
+                                "key": "SMG",
+                                "relativeProbability": 1,
+                                "data": ["5b5f796a86f774093f2ed3c0"]
+                            }, {
+                                "key": "Melee",
+                                "relativeProbability": 1,
+                                "data": ["5b5f7a0886f77409407a7f96"]
+                            }, {
+                                "key": "DMR",
+                                "relativeProbability": 1,
+                                "data": ["5b5f791486f774093f2ed3be"]
+                            }
+                        ],
+                        "weaponRequirements": [{
+                                "key": "Shotgun",
+                                "relativeProbability": 10,
+                                "data": ["5447b6094bdc2dc3278b4567"]
+                            }, {
+                                "key": "Pistol",
+                                "relativeProbability": 10,
+                                "data": ["5447b5cf4bdc2d65278b4567"]
+                            }, {
+                                "key": "AssaultRifle",
+                                "relativeProbability": 3,
+                                "data": ["5447b5f14bdc2d61278b4567"]
+                            }, {
+                                "key": "AssaultCarbine",
+                                "relativeProbability": 5,
+                                "data": ["5447b5fc4bdc2d87278b4567"]
+                            }, {
+                                "key": "MarksmanRifle",
+                                "relativeProbability": 1,
+                                "data": ["5447b6194bdc2d67278b4567"]
+                            }, {
+                                "key": "SniperRifle",
+                                "relativeProbability": 1,
+                                "data": ["5447b6254bdc2dc3278b4568"]
+                            }, {
+                                "key": "SMG",
+                                "relativeProbability": 1,
+                                "data": ["5447b5e04bdc2d62278b4567"]
+                            }
+                        ]
                     }
                 ]
             },
@@ -719,7 +999,7 @@
                                 }
                             }
                         ],
-                        "bodyPartProb": 0.4,
+                        "bodyPartProb": 0.2,
                         "bodyParts": [{
                                 "key": "Head",
                                 "relativeProbability": 1,
@@ -744,7 +1024,77 @@
                         "maxDist": 100,
                         "minDist": 20,
                         "maxKills": 3,
-                        "minKills": 1
+                        "minKills": 1,
+                        "weaponRequirementProb": 0.9,
+                        "weaponCategoryRequirementProb": 0.2,
+                        "weaponCategoryRequirements": [{
+                                "key": "Shotgun",
+                                "relativeProbability": 10,
+                                "data": ["5b5f794b86f77409407a7f92"]
+                            }, {
+                                "key": "Pistol",
+                                "relativeProbability": 10,
+                                "data": ["5b5f792486f77447ed5636b3"]
+                            }, {
+                                "key": "AssaultRifle",
+                                "relativeProbability": 3,
+                                "data": ["5b5f78fc86f77409407a7f90"]
+                            }, {
+                                "key": "AssaultCarbine",
+                                "relativeProbability": 5,
+                                "data": ["5b5f78e986f77447ed5636b1"]
+                            }, {
+                                "key": "MarksmanRifle",
+                                "relativeProbability": 1,
+                                "data": ["5447b6194bdc2d67278b4567"]
+                            }, {
+                                "key": "SniperRifle",
+                                "relativeProbability": 1,
+                                "data": ["5447b6254bdc2dc3278b4568"]
+                            }, {
+                                "key": "SMG",
+                                "relativeProbability": 1,
+                                "data": ["5b5f796a86f774093f2ed3c0"]
+                            }, {
+                                "key": "Melee",
+                                "relativeProbability": 1,
+                                "data": ["5b5f7a0886f77409407a7f96"]
+                            }, {
+                                "key": "DMR",
+                                "relativeProbability": 1,
+                                "data": ["5b5f791486f774093f2ed3be"]
+                            }
+                        ],
+                        "weaponRequirements": [{
+                                "key": "Shotgun",
+                                "relativeProbability": 10,
+                                "data": ["5447b6094bdc2dc3278b4567"]
+                            }, {
+                                "key": "Pistol",
+                                "relativeProbability": 10,
+                                "data": ["5447b5cf4bdc2d65278b4567"]
+                            }, {
+                                "key": "AssaultRifle",
+                                "relativeProbability": 3,
+                                "data": ["5447b5f14bdc2d61278b4567"]
+                            }, {
+                                "key": "AssaultCarbine",
+                                "relativeProbability": 5,
+                                "data": ["5447b5fc4bdc2d87278b4567"]
+                            }, {
+                                "key": "MarksmanRifle",
+                                "relativeProbability": 1,
+                                "data": ["5447b6194bdc2d67278b4567"]
+                            }, {
+                                "key": "SniperRifle",
+                                "relativeProbability": 1,
+                                "data": ["5447b6254bdc2dc3278b4568"]
+                            }, {
+                                "key": "SMG",
+                                "relativeProbability": 1,
+                                "data": ["5447b5e04bdc2d62278b4567"]
+                            }
+                        ]
                     }, {
                         "levelRange": {
                             "min": 16,
@@ -784,7 +1134,77 @@
                         "maxDist": 200,
                         "minDist": 20,
                         "maxKills": 5,
-                        "minKills": 2
+                        "minKills": 2,
+                        "weaponRequirementProb": 0.9,
+                        "weaponCategoryRequirementProb": 0.2,
+                        "weaponCategoryRequirements": [{
+                                "key": "Shotgun",
+                                "relativeProbability": 10,
+                                "data": ["5b5f794b86f77409407a7f92"]
+                            }, {
+                                "key": "Pistol",
+                                "relativeProbability": 10,
+                                "data": ["5b5f792486f77447ed5636b3"]
+                            }, {
+                                "key": "AssaultRifle",
+                                "relativeProbability": 3,
+                                "data": ["5b5f78fc86f77409407a7f90"]
+                            }, {
+                                "key": "AssaultCarbine",
+                                "relativeProbability": 5,
+                                "data": ["5b5f78e986f77447ed5636b1"]
+                            }, {
+                                "key": "MarksmanRifle",
+                                "relativeProbability": 1,
+                                "data": ["5447b6194bdc2d67278b4567"]
+                            }, {
+                                "key": "SniperRifle",
+                                "relativeProbability": 1,
+                                "data": ["5447b6254bdc2dc3278b4568"]
+                            }, {
+                                "key": "SMG",
+                                "relativeProbability": 1,
+                                "data": ["5b5f796a86f774093f2ed3c0"]
+                            }, {
+                                "key": "Melee",
+                                "relativeProbability": 1,
+                                "data": ["5b5f7a0886f77409407a7f96"]
+                            }, {
+                                "key": "DMR",
+                                "relativeProbability": 1,
+                                "data": ["5b5f791486f774093f2ed3be"]
+                            }
+                        ],
+                        "weaponRequirements": [{
+                                "key": "Shotgun",
+                                "relativeProbability": 10,
+                                "data": ["5447b6094bdc2dc3278b4567"]
+                            }, {
+                                "key": "Pistol",
+                                "relativeProbability": 10,
+                                "data": ["5447b5cf4bdc2d65278b4567"]
+                            }, {
+                                "key": "AssaultRifle",
+                                "relativeProbability": 3,
+                                "data": ["5447b5f14bdc2d61278b4567"]
+                            }, {
+                                "key": "AssaultCarbine",
+                                "relativeProbability": 5,
+                                "data": ["5447b5fc4bdc2d87278b4567"]
+                            }, {
+                                "key": "MarksmanRifle",
+                                "relativeProbability": 1,
+                                "data": ["5447b6194bdc2d67278b4567"]
+                            }, {
+                                "key": "SniperRifle",
+                                "relativeProbability": 1,
+                                "data": ["5447b6254bdc2dc3278b4568"]
+                            }, {
+                                "key": "SMG",
+                                "relativeProbability": 1,
+                                "data": ["5447b5e04bdc2d62278b4567"]
+                            }
+                        ]
                     }
                 ]
             },
@@ -804,6 +1224,6 @@
         "Lighthouse": "5704e4dad2720bb55b8b4567",
         "laboratory": "5b0fc42d86f7744a585f9105",
         "RezervBase": "5704e5fad2720bc05b8b4567",
-		"TarkovStreets": "5714dc692459777137212e12"
+        "TarkovStreets": "5714dc692459777137212e12"
     }
 }

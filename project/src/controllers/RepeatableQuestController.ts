@@ -73,7 +73,10 @@ export interface IEliminationTargetPool
     bossKilla?: ITargetLocation
     bossSanitar?: ITargetLocation
     bossTagilla?: ITargetLocation
-    bossKojaniy?: ITargetLocation
+    bossKnight?: ITargetLocation
+    bossZryachiy?: ITargetLocation
+    bossBoar?: ITargetLocation
+    bossBoarSniper?: ITargetLocation
 }
 
 export interface ITargetLocation
@@ -595,6 +598,8 @@ export class RepeatableQuestController
         const locationsConfig = repeatableConfig.locations;
         let targetsConfig = this.probabilityObjectArray(eliminationConfig.targets);
         const bodypartsConfig = this.probabilityObjectArray(eliminationConfig.bodyParts);
+        const weaponCategoryRequirementConfig = this.probabilityObjectArray(eliminationConfig.weaponCategoryRequirements);
+        const weaponRequirementConfig = this.probabilityObjectArray(eliminationConfig.weaponRequirements);
 
         // the difficulty of the quest varies in difficulty depending on the condition
         // possible conditions are
@@ -628,15 +633,15 @@ export class RepeatableQuestController
 
         const maxKillDifficulty = eliminationConfig.maxKills;
 
-        function difficultyWeighing(target: number, bodyPart: number, dist: number, kill: number): number
+        function difficultyWeighing(target: number, bodyPart: number, dist: number, kill: number, weaponRequirement: number): number
         {
-            return Math.sqrt(Math.sqrt(target) + bodyPart + dist) * kill;
+            return Math.sqrt(Math.sqrt(target) + bodyPart + dist + weaponRequirement) * kill;
         }
 
         targetsConfig = targetsConfig.filter(x => Object.keys(questTypePool.pool.Elimination.targets).includes(x.key));
         if (targetsConfig.length === 0 || targetsConfig.every(x => x.data.isBoss))
         {
-            // there are no more targets left for elimination; delete it as a possible quest type
+            // There are no more targets left for elimination; delete it as a possible quest type
             // also if only bosses are left we need to leave otherwise it's a guaranteed boss elimination
             // -> then it would not be a quest with low probability anymore
             questTypePool.types = questTypePool.types.filter(t => t !== "Elimination");
@@ -646,7 +651,8 @@ export class RepeatableQuestController
         const targetKey = targetsConfig.draw()[0];
         const targetDifficulty = 1 / targetsConfig.probability(targetKey);
 
-        let locations = questTypePool.pool.Elimination.targets[targetKey].locations;
+        let locations: string[] = questTypePool.pool.Elimination.targets[targetKey].locations;
+
         // we use any as location if "any" is in the pool and we do not hit the specific location random
         // we use any also if the random condition is not met in case only "any" was in the pool
         let locationKey = "any";
@@ -726,18 +732,39 @@ export class RepeatableQuestController
             distanceDifficulty = maxDistDifficulty * distance / eliminationConfig.maxDist;
         }
 
-        // draw how many npcs are required to be killed
+        let allowedWeaponsCategory: string = undefined;
+        if (eliminationConfig.weaponCategoryRequirementProb > Math.random())
+        {
+            // Pick a weighted weapon categroy
+            const weaponRequirement = weaponCategoryRequirementConfig.draw(1, false);
+
+            // Get the hideout id value stored in the .data array
+            allowedWeaponsCategory = weaponCategoryRequirementConfig.data(weaponRequirement[0])[0];
+        }
+
+        // Only allow a specific weapon requirement if a weapon category was not chosen
+        let allowedWeapon: string = undefined;
+        if (!allowedWeaponsCategory && eliminationConfig.weaponRequirementProb > Math.random())
+        {
+            const weaponRequirement = weaponRequirementConfig.draw(1, false);
+            const allowedWeaponsCategory = weaponRequirementConfig.data(weaponRequirement[0])[0];
+            const allowedWeapons = this.itemHelper.getItemTplsOfBaseType(allowedWeaponsCategory);
+            allowedWeapon = this.randomUtil.getArrayValue(allowedWeapons);
+        }
+
+        // Draw how many npm kills are required
         const kills = this.randomUtil.randInt(eliminationConfig.minKills, eliminationConfig.maxKills + 1);
         const killDifficulty = kills;
 
         // not perfectly happy here; we give difficulty = 1 to the quest reward generation when we have the most diffucult mission
         // e.g. killing reshala 5 times from a distance of 200m with a headshot.
-        const maxDifficulty = difficultyWeighing(1, 1, 1, 1);
+        const maxDifficulty = difficultyWeighing(1, 1, 1, 1, 1);
         const curDifficulty = difficultyWeighing(
             targetDifficulty / maxTargetDifficulty,
             bodyPartDifficulty / maxBodyPartsDifficulty,
             distanceDifficulty / maxDistDifficulty,
-            killDifficulty / maxKillDifficulty
+            killDifficulty / maxKillDifficulty,
+            (allowedWeaponsCategory || allowedWeapon) ? 1 : 0
         );
 
         // aforementioned issue makes it a bit crazy since now all easier quests give significantly lower rewards than Completion / Exploration
@@ -751,9 +778,9 @@ export class RepeatableQuestController
         quest.conditions.AvailableForFinish[0]._props.counter.conditions = [];
         if (locationKey !== "any")
         {
-            quest.conditions.AvailableForFinish[0]._props.counter.conditions.push(this.generateEliminationLocation(locationsConfig[locationKey]));
+            quest.conditions.AvailableForFinish[0]._props.counter.conditions.push(this.generateEliminationLocation(locationsConfig[locationKey], allowedWeapon, allowedWeaponsCategory));
         }
-        quest.conditions.AvailableForFinish[0]._props.counter.conditions.push(this.generateEliminationCondition(targetKey, bodyPartsToClient, distance));
+        quest.conditions.AvailableForFinish[0]._props.counter.conditions.push(this.generateEliminationCondition(targetKey, bodyPartsToClient, distance, allowedWeapon, allowedWeaponsCategory));
         quest.conditions.AvailableForFinish[0]._props.value = kills;
         quest.conditions.AvailableForFinish[0]._props.id = this.objectId.generate();
         quest.location = this.getQuestLocationByMapId(locationKey);
@@ -852,10 +879,9 @@ export class RepeatableQuestController
      * @param   {string}    location        the location on which to fulfill the elimination quest
      * @returns {object}                    object of "Elimination"-location-subcondition
      */
-    protected generateEliminationLocation(location: string[]): IEliminationCondition
+    protected generateEliminationLocation(location: string[], allowedWeapon: string, allowedWeaponCategory: string): IEliminationCondition
     {
-
-        return {
+        const propsObject: IEliminationCondition = {
             _props: {
                 target: location,
                 id: this.objectId.generate(),
@@ -863,6 +889,18 @@ export class RepeatableQuestController
             },
             _parent: "Location"
         };
+
+        if (allowedWeapon)
+        {
+            propsObject._props.weapon = [allowedWeapon];
+        }
+
+        if (allowedWeaponCategory)
+        {
+            propsObject._props.weaponCategories = [allowedWeaponCategory];
+        }
+        
+        return propsObject;
     }
 
     /**
@@ -874,7 +912,7 @@ export class RepeatableQuestController
      * @param   {number}    distance        distance from which to kill (currently only >= supported)
      * @returns {object}                    object of "Elimination"-kill-subcondition
      */
-    protected generateEliminationCondition(target: string, bodyPart: string[], distance: number): IEliminationCondition
+    protected generateEliminationCondition(target: string, bodyPart: string[], distance: number, allowedWeapon: string, allowedWeaponCategory: string): IEliminationCondition
     {
         const killConditionProps: IKillConditionProps = {
             target: target,
@@ -900,6 +938,16 @@ export class RepeatableQuestController
                 compareMethod: ">=",
                 value: distance
             };
+        }
+
+        if (allowedWeapon)
+        {
+            killConditionProps.weapon = [allowedWeapon];
+        }
+
+        if (allowedWeaponCategory?.length > 0)
+        {
+            killConditionProps.weaponCategories = [allowedWeaponCategory];
         }
 
         return {

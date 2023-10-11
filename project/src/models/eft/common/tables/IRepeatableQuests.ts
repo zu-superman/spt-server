@@ -234,6 +234,8 @@ export interface ICompletionAvailableForProps extends IAvailableForProps
 export interface ILocationConditionProps extends IConditionProps 
 {
     target: string[],
+    weapon?: string[]
+    weaponCategories?: string[]
 }
 
 export interface IKillConditionProps extends IConditionProps 
@@ -243,6 +245,8 @@ export interface IKillConditionProps extends IConditionProps
     savageRole?: string[]
     bodyPart?: string[]
     distance?: IDistanceCheck
+    weapon?: string[]
+    weaponCategories? : string[]
 }
 
 export interface IDistanceCheck 

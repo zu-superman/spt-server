@@ -1050,6 +1050,11 @@ class ItemHelper
     {
         return this.localeService.getLocaleDb()[`${itemTpl} Name`];
     }
+
+    public getItemTplsOfBaseType(desiredBaseType: string): string[]
+    {
+        return Object.values(this.databaseServer.getTables().templates.items).filter(x => x._parent === desiredBaseType).map(x =>x._id);
+    }
 }
 
 namespace ItemHelper
