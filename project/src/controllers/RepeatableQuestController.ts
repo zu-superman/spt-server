@@ -753,7 +753,9 @@ export class RepeatableQuestController
         }
 
         // Draw how many npm kills are required
-        const kills = this.randomUtil.randInt(eliminationConfig.minKills, eliminationConfig.maxKills + 1);
+        const kills = (targetsConfig.data(targetKey).isBoss)
+            ? this.randomUtil.randInt(eliminationConfig.minBossKills, eliminationConfig.maxBossKills + 1)
+            : this.randomUtil.randInt(eliminationConfig.minKills, eliminationConfig.maxKills + 1);
         const killDifficulty = kills;
 
         // not perfectly happy here; we give difficulty = 1 to the quest reward generation when we have the most diffucult mission

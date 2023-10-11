@@ -117,6 +117,8 @@ export interface IEliminationConfig
     minDist: number
     maxKills: number
     minKills: number
+    minBossKills: number
+    maxBossKills: number
     weaponCategoryRequirementProb: number
     weaponCategoryRequirements: IWeaponRequirement[]
     weaponRequirementProb: number
