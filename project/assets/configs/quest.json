@@ -247,7 +247,7 @@
                         "minKills": 2,
                         "maxBossKills": 1,
                         "minBossKills": 1,
-                        "weaponRequirementProb": 0.1,
+                        "weaponRequirementProb": 0,
                         "weaponCategoryRequirementProb": 0.3,
                         "weaponCategoryRequirements": [{
                                 "key": "Shotgun",
@@ -424,7 +424,7 @@
                         "minKills": 5,
                         "maxBossKills": 2,
                         "minBossKills": 1,
-                        "weaponRequirementProb": 0.2,
+                        "weaponRequirementProb": 0,
                         "weaponCategoryRequirementProb": 0.3,
                         "weaponCategoryRequirements": [{
                                 "key": "Shotgun",
@@ -515,7 +515,7 @@
                 "levels": [1, 20, 46, 100],
                 "experience": [8000, 16000, 80000, 320000],
                 "roubles": [12000, 20000, 200000, 500000],
-                "items": [4, 4, 6, 8],
+                "items": [5, 6, 7, 8],
                 "reputation": [0.02, 0.03, 0.03, 0.03],
                 "rewardSpread": 0.5
             },
@@ -584,7 +584,7 @@
                         },
                         "targets": [{
                                 "key": "Savage",
-                                "relativeProbability": 8,
+                                "relativeProbability": 15,
                                 "data": {
                                     "isBoss": false
                                 }
@@ -677,15 +677,15 @@
                         ],
                         "specificLocationProb": 0.15,
                         "distLocationBlacklist": ["laboratory", "factory4_day", "factory4_night"],
-                        "distProb": 0.20,
+                        "distProb": 0.15,
                         "maxDist": 100,
                         "minDist": 20,
-                        "maxKills": 10,
-                        "minKills": 5,
-                        "maxBossKills": 1,
-                        "minBossKills": 1,
-                        "weaponRequirementProb": 0.1,
-                        "weaponCategoryRequirementProb": 0.3,
+                        "maxKills": 20,
+                        "minKills": 10,
+                        "maxBossKills": 7,
+                        "minBossKills": 3,
+                        "weaponRequirementProb": 0,
+                        "weaponCategoryRequirementProb": 0.2,
                         "weaponCategoryRequirements": [{
                                 "key": "Shotgun",
                                 "relativeProbability": 10,
@@ -757,6 +757,183 @@
                     }, {
                         "levelRange": {
                             "min": 16,
+                            "max": 40
+                        },
+                        "targets": [{
+                                "key": "Savage",
+                                "relativeProbability": 7,
+                                "data": {
+                                    "isBoss": false
+                                }
+                            }, {
+                                "key": "AnyPmc",
+                                "relativeProbability": 2,
+                                "data": {
+                                    "isBoss": false
+                                }
+                            }, {
+                                "key": "bossBully",
+                                "relativeProbability": 0.5,
+                                "data": {
+                                    "isBoss": true
+                                }
+                            }, {
+                                "key": "bossGluhar",
+                                "relativeProbability": 0.5,
+                                "data": {
+                                    "isBoss": true
+                                }
+                            }, {
+                                "key": "bossKilla",
+                                "relativeProbability": 0.5,
+                                "data": {
+                                    "isBoss": true
+                                }
+                            }, {
+                                "key": "bossSanitar",
+                                "relativeProbability": 0.5,
+                                "data": {
+                                    "isBoss": true
+                                }
+                            }, {
+                                "key": "bossTagilla",
+                                "relativeProbability": 0.5,
+                                "data": {
+                                    "isBoss": true
+                                }
+                            }, {
+                                "key": "bossKojaniy",
+                                "relativeProbability": 0.5,
+                                "data": {
+                                    "isBoss": true
+                                }
+                            }, {
+                                "key": "bossKnight",
+                                "relativeProbability": 0,
+                                "data": {
+                                    "isBoss": true
+                                }
+                            }, {
+                                "key": "bossZryachiy",
+                                "relativeProbability": 0,
+                                "data": {
+                                    "isBoss": true
+                                }
+                            }, {
+                                "key": "bossBoar",
+                                "relativeProbability": 0,
+                                "data": {
+                                    "isBoss": true
+                                }
+                            }, {
+                                "key": "bossBoarSniper",
+                                "relativeProbability": 0,
+                                "data": {
+                                    "isBoss": true
+                                }
+                            }
+                        ],
+                        "bodyPartProb": 0.2,
+                        "bodyParts": [{
+                                "key": "Head",
+                                "relativeProbability": 1,
+                                "data": ["Head"]
+                            }, {
+                                "key": "Chest",
+                                "relativeProbability": 5,
+                                "data": ["Chest", "Stomach"]
+                            }, {
+                                "key": "Arms",
+                                "relativeProbability": 0.5,
+                                "data": ["LeftArm", "RightArm"]
+                            }, {
+                                "key": "Legs",
+                                "relativeProbability": 1,
+                                "data": ["LeftLeg", "RightLeg"]
+                            }
+                        ],
+                        "specificLocationProb": 0.2,
+                        "distLocationBlacklist": ["laboratory", "factory4_day", "factory4_night"],
+                        "distProb": 0.2,
+                        "maxDist": 150,
+                        "minDist": 20,
+                        "maxKills": 40,
+                        "minKills": 15,
+                        "maxBossKills": 30,
+                        "minBossKills": 15,
+                        "weaponRequirementProb": 0,
+                        "weaponCategoryRequirementProb": 0.25,
+                        "weaponCategoryRequirements": [{
+                                "key": "Shotgun",
+                                "relativeProbability": 10,
+                                "data": ["5b5f794b86f77409407a7f92"]
+                            }, {
+                                "key": "Pistol",
+                                "relativeProbability": 10,
+                                "data": ["5b5f792486f77447ed5636b3"]
+                            }, {
+                                "key": "AssaultRifle",
+                                "relativeProbability": 3,
+                                "data": ["5b5f78fc86f77409407a7f90"]
+                            }, {
+                                "key": "AssaultCarbine",
+                                "relativeProbability": 5,
+                                "data": ["5b5f78e986f77447ed5636b1"]
+                            }, {
+                                "key": "MarksmanRifle",
+                                "relativeProbability": 1,
+                                "data": ["5447b6194bdc2d67278b4567"]
+                            }, {
+                                "key": "SniperRifle",
+                                "relativeProbability": 1,
+                                "data": ["5447b6254bdc2dc3278b4568"]
+                            }, {
+                                "key": "SMG",
+                                "relativeProbability": 1,
+                                "data": ["5b5f796a86f774093f2ed3c0"]
+                            }, {
+                                "key": "Melee",
+                                "relativeProbability": 1,
+                                "data": ["5b5f7a0886f77409407a7f96"]
+                            }, {
+                                "key": "DMR",
+                                "relativeProbability": 1,
+                                "data": ["5b5f791486f774093f2ed3be"]
+                            }
+                        ],
+                        "weaponRequirements": [{
+                                "key": "Shotgun",
+                                "relativeProbability": 10,
+                                "data": ["5447b6094bdc2dc3278b4567"]
+                            }, {
+                                "key": "Pistol",
+                                "relativeProbability": 10,
+                                "data": ["5447b5cf4bdc2d65278b4567"]
+                            }, {
+                                "key": "AssaultRifle",
+                                "relativeProbability": 3,
+                                "data": ["5447b5f14bdc2d61278b4567"]
+                            }, {
+                                "key": "AssaultCarbine",
+                                "relativeProbability": 5,
+                                "data": ["5447b5fc4bdc2d87278b4567"]
+                            }, {
+                                "key": "MarksmanRifle",
+                                "relativeProbability": 1,
+                                "data": ["5447b6194bdc2d67278b4567"]
+                            }, {
+                                "key": "SniperRifle",
+                                "relativeProbability": 1,
+                                "data": ["5447b6254bdc2dc3278b4568"]
+                            }, {
+                                "key": "SMG",
+                                "relativeProbability": 1,
+                                "data": ["5447b5e04bdc2d62278b4567"]
+                            }
+                        ]
+                    }, {
+                        "levelRange": {
+                            "min": 17,
                             "max": 100
                         },
                         "targets": [{
@@ -857,11 +1034,11 @@
                         "distProb": 0.25,
                         "maxDist": 200,
                         "minDist": 20,
-                        "maxKills": 15,
-                        "minKills": 5,
-                        "maxBossKills": 3,
-                        "minBossKills": 1,
-                        "weaponRequirementProb": 0.2,
+                        "maxKills": 40,
+                        "minKills": 20,
+                        "maxBossKills": 20,
+                        "minBossKills": 10,
+                        "weaponRequirementProb": 0,
                         "weaponCategoryRequirementProb": 0.3,
                         "weaponCategoryRequirements": [{
                                 "key": "Shotgun",
@@ -1035,7 +1212,7 @@
                         "minKills": 1,
                         "maxBossKills": 1,
                         "minBossKills": 1,
-                        "weaponRequirementProb": 0.1,
+                        "weaponRequirementProb": 0,
                         "weaponCategoryRequirementProb": 0.3,
                         "weaponCategoryRequirements": [{
                                 "key": "Shotgun",
@@ -1147,7 +1324,7 @@
                         "minKills": 3,
                         "maxBossKills": 3,
                         "minBossKills": 1,
-                        "weaponRequirementProb": 0.2,
+                        "weaponRequirementProb": 0,
                         "weaponCategoryRequirementProb": 0.3,
                         "weaponCategoryRequirements": [{
                                 "key": "Shotgun",
