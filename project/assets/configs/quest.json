@@ -283,8 +283,12 @@
                                 "data": ["5b5f791486f774093f2ed3be"]
                             }, {
                                 "key": "BoltAction",
-                                "relativeProbability": 1,
+                                "relativeProbability": 10,
                                 "data": ["588892092459774ac91d4b11"]
+                            }, {
+                                "key": "MachineGun",
+                                "relativeProbability": 0,
+                                "data": ["5b5f79a486f77409407a7f94"]
                             }
                         ],
                         "weaponRequirements": [{
@@ -460,8 +464,12 @@
                                 "data": ["5b5f791486f774093f2ed3be"]
                             }, {
                                 "key": "BoltAction",
-                                "relativeProbability": 1,
+                                "relativeProbability": 5,
                                 "data": ["588892092459774ac91d4b11"]
+                            }, {
+                                "key": "MachineGun",
+                                "relativeProbability": 1,
+                                "data": ["5b5f79a486f77409407a7f94"]
                             }
                         ],
                         "weaponRequirements": [{
@@ -720,8 +728,12 @@
                                 "data": ["5b5f791486f774093f2ed3be"]
                             }, {
                                 "key": "BoltAction",
-                                "relativeProbability": 1,
+                                "relativeProbability": 5,
                                 "data": ["588892092459774ac91d4b11"]
+                            }, {
+                                "key": "MachineGun",
+                                "relativeProbability": 0,
+                                "data": ["5b5f79a486f77409407a7f94"]
                             }
                         ],
                         "weaponRequirements": [{
@@ -899,6 +911,10 @@
                                 "key": "BoltAction",
                                 "relativeProbability": 1,
                                 "data": ["588892092459774ac91d4b11"]
+                            }, {
+                                "key": "MachineGun",
+                                "relativeProbability": 1,
+                                "data": ["5b5f79a486f77409407a7f94"]
                             }
                         ],
                         "weaponRequirements": [{
@@ -1074,8 +1090,12 @@
                                 "data": ["5b5f791486f774093f2ed3be"]
                             }, {
                                 "key": "BoltAction",
-                                "relativeProbability": 1,
+                                "relativeProbability": 5,
                                 "data": ["588892092459774ac91d4b11"]
+                            }, {
+                                "key": "MachineGun",
+                                "relativeProbability": 1,
+                                "data": ["5b5f79a486f77409407a7f94"]
                             }
                         ],
                         "weaponRequirements": [{
@@ -1248,8 +1268,12 @@
                                 "data": ["5b5f791486f774093f2ed3be"]
                             }, {
                                 "key": "BoltAction",
-                                "relativeProbability": 1,
+                                "relativeProbability": 5,
                                 "data": ["588892092459774ac91d4b11"]
+                            }, {
+                                "key": "MachineGun",
+                                "relativeProbability": 0,
+                                "data": ["5b5f79a486f77409407a7f94"]
                             }
                         ],
                         "weaponRequirements": [{
@@ -1328,19 +1352,19 @@
                         "weaponCategoryRequirementProb": 0.3,
                         "weaponCategoryRequirements": [{
                                 "key": "Shotgun",
-                                "relativeProbability": 10,
+                                "relativeProbability": 1,
                                 "data": ["5b5f794b86f77409407a7f92"]
                             }, {
                                 "key": "Pistol",
-                                "relativeProbability": 10,
+                                "relativeProbability": 1,
                                 "data": ["5b5f792486f77447ed5636b3"]
                             }, {
                                 "key": "AssaultRifle",
-                                "relativeProbability": 3,
+                                "relativeProbability": 2,
                                 "data": ["5b5f78fc86f77409407a7f90"]
                             }, {
                                 "key": "AssaultCarbine",
-                                "relativeProbability": 5,
+                                "relativeProbability": 1,
                                 "data": ["5b5f78e986f77447ed5636b1"]
                             }, {
                                 "key": "SniperRifle",
@@ -1362,6 +1386,10 @@
                                 "key": "BoltAction",
                                 "relativeProbability": 1,
                                 "data": ["588892092459774ac91d4b11"]
+                            }, {
+                                "key": "MachineGun",
+                                "relativeProbability": 1,
+                                "data": ["5b5f79a486f77409407a7f94"]
                             }
                         ],
                         "weaponRequirements": [{
