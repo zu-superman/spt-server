@@ -266,10 +266,6 @@
                                 "relativeProbability": 15,
                                 "data": ["5b5f78e986f77447ed5636b1"]
                             }, {
-                                "key": "MarksmanRifle",
-                                "relativeProbability": 1,
-                                "data": ["5447b6194bdc2d67278b4567"]
-                            }, {
                                 "key": "SniperRifle",
                                 "relativeProbability": 1,
                                 "data": ["5447b6254bdc2dc3278b4568"]
@@ -285,6 +281,10 @@
                                 "key": "DMR",
                                 "relativeProbability": 1,
                                 "data": ["5b5f791486f774093f2ed3be"]
+                            }, {
+                                "key": "BoltAction",
+                                "relativeProbability": 1,
+                                "data": ["588892092459774ac91d4b11"]
                             }
                         ],
                         "weaponRequirements": [{
@@ -443,10 +443,6 @@
                                 "relativeProbability": 15,
                                 "data": ["5b5f78e986f77447ed5636b1"]
                             }, {
-                                "key": "MarksmanRifle",
-                                "relativeProbability": 8,
-                                "data": ["5447b6194bdc2d67278b4567"]
-                            }, {
                                 "key": "SniperRifle",
                                 "relativeProbability": 8,
                                 "data": ["5447b6254bdc2dc3278b4568"]
@@ -462,6 +458,10 @@
                                 "key": "DMR",
                                 "relativeProbability": 8,
                                 "data": ["5b5f791486f774093f2ed3be"]
+                            }, {
+                                "key": "BoltAction",
+                                "relativeProbability": 1,
+                                "data": ["588892092459774ac91d4b11"]
                             }
                         ],
                         "weaponRequirements": [{
@@ -703,10 +703,6 @@
                                 "relativeProbability": 5,
                                 "data": ["5b5f78e986f77447ed5636b1"]
                             }, {
-                                "key": "MarksmanRifle",
-                                "relativeProbability": 1,
-                                "data": ["5447b6194bdc2d67278b4567"]
-                            }, {
                                 "key": "SniperRifle",
                                 "relativeProbability": 1,
                                 "data": ["5447b6254bdc2dc3278b4568"]
@@ -722,6 +718,10 @@
                                 "key": "DMR",
                                 "relativeProbability": 1,
                                 "data": ["5b5f791486f774093f2ed3be"]
+                            }, {
+                                "key": "BoltAction",
+                                "relativeProbability": 1,
+                                "data": ["588892092459774ac91d4b11"]
                             }
                         ],
                         "weaponRequirements": [{
@@ -880,10 +880,6 @@
                                 "relativeProbability": 5,
                                 "data": ["5b5f78e986f77447ed5636b1"]
                             }, {
-                                "key": "MarksmanRifle",
-                                "relativeProbability": 1,
-                                "data": ["5447b6194bdc2d67278b4567"]
-                            }, {
                                 "key": "SniperRifle",
                                 "relativeProbability": 1,
                                 "data": ["5447b6254bdc2dc3278b4568"]
@@ -899,6 +895,10 @@
                                 "key": "DMR",
                                 "relativeProbability": 1,
                                 "data": ["5b5f791486f774093f2ed3be"]
+                            }, {
+                                "key": "BoltAction",
+                                "relativeProbability": 1,
+                                "data": ["588892092459774ac91d4b11"]
                             }
                         ],
                         "weaponRequirements": [{
@@ -1057,10 +1057,6 @@
                                 "relativeProbability": 5,
                                 "data": ["5b5f78e986f77447ed5636b1"]
                             }, {
-                                "key": "MarksmanRifle",
-                                "relativeProbability": 1,
-                                "data": ["5447b6194bdc2d67278b4567"]
-                            }, {
                                 "key": "SniperRifle",
                                 "relativeProbability": 1,
                                 "data": ["5447b6254bdc2dc3278b4568"]
@@ -1076,6 +1072,10 @@
                                 "key": "DMR",
                                 "relativeProbability": 1,
                                 "data": ["5b5f791486f774093f2ed3be"]
+                            }, {
+                                "key": "BoltAction",
+                                "relativeProbability": 1,
+                                "data": ["588892092459774ac91d4b11"]
                             }
                         ],
                         "weaponRequirements": [{
@@ -1128,7 +1128,7 @@
                 "levels": [1, 20, 45, 100],
                 "experience": [2000, 4000, 20000, 80000],
                 "roubles": [6000, 10000, 100000, 250000],
-                "items": [1, 2, 4, 4],
+                "items": [2, 3, 4, 4],
                 "reputation": [0.01, 0.02, 0.05, 0.05],
                 "rewardSpread": 0.5
             },
@@ -1231,10 +1231,6 @@
                                 "relativeProbability": 5,
                                 "data": ["5b5f78e986f77447ed5636b1"]
                             }, {
-                                "key": "MarksmanRifle",
-                                "relativeProbability": 1,
-                                "data": ["5447b6194bdc2d67278b4567"]
-                            }, {
                                 "key": "SniperRifle",
                                 "relativeProbability": 1,
                                 "data": ["5447b6254bdc2dc3278b4568"]
@@ -1250,6 +1246,10 @@
                                 "key": "DMR",
                                 "relativeProbability": 1,
                                 "data": ["5b5f791486f774093f2ed3be"]
+                            }, {
+                                "key": "BoltAction",
+                                "relativeProbability": 1,
+                                "data": ["588892092459774ac91d4b11"]
                             }
                         ],
                         "weaponRequirements": [{
@@ -1343,10 +1343,6 @@
                                 "relativeProbability": 5,
                                 "data": ["5b5f78e986f77447ed5636b1"]
                             }, {
-                                "key": "MarksmanRifle",
-                                "relativeProbability": 1,
-                                "data": ["5447b6194bdc2d67278b4567"]
-                            }, {
                                 "key": "SniperRifle",
                                 "relativeProbability": 1,
                                 "data": ["5447b6254bdc2dc3278b4568"]
@@ -1362,6 +1358,10 @@
                                 "key": "DMR",
                                 "relativeProbability": 1,
                                 "data": ["5b5f791486f774093f2ed3be"]
+                            }, {
+                                "key": "BoltAction",
+                                "relativeProbability": 1,
+                                "data": ["588892092459774ac91d4b11"]
                             }
                         ],
                         "weaponRequirements": [{
