@@ -188,7 +188,8 @@ export class LocationController
             itemTypeWhitelist: lootSettingsByType.itemTypeWhitelist,
             itemLimits: lootSettingsByType.itemLimits,
             itemStackLimits: lootSettingsByType.itemStackLimits,
-            armorLevelWhitelist: lootSettingsByType.armorLevelWhitelist
+            armorLevelWhitelist: lootSettingsByType.armorLevelWhitelist,
+            allowBossItems: lootSettingsByType.allowBossItems
         };
     }
 }

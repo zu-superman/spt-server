@@ -114,5 +114,6 @@
         }
     },
     "allowMultipleMoneyRewardsPerRarity": false,
-    "allowMultipleAmmoRewardsPerRarity": true
+    "allowMultipleAmmoRewardsPerRarity": true,
+	"allowBossItemsAsRewards": false
 }

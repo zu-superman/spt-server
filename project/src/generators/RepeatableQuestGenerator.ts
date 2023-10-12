@@ -939,7 +939,8 @@ export class RepeatableQuestGenerator
         // rome-ignore lint/complexity/useSimplifiedLogicExpression: <explanation>
         valid  = !this.itemHelper.isOfBaseclass(tpl, BaseClasses.KEY)
             && !this.itemHelper.isOfBaseclass(tpl, BaseClasses.ARMBAND)
-            && !this.itemFilterService.isItemBlacklisted(tpl);
+            && !this.itemFilterService.isItemBlacklisted(tpl)
+            && !this.itemFilterService.isBossItem(tpl);
 
         return valid;
     }

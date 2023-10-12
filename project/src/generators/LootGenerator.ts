@@ -55,7 +55,14 @@ export class LootGenerator
 
         const tables = this.databaseServer.getTables();
         const itemBlacklist = this.itemFilterService.getBlacklistedItems();
+        
         itemBlacklist.push(...options.itemBlacklist);
+
+        if (!options.allowBossItems)
+        {
+            const bossItems = this.itemFilterService.getBossItems();
+            itemBlacklist.push(...bossItems);
+        }
 
         // Handle sealed weapon containers
         const desiredWeaponCrateCount = this.randomUtil.getInt(options.weaponCrateCount.min, options.weaponCrateCount.max);
@@ -373,13 +380,14 @@ export class LootGenerator
             }
 
             // Get all items of the desired type + not quest items + not globally blacklisted
-            const possibleRewardItems = Object.values(this.databaseServer.getTables().templates.items)
+            const rewardItemPool = Object.values(this.databaseServer.getTables().templates.items)
                 .filter(x => x._parent === rewardTypeId
                     && x._type.toLowerCase() === "item"
                     && !this.itemFilterService.isItemBlacklisted(x._id)
+                    && (!containerSettings.allowBossItems && !this.itemFilterService.isBossItem(x._id))
                     && !x._props.QuestItem);
 
-            if (possibleRewardItems.length === 0)
+            if (rewardItemPool.length === 0)
             {
                 this.logger.debug(`No items with base type of ${rewardTypeId} found, skipping`);
 
@@ -389,7 +397,7 @@ export class LootGenerator
             for (let index = 0; index < rewardCount; index++)
             {
                 // choose a random item from pool
-                const chosenRewardItem = this.randomUtil.getArrayValue(possibleRewardItems);
+                const chosenRewardItem = this.randomUtil.getArrayValue(rewardItemPool);
                 this.addOrIncrementItemToArray(chosenRewardItem._id, rewards);         
             }
         }

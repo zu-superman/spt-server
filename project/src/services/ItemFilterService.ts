@@ -10,7 +10,6 @@ import { DatabaseServer } from "../servers/DatabaseServer";
 @injectable()
 export class ItemFilterService
 {
-    protected blacklist: string[] = [];
     protected itemConfig: IItemConfig ;
 
     constructor(
@@ -20,7 +19,6 @@ export class ItemFilterService
     )
     {
         this.itemConfig = this.configServer.getConfig(ConfigTypes.ITEM);
-        this.blacklist = this.itemConfig.blacklist;
     }
 
     /**
@@ -30,7 +28,7 @@ export class ItemFilterService
      */
     public isItemBlacklisted(tpl: string): boolean
     {
-        return this.blacklist.includes(tpl);
+        return this.itemConfig.blacklist.includes(tpl);
     }
 
     /**
@@ -39,6 +37,25 @@ export class ItemFilterService
      */
     public getBlacklistedItems(): string[]
     {
-        return this.blacklist;
+        return this.itemConfig.blacklist;
+    }
+
+    /**
+     * Check if the provided template id is boss item in config/item.json
+     * @param tpl template id
+     * @returns true if boss item
+     */
+    public isBossItem(tpl: string): boolean
+    {
+        return this.itemConfig.bossItems.includes(tpl);
+    }
+
+    /**
+     * Return boss items in config/item.json
+     * @returns string array of boss item tempalte ids
+     */
+    public getBossItems(): string[]
+    {
+        return this.itemConfig.bossItems;
     }
 }

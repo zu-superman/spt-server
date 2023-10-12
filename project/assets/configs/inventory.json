@@ -154,7 +154,8 @@
             "64898602f09d032aa9399d56",
             "6489870774a806211e4fb685",
             "6489879db5a2df1c815a04ef"
-        ]
+        ],
+		"allowBossItems": false
     },
     "customMoneyTpls": []
 }
