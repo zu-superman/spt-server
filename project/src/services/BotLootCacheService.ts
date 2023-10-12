@@ -189,7 +189,7 @@ export class BotLootCacheService
             // rome-ignore lint/complexity/useSimplifiedLogicExpression: <explanation>
             !this.isBulletOrGrenade(template._props)
             && !this.isMagazine(template._props)
-            && !this.isMedicalItem(template._props)
+            //&& !this.isMedicalItem(template._props) // Disabled for now as followSanitar has a lot of med items as loot
             && !this.isGrenade(template._props));
 
         // Get pocket loot
