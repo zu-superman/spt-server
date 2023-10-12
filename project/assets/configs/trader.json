@@ -160,7 +160,83 @@
             "62f10b79e7ee985f386b2f47",
 			"633ffb5d419dbf4bea7004c6",
 			"543be5dd4bdc2deb348b4569"
-        ]
+        ],
+		"coopExtractGift": {
+			"sendGift": true,
+			"messageLocaleIds": ["5da89b1886f77439d7741002 0", "5da89b3a86f7742f9026cb83 0"],
+			"giftExpiryHours": 168,
+			"presetCount": {
+                "min": 0,
+                "max": 0
+            },
+            "itemCount": {
+                "min": 2,
+                "max": 5
+            },
+            "weaponCrateCount": {
+                "min": 0,
+                "max": 0
+            },
+            "itemBlacklist": [
+                "5e997f0b86f7741ac73993e2",
+                "5b44abe986f774283e2e3512",
+                "5e99711486f7744bfc4af328",
+                "5e99735686f7744bfc4af32c",
+                "6087e570b998180e9f76dc24",
+                "5d52d479a4b936793d58c76b",
+                "5e85aac65505fa48730d8af2",
+                "63495c500c297e20065a08b1",
+                "5cde8864d7f00c0010373be1",
+                "5b3b713c5acfc4330140bd8d",
+                "60c080eb991ac167ad1c3ad4",
+                "6389c7f115805221fb410466"
+            ],
+            "itemTypeWhitelist": [
+                "5d650c3e815116009f6201d2",
+                "57864ee62459775490116fc1",
+                "57864ada245977548638de91",
+                "57864bb7245977548b3b66c2",
+                "57864e4c24597754843f8723",
+                "57864c322459775490116fbf",
+                "57864a66245977548f04a81f"
+            ],
+            "itemLimits": {
+				"5d650c3e815116009f6201d2": 1,
+                "57864ee62459775490116fc1": 1,
+				"57864ada245977548638de91": 2,
+				"57864bb7245977548b3b66c2": 1,
+				"57864e4c24597754843f8723": 1,
+				"57864a66245977548f04a81f": 1,
+				
+                "5448e8d04bdc2ddf718b4569": 1,
+                "5448e8d64bdc2dce718b4568": 1,
+                "5448bc234bdc2d3c308b4569": 1,
+                
+                "5448e5724bdc2ddf718b4568": 1,
+                "55818add4bdc2d5b648b456f": 1,
+                "543be6564bdc2df4348b4568": 1,
+                "550aa4cd4bdc2dd8348b456c": 1,
+                "5448f39d4bdc2d0a728b4568": 1,
+                "5448f3a14bdc2d27728b4569": 1,
+                "5447e1d04bdc2dff2f8b4567": 1,
+                "55818ad54bdc2ddc698b4569": 1
+            },
+            "itemStackLimits": {
+                "5449016a4bdc2d6f028b456f": {
+                    "min": 5000,
+                    "max": 20000
+                },
+                "569668774bdc2da2298b4568": {
+                    "min": 75,
+                    "max": 150
+                },
+                "5696686a4bdc2da3298b456a": {
+                    "min": 75,
+                    "max": 150
+                }
+            },
+            "allowBossItems": false
+		}
     }
 
 }

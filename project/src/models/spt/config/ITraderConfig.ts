@@ -1,4 +1,5 @@
 import { MinMax } from "../../../models/common/MinMax";
+import { LootRequest } from "../services/LootRequest";
 import { IBaseConfig } from "./IBaseConfig";
 
 export interface ITraderConfig extends IBaseConfig
@@ -40,7 +41,15 @@ export interface FenceConfig
     presetSlotsToRemoveChancePercent: Record<string, number>
     /** Block seasonal items from appearing when season is inactive */
     blacklistSeasonalItems: boolean;
-    blacklist: string[]
+    blacklist: string[],
+    coopExtractGift: CoopExtractReward
+}
+
+export interface CoopExtractReward extends LootRequest
+{
+    sendGift: boolean
+    messageLocaleIds: string[]
+    giftExpiryHours: number
 }
 
 export interface DiscountOptions

@@ -19,6 +19,12 @@
         "South V-Ex",
         "E7_car"
     ],
+    "coopExtracts": [
+        "Interchange Cooperation",
+        "tunnel_shared",
+        "EXFIL_ScavCooperation",
+        "Factory Gate"
+    ],
     "carExtractBaseStandingGain": 0.4,
     "scavExtractGain": 0.01,
     "keepFiRSecureContainerOnDeath": false

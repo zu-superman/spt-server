@@ -2,9 +2,11 @@ import { inject, injectable } from "tsyringe";
 
 import { ApplicationContext } from "../context/ApplicationContext";
 import { ContextVariableType } from "../context/ContextVariableType";
+import { LootGenerator } from "../generators/LootGenerator";
 import { ProfileHelper } from "../helpers/ProfileHelper";
 import { TraderHelper } from "../helpers/TraderHelper";
 import { IPmcData } from "../models/eft/common/IPmcData";
+import { Item } from "../models/eft/common/tables/IItem";
 import { ICreateGroupRequestData } from "../models/eft/match/ICreateGroupRequestData";
 import { IEndOfflineRaidRequestData } from "../models/eft/match/IEndOfflineRaidRequestData";
 import { IGetGroupStatusRequestData } from "../models/eft/match/IGetGroupStatusRequestData";
@@ -15,28 +17,38 @@ import {
 import { IJoinMatchRequestData } from "../models/eft/match/IJoinMatchRequestData";
 import { IJoinMatchResult } from "../models/eft/match/IJoinMatchResult";
 import { ConfigTypes } from "../models/enums/ConfigTypes";
+import { MessageType } from "../models/enums/MessageType";
 import { Traders } from "../models/enums/Traders";
 import { IInRaidConfig } from "../models/spt/config/IInRaidConfig";
 import { IMatchConfig } from "../models/spt/config/IMatchConfig";
 import { IPmcConfig } from "../models/spt/config/IPmcConfig";
+import { ITraderConfig } from "../models/spt/config/ITraderConfig";
 import { ILogger } from "../models/spt/utils/ILogger";
 import { ConfigServer } from "../servers/ConfigServer";
 import { SaveServer } from "../servers/SaveServer";
 import { BotGenerationCacheService } from "../services/BotGenerationCacheService";
 import { BotLootCacheService } from "../services/BotLootCacheService";
+import { MailSendService } from "../services/MailSendService";
 import { MatchLocationService } from "../services/MatchLocationService";
 import { ProfileSnapshotService } from "../services/ProfileSnapshotService";
+import { HashUtil } from "../utils/HashUtil";
+import { RandomUtil } from "../utils/RandomUtil";
+import { TimeUtil } from "../utils/TimeUtil";
 
 @injectable()
 export class MatchController
 {
     protected matchConfig: IMatchConfig;
     protected inraidConfig: IInRaidConfig;
+    protected traderConfig: ITraderConfig;
     protected pmcConfig: IPmcConfig;
 
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("SaveServer") protected saveServer: SaveServer,
+        @inject("TimeUtil") protected timeUtil: TimeUtil,
+        @inject("RandomUtil") protected randomUtil: RandomUtil,
+        @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
         @inject("MatchLocationService") protected matchLocationService: MatchLocationService,
         @inject("TraderHelper") protected traderHelper: TraderHelper,
@@ -44,11 +56,14 @@ export class MatchController
         @inject("ConfigServer") protected configServer: ConfigServer,
         @inject("ProfileSnapshotService") protected profileSnapshotService: ProfileSnapshotService,
         @inject("BotGenerationCacheService") protected botGenerationCacheService: BotGenerationCacheService,
+        @inject("MailSendService") protected mailSendService: MailSendService,
+        @inject("LootGenerator") protected lootGenerator: LootGenerator,
         @inject("ApplicationContext") protected applicationContext: ApplicationContext
     )
     {
         this.matchConfig = this.configServer.getConfig(ConfigTypes.MATCH);
         this.inraidConfig = this.configServer.getConfig(ConfigTypes.IN_RAID);
+        this.traderConfig = this.configServer.getConfig(ConfigTypes.TRADER);
         this.pmcConfig = this.configServer.getConfig(ConfigTypes.PMC);
     }
 
@@ -182,6 +197,54 @@ export class MatchController
         {
             this.handleCarExtract(extractName, pmcData, sessionId);
         }
+
+        if (this.extractWasViaCoop(extractName) && this.traderConfig.fence.coopExtractGift.sendGift)
+        {
+            this.sendCoopTakenFenceMessage(sessionId);
+        }
+    }
+
+    /**
+     * Did player take a COOP extract
+     * @param extractName Name of extract player took
+     * @returns True if coop extract
+     */
+    protected extractWasViaCoop(extractName: string): boolean
+    {
+        return (this.inraidConfig.coopExtracts.includes(extractName.trim()));
+    }
+
+    protected sendCoopTakenFenceMessage(sessionId: string): void
+    {
+        // Generate reward for taking coop extract
+        const loot = this.lootGenerator.createRandomLoot(this.traderConfig.fence.coopExtractGift);
+        const mailableLoot: Item[] = [];
+        
+        const parentId = this.hashUtil.generate();
+        for (const item of loot)
+        {
+            mailableLoot.push(
+                {
+                    _id: item.id,
+                    _tpl: item.tpl,
+                    slotId: "main",
+                    parentId: parentId,
+                    upd: {
+                        StackObjectsCount: item.stackCount
+                    }
+                }
+            );
+        }
+
+        // Send message from fence giving player reward generated above
+        this.mailSendService.sendLocalisedNpcMessageToPlayer(
+            sessionId,
+            this.traderHelper.getTraderById(Traders.FENCE),
+            MessageType.MESSAGE_WITH_ITEMS,
+            this.randomUtil.getArrayValue(this.traderConfig.fence.coopExtractGift.messageLocaleIds),
+            mailableLoot,
+            this.timeUtil.getHoursAsSeconds(this.traderConfig.fence.coopExtractGift.giftExpiryHours)
+        );
     }
 
     /**
