@@ -90,7 +90,7 @@ export class BotLootGenerator
             botInventory,
             botRole);
 
-        // Meds
+        // Healing items / Meds
         this.addLootFromPool(
             this.botLootCacheService.getLootFromCache(botRole, isPmc, LootCacheType.HEALING_ITEMS, botJsonTemplate),
             containersBotHasAvailable,
@@ -362,7 +362,7 @@ export class BotLootGenerator
                 }
 
                 // Stop adding items to bots pool if rolling total is over total limit
-                if (totalValueLimitRub > 0 && itemAddedResult === ItemAddedResult.SUCCESS)
+                if (totalValueLimitRub > 0)
                 {
                     currentTotalRub += this.handbookHelper.getTemplatePrice(itemToAddTemplate._id);
                     if (currentTotalRub > totalValueLimitRub)
