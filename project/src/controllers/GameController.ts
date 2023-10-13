@@ -772,7 +772,10 @@ export class GameController
                 if (!traderAssorts.loyal_level_items[assortKey])
                 {
                     // reverse lookup of enum key by value 
-                    this.logger.debug(this.localisationService.getText("assort-missing_quest_assort_unlock", {traderName: Object.keys(Traders)[Object.values(Traders).indexOf(traderId)], questName: quests[questKey]?.QuestName ?? "UNKNOWN"}));
+                    const messageValues = {
+                        traderName: Object.keys(Traders)[Object.values(Traders).indexOf(traderId)],
+                        questName: quests[questKey]?.QuestName ?? "UNKNOWN"};
+                    this.logger.debug(this.localisationService.getText("assort-missing_quest_assort_unlock", messageValues));
                 }
             }
         }
