@@ -90,12 +90,21 @@ export class ScavCaseRewardGenerator
                 {
                     return false;
                 }
+
+                if (item._type === "Node")
+                {
+                    return false;
+                }
     
-                // Skip item if item id is on blacklist or boss item
+                // Skip item if item id is on blacklist
                 if ((item._type !== "Item")
                     || this.scavCaseConfig.rewardItemBlacklist.includes(item._id)
-                    || this.itemFilterService.isItemBlacklisted(item._id)
-                    || ( !this.scavCaseConfig.allowBossItemsAsRewards || this.itemFilterService.isBossItem(item._id)))
+                    || this.itemFilterService.isItemBlacklisted(item._id))
+                {
+                    return false;
+                }
+
+                if (!this.scavCaseConfig.allowBossItemsAsRewards && this.itemFilterService.isBossItem(item._id))
                 {
                     return false;
                 }
