@@ -1,6 +1,7 @@
 import { inject, injectable } from "tsyringe";
 
 import { ITemplateItem } from "../models/eft/common/tables/ITemplateItem";
+import { BaseClasses } from "../models/enums/BaseClasses";
 import { ILogger } from "../models/spt/utils/ILogger";
 import { DatabaseServer } from "../servers/DatabaseServer";
 import { LocalisationService } from "./LocalisationService";
@@ -81,6 +82,19 @@ export class ItemBaseClassService
         if (!this.cacheGenerated)
         {
             this.hydrateItemBaseClassCache();
+        }
+
+        if (typeof itemTpl === "undefined")
+        {
+            this.logger.warning("Unable to check itemTpl base class as its undefined");
+
+            return false;
+        }
+
+        // Edge case - this is the 'root' item that all other items inherit from
+        if (itemTpl === BaseClasses.ITEM)
+        {
+            return false;
         }
 
         // No item in cache
