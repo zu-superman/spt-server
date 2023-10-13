@@ -54,14 +54,13 @@ export class LootGenerator
         const itemTypeCounts = this.initItemLimitCounter(options.itemLimits);
 
         const tables = this.databaseServer.getTables();
-        const itemBlacklist = this.itemFilterService.getBlacklistedItems();
+        const itemBlacklist = new Set(this.itemFilterService.getBlacklistedItems());
         
-        itemBlacklist.push(...options.itemBlacklist);
+        options.itemBlacklist.forEach(itemBlacklist.add, itemBlacklist);
 
         if (!options.allowBossItems)
         {
-            const bossItems = this.itemFilterService.getBossItems();
-            itemBlacklist.push(...bossItems);
+            this.itemFilterService.getBossItems().forEach(itemBlacklist.add, itemBlacklist);
         }
 
         // Handle sealed weapon containers
@@ -85,7 +84,7 @@ export class LootGenerator
         }
 
         // Get items from items.json that have a type of item + not in global blacklist + basetype is in whitelist
-        const items = Object.entries(tables.templates.items).filter(x => !itemBlacklist.includes(x[1]._id) 
+        const items = Object.entries(tables.templates.items).filter(x => !itemBlacklist.has(x[1]._id) 
             && x[1]._type.toLowerCase() === "item" 
             && !x[1]._props.QuestItem
             && options.itemTypeWhitelist.includes(x[1]._parent));
@@ -101,9 +100,10 @@ export class LootGenerator
 
         const globalDefaultPresets = Object.entries(tables.globals.ItemPresets).filter(x => x[1]._encyclopedia !== undefined);
         const randomisedPresetCount = this.randomUtil.getInt(options.presetCount.min, options.presetCount.max);
+        const itemBlacklistArray = Array.from(itemBlacklist);
         for (let index = 0; index < randomisedPresetCount; index++)
         {
-            if (!this.findAndAddRandomPresetToLoot(globalDefaultPresets, itemTypeCounts, itemBlacklist, result))
+            if (!this.findAndAddRandomPresetToLoot(globalDefaultPresets, itemTypeCounts, itemBlacklistArray, result))
             {
                 index--;
             }
