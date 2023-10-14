@@ -13,7 +13,7 @@
             "sourceMaps": true,
             "runtimeArgs": [
                 "run",
-                "test:debug"
+                "run:debug"
             ],
             "outFiles": [
                 "!**/node_modules/**"
