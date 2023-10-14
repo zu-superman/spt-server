@@ -11,6 +11,7 @@ import { IBotType } from "../models/eft/common/tables/IBotType";
 import { Item } from "../models/eft/common/tables/IItem";
 import { AccountTypes } from "../models/enums/AccountTypes";
 import { ConfigTypes } from "../models/enums/ConfigTypes";
+import { MemberCategory } from "../models/enums/MemberCategory";
 import { Traders } from "../models/enums/Traders";
 import { IPlayerScavConfig, KarmaLevel } from "../models/spt/config/IPlayerScavConfig";
 import { ILogger } from "../models/spt/utils/ILogger";
@@ -97,12 +98,15 @@ export class PlayerScavGenerator
         scavData.Info.Bans = [];
         scavData.Info.RegistrationDate = pmcData.Info.RegistrationDate;
         scavData.Info.GameVersion = pmcData.Info.GameVersion;
+        scavData.Info.MemberCategory = MemberCategory.UNIQUE_ID;
         scavData.Info.Level = this.getScavLevel(existingScavData);
         scavData.Info.Experience = this.getScavExperience(existingScavData);
+        scavData.Info.lockedMoveCommands = true;
         scavData.Quests = existingScavData.Quests;
         scavData.Notes = existingScavData.Notes;
         scavData.WishList = existingScavData.WishList;
         scavData.RagfairInfo = pmcData.RagfairInfo;
+        scavData.UnlockedInfo = pmcData.UnlockedInfo;
 
         // Add an extra labs card to pscav backpack based on config chance
         if (this.randomUtil.getChance100(playerScavKarmaSettings.labsAccessCardChancePercent))
