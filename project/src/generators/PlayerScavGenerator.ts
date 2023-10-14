@@ -61,8 +61,8 @@ export class PlayerScavGenerator
     {
         // get karma level from profile
         const profile = this.saveServer.getProfile(sessionID);
-        const pmcData = profile.characters.pmc;
-        const existingScavData = profile.characters.scav;
+        const pmcData = this.jsonUtil.clone(profile.characters.pmc);
+        const existingScavData = this.jsonUtil.clone(profile.characters.scav);
 
         // scav profile can be empty on first profile creation
         const scavKarmaLevel = ((Object.keys(existingScavData).length === 0)) 
@@ -90,12 +90,19 @@ export class PlayerScavGenerator
         scavData.savage = null;
         scavData.sessionId = pmcData.sessionId;
         scavData.aid = pmcData.aid;
-        scavData.Info.Settings = {} as Settings;
-        scavData.TradersInfo = this.jsonUtil.clone(pmcData.TradersInfo);
+        scavData.TradersInfo = pmcData.TradersInfo;
         scavData.Skills = this.getScavSkills(existingScavData);
         scavData.Stats = this.getScavStats(existingScavData);
+        scavData.Info.Settings = {} as Settings;
+        scavData.Info.Bans = [];
+        scavData.Info.RegistrationDate = pmcData.Info.RegistrationDate;
+        scavData.Info.GameVersion = pmcData.Info.GameVersion;
         scavData.Info.Level = this.getScavLevel(existingScavData);
         scavData.Info.Experience = this.getScavExperience(existingScavData);
+        scavData.Quests = existingScavData.Quests;
+        scavData.Notes = existingScavData.Notes;
+        scavData.WishList = existingScavData.WishList;
+        scavData.RagfairInfo = pmcData.RagfairInfo;
 
         // Add an extra labs card to pscav backpack based on config chance
         if (this.randomUtil.getChance100(playerScavKarmaSettings.labsAccessCardChancePercent))
