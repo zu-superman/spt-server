@@ -198,7 +198,7 @@ export class MatchController
             this.handleCarExtract(extractName, pmcData, sessionId);
         }
 
-        if (this.extractWasViaCoop(extractName) && this.traderConfig.fence.coopExtractGift.sendGift)
+        if (extractName && this.extractWasViaCoop(extractName) && this.traderConfig.fence.coopExtractGift.sendGift)
         {
             this.sendCoopTakenFenceMessage(sessionId);
         }
@@ -211,6 +211,12 @@ export class MatchController
      */
     protected extractWasViaCoop(extractName: string): boolean
     {
+        // No extract name, not a coop extract
+        if (!extractName)
+        {
+            return false;
+        }
+
         return (this.inraidConfig.coopExtracts.includes(extractName.trim()));
     }
 
