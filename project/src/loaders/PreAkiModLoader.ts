@@ -384,6 +384,10 @@ export class PreAkiModLoader implements IModLoader
         }
     }
 
+    /**
+     * Compile mod and add into class property "imported"
+     * @param mod Name of mod to compile/add
+     */
     protected async addMod(mod: string): Promise<void>
     {
         const modPath = this.getModPath(mod);
@@ -414,11 +418,14 @@ export class PreAkiModLoader implements IModLoader
             else
             {
                 // rename the mod entry point to .ts if it's set to .js because G_MODS_TRANSPILE_TS is set to false
-                packageData.main = (packageData.main as string).replace(".js", ".ts");
+                packageData.main = (packageData.main).replace(".js", ".ts");
             }
         }
 
-        // add mod to imported list
+        // Purge scripts data from package object
+        packageData.scripts = {};
+
+        // Add mod to imported list
         this.imported[mod] = {...packageData, dependencies: packageData.modDependencies};
         this.logger.info(this.localisationService.getText("modloader-loaded_mod", {name: packageData.name, version: packageData.version, author: packageData.author}));
     }
