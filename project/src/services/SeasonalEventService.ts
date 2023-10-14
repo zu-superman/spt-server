@@ -324,12 +324,12 @@ export class SeasonalEventService
             case SeasonalEventType.HALLOWEEN.toLowerCase():
                 this.httpConfig.serverImagePathOverride["./assets/images/traders/5a7c2ebb86f7746e324a06ab.png"] = "./assets/images/traders/halloween/5a7c2ebb86f7746e324a06ab.png";
                 this.httpConfig.serverImagePathOverride["./assets/images/traders/5ac3b86a86f77461491d1ad8.png"] = "./assets/images/traders/halloween/5ac3b86a86f77461491d1ad8.png";
-                this.httpConfig.serverImagePathOverride["Aki_Data/Server/images/traders/5c06531a86f7746319710e1b.png"] = "Aki_Data/Server/images/traders/halloween/5c06531a86f7746319710e1b.png";
-                this.httpConfig.serverImagePathOverride["Aki_Data/Server/images/traders/59b91ca086f77469a81232e4.png"] = "Aki_Data/Server/images/traders/halloween/59b91ca086f77469a81232e4.png";
-                this.httpConfig.serverImagePathOverride["Aki_Data/Server/images/traders/59b91cab86f77469aa5343ca.png"] = "Aki_Data/Server/images/traders/halloween/59b91cab86f77469aa5343ca.png";
-                this.httpConfig.serverImagePathOverride["Aki_Data/Server/images/traders/59b91cb486f77469a81232e5.png"] = "Aki_Data/Server/images/traders/halloween/59b91cb486f77469a81232e5.png";
-                this.httpConfig.serverImagePathOverride["Aki_Data/Server/images/traders/59b91cbd86f77469aa5343cb.png"] = "Aki_Data/Server/images/traders/halloween/59b91cbd86f77469aa5343cb.png";
-                this.httpConfig.serverImagePathOverride["Aki_Data/Server/images/traders/579dc571d53a0658a154fbec.png"] = "Aki_Data/Server/images/traders/halloween/579dc571d53a0658a154fbec.png"; 
+                this.httpConfig.serverImagePathOverride["./assets/images/traders/5c06531a86f7746319710e1b.png"] = "./assets/images/traders/halloween/5c06531a86f7746319710e1b.png";
+                this.httpConfig.serverImagePathOverride["./assets/images/traders/59b91ca086f77469a81232e4.png"] = "./assets/images/traders/halloween/59b91ca086f77469a81232e4.png";
+                this.httpConfig.serverImagePathOverride["./assets/images/traders/59b91cab86f77469aa5343ca.png"] = "./assets/images/traders/halloween/59b91cab86f77469aa5343ca.png";
+                this.httpConfig.serverImagePathOverride["./assets/images/traders/59b91cb486f77469a81232e5.png"] = "./assets/images/traders/halloween/59b91cb486f77469a81232e5.png";
+                this.httpConfig.serverImagePathOverride["./assets/images/traders/59b91cbd86f77469aa5343cb.png"] = "./assets/images/traders/halloween/59b91cbd86f77469aa5343cb.png";
+                this.httpConfig.serverImagePathOverride["./assets/images/traders/579dc571d53a0658a154fbec.png"] = "./assets/images/traders/halloween/579dc571d53a0658a154fbec.png"; 
                 break; 
             case SeasonalEventType.CHRISTMAS.toLowerCase():
                 // TODO: find christmas trader icons
