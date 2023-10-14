@@ -266,10 +266,6 @@
                                 "relativeProbability": 10,
                                 "data": ["5b5f78e986f77447ed5636b1"]
                             }, {
-                                "key": "SniperRifle",
-                                "relativeProbability": 5,
-                                "data": ["5447b6254bdc2dc3278b4568"]
-                            }, {
                                 "key": "SMG",
                                 "relativeProbability": 3,
                                 "data": ["5b5f796a86f774093f2ed3c0"]
@@ -284,7 +280,7 @@
                             }, {
                                 "key": "BoltAction",
                                 "relativeProbability": 10,
-                                "data": ["588892092459774ac91d4b11"]
+                                "data": ["5b5f798886f77447ed5636b5"]
                             }, {
                                 "key": "MachineGun",
                                 "relativeProbability": 0,
@@ -447,10 +443,7 @@
                                 "relativeProbability": 10,
                                 "data": ["5b5f78e986f77447ed5636b1"]
                             }, {
-                                "key": "SniperRifle",
-                                "relativeProbability": 8,
-                                "data": ["5447b6254bdc2dc3278b4568"]
-                            }, {
+
                                 "key": "SMG",
                                 "relativeProbability": 10,
                                 "data": ["5b5f796a86f774093f2ed3c0"]
@@ -465,7 +458,7 @@
                             }, {
                                 "key": "BoltAction",
                                 "relativeProbability": 10,
-                                "data": ["588892092459774ac91d4b11"]
+                                "data": ["5b5f798886f77447ed5636b5"]
                             }, {
                                 "key": "MachineGun",
                                 "relativeProbability": 0,
@@ -589,7 +582,7 @@
                                 "data": ["Head"]
                             }, {
                                 "key": "Chest",
-                                "relativeProbability": 8,
+                                "relativeProbability": 7,
                                 "data": ["Chest", "Stomach"]
                             }, {
                                 "key": "Arms",
@@ -629,10 +622,6 @@
                                 "relativeProbability": 15,
                                 "data": ["5b5f78e986f77447ed5636b1"]
                             }, {
-                                "key": "SniperRifle",
-                                "relativeProbability": 8,
-                                "data": ["5447b6254bdc2dc3278b4568"]
-                            }, {
                                 "key": "SMG",
                                 "relativeProbability": 8,
                                 "data": ["5b5f796a86f774093f2ed3c0"]
@@ -647,7 +636,7 @@
                             }, {
                                 "key": "BoltAction",
                                 "relativeProbability": 10,
-                                "data": ["588892092459774ac91d4b11"]
+                                "data": ["5b5f798886f77447ed5636b5"]
                             }, {
                                 "key": "MachineGun",
                                 "relativeProbability": 1,
@@ -893,10 +882,6 @@
                                 "relativeProbability": 5,
                                 "data": ["5b5f78e986f77447ed5636b1"]
                             }, {
-                                "key": "SniperRifle",
-                                "relativeProbability": 1,
-                                "data": ["5447b6254bdc2dc3278b4568"]
-                            }, {
                                 "key": "SMG",
                                 "relativeProbability": 1,
                                 "data": ["5b5f796a86f774093f2ed3c0"]
@@ -911,7 +896,7 @@
                             }, {
                                 "key": "BoltAction",
                                 "relativeProbability": 5,
-                                "data": ["588892092459774ac91d4b11"]
+                                "data": ["5b5f798886f77447ed5636b5"]
                             }, {
                                 "key": "MachineGun",
                                 "relativeProbability": 0,
@@ -1074,10 +1059,6 @@
                                 "relativeProbability": 5,
                                 "data": ["5b5f78e986f77447ed5636b1"]
                             }, {
-                                "key": "SniperRifle",
-                                "relativeProbability": 1,
-                                "data": ["5447b6254bdc2dc3278b4568"]
-                            }, {
                                 "key": "SMG",
                                 "relativeProbability": 1,
                                 "data": ["5b5f796a86f774093f2ed3c0"]
@@ -1092,7 +1073,7 @@
                             }, {
                                 "key": "BoltAction",
                                 "relativeProbability": 1,
-                                "data": ["588892092459774ac91d4b11"]
+                                "data": ["5b5f798886f77447ed5636b5"]
                             }, {
                                 "key": "MachineGun",
                                 "relativeProbability": 1,
@@ -1255,10 +1236,6 @@
                                 "relativeProbability": 5,
                                 "data": ["5b5f78e986f77447ed5636b1"]
                             }, {
-                                "key": "SniperRifle",
-                                "relativeProbability": 1,
-                                "data": ["5447b6254bdc2dc3278b4568"]
-                            }, {
                                 "key": "SMG",
                                 "relativeProbability": 1,
                                 "data": ["5b5f796a86f774093f2ed3c0"]
@@ -1273,7 +1250,7 @@
                             }, {
                                 "key": "BoltAction",
                                 "relativeProbability": 5,
-                                "data": ["588892092459774ac91d4b11"]
+                                "data": ["5b5f798886f77447ed5636b5"]
                             }, {
                                 "key": "MachineGun",
                                 "relativeProbability": 1,
@@ -1433,10 +1410,6 @@
                                 "relativeProbability": 5,
                                 "data": ["5b5f78e986f77447ed5636b1"]
                             }, {
-                                "key": "SniperRifle",
-                                "relativeProbability": 1,
-                                "data": ["5447b6254bdc2dc3278b4568"]
-                            }, {
                                 "key": "SMG",
                                 "relativeProbability": 1,
                                 "data": ["5b5f796a86f774093f2ed3c0"]
@@ -1451,7 +1424,7 @@
                             }, {
                                 "key": "BoltAction",
                                 "relativeProbability": 5,
-                                "data": ["588892092459774ac91d4b11"]
+                                "data": ["5b5f798886f77447ed5636b5"]
                             }, {
                                 "key": "MachineGun",
                                 "relativeProbability": 0,
@@ -1549,10 +1522,6 @@
                                 "relativeProbability": 1,
                                 "data": ["5b5f78e986f77447ed5636b1"]
                             }, {
-                                "key": "SniperRifle",
-                                "relativeProbability": 1,
-                                "data": ["5447b6254bdc2dc3278b4568"]
-                            }, {
                                 "key": "SMG",
                                 "relativeProbability": 1,
                                 "data": ["5b5f796a86f774093f2ed3c0"]
@@ -1567,7 +1536,7 @@
                             }, {
                                 "key": "BoltAction",
                                 "relativeProbability": 1,
-                                "data": ["588892092459774ac91d4b11"]
+                                "data": ["5b5f798886f77447ed5636b5"]
                             }, {
                                 "key": "MachineGun",
                                 "relativeProbability": 1,
