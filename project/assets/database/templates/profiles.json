@@ -545,7 +545,7 @@
           "Side": "Bear",
           "SquadInviteRestriction": false,
           "Voice": "__REPLACEME__",
-          "lockedMoveCommands": false
+          "lockedMoveCommands": true
         },
         "InsuredItems": [],
         "Inventory": {
@@ -5024,7 +5024,7 @@
           "Side": "Usec",
           "SquadInviteRestriction": false,
           "Voice": "__REPLACEME__",
-          "lockedMoveCommands": false
+          "lockedMoveCommands": true
         },
         "InsuredItems": [],
         "Inventory": {
@@ -9570,7 +9570,7 @@
           "Side": "Bear",
           "SquadInviteRestriction": false,
           "Voice": "__REPLACEME__",
-          "lockedMoveCommands": false
+          "lockedMoveCommands": true
         },
         "InsuredItems": [],
         "Inventory": {
@@ -12975,7 +12975,7 @@
           "Side": "Usec",
           "SquadInviteRestriction": false,
           "Voice": "__REPLACEME__",
-          "lockedMoveCommands": false
+          "lockedMoveCommands": true
         },
         "InsuredItems": [],
         "Inventory": {
@@ -16487,7 +16487,7 @@
           "Side": "Bear",
           "SquadInviteRestriction": false,
           "Voice": "__REPLACEME__",
-          "lockedMoveCommands": false
+          "lockedMoveCommands": true
         },
         "InsuredItems": [],
         "Inventory": {
@@ -20339,7 +20339,7 @@
           "Side": "Usec",
           "SquadInviteRestriction": false,
           "Voice": "__REPLACEME__",
-          "lockedMoveCommands": false
+          "lockedMoveCommands": true
         },
         "InsuredItems": [],
         "Inventory": {
@@ -26453,7 +26453,7 @@
           "Side": "Bear",
           "SquadInviteRestriction": false,
           "Voice": "__REPLACEME__",
-          "lockedMoveCommands": false
+          "lockedMoveCommands": true
         },
         "InsuredItems": [],
         "Inventory": {
@@ -29558,7 +29558,7 @@
           "Side": "Usec",
           "SquadInviteRestriction": false,
           "Voice": "__REPLACEME__",
-          "lockedMoveCommands": false
+          "lockedMoveCommands": true
         },
         "InsuredItems": [],
         "Inventory": {
@@ -32610,7 +32610,7 @@
           "Side": "Bear",
           "SquadInviteRestriction": false,
           "Voice": "__REPLACEME__",
-          "lockedMoveCommands": false
+          "lockedMoveCommands": true
         },
         "InsuredItems": [],
         "Inventory": {
@@ -36047,7 +36047,7 @@
           "Side": "Usec",
           "SquadInviteRestriction": false,
           "Voice": "__REPLACEME__",
-          "lockedMoveCommands": false
+          "lockedMoveCommands": true
         },
         "InsuredItems": [],
         "Inventory": {
@@ -37456,7 +37456,7 @@
           "Side": "Bear",
           "SquadInviteRestriction": false,
           "Voice": "__REPLACEME__",
-          "lockedMoveCommands": false
+          "lockedMoveCommands": true
         },
         "InsuredItems": [],
         "Inventory": {
@@ -38430,7 +38430,7 @@
           "Side": "Usec",
           "SquadInviteRestriction": false,
           "Voice": "__REPLACEME__",
-          "lockedMoveCommands": false
+          "lockedMoveCommands": true
         },
         "InsuredItems": [],
         "Inventory": {
@@ -39300,7 +39300,7 @@
           "Side": "Bear",
           "SquadInviteRestriction": false,
           "Voice": "__REPLACEME__",
-          "lockedMoveCommands": false
+          "lockedMoveCommands": true
         },
         "InsuredItems": [],
         "Inventory": {
@@ -42103,7 +42103,7 @@
           "Side": "Usec",
           "SquadInviteRestriction": false,
           "Voice": "__REPLACEME__",
-          "lockedMoveCommands": false
+          "lockedMoveCommands": true
         },
         "InsuredItems": [],
         "Inventory": {
