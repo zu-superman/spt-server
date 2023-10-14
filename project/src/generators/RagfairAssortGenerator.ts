@@ -76,7 +76,7 @@ export class RagfairAssortGenerator
         ];
 
         const seasonalEventActive = this.seasonalEventService.seasonalEventEnabled();
-        const seasonalItemTplBlacklist = this.seasonalEventService.getSeasonalEventItemsToBlock();
+        const seasonalItemTplBlacklist = this.seasonalEventService.getAllSeasonalEventItems();
         for (const item of items)
         {
             if (!this.itemHelper.isValidItem(item._id, ragfairItemInvalidBaseTypes))

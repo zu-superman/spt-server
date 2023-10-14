@@ -38,7 +38,7 @@ export class FenceBaseAssortGenerator
      */
     public generateFenceBaseAssorts(): void
     {
-        const blockedSeasonalItems = this.seasonalEventService.getSeasonalEventItemsToBlock();
+        const blockedSeasonalItems = this.seasonalEventService.getAllSeasonalEventItems();
 
         const baseFenceAssort = this.databaseServer.getTables().traders[Traders.FENCE].assort;
 

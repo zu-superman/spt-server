@@ -211,7 +211,7 @@ export class GameController
 
             if (this.seasonalEventService.isAutomaticEventDetectionEnabled())
             {
-                this.seasonalEventService.checkForAndEnableSeasonalEvents(sessionID);
+                this.seasonalEventService.enableSeasonalEvents(sessionID);
             }
 
             if (pmcProfile?.Skills?.Common)

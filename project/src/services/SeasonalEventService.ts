@@ -24,6 +24,9 @@ export class SeasonalEventService
     protected questConfig: IQuestConfig;
     protected httpConfig: IHttpConfig;
 
+    protected halloweenEventActive = undefined;
+    protected christmasEventActive = undefined;
+
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
@@ -38,6 +41,8 @@ export class SeasonalEventService
         this.seasonalEventConfig = this.configServer.getConfig(ConfigTypes.SEASONAL_EVENT);
         this.questConfig = this.configServer.getConfig(ConfigTypes.QUEST);
         this.httpConfig = this.configServer.getConfig(ConfigTypes.HTTP);
+
+        this.cacheActiveEvents();
     }
 
     protected get christmasEventItems(): string[]
@@ -107,28 +112,6 @@ export class SeasonalEventService
     public getAllSeasonalEventItems(): string[]
     {
         const items = [];
-
-        if (!this.christmasEventEnabled())
-        {
-            items.push(...this.christmasEventItems);
-        }
-
-        if (!this.halloweenEventEnabled())
-        {
-            items.push(...this.halloweenEventItems);
-        }
-
-        return items;
-    }
-
-    /**
-     * Get an array of seasonal items that should be blocked as season is not currently active
-     * @returns Array of tpl strings
-     */
-    public getSeasonalEventItemsToBlock(): string[]
-    {
-        const items = [];
-
         if (!this.christmasEventEnabled())
         {
             items.push(...this.christmasEventItems);
@@ -148,26 +131,25 @@ export class SeasonalEventService
      */
     public seasonalEventEnabled(): boolean
     {
-        return this.databaseServer.getTables().globals.config.EventType.includes(SeasonalEventType.CHRISTMAS) ||
-            this.databaseServer.getTables().globals.config.EventType.includes(SeasonalEventType.HALLOWEEN);
+        return this.christmasEventEnabled() || this.halloweenEventEnabled();
     }
 
     /**
-     * Is christmas event active (Globals eventtype array contains even name)
+     * Is christmas event active
      * @returns true if active
      */
     public christmasEventEnabled(): boolean
     {
-        return this.databaseServer.getTables().globals.config.EventType.includes(SeasonalEventType.CHRISTMAS);
+        return this.christmasEventActive;
     }
 
     /**
-     * is halloween event active (Globals eventtype array contains even name)
+     * is halloween event active
      * @returns true if active
      */
     public halloweenEventEnabled(): boolean
     {
-        return this.databaseServer.getTables().globals.config.EventType.includes(SeasonalEventType.HALLOWEEN);
+        return this.halloweenEventActive;
     }
 
     /**
@@ -216,12 +198,25 @@ export class SeasonalEventService
     }
 
     /**
-     * Check if current date falls inside any of the seasons events pased in, if so, handle them
+     * Handle seasonal events
      * @param sessionId Players id
      */
-    public checkForAndEnableSeasonalEvents(sessionId: string): void
+    public enableSeasonalEvents(sessionId: string): void
     {
         const globalConfig = this.databaseServer.getTables().globals.config;
+        if (this.christmasEventActive)
+        {
+            this.updateGlobalEvents(sessionId, globalConfig, SeasonalEventType.CHRISTMAS);
+        }
+
+        if (this.halloweenEventActive)
+        {
+            this.updateGlobalEvents(sessionId, globalConfig, SeasonalEventType.HALLOWEEN);
+        }
+    }
+
+    protected cacheActiveEvents(): void
+    {
         const currentDate = new Date();
         const seasonalEvents = this.getEventDetails();
 
@@ -234,7 +229,8 @@ export class SeasonalEventService
             if (currentDate >= eventStartDate
                 && currentDate <= eventEndDate)
             {
-                this.updateGlobalEvents(sessionId, globalConfig, event.type);
+                this.christmasEventActive = (SeasonalEventType[event.type] === SeasonalEventType.CHRISTMAS);
+                this.halloweenEventActive = (SeasonalEventType[event.type] === SeasonalEventType.HALLOWEEN);
             }
         }
     }
@@ -392,6 +388,8 @@ export class SeasonalEventService
     protected addPumpkinsToScavBackpacks(): void
     {
         const assaultBackpack = this.databaseServer.getTables().bots.types["assault"].inventory.items.Backpack;
+        assaultBackpack.push("634959225289190e5e773b3b");
+        assaultBackpack.push("634959225289190e5e773b3b");
         assaultBackpack.push("634959225289190e5e773b3b");
         assaultBackpack.push("634959225289190e5e773b3b");
         assaultBackpack.push("634959225289190e5e773b3b");
