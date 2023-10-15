@@ -733,18 +733,7 @@ export class RepeatableQuestGenerator
 
         // Possible improvement -> draw trader-specific items e.g. with this.itemHelper.isOfBaseclass(val._id, ItemHelper.BASECLASS.FoodDrink)
         let roublesBudget = rewardRoubles;
-
-        // First filter for type and baseclass to avoid lookup in handbook for non-available items
-        const rewardableItems = this.getRewardableItems(repeatableConfig);
-        const minPrice = Math.min(25000, 0.5 * roublesBudget);
-        let itemSelection = rewardableItems.filter(x => this.itemHelper.getItemPrice(x[0]) < roublesBudget && this.itemHelper.getItemPrice(x[0]) > minPrice);
-        if (itemSelection.length === 0)
-        {
-            this.logger.warning(this.localisationService.getText("repeatable-no_reward_item_found_in_price_range", {minPrice: minPrice, roublesBudget: roublesBudget}));
-            // In case we don't find any items in the price range
-            itemSelection  = rewardableItems.filter(x => this.itemHelper.getItemPrice(x[0]) < roublesBudget
-            );
-        }
+        let chosenRewardItems = this.chooseRewardItemsWithinBudget(repeatableConfig, roublesBudget);
 
         const rewards: IRewards = {
             Started: [],
@@ -769,47 +758,48 @@ export class RepeatableQuestGenerator
         }
 
         let index = 2;
-        if (itemSelection.length > 0)
+        if (chosenRewardItems.length > 0)
         {
             for (let i = 0; i < rewardNumItems; i++)
             {
                 let value = 1;
                 let children = null;
-                const itemSelected = itemSelection[this.randomUtil.randInt(itemSelection.length)];
-                if (this.itemHelper.isOfBaseclass(itemSelected[0], BaseClasses.AMMO))
+                const itemSelected = chosenRewardItems[this.randomUtil.randInt(chosenRewardItems.length)];
+                if (this.itemHelper.isOfBaseclass(itemSelected._id, BaseClasses.AMMO))
                 {
                     // Dont reward ammo that stacks to less than what's defined in config
-                    if (itemSelected[1]._props.StackMaxSize < repeatableConfig.rewardAmmoStackMinSize)
+                    if (itemSelected._props.StackMaxSize < repeatableConfig.rewardAmmoStackMinSize)
                     {
                         continue;
                     }
 
                     // If we provide ammo we don't want to provide just one bullet
-                    value = this.randomUtil.randInt(repeatableConfig.rewardAmmoStackMinSize, itemSelected[1]._props.StackMaxSize);
+                    value = this.randomUtil.randInt(repeatableConfig.rewardAmmoStackMinSize, itemSelected._props.StackMaxSize);
                 }
-                else if (this.itemHelper.isOfBaseclass(itemSelected[0], BaseClasses.WEAPON))
+                else if (this.itemHelper.isOfBaseclass(itemSelected._id, BaseClasses.WEAPON))
                 {
-                    const defaultPreset = this.presetHelper.getDefaultPreset(itemSelected[0]);
+                    const defaultPreset = this.presetHelper.getDefaultPreset(itemSelected._id);
                     if (defaultPreset)
                     {
                         children = this.ragfairServerHelper.reparentPresets(defaultPreset._items[0], defaultPreset._items);
                     }
                 }
-                rewards.Success.push(this.generateRewardItem(itemSelected[0], value, index, children));
+                rewards.Success.push(this.generateRewardItem(itemSelected._id, value, index, children));
 
                 // TODO: maybe also non-default use ragfair to calculate the price
                 // this.ragfairServer.getWeaponPresetPrice(item, items, existingPrice)
 
-                roublesBudget -= value * this.itemHelper.getStaticItemPrice(itemSelected[0]);
+                roublesBudget -= value * this.itemHelper.getStaticItemPrice(itemSelected._id);
                 index += 1;
 
                 // if we still have budget narrow down the items
                 if (roublesBudget > 0)
                 {
-                    itemSelection = itemSelection.filter(x => this.itemHelper.getStaticItemPrice(x[0]) < roublesBudget);
-                    if (itemSelection.length === 0)
+                    // Filter possible reward items to only items with a price below the remaining budget
+                    chosenRewardItems = chosenRewardItems.filter(x => this.itemHelper.getStaticItemPrice(x._id) < roublesBudget);
+                    if (chosenRewardItems.length === 0)
                     {
-                        break;
+                        break; // No reward items left, exit
                     }
                 }
                 else
@@ -819,6 +809,7 @@ export class RepeatableQuestGenerator
             }
         }
 
+        // Add rep reward to rewards array
         if (rewardReputation > 0)
         {
             const reward: IReward = {
@@ -831,6 +822,28 @@ export class RepeatableQuestGenerator
         }
 
         return rewards;
+    }
+
+    /**
+     * Select a number of items that have a colelctive value of the passed in parameter
+     * @param repeatableConfig Config
+     * @param roublesBudget Total value of items to return
+     * @returns Array of reward items that fit budget
+     */
+    protected chooseRewardItemsWithinBudget(repeatableConfig: IRepeatableQuestConfig, roublesBudget: number): ITemplateItem[]
+    {
+        // First filter for type and baseclass to avoid lookup in handbook for non-available items
+        const rewardableItems = this.getRewardableItems(repeatableConfig);
+        const minPrice = Math.min(25000, 0.5 * roublesBudget);
+        let itemSelection = rewardableItems.filter(x => this.itemHelper.getItemPrice(x[0]) < roublesBudget && this.itemHelper.getItemPrice(x[0]) > minPrice).map(x => x[1]);
+        if (itemSelection.length === 0)
+        {
+            this.logger.warning(this.localisationService.getText("repeatable-no_reward_item_found_in_price_range", {minPrice: minPrice, roublesBudget: roublesBudget}));
+            // In case we don't find any items in the price range
+            itemSelection  = rewardableItems.filter(x => this.itemHelper.getItemPrice(x[0]) < roublesBudget).map(x => x[1]);
+        }
+
+        return itemSelection;
     }
 
     /**
