@@ -141,10 +141,10 @@
             "numQuests": 3,
             "minPlayerLevel": 5,
             "rewardScaling": {
-                "levels": [1, 20, 46, 60],
-                "experience": [2000, 4000, 20000, 80000],
-                "roubles": [12000, 20000, 50000, 100000],
-                "items": [2, 3, 5, 7],
+                "levels": [1, 10, 20, 30, 40, 50, 60],
+                "experience": [1000, 12000, 42000, 89000, 177000, 300000, 500000],
+                "roubles": [15000, 40000, 70000, 100000, 0, 0, 0],
+                "items": [2, 2, 3, 3, 4, 5, 6],
                 "reputation": [0.01, 0.01, 0.02, 0.02],
                 "rewardSpread": 0.5
             },
@@ -691,11 +691,11 @@
             "numQuests": 1,
             "minPlayerLevel": 15,
             "rewardScaling": {
-                "levels": [1, 20, 46, 60],
-                "experience": [8000, 16000, 80000, 320000],
-                "roubles": [36000, 62000, 160000, 400000],
-                "items": [5, 6, 7, 8],
-                "reputation": [0.02, 0.03, 0.03, 0.03],
+                "levels": [1, 10, 20, 30, 40, 50, 60],
+                "experience": [5000, 25000, 60000, 130000, 240000, 390000, 750000],
+                "roubles": [50000, 150000, 300000, 425000, 550000, 675000, 8500000],
+                "items": [3, 3, 4, 4, 5, 6, 7],
+                "reputation": [0.02, 0.02, 0.03, 0, 0.03, 0, 0.03],
                 "rewardSpread": 0.5
             },
             "locations": {
@@ -887,7 +887,7 @@
                                 "data": ["5b5f796a86f774093f2ed3c0"]
                             }, {
                                 "key": "Melee",
-                                "relativeProbability": 1,
+                                "relativeProbability": 0,
                                 "data": ["5b5f7a0886f77409407a7f96"]
                             }, {
                                 "key": "DMR",
@@ -1064,7 +1064,7 @@
                                 "data": ["5b5f796a86f774093f2ed3c0"]
                             }, {
                                 "key": "Melee",
-                                "relativeProbability": 1,
+                                "relativeProbability": 0,
                                 "data": ["5b5f7a0886f77409407a7f96"]
                             }, {
                                 "key": "DMR",
@@ -1241,7 +1241,7 @@
                                 "data": ["5b5f796a86f774093f2ed3c0"]
                             }, {
                                 "key": "Melee",
-                                "relativeProbability": 1,
+                                "relativeProbability": 0,
                                 "data": ["5b5f7a0886f77409407a7f96"]
                             }, {
                                 "key": "DMR",
