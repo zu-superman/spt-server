@@ -852,10 +852,11 @@ export class RepeatableQuestGenerator
         };
 
         const rootItem = {
-            "_id": id,
-            "_tpl": tpl,
-            "upd": {
-                "StackObjectsCount": value
+            _id: id,
+            _tpl: tpl,
+            upd: {
+                StackObjectsCount: value,
+                SpawnedInSession: true
             }
         };
 
