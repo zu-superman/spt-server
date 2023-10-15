@@ -141,7 +141,7 @@
             "numQuests": 3,
             "minPlayerLevel": 5,
             "rewardScaling": {
-                "levels": [1, 20, 46, 100],
+                "levels": [1, 20, 46, 60],
                 "experience": [2000, 4000, 20000, 80000],
                 "roubles": [12000, 20000, 50000, 100000],
                 "items": [2, 3, 5, 7],
@@ -691,7 +691,7 @@
             "numQuests": 1,
             "minPlayerLevel": 15,
             "rewardScaling": {
-                "levels": [1, 20, 46, 100],
+                "levels": [1, 20, 46, 60],
                 "experience": [8000, 16000, 80000, 320000],
                 "roubles": [36000, 62000, 160000, 400000],
                 "items": [5, 6, 7, 8],
