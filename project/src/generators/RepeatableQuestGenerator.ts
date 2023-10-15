@@ -736,34 +736,23 @@ export class RepeatableQuestGenerator
 
         // first filter for type and baseclass to avoid lookup in handbook for non-available items
         const rewardableItems = this.getRewardableItems(repeatableConfig);
-        // blacklist
-        // rome-ignore lint/complexity/useSimplifiedLogicExpression: <explanation>
-        let  itemSelection = rewardableItems.filter(x => !this.itemHelper.isOfBaseclass(x[0], BaseClasses.DOG_TAG_USEC)
-            && !this.itemHelper.isOfBaseclass(x[0], BaseClasses.DOG_TAG_BEAR)
-            && !this.itemHelper.isOfBaseclass(x[0], BaseClasses.MOUNT)
-        );
         const minPrice = Math.min(25000, 0.5 * roublesBudget);
-        itemSelection = itemSelection.filter(x => this.itemHelper.getItemPrice(x[0]) < roublesBudget && this.itemHelper.getItemPrice(x[0]) > minPrice);
+        let itemSelection = rewardableItems.filter(x => this.itemHelper.getItemPrice(x[0]) < roublesBudget && this.itemHelper.getItemPrice(x[0]) > minPrice);
         if (itemSelection.length === 0)
         {
             this.logger.warning(this.localisationService.getText("repeatable-no_reward_item_found_in_price_range", {minPrice: minPrice, roublesBudget: roublesBudget}));
-            // in case we don't find any items in the price range
-            // rome-ignore lint/complexity/useSimplifiedLogicExpression: <explanation>
-            itemSelection  = rewardableItems.filter(x => !this.itemHelper.isOfBaseclass(x[0], BaseClasses.DOG_TAG_USEC)
-                && !this.itemHelper.isOfBaseclass(x[0], BaseClasses.DOG_TAG_BEAR)
-                && !this.itemHelper.isOfBaseclass(x[0], BaseClasses.MOUNT)
-                && this.itemHelper.getItemPrice(x[0]) < roublesBudget
+            // In case we don't find any items in the price range
+            itemSelection  = rewardableItems.filter(x => this.itemHelper.getItemPrice(x[0]) < roublesBudget
             );
         }
-
 
         const rewards: IRewards = {
             Started: [],
             Success: [
                 {
-                    "value": rewardXP,
-                    "type": "Experience",
-                    "index": 0
+                    value: rewardXP,
+                    type: "Experience",
+                    index: 0
                 }
             ],
             Fail: []
@@ -936,10 +925,14 @@ export class RepeatableQuestGenerator
             }
         }
 
+        if (this.itemHelper.isOfBaseclasses(tpl, [BaseClasses.DOG_TAG_USEC, BaseClasses.DOG_TAG_BEAR, BaseClasses.MOUNT, BaseClasses.KEY, BaseClasses.ARMBAND]))
+        {
+            return false;
+        }
+
+        // Skip globally blacklisted items + boss items
         // rome-ignore lint/complexity/useSimplifiedLogicExpression: <explanation>
-        valid  = !this.itemHelper.isOfBaseclass(tpl, BaseClasses.KEY)
-            && !this.itemHelper.isOfBaseclass(tpl, BaseClasses.ARMBAND)
-            && !this.itemFilterService.isItemBlacklisted(tpl)
+        valid  = !this.itemFilterService.isItemBlacklisted(tpl)
             && !this.itemFilterService.isBossItem(tpl);
 
         return valid;
