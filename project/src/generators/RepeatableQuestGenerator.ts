@@ -918,12 +918,9 @@ export class RepeatableQuestGenerator
         }
 
         // Item has blacklisted base type
-        for (const baseType of repeatableQuestConfig.rewardBaseTypeBlacklist)
+        if (this.itemHelper.isOfBaseclasses(tpl, [...repeatableQuestConfig.rewardBaseTypeBlacklist]))
         {
-            if (this.itemHelper.isOfBaseclass(tpl, baseType))
-            {
-                return false;
-            }
+            return false;
         }
 
         if (this.itemHelper.isOfBaseclasses(tpl, [BaseClasses.DOG_TAG_USEC, BaseClasses.DOG_TAG_BEAR, BaseClasses.MOUNT, BaseClasses.KEY, BaseClasses.ARMBAND]))
