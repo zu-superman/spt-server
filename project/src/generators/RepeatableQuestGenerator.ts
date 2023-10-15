@@ -800,13 +800,13 @@ export class RepeatableQuestGenerator
                 // TODO: maybe also non-default use ragfair to calculate the price
                 // this.ragfairServer.getWeaponPresetPrice(item, items, existingPrice)
 
-                roublesBudget -= value * this.itemHelper.getItemPrice(itemSelected[0]);
+                roublesBudget -= value * this.itemHelper.getStaticItemPrice(itemSelected[0]);
                 index += 1;
 
                 // if we still have budget narrow down the items
                 if (roublesBudget > 0)
                 {
-                    itemSelection = itemSelection.filter(x => this.itemHelper.getItemPrice(x[0]) < roublesBudget);
+                    itemSelection = itemSelection.filter(x => this.itemHelper.getStaticItemPrice(x[0]) < roublesBudget);
                     if (itemSelection.length === 0)
                     {
                         break;
