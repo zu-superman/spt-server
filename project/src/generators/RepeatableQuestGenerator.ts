@@ -299,7 +299,7 @@ export class RepeatableQuestGenerator
             (allowedWeaponsCategory || allowedWeapon) ? 1 : 0
         );
 
-        // aforementioned issue makes it a bit crazy since now all easier quests give significantly lower rewards than Completion / Exploration
+        // Aforementioned issue makes it a bit crazy since now all easier quests give significantly lower rewards than Completion / Exploration
         // I therefore moved the mapping a bit up (from 0.2...1 to 0.5...2) so that normal difficulty still gives good reward and having the
         // crazy maximum difficulty will lead to a higher difficulty reward gain factor than 1
         const difficulty = this.mathUtil.mapToRange(curDifficulty, minDifficulty, maxDifficulty, 0.5, 2);
@@ -382,7 +382,8 @@ export class RepeatableQuestGenerator
             killConditionProps.bodyPart = bodyPart;
         }
 
-        if (distance)
+        // Dont allow distance + melee requirement
+        if (distance && allowedWeaponCategory !== "5b5f7a0886f77409407a7f96")
         {
             killConditionProps.distance = {
                 compareMethod: ">=",
