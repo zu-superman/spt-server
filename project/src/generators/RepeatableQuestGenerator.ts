@@ -761,7 +761,7 @@ export class RepeatableQuestGenerator
         if (traderId === Traders.PEACEKEEPER)
         {
             // convert to equivalent dollars
-            rewards.Success.push(this.generateRewardItem(Money.DOLLARS, this.handbookHelper.fromRUB(rewardRoubles, Money.DOLLARS), 1));
+            rewards.Success.push(this.generateRewardItem(Money.EUROS, this.handbookHelper.fromRUB(rewardRoubles, Money.EUROS), 1));
         }
         else
         {
