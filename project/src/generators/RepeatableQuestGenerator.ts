@@ -730,11 +730,10 @@ export class RepeatableQuestGenerator
         const rewardReputation = Math.round(100 * difficulty * this.mathUtil.interp1(pmcLevel, levelsConfig, reputationConfig)
             * this.randomUtil.getFloat(1 - rewardSpreadConfig, 1 + rewardSpreadConfig)) / 100;
 
-
-        // possible improvement -> draw trader-specific items e.g. with this.itemHelper.isOfBaseclass(val._id, ItemHelper.BASECLASS.FoodDrink)
+        // Possible improvement -> draw trader-specific items e.g. with this.itemHelper.isOfBaseclass(val._id, ItemHelper.BASECLASS.FoodDrink)
         let roublesBudget = rewardRoubles;
 
-        // first filter for type and baseclass to avoid lookup in handbook for non-available items
+        // First filter for type and baseclass to avoid lookup in handbook for non-available items
         const rewardableItems = this.getRewardableItems(repeatableConfig);
         const minPrice = Math.min(25000, 0.5 * roublesBudget);
         let itemSelection = rewardableItems.filter(x => this.itemHelper.getItemPrice(x[0]) < roublesBudget && this.itemHelper.getItemPrice(x[0]) > minPrice);
@@ -784,7 +783,7 @@ export class RepeatableQuestGenerator
                         continue;
                     }
 
-                    // if we provide ammo we don't want to provide just one bullet
+                    // If we provide ammo we don't want to provide just one bullet
                     value = this.randomUtil.randInt(repeatableConfig.rewardAmmoStackMinSize, itemSelected[1]._props.StackMaxSize);
                 }
                 else if (this.itemHelper.isOfBaseclass(itemSelected[0], BaseClasses.WEAPON))
@@ -836,10 +835,10 @@ export class RepeatableQuestGenerator
     /**
      * Helper to create a reward item structured as required by the client
      *
-     * @param   {string}    tpl             itemId of the rewarded item
-     * @param   {integer}   value           amount of items to give
-     * @param   {integer}   index           all rewards will be appended to a list, for unkown reasons the client wants the index
-     * @returns {object}                    object of "Reward"-item-type
+     * @param   {string}    tpl             ItemId of the rewarded item
+     * @param   {integer}   value           Amount of items to give
+     * @param   {integer}   index           All rewards will be appended to a list, for unknown reasons the client wants the index
+     * @returns {object}                    Object of "Reward"-item-type
      */
     protected generateRewardItem(tpl: string, value: number, index: number, preset = null): IReward
     {
@@ -873,8 +872,8 @@ export class RepeatableQuestGenerator
 
     /**
     * Picks rewardable items from items.json. This means they need to fit into the inventory and they shouldn't be keys (debatable)
-     * @param repeatableQuestConfig config file
-     * @returns a list of rewardable items [[_tpl, itemTemplate],...]
+     * @param repeatableQuestConfig Config file
+     * @returns List of rewardable items [[_tpl, itemTemplate],...]
      */
     protected getRewardableItems(repeatableQuestConfig: IRepeatableQuestConfig): [string, ITemplateItem][]
     {
@@ -900,14 +899,14 @@ export class RepeatableQuestGenerator
      * Checks if an id is a valid item. Valid meaning that it's an item that may be a reward
      * or content of bot loot. Items that are tested as valid may be in a player backpack or stash.
      * @param {string} tpl template id of item to check
-     * @returns boolean: true if item is valid reward
+     * @returns True if item is valid reward
      */
     protected isValidRewardItem(tpl: string, repeatableQuestConfig: IRepeatableQuestConfig): boolean
     {
         let valid = this.itemHelper.isValidItem(tpl);
         if (!valid)
         {
-            return valid; // not valid item
+            return valid;
         }
 
         // Item is on repeatable or global blacklist
@@ -940,10 +939,10 @@ export class RepeatableQuestGenerator
      * Generates the base object of quest type format given as templates in assets/database/templates/repeatableQuests.json
      * The templates include Elimination, Completion and Extraction quest types
      *
-     * @param   {string}    type            quest type: "Elimination", "Completion" or "Extraction"
-     * @param   {string}    traderId        trader from which the quest will be provided
-     * @param   {string}    side            scav daily or pmc daily/weekly quest  
-     * @returns {object}                    a object which contains the base elements for repeatable quests of the requests type
+     * @param   {string}    type            Quest type: "Elimination", "Completion" or "Extraction"
+     * @param   {string}    traderId        Trader from which the quest will be provided
+     * @param   {string}    side            Scav daily or pmc daily/weekly quest  
+     * @returns {object}                    Object which contains the base elements for repeatable quests of the requests type
      *                                      (needs to be filled with reward and conditions by called to make a valid quest)
      */
     // @Incomplete: define Type for "type".
