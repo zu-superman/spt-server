@@ -109,7 +109,7 @@
         ],
         "bigmap": [{
                 "locationId": "(292.121, 1.5664, -190.888)",
-                "probability": 0.3,
+                "probability": 0.03,
                 "template": {
                     "Id": "Loot 19 (9)3596812",
                     "IsContainer": false,
@@ -144,7 +144,7 @@
                 ]
             }, {
                 "locationId": "(291.785, 1.5664, -191.529)",
-                "probability": 0.3,
+                "probability": 0.03,
                 "template": {
                     "Id": "Loot 19 (8)3601082",
                     "IsContainer": false,
@@ -436,7 +436,7 @@
         ],
         "shoreline": [{
                 "locationId": "(-227.977051, -6.41899967, -102.800995)",
-                "probability": 0.02,
+                "probability": 0.007,
                 "template": {
                     "Id": "key_lab_weapon_store (35)6033844",
                     "IsContainer": false,
@@ -471,7 +471,7 @@
                 ]
             }, {
                 "locationId": "(-335.261, -0.0619997978, -88.9129944)",
-                "probability": 0.02,
+                "probability": 0.007,
                 "template": {
                     "Id": "key_lab_weapon_store (36)6032572",
                     "IsContainer": false,
@@ -492,21 +492,21 @@
                     "IsAlwaysSpawn": false,
                     "Root": "63c147d4d25689a1b00a4824",
                     "Items": [{
-                            "_id": "-125004426",
+                            "_id": "-125024426",
                             "_tpl": "5c1d0efb86f7744baf2e7b7b"
                         }
                     ]
                 },
                 "itemDistribution": [{
                         "composedKey": {
-                            "key": "-125004426"
+                            "key": "-125024426"
                         },
                         "relativeProbability": 5
                     }
                 ]
             }, {
                 "locationId": "(-171.123047, -0.0277996063, -87.7450562)",
-                "probability": 0.02,
+                "probability": 0.007,
                 "template": {
                     "Id": "key_lab_weapon_store (37)6032436",
                     "IsContainer": false,
@@ -527,21 +527,21 @@
                     "IsAlwaysSpawn": false,
                     "Root": "63de0be6aba2b30295076b29",
                     "Items": [{
-                            "_id": "-125004426",
+                            "_id": "-125014426",
                             "_tpl": "5c1d0efb86f7744baf2e7b7b"
                         }
                     ]
                 },
                 "itemDistribution": [{
                         "composedKey": {
-                            "key": "-125004426"
+                            "key": "-125014426"
                         },
                         "relativeProbability": 5
                     }
                 ]
             }, {
                 "locationId": "(-155.865112, -2.97210026, -89.4736)",
-                "probability": 0.02,
+                "probability": 0.007,
                 "template": {
                     "Id": "key_lab_karantin (36)6029734",
                     "IsContainer": false,
@@ -576,7 +576,7 @@
                 ]
             }, {
                 "locationId": "(-257.266, -4.6257, -86.741)",
-                "probability": 0.02,
+                "probability": 0.007,
                 "template": {
                     "Id": "key_lab_karantin (38)6033420",
                     "IsContainer": false,
