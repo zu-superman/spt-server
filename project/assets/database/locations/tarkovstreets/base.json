@@ -70,21 +70,6 @@
       "Time": 99999,
       "TriggerId": "BossBoarBorn",
       "TriggerName": "botEvent"
-    },
-    {
-      "BossChance": 5,
-      "BossDifficult": "normal",
-      "BossEscortAmount": "0",
-      "BossEscortDifficult": "normal",
-      "BossEscortType": "pmcBot",
-      "BossName": "bossKilla",
-      "BossPlayer": false,
-      "BossZone": "ZoneHotel_1,ZoneHotel_2",
-      "RandomTimeSpawn": false,
-      "Supports": null,
-      "Time": -1,
-      "TriggerId": "",
-      "TriggerName": ""
     }
   ],
   "BotAssault": 80,
