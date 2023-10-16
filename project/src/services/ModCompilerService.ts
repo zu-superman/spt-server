@@ -2,7 +2,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { inject, injectable } from "tsyringe";
-import { CompilerOptions, ModuleKind, ModuleResolutionKind, ScriptTarget, TranspileOptions, transpileModule } from "typescript";
+import ts from "typescript";
 import type { ILogger } from "../models/spt/utils/ILogger";
 import { VFS } from "../utils/VFS";
 import { HashCacheService } from "./HashCacheService";
@@ -64,18 +64,17 @@ export class ModCompilerService
             {
                 noEmitOnError: true,
                 noImplicitAny: false,
-                target: ScriptTarget.ES2022,
-                module: ModuleKind.CommonJS,
-                moduleResolution: ModuleResolutionKind.Node10,
-                inlineSourceMap: true,
+                target: ts.ScriptTarget.ES2022,
+                module: ts.ModuleKind.CommonJS,
+                moduleResolution: ts.ModuleResolutionKind.Node10,
+                sourceMap: true,
                 resolveJsonModule: true,
                 allowJs: true,
                 esModuleInterop: true,
                 downlevelIteration: true,
                 experimentalDecorators: true,
                 emitDecoratorMetadata: true,
-                rootDir: modPath,
-                isolatedModules: true
+                rootDir: modPath
             });
     }
 
@@ -84,22 +83,21 @@ export class ModCompilerService
      * @param fileNames Paths to TS files
      * @param options Compiler options
      */
-    protected async compile(fileNames: string[], options: CompilerOptions): Promise<void>
+    protected async compile(fileNames: string[], options: ts.CompilerOptions): Promise<void>
     {
-        const tranOptions: TranspileOptions = {
-            compilerOptions: options
-        };
+        // C:/snapshot/project || /snapshot/project
+        const baseDir: string = __dirname.replace(/\\/g,"/").split("/").slice(0, 3).join("/");
 
         for (const filePath of fileNames)
         {
-            const readFile = fs.readFileSync(filePath);
-            const text = readFile.toString();
-
+            const destPath = filePath.replace(".ts", ".js");
+            const parsedPath = path.parse(filePath);
+            const parsedDestPath = path.parse(destPath);
+            const text = fs.readFileSync(filePath).toString();
             let replacedText: string;
+
             if (globalThis.G_RELEASE_CONFIGURATION)
             {
-                // C:/snapshot/project || /snapshot/project
-                const baseDir: string = __dirname.replace(/\\/g,"/").split("/").slice(0, 3).join("/");
                 replacedText = text.replace(/(@spt-aki)/g, `${baseDir}/obj`);
                 for (const dependency of this.serverDependencies) 
                 {
@@ -111,8 +109,19 @@ export class ModCompilerService
                 replacedText = text.replace(/(@spt-aki)/g, path.join(__dirname, "..").replace(/\\/g,"/"));
             }
 
-            const output = transpileModule(replacedText, tranOptions);
-            fs.writeFileSync(filePath.replace(".ts", ".js"), output.outputText);
+            const output = ts.transpileModule(replacedText, { compilerOptions: options });
+
+            if (output.sourceMapText)
+            {
+                output.outputText = output.outputText.replace("//# sourceMappingURL=module.js.map", `//# sourceMappingURL=${parsedDestPath.base}.map`);
+
+                const sourceMap = JSON.parse(output.sourceMapText);
+                sourceMap.file = parsedDestPath.base;
+                sourceMap.sources = [ parsedPath.base ];
+
+                fs.writeFileSync(`${destPath}.map`, JSON.stringify(sourceMap));
+            }
+            fs.writeFileSync(destPath, output.outputText);
         }
 
         while (!this.areFilesReady(fileNames))
