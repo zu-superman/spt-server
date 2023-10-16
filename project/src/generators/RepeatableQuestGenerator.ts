@@ -305,6 +305,12 @@ export class RepeatableQuestGenerator
         const difficulty = this.mathUtil.mapToRange(curDifficulty, minDifficulty, maxDifficulty, 0.5, 2);
 
         const quest = this.generateRepeatableTemplate("Elimination", traderId,repeatableConfig.side) as IElimination;
+        
+        // ASSUMPTION: All fence quests are for scavs
+        if (traderId === Traders.FENCE)
+        {
+            quest.side = "Scav";
+        }
 
         quest.conditions.AvailableForFinish[0]._props.counter.id = this.objectId.generate();
         quest.conditions.AvailableForFinish[0]._props.counter.conditions = [];
