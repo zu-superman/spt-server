@@ -260,7 +260,7 @@ export class BotEquipmentModGenerator
             }
 
             // If front/rear sight are to be added, set opposite to 100% chance
-            if (this.modIsFrontOrRearSight(modSlot))
+            if (this.modIsFrontOrRearSight(modSlot, modToAddTemplate._id))
             {
                 modSpawnChances.mod_sight_front = 100;
                 modSpawnChances.mod_sight_rear = 100;
@@ -317,8 +317,13 @@ export class BotEquipmentModGenerator
      * @param modSlot Slot to check
      * @returns true if it's a front/rear sight
      */
-    protected modIsFrontOrRearSight(modSlot: string): boolean
+    protected modIsFrontOrRearSight(modSlot: string, tpl: string): boolean
     {
+        if (modSlot === "mod_gas_block" && tpl === "5ae30e795acfc408fb139a0b") // M4A1 front sight with gas block
+        {
+            return true;
+        }
+
         return ["mod_sight_front", "mod_sight_rear"].includes(modSlot);
     }
 
