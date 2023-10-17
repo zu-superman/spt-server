@@ -680,7 +680,7 @@
                 "5447b5e04bdc2d62278b4567": ["55818ad54bdc2ddc698b4569", "55818acf4bdc2dde698b456b", "55818ac54bdc2d5b648b456e"],
                 "5447b6254bdc2dc3278b4568": ["55818ae44bdc2dde698b456c", "55818ac54bdc2d5b648b456e", "55818aeb4bdc2ddc698b456a", "55818add4bdc2d5b648b456f"]
             },
-            "nvgIsActiveChanceDayPercent": 20,
+            "nvgIsActiveChanceDayPercent": 10,
             "nvgIsActiveChanceNightPercent": 95,
             "faceShieldIsActiveChancePercent": 85,
             "lightIsActiveDayChancePercent": 25,
