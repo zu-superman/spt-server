@@ -133,6 +133,7 @@ export class RepeatableQuestController
                     // introduce a dynamic quest pool to avoid duplicates
                     const questTypePool = this.generateQuestPool(repeatableConfig, pmcData.Info.Level);
 
+                    // Add daily quests
                     for (let i = 0; i < repeatableConfig.numQuests; i++)
                     {
                         let quest = null;

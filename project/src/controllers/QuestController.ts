@@ -326,17 +326,28 @@ export class QuestController
     {
         const acceptQuestResponse = this.eventOutputHolder.getOutput(sessionID);
 
-        const state = QuestStatus.Started;
-        const newQuest = this.questHelper.getQuestReadyForProfile(pmcData, state, acceptedQuest);
+        const desiredQuestState = QuestStatus.Started;
+        const newQuest = this.questHelper.getQuestReadyForProfile(pmcData, desiredQuestState, acceptedQuest);
         pmcData.Quests.push(newQuest);
-
+        
         const repeatableQuestProfile = this.getRepeatableQuestFromProfile(pmcData, acceptedQuest);
-
         if (!repeatableQuestProfile)
         {
             this.logger.error(this.localisationService.getText("repeatable-accepted_repeatable_quest_not_found_in_active_quests", acceptedQuest.qid));
 
             throw new Error(this.localisationService.getText("repeatable-unable_to_accept_quest_see_log"));
+        }
+
+        // Scav quests need to be added to scav profile
+        if (repeatableQuestProfile.side === "Scav")
+        {
+            const fullProfile = this.profileHelper.getFullProfile(sessionID);
+            if (!fullProfile.characters.scav.Quests)
+            {
+                fullProfile.characters.scav.Quests = [];
+            }
+
+            fullProfile.characters.scav.Quests.push(newQuest);
         }
 
         const locale = this.localeService.getLocaleDb();
@@ -361,7 +372,7 @@ export class QuestController
             }
         }
 
-        const questRewards = this.questHelper.getQuestRewardItems(<IQuest><unknown>repeatableQuestProfile, state);
+        const questRewards = this.questHelper.getQuestRewardItems(<IQuest><unknown>repeatableQuestProfile, desiredQuestState);
 
         this.mailSendService.sendLocalisedNpcMessageToPlayer(
             sessionID,
@@ -372,6 +383,7 @@ export class QuestController
             this.timeUtil.getHoursAsSeconds(this.questConfig.redeemTime));
 
         acceptQuestResponse.profileChanges[sessionID].quests = this.questHelper.getNewlyAccessibleQuestsWhenStartingQuest(acceptedQuest.qid, sessionID);
+
         return acceptQuestResponse;
     }
 
