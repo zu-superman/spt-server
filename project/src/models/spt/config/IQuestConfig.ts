@@ -79,6 +79,7 @@ export interface IRepeatableQuestTypesConfig
 {
     Exploration: IExploration
     Completion: ICompletion
+    Pickup: IPickup;
     Elimination: IEliminationConfig[]
 }
   
@@ -102,6 +103,18 @@ export interface ICompletion
     maxRequestedBulletAmount: number
     useWhitelist: boolean
     useBlacklist: boolean
+}
+
+export interface IPickup
+{
+    ItemTypeToFetchWithMaxCount: IPickupTypeWithMaxCount[]
+}
+
+export interface IPickupTypeWithMaxCount
+{
+    itemType: string
+    maxPickupCount: number
+    minPickupCount: number
 }
   
 export interface IEliminationConfig 

@@ -264,8 +264,13 @@ export class RepeatableQuestController
             if (location !== ELocationName.ANY)
             {
                 questPool.pool.Exploration.locations[location] = repeatableConfig.locations[location];
+                questPool.pool.Pickup.locations[location] = repeatableConfig.locations[location];
             }
         }
+
+        // Add "any" to pickup quest pool
+        questPool.pool.Pickup.locations["any"] = ["any"];
+
         const eliminationConfig = this.repeatableQuestHelper.getEliminationConfigByPmcLevel(pmcLevel, repeatableConfig);
         const targetsConfig = this.repeatableQuestHelper.probabilityObjectArray(eliminationConfig.targets);
         for (const probabilityObject of targetsConfig)
@@ -299,6 +304,9 @@ export class RepeatableQuestController
                 },
                 Elimination: {
                     targets: {}
+                },
+                Pickup: {
+                    locations: {}
                 }
             }
         };

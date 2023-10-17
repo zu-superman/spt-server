@@ -13,8 +13,10 @@ import {
     ICompletionAvailableFor,
     IElimination,
     IEliminationCondition,
+    IEquipmentConditionProps,
     IExploration,
     IExplorationCondition, IKillConditionProps,
+    IPickup,
     IRepeatableQuest, IReward, IRewards
 } from "../models/eft/common/tables/IRepeatableQuests";
 import { ITemplateItem } from "../models/eft/common/tables/ITemplateItem";
@@ -104,6 +106,8 @@ export class RepeatableQuestGenerator
                 return this.generateCompletionQuest(pmcLevel, traderId, repeatableConfig);
             case "Exploration":
                 return this.generateExplorationQuest(pmcLevel, traderId, questTypePool, repeatableConfig);
+            case "Pickup":
+                return this.generatePickupQuest(pmcLevel, traderId, questTypePool, repeatableConfig);
             default:
                 throw new Error(`Unknown mission type ${questType}. Should never be here!`);
         }
@@ -304,7 +308,7 @@ export class RepeatableQuestGenerator
         // crazy maximum difficulty will lead to a higher difficulty reward gain factor than 1
         const difficulty = this.mathUtil.mapToRange(curDifficulty, minDifficulty, maxDifficulty, 0.5, 2);
 
-        const quest = this.generateRepeatableTemplate("Elimination", traderId,repeatableConfig.side) as IElimination;
+        const quest = this.generateRepeatableTemplate("Elimination", traderId, repeatableConfig.side) as IElimination;
         
         // ASSUMPTION: All fence quests are for scavs
         if (traderId === Traders.FENCE)
@@ -312,15 +316,16 @@ export class RepeatableQuestGenerator
             quest.side = "Scav";
         }
 
-        quest.conditions.AvailableForFinish[0]._props.counter.id = this.objectId.generate();
-        quest.conditions.AvailableForFinish[0]._props.counter.conditions = [];
+        const availableForFinishCondition = quest.conditions.AvailableForFinish[0];
+        availableForFinishCondition._props.counter.id = this.objectId.generate();
+        availableForFinishCondition._props.counter.conditions = [];
         if (locationKey !== "any")
         {
-            quest.conditions.AvailableForFinish[0]._props.counter.conditions.push(this.generateEliminationLocation(locationsConfig[locationKey], allowedWeapon, allowedWeaponsCategory));
+            availableForFinishCondition._props.counter.conditions.push(this.generateEliminationLocation(locationsConfig[locationKey], allowedWeapon, allowedWeaponsCategory));
         }
-        quest.conditions.AvailableForFinish[0]._props.counter.conditions.push(this.generateEliminationCondition(targetKey, bodyPartsToClient, distance, allowedWeapon, allowedWeaponsCategory));
-        quest.conditions.AvailableForFinish[0]._props.value = kills;
-        quest.conditions.AvailableForFinish[0]._props.id = this.objectId.generate();
+        availableForFinishCondition._props.counter.conditions.push(this.generateEliminationCondition(targetKey, bodyPartsToClient, distance, allowedWeapon, allowedWeaponsCategory));
+        availableForFinishCondition._props.value = kills;
+        availableForFinishCondition._props.id = this.objectId.generate();
         quest.location = this.getQuestLocationByMapId(locationKey);
 
         quest.rewards = this.generateReward(pmcLevel, Math.min(difficulty, 1), traderId, repeatableConfig);
@@ -656,6 +661,40 @@ export class RepeatableQuestGenerator
         // Difficulty for reward goes from 0.2...1 -> map
         const difficulty = this.mathUtil.mapToRange(numExtracts, 1, explorationConfig.maxExtracts, 0.2, 1);
         quest.rewards = this.generateReward(pmcLevel, difficulty, traderId, repeatableConfig);
+
+        return quest;
+    }
+
+    protected generatePickupQuest(
+        pmcLevel: number,
+        traderId: string,
+        questTypePool: IQuestTypePool,
+        repeatableConfig: IRepeatableQuestConfig
+    ): IPickup
+    {
+        const pickupConfig = repeatableConfig.questConfig.Pickup;
+
+        const quest = this.generateRepeatableTemplate("Pickup", traderId, repeatableConfig.side) as IPickup;
+
+        const itemTypeToFetchWithCount = this.randomUtil.getArrayValue(pickupConfig.ItemTypeToFetchWithMaxCount);
+        const itemCountToFetch = this.randomUtil.randInt(itemTypeToFetchWithCount.minPickupCount, itemTypeToFetchWithCount.maxPickupCount + 1);
+        // Choose location - doesnt seem to work for anything other than 'any'
+        //const locationKey: string = this.randomUtil.drawRandomFromDict(questTypePool.pool.Pickup.locations)[0];
+        //const locationTarget = questTypePool.pool.Pickup.locations[locationKey];
+
+        const findCondition = quest.conditions.AvailableForFinish.find(x => x._parent === "FindItem");
+        findCondition._props.target = [itemTypeToFetchWithCount.itemType];
+        findCondition._props.value = itemCountToFetch;
+
+        const counterCreatorCondition = quest.conditions.AvailableForFinish.find(x => x._parent === "CounterCreator");
+        //const locationCondition = counterCreatorCondition._props.counter.conditions.find(x => x._parent === "Location");
+        //(locationCondition._props as ILocationConditionProps).target = [...locationTarget];
+
+        const equipmentCondition = counterCreatorCondition._props.counter.conditions.find(x => x._parent === "Equipment");
+        (equipmentCondition._props as IEquipmentConditionProps).equipmentInclusive = [[itemTypeToFetchWithCount.itemType]];
+
+        // Add rewards
+        quest.rewards = this.generateReward(pmcLevel, 1, traderId, repeatableConfig);
 
         return quest;
     }

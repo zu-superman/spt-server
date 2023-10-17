@@ -10,6 +10,7 @@ export interface IQuestPool
 {
     Exploration: IExplorationPool
     Elimination: IEliminationPool
+    Pickup: IExplorationPool
 }
 
 export interface IExplorationPool

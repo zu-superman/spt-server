@@ -119,7 +119,7 @@ export interface IAvailableForPropsCounter extends IAvailableForProps
     type: string
     oneSessionOnly: boolean
     doNotResetIfCounterCompleted: boolean
-    counter: ICounter
+    counter?: ICounter
 }
 
 export interface ICounter 
@@ -204,6 +204,38 @@ export interface IExplorationCondition extends ICondition
     _props: ILocationConditionProps | IExitStatusConditionProps | IExitNameConditionProps
 }
 
+// Pickup
+export interface IPickup extends IRepeatableQuest 
+{
+    conditions: IPickupConditions
+}
+
+export interface IPickupConditions extends IConditions 
+{
+    AvailableForFinish: IPickupAvailableFor[]
+}
+
+export interface IPickupAvailableFor extends IAvailableFor 
+{
+    _props: IPickupAvailableForProps
+}
+
+export interface IPickupAvailableForProps extends IAvailableForPropsCounter 
+{
+    target: string[]
+    counter?: IPickupCounter
+}
+
+export interface IPickupCounter extends ICounter 
+{
+    conditions: IPickupCondition[]
+}
+
+export interface IPickupCondition extends ICondition 
+{
+    _props: IEquipmentConditionProps | ILocationConditionProps | IExitStatusConditionProps
+}
+
 // Completion
 export interface ICompletion extends IRepeatableQuest 
 {
@@ -236,6 +268,12 @@ export interface ILocationConditionProps extends IConditionProps
     target: string[],
     weapon?: string[]
     weaponCategories?: string[]
+}
+
+export interface IEquipmentConditionProps extends IConditionProps
+{
+    equipmentInclusive: [string[]] 
+    IncludeNotEquippedItems: boolean
 }
 
 export interface IKillConditionProps extends IConditionProps 

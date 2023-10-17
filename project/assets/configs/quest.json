@@ -11,7 +11,8 @@
         "scav": {
             "elimination": "62825ef60e88d037dc1eb428",
             "completion": "628f588ebb558574b2260fe5",
-            "exploration": "62825ef60e88d037dc1eb42c"
+            "exploration": "62825ef60e88d037dc1eb42c",
+            "pickup": "628f588ebb558574b2260fe5"
         }
     },
     "showNonSeasonalEventQuests": false,
@@ -1297,8 +1298,10 @@
             "name": "Daily_Savage",
             "side": "Scav",
             "types": [
+				"Exploration",
                 "Elimination",
-                "Completion"
+                "Completion",
+				"Pickup"
             ],
             "resetTime": 86400,
             "numQuests": 1,
@@ -1324,7 +1327,7 @@
             },
             "traderWhitelist": [{
                     "traderId": "579dc571d53a0658a154fbec",
-                    "questTypes": ["Completion", "Exploration", "Elimination"]
+                    "questTypes": ["Completion", "Exploration", "Elimination", "Pickup"]
                 }
             ],
             "questConfig": {
@@ -1341,6 +1344,23 @@
                         ]
                     }
                 },
+				"Pickup": {
+					"ItemTypeToFetchWithMaxCount": [
+						{"itemType": "5b47574386f77428ca22b335", "minPickupCount": 2, "maxPickupCount": 4},
+						{"itemType": "5b47574386f77428ca22b336", "minPickupCount": 2, "maxPickupCount": 4},
+						{"itemType": "5b47574386f77428ca22b2ee", "minPickupCount": 2, "maxPickupCount": 3},
+						{"itemType": "5b47574386f77428ca22b2ef", "minPickupCount": 1, "maxPickupCount": 2},
+						{"itemType": "5b47574386f77428ca22b33a", "minPickupCount": 1, "maxPickupCount": 2},
+						{"itemType": "5b5f701386f774093f2ecf0f", "minPickupCount": 1, "maxPickupCount": 2},
+						{"itemType": "5b5f754a86f774094242f19b", "minPickupCount": 1, "maxPickupCount": 3},
+						{"itemType": "5b5f75c686f774094242f19f", "minPickupCount": 1, "maxPickupCount": 2},
+						{"itemType": "5b5f792486f77447ed5636b3", "minPickupCount": 1, "maxPickupCount": 2},
+						{"itemType": "5b5f73ab86f774094242f195", "minPickupCount": 1, "maxPickupCount": 2},
+						{}
+					],
+					"ItemTypesToFetch": ["5b47574386f77428ca22b335", "5b47574386f77428ca22b336", "5b47574386f77428ca22b2ee"],
+					"maxItemFetchCount": 3
+				},
                 "Completion": {
                     "minRequestedAmount": 1,
                     "maxRequestedAmount": 5,

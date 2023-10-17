@@ -182,7 +182,111 @@
 				}
 			],
 			"changeStandingCost": 0
-		}
+		},
+		"Pickup": {
+                    "_id": "64cfb3818db9f48b3f0b0a759",
+                    "traderId": "579dc571d53a0658a154fbec",
+                    "location": "any",
+                    "image": "/files/quest/icon/62bd61b1b818ff064405b827.jpg",
+                    "type": "PickUp",
+                    "isKey": false,
+                    "restartable": false,
+                    "instantComplete": false,
+                    "secretQuest": false,
+                    "canShowNotificationsInGame": true,
+                    "rewards": {
+                        "Started": [],
+                        "Success": [],
+                        "Fail": []
+                    },
+                    "conditions": {
+                        "AvailableForStart": [],
+                        "AvailableForFinish": [{
+                                "_props": {
+                                    "id": "64cfb3818db9f48b3f0b0a6f",
+                                    "parentId": "",
+                                    "dynamicLocale": false,
+                                    "index": 0,
+                                    "visibilityConditions": [],
+                                    "globalQuestCounterId": null,
+                                    "target": ["5b47574386f77428ca22b336"],
+                                    "value": 7,
+                                    "minDurability": 0,
+                                    "maxDurability": 100,
+                                    "dogtagLevel": 0,
+                                    "onlyFoundInRaid": false,
+                                    "isEncoded": false,
+                                    "countInRaid": true
+                                },
+                                "_parent": "FindItem",
+                                "dynamicLocale": false
+                            }, {
+                                "_props": {
+                                    "id": "64cfb3818db9f48b3f0b0a74",
+                                    "parentId": "",
+                                    "dynamicLocale": true,
+                                    "index": 0,
+                                    "visibilityConditions": [],
+                                    "globalQuestCounterId": null,
+                                    "value": 1,
+                                    "type": "PickUp",
+                                    "completeInSeconds": 0,
+                                    "oneSessionOnly": true,
+                                    "doNotResetIfCounterCompleted": false,
+                                    "counter": {
+                                        "id": "64cfb3818db9f48b3f0b0a73",
+                                        "conditions": [{
+                                                "_props": {
+                                                    "target": ["any"],
+                                                    "id": "64cfb3818db9f48b3f0b0a70",
+                                                    "dynamicLocale": true
+                                                },
+                                                "_parent": "Location"
+                                            }, {
+                                                "_props": {
+                                                    "status": ["Survived"],
+                                                    "id": "64cfb3818db9f48b3f0b0a71",
+                                                    "dynamicLocale": true
+                                                },
+                                                "_parent": "ExitStatus"
+                                            }, {
+                                                "_props": {
+                                                    "equipmentInclusive": [["5b47574386f77428ca22b336"]],
+                                                    "IncludeNotEquippedItems": true,
+                                                    "id": "64cfb3818db9f48b3f0b0a72",
+                                                    "dynamicLocale": true
+                                                },
+                                                "_parent": "Equipment"
+                                            }
+                                        ]
+                                    }
+                                },
+                                "_parent": "CounterCreator",
+                                "dynamicLocale": true
+                            }
+                        ],
+                        "Fail": []
+                    },
+                    "side": "Scav",
+                    "questStatus": {},
+                    "name": "{templateId} name {traderId}",
+                    "note": "{templateId} note {traderId}",
+                    "description": "{templateId} description {traderId} 0",
+                    "successMessageText": "{templateId} successMessageText {traderId} 0",
+                    "failMessageText": "{templateId} failMessageText {traderId} 0",
+                    "startedMessageText": "{templateId} startedMessageText {traderId} 0",
+                    "changeQuestMessageText": "{templateId} changeQuestMessageText {traderId} 0",
+                    "acceptPlayerMessage": "{templateId} acceptPlayerMessage {traderId}",
+                    "declinePlayerMessage": "{templateId} declinePlayerMessage {traderId}",
+                    "completePlayerMessage": "{templateId} completePlayerMessage {traderId}",
+                    "templateId": "{templateId}",
+                    "changeCost": [{
+                            "templateId": "5449016a4bdc2d6f028b456f",
+                            "count": 12000
+                        }
+                    ],
+                    "changeStandingCost": 0
+                }
 	},
 	"rewards": {
 		"itemsBlacklist": [
