@@ -338,8 +338,8 @@ export class QuestController
             throw new Error(this.localisationService.getText("repeatable-unable_to_accept_quest_see_log"));
         }
 
-        // Scav quests need to be added to scav profile
-        if (repeatableQuestProfile.side === "Scav")
+        // Some scav quests need to be added to scav profile for them to show up in-raid
+        if (repeatableQuestProfile.side === "Scav" && ["PickUp", "Exploration", "Elimination"].includes(repeatableQuestProfile.type))
         {
             const fullProfile = this.profileHelper.getFullProfile(sessionID);
             if (!fullProfile.characters.scav.Quests)
@@ -460,6 +460,9 @@ export class QuestController
             {
                 currentRepeatable.activeQuests = currentRepeatable.activeQuests.filter(x => x._id !== completedQuestId);
                 currentRepeatable.inactiveQuests.push(repeatableQuest);
+
+                // Need to remove redundant scav quest object as its no longer necessary, is tracked in pmc profile
+                this.removeQuestFromScavProfile(sessionID, repeatableQuest._id);
             }
         }
 
@@ -474,6 +477,25 @@ export class QuestController
         pmcData.Info.Level = this.playerService.calculateLevel(pmcData);
 
         return completeQuestResponse;
+    }
+
+    /**
+     * Remove a quest entirely from a profile
+     * @param sessionId Player id
+     * @param questIdToRemove Qid of quest to remove
+     */
+    protected removeQuestFromScavProfile(sessionId: string, questIdToRemove: string): void
+    {
+        const fullProfile = this.profileHelper.getFullProfile(sessionId);
+        const repeatableInScavProfile = fullProfile.characters.scav.Quests.find(x => x.qid === questIdToRemove);
+        if (!repeatableInScavProfile)
+        {
+            this.logger.warning(`Unable to remove quest: ${questIdToRemove} from profile as scav profile cannot be found`);
+
+            return;
+        }
+
+        fullProfile.characters.scav.Quests.splice(fullProfile.characters.scav.Quests.indexOf(repeatableInScavProfile), 1);
     }
 
     /**

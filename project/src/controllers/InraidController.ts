@@ -262,6 +262,13 @@ export class InraidController
 
         scavData = this.inRaidHelper.updateProfileBaseStats(scavData, postRaidRequest, sessionID);
 
+        // Completing scav quests create ConditionCounters, these values need to be transported to the PMC profile
+        if (this.profileHasConditionCounters(scavData))
+        {
+            // Scav quest progress needs to be moved to pmc so player can see it in menu / hand them in
+            this.migrateScavQuestProgressToPmcProfile(scavData, pmcData);
+        }
+
         // Check for exit status
         this.markOrRemoveFoundInRaidItems(postRaidRequest);
 
@@ -269,6 +276,66 @@ export class InraidController
         this.inRaidHelper.addUpdToMoneyFromRaid(postRaidRequest.profile.Inventory.items);
 
         this.handlePostRaidPlayerScavProcess(scavData, sessionID, postRaidRequest, pmcData, isDead);
+    }
+
+    /**
+     * Does provided profile contain any condition counters
+     * @param profile Profile to check for condition counters
+     * @returns 
+     */
+    protected profileHasConditionCounters(profile: IPmcData): boolean
+    {
+        if (!profile.ConditionCounters.Counters)
+        {
+            return false;
+        }
+
+        return profile.ConditionCounters.Counters.length > 0;
+    }
+
+    protected migrateScavQuestProgressToPmcProfile(scavProfile: IPmcData, pmcProfile: IPmcData): void
+    {
+        for (const quest of scavProfile.Quests)
+        {
+            const pmcQuest = pmcProfile.Quests.find(x => x.qid === quest.qid);
+            if (!pmcQuest)
+            {
+                this.logger.warning(`No PMC quest found for ID: ${quest.qid}`);
+                continue;
+            }
+
+            // Post-raid status is enum word e.g. `Started` but pmc quest status is number e.g. 2
+            // Status values mismatch or statusTimers counts mismatch
+            if (quest.status !== <any>QuestStatus[pmcQuest.status] || quest.statusTimers.length !== pmcQuest.statusTimers.length)
+            {
+                this.logger.warning(`Quest: ${quest.qid} found in PMC profile has different status/statustimer. Scav: ${quest.status} vs PMC: ${pmcQuest.status}`);
+                pmcQuest.status = <any>QuestStatus[quest.status];
+                pmcQuest.statusTimers = quest.statusTimers;
+            }
+        }
+
+        // Loop over all scav counters and add into pmc profile
+        for (const scavCounter of scavProfile.ConditionCounters.Counters)
+        {
+            this.logger.warning(`Processing counter: ${scavCounter.id} value:${scavCounter.value} quest:${scavCounter.qid}`);
+            const counterInPmcProfile = pmcProfile.ConditionCounters.Counters.find(x => x.id === scavCounter.id);
+            if (!counterInPmcProfile)
+            {
+                // Doesn't exist yet, push it straight in
+                pmcProfile.ConditionCounters.Counters.push(scavCounter);
+                
+                continue;
+            }
+
+            this.logger.warning(`Counter id: ${scavCounter.id} already exists in pmc profile! with value: ${counterInPmcProfile.value} for quest: ${counterInPmcProfile.qid}`);
+            this.logger.warning(`OVERWRITING with values: ${scavCounter.value} quest: ${scavCounter.qid}`);
+
+            // Only adjust counter value if its changed
+            if (counterInPmcProfile.value !== scavCounter.value)
+            {
+                counterInPmcProfile.value = scavCounter.value;
+            }
+        }
     }
 
     /**

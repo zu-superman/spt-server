@@ -97,7 +97,8 @@ export class RepeatableQuestController
             const currentRepeatableType = this.getRepeatableQuestSubTypeFromProfile(repeatableConfig, pmcData);
             
             if (repeatableConfig.side === "Pmc"
-                && pmcData.Info.Level >= repeatableConfig.minPlayerLevel || repeatableConfig.side === "Scav" && scavQuestUnlocked)
+                && pmcData.Info.Level >= repeatableConfig.minPlayerLevel
+                || repeatableConfig.side === "Scav" && scavQuestUnlocked)
             {
                 if (time > currentRepeatableType.endTime - 1)
                 {

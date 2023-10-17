@@ -145,6 +145,7 @@ export class InRaidHelper
 
         for (const backendCounterKey in saveProgressRequest.profile.BackendCounters)
         {
+            // Skip counters with no id
             if (!saveProgressRequest.profile.BackendCounters[backendCounterKey].id)
             {
                 continue;
@@ -160,7 +161,7 @@ export class InRaidHelper
 
             if (matchingPreRaidCounter.value !== saveProgressRequest.profile.BackendCounters[backendCounterKey].value)
             {
-                this.logger.error(`Backendcounter: ${backendCounterKey} value is different post raid, old: ${matchingPreRaidCounter.value} new: saveProgressRequest.profile.BackendCounters[backendCounterKey].value`);
+                this.logger.error(`Backendcounter: ${backendCounterKey} value is different post raid, old: ${matchingPreRaidCounter.value} new: ${saveProgressRequest.profile.BackendCounters[backendCounterKey].value}`);
             }
         }
 
@@ -174,7 +175,7 @@ export class InRaidHelper
 
         profileData.SurvivorClass = saveProgressRequest.profile.SurvivorClass;
 
-        // add experience points
+        // Add experience points
         profileData.Info.Experience += profileData.Stats.Eft.TotalSessionExperience;
         profileData.Stats.Eft.TotalSessionExperience = 0;
 
