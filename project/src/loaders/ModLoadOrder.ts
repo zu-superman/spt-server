@@ -1,5 +1,7 @@
-import { injectable } from "tsyringe";
+import { inject, injectable } from "tsyringe";
 import { IPackageJsonData } from "../models/spt/mod/IPackageJsonData";
+import { ILogger } from "../models/spt/utils/ILogger";
+import { LocalisationService } from "../services/LocalisationService";
 
 @injectable()
 export class ModLoadOrder
@@ -7,6 +9,12 @@ export class ModLoadOrder
     protected mods = new Map<string, IPackageJsonData>();
     protected modsAvailable = new Map<string, IPackageJsonData>();
     protected loadOrder = new Set<string>();
+
+    constructor(
+        @inject("WinstonLogger") protected logger: ILogger,
+        @inject("LocalisationService") protected localisationService: LocalisationService
+    )
+    { }
 
     public setModList(mods: Record<string, IPackageJsonData>): void
     {
@@ -82,15 +90,9 @@ export class ModLoadOrder
 
     protected invertLoadBefore(mod: string): void
     {
-        if (!this.modsAvailable.has(mod))
-        {
-            console.log("missing mod", mod);
-            throw new Error("MISSING DEPENDENCY");
-        }
-
         const loadBefore = this.getModsOnLoadBefore(mod);
-        
-        for (const loadBeforeMod of loadBefore) 
+
+        for (const loadBeforeMod of loadBefore)
         {
             const loadBeforeModConfig = this.modsAvailable.get(loadBeforeMod)!;
 
@@ -111,17 +113,25 @@ export class ModLoadOrder
 
         if (visited.has(mod))
         {
-            console.log("current mod", mod);
-            console.log("result", JSON.stringify(this.loadOrder, null, "\t"));
-            console.log("visited", JSON.stringify(visited, null, "\t"));
-            throw new Error("CYCLIC DEPENDENCY");
+            // front: white, back: red
+            this.logger.error(this.localisationService.getText("modloader-cyclic_dependency"));
+
+            // additional info
+            this.logger.debug(this.localisationService.getText("modloader-checking_mod", mod));
+            this.logger.debug(`${this.localisationService.getText("modloader-checked")}:`);
+            this.logger.debug(JSON.stringify(this.loadOrder, null, "\t"));
+            this.logger.debug(`${this.localisationService.getText("modloader-visited")}:`);
+            this.logger.debug(JSON.stringify(visited, null, "\t"));
+
+            // wait for input
+            process.exit(1);
         }
 
         // check dependencies
         if (!this.modsAvailable.has(mod))
         {
-            console.log("missing mod", mod);
-            throw new Error("MISSING DEPENDENCY");
+            this.logger.error(this.localisationService.getText("modloader-missing_dependency"));
+            throw new Error(this.localisationService.getText("modloader-error_parsing_mod_load_order"));
         }
 
         const config = this.modsAvailable.get(mod);
