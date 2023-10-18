@@ -122,6 +122,7 @@ import { TraderHelper } from "../helpers/TraderHelper";
 import { UtilityHelper } from "../helpers/UtilityHelper";
 import { WeightedRandomHelper } from "../helpers/WeightedRandomHelper";
 import { BundleLoader } from "../loaders/BundleLoader";
+import { ModLoadOrder } from "../loaders/ModLoadOrder";
 import { ModTypeCheck } from "../loaders/ModTypeCheck";
 import { PostAkiModLoader } from "../loaders/PostAkiModLoader";
 import { PostDBModLoader } from "../loaders/PostDBModLoader";
@@ -383,6 +384,7 @@ export class Container
         depContainer.register<IAsyncQueue>("AsyncQueue", AsyncQueue, { lifecycle: Lifecycle.Singleton });
         depContainer.register<IUUidGenerator>("UUidGenerator", UUidGenerator, { lifecycle: Lifecycle.Singleton });
         depContainer.register<HttpFileUtil>("HttpFileUtil", HttpFileUtil, { lifecycle: Lifecycle.Singleton });
+        depContainer.register<ModLoadOrder>("ModLoadOrder", ModLoadOrder, { lifecycle: Lifecycle.Singleton });
         depContainer.register<ModTypeCheck>("ModTypeCheck", ModTypeCheck, { lifecycle: Lifecycle.Singleton });
     }
 
