@@ -169,7 +169,7 @@ export class RepeatableQuestController
             {
                 currentRepeatableQuestType.changeRequirement[quest._id] = {
                     changeCost: quest.changeCost,
-                    changeStandingCost: quest.changeStandingCost
+                    changeStandingCost: this.randomUtil.getArrayValue([0, 0.01])
                 };
             }
 
@@ -371,7 +371,7 @@ export class RepeatableQuestController
                 currentRepeatablePool.activeQuests.push(newRepeatableQuest);
                 currentRepeatablePool.changeRequirement[newRepeatableQuest._id] = {
                     changeCost: newRepeatableQuest.changeCost,
-                    changeStandingCost: newRepeatableQuest.changeStandingCost
+                    changeStandingCost: this.randomUtil.getArrayValue([0, 0.01])
                 };
             }
 
