@@ -10,7 +10,7 @@ import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
 import { IQuestStatus } from "@spt-aki/models/eft/common/tables/IBotBase";
 import { Item } from "@spt-aki/models/eft/common/tables/IItem";
 import { AvailableForConditions, IQuest, Reward } from "@spt-aki/models/eft/common/tables/IQuest";
-import { IRepeatableQuest } from "@spt-aki/models/eft/common/tables/IRepeatableQuests";
+import { IPmcDataRepeatableQuest, IRepeatableQuest } from "@spt-aki/models/eft/common/tables/IRepeatableQuests";
 import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEventRouterResponse";
 import { IAcceptQuestRequestData } from "@spt-aki/models/eft/quests/IAcceptQuestRequestData";
 import { ICompleteQuestRequestData } from "@spt-aki/models/eft/quests/ICompleteQuestRequestData";
@@ -373,7 +373,6 @@ export class QuestController
         }
 
         const questRewards = this.questHelper.getQuestRewardItems(<IQuest><unknown>repeatableQuestProfile, desiredQuestState);
-
         this.mailSendService.sendLocalisedNpcMessageToPlayer(
             sessionID,
             this.traderHelper.getTraderById(repeatableQuestProfile.traderId),
@@ -382,7 +381,15 @@ export class QuestController
             questRewards,
             this.timeUtil.getHoursAsSeconds(this.questConfig.redeemTime));
 
-        acceptQuestResponse.profileChanges[sessionID].quests = this.questHelper.getNewlyAccessibleQuestsWhenStartingQuest(acceptedQuest.qid, sessionID);
+        const repeatableSettings = pmcData.RepeatableQuests.find(x => x.name === repeatableQuestProfile.sptRepatableGroupName);
+        const responseData: IPmcDataRepeatableQuest = {
+            activeQuests: [repeatableQuestProfile],
+            name: repeatableSettings.name,
+            inactiveQuests: [],
+            endTime: repeatableSettings.endTime,
+            changeRequirement: repeatableSettings.changeRequirement
+        };
+        acceptQuestResponse.profileChanges[sessionID].repeatableQuests = [responseData];
 
         return acceptQuestResponse;
     }
@@ -401,6 +408,7 @@ export class QuestController
             if (matchingQuest)
             {
                 this.logger.debug(`Accepted repeatable quest ${acceptedQuest.qid} from ${repeatableQuest.name}`);
+                matchingQuest.sptRepatableGroupName = repeatableQuest.name;
                 
                 return matchingQuest;
             }

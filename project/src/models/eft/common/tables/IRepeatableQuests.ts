@@ -73,6 +73,7 @@ export interface IRepeatableQuest
     templateId: string
     changeCost: IChangeCost[]
     changeStandingCost: number
+    sptRepatableGroupName?: string;
 }
 
 export interface IRewards 
