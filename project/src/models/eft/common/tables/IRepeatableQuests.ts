@@ -50,9 +50,9 @@ export interface IChangeCost
 
 export interface IRepeatableQuest 
 {
-    _id: any
+    _id: string
     traderId: string
-    location: any
+    location: string
     image: string
     type: string
     isKey: boolean
