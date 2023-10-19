@@ -1,5 +1,6 @@
 import { inject, injectable } from "tsyringe";
 
+import { ErrorHandler } from "../ErrorHandler";
 import { IPackageJsonData } from "../models/spt/mod/IPackageJsonData";
 import { ILogger } from "../models/spt/utils/ILogger";
 import { LocalisationService } from "../services/LocalisationService";
@@ -106,7 +107,7 @@ export class ModLoadOrder
 
     protected getLoadOrderRecursive(mod: string, visited: Set<string>): void
     {
-        // validate package
+        // Validate package
         if (this.loadOrder.has(mod))
         {
             return;
@@ -114,21 +115,23 @@ export class ModLoadOrder
 
         if (visited.has(mod))
         {
-            // front: white, back: red
-            this.logger.error(this.localisationService.getText("modloader-cyclic_dependency"));
+            // Front: white, back: red
+            const errorMessage = this.localisationService.getText("modloader-cyclic_dependency");
+            this.logger.error(errorMessage);
 
-            // additional info
+            // Additional info to help debug
             this.logger.debug(this.localisationService.getText("modloader-checking_mod", mod));
             this.logger.debug(`${this.localisationService.getText("modloader-checked")}:`);
             this.logger.debug(JSON.stringify(this.loadOrder, null, "\t"));
             this.logger.debug(`${this.localisationService.getText("modloader-visited")}:`);
             this.logger.debug(JSON.stringify(visited, null, "\t"));
 
-            // wait for input
-            process.exit(1);
+            // Wait for input
+            const errorHandler = new ErrorHandler();
+            errorHandler.handleCriticalError({errorMessage});
         }
 
-        // check dependencies
+        // Check dependencies
         if (!this.modsAvailable.has(mod))
         {
             this.logger.error(this.localisationService.getText("modloader-missing_dependency"));
@@ -148,8 +151,10 @@ export class ModLoadOrder
             {
                 if (this.modsAvailable.get(modAfter)?.loadAfter?.includes(mod))
                 {
-                    this.logger.error(this.localisationService.getText("modloader-load_order_conflict", {modOneName: mod, modTwoName: modAfter}));
-                    process.exit(1);
+                    const errorMessage = this.localisationService.getText("modloader-load_order_conflict", {modOneName: mod, modTwoName: modAfter});
+                    this.logger.error(errorMessage);
+                    const errorHandler = new ErrorHandler();
+                    errorHandler.handleCriticalError(errorMessage);
                 }
 
                 dependencies.add(modAfter);
