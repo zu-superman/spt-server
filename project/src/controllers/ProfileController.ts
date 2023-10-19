@@ -80,33 +80,33 @@ export class ProfileController
         const pmc = profile.characters.pmc;
 
         // make sure character completed creation
-        if (!(("Info" in pmc) && ("Level" in pmc.Info)))
+        if (!((pmc?.Info?.Level)))
         {
             return {
-                "username": profile.info.username,
-                "nickname": "unknown",
-                "side": "unknown",
-                "currlvl": 0,
-                "currexp": 0,
-                "prevexp": 0,
-                "nextlvl": 0,
-                "maxlvl": maxlvl,
-                "akiData": this.profileHelper.getDefaultAkiDataObject()
+                username: profile.info.username,
+                nickname: "unknown",
+                side: "unknown",
+                currlvl: 0,
+                currexp: 0,
+                prevexp: 0,
+                nextlvl: 0,
+                maxlvl: maxlvl,
+                akiData: this.profileHelper.getDefaultAkiDataObject()
             };
         }
 
         const currlvl = pmc.Info.Level;
         const nextlvl = this.profileHelper.getExperience(currlvl + 1);
         const result = {
-            "username": profile.info.username,
-            "nickname": pmc.Info.Nickname,
-            "side": pmc.Info.Side,
-            "currlvl": pmc.Info.Level,
-            "currexp": pmc.Info.Experience,
-            "prevexp": (currlvl === 0) ? 0 : this.profileHelper.getExperience(currlvl),
-            "nextlvl": nextlvl,
-            "maxlvl": maxlvl,
-            "akiData": profile.aki
+            username: profile.info.username,
+            nickname: pmc.Info.Nickname,
+            side: pmc.Info.Side,
+            currlvl: pmc.Info.Level,
+            currexp: pmc.Info.Experience ?? 0,
+            prevexp: (currlvl === 0) ? 0 : this.profileHelper.getExperience(currlvl),
+            nextlvl: nextlvl,
+            maxlvl: maxlvl,
+            akiData: profile.aki
         };
 
         return result;
