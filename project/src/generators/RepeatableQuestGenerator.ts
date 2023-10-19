@@ -1023,7 +1023,9 @@ export class RepeatableQuestGenerator
         quest.successMessageText = quest.successMessageText.replace("{traderId}", traderId).replace("{templateId}",quest.templateId);
         quest.failMessageText = quest.failMessageText.replace("{traderId}", traderId).replace("{templateId}",quest.templateId);
         quest.startedMessageText = quest.startedMessageText.replace("{traderId}", traderId).replace("{templateId}",quest.templateId);
-        quest.changeQuestMessageText = quest.changeQuestMessageText.replace("{traderId}", traderId).replace("{templateId}",quest.templateId);
+        quest.acceptPlayerMessage = quest.acceptPlayerMessage.replace("{traderId}", traderId).replace("{templateId}",quest.templateId);
+        quest.declinePlayerMessage = quest.declinePlayerMessage.replace("{traderId}", traderId).replace("{templateId}",quest.templateId);
+        quest.completePlayerMessage = quest.completePlayerMessage.replace("{traderId}", traderId).replace("{templateId}",quest.templateId);
 
         return quest;
     }

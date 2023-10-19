@@ -70,6 +70,9 @@ export interface IRepeatableQuest
     failMessageText: string
     startedMessageText: string
     changeQuestMessageText: string
+    acceptPlayerMessage: string
+    declinePlayerMessage: string
+    completePlayerMessage: string
     templateId: string
     changeCost: IChangeCost[]
     changeStandingCost: number

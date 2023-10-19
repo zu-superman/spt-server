@@ -59,6 +59,9 @@
             "failMessageText": "{templateId} failMessageText {traderId} 0",
             "startedMessageText": "{templateId} startedMessageText {traderId} 0",
             "changeQuestMessageText": "{templateId} changeQuestMessageText {traderId} 0",
+            "acceptPlayerMessage": "{templateId} acceptPlayerMessage {traderId}",
+            "declinePlayerMessage": "{templateId} declinePlayerMessage {traderId}",
+            "completePlayerMessage": "{templateId} completePlayerMessage {traderId}",
             "templateId": "{templateId}",
             "changeCost": [{
                     "templateId": "5449016a4bdc2d6f028b456f",
@@ -95,6 +98,9 @@
             "failMessageText": "{templateId} failMessageText {traderId} 0",
             "startedMessageText": "{templateId} startedMessageText {traderId} 0",
             "changeQuestMessageText": "{templateId} changeQuestMessageText {traderId} 0",
+            "acceptPlayerMessage": "{templateId} acceptPlayerMessage {traderId}",
+            "declinePlayerMessage": "{templateId} declinePlayerMessage {traderId}",
+            "completePlayerMessage": "{templateId} completePlayerMessage {traderId}",
             "templateId": "{templateId}",
             "changeCost": [{
                     "templateId": "5449016a4bdc2d6f028b456f",
