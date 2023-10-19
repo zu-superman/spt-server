@@ -42,6 +42,7 @@ export interface IEventQuestData
   
 export interface IRepeatableQuestConfig 
 {
+    id: string;
     name: string
     side: string
     types: string[]

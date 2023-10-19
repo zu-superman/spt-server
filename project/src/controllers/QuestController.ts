@@ -382,11 +382,13 @@ export class QuestController
             this.timeUtil.getHoursAsSeconds(this.questConfig.redeemTime));
 
         const repeatableSettings = pmcData.RepeatableQuests.find(x => x.name === repeatableQuestProfile.sptRepatableGroupName);
+        const change = {};
+        change[repeatableQuestProfile._id] = repeatableSettings.changeRequirement[repeatableQuestProfile._id];
         const responseData: IPmcDataRepeatableQuest = {
             id: repeatableSettings.id,
             name: repeatableSettings.name,
             endTime: repeatableSettings.endTime,
-            changeRequirement: repeatableSettings.changeRequirement,
+            changeRequirement: change,
             activeQuests: [repeatableQuestProfile],
             inactiveQuests: []
         };

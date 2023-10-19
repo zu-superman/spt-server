@@ -88,16 +88,16 @@ export class RepeatableQuestController
         for (const repeatableConfig of this.questConfig.repeatableQuests)
         {
             // get daily/weekly data from profile, add empty object if missing
-            const currentRepeatableType = this.getRepeatableQuestSubTypeFromProfile(repeatableConfig, pmcData);
+            const currentRepeatableQuestType = this.getRepeatableQuestSubTypeFromProfile(repeatableConfig, pmcData);
             
             if (repeatableConfig.side === "Pmc"
                 && pmcData.Info.Level >= repeatableConfig.minPlayerLevel
                 || repeatableConfig.side === "Scav" && scavQuestUnlocked)
             {
-                if (time > currentRepeatableType.endTime - 1)
+                if (time > currentRepeatableQuestType.endTime - 1)
                 {
-                    currentRepeatableType.endTime = time + repeatableConfig.resetTime;
-                    currentRepeatableType.inactiveQuests = [];
+                    currentRepeatableQuestType.endTime = time + repeatableConfig.resetTime;
+                    currentRepeatableQuestType.inactiveQuests = [];
                     this.logger.debug(`Generating new ${repeatableConfig.name}`);
 
                     // put old quests to inactive (this is required since only then the client makes them fail due to non-completion)
@@ -106,7 +106,7 @@ export class RepeatableQuestController
                     // and remove them from the PMC's Quests and RepeatableQuests[i].activeQuests
                     const questsToKeep = [];
                     //for (let i = 0; i < currentRepeatable.activeQuests.length; i++)
-                    for (const activeQuest of currentRepeatableType.activeQuests)
+                    for (const activeQuest of currentRepeatableQuestType.activeQuests)
                     {
                         // check if the quest is ready to be completed, if so, don't remove it
                         const quest = pmcData.Quests.filter(q => q.qid === activeQuest._id);
@@ -121,9 +121,9 @@ export class RepeatableQuestController
                         }
                         this.profileFixerService.removeDanglingConditionCounters(pmcData);
                         pmcData.Quests = pmcData.Quests.filter(q => q.qid !== activeQuest._id);
-                        currentRepeatableType.inactiveQuests.push(activeQuest);
+                        currentRepeatableQuestType.inactiveQuests.push(activeQuest);
                     }
-                    currentRepeatableType.activeQuests = questsToKeep;
+                    currentRepeatableQuestType.activeQuests = questsToKeep;
 
                     // introduce a dynamic quest pool to avoid duplicates
                     const questTypePool = this.generateQuestPool(repeatableConfig, pmcData.Info.Level);
@@ -155,7 +155,7 @@ export class RepeatableQuestController
                             break;
                         }
                         quest.side = repeatableConfig.side;
-                        currentRepeatableType.activeQuests.push(quest);
+                        currentRepeatableQuestType.activeQuests.push(quest);
                     }
                 }
                 else
@@ -165,21 +165,21 @@ export class RepeatableQuestController
             }
 
             // create stupid redundant change requirements from quest data
-            for (const quest of currentRepeatableType.activeQuests)
+            for (const quest of currentRepeatableQuestType.activeQuests)
             {
-                currentRepeatableType.changeRequirement[quest._id] = {
+                currentRepeatableQuestType.changeRequirement[quest._id] = {
                     changeCost: quest.changeCost,
                     changeStandingCost: quest.changeStandingCost
                 };
             }
 
             returnData.push({
-                id: this.objectId.generate(),
-                name: currentRepeatableType.name,
-                endTime: currentRepeatableType.endTime,
-                activeQuests: currentRepeatableType.activeQuests,
-                inactiveQuests: currentRepeatableType.inactiveQuests,
-                changeRequirement: currentRepeatableType.changeRequirement
+                id: repeatableConfig.id,
+                name: currentRepeatableQuestType.name,
+                endTime: currentRepeatableQuestType.endTime,
+                activeQuests: currentRepeatableQuestType.activeQuests,
+                inactiveQuests: currentRepeatableQuestType.inactiveQuests,
+                changeRequirement: currentRepeatableQuestType.changeRequirement
             });
         }
 
@@ -199,6 +199,7 @@ export class RepeatableQuestController
         if (!repeatableQuestDetails)
         {
             repeatableQuestDetails = {
+                id: repeatableConfig.id,
                 name: repeatableConfig.name,
                 activeQuests: [],
                 inactiveQuests: [],

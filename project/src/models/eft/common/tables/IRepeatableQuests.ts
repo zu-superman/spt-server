@@ -63,6 +63,7 @@ export interface IRepeatableQuest
     rewards: IRewards
     conditions: IConditions
     side: string
+    questStatus: any
     name: string
     note: string
     description: string
