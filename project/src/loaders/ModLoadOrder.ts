@@ -1,4 +1,5 @@
 import { inject, injectable } from "tsyringe";
+
 import { IPackageJsonData } from "../models/spt/mod/IPackageJsonData";
 import { ILogger } from "../models/spt/utils/ILogger";
 import { LocalisationService } from "../services/LocalisationService";
@@ -139,19 +140,25 @@ export class ModLoadOrder
         config.loadAfter ??= [];
         config.modDependencies ??= {};
 
-        const loadAfter = new Set<string>(Object.keys(config.modDependencies));
+        const dependencies = new Set<string>(Object.keys(config.modDependencies));
 
-        for (const after of config.loadAfter)
+        for (const modAfter of config.loadAfter)
         {
-            if (this.modsAvailable.has(after))
+            if (this.modsAvailable.has(modAfter))
             {
-                loadAfter.add(after);
+                if (this.modsAvailable.get(modAfter)?.loadAfter?.includes(mod))
+                {
+                    this.logger.error(this.localisationService.getText("modloader-load_order_conflict", {modOneName: mod, modTwoName: modAfter}));
+                    process.exit(1);
+                }
+
+                dependencies.add(modAfter);
             }
         }
 
         visited.add(mod);
 
-        for (const mod of loadAfter)
+        for (const mod of dependencies)
         {
             this.getLoadOrderRecursive(mod, visited);
         }
