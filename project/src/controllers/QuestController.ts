@@ -383,11 +383,12 @@ export class QuestController
 
         const repeatableSettings = pmcData.RepeatableQuests.find(x => x.name === repeatableQuestProfile.sptRepatableGroupName);
         const responseData: IPmcDataRepeatableQuest = {
-            activeQuests: [repeatableQuestProfile],
+            id: repeatableSettings.id,
             name: repeatableSettings.name,
-            inactiveQuests: [],
             endTime: repeatableSettings.endTime,
-            changeRequirement: repeatableSettings.changeRequirement
+            changeRequirement: repeatableSettings.changeRequirement,
+            activeQuests: [repeatableQuestProfile],
+            inactiveQuests: []
         };
         acceptQuestResponse.profileChanges[sessionID].repeatableQuests = [responseData];
 
