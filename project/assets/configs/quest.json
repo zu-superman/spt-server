@@ -1358,8 +1358,7 @@
 						{"itemType": "5b5f754a86f774094242f19b", "minPickupCount": 1, "maxPickupCount": 3},
 						{"itemType": "5b5f75c686f774094242f19f", "minPickupCount": 1, "maxPickupCount": 2},
 						{"itemType": "5b5f792486f77447ed5636b3", "minPickupCount": 1, "maxPickupCount": 2},
-						{"itemType": "5b5f73ab86f774094242f195", "minPickupCount": 1, "maxPickupCount": 2},
-						{}
+						{"itemType": "5b5f73ab86f774094242f195", "minPickupCount": 1, "maxPickupCount": 2}
 					],
 					"ItemTypesToFetch": ["5b47574386f77428ca22b335", "5b47574386f77428ca22b336", "5b47574386f77428ca22b2ee"],
 					"maxItemFetchCount": 3
