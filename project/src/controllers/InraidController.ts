@@ -328,11 +328,11 @@ export class InraidController
             }
 
             this.logger.warning(`Counter id: ${scavCounter.id} already exists in pmc profile! with value: ${counterInPmcProfile.value} for quest: ${counterInPmcProfile.qid}`);
-            this.logger.warning(`OVERWRITING with values: ${scavCounter.value} quest: ${scavCounter.qid}`);
 
             // Only adjust counter value if its changed
             if (counterInPmcProfile.value !== scavCounter.value)
             {
+                this.logger.warning(`OVERWRITING with values: ${scavCounter.value} quest: ${scavCounter.qid}`);
                 counterInPmcProfile.value = scavCounter.value;
             }
         }
