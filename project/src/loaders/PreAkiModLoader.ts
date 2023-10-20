@@ -57,8 +57,8 @@ export class PreAkiModLoader implements IModLoader
         if (globalThis.G_MODS_ENABLED)
         {
             PreAkiModLoader.container = container;
-            await this.importMods();
-            await this.executeMods(container);
+            await this.importModsAsync();
+            await this.executeModsAsync(container);
         }
     }
 
@@ -115,7 +115,7 @@ export class PreAkiModLoader implements IModLoader
         return `${this.basepath}${mod}/`;
     }
 
-    protected async importMods(): Promise<void>
+    protected async importModsAsync(): Promise<void>
     {
         if (!this.vfs.exists(this.basepath))
         {
@@ -207,7 +207,7 @@ export class PreAkiModLoader implements IModLoader
         // add mods
         for (const mod of sortedMods)
         {
-            await this.addMod(mod);
+            await this.addModAsync(mod);
         }
 
         this.modLoadOrder.setModList(this.imported);
@@ -299,7 +299,11 @@ export class PreAkiModLoader implements IModLoader
         return loadedMods;
     }
 
-
+    /**
+     * Is the passed in mod compatible with the running server version
+     * @param mod Mod to check compatibiltiy with AKI
+     * @returns True if compatible
+     */
     protected isModCombatibleWithAki(mod: IPackageJsonData): boolean
     {
         const akiVersion = this.akiConfig.akiVersion;
@@ -329,53 +333,70 @@ export class PreAkiModLoader implements IModLoader
         return true;
     }
 
-    protected async executeMods(container: DependencyContainer): Promise<void>
+    /**
+     * Execute each mod found in this.imported
+     * @param container Dependence container to give to mod when it runs
+     * @returns void promise
+     */
+    protected async executeModsAsync(container: DependencyContainer): Promise<void>
     {
-        // sort mods load order
+        // Sort mods load order
         const source = this.sortModsLoadOrder();
 
-        // import mod classes
+        // Import mod classes
         for (const mod of source)
         {
-
-            if ("main" in this.imported[mod])
+            if (!this.imported[mod].main)
             {
-                const filepath = `${this.getModPath(mod)}${this.imported[mod].main}`;
-                // import class
-                const modFilePath = `${process.cwd()}/${filepath}`;
+                this.logger.error(this.localisationService.getText("modloader-mod_has_no_main_property", mod));
 
-                // eslint-disable-next-line @typescript-eslint/no-var-requires
-                const requiredMod = require(modFilePath);
+                continue;
+            }
 
-                if (!this.modTypeCheck.isPostV3Compatible(requiredMod.mod))
+            const filepath = `${this.getModPath(mod)}${this.imported[mod].main}`;
+            // Import class
+            const modFilePath = `${process.cwd()}/${filepath}`;
+
+            // eslint-disable-next-line @typescript-eslint/no-var-requires
+            const requiredMod = require(modFilePath);
+
+            if (!this.modTypeCheck.isPostV3Compatible(requiredMod.mod))
+            {
+                this.logger.error(this.localisationService.getText("modloader-mod_incompatible", mod));
+                delete this.imported[mod];
+
+                return;
+            }
+
+            // Perform async load of mod
+            if (this.modTypeCheck.isPreAkiLoadAsync(requiredMod.mod))
+            {
+                try 
                 {
-                    this.logger.error(this.localisationService.getText("modloader-mod_incompatible", mod));
-                    delete this.imported[mod];
-                    return;
-                }
-
-                if (this.modTypeCheck.isPreAkiLoadAsync(requiredMod.mod))
-                {
-                    try 
-                    {
-                        await (requiredMod.mod as IPreAkiLoadModAsync).preAkiLoadAsync(container);
-                        globalThis[mod] = requiredMod;
-                    }
-                    catch (err) 
-                    {
-                        this.logger.error(this.localisationService.getText("modloader-async_mod_error", `${err?.message ?? ""}\n${err.stack ?? ""}`));
-                    }
-                }
-
-                if (this.modTypeCheck.isPreAkiLoad(requiredMod.mod))
-                {
-                    (requiredMod.mod as IPreAkiLoadMod).preAkiLoad(container);
+                    await (requiredMod.mod as IPreAkiLoadModAsync).preAkiLoadAsync(container);
                     globalThis[mod] = requiredMod;
                 }
+                catch (err) 
+                {
+                    this.logger.error(this.localisationService.getText("modloader-async_mod_error", `${err?.message ?? ""}\n${err.stack ?? ""}`));
+                }
+
+                continue;
+            }
+
+            // Perform sync load of mod
+            if (this.modTypeCheck.isPreAkiLoad(requiredMod.mod))
+            {
+                (requiredMod.mod as IPreAkiLoadMod).preAkiLoad(container);
+                globalThis[mod] = requiredMod;
             }
         }
     }
 
+    /**
+     * Read loadorder.json (create if doesnt exist) and return sorted list of mods
+     * @returns string array of sorted mod names
+     */
     public sortModsLoadOrder(): string[]
     {
         // if loadorder.json exists: load it, otherwise generate load order
@@ -393,7 +414,7 @@ export class PreAkiModLoader implements IModLoader
      * Compile mod and add into class property "imported"
      * @param mod Name of mod to compile/add
      */
-    protected async addMod(mod: string): Promise<void>
+    protected async addModAsync(mod: string): Promise<void>
     {
         const modPath = this.getModPath(mod);
         const packageData = this.jsonUtil.deserialize<IPackageJsonData>(this.vfs.readFile(`${modPath}/package.json`));
@@ -455,13 +476,13 @@ export class PreAkiModLoader implements IModLoader
             depIdx++;
         }
 
-        //if the mod has no extra dependencies return as there's nothing that needs to be done.
+        // If the mod has no extra dependencies return as there's nothing that needs to be done.
         if (dependenciesToInstall.length === 0)
         {
             return;
         }
 
-        //if this feature flag is set to false, we warn the user he has a mod that requires extra dependencies and might not work, point them in the right direction on how to enable this feature.
+        // If this feature flag is set to false, we warn the user he has a mod that requires extra dependencies and might not work, point them in the right direction on how to enable this feature.
         if (!this.akiConfig.features.autoInstallModDependencies)
         {
             this.logger.warning(this.localisationService.getText("modloader-installing_external_dependencies_disabled", {
@@ -475,18 +496,18 @@ export class PreAkiModLoader implements IModLoader
             return;
         }
 
-        //temporarily rename package.json because otherwise npm, pnpm and any other package manager will forcefully download all packages in dependencies without any way of disabling this behavior
+        // Temporarily rename package.json because otherwise npm, pnpm and any other package manager will forcefully download all packages in dependencies without any way of disabling this behavior
         this.vfs.rename(`${modPath}/package.json`, `${modPath}/package.json.bak`);
         this.vfs.writeFile(`${modPath}/package.json`, "{}");
 
         this.logger.info(this.localisationService.getText("modloader-installing_external_dependencies", {name: pkg.name, author: pkg.author}));
 
         const pnpmPath = path.join(process.cwd(), (globalThis.G_RELEASE_CONFIGURATION ? "Aki_Data/Server/@pnpm/exe" : "node_modules/@pnpm/exe"), (os.platform() === "win32" ? "pnpm.exe" : "pnpm"));
-        let command: string = `${pnpmPath} install `;
+        let command = `${pnpmPath} install `;
         command += dependenciesToInstall.map(([depName, depVersion]) => `${depName}@${depVersion}`).join(" ");
         execSync(command, { cwd: modPath });
 
-        // delete the new blank package.json then rename the backup back to the original name
+        // Delete the new blank package.json then rename the backup back to the original name
         this.vfs.removeFile(`${modPath}/package.json`);
         this.vfs.rename(`${modPath}/package.json.bak`, `${modPath}/package.json`);
     }
