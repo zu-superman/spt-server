@@ -79,34 +79,40 @@ export class PlayerScavGenerator
 
         this.logger.debug(`generated player scav loadout with karma level ${scavKarmaLevel}`);
 
-        // edit baseBotNode values
+        // Edit baseBotNode values
         const baseBotNode: IBotType = this.constructBotBaseTemplate(playerScavKarmaSettings.botTypeForLoot);
         this.adjustBotTemplateWithKarmaSpecificSettings(playerScavKarmaSettings, baseBotNode);
 
         let scavData = this.botGenerator.generatePlayerScav(sessionID, playerScavKarmaSettings.botTypeForLoot.toLowerCase(), "easy", baseBotNode);
+
+        // Remove cached bot data after scav was generated
         this.botLootCacheService.clearCache();
 
-        // add scav metadata
-        scavData._id = pmcData.savage;
+        // Add scav metadata
         scavData.savage = null;
-        scavData.sessionId = pmcData.sessionId;
         scavData.aid = pmcData.aid;
         scavData.TradersInfo = pmcData.TradersInfo;
-        scavData.Skills = this.getScavSkills(existingScavData);
-        scavData.Stats = this.getScavStats(existingScavData);
         scavData.Info.Settings = {} as Settings;
         scavData.Info.Bans = [];
         scavData.Info.RegistrationDate = pmcData.Info.RegistrationDate;
         scavData.Info.GameVersion = pmcData.Info.GameVersion;
         scavData.Info.MemberCategory = MemberCategory.UNIQUE_ID;
-        scavData.Info.Level = this.getScavLevel(existingScavData);
-        scavData.Info.Experience = this.getScavExperience(existingScavData);
         scavData.Info.lockedMoveCommands = true;
-        scavData.Quests = existingScavData.Quests;
-        scavData.Notes = existingScavData.Notes;
-        scavData.WishList = existingScavData.WishList;
         scavData.RagfairInfo = pmcData.RagfairInfo;
         scavData.UnlockedInfo = pmcData.UnlockedInfo;
+
+        // Persist previous scav data into new scav
+        scavData._id = existingScavData._id;
+        scavData.sessionId = existingScavData.sessionId;
+        scavData.Skills = this.getScavSkills(existingScavData);
+        scavData.Stats = this.getScavStats(existingScavData);
+        scavData.Info.Level = this.getScavLevel(existingScavData);
+        scavData.Info.Experience = this.getScavExperience(existingScavData);
+        scavData.Quests = existingScavData.Quests;
+        scavData.ConditionCounters = existingScavData.ConditionCounters;
+        scavData.Notes = existingScavData.Notes;
+        scavData.WishList = existingScavData.WishList;
+
 
         // Add an extra labs card to pscav backpack based on config chance
         if (this.randomUtil.getChance100(playerScavKarmaSettings.labsAccessCardChancePercent))
@@ -120,13 +126,13 @@ export class PlayerScavGenerator
             this.botWeaponGeneratorHelper.addItemWithChildrenToEquipmentSlot(["TacticalVest", "Pockets", "Backpack"], itemsToAdd[0]._id, labsCard._id, itemsToAdd, scavData.Inventory);
         }
 
-        // remove secure container
+        // Remove secure container
         scavData = this.profileHelper.removeSecureContainer(scavData);
 
-        // set cooldown timer
+        // Set cooldown timer
         scavData = this.setScavCooldownTimer(scavData, pmcData);
 
-        // add scav to the profile
+        // Add scav to the profile
         this.saveServer.getProfile(sessionID).characters.scav = scavData;
 
         return scavData;
