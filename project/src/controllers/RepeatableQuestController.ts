@@ -2,6 +2,7 @@ import { inject, injectable } from "tsyringe";
 
 import { RepeatableQuestGenerator } from "@spt-aki/generators/RepeatableQuestGenerator";
 import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
+import { QuestHelper } from "@spt-aki/helpers/QuestHelper";
 import { RagfairServerHelper } from "@spt-aki/helpers/RagfairServerHelper";
 import { RepeatableQuestHelper } from "@spt-aki/helpers/RepeatableQuestHelper";
 import { IEmptyRequestData } from "@spt-aki/models/eft/common/IEmptyRequestData";
@@ -45,6 +46,7 @@ export class RepeatableQuestController
         @inject("ObjectId") protected objectId: ObjectId,
         @inject("RepeatableQuestGenerator") protected repeatableQuestGenerator: RepeatableQuestGenerator,
         @inject("RepeatableQuestHelper") protected repeatableQuestHelper: RepeatableQuestHelper,
+        @inject("RepeatableQuestHelper") protected questHelper: QuestHelper,
         @inject("ConfigServer") protected configServer: ConfigServer
     )
     {
@@ -350,19 +352,20 @@ export class RepeatableQuestController
             {
                 continue;
             }
-
+            
+            // Save for later standing loss calculation
             replacedQuestTraderId = questToReplace.traderId;
 
             // Update active quests to exclude the quest we're replacing
             currentRepeatablePool.activeQuests = currentRepeatablePool.activeQuests.filter(x => x._id !== changeRequest.qid);
 
-            // Get saved costs to replace existing quest
+            // Get cost to replace existing quest
             changeRequirement = this.jsonUtil.clone(currentRepeatablePool.changeRequirement[changeRequest.qid]);
             delete currentRepeatablePool.changeRequirement[changeRequest.qid];
-            const repeatableConfig = this.questConfig.repeatableQuests.find(x => x.name === currentRepeatablePool.name);
-            const questTypePool = this.generateQuestPool(repeatableConfig, pmcData.Info.Level);
             // TODO: somehow we need to reduce the questPool by the currently active quests (for all repeatables)
             
+            const repeatableConfig = this.questConfig.repeatableQuests.find(x => x.name === currentRepeatablePool.name);
+            const questTypePool = this.generateQuestPool(repeatableConfig, pmcData.Info.Level);
             const newRepeatableQuest = this.attemptToGenerateRepeatableQuest(pmcData, questTypePool, repeatableConfig);
             if (newRepeatableQuest)
             {
@@ -373,11 +376,20 @@ export class RepeatableQuestController
                     changeCost: newRepeatableQuest.changeCost,
                     changeStandingCost: this.randomUtil.getArrayValue([0, 0.01])
                 };
+
+                const fullProfile = this.profileHelper.getFullProfile(sessionID);
+
+                // Find quest we're replacing in pmc profile quests array and remove it
+                this.questHelper.findAndRemoveQuestFromArrayIfExists(questToReplace._id, pmcData.Quests);
+    
+                // Find quest we're replacing in scav profile quests array and remove it
+                this.questHelper.findAndRemoveQuestFromArrayIfExists(questToReplace._id, fullProfile.characters.scav?.Quests ?? []);
             }
 
             // Found and replaced the quest in current repeatable
             repeatableToChange = this.jsonUtil.clone(currentRepeatablePool);
             delete repeatableToChange.inactiveQuests;
+
             break;
         }
 
@@ -386,6 +398,7 @@ export class RepeatableQuestController
         {
             const message = "Unable to find repeatable quest to replace";
             this.logger.error(message);
+
             return this.httpResponse.appendErrorToOutput(output, message);
         }
 

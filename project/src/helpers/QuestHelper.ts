@@ -881,7 +881,15 @@ export class QuestHelper
                 // Add new
                 pmcProfile.Quests.push(questRecordToAdd);
             }
-            
+        }
+    }
+
+    public findAndRemoveQuestFromArrayIfExists(questId: string, quests: IQuestStatus[]): void
+    {
+        const pmcQuestToReplaceStatus = quests.find(x => x.qid === questId);
+        if (pmcQuestToReplaceStatus)
+        {
+            quests.splice(quests.indexOf(pmcQuestToReplaceStatus, 1));
         }
     }
 }
