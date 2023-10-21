@@ -46,7 +46,7 @@ export class RepeatableQuestController
         @inject("ObjectId") protected objectId: ObjectId,
         @inject("RepeatableQuestGenerator") protected repeatableQuestGenerator: RepeatableQuestGenerator,
         @inject("RepeatableQuestHelper") protected repeatableQuestHelper: RepeatableQuestHelper,
-        @inject("RepeatableQuestHelper") protected questHelper: QuestHelper,
+        @inject("QuestHelper") protected questHelper: QuestHelper,
         @inject("ConfigServer") protected configServer: ConfigServer
     )
     {
