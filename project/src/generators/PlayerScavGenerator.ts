@@ -102,16 +102,16 @@ export class PlayerScavGenerator
         scavData.UnlockedInfo = pmcData.UnlockedInfo;
 
         // Persist previous scav data into new scav
-        scavData._id = existingScavData._id;
-        scavData.sessionId = existingScavData.sessionId;
+        scavData._id = existingScavData._id ?? pmcData.savage;
+        scavData.sessionId = existingScavData.sessionId ?? pmcData.sessionId;
         scavData.Skills = this.getScavSkills(existingScavData);
         scavData.Stats = this.getScavStats(existingScavData);
         scavData.Info.Level = this.getScavLevel(existingScavData);
         scavData.Info.Experience = this.getScavExperience(existingScavData);
-        scavData.Quests = existingScavData.Quests;
-        scavData.ConditionCounters = existingScavData.ConditionCounters;
-        scavData.Notes = existingScavData.Notes;
-        scavData.WishList = existingScavData.WishList;
+        scavData.Quests = existingScavData.Quests ?? [];
+        scavData.ConditionCounters = existingScavData.ConditionCounters ?? {Counters: []};
+        scavData.Notes = existingScavData.Notes ?? {Notes: []};
+        scavData.WishList = existingScavData.WishList ?? [];
 
 
         // Add an extra labs card to pscav backpack based on config chance
