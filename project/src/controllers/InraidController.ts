@@ -310,7 +310,17 @@ export class InraidController
             {
                 this.logger.warning(`Quest: ${quest.qid} found in PMC profile has different status/statustimer. Scav: ${quest.status} vs PMC: ${pmcQuest.status}`);
                 pmcQuest.status = <any>QuestStatus[quest.status];
+
+                // Copy status timers over + fix bad enum key for each
                 pmcQuest.statusTimers = quest.statusTimers;
+                for (const statusTimerKey in quest.statusTimers)
+                {
+                    if (!Number(statusTimerKey))
+                    {
+                        quest.statusTimers[QuestStatus[statusTimerKey]] = quest.statusTimers[statusTimerKey];
+                        delete quest.statusTimers[statusTimerKey];
+                    }
+                }
             }
         }
 
