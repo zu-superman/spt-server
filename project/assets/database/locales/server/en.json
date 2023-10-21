@@ -155,7 +155,7 @@
 	"payment-zero_price_no_payment": "Price is 0 no payment needed",
 	"player-attempt_to_increment_skill_with_negative_value": "Unable to increment skill: %s with a negative amount",
 	"port_already_in_use": "Port %s is already in use, check if the server is already running",
-	"profile_saved": "Profile changes saved",
+	"profile_saved": "%s Profile changes saved",
 	"profile_save_callback_error": "Error while executing onBeforeSaveCallback: {{callback}}, {{error}}",
 	"profile-unable_to_find_profile_by_id_cannot_delete": "Unable to delete profile with id: %s, no profile with id found",
 	"quest-compare_operator_unhandled": "loyaltyRequirementCheck() operator %s not handled, defaulting to false",

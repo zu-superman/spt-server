@@ -208,9 +208,9 @@ export class SaveServer
         if (typeof(this.saveMd5[sessionID]) !== "string" || this.saveMd5[sessionID] !== fmd5)
         {
             this.saveMd5[sessionID] = String(fmd5);
-            // save profile
+            // save profile to disk
             this.vfs.writeFile(filePath, jsonProfile);
-            this.logger.info(this.localisationService.getText("profile_saved"));
+            this.logger.info(this.localisationService.getText("profile_saved", sessionID));
         }
     }
 
