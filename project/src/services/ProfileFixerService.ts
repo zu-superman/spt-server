@@ -980,7 +980,7 @@ export class ProfileFixerService
 
             fullProfile.info.aid = fullProfile.characters.pmc.aid;
 
-            this.logger.debug(`Migrated AccountId from: ${fullProfile.characters.pmc.sessionId} to numeric to: ${fullProfile.characters.pmc.aid}`);
+            this.logger.debug(`Migrated AccountId from: ${fullProfile.characters.pmc.sessionId} to: ${fullProfile.characters.pmc.aid}`);
         }
     }
 
