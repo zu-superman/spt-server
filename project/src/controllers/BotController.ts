@@ -83,7 +83,7 @@ export class BotController
         const raidConfig = this.applicationContext.getLatestValue(ContextVariableType.RAID_CONFIGURATION)?.getValue<IGetRaidConfigurationRequestData>();
         if (!raidConfig)
         {
-            this.logger.error("applicationContex could not find RAID_CONFIGURATION value, raidConfig is undefined");
+            this.logger.error(this.localisationService.getText("bot-missing_application_context", "RAID_CONFIGURATION"));
         }
 
         // Check value chosen in pre-raid difficulty dropdown

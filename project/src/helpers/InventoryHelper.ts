@@ -941,12 +941,12 @@ export class InventoryHelper
         const stashTPL = this.getStashType(sessionID);
         if (!stashTPL)
         {
-            this.logger.error("No stash found in player inventory");
+            this.logger.error(this.localisationService.getText("inventory-missing_stash_size"));
         }
         const stashItemDetails = this.itemHelper.getItem(stashTPL);
         if (!stashItemDetails[0])
         {
-            this.logger.error(`Stash with id: ${stashTPL} not found in db`);
+            this.logger.error(this.localisationService.getText("inventory-stash_not_found", stashTPL));
         }
 
         const stashX = stashItemDetails[1]._props.Grids[0]._props.cellsH !== 0

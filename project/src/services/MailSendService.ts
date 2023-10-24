@@ -50,7 +50,7 @@ export class MailSendService
     {
         if (!trader)
         {
-            this.logger.error(`Unable to send message type: ${messageType} to player: ${sessionId}, provided trader enum was null`);
+            this.logger.error(this.localisationService.getText("mailsend-missing_trader", {messageType: messageType, sessionId: sessionId}));
 
             return;
         }
@@ -96,7 +96,7 @@ export class MailSendService
     {
         if (!trader)
         {
-            this.logger.error(`Unable to send message type: ${messageType} to player: ${sessionId}, provided trader enum was null`);
+            this.logger.error(this.localisationService.getText("mailsend-missing_trader", {messageType: messageType, sessionId: sessionId}));
 
             return;
         }
@@ -264,7 +264,9 @@ export class MailSendService
         const dialogWithNpc = playerProfile.dialogues[targetNpcId];
         if (!dialogWithNpc)
         {
-            this.logger.error(`Dialog for: ${targetNpcId} does not exist`);
+            this.logger.error(this.localisationService.getText("mailsend-missing_npc_dialog", targetNpcId));
+
+            return;
         }
 
         dialogWithNpc.messages.push({
@@ -348,7 +350,8 @@ export class MailSendService
             const parentItem = this.getBaseItemFromRewards(messageDetails.items);
             if (!parentItem)
             {
-                this.logger.error(`unable to find an item with slotId of: hideout for message to: ${messageDetails.trader} sender: ${messageDetails.sender}`);
+                this.localisationService.getText("mailsend-missing_parent", {traderId: messageDetails.trader, sender: messageDetails.sender});
+
                 return itemsToSendToPlayer;
             }
 
