@@ -111,6 +111,8 @@
 	"location-unable_to_reparent_item": "createItem() failed, unable to reparent {{tpl}}, parentId: {{parentId}}",
 	"location-unable_to_find_airdrop_drop_config_of_type": "Unable to find airdrop config settings for type: %s, falling back to drop type: mixed ",
 	"location-unable_to_fix_broken_waves_missing_base": "%s lacks a base json, skipping map wave fixes",
+	"location-missing_dynamic_template": "Chosen dynamic spawnpoint %s has no template, skipping",
+	"location-spawnpoint_missing_items": "Chosen dynamic spawnpoint %s has no items, skipping",
 	"loot-item_missing_parentid": "Item: %s lacks a parentId value, unable to use item as loot",
 	"loot-non_item_picked_as_sealed_weapon_crate_reward": "Invalid weapon: %s, was picked as reward for sealed weapon crate, unable to create loot",
 	"mod-send_bundle_url": "[BUNDLE]: %s",

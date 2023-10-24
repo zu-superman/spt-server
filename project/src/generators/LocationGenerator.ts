@@ -488,13 +488,13 @@ export class LocationGenerator
         // Positions not in forced but have 100% chance to spawn
         const guaranteedLoosePoints: Spawnpoint[] = [];
 
-        const blacklistedPoints = this.locationConfig.looseLootBlacklist[locationName];
+        const blacklistedSpawnpoints = this.locationConfig.looseLootBlacklist[locationName];
         const spawnpointArray = new ProbabilityObjectArray<string, Spawnpoint>(this.mathUtil, this.jsonUtil);
 
         for (const spawnpoint of allDynamicSpawnpoints)
         {
             // Point is blacklsited, skip
-            if (blacklistedPoints?.includes(spawnpoint.template.Id))
+            if (blacklistedSpawnpoints?.includes(spawnpoint.template.Id))
             {
                 this.logger.debug(`Ignoring loose loot location: ${spawnpoint.template.Id}`);
                 continue;
@@ -512,9 +512,10 @@ export class LocationGenerator
         }
 
         // Select a number of spawn points to add loot to
-        let chosenSpawnpoints: Spawnpoint[] = [];
         // Add ALL loose loot with 100% chance to pool
-        chosenSpawnpoints.push(...guaranteedLoosePoints);
+        let chosenSpawnpoints: Spawnpoint[] = [...guaranteedLoosePoints];
+
+        // Add randomly chosen spawn points
         for (const si of spawnpointArray.draw(desiredSpawnpointCount, false))
         {
             chosenSpawnpoints.push(spawnpointArray.data(si));
@@ -522,8 +523,10 @@ export class LocationGenerator
 
         // Filter out duplicate locationIds
         chosenSpawnpoints = [...new Map(chosenSpawnpoints.map(x => [x.locationId, x])).values()];
-        const numberTooManyRequested = desiredSpawnpointCount - chosenSpawnpoints.length;
-        if (numberTooManyRequested > 0)
+
+        // Do we have enough items in pool to fulfill requirement
+        const tooManySpawnPointsRequested = (desiredSpawnpointCount - chosenSpawnpoints.length) > 0;
+        if (tooManySpawnPointsRequested)
         {
             this.logger.debug(this.localisationService.getText("location-spawn_point_count_requested_vs_found", {requested: desiredSpawnpointCount+guaranteedLoosePoints.length, found: chosenSpawnpoints.length, mapName: locationName}));
         }
@@ -533,6 +536,20 @@ export class LocationGenerator
         const seasonalItemTplBlacklist = this.seasonalEventService.getAllSeasonalEventItems();
         for (const spawnPoint of chosenSpawnpoints)
         {
+            if (!spawnPoint.template)
+            {
+                this.logger.warning(this.localisationService.getText("location-missing_dynamic_template", spawnPoint.locationId));
+
+                continue;
+            }
+
+            if (!spawnPoint.template.Items || spawnPoint.template.Items.length === 0)
+            {
+                this.logger.error(this.localisationService.getText("location-spawnpoint_missing_items", spawnPoint.template.Id));
+    
+                continue;
+            }
+
             const itemArray = new ProbabilityObjectArray<string>(this.mathUtil, this.jsonUtil);
             for (const itemDist of spawnPoint.itemDistribution)
             {
@@ -653,12 +670,13 @@ export class LocationGenerator
                 {
                     _id: this.objectId.generate(),
                     _tpl: chosenTpl,
-                    upd: { "StackObjectsCount": stackCount }
+                    upd: { StackObjectsCount: stackCount }
                 }
             );
         }
         else if (this.itemHelper.isOfBaseclass(chosenTpl, BaseClasses.AMMO_BOX))
         {
+            // Fill with cartrdiges
             const ammoBoxTemplate = this.itemHelper.getItem(chosenTpl)[1];
             const ammoBoxItem: Item[] = [{
                 _id: this.objectId.generate(),
@@ -669,7 +687,7 @@ export class LocationGenerator
         }
         else if (this.itemHelper.isOfBaseclass(chosenTpl, BaseClasses.MAGAZINE))
         {
-            // Create array with just magazine
+            // Create array with just magazine + randomised amount of cartridges
             const magazineTemplate = this.itemHelper.getItem(chosenTpl)[1];
             const magazineItem: Item[] = [{
                 _id: this.objectId.generate(),
@@ -760,7 +778,7 @@ export class LocationGenerator
         if (this.itemHelper.isOfBaseclass(tpl, BaseClasses.MONEY) || this.itemHelper.isOfBaseclass(tpl, BaseClasses.AMMO))
         {
             const stackCount = this.randomUtil.getInt(itemTemplate._props.StackMinRandom, itemTemplate._props.StackMaxRandom);
-            items[0].upd = { "StackObjectsCount": stackCount };
+            items[0].upd = { StackObjectsCount: stackCount };
         }
         // No spawn point, use default template
         else if (this.itemHelper.isOfBaseclass(tpl, BaseClasses.WEAPON))
