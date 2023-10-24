@@ -345,7 +345,7 @@ export class RepeatableQuestGenerator
 
         if (targetsConfig.data(targetKey).isPmc)
         {
-            return this.randomUtil.randInt(eliminationConfig.minBossKills, eliminationConfig.maxBossKills + 1);
+            return this.randomUtil.randInt(eliminationConfig.minPmcKills, eliminationConfig.maxPmcKills + 1);
         }
 
         return this.randomUtil.randInt(eliminationConfig.minKills, eliminationConfig.maxKills + 1);
