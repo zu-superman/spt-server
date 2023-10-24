@@ -336,7 +336,7 @@ export class RepeatableQuestGenerator
      * @param eliminationConfig Config
      * @returns Number of AI to kill
      */
-    getEliminationKillCount(targetKey: string, targetsConfig: ProbabilityObjectArray<string, IBossInfo>, eliminationConfig: IEliminationConfig): number
+    protected getEliminationKillCount(targetKey: string, targetsConfig: ProbabilityObjectArray<string, IBossInfo>, eliminationConfig: IEliminationConfig): number
     {
         if (targetsConfig.data(targetKey).isBoss)
         {
