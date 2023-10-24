@@ -133,6 +133,8 @@ export interface IEliminationConfig
     minKills: number
     minBossKills: number
     maxBossKills: number
+    minPmcKills: number
+    maxPmcKills: number
     weaponCategoryRequirementProb: number
     weaponCategoryRequirements: IWeaponRequirement[]
     weaponRequirementProb: number
@@ -147,6 +149,7 @@ export interface ITarget extends IProbabilityObject
 export interface IBossInfo 
 {
     isBoss: boolean
+    isPmc: boolean
 }
 
 export interface IBodyPart extends IProbabilityObject 

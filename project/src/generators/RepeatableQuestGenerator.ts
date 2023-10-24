@@ -24,7 +24,7 @@ import { BaseClasses } from "@spt-aki/models/enums/BaseClasses";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { Money } from "@spt-aki/models/enums/Money";
 import { Traders } from "@spt-aki/models/enums/Traders";
-import { IQuestConfig, IRepeatableQuestConfig } from "@spt-aki/models/spt/config/IQuestConfig";
+import { IBossInfo, IEliminationConfig, IQuestConfig, IRepeatableQuestConfig } from "@spt-aki/models/spt/config/IQuestConfig";
 import { IQuestTypePool } from "@spt-aki/models/spt/repeatable/IQuestTypePool";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { EventOutputHolder } from "@spt-aki/routers/EventOutputHolder";
@@ -38,7 +38,7 @@ import { HttpResponseUtil } from "@spt-aki/utils/HttpResponseUtil";
 import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 import { MathUtil } from "@spt-aki/utils/MathUtil";
 import { ObjectId } from "@spt-aki/utils/ObjectId";
-import { RandomUtil } from "@spt-aki/utils/RandomUtil";
+import { ProbabilityObjectArray, RandomUtil } from "@spt-aki/utils/RandomUtil";
 import { TimeUtil } from "@spt-aki/utils/TimeUtil";
 
 @injectable()
@@ -285,10 +285,8 @@ export class RepeatableQuestGenerator
         }
 
         // Draw how many npm kills are required
-        const kills = (targetsConfig.data(targetKey).isBoss)
-            ? this.randomUtil.randInt(eliminationConfig.minBossKills, eliminationConfig.maxBossKills + 1)
-            : this.randomUtil.randInt(eliminationConfig.minKills, eliminationConfig.maxKills + 1);
-        const killDifficulty = kills;
+        const desiredKillCount = this.getEliminationKillCount(targetKey, targetsConfig, eliminationConfig);
+        const killDifficulty = desiredKillCount;
 
         // not perfectly happy here; we give difficulty = 1 to the quest reward generation when we have the most diffucult mission
         // e.g. killing reshala 5 times from a distance of 200m with a headshot.
@@ -322,13 +320,35 @@ export class RepeatableQuestGenerator
             availableForFinishCondition._props.counter.conditions.push(this.generateEliminationLocation(locationsConfig[locationKey], allowedWeapon, allowedWeaponsCategory));
         }
         availableForFinishCondition._props.counter.conditions.push(this.generateEliminationCondition(targetKey, bodyPartsToClient, distance, allowedWeapon, allowedWeaponsCategory));
-        availableForFinishCondition._props.value = kills;
+        availableForFinishCondition._props.value = desiredKillCount;
         availableForFinishCondition._props.id = this.objectId.generate();
         quest.location = this.getQuestLocationByMapId(locationKey);
 
         quest.rewards = this.generateReward(pmcLevel, Math.min(difficulty, 1), traderId, repeatableConfig);
 
         return quest;
+    }
+
+    /**
+     * Get a number of kills neded to complete elimination quest
+     * @param targetKey Target type desired e.g. anyPmc/bossBully/Savage
+     * @param targetsConfig Config
+     * @param eliminationConfig Config
+     * @returns Number of AI to kill
+     */
+    getEliminationKillCount(targetKey: string, targetsConfig: ProbabilityObjectArray<string, IBossInfo>, eliminationConfig: IEliminationConfig): number
+    {
+        if (targetsConfig.data(targetKey).isBoss)
+        {
+            return this.randomUtil.randInt(eliminationConfig.minBossKills, eliminationConfig.maxBossKills + 1);
+        }
+
+        if (targetsConfig.data(targetKey).isPmc)
+        {
+            return this.randomUtil.randInt(eliminationConfig.minBossKills, eliminationConfig.maxBossKills + 1);
+        }
+
+        return this.randomUtil.randInt(eliminationConfig.minKills, eliminationConfig.maxKills + 1);
     }
 
     /**
