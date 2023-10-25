@@ -48,22 +48,33 @@ export class TraderHelper
         this.traderConfig = this.configServer.getConfig(ConfigTypes.TRADER);
     }
 
+    /**
+     * Get a trader base object, update profile to reflect players current standing in profile 
+     * when trader not found in profile
+     * @param traderID Traders Id to get
+     * @param sessionID Players id
+     * @returns Trader base
+     */
     public getTrader(traderID: string, sessionID: string): ITraderBase
     {
         const pmcData = this.profileHelper.getPmcProfile(sessionID);
-        const trader = this.databaseServer.getTables().traders[traderID].base;
-
-        if (!("TradersInfo" in pmcData))
+        if (!pmcData)
         {
-            // pmc profile wiped
-            return trader;
+            this.logger.error(`No profile with sessionId: ${sessionID}`);
         }
-
-        if (!(traderID in pmcData.TradersInfo))
+        
+        // Profile has traderInfo dict (profile beyond creation stage) but no requested trader in profile
+        if (pmcData.TradersInfo && !(traderID in pmcData.TradersInfo))
         {
-            // trader doesn't exist in profile
+            // Add trader values to profile
             this.resetTrader(sessionID, traderID);
             this.lvlUp(traderID, pmcData);
+        }
+        
+        const trader = this.databaseServer.getTables().traders?.[traderID]?.base;
+        if (!trader)
+        {
+            this.logger.error(`No trader with Id: ${traderID} found`);
         }
 
         return trader;
