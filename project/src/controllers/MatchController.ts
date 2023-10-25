@@ -234,7 +234,8 @@ export class MatchController
                     slotId: "main",
                     parentId: parentId,
                     upd: {
-                        StackObjectsCount: item.stackCount
+                        StackObjectsCount: item.stackCount,
+                        SpawnedInSession: true
                     }
                 }
             );
