@@ -4,6 +4,7 @@ import { NoteCallbacks } from "@spt-aki/callbacks/NoteCallbacks";
 import { HandledRoute, ItemEventRouterDefinition } from "@spt-aki/di/Router";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
 import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEventRouterResponse";
+import { INoteActionData } from "@spt-aki/models/eft/notes/INoteActionData";
 
 @injectable()
 export class NoteItemEventRouter extends ItemEventRouterDefinition 
@@ -24,7 +25,7 @@ export class NoteItemEventRouter extends ItemEventRouterDefinition
         ];
     }
 
-    public override handleItemEvent(url: string, pmcData: IPmcData, body: any, sessionID: string): IItemEventRouterResponse 
+    public override handleItemEvent(url: string, pmcData: IPmcData, body: INoteActionData, sessionID: string): IItemEventRouterResponse 
     {
         switch (url)
         {
