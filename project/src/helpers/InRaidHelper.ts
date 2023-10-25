@@ -151,6 +151,13 @@ export class InRaidHelper
                 continue;
             }
 
+            const postRaidValue = saveProgressRequest.profile.BackendCounters[backendCounterKey]?.value;
+            if (typeof postRaidValue === "undefined")
+            {
+                // No value, skip
+                continue;
+            }
+
             const matchingPreRaidCounter = profileData.BackendCounters[backendCounterKey];
             if (!matchingPreRaidCounter)
             {
@@ -159,9 +166,9 @@ export class InRaidHelper
                 continue;
             }
 
-            if (matchingPreRaidCounter.value !== saveProgressRequest.profile.BackendCounters[backendCounterKey].value)
+            if (matchingPreRaidCounter.value !== postRaidValue)
             {
-                this.logger.error(`Backendcounter: ${backendCounterKey} value is different post raid, old: ${matchingPreRaidCounter.value} new: ${saveProgressRequest.profile.BackendCounters[backendCounterKey].value}`);
+                this.logger.error(`Backendcounter: ${backendCounterKey} value is different post raid, old: ${matchingPreRaidCounter.value} new: ${postRaidValue}`);
             }
         }
 
