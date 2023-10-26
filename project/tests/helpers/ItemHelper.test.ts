@@ -1,15 +1,14 @@
 import "reflect-metadata";
 
-import { container } from "tsyringe";
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 
 describe("ItemHelper", () =>
 {
     let itemHelper: ItemHelper;
 
-    beforeEach(() =>
+    beforeAll(() =>
     {
-        itemHelper = container.resolve<ItemHelper>("ItemHelper");
+        itemHelper = globalThis.container.resolve<ItemHelper>("ItemHelper");
     });
 
     afterEach(() =>
