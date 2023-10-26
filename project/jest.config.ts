@@ -1,10 +1,10 @@
-import { pathsToModuleNameMapper  } from "ts-jest";
 import type { JestConfigWithTsJest } from "ts-jest";
+import { pathsToModuleNameMapper } from "ts-jest";
 import { compilerOptions } from "./tsconfig.json";
 
 const config: JestConfigWithTsJest = {
     preset: "ts-jest",
-    testEnvironment: "node",
+    testEnvironment: "./tests/CustomEnvironment.ts",
     roots: [
         "./tests/"
     ],
