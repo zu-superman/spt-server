@@ -1,13 +1,12 @@
 import "reflect-metadata";
+import { container } from "tsyringe";
 
 import NodeEnvironment from "jest-environment-node";
-import type {EnvironmentContext} from "@jest/environment";
-import type {JestEnvironmentConfig} from "@jest/environment";
+import type { EnvironmentContext, JestEnvironmentConfig } from "@jest/environment";
 
-import { container } from "tsyringe";
 import { Container } from "@spt-aki/di/Container";
 
-class CustomEnvironment extends NodeEnvironment
+export default class CustomEnvironment extends NodeEnvironment
 {
     constructor(config: JestEnvironmentConfig, context: EnvironmentContext)
     {
@@ -27,5 +26,3 @@ class CustomEnvironment extends NodeEnvironment
         await super.teardown();
     }
 }
-
-module.exports = CustomEnvironment;

@@ -1,15 +1,15 @@
-import type { JestConfigWithTsJest } from "ts-jest";
-import { pathsToModuleNameMapper } from "ts-jest";
-import { compilerOptions } from "./tsconfig.json";
+/* eslint-disable @typescript-eslint/naming-convention */
+import type { Config } from "jest";
+import fs from "fs";
 
-const config: JestConfigWithTsJest = {
-    preset: "ts-jest",
+const config: Config = {
     testEnvironment: "./tests/CustomEnvironment.ts",
     roots: [
         "./tests/"
     ],
-    modulePaths: [ compilerOptions.baseUrl ],
-    moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths)
+    transform: {
+        "^.+\\.ts$": [ "@swc/jest", JSON.parse(fs.readFileSync(`${__dirname}/.swcrc`, "utf-8")) ]
+    }
 };
 
 export default config;
