@@ -82,6 +82,7 @@ export interface ModsChances
     mod_tactical_001: number
     mod_tactical_002: number
     mod_tactical_003: number
+    mod_handguard: number
 }
 
 export interface Difficulties 

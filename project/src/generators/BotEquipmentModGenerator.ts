@@ -266,8 +266,16 @@ export class BotEquipmentModGenerator
                 modSpawnChances.mod_sight_rear = 100;
             }
 
+            // Handguard mod can take a sub handguard mod + weapon has no UBGL (takes same slot)
+            // Force spawn chance to be 100% to ensure it gets added
+            if (modSlot === "mod_handguard" && modToAddTemplate._props.Slots.find(x => x._name === "mod_handguard") && !weapon.find(x => x.slotId === "mod_launcher"))
+            {
+                // Needed for handguards with lower
+                modSpawnChances.mod_handguard = 100;
+            }
+
             // If stock mod can take a sub stock mod, force spawn chance to be 100% to ensure stock gets added
-            if (modSlot === "mod_stock" && modToAddTemplate._props.Slots.find(x => x._name === "mod_stock"))
+            if (modSlot === "mod_stock" && modToAddTemplate._props.Slots.find(x => x._name.includes("mod_stock")))
             {
                 // Stock mod can take additional stocks, could be a locking device, force 100% chance
                 modSpawnChances.mod_stock = 100;
