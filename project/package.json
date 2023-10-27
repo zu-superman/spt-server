@@ -14,7 +14,7 @@
         "check:circular": "madge --circular --extensions ts ./src/",
         "lint": "rome ci src --formatter-enabled=false --max-diagnostics=200",
         "lint:fix": "eslint --fix --ext .ts src/**",
-        "test:run": "jest --colors --runInBand",
+        "test": "jest --colors --runInBand",
         "test:coverage": "jest --coverage --maxWorkers=1 --no-cache",
         "build:release": "cross-env PKG_CACHE_PATH=\"./.pkg-cache\" gulp build:release",
         "build:debug": "cross-env PKG_CACHE_PATH=\"./.pkg-cache\" gulp build:debug",

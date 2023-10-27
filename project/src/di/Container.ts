@@ -250,16 +250,16 @@ import { WinstonRequestLogger } from "@spt-aki/utils/logging/WinstonRequestLogge
 /**
  * Handle the registration of classes to be used by the Dependency Injection code
  */
-export class Container 
+export class Container
 {
-    
-    public static registerPostLoadTypes(container: DependencyContainer, childContainer: DependencyContainer):void 
+
+    public static registerPostLoadTypes(container: DependencyContainer, childContainer: DependencyContainer):void
     {
         container.register<AkiHttpListener>("AkiHttpListener", AkiHttpListener, {lifecycle: Lifecycle.Singleton});
         childContainer.registerType("HttpListener", "AkiHttpListener");
     }
 
-    public static registerTypes(depContainer: DependencyContainer): void 
+    public static registerTypes(depContainer: DependencyContainer): void
     {
         depContainer.register("ApplicationContext", ApplicationContext, { lifecycle: Lifecycle.Singleton });
         Container.registerUtils(depContainer);
@@ -275,13 +275,13 @@ export class Container
         Container.registerCallbacks(depContainer);
 
         Container.registerServers(depContainer);
-        
+
         Container.registerServices(depContainer);
 
         Container.registerControllers(depContainer);
     }
 
-    public static registerListTypes(depContainer: DependencyContainer): void 
+    public static registerListTypes(depContainer: DependencyContainer): void
     {
         depContainer.register("OnLoadModService", { useValue: new OnLoadModService(depContainer) });
         depContainer.register("HttpListenerModService", { useValue: new HttpListenerModService(depContainer) });
@@ -360,7 +360,7 @@ export class Container
         depContainer.registerType("SaveLoadRouter", "ProfileSaveLoadRouter");
     }
 
-    private static registerUtils(depContainer: DependencyContainer): void 
+    private static registerUtils(depContainer: DependencyContainer): void
     {
         // Utils
         depContainer.register<App>("App", App, { lifecycle: Lifecycle.Singleton });
@@ -386,7 +386,7 @@ export class Container
         depContainer.register<ModTypeCheck>("ModTypeCheck", ModTypeCheck, { lifecycle: Lifecycle.Singleton });
     }
 
-    private static registerRouters(depContainer: DependencyContainer): void 
+    private static registerRouters(depContainer: DependencyContainer): void
     {
         // Routers
         depContainer.register<HttpRouter>("HttpRouter", HttpRouter, { lifecycle: Lifecycle.Singleton });
@@ -454,7 +454,7 @@ export class Container
         depContainer.register<WeatherStaticRouter>("WeatherStaticRouter", { useClass: WeatherStaticRouter });
     }
 
-    private static registerGenerators(depContainer: DependencyContainer): void 
+    private static registerGenerators(depContainer: DependencyContainer): void
     {
         // Generators
         depContainer.register<BotGenerator>("BotGenerator", BotGenerator);
@@ -473,8 +473,8 @@ export class Container
         depContainer.register<BotLevelGenerator>("BotLevelGenerator", { useClass: BotLevelGenerator });
         depContainer.register<BotEquipmentModGenerator>("BotEquipmentModGenerator", { useClass: BotEquipmentModGenerator });
         depContainer.register<RepeatableQuestGenerator>("RepeatableQuestGenerator", { useClass: RepeatableQuestGenerator });
-        
-        
+
+
         depContainer.register<BarrelInventoryMagGen>("BarrelInventoryMagGen", { useClass: BarrelInventoryMagGen });
         depContainer.register<ExternalInventoryMagGen>("ExternalInventoryMagGen", { useClass: ExternalInventoryMagGen });
         depContainer.register<InternalMagazineInventoryMagGen>("InternalMagazineInventoryMagGen", { useClass: InternalMagazineInventoryMagGen });
@@ -488,7 +488,7 @@ export class Container
 
     }
 
-    private static registerHelpers(depContainer: DependencyContainer): void 
+    private static registerHelpers(depContainer: DependencyContainer): void
     {
         // Helpers
         depContainer.register<AssortHelper>("AssortHelper", { useClass: AssortHelper });
@@ -530,7 +530,7 @@ export class Container
         depContainer.register<RepeatableQuestHelper>("RepeatableQuestHelper", { useClass: RepeatableQuestHelper });
     }
 
-    private static registerLoaders(depContainer: DependencyContainer): void 
+    private static registerLoaders(depContainer: DependencyContainer): void
     {
         // Loaders
         depContainer.register<BundleLoader>("BundleLoader", BundleLoader, { lifecycle: Lifecycle.Singleton });
@@ -538,7 +538,7 @@ export class Container
         depContainer.register<PostAkiModLoader>("PostAkiModLoader", PostAkiModLoader, { lifecycle: Lifecycle.Singleton });
     }
 
-    private static registerCallbacks(depContainer: DependencyContainer): void 
+    private static registerCallbacks(depContainer: DependencyContainer): void
     {
         // Callbacks
         depContainer.register<BotCallbacks>("BotCallbacks", { useClass: BotCallbacks });
@@ -576,7 +576,7 @@ export class Container
         depContainer.register<WishlistCallbacks>("WishlistCallbacks", { useClass: WishlistCallbacks });
     }
 
-    private static registerServices(depContainer: DependencyContainer): void 
+    private static registerServices(depContainer: DependencyContainer): void
     {
         // Services
         depContainer.register<ImageRouteService>("ImageRouteService", ImageRouteService, { lifecycle: Lifecycle.Singleton });
@@ -621,7 +621,7 @@ export class Container
         depContainer.register<MailSendService>("MailSendService", MailSendService);
     }
 
-    private static registerServers(depContainer: DependencyContainer): void 
+    private static registerServers(depContainer: DependencyContainer): void
     {
         // Servers
         depContainer.register<DatabaseServer>("DatabaseServer", DatabaseServer, { lifecycle: Lifecycle.Singleton });
@@ -634,7 +634,7 @@ export class Container
 
     }
 
-    private static registerControllers(depContainer: DependencyContainer): void 
+    private static registerControllers(depContainer: DependencyContainer): void
     {
         // Controllers
         depContainer.register<BotController>("BotController", { useClass: BotController });
