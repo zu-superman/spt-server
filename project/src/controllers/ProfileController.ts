@@ -138,6 +138,7 @@ export class ProfileController
         pmcData.Info.RegistrationDate = this.timeUtil.getTimestamp();
         pmcData.Info.Voice = this.databaseServer.getTables().templates.customization[info.voiceId]._name;
         pmcData.Stats = this.profileHelper.getDefaultCounters();
+        pmcData.Info.NeedWipeOptions = [];
         pmcData.Customization.Head = info.headId;
         pmcData.Health.UpdateTime = this.timeUtil.getTimestamp();
         pmcData.Quests = [];
