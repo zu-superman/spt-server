@@ -12,6 +12,7 @@ import { Upd } from "@spt-aki/models/eft/common/tables/IItem";
 import { HideoutUpgradeCompleteRequestData } from "@spt-aki/models/eft/hideout/HideoutUpgradeCompleteRequestData";
 import { IHandleQTEEventRequestData } from "@spt-aki/models/eft/hideout/IHandleQTEEventRequestData";
 import { IHideoutArea, Stage } from "@spt-aki/models/eft/hideout/IHideoutArea";
+import { IHideoutCancelProductionRequestData } from "@spt-aki/models/eft/hideout/IHideoutCancelProductionRequestData";
 import { IHideoutContinuousProductionStartRequestData } from "@spt-aki/models/eft/hideout/IHideoutContinuousProductionStartRequestData";
 import { IHideoutImproveAreaRequestData } from "@spt-aki/models/eft/hideout/IHideoutImproveAreaRequestData";
 import { IHideoutProduction } from "@spt-aki/models/eft/hideout/IHideoutProduction";
@@ -125,7 +126,6 @@ export class HideoutController
         }
 
         const hideoutData = this.databaseServer.getTables().hideout.areas.find(area => area.type === request.areaType);
-
         if (!hideoutData)
         {
             this.logger.error(this.localisationService.getText("hideout-unable_to_find_area_in_database", request.areaType));
@@ -133,7 +133,6 @@ export class HideoutController
         }
 
         const ctime = hideoutData.stages[hideoutArea.level + 1].constructionTime;
-
         if (ctime > 0)
         {
             const timestamp = this.timeUtil.getTimestamp();
@@ -832,7 +831,6 @@ export class HideoutController
         return this.hideoutHelper.registerProduction(pmcData, request, sessionID);
     }
 
-
     /**
      * Get quick time event list for hideout
      * // TODO - implement this
@@ -909,8 +907,8 @@ export class HideoutController
     /**
      * Handle client/game/profile/items/moving - HideoutImproveArea
      * @param sessionId Session id
-     * @param pmcData profile to improve area in
-     * @param request improve area request data
+     * @param pmcData Profile to improve area in
+     * @param request Improve area request data
      */
     public improveArea(sessionId: string, pmcData: IPmcData, request: IHideoutImproveAreaRequestData): IItemEventRouterResponse
     {
@@ -976,6 +974,34 @@ export class HideoutController
             output.profileChanges[sessionId].improvements[improvement.id] = improvementDetails;
             pmcData.Hideout.Improvement[improvement.id] = improvementDetails;
         }        
+
+        return output;
+    }
+
+    /**
+     * Handle client/game/profile/items/moving HideoutCancelProductionCommand
+     * @param sessionId Session id
+     * @param pmcData Profile with craft to cancel
+     * @param request Cancel production request data
+     * @returns 
+     */
+    public cancelProduction(sessionId: string, pmcData: IPmcData, request: IHideoutCancelProductionRequestData): IItemEventRouterResponse
+    {
+        const output = this.eventOutputHolder.getOutput(sessionId);
+
+        const craftToCancel = pmcData.Hideout.Production[request.recipeId];
+        if (!craftToCancel)
+        {
+            const errorMessage = `Unable to find craft ${request.recipeId} to cancel`;
+            this.logger.error(errorMessage);
+
+            return this.httpResponse.appendErrorToOutput(output, errorMessage);
+        }
+
+        // Remove production from profile
+        delete pmcData.Hideout.Production[request.recipeId];
+
+        // TODO - handle timestamp somehow?
 
         return output;
     }
