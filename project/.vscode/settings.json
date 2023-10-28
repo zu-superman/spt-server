@@ -9,5 +9,12 @@
         "editor.detectIndentation": false,
         "editor.tabSize": 4,
         "editor.insertSpaces": true
-    }
+    },
+    "cSpell.words": [
+        "Baseclass",
+        "IIIA",
+        "medkit",
+        "Superfors",
+        "ULACH"
+    ]
 }

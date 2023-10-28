@@ -1,6 +1,8 @@
 import "reflect-metadata";
-import { DependencyContainer } from "tsyringe";
 
+import { vi, beforeAll, afterEach, describe, expect, it } from "vitest";
+
+import { DependencyContainer } from "tsyringe";
 import { PaymentService } from "@spt-aki/services/PaymentService";
 
 describe("PaymentService", () =>
@@ -10,13 +12,13 @@ describe("PaymentService", () =>
 
     beforeAll(() =>
     {
-        container = globalThis.container;
+        container = global.container;
         paymentService = container.resolve<PaymentService>("PaymentService");
     });
 
     afterEach(() =>
     {
-        jest.restoreAllMocks();
+        vi.restoreAllMocks();
     });
 
     describe("should be registered", () =>

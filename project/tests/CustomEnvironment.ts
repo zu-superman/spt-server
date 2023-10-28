@@ -248,460 +248,454 @@ import { Watermark, WatermarkLocale } from "@spt-aki/utils/Watermark";
 import { WinstonMainLogger } from "@spt-aki/utils/logging/WinstonMainLogger";
 import { WinstonRequestLogger } from "@spt-aki/utils/logging/WinstonRequestLogger";
 
-// For the Jest Custom Environment.
-import NodeEnvironment from "jest-environment-node";
-import type { EnvironmentContext, JestEnvironmentConfig } from "@jest/environment";
+// For the Vitest Custom Environment.
+import type { Environment } from "vitest";
+import { populateGlobal } from "vitest/environments";
 
 // Used for importing the database.
 import path from "path";
 import { IDatabaseTables } from "@spt-aki/models/spt/server/IDatabaseTables";
 
-export default class CustomEnvironment extends NodeEnvironment
-{
-    private container: DependencyContainer;
-
-    // For importing the database.
-    private importerUtil: ImporterUtil;
-    private databaseServer: DatabaseServer;
-
-    constructor(config: JestEnvironmentConfig, context: EnvironmentContext)
+export default <Environment> {
+    name: "spt-aki-server",
+    transformMode: "ssr",
+    async setup()
     {
-        super(config, context);
-
-        this.container = this.register(container);
-    }
-
-    async setup(): Promise<void>
-    {
-        await super.setup();
+        // Register all of the things!
+        register(container);
 
         // Import the database.
-        await this.importDatabase();
+        await importDatabase(container);
 
-        // Make the container accessible to the tests.
-        this.global.container = this.container;
+        // Populate the global scope with all of the things!
+        populateGlobal(global, { container }, { bindFunctions: true });
 
         // TODO: Create test account/profile
+
+        return {
+            teardown()
+            {
+                // Not sure this is required, but it's here just in case.
+                delete global.container;
+
+                // TODO: Delete test account/profile
+            }
+        };
     }
+};
 
-    async teardown(): Promise<void>
-    {
-        // TODO: Delete test account/profile
+// Register all of the things!
+function register(container: DependencyContainer): DependencyContainer
+{
+    container.register("ApplicationContext", ApplicationContext, { lifecycle: Lifecycle.Singleton });
 
-        await super.teardown();
-    }
+    registerUtils(container);
+    registerRouters(container);
+    registerGenerators(container);
+    registerHelpers(container);
+    registerLoaders(container);
+    registerCallbacks(container);
+    registerServers(container);
+    registerServices(container);
+    registerControllers(container);
 
-    // Register all of the things!
-    private register(container: DependencyContainer): DependencyContainer
-    {
-        container.register("ApplicationContext", ApplicationContext, { lifecycle: Lifecycle.Singleton });
+    registerListTypes(container);
 
-        this.registerUtils(container);
-        this.registerRouters(container);
-        this.registerGenerators(container);
-        this.registerHelpers(container);
-        this.registerLoaders(container);
-        this.registerCallbacks(container);
-        this.registerServers(container);
-        this.registerServices(container);
-        this.registerControllers(container);
+    return container;
+}
 
-        this.registerListTypes(container);
+function registerUtils(container: DependencyContainer): void
+{
+    // Utils
+    container.register<App>("App", App, { lifecycle: Lifecycle.Singleton });
+    container.register<DatabaseImporter>("DatabaseImporter", DatabaseImporter, { lifecycle: Lifecycle.Singleton });
+    container.register<HashUtil>("HashUtil", HashUtil, { lifecycle: Lifecycle.Singleton });
+    container.register<ImporterUtil>("ImporterUtil", ImporterUtil, { lifecycle: Lifecycle.Singleton });
+    container.register<HttpResponseUtil>("HttpResponseUtil", HttpResponseUtil);
+    container.register<EncodingUtil>("EncodingUtil", EncodingUtil, { lifecycle: Lifecycle.Singleton });
+    container.register<JsonUtil>("JsonUtil", JsonUtil);
+    container.register<WinstonMainLogger>("WinstonLogger", WinstonMainLogger, { lifecycle: Lifecycle.Singleton });
+    container.register<WinstonRequestLogger>("RequestsLogger", WinstonRequestLogger, { lifecycle: Lifecycle.Singleton });
+    container.register<MathUtil>("MathUtil", MathUtil, { lifecycle: Lifecycle.Singleton });
+    container.register<ObjectId>("ObjectId", ObjectId);
+    container.register<RandomUtil>("RandomUtil", RandomUtil, { lifecycle: Lifecycle.Singleton });
+    container.register<TimeUtil>("TimeUtil", TimeUtil, { lifecycle: Lifecycle.Singleton });
+    container.register<VFS>("VFS", VFS, { lifecycle: Lifecycle.Singleton });
 
-        return container;
-    }
+    // These two trouble-makers are manually mocked, as the original implementation hijacks our test console.
+    container.register<WatermarkLocale>("WatermarkLocale", WatermarkLocale, { lifecycle: Lifecycle.Singleton });
+    container.register<Watermark>("Watermark", Watermark, { lifecycle: Lifecycle.Singleton });
 
-    private registerUtils(container: DependencyContainer): void
-    {
-        // Utils
-        container.register<App>("App", App, { lifecycle: Lifecycle.Singleton });
-        container.register<DatabaseImporter>("DatabaseImporter", DatabaseImporter, { lifecycle: Lifecycle.Singleton });
-        container.register<HashUtil>("HashUtil", HashUtil, { lifecycle: Lifecycle.Singleton });
-        container.register<ImporterUtil>("ImporterUtil", ImporterUtil, { lifecycle: Lifecycle.Singleton });
-        container.register<HttpResponseUtil>("HttpResponseUtil", HttpResponseUtil);
-        container.register<EncodingUtil>("EncodingUtil", EncodingUtil, { lifecycle: Lifecycle.Singleton });
-        container.register<JsonUtil>("JsonUtil", JsonUtil);
-        container.register<WinstonMainLogger>("WinstonLogger", WinstonMainLogger, { lifecycle: Lifecycle.Singleton });
-        container.register<WinstonRequestLogger>("RequestsLogger", WinstonRequestLogger, { lifecycle: Lifecycle.Singleton });
-        container.register<MathUtil>("MathUtil", MathUtil, { lifecycle: Lifecycle.Singleton });
-        container.register<ObjectId>("ObjectId", ObjectId);
-        container.register<RandomUtil>("RandomUtil", RandomUtil, { lifecycle: Lifecycle.Singleton });
-        container.register<TimeUtil>("TimeUtil", TimeUtil, { lifecycle: Lifecycle.Singleton });
-        container.register<VFS>("VFS", VFS, { lifecycle: Lifecycle.Singleton });
-        container.register<WatermarkLocale>("WatermarkLocale", WatermarkLocale, { lifecycle: Lifecycle.Singleton });
-        container.register<Watermark>("Watermark", Watermark, { lifecycle: Lifecycle.Singleton });
-        container.register<IAsyncQueue>("AsyncQueue", AsyncQueue, { lifecycle: Lifecycle.Singleton });
-        container.register<IUUidGenerator>("UUidGenerator", UUidGenerator, { lifecycle: Lifecycle.Singleton });
-        container.register<HttpFileUtil>("HttpFileUtil", HttpFileUtil, { lifecycle: Lifecycle.Singleton });
-        container.register<ModLoadOrder>("ModLoadOrder", ModLoadOrder, { lifecycle: Lifecycle.Singleton });
-        container.register<ModTypeCheck>("ModTypeCheck", ModTypeCheck, { lifecycle: Lifecycle.Singleton });
-    }
+    container.register<IAsyncQueue>("AsyncQueue", AsyncQueue, { lifecycle: Lifecycle.Singleton });
+    container.register<IUUidGenerator>("UUidGenerator", UUidGenerator, { lifecycle: Lifecycle.Singleton });
+    container.register<HttpFileUtil>("HttpFileUtil", HttpFileUtil, { lifecycle: Lifecycle.Singleton });
+    container.register<ModLoadOrder>("ModLoadOrder", ModLoadOrder, { lifecycle: Lifecycle.Singleton });
+    container.register<ModTypeCheck>("ModTypeCheck", ModTypeCheck, { lifecycle: Lifecycle.Singleton });
+}
 
-    private registerRouters(container: DependencyContainer): void
-    {
-        // Routers
-        container.register<HttpRouter>("HttpRouter", HttpRouter, { lifecycle: Lifecycle.Singleton });
-        container.register<ImageRouter>("ImageRouter", ImageRouter);
-        container.register<EventOutputHolder>("EventOutputHolder", EventOutputHolder, { lifecycle: Lifecycle.Singleton });
-        container.register<ItemEventRouter>("ItemEventRouter", ItemEventRouter);
+function registerRouters(container: DependencyContainer): void
+{
+    // Routers
+    container.register<HttpRouter>("HttpRouter", HttpRouter, { lifecycle: Lifecycle.Singleton });
+    container.register<ImageRouter>("ImageRouter", ImageRouter);
+    container.register<EventOutputHolder>("EventOutputHolder", EventOutputHolder, { lifecycle: Lifecycle.Singleton });
+    container.register<ItemEventRouter>("ItemEventRouter", ItemEventRouter);
 
-        // Dynamic Routes
-        container.register<BotDynamicRouter>("BotDynamicRouter", { useClass: BotDynamicRouter });
-        container.register<BundleDynamicRouter>("BundleDynamicRouter", { useClass: BundleDynamicRouter });
-        container.register<CustomizationDynamicRouter>("CustomizationDynamicRouter", { useClass: CustomizationDynamicRouter });
-        container.register<DataDynamicRouter>("DataDynamicRouter", { useClass: DataDynamicRouter });
-        container.register<HttpDynamicRouter>("HttpDynamicRouter", { useClass: HttpDynamicRouter });
-        container.register<InraidDynamicRouter>("InraidDynamicRouter", { useClass: InraidDynamicRouter });
-        container.register<LocationDynamicRouter>("LocationDynamicRouter", { useClass: LocationDynamicRouter });
-        container.register<NotifierDynamicRouter>("NotifierDynamicRouter", { useClass: NotifierDynamicRouter });
-        container.register<TraderDynamicRouter>("TraderDynamicRouter", { useClass: TraderDynamicRouter });
+    // Dynamic Routes
+    container.register<BotDynamicRouter>("BotDynamicRouter", { useClass: BotDynamicRouter });
+    container.register<BundleDynamicRouter>("BundleDynamicRouter", { useClass: BundleDynamicRouter });
+    container.register<CustomizationDynamicRouter>("CustomizationDynamicRouter", { useClass: CustomizationDynamicRouter });
+    container.register<DataDynamicRouter>("DataDynamicRouter", { useClass: DataDynamicRouter });
+    container.register<HttpDynamicRouter>("HttpDynamicRouter", { useClass: HttpDynamicRouter });
+    container.register<InraidDynamicRouter>("InraidDynamicRouter", { useClass: InraidDynamicRouter });
+    container.register<LocationDynamicRouter>("LocationDynamicRouter", { useClass: LocationDynamicRouter });
+    container.register<NotifierDynamicRouter>("NotifierDynamicRouter", { useClass: NotifierDynamicRouter });
+    container.register<TraderDynamicRouter>("TraderDynamicRouter", { useClass: TraderDynamicRouter });
 
-        // Item Event Routes
-        container.register<CustomizationItemEventRouter>("CustomizationItemEventRouter", { useClass: CustomizationItemEventRouter });
-        container.register<HealthItemEventRouter>("HealthItemEventRouter", { useClass: HealthItemEventRouter });
-        container.register<HideoutItemEventRouter>("HideoutItemEventRouter", { useClass: HideoutItemEventRouter });
-        container.register<InsuranceItemEventRouter>("InsuranceItemEventRouter", { useClass: InsuranceItemEventRouter });
-        container.register<InventoryItemEventRouter>("InventoryItemEventRouter", { useClass: InventoryItemEventRouter });
-        container.register<NoteItemEventRouter>("NoteItemEventRouter", { useClass: NoteItemEventRouter });
-        container.register<PresetBuildItemEventRouter>("PresetBuildItemEventRouter", { useClass: PresetBuildItemEventRouter });
-        container.register<QuestItemEventRouter>("QuestItemEventRouter", { useClass: QuestItemEventRouter });
-        container.register<RagfairItemEventRouter>("RagfairItemEventRouter", { useClass: RagfairItemEventRouter });
-        container.register<RepairItemEventRouter>("RepairItemEventRouter", { useClass: RepairItemEventRouter });
-        container.register<TradeItemEventRouter>("TradeItemEventRouter", { useClass: TradeItemEventRouter });
-        container.register<WishlistItemEventRouter>("WishlistItemEventRouter", { useClass: WishlistItemEventRouter });
+    // Item Event Routes
+    container.register<CustomizationItemEventRouter>("CustomizationItemEventRouter", { useClass: CustomizationItemEventRouter });
+    container.register<HealthItemEventRouter>("HealthItemEventRouter", { useClass: HealthItemEventRouter });
+    container.register<HideoutItemEventRouter>("HideoutItemEventRouter", { useClass: HideoutItemEventRouter });
+    container.register<InsuranceItemEventRouter>("InsuranceItemEventRouter", { useClass: InsuranceItemEventRouter });
+    container.register<InventoryItemEventRouter>("InventoryItemEventRouter", { useClass: InventoryItemEventRouter });
+    container.register<NoteItemEventRouter>("NoteItemEventRouter", { useClass: NoteItemEventRouter });
+    container.register<PresetBuildItemEventRouter>("PresetBuildItemEventRouter", { useClass: PresetBuildItemEventRouter });
+    container.register<QuestItemEventRouter>("QuestItemEventRouter", { useClass: QuestItemEventRouter });
+    container.register<RagfairItemEventRouter>("RagfairItemEventRouter", { useClass: RagfairItemEventRouter });
+    container.register<RepairItemEventRouter>("RepairItemEventRouter", { useClass: RepairItemEventRouter });
+    container.register<TradeItemEventRouter>("TradeItemEventRouter", { useClass: TradeItemEventRouter });
+    container.register<WishlistItemEventRouter>("WishlistItemEventRouter", { useClass: WishlistItemEventRouter });
 
-        // Save Load Routes
-        container.register<HealthSaveLoadRouter>("HealthSaveLoadRouter", { useClass: HealthSaveLoadRouter });
-        container.register<InraidSaveLoadRouter>("InraidSaveLoadRouter", { useClass: InraidSaveLoadRouter });
-        container.register<InsuranceSaveLoadRouter>("InsuranceSaveLoadRouter", { useClass: InsuranceSaveLoadRouter });
-        container.register<ProfileSaveLoadRouter>("ProfileSaveLoadRouter", { useClass: ProfileSaveLoadRouter });
+    // Save Load Routes
+    container.register<HealthSaveLoadRouter>("HealthSaveLoadRouter", { useClass: HealthSaveLoadRouter });
+    container.register<InraidSaveLoadRouter>("InraidSaveLoadRouter", { useClass: InraidSaveLoadRouter });
+    container.register<InsuranceSaveLoadRouter>("InsuranceSaveLoadRouter", { useClass: InsuranceSaveLoadRouter });
+    container.register<ProfileSaveLoadRouter>("ProfileSaveLoadRouter", { useClass: ProfileSaveLoadRouter });
 
-        // Route Serializers
-        container.register<BundleSerializer>("BundleSerializer", { useClass: BundleSerializer });
-        container.register<ImageSerializer>("ImageSerializer", { useClass: ImageSerializer });
-        container.register<NotifySerializer>("NotifySerializer", { useClass: NotifySerializer });
+    // Route Serializers
+    container.register<BundleSerializer>("BundleSerializer", { useClass: BundleSerializer });
+    container.register<ImageSerializer>("ImageSerializer", { useClass: ImageSerializer });
+    container.register<NotifySerializer>("NotifySerializer", { useClass: NotifySerializer });
 
-        // Static Routes
-        container.register<BotStaticRouter>("BotStaticRouter", { useClass: BotStaticRouter });
-        container.register<BundleStaticRouter>("BundleStaticRouter", { useClass: BundleStaticRouter });
-        container.register<ClientLogStaticRouter>("ClientLogStaticRouter", { useClass: ClientLogStaticRouter });
-        container.register<CustomizationStaticRouter>("CustomizationStaticRouter", { useClass: CustomizationStaticRouter });
-        container.register<DataStaticRouter>("DataStaticRouter", { useClass: DataStaticRouter });
-        container.register<DialogStaticRouter>("DialogStaticRouter", { useClass: DialogStaticRouter });
-        container.register<GameStaticRouter>("GameStaticRouter", { useClass: GameStaticRouter });
-        container.register<HealthStaticRouter>("HealthStaticRouter", { useClass: HealthStaticRouter });
-        container.register<InraidStaticRouter>("InraidStaticRouter", { useClass: InraidStaticRouter });
-        container.register<InsuranceStaticRouter>("InsuranceStaticRouter", { useClass: InsuranceStaticRouter });
-        container.register<ItemEventStaticRouter>("ItemEventStaticRouter", { useClass: ItemEventStaticRouter });
-        container.register<LauncherStaticRouter>("LauncherStaticRouter", { useClass: LauncherStaticRouter });
-        container.register<LocationStaticRouter>("LocationStaticRouter", { useClass: LocationStaticRouter });
-        container.register<MatchStaticRouter>("MatchStaticRouter", { useClass: MatchStaticRouter });
-        container.register<NotifierStaticRouter>("NotifierStaticRouter", { useClass: NotifierStaticRouter });
-        container.register<PresetStaticRouter>("PresetStaticRouter", { useClass: PresetStaticRouter });
-        container.register<ProfileStaticRouter>("ProfileStaticRouter", { useClass: ProfileStaticRouter });
-        container.register<QuestStaticRouter>("QuestStaticRouter", { useClass: QuestStaticRouter });
-        container.register<RagfairStaticRouter>("RagfairStaticRouter", { useClass: RagfairStaticRouter });
-        container.register<TraderStaticRouter>("TraderStaticRouter", { useClass: TraderStaticRouter });
-        container.register<WeatherStaticRouter>("WeatherStaticRouter", { useClass: WeatherStaticRouter });
-    }
+    // Static Routes
+    container.register<BotStaticRouter>("BotStaticRouter", { useClass: BotStaticRouter });
+    container.register<BundleStaticRouter>("BundleStaticRouter", { useClass: BundleStaticRouter });
+    container.register<ClientLogStaticRouter>("ClientLogStaticRouter", { useClass: ClientLogStaticRouter });
+    container.register<CustomizationStaticRouter>("CustomizationStaticRouter", { useClass: CustomizationStaticRouter });
+    container.register<DataStaticRouter>("DataStaticRouter", { useClass: DataStaticRouter });
+    container.register<DialogStaticRouter>("DialogStaticRouter", { useClass: DialogStaticRouter });
+    container.register<GameStaticRouter>("GameStaticRouter", { useClass: GameStaticRouter });
+    container.register<HealthStaticRouter>("HealthStaticRouter", { useClass: HealthStaticRouter });
+    container.register<InraidStaticRouter>("InraidStaticRouter", { useClass: InraidStaticRouter });
+    container.register<InsuranceStaticRouter>("InsuranceStaticRouter", { useClass: InsuranceStaticRouter });
+    container.register<ItemEventStaticRouter>("ItemEventStaticRouter", { useClass: ItemEventStaticRouter });
+    container.register<LauncherStaticRouter>("LauncherStaticRouter", { useClass: LauncherStaticRouter });
+    container.register<LocationStaticRouter>("LocationStaticRouter", { useClass: LocationStaticRouter });
+    container.register<MatchStaticRouter>("MatchStaticRouter", { useClass: MatchStaticRouter });
+    container.register<NotifierStaticRouter>("NotifierStaticRouter", { useClass: NotifierStaticRouter });
+    container.register<PresetStaticRouter>("PresetStaticRouter", { useClass: PresetStaticRouter });
+    container.register<ProfileStaticRouter>("ProfileStaticRouter", { useClass: ProfileStaticRouter });
+    container.register<QuestStaticRouter>("QuestStaticRouter", { useClass: QuestStaticRouter });
+    container.register<RagfairStaticRouter>("RagfairStaticRouter", { useClass: RagfairStaticRouter });
+    container.register<TraderStaticRouter>("TraderStaticRouter", { useClass: TraderStaticRouter });
+    container.register<WeatherStaticRouter>("WeatherStaticRouter", { useClass: WeatherStaticRouter });
+}
 
-    private registerGenerators(container: DependencyContainer): void
-    {
-        // Generators
-        container.register<BotGenerator>("BotGenerator", BotGenerator);
-        container.register<BotWeaponGenerator>("BotWeaponGenerator", BotWeaponGenerator);
-        container.register<BotLootGenerator>("BotLootGenerator", BotLootGenerator);
-        container.register<BotInventoryGenerator>("BotInventoryGenerator", BotInventoryGenerator);
-        container.register<LocationGenerator>("LocationGenerator", { useClass: LocationGenerator });
-        container.register<PMCLootGenerator>("PMCLootGenerator", PMCLootGenerator, { lifecycle: Lifecycle.Singleton });
-        container.register<ScavCaseRewardGenerator>("ScavCaseRewardGenerator", ScavCaseRewardGenerator, { lifecycle: Lifecycle.Singleton });
-        container.register<RagfairAssortGenerator>("RagfairAssortGenerator", { useClass: RagfairAssortGenerator });
-        container.register<RagfairOfferGenerator>("RagfairOfferGenerator", { useClass: RagfairOfferGenerator });
-        container.register<WeatherGenerator>("WeatherGenerator", { useClass: WeatherGenerator });
-        container.register<PlayerScavGenerator>("PlayerScavGenerator", { useClass: PlayerScavGenerator });
-        container.register<LootGenerator>("LootGenerator", { useClass: LootGenerator });
-        container.register<FenceBaseAssortGenerator>("FenceBaseAssortGenerator", { useClass: FenceBaseAssortGenerator });
-        container.register<BotLevelGenerator>("BotLevelGenerator", { useClass: BotLevelGenerator });
-        container.register<BotEquipmentModGenerator>("BotEquipmentModGenerator", { useClass: BotEquipmentModGenerator });
-        container.register<RepeatableQuestGenerator>("RepeatableQuestGenerator", { useClass: RepeatableQuestGenerator });
-        container.register<BarrelInventoryMagGen>("BarrelInventoryMagGen", { useClass: BarrelInventoryMagGen });
-        container.register<ExternalInventoryMagGen>("ExternalInventoryMagGen", { useClass: ExternalInventoryMagGen });
-        container.register<InternalMagazineInventoryMagGen>("InternalMagazineInventoryMagGen", { useClass: InternalMagazineInventoryMagGen });
-        container.register<UbglExternalMagGen>("UbglExternalMagGen", { useClass: UbglExternalMagGen });
+function registerGenerators(container: DependencyContainer): void
+{
+    // Generators
+    container.register<BotGenerator>("BotGenerator", BotGenerator);
+    container.register<BotWeaponGenerator>("BotWeaponGenerator", BotWeaponGenerator);
+    container.register<BotLootGenerator>("BotLootGenerator", BotLootGenerator);
+    container.register<BotInventoryGenerator>("BotInventoryGenerator", BotInventoryGenerator);
+    container.register<LocationGenerator>("LocationGenerator", { useClass: LocationGenerator });
+    container.register<PMCLootGenerator>("PMCLootGenerator", PMCLootGenerator, { lifecycle: Lifecycle.Singleton });
+    container.register<ScavCaseRewardGenerator>("ScavCaseRewardGenerator", ScavCaseRewardGenerator, { lifecycle: Lifecycle.Singleton });
+    container.register<RagfairAssortGenerator>("RagfairAssortGenerator", { useClass: RagfairAssortGenerator });
+    container.register<RagfairOfferGenerator>("RagfairOfferGenerator", { useClass: RagfairOfferGenerator });
+    container.register<WeatherGenerator>("WeatherGenerator", { useClass: WeatherGenerator });
+    container.register<PlayerScavGenerator>("PlayerScavGenerator", { useClass: PlayerScavGenerator });
+    container.register<LootGenerator>("LootGenerator", { useClass: LootGenerator });
+    container.register<FenceBaseAssortGenerator>("FenceBaseAssortGenerator", { useClass: FenceBaseAssortGenerator });
+    container.register<BotLevelGenerator>("BotLevelGenerator", { useClass: BotLevelGenerator });
+    container.register<BotEquipmentModGenerator>("BotEquipmentModGenerator", { useClass: BotEquipmentModGenerator });
+    container.register<RepeatableQuestGenerator>("RepeatableQuestGenerator", { useClass: RepeatableQuestGenerator });
+    container.register<BarrelInventoryMagGen>("BarrelInventoryMagGen", { useClass: BarrelInventoryMagGen });
+    container.register<ExternalInventoryMagGen>("ExternalInventoryMagGen", { useClass: ExternalInventoryMagGen });
+    container.register<InternalMagazineInventoryMagGen>("InternalMagazineInventoryMagGen", { useClass: InternalMagazineInventoryMagGen });
+    container.register<UbglExternalMagGen>("UbglExternalMagGen", { useClass: UbglExternalMagGen });
 
-        container.registerType("InventoryMagGen", "BarrelInventoryMagGen");
-        container.registerType("InventoryMagGen", "ExternalInventoryMagGen");
-        container.registerType("InventoryMagGen", "InternalMagazineInventoryMagGen");
-        container.registerType("InventoryMagGen", "UbglExternalMagGen");
-    }
+    container.registerType("InventoryMagGen", "BarrelInventoryMagGen");
+    container.registerType("InventoryMagGen", "ExternalInventoryMagGen");
+    container.registerType("InventoryMagGen", "InternalMagazineInventoryMagGen");
+    container.registerType("InventoryMagGen", "UbglExternalMagGen");
+}
 
-    private registerHelpers(container: DependencyContainer): void
-    {
-        // Helpers
-        container.register<AssortHelper>("AssortHelper", { useClass: AssortHelper });
-        container.register<BotHelper>("BotHelper", { useClass: BotHelper });
-        container.register<BotGeneratorHelper>("BotGeneratorHelper", { useClass: BotGeneratorHelper });
-        container.register<ContainerHelper>("ContainerHelper", ContainerHelper);
-        container.register<DialogueHelper>("DialogueHelper", { useClass: DialogueHelper });
-        container.register<DurabilityLimitsHelper>("DurabilityLimitsHelper", { useClass: DurabilityLimitsHelper });
-        container.register<GameEventHelper>("GameEventHelper", GameEventHelper);
-        container.register<HandbookHelper>("HandbookHelper", HandbookHelper, { lifecycle: Lifecycle.Singleton });
-        container.register<HealthHelper>("HealthHelper", { useClass: HealthHelper });
-        container.register<HideoutHelper>("HideoutHelper", { useClass: HideoutHelper });
-        container.register<InRaidHelper>("InRaidHelper", { useClass: InRaidHelper });
-        container.register<InventoryHelper>("InventoryHelper", { useClass: InventoryHelper });
-        container.register<PaymentHelper>("PaymentHelper", PaymentHelper);
-        container.register<ItemHelper>("ItemHelper", { useClass: ItemHelper });
-        container.register<PresetHelper>("PresetHelper", PresetHelper, { lifecycle: Lifecycle.Singleton });
-        container.register<ProfileHelper>("ProfileHelper", { useClass: ProfileHelper });
-        container.register<QuestHelper>("QuestHelper", { useClass: QuestHelper });
-        container.register<QuestConditionHelper>("QuestConditionHelper", QuestConditionHelper);
-        container.register<RagfairHelper>("RagfairHelper", { useClass: RagfairHelper });
-        container.register<RagfairSortHelper>("RagfairSortHelper", { useClass: RagfairSortHelper });
-        container.register<RagfairSellHelper>("RagfairSellHelper", { useClass: RagfairSellHelper });
-        container.register<RagfairOfferHelper>("RagfairOfferHelper", { useClass: RagfairOfferHelper });
-        container.register<RagfairServerHelper>("RagfairServerHelper", { useClass: RagfairServerHelper });
-        container.register<RepairHelper>("RepairHelper", { useClass: RepairHelper });
-        container.register<TraderHelper>("TraderHelper", TraderHelper);
-        container.register<TraderAssortHelper>("TraderAssortHelper", TraderAssortHelper, { lifecycle: Lifecycle.Singleton });
-        container.register<TradeHelper>("TradeHelper", { useClass: TradeHelper });
-        container.register<NotifierHelper>("NotifierHelper", { useClass: NotifierHelper });
-        container.register<UtilityHelper>("UtilityHelper", UtilityHelper);
-        container.register<WeightedRandomHelper>("WeightedRandomHelper", { useClass: WeightedRandomHelper });
-        container.register<HttpServerHelper>("HttpServerHelper", { useClass: HttpServerHelper });
-        container.register<NotificationSendHelper>("NotificationSendHelper", { useClass: NotificationSendHelper });
-        container.register<SecureContainerHelper>("SecureContainerHelper", { useClass: SecureContainerHelper });
-        container.register<ProbabilityHelper>("ProbabilityHelper", { useClass: ProbabilityHelper });
-        container.register<BotWeaponGeneratorHelper>("BotWeaponGeneratorHelper", { useClass: BotWeaponGeneratorHelper });
-        container.register<BotDifficultyHelper>("BotDifficultyHelper", { useClass: BotDifficultyHelper });
-        container.register<RepeatableQuestHelper>("RepeatableQuestHelper", { useClass: RepeatableQuestHelper });
-    }
+function registerHelpers(container: DependencyContainer): void
+{
+    // Helpers
+    container.register<AssortHelper>("AssortHelper", { useClass: AssortHelper });
+    container.register<BotHelper>("BotHelper", { useClass: BotHelper });
+    container.register<BotGeneratorHelper>("BotGeneratorHelper", { useClass: BotGeneratorHelper });
+    container.register<ContainerHelper>("ContainerHelper", ContainerHelper);
+    container.register<DialogueHelper>("DialogueHelper", { useClass: DialogueHelper });
+    container.register<DurabilityLimitsHelper>("DurabilityLimitsHelper", { useClass: DurabilityLimitsHelper });
+    container.register<GameEventHelper>("GameEventHelper", GameEventHelper);
+    container.register<HandbookHelper>("HandbookHelper", HandbookHelper, { lifecycle: Lifecycle.Singleton });
+    container.register<HealthHelper>("HealthHelper", { useClass: HealthHelper });
+    container.register<HideoutHelper>("HideoutHelper", { useClass: HideoutHelper });
+    container.register<InRaidHelper>("InRaidHelper", { useClass: InRaidHelper });
+    container.register<InventoryHelper>("InventoryHelper", { useClass: InventoryHelper });
+    container.register<PaymentHelper>("PaymentHelper", PaymentHelper);
+    container.register<ItemHelper>("ItemHelper", { useClass: ItemHelper });
+    container.register<PresetHelper>("PresetHelper", PresetHelper, { lifecycle: Lifecycle.Singleton });
+    container.register<ProfileHelper>("ProfileHelper", { useClass: ProfileHelper });
+    container.register<QuestHelper>("QuestHelper", { useClass: QuestHelper });
+    container.register<QuestConditionHelper>("QuestConditionHelper", QuestConditionHelper);
+    container.register<RagfairHelper>("RagfairHelper", { useClass: RagfairHelper });
+    container.register<RagfairSortHelper>("RagfairSortHelper", { useClass: RagfairSortHelper });
+    container.register<RagfairSellHelper>("RagfairSellHelper", { useClass: RagfairSellHelper });
+    container.register<RagfairOfferHelper>("RagfairOfferHelper", { useClass: RagfairOfferHelper });
+    container.register<RagfairServerHelper>("RagfairServerHelper", { useClass: RagfairServerHelper });
+    container.register<RepairHelper>("RepairHelper", { useClass: RepairHelper });
+    container.register<TraderHelper>("TraderHelper", TraderHelper);
+    container.register<TraderAssortHelper>("TraderAssortHelper", TraderAssortHelper, { lifecycle: Lifecycle.Singleton });
+    container.register<TradeHelper>("TradeHelper", { useClass: TradeHelper });
+    container.register<NotifierHelper>("NotifierHelper", { useClass: NotifierHelper });
+    container.register<UtilityHelper>("UtilityHelper", UtilityHelper);
+    container.register<WeightedRandomHelper>("WeightedRandomHelper", { useClass: WeightedRandomHelper });
+    container.register<HttpServerHelper>("HttpServerHelper", { useClass: HttpServerHelper });
+    container.register<NotificationSendHelper>("NotificationSendHelper", { useClass: NotificationSendHelper });
+    container.register<SecureContainerHelper>("SecureContainerHelper", { useClass: SecureContainerHelper });
+    container.register<ProbabilityHelper>("ProbabilityHelper", { useClass: ProbabilityHelper });
+    container.register<BotWeaponGeneratorHelper>("BotWeaponGeneratorHelper", { useClass: BotWeaponGeneratorHelper });
+    container.register<BotDifficultyHelper>("BotDifficultyHelper", { useClass: BotDifficultyHelper });
+    container.register<RepeatableQuestHelper>("RepeatableQuestHelper", { useClass: RepeatableQuestHelper });
+}
 
-    private registerLoaders(container: DependencyContainer): void
-    {
-        // Loaders
-        container.register<BundleLoader>("BundleLoader", BundleLoader, { lifecycle: Lifecycle.Singleton });
-        container.register<PreAkiModLoader>("PreAkiModLoader", PreAkiModLoader, { lifecycle: Lifecycle.Singleton });
-        container.register<PostAkiModLoader>("PostAkiModLoader", PostAkiModLoader, { lifecycle: Lifecycle.Singleton });
-    }
+function registerLoaders(container: DependencyContainer): void
+{
+    // Loaders
+    container.register<BundleLoader>("BundleLoader", BundleLoader, { lifecycle: Lifecycle.Singleton });
+    container.register<PreAkiModLoader>("PreAkiModLoader", PreAkiModLoader, { lifecycle: Lifecycle.Singleton });
+    container.register<PostAkiModLoader>("PostAkiModLoader", PostAkiModLoader, { lifecycle: Lifecycle.Singleton });
+}
 
-    private registerCallbacks(container: DependencyContainer): void
-    {
-        // Callbacks
-        container.register<BotCallbacks>("BotCallbacks", { useClass: BotCallbacks });
-        container.register<BundleCallbacks>("BundleCallbacks", { useClass: BundleCallbacks });
-        container.register<ClientLogCallbacks>("ClientLogCallbacks", { useClass: ClientLogCallbacks });
-        container.register<CustomizationCallbacks>("CustomizationCallbacks", { useClass: CustomizationCallbacks });
-        container.register<DataCallbacks>("DataCallbacks", { useClass: DataCallbacks });
-        container.register<DialogueCallbacks>("DialogueCallbacks", { useClass: DialogueCallbacks });
-        container.register<GameCallbacks>("GameCallbacks", { useClass: GameCallbacks });
-        container.register<HandbookCallbacks>("HandbookCallbacks", { useClass: HandbookCallbacks });
-        container.register<HealthCallbacks>("HealthCallbacks", { useClass: HealthCallbacks });
-        container.register<HideoutCallbacks>("HideoutCallbacks", { useClass: HideoutCallbacks });
-        container.register<HttpCallbacks>("HttpCallbacks", { useClass: HttpCallbacks });
-        container.register<InraidCallbacks>("InraidCallbacks", { useClass: InraidCallbacks });
-        container.register<InsuranceCallbacks>("InsuranceCallbacks", { useClass: InsuranceCallbacks });
-        container.register<InventoryCallbacks>("InventoryCallbacks", { useClass: InventoryCallbacks });
-        container.register<ItemEventCallbacks>("ItemEventCallbacks", { useClass: ItemEventCallbacks });
-        container.register<LauncherCallbacks>("LauncherCallbacks", { useClass: LauncherCallbacks });
-        container.register<LocationCallbacks>("LocationCallbacks", { useClass: LocationCallbacks });
-        container.register<MatchCallbacks>("MatchCallbacks", { useClass: MatchCallbacks });
-        container.register<ModCallbacks>("ModCallbacks", { useClass: ModCallbacks });
-        container.register<PostDBModLoader>("PostDBModLoader", { useClass: PostDBModLoader });
-        container.register<NoteCallbacks>("NoteCallbacks", { useClass: NoteCallbacks });
-        container.register<NotifierCallbacks>("NotifierCallbacks", { useClass: NotifierCallbacks });
-        container.register<PresetBuildCallbacks>("PresetBuildCallbacks", { useClass: PresetBuildCallbacks });
-        container.register<PresetCallbacks>("PresetCallbacks", { useClass: PresetCallbacks });
-        container.register<ProfileCallbacks>("ProfileCallbacks", { useClass: ProfileCallbacks });
-        container.register<QuestCallbacks>("QuestCallbacks", { useClass: QuestCallbacks });
-        container.register<RagfairCallbacks>("RagfairCallbacks", { useClass: RagfairCallbacks });
-        container.register<RepairCallbacks>("RepairCallbacks", { useClass: RepairCallbacks });
-        container.register<SaveCallbacks>("SaveCallbacks", { useClass: SaveCallbacks });
-        container.register<TradeCallbacks>("TradeCallbacks", { useClass: TradeCallbacks });
-        container.register<TraderCallbacks>("TraderCallbacks", { useClass: TraderCallbacks });
-        container.register<WeatherCallbacks>("WeatherCallbacks", { useClass: WeatherCallbacks });
-        container.register<WishlistCallbacks>("WishlistCallbacks", { useClass: WishlistCallbacks });
-    }
+function registerCallbacks(container: DependencyContainer): void
+{
+    // Callbacks
+    container.register<BotCallbacks>("BotCallbacks", { useClass: BotCallbacks });
+    container.register<BundleCallbacks>("BundleCallbacks", { useClass: BundleCallbacks });
+    container.register<ClientLogCallbacks>("ClientLogCallbacks", { useClass: ClientLogCallbacks });
+    container.register<CustomizationCallbacks>("CustomizationCallbacks", { useClass: CustomizationCallbacks });
+    container.register<DataCallbacks>("DataCallbacks", { useClass: DataCallbacks });
+    container.register<DialogueCallbacks>("DialogueCallbacks", { useClass: DialogueCallbacks });
+    container.register<GameCallbacks>("GameCallbacks", { useClass: GameCallbacks });
+    container.register<HandbookCallbacks>("HandbookCallbacks", { useClass: HandbookCallbacks });
+    container.register<HealthCallbacks>("HealthCallbacks", { useClass: HealthCallbacks });
+    container.register<HideoutCallbacks>("HideoutCallbacks", { useClass: HideoutCallbacks });
+    container.register<HttpCallbacks>("HttpCallbacks", { useClass: HttpCallbacks });
+    container.register<InraidCallbacks>("InraidCallbacks", { useClass: InraidCallbacks });
+    container.register<InsuranceCallbacks>("InsuranceCallbacks", { useClass: InsuranceCallbacks });
+    container.register<InventoryCallbacks>("InventoryCallbacks", { useClass: InventoryCallbacks });
+    container.register<ItemEventCallbacks>("ItemEventCallbacks", { useClass: ItemEventCallbacks });
+    container.register<LauncherCallbacks>("LauncherCallbacks", { useClass: LauncherCallbacks });
+    container.register<LocationCallbacks>("LocationCallbacks", { useClass: LocationCallbacks });
+    container.register<MatchCallbacks>("MatchCallbacks", { useClass: MatchCallbacks });
+    container.register<ModCallbacks>("ModCallbacks", { useClass: ModCallbacks });
+    container.register<PostDBModLoader>("PostDBModLoader", { useClass: PostDBModLoader });
+    container.register<NoteCallbacks>("NoteCallbacks", { useClass: NoteCallbacks });
+    container.register<NotifierCallbacks>("NotifierCallbacks", { useClass: NotifierCallbacks });
+    container.register<PresetBuildCallbacks>("PresetBuildCallbacks", { useClass: PresetBuildCallbacks });
+    container.register<PresetCallbacks>("PresetCallbacks", { useClass: PresetCallbacks });
+    container.register<ProfileCallbacks>("ProfileCallbacks", { useClass: ProfileCallbacks });
+    container.register<QuestCallbacks>("QuestCallbacks", { useClass: QuestCallbacks });
+    container.register<RagfairCallbacks>("RagfairCallbacks", { useClass: RagfairCallbacks });
+    container.register<RepairCallbacks>("RepairCallbacks", { useClass: RepairCallbacks });
+    container.register<SaveCallbacks>("SaveCallbacks", { useClass: SaveCallbacks });
+    container.register<TradeCallbacks>("TradeCallbacks", { useClass: TradeCallbacks });
+    container.register<TraderCallbacks>("TraderCallbacks", { useClass: TraderCallbacks });
+    container.register<WeatherCallbacks>("WeatherCallbacks", { useClass: WeatherCallbacks });
+    container.register<WishlistCallbacks>("WishlistCallbacks", { useClass: WishlistCallbacks });
+}
 
-    private registerServices(container: DependencyContainer): void
-    {
-        // Services
-        container.register<ImageRouteService>("ImageRouteService", ImageRouteService, { lifecycle: Lifecycle.Singleton });
-        container.register<FenceService>("FenceService", FenceService, { lifecycle: Lifecycle.Singleton });
-        container.register<PlayerService>("PlayerService", { useClass: PlayerService });
-        container.register<PaymentService>("PaymentService", { useClass: PaymentService });
-        container.register<InsuranceService>("InsuranceService", InsuranceService, { lifecycle: Lifecycle.Singleton });
-        container.register<TraderAssortService>("TraderAssortService", TraderAssortService, { lifecycle: Lifecycle.Singleton });
-        container.register<RagfairPriceService>("RagfairPriceService", RagfairPriceService, { lifecycle: Lifecycle.Singleton });
-        container.register<RagfairCategoriesService>("RagfairCategoriesService", RagfairCategoriesService, { lifecycle: Lifecycle.Singleton });
-        container.register<RagfairOfferService>("RagfairOfferService", RagfairOfferService, { lifecycle: Lifecycle.Singleton });
-        container.register<RagfairLinkedItemService>("RagfairLinkedItemService", RagfairLinkedItemService, { lifecycle: Lifecycle.Singleton });
-        container.register<RagfairRequiredItemsService>("RagfairRequiredItemsService", RagfairRequiredItemsService, { lifecycle: Lifecycle.Singleton });
-        container.register<NotificationService>("NotificationService", NotificationService, { lifecycle: Lifecycle.Singleton });
-        container.register<MatchLocationService>("MatchLocationService", MatchLocationService, { lifecycle: Lifecycle.Singleton });
-        container.register<ModCompilerService>("ModCompilerService", ModCompilerService);
-        container.register<HashCacheService>("HashCacheService", HashCacheService, { lifecycle: Lifecycle.Singleton });
-        container.register<LocaleService>("LocaleService", LocaleService, { lifecycle: Lifecycle.Singleton });
-        container.register<ProfileFixerService>("ProfileFixerService", ProfileFixerService);
-        container.register<RepairService>("RepairService", RepairService);
-        container.register<BotLootCacheService>("BotLootCacheService", BotLootCacheService, { lifecycle: Lifecycle.Singleton });
-        container.register<CustomItemService>("CustomItemService", CustomItemService);
-        container.register<BotEquipmentFilterService>("BotEquipmentFilterService", BotEquipmentFilterService);
-        container.register<ProfileSnapshotService>("ProfileSnapshotService", ProfileSnapshotService, { lifecycle: Lifecycle.Singleton });
-        container.register<ItemFilterService>("ItemFilterService", ItemFilterService, { lifecycle: Lifecycle.Singleton });
-        container.register<BotGenerationCacheService>("BotGenerationCacheService", BotGenerationCacheService, { lifecycle: Lifecycle.Singleton });
-        container.register<LocalisationService>("LocalisationService", LocalisationService, { lifecycle: Lifecycle.Singleton });
-        container.register<CustomLocationWaveService>("CustomLocationWaveService", CustomLocationWaveService, { lifecycle: Lifecycle.Singleton });
-        container.register<OpenZoneService>("OpenZoneService", OpenZoneService, { lifecycle: Lifecycle.Singleton });
-        container.register<ItemBaseClassService>("ItemBaseClassService", ItemBaseClassService, { lifecycle: Lifecycle.Singleton });
-        container.register<BotEquipmentModPoolService>("BotEquipmentModPoolService", BotEquipmentModPoolService, { lifecycle: Lifecycle.Singleton });
-        container.register<BotWeaponModLimitService>("BotWeaponModLimitService", BotWeaponModLimitService, { lifecycle: Lifecycle.Singleton });
-        container.register<SeasonalEventService>("SeasonalEventService", SeasonalEventService, { lifecycle: Lifecycle.Singleton });
-        container.register<MatchBotDetailsCacheService>("MatchBotDetailsCacheService", MatchBotDetailsCacheService, { lifecycle: Lifecycle.Singleton });
-        container.register<RagfairTaxService>("RagfairTaxService", RagfairTaxService, { lifecycle: Lifecycle.Singleton });
-        container.register<TraderPurchasePersisterService>("TraderPurchasePersisterService", TraderPurchasePersisterService);
-        container.register<PmcChatResponseService>("PmcChatResponseService", PmcChatResponseService);
-        container.register<GiftService>("GiftService", GiftService);
-        container.register<MailSendService>("MailSendService", MailSendService);
-    }
+function registerServices(container: DependencyContainer): void
+{
+    // Services
+    container.register<ImageRouteService>("ImageRouteService", ImageRouteService, { lifecycle: Lifecycle.Singleton });
+    container.register<FenceService>("FenceService", FenceService, { lifecycle: Lifecycle.Singleton });
+    container.register<PlayerService>("PlayerService", { useClass: PlayerService });
+    container.register<PaymentService>("PaymentService", { useClass: PaymentService });
+    container.register<InsuranceService>("InsuranceService", InsuranceService, { lifecycle: Lifecycle.Singleton });
+    container.register<TraderAssortService>("TraderAssortService", TraderAssortService, { lifecycle: Lifecycle.Singleton });
+    container.register<RagfairPriceService>("RagfairPriceService", RagfairPriceService, { lifecycle: Lifecycle.Singleton });
+    container.register<RagfairCategoriesService>("RagfairCategoriesService", RagfairCategoriesService, { lifecycle: Lifecycle.Singleton });
+    container.register<RagfairOfferService>("RagfairOfferService", RagfairOfferService, { lifecycle: Lifecycle.Singleton });
+    container.register<RagfairLinkedItemService>("RagfairLinkedItemService", RagfairLinkedItemService, { lifecycle: Lifecycle.Singleton });
+    container.register<RagfairRequiredItemsService>("RagfairRequiredItemsService", RagfairRequiredItemsService, { lifecycle: Lifecycle.Singleton });
+    container.register<NotificationService>("NotificationService", NotificationService, { lifecycle: Lifecycle.Singleton });
+    container.register<MatchLocationService>("MatchLocationService", MatchLocationService, { lifecycle: Lifecycle.Singleton });
+    container.register<ModCompilerService>("ModCompilerService", ModCompilerService);
+    container.register<HashCacheService>("HashCacheService", HashCacheService, { lifecycle: Lifecycle.Singleton });
+    container.register<LocaleService>("LocaleService", LocaleService, { lifecycle: Lifecycle.Singleton });
+    container.register<ProfileFixerService>("ProfileFixerService", ProfileFixerService);
+    container.register<RepairService>("RepairService", RepairService);
+    container.register<BotLootCacheService>("BotLootCacheService", BotLootCacheService, { lifecycle: Lifecycle.Singleton });
+    container.register<CustomItemService>("CustomItemService", CustomItemService);
+    container.register<BotEquipmentFilterService>("BotEquipmentFilterService", BotEquipmentFilterService);
+    container.register<ProfileSnapshotService>("ProfileSnapshotService", ProfileSnapshotService, { lifecycle: Lifecycle.Singleton });
+    container.register<ItemFilterService>("ItemFilterService", ItemFilterService, { lifecycle: Lifecycle.Singleton });
+    container.register<BotGenerationCacheService>("BotGenerationCacheService", BotGenerationCacheService, { lifecycle: Lifecycle.Singleton });
+    container.register<LocalisationService>("LocalisationService", LocalisationService, { lifecycle: Lifecycle.Singleton });
+    container.register<CustomLocationWaveService>("CustomLocationWaveService", CustomLocationWaveService, { lifecycle: Lifecycle.Singleton });
+    container.register<OpenZoneService>("OpenZoneService", OpenZoneService, { lifecycle: Lifecycle.Singleton });
+    container.register<ItemBaseClassService>("ItemBaseClassService", ItemBaseClassService, { lifecycle: Lifecycle.Singleton });
+    container.register<BotEquipmentModPoolService>("BotEquipmentModPoolService", BotEquipmentModPoolService, { lifecycle: Lifecycle.Singleton });
+    container.register<BotWeaponModLimitService>("BotWeaponModLimitService", BotWeaponModLimitService, { lifecycle: Lifecycle.Singleton });
+    container.register<SeasonalEventService>("SeasonalEventService", SeasonalEventService, { lifecycle: Lifecycle.Singleton });
+    container.register<MatchBotDetailsCacheService>("MatchBotDetailsCacheService", MatchBotDetailsCacheService, { lifecycle: Lifecycle.Singleton });
+    container.register<RagfairTaxService>("RagfairTaxService", RagfairTaxService, { lifecycle: Lifecycle.Singleton });
+    container.register<TraderPurchasePersisterService>("TraderPurchasePersisterService", TraderPurchasePersisterService);
+    container.register<PmcChatResponseService>("PmcChatResponseService", PmcChatResponseService);
+    container.register<GiftService>("GiftService", GiftService);
+    container.register<MailSendService>("MailSendService", MailSendService);
+}
 
-    private registerServers(container: DependencyContainer): void
-    {
-        // Servers
-        container.register<DatabaseServer>("DatabaseServer", DatabaseServer, { lifecycle: Lifecycle.Singleton });
-        container.register<HttpServer>("HttpServer", HttpServer, { lifecycle: Lifecycle.Singleton });
-        container.register<WebSocketServer>("WebSocketServer", WebSocketServer, { lifecycle: Lifecycle.Singleton });
-        container.register<RagfairServer>("RagfairServer", RagfairServer);
-        container.register<SaveServer>("SaveServer", SaveServer, { lifecycle: Lifecycle.Singleton });
-        container.register<ConfigServer>("ConfigServer", ConfigServer, { lifecycle: Lifecycle.Singleton });
-        container.register<HttpBufferHandler>("HttpBufferHandler", HttpBufferHandler, {lifecycle: Lifecycle.Singleton});
-    }
+function registerServers(container: DependencyContainer): void
+{
+    // Servers
+    container.register<DatabaseServer>("DatabaseServer", DatabaseServer, { lifecycle: Lifecycle.Singleton });
+    container.register<HttpServer>("HttpServer", HttpServer, { lifecycle: Lifecycle.Singleton });
+    container.register<WebSocketServer>("WebSocketServer", WebSocketServer, { lifecycle: Lifecycle.Singleton });
+    container.register<RagfairServer>("RagfairServer", RagfairServer);
+    container.register<SaveServer>("SaveServer", SaveServer, { lifecycle: Lifecycle.Singleton });
+    container.register<ConfigServer>("ConfigServer", ConfigServer, { lifecycle: Lifecycle.Singleton });
+    container.register<HttpBufferHandler>("HttpBufferHandler", HttpBufferHandler, {lifecycle: Lifecycle.Singleton});
+}
 
-    private registerControllers(container: DependencyContainer): void
-    {
-        // Controllers
-        container.register<BotController>("BotController", { useClass: BotController });
-        container.register<ClientLogController>("ClientLogController", { useClass: ClientLogController });
-        container.register<CustomizationController>("CustomizationController", { useClass: CustomizationController });
-        container.register<DialogueController>("DialogueController", { useClass: DialogueController });
-        container.register<GameController>("GameController", { useClass: GameController });
-        container.register<HandbookController>("HandbookController", { useClass: HandbookController });
-        container.register<HealthController>("HealthController", { useClass: HealthController });
-        container.register<HideoutController>("HideoutController", { useClass: HideoutController });
-        container.register<InraidController>("InraidController", { useClass: InraidController });
-        container.register<InsuranceController>("InsuranceController", { useClass: InsuranceController });
-        container.register<InventoryController>("InventoryController", { useClass: InventoryController });
-        container.register<LauncherController>("LauncherController", { useClass: LauncherController });
-        container.register<LocationController>("LocationController", { useClass: LocationController });
-        container.register<MatchController>("MatchController", MatchController);
-        container.register<NoteController>("NoteController", { useClass: NoteController });
-        container.register<NotifierController>("NotifierController", { useClass: NotifierController });
-        container.register<PresetBuildController>("PresetBuildController", { useClass: PresetBuildController });
-        container.register<PresetController>("PresetController", { useClass: PresetController });
-        container.register<ProfileController>("ProfileController", { useClass: ProfileController });
-        container.register<QuestController>("QuestController", { useClass: QuestController });
-        container.register<RagfairController>("RagfairController", { useClass: RagfairController });
-        container.register<RepairController>("RepairController", { useClass: RepairController });
-        container.register<RepeatableQuestController>("RepeatableQuestController", { useClass: RepeatableQuestController });
-        container.register<TradeController>("TradeController", { useClass: TradeController });
-        container.register<TraderController>("TraderController", { useClass: TraderController });
-        container.register<WeatherController>("WeatherController", { useClass: WeatherController });
-        container.register<WishlistController>("WishlistController", WishlistController);
-    }
+function registerControllers(container: DependencyContainer): void
+{
+    // Controllers
+    container.register<BotController>("BotController", { useClass: BotController });
+    container.register<ClientLogController>("ClientLogController", { useClass: ClientLogController });
+    container.register<CustomizationController>("CustomizationController", { useClass: CustomizationController });
+    container.register<DialogueController>("DialogueController", { useClass: DialogueController });
+    container.register<GameController>("GameController", { useClass: GameController });
+    container.register<HandbookController>("HandbookController", { useClass: HandbookController });
+    container.register<HealthController>("HealthController", { useClass: HealthController });
+    container.register<HideoutController>("HideoutController", { useClass: HideoutController });
+    container.register<InraidController>("InraidController", { useClass: InraidController });
+    container.register<InsuranceController>("InsuranceController", { useClass: InsuranceController });
+    container.register<InventoryController>("InventoryController", { useClass: InventoryController });
+    container.register<LauncherController>("LauncherController", { useClass: LauncherController });
+    container.register<LocationController>("LocationController", { useClass: LocationController });
+    container.register<MatchController>("MatchController", MatchController);
+    container.register<NoteController>("NoteController", { useClass: NoteController });
+    container.register<NotifierController>("NotifierController", { useClass: NotifierController });
+    container.register<PresetBuildController>("PresetBuildController", { useClass: PresetBuildController });
+    container.register<PresetController>("PresetController", { useClass: PresetController });
+    container.register<ProfileController>("ProfileController", { useClass: ProfileController });
+    container.register<QuestController>("QuestController", { useClass: QuestController });
+    container.register<RagfairController>("RagfairController", { useClass: RagfairController });
+    container.register<RepairController>("RepairController", { useClass: RepairController });
+    container.register<RepeatableQuestController>("RepeatableQuestController", { useClass: RepeatableQuestController });
+    container.register<TradeController>("TradeController", { useClass: TradeController });
+    container.register<TraderController>("TraderController", { useClass: TraderController });
+    container.register<WeatherController>("WeatherController", { useClass: WeatherController });
+    container.register<WishlistController>("WishlistController", WishlistController);
+}
 
-    private registerListTypes(container: DependencyContainer): void
-    {
-        container.register("OnLoadModService", { useValue: new OnLoadModService(container) });
-        container.register("HttpListenerModService", { useValue: new HttpListenerModService(container) });
-        container.register("OnUpdateModService", { useValue: new OnUpdateModService(container) });
-        container.register("DynamicRouterModService", { useValue: new DynamicRouterModService(container) });
-        container.register("StaticRouterModService", { useValue: new StaticRouterModService(container) });
+function registerListTypes(container: DependencyContainer): void
+{
+    container.register("OnLoadModService", { useValue: new OnLoadModService(container) });
+    container.register("HttpListenerModService", { useValue: new HttpListenerModService(container) });
+    container.register("OnUpdateModService", { useValue: new OnUpdateModService(container) });
+    container.register("DynamicRouterModService", { useValue: new DynamicRouterModService(container) });
+    container.register("StaticRouterModService", { useValue: new StaticRouterModService(container) });
 
-        container.registerType("OnLoad", "DatabaseImporter");
-        container.registerType("OnLoad", "PostDBModLoader");
-        container.registerType("OnLoad", "HandbookCallbacks");
-        container.registerType("OnLoad", "HttpCallbacks");
-        container.registerType("OnLoad", "PresetCallbacks");
-        container.registerType("OnLoad", "SaveCallbacks");
-        container.registerType("OnLoad", "TraderCallbacks"); // must occur prior to RagfairCallbacks
-        container.registerType("OnLoad", "RagfairPriceService");
-        container.registerType("OnLoad", "RagfairCallbacks");
-        container.registerType("OnLoad", "ModCallbacks");
-        container.registerType("OnLoad", "GameCallbacks");
+    container.registerType("OnLoad", "DatabaseImporter");
+    container.registerType("OnLoad", "PostDBModLoader");
+    container.registerType("OnLoad", "HandbookCallbacks");
+    container.registerType("OnLoad", "HttpCallbacks");
+    container.registerType("OnLoad", "PresetCallbacks");
+    container.registerType("OnLoad", "SaveCallbacks");
+    container.registerType("OnLoad", "TraderCallbacks"); // must occur prior to RagfairCallbacks
+    container.registerType("OnLoad", "RagfairPriceService");
+    container.registerType("OnLoad", "RagfairCallbacks");
+    container.registerType("OnLoad", "ModCallbacks");
+    container.registerType("OnLoad", "GameCallbacks");
 
-        container.registerType("OnUpdate", "DialogueCallbacks");
-        container.registerType("OnUpdate", "HideoutCallbacks");
-        container.registerType("OnUpdate", "TraderCallbacks");
-        container.registerType("OnUpdate", "RagfairCallbacks");
-        container.registerType("OnUpdate", "InsuranceCallbacks");
-        container.registerType("OnUpdate", "SaveCallbacks");
+    container.registerType("OnUpdate", "DialogueCallbacks");
+    container.registerType("OnUpdate", "HideoutCallbacks");
+    container.registerType("OnUpdate", "TraderCallbacks");
+    container.registerType("OnUpdate", "RagfairCallbacks");
+    container.registerType("OnUpdate", "InsuranceCallbacks");
+    container.registerType("OnUpdate", "SaveCallbacks");
 
-        container.registerType("StaticRoutes", "BotStaticRouter");
-        container.registerType("StaticRoutes", "ClientLogStaticRouter");
-        container.registerType("StaticRoutes", "CustomizationStaticRouter");
-        container.registerType("StaticRoutes", "DataStaticRouter");
-        container.registerType("StaticRoutes", "DialogStaticRouter");
-        container.registerType("StaticRoutes", "GameStaticRouter");
-        container.registerType("StaticRoutes", "HealthStaticRouter");
-        container.registerType("StaticRoutes", "InraidStaticRouter");
-        container.registerType("StaticRoutes", "InsuranceStaticRouter");
-        container.registerType("StaticRoutes", "ItemEventStaticRouter");
-        container.registerType("StaticRoutes", "LauncherStaticRouter");
-        container.registerType("StaticRoutes", "LocationStaticRouter");
-        container.registerType("StaticRoutes", "WeatherStaticRouter");
-        container.registerType("StaticRoutes", "MatchStaticRouter");
-        container.registerType("StaticRoutes", "QuestStaticRouter");
-        container.registerType("StaticRoutes", "RagfairStaticRouter");
-        container.registerType("StaticRoutes", "PresetStaticRouter");
-        container.registerType("StaticRoutes", "BundleStaticRouter");
-        container.registerType("StaticRoutes", "NotifierStaticRouter");
-        container.registerType("StaticRoutes", "ProfileStaticRouter");
-        container.registerType("StaticRoutes", "TraderStaticRouter");
+    container.registerType("StaticRoutes", "BotStaticRouter");
+    container.registerType("StaticRoutes", "ClientLogStaticRouter");
+    container.registerType("StaticRoutes", "CustomizationStaticRouter");
+    container.registerType("StaticRoutes", "DataStaticRouter");
+    container.registerType("StaticRoutes", "DialogStaticRouter");
+    container.registerType("StaticRoutes", "GameStaticRouter");
+    container.registerType("StaticRoutes", "HealthStaticRouter");
+    container.registerType("StaticRoutes", "InraidStaticRouter");
+    container.registerType("StaticRoutes", "InsuranceStaticRouter");
+    container.registerType("StaticRoutes", "ItemEventStaticRouter");
+    container.registerType("StaticRoutes", "LauncherStaticRouter");
+    container.registerType("StaticRoutes", "LocationStaticRouter");
+    container.registerType("StaticRoutes", "WeatherStaticRouter");
+    container.registerType("StaticRoutes", "MatchStaticRouter");
+    container.registerType("StaticRoutes", "QuestStaticRouter");
+    container.registerType("StaticRoutes", "RagfairStaticRouter");
+    container.registerType("StaticRoutes", "PresetStaticRouter");
+    container.registerType("StaticRoutes", "BundleStaticRouter");
+    container.registerType("StaticRoutes", "NotifierStaticRouter");
+    container.registerType("StaticRoutes", "ProfileStaticRouter");
+    container.registerType("StaticRoutes", "TraderStaticRouter");
 
-        container.registerType("DynamicRoutes", "BotDynamicRouter");
-        container.registerType("DynamicRoutes", "BundleDynamicRouter");
-        container.registerType("DynamicRoutes", "CustomizationDynamicRouter");
-        container.registerType("DynamicRoutes", "DataDynamicRouter");
-        container.registerType("DynamicRoutes", "HttpDynamicRouter");
-        container.registerType("DynamicRoutes", "InraidDynamicRouter");
-        container.registerType("DynamicRoutes", "LocationDynamicRouter");
-        container.registerType("DynamicRoutes", "NotifierDynamicRouter");
-        container.registerType("DynamicRoutes", "TraderDynamicRouter");
+    container.registerType("DynamicRoutes", "BotDynamicRouter");
+    container.registerType("DynamicRoutes", "BundleDynamicRouter");
+    container.registerType("DynamicRoutes", "CustomizationDynamicRouter");
+    container.registerType("DynamicRoutes", "DataDynamicRouter");
+    container.registerType("DynamicRoutes", "HttpDynamicRouter");
+    container.registerType("DynamicRoutes", "InraidDynamicRouter");
+    container.registerType("DynamicRoutes", "LocationDynamicRouter");
+    container.registerType("DynamicRoutes", "NotifierDynamicRouter");
+    container.registerType("DynamicRoutes", "TraderDynamicRouter");
 
-        container.registerType("IERouters", "CustomizationItemEventRouter");
-        container.registerType("IERouters", "HealthItemEventRouter");
-        container.registerType("IERouters", "HideoutItemEventRouter");
-        container.registerType("IERouters", "InsuranceItemEventRouter");
-        container.registerType("IERouters", "InventoryItemEventRouter");
-        container.registerType("IERouters", "NoteItemEventRouter");
-        container.registerType("IERouters", "PresetBuildItemEventRouter");
-        container.registerType("IERouters", "QuestItemEventRouter");
-        container.registerType("IERouters", "RagfairItemEventRouter");
-        container.registerType("IERouters", "RepairItemEventRouter");
-        container.registerType("IERouters", "TradeItemEventRouter");
-        container.registerType("IERouters", "WishlistItemEventRouter");
+    container.registerType("IERouters", "CustomizationItemEventRouter");
+    container.registerType("IERouters", "HealthItemEventRouter");
+    container.registerType("IERouters", "HideoutItemEventRouter");
+    container.registerType("IERouters", "InsuranceItemEventRouter");
+    container.registerType("IERouters", "InventoryItemEventRouter");
+    container.registerType("IERouters", "NoteItemEventRouter");
+    container.registerType("IERouters", "PresetBuildItemEventRouter");
+    container.registerType("IERouters", "QuestItemEventRouter");
+    container.registerType("IERouters", "RagfairItemEventRouter");
+    container.registerType("IERouters", "RepairItemEventRouter");
+    container.registerType("IERouters", "TradeItemEventRouter");
+    container.registerType("IERouters", "WishlistItemEventRouter");
 
-        container.registerType("Serializer", "ImageSerializer");
-        container.registerType("Serializer", "BundleSerializer");
-        container.registerType("Serializer", "NotifySerializer");
+    container.registerType("Serializer", "ImageSerializer");
+    container.registerType("Serializer", "BundleSerializer");
+    container.registerType("Serializer", "NotifySerializer");
 
-        // Registering these starts the server...?
-        container.registerType("SaveLoadRouter", "HealthSaveLoadRouter");
-        container.registerType("SaveLoadRouter", "InraidSaveLoadRouter");
-        container.registerType("SaveLoadRouter", "InsuranceSaveLoadRouter");
-        container.registerType("SaveLoadRouter", "ProfileSaveLoadRouter");
-    }
+    container.registerType("SaveLoadRouter", "HealthSaveLoadRouter");
+    container.registerType("SaveLoadRouter", "InraidSaveLoadRouter");
+    container.registerType("SaveLoadRouter", "InsuranceSaveLoadRouter");
+    container.registerType("SaveLoadRouter", "ProfileSaveLoadRouter");
+}
 
-    private async importDatabase(): Promise<void>
-    {
-        this.importerUtil = this.container.resolve<ImporterUtil>("ImporterUtil");
-        this.databaseServer = this.container.resolve<DatabaseServer>("DatabaseServer");
+async function importDatabase(container: DependencyContainer): Promise<void>
+{
+    const importerUtil = container.resolve<ImporterUtil>("ImporterUtil");
+    const databaseServer = container.resolve<DatabaseServer>("DatabaseServer");
 
-        // Read the data from the JSON files.
-        const databaseDir = path.resolve("./assets/database");
-        const dataToImport = await this.importerUtil.loadAsync<IDatabaseTables>(`${databaseDir}/`);
+    // Read the data from the JSON files.
+    const databaseDir = path.resolve("./assets/database");
+    const dataToImport = await importerUtil.loadAsync<IDatabaseTables>(`${databaseDir}/`);
 
-        // Save the data to memory.
-        this.databaseServer.setTables(dataToImport);
-    }
+    // Save the data to memory.
+    databaseServer.setTables(dataToImport);
 }

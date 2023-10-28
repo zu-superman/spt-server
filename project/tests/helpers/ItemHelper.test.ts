@@ -1,5 +1,7 @@
 import "reflect-metadata";
 
+import { vi, beforeAll, afterEach, describe, expect, it } from "vitest";
+
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { DependencyContainer } from "tsyringe";
 import { Item, Repairable } from "@spt-aki/models/eft/common/tables/IItem";
@@ -11,22 +13,15 @@ describe("ItemHelper", () =>
     let container: DependencyContainer;
     let itemHelper: ItemHelper;
 
-    // Spies
-    let handbookHelperGetTemplatePriceSpy: jest.SpyInstance;
-    let loggerWarningSpy: jest.SpyInstance;
-    let loggerErrorSpy: jest.SpyInstance;
-    let databaseServerGetTablesSpy: jest.SpyInstance;
-    let jsonUtilCloneSpy: jest.SpyInstance;
-
     beforeAll(() =>
     {
-        container = globalThis.container;
+        container = global.container;
         itemHelper = container.resolve<ItemHelper>("ItemHelper");
     });
 
     afterEach(() =>
     {
-        jest.restoreAllMocks();
+        vi.restoreAllMocks();
     });
 
     describe("isValidItem", () =>
@@ -52,7 +47,7 @@ describe("ItemHelper", () =>
         it("should return false when item's price is zero", () =>
         {
             // Unsure if any item has price of "0", so mock the getItemPrice method to return 0.
-            jest.spyOn(itemHelper, "getItemPrice").mockReturnValue(0);
+            vi.spyOn(itemHelper, "getItemPrice").mockReturnValue(0);
 
             const result = itemHelper.isValidItem("5fc64ea372b0dd78d51159dc");
             expect(result).toBe(false);
@@ -112,7 +107,7 @@ describe("ItemHelper", () =>
             const staticPrice = 1;
             const tpl = "590c657e86f77412b013051d";
 
-            jest.spyOn(itemHelper, "getStaticItemPrice").mockReturnValue(staticPrice);
+            vi.spyOn(itemHelper, "getStaticItemPrice").mockReturnValue(staticPrice);
 
             const result = itemHelper.getItemPrice(tpl);
 
@@ -125,8 +120,8 @@ describe("ItemHelper", () =>
             const dynamicPrice = 42069;
             const tpl = "590c657e86f77412b013051d";
 
-            jest.spyOn(itemHelper, "getStaticItemPrice").mockReturnValue(staticPrice);
-            jest.spyOn(itemHelper, "getDynamicItemPrice").mockReturnValue(dynamicPrice);
+            vi.spyOn(itemHelper, "getStaticItemPrice").mockReturnValue(staticPrice);
+            vi.spyOn(itemHelper, "getDynamicItemPrice").mockReturnValue(dynamicPrice);
 
             const result = itemHelper.getItemPrice(tpl);
 
@@ -138,8 +133,8 @@ describe("ItemHelper", () =>
         {
             const tpl = "590c657e86f77412b013051d";
 
-            jest.spyOn(itemHelper, "getStaticItemPrice").mockReturnValue(0);
-            jest.spyOn(itemHelper, "getDynamicItemPrice").mockReturnValue(0);
+            vi.spyOn(itemHelper, "getStaticItemPrice").mockReturnValue(0);
+            vi.spyOn(itemHelper, "getDynamicItemPrice").mockReturnValue(0);
 
             const result = itemHelper.getItemPrice(tpl);
 
@@ -156,8 +151,8 @@ describe("ItemHelper", () =>
             const dynamicPrice = 69;
             const tpl = "590c657e86f77412b013051d";
 
-            jest.spyOn(itemHelper, "getStaticItemPrice").mockReturnValue(staticPrice);
-            jest.spyOn(itemHelper, "getDynamicItemPrice").mockReturnValue(dynamicPrice);
+            vi.spyOn(itemHelper, "getStaticItemPrice").mockReturnValue(staticPrice);
+            vi.spyOn(itemHelper, "getDynamicItemPrice").mockReturnValue(dynamicPrice);
 
             const result = itemHelper.getItemMaxPrice(tpl);
 
@@ -170,8 +165,8 @@ describe("ItemHelper", () =>
             const dynamicPrice = 420;
             const tpl = "590c657e86f77412b013051d";
 
-            jest.spyOn(itemHelper, "getStaticItemPrice").mockReturnValue(staticPrice);
-            jest.spyOn(itemHelper, "getDynamicItemPrice").mockReturnValue(dynamicPrice);
+            vi.spyOn(itemHelper, "getStaticItemPrice").mockReturnValue(staticPrice);
+            vi.spyOn(itemHelper, "getDynamicItemPrice").mockReturnValue(dynamicPrice);
 
             const result = itemHelper.getItemMaxPrice(tpl);
 
@@ -183,8 +178,8 @@ describe("ItemHelper", () =>
             const price = 42069;
             const tpl = "590c657e86f77412b013051d";
 
-            jest.spyOn(itemHelper, "getStaticItemPrice").mockReturnValue(price);
-            jest.spyOn(itemHelper, "getDynamicItemPrice").mockReturnValue(price);
+            vi.spyOn(itemHelper, "getStaticItemPrice").mockReturnValue(price);
+            vi.spyOn(itemHelper, "getDynamicItemPrice").mockReturnValue(price);
 
             const result = itemHelper.getItemMaxPrice(tpl);
 
@@ -209,7 +204,7 @@ describe("ItemHelper", () =>
             const price = 42069;
             const tpl = "590c657e86f77412b013051d";
 
-            handbookHelperGetTemplatePriceSpy = jest.spyOn((itemHelper as any).handbookHelper, "getTemplatePrice");
+            const handbookHelperGetTemplatePriceSpy = vi.spyOn((itemHelper as any).handbookHelper, "getTemplatePrice");
             handbookHelperGetTemplatePriceSpy.mockReturnValue(price);
 
             const result = itemHelper.getStaticItemPrice(tpl);
@@ -222,7 +217,7 @@ describe("ItemHelper", () =>
             const price = 0;
             const tpl = "590c657e86f77412b013051d"; // "Grizzly medical kit"
 
-            handbookHelperGetTemplatePriceSpy = jest.spyOn((itemHelper as any).handbookHelper, "getTemplatePrice");
+            const handbookHelperGetTemplatePriceSpy = vi.spyOn((itemHelper as any).handbookHelper, "getTemplatePrice");
             handbookHelperGetTemplatePriceSpy.mockReturnValue(price);
 
             const result = itemHelper.getStaticItemPrice(tpl);
@@ -320,7 +315,7 @@ describe("ItemHelper", () =>
 
             const parentId = container.resolve<HashUtil>("HashUtil").generate();
 
-            loggerWarningSpy = jest.spyOn((itemHelper as any).logger, "warning");
+            const loggerWarningSpy = vi.spyOn((itemHelper as any).logger, "warning");
 
             itemHelper.generateItemsFromStackSlot(ammoBox[1], parentId);
 
@@ -332,8 +327,8 @@ describe("ItemHelper", () =>
     {
         it("should call databaseServer.getTables() and jsonUtil.clone() methods", () =>
         {
-            databaseServerGetTablesSpy = jest.spyOn((itemHelper as any).databaseServer, "getTables");
-            jsonUtilCloneSpy = jest.spyOn((itemHelper as any).jsonUtil, "clone");
+            const databaseServerGetTablesSpy = vi.spyOn((itemHelper as any).databaseServer, "getTables");
+            const jsonUtilCloneSpy = vi.spyOn((itemHelper as any).jsonUtil, "clone");
 
             itemHelper.getItems();
 
@@ -404,7 +399,7 @@ describe("ItemHelper", () =>
 
         it("should call getItem with the provided tpl", () =>
         {
-            const itemHelperSpy = jest.spyOn(itemHelper, "getItem");
+            const itemHelperSpy = vi.spyOn(itemHelper, "getItem");
 
             const tpl = "590c657e86f77412b013051d"; // "Grizzly medical kit"
 
@@ -717,7 +712,7 @@ describe("ItemHelper", () =>
                 _tpl: ""
             };
 
-            loggerErrorSpy = jest.spyOn((itemHelper as any).logger, "error");
+            const loggerErrorSpy = vi.spyOn((itemHelper as any).logger, "error");
 
             // Cast the method to any to allow access to private/protected method.
             (itemHelper as any).getRepairableItemQualityValue(weapon, repairable, item);
