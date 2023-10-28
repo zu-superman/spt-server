@@ -660,12 +660,16 @@ export class LocationGenerator
 
         // Item array to return
         const itemWithMods: Item[] = [];
-        
+
         // Money/Ammo - don't rely on items in spawnPoint.template.Items so we can randomise it ourselves
         if (this.itemHelper.isOfBaseclass(chosenTpl, BaseClasses.MONEY) || this.itemHelper.isOfBaseclass(chosenTpl, BaseClasses.AMMO))
         {
             const itemTemplate = this.itemHelper.getItem(chosenTpl)[1];
-            const stackCount = this.randomUtil.getInt(itemTemplate._props.StackMinRandom, itemTemplate._props.StackMaxRandom);
+
+            const stackCount = itemTemplate._props.StackMaxSize === 1
+                ? 1
+                : this.randomUtil.getInt(itemTemplate._props.StackMinRandom, itemTemplate._props.StackMaxRandom);
+
             itemWithMods.push(
                 {
                     _id: this.objectId.generate(),
@@ -777,7 +781,10 @@ export class LocationGenerator
 
         if (this.itemHelper.isOfBaseclass(tpl, BaseClasses.MONEY) || this.itemHelper.isOfBaseclass(tpl, BaseClasses.AMMO))
         {
-            const stackCount = this.randomUtil.getInt(itemTemplate._props.StackMinRandom, itemTemplate._props.StackMaxRandom);
+            // Edge case - some ammos e.g. flares or M406 grenades shouldn't be stacked
+            const stackCount = itemTemplate._props.StackMaxSize === 1
+                ? 1
+                : this.randomUtil.getInt(itemTemplate._props.StackMinRandom, itemTemplate._props.StackMaxRandom);
             items[0].upd = { StackObjectsCount: stackCount };
         }
         // No spawn point, use default template

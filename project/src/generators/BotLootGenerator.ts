@@ -528,10 +528,11 @@ export class BotLootGenerator
         // only add if no upd or stack objects exist - preserves existing stack count
         if (!ammoItem.upd?.StackObjectsCount)
         {
-            const minStackSize = itemTemplate._props.StackMinRandom;
-            const maxStackSize = itemTemplate._props.StackMaxSize;
+            const randomSize = itemTemplate._props.StackMaxSize === 1
+                ? 1
+                : this.randomUtil.getInt(itemTemplate._props.StackMinRandom, itemTemplate._props.StackMaxRandom);
 
-            ammoItem.upd = { "StackObjectsCount":  this.randomUtil.getInt(minStackSize, maxStackSize) };
+            ammoItem.upd = { StackObjectsCount: randomSize };
         }
     }
 
