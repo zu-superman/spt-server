@@ -64,6 +64,8 @@ export class WatermarkLocale
 export class Watermark
 {
     protected akiConfig: ICoreConfig;
+    protected text: string[] = [];
+    protected versionLabel = "";
 
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
@@ -73,15 +75,7 @@ export class Watermark
     )
     {
         this.akiConfig = this.configServer.getConfig<ICoreConfig>(ConfigTypes.CORE);
-
-        this.initialize();
-        this.setTitle();
-        this.resetCursor();
-        this.draw();
     }
-
-    protected text: string[] = [];
-    protected versionLabel = "";
 
     public initialize(): void
     {
@@ -103,6 +97,10 @@ export class Watermark
         {
             this.text = this.text.concat([...modding]);
         }
+
+        this.setTitle();
+        this.resetCursor();
+        this.draw();
     }
 
     /**

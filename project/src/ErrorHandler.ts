@@ -7,7 +7,7 @@ import { WinstonMainLogger } from "@spt-aki/utils/logging/WinstonMainLogger";
 
 export class ErrorHandler
 {
-    private logger:ILogger;
+    private logger: ILogger;
     private readLine: readline.Interface;
 
     constructor()
@@ -19,15 +19,17 @@ export class ErrorHandler
         });
     }
 
-    public handleCriticalError(err: any): void
+    public handleCriticalError(err: Error): void
     {
         this.logger.error("The application had a critical error and failed to run");
-        this.logger.error(`Exception produced: ${err}`);
+        this.logger.error(`Exception produced: ${err.name}`);
         if (err.stack)
-            this.logger.error(`\nStacktrace:\n ${err.stack}`);
-            
+        {
+            this.logger.error(`\nStacktrace:\n${err.stack}`);
+        }
+
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         this.readLine.question("Press Enter to close the window", (_ans) => this.readLine.close());
-        this.readLine.on("close", () => process.exit(0));
+        this.readLine.on("close", () => process.exit(1));
     }
 }

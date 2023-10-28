@@ -18,26 +18,25 @@ export class Program
         this.errorHandler = new ErrorHandler();
     }
     
-    public start(): void 
+    public async start(): Promise<void>
     {
         try
         {
             Container.registerTypes(container);
             const childContainer = container.createChildContainer();
-            childContainer.resolve<Watermark>("Watermark");
+            const watermark = childContainer.resolve<Watermark>("Watermark");
+            watermark.initialize();
+
             const preAkiModLoader = childContainer.resolve<PreAkiModLoader>("PreAkiModLoader");
             Container.registerListTypes(childContainer);
-            preAkiModLoader.load(childContainer)
-                .then(() => 
-                {
-                    Container.registerPostLoadTypes(container, childContainer);
-                    childContainer.resolve<App>("App").load();
-                }).catch(rej => this.errorHandler.handleCriticalError(rej));
-            
+            await preAkiModLoader.load(childContainer);
+
+            Container.registerPostLoadTypes(container, childContainer);
+            childContainer.resolve<App>("App").load();
         }
-        catch (e)
+        catch (err: any)
         {
-            this.errorHandler.handleCriticalError(e);
+            this.errorHandler.handleCriticalError((err instanceof Error ? err : new Error(err)));
         }
     }
 }

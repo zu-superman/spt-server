@@ -1,6 +1,5 @@
 import { inject, injectable } from "tsyringe";
 
-import { ErrorHandler } from "@spt-aki/ErrorHandler";
 import { IPackageJsonData } from "@spt-aki/models/spt/mod/IPackageJsonData";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
@@ -115,10 +114,6 @@ export class ModLoadOrder
 
         if (visited.has(mod))
         {
-            // Front: white, back: red
-            const errorMessage = this.localisationService.getText("modloader-cyclic_dependency");
-            this.logger.error(errorMessage);
-
             // Additional info to help debug
             this.logger.debug(this.localisationService.getText("modloader-checking_mod", mod));
             this.logger.debug(`${this.localisationService.getText("modloader-checked")}:`);
@@ -126,15 +121,12 @@ export class ModLoadOrder
             this.logger.debug(`${this.localisationService.getText("modloader-visited")}:`);
             this.logger.debug(JSON.stringify(visited, null, "\t"));
 
-            // Wait for input
-            const errorHandler = new ErrorHandler();
-            errorHandler.handleCriticalError({errorMessage});
+            throw new Error(this.localisationService.getText("modloader-cyclic_dependency"));
         }
 
         // Check dependencies
         if (!this.modsAvailable.has(mod))
         {
-            this.logger.error(this.localisationService.getText("modloader-missing_dependency"));
             throw new Error(this.localisationService.getText("modloader-error_parsing_mod_load_order"));
         }
 
@@ -151,10 +143,7 @@ export class ModLoadOrder
             {
                 if (this.modsAvailable.get(modAfter)?.loadAfter?.includes(mod))
                 {
-                    const errorMessage = this.localisationService.getText("modloader-load_order_conflict", {modOneName: mod, modTwoName: modAfter});
-                    this.logger.error(errorMessage);
-                    const errorHandler = new ErrorHandler();
-                    errorHandler.handleCriticalError(errorMessage);
+                    throw new Error(this.localisationService.getText("modloader-load_order_conflict", {modOneName: mod, modTwoName: modAfter}));
                 }
 
                 dependencies.add(modAfter);
