@@ -733,8 +733,8 @@ export class HideoutController
             area.lastRecipe = request.recipeId;
             counterHoursCrafting.value = hoursCrafting;
 
-            // Delete production now it's complete
-            delete pmcData.Hideout.Production[prodId];
+            // Null production data now it's complete - will be cleaned up later by update() process
+            pmcData.Hideout.Production[prodId] = null;
         };
 
         // Remove the old production from output object before its sent to client
@@ -813,7 +813,9 @@ export class HideoutController
 
         const callback = () =>
         {
-            delete pmcData.Hideout.Production[prodId];
+
+            // Null production data now it's complete - will be cleaned up later by update() process
+            pmcData.Hideout.Production[prodId] = null;
         };
 
         return this.inventoryHelper.addItem(pmcData, newReq, output, sessionID, callback, true);
