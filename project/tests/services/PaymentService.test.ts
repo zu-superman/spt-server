@@ -1,18 +1,15 @@
 import "reflect-metadata";
-
+import { container } from "tsyringe";
 import { vi, beforeAll, afterEach, describe, expect, it } from "vitest";
 
-import { DependencyContainer } from "tsyringe";
 import { PaymentService } from "@spt-aki/services/PaymentService";
 
 describe("PaymentService", () =>
 {
-    let container: DependencyContainer;
     let paymentService: PaymentService;
 
     beforeAll(() =>
     {
-        container = global.container;
         paymentService = container.resolve<PaymentService>("PaymentService");
     });
 

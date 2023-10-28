@@ -1,21 +1,18 @@
 import "reflect-metadata";
-
+import { container } from "tsyringe";
 import { vi, beforeAll, afterEach, describe, expect, it } from "vitest";
 
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
-import { DependencyContainer } from "tsyringe";
 import { Item, Repairable } from "@spt-aki/models/eft/common/tables/IItem";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { HashUtil } from "@spt-aki/utils/HashUtil";
 
 describe("ItemHelper", () =>
 {
-    let container: DependencyContainer;
     let itemHelper: ItemHelper;
 
     beforeAll(() =>
     {
-        container = global.container;
         itemHelper = container.resolve<ItemHelper>("ItemHelper");
     });
 
