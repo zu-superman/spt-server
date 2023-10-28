@@ -983,7 +983,7 @@ export class HideoutController
      * @param sessionId Session id
      * @param pmcData Profile with craft to cancel
      * @param request Cancel production request data
-     * @returns 
+     * @returns IItemEventRouterResponse
      */
     public cancelProduction(sessionId: string, pmcData: IPmcData, request: IHideoutCancelProductionRequestData): IItemEventRouterResponse
     {
@@ -998,8 +998,8 @@ export class HideoutController
             return this.httpResponse.appendErrorToOutput(output, errorMessage);
         }
 
-        // Remove production from profile
-        delete pmcData.Hideout.Production[request.recipeId];
+        // Null out production data so client gets informed when response send back
+        pmcData.Hideout.Production[request.recipeId] = null;
 
         // TODO - handle timestamp somehow?
 
