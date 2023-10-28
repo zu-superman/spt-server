@@ -15643,7 +15643,7 @@
   "5bc4893c86f774626f5ebf3e successMessageText": "[타르코프의 저격수 - 파트 8 (The Tarkov Shooter - Part 8), 성공]\n똑똑하게 행동할 수 있을 만큼 똑똑하지는 않았나 보군. 구식이더라도 좋은 볼트액션 소총이 도움되기도 하고 말일세. 스나이퍼는 아직 따로 연락이 없어서 다음 임무가 나오기 전까지 잠시 기다려야 할 것 같네. 준비되면 자네에게 연락하지.",
   "5bc48aed86f77452c947ce67": "Eliminate PMC operatives with a headshot without dying while using a bolt-action rifle",
   "5bdabf7186f7743e152e867d": "",
-  "64b6a5a525251516d7685428": "You must not die or leave the raid while the task is active (Status: KIA, Left the Action, MIA)",
+  "64b6a5a525251516d7685428": "You cannot die or leave the raid until the quest is handed over to the customer (Status: Killed, Ran through, MIA)",
   "5bc4893c86f774626f5ebf3e acceptPlayerMessage": "",
   "5bc4893c86f774626f5ebf3e declinePlayerMessage": "",
   "5bc4893c86f774626f5ebf3e completePlayerMessage": "",

@@ -173,6 +173,7 @@
         "MAX_DIST_COVER_BOSS_SQRT": 4225,
         "MAX_DIST_DECIDER_TO_SEND": 35,
         "MAX_DIST_DECIDER_TO_SEND_SQRT": 1225,
+        "NOT_ADD_TO_ENEMY_ON_KILLS": true,
         "PERSONS_SEND": 2,
         "SHALL_WARN": true,
         "TIME_AFTER_LOSE": 15,
@@ -421,6 +422,7 @@
         "FRIENDLY_BOT_TYPES": [],
         "FRIEND_AGR_KILL": 0.2,
         "FRIEND_DEAD_AGR_LOW": -0.2,
+        "GIFTER_ADDITIONAL_GIFTS": 1,
         "GROUP_ANY_PHRASE_DELAY": 20,
         "GROUP_EXACTLY_PHRASE_DELAY": 20,
         "HEAL_DELAY_SEC": 5,
@@ -654,6 +656,7 @@
         "MAX_DIST_COVER_BOSS_SQRT": 4225,
         "MAX_DIST_DECIDER_TO_SEND": 35,
         "MAX_DIST_DECIDER_TO_SEND_SQRT": 1225,
+        "NOT_ADD_TO_ENEMY_ON_KILLS": true,
         "PERSONS_SEND": 2,
         "SHALL_WARN": true,
         "TIME_AFTER_LOSE": 15,
@@ -902,6 +905,7 @@
         "FRIENDLY_BOT_TYPES": [],
         "FRIEND_AGR_KILL": 0.2,
         "FRIEND_DEAD_AGR_LOW": -0.2,
+        "GIFTER_ADDITIONAL_GIFTS": 1,
         "GROUP_ANY_PHRASE_DELAY": 20,
         "GROUP_EXACTLY_PHRASE_DELAY": 20,
         "HEAL_DELAY_SEC": 5,
@@ -1135,6 +1139,7 @@
         "MAX_DIST_COVER_BOSS_SQRT": 4225,
         "MAX_DIST_DECIDER_TO_SEND": 35,
         "MAX_DIST_DECIDER_TO_SEND_SQRT": 1225,
+        "NOT_ADD_TO_ENEMY_ON_KILLS": true,
         "PERSONS_SEND": 2,
         "SHALL_WARN": true,
         "TIME_AFTER_LOSE": 15,
@@ -1383,6 +1388,7 @@
         "FRIENDLY_BOT_TYPES": [],
         "FRIEND_AGR_KILL": 0.2,
         "FRIEND_DEAD_AGR_LOW": -0.2,
+        "GIFTER_ADDITIONAL_GIFTS": 1,
         "GROUP_ANY_PHRASE_DELAY": 20,
         "GROUP_EXACTLY_PHRASE_DELAY": 20,
         "HEAL_DELAY_SEC": 5,
@@ -1616,6 +1622,7 @@
         "MAX_DIST_COVER_BOSS_SQRT": 4225,
         "MAX_DIST_DECIDER_TO_SEND": 35,
         "MAX_DIST_DECIDER_TO_SEND_SQRT": 1225,
+        "NOT_ADD_TO_ENEMY_ON_KILLS": true,
         "PERSONS_SEND": 2,
         "SHALL_WARN": true,
         "TIME_AFTER_LOSE": 15,
@@ -1864,6 +1871,7 @@
         "FRIENDLY_BOT_TYPES": [],
         "FRIEND_AGR_KILL": 0.2,
         "FRIEND_DEAD_AGR_LOW": -0.2,
+        "GIFTER_ADDITIONAL_GIFTS": 1,
         "GROUP_ANY_PHRASE_DELAY": 20,
         "GROUP_EXACTLY_PHRASE_DELAY": 20,
         "HEAL_DELAY_SEC": 5,
@@ -3077,10 +3085,12 @@
         "mod_muzzle": [
           "56e05b06d2720bb2668b4586"
         ],
+        "mod_pistolgrip": [
+          "56e05a6ed2720bd0748b4567"
+        ],
         "patron_in_weapon": [
           "573719762459775a626ccbc1"
-        ],
-		"mod_pistolgrip": ["56e05a6ed2720bd0748b4567"]
+        ]
       },
       "571a12c42459771f627b58a0": {
         "mod_barrel": [
@@ -3173,15 +3183,16 @@
         "mod_magazine": [
           "5448c12b4bdc2d02308b456f"
         ],
-		"mod_reciever": ["6374a822e629013b9c0645c8"],
+        "mod_pistolgrip": [
+          "637784c5f7b3f4ac1a0d1a9a"
+        ],
+        "mod_reciever": [
+          "6374a822e629013b9c0645c8"
+        ],
         "patron_in_weapon": [
           "573719762459775a626ccbc1"
-        ],
-		"mod_pistolgrip": ["637784c5f7b3f4ac1a0d1a9a"]
+        ]
       },
-	  "6374a822e629013b9c0645c8": {
-		  "mod_sight_rear": ["63c6adcfb4ba094317063742"]
-	  },
       "57d14d2524597714373db789": {
         "mod_magazine": [
           "57d14e1724597714010c3f4b"
@@ -3578,6 +3589,11 @@
         ],
         "mod_stock": [
           "607d5a891246154cad35d6aa"
+        ]
+      },
+      "6374a822e629013b9c0645c8": {
+        "mod_sight_rear": [
+          "63c6adcfb4ba094317063742"
         ]
       }
     }
