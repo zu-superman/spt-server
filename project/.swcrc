@@ -17,9 +17,6 @@
         "paths": {
             "@spt-aki/*": [
                 "src/*"
-            ],
-            "@tests/*": [
-                "tests/*"
             ]
         }
     },
