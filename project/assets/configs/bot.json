@@ -780,6 +780,7 @@
                         "Backpack": 35,
                         "FaceCover": 5
                     },
+					"randomisedWeaponModSlots": [],
                     "mods": {
                         "mod_barrel": 20,
                         "mod_bipod": 10,
