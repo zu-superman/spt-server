@@ -185,7 +185,7 @@ export class BotEquipmentModGenerator
         const botWeaponSightWhitelist = this.botEquipmentFilterService.getBotWeaponSightWhitelist(botEquipmentRole);
         const randomisationSettings = this.botHelper.getBotRandomizationDetails(botLevel, botEquipConfig);
 
-        // Iterate over mod pool and choose mods to add to item
+        // Iterate over mod pool and choose mods to attach
         const sortedModKeys = this.sortModKeys(Object.keys(compatibleModsPool));
         for (const modSlot of sortedModKeys)
         {
@@ -204,7 +204,7 @@ export class BotEquipmentModGenerator
                 continue;
             }
 
-            const isRandomisableSlot = randomisationSettings?.randomisedWeaponModSlots?.includes(modSlot);
+            const isRandomisableSlot = randomisationSettings?.randomisedWeaponModSlots?.includes(modSlot) ?? false;
             const modToAdd = this.chooseModToPutIntoSlot(modSlot, isRandomisableSlot, botWeaponSightWhitelist, botEquipBlacklist, compatibleModsPool, weapon, ammoTpl, parentTemplate);
 
             // Compatible mod not found
@@ -213,13 +213,12 @@ export class BotEquipmentModGenerator
                 continue;
             }
 
-            const modToAddTemplate = modToAdd[1];
-
             if (!this.isModValidForSlot(modToAdd, modsParentSlot, modSlot, parentTemplate))
             {
                 continue;
             }
 
+            const modToAddTemplate = modToAdd[1];
             // Skip adding mod to weapon if type limit reached
             if (this.botWeaponModLimitService.weaponModHasReachedLimit(botEquipmentRole, modToAddTemplate, modLimits, parentTemplate, weapon))
             {
@@ -562,6 +561,7 @@ export class BotEquipmentModGenerator
                 if (!modCompatibilityResult.incompatible)
                 {
                     found = true;
+
                     break;
                 }
             }
