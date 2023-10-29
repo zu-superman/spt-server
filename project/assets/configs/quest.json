@@ -747,7 +747,7 @@
                 "Exploration": {
                     "maxExtracts": 10,
                     "specificExits": {
-                        "probability": 0.5,
+                        "probability": 0.4,
                         "passageRequirementWhitelist": [
                             "None",
                             "TransferItem",
@@ -846,7 +846,7 @@
                                 }
                             }
                         ],
-                        "bodyPartProb": 0.2,
+                        "bodyPartProb": 0.15,
                         "bodyParts": [{
                                 "key": "Head",
                                 "relativeProbability": 1,
@@ -1052,8 +1052,8 @@
                         "minDist": 10,
                         "maxKills": 40,
                         "minKills": 15,
-                        "maxBossKills": 30,
-                        "minBossKills": 15,
+                        "maxBossKills": 10,
+                        "minBossKills": 5,
                         "maxPmcKills": 15,
                         "minPmcKills": 10,
                         "weaponRequirementProb": 0,
@@ -1206,7 +1206,7 @@
                                 }
                             }
                         ],
-                        "bodyPartProb": 0.4,
+                        "bodyPartProb": 0.25,
                         "bodyParts": [{
                                 "key": "Head",
                                 "relativeProbability": 1,
@@ -1232,8 +1232,8 @@
                         "minDist": 10,
                         "maxKills": 40,
                         "minKills": 20,
-                        "maxBossKills": 20,
-                        "minBossKills": 10,
+                        "maxBossKills": 14,
+                        "minBossKills": 7,
                         "maxPmcKills": 25,
                         "minPmcKills": 10,
                         "weaponRequirementProb": 0,
