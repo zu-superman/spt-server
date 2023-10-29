@@ -386,12 +386,19 @@ export class BotEquipmentModGenerator
         const sortedKeys: string[] = [];
         const modRecieverKey = "mod_reciever";
         const modMount001Key = "mod_mount_001";
-        const modGasBLockKey = "mod_gas_block";
+        const modGasBlockKey = "mod_gas_block";
         const modPistolGrip = "mod_pistol_grip";
         const modStockKey = "mod_stock";
         const modBarrelKey = "mod_barrel";
+        const modHandguardKey = "mod_handguard";
         const modMountKey = "mod_mount";
         const modScopeKey = "mod_scope";
+
+        if (unsortedKeys.includes(modHandguardKey))
+        {
+            sortedKeys.push(modHandguardKey);
+            unsortedKeys.splice(unsortedKeys.indexOf(modHandguardKey), 1);
+        }
 
         if (unsortedKeys.includes(modBarrelKey))
         {
@@ -417,10 +424,10 @@ export class BotEquipmentModGenerator
             unsortedKeys.splice(unsortedKeys.indexOf(modPistolGrip), 1);
         }
 
-        if (unsortedKeys.includes(modGasBLockKey))
+        if (unsortedKeys.includes(modGasBlockKey))
         {
-            sortedKeys.push(modGasBLockKey);
-            unsortedKeys.splice(unsortedKeys.indexOf(modGasBLockKey), 1);
+            sortedKeys.push(modGasBlockKey);
+            unsortedKeys.splice(unsortedKeys.indexOf(modGasBlockKey), 1);
         }
 
         if (unsortedKeys.includes(modStockKey))
