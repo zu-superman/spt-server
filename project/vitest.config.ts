@@ -8,6 +8,9 @@ export default defineConfig({
         root: "./tests",
         environment: "./CustomEnvironment.ts",
         globals: true,
+        typecheck: {
+            enabled: true
+        },
         alias: {
             "@spt-aki": path.resolve(__dirname, "src"),
             "@tests": path.resolve(__dirname, "tests")
