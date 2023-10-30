@@ -4,8 +4,7 @@
         "outDir": "obj",
         "declaration": true,
         "sourceMap": true,
-        "noImplicitAny": false,
-        "types": ["vitest/globals"],
+        "noImplicitAny": false
     },
     "include": [
         "./types/**/*",

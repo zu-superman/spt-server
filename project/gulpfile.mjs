@@ -34,7 +34,7 @@ const compile = async () => await exec("swc src -d obj", { stdio });
 /**
  * Transpiles the src files into javascript with tsc for the profiler run
  */
-const compileProfiler = async () => await exec("tsc -p tsconfig.test.json", { stdio });
+const compileProfiler = async () => await exec("tsc -p tsconfig.profiler.json", { stdio });
 
 // Packaging
 const fetchPackageImage = async () =>
