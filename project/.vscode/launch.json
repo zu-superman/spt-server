@@ -8,7 +8,7 @@
             "name": "Debug",
             "type": "node",
             "runtimeVersion": "18.15.0",
-            "runtimeExecutable": "node",
+            "runtimeExecutable": "npm",
             "request": "launch",
             "sourceMaps": true,
             "runtimeArgs": [
@@ -22,21 +22,17 @@
             "outputCapture": "std"
         },
         {
-            "name": "Run Jest UnitTests",
+            "name": "Run Vitest Tests",
             "type": "node",
             "runtimeVersion": "18.15.0",
             "runtimeExecutable": "node",
             "request": "launch",
-            "program": "${workspaceFolder}/node_modules/.bin/jest",
+            "program": "${workspaceFolder}/node_modules/.bin/vitest",
             "args": [
-                "--runInBand"
+                "run"
             ],
             "console": "integratedTerminal",
-            "internalConsoleOptions": "neverOpen",
-            "disableOptimisticBPs": true,
-            "windows": {
-                "program": "${workspaceFolder}/node_modules/jest/bin/jest",
-            }
+            "internalConsoleOptions": "neverOpen"
         }
     ]
 }
