@@ -1,6 +1,5 @@
 import "reflect-metadata";
 import { container, DependencyContainer } from "tsyringe";
-import path from "node:path";
 
 // For the Vitest Custom Environment.
 import type { Environment } from "vitest";
@@ -13,6 +12,7 @@ import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { ImporterUtil } from "@spt-aki/utils/ImporterUtil";
 
 // Required for creating a temporary test account/profile.
+import path from "node:path";
 import { SaveServer } from "@spt-aki/servers/SaveServer";
 import { LauncherController } from "@spt-aki/controllers/LauncherController";
 import { IRegisterData } from "@spt-aki/models/eft/launcher/IRegisterData";
