@@ -192,11 +192,11 @@ export class SaveServer
         for (const callback in this.onBeforeSaveCallbacks)
         {
             const previous = this.profiles[sessionID];
-            try 
+            try
             {
                 this.profiles[sessionID] = this.onBeforeSaveCallbacks[callback](this.profiles[sessionID]);
             }
-            catch (error) 
+            catch (error)
             {
                 this.logger.error(this.localisationService.getText("profile_save_callback_error", { callback, error }));
                 this.profiles[sessionID] = previous;
@@ -210,7 +210,7 @@ export class SaveServer
             this.saveMd5[sessionID] = String(fmd5);
             // save profile to disk
             this.vfs.writeFile(filePath, jsonProfile);
-            this.logger.info(this.localisationService.getText("profile_saved", sessionID));
+            this.logger.debug(this.localisationService.getText("profile_saved", sessionID), true);
         }
     }
 
