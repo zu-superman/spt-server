@@ -16665,8 +16665,8 @@
     "CoopSettings": {
       "AvailableVersions": [
         "edge_of_darkness",
-          "press_edition",
-          "tournament_live"
+        "press_edition",
+        "tournament_live"
       ]
     },
     "Customization": {
@@ -17388,6 +17388,56 @@
       }
     },
     "DiscardLimitsEnabled": true,
+      "EventSettings": {
+        "EventActive": true,
+        "EventTime": 420,
+        "EventWeather": {
+          "Cloudness": 1,
+          "Hour": 21,
+          "Minute": 0,
+          "Rain": 0.1,
+          "RainRandomness": 0,
+          "ScaterringFogDensity": 0.02,
+          "TopWindDirection": {
+            "x": -1,
+            "y": 0,
+            "z": 0
+          },
+          "Wind": 4,
+          "WindDirection": 8
+        },
+        "ExitTimeMultiplier": 3,
+        "StaminaMultiplier": 3,
+        "SummonFailedWeather": {
+          "Cloudness": 0,
+          "Rain": 0,
+          "RainRandomness": 0,
+          "ScaterringFogDensity": 0.001,
+          "TopWindDirection": {
+            "x": -1,
+            "y": 0,
+            "z": 0
+          },
+          "Wind": 0,
+          "WindDirection": 8
+        },
+        "SummonSuccessWeather": {
+          "Cloudness": 0,
+          "Hour": 6,
+          "Minute": 10,
+          "Rain": 0.1,
+          "RainRandomness": 0,
+          "ScaterringFogDensity": 0.05,
+          "TopWindDirection": {
+            "x": -1,
+            "y": 0,
+            "z": 0
+          },
+          "Wind": 0.2,
+          "WindDirection": 8
+        },
+        "WeatherChangeTime": 20
+      },
     "EventType": [
       "None"
     ],
