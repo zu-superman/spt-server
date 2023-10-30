@@ -312,12 +312,18 @@ describe("ItemHelper", () =>
 
             const parentId = container.resolve<HashUtil>("HashUtil").generate();
 
-            const loggerWarningSpy = vi.spyOn((itemHelper as any).logger, "warning");
+            // Spy on the logger's warning method and mock its implementation to prevent it from being actually called.
+            const loggerWarningSpy = vi.spyOn((itemHelper as any).logger, "warning").mockImplementation(() =>
+            {});
 
             itemHelper.generateItemsFromStackSlot(ammoBox[1], parentId);
 
             expect(loggerWarningSpy).toHaveBeenCalled();
+
+            // Restore the original behavior
+            loggerWarningSpy.mockRestore();
         });
+
     });
 
     describe("getItems", () =>
@@ -671,9 +677,14 @@ describe("ItemHelper", () =>
                 _tpl: ""
             };
 
+            // Mock the logger's error method to prevent it from being actually called.
+            const loggerErrorSpy = vi.spyOn((itemHelper as any).logger, "error").mockImplementation(() =>
+            {});
+
             // Cast the method to any to allow access to private/protected method.
             const result = (itemHelper as any).getRepairableItemQualityValue(weapon, repairable, item);
 
+            expect(loggerErrorSpy).toHaveBeenCalled();
             expect(result).toBe(1);
         });
 
