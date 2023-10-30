@@ -164,9 +164,9 @@ const cleanCompiled = async () => await fs.rm("./obj", { recursive: true, force:
 
 /**
  * Recursively builds an array of paths for json files.
- * 
- * @param {fs.PathLike} dir 
- * @param {string[]} files 
+ *
+ * @param {fs.PathLike} dir
+ * @param {string[]} files
  * @returns {Promise<string[]>}
  */
 const getJSONFiles = async (dir, files = []) =>
@@ -211,8 +211,8 @@ const validateJSONs = async () =>
 
 /**
  * Hash helper function
- * 
- * @param {crypto.BinaryLike} data 
+ *
+ * @param {crypto.BinaryLike} data
  * @returns {string}
  */
 const generateHashForData = (data) =>
@@ -224,8 +224,8 @@ const generateHashForData = (data) =>
 
 /**
  * Loader to recursively find all json files in a folder
- * 
- * @param {fs.PathLike} filepath 
+ *
+ * @param {fs.PathLike} filepath
  * @returns {}
  */
 const loadRecursiveAsync = async (filepath) =>
