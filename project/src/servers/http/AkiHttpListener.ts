@@ -28,7 +28,7 @@ export class AkiHttpListener implements IHttpListener
 
     public canHandle(_: string, req: IncomingMessage): boolean
     {
-        return req.method === "GET" || req.method === "PUT" || req.method === "POST";
+        return ["GET", "PUT", "POST"].includes(req.method);
     }
 
     public handle(sessionId: string, req: IncomingMessage, resp: ServerResponse): void
@@ -41,7 +41,6 @@ export class AkiHttpListener implements IHttpListener
                 this.sendResponse(sessionId, req, resp, null, response);
                 break;
             }
-
             // these are handled almost identically.
             case "POST":
             case "PUT":
@@ -54,7 +53,8 @@ export class AkiHttpListener implements IHttpListener
                 const buffer = Buffer.alloc(requestLength);
                 let written = 0;
 
-                req.on("data", (data: any) => {
+                req.on("data", (data: any) => 
+                {
                     data.copy(buffer, written, 0);
                     written += data.length;
                 });
@@ -65,12 +65,12 @@ export class AkiHttpListener implements IHttpListener
                     // determine if the payload is compressed. All PUT requests are, and POST requests without
                     // debug = 1 are as well. This should be fixed.
                     // let compressed = req.headers["content-encoding"] === "deflate";
-                    let compressed = req.method === "PUT" || req.headers["debug"] !== "1";
+                    const compressed = req.method === "PUT" || req.headers["debug"] !== "1";
 
                     const value = compressed ? zlib.inflateSync(buffer) : buffer;
                     if (req.headers["debug"] === "1")
                     {
-                        console.log(value.toString());
+                        this.logger.debug(value.toString(), true);
                     }
 
                     const response = this.getResponse(sessionId, req, value);
@@ -82,18 +82,26 @@ export class AkiHttpListener implements IHttpListener
 
             default:
             {
-                this.logger.warning(this.localisationService.getText("unknown_request") + ": " + req.method);
+                this.logger.warning(`${this.localisationService.getText("unknown_request")}: ${req.method}`);
                 break;
             }
         }
     }
 
+    /**
+     * Send http response to the client
+     * @param sessionID Player id
+     * @param req Incoming request
+     * @param resp Outgoing response
+     * @param body Buffer
+     * @param output Server generated response data
+     */
     public sendResponse(sessionID: string, req: IncomingMessage, resp: ServerResponse, body: Buffer, output: string): void
     {
         const info = this.getBodyInfo(body);
         let handled = false;
 
-        // Check if this is a debug request, if so just send the raw response without transformation.
+        // Check if this is a debug request, if so just send the raw response without transformation
         if (req.headers["debug"] === "1")
         {
             this.sendJson(resp, output, sessionID);
