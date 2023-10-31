@@ -211,7 +211,7 @@ export class ProfileHelper
     public getDefaultAkiDataObject(): any
     {
         return {
-            "version": this.getServerVersion()
+            version: this.getServerVersion()
         };
     }
 

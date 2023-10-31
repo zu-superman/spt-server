@@ -82,14 +82,14 @@ export class VFS
 
     public createDir(filepath: string): void
     {
-        fs.mkdirSync(filepath.substr(0, filepath.lastIndexOf("/")), { "recursive": true });
+        fs.mkdirSync(filepath.substr(0, filepath.lastIndexOf("/")), { recursive: true });
     }
 
     public async createDirAsync(filepath: string): Promise<void>
     {
         const command = {
             uuid: crypto.randomUUID(),
-            cmd: async () => await this.mkdirPromisify(filepath.substr(0, filepath.lastIndexOf("/")), { "recursive": true })
+            cmd: async () => await this.mkdirPromisify(filepath.substr(0, filepath.lastIndexOf("/")), { recursive: true })
         };
         await this.asyncQueue.waitFor(command);
     }
@@ -167,7 +167,7 @@ export class VFS
 
     public writeFile(filepath: any, data = "", append = false, atomic = true): void
     {
-        const options = (append) ? { "flag": "a" } : { "flag": "w" };
+        const options = append ? { flag: "a" } : { flag: "w" };
 
         if (!this.exists(filepath))
         {
@@ -194,7 +194,7 @@ export class VFS
 
     public async writeFileAsync(filepath: any, data = "", append = false, atomic = true): Promise<void>
     {
-        const options = (append) ? { "flag": "a" } : { "flag": "w" };
+        const options = append ? { flag: "a" } : { flag: "w" };
 
         if (!await this.exists(filepath))
         {

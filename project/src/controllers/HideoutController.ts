@@ -652,7 +652,10 @@ export class HideoutController
         let counterHoursCrafting = pmcData.BackendCounters[HideoutController.nameBackendCountersCrafting];
         if (!counterHoursCrafting)
         {
-            pmcData.BackendCounters[HideoutController.nameBackendCountersCrafting] = { "id": HideoutController.nameBackendCountersCrafting, "value": 0 };
+            pmcData.BackendCounters[HideoutController.nameBackendCountersCrafting] = {
+                id: HideoutController.nameBackendCountersCrafting,
+                value: 0
+            };
             counterHoursCrafting = pmcData.BackendCounters[HideoutController.nameBackendCountersCrafting];
         }
         let hoursCrafting = counterHoursCrafting.value;
@@ -856,10 +859,10 @@ export class HideoutController
     public handleQTEEventOutcome(sessionId: string, pmcData: IPmcData, request: IHandleQTEEventRequestData): IItemEventRouterResponse
     {
         // {
-        //     "Action": "HideoutQuickTimeEvent",
-        //     "results": [true, false, true, true, true, true, true, true, true, false, false, false, false, false, false],
-        //     "id": "63b16feb5d012c402c01f6ef",
-        //     "timestamp": 1672585349
+        //     Action: "HideoutQuickTimeEvent",
+        //     results: [true, false, true, true, true, true, true, true, true, false, false, false, false, false, false],
+        //     id: "63b16feb5d012c402c01f6ef",
+        //     timestamp: 1672585349
         // }
 
         // Skill changes are done in 

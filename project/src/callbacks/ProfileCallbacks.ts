@@ -109,7 +109,7 @@ export class ProfileCallbacks
             return this.httpResponse.getBody(null, 256, "256 - ");
         }
 
-        return this.httpResponse.getBody({ "status": "ok" });
+        return this.httpResponse.getBody({ status: "ok" });
     }
 
     /**
@@ -131,12 +131,12 @@ export class ProfileCallbacks
             maxPveCountExceeded: false,
             profiles: [
                 {
-                    "profileid": `scav${sessionID}`,
+                    profileid: `scav${sessionID}`,
                     profileToken: null,
-                    "status": "Free",
-                    "sid": "",
-                    "ip": "",
-                    "port": 0,
+                    status: "Free",
+                    sid: "",
+                    ip: "",
+                    port: 0,
                     version: "live",
                     location: "bigmap",
                     raidMode: "Online",
@@ -145,12 +145,12 @@ export class ProfileCallbacks
 
                 },
                 {
-                    "profileid": `pmc${sessionID}`,
+                    profileid: `pmc${sessionID}`,
                     profileToken: null,
-                    "status": "Free",
-                    "sid": "",
-                    "ip": "",
-                    "port": 0
+                    status: "Free",
+                    sid: "",
+                    ip: "",
+                    port: 0
                 }
             ]
         };

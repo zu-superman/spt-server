@@ -53,7 +53,7 @@ export class LauncherController
     protected getProfileDescriptions(): Record<string, string>
     {
         return {
-            "Standard": this.localisationService.getText("launcher-profile_standard"),
+            Standard: this.localisationService.getText("launcher-profile_standard"),
             // eslint-disable-next-line @typescript-eslint/naming-convention
             "Left Behind": this.localisationService.getText("launcher-profile_leftbehind"),
             // eslint-disable-next-line @typescript-eslint/naming-convention

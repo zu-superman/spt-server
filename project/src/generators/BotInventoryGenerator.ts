@@ -98,24 +98,24 @@ export class BotInventoryGenerator
         return {
             items: [
                 {
-                    "_id": equipmentId,
-                    "_tpl": equipmentTpl
+                    _id: equipmentId,
+                    _tpl: equipmentTpl
                 },
                 {
-                    "_id": stashId,
-                    "_tpl": stashTpl
+                    _id: stashId,
+                    _tpl: stashTpl
                 },
                 {
-                    "_id": questRaidItemsId,
-                    "_tpl": questRaidItemsTpl
+                    _id: questRaidItemsId,
+                    _tpl: questRaidItemsTpl
                 },
                 {
-                    "_id": questStashItemsId,
-                    "_tpl": questStashItemsTpl
+                    _id: questStashItemsId,
+                    _tpl: questStashItemsTpl
                 },
                 {
-                    "_id": sortingTableId,
-                    "_tpl": sortingTableTpl
+                    _id: sortingTableId,
+                    _tpl: sortingTableTpl
                 }
             ],
             equipment: equipmentId,
@@ -223,10 +223,10 @@ export class BotInventoryGenerator
             }
 
             const item = {
-                "_id": id,
-                "_tpl": equipmentItemTpl,
-                "parentId": inventory.equipment,
-                "slotId": equipmentSlot,
+                _id: id,
+                _tpl: equipmentItemTpl,
+                parentId: inventory.equipment,
+                slotId: equipmentSlot,
                 ...this.botGeneratorHelper.generateExtraPropertiesForItem(itemTemplate[1], botRole)
             };
 

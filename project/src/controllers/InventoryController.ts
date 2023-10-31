@@ -434,7 +434,7 @@ export class InventoryController
         {
             if (item._id && item._id === body.item)
             {
-                item.upd.Foldable = { "Folded": body.value };
+                item.upd.Foldable = { Folded: body.value };
                 return this.eventOutputHolder.getOutput(sessionID);
             }
         }

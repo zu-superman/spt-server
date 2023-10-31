@@ -10,15 +10,15 @@ export class HttpServerHelper
     protected httpConfig: IHttpConfig;
 
     protected mime = {
-        "css": "text/css",
-        "bin": "application/octet-stream",
-        "html": "text/html",
-        "jpg": "image/jpeg",
-        "js": "text/javascript",
-        "json": "application/json",
-        "png": "image/png",
-        "svg": "image/svg+xml",
-        "txt": "text/plain"
+        css: "text/css",
+        bin: "application/octet-stream",
+        html: "text/html",
+        jpg: "image/jpeg",
+        js: "text/javascript",
+        json: "application/json",
+        png: "image/png",
+        svg: "image/svg+xml",
+        txt: "text/plain"
     };
 
     constructor(

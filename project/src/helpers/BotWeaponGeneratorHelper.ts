@@ -118,7 +118,7 @@ export class BotWeaponGeneratorHelper
         const ammoItems = this.itemHelper.splitStack({
             _id: this.hashUtil.generate(),
             _tpl: ammoTpl,
-            upd: { "StackObjectsCount": cartridgeCount }
+            upd: { StackObjectsCount: cartridgeCount }
         });
 
         for (const ammoItem of ammoItems)

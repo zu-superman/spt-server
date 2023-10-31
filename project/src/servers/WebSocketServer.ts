@@ -40,7 +40,7 @@ export class WebSocketServer
     public setupWebSocket(httpServer: http.Server): void 
     {
         const webSocketServer = new WebSocket.Server({
-            "server": httpServer
+            server: httpServer
         });
 
         webSocketServer.addListener("listening", () => 

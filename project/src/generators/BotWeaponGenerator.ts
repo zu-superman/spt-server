@@ -261,8 +261,8 @@ export class BotWeaponGenerator
             const parentItem = preset._items[0];
             preset._items[0] = {
                 ...parentItem, ...{
-                    "parentId": weaponParentId,
-                    "slotId": equipmentSlot,
+                    parentId: weaponParentId,
+                    slotId: equipmentSlot,
                     ...this.botGeneratorHelper.generateExtraPropertiesForItem(itemTemplate, botRole)
                 }
             };

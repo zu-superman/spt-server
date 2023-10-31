@@ -142,10 +142,10 @@ export class RepeatableQuestGenerator
         // a random combination of listed conditions can be required
         // possible conditions elements and their relative probability can be defined in QuestConfig.js
         // We use ProbabilityObjectArray to draw by relative probability. e.g. for targets:
-        // "targets": {
-        //    "Savage": 7,
-        //    "AnyPmc": 2,
-        //    "bossBully": 0.5
+        // targets: {
+        //    Savage: 7,
+        //    AnyPmc: 2,
+        //    bossBully: 0.5
         //}
         // higher is more likely. We define the difficulty to be the inverse of the relative probability.
 
@@ -467,7 +467,7 @@ export class RepeatableQuestGenerator
         itemSelection = itemSelection.filter(x => this.itemHelper.getItemPrice(x[0]) < roublesBudget);
 
         // We also have the option to use whitelist and/or blacklist which is defined in repeatableQuests.json as
-        // [{"minPlayerLevel": 1, "itemIds": ["id1",...]}, {"minPlayerLevel": 15, "itemIds": ["id3",...]}]
+        // [{minPlayerLevel: 1, itemIds: ["id1",...]}, {minPlayerLevel: 15, itemIds: ["id3",...]}]
         if (repeatableConfig.questConfig.Completion.useWhitelist)
         {
             const itemWhitelist = this.databaseServer.getTables().templates.repeatableQuests.data.Completion.itemsWhitelist;

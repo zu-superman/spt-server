@@ -372,7 +372,7 @@ export class LocationGenerator
             const rotation = result.rotation ? 1 : 0;
 
             items[0].slotId = "main";
-            items[0].location = { "x": result.x, "y": result.y, "r": rotation };
+            items[0].location = { x: result.x, y: result.y, r: rotation };
 
             // Add loot to container before returning
             for (const item of items)

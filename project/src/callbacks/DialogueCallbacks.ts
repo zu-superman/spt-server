@@ -65,13 +65,13 @@ export class DialogueCallbacks implements OnUpdate
                 DateTime: this.timeUtil.getTimestamp(),
                 IsDeveloper: true,
                 Regions: ["EUR"],
-                "VersionId": "bgkidft87ddd",
-                "Ip": "",
-                "Port": 0,
-                "Chats": [
+                VersionId: "bgkidft87ddd",
+                Ip: "",
+                Port: 0,
+                Chats: [
                     {
-                        "_id": "0",
-                        "Members": 0
+                        _id: "0",
+                        Members: 0
                     }
                 ]
             };

@@ -109,17 +109,17 @@ export class MatchController
 
         // get list of players joining into the match
         output.profiles.push({
-            "profileid": "TODO",
+            profileid: "TODO",
             profileToken: "TODO",
-            "status": "MatchWait",
-            "sid": "",
-            "ip": "",
-            "port": 0,
-            "version": "live",
-            "location": "TODO get location",
+            status: "MatchWait",
+            sid: "",
+            ip: "",
+            port: 0,
+            version: "live",
+            location: "TODO get location",
             raidMode: "Online",
-            "mode": "deathmatch",
-            "shortid": null,
+            mode: "deathmatch",
+            shortid: null,
             // eslint-disable-next-line @typescript-eslint/naming-convention
             additional_info: null
         });

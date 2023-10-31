@@ -62,9 +62,9 @@ export class DialogueController
     {
         // Force a fake friend called SPT into friend list
         return {
-            "Friends": [this.getSptFriendData()],
-            "Ignore": [],
-            "InIgnoreList": []
+            Friends: [this.getSptFriendData()],
+            Ignore: [],
+            InIgnoreList: []
         };
     }
 

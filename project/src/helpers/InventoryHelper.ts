@@ -788,13 +788,12 @@ export class InventoryHelper
     protected getInventoryItemHash(inventoryItem: Item[]): InventoryHelper.InventoryItemHash
     {
         const inventoryItemHash: InventoryHelper.InventoryItemHash = {
-            "byItemId": {},
-            "byParentId": {}
+            byItemId: {},
+            byParentId: {}
         };
 
-        for (let i = 0; i < inventoryItem.length; i++)
+        for (const item of inventoryItem)
         {
-            const item = inventoryItem[i];
             inventoryItemHash.byItemId[item._id] = item;
 
             if (!("parentId" in item))

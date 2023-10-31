@@ -613,10 +613,10 @@ export class BotEquipmentModGenerator
     protected createModItem(modId: string, modTpl: string, parentId: string, modSlot: string, modTemplate: ITemplateItem, botRole: string): Item
     {
         return {
-            "_id": modId,
-            "_tpl": modTpl,
-            "parentId": parentId,
-            "slotId": modSlot,
+            _id: modId,
+            _tpl: modTpl,
+            parentId: parentId,
+            slotId: modSlot,
             ...this.botGeneratorHelper.generateExtraPropertiesForItem(modTemplate, botRole)
         };
     }

@@ -635,36 +635,36 @@ export class RagfairOfferGenerator
         if (isRepairable && props.Durability > 0)
         {
             item.upd.Repairable = {
-                "Durability": props.Durability,
-                "MaxDurability": props.Durability
+                Durability: props.Durability,
+                MaxDurability: props.Durability
             };
         }
 
         if (isMedkit && props.MaxHpResource > 0)
         {
             item.upd.MedKit = {
-                "HpResource": props.MaxHpResource
+                HpResource: props.MaxHpResource
             };
         }
 
         if (isKey) 
         {
             item.upd.Key = {
-                "NumberOfUsages": 0
+                NumberOfUsages: 0
             };
         }
 
         if (isConsumable) 
         {
             item.upd.FoodDrink = {
-                "HpPercent": props.MaxResource
+                HpPercent: props.MaxResource
             };
         }
 
         if (isRepairKit) 
         {
             item.upd.RepairKit = {
-                "Resource": props.MaxRepairResource
+                Resource: props.MaxRepairResource
             };
         }
 

@@ -753,7 +753,7 @@ export class HideoutHelper
             _id: this.hashUtil.generate(),
             _tpl: "59faff1d86f7746c51718c9c",
             upd: {
-                "StackObjectsCount": 1
+                StackObjectsCount: 1
             }
         });
 

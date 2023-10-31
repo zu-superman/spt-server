@@ -365,16 +365,16 @@ export class RandomUtil
         if (max < min)
         {
             throw {
-                "name": "Invalid arguments",
-                "message": `Bounded random number generation max is smaller than min (${max} < ${min})`
+                name: "Invalid arguments",
+                message: `Bounded random number generation max is smaller than min (${max} < ${min})`
             };
         }
 
         if (n < 1)
         {
             throw {
-                "name": "Invalid argument",
-                "message": `'n' must be 1 or greater (received ${n})`
+                name: "Invalid argument",
+                message: `'n' must be 1 or greater (received ${n})`
             };
         }
 

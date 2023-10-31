@@ -532,7 +532,7 @@ export class QuestHelper
         {
             // this case is probably dead Code right now, since the only calling function
             // checks explicitly for Value > 0.
-            output.profileChanges[sessionID].items.del.push({ "_id": itemId });
+            output.profileChanges[sessionID].items.del.push({ _id: itemId });
             pmcData.Inventory.items.splice(inventoryItemIndex, 1);
         }
     }
@@ -546,12 +546,14 @@ export class QuestHelper
     protected addItemStackSizeChangeIntoEventResponse(output: IItemEventRouterResponse, sessionId: string, item: Item): void
     {
         output.profileChanges[sessionId].items.change.push({
-            "_id": item._id,
-            "_tpl": item._tpl,
-            "parentId": item.parentId,
-            "slotId": item.slotId,
-            "location": item.location,
-            "upd": { "StackObjectsCount": item.upd.StackObjectsCount }
+            _id: item._id,
+            _tpl: item._tpl,
+            parentId: item.parentId,
+            slotId: item.slotId,
+            location: item.location,
+            upd: {
+                StackObjectsCount: item.upd.StackObjectsCount
+            }
         });
     }
 
