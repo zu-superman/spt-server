@@ -383,7 +383,7 @@ export interface Productive
     ProductionTime?: number
     GivenItemsInStart?: string[]
     Interrupted?: boolean
-    /** Used in hideout prodiction.json */
+    /** Used in hideout production.json */
     needFuelForAllProductionTime?: boolean
     /** Used when sending data to client */
     NeedFuelForAllProductionTime?: boolean

@@ -45,7 +45,7 @@ export class WeightedRandomHelper
     {
         if (items.length !== weights.length)
         {
-            throw new Error("Items and weights must be of the same size");
+            throw new Error("Items and weight inputs must be of the same length");
         }
 
         if (!items.length)

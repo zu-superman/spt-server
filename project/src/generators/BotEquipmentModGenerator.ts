@@ -185,7 +185,7 @@ export class BotEquipmentModGenerator
         const botWeaponSightWhitelist = this.botEquipmentFilterService.getBotWeaponSightWhitelist(botEquipmentRole);
         const randomisationSettings = this.botHelper.getBotRandomizationDetails(botLevel, botEquipConfig);
 
-        // Iterate over mod pool and choose mods to add to item
+        // Iterate over mod pool and choose mods to attach
         const sortedModKeys = this.sortModKeys(Object.keys(compatibleModsPool));
         for (const modSlot of sortedModKeys)
         {
@@ -204,7 +204,7 @@ export class BotEquipmentModGenerator
                 continue;
             }
 
-            const isRandomisableSlot = randomisationSettings?.randomisedWeaponModSlots?.includes(modSlot);
+            const isRandomisableSlot = randomisationSettings?.randomisedWeaponModSlots?.includes(modSlot) ?? false;
             const modToAdd = this.chooseModToPutIntoSlot(modSlot, isRandomisableSlot, botWeaponSightWhitelist, botEquipBlacklist, compatibleModsPool, weapon, ammoTpl, parentTemplate);
 
             // Compatible mod not found
@@ -213,13 +213,12 @@ export class BotEquipmentModGenerator
                 continue;
             }
 
-            const modToAddTemplate = modToAdd[1];
-
             if (!this.isModValidForSlot(modToAdd, modsParentSlot, modSlot, parentTemplate))
             {
                 continue;
             }
 
+            const modToAddTemplate = modToAdd[1];
             // Skip adding mod to weapon if type limit reached
             if (this.botWeaponModLimitService.weaponModHasReachedLimit(botEquipmentRole, modToAddTemplate, modLimits, parentTemplate, weapon))
             {
@@ -386,12 +385,19 @@ export class BotEquipmentModGenerator
         const sortedKeys: string[] = [];
         const modRecieverKey = "mod_reciever";
         const modMount001Key = "mod_mount_001";
-        const modGasBLockKey = "mod_gas_block";
+        const modGasBlockKey = "mod_gas_block";
         const modPistolGrip = "mod_pistol_grip";
         const modStockKey = "mod_stock";
         const modBarrelKey = "mod_barrel";
+        const modHandguardKey = "mod_handguard";
         const modMountKey = "mod_mount";
         const modScopeKey = "mod_scope";
+
+        if (unsortedKeys.includes(modHandguardKey))
+        {
+            sortedKeys.push(modHandguardKey);
+            unsortedKeys.splice(unsortedKeys.indexOf(modHandguardKey), 1);
+        }
 
         if (unsortedKeys.includes(modBarrelKey))
         {
@@ -417,10 +423,10 @@ export class BotEquipmentModGenerator
             unsortedKeys.splice(unsortedKeys.indexOf(modPistolGrip), 1);
         }
 
-        if (unsortedKeys.includes(modGasBLockKey))
+        if (unsortedKeys.includes(modGasBlockKey))
         {
-            sortedKeys.push(modGasBLockKey);
-            unsortedKeys.splice(unsortedKeys.indexOf(modGasBLockKey), 1);
+            sortedKeys.push(modGasBlockKey);
+            unsortedKeys.splice(unsortedKeys.indexOf(modGasBlockKey), 1);
         }
 
         if (unsortedKeys.includes(modStockKey))
@@ -555,6 +561,7 @@ export class BotEquipmentModGenerator
                 if (!modCompatibilityResult.incompatible)
                 {
                     found = true;
+
                     break;
                 }
             }

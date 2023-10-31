@@ -465,7 +465,7 @@ export class FenceService
     }
 
     /**
-     * Get stack size ofr a singular item (no mods)
+     * Get stack size of a singular item (no mods)
      * @param itemDbDetails item being added to fence
      * @returns Stack size
      */
@@ -478,11 +478,12 @@ export class FenceService
             return this.randomUtil.getInt(overrideValues.min, overrideValues.max);
         }
 
-        // Fence doesn't sell ammo by default, but handle it as players mod fence
         if (this.itemHelper.isOfBaseclass(itemDbDetails._id, BaseClasses.AMMO))
         {
             // No override, use stack max size from item db
-            return this.randomUtil.getInt(1, itemDbDetails._props.StackMaxSize);
+            return itemDbDetails._props.StackMaxSize === 1
+                ? 1
+                : this.randomUtil.getInt(itemDbDetails._props.StackMinRandom, itemDbDetails._props.StackMaxRandom);
         }
         
         return 1;

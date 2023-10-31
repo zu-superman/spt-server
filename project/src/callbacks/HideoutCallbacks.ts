@@ -4,6 +4,7 @@ import { HideoutController } from "@spt-aki/controllers/HideoutController";
 import { OnUpdate } from "@spt-aki/di/OnUpdate";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
 import { IHandleQTEEventRequestData } from "@spt-aki/models/eft/hideout/IHandleQTEEventRequestData";
+import { IHideoutCancelProductionRequestData } from "@spt-aki/models/eft/hideout/IHideoutCancelProductionRequestData";
 import { IHideoutContinuousProductionStartRequestData } from "@spt-aki/models/eft/hideout/IHideoutContinuousProductionStartRequestData";
 import { IHideoutImproveAreaRequestData } from "@spt-aki/models/eft/hideout/IHideoutImproveAreaRequestData";
 import { IHideoutPutItemInRequestData } from "@spt-aki/models/eft/hideout/IHideoutPutItemInRequestData";
@@ -127,6 +128,14 @@ export class HideoutCallbacks implements OnUpdate
     public improveArea(pmcData: IPmcData, request: IHideoutImproveAreaRequestData, sessionId: string): IItemEventRouterResponse
     {
         return this.hideoutController.improveArea(sessionId, pmcData, request);
+    }
+
+    /**
+     * Handle client/game/profile/items/moving - HideoutCancelProductionCommand
+     */
+    public cancelProduction(pmcData: IPmcData, request: IHideoutCancelProductionRequestData, sessionId: string): IItemEventRouterResponse
+    {
+        return this.hideoutController.cancelProduction(sessionId, pmcData, request);
     }
 
     public async onUpdate(timeSinceLastRun: number): Promise<boolean>

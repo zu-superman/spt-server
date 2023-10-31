@@ -386,7 +386,7 @@
         "DEFAULT_BEAR_BEHAVIOUR": "Attack",
         "DEFAULT_ENEMY_BEAR": true,
         "DEFAULT_ENEMY_USEC": true,
-        "DEFAULT_SAVAGE_BEHAVIOUR": "Warn",
+        "DEFAULT_SAVAGE_BEHAVIOUR": "Attack",
         "DEFAULT_USEC_BEHAVIOUR": "Attack",
         "DIST_TO_ENEMY_YO_CAN_HEAL": 130,
         "DIST_TO_FOUND_SQRT": 400,
@@ -897,7 +897,7 @@
         "DEFAULT_BEAR_BEHAVIOUR": "Attack",
         "DEFAULT_ENEMY_BEAR": true,
         "DEFAULT_ENEMY_USEC": true,
-        "DEFAULT_SAVAGE_BEHAVIOUR": "Warn",
+        "DEFAULT_SAVAGE_BEHAVIOUR": "Attack",
         "DEFAULT_USEC_BEHAVIOUR": "Attack",
         "DIST_TO_ENEMY_YO_CAN_HEAL": 130,
         "DIST_TO_FOUND_SQRT": 400,
@@ -1408,7 +1408,7 @@
         "DEFAULT_BEAR_BEHAVIOUR": "Attack",
         "DEFAULT_ENEMY_BEAR": true,
         "DEFAULT_ENEMY_USEC": true,
-        "DEFAULT_SAVAGE_BEHAVIOUR": "Warn",
+        "DEFAULT_SAVAGE_BEHAVIOUR": "Attack",
         "DEFAULT_USEC_BEHAVIOUR": "Attack",
         "DIST_TO_ENEMY_YO_CAN_HEAL": 130,
         "DIST_TO_FOUND_SQRT": 400,
@@ -1919,7 +1919,7 @@
         "DEFAULT_BEAR_BEHAVIOUR": "Attack",
         "DEFAULT_ENEMY_BEAR": true,
         "DEFAULT_ENEMY_USEC": true,
-        "DEFAULT_SAVAGE_BEHAVIOUR": "Warn",
+        "DEFAULT_SAVAGE_BEHAVIOUR": "Attack",
         "DEFAULT_USEC_BEHAVIOUR": "Attack",
         "DIST_TO_ENEMY_YO_CAN_HEAL": 130,
         "DIST_TO_FOUND_SQRT": 400,
@@ -2253,18 +2253,18 @@
   "inventory": {
     "Ammo": {
       "Caliber762x39": {
-        "5656d7c34bdc2d9d198b4587": 1,
-        "59e0d99486f7744a32234762": 1,
-        "64b7af5a8532cf95ee0a0dbd": 1
+        "5656d7c34bdc2d9d198b4587": 410,
+        "59e0d99486f7744a32234762": 165,
+        "64b7af5a8532cf95ee0a0dbd": 386
       },
       "Caliber762x51": {
-        "5a6086ea4f39f99cd479502f": 1,
-        "5a608bf24f39f98ffc77720e": 1,
-        "5e023e53d4353e3302577c4c": 1
+        "5a6086ea4f39f99cd479502f": 166,
+        "5a608bf24f39f98ffc77720e": 211,
+        "5e023e53d4353e3302577c4c": 2440
       },
       "Caliber9x19PARA": {
-        "56d59d3ad2720bdb418b4577": 1,
-        "64b7bbb74b75259c590fa897": 1
+        "56d59d3ad2720bdb418b4577": 1891,
+        "64b7bbb74b75259c590fa897": 1887
       }
     },
     "equipment": {
@@ -2274,20 +2274,20 @@
       "Earpiece": {},
       "Eyewear": {},
       "FaceCover": {
-        "5c1a1e3f2e221602b66cc4c2": 1,
-        "62963c18dbc8ab5f0d382d0b": 1
+        "5c1a1e3f2e221602b66cc4c2": 2,
+        "62963c18dbc8ab5f0d382d0b": 1887
       },
       "FirstPrimaryWeapon": {
-        "5dcbd56fdbd3d91b3e5468d5": 1,
-        "606587252535c57a13424cfd": 1,
-        "6165ac306ef05c2ce828ef74": 1
+        "5dcbd56fdbd3d91b3e5468d5": 1376,
+        "606587252535c57a13424cfd": 961,
+        "6165ac306ef05c2ce828ef74": 1441
       },
       "Headwear": {
         "5a43957686f7742a2c2f11b0": 1
       },
       "Holster": {
-        "5a7ae0c351dfba0017554310": 1,
-        "5b1fa9b25acfc40018633c01": 1
+        "5a7ae0c351dfba0017554310": 2369,
+        "5b1fa9b25acfc40018633c01": 1409
       },
       "Pockets": {
         "5af99e9186f7747c447120b8": 1

@@ -153,8 +153,14 @@ export class EventOutputHolder
     {
         for (const productionKey in productions)
         {
-            // Skip completed
             const production = productions[productionKey];
+            if (!production)
+            {
+                // Could be cancelled production, skip item to save processing
+                continue;
+            }
+
+            // Skip completed
             if (!production.inProgress)
             {
                 continue;

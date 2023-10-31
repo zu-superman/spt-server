@@ -227,6 +227,11 @@ export class HideoutHelper
         for (const prodId in pmcData.Hideout.Production)
         {
             const craft = pmcData.Hideout.Production[prodId];
+            if (!craft)
+            {
+                // Craft value is null, get rid of it (could be from cancelling craft that needs cleaning up)
+                delete pmcData.Hideout.Production[prodId];
+            }
 
             // Craft complete, skip processing (Don't skip continious crafts like bitcoin farm)
             if (craft.Progress >= craft.ProductionTime && prodId !== HideoutHelper.bitcoinFarm)

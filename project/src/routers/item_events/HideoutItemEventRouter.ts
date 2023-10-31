@@ -29,7 +29,8 @@ export class HideoutItemEventRouter extends ItemEventRouterDefinition
             new HandledRoute(HideoutEventActions.HIDEOUT_CONTINUOUS_PRODUCTION_START, false),
             new HandledRoute(HideoutEventActions.HIDEOUT_TAKE_PRODUCTION, false),
             new HandledRoute(HideoutEventActions.HIDEOUT_RECORD_SHOOTING_RANGE_POINTS, false),
-            new HandledRoute(HideoutEventActions.HIDEOUT_IMPROVE_AREA, false)
+            new HandledRoute(HideoutEventActions.HIDEOUT_IMPROVE_AREA, false),
+            new HandledRoute(HideoutEventActions.HIDEOUT_CANCEL_PRODUCTION_COMMAND, false)
         ];
     }
 
@@ -59,6 +60,8 @@ export class HideoutItemEventRouter extends ItemEventRouterDefinition
                 return this.hideoutCallbacks.recordShootingRangePoints(pmcData, body, sessionID);
             case HideoutEventActions.HIDEOUT_IMPROVE_AREA:
                 return this.hideoutCallbacks.improveArea(pmcData, body, sessionID);
+            case HideoutEventActions.HIDEOUT_CANCEL_PRODUCTION_COMMAND:
+                return this.hideoutCallbacks.cancelProduction(pmcData, body, sessionID);
         }
     }
 }

@@ -305,7 +305,7 @@
         "DIST_LAY_CHECK": 11,
         "DIST_TO_COVER_TO_LAY": 3.5,
         "DIST_TO_COVER_TO_LAY_SQRT": 12.25,
-        "IF_NO_ENEMY": true,
+        "IF_NO_ENEMY": false,
         "LAY_AIM": 0.6,
         "LAY_CHANCE_DANGER": 40,
         "MAX_CAN_LAY_DIST": 200,
@@ -786,7 +786,7 @@
         "DIST_LAY_CHECK": 11,
         "DIST_TO_COVER_TO_LAY": 3.5,
         "DIST_TO_COVER_TO_LAY_SQRT": 12.25,
-        "IF_NO_ENEMY": true,
+        "IF_NO_ENEMY": false,
         "LAY_AIM": 0.6,
         "LAY_CHANCE_DANGER": 40,
         "MAX_CAN_LAY_DIST": 200,
@@ -1267,7 +1267,7 @@
         "DIST_LAY_CHECK": 11,
         "DIST_TO_COVER_TO_LAY": 3.5,
         "DIST_TO_COVER_TO_LAY_SQRT": 12.25,
-        "IF_NO_ENEMY": true,
+        "IF_NO_ENEMY": false,
         "LAY_AIM": 0.6,
         "LAY_CHANCE_DANGER": 40,
         "MAX_CAN_LAY_DIST": 200,
@@ -1748,7 +1748,7 @@
         "DIST_LAY_CHECK": 11,
         "DIST_TO_COVER_TO_LAY": 3.5,
         "DIST_TO_COVER_TO_LAY_SQRT": 12.25,
-        "IF_NO_ENEMY": true,
+        "IF_NO_ENEMY": false,
         "LAY_AIM": 0.6,
         "LAY_CHANCE_DANGER": 40,
         "MAX_CAN_LAY_DIST": 200,
@@ -2178,8 +2178,8 @@
         "5fc382a9d724d907e2077dab": 1
       },
       "Caliber9x21": {
-        "5a269f97c4a282000b151807": 1,
-        "5a26abfac4a28232980eabff": 1
+        "5a269f97c4a282000b151807": 13,
+        "5a26abfac4a28232980eabff": 968
       }
     },
     "equipment": {
@@ -2192,8 +2192,8 @@
         "63626d904aa74b8fe30ab426": 1
       },
       "FirstPrimaryWeapon": {
-        "5c46fbd72e2216398b5a8c9c": 1,
-        "627e14b21713922ded6f2c15": 1
+        "5c46fbd72e2216398b5a8c9c": 968,
+        "627e14b21713922ded6f2c15": 13
       },
       "Headwear": {
         "636270263f2495c26f00b007": 1
@@ -2206,8 +2206,8 @@
       },
       "Scabbard": {},
       "SecondPrimaryWeapon": {
-        "57dc2fa62459775949412633": 1,
-        "5ba26383d4351e00334c93d9": 1
+        "57dc2fa62459775949412633": 968,
+        "5ba26383d4351e00334c93d9": 13
       },
       "SecuredContainer": {
         "5c0a794586f77461c458f892": 1

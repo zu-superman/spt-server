@@ -12,6 +12,7 @@ import { Upd } from "@spt-aki/models/eft/common/tables/IItem";
 import { HideoutUpgradeCompleteRequestData } from "@spt-aki/models/eft/hideout/HideoutUpgradeCompleteRequestData";
 import { IHandleQTEEventRequestData } from "@spt-aki/models/eft/hideout/IHandleQTEEventRequestData";
 import { IHideoutArea, Stage } from "@spt-aki/models/eft/hideout/IHideoutArea";
+import { IHideoutCancelProductionRequestData } from "@spt-aki/models/eft/hideout/IHideoutCancelProductionRequestData";
 import { IHideoutContinuousProductionStartRequestData } from "@spt-aki/models/eft/hideout/IHideoutContinuousProductionStartRequestData";
 import { IHideoutImproveAreaRequestData } from "@spt-aki/models/eft/hideout/IHideoutImproveAreaRequestData";
 import { IHideoutProduction } from "@spt-aki/models/eft/hideout/IHideoutProduction";
@@ -125,7 +126,6 @@ export class HideoutController
         }
 
         const hideoutData = this.databaseServer.getTables().hideout.areas.find(area => area.type === request.areaType);
-
         if (!hideoutData)
         {
             this.logger.error(this.localisationService.getText("hideout-unable_to_find_area_in_database", request.areaType));
@@ -133,7 +133,6 @@ export class HideoutController
         }
 
         const ctime = hideoutData.stages[hideoutArea.level + 1].constructionTime;
-
         if (ctime > 0)
         {
             const timestamp = this.timeUtil.getTimestamp();
@@ -734,8 +733,8 @@ export class HideoutController
             area.lastRecipe = request.recipeId;
             counterHoursCrafting.value = hoursCrafting;
 
-            // Delete production now it's complete
-            delete pmcData.Hideout.Production[prodId];
+            // Null production data now it's complete - will be cleaned up later by update() process
+            pmcData.Hideout.Production[prodId] = null;
         };
 
         // Remove the old production from output object before its sent to client
@@ -814,7 +813,9 @@ export class HideoutController
 
         const callback = () =>
         {
-            delete pmcData.Hideout.Production[prodId];
+
+            // Null production data now it's complete - will be cleaned up later by update() process
+            pmcData.Hideout.Production[prodId] = null;
         };
 
         return this.inventoryHelper.addItem(pmcData, newReq, output, sessionID, callback, true);
@@ -831,7 +832,6 @@ export class HideoutController
     {
         return this.hideoutHelper.registerProduction(pmcData, request, sessionID);
     }
-
 
     /**
      * Get quick time event list for hideout
@@ -909,8 +909,8 @@ export class HideoutController
     /**
      * Handle client/game/profile/items/moving - HideoutImproveArea
      * @param sessionId Session id
-     * @param pmcData profile to improve area in
-     * @param request improve area request data
+     * @param pmcData Profile to improve area in
+     * @param request Improve area request data
      */
     public improveArea(sessionId: string, pmcData: IPmcData, request: IHideoutImproveAreaRequestData): IItemEventRouterResponse
     {
@@ -976,6 +976,34 @@ export class HideoutController
             output.profileChanges[sessionId].improvements[improvement.id] = improvementDetails;
             pmcData.Hideout.Improvement[improvement.id] = improvementDetails;
         }        
+
+        return output;
+    }
+
+    /**
+     * Handle client/game/profile/items/moving HideoutCancelProductionCommand
+     * @param sessionId Session id
+     * @param pmcData Profile with craft to cancel
+     * @param request Cancel production request data
+     * @returns IItemEventRouterResponse
+     */
+    public cancelProduction(sessionId: string, pmcData: IPmcData, request: IHideoutCancelProductionRequestData): IItemEventRouterResponse
+    {
+        const output = this.eventOutputHolder.getOutput(sessionId);
+
+        const craftToCancel = pmcData.Hideout.Production[request.recipeId];
+        if (!craftToCancel)
+        {
+            const errorMessage = `Unable to find craft ${request.recipeId} to cancel`;
+            this.logger.error(errorMessage);
+
+            return this.httpResponse.appendErrorToOutput(output, errorMessage);
+        }
+
+        // Null out production data so client gets informed when response send back
+        pmcData.Hideout.Production[request.recipeId] = null;
+
+        // TODO - handle timestamp somehow?
 
         return output;
     }

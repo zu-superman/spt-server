@@ -4,7 +4,7 @@
       "5fb53d0b7b5d1342ee24bd64": 1
     },
     "feet": {
-      "5fb535bd1c69e5198e234125": 1,
+      "5fb535bd1c69e5198e234125": 5,
       "5fb535cf1c69e5198e234126": 1
     },
     "hands": [
@@ -315,7 +315,7 @@
         "DIST_LAY_CHECK": 11,
         "DIST_TO_COVER_TO_LAY": 3.5,
         "DIST_TO_COVER_TO_LAY_SQRT": 12.25,
-        "IF_NO_ENEMY": true,
+        "IF_NO_ENEMY": false,
         "LAY_AIM": 0.6,
         "LAY_CHANCE_DANGER": 40,
         "MAX_CAN_LAY_DIST": 200,
@@ -793,7 +793,7 @@
         "DIST_LAY_CHECK": 11,
         "DIST_TO_COVER_TO_LAY": 3.5,
         "DIST_TO_COVER_TO_LAY_SQRT": 12.25,
-        "IF_NO_ENEMY": true,
+        "IF_NO_ENEMY": false,
         "LAY_AIM": 0.6,
         "LAY_CHANCE_DANGER": 40,
         "MAX_CAN_LAY_DIST": 200,
@@ -1271,7 +1271,7 @@
         "DIST_LAY_CHECK": 11,
         "DIST_TO_COVER_TO_LAY": 3.5,
         "DIST_TO_COVER_TO_LAY_SQRT": 12.25,
-        "IF_NO_ENEMY": true,
+        "IF_NO_ENEMY": false,
         "LAY_AIM": 0.6,
         "LAY_CHANCE_DANGER": 40,
         "MAX_CAN_LAY_DIST": 200,
@@ -1749,7 +1749,7 @@
         "DIST_LAY_CHECK": 11,
         "DIST_TO_COVER_TO_LAY": 3.5,
         "DIST_TO_COVER_TO_LAY_SQRT": 12.25,
-        "IF_NO_ENEMY": true,
+        "IF_NO_ENEMY": false,
         "LAY_AIM": 0.6,
         "LAY_CHANCE_DANGER": 40,
         "MAX_CAN_LAY_DIST": 200,
@@ -2169,12 +2169,12 @@
         "54527a984bdc2d4e668b4567": 1
       },
       "Caliber762x51": {
-        "5a6086ea4f39f99cd479502f": 1,
-        "5e023e53d4353e3302577c4c": 1
+        "5a6086ea4f39f99cd479502f": 13,
+        "5e023e53d4353e3302577c4c": 45
       },
       "Caliber762x54R": {
-        "560d61e84bdc2da74d8b4571": 1,
-        "5887431f2459777e1612938f": 1
+        "560d61e84bdc2da74d8b4571": 92,
+        "5887431f2459777e1612938f": 145
       },
       "Caliber9x19PARA": {
         "56d59d3ad2720bdb418b4577": 1
@@ -2183,23 +2183,23 @@
     "equipment": {
       "ArmBand": {},
       "ArmorVest": {
-        "5e4abb5086f77406975c9342": 1,
-        "5fd4c474dd870108a754b241": 1
+        "5e4abb5086f77406975c9342": 13,
+        "5fd4c474dd870108a754b241": 9
       },
       "Backpack": {},
       "Earpiece": {},
       "Eyewear": {},
       "FaceCover": {
-        "5ab8f4ff86f77431c60d91ba": 1,
-        "5b432b2f5acfc4771e1c6622": 1,
-        "635267ab3c89e2112001f826": 1
+        "5ab8f4ff86f77431c60d91ba": 1506,
+        "5b432b2f5acfc4771e1c6622": 1584,
+        "635267ab3c89e2112001f826": 997
       },
       "FirstPrimaryWeapon": {
-        "55801eed4bdc2d89578b4588": 1,
-        "5bfea6e90db834001b7347f3": 1,
-        "5c46fbd72e2216398b5a8c9c": 1,
-        "5df8ce05b11454561e39243b": 1,
-        "6176aca650224f204c1da3fb": 1
+        "55801eed4bdc2d89578b4588": 2465,
+        "5bfea6e90db834001b7347f3": 20,
+        "5c46fbd72e2216398b5a8c9c": 1564,
+        "5df8ce05b11454561e39243b": 13,
+        "6176aca650224f204c1da3fb": 25
       },
       "Headwear": {},
       "Holster": {},
@@ -2208,17 +2208,17 @@
       },
       "Scabbard": {},
       "SecondPrimaryWeapon": {
-        "5447a9cd4bdc2dbd208b4567": 1,
-        "57dc2fa62459775949412633": 1,
-        "59984ab886f7743e98271174": 1
+        "5447a9cd4bdc2dbd208b4567": 90,
+        "57dc2fa62459775949412633": 1873,
+        "59984ab886f7743e98271174": 1133
       },
       "SecuredContainer": {
         "5c0a794586f77461c458f892": 1
       },
       "TacticalVest": {
-        "544a5caa4bdc2d1a388b4568": 1,
-        "61bcc89aef0f505f0c6cd0fc": 1,
-        "63611865ba5b90db0c0399d1": 1
+        "544a5caa4bdc2d1a388b4568": 18,
+        "61bcc89aef0f505f0c6cd0fc": 59,
+        "63611865ba5b90db0c0399d1": 4010
       }
     },
     "items": {
