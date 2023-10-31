@@ -383,14 +383,14 @@ export class ProfileFixerService
     protected getActiveRepeatableQuests(repeatableQuests: IPmcDataRepeatableQuest[]): IRepeatableQuest[]
     {
         let activeQuests = [];
-        repeatableQuests?.forEach(x =>
+        for (const repeatableQuest of repeatableQuests)
         {
-            if (x.activeQuests.length > 0)
+            if (repeatableQuest.activeQuests.length > 0)
             {
                 // daily/weekly collection has active quests in them, add to array and return
-                activeQuests = activeQuests.concat(x.activeQuests);
+                activeQuests = activeQuests.concat(repeatableQuest.activeQuests);
             }
-        });
+        }
 
         return activeQuests;
     }

@@ -146,10 +146,10 @@ export class PreAkiModLoader implements IModLoader
             const modOrder = this.vfs.readFile(this.modOrderPath, { encoding: "utf8" });
             try 
             {
-                this.jsonUtil.deserialize<any>(modOrder).order.forEach((mod: string, index: number) => 
+                for (const [index, mod] of (this.jsonUtil.deserialize<any>(modOrder).order as string[]).entries())
                 {
                     this.order[mod] = index;
-                });
+                }
             }
             catch (error) 
             {
@@ -210,7 +210,10 @@ export class PreAkiModLoader implements IModLoader
         validMods.sort((prev, next) => this.sortMods(prev, next, missingFromOrderJSON));
 
         // log the missing mods from order.json
-        Object.keys(missingFromOrderJSON).forEach((missingMod) => (this.logger.debug(this.localisationService.getText("modloader-mod_order_missing_from_json", missingMod))));
+        for (const missingMod of Object.keys(missingFromOrderJSON))
+        {
+            this.logger.debug(this.localisationService.getText("modloader-mod_order_missing_from_json", missingMod));
+        }
 
         // add mods
         for (const mod of validMods)

@@ -120,7 +120,7 @@ export class InsuranceController
         this.logger.debug(`Processing ${insuranceDetails.length} insurance packages, which includes a total of ${this.countAllInsuranceItems(insuranceDetails)} items, in profile ${sessionID}`);
 
         // Iterate over each of the insurance packages.
-        insuranceDetails.forEach(insured =>
+        for (const insured of insuranceDetails)
         {
             // Find items that should be deleted from the insured items.
             const itemsToDelete = this.findItemsToDelete(insured);
@@ -136,7 +136,7 @@ export class InsuranceController
 
             // Remove the fully processed insurance package from the profile.
             this.removeInsurancePackageFromProfile(sessionID, insured.messageContent.systemData);
-        });
+        }
     }
 
     /**
@@ -216,7 +216,10 @@ export class InsuranceController
     protected populateItemsMap(insured: Insurance): Map<string, Item>
     {
         const itemsMap = new Map<string, Item>();
-        insured.items.forEach(item => itemsMap.set(item._id, item));
+        for (const item of insured.items)
+        {
+            itemsMap.set(item._id, item);
+        }
         return itemsMap;
     }
 
@@ -311,7 +314,10 @@ export class InsuranceController
                 const allChildrenAreAttachments = directChildren.every(child => this.itemHelper.isAttachmentAttached(child));
                 if (allChildrenAreAttachments)
                 {
-                    itemAndChildren.forEach(item => toDelete.add(item._id));
+                    for (const item of itemAndChildren)
+                    {
+                        toDelete.add(item._id);
+                    }
                 }
             }
         }
@@ -327,7 +333,7 @@ export class InsuranceController
      */
     protected processAttachments(mainParentToAttachmentsMap: Map<string, Item[]>, itemsMap: Map<string, Item>, traderId: string, toDelete: Set<string>): void
     {
-        mainParentToAttachmentsMap.forEach((attachmentItems, parentId) =>
+        for (const [ parentId, attachmentItems ] of mainParentToAttachmentsMap)
         {
             // Log the parent item's name.
             const parentItem = itemsMap.get(parentId);
@@ -336,7 +342,7 @@ export class InsuranceController
 
             // Process the attachments for this individual parent item.
             this.processAttachmentByParent(attachmentItems, traderId, toDelete);
-        });
+        }
     }
 
     /**
@@ -383,10 +389,10 @@ export class InsuranceController
      */
     protected logAttachmentsDetails(attachments: EnrichedItem[]): void
     {
-        attachments.forEach(({ name, maxPrice }) =>
+        for ( const attachment of attachments)
         {
-            this.logger.debug(`Child Item - Name: ${name}, Max Price: ${maxPrice}`);
-        });
+            this.logger.debug(`Child Item - Name: ${attachment.name}, Max Price: ${attachment.maxPrice}`);
+        }
     }
 
     /**
@@ -413,7 +419,7 @@ export class InsuranceController
     {
         const valuableToDelete = attachments.slice(0, successfulRolls).map(({ _id }) => _id);
 
-        valuableToDelete.forEach(attachmentsId =>
+        for (const attachmentsId of valuableToDelete)
         {
             const valuableChild = attachments.find(({ _id }) => _id === attachmentsId);
             if (valuableChild)
@@ -422,7 +428,7 @@ export class InsuranceController
                 this.logger.debug(`Marked for removal - Child Item: ${name}, Max Price: ${maxPrice}`);
                 toDelete.add(attachmentsId);
             }
-        });
+        }
     }
 
     /**
@@ -448,7 +454,7 @@ export class InsuranceController
     {
         const hideoutParentId = this.fetchHideoutItemParent(insured.items);
 
-        insured.items.forEach(item =>
+        for (const item of insured.items)
         {
             // Check if the item's parent exists in the insured items list.
             const parentExists = insured.items.some(parentItem => parentItem._id === item.parentId);
@@ -460,7 +466,7 @@ export class InsuranceController
                 item.slotId = "hideout";
                 delete item.location;
             }
-        });
+        }
     }
 
     /**

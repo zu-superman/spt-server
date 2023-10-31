@@ -32,7 +32,7 @@ export const Listen = (basePath: string) =>
                 if (!handlersArray) return;
 
                 // Add each flagged handler to the Record
-                handlersArray.forEach(({ handlerName, path, httpMethod }) =>
+                for (const { handlerName, path, httpMethod } of handlersArray)
                 {
                     if (!this.handlers[httpMethod]) this.handlers[httpMethod] = {};
 
@@ -41,7 +41,7 @@ export const Listen = (basePath: string) =>
                         if (!path || path === "") this.handlers[httpMethod][`/${basePath}`] = this[handlerName];
                         this.handlers[httpMethod][`/${basePath}/${path}`] = this[handlerName];
                     }
-                });
+                }
 
                 // Cleanup the handlers list
                 Base.prototype["handlers"] = [];

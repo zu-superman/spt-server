@@ -237,7 +237,10 @@ export class LocationGenerator
 
         // Create probability array with all possible container ids in this group and their relataive probability of spawning
         const containerDistribution = new ProbabilityObjectArray<string>(this.mathUtil, this.jsonUtil);
-        containerIds.forEach(x => containerDistribution.push(new ProbabilityObject(x, containerData.containerIdsWithProbability[x])));
+        for (const containerId of containerIds)
+        {
+            containerDistribution.push(new ProbabilityObject(containerId, containerData.containerIdsWithProbability[containerId]));
+        }
 
         chosenContainerIds.push(...containerDistribution.draw(containerData.chosenCount));
 

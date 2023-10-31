@@ -27,17 +27,17 @@ export class BotGenerationCacheService
      */
     public storeBots(key: string, botsToStore: IBotBase[]): void
     {   
-        botsToStore.forEach(e => 
+        for (const bot of botsToStore)
         {
             if (this.storedBots.has(key))
             {
-                this.storedBots.get(key).unshift(e);
+                this.storedBots.get(key).unshift(bot);
             }
             else
             {
-                this.storedBots.set(key, [e]);
+                this.storedBots.set(key, [bot]);
             }
-        });
+        }
     }
 
     /**

@@ -127,7 +127,13 @@ export class AssortHelper
 
         if (assort.barter_scheme[itemID] && flea)
         {
-            assort.barter_scheme[itemID].forEach(b => b.forEach(br => br.sptQuestLocked = true));
+            for (const barterSchemes of assort.barter_scheme[itemID])
+            {
+                for (const barterScheme of barterSchemes)
+                {
+                    barterScheme.sptQuestLocked = true;
+                }
+            }
             return assort;
         }
         delete assort.barter_scheme[itemID];

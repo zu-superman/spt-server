@@ -54,13 +54,13 @@ export class LootGenerator
         const itemTypeCounts = this.initItemLimitCounter(options.itemLimits);
 
         const tables = this.databaseServer.getTables();
-        const itemBlacklist = new Set(this.itemFilterService.getBlacklistedItems());
-        
-        options.itemBlacklist.forEach(itemBlacklist.add, itemBlacklist);
-
+        const itemBlacklist = new Set<string>([...this.itemFilterService.getBlacklistedItems(), ...options.itemBlacklist]);
         if (!options.allowBossItems)
         {
-            this.itemFilterService.getBossItems().forEach(itemBlacklist.add, itemBlacklist);
+            for (const bossItem of this.itemFilterService.getBossItems())
+            {
+                itemBlacklist.add(bossItem);
+            }
         }
 
         // Handle sealed weapon containers

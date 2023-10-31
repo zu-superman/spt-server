@@ -51,7 +51,10 @@ export class RagfairOfferHolder
 
     public addOffers(offers: Array<IRagfairOffer>): void
     {
-        offers.forEach(o => this.addOffer(o));
+        for (const offer of offers)
+        {
+            this.addOffer(offer);
+        }
     }
 
     public addOffer(offer: IRagfairOffer): void
@@ -76,7 +79,10 @@ export class RagfairOfferHolder
 
     public removeOffers(offers: Array<IRagfairOffer>): void
     {
-        offers.forEach(o => this.removeOffer(o));
+        for (const offer of offers)
+        {
+            this.removeOffer(offer);
+        }
     }
     
     public removeOfferByTrader(traderId: string): void

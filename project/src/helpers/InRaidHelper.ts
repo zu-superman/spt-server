@@ -364,10 +364,10 @@ export class InRaidHelper
                 && !(this.inRaidConfig.keepFiRSecureContainerOnDeath && this.itemHelper.itemIsInsideContainer(x, "SecuredContainer", postRaidProfile.Inventory.items));
         });
 
-        itemsToRemovePropertyFrom.forEach(item =>
+        for (const item of itemsToRemovePropertyFrom)
         {
             delete item.upd.SpawnedInSession;
-        });
+        }
 
         return postRaidProfile;
     }
@@ -410,10 +410,10 @@ export class InRaidHelper
     {
         // Get inventory item ids to remove from players profile
         const itemIdsToDeleteFromProfile = this.getInventoryItemsLostOnDeath(pmcData).map(x => x._id);
-        itemIdsToDeleteFromProfile.forEach(x =>
+        for (const itemId of itemIdsToDeleteFromProfile)
         {
-            this.inventoryHelper.removeItem(pmcData, x, sessionID);
-        });
+            this.inventoryHelper.removeItem(pmcData, itemId, sessionID);
+        }
 
         // Remove contents of fast panel
         pmcData.Inventory.fastPanel = {};
