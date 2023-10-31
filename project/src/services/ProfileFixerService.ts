@@ -970,7 +970,7 @@ export class ProfileFixerService
     public fixIncorrectAidValue(fullProfile: IAkiProfile): void
     {
         // Not a number, regenerate
-        if (isNaN(fullProfile.characters.pmc.aid))
+        if (Number.isNaN(fullProfile.characters.pmc.aid))
         {
             fullProfile.characters.pmc.sessionId = <string><unknown>fullProfile.characters.pmc.aid;
             fullProfile.characters.pmc.aid = this.hashUtil.generateAccountId();

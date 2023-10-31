@@ -77,7 +77,7 @@ export class RagfairSellHelper
         const result: SellResult[] = [];
         
         // Value can sometimes be NaN for whatever reason, default to base chance if that happens
-        if (isNaN(sellChancePercent))
+        if (Number.isNaN(sellChancePercent))
         {
             this.logger.warning(`Sell chance was not a number: ${sellChancePercent}, defaulting to ${this.ragfairConfig.sell.chance.base} %`);
             sellChancePercent = this.ragfairConfig.sell.chance.base;
