@@ -186,7 +186,7 @@ export class BotLootCacheService
 
         // Get loot items (excluding magazines, bullets, grenades and healing items)
         const backpackLootItems = backpackLootTemplates.filter(template =>
-            // rome-ignore lint/complexity/useSimplifiedLogicExpression: <explanation>
+            // biome-ignore lint/complexity/useSimplifiedLogicExpression: <explanation>
             !this.isBulletOrGrenade(template._props)
             && !this.isMagazine(template._props)
             //&& !this.isMedicalItem(template._props) // Disabled for now as followSanitar has a lot of med items as loot
@@ -194,7 +194,7 @@ export class BotLootCacheService
 
         // Get pocket loot
         const pocketLootItems = pocketLootTemplates.filter(template =>
-            // rome-ignore lint/complexity/useSimplifiedLogicExpression: <explanation>
+            // biome-ignore lint/complexity/useSimplifiedLogicExpression: <explanation>
             !this.isBulletOrGrenade(template._props)
             && !this.isMagazine(template._props)
             && !this.isMedicalItem(template._props)
@@ -204,7 +204,7 @@ export class BotLootCacheService
 
         // Get vest loot items
         const vestLootItems = vestLootTemplates.filter(template =>
-            // rome-ignore lint/complexity/useSimplifiedLogicExpression: <explanation>
+            // biome-ignore lint/complexity/useSimplifiedLogicExpression: <explanation>
             !this.isBulletOrGrenade(template._props)
             && !this.isMagazine(template._props)
             && !this.isMedicalItem(template._props)

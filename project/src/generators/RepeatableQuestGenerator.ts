@@ -1017,7 +1017,7 @@ export class RepeatableQuestGenerator
         }
 
         // Skip globally blacklisted items + boss items
-        // rome-ignore lint/complexity/useSimplifiedLogicExpression: <explanation>
+        // biome-ignore lint/complexity/useSimplifiedLogicExpression: <explanation>
         valid  = !this.itemFilterService.isItemBlacklisted(tpl)
             && !this.itemFilterService.isBossItem(tpl);
 

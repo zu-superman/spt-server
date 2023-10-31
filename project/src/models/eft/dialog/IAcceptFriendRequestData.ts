@@ -1,10 +1,10 @@
-// rome-ignore lint/suspicious/noEmptyInterface: <explanation>
+// biome-ignore lint/suspicious/noEmptyInterface: <explanation>
 export  interface IAcceptFriendRequestData extends IBaseFriendRequest
 {
     
 }
 
-// rome-ignore lint/suspicious/noEmptyInterface: <explanation>
+// biome-ignore lint/suspicious/noEmptyInterface: <explanation>
 export  interface ICancelFriendRequestData extends  IBaseFriendRequest
 {
 

@@ -170,7 +170,7 @@ export class BotEquipmentModGenerator
         const compatibleModsPool = modPool[parentTemplate._id];
 
         // Null guard against bad input weapon
-        // rome-ignore lint/complexity/useSimplifiedLogicExpression: <explanation>
+        // biome-ignore lint/complexity/useSimplifiedLogicExpression: <explanation>
         if  (!parentTemplate._props.Slots.length
             && !parentTemplate._props.Cartridges?.length
             && !parentTemplate._props.Chambers?.length)
