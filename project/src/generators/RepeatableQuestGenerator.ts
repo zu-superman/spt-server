@@ -781,7 +781,7 @@ export class RepeatableQuestGenerator
         const rewardSpreadConfig = repeatableConfig.rewardScaling.rewardSpread;
         const reputationConfig = repeatableConfig.rewardScaling.reputation;
 
-        if (isNaN(difficulty))
+        if (Number.isNaN(difficulty))
         {
             difficulty = 1;
             this.logger.warning(this.localisationService.getText("repeatable-difficulty_was_nan"));
