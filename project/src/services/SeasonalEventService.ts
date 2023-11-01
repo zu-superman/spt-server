@@ -383,6 +383,9 @@ export class SeasonalEventService
             const gearAmendments = botGearChanges[bot];
             for (const equipmentSlot in gearAmendments)
             {
+                // Adjust slots spawn chance to be at least 75%
+                botToUpdate.chances.equipment[equipmentSlot] = Math.max(botToUpdate.chances.equipment[equipmentSlot], 75);
+
                 // Grab gear to add and loop over it
                 const itemsToAdd = gearAmendments[equipmentSlot];
                 for (const itemTplIdToAdd in itemsToAdd)
