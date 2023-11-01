@@ -95,7 +95,7 @@ export class ModLoadOrder
 
         for (const loadBeforeMod of loadBefore)
         {
-            const loadBeforeModConfig = this.modsAvailable.get(loadBeforeMod)!;
+            const loadBeforeModConfig = this.modsAvailable.get(loadBeforeMod);
 
             loadBeforeModConfig.loadAfter ??= [];
             loadBeforeModConfig.loadAfter.push(mod);
