@@ -62,7 +62,15 @@ export class SeasonalEventService
         return [
             "635267ab3c89e2112001f826", // Halloween skull mask
             "634959225289190e5e773b3b", // Pumpkin loot box
-            "59ef13ca86f77445fd0e2483" // Jack'o'lantern helmet
+            "59ef13ca86f77445fd0e2483", // Jack'o'lantern helmet
+            "6176a48d732a664031271438", // Faceless mask
+            "5bd071d786f7747e707b93a3", // Jason mask
+            "5bd0716d86f774171822ef4b", // Misha Mayorov mask
+            "5bd06f5d86f77427101ad47c", // Slender mask
+            "6176a40f0b8c0312ac75a3d3", // Ghoul mask
+            "62a5c2c98ec41a51b34739c0", // Hockey player mask "Captain"
+            "62a5c333ec21e50cad3b5dc6", // Hockey player mask "Brawler"
+            "62a5c41e8ec41a51b34739c3" // Hockey player mask "Quiet"
         ];
     }
 
