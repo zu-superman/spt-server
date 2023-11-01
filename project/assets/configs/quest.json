@@ -1460,6 +1460,8 @@
                         "minKills": 1,
                         "maxBossKills": 1,
                         "minBossKills": 1,
+						"maxPmcKills": 2,
+                        "minPmcKills": 1,
                         "weaponRequirementProb": 0,
                         "weaponCategoryRequirementProb": 0.3,
                         "weaponCategoryRequirements": [{
@@ -1573,6 +1575,8 @@
                         "minKills": 3,
                         "maxBossKills": 3,
                         "minBossKills": 1,
+						"maxPmcKills": 5,
+                        "minPmcKills": 2,
                         "weaponRequirementProb": 0,
                         "weaponCategoryRequirementProb": 0.3,
                         "weaponCategoryRequirements": [{
