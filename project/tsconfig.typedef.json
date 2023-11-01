@@ -3,7 +3,13 @@
     "compilerOptions": {
         "emitDeclarationOnly": true,
         "declaration": true,
-        "declarationDir": "./types"
+        "declarationDir": "./types",
+		"baseUrl": ".",
+		"paths": {
+            "@spt-aki/*": [
+                "src/*"
+            ]
+        }
     },
     "exclude": [
         "./types/**/*"
