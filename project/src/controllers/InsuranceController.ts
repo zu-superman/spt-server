@@ -129,7 +129,7 @@ export class InsuranceController
             this.adoptOrphanedItems(insured);
 
             // Send the mail to the player.
-            this.sendMail(sessionID, insured, insured.items.length === 0);
+            this.sendMail(sessionID, insured);
 
             // Remove the fully processed insurance package from the profile.
             this.removeInsurancePackageFromProfile(sessionID, insured.messageContent.systemData);
@@ -170,11 +170,20 @@ export class InsuranceController
         const itemsMap = this.populateItemsMap(insured);
         const parentAttachmentsMap = this.populateParentAttachmentsMap(insured, itemsMap);
 
-        // Process all items that are not attached, attachments. Those are handled separately, by value.
-        this.processRegularItems(insured, toDelete);
+        // Check to see if any regular items are present.
+        const hasRegularItems = Array.from(itemsMap.values()).some(item => !this.itemHelper.isAttachmentAttached(item));
 
-        // Process attached, attachments, by value.
-        this.processAttachments(parentAttachmentsMap, itemsMap, insured.traderId, toDelete);
+        // Process all items that are not attached, attachments. Those are handled separately, by value.
+        if (hasRegularItems)
+        {
+            this.processRegularItems(insured, toDelete);
+        }
+
+        // Process attached, attachments, by value, only if there are any.
+        if (parentAttachmentsMap.size > 0)
+        {
+            this.processAttachments(parentAttachmentsMap, itemsMap, insured.traderId, toDelete);
+        }
 
         // Log the number of items marked for deletion, if any
         if (toDelete.size)
@@ -455,14 +464,13 @@ export class InsuranceController
      *
      * @param sessionID The session ID that should receive the insurance message.
      * @param insurance The context of insurance to use.
-     * @param noItems Whether or not there are any items to return to the player.
      * @returns void
      */
-    protected sendMail(sessionID: string, insurance: Insurance, noItems: boolean): void
+    protected sendMail(sessionID: string, insurance: Insurance): void
     {
         // After all of the item filtering that we've done, if there are no items remaining, the insurance has
         // successfully "failed" to return anything and an appropriate message should be sent to the player.
-        if (noItems)
+        if (insurance.items.length === 0)
         {
             const insuranceFailedTemplates = this.databaseServer.getTables().traders[insurance.traderId].dialogue.insuranceFailed;
             insurance.messageContent.templateId = this.randomUtil.getArrayValue(insuranceFailedTemplates);
@@ -486,10 +494,16 @@ export class InsuranceController
      *
      * @param traderId The ID of the trader who insured the item.
      * @param insuredItem Optional. The item to roll for. Only used for logging.
-     * @returns true if the insured item should be removed from inventory, false otherwise.
+     * @returns true if the insured item should be removed from inventory, false otherwise, or null on error.
      */
-    protected rollForDelete(traderId: string, insuredItem?: Item): boolean
+    protected rollForDelete(traderId: string, insuredItem?: Item): boolean | null
     {
+        const trader = this.traderHelper.getTraderById(traderId);
+        if (!trader)
+        {
+            return null;
+        }
+
         const maxRoll = 9999;
         const conversionFactor = 100;
 
@@ -499,7 +513,6 @@ export class InsuranceController
 
         // Log the roll with as much detail as possible.
         const itemName = insuredItem ? ` for "${this.itemHelper.getItemName(insuredItem._tpl)}"` : "";
-        const trader = this.traderHelper.getTraderById(traderId);
         const status = roll ? "Delete" : "Keep";
         this.logger.debug(`Rolling deletion${itemName} with ${trader} - Return ${traderReturnChance}% - Roll: ${returnChance} - Status: ${status}`);
 
