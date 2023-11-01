@@ -244,11 +244,11 @@ export class RepeatableQuestGenerator
         {
             // get all boss spawn information
             const bossSpawns = Object.values(this.databaseServer.getTables().locations).filter(x => "base" in x && "Id" in x.base).map(
-                (x) => ({ "Id": x.base.Id, "BossSpawn": x.base.BossLocationSpawn })
+                (x) => ({ Id: x.base.Id, BossSpawn: x.base.BossLocationSpawn })
             );
             // filter for the current boss to spawn on map
             const thisBossSpawns = bossSpawns.map(
-                (x) => ({ "Id": x.Id, "BossSpawn": x.BossSpawn.filter(e => e.BossName === targetKey) })
+                (x) => ({ Id: x.Id, BossSpawn: x.BossSpawn.filter(e => e.BossName === targetKey) })
             ).filter(x => x.BossSpawn.length > 0);
             // remove blacklisted locations
             const allowedSpawns = thisBossSpawns.filter(x => !eliminationConfig.distLocationBlacklist.includes(x.Id));
@@ -315,9 +315,11 @@ export class RepeatableQuestGenerator
         const availableForFinishCondition = quest.conditions.AvailableForFinish[0];
         availableForFinishCondition._props.counter.id = this.objectId.generate();
         availableForFinishCondition._props.counter.conditions = [];
+
+        // Only add specific location condition if specific map selected
         if (locationKey !== "any")
         {
-            availableForFinishCondition._props.counter.conditions.push(this.generateEliminationLocation(locationsConfig[locationKey], allowedWeapon, allowedWeaponsCategory));
+            availableForFinishCondition._props.counter.conditions.push(this.generateEliminationLocation(locationsConfig[locationKey]));
         }
         availableForFinishCondition._props.counter.conditions.push(this.generateEliminationCondition(targetKey, bodyPartsToClient, distance, allowedWeapon, allowedWeaponsCategory));
         availableForFinishCondition._props.value = desiredKillCount;
@@ -356,9 +358,9 @@ export class RepeatableQuestGenerator
      * This is a helper method for GenerateEliminationQuest to create a location condition.
      *
      * @param   {string}    location        the location on which to fulfill the elimination quest
-     * @returns {object}                    object of "Elimination"-location-subcondition
+     * @returns {IEliminationCondition}     object of "Elimination"-location-subcondition
      */
-    protected generateEliminationLocation(location: string[], allowedWeapon: string, allowedWeaponCategory: string): IEliminationCondition
+    protected generateEliminationLocation(location: string[]): IEliminationCondition
     {
         const propsObject: IEliminationCondition = {
             _props: {
@@ -368,30 +370,20 @@ export class RepeatableQuestGenerator
             },
             _parent: "Location"
         };
-
-        if (allowedWeapon)
-        {
-            propsObject._props.weapon = [allowedWeapon];
-        }
-
-        if (allowedWeaponCategory)
-        {
-            propsObject._props.weaponCategories = [allowedWeaponCategory];
-        }
         
         return propsObject;
     }
 
     /**
-     * A repeatable quest, besides some more or less static components, exists of reward and condition (see assets/database/templates/repeatableQuests.json)
-     * This is a helper method for GenerateEliminationQuest to create a kill condition.
-     *
-     * @param   {string}    target          array of target npcs e.g. "AnyPmc", "Savage"
-     * @param   {array}     bodyParts       array of body parts with which to kill e.g. ["stomach", "thorax"]
-     * @param   {number}    distance        distance from which to kill (currently only >= supported)
-     * @returns {object}                    object of "Elimination"-kill-subcondition
+     * Create kill condition for an elimination quest
+     * @param target Bot type target of elimination quest e.g. "AnyPmc", "Savage"
+     * @param targetedBodyParts Body parts player must hit
+     * @param distance Distance from which to kill (currently only >= supported
+     * @param allowedWeapon What weapon must be used - undefined = any
+     * @param allowedWeaponCategory What category of weapon must be used - undefined = any
+     * @returns IEliminationCondition object
      */
-    protected generateEliminationCondition(target: string, bodyPart: string[], distance: number, allowedWeapon: string, allowedWeaponCategory: string): IEliminationCondition
+    protected generateEliminationCondition(target: string, targetedBodyParts: string[], distance: number, allowedWeapon: string, allowedWeaponCategory: string): IEliminationCondition
     {
         const killConditionProps: IKillConditionProps = {
             target: target,
@@ -406,9 +398,10 @@ export class RepeatableQuestGenerator
             killConditionProps.savageRole = [target];
         }
 
-        if (bodyPart)
+        // Has specific body part hit condition
+        if (targetedBodyParts)
         {
-            killConditionProps.bodyPart = bodyPart;
+            killConditionProps.bodyPart = targetedBodyParts;
         }
 
         // Dont allow distance + melee requirement
@@ -420,11 +413,13 @@ export class RepeatableQuestGenerator
             };
         }
 
+        // Has specific weapon requirement
         if (allowedWeapon)
         {
             killConditionProps.weapon = [allowedWeapon];
         }
 
+        // Has specific weapon category requirement
         if (allowedWeaponCategory?.length > 0)
         {
             killConditionProps.weaponCategories = [allowedWeaponCategory];
