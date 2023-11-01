@@ -105,11 +105,12 @@ export class SeasonalEventService
     }
 
     /**
-     * Get an array of items that appear during a seasonal event
-     * returns multiple seasonal event items if they are both active
+     * Get an array of seasonal items that should not appear
+     * e.g. if halloween is active, only return christmas items
+     * or, if halloween and christmas are inactive, return both sets of items
      * @returns array of tpl strings
      */
-    public getAllSeasonalEventItems(): string[]
+    public getInactiveSeasonalEventItems(): string[]
     {
         const items = [];
         if (!this.christmasEventEnabled())
@@ -237,10 +238,10 @@ export class SeasonalEventService
 
     /**
      * Iterate through bots inventory and loot to find and remove christmas items (as defined in SeasonalEventService)
-     * @param nodeInventory Bots inventory to iterate over
+     * @param botInventory Bots inventory to iterate over
      * @param botRole the role of the bot being processed
      */
-    public removeChristmasItemsFromBotInventory(nodeInventory: Inventory, botRole: string): void
+    public removeChristmasItemsFromBotInventory(botInventory: Inventory, botRole: string): void
     {
         const christmasItems = this.getChristmasEventItems();
         const equipmentSlotsToFilter = ["FaceCover", "Headwear", "Backpack", "TacticalVest"];
@@ -249,25 +250,25 @@ export class SeasonalEventService
         // Remove christmas related equipment
         for (const equipmentSlotKey of equipmentSlotsToFilter)
         {
-            if (!nodeInventory.equipment[equipmentSlotKey])
+            if (!botInventory.equipment[equipmentSlotKey])
             {
                 this.logger.warning(this.localisationService.getText("seasonal-missing_equipment_slot_on_bot", {equipmentSlot: equipmentSlotKey, botRole: botRole}));
             }
 
-            const equipment: Record<string, number> = nodeInventory.equipment[equipmentSlotKey];
+            const equipment: Record<string, number> = botInventory.equipment[equipmentSlotKey];
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            nodeInventory.equipment[equipmentSlotKey] = Object.fromEntries(Object.entries(equipment).filter(([index]) => !christmasItems.includes(index)));
+            botInventory.equipment[equipmentSlotKey] = Object.fromEntries(Object.entries(equipment).filter(([index]) => !christmasItems.includes(index)));
         }
 
         // Remove christmas related loot from loot containers
         for (const lootContainerKey of lootContainersToFilter)
         {
-            if (!nodeInventory.items[lootContainerKey])
+            if (!botInventory.items[lootContainerKey])
             {
                 this.logger.warning(this.localisationService.getText("seasonal-missing_loot_container_slot_on_bot", {lootContainer: lootContainerKey, botRole: botRole}));
             }
 
-            nodeInventory.items[lootContainerKey] = nodeInventory.items[lootContainerKey].filter((x: string) => !christmasItems.includes(x));
+            botInventory.items[lootContainerKey] = botInventory.items[lootContainerKey].filter((x: string) => !christmasItems.includes(x));
         }
     }
 
