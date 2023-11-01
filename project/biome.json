@@ -5,6 +5,9 @@
             "unsafeParameterDecoratorsEnabled": true
         }
     },
+    "organizeImports": {
+        "enabled": false
+    },
     "linter": {
         "enabled": true,
         "rules": {
@@ -32,6 +35,7 @@
                 "noUnnecessaryContinue": "warn"
             },
             "complexity": {
+                "noStaticOnlyClass": "off",
                 "useSimplifiedLogicExpression": "warn",
                 "useOptionalChain": "warn"
             }
