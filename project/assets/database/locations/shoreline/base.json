@@ -52,7 +52,10 @@
       "BossZone": "ZoneForestTruck",
       "RandomTimeSpawn": false,
       "Supports": null,
-      "Time": -1
+      "Time": -1,
+	  "Delay": 0,
+      "ForceSpawn": false,
+      "IgnoreMaxBots": false
     },
     {
       "BossChance": 35,
@@ -63,6 +66,9 @@
       "BossName": "bossKnight",
       "BossPlayer": false,
       "BossZone": "ZoneMeteoStation",
+      "Delay": 0,
+      "ForceSpawn": false,
+      "IgnoreMaxBots": false,
       "RandomTimeSpawn": true,
       "Supports": [
         {
@@ -87,7 +93,9 @@
           "BossEscortType": "followerGluharScout"
         }
       ],
-      "Time": -1
+      "Time": -1,
+      "TriggerId": "",
+      "TriggerName": ""
     },
     {
       "BossChance": 35,
@@ -98,9 +106,14 @@
       "BossName": "bossSanitar",
       "BossPlayer": false,
       "BossZone": "ZoneGreenHouses,ZoneSanatorium1,ZoneGreenHouses,ZoneSanatorium2,ZonePort",
+      "Delay": 0,
+      "ForceSpawn": false,
+      "IgnoreMaxBots": false,
       "RandomTimeSpawn": false,
       "Supports": null,
-      "Time": -1
+      "Time": -1,
+      "TriggerId": "",
+      "TriggerName": ""
     },
     {
       "BossChance": 12,
@@ -111,9 +124,14 @@
       "BossName": "sectantPriest",
       "BossPlayer": false,
       "BossZone": "ZoneForestGasStation",
+      "Delay": 0,
+      "ForceSpawn": false,
+      "IgnoreMaxBots": false,
       "RandomTimeSpawn": false,
       "Supports": null,
-      "Time": -1
+      "Time": -1,
+      "TriggerId": "",
+      "TriggerName": ""
     },
     {
       "BossChance": 12,
@@ -124,9 +142,14 @@
       "BossName": "sectantPriest",
       "BossPlayer": false,
       "BossZone": "ZoneForestSpawn",
+      "Delay": 0,
+      "ForceSpawn": false,
+      "IgnoreMaxBots": false,
       "RandomTimeSpawn": false,
       "Supports": null,
-      "Time": -1
+      "Time": -1,
+      "TriggerId": "",
+      "TriggerName": ""
     },
     {
       "BossChance": 5,
@@ -273,6 +296,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "012debaa-649e-4aae-bcd1-c479bf8efbe0",
       "Infiltration": "Riverside",
@@ -302,6 +326,7 @@
           "Radius": 158.9
         }
       },
+      "CorePointId": 20,
       "DelayToCanSpawnSec": 4,
       "Id": "0411ce35-16f3-4833-9a18-0d858eaa6ac6",
       "Infiltration": "",
@@ -331,6 +356,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "04a50f48-34c2-4e5d-9714-06988624c36a",
       "Infiltration": "Riverside",
@@ -360,6 +386,7 @@
           "Radius": 71.23
         }
       },
+      "CorePointId": 13,
       "DelayToCanSpawnSec": 4,
       "Id": "05b625a1-c32a-4136-82f6-8ba32a2a5f4e",
       "Infiltration": "",
@@ -389,6 +416,7 @@
           "Radius": 170
         }
       },
+      "CorePointId": 5,
       "DelayToCanSpawnSec": 4,
       "Id": "0801b334-74f5-415e-b1d5-2c22b5d2ce27",
       "Infiltration": "",
@@ -418,6 +446,7 @@
           "Radius": 170
         }
       },
+      "CorePointId": 5,
       "DelayToCanSpawnSec": 4,
       "Id": "0831ca46-91e2-480c-8434-4bc90e22d9f5",
       "Infiltration": "",
@@ -447,6 +476,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "08475ee7-0dfb-4e8e-82c8-e40283ee7d6c",
       "Infiltration": "Village",
@@ -476,6 +506,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "085a9fa8-472e-4928-aa1e-ddb8f766e9a0",
       "Infiltration": "Village",
@@ -505,6 +536,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "08eb4844-1742-4e80-ad4c-34133be10b53",
       "Infiltration": "Village",
@@ -534,6 +566,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "0a656c0b-40b8-4dfb-9821-eaf053da5bd8",
       "Infiltration": "Village",
@@ -563,6 +596,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "0b9c7508-27ca-4fe2-8874-0847eb253cb4",
       "Infiltration": "Riverside",
@@ -592,6 +626,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "0baf5b66-31b0-4c2f-8f2e-4f4320a25243",
       "Infiltration": "Village",
@@ -621,6 +656,7 @@
           "Radius": 170
         }
       },
+      "CorePointId": 5,
       "DelayToCanSpawnSec": 4,
       "Id": "0c534e86-be0c-40df-aec9-ca428e378b06",
       "Infiltration": "",
@@ -650,6 +686,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "0cd882b4-e077-4f54-8d63-e368eb600ba7",
       "Infiltration": "Village",
@@ -679,6 +716,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "0d4d2d64-9c67-4369-92c6-993bdcc2745f",
       "Infiltration": "Riverside",
@@ -709,6 +747,7 @@
           "Radius": 95
         }
       },
+      "CorePointId": 13,
       "DelayToCanSpawnSec": 4,
       "Id": "0d8b7ae8-16d2-4e35-bb75-12932f102043",
       "Infiltration": "",
@@ -739,6 +778,7 @@
           "Radius": 95
         }
       },
+      "CorePointId": 13,
       "DelayToCanSpawnSec": 4,
       "Id": "0e1f629c-42ed-46eb-920a-618a0cdb7781",
       "Infiltration": "",
@@ -768,6 +808,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "0e75428d-8a9e-468b-ba73-1275cd67171d",
       "Infiltration": "Riverside",
@@ -798,6 +839,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "0f334893-a01d-44f4-a684-0040c05f7029",
       "Infiltration": "Village",
@@ -827,6 +869,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "10914095-ef6a-448c-b03a-ec69c3c6bba0",
       "Infiltration": "Village",
@@ -856,6 +899,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "10b6c3eb-78df-4487-9e83-ac0240062165",
       "Infiltration": "Riverside",
@@ -885,6 +929,7 @@
           "Radius": 70
         }
       },
+      "CorePointId": 8,
       "DelayToCanSpawnSec": 4,
       "Id": "10cc67d9-b562-496e-a5f7-e35116e9d9bf",
       "Infiltration": "",
@@ -914,6 +959,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "11941eb6-c3a3-4386-b873-8afa20560fcf",
       "Infiltration": "Riverside",
@@ -943,6 +989,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "12a9fde9-327d-4822-9f39-a77589cc8e6e",
       "Infiltration": "Village",
@@ -972,6 +1019,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "12c16199-687e-4ad7-a6e6-1ae437d0e676",
       "Infiltration": "Riverside",
@@ -1001,6 +1049,7 @@
           "Radius": 158.9
         }
       },
+      "CorePointId": 2,
       "DelayToCanSpawnSec": 4,
       "Id": "13161a26-f578-4281-8046-ac3bd216ee54",
       "Infiltration": "",
@@ -1031,6 +1080,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "13b9c174-67fb-4657-a020-34bd04140295",
       "Infiltration": "Village",
@@ -1060,6 +1110,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "153e740f-bdd1-4bd7-8a6c-668b14616343",
       "Infiltration": "Riverside",
@@ -1089,6 +1140,7 @@
           "Radius": 158.9
         }
       },
+      "CorePointId": 6,
       "DelayToCanSpawnSec": 4,
       "Id": "16bcd9ef-2edf-48f2-b2bf-9a2817843549",
       "Infiltration": "",
@@ -1119,6 +1171,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 7,
       "DelayToCanSpawnSec": 4,
       "Id": "183b8bee-e971-4f3b-8ce6-62fd38205327",
       "Infiltration": "",
@@ -1148,6 +1201,7 @@
           "Radius": 170
         }
       },
+      "CorePointId": 11,
       "DelayToCanSpawnSec": 4,
       "Id": "1888fe5e-df97-4cb6-8e8e-6d0a0f0880cb",
       "Infiltration": "",
@@ -1177,6 +1231,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "1aff115b-65d6-4b27-bbe1-4f147541caad",
       "Infiltration": "Village",
@@ -1206,6 +1261,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "1c009c5c-0593-443b-8ae3-3ecf3bcf89ed",
       "Infiltration": "Village",
@@ -1235,6 +1291,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "1d8bfebb-e39d-4bf4-9f24-9275e754b857",
       "Infiltration": "Village",
@@ -1265,6 +1322,7 @@
           "Radius": 165
         }
       },
+      "CorePointId": 9,
       "DelayToCanSpawnSec": 4,
       "Id": "1dc5ee81-a8fb-47fb-b456-297bbd1d3e91",
       "Infiltration": "",
@@ -1294,6 +1352,7 @@
           "Radius": 170
         }
       },
+      "CorePointId": 5,
       "DelayToCanSpawnSec": 4,
       "Id": "1fd5d815-478b-4cd0-89a4-da65bf71a13d",
       "Infiltration": "",
@@ -1324,6 +1383,7 @@
           "Radius": 100
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "220a409b-6d31-4223-b3b6-21b6ba5e5d95",
       "Infiltration": "Village",
@@ -1354,6 +1414,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "2231842f-d5f9-411a-ab01-02072fb11297",
       "Infiltration": "Village",
@@ -1383,6 +1444,7 @@
           "Radius": 25
         }
       },
+      "CorePointId": 10,
       "DelayToCanSpawnSec": 1700,
       "Id": "2257d8d3-56a5-48dc-80bf-4f79f0135606",
       "Infiltration": "",
@@ -1412,6 +1474,7 @@
           "Radius": 120
         }
       },
+      "CorePointId": 15,
       "DelayToCanSpawnSec": 4,
       "Id": "23487c2b-3302-4216-afe5-48feddfe82d7",
       "Infiltration": "",
@@ -1441,6 +1504,7 @@
           "Radius": 158.9
         }
       },
+      "CorePointId": 18,
       "DelayToCanSpawnSec": 4,
       "Id": "2647fdcd-0a7a-4b16-bec8-d918a4db0474",
       "Infiltration": "",
@@ -1470,6 +1534,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "28048da3-ecaa-45a6-8c3c-ff5c2956fe7c",
       "Infiltration": "Village",
@@ -1499,6 +1564,7 @@
           "Radius": 158.9
         }
       },
+      "CorePointId": 3,
       "DelayToCanSpawnSec": 4,
       "Id": "28ab3452-75fa-4b60-ae53-7a7c3300f7e6",
       "Infiltration": "",
@@ -1528,6 +1594,7 @@
           "Radius": 70
         }
       },
+      "CorePointId": 8,
       "DelayToCanSpawnSec": 4,
       "Id": "28d0606a-8ce2-4252-86c7-50ad14bb92d7",
       "Infiltration": "",
@@ -1558,6 +1625,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "2912d83e-b7a3-404e-8cc2-5a801c64e524",
       "Infiltration": "Village",
@@ -1587,6 +1655,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "2c11e954-f7e5-4a67-845c-54328c8b9c27",
       "Infiltration": "Riverside",
@@ -1617,6 +1686,7 @@
           "Radius": 100
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "2dd04c2a-7e3e-426f-b6eb-9cf99ae0f01e",
       "Infiltration": "Riverside",
@@ -1646,6 +1716,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "34ac29bf-3a27-4e1f-816c-0731442834a2",
       "Infiltration": "Village",
@@ -1676,6 +1747,7 @@
           "Radius": 165
         }
       },
+      "CorePointId": 9,
       "DelayToCanSpawnSec": 4,
       "Id": "34eafa11-aaa1-4fb3-a0a4-89a7ce0dc3be",
       "Infiltration": "",
@@ -1705,6 +1777,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "37094848-6ca3-4b9f-9b06-4abc64e144bf",
       "Infiltration": "Village",
@@ -1734,6 +1807,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "373f1d18-1627-415d-8f9f-0acf5d415f4b",
       "Infiltration": "Riverside",
@@ -1764,6 +1838,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "382b4a79-0a0f-4242-b444-0bdaf7f1b52b",
       "Infiltration": "Village",
@@ -1793,6 +1868,7 @@
           "Radius": 1800
         }
       },
+      "CorePointId": 6,
       "DelayToCanSpawnSec": 4,
       "Id": "39be12b3-1b88-42a4-bc2e-6af33f896b4c",
       "Infiltration": "",
@@ -1822,6 +1898,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "3a50464e-38ed-483d-8945-8c43ab5850e6",
       "Infiltration": "Riverside",
@@ -1851,6 +1928,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "3c3ca272-7901-4bb7-ab9a-c7c79f36361a",
       "Infiltration": "Riverside",
@@ -1880,6 +1958,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "3eddbe61-12b7-4bc2-aa73-2087c2eb9f2b",
       "Infiltration": "Village",
@@ -1909,6 +1988,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "3fd55f19-ef15-4017-b468-cff2d9fe9b35",
       "Infiltration": "Riverside",
@@ -1938,6 +2018,7 @@
           "Radius": 165
         }
       },
+      "CorePointId": 18,
       "DelayToCanSpawnSec": 4,
       "Id": "407fcc4e-5328-48d3-9741-b5b8a6bd9740",
       "Infiltration": "",
@@ -1967,6 +2048,7 @@
           "Radius": 165
         }
       },
+      "CorePointId": 11,
       "DelayToCanSpawnSec": 4,
       "Id": "41603e25-db69-4228-94a6-4d89946538a2",
       "Infiltration": "",
@@ -1996,6 +2078,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "4161383c-4c28-487c-a858-7733e662bec4",
       "Infiltration": "Village",
@@ -2025,6 +2108,7 @@
           "Radius": 112
         }
       },
+      "CorePointId": 1,
       "DelayToCanSpawnSec": 4,
       "Id": "431e5472-f75c-4b39-babe-6279270ec408",
       "Infiltration": "",
@@ -2054,6 +2138,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "4349ecfb-ccd5-4a68-be17-d7fc1fe7cbb8",
       "Infiltration": "Village",
@@ -2083,6 +2168,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "438f6b11-098b-4b8a-96ed-954766b846e3",
       "Infiltration": "Village",
@@ -2112,6 +2198,7 @@
           "Radius": 220
         }
       },
+      "CorePointId": 19,
       "DelayToCanSpawnSec": 4,
       "Id": "44667a60-af02-46f1-a9de-7eead569f243",
       "Infiltration": "",
@@ -2141,6 +2228,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "4514864e-beb2-4e98-aa1e-c39d9da1db0c",
       "Infiltration": "Riverside",
@@ -2170,6 +2258,7 @@
           "Radius": 117
         }
       },
+      "CorePointId": 17,
       "DelayToCanSpawnSec": 4,
       "Id": "4588cab6-e89b-4eb1-9059-7968e6f3c209",
       "Infiltration": "",
@@ -2199,6 +2288,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "474b3d06-7368-4b8d-9a4d-2c9c223b71b2",
       "Infiltration": "Village",
@@ -2228,6 +2318,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "47b2c388-edcf-4366-ad4b-f323db229951",
       "Infiltration": "Village",
@@ -2257,6 +2348,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "47f2d197-7e3e-49b6-803b-66fea4a4f34e",
       "Infiltration": "Riverside",
@@ -2286,6 +2378,7 @@
           "Radius": 71.23
         }
       },
+      "CorePointId": 13,
       "DelayToCanSpawnSec": 4,
       "Id": "4850ebc6-6b85-4059-a1cd-ab705e88e822",
       "Infiltration": "",
@@ -2316,6 +2409,7 @@
           "Radius": 158.9
         }
       },
+      "CorePointId": 2,
       "DelayToCanSpawnSec": 4,
       "Id": "4897f155-137b-40a4-b2d5-1b1b96188cde",
       "Infiltration": "",
@@ -2345,6 +2439,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "4b2a193c-2749-4497-93ba-75a8f6a3e218",
       "Infiltration": "Riverside",
@@ -2374,6 +2469,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "4d45d646-18b4-4602-b06d-128c933eb919",
       "Infiltration": "Riverside",
@@ -2403,6 +2499,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "4e3a2705-96a2-467a-af09-a6f9b4a67f3e",
       "Infiltration": "Village",
@@ -2433,6 +2530,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 7,
       "DelayToCanSpawnSec": 4,
       "Id": "4e47415a-1af5-4f41-8a9d-cc59bfc5ff0d",
       "Infiltration": "",
@@ -2462,6 +2560,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "4f340491-d43e-4fd5-8447-65c925eacce6",
       "Infiltration": "Riverside",
@@ -2491,6 +2590,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "50953d91-6601-4bca-ae2b-84708e1eff5d",
       "Infiltration": "Village",
@@ -2520,6 +2620,7 @@
           "Radius": 130
         }
       },
+      "CorePointId": 14,
       "DelayToCanSpawnSec": 4,
       "Id": "50b0c9f1-d416-4686-9e25-d85b744aaa38",
       "Infiltration": "",
@@ -2549,6 +2650,7 @@
           "Radius": 112
         }
       },
+      "CorePointId": 1,
       "DelayToCanSpawnSec": 4,
       "Id": "50dec41f-4850-4f59-be23-df2acc021286",
       "Infiltration": "",
@@ -2578,6 +2680,7 @@
           "Radius": 25
         }
       },
+      "CorePointId": 10,
       "DelayToCanSpawnSec": 1700,
       "Id": "512db93b-1e90-4209-afa2-e08d3ccbcd7e",
       "Infiltration": "",
@@ -2608,6 +2711,7 @@
           "Radius": 100
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "525f08d2-b663-480c-8544-3c04e8be3067",
       "Infiltration": "Riverside",
@@ -2638,6 +2742,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "54093830-8555-41f4-929f-2faa687aedd7",
       "Infiltration": "Village",
@@ -2668,6 +2773,7 @@
           "Radius": 5
         }
       },
+      "CorePointId": 1,
       "DelayToCanSpawnSec": 4,
       "Id": "5456e9f2-6def-4280-bf5c-4aec633c1d26",
       "Infiltration": "",
@@ -2697,6 +2803,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "54571ae3-8329-4326-a812-678b5ead1d2e",
       "Infiltration": "Riverside",
@@ -2726,6 +2833,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "56a56015-97cc-46fc-8940-03dd1d9dd3ea",
       "Infiltration": "Riverside",
@@ -2755,6 +2863,7 @@
           "Radius": 158.9
         }
       },
+      "CorePointId": 4,
       "DelayToCanSpawnSec": 4,
       "Id": "56b5664c-114c-4ac2-b895-7c4c0890c7e6",
       "Infiltration": "",
@@ -2784,6 +2893,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "56d35730-0f36-4396-858d-b2128289b72a",
       "Infiltration": "Riverside",
@@ -2813,6 +2923,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "58474a2e-3915-4fd5-b6e1-5fc4a581c2f2",
       "Infiltration": "Village",
@@ -2842,6 +2953,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "58a5c474-0e2f-4f65-98d0-50106e504300",
       "Infiltration": "Riverside",
@@ -2872,6 +2984,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "594acb82-cc88-43b0-bff1-0199e4195afb",
       "Infiltration": "Village",
@@ -2901,6 +3014,7 @@
           "Radius": 70
         }
       },
+      "CorePointId": 7,
       "DelayToCanSpawnSec": 4,
       "Id": "5a570e48-4e5c-40e9-a12a-e8a6475c397a",
       "Infiltration": "",
@@ -2931,6 +3045,7 @@
           "Radius": 100
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "5c2478d1-5fbb-4750-9fbd-90ebe67cd81b",
       "Infiltration": "Riverside",
@@ -2961,6 +3076,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "5deae6e8-5819-4896-a198-3e5b42e3e863",
       "Infiltration": "Village",
@@ -2990,6 +3106,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "5e1f7e2e-90b3-4dd8-bc05-5d708d558f4b",
       "Infiltration": "Riverside",
@@ -3019,6 +3136,7 @@
           "Radius": 145.2
         }
       },
+      "CorePointId": 13,
       "DelayToCanSpawnSec": 4,
       "Id": "5e9b5165-8433-457e-87e5-8bb6a95ef4eb",
       "Infiltration": "",
@@ -3048,6 +3166,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "5ed61a3a-1479-4875-af7a-9d4110220734",
       "Infiltration": "Village",
@@ -3077,6 +3196,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "5fe5b3c3-0f56-44b9-b96e-36654b033117",
       "Infiltration": "Riverside",
@@ -3107,6 +3227,7 @@
           "Radius": 100
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "6107b7f0-6ea8-4317-82d6-d67f696a8183",
       "Infiltration": "Riverside",
@@ -3137,6 +3258,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "61421812-9ef3-4ca3-88bb-ca526149814d",
       "Infiltration": "Village",
@@ -3166,6 +3288,7 @@
           "Radius": 158.9
         }
       },
+      "CorePointId": 4,
       "DelayToCanSpawnSec": 4,
       "Id": "62414081-a282-4fad-8455-6c6b6b2111fc",
       "Infiltration": "",
@@ -3195,6 +3318,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "62462903-f1aa-4951-9e5b-5316a1eb11a0",
       "Infiltration": "Riverside",
@@ -3225,6 +3349,7 @@
           "Radius": 100
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "635421ff-68db-4d8c-b45d-c79704789dd5",
       "Infiltration": "Riverside",
@@ -3254,6 +3379,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "6420bc23-31ab-4b72-9149-90c6405f9852",
       "Infiltration": "Riverside",
@@ -3283,6 +3409,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "6433d24d-cd7b-45a9-9383-04971236e848",
       "Infiltration": "Village",
@@ -3312,6 +3439,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "653c7454-bcd7-41f9-9fab-8b978009c83b",
       "Infiltration": "Riverside",
@@ -3341,6 +3469,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "6581da65-0aa5-44da-a2cb-9bacb0ce7657",
       "Infiltration": "Riverside",
@@ -3370,6 +3499,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "698b0cea-682d-44e8-9e5e-35bbcb29acb9",
       "Infiltration": "Village",
@@ -3399,6 +3529,7 @@
           "Radius": 70
         }
       },
+      "CorePointId": 8,
       "DelayToCanSpawnSec": 4,
       "Id": "6a5dd707-4466-48f7-8ee7-b0766aa65228",
       "Infiltration": "",
@@ -3429,6 +3560,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "6a9699f3-46c0-4c72-bcb0-2075ffe2a777",
       "Infiltration": "Village",
@@ -3458,6 +3590,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "6b5f3dea-8c56-4203-a688-fc19b973ccc8",
       "Infiltration": "Village",
@@ -3487,6 +3620,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "6c7c9155-1768-45c0-91b8-26c648ca103a",
       "Infiltration": "Riverside",
@@ -3516,6 +3650,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "6ca2e437-a02d-41b0-90d9-462567349798",
       "Infiltration": "Riverside",
@@ -3545,6 +3680,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "6cae38ee-8013-49e2-83e6-74e038360c5e",
       "Infiltration": "Riverside",
@@ -3574,6 +3710,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "6dcbdea1-20f6-4b76-afcb-b286e5bc139a",
       "Infiltration": "Village",
@@ -3604,6 +3741,7 @@
           "Radius": 95
         }
       },
+      "CorePointId": 13,
       "DelayToCanSpawnSec": 4,
       "Id": "6eb4ce5e-839c-42b0-8805-efe093e45329",
       "Infiltration": "",
@@ -3633,6 +3771,7 @@
           "Radius": 158.9
         }
       },
+      "CorePointId": 20,
       "DelayToCanSpawnSec": 4,
       "Id": "7416a007-bcd7-4184-a4ba-d2894f273a5d",
       "Infiltration": "",
@@ -3662,6 +3801,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "75c38946-8152-4995-9d27-92bf29808f66",
       "Infiltration": "Village",
@@ -3691,6 +3831,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "76f61bd4-adb9-4376-9295-1806c79e4cd6",
       "Infiltration": "Riverside",
@@ -3720,6 +3861,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "7873d881-5bb9-4f2b-a0c4-35302ec1d706",
       "Infiltration": "Village",
@@ -3749,6 +3891,7 @@
           "Radius": 158.9
         }
       },
+      "CorePointId": 18,
       "DelayToCanSpawnSec": 4,
       "Id": "7ae2415b-081d-4762-b706-1a81da1409c4",
       "Infiltration": "",
@@ -3778,6 +3921,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "7bbe3e83-685a-4fac-950c-64edb79e9573",
       "Infiltration": "Village",
@@ -3807,6 +3951,7 @@
           "Radius": 158.9
         }
       },
+      "CorePointId": 14,
       "DelayToCanSpawnSec": 4,
       "Id": "7c202864-3ccc-422a-9071-ef9162bd3ced",
       "Infiltration": "",
@@ -3837,6 +3982,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "7c5203e0-f239-41b6-be4e-93366faaf857",
       "Infiltration": "Village",
@@ -3867,6 +4013,7 @@
           "Radius": 100
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "7f1651f7-d0c1-4a6d-a436-c2a425aa226c",
       "Infiltration": "Village",
@@ -3896,6 +4043,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "7f6f6ea4-f3eb-45d2-9028-2ec37ee7e0de",
       "Infiltration": "Village",
@@ -3925,6 +4073,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "7fa214c7-fc29-4dff-99a3-bb155d815c4a",
       "Infiltration": "Village",
@@ -3954,6 +4103,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "7fd13404-5b44-4bff-b18b-b42ff698b52c",
       "Infiltration": "Riverside",
@@ -3983,6 +4133,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "8003226b-ab94-41da-81c7-aef012c52444",
       "Infiltration": "Riverside",
@@ -4012,6 +4163,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "81edf0dc-9ee0-4483-a76e-a80dfc7ed31e",
       "Infiltration": "Village",
@@ -4041,6 +4193,7 @@
           "Radius": 158.9
         }
       },
+      "CorePointId": 6,
       "DelayToCanSpawnSec": 4,
       "Id": "823bd6a4-58e2-489e-b557-c64ea6a8cb08",
       "Infiltration": "",
@@ -4070,6 +4223,7 @@
           "Radius": 158.9
         }
       },
+      "CorePointId": 6,
       "DelayToCanSpawnSec": 4,
       "Id": "826c70a2-7983-49a9-94f1-433b364fa01a",
       "Infiltration": "",
@@ -4099,6 +4253,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "842e293c-842b-482b-a9df-8bf374a6811e",
       "Infiltration": "Riverside",
@@ -4128,6 +4283,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "84a96df9-883b-496e-b44d-9fef512b29a0",
       "Infiltration": "Riverside",
@@ -4157,6 +4313,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "8526c84a-ce86-463a-9ea4-4acc7ce6a97b",
       "Infiltration": "Village",
@@ -4186,6 +4343,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "85c38e4d-b7d2-4ae6-8a0f-cda5d0596d54",
       "Infiltration": "Village",
@@ -4215,6 +4373,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "89c56336-22f0-47ea-91e5-6a3866c9c0ed",
       "Infiltration": "Village",
@@ -4245,6 +4404,7 @@
           "Radius": 100
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "8a734ba8-6fa0-4d55-aa5c-ab260a307087",
       "Infiltration": "Village",
@@ -4274,6 +4434,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "8b3b39ba-1662-4d2f-9757-9ceca0a1d311",
       "Infiltration": "Riverside",
@@ -4303,6 +4464,7 @@
           "Radius": 98.1
         }
       },
+      "CorePointId": 15,
       "DelayToCanSpawnSec": 4,
       "Id": "8c7dcf3c-2e1b-4d36-b23c-ca1c99260166",
       "Infiltration": "",
@@ -4332,6 +4494,7 @@
           "Radius": 158.9
         }
       },
+      "CorePointId": 4,
       "DelayToCanSpawnSec": 4,
       "Id": "8d0f7f84-2ef1-4779-869e-4e9d8954d0ae",
       "Infiltration": "",
@@ -4361,6 +4524,7 @@
           "Radius": 117
         }
       },
+      "CorePointId": 17,
       "DelayToCanSpawnSec": 4,
       "Id": "8d83f63c-b4c0-420f-b594-7c55017641ef",
       "Infiltration": "",
@@ -4390,6 +4554,7 @@
           "Radius": 158.9
         }
       },
+      "CorePointId": 20,
       "DelayToCanSpawnSec": 4,
       "Id": "8f7d2c94-5cc8-490b-895d-4c89092fd9f9",
       "Infiltration": "",
@@ -4419,6 +4584,7 @@
           "Radius": 170
         }
       },
+      "CorePointId": 18,
       "DelayToCanSpawnSec": 4,
       "Id": "90c561a8-e884-4e68-8846-01a97eb68004",
       "Infiltration": "",
@@ -4448,6 +4614,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "914d1a86-0305-4e7c-b9ab-913ca92c1233",
       "Infiltration": "Riverside",
@@ -4477,6 +4644,7 @@
           "Radius": 158.9
         }
       },
+      "CorePointId": 4,
       "DelayToCanSpawnSec": 4,
       "Id": "91726af6-c2c1-4003-ae0d-3dec9970c35c",
       "Infiltration": "",
@@ -4506,6 +4674,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "91ecd38d-841e-49fa-8c2c-8edae515393f",
       "Infiltration": "Village",
@@ -4536,6 +4705,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "92163c32-233b-42a0-ba3a-be10554ac266",
       "Infiltration": "Village",
@@ -4566,6 +4736,7 @@
           "Radius": 100
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "9234a0bc-67f9-4015-98f8-faed8d6377b1",
       "Infiltration": "Village",
@@ -4595,6 +4766,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "9236eae8-6d72-4ac9-94b2-f75a282c53f5",
       "Infiltration": "Village",
@@ -4625,6 +4797,7 @@
           "Radius": 165
         }
       },
+      "CorePointId": 9,
       "DelayToCanSpawnSec": 4,
       "Id": "925829df-028b-4adc-9e87-a2291529cdc1",
       "Infiltration": "",
@@ -4654,6 +4827,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "92c3485f-0cf2-40f4-8b30-a7bed149d5c1",
       "Infiltration": "Riverside",
@@ -4683,6 +4857,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "92d8e295-31b6-49ed-a345-0d527f169f8c",
       "Infiltration": "Riverside",
@@ -4713,6 +4888,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 7,
       "DelayToCanSpawnSec": 4,
       "Id": "938b250b-41f5-4c0f-b942-8f918c6a7298",
       "Infiltration": "",
@@ -4743,6 +4919,7 @@
           "Radius": 100
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "963adbd1-9af1-4b86-ad81-c184ce1e88ea",
       "Infiltration": "Village",
@@ -4772,6 +4949,7 @@
           "Radius": 130
         }
       },
+      "CorePointId": 14,
       "DelayToCanSpawnSec": 4,
       "Id": "96ca0195-311a-428c-b617-fc5f1bc21c1b",
       "Infiltration": "",
@@ -4801,6 +4979,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "96d99ac5-c5ec-44c1-9979-f0f548ac56ce",
       "Infiltration": "Riverside",
@@ -4831,6 +5010,7 @@
           "Radius": 100
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "97dfda16-2fa5-4511-baf7-da5833763b90",
       "Infiltration": "Village",
@@ -4860,6 +5040,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "980c108b-6d31-4458-aa32-7f9b2b86590a",
       "Infiltration": "Riverside",
@@ -4889,6 +5070,7 @@
           "Radius": 158.9
         }
       },
+      "CorePointId": 16,
       "DelayToCanSpawnSec": 4,
       "Id": "981b88f5-a184-4b55-be4d-8ff67c765f22",
       "Infiltration": "",
@@ -4918,6 +5100,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "98684f29-1a14-4872-bfe7-ad4832881a44",
       "Infiltration": "Riverside",
@@ -4947,6 +5130,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "986d0d12-464b-4d21-beab-1dc3ca37017d",
       "Infiltration": "Village",
@@ -4976,6 +5160,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "989704c5-1c3a-4ea2-9a53-4482b17a1faa",
       "Infiltration": "Riverside",
@@ -5005,6 +5190,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "993e3fea-466e-4e80-ace0-9ead90996f1d",
       "Infiltration": "Village",
@@ -5034,6 +5220,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "9970036b-c1af-4840-83b9-1e31b4e6cf77",
       "Infiltration": "Village",
@@ -5063,6 +5250,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "9a5a8591-005c-4ab0-8231-3d3ed8480ebb",
       "Infiltration": "Riverside",
@@ -5092,6 +5280,7 @@
           "Radius": 117
         }
       },
+      "CorePointId": 17,
       "DelayToCanSpawnSec": 4,
       "Id": "9b67a27d-6caf-48b0-be50-0217ebd0dbd9",
       "Infiltration": "",
@@ -5121,6 +5310,7 @@
           "Radius": 158.9
         }
       },
+      "CorePointId": 3,
       "DelayToCanSpawnSec": 4,
       "Id": "9bd84efe-dfce-46ed-ab04-60bbba500158",
       "Infiltration": "",
@@ -5150,6 +5340,7 @@
           "Radius": 70
         }
       },
+      "CorePointId": 7,
       "DelayToCanSpawnSec": 4,
       "Id": "9c654abe-54da-4a4b-8ce2-f09922d84ae2",
       "Infiltration": "",
@@ -5179,6 +5370,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "9c7c5171-f30e-4d4a-958e-04787fcaed11",
       "Infiltration": "Village",
@@ -5208,6 +5400,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "9f4a8692-feee-433b-96ad-e01829182d9e",
       "Infiltration": "Village",
@@ -5237,6 +5430,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "9fcd3f72-046c-4c1e-a22c-5d07a395f52d",
       "Infiltration": "Riverside",
@@ -5266,6 +5460,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "a00348b8-05c3-4ce5-a471-69ced43de90e",
       "Infiltration": "Village",
@@ -5295,6 +5490,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "a1087f16-1d66-46f6-be69-7e1c7f50c684",
       "Infiltration": "Riverside",
@@ -5324,6 +5520,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "a16c0809-6476-48e9-8d18-cb005c3c79b5",
       "Infiltration": "Riverside",
@@ -5353,6 +5550,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "a21768bc-7a14-447d-a682-90715c7e6f7f",
       "Infiltration": "Village",
@@ -5383,6 +5581,7 @@
           "Radius": 170
         }
       },
+      "CorePointId": 9,
       "DelayToCanSpawnSec": 4,
       "Id": "a294d2da-60f6-4803-bd40-6fa33bcca45f",
       "Infiltration": "",
@@ -5412,6 +5611,7 @@
           "Radius": 158.9
         }
       },
+      "CorePointId": 19,
       "DelayToCanSpawnSec": 4,
       "Id": "a2e7aa5f-add8-47a7-9ba6-226b0b57a1a1",
       "Infiltration": "",
@@ -5441,6 +5641,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "a4da313e-6e8c-4a25-b770-783791b1c38a",
       "Infiltration": "Village",
@@ -5470,6 +5671,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "a53d95b3-84f3-431a-8436-830ea88578e8",
       "Infiltration": "Riverside",
@@ -5499,6 +5701,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "a595d41d-bd59-4bb4-a70d-3f81e4ae223b",
       "Infiltration": "Village",
@@ -5529,6 +5732,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "a59d52cb-e92a-4e80-9000-eb2211045742",
       "Infiltration": "Village",
@@ -5558,6 +5762,7 @@
           "Radius": 158.9
         }
       },
+      "CorePointId": 18,
       "DelayToCanSpawnSec": 4,
       "Id": "a5e05573-62eb-4692-ada5-00bb62697fb6",
       "Infiltration": "",
@@ -5587,6 +5792,7 @@
           "Radius": 117
         }
       },
+      "CorePointId": 17,
       "DelayToCanSpawnSec": 4,
       "Id": "a719320f-225f-4ebe-a8cf-0adbcb6a9586",
       "Infiltration": "",
@@ -5617,6 +5823,7 @@
           "Radius": 100
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "a7bdd115-0387-42f5-8e08-abb08cd5d365",
       "Infiltration": "Village",
@@ -5646,6 +5853,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "a7c7a365-ea94-481f-b15a-c880eb6df6e6",
       "Infiltration": "Riverside",
@@ -5675,6 +5883,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "a8f40aef-a808-4b51-9961-9d3f9914d22b",
       "Infiltration": "Riverside",
@@ -5704,6 +5913,7 @@
           "Radius": 70
         }
       },
+      "CorePointId": 7,
       "DelayToCanSpawnSec": 4,
       "Id": "a989147e-ac05-4166-b9a5-762c9bfdc61d",
       "Infiltration": "",
@@ -5734,6 +5944,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "aa0a2c1f-ad7d-4109-b629-1007e8b0698c",
       "Infiltration": "Village",
@@ -5763,6 +5974,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "aaeee0f3-0a91-46b0-bc4a-9c6bcc31d097",
       "Infiltration": "Riverside",
@@ -5792,6 +6004,7 @@
           "Radius": 70
         }
       },
+      "CorePointId": 8,
       "DelayToCanSpawnSec": 4,
       "Id": "ab0b8d38-e6ae-4a29-af4f-0408fef79778",
       "Infiltration": "",
@@ -5821,6 +6034,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "ab31a334-dc31-4113-96d5-7fdd00a7a84b",
       "Infiltration": "Village",
@@ -5850,6 +6064,7 @@
           "Radius": 212
         }
       },
+      "CorePointId": 19,
       "DelayToCanSpawnSec": 4,
       "Id": "ac458490-015b-483c-903c-e37482705e07",
       "Infiltration": "",
@@ -5879,6 +6094,7 @@
           "Radius": 112
         }
       },
+      "CorePointId": 1,
       "DelayToCanSpawnSec": 4,
       "Id": "ac818198-061f-473f-8295-a0bb06ac574c",
       "Infiltration": "",
@@ -5908,6 +6124,7 @@
           "Radius": 158.9
         }
       },
+      "CorePointId": 4,
       "DelayToCanSpawnSec": 4,
       "Id": "afc031e2-8a83-48d7-aabd-991abb6b17b3",
       "Infiltration": "",
@@ -5937,6 +6154,7 @@
           "Radius": 158.9
         }
       },
+      "CorePointId": 6,
       "DelayToCanSpawnSec": 4,
       "Id": "b023d356-ee7e-490a-a5fa-0f1cc67bad93",
       "Infiltration": "",
@@ -5966,6 +6184,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "b0ca8c3f-6d94-4e03-8e1f-5b3996478e2f",
       "Infiltration": "Riverside",
@@ -5995,6 +6214,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "b135a5e9-ed2e-4050-a17e-e9cbebcec1d2",
       "Infiltration": "Village",
@@ -6024,6 +6244,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "b1f26a54-31e6-448e-a890-706cbc56420d",
       "Infiltration": "Riverside",
@@ -6053,6 +6274,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "b2ea260b-dceb-44cc-b764-ddd328da57fd",
       "Infiltration": "Village",
@@ -6082,6 +6304,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "b39110f2-aac6-4c71-9020-b2783420ced7",
       "Infiltration": "Village",
@@ -6112,6 +6335,7 @@
           "Radius": 158.9
         }
       },
+      "CorePointId": 2,
       "DelayToCanSpawnSec": 4,
       "Id": "b63d6bee-c914-471f-9c2d-78a3fc6c32e6",
       "Infiltration": "",
@@ -6141,6 +6365,7 @@
           "Radius": 112
         }
       },
+      "CorePointId": 1,
       "DelayToCanSpawnSec": 4,
       "Id": "b6842fd6-2a9f-4d1e-a64f-d36188ede81d",
       "Infiltration": "",
@@ -6170,6 +6395,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "b7c84f7e-ea0b-471b-8608-df2186e054e0",
       "Infiltration": "Village",
@@ -6199,6 +6425,7 @@
           "Radius": 112
         }
       },
+      "CorePointId": 1,
       "DelayToCanSpawnSec": 4,
       "Id": "b8f30e4e-7b17-4e65-834e-d2589d2900ee",
       "Infiltration": "",
@@ -6228,6 +6455,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "b90ace25-5546-4bf4-9670-b6ac0ac3c476",
       "Infiltration": "Village",
@@ -6257,6 +6485,7 @@
           "Radius": 25
         }
       },
+      "CorePointId": 12,
       "DelayToCanSpawnSec": 1700,
       "Id": "b91e3a38-0087-44d2-9940-aac3bb71cf1e",
       "Infiltration": "",
@@ -6287,6 +6516,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "ba72e3de-9971-429d-9235-3f1803bb9a4a",
       "Infiltration": "Village",
@@ -6316,6 +6546,7 @@
           "Radius": 120
         }
       },
+      "CorePointId": 15,
       "DelayToCanSpawnSec": 4,
       "Id": "bbc42143-f4e8-44b3-bd41-90d3d994b402",
       "Infiltration": "",
@@ -6345,6 +6576,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "bf0c91c9-6ee4-4fd3-8f03-9c02d79355ce",
       "Infiltration": "Riverside",
@@ -6374,6 +6606,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "bf77b78e-1f10-45f9-9f56-022636656e57",
       "Infiltration": "Riverside",
@@ -6404,6 +6637,7 @@
           "Radius": 100
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "bf83503c-7a7f-4e43-8626-dbb8121e0443",
       "Infiltration": "Village",
@@ -6433,6 +6667,7 @@
           "Radius": 170
         }
       },
+      "CorePointId": 20,
       "DelayToCanSpawnSec": 4,
       "Id": "bfffe275-5b13-4fc0-b596-e4778ff08eb5",
       "Infiltration": "",
@@ -6462,6 +6697,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "c018a1cc-6aca-45bf-80b6-b0dacc6b796f",
       "Infiltration": "Village",
@@ -6491,6 +6727,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "c0cfd064-a695-45d7-8be9-e1af339c58b1",
       "Infiltration": "Village",
@@ -6520,6 +6757,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "c0f12c99-a339-46f3-be4b-fa6dbb58184d",
       "Infiltration": "Riverside",
@@ -6549,6 +6787,7 @@
           "Radius": 158.9
         }
       },
+      "CorePointId": 20,
       "DelayToCanSpawnSec": 4,
       "Id": "c0f63e2d-cb8a-4a19-99cf-7b8a3d0b8949",
       "Infiltration": "",
@@ -6578,6 +6817,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "c2b1f531-0bb7-48f1-9ec8-9adf34f5260e",
       "Infiltration": "Riverside",
@@ -6607,6 +6847,7 @@
           "Radius": 71.23
         }
       },
+      "CorePointId": 13,
       "DelayToCanSpawnSec": 4,
       "Id": "c3f56b58-a7b4-4922-9669-950d44de75e7",
       "Infiltration": "",
@@ -6636,6 +6877,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "c5425f62-ced4-4198-9a77-dc186b09fee9",
       "Infiltration": "Riverside",
@@ -6666,6 +6908,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "c5d9e312-8420-4e93-895b-edb98bd378e2",
       "Infiltration": "Village",
@@ -6695,6 +6938,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "c65fa07d-bbea-4dbc-a1a8-de4e6cc58a38",
       "Infiltration": "Village",
@@ -6725,6 +6969,7 @@
           "Radius": 100
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "c7cb0954-dda5-42e0-9b79-a46147072046",
       "Infiltration": "Riverside",
@@ -6754,6 +6999,7 @@
           "Radius": 117
         }
       },
+      "CorePointId": 17,
       "DelayToCanSpawnSec": 4,
       "Id": "c826160b-4d5a-4e0a-b918-93c5df909d13",
       "Infiltration": "",
@@ -6783,6 +7029,7 @@
           "Radius": 70
         }
       },
+      "CorePointId": 8,
       "DelayToCanSpawnSec": 4,
       "Id": "c8a44191-2caa-4c18-9bc1-872fb21a980e",
       "Infiltration": "",
@@ -6812,6 +7059,7 @@
           "Radius": 158.9
         }
       },
+      "CorePointId": 18,
       "DelayToCanSpawnSec": 4,
       "Id": "c9306832-7442-48d8-a3bc-d78fb6ad456a",
       "Infiltration": "",
@@ -6842,6 +7090,7 @@
           "Radius": 100
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "c9cf5a12-0263-4478-8f0d-f6c73e39080a",
       "Infiltration": "Riverside",
@@ -6872,6 +7121,7 @@
           "Radius": 5
         }
       },
+      "CorePointId": 1,
       "DelayToCanSpawnSec": 4,
       "Id": "ccd7a541-5afc-4054-a51a-9979490a2f2e",
       "Infiltration": "",
@@ -6901,6 +7151,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "cd50d306-1cfa-4829-a915-043e547288af",
       "Infiltration": "Riverside",
@@ -6930,6 +7181,7 @@
           "Radius": 117
         }
       },
+      "CorePointId": 17,
       "DelayToCanSpawnSec": 4,
       "Id": "ce9993f4-2376-4717-a1c7-780b75fde60d",
       "Infiltration": "",
@@ -6959,6 +7211,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "ced937d7-c30d-4166-9c22-e1fbbd776604",
       "Infiltration": "Riverside",
@@ -6988,6 +7241,7 @@
           "Radius": 1800
         }
       },
+      "CorePointId": 19,
       "DelayToCanSpawnSec": 4,
       "Id": "d09377f6-9b63-4850-8b9c-89ba5b6555a9",
       "Infiltration": "",
@@ -7017,6 +7271,7 @@
           "Radius": 158.9
         }
       },
+      "CorePointId": 4,
       "DelayToCanSpawnSec": 4,
       "Id": "d1856a0e-3988-463e-a177-53d1b6673992",
       "Infiltration": "",
@@ -7046,6 +7301,7 @@
           "Radius": 112
         }
       },
+      "CorePointId": 1,
       "DelayToCanSpawnSec": 4,
       "Id": "d27f5052-b7db-4886-9d49-b8d05d6dc7b1",
       "Infiltration": "",
@@ -7076,6 +7332,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "d3134c35-d002-4460-8770-4521bff63908",
       "Infiltration": "Village",
@@ -7105,6 +7362,7 @@
           "Radius": 71.23
         }
       },
+      "CorePointId": 13,
       "DelayToCanSpawnSec": 4,
       "Id": "d374eb79-72b6-4bd9-aefc-b19ded42c7f6",
       "Infiltration": "",
@@ -7134,6 +7392,7 @@
           "Radius": 25
         }
       },
+      "CorePointId": 12,
       "DelayToCanSpawnSec": 1700,
       "Id": "d3cd70b1-9a90-4d8f-91bc-28f433a9ef09",
       "Infiltration": "",
@@ -7163,6 +7422,7 @@
           "Radius": 158.9
         }
       },
+      "CorePointId": 20,
       "DelayToCanSpawnSec": 4,
       "Id": "d4bc284a-88d8-4f53-a9d4-cc1120c4f908",
       "Infiltration": "",
@@ -7193,6 +7453,7 @@
           "Radius": 100
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "d635ccc7-2aea-4e5a-aa3d-2418daa3b472",
       "Infiltration": "Riverside",
@@ -7222,6 +7483,7 @@
           "Radius": 158.9
         }
       },
+      "CorePointId": 14,
       "DelayToCanSpawnSec": 4,
       "Id": "d6f672ad-ca9a-4437-a517-e02a07840143",
       "Infiltration": "",
@@ -7251,6 +7513,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "d848ab74-083b-4454-94d3-3f5cb54b6f7a",
       "Infiltration": "Village",
@@ -7280,6 +7543,7 @@
           "Radius": 158.9
         }
       },
+      "CorePointId": 14,
       "DelayToCanSpawnSec": 4,
       "Id": "d84e957d-f726-4426-b3b1-a774f8973935",
       "Infiltration": "",
@@ -7309,6 +7573,7 @@
           "Radius": 98.1
         }
       },
+      "CorePointId": 15,
       "DelayToCanSpawnSec": 4,
       "Id": "d904fe54-6447-4723-899a-7e14e05ae9a7",
       "Infiltration": "",
@@ -7338,6 +7603,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "d92df5a8-fe9d-4a40-839f-5f6652251b7d",
       "Infiltration": "Village",
@@ -7368,6 +7634,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "da7f0704-9a32-4743-9249-c0d140624733",
       "Infiltration": "Village",
@@ -7397,6 +7664,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "dba2b2cf-a399-4193-926d-17dd61d15435",
       "Infiltration": "Village",
@@ -7426,6 +7694,7 @@
           "Radius": 70
         }
       },
+      "CorePointId": 8,
       "DelayToCanSpawnSec": 4,
       "Id": "dc8b4a31-bd12-4591-bb4a-d9a252c34232",
       "Infiltration": "",
@@ -7455,6 +7724,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "dd45d07f-ac7b-4aaa-9a2f-643365a0b3d3",
       "Infiltration": "Riverside",
@@ -7485,6 +7755,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "ddad0594-dea6-446e-8b1e-1de3b7f43677",
       "Infiltration": "Village",
@@ -7515,6 +7786,7 @@
           "Radius": 5
         }
       },
+      "CorePointId": 1,
       "DelayToCanSpawnSec": 4,
       "Id": "ddd33365-1757-4d21-bf0c-d34d51ac5920",
       "Infiltration": "",
@@ -7545,6 +7817,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 7,
       "DelayToCanSpawnSec": 4,
       "Id": "de404ee2-edfe-46e3-aa54-473c35e5d226",
       "Infiltration": "",
@@ -7574,6 +7847,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "df0eb3d7-47e4-4d21-8225-fd64893ff772",
       "Infiltration": "Village",
@@ -7603,6 +7877,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "e019f4bd-bb0b-44f1-b0b8-fe93384b2974",
       "Infiltration": "Village",
@@ -7633,6 +7908,7 @@
           "Radius": 100
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "e0216058-7361-4809-9c05-245ab15728b5",
       "Infiltration": "Riverside",
@@ -7662,6 +7938,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "e0dfb1f3-189b-4da7-bf05-8e68e4346f13",
       "Infiltration": "Riverside",
@@ -7691,6 +7968,7 @@
           "Radius": 90
         }
       },
+      "CorePointId": 2,
       "DelayToCanSpawnSec": 4,
       "Id": "e1d1ed4f-a087-4947-8af2-87131b26c963",
       "Infiltration": "",
@@ -7720,6 +7998,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "e2a13b2e-16d3-420f-af05-905069917b66",
       "Infiltration": "Village",
@@ -7750,6 +8029,7 @@
           "Radius": 100
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "e528890a-7517-4c9b-85c8-807986bc4ca8",
       "Infiltration": "Riverside",
@@ -7779,6 +8059,7 @@
           "Radius": 131.2
         }
       },
+      "CorePointId": 13,
       "DelayToCanSpawnSec": 4,
       "Id": "e5dba50e-19e5-45f3-a993-474f34d853c1",
       "Infiltration": "",
@@ -7809,6 +8090,7 @@
           "Radius": 158.9
         }
       },
+      "CorePointId": 2,
       "DelayToCanSpawnSec": 4,
       "Id": "e61d1eae-714c-480c-b3fe-035608fbf8a6",
       "Infiltration": "",
@@ -7838,6 +8120,7 @@
           "Radius": 70
         }
       },
+      "CorePointId": 8,
       "DelayToCanSpawnSec": 4,
       "Id": "e69e6216-1071-4a19-91dc-c3da26f483d6",
       "Infiltration": "",
@@ -7867,6 +8150,7 @@
           "Radius": 158.9
         }
       },
+      "CorePointId": 6,
       "DelayToCanSpawnSec": 4,
       "Id": "e72294f1-07bc-4a75-8a10-a49951ab935b",
       "Infiltration": "",
@@ -7896,6 +8180,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "e815c01c-4f47-4a3e-9f36-b4ace91d79b4",
       "Infiltration": "Village",
@@ -7925,6 +8210,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "ea5c5ca2-148f-4ca4-a428-b0a7ce84921d",
       "Infiltration": "Riverside",
@@ -7955,6 +8241,7 @@
           "Radius": 100
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "eaa395e8-9bb9-4412-ad91-85c116492f3e",
       "Infiltration": "Village",
@@ -7984,6 +8271,7 @@
           "Radius": 98.1
         }
       },
+      "CorePointId": 15,
       "DelayToCanSpawnSec": 4,
       "Id": "ead31b34-16c2-48b2-abe4-fae5f5e97e36",
       "Infiltration": "",
@@ -8014,6 +8302,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 8,
       "DelayToCanSpawnSec": 4,
       "Id": "eb855092-1185-4ee8-a67f-219238d5b35a",
       "Infiltration": "",
@@ -8043,6 +8332,7 @@
           "Radius": 165
         }
       },
+      "CorePointId": 11,
       "DelayToCanSpawnSec": 4,
       "Id": "ebc374a7-883a-4769-a1c0-068a707fecee",
       "Infiltration": "",
@@ -8073,6 +8363,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 7,
       "DelayToCanSpawnSec": 4,
       "Id": "ef21d970-5152-41df-8578-82e053fbc320",
       "Infiltration": "",
@@ -8102,6 +8393,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "ef2f2161-0120-46af-8fe6-06fcf8bbb5f7",
       "Infiltration": "Village",
@@ -8131,6 +8423,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "ef4e1953-ed0d-42c5-b1e8-6b58db5c6f44",
       "Infiltration": "Village",
@@ -8160,6 +8453,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "f2cce129-3b6d-4d74-a6f7-a7e909b33814",
       "Infiltration": "Village",
@@ -8190,6 +8484,7 @@
           "Radius": 100
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "f3dc2121-5ac2-418c-8907-a8917c3a09b2",
       "Infiltration": "Village",
@@ -8219,6 +8514,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "f3fab340-0d6e-49d3-abf9-609f10262382",
       "Infiltration": "Riverside",
@@ -8248,6 +8544,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "f428129a-95b4-424d-accc-c89b301cb3c1",
       "Infiltration": "Riverside",
@@ -8277,6 +8574,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "f451a986-9344-43f7-a6cd-4c2c25993bd6",
       "Infiltration": "Riverside",
@@ -8306,6 +8604,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "f474e253-6abe-416b-99cd-f5c3ed524804",
       "Infiltration": "Riverside",
@@ -8335,6 +8634,7 @@
           "Radius": 158.9
         }
       },
+      "CorePointId": 6,
       "DelayToCanSpawnSec": 4,
       "Id": "f487ecdc-1bcc-41bf-b948-9bac5116b933",
       "Infiltration": "",
@@ -8364,6 +8664,7 @@
           "Radius": 158.9
         }
       },
+      "CorePointId": 2,
       "DelayToCanSpawnSec": 4,
       "Id": "f67f1b62-76f7-4974-9374-2df04368a862",
       "Infiltration": "",
@@ -8394,6 +8695,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "f79c4cad-9e70-4da7-bae8-19c2ff9bd403",
       "Infiltration": "Village",
@@ -8424,6 +8726,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "f7d9fd21-aa76-4c4f-ac8e-5019ad44fbed",
       "Infiltration": "Village",
@@ -8453,6 +8756,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "f883d201-beea-44b0-981b-3e5416ca1d3d",
       "Infiltration": "Village",
@@ -8482,6 +8786,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "fa5ef3eb-f86a-4f3d-a4b4-11105d318930",
       "Infiltration": "Village",
@@ -8511,6 +8816,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "fb7bd71f-8177-4417-8e29-916904ca2d8a",
       "Infiltration": "Village",
@@ -8540,6 +8846,7 @@
           "Radius": 50
         }
       },
+      "CorePointId": 0,
       "DelayToCanSpawnSec": 4,
       "Id": "fba8398f-90ea-433e-a3bb-669e08b18937",
       "Infiltration": "Riverside",
@@ -8569,6 +8876,7 @@
           "Radius": 175
         }
       },
+      "CorePointId": 18,
       "DelayToCanSpawnSec": 4,
       "Id": "fd9ae1ee-6358-44d6-a344-edcf4ed1556f",
       "Infiltration": "",
@@ -8592,7 +8900,8 @@
   "exits": [
     {
       "Chance": 100,
-      "EntryPoints": "Riverside",
+      "EntryPoints": "Village,Riverside",
+      "EventAvailable": true,
       "ExfiltrationTime": 8,
       "Id": "",
       "MaxTime": 0,
@@ -8604,6 +8913,7 @@
     {
       "Chance": 0,
       "EntryPoints": "Village,Riverside",
+      "EventAvailable": false,
       "ExfiltrationTime": 8,
       "Id": "",
       "MaxTime": 0,
@@ -8615,6 +8925,7 @@
     {
       "Chance": 50,
       "EntryPoints": "Village,Riverside",
+      "EventAvailable": false,
       "ExfiltrationTime": 30,
       "Id": "",
       "MaxTime": 0,
@@ -8626,6 +8937,7 @@
     {
       "Chance": 50,
       "EntryPoints": "Village",
+      "EventAvailable": false,
       "ExfiltrationTime": 8,
       "Id": "",
       "MaxTime": 0,
@@ -8636,7 +8948,8 @@
     },
     {
       "Chance": 100,
-      "EntryPoints": "Village",
+      "EntryPoints": "Village,Riverside",
+      "EventAvailable": true,
       "ExfiltrationTime": 8,
       "Id": "",
       "MaxTime": 0,
@@ -8648,6 +8961,7 @@
     {
       "Chance": 100,
       "EntryPoints": "Village,Riverside",
+      "EventAvailable": true,
       "ExfiltrationTime": 8,
       "Id": "",
       "MaxTime": 0,
@@ -8658,7 +8972,8 @@
     },
     {
       "Chance": 100,
-      "EntryPoints": "Village",
+      "EntryPoints": "Village,Riverside",
+      "EventAvailable": true,
       "ExfiltrationTime": 8,
       "Id": "",
       "MaxTime": 0,

@@ -100,9 +100,9 @@
   "BotImpossible": 0,
   "BotLocationModifier": {
     "AccuracySpeed": 1,
-    "DistToActivate": 140,
+    "DistToActivate": 100,
     "DistToPersueAxemanCoef": 0.9,
-    "DistToSleep": 150,
+    "DistToSleep": 120,
     "GainSight": 1,
     "KhorovodChance": 0,
     "MagnetPower": 15,
@@ -111,7 +111,7 @@
     "VisibleDistance": 1
   },
   "BotMarksman": 0,
-  "BotMax": 0,
+  "BotMax": 16,
   "BotMaxPlayer": 0,
   "BotMaxTimePlayer": 0,
   "BotNormal": 0,
@@ -128,12 +128,12 @@
   "DisabledForScav": false,
   "DisabledScavExits": "Cellars,Gate 0",
   "EnableCoop": true,
-  "Enabled": true,
-  "EscapeTimeLimit": 20,
+  "Enabled": false,
+  "EscapeTimeLimit": 25,
   "EscapeTimeLimitCoop": 15,
   "GenerateLocalLootCache": true,
   "GlobalContainerChanceModifier": 1,
-  "GlobalLootChanceModifier": 0.2,
+  "GlobalLootChanceModifier": 0.4,
   "IconX": 318,
   "IconY": 359,
   "Id": "factory4_night",
@@ -148,18 +148,18 @@
     },
     {
       "minPlayers": 3,
-      "time": 120
+      "time": 70
     },
     {
       "minPlayers": 2,
-      "time": 250
+      "time": 120
     },
     {
       "minPlayers": 1,
       "time": 330
     }
   ],
-  "MaxBotPerZone": 4,
+  "MaxBotPerZone": 0,
   "MaxCoopGroup": 6,
   "MaxDistToFreePoint": 900,
   "MaxPlayers": 6,
@@ -3910,12 +3910,7 @@
   "filter_ex": [],
   "limits": [],
   "matching_min_seconds": 45,
-  "maxItemCountInLocation": [
-    {
-      "TemplateId": "54009119af1c881c07000029",
-      "Value": 0
-    }
-  ],
+  "maxItemCountInLocation": [],
   "sav_summon_seconds": 60,
   "tmp_location_field_remove_me": 0,
   "users_gather_seconds": 0,

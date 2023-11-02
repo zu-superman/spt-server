@@ -3920,7 +3920,10 @@
       "BossEscortAmount": "0",
       "Time": -1,
       "RandomTimeSpawn": false,
-      "Supports": null
+      "Supports": null,
+	  "Delay": 0,
+      "TriggerId": "",
+      "TriggerName": ""
     }
   ],
   "MatchMakerMinPlayersByWaitTime": [
