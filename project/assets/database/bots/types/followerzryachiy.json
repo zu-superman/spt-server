@@ -42,7 +42,7 @@
       "mod_handguard": 100,
       "mod_launcher": 0,
       "mod_magazine": 100,
-      "mod_mount": 93,
+      "mod_mount": 95,
       "mod_mount_000": 72,
       "mod_mount_001": 97,
       "mod_mount_002": 98,
@@ -61,7 +61,7 @@
       "mod_tactical002": 0,
       "mod_tactical_000": 1,
       "mod_tactical_001": 0,
-      "mod_tactical_002": 96
+      "mod_tactical_002": 97
     }
   },
   "difficulty": {
