@@ -221,8 +221,15 @@ export class InsuranceController
         const mainParentToAttachmentsMap = new Map<string, Item[]>();
         for (const insuredItem of insured.items)
         {
-            // Use the template ID from the item to get the parent item's template details.
+            // Use the parent ID from the item to get the parent item.
             const parentItem = insured.items.find(item => item._id === insuredItem.parentId);
+
+            // The parent (not the hideout) could not be found. Skip and warn.
+            if (!parentItem && insuredItem.parentId !== this.fetchHideoutItemParent(insured.items))
+            {
+                this.logger.warning(`Could not find parent for insured item - ID: ${insuredItem._id}, Template: ${insuredItem._tpl}, Parent ID: ${insuredItem.parentId}`);
+                continue;
+            }
 
             // Check if this is an attachment currently attached to its parent.
             if (this.itemHelper.isAttachmentAttached(insuredItem))
@@ -238,7 +245,7 @@ export class InsuranceController
                 if (!mainParent)
                 {
                     // Odd. The parent couldn't be found. Skip this attachment and warn.
-                    this.logger.warning(`Could not find main-parent for insured attachment: ${this.itemHelper.getItemName(insuredItem._tpl)}`);
+                    this.logger.warning(`Could not find main-parent for insured attachment - ID: ${insuredItem._id}, Template: ${insuredItem._tpl}, Parent ID: ${insuredItem.parentId}`);
                     continue;
                 }
 
@@ -300,9 +307,6 @@ export class InsuranceController
     /**
      * Process parent items and their attachments, updating the toDelete Set accordingly.
      *
-     * This method iterates over a map of parent items to their attachments and performs evaluations on each.
-     * It marks items for deletion based on certain conditions and updates the toDelete Set accordingly.
-     *
      * @param mainParentToAttachmentsMap A Map object containing parent item IDs to arrays of their attachment items.
      * @param itemsMap A Map object for quick item look-up by item ID.
      * @param traderId The trader ID from the Insurance object.
@@ -317,7 +321,7 @@ export class InsuranceController
             const parentName = this.itemHelper.getItemName(parentItem._tpl);
             this.logger.debug(`Processing attachments for parent item: ${parentName}`);
 
-            // Your existing logic for sorting and filtering children of this parent item
+            // Process the attachments for this individual parent item.
             this.processAttachmentByParent(attachmentItems, traderId, toDelete);
         });
     }

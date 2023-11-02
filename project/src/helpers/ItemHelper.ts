@@ -827,6 +827,10 @@ class ItemHelper
         while (currentItem && this.isAttachmentAttached(currentItem))
         {
             currentItem = itemsMap.get(currentItem.parentId);
+            if (!currentItem)
+            {
+                return null;
+            }
         }
         return currentItem;
     }
