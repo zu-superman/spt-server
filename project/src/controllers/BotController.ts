@@ -28,7 +28,6 @@ export class BotController
 {
     protected botConfig: IBotConfig;
     protected pmcConfig: IPmcConfig;
-    public static readonly pmcTypeLabel = "PMC";
 
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
