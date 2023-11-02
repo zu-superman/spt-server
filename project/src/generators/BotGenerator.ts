@@ -120,6 +120,8 @@ export class BotGenerator
             output.push(bot);
         }
 
+        this.logger.debug(`Generated ${botGenerationDetails.botCountToGenerate} ${output[0].Info.Settings.Role} (${botGenerationDetails.eventRole}) bots`);
+
         return output;
     }
 
@@ -187,6 +189,12 @@ export class BotGenerator
 
         // generate new inventory ID
         bot = this.generateInventoryID(bot);
+
+        // Set role back to originally requested now its been generated
+        if (botGenerationDetails.eventRole)
+        {
+            bot.Info.Settings.Role = botGenerationDetails.eventRole;
+        }
 
         return bot;
     }

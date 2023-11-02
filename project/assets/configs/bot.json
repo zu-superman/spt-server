@@ -36,6 +36,9 @@
         "crazyAssaultEvent": 15,
         "bossBoar": 5,
         "bossBoarSniper": 5,
+		"peacefullZryachiyEvent": 5,
+		"sectactPriestEvent": 20,
+		"ravangeZryachiyEvent": 25,
         "sptUsec": 30,
         "sptBear": 30
     },

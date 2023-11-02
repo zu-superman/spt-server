@@ -2204,7 +2204,9 @@
       "Pockets": {
         "60c7272c204bc17802313365": 1
       },
-      "Scabbard": {},
+      "Scabbard": {
+		  "5fc64ea372b0dd78d51159dc": 1
+	  },
       "SecondPrimaryWeapon": {
         "57dc2fa62459775949412633": 968,
         "5ba26383d4351e00334c93d9": 13

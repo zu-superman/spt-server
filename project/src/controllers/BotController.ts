@@ -21,6 +21,7 @@ import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { BotGenerationCacheService } from "@spt-aki/services/BotGenerationCacheService";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
 import { MatchBotDetailsCacheService } from "@spt-aki/services/MatchBotDetailsCacheService";
+import { SeasonalEventService } from "@spt-aki/services/SeasonalEventService";
 import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 
 @injectable()
@@ -38,6 +39,7 @@ export class BotController
         @inject("BotGenerationCacheService") protected botGenerationCacheService: BotGenerationCacheService,
         @inject("MatchBotDetailsCacheService") protected matchBotDetailsCacheService: MatchBotDetailsCacheService,
         @inject("LocalisationService") protected localisationService: LocalisationService,
+        @inject("SeasonalEventService") protected seasonalEventService: SeasonalEventService,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
         @inject("ConfigServer") protected configServer: ConfigServer,
         @inject("ApplicationContext") protected applicationContext: ApplicationContext,
@@ -55,9 +57,18 @@ export class BotController
      */
     public getBotPresetGenerationLimit(type: string): number
     {
-        return this.botConfig.presetBatch[(type === "assaultGroup")
+        const value = this.botConfig.presetBatch[(type === "assaultGroup")
             ? "assault"
             : type];
+
+        if (!value)
+        {
+            this.logger.warning(`No value found for bot type ${type}, defaulting to 30`);
+
+            return value;
+        }
+
+        return value;
     }
 
     /**
@@ -105,8 +116,8 @@ export class BotController
                 break;
             default:
                 difficultySettings = this.botDifficultyHelper.getBotDifficultySettings(type, difficulty);
-                // Don't add pmcs to gifter enemy list
-                if (type.toLowerCase() !== "gifter")
+                // Don't add pmcs to event enemies
+                if (!["gifter", "peacefullzryachiyevent"].includes(type.toLowerCase()))
                 {
                     this.botHelper.addBotToEnemyList(difficultySettings, [this.pmcConfig.bearType, this.pmcConfig.usecType], lowercasedBotType);
                 }
@@ -141,6 +152,15 @@ export class BotController
                 isPlayerScav: false
             };
 
+            // Event bots need special actions to occur, set data up for them
+            const isEventBot = condition.Role.includes("Event");
+            if (isEventBot)
+            {
+                // Add eventRole data + reassign role property to be base type
+                botGenerationDetails.eventRole = condition.Role;
+                botGenerationDetails.role = this.seasonalEventService.getBaseRoleForEventBot(botGenerationDetails.eventRole);
+            }
+
             // Custom map waves can have spt roles in them
             // Is bot type sptusec/sptbear, set is pmc true and set side
             if (this.botHelper.botRoleIsPmc(condition.Role))
@@ -154,9 +174,10 @@ export class BotController
             for (let i = 0; i < botGenerationDetails.botCountToGenerate; i ++)
             {
                 const details = this.jsonUtil.clone(botGenerationDetails);
+                const botRole = (isEventBot) ? details.eventRole : details.role;
 
                 // Roll chance to be pmc if type is allowed to be one
-                const botConvertRateMinMax = this.pmcConfig.convertIntoPmcChance[details.role.toLowerCase()];
+                const botConvertRateMinMax = this.pmcConfig.convertIntoPmcChance[botRole.toLowerCase()];
                 if (botConvertRateMinMax)
                 {
                     // Should bot become PMC
@@ -170,7 +191,7 @@ export class BotController
                     }
                 }
 
-                cacheKey = `${details.role}${details.botDifficulty}`;
+                cacheKey = `${botRole}${details.botDifficulty}`;
                 // Check for bot in cache, add if not
                 if (!this.botGenerationCacheService.cacheHasBotOfRole(cacheKey))
                 {
