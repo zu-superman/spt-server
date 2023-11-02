@@ -50,6 +50,9 @@
       "BossName": "bossGluhar",
       "BossPlayer": false,
       "BossZone": "ZoneRailStrorage",
+      "Delay": 0,
+      "ForceSpawn": false,
+      "IgnoreMaxBots": false,
       "RandomTimeSpawn": false,
       "Supports": [
         {
@@ -87,6 +90,9 @@
       "BossName": "pmcBot",
       "BossPlayer": false,
       "BossZone": "ZoneRailStrorage",
+      "Delay": 0,
+      "ForceSpawn": false,
+      "IgnoreMaxBots": false,
       "RandomTimeSpawn": false,
       "Supports": null,
       "Time": 1470,
@@ -102,6 +108,9 @@
       "BossName": "pmcBot",
       "BossPlayer": false,
       "BossZone": "ZoneRailStrorage",
+      "Delay": 0,
+      "ForceSpawn": false,
+      "IgnoreMaxBots": false,
       "RandomTimeSpawn": false,
       "Supports": null,
       "Time": -1,
@@ -117,6 +126,9 @@
       "BossName": "pmcBot",
       "BossPlayer": false,
       "BossZone": "ZoneSubCommand",
+      "Delay": 0,
+      "ForceSpawn": false,
+      "IgnoreMaxBots": false,
       "RandomTimeSpawn": false,
       "Supports": null,
       "Time": -1,
@@ -132,6 +144,9 @@
       "BossName": "pmcBot",
       "BossPlayer": false,
       "BossZone": "ZoneSubCommand",
+      "Delay": 0,
+      "ForceSpawn": false,
+      "IgnoreMaxBots": false,
       "RandomTimeSpawn": false,
       "Supports": null,
       "Time": 3,
@@ -431,6 +446,36 @@
       ]
     },
     {
+      "BotZoneName": "ZoneSubCommand",
+      "Categories": [
+        "Bot",
+        "Boss"
+      ],
+      "ColliderParams": {
+        "_parent": "SpawnSphereParams",
+        "_props": {
+          "Center": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "Radius": 15
+        }
+      },
+      "DelayToCanSpawnSec": 4,
+      "Id": "08f2256d-4fd7-4ece-bf91-6928a0410f95",
+      "Infiltration": "",
+      "Position": {
+        "x": -94.91,
+        "y": -14.75,
+        "z": 3.42
+      },
+      "Rotation": 96.64535,
+      "Sides": [
+        "Savage"
+      ]
+    },
+    {
       "BotZoneName": "",
       "Categories": [
         "Player"
@@ -722,6 +767,35 @@
       "Rotation": 28.0800037,
       "Sides": [
         "Pmc"
+      ]
+    },
+    {
+      "BotZoneName": "ZoneBarrack",
+      "Categories": [
+        "Bot"
+      ],
+      "ColliderParams": {
+        "_parent": "SpawnSphereParams",
+        "_props": {
+          "Center": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "Radius": 100
+        }
+      },
+      "DelayToCanSpawnSec": 4,
+      "Id": "162cd326-c355-446a-bf62-e2a76e76d743",
+      "Infiltration": "",
+      "Position": {
+        "x": -140.161,
+        "y": -6.963005,
+        "z": -35.536
+      },
+      "Rotation": 130.028351,
+      "Sides": [
+        "Savage"
       ]
     },
     {
@@ -1924,6 +1998,35 @@
       "Rotation": 264.97,
       "Sides": [
         "All"
+      ]
+    },
+    {
+      "BotZoneName": "ZoneBarrack",
+      "Categories": [
+        "Bot"
+      ],
+      "ColliderParams": {
+        "_parent": "SpawnSphereParams",
+        "_props": {
+          "Center": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "Radius": 150
+        }
+      },
+      "DelayToCanSpawnSec": 4,
+      "Id": "4b04a014-b605-46c4-905e-c5f31f652b77",
+      "Infiltration": "",
+      "Position": {
+        "x": -266.77,
+        "y": -6.24500275,
+        "z": 23.06
+      },
+      "Rotation": 84.70626,
+      "Sides": [
+        "Savage"
       ]
     },
     {
@@ -5938,6 +6041,7 @@
       "Chance": 100,
       "Count": 420,
       "EntryPoints": "Common",
+      "EventAvailable": true,
       "ExfiltrationTime": 5,
       "ExfiltrationType": "SharedTimer",
       "Id": "0",
@@ -5953,6 +6057,7 @@
       "Chance": 100,
       "Count": 0,
       "EntryPoints": "Common",
+      "EventAvailable": false,
       "ExfiltrationTime": 8,
       "ExfiltrationType": "Individual",
       "Id": "Alpinist",
@@ -5968,6 +6073,7 @@
       "Chance": 100,
       "Count": 0,
       "EntryPoints": "Common",
+      "EventAvailable": false,
       "ExfiltrationTime": 8,
       "ExfiltrationType": "SharedTimer",
       "Id": "",
@@ -5983,6 +6089,7 @@
       "Chance": 100,
       "Count": 0,
       "EntryPoints": "Common",
+      "EventAvailable": false,
       "ExfiltrationTime": 18,
       "ExfiltrationType": "Individual",
       "Id": "",
@@ -5998,6 +6105,7 @@
       "Chance": 100,
       "Count": 0,
       "EntryPoints": "Common",
+      "EventAvailable": false,
       "ExfiltrationTime": 10,
       "ExfiltrationType": "Individual",
       "Id": "",
@@ -6013,6 +6121,7 @@
       "Chance": 100,
       "Count": 0,
       "EntryPoints": "Common",
+      "EventAvailable": false,
       "ExfiltrationTime": 8,
       "ExfiltrationType": "Individual",
       "Id": "",
