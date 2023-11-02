@@ -350,7 +350,7 @@ export class SeasonalEventService
                 if (!mapBosses.find(x => x.BossName === boss.BossName))
                 {
 
-                    this.databaseServer.getTables().locations.bigmap.base.BossLocationSpawn.push(...bossesToAdd);
+                    this.databaseServer.getTables().locations[mapKey].base.BossLocationSpawn.push(...bossesToAdd);
                 }
             }
         }

@@ -116,8 +116,8 @@ export class BotController
                 break;
             default:
                 difficultySettings = this.botDifficultyHelper.getBotDifficultySettings(type, difficulty);
-                // Don't add pmcs to event enemies
-                if (!["gifter", "peacefullzryachiyevent"].includes(type.toLowerCase()))
+                // Don't add pmcs to event enemies (e.g. gifter/peacefullzryachiyevent)
+                if (!this.botConfig.botsToNotAddPMCsAsEnemiesTo.includes(type.toLowerCase()))
                 {
                     this.botHelper.addBotToEnemyList(difficultySettings, [this.pmcConfig.bearType, this.pmcConfig.usecType], lowercasedBotType);
                 }
@@ -153,7 +153,7 @@ export class BotController
             };
 
             // Event bots need special actions to occur, set data up for them
-            const isEventBot = condition.Role.includes("Event");
+            const isEventBot = condition.Role.toLowerCase().includes("event");
             if (isEventBot)
             {
                 // Add eventRole data + reassign role property to be base type

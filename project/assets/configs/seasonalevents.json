@@ -610,7 +610,8 @@
                     "TriggerName": "botEvent"
                 }
             ]
-        }
+        },
+		"christmas": {}
     },
     "gifterSettings": [{
             "map": "bigmap",

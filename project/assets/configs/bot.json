@@ -43,6 +43,7 @@
         "sptBear": 30
     },
     "bosses": ["bossbully", "bossgluhar", "bosskilla", "bosskojaniy", "bosssanitar", "bosstagilla", "bossknight", "bossZryachiy", "bossBoar", "bossBoarSniper"],
+	"botsToNotAddPMCsAsEnemiesTo": ["gifter", "peacefullzryachiyevent"],
     "durability": {
         "default": {
             "armor": {

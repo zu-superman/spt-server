@@ -8,6 +8,8 @@ export interface IBotConfig extends IBaseConfig
     kind: "aki-bot"
     /** How many variants of each bot should be generated on raid start */
     presetBatch: PresetBatch
+    /** Bot roles that should not have PMC types (sptBear/sptUsec) added as enemies to */
+    botsToNotAddPMCsAsEnemiesTo: string[]
     /** What bot types should be classified as bosses */
     bosses: string[]
     /** Control weapon/armor durability min/max values for each bot type */
