@@ -185,7 +185,6 @@ import { RagfairServer } from "@spt-aki/servers/RagfairServer";
 import { SaveServer } from "@spt-aki/servers/SaveServer";
 import { WebSocketServer } from "@spt-aki/servers/WebSocketServer";
 import { AkiHttpListener } from "@spt-aki/servers/http/AkiHttpListener";
-import { HttpBufferHandler } from "@spt-aki/servers/http/HttpBufferHandler";
 import { BotEquipmentFilterService } from "@spt-aki/services/BotEquipmentFilterService";
 import { BotEquipmentModPoolService } from "@spt-aki/services/BotEquipmentModPoolService";
 import { BotGenerationCacheService } from "@spt-aki/services/BotGenerationCacheService";
@@ -630,8 +629,6 @@ export class Container
         depContainer.register<RagfairServer>("RagfairServer", RagfairServer);
         depContainer.register<SaveServer>("SaveServer", SaveServer, { lifecycle: Lifecycle.Singleton });
         depContainer.register<ConfigServer>("ConfigServer", ConfigServer, { lifecycle: Lifecycle.Singleton });
-        depContainer.register<HttpBufferHandler>("HttpBufferHandler", HttpBufferHandler, {lifecycle: Lifecycle.Singleton});
-
     }
 
     private static registerControllers(depContainer: DependencyContainer): void

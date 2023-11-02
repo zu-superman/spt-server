@@ -201,6 +201,7 @@ export interface SpawnPointParam
     BotZoneName: string
     Categories: string[]
     ColliderParams: ColliderParams
+    CorePointId: number
     DelayToCanSpawnSec: number
     Id: string
     Infiltration: string

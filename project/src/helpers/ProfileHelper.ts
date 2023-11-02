@@ -191,6 +191,7 @@ export class ProfileHelper
             level = expTable.length - 1;
         }
 
+        // TODO: Replace with exp = expTable.slice(0, level).reduce((acc, curr) => acc + curr.exp, 0);
         for (let i = 0; i < level; i++)
         {
             exp += expTable[i].exp;
@@ -246,12 +247,23 @@ export class ProfileHelper
         return {
             Eft: {
                 CarriedQuestItems: [],
-                Victims: [],
-                TotalSessionExperience: 0,
-                LastSessionDate: this.timeUtil.getTimestamp(),
-                SessionCounters: { Items: [] },
+                DamageHistory: {
+                    LethalDamagePart: "Head",
+                    LethalDamage: undefined,
+                    BodyParts: <any>[]
+                },
+                DroppedItems: [],
+                ExperienceBonusMult: 0,
+                FoundInRaidItems: [],
+                LastPlayerState: undefined,
+                LastSessionDate: 0,
                 OverallCounters: { Items: [] },
-                TotalInGameTime: 0
+                SessionCounters: { Items: [] },
+                SessionExperienceMult: 0,
+                SurvivorClass: "Unknown",
+                TotalInGameTime: 0,
+                TotalSessionExperience: 0,
+                Victims: []
             }
         };
     }

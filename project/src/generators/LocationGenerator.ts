@@ -431,7 +431,7 @@ export class LocationGenerator
     protected getPossibleLootItemsForContainer(containerTypeId: string, staticLootDist: Record<string, IStaticLootDetails>): ProbabilityObjectArray<string, number>
     {
         const seasonalEventActive = this.seasonalEventService.seasonalEventEnabled();
-        const seasonalItemTplBlacklist = this.seasonalEventService.getAllSeasonalEventItems();
+        const seasonalItemTplBlacklist = this.seasonalEventService.getInactiveSeasonalEventItems();
 
         const itemDistribution = new ProbabilityObjectArray<string>(this.mathUtil, this.jsonUtil);
         for (const icd of staticLootDist[containerTypeId].itemDistribution)
@@ -533,7 +533,7 @@ export class LocationGenerator
 
         // Iterate over spawnpoints
         const seasonalEventActive = this.seasonalEventService.seasonalEventEnabled();
-        const seasonalItemTplBlacklist = this.seasonalEventService.getAllSeasonalEventItems();
+        const seasonalItemTplBlacklist = this.seasonalEventService.getInactiveSeasonalEventItems();
         for (const spawnPoint of chosenSpawnpoints)
         {
             if (!spawnPoint.template)
@@ -623,7 +623,7 @@ export class LocationGenerator
         }
 
         const seasonalEventActive = this.seasonalEventService.seasonalEventEnabled();
-        const seasonalItemTplBlacklist = this.seasonalEventService.getAllSeasonalEventItems();
+        const seasonalItemTplBlacklist = this.seasonalEventService.getInactiveSeasonalEventItems();
         // Add remaining forced loot to array
         for (const forcedLootItem of forcedSpawnPoints)
         {

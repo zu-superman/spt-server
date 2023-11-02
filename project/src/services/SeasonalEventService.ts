@@ -62,7 +62,15 @@ export class SeasonalEventService
         return [
             "635267ab3c89e2112001f826", // Halloween skull mask
             "634959225289190e5e773b3b", // Pumpkin loot box
-            "59ef13ca86f77445fd0e2483" // Jack'o'lantern helmet
+            "59ef13ca86f77445fd0e2483", // Jack'o'lantern helmet
+            "6176a48d732a664031271438", // Faceless mask
+            "5bd071d786f7747e707b93a3", // Jason mask
+            "5bd0716d86f774171822ef4b", // Misha Mayorov mask
+            "5bd06f5d86f77427101ad47c", // Slender mask
+            "6176a40f0b8c0312ac75a3d3", // Ghoul mask
+            "62a5c2c98ec41a51b34739c0", // Hockey player mask "Captain"
+            "62a5c333ec21e50cad3b5dc6", // Hockey player mask "Brawler"
+            "62a5c41e8ec41a51b34739c3" // Hockey player mask "Quiet"
         ];
     }
 
@@ -105,11 +113,12 @@ export class SeasonalEventService
     }
 
     /**
-     * Get an array of items that appear during a seasonal event
-     * returns multiple seasonal event items if they are both active
+     * Get an array of seasonal items that should not appear
+     * e.g. if halloween is active, only return christmas items
+     * or, if halloween and christmas are inactive, return both sets of items
      * @returns array of tpl strings
      */
-    public getAllSeasonalEventItems(): string[]
+    public getInactiveSeasonalEventItems(): string[]
     {
         const items = [];
         if (!this.christmasEventEnabled())
@@ -237,10 +246,10 @@ export class SeasonalEventService
 
     /**
      * Iterate through bots inventory and loot to find and remove christmas items (as defined in SeasonalEventService)
-     * @param nodeInventory Bots inventory to iterate over
+     * @param botInventory Bots inventory to iterate over
      * @param botRole the role of the bot being processed
      */
-    public removeChristmasItemsFromBotInventory(nodeInventory: Inventory, botRole: string): void
+    public removeChristmasItemsFromBotInventory(botInventory: Inventory, botRole: string): void
     {
         const christmasItems = this.getChristmasEventItems();
         const equipmentSlotsToFilter = ["FaceCover", "Headwear", "Backpack", "TacticalVest"];
@@ -249,25 +258,25 @@ export class SeasonalEventService
         // Remove christmas related equipment
         for (const equipmentSlotKey of equipmentSlotsToFilter)
         {
-            if (!nodeInventory.equipment[equipmentSlotKey])
+            if (!botInventory.equipment[equipmentSlotKey])
             {
                 this.logger.warning(this.localisationService.getText("seasonal-missing_equipment_slot_on_bot", {equipmentSlot: equipmentSlotKey, botRole: botRole}));
             }
 
-            const equipment: Record<string, number> = nodeInventory.equipment[equipmentSlotKey];
+            const equipment: Record<string, number> = botInventory.equipment[equipmentSlotKey];
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            nodeInventory.equipment[equipmentSlotKey] = Object.fromEntries(Object.entries(equipment).filter(([index]) => !christmasItems.includes(index)));
+            botInventory.equipment[equipmentSlotKey] = Object.fromEntries(Object.entries(equipment).filter(([index]) => !christmasItems.includes(index)));
         }
 
         // Remove christmas related loot from loot containers
         for (const lootContainerKey of lootContainersToFilter)
         {
-            if (!nodeInventory.items[lootContainerKey])
+            if (!botInventory.items[lootContainerKey])
             {
                 this.logger.warning(this.localisationService.getText("seasonal-missing_loot_container_slot_on_bot", {lootContainer: lootContainerKey, botRole: botRole}));
             }
 
-            nodeInventory.items[lootContainerKey] = nodeInventory.items[lootContainerKey].filter((x: string) => !christmasItems.includes(x));
+            botInventory.items[lootContainerKey] = botInventory.items[lootContainerKey].filter((x: string) => !christmasItems.includes(x));
         }
     }
 
@@ -375,6 +384,9 @@ export class SeasonalEventService
             const gearAmendments = botGearChanges[bot];
             for (const equipmentSlot in gearAmendments)
             {
+                // Adjust slots spawn chance to be at least 75%
+                botToUpdate.chances.equipment[equipmentSlot] = Math.max(botToUpdate.chances.equipment[equipmentSlot], 75);
+
                 // Grab gear to add and loop over it
                 const itemsToAdd = gearAmendments[equipmentSlot];
                 for (const itemTplIdToAdd in itemsToAdd)

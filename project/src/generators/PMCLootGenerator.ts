@@ -53,7 +53,7 @@ export class PMCLootGenerator
             if (!this.seasonalEventService.seasonalEventEnabled())
             {
                 // Blacklist seasonal items
-                itemBlacklist.push(...this.seasonalEventService.getAllSeasonalEventItems());
+                itemBlacklist.push(...this.seasonalEventService.getInactiveSeasonalEventItems());
             }
 
             const itemsToAdd = Object.values(items).filter(item => allowedItemTypes.includes(item._parent)
@@ -89,7 +89,7 @@ export class PMCLootGenerator
             if (!this.seasonalEventService.seasonalEventEnabled())
             {
                 // Blacklist seasonal items
-                itemBlacklist.push(...this.seasonalEventService.getAllSeasonalEventItems());
+                itemBlacklist.push(...this.seasonalEventService.getInactiveSeasonalEventItems());
             }
 
             const itemsToAdd = Object.values(items).filter(item => allowedItemTypes.includes(item._parent)
@@ -134,7 +134,7 @@ export class PMCLootGenerator
             if (!this.seasonalEventService.seasonalEventEnabled())
             {
                 // Blacklist seasonal items
-                itemBlacklist.push(...this.seasonalEventService.getAllSeasonalEventItems());
+                itemBlacklist.push(...this.seasonalEventService.getInactiveSeasonalEventItems());
             }
 
             const itemsToAdd = Object.values(items).filter(item => allowedItemTypes.includes(item._parent)

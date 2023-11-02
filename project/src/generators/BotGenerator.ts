@@ -152,8 +152,7 @@ export class BotGenerator
 
         bot.Info.Nickname = this.generateBotNickname(botJsonTemplate, botGenerationDetails.isPlayerScav, botRole, sessionId);
 
-        const skipChristmasItems = !this.seasonalEventService.christmasEventEnabled();
-        if (skipChristmasItems)
+        if (!this.seasonalEventService.christmasEventEnabled())
         {
             this.seasonalEventService.removeChristmasItemsFromBotInventory(botJsonTemplate.inventory, botGenerationDetails.role);
         }

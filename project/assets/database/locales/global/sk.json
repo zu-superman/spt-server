@@ -15643,7 +15643,7 @@
   "5bc4893c86f774626f5ebf3e successMessageText": "It seems that sometimes being smart isn’t enough to act smart. Well, a good old bolty can be of help with this. Sniper is silent for now, so let's wait for a little before your next tasks. I will let you know when there are new tests for you.",
   "5bc48aed86f77452c947ce67": "Eliminate PMC operatives with a headshot without dying while using a bolt-action rifle",
   "5bdabf7186f7743e152e867d": "",
-  "64b6a5a525251516d7685428": "You must not die or leave the raid while the task is active (Status: KIA, Left the Action, MIA)",
+  "64b6a5a525251516d7685428": "You cannot die or leave the raid until the quest is handed over to the customer (Status: Killed, Ran through, MIA)",
   "5bc4893c86f774626f5ebf3e acceptPlayerMessage": "",
   "5bc4893c86f774626f5ebf3e declinePlayerMessage": "",
   "5bc4893c86f774626f5ebf3e completePlayerMessage": "",
