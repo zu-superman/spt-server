@@ -856,8 +856,7 @@
                         "mod_reciever": ["5d4405aaa4b9361e6a4e6bd3"],
                         "mod_stock": ["5cde739cd7f00c0010373bd3"],
                         "mod_rear_sight": ["5a0ed824fcdbcb0176308b0d"],
-                        "mod_front_sight": ["5a0f096dfcdbcb0176308b15"],
-                        "mod_magazine": ["6241c2c2117ad530666a5108"]
+                        "mod_front_sight": ["5a0f096dfcdbcb0176308b15"]
                     },
                     "cartridge": {
                         "Caliber23x75": ["5e85a9f4add9fe03027d9bf1"],
