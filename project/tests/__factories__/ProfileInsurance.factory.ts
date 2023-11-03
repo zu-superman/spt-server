@@ -30,7 +30,8 @@ export class ProfileInsuranceFactory
     {
         this.profileInsuranceFixture = this.profileInsuranceFixture.map((insurance, index) =>
         {
-            const defaultDate = Date.now() - 3600000; // One hour ago.
+            // Default to 1 hour ago.
+            const defaultDate = Math.floor((Date.now() / 1000) - (1 * 60 * 60));
 
             let date: number;
             if (Array.isArray(dateInput) || typeof dateInput === "object")

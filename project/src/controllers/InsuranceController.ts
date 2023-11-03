@@ -114,7 +114,7 @@ export class InsuranceController
      */
     protected processInsuredItems(insuranceDetails: Insurance[], sessionID: string): void
     {
-        this.logger.debug(`Processing ${insuranceDetails.length} insurance packages, which includes a total of ${insuranceDetails.map(ins => ins.items.length).reduce((acc, len) => acc + len, 0)} items, in profile ${sessionID}`);
+        this.logger.debug(`Processing ${insuranceDetails.length} insurance packages, which includes a total of ${this.countAllInsuranceItems(insuranceDetails)} items, in profile ${sessionID}`);
 
         // Iterate over each of the insurance packages.
         insuranceDetails.forEach(insured =>
@@ -134,6 +134,16 @@ export class InsuranceController
             // Remove the fully processed insurance package from the profile.
             this.removeInsurancePackageFromProfile(sessionID, insured.messageContent.systemData);
         });
+    }
+
+    /**
+     * Count all items in all insurance packages.
+     * @param insurance
+     * @returns
+     */
+    protected countAllInsuranceItems(insurance: Insurance[]): number
+    {
+        return insurance.map(ins => ins.items.length).reduce((acc, len) => acc + len, 0);
     }
 
     /**
@@ -460,7 +470,14 @@ export class InsuranceController
     protected fetchHideoutItemParent(items: Item[]): string
     {
         const hideoutItem = items.find(item => item.slotId === "hideout");
-        return hideoutItem ? hideoutItem?.parentId : "";
+        const hideoutParentId = hideoutItem ? hideoutItem?.parentId : "";
+
+        if (hideoutParentId === "")
+        {
+            this.logger.warning("Unable to find an item with slotId 'hideout' in the insured item package.");
+        }
+
+        return hideoutParentId;
     }
 
     /**
