@@ -432,7 +432,8 @@
             "faceShieldIsActiveChancePercent": 100,
             "lightIsActiveDayChancePercent": 25,
             "lightIsActiveNightChancePercent": 75,
-            "laserIsActiveChancePercent": 75
+            "laserIsActiveChancePercent": 75,
+            "forceStock": true
         },
         "bossgluhar": {
             "nvgIsActiveChanceDayPercent": 10,
@@ -440,13 +441,15 @@
             "faceShieldIsActiveChancePercent": 100,
             "lightIsActiveDayChancePercent": 45,
             "lightIsActiveNightChancePercent": 95,
-            "laserIsActiveChancePercent": 95
+            "laserIsActiveChancePercent": 95,
+            "forceStock": true
         },
         "bosskilla": {
             "faceShieldIsActiveChancePercent": 100,
             "lightIsActiveDayChancePercent": 35,
             "lightIsActiveNightChancePercent": 85,
-            "laserIsActiveChancePercent": 85
+            "laserIsActiveChancePercent": 85,
+            "forceStock": true
         },
         "bosskojaniy": {
             "faceShieldIsActiveChancePercent": 100,
@@ -468,7 +471,8 @@
             "faceShieldIsActiveChancePercent": 100,
             "lightIsActiveDayChancePercent": 25,
             "lightIsActiveNightChancePercent": 75,
-            "laserIsActiveChancePercent": 75
+            "laserIsActiveChancePercent": 75,
+            "forceStock": true
         },
         "bossknight": {
             "nvgIsActiveChanceDayPercent": 10,
@@ -476,21 +480,24 @@
             "faceShieldIsActiveChancePercent": 100,
             "lightIsActiveDayChancePercent": 25,
             "lightIsActiveNightChancePercent": 75,
-            "laserIsActiveChancePercent": 75
+            "laserIsActiveChancePercent": 75,
+            "forceStock": true
         },
         "bosszryachiy": {
             "nvgIsActiveChanceDayPercent": 10,
             "nvgIsActiveChanceNightPercent": 90,
             "lightIsActiveDayChancePercent": 25,
             "lightIsActiveNightChancePercent": 85,
-            "laserIsActiveChancePercent": 85
+            "laserIsActiveChancePercent": 85,
+            "forceStock": true
         },
         "bossboar": {
             "nvgIsActiveChanceDayPercent": 10,
             "nvgIsActiveChanceNightPercent": 90,
             "lightIsActiveDayChancePercent": 25,
             "lightIsActiveNightChancePercent": 85,
-            "laserIsActiveChancePercent": 85
+            "laserIsActiveChancePercent": 85,
+            "forceStock": true
         },
         "bosstest": {},
         "followerbully": {
@@ -547,6 +554,7 @@
             "lightIsActiveDayChancePercent": 25,
             "lightIsActiveNightChancePercent": 75,
             "laserIsActiveChancePercent": 75,
+            "forceStock": true,
             "weaponModLimits": {
                 "scopeLimit": 1,
                 "lightLaserLimit": 1
@@ -558,7 +566,8 @@
             "faceShieldIsActiveChancePercent": 100,
             "lightIsActiveDayChancePercent": 25,
             "lightIsActiveNightChancePercent": 75,
-            "laserIsActiveChancePercent": 75
+            "laserIsActiveChancePercent": 75,
+            "forceStock": true
         },
         "followerzryachiy": {
             "nvgIsActiveChanceDayPercent": 10,
@@ -586,6 +595,7 @@
             "lightIsActiveDayChancePercent": 25,
             "lightIsActiveNightChancePercent": 75,
             "laserIsActiveChancePercent": 75,
+            "forceStock": true,
             "weaponModLimits": {
                 "scopeLimit": 2,
                 "lightLaserLimit": 1
@@ -616,6 +626,7 @@
             "lightIsActiveDayChancePercent": 35,
             "lightIsActiveNightChancePercent": 95,
             "laserIsActiveChancePercent": 95,
+            "forceStock": true,
             "weaponModLimits": {
                 "scopeLimit": 1,
                 "lightLaserLimit": 1
@@ -780,7 +791,7 @@
                         "Backpack": 35,
                         "FaceCover": 5
                     },
-					"randomisedWeaponModSlots": [],
+                    "randomisedWeaponModSlots": [],
                     "mods": {
                         "mod_barrel": 20,
                         "mod_bipod": 10,
