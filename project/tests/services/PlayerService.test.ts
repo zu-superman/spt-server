@@ -7,7 +7,7 @@ import { PlayerService } from "@spt-aki/services/PlayerService";
 
 describe("PlayerService", () =>
 {
-    let playerService: PlayerService; // Using "any" to access private/protected methods without type errors.
+    let playerService: PlayerService;
 
     beforeAll(() =>
     {
