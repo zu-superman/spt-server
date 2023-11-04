@@ -12,13 +12,13 @@ export default defineConfig({
         environment: "./tests/CustomEnvironment.ts",
         globals: true,
         coverage: {
-            provider: "v8",
+            provider: "istanbul",
             reporter: ["text", "html"],
             reportsDirectory: "./tests/__coverage__",
             reportOnFailure: true,
             all: true,
             include: ["src"],
-            exclude: ["src/models/**", "tests/**"] 
+            exclude: ["src/models/**", "tests/**"]
         },
         typecheck: {
             enabled: true
