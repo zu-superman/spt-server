@@ -17,7 +17,7 @@
         "test": "vitest run",
         "test:watch": "vitest",
         "test:coverage": "vitest run --coverage",
-        "test:ui": "vitest --ui",
+        "test:ui": "vitest --ui --coverage",
         "build:release": "cross-env PKG_CACHE_PATH=\"./.pkg-cache\" gulp build:release",
         "build:debug": "cross-env PKG_CACHE_PATH=\"./.pkg-cache\" gulp build:debug",
         "build:bleeding": "cross-env PKG_CACHE_PATH=\"./.pkg-cache\" gulp build:bleeding",
