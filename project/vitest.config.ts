@@ -14,11 +14,11 @@ export default defineConfig({
         coverage: {
             provider: "v8",
             reporter: ["text", "html"],
-            reportsDirectory: "./__coverage__",
+            reportsDirectory: "./tests/__coverage__",
             reportOnFailure: true,
-			all: true,
-			include: ["src"],
-			exclude: ["src/models/**", "tests/**", "src/__coverage__"] 
+            all: true,
+            include: ["src"],
+            exclude: ["src/models/**", "tests/**"] 
         },
         typecheck: {
             enabled: true
