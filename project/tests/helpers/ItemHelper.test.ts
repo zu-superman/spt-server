@@ -37,7 +37,7 @@ describe("ItemHelper", () =>
 
         it("should return false when item is of an invalid base type", () =>
         {
-            const result = itemHelper.isValidItem("5fc64ea372b0dd78d51159dc", ["invalid-base-type"]); // "Cultist knife"
+            const result = itemHelper.isValidItem("5fc64ea372b0dd78d51159dc", ["5447e1d04bdc2dff2f8b4567"]); // "Cultist knife"
             expect(result).toBe(false);
         });
 
