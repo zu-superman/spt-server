@@ -115,7 +115,7 @@ class ItemHelper
             return handbookPrice;
         }
 
-        const dynamicPrice = this.getDynamicItemPrice[tpl];
+        const dynamicPrice = this.getDynamicItemPrice(tpl);
         if (dynamicPrice)
         {
             return dynamicPrice;
