@@ -775,4 +775,44 @@ describe("ItemHelper", () =>
             expect(result).toEqual(["3"]);
         });
     });
+
+    describe("getItemStackSize", () =>
+    {
+        it("should return 1 when item has no existing stack size", () =>
+        {
+            const itemId = container.resolve<HashUtil>("HashUtil").generate();
+            const item: Item = {
+                _id: itemId,
+                _tpl: "591094e086f7747caa7bb2ef", // "Body armor repair kit"
+                upd: {}
+            };
+            const result = itemHelper.getItemStackSize(item);
+            expect(result).toBe(1);
+        });
+
+        it("should return 1 when item has no upd property", () =>
+        {
+            const itemId = container.resolve<HashUtil>("HashUtil").generate();
+            const item: Item = {
+                _id: itemId,
+                _tpl: "591094e086f7747caa7bb2ef" // "Body armor repair kit"
+            };
+            const result = itemHelper.getItemStackSize(item);
+            expect(result).toBe(1);
+        });
+
+        it("should return 5 when item has existing stack size of 5", () =>
+        {
+            const itemId = container.resolve<HashUtil>("HashUtil").generate();
+            const item: Item = {
+                _id: itemId,
+                _tpl: "591094e086f7747caa7bb2ef", // "Body armor repair kit"
+                upd: {
+                    StackObjectsCount: 5
+                }
+            };
+            const result = itemHelper.getItemStackSize(item);
+            expect(result).toBe(5);
+        });
+    });
 });
