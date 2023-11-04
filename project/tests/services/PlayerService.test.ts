@@ -21,6 +21,19 @@ describe("PlayerService", () =>
 
     describe("calculateLevel", () =>
     {
+        it("should return 1 when player xp is 0", () =>
+        {
+            const playerProfile = {
+                Info: {
+                    Experience: 0 // Via wiki: https://escapefromtarkov.fandom.com/wiki/Character_skills#Levels
+                }
+            };
+
+            const result = playerService.calculateLevel(playerProfile as IPmcData);
+
+            expect(result).toBe(1);
+        });
+
         it("should return 1 when player xp is 999", () =>
         {
             const playerProfile = {
