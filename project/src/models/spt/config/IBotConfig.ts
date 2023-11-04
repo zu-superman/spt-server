@@ -112,6 +112,8 @@ export interface EquipmentFilters
     weightingAdjustmentsByBotLevel: WeightingAdjustmentDetails[]
     /** Same as weightingAdjustments but based on player level instead of bot level */
     weightingAdjustmentsByPlayerLevel?: WeightingAdjustmentDetails[]
+    /** Should the stock mod be forced to spawn on bot */
+    forceStock: boolean
 }
 
 export interface ModLimits

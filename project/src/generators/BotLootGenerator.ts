@@ -333,7 +333,7 @@ export class BotLootGenerator
                 {
                     this.itemHelper.addCartridgesToAmmoBox(itemsToAdd, itemToAddTemplate);
                 }
-                // make money a stack
+                // Make money a stack
                 else if (this.itemHelper.isOfBaseclass(itemToAddTemplate._id, BaseClasses.MONEY))
                 {
                     this.randomiseMoneyStackSize(isPmc, itemToAddTemplate, itemsToAdd[0]);
@@ -374,14 +374,13 @@ export class BotLootGenerator
         }
     }
 
-
     /**
      * Add generated weapons to inventory as loot
      * @param botInventory inventory to add preset to
      * @param equipmentSlot slot to place the preset in (backpack)
      * @param templateInventory bots template, assault.json
      * @param modChances chances for mods to spawn on weapon
-     * @param botRole bots role, .e.g. pmcBot
+     * @param botRole bots role .e.g. pmcBot
      * @param isPmc are we generating for a pmc
      */
     protected addLooseWeaponsToInventorySlot(sessionId: string, botInventory: PmcInventory, equipmentSlot: string, templateInventory: Inventory, modChances: ModsChances, botRole: string, isPmc: boolean, botLevel: number): void
@@ -498,42 +497,45 @@ export class BotLootGenerator
 
     /**
      * Randomise the stack size of a money object, uses different values for pmc or scavs
-     * @param isPmc is this a PMC
-     * @param itemTemplate item details
-     * @param moneyItem Money stack to randomise
+     * @param isPmc Is money on a PMC bot
+     * @param itemTemplate item details from db
+     * @param moneyItem Money item to randomise
      */
     protected randomiseMoneyStackSize(isPmc: boolean, itemTemplate: ITemplateItem, moneyItem: Item): void
     {
-        // Only add if no upd or stack objects exist - preserves existing stack count
-        if (!moneyItem.upd?.StackObjectsCount)
-        {
-            // PMCs have a different stack max size
-            const minStackSize = itemTemplate._props.StackMinRandom;
-            const maxStackSize = (isPmc)
-                ? this.pmcConfig.dynamicLoot.moneyStackLimits[itemTemplate._id]
-                : itemTemplate._props.StackMaxRandom;
+        // PMCs have a different stack max size
+        const minStackSize = itemTemplate._props.StackMinRandom;
+        const maxStackSize = (isPmc)
+            ? this.pmcConfig.dynamicLoot.moneyStackLimits[itemTemplate._id]
+            : itemTemplate._props.StackMaxRandom;
+        const randomSize = this.randomUtil.getInt(minStackSize, maxStackSize);
 
-            moneyItem.upd = { "StackObjectsCount":  this.randomUtil.getInt(minStackSize, maxStackSize) };
+        if (!moneyItem.upd)
+        {
+            moneyItem.upd = {};
         }
+
+        moneyItem.upd.StackObjectsCount =  randomSize;
     }
 
     /**
      * Randomise the size of an ammo stack
-     * @param isPmc is this a PMC
-     * @param itemTemplate item details
-     * @param ammoItem Ammo stack to randomise
+     * @param isPmc Is ammo on a PMC bot
+     * @param itemTemplate item details from db
+     * @param ammoItem Ammo item to randomise
      */
     protected randomiseAmmoStackSize(isPmc: boolean, itemTemplate: ITemplateItem, ammoItem: Item): void
     {
-        // only add if no upd or stack objects exist - preserves existing stack count
-        if (!ammoItem.upd?.StackObjectsCount)
-        {
-            const randomSize = itemTemplate._props.StackMaxSize === 1
-                ? 1
-                : this.randomUtil.getInt(itemTemplate._props.StackMinRandom, itemTemplate._props.StackMaxRandom);
+        const randomSize = itemTemplate._props.StackMaxSize === 1
+            ? 1
+            : this.randomUtil.getInt(itemTemplate._props.StackMinRandom, itemTemplate._props.StackMaxRandom);
 
-            ammoItem.upd = { StackObjectsCount: randomSize };
+        if (!ammoItem.upd)
+        {
+            ammoItem.upd = {};
         }
+
+        ammoItem.upd.StackObjectsCount = randomSize ;
     }
 
     /**

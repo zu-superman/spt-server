@@ -436,7 +436,8 @@
             "faceShieldIsActiveChancePercent": 100,
             "lightIsActiveDayChancePercent": 25,
             "lightIsActiveNightChancePercent": 75,
-            "laserIsActiveChancePercent": 75
+            "laserIsActiveChancePercent": 75,
+            "forceStock": true
         },
         "bossgluhar": {
             "nvgIsActiveChanceDayPercent": 10,
@@ -444,13 +445,15 @@
             "faceShieldIsActiveChancePercent": 100,
             "lightIsActiveDayChancePercent": 45,
             "lightIsActiveNightChancePercent": 95,
-            "laserIsActiveChancePercent": 95
+            "laserIsActiveChancePercent": 95,
+            "forceStock": true
         },
         "bosskilla": {
             "faceShieldIsActiveChancePercent": 100,
             "lightIsActiveDayChancePercent": 35,
             "lightIsActiveNightChancePercent": 85,
-            "laserIsActiveChancePercent": 85
+            "laserIsActiveChancePercent": 85,
+            "forceStock": true
         },
         "bosskojaniy": {
             "faceShieldIsActiveChancePercent": 100,
@@ -472,7 +475,8 @@
             "faceShieldIsActiveChancePercent": 100,
             "lightIsActiveDayChancePercent": 25,
             "lightIsActiveNightChancePercent": 75,
-            "laserIsActiveChancePercent": 75
+            "laserIsActiveChancePercent": 75,
+            "forceStock": true
         },
         "bossknight": {
             "nvgIsActiveChanceDayPercent": 10,
@@ -480,21 +484,24 @@
             "faceShieldIsActiveChancePercent": 100,
             "lightIsActiveDayChancePercent": 25,
             "lightIsActiveNightChancePercent": 75,
-            "laserIsActiveChancePercent": 75
+            "laserIsActiveChancePercent": 75,
+            "forceStock": true
         },
         "bosszryachiy": {
             "nvgIsActiveChanceDayPercent": 10,
             "nvgIsActiveChanceNightPercent": 90,
             "lightIsActiveDayChancePercent": 25,
             "lightIsActiveNightChancePercent": 85,
-            "laserIsActiveChancePercent": 85
+            "laserIsActiveChancePercent": 85,
+            "forceStock": true
         },
         "bossboar": {
             "nvgIsActiveChanceDayPercent": 10,
             "nvgIsActiveChanceNightPercent": 90,
             "lightIsActiveDayChancePercent": 25,
             "lightIsActiveNightChancePercent": 85,
-            "laserIsActiveChancePercent": 85
+            "laserIsActiveChancePercent": 85,
+            "forceStock": true
         },
         "bosstest": {},
         "followerbully": {
@@ -551,6 +558,7 @@
             "lightIsActiveDayChancePercent": 25,
             "lightIsActiveNightChancePercent": 75,
             "laserIsActiveChancePercent": 75,
+            "forceStock": true,
             "weaponModLimits": {
                 "scopeLimit": 1,
                 "lightLaserLimit": 1
@@ -562,7 +570,8 @@
             "faceShieldIsActiveChancePercent": 100,
             "lightIsActiveDayChancePercent": 25,
             "lightIsActiveNightChancePercent": 75,
-            "laserIsActiveChancePercent": 75
+            "laserIsActiveChancePercent": 75,
+            "forceStock": true
         },
         "followerzryachiy": {
             "nvgIsActiveChanceDayPercent": 10,
@@ -590,6 +599,7 @@
             "lightIsActiveDayChancePercent": 25,
             "lightIsActiveNightChancePercent": 75,
             "laserIsActiveChancePercent": 75,
+            "forceStock": true,
             "weaponModLimits": {
                 "scopeLimit": 2,
                 "lightLaserLimit": 1
@@ -620,6 +630,7 @@
             "lightIsActiveDayChancePercent": 35,
             "lightIsActiveNightChancePercent": 95,
             "laserIsActiveChancePercent": 95,
+            "forceStock": true,
             "weaponModLimits": {
                 "scopeLimit": 1,
                 "lightLaserLimit": 1
@@ -784,7 +795,7 @@
                         "Backpack": 35,
                         "FaceCover": 5
                     },
-					"randomisedWeaponModSlots": [],
+                    "randomisedWeaponModSlots": [],
                     "mods": {
                         "mod_barrel": 20,
                         "mod_bipod": 10,
@@ -860,8 +871,7 @@
                         "mod_reciever": ["5d4405aaa4b9361e6a4e6bd3"],
                         "mod_stock": ["5cde739cd7f00c0010373bd3"],
                         "mod_rear_sight": ["5a0ed824fcdbcb0176308b0d"],
-                        "mod_front_sight": ["5a0f096dfcdbcb0176308b15"],
-                        "mod_magazine": ["6241c2c2117ad530666a5108"]
+                        "mod_front_sight": ["5a0f096dfcdbcb0176308b15"]
                     },
                     "cartridge": {
                         "Caliber23x75": ["5e85a9f4add9fe03027d9bf1"],
