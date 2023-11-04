@@ -12,10 +12,10 @@ export default defineConfig({
         environment: "./CustomEnvironment.ts",
         globals: true,
         coverage: {
-            enabled: true,
             provider: "v8",
             reporter: ["text", "html"],
-            reportsDirectory: "./__coverage__"
+            reportsDirectory: "./__coverage__",
+            reportOnFailure: true
         },
         typecheck: {
             enabled: true
