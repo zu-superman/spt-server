@@ -10,6 +10,7 @@ import { BaseClasses } from "@spt-aki/models/enums/BaseClasses";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { ItemBaseClassService } from "@spt-aki/services/ItemBaseClassService";
+import { ItemFilterService } from "@spt-aki/services/ItemFilterService";
 import { LocaleService } from "@spt-aki/services/LocaleService";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
 import { HashUtil } from "@spt-aki/utils/HashUtil";
@@ -41,6 +42,7 @@ class ItemHelper
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("HandbookHelper") protected handbookHelper: HandbookHelper,
         @inject("ItemBaseClassService") protected itemBaseClassService: ItemBaseClassService,
+        @inject("ItemFilterService") protected itemFilterService: ItemFilterService,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("LocaleService") protected localeService: LocaleService
     )
@@ -58,11 +60,6 @@ class ItemHelper
             invalidBaseTypes = this.defaultInvalidBaseTypes;
         }
 
-        const blacklist = [
-            "5cffa483d7ad1a049e54ef1c", // mag_utes_ckib_nsv_belt_127x108_100
-            "6087e570b998180e9f76dc24", // weapon_hultafors_db5000 Dead Blow Hammer
-            "5d53f4b7a4b936793d58c780"  // scope_ags_npz_pag17_2,7x
-        ];
         const itemDetails = this.getItem(tpl);
 
         if (!itemDetails[0])
@@ -75,7 +72,7 @@ class ItemHelper
             && itemDetails[1]._type === "Item"
             && invalidBaseTypes.every(x => !this.isOfBaseclass(tpl, x))
             && this.getItemPrice(tpl) > 0
-            && blacklist.every(v => !this.isOfBaseclass(tpl, v));
+            && !this.itemFilterService.isItemBlacklisted(tpl);
     }
 
     /**
