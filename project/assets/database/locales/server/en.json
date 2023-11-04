@@ -46,7 +46,7 @@
 	"bot-weapon_missing_mod_slot": "Slot: {{modSlot}}' does not exist for weapon: {{weaponId}} {{weaponName}} on {{botRole}}",
 	"bot-weapons_required_slot_missing_item": "Required slot '{{modSlot}}' on {{modName}} {{slotId}} was empty on {{botRole}}",
 	"bot-item_missing_props_property": "Item {{itemTpl}} {{name}} is missing a _props property",
-	"bot-unable_to_fill_camora_slot_mod_pool_empty": "Unable to fill weapon camora slot for {{weaponId}} {{weaponName}} mod pool for item was empty",
+	"bot-unable_to_fill_camora_slot_mod_pool_empty": "Unable to fill weapon camora slots for {{weaponId}} - {{weaponName}}. Mod pool for was empty, attempting to generate dynamically",
 	"bot-unable_to_edit_limits_of_unknown_map": "Unable to edit bot limits of map: %s as it cannot be found",
 	"bot-unable_to_find_loot_n_value_for_bot": "Unable to find loot N value for bot: %s, using scav n value instead",
 	"bot-unable_to_find_bot_in_cache": "Unable to find bot in cache with name: %s",

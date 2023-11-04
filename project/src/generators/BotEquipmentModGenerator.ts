@@ -787,17 +787,25 @@ export class BotEquipmentModGenerator
      * Ammo is not put into the magazine directly but assigned to the magazine's slots: The "camora_xxx" slots.
      * This function is a helper called by generateModsForItem for mods with parent type "CylinderMagazine"
      * @param items The items where the CylinderMagazine's camora are appended to
-     * @param modPool modPool which should include available cartrigdes
+     * @param modPool modPool which should include available cartridges
      * @param parentId The CylinderMagazine's UID
      * @param parentTemplate The CylinderMagazine's template
      */
     protected fillCamora(items: Item[], modPool: Mods, parentId: string, parentTemplate: ITemplateItem): void
     {
-        const itemModPool = modPool[parentTemplate._id];
-
+        let itemModPool = modPool[parentTemplate._id];
         if (!itemModPool)
         {
-            this.logger.error(this.localisationService.getText("bot-unable_to_fill_camora_slot_mod_pool_empty", {weaponId: parentTemplate._id, weaponName: parentTemplate._name}));
+            this.logger.warning(this.localisationService.getText("bot-unable_to_fill_camora_slot_mod_pool_empty", {weaponId: parentTemplate._id, weaponName: parentTemplate._name}));
+            const camoraSlots = parentTemplate._props.Slots.filter(x => x._name.startsWith("camora"));
+
+            // Attempt to generate camora slots for item
+            modPool[parentTemplate._id] = {};
+            for (const camora of camoraSlots)
+            {
+                modPool[parentTemplate._id][camora._name] = camora._props.filters[0].Filter;
+            }
+            itemModPool = modPool[parentTemplate._id];
         }
 
         let exhaustableModPool = null;
@@ -843,10 +851,10 @@ export class BotEquipmentModGenerator
             const modSlotId = slot._name;
             const modId = this.hashUtil.generate();
             items.push({
-                "_id": modId,
-                "_tpl": modTpl,
-                "parentId": parentId,
-                "slotId": modSlotId
+                _id: modId,
+                _tpl: modTpl,
+                parentId: parentId,
+                slotId: modSlotId
             });
         }
     }
