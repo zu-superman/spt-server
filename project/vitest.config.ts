@@ -7,15 +7,18 @@ export default defineConfig({
         name: "spt-server",
         api: 51204,
         reporters: ["default"],
-        root: "./tests",
+        root: "./",
         cache: false,
-        environment: "./CustomEnvironment.ts",
+        environment: "./tests/CustomEnvironment.ts",
         globals: true,
         coverage: {
             provider: "v8",
             reporter: ["text", "html"],
             reportsDirectory: "./__coverage__",
-            reportOnFailure: true
+            reportOnFailure: true,
+			all: true,
+			include: ["src"],
+			exclude: ["src/models/**", "tests/**", "src/__coverage__"] 
         },
         typecheck: {
             enabled: true
