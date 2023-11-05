@@ -60,17 +60,18 @@ export class PlayerService
      */
     public calculateLevel(pmcData: IPmcData): number
     {
-        let exp = 0;
+        let accExp = 0;
 
-        for (const level in this.databaseServer.getTables().globals.config.exp.level.exp_table)
+        for (const [level, { exp }] of this.databaseServer.getTables().globals.config.exp.level.exp_table.entries())
         {
-            if (pmcData.Info.Experience < exp)
+            accExp += exp;
+
+            if (pmcData.Info.Experience < accExp)
             {
                 break;
             }
 
-            pmcData.Info.Level = parseInt(level);
-            exp += this.databaseServer.getTables().globals.config.exp.level.exp_table[level].exp;
+            pmcData.Info.Level = level + 1;
         }
 
         return pmcData.Info.Level;
