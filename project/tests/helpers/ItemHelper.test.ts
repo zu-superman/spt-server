@@ -815,4 +815,163 @@ describe("ItemHelper", () =>
             expect(result).toBe(5);
         });
     });
+
+    describe("hasBuyRestrictions", () =>
+    {
+        it("should return true when item has buy restriction current and max properties", () =>
+        {
+            const itemId = container.resolve<HashUtil>("HashUtil").generate();
+            const item: Item = {
+                _id: itemId,
+                _tpl: "591094e086f7747caa7bb2ef", // "Body armor repair kit"
+                upd: {
+                    BuyRestrictionCurrent: 0,
+                    BuyRestrictionMax: 1
+                }
+            };
+            const result = itemHelper.hasBuyRestrictions(item);
+            expect(result).toBe(true);
+        });
+
+        it("should return false when item has no buy restriction current or max properties but does have upd property", () =>
+        {
+            const itemId = container.resolve<HashUtil>("HashUtil").generate();
+            const item: Item = {
+                _id: itemId,
+                _tpl: "591094e086f7747caa7bb2ef", // "Body armor repair kit"
+                upd: {}
+            };
+            const result = itemHelper.hasBuyRestrictions(item);
+            expect(result).toBe(false);
+        });
+
+        it("should return false when item has no buy restriction current, max or upd properties", () =>
+        {
+            const itemId = container.resolve<HashUtil>("HashUtil").generate();
+            const item: Item = {
+                _id: itemId,
+                _tpl: "591094e086f7747caa7bb2ef" // "Body armor repair kit"
+            };
+            const result = itemHelper.hasBuyRestrictions(item);
+            expect(result).toBe(false);
+        });
+    });
+
+    describe("isDogtag", () =>
+    {
+        it("should return true when tpl is a dogtag", () =>
+        {
+            const result = itemHelper.isDogtag("59f32bb586f774757e1e8442"); // "Bear dogtag"
+            expect(result).toBe(true);
+        });
+
+        it("should return false when tpl is not a dogtag", () =>
+        {
+            const result = itemHelper.isDogtag("591094e086f7747caa7bb2ef"); // "Body armor repair kit"
+            expect(result).toBe(false);
+        });
+
+        it("should return false when tpl is invalid", () =>
+        {
+            const result = itemHelper.isDogtag("invalidTpl");
+            expect(result).toBe(false);
+        });
+    });
+
+    describe("addCartridgesToAmmoBox", () =>
+    {
+        it("should return an array with  1xammoBox and 1xcartridge item", () =>
+        {
+            const itemId = container.resolve<HashUtil>("HashUtil").generate();
+            const ammoBox: Item[] = [{
+                _id: itemId,
+                _tpl: "5c12619186f7743f871c8a32" // "9x39mm SPP gs ammo pack (8 pcs)"
+            }];
+
+            const databaseServer = container.resolve<DatabaseServer>("DatabaseServer");
+            const ammoBoxDetails = databaseServer.getTables().templates.items["5c12619186f7743f871c8a32"];
+            itemHelper.addCartridgesToAmmoBox(ammoBox, ammoBoxDetails);
+
+            expect(ammoBox.length).toBe(2);
+            expect(ammoBox[1].upd.StackObjectsCount).toBe(8);
+        });
+
+        it("should return an array with 1xammoBox and 2xcartridge items", () =>
+        {
+            const itemId = container.resolve<HashUtil>("HashUtil").generate();
+            const ammoBox: Item[] = [{
+                _id: itemId,
+                _tpl: "5737292724597765e5728562" // "5.45x39mm BP gs ammo pack (120 pcs)""
+            }];
+
+            const databaseServer = container.resolve<DatabaseServer>("DatabaseServer");
+            const ammoBoxDetails = databaseServer.getTables().templates.items["5737292724597765e5728562"];
+            itemHelper.addCartridgesToAmmoBox(ammoBox, ammoBoxDetails);
+
+            expect(ammoBox.length).toBe(3);
+            expect(ammoBox[1].upd.StackObjectsCount).toBe(60);
+            expect(ammoBox[2].upd.StackObjectsCount).toBe(60);
+        });
+
+        it("should keep original ammo box provided", () =>
+        {
+            const itemId = container.resolve<HashUtil>("HashUtil").generate();
+            const ammoBox: Item[] = [{
+                _id: itemId,
+                _tpl: "5737292724597765e5728562" // "5.45x39mm BP gs ammo pack (120 pcs)""
+            }];
+
+            const databaseServer = container.resolve<DatabaseServer>("DatabaseServer");
+            const ammoBoxDetails = databaseServer.getTables().templates.items["5737292724597765e5728562"];
+            itemHelper.addCartridgesToAmmoBox(ammoBox, ammoBoxDetails);
+
+            expect(ammoBox[0]._tpl).toBe("5737292724597765e5728562");
+        });
+
+        it("should return specific cartridge type for the given ammo box provided", () =>
+        {
+            const itemId = container.resolve<HashUtil>("HashUtil").generate();
+            const ammoBox: Item[] = [{
+                _id: itemId,
+                _tpl: "5737292724597765e5728562" // "5.45x39mm BP gs ammo pack (120 pcs)""
+            }];
+
+            const databaseServer = container.resolve<DatabaseServer>("DatabaseServer");
+            const ammoBoxDetails = databaseServer.getTables().templates.items["5737292724597765e5728562"];
+            itemHelper.addCartridgesToAmmoBox(ammoBox, ammoBoxDetails);
+
+            expect(ammoBox[1]._tpl).toBe("56dfef82d2720bbd668b4567");
+        });
+    });
+
+    describe("isItemTplStackable", () =>
+    {
+        it("should return true for a stackable item", () =>
+        {
+            const result = itemHelper.isItemTplStackable("5449016a4bdc2d6f028b456f"); // Roubles
+
+            expect(result).toBe(true);
+        });
+
+        it("should return false for an unstackable item", () =>
+        {
+            const result = itemHelper.isItemTplStackable("591094e086f7747caa7bb2ef"); // "Body armor repair kit"
+
+            expect(result).toBe(false);
+        });
+
+        it("should return undefined for an unknown item", () =>
+        {
+            const result = itemHelper.isItemTplStackable("fakeTpl");
+
+            expect(result).toBe(false);
+        });
+
+        it("should return undefined for an empty input", () =>
+        {
+            const result = itemHelper.isItemTplStackable("");
+
+            expect(result).toBe(false);
+        });
+    });
 });
