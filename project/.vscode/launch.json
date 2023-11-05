@@ -25,11 +25,11 @@
             "name": "Run Vitest Tests",
             "type": "node",
             "runtimeVersion": "18.15.0",
-            "runtimeExecutable": "node",
+            "runtimeExecutable": "npm",
             "request": "launch",
-            "program": "${workspaceFolder}/node_modules/.bin/vitest",
-            "args": [
-                "run"
+            "runtimeArgs": [
+                "run",
+                "test"
             ],
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen"
