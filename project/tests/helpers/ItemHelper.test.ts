@@ -964,14 +964,14 @@ describe("ItemHelper", () =>
         {
             const result = itemHelper.isItemTplStackable("fakeTpl");
 
-            expect(result).toBe(false);
+            expect(result).toBe(undefined);
         });
 
         it("should return undefined for an empty input", () =>
         {
             const result = itemHelper.isItemTplStackable("");
 
-            expect(result).toBe(false);
+            expect(result).toBe(undefined);
         });
     });
 });
