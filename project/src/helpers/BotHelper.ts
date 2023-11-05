@@ -66,17 +66,17 @@ export class BotHelper
      */
     public isBotPmc(botRole: string): boolean
     {
-        return (["usec", "bear", "pmc", "sptbear", "sptusec"].includes(botRole.toLowerCase()));
+        return (["usec", "bear", "pmc", "sptbear", "sptusec"].includes(botRole?.toLowerCase()));
     }
 
     public isBotBoss(botRole: string): boolean
     {
-        return this.botConfig.bosses.some(x => x.toLowerCase() === botRole.toLowerCase());
+        return this.botConfig.bosses.some(x => x.toLowerCase() === botRole?.toLowerCase());
     }
 
     public isBotFollower(botRole: string): boolean
     {
-        return botRole.toLowerCase().startsWith("follower");
+        return botRole?.toLowerCase().startsWith("follower");
     }
 
     /**
