@@ -465,7 +465,8 @@ class ItemHelper
      */
     public hasBuyRestrictions(itemToCheck: Item): boolean
     {
-        if (itemToCheck.upd.BuyRestrictionCurrent !== undefined && itemToCheck.upd.BuyRestrictionMax !== undefined)
+        if (itemToCheck.upd?.BuyRestrictionCurrent !== undefined
+            && itemToCheck.upd?.BuyRestrictionMax !== undefined)
         {
             return true;
         }
@@ -505,7 +506,13 @@ class ItemHelper
      */
     public isItemTplStackable(tpl: string): boolean
     {
-        return this.databaseServer.getTables().templates.items[tpl]._props.StackMaxSize > 1;
+        const item = this.databaseServer.getTables().templates.items[tpl];
+        if (!item)
+        {
+            return undefined;
+        }
+
+        return item._props.StackMaxSize > 1;
     }
 
     /**
