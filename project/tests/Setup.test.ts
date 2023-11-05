@@ -3,6 +3,7 @@ import "@tests/controllers/InsuranceController.test";
 
 //Generators
 import "@tests/generators/BotLevelGenerator.test";
+import "@tests/generators/BotGenerator.test";
 
 //Helpers
 import "@tests/helpers/BotHelper.test";
