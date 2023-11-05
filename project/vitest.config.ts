@@ -8,6 +8,7 @@ export default defineConfig({
         api: 51204,
         reporters: ["default"],
         root: "./",
+        include: ["tests/Setup.test.ts"],
         cache: false,
         environment: "./tests/CustomEnvironment.ts",
         globals: true,
