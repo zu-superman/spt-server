@@ -363,7 +363,7 @@ class ItemHelper
         // Edge case, max durability is below durability
         if (repairable.Durability < repairable.MaxDurability)
         {
-            this.logger.warning(`Max durability ${repairable.MaxDurability} for item id: ${item._id} was below Durability ${repairable.Durability}, adjusting values to match`);
+            this.logger.warning(`Max durability: ${repairable.MaxDurability} for item id: ${item._id} was below Durability: ${repairable.Durability}, adjusting values to match`);
             repairable.MaxDurability = repairable.Durability;
         }
 
@@ -372,24 +372,22 @@ class ItemHelper
         {
             return repairable.Durability / itemDetails._props.MaxDurability;
         }
-        else
+
+        // Weapon
+        // Get max dura from props, if it isnt there use repairable max dura value
+        const maxDurability = (itemDetails._props.MaxDurability)
+            ? itemDetails._props.MaxDurability
+            : repairable.MaxDurability;
+        const durability = repairable.Durability / maxDurability;
+
+        if (!durability)
         {
-            // Weapon
-            // Get max dura from props, if it isnt there use repairable max dura value
-            const maxDurability = (itemDetails._props.MaxDurability)
-                ? itemDetails._props.MaxDurability
-                : repairable.MaxDurability;
-            const durability = repairable.Durability / maxDurability;
+            this.logger.error(this.localisationService.getText("item-durability_value_invalid_use_default", item._tpl));
 
-            if (!durability)
-            {
-                this.logger.error(this.localisationService.getText("item-durability_value_invalid_use_default", item._tpl));
-
-                return 1;
-            }
-
-            return Math.sqrt(durability);
+            return 1;
         }
+
+        return Math.sqrt(durability);
     }
 
     /**
