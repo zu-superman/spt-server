@@ -2287,8 +2287,8 @@
       "min": 0
     },
     "reward": {
-      "max": 1000,
-      "min": 1000
+      "max": 2650,
+      "min": 2650
     },
     "standingForKill": -0.2
   },

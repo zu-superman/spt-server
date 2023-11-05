@@ -273,11 +273,13 @@ export class BotEquipmentModGenerator
                 modSpawnChances.mod_handguard = 100;
             }
 
-            // If stock mod can take a sub stock mod, force spawn chance to be 100% to ensure stock gets added
-            if (modSlot === "mod_stock" && modToAddTemplate._props.Slots.find(x => x._name.includes("mod_stock")))
+            // If stock mod can take a sub stock mod, force spawn chance to be 100% to ensure sub-stock gets added
+            // Or if mod_stock is configured to be forced on
+            if (modSlot === "mod_stock" && (modToAddTemplate._props.Slots.find(x => x._name.includes("mod_stock") || botEquipConfig.forceStock)))
             {
                 // Stock mod can take additional stocks, could be a locking device, force 100% chance
-                modSpawnChances.mod_stock = 100;
+                const stockSlots = ["mod_stock", "mod_stock_000", "mod_stock_akms"];
+                this.adjustSlotSpawnChances(modSpawnChances, stockSlots, 100);
             }
 
             const modId = this.hashUtil.generate();

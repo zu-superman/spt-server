@@ -148,6 +148,8 @@ export interface BossLocationSpawn
     TriggerId: string
     TriggerName: string
     Delay?: number
+    ForceSpawn?: boolean
+    IgnoreMaxBots?: boolean
     Supports?: BossSupport[]
     sptId?: string
 }

@@ -16,4 +16,5 @@ export interface BotGenerationDetails
     botDifficulty: string
     /** Will the generated bot be a player scav */
     isPlayerScav: boolean
+    eventRole?: string
 }

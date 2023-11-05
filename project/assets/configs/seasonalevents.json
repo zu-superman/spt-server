@@ -13,7 +13,7 @@
                     "62a5c333ec21e50cad3b5dc6": 1500,
                     "62a5c41e8ec41a51b34739c3": 1500,
                     "635267ab3c89e2112001f826": 1500,
-					"5e54f79686f7744022011103": 1500
+                    "5e54f79686f7744022011103": 1500
                 },
                 "Headwear": {
                     "59ef13ca86f77445fd0e2483": 1500
@@ -24,8 +24,8 @@
                     "63495c500c297e20065a08b1": 10
                 }
             },
-			"bear": {
-				"FaceCover": {
+            "bear": {
+                "FaceCover": {
                     "5bd071d786f7747e707b93a3": 5,
                     "5bd0716d86f774171822ef4b": 5,
                     "5bd06f5d86f77427101ad47c": 5,
@@ -35,14 +35,14 @@
                     "62a5c333ec21e50cad3b5dc6": 5,
                     "62a5c41e8ec41a51b34739c3": 5,
                     "635267ab3c89e2112001f826": 5,
-					"5e54f79686f7744022011103": 5
+                    "5e54f79686f7744022011103": 5
                 },
                 "Headwear": {
                     "59ef13ca86f77445fd0e2483": 25
                 }
-			},
-			"usec": {
-				"FaceCover": {
+            },
+            "usec": {
+                "FaceCover": {
                     "5bd071d786f7747e707b93a3": 5,
                     "5bd0716d86f774171822ef4b": 5,
                     "5bd06f5d86f77427101ad47c": 5,
@@ -52,12 +52,12 @@
                     "62a5c333ec21e50cad3b5dc6": 5,
                     "62a5c41e8ec41a51b34739c3": 5,
                     "635267ab3c89e2112001f826": 5,
-					"5e54f79686f7744022011103": 5
+                    "5e54f79686f7744022011103": 5
                 },
                 "Headwear": {
                     "59ef13ca86f77445fd0e2483": 25
                 }
-			}
+            }
         },
         "christmas": {
             "bossgluhar": {
@@ -96,7 +96,7 @@
                     "5a43957686f7742a2c2f11b0": 3
                 }
             },
-			"bossboar": {
+            "bossboar": {
                 "FaceCover": {
                     "5c1a1e3f2e221602b66cc4c2": 1
                 },
@@ -132,11 +132,11 @@
                     "5a43957686f7742a2c2f11b0": 600
                 }
             },
-			"followerboar": {
+            "followerboar": {
                 "FaceCover": {
                     "5c1a1e3f2e221602b66cc4c2": 250
                 },
-				"Headwear": {
+                "Headwear": {
                     "5a43943586f77416ad2f06e2": 3,
                     "5a43957686f7742a2c2f11b0": 3
                 }
@@ -231,6 +231,388 @@
             }
         }
     },
+    "eventBotMapping": {
+        "peacefullZryachiyEvent": "bossZryachiy",
+        "sectactPriestEvent": "sectantPriest",
+        "ravangeZryachiyEvent": "bossZryachiy",
+        "arenaFighterEvent": "arenaFighterEvent"
+    },
+    "eventBossSpawns": {
+        "halloween": {
+            "bigmap": [{
+                    "BossChance": 100,
+                    "BossDifficult": "normal",
+                    "BossEscortAmount": "0",
+                    "BossEscortDifficult": "normal",
+                    "BossEscortType": "peacefullZryachiyEvent",
+                    "BossName": "peacefullZryachiyEvent",
+                    "BossPlayer": false,
+                    "BossZone": "",
+                    "Delay": 0,
+                    "ForceSpawn": true,
+                    "IgnoreMaxBots": true,
+                    "RandomTimeSpawn": false,
+                    "Supports": null,
+                    "Time": -1,
+                    "TriggerId": "",
+                    "TriggerName": ""
+                }, {
+                    "BossChance": 100,
+                    "BossDifficult": "normal",
+                    "BossEscortAmount": "5",
+                    "BossEscortDifficult": "normal",
+                    "BossEscortType": "sectactPriestEvent",
+                    "BossName": "sectactPriestEvent",
+                    "BossPlayer": false,
+                    "BossZone": "",
+                    "Delay": 25,
+                    "ForceSpawn": true,
+                    "IgnoreMaxBots": true,
+                    "RandomTimeSpawn": false,
+                    "Supports": null,
+                    "Time": 999999,
+                    "TriggerId": "ZryachiyPeaceKill",
+                    "TriggerName": "botEvent"
+                }, {
+                    "BossChance": 100,
+                    "BossDifficult": "normal",
+                    "BossEscortAmount": "0",
+                    "BossEscortDifficult": "normal",
+                    "BossEscortType": "ravangeZryachiyEvent",
+                    "BossName": "ravangeZryachiyEvent",
+                    "BossPlayer": false,
+                    "BossZone": "",
+                    "Delay": 0,
+                    "ForceSpawn": true,
+                    "IgnoreMaxBots": true,
+                    "RandomTimeSpawn": false,
+                    "Supports": null,
+                    "Time": 99999,
+                    "TriggerId": "SummonComplete",
+                    "TriggerName": "botEvent"
+                }
+            ],
+            "interchange": [{
+                    "BossChance": 100,
+                    "BossDifficult": "normal",
+                    "BossEscortAmount": "0",
+                    "BossEscortDifficult": "normal",
+                    "BossEscortType": "peacefullZryachiyEvent",
+                    "BossName": "peacefullZryachiyEvent",
+                    "BossPlayer": false,
+                    "BossZone": "",
+                    "Delay": 0,
+                    "ForceSpawn": true,
+                    "IgnoreMaxBots": true,
+                    "RandomTimeSpawn": false,
+                    "Supports": null,
+                    "Time": -1,
+                    "TriggerId": "",
+                    "TriggerName": ""
+                }, {
+                    "BossChance": 100,
+                    "BossDifficult": "normal",
+                    "BossEscortAmount": "5",
+                    "BossEscortDifficult": "normal",
+                    "BossEscortType": "sectactPriestEvent",
+                    "BossName": "sectactPriestEvent",
+                    "BossPlayer": false,
+                    "BossZone": "",
+                    "Delay": 25,
+                    "ForceSpawn": true,
+                    "IgnoreMaxBots": true,
+                    "RandomTimeSpawn": false,
+                    "Supports": null,
+                    "Time": 999999,
+                    "TriggerId": "ZryachiyPeaceKill",
+                    "TriggerName": "botEvent"
+                }, {
+                    "BossChance": 100,
+                    "BossDifficult": "normal",
+                    "BossEscortAmount": "0",
+                    "BossEscortDifficult": "normal",
+                    "BossEscortType": "ravangeZryachiyEvent",
+                    "BossName": "ravangeZryachiyEvent",
+                    "BossPlayer": false,
+                    "BossZone": "",
+                    "Delay": 0,
+                    "ForceSpawn": true,
+                    "IgnoreMaxBots": true,
+                    "RandomTimeSpawn": false,
+                    "Supports": null,
+                    "Time": 99999,
+                    "TriggerId": "SummonComplete",
+                    "TriggerName": "botEvent"
+                }
+            ],
+            "lighthouse": [{
+                    "BossChance": 100,
+                    "BossDifficult": "normal",
+                    "BossEscortAmount": "0",
+                    "BossEscortDifficult": "normal",
+                    "BossEscortType": "peacefullZryachiyEvent",
+                    "BossName": "peacefullZryachiyEvent",
+                    "BossPlayer": false,
+                    "BossZone": "",
+                    "Delay": 0,
+                    "ForceSpawn": true,
+                    "IgnoreMaxBots": true,
+                    "RandomTimeSpawn": false,
+                    "Supports": null,
+                    "Time": -1,
+                    "TriggerId": "",
+                    "TriggerName": ""
+                }, {
+                    "BossChance": 100,
+                    "BossDifficult": "normal",
+                    "BossEscortAmount": "5",
+                    "BossEscortDifficult": "normal",
+                    "BossEscortType": "sectactPriestEvent",
+                    "BossName": "sectactPriestEvent",
+                    "BossPlayer": false,
+                    "BossZone": "",
+                    "Delay": 25,
+                    "ForceSpawn": true,
+                    "IgnoreMaxBots": true,
+                    "RandomTimeSpawn": false,
+                    "Supports": null,
+                    "Time": 999999,
+                    "TriggerId": "ZryachiyPeaceKill",
+                    "TriggerName": "botEvent"
+                }, {
+                    "BossChance": 100,
+                    "BossDifficult": "normal",
+                    "BossEscortAmount": "0",
+                    "BossEscortDifficult": "normal",
+                    "BossEscortType": "ravangeZryachiyEvent",
+                    "BossName": "ravangeZryachiyEvent",
+                    "BossPlayer": false,
+                    "BossZone": "",
+                    "Delay": 0,
+                    "ForceSpawn": true,
+                    "IgnoreMaxBots": true,
+                    "RandomTimeSpawn": false,
+                    "Supports": null,
+                    "Time": 99999,
+                    "TriggerId": "SummonComplete",
+                    "TriggerName": "botEvent"
+                }
+            ],
+            "reservbase": [{
+                    "BossChance": 100,
+                    "BossDifficult": "normal",
+                    "BossEscortAmount": "0",
+                    "BossEscortDifficult": "normal",
+                    "BossEscortType": "peacefullZryachiyEvent",
+                    "BossName": "peacefullZryachiyEvent",
+                    "BossPlayer": false,
+                    "BossZone": "",
+                    "Delay": 0,
+                    "ForceSpawn": true,
+                    "IgnoreMaxBots": true,
+                    "RandomTimeSpawn": false,
+                    "Supports": null,
+                    "Time": -1,
+                    "TriggerId": "",
+                    "TriggerName": ""
+                }, {
+                    "BossChance": 100,
+                    "BossDifficult": "normal",
+                    "BossEscortAmount": "5",
+                    "BossEscortDifficult": "normal",
+                    "BossEscortType": "sectactPriestEvent",
+                    "BossName": "sectactPriestEvent",
+                    "BossPlayer": false,
+                    "BossZone": "",
+                    "Delay": 25,
+                    "ForceSpawn": true,
+                    "IgnoreMaxBots": true,
+                    "RandomTimeSpawn": false,
+                    "Supports": null,
+                    "Time": 999999,
+                    "TriggerId": "ZryachiyPeaceKill",
+                    "TriggerName": "botEvent"
+                }, {
+                    "BossChance": 100,
+                    "BossDifficult": "normal",
+                    "BossEscortAmount": "0",
+                    "BossEscortDifficult": "normal",
+                    "BossEscortType": "ravangeZryachiyEvent",
+                    "BossName": "ravangeZryachiyEvent",
+                    "BossPlayer": false,
+                    "BossZone": "",
+                    "Delay": 0,
+                    "ForceSpawn": true,
+                    "IgnoreMaxBots": true,
+                    "RandomTimeSpawn": false,
+                    "Supports": null,
+                    "Time": 99999,
+                    "TriggerId": "SummonComplete",
+                    "TriggerName": "botEvent"
+                }
+            ],
+            "shoreline": [{
+                    "BossChance": 100,
+                    "BossDifficult": "normal",
+                    "BossEscortAmount": "0",
+                    "BossEscortDifficult": "normal",
+                    "BossEscortType": "peacefullZryachiyEvent",
+                    "BossName": "peacefullZryachiyEvent",
+                    "BossPlayer": false,
+                    "BossZone": "",
+                    "Delay": 0,
+                    "ForceSpawn": true,
+                    "IgnoreMaxBots": true,
+                    "RandomTimeSpawn": false,
+                    "Supports": null,
+                    "Time": -1,
+                    "TriggerId": "",
+                    "TriggerName": ""
+                }, {
+                    "BossChance": 100,
+                    "BossDifficult": "normal",
+                    "BossEscortAmount": "5",
+                    "BossEscortDifficult": "normal",
+                    "BossEscortType": "sectactPriestEvent",
+                    "BossName": "sectactPriestEvent",
+                    "BossPlayer": false,
+                    "BossZone": "",
+                    "Delay": 25,
+                    "ForceSpawn": true,
+                    "IgnoreMaxBots": true,
+                    "RandomTimeSpawn": false,
+                    "Supports": null,
+                    "Time": 999999,
+                    "TriggerId": "ZryachiyPeaceKill",
+                    "TriggerName": "botEvent"
+                }, {
+                    "BossChance": 100,
+                    "BossDifficult": "normal",
+                    "BossEscortAmount": "0",
+                    "BossEscortDifficult": "normal",
+                    "BossEscortType": "ravangeZryachiyEvent",
+                    "BossName": "ravangeZryachiyEvent",
+                    "BossPlayer": false,
+                    "BossZone": "",
+                    "Delay": 0,
+                    "ForceSpawn": true,
+                    "IgnoreMaxBots": true,
+                    "RandomTimeSpawn": false,
+                    "Supports": null,
+                    "Time": 99999,
+                    "TriggerId": "SummonComplete",
+                    "TriggerName": "botEvent"
+                }
+            ],
+            "tarkovstreets": [{
+                    "BossChance": 100,
+                    "BossDifficult": "normal",
+                    "BossEscortAmount": "0",
+                    "BossEscortDifficult": "normal",
+                    "BossEscortType": "peacefullZryachiyEvent",
+                    "BossName": "peacefullZryachiyEvent",
+                    "BossPlayer": false,
+                    "BossZone": "",
+                    "Delay": 0,
+                    "ForceSpawn": true,
+                    "IgnoreMaxBots": true,
+                    "RandomTimeSpawn": false,
+                    "Supports": null,
+                    "Time": -1,
+                    "TriggerId": "",
+                    "TriggerName": ""
+                }, {
+                    "BossChance": 100,
+                    "BossDifficult": "normal",
+                    "BossEscortAmount": "5",
+                    "BossEscortDifficult": "normal",
+                    "BossEscortType": "sectactPriestEvent",
+                    "BossName": "sectactPriestEvent",
+                    "BossPlayer": false,
+                    "BossZone": "",
+                    "Delay": 25,
+                    "ForceSpawn": true,
+                    "IgnoreMaxBots": true,
+                    "RandomTimeSpawn": false,
+                    "Supports": null,
+                    "Time": 999999,
+                    "TriggerId": "ZryachiyPeaceKill",
+                    "TriggerName": "botEvent"
+                }, {
+                    "BossChance": 100,
+                    "BossDifficult": "normal",
+                    "BossEscortAmount": "0",
+                    "BossEscortDifficult": "normal",
+                    "BossEscortType": "ravangeZryachiyEvent",
+                    "BossName": "ravangeZryachiyEvent",
+                    "BossPlayer": false,
+                    "BossZone": "",
+                    "Delay": 0,
+                    "ForceSpawn": true,
+                    "IgnoreMaxBots": true,
+                    "RandomTimeSpawn": false,
+                    "Supports": null,
+                    "Time": 99999,
+                    "TriggerId": "SummonComplete",
+                    "TriggerName": "botEvent"
+                }
+            ],
+            "woods": [{
+                    "BossChance": 100,
+                    "BossDifficult": "normal",
+                    "BossEscortAmount": "0",
+                    "BossEscortDifficult": "normal",
+                    "BossEscortType": "peacefullZryachiyEvent",
+                    "BossName": "peacefullZryachiyEvent",
+                    "BossPlayer": false,
+                    "BossZone": "",
+                    "Delay": 0,
+                    "ForceSpawn": true,
+                    "IgnoreMaxBots": true,
+                    "RandomTimeSpawn": false,
+                    "Supports": null,
+                    "Time": -1,
+                    "TriggerId": "",
+                    "TriggerName": ""
+                }, {
+                    "BossChance": 100,
+                    "BossDifficult": "normal",
+                    "BossEscortAmount": "5",
+                    "BossEscortDifficult": "normal",
+                    "BossEscortType": "sectactPriestEvent",
+                    "BossName": "sectactPriestEvent",
+                    "BossPlayer": false,
+                    "BossZone": "",
+                    "Delay": 25,
+                    "ForceSpawn": true,
+                    "IgnoreMaxBots": true,
+                    "RandomTimeSpawn": false,
+                    "Supports": null,
+                    "Time": 999999,
+                    "TriggerId": "ZryachiyPeaceKill",
+                    "TriggerName": "botEvent"
+                }, {
+                    "BossChance": 100,
+                    "BossDifficult": "normal",
+                    "BossEscortAmount": "0",
+                    "BossEscortDifficult": "normal",
+                    "BossEscortType": "ravangeZryachiyEvent",
+                    "BossName": "ravangeZryachiyEvent",
+                    "BossPlayer": false,
+                    "BossZone": "",
+                    "Delay": 0,
+                    "ForceSpawn": true,
+                    "IgnoreMaxBots": true,
+                    "RandomTimeSpawn": false,
+                    "Supports": null,
+                    "Time": 99999,
+                    "TriggerId": "SummonComplete",
+                    "TriggerName": "botEvent"
+                }
+            ]
+        },
+		"christmas": {}
+    },
     "gifterSettings": [{
             "map": "bigmap",
             "zones": "ZoneDormitory,ZoneGasStation,ZoneScavBase",
@@ -271,21 +653,21 @@
     ],
     "events": [{
             "name": "halloween",
-			"type": "HALLOWEEN",
+            "type": "HALLOWEEN",
             "startDay": "24",
             "startMonth": "10",
             "endDay": "4",
             "endMonth": "11"
         }, {
             "name": "christmas",
-			"type": "CHRISTMAS",
+            "type": "CHRISTMAS",
             "startDay": "7",
             "startMonth": "12",
             "endDay": "31",
             "endMonth": "12"
         }, {
             "name": "newyears",
-			"type": "NEW_YEARS",
+            "type": "NEW_YEARS",
             "startDay": "1",
             "startMonth": "1",
             "endDay": "7",

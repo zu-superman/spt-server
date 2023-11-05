@@ -3,6 +3,7 @@ import { inject, injectable } from "tsyringe";
 import { BotHelper } from "@spt-aki/helpers/BotHelper";
 import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
 import { IConfig } from "@spt-aki/models/eft/common/IGlobals";
+import { BossLocationSpawn } from "@spt-aki/models/eft/common/ILocationBase";
 import { Inventory } from "@spt-aki/models/eft/common/tables/IBotType";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { SeasonalEventType } from "@spt-aki/models/enums/SeasonalEventType";
@@ -296,6 +297,8 @@ export class SeasonalEventService
                 globalConfig.EventType.push("HalloweenIllumination");
                 globalConfig.Health.ProfileHealthSettings.DefaultStimulatorBuff = "Buffs_Halloween";
                 this.addEventGearToBots(eventType);
+                this.adjustZryachiyMeleeChance();
+                this.addEventBossesToMaps(eventType);
                 this.addPumpkinsToScavBackpacks();
                 this.adjustTraderIcons(eventType);
                 break;
@@ -315,6 +318,41 @@ export class SeasonalEventService
                 // Likely a mod event
                 this.addEventGearToBots(eventType);
                 break;
+        }
+    }
+
+    protected adjustZryachiyMeleeChance(): void
+    {
+        this.databaseServer.getTables().bots.types.bosszryachiy.chances.equipment.Scabbard = 100;
+    }
+
+    protected addEventBossesToMaps(eventType: SeasonalEventType): void
+    {
+        const botsToAddPerMap = this.seasonalEventConfig.eventBossSpawns[eventType.toLowerCase()];
+        if (!botsToAddPerMap)
+        {
+            this.logger.warning(`Unable to add ${eventType} bosses, eventBossSpawns is missing`);
+            return;
+        }
+        const mapKeys = Object.keys(botsToAddPerMap) ?? [];
+
+        for (const mapKey of mapKeys)
+        {
+            const bossesToAdd = botsToAddPerMap[mapKey];
+            if (!bossesToAdd)
+            {
+                this.logger.warning(`Unable to add ${eventType} bosses to ${mapKey}`);
+                continue;
+            }
+            for (const boss of bossesToAdd)
+            {
+                const mapBosses: BossLocationSpawn[] = this.databaseServer.getTables().locations[mapKey].base.BossLocationSpawn;
+                if (!mapBosses.find(x => x.BossName === boss.BossName))
+                {
+
+                    this.databaseServer.getTables().locations[mapKey].base.BossLocationSpawn.push(...bossesToAdd);
+                }
+            }
         }
     }
 
@@ -469,5 +507,15 @@ export class SeasonalEventService
             this.giftService.sendGiftToPlayer(playerId, giftkey);
         }
         
+    }
+
+    /**
+     * Get the underlying bot type for an event bot e.g. `peacefullZryachiyEvent` will return `bossZryachiy`
+     * @param eventBotRole Event bot role type
+     * @returns Bot role as string
+     */
+    public getBaseRoleForEventBot(eventBotRole: string): string
+    {
+        return this.seasonalEventConfig.eventBotMapping[eventBotRole];
     }
 }
