@@ -21,9 +21,6 @@ export default defineConfig({
             include: ["src"],
             exclude: ["src/models/**", "tests/**"]
         },
-        typecheck: {
-            enabled: true
-        },
         alias: {
             "@spt-aki": path.resolve(__dirname, "src"),
             "@tests": path.resolve(__dirname, "tests")
