@@ -298,6 +298,7 @@ export class SeasonalEventService
                 globalConfig.Health.ProfileHealthSettings.DefaultStimulatorBuff = "Buffs_Halloween";
                 this.addEventGearToBots(eventType);
                 this.adjustZryachiyMeleeChance();
+                this.enableHalloweenSummonEvent();
                 this.addEventBossesToMaps(eventType);
                 this.addPumpkinsToScavBackpacks();
                 this.adjustTraderIcons(eventType);
@@ -324,6 +325,11 @@ export class SeasonalEventService
     protected adjustZryachiyMeleeChance(): void
     {
         this.databaseServer.getTables().bots.types.bosszryachiy.chances.equipment.Scabbard = 100;
+    }
+
+    protected enableHalloweenSummonEvent(): void
+    {
+        this.databaseServer.getTables().globals.config.EventSettings.EventActive = true;
     }
 
     protected addEventBossesToMaps(eventType: SeasonalEventType): void
