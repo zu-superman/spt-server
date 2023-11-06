@@ -75,6 +75,7 @@ export interface IConfig
     SkillPointsBeforeFatigue: number
     SkillFatigueReset: number
     DiscardLimitsEnabled: boolean
+    EventSettings: IEventSettings
     EventType: string[]
     WalkSpeed: Ixyz
     SprintSpeed: Ixyz
@@ -108,6 +109,31 @@ export interface IWeaponFastDrawSettings
     WeaponFastSwitchMinSpeedMult: number
     WeaponPistolFastSwitchMaxSpeedMult: number
     WeaponPistolFastSwitchMinSpeedMult: number
+}
+
+export interface IEventSettings
+{
+    EventActive: boolean
+    EventTime: number
+    EventWeather: IEventWeather
+    ExitTimeMultiplier: number
+    StaminaMultiplier: number
+    SummonFailedWeather: IEventWeather
+    SummonSuccessWeather: IEventWeather
+    WeatherChangeTime: number
+}
+
+export interface IEventWeather
+{
+    Cloudness: number
+    Hour: number
+    Minute: number
+    Rain: number
+    RainRandomness: number
+    ScaterringFogDensity: number
+    TopWindDirection: Ixyz
+    Wind: number
+    WindDirection: number
 }
 
 export interface IGraphicSettings

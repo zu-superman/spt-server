@@ -17389,7 +17389,7 @@
     },
     "DiscardLimitsEnabled": true,
     "EventSettings": {
-      "EventActive": true,
+      "EventActive": false,
       "EventTime": 390,
       "EventWeather": {
         "Cloudness": 1,
