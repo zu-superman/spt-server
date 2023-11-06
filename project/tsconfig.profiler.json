@@ -4,13 +4,7 @@
         "outDir": "obj",
         "declaration": true,
         "sourceMap": true,
-        "noImplicitAny": false,
-        "baseUrl": ".",
-        "paths": {
-            "@spt-aki/*": [
-                "src/*"
-            ]
-        }
+        "noImplicitAny": false
     },
     "include": [
         "./types/**/*",
