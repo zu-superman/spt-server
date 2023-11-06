@@ -11,7 +11,7 @@ import { IDatabaseTables } from "@spt-aki/models/spt/server/IDatabaseTables";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { ImporterUtil } from "@spt-aki/utils/ImporterUtil";
 
-//mocks
+// Manually mock for the logger.
 import { WinstonLogger } from "@tests/__mocks__/WinstonLogger.mock";
 
 export default <Environment> {
@@ -23,7 +23,7 @@ export default <Environment> {
         Container.registerTypes(container);
         Container.registerListTypes(container);
 
-        // Override registration to the container
+        // Override registration to the container.
         container.register<WinstonLogger>("WinstonLogger", WinstonLogger, { lifecycle: Lifecycle.Singleton });
 
         // Import the database.

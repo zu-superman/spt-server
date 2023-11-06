@@ -25,8 +25,6 @@ describe("InsuranceController", () =>
 
     afterEach(() =>
     {
-        // Restore all mocks to their original implementations.
-        vi.resetAllMocks();
         vi.restoreAllMocks();
     });
 
