@@ -361,7 +361,7 @@ class ItemHelper
     protected getRepairableItemQualityValue(itemDetails: ITemplateItem, repairable: Repairable, item: Item): number
     {
         // Edge case, max durability is below durability
-        if (repairable.Durability < repairable.MaxDurability)
+        if (repairable.Durability > repairable.MaxDurability)
         {
             this.logger.warning(`Max durability: ${repairable.MaxDurability} for item id: ${item._id} was below Durability: ${repairable.Durability}, adjusting values to match`);
             repairable.MaxDurability = repairable.Durability;

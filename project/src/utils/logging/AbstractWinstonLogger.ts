@@ -84,7 +84,7 @@ export abstract class AbstractWinstonLogger implements ILogger
                 new DailyRotateFile({
                     level: "debug",
                     filename: this.filePath,
-                    datePattern: "YYYY-MM-DD-HH",
+                    datePattern: "YYYY-MM-DD",
                     zippedArchive: true,
                     maxSize: this.getLogMaxSize(),
                     maxFiles: this.getLogMaxFiles(),
