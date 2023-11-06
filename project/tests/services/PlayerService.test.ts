@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import "reflect-metadata";
 import { container } from "tsyringe";
-import { vi, beforeAll, afterEach, describe, expect, it } from "vitest";
+import { vi, beforeEach, afterEach, describe, expect, it } from "vitest";
+
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
 import { PlayerService } from "@spt-aki/services/PlayerService";
 
@@ -9,7 +10,7 @@ describe("PlayerService", () =>
 {
     let playerService: PlayerService;
 
-    beforeAll(() =>
+    beforeEach(() =>
     {
         playerService = container.resolve<PlayerService>("PlayerService");
     });

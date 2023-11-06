@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { container } from "tsyringe";
-import { vi, beforeAll, afterEach, describe, expect, it } from "vitest";
+import { vi, beforeEach, afterEach, describe, expect, it } from "vitest";
 
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { Item, Repairable } from "@spt-aki/models/eft/common/tables/IItem";
@@ -11,7 +11,7 @@ describe("ItemHelper", () =>
 {
     let itemHelper: ItemHelper;
 
-    beforeAll(() =>
+    beforeEach(() =>
     {
         itemHelper = container.resolve<ItemHelper>("ItemHelper");
     });

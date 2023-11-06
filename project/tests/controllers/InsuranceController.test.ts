@@ -19,10 +19,7 @@ describe("InsuranceController", () =>
 
     beforeEach(() =>
     {
-        // (Re)resolve the test target.
         insuranceController = container.resolve<InsuranceController>("InsuranceController");
-
-        // Reset the insurance fixture before each test.
         insuranceFixture = new ProfileInsuranceFactory().adjustPackageDates().get();
     });
 

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import "reflect-metadata";
 import { container } from "tsyringe";
-import { vi, beforeAll, afterEach, describe, expect, it } from "vitest";
+import { vi, beforeEach, afterEach, describe, expect, it } from "vitest";
 
 import { PaymentService } from "@spt-aki/services/PaymentService";
 
@@ -16,7 +16,7 @@ describe("PaymentService", () =>
 {
     let paymentService: any; // Using "any" to access private/protected methods without type errors.
 
-    beforeAll(() =>
+    beforeEach(() =>
     {
         paymentService = container.resolve<PaymentService>("PaymentService");
     });

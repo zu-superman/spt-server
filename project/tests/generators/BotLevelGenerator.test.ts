@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { container } from "tsyringe";
-import { vi, beforeAll, afterEach, describe, expect, it } from "vitest";
+import { vi, beforeEach, afterEach, describe, expect, it } from "vitest";
 
 import { BotLevelGenerator } from "@spt-aki/generators/BotLevelGenerator";
 import { MinMax } from "@spt-aki/models/common/MinMax";
@@ -12,7 +12,7 @@ describe("BotLevelGenerator", () =>
     let botLevelGenerator: any;
     let databaseServer: DatabaseServer;
 
-    beforeAll(() =>
+    beforeEach(() =>
     {
         botLevelGenerator = container.resolve<BotLevelGenerator>("BotLevelGenerator");
         databaseServer = container.resolve<DatabaseServer>("DatabaseServer");

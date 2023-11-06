@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import "reflect-metadata";
 import { container } from "tsyringe";
-import { vi, beforeAll, afterEach, describe, expect, it } from "vitest";
+import { vi, beforeEach, afterEach, describe, expect, it } from "vitest";
 import { ItemBaseClassService } from "@spt-aki/services/ItemBaseClassService";
 
 describe("ItemBaseClassService", () =>
 {
     let itemBaseClassService: any;
 
-    beforeAll(() =>
+    beforeEach(() =>
     {
         itemBaseClassService = container.resolve<ItemBaseClassService>("ItemBaseClassService");
     });
@@ -73,9 +73,9 @@ describe("ItemBaseClassService", () =>
         {
             // Set cache to false
             itemBaseClassService.cacheGenerated = false;
-            
+
             const hydrateItemBaseClassCacheSpy = vi.spyOn(itemBaseClassService, "hydrateItemBaseClassCache");
-            
+
             // Remove item from base cache
             const salewaTpl = "544fb45d4bdc2dee738b4568";
             delete itemBaseClassService.itemBaseClassesCache[salewaTpl];

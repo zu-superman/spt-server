@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { container } from "tsyringe";
-import { vi, beforeAll, afterEach, describe, expect, it } from "vitest";
+import { vi, beforeEach, afterEach, describe, expect, it } from "vitest";
 
 import { BotHelper } from "@spt-aki/helpers/BotHelper";
 
@@ -8,7 +8,7 @@ describe("BotHelper", () =>
 {
     let botHelper: any;
 
-    beforeAll(() =>
+    beforeEach(() =>
     {
         botHelper = container.resolve<BotHelper>("BotHelper");
     });

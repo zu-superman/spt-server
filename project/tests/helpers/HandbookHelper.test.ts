@@ -1,6 +1,7 @@
 import "reflect-metadata";
 import { container } from "tsyringe";
-import { vi, beforeAll, afterEach, describe, expect, it } from "vitest";
+import { vi, beforeEach, afterEach, describe, expect, it } from "vitest";
+
 import { HandbookHelper } from "@spt-aki/helpers/HandbookHelper";
 import { Money } from "@spt-aki/models/enums/Money";
 
@@ -8,7 +9,7 @@ describe("HandbookHelper", () =>
 {
     let handbookHelper: any;
 
-    beforeAll(() =>
+    beforeEach(() =>
     {
         handbookHelper = container.resolve<HandbookHelper>("HandbookHelper");
     });

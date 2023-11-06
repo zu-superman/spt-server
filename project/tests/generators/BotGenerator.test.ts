@@ -1,22 +1,23 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import "reflect-metadata";
 import { container } from "tsyringe";
-import { vi, beforeAll, afterEach, describe, expect, it } from "vitest";
+import { vi, beforeEach, afterEach, describe, expect, it } from "vitest";
 import { BotGenerator } from "@spt-aki/generators/BotGenerator";
-import { BotGenerationDetails } from "@spt-aki/models/spt/bots/BotGenerationDetails";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
 
 describe("BotGenerator", () =>
 {
     let botGenerator: any;
 
-    beforeAll(() =>
+    beforeEach(() =>
     {
         botGenerator = container.resolve<BotGenerator>("BotGenerator");
     });
 
     afterEach(() =>
     {
+        // Restore all mocks to their original implementations.
+        vi.resetAllMocks();
         vi.restoreAllMocks();
     });
 

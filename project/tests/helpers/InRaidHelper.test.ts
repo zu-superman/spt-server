@@ -1,14 +1,15 @@
-import { InRaidHelper } from "@spt-aki/helpers/InRaidHelper";
-import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import "reflect-metadata";
 import { container } from "tsyringe";
-import { vi, beforeAll, afterEach, describe, expect, it } from "vitest";
+import { vi, beforeEach, afterEach, describe, expect, it } from "vitest";
+
+import { InRaidHelper } from "@spt-aki/helpers/InRaidHelper";
+import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 
 describe("InRaidHelper", () =>
 {
     let inraidHelper: any;
 
-    beforeAll(() =>
+    beforeEach(() =>
     {
         inraidHelper = container.resolve<InRaidHelper>("InRaidHelper");
     });
