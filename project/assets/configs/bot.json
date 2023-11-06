@@ -832,9 +832,78 @@
                         "mod_tactical_003": 10,
                         "mod_tactical_2": 10
                     }
-                }, {
-                    "levelRange": {
+                },
+				{
+					"levelRange": {
                         "min": 15,
+                        "max": 22
+                    },
+					"equipment": {
+                        "ArmBand": 90,
+                        "FirstPrimaryWeapon": 90,
+                        "SecondPrimaryWeapon": 0,
+                        "Holster": 10,
+                        "Earpiece": 35,
+                        "Eyewear": 15,
+						"FaceCover": 20,
+                        "Backpack": 80,
+						"Scabbard": 100,
+						"TacticalVest": 90
+                    },
+					"randomisedArmorSlots": ["Headwear"],
+                    "randomisedWeaponModSlots": ["mod_scope", "mod_scope_000", "mod_scope_001", "mod_scope_002", "mod_scope_003",
+                        "mod_handguard", "mod_magazine", "mod_muzzle", "mod_bipod",
+                        "mod_muzzle_000", "mod_muzzle_001", "mod_charge",
+                        "mod_gas_block", "mod_pistol_grip", "mod_pistolgrip", "mod_pistol_grip_akms", "mod_pistolgrip_000",
+                        "mod_foregrip", "mod_trigger", "mod_reciever", "mod_hammer",
+                        "mod_stock", "mod_stock_000", "mod_stock_001", "mod_stock_akms", "mod_stock_axis",
+                        "mod_mount_000", "mod_mount_001", "mod_mount_002", "mod_mount_003", "mod_mount_004", "mod_mount_005", "mod_mount_006",
+                        "mod_tactical", "mod_tactical_2", "mod_tactical_000", "mod_tactical_001", "mod_tactical_002", "mod_tactical_003"
+                    ],
+					"mods": {
+                        "mod_barrel": 50,
+                        "mod_bipod": 10,
+                        "mod_flashlight": 35,
+                        "mod_foregrip": 45,
+                        "mod_handguard": 25,
+                        "mod_launcher": 5,
+                        "mod_magazine": 50,
+                        "mod_mount": 45,
+                        "mod_mount_000": 35,
+                        "mod_mount_001": 35,
+                        "mod_mount_002": 35,
+                        "mod_mount_003": 35,
+                        "mod_mount_004": 35,
+                        "mod_mount_005": 35,
+                        "mod_mount_006": 35,
+                        "mod_muzzle": 25,
+                        "mod_muzzle_000": 20,
+                        "mod_muzzle_001": 20,
+                        "mod_equipment": 30,
+                        "mod_equipment_000": 40,
+                        "mod_equipment_001": 35,
+                        "mod_equipment_002": 30,
+                        "mod_nvg": 20,
+                        "mod_pistol_grip_akms": 35,
+                        "mod_pistol_grip": 40,
+                        "mod_scope": 15,
+                        "mod_scope_000": 45,
+                        "mod_scope_001": 35,
+                        "mod_scope_002": 35,
+                        "mod_scope_003": 25,
+                        "mod_tactical": 15,
+                        "mod_tactical001": 40,
+                        "mod_tactical002": 30,
+                        "mod_tactical_000": 40,
+                        "mod_tactical_001": 30,
+                        "mod_tactical_002": 30,
+                        "mod_tactical_003": 30,
+                        "mod_tactical_2": 15
+                    }
+				},
+				{
+                    "levelRange": {
+                        "min": 23,
                         "max": 100
                     },
                     "equipment": {
@@ -998,7 +1067,9 @@
                                 "5e870397991fd70db46995c8": 10,
                                 "61f7c9e189e6fb1a5e3ea78d": 110,
                                 "5a38e6bac4a2826c6e06d79b": 90,
-                                "5ea03f7400685063ec28bfa8": 50
+                                "5ea03f7400685063ec28bfa8": 50,
+								"627e14b21713922ded6f2c15": 1,
+								"6275303a9f372d6ea97f9ec7": 1
                             },
                             "SecondPrimaryWeapon": {
                                 "5e81ebcd8e146c7080625e15": 0
@@ -1034,7 +1105,63 @@
                             }
                         }
                     }
-                }, {
+                },
+				{
+					"levelRange": {
+                        "min": 15,
+                        "max": 22
+                    },
+					"equipment": {
+						"edit": {
+							"ArmorVest": {
+								"5c0e5bab86f77461f55ed1f3": 135,
+                                "5c0e5edb86f77461f55ed1f7": 135,
+                                "5648a7494bdc2d9d488b4583": 135,
+                                "5ab8e4ed86f7742d8e50c7fa": 135
+							},
+							"TacticalVest": {
+								"5c0e3eb886f7742015526062": 40,
+								"64a536392d2c4e6e970f4121": 40,
+								"64a5366719bab53bd203bf33": 40
+							},
+							"Backpack": {
+								"544a5cde4bdc2d39388b456b": 7,
+								"5ca20d5986f774331e7c9602": 7,
+								"60a272cc93ef783291411d8e": 7,
+								"6034d103ca006d2dca39b3f0": 7,
+								"618bb76513f5097c8d5aa2d5": 7,
+								"619cf0335771dd3c390269ae": 7,
+								"628e1ffc83ec92260c0f437f": 7,
+								"62a1b7fbc30cfa1d366af586": 7,
+								"5f5e467b0bc58666c37e7821": 6,
+								"5c0e805e86f774683f3dd637": 6
+							},
+							"Headwear": {
+								"5aa7cfc0e5b5b00015693143": 80,
+								"5a7c4850e899ef00150be885": 80,
+								"5e00c1ad86f774747333222c": 50,
+								"5c06c6a80db834001b735491": 80,
+								"5aa7d03ae5b5b00016327db5": 70,
+								"5d5e7d28a4b936645d161203": 50,
+								"5b432d215acfc4771e1c6624": 60,
+								"5b40e3f35acfc40016388218": 40,
+								"5b40e4035acfc47a87740943": 40,
+								"5a154d5cfcdbcb001a3b00da": 40,
+								"5ac8d6885acfc400180ae7b0": 40
+							},
+							"Earpiece": {
+								"5645bcc04bdc2d363b8b4572": 7
+							},
+							"FirstPrimaryWeapon": {
+								"627e14b21713922ded6f2c15": 1,
+								"6275303a9f372d6ea97f9ec7": 1,
+								"64ca3d3954fc657e230529cc": 1,
+								"64637076203536ad5600c990": 1
+							}
+						}
+					}
+				},
+				{
                     "levelRange": {
                         "min": 30,
                         "max": 50
