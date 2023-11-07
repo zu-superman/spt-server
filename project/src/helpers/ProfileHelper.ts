@@ -9,6 +9,7 @@ import { SkillTypes } from "@spt-aki/models/enums/SkillTypes";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { SaveServer } from "@spt-aki/servers/SaveServer";
+import { LocalisationService } from "@spt-aki/services/LocalisationService";
 import { ProfileSnapshotService } from "@spt-aki/services/ProfileSnapshotService";
 import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 import { TimeUtil } from "@spt-aki/utils/TimeUtil";
@@ -25,7 +26,8 @@ export class ProfileHelper
         @inject("SaveServer") protected saveServer: SaveServer,
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
-        @inject("ProfileSnapshotService") protected profileSnapshotService: ProfileSnapshotService
+        @inject("ProfileSnapshotService") protected profileSnapshotService: ProfileSnapshotService,
+        @inject("LocalisationService") protected localisationService: LocalisationService
     )
     { }
 
@@ -365,5 +367,48 @@ export class ProfileHelper
             return false;
         }
         return profileSkill.Progress >= 5100; // level 51
+    }
+
+    /**
+     * Add points to a specific skill in player profile
+     * @param skill Skill to add points to
+     * @param pointsToAdd Points to add
+     * @param pmcProfile Player profile with skill
+     * @param useSkillProgressRateMultipler Skills are multiplied by a value in globals, default is off to maintain compatibility with legacy code
+     * @returns 
+     */
+    public addSkillPointsToPlayer(pmcProfile: IPmcData, skill: SkillTypes, pointsToAdd: number, useSkillProgressRateMultipler = false): void
+    {
+        if (!pointsToAdd || pointsToAdd < 0)
+        {
+            this.logger.error(this.localisationService.getText("player-attempt_to_increment_skill_with_negative_value", skill));
+            return;
+        }
+
+        const profileSkills = pmcProfile?.Skills?.Common;
+        if (!profileSkills)
+        {
+            this.logger.warning(`Unable to add ${pointsToAdd} points to ${skill}, profile has no skills`);
+
+            return;
+        }
+
+        const profileSkill = profileSkills.find(x => x.Id === skill);
+        if (!profileSkill)
+        {
+            this.logger.error(this.localisationService.getText("quest-no_skill_found", skill));
+
+            return;
+        }
+
+        if (useSkillProgressRateMultipler)
+        {
+            const globals = this.databaseServer.getTables().globals;
+            const skillProgressRate = globals.config.SkillsSettings.SkillProgressRate;
+            pointsToAdd = skillProgressRate * pointsToAdd;
+        }
+
+        profileSkill.Progress += pointsToAdd;
+        profileSkill.LastAccess = this.timeUtil.getTimestamp();
     }
 }
