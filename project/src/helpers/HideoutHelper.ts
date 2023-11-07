@@ -403,7 +403,7 @@ export class HideoutHelper
                 //check unit consumed for increment skill point
                 if (pmcData && Math.floor(pointsConsumed / 10) >= 1)
                 {
-                    this.playerService.incrementSkillLevel(pmcData, SkillTypes.HIDEOUT_MANAGEMENT, 1);
+                    this.profileHelper.addSkillPointsToPlayer(pmcData, SkillTypes.HIDEOUT_MANAGEMENT, 1);
                     pointsConsumed -= 10;
                 }
 
@@ -511,7 +511,7 @@ export class HideoutHelper
                     // Check amount of units consumed for possible increment of hideout mgmt skill point
                     if (pmcData && Math.floor(pointsConsumed / 10) >= 1)
                     {
-                        this.playerService.incrementSkillLevel(pmcData, SkillTypes.HIDEOUT_MANAGEMENT, 1);
+                        this.profileHelper.addSkillPointsToPlayer(pmcData, SkillTypes.HIDEOUT_MANAGEMENT, 1);
                         pointsConsumed -= 10;
                     }
 
@@ -637,7 +637,7 @@ export class HideoutHelper
                 //check unit consumed for increment skill point
                 if (pmcData && Math.floor(pointsConsumed / 10) >= 1)
                 {
-                    this.playerService.incrementSkillLevel(pmcData, SkillTypes.HIDEOUT_MANAGEMENT, 1);
+                    this.profileHelper.addSkillPointsToPlayer(pmcData, SkillTypes.HIDEOUT_MANAGEMENT, 1);
                     pointsConsumed -= 10;
                 }
 
@@ -794,7 +794,7 @@ export class HideoutHelper
     {
         const bitcoinProduction = this.databaseServer.getTables().hideout.production.find(p => p._id === HideoutHelper.bitcoinFarm);
         const productionSlots = bitcoinProduction?.productionLimitCount || 3;
-        const hasManagementSkillSlots = this.hasEliteHideoutManagementSkill(pmcData);
+        const hasManagementSkillSlots = this.profileHelper.hasEliteSkillLevel(SkillTypes.HIDEOUT_MANAGEMENT, pmcData);
         const managementSlotsCount = this.getBitcoinMinerContainerSlotSize() || 2;
 
         return productionSlots + (hasManagementSkillSlots ? managementSlotsCount : 0);

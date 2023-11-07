@@ -1,7 +1,7 @@
 import { inject, injectable } from "tsyringe";
 
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
-import { QuestHelper } from "@spt-aki/helpers/QuestHelper";
+import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
 import { RepairHelper } from "@spt-aki/helpers/RepairHelper";
 import { TraderHelper } from "@spt-aki/helpers/TraderHelper";
 import { WeightedRandomHelper } from "@spt-aki/helpers/WeightedRandomHelper";
@@ -31,7 +31,7 @@ export class RepairService
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
-        @inject("QuestHelper") protected questHelper: QuestHelper,
+        @inject("ProfileHelper") protected profileHelper: ProfileHelper,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("TraderHelper") protected traderHelper: TraderHelper,
@@ -151,7 +151,7 @@ export class RepairService
         {
             const skillPoints = this.getWeaponRepairSkillPoints(repairDetails);
 
-            this.questHelper.rewardSkillPoints(sessionId, pmcData, "WeaponTreatment", skillPoints, true);
+            this.profileHelper.addSkillPointsToPlayer(pmcData, SkillTypes.WEAPON_TREATMENT, skillPoints, true);
         }
 
         // Handle kit repairs of armor
@@ -167,10 +167,12 @@ export class RepairService
             }
 
             const isHeavyArmor = itemDetails[1]._props.ArmorType === "Heavy";
-            const vestSkillToLevel = (isHeavyArmor) ? "HeavyVests" : "LightVests";
+            const vestSkillToLevel = (isHeavyArmor)
+                ? SkillTypes.HEAVY_VESTS
+                : SkillTypes.LIGHT_VESTS;
             const pointsToAddToVestSkill = repairDetails.repairPoints * this.repairConfig.armorKitSkillPointGainPerRepairPointMultiplier;
 
-            this.questHelper.rewardSkillPoints(sessionId, pmcData, vestSkillToLevel, pointsToAddToVestSkill);
+            this.profileHelper.addSkillPointsToPlayer(pmcData, vestSkillToLevel, pointsToAddToVestSkill);
         }
 
         // Handle giving INT to player - differs if using kit/trader and weapon vs armor
@@ -190,7 +192,7 @@ export class RepairService
             intellectGainedFromRepair = Math.min(repairDetails.repairAmount / 10, this.repairConfig.maxIntellectGainPerRepair.trader);
         }
 
-        this.questHelper.rewardSkillPoints(sessionId, pmcData, SkillTypes.INTELLECT, intellectGainedFromRepair);
+        this.profileHelper.addSkillPointsToPlayer(pmcData, SkillTypes.INTELLECT, intellectGainedFromRepair);
     }
 
     /**

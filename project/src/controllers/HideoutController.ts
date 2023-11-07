@@ -200,7 +200,7 @@ export class HideoutController
         }
 
         // Add Skill Points Per Area Upgrade
-        this.playerService.incrementSkillLevel(pmcData, SkillTypes.HIDEOUT_MANAGEMENT, db.globals.config.SkillsSettings.HideoutManagement.SkillPointsPerAreaUpgrade);
+        this.profileHelper.addSkillPointsToPlayer(pmcData, SkillTypes.HIDEOUT_MANAGEMENT, db.globals.config.SkillsSettings.HideoutManagement.SkillPointsPerAreaUpgrade);
         
         return output;
     }
@@ -723,12 +723,12 @@ export class HideoutController
             // manager Hideout skill
             // ? use a configuration variable for the value?
             const globals = this.databaseServer.getTables().globals;
-            this.playerService.incrementSkillLevel(pmcData, SkillTypes.HIDEOUT_MANAGEMENT, globals.config.SkillsSettings.HideoutManagement.SkillPointsPerCraft, true);
+            this.profileHelper.addSkillPointsToPlayer(pmcData, SkillTypes.HIDEOUT_MANAGEMENT, globals.config.SkillsSettings.HideoutManagement.SkillPointsPerCraft, true);
             //manager Crafting skill
             if (craftingExpAmount > 0)
             {
-                this.playerService.incrementSkillLevel(pmcData, SkillTypes.CRAFTING, craftingExpAmount);
-                this.playerService.incrementSkillLevel(pmcData, SkillTypes.INTELLECT, 0.5 *  (Math.round(craftingExpAmount / 15)));
+                this.profileHelper.addSkillPointsToPlayer(pmcData, SkillTypes.CRAFTING, craftingExpAmount);
+                this.profileHelper.addSkillPointsToPlayer(pmcData, SkillTypes.INTELLECT, 0.5 *  (Math.round(craftingExpAmount / 15)));
             }
             area.lastRecipe = request.recipeId;
             counterHoursCrafting.value = hoursCrafting;

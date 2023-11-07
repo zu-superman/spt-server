@@ -24,7 +24,7 @@ import { BaseClasses } from "@spt-aki/models/enums/BaseClasses";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { Money } from "@spt-aki/models/enums/Money";
 import { Traders } from "@spt-aki/models/enums/Traders";
-import { IBossInfo, IEliminationConfig, IQuestConfig, IRepeatableQuestConfig } from "@spt-aki/models/spt/config/IQuestConfig";
+import { IBaseQuestConfig, IBossInfo, IEliminationConfig, IQuestConfig, IRepeatableQuestConfig } from "@spt-aki/models/spt/config/IQuestConfig";
 import { IQuestTypePool } from "@spt-aki/models/spt/repeatable/IQuestTypePool";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { EventOutputHolder } from "@spt-aki/routers/EventOutputHolder";
@@ -326,7 +326,7 @@ export class RepeatableQuestGenerator
         availableForFinishCondition._props.id = this.objectId.generate();
         quest.location = this.getQuestLocationByMapId(locationKey);
 
-        quest.rewards = this.generateReward(pmcLevel, Math.min(difficulty, 1), traderId, repeatableConfig);
+        quest.rewards = this.generateReward(pmcLevel, Math.min(difficulty, 1), traderId, repeatableConfig, eliminationConfig);
 
         return quest;
     }
@@ -544,7 +544,7 @@ export class RepeatableQuestGenerator
             }
         }
 
-        quest.rewards = this.generateReward(pmcLevel, 1, traderId, repeatableConfig);
+        quest.rewards = this.generateReward(pmcLevel, 1, traderId, repeatableConfig, completionConfig);
 
         return quest;
     }
@@ -673,7 +673,7 @@ export class RepeatableQuestGenerator
         // Difficulty for exploration goes from 1 extract to maxExtracts
         // Difficulty for reward goes from 0.2...1 -> map
         const difficulty = this.mathUtil.mapToRange(numExtracts, 1, explorationConfig.maxExtracts, 0.2, 1);
-        quest.rewards = this.generateReward(pmcLevel, difficulty, traderId, repeatableConfig);
+        quest.rewards = this.generateReward(pmcLevel, difficulty, traderId, repeatableConfig, explorationConfig);
 
         return quest;
     }
@@ -707,7 +707,7 @@ export class RepeatableQuestGenerator
         (equipmentCondition._props as IEquipmentConditionProps).equipmentInclusive = [[itemTypeToFetchWithCount.itemType]];
 
         // Add rewards
-        quest.rewards = this.generateReward(pmcLevel, 1, traderId, repeatableConfig);
+        quest.rewards = this.generateReward(pmcLevel, 1, traderId, repeatableConfig, pickupConfig);
 
         return quest;
     }
@@ -765,7 +765,8 @@ export class RepeatableQuestGenerator
         pmcLevel: number,
         difficulty: number,
         traderId: string,
-        repeatableConfig: IRepeatableQuestConfig
+        repeatableConfig: IRepeatableQuestConfig,
+        questConfig: IBaseQuestConfig
     ): IRewards
     {
         // difficulty could go from 0.2 ... -> for lowest diffuculty receive 0.2*nominal reward
@@ -774,6 +775,8 @@ export class RepeatableQuestGenerator
         const xpConfig = repeatableConfig.rewardScaling.experience;
         const itemsConfig = repeatableConfig.rewardScaling.items;
         const rewardSpreadConfig = repeatableConfig.rewardScaling.rewardSpread;
+        const skillRewardChanceConfig = repeatableConfig.rewardScaling.skillRewardChance;
+        const skillPointRewardConfig = repeatableConfig.rewardScaling.skillPointReward;
         const reputationConfig = repeatableConfig.rewardScaling.reputation;
 
         if (Number.isNaN(difficulty))
@@ -788,6 +791,8 @@ export class RepeatableQuestGenerator
         const rewardNumItems = this.randomUtil.randInt(1, Math.round(this.mathUtil.interp1(pmcLevel, levelsConfig, itemsConfig)) + 1);
         const rewardReputation = Math.round(100 * difficulty * this.mathUtil.interp1(pmcLevel, levelsConfig, reputationConfig)
             * this.randomUtil.getFloat(1 - rewardSpreadConfig, 1 + rewardSpreadConfig)) / 100;
+        const skillRewardChance = this.mathUtil.interp1(pmcLevel, levelsConfig, skillRewardChanceConfig);
+        const skillPointReward = this.mathUtil.interp1(pmcLevel, levelsConfig, skillPointRewardConfig);
 
         // Possible improvement -> draw trader-specific items e.g. with this.itemHelper.isOfBaseclass(val._id, ItemHelper.BASECLASS.FoodDrink)
         let roublesBudget = rewardRoubles;
@@ -874,6 +879,18 @@ export class RepeatableQuestGenerator
                 target: traderId,
                 value: rewardReputation,
                 type: "TraderStanding",
+                index: index
+            };
+            rewards.Success.push(reward);
+        }
+
+        if (this.randomUtil.getChance100(skillRewardChance * 100))
+        {
+            index++;
+            const reward: IReward = {
+                target: this.randomUtil.getArrayValue(questConfig.possibleSkillRewards),
+                value: skillPointReward,
+                type: "Skill",
                 index: index
             };
             rewards.Success.push(reward);

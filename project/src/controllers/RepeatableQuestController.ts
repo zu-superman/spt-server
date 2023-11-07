@@ -14,11 +14,13 @@ import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { ELocationName } from "@spt-aki/models/enums/ELocationName";
 import { HideoutAreas } from "@spt-aki/models/enums/HideoutAreas";
 import { QuestStatus } from "@spt-aki/models/enums/QuestStatus";
+import { SkillTypes } from "@spt-aki/models/enums/SkillTypes";
 import { IQuestConfig, IRepeatableQuestConfig } from "@spt-aki/models/spt/config/IQuestConfig";
 import { IQuestTypePool } from "@spt-aki/models/spt/repeatable/IQuestTypePool";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { EventOutputHolder } from "@spt-aki/routers/EventOutputHolder";
 import { ConfigServer } from "@spt-aki/servers/ConfigServer";
+import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { PaymentService } from "@spt-aki/services/PaymentService";
 import { ProfileFixerService } from "@spt-aki/services/ProfileFixerService";
 import { HttpResponseUtil } from "@spt-aki/utils/HttpResponseUtil";
@@ -33,8 +35,9 @@ export class RepeatableQuestController
     protected questConfig: IQuestConfig;
 
     constructor(
-        @inject("TimeUtil") protected timeUtil: TimeUtil,
         @inject("WinstonLogger") protected logger: ILogger,
+        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("TimeUtil") protected timeUtil: TimeUtil,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("HttpResponseUtil") protected httpResponse: HttpResponseUtil,
         @inject("JsonUtil") protected jsonUtil: JsonUtil,
@@ -131,7 +134,7 @@ export class RepeatableQuestController
                     const questTypePool = this.generateQuestPool(repeatableConfig, pmcData.Info.Level);
 
                     // Add daily quests
-                    for (let i = 0; i < repeatableConfig.numQuests; i++)
+                    for (let i = 0; i < this.getQuestCount(repeatableConfig, pmcData); i++)
                     {
                         let quest = null;
                         let lifeline = 0;
@@ -186,6 +189,23 @@ export class RepeatableQuestController
         }
 
         return returnData;
+    }
+
+    /**
+     * Get the number of quests to generate - takes into account charisma state of player
+     * @param repeatableConfig Config
+     * @param pmcData Player profile
+     * @returns Quest count
+     */
+    protected getQuestCount(repeatableConfig: IRepeatableQuestConfig, pmcData: IPmcData): number
+    {
+        if (repeatableConfig.name.toLowerCase() === "daily" && this.profileHelper.hasEliteSkillLevel(SkillTypes.CHARISMA, pmcData))
+        {
+            // Elite charisma skill gives extra daily quest(s)
+            return repeatableConfig.numQuests + this.databaseServer.getTables().globals.config.SkillsSettings.Charisma.BonusSettings.EliteBonusSettings.RepeatableQuestExtraCount;
+        }
+
+        return repeatableConfig.numQuests;
     }
 
     /**
