@@ -6,6 +6,7 @@ import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { Item, Repairable } from "@spt-aki/models/eft/common/tables/IItem";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { HashUtil } from "@spt-aki/utils/HashUtil";
+import { ITemplateItem } from "@spt-aki/models/eft/common/tables/ITemplateItem";
 
 describe("ItemHelper", () =>
 {
@@ -1070,6 +1071,54 @@ describe("ItemHelper", () =>
             };
             const result = itemHelper.splitStack(stackableItem); // "Roubles"
             expect(result.length).toBe(1);
+        });
+    });
+
+    describe("getRandomCompatibleCaliberTemplateId", () =>
+    {
+        it("Should return an item from the passed in items Filter array", () =>
+        {
+            const fakeTemplateItem = {
+                _props: {
+                    Cartridges: [
+                        {
+                            _props: {
+                                filters: [
+                                    {
+                                        Filter: [
+                                            "desiredItemTpl"
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            };
+            const result = itemHelper.getRandomCompatibleCaliberTemplateId(fakeTemplateItem as ITemplateItem);
+
+            expect(result).toBe("desiredItemTpl");
+        });
+
+        it("Should return null when item passed in has empty cartridges data", () =>
+        {
+            const fakeTemplateItem = {
+                _props: {
+                    Cartridges: [
+                        {}
+                    ]
+                }
+            };
+            const result = itemHelper.getRandomCompatibleCaliberTemplateId(fakeTemplateItem as ITemplateItem);
+
+            expect(result).toBe(null);
+        });
+
+        it("Should return null when undefined passed in", () =>
+        {
+            const result = itemHelper.getRandomCompatibleCaliberTemplateId(undefined as ITemplateItem);
+
+            expect(result).toBe(null);
         });
     });
 });
