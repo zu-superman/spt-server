@@ -117,6 +117,8 @@ class ItemHelper
         {
             return dynamicPrice;
         }
+
+        return 0;
     }
 
     /**
