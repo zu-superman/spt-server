@@ -8,8 +8,10 @@ export default defineConfig({
         api: 51204,
         reporters: ["default"],
         root: "./",
-        include: ["tests/Setup.test.ts"],
-        cache: false,
+        include: ["**/*.{test,spec}.?(c|m)[jt]s?(x)"],
+        cache: {
+            dir: "./tests/__cache__"
+        },
         environment: "./tests/CustomEnvironment.ts",
         globals: true,
         coverage: {
@@ -20,6 +22,13 @@ export default defineConfig({
             all: true,
             include: ["src"],
             exclude: ["src/models/**", "tests/**"]
+        },
+        pool: "threads",
+        poolOptions: {
+            threads: {
+                singleThread: true,
+                isolate: false
+            }
         },
         alias: {
             "@spt-aki": path.resolve(__dirname, "src"),

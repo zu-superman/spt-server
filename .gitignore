@@ -11,8 +11,8 @@ project/Aki_Data/
 project/tmp/
 project/docs/
 project/types/
+project/tests/__cache__/
 project/tests/__coverage__/
-project/__coverage__/
 project/src/__coverage__/
 
 ## visual studio
