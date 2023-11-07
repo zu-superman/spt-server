@@ -259,6 +259,7 @@ export class RepairService
         const itemToRepairDetails = itemsDb[itemToRepair._tpl];
         const repairItemIsArmor = (!!itemToRepairDetails._props.ArmorMaterial);
         const repairAmount = repairKits[0].count / this.getKitDivisor(itemToRepairDetails, repairItemIsArmor, pmcData);
+        const shouldApplyDurabilityLoss = this.shouldRepairKitApplyDurabilityLoss(pmcData, this.repairConfig.applyRandomizeDurabilityLoss);
 
         this.repairHelper.updateItemDurability(
             itemToRepair,
@@ -267,7 +268,7 @@ export class RepairService
             repairAmount,
             true,
             1,
-            this.repairConfig.applyRandomizeDurabilityLoss);
+            shouldApplyDurabilityLoss);
 
         // Find and use repair kit defined in body
         for (const repairKit of repairKits)
@@ -306,7 +307,7 @@ export class RepairService
         const globalRepairSettings = globals.config.RepairSettings;
 
         const intellectRepairPointsPerLevel = globals.config.SkillsSettings.Intellect.RepairPointsCostReduction;
-        const profileIntellectLevel = pmcData.Skills?.Common?.find(s => s.Id === SkillTypes.INTELLECT)?.Progress ?? 0;
+        const profileIntellectLevel = this.profileHelper.getSkillFromProfile(pmcData, SkillTypes.INTELLECT)?.Progress ?? 0;
         const intellectPointReduction = intellectRepairPointsPerLevel * Math.trunc(profileIntellectLevel / 100);
 
         if (isArmor)
@@ -350,6 +351,29 @@ export class RepairService
         }
 
         return value;
+    }
+
+    /**
+     * Should a repair kit apply total durability loss on repair
+     * @param pmcData Player profile
+     * @param applyRandomizeDurabilityLoss Value from repair config
+     * @returns True if loss should be applied
+     */
+    protected shouldRepairKitApplyDurabilityLoss(pmcData: IPmcData, applyRandomizeDurabilityLoss: boolean): boolean
+    {
+        let shouldApplyDurabilityLoss = applyRandomizeDurabilityLoss;
+        if (shouldApplyDurabilityLoss)
+        {
+            // Random loss not disabled via config, perform charisma check
+            const hasEliteCharisma = this.profileHelper.hasEliteSkillLevel(SkillTypes.CHARISMA, pmcData);
+            if (hasEliteCharisma)
+            {
+                // 50/50 chance of loss being ignored at elite level
+                shouldApplyDurabilityLoss = this.randomUtil.getChance100(50);
+            }
+        }
+
+        return shouldApplyDurabilityLoss;
     }
 
     /**
@@ -448,13 +472,15 @@ export class RepairService
 
         const itemSkillType = this.getItemSkillType(template);
         if (!itemSkillType)
+        {
             return false;
+        }
 
-        const commonBuffMinChanceValue = globals.config.SkillsSettings[itemSkillType].BuffSettings.CommonBuffMinChanceValue;
-        const commonBuffChanceLevelBonus = globals.config.SkillsSettings[itemSkillType].BuffSettings.CommonBuffChanceLevelBonus;
-        const receivedDurabilityMaxPercent = globals.config.SkillsSettings[itemSkillType].BuffSettings.ReceivedDurabilityMaxPercent;
+        const commonBuffMinChanceValue = globals.config.SkillsSettings[itemSkillType as string].BuffSettings.CommonBuffMinChanceValue;
+        const commonBuffChanceLevelBonus = globals.config.SkillsSettings[itemSkillType as string].BuffSettings.CommonBuffChanceLevelBonus;
+        const receivedDurabilityMaxPercent = globals.config.SkillsSettings[itemSkillType as string].BuffSettings.ReceivedDurabilityMaxPercent;
 
-        const skillLevel = Math.trunc((pmcData?.Skills?.Common?.find(s => s.Id === itemSkillType)?.Progress ?? 0) / 100);
+        const skillLevel = Math.trunc((this.profileHelper.getSkillFromProfile(pmcData, itemSkillType)?.Progress ?? 0) / 100);
 
         const durabilityToRestorePercent = repairDetails.repairPoints / template._props.MaxDurability;
         const durabilityMultiplier = this.getDurabilityMultiplier(receivedDurabilityMaxPercent, durabilityToRestorePercent);
@@ -474,26 +500,26 @@ export class RepairService
      * @param itemTemplate Item to check for skill
      * @returns Skill name
      */
-    protected getItemSkillType(itemTemplate: ITemplateItem): string  
+    protected getItemSkillType(itemTemplate: ITemplateItem): SkillTypes  
     {
         if (this.itemHelper.isOfBaseclass(itemTemplate._id, BaseClasses.ARMOR))
         {
             if (itemTemplate._props.ArmorType === "Light")
             {
-                return "LightVests";
+                return SkillTypes.LIGHT_VESTS;
             }
             else if (itemTemplate._props.ArmorType === "Heavy")
             {
-                return "HeavyVests";
+                return SkillTypes.HEAVY_VESTS;
             }
         }
         else if (this.itemHelper.isOfBaseclass(itemTemplate._id, BaseClasses.WEAPON))
         {
-            return "WeaponTreatment";
+            return SkillTypes.WEAPON_TREATMENT;
         }
         else if (this.itemHelper.isOfBaseclass(itemTemplate._id, BaseClasses.KNIFE))
         {
-            return "Melee";
+            return SkillTypes.MELEE;
         }
 
         return undefined;

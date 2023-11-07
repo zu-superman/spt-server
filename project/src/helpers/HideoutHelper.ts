@@ -3,7 +3,7 @@ import { inject, injectable } from "tsyringe";
 import { InventoryHelper } from "@spt-aki/helpers/InventoryHelper";
 import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
-import { Common, HideoutArea, IHideoutImprovement, Production, Productive } from "@spt-aki/models/eft/common/tables/IBotBase";
+import { HideoutArea, IHideoutImprovement, Production, Productive } from "@spt-aki/models/eft/common/tables/IBotBase";
 import { Upd } from "@spt-aki/models/eft/common/tables/IItem";
 import { StageBonus } from "@spt-aki/models/eft/hideout/IHideoutArea";
 import { IHideoutContinuousProductionStartRequestData } from "@spt-aki/models/eft/hideout/IHideoutContinuousProductionStartRequestData";
@@ -801,31 +801,11 @@ export class HideoutHelper
     }
 
     /**
-     * Does profile have elite hideout management skill
-     * @param pmcData Profile to look at
-     * @returns True if profile has skill
-     */
-    protected hasEliteHideoutManagementSkill(pmcData: IPmcData): boolean
-    {
-        return this.getHideoutManagementSkill(pmcData)?.Progress >= 5100; // level 51+
-    }
-
-    /**
      * Get a count of bitcoins player miner can hold
      */
     protected getBitcoinMinerContainerSlotSize(): number
     {
         return this.databaseServer.getTables().globals.config.SkillsSettings.HideoutManagement.EliteSlots.BitcoinFarm.Container;
-    }
-
-    /**
-     * Get the hideout management skill from player profile
-     * @param pmcData Profile to look at
-     * @returns Hideout management skill object
-     */
-    protected getHideoutManagementSkill(pmcData: IPmcData): Common
-    {
-        return pmcData.Skills.Common.find(x => x.Id === SkillTypes.HIDEOUT_MANAGEMENT);
     }
 
     /**
@@ -836,7 +816,7 @@ export class HideoutHelper
      */
     protected getHideoutManagementConsumptionBonus(pmcData: IPmcData): number
     {
-        const hideoutManagementSkill = this.getHideoutManagementSkill(pmcData);
+        const hideoutManagementSkill = this.profileHelper.getSkillFromProfile(pmcData, SkillTypes.HIDEOUT_MANAGEMENT);
         if (!hideoutManagementSkill)
         {
             return 0;

@@ -818,7 +818,7 @@ export class QuestHelper
         let moneyRewardBonus = moneyRewardBonuses.reduce((acc, cur) => acc + cur.value, 0);
 
         // Apply hideout management bonus to money reward (up to 51% bonus)
-        const hideoutManagementSkill = pmcData.Skills.Common.find(x => x.Id === SkillTypes.HIDEOUT_MANAGEMENT);
+        const hideoutManagementSkill = this.profileHelper.getSkillFromProfile(pmcData, SkillTypes.HIDEOUT_MANAGEMENT);
         if (hideoutManagementSkill)
         {
             moneyRewardBonus *= (1 + (hideoutManagementSkill.Progress / 10000)); // 5100 becomes 0.51, add 1 to it, 1.51, multiply the moneyreward bonus by it (e.g. 15 x 51)

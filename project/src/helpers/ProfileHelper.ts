@@ -2,7 +2,7 @@ import { inject, injectable } from "tsyringe";
 
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
-import { CounterKeyValue, Stats } from "@spt-aki/models/eft/common/tables/IBotBase";
+import { Common, CounterKeyValue, Stats } from "@spt-aki/models/eft/common/tables/IBotBase";
 import { IAkiProfile } from "@spt-aki/models/eft/profile/IAkiProfile";
 import { IValidateNicknameRequestData } from "@spt-aki/models/eft/profile/IValidateNicknameRequestData";
 import { SkillTypes } from "@spt-aki/models/enums/SkillTypes";
@@ -422,5 +422,17 @@ export class ProfileHelper
 
         profileSkill.Progress += pointsToAdd;
         profileSkill.LastAccess = this.timeUtil.getTimestamp();
+    }
+
+    public getSkillFromProfile(pmcData: IPmcData, skill: SkillTypes): Common
+    {
+        const skillToReturn = pmcData.Skills.Common.find(x => x.Id === skill);
+        if (!skillToReturn)
+        {
+            this.logger.warning(`Profile ${pmcData.sessionId} does not have a skill named: ${skill}`);
+            return undefined;
+        }
+
+        return skillToReturn;
     }
 }
