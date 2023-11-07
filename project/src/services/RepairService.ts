@@ -259,6 +259,7 @@ export class RepairService
         const itemToRepairDetails = itemsDb[itemToRepair._tpl];
         const repairItemIsArmor = (!!itemToRepairDetails._props.ArmorMaterial);
         const repairAmount = repairKits[0].count / this.getKitDivisor(itemToRepairDetails, repairItemIsArmor, pmcData);
+        const shouldApplyDurabilityLoss = this.shouldRepairKitApplyDurabilityLoss(pmcData, this.repairConfig.applyRandomizeDurabilityLoss);
 
         this.repairHelper.updateItemDurability(
             itemToRepair,
@@ -267,7 +268,7 @@ export class RepairService
             repairAmount,
             true,
             1,
-            this.repairConfig.applyRandomizeDurabilityLoss);
+            shouldApplyDurabilityLoss);
 
         // Find and use repair kit defined in body
         for (const repairKit of repairKits)
@@ -350,6 +351,29 @@ export class RepairService
         }
 
         return value;
+    }
+
+    /**
+     * Should a repair kit apply total durability loss on repair
+     * @param pmcData Player profile
+     * @param applyRandomizeDurabilityLoss Value from repair config
+     * @returns True if loss should be applied
+     */
+    protected shouldRepairKitApplyDurabilityLoss(pmcData: IPmcData, applyRandomizeDurabilityLoss: boolean): boolean
+    {
+        let shouldApplyDurabilityLoss = applyRandomizeDurabilityLoss;
+        if (shouldApplyDurabilityLoss)
+        {
+            // Random loss not disabled via config, perform charisma check
+            const hasEliteCharisma = this.profileHelper.hasEliteSkillLevel(SkillTypes.CHARISMA, pmcData);
+            if (hasEliteCharisma)
+            {
+                // 50/50 chance of loss being ignored at elite level
+                shouldApplyDurabilityLoss = this.randomUtil.getChance100(50);
+            }
+        }
+
+        return shouldApplyDurabilityLoss;
     }
 
     /**
