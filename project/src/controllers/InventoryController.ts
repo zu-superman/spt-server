@@ -599,7 +599,7 @@ export class InventoryController
             pmcData.Encyclopedia[itemId] = true;
 
             // TODO: update this with correct calculation using values from globals json
-            this.questHelper.rewardSkillPoints(sessionID, pmcData, SkillTypes.INTELLECT, 0.5);
+            this.profileHelper.addSkillPointsToPlayer(pmcData, SkillTypes.INTELLECT, 0.5);
         }
 
         return this.eventOutputHolder.getOutput(sessionID);
