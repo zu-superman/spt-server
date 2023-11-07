@@ -20,6 +20,7 @@ import { IQuestTypePool } from "@spt-aki/models/spt/repeatable/IQuestTypePool";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { EventOutputHolder } from "@spt-aki/routers/EventOutputHolder";
 import { ConfigServer } from "@spt-aki/servers/ConfigServer";
+import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { PaymentService } from "@spt-aki/services/PaymentService";
 import { ProfileFixerService } from "@spt-aki/services/ProfileFixerService";
 import { HttpResponseUtil } from "@spt-aki/utils/HttpResponseUtil";
@@ -34,8 +35,9 @@ export class RepeatableQuestController
     protected questConfig: IQuestConfig;
 
     constructor(
-        @inject("TimeUtil") protected timeUtil: TimeUtil,
         @inject("WinstonLogger") protected logger: ILogger,
+        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("TimeUtil") protected timeUtil: TimeUtil,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("HttpResponseUtil") protected httpResponse: HttpResponseUtil,
         @inject("JsonUtil") protected jsonUtil: JsonUtil,
@@ -199,8 +201,8 @@ export class RepeatableQuestController
     {
         if (repeatableConfig.name.toLowerCase() === "daily" && this.profileHelper.hasEliteSkillLevel(SkillTypes.CHARISMA, pmcData))
         {
-            // Elite charisma skill gives 1 extra daily quest
-            return repeatableConfig.numQuests + 1;
+            // Elite charisma skill gives extra daily quest(s)
+            return repeatableConfig.numQuests + this.databaseServer.getTables().globals.config.SkillsSettings.Charisma.BonusSettings.EliteBonusSettings.RepeatableQuestExtraCount;
         }
 
         return repeatableConfig.numQuests;
