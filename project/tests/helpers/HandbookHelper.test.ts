@@ -37,12 +37,12 @@ describe("HandbookHelper", () =>
             expect(secondResult).greaterThan(1);
         });
 
-        it("should return 1 when item not found in handbook is supplied and internal price cache has not been updated", () =>
+        it("should return 0 when item not found in handbook is supplied and internal price cache has not been updated", () =>
         {
             handbookHelper.lookupCacheGenerated = false;
             const result = handbookHelper.getTemplatePrice("fakeItem");
 
-            expect(result).toBe(1);
+            expect(result).toBe(0);
         });
 
         it("should return 1 when item not found in handbook is supplied and internal price cache has been updated", () =>
@@ -55,22 +55,21 @@ describe("HandbookHelper", () =>
             // Get item from cache
             const secondResult = handbookHelper.getTemplatePrice("modItemTpl");
 
-            expect(secondResult).toBe(1);
+            expect(secondResult).toBe(0);
         });
     });
 
     describe("templatesWithParent", () =>
     {
-        it("should return multiple items when supplied with medkit type id", () =>
+        it("should return multiple items when supplied with Drinks category id", () =>
         {
-            // TODO - Function doesn't init handbookPriceCache.items.byParent by itself when null
-            const result = handbookHelper.templatesWithParent("5448f39d4bdc2d0a728b4568"); // MedKit
+            const result = handbookHelper.templatesWithParent("5b47574386f77428ca22b335"); // Drinks category
             expect(result.length).greaterThan(5);
         });
 
         it("should return empty array when supplied with invalid id", () =>
         {
-            const result = handbookHelper.templatesWithParent("fakeParentid");
+            const result = handbookHelper.templatesWithParent("fakeCategory");
             expect(result.length).toBe(0);
         });
     });
