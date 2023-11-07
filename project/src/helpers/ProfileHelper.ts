@@ -5,6 +5,7 @@ import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
 import { CounterKeyValue, Stats } from "@spt-aki/models/eft/common/tables/IBotBase";
 import { IAkiProfile } from "@spt-aki/models/eft/profile/IAkiProfile";
 import { IValidateNicknameRequestData } from "@spt-aki/models/eft/profile/IValidateNicknameRequestData";
+import { SkillTypes } from "@spt-aki/models/enums/SkillTypes";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { SaveServer } from "@spt-aki/servers/SaveServer";
@@ -340,5 +341,29 @@ export class ProfileHelper
         {
             stat.Value++;
         }
+    }
+
+    /**
+     * Check if player has a skill at elite level
+     * @param skillType Skill to check
+     * @param pmcProfile Profile to find skill in
+     * @returns True if player has skill at elite level
+     */
+    public hasEliteSkillLevel(skillType: SkillTypes, pmcProfile: IPmcData): boolean
+    {
+        const profileSkills = pmcProfile?.Skills?.Common;
+        if (!profileSkills)
+        {
+            return false;
+        }
+
+        const profileSkill = profileSkills.find(x => x.Id === skillType);
+        if (!profileSkill)
+        {
+            this.logger.warning(`Unable to check for elite skill ${skillType}, not found in profile`);
+
+            return false;
+        }
+        return profileSkill.Progress >= 5100; // level 51
     }
 }

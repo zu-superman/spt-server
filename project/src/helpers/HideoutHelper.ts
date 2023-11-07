@@ -794,7 +794,7 @@ export class HideoutHelper
     {
         const bitcoinProduction = this.databaseServer.getTables().hideout.production.find(p => p._id === HideoutHelper.bitcoinFarm);
         const productionSlots = bitcoinProduction?.productionLimitCount || 3;
-        const hasManagementSkillSlots = this.hasEliteHideoutManagementSkill(pmcData);
+        const hasManagementSkillSlots = this.profileHelper.hasEliteSkillLevel(SkillTypes.HIDEOUT_MANAGEMENT, pmcData);
         const managementSlotsCount = this.getBitcoinMinerContainerSlotSize() || 2;
 
         return productionSlots + (hasManagementSkillSlots ? managementSlotsCount : 0);

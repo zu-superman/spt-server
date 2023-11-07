@@ -14,6 +14,7 @@ import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { ELocationName } from "@spt-aki/models/enums/ELocationName";
 import { HideoutAreas } from "@spt-aki/models/enums/HideoutAreas";
 import { QuestStatus } from "@spt-aki/models/enums/QuestStatus";
+import { SkillTypes } from "@spt-aki/models/enums/SkillTypes";
 import { IQuestConfig, IRepeatableQuestConfig } from "@spt-aki/models/spt/config/IQuestConfig";
 import { IQuestTypePool } from "@spt-aki/models/spt/repeatable/IQuestTypePool";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
@@ -131,7 +132,7 @@ export class RepeatableQuestController
                     const questTypePool = this.generateQuestPool(repeatableConfig, pmcData.Info.Level);
 
                     // Add daily quests
-                    for (let i = 0; i < repeatableConfig.numQuests; i++)
+                    for (let i = 0; i < this.getQuestCount(repeatableConfig, pmcData); i++)
                     {
                         let quest = null;
                         let lifeline = 0;
@@ -186,6 +187,23 @@ export class RepeatableQuestController
         }
 
         return returnData;
+    }
+
+    /**
+     * Get the number of quests to generate - takes into account charisma state of player
+     * @param repeatableConfig Config
+     * @param pmcData Player profile
+     * @returns Quest count
+     */
+    protected getQuestCount(repeatableConfig: IRepeatableQuestConfig, pmcData: IPmcData): number
+    {
+        if (repeatableConfig.name.toLowerCase() === "daily" && this.profileHelper.hasEliteSkillLevel(SkillTypes.CHARISMA, pmcData))
+        {
+            // Elite charisma skill gives 1 extra daily quest
+            return repeatableConfig.numQuests + 1;
+        }
+
+        return repeatableConfig.numQuests;
     }
 
     /**
