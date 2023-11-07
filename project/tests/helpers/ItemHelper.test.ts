@@ -974,4 +974,102 @@ describe("ItemHelper", () =>
             expect(result).toBe(undefined);
         });
     });
+
+    describe("getItemName", () =>
+    {
+        it("should return item name for a valid item", () =>
+        {
+            const result = itemHelper.getItemName("5449016a4bdc2d6f028b456f"); // "Roubles"
+
+            expect(result).toBe("Roubles");
+        });
+
+        it("should return undefined for invalid item", () =>
+        {
+            const result = itemHelper.getItemName("fake tpl");
+
+            expect(result).toBe(undefined);
+        });
+
+        it("should return undefined for empty string", () =>
+        {
+            const result = itemHelper.getItemName("");
+
+            expect(result).toBe(undefined);
+        });
+
+        it("should return undefined for undefined", () =>
+        {
+            const result = itemHelper.getItemName(undefined);
+
+            expect(result).toBe(undefined);
+        });
+    });
+
+    describe("splitStack", () =>
+    {
+        it("should return array of two items when provided item over its natural stack size limit", () =>
+        {
+            const stackableItem: Item = {
+                _id: container.resolve<HashUtil>("HashUtil").generate(),
+                _tpl: "59e690b686f7746c9f75e848", // m995
+                upd: {
+                    StackObjectsCount: 80 // Default is 60
+                }
+            };
+            const result = itemHelper.splitStack(stackableItem); // "Roubles"
+
+            expect(result.length).toBe(2);
+        });
+
+        it("should return same count of items passed in when provided is natural stack size limit", () =>
+        {
+            const stackableItem: Item = {
+                _id: container.resolve<HashUtil>("HashUtil").generate(),
+                _tpl: "59e690b686f7746c9f75e848", // m995
+                upd: {
+                    StackObjectsCount: 80 // Default is 60
+                }
+            };
+            const result = itemHelper.splitStack(stackableItem); // "Roubles"
+            const itemCount = result.reduce((sum, curr) => sum + curr.upd.StackObjectsCount, 0);
+            expect(itemCount).toBe(80);
+        });
+
+        it("should return same item if below max stack size", () =>
+        {
+            const stackableItem: Item = {
+                _id: container.resolve<HashUtil>("HashUtil").generate(),
+                _tpl: "59e690b686f7746c9f75e848", // m995
+                upd: {
+                    StackObjectsCount: 60 // Default is 60
+                }
+            };
+            const result = itemHelper.splitStack(stackableItem); // "Roubles"
+            const itemCount = result.reduce((sum, curr) => sum + curr.upd.StackObjectsCount, 0);
+            expect(itemCount).toBe(60);
+            expect(result.length).toBe(1);
+        });
+
+        it("should return same item if item has no StackObjectsCount property", () =>
+        {
+            const stackableItem: Item = {
+                _id: container.resolve<HashUtil>("HashUtil").generate(),
+                _tpl: "59e690b686f7746c9f75e848", // m995
+                upd: {}
+            };
+            const result = itemHelper.splitStack(stackableItem); // "Roubles"
+            expect(result.length).toBe(1);
+        });
+
+        it("should return same item if item has no upd object", () =>
+        {
+            const stackableItem: Item = {
+                _id: container.resolve<HashUtil>("HashUtil").generate(),
+                _tpl: "59e690b686f7746c9f75e848" // m995
+            };
+            const result = itemHelper.splitStack(stackableItem); // "Roubles"
+            expect(result.length).toBe(1);
+        });
+    });
 });
