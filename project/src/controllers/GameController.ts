@@ -119,6 +119,8 @@ export class GameController
 
         this.adjustLooseLootSpawnProbabilities();
 
+        this.checkTraderRepairValuesExist();
+
         // repeatableQuests are stored by in profile.Quests due to the responses of the client (e.g. Quests in offraidData)
         // Since we don't want to clutter the Quests list, we need to remove all completed (failed / successful) repeatable quests.
         // We also have to remove the Counters from the repeatableQuests
@@ -224,6 +226,30 @@ export class GameController
             if (!this.ragfairConfig.dynamic.blacklist.enableBsgList)
             {
                 this.flagAllItemsInDbAsSellableOnFlea();
+            }
+        }
+    }
+
+    /**
+     * Out of date/incorrectly made trader mods forget this data
+     */
+    protected checkTraderRepairValuesExist(): void
+    {
+        for (const traderKey in this.databaseServer.getTables().traders)
+        {
+            const trader = this.databaseServer.getTables().traders[traderKey];
+            if (!trader?.base?.repair)
+            {
+                this.logger.warning(`Trader ${trader.base._id} ${trader.base.name} is missing a repair object, adding in default values`);
+                trader.base.repair = this.jsonUtil.clone(this.databaseServer.getTables().traders.ragfair.base.repair);
+
+                return;
+            }
+
+            if (trader?.base?.repair?.quality)
+            {
+                this.logger.warning(`Trader ${trader.base._id} ${trader.base.name} is missing a repair quality value, adding in default value`);
+                trader.base.repair.quality = this.jsonUtil.clone(this.databaseServer.getTables().traders.ragfair.base.repair.quality);
             }
         }
     }
