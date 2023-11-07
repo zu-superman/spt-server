@@ -18,6 +18,7 @@ import { IServerDetails } from "@spt-aki/models/eft/game/IServerDetails";
 import { IAkiProfile } from "@spt-aki/models/eft/profile/IAkiProfile";
 import { AccountTypes } from "@spt-aki/models/enums/AccountTypes";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
+import { SkillTypes } from "@spt-aki/models/enums/SkillTypes";
 import { Traders } from "@spt-aki/models/enums/Traders";
 import { ICoreConfig } from "@spt-aki/models/spt/config/ICoreConfig";
 import { IHttpConfig } from "@spt-aki/models/spt/config/IHttpConfig";
@@ -472,7 +473,7 @@ export class GameController
      */
     protected warnOnActiveBotReloadSkill(pmcProfile: IPmcData): void
     {
-        const botReloadSkill = pmcProfile.Skills.Common.find(x => x.Id === "BotReload");
+        const botReloadSkill = this.profileHelper.getSkillFromProfile(pmcProfile, SkillTypes.BOT_RELOAD);
         if (botReloadSkill?.Progress > 0)
         {
             this.logger.warning(this.localisationService.getText("server_start_player_active_botreload_skill"));
