@@ -18,6 +18,7 @@ import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { MessageType } from "@spt-aki/models/enums/MessageType";
 import { QuestRewardType } from "@spt-aki/models/enums/QuestRewardType";
 import { QuestStatus } from "@spt-aki/models/enums/QuestStatus";
+import { SkillTypes } from "@spt-aki/models/enums/SkillTypes";
 import { IQuestConfig } from "@spt-aki/models/spt/config/IQuestConfig";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { EventOutputHolder } from "@spt-aki/routers/EventOutputHolder";
@@ -125,42 +126,6 @@ export class QuestHelper
         }
 
         return after;
-    }
-
-    /**
-     * Increase skill points of a skill on player profile
-     * Dupe of PlayerService.incrementSkillLevel()
-     * @param sessionID Session id
-     * @param pmcData Player profile
-     * @param skillName Name of skill to increase skill points of
-     * @param progressAmount Amount of skill points to add to skill
-     */
-    public rewardSkillPoints(sessionID: string, pmcData: IPmcData, skillName: string, progressAmount: number, scaleToSkillLevel: boolean = false): void
-    {
-        const indexOfSkillToUpdate = pmcData.Skills.Common.findIndex(s => s.Id === skillName);
-        if (indexOfSkillToUpdate === -1)
-        {
-            this.logger.error(this.localisationService.getText("quest-no_skill_found", skillName));
-
-            return;
-        }
-
-        const profileSkill = pmcData.Skills.Common[indexOfSkillToUpdate];
-        if (!profileSkill)
-        {
-            this.logger.error(this.localisationService.getText("quest-no_skill_found", skillName));
-
-            return;
-        }
-
-        // Tarkov has special handling of skills under level 9 to scale them to the lower XP requirement
-        if (scaleToSkillLevel)
-        {
-            progressAmount = this.adjustSkillExpForLowLevels(profileSkill, progressAmount);
-        }
-
-        profileSkill.Progress += progressAmount;
-        profileSkill.LastAccess = this.timeUtil.getTimestamp();
     }
 
     /**
@@ -771,7 +736,7 @@ export class QuestHelper
             switch (reward.type)
             {
                 case QuestRewardType.SKILL:
-                    this.rewardSkillPoints(sessionId, pmcData, reward.target, Number(reward.value));
+                    this.profileHelper.addSkillPointsToPlayer(pmcData, reward.target as SkillTypes, Number(reward.value));
                     break;
                 case QuestRewardType.EXPERIENCE:
                     this.profileHelper.addExperienceToPmc(sessionId, parseInt(<string>reward.value)); // this must occur first as the output object needs to take the modified profile exp value
@@ -853,7 +818,7 @@ export class QuestHelper
         let moneyRewardBonus = moneyRewardBonuses.reduce((acc, cur) => acc + cur.value, 0);
 
         // Apply hideout management bonus to money reward (up to 51% bonus)
-        const hideoutManagementSkill = pmcData.Skills.Common.find(x => x.Id === "HideoutManagement");
+        const hideoutManagementSkill = this.profileHelper.getSkillFromProfile(pmcData, SkillTypes.HIDEOUT_MANAGEMENT);
         if (hideoutManagementSkill)
         {
             moneyRewardBonus *= (1 + (hideoutManagementSkill.Progress / 10000)); // 5100 becomes 0.51, add 1 to it, 1.51, multiply the moneyreward bonus by it (e.g. 15 x 51)

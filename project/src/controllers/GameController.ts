@@ -18,6 +18,7 @@ import { IServerDetails } from "@spt-aki/models/eft/game/IServerDetails";
 import { IAkiProfile } from "@spt-aki/models/eft/profile/IAkiProfile";
 import { AccountTypes } from "@spt-aki/models/enums/AccountTypes";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
+import { SkillTypes } from "@spt-aki/models/enums/SkillTypes";
 import { Traders } from "@spt-aki/models/enums/Traders";
 import { ICoreConfig } from "@spt-aki/models/spt/config/ICoreConfig";
 import { IHttpConfig } from "@spt-aki/models/spt/config/IHttpConfig";
@@ -117,6 +118,8 @@ export class GameController
         }
 
         this.adjustLooseLootSpawnProbabilities();
+
+        this.checkTraderRepairValuesExist();
 
         // repeatableQuests are stored by in profile.Quests due to the responses of the client (e.g. Quests in offraidData)
         // Since we don't want to clutter the Quests list, we need to remove all completed (failed / successful) repeatable quests.
@@ -223,6 +226,30 @@ export class GameController
             if (!this.ragfairConfig.dynamic.blacklist.enableBsgList)
             {
                 this.flagAllItemsInDbAsSellableOnFlea();
+            }
+        }
+    }
+
+    /**
+     * Out of date/incorrectly made trader mods forget this data
+     */
+    protected checkTraderRepairValuesExist(): void
+    {
+        for (const traderKey in this.databaseServer.getTables().traders)
+        {
+            const trader = this.databaseServer.getTables().traders[traderKey];
+            if (!trader?.base?.repair)
+            {
+                this.logger.warning(`Trader ${trader.base._id} ${trader.base.name} is missing a repair object, adding in default values`);
+                trader.base.repair = this.jsonUtil.clone(this.databaseServer.getTables().traders.ragfair.base.repair);
+
+                return;
+            }
+
+            if (trader?.base?.repair?.quality)
+            {
+                this.logger.warning(`Trader ${trader.base._id} ${trader.base.name} is missing a repair quality value, adding in default value`);
+                trader.base.repair.quality = this.jsonUtil.clone(this.databaseServer.getTables().traders.ragfair.base.repair.quality);
             }
         }
     }
@@ -472,7 +499,7 @@ export class GameController
      */
     protected warnOnActiveBotReloadSkill(pmcProfile: IPmcData): void
     {
-        const botReloadSkill = pmcProfile.Skills.Common.find(x => x.Id === "BotReload");
+        const botReloadSkill = this.profileHelper.getSkillFromProfile(pmcProfile, SkillTypes.BOT_RELOAD);
         if (botReloadSkill?.Progress > 0)
         {
             this.logger.warning(this.localisationService.getText("server_start_player_active_botreload_skill"));

@@ -10,10 +10,11 @@ import { IGetInsuranceCostRequestData } from "@spt-aki/models/eft/insurance/IGet
 import { IGetInsuranceCostResponseData } from "@spt-aki/models/eft/insurance/IGetInsuranceCostResponseData";
 import { IInsureRequestData } from "@spt-aki/models/eft/insurance/IInsureRequestData";
 import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEventRouterResponse";
-import { Insurance, ISystemData } from "@spt-aki/models/eft/profile/IAkiProfile";
+import { ISystemData, Insurance } from "@spt-aki/models/eft/profile/IAkiProfile";
 import { IProcessBuyTradeRequestData } from "@spt-aki/models/eft/trade/IProcessBuyTradeRequestData";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { MessageType } from "@spt-aki/models/enums/MessageType";
+import { SkillTypes } from "@spt-aki/models/enums/SkillTypes";
 import { IInsuranceConfig } from "@spt-aki/models/spt/config/IInsuranceConfig";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { EventOutputHolder } from "@spt-aki/routers/EventOutputHolder";
@@ -552,6 +553,7 @@ export class InsuranceController
     public insure(pmcData: IPmcData, body: IInsureRequestData, sessionID: string): IItemEventRouterResponse
     {
         let output = this.eventOutputHolder.getOutput(sessionID);
+        const itemsToInsureCount = body.items.length;
         const itemsToPay = [];
         const inventoryItemsHash = {};
 
@@ -597,6 +599,8 @@ export class InsuranceController
                 itemId: inventoryItemsHash[key]._id
             });
         }
+
+        this.profileHelper.addSkillPointsToPlayer(pmcData, SkillTypes.CHARISMA, itemsToInsureCount * 0.01);
 
         return output;
     }

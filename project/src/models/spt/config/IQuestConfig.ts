@@ -68,6 +68,8 @@ export interface IRewardScaling
     items: number[]
     reputation: number[]
     rewardSpread: number
+    skillRewardChance: number[]
+    skillPointReward: number[]
 }
   
 export interface ITraderWhitelist 
@@ -84,7 +86,7 @@ export interface IRepeatableQuestTypesConfig
     Elimination: IEliminationConfig[]
 }
   
-export interface IExploration 
+export interface IExploration extends IBaseQuestConfig
 {
     maxExtracts: number
     specificExits: ISpecificExits
@@ -96,7 +98,7 @@ export interface ISpecificExits
     passageRequirementWhitelist: string[]
 }
   
-export interface ICompletion 
+export interface ICompletion extends IBaseQuestConfig
 {
     minRequestedAmount: number
     maxRequestedAmount: number
@@ -106,7 +108,7 @@ export interface ICompletion
     useBlacklist: boolean
 }
 
-export interface IPickup
+export interface IPickup extends IBaseQuestConfig
 {
     ItemTypeToFetchWithMaxCount: IPickupTypeWithMaxCount[]
 }
@@ -118,7 +120,7 @@ export interface IPickupTypeWithMaxCount
     minPickupCount: number
 }
   
-export interface IEliminationConfig 
+export interface IEliminationConfig extends IBaseQuestConfig
 {
     levelRange: MinMax
     targets: ITarget[]
@@ -139,6 +141,11 @@ export interface IEliminationConfig
     weaponCategoryRequirements: IWeaponRequirement[]
     weaponRequirementProb: number
     weaponRequirements: IWeaponRequirement[]
+}
+
+export interface IBaseQuestConfig
+{
+    possibleSkillRewards: string[]
 }
 
 export interface ITarget extends IProbabilityObject

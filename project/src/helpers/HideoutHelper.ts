@@ -3,7 +3,7 @@ import { inject, injectable } from "tsyringe";
 import { InventoryHelper } from "@spt-aki/helpers/InventoryHelper";
 import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
-import { Common, HideoutArea, IHideoutImprovement, Production, Productive } from "@spt-aki/models/eft/common/tables/IBotBase";
+import { HideoutArea, IHideoutImprovement, Production, Productive } from "@spt-aki/models/eft/common/tables/IBotBase";
 import { Upd } from "@spt-aki/models/eft/common/tables/IItem";
 import { StageBonus } from "@spt-aki/models/eft/hideout/IHideoutArea";
 import { IHideoutContinuousProductionStartRequestData } from "@spt-aki/models/eft/hideout/IHideoutContinuousProductionStartRequestData";
@@ -403,7 +403,7 @@ export class HideoutHelper
                 //check unit consumed for increment skill point
                 if (pmcData && Math.floor(pointsConsumed / 10) >= 1)
                 {
-                    this.playerService.incrementSkillLevel(pmcData, SkillTypes.HIDEOUT_MANAGEMENT, 1);
+                    this.profileHelper.addSkillPointsToPlayer(pmcData, SkillTypes.HIDEOUT_MANAGEMENT, 1);
                     pointsConsumed -= 10;
                 }
 
@@ -511,7 +511,7 @@ export class HideoutHelper
                     // Check amount of units consumed for possible increment of hideout mgmt skill point
                     if (pmcData && Math.floor(pointsConsumed / 10) >= 1)
                     {
-                        this.playerService.incrementSkillLevel(pmcData, SkillTypes.HIDEOUT_MANAGEMENT, 1);
+                        this.profileHelper.addSkillPointsToPlayer(pmcData, SkillTypes.HIDEOUT_MANAGEMENT, 1);
                         pointsConsumed -= 10;
                     }
 
@@ -637,7 +637,7 @@ export class HideoutHelper
                 //check unit consumed for increment skill point
                 if (pmcData && Math.floor(pointsConsumed / 10) >= 1)
                 {
-                    this.playerService.incrementSkillLevel(pmcData, SkillTypes.HIDEOUT_MANAGEMENT, 1);
+                    this.profileHelper.addSkillPointsToPlayer(pmcData, SkillTypes.HIDEOUT_MANAGEMENT, 1);
                     pointsConsumed -= 10;
                 }
 
@@ -794,20 +794,10 @@ export class HideoutHelper
     {
         const bitcoinProduction = this.databaseServer.getTables().hideout.production.find(p => p._id === HideoutHelper.bitcoinFarm);
         const productionSlots = bitcoinProduction?.productionLimitCount || 3;
-        const hasManagementSkillSlots = this.hasEliteHideoutManagementSkill(pmcData);
+        const hasManagementSkillSlots = this.profileHelper.hasEliteSkillLevel(SkillTypes.HIDEOUT_MANAGEMENT, pmcData);
         const managementSlotsCount = this.getBitcoinMinerContainerSlotSize() || 2;
 
         return productionSlots + (hasManagementSkillSlots ? managementSlotsCount : 0);
-    }
-
-    /**
-     * Does profile have elite hideout management skill
-     * @param pmcData Profile to look at
-     * @returns True if profile has skill
-     */
-    protected hasEliteHideoutManagementSkill(pmcData: IPmcData): boolean
-    {
-        return this.getHideoutManagementSkill(pmcData)?.Progress >= 5100; // level 51+
     }
 
     /**
@@ -819,16 +809,6 @@ export class HideoutHelper
     }
 
     /**
-     * Get the hideout management skill from player profile
-     * @param pmcData Profile to look at
-     * @returns Hideout management skill object
-     */
-    protected getHideoutManagementSkill(pmcData: IPmcData): Common
-    {
-        return pmcData.Skills.Common.find(x => x.Id === SkillTypes.HIDEOUT_MANAGEMENT);
-    }
-
-    /**
      * HideoutManagement skill gives a consumption bonus the higher the level
      * 0.5% per level per 1-51, (25.5% at max)
      * @param pmcData Profile to get hideout consumption level level from
@@ -836,7 +816,7 @@ export class HideoutHelper
      */
     protected getHideoutManagementConsumptionBonus(pmcData: IPmcData): number
     {
-        const hideoutManagementSkill = this.getHideoutManagementSkill(pmcData);
+        const hideoutManagementSkill = this.profileHelper.getSkillFromProfile(pmcData, SkillTypes.HIDEOUT_MANAGEMENT);
         if (!hideoutManagementSkill)
         {
             return 0;
