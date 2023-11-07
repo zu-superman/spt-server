@@ -92,9 +92,10 @@ export class HandbookHelper
         const handbookItem = this.databaseServer.getTables().templates.handbook.Items.find(x => x.Id === tpl);
         if (!handbookItem)
         {
-            this.handbookPriceCache.items.byId.set(tpl, 1);
+            const newValue = 0;
+            this.handbookPriceCache.items.byId.set(tpl, newValue);
 
-            return 1;
+            return newValue;
         }
 
         return handbookItem.Price;
