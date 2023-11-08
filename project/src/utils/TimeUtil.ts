@@ -15,7 +15,7 @@ export class TimeUtil
      * @param {number} number - The number to pad.
      * @returns {string} The padded number as a string.
      */
-    private pad(number: number): string
+    protected pad(number: number): string
     {
         return String(number).padStart(2, "0");
     }
