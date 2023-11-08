@@ -26,6 +26,7 @@ import { MailSendService } from "@spt-aki/services/MailSendService";
 import { PaymentService } from "@spt-aki/services/PaymentService";
 import { RandomUtil } from "@spt-aki/utils/RandomUtil";
 import { TimeUtil } from "@spt-aki/utils/TimeUtil";
+import { MathUtil } from "@spt-aki/utils/MathUtil";
 
 @injectable()
 export class InsuranceController
@@ -35,6 +36,7 @@ export class InsuranceController
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
+        @inject("MathUtil") protected mathUtil: MathUtil,
         @inject("EventOutputHolder") protected eventOutputHolder: EventOutputHolder,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
         @inject("SaveServer") protected saveServer: SaveServer,
@@ -144,7 +146,7 @@ export class InsuranceController
      */
     protected countAllInsuranceItems(insurance: Insurance[]): number
     {
-        return insurance.map(ins => ins.items.length).reduce((acc, len) => acc + len, 0);
+        return this.mathUtil.arraySum(insurance.map(ins => ins.items.length));
     }
 
     /**
