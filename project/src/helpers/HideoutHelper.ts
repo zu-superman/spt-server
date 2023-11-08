@@ -292,7 +292,9 @@ export class HideoutHelper
 
         // Increment progress by time passed
         const production = pmcData.Hideout.Production[prodId];
-        production.Progress += production.needFuelForAllProductionTime ? 0 : timeElapsed; // Some items NEED power to craft (e.g. DSP)
+        production.Progress += (production.needFuelForAllProductionTime && !hideoutProperties.isGeneratorOn)
+            ? 0
+            : timeElapsed; // Some items NEED power to craft (e.g. DSP)
 
         // Limit progress to total production time if progress is over (dont run for continious crafts))
         if (!recipe.continuous)
