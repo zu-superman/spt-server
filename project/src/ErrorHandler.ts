@@ -2,7 +2,6 @@ import readline from "node:readline";
 
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { AsyncQueue } from "@spt-aki/utils/AsyncQueue";
-import { UUidGenerator } from "@spt-aki/utils/UUidGenerator";
 import { WinstonMainLogger } from "@spt-aki/utils/logging/WinstonMainLogger";
 
 export class ErrorHandler
@@ -12,7 +11,7 @@ export class ErrorHandler
 
     constructor()
     {
-        this.logger = new WinstonMainLogger(new AsyncQueue(), new UUidGenerator());
+        this.logger = new WinstonMainLogger(new AsyncQueue());
         this.readLine = readline.createInterface({
             input: process.stdin,
             output: process.stdout

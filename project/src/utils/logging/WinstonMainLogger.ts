@@ -1,7 +1,6 @@
 import { inject, injectable } from "tsyringe";
 
 import { IAsyncQueue } from "@spt-aki/models/spt/utils/IAsyncQueue";
-import { IUUidGenerator } from "@spt-aki/models/spt/utils/IUuidGenerator";
 import { AbstractWinstonLogger } from "@spt-aki/utils/logging/AbstractWinstonLogger";
 
 @injectable()
@@ -9,11 +8,10 @@ export class WinstonMainLogger extends AbstractWinstonLogger
 {
 
     constructor(
-        @inject("AsyncQueue") protected asyncQueue: IAsyncQueue,
-        @inject("UUidGenerator") protected uuidGenerator: IUUidGenerator
+        @inject("AsyncQueue") protected asyncQueue: IAsyncQueue
     )
     {
-        super(asyncQueue, uuidGenerator);
+        super(asyncQueue);
     }
 
     protected isLogExceptions(): boolean 

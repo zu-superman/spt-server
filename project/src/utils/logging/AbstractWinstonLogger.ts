@@ -1,4 +1,5 @@
 import fs from "node:fs";
+import crypto from "node:crypto";
 import { promisify } from "node:util";
 import winston, { createLogger, format, transports } from "winston";
 import DailyRotateFile from "winston-daily-rotate-file";
@@ -10,7 +11,6 @@ import { SptLogger } from "@spt-aki/models/spt/logging/SptLogger";
 import { IAsyncQueue } from "@spt-aki/models/spt/utils/IAsyncQueue";
 import { ICommand } from "@spt-aki/models/spt/utils/ICommand";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
-import { IUUidGenerator } from "@spt-aki/models/spt/utils/IUuidGenerator";
 
 export abstract class AbstractWinstonLogger implements ILogger 
 {
@@ -49,9 +49,8 @@ export abstract class AbstractWinstonLogger implements ILogger
     protected writeFilePromisify: (path: fs.PathLike, data: string, options?: any) => Promise<void>;
 
     constructor(
-        protected asyncQueue: IAsyncQueue,
-        protected uuidGenerator: IUUidGenerator
-    ) 
+        protected asyncQueue: IAsyncQueue
+    )
     {
         this.filePath = `${this.getFilePath()}${this.getFileName()}`;
         this.writeFilePromisify = promisify(fs.writeFile);
@@ -140,7 +139,7 @@ export abstract class AbstractWinstonLogger implements ILogger
     public async writeToLogFile(data: string | Daum): Promise<void> 
     {
         const command: ICommand = {
-            uuid: this.uuidGenerator.generate(),
+            uuid: crypto.randomUUID(),
             cmd: async () => await this.writeFilePromisify(this.filePath, `${data}\n`, true)
         };
         await this.asyncQueue.waitFor(command);
@@ -165,14 +164,14 @@ export abstract class AbstractWinstonLogger implements ILogger
         if (typeof (data) === "string") 
         {
             command = {
-                uuid: this.uuidGenerator.generate(),
+                uuid: crypto.randomUUID(),
                 cmd: async () => await tmpLogger.log("custom", data)
             };
         }
         else 
         {
             command = {
-                uuid: this.uuidGenerator.generate(),
+                uuid: crypto.randomUUID(),
                 cmd: async () => await tmpLogger.log("custom", JSON.stringify(data, null, 4))
             };
         }
@@ -183,7 +182,7 @@ export abstract class AbstractWinstonLogger implements ILogger
     public async error(data: string | Record<string, unknown>): Promise<void> 
     {
         const command: ICommand = {
-            uuid: this.uuidGenerator.generate(),
+            uuid: crypto.randomUUID(),
             cmd: async () => await this.logger.error(data)
         };
         await this.asyncQueue.waitFor(command);
@@ -192,7 +191,7 @@ export abstract class AbstractWinstonLogger implements ILogger
     public async warning(data: string | Record<string, unknown>): Promise<void> 
     {
         const command: ICommand = {
-            uuid: this.uuidGenerator.generate(),
+            uuid: crypto.randomUUID(),
             cmd: async () => await this.logger.warn(data)
         };
         await this.asyncQueue.waitFor(command);
@@ -201,7 +200,7 @@ export abstract class AbstractWinstonLogger implements ILogger
     public async success(data: string | Record<string, unknown>): Promise<void> 
     {
         const command: ICommand = {
-            uuid: this.uuidGenerator.generate(),
+            uuid: crypto.randomUUID(),
             cmd: async () => await this.logger.succ(data)
         };
         await this.asyncQueue.waitFor(command);
@@ -210,7 +209,7 @@ export abstract class AbstractWinstonLogger implements ILogger
     public async info(data: string | Record<string, unknown>): Promise<void> 
     {
         const command: ICommand = {
-            uuid: this.uuidGenerator.generate(),
+            uuid: crypto.randomUUID(),
             cmd: async () => await this.logger.info(data)
         };
         await this.asyncQueue.waitFor(command);
@@ -225,7 +224,7 @@ export abstract class AbstractWinstonLogger implements ILogger
     public async logWithColor(data: string | Record<string, unknown>, textColor: LogTextColor, backgroundColor = LogBackgroundColor.DEFAULT): Promise<void>
     {
         const command: ICommand = {
-            uuid: this.uuidGenerator.generate(),
+            uuid: crypto.randomUUID(),
             cmd: async () => await this.log(data, textColor.toString(), backgroundColor.toString())
         };
 
@@ -239,14 +238,14 @@ export abstract class AbstractWinstonLogger implements ILogger
         if (onlyShowInConsole) 
         {
             command = {
-                uuid: this.uuidGenerator.generate(),
+                uuid: crypto.randomUUID(),
                 cmd: async () => await this.log(data, this.logLevels.colors.debug)
             };
         }
         else 
         {
             command = {
-                uuid: this.uuidGenerator.generate(),
+                uuid: crypto.randomUUID(),
                 cmd: async () => await this.logger.debug(data)
             };
         }

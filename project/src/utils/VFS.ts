@@ -1,13 +1,13 @@
-import { writeFileSync } from "atomically";
-import fs from "node:fs";
-import path, { resolve } from "node:path";
-import { promisify } from "node:util";
-import lockfile from "proper-lockfile";
 import "reflect-metadata";
 import { inject, injectable } from "tsyringe";
 
+import fs from "node:fs";
+import crypto from "node:crypto";
+import { promisify } from "node:util";
+import path, { resolve } from "node:path";
+import { writeFileSync } from "atomically";
+import lockfile from "proper-lockfile";
 import { IAsyncQueue } from "@spt-aki/models/spt/utils/IAsyncQueue";
-import { IUUidGenerator } from "@spt-aki/models/spt/utils/IUuidGenerator";
 
 @injectable()
 export class VFS 
@@ -24,9 +24,8 @@ export class VFS
     renamePromisify: (oldPath: fs.PathLike, newPath: fs.PathLike) => Promise<void>;
 
     constructor(
-        @inject("AsyncQueue") protected asyncQueue: IAsyncQueue,
-        @inject("UUidGenerator") protected uuidGenerator: IUUidGenerator
-    ) 
+        @inject("AsyncQueue") protected asyncQueue: IAsyncQueue
+    )
     {
         this.accessFilePromisify = promisify(fs.access);
         this.copyFilePromisify = promisify(fs.copyFile);
@@ -51,7 +50,7 @@ export class VFS
         {
             // Create the command to add to the queue
             const command = {
-                uuid: this.uuidGenerator.generate(),
+                uuid: crypto.randomUUID(),
                 cmd: async () => await this.accessFilePromisify(filepath)
             };
             // Wait for the command completion
@@ -75,7 +74,7 @@ export class VFS
     public async copyAsync(filepath: fs.PathLike, target: fs.PathLike): Promise<void> 
     {
         const command = {
-            uuid: this.uuidGenerator.generate(),
+            uuid: crypto.randomUUID(),
             cmd: async () => await this.copyFilePromisify(filepath, target)
         };
         await this.asyncQueue.waitFor(command);
@@ -89,7 +88,7 @@ export class VFS
     public async createDirAsync(filepath: string): Promise<void> 
     {
         const command = {
-            uuid: this.uuidGenerator.generate(),
+            uuid: crypto.randomUUID(),
             cmd: async () => await this.mkdirPromisify(filepath.substr(0, filepath.lastIndexOf("/")), { "recursive": true })
         };
         await this.asyncQueue.waitFor(command);
