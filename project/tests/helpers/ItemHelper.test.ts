@@ -1088,13 +1088,13 @@ describe("ItemHelper", () =>
                 "5735fdcd2459776445391d61"
             ];
             const mockTemplateItem = {
-                "_id": "571a29dc2459771fb2755a6a",
-                "_name": "mag_tt_toz_std_762x25tt_8",
-                "_props": {
-                    "Cartridges": [{
-                        "_props": {
-                            "filters": [{
-                                "Filter": validAmmoItems
+                _id: "571a29dc2459771fb2755a6a",
+                _name: "mag_tt_toz_std_762x25tt_8",
+                _props: {
+                    Cartridges: [{
+                        _props: {
+                            filters: [{
+                                Filter: validAmmoItems
                             }]
                         }
                     }]
