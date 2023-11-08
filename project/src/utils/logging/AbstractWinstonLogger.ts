@@ -12,7 +12,7 @@ import { IAsyncQueue } from "@spt-aki/models/spt/utils/IAsyncQueue";
 import { ICommand } from "@spt-aki/models/spt/utils/ICommand";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 
-export abstract class AbstractWinstonLogger implements ILogger 
+export abstract class AbstractWinstonLogger implements ILogger
 {
     protected showDebugInConsole = false;
     protected filePath: string;
@@ -55,7 +55,7 @@ export abstract class AbstractWinstonLogger implements ILogger
         this.filePath = `${this.getFilePath()}${this.getFileName()}`;
         this.writeFilePromisify = promisify(fs.writeFile);
         this.showDebugInConsole = globalThis.G_DEBUG_CONFIGURATION;
-        if (!fs.existsSync(this.getFilePath())) 
+        if (!fs.existsSync(this.getFilePath()))
         {
             fs.mkdirSync(this.getFilePath(), { recursive: true });
         }
@@ -69,7 +69,7 @@ export abstract class AbstractWinstonLogger implements ILogger
                     level: this.showDebugInConsole ? "debug" : "custom",
                     format: format.combine(
                         format.colorize({ all: true, colors: this.logLevels.colors }),
-                        format.printf(({ message }) => 
+                        format.printf(({ message }) =>
                         {
                             return `${message}`;
                         })
@@ -91,7 +91,7 @@ export abstract class AbstractWinstonLogger implements ILogger
                         format.timestamp(),
                         format.align(),
                         format.json(),
-                        format.printf(({ timestamp, level, message }) => 
+                        format.printf(({ timestamp, level, message }) =>
                         {
                             return `[${timestamp}] ${level}: ${message}`;
                         })
@@ -108,7 +108,7 @@ export abstract class AbstractWinstonLogger implements ILogger
 
         if (this.isLogExceptions())
         {
-            process.on("uncaughtException", (error) => 
+            process.on("uncaughtException", (error) =>
             {
                 this.error(`${error.name}: ${error.message}`);
                 this.error(error.stack);
@@ -123,9 +123,9 @@ export abstract class AbstractWinstonLogger implements ILogger
     protected abstract isLogExceptions(): boolean;
 
     protected abstract getFilePath(): string;
-    
+
     protected abstract getFileName(): string;
-    
+
     protected getLogMaxSize(): string
     {
         return "5m";
@@ -136,7 +136,7 @@ export abstract class AbstractWinstonLogger implements ILogger
         return "14d";
     }
 
-    public async writeToLogFile(data: string | Daum): Promise<void> 
+    public async writeToLogFile(data: string | Daum): Promise<void>
     {
         const command: ICommand = {
             uuid: crypto.randomUUID(),
@@ -145,7 +145,7 @@ export abstract class AbstractWinstonLogger implements ILogger
         await this.asyncQueue.waitFor(command);
     }
 
-    public async log(data: string | Error | Record<string, unknown>, color: string, backgroundColor = "" ): Promise<void> 
+    public async log(data: string | Error | Record<string, unknown>, color: string, backgroundColor = "" ): Promise<void>
     {
         const textColor = `${color} ${backgroundColor}`.trimEnd();
         const tmpLogger = createLogger({
@@ -161,14 +161,14 @@ export abstract class AbstractWinstonLogger implements ILogger
 
         let command: ICommand;
 
-        if (typeof (data) === "string") 
+        if (typeof (data) === "string")
         {
             command = {
                 uuid: crypto.randomUUID(),
                 cmd: async () => await tmpLogger.log("custom", data)
             };
         }
-        else 
+        else
         {
             command = {
                 uuid: crypto.randomUUID(),
@@ -179,7 +179,7 @@ export abstract class AbstractWinstonLogger implements ILogger
         await this.asyncQueue.waitFor(command);
     }
 
-    public async error(data: string | Record<string, unknown>): Promise<void> 
+    public async error(data: string | Record<string, unknown>): Promise<void>
     {
         const command: ICommand = {
             uuid: crypto.randomUUID(),
@@ -188,7 +188,7 @@ export abstract class AbstractWinstonLogger implements ILogger
         await this.asyncQueue.waitFor(command);
     }
 
-    public async warning(data: string | Record<string, unknown>): Promise<void> 
+    public async warning(data: string | Record<string, unknown>): Promise<void>
     {
         const command: ICommand = {
             uuid: crypto.randomUUID(),
@@ -197,7 +197,7 @@ export abstract class AbstractWinstonLogger implements ILogger
         await this.asyncQueue.waitFor(command);
     }
 
-    public async success(data: string | Record<string, unknown>): Promise<void> 
+    public async success(data: string | Record<string, unknown>): Promise<void>
     {
         const command: ICommand = {
             uuid: crypto.randomUUID(),
@@ -206,7 +206,7 @@ export abstract class AbstractWinstonLogger implements ILogger
         await this.asyncQueue.waitFor(command);
     }
 
-    public async info(data: string | Record<string, unknown>): Promise<void> 
+    public async info(data: string | Record<string, unknown>): Promise<void>
     {
         const command: ICommand = {
             uuid: crypto.randomUUID(),
@@ -231,18 +231,18 @@ export abstract class AbstractWinstonLogger implements ILogger
         await this.asyncQueue.waitFor(command);
     }
 
-    public async debug(data: string | Record<string, unknown>, onlyShowInConsole = false): Promise<void> 
+    public async debug(data: string | Record<string, unknown>, onlyShowInConsole = false): Promise<void>
     {
         let command: ICommand;
 
-        if (onlyShowInConsole) 
+        if (onlyShowInConsole)
         {
             command = {
                 uuid: crypto.randomUUID(),
                 cmd: async () => await this.log(data, this.logLevels.colors.debug)
             };
         }
-        else 
+        else
         {
             command = {
                 uuid: crypto.randomUUID(),

@@ -4,9 +4,8 @@ import { IAsyncQueue } from "@spt-aki/models/spt/utils/IAsyncQueue";
 import { AbstractWinstonLogger } from "@spt-aki/utils/logging/AbstractWinstonLogger";
 
 @injectable()
-export class WinstonMainLogger extends AbstractWinstonLogger 
+export class WinstonMainLogger extends AbstractWinstonLogger
 {
-
     constructor(
         @inject("AsyncQueue") protected asyncQueue: IAsyncQueue
     )
@@ -14,27 +13,27 @@ export class WinstonMainLogger extends AbstractWinstonLogger
         super(asyncQueue);
     }
 
-    protected isLogExceptions(): boolean 
+    protected isLogExceptions(): boolean
     {
         return true;
     }
 
-    protected isLogToFile(): boolean 
-    {
-        return true;
-    }
-    
-    protected isLogToConsole(): boolean 
+    protected isLogToFile(): boolean
     {
         return true;
     }
 
-    protected getFilePath(): string 
+    protected isLogToConsole(): boolean
+    {
+        return true;
+    }
+
+    protected getFilePath(): string
     {
         return "./user/logs/";
     }
 
-    protected getFileName(): string 
+    protected getFileName(): string
     {
         return "server-%DATE%.log";
     }
