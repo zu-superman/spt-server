@@ -1076,31 +1076,39 @@ describe("ItemHelper", () =>
 
     describe("getRandomCompatibleCaliberTemplateId", () =>
     {
-        it("Should return an item from the passed in items Filter array", () =>
+        it("should return an item from the passed template's cartridge filter array", () =>
         {
-            const fakeTemplateItem = {
-                _props: {
-                    Cartridges: [
-                        {
-                            _props: {
-                                filters: [
-                                    {
-                                        Filter: [
-                                            "desiredItemTpl"
-                                        ]
-                                    }
-                                ]
-                            }
+            const validAmmoItems = [
+                "5735ff5c245977640e39ba7e",
+                "573601b42459776410737435",
+                "573602322459776445391df1",
+                "5736026a245977644601dc61",
+                "573603562459776430731618",
+                "573603c924597764442bd9cb",
+                "5735fdcd2459776445391d61"
+            ];
+            const mockTemplateItem = {
+                "_id": "571a29dc2459771fb2755a6a",
+                "_name": "mag_tt_toz_std_762x25tt_8",
+                "_props": {
+                    "Cartridges": [{
+                        "_props": {
+                            "filters": [{
+                                "Filter": validAmmoItems
+                            }]
                         }
-                    ]
+                    }]
                 }
             };
-            const result = itemHelper.getRandomCompatibleCaliberTemplateId(fakeTemplateItem as ITemplateItem);
 
-            expect(result).toBe("desiredItemTpl");
+            vi.spyOn((itemHelper as any).randomUtil, "getArrayValue").mockReturnValue(validAmmoItems[0]);
+
+            const result = itemHelper.getRandomCompatibleCaliberTemplateId(mockTemplateItem as ITemplateItem);
+
+            expect(validAmmoItems).toContain(result);
         });
 
-        it("Should return null when item passed in has empty cartridges data", () =>
+        it("should return null when passed template has empty cartridge property", () =>
         {
             const fakeTemplateItem = {
                 _props: {
@@ -1114,11 +1122,20 @@ describe("ItemHelper", () =>
             expect(result).toBe(null);
         });
 
-        it("Should return null when undefined passed in", () =>
+        it("should return null when undefined passed in", () =>
         {
             const result = itemHelper.getRandomCompatibleCaliberTemplateId(undefined as ITemplateItem);
 
             expect(result).toBe(null);
+        });
+
+        it("should log a warning when the template cartridge can not be found", () =>
+        {
+            const mockLoggerWarning = vi.spyOn((itemHelper as any).logger, "warning");
+
+            itemHelper.getRandomCompatibleCaliberTemplateId(undefined as ITemplateItem);
+
+            expect(mockLoggerWarning).toHaveBeenCalled();
         });
     });
 });

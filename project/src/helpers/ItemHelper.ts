@@ -912,17 +912,17 @@ class ItemHelper
      * @param item Db item template to look up Cartridge filter values from
      * @returns Caliber of cartridge
      */
-    public getRandomCompatibleCaliberTemplateId(item: ITemplateItem): string
+    public getRandomCompatibleCaliberTemplateId(item: ITemplateItem): string | null
     {
-        const cartridges = item._props.Cartridges[0]._props.filters[0].Filter;
+        const cartridges = item?._props?.Cartridges[0]?._props?.filters[0]?.Filter;
 
         if (!cartridges)
         {
-            this.logger.warning(`no cartridges found for item: ${item._id} ${item._name}`);
+            this.logger.warning(`Failed to find cartridge for item: ${item?._id} ${item?._name}`);
             return null;
         }
 
-        return cartridges[Math.floor(Math.random() * item._props.Cartridges[0]._props.filters[0].Filter.length)];
+        return this.randomUtil.getArrayValue(cartridges);
     }
 
     /**
