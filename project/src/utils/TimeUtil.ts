@@ -1,41 +1,77 @@
 import { injectable } from "tsyringe";
+import { formatInTimeZone } from "date-fns-tz";
 
 /**
- * Utility class to handle time related problems
+ * Utility class to handle time related operations.
  */
 @injectable()
 export class TimeUtil
 {
-    public static readonly oneHourAsSeconds = 3600;
+    public static readonly oneHourAsSeconds = 3600; // Number of seconds in one hour.
 
+    /**
+     * Pads a number with a leading zero if it is less than 10.
+     *
+     * @param {number} number - The number to pad.
+     * @returns {string} The padded number as a string.
+     */
+    private pad(number: number): string
+    {
+        return String(number).padStart(2, "0");
+    }
+
+    /**
+     * Formats the time part of a date as a UTC string.
+     *
+     * @param {Date} date - The date to format in UTC.
+     * @returns {string} The formatted time as 'HH-MM-SS'.
+     */
     public formatTime(date: Date): string
     {
-        const hours = `0${date.getHours()}`.substr(-2);
-        const minutes = `0${date.getMinutes()}`.substr(-2);
-        const seconds = `0${date.getSeconds()}`.substr(-2);
+        const hours = this.pad(date.getUTCHours());
+        const minutes = this.pad(date.getUTCMinutes());
+        const seconds = this.pad(date.getUTCSeconds());
         return `${hours}-${minutes}-${seconds}`;
     }
 
+    /**
+     * Formats the date part of a date as a UTC string.
+     *
+     * @param {Date} date - The date to format in UTC.
+     * @returns {string} The formatted date as 'YYYY-MM-DD'.
+     */
     public formatDate(date: Date): string
     {
-        const day = `0${date.getDate()}`.substr(-2);
-        const month = `0${date.getMonth() + 1}`.substr(-2);
-        return `${date.getFullYear()}-${month}-${day}`;
+        const day = this.pad(date.getUTCDate());
+        const month = this.pad(date.getUTCMonth() + 1); // getUTCMonth returns 0-11
+        const year = date.getUTCFullYear();
+        return `${year}-${month}-${day}`;
     }
 
+    /**
+     * Gets the current date as a formatted UTC string.
+     *
+     * @returns {string} The current date as 'YYYY-MM-DD'.
+     */
     public getDate(): string
     {
         return this.formatDate(new Date());
     }
 
+    /**
+     * Gets the current time as a formatted UTC string.
+     *
+     * @returns {string} The current time as 'HH-MM-SS'.
+     */
     public getTime(): string
     {
         return this.formatTime(new Date());
     }
 
     /**
-     * Get timestamp in seconds
-     * @returns 
+     * Gets the current timestamp in seconds in UTC.
+     *
+     * @returns {number} The current timestamp in seconds since the Unix epoch in UTC.
      */
     public getTimestamp(): number
     {
@@ -43,36 +79,33 @@ export class TimeUtil
     }
 
     /**
-     * mail in eft requires time be in a specific format 
-     * @returns current time in format: 00:00 (hh:mm)
+     * Gets the current time in UTC in a format suitable for mail in EFT.
+     *
+     * @returns {string} The current time as 'HH:MM' in UTC.
      */
     public getTimeMailFormat(): string
     {
-        const date = new Date();
-        const hours = `0${date.getHours()}`.substr(-2);
-        const minutes = `0${date.getMinutes()}`.substr(-2);
-        return `${hours}:${minutes}`;
+        return formatInTimeZone(new Date(), "UTC", "HH:mm");
     }
 
     /**
-     * Mail in eft requires date be in a specific format 
-     * @returns current date in format: 00.00.0000 (dd.mm.yyyy)
+     * Gets the current date in UTC in a format suitable for emails in EFT.
+     *
+     * @returns {string} The current date as 'DD.MM.YYYY' in UTC.
      */
     public getDateMailFormat(): string
     {
-        const date = new Date();
-        const day = `0${date.getDate()}`.substr(-2);
-        const month = `0${date.getMonth() + 1}`.substr(-2);
-        return `${day}.${month}.${date.getFullYear()}`;
+        return formatInTimeZone(new Date(), "UTC", "dd.MM.yyyy");
     }
 
     /**
-     * Convert hours into seconds
-     * @param hours hours to convert to seconds
-     * @returns number
+     * Converts a number of hours into seconds.
+     *
+     * @param {number} hours - The number of hours to convert.
+     * @returns {number} The equivalent number of seconds.
      */
     public getHoursAsSeconds(hours: number): number
     {
-        return hours * 3600;
+        return hours * TimeUtil.oneHourAsSeconds;
     }
 }
