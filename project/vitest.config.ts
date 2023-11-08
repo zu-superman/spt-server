@@ -5,7 +5,6 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
     test: {
         name: "spt-server",
-        api: 51204,
         reporters: ["default"],
         root: "./",
         include: ["**/*.{test,spec}.?(c|m)[jt]s?(x)"],
