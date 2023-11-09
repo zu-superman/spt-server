@@ -1,9 +1,12 @@
 import os from "node:os";
-import { inject, injectable, injectAll } from "tsyringe";
+import { inject, injectAll, injectable } from "tsyringe";
 
 import { OnLoad } from "@spt-aki/di/OnLoad";
 import { OnUpdate } from "@spt-aki/di/OnUpdate";
+import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
+import { ICoreConfig } from "@spt-aki/models/spt/config/ICoreConfig";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
+import { ConfigServer } from "@spt-aki/servers/ConfigServer";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
 import { EncodingUtil } from "@spt-aki/utils/EncodingUtil";
 import { TimeUtil } from "@spt-aki/utils/TimeUtil";
@@ -12,16 +15,20 @@ import { TimeUtil } from "@spt-aki/utils/TimeUtil";
 export class App
 {
     protected onUpdateLastRun = {};
+    protected coreConfig: ICoreConfig;
 
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
         @inject("LocalisationService") protected localisationService: LocalisationService,
+        @inject("ConfigServer") protected configServer: ConfigServer,
         @inject("EncodingUtil") protected encodingUtil: EncodingUtil,
         @injectAll("OnLoad") protected onLoadComponents: OnLoad[],
         @injectAll("OnUpdate") protected onUpdateComponents: OnUpdate[]
     )
-    { }
+    {
+        this.coreConfig = this.configServer.getConfig(ConfigTypes.CORE);
+    }
 
     public async load(): Promise<void>
     {
@@ -33,6 +40,16 @@ export class App
         this.logger.debug(`RAM: ${(os.totalmem() / 1024 / 1024 / 1024).toFixed(2)}GB`);
         this.logger.debug(`PATH: ${this.encodingUtil.toBase64(process.argv[0])}`);
         this.logger.debug(`PATH: ${this.encodingUtil.toBase64(process.execPath)}`);
+        this.logger.debug(`Server: ${this.coreConfig.akiVersion}`);
+        if (this.coreConfig.buildTime)
+        {
+            this.logger.debug(`Date: ${this.coreConfig.buildTime}`);
+        }
+
+        if (this.coreConfig.commit)
+        {
+            this.logger.debug(`Commit: ${this.coreConfig.commit}`);
+        }
 
         for (const onLoad of this.onLoadComponents)
         {
