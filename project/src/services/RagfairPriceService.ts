@@ -101,7 +101,7 @@ export class RagfairPriceService implements OnLoad
     {
         // Get dynamic price (templates/prices), if that doesnt exist get price from static array (templates/handbook)
         let itemPrice = this.getDynamicPriceForItem(tplId) || this.getStaticPriceForItem(tplId);
-        if (!itemPrice)
+        if (itemPrice === undefined)
         {
             this.logger.warning(this.localisationService.getText("ragfair-unable_to_find_item_price_for_item_in_flea_handbook", tplId));
         }
