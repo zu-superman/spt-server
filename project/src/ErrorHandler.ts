@@ -14,7 +14,7 @@ export class ErrorHandler
         this.logger = new WinstonMainLogger(new AsyncQueue());
         this.readLine = readline.createInterface({
             input: process.stdin,
-            output: process.stdout
+            output: process.stdout,
         });
     }
 
@@ -27,7 +27,6 @@ export class ErrorHandler
             this.logger.error(`\nStacktrace:\n${err.stack}`);
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         this.readLine.question("Press Enter to close the window", (_ans) => this.readLine.close());
         this.readLine.on("close", () => process.exit(1));
     }

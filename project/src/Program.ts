@@ -1,23 +1,22 @@
 import { container } from "tsyringe";
 
-import { ErrorHandler } from "@spt-aki/ErrorHandler";
 import { Container } from "@spt-aki/di/Container";
+import { ErrorHandler } from "@spt-aki/ErrorHandler";
 import type { PreAkiModLoader } from "@spt-aki/loaders/PreAkiModLoader";
 import { App } from "@spt-aki/utils/App";
 import { Watermark } from "@spt-aki/utils/Watermark";
 
 export class Program
 {
-
     private errorHandler: ErrorHandler;
-    constructor() 
+    constructor()
     {
         // set window properties
         process.stdout.setEncoding("utf8");
         process.title = "SPT-AKI Server";
         this.errorHandler = new ErrorHandler();
     }
-    
+
     public async start(): Promise<void>
     {
         try
@@ -36,7 +35,7 @@ export class Program
         }
         catch (err: any)
         {
-            this.errorHandler.handleCriticalError((err instanceof Error ? err : new Error(err)));
+            this.errorHandler.handleCriticalError(err instanceof Error ? err : new Error(err));
         }
     }
 }

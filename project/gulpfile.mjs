@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
-
 import gulp from "gulp";
 import { exec } from "gulp-execa";
 import rename from "gulp-rename";
@@ -10,7 +8,7 @@ import path from "node:path";
 import pkg from "pkg";
 import pkgfetch from "pkg-fetch";
 import * as ResEdit from "resedit";
-import manifest from "./package.json" assert { type: "json" };
+import manifest from "./package.json" assert {type: "json"};
 
 const nodeVersion = "node18"; // As of pkg-fetch v3.5, it's v18.15.0
 const stdio = "inherit";
@@ -22,14 +20,14 @@ const pkgConfig = "pkgconfig.json";
 const entries = {
     release: path.join("obj", "ide", "ReleaseEntry.js"),
     debug: path.join("obj", "ide", "DebugEntry.js"),
-    bleeding: path.join("obj", "ide", "BleedingEdgeEntry.js")
+    bleeding: path.join("obj", "ide", "BleedingEdgeEntry.js"),
 };
 const licenseFile = "../LICENSE.md";
 
 /**
- * Transpiles the src files into javascript with swc
+ * Transpile src files into Javascript with SWC
  */
-const compile = async () => await exec("swc src -d obj", { stdio });
+const compile = async () => await exec("swc src -d obj", {stdio});
 
 // Packaging
 const fetchPackageImage = async () =>
@@ -37,7 +35,12 @@ const fetchPackageImage = async () =>
     try
     {
         const output = "./.pkg-cache/v3.5";
-        const fetchedPkg = await pkgfetch.need({ arch: process.arch, nodeRange: nodeVersion, platform: process.platform, output });
+        const fetchedPkg = await pkgfetch.need({
+            arch: process.arch,
+            nodeRange: nodeVersion,
+            platform: process.platform,
+            output,
+        });
         console.log(`fetched node binary at ${fetchedPkg}`);
         const builtPkg = fetchedPkg.replace("node", "built");
         await fs.copyFile(fetchedPkg, builtPkg);
@@ -66,7 +69,7 @@ const updateBuildProperties = async () =>
         res.entries,
         1,
         1033,
-        iconFile.icons.map(item => item.data)
+        iconFile.icons.map((item) => item.data),
     );
 
     const vi = ResEdit.Resource.VersionInfo.fromEntries(res.entries)[0];
@@ -77,8 +80,8 @@ const updateBuildProperties = async () =>
             ProductName: manifest.author,
             FileDescription: manifest.description,
             CompanyName: manifest.name,
-            LegalCopyright:  manifest.license
-        }
+            LegalCopyright: manifest.license,
+        },
     );
     vi.removeStringValue({lang: 1033, codepage: 1200}, "OriginalFilename");
     vi.removeStringValue({lang: 1033, codepage: 1200}, "InternalName");
@@ -92,12 +95,16 @@ const updateBuildProperties = async () =>
 /**
  * Copy various asset files to the destination directory
  */
-const copyAssets = () => gulp.src(["assets/**/*.json", "assets/**/*.json5", "assets/**/*.png", "assets/**/*.jpg", "assets/**/*.ico"]).pipe(gulp.dest(dataDir));
+const copyAssets = () =>
+    gulp.src(["assets/**/*.json", "assets/**/*.json5", "assets/**/*.png", "assets/**/*.jpg", "assets/**/*.ico"]).pipe(
+        gulp.dest(dataDir),
+    );
 
 /**
  * Copy executables from node_modules
  */
-const copyExecutables = () => gulp.src(["node_modules/@pnpm/exe/**/*"]).pipe(gulp.dest(path.join(dataDir, "@pnpm", "exe")));
+const copyExecutables = () =>
+    gulp.src(["node_modules/@pnpm/exe/**/*"]).pipe(gulp.dest(path.join(dataDir, "@pnpm", "exe")));
 
 /**
  * Rename and copy the license file
@@ -116,7 +123,7 @@ const writeCommitHashToCoreJSON = async () =>
         const parsed = JSON.parse(coreJSON);
 
         // Fetch the latest Git commit hash
-        const gitResult = await exec("git rev-parse HEAD", { stdout: "pipe" });
+        const gitResult = await exec("git rev-parse HEAD", {stdout: "pipe"});
 
         // Update the commit hash in the core.json object
         parsed.commit = gitResult.stdout.trim() || "";
@@ -150,12 +157,12 @@ const addAssets = gulp.series(copyAssets, copyExecutables, copyLicense, writeCom
 /**
  * Cleans the build directory.
  */
-const cleanBuild = async () => await fs.rm(buildDir, { recursive: true, force: true });
+const cleanBuild = async () => await fs.rm(buildDir, {recursive: true, force: true});
 
 /**
  * Cleans the transpiled javascript directory.
  */
-const cleanCompiled = async () => await fs.rm("./obj", { recursive: true, force: true });
+const cleanCompiled = async () => await fs.rm("./obj", {recursive: true, force: true});
 
 /**
  * Recursively builds an array of paths for json files.
@@ -244,7 +251,7 @@ const loadRecursiveAsync = async (filepath) =>
 
     // set all loadRecursive to be executed asynchronously
     const resEntries = Object.entries(result);
-    const resResolved = await Promise.all(resEntries.map(ent => ent[1]));
+    const resResolved = await Promise.all(resEntries.map((ent) => ent[1]));
     for (let resIdx = 0; resIdx < resResolved.length; resIdx++)
     {
         resEntries[resIdx][1] = resResolved[resIdx];
@@ -259,7 +266,16 @@ const build = (packagingType) =>
 {
     const anonPackaging = () => packaging(entries[packagingType]);
     anonPackaging.displayName = `packaging-${packagingType}`;
-    const tasks = [cleanBuild, validateJSONs, compile, fetchPackageImage, anonPackaging, addAssets, updateBuildProperties, cleanCompiled];
+    const tasks = [
+        cleanBuild,
+        validateJSONs,
+        compile,
+        fetchPackageImage,
+        anonPackaging,
+        addAssets,
+        updateBuildProperties,
+        cleanCompiled,
+    ];
     return gulp.series(tasks);
 };
 
@@ -269,7 +285,18 @@ const packaging = async (entry) =>
     const target = `${nodeVersion}-${process.platform}-${process.arch}`;
     try
     {
-        await pkg.exec([entry, "--compress", "GZip", "--target", target, "--output", serverExe, "--config", pkgConfig, "--public"]);
+        await pkg.exec([
+            entry,
+            "--compress",
+            "GZip",
+            "--target",
+            target,
+            "--output",
+            serverExe,
+            "--config",
+            pkgConfig,
+            "--public",
+        ]);
     }
     catch (error)
     {
@@ -281,11 +308,11 @@ gulp.task("build:debug", build("debug"));
 gulp.task("build:release", build("release"));
 gulp.task("build:bleeding", build("bleeding"));
 
-gulp.task("run:build", async () => await exec("Aki.Server.exe", { stdio, cwd: buildDir }));
-gulp.task("run:debug", async () => await exec("ts-node-dev -r tsconfig-paths/register src/ide/TestEntry.ts", { stdio }));
+gulp.task("run:build", async () => await exec("Aki.Server.exe", {stdio, cwd: buildDir}));
+gulp.task("run:debug", async () => await exec("ts-node-dev -r tsconfig-paths/register src/ide/TestEntry.ts", {stdio}));
 gulp.task("run:profiler", async () =>
 {
     await cleanCompiled();
     await compile();
-    await exec("node --prof --inspect --trace-warnings obj/ide/TestEntry.js", { stdio });
+    await exec("node --prof --inspect --trace-warnings obj/ide/TestEntry.js", {stdio});
 });

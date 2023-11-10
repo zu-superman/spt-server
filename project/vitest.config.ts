@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 import path from "node:path";
 import { defineConfig } from "vitest/config";
 
@@ -9,7 +8,7 @@ export default defineConfig({
         root: "./",
         include: ["**/*.{test,spec}.?(c|m)[jt]s?(x)"],
         cache: {
-            dir: "./tests/__cache__"
+            dir: "./tests/__cache__",
         },
         environment: "./tests/CustomEnvironment.ts",
         globals: true,
@@ -20,18 +19,18 @@ export default defineConfig({
             reportOnFailure: true,
             all: true,
             include: ["src"],
-            exclude: ["src/models/**", "tests/**"]
+            exclude: ["src/models/**", "tests/**"],
         },
         pool: "threads",
         poolOptions: {
             threads: {
                 singleThread: true,
-                isolate: false
-            }
+                isolate: false,
+            },
         },
         alias: {
             "@spt-aki": path.resolve(__dirname, "src"),
-            "@tests": path.resolve(__dirname, "tests")
-        }
-    }
+            "@tests": path.resolve(__dirname, "tests"),
+        },
+    },
 });
