@@ -498,10 +498,10 @@ export class QuestController
     protected removeQuestFromScavProfile(sessionId: string, questIdToRemove: string): void
     {
         const fullProfile = this.profileHelper.getFullProfile(sessionId);
-        const repeatableInScavProfile = fullProfile.characters.scav.Quests.find(x => x.qid === questIdToRemove);
+        const repeatableInScavProfile = fullProfile.characters.scav.Quests?.find(x => x.qid === questIdToRemove);
         if (!repeatableInScavProfile)
         {
-            this.logger.warning(`Unable to remove quest: ${questIdToRemove} from profile as scav profile cannot be found`);
+            this.logger.warning(`Unable to remove quest: ${questIdToRemove} from profile as scav quest cannot be found`);
 
             return;
         }
