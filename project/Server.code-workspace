@@ -9,7 +9,8 @@
             "EditorConfig.EditorConfig",
             "dprint.dprint",
             "dbaeumer.vscode-eslint",
-            "biomejs.biome"
+            "biomejs.biome",
+            "streetsidesoftware.code-spell-checker"
         ]
     },
     "settings": {
@@ -19,6 +20,13 @@
         "editor.codeActionsOnSave": [
             "source.fixAll.eslint",
             "source.organizeImports.biome"
+        ],
+        "cSpell.words": [
+            "deathmatch",
+            "gethideout",
+            "profileid",
+            "requestid",
+            "scavcase"
         ]
     }
 }

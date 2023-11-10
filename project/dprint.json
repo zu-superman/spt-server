@@ -63,7 +63,6 @@
     "excludes": [
         "**/*.js",
         "**/*.d.ts",
-        "**/*.swcrc",
         "**/*-lock.json",
         "**/.git/**/*",
         "**/node_modules/**/*",
