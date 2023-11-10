@@ -240,7 +240,7 @@ export class GameController
             const trader = this.databaseServer.getTables().traders[traderKey];
             if (!trader?.base?.repair)
             {
-                this.logger.warning(`Trader ${trader.base._id} ${trader.base.name} is missing a repair object, adding in default values`);
+                this.logger.warning(`Trader ${trader.base._id} ${trader.base.nickname} is missing a repair object, adding in default values`);
                 trader.base.repair = this.jsonUtil.clone(this.databaseServer.getTables().traders.ragfair.base.repair);
 
                 return;
@@ -248,7 +248,7 @@ export class GameController
 
             if (trader.base.repair?.quality)
             {
-                this.logger.warning(`Trader ${trader.base._id} ${trader.base.name} is missing a repair quality value, adding in default value`);
+                this.logger.warning(`Trader ${trader.base._id} ${trader.base.nickname} is missing a repair quality value, adding in default value`);
                 trader.base.repair.quality = this.databaseServer.getTables().traders.ragfair.base.repair.quality;
             }
         }
