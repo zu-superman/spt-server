@@ -246,7 +246,7 @@ export class GameController
                 return;
             }
 
-            if (trader.base.repair?.quality)
+            if (trader.base.repair?.quality === undefined)
             {
                 this.logger.warning(`Trader ${trader.base._id} ${trader.base.nickname} is missing a repair quality value, adding in default value`);
                 trader.base.repair.quality = this.databaseServer.getTables().traders.ragfair.base.repair.quality;
