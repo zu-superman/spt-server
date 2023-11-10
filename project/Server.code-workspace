@@ -7,9 +7,8 @@
     "extensions": {
         "recommendations": [
             "EditorConfig.EditorConfig",
-            "Jota0222.multi-formatter",
-            "dbaeumer.vscode-eslint",
             "dprint.dprint",
+            "dbaeumer.vscode-eslint",
             "biomejs.biome"
         ]
     },
@@ -17,15 +16,9 @@
         "window.title": "SPT-AKI Server",
         "editor.formatOnSave": true,
         "editor.defaultFormatter": "dprint.dprint",
-        "multiFormatter.formatterList": [
-            "dprint.dprint",
-            "biomejs.biome"
-        ],
-        "[typescript]": {
-            "editor.codeActionsOnSave": {
-                "quickfix.biome": false,
-                "source.organizeImports.biome": true
-            }
-        }
+        "editor.codeActionsOnSave": [
+            "source.fixAll.eslint",
+            "source.organizeImports.biome"
+        ]
     }
 }
