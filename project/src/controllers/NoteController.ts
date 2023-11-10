@@ -10,15 +10,15 @@ import { EventOutputHolder } from "@spt-aki/routers/EventOutputHolder";
 export class NoteController
 {
     constructor(
-        @inject("EventOutputHolder") protected eventOutputHolder: EventOutputHolder
+        @inject("EventOutputHolder") protected eventOutputHolder: EventOutputHolder,
     )
-    { }
+    {}
 
     public addNote(pmcData: IPmcData, body: INoteActionData, sessionID: string): IItemEventRouterResponse
     {
         const newNote: Note = {
             Time: body.note.Time,
-            Text: body.note.Text
+            Text: body.note.Text,
         };
         pmcData.Notes.Notes.push(newNote);
 

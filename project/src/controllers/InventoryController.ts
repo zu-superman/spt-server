@@ -62,21 +62,25 @@ export class InventoryController
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("LootGenerator") protected lootGenerator: LootGenerator,
         @inject("EventOutputHolder") protected eventOutputHolder: EventOutputHolder,
-        @inject("HttpResponseUtil") protected httpResponseUtil: HttpResponseUtil
+        @inject("HttpResponseUtil") protected httpResponseUtil: HttpResponseUtil,
     )
     {}
 
     /**
-    * Move Item
-    * change location of item with parentId and slotId
-    * transfers items from one profile to another if fromOwner/toOwner is set in the body.
-    * otherwise, move is contained within the same profile_f.
+     * Move Item
+     * change location of item with parentId and slotId
+     * transfers items from one profile to another if fromOwner/toOwner is set in the body.
+     * otherwise, move is contained within the same profile_f.
      * @param pmcData Profile
      * @param moveRequest Move request data
      * @param sessionID Session id
      * @returns IItemEventRouterResponse
      */
-    public moveItem(pmcData: IPmcData, moveRequest: IInventoryMoveRequestData, sessionID: string): IItemEventRouterResponse
+    public moveItem(
+        pmcData: IPmcData,
+        moveRequest: IInventoryMoveRequestData,
+        sessionID: string,
+    ): IItemEventRouterResponse
     {
         const output = this.eventOutputHolder.getOutput(sessionID);
 
@@ -89,14 +93,14 @@ export class InventoryController
         const ownerInventoryItems = this.inventoryHelper.getOwnerInventoryItems(moveRequest, sessionID);
         if (ownerInventoryItems.sameInventory)
         {
-            // Dont move items from trader to profile, this can happen when editing a traders preset weapons
+            // Don't move items from trader to profile, this can happen when editing a traders preset weapons
             if (moveRequest.fromOwner?.type === "Trader" && !ownerInventoryItems.isMail)
             {
                 return this.getTraderExploitErrorResponse(output);
             }
 
             // Check for item in inventory before allowing internal transfer
-            const originalItemLocation = ownerInventoryItems.from.find(x => x._id === moveRequest.item);
+            const originalItemLocation = ownerInventoryItems.from.find((x) => x._id === moveRequest.item);
             if (!originalItemLocation)
             {
                 // Internal item move but item never existed, possible dupe glitch
@@ -123,14 +127,23 @@ export class InventoryController
      */
     protected getTraderExploitErrorResponse(output: IItemEventRouterResponse): IItemEventRouterResponse
     {
-        return this.httpResponseUtil.appendErrorToOutput(output, this.localisationService.getText("inventory-edit_trader_item"), <BackendErrorCodes>228);
+        return this.httpResponseUtil.appendErrorToOutput(
+            output,
+            this.localisationService.getText("inventory-edit_trader_item"),
+            <BackendErrorCodes>228,
+        );
     }
 
     /**
-    * Remove Item from Profile
-    * Deep tree item deletion, also removes items from insurance list
-    */
-    public removeItem(pmcData: IPmcData, itemId: string, sessionID: string, output: IItemEventRouterResponse = undefined): IItemEventRouterResponse
+     * Remove Item from Profile
+     * Deep tree item deletion, also removes items from insurance list
+     */
+    public removeItem(
+        pmcData: IPmcData,
+        itemId: string,
+        sessionID: string,
+        output: IItemEventRouterResponse = undefined,
+    ): IItemEventRouterResponse
     {
         return this.inventoryHelper.removeItem(pmcData, itemId, sessionID, output);
     }
@@ -140,29 +153,46 @@ export class InventoryController
      * Implements functionality "Discard" from Main menu (Stash etc.)
      * Removes item from PMC Profile
      */
-    public discardItem(pmcData: IPmcData, body: IInventoryRemoveRequestData, sessionID: string): IItemEventRouterResponse
+    public discardItem(
+        pmcData: IPmcData,
+        body: IInventoryRemoveRequestData,
+        sessionID: string,
+    ): IItemEventRouterResponse
     {
         if (body.fromOwner?.type === "Mail")
         {
-            return this.inventoryHelper.removeItemAndChildrenFromMailRewards(sessionID, body, this.eventOutputHolder.getOutput(sessionID));
+            return this.inventoryHelper.removeItemAndChildrenFromMailRewards(
+                sessionID,
+                body,
+                this.eventOutputHolder.getOutput(sessionID),
+            );
         }
-        
-        const profileToRemoveItemFrom = (!body.fromOwner || body.fromOwner.id === pmcData._id)
-            ? pmcData
-            : this.profileHelper.getFullProfile(sessionID).characters.scav;
 
-        return this.inventoryHelper.removeItem(profileToRemoveItemFrom, body.item, sessionID, this.eventOutputHolder.getOutput(sessionID));
+        const profileToRemoveItemFrom = (!body.fromOwner || body.fromOwner.id === pmcData._id) ?
+            pmcData :
+            this.profileHelper.getFullProfile(sessionID).characters.scav;
+
+        return this.inventoryHelper.removeItem(
+            profileToRemoveItemFrom,
+            body.item,
+            sessionID,
+            this.eventOutputHolder.getOutput(sessionID),
+        );
     }
 
     /**
      * Split Item
-     * spliting 1 stack into 2
+     * splitting 1 stack into 2
      * @param pmcData Player profile (unused, getOwnerInventoryItems() gets profile)
      * @param request Split request
      * @param sessionID Session/player id
      * @returns IItemEventRouterResponse
      */
-    public splitItem(pmcData: IPmcData, request: IInventorySplitRequestData, sessionID: string): IItemEventRouterResponse
+    public splitItem(
+        pmcData: IPmcData,
+        request: IInventorySplitRequestData,
+        sessionID: string,
+    ): IItemEventRouterResponse
     {
         const output = this.eventOutputHolder.getOutput(sessionID);
 
@@ -172,15 +202,16 @@ export class InventoryController
         // Handle cartridge edge-case
         if (!request.container.location && request.container.container === "cartridges")
         {
-            const matchingItems = inventoryItems.to.filter(x => x.parentId === request.container.id);
+            const matchingItems = inventoryItems.to.filter((x) => x.parentId === request.container.id);
             request.container.location = matchingItems.length; // Wrong location for first cartridge
         }
 
-        // The item being merged has three possible sources: pmc, scav or mail, getOwnerInventoryItems() handles getting correct one
-        const itemToSplit = inventoryItems.from.find(x => x._id === request.splitItem);
+        // The item being merged has three possible sources: pmc, scav or mail, getOwnerInventoryItems() handles getting
+        // correct one.
+        const itemToSplit = inventoryItems.from.find((x) => x._id === request.splitItem);
         if (!itemToSplit)
         {
-            const errorMessage = (`Unable to split stack as source item: ${request.splitItem} cannot be found`);
+            const errorMessage = `Unable to split stack as source item: ${request.splitItem} cannot be found`;
             this.logger.error(errorMessage);
 
             return this.httpResponseUtil.appendErrorToOutput(output, errorMessage);
@@ -197,7 +228,7 @@ export class InventoryController
         output.profileChanges[sessionID].items.new.push({
             _id: request.newItem,
             _tpl: itemToSplit._tpl,
-            upd: updatedUpd
+            upd: updatedUpd,
         });
 
         // Update player inventory
@@ -207,7 +238,7 @@ export class InventoryController
             parentId: request.container.id,
             slotId: request.container.container,
             location: request.container.location,
-            upd: updatedUpd
+            upd: updatedUpd,
         });
 
         return output;
@@ -229,20 +260,20 @@ export class InventoryController
         const inventoryItems = this.inventoryHelper.getOwnerInventoryItems(body, sessionID);
 
         // Get source item (can be from player or trader or mail)
-        const sourceItem = inventoryItems.from.find(x => x._id === body.item);
+        const sourceItem = inventoryItems.from.find((x) => x._id === body.item);
         if (!sourceItem)
         {
-            const errorMessage = (`Unable to merge stacks as source item: ${body.with} cannot be found`);
+            const errorMessage = `Unable to merge stacks as source item: ${body.with} cannot be found`;
             this.logger.error(errorMessage);
 
             return this.httpResponseUtil.appendErrorToOutput(output, errorMessage);
         }
 
         // Get item being merged into
-        const destinationItem = inventoryItems.to.find(x => x._id === body.with);
+        const destinationItem = inventoryItems.to.find((x) => x._id === body.with);
         if (!destinationItem)
         {
-            const errorMessage = (`Unable to merge stacks as destination item: ${body.with} cannot be found`);
+            const errorMessage = `Unable to merge stacks as destination item: ${body.with} cannot be found`;
             this.logger.error(errorMessage);
 
             return this.httpResponseUtil.appendErrorToOutput(output, errorMessage);
@@ -250,29 +281,29 @@ export class InventoryController
 
         if (!(destinationItem.upd?.StackObjectsCount))
         {
-            // No stackcount on destination, add one
-            destinationItem.upd = { StackObjectsCount: 1 };
+            // No stack count on destination, add one
+            destinationItem.upd = {StackObjectsCount: 1};
         }
 
         if (!sourceItem.upd)
         {
             sourceItem.upd = {
-                StackObjectsCount: 1
+                StackObjectsCount: 1,
             };
         }
         else if (!sourceItem.upd.StackObjectsCount)
         {
-            // Items pulled out of raid can have no stackcount if the stack should be 1
+            // Items pulled out of raid can have no stack count if the stack should be 1
             sourceItem.upd.StackObjectsCount = 1;
         }
 
-        destinationItem.upd.StackObjectsCount += sourceItem.upd.StackObjectsCount; // Add source stackcount to destination
-        output.profileChanges[sessionID].items.del.push({ _id: sourceItem._id }); // Inform client source item being deleted
+        destinationItem.upd.StackObjectsCount += sourceItem.upd.StackObjectsCount; // Add source stack count to destination
+        output.profileChanges[sessionID].items.del.push({_id: sourceItem._id}); // Inform client source item being deleted
 
-        const indexOfItemToRemove = inventoryItems.from.findIndex(x => x._id === sourceItem._id);
+        const indexOfItemToRemove = inventoryItems.from.findIndex((x) => x._id === sourceItem._id);
         if (indexOfItemToRemove === -1)
         {
-            const errorMessage = (`Unable to find item: ${sourceItem._id} to remove from sender inventory`);
+            const errorMessage = `Unable to find item: ${sourceItem._id} to remove from sender inventory`;
             this.logger.error(errorMessage);
 
             return this.httpResponseUtil.appendErrorToOutput(output, errorMessage);
@@ -283,8 +314,8 @@ export class InventoryController
     }
 
     /**
-     * TODO: Adds no data to output to send to client, is this by design?
-     * TODO: should make use of getOwnerInventoryItems(), stack being transferred may not always be on pmc
+     * // TODO: Adds no data to output to send to client, is this by design?
+     * // TODO: should make use of getOwnerInventoryItems(), stack being transferred may not always be on pmc
      * Transfer items from one stack into another while keeping original stack
      * Used to take items from scav inventory into stash or to insert ammo into mags (shotgun ones) and reloading weapon by clicking "Reload"
      * @param pmcData Player profile
@@ -292,7 +323,11 @@ export class InventoryController
      * @param sessionID Session id
      * @returns IItemEventRouterResponse
      */
-    public transferItem(pmcData: IPmcData, body: IInventoryTransferRequestData, sessionID: string): IItemEventRouterResponse
+    public transferItem(
+        pmcData: IPmcData,
+        body: IInventoryTransferRequestData,
+        sessionID: string,
+    ): IItemEventRouterResponse
     {
         const output = this.eventOutputHolder.getOutput(sessionID);
 
@@ -314,7 +349,7 @@ export class InventoryController
             if (sourceItem !== null && destinationItem !== null)
             {
                 // Both items found, exit loop
-                break; 
+                break;
             }
         }
 
@@ -359,7 +394,7 @@ export class InventoryController
         }
         else
         {
-            Object.assign(destinationItem, { upd: { StackObjectsCount: 1 } });
+            Object.assign(destinationItem, {upd: {StackObjectsCount: 1}});
         }
 
         destinationItem.upd.StackObjectsCount = destinationStackCount + body.count;
@@ -368,28 +403,28 @@ export class InventoryController
     }
 
     /**
-    * Swap Item
-    * its used for "reload" if you have weapon in hands and magazine is somewhere else in rig or backpack in equipment
-    * Also used to swap items using quick selection on character screen
-    */
+     * Swap Item
+     * its used for "reload" if you have weapon in hands and magazine is somewhere else in rig or backpack in equipment
+     * Also used to swap items using quick selection on character screen
+     */
     public swapItem(pmcData: IPmcData, request: IInventorySwapRequestData, sessionID: string): IItemEventRouterResponse
     {
-        const itemOne = pmcData.Inventory.items.find(x => x._id === request.item);
+        const itemOne = pmcData.Inventory.items.find((x) => x._id === request.item);
         if (!itemOne)
         {
             this.logger.error(`Unable to find item: ${request.item} to swap positions with: ${request.item2}`);
         }
 
-        const itemTwo = pmcData.Inventory.items.find(x => x._id === request.item2);
+        const itemTwo = pmcData.Inventory.items.find((x) => x._id === request.item2);
         if (!itemTwo)
         {
             this.logger.error(`Unable to find item: ${request.item2} to swap positions with: ${request.item}`);
         }
 
-        // to.id is the parentid
+        // to.id is the parentId
         itemOne.parentId = request.to.id;
-        
-        // to.container is the slotid
+
+        // to.container is the slotId
         itemOne.slotId = request.to.container;
 
         // Request object has location data, add it in, otherwise remove existing location from object
@@ -423,9 +458,11 @@ export class InventoryController
     public foldItem(pmcData: IPmcData, body: IInventoryFoldRequestData, sessionID: string): IItemEventRouterResponse
     {
         // Fix for folding weapons while on they're in the Scav inventory
-        if (body.fromOwner
-            && body.fromOwner.type === "Profile"
-            && body.fromOwner.id !== pmcData._id)
+        if (
+            body.fromOwner &&
+            body.fromOwner.type === "Profile" &&
+            body.fromOwner.id !== pmcData._id
+        )
         {
             pmcData = this.profileHelper.getScavProfile(sessionID);
         }
@@ -434,19 +471,19 @@ export class InventoryController
         {
             if (item._id && item._id === body.item)
             {
-                item.upd.Foldable = { Folded: body.value };
+                item.upd.Foldable = {Folded: body.value};
                 return this.eventOutputHolder.getOutput(sessionID);
             }
         }
 
         return {
             warnings: [],
-            profileChanges: {}
+            profileChanges: {},
         };
     }
 
     /**
-     * Toggles "Toggleable" items like night vision goggles and face shields.
+     * Toggles "toggleable" items like night vision goggles and face shields.
      * @param pmcData player profile
      * @param body Toggle request
      * @param sessionID Session id
@@ -460,27 +497,31 @@ export class InventoryController
             pmcData = this.profileHelper.getScavProfile(sessionID);
         }
 
-        const itemToToggle = pmcData.Inventory.items.find(x => x._id === body.item);
+        const itemToToggle = pmcData.Inventory.items.find((x) => x._id === body.item);
         if (itemToToggle)
         {
             if (!itemToToggle.upd)
             {
-                this.logger.warning(this.localisationService.getText("inventory-item_to_toggle_missing_upd", itemToToggle._id));
+                this.logger.warning(
+                    this.localisationService.getText("inventory-item_to_toggle_missing_upd", itemToToggle._id),
+                );
                 itemToToggle.upd = {};
             }
 
-            itemToToggle.upd.Togglable = { On: body.value };
+            itemToToggle.upd.Togglable = {On: body.value};
 
             return this.eventOutputHolder.getOutput(sessionID);
         }
         else
         {
-            this.logger.warning(this.localisationService.getText("inventory-unable_to_toggle_item_not_found", body.item));
+            this.logger.warning(
+                this.localisationService.getText("inventory-unable_to_toggle_item_not_found", body.item),
+            );
         }
 
         return {
             warnings: [],
-            profileChanges: {}
+            profileChanges: {},
         };
     }
 
@@ -499,11 +540,11 @@ export class InventoryController
             {
                 if ("upd" in item)
                 {
-                    item.upd.Tag = { Color: body.TagColor, Name: body.TagName };
+                    item.upd.Tag = {Color: body.TagColor, Name: body.TagName};
                 }
                 else
                 {
-                    item.upd = { Tag: { Color: body.TagColor, Name: body.TagName } };
+                    item.upd = {Tag: {Color: body.TagColor, Name: body.TagName}};
                 }
 
                 return this.eventOutputHolder.getOutput(sessionID);
@@ -512,18 +553,22 @@ export class InventoryController
 
         return {
             warnings: [],
-            profileChanges: {}
+            profileChanges: {},
         };
     }
 
     /**
      * Bind an inventory item to the quick access menu at bottom of player screen
      * @param pmcData Player profile
-     * @param bindRequest Reqeust object
+     * @param bindRequest Request object
      * @param sessionID Session id
      * @returns IItemEventRouterResponse
      */
-    public bindItem(pmcData: IPmcData, bindRequest: IInventoryBindRequestData, sessionID: string): IItemEventRouterResponse
+    public bindItem(
+        pmcData: IPmcData,
+        bindRequest: IInventoryBindRequestData,
+        sessionID: string,
+    ): IItemEventRouterResponse
     {
         for (const index in pmcData.Inventory.fastPanel)
         {
@@ -538,7 +583,6 @@ export class InventoryController
         return this.eventOutputHolder.getOutput(sessionID);
     }
 
-
     /**
      * Handles examining an item
      * @param pmcData player profile
@@ -546,7 +590,11 @@ export class InventoryController
      * @param sessionID session id
      * @returns response
      */
-    public examineItem(pmcData: IPmcData, body: IInventoryExamineRequestData, sessionID: string): IItemEventRouterResponse
+    public examineItem(
+        pmcData: IPmcData,
+        body: IInventoryExamineRequestData,
+        sessionID: string,
+    ): IItemEventRouterResponse
     {
         let itemId = "";
         if ("fromOwner" in body)
@@ -559,7 +607,7 @@ export class InventoryController
             {
                 this.logger.error(this.localisationService.getText("inventory-examine_item_does_not_exist", body.item));
             }
-            
+
             // get hideout item
             if (body.fromOwner.type === "HideoutProduction")
             {
@@ -606,9 +654,9 @@ export class InventoryController
     }
 
     /**
-     * Get the tplid of an item from the examine request object
+     * Get the tplId of an item from the examine request object
      * @param body response request
-     * @returns tplid
+     * @returns string
      */
     protected getExaminedItemTpl(body: IInventoryExamineRequestData): string
     {
@@ -618,49 +666,55 @@ export class InventoryController
         }
         else if (body.fromOwner.id === Traders.FENCE)
         {
-            // get tpl from fence assorts
-            return this.fenceService.getRawFenceAssorts().items.find(x => x._id === body.item)._tpl;
+            // Get tpl from fence assorts
+            return this.fenceService.getRawFenceAssorts().items.find((x) => x._id === body.item)._tpl;
         }
-        else if (body.fromOwner.type === "Trader") // not fence
+        else if (body.fromOwner.type === "Trader")
         {
-            // get tpl from trader assort
-            return this.databaseServer.getTables().traders[body.fromOwner.id].assort.items.find(item => item._id === body.item)._tpl;
+            // Not fence
+            // Get tpl from trader assort
+            return this.databaseServer.getTables().traders[body.fromOwner.id].assort.items.find((item) =>
+                item._id === body.item
+            )._tpl;
         }
         else if (body.fromOwner.type === "RagFair")
         {
-            // try to get tplid from items.json first
+            // try to get tplId from items.json first
             const item = this.databaseServer.getTables().templates.items[body.item];
             if (item)
             {
                 return item._id;
             }
 
-            // try alternate way of getting offer if first approach fails
+            // Try alternate way of getting offer if first approach fails
             let offer = this.ragfairOfferService.getOfferByOfferId(body.item);
             if (!offer)
             {
                 offer = this.ragfairOfferService.getOfferByOfferId(body.fromOwner.id);
             }
 
-            // try find examine item inside offer items array
-            const matchingItem = offer.items.find(x => x._id === body.item);
+            // Try find examine item inside offer items array
+            const matchingItem = offer.items.find((x) => x._id === body.item);
             if (matchingItem)
             {
                 return matchingItem._tpl;
-            } 
+            }
 
-            // unable to find item in database or ragfair
+            // Unable to find item in database or ragfair
             throw new Error(this.localisationService.getText("inventory-unable_to_find_item", body.item));
         }
     }
 
-    public readEncyclopedia(pmcData: IPmcData, body: IInventoryReadEncyclopediaRequestData, sessionID: string): IItemEventRouterResponse
+    public readEncyclopedia(
+        pmcData: IPmcData,
+        body: IInventoryReadEncyclopediaRequestData,
+        sessionID: string,
+    ): IItemEventRouterResponse
     {
         for (const id of body.ids)
         {
             pmcData.Encyclopedia[id] = true;
         }
-
         return this.eventOutputHolder.getOutput(sessionID);
     }
 
@@ -672,15 +726,20 @@ export class InventoryController
      * @param sessionID Session id
      * @returns IItemEventRouterResponse
      */
-    public sortInventory(pmcData: IPmcData, request: IInventorySortRequestData, sessionID: string): IItemEventRouterResponse
+    public sortInventory(
+        pmcData: IPmcData,
+        request: IInventorySortRequestData,
+        sessionID: string,
+    ): IItemEventRouterResponse
     {
-
         for (const change of request.changedItems)
         {
-            const inventoryItem = pmcData.Inventory.items.find(x => x._id === change._id);
+            const inventoryItem = pmcData.Inventory.items.find((x) => x._id === change._id);
             if (!inventoryItem)
             {
-                this.logger.error(`Unable to find inventory item: ${change._id} to auto-sort, YOU MUST RELOAD YOUR GAME`);
+                this.logger.error(
+                    `Unable to find inventory item: ${change._id} to auto-sort, YOU MUST RELOAD YOUR GAME`,
+                );
 
                 continue;
             }
@@ -707,13 +766,17 @@ export class InventoryController
      * @param sessionID Session id
      * @returns IItemEventRouterResponse
      */
-    public createMapMarker(pmcData: IPmcData, request: IInventoryCreateMarkerRequestData, sessionID: string): IItemEventRouterResponse
+    public createMapMarker(
+        pmcData: IPmcData,
+        request: IInventoryCreateMarkerRequestData,
+        sessionID: string,
+    ): IItemEventRouterResponse
     {
         // Get map from inventory
-        const mapItem = pmcData.Inventory.items.find(i => i._id === request.item);
+        const mapItem = pmcData.Inventory.items.find((i) => i._id === request.item);
 
         // add marker
-        mapItem.upd.Map = mapItem.upd.Map || { Markers: [] };
+        mapItem.upd.Map = mapItem.upd.Map || {Markers: []};
         request.mapMarker.Note = this.sanitiseMapMarkerText(request.mapMarker.Note);
         mapItem.upd.Map.Markers.push(request.mapMarker);
 
@@ -731,10 +794,14 @@ export class InventoryController
      * @param sessionID Session id
      * @returns IItemEventRouterResponse
      */
-    public deleteMapMarker(pmcData: IPmcData, request: IInventoryDeleteMarkerRequestData, sessionID: string): IItemEventRouterResponse
+    public deleteMapMarker(
+        pmcData: IPmcData,
+        request: IInventoryDeleteMarkerRequestData,
+        sessionID: string,
+    ): IItemEventRouterResponse
     {
         // Get map from inventory
-        const mapItem = pmcData.Inventory.items.find(i => i._id === request.item);
+        const mapItem = pmcData.Inventory.items.find((i) => i._id === request.item);
 
         // remove marker
         const markers = mapItem.upd.Map.Markers.filter((marker) =>
@@ -756,13 +823,17 @@ export class InventoryController
      * @param sessionID Session id
      * @returns IItemEventRouterResponse
      */
-    public editMapMarker(pmcData: IPmcData, request: IInventoryEditMarkerRequestData, sessionID: string): IItemEventRouterResponse
+    public editMapMarker(
+        pmcData: IPmcData,
+        request: IInventoryEditMarkerRequestData,
+        sessionID: string,
+    ): IItemEventRouterResponse
     {
         // Get map from inventory
-        const mapItem = pmcData.Inventory.items.find(i => i._id === request.item);
+        const mapItem = pmcData.Inventory.items.find((i) => i._id === request.item);
 
         // edit marker
-        const indexOfExistingNote = mapItem.upd.Map.Markers.findIndex(m => m.X === request.X && m.Y === request.Y);
+        const indexOfExistingNote = mapItem.upd.Map.Markers.findIndex((m) => m.X === request.X && m.Y === request.Y);
         request.mapMarker.Note = this.sanitiseMapMarkerText(request.mapMarker.Note);
         mapItem.upd.Map.Markers[indexOfExistingNote] = request.mapMarker;
 
@@ -791,15 +862,19 @@ export class InventoryController
      * @param sessionID Session id
      * @returns IItemEventRouterResponse
      */
-    public openRandomLootContainer(pmcData: IPmcData, body: IOpenRandomLootContainerRequestData, sessionID: string): IItemEventRouterResponse
+    public openRandomLootContainer(
+        pmcData: IPmcData,
+        body: IOpenRandomLootContainerRequestData,
+        sessionID: string,
+    ): IItemEventRouterResponse
     {
-        const openedItem = pmcData.Inventory.items.find(x => x._id === body.item);
+        const openedItem = pmcData.Inventory.items.find((x) => x._id === body.item);
         const containerDetails = this.itemHelper.getItem(openedItem._tpl);
         const isSealedWeaponBox = containerDetails[1]._name.includes("event_container_airdrop");
 
         const newItemRequest: IAddItemRequestData = {
             tid: "RandomLootContainer",
-            items: []
+            items: [],
         };
 
         let foundInRaid = false;

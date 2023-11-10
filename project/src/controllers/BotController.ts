@@ -43,7 +43,7 @@ export class BotController
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
         @inject("ConfigServer") protected configServer: ConfigServer,
         @inject("ApplicationContext") protected applicationContext: ApplicationContext,
-        @inject("JsonUtil") protected jsonUtil: JsonUtil
+        @inject("JsonUtil") protected jsonUtil: JsonUtil,
     )
     {
         this.botConfig = this.configServer.getConfig(ConfigTypes.BOT);
@@ -51,29 +51,29 @@ export class BotController
     }
 
     /**
-     * Return the number of bot loadout varieties to be generated
-     * @param type bot Type we want the loadout gen count for
+     * Return the number of bot load-out varieties to be generated
+     * @param type bot Type we want the load-out gen count for
      * @returns number of bots to generate
      */
     public getBotPresetGenerationLimit(type: string): number
     {
-        const value = this.botConfig.presetBatch[(type === "assaultGroup")
-            ? "assault"
-            : type];
+        const value = this.botConfig.presetBatch[
+            (type === "assaultGroup") ?
+                "assault" :
+                type
+        ];
 
         if (!value)
         {
             this.logger.warning(`No value found for bot type ${type}, defaulting to 30`);
-
             return value;
         }
-
         return value;
     }
 
     /**
      * Handle singleplayer/settings/bot/difficulty
-     * Get the core.json difficulty settings from database\bots
+     * Get the core.json difficulty settings from database/bots
      * @returns IBotCore
      */
     public getBotCoreDifficulty(): IBotCore
@@ -90,10 +90,14 @@ export class BotController
      */
     public getBotDifficulty(type: string, difficulty: string): Difficulty
     {
-        const raidConfig = this.applicationContext.getLatestValue(ContextVariableType.RAID_CONFIGURATION)?.getValue<IGetRaidConfigurationRequestData>();
+        const raidConfig = this.applicationContext.getLatestValue(ContextVariableType.RAID_CONFIGURATION)?.getValue<
+            IGetRaidConfigurationRequestData
+        >();
         if (!raidConfig)
         {
-            this.logger.error(this.localisationService.getText("bot-missing_application_context", "RAID_CONFIGURATION"));
+            this.logger.error(
+                this.localisationService.getText("bot-missing_application_context", "RAID_CONFIGURATION"),
+            );
         }
 
         // Check value chosen in pre-raid difficulty dropdown
@@ -101,7 +105,9 @@ export class BotController
         const botDifficultyDropDownValue = raidConfig.wavesSettings.botDifficulty.toLowerCase();
         if (botDifficultyDropDownValue !== "asonline")
         {
-            difficulty = this.botDifficultyHelper.convertBotDifficultyDropdownToBotDifficulty(botDifficultyDropDownValue);
+            difficulty = this.botDifficultyHelper.convertBotDifficultyDropdownToBotDifficulty(
+                botDifficultyDropDownValue,
+            );
         }
 
         let difficultySettings: Difficulty;
@@ -109,19 +115,31 @@ export class BotController
         switch (lowercasedBotType)
         {
             case this.pmcConfig.bearType.toLowerCase():
-                difficultySettings = this.botDifficultyHelper.getPmcDifficultySettings("bear", difficulty, this.pmcConfig.usecType, this.pmcConfig.bearType);
+                difficultySettings = this.botDifficultyHelper.getPmcDifficultySettings(
+                    "bear",
+                    difficulty,
+                    this.pmcConfig.usecType,
+                    this.pmcConfig.bearType,
+                );
                 break;
             case this.pmcConfig.usecType.toLowerCase():
-                difficultySettings = this.botDifficultyHelper.getPmcDifficultySettings("usec", difficulty, this.pmcConfig.usecType, this.pmcConfig.bearType);
+                difficultySettings = this.botDifficultyHelper.getPmcDifficultySettings(
+                    "usec",
+                    difficulty,
+                    this.pmcConfig.usecType,
+                    this.pmcConfig.bearType,
+                );
                 break;
             default:
                 difficultySettings = this.botDifficultyHelper.getBotDifficultySettings(type, difficulty);
-                // Don't add pmcs to event enemies (e.g. gifter/peacefullzryachiyevent)
+                // Don't add PMCs to event enemies (e.g. gifter/peacefullzryachiyevent)
                 if (!this.botConfig.botsToNotAddPMCsAsEnemiesTo.includes(type.toLowerCase()))
                 {
-                    this.botHelper.addBotToEnemyList(difficultySettings, [this.pmcConfig.bearType, this.pmcConfig.usecType], lowercasedBotType);
+                    this.botHelper.addBotToEnemyList(difficultySettings, [
+                        this.pmcConfig.bearType,
+                        this.pmcConfig.usecType,
+                    ], lowercasedBotType);
                 }
-                
                 break;
         }
 
@@ -149,7 +167,7 @@ export class BotController
                 botRelativeLevelDeltaMax: this.pmcConfig.botRelativeLevelDeltaMax,
                 botCountToGenerate: this.botConfig.presetBatch[condition.Role],
                 botDifficulty: condition.Difficulty,
-                isPlayerScav: false
+                isPlayerScav: false,
             };
 
             // Event bots need special actions to occur, set data up for them
@@ -158,7 +176,9 @@ export class BotController
             {
                 // Add eventRole data + reassign role property to be base type
                 botGenerationDetails.eventRole = condition.Role;
-                botGenerationDetails.role = this.seasonalEventService.getBaseRoleForEventBot(botGenerationDetails.eventRole);
+                botGenerationDetails.role = this.seasonalEventService.getBaseRoleForEventBot(
+                    botGenerationDetails.eventRole,
+                );
             }
 
             // Custom map waves can have spt roles in them
@@ -171,10 +191,10 @@ export class BotController
 
             // Loop over and make x bots for this condition
             let cacheKey = "";
-            for (let i = 0; i < botGenerationDetails.botCountToGenerate; i ++)
+            for (let i = 0; i < botGenerationDetails.botCountToGenerate; i++)
             {
                 const details = this.jsonUtil.clone(botGenerationDetails);
-                const botRole = (isEventBot) ? details.eventRole : details.role;
+                const botRole = isEventBot ? details.eventRole : details.role;
 
                 // Roll chance to be pmc if type is allowed to be one
                 const botConvertRateMinMax = this.pmcConfig.convertIntoPmcChance[botRole.toLowerCase()];
@@ -192,6 +212,7 @@ export class BotController
                 }
 
                 cacheKey = `${botRole}${details.botDifficulty}`;
+
                 // Check for bot in cache, add if not
                 if (!this.botGenerationCacheService.cacheHasBotOfRole(cacheKey))
                 {
@@ -200,6 +221,7 @@ export class BotController
                     this.botGenerationCacheService.storeBots(cacheKey, botsToAddToCache);
                 }
             }
+
             // Get bot from cache, add to return array
             const botToReturn = this.botGenerationCacheService.getBot(cacheKey);
 
@@ -217,13 +239,13 @@ export class BotController
     }
 
     /**
-     * Get the difficulty passed in, if its not "asoline", get selected difficulty from config
-     * @param requestedDifficulty 
-     * @returns 
+     * Get the difficulty passed in, if its not "asonline", get selected difficulty from config
+     * @param requestedDifficulty
+     * @returns
      */
     public getPMCDifficulty(requestedDifficulty: string): string
     {
-        // maybe retrun a random difficulty...
+        // Maybe return a random difficulty...
         if (this.pmcConfig.difficulty.toLowerCase() === "asonline")
         {
             return requestedDifficulty;
@@ -245,20 +267,27 @@ export class BotController
     public getBotCap(): number
     {
         const defaultMapCapId = "default";
-        const raidConfig = this.applicationContext.getLatestValue(ContextVariableType.RAID_CONFIGURATION).getValue<IGetRaidConfigurationRequestData>();
+        const raidConfig = this.applicationContext.getLatestValue(ContextVariableType.RAID_CONFIGURATION).getValue<
+            IGetRaidConfigurationRequestData
+        >();
         if (!raidConfig)
         {
             this.logger.warning(this.localisationService.getText("bot-missing_saved_match_info"));
         }
 
-        const mapName = (raidConfig)
-            ? raidConfig.location
-            : defaultMapCapId;
+        const mapName = raidConfig ?
+            raidConfig.location :
+            defaultMapCapId;
 
         let botCap = this.botConfig.maxBotCap[mapName.toLowerCase()];
         if (!botCap)
         {
-            this.logger.warning(this.localisationService.getText("bot-no_bot_cap_found_for_location", raidConfig.location.toLowerCase()));
+            this.logger.warning(
+                this.localisationService.getText(
+                    "bot-no_bot_cap_found_for_location",
+                    raidConfig.location.toLowerCase(),
+                ),
+            );
             botCap = this.botConfig.maxBotCap[defaultMapCapId];
         }
 
@@ -269,7 +298,7 @@ export class BotController
     {
         return {
             pmc: this.pmcConfig.pmcType,
-            assault: this.botConfig.assaultBrainType
+            assault: this.botConfig.assaultBrainType,
         };
     }
 }

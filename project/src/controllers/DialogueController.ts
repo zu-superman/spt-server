@@ -37,7 +37,7 @@ export class DialogueController
         @inject("MailSendService") protected mailSendService: MailSendService,
         @inject("GiftService") protected giftService: GiftService,
         @inject("HashUtil") protected hashUtil: HashUtil,
-        @inject("ConfigServer") protected configServer: ConfigServer
+        @inject("ConfigServer") protected configServer: ConfigServer,
     )
     {
         this.coreConfig = this.configServer.getConfig(ConfigTypes.CORE);
@@ -57,14 +57,13 @@ export class DialogueController
      * Handle client/friend/list
      * @returns IGetFriendListDataResponse
      */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public getFriendList(sessionID: string): IGetFriendListDataResponse
     {
         // Force a fake friend called SPT into friend list
         return {
             Friends: [this.getSptFriendData()],
             Ignore: [],
-            InIgnoreList: []
+            InIgnoreList: [],
         };
     }
 
@@ -104,7 +103,7 @@ export class DialogueController
             new: dialogue.new,
             attachmentsNew: dialogue.attachmentsNew,
             pinned: dialogue.pinned,
-            Users: this.getDialogueUsers(dialogue, dialogue.type, sessionID)
+            Users: this.getDialogueUsers(dialogue, dialogue.type, sessionID),
         };
 
         return result;
@@ -121,7 +120,9 @@ export class DialogueController
         const profile = this.saveServer.getProfile(sessionID);
 
         // User to user messages are special in that they need the player to exist in them, add if they don't
-        if (messageType === MessageType.USER_MESSAGE && !dialog.Users?.find(x => x._id === profile.characters.pmc._id))
+        if (
+            messageType === MessageType.USER_MESSAGE && !dialog.Users?.find((x) => x._id === profile.characters.pmc._id)
+        )
         {
             if (!dialog.Users)
             {
@@ -134,8 +135,8 @@ export class DialogueController
                     Level: profile.characters.pmc.Info.Level,
                     Nickname: profile.characters.pmc.Info.Nickname,
                     Side: profile.characters.pmc.Info.Side,
-                    MemberCategory: profile.characters.pmc.Info.MemberCategory
-                }
+                    MemberCategory: profile.characters.pmc.Info.MemberCategory,
+                },
             });
         }
 
@@ -144,14 +145,17 @@ export class DialogueController
 
     /**
      * Handle client/mail/dialog/view
-     * Handle player clicking 'messenger' and seeing all the messages they've recieved
+     * Handle player clicking 'messenger' and seeing all the messages they've received
      * Set the content of the dialogue on the details panel, showing all the messages
      * for the specified dialogue.
      * @param request Get dialog request
      * @param sessionId Session id
      * @returns IGetMailDialogViewResponseData object
      */
-    public generateDialogueView(request: IGetMailDialogViewRequestData, sessionId: string): IGetMailDialogViewResponseData
+    public generateDialogueView(
+        request: IGetMailDialogViewRequestData,
+        sessionId: string,
+    ): IGetMailDialogViewResponseData
     {
         const dialogueId = request.dialogId;
         const fullProfile = this.saveServer.getProfile(sessionId);
@@ -163,17 +167,17 @@ export class DialogueController
         // Set number of new attachments, but ignore those that have expired.
         dialogue.attachmentsNew = this.getUnreadMessagesWithAttachmentsCount(sessionId, dialogueId);
 
-        return { 
+        return {
             messages: dialogue.messages,
             profiles: this.getProfilesForMail(fullProfile, dialogue.Users),
-            hasMessagesWithRewards: this.messagesHaveUncollectedRewards(dialogue.messages)
+            hasMessagesWithRewards: this.messagesHaveUncollectedRewards(dialogue.messages),
         };
     }
 
     /**
      * Get dialog from player profile, create if doesn't exist
      * @param profile Player profile
-     * @param request get dialog request (params used when dialog doesnt exist in profile)
+     * @param request get dialog request (params used when dialog doesn't exist in profile)
      * @returns Dialogue
      */
     protected getDialogByIdFromProfile(profile: IAkiProfile, request: IGetMailDialogViewRequestData): Dialogue
@@ -186,7 +190,7 @@ export class DialogueController
                 pinned: false,
                 messages: [],
                 new: 0,
-                type: request.type
+                type: request.type,
             };
 
             if (request.type === MessageType.USER_MESSAGE)
@@ -211,8 +215,8 @@ export class DialogueController
         {
             result.push(...dialogUsers);
 
-            // Player doesnt exist, add them in before returning
-            if (!result.find(x => x._id === fullProfile.info.id))
+            // Player doesn't exist, add them in before returning
+            if (!result.find((x) => x._id === fullProfile.info.id))
             {
                 const pmcProfile = fullProfile.characters.pmc;
                 result.push({
@@ -221,8 +225,8 @@ export class DialogueController
                         Nickname: pmcProfile.Info.Nickname,
                         Side: pmcProfile.Info.Side,
                         Level: pmcProfile.Info.Level,
-                        MemberCategory: pmcProfile.Info.MemberCategory
-                    }
+                        MemberCategory: pmcProfile.Info.MemberCategory,
+                    },
                 });
             }
         }
@@ -258,7 +262,7 @@ export class DialogueController
      */
     protected messagesHaveUncollectedRewards(messages: Message[]): boolean
     {
-        return messages.some(x => x.items?.data?.length > 0);
+        return messages.some((x) => x.items?.data?.length > 0);
     }
 
     /**
@@ -274,7 +278,6 @@ export class DialogueController
         if (!dialog)
         {
             this.logger.error(`No dialog in profile: ${sessionId} found with id: ${dialogueId}`);
-
             return;
         }
 
@@ -288,7 +291,6 @@ export class DialogueController
         if (!dialog)
         {
             this.logger.error(`No dialog in profile: ${sessionId} found with id: ${dialogueId}`);
-
             return;
         }
 
@@ -307,7 +309,6 @@ export class DialogueController
         if (!dialogs)
         {
             this.logger.error(`No dialog object in profile: ${sessionId}`);
-
             return;
         }
 
@@ -323,7 +324,7 @@ export class DialogueController
      * Get all uncollected items attached to mail in a particular dialog
      * @param dialogueId Dialog to get mail attachments from
      * @param sessionId Session id
-     * @returns 
+     * @returns
      */
     public getAllAttachments(dialogueId: string, sessionId: string): IGetAllAttachmentsResponse
     {
@@ -332,25 +333,23 @@ export class DialogueController
         if (!dialog)
         {
             this.logger.error(`No dialog in profile: ${sessionId} found with id: ${dialogueId}`);
-
             return;
         }
 
         // Removes corner 'new messages' tag
         dialog.attachmentsNew = 0;
-        
+
         const activeMessages = this.getActiveMessagesFromDialog(sessionId, dialogueId);
         const messagesWithAttachments = this.getMessagesWithAttachments(activeMessages);
 
-        return { 
+        return {
             messages: messagesWithAttachments,
             profiles: [],
-            hasMessagesWithRewards: this.messagesHaveUncollectedRewards(messagesWithAttachments)
+            hasMessagesWithRewards: this.messagesHaveUncollectedRewards(messagesWithAttachments),
         };
     }
 
     /** client/mail/msg/send */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public sendMessage(sessionId: string, request: ISendMessageRequest): string
     {
         this.mailSendService.sendPlayerMessageToNpc(sessionId, request.dialogId, request.text);
@@ -372,48 +371,97 @@ export class DialogueController
     protected handleChatWithSPTFriend(sessionId: string, request: ISendMessageRequest): void
     {
         const sender = this.profileHelper.getPmcProfile(sessionId);
-
         const sptFriendUser = this.getSptFriendData();
-
         const giftSent = this.giftService.sendGiftToPlayer(sessionId, request.text);
 
-        if (giftSent === GiftSentResult.SUCCESS) 
+        if (giftSent === GiftSentResult.SUCCESS)
         {
-            this.mailSendService.sendUserMessageToPlayer(sessionId, sptFriendUser, this.randomUtil.getArrayValue(["Hey! you got the right code!", "A secret code, how exciting!", "You found a gift code!"]));
-
+            this.mailSendService.sendUserMessageToPlayer(
+                sessionId,
+                sptFriendUser,
+                this.randomUtil.getArrayValue([
+                    "Hey! you got the right code!",
+                    "A secret code, how exciting!",
+                    "You found a gift code!",
+                ]),
+            );
             return;
         }
 
-        if (giftSent === GiftSentResult.FAILED_GIFT_ALREADY_RECEIVED) 
+        if (giftSent === GiftSentResult.FAILED_GIFT_ALREADY_RECEIVED)
         {
-            this.mailSendService.sendUserMessageToPlayer(sessionId, sptFriendUser, this.randomUtil.getArrayValue(["Looks like you already used that code", "You already have that!!"]));
-
+            this.mailSendService.sendUserMessageToPlayer(
+                sessionId,
+                sptFriendUser,
+                this.randomUtil.getArrayValue(["Looks like you already used that code", "You already have that!!"]),
+            );
             return;
         }
 
-        if (request.text.toLowerCase().includes("love you")) 
+        if (request.text.toLowerCase().includes("love you"))
         {
-            this.mailSendService.sendUserMessageToPlayer(sessionId, sptFriendUser, this.randomUtil.getArrayValue(["That's quite forward but i love you too in a purely chatbot-human way", "I love you too buddy :3!", "uwu", `love you too ${sender?.Info?.Nickname}`]));
+            this.mailSendService.sendUserMessageToPlayer(
+                sessionId,
+                sptFriendUser,
+                this.randomUtil.getArrayValue([
+                    "That's quite forward but i love you too in a purely chatbot-human way",
+                    "I love you too buddy :3!",
+                    "uwu",
+                    `love you too ${sender?.Info?.Nickname}`,
+                ]),
+            );
         }
 
-        if (request.text.toLowerCase() === "spt") 
+        if (request.text.toLowerCase() === "spt")
         {
-            this.mailSendService.sendUserMessageToPlayer(sessionId, sptFriendUser, this.randomUtil.getArrayValue(["Its me!!", "spt? i've heard of that project"]));
+            this.mailSendService.sendUserMessageToPlayer(
+                sessionId,
+                sptFriendUser,
+                this.randomUtil.getArrayValue(["Its me!!", "spt? i've heard of that project"]),
+            );
         }
 
-        if (["hello", "hi", "sup", "yo", "hey"].includes(request.text.toLowerCase())) 
+        if (["hello", "hi", "sup", "yo", "hey"].includes(request.text.toLowerCase()))
         {
-            this.mailSendService.sendUserMessageToPlayer(sessionId, sptFriendUser, this.randomUtil.getArrayValue(["Howdy", "Hi", "Greetings", "Hello", "bonjor", "Yo", "Sup", "Heyyyyy", "Hey there", `Hello ${sender?.Info?.Nickname}`]));
+            this.mailSendService.sendUserMessageToPlayer(
+                sessionId,
+                sptFriendUser,
+                this.randomUtil.getArrayValue([
+                    "Howdy",
+                    "Hi",
+                    "Greetings",
+                    "Hello",
+                    "Bonjour",
+                    "Yo",
+                    "Sup",
+                    "Heyyyyy",
+                    "Hey there",
+                    `Hello ${sender?.Info?.Nickname}`,
+                ]),
+            );
         }
 
-        if (request.text.toLowerCase() === "nikita") 
+        if (request.text.toLowerCase() === "nikita")
         {
-            this.mailSendService.sendUserMessageToPlayer(sessionId, sptFriendUser, this.randomUtil.getArrayValue(["I know that guy!", "Cool guy, he made EFT!", "Legend", "Remember when he said webel-webel-webel-webel, classic nikita moment"]));
+            this.mailSendService.sendUserMessageToPlayer(
+                sessionId,
+                sptFriendUser,
+                this.randomUtil.getArrayValue([
+                    "I know that guy!",
+                    "Cool guy, he made EFT!",
+                    "Legend",
+                    "Remember when he said webel-webel-webel-webel, classic nikita moment",
+                ]),
+            );
         }
 
-        if (request.text.toLowerCase() === "are you a bot") 
+        if (request.text.toLowerCase() === "are you a bot")
         {
-            this.mailSendService.sendUserMessageToPlayer(sessionId, sptFriendUser, this.randomUtil.getArrayValue(["beep boop", "**sad boop**", "probably", "sometimes", "yeah lol"]));
+            this.mailSendService.sendUserMessageToPlayer(
+                sessionId,
+                sptFriendUser,
+                this.randomUtil.getArrayValue(["beep boop", "**sad boop**", "probably", "sometimes", "yeah lol"]),
+            );
         }
     }
 
@@ -425,8 +473,8 @@ export class DialogueController
                 Level: 1,
                 MemberCategory: MemberCategory.DEVELOPER,
                 Nickname: this.coreConfig.sptFriendNickname,
-                Side: "Usec"
-            }
+                Side: "Usec",
+            },
         };
     }
 
@@ -440,7 +488,7 @@ export class DialogueController
     {
         const timeNow = this.timeUtil.getTimestamp();
         const dialogs = this.dialogueHelper.getDialogsForProfile(sessionId);
-        return dialogs[dialogueId].messages.filter(x => timeNow < (x.dt + x.maxStorageTime));
+        return dialogs[dialogueId].messages.filter((x) => timeNow < (x.dt + x.maxStorageTime));
     }
 
     /**
@@ -450,7 +498,7 @@ export class DialogueController
      */
     protected getMessagesWithAttachments(messages: Message[]): Message[]
     {
-        return messages.filter(x => x.items?.data?.length > 0);
+        return messages.filter((x) => x.items?.data?.length > 0);
     }
 
     /**

@@ -15,7 +15,7 @@ export class WeatherController
     constructor(
         @inject("WeatherGenerator") protected weatherGenerator: WeatherGenerator,
         @inject("WinstonLogger") protected logger: ILogger,
-        @inject("ConfigServer") protected configServer: ConfigServer
+        @inject("ConfigServer") protected configServer: ConfigServer,
     )
     {
         this.weatherConfig = this.configServer.getConfig(ConfigTypes.WEATHER);
@@ -28,7 +28,7 @@ export class WeatherController
             acceleration: 0,
             time: "",
             date: "",
-            weather: null
+            weather: null,
         };
 
         result = this.weatherGenerator.calculateGameTime(result);

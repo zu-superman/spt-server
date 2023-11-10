@@ -69,7 +69,7 @@ export class GameController
         @inject("ItemBaseClassService") protected itemBaseClassService: ItemBaseClassService,
         @inject("GiftService") protected giftService: GiftService,
         @inject("ApplicationContext") protected applicationContext: ApplicationContext,
-        @inject("ConfigServer") protected configServer: ConfigServer
+        @inject("ConfigServer") protected configServer: ConfigServer,
     )
     {
         this.httpConfig = this.configServer.getConfig(ConfigTypes.HTTP);
@@ -82,10 +82,10 @@ export class GameController
 
     public load(): void
     {
-        // Regenerate basecache now mods are loaded and game is starting
-        // Mods that add items and use the baseclass service generate the cache including their items, the next mod that add items gets left out,causing warnings
+        // Regenerate base cache now mods are loaded and game is starting
+        // Mods that add items and use the baseClass service generate the cache including their items, the next mod that
+        // add items gets left out,causing warnings
         this.itemBaseClassService.hydrateItemBaseClassCache();
-
         this.addCustomLooseLootPositions();
     }
 
@@ -121,9 +121,9 @@ export class GameController
 
         this.checkTraderRepairValuesExist();
 
-        // repeatableQuests are stored by in profile.Quests due to the responses of the client (e.g. Quests in offraidData)
-        // Since we don't want to clutter the Quests list, we need to remove all completed (failed / successful) repeatable quests.
-        // We also have to remove the Counters from the repeatableQuests
+        // repeatableQuests are stored by in profile.Quests due to the responses of the client (e.g. Quests in
+        // offraidData). Since we don't want to clutter the Quests list, we need to remove all completed (failed or
+        // successful) repeatable quests. We also have to remove the Counters from the repeatableQuests
         if (sessionID)
         {
             const fullProfile = this.profileHelper.getFullProfile(sessionID);
@@ -166,7 +166,7 @@ export class GameController
                 this.profileFixerService.fixIncorrectAidValue(fullProfile);
 
                 this.profileFixerService.migrateStatsToNewStructure(fullProfile);
-                
+
                 this.sendPraporGiftsToNewProfiles(pmcProfile);
 
                 this.profileFixerService.checkForOrphanedModdedItems(sessionID, fullProfile);
@@ -184,7 +184,7 @@ export class GameController
                 this.hideoutHelper.unlockHideoutWallInProfile(pmcProfile);
                 this.profileFixerService.addMissingIdsToBonuses(pmcProfile);
             }
-            
+
             this.logProfileDetails(fullProfile);
 
             this.adjustLabsRaiderSpawnRate();
@@ -240,7 +240,9 @@ export class GameController
             const trader = this.databaseServer.getTables().traders[traderKey];
             if (!trader?.base?.repair)
             {
-                this.logger.warning(`Trader ${trader.base._id} ${trader.base.name} is missing a repair object, adding in default values`);
+                this.logger.warning(
+                    `Trader ${trader.base._id} ${trader.base.name} is missing a repair object, adding in default values`,
+                );
                 trader.base.repair = this.jsonUtil.clone(this.databaseServer.getTables().traders.ragfair.base.repair);
 
                 return;
@@ -248,8 +250,12 @@ export class GameController
 
             if (trader?.base?.repair?.quality)
             {
-                this.logger.warning(`Trader ${trader.base._id} ${trader.base.name} is missing a repair quality value, adding in default value`);
-                trader.base.repair.quality = this.jsonUtil.clone(this.databaseServer.getTables().traders.ragfair.base.repair.quality);
+                this.logger.warning(
+                    `Trader ${trader.base._id} ${trader.base.name} is missing a repair quality value, adding in default value`,
+                );
+                trader.base.repair.quality = this.jsonUtil.clone(
+                    this.databaseServer.getTables().traders.ragfair.base.repair.quality,
+                );
             }
         }
     }
@@ -274,7 +280,9 @@ export class GameController
             for (const positionToAdd of positionsToAdd)
             {
                 // Exists already, add new items to existing positions pool
-                const existingLootPosition = mapLooseLoot.spawnpoints.find(x => x.template.Id === positionToAdd.template.Id);
+                const existingLootPosition = mapLooseLoot.spawnpoints.find((x) =>
+                    x.template.Id === positionToAdd.template.Id
+                );
                 if (existingLootPosition)
                 {
                     existingLootPosition.template.Items.push(...positionToAdd.template.Items);
@@ -283,7 +291,7 @@ export class GameController
                     continue;
                 }
 
-                // new postion, add entire object
+                // New position, add entire object
                 mapLooseLoot.spawnpoints.push(positionToAdd);
             }
         }
@@ -303,7 +311,7 @@ export class GameController
             const mapLootAdjustmentsDict = adjustments[mapId];
             for (const lootKey in mapLootAdjustmentsDict)
             {
-                const lootPostionToAdjust = mapLooseLootData.spawnpoints.find(x => x.template.Id === lootKey);
+                const lootPostionToAdjust = mapLooseLootData.spawnpoints.find((x) => x.template.Id === lootKey);
                 if (!lootPostionToAdjust)
                 {
                     this.logger.warning(`Unable to adjust loot position: ${lootKey} on map: ${mapId}`);
@@ -314,24 +322,24 @@ export class GameController
             }
         }
     }
-    
+
     protected setHideoutAreasAndCraftsTo40Secs(): void
     {
-        for (const hideoutProd of this.databaseServer.getTables().hideout.production) 
+        for (const hideoutProd of this.databaseServer.getTables().hideout.production)
         {
-            if (hideoutProd.productionTime > 40) 
+            if (hideoutProd.productionTime > 40)
             {
                 hideoutProd.productionTime = 40;
             }
         }
         this.logger.warning("DEVELOPER: SETTING ALL HIDEOUT PRODUCTIONS TO 40 SECONDS");
 
-        for (const hideoutArea of this.databaseServer.getTables().hideout.areas) 
+        for (const hideoutArea of this.databaseServer.getTables().hideout.areas)
         {
-            for (const stageKey in hideoutArea.stages) 
+            for (const stageKey in hideoutArea.stages)
             {
                 const stage = hideoutArea.stages[stageKey];
-                if (stage.constructionTime > 40) 
+                if (stage.constructionTime > 40)
                 {
                     stage.constructionTime = 40;
                 }
@@ -339,9 +347,9 @@ export class GameController
         }
         this.logger.warning("DEVELOPER: SETTING ALL HIDEOUT AREAS TO 40 SECOND UPGRADES");
 
-        for (const scavCaseCraft of this.databaseServer.getTables().hideout.scavcase) 
+        for (const scavCaseCraft of this.databaseServer.getTables().hideout.scavcase)
         {
-            if (scavCaseCraft.ProductionTime > 40) 
+            if (scavCaseCraft.ProductionTime > 40)
             {
                 scavCaseCraft.ProductionTime = 40;
             }
@@ -363,12 +371,14 @@ export class GameController
             const map: ILocationData = mapsDb[mapId];
             if (!map)
             {
-                this.logger.warning(this.localisationService.getText("bot-unable_to_edit_limits_of_unknown_map", mapId));
+                this.logger.warning(
+                    this.localisationService.getText("bot-unable_to_edit_limits_of_unknown_map", mapId),
+                );
             }
 
             for (const botToLimit of this.locationConfig.botTypeLimits[mapId])
             {
-                const index = map.base.MinMaxBots.findIndex(x => x.WildSpawnType === botToLimit.type);
+                const index = map.base.MinMaxBots.findIndex((x) => x.WildSpawnType === botToLimit.type);
                 if (index !== -1)
                 {
                     // Existing bot type found in MinMaxBots array, edit
@@ -378,14 +388,12 @@ export class GameController
                 }
                 else
                 {
-                    map.base.MinMaxBots.push(
-                        {
-                            // Bot type not found, add new object
-                            WildSpawnType: botToLimit.type,
-                            min: botToLimit.min,
-                            max: botToLimit.max
-                        }
-                    );
+                    // Bot type not found, add new object
+                    map.base.MinMaxBots.push({
+                        WildSpawnType: botToLimit.type,
+                        min: botToLimit.min,
+                        max: botToLimit.max,
+                    });
                 }
             }
         }
@@ -412,12 +420,11 @@ export class GameController
                 Trading: this.httpServerHelper.getBackendUrl(),
                 Messaging: this.httpServerHelper.getBackendUrl(),
                 Main: this.httpServerHelper.getBackendUrl(),
-                RagFair: this.httpServerHelper.getBackendUrl()
+                RagFair: this.httpServerHelper.getBackendUrl(),
             },
             useProtobuf: false,
-            // eslint-disable-next-line @typescript-eslint/naming-convention
             utc_time: new Date().getTime() / 1000,
-            totalInGame: profile.Stats?.Eft?.TotalInGameTime ?? 0
+            totalInGame: profile.Stats?.Eft?.TotalInGameTime ?? 0,
         };
 
         return config;
@@ -426,50 +433,43 @@ export class GameController
     /**
      * Handle client/server/list
      */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public getServer(sessionId: string): IServerDetails[]
     {
-        return [
-            {
-                ip: this.httpConfig.ip,
-                port: this.httpConfig.port
-            }
-        ];
+        return [{
+            ip: this.httpConfig.ip,
+            port: this.httpConfig.port,
+        }];
     }
 
     /**
      * Handle client/match/group/current
      */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public getCurrentGroup(sessionId: string): ICurrentGroupResponse
     {
         return {
-            squad: []
+            squad: [],
         };
     }
 
     /**
      * Handle client/checkVersion
      */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public getValidGameVersion(sessionId: string): ICheckVersionResponse
     {
         return {
             isvalid: true,
-            latestVersion: this.coreConfig.compatibleTarkovVersion
+            latestVersion: this.coreConfig.compatibleTarkovVersion,
         };
     }
 
     /**
      * Handle client/game/keepalive
      */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public getKeepAlive(sessionId: string): IGameKeepAliveResponse
     {
         return {
             msg: "OK",
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            utc_time: new Date().getTime() / 1000
+            utc_time: new Date().getTime() / 1000,
         };
     }
 
@@ -520,8 +520,8 @@ export class GameController
 
     /**
      * When player logs in, iterate over all active effects and reduce timer
-     * TODO - add body part HP regen
-     * @param pmcProfile 
+     * // TODO: Add body part HP regeneration
+     * @param pmcProfile
      */
     protected updateProfileHealthValues(pmcProfile: IPmcData): void
     {
@@ -538,14 +538,23 @@ export class GameController
             let hpRegenPerHour = 456.6;
 
             // Set new values, whatever is smallest
-            energyRegenPerHour += pmcProfile.Bonuses.filter(x => x.type === "EnergyRegeneration").reduce((sum, curr) => sum + curr.value, 0);
-            hydrationRegenPerHour += pmcProfile.Bonuses.filter(x => x.type === "HydrationRegeneration").reduce((sum, curr) => sum + curr.value, 0);
-            hpRegenPerHour += pmcProfile.Bonuses.filter(x => x.type === "HealthRegeneration").reduce((sum, curr) => sum + curr.value, 0);
+            energyRegenPerHour += pmcProfile.Bonuses.filter((x) => x.type === "EnergyRegeneration").reduce(
+                (sum, curr) => sum + curr.value,
+                0,
+            );
+            hydrationRegenPerHour += pmcProfile.Bonuses.filter((x) => x.type === "HydrationRegeneration").reduce(
+                (sum, curr) => sum + curr.value,
+                0,
+            );
+            hpRegenPerHour += pmcProfile.Bonuses.filter((x) => x.type === "HealthRegeneration").reduce(
+                (sum, curr) => sum + curr.value,
+                0,
+            );
 
             if (pmcProfile.Health.Energy.Current !== pmcProfile.Health.Energy.Maximum)
             {
                 // Set new value, whatever is smallest
-                pmcProfile.Health.Energy.Current += Math.round((energyRegenPerHour * (diffSeconds / 3600)));
+                pmcProfile.Health.Energy.Current += Math.round(energyRegenPerHour * (diffSeconds / 3600));
                 if (pmcProfile.Health.Energy.Current > pmcProfile.Health.Energy.Maximum)
                 {
                     pmcProfile.Health.Energy.Current = pmcProfile.Health.Energy.Maximum;
@@ -554,7 +563,7 @@ export class GameController
 
             if (pmcProfile.Health.Hydration.Current !== pmcProfile.Health.Hydration.Maximum)
             {
-                pmcProfile.Health.Hydration.Current += Math.round((hydrationRegenPerHour * (diffSeconds / 3600)));
+                pmcProfile.Health.Hydration.Current += Math.round(hydrationRegenPerHour * (diffSeconds / 3600));
                 if (pmcProfile.Health.Hydration.Current > pmcProfile.Health.Hydration.Maximum)
                 {
                     pmcProfile.Health.Hydration.Current = pmcProfile.Health.Hydration.Maximum;
@@ -565,17 +574,17 @@ export class GameController
             for (const bodyPartKey in pmcProfile.Health.BodyParts)
             {
                 const bodyPart = pmcProfile.Health.BodyParts[bodyPartKey] as BodyPartHealth;
-                
+
                 // Check part hp
                 if (bodyPart.Health.Current < bodyPart.Health.Maximum)
                 {
-                    bodyPart.Health.Current += Math.round((hpRegenPerHour * (diffSeconds / 3600)));
+                    bodyPart.Health.Current += Math.round(hpRegenPerHour * (diffSeconds / 3600));
                 }
                 if (bodyPart.Health.Current > bodyPart.Health.Maximum)
                 {
                     bodyPart.Health.Current = bodyPart.Health.Maximum;
                 }
-                
+
                 // Look for effects
                 if (Object.keys(bodyPart.Effects ?? {}).length > 0)
                 {
@@ -618,7 +627,9 @@ export class GameController
             const location: ILocationData = this.databaseServer.getTables().locations[locationKey];
             if (!location.base)
             {
-                this.logger.warning(this.localisationService.getText("location-unable_to_fix_broken_waves_missing_base", locationKey));
+                this.logger.warning(
+                    this.localisationService.getText("location-unable_to_fix_broken_waves_missing_base", locationKey),
+                );
                 continue;
             }
 
@@ -626,7 +637,9 @@ export class GameController
             {
                 if ((wave.slots_max - wave.slots_min === 0))
                 {
-                    this.logger.debug(`Fixed ${wave.WildSpawnType} Spawn: ${locationKey} wave: ${wave.number} of type: ${wave.WildSpawnType} in zone: ${wave.SpawnPoints} with Max Slots of ${wave.slots_max}`);
+                    this.logger.debug(
+                        `Fixed ${wave.WildSpawnType} Spawn: ${locationKey} wave: ${wave.number} of type: ${wave.WildSpawnType} in zone: ${wave.SpawnPoints} with Max Slots of ${wave.slots_max}`,
+                    );
                     wave.slots_max++;
                 }
             }
@@ -673,7 +686,8 @@ export class GameController
     }
 
     /**
-     * Find and split waves with large numbers of bots into smaller waves - BSG appears to reduce the size of these waves to one bot when they're waiting to spawn for too long
+     * Find and split waves with large numbers of bots into smaller waves - BSG appears to reduce the size of these
+     * waves to one bot when they're waiting to spawn for too long
      */
     protected splitBotWavesIntoSingleWaves(): void
     {
@@ -689,18 +703,23 @@ export class GameController
             for (const wave of location.base.waves)
             {
                 // Wave has size that makes it candidate for splitting
-                if (wave.slots_max - wave.slots_min >= this.locationConfig.splitWaveIntoSingleSpawnsSettings.waveSizeThreshold)
+                if (
+                    wave.slots_max - wave.slots_min >=
+                        this.locationConfig.splitWaveIntoSingleSpawnsSettings.waveSizeThreshold
+                )
                 {
                     // Get count of bots to be spawned in wave
                     const waveSize = wave.slots_max - wave.slots_min;
-                    
+
                     // Update wave to spawn single bot
                     wave.slots_min = 1;
                     wave.slots_max = 2;
-                    
+
                     // Get index of wave
                     const indexOfWaveToSplit = location.base.waves.indexOf(wave);
-                    this.logger.debug(`Splitting map: ${location.base.Id} wave: ${indexOfWaveToSplit} with ${waveSize} bots`);
+                    this.logger.debug(
+                        `Splitting map: ${location.base.Id} wave: ${indexOfWaveToSplit} with ${waveSize} bots`,
+                    );
 
                     // Add new waves to fill gap from bots we removed in above wave
                     let wavesAddedCount = 0;
@@ -716,20 +735,23 @@ export class GameController
                             waveToAdd.number = index;
                         }
 
-                        // Place wave into array in just-edited postion + 1
+                        // Place wave into array in just-edited position + 1
                         location.base.waves.splice(index, 0, waveToAdd);
                         wavesAddedCount++;
                     }
 
-                    // Update subsequent wave number property to accomodate the new waves
-                    for (let index = indexOfWaveToSplit + wavesAddedCount + 1; index < location.base.waves.length; index++)
+                    // Update subsequent wave number property to accommodate the new waves
+                    for (
+                        let index = indexOfWaveToSplit + wavesAddedCount + 1;
+                        index < location.base.waves.length;
+                        index++
+                    )
                     {
                         // Some waves have value of 0, leave them as-is
                         if (location.base.waves[index].number !== 0)
                         {
                             location.base.waves[index].number += wavesAddedCount;
                         }
-                        
                     }
                 }
             }
@@ -753,9 +775,13 @@ export class GameController
         for (const modKey in activeMods)
         {
             const modDetails = activeMods[modKey];
-            if (fullProfile.aki.mods.some(x => x.author === modDetails.author
-                && x.name === modDetails.name
-                && x.version === modDetails.version))
+            if (
+                fullProfile.aki.mods.some((x) =>
+                    x.author === modDetails.author &&
+                    x.name === modDetails.name &&
+                    x.version === modDetails.version
+                )
+            )
             {
                 // Exists already, skip
                 continue;
@@ -765,13 +791,13 @@ export class GameController
                 author: modDetails.author,
                 dateAdded: Date.now(),
                 name: modDetails.name,
-                version: modDetails.version
+                version: modDetails.version,
             });
         }
     }
 
     /**
-     * Check for any missing assorts inside each traders assort.json data, checking against traders qeustassort.json
+     * Check for any missing assorts inside each traders assort.json data, checking against traders questassort.json
      */
     protected validateQuestAssortUnlocksExist(): void
     {
@@ -788,19 +814,26 @@ export class GameController
             }
 
             // Merge started/success/fail quest assorts into one dictionary
-            const mergedQuestAssorts = { ...traderData.questassort["started"], ...traderData.questassort["success"], ...traderData.questassort["fail"]};
+            const mergedQuestAssorts = {
+                ...traderData.questassort["started"],
+                ...traderData.questassort["success"],
+                ...traderData.questassort["fail"],
+            };
 
-            // loop over all assorts for trader
+            // Loop over all assorts for trader
             for (const [assortKey, questKey] of Object.entries(mergedQuestAssorts))
             {
                 // Does assort key exist in trader assort file
                 if (!traderAssorts.loyal_level_items[assortKey])
                 {
-                    // reverse lookup of enum key by value 
+                    // Reverse lookup of enum key by value
                     const messageValues = {
                         traderName: Object.keys(Traders)[Object.values(Traders).indexOf(traderId)],
-                        questName: quests[questKey]?.QuestName ?? "UNKNOWN"};
-                    this.logger.debug(this.localisationService.getText("assort-missing_quest_assort_unlock", messageValues));
+                        questName: quests[questKey]?.QuestName ?? "UNKNOWN",
+                    };
+                    this.logger.debug(
+                        this.localisationService.getText("assort-missing_quest_assort_unlock", messageValues),
+                    );
                 }
             }
         }
@@ -821,11 +854,11 @@ export class GameController
             {
                 bots["bear"].firstName.push(playerName);
             }
-            
+
             if (bots["usec"])
             {
                 bots["usec"].firstName.push(playerName);
-            } 
+            }
         }
     }
 
@@ -847,7 +880,7 @@ export class GameController
      */
     protected removePraporTestMessage(): void
     {
-        // Iterate over all langauges (e.g. "en", "fr")
+        // Iterate over all languages (e.g. "en", "fr")
         for (const localeKey in this.databaseServer.getTables().locales.global)
         {
             this.databaseServer.getTables().locales.global[localeKey]["61687e2c3e526901fa76baf9"] = "";
@@ -860,7 +893,9 @@ export class GameController
     protected adjustLabsRaiderSpawnRate(): void
     {
         const labsBase = this.databaseServer.getTables().locations.laboratory.base;
-        const nonTriggerLabsBossSpawns = labsBase.BossLocationSpawn.filter(x => x.TriggerId === "" && x.TriggerName === "");
+        const nonTriggerLabsBossSpawns = labsBase.BossLocationSpawn.filter((x) =>
+            x.TriggerId === "" && x.TriggerName === ""
+        );
         if (nonTriggerLabsBossSpawns)
         {
             for (const boss of nonTriggerLabsBossSpawns)

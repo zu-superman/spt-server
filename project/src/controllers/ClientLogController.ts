@@ -9,9 +9,9 @@ import { inject, injectable } from "tsyringe";
 export class ClientLogController
 {
     constructor(
-        @inject("WinstonLogger") protected logger: ILogger
+        @inject("WinstonLogger") protected logger: ILogger,
     )
-    { }
+    {}
 
     /**
      * Handle /singleplayer/log

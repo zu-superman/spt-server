@@ -30,7 +30,7 @@ export class LauncherController
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("PreAkiModLoader") protected preAkiModLoader: PreAkiModLoader,
-        @inject("ConfigServer") protected configServer: ConfigServer
+        @inject("ConfigServer") protected configServer: ConfigServer,
     )
     {
         this.coreConfig = this.configServer.getConfig(ConfigTypes.CORE);
@@ -42,30 +42,26 @@ export class LauncherController
             backendUrl: this.httpServerHelper.getBackendUrl(),
             name: this.coreConfig.serverName,
             editions: Object.keys(this.databaseServer.getTables().templates.profiles),
-            profileDescriptions: this.getProfileDescriptions()
+            profileDescriptions: this.getProfileDescriptions(),
         };
     }
 
     /**
-     * Get descriptive text for each of the profile edtions a player can choose
-     * @returns 
+     * Get descriptive text for each of the profile editions a player can choose
+     * @returns
      */
     protected getProfileDescriptions(): Record<string, string>
     {
         return {
+            /* eslint-disable @typescript-eslint/naming-convention */
             Standard: this.localisationService.getText("launcher-profile_standard"),
-            // eslint-disable-next-line @typescript-eslint/naming-convention
             "Left Behind": this.localisationService.getText("launcher-profile_leftbehind"),
-            // eslint-disable-next-line @typescript-eslint/naming-convention
             "Prepare To Escape": this.localisationService.getText("launcher-profile_preparetoescape"),
-            // eslint-disable-next-line @typescript-eslint/naming-convention
             "Edge Of Darkness": this.localisationService.getText("launcher-edgeofdarkness"),
-            // eslint-disable-next-line @typescript-eslint/naming-convention
             "SPT Easy start": this.localisationService.getText("launcher-profile_spteasystart"),
-            // eslint-disable-next-line @typescript-eslint/naming-convention
             "SPT Zero to hero": this.localisationService.getText("launcher-profile_sptzerotohero"),
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            "SPT Developer": this.localisationService.getText("launcher-profile_sptdeveloper")
+            "SPT Developer": this.localisationService.getText("launcher-profile_sptdeveloper"),
+            /* eslint-enable @typescript-eslint/naming-convention */
         };
     }
 
@@ -115,12 +111,13 @@ export class LauncherController
             username: info.username,
             password: info.password,
             wipe: true,
-            edition: info.edition
+            edition: info.edition,
         };
         this.saveServer.createProfile(newProfileDetails);
 
         this.saveServer.loadProfile(sessionID);
         this.saveServer.saveProfile(sessionID);
+
         return sessionID;
     }
 

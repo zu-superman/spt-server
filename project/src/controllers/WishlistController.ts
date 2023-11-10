@@ -9,16 +9,16 @@ import { EventOutputHolder } from "@spt-aki/routers/EventOutputHolder";
 export class WishlistController
 {
     constructor(
-        @inject("EventOutputHolder") protected eventOutputHolder: EventOutputHolder
+        @inject("EventOutputHolder") protected eventOutputHolder: EventOutputHolder,
     )
-    { }
+    {}
 
     /** Handle AddToWishList */
     public addToWishList(pmcData: IPmcData, body: IWishlistActionData, sessionID: string): IItemEventRouterResponse
     {
         for (const item in pmcData.WishList)
         {
-            // don't add the item
+            // Don't add the item
             if (pmcData.WishList[item] === body.templateId)
             {
                 return this.eventOutputHolder.getOutput(sessionID);
