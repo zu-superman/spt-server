@@ -6,7 +6,7 @@
         }
     },
     "organizeImports": {
-        "enabled": false
+        "enabled": true
     },
     "linter": {
         "enabled": true,
@@ -26,7 +26,7 @@
                 "noExplicitAny": "off",
                 "noDoubleEquals": "warn",
                 "noShadowRestrictedNames": "warn",
-                "noEmptyInterface":"off"
+                "noEmptyInterface": "off"
             },
             "performance": {
                 "noDelete": "off"
@@ -39,13 +39,30 @@
                 "useSimplifiedLogicExpression": "warn",
                 "useOptionalChain": "warn"
             }
-        },
+        }
+    },
+    "formatter": {
+        "enabled": false
+    },
+    "files": {
         "ignore": [
             "**/*.js",
             "**/*.json",
-            "**/*.mjs",
+            "**/*.d.ts",
             "**/Dockerfile.*",
-            "**/node_modules/**/*"
+            "**/.git/**/*",
+            "**/.vscode/**/*",
+            "**/node_modules/**/*",
+            "**/build/**/*",
+            "**/obj/**/*",
+            "**/dist/**/*",
+            "**/user/**/*",
+            "**/logs/**/*",
+            "**/assets/**/*",
+            "**/Aki_Data/**/*",
+            "**/types/**/*",
+            "**/tests/__cache__/**/*",
+            "**/tests/__coverage__/**/*"
         ]
-    } 
+    }
 }

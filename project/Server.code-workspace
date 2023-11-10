@@ -5,18 +5,27 @@
         }
     ],
     "extensions": {
-        "recommendations": ["dbaeumer.vscode-eslint"],
+        "recommendations": [
+            "EditorConfig.EditorConfig",
+            "Jota0222.multi-formatter",
+            "dbaeumer.vscode-eslint",
+            "dprint.dprint",
+            "biomejs.biome"
+        ]
     },
     "settings": {
         "window.title": "SPT-AKI Server",
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "dprint.dprint",
+        "multiFormatter.formatterList": [
+            "dprint.dprint",
+            "biomejs.biome"
+        ],
         "[typescript]": {
-            "editor.formatOnSave": true,
-            "editor.defaultFormatter": "dbaeumer.vscode-eslint"
-        },
-        "eslint.validate": ["typescript"],
-        "editor.codeActionsOnSave": {
-            "source.organizeImports": false,
-            "source.fixAll.eslint": true
+            "editor.codeActionsOnSave": {
+                "quickfix.biome": false,
+                "source.organizeImports.biome": true
+            }
         }
-    },
+    }
 }
