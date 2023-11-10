@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { container } from "tsyringe";
-import { vi, beforeEach, afterEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { InRaidHelper } from "@spt-aki/helpers/InRaidHelper";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
@@ -27,12 +27,12 @@ describe("InRaidHelper", () =>
             const postRaidPlayerVictims = [
                 {
                     Side: "Savage",
-                    Role: "assault"
+                    Role: "assault",
                 },
                 {
                     Side: "Savage",
-                    Role: "assault"
-                }
+                    Role: "assault",
+                },
             ]; // Kills
 
             const databaseServer = container.resolve<DatabaseServer>("DatabaseServer");
@@ -49,12 +49,12 @@ describe("InRaidHelper", () =>
             const postRaidPlayerVictims = [
                 {
                     Side: "Usec",
-                    Role: "sptUsec"
+                    Role: "sptUsec",
                 },
                 {
                     Side: "Bear",
-                    Role: "sptBear"
-                }
+                    Role: "sptBear",
+                },
             ]; // Kills
 
             const databaseServer = container.resolve<DatabaseServer>("DatabaseServer");
@@ -72,29 +72,32 @@ describe("InRaidHelper", () =>
             const postRaidPlayerVictims = [
                 {
                     Side: "Usec",
-                    Role: "sptUsec"
+                    Role: "sptUsec",
                 },
                 {
                     Side: "savage",
-                    Role: "assault"
+                    Role: "assault",
                 },
                 {
                     Side: "savage",
-                    Role: "bossBoar"
+                    Role: "bossBoar",
                 },
                 {
                     Side: "savage",
-                    Role: "assault"
-                }
+                    Role: "assault",
+                },
             ]; // Kills
 
             const databaseServer = container.resolve<DatabaseServer>("DatabaseServer");
             const usecStandingChangeOnKill = databaseServer.getTables().bots.types.bear.experience.standingForKill;
             const scavStandingChangeOnKill = databaseServer.getTables().bots.types.assault.experience.standingForKill;
-            const bossBoarStandingChangeOnKill = databaseServer.getTables().bots.types.bossboar.experience.standingForKill;
+            const bossBoarStandingChangeOnKill =
+                databaseServer.getTables().bots.types.bossboar.experience.standingForKill;
 
             const result = inraidHelper.calculateFenceStandingChangeFromKills(fenceStanding, postRaidPlayerVictims);
-            expect(result).toBe(usecStandingChangeOnKill + (scavStandingChangeOnKill * 2) + bossBoarStandingChangeOnKill);
+            expect(result).toBe(
+                usecStandingChangeOnKill + (scavStandingChangeOnKill * 2) + bossBoarStandingChangeOnKill,
+            );
             expect(result).lessThan(0);
         });
 
@@ -104,12 +107,14 @@ describe("InRaidHelper", () =>
             const postRaidPlayerVictims = [
                 {
                     Side: "savage",
-                    Role: "testRole"
-                }
+                    Role: "testRole",
+                },
             ]; // Kills
 
             // Fake getFenceStandingChangeForKillAsScav() returning null
-            vi.spyOn(inraidHelper, "getFenceStandingChangeForKillAsScav").mockReturnValueOnce(null).mockReturnValueOnce(null);
+            vi.spyOn(inraidHelper, "getFenceStandingChangeForKillAsScav").mockReturnValueOnce(null).mockReturnValueOnce(
+                null,
+            );
             const result = inraidHelper.calculateFenceStandingChangeFromKills(fenceStanding, postRaidPlayerVictims);
             expect(result).toBe(0);
         });

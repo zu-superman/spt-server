@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import "reflect-metadata";
-import { container } from "tsyringe";
-import { vi, beforeEach, afterEach, describe, expect, it } from "vitest";
 import { BotGenerator } from "@spt-aki/generators/BotGenerator";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
+import { container } from "tsyringe";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 describe("BotGenerator", () =>
 {
@@ -62,15 +62,15 @@ describe("BotGenerator", () =>
             const mockPlayerProfile = {
                 Info: {
                     Nickname: "Player Nickname",
-                    Level: 1
-                }
+                    Level: 1,
+                },
             };
 
             vi.spyOn(botGenerator.profileHelper, "getPmcProfile").mockReturnValue(<IPmcData>mockPlayerProfile);
 
             const botJsonTemplate = {
                 firstName: ["test"],
-                lastName: []
+                lastName: [],
             };
 
             const sessionId = "sessionId";
@@ -88,14 +88,14 @@ describe("BotGenerator", () =>
             const mockPlayerProfile = {
                 Info: {
                     Nickname: "Player Nickname",
-                    Level: 1
-                }
+                    Level: 1,
+                },
             };
             vi.spyOn(botGenerator.profileHelper, "getPmcProfile").mockReturnValue(<IPmcData>mockPlayerProfile);
 
             const botJsonTemplate = {
                 firstName: ["test"],
-                lastName: []
+                lastName: [],
             };
 
             const sessionId = "sessionId";
@@ -114,15 +114,15 @@ describe("BotGenerator", () =>
             const mockPlayerProfile = {
                 Info: {
                     Nickname: "Player",
-                    Level: 1
-                }
+                    Level: 1,
+                },
             };
             vi.spyOn(botGenerator.profileHelper, "getPmcProfile").mockReturnValue(<IPmcData>mockPlayerProfile);
             vi.spyOn(botGenerator.localisationService, "getRandomTextThatMatchesPartialKey").mockReturnValue("test");
 
             const botJsonTemplate = {
                 firstName: ["Player"],
-                lastName: []
+                lastName: [],
             };
 
             const sessionId = "sessionId";
@@ -140,14 +140,14 @@ describe("BotGenerator", () =>
             const mockPlayerProfile = {
                 Info: {
                     Nickname: "Player",
-                    Level: 1
-                }
+                    Level: 1,
+                },
             };
             vi.spyOn(botGenerator.profileHelper, "getPmcProfile").mockReturnValue(<IPmcData>mockPlayerProfile);
 
             const botJsonTemplate = {
                 firstName: ["test"],
-                lastName: []
+                lastName: [],
             };
 
             const sessionId = "sessionId";
@@ -167,14 +167,14 @@ describe("BotGenerator", () =>
             const mockPlayerProfile = {
                 Info: {
                     Nickname: "Player",
-                    Level: 1
-                }
+                    Level: 1,
+                },
             };
             vi.spyOn(botGenerator.profileHelper, "getPmcProfile").mockReturnValue(<IPmcData>mockPlayerProfile);
 
             const botJsonTemplate = {
                 firstName: ["test"],
-                lastName: []
+                lastName: [],
             };
 
             const sessionId = "sessionId";

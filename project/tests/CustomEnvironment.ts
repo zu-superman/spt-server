@@ -1,20 +1,17 @@
 import "reflect-metadata";
 import { container, DependencyContainer, Lifecycle } from "tsyringe";
 
-// For the Vitest Custom Environment.
-import type { Environment } from "vitest";
 import { Container } from "@spt-aki/di/Container";
-
-// Required for importing the database.
-import path from "node:path";
 import { IDatabaseTables } from "@spt-aki/models/spt/server/IDatabaseTables";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { ImporterUtil } from "@spt-aki/utils/ImporterUtil";
+import path from "node:path";
+import type { Environment } from "vitest";
 
-// Manually mock for the logger.
+// Manually mock the logger.
 import { WinstonLogger } from "@tests/__mocks__/WinstonLogger.mock";
 
-export default <Environment> {
+export default <Environment>{
     name: "spt-aki-server",
     transformMode: "ssr",
     async setup()
@@ -24,16 +21,16 @@ export default <Environment> {
         Container.registerListTypes(container);
 
         // Override registration to the container.
-        container.register<WinstonLogger>("WinstonLogger", WinstonLogger, { lifecycle: Lifecycle.Singleton });
+        container.register<WinstonLogger>("WinstonLogger", WinstonLogger, {lifecycle: Lifecycle.Singleton});
 
         // Import the database.
         await importDatabase(container);
 
         return {
             async teardown()
-            {}
+            {},
         };
-    }
+    },
 };
 
 /**

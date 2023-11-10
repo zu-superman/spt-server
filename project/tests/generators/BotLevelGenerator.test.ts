@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { container } from "tsyringe";
-import { vi, beforeEach, afterEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { BotLevelGenerator } from "@spt-aki/generators/BotLevelGenerator";
 import { MinMax } from "@spt-aki/models/common/MinMax";
@@ -29,7 +29,7 @@ describe("BotLevelGenerator", () =>
         {
             const levelDetails: MinMax = {
                 min: 5,
-                max: 10
+                max: 10,
             };
 
             const botGenerationDetails: BotGenerationDetails = {
@@ -40,7 +40,7 @@ describe("BotLevelGenerator", () =>
                 botRelativeLevelDeltaMax: 0,
                 botCountToGenerate: 0,
                 botDifficulty: "",
-                isPlayerScav: false
+                isPlayerScav: false,
             };
 
             const result = botLevelGenerator.generateBotLevel(levelDetails, botGenerationDetails, null);
@@ -55,7 +55,7 @@ describe("BotLevelGenerator", () =>
         {
             const levelDetails: MinMax = {
                 min: 5,
-                max: 10
+                max: 10,
             };
 
             const expTable = databaseServer.getTables().globals.config.exp.level.exp_table;
@@ -69,14 +69,19 @@ describe("BotLevelGenerator", () =>
         {
             const levelDetails: MinMax = {
                 min: 100,
-                max: 100
+                max: 100,
             };
 
             const expTable = databaseServer.getTables().globals.config.exp.level.exp_table;
             const playerLevel = 100;
             const relativeDeltaMax = 5;
 
-            const result = botLevelGenerator.getHighestRelativeBotLevel(playerLevel, relativeDeltaMax, levelDetails, expTable);
+            const result = botLevelGenerator.getHighestRelativeBotLevel(
+                playerLevel,
+                relativeDeltaMax,
+                levelDetails,
+                expTable,
+            );
 
             expect(result).toBe(79);
         });

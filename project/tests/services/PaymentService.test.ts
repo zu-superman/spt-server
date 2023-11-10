@@ -1,16 +1,16 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import "reflect-metadata";
 import { container } from "tsyringe";
-import { vi, beforeEach, afterEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { PaymentService } from "@spt-aki/services/PaymentService";
 
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
-import { IProcessBuyTradeRequestData } from "@spt-aki/models/eft/trade/IProcessBuyTradeRequestData";
-import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEventRouterResponse";
-import { HashUtil } from "@spt-aki/utils/HashUtil";
-import { ITraderBase } from "@spt-aki/models/eft/common/tables/ITrader";
 import { Item } from "@spt-aki/models/eft/common/tables/IItem";
+import { ITraderBase } from "@spt-aki/models/eft/common/tables/ITrader";
+import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEventRouterResponse";
+import { IProcessBuyTradeRequestData } from "@spt-aki/models/eft/trade/IProcessBuyTradeRequestData";
+import { HashUtil } from "@spt-aki/utils/HashUtil";
 
 describe("PaymentService", () =>
 {
@@ -44,8 +44,8 @@ describe("PaymentService", () =>
                 _id: costItemId,
                 _tpl: costItemTpl,
                 upd: {
-                    StackObjectsCount: costAmount * 4 // More than enough.
-                }
+                    StackObjectsCount: costAmount * 4, // More than enough.
+                },
             } as Item;
 
             // Object representing the player's PMC inventory.
@@ -54,12 +54,12 @@ describe("PaymentService", () =>
                     [traderId]: {
                         salesSum: 0,
                         unlocked: true,
-                        disabled: false
-                    }
+                        disabled: false,
+                    },
                 },
                 Inventory: {
-                    items: [moneyItem]
-                }
+                    items: [moneyItem],
+                },
             } as unknown as IPmcData;
 
             // Buy a factory map from Therapist... although it doesn't really matter what the item is as there's no
@@ -74,9 +74,9 @@ describe("PaymentService", () =>
                 scheme_items: [
                     {
                         id: costItemId,
-                        count: costAmount
-                    }
-                ]
+                        count: costAmount,
+                    },
+                ],
             } as IProcessBuyTradeRequestData;
 
             // Inconsequential profile ID
@@ -90,10 +90,10 @@ describe("PaymentService", () =>
                         items: {
                             new: [],
                             change: [],
-                            del: []
-                        }
-                    }
-                }
+                            del: [],
+                        },
+                    },
+                },
             } as unknown as IItemEventRouterResponse;
 
             // Mock the logger debug method to return void.
@@ -101,13 +101,14 @@ describe("PaymentService", () =>
             {});
 
             // Mock the trader helper to return a trader with the currency of Roubles.
-            const traderHelperGetTraderSpy = vi.spyOn((paymentService as any).traderHelper, "getTrader").mockReturnValue({
-                tid: traderId,
-                currency: "RUB"
-            } as unknown as ITraderBase);
+            const traderHelperGetTraderSpy = vi.spyOn((paymentService as any).traderHelper, "getTrader")
+                .mockReturnValue({
+                    tid: traderId,
+                    currency: "RUB",
+                } as unknown as ITraderBase);
 
             // Mock the addPaymentToOutput method to subtract the item cost from the money stack.
-            const addPaymentToOutputSpy = vi.spyOn((paymentService as any), "addPaymentToOutput").mockImplementation(() =>
+            const addPaymentToOutputSpy = vi.spyOn(paymentService as any, "addPaymentToOutput").mockImplementation(() =>
             {
                 moneyItem.upd.StackObjectsCount -= costAmount;
                 return {
@@ -115,18 +116,25 @@ describe("PaymentService", () =>
                     profileChanges: {
                         [sessionID]: {
                             items: {
-                                change: [moneyItem]
-                            }
-                        }
-                    }
+                                change: [moneyItem],
+                            },
+                        },
+                    },
                 };
             });
 
             // Mock the traderHelper lvlUp method to return void.
-            const traderHelperLvlUpSpy = vi.spyOn((paymentService as any).traderHelper, "lvlUp").mockImplementation(() =>
-            {});
+            const traderHelperLvlUpSpy = vi.spyOn((paymentService as any).traderHelper, "lvlUp").mockImplementation(
+                () =>
+                {},
+            );
 
-            const output = paymentService.payMoney(pmcData, processBuyTradeRequestData, sessionID, itemEventRouterResponse);
+            const output = paymentService.payMoney(
+                pmcData,
+                processBuyTradeRequestData,
+                sessionID,
+                itemEventRouterResponse,
+            );
 
             // Check for absence of output warnings.
             expect(output.warnings).toHaveLength(0);
@@ -139,7 +147,13 @@ describe("PaymentService", () =>
 
             // Check if mocked methods were called as expected.
             expect(traderHelperGetTraderSpy).toBeCalledTimes(1);
-            expect(addPaymentToOutputSpy).toBeCalledWith(expect.anything(), costItemTpl, costAmount, sessionID, expect.anything());
+            expect(addPaymentToOutputSpy).toBeCalledWith(
+                expect.anything(),
+                costItemTpl,
+                costAmount,
+                sessionID,
+                expect.anything(),
+            );
             expect(traderHelperLvlUpSpy).toBeCalledTimes(1);
         });
     });
@@ -151,14 +165,14 @@ describe("PaymentService", () =>
             const hashUtil = container.resolve<HashUtil>("HashUtil");
             const stashItem: Item = {
                 _id: "stashid",
-                _tpl: "55d7217a4bdc2d86028b456d" // standard stash id
+                _tpl: "55d7217a4bdc2d86028b456d", // standard stash id
             };
 
             const inventoryItemToFind: Item = {
                 _id: hashUtil.generate(),
                 _tpl: "544fb6cc4bdc2d34748b456e", // Slickers chocolate bar
                 parentId: stashItem._id,
-                slotId: "hideout"
+                slotId: "hideout",
             };
             const playerInventory = [stashItem, inventoryItemToFind];
 
@@ -172,20 +186,20 @@ describe("PaymentService", () =>
             const hashUtil = container.resolve<HashUtil>("HashUtil");
             const stashItem: Item = {
                 _id: "stashId",
-                _tpl: "55d7217a4bdc2d86028b456d" // standard stash id
+                _tpl: "55d7217a4bdc2d86028b456d", // standard stash id
             };
 
             const foodBagToHoldItemToFind: Item = {
                 _id: hashUtil.generate(),
                 _tpl: "5c093db286f7740a1b2617e3",
                 parentId: stashItem._id,
-                slotId: "hideout"
+                slotId: "hideout",
             };
 
             const inventoryItemToFind: Item = {
                 _id: hashUtil.generate(),
                 _tpl: "544fb6cc4bdc2d34748b456e", // Slickers chocolate bar
-                parentId: foodBagToHoldItemToFind._id
+                parentId: foodBagToHoldItemToFind._id,
             };
             const playerInventory = [stashItem, foodBagToHoldItemToFind, inventoryItemToFind];
 
@@ -199,14 +213,14 @@ describe("PaymentService", () =>
             const hashUtil = container.resolve<HashUtil>("HashUtil");
             const stashItem: Item = {
                 _id: "stashId",
-                _tpl: "55d7217a4bdc2d86028b456d" // standard stash id
+                _tpl: "55d7217a4bdc2d86028b456d", // standard stash id
             };
 
             const inventoryItemToFind: Item = {
                 _id: hashUtil.generate(),
                 _tpl: "544fb6cc4bdc2d34748b456e", // Slickers chocolate bar
                 parentId: stashItem._id,
-                slotId: "hideout"
+                slotId: "hideout",
             };
             const playerInventory = [stashItem, inventoryItemToFind];
 
@@ -220,16 +234,16 @@ describe("PaymentService", () =>
             const hashUtil = container.resolve<HashUtil>("HashUtil");
             const stashItem: Item = {
                 _id: "stashId",
-                _tpl: "55d7217a4bdc2d86028b456d" // standard stash id
+                _tpl: "55d7217a4bdc2d86028b456d", // standard stash id
             };
 
             const inventoryItemToFind: Item = {
                 _id: hashUtil.generate(),
                 _tpl: "544fb6cc4bdc2d34748b456e", // Slickers chocolate bar
                 parentId: stashItem._id,
-                slotId: "hideout"
+                slotId: "hideout",
             };
-            const playerInventory = [ inventoryItemToFind];
+            const playerInventory = [inventoryItemToFind];
 
             const result = paymentService.isInStash("notCorrectId", playerInventory, stashItem._id);
 

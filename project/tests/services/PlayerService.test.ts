@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import "reflect-metadata";
 import { container } from "tsyringe";
-import { vi, beforeEach, afterEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
 import { PlayerService } from "@spt-aki/services/PlayerService";
@@ -26,8 +26,8 @@ describe("PlayerService", () =>
         {
             const playerProfile = {
                 Info: {
-                    Experience: 0 // Via wiki: https://escapefromtarkov.fandom.com/wiki/Character_skills#Levels
-                }
+                    Experience: 0, // Via wiki: https://escapefromtarkov.fandom.com/wiki/Character_skills#Levels
+                },
             };
 
             const result = playerService.calculateLevel(playerProfile as IPmcData);
@@ -39,8 +39,8 @@ describe("PlayerService", () =>
         {
             const playerProfile = {
                 Info: {
-                    Experience: 999 // Via wiki: https://escapefromtarkov.fandom.com/wiki/Character_skills#Levels
-                }
+                    Experience: 999, // Via wiki: https://escapefromtarkov.fandom.com/wiki/Character_skills#Levels
+                },
             };
 
             const result = playerService.calculateLevel(playerProfile as IPmcData);
@@ -52,8 +52,8 @@ describe("PlayerService", () =>
         {
             const playerProfile = {
                 Info: {
-                    Experience: 609066 // Via wiki: https://escapefromtarkov.fandom.com/wiki/Character_skills#Levels
-                }
+                    Experience: 609066, // Via wiki: https://escapefromtarkov.fandom.com/wiki/Character_skills#Levels
+                },
             };
 
             const result = playerService.calculateLevel(playerProfile as IPmcData);
@@ -65,8 +65,8 @@ describe("PlayerService", () =>
         {
             const playerProfile = {
                 Info: {
-                    Experience: 68206066 // Via wiki: https://escapefromtarkov.fandom.com/wiki/Character_skills#Levels
-                }
+                    Experience: 68206066, // Via wiki: https://escapefromtarkov.fandom.com/wiki/Character_skills#Levels
+                },
             };
 
             const result = playerService.calculateLevel(playerProfile as IPmcData);
