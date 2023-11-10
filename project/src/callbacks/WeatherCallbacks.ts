@@ -11,15 +11,14 @@ export class WeatherCallbacks
 {
     constructor(
         @inject("HttpResponseUtil") protected httpResponse: HttpResponseUtil,
-        @inject("WeatherController") protected weatherController: WeatherController
+        @inject("WeatherController") protected weatherController: WeatherController,
     )
-    { }
+    {}
 
     /**
      * Handle client/weather
      * @returns IWeatherData
      */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public getWeather(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<IWeatherData>
     {
         return this.httpResponse.getBody(this.weatherController.generate());

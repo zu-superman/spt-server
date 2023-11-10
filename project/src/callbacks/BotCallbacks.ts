@@ -12,15 +12,15 @@ export class BotCallbacks
 {
     constructor(
         @inject("BotController") protected botController: BotController,
-        @inject("HttpResponseUtil") protected httpResponse: HttpResponseUtil)
-    { }
+        @inject("HttpResponseUtil") protected httpResponse: HttpResponseUtil,
+    )
+    {}
 
     /**
      * Handle singleplayer/settings/bot/limit
      * Is called by client to define each bot roles wave limit
      * @returns string
      */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public getBotLimit(url: string, info: IEmptyRequestData, sessionID: string): string
     {
         const splittedUrl = url.split("/");
@@ -32,7 +32,6 @@ export class BotCallbacks
      * Handle singleplayer/settings/bot/difficulty
      * @returns string
      */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public getBotDifficulty(url: string, info: IEmptyRequestData, sessionID: string): string
     {
         const splittedUrl = url.split("/");
@@ -42,7 +41,6 @@ export class BotCallbacks
         {
             return this.httpResponse.noBody(this.botController.getBotCoreDifficulty());
         }
-
         return this.httpResponse.noBody(this.botController.getBotDifficulty(type, difficulty));
     }
 
@@ -50,7 +48,11 @@ export class BotCallbacks
      * Handle client/game/bot/generate
      * @returns IGetBodyResponseData
      */
-    public generateBots(url: string, info: IGenerateBotsRequestData, sessionID: string): IGetBodyResponseData<IBotBase[]>
+    public generateBots(
+        url: string,
+        info: IGenerateBotsRequestData,
+        sessionID: string,
+    ): IGetBodyResponseData<IBotBase[]>
     {
         return this.httpResponse.getBody(this.botController.generate(sessionID, info));
     }

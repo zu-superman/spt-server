@@ -9,8 +9,9 @@ import { IWishlistActionData } from "@spt-aki/models/eft/wishlist/IWishlistActio
 export class WishlistCallbacks
 {
     constructor(
-        @inject("WishlistController") protected wishlistController: WishlistController)
-    { }
+        @inject("WishlistController") protected wishlistController: WishlistController,
+    )
+    {}
 
     /** Handle AddToWishList event */
     public addToWishlist(pmcData: IPmcData, body: IWishlistActionData, sessionID: string): IItemEventRouterResponse

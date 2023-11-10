@@ -11,57 +11,51 @@ import { HttpResponseUtil } from "@spt-aki/utils/HttpResponseUtil";
 import { Watermark } from "@spt-aki/utils/Watermark";
 
 @injectable()
-class LauncherCallbacks
+export class LauncherCallbacks
 {
     constructor(
         @inject("HttpResponseUtil") protected httpResponse: HttpResponseUtil,
         @inject("LauncherController") protected launcherController: LauncherController,
         @inject("SaveServer") protected saveServer: SaveServer,
-        @inject("Watermark") protected watermark: Watermark
+        @inject("Watermark") protected watermark: Watermark,
     )
-    { }
+    {}
 
     public connect(): string
     {
         return this.httpResponse.noBody(this.launcherController.connect());
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public login(url: string, info: ILoginRequestData, sessionID: string): string
     {
         const output = this.launcherController.login(info);
         return (!output) ? "FAILED" : output;
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public register(url: string, info: IRegisterData, sessionID: string): "FAILED" | "OK"
     {
         const output = this.launcherController.register(info);
         return (!output) ? "FAILED" : "OK";
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public get(url: string, info: ILoginRequestData, sessionID: string): string
     {
         const output = this.launcherController.find(this.launcherController.login(info));
         return this.httpResponse.noBody(output);
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public changeUsername(url: string, info: IChangeRequestData, sessionID: string): "FAILED" | "OK"
     {
         const output = this.launcherController.changeUsername(info);
         return (!output) ? "FAILED" : "OK";
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public changePassword(url: string, info: IChangeRequestData, sessionID: string): "FAILED" | "OK"
     {
         const output = this.launcherController.changePassword(info);
         return (!output) ? "FAILED" : "OK";
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public wipe(url: string, info: IRegisterData, sessionID: string): "FAILED" | "OK"
     {
         const output = this.launcherController.wipe(info);
@@ -73,7 +67,6 @@ class LauncherCallbacks
         return this.httpResponse.noBody(this.watermark.getVersionTag());
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public ping(url: string, info: IEmptyRequestData, sessionID: string): string
     {
         return this.httpResponse.noBody("pong!");
@@ -99,6 +92,3 @@ class LauncherCallbacks
         return this.httpResponse.noBody(this.launcherController.getServerModsProfileUsed(sessionId));
     }
 }
-
-export { LauncherCallbacks };
-

@@ -10,14 +10,13 @@ export class ClientLogCallbacks
 {
     constructor(
         @inject("HttpResponseUtil") protected httpResponse: HttpResponseUtil,
-        @inject("ClientLogController") protected clientLogController: ClientLogController
-    ) 
-    { }
+        @inject("ClientLogController") protected clientLogController: ClientLogController,
+    )
+    {}
 
     /**
      * Handle /singleplayer/log
      */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public clientLog(url: string, info: IClientLogRequest, sessionID: string): INullResponseData
     {
         this.clientLogController.clientLog(info);

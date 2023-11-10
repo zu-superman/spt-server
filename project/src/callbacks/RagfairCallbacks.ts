@@ -39,7 +39,7 @@ export class RagfairCallbacks implements OnLoad, OnUpdate
         @inject("RagfairServer") protected ragfairServer: RagfairServer,
         @inject("RagfairController") protected ragfairController: RagfairController,
         @inject("RagfairTaxService") protected ragfairTaxService: RagfairTaxService,
-        @inject("ConfigServer") protected configServer: ConfigServer
+        @inject("ConfigServer") protected configServer: ConfigServer,
     )
     {
         this.ragfairConfig = this.configServer.getConfig(ConfigTypes.RAGFAIR);
@@ -67,7 +67,6 @@ export class RagfairCallbacks implements OnLoad, OnUpdate
 
             return true;
         }
-
         return false;
     }
 
@@ -81,8 +80,11 @@ export class RagfairCallbacks implements OnLoad, OnUpdate
     }
 
     /** Handle client/ragfair/itemMarketPrice */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public getMarketPrice(url: string, info: IGetMarketPriceRequestData, sessionID: string): IGetBodyResponseData<IGetItemPriceResult>
+    public getMarketPrice(
+        url: string,
+        info: IGetMarketPriceRequestData,
+        sessionID: string,
+    ): IGetBodyResponseData<IGetItemPriceResult>
     {
         return this.httpResponse.getBody(this.ragfairController.getItemMinAvgMaxFleaPriceValues(info));
     }
@@ -93,7 +95,7 @@ export class RagfairCallbacks implements OnLoad, OnUpdate
         return this.ragfairController.addPlayerOffer(pmcData, info, sessionID);
     }
 
-    /** \Handle RagFairRemoveOffer event */
+    /** Handle RagFairRemoveOffer event */
     public removeOffer(pmcData: IPmcData, info: IRemoveOfferRequestData, sessionID: string): IItemEventRouterResponse
     {
         return this.ragfairController.removeOffer(info.offerId, sessionID);
@@ -109,23 +111,28 @@ export class RagfairCallbacks implements OnLoad, OnUpdate
      * Handle /client/items/prices
      * Called when clicking an item to list on flea
      */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public getFleaPrices(url: string, request: IEmptyRequestData, sessionID: string): IGetBodyResponseData<Record<string, number>>
+    public getFleaPrices(
+        url: string,
+        request: IEmptyRequestData,
+        sessionID: string,
+    ): IGetBodyResponseData<Record<string, number>>
     {
         return this.httpResponse.getBody(this.ragfairController.getAllFleaPrices());
     }
 
     /** Handle client/reports/ragfair/send */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public sendReport(url: string, info: ISendRagfairReportRequestData, sessionID: string): INullResponseData
     {
         return this.httpResponse.nullResponse();
     }
 
-    public storePlayerOfferTaxAmount(url: string, request: IStorePlayerOfferTaxAmountRequestData, sessionId: string): INullResponseData
+    public storePlayerOfferTaxAmount(
+        url: string,
+        request: IStorePlayerOfferTaxAmountRequestData,
+        sessionId: string,
+    ): INullResponseData
     {
         this.ragfairTaxService.storeClientOfferTaxValue(sessionId, request);
         return this.httpResponse.nullResponse();
     }
-
 }

@@ -11,7 +11,7 @@ import { HttpFileUtil } from "@spt-aki/utils/HttpFileUtil";
 import { HttpResponseUtil } from "@spt-aki/utils/HttpResponseUtil";
 
 @injectable()
-class ModCallbacks implements OnLoad
+export class ModCallbacks implements OnLoad
 {
     protected httpConfig: IHttpConfig;
 
@@ -21,12 +21,12 @@ class ModCallbacks implements OnLoad
         @inject("HttpFileUtil") protected httpFileUtil: HttpFileUtil,
         @inject("PostAkiModLoader") protected postAkiModLoader: PostAkiModLoader,
         @inject("LocalisationService") protected localisationService: LocalisationService,
-        @inject("ConfigServer") protected configServer: ConfigServer
+        @inject("ConfigServer") protected configServer: ConfigServer,
     )
     {
         this.httpConfig = this.configServer.getConfig(ConfigTypes.HTTP);
     }
-    
+
     public async onLoad(): Promise<void>
     {
         if (globalThis.G_MODS_ENABLED)
@@ -40,6 +40,3 @@ class ModCallbacks implements OnLoad
         return "aki-mods";
     }
 }
-
-export { ModCallbacks };
-

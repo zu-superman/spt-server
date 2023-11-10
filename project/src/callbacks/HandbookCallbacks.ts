@@ -7,15 +7,16 @@ import { OnLoad } from "@spt-aki/di/OnLoad";
 export class HandbookCallbacks implements OnLoad
 {
     constructor(
-        @inject("HandbookController") protected handbookController: HandbookController
+        @inject("HandbookController") protected handbookController: HandbookController,
     )
-    {
-    }
-    public async onLoad(): Promise<void> 
+    {}
+
+    public async onLoad(): Promise<void>
     {
         this.handbookController.load();
     }
-    public getRoute(): string 
+
+    public getRoute(): string
     {
         return "aki-handbook";
     }

@@ -9,8 +9,9 @@ import { INoteActionData } from "@spt-aki/models/eft/notes/INoteActionData";
 export class NoteCallbacks
 {
     constructor(
-        @inject("NoteController") protected noteController: NoteController)
-    { }
+        @inject("NoteController") protected noteController: NoteController,
+    )
+    {}
 
     /** Handle AddNote event */
     public addNote(pmcData: IPmcData, body: INoteActionData, sessionID: string): IItemEventRouterResponse
