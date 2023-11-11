@@ -231,6 +231,8 @@ export class HideoutHelper
             {
                 // Craft value is null, get rid of it (could be from cancelling craft that needs cleaning up)
                 delete pmcData.Hideout.Production[prodId];
+
+                continue;
             }
 
             if (craft.Progress === undefined)
