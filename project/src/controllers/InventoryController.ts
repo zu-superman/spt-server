@@ -518,6 +518,7 @@ export class InventoryController
 
     /**
      * Bind an inventory item to the quick access menu at bottom of player screen
+     * Handle bind event
      * @param pmcData Player profile
      * @param bindRequest Reqeust object
      * @param sessionID Session id
@@ -527,13 +528,33 @@ export class InventoryController
     {
         for (const index in pmcData.Inventory.fastPanel)
         {
+            // Find item with existing item in it and remove existing binding, you cant have same item bound to more than 1 slot
             if (pmcData.Inventory.fastPanel[index] === bindRequest.item)
             {
                 pmcData.Inventory.fastPanel[index] = "";
+
+                break;
             }
         }
 
+        // Create link between fast panel slot and requested item
         pmcData.Inventory.fastPanel[bindRequest.index] = bindRequest.item;
+
+        return this.eventOutputHolder.getOutput(sessionID);
+    }
+
+    /**
+     * Unbind an inventory item from quick access menu at bottom of player screen
+     * Handle unbind event
+     * @param pmcData Player profile
+     * @param bindRequest Request object
+     * @param sessionID Session id
+     * @returns IItemEventRouterResponse
+     */
+    public unbindItem(pmcData: IPmcData, request: IInventoryBindRequestData, sessionID: string): IItemEventRouterResponse
+    {
+        // Remove kvp from requested fast panel index
+        delete pmcData.Inventory.fastPanel[request.index];
 
         return this.eventOutputHolder.getOutput(sessionID);
     }
