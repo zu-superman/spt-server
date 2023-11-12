@@ -1337,7 +1337,7 @@
                 "Pickup"
             ],
             "resetTime": 86400,
-            "numQuests": 4,
+            "numQuests": 1,
             "minPlayerLevel": 1,
             "rewardScaling": {
                 "levels": [1, 20, 45, 100],
