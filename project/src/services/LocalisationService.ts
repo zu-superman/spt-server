@@ -1,5 +1,5 @@
-import { I18n } from "i18n";
 import path from "node:path";
+import { I18n } from "i18n";
 import { inject, injectable } from "tsyringe";
 
 import { ILocaleConfig } from "@spt-aki/models/spt/config/ILocaleConfig";

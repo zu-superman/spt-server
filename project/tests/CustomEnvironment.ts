@@ -1,11 +1,11 @@
 import "reflect-metadata";
-import { container, DependencyContainer, Lifecycle } from "tsyringe";
+import { DependencyContainer, Lifecycle, container } from "tsyringe";
 
+import path from "node:path";
 import { Container } from "@spt-aki/di/Container";
 import { IDatabaseTables } from "@spt-aki/models/spt/server/IDatabaseTables";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { ImporterUtil } from "@spt-aki/utils/ImporterUtil";
-import path from "node:path";
 import type { Environment } from "vitest";
 
 // Manually mock the logger.

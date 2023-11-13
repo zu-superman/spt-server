@@ -1,12 +1,12 @@
 import "reflect-metadata";
 import { inject, injectable } from "tsyringe";
 
-import { IAsyncQueue } from "@spt-aki/models/spt/utils/IAsyncQueue";
-import { writeFileSync } from "atomically";
 import crypto from "node:crypto";
 import fs from "node:fs";
 import path, { resolve } from "node:path";
 import { promisify } from "node:util";
+import { IAsyncQueue } from "@spt-aki/models/spt/utils/IAsyncQueue";
+import { writeFileSync } from "atomically";
 import lockfile from "proper-lockfile";
 
 @injectable()

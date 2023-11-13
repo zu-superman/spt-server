@@ -1,5 +1,5 @@
 import http, { IncomingMessage, ServerResponse } from "node:http";
-import { inject, injectable, injectAll } from "tsyringe";
+import { inject, injectAll, injectable } from "tsyringe";
 
 import { ApplicationContext } from "@spt-aki/context/ApplicationContext";
 import { ContextVariableType } from "@spt-aki/context/ContextVariableType";
@@ -9,8 +9,8 @@ import { IHttpConfig } from "@spt-aki/models/spt/config/IHttpConfig";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt-aki/servers/ConfigServer";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
-import { IHttpListener } from "@spt-aki/servers/http/IHttpListener";
 import { WebSocketServer } from "@spt-aki/servers/WebSocketServer";
+import { IHttpListener } from "@spt-aki/servers/http/IHttpListener";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
 
 @injectable()

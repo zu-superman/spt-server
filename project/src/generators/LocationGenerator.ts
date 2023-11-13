@@ -6,7 +6,7 @@ import { PresetHelper } from "@spt-aki/helpers/PresetHelper";
 import { RagfairServerHelper } from "@spt-aki/helpers/RagfairServerHelper";
 import { IContainerMinMax, IStaticContainer } from "@spt-aki/models/eft/common/ILocation";
 import { ILocationBase } from "@spt-aki/models/eft/common/ILocationBase";
-import { ILooseLoot, Spawnpoint, SpawnpointsForced, SpawnpointTemplate } from "@spt-aki/models/eft/common/ILooseLoot";
+import { ILooseLoot, Spawnpoint, SpawnpointTemplate, SpawnpointsForced } from "@spt-aki/models/eft/common/ILooseLoot";
 import { Item } from "@spt-aki/models/eft/common/tables/IItem";
 import {
     IStaticAmmoDetails,

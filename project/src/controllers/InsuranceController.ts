@@ -10,7 +10,7 @@ import { IGetInsuranceCostRequestData } from "@spt-aki/models/eft/insurance/IGet
 import { IGetInsuranceCostResponseData } from "@spt-aki/models/eft/insurance/IGetInsuranceCostResponseData";
 import { IInsureRequestData } from "@spt-aki/models/eft/insurance/IInsureRequestData";
 import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEventRouterResponse";
-import { Insurance, ISystemData } from "@spt-aki/models/eft/profile/IAkiProfile";
+import { ISystemData, Insurance } from "@spt-aki/models/eft/profile/IAkiProfile";
 import { IProcessBuyTradeRequestData } from "@spt-aki/models/eft/trade/IProcessBuyTradeRequestData";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { MessageType } from "@spt-aki/models/enums/MessageType";

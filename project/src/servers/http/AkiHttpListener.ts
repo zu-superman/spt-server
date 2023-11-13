@@ -1,6 +1,6 @@
 import { IncomingHttpHeaders, IncomingMessage, ServerResponse } from "node:http";
 import zlib from "node:zlib";
-import { inject, injectable, injectAll } from "tsyringe";
+import { inject, injectAll, injectable } from "tsyringe";
 
 import { Serializer } from "@spt-aki/di/Serializer";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";

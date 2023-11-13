@@ -1,5 +1,5 @@
 import os from "node:os";
-import { inject, injectable, injectAll } from "tsyringe";
+import { inject, injectAll, injectable } from "tsyringe";
 
 import { OnLoad } from "@spt-aki/di/OnLoad";
 import { OnUpdate } from "@spt-aki/di/OnUpdate";
