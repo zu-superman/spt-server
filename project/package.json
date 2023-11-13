@@ -13,7 +13,7 @@
     "scripts": {
         "check:circular": "madge --circular --ts-config tsconfig.json --extensions ts ./src/",
         "lint": "biome ci src --formatter-enabled=false --max-diagnostics=200",
-        "lint:fix": "eslint --fix --ext .ts src/**",
+        "lint:fix": "biome check --apply-unsafe --max-diagnostics=200 . && dprint fmt --incremental=false",
         "style": "dprint check --incremental=false",
         "style:fix": "dprint fmt --incremental=false",
         "test": "vitest run",
