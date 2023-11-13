@@ -251,13 +251,13 @@ export class Container
 {
     public static registerPostLoadTypes(container: DependencyContainer, childContainer: DependencyContainer): void
     {
-        container.register<AkiHttpListener>("AkiHttpListener", AkiHttpListener, {lifecycle: Lifecycle.Singleton});
+        container.register<AkiHttpListener>("AkiHttpListener", AkiHttpListener, { lifecycle: Lifecycle.Singleton });
         childContainer.registerType("HttpListener", "AkiHttpListener");
     }
 
     public static registerTypes(con: DependencyContainer): void
     {
-        con.register("ApplicationContext", ApplicationContext, {lifecycle: Lifecycle.Singleton});
+        con.register("ApplicationContext", ApplicationContext, { lifecycle: Lifecycle.Singleton });
         Container.registerUtils(con);
         Container.registerRouters(con);
         Container.registerGenerators(con);
@@ -271,11 +271,11 @@ export class Container
 
     public static registerListTypes(con: DependencyContainer): void
     {
-        con.register("OnLoadModService", {useValue: new OnLoadModService(con)});
-        con.register("HttpListenerModService", {useValue: new HttpListenerModService(con)});
-        con.register("OnUpdateModService", {useValue: new OnUpdateModService(con)});
-        con.register("DynamicRouterModService", {useValue: new DynamicRouterModService(con)});
-        con.register("StaticRouterModService", {useValue: new StaticRouterModService(con)});
+        con.register("OnLoadModService", { useValue: new OnLoadModService(con) });
+        con.register("HttpListenerModService", { useValue: new HttpListenerModService(con) });
+        con.register("OnUpdateModService", { useValue: new OnUpdateModService(con) });
+        con.register("DynamicRouterModService", { useValue: new DynamicRouterModService(con) });
+        con.register("StaticRouterModService", { useValue: new StaticRouterModService(con) });
 
         con.registerType("OnLoad", "DatabaseImporter");
         con.registerType("OnLoad", "PostDBModLoader");
@@ -351,96 +351,100 @@ export class Container
     private static registerUtils(con: DependencyContainer): void
     {
         // Utils
-        con.register<App>("App", App, {lifecycle: Lifecycle.Singleton});
-        con.register<DatabaseImporter>("DatabaseImporter", DatabaseImporter, {lifecycle: Lifecycle.Singleton});
-        con.register<HashUtil>("HashUtil", HashUtil, {lifecycle: Lifecycle.Singleton});
-        con.register<ImporterUtil>("ImporterUtil", ImporterUtil, {lifecycle: Lifecycle.Singleton});
+        con.register<App>("App", App, { lifecycle: Lifecycle.Singleton });
+        con.register<DatabaseImporter>("DatabaseImporter", DatabaseImporter, { lifecycle: Lifecycle.Singleton });
+        con.register<HashUtil>("HashUtil", HashUtil, { lifecycle: Lifecycle.Singleton });
+        con.register<ImporterUtil>("ImporterUtil", ImporterUtil, { lifecycle: Lifecycle.Singleton });
         con.register<HttpResponseUtil>("HttpResponseUtil", HttpResponseUtil);
-        con.register<EncodingUtil>("EncodingUtil", EncodingUtil, {lifecycle: Lifecycle.Singleton});
+        con.register<EncodingUtil>("EncodingUtil", EncodingUtil, { lifecycle: Lifecycle.Singleton });
         con.register<JsonUtil>("JsonUtil", JsonUtil);
-        con.register<WinstonMainLogger>("WinstonLogger", WinstonMainLogger, {lifecycle: Lifecycle.Singleton});
-        con.register<WinstonRequestLogger>("RequestsLogger", WinstonRequestLogger, {lifecycle: Lifecycle.Singleton});
-        con.register<MathUtil>("MathUtil", MathUtil, {lifecycle: Lifecycle.Singleton});
+        con.register<WinstonMainLogger>("WinstonLogger", WinstonMainLogger, { lifecycle: Lifecycle.Singleton });
+        con.register<WinstonRequestLogger>("RequestsLogger", WinstonRequestLogger, { lifecycle: Lifecycle.Singleton });
+        con.register<MathUtil>("MathUtil", MathUtil, { lifecycle: Lifecycle.Singleton });
         con.register<ObjectId>("ObjectId", ObjectId);
-        con.register<RandomUtil>("RandomUtil", RandomUtil, {lifecycle: Lifecycle.Singleton});
-        con.register<TimeUtil>("TimeUtil", TimeUtil, {lifecycle: Lifecycle.Singleton});
-        con.register<VFS>("VFS", VFS, {lifecycle: Lifecycle.Singleton});
-        con.register<WatermarkLocale>("WatermarkLocale", WatermarkLocale, {lifecycle: Lifecycle.Singleton});
-        con.register<Watermark>("Watermark", Watermark, {lifecycle: Lifecycle.Singleton});
-        con.register<IAsyncQueue>("AsyncQueue", AsyncQueue, {lifecycle: Lifecycle.Singleton});
-        con.register<HttpFileUtil>("HttpFileUtil", HttpFileUtil, {lifecycle: Lifecycle.Singleton});
-        con.register<ModLoadOrder>("ModLoadOrder", ModLoadOrder, {lifecycle: Lifecycle.Singleton});
-        con.register<ModTypeCheck>("ModTypeCheck", ModTypeCheck, {lifecycle: Lifecycle.Singleton});
+        con.register<RandomUtil>("RandomUtil", RandomUtil, { lifecycle: Lifecycle.Singleton });
+        con.register<TimeUtil>("TimeUtil", TimeUtil, { lifecycle: Lifecycle.Singleton });
+        con.register<VFS>("VFS", VFS, { lifecycle: Lifecycle.Singleton });
+        con.register<WatermarkLocale>("WatermarkLocale", WatermarkLocale, { lifecycle: Lifecycle.Singleton });
+        con.register<Watermark>("Watermark", Watermark, { lifecycle: Lifecycle.Singleton });
+        con.register<IAsyncQueue>("AsyncQueue", AsyncQueue, { lifecycle: Lifecycle.Singleton });
+        con.register<HttpFileUtil>("HttpFileUtil", HttpFileUtil, { lifecycle: Lifecycle.Singleton });
+        con.register<ModLoadOrder>("ModLoadOrder", ModLoadOrder, { lifecycle: Lifecycle.Singleton });
+        con.register<ModTypeCheck>("ModTypeCheck", ModTypeCheck, { lifecycle: Lifecycle.Singleton });
     }
 
     private static registerRouters(con: DependencyContainer): void
     {
         // Routers
-        con.register<HttpRouter>("HttpRouter", HttpRouter, {lifecycle: Lifecycle.Singleton});
+        con.register<HttpRouter>("HttpRouter", HttpRouter, { lifecycle: Lifecycle.Singleton });
         con.register<ImageRouter>("ImageRouter", ImageRouter);
-        con.register<EventOutputHolder>("EventOutputHolder", EventOutputHolder, {lifecycle: Lifecycle.Singleton});
+        con.register<EventOutputHolder>("EventOutputHolder", EventOutputHolder, { lifecycle: Lifecycle.Singleton });
         con.register<ItemEventRouter>("ItemEventRouter", ItemEventRouter);
 
         // Dynamic routes
-        con.register<BotDynamicRouter>("BotDynamicRouter", {useClass: BotDynamicRouter});
-        con.register<BundleDynamicRouter>("BundleDynamicRouter", {useClass: BundleDynamicRouter});
-        con.register<CustomizationDynamicRouter>("CustomizationDynamicRouter", {useClass: CustomizationDynamicRouter});
-        con.register<DataDynamicRouter>("DataDynamicRouter", {useClass: DataDynamicRouter});
-        con.register<HttpDynamicRouter>("HttpDynamicRouter", {useClass: HttpDynamicRouter});
-        con.register<InraidDynamicRouter>("InraidDynamicRouter", {useClass: InraidDynamicRouter});
-        con.register<LocationDynamicRouter>("LocationDynamicRouter", {useClass: LocationDynamicRouter});
-        con.register<NotifierDynamicRouter>("NotifierDynamicRouter", {useClass: NotifierDynamicRouter});
-        con.register<TraderDynamicRouter>("TraderDynamicRouter", {useClass: TraderDynamicRouter});
+        con.register<BotDynamicRouter>("BotDynamicRouter", { useClass: BotDynamicRouter });
+        con.register<BundleDynamicRouter>("BundleDynamicRouter", { useClass: BundleDynamicRouter });
+        con.register<CustomizationDynamicRouter>("CustomizationDynamicRouter", {
+            useClass: CustomizationDynamicRouter,
+        });
+        con.register<DataDynamicRouter>("DataDynamicRouter", { useClass: DataDynamicRouter });
+        con.register<HttpDynamicRouter>("HttpDynamicRouter", { useClass: HttpDynamicRouter });
+        con.register<InraidDynamicRouter>("InraidDynamicRouter", { useClass: InraidDynamicRouter });
+        con.register<LocationDynamicRouter>("LocationDynamicRouter", { useClass: LocationDynamicRouter });
+        con.register<NotifierDynamicRouter>("NotifierDynamicRouter", { useClass: NotifierDynamicRouter });
+        con.register<TraderDynamicRouter>("TraderDynamicRouter", { useClass: TraderDynamicRouter });
 
         // Item event routes
         con.register<CustomizationItemEventRouter>("CustomizationItemEventRouter", {
             useClass: CustomizationItemEventRouter,
         });
-        con.register<HealthItemEventRouter>("HealthItemEventRouter", {useClass: HealthItemEventRouter});
-        con.register<HideoutItemEventRouter>("HideoutItemEventRouter", {useClass: HideoutItemEventRouter});
-        con.register<InsuranceItemEventRouter>("InsuranceItemEventRouter", {useClass: InsuranceItemEventRouter});
-        con.register<InventoryItemEventRouter>("InventoryItemEventRouter", {useClass: InventoryItemEventRouter});
-        con.register<NoteItemEventRouter>("NoteItemEventRouter", {useClass: NoteItemEventRouter});
-        con.register<PresetBuildItemEventRouter>("PresetBuildItemEventRouter", {useClass: PresetBuildItemEventRouter});
-        con.register<QuestItemEventRouter>("QuestItemEventRouter", {useClass: QuestItemEventRouter});
-        con.register<RagfairItemEventRouter>("RagfairItemEventRouter", {useClass: RagfairItemEventRouter});
-        con.register<RepairItemEventRouter>("RepairItemEventRouter", {useClass: RepairItemEventRouter});
-        con.register<TradeItemEventRouter>("TradeItemEventRouter", {useClass: TradeItemEventRouter});
-        con.register<WishlistItemEventRouter>("WishlistItemEventRouter", {useClass: WishlistItemEventRouter});
+        con.register<HealthItemEventRouter>("HealthItemEventRouter", { useClass: HealthItemEventRouter });
+        con.register<HideoutItemEventRouter>("HideoutItemEventRouter", { useClass: HideoutItemEventRouter });
+        con.register<InsuranceItemEventRouter>("InsuranceItemEventRouter", { useClass: InsuranceItemEventRouter });
+        con.register<InventoryItemEventRouter>("InventoryItemEventRouter", { useClass: InventoryItemEventRouter });
+        con.register<NoteItemEventRouter>("NoteItemEventRouter", { useClass: NoteItemEventRouter });
+        con.register<PresetBuildItemEventRouter>("PresetBuildItemEventRouter", {
+            useClass: PresetBuildItemEventRouter,
+        });
+        con.register<QuestItemEventRouter>("QuestItemEventRouter", { useClass: QuestItemEventRouter });
+        con.register<RagfairItemEventRouter>("RagfairItemEventRouter", { useClass: RagfairItemEventRouter });
+        con.register<RepairItemEventRouter>("RepairItemEventRouter", { useClass: RepairItemEventRouter });
+        con.register<TradeItemEventRouter>("TradeItemEventRouter", { useClass: TradeItemEventRouter });
+        con.register<WishlistItemEventRouter>("WishlistItemEventRouter", { useClass: WishlistItemEventRouter });
 
         // save load routes
-        con.register<HealthSaveLoadRouter>("HealthSaveLoadRouter", {useClass: HealthSaveLoadRouter});
-        con.register<InraidSaveLoadRouter>("InraidSaveLoadRouter", {useClass: InraidSaveLoadRouter});
-        con.register<InsuranceSaveLoadRouter>("InsuranceSaveLoadRouter", {useClass: InsuranceSaveLoadRouter});
-        con.register<ProfileSaveLoadRouter>("ProfileSaveLoadRouter", {useClass: ProfileSaveLoadRouter});
+        con.register<HealthSaveLoadRouter>("HealthSaveLoadRouter", { useClass: HealthSaveLoadRouter });
+        con.register<InraidSaveLoadRouter>("InraidSaveLoadRouter", { useClass: InraidSaveLoadRouter });
+        con.register<InsuranceSaveLoadRouter>("InsuranceSaveLoadRouter", { useClass: InsuranceSaveLoadRouter });
+        con.register<ProfileSaveLoadRouter>("ProfileSaveLoadRouter", { useClass: ProfileSaveLoadRouter });
 
         // Route serializers
-        con.register<BundleSerializer>("BundleSerializer", {useClass: BundleSerializer});
-        con.register<ImageSerializer>("ImageSerializer", {useClass: ImageSerializer});
-        con.register<NotifySerializer>("NotifySerializer", {useClass: NotifySerializer});
+        con.register<BundleSerializer>("BundleSerializer", { useClass: BundleSerializer });
+        con.register<ImageSerializer>("ImageSerializer", { useClass: ImageSerializer });
+        con.register<NotifySerializer>("NotifySerializer", { useClass: NotifySerializer });
 
         // Static routes
-        con.register<BotStaticRouter>("BotStaticRouter", {useClass: BotStaticRouter});
-        con.register<BundleStaticRouter>("BundleStaticRouter", {useClass: BundleStaticRouter});
-        con.register<ClientLogStaticRouter>("ClientLogStaticRouter", {useClass: ClientLogStaticRouter});
-        con.register<CustomizationStaticRouter>("CustomizationStaticRouter", {useClass: CustomizationStaticRouter});
-        con.register<DataStaticRouter>("DataStaticRouter", {useClass: DataStaticRouter});
-        con.register<DialogStaticRouter>("DialogStaticRouter", {useClass: DialogStaticRouter});
-        con.register<GameStaticRouter>("GameStaticRouter", {useClass: GameStaticRouter});
-        con.register<HealthStaticRouter>("HealthStaticRouter", {useClass: HealthStaticRouter});
-        con.register<InraidStaticRouter>("InraidStaticRouter", {useClass: InraidStaticRouter});
-        con.register<InsuranceStaticRouter>("InsuranceStaticRouter", {useClass: InsuranceStaticRouter});
-        con.register<ItemEventStaticRouter>("ItemEventStaticRouter", {useClass: ItemEventStaticRouter});
-        con.register<LauncherStaticRouter>("LauncherStaticRouter", {useClass: LauncherStaticRouter});
-        con.register<LocationStaticRouter>("LocationStaticRouter", {useClass: LocationStaticRouter});
-        con.register<MatchStaticRouter>("MatchStaticRouter", {useClass: MatchStaticRouter});
-        con.register<NotifierStaticRouter>("NotifierStaticRouter", {useClass: NotifierStaticRouter});
-        con.register<PresetStaticRouter>("PresetStaticRouter", {useClass: PresetStaticRouter});
-        con.register<ProfileStaticRouter>("ProfileStaticRouter", {useClass: ProfileStaticRouter});
-        con.register<QuestStaticRouter>("QuestStaticRouter", {useClass: QuestStaticRouter});
-        con.register<RagfairStaticRouter>("RagfairStaticRouter", {useClass: RagfairStaticRouter});
-        con.register<TraderStaticRouter>("TraderStaticRouter", {useClass: TraderStaticRouter});
-        con.register<WeatherStaticRouter>("WeatherStaticRouter", {useClass: WeatherStaticRouter});
+        con.register<BotStaticRouter>("BotStaticRouter", { useClass: BotStaticRouter });
+        con.register<BundleStaticRouter>("BundleStaticRouter", { useClass: BundleStaticRouter });
+        con.register<ClientLogStaticRouter>("ClientLogStaticRouter", { useClass: ClientLogStaticRouter });
+        con.register<CustomizationStaticRouter>("CustomizationStaticRouter", { useClass: CustomizationStaticRouter });
+        con.register<DataStaticRouter>("DataStaticRouter", { useClass: DataStaticRouter });
+        con.register<DialogStaticRouter>("DialogStaticRouter", { useClass: DialogStaticRouter });
+        con.register<GameStaticRouter>("GameStaticRouter", { useClass: GameStaticRouter });
+        con.register<HealthStaticRouter>("HealthStaticRouter", { useClass: HealthStaticRouter });
+        con.register<InraidStaticRouter>("InraidStaticRouter", { useClass: InraidStaticRouter });
+        con.register<InsuranceStaticRouter>("InsuranceStaticRouter", { useClass: InsuranceStaticRouter });
+        con.register<ItemEventStaticRouter>("ItemEventStaticRouter", { useClass: ItemEventStaticRouter });
+        con.register<LauncherStaticRouter>("LauncherStaticRouter", { useClass: LauncherStaticRouter });
+        con.register<LocationStaticRouter>("LocationStaticRouter", { useClass: LocationStaticRouter });
+        con.register<MatchStaticRouter>("MatchStaticRouter", { useClass: MatchStaticRouter });
+        con.register<NotifierStaticRouter>("NotifierStaticRouter", { useClass: NotifierStaticRouter });
+        con.register<PresetStaticRouter>("PresetStaticRouter", { useClass: PresetStaticRouter });
+        con.register<ProfileStaticRouter>("ProfileStaticRouter", { useClass: ProfileStaticRouter });
+        con.register<QuestStaticRouter>("QuestStaticRouter", { useClass: QuestStaticRouter });
+        con.register<RagfairStaticRouter>("RagfairStaticRouter", { useClass: RagfairStaticRouter });
+        con.register<TraderStaticRouter>("TraderStaticRouter", { useClass: TraderStaticRouter });
+        con.register<WeatherStaticRouter>("WeatherStaticRouter", { useClass: WeatherStaticRouter });
     }
 
     private static registerGenerators(con: DependencyContainer): void
@@ -450,27 +454,27 @@ export class Container
         con.register<BotWeaponGenerator>("BotWeaponGenerator", BotWeaponGenerator);
         con.register<BotLootGenerator>("BotLootGenerator", BotLootGenerator);
         con.register<BotInventoryGenerator>("BotInventoryGenerator", BotInventoryGenerator);
-        con.register<LocationGenerator>("LocationGenerator", {useClass: LocationGenerator});
-        con.register<PMCLootGenerator>("PMCLootGenerator", PMCLootGenerator, {lifecycle: Lifecycle.Singleton});
+        con.register<LocationGenerator>("LocationGenerator", { useClass: LocationGenerator });
+        con.register<PMCLootGenerator>("PMCLootGenerator", PMCLootGenerator, { lifecycle: Lifecycle.Singleton });
         con.register<ScavCaseRewardGenerator>("ScavCaseRewardGenerator", ScavCaseRewardGenerator, {
             lifecycle: Lifecycle.Singleton,
         });
-        con.register<RagfairAssortGenerator>("RagfairAssortGenerator", {useClass: RagfairAssortGenerator});
-        con.register<RagfairOfferGenerator>("RagfairOfferGenerator", {useClass: RagfairOfferGenerator});
-        con.register<WeatherGenerator>("WeatherGenerator", {useClass: WeatherGenerator});
-        con.register<PlayerScavGenerator>("PlayerScavGenerator", {useClass: PlayerScavGenerator});
-        con.register<LootGenerator>("LootGenerator", {useClass: LootGenerator});
-        con.register<FenceBaseAssortGenerator>("FenceBaseAssortGenerator", {useClass: FenceBaseAssortGenerator});
-        con.register<BotLevelGenerator>("BotLevelGenerator", {useClass: BotLevelGenerator});
-        con.register<BotEquipmentModGenerator>("BotEquipmentModGenerator", {useClass: BotEquipmentModGenerator});
-        con.register<RepeatableQuestGenerator>("RepeatableQuestGenerator", {useClass: RepeatableQuestGenerator});
+        con.register<RagfairAssortGenerator>("RagfairAssortGenerator", { useClass: RagfairAssortGenerator });
+        con.register<RagfairOfferGenerator>("RagfairOfferGenerator", { useClass: RagfairOfferGenerator });
+        con.register<WeatherGenerator>("WeatherGenerator", { useClass: WeatherGenerator });
+        con.register<PlayerScavGenerator>("PlayerScavGenerator", { useClass: PlayerScavGenerator });
+        con.register<LootGenerator>("LootGenerator", { useClass: LootGenerator });
+        con.register<FenceBaseAssortGenerator>("FenceBaseAssortGenerator", { useClass: FenceBaseAssortGenerator });
+        con.register<BotLevelGenerator>("BotLevelGenerator", { useClass: BotLevelGenerator });
+        con.register<BotEquipmentModGenerator>("BotEquipmentModGenerator", { useClass: BotEquipmentModGenerator });
+        con.register<RepeatableQuestGenerator>("RepeatableQuestGenerator", { useClass: RepeatableQuestGenerator });
 
-        con.register<BarrelInventoryMagGen>("BarrelInventoryMagGen", {useClass: BarrelInventoryMagGen});
-        con.register<ExternalInventoryMagGen>("ExternalInventoryMagGen", {useClass: ExternalInventoryMagGen});
+        con.register<BarrelInventoryMagGen>("BarrelInventoryMagGen", { useClass: BarrelInventoryMagGen });
+        con.register<ExternalInventoryMagGen>("ExternalInventoryMagGen", { useClass: ExternalInventoryMagGen });
         con.register<InternalMagazineInventoryMagGen>("InternalMagazineInventoryMagGen", {
             useClass: InternalMagazineInventoryMagGen,
         });
-        con.register<UbglExternalMagGen>("UbglExternalMagGen", {useClass: UbglExternalMagGen});
+        con.register<UbglExternalMagGen>("UbglExternalMagGen", { useClass: UbglExternalMagGen });
 
         con.registerType("InventoryMagGen", "BarrelInventoryMagGen");
         con.registerType("InventoryMagGen", "ExternalInventoryMagGen");
@@ -481,107 +485,113 @@ export class Container
     private static registerHelpers(con: DependencyContainer): void
     {
         // Helpers
-        con.register<AssortHelper>("AssortHelper", {useClass: AssortHelper});
-        con.register<BotHelper>("BotHelper", {useClass: BotHelper});
-        con.register<BotGeneratorHelper>("BotGeneratorHelper", {useClass: BotGeneratorHelper});
+        con.register<AssortHelper>("AssortHelper", { useClass: AssortHelper });
+        con.register<BotHelper>("BotHelper", { useClass: BotHelper });
+        con.register<BotGeneratorHelper>("BotGeneratorHelper", { useClass: BotGeneratorHelper });
         con.register<ContainerHelper>("ContainerHelper", ContainerHelper);
-        con.register<DialogueHelper>("DialogueHelper", {useClass: DialogueHelper});
-        con.register<DurabilityLimitsHelper>("DurabilityLimitsHelper", {useClass: DurabilityLimitsHelper});
+        con.register<DialogueHelper>("DialogueHelper", { useClass: DialogueHelper });
+        con.register<DurabilityLimitsHelper>("DurabilityLimitsHelper", { useClass: DurabilityLimitsHelper });
         con.register<GameEventHelper>("GameEventHelper", GameEventHelper);
-        con.register<HandbookHelper>("HandbookHelper", HandbookHelper, {lifecycle: Lifecycle.Singleton});
-        con.register<HealthHelper>("HealthHelper", {useClass: HealthHelper});
-        con.register<HideoutHelper>("HideoutHelper", {useClass: HideoutHelper});
-        con.register<InRaidHelper>("InRaidHelper", {useClass: InRaidHelper});
-        con.register<InventoryHelper>("InventoryHelper", {useClass: InventoryHelper});
+        con.register<HandbookHelper>("HandbookHelper", HandbookHelper, { lifecycle: Lifecycle.Singleton });
+        con.register<HealthHelper>("HealthHelper", { useClass: HealthHelper });
+        con.register<HideoutHelper>("HideoutHelper", { useClass: HideoutHelper });
+        con.register<InRaidHelper>("InRaidHelper", { useClass: InRaidHelper });
+        con.register<InventoryHelper>("InventoryHelper", { useClass: InventoryHelper });
         con.register<PaymentHelper>("PaymentHelper", PaymentHelper);
-        con.register<ItemHelper>("ItemHelper", {useClass: ItemHelper});
-        con.register<PresetHelper>("PresetHelper", PresetHelper, {lifecycle: Lifecycle.Singleton});
-        con.register<ProfileHelper>("ProfileHelper", {useClass: ProfileHelper});
-        con.register<QuestHelper>("QuestHelper", {useClass: QuestHelper});
+        con.register<ItemHelper>("ItemHelper", { useClass: ItemHelper });
+        con.register<PresetHelper>("PresetHelper", PresetHelper, { lifecycle: Lifecycle.Singleton });
+        con.register<ProfileHelper>("ProfileHelper", { useClass: ProfileHelper });
+        con.register<QuestHelper>("QuestHelper", { useClass: QuestHelper });
         con.register<QuestConditionHelper>("QuestConditionHelper", QuestConditionHelper);
-        con.register<RagfairHelper>("RagfairHelper", {useClass: RagfairHelper});
-        con.register<RagfairSortHelper>("RagfairSortHelper", {useClass: RagfairSortHelper});
-        con.register<RagfairSellHelper>("RagfairSellHelper", {useClass: RagfairSellHelper});
-        con.register<RagfairOfferHelper>("RagfairOfferHelper", {useClass: RagfairOfferHelper});
-        con.register<RagfairServerHelper>("RagfairServerHelper", {useClass: RagfairServerHelper});
-        con.register<RepairHelper>("RepairHelper", {useClass: RepairHelper});
+        con.register<RagfairHelper>("RagfairHelper", { useClass: RagfairHelper });
+        con.register<RagfairSortHelper>("RagfairSortHelper", { useClass: RagfairSortHelper });
+        con.register<RagfairSellHelper>("RagfairSellHelper", { useClass: RagfairSellHelper });
+        con.register<RagfairOfferHelper>("RagfairOfferHelper", { useClass: RagfairOfferHelper });
+        con.register<RagfairServerHelper>("RagfairServerHelper", { useClass: RagfairServerHelper });
+        con.register<RepairHelper>("RepairHelper", { useClass: RepairHelper });
         con.register<TraderHelper>("TraderHelper", TraderHelper);
-        con.register<TraderAssortHelper>("TraderAssortHelper", TraderAssortHelper, {lifecycle: Lifecycle.Singleton});
-        con.register<TradeHelper>("TradeHelper", {useClass: TradeHelper});
-        con.register<NotifierHelper>("NotifierHelper", {useClass: NotifierHelper});
+        con.register<TraderAssortHelper>("TraderAssortHelper", TraderAssortHelper, { lifecycle: Lifecycle.Singleton });
+        con.register<TradeHelper>("TradeHelper", { useClass: TradeHelper });
+        con.register<NotifierHelper>("NotifierHelper", { useClass: NotifierHelper });
         con.register<UtilityHelper>("UtilityHelper", UtilityHelper);
-        con.register<WeightedRandomHelper>("WeightedRandomHelper", {useClass: WeightedRandomHelper});
-        con.register<HttpServerHelper>("HttpServerHelper", {useClass: HttpServerHelper});
-        con.register<NotificationSendHelper>("NotificationSendHelper", {useClass: NotificationSendHelper});
-        con.register<SecureContainerHelper>("SecureContainerHelper", {useClass: SecureContainerHelper});
-        con.register<ProbabilityHelper>("ProbabilityHelper", {useClass: ProbabilityHelper});
-        con.register<BotWeaponGeneratorHelper>("BotWeaponGeneratorHelper", {useClass: BotWeaponGeneratorHelper});
-        con.register<BotDifficultyHelper>("BotDifficultyHelper", {useClass: BotDifficultyHelper});
-        con.register<RepeatableQuestHelper>("RepeatableQuestHelper", {useClass: RepeatableQuestHelper});
+        con.register<WeightedRandomHelper>("WeightedRandomHelper", { useClass: WeightedRandomHelper });
+        con.register<HttpServerHelper>("HttpServerHelper", { useClass: HttpServerHelper });
+        con.register<NotificationSendHelper>("NotificationSendHelper", { useClass: NotificationSendHelper });
+        con.register<SecureContainerHelper>("SecureContainerHelper", { useClass: SecureContainerHelper });
+        con.register<ProbabilityHelper>("ProbabilityHelper", { useClass: ProbabilityHelper });
+        con.register<BotWeaponGeneratorHelper>("BotWeaponGeneratorHelper", { useClass: BotWeaponGeneratorHelper });
+        con.register<BotDifficultyHelper>("BotDifficultyHelper", { useClass: BotDifficultyHelper });
+        con.register<RepeatableQuestHelper>("RepeatableQuestHelper", { useClass: RepeatableQuestHelper });
     }
 
     private static registerLoaders(con: DependencyContainer): void
     {
         // Loaders
-        con.register<BundleLoader>("BundleLoader", BundleLoader, {lifecycle: Lifecycle.Singleton});
-        con.register<PreAkiModLoader>("PreAkiModLoader", PreAkiModLoader, {lifecycle: Lifecycle.Singleton});
-        con.register<PostAkiModLoader>("PostAkiModLoader", PostAkiModLoader, {lifecycle: Lifecycle.Singleton});
+        con.register<BundleLoader>("BundleLoader", BundleLoader, { lifecycle: Lifecycle.Singleton });
+        con.register<PreAkiModLoader>("PreAkiModLoader", PreAkiModLoader, { lifecycle: Lifecycle.Singleton });
+        con.register<PostAkiModLoader>("PostAkiModLoader", PostAkiModLoader, { lifecycle: Lifecycle.Singleton });
     }
 
     private static registerCallbacks(con: DependencyContainer): void
     {
         // Callbacks
-        con.register<BotCallbacks>("BotCallbacks", {useClass: BotCallbacks});
-        con.register<BundleCallbacks>("BundleCallbacks", {useClass: BundleCallbacks});
-        con.register<ClientLogCallbacks>("ClientLogCallbacks", {useClass: ClientLogCallbacks});
-        con.register<CustomizationCallbacks>("CustomizationCallbacks", {useClass: CustomizationCallbacks});
-        con.register<DataCallbacks>("DataCallbacks", {useClass: DataCallbacks});
-        con.register<DialogueCallbacks>("DialogueCallbacks", {useClass: DialogueCallbacks});
-        con.register<GameCallbacks>("GameCallbacks", {useClass: GameCallbacks});
-        con.register<HandbookCallbacks>("HandbookCallbacks", {useClass: HandbookCallbacks});
-        con.register<HealthCallbacks>("HealthCallbacks", {useClass: HealthCallbacks});
-        con.register<HideoutCallbacks>("HideoutCallbacks", {useClass: HideoutCallbacks});
-        con.register<HttpCallbacks>("HttpCallbacks", {useClass: HttpCallbacks});
-        con.register<InraidCallbacks>("InraidCallbacks", {useClass: InraidCallbacks});
-        con.register<InsuranceCallbacks>("InsuranceCallbacks", {useClass: InsuranceCallbacks});
-        con.register<InventoryCallbacks>("InventoryCallbacks", {useClass: InventoryCallbacks});
-        con.register<ItemEventCallbacks>("ItemEventCallbacks", {useClass: ItemEventCallbacks});
-        con.register<LauncherCallbacks>("LauncherCallbacks", {useClass: LauncherCallbacks});
-        con.register<LocationCallbacks>("LocationCallbacks", {useClass: LocationCallbacks});
-        con.register<MatchCallbacks>("MatchCallbacks", {useClass: MatchCallbacks});
-        con.register<ModCallbacks>("ModCallbacks", {useClass: ModCallbacks});
-        con.register<PostDBModLoader>("PostDBModLoader", {useClass: PostDBModLoader});
-        con.register<NoteCallbacks>("NoteCallbacks", {useClass: NoteCallbacks});
-        con.register<NotifierCallbacks>("NotifierCallbacks", {useClass: NotifierCallbacks});
-        con.register<PresetBuildCallbacks>("PresetBuildCallbacks", {useClass: PresetBuildCallbacks});
-        con.register<PresetCallbacks>("PresetCallbacks", {useClass: PresetCallbacks});
-        con.register<ProfileCallbacks>("ProfileCallbacks", {useClass: ProfileCallbacks});
-        con.register<QuestCallbacks>("QuestCallbacks", {useClass: QuestCallbacks});
-        con.register<RagfairCallbacks>("RagfairCallbacks", {useClass: RagfairCallbacks});
-        con.register<RepairCallbacks>("RepairCallbacks", {useClass: RepairCallbacks});
-        con.register<SaveCallbacks>("SaveCallbacks", {useClass: SaveCallbacks});
-        con.register<TradeCallbacks>("TradeCallbacks", {useClass: TradeCallbacks});
-        con.register<TraderCallbacks>("TraderCallbacks", {useClass: TraderCallbacks});
-        con.register<WeatherCallbacks>("WeatherCallbacks", {useClass: WeatherCallbacks});
-        con.register<WishlistCallbacks>("WishlistCallbacks", {useClass: WishlistCallbacks});
+        con.register<BotCallbacks>("BotCallbacks", { useClass: BotCallbacks });
+        con.register<BundleCallbacks>("BundleCallbacks", { useClass: BundleCallbacks });
+        con.register<ClientLogCallbacks>("ClientLogCallbacks", { useClass: ClientLogCallbacks });
+        con.register<CustomizationCallbacks>("CustomizationCallbacks", { useClass: CustomizationCallbacks });
+        con.register<DataCallbacks>("DataCallbacks", { useClass: DataCallbacks });
+        con.register<DialogueCallbacks>("DialogueCallbacks", { useClass: DialogueCallbacks });
+        con.register<GameCallbacks>("GameCallbacks", { useClass: GameCallbacks });
+        con.register<HandbookCallbacks>("HandbookCallbacks", { useClass: HandbookCallbacks });
+        con.register<HealthCallbacks>("HealthCallbacks", { useClass: HealthCallbacks });
+        con.register<HideoutCallbacks>("HideoutCallbacks", { useClass: HideoutCallbacks });
+        con.register<HttpCallbacks>("HttpCallbacks", { useClass: HttpCallbacks });
+        con.register<InraidCallbacks>("InraidCallbacks", { useClass: InraidCallbacks });
+        con.register<InsuranceCallbacks>("InsuranceCallbacks", { useClass: InsuranceCallbacks });
+        con.register<InventoryCallbacks>("InventoryCallbacks", { useClass: InventoryCallbacks });
+        con.register<ItemEventCallbacks>("ItemEventCallbacks", { useClass: ItemEventCallbacks });
+        con.register<LauncherCallbacks>("LauncherCallbacks", { useClass: LauncherCallbacks });
+        con.register<LocationCallbacks>("LocationCallbacks", { useClass: LocationCallbacks });
+        con.register<MatchCallbacks>("MatchCallbacks", { useClass: MatchCallbacks });
+        con.register<ModCallbacks>("ModCallbacks", { useClass: ModCallbacks });
+        con.register<PostDBModLoader>("PostDBModLoader", { useClass: PostDBModLoader });
+        con.register<NoteCallbacks>("NoteCallbacks", { useClass: NoteCallbacks });
+        con.register<NotifierCallbacks>("NotifierCallbacks", { useClass: NotifierCallbacks });
+        con.register<PresetBuildCallbacks>("PresetBuildCallbacks", { useClass: PresetBuildCallbacks });
+        con.register<PresetCallbacks>("PresetCallbacks", { useClass: PresetCallbacks });
+        con.register<ProfileCallbacks>("ProfileCallbacks", { useClass: ProfileCallbacks });
+        con.register<QuestCallbacks>("QuestCallbacks", { useClass: QuestCallbacks });
+        con.register<RagfairCallbacks>("RagfairCallbacks", { useClass: RagfairCallbacks });
+        con.register<RepairCallbacks>("RepairCallbacks", { useClass: RepairCallbacks });
+        con.register<SaveCallbacks>("SaveCallbacks", { useClass: SaveCallbacks });
+        con.register<TradeCallbacks>("TradeCallbacks", { useClass: TradeCallbacks });
+        con.register<TraderCallbacks>("TraderCallbacks", { useClass: TraderCallbacks });
+        con.register<WeatherCallbacks>("WeatherCallbacks", { useClass: WeatherCallbacks });
+        con.register<WishlistCallbacks>("WishlistCallbacks", { useClass: WishlistCallbacks });
     }
 
     private static registerServices(con: DependencyContainer): void
     {
         // Services
-        con.register<ImageRouteService>("ImageRouteService", ImageRouteService, {lifecycle: Lifecycle.Singleton});
+        con.register<ImageRouteService>("ImageRouteService", ImageRouteService, { lifecycle: Lifecycle.Singleton });
 
-        con.register<FenceService>("FenceService", FenceService, {lifecycle: Lifecycle.Singleton});
-        con.register<PlayerService>("PlayerService", {useClass: PlayerService});
-        con.register<PaymentService>("PaymentService", {useClass: PaymentService});
-        con.register<InsuranceService>("InsuranceService", InsuranceService, {lifecycle: Lifecycle.Singleton});
-        con.register<TraderAssortService>("TraderAssortService", TraderAssortService, {lifecycle: Lifecycle.Singleton});
+        con.register<FenceService>("FenceService", FenceService, { lifecycle: Lifecycle.Singleton });
+        con.register<PlayerService>("PlayerService", { useClass: PlayerService });
+        con.register<PaymentService>("PaymentService", { useClass: PaymentService });
+        con.register<InsuranceService>("InsuranceService", InsuranceService, { lifecycle: Lifecycle.Singleton });
+        con.register<TraderAssortService>("TraderAssortService", TraderAssortService, {
+            lifecycle: Lifecycle.Singleton,
+        });
 
-        con.register<RagfairPriceService>("RagfairPriceService", RagfairPriceService, {lifecycle: Lifecycle.Singleton});
+        con.register<RagfairPriceService>("RagfairPriceService", RagfairPriceService, {
+            lifecycle: Lifecycle.Singleton,
+        });
         con.register<RagfairCategoriesService>("RagfairCategoriesService", RagfairCategoriesService, {
             lifecycle: Lifecycle.Singleton,
         });
-        con.register<RagfairOfferService>("RagfairOfferService", RagfairOfferService, {lifecycle: Lifecycle.Singleton});
+        con.register<RagfairOfferService>("RagfairOfferService", RagfairOfferService, {
+            lifecycle: Lifecycle.Singleton,
+        });
         con.register<RagfairLinkedItemService>("RagfairLinkedItemService", RagfairLinkedItemService, {
             lifecycle: Lifecycle.Singleton,
         });
@@ -589,30 +599,36 @@ export class Container
             lifecycle: Lifecycle.Singleton,
         });
 
-        con.register<NotificationService>("NotificationService", NotificationService, {lifecycle: Lifecycle.Singleton});
+        con.register<NotificationService>("NotificationService", NotificationService, {
+            lifecycle: Lifecycle.Singleton,
+        });
         con.register<MatchLocationService>("MatchLocationService", MatchLocationService, {
             lifecycle: Lifecycle.Singleton,
         });
         con.register<ModCompilerService>("ModCompilerService", ModCompilerService);
-        con.register<HashCacheService>("HashCacheService", HashCacheService, {lifecycle: Lifecycle.Singleton});
-        con.register<LocaleService>("LocaleService", LocaleService, {lifecycle: Lifecycle.Singleton});
+        con.register<HashCacheService>("HashCacheService", HashCacheService, { lifecycle: Lifecycle.Singleton });
+        con.register<LocaleService>("LocaleService", LocaleService, { lifecycle: Lifecycle.Singleton });
         con.register<ProfileFixerService>("ProfileFixerService", ProfileFixerService);
         con.register<RepairService>("RepairService", RepairService);
-        con.register<BotLootCacheService>("BotLootCacheService", BotLootCacheService, {lifecycle: Lifecycle.Singleton});
+        con.register<BotLootCacheService>("BotLootCacheService", BotLootCacheService, {
+            lifecycle: Lifecycle.Singleton,
+        });
         con.register<CustomItemService>("CustomItemService", CustomItemService);
         con.register<BotEquipmentFilterService>("BotEquipmentFilterService", BotEquipmentFilterService);
         con.register<ProfileSnapshotService>("ProfileSnapshotService", ProfileSnapshotService, {
             lifecycle: Lifecycle.Singleton,
         });
-        con.register<ItemFilterService>("ItemFilterService", ItemFilterService, {lifecycle: Lifecycle.Singleton});
+        con.register<ItemFilterService>("ItemFilterService", ItemFilterService, { lifecycle: Lifecycle.Singleton });
         con.register<BotGenerationCacheService>("BotGenerationCacheService", BotGenerationCacheService, {
             lifecycle: Lifecycle.Singleton,
         });
-        con.register<LocalisationService>("LocalisationService", LocalisationService, {lifecycle: Lifecycle.Singleton});
+        con.register<LocalisationService>("LocalisationService", LocalisationService, {
+            lifecycle: Lifecycle.Singleton,
+        });
         con.register<CustomLocationWaveService>("CustomLocationWaveService", CustomLocationWaveService, {
             lifecycle: Lifecycle.Singleton,
         });
-        con.register<OpenZoneService>("OpenZoneService", OpenZoneService, {lifecycle: Lifecycle.Singleton});
+        con.register<OpenZoneService>("OpenZoneService", OpenZoneService, { lifecycle: Lifecycle.Singleton });
         con.register<ItemBaseClassService>("ItemBaseClassService", ItemBaseClassService, {
             lifecycle: Lifecycle.Singleton,
         });
@@ -628,7 +644,7 @@ export class Container
         con.register<MatchBotDetailsCacheService>("MatchBotDetailsCacheService", MatchBotDetailsCacheService, {
             lifecycle: Lifecycle.Singleton,
         });
-        con.register<RagfairTaxService>("RagfairTaxService", RagfairTaxService, {lifecycle: Lifecycle.Singleton});
+        con.register<RagfairTaxService>("RagfairTaxService", RagfairTaxService, { lifecycle: Lifecycle.Singleton });
         con.register<TraderPurchasePersisterService>("TraderPurchasePersisterService", TraderPurchasePersisterService);
         con.register<PmcChatResponseService>("PmcChatResponseService", PmcChatResponseService);
         con.register<GiftService>("GiftService", GiftService);
@@ -638,43 +654,43 @@ export class Container
     private static registerServers(con: DependencyContainer): void
     {
         // Servers
-        con.register<DatabaseServer>("DatabaseServer", DatabaseServer, {lifecycle: Lifecycle.Singleton});
-        con.register<HttpServer>("HttpServer", HttpServer, {lifecycle: Lifecycle.Singleton});
-        con.register<WebSocketServer>("WebSocketServer", WebSocketServer, {lifecycle: Lifecycle.Singleton});
+        con.register<DatabaseServer>("DatabaseServer", DatabaseServer, { lifecycle: Lifecycle.Singleton });
+        con.register<HttpServer>("HttpServer", HttpServer, { lifecycle: Lifecycle.Singleton });
+        con.register<WebSocketServer>("WebSocketServer", WebSocketServer, { lifecycle: Lifecycle.Singleton });
         con.register<RagfairServer>("RagfairServer", RagfairServer);
-        con.register<SaveServer>("SaveServer", SaveServer, {lifecycle: Lifecycle.Singleton});
-        con.register<ConfigServer>("ConfigServer", ConfigServer, {lifecycle: Lifecycle.Singleton});
+        con.register<SaveServer>("SaveServer", SaveServer, { lifecycle: Lifecycle.Singleton });
+        con.register<ConfigServer>("ConfigServer", ConfigServer, { lifecycle: Lifecycle.Singleton });
     }
 
     private static registerControllers(con: DependencyContainer): void
     {
         // Controllers
-        con.register<BotController>("BotController", {useClass: BotController});
-        con.register<ClientLogController>("ClientLogController", {useClass: ClientLogController});
-        con.register<CustomizationController>("CustomizationController", {useClass: CustomizationController});
-        con.register<DialogueController>("DialogueController", {useClass: DialogueController});
-        con.register<GameController>("GameController", {useClass: GameController});
-        con.register<HandbookController>("HandbookController", {useClass: HandbookController});
-        con.register<HealthController>("HealthController", {useClass: HealthController});
-        con.register<HideoutController>("HideoutController", {useClass: HideoutController});
-        con.register<InraidController>("InraidController", {useClass: InraidController});
-        con.register<InsuranceController>("InsuranceController", {useClass: InsuranceController});
-        con.register<InventoryController>("InventoryController", {useClass: InventoryController});
-        con.register<LauncherController>("LauncherController", {useClass: LauncherController});
-        con.register<LocationController>("LocationController", {useClass: LocationController});
+        con.register<BotController>("BotController", { useClass: BotController });
+        con.register<ClientLogController>("ClientLogController", { useClass: ClientLogController });
+        con.register<CustomizationController>("CustomizationController", { useClass: CustomizationController });
+        con.register<DialogueController>("DialogueController", { useClass: DialogueController });
+        con.register<GameController>("GameController", { useClass: GameController });
+        con.register<HandbookController>("HandbookController", { useClass: HandbookController });
+        con.register<HealthController>("HealthController", { useClass: HealthController });
+        con.register<HideoutController>("HideoutController", { useClass: HideoutController });
+        con.register<InraidController>("InraidController", { useClass: InraidController });
+        con.register<InsuranceController>("InsuranceController", { useClass: InsuranceController });
+        con.register<InventoryController>("InventoryController", { useClass: InventoryController });
+        con.register<LauncherController>("LauncherController", { useClass: LauncherController });
+        con.register<LocationController>("LocationController", { useClass: LocationController });
         con.register<MatchController>("MatchController", MatchController);
-        con.register<NoteController>("NoteController", {useClass: NoteController});
-        con.register<NotifierController>("NotifierController", {useClass: NotifierController});
-        con.register<PresetBuildController>("PresetBuildController", {useClass: PresetBuildController});
-        con.register<PresetController>("PresetController", {useClass: PresetController});
-        con.register<ProfileController>("ProfileController", {useClass: ProfileController});
-        con.register<QuestController>("QuestController", {useClass: QuestController});
-        con.register<RagfairController>("RagfairController", {useClass: RagfairController});
-        con.register<RepairController>("RepairController", {useClass: RepairController});
-        con.register<RepeatableQuestController>("RepeatableQuestController", {useClass: RepeatableQuestController});
-        con.register<TradeController>("TradeController", {useClass: TradeController});
-        con.register<TraderController>("TraderController", {useClass: TraderController});
-        con.register<WeatherController>("WeatherController", {useClass: WeatherController});
+        con.register<NoteController>("NoteController", { useClass: NoteController });
+        con.register<NotifierController>("NotifierController", { useClass: NotifierController });
+        con.register<PresetBuildController>("PresetBuildController", { useClass: PresetBuildController });
+        con.register<PresetController>("PresetController", { useClass: PresetController });
+        con.register<ProfileController>("ProfileController", { useClass: ProfileController });
+        con.register<QuestController>("QuestController", { useClass: QuestController });
+        con.register<RagfairController>("RagfairController", { useClass: RagfairController });
+        con.register<RepairController>("RepairController", { useClass: RepairController });
+        con.register<RepeatableQuestController>("RepeatableQuestController", { useClass: RepeatableQuestController });
+        con.register<TradeController>("TradeController", { useClass: TradeController });
+        con.register<TraderController>("TraderController", { useClass: TraderController });
+        con.register<WeatherController>("WeatherController", { useClass: WeatherController });
         con.register<WishlistController>("WishlistController", WishlistController);
     }
 }

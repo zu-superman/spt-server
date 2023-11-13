@@ -38,7 +38,7 @@ export class HealthHelper
 
         if (!profile.vitality)
         { // Occurs on newly created profiles
-            profile.vitality = {health: null, effects: null};
+            profile.vitality = { health: null, effects: null };
         }
         profile.vitality.health = {
             Hydration: 0,
@@ -255,7 +255,7 @@ export class HealthHelper
             profileBodyPart.Effects = {};
         }
 
-        profileBodyPart.Effects[effectType] = {Time: duration};
+        profileBodyPart.Effects[effectType] = { Time: duration };
 
         // Delete empty property to prevent client bugs
         if (this.isEmpty(profileBodyPart.Effects))
@@ -264,7 +264,7 @@ export class HealthHelper
         }
     }
 
-    protected isEmpty(map: Record<string, {Time: number;}>): boolean
+    protected isEmpty(map: Record<string, { Time: number; }>): boolean
     {
         for (const key in map)
         {

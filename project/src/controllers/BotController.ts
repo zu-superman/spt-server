@@ -290,6 +290,6 @@ export class BotController
 
     public getAiBotBrainTypes(): any
     {
-        return {pmc: this.pmcConfig.pmcType, assault: this.botConfig.assaultBrainType};
+        return { pmc: this.pmcConfig.pmcType, assault: this.botConfig.assaultBrainType };
     }
 }

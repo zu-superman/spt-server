@@ -29,7 +29,7 @@ export class RagfairPriceService implements OnLoad
     protected generatedDynamicPrices: boolean;
     protected generatedStaticPrices: boolean;
 
-    protected prices: IRagfairServerPrices = {static: {}, dynamic: {}};
+    protected prices: IRagfairServerPrices = { static: {}, dynamic: {} };
 
     constructor(
         @inject("HandbookHelper") protected handbookHelper: HandbookHelper,
@@ -153,12 +153,12 @@ export class RagfairPriceService implements OnLoad
     public getAllFleaPrices(): Record<string, number>
     {
         // assign static values first, then overwrite them with dynamic, any values not stored in dynamic data will be covered by static data
-        return {...this.prices.static, ...this.prices.dynamic};
+        return { ...this.prices.static, ...this.prices.dynamic };
     }
 
     public getAllStaticPrices(): Record<string, number>
     {
-        return {...this.prices.static};
+        return { ...this.prices.static };
     }
 
     /**
@@ -409,12 +409,12 @@ export class RagfairPriceService implements OnLoad
      * @param presets weapon presets to choose from
      * @returns Default preset object
      */
-    protected getWeaponPreset(presets: IPreset[], weapon: Item): {isDefault: boolean; preset: IPreset;}
+    protected getWeaponPreset(presets: IPreset[], weapon: Item): { isDefault: boolean; preset: IPreset; }
     {
         const defaultPreset = presets.find((x) => x._encyclopedia);
         if (defaultPreset)
         {
-            return {isDefault: true, preset: defaultPreset};
+            return { isDefault: true, preset: defaultPreset };
         }
 
         if (presets.length === 1)
@@ -434,6 +434,6 @@ export class RagfairPriceService implements OnLoad
             );
         }
 
-        return {isDefault: false, preset: presets[0]};
+        return { isDefault: false, preset: presets[0] };
     }
 }

@@ -139,11 +139,11 @@ export class PreAkiModLoader implements IModLoader
             this.logger.info(this.localisationService.getText("modloader-mod_order_missing"));
 
             // Write file with empty order array to disk
-            this.vfs.writeFile(this.modOrderPath, this.jsonUtil.serializeAdvanced({order: []}, null, 4));
+            this.vfs.writeFile(this.modOrderPath, this.jsonUtil.serializeAdvanced({ order: [] }, null, 4));
         }
         else
         {
-            const modOrder = this.vfs.readFile(this.modOrderPath, {encoding: "utf8"});
+            const modOrder = this.vfs.readFile(this.modOrderPath, { encoding: "utf8" });
             try
             {
                 for (const [index, mod] of (this.jsonUtil.deserialize<any>(modOrder).order as string[]).entries())
@@ -225,7 +225,7 @@ export class PreAkiModLoader implements IModLoader
 
             if (this.shouldSkipMod(pkg))
             {
-                this.logger.warning(this.localisationService.getText("modloader-skipped_mod", {mod: mod}));
+                this.logger.warning(this.localisationService.getText("modloader-skipped_mod", { mod: mod }));
                 continue;
             }
 
@@ -473,7 +473,7 @@ export class PreAkiModLoader implements IModLoader
         pkg.scripts = {};
 
         // Add mod to imported list
-        this.imported[mod] = {...pkg, dependencies: pkg.modDependencies};
+        this.imported[mod] = { ...pkg, dependencies: pkg.modDependencies };
         this.logger.info(
             this.localisationService.getText("modloader-loaded_mod", {
                 name: pkg.name,
@@ -557,7 +557,7 @@ export class PreAkiModLoader implements IModLoader
         );
         let command = `${pnpmPath} install `;
         command += dependenciesToInstall.map(([depName, depVersion]) => `${depName}@${depVersion}`).join(" ");
-        execSync(command, {cwd: modPath});
+        execSync(command, { cwd: modPath });
 
         // Delete the new blank package.json then rename the backup back to the original name
         this.vfs.removeFile(`${modPath}/package.json`);

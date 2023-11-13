@@ -46,7 +46,7 @@ export class BotGeneratorHelper
      * @param botRole Used by weapons to randomize the durability values. Null for non-equipped items
      * @returns Item Upd object with extra properties
      */
-    public generateExtraPropertiesForItem(itemTemplate: ITemplateItem, botRole?: string): {upd?: Upd;}
+    public generateExtraPropertiesForItem(itemTemplate: ITemplateItem, botRole?: string): { upd?: Upd; }
     {
         // Get raid settings, if no raid, default to day
         const raidSettings = this.applicationContext.getLatestValue(ContextVariableType.RAID_CONFIGURATION)?.getValue<
@@ -70,23 +70,23 @@ export class BotGeneratorHelper
 
         if (itemTemplate._props.HasHinge)
         {
-            itemProperties.Togglable = {On: true};
+            itemProperties.Togglable = { On: true };
         }
 
         if (itemTemplate._props.Foldable)
         {
-            itemProperties.Foldable = {Folded: false};
+            itemProperties.Foldable = { Folded: false };
         }
 
         if (itemTemplate._props.weapFireType?.length)
         {
             if (itemTemplate._props.weapFireType.includes("fullauto"))
             {
-                itemProperties.FireMode = {FireMode: "fullauto"};
+                itemProperties.FireMode = { FireMode: "fullauto" };
             }
             else
             {
-                itemProperties.FireMode = {FireMode: this.randomUtil.getArrayValue(itemTemplate._props.weapFireType)};
+                itemProperties.FireMode = { FireMode: this.randomUtil.getArrayValue(itemTemplate._props.weapFireType) };
             }
         }
 
@@ -116,7 +116,10 @@ export class BotGeneratorHelper
             const lightLaserActiveChance = raidIsNight
                 ? this.getBotEquipmentSettingFromConfig(botRole, "lightIsActiveNightChancePercent", 50)
                 : this.getBotEquipmentSettingFromConfig(botRole, "lightIsActiveDayChancePercent", 25);
-            itemProperties.Light = {IsActive: (this.randomUtil.getChance100(lightLaserActiveChance)), SelectedMode: 0};
+            itemProperties.Light = {
+                IsActive: (this.randomUtil.getChance100(lightLaserActiveChance)),
+                SelectedMode: 0,
+            };
         }
         else if (itemTemplate._parent === BaseClasses.TACTICAL_COMBO)
         {
@@ -126,7 +129,10 @@ export class BotGeneratorHelper
                 "laserIsActiveChancePercent",
                 50,
             );
-            itemProperties.Light = {IsActive: (this.randomUtil.getChance100(lightLaserActiveChance)), SelectedMode: 0};
+            itemProperties.Light = {
+                IsActive: (this.randomUtil.getChance100(lightLaserActiveChance)),
+                SelectedMode: 0,
+            };
         }
 
         if (itemTemplate._parent === BaseClasses.NIGHTVISION)
@@ -135,7 +141,7 @@ export class BotGeneratorHelper
             const nvgActiveChance = raidIsNight
                 ? this.getBotEquipmentSettingFromConfig(botRole, "nvgIsActiveChanceNightPercent", 90)
                 : this.getBotEquipmentSettingFromConfig(botRole, "nvgIsActiveChanceDayPercent", 15);
-            itemProperties.Togglable = {On: (this.randomUtil.getChance100(nvgActiveChance))};
+            itemProperties.Togglable = { On: (this.randomUtil.getChance100(nvgActiveChance)) };
         }
 
         // Togglable face shield
@@ -147,10 +153,10 @@ export class BotGeneratorHelper
                 "faceShieldIsActiveChancePercent",
                 75,
             );
-            itemProperties.Togglable = {On: (this.randomUtil.getChance100(faceShieldActiveChance))};
+            itemProperties.Togglable = { On: (this.randomUtil.getChance100(faceShieldActiveChance)) };
         }
 
-        return Object.keys(itemProperties).length ? {upd: itemProperties} : {};
+        return Object.keys(itemProperties).length ? { upd: itemProperties } : {};
     }
 
     /**
@@ -238,7 +244,7 @@ export class BotGeneratorHelper
             maxDurability,
         );
 
-        return {Durability: currentDurability, MaxDurability: maxDurability};
+        return { Durability: currentDurability, MaxDurability: maxDurability };
     }
 
     /**
@@ -266,7 +272,7 @@ export class BotGeneratorHelper
             );
         }
 
-        return {Durability: currentDurability, MaxDurability: maxDurability};
+        return { Durability: currentDurability, MaxDurability: maxDurability };
     }
 
     /**
@@ -280,12 +286,12 @@ export class BotGeneratorHelper
         items: Item[],
         tplToCheck: string,
         equipmentSlot: string,
-    ): {incompatible: boolean; reason: string;}
+    ): { incompatible: boolean; reason: string; }
     {
         // Skip slots that have no incompatibilities
         if (["Scabbard", "Backpack", "SecureContainer", "Holster", "ArmBand"].includes(equipmentSlot))
         {
-            return {incompatible: false, reason: ""};
+            return { incompatible: false, reason: "" };
         }
 
         // TODO: Can probably be optimized to cache itemTemplates as items are added to inventory
@@ -350,7 +356,7 @@ export class BotGeneratorHelper
             };
         }
 
-        return {incompatible: false, reason: ""};
+        return { incompatible: false, reason: "" };
     }
 
     /**

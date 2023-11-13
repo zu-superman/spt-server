@@ -187,7 +187,7 @@ export class HideoutHelper
      */
     protected getHideoutProperties(
         pmcData: IPmcData,
-    ): {btcFarmCGs: number; isGeneratorOn: boolean; waterCollectorHasFilter: boolean;}
+    ): { btcFarmCGs: number; isGeneratorOn: boolean; waterCollectorHasFilter: boolean; }
     {
         const bitcoinFarm = pmcData.Hideout.Areas.find((x) => x.type === HideoutAreas.BITCOIN_FARM);
         const bitcoinCount = bitcoinFarm?.slots.filter((slot) => slot.item).length ?? 0; // Get slots with an item property
@@ -224,7 +224,7 @@ export class HideoutHelper
     protected updateWaterCollectorProductionTimer(
         pmcData: IPmcData,
         productionId: string,
-        hideoutProperties: {btcFarmCGs?: number; isGeneratorOn: boolean; waterCollectorHasFilter: boolean;},
+        hideoutProperties: { btcFarmCGs?: number; isGeneratorOn: boolean; waterCollectorHasFilter: boolean; },
     ): void
     {
         const timeElapsed = this.getTimeElapsedSinceLastServerTick(pmcData, hideoutProperties.isGeneratorOn);
@@ -241,7 +241,7 @@ export class HideoutHelper
      */
     protected updateProductionTimers(
         pmcData: IPmcData,
-        hideoutProperties: {btcFarmCGs: number; isGeneratorOn: boolean; waterCollectorHasFilter: boolean;},
+        hideoutProperties: { btcFarmCGs: number; isGeneratorOn: boolean; waterCollectorHasFilter: boolean; },
     ): void
     {
         const recipes = this.databaseServer.getTables().hideout.production;
@@ -310,7 +310,7 @@ export class HideoutHelper
         pmcData: IPmcData,
         prodId: string,
         recipe: IHideoutProduction,
-        hideoutProperties: {btcFarmCGs?: number; isGeneratorOn: boolean; waterCollectorHasFilter?: boolean;},
+        hideoutProperties: { btcFarmCGs?: number; isGeneratorOn: boolean; waterCollectorHasFilter?: boolean; },
     ): void
     {
         // Production is complete, no need to do any calculations
@@ -367,7 +367,7 @@ export class HideoutHelper
     protected updateAreasWithResources(
         sessionID: string,
         pmcData: IPmcData,
-        hideoutProperties: {btcFarmCGs: number; isGeneratorOn: boolean; waterCollectorHasFilter: boolean;},
+        hideoutProperties: { btcFarmCGs: number; isGeneratorOn: boolean; waterCollectorHasFilter: boolean; },
     ): void
     {
         for (const area of pmcData.Hideout.Areas)
@@ -651,7 +651,10 @@ export class HideoutHelper
      */
     protected getAreaUpdObject(stackCount: number, resourceValue: number, resourceUnitsConsumed: number): Upd
     {
-        return {StackObjectsCount: stackCount, Resource: {Value: resourceValue, UnitsConsumed: resourceUnitsConsumed}};
+        return {
+            StackObjectsCount: stackCount,
+            Resource: { Value: resourceValue, UnitsConsumed: resourceUnitsConsumed },
+        };
     }
 
     protected updateAirFilters(airFilterArea: HideoutArea, pmcData: IPmcData): void
@@ -699,7 +702,7 @@ export class HideoutHelper
                 {
                     airFilterArea.slots[i].item[0].upd = {
                         StackObjectsCount: 1,
-                        Resource: {Value: resourceValue, UnitsConsumed: pointsConsumed},
+                        Resource: { Value: resourceValue, UnitsConsumed: pointsConsumed },
                     };
                     this.logger.debug(`Air filter: ${resourceValue} filter left on slot ${i + 1}`);
                     break; // Break here to avoid updating all filters
@@ -806,7 +809,7 @@ export class HideoutHelper
         btcProd.Products.push({
             _id: this.hashUtil.generate(),
             _tpl: "59faff1d86f7746c51718c9c",
-            upd: {StackObjectsCount: 1},
+            upd: { StackObjectsCount: 1 },
         });
 
         btcProd.Progress -= coinCraftTimeSeconds;

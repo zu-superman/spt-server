@@ -109,7 +109,7 @@ export class ModCompilerService
                 replacedText = text.replace(/(@spt-aki)/g, path.join(__dirname, "..").replace(/\\/g, "/"));
             }
 
-            const output = ts.transpileModule(replacedText, {compilerOptions: options});
+            const output = ts.transpileModule(replacedText, { compilerOptions: options });
 
             if (output.sourceMapText)
             {

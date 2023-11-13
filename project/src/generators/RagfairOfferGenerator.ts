@@ -33,7 +33,7 @@ import { TimeUtil } from "@spt-aki/utils/TimeUtil";
 export class RagfairOfferGenerator
 {
     protected ragfairConfig: IRagfairConfig;
-    protected allowedFleaPriceItemsForBarter: {tpl: string; price: number;}[];
+    protected allowedFleaPriceItemsForBarter: { tpl: string; price: number; }[];
 
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
@@ -636,7 +636,7 @@ export class RagfairOfferGenerator
         {
             const totalCapacity = itemDetails._props.MaxResource;
             const remainingFuel = Math.round(totalCapacity * multiplier);
-            item.upd.Resource = {UnitsConsumed: totalCapacity - remainingFuel, Value: remainingFuel};
+            item.upd.Resource = { UnitsConsumed: totalCapacity - remainingFuel, Value: remainingFuel };
         }
     }
 
@@ -687,27 +687,27 @@ export class RagfairOfferGenerator
 
         if (isRepairable && props.Durability > 0)
         {
-            item.upd.Repairable = {Durability: props.Durability, MaxDurability: props.Durability};
+            item.upd.Repairable = { Durability: props.Durability, MaxDurability: props.Durability };
         }
 
         if (isMedkit && props.MaxHpResource > 0)
         {
-            item.upd.MedKit = {HpResource: props.MaxHpResource};
+            item.upd.MedKit = { HpResource: props.MaxHpResource };
         }
 
         if (isKey)
         {
-            item.upd.Key = {NumberOfUsages: 0};
+            item.upd.Key = { NumberOfUsages: 0 };
         }
 
         if (isConsumable)
         {
-            item.upd.FoodDrink = {HpPercent: props.MaxResource};
+            item.upd.FoodDrink = { HpPercent: props.MaxResource };
         }
 
         if (isRepairKit)
         {
-            item.upd.RepairKit = {Resource: props.MaxRepairResource};
+            item.upd.RepairKit = { Resource: props.MaxRepairResource };
         }
 
         return item;
@@ -762,20 +762,20 @@ export class RagfairOfferGenerator
         // Choose random item from price-filtered flea items
         const randomItem = this.randomUtil.getArrayValue(filtered);
 
-        return [{count: barterItemCount, _tpl: randomItem.tpl}];
+        return [{ count: barterItemCount, _tpl: randomItem.tpl }];
     }
 
     /**
      * Get an array of flea prices + item tpl, cached in generator class inside `allowedFleaPriceItemsForBarter`
      * @returns array with tpl/price values
      */
-    protected getFleaPricesAsArray(): {tpl: string; price: number;}[]
+    protected getFleaPricesAsArray(): { tpl: string; price: number; }[]
     {
         // Generate if needed
         if (!this.allowedFleaPriceItemsForBarter)
         {
             const fleaPrices = this.databaseServer.getTables().templates.prices;
-            const fleaArray = Object.entries(fleaPrices).map(([tpl, price]) => ({tpl: tpl, price: price}));
+            const fleaArray = Object.entries(fleaPrices).map(([tpl, price]) => ({ tpl: tpl, price: price }));
 
             // Only get item prices for items that also exist in items.json
             const filteredItems = fleaArray.filter((x) => this.itemHelper.getItem(x.tpl)[0]);
@@ -801,6 +801,6 @@ export class RagfairOfferGenerator
         const price = this.ragfairPriceService.getDynamicOfferPriceForOffer(offerItems, currency, isPackOffer)
             * multipler;
 
-        return [{count: price, _tpl: currency}];
+        return [{ count: price, _tpl: currency }];
     }
 }

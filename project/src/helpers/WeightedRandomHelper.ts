@@ -9,7 +9,7 @@ export class WeightedRandomHelper
      * @param {tplId: weighting[]} itemArray
      * @returns tplId
      */
-    public getWeightedInventoryItem(itemArray: {[tplId: string]: unknown;} | ArrayLike<unknown>): string
+    public getWeightedInventoryItem(itemArray: { [tplId: string]: unknown; } | ArrayLike<unknown>): string
     {
         const itemKeys = Object.keys(itemArray);
         const weights = Object.values(itemArray);
@@ -18,7 +18,7 @@ export class WeightedRandomHelper
         return chosenItem.item;
     }
 
-    public getWeightedValue<T>(itemArray: {[key: string]: unknown;} | ArrayLike<unknown>): T
+    public getWeightedValue<T>(itemArray: { [key: string]: unknown; } | ArrayLike<unknown>): T
     {
         const itemKeys = Object.keys(itemArray);
         const weights = Object.values(itemArray);
@@ -41,7 +41,7 @@ export class WeightedRandomHelper
      * @param {number[]} weights
      * @returns {{item: any, index: number}}
      */
-    public weightedRandom(items: string | any[], weights: string | any[]): {item: any; index: number;}
+    public weightedRandom(items: string | any[], weights: string | any[]): { item: any; index: number; }
     {
         if (items.length !== weights.length)
         {
@@ -77,7 +77,7 @@ export class WeightedRandomHelper
         {
             if (cumulativeWeights[itemIndex] >= randomNumber)
             {
-                return {item: items[itemIndex], index: itemIndex};
+                return { item: items[itemIndex], index: itemIndex };
             }
         }
     }

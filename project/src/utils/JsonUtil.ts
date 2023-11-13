@@ -181,7 +181,7 @@ export class JsonUtil
         {
             try
             {
-                const {data, changed} = fixJson(jsonString);
+                const { data, changed } = fixJson(jsonString);
                 if (changed)
                 { // data invalid, return it
                     this.logger.error(`${filePath} - Detected faulty json, please fix your json file using VSCodium`);

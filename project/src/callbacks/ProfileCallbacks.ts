@@ -34,7 +34,7 @@ export class ProfileCallbacks
     public createProfile(url: string, info: IProfileCreateRequestData, sessionID: string): IGetBodyResponseData<any>
     {
         this.profileController.createProfile(info, sessionID);
-        return this.httpResponse.getBody({uid: `pmc${sessionID}`});
+        return this.httpResponse.getBody({ uid: `pmc${sessionID}` });
     }
 
     /**
@@ -91,7 +91,7 @@ export class ProfileCallbacks
             return this.httpResponse.getBody(null, 1, "The nickname is too short");
         }
 
-        return this.httpResponse.getBody({status: 0, nicknamechangedate: this.timeUtil.getTimestamp()});
+        return this.httpResponse.getBody({ status: 0, nicknamechangedate: this.timeUtil.getTimestamp() });
     }
 
     /**
@@ -115,7 +115,7 @@ export class ProfileCallbacks
             return this.httpResponse.getBody(null, 256, "256 - ");
         }
 
-        return this.httpResponse.getBody({status: "ok"});
+        return this.httpResponse.getBody({ status: "ok" });
     }
 
     /**
@@ -150,7 +150,7 @@ export class ProfileCallbacks
                 raidMode: "Online",
                 mode: "deathmatch",
                 shortId: "xxx1x1",
-            }, {profileid: `pmc${sessionID}`, profileToken: null, status: "Free", sid: "", ip: "", port: 0}],
+            }, { profileid: `pmc${sessionID}`, profileToken: null, status: "Free", sid: "", ip: "", port: 0 }],
         };
 
         return this.httpResponse.getBody(response);

@@ -217,7 +217,7 @@ export class ProfileHelper
 
     public getDefaultAkiDataObject(): any
     {
-        return {version: this.getServerVersion()};
+        return { version: this.getServerVersion() };
     }
 
     public getFullProfile(sessionID: string): IAkiProfile
@@ -255,14 +255,14 @@ export class ProfileHelper
         return {
             Eft: {
                 CarriedQuestItems: [],
-                DamageHistory: {LethalDamagePart: "Head", LethalDamage: undefined, BodyParts: <any>[]},
+                DamageHistory: { LethalDamagePart: "Head", LethalDamage: undefined, BodyParts: <any>[] },
                 DroppedItems: [],
                 ExperienceBonusMult: 0,
                 FoundInRaidItems: [],
                 LastPlayerState: undefined,
                 LastSessionDate: 0,
-                OverallCounters: {Items: []},
-                SessionCounters: {Items: []},
+                OverallCounters: { Items: [] },
+                SessionCounters: { Items: [] },
                 SessionExperienceMult: 0,
                 SurvivorClass: "Unknown",
                 TotalInGameTime: 0,
@@ -321,7 +321,7 @@ export class ProfileHelper
             profileToUpdate.aki.receivedGifts = [];
         }
 
-        profileToUpdate.aki.receivedGifts.push({giftId: giftId, timestampAccepted: this.timeUtil.getTimestamp()});
+        profileToUpdate.aki.receivedGifts.push({ giftId: giftId, timestampAccepted: this.timeUtil.getTimestamp() });
     }
 
     /**

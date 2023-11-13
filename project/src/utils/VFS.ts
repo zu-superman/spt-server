@@ -14,14 +14,14 @@ export class VFS
 {
     accessFilePromisify: (path: fs.PathLike, mode?: number) => Promise<void>;
     copyFilePromisify: (src: fs.PathLike, dst: fs.PathLike, flags?: number) => Promise<void>;
-    mkdirPromisify: (path: fs.PathLike, options: fs.MakeDirectoryOptions & {recursive: true;}) => Promise<string>;
+    mkdirPromisify: (path: fs.PathLike, options: fs.MakeDirectoryOptions & { recursive: true; }) => Promise<string>;
     readFilePromisify: (path: fs.PathLike) => Promise<Buffer>;
     writeFilePromisify: (path: fs.PathLike, data: string, options?: any) => Promise<void>;
     readdirPromisify: (
         path: fs.PathLike,
-        options?: BufferEncoding | {encoding: BufferEncoding; withFileTypes?: false;},
+        options?: BufferEncoding | { encoding: BufferEncoding; withFileTypes?: false; },
     ) => Promise<string[]>;
-    statPromisify: (path: fs.PathLike, options?: fs.StatOptions & {bigint?: false;}) => Promise<fs.Stats>;
+    statPromisify: (path: fs.PathLike, options?: fs.StatOptions & { bigint?: false; }) => Promise<fs.Stats>;
     unlinkPromisify: (path: fs.PathLike) => Promise<void>;
     rmdirPromisify: (path: fs.PathLike) => Promise<void>;
     renamePromisify: (oldPath: fs.PathLike, newPath: fs.PathLike) => Promise<void>;
@@ -50,7 +50,7 @@ export class VFS
         try
         {
             // Create the command to add to the queue
-            const command = {uuid: crypto.randomUUID(), cmd: async () => await this.accessFilePromisify(filepath)};
+            const command = { uuid: crypto.randomUUID(), cmd: async () => await this.accessFilePromisify(filepath) };
             // Wait for the command completion
             await this.asyncQueue.waitFor(command);
 
@@ -71,13 +71,13 @@ export class VFS
 
     public async copyAsync(filepath: fs.PathLike, target: fs.PathLike): Promise<void>
     {
-        const command = {uuid: crypto.randomUUID(), cmd: async () => await this.copyFilePromisify(filepath, target)};
+        const command = { uuid: crypto.randomUUID(), cmd: async () => await this.copyFilePromisify(filepath, target) };
         await this.asyncQueue.waitFor(command);
     }
 
     public createDir(filepath: string): void
     {
-        fs.mkdirSync(filepath.substr(0, filepath.lastIndexOf("/")), {recursive: true});
+        fs.mkdirSync(filepath.substr(0, filepath.lastIndexOf("/")), { recursive: true });
     }
 
     public async createDirAsync(filepath: string): Promise<void>
@@ -85,7 +85,7 @@ export class VFS
         const command = {
             uuid: crypto.randomUUID(),
             cmd: async () =>
-                await this.mkdirPromisify(filepath.substr(0, filepath.lastIndexOf("/")), {recursive: true}),
+                await this.mkdirPromisify(filepath.substr(0, filepath.lastIndexOf("/")), { recursive: true }),
         };
         await this.asyncQueue.waitFor(command);
     }
@@ -167,7 +167,7 @@ export class VFS
 
     public writeFile(filepath: any, data = "", append = false, atomic = true): void
     {
-        const options = append ? {flag: "a"} : {flag: "w"};
+        const options = append ? { flag: "a" } : { flag: "w" };
 
         if (!this.exists(filepath))
         {
@@ -194,7 +194,7 @@ export class VFS
 
     public async writeFileAsync(filepath: any, data = "", append = false, atomic = true): Promise<void>
     {
-        const options = append ? {flag: "a"} : {flag: "w"};
+        const options = append ? { flag: "a" } : { flag: "w" };
 
         if (!await this.exists(filepath))
         {
@@ -376,7 +376,7 @@ export class VFS
             return files;
         }
 
-        const dirents = fs.readdirSync(directory, {encoding: "utf-8", withFileTypes: true});
+        const dirents = fs.readdirSync(directory, { encoding: "utf-8", withFileTypes: true });
         for (const dirent of dirents)
         {
             const res = resolve(directory, dirent.name);

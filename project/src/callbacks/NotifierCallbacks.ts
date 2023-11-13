@@ -68,7 +68,7 @@ export class NotifierCallbacks
         sessionID: string,
     ): IGetBodyResponseData<ISelectProfileResponse>
     {
-        return this.httpResponse.getBody({status: "ok"});
+        return this.httpResponse.getBody({ status: "ok" });
     }
 
     public notify(url: string, info: any, sessionID: string): string

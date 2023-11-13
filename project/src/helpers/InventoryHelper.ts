@@ -103,7 +103,7 @@ export class InventoryHelper
             }
             else if (this.paymentHelper.isMoneyTpl(requestItem.item_id))
             {
-                itemLib.push({_id: requestItem.item_id, _tpl: requestItem.item_id});
+                itemLib.push({ _id: requestItem.item_id, _tpl: requestItem.item_id });
             }
             else if (request.tid === Traders.FENCE)
             {
@@ -125,7 +125,7 @@ export class InventoryHelper
             }
             else if (request.tid === "RandomLootContainer")
             {
-                itemLib.push({_id: requestItem.item_id, _tpl: requestItem.item_id});
+                itemLib.push({ _id: requestItem.item_id, _tpl: requestItem.item_id });
             }
             else
             {
@@ -185,7 +185,7 @@ export class InventoryHelper
         {
             let idForItemToAdd = this.hashUtil.generate();
             const toDo: string[][] = [[itemToAdd.itemRef._id, idForItemToAdd]]; // WHAT IS THIS?!
-            let upd: Upd = {StackObjectsCount: itemToAdd.count};
+            let upd: Upd = { StackObjectsCount: itemToAdd.count };
 
             // If item being added is preset, load preset's upd data too.
             if (itemToAdd.isPreset)
@@ -213,7 +213,7 @@ export class InventoryHelper
             // add ragfair upd properties
             if (addUpd)
             {
-                upd = {...addUpd, ...upd};
+                upd = { ...addUpd, ...upd };
             }
 
             // Hideout items need to be marked as found in raid
@@ -244,7 +244,7 @@ export class InventoryHelper
                 _tpl: itemToAdd.itemRef._tpl,
                 parentId: itemToAdd.containerId,
                 slotId: "hideout",
-                location: {x: itemToAdd.location.x, y: itemToAdd.location.y, r: itemToAdd.location.rotation ? 1 : 0},
+                location: { x: itemToAdd.location.x, y: itemToAdd.location.y, r: itemToAdd.location.rotation ? 1 : 0 },
                 upd: this.jsonUtil.clone(upd),
             });
 
@@ -253,7 +253,7 @@ export class InventoryHelper
                 _tpl: itemToAdd.itemRef._tpl,
                 parentId: itemToAdd.containerId,
                 slotId: "hideout",
-                location: {x: itemToAdd.location.x, y: itemToAdd.location.y, r: itemToAdd.location.rotation ? 1 : 0},
+                location: { x: itemToAdd.location.x, y: itemToAdd.location.y, r: itemToAdd.location.rotation ? 1 : 0 },
                 upd: this.jsonUtil.clone(upd), // Clone upd to prevent multi-purchases of same item referencing same upd object in memory
             });
 
@@ -277,7 +277,7 @@ export class InventoryHelper
                     // If its from ItemPreset, load preset's upd data too.
                     if (itemToAdd.isPreset)
                     {
-                        upd = {StackObjectsCount: itemToAdd.count};
+                        upd = { StackObjectsCount: itemToAdd.count };
 
                         for (const updID in itemLib[tmpKey].upd)
                         {
@@ -297,7 +297,7 @@ export class InventoryHelper
                             _tpl: itemLib[tmpKey]._tpl,
                             parentId: toDo[0][1],
                             slotId: slotID,
-                            location: {x: itemToAdd.location.x, y: itemToAdd.location.y, r: "Horizontal"},
+                            location: { x: itemToAdd.location.x, y: itemToAdd.location.y, r: "Horizontal" },
                             upd: this.jsonUtil.clone(upd),
                         });
 
@@ -306,7 +306,7 @@ export class InventoryHelper
                             _tpl: itemLib[tmpKey]._tpl,
                             parentId: toDo[0][1],
                             slotId: itemLib[tmpKey].slotId,
-                            location: {x: itemToAdd.location.x, y: itemToAdd.location.y, r: "Horizontal"},
+                            location: { x: itemToAdd.location.x, y: itemToAdd.location.y, r: "Horizontal" },
                             upd: this.jsonUtil.clone(upd),
                         });
                     }
@@ -506,7 +506,7 @@ export class InventoryHelper
                     parentId: parentId,
                     slotId: "cartridges",
                     location: location,
-                    upd: {StackObjectsCount: ammoStackSize},
+                    upd: { StackObjectsCount: ammoStackSize },
                 };
 
                 if (foundInRaid)
@@ -622,7 +622,7 @@ export class InventoryHelper
         // We have output object, inform client of item deletion
         if (output)
         {
-            output.profileChanges[sessionID].items.del.push({_id: itemId});
+            output.profileChanges[sessionID].items.del.push({ _id: itemId });
         }
 
         for (const childId of itemToRemoveWithChildren)
@@ -885,7 +885,7 @@ export class InventoryHelper
 
     protected getInventoryItemHash(inventoryItem: Item[]): InventoryHelper.InventoryItemHash
     {
-        const inventoryItemHash: InventoryHelper.InventoryItemHash = {byItemId: {}, byParentId: {}};
+        const inventoryItemHash: InventoryHelper.InventoryItemHash = { byItemId: {}, byParentId: {} };
 
         for (const item of inventoryItem)
         {
@@ -1144,7 +1144,7 @@ export class InventoryHelper
         pmcData: IPmcData,
         inventoryItems: Item[],
         moveRequest: IInventoryMoveRequestData,
-    ): {success: boolean; errorMessage?: string;}
+    ): { success: boolean; errorMessage?: string; }
     {
         this.handleCartridges(inventoryItems, moveRequest);
 
@@ -1155,7 +1155,7 @@ export class InventoryHelper
             const errorMesage = `Unable to move item: ${moveRequest.item}, cannot find in inventory`;
             this.logger.error(errorMesage);
 
-            return {success: false, errorMessage: errorMesage};
+            return { success: false, errorMessage: errorMesage };
         }
 
         this.logger.debug(
@@ -1172,7 +1172,7 @@ export class InventoryHelper
                 }),
             );
 
-            return {success: true};
+            return { success: true };
         }
 
         // Edit items details to match its new location
@@ -1193,7 +1193,7 @@ export class InventoryHelper
             }
         }
 
-        return {success: true};
+        return { success: true };
     }
 
     /**

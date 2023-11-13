@@ -112,8 +112,8 @@ export class PlayerScavGenerator
         scavData.Info.Level = this.getScavLevel(existingScavData);
         scavData.Info.Experience = this.getScavExperience(existingScavData);
         scavData.Quests = existingScavData.Quests ?? [];
-        scavData.ConditionCounters = existingScavData.ConditionCounters ?? {Counters: []};
-        scavData.Notes = existingScavData.Notes ?? {Notes: []};
+        scavData.ConditionCounters = existingScavData.ConditionCounters ?? { Counters: [] };
+        scavData.Notes = existingScavData.Notes ?? { Notes: [] };
         scavData.WishList = existingScavData.WishList ?? [];
 
         // Add an extra labs card to pscav backpack based on config chance
@@ -256,7 +256,7 @@ export class PlayerScavGenerator
 
     protected getDefaultScavSkills(): Skills
     {
-        return {Common: [], Mastering: [], Points: 0};
+        return { Common: [], Mastering: [], Points: 0 };
     }
 
     protected getScavStats(scavProfile: IPmcData): Stats

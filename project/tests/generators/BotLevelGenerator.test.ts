@@ -27,7 +27,7 @@ describe("BotLevelGenerator", () =>
     {
         it("should return value between 5 and 10 when player is level 5 and max is 10", () =>
         {
-            const levelDetails: MinMax = {min: 5, max: 10};
+            const levelDetails: MinMax = { min: 5, max: 10 };
 
             const botGenerationDetails: BotGenerationDetails = {
                 isPmc: false,
@@ -50,7 +50,7 @@ describe("BotLevelGenerator", () =>
     {
         it("should return 10 when player level is 5 and delta is 5", () =>
         {
-            const levelDetails: MinMax = {min: 5, max: 10};
+            const levelDetails: MinMax = { min: 5, max: 10 };
 
             const expTable = databaseServer.getTables().globals.config.exp.level.exp_table;
 
@@ -61,7 +61,7 @@ describe("BotLevelGenerator", () =>
 
         it("should return 79 when player level is above possible max (100), desired max is 100 and delta is 5", () =>
         {
-            const levelDetails: MinMax = {min: 100, max: 100};
+            const levelDetails: MinMax = { min: 100, max: 100 };
 
             const expTable = databaseServer.getTables().globals.config.exp.level.exp_table;
             const playerLevel = 100;

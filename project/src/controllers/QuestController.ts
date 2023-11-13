@@ -866,7 +866,7 @@ export class QuestController
                 let index = pmcData.Inventory.items.length;
 
                 // Important: don't tell the client to remove the attachments, it will handle it
-                output.profileChanges[sessionID].items.del.push({_id: itemHandover.id});
+                output.profileChanges[sessionID].items.del.push({ _id: itemHandover.id });
 
                 // Important: loop backward when removing items from the array we're looping on
                 while (index-- > 0)
@@ -955,6 +955,6 @@ export class QuestController
             return;
         }
 
-        pmcData.BackendCounters[conditionId] = {id: conditionId, qid: questId, value: counterValue};
+        pmcData.BackendCounters[conditionId] = { id: conditionId, qid: questId, value: counterValue };
     }
 }

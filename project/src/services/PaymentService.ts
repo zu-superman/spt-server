@@ -49,7 +49,7 @@ export class PaymentService
         const trader = this.traderHelper.getTrader(request.tid, sessionID);
 
         // Track the amounts of each type of currency involved in the trade.
-        const currencyAmounts: {[key: string]: number;} = {};
+        const currencyAmounts: { [key: string]: number; } = {};
 
         // Delete barter items and track currencies if the action is "TradingConfirm".
         if (request.Action === "TradingConfirm")

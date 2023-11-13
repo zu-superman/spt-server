@@ -430,7 +430,7 @@ export class BotGenerator
             }
 
             // All skills have id and progress props
-            const skillToAdd: IBaseSkill = {Id: skillKey, Progress: this.randomUtil.getInt(skill.min, skill.max)};
+            const skillToAdd: IBaseSkill = { Id: skillKey, Progress: this.randomUtil.getInt(skill.min, skill.max) };
 
             // Common skills have additional props
             if (isCommonSkills)

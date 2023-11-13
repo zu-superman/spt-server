@@ -10,7 +10,7 @@ export class NotifierHelper
     /**
      * The default notification sent when waiting times out.
      */
-    protected defaultNotification: INotification = {type: NotificationType.PING, eventId: "ping"};
+    protected defaultNotification: INotification = { type: NotificationType.PING, eventId: "ping" };
 
     constructor(@inject("HttpServerHelper") protected httpServerHelper: HttpServerHelper)
     {}

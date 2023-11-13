@@ -209,7 +209,7 @@ export class CustomizationController
                 parentId: relatedItem.parentId,
                 slotId: relatedItem.slotId,
                 location: relatedItem.location,
-                upd: {StackObjectsCount: relatedItem.upd.StackObjectsCount},
+                upd: { StackObjectsCount: relatedItem.upd.StackObjectsCount },
             });
         }
     }

@@ -16,7 +16,7 @@ export class ProfileSaveLoadRouter extends SaveLoadRouter
     {
         if (profile.characters === null)
         {
-            profile.characters = {pmc: {} as IPmcData, scav: {} as IPmcData};
+            profile.characters = { pmc: {} as IPmcData, scav: {} as IPmcData };
         }
         return profile;
     }

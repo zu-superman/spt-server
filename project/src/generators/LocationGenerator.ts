@@ -338,7 +338,7 @@ export class LocationGenerator
 
         // Add an empty group for containers without a group id but still have a < 100% chance to spawn
         // Likely bad BSG data, will be fixed...eventually, example of the groupids: `NEED_TO_BE_FIXED1`,`NEED_TO_BE_FIXED_SE02`, `NEED_TO_BE_FIXED_NW_01`
-        mapping[""] = {containerIdsWithProbability: {}, chosenCount: -1};
+        mapping[""] = { containerIdsWithProbability: {}, chosenCount: -1 };
 
         // Iterate over all containers and add to group keyed by groupId
         // Containers without a group go into a group with empty key ""
@@ -449,7 +449,7 @@ export class LocationGenerator
             const rotation = result.rotation ? 1 : 0;
 
             items[0].slotId = "main";
-            items[0].location = {x: result.x, y: result.y, r: rotation};
+            items[0].location = { x: result.x, y: result.y, r: rotation };
 
             // Add loot to container before returning
             for (const item of items)
@@ -780,13 +780,17 @@ export class LocationGenerator
                 ? 1
                 : this.randomUtil.getInt(itemTemplate._props.StackMinRandom, itemTemplate._props.StackMaxRandom);
 
-            itemWithMods.push({_id: this.objectId.generate(), _tpl: chosenTpl, upd: {StackObjectsCount: stackCount}});
+            itemWithMods.push({
+                _id: this.objectId.generate(),
+                _tpl: chosenTpl,
+                upd: { StackObjectsCount: stackCount },
+            });
         }
         else if (this.itemHelper.isOfBaseclass(chosenTpl, BaseClasses.AMMO_BOX))
         {
             // Fill with cartrdiges
             const ammoBoxTemplate = this.itemHelper.getItem(chosenTpl)[1];
-            const ammoBoxItem: Item[] = [{_id: this.objectId.generate(), _tpl: chosenTpl}];
+            const ammoBoxItem: Item[] = [{ _id: this.objectId.generate(), _tpl: chosenTpl }];
             this.itemHelper.addCartridgesToAmmoBox(ammoBoxItem, ammoBoxTemplate);
             itemWithMods.push(...ammoBoxItem);
         }
@@ -794,7 +798,7 @@ export class LocationGenerator
         {
             // Create array with just magazine + randomised amount of cartridges
             const magazineTemplate = this.itemHelper.getItem(chosenTpl)[1];
-            const magazineItem: Item[] = [{_id: this.objectId.generate(), _tpl: chosenTpl}];
+            const magazineItem: Item[] = [{ _id: this.objectId.generate(), _tpl: chosenTpl }];
             this.itemHelper.fillMagazineWithRandomCartridge(
                 magazineItem,
                 magazineTemplate,
@@ -821,7 +825,7 @@ export class LocationGenerator
         // Get inventory size of item
         const size = this.itemHelper.getItemSize(itemWithMods, itemWithMods[0]._id);
 
-        return {items: itemWithMods, width: size.width, height: size.height};
+        return { items: itemWithMods, width: size.width, height: size.height };
     }
 
     /**
@@ -873,7 +877,7 @@ export class LocationGenerator
         const itemTemplate = this.itemHelper.getItem(tpl)[1];
         let width = itemTemplate._props.Width;
         let height = itemTemplate._props.Height;
-        let items: Item[] = [{_id: this.objectId.generate(), _tpl: tpl}];
+        let items: Item[] = [{ _id: this.objectId.generate(), _tpl: tpl }];
 
         // Use passed in parentId as override for new item
         if (parentId)
@@ -890,7 +894,7 @@ export class LocationGenerator
             const stackCount = itemTemplate._props.StackMaxSize === 1
                 ? 1
                 : this.randomUtil.getInt(itemTemplate._props.StackMinRandom, itemTemplate._props.StackMaxRandom);
-            items[0].upd = {StackObjectsCount: stackCount};
+            items[0].upd = { StackObjectsCount: stackCount };
         }
         // No spawn point, use default template
         else if (this.itemHelper.isOfBaseclass(tpl, BaseClasses.WEAPON))
@@ -930,7 +934,7 @@ export class LocationGenerator
             if (!rootItem)
             {
                 this.logger.error(
-                    this.localisationService.getText("location-missing_root_item", {tpl: tpl, parentId: parentId}),
+                    this.localisationService.getText("location-missing_root_item", { tpl: tpl, parentId: parentId }),
                 );
 
                 throw new Error(this.localisationService.getText("location-critical_error_see_log"));
@@ -1004,6 +1008,6 @@ export class LocationGenerator
             items.splice(items.indexOf(items[0]), 1, ...magazineWithCartridges);
         }
 
-        return {items: items, width: width, height: height};
+        return { items: items, width: width, height: height };
     }
 }

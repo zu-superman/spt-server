@@ -17,8 +17,8 @@ export abstract class AbstractWinstonLogger implements ILogger
     protected showDebugInConsole = false;
     protected filePath: string;
     protected logLevels = {
-        levels: {error: 0, warn: 1, succ: 2, info: 3, custom: 4, debug: 5},
-        colors: {error: "red", warn: "yellow", succ: "green", info: "white", custom: "black", debug: "gray"},
+        levels: { error: 0, warn: 1, succ: 2, info: 3, custom: 4, debug: 5 },
+        colors: { error: "red", warn: "yellow", succ: "green", info: "white", custom: "black", debug: "gray" },
         bgColors: {
             default: "",
             blackBG: "blackBG",
@@ -41,7 +41,7 @@ export abstract class AbstractWinstonLogger implements ILogger
         this.showDebugInConsole = globalThis.G_DEBUG_CONFIGURATION;
         if (!fs.existsSync(this.getFilePath()))
         {
-            fs.mkdirSync(this.getFilePath(), {recursive: true});
+            fs.mkdirSync(this.getFilePath(), { recursive: true });
         }
 
         const transportsList: winston.transport[] = [];
@@ -52,8 +52,8 @@ export abstract class AbstractWinstonLogger implements ILogger
                 new transports.Console({
                     level: this.showDebugInConsole ? "debug" : "custom",
                     format: format.combine(
-                        format.colorize({all: true, colors: this.logLevels.colors}),
-                        format.printf(({message}) =>
+                        format.colorize({ all: true, colors: this.logLevels.colors }),
+                        format.printf(({ message }) =>
                         {
                             return `${message}`;
                         }),
@@ -75,7 +75,7 @@ export abstract class AbstractWinstonLogger implements ILogger
                         format.timestamp(),
                         format.align(),
                         format.json(),
-                        format.printf(({timestamp, level, message}) =>
+                        format.printf(({ timestamp, level, message }) =>
                         {
                             return `[${timestamp}] ${level}: ${message}`;
                         }),
@@ -85,7 +85,7 @@ export abstract class AbstractWinstonLogger implements ILogger
         }
 
         winston.addColors(this.logLevels.colors);
-        this.logger = createLogger({levels: this.logLevels.levels, transports: [...transportsList]});
+        this.logger = createLogger({ levels: this.logLevels.levels, transports: [...transportsList] });
 
         if (this.isLogExceptions())
         {
@@ -130,13 +130,13 @@ export abstract class AbstractWinstonLogger implements ILogger
     {
         const textColor = `${color} ${backgroundColor}`.trimEnd();
         const tmpLogger = createLogger({
-            levels: {custom: 0},
+            levels: { custom: 0 },
             level: "custom",
             transports: [
                 new transports.Console({
                     format: format.combine(
-                        format.colorize({all: true, colors: {custom: textColor}}),
-                        format.printf(({message}) => message),
+                        format.colorize({ all: true, colors: { custom: textColor } }),
+                        format.printf(({ message }) => message),
                     ),
                 }),
             ],
@@ -146,7 +146,7 @@ export abstract class AbstractWinstonLogger implements ILogger
 
         if (typeof data === "string")
         {
-            command = {uuid: crypto.randomUUID(), cmd: async () => await tmpLogger.log("custom", data)};
+            command = { uuid: crypto.randomUUID(), cmd: async () => await tmpLogger.log("custom", data) };
         }
         else
         {
@@ -161,25 +161,25 @@ export abstract class AbstractWinstonLogger implements ILogger
 
     public async error(data: string | Record<string, unknown>): Promise<void>
     {
-        const command: ICommand = {uuid: crypto.randomUUID(), cmd: async () => await this.logger.error(data)};
+        const command: ICommand = { uuid: crypto.randomUUID(), cmd: async () => await this.logger.error(data) };
         await this.asyncQueue.waitFor(command);
     }
 
     public async warning(data: string | Record<string, unknown>): Promise<void>
     {
-        const command: ICommand = {uuid: crypto.randomUUID(), cmd: async () => await this.logger.warn(data)};
+        const command: ICommand = { uuid: crypto.randomUUID(), cmd: async () => await this.logger.warn(data) };
         await this.asyncQueue.waitFor(command);
     }
 
     public async success(data: string | Record<string, unknown>): Promise<void>
     {
-        const command: ICommand = {uuid: crypto.randomUUID(), cmd: async () => await this.logger.succ(data)};
+        const command: ICommand = { uuid: crypto.randomUUID(), cmd: async () => await this.logger.succ(data) };
         await this.asyncQueue.waitFor(command);
     }
 
     public async info(data: string | Record<string, unknown>): Promise<void>
     {
-        const command: ICommand = {uuid: crypto.randomUUID(), cmd: async () => await this.logger.info(data)};
+        const command: ICommand = { uuid: crypto.randomUUID(), cmd: async () => await this.logger.info(data) };
         await this.asyncQueue.waitFor(command);
     }
 
@@ -209,11 +209,11 @@ export abstract class AbstractWinstonLogger implements ILogger
 
         if (onlyShowInConsole)
         {
-            command = {uuid: crypto.randomUUID(), cmd: async () => await this.log(data, this.logLevels.colors.debug)};
+            command = { uuid: crypto.randomUUID(), cmd: async () => await this.log(data, this.logLevels.colors.debug) };
         }
         else
         {
-            command = {uuid: crypto.randomUUID(), cmd: async () => await this.logger.debug(data)};
+            command = { uuid: crypto.randomUUID(), cmd: async () => await this.logger.debug(data) };
         }
 
         await this.asyncQueue.waitFor(command);

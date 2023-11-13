@@ -642,7 +642,10 @@ export class BotEquipmentModGenerator
 
             // Pick random mod and check it's compatible
             const exhaustableModPool = new ExhaustableArray(itemModPool[modSlot], this.randomUtil, this.jsonUtil);
-            let modCompatibilityResult: {incompatible: boolean; reason: string;} = {incompatible: false, reason: ""};
+            let modCompatibilityResult: { incompatible: boolean; reason: string; } = {
+                incompatible: false,
+                reason: "",
+            };
             while (exhaustableModPool.hasValues())
             {
                 modTpl = exhaustableModPool.getRandomValue();
@@ -1011,7 +1014,7 @@ export class BotEquipmentModGenerator
         {
             const modSlotId = slot._name;
             const modId = this.hashUtil.generate();
-            items.push({_id: modId, _tpl: modTpl, parentId: parentId, slotId: modSlotId});
+            items.push({ _id: modId, _tpl: modTpl, parentId: parentId, slotId: modSlotId });
         }
     }
 

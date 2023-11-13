@@ -435,7 +435,7 @@ export class GameController
      */
     public getServer(sessionId: string): IServerDetails[]
     {
-        return [{ip: this.httpConfig.ip, port: this.httpConfig.port}];
+        return [{ ip: this.httpConfig.ip, port: this.httpConfig.port }];
     }
 
     /**
@@ -443,7 +443,7 @@ export class GameController
      */
     public getCurrentGroup(sessionId: string): ICurrentGroupResponse
     {
-        return {squad: []};
+        return { squad: [] };
     }
 
     /**
@@ -451,7 +451,7 @@ export class GameController
      */
     public getValidGameVersion(sessionId: string): ICheckVersionResponse
     {
-        return {isvalid: true, latestVersion: this.coreConfig.compatibleTarkovVersion};
+        return { isvalid: true, latestVersion: this.coreConfig.compatibleTarkovVersion };
     }
 
     /**
@@ -459,7 +459,7 @@ export class GameController
      */
     public getKeepAlive(sessionId: string): IGameKeepAliveResponse
     {
-        return {msg: "OK", utc_time: new Date().getTime() / 1000};
+        return { msg: "OK", utc_time: new Date().getTime() / 1000 };
     }
 
     /**

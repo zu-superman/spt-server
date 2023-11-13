@@ -10,7 +10,7 @@ export class StaticRouterModService
     {}
     public registerStaticRouter(name: string, routes: RouteAction[], topLevelRoute: string): void
     {
-        this.container.register(name, {useValue: new StaticRouterMod(routes, topLevelRoute)});
+        this.container.register(name, { useValue: new StaticRouterMod(routes, topLevelRoute) });
         this.container.registerType("StaticRoutes", name);
     }
 }

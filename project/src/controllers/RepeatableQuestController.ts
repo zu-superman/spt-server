@@ -313,7 +313,7 @@ export class RepeatableQuestController
             // Target is boss
             if (probabilityObject.data.isBoss)
             {
-                questPool.pool.Elimination.targets[probabilityObject.key] = {locations: ["any"]};
+                questPool.pool.Elimination.targets[probabilityObject.key] = { locations: ["any"] };
             }
             else
             {
@@ -321,8 +321,8 @@ export class RepeatableQuestController
 
                 // Set possible locations for elimination task, if target is savage, exclude labs from locations
                 questPool.pool.Elimination.targets[probabilityObject.key] = (probabilityObject.key === "Savage")
-                    ? {locations: possibleLocations.filter((x) => x !== "laboratory")}
-                    : {locations: possibleLocations};
+                    ? { locations: possibleLocations.filter((x) => x !== "laboratory") }
+                    : { locations: possibleLocations };
             }
         }
 
@@ -333,7 +333,7 @@ export class RepeatableQuestController
     {
         return {
             types: repeatableConfig.types.slice(),
-            pool: {Exploration: {locations: {}}, Elimination: {targets: {}}, Pickup: {locations: {}}},
+            pool: { Exploration: { locations: {} }, Elimination: { targets: {} }, Pickup: { locations: {} } },
         };
     }
 

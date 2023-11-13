@@ -59,11 +59,11 @@ describe("BotGenerator", () =>
         {
             botGenerator.botConfig.chanceAssaultScavHasPlayerScavName = 0;
 
-            const mockPlayerProfile = {Info: {Nickname: "Player Nickname", Level: 1}};
+            const mockPlayerProfile = { Info: { Nickname: "Player Nickname", Level: 1 } };
 
             vi.spyOn(botGenerator.profileHelper, "getPmcProfile").mockReturnValue(<IPmcData>mockPlayerProfile);
 
-            const botJsonTemplate = {firstName: ["test"], lastName: []};
+            const botJsonTemplate = { firstName: ["test"], lastName: [] };
 
             const sessionId = "sessionId";
             const isPlayerScav = false;
@@ -77,10 +77,10 @@ describe("BotGenerator", () =>
         {
             botGenerator.botConfig.showTypeInNickname = true;
 
-            const mockPlayerProfile = {Info: {Nickname: "Player Nickname", Level: 1}};
+            const mockPlayerProfile = { Info: { Nickname: "Player Nickname", Level: 1 } };
             vi.spyOn(botGenerator.profileHelper, "getPmcProfile").mockReturnValue(<IPmcData>mockPlayerProfile);
 
-            const botJsonTemplate = {firstName: ["test"], lastName: []};
+            const botJsonTemplate = { firstName: ["test"], lastName: [] };
 
             const sessionId = "sessionId";
             const isPlayerScav = false;
@@ -95,11 +95,11 @@ describe("BotGenerator", () =>
             botGenerator.botConfig.showTypeInNickname = false;
             botGenerator.pmcConfig.addPrefixToSameNamePMCAsPlayerChance = 100;
 
-            const mockPlayerProfile = {Info: {Nickname: "Player", Level: 1}};
+            const mockPlayerProfile = { Info: { Nickname: "Player", Level: 1 } };
             vi.spyOn(botGenerator.profileHelper, "getPmcProfile").mockReturnValue(<IPmcData>mockPlayerProfile);
             vi.spyOn(botGenerator.localisationService, "getRandomTextThatMatchesPartialKey").mockReturnValue("test");
 
-            const botJsonTemplate = {firstName: ["Player"], lastName: []};
+            const botJsonTemplate = { firstName: ["Player"], lastName: [] };
 
             const sessionId = "sessionId";
             const isPlayerScav = false;
@@ -113,10 +113,10 @@ describe("BotGenerator", () =>
         {
             botGenerator.botConfig.chanceAssaultScavHasPlayerScavName = 100;
 
-            const mockPlayerProfile = {Info: {Nickname: "Player", Level: 1}};
+            const mockPlayerProfile = { Info: { Nickname: "Player", Level: 1 } };
             vi.spyOn(botGenerator.profileHelper, "getPmcProfile").mockReturnValue(<IPmcData>mockPlayerProfile);
 
-            const botJsonTemplate = {firstName: ["test"], lastName: []};
+            const botJsonTemplate = { firstName: ["test"], lastName: [] };
 
             const sessionId = "sessionId";
             const isPlayerScav = true;
@@ -132,10 +132,10 @@ describe("BotGenerator", () =>
             botGenerator.databaseServer.getTables().bots.types.usec.firstName = ["usec"];
             botGenerator.databaseServer.getTables().bots.types.bear.firstName = [];
 
-            const mockPlayerProfile = {Info: {Nickname: "Player", Level: 1}};
+            const mockPlayerProfile = { Info: { Nickname: "Player", Level: 1 } };
             vi.spyOn(botGenerator.profileHelper, "getPmcProfile").mockReturnValue(<IPmcData>mockPlayerProfile);
 
-            const botJsonTemplate = {firstName: ["test"], lastName: []};
+            const botJsonTemplate = { firstName: ["test"], lastName: [] };
 
             const sessionId = "sessionId";
             const isPlayerScav = false;

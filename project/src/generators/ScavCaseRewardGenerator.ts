@@ -279,7 +279,7 @@ export class ScavCaseRewardGenerator
         const result: Product[] = [];
         for (const item of rewardItems)
         {
-            const resultItem = {_id: this.hashUtil.generate(), _tpl: item._id, upd: undefined};
+            const resultItem = { _id: this.hashUtil.generate(), _tpl: item._id, upd: undefined };
 
             this.addStackCountToAmmoAndMoney(item, resultItem, rarity);
 
@@ -302,13 +302,13 @@ export class ScavCaseRewardGenerator
      */
     protected addStackCountToAmmoAndMoney(
         item: ITemplateItem,
-        resultItem: {_id: string; _tpl: string; upd: Upd;},
+        resultItem: { _id: string; _tpl: string; upd: Upd; },
         rarity: string,
     ): void
     {
         if (item._parent === BaseClasses.AMMO || item._parent === BaseClasses.MONEY)
         {
-            resultItem.upd = {StackObjectsCount: this.getRandomAmountRewardForScavCase(item, rarity)};
+            resultItem.upd = { StackObjectsCount: this.getRandomAmountRewardForScavCase(item, rarity) };
         }
     }
 

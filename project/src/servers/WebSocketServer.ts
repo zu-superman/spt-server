@@ -28,14 +28,14 @@ export class WebSocketServer
     }
 
     protected httpConfig: IHttpConfig;
-    protected defaultNotification: INotification = {type: NotificationType.PING, eventId: "ping"};
+    protected defaultNotification: INotification = { type: NotificationType.PING, eventId: "ping" };
 
     protected webSockets: Record<string, WebSocket.WebSocket> = {};
     protected websocketPingHandler = null;
 
     public setupWebSocket(httpServer: http.Server): void
     {
-        const webSocketServer = new WebSocket.Server({server: httpServer});
+        const webSocketServer = new WebSocket.Server({ server: httpServer });
 
         webSocketServer.addListener("listening", () =>
         {

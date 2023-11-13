@@ -432,7 +432,7 @@ export class RagfairOfferHelper
             const requestedItem: Item = {
                 _id: this.hashUtil.generate(),
                 _tpl: requirement._tpl,
-                upd: {StackObjectsCount: requirement.count * boughtAmount},
+                upd: { StackObjectsCount: requirement.count * boughtAmount },
             };
 
             const stacks = this.itemHelper.splitStack(requestedItem);

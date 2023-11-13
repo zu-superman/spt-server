@@ -68,7 +68,7 @@ export class RepairHelper
         }
 
         // Construct object to return
-        itemToRepair.upd.Repairable = {Durability: newCurrentDurability, MaxDurability: newCurrentMaxDurability};
+        itemToRepair.upd.Repairable = { Durability: newCurrentDurability, MaxDurability: newCurrentMaxDurability };
 
         // when modders set the repair coefficient to 0 it means that they dont want to lose durability on items
         // the code below generates a random degradation on the weapon durability

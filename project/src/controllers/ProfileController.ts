@@ -149,7 +149,7 @@ export class ProfileController
 
         if (!pmcData.UnlockedInfo)
         {
-            pmcData.UnlockedInfo = {unlockedProductionRecipe: []};
+            pmcData.UnlockedInfo = { unlockedProductionRecipe: [] };
         }
 
         // Change item id's to be unique
@@ -164,7 +164,7 @@ export class ProfileController
         // Create profile
         const profileDetails: IAkiProfile = {
             info: account,
-            characters: {pmc: pmcData, scav: {} as IPmcData},
+            characters: { pmc: pmcData, scav: {} as IPmcData },
             suits: profile.suits,
             userbuilds: profile.userbuilds,
             dialogues: profile.dialogues,
@@ -348,6 +348,6 @@ export class ProfileController
      */
     public getFriends(info: ISearchFriendRequestData, sessionID: string): ISearchFriendResponse[]
     {
-        return [{_id: this.hashUtil.generate(), Info: {Level: 1, Side: "Bear", Nickname: info.nickname}}];
+        return [{ _id: this.hashUtil.generate(), Info: { Level: 1, Side: "Bear", Nickname: info.nickname } }];
     }
 }

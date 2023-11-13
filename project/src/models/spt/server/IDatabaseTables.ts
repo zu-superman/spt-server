@@ -24,7 +24,7 @@ import { ISettingsBase } from "@spt-aki/models/spt/server/ISettingsBase";
 
 export interface IDatabaseTables
 {
-    bots?: {types: Record<string, IBotType>; base: IBotBase; core: IBotCore;};
+    bots?: { types: Record<string, IBotType>; base: IBotBase; core: IBotCore; };
     hideout?: {
         areas: IHideoutArea[];
         production: IHideoutProduction[];

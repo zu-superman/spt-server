@@ -273,7 +273,7 @@ export class RepeatableQuestGenerator
             // get all boss spawn information
             const bossSpawns = Object.values(this.databaseServer.getTables().locations).filter((x) =>
                 "base" in x && "Id" in x.base
-            ).map((x) => ({Id: x.base.Id, BossSpawn: x.base.BossLocationSpawn}));
+            ).map((x) => ({ Id: x.base.Id, BossSpawn: x.base.BossLocationSpawn }));
             // filter for the current boss to spawn on map
             const thisBossSpawns = bossSpawns.map((x) => ({
                 Id: x.Id,
@@ -415,7 +415,7 @@ export class RepeatableQuestGenerator
     protected generateEliminationLocation(location: string[]): IEliminationCondition
     {
         const propsObject: IEliminationCondition = {
-            _props: {target: location, id: this.objectId.generate(), dynamicLocale: true},
+            _props: { target: location, id: this.objectId.generate(), dynamicLocale: true },
             _parent: "Location",
         };
 
@@ -461,7 +461,7 @@ export class RepeatableQuestGenerator
         // Dont allow distance + melee requirement
         if (distance && allowedWeaponCategory !== "5b5f7a0886f77409407a7f96")
         {
-            killConditionProps.distance = {compareMethod: ">=", value: distance};
+            killConditionProps.distance = { compareMethod: ">=", value: distance };
         }
 
         // Has specific weapon requirement
@@ -476,7 +476,7 @@ export class RepeatableQuestGenerator
             killConditionProps.weaponCategories = [allowedWeaponCategory];
         }
 
-        return {_props: killConditionProps, _parent: "Kills"};
+        return { _props: killConditionProps, _parent: "Kills" };
     }
 
     /**
@@ -699,11 +699,11 @@ export class RepeatableQuestGenerator
 
         const exitStatusCondition: IExplorationCondition = {
             _parent: "ExitStatus",
-            _props: {id: this.objectId.generate(), dynamicLocale: true, status: ["Survived"]},
+            _props: { id: this.objectId.generate(), dynamicLocale: true, status: ["Survived"] },
         };
         const locationCondition: IExplorationCondition = {
             _parent: "Location",
-            _props: {id: this.objectId.generate(), dynamicLocale: true, target: locationTarget},
+            _props: { id: this.objectId.generate(), dynamicLocale: true, target: locationTarget },
         };
 
         quest.conditions.AvailableForFinish[0]._props.counter.id = this.objectId.generate();
@@ -797,7 +797,10 @@ export class RepeatableQuestGenerator
      */
     protected generateExplorationExitCondition(exit: Exit): IExplorationCondition
     {
-        return {_parent: "ExitName", _props: {exitName: exit.Name, id: this.objectId.generate(), dynamicLocale: true}};
+        return {
+            _parent: "ExitName",
+            _props: { exitName: exit.Name, id: this.objectId.generate(), dynamicLocale: true },
+        };
     }
 
     /**
@@ -869,7 +872,11 @@ export class RepeatableQuestGenerator
         let roublesBudget = rewardRoubles;
         let chosenRewardItems = this.chooseRewardItemsWithinBudget(repeatableConfig, roublesBudget);
 
-        const rewards: IRewards = {Started: [], Success: [{value: rewardXP, type: "Experience", index: 0}], Fail: []};
+        const rewards: IRewards = {
+            Started: [],
+            Success: [{ value: rewardXP, type: "Experience", index: 0 }],
+            Fail: [],
+        };
 
         if (traderId === Traders.PEACEKEEPER)
         {
@@ -946,7 +953,7 @@ export class RepeatableQuestGenerator
         // Add rep reward to rewards array
         if (rewardReputation > 0)
         {
-            const reward: IReward = {target: traderId, value: rewardReputation, type: "TraderStanding", index: index};
+            const reward: IReward = { target: traderId, value: rewardReputation, type: "TraderStanding", index: index };
             rewards.Success.push(reward);
         }
 
@@ -1010,9 +1017,9 @@ export class RepeatableQuestGenerator
     protected generateRewardItem(tpl: string, value: number, index: number, preset = null): IReward
     {
         const id = this.objectId.generate();
-        const rewardItem: IReward = {target: id, value: value, type: "Item", index: index};
+        const rewardItem: IReward = { target: id, value: value, type: "Item", index: index };
 
-        const rootItem = {_id: id, _tpl: tpl, upd: {StackObjectsCount: value, SpawnedInSession: true}};
+        const rootItem = { _id: id, _tpl: tpl, upd: { StackObjectsCount: value, SpawnedInSession: true } };
 
         if (preset)
         {

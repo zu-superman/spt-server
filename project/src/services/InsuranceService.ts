@@ -158,7 +158,7 @@ export class InsuranceService
             randomResponseId,
             [],
             null,
-            {location: locationName},
+            { location: locationName },
         );
     }
 
@@ -334,7 +334,7 @@ export class InsuranceService
             // Item didnt have faceshield object pre-raid, add it
             if (!itemToReturn.upd.FaceShield)
             {
-                itemToReturn.upd.FaceShield = {Hits: insuredItemFromClient.hits};
+                itemToReturn.upd.FaceShield = { Hits: insuredItemFromClient.hits };
             }
             else
             {
@@ -391,7 +391,7 @@ export class InsuranceService
      * @param traderId Id of trader item was insured with
      */
     protected addGearToSend(
-        gear: {sessionID: string; pmcData: IPmcData; itemToReturnToPlayer: Item; traderId: string;},
+        gear: { sessionID: string; pmcData: IPmcData; itemToReturnToPlayer: Item; traderId: string; },
     ): void
     {
         const sessionId = gear.sessionID;

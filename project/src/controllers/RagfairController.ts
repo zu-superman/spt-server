@@ -326,7 +326,7 @@ export class RagfairController
             const min = offers[0].requirementsCost; // Get first item from array as its pre-sorted
             const max = offers.at(-1).requirementsCost; // Get last item from array as its pre-sorted
 
-            return {avg: (min + max) / 2, min: min, max: max};
+            return { avg: (min + max) / 2, min: min, max: max };
         }
         // No offers listed, get price from live ragfair price list prices.json
         else
@@ -340,7 +340,7 @@ export class RagfairController
                 tplPrice = this.handbookHelper.getTemplatePrice(getPriceRequest.templateId);
             }
 
-            return {avg: tplPrice, min: tplPrice, max: tplPrice};
+            return { avg: tplPrice, min: tplPrice, max: tplPrice };
         }
     }
 
@@ -613,7 +613,7 @@ export class RagfairController
 
         const formattedRequirements: IBarterScheme[] = requirements.map((item) =>
         {
-            return {_tpl: item._tpl, count: item.count, onlyFunctional: item.onlyFunctional};
+            return { _tpl: item._tpl, count: item.count, onlyFunctional: item.onlyFunctional };
         });
 
         return this.ragfairOfferGenerator.createFleaOffer(
@@ -663,7 +663,7 @@ export class RagfairController
         if (index === -1)
         {
             this.logger.error(
-                this.localisationService.getText("ragfair-offer_not_found_in_profile", {offerId: offerId}),
+                this.localisationService.getText("ragfair-offer_not_found_in_profile", { offerId: offerId }),
             );
             return this.httpResponse.appendErrorToOutput(
                 this.eventOutputHolder.getOutput(sessionID),
@@ -693,7 +693,7 @@ export class RagfairController
         if (index === -1)
         {
             this.logger.warning(
-                this.localisationService.getText("ragfair-offer_not_found_in_profile", {offerId: info.offerId}),
+                this.localisationService.getText("ragfair-offer_not_found_in_profile", { offerId: info.offerId }),
             );
             return this.httpResponse.appendErrorToOutput(
                 this.eventOutputHolder.getOutput(sessionID),
@@ -742,7 +742,7 @@ export class RagfairController
         return {
             tid: "ragfair",
             Action: "TradingConfirm",
-            scheme_items: [{id: this.paymentHelper.getCurrency(currency), count: Math.round(value)}],
+            scheme_items: [{ id: this.paymentHelper.getCurrency(currency), count: Math.round(value) }],
             type: "",
             item_id: "",
             count: 0,

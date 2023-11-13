@@ -21,7 +21,7 @@ export default <Environment>{
         Container.registerListTypes(container);
 
         // Override registration to the container.
-        container.register<WinstonLogger>("WinstonLogger", WinstonLogger, {lifecycle: Lifecycle.Singleton});
+        container.register<WinstonLogger>("WinstonLogger", WinstonLogger, { lifecycle: Lifecycle.Singleton });
 
         // Import the database.
         await importDatabase(container);

@@ -75,7 +75,7 @@ export class DialogueCallbacks implements OnUpdate
             VersionId: "bgkidft87ddd", // TODO: Is this... correct?
             Ip: "",
             Port: 0,
-            Chats: [{_id: "0", Members: 0}],
+            Chats: [{ _id: "0", Members: 0 }],
         };
 
         return this.httpResponse.getBody([chatServer]);
@@ -181,7 +181,7 @@ export class DialogueCallbacks implements OnUpdate
         sessionID: string,
     ): IGetBodyResponseData<IFriendRequestSendResponse>
     {
-        return this.httpResponse.getBody({status: 0, requestid: "12345", retryAfter: 600});
+        return this.httpResponse.getBody({ status: 0, requestid: "12345", retryAfter: 600 });
     }
 
     /**
@@ -215,13 +215,13 @@ export class DialogueCallbacks implements OnUpdate
     }
 
     /** Handle client/friend/ignore/set */
-    public ignoreFriend(url: string, request: {uid: string;}, sessionID: string): any
+    public ignoreFriend(url: string, request: { uid: string; }, sessionID: string): any
     {
         return this.httpResponse.nullResponse();
     }
 
     /** Handle client/friend/ignore/remove */
-    public unIgnoreFriend(url: string, request: {uid: string;}, sessionID: string): any
+    public unIgnoreFriend(url: string, request: { uid: string; }, sessionID: string): any
     {
         return this.httpResponse.nullResponse();
     }

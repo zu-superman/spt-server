@@ -46,7 +46,7 @@ export class BotWeaponModLimitService
     public getWeaponModLimits(botRole: string): BotModLimits
     {
         return {
-            scope: {count: 0},
+            scope: { count: 0 },
             scopeMax: this.botConfig.equipment[botRole]?.weaponModLimits?.scopeLimit,
             scopeBaseTypes: [
                 BaseClasses.OPTIC_SCOPE,
@@ -55,7 +55,7 @@ export class BotWeaponModLimitService
                 BaseClasses.COMPACT_COLLIMATOR,
                 BaseClasses.SPECIAL_SCOPE,
             ],
-            flashlightLaser: {count: 0},
+            flashlightLaser: { count: 0 },
             flashlightLaserMax: this.botConfig.equipment[botRole]?.weaponModLimits?.lightLaserLimit,
             flashlgihtLaserBaseTypes: [
                 BaseClasses.TACTICAL_COMBO,
@@ -166,7 +166,7 @@ export class BotWeaponModLimitService
      */
     protected weaponModLimitReached(
         modTpl: string,
-        currentCount: {count: number;},
+        currentCount: { count: number; },
         maxLimit: number,
         botRole: string,
     ): boolean

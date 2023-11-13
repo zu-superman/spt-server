@@ -155,7 +155,7 @@ export class CustomItemService
      */
     protected addToHandbookDb(newItemId: string, parentId: string, priceRoubles: number): void
     {
-        this.tables.templates.handbook.Items.push({Id: newItemId, ParentId: parentId, Price: priceRoubles});
+        this.tables.templates.handbook.Items.push({ Id: newItemId, ParentId: parentId, Price: priceRoubles });
     }
 
     /**

@@ -551,7 +551,7 @@ export class QuestHelper
         {
             // this case is probably dead Code right now, since the only calling function
             // checks explicitly for Value > 0.
-            output.profileChanges[sessionID].items.del.push({_id: itemId});
+            output.profileChanges[sessionID].items.del.push({ _id: itemId });
             pmcData.Inventory.items.splice(inventoryItemIndex, 1);
         }
     }
@@ -574,7 +574,7 @@ export class QuestHelper
             parentId: item.parentId,
             slotId: item.slotId,
             location: item.location,
-            upd: {StackObjectsCount: item.upd.StackObjectsCount},
+            upd: { StackObjectsCount: item.upd.StackObjectsCount },
         });
     }
 

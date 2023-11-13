@@ -420,7 +420,7 @@ export class MailSendService
                 parentItem.parentId = this.hashUtil.generate();
             }
 
-            itemsToSendToPlayer = {stash: parentItem.parentId, data: []};
+            itemsToSendToPlayer = { stash: parentItem.parentId, data: [] };
 
             // Ensure Ids are unique and cont collide with items in player inventory later
             messageDetails.items = this.itemHelper.replaceIDs(null, messageDetails.items);

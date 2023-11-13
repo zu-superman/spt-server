@@ -252,13 +252,13 @@ export class BotWeaponGenerator
                 _tpl: ammoTpl,
                 parentId: weaponWithModsArray[0]._id,
                 slotId: desiredSlotId,
-                upd: {StackObjectsCount: 1},
+                upd: { StackObjectsCount: 1 },
             });
         }
         else
         {
             // Already exists, update values
-            existingItemWithSlot.upd = {StackObjectsCount: 1};
+            existingItemWithSlot.upd = { StackObjectsCount: 1 };
             existingItemWithSlot._tpl = ammoTpl;
         }
     }
@@ -486,7 +486,7 @@ export class BotWeaponGenerator
         // Define min/max of how many grenades bot will have
         const ubglMinMax: GenerationData = {
             // eslint-disable-next-line @typescript-eslint/naming-convention
-            weights: {"1": 1, "2": 1},
+            weights: { "1": 1, "2": 1 },
             whitelist: [],
         };
 
@@ -530,7 +530,7 @@ export class BotWeaponGenerator
                 [EquipmentSlots.SECURED_CONTAINER],
                 id,
                 ammoTpl,
-                [{_id: id, _tpl: ammoTpl, upd: {StackObjectsCount: stackSize}}],
+                [{ _id: id, _tpl: ammoTpl, upd: { StackObjectsCount: stackSize } }],
                 inventory,
             );
         }
@@ -704,7 +704,7 @@ export class BotWeaponGenerator
             _tpl: ubglAmmoTpl,
             parentId: ubglMod._id,
             slotId: "patron_in_weapon",
-            upd: {StackObjectsCount: 1},
+            upd: { StackObjectsCount: 1 },
         });
     }
 
@@ -763,7 +763,7 @@ export class BotWeaponGenerator
             }
             else
             {
-                camora.upd = {StackObjectsCount: 1};
+                camora.upd = { StackObjectsCount: 1 };
             }
         }
     }

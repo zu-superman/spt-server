@@ -423,7 +423,7 @@ export class InsuranceController
      */
     protected countSuccessfulRolls(attachments: Item[], traderId: string): number
     {
-        const rolls = Array.from({length: attachments.length}, () => this.rollForDelete(traderId));
+        const rolls = Array.from({ length: attachments.length }, () => this.rollForDelete(traderId));
         return rolls.filter(Boolean).length;
     }
 
@@ -440,14 +440,14 @@ export class InsuranceController
         toDelete: Set<string>,
     ): void
     {
-        const valuableToDelete = attachments.slice(0, successfulRolls).map(({_id}) => _id);
+        const valuableToDelete = attachments.slice(0, successfulRolls).map(({ _id }) => _id);
 
         for (const attachmentsId of valuableToDelete)
         {
-            const valuableChild = attachments.find(({_id}) => _id === attachmentsId);
+            const valuableChild = attachments.find(({ _id }) => _id === attachmentsId);
             if (valuableChild)
             {
-                const {name, maxPrice} = valuableChild;
+                const { name, maxPrice } = valuableChild;
                 this.logger.debug(`Marked for removal - Child Item: ${name}, Max Price: ${maxPrice}`);
                 toDelete.add(attachmentsId);
             }
@@ -625,7 +625,7 @@ export class InsuranceController
         // add items to InsuredItems list once money has been paid
         for (const key of body.items)
         {
-            pmcData.InsuredItems.push({tid: body.tid, itemId: inventoryItemsHash[key]._id});
+            pmcData.InsuredItems.push({ tid: body.tid, itemId: inventoryItemsHash[key]._id });
         }
 
         this.profileHelper.addSkillPointsToPlayer(pmcData, SkillTypes.CHARISMA, itemsToInsureCount * 0.01);

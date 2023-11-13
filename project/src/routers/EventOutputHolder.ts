@@ -12,7 +12,7 @@ import { TimeUtil } from "@spt-aki/utils/TimeUtil";
 export class EventOutputHolder
 {
     /** What has client been informed of this game session */
-    protected clientActiveSessionStorage: Record<string, {clientInformed: boolean;}> = {};
+    protected clientActiveSessionStorage: Record<string, { clientInformed: boolean; }> = {};
 
     constructor(
         @inject("JsonUtil") protected jsonUtil: JsonUtil,
@@ -22,7 +22,7 @@ export class EventOutputHolder
     {}
 
     // TODO REMEMBER TO CHANGE OUTPUT
-    protected output: IItemEventRouterResponse = {warnings: [], profileChanges: {}};
+    protected output: IItemEventRouterResponse = { warnings: [], profileChanges: {} };
 
     public getOutput(sessionID: string): IItemEventRouterResponse
     {
@@ -51,10 +51,10 @@ export class EventOutputHolder
             ragFairOffers: [],
             weaponBuilds: [],
             equipmentBuilds: [],
-            items: {new: [], change: [], del: []},
+            items: { new: [], change: [], del: [] },
             production: {},
             improvements: {},
-            skills: {Common: [], Mastering: [], Points: 0},
+            skills: { Common: [], Mastering: [], Points: 0 },
             health: this.jsonUtil.clone(pmcData.Health),
             traderRelations: {},
             // changedHideoutStashes: {},
@@ -170,7 +170,7 @@ export class EventOutputHolder
             // Flag started craft as having been seen by client
             if (production.Progress > 0 && !this.clientActiveSessionStorage[productionKey]?.clientInformed)
             {
-                this.clientActiveSessionStorage[productionKey] = {clientInformed: true};
+                this.clientActiveSessionStorage[productionKey] = { clientInformed: true };
             }
         }
 

@@ -421,7 +421,7 @@ export class FenceService
         fenceAssortIds: string[],
         assorts: ITraderAssort,
         fenceAssort: ITraderAssort,
-        itemTypeCounts: Record<string, {current: number; max: number;}>,
+        itemTypeCounts: Record<string, { current: number; max: number; }>,
         loyaltyLevel: number,
     ): void
     {
@@ -585,7 +585,7 @@ export class FenceService
 
             // Multiply weapon+mods rouble price by multipler in config
             assorts.barter_scheme[weaponAndMods[0]._id] = [[]];
-            assorts.barter_scheme[weaponAndMods[0]._id][0][0] = {_tpl: Money.ROUBLES, count: Math.round(rub)};
+            assorts.barter_scheme[weaponAndMods[0]._id][0][0] = { _tpl: Money.ROUBLES, count: Math.round(rub) };
 
             assorts.loyal_level_items[weaponAndMods[0]._id] = loyaltyLevel;
 
@@ -675,7 +675,7 @@ export class FenceService
         // Randomise hp resource of med items
         if ("MaxHpResource" in itemDetails._props && itemDetails._props.MaxHpResource > 0)
         {
-            itemToAdjust.upd.MedKit = {HpResource: this.randomUtil.getInt(1, itemDetails._props.MaxHpResource)};
+            itemToAdjust.upd.MedKit = { HpResource: this.randomUtil.getInt(1, itemDetails._props.MaxHpResource) };
         }
 
         // Randomise armor durability
@@ -694,7 +694,7 @@ export class FenceService
             const maxDurability = this.randomUtil.getInt(duraMin, duraMax);
             const durability = this.randomUtil.getInt(1, maxDurability);
 
-            itemToAdjust.upd.Repairable = {Durability: durability, MaxDurability: maxDurability};
+            itemToAdjust.upd.Repairable = { Durability: durability, MaxDurability: maxDurability };
 
             return;
         }
@@ -709,14 +709,14 @@ export class FenceService
             const maxDurability = this.randomUtil.getInt(duraMin, duraMax);
             const durability = this.randomUtil.getInt(1, maxDurability);
 
-            itemToAdjust.upd.Repairable = {Durability: durability, MaxDurability: maxDurability};
+            itemToAdjust.upd.Repairable = { Durability: durability, MaxDurability: maxDurability };
 
             return;
         }
 
         if (this.itemHelper.isOfBaseclass(itemDetails._id, BaseClasses.REPAIR_KITS))
         {
-            itemToAdjust.upd.RepairKit = {Resource: this.randomUtil.getInt(1, itemDetails._props.MaxRepairResource)};
+            itemToAdjust.upd.RepairKit = { Resource: this.randomUtil.getInt(1, itemDetails._props.MaxRepairResource) };
 
             return;
         }
@@ -740,7 +740,7 @@ export class FenceService
             const resourceMax = itemDetails._props.MaxResource;
             const resourceCurrent = this.randomUtil.getInt(1, itemDetails._props.MaxResource);
 
-            itemToAdjust.upd.Resource = {Value: resourceMax - resourceCurrent, UnitsConsumed: resourceCurrent};
+            itemToAdjust.upd.Resource = { Value: resourceMax - resourceCurrent, UnitsConsumed: resourceCurrent };
         }
     }
 
@@ -749,13 +749,13 @@ export class FenceService
      * @param limits limits as defined in config
      * @returns record, key: item tplId, value: current/max item count allowed
      */
-    protected initItemLimitCounter(limits: Record<string, number>): Record<string, {current: number; max: number;}>
+    protected initItemLimitCounter(limits: Record<string, number>): Record<string, { current: number; max: number; }>
     {
-        const itemTypeCounts: Record<string, {current: number; max: number;}> = {};
+        const itemTypeCounts: Record<string, { current: number; max: number; }> = {};
 
         for (const x in limits)
         {
-            itemTypeCounts[x] = {current: 0, max: limits[x]};
+            itemTypeCounts[x] = { current: 0, max: limits[x] };
         }
 
         return itemTypeCounts;

@@ -176,7 +176,7 @@ class ItemHelper
     {
         if (item.upd === undefined)
         {
-            item.upd = {StackObjectsCount: 1};
+            item.upd = { StackObjectsCount: 1 };
         }
 
         if (item.upd.StackObjectsCount === undefined)
@@ -241,7 +241,7 @@ class ItemHelper
                     parentId: parentId,
                     slotId: slotId,
                     location: 0,
-                    upd: {StackObjectsCount: count},
+                    upd: { StackObjectsCount: count },
                 };
                 stackSlotItems.push(stackSlotItem);
             }
@@ -1113,7 +1113,7 @@ class ItemHelper
             parentId: parentId,
             slotId: "cartridges",
             location: location,
-            upd: {StackObjectsCount: stackCount},
+            upd: { StackObjectsCount: stackCount },
         };
     }
 

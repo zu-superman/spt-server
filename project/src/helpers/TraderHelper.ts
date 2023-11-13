@@ -268,7 +268,7 @@ export class TraderHelper
                 }),
             );
             this.traderConfig.updateTime.push( // create temporary entry to prevent logger spam
-                {traderId: traderId, seconds: this.traderConfig.updateTimeDefault},
+                { traderId: traderId, seconds: this.traderConfig.updateTimeDefault },
             );
         }
         else
@@ -303,7 +303,7 @@ export class TraderHelper
     // eslint-disable-next-line @typescript-eslint/naming-convention
     public addTraderPurchasesToPlayerProfile(
         sessionID: string,
-        newPurchaseDetails: {items: {item_id: string; count: number;}[]; tid: string;},
+        newPurchaseDetails: { items: { item_id: string; count: number; }[]; tid: string; },
     ): void
     {
         const profile = this.profileHelper.getFullProfile(sessionID);

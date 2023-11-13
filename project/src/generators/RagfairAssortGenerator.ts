@@ -135,7 +135,7 @@ export class RagfairAssortGenerator
             _tpl: tplId,
             parentId: "hideout",
             slotId: "hideout",
-            upd: {StackObjectsCount: 99999999, UnlimitedCount: true},
+            upd: { StackObjectsCount: 99999999, UnlimitedCount: true },
         };
     }
 }

@@ -92,7 +92,7 @@ export class HealthController
         {
             // Get max healing from db
             const maxHp = this.itemHelper.getItem(healingItemToUse._tpl)[1]._props.MaxHpResource;
-            healingItemToUse.upd.MedKit = {HpResource: maxHp - request.count}; // Subtract amount used from max
+            healingItemToUse.upd.MedKit = { HpResource: maxHp - request.count }; // Subtract amount used from max
         }
 
         // Resource in medkit is spent, delete it
@@ -132,7 +132,7 @@ export class HealthController
         {
             if (itemToConsume.upd.FoodDrink === undefined)
             {
-                itemToConsume.upd.FoodDrink = {HpPercent: consumedItemMaxResource - request.count};
+                itemToConsume.upd.FoodDrink = { HpPercent: consumedItemMaxResource - request.count };
             }
             else
             {

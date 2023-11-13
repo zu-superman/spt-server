@@ -196,7 +196,7 @@ export class ProfileFixerService
             }
             else
             {
-                pmcProfile.Inventory.items.push({_id: hideoutStandAreaDb._id, _tpl: stageCurrentAt.container});
+                pmcProfile.Inventory.items.push({ _id: hideoutStandAreaDb._id, _tpl: stageCurrentAt.container });
                 this.logger.debug(
                     `Added missing gun stand inventory stash: ${hideoutStandAreaDb._id} tpl to ${stageCurrentAt.container}`,
                 );
@@ -215,7 +215,10 @@ export class ProfileFixerService
             }
             else
             {
-                pmcProfile.Inventory.items.push({_id: hideoutStandSecondaryAreaDb._id, _tpl: stageCurrentAt.container});
+                pmcProfile.Inventory.items.push({
+                    _id: hideoutStandSecondaryAreaDb._id,
+                    _tpl: stageCurrentAt.container,
+                });
                 this.logger.debug(
                     `Added missing gun stand inventory secondary stash: ${hideoutStandSecondaryAreaDb._id} tpl to ${stageCurrentAt.container}`,
                 );
@@ -352,7 +355,7 @@ export class ProfileFixerService
         if (!fullProfile.aki)
         {
             this.logger.debug("Adding aki object to profile");
-            fullProfile.aki = {version: this.watermark.getVersionTag(), receivedGifts: []};
+            fullProfile.aki = { version: this.watermark.getVersionTag(), receivedGifts: [] };
         }
     }
 
@@ -396,7 +399,7 @@ export class ProfileFixerService
         if (!pmcProfile.UnlockedInfo)
         {
             this.logger.debug("Adding UnlockedInfo object to profile");
-            pmcProfile.UnlockedInfo = {unlockedProductionRecipe: []};
+            pmcProfile.UnlockedInfo = { unlockedProductionRecipe: [] };
         }
     }
 
@@ -685,7 +688,7 @@ export class ProfileFixerService
         {
             if (!slots.find((x) => x.locationIndex === i))
             {
-                slots.push({locationIndex: i});
+                slots.push({ locationIndex: i });
             }
         }
 
@@ -1085,7 +1088,7 @@ export class ProfileFixerService
             const statsCopy = this.jsonUtil.clone(fullProfile.characters.pmc.Stats);
 
             // Clear stats object
-            fullProfile.characters.pmc.Stats = {Eft: null};
+            fullProfile.characters.pmc.Stats = { Eft: null };
 
             fullProfile.characters.pmc.Stats.Eft = <any><unknown>statsCopy;
         }

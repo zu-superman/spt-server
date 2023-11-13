@@ -135,7 +135,7 @@ export class LocationController
             locations[mapBase._Id] = mapBase;
         }
 
-        return {locations: locations, paths: locationsFromDb.base.paths};
+        return { locations: locations, paths: locationsFromDb.base.paths };
     }
 
     /**
@@ -152,7 +152,7 @@ export class LocationController
 
         const airdropConfig = this.getAirdropLootConfigByType(airdropType);
 
-        return {dropType: airdropType, loot: this.lootGenerator.createRandomLoot(airdropConfig)};
+        return { dropType: airdropType, loot: this.lootGenerator.createRandomLoot(airdropConfig) };
     }
 
     /**

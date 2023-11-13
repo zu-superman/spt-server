@@ -101,7 +101,7 @@ export class MatchController
     /** Handle match/group/start_game */
     public joinMatch(info: IJoinMatchRequestData, sessionId: string): IJoinMatchResult
     {
-        const output: IJoinMatchResult = {maxPveCountExceeded: false, profiles: []};
+        const output: IJoinMatchResult = { maxPveCountExceeded: false, profiles: [] };
 
         // get list of players joining into the match
         output.profiles.push({
@@ -125,7 +125,7 @@ export class MatchController
     /** Handle client/match/group/status */
     public getGroupStatus(info: IGetGroupStatusRequestData): any
     {
-        return {players: [], maxPveCountExceeded: false};
+        return { players: [], maxPveCountExceeded: false };
     }
 
     /**
@@ -225,7 +225,7 @@ export class MatchController
                 _tpl: item.tpl,
                 slotId: "main",
                 parentId: parentId,
-                upd: {StackObjectsCount: item.stackCount, SpawnedInSession: true},
+                upd: { StackObjectsCount: item.stackCount, SpawnedInSession: true },
             });
         }
 

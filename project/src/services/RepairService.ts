@@ -122,7 +122,7 @@ export class RepairService
     {
         const options: IProcessBuyTradeRequestData = {
             // eslint-disable-next-line @typescript-eslint/naming-convention
-            scheme_items: [{id: repairedItemId, count: Math.round(repairCost)}],
+            scheme_items: [{ id: repairedItemId, count: Math.round(repairCost) }],
             tid: traderId,
             Action: "",
             type: "",
@@ -262,7 +262,7 @@ export class RepairService
     ): RepairDetails
     {
         // Find item to repair in inventory
-        const itemToRepair = pmcData.Inventory.items.find((x: {_id: string;}) => x._id === itemToRepairId);
+        const itemToRepair = pmcData.Inventory.items.find((x: { _id: string; }) => x._id === itemToRepairId);
         if (itemToRepair === undefined)
         {
             throw new Error(`Item ${itemToRepairId} not found, unable to repair`);
@@ -405,11 +405,11 @@ export class RepairService
         if (!repairKitInInventory.upd)
         {
             this.logger.debug(`Repair kit: ${repairKitInInventory._id} in inventory lacks upd object, adding`);
-            repairKitInInventory.upd = {RepairKit: {Resource: maxRepairAmount}};
+            repairKitInInventory.upd = { RepairKit: { Resource: maxRepairAmount } };
         }
         if (!repairKitInInventory.upd.RepairKit?.Resource)
         {
-            repairKitInInventory.upd.RepairKit = {Resource: maxRepairAmount};
+            repairKitInInventory.upd.RepairKit = { Resource: maxRepairAmount };
         }
     }
 

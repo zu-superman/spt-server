@@ -282,12 +282,12 @@ export class InventoryController
         if (!(destinationItem.upd?.StackObjectsCount))
         {
             // No stack count on destination, add one
-            destinationItem.upd = {StackObjectsCount: 1};
+            destinationItem.upd = { StackObjectsCount: 1 };
         }
 
         if (!sourceItem.upd)
         {
-            sourceItem.upd = {StackObjectsCount: 1};
+            sourceItem.upd = { StackObjectsCount: 1 };
         }
         else if (!sourceItem.upd.StackObjectsCount)
         {
@@ -296,7 +296,7 @@ export class InventoryController
         }
 
         destinationItem.upd.StackObjectsCount += sourceItem.upd.StackObjectsCount; // Add source stack count to destination
-        output.profileChanges[sessionID].items.del.push({_id: sourceItem._id}); // Inform client source item being deleted
+        output.profileChanges[sessionID].items.del.push({ _id: sourceItem._id }); // Inform client source item being deleted
 
         const indexOfItemToRemove = inventoryItems.from.findIndex((x) => x._id === sourceItem._id);
         if (indexOfItemToRemove === -1)
@@ -370,7 +370,7 @@ export class InventoryController
         let sourceStackCount = 1;
         if (!sourceItem.upd)
         {
-            sourceItem.upd = {StackObjectsCount: 1};
+            sourceItem.upd = { StackObjectsCount: 1 };
         }
         sourceStackCount = sourceItem.upd.StackObjectsCount;
 
@@ -392,7 +392,7 @@ export class InventoryController
         }
         else
         {
-            Object.assign(destinationItem, {upd: {StackObjectsCount: 1}});
+            Object.assign(destinationItem, { upd: { StackObjectsCount: 1 } });
         }
 
         destinationItem.upd.StackObjectsCount = destinationStackCount + body.count;
@@ -465,12 +465,12 @@ export class InventoryController
         {
             if (item._id && item._id === body.item)
             {
-                item.upd.Foldable = {Folded: body.value};
+                item.upd.Foldable = { Folded: body.value };
                 return this.eventOutputHolder.getOutput(sessionID);
             }
         }
 
-        return {warnings: [], profileChanges: {}};
+        return { warnings: [], profileChanges: {} };
     }
 
     /**
@@ -499,7 +499,7 @@ export class InventoryController
                 itemToToggle.upd = {};
             }
 
-            itemToToggle.upd.Togglable = {On: body.value};
+            itemToToggle.upd.Togglable = { On: body.value };
 
             return this.eventOutputHolder.getOutput(sessionID);
         }
@@ -510,7 +510,7 @@ export class InventoryController
             );
         }
 
-        return {warnings: [], profileChanges: {}};
+        return { warnings: [], profileChanges: {} };
     }
 
     /**
@@ -528,18 +528,18 @@ export class InventoryController
             {
                 if ("upd" in item)
                 {
-                    item.upd.Tag = {Color: body.TagColor, Name: body.TagName};
+                    item.upd.Tag = { Color: body.TagColor, Name: body.TagName };
                 }
                 else
                 {
-                    item.upd = {Tag: {Color: body.TagColor, Name: body.TagName}};
+                    item.upd = { Tag: { Color: body.TagColor, Name: body.TagName } };
                 }
 
                 return this.eventOutputHolder.getOutput(sessionID);
             }
         }
 
-        return {warnings: [], profileChanges: {}};
+        return { warnings: [], profileChanges: {} };
     }
 
     /**
@@ -761,7 +761,7 @@ export class InventoryController
         const mapItem = pmcData.Inventory.items.find((i) => i._id === request.item);
 
         // add marker
-        mapItem.upd.Map = mapItem.upd.Map || {Markers: []};
+        mapItem.upd.Map = mapItem.upd.Map || { Markers: [] };
         request.mapMarker.Note = this.sanitiseMapMarkerText(request.mapMarker.Note);
         mapItem.upd.Map.Markers.push(request.mapMarker);
 
@@ -857,7 +857,7 @@ export class InventoryController
         const containerDetails = this.itemHelper.getItem(openedItem._tpl);
         const isSealedWeaponBox = containerDetails[1]._name.includes("event_container_airdrop");
 
-        const newItemRequest: IAddItemRequestData = {tid: "RandomLootContainer", items: []};
+        const newItemRequest: IAddItemRequestData = { tid: "RandomLootContainer", items: [] };
 
         let foundInRaid = false;
         if (isSealedWeaponBox)

@@ -6,7 +6,7 @@ import { Insurance } from "@spt-aki/models/eft/profile/IAkiProfile";
 import { profileInsuranceFixture } from "@tests/__fixture__/profileInsurance.fixture";
 import { format } from "date-fns";
 
-type DateInput = number | number[] | {[index: number]: number;};
+type DateInput = number | number[] | { [index: number]: number; };
 
 export class ProfileInsuranceFactory
 {

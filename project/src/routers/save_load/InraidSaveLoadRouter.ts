@@ -15,7 +15,7 @@ export class InraidSaveLoadRouter extends SaveLoadRouter
     {
         if (profile.inraid === undefined)
         {
-            profile.inraid = {location: "none", character: "none"};
+            profile.inraid = { location: "none", character: "none" };
         }
 
         return profile;

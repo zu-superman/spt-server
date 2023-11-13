@@ -142,7 +142,7 @@ export class SaveServer
             throw new Error(`profile already exists for sessionId: ${profileInfo.id}`);
         }
 
-        this.profiles[profileInfo.id] = {info: profileInfo, characters: {pmc: {}, scav: {}}};
+        this.profiles[profileInfo.id] = { info: profileInfo, characters: { pmc: {}, scav: {} } };
     }
 
     /**
@@ -195,7 +195,7 @@ export class SaveServer
             }
             catch (error)
             {
-                this.logger.error(this.localisationService.getText("profile_save_callback_error", {callback, error}));
+                this.logger.error(this.localisationService.getText("profile_save_callback_error", { callback, error }));
                 this.profiles[sessionID] = previous;
             }
         }

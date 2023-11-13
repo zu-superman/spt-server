@@ -112,11 +112,11 @@ export class BotInventoryGenerator
 
         return {
             items: [
-                {_id: equipmentId, _tpl: equipmentTpl},
-                {_id: stashId, _tpl: stashTpl},
-                {_id: questRaidItemsId, _tpl: questRaidItemsTpl},
-                {_id: questStashItemsId, _tpl: questStashItemsTpl},
-                {_id: sortingTableId, _tpl: sortingTableTpl},
+                { _id: equipmentId, _tpl: equipmentTpl },
+                { _id: stashId, _tpl: stashTpl },
+                { _id: questRaidItemsId, _tpl: questRaidItemsTpl },
+                { _id: questStashItemsId, _tpl: questStashItemsTpl },
+                { _id: sortingTableId, _tpl: sortingTableTpl },
             ],
             equipment: equipmentId,
             stash: stashId,
@@ -403,10 +403,10 @@ export class BotInventoryGenerator
      * @param equipmentChances Chances bot has certain equipment
      * @returns What slots bot should have weapons generated for
      */
-    protected getDesiredWeaponsForBot(equipmentChances: Chances): {slot: EquipmentSlots; shouldSpawn: boolean;}[]
+    protected getDesiredWeaponsForBot(equipmentChances: Chances): { slot: EquipmentSlots; shouldSpawn: boolean; }[]
     {
         const shouldSpawnPrimary = this.randomUtil.getChance100(equipmentChances.equipment.FirstPrimaryWeapon);
-        return [{slot: EquipmentSlots.FIRST_PRIMARY_WEAPON, shouldSpawn: shouldSpawnPrimary}, {
+        return [{ slot: EquipmentSlots.FIRST_PRIMARY_WEAPON, shouldSpawn: shouldSpawnPrimary }, {
             slot: EquipmentSlots.SECOND_PRIMARY_WEAPON,
             shouldSpawn: shouldSpawnPrimary
                 ? this.randomUtil.getChance100(equipmentChances.equipment.SecondPrimaryWeapon)
@@ -432,7 +432,7 @@ export class BotInventoryGenerator
      */
     protected addWeaponAndMagazinesToInventory(
         sessionId: string,
-        weaponSlot: {slot: EquipmentSlots; shouldSpawn: boolean;},
+        weaponSlot: { slot: EquipmentSlots; shouldSpawn: boolean; },
         templateInventory: Inventory,
         botInventory: PmcInventory,
         equipmentChances: Chances,

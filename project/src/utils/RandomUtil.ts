@@ -136,12 +136,12 @@ export class ProbabilityObjectArray<K, V = undefined> extends Array<ProbabilityO
      */
     public draw(count = 1, replacement = true, locklist: Array<K> = []): K[]
     {
-        const {probArray, keyArray} = this.reduce((acc, x) =>
+        const { probArray, keyArray } = this.reduce((acc, x) =>
         {
             acc.probArray.push(x.relativeProbability);
             acc.keyArray.push(x.key);
             return acc;
-        }, {probArray: [], keyArray: []});
+        }, { probArray: [], keyArray: [] });
         let probCumsum = this.cumulativeProbability(probArray);
 
         const drawnKeys = [];
@@ -257,7 +257,7 @@ export class RandomUtil
         return this.getArrayValue(Object.keys(node));
     }
 
-    public getKeyValue(node: {[x: string]: any;}): any
+    public getKeyValue(node: { [x: string]: any; }): any
     {
         return node[this.getKey(node)];
     }
@@ -374,7 +374,7 @@ export class RandomUtil
 
         if (n < 1)
         {
-            throw {name: "Invalid argument", message: `'n' must be 1 or greater (received ${n})`};
+            throw { name: "Invalid argument", message: `'n' must be 1 or greater (received ${n})` };
         }
 
         if (min === max)

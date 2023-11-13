@@ -10,7 +10,7 @@ export class OnUpdateModService
 
     public registerOnUpdate(name: string, onUpdate: (timeSinceLastRun: number) => boolean, getRoute: () => string): void
     {
-        this.container.register(name, {useValue: new OnUpdateMod(onUpdate, getRoute)});
+        this.container.register(name, { useValue: new OnUpdateMod(onUpdate, getRoute) });
         this.container.registerType("OnUpdate", name);
     }
 }

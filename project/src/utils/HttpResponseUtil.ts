@@ -41,7 +41,7 @@ export class HttpResponseUtil
 
     public getUnclearedBody(data: any, err = 0, errmsg = null): string
     {
-        return this.jsonUtil.serialize({err: err, errmsg: errmsg, data: data});
+        return this.jsonUtil.serialize({ err: err, errmsg: errmsg, data: data });
     }
 
     public emptyResponse(): IGetBodyResponseData<string>
@@ -65,7 +65,7 @@ export class HttpResponseUtil
         errorCode = BackendErrorCodes.NONE,
     ): IItemEventRouterResponse
     {
-        output.warnings = [{index: 0, errmsg: message, code: errorCode.toString()}];
+        output.warnings = [{ index: 0, errmsg: message, code: errorCode.toString() }];
 
         return output;
     }

@@ -55,7 +55,7 @@ export class BotLevelGenerator
             exp += this.randomUtil.getInt(0, expTable[level].exp - 1);
         }
 
-        return {level, exp};
+        return { level, exp };
     }
 
     /**

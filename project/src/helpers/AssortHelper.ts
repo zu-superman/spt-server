@@ -75,7 +75,7 @@ export class AssortHelper
     protected getQuestIdAndStatusThatShowAssort(
         mergedQuestAssorts: Record<string, Record<string, string>>,
         assortId: string,
-    ): {questId: string; status: QuestStatus[];}
+    ): { questId: string; status: QuestStatus[]; }
     {
         if (assortId in mergedQuestAssorts.started)
         {
@@ -87,11 +87,11 @@ export class AssortHelper
         }
         else if (assortId in mergedQuestAssorts.success)
         {
-            return {questId: mergedQuestAssorts.success[assortId], status: [QuestStatus.Success]};
+            return { questId: mergedQuestAssorts.success[assortId], status: [QuestStatus.Success] };
         }
         else if (assortId in mergedQuestAssorts.fail)
         {
-            return {questId: mergedQuestAssorts.fail[assortId], status: [QuestStatus.Fail]};
+            return { questId: mergedQuestAssorts.fail[assortId], status: [QuestStatus.Fail] };
         }
 
         return undefined;

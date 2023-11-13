@@ -13,7 +13,7 @@ export type HandleFn = (_: string, req: IncomingMessage, resp: ServerResponse) =
  */
 export const Listen = (basePath: string) =>
 {
-    return <T extends {new(...args: any[]): any;}>(Base: T): T =>
+    return <T extends { new(...args: any[]): any; }>(Base: T): T =>
     {
         // Used for the base class to be able to use DI
         injectable()(Base);
@@ -35,7 +35,7 @@ export const Listen = (basePath: string) =>
                 }
 
                 // Add each flagged handler to the Record
-                for (const {handlerName, path, httpMethod} of handlersArray)
+                for (const { handlerName, path, httpMethod } of handlersArray)
                 {
                     if (!this.handlers[httpMethod])
                     {
@@ -111,7 +111,7 @@ const createHttpDecorator = (httpMethod: HttpMethods) =>
             }
 
             // Flag the method as a HTTP handler
-            target.handlers.push({handlerName: propertyKey, path, httpMethod});
+            target.handlers.push({ handlerName: propertyKey, path, httpMethod });
         };
     };
 };

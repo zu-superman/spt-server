@@ -39,7 +39,7 @@ export class DialogueHelper
      */
     public createMessageContext(templateId: string, messageType: MessageType, maxStoreTime = null): MessageContent
     {
-        const result: MessageContent = {templateId: templateId, type: messageType};
+        const result: MessageContent = { templateId: templateId, type: messageType };
 
         if (maxStoreTime)
         {
@@ -66,7 +66,7 @@ export class DialogueHelper
 
         if (isNewDialogue)
         {
-            dialogue = {_id: dialogueID, type: messageType, messages: [], pinned: false, new: 0, attachmentsNew: 0};
+            dialogue = { _id: dialogueID, type: messageType, messages: [], pinned: false, new: 0, attachmentsNew: 0 };
 
             dialogueData[dialogueID] = dialogue;
         }
@@ -79,7 +79,7 @@ export class DialogueHelper
         if (rewards.length > 0)
         {
             const stashId = this.hashUtil.generate();
-            items = {stash: stashId, data: []};
+            items = { stash: stashId, data: [] };
 
             rewards = this.itemHelper.replaceIDs(null, rewards);
             for (const reward of rewards)

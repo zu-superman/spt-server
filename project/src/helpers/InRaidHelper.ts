@@ -294,7 +294,7 @@ export class InRaidHelper
                 }
 
                 // Add effect to server profile
-                profileBodyPartEffects[effect] = {Time: effectDetails.Time ?? -1};
+                profileBodyPartEffects[effect] = { Time: effectDetails.Time ?? -1 };
             }
         }
     }

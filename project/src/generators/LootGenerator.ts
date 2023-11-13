@@ -19,7 +19,7 @@ import { RagfairLinkedItemService } from "@spt-aki/services/RagfairLinkedItemSer
 import { HashUtil } from "@spt-aki/utils/HashUtil";
 import { RandomUtil } from "@spt-aki/utils/RandomUtil";
 
-type ItemLimit = {current: number; max: number;};
+type ItemLimit = { current: number; max: number; };
 
 @injectable()
 export class LootGenerator
@@ -131,7 +131,7 @@ export class LootGenerator
         const itemTypeCounts: Record<string, ItemLimit> = {};
         for (const itemTypeId in limits)
         {
-            itemTypeCounts[itemTypeId] = {current: 0, max: limits[itemTypeId]};
+            itemTypeCounts[itemTypeId] = { current: 0, max: limits[itemTypeId] };
         }
 
         return itemTypeCounts;
@@ -147,7 +147,7 @@ export class LootGenerator
      */
     protected findAndAddRandomItemToLoot(
         items: [string, ITemplateItem][],
-        itemTypeCounts: Record<string, {current: number; max: number;}>,
+        itemTypeCounts: Record<string, { current: number; max: number; }>,
         options: LootRequest,
         result: LootItem[],
     ): boolean
@@ -225,7 +225,7 @@ export class LootGenerator
      */
     protected findAndAddRandomPresetToLoot(
         globalDefaultPresets: [string, IPreset][],
-        itemTypeCounts: Record<string, {current: number; max: number;}>,
+        itemTypeCounts: Record<string, { current: number; max: number; }>,
         itemBlacklist: string[],
         result: LootItem[],
     ): boolean
@@ -268,7 +268,7 @@ export class LootGenerator
             return false;
         }
 
-        const newLootItem: LootItem = {tpl: randomPreset._items[0]._tpl, isPreset: true, stackCount: 1};
+        const newLootItem: LootItem = { tpl: randomPreset._items[0]._tpl, isPreset: true, stackCount: 1 };
 
         result.push(newLootItem);
 
@@ -505,7 +505,7 @@ export class LootGenerator
         else
         {
             // eslint-disable-next-line @typescript-eslint/naming-convention
-            resultsArray.push({item_id: itemTplToAdd, count: 1, isPreset: false});
+            resultsArray.push({ item_id: itemTplToAdd, count: 1, isPreset: false });
         }
     }
 }

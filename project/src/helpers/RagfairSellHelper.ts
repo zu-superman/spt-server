@@ -112,7 +112,7 @@ export class RagfairSellHelper
                     this.ragfairConfig.sell.time.min * 60,
                 );
 
-                result.push({sellTime: sellTime, amount: boughtAmount});
+                result.push({ sellTime: sellTime, amount: boughtAmount });
 
                 this.logger.debug(`Offer will sell at: ${new Date(sellTime * 1000).toLocaleTimeString("en-US")}`);
             }
