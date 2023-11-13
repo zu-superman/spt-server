@@ -13,9 +13,9 @@ export class ModLoadOrder
 
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
-        @inject("LocalisationService") protected localisationService: LocalisationService
+        @inject("LocalisationService") protected localisationService: LocalisationService,
     )
-    { }
+    {}
 
     public setModList(mods: Record<string, IPackageJsonData>): void
     {
@@ -25,8 +25,8 @@ export class ModLoadOrder
 
         const visited = new Set<string>();
 
-        //invert loadBefore into loadAfter on specified mods
-        for (const [ modName, modConfig ] of this.modsAvailable)
+        // invert loadBefore into loadAfter on specified mods
+        for (const [modName, modConfig] of this.modsAvailable)
         {
             if ((modConfig.loadBefore ?? []).length > 0)
             {
@@ -143,7 +143,12 @@ export class ModLoadOrder
             {
                 if (this.modsAvailable.get(modAfter)?.loadAfter?.includes(mod))
                 {
-                    throw new Error(this.localisationService.getText("modloader-load_order_conflict", {modOneName: mod, modTwoName: modAfter}));
+                    throw new Error(
+                        this.localisationService.getText("modloader-load_order_conflict", {
+                            modOneName: mod,
+                            modTwoName: modAfter,
+                        }),
+                    );
                 }
 
                 dependencies.add(modAfter);
