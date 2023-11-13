@@ -1438,13 +1438,13 @@ describe("InsuranceController", () =>
 
     describe("insure", () =>
     {
-        let pmcData: any,
-            body: any,
-            sessionId: string,
-            insuranceController: any,
-            mockGetPremium: any,
-            mockPayMoney: any,
-            mockGetOutput: any;
+        let pmcData: any;
+        let body: any;
+        let sessionId: string;
+        let insuranceController: any;
+        let mockGetPremium: any;
+        let mockPayMoney: any;
+        let mockGetOutput: any;
 
         beforeEach(() =>
         {
