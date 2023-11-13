@@ -59,8 +59,10 @@ export class ExternalInventoryMagGen implements IInventoryMagGen
                 // and try again. Temporary workaround to Killa spawning with no extras if he spawns with a drum mag.
                 // TODO: Fix this properly
                 if (
-                    magazineTpl ===
-                        this.botWeaponGeneratorHelper.getWeaponsDefaultMagazineTpl(inventoryMagGen.getWeaponTemplate())
+                    magazineTpl
+                        === this.botWeaponGeneratorHelper.getWeaponsDefaultMagazineTpl(
+                            inventoryMagGen.getWeaponTemplate(),
+                        )
                 )
                 {
                     // We were already on default - stop here to prevent infinite looping

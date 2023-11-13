@@ -96,8 +96,8 @@ export class RagfairServerHelper
 
         // Don't include damaged ammo packs
         if (
-            this.ragfairConfig.dynamic.blacklist.damagedAmmoPacks && itemDetails[1]._parent === BaseClasses.AMMO_BOX &&
-            itemDetails[1]._name.includes("_damaged")
+            this.ragfairConfig.dynamic.blacklist.damagedAmmoPacks && itemDetails[1]._parent === BaseClasses.AMMO_BOX
+            && itemDetails[1]._name.includes("_damaged")
         )
         {
             return false;
@@ -175,8 +175,8 @@ export class RagfairServerHelper
 
         // Item Types to return one of
         if (
-            isWeaponPreset ||
-            this.itemHelper.isOfBaseclasses(itemDetails[1]._id, this.ragfairConfig.dynamic.showAsSingleStack)
+            isWeaponPreset
+            || this.itemHelper.isOfBaseclasses(itemDetails[1]._id, this.ragfairConfig.dynamic.showAsSingleStack)
         )
         {
             return 1;

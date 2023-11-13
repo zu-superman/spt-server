@@ -168,9 +168,9 @@ export class InventoryController
             );
         }
 
-        const profileToRemoveItemFrom = (!body.fromOwner || body.fromOwner.id === pmcData._id) ?
-            pmcData :
-            this.profileHelper.getFullProfile(sessionID).characters.scav;
+        const profileToRemoveItemFrom = (!body.fromOwner || body.fromOwner.id === pmcData._id)
+            ? pmcData
+            : this.profileHelper.getFullProfile(sessionID).characters.scav;
 
         return this.inventoryHelper.removeItem(
             profileToRemoveItemFrom,
@@ -459,9 +459,9 @@ export class InventoryController
     {
         // Fix for folding weapons while on they're in the Scav inventory
         if (
-            body.fromOwner &&
-            body.fromOwner.type === "Profile" &&
-            body.fromOwner.id !== pmcData._id
+            body.fromOwner
+            && body.fromOwner.type === "Profile"
+            && body.fromOwner.id !== pmcData._id
         )
         {
             pmcData = this.profileHelper.getScavProfile(sessionID);

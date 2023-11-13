@@ -66,9 +66,9 @@ export class PlayerScavGenerator
         const existingScavData = this.jsonUtil.clone(profile.characters.scav);
 
         // scav profile can be empty on first profile creation
-        const scavKarmaLevel = (Object.keys(existingScavData).length === 0) ?
-            0 :
-            this.getScavKarmaLevel(pmcData);
+        const scavKarmaLevel = (Object.keys(existingScavData).length === 0)
+            ? 0
+            : this.getScavKarmaLevel(pmcData);
 
         // use karma level to get correct karmaSettings
         const playerScavKarmaSettings = this.playerScavConfig.karmaLevel[scavKarmaLevel];

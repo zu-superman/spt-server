@@ -66,8 +66,8 @@ export class FenceBaseAssortGenerator
             if (this.traderConfig.fence.blacklist.length > 0)
             {
                 if (
-                    this.traderConfig.fence.blacklist.includes(item._id) ||
-                    this.itemHelper.isOfBaseclasses(item._id, this.traderConfig.fence.blacklist)
+                    this.traderConfig.fence.blacklist.includes(item._id)
+                    || this.itemHelper.isOfBaseclasses(item._id, this.traderConfig.fence.blacklist)
                 )
                 {
                     continue;

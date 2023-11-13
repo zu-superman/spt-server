@@ -230,8 +230,8 @@ export class QuestController
 
         // Not christmas + quest is for christmas
         if (
-            !isChristmasEventActive &&
-            this.seasonalEventService.isQuestRelatedToEvent(questId, SeasonalEventType.CHRISTMAS)
+            !isChristmasEventActive
+            && this.seasonalEventService.isQuestRelatedToEvent(questId, SeasonalEventType.CHRISTMAS)
         )
         {
             return false;
@@ -239,8 +239,8 @@ export class QuestController
 
         // Not halloween + quest is for halloween
         if (
-            !isHalloweenEventActive &&
-            this.seasonalEventService.isQuestRelatedToEvent(questId, SeasonalEventType.HALLOWEEN)
+            !isHalloweenEventActive
+            && this.seasonalEventService.isQuestRelatedToEvent(questId, SeasonalEventType.HALLOWEEN)
         )
         {
             return false;
@@ -248,8 +248,8 @@ export class QuestController
 
         // Should non-season event quests be shown to player
         if (
-            !this.questConfig.showNonSeasonalEventQuests &&
-            this.seasonalEventService.isQuestRelatedToEvent(questId, SeasonalEventType.NONE)
+            !this.questConfig.showNonSeasonalEventQuests
+            && this.seasonalEventService.isQuestRelatedToEvent(questId, SeasonalEventType.NONE)
         )
         {
             return false;
@@ -381,8 +381,8 @@ export class QuestController
 
         // Some scav quests need to be added to scav profile for them to show up in-raid
         if (
-            repeatableQuestProfile.side === "Scav" &&
-            ["PickUp", "Exploration", "Elimination"].includes(repeatableQuestProfile.type)
+            repeatableQuestProfile.side === "Scav"
+            && ["PickUp", "Exploration", "Elimination"].includes(repeatableQuestProfile.type)
         )
         {
             const fullProfile = this.profileHelper.getFullProfile(sessionID);
@@ -448,8 +448,10 @@ export class QuestController
         const change = {};
         change[repeatableQuestProfile._id] = repeatableSettings.changeRequirement[repeatableQuestProfile._id];
         const responseData: IPmcDataRepeatableQuest = {
-            id: repeatableSettings.id ??
-                this.questConfig.repeatableQuests.find((x) => x.name === repeatableQuestProfile.sptRepatableGroupName)
+            id: repeatableSettings.id
+                ?? this.questConfig.repeatableQuests.find((x) =>
+                    x.name === repeatableQuestProfile.sptRepatableGroupName
+                )
                     .id,
             name: repeatableSettings.name,
             endTime: repeatableSettings.endTime,
@@ -666,8 +668,8 @@ export class QuestController
             if (nextQuestWaitCondition)
             {
                 // Now + wait time
-                const availableAfterTimestamp = this.timeUtil.getTimestamp() +
-                    nextQuestWaitCondition._props.availableAfter;
+                const availableAfterTimestamp = this.timeUtil.getTimestamp()
+                    + nextQuestWaitCondition._props.availableAfter;
 
                 // Update quest in profile with status of AvailableAfter
                 const existingQuestInProfile = pmcData.Quests.find((x) => x.qid === quest._id);
@@ -787,17 +789,17 @@ export class QuestController
         for (const condition of quest.conditions.AvailableForFinish)
         {
             if (
-                condition._props.id === handoverQuestRequest.conditionId &&
-                handoverQuestTypes.includes(condition._parent)
+                condition._props.id === handoverQuestRequest.conditionId
+                && handoverQuestTypes.includes(condition._parent)
             )
             {
                 handedInCount = Number.parseInt(<string>condition._props.value);
                 isItemHandoverQuest = condition._parent === handoverQuestTypes[0];
                 handoverRequirements = condition;
 
-                const profileCounter = (handoverQuestRequest.conditionId in pmcData.BackendCounters) ?
-                    pmcData.BackendCounters[handoverQuestRequest.conditionId].value :
-                    0;
+                const profileCounter = (handoverQuestRequest.conditionId in pmcData.BackendCounters)
+                    ? pmcData.BackendCounters[handoverQuestRequest.conditionId].value
+                    : 0;
                 handedInCount -= profileCounter;
 
                 if (handedInCount <= 0)

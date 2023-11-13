@@ -62,9 +62,9 @@ export class RagfairAssortGenerator
         const results: Item[] = [];
         const items = this.itemHelper.getItems();
 
-        const weaponPresets = (this.ragfairConfig.dynamic.showDefaultPresetsOnly) ?
-            this.getDefaultPresets() :
-            this.getPresets();
+        const weaponPresets = (this.ragfairConfig.dynamic.showDefaultPresetsOnly)
+            ? this.getDefaultPresets()
+            : this.getPresets();
 
         const ragfairItemInvalidBaseTypes: string[] = [
             BaseClasses.LOOT_CONTAINER, // safe, barrel cache etc
@@ -85,8 +85,8 @@ export class RagfairAssortGenerator
             }
 
             if (
-                this.ragfairConfig.dynamic.removeSeasonalItemsWhenNotInEvent && !seasonalEventActive &&
-                seasonalItemTplBlacklist.includes(item._id)
+                this.ragfairConfig.dynamic.removeSeasonalItemsWhenNotInEvent && !seasonalEventActive
+                && seasonalItemTplBlacklist.includes(item._id)
             )
             {
                 continue;

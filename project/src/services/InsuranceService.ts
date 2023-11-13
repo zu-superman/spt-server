@@ -147,9 +147,9 @@ export class InsuranceService
     public sendLostInsuranceMessage(sessionId: string, locationName = ""): void
     {
         const dialogueTemplates = this.databaseServer.getTables().traders[Traders.PRAPOR].dialogue; // todo: get trader id instead of hard coded prapor
-        const randomResponseId = locationName?.toLowerCase() === "laboratory" ?
-            this.randomUtil.getArrayValue(dialogueTemplates.insuranceFailedLabs) :
-            this.randomUtil.getArrayValue(dialogueTemplates.insuranceFailed);
+        const randomResponseId = locationName?.toLowerCase() === "laboratory"
+            ? this.randomUtil.getArrayValue(dialogueTemplates.insuranceFailedLabs)
+            : this.randomUtil.getArrayValue(dialogueTemplates.insuranceFailed);
 
         this.mailSendService.sendLocalisedNpcMessageToPlayer(
             sessionId,
@@ -202,9 +202,9 @@ export class InsuranceService
         }
 
         const insuranceReturnTimeBonus = pmcData.Bonuses.find((b) => b.type === "InsuranceReturnTime");
-        const insuranceReturnTimeBonusPercent = 1.0 - (insuranceReturnTimeBonus ?
-                    Math.abs(insuranceReturnTimeBonus.value) :
-                    0) / 100;
+        const insuranceReturnTimeBonusPercent = 1.0 - (insuranceReturnTimeBonus
+                    ? Math.abs(insuranceReturnTimeBonus.value)
+                    : 0) / 100;
 
         const traderMinReturnAsSeconds = trader.insurance.min_return_hour * TimeUtil.oneHourAsSeconds;
         const traderMaxReturnAsSeconds = trader.insurance.max_return_hour * TimeUtil.oneHourAsSeconds;

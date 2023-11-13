@@ -207,9 +207,9 @@ export class BotWeaponGenerator
 
         // Add cartridge to gun chamber if weapon has slot for it
         if (
-            weaponItemTemplate._props.Chambers?.length === 1 &&
-            weaponItemTemplate._props.Chambers[0]?._name === "patron_in_weapon" &&
-            weaponItemTemplate._props.Chambers[0]?._props?.filters[0]?.Filter?.includes(ammoTpl)
+            weaponItemTemplate._props.Chambers?.length === 1
+            && weaponItemTemplate._props.Chambers[0]?._name === "patron_in_weapon"
+            && weaponItemTemplate._props.Chambers[0]?._props?.filters[0]?.Filter?.includes(ammoTpl)
         )
         {
             this.addCartridgeToChamber(weaponWithModsArray, ammoTpl, "patron_in_weapon");
@@ -615,8 +615,8 @@ export class BotWeaponGenerator
 
         const chosenAmmoTpl = this.weightedRandomHelper.getWeightedValue<string>(compatibleCartridges);
         if (
-            weaponTemplate._props.Chambers[0] &&
-            !weaponTemplate._props.Chambers[0]._props.filters[0].Filter.includes(chosenAmmoTpl)
+            weaponTemplate._props.Chambers[0]
+            && !weaponTemplate._props.Chambers[0]._props.filters[0].Filter.includes(chosenAmmoTpl)
         )
         {
             this.logger.debug(

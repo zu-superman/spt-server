@@ -149,9 +149,9 @@ export class DialogueHelper
             items: items,
             maxStorageTime: messageContent.maxStorageTime,
             systemData: messageContent.systemData ? messageContent.systemData : undefined,
-            profileChangeEvents: (messageContent.profileChangeEvents?.length === 0) ?
-                messageContent.profileChangeEvents :
-                undefined,
+            profileChangeEvents: (messageContent.profileChangeEvents?.length === 0)
+                ? messageContent.profileChangeEvents
+                : undefined,
         };
 
         if (!message.templateId)

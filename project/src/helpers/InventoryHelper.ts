@@ -175,9 +175,9 @@ export class InventoryHelper
         catch (err)
         {
             // Callback failed
-            const message = typeof err === "string" ?
-                err :
-                this.localisationService.getText("http-unknown_error");
+            const message = typeof err === "string"
+                ? err
+                : this.localisationService.getText("http-unknown_error");
 
             return this.httpResponse.appendErrorToOutput(output, message);
         }
@@ -405,9 +405,9 @@ export class InventoryHelper
             }
             catch (err)
             {
-                const errorText = typeof err === "string" ?
-                    ` -> ${err}` :
-                    "";
+                const errorText = typeof err === "string"
+                    ? ` -> ${err}`
+                    : "";
                 this.logger.error(this.localisationService.getText("inventory-fill_container_failed", errorText));
 
                 return this.httpResponse.appendErrorToOutput(
@@ -563,13 +563,13 @@ export class InventoryHelper
                 if (requestItem.count > itemDetails._props.StackMaxSize)
                 {
                     let remainingCountOfItemToAdd = requestItem.count;
-                    const calc = requestItem.count -
-                        (Math.floor(requestItem.count / itemDetails._props.StackMaxSize) *
-                            itemDetails._props.StackMaxSize);
+                    const calc = requestItem.count
+                        - (Math.floor(requestItem.count / itemDetails._props.StackMaxSize)
+                            * itemDetails._props.StackMaxSize);
 
-                    maxStackCount = (calc > 0) ?
-                        maxStackCount + Math.floor(remainingCountOfItemToAdd / itemDetails._props.StackMaxSize) :
-                        Math.floor(remainingCountOfItemToAdd / itemDetails._props.StackMaxSize);
+                    maxStackCount = (calc > 0)
+                        ? maxStackCount + Math.floor(remainingCountOfItemToAdd / itemDetails._props.StackMaxSize)
+                        : Math.floor(remainingCountOfItemToAdd / itemDetails._props.StackMaxSize);
 
                     // Iterate until totalCountOfPurchasedItem is 0
                     for (let i = 0; i < maxStackCount; i++)
@@ -942,14 +942,14 @@ export class InventoryHelper
             const tmpSize = this.getSizeByInventoryItemHash(item._tpl, item._id, inventoryItemHash);
             const iW = tmpSize[0]; // x
             const iH = tmpSize[1]; // y
-            const fH = ((item.location as Location).r === 1 || (item.location as Location).r === "Vertical" ||
-                    (item.location as Location).rotation === "Vertical") ?
-                iW :
-                iH;
-            const fW = ((item.location as Location).r === 1 || (item.location as Location).r === "Vertical" ||
-                    (item.location as Location).rotation === "Vertical") ?
-                iH :
-                iW;
+            const fH = ((item.location as Location).r === 1 || (item.location as Location).r === "Vertical"
+                    || (item.location as Location).rotation === "Vertical")
+                ? iW
+                : iH;
+            const fW = ((item.location as Location).r === 1 || (item.location as Location).r === "Vertical"
+                    || (item.location as Location).rotation === "Vertical")
+                ? iH
+                : iW;
             const fillTo = (item.location as Location).x + fW;
 
             for (let y = 0; y < fH; y++)
@@ -1002,9 +1002,9 @@ export class InventoryHelper
             else if (request.fromOwner.type.toLocaleLowerCase() === "mail")
             {
                 // Split requests dont use 'use' but 'splitItem' property
-                const item = "splitItem" in request ?
-                    request.splitItem :
-                    request.item;
+                const item = "splitItem" in request
+                    ? request.splitItem
+                    : request.item;
                 fromInventoryItems = this.dialogueHelper.getMessageItemContents(request.fromOwner.id, sessionId, item);
                 fromType = "mail";
             }
@@ -1077,12 +1077,12 @@ export class InventoryHelper
             this.logger.error(this.localisationService.getText("inventory-stash_not_found", stashTPL));
         }
 
-        const stashX = stashItemDetails[1]._props.Grids[0]._props.cellsH !== 0 ?
-            stashItemDetails[1]._props.Grids[0]._props.cellsH :
-            10;
-        const stashY = stashItemDetails[1]._props.Grids[0]._props.cellsV !== 0 ?
-            stashItemDetails[1]._props.Grids[0]._props.cellsV :
-            66;
+        const stashX = stashItemDetails[1]._props.Grids[0]._props.cellsH !== 0
+            ? stashItemDetails[1]._props.Grids[0]._props.cellsH
+            : 10;
+        const stashY = stashItemDetails[1]._props.Grids[0]._props.cellsV !== 0
+            ? stashItemDetails[1]._props.Grids[0]._props.cellsV
+            : 66;
         return [stashX, stashY];
     }
 

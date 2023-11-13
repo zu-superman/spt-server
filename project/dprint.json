@@ -13,7 +13,7 @@
         "singleBodyPosition": "maintain",
         "nextControlFlowPosition": "nextLine",
         "trailingCommas": "onlyMultiLine",
-        "operatorPosition": "sameLine",
+        "operatorPosition": "nextLine",
         "preferHanging": false,
         "preferSingleLine": false,
         "arrowFunction.useParentheses": "force",

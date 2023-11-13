@@ -177,9 +177,9 @@ export class DurabilityLimitsHelper
         );
 
         // Dont let weapon dura go below the percent defined in config
-        return (result >= durabilityValueMinLimit) ?
-            result :
-            durabilityValueMinLimit;
+        return (result >= durabilityValueMinLimit)
+            ? result
+            : durabilityValueMinLimit;
     }
 
     protected generateArmorDurability(botRole: string, maxDurability: number): number
@@ -193,9 +193,9 @@ export class DurabilityLimitsHelper
         );
 
         // Dont let armor dura go below the percent defined in config
-        return (result >= durabilityValueMinLimit) ?
-            result :
-            durabilityValueMinLimit;
+        return (result >= durabilityValueMinLimit)
+            ? result
+            : durabilityValueMinLimit;
     }
 
     protected getMinWeaponDeltaFromConfig(botRole: string): number

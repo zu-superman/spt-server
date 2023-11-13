@@ -332,8 +332,8 @@ export class InraidController
             // Post-raid status is enum word e.g. `Started` but pmc quest status is number e.g. 2
             // Status values mismatch or statusTimers counts mismatch
             if (
-                quest.status !== <any>QuestStatus[pmcQuest.status] ||
-                quest.statusTimers.length !== pmcQuest.statusTimers.length
+                quest.status !== <any>QuestStatus[pmcQuest.status]
+                || quest.statusTimers.length !== pmcQuest.statusTimers.length
             )
             {
                 this.logger.warning(

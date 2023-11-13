@@ -379,10 +379,10 @@ export class InRaidHelper
         const itemsToRemovePropertyFrom = postRaidProfile.Inventory.items.filter((x) =>
         {
             // Has upd object + upd.SpawnedInSession property + not a quest item
-            return "upd" in x && "SpawnedInSession" in x.upd &&
-                !dbItems[x._tpl]._props.QuestItem &&
-                !(this.inRaidConfig.keepFiRSecureContainerOnDeath &&
-                    this.itemHelper.itemIsInsideContainer(x, "SecuredContainer", postRaidProfile.Inventory.items));
+            return "upd" in x && "SpawnedInSession" in x.upd
+                && !dbItems[x._tpl]._props.QuestItem
+                && !(this.inRaidConfig.keepFiRSecureContainerOnDeath
+                    && this.itemHelper.itemIsInsideContainer(x, "SecuredContainer", postRaidProfile.Inventory.items));
         });
 
         for (const item of itemsToRemovePropertyFrom)

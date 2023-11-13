@@ -212,8 +212,8 @@ export class RepeatableQuestGenerator
         // we use any also if the random condition is not met in case only "any" was in the pool
         let locationKey = "any";
         if (
-            locations.includes("any") &&
-            (eliminationConfig.specificLocationProb < Math.random() || locations.length <= 1)
+            locations.includes("any")
+            && (eliminationConfig.specificLocationProb < Math.random() || locations.length <= 1)
         )
         {
             locationKey = "any";
@@ -290,8 +290,8 @@ export class RepeatableQuestGenerator
         {
             // random distance with lower values more likely; simple distribution for starters...
             distance = Math.floor(
-                Math.abs(Math.random() - Math.random()) * (1 + eliminationConfig.maxDist - eliminationConfig.minDist) +
-                    eliminationConfig.minDist,
+                Math.abs(Math.random() - Math.random()) * (1 + eliminationConfig.maxDist - eliminationConfig.minDist)
+                    + eliminationConfig.minDist,
             );
             distance = Math.ceil(distance / 5) * 5;
             distanceDifficulty = maxDistDifficulty * distance / eliminationConfig.maxDist;
@@ -542,8 +542,8 @@ export class RepeatableQuestGenerator
             itemSelection = itemSelection.filter((x) =>
             {
                 // Whitelist can contain item tpls and item base type ids
-                return (itemIdsWhitelisted.some((v) => this.itemHelper.isOfBaseclass(x[0], v)) ||
-                    itemIdsWhitelisted.includes(x[0]));
+                return (itemIdsWhitelisted.some((v) => this.itemHelper.isOfBaseclass(x[0], v))
+                    || itemIdsWhitelisted.includes(x[0]));
             });
             // check if items are missing
             // const flatList = itemSelection.reduce((a, il) => a.concat(il[0]), []);
@@ -561,8 +561,8 @@ export class RepeatableQuestGenerator
             );
             itemSelection = itemSelection.filter((x) =>
             {
-                return itemIdsBlacklisted.every((v) => !this.itemHelper.isOfBaseclass(x[0], v)) ||
-                    !itemIdsBlacklisted.includes(x[0]);
+                return itemIdsBlacklisted.every((v) => !this.itemHelper.isOfBaseclass(x[0], v))
+                    || !itemIdsBlacklisted.includes(x[0]);
             });
         }
 
@@ -637,16 +637,16 @@ export class RepeatableQuestGenerator
         let minDurability = 0;
         let onlyFoundInRaid = true;
         if (
-            this.itemHelper.isOfBaseclass(targetItemId, BaseClasses.WEAPON) ||
-            this.itemHelper.isOfBaseclass(targetItemId, BaseClasses.ARMOR)
+            this.itemHelper.isOfBaseclass(targetItemId, BaseClasses.WEAPON)
+            || this.itemHelper.isOfBaseclass(targetItemId, BaseClasses.ARMOR)
         )
         {
             minDurability = 80;
         }
 
         if (
-            this.itemHelper.isOfBaseclass(targetItemId, BaseClasses.DOG_TAG_USEC) ||
-            this.itemHelper.isOfBaseclass(targetItemId, BaseClasses.DOG_TAG_BEAR)
+            this.itemHelper.isOfBaseclass(targetItemId, BaseClasses.DOG_TAG_USEC)
+            || this.itemHelper.isOfBaseclass(targetItemId, BaseClasses.DOG_TAG_BEAR)
         )
         {
             onlyFoundInRaid = false;
@@ -744,11 +744,11 @@ export class RepeatableQuestGenerator
                 (this.databaseServer.getTables().locations[locationKey.toLowerCase()].base as ILocationBase).exits;
             const possibleExists = mapExits.filter(
                 (x) =>
-                    (!("PassageRequirement" in x) ||
-                        repeatableConfig.questConfig.Exploration.specificExits.passageRequirementWhitelist.includes(
+                    (!("PassageRequirement" in x)
+                        || repeatableConfig.questConfig.Exploration.specificExits.passageRequirementWhitelist.includes(
                             x.PassageRequirement,
-                        )) &&
-                    x.Chance > 0,
+                        ))
+                    && x.Chance > 0,
             );
             const exit = this.randomUtil.drawRandomFromList(possibleExists, 1)[0];
             const exitCondition = this.generateExplorationExitCondition(exit);
@@ -879,20 +879,20 @@ export class RepeatableQuestGenerator
 
         // rewards are generated based on pmcLevel, difficulty and a random spread
         const rewardXP = Math.floor(
-            difficulty * this.mathUtil.interp1(pmcLevel, levelsConfig, xpConfig) *
-                this.randomUtil.getFloat(1 - rewardSpreadConfig, 1 + rewardSpreadConfig),
+            difficulty * this.mathUtil.interp1(pmcLevel, levelsConfig, xpConfig)
+                * this.randomUtil.getFloat(1 - rewardSpreadConfig, 1 + rewardSpreadConfig),
         );
         const rewardRoubles = Math.floor(
-            difficulty * this.mathUtil.interp1(pmcLevel, levelsConfig, roublesConfig) *
-                this.randomUtil.getFloat(1 - rewardSpreadConfig, 1 + rewardSpreadConfig),
+            difficulty * this.mathUtil.interp1(pmcLevel, levelsConfig, roublesConfig)
+                * this.randomUtil.getFloat(1 - rewardSpreadConfig, 1 + rewardSpreadConfig),
         );
         const rewardNumItems = this.randomUtil.randInt(
             1,
             Math.round(this.mathUtil.interp1(pmcLevel, levelsConfig, itemsConfig)) + 1,
         );
         const rewardReputation = Math.round(
-            100 * difficulty * this.mathUtil.interp1(pmcLevel, levelsConfig, reputationConfig) *
-                this.randomUtil.getFloat(1 - rewardSpreadConfig, 1 + rewardSpreadConfig),
+            100 * difficulty * this.mathUtil.interp1(pmcLevel, levelsConfig, reputationConfig)
+                * this.randomUtil.getFloat(1 - rewardSpreadConfig, 1 + rewardSpreadConfig),
         ) / 100;
         const skillRewardChance = this.mathUtil.interp1(pmcLevel, levelsConfig, skillRewardChanceConfig);
         const skillPointReward = this.mathUtil.interp1(pmcLevel, levelsConfig, skillPointRewardConfig);
@@ -1124,8 +1124,8 @@ export class RepeatableQuestGenerator
 
         // Item is on repeatable or global blacklist
         if (
-            repeatableQuestConfig.rewardBlacklist.includes(tpl) ||
-            this.itemFilterService.isItemBlacklisted(tpl)
+            repeatableQuestConfig.rewardBlacklist.includes(tpl)
+            || this.itemFilterService.isItemBlacklisted(tpl)
         )
         {
             return false;
@@ -1152,8 +1152,8 @@ export class RepeatableQuestGenerator
 
         // Skip globally blacklisted items + boss items
         // biome-ignore lint/complexity/useSimplifiedLogicExpression: <explanation>
-        valid = !this.itemFilterService.isItemBlacklisted(tpl) &&
-            !this.itemFilterService.isBossItem(tpl);
+        valid = !this.itemFilterService.isItemBlacklisted(tpl)
+            && !this.itemFilterService.isBossItem(tpl);
 
         return valid;
     }

@@ -40,10 +40,12 @@ export class RagfairSellHelper
 
         const listedPriceAboveAverage = playerListedPriceRub > averageOfferPriceRub;
         // Get sell chance multiplier
-        const multiplier = listedPriceAboveAverage ?
-            this.ragfairConfig.sell.chance.overpriced // Player price is over average listing price
-             :
-            this.getSellMultiplierWhenPlayerPriceIsBelowAverageListingPrice(averageOfferPriceRub, playerListedPriceRub);
+        const multiplier = listedPriceAboveAverage
+            ? this.ragfairConfig.sell.chance.overpriced // Player price is over average listing price
+            : this.getSellMultiplierWhenPlayerPriceIsBelowAverageListingPrice(
+                averageOfferPriceRub,
+                playerListedPriceRub,
+            );
 
         return Math.round(baseSellChancePercent * (averageOfferPriceRub / playerListedPriceRub * multiplier));
     }
@@ -59,9 +61,9 @@ export class RagfairSellHelper
         playerListedPriceRub: number,
     ): number
     {
-        return (playerListedPriceRub < averageOfferPriceRub) ?
-            this.ragfairConfig.sell.chance.underpriced :
-            1;
+        return (playerListedPriceRub < averageOfferPriceRub)
+            ? this.ragfairConfig.sell.chance.underpriced
+            : 1;
     }
 
     /**

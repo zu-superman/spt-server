@@ -113,9 +113,9 @@ export class BotGeneratorHelper
         if (itemTemplate._parent === BaseClasses.FLASHLIGHT)
         {
             // Get chance from botconfig for bot type
-            const lightLaserActiveChance = raidIsNight ?
-                this.getBotEquipmentSettingFromConfig(botRole, "lightIsActiveNightChancePercent", 50) :
-                this.getBotEquipmentSettingFromConfig(botRole, "lightIsActiveDayChancePercent", 25);
+            const lightLaserActiveChance = raidIsNight
+                ? this.getBotEquipmentSettingFromConfig(botRole, "lightIsActiveNightChancePercent", 50)
+                : this.getBotEquipmentSettingFromConfig(botRole, "lightIsActiveDayChancePercent", 25);
             itemProperties.Light = {IsActive: (this.randomUtil.getChance100(lightLaserActiveChance)), SelectedMode: 0};
         }
         else if (itemTemplate._parent === BaseClasses.TACTICAL_COMBO)
@@ -132,9 +132,9 @@ export class BotGeneratorHelper
         if (itemTemplate._parent === BaseClasses.NIGHTVISION)
         {
             // Get chance from botconfig for bot type
-            const nvgActiveChance = raidIsNight ?
-                this.getBotEquipmentSettingFromConfig(botRole, "nvgIsActiveChanceNightPercent", 90) :
-                this.getBotEquipmentSettingFromConfig(botRole, "nvgIsActiveChanceDayPercent", 15);
+            const nvgActiveChance = raidIsNight
+                ? this.getBotEquipmentSettingFromConfig(botRole, "nvgIsActiveChanceNightPercent", 90)
+                : this.getBotEquipmentSettingFromConfig(botRole, "nvgIsActiveChanceDayPercent", 15);
             itemProperties.Togglable = {On: (this.randomUtil.getChance100(nvgActiveChance))};
         }
 
@@ -150,9 +150,9 @@ export class BotGeneratorHelper
             itemProperties.Togglable = {On: (this.randomUtil.getChance100(faceShieldActiveChance))};
         }
 
-        return Object.keys(itemProperties).length ?
-            {upd: itemProperties} :
-            {};
+        return Object.keys(itemProperties).length
+            ? {upd: itemProperties}
+            : {};
     }
 
     /**
@@ -370,9 +370,9 @@ export class BotGeneratorHelper
     {
         return ([this.pmcConfig.usecType.toLowerCase(), this.pmcConfig.bearType.toLowerCase()].includes(
                 botRole.toLowerCase(),
-            )) ?
-            "pmc" :
-            botRole;
+            ))
+            ? "pmc"
+            : botRole;
     }
 }
 

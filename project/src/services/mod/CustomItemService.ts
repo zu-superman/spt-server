@@ -120,9 +120,9 @@ export class CustomItemService
      */
     protected getOrGenerateIdForItem(newId: string): string
     {
-        return (newId === "") ?
-            this.hashUtil.generate() :
-            newId;
+        return (newId === "")
+            ? this.hashUtil.generate()
+            : newId;
     }
 
     /**

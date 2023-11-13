@@ -598,9 +598,9 @@ export class BotLootGenerator
     {
         // PMCs have a different stack max size
         const minStackSize = itemTemplate._props.StackMinRandom;
-        const maxStackSize = isPmc ?
-            this.pmcConfig.dynamicLoot.moneyStackLimits[itemTemplate._id] :
-            itemTemplate._props.StackMaxRandom;
+        const maxStackSize = isPmc
+            ? this.pmcConfig.dynamicLoot.moneyStackLimits[itemTemplate._id]
+            : itemTemplate._props.StackMaxRandom;
         const randomSize = this.randomUtil.getInt(minStackSize, maxStackSize);
 
         if (!moneyItem.upd)
@@ -619,9 +619,9 @@ export class BotLootGenerator
      */
     protected randomiseAmmoStackSize(isPmc: boolean, itemTemplate: ITemplateItem, ammoItem: Item): void
     {
-        const randomSize = itemTemplate._props.StackMaxSize === 1 ?
-            1 :
-            this.randomUtil.getInt(itemTemplate._props.StackMinRandom, itemTemplate._props.StackMaxRandom);
+        const randomSize = itemTemplate._props.StackMaxSize === 1
+            ? 1
+            : this.randomUtil.getInt(itemTemplate._props.StackMinRandom, itemTemplate._props.StackMaxRandom);
 
         if (!ammoItem.upd)
         {

@@ -704,8 +704,8 @@ export class GameController
             {
                 // Wave has size that makes it candidate for splitting
                 if (
-                    wave.slots_max - wave.slots_min >=
-                        this.locationConfig.splitWaveIntoSingleSpawnsSettings.waveSizeThreshold
+                    wave.slots_max - wave.slots_min
+                        >= this.locationConfig.splitWaveIntoSingleSpawnsSettings.waveSizeThreshold
                 )
                 {
                     // Get count of bots to be spawned in wave
@@ -777,9 +777,9 @@ export class GameController
             const modDetails = activeMods[modKey];
             if (
                 fullProfile.aki.mods.some((x) =>
-                    x.author === modDetails.author &&
-                    x.name === modDetails.name &&
-                    x.version === modDetails.version
+                    x.author === modDetails.author
+                    && x.name === modDetails.name
+                    && x.version === modDetails.version
                 )
             )
             {

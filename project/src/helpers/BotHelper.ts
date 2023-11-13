@@ -185,8 +185,8 @@ export class BotHelper
 
     public rollChanceToBePmc(role: string, botConvertMinMax: MinMax): boolean
     {
-        return role.toLowerCase() in this.pmcConfig.convertIntoPmcChance &&
-            this.randomUtil.getChance100(this.randomUtil.getInt(botConvertMinMax.min, botConvertMinMax.max));
+        return role.toLowerCase() in this.pmcConfig.convertIntoPmcChance
+            && this.randomUtil.getChance100(this.randomUtil.getInt(botConvertMinMax.min, botConvertMinMax.max));
     }
 
     public botRoleIsPmc(botRole: string): boolean
@@ -219,9 +219,9 @@ export class BotHelper
      */
     public getRandomizedPmcRole(): string
     {
-        return (this.randomUtil.getChance100(this.pmcConfig.isUsec)) ?
-            this.pmcConfig.usecType :
-            this.pmcConfig.bearType;
+        return (this.randomUtil.getChance100(this.pmcConfig.isUsec))
+            ? this.pmcConfig.usecType
+            : this.pmcConfig.bearType;
     }
 
     /**
@@ -248,8 +248,8 @@ export class BotHelper
      */
     protected getRandomizedPmcSide(): string
     {
-        return (this.randomUtil.getChance100(this.pmcConfig.isUsec)) ?
-            "Usec" :
-            "Bear";
+        return (this.randomUtil.getChance100(this.pmcConfig.isUsec))
+            ? "Usec"
+            : "Bear";
     }
 }

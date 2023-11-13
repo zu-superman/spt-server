@@ -121,10 +121,10 @@ export class BotWeaponModLimitService
 
         // Mod is a mount that can hold only scopes and limit is reached (dont want to add empty mounts if limit is reached)
         if (
-            this.itemHelper.isOfBaseclass(modTemplate._id, BaseClasses.MOUNT) &&
-            modTemplate._props.Slots.some((x) => x._name === "mod_scope") &&
-            modTemplate._props.Slots.length === 1 &&
-            modLimits.scope.count >= modLimits.scopeMax
+            this.itemHelper.isOfBaseclass(modTemplate._id, BaseClasses.MOUNT)
+            && modTemplate._props.Slots.some((x) => x._name === "mod_scope")
+            && modTemplate._props.Slots.length === 1
+            && modLimits.scope.count >= modLimits.scopeMax
         )
         {
             return true;
@@ -144,10 +144,10 @@ export class BotWeaponModLimitService
 
         // Mod is a mount that can hold only flashlights ad limit is reached (dont want to add empty mounts if limit is reached)
         if (
-            this.itemHelper.isOfBaseclass(modTemplate._id, BaseClasses.MOUNT) &&
-            modTemplate._props.Slots.some((x) => x._name === "mod_flashlight") &&
-            modTemplate._props.Slots.length === 1 &&
-            modLimits.scope.count >= modLimits.scopeMax
+            this.itemHelper.isOfBaseclass(modTemplate._id, BaseClasses.MOUNT)
+            && modTemplate._props.Slots.some((x) => x._name === "mod_flashlight")
+            && modTemplate._props.Slots.length === 1
+            && modLimits.scope.count >= modLimits.scopeMax
         )
         {
             return true;

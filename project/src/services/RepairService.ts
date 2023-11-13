@@ -69,9 +69,9 @@ export class RepairService
         const priceCoef = this.traderHelper.getLoyaltyLevel(traderId, pmcData).repair_price_coef;
         const traderRepairDetails = this.traderHelper.getTrader(traderId, sessionID).repair;
         const repairQualityMultiplier = traderRepairDetails.quality;
-        const repairRate = (priceCoef <= 0) ?
-            1 :
-            (priceCoef / 100 + 1);
+        const repairRate = (priceCoef <= 0)
+            ? 1
+            : (priceCoef / 100 + 1);
 
         const itemToRepairDetails = this.databaseServer.getTables().templates.items[itemToRepair._tpl];
         const repairItemIsArmor = !!itemToRepairDetails._props.ArmorMaterial;
@@ -156,8 +156,8 @@ export class RepairService
     ): void
     {
         if (
-            repairDetails.repairedByKit &&
-            this.itemHelper.isOfBaseclass(repairDetails.repairedItem._tpl, BaseClasses.WEAPON)
+            repairDetails.repairedByKit
+            && this.itemHelper.isOfBaseclass(repairDetails.repairedItem._tpl, BaseClasses.WEAPON)
         )
         {
             const skillPoints = this.getWeaponRepairSkillPoints(repairDetails);
@@ -167,8 +167,8 @@ export class RepairService
 
         // Handle kit repairs of armor
         if (
-            repairDetails.repairedByKit &&
-            this.itemHelper.isOfBaseclasses(repairDetails.repairedItem._tpl, [BaseClasses.ARMOR, BaseClasses.VEST])
+            repairDetails.repairedByKit
+            && this.itemHelper.isOfBaseclasses(repairDetails.repairedItem._tpl, [BaseClasses.ARMOR, BaseClasses.VEST])
         )
         {
             const itemDetails = this.itemHelper.getItem(repairDetails.repairedItem._tpl);
@@ -186,11 +186,11 @@ export class RepairService
             }
 
             const isHeavyArmor = itemDetails[1]._props.ArmorType === "Heavy";
-            const vestSkillToLevel = isHeavyArmor ?
-                SkillTypes.HEAVY_VESTS :
-                SkillTypes.LIGHT_VESTS;
-            const pointsToAddToVestSkill = repairDetails.repairPoints *
-                this.repairConfig.armorKitSkillPointGainPerRepairPointMultiplier;
+            const vestSkillToLevel = isHeavyArmor
+                ? SkillTypes.HEAVY_VESTS
+                : SkillTypes.LIGHT_VESTS;
+            const pointsToAddToVestSkill = repairDetails.repairPoints
+                * this.repairConfig.armorKitSkillPointGainPerRepairPointMultiplier;
 
             this.profileHelper.addSkillPointsToPlayer(pmcData, vestSkillToLevel, pointsToAddToVestSkill);
         }
@@ -200,9 +200,9 @@ export class RepairService
         if (repairDetails.repairedByKit)
         {
             const intRepairMultiplier =
-                (this.itemHelper.isOfBaseclass(repairDetails.repairedItem._tpl, BaseClasses.WEAPON)) ?
-                    this.repairConfig.repairKitIntellectGainMultiplier.weapon :
-                    this.repairConfig.repairKitIntellectGainMultiplier.armor;
+                (this.itemHelper.isOfBaseclass(repairDetails.repairedItem._tpl, BaseClasses.WEAPON))
+                    ? this.repairConfig.repairKitIntellectGainMultiplier.weapon
+                    : this.repairConfig.repairKitIntellectGainMultiplier.armor;
 
             // limit gain to a max value defined in config.maxIntellectGainPerRepair
             intellectGainedFromRepair = Math.min(
@@ -339,8 +339,8 @@ export class RepairService
         const globalRepairSettings = globals.config.RepairSettings;
 
         const intellectRepairPointsPerLevel = globals.config.SkillsSettings.Intellect.RepairPointsCostReduction;
-        const profileIntellectLevel = this.profileHelper.getSkillFromProfile(pmcData, SkillTypes.INTELLECT)?.Progress ??
-            0;
+        const profileIntellectLevel = this.profileHelper.getSkillFromProfile(pmcData, SkillTypes.INTELLECT)?.Progress
+            ?? 0;
         const intellectPointReduction = intellectRepairPointsPerLevel * Math.trunc(profileIntellectLevel / 100);
 
         if (isArmor)

@@ -285,8 +285,8 @@ export class MailSendService
         // TODO: clean up old code here
         // Offer Sold notifications are now separate from the main notification
         if (
-            [MessageType.NPC_TRADER, MessageType.FLEAMARKET_MESSAGE].includes(senderDialog.type) &&
-            messageDetails.ragfairDetails
+            [MessageType.NPC_TRADER, MessageType.FLEAMARKET_MESSAGE].includes(senderDialog.type)
+            && messageDetails.ragfairDetails
         )
         {
             const offerSoldMessage = this.notifierHelper.createRagfairOfferSoldNotification(
@@ -348,9 +348,9 @@ export class MailSendService
             hasRewards: false, // The default dialog message has no rewards, can be added later via addRewardItemsToMessage()
             rewardCollected: false, // The default dialog message has no rewards, can be added later via addRewardItemsToMessage()
             systemData: messageDetails.systemData ? messageDetails.systemData : undefined, // Used by ragfair / localised messages that need "location" or "time"
-            profileChangeEvents: (messageDetails.profileChangeEvents?.length === 0) ?
-                messageDetails.profileChangeEvents :
-                undefined, // no one knows, its never been used in any dumps
+            profileChangeEvents: (messageDetails.profileChangeEvents?.length === 0)
+                ? messageDetails.profileChangeEvents
+                : undefined, // no one knows, its never been used in any dumps
         };
 
         // Clean up empty system data

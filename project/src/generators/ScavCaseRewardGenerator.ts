@@ -107,9 +107,9 @@ export class ScavCaseRewardGenerator
 
                 // Skip item if item id is on blacklist
                 if (
-                    (item._type !== "Item") ||
-                    this.scavCaseConfig.rewardItemBlacklist.includes(item._id) ||
-                    this.itemFilterService.isItemBlacklisted(item._id)
+                    (item._type !== "Item")
+                    || this.scavCaseConfig.rewardItemBlacklist.includes(item._id)
+                    || this.itemFilterService.isItemBlacklisted(item._id)
                 )
                 {
                     return false;
@@ -249,8 +249,8 @@ export class ScavCaseRewardGenerator
             // Is ammo handbook price between desired range
             const handbookPrice = this.ragfairPriceService.getStaticPriceForItem(ammo._id);
             if (
-                handbookPrice >= this.scavCaseConfig.ammoRewards.ammoRewardValueRangeRub[rarity].min &&
-                handbookPrice <= this.scavCaseConfig.ammoRewards.ammoRewardValueRangeRub[rarity].max
+                handbookPrice >= this.scavCaseConfig.ammoRewards.ammoRewardValueRangeRub[rarity].min
+                && handbookPrice <= this.scavCaseConfig.ammoRewards.ammoRewardValueRangeRub[rarity].max
             )
             {
                 return true;
@@ -332,8 +332,8 @@ export class ScavCaseRewardGenerator
         {
             const handbookPrice = this.ragfairPriceService.getStaticPriceForItem(item._id);
             if (
-                handbookPrice >= itemFilters.minPriceRub &&
-                handbookPrice <= itemFilters.maxPriceRub
+                handbookPrice >= itemFilters.minPriceRub
+                && handbookPrice <= itemFilters.maxPriceRub
             )
             {
                 return true;

@@ -62,8 +62,8 @@ export const Listen = (basePath: string) =>
             {
                 const routesHandles = this.handlers[req.method];
 
-                return Object.keys(this.handlers).some((meth) => meth === req.method) &&
-                    Object.keys(routesHandles).some((route) => (new RegExp(route)).test(req.url));
+                return Object.keys(this.handlers).some((meth) => meth === req.method)
+                    && Object.keys(routesHandles).some((route) => (new RegExp(route)).test(req.url));
             };
 
             // The actual handle method dispatches the request to the registered handlers

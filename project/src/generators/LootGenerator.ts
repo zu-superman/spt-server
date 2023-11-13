@@ -93,10 +93,10 @@ export class LootGenerator
 
         // Get items from items.json that have a type of item + not in global blacklist + basetype is in whitelist
         const items = Object.entries(tables.templates.items).filter((x) =>
-            !itemBlacklist.has(x[1]._id) &&
-            x[1]._type.toLowerCase() === "item" &&
-            !x[1]._props.QuestItem &&
-            options.itemTypeWhitelist.includes(x[1]._parent)
+            !itemBlacklist.has(x[1]._id)
+            && x[1]._type.toLowerCase() === "item"
+            && !x[1]._props.QuestItem
+            && options.itemTypeWhitelist.includes(x[1]._parent)
         );
 
         const randomisedItemCount = this.randomUtil.getInt(options.itemCount.min, options.itemCount.max);
@@ -175,8 +175,8 @@ export class LootGenerator
 
         // Check if armor has level in allowed whitelist
         if (
-            randomItem._parent === BaseClasses.ARMOR ||
-            randomItem._parent === BaseClasses.VEST
+            randomItem._parent === BaseClasses.ARMOR
+            || randomItem._parent === BaseClasses.VEST
         )
         {
             if (!options.armorLevelWhitelist.includes(Number(randomItem._props.armorClass)))
@@ -319,9 +319,9 @@ export class LootGenerator
         }
 
         // Get weapon preset - default or choose a random one from all possible
-        let chosenWeaponPreset = containerSettings.defaultPresetsOnly ?
-            this.presetHelper.getDefaultPreset(chosenWeaponTpl) :
-            this.randomUtil.getArrayValue(this.presetHelper.getPresets(chosenWeaponTpl));
+        let chosenWeaponPreset = containerSettings.defaultPresetsOnly
+            ? this.presetHelper.getDefaultPreset(chosenWeaponTpl)
+            : this.randomUtil.getArrayValue(this.presetHelper.getPresets(chosenWeaponTpl));
 
         if (!chosenWeaponPreset)
         {
@@ -407,11 +407,11 @@ export class LootGenerator
             // Get all items of the desired type + not quest items + not globally blacklisted
             const rewardItemPool = Object.values(this.databaseServer.getTables().templates.items)
                 .filter((x) =>
-                    x._parent === rewardTypeId &&
-                    x._type.toLowerCase() === "item" &&
-                    !this.itemFilterService.isItemBlacklisted(x._id) &&
-                    (!(containerSettings.allowBossItems || this.itemFilterService.isBossItem(x._id))) &&
-                    !x._props.QuestItem
+                    x._parent === rewardTypeId
+                    && x._type.toLowerCase() === "item"
+                    && !this.itemFilterService.isItemBlacklisted(x._id)
+                    && (!(containerSettings.allowBossItems || this.itemFilterService.isBossItem(x._id)))
+                    && !x._props.QuestItem
                 );
 
             if (rewardItemPool.length === 0)

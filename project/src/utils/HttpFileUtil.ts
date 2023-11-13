@@ -16,8 +16,8 @@ export class HttpFileUtil
     public sendFile(resp: ServerResponse, file: any): void
     {
         const pathSlic = file.split("/");
-        const type = this.httpServerHelper.getMimeText(pathSlic[pathSlic.length - 1].split(".").at(-1)) ||
-            this.httpServerHelper.getMimeText("txt");
+        const type = this.httpServerHelper.getMimeText(pathSlic[pathSlic.length - 1].split(".").at(-1))
+            || this.httpServerHelper.getMimeText("txt");
         const fileStream = fs.createReadStream(file);
 
         fileStream.on("open", function()

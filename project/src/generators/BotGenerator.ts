@@ -115,9 +115,9 @@ export class BotGenerator
 
             // Get raw json data for bot (Cloned)
             const botJsonTemplate = this.jsonUtil.clone(this.botHelper.getBotTemplate(
-                (botGenerationDetails.isPmc) ?
-                    bot.Info.Side :
-                    botGenerationDetails.role,
+                (botGenerationDetails.isPmc)
+                    ? bot.Info.Side
+                    : botGenerationDetails.role,
             ));
 
             bot = this.generateBot(sessionId, bot, botJsonTemplate, botGenerationDetails);
@@ -328,9 +328,9 @@ export class BotGenerator
      */
     protected generateHealth(healthObj: Health, playerScav = false): PmcHealth
     {
-        const bodyParts = playerScav ?
-            healthObj.BodyParts[0] :
-            this.randomUtil.getArrayValue(healthObj.BodyParts);
+        const bodyParts = playerScav
+            ? healthObj.BodyParts[0]
+            : this.randomUtil.getArrayValue(healthObj.BodyParts);
 
         const newHealth: PmcHealth = {
             Hydration: {

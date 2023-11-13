@@ -139,8 +139,8 @@ export class ProfileHelper
             }
 
             if (
-                !this.sessionIdMatchesProfileId(profile.info.id, sessionID) &&
-                this.nicknameMatches(profile.characters.pmc.Info.LowerNickname, nicknameRequest.nickname)
+                !this.sessionIdMatchesProfileId(profile.info.id, sessionID)
+                && this.nicknameMatches(profile.characters.pmc.Info.LowerNickname, nicknameRequest.nickname)
             )
             {
                 return true;

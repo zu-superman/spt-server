@@ -26,9 +26,9 @@ export class LocalisationService
     {
         const localeFileDirectory = path.join(
             process.cwd(),
-            globalThis.G_RELEASE_CONFIGURATION ?
-                "Aki_Data/Server/database/locales/server" :
-                "./assets/database/locales/server",
+            globalThis.G_RELEASE_CONFIGURATION
+                ? "Aki_Data/Server/database/locales/server"
+                : "./assets/database/locales/server",
         );
         this.i18n = new I18n(
             {

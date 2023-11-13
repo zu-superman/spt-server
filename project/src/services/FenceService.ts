@@ -279,8 +279,8 @@ export class FenceService
      */
     protected incrementPartialRefreshTime(): void
     {
-        this.nextMiniRefreshTimestamp = this.timeUtil.getTimestamp() +
-            this.traderConfig.fence.partialRefreshTimeSeconds;
+        this.nextMiniRefreshTimestamp = this.timeUtil.getTimestamp()
+            + this.traderConfig.fence.partialRefreshTimeSeconds;
     }
 
     /**
@@ -294,14 +294,14 @@ export class FenceService
         const desiredTotalCount = this.traderConfig.fence.assortSize;
         const actualTotalCount = this.fenceAssort.items.reduce((count, item) =>
         {
-            return item.slotId === "hideout" ?
-                count + 1 :
-                count;
+            return item.slotId === "hideout"
+                ? count + 1
+                : count;
         }, 0);
 
-        return actualTotalCount < desiredTotalCount ?
-            (desiredTotalCount - actualTotalCount) + existingItemCountToReplace :
-            existingItemCountToReplace;
+        return actualTotalCount < desiredTotalCount
+            ? (desiredTotalCount - actualTotalCount) + existingItemCountToReplace
+            : existingItemCountToReplace;
     }
 
     /**
@@ -506,9 +506,9 @@ export class FenceService
         if (this.itemHelper.isOfBaseclass(itemDbDetails._id, BaseClasses.AMMO))
         {
             // No override, use stack max size from item db
-            return itemDbDetails._props.StackMaxSize === 1 ?
-                1 :
-                this.randomUtil.getInt(itemDbDetails._props.StackMinRandom, itemDbDetails._props.StackMaxRandom);
+            return itemDbDetails._props.StackMaxSize === 1
+                ? 1
+                : this.randomUtil.getInt(itemDbDetails._props.StackMinRandom, itemDbDetails._props.StackMaxRandom);
         }
 
         return 1;
@@ -658,8 +658,8 @@ export class FenceService
         // Roll from 0 to 9999, then divide it by 100: 9999 =  99.99%
         const randomChance = this.randomUtil.getInt(0, 9999) / 100;
 
-        return randomChance > removalChance &&
-            !itemsBeingDeleted.includes(weaponMod._id);
+        return randomChance > removalChance
+            && !itemsBeingDeleted.includes(weaponMod._id);
     }
 
     /**
@@ -688,12 +688,12 @@ export class FenceService
 
         // Randomise armor durability
         if (
-            (itemDetails._parent === BaseClasses.ARMOR ||
-                itemDetails._parent === BaseClasses.HEADWEAR ||
-                itemDetails._parent === BaseClasses.VEST ||
-                itemDetails._parent === BaseClasses.ARMOREDEQUIPMENT ||
-                itemDetails._parent === BaseClasses.FACECOVER) &&
-            itemDetails._props.MaxDurability > 0
+            (itemDetails._parent === BaseClasses.ARMOR
+                || itemDetails._parent === BaseClasses.HEADWEAR
+                || itemDetails._parent === BaseClasses.VEST
+                || itemDetails._parent === BaseClasses.ARMOREDEQUIPMENT
+                || itemDetails._parent === BaseClasses.FACECOVER)
+            && itemDetails._props.MaxDurability > 0
         )
         {
             const armorMaxDurabilityLimits = this.traderConfig.fence.armorMaxDurabilityPercentMinMax;
@@ -740,8 +740,8 @@ export class FenceService
 
         // Mechanical key + has limited uses
         if (
-            this.itemHelper.isOfBaseclass(itemDetails._id, BaseClasses.KEY_MECHANICAL) &&
-            itemDetails._props.MaximumNumberOfUsage > 1
+            this.itemHelper.isOfBaseclass(itemDetails._id, BaseClasses.KEY_MECHANICAL)
+            && itemDetails._props.MaximumNumberOfUsage > 1
         )
         {
             itemToAdjust.upd.Key = {

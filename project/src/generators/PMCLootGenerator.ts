@@ -56,12 +56,12 @@ export class PMCLootGenerator
             }
 
             const itemsToAdd = Object.values(items).filter((item) =>
-                allowedItemTypes.includes(item._parent) &&
-                this.itemHelper.isValidItem(item._id) &&
-                !pmcItemBlacklist.includes(item._id) &&
-                !itemBlacklist.includes(item._id) &&
-                item._props.Width === 1 &&
-                item._props.Height === 1
+                allowedItemTypes.includes(item._parent)
+                && this.itemHelper.isValidItem(item._id)
+                && !pmcItemBlacklist.includes(item._id)
+                && !itemBlacklist.includes(item._id)
+                && item._props.Width === 1
+                && item._props.Height === 1
             );
 
             this.pocketLootPool = itemsToAdd.map((x) => x._id);
@@ -94,11 +94,11 @@ export class PMCLootGenerator
             }
 
             const itemsToAdd = Object.values(items).filter((item) =>
-                allowedItemTypes.includes(item._parent) &&
-                this.itemHelper.isValidItem(item._id) &&
-                !pmcItemBlacklist.includes(item._id) &&
-                !itemBlacklist.includes(item._id) &&
-                this.itemFitsInto2By2Slot(item)
+                allowedItemTypes.includes(item._parent)
+                && this.itemHelper.isValidItem(item._id)
+                && !pmcItemBlacklist.includes(item._id)
+                && !itemBlacklist.includes(item._id)
+                && this.itemFitsInto2By2Slot(item)
             );
 
             this.vestLootPool = itemsToAdd.map((x) => x._id);
@@ -141,10 +141,10 @@ export class PMCLootGenerator
             }
 
             const itemsToAdd = Object.values(items).filter((item) =>
-                allowedItemTypes.includes(item._parent) &&
-                this.itemHelper.isValidItem(item._id) &&
-                !pmcItemBlacklist.includes(item._id) &&
-                !itemBlacklist.includes(item._id)
+                allowedItemTypes.includes(item._parent)
+                && this.itemHelper.isValidItem(item._id)
+                && !pmcItemBlacklist.includes(item._id)
+                && !itemBlacklist.includes(item._id)
             );
 
             this.backpackLootPool = itemsToAdd.map((x) => x._id);

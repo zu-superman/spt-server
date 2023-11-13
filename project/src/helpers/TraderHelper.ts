@@ -87,9 +87,9 @@ export class TraderHelper
      */
     public getTraderAssortsByTraderId(traderId: string): ITraderAssort
     {
-        return traderId === Traders.FENCE ?
-            this.fenceService.getRawFenceAssorts() :
-            this.databaseServer.getTables().traders[traderId].assort;
+        return traderId === Traders.FENCE
+            ? this.fenceService.getRawFenceAssorts()
+            : this.databaseServer.getTables().traders[traderId].assort;
     }
 
     /**
@@ -199,9 +199,9 @@ export class TraderHelper
     {
         const newStanding = currentStanding + standingToAdd;
 
-        return newStanding < 0 ?
-            0 :
-            newStanding;
+        return newStanding < 0
+            ? 0
+            : newStanding;
     }
 
     /**
@@ -227,10 +227,10 @@ export class TraderHelper
             const loyalty = loyaltyLevels[level];
 
             if (
-                (loyalty.minLevel <= pmcData.Info.Level &&
-                    loyalty.minSalesSum <= pmcData.TradersInfo[traderID].salesSum &&
-                    loyalty.minStanding <= pmcData.TradersInfo[traderID].standing) &&
-                targetLevel < 4
+                (loyalty.minLevel <= pmcData.Info.Level
+                    && loyalty.minSalesSum <= pmcData.TradersInfo[traderID].salesSum
+                    && loyalty.minStanding <= pmcData.TradersInfo[traderID].standing)
+                && targetLevel < 4
             )
             {
                 // level reached
@@ -386,9 +386,9 @@ export class TraderHelper
                 const barterScheme = traderAssorts.barter_scheme[item._id][0][0];
 
                 // Convert into roubles
-                const roubleAmount = barterScheme._tpl === Money.ROUBLES ?
-                    barterScheme.count :
-                    this.handbookHelper.inRUB(barterScheme.count, barterScheme._tpl);
+                const roubleAmount = barterScheme._tpl === Money.ROUBLES
+                    ? barterScheme.count
+                    : this.handbookHelper.inRUB(barterScheme.count, barterScheme._tpl);
 
                 // Existing price smaller in dict than current iteration, overwrite
                 if (this.highestTraderPriceItems[item._tpl] ?? 0 < roubleAmount)

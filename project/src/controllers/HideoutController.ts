@@ -111,10 +111,10 @@ export class HideoutController
             }
 
             if (
-                this.paymentHelper.isMoneyTpl(item.inventoryItem._tpl) &&
-                item.inventoryItem.upd &&
-                item.inventoryItem.upd.StackObjectsCount &&
-                item.inventoryItem.upd.StackObjectsCount > item.requestedItem.count
+                this.paymentHelper.isMoneyTpl(item.inventoryItem._tpl)
+                && item.inventoryItem.upd
+                && item.inventoryItem.upd.StackObjectsCount
+                && item.inventoryItem.upd.StackObjectsCount > item.requestedItem.count
             )
             {
                 item.inventoryItem.upd.StackObjectsCount -= item.requestedItem.count;
@@ -220,8 +220,8 @@ export class HideoutController
 
         // Upgrading water collector / med station
         if (
-            profileHideoutArea.type === HideoutAreas.WATER_COLLECTOR ||
-            profileHideoutArea.type === HideoutAreas.MEDSTATION
+            profileHideoutArea.type === HideoutAreas.WATER_COLLECTOR
+            || profileHideoutArea.type === HideoutAreas.MEDSTATION
         )
         {
             this.checkAndUpgradeWall(pmcData);
@@ -632,8 +632,8 @@ export class HideoutController
             }
 
             if (
-                inventoryItem.upd?.StackObjectsCount &&
-                inventoryItem.upd.StackObjectsCount > requestedItem.count
+                inventoryItem.upd?.StackObjectsCount
+                && inventoryItem.upd.StackObjectsCount > requestedItem.count
             )
             {
                 inventoryItem.upd.StackObjectsCount -= requestedItem.count;
@@ -957,9 +957,9 @@ export class HideoutController
                 {
                     id = this.presetHelper.getDefaultPreset(id)._id;
                 }
-                const numOfItems = !x.upd?.StackObjectsCount ?
-                    1 :
-                    x.upd.StackObjectsCount;
+                const numOfItems = !x.upd?.StackObjectsCount
+                    ? 1
+                    : x.upd.StackObjectsCount;
 
                 return {item_id: id, count: numOfItems};
             },
@@ -1112,10 +1112,10 @@ export class HideoutController
             }
 
             if (
-                this.paymentHelper.isMoneyTpl(item.inventoryItem._tpl) &&
-                item.inventoryItem.upd &&
-                item.inventoryItem.upd.StackObjectsCount &&
-                item.inventoryItem.upd.StackObjectsCount > item.requestedItem.count
+                this.paymentHelper.isMoneyTpl(item.inventoryItem._tpl)
+                && item.inventoryItem.upd
+                && item.inventoryItem.upd.StackObjectsCount
+                && item.inventoryItem.upd.StackObjectsCount > item.requestedItem.count
             )
             {
                 item.inventoryItem.upd.StackObjectsCount -= item.requestedItem.count;

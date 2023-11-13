@@ -133,8 +133,8 @@ export class LocationGenerator
 
         // randomisation is turned off globally or just turned off for this map
         if (
-            !(this.locationConfig.containerRandomisationSettings.enabled &&
-                this.locationConfig.containerRandomisationSettings.maps[locationId])
+            !(this.locationConfig.containerRandomisationSettings.enabled
+                && this.locationConfig.containerRandomisationSettings.maps[locationId])
         )
         {
             this.logger.debug(
@@ -249,8 +249,8 @@ export class LocationGenerator
     {
         return staticContainers
             .filter((x) =>
-                x.probability !== 1 && !x.template.IsAlwaysSpawn &&
-                !this.locationConfig.containerRandomisationSettings.containerTypesToNotRandomise.includes(
+                x.probability !== 1 && !x.template.IsAlwaysSpawn
+                && !this.locationConfig.containerRandomisationSettings.containerTypesToNotRandomise.includes(
                     x.template.Items[0]._tpl,
                 )
             );
@@ -264,8 +264,8 @@ export class LocationGenerator
     protected getGuaranteedContainers(staticContainersOnMap: IStaticContainerData[]): IStaticContainerData[]
     {
         return staticContainersOnMap.filter((x) =>
-            x.probability === 1 || x.template.IsAlwaysSpawn ||
-            this.locationConfig.containerRandomisationSettings.containerTypesToNotRandomise.includes(
+            x.probability === 1 || x.template.IsAlwaysSpawn
+            || this.locationConfig.containerRandomisationSettings.containerTypesToNotRandomise.includes(
                 x.template.Items[0]._tpl,
             )
         );
@@ -325,12 +325,12 @@ export class LocationGenerator
                     containerIdsWithProbability: {},
                     chosenCount: this.randomUtil.getInt(
                         Math.round(
-                            groupData.minContainers *
-                                this.locationConfig.containerRandomisationSettings.containerGroupMinSizeMultiplier,
+                            groupData.minContainers
+                                * this.locationConfig.containerRandomisationSettings.containerGroupMinSizeMultiplier,
                         ),
                         Math.round(
-                            groupData.maxContainers *
-                                this.locationConfig.containerRandomisationSettings.containerGroupMaxSizeMultiplier,
+                            groupData.maxContainers
+                                * this.locationConfig.containerRandomisationSettings.containerGroupMaxSizeMultiplier,
                         ),
                     ),
                 };
@@ -570,8 +570,8 @@ export class LocationGenerator
 
         // Draw from random distribution
         const desiredSpawnpointCount = Math.round(
-            this.getLooseLootMultiplerForLocation(locationName) *
-                this.randomUtil.randn(
+            this.getLooseLootMultiplerForLocation(locationName)
+                * this.randomUtil.randn(
                     dynamicLootDist.spawnpointCount.mean,
                     dynamicLootDist.spawnpointCount.std,
                 ),
@@ -782,15 +782,15 @@ export class LocationGenerator
 
         // Money/Ammo - don't rely on items in spawnPoint.template.Items so we can randomise it ourselves
         if (
-            this.itemHelper.isOfBaseclass(chosenTpl, BaseClasses.MONEY) ||
-            this.itemHelper.isOfBaseclass(chosenTpl, BaseClasses.AMMO)
+            this.itemHelper.isOfBaseclass(chosenTpl, BaseClasses.MONEY)
+            || this.itemHelper.isOfBaseclass(chosenTpl, BaseClasses.AMMO)
         )
         {
             const itemTemplate = this.itemHelper.getItem(chosenTpl)[1];
 
-            const stackCount = itemTemplate._props.StackMaxSize === 1 ?
-                1 :
-                this.randomUtil.getInt(itemTemplate._props.StackMinRandom, itemTemplate._props.StackMaxRandom);
+            const stackCount = itemTemplate._props.StackMaxSize === 1
+                ? 1
+                : this.randomUtil.getInt(itemTemplate._props.StackMinRandom, itemTemplate._props.StackMaxRandom);
 
             itemWithMods.push(
                 {
@@ -915,14 +915,14 @@ export class LocationGenerator
         }
 
         if (
-            this.itemHelper.isOfBaseclass(tpl, BaseClasses.MONEY) ||
-            this.itemHelper.isOfBaseclass(tpl, BaseClasses.AMMO)
+            this.itemHelper.isOfBaseclass(tpl, BaseClasses.MONEY)
+            || this.itemHelper.isOfBaseclass(tpl, BaseClasses.AMMO)
         )
         {
             // Edge case - some ammos e.g. flares or M406 grenades shouldn't be stacked
-            const stackCount = itemTemplate._props.StackMaxSize === 1 ?
-                1 :
-                this.randomUtil.getInt(itemTemplate._props.StackMinRandom, itemTemplate._props.StackMaxRandom);
+            const stackCount = itemTemplate._props.StackMaxSize === 1
+                ? 1
+                : this.randomUtil.getInt(itemTemplate._props.StackMinRandom, itemTemplate._props.StackMaxRandom);
             items[0].upd = {StackObjectsCount: stackCount};
         }
         // No spawn point, use default template

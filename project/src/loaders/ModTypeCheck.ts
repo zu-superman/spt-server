@@ -70,11 +70,11 @@ export class ModTypeCheck
      */
     public isPostV3Compatible(mod: any): boolean
     {
-        return this.isPreAkiLoad(mod) ||
-            this.isPostAkiLoad(mod) ||
-            this.isPostDBAkiLoad(mod) ||
-            this.isPreAkiLoadAsync(mod) ||
-            this.isPostAkiLoadAsync(mod) ||
-            this.isPostDBAkiLoadAsync(mod);
+        return this.isPreAkiLoad(mod)
+            || this.isPostAkiLoad(mod)
+            || this.isPostDBAkiLoad(mod)
+            || this.isPreAkiLoadAsync(mod)
+            || this.isPostAkiLoadAsync(mod)
+            || this.isPostDBAkiLoadAsync(mod);
     }
 }

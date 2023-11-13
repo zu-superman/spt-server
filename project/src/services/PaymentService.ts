@@ -69,8 +69,8 @@ export class PaymentService
                     else
                     {
                         // If the item is money, add its count to the currencyAmounts object.
-                        currencyAmounts[item._tpl] = (currencyAmounts[item._tpl] || 0) +
-                            request.scheme_items[index].count;
+                        currencyAmounts[item._tpl] = (currencyAmounts[item._tpl] || 0)
+                            + request.scheme_items[index].count;
                     }
                 }
             }

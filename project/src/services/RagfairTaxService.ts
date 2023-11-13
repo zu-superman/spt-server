@@ -62,8 +62,8 @@ export class RagfairTaxService
         const requirementsPrice = requirementsValue * (sellInOnePiece ? 1 : offerItemCount);
 
         const itemTaxMult = this.databaseServer.getTables().globals.config.RagFair.communityItemTax / 100.0;
-        const requirementTaxMult = this.databaseServer.getTables().globals.config.RagFair.communityRequirementTax /
-            100.0;
+        const requirementTaxMult = this.databaseServer.getTables().globals.config.RagFair.communityRequirementTax
+            / 100.0;
 
         let itemPriceMult = Math.log10(itemWorth / requirementsPrice);
         let requirementPriceMult = Math.log10(requirementsPrice / itemWorth);
@@ -83,12 +83,12 @@ export class RagfairTaxService
         const hideoutFleaTaxDiscountBonus = pmcData.Bonuses.find((b) => b.type === "RagfairCommission");
         const taxDiscountPercent = hideoutFleaTaxDiscountBonus ? Math.abs(hideoutFleaTaxDiscountBonus.value) : 0;
 
-        const tax = itemWorth * itemTaxMult * itemPriceMult +
-            requirementsPrice * requirementTaxMult * requirementPriceMult;
+        const tax = itemWorth * itemTaxMult * itemPriceMult
+            + requirementsPrice * requirementTaxMult * requirementPriceMult;
         const discountedTax = tax * (1.0 - taxDiscountPercent / 100.0);
-        const itemComissionMult = itemTemplate._props.RagFairCommissionModifier ?
-            itemTemplate._props.RagFairCommissionModifier :
-            1;
+        const itemComissionMult = itemTemplate._props.RagFairCommissionModifier
+            ? itemTemplate._props.RagFairCommissionModifier
+            : 1;
 
         if (item.upd.Buff)
         {
@@ -144,8 +144,8 @@ export class RagfairTaxService
 
         if ("Key" in item.upd && itemTemplate._props.MaximumNumberOfUsage > 0)
         {
-            worth = worth / itemTemplate._props.MaximumNumberOfUsage *
-                (itemTemplate._props.MaximumNumberOfUsage - item.upd.Key.NumberOfUsages);
+            worth = worth / itemTemplate._props.MaximumNumberOfUsage
+                * (itemTemplate._props.MaximumNumberOfUsage - item.upd.Key.NumberOfUsages);
         }
 
         if ("Resource" in item.upd && itemTemplate._props.MaxResource > 0)
@@ -171,10 +171,10 @@ export class RagfairTaxService
         if ("Repairable" in item.upd && <number>itemTemplate._props.armorClass > 0)
         {
             const num2 = 0.01 * (0.0 ** item.upd.Repairable.MaxDurability);
-            worth = worth * ((item.upd.Repairable.MaxDurability / itemTemplate._props.Durability) - num2) -
-                Math.floor(
-                    itemTemplate._props.RepairCost *
-                        (item.upd.Repairable.MaxDurability - item.upd.Repairable.Durability),
+            worth = worth * ((item.upd.Repairable.MaxDurability / itemTemplate._props.Durability) - num2)
+                - Math.floor(
+                    itemTemplate._props.RepairCost
+                        * (item.upd.Repairable.MaxDurability - item.upd.Repairable.Durability),
                 );
         }
 

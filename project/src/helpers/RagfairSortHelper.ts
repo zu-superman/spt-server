@@ -75,11 +75,11 @@ export class RagfairSortHelper
         const nameA = locale[`${tplA} Name`] || tplA;
         const nameB = locale[`${tplB} Name`] || tplB;
 
-        return (nameA < nameB) ?
-            -1 :
-            (nameA > nameB) ?
-            1 :
-            0;
+        return (nameA < nameB)
+            ? -1
+            : (nameA > nameB)
+            ? 1
+            : 0;
     }
 
     /**

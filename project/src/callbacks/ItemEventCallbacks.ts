@@ -24,14 +24,13 @@ export class ItemEventCallbacks
     ): IGetBodyResponseData<IItemEventRouterResponse>
     {
         const eventResponse = this.itemEventRouter.handleEvents(info, sessionID);
-        const result = (eventResponse.warnings.length > 0) ?
-            this.httpResponse.getBody(
+        const result = (eventResponse.warnings.length > 0)
+            ? this.httpResponse.getBody(
                 eventResponse,
                 this.getErrorCode(eventResponse.warnings),
                 eventResponse.warnings[0].errmsg,
             ) // TODO: map 228 to its enum value
-             :
-            this.httpResponse.getBody(eventResponse);
+            : this.httpResponse.getBody(eventResponse);
 
         return result;
     }

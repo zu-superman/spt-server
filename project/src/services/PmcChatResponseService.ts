@@ -167,9 +167,9 @@ export class PmcChatResponseService
      */
     protected stripCapitalistion(isVictim: boolean): boolean
     {
-        const chance = isVictim ?
-            this.pmcResponsesConfig.victim.stripCapitalisationChancePercent :
-            this.pmcResponsesConfig.killer.stripCapitalisationChancePercent;
+        const chance = isVictim
+            ? this.pmcResponsesConfig.victim.stripCapitalisationChancePercent
+            : this.pmcResponsesConfig.killer.stripCapitalisationChancePercent;
 
         return this.randomUtil.getChance100(chance);
     }
@@ -181,9 +181,9 @@ export class PmcChatResponseService
      */
     protected allCaps(isVictim: boolean): boolean
     {
-        const chance = isVictim ?
-            this.pmcResponsesConfig.victim.allCapsChancePercent :
-            this.pmcResponsesConfig.killer.allCapsChancePercent;
+        const chance = isVictim
+            ? this.pmcResponsesConfig.victim.allCapsChancePercent
+            : this.pmcResponsesConfig.killer.allCapsChancePercent;
 
         return this.randomUtil.getChance100(chance);
     }
@@ -195,9 +195,9 @@ export class PmcChatResponseService
      */
     appendSuffixToMessageEnd(isVictim: boolean): boolean
     {
-        const chance = isVictim ?
-            this.pmcResponsesConfig.victim.appendBroToMessageEndChancePercent :
-            this.pmcResponsesConfig.killer.appendBroToMessageEndChancePercent;
+        const chance = isVictim
+            ? this.pmcResponsesConfig.victim.appendBroToMessageEndChancePercent
+            : this.pmcResponsesConfig.killer.appendBroToMessageEndChancePercent;
 
         return this.randomUtil.getChance100(chance);
     }
@@ -209,9 +209,9 @@ export class PmcChatResponseService
      */
     protected chooseResponseType(isVictim = true): string
     {
-        const responseWeights = isVictim ?
-            this.pmcResponsesConfig.victim.responseTypeWeights :
-            this.pmcResponsesConfig.killer.responseTypeWeights;
+        const responseWeights = isVictim
+            ? this.pmcResponsesConfig.victim.responseTypeWeights
+            : this.pmcResponsesConfig.killer.responseTypeWeights;
 
         return this.weightedRandomHelper.getWeightedValue<string>(responseWeights);
     }

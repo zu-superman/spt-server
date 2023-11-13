@@ -75,8 +75,8 @@ export class HideoutHelper
             return this.httpResponse.appendErrorToOutput(this.eventOutputHolder.getOutput(sessionID));
         }
 
-        const modifiedProductionTime = recipe.productionTime -
-            this.getCraftingSkillProductionTimeReduction(pmcData, recipe.productionTime);
+        const modifiedProductionTime = recipe.productionTime
+            - this.getCraftingSkillProductionTimeReduction(pmcData, recipe.productionTime);
 
         // @Important: Here we need to be very exact:
         // - normal recipe: Production time value is stored in attribute "productionType" with small "p"
@@ -353,8 +353,8 @@ export class HideoutHelper
      */
     protected updateScavCaseProductionTimer(pmcData: IPmcData, productionId: string): void
     {
-        const timeElapsed = (this.timeUtil.getTimestamp() - pmcData.Hideout.Production[productionId].StartTimestamp) -
-            pmcData.Hideout.Production[productionId].Progress;
+        const timeElapsed = (this.timeUtil.getTimestamp() - pmcData.Hideout.Production[productionId].StartTimestamp)
+            - pmcData.Hideout.Production[productionId].Progress;
         pmcData.Hideout.Production[productionId].Progress += timeElapsed;
     }
 
@@ -398,8 +398,8 @@ export class HideoutHelper
     {
         // 1 resource last 14 min 27 sec, 1/14.45/60 = 0.00115
         // 10-10-2021 From wiki, 1 resource last 12 minutes 38 seconds, 1/12.63333/60 = 0.00131
-        let fuelDrainRate = this.databaseServer.getTables().hideout.settings.generatorFuelFlowRate *
-            this.hideoutConfig.runIntervalSeconds;
+        let fuelDrainRate = this.databaseServer.getTables().hideout.settings.generatorFuelFlowRate
+            * this.hideoutConfig.runIntervalSeconds;
         // implemented moddable bonus for fuel consumption bonus instead of using solar power variable as before
         const fuelBonus = pmcData.Bonuses.find((b) => b.type === "FuelConsumption");
         const fuelBonusPercent = 1.0 - (fuelBonus ? Math.abs(fuelBonus.value) : 0) / 100;
@@ -414,9 +414,9 @@ export class HideoutHelper
         {
             if (generatorArea.slots[i].item)
             {
-                let resourceValue = (generatorArea.slots[i].item[0].upd?.Resource) ?
-                    generatorArea.slots[i].item[0].upd.Resource.Value :
-                    null;
+                let resourceValue = (generatorArea.slots[i].item[0].upd?.Resource)
+                    ? generatorArea.slots[i].item[0].upd.Resource.Value
+                    : null;
                 if (resourceValue === 0)
                 {
                     continue;
@@ -424,9 +424,9 @@ export class HideoutHelper
                 else if (!resourceValue)
                 {
                     const fuelItem = HideoutHelper.expeditionaryFuelTank;
-                    resourceValue = generatorArea.slots[i].item[0]._tpl === fuelItem ?
-                        60 - fuelDrainRate :
-                        100 - fuelDrainRate;
+                    resourceValue = generatorArea.slots[i].item[0]._tpl === fuelItem
+                        ? 60 - fuelDrainRate
+                        : 100 - fuelDrainRate;
                     pointsConsumed = fuelDrainRate;
                 }
                 else
@@ -542,9 +542,9 @@ export class HideoutHelper
                 if (waterFilterArea.slots[i].item)
                 {
                     // How many units of filter are left
-                    let resourceValue = (waterFilterArea.slots[i].item[0].upd?.Resource) ?
-                        waterFilterArea.slots[i].item[0].upd.Resource.Value :
-                        null;
+                    let resourceValue = (waterFilterArea.slots[i].item[0].upd?.Resource)
+                        ? waterFilterArea.slots[i].item[0].upd.Resource.Value
+                        : null;
                     if (!resourceValue)
                     {
                         // None left
@@ -553,8 +553,8 @@ export class HideoutHelper
                     }
                     else
                     {
-                        pointsConsumed = (waterFilterArea.slots[i].item[0].upd.Resource.UnitsConsumed || 0) +
-                            filterDrainRate;
+                        pointsConsumed = (waterFilterArea.slots[i].item[0].upd.Resource.UnitsConsumed || 0)
+                            + filterDrainRate;
                         resourceValue -= filterDrainRate;
                     }
 
@@ -606,10 +606,9 @@ export class HideoutHelper
         baseFilterDrainRate: number,
     ): number
     {
-        const drainRateMultiplier = secondsSinceServerTick > totalProductionTime ?
-            (totalProductionTime - productionProgress) // more time passed than prod time, get total minus the current progress
-             :
-            secondsSinceServerTick;
+        const drainRateMultiplier = secondsSinceServerTick > totalProductionTime
+            ? (totalProductionTime - productionProgress) // more time passed than prod time, get total minus the current progress
+            : secondsSinceServerTick;
 
         // Multiply drain rate by calculated multiplier
         baseFilterDrainRate *= drainRateMultiplier;
@@ -668,8 +667,8 @@ export class HideoutHelper
             Lasts for 17 hours 38 minutes and 49 seconds (23 hours 31 minutes and 45 seconds with elite hideout management skill),
             300/17.64694/60/60 = 0.004722
         */
-        let filterDrainRate = this.databaseServer.getTables().hideout.settings.airFilterUnitFlowRate *
-            this.hideoutConfig.runIntervalSeconds;
+        let filterDrainRate = this.databaseServer.getTables().hideout.settings.airFilterUnitFlowRate
+            * this.hideoutConfig.runIntervalSeconds;
         // Hideout management resource consumption bonus:
         const hideoutManagementConsumptionBonus = 1.0 - this.getHideoutManagementConsumptionBonus(pmcData);
         filterDrainRate *= hideoutManagementConsumptionBonus;
@@ -679,9 +678,9 @@ export class HideoutHelper
         {
             if (airFilterArea.slots[i].item)
             {
-                let resourceValue = (airFilterArea.slots[i].item[0].upd?.Resource) ?
-                    airFilterArea.slots[i].item[0].upd.Resource.Value :
-                    null;
+                let resourceValue = (airFilterArea.slots[i].item[0].upd?.Resource)
+                    ? airFilterArea.slots[i].item[0].upd.Resource.Value
+                    : null;
                 if (!resourceValue)
                 {
                     resourceValue = 300 - filterDrainRate;
@@ -781,8 +780,8 @@ export class HideoutHelper
                 }
             */
             // BSG finally fixed their settings, they now get loaded from the settings and used in the client
-            const coinCraftTimeSeconds = bitcoinProdData.productionTime /
-                (1 + (btcFarmCGs - 1) * this.databaseServer.getTables().hideout.settings.gpuBoostRate);
+            const coinCraftTimeSeconds = bitcoinProdData.productionTime
+                / (1 + (btcFarmCGs - 1) * this.databaseServer.getTables().hideout.settings.gpuBoostRate);
             while (btcProd.Progress > coinCraftTimeSeconds)
             {
                 if (btcProd.Products.length < coinSlotCount)
@@ -897,12 +896,12 @@ export class HideoutHelper
         // at level 1 you already get 0.5%, so it goes up until level 50. For some reason the wiki
         // says that it caps at level 51 with 25% but as per dump data that is incorrect apparently
         let roundedLevel = Math.floor(hideoutManagementSkill.Progress / 100);
-        roundedLevel = (roundedLevel === 51) ?
-            roundedLevel - 1 :
-            roundedLevel;
+        roundedLevel = (roundedLevel === 51)
+            ? roundedLevel - 1
+            : roundedLevel;
 
-        return (roundedLevel *
-            this.databaseServer.getTables().globals.config.SkillsSettings.HideoutManagement
+        return (roundedLevel
+            * this.databaseServer.getTables().globals.config.SkillsSettings.HideoutManagement
                 .ConsumptionReductionPerLevel) / 100;
     }
 
@@ -1024,9 +1023,9 @@ export class HideoutHelper
      */
     protected hideoutImprovementIsComplete(improvement: IHideoutImprovement): boolean
     {
-        return improvement?.completed ?
-            true :
-            false;
+        return improvement?.completed
+            ? true
+            : false;
     }
 
     /**
@@ -1039,8 +1038,8 @@ export class HideoutHelper
         {
             const improvementDetails = pmcProfile.Hideout.Improvement[improvementId];
             if (
-                improvementDetails.completed === false &&
-                improvementDetails.improveCompleteTimestamp < this.timeUtil.getTimestamp()
+                improvementDetails.completed === false
+                && improvementDetails.improveCompleteTimestamp < this.timeUtil.getTimestamp()
             )
             {
                 improvementDetails.completed = true;

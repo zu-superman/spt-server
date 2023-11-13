@@ -69,9 +69,9 @@ export class QuestHelper
     {
         const quest = pmcData.Quests?.find((q) => q.qid === questId);
 
-        return quest ?
-            quest.status :
-            QuestStatus.Locked;
+        return quest
+            ? quest.status
+            : QuestStatus.Locked;
     }
 
     /**
@@ -279,9 +279,9 @@ export class QuestHelper
             if (item._id === reward.target)
             {
                 if (
-                    (item.parentId !== undefined) && (item.parentId === "hideout") &&
-                    (item.upd !== undefined) && (item.upd.StackObjectsCount !== undefined) &&
-                    (item.upd.StackObjectsCount > 1)
+                    (item.parentId !== undefined) && (item.parentId === "hideout")
+                    && (item.upd !== undefined) && (item.upd.StackObjectsCount !== undefined)
+                    && (item.upd.StackObjectsCount > 1)
                 )
                 {
                     item.upd.StackObjectsCount = 1;
@@ -330,9 +330,9 @@ export class QuestHelper
         // Iterate over all rewards with the desired status, flatten out items that have a type of Item
         const questRewards = quest.rewards[QuestStatus[status]]
             .flatMap((reward: Reward) =>
-                reward.type === "Item" ?
-                    this.processReward(reward) :
-                    []
+                reward.type === "Item"
+                    ? this.processReward(reward)
+                    : []
             );
 
         return questRewards;
@@ -413,9 +413,9 @@ export class QuestHelper
             // e.g. Quest A passed in, quest B is looped over and has requirement of A to be started, include it
             const acceptedQuestCondition = quest.conditions.AvailableForStart.find((x) =>
             {
-                return x._parent === "Quest" &&
-                    x._props.target === startedQuestId &&
-                    x._props.status[0] === QuestStatus.Started;
+                return x._parent === "Quest"
+                    && x._props.target === startedQuestId
+                    && x._props.status[0] === QuestStatus.Started;
             });
 
             // Not found, skip quest
@@ -447,8 +447,8 @@ export class QuestHelper
             }
 
             // Include if quest found in profile and is started or ready to hand in
-            return startedQuestInProfile &&
-                ([QuestStatus.Started, QuestStatus.AvailableForFinish].includes(startedQuestInProfile.status));
+            return startedQuestInProfile
+                && ([QuestStatus.Started, QuestStatus.AvailableForFinish].includes(startedQuestInProfile.status));
         });
 
         return this.getQuestsWithOnlyLevelRequirementStartCondition(eligibleQuests);
@@ -470,9 +470,9 @@ export class QuestHelper
             const acceptedQuestCondition = q.conditions.AvailableForStart.find(
                 (c) =>
                 {
-                    return c._parent === "Quest" &&
-                        c._props.target === failedQuestId &&
-                        c._props.status[0] === QuestStatus.Fail;
+                    return c._parent === "Quest"
+                        && c._props.target === failedQuestId
+                        && c._props.status[0] === QuestStatus.Fail;
                 },
             );
 
@@ -704,8 +704,8 @@ export class QuestHelper
         // blank or is a guid, use description instead
         const startedMessageText = this.getQuestLocaleIdFromDb(startedMessageTextId);
         if (
-            !startedMessageText || startedMessageText.trim() === "" || startedMessageText.toLowerCase() === "test" ||
-            startedMessageText.length === 24
+            !startedMessageText || startedMessageText.trim() === "" || startedMessageText.toLowerCase() === "test"
+            || startedMessageText.length === 24
         )
         {
             return questDescriptionId;
@@ -850,9 +850,9 @@ export class QuestHelper
         // Get hideout crafts and find those that match by areatype/required level/end product tpl - hope for just one match
         const hideoutProductions = this.databaseServer.getTables().hideout.production;
         const matchingProductions = hideoutProductions.filter((x) =>
-            x.areaType === Number.parseInt(craftUnlockReward.traderId) &&
-            x.requirements.some((x) => x.requiredLevel === craftUnlockReward.loyaltyLevel) &&
-            x.endProduct === craftUnlockReward.items[0]._tpl
+            x.areaType === Number.parseInt(craftUnlockReward.traderId)
+            && x.requirements.some((x) => x.requiredLevel === craftUnlockReward.loyaltyLevel)
+            && x.endProduct === craftUnlockReward.items[0]._tpl
         );
 
         // More/less than 1 match, above filtering wasn't strict enough

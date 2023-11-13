@@ -108,8 +108,8 @@ export class HealthHelper
             }
             else
             {
-                profileHealth[bodyPart] = pmcData.Health.BodyParts[bodyPart].Health.Maximum *
-                    this.healthConfig.healthMultipliers.death;
+                profileHealth[bodyPart] = pmcData.Health.BodyParts[bodyPart].Health.Maximum
+                    * this.healthConfig.healthMultipliers.death;
             }
         }
 
@@ -172,8 +172,8 @@ export class HealthHelper
                 {
                     // Blacked body part
                     target = Math.round(
-                        pmcData.Health.BodyParts[healthModifier].Health.Maximum *
-                            this.healthConfig.healthMultipliers.blacked,
+                        pmcData.Health.BodyParts[healthModifier].Health.Maximum
+                            * this.healthConfig.healthMultipliers.blacked,
                     );
                 }
 

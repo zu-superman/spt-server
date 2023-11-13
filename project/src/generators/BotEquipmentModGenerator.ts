@@ -97,9 +97,9 @@ export class BotEquipmentModGenerator
             }
 
             // Ensure submods for nvgs all spawn together
-            forceSpawn = (modSlot === "mod_nvg") ?
-                true :
-                false;
+            forceSpawn = (modSlot === "mod_nvg")
+                ? true
+                : false;
 
             let modTpl: string;
             let found = false;
@@ -200,8 +200,8 @@ export class BotEquipmentModGenerator
 
         // Null guard against bad input weapon
         if (
-            !((parentTemplate._props.Slots.length || parentTemplate._props.Cartridges?.length) ||
-                parentTemplate._props.Chambers?.length)
+            !((parentTemplate._props.Slots.length || parentTemplate._props.Cartridges?.length)
+                || parentTemplate._props.Chambers?.length)
         )
         {
             this.logger.error(
@@ -329,8 +329,8 @@ export class BotEquipmentModGenerator
             // Handguard mod can take a sub handguard mod + weapon has no UBGL (takes same slot)
             // Force spawn chance to be 100% to ensure it gets added
             if (
-                modSlot === "mod_handguard" && modToAddTemplate._props.Slots.find((x) => x._name === "mod_handguard") &&
-                !weapon.find((x) => x.slotId === "mod_launcher")
+                modSlot === "mod_handguard" && modToAddTemplate._props.Slots.find((x) => x._name === "mod_handguard")
+                && !weapon.find((x) => x.slotId === "mod_launcher")
             )
             {
                 // Needed for handguards with lower
@@ -340,8 +340,10 @@ export class BotEquipmentModGenerator
             // If stock mod can take a sub stock mod, force spawn chance to be 100% to ensure sub-stock gets added
             // Or if mod_stock is configured to be forced on
             if (
-                modSlot === "mod_stock" &&
-                (modToAddTemplate._props.Slots.find((x) => x._name.includes("mod_stock") || botEquipConfig.forceStock))
+                modSlot === "mod_stock"
+                && (modToAddTemplate._props.Slots.find((x) =>
+                    x._name.includes("mod_stock") || botEquipConfig.forceStock
+                ))
             )
             {
                 // Stock mod can take additional stocks, could be a locking device, force 100% chance
@@ -433,8 +435,8 @@ export class BotEquipmentModGenerator
             "mod_scope_001",
             "mod_scope_002",
             "mod_scope_003",
-        ].includes(modSlot.toLowerCase()) &&
-            modsParentId === BaseClasses.MOUNT;
+        ].includes(modSlot.toLowerCase())
+            && modsParentId === BaseClasses.MOUNT;
     }
 
     /**
@@ -579,9 +581,8 @@ export class BotEquipmentModGenerator
     protected shouldModBeSpawned(itemSlot: Slot, modSlot: string, modSpawnChances: ModsChances): boolean
     {
         const modSpawnChance = itemSlot._required || this.getAmmoContainers().includes(modSlot) // Required OR it is ammo
-             ?
-            100 :
-            modSpawnChances[modSlot];
+            ? 100
+            : modSpawnChances[modSlot];
 
         if (modSpawnChance === 100)
         {
@@ -824,8 +825,8 @@ export class BotEquipmentModGenerator
 
         // If mod id doesn't exist in slots filter list and mod id doesn't have any of the slots filters as a base class, mod isn't valid for the slot
         if (
-            !(itemSlot._props.filters[0].Filter.includes(modToAdd[1]._id) ||
-                this.itemHelper.isOfBaseclasses(modToAdd[1]._id, itemSlot._props.filters[0].Filter))
+            !(itemSlot._props.filters[0].Filter.includes(modToAdd[1]._id)
+                || this.itemHelper.isOfBaseclasses(modToAdd[1]._id, itemSlot._props.filters[0].Filter))
         )
         {
             this.logger.warning(
@@ -1114,8 +1115,8 @@ export class BotEquipmentModGenerator
                 if (
                     scopeSlot?.every((x) =>
                         x._props.filters[0].Filter.every((x) =>
-                            this.itemHelper.isOfBaseclasses(x, whitelistedSightTypes) ||
-                            this.itemHelper.isOfBaseclass(x, BaseClasses.MOUNT)
+                            this.itemHelper.isOfBaseclasses(x, whitelistedSightTypes)
+                            || this.itemHelper.isOfBaseclass(x, BaseClasses.MOUNT)
                         )
                     )
                 )

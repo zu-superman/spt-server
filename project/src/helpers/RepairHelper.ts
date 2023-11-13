@@ -77,14 +77,14 @@ export class RepairHelper
         // the code below generates a random degradation on the weapon durability
         if (applyMaxDurabilityDegradation)
         {
-            const randomisedWearAmount = isArmor ?
-                this.getRandomisedArmorRepairDegradationValue(
+            const randomisedWearAmount = isArmor
+                ? this.getRandomisedArmorRepairDegradationValue(
                     itemToRepairDetails._props.ArmorMaterial,
                     useRepairKit,
                     itemCurrentMaxDurability,
                     traderQualityMultipler,
-                ) :
-                this.getRandomisedWeaponRepairDegradationValue(
+                )
+                : this.getRandomisedWeaponRepairDegradationValue(
                     itemToRepairDetails._props,
                     useRepairKit,
                     itemCurrentMaxDurability,
@@ -117,13 +117,13 @@ export class RepairHelper
     {
         const armorMaterialSettings = this.databaseServer.getTables().globals.config.ArmorMaterials[armorMaterial];
 
-        const minMultiplier = isRepairKit ?
-            armorMaterialSettings.MinRepairKitDegradation :
-            armorMaterialSettings.MinRepairDegradation;
+        const minMultiplier = isRepairKit
+            ? armorMaterialSettings.MinRepairKitDegradation
+            : armorMaterialSettings.MinRepairDegradation;
 
-        const maxMultiplier = isRepairKit ?
-            armorMaterialSettings.MaxRepairKitDegradation :
-            armorMaterialSettings.MaxRepairDegradation;
+        const maxMultiplier = isRepairKit
+            ? armorMaterialSettings.MaxRepairKitDegradation
+            : armorMaterialSettings.MaxRepairDegradation;
 
         const duraLossPercent = this.randomUtil.getFloat(minMultiplier, maxMultiplier);
         const duraLossMultipliedByTraderMultiplier = (duraLossPercent * armorMax) * traderQualityMultipler;
@@ -138,12 +138,12 @@ export class RepairHelper
         traderQualityMultipler: number,
     ): number
     {
-        const minRepairDeg = isRepairKit ?
-            itemProps.MinRepairKitDegradation :
-            itemProps.MinRepairDegradation;
-        let maxRepairDeg = isRepairKit ?
-            itemProps.MaxRepairKitDegradation :
-            itemProps.MaxRepairDegradation;
+        const minRepairDeg = isRepairKit
+            ? itemProps.MinRepairKitDegradation
+            : itemProps.MinRepairDegradation;
+        let maxRepairDeg = isRepairKit
+            ? itemProps.MaxRepairKitDegradation
+            : itemProps.MaxRepairDegradation;
 
         // WORKAROUND: Some items are always 0 when repairkit is true
         if (maxRepairDeg === 0)

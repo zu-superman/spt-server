@@ -164,9 +164,9 @@ export class InsuranceController
     {
         const profile = this.saveServer.getProfile(sessionID);
         profile.insurance = profile.insurance.filter((insurance) =>
-            insurance.messageContent.systemData.date !== packageInfo.date ||
-            insurance.messageContent.systemData.time !== packageInfo.time ||
-            insurance.messageContent.systemData.location !== packageInfo.location
+            insurance.messageContent.systemData.date !== packageInfo.date
+            || insurance.messageContent.systemData.time !== packageInfo.time
+            || insurance.messageContent.systemData.location !== packageInfo.location
         );
 
         this.logger.debug(

@@ -99,9 +99,9 @@ export class RepeatableQuestController
             const currentRepeatableQuestType = this.getRepeatableQuestSubTypeFromProfile(repeatableConfig, pmcData);
 
             if (
-                repeatableConfig.side === "Pmc" &&
-                    pmcData.Info.Level >= repeatableConfig.minPlayerLevel ||
-                repeatableConfig.side === "Scav" && scavQuestUnlocked
+                repeatableConfig.side === "Pmc"
+                    && pmcData.Info.Level >= repeatableConfig.minPlayerLevel
+                || repeatableConfig.side === "Scav" && scavQuestUnlocked
             )
             {
                 if (time > currentRepeatableQuestType.endTime - 1)
@@ -209,13 +209,14 @@ export class RepeatableQuestController
     protected getQuestCount(repeatableConfig: IRepeatableQuestConfig, pmcData: IPmcData): number
     {
         if (
-            repeatableConfig.name.toLowerCase() === "daily" &&
-            this.profileHelper.hasEliteSkillLevel(SkillTypes.CHARISMA, pmcData)
+            repeatableConfig.name.toLowerCase() === "daily"
+            && this.profileHelper.hasEliteSkillLevel(SkillTypes.CHARISMA, pmcData)
         )
         {
             // Elite charisma skill gives extra daily quest(s)
-            return repeatableConfig.numQuests +
-                this.databaseServer.getTables().globals.config.SkillsSettings.Charisma.BonusSettings.EliteBonusSettings
+            return repeatableConfig.numQuests
+                + this.databaseServer.getTables().globals.config.SkillsSettings.Charisma.BonusSettings
+                    .EliteBonusSettings
                     .RepeatableQuestExtraCount;
         }
 
@@ -321,9 +322,9 @@ export class RepeatableQuestController
                 const possibleLocations = Object.keys(repeatableConfig.locations);
 
                 // Set possible locations for elimination task, if target is savage, exclude labs from locations
-                questPool.pool.Elimination.targets[probabilityObject.key] = (probabilityObject.key === "Savage") ?
-                    {locations: possibleLocations.filter((x) => x !== "laboratory")} :
-                    {locations: possibleLocations};
+                questPool.pool.Elimination.targets[probabilityObject.key] = (probabilityObject.key === "Savage")
+                    ? {locations: possibleLocations.filter((x) => x !== "laboratory")}
+                    : {locations: possibleLocations};
             }
         }
 

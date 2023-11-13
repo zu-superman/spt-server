@@ -106,9 +106,9 @@ export class WeatherGenerator
             wind_gustiness: this.getRandomFloat("windGustiness"),
             rain: rain,
             // eslint-disable-next-line @typescript-eslint/naming-convention
-            rain_intensity: (rain > 1) ?
-                this.getRandomFloat("rainIntensity") :
-                0,
+            rain_intensity: (rain > 1)
+                ? this.getRandomFloat("rainIntensity")
+                : 0,
             fog: this.getWeightedFog(),
             temp: this.getRandomFloat("temp"),
             pressure: this.getRandomFloat("pressure"),

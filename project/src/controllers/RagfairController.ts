@@ -256,9 +256,9 @@ export class RagfairController
         const assortData = traderAssorts.find((x) => x._id === assortId);
 
         // Use value stored in profile, otherwise use value directly from in-memory trader assort data
-        offer.buyRestrictionCurrent = profile.traderPurchases[offer.user.id][assortId] ?
-            profile.traderPurchases[offer.user.id][assortId].count :
-            assortData.upd.BuyRestrictionCurrent;
+        offer.buyRestrictionCurrent = profile.traderPurchases[offer.user.id][assortId]
+            ? profile.traderPurchases[offer.user.id][assortId].count
+            : assortData.upd.BuyRestrictionCurrent;
 
         offer.buyRestrictionMax = assortData.upd.BuyRestrictionMax;
     }
@@ -397,22 +397,21 @@ export class RagfairController
         );
         const rootItem = offer.items[0];
         const qualityMultiplier = this.itemHelper.getItemQualityModifier(rootItem);
-        const averageOfferPrice = this.ragfairPriceService.getFleaPriceForItem(rootItem._tpl) *
-            rootItem.upd.StackObjectsCount * qualityMultiplier;
-        const itemStackCount = (offerRequest.sellInOnePiece) ?
-            1 :
-            rootItem.upd.StackObjectsCount;
+        const averageOfferPrice = this.ragfairPriceService.getFleaPriceForItem(rootItem._tpl)
+            * rootItem.upd.StackObjectsCount * qualityMultiplier;
+        const itemStackCount = (offerRequest.sellInOnePiece)
+            ? 1
+            : rootItem.upd.StackObjectsCount;
 
         // Get averaged price of a single item being listed
-        const averageSingleItemPrice = (offerRequest.sellInOnePiece) ?
-            averageOfferPrice / rootItem.upd.StackObjectsCount // Packs are a single offer made of many items
-             :
-            averageOfferPrice / itemStackCount;
+        const averageSingleItemPrice = (offerRequest.sellInOnePiece)
+            ? averageOfferPrice / rootItem.upd.StackObjectsCount // Packs are a single offer made of many items
+            : averageOfferPrice / itemStackCount;
 
         // Get averaged price of listing
-        const averagePlayerListedPriceInRub = (offerRequest.sellInOnePiece) ?
-            playerListedPriceInRub / rootItem.upd.StackObjectsCount :
-            playerListedPriceInRub;
+        const averagePlayerListedPriceInRub = (offerRequest.sellInOnePiece)
+            ? playerListedPriceInRub / rootItem.upd.StackObjectsCount
+            : playerListedPriceInRub;
 
         // Packs are reduced to the average price of a single item in the pack vs the averaged single price of an item
         const sellChancePercent = this.ragfairSellHelper.calculateSellChance(
@@ -475,9 +474,9 @@ export class RagfairController
     {
         // Get tax from cache hydrated earlier by client, if that's missing fall back to server calculation (inaccurate)
         const storedClientTaxValue = this.ragfairTaxService.getStoredClientOfferTaxValueById(offerRequest.items[0]);
-        const tax = storedClientTaxValue ?
-            storedClientTaxValue.fee :
-            this.ragfairTaxService.calculateTax(
+        const tax = storedClientTaxValue
+            ? storedClientTaxValue.fee
+            : this.ragfairTaxService.calculateTax(
                 rootItem,
                 pmcData,
                 requirementsPriceInRub,
@@ -549,8 +548,8 @@ export class RagfairController
             }
             else
             {
-                requirementsPriceInRub += this.ragfairPriceService.getDynamicPriceForItem(requestedItemTpl) *
-                    item.count;
+                requirementsPriceInRub += this.ragfairPriceService.getDynamicPriceForItem(requestedItemTpl)
+                    * item.count;
             }
         }
 
@@ -719,9 +718,9 @@ export class RagfairController
         // MOD: Pay flea market fee
         if (this.ragfairConfig.sell.fees)
         {
-            const count = offers[index].sellInOnePiece ?
-                1 :
-                offers[index].items.reduce((sum, item) => sum += item.upd.StackObjectsCount, 0);
+            const count = offers[index].sellInOnePiece
+                ? 1
+                : offers[index].items.reduce((sum, item) => sum += item.upd.StackObjectsCount, 0);
             const tax = this.ragfairTaxService.calculateTax(
                 offers[index].items[0],
                 this.profileHelper.getPmcProfile(sessionID),

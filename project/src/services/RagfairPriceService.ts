@@ -298,9 +298,9 @@ export class RagfairPriceService implements OnLoad
 
         // Only adjust price if difference is > a percent AND item price passes threshhold set in config
         if (
-            priceDifferencePercent >
-                this.ragfairConfig.dynamic.offerAdjustment.maxPriceDifferenceBelowHandbookPercent &&
-            itemPrice >= this.ragfairConfig.dynamic.offerAdjustment.priceThreshholdRub
+            priceDifferencePercent
+                > this.ragfairConfig.dynamic.offerAdjustment.maxPriceDifferenceBelowHandbookPercent
+            && itemPrice >= this.ragfairConfig.dynamic.offerAdjustment.priceThreshholdRub
         )
         {
             // const itemDetails = this.itemHelper.getItem(itemTpl);

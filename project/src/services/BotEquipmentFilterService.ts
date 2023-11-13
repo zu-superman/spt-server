@@ -54,9 +54,9 @@ export class BotEquipmentFilterService
     {
         const pmcProfile = this.profileHelper.getPmcProfile(sessionId);
 
-        const botRole = (botGenerationDetails.isPmc) ?
-            "pmc" :
-            botGenerationDetails.role;
+        const botRole = (botGenerationDetails.isPmc)
+            ? "pmc"
+            : botGenerationDetails.role;
         const botEquipmentBlacklist = this.getBotEquipmentBlacklist(botRole, botLevel);
         const botEquipmentWhitelist = this.getBotEquipmentWhitelist(botRole, botLevel);
         const botWeightingAdjustments = this.getBotWeightingAdjustments(botRole, botLevel);
@@ -175,8 +175,8 @@ export class BotEquipmentFilterService
 
         // No equipment blacklist found, skip
         if (
-            !blacklistDetailsForBot || Object.keys(blacklistDetailsForBot).length === 0 ||
-            !blacklistDetailsForBot.blacklist
+            !blacklistDetailsForBot || Object.keys(blacklistDetailsForBot).length === 0
+            || !blacklistDetailsForBot.blacklist
         )
         {
             return null;
@@ -220,8 +220,8 @@ export class BotEquipmentFilterService
 
         // No config found, skip
         if (
-            !botEquipmentConfig || Object.keys(botEquipmentConfig).length === 0 ||
-            !botEquipmentConfig.weightingAdjustmentsByBotLevel
+            !botEquipmentConfig || Object.keys(botEquipmentConfig).length === 0
+            || !botEquipmentConfig.weightingAdjustmentsByBotLevel
         )
         {
             return null;
@@ -244,8 +244,8 @@ export class BotEquipmentFilterService
 
         // No config found, skip
         if (
-            !botEquipmentConfig || Object.keys(botEquipmentConfig).length === 0 ||
-            !botEquipmentConfig.weightingAdjustmentsByPlayerLevel
+            !botEquipmentConfig || Object.keys(botEquipmentConfig).length === 0
+            || !botEquipmentConfig.weightingAdjustmentsByPlayerLevel
         )
         {
             return null;

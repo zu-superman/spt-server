@@ -82,9 +82,9 @@ export class WebSocketServer
             return this.localisationService.getRandomTextThatMatchesPartialKey("server_start_meme_");
         }
 
-        return (globalThis.G_RELEASE_CONFIGURATION) ?
-            `${this.localisationService.getText("server_start_success")}!` :
-            this.localisationService.getText("server_start_success");
+        return (globalThis.G_RELEASE_CONFIGURATION)
+            ? `${this.localisationService.getText("server_start_success")}!`
+            : this.localisationService.getText("server_start_success");
     }
 
     public isConnectionWebSocket(sessionID: string): boolean

@@ -95,8 +95,8 @@ export class TradeController
 
             // Skip buying items when player doesn't have necessary loyalty
             if (
-                fleaOffer.user.memberType === MemberCategory.TRADER &&
-                fleaOffer.loyaltyLevel > pmcData.TradersInfo[fleaOffer.user.id].loyaltyLevel
+                fleaOffer.user.memberType === MemberCategory.TRADER
+                && fleaOffer.loyaltyLevel > pmcData.TradersInfo[fleaOffer.user.id].loyaltyLevel
             )
             {
                 this.logger.debug(
@@ -231,8 +231,8 @@ export class TradeController
         {
             const itemDetails = this.itemHelper.getItem(itemToSell._tpl);
             if (
-                !(itemDetails[0] &&
-                    this.itemHelper.isOfBaseclasses(itemDetails[1]._id, traderDetails.items_buy.category))
+                !(itemDetails[0]
+                    && this.itemHelper.isOfBaseclasses(itemDetails[1]._id, traderDetails.items_buy.category))
             )
             {
                 // Skip if tpl isn't item OR item doesn't fulfill match traders buy categories

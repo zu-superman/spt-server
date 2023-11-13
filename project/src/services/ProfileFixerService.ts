@@ -82,17 +82,17 @@ export class ProfileFixerService
             this.reorderHideoutAreasWithResouceInputs(pmcProfile);
 
             if (
-                pmcProfile.Hideout.Areas[HideoutAreas.GENERATOR].slots.length <
-                    (6 +
-                        this.databaseServer.getTables().globals.config.SkillsSettings.HideoutManagement.EliteSlots
+                pmcProfile.Hideout.Areas[HideoutAreas.GENERATOR].slots.length
+                    < (6
+                        + this.databaseServer.getTables().globals.config.SkillsSettings.HideoutManagement.EliteSlots
                             .Generator.Slots)
             )
             {
                 this.logger.debug("Updating generator area slots to a size of 6 + hideout management skill");
                 this.addEmptyObjectsToHideoutAreaSlots(
                     HideoutAreas.GENERATOR,
-                    6 +
-                        this.databaseServer.getTables().globals.config.SkillsSettings.HideoutManagement.EliteSlots
+                    6
+                        + this.databaseServer.getTables().globals.config.SkillsSettings.HideoutManagement.EliteSlots
                             .Generator
                             .Slots,
                     pmcProfile,
@@ -100,34 +100,34 @@ export class ProfileFixerService
             }
 
             if (
-                pmcProfile.Hideout.Areas[HideoutAreas.WATER_COLLECTOR].slots.length <
-                    (1 +
-                        this.databaseServer.getTables().globals.config.SkillsSettings.HideoutManagement.EliteSlots
+                pmcProfile.Hideout.Areas[HideoutAreas.WATER_COLLECTOR].slots.length
+                    < (1
+                        + this.databaseServer.getTables().globals.config.SkillsSettings.HideoutManagement.EliteSlots
                             .WaterCollector.Slots)
             )
             {
                 this.logger.debug("Updating water collector area slots to a size of 1 + hideout management skill");
                 this.addEmptyObjectsToHideoutAreaSlots(
                     HideoutAreas.WATER_COLLECTOR,
-                    1 +
-                        this.databaseServer.getTables().globals.config.SkillsSettings.HideoutManagement.EliteSlots
+                    1
+                        + this.databaseServer.getTables().globals.config.SkillsSettings.HideoutManagement.EliteSlots
                             .WaterCollector.Slots,
                     pmcProfile,
                 );
             }
 
             if (
-                pmcProfile.Hideout.Areas[HideoutAreas.AIR_FILTERING].slots.length <
-                    (3 +
-                        this.databaseServer.getTables().globals.config.SkillsSettings.HideoutManagement.EliteSlots
+                pmcProfile.Hideout.Areas[HideoutAreas.AIR_FILTERING].slots.length
+                    < (3
+                        + this.databaseServer.getTables().globals.config.SkillsSettings.HideoutManagement.EliteSlots
                             .AirFilteringUnit.Slots)
             )
             {
                 this.logger.debug("Updating air filter area slots to a size of 3 + hideout management skill");
                 this.addEmptyObjectsToHideoutAreaSlots(
                     HideoutAreas.AIR_FILTERING,
-                    3 +
-                        this.databaseServer.getTables().globals.config.SkillsSettings.HideoutManagement.EliteSlots
+                    3
+                        + this.databaseServer.getTables().globals.config.SkillsSettings.HideoutManagement.EliteSlots
                             .AirFilteringUnit.Slots,
                     pmcProfile,
                 );
@@ -135,17 +135,17 @@ export class ProfileFixerService
 
             // BTC Farm doesnt have extra slots for hideout management, but we still check for modded stuff!!
             if (
-                pmcProfile.Hideout.Areas[HideoutAreas.BITCOIN_FARM].slots.length <
-                    (50 +
-                        this.databaseServer.getTables().globals.config.SkillsSettings.HideoutManagement.EliteSlots
+                pmcProfile.Hideout.Areas[HideoutAreas.BITCOIN_FARM].slots.length
+                    < (50
+                        + this.databaseServer.getTables().globals.config.SkillsSettings.HideoutManagement.EliteSlots
                             .BitcoinFarm.Slots)
             )
             {
                 this.logger.debug("Updating bitcoin farm area slots to a size of 50 + hideout management skill");
                 this.addEmptyObjectsToHideoutAreaSlots(
                     HideoutAreas.BITCOIN_FARM,
-                    50 +
-                        this.databaseServer.getTables().globals.config.SkillsSettings.HideoutManagement.EliteSlots
+                    50
+                        + this.databaseServer.getTables().globals.config.SkillsSettings.HideoutManagement.EliteSlots
                             .BitcoinFarm.Slots,
                     pmcProfile,
                 );
@@ -553,8 +553,8 @@ export class ProfileFixerService
             for (const currentRepeatable of pmcProfile.RepeatableQuests)
             {
                 if (
-                    !(currentRepeatable.changeRequirement &&
-                        currentRepeatable.activeQuests.every(
+                    !(currentRepeatable.changeRequirement
+                        && currentRepeatable.activeQuests.every(
                             (x) => (typeof x.changeCost !== "undefined" && typeof x.changeStandingCost !== "undefined"),
                         ))
                 )
@@ -800,8 +800,8 @@ export class ProfileFixerService
         {
             return profileBonuses.find(
                 (x) =>
-                    x.type === bonus.type &&
-                    x.templateId === bonus.templateId,
+                    x.type === bonus.type
+                    && x.templateId === bonus.templateId,
             );
         }
 
@@ -809,16 +809,16 @@ export class ProfileFixerService
         {
             return profileBonuses.find(
                 (x) =>
-                    x.type === bonus.type &&
-                    x.value === bonus.value &&
-                    x.visible === bonus.visible,
+                    x.type === bonus.type
+                    && x.value === bonus.value
+                    && x.visible === bonus.visible,
             );
         }
 
         return profileBonuses.find(
             (x) =>
-                x.type === bonus.type &&
-                x.value === bonus.value,
+                x.type === bonus.type
+                && x.value === bonus.value,
         );
     }
 

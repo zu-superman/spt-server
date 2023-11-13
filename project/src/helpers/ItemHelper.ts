@@ -68,11 +68,11 @@ class ItemHelper
         }
 
         // Is item valid
-        return !itemDetails[1]._props.QuestItem &&
-            itemDetails[1]._type === "Item" &&
-            invalidBaseTypes.every((x) => !this.isOfBaseclass(tpl, x)) &&
-            this.getItemPrice(tpl) > 0 &&
-            !this.itemFilterService.isItemBlacklisted(tpl);
+        return !itemDetails[1]._props.QuestItem
+            && itemDetails[1]._type === "Item"
+            && invalidBaseTypes.every((x) => !this.isOfBaseclass(tpl, x))
+            && this.getItemPrice(tpl) > 0
+            && !this.itemFilterService.isItemBlacklisted(tpl);
     }
 
     /**
@@ -378,9 +378,9 @@ class ItemHelper
 
         // Weapon
         // Get max dura from props, if it isnt there use repairable max dura value
-        const maxDurability = (itemDetails._props.MaxDurability) ?
-            itemDetails._props.MaxDurability :
-            repairable.MaxDurability;
+        const maxDurability = (itemDetails._props.MaxDurability)
+            ? itemDetails._props.MaxDurability
+            : repairable.MaxDurability;
         const durability = repairable.Durability / maxDurability;
 
         if (!durability)
@@ -474,8 +474,8 @@ class ItemHelper
     public hasBuyRestrictions(itemToCheck: Item): boolean
     {
         if (
-            itemToCheck.upd?.BuyRestrictionCurrent !== undefined &&
-            itemToCheck.upd?.BuyRestrictionMax !== undefined
+            itemToCheck.upd?.BuyRestrictionCurrent !== undefined
+            && itemToCheck.upd?.BuyRestrictionMax !== undefined
         )
         {
             return true;
@@ -574,18 +574,18 @@ class ItemHelper
     public findBarterItems(by: "tpl" | "id", items: Item[], barterItemId: string): Item[]
     {
         // find required items to take after buying (handles multiple items)
-        const barterIDs = typeof barterItemId === "string" ?
-            [barterItemId] :
-            barterItemId;
+        const barterIDs = typeof barterItemId === "string"
+            ? [barterItemId]
+            : barterItemId;
 
         let barterItems: Item[] = [];
         for (const barterID of barterIDs)
         {
             const filterResult = items.filter((item) =>
             {
-                return by === "tpl" ?
-                    (item._tpl === barterID) :
-                    (item._id === barterID);
+                return by === "tpl"
+                    ? (item._tpl === barterID)
+                    : (item._id === barterID);
             });
 
             barterItems = Object.assign(barterItems, filterResult);
@@ -625,11 +625,11 @@ class ItemHelper
 
                 // Do not replace important ID's
                 if (
-                    item._id === pmcData.Inventory.equipment ||
-                    item._id === pmcData.Inventory.questRaidItems ||
-                    item._id === pmcData.Inventory.questStashItems ||
-                    item._id === pmcData.Inventory.sortingTable ||
-                    item._id === pmcData.Inventory.stash
+                    item._id === pmcData.Inventory.equipment
+                    || item._id === pmcData.Inventory.questRaidItems
+                    || item._id === pmcData.Inventory.questStashItems
+                    || item._id === pmcData.Inventory.sortingTable
+                    || item._id === pmcData.Inventory.stash
                 )
                 {
                     continue;
@@ -904,9 +904,9 @@ class ItemHelper
                 sizeUp = sizeUp < itemTemplate._props.ExtraSizeUp ? itemTemplate._props.ExtraSizeUp : sizeUp;
                 sizeDown = sizeDown < itemTemplate._props.ExtraSizeDown ? itemTemplate._props.ExtraSizeDown : sizeDown;
                 sizeLeft = sizeLeft < itemTemplate._props.ExtraSizeLeft ? itemTemplate._props.ExtraSizeLeft : sizeLeft;
-                sizeRight = sizeRight < itemTemplate._props.ExtraSizeRight ?
-                    itemTemplate._props.ExtraSizeRight :
-                    sizeRight;
+                sizeRight = sizeRight < itemTemplate._props.ExtraSizeRight
+                    ? itemTemplate._props.ExtraSizeRight
+                    : sizeRight;
             }
         }
 
@@ -954,9 +954,9 @@ class ItemHelper
         while (currentStoredCartridgeCount < ammoBoxMaxCartridgeCount)
         {
             const remainingSpace = ammoBoxMaxCartridgeCount - currentStoredCartridgeCount;
-            const cartridgeCountToAdd = (remainingSpace < maxPerStack) ?
-                remainingSpace :
-                maxPerStack;
+            const cartridgeCountToAdd = (remainingSpace < maxPerStack)
+                ? remainingSpace
+                : maxPerStack;
 
             // Add cartridge item into items array
             ammoBox.push(this.createCartridges(ammoBox[0]._id, cartridgeTpl, cartridgeCountToAdd, location));
@@ -1057,9 +1057,9 @@ class ItemHelper
         while (currentStoredCartridgeCount < desiredStackCount)
         {
             // Get stack size of cartridges
-            let cartridgeCountToAdd = (desiredStackCount <= cartridgeMaxStackSize) ?
-                desiredStackCount :
-                cartridgeMaxStackSize;
+            let cartridgeCountToAdd = (desiredStackCount <= cartridgeMaxStackSize)
+                ? desiredStackCount
+                : cartridgeMaxStackSize;
 
             // Ensure we don't go over the max stackcount size
             const remainingSpace = desiredStackCount - currentStoredCartridgeCount;

@@ -126,9 +126,9 @@ export class RagfairOfferGenerator
             intId: 0,
             user: {
                 id: this.getTraderId(userID),
-                memberType: (userID === "ragfair") ?
-                    MemberCategory.DEFAULT :
-                    this.ragfairServerHelper.getMemberType(userID),
+                memberType: (userID === "ragfair")
+                    ? MemberCategory.DEFAULT
+                    : this.ragfairServerHelper.getMemberType(userID),
                 nickname: this.ragfairServerHelper.getNickname(userID),
                 rating: this.getRating(userID),
                 isRatingGrowing: this.getRatingGrowing(userID),
@@ -164,9 +164,9 @@ export class RagfairOfferGenerator
         let roublePrice = 0;
         for (const requirement of offerRequirements)
         {
-            roublePrice += this.paymentHelper.isMoneyTpl(requirement._tpl) ?
-                Math.round(this.calculateRoublePrice(requirement.count, requirement._tpl)) :
-                this.ragfairPriceService.getFleaPriceForItem(requirement._tpl) * requirement.count; // get flea price for barter offer items
+            roublePrice += this.paymentHelper.isMoneyTpl(requirement._tpl)
+                ? Math.round(this.calculateRoublePrice(requirement.count, requirement._tpl))
+                : this.ragfairPriceService.getFleaPriceForItem(requirement._tpl) * requirement.count; // get flea price for barter offer items
         }
 
         return roublePrice;
@@ -290,8 +290,8 @@ export class RagfairOfferGenerator
 
         // Generated fake-player offer
         return Math.round(
-            time +
-                this.randomUtil.getInt(
+            time
+                + this.randomUtil.getInt(
                     this.ragfairConfig.dynamic.endTimeSeconds.min,
                     this.ragfairConfig.dynamic.endTimeSeconds.max,
                 ),
@@ -307,9 +307,9 @@ export class RagfairOfferGenerator
         const config = this.ragfairConfig.dynamic;
 
         // get assort items from param if they exist, otherwise grab freshly generated assorts
-        const assortItemsToProcess: Item[] = expiredOffers ?
-            expiredOffers :
-            this.ragfairAssortGenerator.getAssortItems();
+        const assortItemsToProcess: Item[] = expiredOffers
+            ? expiredOffers
+            : this.ragfairAssortGenerator.getAssortItems();
 
         // Store all functions to create an offer for every item and pass into Promise.all to run async
         const assorOffersForItemsProcesses = [];
@@ -348,9 +348,9 @@ export class RagfairOfferGenerator
         }
 
         // Get item + sub-items if preset, otherwise just get item
-        const items: Item[] = isPreset ?
-            this.ragfairServerHelper.getPresetItems(assortItem) :
-            [
+        const items: Item[] = isPreset
+            ? this.ragfairServerHelper.getPresetItems(assortItem)
+            : [
                 ...[assortItem],
                 ...this.itemHelper.findAndReturnChildrenByAssort(
                     assortItem._id,
@@ -360,9 +360,9 @@ export class RagfairOfferGenerator
 
         // Get number of offers to create
         // Limit to 1 offer when processing expired
-        const offerCount = expiredOffers ?
-            1 :
-            Math.round(this.randomUtil.getInt(config.offerItemCount.min, config.offerItemCount.max));
+        const offerCount = expiredOffers
+            ? 1
+            : Math.round(this.randomUtil.getInt(config.offerItemCount.min, config.offerItemCount.max));
 
         // Store all functions to create offers for this item and pass into Promise.all to run async
         const assortSingleOfferProcesses = [];
@@ -391,10 +391,10 @@ export class RagfairOfferGenerator
         items[0].upd.StackObjectsCount = this.ragfairServerHelper.calculateDynamicStackCount(items[0]._tpl, isPreset);
 
         const isBarterOffer = this.randomUtil.getChance100(this.ragfairConfig.dynamic.barter.chancePercent);
-        const isPackOffer = this.randomUtil.getChance100(this.ragfairConfig.dynamic.pack.chancePercent) &&
-            !isBarterOffer &&
-            items.length === 1 &&
-            this.itemHelper.isOfBaseclasses(items[0]._tpl, this.ragfairConfig.dynamic.pack.itemTypeWhitelist);
+        const isPackOffer = this.randomUtil.getChance100(this.ragfairConfig.dynamic.pack.chancePercent)
+            && !isBarterOffer
+            && items.length === 1
+            && this.itemHelper.isOfBaseclasses(items[0]._tpl, this.ragfairConfig.dynamic.pack.itemTypeWhitelist);
         const randomUserId = this.hashUtil.generate();
 
         let barterScheme: IBarterScheme[];
@@ -488,9 +488,9 @@ export class RagfairOfferGenerator
             }
 
             const isPreset = this.presetHelper.isPreset(item._id);
-            const items: Item[] = isPreset ?
-                this.ragfairServerHelper.getPresetItems(item) :
-                [...[item], ...this.itemHelper.findAndReturnChildrenByAssort(item._id, assorts.items)];
+            const items: Item[] = isPreset
+                ? this.ragfairServerHelper.getPresetItems(item)
+                : [...[item], ...this.itemHelper.findAndReturnChildrenByAssort(item._id, assorts.items)];
 
             const barterScheme = assorts.barter_scheme[item._id];
             if (!barterScheme)
@@ -762,8 +762,8 @@ export class RagfairOfferGenerator
 
         // Filter possible barters to items that match the price range + not itself
         const filtered = fleaPrices.filter((x) =>
-            x.price >= desiredItemCost - offerCostVariance && x.price <= desiredItemCost + offerCostVariance &&
-            x.tpl !== offerItems[0]._tpl
+            x.price >= desiredItemCost - offerCostVariance && x.price <= desiredItemCost + offerCostVariance
+            && x.tpl !== offerItems[0]._tpl
         );
 
         // No items on flea have a matching price, fall back to currency
@@ -816,8 +816,8 @@ export class RagfairOfferGenerator
     protected createCurrencyBarterScheme(offerItems: Item[], isPackOffer: boolean, multipler = 1): IBarterScheme[]
     {
         const currency = this.ragfairServerHelper.getDynamicOfferCurrency();
-        const price = this.ragfairPriceService.getDynamicOfferPriceForOffer(offerItems, currency, isPackOffer) *
-            multipler;
+        const price = this.ragfairPriceService.getDynamicOfferPriceForOffer(offerItems, currency, isPackOffer)
+            * multipler;
 
         return [
             {

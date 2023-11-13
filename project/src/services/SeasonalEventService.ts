@@ -237,8 +237,8 @@ export class SeasonalEventService
 
             // Current date is between start/end dates
             if (
-                currentDate >= eventStartDate &&
-                currentDate <= eventEndDate
+                currentDate >= eventStartDate
+                && currentDate <= eventEndDate
             )
             {
                 this.christmasEventActive = SeasonalEventType[event.type] === SeasonalEventType.CHRISTMAS;

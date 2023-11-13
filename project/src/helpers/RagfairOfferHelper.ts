@@ -534,8 +534,8 @@ export class RagfairOfferHelper
         const isDefaultUserOffer = offer.user.memberType === MemberCategory.DEFAULT;
 
         if (
-            pmcProfile.Info.Level < this.databaseServer.getTables().globals.config.RagFair.minUserLevel &&
-            isDefaultUserOffer
+            pmcProfile.Info.Level < this.databaseServer.getTables().globals.config.RagFair.minUserLevel
+            && isDefaultUserOffer
         )
         {
             // Skip item if player is < global unlock level (default is 15) and item is from a dynamically generated source
@@ -597,8 +597,8 @@ export class RagfairOfferHelper
         }
 
         if (
-            (item.upd.MedKit || item.upd.Repairable) &&
-            !this.itemQualityInRange(item, searchRequest.conditionFrom, searchRequest.conditionTo)
+            (item.upd.MedKit || item.upd.Repairable)
+            && !this.itemQualityInRange(item, searchRequest.conditionFrom, searchRequest.conditionTo)
         )
         {
             return false;

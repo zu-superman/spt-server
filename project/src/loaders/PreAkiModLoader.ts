@@ -176,8 +176,8 @@ export class PreAkiModLoader implements IModLoader
 
             // if the mod has library dependencies check if these dependencies are bundled in the server, if not install them
             if (
-                modToValidate.dependencies && Object.keys(modToValidate.dependencies).length > 0 &&
-                !this.vfs.exists(`${this.basepath}${modFolderName}/node_modules`)
+                modToValidate.dependencies && Object.keys(modToValidate.dependencies).length > 0
+                && !this.vfs.exists(`${this.basepath}${modFolderName}/node_modules`)
             )
             {
                 this.autoInstallDependencies(`${this.basepath}${modFolderName}`, modToValidate);
