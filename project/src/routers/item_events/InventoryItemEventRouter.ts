@@ -32,6 +32,7 @@ export class InventoryItemEventRouter extends ItemEventRouterDefinition
             new HandledRoute(ItemEventActions.TOGGLE, false),
             new HandledRoute(ItemEventActions.TAG, false),
             new HandledRoute(ItemEventActions.BIND, false),
+            new HandledRoute(ItemEventActions.UNBIND, false),
             new HandledRoute(ItemEventActions.EXAMINE, false),
             new HandledRoute(ItemEventActions.READ_ENCYCLOPEDIA, false),
             new HandledRoute(ItemEventActions.APPLY_INVENTORY_CHANGES, false),
@@ -67,6 +68,8 @@ export class InventoryItemEventRouter extends ItemEventRouterDefinition
                 return this.inventoryCallbacks.tagItem(pmcData, body, sessionID);
             case ItemEventActions.BIND:
                 return this.inventoryCallbacks.bindItem(pmcData, body, sessionID);
+            case ItemEventActions.UNBIND:
+                return this.inventoryCallbacks.unbindItem(pmcData, body, sessionID);
             case ItemEventActions.EXAMINE:
                 return this.inventoryCallbacks.examineItem(pmcData, body, sessionID);
             case ItemEventActions.READ_ENCYCLOPEDIA:

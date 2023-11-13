@@ -652,7 +652,7 @@ export class HideoutController
         let counterHoursCrafting = pmcData.BackendCounters[HideoutController.nameBackendCountersCrafting];
         if (!counterHoursCrafting)
         {
-            pmcData.BackendCounters[HideoutController.nameBackendCountersCrafting] = { "id": HideoutController.nameBackendCountersCrafting, "value": 0 };
+            pmcData.BackendCounters[HideoutController.nameBackendCountersCrafting] = { id: HideoutController.nameBackendCountersCrafting, value: 0 };
             counterHoursCrafting = pmcData.BackendCounters[HideoutController.nameBackendCountersCrafting];
         }
         let hoursCrafting = counterHoursCrafting.value;
@@ -680,6 +680,12 @@ export class HideoutController
         let prodId: string;
         for (const x of entries)
         {
+            // Skip null production objects
+            if (!x[1])
+            {
+                continue;
+            }
+
             if (this.hideoutHelper.isProductionType(x[1])) // Production or ScavCase
             {
                 if ((x[1] as Production).RecipeId === request.recipeId)

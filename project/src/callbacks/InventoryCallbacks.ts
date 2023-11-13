@@ -84,6 +84,11 @@ export class InventoryCallbacks
         return this.inventoryController.bindItem(pmcData, body, sessionID);
     }
 
+    public unbindItem(pmcData: IPmcData, body: IInventoryBindRequestData, sessionID: string): IItemEventRouterResponse
+    {
+        return this.inventoryController.unbindItem(pmcData, body, sessionID);
+    }
+
     public examineItem(pmcData: IPmcData, body: IInventoryExamineRequestData, sessionID: string): IItemEventRouterResponse
     {
         return this.inventoryController.examineItem(pmcData, body, sessionID);

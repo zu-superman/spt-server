@@ -231,6 +231,14 @@ export class HideoutHelper
             {
                 // Craft value is null, get rid of it (could be from cancelling craft that needs cleaning up)
                 delete pmcData.Hideout.Production[prodId];
+
+                continue;
+            }
+
+            if (craft.Progress === undefined)
+            {
+                this.logger.warning(`Craft ${prodId} has an undefined progress value, defaulting to 0`);
+                craft.Progress = 0;
             }
 
             // Craft complete, skip processing (Don't skip continious crafts like bitcoin farm)
