@@ -21,9 +21,7 @@ export class HttpServerHelper
         txt: "text/plain",
     };
 
-    constructor(
-        @inject("ConfigServer") protected configServer: ConfigServer,
-    )
+    constructor(@inject("ConfigServer") protected configServer: ConfigServer)
     {
         this.httpConfig = this.configServer.getConfig(ConfigTypes.HTTP);
     }

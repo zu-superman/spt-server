@@ -19,10 +19,7 @@ import { RagfairLinkedItemService } from "@spt-aki/services/RagfairLinkedItemSer
 import { HashUtil } from "@spt-aki/utils/HashUtil";
 import { RandomUtil } from "@spt-aki/utils/RandomUtil";
 
-type ItemLimit = {
-    current: number;
-    max: number;
-};
+type ItemLimit = {current: number; max: number;};
 
 @injectable()
 export class LootGenerator
@@ -134,10 +131,7 @@ export class LootGenerator
         const itemTypeCounts: Record<string, ItemLimit> = {};
         for (const itemTypeId in limits)
         {
-            itemTypeCounts[itemTypeId] = {
-                current: 0,
-                max: limits[itemTypeId],
-            };
+            itemTypeCounts[itemTypeId] = {current: 0, max: limits[itemTypeId]};
         }
 
         return itemTypeCounts;
@@ -174,10 +168,7 @@ export class LootGenerator
         };
 
         // Check if armor has level in allowed whitelist
-        if (
-            randomItem._parent === BaseClasses.ARMOR
-            || randomItem._parent === BaseClasses.VEST
-        )
+        if (randomItem._parent === BaseClasses.ARMOR || randomItem._parent === BaseClasses.VEST)
         {
             if (!options.armorLevelWhitelist.includes(Number(randomItem._props.armorClass)))
             {
@@ -277,11 +268,7 @@ export class LootGenerator
             return false;
         }
 
-        const newLootItem: LootItem = {
-            tpl: randomPreset._items[0]._tpl,
-            isPreset: true,
-            stackCount: 1,
-        };
+        const newLootItem: LootItem = {tpl: randomPreset._items[0]._tpl, isPreset: true, stackCount: 1};
 
         result.push(newLootItem);
 
@@ -405,14 +392,13 @@ export class LootGenerator
             }
 
             // Get all items of the desired type + not quest items + not globally blacklisted
-            const rewardItemPool = Object.values(this.databaseServer.getTables().templates.items)
-                .filter((x) =>
-                    x._parent === rewardTypeId
-                    && x._type.toLowerCase() === "item"
-                    && !this.itemFilterService.isItemBlacklisted(x._id)
-                    && (!(containerSettings.allowBossItems || this.itemFilterService.isBossItem(x._id)))
-                    && !x._props.QuestItem
-                );
+            const rewardItemPool = Object.values(this.databaseServer.getTables().templates.items).filter((x) =>
+                x._parent === rewardTypeId
+                && x._type.toLowerCase() === "item"
+                && !this.itemFilterService.isItemBlacklisted(x._id)
+                && (!(containerSettings.allowBossItems || this.itemFilterService.isBossItem(x._id)))
+                && !x._props.QuestItem
+            );
 
             if (rewardItemPool.length === 0)
             {

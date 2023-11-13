@@ -175,9 +175,7 @@ export class InventoryHelper
         catch (err)
         {
             // Callback failed
-            const message = typeof err === "string"
-                ? err
-                : this.localisationService.getText("http-unknown_error");
+            const message = typeof err === "string" ? err : this.localisationService.getText("http-unknown_error");
 
             return this.httpResponse.appendErrorToOutput(output, message);
         }
@@ -299,11 +297,7 @@ export class InventoryHelper
                             _tpl: itemLib[tmpKey]._tpl,
                             parentId: toDo[0][1],
                             slotId: slotID,
-                            location: {
-                                x: itemToAdd.location.x,
-                                y: itemToAdd.location.y,
-                                r: "Horizontal",
-                            },
+                            location: {x: itemToAdd.location.x, y: itemToAdd.location.y, r: "Horizontal"},
                             upd: this.jsonUtil.clone(upd),
                         });
 
@@ -312,11 +306,7 @@ export class InventoryHelper
                             _tpl: itemLib[tmpKey]._tpl,
                             parentId: toDo[0][1],
                             slotId: itemLib[tmpKey].slotId,
-                            location: {
-                                x: itemToAdd.location.x,
-                                y: itemToAdd.location.y,
-                                r: "Horizontal",
-                            },
+                            location: {x: itemToAdd.location.x, y: itemToAdd.location.y, r: "Horizontal"},
                             upd: this.jsonUtil.clone(upd),
                         });
                     }
@@ -405,9 +395,7 @@ export class InventoryHelper
             }
             catch (err)
             {
-                const errorText = typeof err === "string"
-                    ? ` -> ${err}`
-                    : "";
+                const errorText = typeof err === "string" ? ` -> ${err}` : "";
                 this.logger.error(this.localisationService.getText("inventory-fill_container_failed", errorText));
 
                 return this.httpResponse.appendErrorToOutput(
@@ -897,10 +885,7 @@ export class InventoryHelper
 
     protected getInventoryItemHash(inventoryItem: Item[]): InventoryHelper.InventoryItemHash
     {
-        const inventoryItemHash: InventoryHelper.InventoryItemHash = {
-            byItemId: {},
-            byParentId: {},
-        };
+        const inventoryItemHash: InventoryHelper.InventoryItemHash = {byItemId: {}, byParentId: {}};
 
         for (const item of inventoryItem)
         {
@@ -942,14 +927,16 @@ export class InventoryHelper
             const tmpSize = this.getSizeByInventoryItemHash(item._tpl, item._id, inventoryItemHash);
             const iW = tmpSize[0]; // x
             const iH = tmpSize[1]; // y
-            const fH = ((item.location as Location).r === 1 || (item.location as Location).r === "Vertical"
-                    || (item.location as Location).rotation === "Vertical")
-                ? iW
-                : iH;
-            const fW = ((item.location as Location).r === 1 || (item.location as Location).r === "Vertical"
-                    || (item.location as Location).rotation === "Vertical")
-                ? iH
-                : iW;
+            const fH =
+                ((item.location as Location).r === 1 || (item.location as Location).r === "Vertical"
+                        || (item.location as Location).rotation === "Vertical")
+                    ? iW
+                    : iH;
+            const fW =
+                ((item.location as Location).r === 1 || (item.location as Location).r === "Vertical"
+                        || (item.location as Location).rotation === "Vertical")
+                    ? iH
+                    : iW;
             const fillTo = (item.location as Location).x + fW;
 
             for (let y = 0; y < fH; y++)
@@ -1002,9 +989,7 @@ export class InventoryHelper
             else if (request.fromOwner.type.toLocaleLowerCase() === "mail")
             {
                 // Split requests dont use 'use' but 'splitItem' property
-                const item = "splitItem" in request
-                    ? request.splitItem
-                    : request.item;
+                const item = "splitItem" in request ? request.splitItem : request.item;
                 fromInventoryItems = this.dialogueHelper.getMessageItemContents(request.fromOwner.id, sessionId, item);
                 fromType = "mail";
             }

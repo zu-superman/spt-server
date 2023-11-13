@@ -9,9 +9,7 @@ import { ITraderRepairActionDataRequest } from "@spt-aki/models/eft/repair/ITrad
 @injectable()
 export class RepairCallbacks
 {
-    constructor(
-        @inject("RepairController") protected repairController: RepairController,
-    )
+    constructor(@inject("RepairController") protected repairController: RepairController)
     {}
 
     /**

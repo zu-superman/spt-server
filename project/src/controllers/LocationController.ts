@@ -135,10 +135,7 @@ export class LocationController
             locations[mapBase._Id] = mapBase;
         }
 
-        return {
-            locations: locations,
-            paths: locationsFromDb.base.paths,
-        };
+        return {locations: locations, paths: locationsFromDb.base.paths};
     }
 
     /**

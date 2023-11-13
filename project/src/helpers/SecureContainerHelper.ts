@@ -14,9 +14,7 @@ export interface OwnerInventoryItems
 @injectable()
 export class SecureContainerHelper
 {
-    constructor(
-        @inject("ItemHelper") protected itemHelper: ItemHelper,
-    )
+    constructor(@inject("ItemHelper") protected itemHelper: ItemHelper)
     {}
 
     public getSecureContainerItems(items: Item[]): string[]

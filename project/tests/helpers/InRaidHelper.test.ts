@@ -24,16 +24,7 @@ describe("InRaidHelper", () =>
         it("should return negative value when player kills 2 scavs as scav", () =>
         {
             const fenceStanding = 0;
-            const postRaidPlayerVictims = [
-                {
-                    Side: "Savage",
-                    Role: "assault",
-                },
-                {
-                    Side: "Savage",
-                    Role: "assault",
-                },
-            ]; // Kills
+            const postRaidPlayerVictims = [{Side: "Savage", Role: "assault"}, {Side: "Savage", Role: "assault"}]; // Kills
 
             const databaseServer = container.resolve<DatabaseServer>("DatabaseServer");
             const scavStandingChangeOnKill = databaseServer.getTables().bots.types.assault.experience.standingForKill;
@@ -46,16 +37,7 @@ describe("InRaidHelper", () =>
         it("should return positive value when player kills 2 PMCs of different sides as scav", () =>
         {
             const fenceStanding = 0;
-            const postRaidPlayerVictims = [
-                {
-                    Side: "Usec",
-                    Role: "sptUsec",
-                },
-                {
-                    Side: "Bear",
-                    Role: "sptBear",
-                },
-            ]; // Kills
+            const postRaidPlayerVictims = [{Side: "Usec", Role: "sptUsec"}, {Side: "Bear", Role: "sptBear"}]; // Kills
 
             const databaseServer = container.resolve<DatabaseServer>("DatabaseServer");
             const bearStandingChangeOnKill = databaseServer.getTables().bots.types.bear.experience.standingForKill;
@@ -69,24 +51,10 @@ describe("InRaidHelper", () =>
         it("should return negative value when player kills 1 PMC, 1 boss and 2 scavs as scav", () =>
         {
             const fenceStanding = 0;
-            const postRaidPlayerVictims = [
-                {
-                    Side: "Usec",
-                    Role: "sptUsec",
-                },
-                {
-                    Side: "savage",
-                    Role: "assault",
-                },
-                {
-                    Side: "savage",
-                    Role: "bossBoar",
-                },
-                {
-                    Side: "savage",
-                    Role: "assault",
-                },
-            ]; // Kills
+            const postRaidPlayerVictims = [{Side: "Usec", Role: "sptUsec"}, {Side: "savage", Role: "assault"}, {
+                Side: "savage",
+                Role: "bossBoar",
+            }, {Side: "savage", Role: "assault"}]; // Kills
 
             const databaseServer = container.resolve<DatabaseServer>("DatabaseServer");
             const usecStandingChangeOnKill = databaseServer.getTables().bots.types.bear.experience.standingForKill;
@@ -104,12 +72,7 @@ describe("InRaidHelper", () =>
         it("should return 0 when player kills bot with undefined standing as scav", () =>
         {
             const fenceStanding = 0;
-            const postRaidPlayerVictims = [
-                {
-                    Side: "savage",
-                    Role: "testRole",
-                },
-            ]; // Kills
+            const postRaidPlayerVictims = [{Side: "savage", Role: "testRole"}]; // Kills
 
             // Fake getFenceStandingChangeForKillAsScav() returning null
             vi.spyOn(inraidHelper, "getFenceStandingChangeForKillAsScav").mockReturnValueOnce(null).mockReturnValueOnce(

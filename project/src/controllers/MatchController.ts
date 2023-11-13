@@ -101,10 +101,7 @@ export class MatchController
     /** Handle match/group/start_game */
     public joinMatch(info: IJoinMatchRequestData, sessionId: string): IJoinMatchResult
     {
-        const output: IJoinMatchResult = {
-            maxPveCountExceeded: false,
-            profiles: [],
-        };
+        const output: IJoinMatchResult = {maxPveCountExceeded: false, profiles: []};
 
         // get list of players joining into the match
         output.profiles.push({
@@ -128,10 +125,7 @@ export class MatchController
     /** Handle client/match/group/status */
     public getGroupStatus(info: IGetGroupStatusRequestData): any
     {
-        return {
-            players: [],
-            maxPveCountExceeded: false,
-        };
+        return {players: [], maxPveCountExceeded: false};
     }
 
     /**
@@ -226,18 +220,13 @@ export class MatchController
         const parentId = this.hashUtil.generate();
         for (const item of loot)
         {
-            mailableLoot.push(
-                {
-                    _id: item.id,
-                    _tpl: item.tpl,
-                    slotId: "main",
-                    parentId: parentId,
-                    upd: {
-                        StackObjectsCount: item.stackCount,
-                        SpawnedInSession: true,
-                    },
-                },
-            );
+            mailableLoot.push({
+                _id: item.id,
+                _tpl: item.tpl,
+                slotId: "main",
+                parentId: parentId,
+                upd: {StackObjectsCount: item.stackCount, SpawnedInSession: true},
+            });
         }
 
         // Send message from fence giving player reward generated above

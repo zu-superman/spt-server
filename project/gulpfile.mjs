@@ -74,15 +74,12 @@ const updateBuildProperties = async () =>
 
     const vi = ResEdit.Resource.VersionInfo.fromEntries(res.entries)[0];
 
-    vi.setStringValues(
-        {lang: 1033, codepage: 1200},
-        {
-            ProductName: manifest.author,
-            FileDescription: manifest.description,
-            CompanyName: manifest.name,
-            LegalCopyright: manifest.license,
-        },
-    );
+    vi.setStringValues({lang: 1033, codepage: 1200}, {
+        ProductName: manifest.author,
+        FileDescription: manifest.description,
+        CompanyName: manifest.name,
+        LegalCopyright: manifest.license,
+    });
     vi.removeStringValue({lang: 1033, codepage: 1200}, "OriginalFilename");
     vi.removeStringValue({lang: 1033, codepage: 1200}, "InternalName");
     vi.setFileVersion(...manifest.version.split(".").map(Number));

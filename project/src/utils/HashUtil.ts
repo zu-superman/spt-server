@@ -6,9 +6,7 @@ import { TimeUtil } from "@spt-aki/utils/TimeUtil";
 @injectable()
 export class HashUtil
 {
-    constructor(
-        @inject("TimeUtil") protected timeUtil: TimeUtil,
-    )
+    constructor(@inject("TimeUtil") protected timeUtil: TimeUtil)
     {}
 
     /**

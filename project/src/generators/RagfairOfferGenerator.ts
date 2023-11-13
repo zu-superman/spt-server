@@ -636,10 +636,7 @@ export class RagfairOfferGenerator
         {
             const totalCapacity = itemDetails._props.MaxResource;
             const remainingFuel = Math.round(totalCapacity * multiplier);
-            item.upd.Resource = {
-                UnitsConsumed: totalCapacity - remainingFuel,
-                Value: remainingFuel,
-            };
+            item.upd.Resource = {UnitsConsumed: totalCapacity - remainingFuel, Value: remainingFuel};
         }
     }
 
@@ -653,9 +650,10 @@ export class RagfairOfferGenerator
         item.upd.Repairable.Durability = Math.round(item.upd.Repairable.Durability * multiplier) || 1;
 
         // randomize max durability, store to a temporary value so we can still compare the max durability
-        let tempMaxDurability = Math.round(
-            this.randomUtil.getFloat(item.upd.Repairable.Durability - 5, item.upd.Repairable.MaxDurability + 5),
-        ) || item.upd.Repairable.Durability;
+        let tempMaxDurability =
+            Math.round(
+                this.randomUtil.getFloat(item.upd.Repairable.Durability - 5, item.upd.Repairable.MaxDurability + 5),
+            ) || item.upd.Repairable.Durability;
 
         // clamp values to max/current
         if (tempMaxDurability >= item.upd.Repairable.MaxDurability)
@@ -689,38 +687,27 @@ export class RagfairOfferGenerator
 
         if (isRepairable && props.Durability > 0)
         {
-            item.upd.Repairable = {
-                Durability: props.Durability,
-                MaxDurability: props.Durability,
-            };
+            item.upd.Repairable = {Durability: props.Durability, MaxDurability: props.Durability};
         }
 
         if (isMedkit && props.MaxHpResource > 0)
         {
-            item.upd.MedKit = {
-                HpResource: props.MaxHpResource,
-            };
+            item.upd.MedKit = {HpResource: props.MaxHpResource};
         }
 
         if (isKey)
         {
-            item.upd.Key = {
-                NumberOfUsages: 0,
-            };
+            item.upd.Key = {NumberOfUsages: 0};
         }
 
         if (isConsumable)
         {
-            item.upd.FoodDrink = {
-                HpPercent: props.MaxResource,
-            };
+            item.upd.FoodDrink = {HpPercent: props.MaxResource};
         }
 
         if (isRepairKit)
         {
-            item.upd.RepairKit = {
-                Resource: props.MaxRepairResource,
-            };
+            item.upd.RepairKit = {Resource: props.MaxRepairResource};
         }
 
         return item;
@@ -775,12 +762,7 @@ export class RagfairOfferGenerator
         // Choose random item from price-filtered flea items
         const randomItem = this.randomUtil.getArrayValue(filtered);
 
-        return [
-            {
-                count: barterItemCount,
-                _tpl: randomItem.tpl,
-            },
-        ];
+        return [{count: barterItemCount, _tpl: randomItem.tpl}];
     }
 
     /**
@@ -819,11 +801,6 @@ export class RagfairOfferGenerator
         const price = this.ragfairPriceService.getDynamicOfferPriceForOffer(offerItems, currency, isPackOffer)
             * multipler;
 
-        return [
-            {
-                count: price,
-                _tpl: currency,
-            },
-        ];
+        return [{count: price, _tpl: currency}];
     }
 }

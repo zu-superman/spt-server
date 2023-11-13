@@ -625,10 +625,7 @@ export class InsuranceController
         // add items to InsuredItems list once money has been paid
         for (const key of body.items)
         {
-            pmcData.InsuredItems.push({
-                tid: body.tid,
-                itemId: inventoryItemsHash[key]._id,
-            });
+            pmcData.InsuredItems.push({tid: body.tid, itemId: inventoryItemsHash[key]._id});
         }
 
         this.profileHelper.addSkillPointsToPlayer(pmcData, SkillTypes.CHARISMA, itemsToInsureCount * 0.01);

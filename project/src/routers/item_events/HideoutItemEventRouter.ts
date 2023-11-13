@@ -9,9 +9,7 @@ import { HideoutEventActions } from "@spt-aki/models/enums/HideoutEventActions";
 @injectable()
 export class HideoutItemEventRouter extends ItemEventRouterDefinition
 {
-    constructor(
-        @inject("HideoutCallbacks") protected hideoutCallbacks: HideoutCallbacks,
-    )
+    constructor(@inject("HideoutCallbacks") protected hideoutCallbacks: HideoutCallbacks)
     {
         super();
     }

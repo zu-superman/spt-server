@@ -150,9 +150,7 @@ export class BotGeneratorHelper
             itemProperties.Togglable = {On: (this.randomUtil.getChance100(faceShieldActiveChance))};
         }
 
-        return Object.keys(itemProperties).length
-            ? {upd: itemProperties}
-            : {};
+        return Object.keys(itemProperties).length ? {upd: itemProperties} : {};
     }
 
     /**
@@ -240,10 +238,7 @@ export class BotGeneratorHelper
             maxDurability,
         );
 
-        return {
-            Durability: currentDurability,
-            MaxDurability: maxDurability,
-        };
+        return {Durability: currentDurability, MaxDurability: maxDurability};
     }
 
     /**
@@ -271,10 +266,7 @@ export class BotGeneratorHelper
             );
         }
 
-        return {
-            Durability: currentDurability,
-            MaxDurability: maxDurability,
-        };
+        return {Durability: currentDurability, MaxDurability: maxDurability};
     }
 
     /**
@@ -381,11 +373,7 @@ export class ExhaustableArray<T>
 {
     private pool: T[];
 
-    constructor(
-        private itemPool: T[],
-        private randomUtil: RandomUtil,
-        private jsonUtil: JsonUtil,
-    )
+    constructor(private itemPool: T[], private randomUtil: RandomUtil, private jsonUtil: JsonUtil)
     {
         this.pool = this.jsonUtil.clone(itemPool);
     }

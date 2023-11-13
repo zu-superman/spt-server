@@ -7,9 +7,7 @@ import { BotWeaponGeneratorHelper } from "@spt-aki/helpers/BotWeaponGeneratorHel
 @injectable()
 export class InternalMagazineInventoryMagGen implements IInventoryMagGen
 {
-    constructor(
-        @inject("BotWeaponGeneratorHelper") protected botWeaponGeneratorHelper: BotWeaponGeneratorHelper,
-    )
+    constructor(@inject("BotWeaponGeneratorHelper") protected botWeaponGeneratorHelper: BotWeaponGeneratorHelper)
     {}
 
     public getPriority(): number

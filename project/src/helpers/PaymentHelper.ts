@@ -10,9 +10,7 @@ export class PaymentHelper
 {
     protected inventoryConfig: IInventoryConfig;
 
-    constructor(
-        @inject("ConfigServer") protected configServer: ConfigServer,
-    )
+    constructor(@inject("ConfigServer") protected configServer: ConfigServer)
     {
         this.inventoryConfig = this.configServer.getConfig(ConfigTypes.INVENTORY);
     }

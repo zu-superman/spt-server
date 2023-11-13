@@ -8,9 +8,7 @@ export class InsuranceSaveLoadRouter extends SaveLoadRouter
 {
     public override getHandledRoutes(): HandledRoute[]
     {
-        return [
-            new HandledRoute("aki-insurance", false),
-        ];
+        return [new HandledRoute("aki-insurance", false)];
     }
 
     public override handleLoad(profile: IAkiProfile): IAkiProfile

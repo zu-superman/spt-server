@@ -8,9 +8,7 @@ export class ProfileSnapshotService
 {
     protected storedProfileSnapshots: Record<string, IAkiProfile> = {};
 
-    constructor(
-        @inject("JsonUtil") protected jsonUtil: JsonUtil,
-    )
+    constructor(@inject("JsonUtil") protected jsonUtil: JsonUtil)
     {}
 
     /**

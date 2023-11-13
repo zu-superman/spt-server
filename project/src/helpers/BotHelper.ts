@@ -248,8 +248,6 @@ export class BotHelper
      */
     protected getRandomizedPmcSide(): string
     {
-        return (this.randomUtil.getChance100(this.pmcConfig.isUsec))
-            ? "Usec"
-            : "Bear";
+        return (this.randomUtil.getChance100(this.pmcConfig.isUsec)) ? "Usec" : "Bear";
     }
 }

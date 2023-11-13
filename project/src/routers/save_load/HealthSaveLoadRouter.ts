@@ -8,19 +8,14 @@ export class HealthSaveLoadRouter extends SaveLoadRouter
 {
     public override getHandledRoutes(): HandledRoute[]
     {
-        return [
-            new HandledRoute("aki-health", false),
-        ];
+        return [new HandledRoute("aki-health", false)];
     }
 
     public override handleLoad(profile: IAkiProfile): IAkiProfile
     {
         if (!profile.vitality)
         { // Occurs on newly created profiles
-            profile.vitality = {
-                health: null,
-                effects: null,
-            };
+            profile.vitality = {health: null, effects: null};
         }
         profile.vitality.health = {
             Hydration: 0,

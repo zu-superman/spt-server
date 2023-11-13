@@ -9,19 +9,14 @@ export class ProfileSaveLoadRouter extends SaveLoadRouter
 {
     public override getHandledRoutes(): HandledRoute[]
     {
-        return [
-            new HandledRoute("aki-profile", false),
-        ];
+        return [new HandledRoute("aki-profile", false)];
     }
 
     public override handleLoad(profile: IAkiProfile): IAkiProfile
     {
         if (profile.characters === null)
         {
-            profile.characters = {
-                pmc: {} as IPmcData,
-                scav: {} as IPmcData,
-            };
+            profile.characters = {pmc: {} as IPmcData, scav: {} as IPmcData};
         }
         return profile;
     }

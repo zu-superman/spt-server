@@ -69,9 +69,7 @@ export class QuestHelper
     {
         const quest = pmcData.Quests?.find((q) => q.qid === questId);
 
-        return quest
-            ? quest.status
-            : QuestStatus.Locked;
+        return quest ? quest.status : QuestStatus.Locked;
     }
 
     /**
@@ -328,12 +326,9 @@ export class QuestHelper
     public getQuestRewardItems(quest: IQuest, status: QuestStatus): Reward[]
     {
         // Iterate over all rewards with the desired status, flatten out items that have a type of Item
-        const questRewards = quest.rewards[QuestStatus[status]]
-            .flatMap((reward: Reward) =>
-                reward.type === "Item"
-                    ? this.processReward(reward)
-                    : []
-            );
+        const questRewards = quest.rewards[QuestStatus[status]].flatMap((reward: Reward) =>
+            reward.type === "Item" ? this.processReward(reward) : []
+        );
 
         return questRewards;
     }
@@ -467,14 +462,12 @@ export class QuestHelper
 
         const quests = this.getQuestsFromDb().filter((q) =>
         {
-            const acceptedQuestCondition = q.conditions.AvailableForStart.find(
-                (c) =>
-                {
-                    return c._parent === "Quest"
-                        && c._props.target === failedQuestId
-                        && c._props.status[0] === QuestStatus.Fail;
-                },
-            );
+            const acceptedQuestCondition = q.conditions.AvailableForStart.find((c) =>
+            {
+                return c._parent === "Quest"
+                    && c._props.target === failedQuestId
+                    && c._props.status[0] === QuestStatus.Fail;
+            });
 
             if (!acceptedQuestCondition)
             {
@@ -581,9 +574,7 @@ export class QuestHelper
             parentId: item.parentId,
             slotId: item.slotId,
             location: item.location,
-            upd: {
-                StackObjectsCount: item.upd.StackObjectsCount,
-            },
+            upd: {StackObjectsCount: item.upd.StackObjectsCount},
         });
     }
 

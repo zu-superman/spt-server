@@ -608,9 +608,7 @@ export class Container
         con.register<BotGenerationCacheService>("BotGenerationCacheService", BotGenerationCacheService, {
             lifecycle: Lifecycle.Singleton,
         });
-        con.register<LocalisationService>("LocalisationService", LocalisationService, {
-            lifecycle: Lifecycle.Singleton,
-        });
+        con.register<LocalisationService>("LocalisationService", LocalisationService, {lifecycle: Lifecycle.Singleton});
         con.register<CustomLocationWaveService>("CustomLocationWaveService", CustomLocationWaveService, {
             lifecycle: Lifecycle.Singleton,
         });

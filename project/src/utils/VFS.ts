@@ -26,9 +26,7 @@ export class VFS
     rmdirPromisify: (path: fs.PathLike) => Promise<void>;
     renamePromisify: (oldPath: fs.PathLike, newPath: fs.PathLike) => Promise<void>;
 
-    constructor(
-        @inject("AsyncQueue") protected asyncQueue: IAsyncQueue,
-    )
+    constructor(@inject("AsyncQueue") protected asyncQueue: IAsyncQueue)
     {
         this.accessFilePromisify = promisify(fs.access);
         this.copyFilePromisify = promisify(fs.copyFile);
@@ -52,10 +50,7 @@ export class VFS
         try
         {
             // Create the command to add to the queue
-            const command = {
-                uuid: crypto.randomUUID(),
-                cmd: async () => await this.accessFilePromisify(filepath),
-            };
+            const command = {uuid: crypto.randomUUID(), cmd: async () => await this.accessFilePromisify(filepath)};
             // Wait for the command completion
             await this.asyncQueue.waitFor(command);
 
@@ -76,10 +71,7 @@ export class VFS
 
     public async copyAsync(filepath: fs.PathLike, target: fs.PathLike): Promise<void>
     {
-        const command = {
-            uuid: crypto.randomUUID(),
-            cmd: async () => await this.copyFilePromisify(filepath, target),
-        };
+        const command = {uuid: crypto.randomUUID(), cmd: async () => await this.copyFilePromisify(filepath, target)};
         await this.asyncQueue.waitFor(command);
     }
 

@@ -60,13 +60,11 @@ export class TradeHelper
         let output = this.eventOutputHolder.getOutput(sessionID);
 
         const newReq = {
-            items: [
-                {
-                    // eslint-disable-next-line @typescript-eslint/naming-convention
-                    item_id: buyRequestData.item_id,
-                    count: buyRequestData.count,
-                },
-            ],
+            items: [{
+                // eslint-disable-next-line @typescript-eslint/naming-convention
+                item_id: buyRequestData.item_id,
+                count: buyRequestData.count,
+            }],
             tid: buyRequestData.tid,
         };
 

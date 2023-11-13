@@ -111,11 +111,7 @@ const createHttpDecorator = (httpMethod: HttpMethods) =>
             }
 
             // Flag the method as a HTTP handler
-            target.handlers.push({
-                handlerName: propertyKey,
-                path,
-                httpMethod,
-            });
+            target.handlers.push({handlerName: propertyKey, path, httpMethod});
         };
     };
 };

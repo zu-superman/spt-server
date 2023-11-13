@@ -6,20 +6,16 @@ import { DynamicRouter, RouteAction } from "@spt-aki/di/Router";
 @injectable()
 export class CustomizationDynamicRouter extends DynamicRouter
 {
-    constructor(
-        @inject("CustomizationCallbacks") protected customizationCallbacks: CustomizationCallbacks,
-    )
+    constructor(@inject("CustomizationCallbacks") protected customizationCallbacks: CustomizationCallbacks)
     {
-        super(
-            [
-                new RouteAction(
-                    "/client/trading/customization/",
-                    (url: string, info: any, sessionID: string, output: string): any =>
-                    {
-                        return this.customizationCallbacks.getTraderSuits(url, info, sessionID);
-                    },
-                ),
-            ],
-        );
+        super([
+            new RouteAction(
+                "/client/trading/customization/",
+                (url: string, info: any, sessionID: string, output: string): any =>
+                {
+                    return this.customizationCallbacks.getTraderSuits(url, info, sessionID);
+                },
+            ),
+        ]);
     }
 }

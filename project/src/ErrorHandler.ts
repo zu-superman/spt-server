@@ -12,10 +12,7 @@ export class ErrorHandler
     constructor()
     {
         this.logger = new WinstonMainLogger(new AsyncQueue());
-        this.readLine = readline.createInterface({
-            input: process.stdin,
-            output: process.stdout,
-        });
+        this.readLine = readline.createInterface({input: process.stdin, output: process.stdout});
     }
 
     public handleCriticalError(err: Error): void

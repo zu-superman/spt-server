@@ -36,9 +36,9 @@ export class NotifierCallbacks
          * Take our array of JSON message objects and cast them to JSON strings, so that they can then
          *  be sent to client as NEWLINE separated strings... yup.
          */
-        this.notifierController.notifyAsync(tmpSessionID)
-            .then((messages: any) => messages.map((message: any) => this.jsonUtil.serialize(message)).join("\n"))
-            .then((text) => this.httpServerHelper.sendTextJson(resp, text));
+        this.notifierController.notifyAsync(tmpSessionID).then((messages: any) =>
+            messages.map((message: any) => this.jsonUtil.serialize(message)).join("\n")
+        ).then((text) => this.httpServerHelper.sendTextJson(resp, text));
     }
 
     /** Handle push/notifier/get */
@@ -68,9 +68,7 @@ export class NotifierCallbacks
         sessionID: string,
     ): IGetBodyResponseData<ISelectProfileResponse>
     {
-        return this.httpResponse.getBody({
-            status: "ok",
-        });
+        return this.httpResponse.getBody({status: "ok"});
     }
 
     public notify(url: string, info: any, sessionID: string): string

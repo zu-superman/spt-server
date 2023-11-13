@@ -45,9 +45,7 @@ export class DatabaseImporter implements OnLoad
      */
     public getSptDataPath(): string
     {
-        return (globalThis.G_RELEASE_CONFIGURATION)
-            ? "Aki_Data/Server/"
-            : "./assets/";
+        return (globalThis.G_RELEASE_CONFIGURATION) ? "Aki_Data/Server/" : "./assets/";
     }
 
     public async onLoad(): Promise<void>

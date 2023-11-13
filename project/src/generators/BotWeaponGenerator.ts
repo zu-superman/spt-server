@@ -258,9 +258,7 @@ export class BotWeaponGenerator
         else
         {
             // Already exists, update values
-            existingItemWithSlot.upd = {
-                StackObjectsCount: 1,
-            };
+            existingItemWithSlot.upd = {StackObjectsCount: 1};
             existingItemWithSlot._tpl = ammoTpl;
         }
     }
@@ -532,11 +530,7 @@ export class BotWeaponGenerator
                 [EquipmentSlots.SECURED_CONTAINER],
                 id,
                 ammoTpl,
-                [{
-                    _id: id,
-                    _tpl: ammoTpl,
-                    upd: {StackObjectsCount: stackSize},
-                }],
+                [{_id: id, _tpl: ammoTpl, upd: {StackObjectsCount: stackSize}}],
                 inventory,
             );
         }
@@ -705,17 +699,13 @@ export class BotWeaponGenerator
      */
     protected fillUbgl(weaponMods: Item[], ubglMod: Item, ubglAmmoTpl: string): void
     {
-        weaponMods.push(
-            {
-                _id: this.hashUtil.generate(),
-                _tpl: ubglAmmoTpl,
-                parentId: ubglMod._id,
-                slotId: "patron_in_weapon",
-                upd: {
-                    StackObjectsCount: 1,
-                },
-            },
-        );
+        weaponMods.push({
+            _id: this.hashUtil.generate(),
+            _tpl: ubglAmmoTpl,
+            parentId: ubglMod._id,
+            slotId: "patron_in_weapon",
+            upd: {StackObjectsCount: 1},
+        });
     }
 
     /**

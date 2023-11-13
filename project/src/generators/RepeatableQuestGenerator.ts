@@ -273,13 +273,12 @@ export class RepeatableQuestGenerator
             // get all boss spawn information
             const bossSpawns = Object.values(this.databaseServer.getTables().locations).filter((x) =>
                 "base" in x && "Id" in x.base
-            ).map(
-                (x) => ({Id: x.base.Id, BossSpawn: x.base.BossLocationSpawn}),
-            );
+            ).map((x) => ({Id: x.base.Id, BossSpawn: x.base.BossLocationSpawn}));
             // filter for the current boss to spawn on map
-            const thisBossSpawns = bossSpawns.map(
-                (x) => ({Id: x.Id, BossSpawn: x.BossSpawn.filter((e) => e.BossName === targetKey)}),
-            ).filter((x) => x.BossSpawn.length > 0);
+            const thisBossSpawns = bossSpawns.map((x) => ({
+                Id: x.Id,
+                BossSpawn: x.BossSpawn.filter((e) => e.BossName === targetKey),
+            })).filter((x) => x.BossSpawn.length > 0);
             // remove blacklisted locations
             const allowedSpawns = thisBossSpawns.filter((x) => !eliminationConfig.distLocationBlacklist.includes(x.Id));
             // if the boss spawns on nom-blacklisted locations and the current location is allowed we can generate a distance kill requirement
@@ -416,11 +415,7 @@ export class RepeatableQuestGenerator
     protected generateEliminationLocation(location: string[]): IEliminationCondition
     {
         const propsObject: IEliminationCondition = {
-            _props: {
-                target: location,
-                id: this.objectId.generate(),
-                dynamicLocale: true,
-            },
+            _props: {target: location, id: this.objectId.generate(), dynamicLocale: true},
             _parent: "Location",
         };
 
@@ -466,10 +461,7 @@ export class RepeatableQuestGenerator
         // Dont allow distance + melee requirement
         if (distance && allowedWeaponCategory !== "5b5f7a0886f77409407a7f96")
         {
-            killConditionProps.distance = {
-                compareMethod: ">=",
-                value: distance,
-            };
+            killConditionProps.distance = {compareMethod: ">=", value: distance};
         }
 
         // Has specific weapon requirement
@@ -484,10 +476,7 @@ export class RepeatableQuestGenerator
             killConditionProps.weaponCategories = [allowedWeaponCategory];
         }
 
-        return {
-            _props: killConditionProps,
-            _parent: "Kills",
-        };
+        return {_props: killConditionProps, _parent: "Kills"};
     }
 
     /**
@@ -710,28 +699,15 @@ export class RepeatableQuestGenerator
 
         const exitStatusCondition: IExplorationCondition = {
             _parent: "ExitStatus",
-            _props: {
-                id: this.objectId.generate(),
-                dynamicLocale: true,
-                status: [
-                    "Survived",
-                ],
-            },
+            _props: {id: this.objectId.generate(), dynamicLocale: true, status: ["Survived"]},
         };
         const locationCondition: IExplorationCondition = {
             _parent: "Location",
-            _props: {
-                id: this.objectId.generate(),
-                dynamicLocale: true,
-                target: locationTarget,
-            },
+            _props: {id: this.objectId.generate(), dynamicLocale: true, target: locationTarget},
         };
 
         quest.conditions.AvailableForFinish[0]._props.counter.id = this.objectId.generate();
-        quest.conditions.AvailableForFinish[0]._props.counter.conditions = [
-            exitStatusCondition,
-            locationCondition,
-        ];
+        quest.conditions.AvailableForFinish[0]._props.counter.conditions = [exitStatusCondition, locationCondition];
         quest.conditions.AvailableForFinish[0]._props.value = numExtracts;
         quest.conditions.AvailableForFinish[0]._props.id = this.objectId.generate();
         quest.location = this.getQuestLocationByMapId(locationKey);
@@ -742,13 +718,11 @@ export class RepeatableQuestGenerator
             // Scav exits are not listed at all in locations.base currently. If that changes at some point, additional filtering will be required
             const mapExits =
                 (this.databaseServer.getTables().locations[locationKey.toLowerCase()].base as ILocationBase).exits;
-            const possibleExists = mapExits.filter(
-                (x) =>
-                    (!("PassageRequirement" in x)
-                        || repeatableConfig.questConfig.Exploration.specificExits.passageRequirementWhitelist.includes(
-                            x.PassageRequirement,
-                        ))
-                    && x.Chance > 0,
+            const possibleExists = mapExits.filter((x) =>
+                (!("PassageRequirement" in x)
+                    || repeatableConfig.questConfig.Exploration.specificExits.passageRequirementWhitelist.includes(
+                        x.PassageRequirement,
+                    )) && x.Chance > 0
             );
             const exit = this.randomUtil.drawRandomFromList(possibleExists, 1)[0];
             const exitCondition = this.generateExplorationExitCondition(exit);
@@ -823,14 +797,7 @@ export class RepeatableQuestGenerator
      */
     protected generateExplorationExitCondition(exit: Exit): IExplorationCondition
     {
-        return {
-            _parent: "ExitName",
-            _props: {
-                exitName: exit.Name,
-                id: this.objectId.generate(),
-                dynamicLocale: true,
-            },
-        };
+        return {_parent: "ExitName", _props: {exitName: exit.Name, id: this.objectId.generate(), dynamicLocale: true}};
     }
 
     /**
@@ -890,10 +857,11 @@ export class RepeatableQuestGenerator
             1,
             Math.round(this.mathUtil.interp1(pmcLevel, levelsConfig, itemsConfig)) + 1,
         );
-        const rewardReputation = Math.round(
-            100 * difficulty * this.mathUtil.interp1(pmcLevel, levelsConfig, reputationConfig)
-                * this.randomUtil.getFloat(1 - rewardSpreadConfig, 1 + rewardSpreadConfig),
-        ) / 100;
+        const rewardReputation =
+            Math.round(
+                100 * difficulty * this.mathUtil.interp1(pmcLevel, levelsConfig, reputationConfig)
+                    * this.randomUtil.getFloat(1 - rewardSpreadConfig, 1 + rewardSpreadConfig),
+            ) / 100;
         const skillRewardChance = this.mathUtil.interp1(pmcLevel, levelsConfig, skillRewardChanceConfig);
         const skillPointReward = this.mathUtil.interp1(pmcLevel, levelsConfig, skillPointRewardConfig);
 
@@ -901,17 +869,7 @@ export class RepeatableQuestGenerator
         let roublesBudget = rewardRoubles;
         let chosenRewardItems = this.chooseRewardItemsWithinBudget(repeatableConfig, roublesBudget);
 
-        const rewards: IRewards = {
-            Started: [],
-            Success: [
-                {
-                    value: rewardXP,
-                    type: "Experience",
-                    index: 0,
-                },
-            ],
-            Fail: [],
-        };
+        const rewards: IRewards = {Started: [], Success: [{value: rewardXP, type: "Experience", index: 0}], Fail: []};
 
         if (traderId === Traders.PEACEKEEPER)
         {
@@ -988,12 +946,7 @@ export class RepeatableQuestGenerator
         // Add rep reward to rewards array
         if (rewardReputation > 0)
         {
-            const reward: IReward = {
-                target: traderId,
-                value: rewardReputation,
-                type: "TraderStanding",
-                index: index,
-            };
+            const reward: IReward = {target: traderId, value: rewardReputation, type: "TraderStanding", index: index};
             rewards.Success.push(reward);
         }
 
@@ -1057,21 +1010,9 @@ export class RepeatableQuestGenerator
     protected generateRewardItem(tpl: string, value: number, index: number, preset = null): IReward
     {
         const id = this.objectId.generate();
-        const rewardItem: IReward = {
-            target: id,
-            value: value,
-            type: "Item",
-            index: index,
-        };
+        const rewardItem: IReward = {target: id, value: value, type: "Item", index: index};
 
-        const rootItem = {
-            _id: id,
-            _tpl: tpl,
-            upd: {
-                StackObjectsCount: value,
-                SpawnedInSession: true,
-            },
-        };
+        const rootItem = {_id: id, _tpl: tpl, upd: {StackObjectsCount: value, SpawnedInSession: true}};
 
         if (preset)
         {
@@ -1094,18 +1035,16 @@ export class RepeatableQuestGenerator
         // check for specific baseclasses which don't make sense as reward item
         // also check if the price is greater than 0; there are some items whose price can not be found
         // those are not in the game yet (e.g. AGS grenade launcher)
-        return Object.entries(this.databaseServer.getTables().templates.items).filter(
-            ([tpl, itemTemplate]) =>
+        return Object.entries(this.databaseServer.getTables().templates.items).filter(([tpl, itemTemplate]) =>
+        {
+            // Base "Item" item has no parent, ignore it
+            if (itemTemplate._parent === "")
             {
-                // Base "Item" item has no parent, ignore it
-                if (itemTemplate._parent === "")
-                {
-                    return false;
-                }
+                return false;
+            }
 
-                return this.isValidRewardItem(tpl, repeatableQuestConfig);
-            },
-        );
+            return this.isValidRewardItem(tpl, repeatableQuestConfig);
+        });
     }
 
     /**
@@ -1123,10 +1062,7 @@ export class RepeatableQuestGenerator
         }
 
         // Item is on repeatable or global blacklist
-        if (
-            repeatableQuestConfig.rewardBlacklist.includes(tpl)
-            || this.itemFilterService.isItemBlacklisted(tpl)
-        )
+        if (repeatableQuestConfig.rewardBlacklist.includes(tpl) || this.itemFilterService.isItemBlacklisted(tpl))
         {
             return false;
         }
@@ -1152,8 +1088,7 @@ export class RepeatableQuestGenerator
 
         // Skip globally blacklisted items + boss items
         // biome-ignore lint/complexity/useSimplifiedLogicExpression: <explanation>
-        valid = !this.itemFilterService.isItemBlacklisted(tpl)
-            && !this.itemFilterService.isBossItem(tpl);
+        valid = !this.itemFilterService.isItemBlacklisted(tpl) && !this.itemFilterService.isBossItem(tpl);
 
         return valid;
     }

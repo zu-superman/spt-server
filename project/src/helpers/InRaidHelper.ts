@@ -593,10 +593,7 @@ export class InRaidHelper
             }
 
             // Add these new found items to our list of inventory items
-            inventoryItems = [
-                ...inventoryItems,
-                ...foundItems,
-            ];
+            inventoryItems = [...inventoryItems, ...foundItems];
 
             // Now find the children of these items
             newItems = foundItems;

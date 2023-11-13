@@ -91,10 +91,7 @@ export class ProfileCallbacks
             return this.httpResponse.getBody(null, 1, "The nickname is too short");
         }
 
-        return this.httpResponse.getBody({
-            status: 0,
-            nicknamechangedate: this.timeUtil.getTimestamp(),
-        });
+        return this.httpResponse.getBody({status: 0, nicknamechangedate: this.timeUtil.getTimestamp()});
     }
 
     /**
@@ -141,29 +138,19 @@ export class ProfileCallbacks
     {
         const response: GetProfileStatusResponseData = {
             maxPveCountExceeded: false,
-            profiles: [
-                {
-                    profileid: `scav${sessionID}`,
-                    profileToken: null,
-                    status: "Free",
-                    sid: "",
-                    ip: "",
-                    port: 0,
-                    version: "live",
-                    location: "bigmap",
-                    raidMode: "Online",
-                    mode: "deathmatch",
-                    shortId: "xxx1x1",
-                },
-                {
-                    profileid: `pmc${sessionID}`,
-                    profileToken: null,
-                    status: "Free",
-                    sid: "",
-                    ip: "",
-                    port: 0,
-                },
-            ],
+            profiles: [{
+                profileid: `scav${sessionID}`,
+                profileToken: null,
+                status: "Free",
+                sid: "",
+                ip: "",
+                port: 0,
+                version: "live",
+                location: "bigmap",
+                raidMode: "Online",
+                mode: "deathmatch",
+                shortId: "xxx1x1",
+            }, {profileid: `pmc${sessionID}`, profileToken: null, status: "Free", sid: "", ip: "", port: 0}],
         };
 
         return this.httpResponse.getBody(response);

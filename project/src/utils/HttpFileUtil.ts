@@ -7,9 +7,7 @@ import { HttpServerHelper } from "@spt-aki/helpers/HttpServerHelper";
 @injectable()
 export class HttpFileUtil
 {
-    constructor(
-        @inject("HttpServerHelper") protected httpServerHelper: HttpServerHelper,
-    )
+    constructor(@inject("HttpServerHelper") protected httpServerHelper: HttpServerHelper)
     {
     }
 

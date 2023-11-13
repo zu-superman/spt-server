@@ -44,11 +44,7 @@ export class HealthCallbacks
      */
     public handleWorkoutEffects(url: string, info: IWorkoutData, sessionID: string): IGetBodyResponseData<string>
     {
-        this.healthController.applyWorkoutChanges(
-            this.profileHelper.getPmcProfile(sessionID),
-            info,
-            sessionID,
-        );
+        this.healthController.applyWorkoutChanges(this.profileHelper.getPmcProfile(sessionID), info, sessionID);
         return this.httpResponse.emptyResponse();
     }
 

@@ -96,10 +96,7 @@ export class BotWeaponGeneratorHelper
      */
     public createMagazineWithAmmo(magazineTpl: string, ammoTpl: string, magTemplate: ITemplateItem): Item[]
     {
-        const magazine: Item[] = [{
-            _id: this.hashUtil.generate(),
-            _tpl: magazineTpl,
-        }];
+        const magazine: Item[] = [{_id: this.hashUtil.generate(), _tpl: magazineTpl}];
 
         this.itemHelper.fillMagazineWithCartridge(magazine, magTemplate, ammoTpl, 1);
 
@@ -128,13 +125,9 @@ export class BotWeaponGeneratorHelper
 
         for (const ammoItem of ammoItems)
         {
-            const result = this.addItemWithChildrenToEquipmentSlot(
-                equipmentSlotsToAddTo,
-                ammoItem._id,
-                ammoItem._tpl,
-                [ammoItem],
-                inventory,
-            );
+            const result = this.addItemWithChildrenToEquipmentSlot(equipmentSlotsToAddTo, ammoItem._id, ammoItem._tpl, [
+                ammoItem,
+            ], inventory);
 
             if (result === ItemAddedResult.NO_SPACE)
             {

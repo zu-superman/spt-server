@@ -168,8 +168,7 @@ export class BotLootCacheService
         const specialLootItems = (botJsonTemplate.generation.items.specialItems.whitelist?.length > 0)
             ? botJsonTemplate.generation.items.specialItems.whitelist.map((x) => this.itemHelper.getItem(x)[1])
             : specialLootTemplates.filter((template) =>
-                !(this.isBulletOrGrenade(template._props)
-                    || this.isMagazine(template._props))
+                !(this.isBulletOrGrenade(template._props) || this.isMagazine(template._props))
             );
 
         const healingItems = (botJsonTemplate.generation.items.healing.whitelist?.length > 0)
@@ -183,15 +182,13 @@ export class BotLootCacheService
         const drugItems = (botJsonTemplate.generation.items.drugs.whitelist?.length > 0)
             ? botJsonTemplate.generation.items.drugs.whitelist.map((x) => this.itemHelper.getItem(x)[1])
             : combinedPoolTemplates.filter((template) =>
-                this.isMedicalItem(template._props)
-                && template._parent === BaseClasses.DRUGS
+                this.isMedicalItem(template._props) && template._parent === BaseClasses.DRUGS
             );
 
         const stimItems = (botJsonTemplate.generation.items.stims.whitelist?.length > 0)
             ? botJsonTemplate.generation.items.stims.whitelist.map((x) => this.itemHelper.getItem(x)[1])
             : combinedPoolTemplates.filter((template) =>
-                this.isMedicalItem(template._props)
-                && template._parent === BaseClasses.STIMULATOR
+                this.isMedicalItem(template._props) && template._parent === BaseClasses.STIMULATOR
             );
 
         const grenadeItems = (botJsonTemplate.generation.items.grenades.whitelist?.length > 0)
@@ -201,9 +198,7 @@ export class BotLootCacheService
         // Get loot items (excluding magazines, bullets, grenades and healing items)
         const backpackLootItems = backpackLootTemplates.filter((template) =>
             // biome-ignore lint/complexity/useSimplifiedLogicExpression: <explanation>
-            !this.isBulletOrGrenade(template._props)
-            && !this.isMagazine(template._props)
-            // && !this.isMedicalItem(template._props) // Disabled for now as followSanitar has a lot of med items as loot
+            !this.isBulletOrGrenade(template._props) && !this.isMagazine(template._props) // && !this.isMedicalItem(template._props) // Disabled for now as followSanitar has a lot of med items as loot
             && !this.isGrenade(template._props)
         );
 

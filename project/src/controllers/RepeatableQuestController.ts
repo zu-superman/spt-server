@@ -99,8 +99,7 @@ export class RepeatableQuestController
             const currentRepeatableQuestType = this.getRepeatableQuestSubTypeFromProfile(repeatableConfig, pmcData);
 
             if (
-                repeatableConfig.side === "Pmc"
-                    && pmcData.Info.Level >= repeatableConfig.minPlayerLevel
+                repeatableConfig.side === "Pmc" && pmcData.Info.Level >= repeatableConfig.minPlayerLevel
                 || repeatableConfig.side === "Scav" && scavQuestUnlocked
             )
             {
@@ -216,8 +215,7 @@ export class RepeatableQuestController
             // Elite charisma skill gives extra daily quest(s)
             return repeatableConfig.numQuests
                 + this.databaseServer.getTables().globals.config.SkillsSettings.Charisma.BonusSettings
-                    .EliteBonusSettings
-                    .RepeatableQuestExtraCount;
+                    .EliteBonusSettings.RepeatableQuestExtraCount;
         }
 
         return repeatableConfig.numQuests;
@@ -335,17 +333,7 @@ export class RepeatableQuestController
     {
         return {
             types: repeatableConfig.types.slice(),
-            pool: {
-                Exploration: {
-                    locations: {},
-                },
-                Elimination: {
-                    targets: {},
-                },
-                Pickup: {
-                    locations: {},
-                },
-            },
+            pool: {Exploration: {locations: {}}, Elimination: {targets: {}}, Pickup: {locations: {}}},
         };
     }
 

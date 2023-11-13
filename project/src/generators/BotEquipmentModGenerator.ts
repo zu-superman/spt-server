@@ -97,9 +97,7 @@ export class BotEquipmentModGenerator
             }
 
             // Ensure submods for nvgs all spawn together
-            forceSpawn = (modSlot === "mod_nvg")
-                ? true
-                : false;
+            forceSpawn = (modSlot === "mod_nvg") ? true : false;
 
             let modTpl: string;
             let found = false;
@@ -290,13 +288,7 @@ export class BotEquipmentModGenerator
             if (this.modSlotCanHoldScope(modSlot, modToAddTemplate._parent))
             {
                 // mod_mount was picked to be added to weapon, force scope chance to ensure its filled
-                const scopeSlots = [
-                    "mod_scope",
-                    "mod_scope_000",
-                    "mod_scope_001",
-                    "mod_scope_002",
-                    "mod_scope_003",
-                ];
+                const scopeSlots = ["mod_scope", "mod_scope_000", "mod_scope_001", "mod_scope_002", "mod_scope_003"];
                 this.adjustSlotSpawnChances(modSpawnChances, scopeSlots, 100);
 
                 // Hydrate pool of mods that fit into mount as its a randomisable slot
@@ -310,11 +302,7 @@ export class BotEquipmentModGenerator
             // If picked item is muzzle adapter that can hold a child, adjust spawn chance
             if (this.modSlotCanHoldMuzzleDevices(modSlot, modToAddTemplate._parent))
             {
-                const muzzleSlots = [
-                    "mod_muzzle",
-                    "mod_muzzle_000",
-                    "mod_muzzle_001",
-                ];
+                const muzzleSlots = ["mod_muzzle", "mod_muzzle_000", "mod_muzzle_001"];
                 // Make chance of muzzle devices 95%, nearly certain but not guaranteed
                 this.adjustSlotSpawnChances(modSpawnChances, muzzleSlots, 95);
             }
@@ -340,8 +328,7 @@ export class BotEquipmentModGenerator
             // If stock mod can take a sub stock mod, force spawn chance to be 100% to ensure sub-stock gets added
             // Or if mod_stock is configured to be forced on
             if (
-                modSlot === "mod_stock"
-                && (modToAddTemplate._props.Slots.find((x) =>
+                modSlot === "mod_stock" && (modToAddTemplate._props.Slots.find((x) =>
                     x._name.includes("mod_stock") || botEquipConfig.forceStock
                 ))
             )
@@ -435,8 +422,7 @@ export class BotEquipmentModGenerator
             "mod_scope_001",
             "mod_scope_002",
             "mod_scope_003",
-        ].includes(modSlot.toLowerCase())
-            && modsParentId === BaseClasses.MOUNT;
+        ].includes(modSlot.toLowerCase()) && modsParentId === BaseClasses.MOUNT;
     }
 
     /**
@@ -1025,12 +1011,7 @@ export class BotEquipmentModGenerator
         {
             const modSlotId = slot._name;
             const modId = this.hashUtil.generate();
-            items.push({
-                _id: modId,
-                _tpl: modTpl,
-                parentId: parentId,
-                slotId: modSlotId,
-            });
+            items.push({_id: modId, _tpl: modTpl, parentId: parentId, slotId: modSlotId});
         }
     }
 

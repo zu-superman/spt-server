@@ -22,10 +22,7 @@ export class EventOutputHolder
     {}
 
     // TODO REMEMBER TO CHANGE OUTPUT
-    protected output: IItemEventRouterResponse = {
-        warnings: [],
-        profileChanges: {},
-    };
+    protected output: IItemEventRouterResponse = {warnings: [], profileChanges: {}};
 
     public getOutput(sessionID: string): IItemEventRouterResponse
     {
@@ -54,18 +51,10 @@ export class EventOutputHolder
             ragFairOffers: [],
             weaponBuilds: [],
             equipmentBuilds: [],
-            items: {
-                new: [],
-                change: [],
-                del: [],
-            },
+            items: {new: [], change: [], del: []},
             production: {},
             improvements: {},
-            skills: {
-                Common: [],
-                Mastering: [],
-                Points: 0,
-            },
+            skills: {Common: [], Mastering: [], Points: 0},
             health: this.jsonUtil.clone(pmcData.Health),
             traderRelations: {},
             // changedHideoutStashes: {},

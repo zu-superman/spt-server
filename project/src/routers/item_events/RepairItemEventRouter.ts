@@ -8,19 +8,14 @@ import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEve
 @injectable()
 export class RepairItemEventRouter extends ItemEventRouterDefinition
 {
-    constructor(
-        @inject("RepairCallbacks") protected repairCallbacks: RepairCallbacks,
-    )
+    constructor(@inject("RepairCallbacks") protected repairCallbacks: RepairCallbacks)
     {
         super();
     }
 
     public override getHandledRoutes(): HandledRoute[]
     {
-        return [
-            new HandledRoute("Repair", false),
-            new HandledRoute("TraderRepair", false),
-        ];
+        return [new HandledRoute("Repair", false), new HandledRoute("TraderRepair", false)];
     }
 
     public override handleItemEvent(

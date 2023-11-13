@@ -93,10 +93,7 @@ export class HideoutController
         const items = request.items.map((reqItem) =>
         {
             const item = pmcData.Inventory.items.find((invItem) => invItem._id === reqItem.id);
-            return {
-                inventoryItem: item,
-                requestedItem: reqItem,
-            };
+            return {inventoryItem: item, requestedItem: reqItem};
         });
 
         // If it's not money, its construction / barter items
@@ -375,11 +372,7 @@ export class HideoutController
         const itemsToAdd = Object.entries(addItemToHideoutRequest.items).map((kvp) =>
         {
             const item = pmcData.Inventory.items.find((invItem) => invItem._id === kvp[1].id);
-            return {
-                inventoryItem: item,
-                requestedItem: kvp[1],
-                slot: kvp[0],
-            };
+            return {inventoryItem: item, requestedItem: kvp[1], slot: kvp[0]};
         });
 
         const hideoutArea = pmcData.Hideout.Areas.find((area) => area.type === addItemToHideoutRequest.areaType);
@@ -631,10 +624,7 @@ export class HideoutController
                 return this.httpResponse.appendErrorToOutput(output);
             }
 
-            if (
-                inventoryItem.upd?.StackObjectsCount
-                && inventoryItem.upd.StackObjectsCount > requestedItem.count
-            )
+            if (inventoryItem.upd?.StackObjectsCount && inventoryItem.upd.StackObjectsCount > requestedItem.count)
             {
                 inventoryItem.upd.StackObjectsCount -= requestedItem.count;
             }
@@ -693,9 +683,7 @@ export class HideoutController
      */
     protected addScavCaseRewardsToProfile(pmcData: IPmcData, rewards: Product[], recipeId: string): void
     {
-        pmcData.Hideout.Production[`ScavCase${recipeId}`] = {
-            Products: rewards,
-        };
+        pmcData.Hideout.Production[`ScavCase${recipeId}`] = {Products: rewards};
     }
 
     /**
@@ -799,13 +787,7 @@ export class HideoutController
             id = this.presetHelper.getDefaultPreset(id)._id;
         }
 
-        const newReq = {
-            items: [{
-                item_id: id,
-                count: recipe.count,
-            }],
-            tid: "ragfair",
-        };
+        const newReq = {items: [{item_id: id, count: recipe.count}], tid: "ragfair"};
 
         const entries = Object.entries(pmcData.Hideout.Production);
         let prodId: string;
@@ -889,9 +871,7 @@ export class HideoutController
         // Handle the isEncoded flag from recipe
         if (recipe.isEncoded)
         {
-            const upd: Upd = {
-                RecodableComponent: {IsEncoded: true},
-            };
+            const upd: Upd = {RecodableComponent: {IsEncoded: true}};
 
             return this.inventoryHelper.addItem(pmcData, newReq, output, sessionID, callback, true, upd);
         }
@@ -957,18 +937,13 @@ export class HideoutController
                 {
                     id = this.presetHelper.getDefaultPreset(id)._id;
                 }
-                const numOfItems = !x.upd?.StackObjectsCount
-                    ? 1
-                    : x.upd.StackObjectsCount;
+                const numOfItems = !x.upd?.StackObjectsCount ? 1 : x.upd.StackObjectsCount;
 
                 return {item_id: id, count: numOfItems};
             },
         );
 
-        const newReq = {
-            items: itemsToAdd,
-            tid: "ragfair",
-        };
+        const newReq = {items: itemsToAdd, tid: "ragfair"};
 
         const callback = () =>
         {
@@ -1060,10 +1035,7 @@ export class HideoutController
         // Check if counter exists, add placeholder if it doesn't
         if (!pmcData.Stats.Eft.OverallCounters.Items.find((x) => x.Key.includes("ShootingRangePoints")))
         {
-            pmcData.Stats.Eft.OverallCounters.Items.push({
-                Key: ["ShootingRangePoints"],
-                Value: 0,
-            });
+            pmcData.Stats.Eft.OverallCounters.Items.push({Key: ["ShootingRangePoints"], Value: 0});
         }
 
         // Find counter by key and update value
@@ -1094,10 +1066,7 @@ export class HideoutController
         const items = request.items.map((reqItem) =>
         {
             const item = pmcData.Inventory.items.find((invItem) => invItem._id === reqItem.id);
-            return {
-                inventoryItem: item,
-                requestedItem: reqItem,
-            };
+            return {inventoryItem: item, requestedItem: reqItem};
         });
 
         // If it's not money, its construction / barter items

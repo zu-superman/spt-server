@@ -7,9 +7,7 @@ import { ImageRouter } from "@spt-aki/routers/ImageRouter";
 @injectable()
 export class ImageSerializer extends Serializer
 {
-    constructor(
-        @inject("ImageRouter") protected imageRouter: ImageRouter,
-    )
+    constructor(@inject("ImageRouter") protected imageRouter: ImageRouter)
     {
         super();
     }

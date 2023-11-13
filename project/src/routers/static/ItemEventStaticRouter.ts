@@ -6,20 +6,16 @@ import { RouteAction, StaticRouter } from "@spt-aki/di/Router";
 @injectable()
 export class ItemEventStaticRouter extends StaticRouter
 {
-    constructor(
-        @inject("ItemEventCallbacks") protected itemEventCallbacks: ItemEventCallbacks,
-    )
+    constructor(@inject("ItemEventCallbacks") protected itemEventCallbacks: ItemEventCallbacks)
     {
-        super(
-            [
-                new RouteAction(
-                    "/client/game/profile/items/moving",
-                    (url: string, info: any, sessionID: string, output: string): any =>
-                    {
-                        return this.itemEventCallbacks.handleEvents(url, info, sessionID);
-                    },
-                ),
-            ],
-        );
+        super([
+            new RouteAction(
+                "/client/game/profile/items/moving",
+                (url: string, info: any, sessionID: string, output: string): any =>
+                {
+                    return this.itemEventCallbacks.handleEvents(url, info, sessionID);
+                },
+            ),
+        ]);
     }
 }

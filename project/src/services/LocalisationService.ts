@@ -30,14 +30,12 @@ export class LocalisationService
                 ? "Aki_Data/Server/database/locales/server"
                 : "./assets/database/locales/server",
         );
-        this.i18n = new I18n(
-            {
-                locales: this.localeService.getServerSupportedLocales(),
-                defaultLocale: "en",
-                directory: localeFileDirectory,
-                retryInDefaultLocale: true,
-            },
-        );
+        this.i18n = new I18n({
+            locales: this.localeService.getServerSupportedLocales(),
+            defaultLocale: "en",
+            directory: localeFileDirectory,
+            retryInDefaultLocale: true,
+        });
 
         this.i18n.setLocale(this.localeService.getDesiredServerLocale());
     }

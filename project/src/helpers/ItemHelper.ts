@@ -176,9 +176,7 @@ class ItemHelper
     {
         if (item.upd === undefined)
         {
-            item.upd = {
-                StackObjectsCount: 1,
-            };
+            item.upd = {StackObjectsCount: 1};
         }
 
         if (item.upd.StackObjectsCount === undefined)
@@ -243,9 +241,7 @@ class ItemHelper
                     parentId: parentId,
                     slotId: slotId,
                     location: 0,
-                    upd: {
-                        StackObjectsCount: count,
-                    },
+                    upd: {StackObjectsCount: count},
                 };
                 stackSlotItems.push(stackSlotItem);
             }
@@ -473,10 +469,7 @@ class ItemHelper
      */
     public hasBuyRestrictions(itemToCheck: Item): boolean
     {
-        if (
-            itemToCheck.upd?.BuyRestrictionCurrent !== undefined
-            && itemToCheck.upd?.BuyRestrictionMax !== undefined
-        )
+        if (itemToCheck.upd?.BuyRestrictionCurrent !== undefined && itemToCheck.upd?.BuyRestrictionMax !== undefined)
         {
             return true;
         }
@@ -574,18 +567,14 @@ class ItemHelper
     public findBarterItems(by: "tpl" | "id", items: Item[], barterItemId: string): Item[]
     {
         // find required items to take after buying (handles multiple items)
-        const barterIDs = typeof barterItemId === "string"
-            ? [barterItemId]
-            : barterItemId;
+        const barterIDs = typeof barterItemId === "string" ? [barterItemId] : barterItemId;
 
         let barterItems: Item[] = [];
         for (const barterID of barterIDs)
         {
             const filterResult = items.filter((item) =>
             {
-                return by === "tpl"
-                    ? (item._tpl === barterID)
-                    : (item._id === barterID);
+                return by === "tpl" ? (item._tpl === barterID) : (item._id === barterID);
             });
 
             barterItems = Object.assign(barterItems, filterResult);
@@ -954,9 +943,7 @@ class ItemHelper
         while (currentStoredCartridgeCount < ammoBoxMaxCartridgeCount)
         {
             const remainingSpace = ammoBoxMaxCartridgeCount - currentStoredCartridgeCount;
-            const cartridgeCountToAdd = (remainingSpace < maxPerStack)
-                ? remainingSpace
-                : maxPerStack;
+            const cartridgeCountToAdd = (remainingSpace < maxPerStack) ? remainingSpace : maxPerStack;
 
             // Add cartridge item into items array
             ammoBox.push(this.createCartridges(ammoBox[0]._id, cartridgeTpl, cartridgeCountToAdd, location));
@@ -1086,10 +1073,8 @@ class ItemHelper
         const ammoTpls = magTemplate._props.Cartridges[0]._props.filters[0].Filter;
         const calibers = [
             ...new Set(
-                ammoTpls.filter(
-                    (x: string) => this.getItem(x)[0],
-                ).map(
-                    (x: string) => this.getItem(x)[1]._props.Caliber,
+                ammoTpls.filter((x: string) => this.getItem(x)[0]).map((x: string) =>
+                    this.getItem(x)[1]._props.Caliber
                 ),
             ),
         ];
@@ -1107,9 +1092,7 @@ class ItemHelper
         const ammoArray = new ProbabilityObjectArray<string>(this.mathUtil, this.jsonUtil);
         for (const icd of staticAmmoDist[caliber])
         {
-            ammoArray.push(
-                new ProbabilityObject(icd.tpl, icd.relativeProbability),
-            );
+            ammoArray.push(new ProbabilityObject(icd.tpl, icd.relativeProbability));
         }
         return ammoArray.draw(1)[0];
     }

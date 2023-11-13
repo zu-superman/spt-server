@@ -17,9 +17,7 @@ export class InsuranceItemEventRouter extends ItemEventRouterDefinition
 
     public override getHandledRoutes(): HandledRoute[]
     {
-        return [
-            new HandledRoute("Insure", false),
-        ];
+        return [new HandledRoute("Insure", false)];
     }
 
     public override handleItemEvent(

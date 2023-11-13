@@ -60,11 +60,7 @@ export class DialogueController
     public getFriendList(sessionID: string): IGetFriendListDataResponse
     {
         // Force a fake friend called SPT into friend list
-        return {
-            Friends: [this.getSptFriendData()],
-            Ignore: [],
-            InIgnoreList: [],
-        };
+        return {Friends: [this.getSptFriendData()], Ignore: [], InIgnoreList: []};
     }
 
     /**

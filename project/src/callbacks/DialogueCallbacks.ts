@@ -75,12 +75,7 @@ export class DialogueCallbacks implements OnUpdate
             VersionId: "bgkidft87ddd", // TODO: Is this... correct?
             Ip: "",
             Port: 0,
-            Chats: [
-                {
-                    _id: "0",
-                    Members: 0,
-                },
-            ],
+            Chats: [{_id: "0", Members: 0}],
         };
 
         return this.httpResponse.getBody([chatServer]);

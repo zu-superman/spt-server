@@ -120,9 +120,7 @@ export class CustomItemService
      */
     protected getOrGenerateIdForItem(newId: string): string
     {
-        return (newId === "")
-            ? this.hashUtil.generate()
-            : newId;
+        return (newId === "") ? this.hashUtil.generate() : newId;
     }
 
     /**
@@ -157,13 +155,7 @@ export class CustomItemService
      */
     protected addToHandbookDb(newItemId: string, parentId: string, priceRoubles: number): void
     {
-        this.tables.templates.handbook.Items.push(
-            {
-                Id: newItemId,
-                ParentId: parentId,
-                Price: priceRoubles,
-            },
-        );
+        this.tables.templates.handbook.Items.push({Id: newItemId, ParentId: parentId, Price: priceRoubles});
     }
 
     /**

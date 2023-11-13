@@ -199,9 +199,7 @@ export class TraderHelper
     {
         const newStanding = currentStanding + standingToAdd;
 
-        return newStanding < 0
-            ? 0
-            : newStanding;
+        return newStanding < 0 ? 0 : newStanding;
     }
 
     /**
@@ -229,8 +227,7 @@ export class TraderHelper
             if (
                 (loyalty.minLevel <= pmcData.Info.Level
                     && loyalty.minSalesSum <= pmcData.TradersInfo[traderID].salesSum
-                    && loyalty.minStanding <= pmcData.TradersInfo[traderID].standing)
-                && targetLevel < 4
+                    && loyalty.minStanding <= pmcData.TradersInfo[traderID].standing) && targetLevel < 4
             )
             {
                 // level reached
@@ -271,10 +268,7 @@ export class TraderHelper
                 }),
             );
             this.traderConfig.updateTime.push( // create temporary entry to prevent logger spam
-                {
-                    traderId: traderId,
-                    seconds: this.traderConfig.updateTimeDefault,
-                },
+                {traderId: traderId, seconds: this.traderConfig.updateTimeDefault},
             );
         }
         else

@@ -9,9 +9,7 @@ import { EquipmentSlots } from "@spt-aki/models/enums/EquipmentSlots";
 @injectable()
 export class UbglExternalMagGen implements IInventoryMagGen
 {
-    constructor(
-        @inject("BotWeaponGeneratorHelper") protected botWeaponGeneratorHelper: BotWeaponGeneratorHelper,
-    )
+    constructor(@inject("BotWeaponGeneratorHelper") protected botWeaponGeneratorHelper: BotWeaponGeneratorHelper)
     {}
 
     public getPriority(): number

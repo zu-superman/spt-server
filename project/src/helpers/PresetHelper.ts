@@ -25,13 +25,13 @@ export class PresetHelper
     {
         if (!this.defaultPresets)
         {
-            this.defaultPresets = Object.values(this.databaseServer.getTables().globals.ItemPresets)
-                .filter((x) => x._encyclopedia !== undefined)
-                .reduce((acc, cur) =>
-                {
-                    acc[cur._id] = cur;
-                    return acc;
-                }, {});
+            this.defaultPresets = Object.values(this.databaseServer.getTables().globals.ItemPresets).filter((x) =>
+                x._encyclopedia !== undefined
+            ).reduce((acc, cur) =>
+            {
+                acc[cur._id] = cur;
+                return acc;
+            }, {});
         }
 
         return this.defaultPresets;

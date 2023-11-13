@@ -14,9 +14,7 @@ export class WatermarkLocale
     protected warning: string[];
     protected modding: string[];
 
-    constructor(
-        @inject("LocalisationService") protected localisationService: LocalisationService,
-    )
+    constructor(@inject("LocalisationService") protected localisationService: LocalisationService)
     {
         this.description = [
             this.localisationService.getText("watermark-discord_url"),

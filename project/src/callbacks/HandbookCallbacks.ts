@@ -6,9 +6,7 @@ import { OnLoad } from "@spt-aki/di/OnLoad";
 @injectable()
 export class HandbookCallbacks implements OnLoad
 {
-    constructor(
-        @inject("HandbookController") protected handbookController: HandbookController,
-    )
+    constructor(@inject("HandbookController") protected handbookController: HandbookController)
     {}
 
     public async onLoad(): Promise<void>

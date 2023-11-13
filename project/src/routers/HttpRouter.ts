@@ -87,8 +87,6 @@ export class HttpRouter
 
 class ResponseWrapper
 {
-    constructor(
-        public output: string,
-    )
+    constructor(public output: string)
     {}
 }

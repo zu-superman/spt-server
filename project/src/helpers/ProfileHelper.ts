@@ -217,9 +217,7 @@ export class ProfileHelper
 
     public getDefaultAkiDataObject(): any
     {
-        return {
-            version: this.getServerVersion(),
-        };
+        return {version: this.getServerVersion()};
     }
 
     public getFullProfile(sessionID: string): IAkiProfile
@@ -257,11 +255,7 @@ export class ProfileHelper
         return {
             Eft: {
                 CarriedQuestItems: [],
-                DamageHistory: {
-                    LethalDamagePart: "Head",
-                    LethalDamage: undefined,
-                    BodyParts: <any>[],
-                },
+                DamageHistory: {LethalDamagePart: "Head", LethalDamage: undefined, BodyParts: <any>[]},
                 DroppedItems: [],
                 ExperienceBonusMult: 0,
                 FoundInRaidItems: [],

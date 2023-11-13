@@ -58,9 +58,7 @@ export class GameCallbacks implements OnLoad
         const today = new Date().toUTCString();
         const startTimeStampMS = Date.parse(today);
         this.gameController.gameStart(url, info, sessionID, startTimeStampMS);
-        return this.httpResponse.getBody({
-            utc_time: startTimeStampMS / 1000,
-        });
+        return this.httpResponse.getBody({utc_time: startTimeStampMS / 1000});
     }
 
     /**
@@ -75,9 +73,7 @@ export class GameCallbacks implements OnLoad
     ): IGetBodyResponseData<IGameLogoutResponseData>
     {
         this.saveServer.save();
-        return this.httpResponse.getBody({
-            status: "ok",
-        });
+        return this.httpResponse.getBody({status: "ok"});
     }
 
     /**
@@ -144,9 +140,7 @@ export class GameCallbacks implements OnLoad
      */
     public getVersion(url: string, info: IEmptyRequestData, sessionID: string): string
     {
-        return this.httpResponse.noBody({
-            Version: this.watermark.getInGameVersionLabel(),
-        });
+        return this.httpResponse.noBody({Version: this.watermark.getInGameVersionLabel()});
     }
 
     public reportNickname(url: string, info: IReportNicknameRequestData, sessionID: string): INullResponseData

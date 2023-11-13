@@ -8,9 +8,7 @@ import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEve
 @injectable()
 export class TradeItemEventRouter extends ItemEventRouterDefinition
 {
-    constructor(
-        @inject("TradeCallbacks") protected tradeCallbacks: TradeCallbacks,
-    )
+    constructor(@inject("TradeCallbacks") protected tradeCallbacks: TradeCallbacks)
     {
         super();
     }

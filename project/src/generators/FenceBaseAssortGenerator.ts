@@ -97,10 +97,7 @@ export class FenceBaseAssortGenerator
                 _tpl: item._id,
                 parentId: "hideout",
                 slotId: "hideout",
-                upd: {
-                    StackObjectsCount: 9999999,
-                    UnlimitedCount: true,
-                },
+                upd: {StackObjectsCount: 9999999, UnlimitedCount: true},
             };
 
             // Add item to base

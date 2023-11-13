@@ -63,11 +63,7 @@ export class JsonUtil
      * @param options Stringify options or a replacer.
      * @returns The string converted from the JavaScript value
      */
-    public serializeJsonC(
-        data: any,
-        filename?: string | null,
-        options?: IStringifyOptions | Reviver,
-    ): string
+    public serializeJsonC(data: any, filename?: string | null, options?: IStringifyOptions | Reviver): string
     {
         try
         {
@@ -81,11 +77,7 @@ export class JsonUtil
         }
     }
 
-    public serializeJson5(
-        data: any,
-        filename?: string | null,
-        prettify = false,
-    ): string
+    public serializeJson5(data: any, filename?: string | null, prettify = false): string
     {
         try
         {

@@ -15,7 +15,7 @@
         "trailingCommas": "onlyMultiLine",
         "operatorPosition": "nextLine",
         "preferHanging": false,
-        "preferSingleLine": false,
+        "preferSingleLine": true,
         "arrowFunction.useParentheses": "force",
         "binaryExpression.linePerExpression": false,
         "memberExpression.linePerExpression": false,

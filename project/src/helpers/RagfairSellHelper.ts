@@ -61,9 +61,7 @@ export class RagfairSellHelper
         playerListedPriceRub: number,
     ): number
     {
-        return (playerListedPriceRub < averageOfferPriceRub)
-            ? this.ragfairConfig.sell.chance.underpriced
-            : 1;
+        return (playerListedPriceRub < averageOfferPriceRub) ? this.ragfairConfig.sell.chance.underpriced : 1;
     }
 
     /**
@@ -114,10 +112,7 @@ export class RagfairSellHelper
                     this.ragfairConfig.sell.time.min * 60,
                 );
 
-                result.push({
-                    sellTime: sellTime,
-                    amount: boughtAmount,
-                });
+                result.push({sellTime: sellTime, amount: boughtAmount});
 
                 this.logger.debug(`Offer will sell at: ${new Date(sellTime * 1000).toLocaleTimeString("en-US")}`);
             }

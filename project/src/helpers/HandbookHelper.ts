@@ -49,9 +49,7 @@ export class HandbookHelper
             {
                 this.handbookPriceCache.items.byParent.set(handbookItem.ParentId, []);
             }
-            this.handbookPriceCache.items.byParent
-                .get(handbookItem.ParentId)
-                .push(handbookItem.Id);
+            this.handbookPriceCache.items.byParent.get(handbookItem.ParentId).push(handbookItem.Id);
         }
 
         for (const handbookCategory of handbookDb.Categories)
@@ -63,9 +61,7 @@ export class HandbookHelper
                 {
                     this.handbookPriceCache.categories.byParent.set(handbookCategory.ParentId, []);
                 }
-                this.handbookPriceCache.categories.byParent
-                    .get(handbookCategory.ParentId)
-                    .push(handbookCategory.Id);
+                this.handbookPriceCache.categories.byParent.get(handbookCategory.ParentId).push(handbookCategory.Id);
             }
         }
     }

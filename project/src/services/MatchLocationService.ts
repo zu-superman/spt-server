@@ -8,9 +8,7 @@ export class MatchLocationService
 {
     protected locations = {};
 
-    constructor(
-        @inject("TimeUtil") protected timeUtil: TimeUtil,
-    )
+    constructor(@inject("TimeUtil") protected timeUtil: TimeUtil)
     {}
 
     public createGroup(sessionID: string, info: ICreateGroupRequestData): any
@@ -27,15 +25,13 @@ export class MatchLocationService
             isSavage: false,
             timeShift: "CURR",
             dt: this.timeUtil.getTimestamp(),
-            players: [
-                {
-                    _id: `pmc${sessionID}`,
-                    region: "EUR",
-                    ip: "127.0.0.1",
-                    savageId: `scav${sessionID}`,
-                    accessKeyId: "",
-                },
-            ],
+            players: [{
+                _id: `pmc${sessionID}`,
+                region: "EUR",
+                ip: "127.0.0.1",
+                savageId: `scav${sessionID}`,
+                accessKeyId: "",
+            }],
             customDataCenter: [],
         };
 

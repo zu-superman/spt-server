@@ -247,13 +247,12 @@ export class LocationGenerator
      */
     protected getRandomisableContainersOnMap(staticContainers: IStaticContainerData[]): IStaticContainerData[]
     {
-        return staticContainers
-            .filter((x) =>
-                x.probability !== 1 && !x.template.IsAlwaysSpawn
-                && !this.locationConfig.containerRandomisationSettings.containerTypesToNotRandomise.includes(
-                    x.template.Items[0]._tpl,
-                )
-            );
+        return staticContainers.filter((x) =>
+            x.probability !== 1 && !x.template.IsAlwaysSpawn
+            && !this.locationConfig.containerRandomisationSettings.containerTypesToNotRandomise.includes(
+                x.template.Items[0]._tpl,
+            )
+        );
     }
 
     /**
@@ -530,9 +529,7 @@ export class LocationGenerator
                 continue;
             }
 
-            itemDistribution.push(
-                new ProbabilityObject(icd.tpl, icd.relativeProbability),
-            );
+            itemDistribution.push(new ProbabilityObject(icd.tpl, icd.relativeProbability));
         }
 
         return itemDistribution;
@@ -571,10 +568,7 @@ export class LocationGenerator
         // Draw from random distribution
         const desiredSpawnpointCount = Math.round(
             this.getLooseLootMultiplerForLocation(locationName)
-                * this.randomUtil.randn(
-                    dynamicLootDist.spawnpointCount.mean,
-                    dynamicLootDist.spawnpointCount.std,
-                ),
+                * this.randomUtil.randn(dynamicLootDist.spawnpointCount.mean, dynamicLootDist.spawnpointCount.std),
         );
 
         // Positions not in forced but have 100% chance to spawn
@@ -598,9 +592,7 @@ export class LocationGenerator
                 continue;
             }
 
-            spawnpointArray.push(
-                new ProbabilityObject(spawnpoint.template.Id, spawnpoint.probability, spawnpoint),
-            );
+            spawnpointArray.push(new ProbabilityObject(spawnpoint.template.Id, spawnpoint.probability, spawnpoint));
         }
 
         // Select a number of spawn points to add loot to
@@ -665,9 +657,7 @@ export class LocationGenerator
                     continue;
                 }
 
-                itemArray.push(
-                    new ProbabilityObject(itemDist.composedKey.key, itemDist.relativeProbability),
-                );
+                itemArray.push(new ProbabilityObject(itemDist.composedKey.key, itemDist.relativeProbability));
             }
 
             // Draw a random item from spawn points possible items
@@ -720,9 +710,7 @@ export class LocationGenerator
                 for (const si of items)
                 {
                     // use locationId as template.Id is the same across all items
-                    spawnpointArray.push(
-                        new ProbabilityObject(si.locationId, si.probability, si),
-                    );
+                    spawnpointArray.push(new ProbabilityObject(si.locationId, si.probability, si));
                 }
 
                 // Choose 1 out of all found spawn positions for spawn id and add to loot array
@@ -792,22 +780,13 @@ export class LocationGenerator
                 ? 1
                 : this.randomUtil.getInt(itemTemplate._props.StackMinRandom, itemTemplate._props.StackMaxRandom);
 
-            itemWithMods.push(
-                {
-                    _id: this.objectId.generate(),
-                    _tpl: chosenTpl,
-                    upd: {StackObjectsCount: stackCount},
-                },
-            );
+            itemWithMods.push({_id: this.objectId.generate(), _tpl: chosenTpl, upd: {StackObjectsCount: stackCount}});
         }
         else if (this.itemHelper.isOfBaseclass(chosenTpl, BaseClasses.AMMO_BOX))
         {
             // Fill with cartrdiges
             const ammoBoxTemplate = this.itemHelper.getItem(chosenTpl)[1];
-            const ammoBoxItem: Item[] = [{
-                _id: this.objectId.generate(),
-                _tpl: chosenTpl,
-            }];
+            const ammoBoxItem: Item[] = [{_id: this.objectId.generate(), _tpl: chosenTpl}];
             this.itemHelper.addCartridgesToAmmoBox(ammoBoxItem, ammoBoxTemplate);
             itemWithMods.push(...ammoBoxItem);
         }
@@ -815,10 +794,7 @@ export class LocationGenerator
         {
             // Create array with just magazine + randomised amount of cartridges
             const magazineTemplate = this.itemHelper.getItem(chosenTpl)[1];
-            const magazineItem: Item[] = [{
-                _id: this.objectId.generate(),
-                _tpl: chosenTpl,
-            }];
+            const magazineItem: Item[] = [{_id: this.objectId.generate(), _tpl: chosenTpl}];
             this.itemHelper.fillMagazineWithRandomCartridge(
                 magazineItem,
                 magazineTemplate,
@@ -845,11 +821,7 @@ export class LocationGenerator
         // Get inventory size of item
         const size = this.itemHelper.getItemSize(itemWithMods, itemWithMods[0]._id);
 
-        return {
-            items: itemWithMods,
-            width: size.width,
-            height: size.height,
-        };
+        return {items: itemWithMods, width: size.width, height: size.height};
     }
 
     /**
@@ -901,12 +873,7 @@ export class LocationGenerator
         const itemTemplate = this.itemHelper.getItem(tpl)[1];
         let width = itemTemplate._props.Width;
         let height = itemTemplate._props.Height;
-        let items: Item[] = [
-            {
-                _id: this.objectId.generate(),
-                _tpl: tpl,
-            },
-        ];
+        let items: Item[] = [{_id: this.objectId.generate(), _tpl: tpl}];
 
         // Use passed in parentId as override for new item
         if (parentId)
@@ -1037,10 +1004,6 @@ export class LocationGenerator
             items.splice(items.indexOf(items[0]), 1, ...magazineWithCartridges);
         }
 
-        return {
-            items: items,
-            width: width,
-            height: height,
-        };
+        return {items: items, width: width, height: height};
     }
 }

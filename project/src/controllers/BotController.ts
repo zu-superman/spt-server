@@ -57,11 +57,7 @@ export class BotController
      */
     public getBotPresetGenerationLimit(type: string): number
     {
-        const value = this.botConfig.presetBatch[
-            (type === "assaultGroup")
-                ? "assault"
-                : type
-        ];
+        const value = this.botConfig.presetBatch[(type === "assaultGroup") ? "assault" : type];
 
         if (!value)
         {
@@ -275,9 +271,7 @@ export class BotController
             this.logger.warning(this.localisationService.getText("bot-missing_saved_match_info"));
         }
 
-        const mapName = raidConfig
-            ? raidConfig.location
-            : defaultMapCapId;
+        const mapName = raidConfig ? raidConfig.location : defaultMapCapId;
 
         let botCap = this.botConfig.maxBotCap[mapName.toLowerCase()];
         if (!botCap)
@@ -296,9 +290,6 @@ export class BotController
 
     public getAiBotBrainTypes(): any
     {
-        return {
-            pmc: this.pmcConfig.pmcType,
-            assault: this.botConfig.assaultBrainType,
-        };
+        return {pmc: this.pmcConfig.pmcType, assault: this.botConfig.assaultBrainType};
     }
 }

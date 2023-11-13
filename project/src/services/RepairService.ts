@@ -69,9 +69,7 @@ export class RepairService
         const priceCoef = this.traderHelper.getLoyaltyLevel(traderId, pmcData).repair_price_coef;
         const traderRepairDetails = this.traderHelper.getTrader(traderId, sessionID).repair;
         const repairQualityMultiplier = traderRepairDetails.quality;
-        const repairRate = (priceCoef <= 0)
-            ? 1
-            : (priceCoef / 100 + 1);
+        const repairRate = (priceCoef <= 0) ? 1 : (priceCoef / 100 + 1);
 
         const itemToRepairDetails = this.databaseServer.getTables().templates.items[itemToRepair._tpl];
         const repairItemIsArmor = !!itemToRepairDetails._props.ArmorMaterial;
@@ -124,12 +122,7 @@ export class RepairService
     {
         const options: IProcessBuyTradeRequestData = {
             // eslint-disable-next-line @typescript-eslint/naming-convention
-            scheme_items: [
-                {
-                    id: repairedItemId,
-                    count: Math.round(repairCost),
-                },
-            ],
+            scheme_items: [{id: repairedItemId, count: Math.round(repairCost)}],
             tid: traderId,
             Action: "",
             type: "",
@@ -149,11 +142,7 @@ export class RepairService
      * @param repairDetails details of item repaired, cost/item
      * @param pmcData Profile to add points to
      */
-    public addRepairSkillPoints(
-        sessionId: string,
-        repairDetails: RepairDetails,
-        pmcData: IPmcData,
-    ): void
+    public addRepairSkillPoints(sessionId: string, repairDetails: RepairDetails, pmcData: IPmcData): void
     {
         if (
             repairDetails.repairedByKit
@@ -186,9 +175,7 @@ export class RepairService
             }
 
             const isHeavyArmor = itemDetails[1]._props.ArmorType === "Heavy";
-            const vestSkillToLevel = isHeavyArmor
-                ? SkillTypes.HEAVY_VESTS
-                : SkillTypes.LIGHT_VESTS;
+            const vestSkillToLevel = isHeavyArmor ? SkillTypes.HEAVY_VESTS : SkillTypes.LIGHT_VESTS;
             const pointsToAddToVestSkill = repairDetails.repairPoints
                 * this.repairConfig.armorKitSkillPointGainPerRepairPointMultiplier;
 
@@ -227,9 +214,7 @@ export class RepairService
      * @param repairDetails the repair details to calculate skill points for
      * @returns the number of skill points to reward the user
      */
-    protected getWeaponRepairSkillPoints(
-        repairDetails: RepairDetails,
-    ): number
+    protected getWeaponRepairSkillPoints(repairDetails: RepairDetails): number
     {
         // This formula and associated configs is calculated based on 30 repairs done on live
         // The points always came out 2-aligned, which is why there's a divide/multiply by 2 with ceil calls
@@ -420,17 +405,11 @@ export class RepairService
         if (!repairKitInInventory.upd)
         {
             this.logger.debug(`Repair kit: ${repairKitInInventory._id} in inventory lacks upd object, adding`);
-            repairKitInInventory.upd = {
-                RepairKit: {
-                    Resource: maxRepairAmount,
-                },
-            };
+            repairKitInInventory.upd = {RepairKit: {Resource: maxRepairAmount}};
         }
         if (!repairKitInInventory.upd.RepairKit?.Resource)
         {
-            repairKitInInventory.upd.RepairKit = {
-                Resource: maxRepairAmount,
-            };
+            repairKitInInventory.upd.RepairKit = {Resource: maxRepairAmount};
         }
     }
 

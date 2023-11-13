@@ -6,9 +6,7 @@ import { TimeUtil } from "@spt-aki/utils/TimeUtil";
 @injectable()
 export class ObjectId
 {
-    constructor(
-        @inject("TimeUtil") protected timeUtil: TimeUtil,
-    )
+    constructor(@inject("TimeUtil") protected timeUtil: TimeUtil)
     {}
 
     protected randomBytes = crypto.randomBytes(5);

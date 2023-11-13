@@ -6,9 +6,7 @@ import { HttpServer } from "@spt-aki/servers/HttpServer";
 @injectable()
 export class HttpCallbacks implements OnLoad
 {
-    constructor(
-        @inject("HttpServer") protected httpServer: HttpServer,
-    )
+    constructor(@inject("HttpServer") protected httpServer: HttpServer)
     {}
 
     public async onLoad(): Promise<void>

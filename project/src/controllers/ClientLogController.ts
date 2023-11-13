@@ -8,9 +8,7 @@ import { inject, injectable } from "tsyringe";
 @injectable()
 export class ClientLogController
 {
-    constructor(
-        @inject("WinstonLogger") protected logger: ILogger,
-    )
+    constructor(@inject("WinstonLogger") protected logger: ILogger)
     {}
 
     /**

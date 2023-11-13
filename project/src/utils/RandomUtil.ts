@@ -21,11 +21,7 @@ import { MathUtil } from "@spt-aki/utils/MathUtil";
  */
 export class ProbabilityObjectArray<K, V = undefined> extends Array<ProbabilityObject<K, V>>
 {
-    constructor(
-        private mathUtil: MathUtil,
-        private jsonUtil: JsonUtil,
-        ...items: ProbabilityObject<K, V>[]
-    )
+    constructor(private mathUtil: MathUtil, private jsonUtil: JsonUtil, ...items: ProbabilityObject<K, V>[])
     {
         super();
         this.push(...items);
@@ -204,10 +200,7 @@ export class ProbabilityObject<K, V = undefined>
 @injectable()
 export class RandomUtil
 {
-    constructor(
-        @inject("JsonUtil") protected jsonUtil: JsonUtil,
-        @inject("WinstonLogger") protected logger: ILogger,
-    )
+    constructor(@inject("JsonUtil") protected jsonUtil: JsonUtil, @inject("WinstonLogger") protected logger: ILogger)
     {
     }
 
@@ -381,10 +374,7 @@ export class RandomUtil
 
         if (n < 1)
         {
-            throw {
-                name: "Invalid argument",
-                message: `'n' must be 1 or greater (received ${n})`,
-            };
+            throw {name: "Invalid argument", message: `'n' must be 1 or greater (received ${n})`};
         }
 
         if (min === max)
@@ -453,10 +443,7 @@ export class RandomUtil
             currentIndex--;
 
             // And swap it with the current element.
-            [array[currentIndex], array[randomIndex]] = [
-                array[randomIndex],
-                array[currentIndex],
-            ];
+            [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
         }
 
         return array;

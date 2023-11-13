@@ -8,9 +8,7 @@ export class RagfairCategoriesService
 {
     protected categories: Record<string, number> = {};
 
-    constructor(
-        @inject("WinstonLogger") protected logger: ILogger,
-    )
+    constructor(@inject("WinstonLogger") protected logger: ILogger)
     {}
 
     /**
@@ -58,9 +56,7 @@ export class RagfairCategoriesService
         const itemId = offer.items[0]._tpl;
         if (increment)
         {
-            categories[itemId] = categories[itemId]
-                ? categories[itemId] + 1
-                : 1;
+            categories[itemId] = categories[itemId] ? categories[itemId] + 1 : 1;
         }
         else
         {

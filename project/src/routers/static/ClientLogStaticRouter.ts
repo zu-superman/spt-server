@@ -6,20 +6,13 @@ import { RouteAction, StaticRouter } from "@spt-aki/di/Router";
 @injectable()
 export class ClientLogStaticRouter extends StaticRouter
 {
-    constructor(
-        @inject("ClientLogCallbacks") protected clientLogCallbacks: ClientLogCallbacks,
-    )
+    constructor(@inject("ClientLogCallbacks") protected clientLogCallbacks: ClientLogCallbacks)
     {
-        super(
-            [
-                new RouteAction(
-                    "/singleplayer/log",
-                    (url: string, info: any, sessionID: string, output: string): any =>
-                    {
-                        return this.clientLogCallbacks.clientLog(url, info, sessionID);
-                    },
-                ),
-            ],
-        );
+        super([
+            new RouteAction("/singleplayer/log", (url: string, info: any, sessionID: string, output: string): any =>
+            {
+                return this.clientLogCallbacks.clientLog(url, info, sessionID);
+            }),
+        ]);
     }
 }

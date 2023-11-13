@@ -10,9 +10,7 @@ import { ISellScavItemsToFenceRequestData } from "@spt-aki/models/eft/trade/ISel
 @injectable()
 export class TradeCallbacks
 {
-    constructor(
-        @inject("TradeController") protected tradeController: TradeController,
-    )
+    constructor(@inject("TradeController") protected tradeController: TradeController)
     {}
 
     /**

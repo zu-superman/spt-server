@@ -142,10 +142,7 @@ export class SaveServer
             throw new Error(`profile already exists for sessionId: ${profileInfo.id}`);
         }
 
-        this.profiles[profileInfo.id] = {
-            info: profileInfo,
-            characters: {pmc: {}, scav: {}},
-        };
+        this.profiles[profileInfo.id] = {info: profileInfo, characters: {pmc: {}, scav: {}}};
     }
 
     /**

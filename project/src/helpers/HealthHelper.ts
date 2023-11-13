@@ -38,10 +38,7 @@ export class HealthHelper
 
         if (!profile.vitality)
         { // Occurs on newly created profiles
-            profile.vitality = {
-                health: null,
-                effects: null,
-            };
+            profile.vitality = {health: null, effects: null};
         }
         profile.vitality.health = {
             Hydration: 0,

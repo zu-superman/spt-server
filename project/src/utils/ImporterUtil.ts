@@ -9,10 +9,7 @@ import { Queue } from "@spt-aki/utils/collections/queue/Queue";
 @injectable()
 export class ImporterUtil
 {
-    constructor(
-        @inject("VFS") protected vfs: VFS,
-        @inject("JsonUtil") protected jsonUtil: JsonUtil,
-    )
+    constructor(@inject("VFS") protected vfs: VFS, @inject("JsonUtil") protected jsonUtil: JsonUtil)
     {}
 
     /**
@@ -74,13 +71,9 @@ export class ImporterUtil
      * @param filepath Path to folder with files
      * @returns
      */
-    public loadRecursive<T>(
-        filepath: string,
-        onReadCallback: (fileWithPath: string, data: string) => void = () =>
-        {},
-        onObjectDeserialized: (fileWithPath: string, object: any) => void = () =>
-        {},
-    ): T
+    public loadRecursive<T>(filepath: string, onReadCallback: (fileWithPath: string, data: string) => void = () =>
+    {}, onObjectDeserialized: (fileWithPath: string, object: any) => void = () =>
+    {}): T
     {
         const result = {} as T;
 
@@ -148,18 +141,16 @@ export class ImporterUtil
             {
                 const filePathAndName = `${fileNode.filePath}${fileNode.fileName}`;
                 promises.push(
-                    this.vfs.readFileAsync(filePathAndName)
-                        .then(async (fileData) =>
-                        {
-                            onReadCallback(filePathAndName, fileData);
-                            return this.jsonUtil.deserializeWithCacheCheckAsync<any>(fileData, filePathAndName);
-                        })
-                        .then(async (fileDeserialized) =>
-                        {
-                            onObjectDeserialized(filePathAndName, fileDeserialized);
-                            const strippedFilePath = this.vfs.stripExtension(filePathAndName).replace(filepath, "");
-                            this.placeObject(fileDeserialized, strippedFilePath, result, strippablePath);
-                        }),
+                    this.vfs.readFileAsync(filePathAndName).then(async (fileData) =>
+                    {
+                        onReadCallback(filePathAndName, fileData);
+                        return this.jsonUtil.deserializeWithCacheCheckAsync<any>(fileData, filePathAndName);
+                    }).then(async (fileDeserialized) =>
+                    {
+                        onObjectDeserialized(filePathAndName, fileDeserialized);
+                        const strippedFilePath = this.vfs.stripExtension(filePathAndName).replace(filepath, "");
+                        this.placeObject(fileDeserialized, strippedFilePath, result, strippablePath);
+                    }),
                 );
             }
         }
@@ -196,9 +187,6 @@ export class ImporterUtil
 
 class VisitNode
 {
-    constructor(
-        public filePath: string,
-        public fileName: string,
-    )
+    constructor(public filePath: string, public fileName: string)
     {}
 }

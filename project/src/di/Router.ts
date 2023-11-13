@@ -94,18 +94,12 @@ export class SaveLoadRouter extends Router
 
 export class HandledRoute
 {
-    constructor(
-        public route: string,
-        public dynamic: boolean,
-    )
+    constructor(public route: string, public dynamic: boolean)
     {}
 }
 
 export class RouteAction
 {
-    constructor(
-        public url: string,
-        public action: (url: string, info: any, sessionID: string, output: string) => any,
-    )
+    constructor(public url: string, public action: (url: string, info: any, sessionID: string, output: string) => any)
     {}
 }

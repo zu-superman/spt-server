@@ -33,10 +33,7 @@ export class PresetBuildController
         const profile = this.saveServer.getProfile(sessionID);
         if (!profile.userbuilds)
         {
-            profile.userbuilds = {
-                equipmentBuilds: [],
-                weaponBuilds: [],
-            };
+            profile.userbuilds = {equipmentBuilds: [], weaponBuilds: []};
         }
 
         // Ensure the secure container in the default presets match what the player has equipped
@@ -87,13 +84,7 @@ export class PresetBuildController
 
         // Create new object ready to save into profile userbuilds.weaponBuilds
         const newId = this.hashUtil.generate(); // Id is empty, generate it
-        const newBuild: IWeaponBuild = {
-            id: newId,
-            name: body.name,
-            root: body.root,
-            items: body.items,
-            type: "weapon",
-        };
+        const newBuild: IWeaponBuild = {id: newId, name: body.name, root: body.root, items: body.items, type: "weapon"};
 
         const savedWeaponBuilds = this.saveServer.getProfile(sessionId).userbuilds.weaponBuilds;
         const existingBuild = savedWeaponBuilds.find((x) => x.id === body.id);

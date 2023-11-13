@@ -6,21 +6,17 @@ import { DynamicRouter, RouteAction } from "@spt-aki/di/Router";
 @injectable()
 export class LocationDynamicRouter extends DynamicRouter
 {
-    constructor(
-        @inject("LocationCallbacks") protected locationCallbacks: LocationCallbacks,
-    )
+    constructor(@inject("LocationCallbacks") protected locationCallbacks: LocationCallbacks)
     {
-        super(
-            [
-                new RouteAction(
-                    "/client/location/getLocalloot",
-                    (url: string, info: any, sessionID: string, _output: string): any =>
-                    {
-                        return this.locationCallbacks.getLocation(url, info, sessionID);
-                    },
-                ),
-            ],
-        );
+        super([
+            new RouteAction(
+                "/client/location/getLocalloot",
+                (url: string, info: any, sessionID: string, _output: string): any =>
+                {
+                    return this.locationCallbacks.getLocation(url, info, sessionID);
+                },
+            ),
+        ]);
     }
 
     public override getTopLevelRoute(): string

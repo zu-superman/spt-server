@@ -73,9 +73,7 @@ export class RagfairHelper
         if (info.linkedSearchId)
         {
             const data = this.ragfairLinkedItemService.getLinkedItems(info.linkedSearchId);
-            result = !data
-                ? []
-                : [...data];
+            result = !data ? [] : [...data];
         }
 
         // Case: category

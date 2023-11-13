@@ -34,10 +34,7 @@ describe("InsuranceController", () =>
         {
             const session1 = "session1";
             const session2 = "session2";
-            const profiles = {
-                [session1]: {},
-                [session2]: {},
-            };
+            const profiles = {[session1]: {}, [session2]: {}};
             const getProfilesSpy = vi.spyOn(insuranceController.saveServer, "getProfiles").mockReturnValue(profiles);
             const processReturnByProfileSpy = vi.spyOn(insuranceController, "processReturnByProfile").mockReturnValue(
                 vi.fn(),
@@ -75,10 +72,12 @@ describe("InsuranceController", () =>
             const sessionId = "session-id";
 
             // Mock internal methods.
-            const mockFilterInsuredItems = vi.spyOn(insuranceController, "filterInsuredItems")
-                .mockReturnValue(insuranceFixture);
-            const mockProcessInsuredItems = vi.spyOn(insuranceController, "processInsuredItems")
-                .mockImplementation(vi.fn());
+            const mockFilterInsuredItems = vi.spyOn(insuranceController, "filterInsuredItems").mockReturnValue(
+                insuranceFixture,
+            );
+            const mockProcessInsuredItems = vi.spyOn(insuranceController, "processInsuredItems").mockImplementation(
+                vi.fn(),
+            );
 
             insuranceController.processReturnByProfile(sessionId);
 
@@ -92,10 +91,10 @@ describe("InsuranceController", () =>
             const sessionId = "session-id";
 
             // Mock internal methods.
-            const mockFilterInsuredItems = vi.spyOn(insuranceController, "filterInsuredItems")
-                .mockReturnValue([]); // Return an empty array.
-            const mockProcessInsuredItems = vi.spyOn(insuranceController, "processInsuredItems")
-                .mockImplementation(vi.fn());
+            const mockFilterInsuredItems = vi.spyOn(insuranceController, "filterInsuredItems").mockReturnValue([]); // Return an empty array.
+            const mockProcessInsuredItems = vi.spyOn(insuranceController, "processInsuredItems").mockImplementation(
+                vi.fn(),
+            );
 
             insuranceController.processReturnByProfile(sessionId);
 
@@ -113,8 +112,9 @@ describe("InsuranceController", () =>
             const insured = JSON.parse(JSON.stringify(insuranceFixture));
 
             // Mock getProfile to return the fixture.
-            const mockGetProfile = vi.spyOn(insuranceController.saveServer, "getProfile")
-                .mockReturnValue({insurance: insured});
+            const mockGetProfile = vi.spyOn(insuranceController.saveServer, "getProfile").mockReturnValue({
+                insurance: insured,
+            });
             const mockLoggerDebug = vi.spyOn(insuranceController.logger, "debug");
 
             // Execute the method.
@@ -137,8 +137,9 @@ describe("InsuranceController", () =>
             insured[0].scheduledTime = Math.floor((Date.now() / 1000) + (2 * 60 * 60));
 
             // Mock getProfile to return the fixture.
-            const mockGetProfile = vi.spyOn(insuranceController.saveServer, "getProfile")
-                .mockReturnValue({insurance: insured});
+            const mockGetProfile = vi.spyOn(insuranceController.saveServer, "getProfile").mockReturnValue({
+                insurance: insured,
+            });
             const mockLoggerDebug = vi.spyOn(insuranceController.logger, "debug");
 
             // Execute the method.
@@ -158,8 +159,9 @@ describe("InsuranceController", () =>
             const insured = JSON.parse(JSON.stringify(insuranceFixture));
 
             // Mock getProfile to return the fixture.
-            const mockGetProfile = vi.spyOn(insuranceController.saveServer, "getProfile")
-                .mockReturnValue({insurance: insured});
+            const mockGetProfile = vi.spyOn(insuranceController.saveServer, "getProfile").mockReturnValue({
+                insurance: insured,
+            });
             const mockLoggerDebug = vi.spyOn(insuranceController.logger, "debug");
 
             // Execute the method, passing in a time that's two hours in the past. The function should use this past
@@ -241,25 +243,19 @@ describe("InsuranceController", () =>
     {
         it("should return the total number of items in all insurance packages", () =>
         {
-            const insurance = [
-                {
-                    _id: "1",
-                    upd: 1234567890,
-                    items: [
-                        {_id: "1", parentId: "1", slotId: "1"},
-                        {_id: "2", parentId: "1", slotId: "2"},
-                    ],
-                },
-                {
-                    _id: "2",
-                    upd: 1234567890,
-                    items: [
-                        {_id: "3", parentId: "2", slotId: "1"},
-                        {_id: "4", parentId: "2", slotId: "2"},
-                        {_id: "5", parentId: "2", slotId: "3"},
-                    ],
-                },
-            ];
+            const insurance = [{
+                _id: "1",
+                upd: 1234567890,
+                items: [{_id: "1", parentId: "1", slotId: "1"}, {_id: "2", parentId: "1", slotId: "2"}],
+            }, {
+                _id: "2",
+                upd: 1234567890,
+                items: [{_id: "3", parentId: "2", slotId: "1"}, {_id: "4", parentId: "2", slotId: "2"}, {
+                    _id: "5",
+                    parentId: "2",
+                    slotId: "3",
+                }],
+            }];
             const expectedCount = 5; // 2 items in the first package + 3 items in the second package.
 
             // Execute the method.
@@ -283,18 +279,7 @@ describe("InsuranceController", () =>
 
         it("should return 0 if there are no items in any of the insurance packages", () =>
         {
-            const insurance = [
-                {
-                    _id: "1",
-                    upd: 1234567890,
-                    items: [],
-                },
-                {
-                    _id: "2",
-                    upd: 1234567890,
-                    items: [],
-                },
-            ];
+            const insurance = [{_id: "1", upd: 1234567890, items: []}, {_id: "2", upd: 1234567890, items: []}];
             const expectedCount = 0;
 
             // Execute the method.
@@ -310,32 +295,13 @@ describe("InsuranceController", () =>
         it("should remove the specified insurance package from the profile", () =>
         {
             const sessionID = "session-id";
-            const packageToRemove = {
-                date: "01.11.2023",
-                time: "10:51",
-                location: "factory4_day",
-            };
+            const packageToRemove = {date: "01.11.2023", time: "10:51", location: "factory4_day"};
             const profile = {
-                insurance: [
-                    {
-                        messageContent: {
-                            systemData: {
-                                date: "01.11.2023",
-                                time: "11:18",
-                                location: "factory4_day",
-                            },
-                        },
-                    },
-                    { // This one should be removed
-                        messageContent: {
-                            systemData: {
-                                date: "01.11.2023",
-                                time: "10:51",
-                                location: "factory4_day",
-                            },
-                        },
-                    },
-                ],
+                insurance: [{
+                    messageContent: {systemData: {date: "01.11.2023", time: "11:18", location: "factory4_day"}},
+                }, { // This one should be removed
+                    messageContent: {systemData: {date: "01.11.2023", time: "10:51", location: "factory4_day"}},
+                }],
             };
 
             // Mock the getProfile method to return the above profile.
@@ -356,23 +322,11 @@ describe("InsuranceController", () =>
         it("should log a message indicating that the package was removed", () =>
         {
             const sessionID = "session-id";
-            const packageToRemove = {
-                date: "01.11.2023",
-                time: "10:51",
-                location: "factory4_day",
-            };
+            const packageToRemove = {date: "01.11.2023", time: "10:51", location: "factory4_day"};
             const profile = {
-                insurance: [
-                    {
-                        messageContent: {
-                            systemData: {
-                                date: "01.11.2023",
-                                time: "10:51",
-                                location: "factory4_day",
-                            },
-                        },
-                    },
-                ],
+                insurance: [{
+                    messageContent: {systemData: {date: "01.11.2023", time: "10:51", location: "factory4_day"}},
+                }],
             };
 
             // Mock the getProfile method to return the above profile.
@@ -393,23 +347,11 @@ describe("InsuranceController", () =>
         it("should not remove any packages if the specified package is not found", () =>
         {
             const sessionID = "session-id";
-            const packageToRemove = {
-                date: "01.11.2023",
-                time: "10:51",
-                location: "factory4_day",
-            };
+            const packageToRemove = {date: "01.11.2023", time: "10:51", location: "factory4_day"};
             const profile = {
-                insurance: [
-                    {
-                        messageContent: {
-                            systemData: {
-                                date: "02.11.2023",
-                                time: "10:50",
-                                location: "factory4_night",
-                            },
-                        },
-                    },
-                ],
+                insurance: [{
+                    messageContent: {systemData: {date: "02.11.2023", time: "10:50", location: "factory4_night"}},
+                }],
             };
 
             // Mock the getProfile method to return the above profile.
@@ -975,10 +917,11 @@ describe("InsuranceController", () =>
     {
         it("should log details for each attachment", () =>
         {
-            const attachments = [
-                {_id: "item1", name: "Item 1", maxPrice: 100},
-                {_id: "item2", name: "Item 2", maxPrice: 200},
-            ];
+            const attachments = [{_id: "item1", name: "Item 1", maxPrice: 100}, {
+                _id: "item2",
+                name: "Item 2",
+                maxPrice: 200,
+            }];
 
             // Mock the logger.debug function.
             const loggerDebugSpy = vi.spyOn(insuranceController.logger, "debug");
@@ -1018,8 +961,7 @@ describe("InsuranceController", () =>
 
             // Mock rollForDelete to return true for the first two attachments.
             const mockRollForDelete = vi.spyOn(insuranceController, "rollForDelete").mockReturnValue(false)
-                .mockReturnValueOnce(true)
-                .mockReturnValueOnce(true);
+                .mockReturnValueOnce(true).mockReturnValueOnce(true);
 
             // Execute the method.
             const result = insuranceController.countSuccessfulRolls(attachments, insured.traderId);
@@ -1298,8 +1240,9 @@ describe("InsuranceController", () =>
             const insuranceFailedTpl = "failed-message-template";
 
             // Mock the randomUtil to return a static failed template string.
-            const mockGetArrayValue = vi.spyOn(insuranceController.randomUtil, "getArrayValue")
-                .mockReturnValue(insuranceFailedTpl);
+            const mockGetArrayValue = vi.spyOn(insuranceController.randomUtil, "getArrayValue").mockReturnValue(
+                insuranceFailedTpl,
+            );
 
             // Don't actually send the message.
             const sendMessageSpy = vi.spyOn(insuranceController.mailSendService, "sendLocalisedNpcMessageToPlayer")
@@ -1332,8 +1275,9 @@ describe("InsuranceController", () =>
             const insuranceFailedTpl = "failed-message-template";
 
             // Mock the randomUtil to return a static failed template string.
-            const mockGetArrayValue = vi.spyOn(insuranceController.randomUtil, "getArrayValue")
-                .mockReturnValue(insuranceFailedTpl);
+            const mockGetArrayValue = vi.spyOn(insuranceController.randomUtil, "getArrayValue").mockReturnValue(
+                insuranceFailedTpl,
+            );
 
             // Don't actually send the message.
             const sendMessageSpy = vi.spyOn(insuranceController.mailSendService, "sendLocalisedNpcMessageToPlayer")
@@ -1452,18 +1396,10 @@ describe("InsuranceController", () =>
 
             // Setup shared test data.
             pmcData = {
-                Inventory: {
-                    items: [
-                        {_id: "item1", otherProps: "value1"},
-                        {_id: "item2", otherProps: "value2"},
-                    ],
-                },
+                Inventory: {items: [{_id: "item1", otherProps: "value1"}, {_id: "item2", otherProps: "value2"}]},
                 InsuredItems: [],
             };
-            body = {
-                items: ["item1", "item2"],
-                tid: "someTraderId",
-            };
+            body = {items: ["item1", "item2"], tid: "someTraderId"};
             sessionId = "session-id";
 
             // Setup shared mocks.
@@ -1488,10 +1424,7 @@ describe("InsuranceController", () =>
             expect(mockPayMoney).toHaveBeenCalledWith(
                 pmcData,
                 {
-                    scheme_items: [
-                        {id: "item1", count: 100},
-                        {id: "item2", count: 100},
-                    ],
+                    scheme_items: [{id: "item1", count: 100}, {id: "item2", count: 100}],
                     tid: "someTraderId",
                     Action: "",
                     type: "",
@@ -1500,10 +1433,7 @@ describe("InsuranceController", () =>
                     scheme_id: 0,
                 },
                 sessionId,
-                {
-                    warnings: [],
-                    otherProperty: "property-value",
-                },
+                {warnings: [], otherProperty: "property-value"},
             );
         });
 
@@ -1529,10 +1459,7 @@ describe("InsuranceController", () =>
 
             // Define the expected payment options structure based on the setup data.
             const expectedPaymentOptions = {
-                scheme_items: [
-                    {id: "item1", count: 100},
-                    {id: "item2", count: 100},
-                ],
+                scheme_items: [{id: "item1", count: 100}, {id: "item2", count: 100}],
                 tid: body.tid,
                 Action: "",
                 type: "",
@@ -1571,11 +1498,7 @@ describe("InsuranceController", () =>
         {
             // Override the payMoney mock to simulate a payment failure with a warning.
             const expectedPayMoneyReturn = {
-                warnings: [{
-                    index: 0,
-                    errmsg: "Not enough money to complete transaction",
-                    code: 500,
-                }],
+                warnings: [{index: 0, errmsg: "Not enough money to complete transaction", code: 500}],
                 otherProperty: "property-value",
             };
             mockPayMoney.mockReturnValue(expectedPayMoneyReturn);
@@ -1594,11 +1517,7 @@ describe("InsuranceController", () =>
         {
             // Override the payMoney mock to simulate a payment failure with a warning.
             const expectedPayMoneyReturn = {
-                warnings: [{
-                    index: 0,
-                    errmsg: "Not enough money to complete transaction",
-                    code: 500,
-                }],
+                warnings: [{index: 0, errmsg: "Not enough money to complete transaction", code: 500}],
                 otherProperty: "property-value",
             };
             mockPayMoney.mockReturnValue(expectedPayMoneyReturn);
@@ -1623,11 +1542,11 @@ describe("InsuranceController", () =>
 
             vi.spyOn(insuranceController.profileHelper, "getPmcProfile").mockReturnValue({
                 Inventory: {
-                    items: [
-                        {_id: "itemId1", _tpl: "itemTpl1", otherProperty: "property-value1"},
-                        {_id: "itemId2", _tpl: "itemTpl2", otherProperty: "property-value2"},
-                        {_id: "itemId3", _tpl: "itemTpl3", otherProperty: "property-value3"},
-                    ],
+                    items: [{_id: "itemId1", _tpl: "itemTpl1", otherProperty: "property-value1"}, {
+                        _id: "itemId2",
+                        _tpl: "itemTpl2",
+                        otherProperty: "property-value2",
+                    }, {_id: "itemId3", _tpl: "itemTpl3", otherProperty: "property-value3"}],
                 },
             });
         });
@@ -1664,23 +1583,16 @@ describe("InsuranceController", () =>
 
         it("should return the expected cost for each item and trader", () =>
         {
-            const request = {
-                traders: ["prapor", "therapist"],
-                items: ["itemId1", "itemId2", "itemId3"],
-            };
+            const request = {traders: ["prapor", "therapist"], items: ["itemId1", "itemId2", "itemId3"]};
             const expected = {
                 prapor: {itemTpl1: 100, itemTpl2: 200, itemTpl3: 300},
                 therapist: {itemTpl1: 150, itemTpl2: 250, itemTpl3: 350},
             };
 
             // Mock the InsuranceService.getPremium method to return the expected values.
-            vi.spyOn(insuranceController.insuranceService, "getPremium")
-                .mockReturnValueOnce(100)
-                .mockReturnValueOnce(200)
-                .mockReturnValueOnce(300)
-                .mockReturnValueOnce(150)
-                .mockReturnValueOnce(250)
-                .mockReturnValueOnce(350);
+            vi.spyOn(insuranceController.insuranceService, "getPremium").mockReturnValueOnce(100).mockReturnValueOnce(
+                200,
+            ).mockReturnValueOnce(300).mockReturnValueOnce(150).mockReturnValueOnce(250).mockReturnValueOnce(350);
 
             const result = insuranceController.cost(request, sessionId);
 
@@ -1697,14 +1609,12 @@ describe("InsuranceController", () =>
                     "itemId4", // Doesn't exist in the player's inventory.
                 ],
             };
-            const expected = {
-                prapor: {itemTpl1: 100, itemTpl2: 200},
-            };
+            const expected = {prapor: {itemTpl1: 100, itemTpl2: 200}};
 
             // Mock the InsuranceService.getPremium method to return the expected values.
-            vi.spyOn(insuranceController.insuranceService, "getPremium")
-                .mockReturnValueOnce(100)
-                .mockReturnValueOnce(200);
+            vi.spyOn(insuranceController.insuranceService, "getPremium").mockReturnValueOnce(100).mockReturnValueOnce(
+                200,
+            );
 
             const result = insuranceController.cost(request, sessionId);
 

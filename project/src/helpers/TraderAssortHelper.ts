@@ -26,11 +26,7 @@ import { TimeUtil } from "@spt-aki/utils/TimeUtil";
 export class TraderAssortHelper
 {
     protected traderConfig: ITraderConfig;
-    protected mergedQuestAssorts: Record<string, Record<string, string>> = {
-        started: {},
-        success: {},
-        fail: {},
-    };
+    protected mergedQuestAssorts: Record<string, Record<string, string>> = {started: {}, success: {}, fail: {}};
     protected createdMergedQuestAssorts = false;
 
     constructor(

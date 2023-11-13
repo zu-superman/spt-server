@@ -29,10 +29,7 @@ export class RagfairPriceService implements OnLoad
     protected generatedDynamicPrices: boolean;
     protected generatedStaticPrices: boolean;
 
-    protected prices: IRagfairServerPrices = {
-        static: {},
-        dynamic: {},
-    };
+    protected prices: IRagfairServerPrices = {static: {}, dynamic: {}};
 
     constructor(
         @inject("HandbookHelper") protected handbookHelper: HandbookHelper,
@@ -298,8 +295,7 @@ export class RagfairPriceService implements OnLoad
 
         // Only adjust price if difference is > a percent AND item price passes threshhold set in config
         if (
-            priceDifferencePercent
-                > this.ragfairConfig.dynamic.offerAdjustment.maxPriceDifferenceBelowHandbookPercent
+            priceDifferencePercent > this.ragfairConfig.dynamic.offerAdjustment.maxPriceDifferenceBelowHandbookPercent
             && itemPrice >= this.ragfairConfig.dynamic.offerAdjustment.priceThreshholdRub
         )
         {
@@ -418,10 +414,7 @@ export class RagfairPriceService implements OnLoad
         const defaultPreset = presets.find((x) => x._encyclopedia);
         if (defaultPreset)
         {
-            return {
-                isDefault: true,
-                preset: defaultPreset,
-            };
+            return {isDefault: true, preset: defaultPreset};
         }
 
         if (presets.length === 1)
@@ -441,9 +434,6 @@ export class RagfairPriceService implements OnLoad
             );
         }
 
-        return {
-            isDefault: false,
-            preset: presets[0],
-        };
+        return {isDefault: false, preset: presets[0]};
     }
 }

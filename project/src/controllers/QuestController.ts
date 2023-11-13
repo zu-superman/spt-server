@@ -448,11 +448,9 @@ export class QuestController
         const change = {};
         change[repeatableQuestProfile._id] = repeatableSettings.changeRequirement[repeatableQuestProfile._id];
         const responseData: IPmcDataRepeatableQuest = {
-            id: repeatableSettings.id
-                ?? this.questConfig.repeatableQuests.find((x) =>
-                    x.name === repeatableQuestProfile.sptRepatableGroupName
-                )
-                    .id,
+            id: repeatableSettings.id ?? this.questConfig.repeatableQuests.find((x) =>
+                x.name === repeatableQuestProfile.sptRepatableGroupName
+            ).id,
             name: repeatableSettings.name,
             endTime: repeatableSettings.endTime,
             changeRequirement: change,
@@ -957,10 +955,6 @@ export class QuestController
             return;
         }
 
-        pmcData.BackendCounters[conditionId] = {
-            id: conditionId,
-            qid: questId,
-            value: counterValue,
-        };
+        pmcData.BackendCounters[conditionId] = {id: conditionId, qid: questId, value: counterValue};
     }
 }

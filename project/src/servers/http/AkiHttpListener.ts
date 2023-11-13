@@ -141,9 +141,7 @@ export class AkiHttpListener implements IHttpListener
         if (globalThis.G_LOG_REQUESTS)
         {
             // Parse quest info into object
-            const data = (typeof info === "object")
-                ? info
-                : this.jsonUtil.deserialize(info);
+            const data = (typeof info === "object") ? info : this.jsonUtil.deserialize(info);
 
             const log = new Request(req.method, new RequestData(req.url, req.headers, data));
             this.requestsLogger.info(`REQUEST=${this.jsonUtil.serialize(log)}`);
@@ -184,28 +182,18 @@ export class AkiHttpListener implements IHttpListener
 
 class RequestData
 {
-    constructor(
-        public url: string,
-        public headers: IncomingHttpHeaders,
-        public data?: any,
-    )
+    constructor(public url: string, public headers: IncomingHttpHeaders, public data?: any)
     {}
 }
 
 class Request
 {
-    constructor(
-        public type: string,
-        public req: RequestData,
-    )
+    constructor(public type: string, public req: RequestData)
     {}
 }
 
 class Response
 {
-    constructor(
-        public type: string,
-        public response: any,
-    )
+    constructor(public type: string, public response: any)
     {}
 }

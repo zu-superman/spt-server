@@ -54,9 +54,7 @@ export class BotEquipmentFilterService
     {
         const pmcProfile = this.profileHelper.getPmcProfile(sessionId);
 
-        const botRole = (botGenerationDetails.isPmc)
-            ? "pmc"
-            : botGenerationDetails.role;
+        const botRole = (botGenerationDetails.isPmc) ? "pmc" : botGenerationDetails.role;
         const botEquipmentBlacklist = this.getBotEquipmentBlacklist(botRole, botLevel);
         const botEquipmentWhitelist = this.getBotEquipmentWhitelist(botRole, botLevel);
         const botWeightingAdjustments = this.getBotWeightingAdjustments(botRole, botLevel);

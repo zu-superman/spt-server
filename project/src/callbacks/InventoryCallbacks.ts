@@ -24,9 +24,7 @@ import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEve
 @injectable()
 export class InventoryCallbacks
 {
-    constructor(
-        @inject("InventoryController") protected inventoryController: InventoryController,
-    )
+    constructor(@inject("InventoryController") protected inventoryController: InventoryController)
     {}
 
     /** Handle Move event */

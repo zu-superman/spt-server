@@ -651,13 +651,7 @@ export class HideoutHelper
      */
     protected getAreaUpdObject(stackCount: number, resourceValue: number, resourceUnitsConsumed: number): Upd
     {
-        return {
-            StackObjectsCount: stackCount,
-            Resource: {
-                Value: resourceValue,
-                UnitsConsumed: resourceUnitsConsumed,
-            },
-        };
+        return {StackObjectsCount: stackCount, Resource: {Value: resourceValue, UnitsConsumed: resourceUnitsConsumed}};
     }
 
     protected updateAirFilters(airFilterArea: HideoutArea, pmcData: IPmcData): void
@@ -705,10 +699,7 @@ export class HideoutHelper
                 {
                     airFilterArea.slots[i].item[0].upd = {
                         StackObjectsCount: 1,
-                        Resource: {
-                            Value: resourceValue,
-                            UnitsConsumed: pointsConsumed,
-                        },
+                        Resource: {Value: resourceValue, UnitsConsumed: pointsConsumed},
                     };
                     this.logger.debug(`Air filter: ${resourceValue} filter left on slot ${i + 1}`);
                     break; // Break here to avoid updating all filters
@@ -815,9 +806,7 @@ export class HideoutHelper
         btcProd.Products.push({
             _id: this.hashUtil.generate(),
             _tpl: "59faff1d86f7746c51718c9c",
-            upd: {
-                StackObjectsCount: 1,
-            },
+            upd: {StackObjectsCount: 1},
         });
 
         btcProd.Progress -= coinCraftTimeSeconds;
@@ -896,9 +885,7 @@ export class HideoutHelper
         // at level 1 you already get 0.5%, so it goes up until level 50. For some reason the wiki
         // says that it caps at level 51 with 25% but as per dump data that is incorrect apparently
         let roundedLevel = Math.floor(hideoutManagementSkill.Progress / 100);
-        roundedLevel = (roundedLevel === 51)
-            ? roundedLevel - 1
-            : roundedLevel;
+        roundedLevel = (roundedLevel === 51) ? roundedLevel - 1 : roundedLevel;
 
         return (roundedLevel
             * this.databaseServer.getTables().globals.config.SkillsSettings.HideoutManagement
@@ -1023,9 +1010,7 @@ export class HideoutHelper
      */
     protected hideoutImprovementIsComplete(improvement: IHideoutImprovement): boolean
     {
-        return improvement?.completed
-            ? true
-            : false;
+        return improvement?.completed ? true : false;
     }
 
     /**

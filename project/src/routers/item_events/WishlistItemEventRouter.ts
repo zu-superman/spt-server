@@ -8,19 +8,14 @@ import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEve
 @injectable()
 export class WishlistItemEventRouter extends ItemEventRouterDefinition
 {
-    constructor(
-        @inject("WishlistCallbacks") protected wishlistCallbacks: WishlistCallbacks,
-    )
+    constructor(@inject("WishlistCallbacks") protected wishlistCallbacks: WishlistCallbacks)
     {
         super();
     }
 
     public override getHandledRoutes(): HandledRoute[]
     {
-        return [
-            new HandledRoute("AddToWishList", false),
-            new HandledRoute("RemoveFromWishList", false),
-        ];
+        return [new HandledRoute("AddToWishList", false), new HandledRoute("RemoveFromWishList", false)];
     }
 
     public override handleItemEvent(

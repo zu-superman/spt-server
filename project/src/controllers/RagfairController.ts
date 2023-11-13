@@ -326,11 +326,7 @@ export class RagfairController
             const min = offers[0].requirementsCost; // Get first item from array as its pre-sorted
             const max = offers.at(-1).requirementsCost; // Get last item from array as its pre-sorted
 
-            return {
-                avg: (min + max) / 2,
-                min: min,
-                max: max,
-            };
+            return {avg: (min + max) / 2, min: min, max: max};
         }
         // No offers listed, get price from live ragfair price list prices.json
         else
@@ -344,11 +340,7 @@ export class RagfairController
                 tplPrice = this.handbookHelper.getTemplatePrice(getPriceRequest.templateId);
             }
 
-            return {
-                avg: tplPrice,
-                min: tplPrice,
-                max: tplPrice,
-            };
+            return {avg: tplPrice, min: tplPrice, max: tplPrice};
         }
     }
 
@@ -399,9 +391,7 @@ export class RagfairController
         const qualityMultiplier = this.itemHelper.getItemQualityModifier(rootItem);
         const averageOfferPrice = this.ragfairPriceService.getFleaPriceForItem(rootItem._tpl)
             * rootItem.upd.StackObjectsCount * qualityMultiplier;
-        const itemStackCount = (offerRequest.sellInOnePiece)
-            ? 1
-            : rootItem.upd.StackObjectsCount;
+        const itemStackCount = (offerRequest.sellInOnePiece) ? 1 : rootItem.upd.StackObjectsCount;
 
         // Get averaged price of a single item being listed
         const averageSingleItemPrice = (offerRequest.sellInOnePiece)
@@ -623,11 +613,7 @@ export class RagfairController
 
         const formattedRequirements: IBarterScheme[] = requirements.map((item) =>
         {
-            return {
-                _tpl: item._tpl,
-                count: item.count,
-                onlyFunctional: item.onlyFunctional,
-            };
+            return {_tpl: item._tpl, count: item.count, onlyFunctional: item.onlyFunctional};
         });
 
         return this.ragfairOfferGenerator.createFleaOffer(
@@ -756,12 +742,7 @@ export class RagfairController
         return {
             tid: "ragfair",
             Action: "TradingConfirm",
-            scheme_items: [
-                {
-                    id: this.paymentHelper.getCurrency(currency),
-                    count: Math.round(value),
-                },
-            ],
+            scheme_items: [{id: this.paymentHelper.getCurrency(currency), count: Math.round(value)}],
             type: "",
             item_id: "",
             count: 0,

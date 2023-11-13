@@ -287,9 +287,7 @@ export class InventoryController
 
         if (!sourceItem.upd)
         {
-            sourceItem.upd = {
-                StackObjectsCount: 1,
-            };
+            sourceItem.upd = {StackObjectsCount: 1};
         }
         else if (!sourceItem.upd.StackObjectsCount)
         {
@@ -458,11 +456,7 @@ export class InventoryController
     public foldItem(pmcData: IPmcData, body: IInventoryFoldRequestData, sessionID: string): IItemEventRouterResponse
     {
         // Fix for folding weapons while on they're in the Scav inventory
-        if (
-            body.fromOwner
-            && body.fromOwner.type === "Profile"
-            && body.fromOwner.id !== pmcData._id
-        )
+        if (body.fromOwner && body.fromOwner.type === "Profile" && body.fromOwner.id !== pmcData._id)
         {
             pmcData = this.profileHelper.getScavProfile(sessionID);
         }
@@ -476,10 +470,7 @@ export class InventoryController
             }
         }
 
-        return {
-            warnings: [],
-            profileChanges: {},
-        };
+        return {warnings: [], profileChanges: {}};
     }
 
     /**
@@ -519,10 +510,7 @@ export class InventoryController
             );
         }
 
-        return {
-            warnings: [],
-            profileChanges: {},
-        };
+        return {warnings: [], profileChanges: {}};
     }
 
     /**
@@ -551,10 +539,7 @@ export class InventoryController
             }
         }
 
-        return {
-            warnings: [],
-            profileChanges: {},
-        };
+        return {warnings: [], profileChanges: {}};
     }
 
     /**
@@ -872,10 +857,7 @@ export class InventoryController
         const containerDetails = this.itemHelper.getItem(openedItem._tpl);
         const isSealedWeaponBox = containerDetails[1]._name.includes("event_container_airdrop");
 
-        const newItemRequest: IAddItemRequestData = {
-            tid: "RandomLootContainer",
-            items: [],
-        };
+        const newItemRequest: IAddItemRequestData = {tid: "RandomLootContainer", items: []};
 
         let foundInRaid = false;
         if (isSealedWeaponBox)

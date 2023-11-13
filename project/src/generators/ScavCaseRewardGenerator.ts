@@ -279,11 +279,7 @@ export class ScavCaseRewardGenerator
         const result: Product[] = [];
         for (const item of rewardItems)
         {
-            const resultItem = {
-                _id: this.hashUtil.generate(),
-                _tpl: item._id,
-                upd: undefined,
-            };
+            const resultItem = {_id: this.hashUtil.generate(), _tpl: item._id, upd: undefined};
 
             this.addStackCountToAmmoAndMoney(item, resultItem, rarity);
 
@@ -312,9 +308,7 @@ export class ScavCaseRewardGenerator
     {
         if (item._parent === BaseClasses.AMMO || item._parent === BaseClasses.MONEY)
         {
-            resultItem.upd = {
-                StackObjectsCount: this.getRandomAmountRewardForScavCase(item, rarity),
-            };
+            resultItem.upd = {StackObjectsCount: this.getRandomAmountRewardForScavCase(item, rarity)};
         }
     }
 
@@ -331,10 +325,7 @@ export class ScavCaseRewardGenerator
         return dbItems.filter((item) =>
         {
             const handbookPrice = this.ragfairPriceService.getStaticPriceForItem(item._id);
-            if (
-                handbookPrice >= itemFilters.minPriceRub
-                && handbookPrice <= itemFilters.maxPriceRub
-            )
+            if (handbookPrice >= itemFilters.minPriceRub && handbookPrice <= itemFilters.maxPriceRub)
             {
                 return true;
             }

@@ -202,9 +202,8 @@ export class InsuranceService
         }
 
         const insuranceReturnTimeBonus = pmcData.Bonuses.find((b) => b.type === "InsuranceReturnTime");
-        const insuranceReturnTimeBonusPercent = 1.0 - (insuranceReturnTimeBonus
-                    ? Math.abs(insuranceReturnTimeBonus.value)
-                    : 0) / 100;
+        const insuranceReturnTimeBonusPercent = 1.0
+            - (insuranceReturnTimeBonus ? Math.abs(insuranceReturnTimeBonus.value) : 0) / 100;
 
         const traderMinReturnAsSeconds = trader.insurance.min_return_hour * TimeUtil.oneHourAsSeconds;
         const traderMaxReturnAsSeconds = trader.insurance.max_return_hour * TimeUtil.oneHourAsSeconds;
@@ -335,9 +334,7 @@ export class InsuranceService
             // Item didnt have faceshield object pre-raid, add it
             if (!itemToReturn.upd.FaceShield)
             {
-                itemToReturn.upd.FaceShield = {
-                    Hits: insuredItemFromClient.hits,
-                };
+                itemToReturn.upd.FaceShield = {Hits: insuredItemFromClient.hits};
             }
             else
             {
@@ -355,12 +352,7 @@ export class InsuranceService
      */
     protected updateSlotIdValue(playerBaseInventoryEquipmentId: string, itemToReturn: Item): void
     {
-        const pocketSlots = [
-            "pocket1",
-            "pocket2",
-            "pocket3",
-            "pocket4",
-        ];
+        const pocketSlots = ["pocket1", "pocket2", "pocket3", "pocket4"];
 
         // Some pockets can lose items with player death, some don't
         if (!("slotId" in itemToReturn) || pocketSlots.includes(itemToReturn.slotId))

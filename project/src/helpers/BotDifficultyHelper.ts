@@ -38,12 +38,8 @@ export class BotDifficultyHelper
     {
         const difficultySettings = this.getDifficultySettings(pmcType, difficulty);
 
-        const friendlyType = pmcType === "bear"
-            ? bearType
-            : usecType;
-        const enemyType = pmcType === "bear"
-            ? usecType
-            : bearType;
+        const friendlyType = pmcType === "bear" ? bearType : usecType;
+        const enemyType = pmcType === "bear" ? usecType : bearType;
 
         this.botHelper.addBotToEnemyList(difficultySettings, this.pmcConfig.enemyTypes, friendlyType); // Add generic bot types to enemy list
         this.botHelper.addBotToEnemyList(difficultySettings, [enemyType, friendlyType], ""); // add same/opposite side to enemy list

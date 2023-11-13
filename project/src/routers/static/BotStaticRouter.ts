@@ -6,20 +6,16 @@ import { RouteAction, StaticRouter } from "@spt-aki/di/Router";
 @injectable()
 export class BotStaticRouter extends StaticRouter
 {
-    constructor(
-        @inject("BotCallbacks") protected botCallbacks: BotCallbacks,
-    )
+    constructor(@inject("BotCallbacks") protected botCallbacks: BotCallbacks)
     {
-        super(
-            [
-                new RouteAction(
-                    "/client/game/bot/generate",
-                    (url: string, info: any, sessionID: string, output: string): any =>
-                    {
-                        return this.botCallbacks.generateBots(url, info, sessionID);
-                    },
-                ),
-            ],
-        );
+        super([
+            new RouteAction(
+                "/client/game/bot/generate",
+                (url: string, info: any, sessionID: string, output: string): any =>
+                {
+                    return this.botCallbacks.generateBots(url, info, sessionID);
+                },
+            ),
+        ]);
     }
 }

@@ -9,9 +9,7 @@ import { ItemEventActions } from "@spt-aki/models/enums/ItemEventActions";
 @injectable()
 export class PresetBuildItemEventRouter extends ItemEventRouterDefinition
 {
-    constructor(
-        @inject("PresetBuildCallbacks") protected presetBuildCallbacks: PresetBuildCallbacks,
-    )
+    constructor(@inject("PresetBuildCallbacks") protected presetBuildCallbacks: PresetBuildCallbacks)
     {
         super();
     }

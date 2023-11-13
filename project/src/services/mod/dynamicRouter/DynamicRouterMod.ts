@@ -2,10 +2,7 @@ import { DynamicRouter, RouteAction } from "@spt-aki/di/Router";
 
 export class DynamicRouterMod extends DynamicRouter
 {
-    public constructor(
-        routes: RouteAction[],
-        private topLevelRoute: string,
-    )
+    public constructor(routes: RouteAction[], private topLevelRoute: string)
     {
         super(routes);
     }

@@ -8,9 +8,7 @@ import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEve
 @injectable()
 export class RagfairItemEventRouter extends ItemEventRouterDefinition
 {
-    constructor(
-        @inject("RagfairCallbacks") protected ragfairCallbacks: RagfairCallbacks,
-    )
+    constructor(@inject("RagfairCallbacks") protected ragfairCallbacks: RagfairCallbacks)
     {
         super();
     }

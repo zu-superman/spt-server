@@ -93,8 +93,7 @@ export class ProfileFixerService
                     HideoutAreas.GENERATOR,
                     6
                         + this.databaseServer.getTables().globals.config.SkillsSettings.HideoutManagement.EliteSlots
-                            .Generator
-                            .Slots,
+                            .Generator.Slots,
                     pmcProfile,
                 );
             }
@@ -276,34 +275,30 @@ export class ProfileFixerService
     {
         if (!pmcProfile.Hideout.Areas.find((x) => x.type === HideoutAreas.WEAPON_STAND))
         {
-            pmcProfile.Hideout.Areas.push(
-                {
-                    type: 24,
-                    level: 0,
-                    active: true,
-                    passiveBonusesEnabled: true,
-                    completeTime: 0,
-                    constructing: false,
-                    slots: [],
-                    lastRecipe: "",
-                },
-            );
+            pmcProfile.Hideout.Areas.push({
+                type: 24,
+                level: 0,
+                active: true,
+                passiveBonusesEnabled: true,
+                completeTime: 0,
+                constructing: false,
+                slots: [],
+                lastRecipe: "",
+            });
         }
 
         if (!pmcProfile.Hideout.Areas.find((x) => x.type === HideoutAreas.WEAPON_STAND_SECONDARY))
         {
-            pmcProfile.Hideout.Areas.push(
-                {
-                    type: 25,
-                    level: 0,
-                    active: true,
-                    passiveBonusesEnabled: true,
-                    completeTime: 0,
-                    constructing: false,
-                    slots: [],
-                    lastRecipe: "",
-                },
-            );
+            pmcProfile.Hideout.Areas.push({
+                type: 25,
+                level: 0,
+                active: true,
+                passiveBonusesEnabled: true,
+                completeTime: 0,
+                constructing: false,
+                slots: [],
+                lastRecipe: "",
+            });
         }
     }
 
@@ -357,10 +352,7 @@ export class ProfileFixerService
         if (!fullProfile.aki)
         {
             this.logger.debug("Adding aki object to profile");
-            fullProfile.aki = {
-                version: this.watermark.getVersionTag(),
-                receivedGifts: [],
-            };
+            fullProfile.aki = {version: this.watermark.getVersionTag(), receivedGifts: []};
         }
     }
 
@@ -404,9 +396,7 @@ export class ProfileFixerService
         if (!pmcProfile.UnlockedInfo)
         {
             this.logger.debug("Adding UnlockedInfo object to profile");
-            pmcProfile.UnlockedInfo = {
-                unlockedProductionRecipe: [],
-            };
+            pmcProfile.UnlockedInfo = {unlockedProductionRecipe: []};
         }
     }
 
@@ -554,9 +544,9 @@ export class ProfileFixerService
             {
                 if (
                     !(currentRepeatable.changeRequirement
-                        && currentRepeatable.activeQuests.every(
-                            (x) => (typeof x.changeCost !== "undefined" && typeof x.changeStandingCost !== "undefined"),
-                        ))
+                        && currentRepeatable.activeQuests.every((
+                            x,
+                        ) => (typeof x.changeCost !== "undefined" && typeof x.changeStandingCost !== "undefined")))
                 )
                 {
                     repeatablesCompatible = false;
@@ -798,28 +788,17 @@ export class ProfileFixerService
 
         if (bonus.type.toLowerCase() === "stashsize")
         {
-            return profileBonuses.find(
-                (x) =>
-                    x.type === bonus.type
-                    && x.templateId === bonus.templateId,
-            );
+            return profileBonuses.find((x) => x.type === bonus.type && x.templateId === bonus.templateId);
         }
 
         if (bonus.type.toLowerCase() === "additionalslots")
         {
-            return profileBonuses.find(
-                (x) =>
-                    x.type === bonus.type
-                    && x.value === bonus.value
-                    && x.visible === bonus.visible,
+            return profileBonuses.find((x) =>
+                x.type === bonus.type && x.value === bonus.value && x.visible === bonus.visible
             );
         }
 
-        return profileBonuses.find(
-            (x) =>
-                x.type === bonus.type
-                && x.value === bonus.value,
-        );
+        return profileBonuses.find((x) => x.type === bonus.type && x.value === bonus.value);
     }
 
     /**

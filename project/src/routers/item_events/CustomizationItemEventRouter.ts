@@ -17,10 +17,7 @@ export class CustomizationItemEventRouter extends ItemEventRouterDefinition
 
     public override getHandledRoutes(): HandledRoute[]
     {
-        return [
-            new HandledRoute("CustomizationWear", false),
-            new HandledRoute("CustomizationBuy", false),
-        ];
+        return [new HandledRoute("CustomizationWear", false), new HandledRoute("CustomizationBuy", false)];
     }
 
     public override handleItemEvent(

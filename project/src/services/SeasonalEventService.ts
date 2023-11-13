@@ -236,10 +236,7 @@ export class SeasonalEventService
             const eventEndDate = new Date(currentDate.getFullYear(), event.endMonth - 1, event.endDay);
 
             // Current date is between start/end dates
-            if (
-                currentDate >= eventStartDate
-                && currentDate <= eventEndDate
-            )
+            if (currentDate >= eventStartDate && currentDate <= eventEndDate)
             {
                 this.christmasEventActive = SeasonalEventType[event.type] === SeasonalEventType.CHRISTMAS;
                 this.halloweenEventActive = SeasonalEventType[event.type] === SeasonalEventType.HALLOWEEN;
