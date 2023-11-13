@@ -15,9 +15,9 @@ export class BotLevelGenerator
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer
+        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
     )
-    { }
+    {}
 
     /**
      * Return a randomised bot level and exp value
@@ -26,12 +26,20 @@ export class BotLevelGenerator
      * @param bot being level is being generated for
      * @returns IRandomisedBotLevelResult object
      */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public generateBotLevel(levelDetails: MinMax, botGenerationDetails: BotGenerationDetails, bot: IBotBase): IRandomisedBotLevelResult
+    public generateBotLevel(
+        levelDetails: MinMax,
+        botGenerationDetails: BotGenerationDetails,
+        bot: IBotBase,
+    ): IRandomisedBotLevelResult
     {
         const expTable = this.databaseServer.getTables().globals.config.exp.level.exp_table;
-        const highestLevel = this.getHighestRelativeBotLevel(botGenerationDetails.playerLevel, botGenerationDetails.botRelativeLevelDeltaMax, levelDetails, expTable);
-        
+        const highestLevel = this.getHighestRelativeBotLevel(
+            botGenerationDetails.playerLevel,
+            botGenerationDetails.botRelativeLevelDeltaMax,
+            levelDetails,
+            expTable,
+        );
+
         // Get random level based on the exp table.
         let exp = 0;
         const level = this.randomUtil.getInt(1, highestLevel);
@@ -47,16 +55,21 @@ export class BotLevelGenerator
             exp += this.randomUtil.getInt(0, expTable[level].exp - 1);
         }
 
-        return { level, exp };
+        return {level, exp};
     }
 
     /**
-     * Get the highest level a bot can be relative to the players level, but no futher than the max size from globals.exp_table
+     * Get the highest level a bot can be relative to the players level, but no further than the max size from globals.exp_table
      * @param playerLevel Players current level
      * @param relativeDeltaMax max delta above player level to go
      * @returns highest level possible for bot
      */
-    protected getHighestRelativeBotLevel(playerLevel: number, relativeDeltaMax: number, levelDetails: MinMax, expTable: IExpTable[]): number
+    protected getHighestRelativeBotLevel(
+        playerLevel: number,
+        relativeDeltaMax: number,
+        levelDetails: MinMax,
+        expTable: IExpTable[],
+    ): number
     {
         const maxPossibleLevel = Math.min(levelDetails.max, expTable.length);
 

@@ -47,7 +47,7 @@ export class PlayerScavGenerator
         @inject("BotLootCacheService") protected botLootCacheService: BotLootCacheService,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("BotGenerator") protected botGenerator: BotGenerator,
-        @inject("ConfigServer") protected configServer: ConfigServer
+        @inject("ConfigServer") protected configServer: ConfigServer,
     )
     {
         this.playerScavConfig = this.configServer.getConfig(ConfigTypes.PLAYERSCAV);
@@ -66,9 +66,9 @@ export class PlayerScavGenerator
         const existingScavData = this.jsonUtil.clone(profile.characters.scav);
 
         // scav profile can be empty on first profile creation
-        const scavKarmaLevel = ((Object.keys(existingScavData).length === 0)) 
-            ? 0
-            : this.getScavKarmaLevel(pmcData);
+        const scavKarmaLevel = (Object.keys(existingScavData).length === 0) ?
+            0 :
+            this.getScavKarmaLevel(pmcData);
 
         // use karma level to get correct karmaSettings
         const playerScavKarmaSettings = this.playerScavConfig.karmaLevel[scavKarmaLevel];
@@ -83,7 +83,12 @@ export class PlayerScavGenerator
         const baseBotNode: IBotType = this.constructBotBaseTemplate(playerScavKarmaSettings.botTypeForLoot);
         this.adjustBotTemplateWithKarmaSpecificSettings(playerScavKarmaSettings, baseBotNode);
 
-        let scavData = this.botGenerator.generatePlayerScav(sessionID, playerScavKarmaSettings.botTypeForLoot.toLowerCase(), "easy", baseBotNode);
+        let scavData = this.botGenerator.generatePlayerScav(
+            sessionID,
+            playerScavKarmaSettings.botTypeForLoot.toLowerCase(),
+            "easy",
+            baseBotNode,
+        );
 
         // Remove cached bot data after scav was generated
         this.botLootCacheService.clearCache();
@@ -113,7 +118,6 @@ export class PlayerScavGenerator
         scavData.Notes = existingScavData.Notes ?? {Notes: []};
         scavData.WishList = existingScavData.WishList ?? [];
 
-
         // Add an extra labs card to pscav backpack based on config chance
         if (this.randomUtil.getChance100(playerScavKarmaSettings.labsAccessCardChancePercent))
         {
@@ -121,9 +125,15 @@ export class PlayerScavGenerator
             const itemsToAdd: Item[] = [{
                 _id: this.hashUtil.generate(),
                 _tpl: labsCard._id,
-                ...this.botGeneratorHelper.generateExtraPropertiesForItem(labsCard)
+                ...this.botGeneratorHelper.generateExtraPropertiesForItem(labsCard),
             }];
-            this.botWeaponGeneratorHelper.addItemWithChildrenToEquipmentSlot(["TacticalVest", "Pockets", "Backpack"], itemsToAdd[0]._id, labsCard._id, itemsToAdd, scavData.Inventory);
+            this.botWeaponGeneratorHelper.addItemWithChildrenToEquipmentSlot(
+                ["TacticalVest", "Pockets", "Backpack"],
+                itemsToAdd[0]._id,
+                labsCard._id,
+                itemsToAdd,
+                scavData.Inventory,
+            );
         }
 
         // Remove secure container
@@ -251,7 +261,7 @@ export class PlayerScavGenerator
         return {
             Common: [],
             Mastering: [],
-            Points: 0
+            Points: 0,
         };
     }
 
@@ -292,7 +302,7 @@ export class PlayerScavGenerator
      * take into account scav cooldown bonus
      * @param scavData scav profile
      * @param pmcData pmc profile
-     * @returns 
+     * @returns
      */
     protected setScavCooldownTimer(scavData: IPmcData, pmcData: IPmcData): IPmcData
     {
@@ -314,7 +324,7 @@ export class PlayerScavGenerator
         const fenceInfo = this.fenceService.getFenceInfo(pmcData);
         modifier *= fenceInfo.SavageCooldownModifier;
         scavLockDuration *= modifier;
-        
+
         const fullProfile = this.profileHelper.getFullProfile(pmcData?.sessionId);
         if (fullProfile?.info?.edition?.toLowerCase?.().startsWith?.(AccountTypes.SPT_DEVELOPER))
         {
@@ -323,7 +333,7 @@ export class PlayerScavGenerator
         }
 
         scavData.Info.SavageLockTime = (Date.now() / 1000) + scavLockDuration;
-            
+
         return scavData;
     }
 }
