@@ -374,7 +374,7 @@ export class HideoutController
 
         const itemsToAdd = Object.entries(addItemToHideoutRequest.items).map((kvp) =>
         {
-            const item = pmcData.Inventory.items.find((invItem) => invItem._id === kvp[1]["id"]);
+            const item = pmcData.Inventory.items.find((invItem) => invItem._id === kvp[1].id);
             return {
                 inventoryItem: item,
                 requestedItem: kvp[1],
@@ -400,7 +400,7 @@ export class HideoutController
             {
                 this.logger.error(
                     this.localisationService.getText("hideout-unable_to_find_item_in_inventory", {
-                        itemId: item.requestedItem["id"],
+                        itemId: item.requestedItem.id,
                         area: hideoutArea.type,
                     }),
                 );

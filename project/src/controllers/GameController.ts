@@ -651,7 +651,7 @@ export class GameController
      */
     protected fixRoguesSpawningInstantlyOnLighthouse(): void
     {
-        const lighthouse = this.databaseServer.getTables().locations["lighthouse"].base;
+        const lighthouse = this.databaseServer.getTables().locations.lighthouse.base;
         for (const wave of lighthouse.BossLocationSpawn)
         {
             // Find Rogues that spawn instantly
@@ -815,9 +815,9 @@ export class GameController
 
             // Merge started/success/fail quest assorts into one dictionary
             const mergedQuestAssorts = {
-                ...traderData.questassort["started"],
-                ...traderData.questassort["success"],
-                ...traderData.questassort["fail"],
+                ...traderData.questassort.started,
+                ...traderData.questassort.success,
+                ...traderData.questassort.fail,
             };
 
             // Loop over all assorts for trader
@@ -850,14 +850,14 @@ export class GameController
         {
             const bots = this.databaseServer.getTables().bots.types;
 
-            if (bots["bear"])
+            if (bots.bear)
             {
-                bots["bear"].firstName.push(playerName);
+                bots.bear.firstName.push(playerName);
             }
 
-            if (bots["usec"])
+            if (bots.usec)
             {
-                bots["usec"].firstName.push(playerName);
+                bots.usec.firstName.push(playerName);
             }
         }
     }
@@ -868,10 +868,10 @@ export class GameController
      */
     protected checkForAndRemoveUndefinedDialogs(fullProfile: IAkiProfile): void
     {
-        const undefinedDialog = fullProfile.dialogues["undefined"];
+        const undefinedDialog = fullProfile.dialogues.undefined;
         if (undefinedDialog)
         {
-            delete fullProfile.dialogues["undefined"];
+            delete fullProfile.dialogues.undefined;
         }
     }
 

@@ -256,7 +256,7 @@ describe("ItemHelper", () =>
             const fixedItem = itemHelper.fixItemStackCount(initialItem);
 
             expect(fixedItem.upd).toBeDefined();
-            expect(fixedItem.upd!.StackObjectsCount).toBe(1);
+            expect(fixedItem.upd?.StackObjectsCount).toBe(1);
         });
 
         it("should set upd.StackObjectsCount to 1 if upd.StackObjectsCount is undefined", () =>
@@ -269,7 +269,7 @@ describe("ItemHelper", () =>
             const fixedItem = itemHelper.fixItemStackCount(initialItem);
 
             expect(fixedItem.upd).toBeDefined();
-            expect(fixedItem.upd!.StackObjectsCount).toBe(1);
+            expect(fixedItem.upd?.StackObjectsCount).toBe(1);
         });
 
         it("should not change upd.StackObjectsCount if it is already defined", () =>
@@ -284,7 +284,7 @@ describe("ItemHelper", () =>
             const fixedItem = itemHelper.fixItemStackCount(initialItem);
 
             expect(fixedItem.upd).toBeDefined();
-            expect(fixedItem.upd!.StackObjectsCount).toBe(5);
+            expect(fixedItem.upd?.StackObjectsCount).toBe(5);
         });
     });
 

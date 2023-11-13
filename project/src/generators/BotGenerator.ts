@@ -282,8 +282,8 @@ export class BotGenerator
             }
 
             const pmcNames = [
-                ...this.databaseServer.getTables().bots.types["usec"].firstName,
-                ...this.databaseServer.getTables().bots.types["bear"].firstName,
+                ...this.databaseServer.getTables().bots.types.usec.firstName,
+                ...this.databaseServer.getTables().bots.types.bear.firstName,
             ];
 
             return `${name} (${this.randomUtil.getArrayValue(pmcNames)})`;

@@ -161,8 +161,8 @@ describe("BotGenerator", () =>
         it("should return name `test (usec)` for player scav bot", () =>
         {
             botGenerator.botConfig.chanceAssaultScavHasPlayerScavName = 100;
-            botGenerator.databaseServer.getTables().bots.types["usec"].firstName = ["usec"];
-            botGenerator.databaseServer.getTables().bots.types["bear"].firstName = [];
+            botGenerator.databaseServer.getTables().bots.types.usec.firstName = ["usec"];
+            botGenerator.databaseServer.getTables().bots.types.bear.firstName = [];
 
             const mockPlayerProfile = {
                 Info: {

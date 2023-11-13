@@ -469,9 +469,9 @@ export class ProfileFixerService
 
     protected addMissingBonusesProperty(pmcProfile: IPmcData): void
     {
-        if (typeof pmcProfile["Bonuses"] === "undefined")
+        if (typeof pmcProfile.Bonuses === "undefined")
         {
-            pmcProfile["Bonuses"] = [];
+            pmcProfile.Bonuses = [];
             this.logger.debug("Missing Bonuses property added to profile");
         }
     }
@@ -1024,7 +1024,7 @@ export class ProfileFixerService
      */
     public addMissingHideoutAreasToProfile(fullProfile: IAkiProfile): void
     {
-        const pmcProfile = fullProfile.characters["pmc"];
+        const pmcProfile = fullProfile.characters.pmc;
         // No profile, probably new account being created
         if (!pmcProfile?.Hideout)
         {
@@ -1163,11 +1163,11 @@ export class ProfileFixerService
      */
     protected migrateImprovements(pmcProfile: IPmcData): void
     {
-        if (pmcProfile.Hideout["Improvements"])
+        if (pmcProfile.Hideout.Improvements)
         {
             // Correct name is `Improvement`
-            pmcProfile.Hideout.Improvement = this.jsonUtil.clone(pmcProfile.Hideout["Improvements"]);
-            delete pmcProfile.Hideout["Improvements"];
+            pmcProfile.Hideout.Improvement = this.jsonUtil.clone(pmcProfile.Hideout.Improvements);
+            delete pmcProfile.Hideout.Improvements;
             this.logger.success("Successfully migrated hideout Improvements data to new location, deleted old data");
         }
     }
