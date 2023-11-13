@@ -12,11 +12,11 @@ export class NotifierHelper
      */
     protected defaultNotification: INotification = {
         type: NotificationType.PING,
-        eventId: "ping"
+        eventId: "ping",
     };
 
     constructor(
-        @inject("HttpServerHelper") protected httpServerHelper: HttpServerHelper
+        @inject("HttpServerHelper") protected httpServerHelper: HttpServerHelper,
     )
     {}
 
@@ -29,22 +29,25 @@ export class NotifierHelper
      * Create a new notification that displays the "Your offer was sold!" prompt and removes sold offer from "My Offers" on clientside
      * @param dialogueMessage Message from dialog that was sent
      * @param ragfairData Ragfair data to attach to notification
-     * @returns 
+     * @returns
      */
-    public createRagfairOfferSoldNotification(dialogueMessage: Message, ragfairData: MessageContentRagfair): INotification
+    public createRagfairOfferSoldNotification(
+        dialogueMessage: Message,
+        ragfairData: MessageContentRagfair,
+    ): INotification
     {
         return {
             type: NotificationType.RAGFAIR_OFFER_SOLD,
             eventId: dialogueMessage._id,
             dialogId: dialogueMessage.uid,
-            ...ragfairData
+            ...ragfairData,
         };
     }
 
     /**
      * Create a new notification with the specified dialogueMessage object
-     * @param dialogueMessage 
-     * @returns 
+     * @param dialogueMessage
+     * @returns
      */
     public createNewMessageNotification(dialogueMessage: Message): INotification
     {
@@ -52,7 +55,7 @@ export class NotifierHelper
             type: NotificationType.NEW_MESSAGE,
             eventId: dialogueMessage._id,
             dialogId: dialogueMessage.uid,
-            message: dialogueMessage
+            message: dialogueMessage,
         };
     }
 

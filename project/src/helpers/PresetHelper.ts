@@ -12,9 +12,9 @@ export class PresetHelper
 
     constructor(
         @inject("JsonUtil") protected jsonUtil: JsonUtil,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer
+        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
     )
-    { }
+    {}
 
     public hydratePresetStore(input: Record<string, string[]>): void
     {
@@ -26,7 +26,7 @@ export class PresetHelper
         if (!this.defaultPresets)
         {
             this.defaultPresets = Object.values(this.databaseServer.getTables().globals.ItemPresets)
-                .filter(x => x._encyclopedia !== undefined)
+                .filter((x) => x._encyclopedia !== undefined)
                 .reduce((acc, cur) =>
                 {
                     acc[cur._id] = cur;

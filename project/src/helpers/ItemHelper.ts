@@ -29,7 +29,7 @@ class ItemHelper
         BaseClasses.SORTING_TABLE,
         BaseClasses.INVENTORY,
         BaseClasses.STATIONARY_CONTAINER,
-        BaseClasses.POCKETS
+        BaseClasses.POCKETS,
     ];
 
     constructor(
@@ -44,7 +44,7 @@ class ItemHelper
         @inject("ItemBaseClassService") protected itemBaseClassService: ItemBaseClassService,
         @inject("ItemFilterService") protected itemFilterService: ItemFilterService,
         @inject("LocalisationService") protected localisationService: LocalisationService,
-        @inject("LocaleService") protected localeService: LocaleService
+        @inject("LocaleService") protected localeService: LocaleService,
     )
     {}
 
@@ -68,11 +68,11 @@ class ItemHelper
         }
 
         // Is item valid
-        return !itemDetails[1]._props.QuestItem
-            && itemDetails[1]._type === "Item"
-            && invalidBaseTypes.every(x => !this.isOfBaseclass(tpl, x))
-            && this.getItemPrice(tpl) > 0
-            && !this.itemFilterService.isItemBlacklisted(tpl);
+        return !itemDetails[1]._props.QuestItem &&
+            itemDetails[1]._type === "Item" &&
+            invalidBaseTypes.every((x) => !this.isOfBaseclass(tpl, x)) &&
+            this.getItemPrice(tpl) > 0 &&
+            !this.itemFilterService.isItemBlacklisted(tpl);
     }
 
     /**
@@ -177,7 +177,7 @@ class ItemHelper
         if (item.upd === undefined)
         {
             item.upd = {
-                StackObjectsCount: 1
+                StackObjectsCount: 1,
             };
         }
 
@@ -244,8 +244,8 @@ class ItemHelper
                     slotId: slotId,
                     location: 0,
                     upd: {
-                        StackObjectsCount: count
-                    }
+                        StackObjectsCount: count,
+                    },
                 };
                 stackSlotItems.push(stackSlotItem);
             }
@@ -352,7 +352,6 @@ class ItemHelper
         return result;
     }
 
-
     /**
      * Get a quality value based on a repairable items (weapon/armor) current state between current and max durability
      * @param itemDetails Db details for item we want quality value for
@@ -365,7 +364,9 @@ class ItemHelper
         // Edge case, max durability is below durability
         if (repairable.Durability > repairable.MaxDurability)
         {
-            this.logger.warning(`Max durability: ${repairable.MaxDurability} for item id: ${item._id} was below Durability: ${repairable.Durability}, adjusting values to match`);
+            this.logger.warning(
+                `Max durability: ${repairable.MaxDurability} for item id: ${item._id} was below Durability: ${repairable.Durability}, adjusting values to match`,
+            );
             repairable.MaxDurability = repairable.Durability;
         }
 
@@ -377,9 +378,9 @@ class ItemHelper
 
         // Weapon
         // Get max dura from props, if it isnt there use repairable max dura value
-        const maxDurability = (itemDetails._props.MaxDurability)
-            ? itemDetails._props.MaxDurability
-            : repairable.MaxDurability;
+        const maxDurability = (itemDetails._props.MaxDurability) ?
+            itemDetails._props.MaxDurability :
+            repairable.MaxDurability;
         const durability = repairable.Durability / maxDurability;
 
         if (!durability)
@@ -434,7 +435,7 @@ class ItemHelper
                 continue;
             }
 
-            if (childItem.parentId === baseItemId && !list.find(item => childItem._id === item._id))
+            if (childItem.parentId === baseItemId && !list.find((item) => childItem._id === item._id))
             {
                 list.push(...this.findAndReturnChildrenAsItems(items, childItem._id));
             }
@@ -455,7 +456,7 @@ class ItemHelper
 
         for (const itemFromAssort of assort)
         {
-            if (itemFromAssort.parentId === itemIdToFind && !list.find(item => itemFromAssort._id === item._id))
+            if (itemFromAssort.parentId === itemIdToFind && !list.find((item) => itemFromAssort._id === item._id))
             {
                 list.push(itemFromAssort);
                 list = list.concat(this.findAndReturnChildrenByAssort(itemFromAssort._id, assort));
@@ -472,8 +473,10 @@ class ItemHelper
      */
     public hasBuyRestrictions(itemToCheck: Item): boolean
     {
-        if (itemToCheck.upd?.BuyRestrictionCurrent !== undefined
-            && itemToCheck.upd?.BuyRestrictionMax !== undefined)
+        if (
+            itemToCheck.upd?.BuyRestrictionCurrent !== undefined &&
+            itemToCheck.upd?.BuyRestrictionMax !== undefined
+        )
         {
             return true;
         }
@@ -571,18 +574,18 @@ class ItemHelper
     public findBarterItems(by: "tpl" | "id", items: Item[], barterItemId: string): Item[]
     {
         // find required items to take after buying (handles multiple items)
-        const barterIDs = typeof barterItemId === "string"
-            ? [barterItemId]
-            : barterItemId;
+        const barterIDs = typeof barterItemId === "string" ?
+            [barterItemId] :
+            barterItemId;
 
         let barterItems: Item[] = [];
         for (const barterID of barterIDs)
         {
-            const filterResult = items.filter(item =>
+            const filterResult = items.filter((item) =>
             {
-                return by === "tpl"
-                    ? (item._tpl === barterID)
-                    : (item._id === barterID);
+                return by === "tpl" ?
+                    (item._tpl === barterID) :
+                    (item._id === barterID);
             });
 
             barterItems = Object.assign(barterItems, filterResult);
@@ -615,17 +618,19 @@ class ItemHelper
             {
                 // Insured items shouldn't be renamed
                 // only works for pmcs.
-                if (insuredItems?.find(insuredItem => insuredItem.itemId === item._id))
+                if (insuredItems?.find((insuredItem) => insuredItem.itemId === item._id))
                 {
                     continue;
                 }
 
                 // Do not replace important ID's
-                if (item._id === pmcData.Inventory.equipment
-                    || item._id === pmcData.Inventory.questRaidItems
-                    || item._id === pmcData.Inventory.questStashItems
-                    || item._id === pmcData.Inventory.sortingTable
-                    || item._id === pmcData.Inventory.stash)
+                if (
+                    item._id === pmcData.Inventory.equipment ||
+                    item._id === pmcData.Inventory.questRaidItems ||
+                    item._id === pmcData.Inventory.questStashItems ||
+                    item._id === pmcData.Inventory.sortingTable ||
+                    item._id === pmcData.Inventory.stash
+                )
                 {
                     continue;
                 }
@@ -804,7 +809,9 @@ class ItemHelper
         let isRequiredSlot = false;
         if (parentTemplate[0] && parentTemplate[1]?._props?.Slots)
         {
-            isRequiredSlot = parentTemplate[1]._props.Slots.some(slot => slot._name === item.slotId && slot._required);
+            isRequiredSlot = parentTemplate[1]._props.Slots.some((slot) =>
+                slot._name === item.slotId && slot._required
+            );
         }
 
         return itemTemplate[0] && parentTemplate[0] && !(isNotRaidModdable || isRequiredSlot);
@@ -865,7 +872,7 @@ class ItemHelper
      */
     public getItemSize(items: Item[], rootItemId: string): ItemHelper.ItemSize
     {
-        const rootTemplate = this.getItem(items.filter(x => x._id === rootItemId)[0]._tpl)[1];
+        const rootTemplate = this.getItem(items.filter((x) => x._id === rootItemId)[0]._tpl)[1];
         const width = rootTemplate._props.Width;
         const height = rootTemplate._props.Height;
 
@@ -897,13 +904,15 @@ class ItemHelper
                 sizeUp = sizeUp < itemTemplate._props.ExtraSizeUp ? itemTemplate._props.ExtraSizeUp : sizeUp;
                 sizeDown = sizeDown < itemTemplate._props.ExtraSizeDown ? itemTemplate._props.ExtraSizeDown : sizeDown;
                 sizeLeft = sizeLeft < itemTemplate._props.ExtraSizeLeft ? itemTemplate._props.ExtraSizeLeft : sizeLeft;
-                sizeRight = sizeRight < itemTemplate._props.ExtraSizeRight ? itemTemplate._props.ExtraSizeRight : sizeRight;
+                sizeRight = sizeRight < itemTemplate._props.ExtraSizeRight ?
+                    itemTemplate._props.ExtraSizeRight :
+                    sizeRight;
             }
         }
 
         return {
             width: width + sizeLeft + sizeRight + forcedLeft + forcedRight,
-            height: height + sizeUp + sizeDown + forcedUp + forcedDown
+            height: height + sizeUp + sizeDown + forcedUp + forcedDown,
         };
     }
 
@@ -945,15 +954,15 @@ class ItemHelper
         while (currentStoredCartridgeCount < ammoBoxMaxCartridgeCount)
         {
             const remainingSpace = ammoBoxMaxCartridgeCount - currentStoredCartridgeCount;
-            const cartridgeCountToAdd = (remainingSpace < maxPerStack)
-                ? remainingSpace
-                : maxPerStack;
+            const cartridgeCountToAdd = (remainingSpace < maxPerStack) ?
+                remainingSpace :
+                maxPerStack;
 
             // Add cartridge item into items array
             ammoBox.push(this.createCartridges(ammoBox[0]._id, cartridgeTpl, cartridgeCountToAdd, location));
 
             currentStoredCartridgeCount += cartridgeCountToAdd;
-            location ++;
+            location++;
         }
     }
 
@@ -967,7 +976,7 @@ class ItemHelper
     public itemIsInsideContainer(item: Item, desiredContainerSlotId: string, items: Item[]): boolean
     {
         // Get items parent
-        const parent = items.find(x => x._id === item.parentId);
+        const parent = items.find((x) => x._id === item.parentId);
         if (!parent)
         {
             // No parent, end of line, not inside container
@@ -997,7 +1006,7 @@ class ItemHelper
         magTemplate: ITemplateItem,
         staticAmmoDist: Record<string, IStaticAmmoDetails[]>,
         caliber: string = undefined,
-        minSizePercent = 0.25
+        minSizePercent = 0.25,
     ): void
     {
         // no caliber defined, choose one at random
@@ -1028,7 +1037,7 @@ class ItemHelper
         magazine: Item[],
         magTemplate: ITemplateItem,
         cartridgeTpl: string,
-        minSizePercent = 0.25
+        minSizePercent = 0.25,
     ): void
     {
         // Get cartrdge properties and max allowed stack size
@@ -1037,7 +1046,10 @@ class ItemHelper
 
         // Get max number of cartridges in magazine, choose random value between min/max
         const magazineCartridgeMaxCount = magTemplate._props.Cartridges[0]._max_count;
-        const desiredStackCount = this.randomUtil.getInt(Math.round(minSizePercent * magazineCartridgeMaxCount), magazineCartridgeMaxCount);
+        const desiredStackCount = this.randomUtil.getInt(
+            Math.round(minSizePercent * magazineCartridgeMaxCount),
+            magazineCartridgeMaxCount,
+        );
 
         // Loop over cartridge count and add stacks to magazine
         let currentStoredCartridgeCount = 0;
@@ -1045,9 +1057,9 @@ class ItemHelper
         while (currentStoredCartridgeCount < desiredStackCount)
         {
             // Get stack size of cartridges
-            let cartridgeCountToAdd = (desiredStackCount <= cartridgeMaxStackSize)
-                ? desiredStackCount
-                : cartridgeMaxStackSize;
+            let cartridgeCountToAdd = (desiredStackCount <= cartridgeMaxStackSize) ?
+                desiredStackCount :
+                cartridgeMaxStackSize;
 
             // Ensure we don't go over the max stackcount size
             const remainingSpace = desiredStackCount - currentStoredCartridgeCount;
@@ -1060,7 +1072,7 @@ class ItemHelper
             magazine.push(this.createCartridges(magazine[0]._id, cartridgeTpl, cartridgeCountToAdd, location));
 
             currentStoredCartridgeCount += cartridgeCountToAdd;
-            location ++;
+            location++;
         }
     }
 
@@ -1075,11 +1087,11 @@ class ItemHelper
         const calibers = [
             ...new Set(
                 ammoTpls.filter(
-                    (x: string) => this.getItem(x)[0]
+                    (x: string) => this.getItem(x)[0],
                 ).map(
-                    (x: string) => this.getItem(x)[1]._props.Caliber
-                )
-            )
+                    (x: string) => this.getItem(x)[1]._props.Caliber,
+                ),
+            ),
         ];
         return this.randomUtil.drawRandomFromList(calibers)[0];
     }
@@ -1096,7 +1108,7 @@ class ItemHelper
         for (const icd of staticAmmoDist[caliber])
         {
             ammoArray.push(
-                new ProbabilityObject(icd.tpl, icd.relativeProbability)
+                new ProbabilityObject(icd.tpl, icd.relativeProbability),
             );
         }
         return ammoArray.draw(1)[0];
@@ -1118,7 +1130,7 @@ class ItemHelper
             parentId: parentId,
             slotId: "cartridges",
             location: location,
-            upd: { StackObjectsCount: stackCount }
+            upd: {StackObjectsCount: stackCount},
         };
     }
 
@@ -1149,7 +1161,9 @@ class ItemHelper
 
     public getItemTplsOfBaseType(desiredBaseType: string): string[]
     {
-        return Object.values(this.databaseServer.getTables().templates.items).filter(x => x._parent === desiredBaseType).map(x =>x._id);
+        return Object.values(this.databaseServer.getTables().templates.items).filter((x) =>
+            x._parent === desiredBaseType
+        ).map((x) => x._id);
     }
 }
 
@@ -1157,10 +1171,9 @@ namespace ItemHelper
 {
     export interface ItemSize
     {
-        width: number
-        height: number
+        width: number;
+        height: number;
     }
 }
 
-export { ItemHelper };
-
+export {ItemHelper};

@@ -29,7 +29,7 @@ export class LookupCollection
 
 @injectable()
 export class HandbookHelper
-{    
+{
     protected lookupCacheGenerated = false;
     protected handbookPriceCache = new LookupCollection();
 
@@ -89,7 +89,7 @@ export class HandbookHelper
             return this.handbookPriceCache.items.byId.get(tpl);
         }
 
-        const handbookItem = this.databaseServer.getTables().templates.handbook.Items.find(x => x.Id === tpl);
+        const handbookItem = this.databaseServer.getTables().templates.handbook.Items.find((x) => x.Id === tpl);
         if (!handbookItem)
         {
             const newValue = 0;
@@ -103,7 +103,7 @@ export class HandbookHelper
 
     /**
      * Get all items in template with the given parent category
-     * @param parentId 
+     * @param parentId
      * @returns string array
      */
     public templatesWithParent(parentId: string): string[]
@@ -113,7 +113,7 @@ export class HandbookHelper
 
     /**
      * Does category exist in handbook cache
-     * @param category 
+     * @param category
      * @returns true if exists in cache
      */
     public isCategory(category: string): boolean
@@ -123,7 +123,7 @@ export class HandbookHelper
 
     /**
      * Get all items associated with a categories parent
-     * @param categoryParent 
+     * @param categoryParent
      * @returns string array
      */
     public childrenCategories(categoryParent: string): string[]

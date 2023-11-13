@@ -12,25 +12,30 @@ import { LocalisationService } from "@spt-aki/services/LocalisationService";
 @injectable()
 export class AssortHelper
 {
-
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("LocalisationService") protected localisationService: LocalisationService,
-        @inject("QuestHelper") protected questHelper: QuestHelper
+        @inject("QuestHelper") protected questHelper: QuestHelper,
     )
-    { }
+    {}
 
     /**
-     * Remove assorts from a trader that have not been unlocked yet (via player completing corrisponding quest)
+     * Remove assorts from a trader that have not been unlocked yet (via player completing corresponding quest)
      * @param pmcProfile Player profile
      * @param traderId Traders id the assort belongs to
      * @param traderAssorts All assort items from same trader
      * @param mergedQuestAssorts Dict of quest assort to quest id unlocks for all traders (key = started/failed/complete)
      * @returns Assort items minus locked quest assorts
      */
-    public stripLockedQuestAssort(pmcProfile: IPmcData, traderId: string, traderAssorts: ITraderAssort, mergedQuestAssorts: Record<string, Record<string, string>>, flea = false): ITraderAssort
+    public stripLockedQuestAssort(
+        pmcProfile: IPmcData,
+        traderId: string,
+        traderAssorts: ITraderAssort,
+        mergedQuestAssorts: Record<string, Record<string, string>>,
+        flea = false,
+    ): ITraderAssort
     {
         // Trader assort does not always contain loyal_level_items
         if (!traderAssorts.loyal_level_items)
@@ -67,20 +72,26 @@ export class AssortHelper
      * @param assortId Assort to look for linked quest id
      * @returns quest id + array of quest status the assort should show for
      */
-    protected getQuestIdAndStatusThatShowAssort(mergedQuestAssorts: Record<string, Record<string, string>>, assortId: string): { questId: string; status: QuestStatus[]; }
+    protected getQuestIdAndStatusThatShowAssort(
+        mergedQuestAssorts: Record<string, Record<string, string>>,
+        assortId: string,
+    ): {questId: string; status: QuestStatus[];}
     {
         if (assortId in mergedQuestAssorts.started)
         {
             // Assort unlocked by starting quest, assort is visible to player when : started or ready to hand in + handed in
-            return { questId: mergedQuestAssorts.started[assortId], status: [QuestStatus.Started, QuestStatus.AvailableForFinish, QuestStatus.Success]};
+            return {
+                questId: mergedQuestAssorts.started[assortId],
+                status: [QuestStatus.Started, QuestStatus.AvailableForFinish, QuestStatus.Success],
+            };
         }
         else if (assortId in mergedQuestAssorts.success)
         {
-            return { questId: mergedQuestAssorts.success[assortId], status: [QuestStatus.Success]};
+            return {questId: mergedQuestAssorts.success[assortId], status: [QuestStatus.Success]};
         }
         else if (assortId in mergedQuestAssorts.fail)
         {
-            return { questId: mergedQuestAssorts.fail[assortId], status: [QuestStatus.Fail]};
+            return {questId: mergedQuestAssorts.fail[assortId], status: [QuestStatus.Fail]};
         }
 
         return undefined;
