@@ -1,5 +1,5 @@
 export enum WildSpawnTypeNumber
-    {
+{
     MARKSMAN = 0,
     ASSAULT = 1,
     BOSSTEST = 2,
@@ -41,5 +41,5 @@ export enum WildSpawnTypeNumber
     SECTACTPRIESTEVENT = 39,
     RAVANGEZRYACHIYEVENT = 40,
     SPTUSEC = 41,
-    SPTBEAR = 42
+    SPTBEAR = 42,
 }
