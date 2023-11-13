@@ -9,9 +9,9 @@ export class MatchLocationService
     protected locations = {};
 
     constructor(
-        @inject("TimeUtil") protected timeUtil: TimeUtil
+        @inject("TimeUtil") protected timeUtil: TimeUtil,
     )
-    { }
+    {}
 
     public createGroup(sessionID: string, info: ICreateGroupRequestData): any
     {
@@ -33,10 +33,10 @@ export class MatchLocationService
                     region: "EUR",
                     ip: "127.0.0.1",
                     savageId: `scav${sessionID}`,
-                    accessKeyId: ""
-                }
+                    accessKeyId: "",
+                },
             ],
-            customDataCenter: []
+            customDataCenter: [],
         };
 
         return this.locations[info.location].groups[groupID];

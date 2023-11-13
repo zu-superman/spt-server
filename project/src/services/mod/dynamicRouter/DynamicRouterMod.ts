@@ -4,13 +4,13 @@ export class DynamicRouterMod extends DynamicRouter
 {
     public constructor(
         routes: RouteAction[],
-        private topLevelRoute: string
-    ) 
+        private topLevelRoute: string,
+    )
     {
         super(routes);
     }
 
-    public override getTopLevelRoute(): string 
+    public override getTopLevelRoute(): string
     {
         return this.topLevelRoute;
     }

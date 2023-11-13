@@ -9,14 +9,13 @@ import { TimeUtil } from "@spt-aki/utils/TimeUtil";
 @injectable()
 export class PlayerService
 {
-
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
         @inject("LocalisationService") protected localisationService: LocalisationService,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer
+        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
     )
-    { }
+    {}
 
     /**
      * Get level of player
@@ -27,7 +26,7 @@ export class PlayerService
     {
         let accExp = 0;
 
-        for (const [level, { exp }] of this.databaseServer.getTables().globals.config.exp.level.exp_table.entries())
+        for (const [level, {exp}] of this.databaseServer.getTables().globals.config.exp.level.exp_table.entries())
         {
             accExp += exp;
 
