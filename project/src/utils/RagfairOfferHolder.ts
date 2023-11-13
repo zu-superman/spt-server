@@ -84,7 +84,7 @@ export class RagfairOfferHolder
             this.removeOffer(offer);
         }
     }
-    
+
     public removeOfferByTrader(traderId: string): void
     {
         if (this.offersByTrader.has(traderId))
@@ -99,7 +99,7 @@ export class RagfairOfferHolder
      */
     public getStaleOffers(time: number): Array<IRagfairOffer>
     {
-        return this.getOffers().filter(o => this.isStale(o, time));
+        return this.getOffers().filter((o) => this.isStale(o, time));
     }
 
     protected addOfferByTemplates(template: string, offer: IRagfairOffer): void

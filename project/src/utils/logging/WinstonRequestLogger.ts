@@ -7,7 +7,7 @@ import { AbstractWinstonLogger } from "@spt-aki/utils/logging/AbstractWinstonLog
 export class WinstonRequestLogger extends AbstractWinstonLogger
 {
     constructor(
-        @inject("AsyncQueue") protected asyncQueue: IAsyncQueue
+        @inject("AsyncQueue") protected asyncQueue: IAsyncQueue,
     )
     {
         super(asyncQueue);

@@ -33,7 +33,7 @@ export class DatabaseImporter implements OnLoad
         @inject("EncodingUtil") protected encodingUtil: EncodingUtil,
         @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("ImporterUtil") protected importerUtil: ImporterUtil,
-        @inject("ConfigServer") protected configServer: ConfigServer
+        @inject("ConfigServer") protected configServer: ConfigServer,
     )
     {
         this.httpConfig = this.configServer.getConfig(ConfigTypes.HTTP);
@@ -45,25 +45,28 @@ export class DatabaseImporter implements OnLoad
      */
     public getSptDataPath(): string
     {
-        return (globalThis.G_RELEASE_CONFIGURATION)
-            ? "Aki_Data/Server/"
-            : "./assets/";
+        return (globalThis.G_RELEASE_CONFIGURATION) ?
+            "Aki_Data/Server/" :
+            "./assets/";
     }
-    
+
     public async onLoad(): Promise<void>
     {
         this.filepath = this.getSptDataPath();
-        
+
         if (globalThis.G_RELEASE_CONFIGURATION)
         {
-            try 
+            try
             {
                 // Reading the dynamic SHA1 file
                 const file = "checks.dat";
                 const fileWithPath = `${this.filepath}${file}`;
                 if (this.vfs.exists(fileWithPath))
                 {
-                    this.hashedFile = this.jsonUtil.deserialize(this.encodingUtil.fromBase64(this.vfs.readFile(fileWithPath)), file);
+                    this.hashedFile = this.jsonUtil.deserialize(
+                        this.encodingUtil.fromBase64(this.vfs.readFile(fileWithPath)),
+                        file,
+                    );
                 }
                 else
                 {
@@ -88,7 +91,7 @@ export class DatabaseImporter implements OnLoad
             "/files/Hideout/",
             "/files/launcher/",
             "/files/quest/icon/",
-            "/files/trader/avatar/"
+            "/files/trader/avatar/",
         ]);
     }
 
@@ -99,42 +102,50 @@ export class DatabaseImporter implements OnLoad
     protected async hydrateDatabase(filepath: string): Promise<void>
     {
         this.logger.info(this.localisationService.getText("importing_database"));
-        
+
         const dataToImport = await this.importerUtil.loadAsync<IDatabaseTables>(
             `${filepath}database/`,
             this.filepath,
-            (fileWithPath: string, data: string) => this.onReadValidate(fileWithPath, data)
+            (fileWithPath: string, data: string) => this.onReadValidate(fileWithPath, data),
         );
 
-        const validation = (this.valid === VaildationResult.FAILED || this.valid === VaildationResult.NOT_FOUND) ? "." : "";
+        const validation = (this.valid === VaildationResult.FAILED || this.valid === VaildationResult.NOT_FOUND) ?
+            "." :
+            "";
         this.logger.info(`${this.localisationService.getText("importing_database_finish")}${validation}`);
         this.databaseServer.setTables(dataToImport);
     }
-    
+
     protected onReadValidate(fileWithPath: string, data: string): void
     {
         // Validate files
         if (globalThis.G_RELEASE_CONFIGURATION && this.hashedFile && !this.validateFile(fileWithPath, data))
+        {
             this.valid = VaildationResult.FAILED;
+        }
     }
 
     public getRoute(): string
     {
         return "aki-database";
     }
-    
+
     protected validateFile(filePathAndName: string, fileData: any): boolean
     {
-        try 
+        try
         {
             const finalPath = filePathAndName.replace(this.filepath, "").replace(".json", "");
             let tempObject;
             for (const prop of finalPath.split("/"))
             {
                 if (!tempObject)
+                {
                     tempObject = this.hashedFile[prop];
+                }
                 else
+                {
                     tempObject = tempObject[prop];
+                }
             }
 
             if (tempObject !== this.hashUtil.generateSha1ForData(fileData))
@@ -196,9 +207,9 @@ export class DatabaseImporter implements OnLoad
 }
 
 enum VaildationResult
-    {
+{
     SUCCESS = 0,
     FAILED = 1,
     NOT_FOUND = 2,
-    UNDEFINED = 3
+    UNDEFINED = 3,
 }

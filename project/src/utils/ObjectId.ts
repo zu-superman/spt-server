@@ -7,9 +7,9 @@ import { TimeUtil } from "@spt-aki/utils/TimeUtil";
 export class ObjectId
 {
     constructor(
-        @inject("TimeUtil") protected timeUtil: TimeUtil
+        @inject("TimeUtil") protected timeUtil: TimeUtil,
     )
-    { }
+    {}
 
     protected randomBytes = crypto.randomBytes(5);
     protected constglobalCounter = 0;

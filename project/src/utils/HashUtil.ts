@@ -7,9 +7,9 @@ import { TimeUtil } from "@spt-aki/utils/TimeUtil";
 export class HashUtil
 {
     constructor(
-        @inject("TimeUtil") protected timeUtil: TimeUtil
+        @inject("TimeUtil") protected timeUtil: TimeUtil,
     )
-    { }
+    {}
 
     /**
      * Create a 24 character id using the sha256 algorithm + current timestamp

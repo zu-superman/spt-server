@@ -1,5 +1,5 @@
-import { injectable } from "tsyringe";
 import { formatInTimeZone } from "date-fns-tz";
+import { injectable } from "tsyringe";
 
 /**
  * Utility class to handle time related operations.

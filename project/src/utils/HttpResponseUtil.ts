@@ -10,12 +10,11 @@ import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 @injectable()
 export class HttpResponseUtil
 {
-
     constructor(
         @inject("JsonUtil") protected jsonUtil: JsonUtil,
-        @inject("LocalisationService") protected localisationService: LocalisationService
+        @inject("LocalisationService") protected localisationService: LocalisationService,
     )
-    { }
+    {}
 
     protected clearString(s: string): any
     {
@@ -29,8 +28,8 @@ export class HttpResponseUtil
 
     /**
      * Return passed in data as JSON string
-     * @param data 
-     * @returns 
+     * @param data
+     * @returns
      */
     public noBody(data: any): any
     {
@@ -47,7 +46,7 @@ export class HttpResponseUtil
         return this.jsonUtil.serialize({
             err: err,
             errmsg: errmsg,
-            data: data
+            data: data,
         });
     }
 
@@ -66,12 +65,16 @@ export class HttpResponseUtil
         return this.getBody([]);
     }
 
-    public appendErrorToOutput(output: IItemEventRouterResponse, message = this.localisationService.getText("http-unknown_error"), errorCode = BackendErrorCodes.NONE): IItemEventRouterResponse
+    public appendErrorToOutput(
+        output: IItemEventRouterResponse,
+        message = this.localisationService.getText("http-unknown_error"),
+        errorCode = BackendErrorCodes.NONE,
+    ): IItemEventRouterResponse
     {
         output.warnings = [{
             index: 0,
             errmsg: message,
-            code: errorCode.toString()
+            code: errorCode.toString(),
         }];
 
         return output;
