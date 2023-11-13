@@ -7,16 +7,16 @@ import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEve
 import { HideoutEventActions } from "@spt-aki/models/enums/HideoutEventActions";
 
 @injectable()
-export class HideoutItemEventRouter extends ItemEventRouterDefinition 
+export class HideoutItemEventRouter extends ItemEventRouterDefinition
 {
     constructor(
-        @inject("HideoutCallbacks") protected hideoutCallbacks: HideoutCallbacks
-    ) 
+        @inject("HideoutCallbacks") protected hideoutCallbacks: HideoutCallbacks,
+    )
     {
         super();
     }
 
-    public override getHandledRoutes(): HandledRoute[] 
+    public override getHandledRoutes(): HandledRoute[]
     {
         return [
             new HandledRoute(HideoutEventActions.HIDEOUT_UPGRADE, false),
@@ -30,11 +30,16 @@ export class HideoutItemEventRouter extends ItemEventRouterDefinition
             new HandledRoute(HideoutEventActions.HIDEOUT_TAKE_PRODUCTION, false),
             new HandledRoute(HideoutEventActions.HIDEOUT_RECORD_SHOOTING_RANGE_POINTS, false),
             new HandledRoute(HideoutEventActions.HIDEOUT_IMPROVE_AREA, false),
-            new HandledRoute(HideoutEventActions.HIDEOUT_CANCEL_PRODUCTION_COMMAND, false)
+            new HandledRoute(HideoutEventActions.HIDEOUT_CANCEL_PRODUCTION_COMMAND, false),
         ];
     }
 
-    public override handleItemEvent(url: string, pmcData: IPmcData, body: any, sessionID: string): IItemEventRouterResponse 
+    public override handleItemEvent(
+        url: string,
+        pmcData: IPmcData,
+        body: any,
+        sessionID: string,
+    ): IItemEventRouterResponse
     {
         switch (url)
         {

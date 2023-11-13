@@ -9,17 +9,15 @@ import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 @injectable()
 export class NotifySerializer extends Serializer
 {
-
     constructor(
         @inject("NotifierController") protected notifierController: NotifierController,
         @inject("JsonUtil") protected jsonUtil: JsonUtil,
-        @inject("HttpServerHelper") protected httpServerHelper: HttpServerHelper
+        @inject("HttpServerHelper") protected httpServerHelper: HttpServerHelper,
     )
     {
         super();
     }
-    
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
     public override serialize(_sessionID: string, req: IncomingMessage, resp: ServerResponse, _: any): void
     {
         const splittedUrl = req.url.split("/");
