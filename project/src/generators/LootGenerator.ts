@@ -410,7 +410,7 @@ export class LootGenerator
                     x._parent === rewardTypeId &&
                     x._type.toLowerCase() === "item" &&
                     !this.itemFilterService.isItemBlacklisted(x._id) &&
-                    (!containerSettings.allowBossItems && !this.itemFilterService.isBossItem(x._id)) &&
+                    (!(containerSettings.allowBossItems || this.itemFilterService.isBossItem(x._id))) &&
                     !x._props.QuestItem
                 );
 

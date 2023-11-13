@@ -424,7 +424,7 @@ export class ProfileFixerService
                     const existsInQuests = pmcProfile.Quests.some((q) => q.qid === backendCounter.qid);
 
                     // if BackendCounter's quest is neither in activeQuests nor Quests it's stale
-                    if (!existsInActiveRepeatableQuests && !existsInQuests)
+                    if (!(existsInActiveRepeatableQuests || existsInQuests))
                     {
                         counterKeysToRemove.push(key);
                     }
