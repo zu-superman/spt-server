@@ -1,6 +1,6 @@
 import { IncomingHttpHeaders, IncomingMessage, ServerResponse } from "node:http";
 import zlib from "node:zlib";
-import { inject, injectAll, injectable } from "tsyringe";
+import { inject, injectable, injectAll } from "tsyringe";
 
 import { Serializer } from "@spt-aki/di/Serializer";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
@@ -13,7 +13,6 @@ import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 @injectable()
 export class AkiHttpListener implements IHttpListener
 {
-
     constructor(
         @inject("HttpRouter") protected httpRouter: HttpRouter, // TODO: delay required
         @injectAll("Serializer") protected serializers: Serializer[],
@@ -21,7 +20,7 @@ export class AkiHttpListener implements IHttpListener
         @inject("RequestsLogger") protected requestsLogger: ILogger,
         @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("HttpResponseUtil") protected httpResponse: HttpResponseUtil,
-        @inject("LocalisationService") protected localisationService: LocalisationService
+        @inject("LocalisationService") protected localisationService: LocalisationService,
     )
     {
     }
@@ -53,7 +52,7 @@ export class AkiHttpListener implements IHttpListener
                 const buffer = Buffer.alloc(requestLength);
                 let written = 0;
 
-                req.on("data", (data: any) => 
+                req.on("data", (data: any) =>
                 {
                     data.copy(buffer, written, 0);
                     written += data.length;
@@ -96,7 +95,13 @@ export class AkiHttpListener implements IHttpListener
      * @param body Buffer
      * @param output Server generated response data
      */
-    public sendResponse(sessionID: string, req: IncomingMessage, resp: ServerResponse, body: Buffer, output: string): void
+    public sendResponse(
+        sessionID: string,
+        req: IncomingMessage,
+        resp: ServerResponse,
+        body: Buffer,
+        output: string,
+    ): void
     {
         const info = this.getBodyInfo(body);
         let handled = false;
@@ -136,9 +141,9 @@ export class AkiHttpListener implements IHttpListener
         if (globalThis.G_LOG_REQUESTS)
         {
             // Parse quest info into object
-            const data = (typeof info === "object")
-                ? info
-                : this.jsonUtil.deserialize(info);
+            const data = (typeof info === "object") ?
+                info :
+                this.jsonUtil.deserialize(info);
 
             const log = new Request(req.method, new RequestData(req.url, req.headers, data));
             this.requestsLogger.info(`REQUEST=${this.jsonUtil.serialize(log)}`);
@@ -150,32 +155,31 @@ export class AkiHttpListener implements IHttpListener
         {
             this.logger.error(this.localisationService.getText("unhandled_response", req.url));
             this.logger.info(info);
-            output = <string><unknown> this.httpResponse.getBody(null, 404, `UNHANDLED RESPONSE: ${req.url}`);
+            output = <string><unknown>this.httpResponse.getBody(null, 404, `UNHANDLED RESPONSE: ${req.url}`);
         }
         return output;
     }
 
-    protected  getBodyInfo(body: Buffer, requestUrl = null): any
+    protected getBodyInfo(body: Buffer, requestUrl = null): any
     {
-        const text = (body) ? body.toString() : "{}";
-        const info = (text) ? this.jsonUtil.deserialize<any>(text, requestUrl) : {};
+        const text = body ? body.toString() : "{}";
+        const info = text ? this.jsonUtil.deserialize<any>(text, requestUrl) : {};
         return info;
     }
 
     public sendJson(resp: ServerResponse, output: string, sessionID: string): void
     {
         // eslint-disable-next-line @typescript-eslint/naming-convention
-        resp.writeHead(200, "OK", { "Content-Type": "application/json", "Set-Cookie": `PHPSESSID=${sessionID}` });
+        resp.writeHead(200, "OK", {"Content-Type": "application/json", "Set-Cookie": `PHPSESSID=${sessionID}`});
         resp.end(output);
     }
 
     public sendZlibJson(resp: ServerResponse, output: string, sessionID: string): void
     {
         // eslint-disable-next-line @typescript-eslint/naming-convention
-        resp.writeHead(200, "OK", { "Content-Type": "application/json", "Set-Cookie": `PHPSESSID=${sessionID}` });
+        resp.writeHead(200, "OK", {"Content-Type": "application/json", "Set-Cookie": `PHPSESSID=${sessionID}`});
         zlib.deflate(output, (_, buf) => resp.end(buf));
     }
-
 }
 
 class RequestData
@@ -183,7 +187,7 @@ class RequestData
     constructor(
         public url: string,
         public headers: IncomingHttpHeaders,
-        public data?: any
+        public data?: any,
     )
     {}
 }
@@ -192,7 +196,7 @@ class Request
 {
     constructor(
         public type: string,
-        public req: RequestData
+        public req: RequestData,
     )
     {}
 }
@@ -201,7 +205,7 @@ class Response
 {
     constructor(
         public type: string,
-        public response: any
+        public response: any,
     )
     {}
 }

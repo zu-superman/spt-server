@@ -13,17 +13,16 @@ import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 import { RandomUtil } from "@spt-aki/utils/RandomUtil";
 
 @injectable()
-export class WebSocketServer 
+export class WebSocketServer
 {
-
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("ConfigServer") protected configServer: ConfigServer,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("JsonUtil") protected jsonUtil: JsonUtil,
-        @inject("HttpServerHelper") protected httpServerHelper: HttpServerHelper
-    ) 
+        @inject("HttpServerHelper") protected httpServerHelper: HttpServerHelper,
+    )
     {
         this.httpConfig = this.configServer.getConfig(ConfigTypes.HTTP);
     }
@@ -31,22 +30,26 @@ export class WebSocketServer
     protected httpConfig: IHttpConfig;
     protected defaultNotification: INotification = {
         type: NotificationType.PING,
-        eventId: "ping"
+        eventId: "ping",
     };
 
     protected webSockets: Record<string, WebSocket.WebSocket> = {};
     protected websocketPingHandler = null;
 
-    public setupWebSocket(httpServer: http.Server): void 
+    public setupWebSocket(httpServer: http.Server): void
     {
         const webSocketServer = new WebSocket.Server({
-            server: httpServer
+            server: httpServer,
         });
 
-        webSocketServer.addListener("listening", () => 
+        webSocketServer.addListener("listening", () =>
         {
-            this.logger.success(this.localisationService.getText("websocket-started", this.httpServerHelper.getWebsocketUrl()));
-            this.logger.success(`${this.localisationService.getText("server_running")}, ${this.getRandomisedMessage()}!`);
+            this.logger.success(
+                this.localisationService.getText("websocket-started", this.httpServerHelper.getWebsocketUrl()),
+            );
+            this.logger.success(
+                `${this.localisationService.getText("server_running")}, ${this.getRandomisedMessage()}!`,
+            );
         });
 
         webSocketServer.addListener("connection", this.wsOnConnection.bind(this));
@@ -72,24 +75,24 @@ export class WebSocketServer
         }
     }
 
-    protected getRandomisedMessage(): string 
+    protected getRandomisedMessage(): string
     {
-        if (this.randomUtil.getInt(1, 1000) > 999) 
+        if (this.randomUtil.getInt(1, 1000) > 999)
         {
             return this.localisationService.getRandomTextThatMatchesPartialKey("server_start_meme_");
         }
 
-        return (globalThis.G_RELEASE_CONFIGURATION)
-            ? `${this.localisationService.getText("server_start_success")}!`
-            : this.localisationService.getText("server_start_success");
+        return (globalThis.G_RELEASE_CONFIGURATION) ?
+            `${this.localisationService.getText("server_start_success")}!` :
+            this.localisationService.getText("server_start_success");
     }
 
-    public isConnectionWebSocket(sessionID: string): boolean 
+    public isConnectionWebSocket(sessionID: string): boolean
     {
         return this.webSockets[sessionID] !== undefined && this.webSockets[sessionID].readyState === WebSocket.OPEN;
     }
 
-    protected wsOnConnection(ws: WebSocket.WebSocket, req: IncomingMessage): void 
+    protected wsOnConnection(ws: WebSocket.WebSocket, req: IncomingMessage): void
     {
         // Strip request and break it into sections
         const splitUrl = req.url.substring(0, req.url.indexOf("?")).split("/");
@@ -99,27 +102,27 @@ export class WebSocketServer
 
         const logger = this.logger;
         const msgToLog = this.localisationService.getText("websocket-received_message", sessionID);
-        ws.on("message", function message(msg) 
+        ws.on("message", function message(msg)
         {
             logger.info(`${msgToLog} ${msg}`);
         });
 
         this.webSockets[sessionID] = ws;
 
-        if (this.websocketPingHandler) 
+        if (this.websocketPingHandler)
         {
             clearInterval(this.websocketPingHandler);
         }
 
-        this.websocketPingHandler = setInterval(() => 
+        this.websocketPingHandler = setInterval(() =>
         {
             this.logger.debug(this.localisationService.getText("websocket-pinging_player", sessionID));
 
-            if (ws.readyState === WebSocket.OPEN) 
+            if (ws.readyState === WebSocket.OPEN)
             {
                 ws.send(this.jsonUtil.serialize(this.defaultNotification));
             }
-            else 
+            else
             {
                 this.logger.debug(this.localisationService.getText("websocket-socket_lost_deleting_handle"));
                 clearInterval(this.websocketPingHandler);
