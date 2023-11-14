@@ -31,6 +31,7 @@ import { TimeUtil } from "@spt-aki/utils/TimeUtil";
 export class InsuranceController
 {
     protected insuranceConfig: IInsuranceConfig;
+    protected roubleTpl = "5449016a4bdc2d6f028b456f";
 
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
@@ -522,17 +523,17 @@ export class InsuranceController
         const itemsToInsureCount = body.items.length;
         const itemsToPay = [];
         const inventoryItemsHash = {};
-
+        // Create hash of player inventory items (keyed by item id)
         for (const item of pmcData.Inventory.items)
         {
             inventoryItemsHash[item._id] = item;
         }
 
-        // get the price of all items
+        // Get price of all items being insured
         for (const key of body.items)
         {
             itemsToPay.push({
-                id: inventoryItemsHash[key]._id,
+                id: this.roubleTpl, // TODO: update to handle difference currencies
                 count: Math.round(this.insuranceService.getPremium(pmcData, inventoryItemsHash[key], body.tid))
             });
         }
@@ -541,7 +542,7 @@ export class InsuranceController
             // eslint-disable-next-line @typescript-eslint/naming-convention
             scheme_items: itemsToPay,
             tid: body.tid,
-            Action: "",
+            Action: "SptInsure",
             type: "",
             // eslint-disable-next-line @typescript-eslint/naming-convention
             item_id: "",

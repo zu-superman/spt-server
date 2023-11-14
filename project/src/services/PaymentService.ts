@@ -70,6 +70,16 @@ export class PaymentService
             }
         }
 
+        // Needs specific handling, add up currency amounts for insured items
+        if (request.Action === "SptInsure")
+        {
+            for (const index in request.scheme_items)
+            {
+                const currencyTpl = request.scheme_items[index].id;
+                currencyAmounts[currencyTpl] = (currencyAmounts[currencyTpl] || 0) + request.scheme_items[index].count;
+            }
+        }
+
         // Track the total amount of all currencies.
         let totalCurrencyAmount = 0;
 
@@ -81,6 +91,7 @@ export class PaymentService
 
             if (currencyAmount > 0)
             {
+                // Find money stacks in inventory and remove amount needed + update output object to inform client of changes
                 output = this.addPaymentToOutput(pmcData, currencyTpl, currencyAmount, sessionID, output);
 
                 // If there are warnings, exit early.
@@ -240,7 +251,7 @@ export class PaymentService
     }
 
     /**
-     * Remove currency from player stash/inventory
+     * Remove currency from player stash/inventory and update client object with changes
      * @param pmcData Player profile to find and remove currency from
      * @param currencyTpl Type of currency to pay
      * @param amountToPay money value to pay
