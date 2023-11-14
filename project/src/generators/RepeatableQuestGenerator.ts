@@ -8,6 +8,7 @@ import { RagfairServerHelper } from "@spt-aki/helpers/RagfairServerHelper";
 import { RepeatableQuestHelper } from "@spt-aki/helpers/RepeatableQuestHelper";
 import { Exit, ILocationBase } from "@spt-aki/models/eft/common/ILocationBase";
 import { TraderInfo } from "@spt-aki/models/eft/common/tables/IBotBase";
+import { Item } from "@spt-aki/models/eft/common/tables/IItem";
 import {
     ICompletion,
     ICompletionAvailableFor,
@@ -449,7 +450,7 @@ export class RepeatableQuestGenerator
         const levelsConfig = repeatableConfig.rewardScaling.levels;
         const roublesConfig = repeatableConfig.rewardScaling.roubles;
 
-        // in the available dumps only 2 distinct items were ever requested
+        // In the available dumps only 2 distinct items were ever requested
         let numberDistinctItems = 1;
         if (Math.random() > 0.75)
         {
@@ -458,13 +459,13 @@ export class RepeatableQuestGenerator
 
         const quest = this.generateRepeatableTemplate("Completion", traderId,repeatableConfig.side) as ICompletion;
 
-        // Filter the items.json items to items the player must retrieve to complete queist: shouldn't be a quest item or "non-existant"
-        let itemSelection = this.getRewardableItems(repeatableConfig);
+        // Filter the items.json items to items the player must retrieve to complete quest: shouldn't be a quest item or "non-existant"
+        const possibleItemsToRetrievePool = this.getRewardableItems(repeatableConfig, traderId);
 
         // Be fair, don't let the items be more expensive than the reward
         let roublesBudget = Math.floor(this.mathUtil.interp1(pmcLevel, levelsConfig, roublesConfig) * this.randomUtil.getFloat(0.5, 1));
         roublesBudget = Math.max(roublesBudget, 5000);
-        itemSelection = itemSelection.filter(x => this.itemHelper.getItemPrice(x[0]) < roublesBudget);
+        let itemSelection = possibleItemsToRetrievePool.filter(x => this.itemHelper.getItemPrice(x[0]) < roublesBudget);
 
         // We also have the option to use whitelist and/or blacklist which is defined in repeatableQuests.json as
         // [{"minPlayerLevel": 1, "itemIds": ["id1",...]}, {"minPlayerLevel": 15, "itemIds": ["id3",...]}]
@@ -796,8 +797,9 @@ export class RepeatableQuestGenerator
 
         // Possible improvement -> draw trader-specific items e.g. with this.itemHelper.isOfBaseclass(val._id, ItemHelper.BASECLASS.FoodDrink)
         let roublesBudget = rewardRoubles;
-        let chosenRewardItems = this.chooseRewardItemsWithinBudget(repeatableConfig, roublesBudget);
+        let rewardItemPool = this.chooseRewardItemsWithinBudget(repeatableConfig, roublesBudget, traderId);
 
+        // Add xp reward
         const rewards: IRewards = {
             Started: [],
             Success: [
@@ -810,6 +812,7 @@ export class RepeatableQuestGenerator
             Fail: []
         };
 
+        // Add money reward
         if (traderId === Traders.PEACEKEEPER)
         {
             // convert to equivalent dollars
@@ -821,13 +824,14 @@ export class RepeatableQuestGenerator
         }
 
         let index = 2;
-        if (chosenRewardItems.length > 0)
+        if (rewardItemPool.length > 0)
         {
+            let weaponRewardCount = 0;
             for (let i = 0; i < rewardNumItems; i++)
             {
-                let value = 1;
-                let children = null;
-                const itemSelected = chosenRewardItems[this.randomUtil.randInt(chosenRewardItems.length)];
+                let itemCount = 1;
+                let children: Item[] = null;
+                const itemSelected = rewardItemPool[this.randomUtil.randInt(rewardItemPool.length)];
                 if (this.itemHelper.isOfBaseclass(itemSelected._id, BaseClasses.AMMO))
                 {
                     // Dont reward ammo that stacks to less than what's defined in config
@@ -837,10 +841,16 @@ export class RepeatableQuestGenerator
                     }
 
                     // Randomise the cartridge count returned
-                    value = this.randomUtil.randInt(repeatableConfig.rewardAmmoStackMinSize, itemSelected._props.StackMaxSize);
+                    itemCount = this.randomUtil.randInt(repeatableConfig.rewardAmmoStackMinSize, itemSelected._props.StackMaxSize);
                 }
                 else if (this.itemHelper.isOfBaseclass(itemSelected._id, BaseClasses.WEAPON))
                 {
+                    if (weaponRewardCount >= 1)
+                    {
+                        // Limit weapon rewards to 1 per daily
+                        rewardItemPool = rewardItemPool.filter(x => !this.itemHelper.isOfBaseclass(x._id, BaseClasses.WEAPON));
+                        continue;
+                    }
                     let defaultPreset = this.presetHelper.getDefaultPreset(itemSelected._id);
                     if (!defaultPreset)
                     {
@@ -850,21 +860,21 @@ export class RepeatableQuestGenerator
                     }
 
                     children = this.ragfairServerHelper.reparentPresets(defaultPreset._items[0], defaultPreset._items);
-                }
-                rewards.Success.push(this.generateRewardItem(itemSelected._id, value, index, children));
+                    weaponRewardCount ++;
 
-                // TODO: maybe also non-default use ragfair to calculate the price
+                    // TODO: maybe also non-default use ragfair to calculate the price
                 // this.ragfairServer.getWeaponPresetPrice(item, items, existingPrice)
-
-                roublesBudget -= value * this.itemHelper.getStaticItemPrice(itemSelected._id);
+                }
+                rewards.Success.push(this.generateRewardItem(itemSelected._id, itemCount, index, children));
+                roublesBudget -= itemCount * this.itemHelper.getStaticItemPrice(itemSelected._id);
                 index += 1;
 
                 // if we still have budget narrow down the items
                 if (roublesBudget > 0)
                 {
                     // Filter possible reward items to only items with a price below the remaining budget
-                    chosenRewardItems = chosenRewardItems.filter(x => this.itemHelper.getStaticItemPrice(x._id) < roublesBudget);
-                    if (chosenRewardItems.length === 0)
+                    rewardItemPool = rewardItemPool.filter(x => this.itemHelper.getStaticItemPrice(x._id) < roublesBudget);
+                    if (rewardItemPool.length === 0)
                     {
                         break; // No reward items left, exit
                     }
@@ -909,20 +919,21 @@ export class RepeatableQuestGenerator
      * @param roublesBudget Total value of items to return
      * @returns Array of reward items that fit budget
      */
-    protected chooseRewardItemsWithinBudget(repeatableConfig: IRepeatableQuestConfig, roublesBudget: number): ITemplateItem[]
+    protected chooseRewardItemsWithinBudget(repeatableConfig: IRepeatableQuestConfig, roublesBudget: number, traderId: string): ITemplateItem[]
     {
         // First filter for type and baseclass to avoid lookup in handbook for non-available items
-        const rewardableItems = this.getRewardableItems(repeatableConfig);
+        const rewardableItemPool = this.getRewardableItems(repeatableConfig, traderId);
         const minPrice = Math.min(25000, 0.5 * roublesBudget);
-        let itemSelection = rewardableItems.filter(x => this.itemHelper.getItemPrice(x[0]) < roublesBudget && this.itemHelper.getItemPrice(x[0]) > minPrice).map(x => x[1]);
-        if (itemSelection.length === 0)
+
+        let rewardableItemPoolWithinBudget = rewardableItemPool.filter(x => this.itemHelper.getItemPrice(x[0]) < roublesBudget && this.itemHelper.getItemPrice(x[0]) > minPrice).map(x => x[1]);
+        if (rewardableItemPoolWithinBudget.length === 0)
         {
             this.logger.warning(this.localisationService.getText("repeatable-no_reward_item_found_in_price_range", {minPrice: minPrice, roublesBudget: roublesBudget}));
             // In case we don't find any items in the price range
-            itemSelection  = rewardableItems.filter(x => this.itemHelper.getItemPrice(x[0]) < roublesBudget).map(x => x[1]);
+            rewardableItemPoolWithinBudget  = rewardableItemPool.filter(x => this.itemHelper.getItemPrice(x[0]) < roublesBudget).map(x => x[1]);
         }
 
-        return itemSelection;
+        return rewardableItemPoolWithinBudget;
     }
 
     /**
@@ -968,7 +979,7 @@ export class RepeatableQuestGenerator
      * @param repeatableQuestConfig Config file
      * @returns List of rewardable items [[_tpl, itemTemplate],...]
      */
-    protected getRewardableItems(repeatableQuestConfig: IRepeatableQuestConfig): [string, ITemplateItem][]
+    protected getRewardableItems(repeatableQuestConfig: IRepeatableQuestConfig, traderId: string): [string, ITemplateItem][]
     {
         // check for specific baseclasses which don't make sense as reward item
         // also check if the price is greater than 0; there are some items whose price can not be found
@@ -983,7 +994,8 @@ export class RepeatableQuestGenerator
                     return false;
                 }
 
-                return this.isValidRewardItem(tpl, repeatableQuestConfig);
+                const traderWhitelist = repeatableQuestConfig.traderWhitelist.find(x => x.traderId === traderId);
+                return this.isValidRewardItem(tpl, repeatableQuestConfig, traderWhitelist?.rewardBaseWhitelist);
             }
         );
     }
@@ -994,12 +1006,17 @@ export class RepeatableQuestGenerator
      * @param {string} tpl template id of item to check
      * @returns True if item is valid reward
      */
-    protected isValidRewardItem(tpl: string, repeatableQuestConfig: IRepeatableQuestConfig): boolean
+    protected isValidRewardItem(tpl: string, repeatableQuestConfig: IRepeatableQuestConfig, itemBaseWhitelist: string[]): boolean
     {
-        let valid = this.itemHelper.isValidItem(tpl);
-        if (!valid)
+        if (!this.itemHelper.isValidItem(tpl))
         {
-            return valid;
+            return false;
+        }
+
+        // Check global blacklist
+        if (this.itemFilterService.isItemBlacklisted(tpl))
+        {
+            return false;
         }
 
         // Item is on repeatable or global blacklist
@@ -1015,17 +1032,22 @@ export class RepeatableQuestGenerator
             return false;
         }
 
-        if (this.itemHelper.isOfBaseclasses(tpl, [BaseClasses.DOG_TAG_USEC, BaseClasses.DOG_TAG_BEAR, BaseClasses.MOUNT, BaseClasses.KEY, BaseClasses.ARMBAND]))
+        // Skip boss items
+        if (this.itemFilterService.isBossItem(tpl))
         {
             return false;
         }
 
-        // Skip globally blacklisted items + boss items
-        // rome-ignore lint/complexity/useSimplifiedLogicExpression: <explanation>
-        valid  = !this.itemFilterService.isItemBlacklisted(tpl)
-            && !this.itemFilterService.isBossItem(tpl);
+        // Trader has specific item base types they can give as rewards to player
+        if (itemBaseWhitelist !== undefined)
+        {
+            if (!this.itemHelper.isOfBaseclasses(tpl, [...itemBaseWhitelist]))
+            {
+                return false;
+            }
+        }
 
-        return valid;
+        return true;
     }
 
     /**

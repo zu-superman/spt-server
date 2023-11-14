@@ -533,7 +533,7 @@ export class InsuranceController
         for (const key of body.items)
         {
             itemsToPay.push({
-                id: this.roubleTpl, // TODO: update to handle difference currencies
+                id: this.roubleTpl, // TODO: update to handle different currencies
                 count: Math.round(this.insuranceService.getPremium(pmcData, inventoryItemsHash[key], body.tid))
             });
         }
