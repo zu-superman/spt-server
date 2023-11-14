@@ -186,9 +186,6 @@ export class InRaidHelper
         profileData.Info.Experience += profileData.Stats.Eft.TotalSessionExperience;
         profileData.Stats.Eft.TotalSessionExperience = 0;
 
-        // Remove the Lab card
-        this.removeMapAccessKey(saveProgressRequest, sessionID);
-
         this.setPlayerInRaidLocationStatusToNone(sessionID);
 
         if (!saveProgressRequest.isPlayerScav)
@@ -308,32 +305,6 @@ export class InRaidHelper
             {
                 // Difference found, update server profile with values from client profile
                 tradersServerProfile[traderId].standing = clientProfileTrader.standing;
-            }
-        }
-    }
-
-    /**
-     * Some maps have one-time-use keys (e.g. Labs
-     * Remove the relevant key from an inventory based on the post-raid request data passed in
-     * @param offraidData post-raid data
-     * @param sessionID Session id
-     */
-    protected removeMapAccessKey(offraidData: ISaveProgressRequestData, sessionID: string): void
-    {
-        const locationName = this.saveServer.getProfile(sessionID).inraid.location.toLowerCase();
-        const mapKey = this.databaseServer.getTables().locations[locationName].base.AccessKeys[0];
-
-        if (!mapKey)
-        {
-            return;
-        }
-
-        for (const item of offraidData.profile.Inventory.items)
-        {
-            if (item._tpl === mapKey && item.slotId.toLowerCase() !== "hideout")
-            {
-                this.inventoryHelper.removeItem(offraidData.profile, item._id, sessionID);
-                break;
             }
         }
     }
