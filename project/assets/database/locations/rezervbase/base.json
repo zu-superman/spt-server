@@ -49,7 +49,7 @@
       "BossEscortType": "followerGluharAssault",
       "BossName": "bossGluhar",
       "BossPlayer": false,
-      "BossZone": "ZoneRailStrorage",
+      "BossZone": "ZoneRailStrorage,ZoneRailStrorage,ZoneRailStrorage,ZonePTOR1,ZonePTOR2,ZoneBarrack,ZoneBarrack,ZoneBarrack,ZoneSubStorage",
       "RandomTimeSpawn": false,
       "Supports": [
         {

@@ -126,7 +126,7 @@
       "BossEscortType": "followerBully",
       "BossName": "bossBully",
       "BossPlayer": false,
-      "BossZone": "ZoneDormitory",
+      "BossZone": "ZoneDormitory,ZoneGasStation,ZoneScavBase",
       "RandomTimeSpawn": false,
       "Supports": null,
       "Time": -1
