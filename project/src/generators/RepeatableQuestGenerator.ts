@@ -836,16 +836,20 @@ export class RepeatableQuestGenerator
                         continue;
                     }
 
-                    // If we provide ammo we don't want to provide just one bullet
+                    // Randomise the cartridge count returned
                     value = this.randomUtil.randInt(repeatableConfig.rewardAmmoStackMinSize, itemSelected._props.StackMaxSize);
                 }
                 else if (this.itemHelper.isOfBaseclass(itemSelected._id, BaseClasses.WEAPON))
                 {
-                    const defaultPreset = this.presetHelper.getDefaultPreset(itemSelected._id);
-                    if (defaultPreset)
+                    let defaultPreset = this.presetHelper.getDefaultPreset(itemSelected._id);
+                    if (!defaultPreset)
                     {
-                        children = this.ragfairServerHelper.reparentPresets(defaultPreset._items[0], defaultPreset._items);
+                        // No default for chosen weapon found, get any random default weapon preset
+                        const defaultPresets = Object.values(this.presetHelper.getDefaultPresets());
+                        defaultPreset = this.randomUtil.getArrayValue(defaultPresets);
                     }
+
+                    children = this.ragfairServerHelper.reparentPresets(defaultPreset._items[0], defaultPreset._items);
                 }
                 rewards.Success.push(this.generateRewardItem(itemSelected._id, value, index, children));
 
