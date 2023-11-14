@@ -861,12 +861,12 @@ export class RepeatableQuestGenerator
 
                     children = this.ragfairServerHelper.reparentPresets(defaultPreset._items[0], defaultPreset._items);
                     weaponRewardCount ++;
-
-                    // TODO: maybe also non-default use ragfair to calculate the price
-                // this.ragfairServer.getWeaponPresetPrice(item, items, existingPrice)
                 }
                 rewards.Success.push(this.generateRewardItem(itemSelected._id, itemCount, index, children));
-                roublesBudget -= itemCount * this.itemHelper.getStaticItemPrice(itemSelected._id);
+                const itemCost = (this.itemHelper.isOfBaseclass(itemSelected._id, BaseClasses.WEAPON))
+                    ? this.itemHelper.getItemMaxPrice(children[0]._tpl) // use if preset is not default : this.itemHelper.getWeaponPresetPrice(children[0], children, this.itemHelper.getStaticItemPrice(itemSelected._id))
+                    : this.itemHelper.getStaticItemPrice(itemSelected._id);
+                roublesBudget -= itemCount * itemCost;
                 index += 1;
 
                 // if we still have budget narrow down the items
