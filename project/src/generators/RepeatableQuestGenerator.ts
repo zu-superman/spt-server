@@ -862,6 +862,13 @@ export class RepeatableQuestGenerator
                     children = this.ragfairServerHelper.reparentPresets(defaultPreset._items[0], defaultPreset._items);
                     weaponRewardCount ++;
                 }
+
+                // 25% chance to double reward stack (item should be stackable and not weapon)
+                if (this.increaseRewardItemStackSize(itemSelected))
+                {
+                    itemCount = 2;
+                }
+
                 rewards.Success.push(this.generateRewardItem(itemSelected._id, itemCount, index, children));
                 const itemCost = (this.itemHelper.isOfBaseclass(itemSelected._id, BaseClasses.WEAPON))
                     ? this.itemHelper.getItemMaxPrice(children[0]._tpl) // use if preset is not default : this.itemHelper.getWeaponPresetPrice(children[0], children, this.itemHelper.getStaticItemPrice(itemSelected._id))
@@ -911,6 +918,18 @@ export class RepeatableQuestGenerator
         }
 
         return rewards;
+    }
+
+    /**
+     * Should reward item have stack size increased (25% chance)
+     * @param item Item to possibly increase stack size of
+     * @returns True if it should
+     */
+    protected increaseRewardItemStackSize(item: ITemplateItem): boolean
+    {
+        return item._props.StackMaxSize > 1
+            && !this.itemHelper.isOfBaseclass(item._id, BaseClasses.WEAPON)
+            && this.randomUtil.getChance100(25);
     }
 
     /**
