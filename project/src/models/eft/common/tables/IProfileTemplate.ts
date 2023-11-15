@@ -9,11 +9,18 @@ export interface IProfileTemplates
     // eslint-disable-next-line @typescript-eslint/naming-convention
     "Prepare To Escape": IProfileSides
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    "Edge Of Darkness": IProfileSides
+    "Edge Of Darkness": IProfileSides,
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    "SPT Developer": IProfileSides,
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    "SPT Easy start": IProfileSides,
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    "SPT Zero to hero": IProfileSides
 }
 
 export interface IProfileSides
 {
+    descriptionLocaleKey: string
     usec: TemplateSide
     bear: TemplateSide
 }
