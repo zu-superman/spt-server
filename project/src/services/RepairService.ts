@@ -119,12 +119,12 @@ export class RepairService
             // eslint-disable-next-line @typescript-eslint/naming-convention
             scheme_items: [
                 {
-                    id: repairedItemId,
+                    id: "5449016a4bdc2d6f028b456f", // Rouble tpl
                     count: Math.round(repairCost)
                 }
             ],
             tid: traderId,
-            Action: "",
+            Action: "SptRepair",
             type: "",
             // eslint-disable-next-line @typescript-eslint/naming-convention
             item_id: "",
