@@ -704,7 +704,7 @@ export class HideoutController
         }
 
         // check if the recipe is the same as the last one
-        const area = pmcData.Hideout.Areas[recipe.areaType];
+        const area = pmcData.Hideout.Areas.find(x => x.type === recipe.areaType);
         if (area && request.recipeId !== area.lastRecipe)
         {
             // 1 point per craft upon the end of production for alternating between 2 different crafting recipes in the same module

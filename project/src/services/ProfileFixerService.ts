@@ -81,27 +81,27 @@ export class ProfileFixerService
 
             this.reorderHideoutAreasWithResouceInputs(pmcProfile);
 
-            if (pmcProfile.Hideout.Areas[HideoutAreas.GENERATOR].slots.length < 
+            if (pmcProfile.Hideout.Areas.find(x => x.type === HideoutAreas.GENERATOR).slots.length < 
                 (6 + this.databaseServer.getTables().globals.config.SkillsSettings.HideoutManagement.EliteSlots.Generator.Slots))
             {
                 this.logger.debug("Updating generator area slots to a size of 6 + hideout management skill");
                 this.addEmptyObjectsToHideoutAreaSlots(HideoutAreas.GENERATOR, (6 + this.databaseServer.getTables().globals.config.SkillsSettings.HideoutManagement.EliteSlots.Generator.Slots), pmcProfile);
             }
 
-            if (pmcProfile.Hideout.Areas[HideoutAreas.WATER_COLLECTOR].slots.length < (1 + this.databaseServer.getTables().globals.config.SkillsSettings.HideoutManagement.EliteSlots.WaterCollector.Slots))
+            if (pmcProfile.Hideout.Areas.find(x => x.type === HideoutAreas.WATER_COLLECTOR).slots.length < (1 + this.databaseServer.getTables().globals.config.SkillsSettings.HideoutManagement.EliteSlots.WaterCollector.Slots))
             {
                 this.logger.debug("Updating water collector area slots to a size of 1 + hideout management skill");
                 this.addEmptyObjectsToHideoutAreaSlots(HideoutAreas.WATER_COLLECTOR, (1 + this.databaseServer.getTables().globals.config.SkillsSettings.HideoutManagement.EliteSlots.WaterCollector.Slots), pmcProfile);
             }
 
-            if (pmcProfile.Hideout.Areas[HideoutAreas.AIR_FILTERING].slots.length < (3 + this.databaseServer.getTables().globals.config.SkillsSettings.HideoutManagement.EliteSlots.AirFilteringUnit.Slots))
+            if (pmcProfile.Hideout.Areas.find(x => x.type === HideoutAreas.AIR_FILTERING).slots.length < (3 + this.databaseServer.getTables().globals.config.SkillsSettings.HideoutManagement.EliteSlots.AirFilteringUnit.Slots))
             {
                 this.logger.debug("Updating air filter area slots to a size of 3 + hideout management skill");
                 this.addEmptyObjectsToHideoutAreaSlots(HideoutAreas.AIR_FILTERING, (3 + this.databaseServer.getTables().globals.config.SkillsSettings.HideoutManagement.EliteSlots.AirFilteringUnit.Slots), pmcProfile);
             }
 
             // BTC Farm doesnt have extra slots for hideout management, but we still check for modded stuff!!
-            if (pmcProfile.Hideout.Areas[HideoutAreas.BITCOIN_FARM].slots.length < (50 + this.databaseServer.getTables().globals.config.SkillsSettings.HideoutManagement.EliteSlots.BitcoinFarm.Slots))
+            if (pmcProfile.Hideout.Areas.find(x => x.type === HideoutAreas.BITCOIN_FARM).slots.length < (50 + this.databaseServer.getTables().globals.config.SkillsSettings.HideoutManagement.EliteSlots.BitcoinFarm.Slots))
             {
                 this.logger.debug("Updating bitcoin farm area slots to a size of 50 + hideout management skill");
                 this.addEmptyObjectsToHideoutAreaSlots(HideoutAreas.BITCOIN_FARM, (50 + this.databaseServer.getTables().globals.config.SkillsSettings.HideoutManagement.EliteSlots.BitcoinFarm.Slots), pmcProfile);
@@ -506,7 +506,7 @@ export class ProfileFixerService
      */
     protected addMissingWallImprovements(pmcProfile: IPmcData): void
     {
-        const profileWallArea = pmcProfile.Hideout.Areas[HideoutAreas.EMERGENCY_WALL];
+        const profileWallArea = pmcProfile.Hideout.Areas.find(x => x.type === HideoutAreas.EMERGENCY_WALL);
         const wallDb = this.databaseServer.getTables().hideout.areas.find(x => x.type === HideoutAreas.EMERGENCY_WALL);
 
         if (profileWallArea.level > 0)
