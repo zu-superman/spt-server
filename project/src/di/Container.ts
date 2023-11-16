@@ -353,19 +353,13 @@ export class Container
         // Utils
         con.register<App>("App", App, { lifecycle: Lifecycle.Singleton });
         con.register<DatabaseImporter>("DatabaseImporter", DatabaseImporter, { lifecycle: Lifecycle.Singleton });
-            lifecycle: Lifecycle.Singleton,
-        });
         con.register<HashUtil>("HashUtil", HashUtil, { lifecycle: Lifecycle.Singleton });
         con.register<ImporterUtil>("ImporterUtil", ImporterUtil, { lifecycle: Lifecycle.Singleton });
         con.register<HttpResponseUtil>("HttpResponseUtil", HttpResponseUtil);
         con.register<EncodingUtil>("EncodingUtil", EncodingUtil, { lifecycle: Lifecycle.Singleton });
         con.register<JsonUtil>("JsonUtil", JsonUtil);
         con.register<WinstonMainLogger>("WinstonLogger", WinstonMainLogger, { lifecycle: Lifecycle.Singleton });
-            lifecycle: Lifecycle.Singleton,
-        });
         con.register<WinstonRequestLogger>("RequestsLogger", WinstonRequestLogger, { lifecycle: Lifecycle.Singleton });
-            lifecycle: Lifecycle.Singleton,
-        });
         con.register<MathUtil>("MathUtil", MathUtil, { lifecycle: Lifecycle.Singleton });
         con.register<ObjectId>("ObjectId", ObjectId);
         con.register<RandomUtil>("RandomUtil", RandomUtil, { lifecycle: Lifecycle.Singleton });
@@ -385,8 +379,6 @@ export class Container
         con.register<HttpRouter>("HttpRouter", HttpRouter, { lifecycle: Lifecycle.Singleton });
         con.register<ImageRouter>("ImageRouter", ImageRouter);
         con.register<EventOutputHolder>("EventOutputHolder", EventOutputHolder, { lifecycle: Lifecycle.Singleton });
-            lifecycle: Lifecycle.Singleton,
-        });
         con.register<ItemEventRouter>("ItemEventRouter", ItemEventRouter);
 
         // Dynamic routes
@@ -409,11 +401,7 @@ export class Container
         con.register<HealthItemEventRouter>("HealthItemEventRouter", { useClass: HealthItemEventRouter });
         con.register<HideoutItemEventRouter>("HideoutItemEventRouter", { useClass: HideoutItemEventRouter });
         con.register<InsuranceItemEventRouter>("InsuranceItemEventRouter", { useClass: InsuranceItemEventRouter });
-            useClass: InsuranceItemEventRouter,
-        });
         con.register<InventoryItemEventRouter>("InventoryItemEventRouter", { useClass: InventoryItemEventRouter });
-            useClass: InventoryItemEventRouter,
-        });
         con.register<NoteItemEventRouter>("NoteItemEventRouter", { useClass: NoteItemEventRouter });
         con.register<PresetBuildItemEventRouter>("PresetBuildItemEventRouter", {
             useClass: PresetBuildItemEventRouter,
@@ -423,15 +411,11 @@ export class Container
         con.register<RepairItemEventRouter>("RepairItemEventRouter", { useClass: RepairItemEventRouter });
         con.register<TradeItemEventRouter>("TradeItemEventRouter", { useClass: TradeItemEventRouter });
         con.register<WishlistItemEventRouter>("WishlistItemEventRouter", { useClass: WishlistItemEventRouter });
-            useClass: WishlistItemEventRouter,
-        });
 
         // save load routes
         con.register<HealthSaveLoadRouter>("HealthSaveLoadRouter", { useClass: HealthSaveLoadRouter });
         con.register<InraidSaveLoadRouter>("InraidSaveLoadRouter", { useClass: InraidSaveLoadRouter });
         con.register<InsuranceSaveLoadRouter>("InsuranceSaveLoadRouter", { useClass: InsuranceSaveLoadRouter });
-            useClass: InsuranceSaveLoadRouter,
-        });
         con.register<ProfileSaveLoadRouter>("ProfileSaveLoadRouter", { useClass: ProfileSaveLoadRouter });
 
         // Route serializers
@@ -444,8 +428,6 @@ export class Container
         con.register<BundleStaticRouter>("BundleStaticRouter", { useClass: BundleStaticRouter });
         con.register<ClientLogStaticRouter>("ClientLogStaticRouter", { useClass: ClientLogStaticRouter });
         con.register<CustomizationStaticRouter>("CustomizationStaticRouter", { useClass: CustomizationStaticRouter });
-            useClass: CustomizationStaticRouter,
-        });
         con.register<DataStaticRouter>("DataStaticRouter", { useClass: DataStaticRouter });
         con.register<DialogStaticRouter>("DialogStaticRouter", { useClass: DialogStaticRouter });
         con.register<GameStaticRouter>("GameStaticRouter", { useClass: GameStaticRouter });
@@ -477,7 +459,7 @@ export class Container
         con.register<ScavCaseRewardGenerator>("ScavCaseRewardGenerator", ScavCaseRewardGenerator, {
             lifecycle: Lifecycle.Singleton,
         });
-        depContainer.register<ScavCaseRewardGenerator>("ScavCaseRewardGenerator", ScavCaseRewardGenerator, {
+        con.register<ScavCaseRewardGenerator>("ScavCaseRewardGenerator", ScavCaseRewardGenerator, {
             lifecycle: Lifecycle.Singleton,
         });
         con.register<RagfairAssortGenerator>("RagfairAssortGenerator", { useClass: RagfairAssortGenerator });
@@ -486,18 +468,12 @@ export class Container
         con.register<PlayerScavGenerator>("PlayerScavGenerator", { useClass: PlayerScavGenerator });
         con.register<LootGenerator>("LootGenerator", { useClass: LootGenerator });
         con.register<FenceBaseAssortGenerator>("FenceBaseAssortGenerator", { useClass: FenceBaseAssortGenerator });
-            useClass: FenceBaseAssortGenerator,
-        });
         con.register<BotLevelGenerator>("BotLevelGenerator", { useClass: BotLevelGenerator });
         con.register<BotEquipmentModGenerator>("BotEquipmentModGenerator", { useClass: BotEquipmentModGenerator });
-            useClass: BotEquipmentModGenerator,
-        });
         con.register<RepeatableQuestGenerator>("RepeatableQuestGenerator", { useClass: RepeatableQuestGenerator });
 
         con.register<BarrelInventoryMagGen>("BarrelInventoryMagGen", { useClass: BarrelInventoryMagGen });
         con.register<ExternalInventoryMagGen>("ExternalInventoryMagGen", { useClass: ExternalInventoryMagGen });
-            useClass: ExternalInventoryMagGen,
-        });
         con.register<InternalMagazineInventoryMagGen>("InternalMagazineInventoryMagGen", {
             useClass: InternalMagazineInventoryMagGen,
         });
@@ -538,8 +514,6 @@ export class Container
         con.register<RepairHelper>("RepairHelper", { useClass: RepairHelper });
         con.register<TraderHelper>("TraderHelper", TraderHelper);
         con.register<TraderAssortHelper>("TraderAssortHelper", TraderAssortHelper, { lifecycle: Lifecycle.Singleton });
-            lifecycle: Lifecycle.Singleton,
-        });
         con.register<TradeHelper>("TradeHelper", { useClass: TradeHelper });
         con.register<NotifierHelper>("NotifierHelper", { useClass: NotifierHelper });
         con.register<UtilityHelper>("UtilityHelper", UtilityHelper);
@@ -549,8 +523,6 @@ export class Container
         con.register<SecureContainerHelper>("SecureContainerHelper", { useClass: SecureContainerHelper });
         con.register<ProbabilityHelper>("ProbabilityHelper", { useClass: ProbabilityHelper });
         con.register<BotWeaponGeneratorHelper>("BotWeaponGeneratorHelper", { useClass: BotWeaponGeneratorHelper });
-            useClass: BotWeaponGeneratorHelper,
-        });
         con.register<BotDifficultyHelper>("BotDifficultyHelper", { useClass: BotDifficultyHelper });
         con.register<RepeatableQuestHelper>("RepeatableQuestHelper", { useClass: RepeatableQuestHelper });
     }
@@ -561,8 +533,6 @@ export class Container
         con.register<BundleLoader>("BundleLoader", BundleLoader, { lifecycle: Lifecycle.Singleton });
         con.register<PreAkiModLoader>("PreAkiModLoader", PreAkiModLoader, { lifecycle: Lifecycle.Singleton });
         con.register<PostAkiModLoader>("PostAkiModLoader", PostAkiModLoader, { lifecycle: Lifecycle.Singleton });
-            lifecycle: Lifecycle.Singleton,
-        });
     }
 
     private static registerCallbacks(con: DependencyContainer): void
@@ -607,15 +577,11 @@ export class Container
     {
         // Services
         con.register<ImageRouteService>("ImageRouteService", ImageRouteService, { lifecycle: Lifecycle.Singleton });
-            lifecycle: Lifecycle.Singleton,
-        });
 
         con.register<FenceService>("FenceService", FenceService, { lifecycle: Lifecycle.Singleton });
         con.register<PlayerService>("PlayerService", { useClass: PlayerService });
         con.register<PaymentService>("PaymentService", { useClass: PaymentService });
         con.register<InsuranceService>("InsuranceService", InsuranceService, { lifecycle: Lifecycle.Singleton });
-            lifecycle: Lifecycle.Singleton,
-        });
         con.register<TraderAssortService>("TraderAssortService", TraderAssortService, {
             lifecycle: Lifecycle.Singleton,
         });
@@ -639,22 +605,7 @@ export class Container
         con.register<NotificationService>("NotificationService", NotificationService, {
             lifecycle: Lifecycle.Singleton,
         });
-        depContainer.register<MatchLocationService>("MatchLocationService", MatchLocationService, {
-            lifecycle: Lifecycle.Singleton,
-        });
-        depContainer.register<ModCompilerService>("ModCompilerService", ModCompilerService);
-        depContainer.register<HashCacheService>("HashCacheService", HashCacheService, {
-            lifecycle: Lifecycle.Singleton,
-        });
-        depContainer.register<LocaleService>("LocaleService", LocaleService, { lifecycle: Lifecycle.Singleton });
-        depContainer.register<ProfileFixerService>("ProfileFixerService", ProfileFixerService);
-        depContainer.register<RepairService>("RepairService", RepairService);
-        depContainer.register<BotLootCacheService>("BotLootCacheService", BotLootCacheService, {
-            lifecycle: Lifecycle.Singleton,
-        });
         con.register<MatchLocationService>("MatchLocationService", MatchLocationService, {
-        depContainer.register<BotEquipmentFilterService>("BotEquipmentFilterService", BotEquipmentFilterService);
-        depContainer.register<ProfileSnapshotService>("ProfileSnapshotService", ProfileSnapshotService, {
             lifecycle: Lifecycle.Singleton,
         });
         con.register<ModCompilerService>("ModCompilerService", ModCompilerService);
@@ -678,7 +629,6 @@ export class Container
             lifecycle: Lifecycle.Singleton,
         });
         con.register<CustomLocationWaveService>("CustomLocationWaveService", CustomLocationWaveService, {
-        depContainer.register<ItemBaseClassService>("ItemBaseClassService", ItemBaseClassService, {
             lifecycle: Lifecycle.Singleton,
         });
         con.register<OpenZoneService>("OpenZoneService", OpenZoneService, { lifecycle: Lifecycle.Singleton });
@@ -699,9 +649,6 @@ export class Container
         });
         con.register<RagfairTaxService>("RagfairTaxService", RagfairTaxService, { lifecycle: Lifecycle.Singleton });
         con.register<TraderPurchasePersisterService>("TraderPurchasePersisterService", TraderPurchasePersisterService);
-            "TraderPurchasePersisterService",
-            TraderPurchasePersisterService,
-        );
         con.register<PmcChatResponseService>("PmcChatResponseService", PmcChatResponseService);
         con.register<GiftService>("GiftService", GiftService);
         con.register<MailSendService>("MailSendService", MailSendService);
@@ -724,8 +671,6 @@ export class Container
         con.register<BotController>("BotController", { useClass: BotController });
         con.register<ClientLogController>("ClientLogController", { useClass: ClientLogController });
         con.register<CustomizationController>("CustomizationController", { useClass: CustomizationController });
-            useClass: CustomizationController,
-        });
         con.register<DialogueController>("DialogueController", { useClass: DialogueController });
         con.register<GameController>("GameController", { useClass: GameController });
         con.register<HandbookController>("HandbookController", { useClass: HandbookController });
@@ -746,8 +691,6 @@ export class Container
         con.register<RagfairController>("RagfairController", { useClass: RagfairController });
         con.register<RepairController>("RepairController", { useClass: RepairController });
         con.register<RepeatableQuestController>("RepeatableQuestController", { useClass: RepeatableQuestController });
-            useClass: RepeatableQuestController,
-        });
         con.register<TradeController>("TradeController", { useClass: TradeController });
         con.register<TraderController>("TraderController", { useClass: TraderController });
         con.register<WeatherController>("WeatherController", { useClass: WeatherController });

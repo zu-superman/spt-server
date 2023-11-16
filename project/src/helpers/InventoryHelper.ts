@@ -315,9 +315,9 @@ export class InventoryHelper
                         const itemLocation = {};
 
                         // Item already has location property, use it
-                        if (itemLib[tmpKey].location !== undefined)
+                        if (itemLib[tmpKey]["location"] !== undefined)
                         {
-                            itemLocation.location = itemLib[tmpKey].location;
+                            itemLocation["location"] = itemLib[tmpKey]["location"];
                         }
 
                         output.profileChanges[sessionID].items.new.push({

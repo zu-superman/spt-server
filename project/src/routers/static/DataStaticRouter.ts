@@ -67,9 +67,6 @@ export class DataStaticRouter extends StaticRouter
             new RouteAction("/client/languages", (url: string, info: any, sessionID: string, output: string): any =>
             {
                 return this.dataCallbacks.getLocalesLanguages(url, info, sessionID);
-                (url: string, info: any, sessionID: string, output: string): any =>
-                {
-                    return this.dataCallbacks.getLocalesLanguages(url, info, sessionID);
             }),
             new RouteAction(
                 "/client/hideout/qte/list",
