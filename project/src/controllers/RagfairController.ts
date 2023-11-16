@@ -688,7 +688,7 @@ export class RagfairController
         const pmcData = this.saveServer.getProfile(sessionID).characters.pmc;
         const offers = pmcData.RagfairInfo.offers;
         const index = offers.findIndex((offer) => offer._id === info.offerId);
-        const secondsToAdd = info.renewalTime * TimeUtil.oneHourAsSeconds;
+        const secondsToAdd = info.renewalTime * TimeUtil.ONE_HOUR_AS_SECONDS;
 
         if (index === -1)
         {

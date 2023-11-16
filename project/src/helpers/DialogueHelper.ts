@@ -43,7 +43,7 @@ export class DialogueHelper
 
         if (maxStoreTime)
         {
-            result.maxStorageTime = maxStoreTime * TimeUtil.oneHourAsSeconds;
+            result.maxStorageTime = maxStoreTime * TimeUtil.ONE_HOUR_AS_SECONDS;
         }
 
         return result;

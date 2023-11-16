@@ -7,7 +7,7 @@ import { injectable } from "tsyringe";
 @injectable()
 export class TimeUtil
 {
-    public static readonly oneHourAsSeconds = 3600; // Number of seconds in one hour.
+    public static readonly ONE_HOUR_AS_SECONDS = 3600; // Number of seconds in one hour.
 
     /**
      * Pads a number with a leading zero if it is less than 10.
@@ -106,6 +106,6 @@ export class TimeUtil
      */
     public getHoursAsSeconds(hours: number): number
     {
-        return hours * TimeUtil.oneHourAsSeconds;
+        return hours * TimeUtil.ONE_HOUR_AS_SECONDS;
     }
 }

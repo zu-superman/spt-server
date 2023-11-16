@@ -279,7 +279,7 @@ export class RagfairOfferGenerator
         if (this.ragfairServerHelper.isPlayer(userID))
         {
             // Player offer
-            return this.timeUtil.getTimestamp() + Math.round(12 * TimeUtil.oneHourAsSeconds);
+            return this.timeUtil.getTimestamp() + Math.round(12 * TimeUtil.ONE_HOUR_AS_SECONDS);
         }
 
         if (this.ragfairServerHelper.isTrader(userID))

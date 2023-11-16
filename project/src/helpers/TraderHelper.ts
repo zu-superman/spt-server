@@ -302,6 +302,7 @@ export class TraderHelper
      */
     public addTraderPurchasesToPlayerProfile(
         sessionID: string,
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         newPurchaseDetails: { items: { item_id: string; count: number; }[]; tid: string; },
     ): void
     {

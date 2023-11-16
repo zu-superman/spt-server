@@ -205,8 +205,8 @@ export class InsuranceService
         const insuranceReturnTimeBonusPercent = 1.0
             - (insuranceReturnTimeBonus ? Math.abs(insuranceReturnTimeBonus.value) : 0) / 100;
 
-        const traderMinReturnAsSeconds = trader.insurance.min_return_hour * TimeUtil.oneHourAsSeconds;
-        const traderMaxReturnAsSeconds = trader.insurance.max_return_hour * TimeUtil.oneHourAsSeconds;
+        const traderMinReturnAsSeconds = trader.insurance.min_return_hour * TimeUtil.ONE_HOUR_AS_SECONDS;
+        const traderMaxReturnAsSeconds = trader.insurance.max_return_hour * TimeUtil.ONE_HOUR_AS_SECONDS;
         const randomisedReturnTimeSeconds = this.randomUtil.getInt(traderMinReturnAsSeconds, traderMaxReturnAsSeconds);
 
         // Current time + randomised time calculated above

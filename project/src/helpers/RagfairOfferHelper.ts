@@ -566,7 +566,10 @@ export class RagfairOfferHelper
             return false;
         }
 
-        if (searchRequest.oneHourExpiration && offer.endTime - this.timeUtil.getTimestamp() > TimeUtil.oneHourAsSeconds)
+        if (
+            searchRequest.oneHourExpiration
+            && offer.endTime - this.timeUtil.getTimestamp() > TimeUtil.ONE_HOUR_AS_SECONDS
+        )
         {
             // offer doesnt expire within an hour
             return false;
