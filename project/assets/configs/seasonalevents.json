@@ -235,7 +235,8 @@
         "peacefullZryachiyEvent": "bossZryachiy",
         "sectactPriestEvent": "sectantPriest",
         "ravangeZryachiyEvent": "bossZryachiy",
-        "arenaFighterEvent": "arenaFighterEvent"
+        "arenaFighterEvent": "arenaFighterEvent",
+		"crazyAssaultEvent": "crazyAssaultEvent"
     },
     "eventBossSpawns": {
         "halloween": {
