@@ -31,7 +31,8 @@ export interface IBotBase
     RepeatableQuests: IPmcDataRepeatableQuest[]
     Bonuses: Bonus[]
     Notes: Notes
-    CarExtractCounts: CarExtractCounts
+    CarExtractCounts: Record<string, number>
+    CoopExtractCounts: Record<string, number>
     SurvivorClass: SurvivorClass
     WishList: string[]
     /** SPT specific property used during bot generation in raid */
@@ -443,11 +444,6 @@ export interface LastCompleted
 export interface Notes 
 {
     Notes: Note[]
-}
-
-export interface CarExtractCounts 
-{
-
 }
 
 export enum SurvivorClass
