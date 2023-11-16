@@ -56,7 +56,7 @@ export class MatchController
         @inject("BotGenerationCacheService") protected botGenerationCacheService: BotGenerationCacheService,
         @inject("MailSendService") protected mailSendService: MailSendService,
         @inject("LootGenerator") protected lootGenerator: LootGenerator,
-        @inject("ApplicationContext") protected applicationContext: ApplicationContext
+        @inject("ApplicationContext") protected applicationContext: ApplicationContext,
     )
     {
         this.matchConfig = this.configServer.getConfig(ConfigTypes.MATCH);
@@ -99,42 +99,33 @@ export class MatchController
     }
 
     /** Handle match/group/start_game */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public joinMatch(info: IJoinMatchRequestData, sessionId: string): IJoinMatchResult
     {
-        const output: IJoinMatchResult = {
-            maxPveCountExceeded: false,
-            profiles: []
-        };
+        const output: IJoinMatchResult = { maxPveCountExceeded: false, profiles: [] };
 
         // get list of players joining into the match
         output.profiles.push({
-            "profileid": "TODO",
+            profileid: "TODO",
             profileToken: "TODO",
-            "status": "MatchWait",
-            "sid": "",
-            "ip": "",
-            "port": 0,
-            "version": "live",
-            "location": "TODO get location",
+            status: "MatchWait",
+            sid: "",
+            ip: "",
+            port: 0,
+            version: "live",
+            location: "TODO get location",
             raidMode: "Online",
-            "mode": "deathmatch",
-            "shortid": null,
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            additional_info: null
+            mode: "deathmatch",
+            shortid: null,
+            additional_info: null,
         });
 
         return output;
     }
 
     /** Handle client/match/group/status */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public getGroupStatus(info: IGetGroupStatusRequestData): any
     {
-        return {
-            players: [],
-            maxPveCountExceeded: false
-        };
+        return { players: [], maxPveCountExceeded: false };
     }
 
     /**
@@ -147,15 +138,17 @@ export class MatchController
         // Store request data for access during bot generation
         this.applicationContext.addValue(ContextVariableType.RAID_CONFIGURATION, request);
 
-        //TODO: add code to strip PMC of equipment now they've started the raid
+        // TODO: add code to strip PMC of equipment now they've started the raid
 
         // Set pmcs to difficulty set in pre-raid screen if override in bot config isnt enabled
         if (!this.pmcConfig.useDifficultyOverride)
         {
-            this.pmcConfig.difficulty = this.convertDifficultyDropdownIntoBotDifficulty(request.wavesSettings.botDifficulty);
+            this.pmcConfig.difficulty = this.convertDifficultyDropdownIntoBotDifficulty(
+                request.wavesSettings.botDifficulty,
+            );
         }
 
-        // Store the profile as-is for later use on the post-raid exp screen 
+        // Store the profile as-is for later use on the post-raid exp screen
         const currentProfile = this.saveServer.getProfile(sessionID);
         this.profileSnapshotService.storeProfileSnapshot(sessionID, currentProfile);
     }
@@ -178,7 +171,7 @@ export class MatchController
 
     /** Handle client/match/offline/end */
     public endOfflineRaid(info: IEndOfflineRaidRequestData, sessionId: string): void
-    {       
+    {
         const pmcData: IPmcData = this.profileHelper.getPmcProfile(sessionId);
         const extractName = info.exitName;
 
@@ -223,22 +216,17 @@ export class MatchController
         // Generate reward for taking coop extract
         const loot = this.lootGenerator.createRandomLoot(this.traderConfig.fence.coopExtractGift);
         const mailableLoot: Item[] = [];
-        
+
         const parentId = this.hashUtil.generate();
         for (const item of loot)
         {
-            mailableLoot.push(
-                {
-                    _id: item.id,
-                    _tpl: item.tpl,
-                    slotId: "main",
-                    parentId: parentId,
-                    upd: {
-                        StackObjectsCount: item.stackCount,
-                        SpawnedInSession: true
-                    }
-                }
-            );
+            mailableLoot.push({
+                _id: item.id,
+                _tpl: item.tpl,
+                slotId: "main",
+                parentId: parentId,
+                upd: { StackObjectsCount: item.stackCount, SpawnedInSession: true },
+            });
         }
 
         // Send message from fence giving player reward generated above
@@ -248,7 +236,7 @@ export class MatchController
             MessageType.MESSAGE_WITH_ITEMS,
             this.randomUtil.getArrayValue(this.traderConfig.fence.coopExtractGift.messageLocaleIds),
             mailableLoot,
-            this.timeUtil.getHoursAsSeconds(this.traderConfig.fence.coopExtractGift.giftExpiryHours)
+            this.timeUtil.getHoursAsSeconds(this.traderConfig.fence.coopExtractGift.giftExpiryHours),
         );
     }
 
@@ -292,18 +280,20 @@ export class MatchController
 
         const fenceId: string = Traders.FENCE;
         this.updateFenceStandingInProfile(pmcData, fenceId, extractName);
-        
+
         this.traderHelper.lvlUp(fenceId, pmcData);
         pmcData.TradersInfo[fenceId].loyaltyLevel = Math.max(pmcData.TradersInfo[fenceId].loyaltyLevel, 1);
 
-        this.logger.debug(`Car extract: ${extractName} used, total times taken: ${pmcData.CarExtractCounts[extractName]}`);
+        this.logger.debug(
+            `Car extract: ${extractName} used, total times taken: ${pmcData.CarExtractCounts[extractName]}`,
+        );
     }
 
     /**
      * Update players fence trader standing value in profile
      * @param pmcData Player profile
      * @param fenceId Id of fence trader
-     * @param extractName Name of extract used 
+     * @param extractName Name of extract used
      */
     protected updateFenceStandingInProfile(pmcData: IPmcData, fenceId: string, extractName: string): void
     {

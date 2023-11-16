@@ -249,10 +249,7 @@ describe("ItemHelper", () =>
     {
         it("should set upd.StackObjectsCount to 1 if upd is undefined", () =>
         {
-            const initialItem: Item = {
-                _id: "",
-                _tpl: ""
-            };
+            const initialItem: Item = { _id: "", _tpl: "" };
             const fixedItem = itemHelper.fixItemStackCount(initialItem);
 
             expect(fixedItem.upd).toBeDefined();
@@ -261,11 +258,7 @@ describe("ItemHelper", () =>
 
         it("should set upd.StackObjectsCount to 1 if upd.StackObjectsCount is undefined", () =>
         {
-            const initialItem: Item = {
-                _id: "",
-                _tpl: "",
-                upd: {}
-            };
+            const initialItem: Item = { _id: "", _tpl: "", upd: {} };
             const fixedItem = itemHelper.fixItemStackCount(initialItem);
 
             expect(fixedItem.upd).toBeDefined();
@@ -274,13 +267,7 @@ describe("ItemHelper", () =>
 
         it("should not change upd.StackObjectsCount if it is already defined", () =>
         {
-            const initialItem: Item = {
-                _id: "",
-                _tpl: "",
-                upd: {
-                    StackObjectsCount: 5
-                }
-            };
+            const initialItem: Item = { _id: "", _tpl: "", upd: { StackObjectsCount: 5 } };
             const fixedItem = itemHelper.fixItemStackCount(initialItem);
 
             expect(fixedItem.upd).toBeDefined();
@@ -324,7 +311,6 @@ describe("ItemHelper", () =>
             // Restore the original behavior
             loggerWarningSpy.mockRestore();
         });
-
     });
 
     describe("getItems", () =>
@@ -420,7 +406,7 @@ describe("ItemHelper", () =>
             const itemId = container.resolve<HashUtil>("HashUtil").generate();
             const item: Item = {
                 _id: itemId,
-                _tpl: "590c657e86f77412b013051d"  // "Grizzly medical kit"
+                _tpl: "590c657e86f77412b013051d", // "Grizzly medical kit"
             };
 
             const result = itemHelper.getItemQualityModifier(item);
@@ -433,8 +419,8 @@ describe("ItemHelper", () =>
             const itemId = container.resolve<HashUtil>("HashUtil").generate();
             const item: Item = {
                 _id: itemId,
-                _tpl: "590c657e86f77412b013051d",  // "Grizzly medical kit"
-                upd: {}
+                _tpl: "590c657e86f77412b013051d", // "Grizzly medical kit"
+                upd: {},
             };
 
             const result = itemHelper.getItemQualityModifier(item);
@@ -447,12 +433,12 @@ describe("ItemHelper", () =>
             const itemId = container.resolve<HashUtil>("HashUtil").generate();
             const item: Item = {
                 _id: itemId,
-                _tpl: "590c657e86f77412b013051d",  // "Grizzly medical kit"
+                _tpl: "590c657e86f77412b013051d", // "Grizzly medical kit"
                 upd: {
                     MedKit: {
-                        HpResource: 900 // 1800 total
-                    }
-                }
+                        HpResource: 900, // 1800 total
+                    },
+                },
             };
 
             const result = itemHelper.getItemQualityModifier(item);
@@ -466,12 +452,7 @@ describe("ItemHelper", () =>
             const item: Item = {
                 _id: itemId,
                 _tpl: "5b40e1525acfc4771e1c6611", // "HighCom Striker ULACH IIIA helmet (Black)"
-                upd: {
-                    Repairable: {
-                        Durability: 19,
-                        MaxDurability: 38
-                    }
-                }
+                upd: { Repairable: { Durability: 19, MaxDurability: 38 } },
             };
 
             const result = itemHelper.getItemQualityModifier(item);
@@ -485,12 +466,7 @@ describe("ItemHelper", () =>
             const item: Item = {
                 _id: itemId,
                 _tpl: "5a38e6bac4a2826c6e06d79b", // "TOZ-106 20ga bolt-action shotgun"
-                upd: {
-                    Repairable: {
-                        Durability: 20,
-                        MaxDurability: 100
-                    }
-                }
+                upd: { Repairable: { Durability: 20, MaxDurability: 100 } },
             };
 
             const result = itemHelper.getItemQualityModifier(item);
@@ -506,9 +482,9 @@ describe("ItemHelper", () =>
                 _tpl: "5448fee04bdc2dbc018b4567", // "Bottle of water (0.6L)"
                 upd: {
                     FoodDrink: {
-                        HpPercent: 30 // Not actually a percentage, but value of max 60.
-                    }
-                }
+                        HpPercent: 30, // Not actually a percentage, but value of max 60.
+                    },
+                },
             };
 
             const result = itemHelper.getItemQualityModifier(item);
@@ -522,11 +498,7 @@ describe("ItemHelper", () =>
             const item: Item = {
                 _id: itemId,
                 _tpl: "5780cf7f2459777de4559322", // "Dorm room 314 marked key"
-                upd: {
-                    Key: {
-                        NumberOfUsages: 5
-                    }
-                }
+                upd: { Key: { NumberOfUsages: 5 } },
             };
 
             const result = itemHelper.getItemQualityModifier(item);
@@ -543,9 +515,9 @@ describe("ItemHelper", () =>
                 upd: {
                     Resource: {
                         Value: 50, // How much fuel is left in the tank.
-                        UnitsConsumed: 50 // How much fuel has been used in the generator.
-                    }
-                }
+                        UnitsConsumed: 50, // How much fuel has been used in the generator.
+                    },
+                },
             };
 
             const result = itemHelper.getItemQualityModifier(item);
@@ -559,11 +531,7 @@ describe("ItemHelper", () =>
             const item: Item = {
                 _id: itemId,
                 _tpl: "591094e086f7747caa7bb2ef", // "Body armor repair kit"
-                upd: {
-                    RepairKit: {
-                        Resource: 600
-                    }
-                }
+                upd: { RepairKit: { Resource: 600 } },
             };
 
             const result = itemHelper.getItemQualityModifier(item);
@@ -577,11 +545,7 @@ describe("ItemHelper", () =>
             const item: Item = {
                 _id: itemId,
                 _tpl: "591094e086f7747caa7bb2ef", // "Body armor repair kit"
-                upd: {
-                    RepairKit: {
-                        Resource: 0
-                    }
-                }
+                upd: { RepairKit: { Resource: 0 } },
             };
 
             const result = itemHelper.getItemQualityModifier(item);
@@ -594,14 +558,11 @@ describe("ItemHelper", () =>
     {
         it("should return the correct quality value for armor items", () =>
         {
-            const armor = itemHelper.getItem("5648a7494bdc2d9d488b4583")[1];  // "PACA Soft Armor"
-            const repairable: Repairable = {
-                Durability: 25,
-                MaxDurability: 50
-            };
+            const armor = itemHelper.getItem("5648a7494bdc2d9d488b4583")[1]; // "PACA Soft Armor"
+            const repairable: Repairable = { Durability: 25, MaxDurability: 50 };
             const item: Item = { // Not used for armor, but required for the method.
                 _id: "",
-                _tpl: ""
+                _tpl: "",
             };
 
             // Cast the method to any to allow access to private/protected method.
@@ -612,14 +573,14 @@ describe("ItemHelper", () =>
 
         it("should not use the Repairable MaxDurability property for armor", () =>
         {
-            const armor = itemHelper.getItem("5648a7494bdc2d9d488b4583")[1];  // "PACA Soft Armor"
+            const armor = itemHelper.getItem("5648a7494bdc2d9d488b4583")[1]; // "PACA Soft Armor"
             const repairable: Repairable = {
                 Durability: 25,
-                MaxDurability: 1000 // This should be ignored.
+                MaxDurability: 1000, // This should be ignored.
             };
             const item: Item = { // Not used for armor, but required for the method.
                 _id: "",
-                _tpl: ""
+                _tpl: "",
             };
 
             // Cast the method to any to allow access to private/protected method.
@@ -630,15 +591,9 @@ describe("ItemHelper", () =>
 
         it("should return the correct quality value for weapon items", () =>
         {
-            const weapon = itemHelper.getItem("5a38e6bac4a2826c6e06d79b")[1];  // "TOZ-106 20ga bolt-action shotgun"
-            const repairable: Repairable = {
-                Durability: 50,
-                MaxDurability: 100
-            };
-            const item: Item = {
-                _id: "",
-                _tpl: ""
-            };
+            const weapon = itemHelper.getItem("5a38e6bac4a2826c6e06d79b")[1]; // "TOZ-106 20ga bolt-action shotgun"
+            const repairable: Repairable = { Durability: 50, MaxDurability: 100 };
+            const item: Item = { _id: "", _tpl: "" };
 
             // Cast the method to any to allow access to private/protected method.
             const result = (itemHelper as any).getRepairableItemQualityValue(weapon, repairable, item);
@@ -648,16 +603,13 @@ describe("ItemHelper", () =>
 
         it("should fall back to using Repairable MaxDurability for weapon items", () =>
         {
-            const weapon = itemHelper.getItem("5a38e6bac4a2826c6e06d79b")[1];  // "TOZ-106 20ga bolt-action shotgun"
+            const weapon = itemHelper.getItem("5a38e6bac4a2826c6e06d79b")[1]; // "TOZ-106 20ga bolt-action shotgun"
             weapon._props.MaxDurability = undefined; // Remove the MaxDurability property.
             const repairable: Repairable = {
                 Durability: 50,
-                MaxDurability: 200 // This should be used now.
+                MaxDurability: 200, // This should be used now.
             };
-            const item: Item = {
-                _id: "",
-                _tpl: ""
-            };
+            const item: Item = { _id: "", _tpl: "" };
 
             // Cast the method to any to allow access to private/protected method.
             const result = (itemHelper as any).getRepairableItemQualityValue(weapon, repairable, item);
@@ -667,16 +619,13 @@ describe("ItemHelper", () =>
 
         it("should return 1 if durability value is invalid", () =>
         {
-            const weapon = itemHelper.getItem("5a38e6bac4a2826c6e06d79b")[1];  // "TOZ-106 20ga bolt-action shotgun"
+            const weapon = itemHelper.getItem("5a38e6bac4a2826c6e06d79b")[1]; // "TOZ-106 20ga bolt-action shotgun"
             weapon._props.MaxDurability = undefined; // Remove the MaxDurability property.
             const repairable: Repairable = {
                 Durability: 50,
-                MaxDurability: undefined // Remove the MaxDurability property value... Technically an invalid Type.
+                MaxDurability: undefined, // Remove the MaxDurability property value... Technically an invalid Type.
             };
-            const item: Item = {
-                _id: "",
-                _tpl: ""
-            };
+            const item: Item = { _id: "", _tpl: "" };
 
             // Mock the logger's error method to prevent it from being actually called.
             const loggerErrorSpy = vi.spyOn((itemHelper as any).logger, "error").mockImplementation(() =>
@@ -691,16 +640,13 @@ describe("ItemHelper", () =>
 
         it("should not divide by zero", () =>
         {
-            const weapon = itemHelper.getItem("5a38e6bac4a2826c6e06d79b")[1];  // "TOZ-106 20ga bolt-action shotgun"
+            const weapon = itemHelper.getItem("5a38e6bac4a2826c6e06d79b")[1]; // "TOZ-106 20ga bolt-action shotgun"
             weapon._props.MaxDurability = undefined; // Remove the MaxDurability property.
             const repairable: Repairable = {
                 Durability: 50,
-                MaxDurability: 0 // This is a problem.
+                MaxDurability: 0, // This is a problem.
             };
-            const item: Item = {
-                _id: "",
-                _tpl: ""
-            };
+            const item: Item = { _id: "", _tpl: "" };
 
             // Cast the method to any to allow access to private/protected method.
             const result = (itemHelper as any).getRepairableItemQualityValue(weapon, repairable, item);
@@ -710,16 +656,13 @@ describe("ItemHelper", () =>
 
         it("should log an error if durability is invalid", () =>
         {
-            const weapon = itemHelper.getItem("5a38e6bac4a2826c6e06d79b")[1];  // "TOZ-106 20ga bolt-action shotgun"
+            const weapon = itemHelper.getItem("5a38e6bac4a2826c6e06d79b")[1]; // "TOZ-106 20ga bolt-action shotgun"
             weapon._props.MaxDurability = undefined; // Remove the MaxDurability property.
             const repairable: Repairable = {
                 Durability: 50,
-                MaxDurability: undefined // Remove the MaxDurability property value... Technically an invalid Type.
+                MaxDurability: undefined, // Remove the MaxDurability property value... Technically an invalid Type.
             };
-            const item: Item = {
-                _id: "",
-                _tpl: ""
-            };
+            const item: Item = { _id: "", _tpl: "" };
 
             const loggerErrorSpy = vi.spyOn((itemHelper as any).logger, "error");
 
@@ -734,44 +677,40 @@ describe("ItemHelper", () =>
     {
         it("should return an array containing only the parent ID when no children are found", () =>
         {
-            const items: Item[] = [
-                { _id: "1", _tpl: "", parentId: null },
-                { _id: "2", _tpl: "", parentId: null },
-                { _id: "3", _tpl: "", parentId: "2" }
-            ];
+            const items: Item[] = [{ _id: "1", _tpl: "", parentId: null }, { _id: "2", _tpl: "", parentId: null }, {
+                _id: "3",
+                _tpl: "",
+                parentId: "2",
+            }];
             const result = itemHelper.findAndReturnChildrenByItems(items, "1");
             expect(result).toEqual(["1"]);
         });
 
         it("should return array of child IDs when single-level children are found", () =>
         {
-            const items: Item[] = [
-                { _id: "1", _tpl: "", parentId: null },
-                { _id: "2", _tpl: "", parentId: "1" },
-                { _id: "3", _tpl: "", parentId: "1" }
-            ];
+            const items: Item[] = [{ _id: "1", _tpl: "", parentId: null }, { _id: "2", _tpl: "", parentId: "1" }, {
+                _id: "3",
+                _tpl: "",
+                parentId: "1",
+            }];
             const result = itemHelper.findAndReturnChildrenByItems(items, "1");
             expect(result).toEqual(["2", "3", "1"]);
         });
 
         it("should return array of child IDs when multi-level children are found", () =>
         {
-            const items: Item[] = [
-                { _id: "1", _tpl: "", parentId: null },
-                { _id: "2", _tpl: "", parentId: "1" },
-                { _id: "3", _tpl: "", parentId: "2" },
-                { _id: "4", _tpl: "", parentId: "3" }
-            ];
+            const items: Item[] = [{ _id: "1", _tpl: "", parentId: null }, { _id: "2", _tpl: "", parentId: "1" }, {
+                _id: "3",
+                _tpl: "",
+                parentId: "2",
+            }, { _id: "4", _tpl: "", parentId: "3" }];
             const result = itemHelper.findAndReturnChildrenByItems(items, "1");
             expect(result).toEqual(["4", "3", "2", "1"]);
         });
 
         it("should return an array containing only the parent ID when parent ID does not exist in items", () =>
         {
-            const items: Item[] = [
-                { _id: "1", _tpl: "", parentId: null },
-                { _id: "2", _tpl: "", parentId: "1" }
-            ];
+            const items: Item[] = [{ _id: "1", _tpl: "", parentId: null }, { _id: "2", _tpl: "", parentId: "1" }];
             const result = itemHelper.findAndReturnChildrenByItems(items, "3");
             expect(result).toEqual(["3"]);
         });
@@ -785,7 +724,7 @@ describe("ItemHelper", () =>
             const item: Item = {
                 _id: itemId,
                 _tpl: "591094e086f7747caa7bb2ef", // "Body armor repair kit"
-                upd: {}
+                upd: {},
             };
             const result = itemHelper.getItemStackSize(item);
             expect(result).toBe(1);
@@ -796,7 +735,7 @@ describe("ItemHelper", () =>
             const itemId = container.resolve<HashUtil>("HashUtil").generate();
             const item: Item = {
                 _id: itemId,
-                _tpl: "591094e086f7747caa7bb2ef" // "Body armor repair kit"
+                _tpl: "591094e086f7747caa7bb2ef", // "Body armor repair kit"
             };
             const result = itemHelper.getItemStackSize(item);
             expect(result).toBe(1);
@@ -808,9 +747,7 @@ describe("ItemHelper", () =>
             const item: Item = {
                 _id: itemId,
                 _tpl: "591094e086f7747caa7bb2ef", // "Body armor repair kit"
-                upd: {
-                    StackObjectsCount: 5
-                }
+                upd: { StackObjectsCount: 5 },
             };
             const result = itemHelper.getItemStackSize(item);
             expect(result).toBe(5);
@@ -825,10 +762,7 @@ describe("ItemHelper", () =>
             const item: Item = {
                 _id: itemId,
                 _tpl: "591094e086f7747caa7bb2ef", // "Body armor repair kit"
-                upd: {
-                    BuyRestrictionCurrent: 0,
-                    BuyRestrictionMax: 1
-                }
+                upd: { BuyRestrictionCurrent: 0, BuyRestrictionMax: 1 },
             };
             const result = itemHelper.hasBuyRestrictions(item);
             expect(result).toBe(true);
@@ -840,7 +774,7 @@ describe("ItemHelper", () =>
             const item: Item = {
                 _id: itemId,
                 _tpl: "591094e086f7747caa7bb2ef", // "Body armor repair kit"
-                upd: {}
+                upd: {},
             };
             const result = itemHelper.hasBuyRestrictions(item);
             expect(result).toBe(false);
@@ -851,7 +785,7 @@ describe("ItemHelper", () =>
             const itemId = container.resolve<HashUtil>("HashUtil").generate();
             const item: Item = {
                 _id: itemId,
-                _tpl: "591094e086f7747caa7bb2ef" // "Body armor repair kit"
+                _tpl: "591094e086f7747caa7bb2ef", // "Body armor repair kit"
             };
             const result = itemHelper.hasBuyRestrictions(item);
             expect(result).toBe(false);
@@ -886,7 +820,7 @@ describe("ItemHelper", () =>
             const itemId = container.resolve<HashUtil>("HashUtil").generate();
             const ammoBox: Item[] = [{
                 _id: itemId,
-                _tpl: "5c12619186f7743f871c8a32" // "9x39mm SPP gs ammo pack (8 pcs)"
+                _tpl: "5c12619186f7743f871c8a32", // "9x39mm SPP gs ammo pack (8 pcs)"
             }];
 
             const databaseServer = container.resolve<DatabaseServer>("DatabaseServer");
@@ -902,7 +836,7 @@ describe("ItemHelper", () =>
             const itemId = container.resolve<HashUtil>("HashUtil").generate();
             const ammoBox: Item[] = [{
                 _id: itemId,
-                _tpl: "5737292724597765e5728562" // "5.45x39mm BP gs ammo pack (120 pcs)""
+                _tpl: "5737292724597765e5728562", // "5.45x39mm BP gs ammo pack (120 pcs)""
             }];
 
             const databaseServer = container.resolve<DatabaseServer>("DatabaseServer");
@@ -919,7 +853,7 @@ describe("ItemHelper", () =>
             const itemId = container.resolve<HashUtil>("HashUtil").generate();
             const ammoBox: Item[] = [{
                 _id: itemId,
-                _tpl: "5737292724597765e5728562" // "5.45x39mm BP gs ammo pack (120 pcs)""
+                _tpl: "5737292724597765e5728562", // "5.45x39mm BP gs ammo pack (120 pcs)""
             }];
 
             const databaseServer = container.resolve<DatabaseServer>("DatabaseServer");
@@ -934,7 +868,7 @@ describe("ItemHelper", () =>
             const itemId = container.resolve<HashUtil>("HashUtil").generate();
             const ammoBox: Item[] = [{
                 _id: itemId,
-                _tpl: "5737292724597765e5728562" // "5.45x39mm BP gs ammo pack (120 pcs)""
+                _tpl: "5737292724597765e5728562", // "5.45x39mm BP gs ammo pack (120 pcs)""
             }];
 
             const databaseServer = container.resolve<DatabaseServer>("DatabaseServer");
@@ -1015,8 +949,8 @@ describe("ItemHelper", () =>
                 _id: container.resolve<HashUtil>("HashUtil").generate(),
                 _tpl: "59e690b686f7746c9f75e848", // m995
                 upd: {
-                    StackObjectsCount: 80 // Default is 60
-                }
+                    StackObjectsCount: 80, // Default is 60
+                },
             };
             const result = itemHelper.splitStack(stackableItem); // "Roubles"
 
@@ -1029,8 +963,8 @@ describe("ItemHelper", () =>
                 _id: container.resolve<HashUtil>("HashUtil").generate(),
                 _tpl: "59e690b686f7746c9f75e848", // m995
                 upd: {
-                    StackObjectsCount: 80 // Default is 60
-                }
+                    StackObjectsCount: 80, // Default is 60
+                },
             };
             const result = itemHelper.splitStack(stackableItem); // "Roubles"
             const itemCount = result.reduce((sum, curr) => sum + curr.upd.StackObjectsCount, 0);
@@ -1043,8 +977,8 @@ describe("ItemHelper", () =>
                 _id: container.resolve<HashUtil>("HashUtil").generate(),
                 _tpl: "59e690b686f7746c9f75e848", // m995
                 upd: {
-                    StackObjectsCount: 60 // Default is 60
-                }
+                    StackObjectsCount: 60, // Default is 60
+                },
             };
             const result = itemHelper.splitStack(stackableItem); // "Roubles"
             const itemCount = result.reduce((sum, curr) => sum + curr.upd.StackObjectsCount, 0);
@@ -1057,7 +991,7 @@ describe("ItemHelper", () =>
             const stackableItem: Item = {
                 _id: container.resolve<HashUtil>("HashUtil").generate(),
                 _tpl: "59e690b686f7746c9f75e848", // m995
-                upd: {}
+                upd: {},
             };
             const result = itemHelper.splitStack(stackableItem); // "Roubles"
             expect(result.length).toBe(1);
@@ -1067,7 +1001,7 @@ describe("ItemHelper", () =>
         {
             const stackableItem: Item = {
                 _id: container.resolve<HashUtil>("HashUtil").generate(),
-                _tpl: "59e690b686f7746c9f75e848" // m995
+                _tpl: "59e690b686f7746c9f75e848", // m995
             };
             const result = itemHelper.splitStack(stackableItem); // "Roubles"
             expect(result.length).toBe(1);
@@ -1085,20 +1019,12 @@ describe("ItemHelper", () =>
                 "5736026a245977644601dc61",
                 "573603562459776430731618",
                 "573603c924597764442bd9cb",
-                "5735fdcd2459776445391d61"
+                "5735fdcd2459776445391d61",
             ];
             const mockTemplateItem = {
                 _id: "571a29dc2459771fb2755a6a",
                 _name: "mag_tt_toz_std_762x25tt_8",
-                _props: {
-                    Cartridges: [{
-                        _props: {
-                            filters: [{
-                                Filter: validAmmoItems
-                            }]
-                        }
-                    }]
-                }
+                _props: { Cartridges: [{ _props: { filters: [{ Filter: validAmmoItems }] } }] },
             };
 
             vi.spyOn((itemHelper as any).randomUtil, "getArrayValue").mockReturnValue(validAmmoItems[0]);
@@ -1110,13 +1036,7 @@ describe("ItemHelper", () =>
 
         it("should return null when passed template has empty cartridge property", () =>
         {
-            const fakeTemplateItem = {
-                _props: {
-                    Cartridges: [
-                        {}
-                    ]
-                }
-            };
+            const fakeTemplateItem = { _props: { Cartridges: [{}] } };
             const result = itemHelper.getRandomCompatibleCaliberTemplateId(fakeTemplateItem as ITemplateItem);
 
             expect(result).toBe(null);

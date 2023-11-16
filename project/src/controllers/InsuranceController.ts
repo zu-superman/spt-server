@@ -48,7 +48,7 @@ export class InsuranceController
         @inject("PaymentService") protected paymentService: PaymentService,
         @inject("InsuranceService") protected insuranceService: InsuranceService,
         @inject("MailSendService") protected mailSendService: MailSendService,
-        @inject("ConfigServer") protected configServer: ConfigServer
+        @inject("ConfigServer") protected configServer: ConfigServer,
     )
     {
         this.insuranceConfig = this.configServer.getConfig(ConfigTypes.INSURANCE);
@@ -58,7 +58,7 @@ export class InsuranceController
      * Process insurance items of all profiles prior to being given back to the player through the mail service.
      *
      * @returns void
-    */
+     */
     public processReturn(): void
     {
         // Process each installed profile.
@@ -72,7 +72,7 @@ export class InsuranceController
      * Process insurance items of a single profile prior to being given back to the player through the mail service.
      *
      * @returns void
-    */
+     */
     public processReturnByProfile(sessionID: string): void
     {
         // Filter out items that don't need to be processed yet.
@@ -117,10 +117,14 @@ export class InsuranceController
      */
     protected processInsuredItems(insuranceDetails: Insurance[], sessionID: string): void
     {
-        this.logger.debug(`Processing ${insuranceDetails.length} insurance packages, which includes a total of ${this.countAllInsuranceItems(insuranceDetails)} items, in profile ${sessionID}`);
+        this.logger.debug(
+            `Processing ${insuranceDetails.length} insurance packages, which includes a total of ${
+                this.countAllInsuranceItems(insuranceDetails)
+            } items, in profile ${sessionID}`,
+        );
 
         // Iterate over each of the insurance packages.
-        insuranceDetails.forEach(insured =>
+        insuranceDetails.forEach((insured) =>
         {
             // Find items that should be deleted from the insured items.
             const itemsToDelete = this.findItemsToDelete(insured);
@@ -146,7 +150,7 @@ export class InsuranceController
      */
     protected countAllInsuranceItems(insurance: Insurance[]): number
     {
-        return this.mathUtil.arraySum(insurance.map(ins => ins.items.length));
+        return this.mathUtil.arraySum(insurance.map((ins) => ins.items.length));
     }
 
     /**
@@ -159,13 +163,15 @@ export class InsuranceController
     protected removeInsurancePackageFromProfile(sessionID: string, packageInfo: ISystemData): void
     {
         const profile = this.saveServer.getProfile(sessionID);
-        profile.insurance = profile.insurance.filter(insurance =>
-            insurance.messageContent.systemData.date !== packageInfo.date ||
-            insurance.messageContent.systemData.time !== packageInfo.time ||
-            insurance.messageContent.systemData.location !== packageInfo.location
+        profile.insurance = profile.insurance.filter((insurance) =>
+            insurance.messageContent.systemData.date !== packageInfo.date
+            || insurance.messageContent.systemData.time !== packageInfo.time
+            || insurance.messageContent.systemData.location !== packageInfo.location
         );
 
-        this.logger.debug(`Removed insurance package with date: ${packageInfo.date}, time: ${packageInfo.time}, and location: ${packageInfo.location} from profile ${sessionID}. Remaining packages: ${profile.insurance.length}`);
+        this.logger.debug(
+            `Removed insurance package with date: ${packageInfo.date}, time: ${packageInfo.time}, and location: ${packageInfo.location} from profile ${sessionID}. Remaining packages: ${profile.insurance.length}`,
+        );
     }
 
     /**
@@ -184,7 +190,9 @@ export class InsuranceController
         const parentAttachmentsMap = this.populateParentAttachmentsMap(insured, itemsMap);
 
         // Check to see if any regular items are present.
-        const hasRegularItems = Array.from(itemsMap.values()).some(item => !this.itemHelper.isAttachmentAttached(item));
+        const hasRegularItems = Array.from(itemsMap.values()).some((item) =>
+            !this.itemHelper.isAttachmentAttached(item)
+        );
 
         // Process all items that are not attached, attachments. Those are handled separately, by value.
         if (hasRegularItems)
@@ -216,7 +224,7 @@ export class InsuranceController
     protected populateItemsMap(insured: Insurance): Map<string, Item>
     {
         const itemsMap = new Map<string, Item>();
-        insured.items.forEach(item => itemsMap.set(item._id, item));
+        insured.items.forEach((item) => itemsMap.set(item._id, item));
         return itemsMap;
     }
 
@@ -235,12 +243,14 @@ export class InsuranceController
         for (const insuredItem of insured.items)
         {
             // Use the parent ID from the item to get the parent item.
-            const parentItem = insured.items.find(item => item._id === insuredItem.parentId);
+            const parentItem = insured.items.find((item) => item._id === insuredItem.parentId);
 
             // The parent (not the hideout) could not be found. Skip and warn.
             if (!parentItem && insuredItem.parentId !== this.fetchHideoutItemParent(insured.items))
             {
-                this.logger.warning(`Could not find parent for insured item - ID: ${insuredItem._id}, Template: ${insuredItem._tpl}, Parent ID: ${insuredItem.parentId}`);
+                this.logger.warning(
+                    `Could not find parent for insured item - ID: ${insuredItem._id}, Template: ${insuredItem._tpl}, Parent ID: ${insuredItem.parentId}`,
+                );
                 continue;
             }
 
@@ -258,7 +268,9 @@ export class InsuranceController
                 if (!mainParent)
                 {
                     // Odd. The parent couldn't be found. Skip this attachment and warn.
-                    this.logger.warning(`Could not find main-parent for insured attachment - ID: ${insuredItem._id}, Template: ${insuredItem._tpl}, Parent ID: ${insuredItem.parentId}`);
+                    this.logger.warning(
+                        `Could not find main-parent for insured attachment - ID: ${insuredItem._id}, Template: ${insuredItem._tpl}, Parent ID: ${insuredItem.parentId}`,
+                    );
                     continue;
                 }
 
@@ -307,11 +319,13 @@ export class InsuranceController
 
                 // Check if the item has any children and mark those for deletion as well, but only if those
                 // children are currently attached attachments.
-                const directChildren = insured.items.filter(item => item.parentId === insuredItem._id);
-                const allChildrenAreAttachments = directChildren.every(child => this.itemHelper.isAttachmentAttached(child));
+                const directChildren = insured.items.filter((item) => item.parentId === insuredItem._id);
+                const allChildrenAreAttachments = directChildren.every((child) =>
+                    this.itemHelper.isAttachmentAttached(child)
+                );
                 if (allChildrenAreAttachments)
                 {
-                    itemAndChildren.forEach(item => toDelete.add(item._id));
+                    itemAndChildren.forEach((item) => toDelete.add(item._id));
                 }
             }
         }
@@ -325,7 +339,12 @@ export class InsuranceController
      * @param traderId The trader ID from the Insurance object.
      * @param toDelete A Set object to keep track of items marked for deletion.
      */
-    protected processAttachments(mainParentToAttachmentsMap: Map<string, Item[]>, itemsMap: Map<string, Item>, traderId: string, toDelete: Set<string>): void
+    protected processAttachments(
+        mainParentToAttachmentsMap: Map<string, Item[]>,
+        itemsMap: Map<string, Item>,
+        traderId: string,
+        toDelete: Set<string>,
+    ): void
     {
         mainParentToAttachmentsMap.forEach((attachmentItems, parentId) =>
         {
@@ -369,10 +388,10 @@ export class InsuranceController
      */
     protected sortAttachmentsByPrice(attachments: Item[]): EnrichedItem[]
     {
-        return attachments.map(item => ({
+        return attachments.map((item) => ({
             ...item,
             name: this.itemHelper.getItemName(item._tpl),
-            maxPrice: this.itemHelper.getItemMaxPrice(item._tpl)
+            maxPrice: this.itemHelper.getItemMaxPrice(item._tpl),
         })).sort((a, b) => b.maxPrice - a.maxPrice);
     }
 
@@ -409,11 +428,15 @@ export class InsuranceController
      * @param successfulRolls The number of successful rolls.
      * @param toDelete The array that accumulates the IDs of the items to be deleted.
      */
-    protected attachmentDeletionByValue(attachments: EnrichedItem[], successfulRolls: number, toDelete: Set<string>): void
+    protected attachmentDeletionByValue(
+        attachments: EnrichedItem[],
+        successfulRolls: number,
+        toDelete: Set<string>,
+    ): void
     {
         const valuableToDelete = attachments.slice(0, successfulRolls).map(({ _id }) => _id);
 
-        valuableToDelete.forEach(attachmentsId =>
+        valuableToDelete.forEach((attachmentsId) =>
         {
             const valuableChild = attachments.find(({ _id }) => _id === attachmentsId);
             if (valuableChild)
@@ -434,7 +457,7 @@ export class InsuranceController
      */
     protected removeItemsFromInsurance(insured: Insurance, toDelete: Set<string>): void
     {
-        insured.items = insured.items.filter(item => !toDelete.has(item._id));
+        insured.items = insured.items.filter((item) => !toDelete.has(item._id));
     }
 
     /**
@@ -448,10 +471,10 @@ export class InsuranceController
     {
         const hideoutParentId = this.fetchHideoutItemParent(insured.items);
 
-        insured.items.forEach(item =>
+        insured.items.forEach((item) =>
         {
             // Check if the item's parent exists in the insured items list.
-            const parentExists = insured.items.some(parentItem => parentItem._id === item.parentId);
+            const parentExists = insured.items.some((parentItem) => parentItem._id === item.parentId);
 
             // If the parent does not exist and the item is not already a 'hideout' item, adopt the orphaned item.
             if (!parentExists && item.parentId !== hideoutParentId && item.slotId !== "hideout")
@@ -472,7 +495,7 @@ export class InsuranceController
      */
     protected fetchHideoutItemParent(items: Item[]): string
     {
-        const hideoutItem = items.find(item => item.slotId === "hideout");
+        const hideoutItem = items.find((item) => item.slotId === "hideout");
         const hideoutParentId = hideoutItem ? hideoutItem?.parentId : "";
 
         if (hideoutParentId === "")
@@ -496,7 +519,8 @@ export class InsuranceController
         // successfully "failed" to return anything and an appropriate message should be sent to the player.
         if (insurance.items.length === 0)
         {
-            const insuranceFailedTemplates = this.databaseServer.getTables().traders[insurance.traderId].dialogue.insuranceFailed;
+            const insuranceFailedTemplates =
+                this.databaseServer.getTables().traders[insurance.traderId].dialogue.insuranceFailed;
             insurance.messageContent.templateId = this.randomUtil.getArrayValue(insuranceFailedTemplates);
         }
 
@@ -508,7 +532,7 @@ export class InsuranceController
             insurance.messageContent.templateId,
             insurance.items,
             insurance.messageContent.maxStorageTime,
-            insurance.messageContent.systemData
+            insurance.messageContent.systemData,
         );
     }
 
@@ -538,7 +562,9 @@ export class InsuranceController
         // Log the roll with as much detail as possible.
         const itemName = insuredItem ? ` for "${this.itemHelper.getItemName(insuredItem._tpl)}"` : "";
         const status = roll ? "Delete" : "Keep";
-        this.logger.debug(`Rolling deletion${itemName} with ${trader} - Return ${traderReturnChance}% - Roll: ${returnChance} - Status: ${status}`);
+        this.logger.debug(
+            `Rolling deletion${itemName} with ${trader} - Return ${traderReturnChance}% - Roll: ${returnChance} - Status: ${status}`,
+        );
 
         return roll;
     }
@@ -569,21 +595,18 @@ export class InsuranceController
         {
             itemsToPay.push({
                 id: inventoryItemsHash[key]._id,
-                count: Math.round(this.insuranceService.getPremium(pmcData, inventoryItemsHash[key], body.tid))
+                count: Math.round(this.insuranceService.getPremium(pmcData, inventoryItemsHash[key], body.tid)),
             });
         }
 
         const options: IProcessBuyTradeRequestData = {
-            // eslint-disable-next-line @typescript-eslint/naming-convention
             scheme_items: itemsToPay,
             tid: body.tid,
             Action: "",
             type: "",
-            // eslint-disable-next-line @typescript-eslint/naming-convention
             item_id: "",
             count: 0,
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            scheme_id: 0
+            scheme_id: 0,
         };
 
         // pay for the item insurance
@@ -596,10 +619,7 @@ export class InsuranceController
         // add items to InsuredItems list once money has been paid
         for (const key of body.items)
         {
-            pmcData.InsuredItems.push({
-                tid: body.tid,
-                itemId: inventoryItemsHash[key]._id
-            });
+            pmcData.InsuredItems.push({ tid: body.tid, itemId: inventoryItemsHash[key]._id });
         }
 
         this.profileHelper.addSkillPointsToPlayer(pmcData, SkillTypes.CHARISMA, itemsToInsureCount * 0.01);
@@ -639,7 +659,9 @@ export class InsuranceController
                     this.logger.debug(`Item with id: ${itemId} missing from player inventory, skipping`);
                     continue;
                 }
-                items[inventoryItemsHash[itemId]._tpl] = Math.round(this.insuranceService.getPremium(pmcData, inventoryItemsHash[itemId], trader));
+                items[inventoryItemsHash[itemId]._tpl] = Math.round(
+                    this.insuranceService.getPremium(pmcData, inventoryItemsHash[itemId], trader),
+                );
             }
 
             output[trader] = items;

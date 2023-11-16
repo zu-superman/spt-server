@@ -26,8 +26,8 @@ describe("PlayerService", () =>
         {
             const playerProfile = {
                 Info: {
-                    Experience: 0 // Via wiki: https://escapefromtarkov.fandom.com/wiki/Character_skills#Levels
-                }
+                    Experience: 0, // Via wiki: https://escapefromtarkov.fandom.com/wiki/Character_skills#Levels
+                },
             };
 
             const result = playerService.calculateLevel(playerProfile as IPmcData);
@@ -39,8 +39,8 @@ describe("PlayerService", () =>
         {
             const playerProfile = {
                 Info: {
-                    Experience: 999 // Via wiki: https://escapefromtarkov.fandom.com/wiki/Character_skills#Levels
-                }
+                    Experience: 999, // Via wiki: https://escapefromtarkov.fandom.com/wiki/Character_skills#Levels
+                },
             };
 
             const result = playerService.calculateLevel(playerProfile as IPmcData);
@@ -52,8 +52,8 @@ describe("PlayerService", () =>
         {
             const playerProfile = {
                 Info: {
-                    Experience: 609066 // Via wiki: https://escapefromtarkov.fandom.com/wiki/Character_skills#Levels
-                }
+                    Experience: 609066, // Via wiki: https://escapefromtarkov.fandom.com/wiki/Character_skills#Levels
+                },
             };
 
             const result = playerService.calculateLevel(playerProfile as IPmcData);
@@ -65,8 +65,8 @@ describe("PlayerService", () =>
         {
             const playerProfile = {
                 Info: {
-                    Experience: 68206066 // Via wiki: https://escapefromtarkov.fandom.com/wiki/Character_skills#Levels
-                }
+                    Experience: 68206066, // Via wiki: https://escapefromtarkov.fandom.com/wiki/Character_skills#Levels
+                },
             };
 
             const result = playerService.calculateLevel(playerProfile as IPmcData);

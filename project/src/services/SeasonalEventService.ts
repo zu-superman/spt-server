@@ -36,7 +36,7 @@ export class SeasonalEventService
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("BotHelper") protected botHelper: BotHelper,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
-        @inject("ConfigServer") protected configServer: ConfigServer
+        @inject("ConfigServer") protected configServer: ConfigServer,
     )
     {
         this.seasonalEventConfig = this.configServer.getConfig(ConfigTypes.SEASONAL_EVENT);
@@ -54,7 +54,7 @@ export class SeasonalEventService
             "5df8a77486f77412672a1e3f", // Violet bauble
             "5df8a72c86f77412640e2e83", // Silver bauble
             "5a43943586f77416ad2f06e2", // Ded moroz hat
-            "5a43957686f7742a2c2f11b0" // Santa hat
+            "5a43957686f7742a2c2f11b0", // Santa hat
         ];
     }
 
@@ -71,7 +71,7 @@ export class SeasonalEventService
             "6176a40f0b8c0312ac75a3d3", // Ghoul mask
             "62a5c2c98ec41a51b34739c0", // Hockey player mask "Captain"
             "62a5c333ec21e50cad3b5dc6", // Hockey player mask "Brawler"
-            "62a5c41e8ec41a51b34739c3" // Hockey player mask "Quiet"
+            "62a5c41e8ec41a51b34739c3", // Hockey player mask "Quiet"
         ];
     }
 
@@ -106,7 +106,7 @@ export class SeasonalEventService
     /**
      * Check if item id exists in christmas or halloween event arrays
      * @param itemTpl item tpl to check for
-     * @returns 
+     * @returns
      */
     public itemIsSeasonalRelated(itemTpl: string): boolean
     {
@@ -236,11 +236,10 @@ export class SeasonalEventService
             const eventEndDate = new Date(currentDate.getFullYear(), event.endMonth - 1, event.endDay);
 
             // Current date is between start/end dates
-            if (currentDate >= eventStartDate
-                && currentDate <= eventEndDate)
+            if (currentDate >= eventStartDate && currentDate <= eventEndDate)
             {
-                this.christmasEventActive = (SeasonalEventType[event.type] === SeasonalEventType.CHRISTMAS);
-                this.halloweenEventActive = (SeasonalEventType[event.type] === SeasonalEventType.HALLOWEEN);
+                this.christmasEventActive = SeasonalEventType[event.type] === SeasonalEventType.CHRISTMAS;
+                this.halloweenEventActive = SeasonalEventType[event.type] === SeasonalEventType.HALLOWEEN;
             }
         }
     }
@@ -261,12 +260,18 @@ export class SeasonalEventService
         {
             if (!botInventory.equipment[equipmentSlotKey])
             {
-                this.logger.warning(this.localisationService.getText("seasonal-missing_equipment_slot_on_bot", {equipmentSlot: equipmentSlotKey, botRole: botRole}));
+                this.logger.warning(
+                    this.localisationService.getText("seasonal-missing_equipment_slot_on_bot", {
+                        equipmentSlot: equipmentSlotKey,
+                        botRole: botRole,
+                    }),
+                );
             }
 
             const equipment: Record<string, number> = botInventory.equipment[equipmentSlotKey];
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            botInventory.equipment[equipmentSlotKey] = Object.fromEntries(Object.entries(equipment).filter(([index]) => !christmasItems.includes(index)));
+            botInventory.equipment[equipmentSlotKey] = Object.fromEntries(
+                Object.entries(equipment).filter(([index]) => !christmasItems.includes(index)),
+            );
         }
 
         // Remove christmas related loot from loot containers
@@ -274,10 +279,17 @@ export class SeasonalEventService
         {
             if (!botInventory.items[lootContainerKey])
             {
-                this.logger.warning(this.localisationService.getText("seasonal-missing_loot_container_slot_on_bot", {lootContainer: lootContainerKey, botRole: botRole}));
+                this.logger.warning(
+                    this.localisationService.getText("seasonal-missing_loot_container_slot_on_bot", {
+                        lootContainer: lootContainerKey,
+                        botRole: botRole,
+                    }),
+                );
             }
 
-            botInventory.items[lootContainerKey] = botInventory.items[lootContainerKey].filter((x: string) => !christmasItems.includes(x));
+            botInventory.items[lootContainerKey] = botInventory.items[lootContainerKey].filter((x: string) =>
+                !christmasItems.includes(x)
+            );
         }
     }
 
@@ -292,7 +304,7 @@ export class SeasonalEventService
         switch (eventType.toLowerCase())
         {
             case SeasonalEventType.HALLOWEEN.toLowerCase():
-                globalConfig.EventType = globalConfig.EventType.filter(x => x !== "None");
+                globalConfig.EventType = globalConfig.EventType.filter((x) => x !== "None");
                 globalConfig.EventType.push("Halloween");
                 globalConfig.EventType.push("HalloweenIllumination");
                 globalConfig.Health.ProfileHealthSettings.DefaultStimulatorBuff = "Buffs_Halloween";
@@ -304,7 +316,7 @@ export class SeasonalEventService
                 this.adjustTraderIcons(eventType);
                 break;
             case SeasonalEventType.CHRISTMAS.toLowerCase():
-                globalConfig.EventType = globalConfig.EventType.filter(x => x !== "None");
+                globalConfig.EventType = globalConfig.EventType.filter((x) => x !== "None");
                 globalConfig.EventType.push("Christmas");
                 this.addEventGearToBots(eventType);
                 this.addGifterBotToMaps();
@@ -352,10 +364,10 @@ export class SeasonalEventService
             }
             for (const boss of bossesToAdd)
             {
-                const mapBosses: BossLocationSpawn[] = this.databaseServer.getTables().locations[mapKey].base.BossLocationSpawn;
-                if (!mapBosses.find(x => x.BossName === boss.BossName))
+                const mapBosses: BossLocationSpawn[] =
+                    this.databaseServer.getTables().locations[mapKey].base.BossLocationSpawn;
+                if (!mapBosses.find((x) => x.BossName === boss.BossName))
                 {
-
                     this.databaseServer.getTables().locations[mapKey].base.BossLocationSpawn.push(...bossesToAdd);
                 }
             }
@@ -371,21 +383,31 @@ export class SeasonalEventService
         switch (eventType.toLowerCase())
         {
             case SeasonalEventType.HALLOWEEN.toLowerCase():
-                this.httpConfig.serverImagePathOverride["./assets/images/traders/5a7c2ebb86f7746e324a06ab.png"] = "./assets/images/traders/halloween/5a7c2ebb86f7746e324a06ab.png";
-                this.httpConfig.serverImagePathOverride["./assets/images/traders/5ac3b86a86f77461491d1ad8.png"] = "./assets/images/traders/halloween/5ac3b86a86f77461491d1ad8.png";
-                this.httpConfig.serverImagePathOverride["./assets/images/traders/5c06531a86f7746319710e1b.png"] = "./assets/images/traders/halloween/5c06531a86f7746319710e1b.png";
-                this.httpConfig.serverImagePathOverride["./assets/images/traders/59b91ca086f77469a81232e4.png"] = "./assets/images/traders/halloween/59b91ca086f77469a81232e4.png";
-                this.httpConfig.serverImagePathOverride["./assets/images/traders/59b91cab86f77469aa5343ca.png"] = "./assets/images/traders/halloween/59b91cab86f77469aa5343ca.png";
-                this.httpConfig.serverImagePathOverride["./assets/images/traders/59b91cb486f77469a81232e5.png"] = "./assets/images/traders/halloween/59b91cb486f77469a81232e5.png";
-                this.httpConfig.serverImagePathOverride["./assets/images/traders/59b91cbd86f77469aa5343cb.png"] = "./assets/images/traders/halloween/59b91cbd86f77469aa5343cb.png";
-                this.httpConfig.serverImagePathOverride["./assets/images/traders/579dc571d53a0658a154fbec.png"] = "./assets/images/traders/halloween/579dc571d53a0658a154fbec.png"; 
-                break; 
+                this.httpConfig.serverImagePathOverride["./assets/images/traders/5a7c2ebb86f7746e324a06ab.png"] =
+                    "./assets/images/traders/halloween/5a7c2ebb86f7746e324a06ab.png";
+                this.httpConfig.serverImagePathOverride["./assets/images/traders/5ac3b86a86f77461491d1ad8.png"] =
+                    "./assets/images/traders/halloween/5ac3b86a86f77461491d1ad8.png";
+                this.httpConfig.serverImagePathOverride["./assets/images/traders/5c06531a86f7746319710e1b.png"] =
+                    "./assets/images/traders/halloween/5c06531a86f7746319710e1b.png";
+                this.httpConfig.serverImagePathOverride["./assets/images/traders/59b91ca086f77469a81232e4.png"] =
+                    "./assets/images/traders/halloween/59b91ca086f77469a81232e4.png";
+                this.httpConfig.serverImagePathOverride["./assets/images/traders/59b91cab86f77469aa5343ca.png"] =
+                    "./assets/images/traders/halloween/59b91cab86f77469aa5343ca.png";
+                this.httpConfig.serverImagePathOverride["./assets/images/traders/59b91cb486f77469a81232e5.png"] =
+                    "./assets/images/traders/halloween/59b91cb486f77469a81232e5.png";
+                this.httpConfig.serverImagePathOverride["./assets/images/traders/59b91cbd86f77469aa5343cb.png"] =
+                    "./assets/images/traders/halloween/59b91cbd86f77469aa5343cb.png";
+                this.httpConfig.serverImagePathOverride["./assets/images/traders/579dc571d53a0658a154fbec.png"] =
+                    "./assets/images/traders/halloween/579dc571d53a0658a154fbec.png";
+                break;
             case SeasonalEventType.CHRISTMAS.toLowerCase():
                 // TODO: find christmas trader icons
                 break;
         }
 
-        this.databaseImporter.loadImages(`${this.databaseImporter.getSptDataPath()}images/`, ["traders"], ["/files/trader/avatar/"]);
+        this.databaseImporter.loadImages(`${this.databaseImporter.getSptDataPath()}images/`, ["traders"], [
+            "/files/trader/avatar/",
+        ]);
     }
 
     /**
@@ -413,7 +435,7 @@ export class SeasonalEventService
 
             return;
         }
-        
+
         // Iterate over bots with changes to apply
         for (const bot in botGearChanges)
         {
@@ -429,7 +451,10 @@ export class SeasonalEventService
             for (const equipmentSlot in gearAmendments)
             {
                 // Adjust slots spawn chance to be at least 75%
-                botToUpdate.chances.equipment[equipmentSlot] = Math.max(botToUpdate.chances.equipment[equipmentSlot], 75);
+                botToUpdate.chances.equipment[equipmentSlot] = Math.max(
+                    botToUpdate.chances.equipment[equipmentSlot],
+                    75,
+                );
 
                 // Grab gear to add and loop over it
                 const itemsToAdd = gearAmendments[equipmentSlot];
@@ -496,7 +521,7 @@ export class SeasonalEventService
                 TriggerId: "",
                 TriggerName: "",
                 Delay: 0,
-                RandomTimeSpawn: false
+                RandomTimeSpawn: false,
             });
         }
     }
@@ -512,7 +537,6 @@ export class SeasonalEventService
         {
             this.giftService.sendGiftToPlayer(playerId, giftkey);
         }
-        
     }
 
     /**

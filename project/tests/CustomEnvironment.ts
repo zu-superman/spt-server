@@ -14,7 +14,7 @@ import { ImporterUtil } from "@spt-aki/utils/ImporterUtil";
 // Manually mock for the logger.
 import { WinstonLogger } from "@tests/__mocks__/WinstonLogger.mock";
 
-export default <Environment> {
+export default <Environment>{
     name: "spt-aki-server",
     transformMode: "ssr",
     async setup()
@@ -31,9 +31,9 @@ export default <Environment> {
 
         return {
             async teardown()
-            {}
+            {},
         };
-    }
+    },
 };
 
 /**

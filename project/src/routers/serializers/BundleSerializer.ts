@@ -9,17 +9,15 @@ import { HttpFileUtil } from "@spt-aki/utils/HttpFileUtil";
 @injectable()
 export class BundleSerializer extends Serializer
 {
-
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("BundleLoader") protected bundleLoader: BundleLoader,
-        @inject("HttpFileUtil") protected httpFileUtil: HttpFileUtil
+        @inject("HttpFileUtil") protected httpFileUtil: HttpFileUtil,
     )
     {
         super();
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public override serialize(sessionID: string, req: IncomingMessage, resp: ServerResponse, body: any): void
     {
         this.logger.info(`[BUNDLE]: ${req.url}`);

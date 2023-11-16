@@ -64,7 +64,10 @@ describe("ItemBaseClassService", () =>
 
             // Remove item from base cache
             delete itemBaseClassService.itemBaseClassesCache[salewaTpl];
-            const result = itemBaseClassService.itemHasBaseClass(salewaTpl, ["543be5664bdc2dd4348b4569", "54009119af1c881c07000029"]); // "Meds" and "Item" type
+            const result = itemBaseClassService.itemHasBaseClass(salewaTpl, [
+                "543be5664bdc2dd4348b4569",
+                "54009119af1c881c07000029",
+            ]); // "Meds" and "Item" type
 
             expect(result).toBe(true);
         });
