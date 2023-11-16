@@ -740,7 +740,7 @@ export class HideoutController
             counterHoursCrafting.value = hoursCrafting;
 
             // Null production data now it's complete - will be cleaned up later by update() process
-            pmcData.Hideout.Production[prodId] = null;
+            pmcData.Hideout.Production[prodId].sptIsComplete = true;
         };
 
         // Remove the old production from output object before its sent to client
@@ -820,8 +820,8 @@ export class HideoutController
         const callback = () =>
         {
 
-            // Null production data now it's complete - will be cleaned up later by update() process
-            pmcData.Hideout.Production[prodId] = null;
+            // Flag as complete - will be cleaned up later by update() process
+            pmcData.Hideout.Production[prodId].sptIsComplete = true;
         };
 
         return this.inventoryHelper.addItem(pmcData, newReq, output, sessionID, callback, true);

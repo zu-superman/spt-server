@@ -389,6 +389,8 @@ export interface Productive
     /** Used when sending data to client */
     NeedFuelForAllProductionTime?: boolean
     sptIsScavCase?: boolean
+    /** Some crafts are always inProgress, but need to be reset, e.g. water collector */
+    sptIsComplete?: boolean
 }
 
 export interface Production extends Productive 
