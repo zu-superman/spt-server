@@ -1,9 +1,10 @@
 import "reflect-metadata";
 import { container } from "tsyringe";
-import { format } from "date-fns";
-import { profileInsuranceFixture } from "@tests/__fixture__/profileInsurance.fixture";
-import { Insurance } from "@spt-aki/models/eft/profile/IAkiProfile";
+
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
+import { Insurance } from "@spt-aki/models/eft/profile/IAkiProfile";
+import { profileInsuranceFixture } from "@tests/__fixture__/profileInsurance.fixture";
+import { format } from "date-fns";
 
 type DateInput = number | number[] | { [index: number]: number; };
 
@@ -79,7 +80,6 @@ export class ProfileInsuranceFactory
         this.profileInsuranceFixture = this.profileInsuranceFixture.map((insurance) =>
         {
             insurance.items = insurance.items.filter((item) => itemHelper.isAttachmentAttached(item));
-
             return insurance;
         });
 

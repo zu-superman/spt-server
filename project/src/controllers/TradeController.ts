@@ -29,7 +29,7 @@ import { HttpResponseUtil } from "@spt-aki/utils/HttpResponseUtil";
 import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 
 @injectable()
-class TradeController
+export class TradeController
 {
     protected ragfairConfig: IRagfairConfig;
     protected traderConfig: ITraderConfig;
@@ -119,7 +119,8 @@ class TradeController
                 scheme_items: offer.items,
             };
 
-            // confirmTrading() must occur prior to removing the offer stack, otherwise item inside offer doesn't exist for confirmTrading() to use
+            // confirmTrading() must occur prior to removing the offer stack, otherwise item inside offer doesn't exist
+            // for confirmTrading() to use
             output = this.confirmTradingInternal(
                 pmcData,
                 buyData,
@@ -157,7 +158,7 @@ class TradeController
     }
 
     /**
-     * Sell all sellable items to a trader from inventory
+     * Sell all items (that can be sold) to a trader from inventory
      * WILL DELETE ITEMS FROM INVENTORY + CHILDREN OF ITEMS SOLD
      * @param sessionId Session id
      * @param profileWithItemsToSell Profile with items to be sold to trader
@@ -173,7 +174,7 @@ class TradeController
     ): IItemEventRouterResponse
     {
         const handbookPrices = this.ragfairPriceService.getAllStaticPrices();
-        // TODO, apply trader sell bonuses?
+        // TODO: apply trader sell bonuses?
         const traderDetails = this.traderHelper.getTrader(trader, sessionId);
 
         // Prep request object
@@ -237,7 +238,7 @@ class TradeController
                     && this.itemHelper.isOfBaseclasses(itemDetails[1]._id, traderDetails.items_buy.category))
             )
             {
-                // Skip if tpl isnt item OR item doesn't fulfill match traders buy categories
+                // Skip if tpl isn't item OR item doesn't fulfill match traders buy categories
                 continue;
             }
 
@@ -273,5 +274,3 @@ class TradeController
         return null;
     }
 }
-
-export {TradeController};

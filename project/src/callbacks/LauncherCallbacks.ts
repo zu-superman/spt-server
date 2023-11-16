@@ -11,7 +11,7 @@ import { HttpResponseUtil } from "@spt-aki/utils/HttpResponseUtil";
 import { Watermark } from "@spt-aki/utils/Watermark";
 
 @injectable()
-class LauncherCallbacks
+export class LauncherCallbacks
 {
     constructor(
         @inject("HttpResponseUtil") protected httpResponse: HttpResponseUtil,
@@ -92,5 +92,3 @@ class LauncherCallbacks
         return this.httpResponse.noBody(this.launcherController.getServerModsProfileUsed(sessionId));
     }
 }
-
-export {LauncherCallbacks};

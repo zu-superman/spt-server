@@ -55,10 +55,9 @@ export class ExternalInventoryMagGen implements IInventoryMagGen
 
             if (ableToFitMagazinesIntoBotInventory === ItemAddedResult.NO_SPACE && i < randomizedMagazineCount)
             {
-                /* We were unable to fit at least the minimum amount of magazines,
-                     * so we fallback to default magazine and try again.
-                     * Temporary workaround to Killa spawning with no extras if he spawns with a drum mag */
-
+                // We were unable to fit at least the minimum amount of magazines, so we fallback to default magazine
+                // and try again. Temporary workaround to Killa spawning with no extras if he spawns with a drum mag.
+                // TODO: Fix this properly
                 if (
                     magazineTpl
                         === this.botWeaponGeneratorHelper.getWeaponsDefaultMagazineTpl(

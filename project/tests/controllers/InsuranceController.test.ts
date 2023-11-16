@@ -1,16 +1,16 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import "reflect-metadata";
 import { container } from "tsyringe";
-import { vi, afterEach, describe, expect, it, beforeEach } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { InsuranceController } from "@spt-aki/controllers/InsuranceController";
 import { ProfileInsuranceFactory } from "@tests/__factories__/ProfileInsurance.factory";
 
-import { MessageType } from "@spt-aki/models/enums/MessageType";
+import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { TraderHelper } from "@spt-aki/helpers/TraderHelper";
 import { Item } from "@spt-aki/models/eft/common/tables/IItem";
 import { Insurance } from "@spt-aki/models/eft/profile/IAkiProfile";
-import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
+import { MessageType } from "@spt-aki/models/enums/MessageType";
 
 describe("InsuranceController", () =>
 {
@@ -1382,13 +1382,13 @@ describe("InsuranceController", () =>
 
     describe("insure", () =>
     {
-        let pmcData: any,
-            body: any,
-            sessionId: string,
-            insuranceController: any,
-            mockGetPremium: any,
-            mockPayMoney: any,
-            mockGetOutput: any;
+        let pmcData: any;
+        let body: any;
+        let sessionId: string;
+        let insuranceController: any;
+        let mockGetPremium: any;
+        let mockPayMoney: any;
+        let mockGetOutput: any;
 
         beforeEach(() =>
         {

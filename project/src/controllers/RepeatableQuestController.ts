@@ -72,8 +72,8 @@ export class RepeatableQuestController
      * }
      *
      * The method checks if the player level requirement for repeatable quests (e.g. daily lvl5, weekly lvl15) is met and if the previously active quests
-     * are still valid. This ischecked by endTime persisted in profile accordning to the resetTime configured for each repeatable kind (daily, weekly)
-     * in QuestCondig.js
+     * are still valid. This is checked by endTime persisted in profile according to the resetTime configured for each repeatable kind (daily, weekly)
+     * in QuestConfig.js
      *
      * If the condition is met, new repeatableQuests are created, old quests (which are persisted in the profile.RepeatableQuests[i].activeQuests) are
      * moved to profile.RepeatableQuests[i].inactiveQuests. This memory is required to get rid of old repeatable quest data in the profile, otherwise
@@ -82,7 +82,7 @@ export class RepeatableQuestController
      * The new quests generated are again persisted in profile.RepeatableQuests
      *
      * @param   {string}    sessionId       Player's session id
-     * @returns  {array}                    array of "repeatableQuestObjects" as descibed above
+     * @returns  {array}                    array of "repeatableQuestObjects" as described above
      */
     public getClientRepeatableQuests(_info: IEmptyRequestData, sessionID: string): IPmcDataRepeatableQuest[]
     {
@@ -304,7 +304,7 @@ export class RepeatableQuestController
         }
 
         // Add "any" to pickup quest pool
-        questPool.pool.Pickup.locations["any"] = ["any"];
+        questPool.pool.Pickup.locations.any = ["any"];
 
         const eliminationConfig = this.repeatableQuestHelper.getEliminationConfigByPmcLevel(pmcLevel, repeatableConfig);
         const targetsConfig = this.repeatableQuestHelper.probabilityObjectArray(eliminationConfig.targets);
@@ -319,7 +319,7 @@ export class RepeatableQuestController
             {
                 const possibleLocations = Object.keys(repeatableConfig.locations);
 
-                // Set possible locations for elimination task, ift arget is savage, exclude labs from locations
+                // Set possible locations for elimination task, if target is savage, exclude labs from locations
                 questPool.pool.Elimination.targets[probabilityObject.key] = (probabilityObject.key === "Savage")
                     ? { locations: possibleLocations.filter((x) => x !== "laboratory") }
                     : { locations: possibleLocations };
@@ -394,7 +394,8 @@ export class RepeatableQuestController
             // Get cost to replace existing quest
             changeRequirement = this.jsonUtil.clone(currentRepeatablePool.changeRequirement[changeRequest.qid]);
             delete currentRepeatablePool.changeRequirement[changeRequest.qid];
-            // TODO: somehow we need to reduce the questPool by the currently active quests (for all repeatables)
+
+            // TODO: somehow we need to reduce the questPool by the currently active quests (for all repeatable)
 
             const repeatableConfig = this.questConfig.repeatableQuests.find((x) =>
                 x.name === currentRepeatablePool.name
@@ -484,7 +485,6 @@ export class RepeatableQuestController
                 break;
             }
         }
-
         return newRepeatableQuest;
     }
 }

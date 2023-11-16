@@ -315,9 +315,9 @@ export class InventoryHelper
                         const itemLocation = {};
 
                         // Item already has location property, use it
-                        if (itemLib[tmpKey]["location"] !== undefined)
+                        if (itemLib[tmpKey].location !== undefined)
                         {
-                            itemLocation["location"] = itemLib[tmpKey]["location"];
+                            itemLocation.location = itemLib[tmpKey].location;
                         }
 
                         output.profileChanges[sessionID].items.new.push({
@@ -887,9 +887,8 @@ export class InventoryHelper
     {
         const inventoryItemHash: InventoryHelper.InventoryItemHash = { byItemId: {}, byParentId: {} };
 
-        for (let i = 0; i < inventoryItem.length; i++)
+        for (const item of inventoryItem)
         {
-            const item = inventoryItem[i];
             inventoryItemHash.byItemId[item._id] = item;
 
             if (!("parentId" in item))

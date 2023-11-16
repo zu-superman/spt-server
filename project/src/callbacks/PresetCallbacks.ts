@@ -7,8 +7,7 @@ import { OnLoad } from "@spt-aki/di/OnLoad";
 export class PresetCallbacks implements OnLoad
 {
     constructor(@inject("PresetController") protected presetController: PresetController)
-    {
-    }
+    {}
 
     public async onLoad(): Promise<void>
     {

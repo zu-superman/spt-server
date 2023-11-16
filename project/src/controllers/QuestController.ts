@@ -133,7 +133,7 @@ export class QuestController
                     break;
                 }
 
-                // Prereq does not have its status requirement fulfilled
+                // Prerequisite does not have its status requirement fulfilled
                 if (!conditionToFulfil._props.status.includes(prerequisiteQuest.status))
                 {
                     haveCompletedPreviousQuest = false;
@@ -402,15 +402,15 @@ export class QuestController
 
         // Can be started text or description text based on above function result
         let questStartedMessageText = locale[questStartedMessageKey];
-        // TODO: remove this whole if statement, possibly not required?
+        // TODO: Remove this whole if statement, possibly not required?
         if (!questStartedMessageText)
         {
             this.logger.debug(
                 `Unable to accept quest ${acceptedQuest.qid}, cannot find the quest started message text with id ${questStartedMessageKey}. attempting to find it in en locale instead`,
             );
 
-            // For some reason non-en locales dont have repeatable quest ids, fall back to en and grab it if possible
-            const enLocale = this.databaseServer.getTables().locales.global["en"];
+            // For some reason non-en locales don't have repeatable quest ids, fall back to en and grab it if possible
+            const enLocale = this.databaseServer.getTables().locales.global.en;
             questStartedMessageText = enLocale[repeatableQuestProfile.startedMessageText];
 
             if (!questStartedMessageText)
@@ -532,7 +532,7 @@ export class QuestController
         // Add diff of quests before completion vs after for client response
         const questDelta = this.questHelper.getDeltaQuests(beforeQuests, this.getClientQuests(sessionID));
 
-        // Check newly available + failed quests for timegates and add them to profile
+        // Check newly available + failed quests for time gates and add them to profile
         this.addTimeLockedQuestsToProfile(pmcData, [...questDelta, ...questsToFail], body.qid);
 
         // Inform client of quest changes
@@ -593,12 +593,12 @@ export class QuestController
 
     /**
      * Return quests that have different statuses
-     * @param preQuestStatusus Quests before
+     * @param preQuestStatuses Quests before
      * @param postQuestStatuses Quests after
      * @returns QuestStatusChange array
      */
     protected getQuestsWithDifferentStatuses(
-        preQuestStatusus: IQuestStatus[],
+        preQuestStatuses: IQuestStatus[],
         postQuestStatuses: IQuestStatus[],
     ): IQuestStatus[]
     {
@@ -607,7 +607,7 @@ export class QuestController
         for (const quest of postQuestStatuses)
         {
             // Add quest if status differs or quest not found
-            const preQuest = preQuestStatusus.find((x) => x.qid === quest.qid);
+            const preQuest = preQuestStatuses.find((x) => x.qid === quest.qid);
             if (!preQuest || preQuest.status !== quest.status)
             {
                 result.push(quest);
@@ -659,7 +659,7 @@ export class QuestController
         // Iterate over quests, look for quests with right criteria
         for (const quest of quests)
         {
-            // If quest has prereq of completed quest + availableAfter value > 0 (quest has wait time)
+            // If quest has prerequisite of completed quest + availableAfter value > 0 (quest has wait time)
             const nextQuestWaitCondition = quest.conditions.AvailableForStart.find((x) =>
                 x._props.target === completedQuestId && x._props.availableAfter > 0
             );
@@ -686,7 +686,7 @@ export class QuestController
                     startTime: 0,
                     status: QuestStatus.AvailableAfter,
                     statusTimers: {
-                        "9": this.timeUtil.getTimestamp(),
+                        "9": this.timeUtil.getTimestamp(), // eslint-disable-line @typescript-eslint/naming-convention
                     },
                     availableAfter: availableAfterTimestamp,
                 });
@@ -832,7 +832,7 @@ export class QuestController
             const matchingItemInProfile = pmcData.Inventory.items.find((x) => x._id === itemHandover.id);
             if (!handoverRequirements._props.target.includes(matchingItemInProfile._tpl))
             {
-                // Item handed in by player doesnt match what was requested
+                // Item handed in by player doesn't match what was requested
                 return this.showQuestItemHandoverMatchError(
                     handoverQuestRequest,
                     matchingItemInProfile,

@@ -189,7 +189,10 @@ export class RagfairOfferService
     public expireStaleOffers(): void
     {
         const time = this.timeUtil.getTimestamp();
-        this.ragfairOfferHandler.getStaleOffers(time).forEach((o) => this.processStaleOffer(o));
+        for (const staleOffer of this.ragfairOfferHandler.getStaleOffers(time))
+        {
+            this.processStaleOffer(staleOffer);
+        }
     }
 
     /**

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import "reflect-metadata";
 import { container } from "tsyringe";
-import { vi, beforeEach, afterEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
 import { PlayerService } from "@spt-aki/services/PlayerService";

@@ -161,7 +161,7 @@ export class BotInventoryGenerator
 
         for (const equipmentSlot in templateInventory.equipment)
         {
-            // Weapons have special generation and will be generated seperately; ArmorVest should be generated after TactivalVest
+            // Weapons have special generation and will be generated separately; ArmorVest should be generated after TactivalVest
             if (excludedSlots.includes(equipmentSlot))
             {
                 continue;
@@ -331,7 +331,7 @@ export class BotInventoryGenerator
 
     /**
      * Get all possible mods for item and filter down based on equipment blacklist from bot.json config
-     * @param itemTpl Item mod pool is being retreived and filtered
+     * @param itemTpl Item mod pool is being retrieved and filtered
      * @param equipmentBlacklist blacklist to filter mod pool with
      * @returns Filtered pool of mods
      */

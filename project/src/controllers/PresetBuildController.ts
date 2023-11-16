@@ -48,7 +48,7 @@ export class PresetBuildController
         );
         if (playerSecureContainer && playerSecureContainer?._tpl !== firstDefaultItemsSecureContainer?._tpl)
         {
-            // Default equipment presets' secure container tpl doesnt match players secure container tpl
+            // Default equipment presets' secure container tpl doesn't match players secure container tpl
             for (const defaultPreset of defaultEquipmentPresets)
             {
                 // Find presets secure container
@@ -74,7 +74,7 @@ export class PresetBuildController
         sessionId: string,
     ): IItemEventRouterResponse
     {
-        // TODO - could be merged into saveBuild, maybe
+        // TODO: Could be merged into saveBuild, maybe
         const output = this.eventOutputHolder.getOutput(sessionId);
 
         // Replace duplicate Id's. The first item is the base item.
@@ -182,7 +182,7 @@ export class PresetBuildController
         sessionID: string,
     ): IItemEventRouterResponse
     {
-        // todo - does this get called?
+        // TODO: Does this get called?
         return this.removePlayerBuild(pmcData, body.id, sessionID);
     }
 
@@ -193,7 +193,7 @@ export class PresetBuildController
         sessionID: string,
     ): IItemEventRouterResponse
     {
-        // todo - does this get called?
+        // TODO: Does this get called?
         return this.removePlayerBuild(pmcData, body.id, sessionID);
     }
 

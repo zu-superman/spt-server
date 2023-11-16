@@ -42,7 +42,7 @@ export class CustomizationController
         const templates = this.databaseServer.getTables().templates.customization;
         const suits = this.databaseServer.getTables().traders[traderID].suits;
 
-        // Get an inner join of clothing from templates.customization and ragmans suits array
+        // Get an inner join of clothing from templates.customization and Ragman's suits array
         const matchingSuits = suits.filter((x) => x.suiteId in templates);
 
         // Return all suits that have a side array containing the players side (usec/bear)

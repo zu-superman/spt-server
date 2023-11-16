@@ -57,7 +57,6 @@ export class InsuranceCallbacks implements OnUpdate
             this.insuranceController.processReturn();
             return true;
         }
-
         return false;
     }
 

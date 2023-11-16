@@ -11,13 +11,16 @@ export class ApplicationContext
     private static holderMaxSize = 10;
 
     /**
-     * Called like:
+     * @examples
      *
-     * const registerPlayerInfo = this.applicationContext.getLatestValue(ContextVariableType.REGISTER_PLAYER_REQUEST).getValue<IRegisterPlayerRequestData>();
+     * const registerPlayerInfo = this.applicationContext.getLatestValue(ContextVariableType.REGISTER_PLAYER_REQUEST)
+     *     .getValue<IRegisterPlayerRequestData>();
      *
-     * const activePlayerSessionId = this.applicationContext.getLatestValue(ContextVariableType.SESSION_ID).getValue<string>();
+     * const activePlayerSessionId = this.applicationContext.getLatestValue(ContextVariableType.SESSION_ID)
+     *     .getValue<string>();
      *
-     * const matchInfo = this.applicationContext.getLatestValue(ContextVariableType.MATCH_INFO).getValue<IStartOfflineRaidRequestData>();
+     * const matchInfo = this.applicationContext.getLatestValue(ContextVariableType.MATCH_INFO)
+     *     .getValue<IStartOfflineRaidRequestData>();
      * @param type
      * @returns
      */
@@ -27,7 +30,6 @@ export class ApplicationContext
         {
             return this.variables.get(type)?.getTail()?.getValue();
         }
-
         return undefined;
     }
 
@@ -37,7 +39,6 @@ export class ApplicationContext
         {
             return this.variables.get(type).toList();
         }
-
         return undefined;
     }
 

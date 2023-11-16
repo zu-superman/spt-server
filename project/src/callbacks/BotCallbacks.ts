@@ -41,7 +41,6 @@ export class BotCallbacks
         {
             return this.httpResponse.noBody(this.botController.getBotCoreDifficulty());
         }
-
         return this.httpResponse.noBody(this.botController.getBotDifficulty(type, difficulty));
     }
 

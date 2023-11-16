@@ -1,12 +1,12 @@
 import "reflect-metadata";
 import { container } from "tsyringe";
-import { vi, beforeEach, afterEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { Item, Repairable } from "@spt-aki/models/eft/common/tables/IItem";
+import { ITemplateItem } from "@spt-aki/models/eft/common/tables/ITemplateItem";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { HashUtil } from "@spt-aki/utils/HashUtil";
-import { ITemplateItem } from "@spt-aki/models/eft/common/tables/ITemplateItem";
 
 describe("ItemHelper", () =>
 {
@@ -253,7 +253,7 @@ describe("ItemHelper", () =>
             const fixedItem = itemHelper.fixItemStackCount(initialItem);
 
             expect(fixedItem.upd).toBeDefined();
-            expect(fixedItem.upd!.StackObjectsCount).toBe(1);
+            expect(fixedItem.upd?.StackObjectsCount).toBe(1);
         });
 
         it("should set upd.StackObjectsCount to 1 if upd.StackObjectsCount is undefined", () =>
@@ -262,7 +262,7 @@ describe("ItemHelper", () =>
             const fixedItem = itemHelper.fixItemStackCount(initialItem);
 
             expect(fixedItem.upd).toBeDefined();
-            expect(fixedItem.upd!.StackObjectsCount).toBe(1);
+            expect(fixedItem.upd?.StackObjectsCount).toBe(1);
         });
 
         it("should not change upd.StackObjectsCount if it is already defined", () =>
@@ -271,7 +271,7 @@ describe("ItemHelper", () =>
             const fixedItem = itemHelper.fixItemStackCount(initialItem);
 
             expect(fixedItem.upd).toBeDefined();
-            expect(fixedItem.upd!.StackObjectsCount).toBe(5);
+            expect(fixedItem.upd?.StackObjectsCount).toBe(5);
         });
     });
 
@@ -446,7 +446,7 @@ describe("ItemHelper", () =>
             expect(result).toBe(0.5);
         });
 
-        it("should return correct value for a reparable helmet", () =>
+        it("should return correct value for a repairable helmet", () =>
         {
             const itemId = container.resolve<HashUtil>("HashUtil").generate();
             const item: Item = {
@@ -815,7 +815,7 @@ describe("ItemHelper", () =>
 
     describe("addCartridgesToAmmoBox", () =>
     {
-        it("should return an array with  1xammoBox and 1xcartridge item", () =>
+        it("should return an array with 1x ammoBox and 1x cartridge item", () =>
         {
             const itemId = container.resolve<HashUtil>("HashUtil").generate();
             const ammoBox: Item[] = [{
@@ -831,7 +831,7 @@ describe("ItemHelper", () =>
             expect(ammoBox[1].upd.StackObjectsCount).toBe(8);
         });
 
-        it("should return an array with 1xammoBox and 2xcartridge items", () =>
+        it("should return an array with 1x ammoBox and 2x cartridge items", () =>
         {
             const itemId = container.resolve<HashUtil>("HashUtil").generate();
             const ammoBox: Item[] = [{

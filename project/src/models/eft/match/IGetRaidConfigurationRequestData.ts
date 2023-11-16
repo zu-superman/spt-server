@@ -13,32 +13,32 @@ export interface IGetRaidConfigurationRequestData
 }
 
 // {
-//     "keyId": "",
-//     "side": "Pmc",
-//     "location": "factory4_day",
-//     "timeVariant": "CURR", or "PAST"
-//     "raidMode": "Local",
-//     "metabolismDisabled": false,
-//     "playersSpawnPlace": "SamePlace",
-//     "timeAndWeatherSettings": {
-//         "isRandomTime": false,
-//         "isRandomWeather": false,
-//         "cloudinessType": "Clear",
-//         "rainType": "NoRain",
-//         "windType": "Light",
-//         "fogType": "NoFog",
-//         "timeFlowType": "x1",
-//         "hourOfDay": -1
+//     keyId: "",
+//     side: "Pmc",
+//     location: "factory4_day",
+//     timeVariant: "CURR", or "PAST"
+//     raidMode: "Local",
+//     metabolismDisabled: false,
+//     playersSpawnPlace: "SamePlace",
+//     timeAndWeatherSettings: {
+//         isRandomTime: false,
+//         isRandomWeather: false,
+//         cloudinessType: "Clear",
+//         rainType: "NoRain",
+//         windType: "Light",
+//         fogType: "NoFog",
+//         timeFlowType: "x1",
+//         hourOfDay: -1
 //     },
-//     "botSettings": {
-//         "isScavWars": false,
-//         "botAmount": "AsOnline"
+//     botSettings: {
+//         isScavWars: false,
+//         botAmount: "AsOnline"
 //     },
-//     "wavesSettings": {
-//         "botAmount": "AsOnline",
-//         "botDifficulty": "AsOnline",
-//         "isBosses": true,
-//         "isTaggedAndCursed": false
+//     wavesSettings: {
+//         botAmount: "AsOnline",
+//         botDifficulty: "AsOnline",
+//         isBosses: true,
+//         isTaggedAndCursed: false
 //     }
 // }
 

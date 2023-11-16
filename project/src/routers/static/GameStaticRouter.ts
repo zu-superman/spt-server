@@ -9,20 +9,14 @@ export class GameStaticRouter extends StaticRouter
     constructor(@inject("GameCallbacks") protected gameCallbacks: GameCallbacks)
     {
         super([
-            new RouteAction(
-                "/client/game/config",
-                (url: string, info: any, sessionID: string, output: string): any =>
-                {
-                    return this.gameCallbacks.getGameConfig(url, info, sessionID);
-                },
-            ),
-            new RouteAction(
-                "/client/server/list",
-                (url: string, info: any, sessionID: string, output: string): any =>
-                {
-                    return this.gameCallbacks.getServer(url, info, sessionID);
-                },
-            ),
+            new RouteAction("/client/game/config", (url: string, info: any, sessionID: string, output: string): any =>
+            {
+                return this.gameCallbacks.getGameConfig(url, info, sessionID);
+            }),
+            new RouteAction("/client/server/list", (url: string, info: any, sessionID: string, output: string): any =>
+            {
+                return this.gameCallbacks.getServer(url, info, sessionID);
+            }),
             new RouteAction(
                 "/client/match/group/current",
                 (url: string, info: any, sessionID: string, output: string): any =>
@@ -37,27 +31,18 @@ export class GameStaticRouter extends StaticRouter
                     return this.gameCallbacks.versionValidate(url, info, sessionID);
                 },
             ),
-            new RouteAction(
-                "/client/game/start",
-                (url: string, info: any, sessionID: string, output: string): any =>
-                {
-                    return this.gameCallbacks.gameStart(url, info, sessionID);
-                },
-            ),
-            new RouteAction(
-                "/client/game/logout",
-                (url: string, info: any, sessionID: string, output: string): any =>
-                {
-                    return this.gameCallbacks.gameLogout(url, info, sessionID);
-                },
-            ),
-            new RouteAction(
-                "/client/checkVersion",
-                (url: string, info: any, sessionID: string, output: string): any =>
-                {
-                    return this.gameCallbacks.validateGameVersion(url, info, sessionID);
-                },
-            ),
+            new RouteAction("/client/game/start", (url: string, info: any, sessionID: string, output: string): any =>
+            {
+                return this.gameCallbacks.gameStart(url, info, sessionID);
+            }),
+            new RouteAction("/client/game/logout", (url: string, info: any, sessionID: string, output: string): any =>
+            {
+                return this.gameCallbacks.gameLogout(url, info, sessionID);
+            }),
+            new RouteAction("/client/checkVersion", (url: string, info: any, sessionID: string, output: string): any =>
+            {
+                return this.gameCallbacks.validateGameVersion(url, info, sessionID);
+            }),
             new RouteAction(
                 "/client/game/keepalive",
                 (url: string, info: any, sessionID: string, output: string): any =>

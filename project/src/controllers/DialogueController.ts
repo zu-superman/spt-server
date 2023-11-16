@@ -141,7 +141,7 @@ export class DialogueController
 
     /**
      * Handle client/mail/dialog/view
-     * Handle player clicking 'messenger' and seeing all the messages they've recieved
+     * Handle player clicking 'messenger' and seeing all the messages they've received
      * Set the content of the dialogue on the details panel, showing all the messages
      * for the specified dialogue.
      * @param request Get dialog request
@@ -173,7 +173,7 @@ export class DialogueController
     /**
      * Get dialog from player profile, create if doesn't exist
      * @param profile Player profile
-     * @param request get dialog request (params used when dialog doesnt exist in profile)
+     * @param request get dialog request (params used when dialog doesn't exist in profile)
      * @returns Dialogue
      */
     protected getDialogByIdFromProfile(profile: IAkiProfile, request: IGetMailDialogViewRequestData): Dialogue
@@ -211,7 +211,7 @@ export class DialogueController
         {
             result.push(...dialogUsers);
 
-            // Player doesnt exist, add them in before returning
+            // Player doesn't exist, add them in before returning
             if (!result.find((x) => x._id === fullProfile.info.id))
             {
                 const pmcProfile = fullProfile.characters.pmc;
@@ -274,7 +274,6 @@ export class DialogueController
         if (!dialog)
         {
             this.logger.error(`No dialog in profile: ${sessionId} found with id: ${dialogueId}`);
-
             return;
         }
 
@@ -288,7 +287,6 @@ export class DialogueController
         if (!dialog)
         {
             this.logger.error(`No dialog in profile: ${sessionId} found with id: ${dialogueId}`);
-
             return;
         }
 
@@ -307,7 +305,6 @@ export class DialogueController
         if (!dialogs)
         {
             this.logger.error(`No dialog object in profile: ${sessionId}`);
-
             return;
         }
 
@@ -332,7 +329,6 @@ export class DialogueController
         if (!dialog)
         {
             this.logger.error(`No dialog in profile: ${sessionId} found with id: ${dialogueId}`);
-
             return;
         }
 
@@ -371,9 +367,7 @@ export class DialogueController
     protected handleChatWithSPTFriend(sessionId: string, request: ISendMessageRequest): void
     {
         const sender = this.profileHelper.getPmcProfile(sessionId);
-
         const sptFriendUser = this.getSptFriendData();
-
         const giftSent = this.giftService.sendGiftToPlayer(sessionId, request.text);
 
         if (giftSent === GiftSentResult.SUCCESS)
@@ -387,7 +381,6 @@ export class DialogueController
                     "You found a gift code!",
                 ]),
             );
-
             return;
         }
 
@@ -398,7 +391,6 @@ export class DialogueController
                 sptFriendUser,
                 this.randomUtil.getArrayValue(["Looks like you already used that code", "You already have that!!"]),
             );
-
             return;
         }
 
@@ -435,7 +427,7 @@ export class DialogueController
                     "Hi",
                     "Greetings",
                     "Hello",
-                    "bonjor",
+                    "Bonjour",
                     "Yo",
                     "Sup",
                     "Heyyyyy",

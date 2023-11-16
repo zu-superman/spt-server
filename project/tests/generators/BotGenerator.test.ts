@@ -1,7 +1,7 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 import "reflect-metadata";
 import { container } from "tsyringe";
-import { vi, beforeEach, afterEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+
 import { BotGenerator } from "@spt-aki/generators/BotGenerator";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
 
@@ -129,8 +129,8 @@ describe("BotGenerator", () =>
         it("should return name `test (usec)` for player scav bot", () =>
         {
             botGenerator.botConfig.chanceAssaultScavHasPlayerScavName = 100;
-            botGenerator.databaseServer.getTables().bots.types["usec"].firstName = ["usec"];
-            botGenerator.databaseServer.getTables().bots.types["bear"].firstName = [];
+            botGenerator.databaseServer.getTables().bots.types.usec.firstName = ["usec"];
+            botGenerator.databaseServer.getTables().bots.types.bear.firstName = [];
 
             const mockPlayerProfile = { Info: { Nickname: "Player", Level: 1 } };
             vi.spyOn(botGenerator.profileHelper, "getPmcProfile").mockReturnValue(<IPmcData>mockPlayerProfile);

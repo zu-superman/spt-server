@@ -188,7 +188,7 @@ export class InraidController
 
     /**
      * Make changes to pmc profile after they've died in raid,
-     * Alter bodypart hp, handle insurance, delete inventory items, remove carried quest items
+     * Alter body part hp, handle insurance, delete inventory items, remove carried quest items
      * @param postRaidSaveRequest Post-raid save request
      * @param pmcData Pmc profile
      * @param sessionID Session id
@@ -205,7 +205,8 @@ export class InraidController
 
         if (this.inRaidHelper.removeQuestItemsOnDeath())
         {
-            // Find and remove the completed condition from profile if player died, otherwise quest is stuck in limbo and quest items cannot be picked up again
+            // Find and remove the completed condition from profile if player died, otherwise quest is stuck in limbo
+            // and quest items cannot be picked up again
             const allQuests = this.questHelper.getQuestsFromDb();
             const activeQuestIdsInProfile = pmcData.Quests.filter((x) =>
                 ![QuestStatus.AvailableForStart, QuestStatus.Success, QuestStatus.Expired].includes(x.status)
@@ -232,7 +233,7 @@ export class InraidController
     }
 
     /**
-     * Adjust player characters bodypart hp post-raid
+     * Adjust player characters body part hp post-raid
      * @param postRaidSaveRequest post raid data
      * @param pmcData player profile
      */
@@ -257,13 +258,13 @@ export class InraidController
     /**
      * Reduce body part hp to % of max
      * @param pmcData profile to edit
-     * @param multipler multipler to apply to max health
+     * @param multiplier multiplier to apply to max health
      */
-    protected reducePmcHealthToPercent(pmcData: IPmcData, multipler: number): void
+    protected reducePmcHealthToPercent(pmcData: IPmcData, multiplier: number): void
     {
         for (const bodyPart of Object.values(pmcData.Health.BodyParts))
         {
-            (<BodyPartHealth>bodyPart).Health.Current = (<BodyPartHealth>bodyPart).Health.Maximum * multipler;
+            (<BodyPartHealth>bodyPart).Health.Current = (<BodyPartHealth>bodyPart).Health.Maximum * multiplier;
         }
     }
 
@@ -314,7 +315,6 @@ export class InraidController
         {
             return false;
         }
-
         return profile.ConditionCounters.Counters.length > 0;
     }
 
@@ -365,7 +365,6 @@ export class InraidController
             {
                 // Doesn't exist yet, push it straight in
                 pmcProfile.ConditionCounters.Counters.push(scavCounter);
-
                 continue;
             }
 
@@ -400,7 +399,7 @@ export class InraidController
     {
         if (offraidData.exit !== PlayerRaidEndState.SURVIVED)
         {
-            // Remove FIR status if the player havn't survived
+            // Remove FIR status if the player hasn't survived
             offraidData.profile = this.inRaidHelper.removeSpawnedInSessionPropertyFromItems(offraidData.profile);
         }
     }

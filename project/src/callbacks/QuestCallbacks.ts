@@ -46,7 +46,6 @@ export class QuestCallbacks
         {
             return this.questController.acceptRepeatableQuest(pmcData, body, sessionID);
         }
-
         return this.questController.acceptQuest(pmcData, body, sessionID);
     }
 

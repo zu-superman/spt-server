@@ -18,7 +18,10 @@ export class Queue<T>
 
     public enqueueAll(elements: T[]): void
     {
-        elements.forEach((e) => this.enqueue(e));
+        for (const element of elements)
+        {
+            this.enqueue(element);
+        }
     }
 
     public dequeue(): T

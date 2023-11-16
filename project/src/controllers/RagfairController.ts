@@ -118,8 +118,8 @@ export class RagfairController
         {
             if (offer.user.memberType === MemberCategory.TRADER)
             {
-                // for the items, check the barter schemes. The method getDisplayableAssorts sets a flag sptQuestLocked to true if the quest
-                // is not completed yet
+                // for the items, check the barter schemes. The method getDisplayableAssorts sets a flag sptQuestLocked
+                // to true if the quest is not completed yet
                 if (this.ragfairOfferHelper.traderOfferItemQuestLocked(offer, traderAssorts))
                 {
                     offer.locked = true;
@@ -174,7 +174,7 @@ export class RagfairController
      * Get categories for the type of search being performed, linked/required/all
      * @param searchRequest Client search request data
      * @param offers ragfair offers to get categories for
-     * @returns record with tpls + counts
+     * @returns record with templates + counts
      */
     protected getSpecificCategories(searchRequest: ISearchRequestData, offers: IRagfairOffer[]): Record<string, number>
     {
@@ -228,7 +228,7 @@ export class RagfairController
         for (const offer of offers)
         {
             offer.intId = ++counter;
-            offer.items[0].parentId = ""; // without this it causes error:  "Item deserialization error: No parent with id hideout found for item x"
+            offer.items[0].parentId = ""; // Without this it causes error: "Item deserialization error: No parent with id hideout found for item x"
         }
     }
 
@@ -547,7 +547,7 @@ export class RagfairController
     }
 
     /**
-     * Using item ids from flea offer request, find corrispnding items from player inventory and return as array
+     * Using item ids from flea offer request, find corresponding items from player inventory and return as array
      * @param pmcData Player profile
      * @param itemIdsFromFleaOfferRequest Ids from request
      * @param errorMessage if item is not found, add error message to this parameter
@@ -673,7 +673,8 @@ export class RagfairController
 
         const differenceInSeconds = offers[index].endTime - this.timeUtil.getTimestamp();
         if (differenceInSeconds > this.ragfairConfig.sell.expireSeconds)
-        { // expireSeconds Default is 71 seconds
+        {
+            // expireSeconds Default is 71 seconds
             const newEndTime = this.ragfairConfig.sell.expireSeconds + this.timeUtil.getTimestamp();
             offers[index].endTime = Math.round(newEndTime);
         }

@@ -16,7 +16,7 @@ export class WishlistController
     {
         for (const item in pmcData.WishList)
         {
-            // don't add the item
+            // Don't add the item
             if (pmcData.WishList[item] === body.templateId)
             {
                 return this.eventOutputHolder.getOutput(sessionID);

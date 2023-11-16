@@ -120,7 +120,7 @@ export class BotEquipmentModGenerator
                 }
             }
 
-            // Combatible item not found but slot REQUIRES item, get random item from db
+            // Compatible item not found but slot REQUIRES item, get random item from db
             const parentSlot = parentTemplate._props.Slots.find((i) => i._name === modSlot);
             if (!found && parentSlot !== undefined && parentSlot._required)
             {
@@ -131,7 +131,7 @@ export class BotEquipmentModGenerator
             // Compatible item not found + not required
             if (!found && parentSlot !== undefined && !parentSlot._required)
             {
-                // Dont add item
+                // Don't add item
                 continue;
             }
 
@@ -146,7 +146,7 @@ export class BotEquipmentModGenerator
 
             if (Object.keys(modPool).includes(modTpl))
             {
-                // Call self recursivly
+                // Call self recursively
                 this.generateModsForEquipment(
                     equipment,
                     modPool,
@@ -172,8 +172,8 @@ export class BotEquipmentModGenerator
      * @param modSpawnChances Mod spawn chances
      * @param ammoTpl Ammo tpl to use when generating magazines/cartridges
      * @param botRole Role of bot weapon is generated for
-     * @param botLevel lvel of the bot weapon is being generated for
-     * @param modLimits limits placed on certian mod types per gun
+     * @param botLevel Level of the bot weapon is being generated for
+     * @param modLimits limits placed on certain mod types per gun
      * @param botEquipmentRole role of bot when accessing bot.json equipment config settings
      * @returns Weapon + mods array
      */
@@ -197,11 +197,9 @@ export class BotEquipmentModGenerator
         const compatibleModsPool = modPool[parentTemplate._id];
 
         // Null guard against bad input weapon
-        // rome-ignore lint/complexity/useSimplifiedLogicExpression: <explanation>
         if (
-            !parentTemplate._props.Slots.length
-            && !parentTemplate._props.Cartridges?.length
-            && !parentTemplate._props.Chambers?.length
+            !((parentTemplate._props.Slots.length || parentTemplate._props.Cartridges?.length)
+                || parentTemplate._props.Chambers?.length)
         )
         {
             this.logger.error(
@@ -346,7 +344,7 @@ export class BotEquipmentModGenerator
             );
 
             // I first thought we could use the recursive generateModsForItems as previously for cylinder magazines.
-            // However, the recursion doesnt go over the slots of the parent mod but over the modPool which is given by the bot config
+            // However, the recursion doesn't go over the slots of the parent mod but over the modPool which is given by the bot config
             // where we decided to keep cartridges instead of camoras. And since a CylinderMagazine only has one cartridge entry and
             // this entry is not to be filled, we need a special handling for the CylinderMagazine
             const modParentItem = this.databaseServer.getTables().templates.items[modToAddTemplate._parent];
@@ -372,7 +370,7 @@ export class BotEquipmentModGenerator
                 }
                 if (containsModInPool)
                 {
-                    // Call self recursivly to add mods to this mod
+                    // Call self recursively to add mods to this mod
                     this.generateModsForWeapon(
                         sessionId,
                         weapon,
@@ -707,7 +705,7 @@ export class BotEquipmentModGenerator
      * @param modTpl _tpl
      * @param parentId parentId
      * @param modSlot slotId
-     * @param modTemplate Used to add additional properites in the upd object
+     * @param modTemplate Used to add additional properties in the upd object
      * @returns Item object
      */
     protected createModItem(
@@ -741,14 +739,14 @@ export class BotEquipmentModGenerator
     /**
      * Get a random mod from an items compatible mods Filter array
      * @param modTpl ???? default value to return if nothing found
-     * @param parentSlot item mod will go into, used to get combatible items
+     * @param parentSlot item mod will go into, used to get compatible items
      * @param modSlot Slot to get mod to fill
      * @param items items to ensure picked mod is compatible with
      * @returns item tpl
      */
     protected getModTplFromItemDb(modTpl: string, parentSlot: Slot, modSlot: string, items: Item[]): string
     {
-        // Find combatible mods and make an array of them
+        // Find compatible mods and make an array of them
         const allowedItems = parentSlot._props.filters[0].Filter;
 
         // Find mod item that fits slot from sorted mod array
@@ -814,7 +812,7 @@ export class BotEquipmentModGenerator
             return false;
         }
 
-        // If mod id doesnt exist in slots filter list and mod id doesnt have any of the slots filters as a base class, mod isn't valid for the slot
+        // If mod id doesn't exist in slots filter list and mod id doesn't have any of the slots filters as a base class, mod isn't valid for the slot
         if (
             !(itemSlot._props.filters[0].Filter.includes(modToAdd[1]._id)
                 || this.itemHelper.isOfBaseclasses(modToAdd[1]._id, itemSlot._props.filters[0].Filter))
@@ -929,7 +927,7 @@ export class BotEquipmentModGenerator
 
         let result: string[] = [];
 
-        // Get item blacklist and mod equipmet blackist as one array
+        // Get item blacklist and mod equipment blacklist as one array
         const blacklist = this.itemFilterService.getBlacklistedItems().concat(
             botEquipBlacklist.equipment[modSlot] || [],
         );
@@ -1021,9 +1019,9 @@ export class BotEquipmentModGenerator
     }
 
     /**
-     * Take a record of camoras and merge the compatable shells into one array
+     * Take a record of camoras and merge the compatible shells into one array
      * @param camorasWithShells camoras we want to merge into one array
-     * @returns string array of shells fro luitple camora sources
+     * @returns string array of shells for multiple camora sources
      */
     protected mergeCamoraPoolsTogether(camorasWithShells: Record<string, string[]>): string[]
     {
@@ -1113,7 +1111,7 @@ export class BotEquipmentModGenerator
             }
         }
 
-        // No mods added to return list after filtering has occured, send back the original mod list
+        // No mods added to return list after filtering has occurred, send back the original mod list
         if (!filteredScopesAndMods || filteredScopesAndMods.length === 0)
         {
             this.logger.debug(

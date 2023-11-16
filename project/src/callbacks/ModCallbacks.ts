@@ -11,7 +11,7 @@ import { HttpFileUtil } from "@spt-aki/utils/HttpFileUtil";
 import { HttpResponseUtil } from "@spt-aki/utils/HttpResponseUtil";
 
 @injectable()
-class ModCallbacks implements OnLoad
+export class ModCallbacks implements OnLoad
 {
     protected httpConfig: IHttpConfig;
 
@@ -40,5 +40,3 @@ class ModCallbacks implements OnLoad
         return "aki-mods";
     }
 }
-
-export {ModCallbacks};

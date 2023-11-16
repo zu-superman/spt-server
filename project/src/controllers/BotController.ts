@@ -51,8 +51,8 @@ export class BotController
     }
 
     /**
-     * Return the number of bot loadout varieties to be generated
-     * @param type bot Type we want the loadout gen count for
+     * Return the number of bot load-out varieties to be generated
+     * @param type bot Type we want the load-out gen count for
      * @returns number of bots to generate
      */
     public getBotPresetGenerationLimit(type: string): number
@@ -62,16 +62,14 @@ export class BotController
         if (!value)
         {
             this.logger.warning(`No value found for bot type ${type}, defaulting to 30`);
-
             return value;
         }
-
         return value;
     }
 
     /**
      * Handle singleplayer/settings/bot/difficulty
-     * Get the core.json difficulty settings from database\bots
+     * Get the core.json difficulty settings from database/bots
      * @returns IBotCore
      */
     public getBotCoreDifficulty(): IBotCore
@@ -130,7 +128,7 @@ export class BotController
                 break;
             default:
                 difficultySettings = this.botDifficultyHelper.getBotDifficultySettings(type, difficulty);
-                // Don't add pmcs to event enemies (e.g. gifter/peacefullzryachiyevent)
+                // Don't add PMCs to event enemies (e.g. gifter/peacefullzryachiyevent)
                 if (!this.botConfig.botsToNotAddPMCsAsEnemiesTo.includes(type.toLowerCase()))
                 {
                     this.botHelper.addBotToEnemyList(difficultySettings, [
@@ -138,7 +136,6 @@ export class BotController
                         this.pmcConfig.usecType,
                     ], lowercasedBotType);
                 }
-
                 break;
         }
 
@@ -211,6 +208,7 @@ export class BotController
                 }
 
                 cacheKey = `${botRole}${details.botDifficulty}`;
+
                 // Check for bot in cache, add if not
                 if (!this.botGenerationCacheService.cacheHasBotOfRole(cacheKey))
                 {
@@ -219,6 +217,7 @@ export class BotController
                     this.botGenerationCacheService.storeBots(cacheKey, botsToAddToCache);
                 }
             }
+
             // Get bot from cache, add to return array
             const botToReturn = this.botGenerationCacheService.getBot(cacheKey);
 
@@ -236,13 +235,13 @@ export class BotController
     }
 
     /**
-     * Get the difficulty passed in, if its not "asoline", get selected difficulty from config
+     * Get the difficulty passed in, if its not "asonline", get selected difficulty from config
      * @param requestedDifficulty
      * @returns
      */
     public getPMCDifficulty(requestedDifficulty: string): string
     {
-        // maybe retrun a random difficulty...
+        // Maybe return a random difficulty...
         if (this.pmcConfig.difficulty.toLowerCase() === "asonline")
         {
             return requestedDifficulty;

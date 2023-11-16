@@ -12,12 +12,11 @@ import { HttpResponseUtil } from "@spt-aki/utils/HttpResponseUtil";
 export class TraderCallbacks implements OnLoad, OnUpdate
 {
     constructor(
-        @inject("HttpResponseUtil") protected httpResponse: HttpResponseUtil,
+        @inject("HttpResponseUtil") protected httpResponse: HttpResponseUtil, // TODO: delay required
         @inject("TraderController") protected traderController: TraderController,
     )
-    // TODO: delay required
-    {
-    }
+    {}
+
     public async onLoad(): Promise<void>
     {
         this.traderController.load();

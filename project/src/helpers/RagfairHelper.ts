@@ -54,7 +54,6 @@ export class RagfairHelper
 
             case "5449016a4bdc2d6f028b456f":
                 return "RUB";
-
             default:
                 return "";
         }
@@ -214,12 +213,9 @@ export class RagfairHelper
         {
             case Money.EUROS:
                 return "€";
-
             case Money.DOLLARS:
                 return "$";
-
-            case Money.ROUBLES:
-            default:
+            default: // Money.ROUBLES
                 return "₽";
         }
     }

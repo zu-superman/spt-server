@@ -41,8 +41,7 @@ export class DialogueCallbacks implements OnUpdate
         @inject("HttpResponseUtil") protected httpResponse: HttpResponseUtil,
         @inject("DialogueController") protected dialogueController: DialogueController,
     )
-    {
-    }
+    {}
 
     /**
      * Handle client/friend/list
@@ -73,7 +72,7 @@ export class DialogueCallbacks implements OnUpdate
             DateTime: this.timeUtil.getTimestamp(),
             IsDeveloper: true,
             Regions: ["EUR"],
-            VersionId: "bgkidft87ddd",
+            VersionId: "bgkidft87ddd", // TODO: Is this... correct?
             Ip: "",
             Port: 0,
             Chats: [{ _id: "0", Members: 0 }],

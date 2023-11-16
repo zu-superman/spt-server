@@ -82,10 +82,10 @@ export class GameController
 
     public load(): void
     {
-        // Regenerate basecache now mods are loaded and game is starting
-        // Mods that add items and use the baseclass service generate the cache including their items, the next mod that add items gets left out,causing warnings
+        // Regenerate base cache now mods are loaded and game is starting
+        // Mods that add items and use the baseClass service generate the cache including their items, the next mod that
+        // add items gets left out,causing warnings
         this.itemBaseClassService.hydrateItemBaseClassCache();
-
         this.addCustomLooseLootPositions();
     }
 
@@ -121,9 +121,9 @@ export class GameController
 
         this.checkTraderRepairValuesExist();
 
-        // repeatableQuests are stored by in profile.Quests due to the responses of the client (e.g. Quests in offraidData)
-        // Since we don't want to clutter the Quests list, we need to remove all completed (failed / successful) repeatable quests.
-        // We also have to remove the Counters from the repeatableQuests
+        // repeatableQuests are stored by in profile.Quests due to the responses of the client (e.g. Quests in
+        // offraidData). Since we don't want to clutter the Quests list, we need to remove all completed (failed or
+        // successful) repeatable quests. We also have to remove the Counters from the repeatableQuests
         if (sessionID)
         {
             const fullProfile = this.profileHelper.getFullProfile(sessionID);
@@ -253,6 +253,9 @@ export class GameController
                 this.logger.warning(
                     `Trader ${trader.base._id} ${trader.base.nickname} is missing a repair quality value, adding in default value`,
                 );
+                trader.base.repair.quality = this.jsonUtil.clone(
+                    this.databaseServer.getTables().traders.ragfair.base.repair.quality,
+                );
                 trader.base.repair.quality = this.databaseServer.getTables().traders.ragfair.base.repair.quality;
             }
         }
@@ -289,7 +292,7 @@ export class GameController
                     continue;
                 }
 
-                // new postion, add entire object
+                // New position, add entire object
                 mapLooseLoot.spawnpoints.push(positionToAdd);
             }
         }
@@ -386,6 +389,7 @@ export class GameController
                 }
                 else
                 {
+                    // Bot type not found, add new object
                     map.base.MinMaxBots.push({
                         // Bot type not found, add new object
                         WildSpawnType: botToLimit.type,
@@ -457,10 +461,7 @@ export class GameController
      */
     public getKeepAlive(sessionId: string): IGameKeepAliveResponse
     {
-        return {
-            msg: "OK",
-            utc_time: new Date().getTime() / 1000,
-        };
+        return { msg: "OK", utc_time: new Date().getTime() / 1000 };
     }
 
     /**
@@ -510,7 +511,7 @@ export class GameController
 
     /**
      * When player logs in, iterate over all active effects and reduce timer
-     * TODO - add body part HP regen
+     * // TODO: Add body part HP regeneration
      * @param pmcProfile
      */
     protected updateProfileHealthValues(pmcProfile: IPmcData): void
@@ -641,7 +642,7 @@ export class GameController
      */
     protected fixRoguesSpawningInstantlyOnLighthouse(): void
     {
-        const lighthouse = this.databaseServer.getTables().locations["lighthouse"].base;
+        const lighthouse = this.databaseServer.getTables().locations.lighthouse.base;
         for (const wave of lighthouse.BossLocationSpawn)
         {
             // Find Rogues that spawn instantly
@@ -676,7 +677,8 @@ export class GameController
     }
 
     /**
-     * Find and split waves with large numbers of bots into smaller waves - BSG appears to reduce the size of these waves to one bot when they're waiting to spawn for too long
+     * Find and split waves with large numbers of bots into smaller waves - BSG appears to reduce the size of these
+     * waves to one bot when they're waiting to spawn for too long
      */
     protected splitBotWavesIntoSingleWaves(): void
     {
@@ -724,12 +726,12 @@ export class GameController
                             waveToAdd.number = index;
                         }
 
-                        // Place wave into array in just-edited postion + 1
+                        // Place wave into array in just-edited position + 1
                         location.base.waves.splice(index, 0, waveToAdd);
                         wavesAddedCount++;
                     }
 
-                    // Update subsequent wave number property to accomodate the new waves
+                    // Update subsequent wave number property to accommodate the new waves
                     for (
                         let index = indexOfWaveToSplit + wavesAddedCount + 1;
                         index < location.base.waves.length;
@@ -784,7 +786,7 @@ export class GameController
     }
 
     /**
-     * Check for any missing assorts inside each traders assort.json data, checking against traders qeustassort.json
+     * Check for any missing assorts inside each traders assort.json data, checking against traders questassort.json
      */
     protected validateQuestAssortUnlocksExist(): void
     {
@@ -802,18 +804,18 @@ export class GameController
 
             // Merge started/success/fail quest assorts into one dictionary
             const mergedQuestAssorts = {
-                ...traderData.questassort["started"],
-                ...traderData.questassort["success"],
-                ...traderData.questassort["fail"],
+                ...traderData.questassort.started,
+                ...traderData.questassort.success,
+                ...traderData.questassort.fail,
             };
 
-            // loop over all assorts for trader
+            // Loop over all assorts for trader
             for (const [assortKey, questKey] of Object.entries(mergedQuestAssorts))
             {
                 // Does assort key exist in trader assort file
                 if (!traderAssorts.loyal_level_items[assortKey])
                 {
-                    // reverse lookup of enum key by value
+                    // Reverse lookup of enum key by value
                     const messageValues = {
                         traderName: Object.keys(Traders)[Object.values(Traders).indexOf(traderId)],
                         questName: quests[questKey]?.QuestName ?? "UNKNOWN",
@@ -837,14 +839,14 @@ export class GameController
         {
             const bots = this.databaseServer.getTables().bots.types;
 
-            if (bots["bear"])
+            if (bots.bear)
             {
-                bots["bear"].firstName.push(playerName);
+                bots.bear.firstName.push(playerName);
             }
 
-            if (bots["usec"])
+            if (bots.usec)
             {
-                bots["usec"].firstName.push(playerName);
+                bots.usec.firstName.push(playerName);
             }
         }
     }
@@ -855,10 +857,10 @@ export class GameController
      */
     protected checkForAndRemoveUndefinedDialogs(fullProfile: IAkiProfile): void
     {
-        const undefinedDialog = fullProfile.dialogues["undefined"];
+        const undefinedDialog = fullProfile.dialogues.undefined;
         if (undefinedDialog)
         {
-            delete fullProfile.dialogues["undefined"];
+            delete fullProfile.dialogues.undefined;
         }
     }
 
@@ -867,7 +869,7 @@ export class GameController
      */
     protected removePraporTestMessage(): void
     {
-        // Iterate over all langauges (e.g. "en", "fr")
+        // Iterate over all languages (e.g. "en", "fr")
         for (const localeKey in this.databaseServer.getTables().locales.global)
         {
             this.databaseServer.getTables().locales.global[localeKey]["61687e2c3e526901fa76baf9"] = "";

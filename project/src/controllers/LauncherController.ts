@@ -47,12 +47,13 @@ export class LauncherController
     }
 
     /**
-     * Get descriptive text for each of the profile edtions a player can choose
+     * Get descriptive text for each of the profile editions a player can choose
      * @returns
      */
     protected getProfileDescriptions(): Record<string, string>
     {
         return {
+            /* eslint-disable @typescript-eslint/naming-convention */
             Standard: this.localisationService.getText("launcher-profile_standard"),
             "Left Behind": this.localisationService.getText("launcher-profile_leftbehind"),
             "Prepare To Escape": this.localisationService.getText("launcher-profile_preparetoescape"),
@@ -60,6 +61,7 @@ export class LauncherController
             "SPT Easy start": this.localisationService.getText("launcher-profile_spteasystart"),
             "SPT Zero to hero": this.localisationService.getText("launcher-profile_sptzerotohero"),
             "SPT Developer": this.localisationService.getText("launcher-profile_sptdeveloper"),
+            /* eslint-enable @typescript-eslint/naming-convention */
         };
     }
 
@@ -115,6 +117,7 @@ export class LauncherController
 
         this.saveServer.loadProfile(sessionID);
         this.saveServer.saveProfile(sessionID);
+
         return sessionID;
     }
 

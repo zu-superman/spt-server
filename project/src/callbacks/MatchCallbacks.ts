@@ -91,6 +91,7 @@ export class MatchCallbacks
     {
         return this.httpResponse.getBody(true);
     }
+
     /** Handle client/match/group/transfer */
     public transferGroup(url: string, info: ITransferGroupRequest, sessionID: string): IGetBodyResponseData<boolean>
     {

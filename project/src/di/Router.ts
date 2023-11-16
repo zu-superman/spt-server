@@ -78,10 +78,6 @@ export class DynamicRouter extends Router
 // So instead I added the definition
 export class ItemEventRouterDefinition extends Router
 {
-    constructor()
-    {
-        super();
-    }
     public handleItemEvent(url: string, pmcData: IPmcData, body: any, sessionID: string): IItemEventRouterResponse
     {
         throw new Error("This method needs to be overrode by the router classes");
@@ -90,10 +86,6 @@ export class ItemEventRouterDefinition extends Router
 
 export class SaveLoadRouter extends Router
 {
-    constructor()
-    {
-        super();
-    }
     public handleLoad(profile: IAkiProfile): IAkiProfile
     {
         throw new Error("This method needs to be overrode by the router classes");

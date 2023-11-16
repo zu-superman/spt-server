@@ -146,10 +146,10 @@ export class PreAkiModLoader implements IModLoader
             const modOrder = this.vfs.readFile(this.modOrderPath, { encoding: "utf8" });
             try
             {
-                this.jsonUtil.deserialize<any>(modOrder).order.forEach((mod: string, index: number) =>
+                for (const [index, mod] of (this.jsonUtil.deserialize<any>(modOrder).order as string[]).entries())
                 {
                     this.order[mod] = index;
-                });
+                }
             }
             catch (error)
             {

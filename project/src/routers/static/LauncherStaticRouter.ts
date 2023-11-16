@@ -9,13 +9,10 @@ export class LauncherStaticRouter extends StaticRouter
     constructor(@inject("LauncherCallbacks") protected launcherCallbacks: LauncherCallbacks)
     {
         super([
-            new RouteAction(
-                "/launcher/ping",
-                (url: string, info: any, sessionID: string, output: string): any =>
-                {
-                    return this.launcherCallbacks.ping(url, info, sessionID);
-                },
-            ),
+            new RouteAction("/launcher/ping", (url: string, info: any, sessionID: string, output: string): any =>
+            {
+                return this.launcherCallbacks.ping(url, info, sessionID);
+            }),
             new RouteAction(
                 "/launcher/server/connect",
                 (url: string, info: any, sessionID: string, output: string): any =>
@@ -37,13 +34,10 @@ export class LauncherStaticRouter extends StaticRouter
                     return this.launcherCallbacks.register(url, info, sessionID);
                 },
             ),
-            new RouteAction(
-                "/launcher/profile/get",
-                (url: string, info: any, sessionID: string, output: string): any =>
-                {
-                    return this.launcherCallbacks.get(url, info, sessionID);
-                },
-            ),
+            new RouteAction("/launcher/profile/get", (url: string, info: any, sessionID: string, output: string): any =>
+            {
+                return this.launcherCallbacks.get(url, info, sessionID);
+            }),
             new RouteAction(
                 "/launcher/profile/change/username",
                 (url: string, info: any, sessionID: string, output: string): any =>

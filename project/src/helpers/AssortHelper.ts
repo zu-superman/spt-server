@@ -22,7 +22,7 @@ export class AssortHelper
     {}
 
     /**
-     * Remove assorts from a trader that have not been unlocked yet (via player completing corrisponding quest)
+     * Remove assorts from a trader that have not been unlocked yet (via player completing corresponding quest)
      * @param pmcProfile Player profile
      * @param traderId Traders id the assort belongs to
      * @param traderAssorts All assort items from same trader
@@ -138,7 +138,13 @@ export class AssortHelper
 
         if (assort.barter_scheme[itemID] && flea)
         {
-            assort.barter_scheme[itemID].forEach((b) => b.forEach((br) => br.sptQuestLocked = true));
+            for (const barterSchemes of assort.barter_scheme[itemID])
+            {
+                for (const barterScheme of barterSchemes)
+                {
+                    barterScheme.sptQuestLocked = true;
+                }
+            }
             return assort;
         }
         delete assort.barter_scheme[itemID];

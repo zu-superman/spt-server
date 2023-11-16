@@ -79,13 +79,10 @@ export class DialogStaticRouter extends StaticRouter
                     return this.dialogueCallbacks.getAllAttachments(url, info, sessionID);
                 },
             ),
-            new RouteAction(
-                "/client/mail/msg/send",
-                (url: string, info: any, sessionID: string, output: string): any =>
-                {
-                    return this.dialogueCallbacks.sendMessage(url, info, sessionID);
-                },
-            ),
+            new RouteAction("/client/mail/msg/send", (url: string, info: any, sessionID: string, output: string): any =>
+            {
+                return this.dialogueCallbacks.sendMessage(url, info, sessionID);
+            }),
             new RouteAction(
                 "/client/mail/dialog/clear",
                 (url: string, info: any, sessionID: string, output: string): any =>
@@ -93,13 +90,10 @@ export class DialogStaticRouter extends StaticRouter
                     return this.dialogueCallbacks.clearMail(url, info, sessionID);
                 },
             ),
-            new RouteAction(
-                "/client/friend/list",
-                (url: string, info: any, sessionID: string, output: string): any =>
-                {
-                    return this.dialogueCallbacks.getFriendList(url, info, sessionID);
-                },
-            ),
+            new RouteAction("/client/friend/list", (url: string, info: any, sessionID: string, output: string): any =>
+            {
+                return this.dialogueCallbacks.getFriendList(url, info, sessionID);
+            }),
             new RouteAction(
                 "/client/friend/request/list/outbox",
                 (url: string, info: any, sessionID: string, output: string): any =>
@@ -135,13 +129,10 @@ export class DialogStaticRouter extends StaticRouter
                     return this.dialogueCallbacks.cancelFriendRequest(url, info, sessionID);
                 },
             ),
-            new RouteAction(
-                "/client/friend/delete",
-                (url: string, info: any, sessionID: string, output: string): any =>
-                {
-                    return this.dialogueCallbacks.deleteFriend(url, info, sessionID);
-                },
-            ),
+            new RouteAction("/client/friend/delete", (url: string, info: any, sessionID: string, output: string): any =>
+            {
+                return this.dialogueCallbacks.deleteFriend(url, info, sessionID);
+            }),
             new RouteAction(
                 "/client/friend/ignore/set",
                 (url: string, info: any, sessionID: string, output: string): any =>

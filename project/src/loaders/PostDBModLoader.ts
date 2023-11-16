@@ -42,7 +42,7 @@ export class PostDBModLoader implements OnLoad
         const mods = this.preAkiModLoader.sortModsLoadOrder();
         for (const modName of mods)
         {
-            // // import class
+            // import class
             const filepath = `${this.preAkiModLoader.getModPath(modName)}${
                 this.preAkiModLoader.getImportedModDetails()[modName].main
             }`;

@@ -38,7 +38,6 @@ export class SaveCallbacks implements OnLoad, OnUpdate
             this.saveServer.save();
             return true;
         }
-
         return false;
     }
 }

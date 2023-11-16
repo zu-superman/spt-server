@@ -193,7 +193,6 @@ export class HideoutCallbacks implements OnUpdate
             this.hideoutController.update();
             return true;
         }
-
         return false;
     }
 

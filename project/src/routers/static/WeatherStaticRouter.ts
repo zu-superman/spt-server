@@ -9,13 +9,10 @@ export class WeatherStaticRouter extends StaticRouter
     constructor(@inject("WeatherCallbacks") protected weatherCallbacks: WeatherCallbacks)
     {
         super([
-            new RouteAction(
-                "/client/weather",
-                (url: string, info: any, sessionID: string, output: string): any =>
-                {
-                    return this.weatherCallbacks.getWeather(url, info, sessionID);
-                },
-            ),
+            new RouteAction("/client/weather", (url: string, info: any, sessionID: string, output: string): any =>
+            {
+                return this.weatherCallbacks.getWeather(url, info, sessionID);
+            }),
         ]);
     }
 }

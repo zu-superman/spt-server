@@ -93,7 +93,7 @@ export class InventoryController
         const ownerInventoryItems = this.inventoryHelper.getOwnerInventoryItems(moveRequest, sessionID);
         if (ownerInventoryItems.sameInventory)
         {
-            // Dont move items from trader to profile, this can happen when editing a traders preset weapons
+            // Don't move items from trader to profile, this can happen when editing a traders preset weapons
             if (moveRequest.fromOwner?.type === "Trader" && !ownerInventoryItems.isMail)
             {
                 return this.getTraderExploitErrorResponse(output);
@@ -182,7 +182,7 @@ export class InventoryController
 
     /**
      * Split Item
-     * spliting 1 stack into 2
+     * splitting 1 stack into 2
      * @param pmcData Player profile (unused, getOwnerInventoryItems() gets profile)
      * @param request Split request
      * @param sessionID Session/player id
@@ -206,7 +206,8 @@ export class InventoryController
             request.container.location = matchingItems.length; // Wrong location for first cartridge
         }
 
-        // The item being merged has three possible sources: pmc, scav or mail, getOwnerInventoryItems() handles getting correct one
+        // The item being merged has three possible sources: pmc, scav or mail, getOwnerInventoryItems() handles getting
+        // correct one.
         const itemToSplit = inventoryItems.from.find((x) => x._id === request.splitItem);
         if (!itemToSplit)
         {
@@ -280,7 +281,7 @@ export class InventoryController
 
         if (!(destinationItem.upd?.StackObjectsCount))
         {
-            // No stackcount on destination, add one
+            // No stack count on destination, add one
             destinationItem.upd = { StackObjectsCount: 1 };
         }
 
@@ -290,11 +291,11 @@ export class InventoryController
         }
         else if (!sourceItem.upd.StackObjectsCount)
         {
-            // Items pulled out of raid can have no stackcount if the stack should be 1
+            // Items pulled out of raid can have no stack count if the stack should be 1
             sourceItem.upd.StackObjectsCount = 1;
         }
 
-        destinationItem.upd.StackObjectsCount += sourceItem.upd.StackObjectsCount; // Add source stackcount to destination
+        destinationItem.upd.StackObjectsCount += sourceItem.upd.StackObjectsCount; // Add source stack count to destination
         output.profileChanges[sessionID].items.del.push({ _id: sourceItem._id }); // Inform client source item being deleted
 
         const indexOfItemToRemove = inventoryItems.from.findIndex((x) => x._id === sourceItem._id);
@@ -311,8 +312,8 @@ export class InventoryController
     }
 
     /**
-     * TODO: Adds no data to output to send to client, is this by design?
-     * TODO: should make use of getOwnerInventoryItems(), stack being transferred may not always be on pmc
+     * // TODO: Adds no data to output to send to client, is this by design?
+     * // TODO: should make use of getOwnerInventoryItems(), stack being transferred may not always be on pmc
      * Transfer items from one stack into another while keeping original stack
      * Used to take items from scav inventory into stash or to insert ammo into mags (shotgun ones) and reloading weapon by clicking "Reload"
      * @param pmcData Player profile
@@ -418,10 +419,10 @@ export class InventoryController
             this.logger.error(`Unable to find item: ${request.item2} to swap positions with: ${request.item}`);
         }
 
-        // to.id is the parentid
+        // to.id is the parentId
         itemOne.parentId = request.to.id;
 
-        // to.container is the slotid
+        // to.container is the slotId
         itemOne.slotId = request.to.container;
 
         // Request object has location data, add it in, otherwise remove existing location from object
@@ -473,7 +474,7 @@ export class InventoryController
     }
 
     /**
-     * Toggles "Toggleable" items like night vision goggles and face shields.
+     * Toggles "toggleable" items like night vision goggles and face shields.
      * @param pmcData player profile
      * @param body Toggle request
      * @param sessionID Session id
@@ -545,7 +546,7 @@ export class InventoryController
      * Bind an inventory item to the quick access menu at bottom of player screen
      * Handle bind event
      * @param pmcData Player profile
-     * @param bindRequest Reqeust object
+     * @param bindRequest Request object
      * @param sessionID Session id
      * @returns IItemEventRouterResponse
      */
@@ -663,9 +664,9 @@ export class InventoryController
     }
 
     /**
-     * Get the tplid of an item from the examine request object
+     * Get the tplId of an item from the examine request object
      * @param body response request
-     * @returns tplid
+     * @returns string
      */
     protected getExaminedItemTpl(body: IInventoryExamineRequestData): string
     {
@@ -675,40 +676,41 @@ export class InventoryController
         }
         else if (body.fromOwner.id === Traders.FENCE)
         {
-            // get tpl from fence assorts
+            // Get tpl from fence assorts
             return this.fenceService.getRawFenceAssorts().items.find((x) => x._id === body.item)._tpl;
         }
         else if (body.fromOwner.type === "Trader")
         { // not fence
-            // get tpl from trader assort
+            // Not fence
+            // Get tpl from trader assort
             return this.databaseServer.getTables().traders[body.fromOwner.id].assort.items.find((item) =>
                 item._id === body.item
             )._tpl;
         }
         else if (body.fromOwner.type === "RagFair")
         {
-            // try to get tplid from items.json first
+            // try to get tplId from items.json first
             const item = this.databaseServer.getTables().templates.items[body.item];
             if (item)
             {
                 return item._id;
             }
 
-            // try alternate way of getting offer if first approach fails
+            // Try alternate way of getting offer if first approach fails
             let offer = this.ragfairOfferService.getOfferByOfferId(body.item);
             if (!offer)
             {
                 offer = this.ragfairOfferService.getOfferByOfferId(body.fromOwner.id);
             }
 
-            // try find examine item inside offer items array
+            // Try find examine item inside offer items array
             const matchingItem = offer.items.find((x) => x._id === body.item);
             if (matchingItem)
             {
                 return matchingItem._tpl;
             }
 
-            // unable to find item in database or ragfair
+            // Unable to find item in database or ragfair
             throw new Error(this.localisationService.getText("inventory-unable_to_find_item", body.item));
         }
     }
@@ -723,7 +725,6 @@ export class InventoryController
         {
             pmcData.Encyclopedia[id] = true;
         }
-
         return this.eventOutputHolder.getOutput(sessionID);
     }
 

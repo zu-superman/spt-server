@@ -20,7 +20,7 @@ import { HttpResponseUtil } from "@spt-aki/utils/HttpResponseUtil";
 import { Watermark } from "@spt-aki/utils/Watermark";
 
 @injectable()
-class GameCallbacks implements OnLoad
+export class GameCallbacks implements OnLoad
 {
     constructor(
         @inject("HttpResponseUtil") protected httpResponse: HttpResponseUtil,
@@ -58,9 +58,7 @@ class GameCallbacks implements OnLoad
         const today = new Date().toUTCString();
         const startTimeStampMS = Date.parse(today);
         this.gameController.gameStart(url, info, sessionID, startTimeStampMS);
-        return this.httpResponse.getBody({
-            utc_time: startTimeStampMS / 1000,
-        });
+        return this.httpResponse.getBody({ utc_time: startTimeStampMS / 1000 });
     }
 
     /**
@@ -150,5 +148,3 @@ class GameCallbacks implements OnLoad
         return this.httpResponse.nullResponse();
     }
 }
-
-export {GameCallbacks};

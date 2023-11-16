@@ -91,8 +91,8 @@ export class HealthController
         else
         {
             // Get max healing from db
-            const maxhp = this.itemHelper.getItem(healingItemToUse._tpl)[1]._props.MaxHpResource;
-            healingItemToUse.upd.MedKit = { HpResource: maxhp - request.count }; // Subtract amout used from max
+            const maxHp = this.itemHelper.getItem(healingItemToUse._tpl)[1]._props.MaxHpResource;
+            healingItemToUse.upd.MedKit = { HpResource: maxHp - request.count }; // Subtract amount used from max
         }
 
         // Resource in medkit is spent, delete it
@@ -188,7 +188,7 @@ export class HealthController
             const partRequest: BodyPart = healthTreatmentRequest.difference.BodyParts[bodyPartKey];
             const profilePart = pmcData.Health.BodyParts[bodyPartKey];
 
-            // Set profile bodypart to max
+            // Set profile body part to max
             profilePart.Health.Current = profilePart.Health.Maximum;
 
             // Check for effects to remove

@@ -86,13 +86,10 @@ export class ProfileStaticRouter extends StaticRouter
                     return this.profileCallbacks.getMiniProfile(url, info, sessionID);
                 },
             ),
-            new RouteAction(
-                "/launcher/profiles",
-                (url: string, info: any, sessionID: string, output: string): any =>
-                {
-                    return this.profileCallbacks.getAllMiniProfiles(url, info, sessionID);
-                },
-            ),
+            new RouteAction("/launcher/profiles", (url: string, info: any, sessionID: string, output: string): any =>
+            {
+                return this.profileCallbacks.getAllMiniProfiles(url, info, sessionID);
+            }),
         ]);
     }
 }

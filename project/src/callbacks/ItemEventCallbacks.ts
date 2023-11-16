@@ -41,7 +41,6 @@ export class ItemEventCallbacks
         {
             return Number(warnings[0].code);
         }
-
         return BackendErrorCodes.UNKNOWN_ERROR;
     }
 }

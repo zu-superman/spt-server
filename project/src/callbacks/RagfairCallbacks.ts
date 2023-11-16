@@ -67,7 +67,6 @@ export class RagfairCallbacks implements OnLoad, OnUpdate
 
             return true;
         }
-
         return false;
     }
 
@@ -96,7 +95,7 @@ export class RagfairCallbacks implements OnLoad, OnUpdate
         return this.ragfairController.addPlayerOffer(pmcData, info, sessionID);
     }
 
-    /** \Handle RagFairRemoveOffer event */
+    /** Handle RagFairRemoveOffer event */
     public removeOffer(pmcData: IPmcData, info: IRemoveOfferRequestData, sessionID: string): IItemEventRouterResponse
     {
         return this.ragfairController.removeOffer(info.offerId, sessionID);

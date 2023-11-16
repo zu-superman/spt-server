@@ -140,7 +140,7 @@ export class MatchController
 
         // TODO: add code to strip PMC of equipment now they've started the raid
 
-        // Set pmcs to difficulty set in pre-raid screen if override in bot config isnt enabled
+        // Set PMCs to difficulty set in pre-raid screen if override in bot config isn't enabled
         if (!this.pmcConfig.useDifficultyOverride)
         {
             this.pmcConfig.difficulty = this.convertDifficultyDropdownIntoBotDifficulty(
@@ -299,8 +299,8 @@ export class MatchController
     {
         let fenceStanding = Number(pmcData.TradersInfo[fenceId].standing);
 
-        // Not exact replica of Live behaviour
-        // Simplified for now, no real reason to do the whole (unconfirmed) extra 0.01 standing per day regeneration mechanic
+        // Not exact replica of Live behaviour... Simplified for now. No real reason to do the whole (unconfirmed)
+        // extra 0.01 standing per day regeneration mechanic.
         const baseGain: number = this.inraidConfig.carExtractBaseStandingGain;
         const extractCount: number = pmcData.CarExtractCounts[extractName];
 

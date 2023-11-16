@@ -11,8 +11,7 @@ export class InventoryMagGen
         private ammoTemplate: ITemplateItem,
         private pmcInventory: Inventory,
     )
-    {
-    }
+    {}
 
     public getMagCount(): GenerationData
     {

@@ -9,13 +9,10 @@ export class InraidStaticRouter extends StaticRouter
     constructor(@inject("InraidCallbacks") protected inraidCallbacks: InraidCallbacks)
     {
         super([
-            new RouteAction(
-                "/raid/profile/save",
-                (url: string, info: any, sessionID: string, output: string): any =>
-                {
-                    return this.inraidCallbacks.saveProgress(url, info, sessionID);
-                },
-            ),
+            new RouteAction("/raid/profile/save", (url: string, info: any, sessionID: string, output: string): any =>
+            {
+                return this.inraidCallbacks.saveProgress(url, info, sessionID);
+            }),
             new RouteAction(
                 "/singleplayer/settings/raid/endstate",
                 (url: string, info: any, sessionID: string, output: string): any =>

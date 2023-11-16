@@ -133,8 +133,8 @@ export class LocationGenerator
 
         // randomisation is turned off globally or just turned off for this map
         if (
-            !this.locationConfig.containerRandomisationSettings.enabled
-            || !this.locationConfig.containerRandomisationSettings.maps[locationId]
+            !(this.locationConfig.containerRandomisationSettings.enabled
+                && this.locationConfig.containerRandomisationSettings.maps[locationId])
         )
         {
             this.logger.debug(
@@ -271,7 +271,7 @@ export class LocationGenerator
     }
 
     /**
-     * Choose a number of containers based on their probabilty value to fulfil the desired count in containerData.chosenCount
+     * Choose a number of containers based on their probability value to fulfil the desired count in containerData.chosenCount
      * @param groupId Name of the group the containers are being collected for
      * @param containerData Containers and probability values for a groupId
      * @returns List of chosen container Ids
@@ -289,11 +289,14 @@ export class LocationGenerator
             return containerIds;
         }
 
-        // Create probability array with all possible container ids in this group and their relataive probability of spawning
+        // Create probability array with all possible container ids in this group and their relative probability of spawning
         const containerDistribution = new ProbabilityObjectArray<string>(this.mathUtil, this.jsonUtil);
-        containerIds.forEach((x) =>
-            containerDistribution.push(new ProbabilityObject(x, containerData.containerIdsWithProbability[x]))
-        );
+        for (const containerId of containerIds)
+        {
+            containerDistribution.push(
+                new ProbabilityObject(containerId, containerData.containerIdsWithProbability[containerId]),
+            );
+        }
 
         chosenContainerIds.push(...containerDistribution.draw(containerData.chosenCount));
 
@@ -489,7 +492,7 @@ export class LocationGenerator
         locationName: string,
     ): number
     {
-        // Create probability array to calcualte the total count of lootable items inside container
+        // Create probability array to calculate the total count of lootable items inside container
         const itemCountArray = new ProbabilityObjectArray<number>(this.mathUtil, this.jsonUtil);
         for (const itemCountDistribution of staticLootDist[containerTypeId].itemcountDistribution)
         {
@@ -505,9 +508,9 @@ export class LocationGenerator
     /**
      * Get all possible loot items that can be placed into a container
      * Do not add seasonal items if found + current date is inside seasonal event
-     * @param containerTypeId Contianer to get possible loot for
+     * @param containerTypeId Container to get possible loot for
      * @param staticLootDist staticLoot.json
-     * @returns ProbabilityObjectArray of item tpls + probabilty
+     * @returns ProbabilityObjectArray of item tpls + probability
      */
     protected getPossibleLootItemsForContainer(
         containerTypeId: string,
@@ -576,7 +579,7 @@ export class LocationGenerator
 
         for (const spawnpoint of allDynamicSpawnpoints)
         {
-            // Point is blacklsited, skip
+            // Point is blacklisted, skip
             if (blacklistedSpawnpoints?.includes(spawnpoint.template.Id))
             {
                 this.logger.debug(`Ignoring loose loot location: ${spawnpoint.template.Id}`);
@@ -923,7 +926,7 @@ export class LocationGenerator
             }
             else
             {
-                // RSP30 (62178be9d0050232da3485d9/624c0b3340357b5f566e8766/6217726288ed9f0845317459) doesnt have any default presets and kills this code below as it has no chidren to reparent
+                // RSP30 (62178be9d0050232da3485d9/624c0b3340357b5f566e8766/6217726288ed9f0845317459) doesn't have any default presets and kills this code below as it has no children to reparent
                 this.logger.debug(`createItem() No preset found for weapon: ${tpl}`);
             }
 

@@ -1,13 +1,13 @@
 import "reflect-metadata";
 import { inject, injectable } from "tsyringe";
 
-import fs from "node:fs";
 import crypto from "node:crypto";
-import { promisify } from "node:util";
+import fs from "node:fs";
 import path, { resolve } from "node:path";
+import { promisify } from "node:util";
+import { IAsyncQueue } from "@spt-aki/models/spt/utils/IAsyncQueue";
 import { writeFileSync } from "atomically";
 import lockfile from "proper-lockfile";
-import { IAsyncQueue } from "@spt-aki/models/spt/utils/IAsyncQueue";
 
 @injectable()
 export class VFS

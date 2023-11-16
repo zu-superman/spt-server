@@ -51,13 +51,16 @@ export class LootGenerator
         const itemTypeCounts = this.initItemLimitCounter(options.itemLimits);
 
         const tables = this.databaseServer.getTables();
-        const itemBlacklist = new Set(this.itemFilterService.getBlacklistedItems());
-
-        options.itemBlacklist.forEach(itemBlacklist.add, itemBlacklist);
-
+        const itemBlacklist = new Set<string>([
+            ...this.itemFilterService.getBlacklistedItems(),
+            ...options.itemBlacklist,
+        ]);
         if (!options.allowBossItems)
         {
-            this.itemFilterService.getBossItems().forEach(itemBlacklist.add, itemBlacklist);
+            for (const bossItem of this.itemFilterService.getBossItems())
+            {
+                itemBlacklist.add(bossItem);
+            }
         }
 
         // Handle sealed weapon containers
@@ -391,7 +394,7 @@ export class LootGenerator
                 x._parent === rewardTypeId
                 && x._type.toLowerCase() === "item"
                 && !this.itemFilterService.isItemBlacklisted(x._id)
-                && (!containerSettings.allowBossItems && !this.itemFilterService.isBossItem(x._id))
+                && (!(containerSettings.allowBossItems || this.itemFilterService.isBossItem(x._id)))
                 && !x._props.QuestItem
             );
 
@@ -438,7 +441,7 @@ export class LootGenerator
                 continue;
             }
 
-            // Get items that fulfil reward type critera from items that fit on gun
+            // Get items that fulfil reward type criteria from items that fit on gun
             const relatedItems = linkedItemsToWeapon.filter((x) =>
                 x._parent === rewardTypeId && !this.itemFilterService.isItemBlacklisted(x._id)
             );

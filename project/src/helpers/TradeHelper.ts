@@ -61,6 +61,7 @@ export class TradeHelper
 
         const newReq = {
             items: [{
+                // eslint-disable-next-line @typescript-eslint/naming-convention
                 item_id: buyRequestData.item_id,
                 count: buyRequestData.count,
             }],

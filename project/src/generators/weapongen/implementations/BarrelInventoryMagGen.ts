@@ -29,7 +29,8 @@ export class BarrelInventoryMagGen implements IInventoryMagGen
         // Can't be done by _props.ammoType as grenade launcher shoots grenades with ammoType of "buckshot"
         let randomisedAmmoStackSize: number;
         if (inventoryMagGen.getAmmoTemplate()._props.StackMaxRandom === 1)
-        { // doesnt stack
+        {
+            // doesnt stack
             randomisedAmmoStackSize = this.randomUtil.getInt(3, 6);
         }
         else

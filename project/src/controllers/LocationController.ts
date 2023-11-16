@@ -89,7 +89,7 @@ export class LocationController
         const staticLoot = this.locationGenerator.generateStaticContainers(location.base, staticAmmoDist);
         output.Loot.push(...staticLoot);
 
-        // Add dyanmic loot to output loot
+        // Add dynamic loot to output loot
         const dynamicLootDist: ILooseLoot = this.jsonUtil.clone(location.looseLoot);
         const dynamicSpawnPoints: SpawnpointTemplate[] = this.locationGenerator.generateDynamicLoot(
             dynamicLootDist,
@@ -140,7 +140,7 @@ export class LocationController
 
     /**
      * Handle client/location/getAirdropLoot
-     * Get loot for an airdop container
+     * Get loot for an airdrop container
      * Generates it randomly based on config/airdrop.json values
      * @returns Array of LootItem objects
      */

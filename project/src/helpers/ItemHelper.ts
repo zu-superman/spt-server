@@ -190,27 +190,27 @@ class ItemHelper
      * AmmoBoxes contain StackSlots which need to be filled for the AmmoBox to have content.
      * Here's what a filled AmmoBox looks like:
      *   {
-     *       "_id": "b1bbe982daa00ac841d4ae4d",
-     *       "_tpl": "57372c89245977685d4159b1",
-     *       "parentId": "5fe49a0e2694b0755a504876",
-     *       "slotId": "hideout",
-     *       "location": {
-     *           "x": 3,
-     *           "y": 4,
-     *           "r": 0
+     *       _id: "b1bbe982daa00ac841d4ae4d",
+     *       _tpl: "57372c89245977685d4159b1",
+     *       parentId: "5fe49a0e2694b0755a504876",
+     *       slotId: "hideout",
+     *       location: {
+     *           x: 3,
+     *           y: 4,
+     *           r: 0
      *       },
-     *       "upd": {
-     *           "StackObjectsCount": 1
+     *       upd: {
+     *           StackObjectsCount: 1
      *       }
      *   },
      *   {
-     *       "_id": "b997b4117199033afd274a06",
-     *       "_tpl": "56dff061d2720bb5668b4567",
-     *       "parentId": "b1bbe982daa00ac841d4ae4d",
-     *       "slotId": "cartridges",
-     *       "location": 0,
-     *       "upd": {
-     *           "StackObjectsCount": 30
+     *       _id: "b997b4117199033afd274a06",
+     *       _tpl: "56dff061d2720bb5668b4567",
+     *       parentId: "b1bbe982daa00ac841d4ae4d",
+     *       slotId: "cartridges",
+     *       location: 0,
+     *       upd: {
+     *           StackObjectsCount: 30
      *       }
      *   }
      * Given the AmmoBox Item (first object) this function generates the StackSlot (second object) and returns it.
@@ -850,7 +850,7 @@ class ItemHelper
      */
     public isAttachmentAttached(item: Item): boolean
     {
-        return item.slotId !== "hideout" && item.slotId !== "main" && isNaN(Number(item.slotId));
+        return item.slotId !== "hideout" && item.slotId !== "main" && Number.isNaN(Number(item.slotId));
     }
 
     /**

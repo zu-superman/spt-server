@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { container } from "tsyringe";
-import { vi, beforeEach, afterEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { InRaidHelper } from "@spt-aki/helpers/InRaidHelper";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";

@@ -1,5 +1,5 @@
 import { IncomingMessage } from "node:http";
-import { injectable, injectAll } from "tsyringe";
+import { injectAll, injectable } from "tsyringe";
 
 import { DynamicRouter, Router, StaticRouter } from "@spt-aki/di/Router";
 
@@ -15,7 +15,7 @@ export class HttpRouter
     protected groupBy<T>(list: T[], keyGetter: (t: T) => string): Map<string, T[]>
     {
         const map: Map<string, T[]> = new Map();
-        list.forEach((item) =>
+        for (const item of list)
         {
             const key = keyGetter(item);
             const collection = map.get(key);
@@ -27,7 +27,7 @@ export class HttpRouter
             {
                 collection.push(item);
             }
-        });
+        }
         return map;
     }
 
