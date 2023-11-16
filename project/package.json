@@ -11,9 +11,11 @@
         "node": "18.15.0"
     },
     "scripts": {
-        "check:circular": "madge --circular --extensions ts ./src/",
+        "check:circular": "madge --circular --ts-config tsconfig.json --extensions ts ./src/",
         "lint": "biome ci src --formatter-enabled=false --max-diagnostics=200",
-        "lint:fix": "eslint --fix --ext .ts src/**",
+        "lint:fix": "biome check --apply-unsafe --max-diagnostics=200 . && dprint fmt --incremental=false",
+        "style": "dprint check --incremental=false",
+        "style:fix": "dprint fmt --incremental=false",
         "test": "vitest run",
         "test:watch": "vitest",
         "test:coverage": "vitest run --coverage",
@@ -61,6 +63,7 @@
         "@vitest/coverage-istanbul": "1.0.0-beta.3",
         "@vitest/ui": "1.0.0-beta.3",
         "cross-env": "7.0.3",
+        "dprint": "0.42.5",
         "eslint": "8.51.0",
         "gulp": "4.0.2",
         "gulp-execa": "5.0.1",
