@@ -213,11 +213,10 @@ export class PreAkiModLoader implements IModLoader
         validMods.sort((prev, next) => this.sortMods(prev, next, missingFromOrderJSON));
 
         // log the missing mods from order.json
-        Object.keys(missingFromOrderJSON).forEach((
-            missingMod,
-        ) => (this.logger.debug(
-            this.localisationService.getText("modloader-mod_order_missing_from_json", missingMod),
-        )));
+        for (const missingMod of Object.keys(missingFromOrderJSON))
+        {
+            this.logger.debug(this.localisationService.getText("modloader-mod_order_missing_from_json", missingMod));
+        }
 
         // add mods
         for (const mod of validMods)
