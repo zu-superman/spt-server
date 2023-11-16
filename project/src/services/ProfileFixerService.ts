@@ -6,6 +6,7 @@ import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
 import { TraderHelper } from "@spt-aki/helpers/TraderHelper";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
+import { IHideoutImprovement } from "@spt-aki/models/eft/common/tables/IBotBase";
 import { Bonus, HideoutSlot, IQuestStatus } from "@spt-aki/models/eft/common/tables/IBotBase";
 import { IPmcDataRepeatableQuest, IRepeatableQuest } from "@spt-aki/models/eft/common/tables/IRepeatableQuests";
 import { StageBonus } from "@spt-aki/models/eft/hideout/IHideoutArea";
@@ -1145,10 +1146,10 @@ export class ProfileFixerService
      */
     protected migrateImprovements(pmcProfile: IPmcData): void
     {
-        if (pmcProfile.Hideout.Improvements)
+        if ("Improvements" in pmcProfile.Hideout)
         {
-            // Correct name is `Improvement`
-            pmcProfile.Hideout.Improvement = this.jsonUtil.clone(pmcProfile.Hideout.Improvements);
+            const improvements = pmcProfile.Hideout.Improvements as Record<string, IHideoutImprovement>;
+            pmcProfile.Hideout.Improvement = this.jsonUtil.clone(improvements);
             delete pmcProfile.Hideout.Improvements;
             this.logger.success("Successfully migrated hideout Improvements data to new location, deleted old data");
         }
