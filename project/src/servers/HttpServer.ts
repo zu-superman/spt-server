@@ -26,7 +26,7 @@ export class HttpServer
         @injectAll("HttpListener") protected httpListeners: IHttpListener[],
         @inject("ConfigServer") protected configServer: ConfigServer,
         @inject("ApplicationContext") protected applicationContext: ApplicationContext,
-        @inject("WebSocketServer") protected webSocketServer: WebSocketServer
+        @inject("WebSocketServer") protected webSocketServer: WebSocketServer,
     )
     {
         this.httpConfig = this.configServer.getConfig(ConfigTypes.HTTP);
@@ -49,7 +49,9 @@ export class HttpServer
         /* Config server to listen on a port */
         httpServer.listen(this.httpConfig.port, this.httpConfig.ip, () =>
         {
-            this.logger.success(this.localisationService.getText("started_webserver_success", this.httpServerHelper.getBackendUrl()));
+            this.logger.success(
+                this.localisationService.getText("started_webserver_success", this.httpServerHelper.getBackendUrl()),
+            );
         });
 
         httpServer.on("error", (e: any) =>
@@ -72,15 +74,15 @@ export class HttpServer
     protected handleRequest(req: IncomingMessage, resp: ServerResponse): void
     {
         // Pull sessionId out of cookies and store inside app context
-        const sessionId = this.getCookies(req)["PHPSESSID"];
+        const sessionId = this.getCookies(req).PHPSESSID;
         this.applicationContext.addValue(ContextVariableType.SESSION_ID, sessionId);
 
         // http.json logRequests boolean option to allow the user/server to choose to not log requests
-        if (this.httpConfig.logRequests) 
+        if (this.httpConfig.logRequests)
         {
             this.logger.info(this.localisationService.getText("client_request", req.url));
         }
-        
+
         for (const listener of this.httpListeners)
         {
             if (listener.canHandle(sessionId, req))

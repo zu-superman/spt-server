@@ -1,6 +1,6 @@
-import * as TypeMoq from "typemoq";
 import { QuestHelper } from "@spt-aki/helpers/QuestHelper";
 import { TraderHelper } from "@spt-aki/helpers/TraderHelper";
+import * as TypeMoq from "typemoq";
 
 import { ImageRouter } from "@spt-aki/routers/ImageRouter";
 import { ItemEventRouter } from "@spt-aki/routers/ItemEventRouter";
@@ -17,7 +17,7 @@ export class MockHelper
 
     public getMockVFS(): TypeMoq.IMock<VFS>
     {
-        //vfsMock.setup(x => x.getFiles(TypeMoq.It.isAnyString())).returns(() => []);
+        // vfsMock.setup(x => x.getFiles(TypeMoq.It.isAnyString())).returns(() => []);
         return TypeMoq.Mock.ofType(VFS);
     }
 
@@ -45,7 +45,6 @@ export class MockHelper
     {
         return TypeMoq.Mock.ofType(PaymentService);
     }
-
 }
 
 export class TestConfigServer extends ConfigServer
