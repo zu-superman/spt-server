@@ -273,7 +273,7 @@ export class BotEquipmentFilterService
             {
                 const botEquipment = baseBotNode.inventory.equipment[equipmentSlotKey];
 
-                // Skip equipment slot if whitelist doesnt exist / is empty
+                // Skip equipment slot if whitelist doesn't exist / is empty
                 const whitelistEquipmentForSlot = whitelist.equipment[equipmentSlotKey];
                 if (!whitelistEquipmentForSlot || Object.keys(whitelistEquipmentForSlot).length === 0)
                 {
@@ -281,9 +281,14 @@ export class BotEquipmentFilterService
                 }
 
                 // Filter equipment slot items to just items in whitelist
-                baseBotNode.inventory.equipment[equipmentSlotKey] = Object.keys(botEquipment).filter((tpl) =>
-                    whitelistEquipmentForSlot.includes(tpl)
-                ).reduce((res, key) => (res[key] = botEquipment[key], res), {});
+                baseBotNode.inventory.equipment[equipmentSlotKey] = {};
+                for (const key of Object.keys(botEquipment))
+                {
+                    if (whitelistEquipmentForSlot.includes(key))
+                    {
+                        baseBotNode.inventory.equipment[equipmentSlotKey][key] = botEquipment[key];
+                    }
+                }
             }
 
             return;
@@ -295,7 +300,7 @@ export class BotEquipmentFilterService
             {
                 const botEquipment = baseBotNode.inventory.equipment[equipmentSlotKey];
 
-                // Skip equipment slot if blacklist doesnt exist / is empty
+                // Skip equipment slot if blacklist doesn't exist / is empty
                 const equipmentSlotBlacklist = blacklist.equipment[equipmentSlotKey];
                 if (!equipmentSlotBlacklist || Object.keys(equipmentSlotBlacklist).length === 0)
                 {
@@ -303,9 +308,14 @@ export class BotEquipmentFilterService
                 }
 
                 // Filter equipment slot items to just items not in blacklist
-                baseBotNode.inventory.equipment[equipmentSlotKey] = Object.keys(botEquipment).filter((tpl) =>
-                    !equipmentSlotBlacklist.includes(tpl)
-                ).reduce((res, key) => (res[key] = botEquipment[key], res), {});
+                baseBotNode.inventory.equipment[equipmentSlotKey] = {};
+                for (const key of Object.keys(botEquipment))
+                {
+                    if (!equipmentSlotBlacklist.includes(key))
+                    {
+                        baseBotNode.inventory.equipment[equipmentSlotKey][key] = botEquipment[key];
+                    }
+                }
             }
         }
     }
@@ -330,17 +340,22 @@ export class BotEquipmentFilterService
             {
                 const botAmmo = baseBotNode.inventory.Ammo[ammoCaliberKey];
 
-                // Skip cartridge slot if whitelist doesnt exist / is empty
+                // Skip cartridge slot if whitelist doesn't exist / is empty
                 const whiteListedCartridgesForCaliber = whitelist.cartridge[ammoCaliberKey];
                 if (!whiteListedCartridgesForCaliber || Object.keys(whiteListedCartridgesForCaliber).length === 0)
                 {
                     continue;
                 }
 
-                // Filter caliber slot items to just items in whitelist
-                baseBotNode.inventory.Ammo[ammoCaliberKey] = Object.keys(botAmmo).filter((tpl) =>
-                    whitelist.cartridge[ammoCaliberKey].includes(tpl)
-                ).reduce((res, key) => (res[key] = botAmmo[key], res), {});
+                // Filter calibre slot items to just items in whitelist
+                baseBotNode.inventory.Ammo[ammoCaliberKey] = {};
+                for (const key of Object.keys(botAmmo))
+                {
+                    if (whitelist.cartridge[ammoCaliberKey].includes(key))
+                    {
+                        baseBotNode.inventory.Ammo[ammoCaliberKey][key] = botAmmo[key];
+                    }
+                }
             }
 
             return;
@@ -352,7 +367,7 @@ export class BotEquipmentFilterService
             {
                 const botAmmo = baseBotNode.inventory.Ammo[ammoCaliberKey];
 
-                // Skip cartridge slot if blacklist doesnt exist / is empty
+                // Skip cartridge slot if blacklist doesn't exist / is empty
                 const cartridgeCaliberBlacklist = blacklist.cartridge[ammoCaliberKey];
                 if (!cartridgeCaliberBlacklist || Object.keys(cartridgeCaliberBlacklist).length === 0)
                 {
@@ -360,9 +375,14 @@ export class BotEquipmentFilterService
                 }
 
                 // Filter cartridge slot items to just items not in blacklist
-                baseBotNode.inventory.Ammo[ammoCaliberKey] = Object.keys(botAmmo).filter((tpl) =>
-                    !cartridgeCaliberBlacklist.includes(tpl)
-                ).reduce((res, key) => (res[key] = botAmmo[key], res), {});
+                baseBotNode.inventory.Ammo[ammoCaliberKey] = {};
+                for (const key of Object.keys(botAmmo))
+                {
+                    if (!cartridgeCaliberBlacklist.includes(key))
+                    {
+                        baseBotNode.inventory.Ammo[ammoCaliberKey][key] = botAmmo[key];
+                    }
+                }
             }
         }
     }
