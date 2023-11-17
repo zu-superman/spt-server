@@ -459,9 +459,6 @@ export class Container
         con.register<ScavCaseRewardGenerator>("ScavCaseRewardGenerator", ScavCaseRewardGenerator, {
             lifecycle: Lifecycle.Singleton,
         });
-        con.register<ScavCaseRewardGenerator>("ScavCaseRewardGenerator", ScavCaseRewardGenerator, {
-            lifecycle: Lifecycle.Singleton,
-        });
         con.register<RagfairAssortGenerator>("RagfairAssortGenerator", { useClass: RagfairAssortGenerator });
         con.register<RagfairOfferGenerator>("RagfairOfferGenerator", { useClass: RagfairOfferGenerator });
         con.register<WeatherGenerator>("WeatherGenerator", { useClass: WeatherGenerator });

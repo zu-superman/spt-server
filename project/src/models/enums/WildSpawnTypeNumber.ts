@@ -40,6 +40,6 @@ export enum WildSpawnTypeNumber
     PEACEFULLZRYACHIYEVENT = 38,
     SECTACTPRIESTEVENT = 39,
     RAVANGEZRYACHIYEVENT = 40,
-    SPTUSEC = 41,
-    SPTBEAR = 42,
+    SPTUSEC = 38,
+    SPTBEAR = 39,
 }

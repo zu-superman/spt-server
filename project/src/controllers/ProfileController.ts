@@ -146,6 +146,7 @@ export class ProfileController
         pmcData.Hideout.Seed = this.timeUtil.getTimestamp() + (8 * 60 * 60 * 24 * 365); // 8 years in future why? who knows, we saw it in live
         pmcData.RepeatableQuests = [];
         pmcData.CarExtractCounts = {};
+        pmcData.CoopExtractCounts = {};
 
         if (!pmcData.UnlockedInfo)
         {

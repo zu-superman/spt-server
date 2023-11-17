@@ -76,6 +76,7 @@ export interface ITraderWhitelist
 {
     traderId: string;
     questTypes: string[];
+    rewardBaseWhitelist: string[];
 }
 
 export interface IRepeatableQuestTypesConfig

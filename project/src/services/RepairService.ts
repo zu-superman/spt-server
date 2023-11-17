@@ -123,7 +123,7 @@ export class RepairService
         const options: IProcessBuyTradeRequestData = {
             scheme_items: [{ id: repairedItemId, count: Math.round(repairCost) }],
             tid: traderId,
-            Action: "",
+            Action: "SptRepair",
             type: "",
             item_id: "",
             count: 0,

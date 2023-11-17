@@ -11,6 +11,7 @@ import { IConnectResponse } from "@spt-aki/models/eft/profile/IConnectResponse";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { ICoreConfig } from "@spt-aki/models/spt/config/ICoreConfig";
 import { IPackageJsonData } from "@spt-aki/models/spt/mod/IPackageJsonData";
+import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt-aki/servers/ConfigServer";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { SaveServer } from "@spt-aki/servers/SaveServer";
@@ -23,6 +24,7 @@ export class LauncherController
     protected coreConfig: ICoreConfig;
 
     constructor(
+        @inject("WinstonLogger") protected logger: ILogger,
         @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("SaveServer") protected saveServer: SaveServer,
         @inject("HttpServerHelper") protected httpServerHelper: HttpServerHelper,
@@ -47,22 +49,26 @@ export class LauncherController
     }
 
     /**
-     * Get descriptive text for each of the profile editions a player can choose
-     * @returns
+     * Get descriptive text for each of the profile edtions a player can choose, keyed by profile.json profile type e.g. "Edge Of Darkness"
+     * @returns Dictionary of profile types with related descriptive text
      */
     protected getProfileDescriptions(): Record<string, string>
     {
-        return {
-            /* eslint-disable @typescript-eslint/naming-convention */
-            Standard: this.localisationService.getText("launcher-profile_standard"),
-            "Left Behind": this.localisationService.getText("launcher-profile_leftbehind"),
-            "Prepare To Escape": this.localisationService.getText("launcher-profile_preparetoescape"),
-            "Edge Of Darkness": this.localisationService.getText("launcher-edgeofdarkness"),
-            "SPT Easy start": this.localisationService.getText("launcher-profile_spteasystart"),
-            "SPT Zero to hero": this.localisationService.getText("launcher-profile_sptzerotohero"),
-            "SPT Developer": this.localisationService.getText("launcher-profile_sptdeveloper"),
-            /* eslint-enable @typescript-eslint/naming-convention */
-        };
+        const result = {};
+        const dbProfiles = this.databaseServer.getTables().templates.profiles;
+        for (const profileKey in dbProfiles)
+        {
+            const localeKey = dbProfiles[profileKey]?.descriptionLocaleKey;
+            if (!localeKey)
+            {
+                this.logger.warning(this.localisationService.getText("launcher-missing_property", profileKey));
+                continue;
+            }
+
+            result[profileKey] = this.localisationService.getText(localeKey);
+        }
+
+        return result;
     }
 
     public find(sessionIdKey: string): Info

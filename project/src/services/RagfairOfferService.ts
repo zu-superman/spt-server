@@ -239,9 +239,6 @@ export class RagfairOfferService
         const sessionID = profile.sessionId;
         const offerIndex = profile.RagfairInfo.offers.findIndex((o) => o._id === offer._id);
 
-        profile.RagfairInfo.rating -= this.ragfairConfig.sell.reputation.loss;
-        profile.RagfairInfo.isRatingGrowing = false;
-
         if (offerIndex === -1)
         {
             this.logger.warning(this.localisationService.getText("ragfair-unable_to_find_offer_to_remove", offer._id));
@@ -250,6 +247,9 @@ export class RagfairOfferService
                 this.localisationService.getText("ragfair-offer_not_found_in_profile_short"),
             );
         }
+
+        profile.RagfairInfo.rating -= this.ragfairConfig.sell.reputation.loss;
+        profile.RagfairInfo.isRatingGrowing = false;
 
         if (offer.items[0].upd.StackObjectsCount > offer.items[0].upd.OriginalStackObjectsCount)
         {

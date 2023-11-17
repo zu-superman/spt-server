@@ -51,28 +51,31 @@ export class PaymentService
         // Track the amounts of each type of currency involved in the trade.
         const currencyAmounts: { [key: string]: number; } = {};
 
-        // Delete barter items and track currencies if the action is "TradingConfirm".
-        if (request.Action === "TradingConfirm")
+        // Delete barter items and track currencies
+        for (const index in request.scheme_items)
         {
-            for (const index in request.scheme_items)
+            // Find the corresponding item in the player's inventory.
+            const item = pmcData.Inventory.items.find((i) => i._id === request.scheme_items[index].id);
+            if (item !== undefined)
             {
-                // Find the corresponding item in the player's inventory.
-                const item = pmcData.Inventory.items.find((i) => i._id === request.scheme_items[index].id);
-                if (item !== undefined)
+                if (!this.paymentHelper.isMoneyTpl(item._tpl))
                 {
-                    if (!this.paymentHelper.isMoneyTpl(item._tpl))
-                    {
-                        // If the item is not money, remove it from the inventory.
-                        output = this.inventoryHelper.removeItem(pmcData, item._id, sessionID, output);
-                        request.scheme_items[index].count = 0;
-                    }
-                    else
-                    {
-                        // If the item is money, add its count to the currencyAmounts object.
-                        currencyAmounts[item._tpl] = (currencyAmounts[item._tpl] || 0)
-                            + request.scheme_items[index].count;
-                    }
+                    // If the item is not money, remove it from the inventory.
+                    output = this.inventoryHelper.removeItem(pmcData, item._id, sessionID, output);
+                    request.scheme_items[index].count = 0;
                 }
+                else
+                {
+                    // If the item is money, add its count to the currencyAmounts object.
+                    currencyAmounts[item._tpl] = (currencyAmounts[item._tpl] || 0) + request.scheme_items[index].count;
+                }
+            }
+            else
+            {
+                // Used by `SptInsure`
+                // Handle differently, `id` is the money type tpl
+                const currencyTpl = request.scheme_items[index].id;
+                currencyAmounts[currencyTpl] = (currencyAmounts[currencyTpl] || 0) + request.scheme_items[index].count;
             }
         }
 
@@ -87,6 +90,7 @@ export class PaymentService
 
             if (currencyAmount > 0)
             {
+                // Find money stacks in inventory and remove amount needed + update output object to inform client of changes
                 output = this.addPaymentToOutput(pmcData, currencyTpl, currencyAmount, sessionID, output);
 
                 // If there are warnings, exit early.
@@ -214,6 +218,7 @@ export class PaymentService
         {
             const request = {
                 items: [{
+                    // eslint-disable-next-line @typescript-eslint/naming-convention
                     item_id: currency,
                     count: calcAmount,
                 }],
@@ -258,7 +263,7 @@ export class PaymentService
     }
 
     /**
-     * Remove currency from player stash/inventory
+     * Remove currency from player stash/inventory and update client object with changes
      * @param pmcData Player profile to find and remove currency from
      * @param currencyTpl Type of currency to pay
      * @param amountToPay money value to pay

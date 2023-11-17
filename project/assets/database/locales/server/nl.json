@@ -553,7 +553,7 @@
     "launcher-profile_standard": "Zelfde als live, basis stash grootte (10x28), 500,000 roubles",
     "launcher-profile_leftbehind": "Zelfde als Standard plus; grotere stash (10x38), extra uitrusting/items, 500 dollars",
     "launcher-profile_preparetoescape": "Zelfde als Left Behind plus; grotere stash (10x48), extra uitrusting/items, hogere start reputatie met traders, 250 euros",
-    "launcher-edgeofdarkness": "Zelfde als Prepare To Escape plus; grotere stash (10x68), extra uitrusting/items, hogere start reputatie met traders, 1000 dollars, 500 euros",
+    "launcher-profile-edgeofdarkness": "Zelfde als Prepare To Escape plus; grotere stash (10x68), extra uitrusting/items, hogere start reputatie met traders, 1000 dollars, 500 euros",
     "launcher-profile_spteasystart": "Heel veel Roubles/Dollars/Euros, Een aantal QoL skills zijn level 20, trader rep maximaal, start level is 69, geen voltooide missies",
     "launcher-profile_sptzerotohero": "Start met bijna niks, geen Roubles/Dollars/Euros, geen trader rep, 1 mes, geen voltooide missies",
     "launcher-profile_sptdeveloper": "Test profiel, start level is 69, heel veel Roubles/Dollars/Euros, USEC start met alle missied klaar om te starten, BEAR start met alle missies klaar om ingeleverd te vorden, invincibility balaclava"

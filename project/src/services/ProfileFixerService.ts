@@ -6,8 +6,8 @@ import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
 import { TraderHelper } from "@spt-aki/helpers/TraderHelper";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
-import { IHideoutImprovement } from "@spt-aki/models/eft/common/tables/IBotBase";
 import { Bonus, HideoutSlot, IQuestStatus } from "@spt-aki/models/eft/common/tables/IBotBase";
+import { IHideoutImprovement } from "@spt-aki/models/eft/common/tables/IBotBase";
 import { IPmcDataRepeatableQuest, IRepeatableQuest } from "@spt-aki/models/eft/common/tables/IRepeatableQuests";
 import { StageBonus } from "@spt-aki/models/eft/hideout/IHideoutArea";
 import { IAkiProfile } from "@spt-aki/models/eft/profile/IAkiProfile";
@@ -83,7 +83,7 @@ export class ProfileFixerService
             this.reorderHideoutAreasWithResouceInputs(pmcProfile);
 
             if (
-                pmcProfile.Hideout.Areas[HideoutAreas.GENERATOR].slots.length
+                pmcProfile.Hideout.Areas.find((x) => x.type === HideoutAreas.GENERATOR).slots.length
                     < (6
                         + this.databaseServer.getTables().globals.config.SkillsSettings.HideoutManagement.EliteSlots
                             .Generator.Slots)
@@ -100,7 +100,7 @@ export class ProfileFixerService
             }
 
             if (
-                pmcProfile.Hideout.Areas[HideoutAreas.WATER_COLLECTOR].slots.length
+                pmcProfile.Hideout.Areas.find((x) => x.type === HideoutAreas.WATER_COLLECTOR).slots.length
                     < (1
                         + this.databaseServer.getTables().globals.config.SkillsSettings.HideoutManagement.EliteSlots
                             .WaterCollector.Slots)
@@ -117,7 +117,7 @@ export class ProfileFixerService
             }
 
             if (
-                pmcProfile.Hideout.Areas[HideoutAreas.AIR_FILTERING].slots.length
+                pmcProfile.Hideout.Areas.find((x) => x.type === HideoutAreas.AIR_FILTERING).slots.length
                     < (3
                         + this.databaseServer.getTables().globals.config.SkillsSettings.HideoutManagement.EliteSlots
                             .AirFilteringUnit.Slots)
@@ -135,7 +135,7 @@ export class ProfileFixerService
 
             // BTC Farm doesnt have extra slots for hideout management, but we still check for modded stuff!!
             if (
-                pmcProfile.Hideout.Areas[HideoutAreas.BITCOIN_FARM].slots.length
+                pmcProfile.Hideout.Areas.find((x) => x.type === HideoutAreas.BITCOIN_FARM).slots.length
                     < (50
                         + this.databaseServer.getTables().globals.config.SkillsSettings.HideoutManagement.EliteSlots
                             .BitcoinFarm.Slots)
@@ -571,7 +571,7 @@ export class ProfileFixerService
      */
     protected addMissingWallImprovements(pmcProfile: IPmcData): void
     {
-        const profileWallArea = pmcProfile.Hideout.Areas[HideoutAreas.EMERGENCY_WALL];
+        const profileWallArea = pmcProfile.Hideout.Areas.find((x) => x.type === HideoutAreas.EMERGENCY_WALL);
         const wallDb = this.databaseServer.getTables().hideout.areas.find((x) =>
             x.type === HideoutAreas.EMERGENCY_WALL
         );
@@ -647,8 +647,7 @@ export class ProfileFixerService
 
         for (const areaId of areasToCheck)
         {
-            const area = pmcProfile.Hideout.Areas[areaId];
-
+            const area = pmcProfile.Hideout.Areas.find((x) => x.type === areaId);
             if (!area)
             {
                 this.logger.debug(`unable to sort ${areaId} slots, no area found`);

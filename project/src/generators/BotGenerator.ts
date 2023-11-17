@@ -121,9 +121,9 @@ export class BotGenerator
         }
 
         this.logger.debug(
-            `Generated ${botGenerationDetails.botCountToGenerate} ${
-                output[0].Info.Settings.Role
-            } (${botGenerationDetails.eventRole ?? ""}) bots`,
+            `Generated ${botGenerationDetails.botCountToGenerate} ${output[0].Info.Settings.Role} (${
+                botGenerationDetails.eventRole ?? ""
+            }) bots`,
         );
 
         return output;

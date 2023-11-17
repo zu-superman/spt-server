@@ -30,7 +30,8 @@ export interface IBotBase
     RepeatableQuests: IPmcDataRepeatableQuest[];
     Bonuses: Bonus[];
     Notes: Notes;
-    CarExtractCounts: CarExtractCounts;
+    CarExtractCounts: Record<string, number>;
+    CoopExtractCounts: Record<string, number>;
     SurvivorClass: SurvivorClass;
     WishList: string[];
     /** SPT specific property used during bot generation in raid */
@@ -387,6 +388,8 @@ export interface Productive
     /** Used when sending data to client */
     NeedFuelForAllProductionTime?: boolean;
     sptIsScavCase?: boolean;
+    /** Some crafts are always inProgress, but need to be reset, e.g. water collector */
+    sptIsComplete?: boolean;
 }
 
 export interface Production extends Productive

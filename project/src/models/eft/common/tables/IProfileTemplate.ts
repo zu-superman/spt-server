@@ -3,14 +3,20 @@ import { Dialogue, IUserBuilds } from "@spt-aki/models/eft/profile/IAkiProfile";
 
 export interface IProfileTemplates
 {
+    /* eslint-disable @typescript-eslint/naming-convention */
     Standard: IProfileSides;
     "Left Behind": IProfileSides;
     "Prepare To Escape": IProfileSides;
     "Edge Of Darkness": IProfileSides;
+    "SPT Developer": IProfileSides;
+    "SPT Easy start": IProfileSides;
+    "SPT Zero to hero": IProfileSides;
+    /* eslint-enable @typescript-eslint/naming-convention */
 }
 
 export interface IProfileSides
 {
+    descriptionLocaleKey: string;
     usec: TemplateSide;
     bear: TemplateSide;
 }

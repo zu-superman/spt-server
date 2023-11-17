@@ -49,7 +49,7 @@
       "BossEscortType": "followerTagilla",
       "BossName": "bossKilla",
       "BossPlayer": false,
-      "BossZone": "ZoneCenter",
+      "BossZone": "ZoneCenterBot,ZoneCenter,ZoneOLI,ZoneIDEA,ZoneGoshan",
       "Delay": 0,
       "ForceSpawn": false,
       "IgnoreMaxBots": false,

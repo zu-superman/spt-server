@@ -191,6 +191,7 @@ export class MatchController
 
         if (extractName && this.extractWasViaCoop(extractName) && this.traderConfig.fence.coopExtractGift.sendGift)
         {
+            this.handleCoopExtract(pmcData, extractName);
             this.sendCoopTakenFenceMessage(sessionId);
         }
     }
@@ -241,6 +242,41 @@ export class MatchController
     }
 
     /**
+     * Handle when a player extracts using a coop extract - add rep to fence
+     * @param pmcData Profile
+     * @param extractName Name of extract taken
+     */
+    protected handleCoopExtract(pmcData: IPmcData, extractName: string): void
+    {
+        if (!pmcData.CoopExtractCounts)
+        {
+            pmcData.CoopExtractCounts = {};
+        }
+
+        // Ensure key exists for extract
+        if (!(extractName in pmcData.CoopExtractCounts))
+        {
+            pmcData.CoopExtractCounts[extractName] = 0;
+        }
+
+        // Increment extract count value
+        pmcData.CoopExtractCounts[extractName] += 1;
+
+        // Get new fence standing value
+        const newFenceStanding = this.getFenceStandingAfterExtract(
+            pmcData,
+            this.inraidConfig.coopExtractBaseStandingGain,
+            pmcData.CoopExtractCounts[extractName],
+        );
+        const fenceId: string = Traders.FENCE;
+        pmcData.TradersInfo[fenceId].standing = newFenceStanding;
+
+        // Check if new standing has leveled up trader
+        this.traderHelper.lvlUp(fenceId, pmcData);
+        pmcData.TradersInfo[fenceId].loyaltyLevel = Math.max(pmcData.TradersInfo[fenceId].loyaltyLevel, 1);
+    }
+
+    /**
      * Was extract by car
      * @param extractName name of extract
      * @returns true if car extract
@@ -278,9 +314,17 @@ export class MatchController
         // Increment extract count value
         pmcData.CarExtractCounts[extractName] += 1;
 
+        // Not exact replica of Live behaviour
+        // Simplified for now, no real reason to do the whole (unconfirmed) extra 0.01 standing per day regeneration mechanic
+        const newFenceStanding = this.getFenceStandingAfterExtract(
+            pmcData,
+            this.inraidConfig.carExtractBaseStandingGain,
+            pmcData.CarExtractCounts[extractName],
+        );
         const fenceId: string = Traders.FENCE;
-        this.updateFenceStandingInProfile(pmcData, fenceId, extractName);
+        pmcData.TradersInfo[fenceId].standing = newFenceStanding;
 
+        // Check if new standing has leveled up trader
         this.traderHelper.lvlUp(fenceId, pmcData);
         pmcData.TradersInfo[fenceId].loyaltyLevel = Math.max(pmcData.TradersInfo[fenceId].loyaltyLevel, 1);
 
@@ -290,25 +334,25 @@ export class MatchController
     }
 
     /**
-     * Update players fence trader standing value in profile
-     * @param pmcData Player profile
-     * @param fenceId Id of fence trader
-     * @param extractName Name of extract used
+     * Get the fence rep gain from using a car or coop extract
+     * @param pmcData Profile
+     * @param baseGain amount gained for the first extract
+     * @param extractCount Number of times extract was taken
+     * @returns Fence standing after taking extract
      */
-    protected updateFenceStandingInProfile(pmcData: IPmcData, fenceId: string, extractName: string): void
+    protected getFenceStandingAfterExtract(pmcData: IPmcData, baseGain: number, extractCount: number): number
     {
+        // Get current standing
+        const fenceId: string = Traders.FENCE;
         let fenceStanding = Number(pmcData.TradersInfo[fenceId].standing);
 
-        // Not exact replica of Live behaviour... Simplified for now. No real reason to do the whole (unconfirmed)
-        // extra 0.01 standing per day regeneration mechanic.
-        const baseGain: number = this.inraidConfig.carExtractBaseStandingGain;
-        const extractCount: number = pmcData.CarExtractCounts[extractName];
-
+        // get standing after taking extract x times, x.xx format, gain from extract can be no smaller than 0.01
         fenceStanding += Math.max(baseGain / extractCount, 0.01);
 
-        // Ensure fence loyalty level is not above/below the range -7 - 15
+        // Ensure fence loyalty level is not above/below the range -7 to 15
         const newFenceStanding = Math.min(Math.max(fenceStanding, -7), 15);
         this.logger.debug(`Old vs new fence standing: ${pmcData.TradersInfo[fenceId].standing}, ${newFenceStanding}`);
-        pmcData.TradersInfo[fenceId].standing = newFenceStanding;
+
+        return Number(newFenceStanding.toFixed(2));
     }
 }

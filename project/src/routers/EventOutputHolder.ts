@@ -83,6 +83,9 @@ export class EventOutputHolder
         );
         profileChanges.improvements = this.jsonUtil.clone(this.getImprovementsFromProfileAndFlagComplete(pmcData));
         profileChanges.traderRelations = this.constructTraderRelations(pmcData.TradersInfo);
+
+        // Fixes container craft from water collector not resetting after collection
+        this.resetSptIsCompleteFlaggedCrafts(pmcData.Hideout.Production);
     }
 
     /**
@@ -153,6 +156,13 @@ export class EventOutputHolder
                 continue;
             }
 
+            // Complete and is a water collector craft
+            // Needed as canister craft (water collector) is continuous
+            if (production.sptIsComplete && productionKey === "5d5589c1f934db045e6c5492")
+            {
+                continue;
+            }
+
             // Skip completed
             if (!production.inProgress)
             {
@@ -175,5 +185,23 @@ export class EventOutputHolder
         }
 
         return productions;
+    }
+
+    /**
+     * Required as continuous productions don't reset and stay at 100% completion but client thinks it hasn't started
+     * @param productions Productions in a profile
+     */
+    protected resetSptIsCompleteFlaggedCrafts(productions: Record<string, Productive>): void
+    {
+        for (const productionKey in productions)
+        {
+            const production = productions[productionKey];
+            if (production.sptIsComplete)
+            {
+                production.sptIsComplete = false;
+                production.Progress = 0;
+                production.StartTimestamp = this.timeUtil.getTimestamp();
+            }
+        }
     }
 }
