@@ -883,7 +883,7 @@ export class RepeatableQuestGenerator
         };
 
         // Add money reward
-        if (traderId === Traders.PEACEKEEPER)
+        if (traderId === Traders.PEACEKEEPER || traderId === Traders.FENCE)
         {
             // convert to equivalent dollars
             rewards.Success.push(
