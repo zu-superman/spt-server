@@ -654,7 +654,7 @@ export class BotEquipmentModGenerator
                     modTpl,
                     modSlot,
                 );
-                if (!modCompatibilityResult.incompatible)
+                if (!modCompatibilityResult.incompatible && !this.weaponModComboIsIncompatible(weapon, modTpl))
                 {
                     found = true;
 
@@ -666,6 +666,7 @@ export class BotEquipmentModGenerator
             if (modCompatibilityResult.incompatible && parentSlot._required)
             {
                 this.logger.debug(modCompatibilityResult.reason);
+                this.logger.debug(`Weapon: ${weapon.map(x => `${x._tpl} ${x.slotId ?? ""}`).join(",")}`)
             }
         }
 
@@ -697,6 +698,23 @@ export class BotEquipmentModGenerator
         }
 
         return this.itemHelper.getItem(modTpl);
+    }
+
+    /**
+     * Temp fix to prevent certain combinations of weapons with mods that are known to be incompatible
+     * @param weapon Weapon
+     * @param modTpl Mod to check compatibility with weapon
+     * @returns True if incompatible
+     */
+    protected weaponModComboIsIncompatible(weapon: Item[], modTpl: string): boolean
+    {
+        // STM-9 + AR-15 Lone Star Ion Lite handguard
+        if (weapon[0]._tpl === "60339954d62c9b14ed777c06" && modTpl === "5d4405f0a4b9361e6a4e6bd9")
+        {
+            return true;
+        }
+
+        return false;
     }
 
     /**
