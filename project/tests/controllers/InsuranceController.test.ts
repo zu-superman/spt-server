@@ -1424,9 +1424,12 @@ describe("InsuranceController", () =>
             expect(mockPayMoney).toHaveBeenCalledWith(
                 pmcData,
                 {
-                    scheme_items: [{ id: "item1", count: 100 }, { id: "item2", count: 100 }],
+                    scheme_items: [{ id: "5449016a4bdc2d6f028b456f", count: 100 }, {
+                        id: "5449016a4bdc2d6f028b456f",
+                        count: 100,
+                    }],
                     tid: "someTraderId",
-                    Action: "",
+                    Action: "SptInsure",
                     type: "",
                     item_id: "",
                     count: 0,
@@ -1459,9 +1462,12 @@ describe("InsuranceController", () =>
 
             // Define the expected payment options structure based on the setup data.
             const expectedPaymentOptions = {
-                scheme_items: [{ id: "item1", count: 100 }, { id: "item2", count: 100 }],
+                scheme_items: [{ id: "5449016a4bdc2d6f028b456f", count: 100 }, {
+                    id: "5449016a4bdc2d6f028b456f",
+                    count: 100,
+                }],
                 tid: body.tid,
-                Action: "",
+                Action: "SptInsure",
                 type: "",
                 item_id: "",
                 count: 0,
