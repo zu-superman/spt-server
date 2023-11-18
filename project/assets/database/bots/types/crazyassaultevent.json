@@ -4499,6 +4499,8 @@
         "mod_magazine": [
           "5448c12b4bdc2d02308b456f"
         ],
+		"mod_reciever": ["6374a822e629013b9c0645c8"],
+		"mod_pistolgrip": ["6374a7e7417239a7bf00f042"],
         "patron_in_weapon": [
           "573719762459775a626ccbc1",
           "573720e02459776143012541",
@@ -4764,7 +4766,7 @@
         "mod_muzzle": [
           "56e05b06d2720bb2668b4586"
         ],
-        "mod_pistol_grip": [
+        "mod_pistolgrip": [
           "56e05a6ed2720bd0748b4567"
         ],
         "patron_in_weapon": [
@@ -4890,10 +4892,15 @@
         "mod_magazine": [
           "5448c12b4bdc2d02308b456f"
         ],
+		"mod_reciever": ["6374a822e629013b9c0645c8"],
+		"mod_pistolgrip": ["637784c5f7b3f4ac1a0d1a9a", "637b6d610aef6cfc5e02dd14"],
         "patron_in_weapon": [
           "5737201124597760fc4431f1"
         ]
       },
+	  "6374a822e629013b9c0645c8": {
+		  "mod_sight_rear": ["63c6adcfb4ba094317063742"]
+	  },
       "57acb6222459771ec34b5cb0": {
         "mod_scope": [
           "570fd721d2720bc5458b4596",
