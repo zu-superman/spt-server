@@ -593,7 +593,7 @@ export class BotWeaponGenerator
     {
         const desiredCaliber = this.getWeaponCaliber(weaponTemplate);
 
-        const compatibleCartridges = ammo[desiredCaliber];
+        const compatibleCartridges = this.jsonUtil.clone(ammo[desiredCaliber]);
         if (!compatibleCartridges || compatibleCartridges?.length === 0)
         {
             this.logger.debug(
@@ -608,23 +608,42 @@ export class BotWeaponGenerator
             return weaponTemplate._props.defAmmo;
         }
 
-        const chosenAmmoTpl = this.weightedRandomHelper.getWeightedValue<string>(compatibleCartridges);
-        if (
-            weaponTemplate._props.Chambers[0]
-            && !weaponTemplate._props.Chambers[0]._props.filters[0].Filter.includes(chosenAmmoTpl)
-        )
+        let chosenAmmoTpl: string;
+        while (!chosenAmmoTpl)
         {
-            this.logger.debug(
-                this.localisationService.getText("bot-incompatible_ammo_for_weapon_falling_back_to_default", {
-                    chosenAmmo: chosenAmmoTpl,
-                    weaponId: weaponTemplate._id,
-                    weaponName: weaponTemplate._name,
-                    defaultAmmo: weaponTemplate._props.defAmmo,
-                }),
-            );
+            const possibleAmmo = this.weightedRandomHelper.getWeightedValue<string>(compatibleCartridges);
+            
+            // Check compatibility
+            if (weaponTemplate._props.Chambers[0]
+                && !weaponTemplate._props.Chambers[0]._props.filters[0].Filter.includes(possibleAmmo)
+            )
+            {
+                // Ran out of possible choices, use default ammo
+                if (Object.keys(compatibleCartridges).length === 0)
+                {
+                    this.logger.debug(
+                        this.localisationService.getText("bot-incompatible_ammo_for_weapon_falling_back_to_default", {
+                            chosenAmmo: chosenAmmoTpl,
+                            weaponId: weaponTemplate._id,
+                            weaponName: weaponTemplate._name,
+                            defaultAmmo: weaponTemplate._props.defAmmo,
+                        }),
+                    );
 
-            // Incompatible ammo found, return default (can happen with .366 and 7.62x39 weapons)
-            return weaponTemplate._props.defAmmo;
+                    // Set ammo to default and exit
+                    chosenAmmoTpl = weaponTemplate._props.defAmmo;
+                    break;
+                }
+
+                // Not compatible, remove item from possible list and try again
+                delete compatibleCartridges[possibleAmmo];
+            }
+            else
+            {
+                // Compatible ammo found
+                chosenAmmoTpl = possibleAmmo;
+                break;
+            }
         }
 
         return chosenAmmoTpl;
