@@ -89,8 +89,9 @@ export interface IRepeatableQuestTypesConfig
 
 export interface IExploration extends IBaseQuestConfig
 {
-    maxExtracts: number;
-    specificExits: ISpecificExits;
+    maxExtracts: number
+    maxExtractsWithSpecificExit: number
+    specificExits: ISpecificExits
 }
 
 export interface ISpecificExits

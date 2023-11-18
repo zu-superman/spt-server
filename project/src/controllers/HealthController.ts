@@ -91,8 +91,8 @@ export class HealthController
         else
         {
             // Get max healing from db
-            const maxHp = this.itemHelper.getItem(healingItemToUse._tpl)[1]._props.MaxHpResource;
-            healingItemToUse.upd.MedKit = { HpResource: maxHp - request.count }; // Subtract amount used from max
+            const maxhp = this.itemHelper.getItem(healingItemToUse._tpl)[1]._props.MaxHpResource;
+            healingItemToUse.upd.MedKit = { HpResource: maxhp - request.count }; // Subtract amout used from max
         }
 
         // Resource in medkit is spent, delete it
@@ -169,10 +169,13 @@ export class HealthController
         const payMoneyRequest: IProcessBuyTradeRequestData = {
             Action: healthTreatmentRequest.Action,
             tid: Traders.THERAPIST,
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             scheme_items: healthTreatmentRequest.items,
             type: "",
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             item_id: "",
             count: 0,
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             scheme_id: 0,
         };
 
@@ -188,8 +191,12 @@ export class HealthController
             const partRequest: BodyPart = healthTreatmentRequest.difference.BodyParts[bodyPartKey];
             const profilePart = pmcData.Health.BodyParts[bodyPartKey];
 
-            // Set profile body part to max
-            profilePart.Health.Current = profilePart.Health.Maximum;
+            // Bodypart healing is chosen when part request hp is above 0
+            if (partRequest.Health > 0)
+            {
+                // Heal bodypart
+                profilePart.Health.Current = profilePart.Health.Maximum;
+            }
 
             // Check for effects to remove
             if (partRequest.Effects?.length > 0)
@@ -220,6 +227,7 @@ export class HealthController
      * @param info Request data
      * @param sessionID
      */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public applyWorkoutChanges(pmcData: IPmcData, info: IWorkoutData, sessionId: string): void
     {
         // https://dev.sp-tarkov.com/SPT-AKI/Server/issues/2674

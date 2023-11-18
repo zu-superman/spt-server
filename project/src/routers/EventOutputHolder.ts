@@ -184,7 +184,8 @@ export class EventOutputHolder
             }
         }
 
-        return productions;
+        // Return null of there's no crafts to send to client to match live behaviour
+        return (Object.keys(productions).length > 0) ? productions : null
     }
 
     /**

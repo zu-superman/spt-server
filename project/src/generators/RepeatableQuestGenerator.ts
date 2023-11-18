@@ -620,25 +620,26 @@ export class RepeatableQuestGenerator
      * A repeatable quest, besides some more or less static components, exists of reward and condition (see assets/database/templates/repeatableQuests.json)
      * This is a helper method for GenerateCompletionQuest to create a completion condition (of which a completion quest theoretically can have many)
      *
-     * @param   {string}    targetItemId    id of the item to request
+     * @param   {string}    itemTpl    id of the item to request
      * @param   {integer}   value           amount of items of this specific type to request
      * @returns {object}                    object of "Completion"-condition
      */
-    protected generateCompletionAvailableForFinish(targetItemId: string, value: number): ICompletionAvailableFor
+    protected generateCompletionAvailableForFinish(itemTpl: string, value: number): ICompletionAvailableFor
     {
         let minDurability = 0;
         let onlyFoundInRaid = true;
         if (
-            this.itemHelper.isOfBaseclass(targetItemId, BaseClasses.WEAPON)
-            || this.itemHelper.isOfBaseclass(targetItemId, BaseClasses.ARMOR)
+            this.itemHelper.isOfBaseclass(itemTpl, BaseClasses.WEAPON)
+            || this.itemHelper.isOfBaseclass(itemTpl, BaseClasses.ARMOR)
         )
         {
-            minDurability = 80;
+            minDurability = this.randomUtil.getArrayValue([60, 80]);
         }
 
+        // By default all collected items must be FiR, except dog tags
         if (
-            this.itemHelper.isOfBaseclass(targetItemId, BaseClasses.DOG_TAG_USEC)
-            || this.itemHelper.isOfBaseclass(targetItemId, BaseClasses.DOG_TAG_BEAR)
+            this.itemHelper.isOfBaseclass(itemTpl, BaseClasses.DOG_TAG_USEC)
+            || this.itemHelper.isOfBaseclass(itemTpl, BaseClasses.DOG_TAG_BEAR)
         )
         {
             onlyFoundInRaid = false;
@@ -651,7 +652,7 @@ export class RepeatableQuestGenerator
                 dynamicLocale: true,
                 index: 0,
                 visibilityConditions: [],
-                target: [targetItemId],
+                target: [itemTpl],
                 value: value,
                 minDurability: minDurability,
                 maxDurability: 100,
@@ -680,6 +681,7 @@ export class RepeatableQuestGenerator
     ): IExploration
     {
         const explorationConfig = repeatableConfig.questConfig.Exploration;
+        const requiresSpecificExtract = Math.random() < repeatableConfig.questConfig.Exploration.specificExits.probability;
 
         if (Object.keys(questTypePool.pool.Exploration.locations).length === 0)
         {
@@ -696,7 +698,8 @@ export class RepeatableQuestGenerator
         // remove the location from the available pool
         delete questTypePool.pool.Exploration.locations[locationKey];
 
-        const numExtracts = this.randomUtil.randInt(1, explorationConfig.maxExtracts + 1);
+        // Different max extract count when specific extract needed
+        const numExtracts = this.randomUtil.randInt(1, requiresSpecificExtract ? explorationConfig.maxExtractsWithSpecificExit : explorationConfig.maxExtracts + 1);
 
         const quest = this.generateRepeatableTemplate("Exploration", traderId, repeatableConfig.side) as IExploration;
 
@@ -715,7 +718,8 @@ export class RepeatableQuestGenerator
         quest.conditions.AvailableForFinish[0]._props.id = this.objectId.generate();
         quest.location = this.getQuestLocationByMapId(locationKey);
 
-        if (Math.random() < repeatableConfig.questConfig.Exploration.specificExits.probability)
+        
+        if (requiresSpecificExtract)
         {
             // Filter by whitelist, it's also possible that the field "PassageRequirement" does not exist (e.g. Shoreline)
             // Scav exits are not listed at all in locations.base currently. If that changes at some point, additional filtering will be required
@@ -875,27 +879,34 @@ export class RepeatableQuestGenerator
         let roublesBudget = rewardRoubles;
         let rewardItemPool = this.chooseRewardItemsWithinBudget(repeatableConfig, roublesBudget, traderId);
 
-        // Add xp reward
         const rewards: IRewards = {
             Started: [],
-            Success: [{ value: rewardXP, type: "Experience", index: 0 }],
+            Success: [],
             Fail: [],
         };
 
+        let rewardIndex = 0;
+        // Add xp reward
+        if (rewardXP > 0)
+        {
+            rewards.Success.push({ value: rewardXP, type: "Experience", index: rewardIndex });
+            rewardIndex++;
+        }
+
         // Add money reward
-        if (traderId === Traders.PEACEKEEPER)
+        if (traderId === Traders.PEACEKEEPER || traderId === Traders.FENCE)
         {
             // convert to equivalent dollars
             rewards.Success.push(
-                this.generateRewardItem(Money.EUROS, this.handbookHelper.fromRUB(rewardRoubles, Money.EUROS), 1),
+                this.generateRewardItem(Money.EUROS, this.handbookHelper.fromRUB(rewardRoubles, Money.EUROS), rewardIndex),
             );
         }
         else
         {
-            rewards.Success.push(this.generateRewardItem(Money.ROUBLES, rewardRoubles, 1));
+            rewards.Success.push(this.generateRewardItem(Money.ROUBLES, rewardRoubles, rewardIndex));
         }
+        rewardIndex++;
 
-        let index = 2;
         if (rewardItemPool.length > 0)
         {
             let weaponRewardCount = 0;
@@ -946,14 +957,15 @@ export class RepeatableQuestGenerator
                     itemCount = 2;
                 }
 
-                rewards.Success.push(this.generateRewardItem(itemSelected._id, itemCount, index, children));
+                rewards.Success.push(this.generateRewardItem(itemSelected._id, itemCount, rewardIndex, children));
+                rewardIndex++;
+
                 const itemCost = (this.itemHelper.isOfBaseclass(itemSelected._id, BaseClasses.WEAPON))
                     ? this.itemHelper.getItemMaxPrice(children[0]._tpl) // use if preset is not default : this.itemHelper.getWeaponPresetPrice(children[0], children, this.itemHelper.getStaticItemPrice(itemSelected._id))
                     : this.itemHelper.getStaticItemPrice(itemSelected._id);
                 roublesBudget -= itemCount * itemCost;
-                index += 1;
 
-                // if we still have budget narrow down the items
+                // If we still have budget narrow down possible items
                 if (roublesBudget > 0)
                 {
                     // Filter possible reward items to only items with a price below the remaining budget
@@ -975,18 +987,19 @@ export class RepeatableQuestGenerator
         // Add rep reward to rewards array
         if (rewardReputation > 0)
         {
-            const reward: IReward = { target: traderId, value: rewardReputation, type: "TraderStanding", index: index };
+            const reward: IReward = { target: traderId, value: rewardReputation, type: "TraderStanding", index: rewardIndex };
             rewards.Success.push(reward);
+            rewardIndex++;
         }
 
+        // Chance of adding skill reward
         if (this.randomUtil.getChance100(skillRewardChance * 100))
         {
-            index++;
             const reward: IReward = {
                 target: this.randomUtil.getArrayValue(questConfig.possibleSkillRewards),
                 value: skillPointReward,
                 type: "Skill",
-                index: index,
+                index: rewardIndex,
             };
             rewards.Success.push(reward);
         }
