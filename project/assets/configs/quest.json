@@ -280,7 +280,7 @@
                 "Completion": {
                     "possibleSkillRewards": ["Endurance", "Strength", "Vitality"],
                     "minRequestedAmount": 1,
-                    "maxRequestedAmount": 5,
+                    "maxRequestedAmount": 4,
                     "minRequestedBulletAmount": 20,
                     "maxRequestedBulletAmount": 60,
                     "useWhitelist": true,
