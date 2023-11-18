@@ -680,6 +680,7 @@ export class RepeatableQuestGenerator
     ): IExploration
     {
         const explorationConfig = repeatableConfig.questConfig.Exploration;
+        const requiresSpecificExtract = Math.random() < repeatableConfig.questConfig.Exploration.specificExits.probability;
 
         if (Object.keys(questTypePool.pool.Exploration.locations).length === 0)
         {
@@ -696,7 +697,8 @@ export class RepeatableQuestGenerator
         // remove the location from the available pool
         delete questTypePool.pool.Exploration.locations[locationKey];
 
-        const numExtracts = this.randomUtil.randInt(1, explorationConfig.maxExtracts + 1);
+        // Different max extract count when specific extract needed
+        const numExtracts = this.randomUtil.randInt(1, requiresSpecificExtract ? explorationConfig.maxExtractsWithSpecificExit : explorationConfig.maxExtracts + 1);
 
         const quest = this.generateRepeatableTemplate("Exploration", traderId, repeatableConfig.side) as IExploration;
 
@@ -715,7 +717,8 @@ export class RepeatableQuestGenerator
         quest.conditions.AvailableForFinish[0]._props.id = this.objectId.generate();
         quest.location = this.getQuestLocationByMapId(locationKey);
 
-        if (Math.random() < repeatableConfig.questConfig.Exploration.specificExits.probability)
+        
+        if (requiresSpecificExtract)
         {
             // Filter by whitelist, it's also possible that the field "PassageRequirement" does not exist (e.g. Shoreline)
             // Scav exits are not listed at all in locations.base currently. If that changes at some point, additional filtering will be required

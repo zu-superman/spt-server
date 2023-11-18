@@ -262,7 +262,8 @@
             ],
             "questConfig": {
                 "Exploration": {
-                    "maxExtracts": 3,
+                    "maxExtracts": 5,
+					"maxExtractsWithSpecificExit": 3,
                     "possibleSkillRewards": ["Endurance", "Strength", "Vitality"],
                     "specificExits": {
                         "probability": 0.25,
@@ -901,7 +902,8 @@
             "questConfig": {
                 "Exploration": {
                     "possibleSkillRewards": ["Endurance", "Strength", "Vitality"],
-                    "maxExtracts": 10,
+                    "maxExtracts": 25,
+					"maxExtractsWithSpecificExit": 12,
                     "specificExits": {
                         "probability": 0.4,
                         "passageRequirementWhitelist": [
@@ -1522,7 +1524,8 @@
             "questConfig": {
                 "Exploration": {
                     "possibleSkillRewards": ["Endurance", "Strength", "Vitality"],
-                    "maxExtracts": 3,
+                    "maxExtracts": 4,
+					"maxExtractsWithSpecificExit": 2,
                     "specificExits": {
                         "probability": 0.25,
                         "passageRequirementWhitelist": [
