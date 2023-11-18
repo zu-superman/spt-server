@@ -620,25 +620,26 @@ export class RepeatableQuestGenerator
      * A repeatable quest, besides some more or less static components, exists of reward and condition (see assets/database/templates/repeatableQuests.json)
      * This is a helper method for GenerateCompletionQuest to create a completion condition (of which a completion quest theoretically can have many)
      *
-     * @param   {string}    targetItemId    id of the item to request
+     * @param   {string}    itemTpl    id of the item to request
      * @param   {integer}   value           amount of items of this specific type to request
      * @returns {object}                    object of "Completion"-condition
      */
-    protected generateCompletionAvailableForFinish(targetItemId: string, value: number): ICompletionAvailableFor
+    protected generateCompletionAvailableForFinish(itemTpl: string, value: number): ICompletionAvailableFor
     {
         let minDurability = 0;
         let onlyFoundInRaid = true;
         if (
-            this.itemHelper.isOfBaseclass(targetItemId, BaseClasses.WEAPON)
-            || this.itemHelper.isOfBaseclass(targetItemId, BaseClasses.ARMOR)
+            this.itemHelper.isOfBaseclass(itemTpl, BaseClasses.WEAPON)
+            || this.itemHelper.isOfBaseclass(itemTpl, BaseClasses.ARMOR)
         )
         {
-            minDurability = 80;
+            minDurability = this.randomUtil.getArrayValue([60, 80]);
         }
 
+        // By default all collected items must be FiR, except dog tags
         if (
-            this.itemHelper.isOfBaseclass(targetItemId, BaseClasses.DOG_TAG_USEC)
-            || this.itemHelper.isOfBaseclass(targetItemId, BaseClasses.DOG_TAG_BEAR)
+            this.itemHelper.isOfBaseclass(itemTpl, BaseClasses.DOG_TAG_USEC)
+            || this.itemHelper.isOfBaseclass(itemTpl, BaseClasses.DOG_TAG_BEAR)
         )
         {
             onlyFoundInRaid = false;
@@ -651,7 +652,7 @@ export class RepeatableQuestGenerator
                 dynamicLocale: true,
                 index: 0,
                 visibilityConditions: [],
-                target: [targetItemId],
+                target: [itemTpl],
                 value: value,
                 minDurability: minDurability,
                 maxDurability: 100,
