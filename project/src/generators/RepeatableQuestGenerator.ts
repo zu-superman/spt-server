@@ -875,27 +875,34 @@ export class RepeatableQuestGenerator
         let roublesBudget = rewardRoubles;
         let rewardItemPool = this.chooseRewardItemsWithinBudget(repeatableConfig, roublesBudget, traderId);
 
-        // Add xp reward
         const rewards: IRewards = {
             Started: [],
-            Success: [{ value: rewardXP, type: "Experience", index: 0 }],
+            Success: [],
             Fail: [],
         };
+
+        let rewardIndex = 0;
+        // Add xp reward
+        if (rewardXP > 0)
+        {
+            rewards.Success.push({ value: rewardXP, type: "Experience", index: rewardIndex });
+            rewardIndex++;
+        }
 
         // Add money reward
         if (traderId === Traders.PEACEKEEPER || traderId === Traders.FENCE)
         {
             // convert to equivalent dollars
             rewards.Success.push(
-                this.generateRewardItem(Money.EUROS, this.handbookHelper.fromRUB(rewardRoubles, Money.EUROS), 1),
+                this.generateRewardItem(Money.EUROS, this.handbookHelper.fromRUB(rewardRoubles, Money.EUROS), rewardIndex),
             );
         }
         else
         {
-            rewards.Success.push(this.generateRewardItem(Money.ROUBLES, rewardRoubles, 1));
+            rewards.Success.push(this.generateRewardItem(Money.ROUBLES, rewardRoubles, rewardIndex));
         }
+        rewardIndex++;
 
-        let index = 2;
         if (rewardItemPool.length > 0)
         {
             let weaponRewardCount = 0;
@@ -946,14 +953,15 @@ export class RepeatableQuestGenerator
                     itemCount = 2;
                 }
 
-                rewards.Success.push(this.generateRewardItem(itemSelected._id, itemCount, index, children));
+                rewards.Success.push(this.generateRewardItem(itemSelected._id, itemCount, rewardIndex, children));
+                rewardIndex++;
+
                 const itemCost = (this.itemHelper.isOfBaseclass(itemSelected._id, BaseClasses.WEAPON))
                     ? this.itemHelper.getItemMaxPrice(children[0]._tpl) // use if preset is not default : this.itemHelper.getWeaponPresetPrice(children[0], children, this.itemHelper.getStaticItemPrice(itemSelected._id))
                     : this.itemHelper.getStaticItemPrice(itemSelected._id);
                 roublesBudget -= itemCount * itemCost;
-                index += 1;
 
-                // if we still have budget narrow down the items
+                // If we still have budget narrow down possible items
                 if (roublesBudget > 0)
                 {
                     // Filter possible reward items to only items with a price below the remaining budget
@@ -975,18 +983,19 @@ export class RepeatableQuestGenerator
         // Add rep reward to rewards array
         if (rewardReputation > 0)
         {
-            const reward: IReward = { target: traderId, value: rewardReputation, type: "TraderStanding", index: index };
+            const reward: IReward = { target: traderId, value: rewardReputation, type: "TraderStanding", index: rewardIndex };
             rewards.Success.push(reward);
+            rewardIndex++;
         }
 
+        // Chance of adding skill reward
         if (this.randomUtil.getChance100(skillRewardChance * 100))
         {
-            index++;
             const reward: IReward = {
                 target: this.randomUtil.getArrayValue(questConfig.possibleSkillRewards),
                 value: skillPointReward,
                 type: "Skill",
-                index: index,
+                index: rewardIndex,
             };
             rewards.Success.push(reward);
         }
