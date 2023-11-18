@@ -245,7 +245,7 @@ export class RepairService
             skillPoints += this.repairConfig.weaponTreatment.critSuccessAmount;
         }
 
-        return skillPoints;
+        return Math.max(skillPoints, 0);
     }
 
     /**
