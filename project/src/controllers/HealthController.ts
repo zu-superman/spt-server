@@ -191,8 +191,12 @@ export class HealthController
             const partRequest: BodyPart = healthTreatmentRequest.difference.BodyParts[bodyPartKey];
             const profilePart = pmcData.Health.BodyParts[bodyPartKey];
 
-            // Set profile bodypart to max
-            profilePart.Health.Current = profilePart.Health.Maximum;
+            // Bodypart healing is chosen when part request hp is above 0
+            if (partRequest.Health > 0)
+            {
+                // Heal bodypart
+                profilePart.Health.Current = profilePart.Health.Maximum;
+            }
 
             // Check for effects to remove
             if (partRequest.Effects?.length > 0)
