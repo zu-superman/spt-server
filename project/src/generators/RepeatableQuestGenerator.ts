@@ -910,7 +910,7 @@ export class RepeatableQuestGenerator
         if (rewardItemPool.length > 0)
         {
             let weaponRewardCount = 0;
-            for (let i = 0; i < rewardNumItems; i++)
+            for (let i = 0; i < rewardNumItems - 1; i++)
             {
                 let itemCount = 1;
                 let children: Item[] = null;
@@ -943,6 +943,7 @@ export class RepeatableQuestGenerator
                             // No rewards left, break out of loop
                             break;
                         }
+
                         // Another weapon chosen, skip
                         continue;
                     }
