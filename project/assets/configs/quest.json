@@ -166,104 +166,115 @@
             },
             "traderWhitelist": [{
                     "traderId": "54cb50c76803fa8b248b4571",
-					"name": "prapor",
+                    "name": "prapor",
                     "questTypes": ["Completion", "Exploration", "Elimination"],
-					"rewardBaseWhitelist": [
-						"543be6564bdc2df4348b4568",
-						"5485a8684bdc2da71d8b4567",
-						"590c745b86f7743cc433c5f2",
-						"5422acb9af1c889c16000029"
-					]
+                    "rewardBaseWhitelist": [
+                        "543be6564bdc2df4348b4568",
+                        "5485a8684bdc2da71d8b4567",
+                        "590c745b86f7743cc433c5f2",
+                        "5422acb9af1c889c16000029",
+                        "57864c322459775490116fbf",
+                        "57864a66245977548f04a81f"
+                    ]
                 }, {
                     "traderId": "54cb57776803fa99248b456e",
-					"name": "therapist",
+                    "name": "therapist",
                     "questTypes": ["Completion", "Exploration", "Elimination"],
-					"rewardBaseWhitelist": [
-						"57864a66245977548f04a81f",
-						"5448f39d4bdc2d0a728b4568",
-						"5448f3ac4bdc2dce718b4569",
-						"5448f3a64bdc2d60728b456a",
-						"57864c322459775490116fbf",
-						"57864c8c245977548867e7f1",
-						"5448e8d04bdc2ddf718b4569",
-						"57864e4c24597754843f8723",
-						"57864ee62459775490116fc1"
-					]
+                    "rewardBaseWhitelist": [
+                        "57864a66245977548f04a81f",
+                        "5448f39d4bdc2d0a728b4568",
+                        "5448f3ac4bdc2dce718b4569",
+                        "5448f3a64bdc2d60728b456a",
+                        "57864c322459775490116fbf",
+                        "57864c8c245977548867e7f1",
+                        "5448e8d04bdc2ddf718b4569",
+                        "57864e4c24597754843f8723",
+                        "57864ee62459775490116fc1"
+                    ]
                 }, {
                     "traderId": "58330581ace78e27b8b10cee",
-					"name": "skier",
+                    "name": "skier",
                     "questTypes": ["Completion", "Exploration", "Elimination"],
-					"rewardBaseWhitelist": [
-						"5a341c4086f77401f2541505",
-						"5448e8d64bdc2dce718b4568",
-						"5448e8d04bdc2ddf718b4569",
-						"5422acb9af1c889c16000029",
-						"55818ad54bdc2ddc698b4569",
-						"57864a3d24597754843f8721",
-						"5a341c4686f77469e155819e",
-						"55818b224bdc2dde698b456f",
-						"5c99f98d86f7745c314214b3",
-						"55818aeb4bdc2ddc698b456a",
-						"55818acf4bdc2dde698b456b",
-						"57864bb7245977548b3b66c2",
-						"590c745b86f7743cc433c5f2"
-					]
+                    "rewardBaseWhitelist": [
+                        "5a341c4086f77401f2541505",
+                        "5448e8d64bdc2dce718b4568",
+                        "5448e8d04bdc2ddf718b4569",
+                        "5422acb9af1c889c16000029",
+                        "55818ad54bdc2ddc698b4569",
+                        "57864a3d24597754843f8721",
+                        "5a341c4686f77469e155819e",
+                        "55818b224bdc2dde698b456f",
+                        "5c99f98d86f7745c314214b3",
+                        "55818aeb4bdc2ddc698b456a",
+                        "55818acf4bdc2dde698b456b",
+                        "57864bb7245977548b3b66c2",
+                        "590c745b86f7743cc433c5f2",
+                        "57864a66245977548f04a81f",
+                        "5c164d2286f774194c5e69fa"
+                    ]
                 }, {
                     "traderId": "5935c25fb3acc3127c3d8cd9",
-					"name": "peacekeeper",
+                    "name": "peacekeeper",
                     "questTypes": ["Completion", "Exploration", "Elimination"],
-					"rewardBaseWhitelist": [
-						"5422acb9af1c889c16000029",
-						"543be6564bdc2df4348b4568",
-						"5448e5284bdc2dcb718b4567",
-						"5485a8684bdc2da71d8b4567",
-						"57864a3d24597754843f8721",
-						"55818af64bdc2d5b648b4570"
-					]
+                    "rewardBaseWhitelist": [
+                        "5422acb9af1c889c16000029",
+                        "543be6564bdc2df4348b4568",
+                        "5448e5284bdc2dcb718b4567",
+                        "5485a8684bdc2da71d8b4567",
+                        "57864a3d24597754843f8721",
+                        "55818af64bdc2d5b648b4570"
+                    ]
                 }, {
                     "traderId": "5a7c2eca46aef81a7ca2145d",
-					"name": "mechanic",
+                    "name": "mechanic",
                     "questTypes": ["Completion", "Exploration"],
-					"rewardBaseWhitelist": [
-						"55818af64bdc2d5b648b4570",
-						"5448bc234bdc2d3c308b4569",
-						"55818b164bdc2ddc698b456c",
-						"55818a684bdc2ddd698b456d",
-						"550aa4cd4bdc2dd8348b456c",
-						"5422acb9af1c889c16000029",
-						"5485a8684bdc2da71d8b4567",
-						"55818b224bdc2dde698b456f"
-					]
+                    "rewardBaseWhitelist": [
+                        "55818af64bdc2d5b648b4570",
+                        "5448bc234bdc2d3c308b4569",
+                        "55818b164bdc2ddc698b456c",
+                        "55818a684bdc2ddd698b456d",
+                        "550aa4cd4bdc2dd8348b456c",
+                        "5422acb9af1c889c16000029",
+                        "5485a8684bdc2da71d8b4567",
+                        "55818b224bdc2dde698b456f"
+                    ]
                 }, {
                     "traderId": "5ac3b934156ae10c4430e83c",
-					"name": "ragman",
+                    "name": "ragman",
                     "questTypes": ["Completion", "Exploration", "Elimination"],
-					"rewardBaseWhitelist": [
-						"5a341c4086f77401f2541505",
-						"5448e5724bdc2ddf718b4568",
-						"5448e54d4bdc2dcc718b4568",
-						"590c745b86f7743cc433c5f2",
-						"57bef4c42459772e8d35a53b",
-						"5448e53e4bdc2d60728b4567",
-						"5448e5284bdc2dcb718b4567",
-						"57864a66245977548f04a81f"
-					]
+                    "rewardBaseWhitelist": [
+                        "5a341c4086f77401f2541505",
+                        "5448e5724bdc2ddf718b4568",
+                        "5448e54d4bdc2dcc718b4568",
+                        "590c745b86f7743cc433c5f2",
+                        "57bef4c42459772e8d35a53b",
+                        "5448e53e4bdc2d60728b4567",
+                        "5448e5284bdc2dcb718b4567",
+                        "57864a66245977548f04a81f"
+                    ]
                 }, {
                     "traderId": "5c0647fdd443bc2504c2d371",
-					"name": "jaeger",
+                    "name": "jaeger",
                     "questTypes": ["Completion", "Exploration", "Elimination"],
-					"rewardBaseWhitelist": [
-						"5448f3ac4bdc2dce718b4569",
-						"5c99f98d86f7745c314214b3",
-						"590c745b86f7743cc433c5f2",
-						"57864bb7245977548b3b66c2"
-					]
+                    "rewardBaseWhitelist": [
+                        "5448f3ac4bdc2dce718b4569",
+                        "5c99f98d86f7745c314214b3",
+                        "590c745b86f7743cc433c5f2",
+                        "57864bb7245977548b3b66c2",
+                        "57864a66245977548f04a81f",
+                        "57864e4c24597754843f8723",
+                        "57864a3d24597754843f8721",
+                        "5448f3a64bdc2d60728b456a",
+                        "5795f317245977243854e041",
+                        "5d650c3e815116009f6201d2",
+                        "57864ada245977548638de91"
+                    ]
                 }
             ],
             "questConfig": {
                 "Exploration": {
                     "maxExtracts": 5,
-					"maxExtractsWithSpecificExit": 3,
+                    "maxExtractsWithSpecificExit": 3,
                     "possibleSkillRewards": ["Endurance", "Strength", "Vitality"],
                     "specificExits": {
                         "probability": 0.25,
@@ -805,105 +816,116 @@
             },
             "traderWhitelist": [{
                     "traderId": "54cb50c76803fa8b248b4571",
-					"name": "prapor",
+                    "name": "prapor",
                     "questTypes": ["Completion", "Exploration", "Elimination"],
-					"rewardBaseWhitelist": [
-						"543be6564bdc2df4348b4568",
-						"5485a8684bdc2da71d8b4567",
-						"590c745b86f7743cc433c5f2",
-						"5422acb9af1c889c16000029"
-					]
+                    "rewardBaseWhitelist": [
+                        "543be6564bdc2df4348b4568",
+                        "5485a8684bdc2da71d8b4567",
+                        "590c745b86f7743cc433c5f2",
+                        "5422acb9af1c889c16000029",
+                        "57864c322459775490116fbf",
+                        "57864a66245977548f04a81f"
+                    ]
                 }, {
                     "traderId": "54cb57776803fa99248b456e",
-					"name": "therapist",
+                    "name": "therapist",
                     "questTypes": ["Completion", "Exploration", "Elimination"],
-					"rewardBaseWhitelist": [
-						"57864a66245977548f04a81f",
-						"5448f39d4bdc2d0a728b4568",
-						"5448f3ac4bdc2dce718b4569",
-						"5448f3a64bdc2d60728b456a",
-						"57864c322459775490116fbf",
-						"57864c8c245977548867e7f1",
-						"5448e8d04bdc2ddf718b4569",
-						"57864e4c24597754843f8723",
-						"57864ee62459775490116fc1"
-					]
+                    "rewardBaseWhitelist": [
+                        "57864a66245977548f04a81f",
+                        "5448f39d4bdc2d0a728b4568",
+                        "5448f3ac4bdc2dce718b4569",
+                        "5448f3a64bdc2d60728b456a",
+                        "57864c322459775490116fbf",
+                        "57864c8c245977548867e7f1",
+                        "5448e8d04bdc2ddf718b4569",
+                        "57864e4c24597754843f8723",
+                        "57864ee62459775490116fc1"
+                    ]
                 }, {
                     "traderId": "58330581ace78e27b8b10cee",
-					"name": "skier",
+                    "name": "skier",
                     "questTypes": ["Completion", "Exploration", "Elimination"],
-					"rewardBaseWhitelist": [
-						"5a341c4086f77401f2541505",
-						"5448e8d64bdc2dce718b4568",
-						"5448e8d04bdc2ddf718b4569",
-						"5422acb9af1c889c16000029",
-						"55818ad54bdc2ddc698b4569",
-						"57864a3d24597754843f8721",
-						"5a341c4686f77469e155819e",
-						"55818b224bdc2dde698b456f",
-						"5c99f98d86f7745c314214b3",
-						"55818aeb4bdc2ddc698b456a",
-						"55818acf4bdc2dde698b456b",
-						"57864bb7245977548b3b66c2",
-						"590c745b86f7743cc433c5f2"
-					]
+                    "rewardBaseWhitelist": [
+                        "5a341c4086f77401f2541505",
+                        "5448e8d64bdc2dce718b4568",
+                        "5448e8d04bdc2ddf718b4569",
+                        "5422acb9af1c889c16000029",
+                        "55818ad54bdc2ddc698b4569",
+                        "57864a3d24597754843f8721",
+                        "5a341c4686f77469e155819e",
+                        "55818b224bdc2dde698b456f",
+                        "5c99f98d86f7745c314214b3",
+                        "55818aeb4bdc2ddc698b456a",
+                        "55818acf4bdc2dde698b456b",
+                        "57864bb7245977548b3b66c2",
+                        "590c745b86f7743cc433c5f2",
+                        "57864a66245977548f04a81f",
+                        "5c164d2286f774194c5e69fa"
+                    ]
                 }, {
                     "traderId": "5935c25fb3acc3127c3d8cd9",
-					"name": "peacekeeper",
+                    "name": "peacekeeper",
                     "questTypes": ["Completion", "Exploration", "Elimination"],
-					"rewardBaseWhitelist": [
-						"5422acb9af1c889c16000029",
-						"543be6564bdc2df4348b4568",
-						"5448e5284bdc2dcb718b4567",
-						"5485a8684bdc2da71d8b4567",
-						"57864a3d24597754843f8721",
-						"55818af64bdc2d5b648b4570"
-					]
+                    "rewardBaseWhitelist": [
+                        "5422acb9af1c889c16000029",
+                        "543be6564bdc2df4348b4568",
+                        "5448e5284bdc2dcb718b4567",
+                        "5485a8684bdc2da71d8b4567",
+                        "57864a3d24597754843f8721",
+                        "55818af64bdc2d5b648b4570"
+                    ]
                 }, {
                     "traderId": "5a7c2eca46aef81a7ca2145d",
-					"name": "mechanic",
+                    "name": "mechanic",
                     "questTypes": ["Completion", "Exploration"],
-					"rewardBaseWhitelist": [
-						"55818af64bdc2d5b648b4570",
-						"5448bc234bdc2d3c308b4569",
-						"55818b164bdc2ddc698b456c",
-						"55818a684bdc2ddd698b456d",
-						"550aa4cd4bdc2dd8348b456c",
-						"5422acb9af1c889c16000029",
-						"5485a8684bdc2da71d8b4567",
-						"55818b224bdc2dde698b456f"
-					]
+                    "rewardBaseWhitelist": [
+                        "55818af64bdc2d5b648b4570",
+                        "5448bc234bdc2d3c308b4569",
+                        "55818b164bdc2ddc698b456c",
+                        "55818a684bdc2ddd698b456d",
+                        "550aa4cd4bdc2dd8348b456c",
+                        "5422acb9af1c889c16000029",
+                        "5485a8684bdc2da71d8b4567",
+                        "55818b224bdc2dde698b456f"
+                    ]
                 }, {
                     "traderId": "5ac3b934156ae10c4430e83c",
-					"name": "ragman",
+                    "name": "ragman",
                     "questTypes": ["Completion", "Exploration", "Elimination"],
-					"rewardBaseWhitelist": [
-						"5a341c4086f77401f2541505",
-						"5448e5724bdc2ddf718b4568",
-						"5448e54d4bdc2dcc718b4568",
-						"590c745b86f7743cc433c5f2",
-						"57bef4c42459772e8d35a53b",
-						"5448e53e4bdc2d60728b4567",
-						"5448e5284bdc2dcb718b4567",
-						"57864a66245977548f04a81f"
-					]
+                    "rewardBaseWhitelist": [
+                        "5a341c4086f77401f2541505",
+                        "5448e5724bdc2ddf718b4568",
+                        "5448e54d4bdc2dcc718b4568",
+                        "590c745b86f7743cc433c5f2",
+                        "57bef4c42459772e8d35a53b",
+                        "5448e53e4bdc2d60728b4567",
+                        "5448e5284bdc2dcb718b4567",
+                        "57864a66245977548f04a81f"
+                    ]
                 }, {
                     "traderId": "5c0647fdd443bc2504c2d371",
-					"name": "jaeger",
+                    "name": "jaeger",
                     "questTypes": ["Completion", "Exploration", "Elimination"],
-					"rewardBaseWhitelist": [
-						"5448f3ac4bdc2dce718b4569",
-						"5c99f98d86f7745c314214b3",
-						"590c745b86f7743cc433c5f2",
-						"57864bb7245977548b3b66c2"
-					]
+                    "rewardBaseWhitelist": [
+                        "5448f3ac4bdc2dce718b4569",
+                        "5c99f98d86f7745c314214b3",
+                        "590c745b86f7743cc433c5f2",
+                        "57864bb7245977548b3b66c2",
+                        "57864a66245977548f04a81f",
+                        "57864e4c24597754843f8723",
+                        "57864a3d24597754843f8721",
+                        "5448f3a64bdc2d60728b456a",
+                        "5795f317245977243854e041",
+                        "5d650c3e815116009f6201d2",
+                        "57864ada245977548638de91"
+                    ]
                 }
             ],
             "questConfig": {
                 "Exploration": {
                     "possibleSkillRewards": ["Endurance", "Strength", "Vitality"],
                     "maxExtracts": 25,
-					"maxExtractsWithSpecificExit": 12,
+                    "maxExtractsWithSpecificExit": 12,
                     "specificExits": {
                         "probability": 0.4,
                         "passageRequirementWhitelist": [
@@ -1511,21 +1533,21 @@
             "traderWhitelist": [{
                     "traderId": "579dc571d53a0658a154fbec",
                     "questTypes": ["Completion", "Exploration", "Elimination", "Pickup"],
-					"rewardBaseWhitelist": [
-						"55818a684bdc2ddd698b456d",
-						"55818a594bdc2db9688b456a",
-						"57864c8c245977548867e7f1",
-						"5448ecbe4bdc2d60728b4568",
-						"5422acb9af1c889c16000029",
-						"57864bb7245977548b3b66c2"
-					]
+                    "rewardBaseWhitelist": [
+                        "55818a684bdc2ddd698b456d",
+                        "55818a594bdc2db9688b456a",
+                        "57864c8c245977548867e7f1",
+                        "5448ecbe4bdc2d60728b4568",
+                        "5422acb9af1c889c16000029",
+                        "57864bb7245977548b3b66c2"
+                    ]
                 }
             ],
             "questConfig": {
                 "Exploration": {
                     "possibleSkillRewards": ["Endurance", "Strength", "Vitality"],
                     "maxExtracts": 4,
-					"maxExtractsWithSpecificExit": 2,
+                    "maxExtractsWithSpecificExit": 2,
                     "specificExits": {
                         "probability": 0.25,
                         "passageRequirementWhitelist": [
