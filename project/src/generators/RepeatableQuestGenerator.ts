@@ -498,12 +498,7 @@ export class RepeatableQuestGenerator
         const levelsConfig = repeatableConfig.rewardScaling.levels;
         const roublesConfig = repeatableConfig.rewardScaling.roubles;
 
-        // In the available dumps only 2 distinct items were ever requested
-        let numberDistinctItems = 1;
-        if (Math.random() > 0.75)
-        {
-            numberDistinctItems = 2;
-        }
+        const distinctItemsToRetrieveCount = this.randomUtil.getInt(1, completionConfig.uniqueItemCount);
 
         const quest = this.generateRepeatableTemplate("Completion", traderId, repeatableConfig.side) as ICompletion;
 
@@ -570,7 +565,7 @@ export class RepeatableQuestGenerator
         }
 
         // Draw items to ask player to retrieve
-        for (let i = 0; i < numberDistinctItems; i++)
+        for (let i = 0; i < distinctItemsToRetrieveCount; i++)
         {
             const itemSelected = itemSelection[this.randomUtil.randInt(itemSelection.length)];
             const itemUnitPrice = this.itemHelper.getItemPrice(itemSelected[0]);

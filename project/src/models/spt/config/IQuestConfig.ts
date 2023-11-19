@@ -106,6 +106,7 @@ export interface ICompletion extends IBaseQuestConfig
 {
     minRequestedAmount: number;
     maxRequestedAmount: number;
+    uniqueItemCount: number
     minRequestedBulletAmount: number;
     maxRequestedBulletAmount: number;
     useWhitelist: boolean;
