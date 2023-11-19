@@ -937,6 +937,13 @@ export class RepeatableQuestGenerator
                         rewardItemPool = rewardItemPool.filter((x) =>
                             !this.itemHelper.isOfBaseclass(x._id, BaseClasses.WEAPON)
                         );
+
+                        if (rewardItemPool.length === 0)
+                        {
+                            // No rewards left, break out of loop
+                            break;
+                        }
+                        // Another weapon chosen, skip
                         continue;
                     }
                     let defaultPreset = this.presetHelper.getDefaultPreset(itemSelected._id);
