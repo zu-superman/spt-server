@@ -149,7 +149,7 @@
                 "items": [2, 4, 5, 5, 5, 5, 5],
                 "reputation": [0.01, 0.01, 0.02, 0.02, 0.03, 0.03, 0.03],
                 "rewardSpread": 0.5,
-                "skillRewardChance": [0, 0.01, 0.05, 0.1, 0.15, 0.2, 0.2],
+                "skillRewardChance": [0, 0.01, 0.05, 0.1, 0.1, 0.15, 0.15],
                 "skillPointReward": [10, 15, 20, 25, 30, 35, 40]
             },
             "locations": {
@@ -172,10 +172,11 @@
                         "543be6564bdc2df4348b4568",
                         "5485a8684bdc2da71d8b4567",
                         "590c745b86f7743cc433c5f2",
-                        "5422acb9af1c889c16000029",
                         "57864c322459775490116fbf",
                         "57864a66245977548f04a81f"
-                    ]
+                    ],
+                    "rewardCanBeWeapon": true,
+                    "weaponRewardChancePercent": 20
                 }, {
                     "traderId": "54cb57776803fa99248b456e",
                     "name": "therapist",
@@ -189,8 +190,11 @@
                         "57864c8c245977548867e7f1",
                         "5448e8d04bdc2ddf718b4569",
                         "57864e4c24597754843f8723",
-                        "57864ee62459775490116fc1"
-                    ]
+                        "57864ee62459775490116fc1",
+                        "543be5664bdc2dd4348b4569"
+                    ],
+                    "rewardCanBeWeapon": false,
+                    "weaponRewardChancePercent": 0
                 }, {
                     "traderId": "58330581ace78e27b8b10cee",
                     "name": "skier",
@@ -199,7 +203,6 @@
                         "5a341c4086f77401f2541505",
                         "5448e8d64bdc2dce718b4568",
                         "5448e8d04bdc2ddf718b4569",
-                        "5422acb9af1c889c16000029",
                         "55818ad54bdc2ddc698b4569",
                         "57864a3d24597754843f8721",
                         "5a341c4686f77469e155819e",
@@ -211,19 +214,26 @@
                         "590c745b86f7743cc433c5f2",
                         "57864a66245977548f04a81f",
                         "5c164d2286f774194c5e69fa"
-                    ]
+                    ],
+                    "rewardCanBeWeapon": true,
+                    "weaponRewardChancePercent": 20
                 }, {
                     "traderId": "5935c25fb3acc3127c3d8cd9",
                     "name": "peacekeeper",
                     "questTypes": ["Completion", "Exploration", "Elimination"],
                     "rewardBaseWhitelist": [
-                        "5422acb9af1c889c16000029",
                         "543be6564bdc2df4348b4568",
                         "5448e5284bdc2dcb718b4567",
                         "5485a8684bdc2da71d8b4567",
                         "57864a3d24597754843f8721",
-                        "55818af64bdc2d5b648b4570"
-                    ]
+                        "55818af64bdc2d5b648b4570",
+                        "57864e4c24597754843f8723",
+                        "57864a66245977548f04a81f",
+                        "57864ee62459775490116fc1",
+                        "590c745b86f7743cc433c5f2"
+                    ],
+                    "rewardCanBeWeapon": true,
+                    "weaponRewardChancePercent": 20
                 }, {
                     "traderId": "5a7c2eca46aef81a7ca2145d",
                     "name": "mechanic",
@@ -234,10 +244,16 @@
                         "55818b164bdc2ddc698b456c",
                         "55818a684bdc2ddd698b456d",
                         "550aa4cd4bdc2dd8348b456c",
-                        "5422acb9af1c889c16000029",
                         "5485a8684bdc2da71d8b4567",
-                        "55818b224bdc2dde698b456f"
-                    ]
+                        "55818b224bdc2dde698b456f",
+                        "57864a66245977548f04a81f",
+                        "55818af64bdc2d5b648b4570",
+                        "550aa4dd4bdc2dc9348b4569",
+                        "55818a594bdc2db9688b456a",
+                        "55818a104bdc2db9688b4569"
+                    ],
+                    "rewardCanBeWeapon": true,
+                    "weaponRewardChancePercent": 20
                 }, {
                     "traderId": "5ac3b934156ae10c4430e83c",
                     "name": "ragman",
@@ -251,7 +267,9 @@
                         "5448e53e4bdc2d60728b4567",
                         "5448e5284bdc2dcb718b4567",
                         "57864a66245977548f04a81f"
-                    ]
+                    ],
+                    "rewardCanBeWeapon": false,
+                    "weaponRewardChancePercent": 0
                 }, {
                     "traderId": "5c0647fdd443bc2504c2d371",
                     "name": "jaeger",
@@ -268,7 +286,9 @@
                         "5795f317245977243854e041",
                         "5d650c3e815116009f6201d2",
                         "57864ada245977548638de91"
-                    ]
+                    ],
+                    "rewardCanBeWeapon": false,
+                    "weaponRewardChancePercent": 0
                 }
             ],
             "questConfig": {
@@ -799,7 +819,7 @@
                 "items": [4, 5, 5, 6, 6, 7, 7],
                 "reputation": [0.02, 0.03, 0.04, 0.04, 0.05, 0.05, 0.05],
                 "rewardSpread": 0.5,
-                "skillRewardChance": [0, 0.05, 0.1, 0.15, 0.25, 0.3, 0.3],
+                "skillRewardChance": [0, 0.05, 0.1, 0.15, 0.2, 0.2, 0.2],
                 "skillPointReward": [25, 35, 45, 50, 55, 60, 65]
             },
             "locations": {
@@ -822,10 +842,11 @@
                         "543be6564bdc2df4348b4568",
                         "5485a8684bdc2da71d8b4567",
                         "590c745b86f7743cc433c5f2",
-                        "5422acb9af1c889c16000029",
                         "57864c322459775490116fbf",
                         "57864a66245977548f04a81f"
-                    ]
+                    ],
+                    "rewardCanBeWeapon": true,
+                    "weaponRewardChancePercent": 25
                 }, {
                     "traderId": "54cb57776803fa99248b456e",
                     "name": "therapist",
@@ -839,8 +860,11 @@
                         "57864c8c245977548867e7f1",
                         "5448e8d04bdc2ddf718b4569",
                         "57864e4c24597754843f8723",
-                        "57864ee62459775490116fc1"
-                    ]
+                        "57864ee62459775490116fc1",
+                        "543be5664bdc2dd4348b4569"
+                    ],
+                    "rewardCanBeWeapon": false,
+                    "weaponRewardChancePercent": 0
                 }, {
                     "traderId": "58330581ace78e27b8b10cee",
                     "name": "skier",
@@ -849,7 +873,6 @@
                         "5a341c4086f77401f2541505",
                         "5448e8d64bdc2dce718b4568",
                         "5448e8d04bdc2ddf718b4569",
-                        "5422acb9af1c889c16000029",
                         "55818ad54bdc2ddc698b4569",
                         "57864a3d24597754843f8721",
                         "5a341c4686f77469e155819e",
@@ -861,19 +884,26 @@
                         "590c745b86f7743cc433c5f2",
                         "57864a66245977548f04a81f",
                         "5c164d2286f774194c5e69fa"
-                    ]
+                    ],
+                    "rewardCanBeWeapon": true,
+                    "weaponRewardChancePercent": 25
                 }, {
                     "traderId": "5935c25fb3acc3127c3d8cd9",
                     "name": "peacekeeper",
                     "questTypes": ["Completion", "Exploration", "Elimination"],
                     "rewardBaseWhitelist": [
-                        "5422acb9af1c889c16000029",
                         "543be6564bdc2df4348b4568",
                         "5448e5284bdc2dcb718b4567",
                         "5485a8684bdc2da71d8b4567",
                         "57864a3d24597754843f8721",
-                        "55818af64bdc2d5b648b4570"
-                    ]
+                        "55818af64bdc2d5b648b4570",
+                        "57864e4c24597754843f8723",
+                        "57864a66245977548f04a81f",
+                        "57864ee62459775490116fc1",
+                        "590c745b86f7743cc433c5f2"
+                    ],
+                    "rewardCanBeWeapon": true,
+                    "weaponRewardChancePercent": 25
                 }, {
                     "traderId": "5a7c2eca46aef81a7ca2145d",
                     "name": "mechanic",
@@ -884,10 +914,16 @@
                         "55818b164bdc2ddc698b456c",
                         "55818a684bdc2ddd698b456d",
                         "550aa4cd4bdc2dd8348b456c",
-                        "5422acb9af1c889c16000029",
                         "5485a8684bdc2da71d8b4567",
-                        "55818b224bdc2dde698b456f"
-                    ]
+                        "55818b224bdc2dde698b456f",
+                        "57864a66245977548f04a81f",
+                        "55818af64bdc2d5b648b4570",
+                        "550aa4dd4bdc2dc9348b4569",
+                        "55818a594bdc2db9688b456a",
+                        "55818a104bdc2db9688b4569"
+                    ],
+                    "rewardCanBeWeapon": true,
+                    "weaponRewardChancePercent": 25
                 }, {
                     "traderId": "5ac3b934156ae10c4430e83c",
                     "name": "ragman",
@@ -901,7 +937,9 @@
                         "5448e53e4bdc2d60728b4567",
                         "5448e5284bdc2dcb718b4567",
                         "57864a66245977548f04a81f"
-                    ]
+                    ],
+                    "rewardCanBeWeapon": false,
+                    "weaponRewardChancePercent": 0
                 }, {
                     "traderId": "5c0647fdd443bc2504c2d371",
                     "name": "jaeger",
@@ -918,14 +956,16 @@
                         "5795f317245977243854e041",
                         "5d650c3e815116009f6201d2",
                         "57864ada245977548638de91"
-                    ]
+                    ],
+                    "rewardCanBeWeapon": false,
+                    "weaponRewardChancePercent": 0
                 }
             ],
             "questConfig": {
                 "Exploration": {
-                    "possibleSkillRewards": ["Endurance", "Strength", "Vitality"],
                     "maxExtracts": 25,
                     "maxExtractsWithSpecificExit": 12,
+                    "possibleSkillRewards": ["Endurance", "Strength", "Vitality"],
                     "specificExits": {
                         "probability": 0.4,
                         "passageRequirementWhitelist": [
@@ -1538,9 +1578,10 @@
                         "55818a594bdc2db9688b456a",
                         "57864c8c245977548867e7f1",
                         "5448ecbe4bdc2d60728b4568",
-                        "5422acb9af1c889c16000029",
                         "57864bb7245977548b3b66c2"
-                    ]
+                    ],
+                    "rewardCanBeWeapon": true,
+                    "weaponRewardChancePercent": 10
                 }
             ],
             "questConfig": {

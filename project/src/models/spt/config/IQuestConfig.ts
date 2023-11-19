@@ -77,6 +77,8 @@ export interface ITraderWhitelist
     traderId: string;
     questTypes: string[];
     rewardBaseWhitelist: string[];
+    rewardCanBeWeapon: boolean
+    weaponRewardChancePercent: number
 }
 
 export interface IRepeatableQuestTypesConfig
