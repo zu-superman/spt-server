@@ -563,6 +563,10 @@ export class ProfileFixerService
                 this.logger.debug("Missing RepeatableQuests property added to profile");
             }
         }
+        else
+        {
+            pmcProfile.RepeatableQuests = [];
+        }
     }
 
     /**
@@ -925,7 +929,7 @@ export class ProfileFixerService
             }
         }
 
-        for (const repeatable of fullProfile.characters.pmc.RepeatableQuests)
+        for (const repeatable of fullProfile.characters.pmc.RepeatableQuests ?? [])
         {
             for (const activeQuest of repeatable.activeQuests ?? [])
             {
