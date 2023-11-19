@@ -565,6 +565,7 @@ export class RepeatableQuestGenerator
         }
 
         // Draw items to ask player to retrieve
+        let isAmmo = 0
         for (let i = 0; i < distinctItemsToRetrieveCount; i++)
         {
             const itemSelected = itemSelection[this.randomUtil.randInt(itemSelection.length)];
@@ -573,6 +574,14 @@ export class RepeatableQuestGenerator
             let maxValue = completionConfig.maxRequestedAmount;
             if (this.itemHelper.isOfBaseclass(itemSelected[0], BaseClasses.AMMO))
             {
+                // Prevent multiple ammo requirements from being picked, stop after 6 attempts
+                if (isAmmo > 0 && isAmmo < 6)
+                {
+                    isAmmo++;
+                    i--;
+                    continue;
+                }
+                isAmmo++;
                 minValue = completionConfig.minRequestedBulletAmount;
                 maxValue = completionConfig.maxRequestedBulletAmount;
             }
