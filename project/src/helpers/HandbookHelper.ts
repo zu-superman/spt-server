@@ -2,6 +2,7 @@ import { inject, injectable } from "tsyringe";
 
 import { Money } from "@spt-aki/models/enums/Money";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
+import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 
 class LookupItem<T, I>
 {
@@ -33,7 +34,10 @@ export class HandbookHelper
     protected lookupCacheGenerated = false;
     protected handbookPriceCache = new LookupCollection();
 
-    constructor(@inject("DatabaseServer") protected databaseServer: DatabaseServer)
+    constructor(
+        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("JsonUtil") protected jsonUtil: JsonUtil
+    )
     {}
 
     /**
@@ -41,7 +45,7 @@ export class HandbookHelper
      */
     public hydrateLookup(): void
     {
-        const handbookDb = this.databaseServer.getTables().templates.handbook;
+        const handbookDb = this.jsonUtil.clone(this.databaseServer.getTables().templates.handbook);
         for (const handbookItem of handbookDb.Items)
         {
             this.handbookPriceCache.items.byId.set(handbookItem.Id, handbookItem.Price);
