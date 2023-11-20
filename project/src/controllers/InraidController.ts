@@ -322,7 +322,7 @@ export class InraidController
     {
         for (const quest of scavProfile.Quests)
         {
-            const pmcQuest = pmcProfile.Quests.find((x) => x.qid === quest.qid);
+            const pmcQuest = pmcProfile.Quests.find(x => x.qid === quest.qid);
             if (!pmcQuest)
             {
                 this.logger.warning(`No PMC quest found for ID: ${quest.qid}`);
@@ -333,7 +333,7 @@ export class InraidController
             // Status values mismatch or statusTimers counts mismatch
             if (
                 quest.status !== <any>QuestStatus[pmcQuest.status]
-                || quest.statusTimers.length !== pmcQuest.statusTimers.length
+                || Object.keys(quest.statusTimers).length !== Object.keys(pmcQuest.statusTimers).length
             )
             {
                 this.logger.warning(
