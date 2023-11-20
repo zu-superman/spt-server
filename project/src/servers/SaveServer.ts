@@ -185,7 +185,7 @@ export class SaveServer
     {
         const filePath = `${this.profileFilepath}${sessionID}.json`;
 
-        // run callbacks
+        // Run pre-save callbacks before we save into json
         for (const callback in this.onBeforeSaveCallbacks)
         {
             const previous = this.profiles[sessionID];

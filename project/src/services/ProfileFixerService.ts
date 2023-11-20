@@ -162,6 +162,15 @@ export class ProfileFixerService
         }
     }
 
+    /**
+     * Find issues in the scav profile data that may cause issues
+     * @param scavProfile profile to check and fix
+     */
+    public checkForAndFixScavProfileIssues(scavProfile: IPmcData): void
+    {
+        this.updateProfileQuestDataValues(scavProfile);
+    }
+
     protected addMissingGunStandContainerImprovements(pmcProfile: IPmcData): void
     {
         const weaponStandArea = pmcProfile.Hideout.Areas.find((x) => x.type === HideoutAreas.WEAPON_STAND);

@@ -21,6 +21,7 @@ import { SaveServer } from "@spt-aki/servers/SaveServer";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
 import { ProfileFixerService } from "@spt-aki/services/ProfileFixerService";
 import { JsonUtil } from "@spt-aki/utils/JsonUtil";
+import { ProfileHelper } from "./ProfileHelper";
 
 @injectable()
 export class InRaidHelper
@@ -35,6 +36,7 @@ export class InRaidHelper
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("InventoryHelper") protected inventoryHelper: InventoryHelper,
+        @inject("ProfileHelper") protected profileHelper: ProfileHelper,
         @inject("QuestHelper") protected questHelper: QuestHelper,
         @inject("PaymentHelper") protected paymentHelper: PaymentHelper,
         @inject("LocalisationService") protected localisationService: LocalisationService,
@@ -62,19 +64,16 @@ export class InRaidHelper
      */
     public addUpdToMoneyFromRaid(items: Item[]): void
     {
-        for (const item of items)
+        for (const item of items.filter(x => this.paymentHelper.isMoneyTpl(x._tpl)))
         {
-            if (this.paymentHelper.isMoneyTpl(item._tpl))
+            if (!item.upd)
             {
-                if (!item.upd)
-                {
-                    item.upd = {};
-                }
+                item.upd = {};
+            }
 
-                if (!item.upd.StackObjectsCount)
-                {
-                    item.upd.StackObjectsCount = 1;
-                }
+            if (!item.upd.StackObjectsCount)
+            {
+                item.upd.StackObjectsCount = 1;
             }
         }
     }
@@ -140,18 +139,44 @@ export class InRaidHelper
         profileData: IPmcData,
         saveProgressRequest: ISaveProgressRequestData,
         sessionID: string,
-    ): IPmcData
-    {
-        // remove old skill fatigue
+    ): void
+    {      
+        // Remove skill fatigue values
         this.resetSkillPointsEarnedDuringRaid(saveProgressRequest.profile);
 
-        // set profile data
+        // Set profile data
         profileData.Info.Level = saveProgressRequest.profile.Info.Level;
         profileData.Skills = saveProgressRequest.profile.Skills;
         profileData.Stats.Eft = saveProgressRequest.profile.Stats.Eft;
         profileData.Encyclopedia = saveProgressRequest.profile.Encyclopedia;
         profileData.ConditionCounters = saveProgressRequest.profile.ConditionCounters;
 
+        this.validateBackendCounters(saveProgressRequest, profileData);
+
+        profileData.SurvivorClass = saveProgressRequest.profile.SurvivorClass;
+
+        // Add experience points
+        profileData.Info.Experience += profileData.Stats.Eft.TotalSessionExperience;
+        profileData.Stats.Eft.TotalSessionExperience = 0;
+
+        this.setPlayerInRaidLocationStatusToNone(sessionID);
+    }
+
+    /**
+     * Reset the skill points earned in a raid to 0, ready for next raid
+     * @param profile Profile to update
+     */
+    protected resetSkillPointsEarnedDuringRaid(profile: IPmcData): void
+    {
+        for (const skill of profile.Skills.Common)
+        {
+            skill.PointsEarnedDuringSession = 0.0;
+        }
+    }
+
+    /** Check counters are correct in profile */
+    protected validateBackendCounters(saveProgressRequest: ISaveProgressRequestData, profileData: IPmcData): void
+    {
         for (const backendCounterKey in saveProgressRequest.profile.BackendCounters)
         {
             // Skip counters with no id
@@ -178,33 +203,47 @@ export class InRaidHelper
             if (matchingPreRaidCounter.value !== postRaidValue)
             {
                 this.logger.error(
-                    `Backendcounter: ${backendCounterKey} value is different post raid, old: ${matchingPreRaidCounter.value} new: ${postRaidValue}`,
+                    `Backendcounter: ${backendCounterKey} value is different post raid, old: ${matchingPreRaidCounter.value} new: ${postRaidValue}`
                 );
             }
         }
+    }
 
-        this.processFailedQuests(sessionID, profileData, profileData.Quests, saveProgressRequest.profile.Quests);
-        profileData.Quests = saveProgressRequest.profile.Quests;
+    /**
+     * Update various serverPMC profile values; quests/limb hp/trader standing with values post-raic 
+     * @param pmcData Server PMC profile
+     * @param saveProgressRequest Post-raid request data
+     * @param sessionId Session id
+     */
+    public updatePmcProfileDataPostRaid(pmcData: IPmcData, saveProgressRequest: ISaveProgressRequestData, sessionId: string): void
+    {
+        // Process failed quests then copy everything
+        this.processFailedQuests(sessionId, pmcData, pmcData.Quests, saveProgressRequest.profile.Quests);
+        pmcData.Quests = saveProgressRequest.profile.Quests;
 
-        // Transfer effects from request to profile
-        this.transferPostRaidLimbEffectsToProfile(saveProgressRequest, profileData);
+        // No need to do this for scav, old scav is deleted and new one generated
+        this.transferPostRaidLimbEffectsToProfile(saveProgressRequest, pmcData);
 
-        this.applyTraderStandingAdjustments(profileData.TradersInfo, saveProgressRequest.profile.TradersInfo);
+        // Trader standing only occur on pmc profile, scav kills are handled in handlePostRaidPlayerScavKarmaChanges()
+        // Scav client data has standing values of 0 for all traders, DO NOT RUN ON SCAV RAIDS
+        this.applyTraderStandingAdjustments(pmcData.TradersInfo, saveProgressRequest.profile.TradersInfo);
 
-        profileData.SurvivorClass = saveProgressRequest.profile.SurvivorClass;
+        this.profileFixerService.checkForAndFixPmcProfileIssues(pmcData);
+    }
 
-        // Add experience points
-        profileData.Info.Experience += profileData.Stats.Eft.TotalSessionExperience;
-        profileData.Stats.Eft.TotalSessionExperience = 0;
+    /**
+     * Update scav quest values on server profile with updated values post-raid
+     * @param scavData Server scav profile
+     * @param saveProgressRequest Post-raid request data
+     * @param sessionId Session id
+     */
+    public updateScavProfileDataPostRaid(scavData: IPmcData, saveProgressRequest: ISaveProgressRequestData, sessionId: string): void
+    {
+        // Only copy active quests into scav profile // Progress will later to copied over to PMC profile
+        const existingActiveQuestIds = scavData.Quests.filter(x => x.status !== QuestStatus.AvailableForStart).map(x => x.qid);
+        scavData.Quests = saveProgressRequest.profile.Quests.filter(x => existingActiveQuestIds.includes(x.qid));
 
-        this.setPlayerInRaidLocationStatusToNone(sessionID);
-
-        if (!saveProgressRequest.isPlayerScav)
-        {
-            this.profileFixerService.checkForAndFixPmcProfileIssues(profileData);
-        }
-
-        return profileData;
+        this.profileFixerService.checkForAndFixScavProfileIssues(scavData);
     }
 
     /**
@@ -247,14 +286,6 @@ export class InRaidHelper
                     this.questHelper.failQuest(pmcData, failBody, sessionId);
                 }
             }
-        }
-    }
-
-    protected resetSkillPointsEarnedDuringRaid(profile: IPmcData): void
-    {
-        for (const skill of profile.Skills.Common)
-        {
-            skill.PointsEarnedDuringSession = 0.0;
         }
     }
 
