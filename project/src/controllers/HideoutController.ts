@@ -968,6 +968,8 @@ export class HideoutController
         {
             // Flag as complete - will be cleaned up later by update() process
             pmcData.Hideout.Production[prodId].sptIsComplete = true;
+
+            pmcData.Hideout.Production[prodId].inProgress = false;
         };
 
         return this.inventoryHelper.addItem(pmcData, newReq, output, sessionID, callback, true);
