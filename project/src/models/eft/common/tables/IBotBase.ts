@@ -390,6 +390,8 @@ export interface Productive
     sptIsScavCase?: boolean;
     /** Some crafts are always inProgress, but need to be reset, e.g. water collector */
     sptIsComplete?: boolean;
+    /** Is the craft a Continuous, e.g bitcoins/water collector */
+    sptIsContinuous?: boolean;
 }
 
 export interface Production extends Productive
