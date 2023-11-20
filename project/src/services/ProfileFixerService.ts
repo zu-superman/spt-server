@@ -474,20 +474,20 @@ export class ProfileFixerService
      * Adjust profile quest status and statusTimers object values
      * quest.status is numeric e.g. 2
      * quest.statusTimers keys are numeric as strings e.g. "2"
-     * @param pmcProfile profile to update
+     * @param profile profile to update
      */
-    protected updateProfileQuestDataValues(pmcProfile: IPmcData): void
+    protected updateProfileQuestDataValues(profile: IPmcData): void
     {
-        if (!pmcProfile.Quests)
+        if (!profile.Quests)
         {
             return;
         }
 
         const fixes = new Map<any, number>();
         const questsToDelete: IQuestStatus[] = [];
-        const fullProfile = this.profileHelper.getFullProfile(pmcProfile.sessionId);
+        const fullProfile = this.profileHelper.getFullProfile(profile.sessionId);
         const isDevProfile = fullProfile?.info.edition.toLowerCase() === "spt developer";
-        for (const quest of pmcProfile.Quests)
+        for (const quest of profile.Quests)
         {
             // Old profiles had quests with a bad status of 0 (invalid) added to profile, remove them
             // E.g. compensation for damage showing before standing check was added to getClientQuests()
@@ -526,7 +526,7 @@ export class ProfileFixerService
 
         for (const questToDelete of questsToDelete)
         {
-            pmcProfile.Quests.splice(pmcProfile.Quests.indexOf(questToDelete), 1);
+            profile.Quests.splice(profile.Quests.indexOf(questToDelete), 1);
         }
 
         if (fixes.size > 0)
