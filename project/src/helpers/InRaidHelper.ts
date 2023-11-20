@@ -208,7 +208,7 @@ export class InRaidHelper
     }
 
     /**
-     * Look for quests not are now status = fail that were not failed pre-raid and run the failQuest() function
+     * Look for quests with status = fail that were not failed pre-raid and run the failQuest() function
      * @param sessionId Player id
      * @param pmcData Player profile
      * @param preRaidQuests Quests prior to starting raid
