@@ -735,7 +735,7 @@ export class QuestHelper
 
     /**
      * Give player quest rewards - Skills/exp/trader standing/items/assort unlocks - Returns reward items player earned
-     * @param pmcData Player profile
+     * @param profileData Player profile (scav or pmc)
      * @param questId questId of quest to get rewards for
      * @param state State of the quest to get rewards for
      * @param sessionId Session id
@@ -743,14 +743,17 @@ export class QuestHelper
      * @returns Array of reward objects
      */
     public applyQuestReward(
-        pmcData: IPmcData,
+        profileData: IPmcData,
         questId: string,
         state: QuestStatus,
         sessionId: string,
         questResponse: IItemEventRouterResponse,
     ): Reward[]
     {
-        let questDetails = this.getQuestFromDb(questId, pmcData);
+        // Repeatable quest base data is always in PMCProfile, `profileData` may be scav profile
+        // TODO: consider moving repeatable quest data to profile-agnostic location
+        const pmcProfile = this.profileHelper.getPmcProfile(sessionId);
+        let questDetails = this.getQuestFromDb(questId, pmcProfile);
         if (!questDetails)
         {
             this.logger.warning(`Unable to find quest: ${questId} from db, unable to give quest rewards`);
@@ -759,7 +762,7 @@ export class QuestHelper
         }
 
         // Check for and apply intel center money bonus if it exists
-        const questMoneyRewardBonus = this.getQuestMoneyRewardBonus(pmcData);
+        const questMoneyRewardBonus = this.getQuestMoneyRewardBonus(pmcProfile);
         if (questMoneyRewardBonus > 0)
         {
             // Apply additional bonus from hideout skill
@@ -774,7 +777,7 @@ export class QuestHelper
             {
                 case QuestRewardType.SKILL:
                     this.profileHelper.addSkillPointsToPlayer(
-                        pmcData,
+                        profileData,
                         reward.target as SkillTypes,
                         Number(reward.value),
                     );
@@ -799,7 +802,7 @@ export class QuestHelper
                     break;
                 case QuestRewardType.PRODUCTIONS_SCHEME:
                     this.findAndAddHideoutProductionIdToProfile(
-                        pmcData,
+                        pmcProfile,
                         reward,
                         questDetails,
                         sessionId,

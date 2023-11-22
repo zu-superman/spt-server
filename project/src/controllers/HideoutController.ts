@@ -711,19 +711,20 @@ export class HideoutController
     ): IItemEventRouterResponse
     {
         const output = this.eventOutputHolder.getOutput(sessionID);
+        const hideoutDb = this.databaseServer.getTables().hideout;
 
         if (request.recipeId === HideoutHelper.bitcoinFarm)
         {
             return this.hideoutHelper.getBTC(pmcData, request, sessionID);
         }
 
-        const recipe = this.databaseServer.getTables().hideout.production.find((r) => r._id === request.recipeId);
+        const recipe = hideoutDb.production.find((r) => r._id === request.recipeId);
         if (recipe)
         {
             return this.handleRecipe(sessionID, recipe, pmcData, request, output);
         }
 
-        const scavCase = this.databaseServer.getTables().hideout.scavcase.find((r) => r._id === request.recipeId);
+        const scavCase = hideoutDb.scavcase.find((r) => r._id === request.recipeId);
         if (scavCase)
         {
             return this.handleScavCase(sessionID, pmcData, request, output);
@@ -814,7 +815,7 @@ export class HideoutController
             return this.httpResponse.appendErrorToOutput(output);
         }
 
-        // check if the recipe is the same as the last one
+        // Check if the recipe is the same as the last one
         const area = pmcData.Hideout.Areas.find((x) => x.type === recipe.areaType);
         if (area && request.recipeId !== area.lastRecipe)
         {
@@ -831,13 +832,13 @@ export class HideoutController
             hoursCrafting -= this.hideoutConfig.hoursForSkillCrafting * multiplierCrafting;
         }
 
-        // increment
+        // Increment
         // if addItem passes validation:
         //  - increment skill point for crafting
         //  - delete the production in profile Hideout.Production
         const callback = () =>
         {
-            // manager Hideout skill
+            // Manager Hideout skill
             // ? use a configuration variable for the value?
             const globals = this.databaseServer.getTables().globals;
             this.profileHelper.addSkillPointsToPlayer(
@@ -859,12 +860,16 @@ export class HideoutController
             area.lastRecipe = request.recipeId;
             counterHoursCrafting.value = hoursCrafting;
 
-            // Null production data now it's complete - will be cleaned up later by update() process
+            // Continuous crafts have special handling in EventOutputHolder.updateOutputProperties()
             pmcData.Hideout.Production[prodId].sptIsComplete = true;
-        };
+            pmcData.Hideout.Production[prodId].sptIsContinuous = recipe.continuous;
 
-        // Remove the old production from output object before its sent to client
-        delete output.profileChanges[sessionID].production[request.recipeId];
+            // Flag normal crafts as complete
+            if (!recipe.continuous)
+            {
+                pmcData.Hideout.Production[prodId].inProgress = false;
+            }
+        };
 
         // Handle the isEncoded flag from recipe
         if (recipe.isEncoded)
@@ -946,6 +951,8 @@ export class HideoutController
         {
             // Flag as complete - will be cleaned up later by update() process
             pmcData.Hideout.Production[prodId].sptIsComplete = true;
+
+            pmcData.Hideout.Production[prodId].inProgress = false;
         };
 
         return this.inventoryHelper.addItem(pmcData, newReq, output, sessionID, callback, true);

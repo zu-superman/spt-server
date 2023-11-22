@@ -498,12 +498,7 @@ export class RepeatableQuestGenerator
         const levelsConfig = repeatableConfig.rewardScaling.levels;
         const roublesConfig = repeatableConfig.rewardScaling.roubles;
 
-        // In the available dumps only 2 distinct items were ever requested
-        let numberDistinctItems = 1;
-        if (Math.random() > 0.75)
-        {
-            numberDistinctItems = 2;
-        }
+        const distinctItemsToRetrieveCount = this.randomUtil.getInt(1, completionConfig.uniqueItemCount);
 
         const quest = this.generateRepeatableTemplate("Completion", traderId, repeatableConfig.side) as ICompletion;
 
@@ -570,7 +565,8 @@ export class RepeatableQuestGenerator
         }
 
         // Draw items to ask player to retrieve
-        for (let i = 0; i < numberDistinctItems; i++)
+        let isAmmo = 0
+        for (let i = 0; i < distinctItemsToRetrieveCount; i++)
         {
             const itemSelected = itemSelection[this.randomUtil.randInt(itemSelection.length)];
             const itemUnitPrice = this.itemHelper.getItemPrice(itemSelected[0]);
@@ -578,6 +574,14 @@ export class RepeatableQuestGenerator
             let maxValue = completionConfig.maxRequestedAmount;
             if (this.itemHelper.isOfBaseclass(itemSelected[0], BaseClasses.AMMO))
             {
+                // Prevent multiple ammo requirements from being picked, stop after 6 attempts
+                if (isAmmo > 0 && isAmmo < 6)
+                {
+                    isAmmo++;
+                    i--;
+                    continue;
+                }
+                isAmmo++;
                 minValue = completionConfig.minRequestedBulletAmount;
                 maxValue = completionConfig.maxRequestedBulletAmount;
             }
@@ -907,13 +911,23 @@ export class RepeatableQuestGenerator
         }
         rewardIndex++;
 
+        const traderWhitelistDetails = repeatableConfig.traderWhitelist.find((x) => x.traderId === traderId);
+        if (traderWhitelistDetails.rewardCanBeWeapon && this.randomUtil.getChance100(traderWhitelistDetails.weaponRewardChancePercent))
+        {
+            // Add a random default preset weapon as reward
+            const defaultPresets = Object.values(this.presetHelper.getDefaultPresets());
+            const defaultPreset = this.randomUtil.getArrayValue(defaultPresets);
+
+            // use _encyclopedia as its always the base items _tpl, items[0] isnt guaranteed to be base item
+            rewards.Success.push(this.generateRewardItem(defaultPreset._encyclopedia, 1, rewardIndex, defaultPreset._items));
+            rewardIndex++;
+        }
+
         if (rewardItemPool.length > 0)
         {
-            let weaponRewardCount = 0;
             for (let i = 0; i < rewardNumItems; i++)
             {
-                let itemCount = 1;
-                let children: Item[] = null;
+                let rewardItemStackCount = 1;
                 const itemSelected = rewardItemPool[this.randomUtil.randInt(rewardItemPool.length)];
                 if (this.itemHelper.isOfBaseclass(itemSelected._id, BaseClasses.AMMO))
                 {
@@ -924,46 +938,23 @@ export class RepeatableQuestGenerator
                     }
 
                     // Randomise the cartridge count returned
-                    itemCount = this.randomUtil.randInt(
+                    rewardItemStackCount = this.randomUtil.randInt(
                         repeatableConfig.rewardAmmoStackMinSize,
                         itemSelected._props.StackMaxSize,
                     );
                 }
-                else if (this.itemHelper.isOfBaseclass(itemSelected._id, BaseClasses.WEAPON))
-                {
-                    if (weaponRewardCount >= 1)
-                    {
-                        // Limit weapon rewards to 1 per daily
-                        rewardItemPool = rewardItemPool.filter((x) =>
-                            !this.itemHelper.isOfBaseclass(x._id, BaseClasses.WEAPON)
-                        );
-                        continue;
-                    }
-                    let defaultPreset = this.presetHelper.getDefaultPreset(itemSelected._id);
-                    if (!defaultPreset)
-                    {
-                        // No default for chosen weapon found, get any random default weapon preset
-                        const defaultPresets = Object.values(this.presetHelper.getDefaultPresets());
-                        defaultPreset = this.randomUtil.getArrayValue(defaultPresets);
-                    }
-
-                    children = this.ragfairServerHelper.reparentPresets(defaultPreset._items[0], defaultPreset._items);
-                    weaponRewardCount++;
-                }
 
                 // 25% chance to double reward stack (item should be stackable and not weapon)
-                if (this.increaseRewardItemStackSize(itemSelected))
+                if (this.canIncreaseRewardItemStackSize(itemSelected, 70000))
                 {
-                    itemCount = 2;
+                    rewardItemStackCount = this.getRandomisedRewardItemStackSizeByPrice(itemSelected);
                 }
 
-                rewards.Success.push(this.generateRewardItem(itemSelected._id, itemCount, rewardIndex, children));
+                rewards.Success.push(this.generateRewardItem(itemSelected._id, rewardItemStackCount, rewardIndex));
                 rewardIndex++;
 
-                const itemCost = (this.itemHelper.isOfBaseclass(itemSelected._id, BaseClasses.WEAPON))
-                    ? this.itemHelper.getItemMaxPrice(children[0]._tpl) // use if preset is not default : this.itemHelper.getWeaponPresetPrice(children[0], children, this.itemHelper.getStaticItemPrice(itemSelected._id))
-                    : this.itemHelper.getStaticItemPrice(itemSelected._id);
-                roublesBudget -= itemCount * itemCost;
+                const itemCost = this.itemHelper.getStaticItemPrice(itemSelected._id);
+                roublesBudget -= rewardItemStackCount * itemCost;
 
                 // If we still have budget narrow down possible items
                 if (roublesBudget > 0)
@@ -1010,13 +1001,32 @@ export class RepeatableQuestGenerator
     /**
      * Should reward item have stack size increased (25% chance)
      * @param item Item to possibly increase stack size of
+     * @param maxRoublePriceToStack Maximum rouble price an item can be to still be chosen for stacking
      * @returns True if it should
      */
-    protected increaseRewardItemStackSize(item: ITemplateItem): boolean
+    protected canIncreaseRewardItemStackSize(item: ITemplateItem, maxRoublePriceToStack: number): boolean
     {
-        return item._props.StackMaxSize > 1
-            && !this.itemHelper.isOfBaseclass(item._id, BaseClasses.WEAPON)
+        return this.itemHelper.getStaticItemPrice(item._id) < maxRoublePriceToStack
+            && !this.itemHelper.isOfBaseclasses(item._id, [BaseClasses.WEAPON, BaseClasses.AMMO])
             && this.randomUtil.getChance100(25);
+    }
+
+    /**
+     * Get a randomised number a reward items stack size should be based on its handbook price
+     * @param item Reward item to get stack size for
+     * @returns Stack size value
+     */
+    protected getRandomisedRewardItemStackSizeByPrice(item: ITemplateItem): number
+    {
+        const rewardItemPrice = this.itemHelper.getStaticItemPrice(item._id);
+        if (rewardItemPrice < 3000) {
+            return this.randomUtil.getArrayValue([2, 3, 4]);
+        }
+        else if (rewardItemPrice < 10000) {
+            return this.randomUtil.getArrayValue([2, 3]);
+        }
+
+        return 2;
     }
 
     /**
@@ -1063,19 +1073,20 @@ export class RepeatableQuestGenerator
      * @param   {integer}   index           All rewards will be appended to a list, for unknown reasons the client wants the index
      * @returns {object}                    Object of "Reward"-item-type
      */
-    protected generateRewardItem(tpl: string, value: number, index: number, preset = null): IReward
+    protected generateRewardItem(tpl: string, value: number, index: number, preset: Item[] = null): IReward
     {
         const id = this.objectId.generate();
         const rewardItem: IReward = { target: id, value: value, type: "Item", index: index };
 
-        const rootItem = { _id: id, _tpl: tpl, upd: { StackObjectsCount: value, SpawnedInSession: true } };
-
         if (preset)
         {
+            const rootItem = preset.find(x => x._tpl === tpl);
+            rewardItem.target = rootItem._id; // Target property and root items id must match
             rewardItem.items = this.ragfairServerHelper.reparentPresets(rootItem, preset);
         }
         else
         {
+            const rootItem = { _id: id, _tpl: tpl, upd: { StackObjectsCount: value, SpawnedInSession: true } };
             rewardItem.items = [rootItem];
         }
         return rewardItem;
