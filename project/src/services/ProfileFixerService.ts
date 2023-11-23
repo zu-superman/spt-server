@@ -1072,7 +1072,8 @@ export class ProfileFixerService
     public fixIncorrectAidValue(fullProfile: IAkiProfile): void
     {
         // Not a number, regenerate
-        if (Number.isNaN(fullProfile.characters.pmc.aid))
+        // biome-ignore lint/suspicious/noGlobalIsNan: <value can be a valid string, Number.IsNaN() would ignore it>
+        if  (isNaN(fullProfile.characters.pmc.aid) || !fullProfile.info.aid)
         {
             fullProfile.characters.pmc.sessionId = <string><unknown>fullProfile.characters.pmc.aid;
             fullProfile.characters.pmc.aid = this.hashUtil.generateAccountId();
@@ -1082,7 +1083,7 @@ export class ProfileFixerService
 
             fullProfile.info.aid = fullProfile.characters.pmc.aid;
 
-            this.logger.debug(
+            this.logger.info(
                 `Migrated AccountId from: ${fullProfile.characters.pmc.sessionId} to: ${fullProfile.characters.pmc.aid}`,
             );
         }
