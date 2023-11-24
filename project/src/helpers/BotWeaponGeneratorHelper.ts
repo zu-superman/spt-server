@@ -46,12 +46,15 @@ export class BotWeaponGeneratorHelper
         let chamberBulletCount = 0;
         if (this.magazineIsCylinderRelated(parentItem._name))
         {
-            // if we have a CylinderMagazine/SpringDrivenCylinder we count the number of camoras as the _max_count of the magazine is 0
-            chamberBulletCount = magTemplate._props.Slots.length;
+            const firstSlotAmmoTpl = magTemplate._props.Cartridges[0]._props.filters[0].Filter[0];
+            const ammoMaxStackSize = this.itemHelper.getItem(firstSlotAmmoTpl)[1]?._props?.StackMaxSize ?? 1;
+            chamberBulletCount = (ammoMaxStackSize === 1)
+                ? 1 // Rotating grenade launcher
+                : magTemplate._props.Slots.length; // Shotguns/revolvers. We count the number of camoras as the _max_count of the magazine is 0
         }
         else if (parentItem._id === BaseClasses.UBGL)
         {
-            // underbarrel launchers can only have 1 chambered grenade
+            // Underbarrel launchers can only have 1 chambered grenade
             chamberBulletCount = 1;
         }
         else
