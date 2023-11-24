@@ -12,6 +12,7 @@ import { IBotType } from "@spt-aki/models/eft/common/tables/IBotType";
 import { Item } from "@spt-aki/models/eft/common/tables/IItem";
 import { AccountTypes } from "@spt-aki/models/enums/AccountTypes";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
+import { ItemAddedResult } from "@spt-aki/models/enums/ItemAddedResult";
 import { MemberCategory } from "@spt-aki/models/enums/MemberCategory";
 import { Traders } from "@spt-aki/models/enums/Traders";
 import { IPlayerScavConfig, KarmaLevel } from "@spt-aki/models/spt/config/IPlayerScavConfig";
@@ -125,13 +126,18 @@ export class PlayerScavGenerator
                 _tpl: labsCard._id,
                 ...this.botGeneratorHelper.generateExtraPropertiesForItem(labsCard),
             }];
-            this.botWeaponGeneratorHelper.addItemWithChildrenToEquipmentSlot(
+            const result = this.botWeaponGeneratorHelper.addItemWithChildrenToEquipmentSlot(
                 ["TacticalVest", "Pockets", "Backpack"],
                 itemsToAdd[0]._id,
                 labsCard._id,
                 itemsToAdd,
                 scavData.Inventory,
             );
+
+            if (result !== ItemAddedResult.SUCCESS)
+            {
+                this.logger.debug(`Unable to add keycard to bot. Reason: ${ItemAddedResult[result]}`);
+            }
         }
 
         // Remove secure container

@@ -134,7 +134,7 @@ export class BotWeaponGeneratorHelper
 
             if (result !== ItemAddedResult.SUCCESS)
             {
-                this.logger.debug(`Unable to add ammo: ${ammoItem._tpl} to bot equipment, ${ItemAddedResult[result]}`);
+                this.logger.debug(`Unable to add ammo: ${ammoItem._tpl} to bot inventory, ${ItemAddedResult[result]}`);
 
                 if (result === ItemAddedResult.NO_SPACE)
                 {
@@ -173,6 +173,7 @@ export class BotWeaponGeneratorHelper
         inventory: Inventory,
     ): ItemAddedResult
     {
+        let missingContainerCount = 0;
         for (const slot of equipmentSlots)
         {
             // Get container to put item into
@@ -183,8 +184,15 @@ export class BotWeaponGeneratorHelper
                 this.logger.debug(
                     `Unable to add item: ${
                         itemWithChildren[0]._tpl
-                    } to: ${slot}, slot missing/bot generated without equipment`,
+                    } to: ${slot}, slot missing/bot generated without item in slot`,
                 );
+
+                missingContainerCount++;
+                if (missingContainerCount === equipmentSlots.length)
+                {
+                    return ItemAddedResult.NO_CONTAINERS
+                }
+
                 continue;
             }
 
@@ -205,6 +213,9 @@ export class BotWeaponGeneratorHelper
             // Get x/y grid size of item
             const itemSize = this.inventoryHelper.getItemSize(parentTpl, parentId, itemWithChildren);
 
+            // Iterate over each grid in the container and look for a big enough space for the item to be placed in
+            let currentGridCount = 1;
+            const slotGridCount = containerTemplate[1]._props.Grids.length;
             for (const slotGrid of containerTemplate[1]._props.Grids)
             {
                 // Grid is empty, skip
@@ -267,11 +278,18 @@ export class BotWeaponGeneratorHelper
                     return ItemAddedResult.SUCCESS;
                 }
 
+                // If we've checked all grids in container and reached this point, there's no space for item
+                if (slotGridCount >= currentGridCount)
+                {
+                    return ItemAddedResult.NO_SPACE;
+                }
+                currentGridCount++;
+
                 // Start loop again in next grid of container
             }
         }
 
-        return ItemAddedResult.NO_SPACE;
+        return ItemAddedResult.UNKNOWN;
     }
 
     /**
