@@ -202,7 +202,7 @@ export class BotWeaponGeneratorHelper
                 // Container has no slots to hold items
                 continue;
             }
-
+            // Get x/y grid size of item
             const itemSize = this.inventoryHelper.getItemSize(parentTpl, parentId, itemWithChildren);
 
             for (const slotGrid of containerTemplate[1]._props.Grids)
@@ -219,13 +219,13 @@ export class BotWeaponGeneratorHelper
                     continue;
                 }
 
-                // Get all base level items in backpack
-                const containerItems = inventory.items.filter((i) =>
+                // Get all root items in backpack
+                const existingContainerItems = inventory.items.filter((i) =>
                     i.parentId === container._id && i.slotId === slotGrid._name
                 );
 
                 // Get a copy of base level items we can iterate over
-                const containerItemsToCheck = containerItems.filter((x) => x.slotId === slotGrid._name);
+                const containerItemsToCheck = existingContainerItems.filter((x) => x.slotId === slotGrid._name);
                 for (const item of containerItemsToCheck)
                 {
                     // Look for children on items, insert into array if found
@@ -233,7 +233,7 @@ export class BotWeaponGeneratorHelper
                     const itemWithChildren = this.itemHelper.findAndReturnChildrenAsItems(inventory.items, item._id);
                     if (itemWithChildren.length > 1)
                     {
-                        containerItems.splice(containerItems.indexOf(item), 1, ...itemWithChildren);
+                        existingContainerItems.splice(existingContainerItems.indexOf(item), 1, ...itemWithChildren);
                     }
                 }
 
@@ -241,9 +241,10 @@ export class BotWeaponGeneratorHelper
                 const slotGridMap = this.inventoryHelper.getContainerMap(
                     slotGrid._props.cellsH,
                     slotGrid._props.cellsV,
-                    containerItems,
+                    existingContainerItems,
                     container._id,
                 );
+
                 // Try to fit item into grid
                 const findSlotResult = this.containerHelper.findSlotForItem(slotGridMap, itemSize[0], itemSize[1]);
 
