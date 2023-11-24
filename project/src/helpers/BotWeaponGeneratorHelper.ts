@@ -77,7 +77,7 @@ export class BotWeaponGeneratorHelper
         // const range = magCounts.max - magCounts.min;
         // return this.randomUtil.getBiasedRandomNumber(magCounts.min, magCounts.max, Math.round(range * 0.75), 4);
 
-        return this.weightedRandomHelper.getWeightedValue(magCounts.weights);
+        return Number.parseInt(this.weightedRandomHelper.getWeightedValue(magCounts.weights));
     }
 
     /**
