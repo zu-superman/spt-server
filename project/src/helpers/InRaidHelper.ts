@@ -240,8 +240,11 @@ export class InRaidHelper
     public updateScavProfileDataPostRaid(scavData: IPmcData, saveProgressRequest: ISaveProgressRequestData, sessionId: string): void
     {
         // Only copy active quests into scav profile // Progress will later to copied over to PMC profile
-        const existingActiveQuestIds = scavData.Quests.filter(x => x.status !== QuestStatus.AvailableForStart).map(x => x.qid);
-        scavData.Quests = saveProgressRequest.profile.Quests.filter(x => existingActiveQuestIds.includes(x.qid));
+        const existingActiveQuestIds = scavData.Quests?.filter(x => x.status !== QuestStatus.AvailableForStart).map(x => x.qid);
+        if (existingActiveQuestIds)
+        {
+            scavData.Quests = saveProgressRequest.profile.Quests.filter(x => existingActiveQuestIds.includes(x.qid));
+        }
 
         this.profileFixerService.checkForAndFixScavProfileIssues(scavData);
     }
