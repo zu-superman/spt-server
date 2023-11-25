@@ -136,7 +136,7 @@ export class BotWeaponGeneratorHelper
             {
                 this.logger.debug(`Unable to add ammo: ${ammoItem._tpl} to bot inventory, ${ItemAddedResult[result]}`);
 
-                if (result === ItemAddedResult.NO_SPACE)
+                if (result === ItemAddedResult.NO_SPACE || result === ItemAddedResult.NO_CONTAINERS)
                 {
                     // If there's no space for 1 stack, there's no space for the others
                     break;
