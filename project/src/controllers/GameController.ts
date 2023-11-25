@@ -127,6 +127,12 @@ export class GameController
         if (sessionID)
         {
             const fullProfile = this.profileHelper.getFullProfile(sessionID);
+            if (fullProfile.info.wipe)
+            {
+                // Don't bother doing any fixes, we're resetting profile
+                return;
+            }
+
             const pmcProfile = fullProfile.characters.pmc;
 
             this.logger.debug(`Started game with sessionId: ${sessionID} ${pmcProfile.Info?.Nickname}`);
