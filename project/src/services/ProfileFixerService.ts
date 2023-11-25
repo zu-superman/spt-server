@@ -237,9 +237,21 @@ export class ProfileFixerService
             return;
         }
 
-        const stashItem = pmcProfile.Inventory.items?.find((x) => x._id === hideoutStandAreaDb._id);
+        let stashItem = pmcProfile.Inventory.items?.find((x) => x._id === hideoutStandAreaDb._id);
+        if (!stashItem)
+        {
+            // Stand inventory stash item doesnt exist, add it
+            pmcProfile.Inventory.items.push(
+                {
+                    _id: hideoutStandAreaDb._id,
+                    _tpl: stageCurrentAt.container
+                }
+            )
+            stashItem = pmcProfile.Inventory.items?.find((x) => x._id === hideoutStandAreaDb._id)
+        }
+
         // `hideoutAreaStashes` has value related stash inventory items tpl doesnt match what's expected
-        if (hideoutStandStashId && stashItem?._tpl !== stageCurrentAt.container)
+        if (hideoutStandStashId && stashItem._tpl !== stageCurrentAt.container)
         {
             this.logger.debug(
                 `primary Stash tpl was: ${stashItem._tpl}, but should be ${stageCurrentAt.container}, updating`,
@@ -248,7 +260,19 @@ export class ProfileFixerService
             stashItem._tpl = stageCurrentAt.container;
         }
 
-        const stashSecondaryItem = pmcProfile.Inventory.items?.find((x) => x._id === hideoutStandSecondaryAreaDb._id);
+        let stashSecondaryItem = pmcProfile.Inventory.items?.find((x) => x._id === hideoutStandSecondaryAreaDb._id);
+        if (!stashSecondaryItem)
+        {
+            // Stand inventory stash item doesnt exist, add it
+            pmcProfile.Inventory.items.push(
+                {
+                    _id: hideoutStandSecondaryAreaDb._id,
+                    _tpl: stageCurrentAt.container
+                }
+            )
+            stashSecondaryItem = pmcProfile.Inventory.items?.find((x) => x._id === hideoutStandSecondaryAreaDb._id)
+        }
+
         // `hideoutAreaStashes` has value related stash inventory items tpl doesnt match what's expected
         if (hideoutSecondaryStashId && stashSecondaryItem?._tpl !== stageCurrentAt.container)
         {
