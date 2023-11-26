@@ -219,8 +219,8 @@ export class DialogueHelper
                 }
 
                 // Check reward count when item being moved isn't in reward list
-                // if count is 0, it means after this move the reward array will be empty and all rewards collected
-                const rewardItemCount = message.items.data.filter((x) => x._id !== itemId);
+                // If count is 0, it means after this move the reward array will be empty and all rewards collected
+                const rewardItemCount = message.items.data?.filter((item) => item._id !== itemId);
                 if (rewardItemCount.length === 0)
                 {
                     message.rewardCollected = true;
