@@ -793,5 +793,106 @@
     "minFillStaticMagazinePercent": 50,
     "makeWishingTreeAlwaysGiveGift": true,
     "allowDuplicateItemsInStaticContainers": true,
-    "looseLootBlacklist": {}
+    "looseLootBlacklist": {},
+    "scavRaidTimeSettings": {
+        "bigmap": {
+            "reducedChancePercent": 40,
+            "reductionPercentWeights": {
+                "20": 12,
+                "40": 5,
+                "60": 2,
+                "80": 1
+            }
+        },
+        "factory4_day": {
+            "reducedChancePercent": 60,
+            "reductionPercentWeights": {
+                "20": 12,
+                "40": 5,
+                "60": 2,
+                "80": 1
+            }
+        },
+        "factory4_night": {
+            "reducedChancePercent": 40,
+            "reductionPercentWeights": {
+                "20": 12,
+                "40": 5,
+                "60": 2,
+                "80": 1
+            }
+        },
+        "interchange": {
+            "reducedChancePercent": 50,
+            "reductionPercentWeights": {
+                "20": 12,
+                "40": 5,
+                "60": 2,
+                "80": 1
+            }
+        },
+        "rezervbase": {
+            "reducedChancePercent": 40,
+            "reductionPercentWeights": {
+                "20": 12,
+                "40": 5,
+                "60": 2,
+                "80": 1
+            }
+        },
+        "laboratory": {
+            "reducedChancePercent": 30,
+            "reductionPercentWeights": {
+                "20": 12,
+                "40": 5,
+                "60": 2,
+                "80": 1
+            }
+        },
+        "lighthouse": {
+            "reducedChancePercent": 40,
+            "reductionPercentWeights": {
+                "20": 12,
+                "40": 5,
+                "60": 2,
+                "80": 1
+            }
+        },
+        "shoreline": {
+            "reducedChancePercent": 40,
+            "reductionPercentWeights": {
+                "20": 25,
+                "40": 10,
+                "60": 1,
+                "80": 1
+            }
+        },
+        "tarkovstreets": {
+            "reducedChancePercent": 40,
+            "reductionPercentWeights": {
+                "20": 25,
+                "40": 10,
+                "60": 1,
+                "80": 1
+            }
+        },
+        "woods": {
+            "reducedChancePercent": 40,
+            "reductionPercentWeights": {
+                "20": 25,
+                "40": 10,
+                "60": 1,
+                "80": 1
+            }
+        },
+        "default": {
+            "reducedChancePercent": 25,
+            "reductionPercentWeights": {
+                "20": 12,
+                "40": 5,
+                "60": 2,
+                "80": 1
+            }
+        }
+    }
 }

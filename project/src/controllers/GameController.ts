@@ -5,6 +5,7 @@ import { ContextVariableType } from "@spt-aki/context/ContextVariableType";
 import { HideoutHelper } from "@spt-aki/helpers/HideoutHelper";
 import { HttpServerHelper } from "@spt-aki/helpers/HttpServerHelper";
 import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
+import { WeightedRandomHelper } from "@spt-aki/helpers/WeightedRandomHelper";
 import { PreAkiModLoader } from "@spt-aki/loaders/PreAkiModLoader";
 import { IEmptyRequestData } from "@spt-aki/models/eft/common/IEmptyRequestData";
 import { ILooseLoot } from "@spt-aki/models/eft/common/ILooseLoot";
@@ -14,7 +15,10 @@ import { ICheckVersionResponse } from "@spt-aki/models/eft/game/ICheckVersionRes
 import { ICurrentGroupResponse } from "@spt-aki/models/eft/game/ICurrentGroupResponse";
 import { IGameConfigResponse } from "@spt-aki/models/eft/game/IGameConfigResponse";
 import { IGameKeepAliveResponse } from "@spt-aki/models/eft/game/IGameKeepAliveResponse";
+import { IGetRaidTimeRequest } from "@spt-aki/models/eft/game/IGetRaidTimeRequest";
+import { IGetRaidTimeResponse } from "@spt-aki/models/eft/game/IGetRaidTimeResponse";
 import { IServerDetails } from "@spt-aki/models/eft/game/IServerDetails";
+import { IGetRaidConfigurationRequestData } from "@spt-aki/models/eft/match/IGetRaidConfigurationRequestData";
 import { IAkiProfile } from "@spt-aki/models/eft/profile/IAkiProfile";
 import { AccountTypes } from "@spt-aki/models/enums/AccountTypes";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
@@ -68,6 +72,7 @@ export class GameController
         @inject("SeasonalEventService") protected seasonalEventService: SeasonalEventService,
         @inject("ItemBaseClassService") protected itemBaseClassService: ItemBaseClassService,
         @inject("GiftService") protected giftService: GiftService,
+        @inject("WeightedRandomHelper") protected weightedRandomHelper: WeightedRandomHelper,
         @inject("ApplicationContext") protected applicationContext: ApplicationContext,
         @inject("ConfigServer") protected configServer: ConfigServer,
     )
@@ -473,6 +478,53 @@ export class GameController
             // eslint-disable-next-line @typescript-eslint/naming-convention
             utc_time: new Date().getTime() / 1000,
         };
+    }
+
+    /**
+     * singleplayer/settings/getRaidTime
+     */
+    public getRaidTime(sessionId: string, request: IGetRaidTimeRequest): IGetRaidTimeResponse
+    {
+        const baseEscapeTimeMinutes = this.databaseServer.getTables().locations[request.Location.toLowerCase()].base.EscapeTimeLimit;
+        const result: IGetRaidTimeResponse = {
+            RaidTimeMinutes: baseEscapeTimeMinutes
+        }
+
+        // Pmc raid, send default
+        if (request.Side.toLowerCase() === "pmc")
+        {
+            return result;
+        }
+
+        // We're scav
+        let mapSettings = this.locationConfig.scavRaidTimeSettings[request.Location.toLowerCase()];
+        if (!mapSettings)
+        {
+            this.logger.warning(`Unable to find scav raid time settings for map: ${request.Location}, using defaults`);
+            mapSettings = this.locationConfig.scavRaidTimeSettings.default;
+        }
+
+        // Chance of reducing raid time for scav, not guaranteed
+        if (!this.randomUtil.getChance100(mapSettings.reducedChancePercent))
+        {
+            // Send default
+            return result;
+        }
+        
+        // Get the weighted percent to reduce the raid time by
+        const chosenRaidReductionPercent = this.weightedRandomHelper.getWeightedValue<string>(
+            mapSettings.reductionPercentWeights,
+        );
+
+        // How many minutes raid will be
+        const newRaidTime = Math.floor(this.randomUtil.reduceValueByPercent(baseEscapeTimeMinutes, Number.parseInt(chosenRaidReductionPercent)));
+        
+        // Update result object with new time
+        result.RaidTimeMinutes = newRaidTime;
+
+        this.logger.debug(`Reduced: ${request.Location} raid time by: ${chosenRaidReductionPercent}% to ${newRaidTime} minutes`)
+
+        return result;
     }
 
     /**

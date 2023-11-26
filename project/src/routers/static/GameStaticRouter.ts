@@ -89,6 +89,14 @@ export class GameStaticRouter extends StaticRouter
                     return this.gameCallbacks.reportNickname(url, info, sessionID);
                 },
             ),
+            new RouteAction(
+                "/singleplayer/settings/getRaidTime",
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                (url: string, info: any, sessionID: string, output: string): any =>
+                {
+                    return this.gameCallbacks.getRaidTime(url, info, sessionID);
+                },
+            )
         ]);
     }
 }
