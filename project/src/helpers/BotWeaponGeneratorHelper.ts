@@ -180,16 +180,16 @@ export class BotWeaponGeneratorHelper
             const container = inventory.items.find((i) => i.slotId === slot);
             if (!container)
             {
-                // Desired equipment container (e.g. backpack) not found
-                this.logger.debug(
-                    `Unable to add item: ${
-                        itemWithChildren[0]._tpl
-                    } to: ${slot}, slot missing/bot generated without item in slot`,
-                );
-
                 missingContainerCount++;
                 if (missingContainerCount === equipmentSlots.length)
                 {
+                    // Bot doesnt have any containers
+                    this.logger.debug(
+                        `Unable to add item: ${
+                            itemWithChildren[0]._tpl
+                        } to bot as it lacks the following containers: ${equipmentSlots.join(",")}`,
+                    );
+
                     return ItemAddedResult.NO_CONTAINERS
                 }
 
@@ -210,6 +210,7 @@ export class BotWeaponGeneratorHelper
                 // Container has no slots to hold items
                 continue;
             }
+
             // Get x/y grid size of item
             const itemSize = this.inventoryHelper.getItemSize(parentTpl, parentId, itemWithChildren);
 
