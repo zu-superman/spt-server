@@ -8,6 +8,7 @@ import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
 import { WeightedRandomHelper } from "@spt-aki/helpers/WeightedRandomHelper";
 import { PreAkiModLoader } from "@spt-aki/loaders/PreAkiModLoader";
 import { IEmptyRequestData } from "@spt-aki/models/eft/common/IEmptyRequestData";
+import { Exit, ILocationBase } from "@spt-aki/models/eft/common/ILocationBase";
 import { ILooseLoot } from "@spt-aki/models/eft/common/ILooseLoot";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
 import { BodyPartHealth } from "@spt-aki/models/eft/common/tables/IBotBase";
@@ -16,7 +17,7 @@ import { ICurrentGroupResponse } from "@spt-aki/models/eft/game/ICurrentGroupRes
 import { IGameConfigResponse } from "@spt-aki/models/eft/game/IGameConfigResponse";
 import { IGameKeepAliveResponse } from "@spt-aki/models/eft/game/IGameKeepAliveResponse";
 import { IGetRaidTimeRequest } from "@spt-aki/models/eft/game/IGetRaidTimeRequest";
-import { IGetRaidTimeResponse } from "@spt-aki/models/eft/game/IGetRaidTimeResponse";
+import { ExtractChange, IGetRaidTimeResponse } from "@spt-aki/models/eft/game/IGetRaidTimeResponse";
 import { IServerDetails } from "@spt-aki/models/eft/game/IServerDetails";
 import { IGetRaidConfigurationRequestData } from "@spt-aki/models/eft/match/IGetRaidConfigurationRequestData";
 import { IAkiProfile } from "@spt-aki/models/eft/profile/IAkiProfile";
@@ -485,9 +486,15 @@ export class GameController
      */
     public getRaidTime(sessionId: string, request: IGetRaidTimeRequest): IGetRaidTimeResponse
     {
-        const baseEscapeTimeMinutes = this.databaseServer.getTables().locations[request.Location.toLowerCase()].base.EscapeTimeLimit;
+        const mapBase: ILocationBase = this.databaseServer.getTables().locations[request.Location.toLowerCase()].base;
+        const baseEscapeTimeMinutes = mapBase.EscapeTimeLimit;
+        
+        // Prep result object to return
         const result: IGetRaidTimeResponse = {
-            RaidTimeMinutes: baseEscapeTimeMinutes
+            RaidTimeMinutes: baseEscapeTimeMinutes,
+            ExitChanges: [],
+            NewSurviveTimeSeconds: null,
+            OriginalSurvivalTimeSeconds: baseEscapeTimeMinutes
         }
 
         // Pmc raid, send default
@@ -496,7 +503,7 @@ export class GameController
             return result;
         }
 
-        // We're scav
+        // We're scav adjust values
         let mapSettings = this.locationConfig.scavRaidTimeSettings[request.Location.toLowerCase()];
         if (!mapSettings)
         {
@@ -517,14 +524,86 @@ export class GameController
         );
 
         // How many minutes raid will be
-        const newRaidTime = Math.floor(this.randomUtil.reduceValueByPercent(baseEscapeTimeMinutes, Number.parseInt(chosenRaidReductionPercent)));
+        const newRaidTimeMinutes = Math.floor(this.randomUtil.reduceValueByPercent(baseEscapeTimeMinutes, Number.parseInt(chosenRaidReductionPercent)));
         
         // Update result object with new time
-        result.RaidTimeMinutes = newRaidTime;
+        result.RaidTimeMinutes = newRaidTimeMinutes;
 
-        this.logger.debug(`Reduced: ${request.Location} raid time by: ${chosenRaidReductionPercent}% to ${newRaidTime} minutes`)
+        this.logger.debug(`Reduced: ${request.Location} raid time by: ${chosenRaidReductionPercent}% to ${newRaidTimeMinutes} minutes`)
+
+        // get our new total raid time as seconds
+        const newRaidTimeSeconds = newRaidTimeMinutes * 60;
+
+        const originalSurvivalTimeSeconds = this.databaseServer.getTables().globals.config.exp.match_end.survived_seconds_requirement;
+        result.OriginalSurvivalTimeSeconds = originalSurvivalTimeSeconds;
+
+        // Calculate how long player needs to be in raid to get a `survived` extract status
+        result.NewSurviveTimeSeconds = Math.max(originalSurvivalTimeSeconds - newRaidTimeSeconds, 0);
+
+        const exitAdjustments = this.getExitAdjustments(mapBase, newRaidTimeMinutes);
+        if (exitAdjustments)
+        {
+            result.ExitChanges.push(...exitAdjustments);
+        }
 
         return result;
+    }
+
+    /**
+     * Adjust exit times to handle scavs entering raids part-way through
+     * @param mapBase Map base file player is on
+     * @param newRaidTimeMinutes How long raid is in minutes
+     * @returns List of  exit changes to send to client
+     */
+    protected getExitAdjustments(mapBase: ILocationBase, newRaidTimeMinutes: number): ExtractChange[]
+    {
+        const result = [];
+        // Adjust train exits only
+        for (const exit of mapBase.exits)
+        {
+            if (exit.PassageRequirement !== "Train")
+            {
+                continue;
+            }
+
+            // Prepare train adjustment object
+            const exitChange: ExtractChange = {
+                Name: exit.Name,
+                MinTime: null,
+                MaxTime: null,
+                Chance: null
+            }
+
+            // If raid is after last moment train can leave, assume train has already left, disable extract
+            const latestPossibleDepartureMinutes = (exit.MaxTime + exit.Count) / 60;
+            if (newRaidTimeMinutes < latestPossibleDepartureMinutes)
+            {
+                exitChange.Chance = 0;
+
+                this.logger.debug(`Train Exit: ${exit.Name} disabled as new raid time ${newRaidTimeMinutes} minutes is below ${latestPossibleDepartureMinutes} minutes`);
+
+                result.push(exitChange);
+
+                continue;
+            }
+
+            // What minute we simulate the player joining a raid at
+            const simulatedRaidEntryTimeMinutes = mapBase.EscapeTimeLimit - newRaidTimeMinutes;
+
+            // How many seconds to reduce extract arrival times by, negative values seem to make extract turn red in game
+            const reductionSeconds = simulatedRaidEntryTimeMinutes * 60;
+
+            exitChange.MinTime = exit.MinTime - reductionSeconds;
+            exitChange.MaxTime = exit.MaxTime - reductionSeconds;
+
+            this.logger.debug(`Train appears between: ${exitChange.MinTime} and ${exitChange.MaxTime} seconds raid time`);
+            
+            result.push(exitChange);
+        }
+
+        return result.length > 0
+            ? result
+            : null ;
     }
 
     /**

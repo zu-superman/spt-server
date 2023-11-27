@@ -799,6 +799,7 @@
             "reducedChancePercent": 40,
             "reductionPercentWeights": {
                 "20": 12,
+				"30": 7,
                 "40": 5,
                 "60": 2,
                 "80": 1
@@ -808,6 +809,7 @@
             "reducedChancePercent": 60,
             "reductionPercentWeights": {
                 "20": 12,
+				"30": 7,
                 "40": 5,
                 "60": 2,
                 "80": 1
@@ -817,6 +819,7 @@
             "reducedChancePercent": 40,
             "reductionPercentWeights": {
                 "20": 12,
+				"30": 7,
                 "40": 5,
                 "60": 2,
                 "80": 1
@@ -826,6 +829,7 @@
             "reducedChancePercent": 50,
             "reductionPercentWeights": {
                 "20": 12,
+				"30": 7,
                 "40": 5,
                 "60": 2,
                 "80": 1
@@ -835,6 +839,7 @@
             "reducedChancePercent": 40,
             "reductionPercentWeights": {
                 "20": 12,
+				"30": 7,
                 "40": 5,
                 "60": 2,
                 "80": 1
@@ -844,6 +849,7 @@
             "reducedChancePercent": 30,
             "reductionPercentWeights": {
                 "20": 12,
+				"30": 7,
                 "40": 5,
                 "60": 2,
                 "80": 1
@@ -853,6 +859,7 @@
             "reducedChancePercent": 40,
             "reductionPercentWeights": {
                 "20": 12,
+				"30": 7,
                 "40": 5,
                 "60": 2,
                 "80": 1
@@ -862,6 +869,7 @@
             "reducedChancePercent": 40,
             "reductionPercentWeights": {
                 "20": 25,
+				"30": 15,
                 "40": 10,
                 "60": 1,
                 "80": 1
@@ -871,6 +879,7 @@
             "reducedChancePercent": 40,
             "reductionPercentWeights": {
                 "20": 25,
+				"30": 15,
                 "40": 10,
                 "60": 1,
                 "80": 1
@@ -880,6 +889,7 @@
             "reducedChancePercent": 40,
             "reductionPercentWeights": {
                 "20": 25,
+				"30": 12,
                 "40": 10,
                 "60": 1,
                 "80": 1
@@ -889,6 +899,7 @@
             "reducedChancePercent": 25,
             "reductionPercentWeights": {
                 "20": 12,
+				"30": 7,
                 "40": 5,
                 "60": 2,
                 "80": 1
