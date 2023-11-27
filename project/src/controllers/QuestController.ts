@@ -362,10 +362,11 @@ export class QuestController
     {
         const acceptQuestResponse = this.eventOutputHolder.getOutput(sessionID);
 
-        const desiredQuestState = QuestStatus.Started;
-        const newQuest = this.questHelper.getQuestReadyForProfile(pmcData, desiredQuestState, acceptedQuest);
-        pmcData.Quests.push(newQuest);
+        // Create and store quest status object inside player profile
+        const newRepeatableQuest = this.questHelper.getQuestReadyForProfile(pmcData, QuestStatus.Started, acceptedQuest);
+        pmcData.Quests.push(newRepeatableQuest);
 
+        // Look for the generated quest cache in profile.RepeatableQuests
         const repeatableQuestProfile = this.getRepeatableQuestFromProfile(pmcData, acceptedQuest);
         if (!repeatableQuestProfile)
         {
@@ -391,60 +392,13 @@ export class QuestController
                 fullProfile.characters.scav.Quests = [];
             }
 
-            fullProfile.characters.scav.Quests.push(newQuest);
+            fullProfile.characters.scav.Quests.push(newRepeatableQuest);
         }
-
-        const locale = this.localeService.getLocaleDb();
-        const questStartedMessageKey = this.questHelper.getMessageIdForQuestStart(
-            repeatableQuestProfile.startedMessageText,
-            repeatableQuestProfile.description,
-        );
-
-        // Can be started text or description text based on above function result
-        let questStartedMessageText = locale[questStartedMessageKey];
-        // TODO: remove this whole if statement, possibly not required?
-        if (!questStartedMessageText)
-        {
-            this.logger.debug(
-                `Unable to accept quest ${acceptedQuest.qid}, cannot find the quest started message text with id ${questStartedMessageKey}. attempting to find it in en locale instead`,
-            );
-
-            // For some reason non-en locales dont have repeatable quest ids, fall back to en and grab it if possible
-            const enLocale = this.databaseServer.getTables().locales.global.en;
-            questStartedMessageText = enLocale[repeatableQuestProfile.startedMessageText];
-
-            if (!questStartedMessageText)
-            {
-                this.logger.error(
-                    this.localisationService.getText("repeatable-unable_to_accept_quest_starting_message_not_found", {
-                        questId: acceptedQuest.qid,
-                        messageId: questStartedMessageKey,
-                    }),
-                );
-
-                return this.httpResponseUtil.appendErrorToOutput(
-                    acceptQuestResponse,
-                    this.localisationService.getText("repeatable-unable_to_accept_quest_see_log"),
-                );
-            }
-        }
-
-        const questRewards = this.questHelper.getQuestRewardItems(
-            <IQuest><unknown>repeatableQuestProfile,
-            desiredQuestState,
-        );
-        this.mailSendService.sendLocalisedNpcMessageToPlayer(
-            sessionID,
-            this.traderHelper.getTraderById(repeatableQuestProfile.traderId),
-            MessageType.QUEST_START,
-            questStartedMessageKey,
-            questRewards,
-            this.timeUtil.getHoursAsSeconds(this.questConfig.redeemTime),
-        );
 
         const repeatableSettings = pmcData.RepeatableQuests.find((x) =>
             x.name === repeatableQuestProfile.sptRepatableGroupName
         );
+
         const change = {};
         change[repeatableQuestProfile._id] = repeatableSettings.changeRequirement[repeatableQuestProfile._id];
         const responseData: IPmcDataRepeatableQuest = {
