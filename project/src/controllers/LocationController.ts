@@ -1,5 +1,7 @@
 import { inject, injectable } from "tsyringe";
 
+import { ApplicationContext } from "@spt-aki/context/ApplicationContext";
+import { ContextVariableType } from "@spt-aki/context/ContextVariableType";
 import { LocationGenerator } from "@spt-aki/generators/LocationGenerator";
 import { LootGenerator } from "@spt-aki/generators/LootGenerator";
 import { WeightedRandomHelper } from "@spt-aki/helpers/WeightedRandomHelper";
@@ -12,7 +14,8 @@ import { IGetLocationRequestData } from "@spt-aki/models/eft/location/IGetLocati
 import { AirdropTypeEnum } from "@spt-aki/models/enums/AirdropType";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { IAirdropConfig } from "@spt-aki/models/spt/config/IAirdropConfig";
-import { ILocationConfig } from "@spt-aki/models/spt/config/ILocationConfig";
+import { ILocationConfig, LootMultiplier } from "@spt-aki/models/spt/config/ILocationConfig";
+import { ILootMultiplerChange } from "@spt-aki/models/spt/location/ILootMultiplerChange";
 import { ILocations } from "@spt-aki/models/spt/server/ILocations";
 import { LootRequest } from "@spt-aki/models/spt/services/LootRequest";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
@@ -42,6 +45,7 @@ export class LocationController
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
         @inject("ConfigServer") protected configServer: ConfigServer,
+        @inject("ApplicationContext") protected applicationContext: ApplicationContext,
     )
     {
         this.airdropConfig = this.configServer.getConfig(ConfigTypes.AIRDROP);
@@ -83,10 +87,23 @@ export class LocationController
             return output;
         }
 
+        // Check for a loot multipler adjustment in app context and apply if one is found
+        let locationConfigCopy: ILocationConfig;
+        const lootMultiplierAdjustment = this.applicationContext.getLatestValue(ContextVariableType.LOOT_MULTIPLER_CHANGE)?.getValue<ILootMultiplerChange>();
+        if (lootMultiplierAdjustment)
+        {
+            this.logger.debug(`Adjusting dynamic loot multipliers to ${lootMultiplierAdjustment.dynamicLootPercent}% and static loot multipliers to ${lootMultiplierAdjustment.staticLootPercent}% of original`)
+            locationConfigCopy = this.jsonUtil.clone(this.locationConfig); // Clone values so they can be used to reset originals later
+
+            // Change loot multipler values before they're used below
+            this.adjustLootMultipliers(this.locationConfig.looseLootMultiplier, lootMultiplierAdjustment.dynamicLootPercent);
+            this.adjustLootMultipliers(this.locationConfig.staticLootMultiplier, lootMultiplierAdjustment.staticLootPercent);
+        }
+
         const staticAmmoDist = this.jsonUtil.clone(db.loot.staticAmmo);
 
         // Create containers and add loot to them
-        const staticLoot = this.locationGenerator.generateStaticContainers(location.base, staticAmmoDist);
+        const staticLoot = this.locationGenerator.generateStaticContainers(output, staticAmmoDist);
         output.Loot.push(...staticLoot);
 
         // Add dyanmic loot to output loot
@@ -107,7 +124,30 @@ export class LocationController
         );
         this.logger.success(this.localisationService.getText("location-generated_success", name));
 
+        // Reset loot multipliers back to original values
+        if (lootMultiplierAdjustment)
+        {
+            this.logger.debug("Resetting loot multipliers back to their original values");
+            this.locationConfig.staticLootMultiplier = locationConfigCopy.staticLootMultiplier;
+            this.locationConfig.looseLootMultiplier = locationConfigCopy.looseLootMultiplier;
+
+            this.applicationContext.clearValues(ContextVariableType.LOOT_MULTIPLER_CHANGE);
+        }
+
         return output;
+    }
+
+    /**
+     * Adjust the loot multiplier values passed in to be a % of their original value
+     * @param mapLootMultiplers Multiplers to adjust
+     * @param loosePercent Percent to change values to
+     */
+    protected adjustLootMultipliers(mapLootMultiplers: LootMultiplier, loosePercent: number): void
+    {
+        for (const key in mapLootMultiplers)
+        {
+            mapLootMultiplers[key] = this.randomUtil.getPercentOfValue(mapLootMultiplers[key], loosePercent);
+        }
     }
 
     /**

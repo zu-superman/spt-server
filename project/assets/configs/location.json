@@ -796,6 +796,9 @@
     "looseLootBlacklist": {},
     "scavRaidTimeSettings": {
         "bigmap": {
+            "reduceLootByPercent": true,
+            "minDynamicLootPercent": 50,
+            "minStaticLootPercent": 40,
             "reducedChancePercent": 40,
             "reductionPercentWeights": {
                 "20": 12,
@@ -806,7 +809,10 @@
             }
         },
         "factory4_day": {
-            "reducedChancePercent": 60,
+            "reduceLootByPercent": true,
+            "minDynamicLootPercent": 50,
+            "minStaticLootPercent": 40,
+            "reducedChancePercent": 50,
             "reductionPercentWeights": {
                 "20": 12,
                 "30": 7,
@@ -816,6 +822,9 @@
             }
         },
         "factory4_night": {
+            "reduceLootByPercent": true,
+            "minDynamicLootPercent": 50,
+            "minStaticLootPercent": 40,
             "reducedChancePercent": 40,
             "reductionPercentWeights": {
                 "20": 12,
@@ -826,6 +835,9 @@
             }
         },
         "interchange": {
+            "reduceLootByPercent": true,
+            "minDynamicLootPercent": 50,
+            "minStaticLootPercent": 40,
             "reducedChancePercent": 50,
             "reductionPercentWeights": {
                 "20": 12,
@@ -836,7 +848,11 @@
             }
         },
         "rezervbase": {
+            "reduceLootByPercent": true,
+            "minDynamicLootPercent": 50,
+            "minStaticLootPercent": 40,
             "reducedChancePercent": 40,
+
             "reductionPercentWeights": {
                 "20": 12,
                 "30": 7,
@@ -846,6 +862,9 @@
             }
         },
         "laboratory": {
+            "reduceLootByPercent": true,
+            "minDynamicLootPercent": 50,
+            "minStaticLootPercent": 40,
             "reducedChancePercent": 30,
             "reductionPercentWeights": {
                 "20": 12,
@@ -856,6 +875,9 @@
             }
         },
         "lighthouse": {
+            "reduceLootByPercent": true,
+            "minDynamicLootPercent": 50,
+            "minStaticLootPercent": 40,
             "reducedChancePercent": 40,
             "reductionPercentWeights": {
                 "20": 12,
@@ -866,6 +888,9 @@
             }
         },
         "shoreline": {
+            "reduceLootByPercent": true,
+            "minDynamicLootPercent": 50,
+            "minStaticLootPercent": 40,
             "reducedChancePercent": 40,
             "reductionPercentWeights": {
                 "20": 25,
@@ -876,6 +901,9 @@
             }
         },
         "tarkovstreets": {
+            "reduceLootByPercent": true,
+            "minDynamicLootPercent": 50,
+            "minStaticLootPercent": 40,
             "reducedChancePercent": 40,
             "reductionPercentWeights": {
                 "20": 25,
@@ -886,6 +914,9 @@
             }
         },
         "woods": {
+            "reduceLootByPercent": true,
+            "minDynamicLootPercent": 50,
+            "minStaticLootPercent": 40,
             "reducedChancePercent": 40,
             "reductionPercentWeights": {
                 "20": 25,
@@ -896,6 +927,9 @@
             }
         },
         "default": {
+            "reduceLootByPercent": true,
+            "minDynamicLootPercent": 50,
+            "minStaticLootPercent": 50,
             "reducedChancePercent": 25,
             "reductionPercentWeights": {
                 "20": 12,

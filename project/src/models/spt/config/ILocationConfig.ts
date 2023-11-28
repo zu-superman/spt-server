@@ -44,8 +44,13 @@ export interface ILocationConfig extends IBaseConfig
 
 export interface IScavRaidTimeLocationSettings
 {
-    reducedChancePercent: number
-    reductionPercentWeights: Record<string, number>
+    /** Should loot be reduced by same percent length of raid is reduced by */
+    reduceLootByPercent: boolean;
+    minStaticLootPercent: number;
+    minDynamicLootPercent: number;
+    /** Chance raid time is reduced */
+    reducedChancePercent: number;
+    reductionPercentWeights: Record<string, number>;
 }
 
 export interface IContainerRandomistionSettings

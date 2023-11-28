@@ -598,12 +598,22 @@ export class GameController
         }
         
         // Get the weighted percent to reduce the raid time by
-        const chosenRaidReductionPercent = this.weightedRandomHelper.getWeightedValue<string>(
+        const chosenRaidReductionPercent = Number.parseInt(this.weightedRandomHelper.getWeightedValue<string>(
             mapSettings.reductionPercentWeights,
-        );
+        ));
+
+        if (mapSettings.reduceLootByPercent)
+        {
+            // Store time reduction percent in app context so loot gen can pick it up later
+            this.applicationContext.addValue(ContextVariableType.LOOT_MULTIPLER_CHANGE, 
+                {
+                    dynamicLootPercent: Math.max(chosenRaidReductionPercent, mapSettings.minDynamicLootPercent),
+                    staticLootPercent: Math.max(chosenRaidReductionPercent, mapSettings.minStaticLootPercent)
+                });
+        }
 
         // How many minutes raid will be
-        const newRaidTimeMinutes = Math.floor(this.randomUtil.reduceValueByPercent(baseEscapeTimeMinutes, Number.parseInt(chosenRaidReductionPercent)));
+        const newRaidTimeMinutes = Math.floor(this.randomUtil.reduceValueByPercent(baseEscapeTimeMinutes, chosenRaidReductionPercent));
         
         // Update result object with new time
         result.RaidTimeMinutes = newRaidTimeMinutes;

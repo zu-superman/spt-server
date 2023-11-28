@@ -61,4 +61,12 @@ export class ApplicationContext
         list.add(new ContextVariable(value, type));
         this.variables.set(type, list);
     }
+
+    public clearValues(type: ContextVariableType): void
+    {
+        this.variables.has(type)
+        {
+            this.variables.delete(type);
+        }
+    }
 }
