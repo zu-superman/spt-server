@@ -128,6 +128,13 @@
             "startTimestamp": 1701388800000,
             "endTimestamp": 1703980800000,
             "yearly": true
+        },
+        "655e427b64d09b4122018228": {
+            "name": "The punisher - Harvest",
+            "season": "None",
+            "startTimestamp": 1341615600000,
+            "endTimestamp": "",
+            "yearly": false
         }
     },
     "repeatableQuests": [{
