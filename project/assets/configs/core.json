@@ -7,7 +7,8 @@
     "sptFriendNickname": "SPT",
     "fixes": {
         "fixShotgunDispersion": true,
-        "removeModItemsFromProfile": false
+        "removeModItemsFromProfile": false,
+        "fixProfileBreakingInventoryItemIssues": false
     },
     "features": {
         "autoInstallModDependencies": false

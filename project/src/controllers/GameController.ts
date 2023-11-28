@@ -8,7 +8,7 @@ import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
 import { WeightedRandomHelper } from "@spt-aki/helpers/WeightedRandomHelper";
 import { PreAkiModLoader } from "@spt-aki/loaders/PreAkiModLoader";
 import { IEmptyRequestData } from "@spt-aki/models/eft/common/IEmptyRequestData";
-import { Exit, ILocationBase } from "@spt-aki/models/eft/common/ILocationBase";
+import { ILocationBase } from "@spt-aki/models/eft/common/ILocationBase";
 import { ILooseLoot } from "@spt-aki/models/eft/common/ILooseLoot";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
 import { BodyPartHealth } from "@spt-aki/models/eft/common/tables/IBotBase";
@@ -19,7 +19,6 @@ import { IGameKeepAliveResponse } from "@spt-aki/models/eft/game/IGameKeepAliveR
 import { IGetRaidTimeRequest } from "@spt-aki/models/eft/game/IGetRaidTimeRequest";
 import { ExtractChange, IGetRaidTimeResponse } from "@spt-aki/models/eft/game/IGetRaidTimeResponse";
 import { IServerDetails } from "@spt-aki/models/eft/game/IServerDetails";
-import { IGetRaidConfigurationRequestData } from "@spt-aki/models/eft/match/IGetRaidConfigurationRequestData";
 import { IAkiProfile } from "@spt-aki/models/eft/profile/IAkiProfile";
 import { AccountTypes } from "@spt-aki/models/enums/AccountTypes";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
@@ -42,6 +41,7 @@ import { LocalisationService } from "@spt-aki/services/LocalisationService";
 import { OpenZoneService } from "@spt-aki/services/OpenZoneService";
 import { ProfileFixerService } from "@spt-aki/services/ProfileFixerService";
 import { SeasonalEventService } from "@spt-aki/services/SeasonalEventService";
+import { HashUtil } from "@spt-aki/utils/HashUtil";
 import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 import { RandomUtil } from "@spt-aki/utils/RandomUtil";
 import { TimeUtil } from "@spt-aki/utils/TimeUtil";
@@ -61,6 +61,7 @@ export class GameController
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
+        @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("PreAkiModLoader") protected preAkiModLoader: PreAkiModLoader,
         @inject("HttpServerHelper") protected httpServerHelper: HttpServerHelper,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
@@ -142,6 +143,11 @@ export class GameController
             const pmcProfile = fullProfile.characters.pmc;
 
             this.logger.debug(`Started game with sessionId: ${sessionID} ${pmcProfile.Info?.Nickname}`);
+
+            if (this.coreConfig.fixes.fixProfileBreakingInventoryItemIssues)
+            {
+                this.fixProfileBreakingInventoryItemIssues(pmcProfile)
+            }
 
             if (pmcProfile.Health)
             {
@@ -238,6 +244,79 @@ export class GameController
             if (!this.ragfairConfig.dynamic.blacklist.enableBsgList)
             {
                 this.flagAllItemsInDbAsSellableOnFlea();
+            }
+        }
+    }
+
+    /**
+     * Attempt to fix common item issues that corrupt profiles
+     * @param pmcProfile Profile to check items of
+     */
+    protected fixProfileBreakingInventoryItemIssues(pmcProfile: IPmcData): void
+    {
+        // Create a mapping of all inventory items, keyed by _id value
+        const itemMapping = pmcProfile.Inventory.items.reduce((acc, curr) =>
+        {
+            acc[curr._id] = acc[curr._id] || [];
+            acc[curr._id].push(curr);
+
+            return acc;
+        }, {});
+
+        for (const key in itemMapping)
+        {
+            // Only one item for this id, not a dupe
+            if (itemMapping[key].length === 1)
+            {
+                continue;
+            }
+
+            this.logger.warning(`${itemMapping[key].length - 1} duplicate(s) found for item: ${key}`);
+            const itemAJson = this.jsonUtil.serialize(itemMapping[key][0]);
+            const itemBJson = this.jsonUtil.serialize(itemMapping[key][1]);
+            if (itemAJson === itemBJson)
+            {
+                // Both items match, we can safely delete one
+                const indexOfItemToRemove = pmcProfile.Inventory.items.findIndex(x => x._id === key);
+                pmcProfile.Inventory.items.splice(indexOfItemToRemove, 1);
+                this.logger.warning(`Deleted duplicate item: ${key}`);
+            }
+            else
+            {
+                // Items are different, replace ID with unique value
+                // Only replace ID if items have no children, we dont want orphaned children
+                const itemsHaveChildren = pmcProfile.Inventory.items.some(x => x.parentId === key);
+                if (!itemsHaveChildren)
+                {
+                    const itemToAdjustId = pmcProfile.Inventory.items.find(x => x._id === key);
+                    itemToAdjustId._id = this.hashUtil.generate();
+                    this.logger.warning(`Replace duplicate item Id: ${key} with ${itemToAdjustId._id}`);
+                }
+            }
+        }
+
+        // Iterate over all inventory items
+        for (const item of pmcProfile.Inventory.items.filter(x => x.slotId))
+        {
+            if (!item.upd)
+            {
+                // Ignore items without a upd object
+                continue;
+            }
+
+            // Check items with a tag that contains non alphanumeric characters
+            const regxp = /[^a-zA-Z0-9 .]/g;
+            if (regxp.test(item.upd.Tag?.Name))
+            {
+                this.logger.warning(`Fixed item: ${item._id}s Tag value, removed invalid characters`);
+                item.upd.Tag.Name = item.upd.Tag.Name.replace(regxp, '');
+            }
+
+            // Check items with StackObjectsCount (null)
+            if (item.upd.StackObjectsCount === null)
+            {
+                this.logger.warning(`Fixed item: ${item._id}s null StackObjectsCount value, now set to 1`);
+                item.upd.StackObjectsCount = 1;
             }
         }
     }
@@ -482,7 +561,7 @@ export class GameController
     }
 
     /**
-     * singleplayer/settings/getRaidTime
+     * Handle singleplayer/settings/getRaidTime
      */
     public getRaidTime(sessionId: string, request: IGetRaidTimeRequest): IGetRaidTimeResponse
     {
