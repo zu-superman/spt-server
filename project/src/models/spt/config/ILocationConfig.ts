@@ -51,6 +51,8 @@ export interface IScavRaidTimeLocationSettings
     /** Chance raid time is reduced */
     reducedChancePercent: number;
     reductionPercentWeights: Record<string, number>;
+    /** Should bot waves be removed / spawn times be adjusted */
+    adjustWaves: boolean;
 }
 
 export interface IContainerRandomistionSettings

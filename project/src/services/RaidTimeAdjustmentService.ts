@@ -7,7 +7,7 @@ import { ILocationBase } from "@spt-aki/models/eft/common/ILocationBase";
 import { IGetRaidTimeRequest } from "@spt-aki/models/eft/game/IGetRaidTimeRequest";
 import { ExtractChange, IGetRaidTimeResponse } from "@spt-aki/models/eft/game/IGetRaidTimeResponse";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
-import { ILocationConfig, LootMultiplier } from "@spt-aki/models/spt/config/ILocationConfig";
+import { ILocationConfig, IScavRaidTimeLocationSettings, LootMultiplier } from "@spt-aki/models/spt/config/ILocationConfig";
 import { IRaidChanges } from "@spt-aki/models/spt/location/IRaidChanges";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt-aki/servers/ConfigServer";
@@ -45,8 +45,12 @@ export class RaidTimeAdjustmentService
         this.adjustLootMultipliers(this.locationConfig.looseLootMultiplier, raidAdjustments.dynamicLootPercent);
         this.adjustLootMultipliers(this.locationConfig.staticLootMultiplier, raidAdjustments.staticLootPercent);
 
+        const mapSettings = this.getMapSettings(mapBase.Id);
+        if (mapSettings.adjustWaves)
+        {
         // Make alterations to bot spawn waves now player is simulated spawning later
         this.adjustWaves(mapBase, raidAdjustments)
+        }
     }
 
     /**
@@ -76,8 +80,9 @@ export class RaidTimeAdjustmentService
         // Adjust wave min/max times to match new simulated start
         for (const wave of mapBase.waves)
         {
-            wave.time_min -= raidAdjustments.simulatedRaidStartSeconds;
-            wave.time_max -= raidAdjustments.simulatedRaidStartSeconds;
+            // Dont let time fall below 0
+            wave.time_min -= Math.max(raidAdjustments.simulatedRaidStartSeconds, 0);
+            wave.time_max -= Math.max(raidAdjustments.simulatedRaidStartSeconds, 0);
         }
 
         this.logger.debug(`Removed ${originalWaveCount - mapBase.waves.length} wave from map due to simulated raid start time of ${raidAdjustments.simulatedRaidStartSeconds / 60} minutes`);
@@ -91,7 +96,7 @@ export class RaidTimeAdjustmentService
      */
     public getRaidAdjustments(sessionId: string, request: IGetRaidTimeRequest): IGetRaidTimeResponse
     {
-        const db = this.databaseServer.getTables()
+        const db = this.databaseServer.getTables();
 
         const mapBase: ILocationBase = db.locations[request.Location.toLowerCase()].base;
         const baseEscapeTimeMinutes = mapBase.EscapeTimeLimit;
@@ -111,12 +116,7 @@ export class RaidTimeAdjustmentService
         }
 
         // We're scav adjust values
-        let mapSettings = this.locationConfig.scavRaidTimeSettings[request.Location.toLowerCase()];
-        if (!mapSettings)
-        {
-            this.logger.warning(`Unable to find scav raid time settings for map: ${request.Location}, using defaults`);
-            mapSettings = this.locationConfig.scavRaidTimeSettings.default;
-        }
+        const mapSettings = this.getMapSettings(request.Location);
 
         // Chance of reducing raid time for scav, not guaranteed
         if (!this.randomUtil.getChance100(mapSettings.reducedChancePercent))
@@ -162,6 +162,23 @@ export class RaidTimeAdjustmentService
         }
 
         return result;
+    }
+
+    /**
+     * Get raid start time settings for specific map
+     * @param location Map Location e.g. bigmap
+     * @returns IScavRaidTimeLocationSettings
+     */
+    protected getMapSettings(location: string): IScavRaidTimeLocationSettings
+    {
+        const mapSettings = this.locationConfig.scavRaidTimeSettings[location.toLowerCase()];
+        if (!mapSettings)
+        {
+            this.logger.warning(`Unable to find scav raid time settings for map: ${location}, using defaults`);
+            return this.locationConfig.scavRaidTimeSettings.default;
+        }
+
+        return mapSettings;
     }
 
     /**

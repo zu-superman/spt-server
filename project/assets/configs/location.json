@@ -811,7 +811,8 @@
                 "60": 2,
                 "70": 2,
                 "80": 1
-            }
+            },
+            "adjustWaves": true
         },
         "factory4_day": {
             "reduceLootByPercent": true,
@@ -829,7 +830,8 @@
                 "70": 2,
                 "80": 2,
                 "85": 1
-            }
+            },
+            "adjustWaves": true
         },
         "factory4_night": {
             "reduceLootByPercent": true,
@@ -843,7 +845,8 @@
                 "60": 2,
                 "70": 2,
                 "80": 1
-            }
+            },
+            "adjustWaves": true
         },
         "interchange": {
             "reduceLootByPercent": true,
@@ -859,7 +862,8 @@
                 "50": 5,
                 "60": 2,
                 "80": 1
-            }
+            },
+            "adjustWaves": true
         },
         "rezervbase": {
             "reduceLootByPercent": true,
@@ -875,7 +879,8 @@
                 "60": 2,
                 "70": 1,
                 "80": 1
-            }
+            },
+            "adjustWaves": true
         },
         "laboratory": {
             "reduceLootByPercent": true,
@@ -889,7 +894,8 @@
                 "50": 5,
                 "60": 2,
                 "80": 1
-            }
+            },
+            "adjustWaves": true
         },
         "lighthouse": {
             "reduceLootByPercent": true,
@@ -904,7 +910,8 @@
                 "50": 4,
                 "60": 2,
                 "80": 1
-            }
+            },
+            "adjustWaves": true
         },
         "shoreline": {
             "reduceLootByPercent": true,
@@ -921,7 +928,8 @@
                 "60": 2,
                 "70": 1,
                 "80": 1
-            }
+            },
+            "adjustWaves": true
         },
         "tarkovstreets": {
             "reduceLootByPercent": true,
@@ -936,7 +944,8 @@
                 "60": 4,
                 "70": 1,
                 "80": 1
-            }
+            },
+            "adjustWaves": true
         },
         "woods": {
             "reduceLootByPercent": true,
@@ -951,7 +960,8 @@
                 "60": 1,
                 "70": 1,
                 "80": 1
-            }
+            },
+            "adjustWaves": true
         },
         "default": {
             "reduceLootByPercent": true,
@@ -967,7 +977,8 @@
                 "60": 2,
                 "70": 1,
                 "80": 1
-            }
+            },
+            "adjustWaves": true
         }
     }
 }
