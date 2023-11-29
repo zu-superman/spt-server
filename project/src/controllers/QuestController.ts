@@ -289,7 +289,7 @@ export class QuestController
      * @param pmcData Profile to update
      * @param acceptedQuest Quest accepted
      * @param sessionID Session id
-     * @returns client response
+     * @returns Client response
      */
     public acceptQuest(
         pmcData: IPmcData,
@@ -298,30 +298,32 @@ export class QuestController
     ): IItemEventRouterResponse
     {
         const acceptQuestResponse = this.eventOutputHolder.getOutput(sessionID);
-
-        const startedState = QuestStatus.Started;
-        const newQuest = this.questHelper.getQuestReadyForProfile(pmcData, startedState, acceptedQuest);
-
+        
         // Does quest exist in profile
-        if (pmcData.Quests.find((x) => x.qid === acceptedQuest.qid))
+        // Restarting a quest can mean quest exists in profile
+        const existingQuestStatus = pmcData.Quests.find((x) => x.qid === acceptedQuest.qid)
+        if (existingQuestStatus)
         {
             // Update existing
-            this.questHelper.updateQuestState(pmcData, QuestStatus.Started, acceptedQuest.qid);
+            this.questHelper.resetQuestState(pmcData, QuestStatus.Started, acceptedQuest.qid);
         }
         else
         {
             // Add new quest to server profile
+            const newQuest = this.questHelper.getQuestReadyForProfile(pmcData, QuestStatus.Started, acceptedQuest);
             pmcData.Quests.push(newQuest);
         }
 
         // Create a dialog message for starting the quest.
         // Note that for starting quests, the correct locale field is "description", not "startedMessageText".
         const questFromDb = this.questHelper.getQuestFromDb(acceptedQuest.qid, pmcData);
+
         // Get messageId of text to send to player as text message in game
         const messageId = this.questHelper.getMessageIdForQuestStart(
             questFromDb.startedMessageText,
             questFromDb.description,
         );
+
         const startedQuestRewards = this.questHelper.applyQuestReward(
             pmcData,
             acceptedQuest.qid,
@@ -341,7 +343,14 @@ export class QuestController
 
         acceptQuestResponse.profileChanges[sessionID].quests = this.questHelper
             .getNewlyAccessibleQuestsWhenStartingQuest(acceptedQuest.qid, sessionID);
-
+        
+        // Quest already existed, probably a fail/restart
+        // Need to send client an empty list of completedConditions
+        if (existingQuestStatus)
+        {
+            acceptQuestResponse.profileChanges[sessionID].questsStatus = [ existingQuestStatus ];
+        }
+        
         return acceptQuestResponse;
     }
 

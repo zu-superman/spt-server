@@ -734,6 +734,34 @@ export class QuestHelper
     }
 
     /**
+     * Resets a quests values back to its chosen state
+     * @param pmcData Profile to update
+     * @param newQuestState New state the quest should be in
+     * @param questId Id of the quest to alter the status of
+     */
+    public resetQuestState(pmcData: IPmcData, newQuestState: QuestStatus, questId: string): void
+    {
+        const questToUpdate = pmcData.Quests.find((quest) => quest.qid === questId);
+        if (questToUpdate)
+        {
+            questToUpdate.status = newQuestState;
+            questToUpdate.statusTimers[newQuestState] = this.timeUtil.getTimestamp();
+
+            // Delete all status timers after the new status
+            for (const statusKey in questToUpdate.statusTimers)
+            {
+                if (Number.parseInt(statusKey) > newQuestState)
+                {
+                    delete questToUpdate.statusTimers[statusKey]
+                }
+            }
+
+            // Remove all completed conditions
+            questToUpdate.completedConditions = [];
+        }
+    }
+
+    /**
      * Give player quest rewards - Skills/exp/trader standing/items/assort unlocks - Returns reward items player earned
      * @param profileData Player profile (scav or pmc)
      * @param questId questId of quest to get rewards for
