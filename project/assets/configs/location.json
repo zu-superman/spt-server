@@ -799,12 +799,17 @@
             "reduceLootByPercent": true,
             "minDynamicLootPercent": 50,
             "minStaticLootPercent": 40,
-            "reducedChancePercent": 40,
+            "reducedChancePercent": 70,
             "reductionPercentWeights": {
-                "20": 12,
-                "30": 7,
-                "40": 5,
+                "20": 1,
+                "25": 2,
+                "30": 4,
+                "35": 4,
+                "40": 4,
+                "45": 4,
+                "50": 4,
                 "60": 2,
+                "70": 2,
                 "80": 1
             }
         },
@@ -812,25 +817,31 @@
             "reduceLootByPercent": true,
             "minDynamicLootPercent": 50,
             "minStaticLootPercent": 40,
-            "reducedChancePercent": 50,
+            "reducedChancePercent": 80,
             "reductionPercentWeights": {
-                "20": 12,
-                "30": 7,
+                "5": 2,
+                "20": 3,
+                "25": 3,
+                "30": 5,
                 "40": 5,
+                "50": 5,
                 "60": 2,
-                "80": 1
+                "70": 2,
+                "80": 2,
+                "85": 1
             }
         },
         "factory4_night": {
             "reduceLootByPercent": true,
             "minDynamicLootPercent": 50,
             "minStaticLootPercent": 40,
-            "reducedChancePercent": 40,
+            "reducedChancePercent": 70,
             "reductionPercentWeights": {
-                "20": 12,
-                "30": 7,
-                "40": 5,
+                "20": 4,
+                "30": 3,
+                "40": 3,
                 "60": 2,
+                "70": 2,
                 "80": 1
             }
         },
@@ -838,11 +849,14 @@
             "reduceLootByPercent": true,
             "minDynamicLootPercent": 50,
             "minStaticLootPercent": 40,
-            "reducedChancePercent": 50,
+            "reducedChancePercent": 70,
             "reductionPercentWeights": {
-                "20": 12,
-                "30": 7,
+                "20": 5,
+                "25": 5,
+                "30": 5,
+                "35": 5,
                 "40": 5,
+                "50": 5,
                 "60": 2,
                 "80": 1
             }
@@ -851,13 +865,15 @@
             "reduceLootByPercent": true,
             "minDynamicLootPercent": 50,
             "minStaticLootPercent": 40,
-            "reducedChancePercent": 40,
+            "reducedChancePercent": 70,
 
             "reductionPercentWeights": {
-                "20": 12,
-                "30": 7,
-                "40": 5,
+                "20": 3,
+                "30": 3,
+                "40": 4,
+                "50": 4,
                 "60": 2,
+                "70": 1,
                 "80": 1
             }
         },
@@ -865,11 +881,12 @@
             "reduceLootByPercent": true,
             "minDynamicLootPercent": 50,
             "minStaticLootPercent": 40,
-            "reducedChancePercent": 30,
+            "reducedChancePercent": 70,
             "reductionPercentWeights": {
-                "20": 12,
-                "30": 7,
+                "20": 3,
+                "30": 5,
                 "40": 5,
+                "50": 5,
                 "60": 2,
                 "80": 1
             }
@@ -878,11 +895,13 @@
             "reduceLootByPercent": true,
             "minDynamicLootPercent": 50,
             "minStaticLootPercent": 40,
-            "reducedChancePercent": 40,
+            "reducedChancePercent": 60,
             "reductionPercentWeights": {
-                "20": 12,
-                "30": 7,
-                "40": 5,
+                "20": 2,
+                "25": 2,
+                "30": 4,
+                "40": 4,
+                "50": 4,
                 "60": 2,
                 "80": 1
             }
@@ -891,12 +910,16 @@
             "reduceLootByPercent": true,
             "minDynamicLootPercent": 50,
             "minStaticLootPercent": 40,
-            "reducedChancePercent": 40,
+            "reducedChancePercent": 60,
             "reductionPercentWeights": {
-                "20": 25,
-                "30": 15,
-                "40": 10,
-                "60": 1,
+                "20": 2,
+                "25": 3,
+                "30": 5,
+                "35": 5,
+                "40": 5,
+                "50": 5,
+                "60": 2,
+                "70": 1,
                 "80": 1
             }
         },
@@ -904,12 +927,14 @@
             "reduceLootByPercent": true,
             "minDynamicLootPercent": 50,
             "minStaticLootPercent": 40,
-            "reducedChancePercent": 40,
+            "reducedChancePercent": 70,
             "reductionPercentWeights": {
-                "20": 25,
-                "30": 15,
-                "40": 10,
-                "60": 1,
+                "20": 2,
+                "30": 4,
+                "40": 4,
+                "50": 4,
+                "60": 4,
+                "70": 1,
                 "80": 1
             }
         },
@@ -917,12 +942,14 @@
             "reduceLootByPercent": true,
             "minDynamicLootPercent": 50,
             "minStaticLootPercent": 40,
-            "reducedChancePercent": 40,
+            "reducedChancePercent": 60,
             "reductionPercentWeights": {
-                "20": 25,
-                "30": 12,
-                "40": 10,
+                "20": 3,
+                "30": 5,
+                "40": 5,
+                "50": 5,
                 "60": 1,
+                "70": 1,
                 "80": 1
             }
         },
@@ -930,12 +957,15 @@
             "reduceLootByPercent": true,
             "minDynamicLootPercent": 50,
             "minStaticLootPercent": 50,
-            "reducedChancePercent": 25,
+            "reducedChancePercent": 50,
             "reductionPercentWeights": {
-                "20": 12,
-                "30": 7,
+                "10": 1,
+                "20": 2,
+                "30": 5,
                 "40": 5,
+                "50": 5,
                 "60": 2,
+                "70": 1,
                 "80": 1
             }
         }
