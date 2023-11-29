@@ -206,14 +206,15 @@ export class BotWeaponGenerator
             this.fillExistingMagazines(weaponWithModsArray, magazine, ammoTpl);
         }
 
-        // Add cartridge to gun chamber if weapon has slot for it
+        // Add cartridge(s) to gun chamber(s)
         if (
-            weaponItemTemplate._props.Chambers?.length === 1
-            && weaponItemTemplate._props.Chambers[0]?._name === "patron_in_weapon"
+            weaponItemTemplate._props.Chambers?.length > 0
             && weaponItemTemplate._props.Chambers[0]?._props?.filters[0]?.Filter?.includes(ammoTpl)
         )
         {
-            this.addCartridgeToChamber(weaponWithModsArray, ammoTpl, "patron_in_weapon");
+            // Guns have variety of possible Chamber ids, patron_in_weapon/patron_in_weapon_000/patron_in_weapon_001
+            const chamberSlotNames = weaponItemTemplate._props.Chambers.map(x => x._name);
+            this.addCartridgeToChamber(weaponWithModsArray, ammoTpl, chamberSlotNames);
         }
 
         // Fill UBGL if found
@@ -236,31 +237,34 @@ export class BotWeaponGenerator
     }
 
     /**
-     * Insert a cartridge into a weapon
+     * Insert a cartridge(s) into a weapon
+     * Handles all chambers - patron_in_weapon, patron_in_weapon_000 etc
      * @param weaponWithModsArray Weapon and mods
      * @param ammoTpl Cartridge to add to weapon
-     * @param desiredSlotId name of slot, e.g. patron_in_weapon
+     * @param chamberSlotIds name of slots to create or add ammo to
      */
-    protected addCartridgeToChamber(weaponWithModsArray: Item[], ammoTpl: string, desiredSlotId: string): void
+    protected addCartridgeToChamber(weaponWithModsArray: Item[], ammoTpl: string, chamberSlotIds: string[]): void
     {
-        // Check for slot first
-        const existingItemWithSlot = weaponWithModsArray.find((x) => x.slotId === desiredSlotId);
-        if (!existingItemWithSlot)
+        for (const slotId of chamberSlotIds)
         {
-            // Not found, add fresh
-            weaponWithModsArray.push({
-                _id: this.hashUtil.generate(),
-                _tpl: ammoTpl,
-                parentId: weaponWithModsArray[0]._id,
-                slotId: desiredSlotId,
-                upd: { StackObjectsCount: 1 },
-            });
-        }
-        else
-        {
-            // Already exists, update values
-            existingItemWithSlot.upd = { StackObjectsCount: 1 };
-            existingItemWithSlot._tpl = ammoTpl;
+            const existingItemWithSlot = weaponWithModsArray.find((x) => x.slotId === slotId);
+            if (!existingItemWithSlot)
+            {
+                // Not found, add new slot to weapon
+                weaponWithModsArray.push({
+                    _id: this.hashUtil.generate(),
+                    _tpl: ammoTpl,
+                    parentId: weaponWithModsArray[0]._id,
+                    slotId: slotId,
+                    upd: { StackObjectsCount: 1 },
+                });
+            }
+            else
+            {
+                // Already exists, update values
+                existingItemWithSlot._tpl = ammoTpl;
+                existingItemWithSlot.upd = { StackObjectsCount: 1 };
+            }
         }
     }
 
@@ -613,7 +617,7 @@ export class BotWeaponGenerator
         {
             const possibleAmmo = this.weightedRandomHelper.getWeightedValue<string>(compatibleCartridges);
             
-            // Check compatibility
+            // Weapon has chamber but does not support cartridge
             if (weaponTemplate._props.Chambers[0]
                 && !weaponTemplate._props.Chambers[0]._props.filters[0].Filter.includes(possibleAmmo)
             )
