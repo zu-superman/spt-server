@@ -7,5 +7,5 @@ export enum ContextVariableType {
     CLIENT_START_TIMESTAMP = 2,
     /** When player is loading into map and loot is requested */
     REGISTER_PLAYER_REQUEST = 3,
-    LOOT_MULTIPLER_CHANGE = 4,
+    RAID_ADJUSTMENTS = 4,
 }

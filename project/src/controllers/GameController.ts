@@ -5,10 +5,8 @@ import { ContextVariableType } from "@spt-aki/context/ContextVariableType";
 import { HideoutHelper } from "@spt-aki/helpers/HideoutHelper";
 import { HttpServerHelper } from "@spt-aki/helpers/HttpServerHelper";
 import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
-import { WeightedRandomHelper } from "@spt-aki/helpers/WeightedRandomHelper";
 import { PreAkiModLoader } from "@spt-aki/loaders/PreAkiModLoader";
 import { IEmptyRequestData } from "@spt-aki/models/eft/common/IEmptyRequestData";
-import { ILocationBase } from "@spt-aki/models/eft/common/ILocationBase";
 import { ILooseLoot } from "@spt-aki/models/eft/common/ILooseLoot";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
 import { BodyPartHealth } from "@spt-aki/models/eft/common/tables/IBotBase";
@@ -17,7 +15,7 @@ import { ICurrentGroupResponse } from "@spt-aki/models/eft/game/ICurrentGroupRes
 import { IGameConfigResponse } from "@spt-aki/models/eft/game/IGameConfigResponse";
 import { IGameKeepAliveResponse } from "@spt-aki/models/eft/game/IGameKeepAliveResponse";
 import { IGetRaidTimeRequest } from "@spt-aki/models/eft/game/IGetRaidTimeRequest";
-import { ExtractChange, IGetRaidTimeResponse } from "@spt-aki/models/eft/game/IGetRaidTimeResponse";
+import { IGetRaidTimeResponse } from "@spt-aki/models/eft/game/IGetRaidTimeResponse";
 import { IServerDetails } from "@spt-aki/models/eft/game/IServerDetails";
 import { IAkiProfile } from "@spt-aki/models/eft/profile/IAkiProfile";
 import { AccountTypes } from "@spt-aki/models/enums/AccountTypes";
@@ -40,6 +38,7 @@ import { ItemBaseClassService } from "@spt-aki/services/ItemBaseClassService";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
 import { OpenZoneService } from "@spt-aki/services/OpenZoneService";
 import { ProfileFixerService } from "@spt-aki/services/ProfileFixerService";
+import { RaidTimeAdjustmentService } from "@spt-aki/services/RaidTimeAdjustmentService";
 import { SeasonalEventService } from "@spt-aki/services/SeasonalEventService";
 import { HashUtil } from "@spt-aki/utils/HashUtil";
 import { JsonUtil } from "@spt-aki/utils/JsonUtil";
@@ -74,7 +73,7 @@ export class GameController
         @inject("SeasonalEventService") protected seasonalEventService: SeasonalEventService,
         @inject("ItemBaseClassService") protected itemBaseClassService: ItemBaseClassService,
         @inject("GiftService") protected giftService: GiftService,
-        @inject("WeightedRandomHelper") protected weightedRandomHelper: WeightedRandomHelper,
+        @inject("RaidTimeAdjustmentService") protected raidTimeAdjustmentService: RaidTimeAdjustmentService,
         @inject("ApplicationContext") protected applicationContext: ApplicationContext,
         @inject("ConfigServer") protected configServer: ConfigServer,
     )
@@ -565,130 +564,7 @@ export class GameController
      */
     public getRaidTime(sessionId: string, request: IGetRaidTimeRequest): IGetRaidTimeResponse
     {
-        const db = this.databaseServer.getTables()
-
-        const mapBase: ILocationBase = db.locations[request.Location.toLowerCase()].base;
-        const baseEscapeTimeMinutes = mapBase.EscapeTimeLimit;
-        
-        // Prep result object to return
-        const result: IGetRaidTimeResponse = {
-            RaidTimeMinutes: baseEscapeTimeMinutes,
-            ExitChanges: [],
-            NewSurviveTimeSeconds: null,
-            OriginalSurvivalTimeSeconds: db.globals.config.exp.match_end.survived_seconds_requirement
-        }
-
-        // Pmc raid, send default
-        if (request.Side.toLowerCase() === "pmc")
-        {
-            return result;
-        }
-
-        // We're scav adjust values
-        let mapSettings = this.locationConfig.scavRaidTimeSettings[request.Location.toLowerCase()];
-        if (!mapSettings)
-        {
-            this.logger.warning(`Unable to find scav raid time settings for map: ${request.Location}, using defaults`);
-            mapSettings = this.locationConfig.scavRaidTimeSettings.default;
-        }
-
-        // Chance of reducing raid time for scav, not guaranteed
-        if (!this.randomUtil.getChance100(mapSettings.reducedChancePercent))
-        {
-            // Send default
-            return result;
-        }
-        
-        // Get the weighted percent to reduce the raid time by
-        const chosenRaidReductionPercent = Number.parseInt(this.weightedRandomHelper.getWeightedValue<string>(
-            mapSettings.reductionPercentWeights,
-        ));
-
-        if (mapSettings.reduceLootByPercent)
-        {
-            // Store time reduction percent in app context so loot gen can pick it up later
-            this.applicationContext.addValue(ContextVariableType.LOOT_MULTIPLER_CHANGE, 
-                {
-                    dynamicLootPercent: Math.max(chosenRaidReductionPercent, mapSettings.minDynamicLootPercent),
-                    staticLootPercent: Math.max(chosenRaidReductionPercent, mapSettings.minStaticLootPercent)
-                });
-        }
-
-        // How many minutes raid will be
-        const newRaidTimeMinutes = Math.floor(this.randomUtil.reduceValueByPercent(baseEscapeTimeMinutes, chosenRaidReductionPercent));
-        
-        // Update result object with new time
-        result.RaidTimeMinutes = newRaidTimeMinutes;
-
-        this.logger.debug(`Reduced: ${request.Location} raid time by: ${chosenRaidReductionPercent}% to ${newRaidTimeMinutes} minutes`)
-
-        // Calculate how long player needs to be in raid to get a `survived` extract status
-        result.NewSurviveTimeSeconds = Math.max(result.OriginalSurvivalTimeSeconds - ((baseEscapeTimeMinutes - newRaidTimeMinutes) * 60), 0);
-
-        const exitAdjustments = this.getExitAdjustments(mapBase, newRaidTimeMinutes);
-        if (exitAdjustments)
-        {
-            result.ExitChanges.push(...exitAdjustments);
-        }
-
-        return result;
-    }
-
-    /**
-     * Adjust exit times to handle scavs entering raids part-way through
-     * @param mapBase Map base file player is on
-     * @param newRaidTimeMinutes How long raid is in minutes
-     * @returns List of  exit changes to send to client
-     */
-    protected getExitAdjustments(mapBase: ILocationBase, newRaidTimeMinutes: number): ExtractChange[]
-    {
-        const result = [];
-        // Adjust train exits only
-        for (const exit of mapBase.exits)
-        {
-            if (exit.PassageRequirement !== "Train")
-            {
-                continue;
-            }
-
-            // Prepare train adjustment object
-            const exitChange: ExtractChange = {
-                Name: exit.Name,
-                MinTime: null,
-                MaxTime: null,
-                Chance: null
-            }
-
-            // If raid is after last moment train can leave, assume train has already left, disable extract
-            const latestPossibleDepartureMinutes = (exit.MaxTime + exit.Count) / 60;
-            if (newRaidTimeMinutes < latestPossibleDepartureMinutes)
-            {
-                exitChange.Chance = 0;
-
-                this.logger.debug(`Train Exit: ${exit.Name} disabled as new raid time ${newRaidTimeMinutes} minutes is below ${latestPossibleDepartureMinutes} minutes`);
-
-                result.push(exitChange);
-
-                continue;
-            }
-
-            // What minute we simulate the player joining a raid at
-            const simulatedRaidEntryTimeMinutes = mapBase.EscapeTimeLimit - newRaidTimeMinutes;
-
-            // How many seconds to reduce extract arrival times by, negative values seem to make extract turn red in game
-            const reductionSeconds = simulatedRaidEntryTimeMinutes * 60;
-
-            exitChange.MinTime = exit.MinTime - reductionSeconds;
-            exitChange.MaxTime = exit.MaxTime - reductionSeconds;
-
-            this.logger.debug(`Train appears between: ${exitChange.MinTime} and ${exitChange.MaxTime} seconds raid time`);
-            
-            result.push(exitChange);
-        }
-
-        return result.length > 0
-            ? result
-            : null ;
+        return this.raidTimeAdjustmentService.getRaidAdjustments(sessionId, request);
     }
 
     /**

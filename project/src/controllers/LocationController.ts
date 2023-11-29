@@ -14,14 +14,15 @@ import { IGetLocationRequestData } from "@spt-aki/models/eft/location/IGetLocati
 import { AirdropTypeEnum } from "@spt-aki/models/enums/AirdropType";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { IAirdropConfig } from "@spt-aki/models/spt/config/IAirdropConfig";
-import { ILocationConfig, LootMultiplier } from "@spt-aki/models/spt/config/ILocationConfig";
-import { ILootMultiplerChange } from "@spt-aki/models/spt/location/ILootMultiplerChange";
+import { ILocationConfig } from "@spt-aki/models/spt/config/ILocationConfig";
+import { IRaidChanges } from "@spt-aki/models/spt/location/IRaidChanges";
 import { ILocations } from "@spt-aki/models/spt/server/ILocations";
 import { LootRequest } from "@spt-aki/models/spt/services/LootRequest";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt-aki/servers/ConfigServer";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
+import { RaidTimeAdjustmentService } from "@spt-aki/services/RaidTimeAdjustmentService";
 import { HashUtil } from "@spt-aki/utils/HashUtil";
 import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 import { RandomUtil } from "@spt-aki/utils/RandomUtil";
@@ -41,6 +42,7 @@ export class LocationController
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("LocationGenerator") protected locationGenerator: LocationGenerator,
         @inject("LocalisationService") protected localisationService: LocalisationService,
+        @inject("RaidTimeAdjustmentService") protected raidTimeAdjustmentService: RaidTimeAdjustmentService,
         @inject("LootGenerator") protected lootGenerator: LootGenerator,
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
@@ -89,15 +91,11 @@ export class LocationController
 
         // Check for a loot multipler adjustment in app context and apply if one is found
         let locationConfigCopy: ILocationConfig;
-        const lootMultiplierAdjustment = this.applicationContext.getLatestValue(ContextVariableType.LOOT_MULTIPLER_CHANGE)?.getValue<ILootMultiplerChange>();
-        if (lootMultiplierAdjustment)
+        const raidAdjustments = this.applicationContext.getLatestValue(ContextVariableType.RAID_ADJUSTMENTS)?.getValue<IRaidChanges>();
+        if (raidAdjustments)
         {
-            this.logger.debug(`Adjusting dynamic loot multipliers to ${lootMultiplierAdjustment.dynamicLootPercent}% and static loot multipliers to ${lootMultiplierAdjustment.staticLootPercent}% of original`)
             locationConfigCopy = this.jsonUtil.clone(this.locationConfig); // Clone values so they can be used to reset originals later
-
-            // Change loot multipler values before they're used below
-            this.adjustLootMultipliers(this.locationConfig.looseLootMultiplier, lootMultiplierAdjustment.dynamicLootPercent);
-            this.adjustLootMultipliers(this.locationConfig.staticLootMultiplier, lootMultiplierAdjustment.staticLootPercent);
+            this.raidTimeAdjustmentService.makeAdjustmentsToMap(raidAdjustments, output);
         }
 
         const staticAmmoDist = this.jsonUtil.clone(db.loot.staticAmmo);
@@ -125,29 +123,16 @@ export class LocationController
         this.logger.success(this.localisationService.getText("location-generated_success", name));
 
         // Reset loot multipliers back to original values
-        if (lootMultiplierAdjustment)
+        if (raidAdjustments)
         {
             this.logger.debug("Resetting loot multipliers back to their original values");
             this.locationConfig.staticLootMultiplier = locationConfigCopy.staticLootMultiplier;
             this.locationConfig.looseLootMultiplier = locationConfigCopy.looseLootMultiplier;
 
-            this.applicationContext.clearValues(ContextVariableType.LOOT_MULTIPLER_CHANGE);
+            this.applicationContext.clearValues(ContextVariableType.RAID_ADJUSTMENTS);
         }
 
         return output;
-    }
-
-    /**
-     * Adjust the loot multiplier values passed in to be a % of their original value
-     * @param mapLootMultiplers Multiplers to adjust
-     * @param loosePercent Percent to change values to
-     */
-    protected adjustLootMultipliers(mapLootMultiplers: LootMultiplier, loosePercent: number): void
-    {
-        for (const key in mapLootMultiplers)
-        {
-            mapLootMultiplers[key] = this.randomUtil.getPercentOfValue(mapLootMultiplers[key], loosePercent);
-        }
     }
 
     /**

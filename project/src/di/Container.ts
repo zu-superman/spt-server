@@ -216,6 +216,7 @@ import { RagfairOfferService } from "@spt-aki/services/RagfairOfferService";
 import { RagfairPriceService } from "@spt-aki/services/RagfairPriceService";
 import { RagfairRequiredItemsService } from "@spt-aki/services/RagfairRequiredItemsService";
 import { RagfairTaxService } from "@spt-aki/services/RagfairTaxService";
+import { RaidTimeAdjustmentService } from "@spt-aki/services/RaidTimeAdjustmentService";
 import { RepairService } from "@spt-aki/services/RepairService";
 import { SeasonalEventService } from "@spt-aki/services/SeasonalEventService";
 import { TraderAssortService } from "@spt-aki/services/TraderAssortService";
@@ -707,6 +708,7 @@ export class Container
         depContainer.register<PmcChatResponseService>("PmcChatResponseService", PmcChatResponseService);
         depContainer.register<GiftService>("GiftService", GiftService);
         depContainer.register<MailSendService>("MailSendService", MailSendService);
+        depContainer.register<RaidTimeAdjustmentService>("RaidTimeAdjustmentService", RaidTimeAdjustmentService);
     }
 
     private static registerServers(depContainer: DependencyContainer): void
