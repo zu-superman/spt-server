@@ -304,7 +304,7 @@ export class GameController
             }
 
             // Check items with a tag that contains non alphanumeric characters
-            const regxp = /[^a-zA-Z0-9 .]/g;
+            const regxp = /([/w"\\'])/g;
             if (regxp.test(item.upd.Tag?.Name))
             {
                 this.logger.warning(`Fixed item: ${item._id}s Tag value, removed invalid characters`);
