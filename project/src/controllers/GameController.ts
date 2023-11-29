@@ -575,7 +575,7 @@ export class GameController
             RaidTimeMinutes: baseEscapeTimeMinutes,
             ExitChanges: [],
             NewSurviveTimeSeconds: null,
-            OriginalSurvivalTimeSeconds: baseEscapeTimeMinutes
+            OriginalSurvivalTimeSeconds: db.globals.config.exp.match_end.survived_seconds_requirement
         }
 
         // Pmc raid, send default
@@ -622,11 +622,8 @@ export class GameController
 
         this.logger.debug(`Reduced: ${request.Location} raid time by: ${chosenRaidReductionPercent}% to ${newRaidTimeMinutes} minutes`)
 
-        const originalSurvivalTimeSeconds = db.globals.config.exp.match_end.survived_seconds_requirement;
-        result.OriginalSurvivalTimeSeconds = originalSurvivalTimeSeconds;
-
         // Calculate how long player needs to be in raid to get a `survived` extract status
-        result.NewSurviveTimeSeconds = Math.max(originalSurvivalTimeSeconds - ((baseEscapeTimeMinutes - newRaidTimeMinutes) * 60), 0);
+        result.NewSurviveTimeSeconds = Math.max(result.OriginalSurvivalTimeSeconds - ((baseEscapeTimeMinutes - newRaidTimeMinutes) * 60), 0);
 
         const exitAdjustments = this.getExitAdjustments(mapBase, newRaidTimeMinutes);
         if (exitAdjustments)
