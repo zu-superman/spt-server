@@ -748,7 +748,13 @@ export class QuestHelper
             const currentTimestamp = this.timeUtil.getTimestamp();
 
             questToUpdate.status = newQuestState;
-            questToUpdate.startTime = currentTimestamp;
+
+            // Only set start time when quest is being started
+            if (newQuestState === QuestStatus.Started)
+            {
+                questToUpdate.startTime = currentTimestamp;
+            }
+
             questToUpdate.statusTimers[newQuestState] = currentTimestamp;
 
             // Delete all status timers after applying new status
