@@ -419,7 +419,12 @@ export class QuestController
             activeQuests: [repeatableQuestProfile],
             inactiveQuests: [],
         };
-        acceptQuestResponse.profileChanges[sessionID].repeatableQuests = [responseData];
+
+        if (!acceptQuestResponse.profileChanges[sessionID].repeatableQuests)
+        {
+            acceptQuestResponse.profileChanges[sessionID].repeatableQuests = []
+        }
+        acceptQuestResponse.profileChanges[sessionID].repeatableQuests.push(responseData);
 
         return acceptQuestResponse;
     }
@@ -498,7 +503,7 @@ export class QuestController
         this.addTimeLockedQuestsToProfile(pmcData, [...questDelta, ...questsToFail], body.qid);
 
         // Inform client of quest changes
-        completeQuestResponse.profileChanges[sessionID].quests = questDelta;
+        completeQuestResponse.profileChanges[sessionID].quests.push(...questDelta);
 
         // Check if it's a repeatable quest. If so, remove from Quests and repeatable.activeQuests list + move to repeatable.inactiveQuests
         for (const currentRepeatable of pmcData.RepeatableQuests)
