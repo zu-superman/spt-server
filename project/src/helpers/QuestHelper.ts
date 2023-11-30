@@ -747,7 +747,7 @@ export class QuestHelper
             questToUpdate.status = newQuestState;
             questToUpdate.statusTimers[newQuestState] = this.timeUtil.getTimestamp();
 
-            // Delete all status timers after the new status
+            // Delete all status timers after applying new status
             for (const statusKey in questToUpdate.statusTimers)
             {
                 if (Number.parseInt(statusKey) > newQuestState)

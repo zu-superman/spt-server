@@ -300,12 +300,15 @@ export class QuestController
         const acceptQuestResponse = this.eventOutputHolder.getOutput(sessionID);
         
         // Does quest exist in profile
-        // Restarting a quest can mean quest exists in profile
+        // Restarting a failed quest can mean quest exists in profile
         const existingQuestStatus = pmcData.Quests.find((x) => x.qid === acceptedQuest.qid)
         if (existingQuestStatus)
         {
             // Update existing
             this.questHelper.resetQuestState(pmcData, QuestStatus.Started, acceptedQuest.qid);
+
+            // Need to send client an empty list of completedConditions (Unsure if this does anything)
+            acceptQuestResponse.profileChanges[sessionID].questsStatus.push(existingQuestStatus);
         }
         else
         {
@@ -324,7 +327,8 @@ export class QuestController
             questFromDb.description,
         );
 
-        const startedQuestRewards = this.questHelper.applyQuestReward(
+        // Apply non-item rewards to profile + return item rewards
+        const startedQuestRewardItems = this.questHelper.applyQuestReward(
             pmcData,
             acceptedQuest.qid,
             QuestStatus.Started,
@@ -332,24 +336,19 @@ export class QuestController
             acceptQuestResponse,
         );
 
+        // Send started text + any starting reward items found above to player
         this.mailSendService.sendLocalisedNpcMessageToPlayer(
             sessionID,
             this.traderHelper.getTraderById(questFromDb.traderId),
             MessageType.QUEST_START,
             messageId,
-            startedQuestRewards,
+            startedQuestRewardItems,
             this.timeUtil.getHoursAsSeconds(this.questConfig.redeemTime),
         );
 
-        acceptQuestResponse.profileChanges[sessionID].quests = this.questHelper
-            .getNewlyAccessibleQuestsWhenStartingQuest(acceptedQuest.qid, sessionID);
-        
-        // Quest already existed, probably a fail/restart
-        // Need to send client an empty list of completedConditions
-        if (existingQuestStatus)
-        {
-            acceptQuestResponse.profileChanges[sessionID].questsStatus = [ existingQuestStatus ];
-        }
+        // Having accepted new quest, look for newly unlocked quests and inform client of them
+        acceptQuestResponse.profileChanges[sessionID].quests.push(...this.questHelper
+            .getNewlyAccessibleQuestsWhenStartingQuest(acceptedQuest.qid, sessionID));
         
         return acceptQuestResponse;
     }
