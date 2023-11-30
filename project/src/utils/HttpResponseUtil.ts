@@ -34,6 +34,13 @@ export class HttpResponseUtil
         return this.clearString(this.jsonUtil.serialize(data));
     }
 
+    /**
+     * Game client needs server responses in a particular format
+     * @param data 
+     * @param err 
+     * @param errmsg 
+     * @returns 
+     */
     public getBody<T>(data: T, err = 0, errmsg = null): IGetBodyResponseData<T>
     {
         return this.clearString(this.getUnclearedBody(data, err, errmsg));

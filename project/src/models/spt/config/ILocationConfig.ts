@@ -38,6 +38,21 @@ export interface ILocationConfig extends IBaseConfig
     allowDuplicateItemsInStaticContainers: boolean;
     /** Key: map, value: loose loot ids to ignore */
     looseLootBlacklist: Record<string, string[]>;
+    /** Key: map, value: settings to control how long scav raids are*/
+    scavRaidTimeSettings: Record<string, IScavRaidTimeLocationSettings>;
+}
+
+export interface IScavRaidTimeLocationSettings
+{
+    /** Should loot be reduced by same percent length of raid is reduced by */
+    reduceLootByPercent: boolean;
+    minStaticLootPercent: number;
+    minDynamicLootPercent: number;
+    /** Chance raid time is reduced */
+    reducedChancePercent: number;
+    reductionPercentWeights: Record<string, number>;
+    /** Should bot waves be removed / spawn times be adjusted */
+    adjustWaves: boolean;
 }
 
 export interface IContainerRandomistionSettings

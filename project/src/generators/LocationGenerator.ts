@@ -788,7 +788,7 @@ export class LocationGenerator
         }
         else if (this.itemHelper.isOfBaseclass(chosenTpl, BaseClasses.AMMO_BOX))
         {
-            // Fill with cartrdiges
+            // Fill with cartridges
             const ammoBoxTemplate = this.itemHelper.getItem(chosenTpl)[1];
             const ammoBoxItem: Item[] = [{ _id: this.objectId.generate(), _tpl: chosenTpl }];
             this.itemHelper.addCartridgesToAmmoBox(ammoBoxItem, ammoBoxTemplate);

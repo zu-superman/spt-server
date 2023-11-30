@@ -133,7 +133,7 @@ export class QuestController
                     break;
                 }
 
-                // Prerequisite does not have its status requirement fulfilled
+                // Prereq does not have its status requirement fulfilled
                 if (!conditionToFulfil._props.status.includes(prerequisiteQuest.status))
                 {
                     haveCompletedPreviousQuest = false;
@@ -289,7 +289,7 @@ export class QuestController
      * @param pmcData Profile to update
      * @param acceptedQuest Quest accepted
      * @param sessionID Session id
-     * @returns client response
+     * @returns Client response
      */
     public acceptQuest(
         pmcData: IPmcData,
@@ -298,31 +298,37 @@ export class QuestController
     ): IItemEventRouterResponse
     {
         const acceptQuestResponse = this.eventOutputHolder.getOutput(sessionID);
-
-        const startedState = QuestStatus.Started;
-        const newQuest = this.questHelper.getQuestReadyForProfile(pmcData, startedState, acceptedQuest);
-
+        
         // Does quest exist in profile
-        if (pmcData.Quests.find((x) => x.qid === acceptedQuest.qid))
+        // Restarting a failed quest can mean quest exists in profile
+        const existingQuestStatus = pmcData.Quests.find((x) => x.qid === acceptedQuest.qid)
+        if (existingQuestStatus)
         {
             // Update existing
-            this.questHelper.updateQuestState(pmcData, QuestStatus.Started, acceptedQuest.qid);
+            this.questHelper.resetQuestState(pmcData, QuestStatus.Started, acceptedQuest.qid);
+
+            // Need to send client an empty list of completedConditions (Unsure if this does anything)
+            acceptQuestResponse.profileChanges[sessionID].questsStatus.push(existingQuestStatus);
         }
         else
         {
             // Add new quest to server profile
+            const newQuest = this.questHelper.getQuestReadyForProfile(pmcData, QuestStatus.Started, acceptedQuest);
             pmcData.Quests.push(newQuest);
         }
 
         // Create a dialog message for starting the quest.
         // Note that for starting quests, the correct locale field is "description", not "startedMessageText".
         const questFromDb = this.questHelper.getQuestFromDb(acceptedQuest.qid, pmcData);
+
         // Get messageId of text to send to player as text message in game
         const messageId = this.questHelper.getMessageIdForQuestStart(
             questFromDb.startedMessageText,
             questFromDb.description,
         );
-        const startedQuestRewards = this.questHelper.applyQuestReward(
+
+        // Apply non-item rewards to profile + return item rewards
+        const startedQuestRewardItems = this.questHelper.applyQuestReward(
             pmcData,
             acceptedQuest.qid,
             QuestStatus.Started,
@@ -330,18 +336,20 @@ export class QuestController
             acceptQuestResponse,
         );
 
+        // Send started text + any starting reward items found above to player
         this.mailSendService.sendLocalisedNpcMessageToPlayer(
             sessionID,
             this.traderHelper.getTraderById(questFromDb.traderId),
             MessageType.QUEST_START,
             messageId,
-            startedQuestRewards,
+            startedQuestRewardItems,
             this.timeUtil.getHoursAsSeconds(this.questConfig.redeemTime),
         );
 
-        acceptQuestResponse.profileChanges[sessionID].quests = this.questHelper
-            .getNewlyAccessibleQuestsWhenStartingQuest(acceptedQuest.qid, sessionID);
-
+        // Having accepted new quest, look for newly unlocked quests and inform client of them
+        acceptQuestResponse.profileChanges[sessionID].quests.push(...this.questHelper
+            .getNewlyAccessibleQuestsWhenStartingQuest(acceptedQuest.qid, sessionID));
+        
         return acceptQuestResponse;
     }
 
@@ -362,10 +370,11 @@ export class QuestController
     {
         const acceptQuestResponse = this.eventOutputHolder.getOutput(sessionID);
 
-        const desiredQuestState = QuestStatus.Started;
-        const newQuest = this.questHelper.getQuestReadyForProfile(pmcData, desiredQuestState, acceptedQuest);
-        pmcData.Quests.push(newQuest);
+        // Create and store quest status object inside player profile
+        const newRepeatableQuest = this.questHelper.getQuestReadyForProfile(pmcData, QuestStatus.Started, acceptedQuest);
+        pmcData.Quests.push(newRepeatableQuest);
 
+        // Look for the generated quest cache in profile.RepeatableQuests
         const repeatableQuestProfile = this.getRepeatableQuestFromProfile(pmcData, acceptedQuest);
         if (!repeatableQuestProfile)
         {
@@ -391,60 +400,13 @@ export class QuestController
                 fullProfile.characters.scav.Quests = [];
             }
 
-            fullProfile.characters.scav.Quests.push(newQuest);
+            fullProfile.characters.scav.Quests.push(newRepeatableQuest);
         }
-
-        const locale = this.localeService.getLocaleDb();
-        const questStartedMessageKey = this.questHelper.getMessageIdForQuestStart(
-            repeatableQuestProfile.startedMessageText,
-            repeatableQuestProfile.description,
-        );
-
-        // Can be started text or description text based on above function result
-        let questStartedMessageText = locale[questStartedMessageKey];
-        // TODO: Remove this whole if statement, possibly not required?
-        if (!questStartedMessageText)
-        {
-            this.logger.debug(
-                `Unable to accept quest ${acceptedQuest.qid}, cannot find the quest started message text with id ${questStartedMessageKey}. attempting to find it in en locale instead`,
-            );
-
-            // For some reason non-en locales don't have repeatable quest ids, fall back to en and grab it if possible
-            const enLocale = this.databaseServer.getTables().locales.global.en;
-            questStartedMessageText = enLocale[repeatableQuestProfile.startedMessageText];
-
-            if (!questStartedMessageText)
-            {
-                this.logger.error(
-                    this.localisationService.getText("repeatable-unable_to_accept_quest_starting_message_not_found", {
-                        questId: acceptedQuest.qid,
-                        messageId: questStartedMessageKey,
-                    }),
-                );
-
-                return this.httpResponseUtil.appendErrorToOutput(
-                    acceptQuestResponse,
-                    this.localisationService.getText("repeatable-unable_to_accept_quest_see_log"),
-                );
-            }
-        }
-
-        const questRewards = this.questHelper.getQuestRewardItems(
-            <IQuest><unknown>repeatableQuestProfile,
-            desiredQuestState,
-        );
-        this.mailSendService.sendLocalisedNpcMessageToPlayer(
-            sessionID,
-            this.traderHelper.getTraderById(repeatableQuestProfile.traderId),
-            MessageType.QUEST_START,
-            questStartedMessageKey,
-            questRewards,
-            this.timeUtil.getHoursAsSeconds(this.questConfig.redeemTime),
-        );
 
         const repeatableSettings = pmcData.RepeatableQuests.find((x) =>
             x.name === repeatableQuestProfile.sptRepatableGroupName
         );
+
         const change = {};
         change[repeatableQuestProfile._id] = repeatableSettings.changeRequirement[repeatableQuestProfile._id];
         const responseData: IPmcDataRepeatableQuest = {
@@ -457,7 +419,12 @@ export class QuestController
             activeQuests: [repeatableQuestProfile],
             inactiveQuests: [],
         };
-        acceptQuestResponse.profileChanges[sessionID].repeatableQuests = [responseData];
+
+        if (!acceptQuestResponse.profileChanges[sessionID].repeatableQuests)
+        {
+            acceptQuestResponse.profileChanges[sessionID].repeatableQuests = []
+        }
+        acceptQuestResponse.profileChanges[sessionID].repeatableQuests.push(responseData);
 
         return acceptQuestResponse;
     }
@@ -532,11 +499,11 @@ export class QuestController
         // Add diff of quests before completion vs after for client response
         const questDelta = this.questHelper.getDeltaQuests(beforeQuests, this.getClientQuests(sessionID));
 
-        // Check newly available + failed quests for time gates and add them to profile
+        // Check newly available + failed quests for timegates and add them to profile
         this.addTimeLockedQuestsToProfile(pmcData, [...questDelta, ...questsToFail], body.qid);
 
         // Inform client of quest changes
-        completeQuestResponse.profileChanges[sessionID].quests = questDelta;
+        completeQuestResponse.profileChanges[sessionID].quests.push(...questDelta);
 
         // Check if it's a repeatable quest. If so, remove from Quests and repeatable.activeQuests list + move to repeatable.inactiveQuests
         for (const currentRepeatable of pmcData.RepeatableQuests)
@@ -593,12 +560,12 @@ export class QuestController
 
     /**
      * Return quests that have different statuses
-     * @param preQuestStatuses Quests before
+     * @param preQuestStatusus Quests before
      * @param postQuestStatuses Quests after
      * @returns QuestStatusChange array
      */
     protected getQuestsWithDifferentStatuses(
-        preQuestStatuses: IQuestStatus[],
+        preQuestStatusus: IQuestStatus[],
         postQuestStatuses: IQuestStatus[],
     ): IQuestStatus[]
     {
@@ -607,7 +574,7 @@ export class QuestController
         for (const quest of postQuestStatuses)
         {
             // Add quest if status differs or quest not found
-            const preQuest = preQuestStatuses.find((x) => x.qid === quest.qid);
+            const preQuest = preQuestStatusus.find((x) => x.qid === quest.qid);
             if (!preQuest || preQuest.status !== quest.status)
             {
                 result.push(quest);
@@ -659,7 +626,7 @@ export class QuestController
         // Iterate over quests, look for quests with right criteria
         for (const quest of quests)
         {
-            // If quest has prerequisite of completed quest + availableAfter value > 0 (quest has wait time)
+            // If quest has prereq of completed quest + availableAfter value > 0 (quest has wait time)
             const nextQuestWaitCondition = quest.conditions.AvailableForStart.find((x) =>
                 x._props.target === completedQuestId && x._props.availableAfter > 0
             );
@@ -686,7 +653,8 @@ export class QuestController
                     startTime: 0,
                     status: QuestStatus.AvailableAfter,
                     statusTimers: {
-                        "9": this.timeUtil.getTimestamp(), // eslint-disable-line @typescript-eslint/naming-convention
+                        // eslint-disable-next-line @typescript-eslint/naming-convention
+                        "9": this.timeUtil.getTimestamp(),
                     },
                     availableAfter: availableAfterTimestamp,
                 });
@@ -832,7 +800,7 @@ export class QuestController
             const matchingItemInProfile = pmcData.Inventory.items.find((x) => x._id === itemHandover.id);
             if (!handoverRequirements._props.target.includes(matchingItemInProfile._tpl))
             {
-                // Item handed in by player doesn't match what was requested
+                // Item handed in by player doesnt match what was requested
                 return this.showQuestItemHandoverMatchError(
                     handoverQuestRequest,
                     matchingItemInProfile,

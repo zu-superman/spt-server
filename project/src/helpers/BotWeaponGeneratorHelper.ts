@@ -46,12 +46,15 @@ export class BotWeaponGeneratorHelper
         let chamberBulletCount = 0;
         if (this.magazineIsCylinderRelated(parentItem._name))
         {
-            // if we have a CylinderMagazine/SpringDrivenCylinder we count the number of camoras as the _max_count of the magazine is 0
-            chamberBulletCount = magTemplate._props.Slots.length;
+            const firstSlotAmmoTpl = magTemplate._props.Cartridges[0]._props.filters[0].Filter[0];
+            const ammoMaxStackSize = this.itemHelper.getItem(firstSlotAmmoTpl)[1]?._props?.StackMaxSize ?? 1;
+            chamberBulletCount = (ammoMaxStackSize === 1)
+                ? 1 // Rotating grenade launcher
+                : magTemplate._props.Slots.length; // Shotguns/revolvers. We count the number of camoras as the _max_count of the magazine is 0
         }
         else if (parentItem._id === BaseClasses.UBGL)
         {
-            // underbarrel launchers can only have 1 chambered grenade
+            // Underbarrel launchers can only have 1 chambered grenade
             chamberBulletCount = 1;
         }
         else
@@ -74,7 +77,7 @@ export class BotWeaponGeneratorHelper
         // const range = magCounts.max - magCounts.min;
         // return this.randomUtil.getBiasedRandomNumber(magCounts.min, magCounts.max, Math.round(range * 0.75), 4);
 
-        return this.weightedRandomHelper.getWeightedValue(magCounts.weights);
+        return Number.parseInt(this.weightedRandomHelper.getWeightedValue(magCounts.weights));
     }
 
     /**
@@ -129,9 +132,15 @@ export class BotWeaponGeneratorHelper
                 ammoItem,
             ], inventory);
 
-            if (result === ItemAddedResult.NO_SPACE)
+            if (result !== ItemAddedResult.SUCCESS)
             {
-                this.logger.debug(`Unable to add ammo: ${ammoItem._tpl} to bot equipment`);
+                this.logger.debug(`Unable to add ammo: ${ammoItem._tpl} to bot inventory, ${ItemAddedResult[result]}`);
+
+                if (result === ItemAddedResult.NO_SPACE || result === ItemAddedResult.NO_CONTAINERS)
+                {
+                    // If there's no space for 1 stack, there's no space for the others
+                    break;
+                }
             }
         }
     }
@@ -164,18 +173,26 @@ export class BotWeaponGeneratorHelper
         inventory: Inventory,
     ): ItemAddedResult
     {
+        let missingContainerCount = 0;
         for (const slot of equipmentSlots)
         {
             // Get container to put item into
             const container = inventory.items.find((i) => i.slotId === slot);
             if (!container)
             {
-                // Desired equipment container (e.g. backpack) not found
-                this.logger.debug(
-                    `Unable to add item: ${
-                        itemWithChildren[0]._tpl
-                    } to: ${slot}, slot missing/bot generated without equipment`,
-                );
+                missingContainerCount++;
+                if (missingContainerCount === equipmentSlots.length)
+                {
+                    // Bot doesnt have any containers
+                    this.logger.debug(
+                        `Unable to add item: ${
+                            itemWithChildren[0]._tpl
+                        } to bot as it lacks the following containers: ${equipmentSlots.join(",")}`,
+                    );
+
+                    return ItemAddedResult.NO_CONTAINERS
+                }
+
                 continue;
             }
 
@@ -194,8 +211,12 @@ export class BotWeaponGeneratorHelper
                 continue;
             }
 
+            // Get x/y grid size of item
             const itemSize = this.inventoryHelper.getItemSize(parentTpl, parentId, itemWithChildren);
 
+            // Iterate over each grid in the container and look for a big enough space for the item to be placed in
+            let currentGridCount = 1;
+            const slotGridCount = containerTemplate[1]._props.Grids.length;
             for (const slotGrid of containerTemplate[1]._props.Grids)
             {
                 // Grid is empty, skip
@@ -210,13 +231,13 @@ export class BotWeaponGeneratorHelper
                     continue;
                 }
 
-                // Get all base level items in backpack
-                const containerItems = inventory.items.filter((i) =>
+                // Get all root items in backpack
+                const existingContainerItems = inventory.items.filter((i) =>
                     i.parentId === container._id && i.slotId === slotGrid._name
                 );
 
                 // Get a copy of base level items we can iterate over
-                const containerItemsToCheck = containerItems.filter((x) => x.slotId === slotGrid._name);
+                const containerItemsToCheck = existingContainerItems.filter((x) => x.slotId === slotGrid._name);
                 for (const item of containerItemsToCheck)
                 {
                     // Look for children on items, insert into array if found
@@ -224,7 +245,7 @@ export class BotWeaponGeneratorHelper
                     const itemWithChildren = this.itemHelper.findAndReturnChildrenAsItems(inventory.items, item._id);
                     if (itemWithChildren.length > 1)
                     {
-                        containerItems.splice(containerItems.indexOf(item), 1, ...itemWithChildren);
+                        existingContainerItems.splice(existingContainerItems.indexOf(item), 1, ...itemWithChildren);
                     }
                 }
 
@@ -232,9 +253,10 @@ export class BotWeaponGeneratorHelper
                 const slotGridMap = this.inventoryHelper.getContainerMap(
                     slotGrid._props.cellsH,
                     slotGrid._props.cellsV,
-                    containerItems,
+                    existingContainerItems,
                     container._id,
                 );
+
                 // Try to fit item into grid
                 const findSlotResult = this.containerHelper.findSlotForItem(slotGridMap, itemSize[0], itemSize[1]);
 
@@ -257,11 +279,18 @@ export class BotWeaponGeneratorHelper
                     return ItemAddedResult.SUCCESS;
                 }
 
+                // If we've checked all grids in container and reached this point, there's no space for item
+                if (slotGridCount >= currentGridCount)
+                {
+                    return ItemAddedResult.NO_SPACE;
+                }
+                currentGridCount++;
+
                 // Start loop again in next grid of container
             }
         }
 
-        return ItemAddedResult.NO_SPACE;
+        return ItemAddedResult.UNKNOWN;
     }
 
     /**

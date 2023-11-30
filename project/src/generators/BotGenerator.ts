@@ -522,6 +522,7 @@ export class BotGenerator
             return;
         }
 
+        // more color = more op
         botInfo.GameVersion = this.weightedRandomHelper.getWeightedValue(this.pmcConfig.gameVersionWeight);
         botInfo.MemberCategory = Number.parseInt(
             this.weightedRandomHelper.getWeightedValue(this.pmcConfig.accountTypeWeight),

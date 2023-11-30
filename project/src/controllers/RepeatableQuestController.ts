@@ -117,21 +117,24 @@ export class RepeatableQuestController
                     // for (let i = 0; i < currentRepeatable.activeQuests.length; i++)
                     for (const activeQuest of currentRepeatableQuestType.activeQuests)
                     {
-                        // check if the quest is ready to be completed, if so, don't remove it
-                        const quest = pmcData.Quests.filter((q) => q.qid === activeQuest._id);
-                        if (quest.length > 0)
+                        // Keep finished quests in list so player can hand in
+                        const quest = pmcData.Quests.find(quest => quest.qid === activeQuest._id);
+                        if (quest)
                         {
-                            if (quest[0].status === QuestStatus.AvailableForFinish)
+                            if (quest.status === QuestStatus.AvailableForFinish)
                             {
                                 questsToKeep.push(activeQuest);
                                 this.logger.debug(
-                                    `Keeping repeatable quest ${activeQuest._id} in activeQuests since it is available to AvailableForFinish`,
+                                    `Keeping repeatable quest ${activeQuest._id} in activeQuests since it is available to hand in`,
                                 );
+
                                 continue;
                             }
                         }
                         this.profileFixerService.removeDanglingConditionCounters(pmcData);
-                        pmcData.Quests = pmcData.Quests.filter((q) => q.qid !== activeQuest._id);
+
+                        // Remove expired quest from pmc.quest array
+                        pmcData.Quests = pmcData.Quests.filter(quest => quest.qid !== activeQuest._id);
                         currentRepeatableQuestType.inactiveQuests.push(activeQuest);
                     }
                     currentRepeatableQuestType.activeQuests = questsToKeep;
@@ -455,7 +458,11 @@ export class RepeatableQuestController
         droppedQuestTrader.standing -= changeRequirement.changeStandingCost;
 
         // Update client output with new repeatable
-        output.profileChanges[sessionID].repeatableQuests = [repeatableToChange];
+        if (!output.profileChanges[sessionID].repeatableQuests)
+        {
+            output.profileChanges[sessionID].repeatableQuests = [];
+        }
+        output.profileChanges[sessionID].repeatableQuests.push(repeatableToChange);
 
         return output;
     }

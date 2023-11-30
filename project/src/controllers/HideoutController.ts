@@ -328,7 +328,7 @@ export class HideoutController
     }
 
     /**
-     * @param output Objet to send to client
+     * @param output Object to send to client
      * @param sessionID Session/player id
      * @param areaType Hideout area that had stash added
      * @param hideoutDbData Hideout area that caused addition of stash
@@ -1118,13 +1118,14 @@ export class HideoutController
         // Add all improvements to output object
         const improvements = hideoutDbData.stages[profileHideoutArea.level].improvements;
         const timestamp = this.timeUtil.getTimestamp();
+
+        if (!output.profileChanges[sessionId].improvements)
+        {
+            output.profileChanges[sessionId].improvements = {};
+        }
+
         for (const improvement of improvements)
         {
-            if (!output.profileChanges[sessionId].improvements)
-            {
-                output.profileChanges[sessionId].improvements = {};
-            }
-
             const improvementDetails = {
                 completed: false,
                 improveCompleteTimestamp: timestamp + improvement.improvementTime,

@@ -1027,7 +1027,7 @@ class ItemHelper
         minSizePercent = 0.25,
     ): void
     {
-        // Get cartrdge properties and max allowed stack size
+        // Get cartridge properties and max allowed stack size
         const cartridgeDetails = this.getItem(cartridgeTpl);
         const cartridgeMaxStackSize = cartridgeDetails[1]._props.StackMaxSize;
 
@@ -1085,7 +1085,7 @@ class ItemHelper
      * Chose a randomly weighted cartridge that fits
      * @param caliber Desired caliber
      * @param staticAmmoDist Cartridges and thier weights
-     * @returns Tpl of cartrdige
+     * @returns Tpl of cartridge
      */
     protected drawAmmoTpl(caliber: string, staticAmmoDist: Record<string, IStaticAmmoDetails[]>): string
     {

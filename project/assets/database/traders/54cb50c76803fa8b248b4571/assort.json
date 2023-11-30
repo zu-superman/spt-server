@@ -9122,7 +9122,7 @@
       "slotId": "hideout",
       "upd": {
         "BuyRestrictionMax": 10,
-        "StackObjectsCount": 1500
+        "StackObjectsCount": 20
       }
     },
     {

@@ -232,6 +232,18 @@ export class RandomUtil
     }
 
     /**
+     * Reduce a value by a percentage
+     * @param number Value to reduce
+     * @param percentage Percentage to reduce value by
+     * @returns Reduced value
+     */
+    public reduceValueByPercent(number: number, percentage: number): number
+    {
+        const reductionAmount = number * (percentage / 100);
+        return number - reductionAmount;
+    }
+
+    /**
      * Check if number passes a check out of 100
      * @param chancePercent value check needs to be above
      * @returns true if value passes check

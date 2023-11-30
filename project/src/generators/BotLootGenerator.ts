@@ -352,13 +352,21 @@ export class BotLootGenerator
                     itemsToAdd,
                     inventoryToAddItemsTo,
                 );
-                if (itemAddedResult === ItemAddedResult.NO_SPACE)
+                if (itemAddedResult !== ItemAddedResult.SUCCESS)
                 {
+                    
+                    if (itemAddedResult === ItemAddedResult.NO_CONTAINERS)
+                    {
+                        // Bot has no container to put item in, exit
+                        this.logger.debug(`Unable to add ${totalItemCount} items to bot as it lacks a container to include them`);
+                        break;
+                    }
+
                     fitItemIntoContainerAttempts++;
                     if (fitItemIntoContainerAttempts >= 4)
                     {
                         this.logger.debug(
-                            `Failed to place item ${i} of ${totalItemCount} item into ${botRole} container: ${equipmentSlots}, ${fitItemIntoContainerAttempts} times, skipping`,
+                            `Failed to place item ${i} of ${totalItemCount} items into ${botRole} containers: ${equipmentSlots.join(",")}. Tried ${fitItemIntoContainerAttempts} times, reason: ${ItemAddedResult[itemAddedResult]}, skipping`,
                         );
 
                         break;
@@ -366,6 +374,7 @@ export class BotLootGenerator
                 }
                 else
                 {
+                    // Reset counter
                     fitItemIntoContainerAttempts = 0;
                 }
 
@@ -426,13 +435,18 @@ export class BotLootGenerator
                     isPmc,
                     botLevel,
                 );
-                this.botWeaponGeneratorHelper.addItemWithChildrenToEquipmentSlot(
+                const result = this.botWeaponGeneratorHelper.addItemWithChildrenToEquipmentSlot(
                     [equipmentSlot],
                     generatedWeapon.weapon[0]._id,
                     generatedWeapon.weapon[0]._tpl,
                     [...generatedWeapon.weapon],
                     botInventory,
                 );
+
+                if (result !== ItemAddedResult.SUCCESS)
+                {
+                    this.logger.debug(`Failed to add additional weapon ${generatedWeapon.weapon[0]._id} to bot backpack, reason: ${ItemAddedResult[result]}`);
+                }
             }
         }
     }
