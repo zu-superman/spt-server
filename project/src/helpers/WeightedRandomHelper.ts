@@ -22,6 +22,12 @@ export class WeightedRandomHelper
     {
         const itemKeys = Object.keys(itemArray);
         const weights = Object.values(itemArray);
+
+        if (itemKeys.length !== weights.length)
+        {
+            return null;
+        }
+
         const chosenItem = this.weightedRandom(itemKeys, weights);
 
         return chosenItem.item;
