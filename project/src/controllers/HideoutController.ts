@@ -320,6 +320,7 @@ export class HideoutController
         {
             // Update existing items container tpl to point to new id (tpl)
             existingInventoryItem._tpl = hideoutStage.container;
+
             return;
         }
 
@@ -357,7 +358,7 @@ export class HideoutController
      * Handle HideoutPutItemsInAreaSlots
      * Create item in hideout slot item array, remove item from player inventory
      * @param pmcData Profile data
-     * @param addItemToHideoutRequest request from client to place item in area slot
+     * @param addItemToHideoutRequest reqeust from client to place item in area slot
      * @param sessionID Session id
      * @returns IItemEventRouterResponse object
      */
@@ -490,7 +491,14 @@ export class HideoutController
 
         const itemToReturn = hideoutArea.slots.find((x) => x.locationIndex === slotIndexToRemove).item[0];
 
-        const newReq = { items: [{ item_id: itemToReturn._tpl, count: 1 }], tid: "ragfair" };
+        const newReq = {
+            items: [{
+                // eslint-disable-next-line @typescript-eslint/naming-convention
+                item_id: itemToReturn._tpl,
+                count: 1,
+            }],
+            tid: "ragfair",
+        };
 
         output = this.inventoryHelper.addItem(
             pmcData,
@@ -550,7 +558,7 @@ export class HideoutController
      * Handle HideoutSingleProductionStart event
      * Start production for an item from hideout area
      * @param pmcData Player profile
-     * @param body Start production of single item request
+     * @param body Start prodution of single item request
      * @param sessionID Session id
      * @returns IItemEventRouterResponse
      */
@@ -665,6 +673,7 @@ export class HideoutController
         {
             return productionTime;
         }
+
         return productionTime * fenceLevel.ScavCaseTimeModifier;
     }
 
@@ -682,7 +691,7 @@ export class HideoutController
     /**
      * Start production of continuously created item
      * @param pmcData Player profile
-     * @param request Continuous production request
+     * @param request Continious production request
      * @param sessionID Session id
      * @returns IItemEventRouterResponse
      */
@@ -693,6 +702,7 @@ export class HideoutController
     ): IItemEventRouterResponse
     {
         this.registerProduction(pmcData, request, sessionID);
+
         return this.eventOutputHolder.getOutput(sessionID);
     }
 
@@ -757,7 +767,7 @@ export class HideoutController
         output: IItemEventRouterResponse,
     ): IItemEventRouterResponse
     {
-        // Variables for management of skill
+        // Variables for managemnet of skill
         let craftingExpAmount = 0;
 
         // ? move the logic of BackendCounters in new method?
@@ -781,7 +791,14 @@ export class HideoutController
             id = this.presetHelper.getDefaultPreset(id)._id;
         }
 
-        const newReq = { items: [{ item_id: id, count: recipe.count }], tid: "ragfair" };
+        const newReq = {
+            items: [{
+                // eslint-disable-next-line @typescript-eslint/naming-convention
+                item_id: id,
+                count: recipe.count,
+            }],
+            tid: "ragfair",
+        };
 
         const entries = Object.entries(pmcData.Hideout.Production);
         let prodId: string;
@@ -901,7 +918,6 @@ export class HideoutController
         let prodId: string;
         for (const production of ongoingProductions)
         {
-            // Production or ScavCase
             if (this.hideoutHelper.isProductionType(production[1]))
             { // Production or ScavCase
                 if ((production[1] as ScavCase).RecipeId === request.recipeId)
@@ -927,34 +943,38 @@ export class HideoutController
         // Create rewards for scav case
         const scavCaseRewards = this.scavCaseRewardGenerator.generate(request.recipeId);
 
+        // Add scav case rewards to player profile
         pmcData.Hideout.Production[prodId].Products = scavCaseRewards;
 
         // Remove the old production from output object before its sent to client
         delete output.profileChanges[sessionID].production[request.recipeId];
 
+        // Get array of item created + count of them after completing hideout craft
         const itemsToAdd = pmcData.Hideout.Production[prodId].Products.map(
             (x: { _tpl: string; upd?: { StackObjectsCount?: number; }; }) =>
             {
-                let id = x._tpl;
-                if (this.presetHelper.hasPreset(id))
-                {
-                    id = this.presetHelper.getDefaultPreset(id)._id;
-                }
+                const itemTpl = this.presetHelper.hasPreset(x._tpl)
+                    ? this.presetHelper.getDefaultPreset(x._tpl)._id
+                    : x._tpl;
+
+                // Count of items crafted
                 const numOfItems = !x.upd?.StackObjectsCount ? 1 : x.upd.StackObjectsCount;
-                return { item_id: id, count: numOfItems };
+                // eslint-disable-next-line @typescript-eslint/naming-convention
+                return { item_id: itemTpl, count: numOfItems };
             },
         );
 
         const newReq = { items: itemsToAdd, tid: "ragfair" };
-
         const callback = () =>
         {
-            // Flag as complete - will be cleaned up later by update() process
+            // Flag as complete - will be cleaned up later by hideoutController.update()
             pmcData.Hideout.Production[prodId].sptIsComplete = true;
 
+            // Crafting complete, flag as such
             pmcData.Hideout.Production[prodId].inProgress = false;
         };
 
+        // Add crafted item to player inventory
         return this.inventoryHelper.addItem(pmcData, newReq, output, sessionID, callback, true);
     }
 
@@ -976,10 +996,11 @@ export class HideoutController
 
     /**
      * Get quick time event list for hideout
-     * // TODO: Implement this
+     * // TODO - implement this
      * @param sessionId Session id
      * @returns IQteData array
      */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public getQteList(sessionId: string): IQteData[]
     {
         return this.databaseServer.getTables().hideout.qte;
@@ -992,6 +1013,7 @@ export class HideoutController
      * @param pmcData Profile to adjust
      * @param request QTE result object
      */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public handleQTEEventOutcome(
         sessionId: string,
         pmcData: IPmcData,
@@ -999,10 +1021,10 @@ export class HideoutController
     ): IItemEventRouterResponse
     {
         // {
-        //     Action: "HideoutQuickTimeEvent",
-        //     results: [true, false, true, true, true, true, true, true, true, false, false, false, false, false, false],
-        //     id: "63b16feb5d012c402c01f6ef",
-        //     timestamp: 1672585349
+        //     "Action": "HideoutQuickTimeEvent",
+        //     "results": [true, false, true, true, true, true, true, true, true, false, false, false, false, false, false],
+        //     "id": "63b16feb5d012c402c01f6ef",
+        //     "timestamp": 1672585349
         // }
 
         // Skill changes are done in
@@ -1036,7 +1058,7 @@ export class HideoutController
         request: IRecordShootingRangePoints,
     ): IItemEventRouterResponse
     {
-        // Check if counter exists, add placeholder if it doesn't
+        // Check if counter exists, add placeholder if it doesnt
         if (!pmcData.Stats.Eft.OverallCounters.Items.find((x) => x.Key.includes("ShootingRangePoints")))
         {
             pmcData.Stats.Eft.OverallCounters.Items.push({ Key: ["ShootingRangePoints"], Value: 0 });
@@ -1048,7 +1070,7 @@ export class HideoutController
         );
         shootingRangeHighScore.Value = request.points;
 
-        // Check against live, maybe a response isn't necessary
+        // Check against live, maybe a response isnt necessary
         return this.eventOutputHolder.getOutput(sessionId);
     }
 
@@ -1066,7 +1088,7 @@ export class HideoutController
     {
         const output = this.eventOutputHolder.getOutput(sessionId);
 
-        // Create mapping of required item with corresponding item from player inventory
+        // Create mapping of required item with corrisponding item from player inventory
         const items = request.items.map((reqItem) =>
         {
             const item = pmcData.Inventory.items.find((invItem) => invItem._id === reqItem.id);
@@ -1115,7 +1137,7 @@ export class HideoutController
             return this.httpResponse.appendErrorToOutput(output);
         }
 
-        // Add all improvements to output object
+        // Add all improvemets to output object
         const improvements = hideoutDbData.stages[profileHideoutArea.level].improvements;
         const timestamp = this.timeUtil.getTimestamp();
 
@@ -1164,7 +1186,7 @@ export class HideoutController
         // Null out production data so client gets informed when response send back
         pmcData.Hideout.Production[request.recipeId] = null;
 
-        // TODO: handle timestamp somehow?
+        // TODO - handle timestamp somehow?
 
         return output;
     }
