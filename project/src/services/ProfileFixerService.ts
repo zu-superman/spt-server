@@ -1026,6 +1026,120 @@ export class ProfileFixerService
     }
 
     /**
+     * Attempt to fix common item issues that corrupt profiles
+     * @param pmcProfile Profile to check items of
+     */
+    public fixProfileBreakingInventoryItemIssues(pmcProfile: IPmcData): void
+    {
+        // Create a mapping of all inventory items, keyed by _id value
+        const itemMapping = pmcProfile.Inventory.items.reduce((acc, curr) =>
+        {
+            acc[curr._id] = acc[curr._id] || [];
+            acc[curr._id].push(curr);
+
+            return acc;
+        }, {});
+
+        for (const key in itemMapping)
+        {
+            // Only one item for this id, not a dupe
+            if (itemMapping[key].length === 1)
+            {
+                continue;
+            }
+
+            this.logger.warning(`${itemMapping[key].length - 1} duplicate(s) found for item: ${key}`);
+            const itemAJson = this.jsonUtil.serialize(itemMapping[key][0]);
+            const itemBJson = this.jsonUtil.serialize(itemMapping[key][1]);
+            if (itemAJson === itemBJson)
+            {
+                // Both items match, we can safely delete one
+                const indexOfItemToRemove = pmcProfile.Inventory.items.findIndex(x => x._id === key);
+                pmcProfile.Inventory.items.splice(indexOfItemToRemove, 1);
+                this.logger.warning(`Deleted duplicate item: ${key}`);
+            }
+            else
+            {
+                // Items are different, replace ID with unique value
+                // Only replace ID if items have no children, we dont want orphaned children
+                const itemsHaveChildren = pmcProfile.Inventory.items.some(x => x.parentId === key);
+                if (!itemsHaveChildren)
+                {
+                    const itemToAdjustId = pmcProfile.Inventory.items.find(x => x._id === key);
+                    itemToAdjustId._id = this.hashUtil.generate();
+                    this.logger.warning(`Replace duplicate item Id: ${key} with ${itemToAdjustId._id}`);
+                }
+            }
+        }
+
+        // Iterate over all inventory items
+        for (const item of pmcProfile.Inventory.items.filter(x => x.slotId))
+        {
+            if (!item.upd)
+            {
+                // Ignore items without a upd object
+                continue;
+            }
+
+            // Check items with a tag that contains non alphanumeric characters
+            const regxp = /([/w"\\'])/g;
+            if (regxp.test(item.upd.Tag?.Name))
+            {
+                this.logger.warning(`Fixed item: ${item._id}s Tag value, removed invalid characters`);
+                item.upd.Tag.Name = item.upd.Tag.Name.replace(regxp, '');
+            }
+
+            // Check items with StackObjectsCount (null)
+            if (item.upd.StackObjectsCount === null)
+            {
+                this.logger.warning(`Fixed item: ${item._id}s null StackObjectsCount value, now set to 1`);
+                item.upd.StackObjectsCount = 1;
+            }
+        }
+
+        // Iterate over clothing
+        const customizationDb = this.databaseServer.getTables().templates.customization;
+        const customizationDbArray = Object.values(this.databaseServer.getTables().templates.customization);
+        const playerIsUsec = pmcProfile.Info.Side.toLowerCase() === "usec";
+
+        // Check Head
+        if (!customizationDb[pmcProfile.Customization.Head])
+        {
+            const defaultHead = (playerIsUsec)
+                ? customizationDbArray.find(x => x._name === "DefaultUsecHead")
+                : customizationDbArray.find(x => x._name === "DefaultBearHead");
+            pmcProfile.Customization.Head = defaultHead._id;
+        }
+
+        //check Body
+        if (!customizationDb[pmcProfile.Customization.Body])
+        {
+            const defaultBody = (pmcProfile.Info.Side.toLowerCase() === "usec")
+                ? customizationDbArray.find(x => x._name === "DefaultUsecBody")
+                : customizationDbArray.find(x => x._name === "DefaultBearBody");
+            pmcProfile.Customization.Body = defaultBody._id;
+        }
+
+        //check Hands
+        if (!customizationDb[pmcProfile.Customization.Hands])
+        {
+            const defaultHands = (pmcProfile.Info.Side.toLowerCase() === "usec")
+                ? customizationDbArray.find(x => x._name === "DefaultUsecHands")
+                : customizationDbArray.find(x => x._name === "DefaultBearHands");
+            pmcProfile.Customization.Hands = defaultHands._id;
+        }
+
+        //check Hands
+        if (!customizationDb[pmcProfile.Customization.Feet])
+        {
+            const defaultFeet = (pmcProfile.Info.Side.toLowerCase() === "usec")
+                ? customizationDbArray.find(x => x._name === "DefaultUsecFeet")
+                : customizationDbArray.find(x => x._name === "DefaultBearFeet");
+            pmcProfile.Customization.Feet = defaultFeet._id;
+        }
+    }
+
+    /**
      * Add `Improvements` object to hideout if missing - added in eft 13.0.21469
      * @param pmcProfile profile to update
      */
