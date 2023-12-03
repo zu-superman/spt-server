@@ -93,26 +93,27 @@ class TradeController
                 return this.httpResponse.appendErrorToOutput(output, errorMessage, BackendErrorCodes.OFFEROUTOFSTOCK);
             }
 
-            // Skip buying items when player doesn't have necessary loyalty
-            if (
-                fleaOffer.user.memberType === MemberCategory.TRADER
-                && fleaOffer.loyaltyLevel > pmcData.TradersInfo[fleaOffer.user.id].loyaltyLevel
-            )
+            const sellerIsTrader = fleaOffer.user.memberType === MemberCategory.TRADER;
+
+            // Skip buying items when player doesn't have needed loyalty
+            if (sellerIsTrader && fleaOffer.loyaltyLevel > pmcData.TradersInfo[fleaOffer.user.id].loyaltyLevel)
             {
                 this.logger.debug(
                     `Unable to buy item: ${
                         fleaOffer.items[0]._tpl
                     } from trader: ${fleaOffer.user.id} as loyalty level too low, skipping`,
                 );
+
                 continue;
             }
 
+            // Log full purchase JSON
             this.logger.debug(this.jsonUtil.serializeAdvanced(offer, null, 2));
 
             const buyData: IProcessBuyTradeRequestData = {
                 Action: "TradingConfirm",
                 type: "buy_from_trader",
-                tid: (fleaOffer.user.memberType !== MemberCategory.TRADER) ? "ragfair" : fleaOffer.user.id,
+                tid: (sellerIsTrader) ? fleaOffer.user.id : "ragfair",
                 // eslint-disable-next-line @typescript-eslint/naming-convention
                 item_id: fleaOffer.root,
                 count: offer.count,
@@ -121,18 +122,24 @@ class TradeController
                 // eslint-disable-next-line @typescript-eslint/naming-convention
                 scheme_items: offer.items,
             };
-
+            
+            // Trader / PMC offers use different found in raid config values
+            const purchasedItemFoundInRaid = (sellerIsTrader)
+            ? this.traderConfig.purchasesAreFoundInRaid
+            : this.ragfairConfig.dynamic.purchasesAreFoundInRaid;
+            
             // confirmTrading() must occur prior to removing the offer stack, otherwise item inside offer doesn't exist for confirmTrading() to use
             output = this.confirmTradingInternal(
                 pmcData,
                 buyData,
                 sessionID,
-                this.ragfairConfig.dynamic.purchasesAreFoundInRaid,
+                purchasedItemFoundInRaid,
                 fleaOffer.items[0].upd,
             );
-            if (fleaOffer.user.memberType !== MemberCategory.TRADER)
+
+            if (!sellerIsTrader)
             {
-                // remove player item offer stack
+                // Remove the item purchased from flea offer
                 this.ragfairServer.removeOfferStack(fleaOffer._id, offer.count);
             }
         }
@@ -143,7 +150,7 @@ class TradeController
     /** Handle SellAllFromSavage event */
     public sellScavItemsToFence(
         pmcData: IPmcData,
-        body: ISellScavItemsToFenceRequestData,
+        request: ISellScavItemsToFenceRequestData,
         sessionId: string,
     ): IItemEventRouterResponse
     {
@@ -152,7 +159,7 @@ class TradeController
         {
             return this.httpResponse.appendErrorToOutput(
                 this.eventOutputHolder.getOutput(sessionId),
-                `Profile ${body.fromOwner.id} has no scav account`,
+                `Profile ${request.fromOwner.id} has no scav account`,
             );
         }
 
