@@ -673,12 +673,12 @@ export class LocationGenerator
 
     /**
      * Add forced spawn point loot into loot parameter array
-     * @param loot array to add forced loot to
-     * @param forcedSpawnPoints forced loot to add
-     * @param name of map currently generating forced loot for
+     * @param lootLocationTemplates array to add forced loot spawn locations to
+     * @param forcedSpawnPoints forced Forced loot locations that must be added
+     * @param locationName Name of map currently having force loot created for
      */
     protected addForcedLoot(
-        loot: SpawnpointTemplate[],
+        lootLocationTemplates: SpawnpointTemplate[],
         forcedSpawnPoints: SpawnpointsForced[],
         locationName: string,
     ): void
@@ -717,32 +717,47 @@ export class LocationGenerator
                     const lootItem = itemToAdd.template;
                     lootItem.Root = this.objectId.generate();
                     lootItem.Items[0]._id = lootItem.Root;
-                    loot.push(lootItem);
+                    lootLocationTemplates.push(lootItem);
                 }
             }
         }
 
         const seasonalEventActive = this.seasonalEventService.seasonalEventEnabled();
         const seasonalItemTplBlacklist = this.seasonalEventService.getAllSeasonalEventItems();
+        
         // Add remaining forced loot to array
-        for (const forcedLootItem of forcedSpawnPoints)
+        for (const forcedLootLocation of forcedSpawnPoints)
         {
-            // Skip spawn positions processed above
-            if (lootToForceSingleAmountOnMap?.includes(forcedLootItem.template.Items[0]._tpl))
+            const firstLootItemTpl = forcedLootLocation.template.Items[0]._tpl;
+
+            // Skip spawn positions processed already
+            if (lootToForceSingleAmountOnMap?.includes(firstLootItemTpl))
             {
                 continue;
             }
 
-            // Skip seasonal items when seasonal event is active
-            if (!seasonalEventActive && seasonalItemTplBlacklist.includes(forcedLootItem.template.Items[0]._tpl))
+            // Skip adding seasonal items when seasonal event is not active
+            if (!seasonalEventActive && seasonalItemTplBlacklist.includes(firstLootItemTpl))
             {
                 continue;
             }
 
-            const li = forcedLootItem.template;
-            li.Root = this.objectId.generate();
-            li.Items[0]._id = li.Root;
-            loot.push(li);
+            const locationTemplateToAdd = forcedLootLocation.template;
+            
+            // Ensure root id matches the first items id
+            locationTemplateToAdd.Root = this.objectId.generate();
+            locationTemplateToAdd.Items[0]._id = locationTemplateToAdd.Root;
+
+            // Push forced location into array as long as it doesnt exist already
+            const existingLocation = lootLocationTemplates.find(x => x.Id === locationTemplateToAdd.Id);
+            if (!existingLocation)
+            {
+                lootLocationTemplates.push(locationTemplateToAdd);
+            }
+            else
+            {
+                this.logger.warning(`Attempted to add a forced loot location with Id: ${locationTemplateToAdd.Id} to map ${locationName} that already has that id in use, skipping`)
+            }
         }
     }
 
