@@ -56,12 +56,6 @@ export class FenceBaseAssortGenerator
                 continue;
             }
 
-            // Skip quest items
-            if (item._props.QuestItem)
-            {
-                continue;
-            }
-
             // Skip items on fence ignore list
             if (this.traderConfig.fence.blacklist.length > 0)
             {
