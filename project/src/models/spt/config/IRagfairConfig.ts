@@ -154,7 +154,7 @@ export interface Blacklist
     enableBsgList: boolean;
     /** Should quest items be blacklisted from flea */
     enableQuestList: boolean;
-    /** Should trader items that are blacklisted by bsg */
+    /** Should trader items that are blacklisted by bsg be listed on flea */
     traderItems: boolean;
 }
 

@@ -13,7 +13,6 @@ import { ConfigServer } from "@spt-aki/servers/ConfigServer";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { SaveServer } from "@spt-aki/servers/SaveServer";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
-import { RagfairCategoriesService } from "@spt-aki/services/RagfairCategoriesService";
 import { HttpResponseUtil } from "@spt-aki/utils/HttpResponseUtil";
 import { RagfairOfferHolder } from "@spt-aki/utils/RagfairOfferHolder";
 import { TimeUtil } from "@spt-aki/utils/TimeUtil";
@@ -33,7 +32,6 @@ export class RagfairOfferService
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("SaveServer") protected saveServer: SaveServer,
         @inject("RagfairServerHelper") protected ragfairServerHelper: RagfairServerHelper,
-        @inject("RagfairCategoriesService") protected ragfairCategoriesService: RagfairCategoriesService,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
         @inject("EventOutputHolder") protected eventOutputHolder: EventOutputHolder,
         @inject("HttpResponseUtil") protected httpResponse: HttpResponseUtil,
@@ -221,9 +219,6 @@ export class RagfairOfferService
             // TODO: something feels wrong, func returns ItemEventRouterResponse but we dont pass it back to caller?
             this.returnPlayerOffer(staleOffer);
         }
-
-        // Reduce category count by 1 as offer is now stale and about to be removed
-        this.ragfairCategoriesService.decrementCategory(staleOffer);
 
         // Remove expired existing offer from global offers
         this.removeOfferById(staleOffer._id);

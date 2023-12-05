@@ -4,6 +4,7 @@ import { RagfairOfferGenerator } from "@spt-aki/generators/RagfairOfferGenerator
 import { TraderAssortHelper } from "@spt-aki/helpers/TraderAssortHelper";
 import { TraderHelper } from "@spt-aki/helpers/TraderHelper";
 import { IRagfairOffer } from "@spt-aki/models/eft/ragfair/IRagfairOffer";
+import { ISearchRequestData } from "@spt-aki/models/eft/ragfair/ISearchRequestData";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { Traders } from "@spt-aki/models/enums/Traders";
 import { IRagfairConfig } from "@spt-aki/models/spt/config/IRagfairConfig";
@@ -82,14 +83,9 @@ export class RagfairServer
         return Object.keys(this.ragfairConfig.traders).filter((x) => this.ragfairConfig.traders[x]);
     }
 
-    public getAllCategories(): Record<string, number>
+    public getAllActiveCategories(fleaUnlocked: boolean, searchRequestData: ISearchRequestData, offers: IRagfairOffer[]): Record<string, number>
     {
-        return this.ragfairCategoriesService.getAllCategories();
-    }
-
-    public getBespokeCategories(offers: IRagfairOffer[]): Record<string, number>
-    {
-        return this.ragfairCategoriesService.getBespokeCategories(offers);
+        return this.ragfairCategoriesService.getCategoriesFromOffers(offers, searchRequestData, fleaUnlocked);
     }
 
     /**
