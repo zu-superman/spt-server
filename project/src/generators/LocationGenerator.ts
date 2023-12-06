@@ -756,7 +756,7 @@ export class LocationGenerator
             }
             else
             {
-                this.logger.warning(`Attempted to add a forced loot location with Id: ${locationTemplateToAdd.Id} to map ${locationName} that already has that id in use, skipping`)
+                this.logger.debug(`Attempted to add a forced loot location with Id: ${locationTemplateToAdd.Id} to map ${locationName} that already has that id in use, skipping`)
             }
         }
     }
