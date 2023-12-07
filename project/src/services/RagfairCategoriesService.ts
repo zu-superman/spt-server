@@ -24,48 +24,44 @@ export class RagfairCategoriesService
      */
     public getCategoriesFromOffers(offers: IRagfairOffer[], searchRequestData: ISearchRequestData, fleaUnlocked: boolean): Record<string, number>
     {
-        const validOffersForPlayerToSee = {};
-        for (const offer of offers)
+        // Get offers valid for search request, then reduce them down to just the counts
+        return offers.filter(offer =>
         {
-            const isTraderOffer = offer.user.memberType === MemberCategory.TRADER;
+           const isTraderOffer = offer.user.memberType === MemberCategory.TRADER;
 
-            // Not level 15 and offer is from player, skip
-            if (!fleaUnlocked && !isTraderOffer)
-            {
-                continue;
-            }
+           // Not level 15 and offer is from player, skip
+           if (!fleaUnlocked && !isTraderOffer)
+           {
+               return false;
+           }
 
-            // Remove items not for money when `removeBartering` is enabled
-            if (searchRequestData.removeBartering && (offer.requirements.length > 1 || !this.paymentHelper.isMoneyTpl(offer.requirements[0]._tpl)))
-            {
-                continue;
-            }
+           // Remove items not for money when `removeBartering` is enabled
+           if (searchRequestData.removeBartering && (offer.requirements.length > 1 || !this.paymentHelper.isMoneyTpl(offer.requirements[0]._tpl)))
+           {
+               return false;
+           }
 
-            // Remove when filter set to players only + offer is from trader
-            if (searchRequestData.offerOwnerType === OfferOwnerType.PLAYEROWNERTYPE && isTraderOffer) 
-            {
-                continue;
-            }
+           // Remove when filter set to players only + offer is from trader
+           if (searchRequestData.offerOwnerType === OfferOwnerType.PLAYEROWNERTYPE && isTraderOffer) 
+           {
+               return false;
+           }
 
-            // Remove when filter set to traders only + offer is not from trader
-            if (searchRequestData.offerOwnerType === OfferOwnerType.TRADEROWNERTYPE && !isTraderOffer) 
-            {
-                continue;
-            }
+           // Remove when filter set to traders only + offer is not from trader
+           if (searchRequestData.offerOwnerType === OfferOwnerType.TRADEROWNERTYPE && !isTraderOffer) 
+           {
+               return false;
+           }
 
-            const itemTpl = offer.items[0]._tpl
+           // Passed checks, its a valid offer to process
+           return true;
+       }).reduce((acc, offer) =>
+       {
+           const itemTpl = offer.items[0]._tpl;
+           // Increment the category or add if doesnt exist
+           acc[itemTpl] = (acc[itemTpl] || 0) + 1;
 
-            if (!validOffersForPlayerToSee[itemTpl])
-            {
-                validOffersForPlayerToSee[itemTpl] = 1;
-            }
-            else
-            {
-                validOffersForPlayerToSee[itemTpl]++;
-            }
-        }
-
-        return validOffersForPlayerToSee;
-
+           return acc;
+       }, {});
     }
 }
