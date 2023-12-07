@@ -671,7 +671,7 @@ export class InventoryController
             }
 
             pmcProfile.Info.Experience += item._props.ExamineExperience;
-            pmcProfile.Encyclopedia[itemTpl] = true;
+            pmcProfile.Encyclopedia[itemTpl] = false;
         }
 
         // TODO: update this with correct calculation using values from globals json
