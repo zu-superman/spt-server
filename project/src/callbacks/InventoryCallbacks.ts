@@ -19,6 +19,7 @@ import { IInventoryTagRequestData } from "@spt-aki/models/eft/inventory/IInvento
 import { IInventoryToggleRequestData } from "@spt-aki/models/eft/inventory/IInventoryToggleRequestData";
 import { IInventoryTransferRequestData } from "@spt-aki/models/eft/inventory/IInventoryTransferRequestData";
 import { IOpenRandomLootContainerRequestData } from "@spt-aki/models/eft/inventory/IOpenRandomLootContainerRequestData";
+import { IRedeemProfileRequestData } from "@spt-aki/models/eft/inventory/IRedeemProfileRequestData";
 import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEventRouterResponse";
 
 @injectable()
@@ -155,5 +156,13 @@ export class InventoryCallbacks
     ): IItemEventRouterResponse
     {
         return this.inventoryController.openRandomLootContainer(pmcData, body, sessionID);
+    }
+
+    public redeemProfileReward(pmcData: IPmcData,
+        body: IRedeemProfileRequestData,
+        sessionId: string
+    ): IItemEventRouterResponse
+    {
+        return this.inventoryController.redeemProfileReward(pmcData, body, sessionId)
     }
 }

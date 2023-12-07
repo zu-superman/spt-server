@@ -77,6 +77,7 @@ export class GiftService
                     playerId,
                     giftData.localeTextId,
                     giftData.items,
+                    giftData.profileChangeEvents,
                     this.timeUtil.getHoursAsSeconds(giftData.collectionTimeHours),
                 );
             }

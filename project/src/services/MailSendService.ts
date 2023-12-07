@@ -198,6 +198,7 @@ export class MailSendService
         sessionId: string,
         messageLocaleId: string,
         items: Item[] = [],
+        profileChangeEvents = [],
         maxStorageTimeSeconds = null,
     ): void
     {
@@ -212,6 +213,11 @@ export class MailSendService
         {
             details.items = items;
             details.itemsMaxStorageLifetimeSeconds = maxStorageTimeSeconds ?? 172800; // 48 hours if no value supplied
+        }
+
+        if (profileChangeEvents.length > 0)
+        {
+            details.profileChangeEvents = profileChangeEvents;
         }
 
         this.sendMessageToPlayer(details);
@@ -278,6 +284,11 @@ export class MailSendService
 
         // Store reward items inside message and set appropriate flags inside message
         this.addRewardItemsToMessage(message, itemsToSendToPlayer, messageDetails.itemsMaxStorageLifetimeSeconds);
+
+        if (messageDetails.profileChangeEvents)
+        {
+            message.profileChangeEvents = messageDetails.profileChangeEvents;
+        }
 
         // Add message to dialog
         senderDialog.messages.push(message);

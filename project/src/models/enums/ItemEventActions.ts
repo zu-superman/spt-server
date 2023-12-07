@@ -1,5 +1,4 @@
-export enum ItemEventActions
-{
+export enum ItemEventActions {
     MOVE = "Move",
     REMOVE = "Remove",
     SPLIT = "Split",
@@ -24,4 +23,5 @@ export enum ItemEventActions
     REMOVE_BUILD = "RemoveBuild",
     SAVE_EQUIPMENT_BUILD = "SaveEquipmentBuild",
     REMOVE_EQUIPMENT_BUILD = "RemoveEquipmentBuild",
+    REDEEM_PROFILE_REWARD = "RedeemProfileReward"
 }

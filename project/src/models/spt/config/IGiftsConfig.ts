@@ -4,6 +4,7 @@ import { GiftSenderType } from "@spt-aki/models/enums/GiftSenderType";
 import { SeasonalEventType } from "@spt-aki/models/enums/SeasonalEventType";
 import { Traders } from "@spt-aki/models/enums/Traders";
 import { IBaseConfig } from "@spt-aki/models/spt/config/IBaseConfig";
+import { IProfileChangeEvent } from "../dialog/ISendMessageDetails";
 
 export interface IGiftsConfig extends IBaseConfig
 {
@@ -29,4 +30,6 @@ export interface Gift
     timestampToSend?: number;
     associatedEvent: SeasonalEventType;
     collectionTimeHours: number;
+    /** Optional, can be used to change profile settings like level/skills */
+    profileChangeEvents?: IProfileChangeEvent[];
 }
