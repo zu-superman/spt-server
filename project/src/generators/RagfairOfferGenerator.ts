@@ -21,7 +21,6 @@ import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { SaveServer } from "@spt-aki/servers/SaveServer";
 import { FenceService } from "@spt-aki/services/FenceService";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
-import { RagfairCategoriesService } from "@spt-aki/services/RagfairCategoriesService";
 import { RagfairOfferService } from "@spt-aki/services/RagfairOfferService";
 import { RagfairPriceService } from "@spt-aki/services/RagfairPriceService";
 import { HashUtil } from "@spt-aki/utils/HashUtil";
@@ -51,7 +50,6 @@ export class RagfairOfferGenerator
         @inject("RagfairPriceService") protected ragfairPriceService: RagfairPriceService,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("PaymentHelper") protected paymentHelper: PaymentHelper,
-        @inject("RagfairCategoriesService") protected ragfairCategoriesService: RagfairCategoriesService,
         @inject("FenceService") protected fenceService: FenceService,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("ConfigServer") protected configServer: ConfigServer,
@@ -431,8 +429,6 @@ export class RagfairOfferGenerator
             1,
             isPreset || isPackOffer,
         ); // sellAsOnePiece
-
-        this.ragfairCategoriesService.incrementCategory(offer);
     }
 
     /**
@@ -509,8 +505,6 @@ export class RagfairOfferGenerator
             const loyalLevel = assorts.loyal_level_items[item._id];
 
             const offer = this.createFleaOffer(traderID, time, items, barterSchemeItems, loyalLevel, false);
-
-            this.ragfairCategoriesService.incrementCategory(offer);
 
             // Refresh complete, reset flag to false
             trader.base.refreshTraderRagfairOffers = false;

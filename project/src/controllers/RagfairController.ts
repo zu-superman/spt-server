@@ -95,7 +95,11 @@ export class RagfairController
         const pmcProfile = this.profileHelper.getPmcProfile(sessionID);
 
         result.offers = this.getOffersForSearchType(searchRequest, itemsToAdd, traderAssorts, pmcProfile);
-        result.categories = this.getSpecificCategories(searchRequest, result.offers);
+        
+        if (searchRequest.updateOfferCount)
+        {
+            result.categories = this.getSpecificCategories(pmcProfile, searchRequest, result.offers);
+        }
 
         // Client requested "required search"
         if (searchRequest.neededSearchId)
@@ -131,10 +135,8 @@ export class RagfairController
             }
         }
 
-        // Set categories count (needed for categories to show when choosing 'Linked search')
-        this.ragfairHelper.countCategories(result);
-
         result.offersCount = result.offers.length;
+
         // Handle paging before returning results only if searching for general items, not preset items
         if (searchRequest.buildCount === 0)
         {
@@ -176,21 +178,28 @@ export class RagfairController
      * @param offers ragfair offers to get categories for
      * @returns record with templates + counts
      */
-    protected getSpecificCategories(searchRequest: ISearchRequestData, offers: IRagfairOffer[]): Record<string, number>
+    protected getSpecificCategories(pmcProfile: IPmcData, searchRequest: ISearchRequestData, offers: IRagfairOffer[]): Record<string, number>
     {
         // Linked/required search categories
+        const playerHasFleaUnlocked = pmcProfile.Info.Level > this.databaseServer.getTables().globals.config.RagFair.minUserLevel;
+        let offerPool = [];
         if (this.isLinkedSearch(searchRequest) || this.isRequiredSearch(searchRequest))
         {
-            return this.ragfairServer.getBespokeCategories(offers);
+            offerPool = offers;
         }
-
-        // Get all categories
-        if ((searchRequest.linkedSearchId === "" && searchRequest.neededSearchId === ""))
+        else if ((searchRequest.linkedSearchId === "" && searchRequest.neededSearchId === ""))
         {
-            return this.ragfairServer.getAllCategories();
+            // Get all categories
+            offerPool = this.ragfairOfferService.getOffers();
+        }
+        else
+        {
+            this.logger.error("Unable to get categories from search criteria, see log for request data");
+            this.logger.debug(JSON.stringify(searchRequest));
+            return {};
         }
 
-        return {};
+        return this.ragfairServer.getAllActiveCategories(playerHasFleaUnlocked, searchRequest, offerPool);
     }
 
     /**

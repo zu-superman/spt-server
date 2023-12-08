@@ -258,7 +258,7 @@ export class HideoutHelper
                 continue;
             }
 
-            if (craft.Progress === undefined)
+            if (craft.Progress === undefined || craft.Progress === null)
             {
                 this.logger.warning(`Craft ${prodId} has an undefined progress value, defaulting to 0`);
                 craft.Progress = 0;

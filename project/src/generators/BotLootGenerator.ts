@@ -352,13 +352,14 @@ export class BotLootGenerator
                     itemsToAdd,
                     inventoryToAddItemsTo,
                 );
+
+                // Handle when item cannot be added
                 if (itemAddedResult !== ItemAddedResult.SUCCESS)
                 {
-                    
                     if (itemAddedResult === ItemAddedResult.NO_CONTAINERS)
                     {
                         // Bot has no container to put item in, exit
-                        this.logger.debug(`Unable to add ${totalItemCount} items to bot as it lacks a container to include them`);
+                        this.logger.debug(`Unable to add: ${totalItemCount} items to bot as it lacks a container to include them`);
                         break;
                     }
 
@@ -371,10 +372,13 @@ export class BotLootGenerator
 
                         break;
                     }
+
+                    // Reset loop, try again
+                    continue;
                 }
                 else
                 {
-                    // Reset counter
+                    // Item added okay, reset counter for next item
                     fitItemIntoContainerAttempts = 0;
                 }
 

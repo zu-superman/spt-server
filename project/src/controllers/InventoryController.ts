@@ -27,6 +27,7 @@ import { IInventoryTagRequestData } from "@spt-aki/models/eft/inventory/IInvento
 import { IInventoryToggleRequestData } from "@spt-aki/models/eft/inventory/IInventoryToggleRequestData";
 import { IInventoryTransferRequestData } from "@spt-aki/models/eft/inventory/IInventoryTransferRequestData";
 import { IOpenRandomLootContainerRequestData } from "@spt-aki/models/eft/inventory/IOpenRandomLootContainerRequestData";
+import { IRedeemProfileRequestData } from "@spt-aki/models/eft/inventory/IRedeemProfileRequestData";
 import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEventRouterResponse";
 import { BackendErrorCodes } from "@spt-aki/models/enums/BackendErrorCodes";
 import { SkillTypes } from "@spt-aki/models/enums/SkillTypes";
@@ -36,6 +37,7 @@ import { EventOutputHolder } from "@spt-aki/routers/EventOutputHolder";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { FenceService } from "@spt-aki/services/FenceService";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
+import { PlayerService } from "@spt-aki/services/PlayerService";
 import { RagfairOfferService } from "@spt-aki/services/RagfairOfferService";
 import { HashUtil } from "@spt-aki/utils/HashUtil";
 import { HttpResponseUtil } from "@spt-aki/utils/HttpResponseUtil";
@@ -60,6 +62,7 @@ export class InventoryController
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
         @inject("PaymentHelper") protected paymentHelper: PaymentHelper,
         @inject("LocalisationService") protected localisationService: LocalisationService,
+        @inject("PlayerService") protected playerService: PlayerService,
         @inject("LootGenerator") protected lootGenerator: LootGenerator,
         @inject("EventOutputHolder") protected eventOutputHolder: EventOutputHolder,
         @inject("HttpResponseUtil") protected httpResponseUtil: HttpResponseUtil,
@@ -650,17 +653,30 @@ export class InventoryController
 
         if (itemId)
         {
-            // item found
-            const item = this.databaseServer.getTables().templates.items[itemId];
-
-            pmcData.Info.Experience += item._props.ExamineExperience;
-            pmcData.Encyclopedia[itemId] = true;
-
-            // TODO: update this with correct calculation using values from globals json
-            this.profileHelper.addSkillPointsToPlayer(pmcData, SkillTypes.INTELLECT, 0.5);
+            this.flagItemsAsInspectedAndRewardXp([itemId], pmcData);
         }
 
         return this.eventOutputHolder.getOutput(sessionID);
+    }
+
+    protected flagItemsAsInspectedAndRewardXp(itemTpls: string[], pmcProfile: IPmcData): void
+    {
+        for (const itemTpl of itemTpls)
+        {
+            // item found
+            const item = this.databaseServer.getTables().templates.items[itemTpl];
+            if (!item)
+            {
+                this.logger.warning(`Unable to find item with id ${itemTpl}, skipping inspection`)
+                return;
+            }
+
+            pmcProfile.Info.Experience += item._props.ExamineExperience;
+            pmcProfile.Encyclopedia[itemTpl] = false;
+        }
+
+        // TODO: update this with correct calculation using values from globals json
+        this.profileHelper.addSkillPointsToPlayer(pmcProfile, SkillTypes.INTELLECT, 0.05 * itemTpls.length);
     }
 
     /**
@@ -908,6 +924,61 @@ export class InventoryController
 
         // Add reward items to player inventory
         this.inventoryHelper.addItem(pmcData, newItemRequest, output, sessionID, null, foundInRaid, null, true);
+
+        return output;
+    }
+
+    public redeemProfileReward(pmcData: IPmcData, request: IRedeemProfileRequestData, sessionId: string): IItemEventRouterResponse
+    {
+        const output = this.eventOutputHolder.getOutput(sessionId);
+
+        const fullprofile = this.profileHelper.getFullProfile(sessionId);
+        for (const event of request.events)
+        {
+            // Hard coded to `SYSTEM` for now
+            // TODO: make this dynamic
+            const dialog = fullprofile.dialogues["59e7125688a45068a6249071"];
+            const mail = dialog.messages.find(x => x._id === event.MessageId);
+            const mailEvent = mail.profileChangeEvents.find(x => x._id === event.EventId);
+
+            switch (mailEvent.Type)
+            {
+                case "TraderSalesSum":
+                    pmcData.TradersInfo[mailEvent.entity].salesSum = mailEvent.value;
+                    this.logger.success(`Set trader ${mailEvent.entity}: Sales Sum to: ${mailEvent.value}`);
+                    break;
+                case "TraderStanding":
+                    pmcData.TradersInfo[mailEvent.entity].standing = mailEvent.value;
+                    this.logger.success(`Set trader ${mailEvent.entity}: Standing to: ${mailEvent.value}`);
+                    break;
+                case "ProfileLevel":
+                    pmcData.Info.Experience = mailEvent.value;
+                    pmcData.Info.Level = this.playerService.calculateLevel(pmcData);
+                    this.logger.success(`Set profile xp to: ${mailEvent.value}`);
+                    break;
+                case "SkillPoints":
+                {
+                    const profileSkill = pmcData.Skills.Common.find(x => x.Id === mailEvent.entity);
+                    profileSkill.Progress = mailEvent.value;
+                    this.logger.success(`Set profile skill: ${mailEvent.entity} to: ${mailEvent.value}`);
+                    break;
+                }
+                case "ExamineAllItems":
+                {
+                    const itemsToInspect = this.itemHelper.getItems().filter(x => x._type !== "Node");
+                    this.flagItemsAsInspectedAndRewardXp(itemsToInspect.map(x => x._id), pmcData);
+                    this.logger.success(`Flagged ${itemsToInspect.length} items as examined`);
+                    break;
+                }
+                case "UnlockTrader":
+                    pmcData.TradersInfo[mailEvent.entity].unlocked = true;
+                    this.logger.success(`Trader ${mailEvent.entity} Unlocked`);
+                    break;
+                default:
+                    this.logger.success(`Unhandled profile reward event: ${mailEvent.Type}`);
+                    break;
+            }
+        }
 
         return output;
     }

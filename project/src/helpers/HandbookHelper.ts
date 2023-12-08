@@ -1,5 +1,6 @@
 import { inject, injectable } from "tsyringe";
 
+import { Category } from "@spt-aki/models/eft/common/tables/IHandbookBase";
 import { Money } from "@spt-aki/models/enums/Money";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { JsonUtil } from "@spt-aki/utils/JsonUtil";
@@ -163,5 +164,10 @@ export class HandbookHelper
         // Get price of currency from handbook
         const price = this.getTemplatePrice(currencyTypeTo);
         return price ? Math.round(roubleCurrencyCount / price) : 0;
+    }
+
+    public getCategoryById(handbookId: string): Category
+    {
+        return this.databaseServer.getTables().templates.handbook.Categories.find(x => x.Id === handbookId);
     }
 }

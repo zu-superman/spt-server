@@ -299,6 +299,9 @@ Player profile is stored in SPT folder as a JSON file, allowing for changes to p
 - Raid damage
 	- Exiting a raid with injury to player character will be persisted out of raid
 - Post-raid therapist healing
+- Scav Raids
+	- Adjusted time when running raids as scav
+	- Simulated loot being taken by other players the later into the raid player starts
 
 ## Messages
 - Receive from traders

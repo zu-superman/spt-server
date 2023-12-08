@@ -212,7 +212,7 @@ export class LootGenerator
             max = options.itemStackLimits[item._id].max;
         }
 
-        return this.randomUtil.getInt(min, max);
+        return this.randomUtil.getInt(min ?? 1, max ?? 1);
     }
 
     /**

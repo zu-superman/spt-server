@@ -146,31 +146,6 @@ export class RagfairHelper
         return result;
     }
 
-    /* Because of presets, categories are not always 1 */
-    public countCategories(result: IGetOffersResult): void
-    {
-        const categories = {};
-
-        for (const offer of result.offers)
-        {
-            // only the first item can have presets
-            const item = offer.items[0];
-            categories[item._tpl] = categories[item._tpl] || 0;
-            categories[item._tpl]++;
-        }
-
-        // not in search mode, add back non-weapon items
-        for (const category in result.categories)
-        {
-            if (!categories[category])
-            {
-                categories[category] = 1;
-            }
-        }
-
-        result.categories = categories;
-    }
-
     /**
      * Merges Root Items
      * Ragfair allows abnormally large stacks.

@@ -271,7 +271,7 @@ export class LocationGenerator
     }
 
     /**
-     * Choose a number of containers based on their probability value to fulfil the desired count in containerData.chosenCount
+     * Choose a number of containers based on their probabilty value to fulfil the desired count in containerData.chosenCount
      * @param groupId Name of the group the containers are being collected for
      * @param containerData Containers and probability values for a groupId
      * @returns List of chosen container Ids
@@ -289,14 +289,11 @@ export class LocationGenerator
             return containerIds;
         }
 
-        // Create probability array with all possible container ids in this group and their relative probability of spawning
+        // Create probability array with all possible container ids in this group and their relataive probability of spawning
         const containerDistribution = new ProbabilityObjectArray<string>(this.mathUtil, this.jsonUtil);
-        for (const containerId of containerIds)
-        {
-            containerDistribution.push(
-                new ProbabilityObject(containerId, containerData.containerIdsWithProbability[containerId]),
-            );
-        }
+        containerIds.forEach((x) =>
+            containerDistribution.push(new ProbabilityObject(x, containerData.containerIdsWithProbability[x]))
+        );
 
         chosenContainerIds.push(...containerDistribution.draw(containerData.chosenCount));
 
@@ -492,7 +489,7 @@ export class LocationGenerator
         locationName: string,
     ): number
     {
-        // Create probability array to calculate the total count of lootable items inside container
+        // Create probability array to calcualte the total count of lootable items inside container
         const itemCountArray = new ProbabilityObjectArray<number>(this.mathUtil, this.jsonUtil);
         for (const itemCountDistribution of staticLootDist[containerTypeId].itemcountDistribution)
         {
@@ -508,9 +505,9 @@ export class LocationGenerator
     /**
      * Get all possible loot items that can be placed into a container
      * Do not add seasonal items if found + current date is inside seasonal event
-     * @param containerTypeId Container to get possible loot for
+     * @param containerTypeId Contianer to get possible loot for
      * @param staticLootDist staticLoot.json
-     * @returns ProbabilityObjectArray of item tpls + probability
+     * @returns ProbabilityObjectArray of item tpls + probabilty
      */
     protected getPossibleLootItemsForContainer(
         containerTypeId: string,
@@ -518,7 +515,7 @@ export class LocationGenerator
     ): ProbabilityObjectArray<string, number>
     {
         const seasonalEventActive = this.seasonalEventService.seasonalEventEnabled();
-        const seasonalItemTplBlacklist = this.seasonalEventService.getInactiveSeasonalEventItems();
+        const seasonalItemTplBlacklist = this.seasonalEventService.getAllSeasonalEventItems();
 
         const itemDistribution = new ProbabilityObjectArray<string>(this.mathUtil, this.jsonUtil);
         for (const icd of staticLootDist[containerTypeId].itemDistribution)
@@ -579,7 +576,7 @@ export class LocationGenerator
 
         for (const spawnpoint of allDynamicSpawnpoints)
         {
-            // Point is blacklisted, skip
+            // Point is blacklsited, skip
             if (blacklistedSpawnpoints?.includes(spawnpoint.template.Id))
             {
                 this.logger.debug(`Ignoring loose loot location: ${spawnpoint.template.Id}`);
@@ -623,7 +620,7 @@ export class LocationGenerator
 
         // Iterate over spawnpoints
         const seasonalEventActive = this.seasonalEventService.seasonalEventEnabled();
-        const seasonalItemTplBlacklist = this.seasonalEventService.getInactiveSeasonalEventItems();
+        const seasonalItemTplBlacklist = this.seasonalEventService.getAllSeasonalEventItems();
         for (const spawnPoint of chosenSpawnpoints)
         {
             if (!spawnPoint.template)
@@ -676,12 +673,12 @@ export class LocationGenerator
 
     /**
      * Add forced spawn point loot into loot parameter array
-     * @param loot array to add forced loot to
-     * @param forcedSpawnPoints forced loot to add
-     * @param name of map currently generating forced loot for
+     * @param lootLocationTemplates array to add forced loot spawn locations to
+     * @param forcedSpawnPoints forced Forced loot locations that must be added
+     * @param locationName Name of map currently having force loot created for
      */
     protected addForcedLoot(
-        loot: SpawnpointTemplate[],
+        lootLocationTemplates: SpawnpointTemplate[],
         forcedSpawnPoints: SpawnpointsForced[],
         locationName: string,
     ): void
@@ -720,32 +717,47 @@ export class LocationGenerator
                     const lootItem = itemToAdd.template;
                     lootItem.Root = this.objectId.generate();
                     lootItem.Items[0]._id = lootItem.Root;
-                    loot.push(lootItem);
+                    lootLocationTemplates.push(lootItem);
                 }
             }
         }
 
         const seasonalEventActive = this.seasonalEventService.seasonalEventEnabled();
-        const seasonalItemTplBlacklist = this.seasonalEventService.getInactiveSeasonalEventItems();
+        const seasonalItemTplBlacklist = this.seasonalEventService.getAllSeasonalEventItems();
+        
         // Add remaining forced loot to array
-        for (const forcedLootItem of forcedSpawnPoints)
+        for (const forcedLootLocation of forcedSpawnPoints)
         {
-            // Skip spawn positions processed above
-            if (lootToForceSingleAmountOnMap?.includes(forcedLootItem.template.Items[0]._tpl))
+            const firstLootItemTpl = forcedLootLocation.template.Items[0]._tpl;
+
+            // Skip spawn positions processed already
+            if (lootToForceSingleAmountOnMap?.includes(firstLootItemTpl))
             {
                 continue;
             }
 
-            // Skip seasonal items when seasonal event is active
-            if (!seasonalEventActive && seasonalItemTplBlacklist.includes(forcedLootItem.template.Items[0]._tpl))
+            // Skip adding seasonal items when seasonal event is not active
+            if (!seasonalEventActive && seasonalItemTplBlacklist.includes(firstLootItemTpl))
             {
                 continue;
             }
 
-            const li = forcedLootItem.template;
-            li.Root = this.objectId.generate();
-            li.Items[0]._id = li.Root;
-            loot.push(li);
+            const locationTemplateToAdd = forcedLootLocation.template;
+            
+            // Ensure root id matches the first items id
+            locationTemplateToAdd.Root = this.objectId.generate();
+            locationTemplateToAdd.Items[0]._id = locationTemplateToAdd.Root;
+
+            // Push forced location into array as long as it doesnt exist already
+            const existingLocation = lootLocationTemplates.find(x => x.Id === locationTemplateToAdd.Id);
+            if (!existingLocation)
+            {
+                lootLocationTemplates.push(locationTemplateToAdd);
+            }
+            else
+            {
+                this.logger.debug(`Attempted to add a forced loot location with Id: ${locationTemplateToAdd.Id} to map ${locationName} that already has that id in use, skipping`)
+            }
         }
     }
 
@@ -926,7 +938,7 @@ export class LocationGenerator
             }
             else
             {
-                // RSP30 (62178be9d0050232da3485d9/624c0b3340357b5f566e8766/6217726288ed9f0845317459) doesn't have any default presets and kills this code below as it has no children to reparent
+                // RSP30 (62178be9d0050232da3485d9/624c0b3340357b5f566e8766/6217726288ed9f0845317459) doesnt have any default presets and kills this code below as it has no chidren to reparent
                 this.logger.debug(`createItem() No preset found for weapon: ${tpl}`);
             }
 
