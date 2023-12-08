@@ -1034,6 +1034,11 @@ class ItemHelper
             magazineCartridgeMaxCount,
         );
 
+        if (magazine.length > 1)
+        {
+            this.logger.warning(`Magazine ${magTemplate._name} already has cartridges defined, this may cause issues`);
+        }
+
         // Loop over cartridge count and add stacks to magazine
         let currentStoredCartridgeCount = 0;
         let location = 0;

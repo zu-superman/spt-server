@@ -138,7 +138,7 @@ export class BotWeaponGeneratorHelper
 
                 if (result === ItemAddedResult.NO_SPACE || result === ItemAddedResult.NO_CONTAINERS)
                 {
-                    // If there's no space for 1 stack, there's no space for the others
+                    // If there's no space for 1 stack or no containers to hold item, there's no space for the others
                     break;
                 }
             }
@@ -183,7 +183,7 @@ export class BotWeaponGeneratorHelper
                 missingContainerCount++;
                 if (missingContainerCount === equipmentSlots.length)
                 {
-                    // Bot doesnt have any containers
+                    // Bot doesnt have any containers we want to add item to
                     this.logger.debug(
                         `Unable to add item: ${
                             itemWithChildren[0]._tpl
@@ -193,6 +193,7 @@ export class BotWeaponGeneratorHelper
                     return ItemAddedResult.NO_CONTAINERS
                 }
 
+                // No container of desired type found, skip to next container type
                 continue;
             }
 
@@ -200,8 +201,9 @@ export class BotWeaponGeneratorHelper
             const containerTemplate = this.itemHelper.getItem(container._tpl);
             if (!containerTemplate[0])
             {
-                this.logger.error(this.localisationService.getText("bot-missing_container_with_tpl", container._tpl));
+                this.logger.warning(this.localisationService.getText("bot-missing_container_with_tpl", container._tpl));
 
+                // Bad item, skip
                 continue;
             }
 
@@ -225,10 +227,17 @@ export class BotWeaponGeneratorHelper
                     continue;
                 }
 
-                // Can't put item type in grid, skip
+                // Can't put item type in grid, skip all grids as we're assuming they have the same rules
                 if (!this.itemAllowedInContainer(slotGrid, parentTpl))
                 {
-                    continue;
+                    // Only one possible slot and item is incompatible, exit function and inform caller
+                    if (equipmentSlots.length === 1)
+                    {
+                        return ItemAddedResult.INCOMPATIBLE_ITEM;
+                    }
+
+                    // Multiple containers, maybe next one allows item, only break out of loop for this containers grids
+                    break;
                 }
 
                 // Get all root items in backpack
@@ -236,7 +245,7 @@ export class BotWeaponGeneratorHelper
                     i.parentId === container._id && i.slotId === slotGrid._name
                 );
 
-                // Get a copy of base level items we can iterate over
+                // Get root items in container we can iterate over to find out what space is free
                 const containerItemsToCheck = existingContainerItems.filter((x) => x.slotId === slotGrid._name);
                 for (const item of containerItemsToCheck)
                 {
@@ -286,7 +295,7 @@ export class BotWeaponGeneratorHelper
                 }
                 currentGridCount++;
 
-                // Start loop again in next grid of container
+                // No space in this grid, move to next container grid and try again
             }
         }
 
@@ -294,34 +303,42 @@ export class BotWeaponGeneratorHelper
     }
 
     /**
-     * is the provided item allowed inside a container
-     * @param slot location item wants to be placed in
-     * @param itemTpl item being placed
-     * @returns true if allowed
+     * Is the provided item allowed inside a container
+     * @param slotGrid Items sub-grid we want to place item inside
+     * @param itemTpl Item tpl being placed
+     * @returns True if allowed
      */
-    protected itemAllowedInContainer(slot: Grid, itemTpl: string): boolean
+    protected itemAllowedInContainer(slotGrid: Grid, itemTpl: string): boolean
     {
-        const filters = slot._props.filters;
+        const propFilters = slotGrid._props.filters;
+        const excludedFilter = propFilters[0]?.ExcludedFilter;
+        const filter = propFilters[0]?.Filter;
+
+        if (propFilters.length === 0)
+        {
+            // no filters, item is fine to add
+            return true;
+        }
 
         // Check if item base type is excluded
-        if (filters?.length && (filters[0].ExcludedFilter || filters[0].Filter))
+        if (excludedFilter || filter)
         {
             const itemDetails = this.itemHelper.getItem(itemTpl)[1];
 
             // if item to add is found in exclude filter, not allowed
-            if (filters[0].ExcludedFilter.includes(itemDetails._parent))
+            if (excludedFilter.includes(itemDetails._parent))
             {
                 return false;
             }
 
-            // if Filter array only contains 1 filter and its for 'item', allowed
-            if (filters[0].Filter.length === 1 && filters[0].Filter.includes(BaseClasses.ITEM))
+            // If Filter array only contains 1 filter and its for basetype 'item', allow it
+            if (filter.length === 1 && filter.includes(BaseClasses.ITEM))
             {
                 return true;
             }
 
-            // if allowed filter has something in it + filter doesnt have item, not allowed
-            if (filters[0].Filter.length > 0 && !filters[0].Filter.includes(itemDetails._parent))
+            // If allowed filter has something in it + filter doesnt have basetype 'item', not allowed
+            if (filter.length > 0 && !filter.includes(itemDetails._parent))
             {
                 return false;
             }
