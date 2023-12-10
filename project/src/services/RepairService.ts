@@ -154,7 +154,10 @@ export class RepairService
         {
             const skillPoints = this.getWeaponRepairSkillPoints(repairDetails);
 
-            this.profileHelper.addSkillPointsToPlayer(pmcData, SkillTypes.WEAPON_TREATMENT, skillPoints, true);
+            if (skillPoints > 0)
+            {
+                this.profileHelper.addSkillPointsToPlayer(pmcData, SkillTypes.WEAPON_TREATMENT, skillPoints, true);
+            }
         }
 
         // Handle kit repairs of armor
