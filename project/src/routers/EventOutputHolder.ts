@@ -196,14 +196,14 @@ export class EventOutputHolder
         for (const productionKey in productions)
         {
             const production = productions[productionKey];
-            if (production.sptIsComplete && production.sptIsContinuous)
+            if (production?.sptIsComplete && production?.sptIsContinuous)
             {
                 // Water collector / Bitcoin etc
                 production.sptIsComplete = false;
                 production.Progress = 0;
                 production.StartTimestamp = this.timeUtil.getTimestamp();
             }
-            else if (!production.inProgress)
+            else if (!production?.inProgress)
             {
                 // Normal completed craft, delete
                 delete productions[productionKey];
