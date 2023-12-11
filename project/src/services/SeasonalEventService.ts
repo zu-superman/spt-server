@@ -300,6 +300,8 @@ export class SeasonalEventService
      */
     protected updateGlobalEvents(sessionId: string, globalConfig: IConfig, eventType: SeasonalEventType): void
     {
+        this.logger.success(`${eventType} event is active`);
+
         switch (eventType.toLowerCase())
         {
             case SeasonalEventType.HALLOWEEN.toLowerCase():
