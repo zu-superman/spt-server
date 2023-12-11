@@ -394,7 +394,7 @@ export class ProfileHelper
     {
         if (!pointsToAdd || pointsToAdd < 0)
         {
-            this.logger.error(
+            this.logger.warning(
                 this.localisationService.getText("player-attempt_to_increment_skill_with_negative_value", skill),
             );
             return;
