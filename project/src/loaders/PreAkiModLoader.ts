@@ -429,9 +429,10 @@ export class PreAkiModLoader implements IModLoader
     public sortModsLoadOrder(): string[]
     {
         // if loadorder.json exists: load it, otherwise generate load order
-        if (this.vfs.exists(`${this.basepath}loadorder.json`))
+        const loadOrderPath = `${this.basepath}loadorder.json`
+        if (this.vfs.exists(loadOrderPath))
         {
-            return this.jsonUtil.deserialize(this.vfs.readFile(`${this.basepath}loadorder.json`));
+            return this.jsonUtil.deserialize(this.vfs.readFile(loadOrderPath), loadOrderPath);
         }
         else
         {
@@ -661,14 +662,15 @@ export class PreAkiModLoader implements IModLoader
         }
 
         // Check if config exists
-        if (!this.vfs.exists(`${modPath}/package.json`))
+        const modPackagePath = `${modPath}/package.json`;
+        if (!this.vfs.exists(modPackagePath))
         {
             this.logger.error(this.localisationService.getText("modloader-missing_package_json", modName));
             return false;
         }
 
         // Validate mod
-        const config = this.jsonUtil.deserialize<IPackageJsonData>(this.vfs.readFile(`${modPath}/package.json`));
+        const config = this.jsonUtil.deserialize<IPackageJsonData>(this.vfs.readFile(modPackagePath), modPackagePath);
         const checks = ["name", "author", "version", "license"];
         let issue = false;
 
