@@ -234,39 +234,39 @@
     "gifterSettings": [{
             "map": "bigmap",
             "zones": "ZoneDormitory,ZoneGasStation,ZoneScavBase",
-            "spawnChance": 15
+            "spawnChance": 45
         }, {
             "map": "factory4_day",
             "zones": "BotZone",
-            "spawnChance": 10
+            "spawnChance": 30
         }, {
             "map": "laboratory",
             "zones": "BotZoneFloor1,BotZoneFloor2",
-            "spawnChance": 15
+            "spawnChance": 35
         }, {
             "map": "interchange",
             "zones": "ZoneCenterBot,ZoneCenter,ZoneOLI,ZoneIDEA,ZoneGoshan,ZoneIDEAPark,ZoneOLIPark",
-            "spawnChance": 15
+            "spawnChance": 45
         }, {
             "map": "lighthouse",
             "zones": "Zone_TreatmentContainers,Zone_Chalet,Zone_RoofContainers,Zone_RoofBeach,Zone_Hellicopter",
-            "spawnChance": 15
+            "spawnChance": 45
         }, {
             "map": "rezervbase",
             "zones": "ZoneRailStrorage,ZoneRailStrorage,ZoneRailStrorage,ZonePTOR1,ZonePTOR2,ZoneBarrack,ZoneBarrack,ZoneBarrack,ZoneSubStorage",
-            "spawnChance": 15
+            "spawnChance": 45
         }, {
             "map": "shoreline",
             "zones": "ZonePort,ZoneGreenHouses,ZoneSanatorium1,ZoneGreenHouses,ZoneSanatorium2,ZoneMeteoStation,ZoneSanatorium1,ZoneSanatorium2",
-            "spawnChance": 15
+            "spawnChance": 45
         }, {
             "map": "tarkovstreets",
             "zones": "ZoneColumn",
-            "spawnChance": 10
+            "spawnChance": 40
         }, {
             "map": "woods",
             "zones": "ZoneScavBase2,ZoneWoodCutter",
-            "spawnChance": 15
+            "spawnChance": 45
         }
     ],
     "events": [{
