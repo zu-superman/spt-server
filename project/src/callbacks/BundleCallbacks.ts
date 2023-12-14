@@ -25,7 +25,7 @@ export class BundleCallbacks
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public sendBundle(sessionID: string, req: any, resp: any, body: any): any
+    public sendBundle(sessionID: string, req: any, resp: any, body: any): void
     {
         this.logger.info(`[BUNDLE]: ${req.url}`);
 

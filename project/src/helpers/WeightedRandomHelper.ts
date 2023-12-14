@@ -18,6 +18,11 @@ export class WeightedRandomHelper
         return chosenItem.item;
     }
 
+    /**
+     * Choos an item from the passed in array based on the weightings of each
+     * @param itemArray Items and weights to use
+     * @returns Chosen item from array
+     */
     public getWeightedValue<T>(itemArray: { [key: string]: unknown; } | ArrayLike<unknown>): T
     {
         const itemKeys = Object.keys(itemArray);

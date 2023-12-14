@@ -48,6 +48,7 @@ export class RepairHelper
     ): void
     {
         this.logger.debug(`Adding ${amountToRepair} to ${itemToRepairDetails._name} using kit: ${useRepairKit}`);
+
         const itemMaxDurability = this.jsonUtil.clone(itemToRepair.upd.Repairable.MaxDurability);
         const itemCurrentDurability = this.jsonUtil.clone(itemToRepair.upd.Repairable.Durability);
         const itemCurrentMaxDurability = this.jsonUtil.clone(itemToRepair.upd.Repairable.MaxDurability);
@@ -105,6 +106,14 @@ export class RepairHelper
         }
     }
 
+    /**
+     * Repairing armor reduces the total durability value slightly, get a randomised (to 2dp) amount based on armor material
+     * @param armorMaterial What material is the armor being repaired made of
+     * @param isRepairKit Was a repair kit used
+     * @param armorMax Max amount of durability item can have
+     * @param traderQualityMultipler Different traders produce different loss values
+     * @returns Amount to reduce max durability by
+     */
     protected getRandomisedArmorRepairDegradationValue(
         armorMaterial: string,
         isRepairKit: boolean,
@@ -112,6 +121,7 @@ export class RepairHelper
         traderQualityMultipler: number,
     ): number
     {
+        // Degradation value is based on the armor material
         const armorMaterialSettings = this.databaseServer.getTables().globals.config.ArmorMaterials[armorMaterial];
 
         const minMultiplier = isRepairKit
@@ -128,6 +138,14 @@ export class RepairHelper
         return Number(duraLossMultipliedByTraderMultiplier.toFixed(2));
     }
 
+    /**
+     * Repairing weapons reduces the total durability value slightly, get a randomised (to 2dp) amount
+     * @param itemProps Weapon properties
+     * @param isRepairKit Was a repair kit used
+     * @param weaponMax ax amount of durability item can have
+     * @param traderQualityMultipler Different traders produce different loss values
+     * @returns Amount to reduce max durability by
+     */
     protected getRandomisedWeaponRepairDegradationValue(
         itemProps: Props,
         isRepairKit: boolean,
@@ -148,20 +166,5 @@ export class RepairHelper
         const duraLossMultipliedByTraderMultiplier = (duraLossPercent * weaponMax) * traderQualityMultipler;
 
         return Number(duraLossMultipliedByTraderMultiplier.toFixed(2));
-    }
-
-    /**
-     * Is the supplied tpl a weapon
-     * @param tpl tplId to check is a weapon
-     * @returns true if tpl is a weapon
-     */
-    public isWeaponTemplate(tpl: string): boolean
-    {
-        const itemTemplates = this.databaseServer.getTables().templates.items;
-        const baseItem = itemTemplates[tpl];
-        const baseNode = itemTemplates[baseItem._parent];
-        const parentNode = itemTemplates[baseNode._parent];
-
-        return parentNode._id === BaseClasses.WEAPON;
     }
 }

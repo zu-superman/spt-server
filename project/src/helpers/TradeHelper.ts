@@ -120,7 +120,7 @@ export class TradeHelper
                 this.incrementAssortBuyCount(itemPurchased, buyRequestData.count);
             }
 
-            this.logger.debug(`Bought item: ${buyRequestData.item_id} from ${buyRequestData.tid}`);
+            this.logger.debug(`Bought item: ${buyRequestData.item_id} from: ${Traders[buyRequestData.tid]}`);
         };
 
         return this.inventoryHelper.addItem(pmcData, newReq, output, sessionID, callback, foundInRaid, upd);
@@ -184,12 +184,18 @@ export class TradeHelper
         }
     }
 
+    /**
+     * Traders allow a limited number of purchases per refresh cycle (default 60 mins)
+     * @param assortBeingPurchased the item from trader being bought
+     * @param assortId Id of assort being purchased
+     * @param count How many are being bought
+     */
     protected checkPurchaseIsWithinTraderItemLimit(assortBeingPurchased: Item, assortId: string, count: number): void
     {
         if ((assortBeingPurchased.upd.BuyRestrictionCurrent + count) > assortBeingPurchased.upd?.BuyRestrictionMax)
         {
             throw new Error(
-                `Unable to purchase ${count} items, this would exceed your purchase limit of ${assortBeingPurchased.upd.BuyRestrictionMax} from the trader this refresh`,
+                `Unable to purchase ${count} items, this would exceed your purchase limit of ${assortBeingPurchased.upd.BuyRestrictionMax} from the traders assort: ${assortId} this refresh`,
             );
         }
     }

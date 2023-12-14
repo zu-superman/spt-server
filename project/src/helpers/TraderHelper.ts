@@ -149,6 +149,12 @@ export class TraderHelper
         }
     }
 
+    /**
+     * Get the starting standing of a trader based on the current profiles type (e.g. EoD, Standard etc)
+     * @param traderId Trader id to get standing for
+     * @param rawProfileTemplate Raw profile from profiles.json to look up standing from
+     * @returns Standing value
+     */
     protected getStartingStanding(traderId: string, rawProfileTemplate: ProfileTraderTemplate): number
     {
         // Edge case for Lightkeeper, 0 standing means seeing `Make Amends - Buyout` quest
@@ -303,6 +309,7 @@ export class TraderHelper
     // eslint-disable-next-line @typescript-eslint/naming-convention
     public addTraderPurchasesToPlayerProfile(
         sessionID: string,
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         newPurchaseDetails: { items: { item_id: string; count: number; }[]; tid: string; },
     ): void
     {

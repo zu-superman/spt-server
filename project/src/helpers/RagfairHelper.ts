@@ -6,7 +6,6 @@ import { TraderAssortHelper } from "@spt-aki/helpers/TraderAssortHelper";
 import { UtilityHelper } from "@spt-aki/helpers/UtilityHelper";
 import { Item } from "@spt-aki/models/eft/common/tables/IItem";
 import { ITraderAssort } from "@spt-aki/models/eft/common/tables/ITrader";
-import { IGetOffersResult } from "@spt-aki/models/eft/ragfair/IGetOffersResult";
 import { ISearchRequestData } from "@spt-aki/models/eft/ragfair/ISearchRequestData";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { Money } from "@spt-aki/models/enums/Money";
@@ -60,27 +59,27 @@ export class RagfairHelper
         }
     }
 
-    public filterCategories(sessionID: string, info: ISearchRequestData): string[]
+    public filterCategories(sessionID: string, request: ISearchRequestData): string[]
     {
         let result: string[] = [];
 
         // Case: weapon builds
-        if (info.buildCount)
+        if (request.buildCount)
         {
-            return Object.keys(info.buildItems);
+            return Object.keys(request.buildItems);
         }
 
         // Case: search
-        if (info.linkedSearchId)
+        if (request.linkedSearchId)
         {
-            const data = this.ragfairLinkedItemService.getLinkedItems(info.linkedSearchId);
+            const data = this.ragfairLinkedItemService.getLinkedItems(request.linkedSearchId);
             result = !data ? [] : [...data];
         }
 
         // Case: category
-        if (info.handbookId)
+        if (request.handbookId)
         {
-            const handbook = this.getCategoryList(info.handbookId);
+            const handbook = this.getCategoryList(request.handbookId);
 
             if (result.length)
             {
@@ -183,6 +182,12 @@ export class RagfairHelper
         return [...[rootItem], ...list];
     }
 
+    /**
+     * Return the symbol for a currency
+     * e.g. 5449016a4bdc2d6f028b456f return ₽
+     * @param currencyTpl currency to get symbol for
+     * @returns symbol of currency
+     */
     public getCurrencySymbol(currencyTpl: string): string
     {
         switch (currencyTpl)

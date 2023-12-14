@@ -13,6 +13,7 @@ import { MessageType } from "@spt-aki/models/enums/MessageType";
 import { Traders } from "@spt-aki/models/enums/Traders";
 import { IQuestConfig } from "@spt-aki/models/spt/config/IQuestConfig";
 import { IRagfairConfig } from "@spt-aki/models/spt/config/IRagfairConfig";
+import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt-aki/servers/ConfigServer";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { SaveServer } from "@spt-aki/servers/SaveServer";
@@ -35,6 +36,7 @@ export class RagfairServerHelper
     protected static goodsReturnedTemplate = "5bdabfe486f7743e1665df6e 0"; // Your item was not sold
 
     constructor(
+        @inject("WinstonLogger") protected logger: ILogger,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
@@ -236,6 +238,11 @@ export class RagfairServerHelper
         return MemberCategory.DEFAULT;
     }
 
+    /**
+     * Get a player or traders nickname from their profile by their user id
+     * @param userID Sessionid/userid
+     * @returns Nickname of individual
+     */
     public getNickname(userID: string): string
     {
         if (this.isPlayer(userID))
@@ -257,16 +264,25 @@ export class RagfairServerHelper
         return (name.length > 15) ? this.getNickname(userID) : name;
     }
 
-    public getPresetItems(item: any): Item[]
+    /**
+     * Given a preset id from globals.json, return an array of items[] with unique ids
+     * @param item Preset item
+     * @returns Array of weapon and its children
+     */
+    public getPresetItems(item: Item): Item[]
     {
         const preset = this.jsonUtil.clone(this.databaseServer.getTables().globals.ItemPresets[item._id]._items);
         return this.reparentPresets(item, preset);
     }
 
+    /**
+     * Possible bug, returns all items associated with an items tpl, could be multiple presets from globals.json
+     * @param item Preset item
+     * @returns 
+     */
     public getPresetItemsByTpl(item: Item): Item[]
     {
         const presets = [];
-
         for (const itemId in this.databaseServer.getTables().globals.ItemPresets)
         {
             if (this.databaseServer.getTables().globals.ItemPresets[itemId]._items[0]._tpl === item._tpl)
@@ -282,17 +298,17 @@ export class RagfairServerHelper
     }
 
     /**
-     * Generate new unique ids for the children while preserving hierarchy
-     * @param item base item
-     * @param preset
+     * Generate new unique ids for child items while preserving hierarchy
+     * @param rootItem Base/primary item of preset
+     * @param preset Primary item + children of primary item
      * @returns Item array with new IDs
      */
-    public reparentPresets(item: Item, preset: Item[]): Item[]
+    public reparentPresets(rootItem: Item, preset: Item[]): Item[]
     {
         const oldRootId = preset[0]._id;
         const idMappings = {};
 
-        idMappings[oldRootId] = item._id;
+        idMappings[oldRootId] = rootItem._id;
 
         for (const mod of preset)
         {
@@ -314,8 +330,13 @@ export class RagfairServerHelper
             }
         }
 
-        // force item's details into first location of presetItems
-        preset[0] = item;
+        // Force item's details into first location of presetItems
+        if (preset[0]._tpl !== rootItem._tpl)
+        {
+            this.logger.warning(`Reassigning root item from ${preset[0]._tpl} to ${rootItem._tpl}`);
+        }
+
+        preset[0] = rootItem;
 
         return preset;
     }

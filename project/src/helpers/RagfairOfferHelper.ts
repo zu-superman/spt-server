@@ -354,6 +354,7 @@ export class RagfairOfferHelper
         const profileRagfairInfo = this.saveServer.getProfile(sessionID).characters.pmc.RagfairInfo;
         const index = profileRagfairInfo.offers.findIndex((o) => o._id === offerId);
         profileRagfairInfo.offers.splice(index, 1);
+
         // Also delete from ragfair
         this.ragfairOfferService.removeOfferById(offerId);
     }
@@ -437,15 +438,14 @@ export class RagfairOfferHelper
             };
 
             const stacks = this.itemHelper.splitStack(requestedItem);
-
             for (const item of stacks)
             {
                 const outItems = [item];
 
+                // TODO - is this code used?, may have been when adding barters to flea was still possible for player
                 if (requirement.onlyFunctional)
                 {
                     const presetItems = this.ragfairServerHelper.getPresetItemsByTpl(item);
-
                     if (presetItems.length)
                     {
                         outItems.push(presetItems[0]);
