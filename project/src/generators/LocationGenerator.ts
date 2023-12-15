@@ -515,7 +515,7 @@ export class LocationGenerator
     ): ProbabilityObjectArray<string, number>
     {
         const seasonalEventActive = this.seasonalEventService.seasonalEventEnabled();
-        const seasonalItemTplBlacklist = this.seasonalEventService.getAllSeasonalEventItems();
+        const seasonalItemTplBlacklist = this.seasonalEventService.getInactiveSeasonalEventItems();
 
         const itemDistribution = new ProbabilityObjectArray<string>(this.mathUtil, this.jsonUtil);
         for (const icd of staticLootDist[containerTypeId].itemDistribution)
@@ -620,7 +620,7 @@ export class LocationGenerator
 
         // Iterate over spawnpoints
         const seasonalEventActive = this.seasonalEventService.seasonalEventEnabled();
-        const seasonalItemTplBlacklist = this.seasonalEventService.getAllSeasonalEventItems();
+        const seasonalItemTplBlacklist = this.seasonalEventService.getInactiveSeasonalEventItems();
         for (const spawnPoint of chosenSpawnpoints)
         {
             if (!spawnPoint.template)
@@ -723,8 +723,8 @@ export class LocationGenerator
         }
 
         const seasonalEventActive = this.seasonalEventService.seasonalEventEnabled();
-        const seasonalItemTplBlacklist = this.seasonalEventService.getAllSeasonalEventItems();
-        
+        const seasonalItemTplBlacklist = this.seasonalEventService.getInactiveSeasonalEventItems();
+
         // Add remaining forced loot to array
         for (const forcedLootLocation of forcedSpawnPoints)
         {
@@ -743,20 +743,22 @@ export class LocationGenerator
             }
 
             const locationTemplateToAdd = forcedLootLocation.template;
-            
+
             // Ensure root id matches the first items id
             locationTemplateToAdd.Root = this.objectId.generate();
             locationTemplateToAdd.Items[0]._id = locationTemplateToAdd.Root;
 
             // Push forced location into array as long as it doesnt exist already
-            const existingLocation = lootLocationTemplates.find(x => x.Id === locationTemplateToAdd.Id);
+            const existingLocation = lootLocationTemplates.find((x) => x.Id === locationTemplateToAdd.Id);
             if (!existingLocation)
             {
                 lootLocationTemplates.push(locationTemplateToAdd);
             }
             else
             {
-                this.logger.debug(`Attempted to add a forced loot location with Id: ${locationTemplateToAdd.Id} to map ${locationName} that already has that id in use, skipping`)
+                this.logger.debug(
+                    `Attempted to add a forced loot location with Id: ${locationTemplateToAdd.Id} to map ${locationName} that already has that id in use, skipping`,
+                );
             }
         }
     }
