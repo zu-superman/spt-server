@@ -307,6 +307,8 @@ export class BotGeneratorHelper
                     slot: equipmentSlot,
                 }),
             );
+
+            return { incompatible: true, reason: `item: ${tplToCheck} does not exist in the database` }; 
         }
 
         if (!itemToCheck._props)
@@ -318,6 +320,8 @@ export class BotGeneratorHelper
                     slot: equipmentSlot,
                 }),
             );
+
+            return { incompatible: true, reason: `item: ${tplToCheck} does not have a _props field` }; 
         }
 
         // Does an equipped item have a property that blocks the desired item - check for prop "BlocksX" .e.g BlocksEarpiece / BlocksFaceCover

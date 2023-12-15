@@ -27,7 +27,7 @@ export class HashCacheService
         // get mod hash file
         if (!this.modHashes)
         { // empty
-            this.modHashes = this.jsonUtil.deserialize(this.vfs.readFile(`${this.modCachePath}`));
+            this.modHashes = this.jsonUtil.deserialize(this.vfs.readFile(`${this.modCachePath}`), this.modCachePath);
         }
     }
 

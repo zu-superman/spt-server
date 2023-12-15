@@ -141,6 +141,7 @@ export class RepairService
      */
     public addRepairSkillPoints(sessionId: string, repairDetails: RepairDetails, pmcData: IPmcData): void
     {
+        // Handle kit repair of weapon
         if (
             repairDetails.repairedByKit
             && this.itemHelper.isOfBaseclass(repairDetails.repairedItem._tpl, BaseClasses.WEAPON)
@@ -148,10 +149,13 @@ export class RepairService
         {
             const skillPoints = this.getWeaponRepairSkillPoints(repairDetails);
 
-            this.profileHelper.addSkillPointsToPlayer(pmcData, SkillTypes.WEAPON_TREATMENT, skillPoints, true);
+            if (skillPoints > 0)
+            {
+                this.profileHelper.addSkillPointsToPlayer(pmcData, SkillTypes.WEAPON_TREATMENT, skillPoints, true);
+            }
         }
 
-        // Handle kit repairs of armor
+        // Handle kit repair of armor
         if (
             repairDetails.repairedByKit
             && this.itemHelper.isOfBaseclasses(repairDetails.repairedItem._tpl, [BaseClasses.ARMOR, BaseClasses.VEST])
@@ -180,16 +184,25 @@ export class RepairService
         }
 
         // Handle giving INT to player - differs if using kit/trader and weapon vs armor
-        let intellectGainedFromRepair: number;
+        const intellectGainedFromRepair = this.getIntellectGainedFromRepair(repairDetails);
+        if (intellectGainedFromRepair > 0)
+        {
+            this.profileHelper.addSkillPointsToPlayer(pmcData, SkillTypes.INTELLECT, intellectGainedFromRepair);
+        }
+    }
+
+    protected getIntellectGainedFromRepair(repairDetails: RepairDetails): number
+    {
         if (repairDetails.repairedByKit)
         {
+            // Weapons/armor have different multipliers
             const intRepairMultiplier =
                 (this.itemHelper.isOfBaseclass(repairDetails.repairedItem._tpl, BaseClasses.WEAPON))
                     ? this.repairConfig.repairKitIntellectGainMultiplier.weapon
                     : this.repairConfig.repairKitIntellectGainMultiplier.armor;
 
-            // limit gain to a max value defined in config.maxIntellectGainPerRepair
-            intellectGainedFromRepair = Math.min(
+            // Limit gain to a max value defined in config.maxIntellectGainPerRepair
+            return Math.min(
                 repairDetails.repairPoints * intRepairMultiplier,
                 this.repairConfig.maxIntellectGainPerRepair.kit,
             );
@@ -197,13 +210,11 @@ export class RepairService
         else
         {
             // Trader repair - Not as accurate as kit, needs data from live
-            intellectGainedFromRepair = Math.min(
+            return Math.min(
                 repairDetails.repairAmount / 10,
                 this.repairConfig.maxIntellectGainPerRepair.trader,
             );
         }
-
-        this.profileHelper.addSkillPointsToPlayer(pmcData, SkillTypes.INTELLECT, intellectGainedFromRepair);
     }
 
     /**

@@ -146,10 +146,10 @@ export class PreAkiModLoader implements IModLoader
             const modOrder = this.vfs.readFile(this.modOrderPath, { encoding: "utf8" });
             try
             {
-                for (const [index, mod] of (this.jsonUtil.deserialize<any>(modOrder).order as string[]).entries())
+                this.jsonUtil.deserialize<any>(modOrder, this.modOrderPath).order.forEach((mod: string, index: number) =>
                 {
                     this.order[mod] = index;
-                }
+                });
             }
             catch (error)
             {
@@ -213,10 +213,11 @@ export class PreAkiModLoader implements IModLoader
         validMods.sort((prev, next) => this.sortMods(prev, next, missingFromOrderJSON));
 
         // log the missing mods from order.json
-        for (const missingMod of Object.keys(missingFromOrderJSON))
-        {
-            this.logger.debug(this.localisationService.getText("modloader-mod_order_missing_from_json", missingMod));
-        }
+        Object.keys(missingFromOrderJSON).forEach((
+            missingMod,
+        ) => (this.logger.debug(
+            this.localisationService.getText("modloader-mod_order_missing_from_json", missingMod),
+        )));
 
         // add mods
         for (const mod of validMods)
@@ -428,9 +429,10 @@ export class PreAkiModLoader implements IModLoader
     public sortModsLoadOrder(): string[]
     {
         // if loadorder.json exists: load it, otherwise generate load order
-        if (this.vfs.exists(`${this.basepath}loadorder.json`))
+        const loadOrderPath = `${this.basepath}loadorder.json`
+        if (this.vfs.exists(loadOrderPath))
         {
-            return this.jsonUtil.deserialize(this.vfs.readFile(`${this.basepath}loadorder.json`));
+            return this.jsonUtil.deserialize(this.vfs.readFile(loadOrderPath), loadOrderPath);
         }
         else
         {
@@ -660,14 +662,15 @@ export class PreAkiModLoader implements IModLoader
         }
 
         // Check if config exists
-        if (!this.vfs.exists(`${modPath}/package.json`))
+        const modPackagePath = `${modPath}/package.json`;
+        if (!this.vfs.exists(modPackagePath))
         {
             this.logger.error(this.localisationService.getText("modloader-missing_package_json", modName));
             return false;
         }
 
         // Validate mod
-        const config = this.jsonUtil.deserialize<IPackageJsonData>(this.vfs.readFile(`${modPath}/package.json`));
+        const config = this.jsonUtil.deserialize<IPackageJsonData>(this.vfs.readFile(modPackagePath), modPackagePath);
         const checks = ["name", "author", "version", "license"];
         let issue = false;
 

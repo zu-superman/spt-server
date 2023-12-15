@@ -17,6 +17,11 @@ export class SecureContainerHelper
     constructor(@inject("ItemHelper") protected itemHelper: ItemHelper)
     {}
 
+    /**
+     * Get an array of the item IDs (NOT tpls) inside a secure container
+     * @param items Inventory items to look for secure container in
+     * @returns Array of ids
+     */
     public getSecureContainerItems(items: Item[]): string[]
     {
         const secureContainer = items.find((x) => x.slotId === "SecuredContainer");

@@ -524,7 +524,7 @@ export class ProfileFixerService
         {
             // Old profiles had quests with a bad status of 0 (invalid) added to profile, remove them
             // E.g. compensation for damage showing before standing check was added to getClientQuests()
-            if (quest.status === 0 && !isDevProfile)
+            if (quest.status === 0 && quest.availableAfter === 0 && !isDevProfile)
             {
                 questsToDelete.push(quest);
 

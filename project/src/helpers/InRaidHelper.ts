@@ -21,6 +21,7 @@ import { SaveServer } from "@spt-aki/servers/SaveServer";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
 import { ProfileFixerService } from "@spt-aki/services/ProfileFixerService";
 import { JsonUtil } from "@spt-aki/utils/JsonUtil";
+import { TimeUtil } from "@spt-aki/utils/TimeUtil";
 import { ProfileHelper } from "./ProfileHelper";
 
 @injectable()
@@ -31,6 +32,7 @@ export class InRaidHelper
 
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
+        @inject("TimeUtil") protected timeUtil: TimeUtil,
         @inject("SaveServer") protected saveServer: SaveServer,
         @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
@@ -129,7 +131,6 @@ export class InRaidHelper
      * Reset a profile to a baseline, used post-raid
      * Reset points earned during session property
      * Increment exp
-     * Remove Labs keycard
      * @param profileData Profile to update
      * @param saveProgressRequest post raid save data request data
      * @param sessionID Session id
@@ -218,7 +219,7 @@ export class InRaidHelper
     public updatePmcProfileDataPostRaid(pmcData: IPmcData, saveProgressRequest: ISaveProgressRequestData, sessionId: string): void
     {
         // Process failed quests then copy everything
-        this.processFailedQuests(sessionId, pmcData, pmcData.Quests, saveProgressRequest.profile);
+        this.processAlteredQuests(sessionId, pmcData, pmcData.Quests, saveProgressRequest.profile);
         pmcData.Quests = saveProgressRequest.profile.Quests;
 
         // No need to do this for scav, old scav is deleted and new one generated
@@ -250,19 +251,20 @@ export class InRaidHelper
     }
 
     /**
-     * Look for quests with status = fail that were not failed pre-raid and run the failQuest() function
+     * Look for quests with a status different from what it began the raid with
      * @param sessionId Player id
      * @param pmcData Player profile
      * @param preRaidQuests Quests prior to starting raid
-     * @param postRaidProfile Profile sent by client
+     * @param postRaidProfile Profile sent by client with post-raid quests
      */
-    protected processFailedQuests(
+    protected processAlteredQuests(
         sessionId: string,
         pmcData: IPmcData,
         preRaidQuests: IQuestStatus[],
         postRaidProfile: IPostRaidPmcData,
     ): void
     {
+        // TODO: this may break when locked quests are added to profile but player has completed no quests prior to raid
         if (!preRaidQuests)
         {
             // No quests to compare against, skip
@@ -270,29 +272,45 @@ export class InRaidHelper
         }
 
         // Loop over all quests from post-raid profile
+        const newLockedQuests: IQuestStatus[] = [];
         for (const postRaidQuest of postRaidProfile.Quests)
         {
-            // Find matching pre-raid quest + not already failed
+            // postRaidQuest.status has a weird value, need to do some nasty casting to compare it
+            const postRaidQuestStatus = <string><unknown>postRaidQuest.status;
+
+            // Find matching pre-raid quest
             const preRaidQuest = preRaidQuests?.find((x) => x.qid === postRaidQuest.qid);
             if (!preRaidQuest)
             {
+                // Some traders gives locked quests (LightKeeper) due to time-gating
+                if (postRaidQuestStatus === "Locked")
+                {
+                    // Store new locked quest for future processing
+                    newLockedQuests.push(postRaidQuest);
+                }
+
                 continue;
             }
 
-            // Already failed before raid, skip
-            if (preRaidQuest.status === QuestStatus.Fail)
-            {
-                continue;
-            }
-            
-            if (preRaidQuest.status === QuestStatus.Success)
+            // Already completed/failed before raid, skip
+            if ([QuestStatus.Fail, QuestStatus.Success].includes(preRaidQuest.status) )
             {
                 continue;
             }
 
-            // Quest failed inside raid, need to handle
-            // postRaidQuest.status has a weird value, need to do some nasty casting to compare it
-            const postRaidQuestStatus = <string><unknown>postRaidQuest.status;
+            // Quest with time-gate has unlocked
+            if (postRaidQuestStatus === "AvailableAfter" && postRaidQuest.availableAfter <= this.timeUtil.getTimestamp())
+            {
+                // Flag as ready to complete
+                postRaidQuest.status = QuestStatus.AvailableForStart;
+                postRaidQuest.statusTimers[QuestStatus.AvailableForStart] = this.timeUtil.getTimestamp();
+
+                this.logger.debug(`Time-locked quest ${postRaidQuest.qid} is now ready to start`);
+
+                continue;
+            }
+
+            // Quest failed inside raid
             if (postRaidQuestStatus === "Fail")
             {
                 // Send failed message
@@ -345,6 +363,34 @@ export class InRaidHelper
 
                 // Clear out any completed conditions
                 postRaidQuest.completedConditions = [];
+            }
+        }
+
+        // Reclassify time-gated quests as time gated until a specific date
+        if (newLockedQuests.length > 0)
+        {
+            for (const lockedQuest of newLockedQuests)
+            {
+                // Get the quest from Db
+                const dbQuest = this.questHelper.getQuestFromDb(lockedQuest.qid, null);
+                if (!dbQuest)
+                {
+                    this.logger.warning(`Unable to adjust locked quest: ${lockedQuest.qid} as it wasnt found in db. It may not become available later on`);
+                    
+                    continue;
+                }
+
+                // Find the time requirement in AvailableForStart array (assuming there is one as quest in locked state === its time-gated)
+                const afsRequirement = dbQuest.conditions.AvailableForStart.find(x => x._parent === "Quest");
+                if (afsRequirement && afsRequirement._props.availableAfter > 0)
+                {
+                    // Prereq quest has a wait
+                    // Set quest as AvailableAfter and set timer
+                    const timestamp = this.timeUtil.getTimestamp() + afsRequirement._props.availableAfter;
+                    lockedQuest.availableAfter = timestamp;
+                    lockedQuest.statusTimers.AvailableAfter = timestamp;
+                    lockedQuest.status = 9;
+                }
             }
         }
     }
@@ -447,10 +493,10 @@ export class InRaidHelper
                     && this.itemHelper.itemIsInsideContainer(x, "SecuredContainer", postRaidProfile.Inventory.items));
         });
 
-        for (const item of itemsToRemovePropertyFrom)
+        itemsToRemovePropertyFrom.forEach((item) =>
         {
             delete item.upd.SpawnedInSession;
-        }
+        });
 
         return postRaidProfile;
     }
@@ -493,10 +539,11 @@ export class InRaidHelper
     {
         // Get inventory item ids to remove from players profile
         const itemIdsToDeleteFromProfile = this.getInventoryItemsLostOnDeath(pmcData).map((x) => x._id);
-        for (const itemId of itemIdsToDeleteFromProfile)
+        itemIdsToDeleteFromProfile.forEach((x) =>
         {
-            this.inventoryHelper.removeItem(pmcData, itemId, sessionID);
-        }
+            // Items inside containers are handed as part of function
+            this.inventoryHelper.removeItem(pmcData, x, sessionID);
+        });
 
         // Remove contents of fast panel
         pmcData.Inventory.fastPanel = {};
@@ -510,25 +557,25 @@ export class InRaidHelper
     protected getInventoryItemsLostOnDeath(pmcProfile: IPmcData): Item[]
     {
         const inventoryItems = pmcProfile.Inventory.items ?? [];
-        const equipment = pmcProfile?.Inventory?.equipment;
-        const questRaidItems = pmcProfile?.Inventory?.questRaidItems;
+        const equipmentRootId = pmcProfile?.Inventory?.equipment;
+        const questRaidItemContainerId = pmcProfile?.Inventory?.questRaidItems;
 
-        return inventoryItems.filter((x) =>
+        return inventoryItems.filter((item) =>
         {
             // Keep items flagged as kept after death
-            if (this.isItemKeptAfterDeath(pmcProfile, x))
+            if (this.isItemKeptAfterDeath(pmcProfile, item))
             {
                 return false;
             }
 
             // Remove normal items or quest raid items
-            if (x.parentId === equipment || x.parentId === questRaidItems)
+            if (item.parentId === equipmentRootId || item.parentId === questRaidItemContainerId)
             {
                 return true;
             }
 
-            // Pocket items are not lost on death
-            if (x.slotId.startsWith("pocket"))
+            // Pocket items are lost on death
+            if (item.slotId.startsWith("pocket"))
             {
                 return true;
             }
@@ -563,7 +610,7 @@ export class InRaidHelper
      */
     protected isItemKeptAfterDeath(pmcData: IPmcData, itemToCheck: Item): boolean
     {
-        // No parentid means its a base inventory item, always keep
+        // No parentId = base inventory item, always keep
         if (!itemToCheck.parentId)
         {
             return true;
@@ -583,7 +630,7 @@ export class InRaidHelper
         }
 
         // Is quest item + quest item not lost on death
-        if (!this.lostOnDeathConfig.questItems && itemToCheck.parentId === pmcData.Inventory.questRaidItems)
+        if (itemToCheck.parentId === pmcData.Inventory.questRaidItems && !this.lostOnDeathConfig.questItems)
         {
             return true;
         }
@@ -623,6 +670,9 @@ export class InRaidHelper
             "pocket2",
             "pocket3",
             "pocket4",
+            "SpecialSlot1",
+            "SpecialSlot2",
+            "SpecialSlot3",
         ];
 
         let inventoryItems: Item[] = [];

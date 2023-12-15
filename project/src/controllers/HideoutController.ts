@@ -864,15 +864,21 @@ export class HideoutController
                 globals.config.SkillsSettings.HideoutManagement.SkillPointsPerCraft,
                 true,
             );
-            // manager Crafting skill
+            // Manager Crafting skill
             if (craftingExpAmount > 0)
             {
                 this.profileHelper.addSkillPointsToPlayer(pmcData, SkillTypes.CRAFTING, craftingExpAmount);
-                this.profileHelper.addSkillPointsToPlayer(
-                    pmcData,
-                    SkillTypes.INTELLECT,
-                    0.5 * (Math.round(craftingExpAmount / 15)),
-                );
+
+                const intellectAmountToGive = 0.5 * (Math.round(craftingExpAmount / 15));
+                if (intellectAmountToGive > 0)
+                {
+                    this.profileHelper.addSkillPointsToPlayer(
+                        pmcData,
+                        SkillTypes.INTELLECT,
+                        intellectAmountToGive,
+                    );
+                }
+
             }
             area.lastRecipe = request.recipeId;
             counterHoursCrafting.value = hoursCrafting;

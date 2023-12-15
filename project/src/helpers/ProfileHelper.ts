@@ -402,7 +402,7 @@ export class ProfileHelper
     {
         if (!pointsToAdd || pointsToAdd < 0)
         {
-            this.logger.error(
+            this.logger.warning(
                 this.localisationService.getText("player-attempt_to_increment_skill_with_negative_value", skill),
             );
             return;
@@ -432,6 +432,7 @@ export class ProfileHelper
         }
 
         profileSkill.Progress += pointsToAdd;
+        profileSkill.Progress = Math.min(profileSkill.Progress, 5100); // Prevent skill from ever going above level 51 (5100)
         profileSkill.LastAccess = this.timeUtil.getTimestamp();
     }
 

@@ -78,6 +78,7 @@ export class LocationGenerator
         staticAmmoDist: Record<string, IStaticAmmoDetails[]>,
     ): SpawnpointTemplate[]
     {
+        let staticLootItemCount = 0;
         const result: SpawnpointTemplate[] = [];
         const locationId = locationBase.Id.toLowerCase();
 
@@ -127,11 +128,13 @@ export class LocationGenerator
                 locationId,
             );
             result.push(containerWithLoot.template);
+
+            staticLootItemCount += containerWithLoot.template.Items.length;
         }
 
-        this.logger.success(`Added ${guaranteedContainers.length} guaranteed containers`);
+        this.logger.debug(`Added ${guaranteedContainers.length} guaranteed containers`);
 
-        // randomisation is turned off globally or just turned off for this map
+        // Randomisation is turned off globally or just turned off for this map
         if (
             !(this.locationConfig.containerRandomisationSettings.enabled
                 && this.locationConfig.containerRandomisationSettings.maps[locationId])
@@ -150,7 +153,11 @@ export class LocationGenerator
                     locationId,
                 );
                 result.push(containerWithLoot.template);
+
+                staticLootItemCount += containerWithLoot.template.Items.length;
             }
+
+            this.logger.success(`A total of ${staticLootItemCount} static items spawned`);
 
             return result;
         }
@@ -230,8 +237,13 @@ export class LocationGenerator
                 );
                 result.push(containerWithLoot.template);
                 staticContainerCount++;
+
+                staticLootItemCount += containerWithLoot.template.Items.length;
+
             }
         }
+
+        this.logger.success(`A total of ${staticLootItemCount} static items spawned`);
 
         this.logger.success(
             this.localisationService.getText("location-containers_generated_success", staticContainerCount),

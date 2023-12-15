@@ -129,6 +129,7 @@ export class RaidTimeAdjustmentService
         const chosenRaidReductionPercent = Number.parseInt(this.weightedRandomHelper.getWeightedValue<string>(
             mapSettings.reductionPercentWeights,
         ));
+        const raidTimeRemainingPercent = 100 - chosenRaidReductionPercent;
 
         // How many minutes raid will last
         const newRaidTimeMinutes = Math.floor(this.randomUtil.reduceValueByPercent(baseEscapeTimeMinutes, chosenRaidReductionPercent));
@@ -141,8 +142,8 @@ export class RaidTimeAdjustmentService
             // Store time reduction percent in app context so loot gen can pick it up later
             this.applicationContext.addValue(ContextVariableType.RAID_ADJUSTMENTS, 
                 {
-                    dynamicLootPercent: Math.max(chosenRaidReductionPercent, mapSettings.minDynamicLootPercent),
-                    staticLootPercent: Math.max(chosenRaidReductionPercent, mapSettings.minStaticLootPercent),
+                    dynamicLootPercent: Math.max(raidTimeRemainingPercent, mapSettings.minDynamicLootPercent),
+                    staticLootPercent: Math.max(raidTimeRemainingPercent, mapSettings.minStaticLootPercent),
                     simulatedRaidStartSeconds: simulatedRaidStartTimeMinutes * 60
                 });
         }

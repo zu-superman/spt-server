@@ -24,7 +24,8 @@ export class BundleCallbacks
         this.httpConfig = this.configServer.getConfig(ConfigTypes.HTTP);
     }
 
-    public sendBundle(sessionID: string, req: any, resp: any, body: any): any
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    public sendBundle(sessionID: string, req: any, resp: any, body: any): void
     {
         this.logger.info(`[BUNDLE]: ${req.url}`);
 
@@ -38,12 +39,14 @@ export class BundleCallbacks
     /**
      * Handle singleplayer/bundles
      */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public getBundles(url: string, info: any, sessionID: string): string
     {
         const local = this.httpConfig.ip === "127.0.0.1" || this.httpConfig.ip === "localhost";
         return this.httpResponse.noBody(this.bundleLoader.getBundles(local));
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public getBundle(url: string, info: any, sessionID: string): string
     {
         return "BUNDLE";
