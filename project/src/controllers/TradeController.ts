@@ -29,7 +29,7 @@ import { HttpResponseUtil } from "@spt-aki/utils/HttpResponseUtil";
 import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 
 @injectable()
-class TradeController
+export class TradeController
 {
     protected ragfairConfig: IRagfairConfig;
     protected traderConfig: ITraderConfig;
@@ -284,5 +284,3 @@ class TradeController
         return null;
     }
 }
-
-export {TradeController};

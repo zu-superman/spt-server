@@ -20,7 +20,7 @@ import { ObjectId } from "@spt-aki/utils/ObjectId";
 import { ProbabilityObject, ProbabilityObjectArray, RandomUtil } from "@spt-aki/utils/RandomUtil";
 
 @injectable()
-class ItemHelper
+export class ItemHelper
 {
     protected readonly defaultInvalidBaseTypes: string[] = [
         BaseClasses.LOOT_CONTAINER,
@@ -1159,5 +1159,3 @@ namespace ItemHelper
         height: number;
     }
 }
-
-export {ItemHelper};

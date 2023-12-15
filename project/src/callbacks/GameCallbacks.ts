@@ -21,7 +21,7 @@ import { HttpResponseUtil } from "@spt-aki/utils/HttpResponseUtil";
 import { Watermark } from "@spt-aki/utils/Watermark";
 
 @injectable()
-class GameCallbacks implements OnLoad
+export class GameCallbacks implements OnLoad
 {
     constructor(
         @inject("HttpResponseUtil") protected httpResponse: HttpResponseUtil,
@@ -169,5 +169,3 @@ class GameCallbacks implements OnLoad
         return this.httpResponse.noBody(this.gameController.getRaidTime(sessionID, request));
     }
 }
-
-export {GameCallbacks};
