@@ -181,7 +181,7 @@ export class RagfairController
     protected getSpecificCategories(pmcProfile: IPmcData, searchRequest: ISearchRequestData, offers: IRagfairOffer[]): Record<string, number>
     {
         // Linked/required search categories
-        const playerHasFleaUnlocked = pmcProfile.Info.Level > this.databaseServer.getTables().globals.config.RagFair.minUserLevel;
+        const playerHasFleaUnlocked = pmcProfile.Info.Level >= this.databaseServer.getTables().globals.config.RagFair.minUserLevel;
         let offerPool = [];
         if (this.isLinkedSearch(searchRequest) || this.isRequiredSearch(searchRequest))
         {
