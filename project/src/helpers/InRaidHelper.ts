@@ -541,6 +541,7 @@ export class InRaidHelper
         const itemIdsToDeleteFromProfile = this.getInventoryItemsLostOnDeath(pmcData).map((x) => x._id);
         itemIdsToDeleteFromProfile.forEach((x) =>
         {
+            // Items inside containers are handed as part of function
             this.inventoryHelper.removeItem(pmcData, x, sessionID);
         });
 
@@ -556,25 +557,25 @@ export class InRaidHelper
     protected getInventoryItemsLostOnDeath(pmcProfile: IPmcData): Item[]
     {
         const inventoryItems = pmcProfile.Inventory.items ?? [];
-        const equipment = pmcProfile?.Inventory?.equipment;
-        const questRaidItems = pmcProfile?.Inventory?.questRaidItems;
+        const equipmentRootId = pmcProfile?.Inventory?.equipment;
+        const questRaidItemContainerId = pmcProfile?.Inventory?.questRaidItems;
 
-        return inventoryItems.filter((x) =>
+        return inventoryItems.filter((item) =>
         {
             // Keep items flagged as kept after death
-            if (this.isItemKeptAfterDeath(pmcProfile, x))
+            if (this.isItemKeptAfterDeath(pmcProfile, item))
             {
                 return false;
             }
 
             // Remove normal items or quest raid items
-            if (x.parentId === equipment || x.parentId === questRaidItems)
+            if (item.parentId === equipmentRootId || item.parentId === questRaidItemContainerId)
             {
                 return true;
             }
 
-            // Pocket items are not lost on death
-            if (x.slotId.startsWith("pocket"))
+            // Pocket items are lost on death
+            if (item.slotId.startsWith("pocket"))
             {
                 return true;
             }
@@ -609,7 +610,7 @@ export class InRaidHelper
      */
     protected isItemKeptAfterDeath(pmcData: IPmcData, itemToCheck: Item): boolean
     {
-        // No parentid means its a base inventory item, always keep
+        // No parentId = base inventory item, always keep
         if (!itemToCheck.parentId)
         {
             return true;
@@ -629,7 +630,7 @@ export class InRaidHelper
         }
 
         // Is quest item + quest item not lost on death
-        if (!this.lostOnDeathConfig.questItems && itemToCheck.parentId === pmcData.Inventory.questRaidItems)
+        if (itemToCheck.parentId === pmcData.Inventory.questRaidItems && !this.lostOnDeathConfig.questItems)
         {
             return true;
         }
