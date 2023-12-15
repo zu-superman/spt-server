@@ -411,7 +411,7 @@ export class BotEquipmentFilterService
                     {
                         if (showEditWarnings)
                         {
-                            this.logger.warning(
+                            this.logger.debug(
                                 `Tried to edit a non-existent item for slot: ${poolAdjustmentKey} ${itemToEditKey}`,
                             );
                         }
