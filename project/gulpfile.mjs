@@ -5,12 +5,12 @@ import path from "node:path";
 import gulp from "gulp";
 import { exec } from "gulp-execa";
 import rename from "gulp-rename";
-import pkg from "pkg";
-import pkgfetch from "pkg-fetch";
+import pkg from "@yao-pkg/pkg";
+import pkgfetch from "@yao-pkg/pkg-fetch";
 import * as ResEdit from "resedit";
 import manifest from "./package.json" assert { type: "json" };
 
-const nodeVersion = "node18"; // As of pkg-fetch v3.5, it's v18.15.0
+const nodeVersion = "node20"; // As of @yao-pkg/pkg-fetch v3.5.7, it's v20.10.0
 const stdio = "inherit";
 const buildDir = "build/";
 const dataDir = path.join(buildDir, "Aki_Data", "Server");
