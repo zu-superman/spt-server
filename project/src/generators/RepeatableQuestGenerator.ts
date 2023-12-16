@@ -937,11 +937,19 @@ export class RepeatableQuestGenerator
                         continue;
                     }
 
-                    // Randomise the cartridge count returned
-                    rewardItemStackCount = this.randomUtil.randInt(
-                        repeatableConfig.rewardAmmoStackMinSize,
-                        itemSelected._props.StackMaxSize,
-                    );
+                    // The budget for this ammo stack
+                    const stackRoubleBudget = roublesBudget / rewardNumItems;
+
+                    const singleCartridgePrice = this.handbookHelper.getTemplatePrice(itemSelected._id);
+
+                    // Get a stack size of ammo that fits budget
+                    const stackSizeThatFitsBudget = Math.round(stackRoubleBudget / singleCartridgePrice);
+
+                    // Get itemDbs max stack size for ammo - dont go above 100 (some mods mess around with stack sizes)
+                    const stackMaxCount = Math.min(itemSelected._props.StackMaxSize, 100);
+
+                    // Choose smallest between stack max and budget fitting size
+                    rewardItemStackCount = Math.min(stackSizeThatFitsBudget, stackMaxCount);
                 }
 
                 // 25% chance to double reward stack (item should be stackable and not weapon)
