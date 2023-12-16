@@ -1028,7 +1028,14 @@ export class ItemHelper
         const cartridgeMaxStackSize = cartridgeDetails[1]._props.StackMaxSize;
 
         // Get max number of cartridges in magazine, choose random value between min/max
-        const magazineCartridgeMaxCount = magTemplate._props.Cartridges[0]._max_count;
+        const magazineCartridgeMaxCount = magTemplate._props.Cartridges[0]?._max_count;
+        if (!magazineCartridgeMaxCount)
+        {
+            this.logger.warning(`Magazine: ${magTemplate._id} ${magTemplate._name} lacks a Cartridges array, unable to fill magazine with ammo`);
+
+            return;
+        }
+
         const desiredStackCount = this.randomUtil.getInt(
             Math.round(minSizePercent * magazineCartridgeMaxCount),
             magazineCartridgeMaxCount,
