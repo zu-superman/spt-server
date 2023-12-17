@@ -790,6 +790,86 @@
             "collectionTimeHours": 48,
             "associatedEvent": "Promo"
         },
+		"CWX": {
+            "items": [{
+                    "_id": "a89275c1b18274ef7432a6d9",
+                    "_tpl": "5c13cef886f774072e618e82",
+                    "slotId": "main",
+                    "upd": {
+                        "StackObjectsCount": 2
+                    },
+                    "parentId": "64b996c9d0de4697180359b6"
+                }
+            ],
+            "sender": "System",
+            "messageText": "un oh stinky",
+            "collectionTimeHours": 48,
+            "associatedEvent": "Promo"
+        },
+		"TERKOIZ": {
+            "items": [{
+                    "_id": "a89275c1b18274ef7432a6d9",
+                    "_tpl": "5a0eb38b86f774153b320eb0",
+                    "slotId": "main",
+                    "upd": {
+                        "StackObjectsCount": 1
+                    },
+                    "parentId": "64b996c9d0de4697180359b6"
+                }
+            ],
+            "sender": "System",
+            "messageText": "Out of the way, i'm a motorist",
+            "collectionTimeHours": 48,
+            "associatedEvent": "Promo"
+        },
+		"WAFFLE": {
+            "items": [{
+                    "_id": "a89275c1b18274ef7432a6d9",
+                    "_tpl": "57347d90245977448f7b7f65",
+                    "slotId": "main",
+                    "upd": {
+                        "StackObjectsCount": 1
+                    },
+                    "parentId": "64b996c9d0de4697180359b6"
+                },{
+                    "_id": "a89275c1b18274ef7432a6d9",
+                    "_tpl": "575146b724597720a27126d5",
+                    "slotId": "main",
+                    "upd": {
+                        "StackObjectsCount": 1
+                    },
+                    "parentId": "64b996c9d0de4697180359b6"
+                }
+            ],
+            "sender": "System",
+            "messageText": "JONKLER NO",
+            "collectionTimeHours": 48,
+            "associatedEvent": "Promo"
+        },
+		"NIGHTWING": {
+            "items": [{
+                    "_id": "a89275c1b18274ef7432a6d9",
+                    "_tpl": "57347d90245977448f7b7f65",
+                    "slotId": "main",
+                    "upd": {
+                        "StackObjectsCount": 1
+                    },
+                    "parentId": "64b996c9d0de4697180359b6"
+                },{
+                    "_id": "a89275c1b18274ef7432a6d3",
+                    "_tpl": "575146b724597720a27126d5",
+                    "slotId": "main",
+                    "upd": {
+                        "StackObjectsCount": 1
+                    },
+                    "parentId": "64b996c9d0de4697180359b6"
+                }
+            ],
+            "sender": "System",
+            "messageText": "JONKLER NO",
+            "collectionTimeHours": 48,
+            "associatedEvent": "Promo"
+        },
         "BSGBIRTHDAY2023": {
             "sender": "System",
             "messageText": "<ch>BSG birthday present!</ch><cz>BSG birthday present!</cz><en>BSG birthday present!</en><fr>BSG birthday present!</fr><ge>BSG birthday present!</ge><hu>BSG birthday present!</hu><it>BSG birthday present!</it><jp>BSG birthday present!</jp><kr>BSG birthday present!</kr><pl>BSG birthday present!</pl><po>BSG birthday present!</po><sk>BSG birthday present!</sk><es>BSG birthday present!</es><es-mx>BSG birthday present!</es-mx><tu>BSG birthday present!</tu><ru>BSG birthday present!</ru><ro>BSG birthday present!</ro>",
