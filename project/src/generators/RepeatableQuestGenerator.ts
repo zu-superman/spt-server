@@ -916,7 +916,7 @@ export class RepeatableQuestGenerator
         {
             // Add a random default preset weapon as reward
             const defaultPresets = Object.values(this.presetHelper.getDefaultPresets());
-            const defaultPreset = this.randomUtil.getArrayValue(defaultPresets);
+            const defaultPreset = this.jsonUtil.clone(this.randomUtil.getArrayValue(defaultPresets));
 
             // use _encyclopedia as its always the base items _tpl, items[0] isnt guaranteed to be base item
             rewards.Success.push(this.generateRewardItem(defaultPreset._encyclopedia, 1, rewardIndex, defaultPreset._items));
