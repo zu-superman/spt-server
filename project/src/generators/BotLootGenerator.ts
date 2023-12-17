@@ -603,7 +603,7 @@ export class BotLootGenerator
     {
         const randomSize = itemTemplate._props.StackMaxSize === 1
             ? 1
-            : this.randomUtil.getInt(itemTemplate._props.StackMinRandom, itemTemplate._props.StackMaxRandom);
+            : this.randomUtil.getInt(itemTemplate._props.StackMinRandom, Math.min(itemTemplate._props.StackMaxRandom, 60));
 
         if (!ammoItem.upd)
         {
