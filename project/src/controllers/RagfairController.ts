@@ -307,6 +307,9 @@ export class RagfairController
         return info.neededSearchId !== "";
     }
 
+    /**
+     * Check all profiles and sell player offers / send player money for listing if it sold
+     */
     public update(): void
     {
         for (const sessionID in this.saveServer.getProfiles())

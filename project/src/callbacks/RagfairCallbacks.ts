@@ -61,10 +61,13 @@ export class RagfairCallbacks implements OnLoad, OnUpdate
         {
             // There is a flag inside this class that only makes it run once.
             this.ragfairServer.addPlayerOffers();
-            await this.ragfairServer.update();
-            // function below used to be split, merged
+
+            // Check player offers and mail payment to player if sold
             this.ragfairController.update();
 
+            // Process all offers / expire offers
+            await this.ragfairServer.update();
+            
             return true;
         }
 
