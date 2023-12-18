@@ -597,8 +597,7 @@ export class RagfairOfferHelper
             return false;
         }
 
-        if (
-            (item.upd.MedKit || item.upd.Repairable)
+        if (this.isConditionItem(item)
             && !this.itemQualityInRange(item, searchRequest.conditionFrom, searchRequest.conditionTo)
         )
         {
@@ -666,6 +665,20 @@ export class RagfairOfferHelper
         }
 
         return true;
+    }
+
+    /**
+     * Does the passed in item have a condition property
+     * @param item Item to check
+     * @returns True if has condition
+     */
+    protected isConditionItem(item: Item): boolean
+    {
+        // thanks typescript, undefined assertion is not returnable since it 
+        // tries to return a multitype object
+        return (item.upd.MedKit || item.upd.Repairable || item.upd.Resource || item.upd.FoodDrink || item.upd.Key || item.upd.RepairKit)
+            ? true
+            : false;
     }
 
     /**
