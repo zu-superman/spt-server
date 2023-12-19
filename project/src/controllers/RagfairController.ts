@@ -181,7 +181,7 @@ export class RagfairController
     protected getSpecificCategories(pmcProfile: IPmcData, searchRequest: ISearchRequestData, offers: IRagfairOffer[]): Record<string, number>
     {
         // Linked/required search categories
-        const playerHasFleaUnlocked = pmcProfile.Info.Level > this.databaseServer.getTables().globals.config.RagFair.minUserLevel;
+        const playerHasFleaUnlocked = pmcProfile.Info.Level >= this.databaseServer.getTables().globals.config.RagFair.minUserLevel;
         let offerPool = [];
         if (this.isLinkedSearch(searchRequest) || this.isRequiredSearch(searchRequest))
         {
@@ -307,6 +307,9 @@ export class RagfairController
         return info.neededSearchId !== "";
     }
 
+    /**
+     * Check all profiles and sell player offers / send player money for listing if it sold
+     */
     public update(): void
     {
         for (const sessionID in this.saveServer.getProfiles())

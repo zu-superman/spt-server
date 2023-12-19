@@ -64,7 +64,7 @@ export class ApplicationContext
 
     public clearValues(type: ContextVariableType): void
     {
-        this.variables.has(type)
+        if (this.variables.has(type))
         {
             this.variables.delete(type);
         }

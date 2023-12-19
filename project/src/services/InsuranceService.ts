@@ -242,7 +242,7 @@ export class InsuranceService
                 continue;
             }
 
-            // Skip items we should never return
+            // Skip slots we should never return
             if (this.insuranceConfig.blacklistedEquipment.includes(preRaidItem.slotId))
             {
                 continue;

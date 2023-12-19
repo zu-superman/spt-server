@@ -523,7 +523,7 @@ export class InRaidHelper
 
         // Add the new items
         serverProfile.Inventory.items = [...postRaidProfile.Inventory.items, ...serverProfile.Inventory.items];
-        serverProfile.Inventory.fastPanel = postRaidProfile.Inventory.fastPanel;
+        serverProfile.Inventory.fastPanel = postRaidProfile.Inventory.fastPanel; // Quick access items bar
         serverProfile.InsuredItems = insured;
 
         return serverProfile;

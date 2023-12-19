@@ -160,7 +160,7 @@ export class RagfairServerHelper
             MessageType.MESSAGE_WITH_ITEMS,
             RagfairServerHelper.goodsReturnedTemplate,
             returnedItems,
-            this.timeUtil.getHoursAsSeconds(this.questConfig.redeemTime),
+            this.timeUtil.getHoursAsSeconds(this.databaseServer.getTables().globals.config.RagFair.yourOfferDidNotSellMaxStorageTimeInHour),
         );
     }
 

@@ -916,7 +916,7 @@ export class RepeatableQuestGenerator
         {
             // Add a random default preset weapon as reward
             const defaultPresets = Object.values(this.presetHelper.getDefaultPresets());
-            const defaultPreset = this.randomUtil.getArrayValue(defaultPresets);
+            const defaultPreset = this.jsonUtil.clone(this.randomUtil.getArrayValue(defaultPresets));
 
             // use _encyclopedia as its always the base items _tpl, items[0] isnt guaranteed to be base item
             rewards.Success.push(this.generateRewardItem(defaultPreset._encyclopedia, 1, rewardIndex, defaultPreset._items));
@@ -929,6 +929,7 @@ export class RepeatableQuestGenerator
             {
                 let rewardItemStackCount = 1;
                 const itemSelected = rewardItemPool[this.randomUtil.randInt(rewardItemPool.length)];
+
                 if (this.itemHelper.isOfBaseclass(itemSelected._id, BaseClasses.AMMO))
                 {
                     // Dont reward ammo that stacks to less than what's defined in config
@@ -937,14 +938,22 @@ export class RepeatableQuestGenerator
                         continue;
                     }
 
-                    // Randomise the cartridge count returned
-                    rewardItemStackCount = this.randomUtil.randInt(
-                        repeatableConfig.rewardAmmoStackMinSize,
-                        itemSelected._props.StackMaxSize,
-                    );
+                    // The budget for this ammo stack
+                    const stackRoubleBudget = roublesBudget / rewardNumItems;
+
+                    const singleCartridgePrice = this.handbookHelper.getTemplatePrice(itemSelected._id);
+
+                    // Get a stack size of ammo that fits rouble budget
+                    const stackSizeThatFitsBudget = Math.round(stackRoubleBudget / singleCartridgePrice);
+
+                    // Get itemDbs max stack size for ammo - dont go above 100 (some mods mess around with stack sizes)
+                    const stackMaxCount = Math.min(itemSelected._props.StackMaxSize, 100);
+
+                    // Choose smallest value between budget fitting size and stack max
+                    rewardItemStackCount = Math.min(stackSizeThatFitsBudget, stackMaxCount);
                 }
 
-                // 25% chance to double reward stack (item should be stackable and not weapon)
+                // 25% chance to double,triple quadruple reward stack (Only occurs when item is stackable and not weapon or ammo)
                 if (this.canIncreaseRewardItemStackSize(itemSelected, 70000))
                 {
                     rewardItemStackCount = this.getRandomisedRewardItemStackSizeByPrice(itemSelected);

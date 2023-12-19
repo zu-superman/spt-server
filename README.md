@@ -106,10 +106,10 @@ Player profile is stored in SPT folder as a JSON file, allowing for changes to p
 	 - followerKojaniy
 	 - followerSanitar
 	 - followerzryachiy
-	 - gifter (santa)
-		 - ~~Gives gifts~~ NOT IMPLEMENTED
+	 - gifter (Santa)
+		 - Gives gifts (partially implemented)
 	 - marksman
-	 - pmcBot (raider)
+	 - pmcBot (Raider)
 	 - sectantPriest (Cultist)
 	 - sectantWarrior (Cultist)
 - Gear
@@ -239,7 +239,7 @@ Player profile is stored in SPT folder as a JSON file, allowing for changes to p
 		- Negative effects removal rate x2
 	- Illumination
 	- Intel centre
-		- ~~Unlocks scav tasks from fence~~ NOT IMPLEMENTED
+		- ~~Unlocks scav tasks from fence~~ NOT IMPLEMENTED - unlocks at level 5
 		- ~~Reduces insurance return time by 20%~~ NOT IMPLEMENTED
 		- Quest money reward boost
 	- Lavatory
@@ -287,7 +287,15 @@ Player profile is stored in SPT folder as a JSON file, allowing for changes to p
 - Airdrops
 	- Randomised chance of spawning
 	- Fire red flare to request an airdrop
-	- ~~Drops 1 of 3 randomised loot crate types~~ NOT IMPLEMENTED
+	- Drops 'themed' crates:
+		- Weapons / armor
+			- Only weapons and armor
+		- Food / medical
+			- Only food and medical items
+		- Barter goods
+			- Only barter goods
+		- Mixed
+			- A mixture of any of the above items
 	- Drops lootable crate in:
 		- Customs
 		- Reserve
