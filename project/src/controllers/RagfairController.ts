@@ -21,6 +21,7 @@ import { IExtendOfferRequestData } from "@spt-aki/models/eft/ragfair/IExtendOffe
 import { IGetItemPriceResult } from "@spt-aki/models/eft/ragfair/IGetItemPriceResult";
 import { IGetMarketPriceRequestData } from "@spt-aki/models/eft/ragfair/IGetMarketPriceRequestData";
 import { IGetOffersResult } from "@spt-aki/models/eft/ragfair/IGetOffersResult";
+import { IGetRagfairOfferByIdRequest } from "@spt-aki/models/eft/ragfair/IGetRagfairOfferByIdRequest";
 import { IRagfairOffer } from "@spt-aki/models/eft/ragfair/IRagfairOffer";
 import { ISearchRequestData } from "@spt-aki/models/eft/ragfair/ISearchRequestData";
 import { IProcessBuyTradeRequestData } from "@spt-aki/models/eft/trade/IProcessBuyTradeRequestData";
@@ -145,6 +146,20 @@ export class RagfairController
             result.offers = result.offers.slice(start, end);
         }
         return result;
+    }
+
+    /**
+     *  Handle client/ragfair/offer/findbyid
+     * @param sessionId Player id
+     * @param request Request data
+     * @returns IRagfairOffer
+     */
+    public getOfferById(sessionId: string, request: IGetRagfairOfferByIdRequest): IRagfairOffer
+    {
+        const offers = this.ragfairOfferService.getOffers();
+        const offerToReturn = offers.find(x => x.intId === request.id);
+
+        return offerToReturn;
     }
 
     /**

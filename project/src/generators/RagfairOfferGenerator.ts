@@ -34,6 +34,9 @@ export class RagfairOfferGenerator
     protected ragfairConfig: IRagfairConfig;
     protected allowedFleaPriceItemsForBarter: { tpl: string; price: number; }[];
 
+    /** Internal counter to ensure each offer created has a unique value for its intId property */
+    protected offerCounter = 0;
+
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("JsonUtil") protected jsonUtil: JsonUtil,
@@ -121,7 +124,7 @@ export class RagfairOfferGenerator
 
         const offer: IRagfairOffer = {
             _id: this.hashUtil.generate(),
-            intId: 0,
+            intId: this.offerCounter,
             user: {
                 id: this.getTraderId(userID),
                 memberType: (userID === "ragfair")
@@ -148,6 +151,8 @@ export class RagfairOfferGenerator
             notAvailable: false,
             CurrentItemCount: itemCount,
         };
+
+        this.offerCounter++;
 
         return offer;
     }
