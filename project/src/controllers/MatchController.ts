@@ -10,6 +10,7 @@ import { Item } from "@spt-aki/models/eft/common/tables/IItem";
 import { ICreateGroupRequestData } from "@spt-aki/models/eft/match/ICreateGroupRequestData";
 import { IEndOfflineRaidRequestData } from "@spt-aki/models/eft/match/IEndOfflineRaidRequestData";
 import { IGetGroupStatusRequestData } from "@spt-aki/models/eft/match/IGetGroupStatusRequestData";
+import { IGetGroupStatusResponse } from "@spt-aki/models/eft/match/IGetGroupStatusResponse";
 import { IGetProfileRequestData } from "@spt-aki/models/eft/match/IGetProfileRequestData";
 import { IGetRaidConfigurationRequestData } from "@spt-aki/models/eft/match/IGetRaidConfigurationRequestData";
 import { IJoinMatchRequestData } from "@spt-aki/models/eft/match/IJoinMatchRequestData";
@@ -126,7 +127,7 @@ export class MatchController
 
     /** Handle client/match/group/status */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public getGroupStatus(info: IGetGroupStatusRequestData): any
+    public getGroupStatus(info: IGetGroupStatusRequestData): IGetGroupStatusResponse
     {
         return { players: [], maxPveCountExceeded: false };
     }

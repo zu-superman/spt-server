@@ -11,6 +11,7 @@ import { ICancelGroupInviteRequest } from "@spt-aki/models/eft/match/ICancelGrou
 import { ICreateGroupRequestData } from "@spt-aki/models/eft/match/ICreateGroupRequestData";
 import { IEndOfflineRaidRequestData } from "@spt-aki/models/eft/match/IEndOfflineRaidRequestData";
 import { IGetGroupStatusRequestData } from "@spt-aki/models/eft/match/IGetGroupStatusRequestData";
+import { IGetGroupStatusResponse } from "@spt-aki/models/eft/match/IGetGroupStatusResponse";
 import { IGetProfileRequestData } from "@spt-aki/models/eft/match/IGetProfileRequestData";
 import { IGetRaidConfigurationRequestData } from "@spt-aki/models/eft/match/IGetRaidConfigurationRequestData";
 import { IJoinMatchRequestData } from "@spt-aki/models/eft/match/IJoinMatchRequestData";
@@ -159,12 +160,13 @@ export class MatchCallbacks
      * @returns
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public getGroupStatus(url: string, info: IGetGroupStatusRequestData, sessionID: string): IGetBodyResponseData<any>
+    public getGroupStatus(url: string, info: IGetGroupStatusRequestData, sessionID: string): IGetBodyResponseData<IGetGroupStatusResponse>
     {
         return this.httpResponse.getBody(this.matchController.getGroupStatus(info));
     }
 
     /** Handle client/match/group/create */
+    // TODO: may have been removed from client
     public createGroup(url: string, info: ICreateGroupRequestData, sessionID: string): IGetBodyResponseData<any>
     {
         return this.httpResponse.getBody(this.matchController.createGroup(sessionID, info));

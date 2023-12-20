@@ -7,6 +7,7 @@ import { IGetBodyResponseData } from "@spt-aki/models/eft/httpResponse/IGetBodyR
 import { INullResponseData } from "@spt-aki/models/eft/httpResponse/INullResponseData";
 import { IGetMiniProfileRequestData } from "@spt-aki/models/eft/launcher/IGetMiniProfileRequestData";
 import { GetProfileStatusResponseData } from "@spt-aki/models/eft/profile/GetProfileStatusResponseData";
+import { ICreateProfileResponse } from "@spt-aki/models/eft/profile/ICreateProfileResponse";
 import { IGetProfileSettingsRequest } from "@spt-aki/models/eft/profile/IGetProfileSettingsRequest";
 import { IProfileChangeNicknameRequestData } from "@spt-aki/models/eft/profile/IProfileChangeNicknameRequestData";
 import { IProfileChangeVoiceRequestData } from "@spt-aki/models/eft/profile/IProfileChangeVoiceRequestData";
@@ -31,10 +32,11 @@ export class ProfileCallbacks
     /**
      * Handle client/game/profile/create
      */
-    public createProfile(url: string, info: IProfileCreateRequestData, sessionID: string): IGetBodyResponseData<any>
+    public createProfile(url: string, info: IProfileCreateRequestData, sessionID: string): IGetBodyResponseData<ICreateProfileResponse>
     {
-        this.profileController.createProfile(info, sessionID);
-        return this.httpResponse.getBody({ uid: `pmc${sessionID}` });
+        const id = this.profileController.createProfile(info, sessionID);
+
+        return this.httpResponse.getBody({ uid: id });
     }
 
     /**
