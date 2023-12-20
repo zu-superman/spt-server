@@ -44,6 +44,7 @@ export class NotifierCallbacks
 
     /** Handle push/notifier/get */
     /** Handle push/notifier/getwebsocket */
+    // TODO: removed from client?
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public getNotifier(url: string, info: any, sessionID: string): IGetBodyResponseData<any[]>
     {

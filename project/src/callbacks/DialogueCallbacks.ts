@@ -224,14 +224,14 @@ export class DialogueCallbacks implements OnUpdate
 
     /** Handle client/friend/ignore/set */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public ignoreFriend(url: string, request: { uid: string; }, sessionID: string): any
+    public ignoreFriend(url: string, request: { uid: string; }, sessionID: string): INullResponseData
     {
         return this.httpResponse.nullResponse();
     }
 
     /** Handle client/friend/ignore/remove */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public unIgnoreFriend(url: string, request: { uid: string; }, sessionID: string): any
+    public unIgnoreFriend(url: string, request: { uid: string; }, sessionID: string): INullResponseData
     {
         return this.httpResponse.nullResponse();
     }
