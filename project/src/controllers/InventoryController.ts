@@ -297,6 +297,12 @@ export class InventoryController
             sourceItem.upd.StackObjectsCount = 1;
         }
 
+        // Remove FiR status from destination stack when source stack has no FiR but destination does
+        if (!sourceItem.upd.SpawnedInSession && destinationItem.upd.SpawnedInSession)
+        {
+            delete destinationItem.upd.SpawnedInSession;
+        }
+
         destinationItem.upd.StackObjectsCount += sourceItem.upd.StackObjectsCount; // Add source stackcount to destination
         output.profileChanges[sessionID].items.del.push({ _id: sourceItem._id }); // Inform client source item being deleted
 
