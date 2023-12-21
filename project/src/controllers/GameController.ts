@@ -420,6 +420,7 @@ export class GameController
     public getGameConfig(sessionID: string): IGameConfigResponse
     {
         const profile = this.profileHelper.getPmcProfile(sessionID);
+        const gameTime = profile.Stats?.Eft.OverallCounters.Items?.find(counter => counter.Key.includes("LifeTime") && counter.Key.includes("Pmc"))?.Value ?? 0;
 
         const config: IGameConfigResponse = {
             languages: this.databaseServer.getTables().locales.languages,
@@ -440,7 +441,7 @@ export class GameController
             useProtobuf: false,
             // eslint-disable-next-line @typescript-eslint/naming-convention
             utc_time: new Date().getTime() / 1000,
-            totalInGame: profile.Stats?.Eft?.TotalInGameTime ?? 0,
+            totalInGame: gameTime,
         };
 
         return config;
