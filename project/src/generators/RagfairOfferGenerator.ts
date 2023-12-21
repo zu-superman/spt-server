@@ -283,7 +283,7 @@ export class RagfairOfferGenerator
         {
             // Player offer = current time + offerDurationTimeInHour;
             const offerDurationTimeHours = this.databaseServer.getTables().globals.config.RagFair.offerDurationTimeInHour;
-            return this.timeUtil.getTimestamp() + Math.round(offerDurationTimeHours * TimeUtil.oneHourAsSeconds);
+            return this.timeUtil.getTimestamp() + Math.round(offerDurationTimeHours * TimeUtil.ONE_HOUR_AS_SECONDS);
         }
 
         if (this.ragfairServerHelper.isTrader(userID))
