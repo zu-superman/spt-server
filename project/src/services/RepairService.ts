@@ -121,7 +121,10 @@ export class RepairService
     ): void
     {
         const options: IProcessBuyTradeRequestData = {
-            scheme_items: [{ id: repairedItemId, count: Math.round(repairCost) }],
+            scheme_items: [{
+                id: "5449016a4bdc2d6f028b456f", // Rouble tpl
+                count: Math.round(repairCost)
+            }],
             tid: traderId,
             Action: "SptRepair",
             type: "",
