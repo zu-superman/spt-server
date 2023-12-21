@@ -797,8 +797,8 @@ export class QuestController
         let totalItemCountToRemove = 0;
         for (const itemHandover of handoverQuestRequest.items)
         {
-            const matchingItemInProfile = pmcData.Inventory.items.find((x) => x._id === itemHandover.id);
-            if (!handoverRequirements._props.target.includes(matchingItemInProfile._tpl))
+            const matchingItemInProfile = pmcData.Inventory.items.find((item) => item._id === itemHandover.id);
+            if (!matchingItemInProfile || !handoverRequirements._props.target.includes(matchingItemInProfile._tpl))
             {
                 // Item handed in by player doesnt match what was requested
                 return this.showQuestItemHandoverMatchError(
