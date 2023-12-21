@@ -118,8 +118,11 @@ export class ProfileController
 
     /**
      * Handle client/game/profile/create
+     * @param info Client reqeust object
+     * @param sessionID Player id
+     * @returns Profiles _id value
      */
-    public createProfile(info: IProfileCreateRequestData, sessionID: string): void
+    public createProfile(info: IProfileCreateRequestData, sessionID: string): string
     {
         const account = this.saveServer.getProfile(sessionID).info;
         const profile: TemplateSide =
@@ -213,6 +216,8 @@ export class ProfileController
         // Completed account creation
         this.saveServer.getProfile(sessionID).info.wipe = false;
         this.saveServer.saveProfile(sessionID);
+
+        return pmcData._id;
     }
 
     /**

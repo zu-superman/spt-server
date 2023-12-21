@@ -10,6 +10,7 @@ import { Item } from "@spt-aki/models/eft/common/tables/IItem";
 import { ICreateGroupRequestData } from "@spt-aki/models/eft/match/ICreateGroupRequestData";
 import { IEndOfflineRaidRequestData } from "@spt-aki/models/eft/match/IEndOfflineRaidRequestData";
 import { IGetGroupStatusRequestData } from "@spt-aki/models/eft/match/IGetGroupStatusRequestData";
+import { IGetGroupStatusResponse } from "@spt-aki/models/eft/match/IGetGroupStatusResponse";
 import { IGetProfileRequestData } from "@spt-aki/models/eft/match/IGetProfileRequestData";
 import { IGetRaidConfigurationRequestData } from "@spt-aki/models/eft/match/IGetRaidConfigurationRequestData";
 import { IJoinMatchRequestData } from "@spt-aki/models/eft/match/IJoinMatchRequestData";
@@ -99,6 +100,7 @@ export class MatchController
     }
 
     /** Handle match/group/start_game */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public joinMatch(info: IJoinMatchRequestData, sessionId: string): IJoinMatchResult
     {
         const output: IJoinMatchResult = { maxPveCountExceeded: false, profiles: [] };
@@ -116,6 +118,7 @@ export class MatchController
             raidMode: "Online",
             mode: "deathmatch",
             shortid: null,
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             additional_info: null,
         });
 
@@ -123,7 +126,8 @@ export class MatchController
     }
 
     /** Handle client/match/group/status */
-    public getGroupStatus(info: IGetGroupStatusRequestData): any
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    public getGroupStatus(info: IGetGroupStatusRequestData): IGetGroupStatusResponse
     {
         return { players: [], maxPveCountExceeded: false };
     }
@@ -140,7 +144,7 @@ export class MatchController
 
         // TODO: add code to strip PMC of equipment now they've started the raid
 
-        // Set PMCs to difficulty set in pre-raid screen if override in bot config isn't enabled
+        // Set pmcs to difficulty set in pre-raid screen if override in bot config isnt enabled
         if (!this.pmcConfig.useDifficultyOverride)
         {
             this.pmcConfig.difficulty = this.convertDifficultyDropdownIntoBotDifficulty(
