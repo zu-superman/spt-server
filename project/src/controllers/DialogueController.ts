@@ -8,8 +8,11 @@ import { IGetMailDialogViewRequestData } from "@spt-aki/models/eft/dialog/IGetMa
 import { IGetMailDialogViewResponseData } from "@spt-aki/models/eft/dialog/IGetMailDialogViewResponseData";
 import { ISendMessageRequest } from "@spt-aki/models/eft/dialog/ISendMessageRequest";
 import { Dialogue, DialogueInfo, IAkiProfile, IUserDialogInfo, Message } from "@spt-aki/models/eft/profile/IAkiProfile";
+import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { MessageType } from "@spt-aki/models/enums/MessageType";
+import { ICoreConfig } from "@spt-aki/models/spt/config/ICoreConfig";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
+import { ConfigServer } from "@spt-aki/servers/ConfigServer";
 import { SaveServer } from "@spt-aki/servers/SaveServer";
 import { MailSendService } from "@spt-aki/services/MailSendService";
 import { TimeUtil } from "@spt-aki/utils/TimeUtil";
@@ -17,28 +20,39 @@ import { TimeUtil } from "@spt-aki/utils/TimeUtil";
 @injectable()
 export class DialogueController
 {
-    protected registeredDialogueChatBots: Map<string, IDialogueChatBot> = new Map<string, IDialogueChatBot>();
-
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("SaveServer") protected saveServer: SaveServer,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
         @inject("DialogueHelper") protected dialogueHelper: DialogueHelper,
         @inject("MailSendService") protected mailSendService: MailSendService,
+        @inject("ConfigServer") protected configServer: ConfigServer,
         @injectAll("DialogueChatBot") protected dialogueChatBots: IDialogueChatBot[],
     )
     {
-        for (const dialogueChatBot of dialogueChatBots)
+        const coreConfigs = this.configServer.getConfig<ICoreConfig>(ConfigTypes.CORE);
+        // if give command is disabled or commando commands are disabled
+        if (!coreConfigs.features?.chatbotFeatures?.commandoEnabled)
         {
-            if (this.registeredDialogueChatBots.has(dialogueChatBot.getChatBot()._id))
-            {
-                this.logger.error(
-                    `Could not register ${dialogueChatBot.getChatBot()._id} as it is already in use. Skipping.`,
-                );
-                continue;
-            }
-            this.registeredDialogueChatBots.set(dialogueChatBot.getChatBot()._id, dialogueChatBot);
+            const sptCommando = this.dialogueChatBots.find((c) =>
+                c.getChatBot()._id.toLocaleLowerCase() === "sptcommando"
+            );
+            this.dialogueChatBots.splice(this.dialogueChatBots.indexOf(sptCommando), 1);
         }
+        if (!coreConfigs.features?.chatbotFeatures?.sptFriendEnabled)
+        {
+            const sptFriend = this.dialogueChatBots.find((c) => c.getChatBot()._id.toLocaleLowerCase() === "sptFriend");
+            this.dialogueChatBots.splice(this.dialogueChatBots.indexOf(sptFriend), 1);
+        }
+    }
+
+    public registerChatBot(chatBot: IDialogueChatBot): void
+    {
+        if (this.dialogueChatBots.some((cb) => cb.getChatBot()._id === chatBot.getChatBot()._id))
+        {
+            throw new Error(`The chat bot ${chatBot.getChatBot()._id} being registered already exists!`);
+        }
+        this.dialogueChatBots.push(chatBot);
     }
 
     /** Handle onUpdate spt event */
@@ -59,11 +73,7 @@ export class DialogueController
     public getFriendList(sessionID: string): IGetFriendListDataResponse
     {
         // Force a fake friend called SPT into friend list
-        return {
-            Friends: Array.from(this.registeredDialogueChatBots.values()).map((v) => v.getChatBot()),
-            Ignore: [],
-            InIgnoreList: [],
-        };
+        return { Friends: this.dialogueChatBots.map((v) => v.getChatBot()), Ignore: [], InIgnoreList: [] };
     }
 
     /**
@@ -196,11 +206,10 @@ export class DialogueController
             if (request.type === MessageType.USER_MESSAGE)
             {
                 profile.dialogues[request.dialogId].Users = [];
-                if (this.registeredDialogueChatBots.has(request.dialogId))
+                const chatBot = this.dialogueChatBots.find((cb) => cb.getChatBot()._id === request.dialogId);
+                if (chatBot)
                 {
-                    profile.dialogues[request.dialogId].Users.push(
-                        this.registeredDialogueChatBots.get(request.dialogId).getChatBot(),
-                    );
+                    profile.dialogues[request.dialogId].Users.push(chatBot.getChatBot());
                 }
             }
         }
@@ -364,12 +373,10 @@ export class DialogueController
     {
         this.mailSendService.sendPlayerMessageToNpc(sessionId, request.dialogId, request.text);
 
-        if (this.registeredDialogueChatBots.has(request.dialogId))
-        {
-            return this.registeredDialogueChatBots.get(request.dialogId).handleMessage(sessionId, request);
-        }
-
-        return request.dialogId;
+        return this.dialogueChatBots.find((cb) => cb.getChatBot()._id === request.dialogId)?.handleMessage(
+            sessionId,
+            request,
+        ) ?? request.dialogId;
     }
 
     /**
