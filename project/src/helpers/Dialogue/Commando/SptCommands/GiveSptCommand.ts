@@ -82,7 +82,7 @@ export class GiveSptCommand implements ISptCommand
             this.mailSendService.sendUserMessageToPlayer(
                 sessionId,
                 commandHandler,
-                "Invalid template ID requested for give command. The item doesnt exists on the DB.",
+                "Invalid template ID requested for give command. The item doesn't exist in the DB.",
             );
             return request.dialogId;
         }
@@ -100,7 +100,14 @@ export class GiveSptCommand implements ISptCommand
                 );
                 return request.dialogId;
             }
-            itemsToSend.push(...this.jsonUtil.clone(preset._items));
+
+            for (let i = 0; i < +quantity; i++)
+            {
+                // Make sure IDs are unique before adding to array - prevent collisions
+                const presetToSend = this.itemHelper.replaceIDs(null, this.jsonUtil.clone(preset._items));
+                itemsToSend.push(... presetToSend);
+            }
+            
         }
         else if (this.itemHelper.isOfBaseclass(checkedItem[1]._id, BaseClasses.AMMO_BOX))
         {
@@ -117,7 +124,10 @@ export class GiveSptCommand implements ISptCommand
             const item: Item = {
                 _id: this.hashUtil.generate(),
                 _tpl: checkedItem[1]._id,
-                upd: { StackObjectsCount: +quantity },
+                upd: { 
+                    StackObjectsCount: +quantity,
+                    SpawnedInSession: true
+                },
             };
             itemsToSend.push(...this.itemHelper.splitStack(item));
         }
