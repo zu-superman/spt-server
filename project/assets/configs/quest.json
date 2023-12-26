@@ -1552,8 +1552,7 @@
             "types": [
                 "Exploration",
                 "Elimination",
-                "Completion",
-                "Pickup"
+                "Completion"
             ],
             "resetTime": 86400,
             "numQuests": 1,
