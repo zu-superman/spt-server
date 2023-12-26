@@ -104,6 +104,15 @@ export class QuestController
                 continue;
             }
 
+            // Player can use trader mods then remove them, leaving quests behind
+            const trader = profile.TradersInfo[quest.traderId];
+            if (!trader)
+            {
+                this.logger.debug(`Unable to show quest: ${quest.QuestName} as its for a trader: ${quest.traderId} that no longer exists.`);
+
+                continue;
+            }
+
             const questRequirements = this.questConditionHelper.getQuestConditions(quest.conditions.AvailableForStart);
             const loyaltyRequirements = this.questConditionHelper.getLoyaltyConditions(
                 quest.conditions.AvailableForStart,
