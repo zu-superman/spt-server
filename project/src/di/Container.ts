@@ -180,7 +180,6 @@ import { LauncherStaticRouter } from "@spt-aki/routers/static/LauncherStaticRout
 import { LocationStaticRouter } from "@spt-aki/routers/static/LocationStaticRouter";
 import { MatchStaticRouter } from "@spt-aki/routers/static/MatchStaticRouter";
 import { NotifierStaticRouter } from "@spt-aki/routers/static/NotifierStaticRouter";
-import { PresetStaticRouter } from "@spt-aki/routers/static/PresetStaticRouter";
 import { ProfileStaticRouter } from "@spt-aki/routers/static/ProfileStaticRouter";
 import { QuestStaticRouter } from "@spt-aki/routers/static/QuestStaticRouter";
 import { RagfairStaticRouter } from "@spt-aki/routers/static/RagfairStaticRouter";
@@ -329,7 +328,6 @@ export class Container
         depContainer.registerType("StaticRoutes", "MatchStaticRouter");
         depContainer.registerType("StaticRoutes", "QuestStaticRouter");
         depContainer.registerType("StaticRoutes", "RagfairStaticRouter");
-        depContainer.registerType("StaticRoutes", "PresetStaticRouter");
         depContainer.registerType("StaticRoutes", "BundleStaticRouter");
         depContainer.registerType("StaticRoutes", "AchievementStaticRouter");
         depContainer.registerType("StaticRoutes", "BuildsStaticRouter");
@@ -487,7 +485,6 @@ export class Container
         depContainer.register<LocationStaticRouter>("LocationStaticRouter", { useClass: LocationStaticRouter });
         depContainer.register<MatchStaticRouter>("MatchStaticRouter", { useClass: MatchStaticRouter });
         depContainer.register<NotifierStaticRouter>("NotifierStaticRouter", { useClass: NotifierStaticRouter });
-        depContainer.register<PresetStaticRouter>("PresetStaticRouter", { useClass: PresetStaticRouter });
         depContainer.register<ProfileStaticRouter>("ProfileStaticRouter", { useClass: ProfileStaticRouter });
         depContainer.register<QuestStaticRouter>("QuestStaticRouter", { useClass: QuestStaticRouter });
         depContainer.register<RagfairStaticRouter>("RagfairStaticRouter", { useClass: RagfairStaticRouter });
