@@ -7,6 +7,7 @@ import { IProfileChangeEvent } from "@spt-aki/models/spt/dialog/ISendMessageDeta
 
 export interface IAkiProfile
 {
+    
     info: Info;
     characters: Characters;
     /** Clothing purchases */
@@ -19,6 +20,8 @@ export interface IAkiProfile
     insurance: Insurance[];
     /** Assort purchases made by player since last trader refresh */
     traderPurchases?: Record<string, Record<string, TraderPurchaseData>>;
+    /** Achievements earned by player */
+    achievements: Record<string, number>;
 }
 
 export class TraderPurchaseData

@@ -12,6 +12,7 @@ import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEve
 import { IMiniProfile } from "@spt-aki/models/eft/launcher/IMiniProfile";
 import { GetProfileStatusResponseData } from "@spt-aki/models/eft/profile/GetProfileStatusResponseData";
 import { IAkiProfile, Inraid, Vitality } from "@spt-aki/models/eft/profile/IAkiProfile";
+import { ICompletedAchievementsResponse } from "@spt-aki/models/eft/profile/ICompletedAchievementsResponse";
 import { IProfileChangeNicknameRequestData } from "@spt-aki/models/eft/profile/IProfileChangeNicknameRequestData";
 import { IProfileChangeVoiceRequestData } from "@spt-aki/models/eft/profile/IProfileChangeVoiceRequestData";
 import { IProfileCreateRequestData } from "@spt-aki/models/eft/profile/IProfileCreateRequestData";
@@ -178,6 +179,7 @@ export class ProfileController
             inraid: {} as Inraid,
             insurance: [],
             traderPurchases: {},
+            achievements: {}
         };
 
         this.profileFixerService.checkForAndFixPmcProfileIssues(profileDetails.characters.pmc);
@@ -382,5 +384,12 @@ export class ProfileController
         };
 
         return response;
+    }
+
+    public getCompletedAchievements(sessionId: string): ICompletedAchievementsResponse
+    {
+        const profile = this.profileHelper.getFullProfile(sessionId);
+
+        return {elements: profile.achievements};
     }
 }

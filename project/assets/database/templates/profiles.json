@@ -777,6 +777,26 @@
                                 }
                             }
                         }, {
+							"_id": "658c3f38bb2016e5630bdbe5",
+							"_tpl": "65703d866584602f7d057a8a",
+							"parentId": "af4d8b34228a85208fb85895",
+							"slotId": "Soft_armor_front"
+						}, {
+							"_id": "658c3f38bb2016e5630bdbe6",
+							"_tpl": "65703fa06584602f7d057a8e",
+							"parentId": "af4d8b34228a85208fb85895",
+							"slotId": "Soft_armor_back"
+						}, {
+							"_id": "658c3f38bb2016e5630bdbe7",
+							"_tpl": "65703fe46a912c8b5c03468b",
+							"parentId": "af4d8b34228a85208fb85895",
+							"slotId": "Soft_armor_left"
+						}, {
+							"_id": "658c3f38bb2016e5630bdbe8",
+							"_tpl": "657040374e67e8ec7a0d261c",
+							"parentId": "af4d8b34228a85208fb85895",
+							"slotId": "soft_armor_right"
+						}, {
                             "_id": "01e9d751f10e4e9aebdd94d5",
                             "_tpl": "627a4e6b255f7527fb05a0f6",
                             "parentId": "5fe49444ae6628187a2e77b8",
@@ -866,6 +886,26 @@
                                 }
                             }
                         }, {
+							"_id": "658c3f38bb2016e5630bdbe5",
+							"_tpl": "65703d866584602f7d057a8a",
+							"parentId": "fb08ac9e01a36533563a4389",
+							"slotId": "Soft_armor_front"
+						}, {
+							"_id": "658c3f38bb2016e5630bdbe6",
+							"_tpl": "65703fa06584602f7d057a8e",
+							"parentId": "fb08ac9e01a36533563a4389",
+							"slotId": "Soft_armor_back"
+						}, {
+							"_id": "658c3f38bb2016e5630bdbe7",
+							"_tpl": "65703fe46a912c8b5c03468b",
+							"parentId": "fb08ac9e01a36533563a4389",
+							"slotId": "Soft_armor_left"
+						}, {
+							"_id": "658c3f38bb2016e5630bdbe8",
+							"_tpl": "657040374e67e8ec7a0d261c",
+							"parentId": "fb08ac9e01a36533563a4389",
+							"slotId": "soft_armor_right"
+						}, {
                             "_id": "686cfcc458f923cb2e76b8d7",
                             "_tpl": "5710c24ad2720bc3458b45a3",
                             "location": {
@@ -37199,7 +37239,28 @@
                                     "MaxDurability": 50
                                 }
                             }
-                        }, {
+                        },
+{
+                        "_id": "658c3f38bb2016e5630bdbe5",
+                        "_tpl": "65703d866584602f7d057a8a",
+                        "parentId": "5fe4977574f15b4ad31b662b",
+                        "slotId": "Soft_armor_front"
+                    }, {
+                        "_id": "658c3f38bb2016e5630bdbe6",
+                        "_tpl": "65703fa06584602f7d057a8e",
+                        "parentId": "5fe4977574f15b4ad31b662b",
+                        "slotId": "Soft_armor_back"
+                    }, {
+                        "_id": "658c3f38bb2016e5630bdbe7",
+                        "_tpl": "65703fe46a912c8b5c03468b",
+                        "parentId": "5fe4977574f15b4ad31b662b",
+                        "slotId": "Soft_armor_left"
+                    }, {
+                        "_id": "658c3f38bb2016e5630bdbe8",
+                        "_tpl": "657040374e67e8ec7a0d261c",
+                        "parentId": "5fe4977574f15b4ad31b662b",
+                        "slotId": "soft_armor_right"
+                    }, {
                             "_id": "5fe4977574f15b4ad31b662f",
                             "_tpl": "627a4e6b255f7527fb05a0f6",
                             "parentId": "5fe4977574f15b4ad31b6631",
@@ -37288,7 +37349,27 @@
                                     "MaxDurability": 50
                                 }
                             }
-                        }, {
+						}, {
+							"_id": "658c3f38bb2016e5630bdbe5",
+							"_tpl": "65703d866584602f7d057a8a",
+							"parentId": "5fe4977574f15b4ad31b6633",
+							"slotId": "Soft_armor_front"
+						}, {
+							"_id": "658c3f38bb2016e5630bdbe6",
+							"_tpl": "65703fa06584602f7d057a8e",
+							"parentId": "5fe4977574f15b4ad31b6633",
+							"slotId": "Soft_armor_back"
+						}, {
+							"_id": "658c3f38bb2016e5630bdbe7",
+							"_tpl": "65703fe46a912c8b5c03468b",
+							"parentId": "5fe4977574f15b4ad31b6633",
+							"slotId": "Soft_armor_left"
+						}, {
+							"_id": "658c3f38bb2016e5630bdbe8",
+							"_tpl": "657040374e67e8ec7a0d261c",
+							"parentId": "5fe4977574f15b4ad31b6633",
+							"slotId": "soft_armor_right"
+						}, {
                             "_id": "5fe4977574f15b4ad31b6634",
                             "_tpl": "5710c24ad2720bc3458b45a3",
                             "location": {
@@ -37461,6 +37542,26 @@
                                 }
                             }
                         }, {
+							"_id": "658c3f38bb2016e5630bdbe5",
+							"_tpl": "65703d866584602f7d057a8a",
+							"parentId": "5fe4977574f15b4ad31b6641",
+							"slotId": "Soft_armor_front"
+						}, {
+							"_id": "658c3f38bb2016e5630bdbe6",
+							"_tpl": "65703fa06584602f7d057a8e",
+							"parentId": "5fe4977574f15b4ad31b6641",
+							"slotId": "Soft_armor_back"
+						}, {
+							"_id": "658c3f38bb2016e5630bdbe7",
+							"_tpl": "65703fe46a912c8b5c03468b",
+							"parentId": "5fe4977574f15b4ad31b6641",
+							"slotId": "Soft_armor_left"
+						}, {
+							"_id": "658c3f38bb2016e5630bdbe8",
+							"_tpl": "657040374e67e8ec7a0d261c",
+							"parentId": "5fe4977574f15b4ad31b6641",
+							"slotId": "soft_armor_right"
+						}, {							
                             "_id": "5fe4977574f15b4ad31b6642",
                             "_tpl": "5b40e5e25acfc4001a599bea",
                             "location": {
@@ -39793,6 +39894,26 @@
                                 }
                             }
                         }, {
+							"_id": "658c3f38bb2016e5630bdbe5",
+							"_tpl": "65703d866584602f7d057a8a",
+							"parentId": "5fe49cdfa19cac3fa905407f",
+							"slotId": "Soft_armor_front"
+						}, {
+							"_id": "658c3f38bb2016e5630bdbe6",
+							"_tpl": "65703fa06584602f7d057a8e",
+							"parentId": "5fe49cdfa19cac3fa905407f",
+							"slotId": "Soft_armor_back"
+						}, {
+							"_id": "658c3f38bb2016e5630bdbe7",
+							"_tpl": "65703fe46a912c8b5c03468b",
+							"parentId": "5fe49cdfa19cac3fa905407f",
+							"slotId": "Soft_armor_left"
+						}, {
+							"_id": "658c3f38bb2016e5630bdbe8",
+							"_tpl": "657040374e67e8ec7a0d261c",
+							"parentId": "5fe49cdfa19cac3fa905407f",
+							"slotId": "soft_armor_right"
+						}, {
                             "_id": "5fe49cdfa19cac3fa905407d",
                             "_tpl": "627a4e6b255f7527fb05a0f6",
                             "parentId": "5fe49cdfa19cac3fa905407f",
@@ -40234,6 +40355,26 @@
                                 }
                             }
                         }, {
+                        "_id": "658c3f38bb2016e5630bdbe5",
+                        "_tpl": "65703d866584602f7d057a8a",
+                        "parentId": "5fe49cdfa19cac3fa905409d",
+                        "slotId": "Soft_armor_front"
+						}, {
+							"_id": "658c3f38bb2016e5630bdbe6",
+							"_tpl": "65703fa06584602f7d057a8e",
+							"parentId": "5fe49cdfa19cac3fa905409d",
+							"slotId": "Soft_armor_back"
+						}, {
+							"_id": "658c3f38bb2016e5630bdbe7",
+							"_tpl": "65703fe46a912c8b5c03468b",
+							"parentId": "5fe49cdfa19cac3fa905409d",
+							"slotId": "Soft_armor_left"
+						}, {
+							"_id": "658c3f38bb2016e5630bdbe8",
+							"_tpl": "657040374e67e8ec7a0d261c",
+							"parentId": "5fe49cdfa19cac3fa905409d",
+							"slotId": "soft_armor_right"
+						}, {
                             "_id": "5fe49cdfa19cac3fa905409e",
                             "_tpl": "5448fee04bdc2dbc018b4567",
                             "location": {
@@ -40340,6 +40481,26 @@
                                 }
                             }
                         }, {
+							"_id": "658c3f38bb2016e5630bdbe5",
+							"_tpl": "65703d866584602f7d057a8a",
+							"parentId": "5fe49cdfa19cac3fa90540a5",
+							"slotId": "Soft_armor_front"
+						}, {
+							"_id": "658c3f38bb2016e5630bdbe6",
+							"_tpl": "65703fa06584602f7d057a8e",
+							"parentId": "5fe49cdfa19cac3fa90540a5",
+							"slotId": "Soft_armor_back"
+						}, {
+							"_id": "658c3f38bb2016e5630bdbe7",
+							"_tpl": "65703fe46a912c8b5c03468b",
+							"parentId": "5fe49cdfa19cac3fa90540a5",
+							"slotId": "Soft_armor_left"
+						}, {
+							"_id": "658c3f38bb2016e5630bdbe8",
+							"_tpl": "657040374e67e8ec7a0d261c",
+							"parentId": "5fe49cdfa19cac3fa90540a5",
+							"slotId": "soft_armor_right"
+						}, {
                             "_id": "5fe49cdfa19cac3fa90540a6",
                             "_tpl": "5e831507ea0a7c419c2f9bd9",
                             "location": {

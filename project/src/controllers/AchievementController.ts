@@ -1,6 +1,6 @@
 import { inject, injectable } from "tsyringe";
 
-import { IAchievement } from "@spt-aki/models/eft/common/tables/IAchievement";
+import { IGetAchievementsResponse } from "@spt-aki/models/eft/profile/IGetAchievementsResponse";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 
@@ -21,8 +21,8 @@ export class AchievementController
      * Get base achievements
      * @param sessionID Session id
      */
-    public getAchievements(sessionID: string): IAchievement[]
+    public getAchievements(sessionID: string): IGetAchievementsResponse
     {
-        return this.databaseServer.getTables().templates.achievements;
+        return {elements: this.databaseServer.getTables().templates.achievements };
     }
 }
