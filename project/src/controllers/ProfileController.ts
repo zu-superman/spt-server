@@ -10,6 +10,7 @@ import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
 import { TemplateSide } from "@spt-aki/models/eft/common/tables/IProfileTemplate";
 import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEventRouterResponse";
 import { IMiniProfile } from "@spt-aki/models/eft/launcher/IMiniProfile";
+import { GetProfileStatusResponseData } from "@spt-aki/models/eft/profile/GetProfileStatusResponseData";
 import { IAkiProfile, Inraid, Vitality } from "@spt-aki/models/eft/profile/IAkiProfile";
 import { IProfileChangeNicknameRequestData } from "@spt-aki/models/eft/profile/IProfileChangeNicknameRequestData";
 import { IProfileChangeVoiceRequestData } from "@spt-aki/models/eft/profile/IProfileChangeVoiceRequestData";
@@ -133,9 +134,9 @@ export class ProfileController
         this.deleteProfileBySessionId(sessionID);
 
         // PMC
-        pmcData._id = `pmc${sessionID}`;
+        pmcData._id = account.id;
         pmcData.aid = account.aid;
-        pmcData.savage = `scav${sessionID}`;
+        pmcData.savage = account.scavId;
         pmcData.sessionId = sessionID;
         pmcData.Info.Nickname = info.nickname;
         pmcData.Info.LowerNickname = info.nickname.toLowerCase();
@@ -355,5 +356,31 @@ export class ProfileController
     public getFriends(info: ISearchFriendRequestData, sessionID: string): ISearchFriendResponse[]
     {
         return [{ _id: this.hashUtil.generate(), Info: { Level: 1, Side: "Bear", Nickname: info.nickname } }];
+    }
+
+    /** 
+     * Handle client/profile/status
+     */
+    public getProfileStatus(sessionId: string): GetProfileStatusResponseData
+    {
+        const account = this.saveServer.getProfile(sessionId).info;
+        const response: GetProfileStatusResponseData = {
+            maxPveCountExceeded: false,
+            profiles: [{
+                profileid: account.scavId,
+                profileToken: null,
+                status: "Free",
+                sid: "",
+                ip: "",
+                port: 0,
+                version: "live",
+                location: "bigmap",
+                raidMode: "Online",
+                mode: "deathmatch",
+                shortId: "xxx1x1",
+            }, { profileid: account.id, profileToken: null, status: "Free", sid: "", ip: "", port: 0 }],
+        };
+
+        return response;
     }
 }

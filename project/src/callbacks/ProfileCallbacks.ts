@@ -138,24 +138,7 @@ export class ProfileCallbacks
         sessionID: string,
     ): IGetBodyResponseData<GetProfileStatusResponseData>
     {
-        const response: GetProfileStatusResponseData = {
-            maxPveCountExceeded: false,
-            profiles: [{
-                profileid: `scav${sessionID}`,
-                profileToken: null,
-                status: "Free",
-                sid: "",
-                ip: "",
-                port: 0,
-                version: "live",
-                location: "bigmap",
-                raidMode: "Online",
-                mode: "deathmatch",
-                shortId: "xxx1x1",
-            }, { profileid: `pmc${sessionID}`, profileToken: null, status: "Free", sid: "", ip: "", port: 0 }],
-        };
-
-        return this.httpResponse.getBody(response);
+        return this.httpResponse.getBody(this.profileController.getProfileStatus(sessionID));
     }
 
     /**

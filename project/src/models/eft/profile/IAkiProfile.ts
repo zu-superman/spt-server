@@ -29,7 +29,9 @@ export class TraderPurchaseData
 
 export interface Info
 {
+    /** main profile id */
     id: string;
+    scavId: string;
     aid: number;
     username: string;
     password: string;

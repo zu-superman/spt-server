@@ -434,7 +434,7 @@ export class GameController
             lang: "en",
             aid: profile.aid,
             taxonomy: 6,
-            activeProfileId: `pmc${sessionID}`,
+            activeProfileId: sessionID,
             backend: {
                 Lobby: this.httpServerHelper.getBackendUrl(),
                 Trading: this.httpServerHelper.getBackendUrl(),
