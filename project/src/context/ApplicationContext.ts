@@ -24,7 +24,7 @@ export class ApplicationContext
     {
         if (this.variables.has(type))
         {
-            return this.variables.get(type)?.getTail()?.getValue();
+            return this.variables.get(type)?.getTail();
         }
     }
 
