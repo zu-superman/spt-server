@@ -125,6 +125,7 @@ export class BotInventoryGenerator
             sortingTable: sortingTableId,
             hideoutAreaStashes: {},
             fastPanel: {},
+            favoriteItems: []
         };
     }
 

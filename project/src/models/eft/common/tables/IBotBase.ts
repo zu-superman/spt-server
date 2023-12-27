@@ -19,6 +19,7 @@ export interface IBotBase
     Skills: Skills;
     Stats: Stats;
     Encyclopedia: Record<string, boolean>;
+    TaskConditionCounters: Record<string, ITaskConditionCounter>;
     ConditionCounters: ConditionCounters;
     BackendCounters: Record<string, BackendCounter>;
     InsuredItems: InsuredItem[];
@@ -36,6 +37,14 @@ export interface IBotBase
     WishList: string[];
     /** SPT specific property used during bot generation in raid */
     sptIsPmc?: boolean;
+}
+
+export interface ITaskConditionCounter
+{
+    id: string
+    type: string
+    value: number
+    sourceId: string
 }
 
 export interface IUnlockedInfo
@@ -153,6 +162,7 @@ export interface Inventory
     /** Key is hideout area enum numeric as string e.g. "24", value is area _id  */
     hideoutAreaStashes: Record<string, string>;
     fastPanel: Record<string, string>;
+    favoriteItems: string[]
 }
 
 export interface IBaseJsonSkills
