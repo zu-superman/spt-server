@@ -36,14 +36,16 @@
         "crazyAssaultEvent": 15,
         "bossBoar": 5,
         "bossBoarSniper": 5,
-		"peacefullZryachiyEvent": 5,
-		"sectactPriestEvent": 20,
-		"ravangeZryachiyEvent": 25,
+		"followerBoarClose1": 10,
+		"followerBoarClose2": 10,
+		"bossKolontay": 5,
+		"followerKolontayAssault": 10,
+		"followerKolontaySecurity": 10,
+		"shooterBTR": 10,
         "sptUsec": 30,
         "sptBear": 30
     },
     "bosses": ["bossbully", "bossgluhar", "bosskilla", "bosskojaniy", "bosssanitar", "bosstagilla", "bossknight", "bossZryachiy", "bossBoar", "bossBoarSniper"],
-	"botsToNotAddPMCsAsEnemiesTo": ["gifter", "peacefullzryachiyevent"],
     "durability": {
         "default": {
             "armor": {
@@ -592,7 +594,44 @@
                 "lightLaserLimit": 1
             }
         },
+        "followerboarclose1": {
+            "nvgIsActiveChanceDayPercent": 20,
+            "nvgIsActiveChanceNightPercent": 85,
+            "faceShieldIsActiveChancePercent": 80,
+            "lightIsActiveDayChancePercent": 25,
+            "lightIsActiveNightChancePercent": 75,
+            "laserIsActiveChancePercent": 75,
+            "weaponModLimits": {
+                "scopeLimit": 2,
+                "lightLaserLimit": 1
+            }
+        },
+		"followerboarclose2": {
+            "nvgIsActiveChanceDayPercent": 20,
+            "nvgIsActiveChanceNightPercent": 85,
+            "faceShieldIsActiveChancePercent": 80,
+            "lightIsActiveDayChancePercent": 25,
+            "lightIsActiveNightChancePercent": 75,
+            "laserIsActiveChancePercent": 75,
+            "weaponModLimits": {
+                "scopeLimit": 2,
+                "lightLaserLimit": 1
+            }
+        },
         "bossboarsniper": {
+            "nvgIsActiveChanceDayPercent": 20,
+            "nvgIsActiveChanceNightPercent": 85,
+            "faceShieldIsActiveChancePercent": 80,
+            "lightIsActiveDayChancePercent": 25,
+            "lightIsActiveNightChancePercent": 75,
+            "laserIsActiveChancePercent": 75,
+            "forceStock": true,
+            "weaponModLimits": {
+                "scopeLimit": 2,
+                "lightLaserLimit": 1
+            }
+        },
+        "bosskolontay": {
             "nvgIsActiveChanceDayPercent": 20,
             "nvgIsActiveChanceNightPercent": 85,
             "faceShieldIsActiveChancePercent": 80,
@@ -610,16 +649,16 @@
             "nvgIsActiveChanceDayPercent": 10,
             "nvgIsActiveChanceNightPercent": 100,
             "faceShieldIsActiveChancePercent": 100,
-            "lightIsActiveDayChancePercent": 5,
-            "lightIsActiveNightChancePercent": 5,
+            "lightIsActiveDayChancePercent": 25,
+            "lightIsActiveNightChancePercent": 85,
             "laserIsActiveChancePercent": 95
         },
         "sectantwarrior": {
             "nvgIsActiveChanceDayPercent": 10,
             "nvgIsActiveChanceNightPercent": 100,
             "faceShieldIsActiveChancePercent": 100,
-            "lightIsActiveDayChancePercent": 5,
-            "lightIsActiveNightChancePercent": 5,
+            "lightIsActiveDayChancePercent": 25,
+            "lightIsActiveNightChancePercent": 75,
             "laserIsActiveChancePercent": 95
         },
         "test": {},

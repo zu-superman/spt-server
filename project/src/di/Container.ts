@@ -160,7 +160,9 @@ import { ProfileSaveLoadRouter } from "@spt-aki/routers/save_load/ProfileSaveLoa
 import { BundleSerializer } from "@spt-aki/routers/serializers/BundleSerializer";
 import { ImageSerializer } from "@spt-aki/routers/serializers/ImageSerializer";
 import { NotifySerializer } from "@spt-aki/routers/serializers/NotifySerializer";
+import { AchievementStaticRouter } from "@spt-aki/routers/static/AchievementStaticRouter";
 import { BotStaticRouter } from "@spt-aki/routers/static/BotStaticRouter";
+import { BuildsStaticRouter } from "@spt-aki/routers/static/BuildStaticRouter";
 import { BundleStaticRouter } from "@spt-aki/routers/static/BundleStaticRouter";
 import { ClientLogStaticRouter } from "@spt-aki/routers/static/ClientLogStaticRouter";
 import { CustomizationStaticRouter } from "@spt-aki/routers/static/CustomizationStaticRouter";
@@ -326,6 +328,8 @@ export class Container
         depContainer.registerType("StaticRoutes", "RagfairStaticRouter");
         depContainer.registerType("StaticRoutes", "PresetStaticRouter");
         depContainer.registerType("StaticRoutes", "BundleStaticRouter");
+        depContainer.registerType("StaticRoutes", "AchievementStaticRouter");
+        depContainer.registerType("StaticRoutes", "BuildsStaticRouter");
         depContainer.registerType("StaticRoutes", "NotifierStaticRouter");
         depContainer.registerType("StaticRoutes", "ProfileStaticRouter");
         depContainer.registerType("StaticRoutes", "TraderStaticRouter");
@@ -486,6 +490,8 @@ export class Container
         depContainer.register<RagfairStaticRouter>("RagfairStaticRouter", { useClass: RagfairStaticRouter });
         depContainer.register<TraderStaticRouter>("TraderStaticRouter", { useClass: TraderStaticRouter });
         depContainer.register<WeatherStaticRouter>("WeatherStaticRouter", { useClass: WeatherStaticRouter });
+        depContainer.register<AchievementStaticRouter>("AchievementStaticRouter", { useClass: AchievementStaticRouter });
+        depContainer.register<BuildsStaticRouter>("BuildsStaticRouter", { useClass: BuildsStaticRouter });
     }
 
     private static registerGenerators(depContainer: DependencyContainer): void
