@@ -1,9 +1,9 @@
 import { BuildController } from "@spt-aki/controllers/BuildController";
 import { IEmptyRequestData } from "@spt-aki/models/eft/common/IEmptyRequestData";
 import { IGetBodyResponseData } from "@spt-aki/models/eft/httpResponse/IGetBodyResponseData";
+import { IUserBuilds } from "@spt-aki/models/eft/profile/IAkiProfile";
 import { HttpResponseUtil } from "@spt-aki/utils/HttpResponseUtil";
 import { inject, injectable } from "tsyringe";
-import { IUserBuilds } from "x:/SPTDev/ChompServer/project/src/models/eft/profile/IAkiProfile";
 
 @injectable()
 export class BuildsCallbacks
@@ -16,7 +16,6 @@ export class BuildsCallbacks
 
     /**
      * Handle client/builds/list
-     * 
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public getBuilds(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<IUserBuilds>
@@ -26,7 +25,6 @@ export class BuildsCallbacks
 
     /**
      * Handle client/builds/magazine/save
-     * 
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public setMagazine(url: string, info: IEmptyRequestData, sessionID: string): any
@@ -36,17 +34,15 @@ export class BuildsCallbacks
 
     /**
      * Handle client/builds/weapon/save
-     * 
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public setWeapon(url: string, info: IEmptyRequestData, sessionID: string): any
     {
-        //this.httpResponse.getBody(this.buildController.saveWeaponBuild(sessionID, info));
+        // this.httpResponse.getBody(this.buildController.saveWeaponBuild(sessionID, info));
     }
 
     /**
      * Handle client/builds/equipment/save
-     * 
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public setEquipment(url: string, info: IEmptyRequestData, sessionID: string): any
@@ -56,7 +52,6 @@ export class BuildsCallbacks
 
     /**
      * Handle client/builds/delete
-     * 
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public deleteBuild(url: string, info: IEmptyRequestData, sessionID: string): any
