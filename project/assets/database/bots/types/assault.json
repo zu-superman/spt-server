@@ -4654,6 +4654,12 @@
       ]
     },
     "mods": {
+		"5648a7494bdc2d9d488b4583": {
+			"soft_armor_front": ["65703d866584602f7d057a8a"],
+			"soft_armor_back": ["65703fa06584602f7d057a8e"],
+			"soft_armor_left": ["65703fe46a912c8b5c03468b"],
+			"soft_armor_right": ["657040374e67e8ec7a0d261c"]
+		},
       "5447a9cd4bdc2dbd208b4567": {
         "mod_charge": [
           "6033749e88382f4fab3fd2c5",

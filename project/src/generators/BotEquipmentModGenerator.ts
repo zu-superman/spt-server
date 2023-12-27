@@ -97,7 +97,10 @@ export class BotEquipmentModGenerator
             }
 
             // Ensure submods for nvgs all spawn together
-            forceSpawn = (modSlot === "mod_nvg") ? true : false;
+            if (modSlot === "mod_nvg")
+            {
+                forceSpawn = true;
+            }
 
             let modTpl: string;
             let found = false;
@@ -542,16 +545,17 @@ export class BotEquipmentModGenerator
      */
     protected getModItemSlot(modSlot: string, parentTemplate: ITemplateItem): Slot
     {
-        switch (modSlot)
+        const modSlotLower = modSlot.toLowerCase();
+        switch (modSlotLower)
         {
             case "patron_in_weapon":
             case "patron_in_weapon_000":
             case "patron_in_weapon_001":
-                return parentTemplate._props.Chambers.find((c) => c._name.includes(modSlot));
+                return parentTemplate._props.Chambers.find((chamber) => chamber._name.includes(modSlotLower));
             case "cartridges":
-                return parentTemplate._props.Cartridges.find((c) => c._name === modSlot);
+                return parentTemplate._props.Cartridges.find((c) => c._name.toLowerCase() === modSlotLower);
             default:
-                return parentTemplate._props.Slots.find((s) => s._name === modSlot);
+                return parentTemplate._props.Slots.find((s) => s._name.toLowerCase() === modSlotLower);
         }
     }
 
