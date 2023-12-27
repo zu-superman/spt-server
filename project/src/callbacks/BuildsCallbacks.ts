@@ -1,12 +1,16 @@
+import { BuildController } from "@spt-aki/controllers/BuildController";
 import { IEmptyRequestData } from "@spt-aki/models/eft/common/IEmptyRequestData";
+import { IGetBodyResponseData } from "@spt-aki/models/eft/httpResponse/IGetBodyResponseData";
 import { HttpResponseUtil } from "@spt-aki/utils/HttpResponseUtil";
 import { inject, injectable } from "tsyringe";
+import { IUserBuilds } from "x:/SPTDev/ChompServer/project/src/models/eft/profile/IAkiProfile";
 
 @injectable()
 export class BuildsCallbacks
 {
     constructor(
         @inject("HttpResponseUtil") protected httpResponse: HttpResponseUtil,
+        @inject("BuildController") protected buildController: BuildController,
     )
     {}
 
@@ -15,9 +19,9 @@ export class BuildsCallbacks
      * 
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public getBuilds(url: string, info: IEmptyRequestData, sessionID: string): any
+    public getBuilds(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<IUserBuilds>
     {
-        throw new Error("Not implemented");
+        return this.httpResponse.getBody(this.buildController.getUserBuilds(sessionID));
     }
 
     /**
@@ -37,7 +41,7 @@ export class BuildsCallbacks
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public setWeapon(url: string, info: IEmptyRequestData, sessionID: string): any
     {
-        throw new Error("Not implemented");
+        //this.httpResponse.getBody(this.buildController.saveWeaponBuild(sessionID, info));
     }
 
     /**

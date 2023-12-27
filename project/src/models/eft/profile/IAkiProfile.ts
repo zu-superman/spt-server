@@ -47,6 +47,7 @@ export interface IUserBuilds
 {
     weaponBuilds: IWeaponBuild[];
     equipmentBuilds: IEquipmentBuild[];
+    magazineBuilds: IMagazineBuild[]
 }
 
 export interface IWeaponBuild
@@ -67,6 +68,11 @@ export interface IEquipmentBuild
     type: string;
     fastPanel: Record<string, string>;
     buildType: EquipmentBuildType;
+}
+
+export interface IMagazineBuild
+{
+    
 }
 
 export interface Dialogue

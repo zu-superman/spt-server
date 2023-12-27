@@ -14,7 +14,7 @@ import { HashUtil } from "@spt-aki/utils/HashUtil";
 import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 
 @injectable()
-export class PresetBuildController
+export class BuildController
 {
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
@@ -33,7 +33,7 @@ export class PresetBuildController
         const profile = this.saveServer.getProfile(sessionID);
         if (!profile.userbuilds)
         {
-            profile.userbuilds = { equipmentBuilds: [], weaponBuilds: [] };
+            profile.userbuilds = { equipmentBuilds: [], weaponBuilds: [], magazineBuilds: [] };
         }
 
         // Ensure the secure container in the default presets match what the player has equipped
