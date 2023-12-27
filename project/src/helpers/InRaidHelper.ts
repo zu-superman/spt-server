@@ -327,14 +327,14 @@ export class InRaidHelper
                 // Does failed quest have requirement to collect items from raid
                 const questDbData = this.questHelper.getQuestFromDb(postRaidQuest.qid, pmcData);
                 // AvailableForFinish
-                const matchingAffFindConditions = questDbData.conditions.AvailableForFinish.filter(x => x._parent === "FindItem");
+                const matchingAffFindConditions = questDbData.conditions.AvailableForFinish.filter(x => x.conditionType === "FindItem");
                 const itemsToCollect: string[] = [];
                 if (matchingAffFindConditions)
                 {
                     // Find all items the failed quest wanted
                     for (const condition of matchingAffFindConditions)
                     {
-                        itemsToCollect.push(...condition._props.target);
+                        itemsToCollect.push(...condition.target);
                     }
                 }
 
@@ -381,12 +381,12 @@ export class InRaidHelper
                 }
 
                 // Find the time requirement in AvailableForStart array (assuming there is one as quest in locked state === its time-gated)
-                const afsRequirement = dbQuest.conditions.AvailableForStart.find(x => x._parent === "Quest");
-                if (afsRequirement && afsRequirement._props.availableAfter > 0)
+                const afsRequirement = dbQuest.conditions.AvailableForStart.find(x => x.conditionType === "Quest");
+                if (afsRequirement && afsRequirement.availableAfter > 0)
                 {
                     // Prereq quest has a wait
                     // Set quest as AvailableAfter and set timer
-                    const timestamp = this.timeUtil.getTimestamp() + afsRequirement._props.availableAfter;
+                    const timestamp = this.timeUtil.getTimestamp() + afsRequirement.availableAfter;
                     lockedQuest.availableAfter = timestamp;
                     lockedQuest.statusTimers.AvailableAfter = timestamp;
                     lockedQuest.status = 9;

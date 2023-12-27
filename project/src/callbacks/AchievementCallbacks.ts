@@ -1,3 +1,4 @@
+import { AchievementController } from "@spt-aki/controllers/AchievementController";
 import { IEmptyRequestData } from "@spt-aki/models/eft/common/IEmptyRequestData";
 import { HttpResponseUtil } from "@spt-aki/utils/HttpResponseUtil";
 import { inject, injectable } from "tsyringe";
@@ -6,7 +7,7 @@ import { inject, injectable } from "tsyringe";
 export class AchievementCallbacks
 {
     constructor(
-       // @inject("AchievementController") protected botController: AchievementController,
+        @inject("AchievementController") protected achievementController: AchievementController,
         @inject("HttpResponseUtil") protected httpResponse: HttpResponseUtil,
     )
     {}
@@ -18,8 +19,8 @@ export class AchievementCallbacks
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public getAchievements(url: string, info: IEmptyRequestData, sessionID: string): any
     {
-        
-        throw new Error("Not implemented");
+
+        return this.httpResponse.getBody(this.achievementController.getAchievements(sessionID));
     }
 
     /**

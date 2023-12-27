@@ -6,7 +6,6 @@ import { inject, injectable } from "tsyringe";
 export class BuildsCallbacks
 {
     constructor(
-       // @inject("AchievementController") protected botController: AchievementController,
         @inject("HttpResponseUtil") protected httpResponse: HttpResponseUtil,
     )
     {}

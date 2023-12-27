@@ -9,7 +9,7 @@ export interface IQuest
     QuestName?: string;
     _id: string;
     canShowNotificationsInGame: boolean;
-    conditions: Conditions;
+    conditions: IQuestConditions;
     description: string;
     failMessageText: string;
     name: string;
@@ -27,7 +27,7 @@ export interface IQuest
     startedMessageText: string;
     successMessageText: string;
     templateId: string;
-    rewards: Rewards;
+    rewards: IRewards;
     /** Becomes 'AppearStatus' inside client */
     status: string | number;
     KeyQuest: boolean;
@@ -38,7 +38,7 @@ export interface IQuest
     sptStatus?: QuestStatus;
 }
 
-export interface Conditions
+export interface IQuestConditions
 {
     Started: AvailableForConditions[];
     AvailableForFinish: AvailableForConditions[];
@@ -48,13 +48,6 @@ export interface Conditions
 }
 
 export interface AvailableForConditions
-{
-    _parent: string;
-    _props: AvailableForProps;
-    dynamicLocale?: boolean;
-}
-
-export interface AvailableForProps
 {
     id: string;
     index: number;
@@ -79,7 +72,9 @@ export interface AvailableForProps
     zoneId?: string;
     type?: boolean;
     countInRaid?: boolean;
-    globalQuestCounterId?: any;
+    globalQuestCounterId?: string;
+    completeInSeconds?: number
+    conditionType?: string
 }
 
 export interface AvailableForCounter
@@ -90,25 +85,35 @@ export interface AvailableForCounter
 
 export interface CounterCondition
 {
-    _parent: string;
-    _props: CounterProps;
-}
-
-export interface CounterProps
-{
     id: string;
+    dynamicLocale: boolean
     target: string[] | string; // TODO: some objects have an array and some are just strings, thanks bsg very cool
     compareMethod?: string;
     value?: string;
     weapon?: string[];
+    distance: ICounterConditionDistance
     equipmentInclusive?: string[][];
     weaponModsInclusive?: string[][];
+    weaponModsExclusive?: string[][];
+    enemyEquipmentInclusive?: string[][];
+    enemyEquipmentExclusive?: string[][];
+    weaponCaliber: string[]
+    savageRole: any[]
     status?: string[];
     bodyPart?: string[];
-    daytime?: DaytimeCounter;
+    daytime?: IDaytimeCounter;
+    conditionType?: string
+    enemyHealthEffects: any[]
+    resetOnSessionEnd: boolean
 }
 
-export interface DaytimeCounter
+export interface ICounterConditionDistance
+{
+    value: number
+    compareMethod: string
+}
+
+export interface IDaytimeCounter
 {
     from: number;
     to: number;
@@ -122,7 +127,7 @@ export interface VisibilityCondition
     oneSessionOnly: boolean;
 }
 
-export interface Rewards
+export interface IRewards
 {
     AvailableForStart: Reward[];
     AvailableForFinish: Reward[];

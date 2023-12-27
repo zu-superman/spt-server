@@ -6,7 +6,7 @@ import { RouteAction, StaticRouter } from "@spt-aki/di/Router";
 @injectable()
 export class AchievementStaticRouter extends StaticRouter
 {
-    constructor(@inject("AchievementStaticRouter") protected achievementCallbacks: AchievementCallbacks)
+    constructor(@inject("AchievementCallbacks") protected achievementCallbacks: AchievementCallbacks)
     {
         super([
             new RouteAction(

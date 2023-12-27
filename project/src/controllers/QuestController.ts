@@ -135,7 +135,7 @@ export class QuestController
             for (const conditionToFulfil of questRequirements)
             {
                 // If the previous quest isn't in the user profile, it hasn't been completed or started
-                const prerequisiteQuest = profile.Quests.find((pq) => pq.qid === conditionToFulfil._props.target);
+                const prerequisiteQuest = profile.Quests.find((pq) => pq.qid === conditionToFulfil.target);
                 if (!prerequisiteQuest)
                 {
                     haveCompletedPreviousQuest = false;
@@ -143,18 +143,18 @@ export class QuestController
                 }
 
                 // Prereq does not have its status requirement fulfilled
-                if (!conditionToFulfil._props.status.includes(prerequisiteQuest.status))
+                if (!conditionToFulfil.status.includes(prerequisiteQuest.status))
                 {
                     haveCompletedPreviousQuest = false;
                     break;
                 }
 
                 // Has a wait timer
-                if (conditionToFulfil._props.availableAfter > 0)
+                if (conditionToFulfil.availableAfter > 0)
                 {
                     // Compare current time to unlock time for previous quest
                     const previousQuestCompleteTime = prerequisiteQuest.statusTimers[prerequisiteQuest.status];
-                    const unlockTime = previousQuestCompleteTime + conditionToFulfil._props.availableAfter;
+                    const unlockTime = previousQuestCompleteTime + conditionToFulfil.availableAfter;
                     if (unlockTime > this.timeUtil.getTimestamp())
                     {
                         this.logger.debug(
@@ -175,7 +175,7 @@ export class QuestController
             let passesLoyaltyRequirements = true;
             for (const condition of loyaltyRequirements)
             {
-                if (!this.questHelper.traderLoyaltyLevelRequirementCheck(condition._props, profile))
+                if (!this.questHelper.traderLoyaltyLevelRequirementCheck(condition, profile))
                 {
                     passesLoyaltyRequirements = false;
                     break;
@@ -185,7 +185,7 @@ export class QuestController
             let passesStandingRequirements = true;
             for (const condition of standingRequirements)
             {
-                if (!this.questHelper.traderStandingRequirementCheck(condition._props, profile))
+                if (!this.questHelper.traderStandingRequirementCheck(condition, profile))
                 {
                     passesStandingRequirements = false;
                     break;
@@ -637,13 +637,13 @@ export class QuestController
         {
             // If quest has prereq of completed quest + availableAfter value > 0 (quest has wait time)
             const nextQuestWaitCondition = quest.conditions.AvailableForStart.find((x) =>
-                x._props.target === completedQuestId && x._props.availableAfter > 0
+                x.target === completedQuestId && x.availableAfter > 0
             );
             if (nextQuestWaitCondition)
             {
                 // Now + wait time
                 const availableAfterTimestamp = this.timeUtil.getTimestamp()
-                    + nextQuestWaitCondition._props.availableAfter;
+                    + nextQuestWaitCondition.availableAfter;
 
                 // Update quest in profile with status of AvailableAfter
                 const existingQuestInProfile = pmcData.Quests.find((x) => x.qid === quest._id);
@@ -687,7 +687,7 @@ export class QuestController
                 return false;
             }
 
-            return x.conditions.Fail.some((y) => y._props.target === completedQuestId);
+            return x.conditions.Fail.some((y) => y.target === completedQuestId);
         });
     }
 
@@ -709,7 +709,7 @@ export class QuestController
         for (const questToFail of questsToFail)
         {
             // Skip failing a quest that has a fail status of something other than success
-            if (questToFail.conditions.Fail?.some((x) => x._props.status?.some((y) => y !== QuestStatus.Success)))
+            if (questToFail.conditions.Fail?.some((x) => x.status?.some((y) => y !== QuestStatus.Success)))
             {
                 continue;
             }
@@ -764,12 +764,12 @@ export class QuestController
         for (const condition of quest.conditions.AvailableForFinish)
         {
             if (
-                condition._props.id === handoverQuestRequest.conditionId
-                && handoverQuestTypes.includes(condition._parent)
+                condition.id === handoverQuestRequest.conditionId
+                && handoverQuestTypes.includes(condition.conditionType)
             )
             {
-                handedInCount = Number.parseInt(<string>condition._props.value);
-                isItemHandoverQuest = condition._parent === handoverQuestTypes[0];
+                handedInCount = Number.parseInt(<string>condition.value);
+                isItemHandoverQuest = condition.conditionType === handoverQuestTypes[0];
                 handoverRequirements = condition;
 
                 const profileCounter = (handoverQuestRequest.conditionId in pmcData.BackendCounters)
@@ -807,7 +807,7 @@ export class QuestController
         for (const itemHandover of handoverQuestRequest.items)
         {
             const matchingItemInProfile = pmcData.Inventory.items.find((item) => item._id === itemHandover.id);
-            if (!matchingItemInProfile || !handoverRequirements._props.target.includes(matchingItemInProfile._tpl))
+            if (!matchingItemInProfile || !handoverRequirements.target.includes(matchingItemInProfile._tpl))
             {
                 // Item handed in by player doesnt match what was requested
                 return this.showQuestItemHandoverMatchError(
@@ -904,7 +904,7 @@ export class QuestController
         const errorMessage = this.localisationService.getText("quest-handover_wrong_item", {
             questId: handoverQuestRequest.qid,
             handedInTpl: itemHandedOver._tpl,
-            requiredTpl: handoverRequirements._props.target[0],
+            requiredTpl: handoverRequirements.target[0],
         });
         this.logger.error(errorMessage);
 

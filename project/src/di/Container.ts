@@ -1,6 +1,8 @@
 import { DependencyContainer, Lifecycle } from "tsyringe";
 
+import { AchievementCallbacks } from "@spt-aki/callbacks/AchievementCallbacks";
 import { BotCallbacks } from "@spt-aki/callbacks/BotCallbacks";
+import { BuildsCallbacks } from "@spt-aki/callbacks/BuildsCallbacks";
 import { BundleCallbacks } from "@spt-aki/callbacks/BundleCallbacks";
 import { ClientLogCallbacks } from "@spt-aki/callbacks/ClientLogCallbacks";
 import { CustomizationCallbacks } from "@spt-aki/callbacks/CustomizationCallbacks";
@@ -33,6 +35,7 @@ import { TraderCallbacks } from "@spt-aki/callbacks/TraderCallbacks";
 import { WeatherCallbacks } from "@spt-aki/callbacks/WeatherCallbacks";
 import { WishlistCallbacks } from "@spt-aki/callbacks/WishlistCallbacks";
 import { ApplicationContext } from "@spt-aki/context/ApplicationContext";
+import { AchievementController } from "@spt-aki/controllers/AchievementController";
 import { BotController } from "@spt-aki/controllers/BotController";
 import { ClientLogController } from "@spt-aki/controllers/ClientLogController";
 import { CustomizationController } from "@spt-aki/controllers/CustomizationController";
@@ -643,6 +646,8 @@ export class Container
         depContainer.register<TraderCallbacks>("TraderCallbacks", { useClass: TraderCallbacks });
         depContainer.register<WeatherCallbacks>("WeatherCallbacks", { useClass: WeatherCallbacks });
         depContainer.register<WishlistCallbacks>("WishlistCallbacks", { useClass: WishlistCallbacks });
+        depContainer.register<AchievementCallbacks>("AchievementCallbacks", { useClass: AchievementCallbacks });
+        depContainer.register<BuildsCallbacks>("BuildsCallbacks", { useClass: BuildsCallbacks });
     }
 
     private static registerServices(depContainer: DependencyContainer): void
@@ -787,5 +792,6 @@ export class Container
         depContainer.register<TraderController>("TraderController", { useClass: TraderController });
         depContainer.register<WeatherController>("WeatherController", { useClass: WeatherController });
         depContainer.register<WishlistController>("WishlistController", WishlistController);
+        depContainer.register<AchievementController>("AchievementController", AchievementController);
     }
 }

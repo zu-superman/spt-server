@@ -52,6 +52,9 @@ export interface IDatabaseTables
 
         /** Default equipment loadouts that show on main inventory screen */
         defaultEquipmentPresets: IEquipmentBuild[];
+
+        /** Achievements */
+        achievements: IAchievement[]
     };
     traders?: Record<string, ITrader>;
 

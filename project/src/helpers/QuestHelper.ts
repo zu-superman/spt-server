@@ -10,7 +10,7 @@ import { TraderHelper } from "@spt-aki/helpers/TraderHelper";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
 import { Common, IQuestStatus } from "@spt-aki/models/eft/common/tables/IBotBase";
 import { Item } from "@spt-aki/models/eft/common/tables/IItem";
-import { AvailableForConditions, AvailableForProps, IQuest, Reward } from "@spt-aki/models/eft/common/tables/IQuest";
+import { AvailableForConditions, IQuest, Reward } from "@spt-aki/models/eft/common/tables/IQuest";
 import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEventRouterResponse";
 import { IAcceptQuestRequestData } from "@spt-aki/models/eft/quests/IAcceptQuestRequestData";
 import { IFailQuestRequestData } from "@spt-aki/models/eft/quests/IFailQuestRequestData";
@@ -80,25 +80,25 @@ export class QuestHelper
      */
     public doesPlayerLevelFulfilCondition(playerLevel: number, condition: AvailableForConditions): boolean
     {
-        if (condition._parent === "Level")
+        if (condition.conditionType === "Level")
         {
-            switch (condition._props.compareMethod)
+            switch (condition.compareMethod)
             {
                 case ">=":
-                    return playerLevel >= <number>condition._props.value;
+                    return playerLevel >= <number>condition.value;
                 case ">":
-                    return playerLevel > <number>condition._props.value;
+                    return playerLevel > <number>condition.value;
                 case "<":
-                    return playerLevel < <number>condition._props.value;
+                    return playerLevel < <number>condition.value;
                 case "<=":
-                    return playerLevel <= <number>condition._props.value;
+                    return playerLevel <= <number>condition.value;
                 case "=":
-                    return playerLevel === <number>condition._props.value;
+                    return playerLevel === <number>condition.value;
                 default:
                     this.logger.error(
                         this.localisationService.getText(
                             "quest-unable_to_find_compare_condition",
-                            condition._props.compareMethod,
+                            condition.compareMethod,
                         ),
                     );
                     return false;
@@ -198,7 +198,7 @@ export class QuestHelper
      * @param profile Player profile
      * @returns true if loyalty is high enough to fulfill quest requirement
      */
-    public traderLoyaltyLevelRequirementCheck(questProperties: AvailableForProps, profile: IPmcData): boolean
+    public traderLoyaltyLevelRequirementCheck(questProperties: AvailableForConditions, profile: IPmcData): boolean
     {
         const requiredLoyaltyLevel = Number(questProperties.value);
         const trader = profile.TradersInfo[<string>questProperties.target];
@@ -216,7 +216,7 @@ export class QuestHelper
      * @param profile Player profile
      * @returns true if standing is high enough to fulfill quest requirement
      */
-    public traderStandingRequirementCheck(questProperties: AvailableForProps, profile: IPmcData): boolean
+    public traderStandingRequirementCheck(questProperties: AvailableForConditions, profile: IPmcData): boolean
     {
         const requiredStanding = Number(questProperties.value);
         const trader = profile.TradersInfo[<string>questProperties.target];
@@ -373,13 +373,13 @@ export class QuestHelper
 
         // Check if quest has a prereq to be placed in a 'pending' state
         const questDbData = this.getQuestFromDb(acceptedQuest.qid, pmcData);
-        const waitTime = questDbData.conditions.AvailableForStart.find((x) => x._props.availableAfter > 0);
+        const waitTime = questDbData.conditions.AvailableForStart.find((x) => x.availableAfter > 0);
         if (waitTime && acceptedQuest.type !== "repeatable")
         {
             // Quest should be put into 'pending' state
             newQuest.startTime = 0;
             newQuest.status = QuestStatus.AvailableAfter; // 9
-            newQuest.availableAfter = currentTimestamp + waitTime._props.availableAfter;
+            newQuest.availableAfter = currentTimestamp + waitTime.availableAfter;
         }
         else
         {
@@ -409,9 +409,9 @@ export class QuestHelper
             // e.g. Quest A passed in, quest B is looped over and has requirement of A to be started, include it
             const acceptedQuestCondition = quest.conditions.AvailableForStart.find((x) =>
             {
-                return x._parent === "Quest"
-                    && x._props.target === startedQuestId
-                    && x._props.status[0] === QuestStatus.Started;
+                return x.conditionType === "Quest"
+                    && x.target === startedQuestId
+                    && x.status[0] === QuestStatus.Started;
             });
 
             // Not found, skip quest
@@ -425,7 +425,7 @@ export class QuestHelper
             );
             for (const condition of standingRequirements)
             {
-                if (!this.traderStandingRequirementCheck(condition._props, profile))
+                if (!this.traderStandingRequirementCheck(condition, profile))
                 {
                     return false;
                 }
@@ -436,7 +436,7 @@ export class QuestHelper
             );
             for (const condition of loyaltyRequirements)
             {
-                if (!this.traderLoyaltyLevelRequirementCheck(condition._props, profile))
+                if (!this.traderLoyaltyLevelRequirementCheck(condition, profile))
                 {
                     return false;
                 }
@@ -465,9 +465,9 @@ export class QuestHelper
         {
             const acceptedQuestCondition = q.conditions.AvailableForStart.find((c) =>
             {
-                return c._parent === "Quest"
-                    && c._props.target === failedQuestId
-                    && c._props.status[0] === QuestStatus.Fail;
+                return c.conditionType === "Quest"
+                    && c.target === failedQuestId
+                    && c.status[0] === QuestStatus.Fail;
             });
 
             if (!acceptedQuestCondition)
@@ -602,7 +602,7 @@ export class QuestHelper
     public getQuestWithOnlyLevelRequirementStartCondition(quest: IQuest): IQuest
     {
         quest = this.jsonUtil.clone(quest);
-        quest.conditions.AvailableForStart = quest.conditions.AvailableForStart.filter((q) => q._parent === "Level");
+        quest.conditions.AvailableForStart = quest.conditions.AvailableForStart.filter((q) => q.conditionType === "Level");
 
         return quest;
     }
@@ -958,11 +958,11 @@ export class QuestHelper
             }
 
             const condition = questInDb.conditions.AvailableForFinish.find((c) =>
-                c._parent === "FindItem" && c._props?.target?.includes(itemTpl)
+                c.conditionType === "FindItem" && c?.target?.includes(itemTpl)
             );
             if (condition)
             {
-                result[questId] = condition._props.id;
+                result[questId] = condition.id;
 
                 break;
             }

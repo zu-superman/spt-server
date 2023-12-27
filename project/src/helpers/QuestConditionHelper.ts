@@ -45,7 +45,7 @@ export class QuestConditionHelper
     {
         const filteredQuests = q.filter((c) =>
         {
-            if (c._parent === questType)
+            if (c.conditionType === questType)
             {
                 if (furtherFilter)
                 {
