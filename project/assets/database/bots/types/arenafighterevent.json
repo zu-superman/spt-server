@@ -2942,11 +2942,12 @@
         "mod_mount": [
           "587e08ee245977446b4410cf"
         ],
-        "mod_muzzle": [
-          "5cf67cadd7f00c065a5abab7"
+        "mod_reciever": [
+          "634f06262e5def262d0b30ca",
+		  "634f05ca517ccc8a960fc748"
         ],
-        "mod_sight_rear": [
-          "574db213245977459a2f3f5d"
+		"mod_barrel": [
+          "634eff66517ccc8a960fc735"
         ],
         "mod_stock": [
           "5d0236dad7ad1a0940739d29"
@@ -2955,6 +2956,13 @@
           "59e0d99486f7744a32234762"
         ]
       },
+	  "634eff66517ccc8a960fc735": {
+		  "mod_mount_000": ["634f05a21f9f536910079b56"],
+		  "mod_muzzle": ["5cf67cadd7f00c065a5abab7"]
+	  },
+	  "634f05a21f9f536910079b56": {
+		  "mod_gas_block": ["634f036a517ccc8a960fc746"]
+	  },
       "587e08ee245977446b4410cf": {
         "mod_scope": [
           "57acb6222459771ec34b5cb0"

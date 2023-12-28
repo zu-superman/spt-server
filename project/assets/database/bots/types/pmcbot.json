@@ -410,6 +410,7 @@
         "ENEMY_BOT_TYPES": [],
         "ENEMY_LOOK_AT_ME_ANG": 15,
         "FIND_COVER_TO_GET_POSITION_WITH_SHOOT": 2,
+        "FOLLOWER_AND_BOSS_WARN_EQUAL_PRIORITY": true,
         "FRIENDLY_BOT_TYPES": [],
         "FRIEND_AGR_KILL": 0.2,
         "FRIEND_DEAD_AGR_LOW": -0.2,
@@ -894,6 +895,7 @@
         "ENEMY_BOT_TYPES": [],
         "ENEMY_LOOK_AT_ME_ANG": 15,
         "FIND_COVER_TO_GET_POSITION_WITH_SHOOT": 2,
+        "FOLLOWER_AND_BOSS_WARN_EQUAL_PRIORITY": true,
         "FRIENDLY_BOT_TYPES": [],
         "FRIEND_AGR_KILL": 0.2,
         "FRIEND_DEAD_AGR_LOW": -0.2,
@@ -1378,6 +1380,7 @@
         "ENEMY_BOT_TYPES": [],
         "ENEMY_LOOK_AT_ME_ANG": 15,
         "FIND_COVER_TO_GET_POSITION_WITH_SHOOT": 2,
+        "FOLLOWER_AND_BOSS_WARN_EQUAL_PRIORITY": true,
         "FRIENDLY_BOT_TYPES": [],
         "FRIEND_AGR_KILL": 0.2,
         "FRIEND_DEAD_AGR_LOW": -0.2,
@@ -1862,6 +1865,7 @@
         "ENEMY_BOT_TYPES": [],
         "ENEMY_LOOK_AT_ME_ANG": 15,
         "FIND_COVER_TO_GET_POSITION_WITH_SHOOT": 2,
+        "FOLLOWER_AND_BOSS_WARN_EQUAL_PRIORITY": true,
         "FRIENDLY_BOT_TYPES": [],
         "FRIEND_AGR_KILL": 0.2,
         "FRIEND_DEAD_AGR_LOW": -0.2,
@@ -3097,12 +3101,11 @@
         "mod_magazine": [
           "5c5970672e221602b21d7855"
         ],
-        "mod_muzzle": [
-          "593d490386f7745ee97a1555",
-          "5cf67cadd7f00c065a5abab7"
+        "mod_reciever": [
+          "634f06262e5def262d0b30ca"
         ],
-        "mod_sight_rear": [
-          "574db213245977459a2f3f5d"
+        "mod_barrel": [
+          "634eff66517ccc8a960fc735"
         ],
         "mod_stock": [
           "5d0236dad7ad1a0940739d29"
@@ -3114,6 +3117,13 @@
           "64b7af5a8532cf95ee0a0dbd"
         ]
       },
+	  "634eff66517ccc8a960fc735": {
+		  "mod_mount_000": ["634f05a21f9f536910079b56"],
+		  "mod_muzzle": ["5cf67cadd7f00c065a5abab7"]
+	  },
+	  "634f05a21f9f536910079b56": {
+		  "mod_gas_block": ["634f036a517ccc8a960fc746"]
+	  },
       "576165642459773c7a400233": {
         "mod_handguard": [
           "5827272a24597748c74bdeea"
@@ -3806,10 +3816,6 @@
       "5d0236dad7ad1a0940739d29": {
         "mod_pistol_grip": [
           "5b30ac585acfc433000eb79c"
-        ],
-        "mod_scope": [
-          "5c0505e00db834001b735073",
-          "5d2da1e948f035477b1ce2ba"
         ],
         "mod_tactical_000": [
           "5c5952732e2216398b5abda2",

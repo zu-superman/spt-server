@@ -424,6 +424,7 @@
         "PISTOL_SHOTGUN_AMBUSH_DIST": 60,
         "PROTECT_DELTA_HEAL_SEC": 10,
         "PROTECT_TIME_REAL": true,
+        "REVENGE_BOT_TYPES": [],
         "REVENGE_FOR_SAVAGE_PLAYERS": false,
         "SEC_TO_MORE_DIST_TO_RUN": 10,
         "SHOOT_INSTEAD_DOG_FIGHT": 9,
@@ -927,6 +928,7 @@
         "PISTOL_SHOTGUN_AMBUSH_DIST": 60,
         "PROTECT_DELTA_HEAL_SEC": 10,
         "PROTECT_TIME_REAL": true,
+        "REVENGE_BOT_TYPES": [],
         "REVENGE_FOR_SAVAGE_PLAYERS": false,
         "SEC_TO_MORE_DIST_TO_RUN": 10,
         "SHOOT_INSTEAD_DOG_FIGHT": 9,
@@ -1430,6 +1432,7 @@
         "PISTOL_SHOTGUN_AMBUSH_DIST": 60,
         "PROTECT_DELTA_HEAL_SEC": 10,
         "PROTECT_TIME_REAL": true,
+        "REVENGE_BOT_TYPES": [],
         "REVENGE_FOR_SAVAGE_PLAYERS": false,
         "SEC_TO_MORE_DIST_TO_RUN": 10,
         "SHOOT_INSTEAD_DOG_FIGHT": 9,
@@ -1933,6 +1936,7 @@
         "PISTOL_SHOTGUN_AMBUSH_DIST": 60,
         "PROTECT_DELTA_HEAL_SEC": 10,
         "PROTECT_TIME_REAL": true,
+        "REVENGE_BOT_TYPES": [],
         "REVENGE_FOR_SAVAGE_PLAYERS": false,
         "SEC_TO_MORE_DIST_TO_RUN": 10,
         "SHOOT_INSTEAD_DOG_FIGHT": 9,
@@ -2787,16 +2791,23 @@
         "mod_magazine": [
           "5c5970672e221602b21d7855"
         ],
-        "mod_muzzle": [
-          "593d490386f7745ee97a1555"
+        "mod_barrel": [
+          "634eff66517ccc8a960fc735"
         ],
-        "mod_sight_rear": [
-          "574db213245977459a2f3f5d"
+        "mod_reciever": [
+          "634f06262e5def262d0b30ca"
         ],
         "mod_stock": [
           "5afd7ded5acfc40017541f5e"
         ]
       },
+	  "634eff66517ccc8a960fc735": {
+		  "mod_mount_000": ["634f05a21f9f536910079b56"],
+		  "mod_muzzle": ["5cf67cadd7f00c065a5abab7"]
+	  },
+	  "634f05a21f9f536910079b56": {
+		  "mod_gas_block": ["634f036a517ccc8a960fc746"]
+	  },
       "57c44b372459772d2b39b8ce": {
         "mod_magazine": [
           "57838f9f2459774a150289a0"

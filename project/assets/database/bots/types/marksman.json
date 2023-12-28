@@ -2656,8 +2656,14 @@
         ]
       },
       "574d967124597745970e7c94": {
+        "mod_barrel": [
+          "634f02331f9f536910079b51"
+        ],
         "mod_magazine": [
           "587df3a12459772c28142567"
+        ],
+        "mod_reciever": [
+          "634f05ca517ccc8a960fc748"
         ],
         "mod_sight_rear": [
           "574db213245977459a2f3f5d"
@@ -2767,11 +2773,17 @@
         ]
       },
       "587e02ff24597743df3deaeb": {
+        "mod_barrel": [
+          "634eff66517ccc8a960fc735"
+        ],
         "mod_magazine": [
           "587df3a12459772c28142567"
         ],
         "mod_mount": [
           "587e08ee245977446b4410cf"
+        ],
+        "mod_reciever": [
+          "634f06262e5def262d0b30ca"
         ],
         "mod_sight_rear": [
           "574db213245977459a2f3f5d"
@@ -3260,6 +3272,26 @@
         "mod_stock_000": [
           "606587d11246154cad35d635",
           "5beec8c20db834001d2c465c"
+        ]
+      },
+      "634eff66517ccc8a960fc735": {
+        "mod_mount_000": [
+          "634f05a21f9f536910079b56"
+        ]
+      },
+      "634f02331f9f536910079b51": {
+        "mod_mount_000": [
+          "634f04d82e5def262d0b30c6"
+        ]
+      },
+      "634f04d82e5def262d0b30c6": {
+        "mod_gas_block": [
+          "634f02d7517ccc8a960fc744"
+        ]
+      },
+      "634f05a21f9f536910079b56": {
+        "mod_gas_block": [
+          "634f036a517ccc8a960fc746"
         ]
       },
       "6410758c857473525b08bb77": {

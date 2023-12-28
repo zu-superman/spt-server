@@ -31,7 +31,7 @@
 	"bot-no_spawn_chance_defined_for_equipment_slot": "No spawn chance was defined for equipment: %s",
 	"bot-single_bot_generation_not_found_in_cache": "Bot: %s not found in cache, generating fresh, this may cause game stuttering",
 	"bot-unable_to_add_mod_item_invalid": "Mod: {{itemName}} is not a valid item, unable to add to slot: '{{modSlot}}' on item: {{parentItemName}}, skipping",
-	"bot-unable_to_add_mods_to_weapon_missing_ammo_slot": "Unable to add mods to weapon: {{weaponName}} {{weaponId}} as it lacks slots, cartridges or chambers",
+	"bot-unable_to_add_mods_to_weapon_missing_ammo_slot": "Unable to add mods to weapon: {{weaponName}} {{weaponId}} as it lacks slots, cartridges or chambers - {{botRole}}",
 	"bot-unable_to_filter_mod_slot_all_blacklisted": "Unable to generate filtered dynamic weapon mod pool as blacklist filtered out all mods for slot: %s, ignoring blacklist and regenerating pool",
 	"bot-unable_to_filter_mods_all_blacklisted": "Unable to filter mods for slot: {{slotName}} on {{itemName}} as they were all blacklisted, ignoring blacklist",
 	"bot-unable_to_find_ammo_item": "Unable to find ammo template with tpl: %s",

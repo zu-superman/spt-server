@@ -366,7 +366,7 @@ export class BotWeaponGenerator
             // Iterate over slots in db item, if required, check tpl in that slot matches the filter list
             for (const modSlot of modDbTemplate._props.Slots)
             {
-                // ignore optional mods
+                // Ignore optional mods
                 if (!modSlot._required)
                 {
                     continue;

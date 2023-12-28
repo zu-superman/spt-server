@@ -208,6 +208,7 @@ export class BotEquipmentModGenerator
                 this.localisationService.getText("bot-unable_to_add_mods_to_weapon_missing_ammo_slot", {
                     weaponName: parentTemplate._name,
                     weaponId: parentTemplate._id,
+                    botRole: botRole
                 }),
             );
 
