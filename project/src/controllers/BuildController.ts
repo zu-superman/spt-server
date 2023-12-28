@@ -243,6 +243,17 @@ export class BuildController
         };
 
         const profile = this.profileHelper.getFullProfile(sessionId);
-        profile.userbuilds.magazineBuilds.push(result);
+
+        const existingArrayId = profile.userbuilds.magazineBuilds.findIndex(item => item.Name === request.Name);
+
+        if (existingArrayId === -1)
+        {
+
+            profile.userbuilds.magazineBuilds.push(result);
+        }
+        else
+        {
+            profile.userbuilds.magazineBuilds.splice(existingArrayId, 1, result)
+        }
     }
 }
