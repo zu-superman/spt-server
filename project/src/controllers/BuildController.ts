@@ -238,7 +238,7 @@ export class BuildController
             Caliber: request.Caliber,
             TopCount: request.TopCount,
             BottomCount: request.BottomCount,
-            Items: request.items,
+            Items: request.Items,
             type: "magazine"
         };
 

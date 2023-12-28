@@ -5,7 +5,7 @@ export interface ISetMagazineRequest
     Id: string
     Name: string
     Caliber: string
-    items: IMagazineTemplateAmmoItem[]
+    Items: IMagazineTemplateAmmoItem[]
     TopCount: number
     BottomCount: number
 }
