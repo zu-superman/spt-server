@@ -139,7 +139,7 @@ export class BotEquipmentModGenerator
             }
 
             const modTemplate = this.itemHelper.getItem(modTpl);
-            if (!this.isModValidForSlot(modTemplate, itemSlot, modSlot, parentTemplate))
+            if (!this.isModValidForSlot(modTemplate, itemSlot, modSlot, parentTemplate, botRole))
             {
                 continue;
             }
@@ -846,6 +846,7 @@ export class BotEquipmentModGenerator
                     modId: modToAdd[1]._id,
                     modSlot: modSlot,
                     parentName: parentTemplate._name,
+                    botRole: botRole
                 }),
             );
 
