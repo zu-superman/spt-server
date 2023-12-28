@@ -90,6 +90,7 @@ export class DatabaseImporter implements OnLoad
             "/files/launcher/",
             "/files/quest/icon/",
             "/files/trader/avatar/",
+			"/files/achievement/"
         ]);
     }
 
