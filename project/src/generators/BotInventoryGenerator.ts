@@ -308,10 +308,8 @@ export class BotInventoryGenerator
                 );
             }
 
-            if (
-                typeof (modPool[equipmentItemTpl]) !== "undefined"
-                || Object.keys(modPool[equipmentItemTpl] || {}).length > 0
-            )
+            // Item has slots
+            if ( itemTemplate[1]._props.Slots?.length > 0 )
             {
                 const items = this.botEquipmentModGenerator.generateModsForEquipment(
                     [item],

@@ -255,9 +255,10 @@ export class BotController
     public getBotCap(): number
     {
         const defaultMapCapId = "default";
-        const raidConfig = this.applicationContext.getLatestValue(ContextVariableType.RAID_CONFIGURATION).getValue<
-            IGetRaidConfigurationRequestData
-        >();
+        const raidConfig = this.applicationContext
+            .getLatestValue(ContextVariableType.RAID_CONFIGURATION)
+            .getValue<IGetRaidConfigurationRequestData>();
+
         if (!raidConfig)
         {
             this.logger.warning(this.localisationService.getText("bot-missing_saved_match_info"));

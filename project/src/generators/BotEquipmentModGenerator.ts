@@ -74,6 +74,10 @@ export class BotEquipmentModGenerator
     ): Item[]
     {
         const compatibleModsPool = modPool[parentTemplate._id];
+        if (!compatibleModsPool)
+        {
+            this.logger.warning(`bot: ${botRole} lacks a mod slot pool for item: ${parentTemplate._id} ${parentTemplate._name}`);
+        }
 
         // Iterate over mod pool and choose mods to add to item
         for (const modSlot in compatibleModsPool)
@@ -86,6 +90,7 @@ export class BotEquipmentModGenerator
                         modSlot: modSlot,
                         parentId: parentTemplate._id,
                         parentName: parentTemplate._name,
+                        botRole: botRole
                     }),
                 );
                 continue;
