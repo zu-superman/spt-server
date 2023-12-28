@@ -201,7 +201,7 @@ export class BotEquipmentModPoolService
     protected generateGearPool(): void
     {
         const gear = Object.values(this.databaseServer.getTables().templates.items).filter((x) =>
-            x._type === "Item" && this.itemHelper.isOfBaseclass(x._id, BaseClasses.ARMOREDEQUIPMENT)
+            x._type === "Item" && this.itemHelper.isOfBaseclasses(x._id, [BaseClasses.ARMOREDEQUIPMENT, BaseClasses.VEST])
         );
         this.generatePool(gear, "gear");
 

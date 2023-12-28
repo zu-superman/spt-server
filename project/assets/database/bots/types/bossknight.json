@@ -2544,6 +2544,16 @@
       ]
     },
     "mods": {
+		"628b9c7d45122232a872358f": {
+			"Front_plate": ["656fa25e94b480b8a500c0e0"],
+			"Back_plate": ["656fa99800d62bcd2e024088"],
+			"Left_side_plate": ["6557458f83942d705f0c4962"],
+			"Right_side_plate": ["6557458f83942d705f0c4962"],
+			"Soft_armor_front": ["6575f24ff6a13a7b7100b09e"],
+			"Soft_armor_back": ["6575f25ada698a4e98067836"],
+			"Soft_armor_left": ["6575f2649cfdfe416f0399b8"],
+			"soft_armor_right": ["6575f26d9c7cad336508e480"]
+		},
       "57d17e212459775a1179a0f5": {
         "mod_flashlight": [
           "57d17c5e2459775a5c57d17d"
