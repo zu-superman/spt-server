@@ -823,7 +823,8 @@
             "interchange": true,
             "lighthouse": true,
             "laboratory": true,
-            "rezervbase": true
+            "rezervbase": true,
+			"sandbox": true
         },
         "containerTypesToNotRandomise": [
             "5d6fd45b86f774317075ed43",
