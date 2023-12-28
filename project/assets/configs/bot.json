@@ -45,7 +45,7 @@
         "sptUsec": 30,
         "sptBear": 30
     },
-    "bosses": ["bossbully", "bossgluhar", "bosskilla", "bosskojaniy", "bosssanitar", "bosstagilla", "bossknight", "bossZryachiy", "bossBoar", "bossBoarSniper"],
+    "bosses": ["bossbully", "bossgluhar", "bosskilla", "bosskojaniy", "bosssanitar", "bosstagilla", "bossknight", "bosszryachiy", "bossboar", "bossboarSniper", "bosskolontay"],
     "durability": {
         "default": {
             "armor": {
