@@ -128,14 +128,6 @@ export class BotController
                 break;
             default:
                 difficultySettings = this.botDifficultyHelper.getBotDifficultySettings(type, difficulty);
-                // Don't add PMCs to event enemies (e.g. gifter/peacefullzryachiyevent)
-                if (!this.botConfig.botsToNotAddPMCsAsEnemiesTo.includes(type.toLowerCase()))
-                {
-                    this.botHelper.addBotToEnemyList(difficultySettings, [
-                        this.pmcConfig.bearType,
-                        this.pmcConfig.usecType,
-                    ], lowercasedBotType);
-                }
                 break;
         }
 
