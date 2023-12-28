@@ -4655,10 +4655,10 @@
     },
     "mods": {
 		"5648a7494bdc2d9d488b4583": {
-			"soft_armor_front": ["65703d866584602f7d057a8a"],
-			"soft_armor_back": ["65703fa06584602f7d057a8e"],
-			"soft_armor_left": ["65703fe46a912c8b5c03468b"],
-			"soft_armor_right": ["657040374e67e8ec7a0d261c"]
+			"Soft_armor_front": ["65703d866584602f7d057a8a"],
+			"Soft_armor_back": ["65703fa06584602f7d057a8e"],
+			"Soft_armor_left": ["65703fe46a912c8b5c03468b"],
+			"Soft_armor_right": ["657040374e67e8ec7a0d261c"]
 		},
       "5447a9cd4bdc2dbd208b4567": {
         "mod_charge": [
@@ -5108,12 +5108,18 @@
           "587df583245977373c4f1129",
           "61695095d92c473c7702147a"
         ],
-        "mod_sight_rear": [
-          "574db213245977459a2f3f5d"
+		"mod_reciever": [
+          "634f06262e5def262d0b30ca",
+          "634f05ca517ccc8a960fc748",
+		  "6415c694da439c6a97048b56"
         ],
         "mod_stock": [
           "574dad8024597745964bf05c",
           "587e0531245977466077a0f7"
+        ],
+		"mod_barrel": [
+          "634eff66517ccc8a960fc735",
+          "634f02331f9f536910079b51"
         ],
         "patron_in_weapon": [
           "59e4cf5286f7741778269d8a",
@@ -5123,11 +5129,18 @@
           "64b7af734b75259c590fa895"
         ]
       },
-      "574dad8024597745964bf05c": {
-        "mod_mount_001": [
-          "593d1fa786f7746da62d61ac"
-        ]
-      },
+	  "634f02331f9f536910079b51": {
+		  "mod_mount_000": ["634f05a21f9f536910079b56"],
+		  "mod_mount_001": ["593d1fa786f7746da62d61ac"],
+		  "mod_muzzle": ["5cf67cadd7f00c065a5abab7"]
+	  },
+	  "634eff66517ccc8a960fc735": {
+		  "mod_mount_000": ["634f05a21f9f536910079b56", "634f04d82e5def262d0b30c6"]
+	  },
+	  "634f05a21f9f536910079b56": {
+		  "mod_gas_block": ["634f036a517ccc8a960fc746", "634f02d7517ccc8a960fc744"],
+		  "mod_sight_rear": ["574db213245977459a2f3f5d"]
+	  },
       "576165642459773c7a400233": {
         "mod_charge": [
           "5648ac824bdc2ded0b8b457d",
@@ -5379,8 +5392,11 @@
         "mod_mount": [
           "587e08ee245977446b4410cf"
         ],
-        "mod_muzzle": [
-          "5cf67cadd7f00c065a5abab7"
+		"mod_barrel": [
+          "634eff66517ccc8a960fc735", "634f02331f9f536910079b51"
+        ],
+		"mod_reciever": [
+          "634f06262e5def262d0b30ca", "634f05ca517ccc8a960fc748", "6415c694da439c6a97048b56"
         ],
         "mod_stock": [
           "574dad8024597745964bf05c",
@@ -5392,11 +5408,6 @@
           "59e4cf5286f7741778269d8a",
           "64b7af5a8532cf95ee0a0dbd",
           "64b7af734b75259c590fa895"
-        ]
-      },
-      "587e0531245977466077a0f7": {
-        "mod_mount_001": [
-          "593d1fa786f7746da62d61ac"
         ]
       },
       "587e08ee245977446b4410cf": {
