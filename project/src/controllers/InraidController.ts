@@ -316,7 +316,7 @@ export class InraidController
      */
     protected profileHasConditionCounters(profile: IPmcData): boolean
     {
-        if (!profile.ConditionCounters.Counters)
+        if (!profile.ConditionCounters?.Counters)
         {
             return false;
         }
