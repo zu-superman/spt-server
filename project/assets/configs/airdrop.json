@@ -6,7 +6,8 @@
         "shoreline": 20,
         "interchange": 20,
         "reserve": 20,
-        "tarkovStreets": 20
+        "tarkovStreets": 20,
+		"sandbox": 20
     },
     "airdropTypeWeightings": {
         "mixed": 2,
