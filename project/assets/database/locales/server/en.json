@@ -20,7 +20,7 @@
 	"bot-missing_item_template": "Unable to find item template with tpl: %s",
 	"bot-missing_saved_match_info": "getBotCap() Unable to get saved match info, falling back to default. Did you restart the server and not the client?",
 	"bot-missing_weapon_preset": "Unable to find preset for weapon with tpl: %s",
-	"bot-mod_not_in_slot_filter_list": "Mod: {{modId}} not found in compatible item filter for slot: '{{modSlot}}' for item: {{parentName}}, skipping",
+	"bot-mod_not_in_slot_filter_list": "Mod: {{modId}} not found in compatible item filter for slot: '{{modSlot}}' for item: {{parentName}}, skipping - {{botRole}}",
 	"bot-mod_slot_missing_from_item": "Slot '{{modSlot}}' does not exist for item: {{parentId}} {{parentName}}",
 	"bot-no_ammo_found_in_bot_json": "Unable to find ammo for bot type: %s",
 	"bot-no_bot_cap_found_for_location": "No bot location cap limit found for bot: %s, using default",

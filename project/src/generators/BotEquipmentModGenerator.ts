@@ -266,7 +266,7 @@ export class BotEquipmentModGenerator
                 continue;
             }
 
-            if (!this.isModValidForSlot(modToAdd, modsParentSlot, modSlot, parentTemplate))
+            if (!this.isModValidForSlot(modToAdd, modsParentSlot, modSlot, parentTemplate, botRole))
             {
                 continue;
             }
@@ -792,6 +792,7 @@ export class BotEquipmentModGenerator
      * @param itemSlot slot the item will be placed in
      * @param modSlot slot the mod will fill
      * @param parentTemplate template of the mods parent item
+     * @param botRole
      * @returns true if valid
      */
     protected isModValidForSlot(
@@ -799,6 +800,7 @@ export class BotEquipmentModGenerator
         itemSlot: Slot,
         modSlot: string,
         parentTemplate: ITemplateItem,
+        botRole: string
     ): boolean
     {
         // Mod lacks template item
