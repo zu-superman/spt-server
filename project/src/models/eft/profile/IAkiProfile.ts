@@ -77,7 +77,19 @@ export interface IEquipmentBuild
 
 export interface IMagazineBuild
 {
-    
+    Id: string;
+    Name: string;
+    Caliber: string
+    TopCount: number
+    BottomCount: number
+    Items: IMagazineTemplateAmmoItem[]
+    type: string
+}
+
+export interface IMagazineTemplateAmmoItem
+{
+    TemplateId: string
+    Count: number
 }
 
 export interface Dialogue

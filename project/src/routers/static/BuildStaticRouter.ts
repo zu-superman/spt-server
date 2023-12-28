@@ -22,7 +22,7 @@ export class BuildsStaticRouter extends StaticRouter
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 (url: string, info: any, sessionID: string, output: string): any =>
                 {
-                    return this.buildsCallbacks.setMagazine(url, info, sessionID);
+                    return this.buildsCallbacks.createMagazineTemplate(url, info, sessionID);
                 },
             ),
             new RouteAction(

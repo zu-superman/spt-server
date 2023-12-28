@@ -7,7 +7,7 @@ import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
 import { QuestHelper } from "@spt-aki/helpers/QuestHelper";
 import { TraderHelper } from "@spt-aki/helpers/TraderHelper";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
-import { TemplateSide } from "@spt-aki/models/eft/common/tables/IProfileTemplate";
+import { ITemplateSide } from "@spt-aki/models/eft/common/tables/IProfileTemplate";
 import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEventRouterResponse";
 import { IMiniProfile } from "@spt-aki/models/eft/launcher/IMiniProfile";
 import { GetProfileStatusResponseData } from "@spt-aki/models/eft/profile/GetProfileStatusResponseData";
@@ -127,7 +127,7 @@ export class ProfileController
     public createProfile(info: IProfileCreateRequestData, sessionID: string): string
     {
         const account = this.saveServer.getProfile(sessionID).info;
-        const profile: TemplateSide =
+        const profile: ITemplateSide =
             this.databaseServer.getTables().templates.profiles[account.edition][info.side.toLowerCase()];
         const pmcData = profile.character;
 
