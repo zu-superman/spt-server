@@ -826,8 +826,6 @@ export class LocationGenerator
             || this.itemHelper.isOfBaseclass(chosenTpl, BaseClasses.AMMO)
         )
         {
-            
-
             const stackCount = itemTemplate._props.StackMaxSize === 1
                 ? 1
                 : this.randomUtil.getInt(itemTemplate._props.StackMinRandom, itemTemplate._props.StackMaxRandom);
