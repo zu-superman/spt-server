@@ -462,6 +462,9 @@ export interface SlotProps
 export interface SlotFilter
 {
     Shift?: number;
+    locked?: boolean;
+    armorColliders?: any[];
+    armorPlateColliders?: string[];
     Filter: string[];
     AnimationIndex?: number;
 }

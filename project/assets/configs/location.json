@@ -1051,5 +1051,12 @@
                 "adjustWaves": true
             }
         }
-    }
+    },
+	"armorLootSettings": {
+		"modSpawnChancePercent": {
+			"mod_nvg": 20,
+			"front_plate": 50,
+			"back_plate": 50
+		}
+	}
 }

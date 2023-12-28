@@ -40,6 +40,14 @@ export interface ILocationConfig extends IBaseConfig
     looseLootBlacklist: Record<string, string[]>;
     /** Key: map, value: settings to control how long scav raids are*/
     scavRaidTimeSettings: IScavRaidTimeSettings;
+    /** Settings to adjust mods for lootable equipment in raid */
+    equipmentLootSettings: IEquipmentLootSettings
+}
+
+export interface IEquipmentLootSettings
+{
+    // Percentage chance item will be added to equipment
+    modSpawnChancePercent: Record<string, number>
 }
 
 export interface IFixEmptyBotWavesSettings

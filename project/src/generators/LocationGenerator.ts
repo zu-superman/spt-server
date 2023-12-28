@@ -14,6 +14,7 @@ import {
     IStaticForcedProps,
     IStaticLootDetails,
 } from "@spt-aki/models/eft/common/tables/ILootBase";
+import { ITemplateItem } from "@spt-aki/models/eft/common/tables/ITemplateItem";
 import { BaseClasses } from "@spt-aki/models/enums/BaseClasses";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { Money } from "@spt-aki/models/enums/Money";
@@ -23,6 +24,7 @@ import { ConfigServer } from "@spt-aki/servers/ConfigServer";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
 import { SeasonalEventService } from "@spt-aki/services/SeasonalEventService";
+import { HashUtil } from "@spt-aki/utils/HashUtil";
 import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 import { MathUtil } from "@spt-aki/utils/MathUtil";
 import { ObjectId } from "@spt-aki/utils/ObjectId";
@@ -52,6 +54,7 @@ export class LocationGenerator
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("JsonUtil") protected jsonUtil: JsonUtil,
+        @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("ObjectId") protected objectId: ObjectId,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("RagfairServerHelper") protected ragfairServerHelper: RagfairServerHelper,
@@ -812,6 +815,7 @@ export class LocationGenerator
     {
         const chosenItem = spawnPoint.template.Items.find((x) => x._id === chosenComposedKey);
         const chosenTpl = chosenItem._tpl;
+        const itemTemplate = this.itemHelper.getItem(chosenTpl)[1]; 
 
         // Item array to return
         const itemWithMods: Item[] = [];
@@ -822,7 +826,7 @@ export class LocationGenerator
             || this.itemHelper.isOfBaseclass(chosenTpl, BaseClasses.AMMO)
         )
         {
-            const itemTemplate = this.itemHelper.getItem(chosenTpl)[1];
+            
 
             const stackCount = itemTemplate._props.StackMaxSize === 1
                 ? 1
@@ -837,24 +841,29 @@ export class LocationGenerator
         else if (this.itemHelper.isOfBaseclass(chosenTpl, BaseClasses.AMMO_BOX))
         {
             // Fill with cartridges
-            const ammoBoxTemplate = this.itemHelper.getItem(chosenTpl)[1];
             const ammoBoxItem: Item[] = [{ _id: this.objectId.generate(), _tpl: chosenTpl }];
-            this.itemHelper.addCartridgesToAmmoBox(ammoBoxItem, ammoBoxTemplate);
+            this.itemHelper.addCartridgesToAmmoBox(ammoBoxItem, itemTemplate); // ammo box template
             itemWithMods.push(...ammoBoxItem);
         }
         else if (this.itemHelper.isOfBaseclass(chosenTpl, BaseClasses.MAGAZINE))
         {
             // Create array with just magazine + randomised amount of cartridges
-            const magazineTemplate = this.itemHelper.getItem(chosenTpl)[1];
             const magazineItem: Item[] = [{ _id: this.objectId.generate(), _tpl: chosenTpl }];
             this.itemHelper.fillMagazineWithRandomCartridge(
                 magazineItem,
-                magazineTemplate,
+                itemTemplate, // Magazine template
                 staticAmmoDist,
                 null,
                 this.locationConfig.minFillLooseMagazinePercent / 100,
             );
             itemWithMods.push(...magazineItem);
+        }
+        else if (this.itemHelper.isOfBaseclasses(chosenTpl, [BaseClasses.VEST, BaseClasses.ARMOR, BaseClasses.HEADWEAR]))
+        {
+            if (itemTemplate._props.Slots?.length > 0)
+            {
+                this.addModsToEquipmentItem(itemWithMods, itemTemplate)
+            }
         }
         else
         {
@@ -917,15 +926,15 @@ export class LocationGenerator
 
     // TODO: rewrite, BIG yikes
     protected createStaticLootItem(
-        tpl: string,
+        chosenTpl: string,
         staticAmmoDist: Record<string, IStaticAmmoDetails[]>,
         parentId: string = undefined,
     ): IContainerItem
     {
-        const itemTemplate = this.itemHelper.getItem(tpl)[1];
+        const itemTemplate = this.itemHelper.getItem(chosenTpl)[1];
         let width = itemTemplate._props.Width;
         let height = itemTemplate._props.Height;
-        let items: Item[] = [{ _id: this.objectId.generate(), _tpl: tpl }];
+        let items: Item[] = [{ _id: this.objectId.generate(), _tpl: chosenTpl }];
 
         // Use passed in parentId as override for new item
         if (parentId)
@@ -934,8 +943,8 @@ export class LocationGenerator
         }
 
         if (
-            this.itemHelper.isOfBaseclass(tpl, BaseClasses.MONEY)
-            || this.itemHelper.isOfBaseclass(tpl, BaseClasses.AMMO)
+            this.itemHelper.isOfBaseclass(chosenTpl, BaseClasses.MONEY)
+            || this.itemHelper.isOfBaseclass(chosenTpl, BaseClasses.AMMO)
         )
         {
             // Edge case - some ammos e.g. flares or M406 grenades shouldn't be stacked
@@ -945,10 +954,10 @@ export class LocationGenerator
             items[0].upd = { StackObjectsCount: stackCount };
         }
         // No spawn point, use default template
-        else if (this.itemHelper.isOfBaseclass(tpl, BaseClasses.WEAPON))
+        else if (this.itemHelper.isOfBaseclass(chosenTpl, BaseClasses.WEAPON))
         {
             let children: Item[] = [];
-            const defaultPreset = this.jsonUtil.clone(this.presetHelper.getDefaultPreset(tpl));
+            const defaultPreset = this.jsonUtil.clone(this.presetHelper.getDefaultPreset(chosenTpl));
             if (defaultPreset)
             {
                 try
@@ -962,7 +971,7 @@ export class LocationGenerator
                     // 5ba26383d4351e00334c93d9 //mp7_devgru
                     this.logger.warning(
                         this.localisationService.getText("location-preset_not_found", {
-                            tpl: tpl,
+                            tpl: chosenTpl,
                             defaultId: defaultPreset._id,
                             defaultName: defaultPreset._name,
                             parentId: parentId,
@@ -975,14 +984,14 @@ export class LocationGenerator
             else
             {
                 // RSP30 (62178be9d0050232da3485d9/624c0b3340357b5f566e8766/6217726288ed9f0845317459) doesnt have any default presets and kills this code below as it has no chidren to reparent
-                this.logger.debug(`createItem() No preset found for weapon: ${tpl}`);
+                this.logger.debug(`createItem() No preset found for weapon: ${chosenTpl}`);
             }
 
             const rootItem = items[0];
             if (!rootItem)
             {
                 this.logger.error(
-                    this.localisationService.getText("location-missing_root_item", { tpl: tpl, parentId: parentId }),
+                    this.localisationService.getText("location-missing_root_item", { tpl: chosenTpl, parentId: parentId }),
                 );
 
                 throw new Error(this.localisationService.getText("location-critical_error_see_log"));
@@ -999,7 +1008,7 @@ export class LocationGenerator
             {
                 this.logger.error(
                     this.localisationService.getText("location-unable_to_reparent_item", {
-                        tpl: tpl,
+                        tpl: chosenTpl,
                         parentId: parentId,
                     }),
                 );
@@ -1016,7 +1025,7 @@ export class LocationGenerator
             if (magazine)
             {
                 const magTemplate = this.itemHelper.getItem(magazine._tpl)[1];
-                const weaponTemplate = this.itemHelper.getItem(tpl)[1];
+                const weaponTemplate = this.itemHelper.getItem(chosenTpl)[1];
 
                 // Create array with just magazine
                 const magazineWithCartridges = [magazine];
@@ -1036,11 +1045,11 @@ export class LocationGenerator
             height = size.height;
         }
         // No spawnpoint to fall back on, generate manually
-        else if (this.itemHelper.isOfBaseclass(tpl, BaseClasses.AMMO_BOX))
+        else if (this.itemHelper.isOfBaseclass(chosenTpl, BaseClasses.AMMO_BOX))
         {
             this.itemHelper.addCartridgesToAmmoBox(items, itemTemplate);
         }
-        else if (this.itemHelper.isOfBaseclass(tpl, BaseClasses.MAGAZINE))
+        else if (this.itemHelper.isOfBaseclass(chosenTpl, BaseClasses.MAGAZINE))
         {
             // Create array with just magazine
             const magazineWithCartridges = [items[0]];
@@ -1055,7 +1064,49 @@ export class LocationGenerator
             // Replace existing magazine with above array
             items.splice(items.indexOf(items[0]), 1, ...magazineWithCartridges);
         }
+        else if (this.itemHelper.isOfBaseclasses(chosenTpl, [BaseClasses.VEST, BaseClasses.ARMOR]))
+        {
+            if (itemTemplate._props.Slots?.length > 0)
+            {
+                this.addModsToEquipmentItem(items, itemTemplate)
+            }
+        }
 
-        return { items: items, width: width, height: height };
+        return {
+            items: items,
+            width: width,
+            height: height
+        };
+    }
+
+    /**
+     * Add mod componenets to an equipment item (head/rig/armor)
+     * @param modItem 
+     * @param itemTemplate 
+     */
+    protected addModsToEquipmentItem(modItem: Item[], itemTemplate: ITemplateItem): void
+    {
+        // Add armor plates
+        for (const slot of itemTemplate._props.Slots)
+        {
+            // Check if mod has % chance to be added
+            const modSpawnChance = this.locationConfig.equipmentLootSettings.modSpawnChancePercent[slot._name.toLowerCase()];
+            if (modSpawnChance && !slot._required)
+            {
+                // only run chance to not add item if its not a required mod
+                if (this.randomUtil.getChance100(modSpawnChance))
+                {
+                    continue;
+                }
+            }
+            modItem.push(
+                {
+                    _id: this.hashUtil.generate(),
+                    _tpl: this.randomUtil.getArrayValue(slot._props.filters[0].Filter), // Choose random tpl from array of compatible
+                    parentId: modItem[0]._id,
+                    slotId: slot._name
+                }
+            )
+        }
     }
 }
