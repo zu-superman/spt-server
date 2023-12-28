@@ -164,6 +164,12 @@ export class LocationGenerator
 
         // Group containers by their groupId
         const staticContainerGroupData: IStaticContainer = db.locations[locationId].statics;
+        if (!staticContainerGroupData)
+        {
+            this.logger.warning(`Map: ${locationId} lacks a statics file, skipping container generation.`)
+
+            return result;
+        }
         const mapping = this.getGroupIdToContainerMappings(staticContainerGroupData, staticRandomisableContainersOnMap);
 
         // For each of the container groups, choose from the pool of containers, hydrate container with loot and add to result array
@@ -503,7 +509,15 @@ export class LocationGenerator
     {
         // Create probability array to calcualte the total count of lootable items inside container
         const itemCountArray = new ProbabilityObjectArray<number>(this.mathUtil, this.jsonUtil);
-        for (const itemCountDistribution of staticLootDist[containerTypeId].itemcountDistribution)
+        const countDistribution = staticLootDist[containerTypeId]?.itemcountDistribution;
+        if (!countDistribution)
+        {
+            this.logger.warning(`Unable to acquire count distrubution for container:  ${containerTypeId} on: ${locationName}. defaulting to 0`);
+
+            return 0;
+        }
+
+        for (const itemCountDistribution of countDistribution)
         {
             // Add each count of items into array
             itemCountArray.push(
@@ -530,7 +544,15 @@ export class LocationGenerator
         const seasonalItemTplBlacklist = this.seasonalEventService.getInactiveSeasonalEventItems();
 
         const itemDistribution = new ProbabilityObjectArray<string>(this.mathUtil, this.jsonUtil);
-        for (const icd of staticLootDist[containerTypeId].itemDistribution)
+
+        const itemContainerDistribution = staticLootDist[containerTypeId]?.itemDistribution;
+        if (!itemContainerDistribution)
+        {
+            this.logger.warning(`Unable to acquire item distrubution for container:  ${containerTypeId}`);
+
+            return itemDistribution;
+        }
+        for (const icd of itemContainerDistribution)
         {
             if (!seasonalEventActive && seasonalItemTplBlacklist.includes(icd.tpl))
             {
