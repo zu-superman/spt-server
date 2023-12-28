@@ -1628,6 +1628,7 @@
         "interchange": 20,
         "laboratory": 18,
         "tarkovstreets": 26,
+		"sandbox": 22,
         "default": 16
     }
 }
