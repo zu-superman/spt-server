@@ -73,6 +73,7 @@ export class RagfairAssortGenerator
             BaseClasses.INVENTORY,
             BaseClasses.STATIONARY_CONTAINER,
             BaseClasses.POCKETS,
+			BaseClasses.BUILT_IN_INSERTS
         ];
 
         const seasonalEventActive = this.seasonalEventService.seasonalEventEnabled();
