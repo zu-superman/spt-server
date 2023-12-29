@@ -376,12 +376,13 @@ export class ProfileController
                 sid: "",
                 ip: "",
                 port: 0,
-                version: "live",
-                location: "bigmap",
-                raidMode: "Online",
-                mode: "deathmatch",
-                shortId: "xxx1x1",
-            }, { profileid: account.id, profileToken: null, status: "Free", sid: "", ip: "", port: 0 }],
+            }, {
+                profileid: account.id,
+                profileToken: null,
+                status: "Free",
+                sid: "",
+                ip: "",
+                port: 0 }],
         };
 
         return response;
