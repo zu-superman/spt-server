@@ -858,6 +858,10 @@ export class LocationGenerator
         }
         else if (this.itemHelper.isOfBaseclasses(chosenTpl, [BaseClasses.VEST, BaseClasses.ARMOR, BaseClasses.HEADWEAR]))
         {
+            itemWithMods.push({
+                _id: this.objectId.generate(),
+                _tpl: chosenTpl,
+            });
             if (itemTemplate._props.Slots?.length > 0)
             {
                 this.addModsToEquipmentItem(itemWithMods, itemTemplate)
