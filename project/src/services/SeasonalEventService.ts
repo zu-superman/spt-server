@@ -10,6 +10,7 @@ import { SeasonalEventType } from "@spt-aki/models/enums/SeasonalEventType";
 import { IHttpConfig } from "@spt-aki/models/spt/config/IHttpConfig";
 import { IQuestConfig } from "@spt-aki/models/spt/config/IQuestConfig";
 import { ISeasonalEvent, ISeasonalEventConfig } from "@spt-aki/models/spt/config/ISeasonalEventConfig";
+import { IWeatherConfig } from "@spt-aki/models/spt/config/IWeatherConfig";
 import { ILocationData } from "@spt-aki/models/spt/server/ILocations";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt-aki/servers/ConfigServer";
@@ -24,6 +25,7 @@ export class SeasonalEventService
     protected seasonalEventConfig: ISeasonalEventConfig;
     protected questConfig: IQuestConfig;
     protected httpConfig: IHttpConfig;
+    protected weatherConfig: IWeatherConfig;
 
     protected halloweenEventActive = undefined;
     protected christmasEventActive = undefined;
@@ -42,6 +44,7 @@ export class SeasonalEventService
         this.seasonalEventConfig = this.configServer.getConfig(ConfigTypes.SEASONAL_EVENT);
         this.questConfig = this.configServer.getConfig(ConfigTypes.QUEST);
         this.httpConfig = this.configServer.getConfig(ConfigTypes.HTTP);
+        this.weatherConfig = this.configServer.getConfig(ConfigTypes.WEATHER);
 
         this.cacheActiveEvents();
     }
@@ -325,9 +328,11 @@ export class SeasonalEventService
                 this.addLootItemsToGifterDropItemsList();
                 this.enableDancingTree();
                 this.giveGift(sessionId, "Christmas2022");
+                this.enableSnow();
                 break;
             case SeasonalEventType.NEW_YEARS.toLowerCase():
                 this.giveGift(sessionId, "NewYear2023");
+                this.enableSnow();
                 break;
             default:
                 // Likely a mod event
@@ -549,5 +554,10 @@ export class SeasonalEventService
     public getBaseRoleForEventBot(eventBotRole: string): string
     {
         return this.seasonalEventConfig.eventBotMapping[eventBotRole];
+    }
+
+    public enableSnow(): void
+    {
+        this.weatherConfig.enableWinterEvent = true;
     }
 }

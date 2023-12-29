@@ -1,5 +1,6 @@
 {
     "acceleration": 7,
+	"enableWinterEvent": false,
     "weather": {
 		"clouds": {
             "values": [-1.5, -1, 0, 0.5, 1, 1.5],
