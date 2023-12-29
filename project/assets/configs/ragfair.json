@@ -168,21 +168,7 @@
         "removeSeasonalItemsWhenNotInEvent": true,
         "blacklist": {
             "damagedAmmoPacks": true,
-            "custom": [
-				"64ad2d8d7e2fcecf0305533f",
-				"64ad2dac6f9247c2f4012439",
-				"64ad2dba0b9840e4c80c2485",
-				"64ad2dc66f9247c2f401243d",
-				"65703d866584602f7d057a8a",
-				"65703fa06584602f7d057a8e",
-				"65703fe46a912c8b5c03468b",
-				"657040374e67e8ec7a0d261c",
-				"65702f87722744627e05cdb8",
-				"6570658a89fd4926380b7346",
-				"6570653e89fd4926380b733e",
-				"65705cea4916448ae1050897",
-				"65705cb314f2ed6d7d0b773c"
-			],
+            "custom": [],
             "enableBsgList": true,
             "enableQuestList": true,
             "traderItems": false
