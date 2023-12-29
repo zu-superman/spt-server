@@ -1052,7 +1052,7 @@
             }
         }
     },
-	"armorLootSettings": {
+	"equipmentLootSettings": {
 		"modSpawnChancePercent": {
 			"mod_nvg": 20,
 			"front_plate": 50,
