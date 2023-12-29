@@ -681,7 +681,7 @@ export class FenceService
             (itemDetails._parent === BaseClasses.ARMOR
                 || itemDetails._parent === BaseClasses.HEADWEAR
                 || itemDetails._parent === BaseClasses.VEST
-                || itemDetails._parent === BaseClasses.ARMOREDEQUIPMENT
+                || itemDetails._parent === BaseClasses.ARMORED_EQUIPMENT
                 || itemDetails._parent === BaseClasses.FACECOVER) && itemDetails._props.MaxDurability > 0
         )
         {
