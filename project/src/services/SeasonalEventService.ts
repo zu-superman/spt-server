@@ -327,7 +327,7 @@ export class SeasonalEventService
                 this.giveGift(sessionId, "Christmas2022");
                 break;
             case SeasonalEventType.NEW_YEARS.toLowerCase():
-                this.giveGift(sessionId, "NewYear2021");
+                this.giveGift(sessionId, "NewYear2023");
                 break;
             default:
                 // Likely a mod event

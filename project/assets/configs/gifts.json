@@ -1,5 +1,200 @@
 {
     "gifts": {
+		"NewYear2023": {
+			"sender": "System",
+            "messageText": "<ch>Hello there, friend. Happy New Year to you! You've probably forgotten that holidays exist, but I think it's important to remain human in any situation. Wishing you lots of working graphics cards this year and that your Hideout never lets you down. Take this gift and be happy!</ch><cz>Hello there, friend. Happy New Year to you! You've probably forgotten that holidays exist, but I think it's important to remain human in any situation. Wishing you lots of working graphics cards this year and that your Hideout never lets you down. Take this gift and be happy!</cz><en>Hello there, friend. Happy New Year to you! You've probably forgotten that holidays exist, but I think it's important to remain human in any situation. Wishing you lots of working graphics cards this year and that your Hideout never lets you down. Take this gift and be happy!</en><fr>Hello there, friend. Happy New Year to you! You've probably forgotten that holidays exist, but I think it's important to remain human in any situation. Wishing you lots of working graphics cards this year and that your Hideout never lets you down. Take this gift and be happy!</fr><ge>Hello there, friend. Happy New Year to you! You've probably forgotten that holidays exist, but I think it's important to remain human in any situation. Wishing you lots of working graphics cards this year and that your Hideout never lets you down. Take this gift and be happy!</ge><hu>Hello there, friend. Happy New Year to you! You've probably forgotten that holidays exist, but I think it's important to remain human in any situation. Wishing you lots of working graphics cards this year and that your Hideout never lets you down. Take this gift and be happy!</hu><it>Hello there, friend. Happy New Year to you! You've probably forgotten that holidays exist, but I think it's important to remain human in any situation. Wishing you lots of working graphics cards this year and that your Hideout never lets you down. Take this gift and be happy!</it><jp>Hello there, friend. Happy New Year to you! You've probably forgotten that holidays exist, but I think it's important to remain human in any situation. Wishing you lots of working graphics cards this year and that your Hideout never lets you down. Take this gift and be happy!</jp><kr>Hello there, friend. Happy New Year to you! You've probably forgotten that holidays exist, but I think it's important to remain human in any situation. Wishing you lots of working graphics cards this year and that your Hideout never lets you down. Take this gift and be happy!</kr><pl>Hello there, friend. Happy New Year to you! You've probably forgotten that holidays exist, but I think it's important to remain human in any situation. Wishing you lots of working graphics cards this year and that your Hideout never lets you down. Take this gift and be happy!</pl><po>Hello there, friend. Happy New Year to you! You've probably forgotten that holidays exist, but I think it's important to remain human in any situation. Wishing you lots of working graphics cards this year and that your Hideout never lets you down. Take this gift and be happy!</po><sk>Hello there, friend. Happy New Year to you! You've probably forgotten that holidays exist, but I think it's important to remain human in any situation. Wishing you lots of working graphics cards this year and that your Hideout never lets you down. Take this gift and be happy!</sk><es>Hello there, friend. Happy New Year to you! You've probably forgotten that holidays exist, but I think it's important to remain human in any situation. Wishing you lots of working graphics cards this year and that your Hideout never lets you down. Take this gift and be happy!</es><es-mx>Hello there, friend. Happy New Year to you! You've probably forgotten that holidays exist, but I think it's important to remain human in any situation. Wishing you lots of working graphics cards this year and that your Hideout never lets you down. Take this gift and be happy!</es-mx><tu>Hello there, friend. Happy New Year to you! You've probably forgotten that holidays exist, but I think it's important to remain human in any situation. Wishing you lots of working graphics cards this year and that your Hideout never lets you down. Take this gift and be happy!</tu><ru>Ну, здравствуй, друг! С Новым годом тебя! Ты наверное забыл уже, что есть праздники, но я считаю, важно оставаться людьми в любой ситуации. Работающих видеокарт тебе в новом году и убежище чтобы не подводило. Держи и радуйся!</ru>",
+            "collectionTimeHours": 20,
+            "associatedEvent": "NewYears",
+            "items": [{
+				"_id": "658efad286f149afb701c2a4",
+				"_tpl": "645e0c6b3b381ede770e1cc9",
+				"upd": {
+					"Repairable": {
+						"Durability": 100,
+						"MaxDurability": 100
+					}
+				},
+				"parentId": "658efad286f149afb701c2a3",
+				"slotId": "main"
+			}, {
+				"_id": "658efad286f149afb701c2a5",
+				"_tpl": "6450ec2e7da7133e5a09ca96",
+				"parentId": "658efad286f149afb701c2a4",
+				"slotId": "mod_magazine"
+			}, {
+				"_id": "658efad286f149afb701c2a6",
+				"_tpl": "6452519e3d52156624001fd5",
+				"parentId": "658efad286f149afb701c2a4",
+				"slotId": "mod_stock"
+			}, {
+				"_id": "658efad286f149afb701c2a7",
+				"_tpl": "645123013d52156624001fd1",
+				"parentId": "658efad286f149afb701c2a4",
+				"slotId": "mod_barrel"
+			}, {
+				"_id": "658efad286f149afb701c2a8",
+				"_tpl": "64527a263d52156624001fd7",
+				"parentId": "658efad286f149afb701c2a7",
+				"slotId": "mod_muzzle"
+			}, {
+				"_id": "658efad286f149afb701c2a9",
+				"_tpl": "6448f2f6d4928d46d30be3f6",
+				"parentId": "658efad286f149afb701c2a7",
+				"slotId": "mod_handguard"
+			}, {
+				"_id": "658efad286f149afb701c2ab",
+				"_tpl": "6450ec2e7da7133e5a09ca96",
+				"upd": {
+					"StackObjectsCount": 1
+				},
+				"parentId": "658efad286f149afb701c2a3",
+				"slotId": "main"
+			}, {
+				"_id": "658efad286f149afb701c2ad",
+				"_tpl": "6450ec2e7da7133e5a09ca96",
+				"upd": {
+					"StackObjectsCount": 1
+				},
+				"parentId": "658efad286f149afb701c2a3",
+				"slotId": "main"
+			}, {
+				"_id": "658efad286f149afb701c2af",
+				"_tpl": "6450ec2e7da7133e5a09ca96",
+				"upd": {
+					"StackObjectsCount": 1
+				},
+				"parentId": "658efad286f149afb701c2a3",
+				"slotId": "main"
+			}, {
+				"_id": "658efad286f149afb701c2b1",
+				"_tpl": "6450ec2e7da7133e5a09ca96",
+				"upd": {
+					"StackObjectsCount": 1
+				},
+				"parentId": "658efad286f149afb701c2a3",
+				"slotId": "main"
+			}, {
+				"_id": "658efad286f149afb701c2b3",
+				"_tpl": "57a0dfb82459774d3078b56c",
+				"upd": {
+					"StackObjectsCount": 50
+				},
+				"parentId": "658efad286f149afb701c2a3",
+				"slotId": "main"
+			}, {
+				"_id": "658efad286f149afb701c2b5",
+				"_tpl": "57a0dfb82459774d3078b56c",
+				"upd": {
+					"StackObjectsCount": 50
+				},
+				"parentId": "658efad286f149afb701c2a3",
+				"slotId": "main"
+			}, {
+				"_id": "658efad286f149afb701c2b7",
+				"_tpl": "57a0dfb82459774d3078b56c",
+				"upd": {
+					"StackObjectsCount": 50
+				},
+				"parentId": "658efad286f149afb701c2a3",
+				"slotId": "main"
+			}, {
+				"_id": "658efad286f149afb701c2b9",
+				"_tpl": "57a0dfb82459774d3078b56c",
+				"upd": {
+					"StackObjectsCount": 50
+				},
+				"parentId": "658efad286f149afb701c2a3",
+				"slotId": "main"
+			}, {
+				"_id": "658efad286f149afb701c2bb",
+				"_tpl": "57a0dfb82459774d3078b56c",
+				"upd": {
+					"StackObjectsCount": 10
+				},
+				"parentId": "658efad286f149afb701c2a3",
+				"slotId": "main"
+			}, {
+				"_id": "658efad286f149afb701c2bd",
+				"_tpl": "572b7f1624597762ae139822",
+				"upd": {
+					"StackObjectsCount": 1
+				},
+				"parentId": "658efad286f149afb701c2a3",
+				"slotId": "main"
+			}, {
+				"_id": "658efad286f149afb701c2bf",
+				"_tpl": "656ddcf0f02d7bcea90bf395",
+				"upd": {
+					"StackObjectsCount": 1
+				},
+				"parentId": "658efad286f149afb701c2a3",
+				"slotId": "main"
+			}, {
+				"_id": "658efad286f149afb701c2c1",
+				"_tpl": "5734773724597737fd047c14",
+				"upd": {
+					"StackObjectsCount": 1
+				},
+				"parentId": "658efad286f149afb701c2a3",
+				"slotId": "main"
+			}, {
+				"_id": "658efad286f149afb701c2c3",
+				"_tpl": "575146b724597720a27126d5",
+				"upd": {
+					"StackObjectsCount": 1
+				},
+				"parentId": "658efad286f149afb701c2a3",
+				"slotId": "main"
+			}, {
+				"_id": "658efad286f149afb701c2c5",
+				"_tpl": "5d40407c86f774318526545a",
+				"upd": {
+					"StackObjectsCount": 1
+				},
+				"parentId": "658efad286f149afb701c2a3",
+				"slotId": "main"
+			}, {
+				"_id": "658efad286f149afb701c2c7",
+				"_tpl": "5df8a6a186f77412640e2e80",
+				"upd": {
+					"StackObjectsCount": 1
+				},
+				"parentId": "658efad286f149afb701c2a3",
+				"slotId": "main"
+			}, {
+				"_id": "658efad286f149afb701c2c9",
+				"_tpl": "5df8a72c86f77412640e2e83",
+				"upd": {
+					"StackObjectsCount": 1
+				},
+				"parentId": "658efad286f149afb701c2a3",
+				"slotId": "main"
+			}, {
+				"_id": "658efad286f149afb701c2cb",
+				"_tpl": "5df8a77486f77412672a1e3f",
+				"upd": {
+					"StackObjectsCount": 1
+				},
+				"parentId": "658efad286f149afb701c2a3",
+				"slotId": "main"
+			}, {
+				"_id": "658efad286f149afb701c2cc",
+				"_tpl": "65709d2d21b9f815e208ff95",
+				"parentId": "658efad286f149afb701c2a3",
+				"slotId": "main"
+			}, {
+				"_id": "658efad286f149afb701c2cd",
+				"_tpl": "657f9eb7e9433140ad0baf86",
+				"parentId": "658efad286f149afb701c2cc",
+				"slotId": "Helmet_top"
+			}, {
+				"_id": "658efad286f149afb701c2ce",
+				"_tpl": "657f9ef6c6679fefb3051e1f",
+				"parentId": "658efad286f149afb701c2cc",
+				"slotId": "Helmet_back"
+			}
+		]
+		},
         "NewYear2021": {
             "sender": "System",
             "messageText": "<ch>Hello there, friend. Happy New Year to you! You've probably forgotten that holidays exist, but I think it's important to remain human in any situation. Wishing you lots of working graphics cards this year and that your Hideout never lets you down. Take this gift and be happy!</ch><cz>Hello there, friend. Happy New Year to you! You've probably forgotten that holidays exist, but I think it's important to remain human in any situation. Wishing you lots of working graphics cards this year and that your Hideout never lets you down. Take this gift and be happy!</cz><en>Hello there, friend. Happy New Year to you! You've probably forgotten that holidays exist, but I think it's important to remain human in any situation. Wishing you lots of working graphics cards this year and that your Hideout never lets you down. Take this gift and be happy!</en><fr>Hello there, friend. Happy New Year to you! You've probably forgotten that holidays exist, but I think it's important to remain human in any situation. Wishing you lots of working graphics cards this year and that your Hideout never lets you down. Take this gift and be happy!</fr><ge>Hello there, friend. Happy New Year to you! You've probably forgotten that holidays exist, but I think it's important to remain human in any situation. Wishing you lots of working graphics cards this year and that your Hideout never lets you down. Take this gift and be happy!</ge><hu>Hello there, friend. Happy New Year to you! You've probably forgotten that holidays exist, but I think it's important to remain human in any situation. Wishing you lots of working graphics cards this year and that your Hideout never lets you down. Take this gift and be happy!</hu><it>Hello there, friend. Happy New Year to you! You've probably forgotten that holidays exist, but I think it's important to remain human in any situation. Wishing you lots of working graphics cards this year and that your Hideout never lets you down. Take this gift and be happy!</it><jp>Hello there, friend. Happy New Year to you! You've probably forgotten that holidays exist, but I think it's important to remain human in any situation. Wishing you lots of working graphics cards this year and that your Hideout never lets you down. Take this gift and be happy!</jp><kr>Hello there, friend. Happy New Year to you! You've probably forgotten that holidays exist, but I think it's important to remain human in any situation. Wishing you lots of working graphics cards this year and that your Hideout never lets you down. Take this gift and be happy!</kr><pl>Hello there, friend. Happy New Year to you! You've probably forgotten that holidays exist, but I think it's important to remain human in any situation. Wishing you lots of working graphics cards this year and that your Hideout never lets you down. Take this gift and be happy!</pl><po>Hello there, friend. Happy New Year to you! You've probably forgotten that holidays exist, but I think it's important to remain human in any situation. Wishing you lots of working graphics cards this year and that your Hideout never lets you down. Take this gift and be happy!</po><sk>Hello there, friend. Happy New Year to you! You've probably forgotten that holidays exist, but I think it's important to remain human in any situation. Wishing you lots of working graphics cards this year and that your Hideout never lets you down. Take this gift and be happy!</sk><es>Hello there, friend. Happy New Year to you! You've probably forgotten that holidays exist, but I think it's important to remain human in any situation. Wishing you lots of working graphics cards this year and that your Hideout never lets you down. Take this gift and be happy!</es><es-mx>Hello there, friend. Happy New Year to you! You've probably forgotten that holidays exist, but I think it's important to remain human in any situation. Wishing you lots of working graphics cards this year and that your Hideout never lets you down. Take this gift and be happy!</es-mx><tu>Hello there, friend. Happy New Year to you! You've probably forgotten that holidays exist, but I think it's important to remain human in any situation. Wishing you lots of working graphics cards this year and that your Hideout never lets you down. Take this gift and be happy!</tu><ru>Ну, здравствуй, друг! С Новым годом тебя! Ты наверное забыл уже, что есть праздники, но я считаю, важно оставаться людьми в любой ситуации. Работающих видеокарт тебе в новом году и убежище чтобы не подводило. Держи и радуйся!</ru>",
