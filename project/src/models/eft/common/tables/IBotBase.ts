@@ -28,6 +28,8 @@ export interface IBotBase
     TradersInfo: Record<string, TraderInfo>;
     UnlockedInfo: IUnlockedInfo;
     RagfairInfo: RagfairInfo;
+    /** Achievement id and timestamp */
+    Achievements: Record<string, number>
     RepeatableQuests: IPmcDataRepeatableQuest[];
     Bonuses: Bonus[];
     Notes: Notes;

@@ -152,6 +152,7 @@ export class ProfileController
         pmcData.RepeatableQuests = [];
         pmcData.CarExtractCounts = {};
         pmcData.CoopExtractCounts = {};
+        pmcData.Achievements = {};
 
         if (!pmcData.UnlockedInfo)
         {
