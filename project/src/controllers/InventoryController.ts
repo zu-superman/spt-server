@@ -28,6 +28,7 @@ import { IInventoryToggleRequestData } from "@spt-aki/models/eft/inventory/IInve
 import { IInventoryTransferRequestData } from "@spt-aki/models/eft/inventory/IInventoryTransferRequestData";
 import { IOpenRandomLootContainerRequestData } from "@spt-aki/models/eft/inventory/IOpenRandomLootContainerRequestData";
 import { IRedeemProfileRequestData } from "@spt-aki/models/eft/inventory/IRedeemProfileRequestData";
+import { ISetFavoriteItems } from "@spt-aki/models/eft/inventory/ISetFavoriteItems";
 import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEventRouterResponse";
 import { BackendErrorCodes } from "@spt-aki/models/enums/BackendErrorCodes";
 import { SkillTypes } from "@spt-aki/models/enums/SkillTypes";
@@ -985,6 +986,32 @@ export class InventoryController
             }
         }
 
+        return output;
+    }
+
+    public setFavoriteItem(pmcData: IPmcData, request: ISetFavoriteItems, sessionId: string): IItemEventRouterResponse
+    {
+        const output = this.eventOutputHolder.getOutput(sessionId);
+
+        if (!pmcData.Inventory.favoriteItems)
+        {
+            pmcData.Inventory.favoriteItems = [];
+        }
+
+        for (const itemId of request.items)
+        {
+            // If id already exists in array, we're removing it
+            const indexOfItemAlreadyFavorited = pmcData.Inventory.favoriteItems.findIndex(x => x === itemId);
+            if (indexOfItemAlreadyFavorited > -1)
+            {
+                pmcData.Inventory.favoriteItems.splice(indexOfItemAlreadyFavorited, 1);
+            }
+            else
+            {
+                pmcData.Inventory.favoriteItems.push(itemId);
+            }
+        }
+        
         return output;
     }
 }

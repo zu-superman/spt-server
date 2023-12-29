@@ -76,6 +76,7 @@ export class ProfileFixerService
             this.addMissingWallImprovements(pmcProfile);
             this.addMissingHideoutWallAreas(pmcProfile);
             this.addMissingGunStandContainerImprovements(pmcProfile);
+            this.addMissingHallOfFameContainerImprovements(pmcProfile);
             this.ensureGunStandLevelsMatch(pmcProfile);
 
             this.removeResourcesFromSlotsInHideoutWithoutLocationIndexValue(pmcProfile);
@@ -281,6 +282,70 @@ export class ProfileFixerService
             );
             // The id inside the profile does not match what the hideout db value is, out of sync, adjust
             stashSecondaryItem._tpl = stageCurrentAt.container;
+        }
+    }
+
+    protected addMissingHallOfFameContainerImprovements(pmcProfile: IPmcData): void
+    {
+        const placeOfFameArea = pmcProfile.Hideout.Areas.find((x) => x.type === HideoutAreas.PLACE_OF_FAME);
+        if (!placeOfFameArea || placeOfFameArea.level === 0)
+        {
+            // No place of fame in profile or its level 0, skip
+            return;
+        }
+
+        const db = this.databaseServer.getTables();
+        const placeOfFameAreaDb = db.hideout.areas.find((x) => x.type === HideoutAreas.PLACE_OF_FAME);
+        const stageCurrentlyAt = placeOfFameAreaDb.stages[placeOfFameArea.level];
+        const placeOfFameStashId = pmcProfile.Inventory.hideoutAreaStashes[HideoutAreas.PLACE_OF_FAME];
+
+        // `hideoutAreaStashes` empty but profile has built gun stand
+        if (!placeOfFameStashId && stageCurrentlyAt)
+        {
+            // Value is missing, add it
+            pmcProfile.Inventory.hideoutAreaStashes[HideoutAreas.PLACE_OF_FAME] = placeOfFameAreaDb._id;
+
+            // Add stash item to profile
+            const placeOfFameStashItem = pmcProfile.Inventory.items.find((x) => x._id === placeOfFameAreaDb._id);
+            if (placeOfFameStashItem)
+            {
+                placeOfFameStashItem._tpl = stageCurrentlyAt.container;
+                this.logger.debug(
+                    `Updated existing place of fame inventory stash: ${placeOfFameStashItem._id} tpl to ${stageCurrentlyAt.container}`,
+                );
+            }
+            else
+            {
+                pmcProfile.Inventory.items.push({ _id: placeOfFameAreaDb._id, _tpl: stageCurrentlyAt.container });
+                this.logger.debug(
+                    `Added missing place of fame inventory stash: ${placeOfFameAreaDb._id} tpl to ${stageCurrentlyAt.container}`,
+                );
+            }
+
+            return;
+        }
+
+        let stashItem = pmcProfile.Inventory.items?.find((x) => x._id === placeOfFameAreaDb._id);
+        if (!stashItem)
+        {
+            // Stand inventory stash item doesnt exist, add it
+            pmcProfile.Inventory.items.push(
+                {
+                    _id: placeOfFameAreaDb._id,
+                    _tpl: stageCurrentlyAt.container
+                }
+            )
+            stashItem = pmcProfile.Inventory.items?.find((x) => x._id === placeOfFameAreaDb._id)
+        }
+
+        // `hideoutAreaStashes` has value related stash inventory items tpl doesnt match what's expected
+        if (placeOfFameStashId && stashItem._tpl !== stageCurrentlyAt.container)
+        {
+            this.logger.debug(
+                `primary Stash tpl was: ${stashItem._tpl}, but should be ${stageCurrentlyAt.container}, updating`,
+            );
+            // The id inside the profile does not match what the hideout db value is, out of sync, adjust
+            stashItem._tpl = stageCurrentlyAt.container;
         }
     }
 

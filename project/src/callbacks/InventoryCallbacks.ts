@@ -20,6 +20,7 @@ import { IInventoryToggleRequestData } from "@spt-aki/models/eft/inventory/IInve
 import { IInventoryTransferRequestData } from "@spt-aki/models/eft/inventory/IInventoryTransferRequestData";
 import { IOpenRandomLootContainerRequestData } from "@spt-aki/models/eft/inventory/IOpenRandomLootContainerRequestData";
 import { IRedeemProfileRequestData } from "@spt-aki/models/eft/inventory/IRedeemProfileRequestData";
+import { ISetFavoriteItems } from "@spt-aki/models/eft/inventory/ISetFavoriteItems";
 import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEventRouterResponse";
 
 @injectable()
@@ -164,5 +165,12 @@ export class InventoryCallbacks
     ): IItemEventRouterResponse
     {
         return this.inventoryController.redeemProfileReward(pmcData, body, sessionId)
+    }
+
+    public setFavoriteItem(pmcData: IPmcData,
+        body: ISetFavoriteItems,
+        sessionId: string): IItemEventRouterResponse
+    {
+        return this.inventoryController.setFavoriteItem(pmcData, body, sessionId);
     }
 }
