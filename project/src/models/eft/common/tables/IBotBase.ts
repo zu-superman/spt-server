@@ -265,18 +265,6 @@ export interface CounterKeyValue
     Value: number;
 }
 
-export interface ConditionCounters
-{
-    Counters: Counter[];
-}
-
-export interface Counter
-{
-    id: string;
-    value: number;
-    qid: string;
-}
-
 export interface Aggressor
 {
     AccountId: string;
