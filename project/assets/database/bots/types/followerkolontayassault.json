@@ -1,36 +1,47 @@
 {
   "appearance": {
     "body": {
-      "64a2edba08d26f8d62049c06": 1,
-      "5d5e7e8386f774393602d6fa": 1,
-      "5d5e7e7586f77427997cfb7f": 2,
-      "5df8a10486f77412672a1e3a": 1,
-      "5fd1eb3fbe3b7107d66cb645": 1
+      "5e4bb3ee86f77406975c934e": 2,
+      "5d5e7e8386f774393602d6fa": 3,
+      "64a2edba08d26f8d62049c06": 2,
+      "5d5e7e7586f77427997cfb7f": 3,
+      "5fd22d311add82653b5a704c": 3,
+      "5fd1eb3fbe3b7107d66cb645": 4,
+      "5df8a10486f77412672a1e3a": 2
     },
     "feet": {
-      "5d5e7f8986f7742798716582": 1,
-      "5f5e41576760b4138443b344": 3,
-      "5cc2e5d014c02e15d53d9c03": 1,
-      "5f5e410c6bdad616ad46d60b": 1
+      "61922589bb2cea6f7a22d964": 2,
+      "5f5e410c6bdad616ad46d60b": 3,
+      "5cc2e5d014c02e15d53d9c03": 3,
+      "5f5e41366760b4138443b343": 3,
+      "5d5e7f4986f7746956659f8a": 2,
+      "5d28af3486f774292364a6e7": 3,
+      "5d5e7f8986f7742798716582": 3,
+      "5f5e41576760b4138443b344": 4,
+      "6033a430ed2e0509b15f9033": 3
     },
     "hands": [
-      "64ac23c449d74fd5ec0a124e",
+      "5e4bb49586f77406a313ec5a",
       "5cc2e68f14c02e28b47de290",
-      "5df8eac086f77412640e2ea7",
-      "5fd78fe9e3bfcf6cab4c9f54"
+      "64ac23c449d74fd5ec0a124e",
+      "5fd7901bdd870108a754c0e6",
+      "5fd78fe9e3bfcf6cab4c9f54",
+      "5df8eac086f77412640e2ea7"
     ],
     "head": [
-      "5d28afe786f774292668618d",
-      "5f68c4a7c174a17c0f4c8945",
+      "5cde9ff17d6c8b0474535daa",
       "5cc2e4d014c02e000d0115f8",
-      "5cde9ff17d6c8b0474535daa"
+      "5f68c4c217d579077152a252",
+      "5d28afe786f774292668618d",
+      "5f68c4a7c174a17c0f4c8945"
     ],
     "voice": [
-      "Scav_6",
-      "Scav_3",
-      "Scav_1",
       "Scav_2",
-      "Scav_5"
+      "Scav_1",
+      "Scav_4",
+      "Scav_6",
+      "Scav_5",
+      "Scav_3"
     ]
   },
   "experience": {
@@ -97,45 +108,69 @@
   "inventory": {
     "equipment": {
       "Headwear": {
+        "5aa7e4a4e5b5b000137b76f2": 4,
+        "5aa2b8d7e5b5b00014028f4a": 3,
         "5f60c74e3b85f6263c145586": 1,
-        "5aa2b8d7e5b5b00014028f4a": 1,
-        "5f60e6403b85f6263c14558c": 1,
-        "5aa7e4a4e5b5b000137b76f2": 1
+        "5645bc214bdc2d363b8b4571": 1,
+        "65719f0775149d62ce0a670b": 2,
+        "5f60e784f2bcbb675b00dac7": 3,
+        "5f60e6403b85f6263c14558c": 1
       },
-      "Earpiece": {},
+      "Earpiece": {
+        "5b432b965acfc47a8774094e": 1
+      },
       "FaceCover": {
-        "5bd073a586f7747e6f135799": 1,
-        "5b432f3d5acfc4704b4a1dfb": 1
+        "5b432f3d5acfc4704b4a1dfb": 4,
+        "5ab8f39486f7745cd93a1cca": 3,
+        "5bd073a586f7747e6f135799": 4
       },
       "ArmorVest": {
-        "5648a7494bdc2d9d488b4583": 2,
-        "5f5f41476bdad616ad46d631": 2,
-        "609e8540d5c319764c2bc2e9": 1
+        "5ab8e79e86f7742d8b372e78": 2,
+        "5648a7494bdc2d9d488b4583": 8,
+        "5f5f41476bdad616ad46d631": 4,
+        "5b44d22286f774172b0c9de8": 5,
+        "609e8540d5c319764c2bc2e9": 2,
+        "64be79c487d1510151095552": 1
       },
       "Eyewear": {
-        "603409c80ca681766b6a0fb2": 1
+        "603409c80ca681766b6a0fb2": 5,
+        "5aa2b986e5b5b00014028f4c": 2,
+        "557ff21e4bdc2d89578b4586": 1
       },
       "ArmBand": {},
       "TacticalVest": {
-        "592c2d1a86f7746dbe2af32a": 1,
-        "5fd4c60f875c30179f5d04c2": 2,
-        "5929a2a086f7744f4b234d43": 2,
+        "5ca20abf86f77418567a43f2": 3,
+        "592c2d1a86f7746dbe2af32a": 4,
+        "59e7643b86f7742cbf2c109a": 3,
+        "5929a2a086f7744f4b234d43": 4,
+        "60a6220e953894617404b00a": 3,
+        "5fd4c60f875c30179f5d04c2": 5,
+        "5c0e722886f7740458316a57": 2,
+        "5ab8dced86f774646209ec87": 1,
         "5d5d87f786f77427997cfaef": 1
       },
       "Backpack": {
-        "618bb76513f5097c8d5aa2d5": 1,
-        "5ca20d5986f774331e7c9602": 5
+        "5e9dcf5986f7746c417435b3": 5,
+        "5ca20d5986f774331e7c9602": 11,
+        "60a2828e8689911a226117f9": 2,
+        "618bb76513f5097c8d5aa2d5": 5,
+        "628e1ffc83ec92260c0f437f": 1
       },
       "FirstPrimaryWeapon": {
-        "57dc2fa62459775949412633": 3,
-        "59984ab886f7743e98271174": 1,
-        "5ac4cd105acfc40016339859": 1,
-        "5ac66d725acfc43b321d4b60": 1
+        "5ac4cd105acfc40016339859": 3,
+        "59984ab886f7743e98271174": 2,
+        "5ac66d725acfc43b321d4b60": 5,
+        "57dc2fa62459775949412633": 11,
+        "59d6088586f774275f37482f": 2,
+        "576165642459773c7a400233": 2,
+        "57d14d2524597714373db789": 1
       },
       "SecondPrimaryWeapon": {},
       "Holster": {
-        "576a581d2459771e7b1bc4f1": 1,
-        "56e0598dd2720bb5668b45a6": 1
+        "56e0598dd2720bb5668b45a6": 10,
+        "602a9740da11d6478d5a06dc": 6,
+        "5a17f98cfcdbcb0980087290": 5,
+        "576a581d2459771e7b1bc4f1": 5
       },
       "Scabbard": {},
       "Pockets": {
@@ -147,76 +182,161 @@
     },
     "Ammo": {
       "Caliber545x39": {
-        "56dff2ced2720bb4668b4567": 1,
-        "56dfef82d2720bbd668b4567": 1
+        "56dfef82d2720bbd668b4567": 7,
+        "56dff2ced2720bb4668b4567": 5,
+        "56dff061d2720bb5668b4567": 2
+      },
+      "Caliber9x18PM": {
+        "573719762459775a626ccbc1": 15,
+        "573719df2459775a626ccbc2": 1
       },
       "Caliber9x19PARA": {
         "56d59d3ad2720bdb418b4577": 1
       },
-      "Caliber9x18PM": {
-        "573719762459775a626ccbc1": 1
-      },
       "Caliber762x39": {
-        "5656d7c34bdc2d9d198b4587": 1
+        "5656d7c34bdc2d9d198b4587": 5,
+        "59e4cf5286f7741778269d8a": 2
+      },
+      "Caliber12g": {
+        "5d6e689ca4b9361bc8618956": 1,
+        "5d6e68e6a4b9361c140bcfe0": 1
       }
     },
     "mods": {
-      "57dc2fa62459775949412633": {
+      "5ac4cd105acfc40016339859": {
         "mod_reciever": [
-          "57dc334d245977597164366f"
+          "5ac50da15acfc4001718d287"
         ],
-        "mod_pistol_grip": [
-          "5998517986f7746017232f7e",
-          "5beec8ea0db834001a6f9dbf",
-          "5649ade84bdc2d1b2b8b4587"
+        "mod_sight_rear": [
+          "5ac72e475acfc400180ae6fe"
         ],
         "mod_gas_block": [
-          "59d36a0086f7747e673f3946"
+          "59c6633186f7740cf0493bb9"
         ],
-        "mod_stock": [
-          "59ecc28286f7746d7a68aa8c",
-          "57dc347d245977596754e7a1"
+        "mod_pistol_grip": [
+          "5649ade84bdc2d1b2b8b4587"
         ],
         "mod_muzzle": [
-          "57dc324a24597759501edc20"
+          "5ac7655e5acfc40016339a19"
+        ],
+        "mod_stock": [
+          "5ac50c185acfc400163398d4",
+          "5ac78eaf5acfc4001926317a",
+          "6386300124a1dc425c00577a"
         ],
         "mod_magazine": [
-          "55d480c04bdc2d1d4e8b456a"
+          "55d480c04bdc2d1d4e8b456a",
+          "5aaa4194e5b5b055d06310a5"
         ]
       },
-      "59d36a0086f7747e673f3946": {
+      "59c6633186f7740cf0493bb9": {
         "mod_handguard": [
-          "57ffa9f4245977728561e844",
-          "57dc32dc245977596d4ef3d3"
+          "5c617a5f2e2216000f1e81b3",
+          "5648b1504bdc2d9d488b4584"
         ]
       },
-      "57ffa9f4245977728561e844": {
+      "5c617a5f2e2216000f1e81b3": {
         "mod_foregrip": [
-          "5c1bc5612e221602b5429350"
+          "5c1bc5fb2e221602b1779b32",
+          "5c1bc7752e221602b1779b34",
+          "5cf4fb76d7f00c065703d3ac",
+          "5c1bc7432e221602b412949d",
+          "5c1bc4812e22164bef5cfde7"
         ],
-        "mod_tactical_000": [
-          "57ffaea724597779f52b3a4d"
-        ],
-        "mod_tactical_001": [
+        "mod_tactical": [
           "560d657b4bdc2da74d8b4572"
         ]
       },
-      "57ffaea724597779f52b3a4d": {
-        "mod_scope": [
-          "57ae0171245977343c27bfcf"
-        ]
-      },
-      "59ecc28286f7746d7a68aa8c": {
-        "mod_stock": [
-          "5b222d405acfc400153af4fe"
-        ]
-      },
-      "576a581d2459771e7b1bc4f1": {
+      "56e0598dd2720bb5668b45a6": {
+        "mod_muzzle": [
+          "56e05b06d2720bb2668b4586"
+        ],
+        "mod_pistolgrip": [
+          "56e05a6ed2720bd0748b4567"
+        ],
         "mod_magazine": [
-          "576a5ed62459771e9c2096cb"
+          "5448c12b4bdc2d02308b456f"
+        ]
+      },
+      "5aa7e4a4e5b5b000137b76f2": {
+        "Helmet_top": [
+          "657f925dada5fadd1f07a57a"
+        ],
+        "Helmet_back": [
+          "657f92acada5fadd1f07a57e"
+        ],
+        "Helmet_ears": [
+          "657f92e7f4c82973640b2354"
+        ]
+      },
+      "5ab8e79e86f7742d8b372e78": {
+        "Front_plate": [
+          "656f611f94b480b8a500c0db"
+        ],
+        "Back_plate": [
+          "65573fa5655447403702a816"
+        ],
+        "Soft_armor_front": [
+          "65732688d9d89ff7ac0d9c4c"
+        ],
+        "Soft_armor_back": [
+          "657326978c1cc6dcd9098b56"
+        ],
+        "Soft_armor_left": [
+          "657326a28c1cc6dcd9098b5a"
+        ],
+        "soft_armor_right": [
+          "657326b08c1cc6dcd9098b5e"
+        ],
+        "Collar": [
+          "657326bc5d3a3129fb05f36b"
+        ]
+      },
+      "59984ab886f7743e98271174": {
+        "mod_reciever": [
+          "59985a8086f77414ec448d1a"
+        ],
+        "mod_sight_rear": [
+          "599860e986f7743bb57573a6"
         ],
         "mod_pistol_grip": [
-          "576a63cd2459771e796e0e11"
+          "5998517986f7746017232f7e"
+        ],
+        "mod_gas_block": [
+          "59ccd11386f77428f24a488f"
+        ],
+        "mod_stock": [
+          "599851db86f77467372f0a18"
+        ],
+        "mod_muzzle": [
+          "5998597786f77414ea6da093"
+        ],
+        "mod_magazine": [
+          "599860ac86f77436b225ed1a"
+        ]
+      },
+      "59ccd11386f77428f24a488f": {
+        "mod_handguard": [
+          "5c617a5f2e2216000f1e81b3"
+        ]
+      },
+      "602a9740da11d6478d5a06dc": {
+        "mod_barrel": [
+          "602a95edda11d6478d5a06da"
+        ],
+        "mod_reciever": [
+          "60228924961b8d75ee233c32"
+        ],
+        "mod_magazine": [
+          "602286df23506e50807090c6"
+        ]
+      },
+      "60228924961b8d75ee233c32": {
+        "mod_sight_rear": [
+          "60229948cacb6b0506369e27"
+        ],
+        "mod_sight_front": [
+          "60228a76d62c9b14ed777a66"
         ]
       },
       "5648a7494bdc2d9d488b4583": {
@@ -233,15 +353,115 @@
           "657040374e67e8ec7a0d261c"
         ]
       },
-      "5f60c74e3b85f6263c145586": {
-        "Helmet_top": [
-          "657bc285aab96fccee08bea3"
+      "5ac66d725acfc43b321d4b60": {
+        "mod_reciever": [
+          "5ac50da15acfc4001718d287"
         ],
-        "Helmet_back": [
-          "657bc2c5a1c61ee0c3036333"
+        "mod_sight_rear": [
+          "5ac733a45acfc400192630e2"
         ],
-        "Helmet_ears": [
-          "657bc2e7b30eca976305118d"
+        "mod_magazine": [
+          "5ac66bea5acfc43b321d4aec"
+        ],
+        "mod_gas_block": [
+          "59e649f986f77411d949b246"
+        ],
+        "mod_pistol_grip": [
+          "5beec8ea0db834001a6f9dbf",
+          "5649ade84bdc2d1b2b8b4587"
+        ],
+        "mod_muzzle": [
+          "5649ab884bdc2ded0b8b457f",
+          "5ac72e895acfc43b321d4bd5"
+        ],
+        "mod_stock": [
+          "5ac50c185acfc400163398d4",
+          "6386300124a1dc425c00577a"
+        ]
+      },
+      "59e649f986f77411d949b246": {
+        "mod_handguard": [
+          "5648b4534bdc2d3d1c8b4580",
+          "5c617a5f2e2216000f1e81b3"
+        ]
+      },
+      "5648b4534bdc2d3d1c8b4580": {
+        "mod_foregrip": [
+          "5c1bc5fb2e221602b1779b32",
+          "5c1bc5612e221602b5429350"
+        ],
+        "mod_scope": [
+          "584984812459776a704a82a6",
+          "591c4efa86f7741030027726"
+        ],
+        "mod_tactical_002": [
+          "560d657b4bdc2da74d8b4572"
+        ]
+      },
+      "5a17f98cfcdbcb0980087290": {
+        "mod_magazine": [
+          "5a17fb03fcdbcbcae668728f"
+        ],
+        "mod_pistol_grip": [
+          "5a17fc70fcdbcb0176308b3d"
+        ],
+        "mod_sight_front": [
+          "5aba62f8d8ce87001943946b"
+        ],
+        "mod_sight_rear": [
+          "5aba637ad8ce87001773e17f"
+        ]
+      },
+      "57dc2fa62459775949412633": {
+        "mod_reciever": [
+          "57dc334d245977597164366f"
+        ],
+        "mod_pistol_grip": [
+          "5649ade84bdc2d1b2b8b4587",
+          "5998517986f7746017232f7e",
+          "5beec8ea0db834001a6f9dbf"
+        ],
+        "mod_gas_block": [
+          "59d36a0086f7747e673f3946"
+        ],
+        "mod_stock": [
+          "57dc347d245977596754e7a1",
+          "59ecc28286f7746d7a68aa8c"
+        ],
+        "mod_muzzle": [
+          "5649ab884bdc2ded0b8b457f",
+          "57dc324a24597759501edc20"
+        ],
+        "mod_magazine": [
+          "5aaa4194e5b5b055d06310a5",
+          "55d480c04bdc2d1d4e8b456a",
+          "64b9e265c94d0d15c5027e35"
+        ]
+      },
+      "59d36a0086f7747e673f3946": {
+        "mod_handguard": [
+          "57ffa9f4245977728561e844",
+          "57dc32dc245977596d4ef3d3"
+        ]
+      },
+      "57ffa9f4245977728561e844": {
+        "mod_foregrip": [
+          "5c1bc4812e22164bef5cfde7",
+          "5c1bc5612e221602b5429350",
+          "5c1bc7432e221602b412949d",
+          "5c1bc7752e221602b1779b34"
+        ],
+        "mod_tactical_000": [
+          "57ffaea724597779f52b3a4d"
+        ],
+        "mod_tactical_001": [
+          "560d657b4bdc2da74d8b4572"
+        ]
+      },
+      "57ffaea724597779f52b3a4d": {
+        "mod_scope": [
+          "591c4efa86f7741030027726",
+          "57ae0171245977343c27bfcf"
         ]
       },
       "5f5f41476bdad616ad46d631": {
@@ -279,51 +499,167 @@
           "65731b6b6042b0f210020ef6"
         ]
       },
-      "56e0598dd2720bb5668b45a6": {
-        "mod_muzzle": [
-          "56e05b06d2720bb2668b4586"
-        ],
-        "mod_pistolgrip": [
-          "56e05a6ed2720bd0748b4567"
-        ],
+      "576a581d2459771e7b1bc4f1": {
         "mod_magazine": [
-          "5448c12b4bdc2d02308b456f"
-        ]
-      },
-      "59984ab886f7743e98271174": {
-        "mod_reciever": [
-          "59985a8086f77414ec448d1a"
-        ],
-        "mod_sight_rear": [
-          "599860e986f7743bb57573a6"
+          "576a5ed62459771e9c2096cb"
         ],
         "mod_pistol_grip": [
-          "5998517986f7746017232f7e"
-        ],
-        "mod_gas_block": [
-          "59ccd11386f77428f24a488f"
-        ],
-        "mod_stock": [
-          "599851db86f77467372f0a18"
-        ],
-        "mod_muzzle": [
-          "5998597786f77414ea6da093"
-        ],
-        "mod_magazine": [
-          "599860ac86f77436b225ed1a"
+          "576a63cd2459771e796e0e11"
         ]
       },
-      "59ccd11386f77428f24a488f": {
+      "59d6088586f774275f37482f": {
+        "mod_reciever": [
+          "59d6507c86f7741b846413a2"
+        ],
+        "mod_sight_rear": [
+          "59d650cf86f7741b846413a4"
+        ],
+        "mod_gas_block": [
+          "59d64ec286f774171d1e0a42"
+        ],
+        "mod_pistol_grip": [
+          "5649ade84bdc2d1b2b8b4587",
+          "5998517986f7746017232f7e"
+        ],
+        "mod_muzzle": [
+          "59d64fc686f774171b243fe2"
+        ],
+        "mod_stock": [
+          "5649b0fc4bdc2d17108b4588"
+        ],
+        "mod_magazine": [
+          "5ac66bea5acfc43b321d4aec",
+          "59d625f086f774661516605d"
+        ]
+      },
+      "59d64ec286f774171d1e0a42": {
         "mod_handguard": [
           "5c617a5f2e2216000f1e81b3"
         ]
       },
-      "5c617a5f2e2216000f1e81b3": {
+      "5b44d22286f774172b0c9de8": {
+        "Front_plate": [
+          "656f9d5900d62bcd2e02407c"
+        ],
+        "Back_plate": [
+          "656f9d5900d62bcd2e02407c"
+        ],
+        "Soft_armor_front": [
+          "65704de13e7bba58ea0285c8"
+        ],
+        "Soft_armor_back": [
+          "65705c3c14f2ed6d7d0b7738"
+        ],
+        "Soft_armor_left": [
+          "65705c777260e1139e091408"
+        ],
+        "soft_armor_right": [
+          "65705cb314f2ed6d7d0b773c"
+        ],
+        "Collar": [
+          "65705cea4916448ae1050897"
+        ]
+      },
+      "59ecc28286f7746d7a68aa8c": {
+        "mod_stock": [
+          "5b222d405acfc400153af4fe"
+        ]
+      },
+      "5f60c74e3b85f6263c145586": {
+        "Helmet_top": [
+          "657bc285aab96fccee08bea3"
+        ],
+        "Helmet_back": [
+          "657bc2c5a1c61ee0c3036333"
+        ],
+        "Helmet_ears": [
+          "657bc2e7b30eca976305118d"
+        ]
+      },
+      "576165642459773c7a400233": {
+        "mod_handguard": [
+          "58272b392459774b4c7b3ccd",
+          "5f63418ef5750b524b45f116"
+        ],
+        "mod_pistol_grip": [
+          "5649ae4a4bdc2d1b2b8b4588",
+          "628a664bccaab13006640e47"
+        ],
+        "mod_muzzle": [
+          "576167ab2459773cad038c43",
+          "58272d7f2459774f6311ddfd"
+        ],
+        "mod_stock": [
+          "57616ca52459773c69055192",
+          "5ac78eaf5acfc4001926317a"
+        ],
+        "mod_magazine": [
+          "57616a9e2459773c7a400234"
+        ],
+        "patron_in_weapon": [
+          "5d6e689ca4b9361bc8618956",
+          "5d6e68e6a4b9361c140bcfe0"
+        ]
+      },
+      "58272b392459774b4c7b3ccd": {
+        "mod_scope": [
+          "5c0505e00db834001b735073"
+        ],
         "mod_foregrip": [
-          "5c1bc7432e221602b412949d",
-          "5c1bc4812e22164bef5cfde7"
+          "5c1bc5612e221602b5429350"
+        ],
+        "mod_tactical_001": [
+          "5b3a337e5acfc4704b4a19a0"
+        ]
+      },
+      "57616ca52459773c69055192": {
+        "mod_stock": [
+          "5a0c59791526d8dba737bba7"
+        ]
+      },
+      "5645bc214bdc2d363b8b4571": {
+        "Helmet_top": [
+          "657bae18b7e9ca9a02045c0a"
+        ],
+        "Helmet_back": [
+          "657baeaacfcf63c951052db3"
+        ],
+        "Helmet_ears": [
+          "657baecbc6f689d3a205b863"
+        ]
+      },
+      "5ac78eaf5acfc4001926317a": {
+        "mod_stock": [
+          "5b222d405acfc400153af4fe"
+        ]
+      },
+      "57d14d2524597714373db789": {
+        "mod_pistol_grip": [
+          "57d152ec245977144076ccdf"
+        ],
+        "mod_mount": [
+          "57ee59b42459771c7b045da5"
+        ],
+        "mod_magazine": [
+          "57d1519e24597714373db79d"
+        ]
+      },
+      "57ee59b42459771c7b045da5": {
+        "mod_scope": [
+          "57ae0171245977343c27bfcf"
         ],
         "mod_tactical": [
+          "560d657b4bdc2da74d8b4572"
+        ]
+      },
+      "5f63418ef5750b524b45f116": {
+        "mod_scope": [
+          "5c0505e00db834001b735073"
+        ],
+        "mod_foregrip": [
+          "5c1bc5fb2e221602b1779b32"
+        ],
+        "mod_tactical_001": [
           "560d657b4bdc2da74d8b4572"
         ]
       },
@@ -347,82 +683,66 @@
           "6572e54873c0eabb700109a8"
         ]
       },
-      "5ac4cd105acfc40016339859": {
-        "mod_reciever": [
-          "5ac50da15acfc4001718d287"
+      "64be79c487d1510151095552": {
+        "Soft_armor_front": [
+          "6570495b45d573133d0d6adb"
         ],
-        "mod_sight_rear": [
-          "5ac72e475acfc400180ae6fe"
-        ],
-        "mod_gas_block": [
-          "59c6633186f7740cf0493bb9"
-        ],
-        "mod_pistol_grip": [
-          "5649ade84bdc2d1b2b8b4587"
-        ],
-        "mod_muzzle": [
-          "5ac7655e5acfc40016339a19"
-        ],
-        "mod_stock": [
-          "6386300124a1dc425c00577a"
-        ],
-        "mod_magazine": [
-          "5aaa4194e5b5b055d06310a5"
+        "Soft_armor_back": [
+          "657049d23425b19bbc0502f0"
         ]
       },
-      "59c6633186f7740cf0493bb9": {
-        "mod_handguard": [
-          "5c617a5f2e2216000f1e81b3"
+      "5c0e722886f7740458316a57": {
+        "Front_plate": [
+          "656fa0fb498d1b7e3e071d9c"
+        ],
+        "Back_plate": [
+          "656fa0fb498d1b7e3e071d9c"
+        ],
+        "Soft_armor_front": [
+          "65730c0e292ecadbfa09ad49"
+        ],
+        "Soft_armor_back": [
+          "65730c2213a2f660f60bea96"
+        ],
+        "Soft_armor_left": [
+          "65730c2b292ecadbfa09ad50"
+        ],
+        "soft_armor_right": [
+          "65730c35292ecadbfa09ad54"
         ]
       },
-      "5aa7e4a4e5b5b000137b76f2": {
+      "65719f0775149d62ce0a670b": {
         "Helmet_top": [
-          "657f925dada5fadd1f07a57a"
+          "657fa0fcd4caf976440afe3e"
         ],
         "Helmet_back": [
-          "657f92acada5fadd1f07a57e"
+          "657fa168e9433140ad0baf8e"
         ],
         "Helmet_ears": [
-          "657f92e7f4c82973640b2354"
+          "657fa186d4caf976440afe42"
+        ],
+        "mod_equipment_000": [
+          "65719f9ef392ad76c50a2ec8"
         ]
       },
-      "5ac66d725acfc43b321d4b60": {
-        "mod_reciever": [
-          "5ac50da15acfc4001718d287"
+      "5ab8dced86f774646209ec87": {
+        "Front_plate": [
+          "656fa25e94b480b8a500c0e0"
         ],
-        "mod_sight_rear": [
-          "5ac733a45acfc400192630e2"
+        "Back_plate": [
+          "656fa25e94b480b8a500c0e0"
         ],
-        "mod_magazine": [
-          "5ac66bea5acfc43b321d4aec"
+        "Soft_armor_front": [
+          "6570f6e774d84423df065f21"
         ],
-        "mod_gas_block": [
-          "59e649f986f77411d949b246"
+        "Soft_armor_back": [
+          "6570f71dd67d0309980a7af8"
         ],
-        "mod_pistol_grip": [
-          "5649ade84bdc2d1b2b8b4587"
+        "Soft_armor_left": [
+          "6570f74774d84423df065f25"
         ],
-        "mod_muzzle": [
-          "5649ab884bdc2ded0b8b457f"
-        ],
-        "mod_stock": [
-          "6386300124a1dc425c00577a"
-        ]
-      },
-      "59e649f986f77411d949b246": {
-        "mod_handguard": [
-          "5648b4534bdc2d3d1c8b4580"
-        ]
-      },
-      "5648b4534bdc2d3d1c8b4580": {
-        "mod_foregrip": [
-          "5c1bc5612e221602b5429350"
-        ],
-        "mod_scope": [
-          "591c4efa86f7741030027726"
-        ],
-        "mod_tactical_002": [
-          "560d657b4bdc2da74d8b4572"
+        "soft_armor_right": [
+          "6570f79c4c65ab77a6015121"
         ]
       },
       "5d5d87f786f77427997cfaef": {
@@ -450,47 +770,96 @@
       "TacticalVest": [
         "55d480c04bdc2d1d4e8b456a",
         "5710c24ad2720bc3458b45a3",
-        "5448be9a4bdc2dfd2f8b456a",
         "599860ac86f77436b225ed1a",
+        "5a01c29586f77474660c694c",
+        "5448be9a4bdc2dfd2f8b456a",
         "5aaa4194e5b5b055d06310a5",
+        "5ac66bea5acfc43b321d4aec",
+        "64b9e265c94d0d15c5027e35",
+        "57616a9e2459773c7a400234",
+        "57d1519e24597714373db79d",
+        "59d625f086f774661516605d",
+        "656fa0fb498d1b7e3e071d9c",
+        "65730c0e292ecadbfa09ad49",
+        "65730c2213a2f660f60bea96",
+        "65730c2b292ecadbfa09ad50",
+        "65730c35292ecadbfa09ad54",
+        "656fa25e94b480b8a500c0e0",
+        "6570f6e774d84423df065f21",
+        "6570f71dd67d0309980a7af8",
+        "6570f74774d84423df065f25",
+        "6570f79c4c65ab77a6015121",
         "656f9fa0498d1b7e3e071d98",
         "6570e5100b57c03ec90b970a",
         "6570e479a6560e4ee50c2b02",
         "6570e5674cc0d2ab1e05edbb",
-        "6570e59b0b57c03ec90b970e",
-        "5a01c29586f77474660c694c"
+        "6570e59b0b57c03ec90b970e"
       ],
       "Pockets": [
-        "576a5ed62459771e9c2096cb",
+        "5448c12b4bdc2d02308b456f",
         "590c678286f77426c9660122",
         "544fb3f34bdc2d03748b456a",
-        "5448c12b4bdc2d02308b456f"
+        "602286df23506e50807090c6",
+        "5a17fb03fcdbcbcae668728f",
+        "576a5ed62459771e9c2096cb"
       ],
       "Backpack": [
-        "544fb37f4bdc2dee738b4567",
+        "5ed515ece452db0eb56fc028",
+        "57347d7224597744596b4e72",
+        "5af0454c86f7746bf20992e8",
         "57513f07245977207e26a311",
+        "544fb37f4bdc2dee738b4567",
+        "544fb25a4bdc2dfb738b4567",
+        "5448fee04bdc2dbc018b4567",
+        "575062b524597720a31c09a1",
+        "590c5d4b86f774784e1b9c45",
+        "57514643245977207f2c2d09",
+        "57505f6224597709a92585a9",
+        "5751487e245977207e26a315",
+        "5ed515e03a40a50460332579",
         "5c0e530286f7747fa1419862",
         "5d02778e86f774203e7dedbe"
       ],
       "SecuredContainer": [
-        "56dff2ced2720bb4668b4567",
-        "56d59d3ad2720bdb418b4577",
         "56dfef82d2720bbd668b4567",
         "573719762459775a626ccbc1",
-        "5656d7c34bdc2d9d198b4587"
+        "56d59d3ad2720bdb418b4577",
+        "5656d7c34bdc2d9d198b4587",
+        "59e4cf5286f7741778269d8a",
+        "56dff2ced2720bb4668b4567",
+        "5d6e689ca4b9361bc8618956",
+        "573719df2459775a626ccbc2",
+        "5d6e68e6a4b9361c140bcfe0",
+        "56dff061d2720bb5668b4567"
       ],
       "SpecialLoot": []
     }
   },
   "firstName": [
+    "Татьянка",
+    "Стрелок",
+    "Козырек",
+    "Бегемотик",
+    "Арсенал",
     "Слонолюб",
     "Крот",
+    "Служебка",
+    "Омон",
+    "Старший",
+    "Главдурь",
+    "Сержант",
+    "Вася",
+    "Басяк",
+    "Пэпс",
+    "Висяк",
     "Старлей",
     "Куча",
-    "Гиббон",
-    "Стрелок"
+    "Гиббон"
   ],
-  "lastName": [],
+  "lastName": [
+    "брат",
+    "Десантник"
+  ],
   "difficulty": {
     "easy": {
       "Lay": {
@@ -2575,14 +2944,14 @@
   },
   "chances": {
     "equipment": {
-      "Headwear": 66,
-      "Earpiece": 0,
-      "FaceCover": 33,
-      "ArmorVest": 83,
-      "Eyewear": 33,
+      "Headwear": 57,
+      "Earpiece": 23,
+      "FaceCover": 42,
+      "ArmorVest": 84,
+      "Eyewear": 30,
       "ArmBand": 0,
       "TacticalVest": 100,
-      "Backpack": 100,
+      "Backpack": 92,
       "FirstPrimaryWeapon": 100,
       "SecondPrimaryWeapon": 0,
       "Holster": 100,
@@ -2591,27 +2960,32 @@
       "SecuredContainer": 100
     },
     "mods": {
-      "mod_stock": 58,
-      "mod_charge": 0,
-      "mod_magazine": 100,
-      "mod_muzzle": 100,
-      "mod_reciever": 100,
-      "mod_mount_000": 0,
-      "mod_foregrip": 100,
-      "mod_tactical_000": 100,
-      "mod_tactical_001": 100,
-      "mod_scope": 66,
-      "mod_tactical": 50,
-      "mod_stock_000": 0,
-      "mod_mount": 0,
-      "mod_equipment": 0,
-      "Front_plate": 100,
-      "Back_plate": 100,
-      "Left_side_plate": 66,
-      "Right_side_plate": 66,
-      "mod_sight_rear": 60,
       "mod_launcher": 0,
-      "mod_tactical_002": 100
+      "mod_muzzle": 100,
+      "mod_reciever": 92,
+      "mod_sight_rear": 65,
+      "mod_stock": 54,
+      "mod_magazine": 100,
+      "mod_mount_000": 0,
+      "mod_charge": 0,
+      "mod_mount": 5,
+      "mod_foregrip": 94,
+      "mod_tactical": 34,
+      "mod_equipment": 0,
+      "front_plate": 100,
+      "back_plate": 100,
+      "left_side_plate": 50,
+      "right_side_plate": 50,
+      "mod_scope": 84,
+      "mod_sight_front": 84,
+      "mod_tactical_002": 60,
+      "mod_tactical_000": 71,
+      "mod_tactical_001": 100,
+      "mod_stock_000": 0,
+      "mod_tactical_003": 0,
+      "mod_tactical_004": 0,
+      "mod_equipment_000": 100,
+      "mod_nvg": 0
     }
   },
   "generation": {
