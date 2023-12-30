@@ -13,19 +13,14 @@
       "5d5f8ba486f77431254e7fd2"
     ],
     "voice": [
-      "Scav_2",
-      "Scav_4",
-      "Scav_1",
-      "Scav_5",
-      "Scav_3",
-      "Scav_6"
+      "Boss_Sturman"
     ]
   },
   "chances": {
     "equipment": {
       "ArmBand": 0,
       "ArmorVest": 0,
-      "Backpack": 93,
+      "Backpack": 100,
       "Earpiece": 0,
       "Eyewear": 0,
       "FaceCover": 0,
