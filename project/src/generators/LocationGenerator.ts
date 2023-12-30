@@ -1066,7 +1066,7 @@ export class LocationGenerator
             // Replace existing magazine with above array
             items.splice(items.indexOf(items[0]), 1, ...magazineWithCartridges);
         }
-        else if (this.itemHelper.isOfBaseclasses(chosenTpl, [BaseClasses.VEST, BaseClasses.ARMOR]))
+        else if (this.itemHelper.isOfBaseclasses(chosenTpl, [BaseClasses.VEST, BaseClasses.ARMOR, BaseClasses.HEADWEAR]))
         {
             if (itemTemplate._props.Slots?.length > 0)
             {
