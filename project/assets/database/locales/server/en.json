@@ -42,7 +42,7 @@
 	"bot-unable_to_get_bot_fallback_to_assault": "Unable to find bot: %s JSON, using assault bot as fallback",
 	"bot-weapon_contains_invalid_item": "Required slot '{{modSlot}}' on {{weaponTpl}} has an invalid item: {{modName}}",
 	"bot-weapon_generated_incorrect_using_default": "Weapon %s was generated incorrectly, falling back to weapon preset see error above",
-	"bot-weapon_missing_magazine_or_chamber": "Weapon with tpl: %s has no magazine or chamber",
+	"bot-weapon_missing_magazine_or_chamber": "Weapon with tpl: {{weaponId}} has no magazine or chamber - {{botRole}}",
 	"bot-weapon_missing_mod_slot": "Slot: {{modSlot}}' does not exist for weapon: {{weaponId}} {{weaponName}} on {{botRole}}",
 	"bot-weapons_required_slot_missing_item": "Required slot '{{modSlot}}' on {{modName}} {{slotId}} was empty on {{botRole}}",
 	"bot-item_missing_props_property": "Item {{itemTpl}} {{name}} is missing a _props property",

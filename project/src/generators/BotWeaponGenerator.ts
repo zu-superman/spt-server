@@ -568,13 +568,13 @@ export class BotWeaponGenerator
             {
                 // Shouldn't happen
                 this.logger.warning(
-                    this.localisationService.getText("bot-weapon_missing_magazine_or_chamber", weaponTemplate._id),
+                    this.localisationService.getText("bot-weapon_missing_magazine_or_chamber", {weaponId: weaponTemplate._id, botRole: botRole}),
                 );
             }
 
             const defaultMagTplId = this.botWeaponGeneratorHelper.getWeaponsDefaultMagazineTpl(weaponTemplate);
             this.logger.debug(
-                `[${botRole}] Unable to find magazine for weapon ${weaponTemplate._id} ${weaponTemplate._name}, using mag template default ${defaultMagTplId}.`,
+                `[${botRole}] Unable to find magazine for weapon: ${weaponTemplate._id} ${weaponTemplate._name}, using mag template default: ${defaultMagTplId}.`,
             );
 
             return defaultMagTplId;
