@@ -303,6 +303,7 @@
         "pmcbot": 4,
         "sectantpriest": 4,
         "sectantwarrior": 4,
+		"shooterbtr": 1,
         "test": 4
     },
     "chanceAssaultScavHasPlayerScavName": 10,
@@ -511,6 +512,7 @@
             "forceStock": true
         },
         "bosstest": {},
+        "shooterbtr": {},
         "followerbully": {
             "faceShieldIsActiveChancePercent": 100,
             "lightIsActiveDayChancePercent": 25,
