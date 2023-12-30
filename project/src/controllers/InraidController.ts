@@ -316,11 +316,12 @@ export class InraidController
      */
     protected profileHasConditionCounters(profile: IPmcData): boolean
     {
-        if (!profile.ConditionCounters?.Counters)
+        if (!profile.TaskConditionCounters?.Counters)
         {
             return false;
         }
-        return profile.ConditionCounters.Counters.length > 0;
+
+        return Object.keys(profile.TaskConditionCounters).length > 0;
     }
 
     /**
@@ -364,16 +365,16 @@ export class InraidController
         }
 
         // Loop over all scav counters and add into pmc profile
-        for (const scavCounter of scavProfile.ConditionCounters.Counters)
+        for (const scavCounter of Object.values(scavProfile.TaskConditionCounters))
         {
             this.logger.debug(
-                `Processing counter: ${scavCounter.id} value:${scavCounter.value} quest:${scavCounter.qid}`,
+                `Processing counter: ${scavCounter.id} value: ${scavCounter.value} quest: ${scavCounter.sourceId}`,
             );
-            const counterInPmcProfile = pmcProfile.ConditionCounters.Counters.find((x) => x.id === scavCounter.id);
+            const counterInPmcProfile = pmcProfile.TaskConditionCounters.Counters[scavCounter.id];
             if (!counterInPmcProfile)
             {
                 // Doesn't exist yet, push it straight in
-                pmcProfile.ConditionCounters.Counters.push(scavCounter);
+                pmcProfile.TaskConditionCounters[scavCounter.id] = scavCounter;
                 continue;
             }
 
@@ -384,7 +385,7 @@ export class InraidController
             // Only adjust counter value if its changed
             if (counterInPmcProfile.value !== scavCounter.value)
             {
-                this.logger.debug(`OVERWRITING with values: ${scavCounter.value} quest: ${scavCounter.qid}`);
+                this.logger.debug(`OVERWRITING with values: ${scavCounter.value} quest: ${scavCounter.sourceId}`);
                 counterInPmcProfile.value = scavCounter.value;
             }
         }

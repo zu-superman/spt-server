@@ -20,7 +20,6 @@ export interface IBotBase
     Stats: Stats;
     Encyclopedia: Record<string, boolean>;
     TaskConditionCounters: Record<string, ITaskConditionCounter>;
-    ConditionCounters: ConditionCounters;
     InsuredItems: InsuredItem[];
     Hideout: Hideout;
     Quests: IQuestStatus[];

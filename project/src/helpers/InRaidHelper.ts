@@ -150,7 +150,7 @@ export class InRaidHelper
         profileData.Skills = saveProgressRequest.profile.Skills;
         profileData.Stats.Eft = saveProgressRequest.profile.Stats.Eft;
         profileData.Encyclopedia = saveProgressRequest.profile.Encyclopedia;
-        profileData.ConditionCounters = saveProgressRequest.profile.ConditionCounters;
+        profileData.TaskConditionCounters = saveProgressRequest.profile.TaskConditionCounters;
 
         this.validateTaskConditionCounters(saveProgressRequest, profileData);
 
@@ -196,7 +196,7 @@ export class InRaidHelper
             const matchingPreRaidCounter = profileData.TaskConditionCounters[backendCounterKey];
             if (!matchingPreRaidCounter)
             {
-                this.logger.error(`Backendcounter: ${backendCounterKey} cannot be found in pre-raid data`);
+                this.logger.error(`TaskConditionCounters: ${backendCounterKey} cannot be found in pre-raid data`);
 
                 continue;
             }
@@ -204,7 +204,7 @@ export class InRaidHelper
             if (matchingPreRaidCounter.value !== postRaidValue)
             {
                 this.logger.error(
-                    `Backendcounter: ${backendCounterKey} value is different post raid, old: ${matchingPreRaidCounter.value} new: ${postRaidValue}`
+                    `TaskConditionCounters: ${backendCounterKey} value is different post raid, old: ${matchingPreRaidCounter.value} new: ${postRaidValue}`
                 );
             }
         }

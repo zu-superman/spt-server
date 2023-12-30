@@ -465,9 +465,16 @@ export class ProfileFixerService
      */
     public removeDanglingConditionCounters(pmcProfile: IPmcData): void
     {
-        if (pmcProfile.ConditionCounters)
+        if (pmcProfile.TaskConditionCounters)
         {
-            pmcProfile.ConditionCounters.Counters = pmcProfile.ConditionCounters.Counters.filter((c) => c.qid !== null);
+            for (const counterId in pmcProfile.TaskConditionCounters)
+            {
+                const counter = pmcProfile.TaskConditionCounters[counterId];
+                if (!counter.sourceId)
+                {
+                    delete pmcProfile.TaskConditionCounters[counterId];
+                }
+            }
         }
     }
 
