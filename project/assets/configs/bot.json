@@ -513,6 +513,8 @@
         },
         "bosstest": {},
         "shooterbtr": {},
+        "followerkolontayassault": {},
+        "followerKolontaySecurity": {},
         "followerbully": {
             "faceShieldIsActiveChancePercent": 100,
             "lightIsActiveDayChancePercent": 25,
