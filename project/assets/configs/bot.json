@@ -10,6 +10,7 @@
         "bossKnight": 5,
         "bossZryachiy": 5,
         "bossTest": 10,
+		"bossKolontay": 5,
         "cursedAssault": 50,
         "followerBully": 5,
         "followerGluharAssault": 5,
@@ -38,7 +39,6 @@
         "bossBoarSniper": 5,
 		"followerBoarClose1": 10,
 		"followerBoarClose2": 10,
-		"bossKolontay": 5,
 		"followerKolontayAssault": 10,
 		"followerKolontaySecurity": 10,
 		"shooterBTR": 10,
@@ -295,10 +295,10 @@
         "followertest": 4,
         "followerzryachiy": 4,
         "followerboar": 4,
-		"followerBoarClose1": 4,
-		"followerBoarClose2": 4,
-		"followerKolontayAssault": 4,
-		"followerKolontaySecurity": 4,
+		"followerboarclose1": 4,
+		"followerboarclose2": 4,
+		"followerkolontayassault": 4,
+		"followerkolontaysecurity": 4,
         "gifter": 4,
         "pmcbot": 4,
         "sectantpriest": 4,
@@ -330,6 +330,7 @@
         "bosstagilla": {},
         "bossknight": {},
         "bosszryachiy": {},
+        "bossjolontay": {},
         "bosstest": {},
         "followerbully": {},
         "followergluharassault": {},
@@ -344,6 +345,10 @@
         "followerzryachiy": {},
         "followertest": {},
         "followerboar": {},
+		"followerboarclose1": {},
+		"followerboarclose2": {},
+		"followerkolontayassault": {},
+		"followerkolontaysecurity": {},
         "sectantpriest": {},
         "sectantwarrior": {},
         "test": {},
@@ -376,7 +381,8 @@
             "5d650c3e815116009f6201d2": 2,
             "5448f39d4bdc2d0a728b4568": 2,
             "543be6564bdc2df4348b4568": 1
-        }
+        },
+		"shooterbtr": {}
     },
     "equipment": {
         "assault": {
@@ -513,8 +519,18 @@
         },
         "bosstest": {},
         "shooterbtr": {},
-        "followerkolontayassault": {},
-        "followerkolontaysecurity": {},
+        "followerkolontayassault": {
+			"faceShieldIsActiveChancePercent": 100,
+            "lightIsActiveDayChancePercent": 25,
+            "lightIsActiveNightChancePercent": 75,
+            "laserIsActiveChancePercent": 75
+		},
+        "followerkolontaysecurity": {
+			"faceShieldIsActiveChancePercent": 100,
+            "lightIsActiveDayChancePercent": 25,
+            "lightIsActiveNightChancePercent": 75,
+            "laserIsActiveChancePercent": 75
+		},
         "followerbully": {
             "faceShieldIsActiveChancePercent": 100,
             "lightIsActiveDayChancePercent": 25,

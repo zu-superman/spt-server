@@ -2971,6 +2971,26 @@
       ]
     },
     "mods": {
+		"5df8a2ca86f7740bfe6df777": {
+        "Soft_armor_front": ["656fd7c32668ef0402028fb9"],
+        "Soft_armor_back": ["656fd89bf5a9631d4e042575"]
+    },
+		"5c0e53c886f7747fa54205c7": {
+        "front_plate": ["656f603f94b480b8a500c0d6", "656f611f94b480b8a500c0db", "656f57dc27aed95beb08f628", "656f63c027aed95beb08f62c"],
+        "back_plate": ["654a4a964b446df1ad03f192", "656efaf54772930db4031ff5", "656efd66034e8e01c407f35c"],
+        "soft_armor_front": ["654a8b0b0337d53f9102c2ae"],
+        "soft_armor_back": ["654a8976f414fcea4004d78b"],
+        "soft_armor_left": ["654a8b3df414fcea4004d78f"],
+        "soft_armor_right": ["654a8b80f414fcea4004d797"],
+        "Collar": ["654a8ae00337d53f9102c2aa"],
+        "Groin": ["654a8bc5f414fcea4004d79b"]
+    },
+		"5d5d646386f7742797261fd9": {
+        "Soft_armor_front": ["65764e1e2bc38ef78e076489"],
+        "Soft_armor_back": ["65764fae2bc38ef78e07648d"],
+        "Groin": ["6576504b526e320fbe035783"],
+        "Groin_back": ["6576500f526e320fbe03577f"]
+    },
       "54491c4f4bdc2db1078b4568": {
         "mod_barrel": [
           "55d4491a4bdc2d882f8b456e"
