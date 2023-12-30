@@ -13,6 +13,8 @@ import { IMiniProfile } from "@spt-aki/models/eft/launcher/IMiniProfile";
 import { GetProfileStatusResponseData } from "@spt-aki/models/eft/profile/GetProfileStatusResponseData";
 import { IAkiProfile, Inraid, Vitality } from "@spt-aki/models/eft/profile/IAkiProfile";
 import { ICompletedAchievementsResponse } from "@spt-aki/models/eft/profile/ICompletedAchievementsResponse";
+import { IGetOtherProfileRequest } from "@spt-aki/models/eft/profile/IGetOtherProfileRequest";
+import { IGetOtherProfileResponse } from "@spt-aki/models/eft/profile/IGetOtherProfileResponse";
 import { IProfileChangeNicknameRequestData } from "@spt-aki/models/eft/profile/IProfileChangeNicknameRequestData";
 import { IProfileChangeVoiceRequestData } from "@spt-aki/models/eft/profile/IProfileChangeVoiceRequestData";
 import { IProfileCreateRequestData } from "@spt-aki/models/eft/profile/IProfileCreateRequestData";
@@ -393,5 +395,25 @@ export class ProfileController
         const profile = this.profileHelper.getFullProfile(sessionId);
 
         return {elements: profile.achievements};
+    }
+
+    public getOtherProfile(sessionId: string, request: IGetOtherProfileRequest): IGetOtherProfileResponse
+    {
+        const player = this.profileHelper.getFullProfile(sessionId);
+        const playerPmc = player.characters.pmc;
+        
+        // return player for now
+        return {
+            id: playerPmc._id,
+            aid: playerPmc.aid,
+            info: playerPmc.Info,
+            customization: playerPmc.Customization,
+            skills: playerPmc.Skills,
+            equipment: playerPmc.Inventory,
+            achievements: playerPmc.Achievements,
+            favoriteItems: playerPmc.Inventory.favoriteItems,
+            pmcStats: playerPmc.Stats,
+            scavStats: player.characters.scav.Stats
+        };
     }
 }

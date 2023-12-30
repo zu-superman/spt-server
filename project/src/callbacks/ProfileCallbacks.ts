@@ -8,6 +8,8 @@ import { INullResponseData } from "@spt-aki/models/eft/httpResponse/INullRespons
 import { IGetMiniProfileRequestData } from "@spt-aki/models/eft/launcher/IGetMiniProfileRequestData";
 import { GetProfileStatusResponseData } from "@spt-aki/models/eft/profile/GetProfileStatusResponseData";
 import { ICreateProfileResponse } from "@spt-aki/models/eft/profile/ICreateProfileResponse";
+import { IGetOtherProfileRequest } from "@spt-aki/models/eft/profile/IGetOtherProfileRequest";
+import { IGetOtherProfileResponse } from "@spt-aki/models/eft/profile/IGetOtherProfileResponse";
 import { IGetProfileSettingsRequest } from "@spt-aki/models/eft/profile/IGetProfileSettingsRequest";
 import { IProfileChangeNicknameRequestData } from "@spt-aki/models/eft/profile/IProfileChangeNicknameRequestData";
 import { IProfileChangeVoiceRequestData } from "@spt-aki/models/eft/profile/IProfileChangeVoiceRequestData";
@@ -147,11 +149,11 @@ export class ProfileCallbacks
      */
     public getOtherProfile(
         url: string,
-        info: IEmptyRequestData,
+        request: IGetOtherProfileRequest,
         sessionID: string,
-    ): any
+    ): IGetBodyResponseData<IGetOtherProfileResponse>
     {
-        throw new Error("Not implemented");
+        return this.httpResponse.getBody(this.profileController.getOtherProfile(sessionID, request));
     }
 
     /**
