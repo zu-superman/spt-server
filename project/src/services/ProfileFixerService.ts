@@ -59,7 +59,7 @@ export class ProfileFixerService
     public checkForAndFixPmcProfileIssues(pmcProfile: IPmcData): void
     {
         this.removeDanglingConditionCounters(pmcProfile);
-        this.removeDanglingBackendCounters(pmcProfile);
+        this.removeDanglingTaskConditionCounters(pmcProfile);
         this.addMissingRepeatableQuestsProperty(pmcProfile);
         this.addLighthouseKeeperIfMissing(pmcProfile);
         this.addUnlockedInfoObjectIfMissing(pmcProfile);
@@ -502,18 +502,18 @@ export class ProfileFixerService
         }
     }
 
-    protected removeDanglingBackendCounters(pmcProfile: IPmcData): void
+    protected removeDanglingTaskConditionCounters(pmcProfile: IPmcData): void
     {
-        if (pmcProfile.BackendCounters)
+        if (pmcProfile.TaskConditionCounters)
         {
             const counterKeysToRemove: string[] = [];
             const activeQuests = this.getActiveRepeatableQuests(pmcProfile.RepeatableQuests);
-            for (const [key, backendCounter] of Object.entries(pmcProfile.BackendCounters))
+            for (const [key, backendCounter] of Object.entries(pmcProfile.TaskConditionCounters))
             {
                 if (pmcProfile.RepeatableQuests && activeQuests.length > 0)
                 {
-                    const existsInActiveRepeatableQuests = activeQuests.some((x) => x._id === backendCounter.qid);
-                    const existsInQuests = pmcProfile.Quests.some((q) => q.qid === backendCounter.qid);
+                    const existsInActiveRepeatableQuests = activeQuests.some((x) => x._id === backendCounter.sourceId);
+                    const existsInQuests = pmcProfile.Quests.some((q) => q.qid === backendCounter.sourceId);
 
                     // if BackendCounter's quest is neither in activeQuests nor Quests it's stale
                     if (!(existsInActiveRepeatableQuests || existsInQuests))
@@ -526,7 +526,7 @@ export class ProfileFixerService
             for (const counterKeyToRemove of counterKeysToRemove)
             {
                 this.logger.debug(`Removed ${counterKeyToRemove} backend count object`);
-                delete pmcProfile.BackendCounters[counterKeyToRemove];
+                delete pmcProfile.TaskConditionCounters[counterKeyToRemove];
             }
         }
     }

@@ -152,7 +152,7 @@ export class InRaidHelper
         profileData.Encyclopedia = saveProgressRequest.profile.Encyclopedia;
         profileData.ConditionCounters = saveProgressRequest.profile.ConditionCounters;
 
-        this.validateBackendCounters(saveProgressRequest, profileData);
+        this.validateTaskConditionCounters(saveProgressRequest, profileData);
 
         profileData.SurvivorClass = saveProgressRequest.profile.SurvivorClass;
 
@@ -176,24 +176,24 @@ export class InRaidHelper
     }
 
     /** Check counters are correct in profile */
-    protected validateBackendCounters(saveProgressRequest: ISaveProgressRequestData, profileData: IPmcData): void
+    protected validateTaskConditionCounters(saveProgressRequest: ISaveProgressRequestData, profileData: IPmcData): void
     {
-        for (const backendCounterKey in saveProgressRequest.profile.BackendCounters)
+        for (const backendCounterKey in saveProgressRequest.profile.TaskConditionCounters)
         {
             // Skip counters with no id
-            if (!saveProgressRequest.profile.BackendCounters[backendCounterKey].id)
+            if (!saveProgressRequest.profile.TaskConditionCounters[backendCounterKey].id)
             {
                 continue;
             }
 
-            const postRaidValue = saveProgressRequest.profile.BackendCounters[backendCounterKey]?.value;
+            const postRaidValue = saveProgressRequest.profile.TaskConditionCounters[backendCounterKey]?.value;
             if (typeof postRaidValue === "undefined")
             {
                 // No value, skip
                 continue;
             }
 
-            const matchingPreRaidCounter = profileData.BackendCounters[backendCounterKey];
+            const matchingPreRaidCounter = profileData.TaskConditionCounters[backendCounterKey];
             if (!matchingPreRaidCounter)
             {
                 this.logger.error(`Backendcounter: ${backendCounterKey} cannot be found in pre-raid data`);

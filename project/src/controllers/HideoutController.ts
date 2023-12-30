@@ -47,7 +47,7 @@ import { TimeUtil } from "@spt-aki/utils/TimeUtil";
 @injectable()
 export class HideoutController
 {
-    protected static nameBackendCountersCrafting = "CounterHoursCrafting";
+    protected static nameTaskConditionCountersCrafting = "CounterHoursCrafting";
     protected hideoutConfig: IHideoutConfig;
 
     constructor(
@@ -770,15 +770,17 @@ export class HideoutController
         // Variables for managemnet of skill
         let craftingExpAmount = 0;
 
-        // ? move the logic of BackendCounters in new method?
-        let counterHoursCrafting = pmcData.BackendCounters[HideoutController.nameBackendCountersCrafting];
+        // ? move the logic of TaskConditionCounters in new method?
+        let counterHoursCrafting = pmcData.TaskConditionCounters[HideoutController.nameTaskConditionCountersCrafting];
         if (!counterHoursCrafting)
         {
-            pmcData.BackendCounters[HideoutController.nameBackendCountersCrafting] = {
-                id: HideoutController.nameBackendCountersCrafting,
+            pmcData.TaskConditionCounters[HideoutController.nameTaskConditionCountersCrafting] = {
+                id: recipe._id,
+                type: HideoutController.nameTaskConditionCountersCrafting,
+                sourceId: "CounterCrafting",
                 value: 0,
             };
-            counterHoursCrafting = pmcData.BackendCounters[HideoutController.nameBackendCountersCrafting];
+            counterHoursCrafting = pmcData.TaskConditionCounters[HideoutController.nameTaskConditionCountersCrafting];
         }
         let hoursCrafting = counterHoursCrafting.value;
 

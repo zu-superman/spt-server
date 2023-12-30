@@ -21,7 +21,6 @@ export interface IBotBase
     Encyclopedia: Record<string, boolean>;
     TaskConditionCounters: Record<string, ITaskConditionCounter>;
     ConditionCounters: ConditionCounters;
-    BackendCounters: Record<string, BackendCounter>;
     InsuredItems: InsuredItem[];
     Hideout: Hideout;
     Quests: IQuestStatus[];
@@ -46,6 +45,7 @@ export interface ITaskConditionCounter
     id: string
     type: string
     value: number
+    /** Quest id */
     sourceId: string
 }
 

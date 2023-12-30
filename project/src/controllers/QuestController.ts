@@ -772,8 +772,8 @@ export class QuestController
                 isItemHandoverQuest = condition.conditionType === handoverQuestTypes[0];
                 handoverRequirements = condition;
 
-                const profileCounter = (handoverQuestRequest.conditionId in pmcData.BackendCounters)
-                    ? pmcData.BackendCounters[handoverQuestRequest.conditionId].value
+                const profileCounter = (handoverQuestRequest.conditionId in pmcData.TaskConditionCounters)
+                    ? pmcData.TaskConditionCounters[handoverQuestRequest.conditionId].value
                     : 0;
                 handedInCount -= profileCounter;
 
@@ -856,7 +856,7 @@ export class QuestController
             }
         }
 
-        this.updateProfileBackendCounterValue(
+        this.updateProfileTaskConditionCounterValue(
             pmcData,
             handoverQuestRequest.conditionId,
             handoverQuestRequest.qid,
@@ -919,19 +919,24 @@ export class QuestController
      * @param questId quest id counter is associated with
      * @param counterValue value to increment the backend counter with
      */
-    protected updateProfileBackendCounterValue(
+    protected updateProfileTaskConditionCounterValue(
         pmcData: IPmcData,
         conditionId: string,
         questId: string,
         counterValue: number,
     ): void
     {
-        if (pmcData.BackendCounters[conditionId] !== undefined)
+        if (pmcData.TaskConditionCounters[conditionId] !== undefined)
         {
-            pmcData.BackendCounters[conditionId].value += counterValue;
+            pmcData.TaskConditionCounters[conditionId].value += counterValue;
+
             return;
         }
 
-        pmcData.BackendCounters[conditionId] = { id: conditionId, qid: questId, value: counterValue };
+        pmcData.TaskConditionCounters[conditionId] = {
+            id: conditionId,
+            sourceId: questId,
+            type: "HandoverItem",
+            value: counterValue };
     }
 }

@@ -3,7 +3,7 @@
         "descriptionLocaleKey": "launcher-profile-edgeofdarkness",
         "bear": {
             "character": {
-                "BackendCounters": {},
+                "TaskConditionCounters": {},
                 "Bonuses": [{
                         "id": "64f5b9e5fa34f11b380756c0",
                         "templateId": "566abbc34bdc2d92178b4576",
@@ -4290,7 +4290,7 @@
         },
         "usec": {
             "character": {
-                "BackendCounters": {},
+                "TaskConditionCounters": {},
                 "Bonuses": [{
                         "id": "64f5b9e5fa34f11b380756c0",
                         "templateId": "566abbc34bdc2d92178b4576",
@@ -8714,7 +8714,7 @@
         "descriptionLocaleKey": "launcher-profile_leftbehind",
         "bear": {
             "character": {
-                "BackendCounters": {},
+                "TaskConditionCounters": {},
                 "Bonuses": [{
                         "id": "64f5b9e5fa34f11b380756c0",
                         "templateId": "566abbc34bdc2d92178b4576",
@@ -11892,7 +11892,7 @@
         },
         "usec": {
             "character": {
-                "BackendCounters": {},
+                "TaskConditionCounters": {},
                 "Bonuses": [{
                         "id": "64f5b9e5fa34f11b380756c0",
                         "templateId": "566abbc34bdc2d92178b4576",
@@ -15175,7 +15175,7 @@
         "descriptionLocaleKey": "launcher-profile_preparetoescape",
         "bear": {
             "character": {
-                "BackendCounters": {},
+                "TaskConditionCounters": {},
                 "Bonuses": [{
                         "id": "64f5b9e5fa34f11b380756c0",
                         "templateId": "566abbc34bdc2d92178b4576",
@@ -18811,7 +18811,7 @@
         },
         "usec": {
             "character": {
-                "BackendCounters": {},
+                "TaskConditionCounters": {},
                 "Bonuses": [{
                         "id": "64f5b9e5fa34f11b380756c0",
                         "templateId": "566abbc34bdc2d92178b4576",
@@ -22650,7 +22650,7 @@
         "descriptionLocaleKey": "launcher-profile_sptdeveloper",
         "bear": {
             "character": {
-                "BackendCounters": {},
+                "TaskConditionCounters": {},
                 "Bonuses": [{
                         "id": "64f5b9e5fa34f11b380756c0",
                         "templateId": "566abbc34bdc2d92178b4576",
@@ -25682,7 +25682,7 @@
         },
         "usec": {
             "character": {
-                "BackendCounters": {},
+                "TaskConditionCounters": {},
                 "Bonuses": [{
                         "id": "64f5b9e5fa34f11b380756c0",
                         "templateId": "566abbc34bdc2d92178b4576",
@@ -28683,7 +28683,7 @@
         "descriptionLocaleKey": "launcher-profile_spteasystart",
         "bear": {
             "character": {
-                "BackendCounters": {},
+                "TaskConditionCounters": {},
                 "Bonuses": [{
                         "id": "64f5b9e5fa34f11b380756c0",
                         "templateId": "566abbc34bdc2d92178b4576",
@@ -32024,7 +32024,7 @@
         },
         "usec": {
             "character": {
-                "BackendCounters": {},
+                "TaskConditionCounters": {},
                 "Bonuses": [{
                         "id": "64f5b9e5fa34f11b380756c0",
                         "templateId": "566abbc34bdc2d92178b4576",
@@ -35368,7 +35368,7 @@
         "descriptionLocaleKey": "launcher-profile_sptzerotohero",
         "bear": {
             "character": {
-                "BackendCounters": {},
+                "TaskConditionCounters": {},
                 "Bonuses": [{
                         "id": "64f5b9e5fa34f11b380756c0",
                         "templateId": "566abbc34bdc2d92178b4576",
@@ -36268,7 +36268,7 @@
         },
         "usec": {
             "character": {
-                "BackendCounters": {},
+                "TaskConditionCounters": {},
                 "Bonuses": [{
                         "id": "64f5b9e5fa34f11b380756c0",
                         "templateId": "566abbc34bdc2d92178b4576",
@@ -37182,7 +37182,7 @@
         "descriptionLocaleKey": "launcher-profile_standard",
         "bear": {
             "character": {
-                "BackendCounters": {},
+                "TaskConditionCounters": {},
                 "Bonuses": [{
                         "id": "64f5b9e5fa34f11b380756c0",
                         "templateId": "566abbc34bdc2d92178b4576",
@@ -39801,7 +39801,7 @@
         },
         "usec": {
             "character": {
-                "BackendCounters": {},
+                "TaskConditionCounters": {},
                 "Bonuses": [{
                         "id": "64f5b9e5fa34f11b380756c0",
                         "templateId": "566abbc34bdc2d92178b4576",
