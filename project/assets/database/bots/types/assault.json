@@ -2714,6 +2714,7 @@
         "62a5c41e8ec41a51b34739c3": 121
       },
       "FirstPrimaryWeapon": {
+		 "644674a13d52156624001fbc": 250,
         "5447a9cd4bdc2dbd208b4567": 22,
         "54491c4f4bdc2db1078b4568": 2513,
         "5580223e4bdc2d1c128b457f": 850,
@@ -4658,6 +4659,16 @@
       ]
     },
     "mods": {
+	"644674a13d52156624001fbc": {
+			"mod_barrel": ["645122f6d4928d46d30be3ff"],
+			"mod_magazine": ["6450ec2e7da7133e5a09ca96"],
+			"mod_pistol_grip": ["6450f21a3d52156624001fcf"],
+			"mod_stock_000": ["6451167ad4928d46d30be3fd"]
+		},
+		"645122f6d4928d46d30be3ff": {
+			"mod_handguard": ["644675573d52156624001fc9"],
+			"mod_muzzle": ["64527a263d52156624001fd7"]
+		},
       "5447a9cd4bdc2dbd208b4567": {
         "mod_charge": [
           "6033749e88382f4fab3fd2c5",

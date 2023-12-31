@@ -36,6 +36,9 @@
       "TacticalVest": 100
     },
     "mods": {
+      "back_plate": 100,
+      "front_plate": 100,
+      "left_side_plate": 100,
       "mod_charge": 0,
       "mod_foregrip": 14,
       "mod_launcher": 0,
@@ -55,7 +58,8 @@
       "mod_stock_000": 100,
       "mod_stock_001": 100,
       "mod_tactical": 5,
-      "mod_tactical_000": 9
+      "mod_tactical_000": 9,
+      "right_side_plate": 100
     }
   },
   "difficulty": {
@@ -3025,6 +3029,9 @@
         ]
       },
       "5afd7ded5acfc40017541f5e": {
+        "mod_mount": [
+          "653ed19d22e1ef3d9002c328"
+        ],
         "mod_pistol_grip": [
           "5afd7e445acfc4001637e35a"
         ],
@@ -3360,9 +3367,43 @@
           "5bc09a30d4351e00367fb7c8"
         ]
       },
+      "6038b4ca92ec1c3103795a0d": {
+        "Back_plate": [
+          "656fa76500d62bcd2e024080"
+        ],
+        "Front_plate": [
+          "656fa76500d62bcd2e024080"
+        ],
+        "Soft_armor_back": [
+          "6575e72660703324250610c7"
+        ],
+        "Soft_armor_front": [
+          "6575e71760703324250610c3"
+        ]
+      },
       "616554fe50224f204c1da2aa": {
         "mod_scope": [
           "61657230d92c473c770213d7"
+        ]
+      },
+      "61bc85697113f767765c7fe7": {
+        "Back_plate": [
+          "656fad8c498d1b7e3e071da0"
+        ],
+        "Front_plate": [
+          "656fad8c498d1b7e3e071da0"
+        ],
+        "Soft_armor_back": [
+          "6572fc8c9a866b80ab07eb5d"
+        ],
+        "Soft_armor_front": [
+          "6572fc809a866b80ab07eb59"
+        ],
+        "Soft_armor_left": [
+          "6572fc989a866b80ab07eb61"
+        ],
+        "soft_armor_right": [
+          "6572fca39a866b80ab07eb65"
         ]
       },
       "628b8d83717774443b15e248": {
@@ -3400,6 +3441,14 @@
         ],
         "mod_stock_000": [
           "628b9a40717774443b15e9f2"
+        ]
+      },
+      "628cd624459354321c4b7fa2": {
+        "Back_plate": [
+          "64afdcb83efdfea28601d041"
+        ],
+        "Front_plate": [
+          "64afdcb83efdfea28601d041"
         ]
       },
       "62e14904c2699c0ec93adc47": {
