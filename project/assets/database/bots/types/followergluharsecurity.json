@@ -2691,8 +2691,60 @@
         ]
       },
       "5aa7e4a4e5b5b000137b76f2": {
+        "Helmet_back": [
+          "657f92acada5fadd1f07a57e"
+        ],
+        "Helmet_ears": [
+          "657f92e7f4c82973640b2354"
+        ],
+        "Helmet_top": [
+          "657f925dada5fadd1f07a57a"
+        ],
         "mod_equipment": [
           "5aa7e3abe5b5b000171d064d"
+        ]
+      },
+      "5ab8dced86f774646209ec87": {
+        "Back_plate": [
+          "656fa25e94b480b8a500c0e0"
+        ],
+        "Front_plate": [
+          "656fa25e94b480b8a500c0e0"
+        ],
+        "Soft_armor_back": [
+          "6570f71dd67d0309980a7af8"
+        ],
+        "Soft_armor_front": [
+          "6570f6e774d84423df065f21"
+        ],
+        "Soft_armor_left": [
+          "6570f74774d84423df065f25"
+        ],
+        "soft_armor_right": [
+          "6570f79c4c65ab77a6015121"
+        ]
+      },
+      "5ab8e79e86f7742d8b372e78": {
+        "Back_plate": [
+          "65573fa5655447403702a816"
+        ],
+        "Collar": [
+          "657326bc5d3a3129fb05f36b"
+        ],
+        "Front_plate": [
+          "656f611f94b480b8a500c0db"
+        ],
+        "Soft_armor_back": [
+          "657326978c1cc6dcd9098b56"
+        ],
+        "Soft_armor_front": [
+          "65732688d9d89ff7ac0d9c4c"
+        ],
+        "Soft_armor_left": [
+          "657326a28c1cc6dcd9098b5a"
+        ],
+        "soft_armor_right": [
+          "657326b08c1cc6dcd9098b5e"
         ]
       },
       "5ac66d725acfc43b321d4b60": {
@@ -2846,6 +2898,151 @@
       "5e848d99865c0f329958c83b": {
         "mod_stock": [
           "5e848dc4e4dbc5266a4ec63d"
+        ]
+      },
+      "5f5f41476bdad616ad46d631": {
+        "Back_plate": [
+          "657b2797c3dbcb01d60c35ea"
+        ],
+        "Collar": [
+          "65731b666e709cddd001ec43"
+        ],
+        "Front_plate": [
+          "656f664200d62bcd2e024077"
+        ],
+        "Groin": [
+          "65731b716e709cddd001ec47"
+        ],
+        "Groin_back": [
+          "65731b6b6042b0f210020ef6"
+        ],
+        "Left_side_plate": [
+          "654a4f8bc721968a4404ef18"
+        ],
+        "Right_side_plate": [
+          "654a4f8bc721968a4404ef18"
+        ],
+        "Soft_armor_back": [
+          "65731b4fcea9255e2102360e"
+        ],
+        "Soft_armor_front": [
+          "65731b46cea9255e2102360a"
+        ],
+        "Soft_armor_left": [
+          "65731b576e709cddd001ec3f"
+        ],
+        "soft_armor_right": [
+          "65731b60ff6dc44a7d068c4a"
+        ]
+      },
+      "60a283193cb70855c43a381d": {
+        "Back_plate": [
+          "656fa61e94b480b8a500c0e8"
+        ],
+        "Collar": [
+          "6575d598b15fef3dd4051678"
+        ],
+        "Front_plate": [
+          "656fa61e94b480b8a500c0e8"
+        ],
+        "Groin": [
+          "6575d5a616c2762fba005820"
+        ],
+        "Left_side_plate": [
+          "64afdb577bb3bfe8fe03fd1d"
+        ],
+        "Right_side_plate": [
+          "64afdb577bb3bfe8fe03fd1d"
+        ],
+        "Soft_armor_back": [
+          "6575d56b16c2762fba005818"
+        ],
+        "Soft_armor_front": [
+          "6575d561b15fef3dd4051670"
+        ],
+        "Soft_armor_left": [
+          "6575d57a16c2762fba00581c"
+        ],
+        "soft_armor_right": [
+          "6575d589b15fef3dd4051674"
+        ]
+      },
+      "618a75c9a3884f56c957ca1b": {
+        "mod_scope": [
+          "618a75f0bd321d49084cd399"
+        ]
+      },
+      "61bca7cda0eae612383adf57": {
+        "Helmet_back": [
+          "657bbcffbbd440df880b2dd5"
+        ],
+        "Helmet_top": [
+          "657bbcc9a1c61ee0c3036327"
+        ]
+      },
+      "6513ef33e06849f06c0957ca": {
+        "mod_barrel": [
+          "6513eff1e06849f06c0957d4",
+          "65266fd43341ed9aa903dd56"
+        ],
+        "mod_handguard": [
+          "6513f05a94c72326990a3866"
+        ],
+        "mod_magazine": [
+          "6513f0a194c72326990a3868"
+        ],
+        "mod_sight_rear": [
+          "6513f153e63f29908d0ffaba"
+        ],
+        "mod_stock": [
+          "6513f1798cb24472490ee331"
+        ]
+      },
+      "6513eff1e06849f06c0957d4": {
+        "mod_bipod": [
+          "6513f037e06849f06c0957d7"
+        ],
+        "mod_muzzle": [
+          "6513f0f5e63f29908d0ffab8"
+        ]
+      },
+      "6513f1798cb24472490ee331": {
+        "mod_pistolgrip": [
+          "6513f13a8cb24472490ee32f"
+        ]
+      },
+      "65268d8ecb944ff1e90ea385": {
+        "mod_barrel": [
+          "6513eff1e06849f06c0957d4"
+        ],
+        "mod_handguard": [
+          "6513f05a94c72326990a3866"
+        ],
+        "mod_magazine": [
+          "6513f0a194c72326990a3868"
+        ],
+        "mod_scope": [
+          "618a75c9a3884f56c957ca1b"
+        ],
+        "mod_sight_rear": [
+          "6513f153e63f29908d0ffaba"
+        ],
+        "mod_stock": [
+          "6513f1798cb24472490ee331"
+        ]
+      },
+      "65719f0775149d62ce0a670b": {
+        "Helmet_back": [
+          "657fa168e9433140ad0baf8e"
+        ],
+        "Helmet_ears": [
+          "657fa186d4caf976440afe42"
+        ],
+        "Helmet_top": [
+          "657fa0fcd4caf976440afe3e"
+        ],
+        "mod_equipment_000": [
+          "65719f9ef392ad76c50a2ec8"
         ]
       }
     }

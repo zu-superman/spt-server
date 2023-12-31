@@ -2849,6 +2849,32 @@
           "65764a4cd8537eb26a0355ee"
         ]
       },
+      "5c0e51be86f774598e797894": {
+        "Back_plate": [
+          "656efd66034e8e01c407f35c"
+        ],
+        "Collar": [
+          "654a8ae00337d53f9102c2aa"
+        ],
+        "Front_plate": [
+          "656f603f94b480b8a500c0d6"
+        ],
+        "Groin": [
+          "654a8bc5f414fcea4004d79b"
+        ],
+        "Soft_armor_back": [
+          "654a8976f414fcea4004d78b"
+        ],
+        "Soft_armor_front": [
+          "654a8b0b0337d53f9102c2ae"
+        ],
+        "Soft_armor_left": [
+          "654a8b3df414fcea4004d78f"
+        ],
+        "soft_armor_right": [
+          "654a8b80f414fcea4004d797"
+        ]
+      },
       "5c0e53c886f7747fa54205c7": {
         "Collar": [
           "654a8ae00337d53f9102c2aa"

@@ -2972,6 +2972,20 @@
           "57d17e212459775a1179a0f5"
         ]
       },
+      "5648a7494bdc2d9d488b4583": {
+        "Soft_armor_back": [
+          "65703fa06584602f7d057a8e"
+        ],
+        "Soft_armor_front": [
+          "65703d866584602f7d057a8a"
+        ],
+        "Soft_armor_left": [
+          "65703fe46a912c8b5c03468b"
+        ],
+        "soft_armor_right": [
+          "657040374e67e8ec7a0d261c"
+        ]
+      },
       "5648ae314bdc2d3d1c8b457f": {
         "mod_foregrip": [
           "558032614bdc2de7118b4585"
@@ -3284,6 +3298,20 @@
           "5c066e3a0db834001b7353f0"
         ]
       },
+      "5c0e655586f774045612eeb2": {
+        "Back_plate": [
+          "656fad8c498d1b7e3e071da0"
+        ],
+        "Front_plate": [
+          "656fad8c498d1b7e3e071da0"
+        ],
+        "Soft_armor_back": [
+          "6570e0610b57c03ec90b96ef"
+        ],
+        "Soft_armor_front": [
+          "6570e025615f54368b04fcb0"
+        ]
+      },
       "5c61a40d2e2216001403158d": {
         "mod_scope": [
           "5d2da1e948f035477b1ce2ba"
@@ -3567,6 +3595,55 @@
           "60926df0132d4d12c81fd9df"
         ]
       },
+      "609e8540d5c319764c2bc2e9": {
+        "Back_plate": [
+          "656f9fa0498d1b7e3e071d98"
+        ],
+        "Front_plate": [
+          "656f9fa0498d1b7e3e071d98"
+        ],
+        "Soft_armor_back": [
+          "6572e52f73c0eabb700109a0"
+        ],
+        "Soft_armor_front": [
+          "6572e5221b5bc1185508c24f"
+        ],
+        "Soft_armor_left": [
+          "6572e53c73c0eabb700109a4"
+        ],
+        "soft_armor_right": [
+          "6572e54873c0eabb700109a8"
+        ]
+      },
+      "60a3c68c37ea821725773ef5": {
+        "Back_plate": [
+          "656fa53d94b480b8a500c0e4"
+        ],
+        "Collar": [
+          "6573334aca0ca984940a2d5b"
+        ],
+        "Front_plate": [
+          "656fa53d94b480b8a500c0e4"
+        ],
+        "Left_side_plate": [
+          "6557458f83942d705f0c4962"
+        ],
+        "Right_side_plate": [
+          "6557458f83942d705f0c4962"
+        ],
+        "Soft_armor_back": [
+          "657333232cc8dfad2c0a3d97"
+        ],
+        "Soft_armor_front": [
+          "65733312ca0ca984940a2d53"
+        ],
+        "Soft_armor_left": [
+          "657333302cc8dfad2c0a3d9b"
+        ],
+        "soft_armor_right": [
+          "6573333eca0ca984940a2d57"
+        ]
+      },
       "616584766ef05c2ce828ef57": {
         "mod_scope": [
           "5c7d560b2e22160bc12c6139"
@@ -3741,6 +3818,26 @@
           "6194f2df645b5d229654ad77"
         ]
       },
+      "61bc85697113f767765c7fe7": {
+        "Back_plate": [
+          "656fad8c498d1b7e3e071da0"
+        ],
+        "Front_plate": [
+          "656fad8c498d1b7e3e071da0"
+        ],
+        "Soft_armor_back": [
+          "6572fc8c9a866b80ab07eb5d"
+        ],
+        "Soft_armor_front": [
+          "6572fc809a866b80ab07eb59"
+        ],
+        "Soft_armor_left": [
+          "6572fc989a866b80ab07eb61"
+        ],
+        "soft_armor_right": [
+          "6572fca39a866b80ab07eb65"
+        ]
+      },
       "628a60ae6b1d481ff772e9c8": {
         "mod_gas_block": [
           "628a83c29179c324ed269508"
@@ -3817,6 +3914,42 @@
       "638f1ff84822287cad04be9d": {
         "mod_foregrip": [
           "5c87ca002e221600114cb150"
+        ]
+      },
+      "64a5366719bab53bd203bf33": {
+        "Back_plate": [
+          "656fac30c6baea13cd07e10c"
+        ],
+        "Front_plate": [
+          "656fac30c6baea13cd07e10c"
+        ]
+      },
+      "64abd93857958b4249003418": {
+        "Back_plate": [
+          "656fb0bd7c2d57afe200c0dc"
+        ],
+        "Front_plate": [
+          "656fb0bd7c2d57afe200c0dc"
+        ],
+        "Soft_armor_back": [
+          "6570f35cd67d0309980a7acb"
+        ],
+        "Soft_armor_front": [
+          "6570f30b0921c914bf07964c"
+        ],
+        "Soft_armor_left": [
+          "6570f3890b4ae5847f060dad"
+        ],
+        "soft_armor_right": [
+          "6570f3bb0b4ae5847f060db2"
+        ]
+      },
+      "65709d2d21b9f815e208ff95": {
+        "Helmet_back": [
+          "657f9ef6c6679fefb3051e1f"
+        ],
+        "Helmet_top": [
+          "657f9eb7e9433140ad0baf86"
         ]
       }
     }
