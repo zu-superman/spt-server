@@ -34,6 +34,8 @@
       "TacticalVest": 100
     },
     "mods": {
+      "back_plate": 100,
+      "front_plate": 100,
       "mod_charge": 14,
       "mod_equipment": 100,
       "mod_foregrip": 8,
@@ -2394,16 +2396,6 @@
       ]
     },
     "mods": {
-		"5c0e541586f7747fa54205c9": {
-        "Front_plate": ["656f63c027aed95beb08f62c", "656f57dc27aed95beb08f628", "656f611f94b480b8a500c0db", "656f603f94b480b8a500c0d6"],
-        "Back_plate": ["654a4a964b446df1ad03f192", "656efaf54772930db4031ff5", "656efd66034e8e01c407f35c"],
-        "Soft_armor_front": ["6575ea3060703324250610da"],
-        "Soft_armor_back": ["6575ea4cf6a13a7b7100adc4"],
-        "Soft_armor_left": ["6575ea5cf6a13a7b7100adc8"],
-        "soft_armor_right": ["6575ea6760703324250610de"],
-        "Collar": ["6575ea719c7cad336508e418"],
-        "Groin": ["6575ea7c60703324250610e2"]
-    },
       "571a12c42459771f627b58a0": {
         "mod_barrel": [
           "571a26d524597720680fbe8a"
@@ -2571,7 +2563,47 @@
           "5beec8b20db834001961942a"
         ]
       },
+      "5c0e541586f7747fa54205c9": {
+        "Back_plate": [
+          "654a4a964b446df1ad03f192",
+          "656efaf54772930db4031ff5",
+          "656efd66034e8e01c407f35c"
+        ],
+        "Collar": [
+          "6575ea719c7cad336508e418"
+        ],
+        "Front_plate": [
+          "656f63c027aed95beb08f62c",
+          "656f57dc27aed95beb08f628",
+          "656f611f94b480b8a500c0db",
+          "656f603f94b480b8a500c0d6"
+        ],
+        "Groin": [
+          "6575ea7c60703324250610e2"
+        ],
+        "Soft_armor_back": [
+          "6575ea4cf6a13a7b7100adc4"
+        ],
+        "Soft_armor_front": [
+          "6575ea3060703324250610da"
+        ],
+        "Soft_armor_left": [
+          "6575ea5cf6a13a7b7100adc8"
+        ],
+        "soft_armor_right": [
+          "6575ea6760703324250610de"
+        ]
+      },
       "5c0e874186f7745dc7616606": {
+        "Helmet_back": [
+          "6571138e818110db4600aa71"
+        ],
+        "Helmet_ears": [
+          "657112fa818110db4600aa6b"
+        ],
+        "Helmet_top": [
+          "6571133d22996eaf11088200"
+        ],
         "mod_equipment": [
           "5c0e842486f77443a74d2976"
         ]

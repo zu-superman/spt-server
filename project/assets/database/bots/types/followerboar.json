@@ -55,6 +55,9 @@
       "TacticalVest": 100
     },
     "mods": {
+      "back_plate": 100,
+      "front_plate": 100,
+      "left_side_plate": 75,
       "mod_charge": 19,
       "mod_equipment": 14,
       "mod_equipment_000": 36,
@@ -84,7 +87,8 @@
       "mod_tactical_001": 33,
       "mod_tactical_002": 34,
       "mod_tactical_003": 0,
-      "mod_tactical_004": 0
+      "mod_tactical_004": 0,
+      "right_side_plate": 75
     }
   },
   "difficulty": {
@@ -2775,6 +2779,38 @@
         ],
         "mod_reciever": [
           "6374a822e629013b9c0645c8"
+        ]
+      },
+      "545cdb794bdc2d3a198b456a": {
+        "Back_plate": [
+          "64afc71497cf3a403c01ff38"
+        ],
+        "Collar": [
+          "6575ce6f16c2762fba005806"
+        ],
+        "Front_plate": [
+          "64afc71497cf3a403c01ff38"
+        ],
+        "Groin": [
+          "6575ce8bdc9932aed601c61e"
+        ],
+        "Left_side_plate": [
+          "64afd81707e2cf40e903a316"
+        ],
+        "Right_side_plate": [
+          "64afd81707e2cf40e903a316"
+        ],
+        "Soft_armor_back": [
+          "6575ce45dc9932aed601c616"
+        ],
+        "Soft_armor_front": [
+          "6575ce3716c2762fba0057fd"
+        ],
+        "Soft_armor_left": [
+          "6575ce5016c2762fba005802"
+        ],
+        "soft_armor_right": [
+          "6575ce5befc786cd9101a671"
         ]
       },
       "5580223e4bdc2d1c128b457f": {

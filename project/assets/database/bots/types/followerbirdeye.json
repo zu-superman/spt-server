@@ -34,6 +34,9 @@
       "TacticalVest": 100
     },
     "mods": {
+      "back_plate": 100,
+      "front_plate": 100,
+      "left_side_plate": 0,
       "mod_foregrip": 88,
       "mod_magazine": 100,
       "mod_mount": 100,
@@ -52,7 +55,8 @@
       "mod_stock": 100,
       "mod_stock_000": 100,
       "mod_tactical": 89,
-      "mod_tactical_000": 0
+      "mod_tactical_000": 0,
+      "right_side_plate": 0
     }
   },
   "difficulty": {
@@ -2688,16 +2692,6 @@
       ]
     },
     "mods": {
-		"609e8540d5c319764c2bc2e9": {
-        "Front_plate": ["656f9d5900d62bcd2e02407c", "656fa8d700d62bcd2e024084", "656fa99800d62bcd2e024088", "656fae5f7c2d57afe200c0d7", "656faf0ca0dce000a2020f77", "656fa0fb498d1b7e3e071d9c", "656fafe3498d1b7e3e071da4", "656fa25e94b480b8a500c0e0", "656fa76500d62bcd2e024080", "656fad8c498d1b7e3e071da0", "656fa61e94b480b8a500c0e8", "656fb21fa0dce000a2020f7c", "656fac30c6baea13cd07e10c", "656fb0bd7c2d57afe200c0dc", "656f9fa0498d1b7e3e071d98", "656fa53d94b480b8a500c0e4", "655746010177119f4a097ff7", "64afdcb83efdfea28601d041", "65573fa5655447403702a816", "64afc71497cf3a403c01ff38"],
-        "Back_plate": ["656f9d5900d62bcd2e02407c", "656fa8d700d62bcd2e024084", "656fa99800d62bcd2e024088", "656fae5f7c2d57afe200c0d7", "656faf0ca0dce000a2020f77", "656fa0fb498d1b7e3e071d9c", "656fafe3498d1b7e3e071da4", "656fa76500d62bcd2e024080", "656fa25e94b480b8a500c0e0", "656fad8c498d1b7e3e071da0", "656fa61e94b480b8a500c0e8", "656fb21fa0dce000a2020f7c", "656fac30c6baea13cd07e10c", "656fb0bd7c2d57afe200c0dc", "656f9fa0498d1b7e3e071d98", "656fa53d94b480b8a500c0e4", "655746010177119f4a097ff7", "64afdcb83efdfea28601d041", "65573fa5655447403702a816", "64afc71497cf3a403c01ff38"],
-        "Left_side_plate": ["6557458f83942d705f0c4962", "64afdb577bb3bfe8fe03fd1d", "64afd81707e2cf40e903a316"],
-        "Right_side_plate": ["6557458f83942d705f0c4962", "64afdb577bb3bfe8fe03fd1d", "64afd81707e2cf40e903a316"],
-        "Soft_armor_front": ["6572e5221b5bc1185508c24f"],
-        "Soft_armor_back": ["6572e52f73c0eabb700109a0"],
-        "Soft_armor_left": ["6572e53c73c0eabb700109a4"],
-        "soft_armor_right": ["6572e54873c0eabb700109a8"]
-    },
       "5447a9cd4bdc2dbd208b4567": {
         "mod_charge": [
           "5b2240bf5acfc40dc528af69"
@@ -2967,6 +2961,74 @@
         ],
         "mod_sight_front": [
           "5c17804b2e2216152006c02f"
+        ]
+      },
+      "609e8540d5c319764c2bc2e9": {
+        "Back_plate": [
+          "656f9d5900d62bcd2e02407c",
+          "656fa8d700d62bcd2e024084",
+          "656fa99800d62bcd2e024088",
+          "656fae5f7c2d57afe200c0d7",
+          "656faf0ca0dce000a2020f77",
+          "656fa0fb498d1b7e3e071d9c",
+          "656fafe3498d1b7e3e071da4",
+          "656fa76500d62bcd2e024080",
+          "656fa25e94b480b8a500c0e0",
+          "656fad8c498d1b7e3e071da0",
+          "656fa61e94b480b8a500c0e8",
+          "656fb21fa0dce000a2020f7c",
+          "656fac30c6baea13cd07e10c",
+          "656fb0bd7c2d57afe200c0dc",
+          "656f9fa0498d1b7e3e071d98",
+          "656fa53d94b480b8a500c0e4",
+          "655746010177119f4a097ff7",
+          "64afdcb83efdfea28601d041",
+          "65573fa5655447403702a816",
+          "64afc71497cf3a403c01ff38"
+        ],
+        "Front_plate": [
+          "656f9d5900d62bcd2e02407c",
+          "656fa8d700d62bcd2e024084",
+          "656fa99800d62bcd2e024088",
+          "656fae5f7c2d57afe200c0d7",
+          "656faf0ca0dce000a2020f77",
+          "656fa0fb498d1b7e3e071d9c",
+          "656fafe3498d1b7e3e071da4",
+          "656fa25e94b480b8a500c0e0",
+          "656fa76500d62bcd2e024080",
+          "656fad8c498d1b7e3e071da0",
+          "656fa61e94b480b8a500c0e8",
+          "656fb21fa0dce000a2020f7c",
+          "656fac30c6baea13cd07e10c",
+          "656fb0bd7c2d57afe200c0dc",
+          "656f9fa0498d1b7e3e071d98",
+          "656fa53d94b480b8a500c0e4",
+          "655746010177119f4a097ff7",
+          "64afdcb83efdfea28601d041",
+          "65573fa5655447403702a816",
+          "64afc71497cf3a403c01ff38"
+        ],
+        "Left_side_plate": [
+          "6557458f83942d705f0c4962",
+          "64afdb577bb3bfe8fe03fd1d",
+          "64afd81707e2cf40e903a316"
+        ],
+        "Right_side_plate": [
+          "6557458f83942d705f0c4962",
+          "64afdb577bb3bfe8fe03fd1d",
+          "64afd81707e2cf40e903a316"
+        ],
+        "Soft_armor_back": [
+          "6572e52f73c0eabb700109a0"
+        ],
+        "Soft_armor_front": [
+          "6572e5221b5bc1185508c24f"
+        ],
+        "Soft_armor_left": [
+          "6572e53c73c0eabb700109a4"
+        ],
+        "soft_armor_right": [
+          "6572e54873c0eabb700109a8"
         ]
       },
       "6130c43c67085e45ef1405a1": {

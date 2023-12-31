@@ -74,6 +74,8 @@
       "TacticalVest": 100
     },
     "mods": {
+      "back_plate": 100,
+      "front_plate": 100,
       "mod_bipod": 0,
       "mod_charge": 0,
       "mod_foregrip": 1,
@@ -2969,6 +2971,29 @@
           "5b3f7c1c5acfc40dc5296b1d"
         ]
       },
+      "5b44d22286f774172b0c9de8": {
+        "Back_plate": [
+          "656f9d5900d62bcd2e02407c"
+        ],
+        "Collar": [
+          "65705cea4916448ae1050897"
+        ],
+        "Front_plate": [
+          "656f9d5900d62bcd2e02407c"
+        ],
+        "Soft_armor_back": [
+          "65705c3c14f2ed6d7d0b7738"
+        ],
+        "Soft_armor_front": [
+          "65704de13e7bba58ea0285c8"
+        ],
+        "Soft_armor_left": [
+          "65705c777260e1139e091408"
+        ],
+        "soft_armor_right": [
+          "65705cb314f2ed6d7d0b773c"
+        ]
+      },
       "5bc5a372d4351e44f824d17f": {
         "mod_scope": [
           "5c0505e00db834001b735073",
@@ -3327,6 +3352,33 @@
         ],
         "mod_stock": [
           "6410745d5dd49d77bd078485"
+        ]
+      },
+      "645123013d52156624001fd1": {
+        "mod_handguard": [
+          "6448f2f6d4928d46d30be3f6"
+        ],
+        "mod_muzzle": [
+          "64527a263d52156624001fd7"
+        ]
+      },
+      "645e0c6b3b381ede770e1cc9": {
+        "mod_barrel": [
+          "645123013d52156624001fd1"
+        ],
+        "mod_magazine": [
+          "6450ec2e7da7133e5a09ca96"
+        ],
+        "mod_stock": [
+          "6452519e3d52156624001fd5"
+        ]
+      },
+      "64be79e2bf8412471d0d9bcc": {
+        "Soft_armor_back": [
+          "657049d23425b19bbc0502f0"
+        ],
+        "Soft_armor_front": [
+          "6570495b45d573133d0d6adb"
         ]
       }
     }

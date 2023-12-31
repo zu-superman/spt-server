@@ -2281,7 +2281,8 @@
         "5a7828548dc32e5a9c28b516": 31
       },
       "Headwear": {
-        "5a43957686f7742a2c2f11b0": 1
+        "59e7708286f7742cbd762753": 2,
+        "5a43957686f7742a2c2f11b0": 3
       },
       "Holster": {
         "5a17f98cfcdbcb0980087290": 1
@@ -2582,14 +2583,17 @@
         ]
       },
       "587e02ff24597743df3deaeb": {
+        "mod_barrel": [
+          "634eff66517ccc8a960fc735"
+        ],
         "mod_magazine": [
           "587df583245977373c4f1129"
         ],
         "mod_mount": [
           "587e08ee245977446b4410cf"
         ],
-        "mod_sight_rear": [
-          "574db213245977459a2f3f5d"
+        "mod_reciever": [
+          "634f06262e5def262d0b30ca"
         ],
         "mod_stock": [
           "5d0236dad7ad1a0940739d29"
@@ -2662,6 +2666,24 @@
       "5dff8db859400025ea5150d4": {
         "mod_scope": [
           "5c0517910db83400232ffee5"
+        ]
+      },
+      "634eff66517ccc8a960fc735": {
+        "mod_mount_000": [
+          "634f05a21f9f536910079b56"
+        ]
+      },
+      "634f036a517ccc8a960fc746": {
+        "mod_mount_000": [
+          "634f03d40384a3ba4f06f874"
+        ]
+      },
+      "634f05a21f9f536910079b56": {
+        "mod_gas_block": [
+          "634f036a517ccc8a960fc746"
+        ],
+        "mod_sight_rear": [
+          "574db213245977459a2f3f5d"
         ]
       }
     }

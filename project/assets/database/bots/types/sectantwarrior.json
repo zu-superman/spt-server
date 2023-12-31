@@ -2788,11 +2788,11 @@
         ]
       },
       "574d967124597745970e7c94": {
-        "mod_magazine": [
-          "5c5970672e221602b21d7855"
-        ],
         "mod_barrel": [
           "634eff66517ccc8a960fc735"
+        ],
+        "mod_magazine": [
+          "5c5970672e221602b21d7855"
         ],
         "mod_reciever": [
           "634f06262e5def262d0b30ca"
@@ -2801,13 +2801,6 @@
           "5afd7ded5acfc40017541f5e"
         ]
       },
-	  "634eff66517ccc8a960fc735": {
-		  "mod_mount_000": ["634f05a21f9f536910079b56"],
-		  "mod_muzzle": ["5cf67cadd7f00c065a5abab7"]
-	  },
-	  "634f05a21f9f536910079b56": {
-		  "mod_gas_block": ["634f036a517ccc8a960fc746"]
-	  },
       "57c44b372459772d2b39b8ce": {
         "mod_magazine": [
           "57838f9f2459774a150289a0"
@@ -3310,6 +3303,14 @@
           "5fc4b9b17283c4046c5814d7"
         ]
       },
+      "5fd4c474dd870108a754b241": {
+        "back_plate": [
+          "656faf0ca0dce000a2020f77"
+        ],
+        "front_plate": [
+          "656faf0ca0dce000a2020f77"
+        ]
+      },
       "602e3f1254072b51b239f713": {
         "mod_stock_000": [
           "602e620f9b513876d4338d9a"
@@ -3434,6 +3435,19 @@
       "62ed1921b3608410ef5a2c04": {
         "mod_tactical": [
           "560d657b4bdc2da74d8b4572"
+        ]
+      },
+      "634eff66517ccc8a960fc735": {
+        "mod_mount_000": [
+          "634f05a21f9f536910079b56"
+        ],
+        "mod_muzzle": [
+          "5cf67cadd7f00c065a5abab7"
+        ]
+      },
+      "634f05a21f9f536910079b56": {
+        "mod_gas_block": [
+          "634f036a517ccc8a960fc746"
         ]
       },
       "637ba19df7ca6372bf2613d7": {

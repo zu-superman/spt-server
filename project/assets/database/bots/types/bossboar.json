@@ -13,12 +13,7 @@
       "64809e3077c11aeac5078e3c"
     ],
     "voice": [
-      "Scav_6",
-      "Scav_2",
-      "Scav_1",
-      "Scav_3",
-      "Scav_5",
-      "Scav_4"
+      "Boss_Kaban"
     ]
   },
   "chances": {
@@ -28,9 +23,9 @@
       "Backpack": 0,
       "Earpiece": 0,
       "Eyewear": 13,
-      "FaceCover": 0,
+      "FaceCover": 22,
       "FirstPrimaryWeapon": 100,
-      "Headwear": 0,
+      "Headwear": 35,
       "Holster": 100,
       "Pockets": 100,
       "Scabbard": 53,
@@ -535,12 +530,12 @@
         "MAX_YDIST_TO_START_WARN_REQUEST_TO_REQUESTER": 5,
         "MIN_DIST_TO_CLOSE_TALK": 5,
         "MIN_DIST_TO_CLOSE_TALK_SQR": 25,
-        "MIN_TALK_DELAY": 35,
+        "MIN_TALK_DELAY": 19,
         "RESERVE_OUT_TIME": 60,
         "RESERVE_TIME_STAY": 72,
         "SUSPETION_PLACE_LIFETIME": 7,
         "TALK_DELAY": 1.1,
-        "TALK_DELAY_BIG": 45.1,
+        "TALK_DELAY_BIG": 25.1,
         "TRY_CHOOSE_RESERV_WAY_ON_START": true,
         "VISION_DIST_COEF_PEACE": 1
       },
@@ -1088,12 +1083,12 @@
         "MAX_YDIST_TO_START_WARN_REQUEST_TO_REQUESTER": 5,
         "MIN_DIST_TO_CLOSE_TALK": 5,
         "MIN_DIST_TO_CLOSE_TALK_SQR": 25,
-        "MIN_TALK_DELAY": 35,
+        "MIN_TALK_DELAY": 19,
         "RESERVE_OUT_TIME": 60,
         "RESERVE_TIME_STAY": 72,
         "SUSPETION_PLACE_LIFETIME": 7,
         "TALK_DELAY": 1.1,
-        "TALK_DELAY_BIG": 45.1,
+        "TALK_DELAY_BIG": 25.1,
         "TRY_CHOOSE_RESERV_WAY_ON_START": true,
         "VISION_DIST_COEF_PEACE": 1
       },
@@ -1641,12 +1636,12 @@
         "MAX_YDIST_TO_START_WARN_REQUEST_TO_REQUESTER": 5,
         "MIN_DIST_TO_CLOSE_TALK": 5,
         "MIN_DIST_TO_CLOSE_TALK_SQR": 25,
-        "MIN_TALK_DELAY": 35,
+        "MIN_TALK_DELAY": 19,
         "RESERVE_OUT_TIME": 60,
         "RESERVE_TIME_STAY": 72,
         "SUSPETION_PLACE_LIFETIME": 7,
         "TALK_DELAY": 1.1,
-        "TALK_DELAY_BIG": 45.1,
+        "TALK_DELAY_BIG": 25.1,
         "TRY_CHOOSE_RESERV_WAY_ON_START": true,
         "VISION_DIST_COEF_PEACE": 1
       },
@@ -2194,12 +2189,12 @@
         "MAX_YDIST_TO_START_WARN_REQUEST_TO_REQUESTER": 5,
         "MIN_DIST_TO_CLOSE_TALK": 5,
         "MIN_DIST_TO_CLOSE_TALK_SQR": 25,
-        "MIN_TALK_DELAY": 35,
+        "MIN_TALK_DELAY": 19,
         "RESERVE_OUT_TIME": 60,
         "RESERVE_TIME_STAY": 72,
         "SUSPETION_PLACE_LIFETIME": 7,
         "TALK_DELAY": 1.1,
-        "TALK_DELAY_BIG": 45.1,
+        "TALK_DELAY_BIG": 25.1,
         "TRY_CHOOSE_RESERV_WAY_ON_START": true,
         "VISION_DIST_COEF_PEACE": 1
       },
@@ -2469,13 +2464,18 @@
       "Eyewear": {
         "5d6d2ef3a4b93618084f58bd": 1
       },
-      "FaceCover": {},
+      "FaceCover": {
+        "5c1a1e3f2e221602b66cc4c2": 11,
+        "657089638db3adca1009f4ca": 1
+      },
       "FirstPrimaryWeapon": {
         "5beed0f50db834001c062b12": 18,
         "64637076203536ad5600c990": 47,
         "64ca3d3954fc657e230529cc": 32
       },
-      "Headwear": {},
+      "Headwear": {
+        "5a43943586f77416ad2f06e2": 1
+      },
       "Holster": {
         "5448bd6b4bdc2dfc2f8b4569": 152,
         "571a12c42459771f627b58a0": 142,
@@ -2976,11 +2976,11 @@
       },
       "6492d7847363b8a52206bc52": {
         "mod_pistolgrip_000": [
-"5649ad3f4bdc2df8348b4585",
-                  "59e62cc886f77440d40b52a1",
-                  "59e6318286f77444dd62c4cc",
-                  "5649ade84bdc2d1b2b8b4587",
-                  "57e3dba62459770f0c32322b"
+          "5649ad3f4bdc2df8348b4585",
+          "59e62cc886f77440d40b52a1",
+          "59e6318286f77444dd62c4cc",
+          "5649ade84bdc2d1b2b8b4587",
+          "57e3dba62459770f0c32322b"
         ],
         "mod_stock_000": [
           "5a0c59791526d8dba737bba7"
