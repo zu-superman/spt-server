@@ -821,10 +821,7 @@ export class LocationGenerator
         const itemWithMods: Item[] = [];
 
         // Money/Ammo - don't rely on items in spawnPoint.template.Items so we can randomise it ourselves
-        if (
-            this.itemHelper.isOfBaseclass(chosenTpl, BaseClasses.MONEY)
-            || this.itemHelper.isOfBaseclass(chosenTpl, BaseClasses.AMMO)
-        )
+        if (this.itemHelper.isOfBaseclasses(chosenTpl, [BaseClasses.MONEY, BaseClasses.AMMO]))
         {
             const stackCount = itemTemplate._props.StackMaxSize === 1
                 ? 1
