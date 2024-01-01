@@ -2505,6 +2505,38 @@
       ]
     },
     "mods": {
+      "545cdb794bdc2d3a198b456a": {
+        "Back_plate": [
+          "64afc71497cf3a403c01ff38"
+        ],
+        "Collar": [
+          "6575ce6f16c2762fba005806"
+        ],
+        "Front_plate": [
+          "64afc71497cf3a403c01ff38"
+        ],
+        "Groin": [
+          "6575ce8bdc9932aed601c61e"
+        ],
+        "Left_side_plate": [
+          "64afd81707e2cf40e903a316"
+        ],
+        "Right_side_plate": [
+          "64afd81707e2cf40e903a316"
+        ],
+        "Soft_armor_back": [
+          "6575ce45dc9932aed601c616"
+        ],
+        "Soft_armor_front": [
+          "6575ce3716c2762fba0057fd"
+        ],
+        "Soft_armor_left": [
+          "6575ce5016c2762fba005802"
+        ],
+        "soft_armor_right": [
+          "6575ce5befc786cd9101a671"
+        ]
+      },
       "576165642459773c7a400233": {
         "mod_handguard": [
           "576169e62459773c69055191",
@@ -2650,6 +2682,9 @@
         ],
         "Helmet_top": [
           "657bc06daab96fccee08be9b"
+        ],
+        "mod_equipment": [
+          "5aa7e373e5b5b000137b76f0"
         ]
       },
       "5aa7e454e5b5b0214e506fa2": {
@@ -2869,6 +2904,34 @@
         ],
         "soft_armor_right": [
           "65731b60ff6dc44a7d068c4a"
+        ]
+      },
+      "6038b4b292ec1c3103795a0b": {
+        "Back_plate": [
+          "656fa76500d62bcd2e024080"
+        ],
+        "Front_plate": [
+          "656fa76500d62bcd2e024080"
+        ],
+        "Soft_armor_back": [
+          "6575e72660703324250610c7"
+        ],
+        "Soft_armor_front": [
+          "6575e71760703324250610c3"
+        ]
+      },
+      "6038b4ca92ec1c3103795a0d": {
+        "Back_plate": [
+          "656fa76500d62bcd2e024080"
+        ],
+        "Front_plate": [
+          "656fa76500d62bcd2e024080"
+        ],
+        "Soft_armor_back": [
+          "6575e72660703324250610c7"
+        ],
+        "Soft_armor_front": [
+          "6575e71760703324250610c3"
         ]
       }
     }

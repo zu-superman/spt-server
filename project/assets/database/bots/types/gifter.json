@@ -3374,36 +3374,6 @@
       },
       "59e649f986f77411d949b246": {
         "mod_handguard": [
-          "59e898ee86f77427614bd225",
-          "59e6284f86f77440d569536f"
-        ]
-      },
-      "59e6687d86f77411d949b251": {
-        "mod_gas_block": [
-          "59e649f986f77411d949b246"
-        ],
-        "mod_magazine": [
-          "59e5d83b86f7745aed03d262",
-          "59d625f086f774661516605d"
-        ],
-        "mod_pistol_grip": [
-          "59e6318286f77444dd62c4cc"
-        ],
-        "mod_reciever": [
-          "59d6507c86f7741b846413a2"
-        ],
-        "mod_sight_rear": [
-          "59d650cf86f7741b846413a4"
-        ],
-        "mod_stock": [
-          "59e6227d86f77440d64f5dc2"
-        ],
-        "patron_in_weapon": [
-          "5656d7c34bdc2d9d198b4587"
-        ]
-      },
-      "59e649f986f77411d949b246": {
-        "mod_handguard": [
           "59e6284f86f77440d569536f",
           "59e898ee86f77427614bd225"
         ]
@@ -3413,7 +3383,8 @@
           "59e649f986f77411d949b246"
         ],
         "mod_magazine": [
-          "59e5d83b86f7745aed03d262"
+          "59e5d83b86f7745aed03d262",
+          "59d625f086f774661516605d"
         ],
         "mod_pistol_grip": [
           "59e6318286f77444dd62c4cc"
@@ -3737,15 +3708,10 @@
           "654a8bc5f414fcea4004d79b"
         ],
         "back_plate": [
-          "654a4a964b446df1ad03f192",
-          "656efaf54772930db4031ff5",
           "656efd66034e8e01c407f35c"
         ],
         "front_plate": [
-          "656f603f94b480b8a500c0d6",
-          "656f611f94b480b8a500c0db",
-          "656f57dc27aed95beb08f628",
-          "656f63c027aed95beb08f62c"
+          "656f603f94b480b8a500c0d6"
         ],
         "soft_armor_back": [
           "654a8976f414fcea4004d78b"

@@ -2649,6 +2649,9 @@
       },
       "Caliber9x21": {
         "5a26abfac4a28232980eabff": 1
+      },
+      "Caliber9x39": {
+        "6576f96220d53a5b8f3e395e": 1
       }
     },
     "equipment": {
@@ -2714,7 +2717,6 @@
         "62a5c41e8ec41a51b34739c3": 121
       },
       "FirstPrimaryWeapon": {
-		 "644674a13d52156624001fbc": 250,
         "5447a9cd4bdc2dbd208b4567": 22,
         "54491c4f4bdc2db1078b4568": 2513,
         "5580223e4bdc2d1c128b457f": 850,
@@ -2752,7 +2754,8 @@
         "60db29ce99594040e04c4a27": 866,
         "61f7c9e189e6fb1a5e3ea78d": 301,
         "6259b864ebedf17603599e88": 51,
-        "643ea5b23db6f9f57107d9fd": 33
+        "643ea5b23db6f9f57107d9fd": 33,
+        "644674a13d52156624001fbc": 250
       },
       "Headwear": {
         "572b7d8524597762b472f9d1": 2053,
@@ -4659,16 +4662,6 @@
       ]
     },
     "mods": {
-	"644674a13d52156624001fbc": {
-			"mod_barrel": ["645122f6d4928d46d30be3ff"],
-			"mod_magazine": ["6450ec2e7da7133e5a09ca96"],
-			"mod_pistol_grip": ["6450f21a3d52156624001fcf"],
-			"mod_stock_000": ["6451167ad4928d46d30be3fd"]
-		},
-		"645122f6d4928d46d30be3ff": {
-			"mod_handguard": ["644675573d52156624001fc9"],
-			"mod_muzzle": ["64527a263d52156624001fd7"]
-		},
       "5447a9cd4bdc2dbd208b4567": {
         "mod_charge": [
           "6033749e88382f4fab3fd2c5",
@@ -6660,15 +6653,10 @@
           "654a8bc5f414fcea4004d79b"
         ],
         "back_plate": [
-          "654a4a964b446df1ad03f192",
-          "656efaf54772930db4031ff5",
           "656efd66034e8e01c407f35c"
         ],
         "front_plate": [
-          "656f603f94b480b8a500c0d6",
-          "656f611f94b480b8a500c0db",
-          "656f57dc27aed95beb08f628",
-          "656f63c027aed95beb08f62c"
+          "656f603f94b480b8a500c0d6"
         ],
         "soft_armor_back": [
           "654a8976f414fcea4004d78b"
@@ -6693,16 +6681,6 @@
         "Front_plate": [
           "656f57dc27aed95beb08f628"
         ],
-        "Left_side_plate": [
-          "6557458f83942d705f0c4962",
-          "64afdb577bb3bfe8fe03fd1d",
-          "64afd81707e2cf40e903a316"
-        ],
-        "Right_side_plate": [
-          "6557458f83942d705f0c4962",
-          "64afdb577bb3bfe8fe03fd1d",
-          "64afd81707e2cf40e903a316"
-        ],
         "Soft_armor_back": [
           "6571dbda88ead79fcf091d75"
         ],
@@ -6718,11 +6696,6 @@
       },
       "5c0faeddd174af02a962601f": {
         "mod_stock_000": [
-          "5beec8c20db834001d2c465c",
-          "55d4ae6c4bdc2d8b2f8b456e",
-          "5947c73886f7747701588af5",
-          "5ae30c9a5acfc408fb139a03",
-          "5bfe86df0db834001b734685",
           "628a85ee6b1d481ff772e9d5"
         ]
       },
@@ -6735,15 +6708,15 @@
           "5c503ad32e2216398b5aada2"
         ],
         "mod_mount": [
-          "5947db3f86f77447880cf76f",
-          "609a4b4fe2ff132951242d04"
+          "609a4b4fe2ff132951242d04",
+          "5947db3f86f77447880cf76f"
         ],
         "mod_reciever": [
           "5c503d0a2e221602b542b7ef"
         ],
         "mod_sight_rear": [
-          "5c503b1c2e221602b21d6e9d",
-          "5649d9a14bdc2d79388b4580"
+          "5649d9a14bdc2d79388b4580",
+          "5c503b1c2e221602b21d6e9d"
         ],
         "mod_stock": [
           "5c503af12e221602b177ca02",
@@ -7518,6 +7491,28 @@
           "6410745d5dd49d77bd078485"
         ]
       },
+      "644674a13d52156624001fbc": {
+        "mod_barrel": [
+          "645122f6d4928d46d30be3ff"
+        ],
+        "mod_magazine": [
+          "6450ec2e7da7133e5a09ca96"
+        ],
+        "mod_pistol_grip": [
+          "6450f21a3d52156624001fcf"
+        ],
+        "mod_stock_000": [
+          "6451167ad4928d46d30be3fd"
+        ]
+      },
+      "645122f6d4928d46d30be3ff": {
+        "mod_handguard": [
+          "644675573d52156624001fc9"
+        ],
+        "mod_muzzle": [
+          "64527a263d52156624001fd7"
+        ]
+      },
       "64748cb8de82c85eaf0a273a": {
         "mod_barrel": [
           "64748d02d1c009260702b526"
@@ -7535,6 +7530,28 @@
         ],
         "Soft_armor_front": [
           "6570495b45d573133d0d6adb"
+        ]
+      },
+      "6513ef33e06849f06c0957ca": {
+        "mod_barrel": [
+          "65266fd43341ed9aa903dd56"
+        ],
+        "mod_handguard": [
+          "6513f05a94c72326990a3866"
+        ],
+        "mod_magazine": [
+          "6513f0a194c72326990a3868"
+        ],
+        "mod_sight_rear": [
+          "6513f153e63f29908d0ffaba"
+        ],
+        "mod_stock": [
+          "6513f1798cb24472490ee331"
+        ]
+      },
+      "6513f1798cb24472490ee331": {
+        "mod_pistolgrip": [
+          "6513f13a8cb24472490ee32f"
         ]
       }
     }

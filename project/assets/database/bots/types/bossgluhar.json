@@ -2775,44 +2775,10 @@
     "mods": {
       "544a5caa4bdc2d1a388b4568": {
         "Back_plate": [
-          "656f9d5900d62bcd2e02407c",
-          "656fa8d700d62bcd2e024084",
-          "656fa99800d62bcd2e024088",
-          "656fae5f7c2d57afe200c0d7",
-          "656faf0ca0dce000a2020f77",
-          "656fa0fb498d1b7e3e071d9c",
-          "656fafe3498d1b7e3e071da4",
-          "656fa76500d62bcd2e024080",
-          "656fad8c498d1b7e3e071da0",
-          "656fa25e94b480b8a500c0e0",
-          "656fa61e94b480b8a500c0e8",
-          "656fac30c6baea13cd07e10c",
-          "656fb0bd7c2d57afe200c0dc",
-          "656fb21fa0dce000a2020f7c",
-          "656f9fa0498d1b7e3e071d98",
-          "656fa53d94b480b8a500c0e4",
-          "655746010177119f4a097ff7",
-          "64afdcb83efdfea28601d041"
+          "656f9fa0498d1b7e3e071d98"
         ],
         "Front_plate": [
-          "656f9d5900d62bcd2e02407c",
-          "656fa8d700d62bcd2e024084",
-          "656fa99800d62bcd2e024088",
-          "656fae5f7c2d57afe200c0d7",
-          "656faf0ca0dce000a2020f77",
-          "656fa0fb498d1b7e3e071d9c",
-          "656fa76500d62bcd2e024080",
-          "656fafe3498d1b7e3e071da4",
-          "656fa25e94b480b8a500c0e0",
-          "656fad8c498d1b7e3e071da0",
-          "656fa61e94b480b8a500c0e8",
-          "656fb21fa0dce000a2020f7c",
-          "656fb0bd7c2d57afe200c0dc",
-          "656fac30c6baea13cd07e10c",
-          "656f9fa0498d1b7e3e071d98",
-          "656fa53d94b480b8a500c0e4",
-          "655746010177119f4a097ff7",
-          "64afdcb83efdfea28601d041"
+          "656f9fa0498d1b7e3e071d98"
         ],
         "Groin": [
           "6570e90b3a5689d85f08db97"
@@ -2916,58 +2882,10 @@
       },
       "5ab8dced86f774646209ec87": {
         "Back_plate": [
-          "656f9d5900d62bcd2e02407c",
-          "656fa8d700d62bcd2e024084",
-          "656fa99800d62bcd2e024088",
-          "656fae5f7c2d57afe200c0d7",
-          "656faf0ca0dce000a2020f77",
-          "656fa0fb498d1b7e3e071d9c",
-          "656fafe3498d1b7e3e071da4",
-          "656fa76500d62bcd2e024080",
-          "656fa25e94b480b8a500c0e0",
-          "656fa61e94b480b8a500c0e8",
-          "656fad8c498d1b7e3e071da0",
-          "656fb21fa0dce000a2020f7c",
-          "656fac30c6baea13cd07e10c",
-          "656fb0bd7c2d57afe200c0dc",
-          "656f9fa0498d1b7e3e071d98",
-          "656fa53d94b480b8a500c0e4",
-          "65573fa5655447403702a816",
-          "64afc71497cf3a403c01ff38",
-          "655746010177119f4a097ff7",
-          "64afdcb83efdfea28601d041"
+          "656fa25e94b480b8a500c0e0"
         ],
         "Front_plate": [
-          "656f9d5900d62bcd2e02407c",
-          "656fa8d700d62bcd2e024084",
-          "656fa99800d62bcd2e024088",
-          "656fae5f7c2d57afe200c0d7",
-          "656faf0ca0dce000a2020f77",
-          "656fa0fb498d1b7e3e071d9c",
-          "656fafe3498d1b7e3e071da4",
-          "656fa76500d62bcd2e024080",
-          "656fa25e94b480b8a500c0e0",
-          "656fad8c498d1b7e3e071da0",
-          "656fa61e94b480b8a500c0e8",
-          "656fb21fa0dce000a2020f7c",
-          "656fac30c6baea13cd07e10c",
-          "656fb0bd7c2d57afe200c0dc",
-          "656f9fa0498d1b7e3e071d98",
-          "656fa53d94b480b8a500c0e4",
-          "655746010177119f4a097ff7",
-          "64afdcb83efdfea28601d041",
-          "65573fa5655447403702a816",
-          "64afc71497cf3a403c01ff38"
-        ],
-        "Left_side_plate": [
-          "6557458f83942d705f0c4962",
-          "64afdb577bb3bfe8fe03fd1d",
-          "64afd81707e2cf40e903a316"
-        ],
-        "Right_side_plate": [
-          "6557458f83942d705f0c4962",
-          "64afdb577bb3bfe8fe03fd1d",
-          "64afd81707e2cf40e903a316"
+          "656fa25e94b480b8a500c0e0"
         ],
         "Soft_armor_back": [
           "6570f71dd67d0309980a7af8"
@@ -3040,9 +2958,28 @@
         ]
       },
       "5b432d215acfc4771e1c6624": {
+        "Helmet_back": [
+          "657bb99db30eca976305117f"
+        ],
+        "Helmet_top": [
+          "657bb92fa1c61ee0c303631f"
+        ],
         "mod_nvg": [
-          "5a16b8a9fcdbcb00165aa6ca",
-          "5c0558060db834001b735271"
+          "5a16b8a9fcdbcb00165aa6ca"
+        ]
+      },
+      "5b44cad286f77402a54ae7e5": {
+        "Back_plate": [
+          "656fae5f7c2d57afe200c0d7"
+        ],
+        "Front_plate": [
+          "656fae5f7c2d57afe200c0d7"
+        ],
+        "Soft_armor_back": [
+          "6575bca0dc9932aed601c5d7"
+        ],
+        "Soft_armor_front": [
+          "6575bc88c6700bd6b40e8a57"
         ]
       },
       "5c066ef40db834001966a595": {
@@ -3057,58 +2994,10 @@
       },
       "5c0e722886f7740458316a57": {
         "Back_plate": [
-          "656f9d5900d62bcd2e02407c",
-          "656fa8d700d62bcd2e024084",
-          "656fa99800d62bcd2e024088",
-          "656fae5f7c2d57afe200c0d7",
-          "656faf0ca0dce000a2020f77",
-          "656fa0fb498d1b7e3e071d9c",
-          "656fafe3498d1b7e3e071da4",
-          "656fa76500d62bcd2e024080",
-          "656fa25e94b480b8a500c0e0",
-          "656fad8c498d1b7e3e071da0",
-          "656fa61e94b480b8a500c0e8",
-          "656fb21fa0dce000a2020f7c",
-          "656fb0bd7c2d57afe200c0dc",
-          "656fac30c6baea13cd07e10c",
-          "656fa53d94b480b8a500c0e4",
-          "656f9fa0498d1b7e3e071d98",
-          "65573fa5655447403702a816",
-          "64afc71497cf3a403c01ff38",
-          "655746010177119f4a097ff7",
-          "64afdcb83efdfea28601d041"
+          "656fa0fb498d1b7e3e071d9c"
         ],
         "Front_plate": [
-          "656f9d5900d62bcd2e02407c",
-          "656fa8d700d62bcd2e024084",
-          "656fae5f7c2d57afe200c0d7",
-          "656fa99800d62bcd2e024088",
-          "656faf0ca0dce000a2020f77",
-          "656fa0fb498d1b7e3e071d9c",
-          "656fafe3498d1b7e3e071da4",
-          "656fa76500d62bcd2e024080",
-          "656fa25e94b480b8a500c0e0",
-          "656fad8c498d1b7e3e071da0",
-          "656fa61e94b480b8a500c0e8",
-          "656fb21fa0dce000a2020f7c",
-          "656fac30c6baea13cd07e10c",
-          "656fb0bd7c2d57afe200c0dc",
-          "656f9fa0498d1b7e3e071d98",
-          "656fa53d94b480b8a500c0e4",
-          "65573fa5655447403702a816",
-          "64afc71497cf3a403c01ff38",
-          "655746010177119f4a097ff7",
-          "64afdcb83efdfea28601d041"
-        ],
-        "Left_side_plate": [
-          "6557458f83942d705f0c4962",
-          "64afdb577bb3bfe8fe03fd1d",
-          "64afd81707e2cf40e903a316"
-        ],
-        "Right_side_plate": [
-          "6557458f83942d705f0c4962",
-          "64afdb577bb3bfe8fe03fd1d",
-          "64afd81707e2cf40e903a316"
+          "656fa0fb498d1b7e3e071d9c"
         ],
         "Soft_armor_back": [
           "65730c2213a2f660f60bea96"
@@ -3125,44 +3014,10 @@
       },
       "5c0e746986f7741453628fe5": {
         "Back_plate": [
-          "656f9d5900d62bcd2e02407c",
-          "656fa8d700d62bcd2e024084",
-          "656fa99800d62bcd2e024088",
-          "656fae5f7c2d57afe200c0d7",
-          "656faf0ca0dce000a2020f77",
-          "656fa0fb498d1b7e3e071d9c",
-          "656fafe3498d1b7e3e071da4",
-          "656fa76500d62bcd2e024080",
-          "656fa53d94b480b8a500c0e4",
-          "656f9fa0498d1b7e3e071d98",
-          "656fb0bd7c2d57afe200c0dc",
-          "656fac30c6baea13cd07e10c",
-          "656fb21fa0dce000a2020f7c",
-          "656fa61e94b480b8a500c0e8",
-          "656fad8c498d1b7e3e071da0",
-          "656fa25e94b480b8a500c0e0",
-          "64afdcb83efdfea28601d041",
-          "655746010177119f4a097ff7"
+          "656fa0fb498d1b7e3e071d9c"
         ],
         "Front_plate": [
-          "656f9d5900d62bcd2e02407c",
-          "656fa8d700d62bcd2e024084",
-          "656fa99800d62bcd2e024088",
-          "656fae5f7c2d57afe200c0d7",
-          "656faf0ca0dce000a2020f77",
-          "656fa0fb498d1b7e3e071d9c",
-          "656fafe3498d1b7e3e071da4",
-          "656fa76500d62bcd2e024080",
-          "656fa25e94b480b8a500c0e0",
-          "656fad8c498d1b7e3e071da0",
-          "656fa61e94b480b8a500c0e8",
-          "656fb21fa0dce000a2020f7c",
-          "656fac30c6baea13cd07e10c",
-          "656fb0bd7c2d57afe200c0dc",
-          "656f9fa0498d1b7e3e071d98",
-          "656fa53d94b480b8a500c0e4",
-          "64afdcb83efdfea28601d041",
-          "655746010177119f4a097ff7"
+          "656fa0fb498d1b7e3e071d9c"
         ],
         "Soft_armor_back": [
           "6570df9c615f54368b04fca9"
@@ -3258,8 +3113,11 @@
         ]
       },
       "5ea17ca01412a1425304d1c0": {
-        "mod_nvg": [
-          "5ea18c84ecf1982c7712d9a2"
+        "Helmet_back": [
+          "657f9a94ada5fadd1f07a589"
+        ],
+        "Helmet_top": [
+          "657f9a55c6679fefb3051e19"
         ]
       },
       "5f36a0e5fbf956000b716b65": {
@@ -3368,54 +3226,10 @@
       },
       "61bc85697113f767765c7fe7": {
         "Back_plate": [
-          "656f9d5900d62bcd2e02407c",
-          "656fa8d700d62bcd2e024084",
-          "656fa99800d62bcd2e024088",
-          "656faf0ca0dce000a2020f77",
-          "656fae5f7c2d57afe200c0d7",
-          "656fa0fb498d1b7e3e071d9c",
-          "656fafe3498d1b7e3e071da4",
-          "656fa76500d62bcd2e024080",
-          "656fa25e94b480b8a500c0e0",
-          "656fad8c498d1b7e3e071da0",
-          "656fa61e94b480b8a500c0e8",
-          "656fb21fa0dce000a2020f7c",
-          "656fac30c6baea13cd07e10c",
-          "656fb0bd7c2d57afe200c0dc",
-          "656f9fa0498d1b7e3e071d98",
-          "656fa53d94b480b8a500c0e4",
-          "655746010177119f4a097ff7",
-          "64afdcb83efdfea28601d041"
+          "656fad8c498d1b7e3e071da0"
         ],
         "Front_plate": [
-          "656f9d5900d62bcd2e02407c",
-          "656fa99800d62bcd2e024088",
-          "656fa8d700d62bcd2e024084",
-          "656faf0ca0dce000a2020f77",
-          "656fae5f7c2d57afe200c0d7",
-          "656fa0fb498d1b7e3e071d9c",
-          "656fafe3498d1b7e3e071da4",
-          "656fa76500d62bcd2e024080",
-          "656fa25e94b480b8a500c0e0",
-          "656fad8c498d1b7e3e071da0",
-          "656fa61e94b480b8a500c0e8",
-          "656fb21fa0dce000a2020f7c",
-          "656fac30c6baea13cd07e10c",
-          "656fb0bd7c2d57afe200c0dc",
-          "656f9fa0498d1b7e3e071d98",
-          "656fa53d94b480b8a500c0e4",
-          "655746010177119f4a097ff7",
-          "64afdcb83efdfea28601d041"
-        ],
-        "Left_side_plate": [
-          "6557458f83942d705f0c4962",
-          "64afdb577bb3bfe8fe03fd1d",
-          "64afd81707e2cf40e903a316"
-        ],
-        "Right_side_plate": [
-          "6557458f83942d705f0c4962",
-          "64afdb577bb3bfe8fe03fd1d",
-          "64afd81707e2cf40e903a316"
+          "656fad8c498d1b7e3e071da0"
         ],
         "Soft_armor_back": [
           "6572fc8c9a866b80ab07eb5d"
@@ -3452,57 +3266,13 @@
       },
       "61bcc89aef0f505f0c6cd0fc": {
         "Back_plate": [
-          "656f9d5900d62bcd2e02407c",
-          "656fa8d700d62bcd2e024084",
-          "656fa99800d62bcd2e024088",
-          "656fae5f7c2d57afe200c0d7",
-          "656faf0ca0dce000a2020f77",
-          "656fa0fb498d1b7e3e071d9c",
-          "656fa76500d62bcd2e024080",
-          "656fa25e94b480b8a500c0e0",
-          "656fafe3498d1b7e3e071da4",
-          "656fad8c498d1b7e3e071da0",
-          "656fa61e94b480b8a500c0e8",
-          "656fb21fa0dce000a2020f7c",
-          "656fac30c6baea13cd07e10c",
-          "656fb0bd7c2d57afe200c0dc",
-          "656f9fa0498d1b7e3e071d98",
-          "656fa53d94b480b8a500c0e4",
-          "655746010177119f4a097ff7",
-          "64afdcb83efdfea28601d041"
+          "656fb21fa0dce000a2020f7c"
         ],
         "Front_plate": [
-          "656f9d5900d62bcd2e02407c",
-          "656fa8d700d62bcd2e024084",
-          "656fa99800d62bcd2e024088",
-          "656fae5f7c2d57afe200c0d7",
-          "656faf0ca0dce000a2020f77",
-          "656fa76500d62bcd2e024080",
-          "656fa0fb498d1b7e3e071d9c",
-          "656fafe3498d1b7e3e071da4",
-          "656fa25e94b480b8a500c0e0",
-          "656fad8c498d1b7e3e071da0",
-          "656fa61e94b480b8a500c0e8",
-          "656fb21fa0dce000a2020f7c",
-          "656fac30c6baea13cd07e10c",
-          "656fb0bd7c2d57afe200c0dc",
-          "656f9fa0498d1b7e3e071d98",
-          "656fa53d94b480b8a500c0e4",
-          "655746010177119f4a097ff7",
-          "64afdcb83efdfea28601d041"
+          "656fb21fa0dce000a2020f7c"
         ],
         "Groin": [
           "6572eb865b5eac12f10a03ee"
-        ],
-        "Left_side_plate": [
-          "6557458f83942d705f0c4962",
-          "64afdb577bb3bfe8fe03fd1d",
-          "64afd81707e2cf40e903a316"
-        ],
-        "Right_side_plate": [
-          "6557458f83942d705f0c4962",
-          "64afdb577bb3bfe8fe03fd1d",
-          "64afd81707e2cf40e903a316"
         ],
         "Soft_armor_back": [
           "6572eb1b04ee6483ef039882"

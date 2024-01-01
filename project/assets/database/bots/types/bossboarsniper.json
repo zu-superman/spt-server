@@ -2161,7 +2161,8 @@
   "inventory": {
     "Ammo": {
       "Caliber127x55": {
-        "5cadf6ddae9215051e1c23b2": 1
+        "5cadf6ddae9215051e1c23b2": 1,
+        "5cadf6eeae921500134b2799": 1
       },
       "Caliber366TKM": {
         "59e6542b86f77411dc52a77a": 16,
@@ -3013,6 +3014,35 @@
           "5aa66be6e5b5b0214e506e97"
         ]
       },
+      "5ca2151486f774244a3b8d30": {
+        "Back_plate": [
+          "65573fa5655447403702a816"
+        ],
+        "Collar": [
+          "6575dd769d3a0ddf660b904b"
+        ],
+        "Front_plate": [
+          "65573fa5655447403702a816"
+        ],
+        "Groin": [
+          "6575dd800546f8b1de093df6"
+        ],
+        "Groin_back": [
+          "6575dd94945bf78edd04c43c"
+        ],
+        "Soft_armor_back": [
+          "6575dd519e27f4a85e081146"
+        ],
+        "Soft_armor_front": [
+          "6575dd3e9e27f4a85e081142"
+        ],
+        "Soft_armor_left": [
+          "6575dd64945bf78edd04c438"
+        ],
+        "soft_armor_right": [
+          "6575dd6e9d3a0ddf660b9047"
+        ]
+      },
       "5d0236dad7ad1a0940739d29": {
         "mod_pistol_grip": [
           "5d023784d7ad1a049d4aa7f2"
@@ -3219,6 +3249,32 @@
           "5e01ea19e9dc277128008c0b"
         ]
       },
+      "5e9dacf986f774054d6b89f4": {
+        "Back_plate": [
+          "65573fa5655447403702a816"
+        ],
+        "Collar": [
+          "65732e215d3a3129fb05f3e1"
+        ],
+        "Front_plate": [
+          "65573fa5655447403702a816"
+        ],
+        "Groin": [
+          "65732e30dd8739f6440ef383"
+        ],
+        "Soft_armor_back": [
+          "65732df4d0acf75aea06c87b"
+        ],
+        "Soft_armor_front": [
+          "65732de75d3a3129fb05f3dd"
+        ],
+        "Soft_armor_left": [
+          "65732e05d0acf75aea06c87f"
+        ],
+        "soft_armor_right": [
+          "65732e0f6784ca384b0167ad"
+        ]
+      },
       "5efaf417aeb21837e749c7f2": {
         "mod_foregrip": [
           "5c791e872e2216001219c40a",
@@ -3393,6 +3449,9 @@
       "634f05a21f9f536910079b56": {
         "mod_gas_block": [
           "634f036a517ccc8a960fc746"
+        ],
+        "mod_sight_rear": [
+          "574db213245977459a2f3f5d"
         ]
       },
       "6374a822e629013b9c0645c8": {

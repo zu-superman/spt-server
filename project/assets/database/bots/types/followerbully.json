@@ -2301,6 +2301,23 @@
       ]
     },
     "mods": {
+      "544a5caa4bdc2d1a388b4568": {
+        "Back_plate": [
+          "656f9fa0498d1b7e3e071d98"
+        ],
+        "Front_plate": [
+          "656f9fa0498d1b7e3e071d98"
+        ],
+        "Groin": [
+          "6570e90b3a5689d85f08db97"
+        ],
+        "Soft_armor_back": [
+          "6570e87c23c1f638ef0b0ee2"
+        ],
+        "Soft_armor_front": [
+          "6570e83223c1f638ef0b0ede"
+        ]
+      },
       "5645bc214bdc2d363b8b4571": {
         "Helmet_back": [
           "657baeaacfcf63c951052db3"
@@ -2420,6 +2437,17 @@
           "5c1bc5612e221602b5429350"
         ]
       },
+      "5aa7e276e5b5b000171d0647": {
+        "Helmet_back": [
+          "657bc0d8a1c61ee0c303632f"
+        ],
+        "Helmet_ears": [
+          "657bc107aab96fccee08be9f"
+        ],
+        "Helmet_top": [
+          "657bc06daab96fccee08be9b"
+        ]
+      },
       "5aa7e454e5b5b0214e506fa2": {
         "Helmet_back": [
           "657f92acada5fadd1f07a57e"
@@ -2429,6 +2457,9 @@
         ],
         "Helmet_top": [
           "657f925dada5fadd1f07a57a"
+        ],
+        "mod_equipment": [
+          "5aa7e3abe5b5b000171d064d"
         ]
       },
       "5ab8dced86f774646209ec87": {
