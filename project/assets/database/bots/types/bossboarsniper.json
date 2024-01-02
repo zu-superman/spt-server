@@ -2907,6 +2907,61 @@
           "654a8b80f414fcea4004d797"
         ]
       },
+      "5c0e57ba86f7747fa141986d": {
+        "Back_plate": [
+          "657b22485f444d6dff0c6c2f"
+        ],
+        "Collar": [
+          "657080ca12755ae0d907ad5e"
+        ],
+        "Front_plate": [
+          "656f603f94b480b8a500c0d6"
+        ],
+        "Groin": [
+          "65708122f65e2491bf009755"
+        ],
+        "Groin_back": [
+          "65708165696fe382cf073255"
+        ],
+        "Soft_armor_back": [
+          "6570800612755ae0d907acf8"
+        ],
+        "Soft_armor_front": [
+          "65707fc348c7a887f2010432"
+        ],
+        "Soft_armor_left": [
+          "65708070f65e2491bf00972c"
+        ],
+        "soft_armor_right": [
+          "657080a212755ae0d907ad04"
+        ]
+      },
+      "5c0e5bab86f77461f55ed1f3": {
+        "Collar": [
+          "6571babb4076795e5e07383f"
+        ],
+        "Front_plate": [
+          "654a4dea7c17dec2f50cc86a"
+        ],
+        "Groin": [
+          "6571bac34076795e5e073843"
+        ],
+        "Groin_back": [
+          "6571babf4cb80d995d0a1494"
+        ],
+        "Soft_armor_back": [
+          "6571baa74cb80d995d0a1490"
+        ],
+        "Soft_armor_front": [
+          "6571b27a6d84a2b8b6007f92"
+        ],
+        "Soft_armor_left": [
+          "6571baac6d84a2b8b6007fa3"
+        ],
+        "soft_armor_right": [
+          "6571bab0f41985531a038091"
+        ]
+      },
       "5c0faeddd174af02a962601f": {
         "mod_stock_000": [
           "5beec8c20db834001d2c465c",
@@ -3338,6 +3393,41 @@
           "57c69dd424597774c03b7bbc"
         ]
       },
+      "5f5f41476bdad616ad46d631": {
+        "Back_plate": [
+          "657b2797c3dbcb01d60c35ea"
+        ],
+        "Collar": [
+          "65731b666e709cddd001ec43"
+        ],
+        "Front_plate": [
+          "656f664200d62bcd2e024077"
+        ],
+        "Groin": [
+          "65731b716e709cddd001ec47"
+        ],
+        "Groin_back": [
+          "65731b6b6042b0f210020ef6"
+        ],
+        "Left_side_plate": [
+          "654a4f8bc721968a4404ef18"
+        ],
+        "Right_side_plate": [
+          "654a4f8bc721968a4404ef18"
+        ],
+        "Soft_armor_back": [
+          "65731b4fcea9255e2102360e"
+        ],
+        "Soft_armor_front": [
+          "65731b46cea9255e2102360a"
+        ],
+        "Soft_armor_left": [
+          "65731b576e709cddd001ec3f"
+        ],
+        "soft_armor_right": [
+          "65731b60ff6dc44a7d068c4a"
+        ]
+      },
       "602e3f1254072b51b239f713": {
         "mod_stock_000": [
           "56eabf3bd2720b75698b4569",
@@ -3409,18 +3499,23 @@
       },
       "633ec6ee025b096d320a3b15": {
         "camora_000": [
+          "5cadf6eeae921500134b2799",
           "5cadf6ddae9215051e1c23b2"
         ],
         "camora_001": [
+          "5cadf6eeae921500134b2799",
           "5cadf6ddae9215051e1c23b2"
         ],
         "camora_002": [
+          "5cadf6eeae921500134b2799",
           "5cadf6ddae9215051e1c23b2"
         ],
         "camora_003": [
+          "5cadf6eeae921500134b2799",
           "5cadf6ddae9215051e1c23b2"
         ],
         "camora_004": [
+          "5cadf6eeae921500134b2799",
           "5cadf6ddae9215051e1c23b2"
         ]
       },
