@@ -694,6 +694,13 @@ export class LocationGenerator
                 itemArray.push(new ProbabilityObject(itemDist.composedKey.key, itemDist.relativeProbability));
             }
 
+            if (itemArray.length === 0)
+            {
+                this.logger.warning(`Loot pool for position: ${spawnPoint.template.Id} is empty. Skipping`);
+
+                continue;
+            }
+
             // Draw a random item from spawn points possible items
             const chosenComposedKey = itemArray.draw(1)[0];
             const createItemResult = this.createDynamicLootItem(chosenComposedKey, spawnPoint, staticAmmoDist);
