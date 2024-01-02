@@ -94,7 +94,7 @@
       "ForceSpawn": false,
       "IgnoreMaxBots": false,
       "RandomTimeSpawn": false,
-      "Supports": null,
+      "Supports": [],
       "Time": -1,
       "TriggerId": "",
       "TriggerName": ""
@@ -112,7 +112,7 @@
       "ForceSpawn": false,
       "IgnoreMaxBots": false,
       "RandomTimeSpawn": false,
-      "Supports": null,
+      "Supports": [],
       "Time": -1,
       "TriggerId": "",
       "TriggerName": ""
@@ -127,7 +127,7 @@
       "BossPlayer": false,
       "BossZone": "ZoneMiniHouse,ZoneClearVill,ZoneRoad,ZoneBrokenVill,ZoneScavBase2",
       "RandomTimeSpawn": false,
-      "Supports": null,
+      "Supports": [],
       "Time": -1
     }
   ],

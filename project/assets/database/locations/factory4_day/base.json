@@ -80,7 +80,7 @@
       "BossZone": "BotZone",
       "Delay": 0,
       "RandomTimeSpawn": false,
-      "Supports": null,
+      "Supports": [],
       "Time": -1,
       "TriggerId": "",
       "TriggerName": ""
