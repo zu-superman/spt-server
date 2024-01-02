@@ -2380,6 +2380,9 @@
           "6197b229af1f5202c57a9bea"
         ]
       },
+	  "6516b129609aaf354b34b3a8": {
+		  "mod_pistolgrip": ["5f6341043ada5942720e2dc5"]
+	  },
       "5c471bfc2e221602b21d4e17": {
         "mod_muzzle": [
           "5e01e9e273d8eb11426f5bc3"

@@ -2376,6 +2376,10 @@
       ]
     },
     "mods": {
+		"5df8a2ca86f7740bfe6df777": {
+        "Soft_armor_front": ["656fd7c32668ef0402028fb9"],
+        "Soft_armor_back": ["656fd89bf5a9631d4e042575"]
+    },
       "5448bd6b4bdc2dfc2f8b4569": {
         "mod_magazine": [
           "5448c12b4bdc2d02308b456f"
@@ -2728,14 +2732,6 @@
         ]
       },
       "5afd7ded5acfc40017541f5e": {
-        "mod_foregrip": [
-          "588226dd24597767ad33f789",
-          "588226ef24597767af46e39c",
-          "5c791e872e2216001219c40a",
-          "588226d124597767ad33f787",
-          "5b057b4f5acfc4771e1bd3e9",
-          "588226e62459776e3e094af7"
-        ],
         "mod_pistol_grip": [
           "5afd7e445acfc4001637e35a"
         ],
