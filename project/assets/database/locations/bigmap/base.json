@@ -136,7 +136,7 @@
       "ForceSpawn": false,
       "IgnoreMaxBots": false,
       "RandomTimeSpawn": false,
-      "Supports": null,
+      "Supports": [],
       "Time": -1,
       "TriggerId": "",
       "TriggerName": ""
@@ -154,7 +154,7 @@
       "ForceSpawn": false,
       "IgnoreMaxBots": false,
       "RandomTimeSpawn": false,
-      "Supports": null,
+      "Supports": [],
       "Time": -1,
       "TriggerId": "",
       "TriggerName": ""
@@ -170,7 +170,7 @@
       "BossZone": "ZoneFactoryCenter,ZoneScavBase",
       "Delay": 0,
       "RandomTimeSpawn": false,
-      "Supports": null,
+      "Supports": [],
       "Time": -1,
       "TriggerId": "",
       "TriggerName": ""
