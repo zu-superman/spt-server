@@ -3521,45 +3521,13 @@
       },
       "5ab8e79e86f7742d8b372e78": {
         "Back_plate": [
-          "656f9d5900d62bcd2e02407c",
-          "656fa8d700d62bcd2e024084",
-          "656fa99800d62bcd2e024088",
-          "656fae5f7c2d57afe200c0d7",
-          "656faf0ca0dce000a2020f77",
-          "656fa0fb498d1b7e3e071d9c",
-          "656fafe3498d1b7e3e071da4",
-          "656fa76500d62bcd2e024080",
-          "656fa25e94b480b8a500c0e0",
-          "656fad8c498d1b7e3e071da0",
-          "656fa61e94b480b8a500c0e8",
-          "656fb21fa0dce000a2020f7c",
-          "656fac30c6baea13cd07e10c",
-          "656fb0bd7c2d57afe200c0dc",
-          "656f9fa0498d1b7e3e071d98",
-          "656fa53d94b480b8a500c0e4",
-          "65573fa5655447403702a816",
-          "64afc71497cf3a403c01ff38",
-          "655746010177119f4a097ff7",
-          "64afdcb83efdfea28601d041"
+          "65573fa5655447403702a816"
         ],
         "Collar": [
           "657326bc5d3a3129fb05f36b"
         ],
         "Front_plate": [
-          "656f611f94b480b8a500c0db",
-          "656f603f94b480b8a500c0d6",
-          "656f57dc27aed95beb08f628",
-          "656f63c027aed95beb08f62c"
-        ],
-        "Left_side_plate": [
-          "6557458f83942d705f0c4962",
-          "64afdb577bb3bfe8fe03fd1d",
-          "64afd81707e2cf40e903a316"
-        ],
-        "Right_side_plate": [
-          "6557458f83942d705f0c4962",
-          "64afdb577bb3bfe8fe03fd1d",
-          "64afd81707e2cf40e903a316"
+          "656f611f94b480b8a500c0db"
         ],
         "Soft_armor_back": [
           "657326978c1cc6dcd9098b56"

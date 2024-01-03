@@ -2301,7 +2301,24 @@
       ]
     },
     "mods": {
-		"545cdb794bdc2d3a198b456a": {
+      "544a5caa4bdc2d1a388b4568": {
+        "Back_plate": [
+          "656f9fa0498d1b7e3e071d98"
+        ],
+        "Front_plate": [
+          "656f9fa0498d1b7e3e071d98"
+        ],
+        "Groin": [
+          "6570e90b3a5689d85f08db97"
+        ],
+        "Soft_armor_back": [
+          "6570e87c23c1f638ef0b0ee2"
+        ],
+        "Soft_armor_front": [
+          "6570e83223c1f638ef0b0ede"
+        ]
+      },
+      "545cdb794bdc2d3a198b456a": {
         "Back_plate": [
           "64afc71497cf3a403c01ff38"
         ],
@@ -2331,23 +2348,6 @@
         ],
         "soft_armor_right": [
           "6575ce5befc786cd9101a671"
-        ]
-      },
-      "544a5caa4bdc2d1a388b4568": {
-        "Back_plate": [
-          "656f9fa0498d1b7e3e071d98"
-        ],
-        "Front_plate": [
-          "656f9fa0498d1b7e3e071d98"
-        ],
-        "Groin": [
-          "6570e90b3a5689d85f08db97"
-        ],
-        "Soft_armor_back": [
-          "6570e87c23c1f638ef0b0ee2"
-        ],
-        "Soft_armor_front": [
-          "6570e83223c1f638ef0b0ede"
         ]
       },
       "5645bc214bdc2d363b8b4571": {
@@ -2753,6 +2753,20 @@
       "5d440625a4b9361eec4ae6c5": {
         "mod_muzzle": [
           "5d44064fa4b9361e4f6eb8b5"
+        ]
+      },
+      "6038b4ca92ec1c3103795a0d": {
+        "Back_plate": [
+          "656fa76500d62bcd2e024080"
+        ],
+        "Front_plate": [
+          "656fa76500d62bcd2e024080"
+        ],
+        "Soft_armor_back": [
+          "6575e72660703324250610c7"
+        ],
+        "Soft_armor_front": [
+          "6575e71760703324250610c3"
         ]
       },
       "64be79c487d1510151095552": {

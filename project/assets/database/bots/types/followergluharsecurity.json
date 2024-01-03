@@ -2886,6 +2886,35 @@
           "5c87ca002e221600114cb150"
         ]
       },
+      "5c0e625a86f7742d77340f62": {
+        "Back_plate": [
+          "656fafe3498d1b7e3e071da4"
+        ],
+        "Collar": [
+          "657643a220cc24d17102b14c"
+        ],
+        "Front_plate": [
+          "656f63c027aed95beb08f62c"
+        ],
+        "Left_side_plate": [
+          "64afd81707e2cf40e903a316"
+        ],
+        "Right_side_plate": [
+          "64afd81707e2cf40e903a316"
+        ],
+        "Soft_armor_back": [
+          "657642b0e6d5dd75f40688a5"
+        ],
+        "Soft_armor_front": [
+          "65764275d8537eb26a0355e9"
+        ],
+        "Soft_armor_left": [
+          "6576434820cc24d17102b148"
+        ],
+        "soft_armor_right": [
+          "657643732bc38ef78e076477"
+        ]
+      },
       "5c0e722886f7740458316a57": {
         "Back_plate": [
           "656fa0fb498d1b7e3e071d9c"
