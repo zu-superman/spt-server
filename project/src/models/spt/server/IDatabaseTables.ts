@@ -1,4 +1,5 @@
 import { IGlobals } from "@spt-aki/models/eft/common/IGlobals";
+import { IAchievement } from "@spt-aki/models/eft/common/tables/IAchievement";
 import { IBotBase } from "@spt-aki/models/eft/common/tables/IBotBase";
 import { IBotCore } from "@spt-aki/models/eft/common/tables/IBotCore";
 import { IBotType } from "@spt-aki/models/eft/common/tables/IBotType";

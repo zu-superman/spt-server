@@ -36,6 +36,6 @@ export class AchievementCallbacks
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public statistic(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<ICompletedAchievementsResponse>
     {
-        return this.httpResponse.getBody(this.profileController.getCompletedAchievements(sessionID));
+        return this.httpResponse.getBody(this.achievementController.getAchievementStatistics(sessionID));
     }
 }

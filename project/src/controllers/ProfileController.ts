@@ -390,13 +390,6 @@ export class ProfileController
         return response;
     }
 
-    public getCompletedAchievements(sessionId: string): ICompletedAchievementsResponse
-    {
-        const profile = this.profileHelper.getFullProfile(sessionId);
-
-        return {elements: profile.achievements};
-    }
-
     public getOtherProfile(sessionId: string, request: IGetOtherProfileRequest): IGetOtherProfileResponse
     {
         const player = this.profileHelper.getFullProfile(sessionId);
