@@ -2386,6 +2386,7 @@
         "5bb2475ed4351e00853264e3": 1,
         "5bd70322209c4d00d7167b8f": 1,
         "5cc82d76e24e8d00134b4b83": 1,
+        "5d43021ca4b9362eab4b5e25": 2,
         "5df8ce05b11454561e39243b": 4,
         "5f2a9575926fd9352339381f": 4,
         "5fbcc1d9016cce60e8341ab3": 2,
@@ -3500,6 +3501,20 @@
           "5a7b483fe899ef0016170d15"
         ]
       },
+      "5ab8e4ed86f7742d8e50c7fa": {
+        "Soft_armor_back": [
+          "657045741bd9beedc40b7299"
+        ],
+        "Soft_armor_front": [
+          "657044e971369562b300ce9b"
+        ],
+        "Soft_armor_left": [
+          "657045b97e80617cee095bda"
+        ],
+        "soft_armor_right": [
+          "6570460471369562b300ce9f"
+        ]
+      },
       "5ac4cd105acfc40016339859": {
         "mod_charge": [
           "5648ac824bdc2ded0b8b457d"
@@ -4251,6 +4266,9 @@
         ],
         "Helmet_top": [
           "657bbad7a1c61ee0c3036323"
+        ],
+        "mod_equipment_000": [
+          "5f60c076f2bcbb675b00dac2"
         ]
       },
       "5fbbc366ca32ed67276c1557": {

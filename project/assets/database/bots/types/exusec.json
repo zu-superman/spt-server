@@ -46,7 +46,7 @@
       "Eyewear": 74,
       "FaceCover": 62,
       "FirstPrimaryWeapon": 100,
-      "Headwear": 83,
+      "Headwear": 84,
       "Holster": 100,
       "Pockets": 100,
       "Scabbard": 0,
@@ -57,9 +57,9 @@
     "mods": {
       "back_plate": 100,
       "front_plate": 100,
-      "left_side_plate": 0,
-      "mod_charge": 32,
-      "mod_equipment_000": 4,
+      "left_side_plate": 14,
+      "mod_charge": 33,
+      "mod_equipment_000": 1,
       "mod_equipment_001": 0,
       "mod_equipment_002": 0,
       "mod_flashlight": 100,
@@ -72,10 +72,10 @@
       "mod_mount_001": 67,
       "mod_mount_002": 2,
       "mod_mount_003": 0,
-      "mod_muzzle": 88,
-      "mod_muzzle_000": 50,
+      "mod_muzzle": 89,
+      "mod_muzzle_000": 42,
       "mod_muzzle_001": 0,
-      "mod_nvg": 22,
+      "mod_nvg": 17,
       "mod_pistol_grip": 0,
       "mod_reciever": 100,
       "mod_scope": 68,
@@ -90,10 +90,10 @@
       "mod_tactical002": 0,
       "mod_tactical_000": 26,
       "mod_tactical_001": 0,
-      "mod_tactical_002": 56,
-      "mod_tactical_003": 27,
-      "mod_tactical_2": 11,
-      "right_side_plate": 0
+      "mod_tactical_002": 55,
+      "mod_tactical_003": 29,
+      "mod_tactical_2": 16,
+      "right_side_plate": 14
     }
   },
   "difficulty": {
@@ -2385,6 +2385,9 @@
         "59e690b686f7746c9f75e848": 11,
         "59e6920f86f77411d82aa167": 3205
       },
+      "Caliber68x51": {
+        "6529302b8c26af6326029fb7": 1
+      },
       "Caliber762x35": {
         "5fbe3ffdf8b6a877a729ea82": 189,
         "64b8725c4b75259c590fa899": 23
@@ -2450,19 +2453,20 @@
         "5fd8d28367cb5e077335170f": 361
       },
       "FirstPrimaryWeapon": {
-        "5447a9cd4bdc2dbd208b4567": 1574,
-        "59d6088586f774275f37482f": 1050,
-        "5ac4cd105acfc40016339859": 323,
-        "5ac66d725acfc43b321d4b60": 737,
-        "5b0bbe4e5acfc40dc528a72d": 28,
-        "5bb2475ed4351e00853264e3": 66,
-        "5df8ce05b11454561e39243b": 64,
-        "5fbcc1d9016cce60e8341ab3": 62,
-        "606587252535c57a13424cfd": 62,
-        "6184055050224f204c1da540": 218,
-        "618428466ef05c2ce828f218": 916,
-        "628a60ae6b1d481ff772e9c8": 182,
-        "63171672192e68c5460cebc5": 69
+        "5447a9cd4bdc2dbd208b4567": 143,
+        "59d6088586f774275f37482f": 109,
+        "5ac4cd105acfc40016339859": 27,
+        "5ac66d725acfc43b321d4b60": 65,
+        "5b0bbe4e5acfc40dc528a72d": 4,
+        "5bb2475ed4351e00853264e3": 9,
+        "5df8ce05b11454561e39243b": 12,
+        "5fbcc1d9016cce60e8341ab3": 7,
+        "606587252535c57a13424cfd": 7,
+        "6184055050224f204c1da540": 14,
+        "618428466ef05c2ce828f218": 85,
+        "628a60ae6b1d481ff772e9c8": 15,
+        "63171672192e68c5460cebc5": 3,
+        "65290f395ae2ae97b80fdf2d": 1
       },
       "Headwear": {
         "5aa2a7e8e5b5b00016327c16": 33,
@@ -3545,6 +3549,9 @@
         "Helmet_top": [
           "657f9c78ada5fadd1f07a58d"
         ],
+        "mod_equipment_000": [
+          "5a16b672fcdbcb001912fa83"
+        ],
         "mod_nvg": [
           "5a16b8a9fcdbcb00165aa6ca"
         ]
@@ -4098,6 +4105,41 @@
         ],
         "soft_armor_right": [
           "6570f3bb0b4ae5847f060db2"
+        ]
+      },
+      "65290f395ae2ae97b80fdf2d": {
+        "mod_charge": [
+          "6529109524cbe3c74a05e5b7"
+        ],
+        "mod_magazine": [
+          "65293c38fc460e50a509cb25"
+        ],
+        "mod_pistol_grip": [
+          "652911675ae2ae97b80fdf3c"
+        ],
+        "mod_reciever": [
+          "6529119424cbe3c74a05e5bb"
+        ],
+        "mod_stock_000": [
+          "5c5db6f82e2216003a0fe914"
+        ]
+      },
+      "652910565ae2ae97b80fdf35": {
+        "mod_gas_block": [
+          "652910bc24cbe3c74a05e5b9"
+        ]
+      },
+      "652910ef50dc782999054b97": {
+        "mod_foregrip": [
+          "57cffcd624597763133760c5"
+        ]
+      },
+      "6529119424cbe3c74a05e5bb": {
+        "mod_barrel": [
+          "652910565ae2ae97b80fdf35"
+        ],
+        "mod_handguard": [
+          "652910ef50dc782999054b97"
         ]
       },
       "65709d2d21b9f815e208ff95": {

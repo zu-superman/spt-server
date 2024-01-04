@@ -34,7 +34,7 @@
     "equipment": {
       "ArmBand": 0,
       "ArmorVest": 92,
-      "Backpack": 87,
+      "Backpack": 90,
       "Earpiece": 30,
       "Eyewear": 0,
       "FaceCover": 100,
@@ -50,7 +50,7 @@
     "mods": {
       "back_plate": 60,
       "front_plate": 100,
-      "left_side_plate": 0,
+      "left_side_plate": 28,
       "mod_charge": 0,
       "mod_foregrip": 0,
       "mod_magazine": 100,
@@ -63,8 +63,8 @@
       "mod_nvg": 100,
       "mod_pistol_grip": 0,
       "mod_reciever": 100,
-      "mod_scope": 57,
-      "mod_sight_front": 57,
+      "mod_scope": 73,
+      "mod_sight_front": 58,
       "mod_sight_rear": 77,
       "mod_stock": 100,
       "mod_stock_000": 100,
@@ -73,7 +73,7 @@
       "mod_tactical_001": 48,
       "mod_tactical_002": 16,
       "mod_tactical_003": 0,
-      "right_side_plate": 0
+      "right_side_plate": 28
     }
   },
   "difficulty": {
@@ -2549,6 +2549,11 @@
       ]
     },
     "mods": {
+      "634f036a517ccc8a960fc746": {
+        "mod_mount_000": [
+          "634f03d40384a3ba4f06f874"
+        ]
+      },
       "54491c4f4bdc2db1078b4568": {
         "mod_barrel": [
           "55d4491a4bdc2d882f8b456e"

@@ -37,8 +37,8 @@
       "mod_charge": 0,
       "mod_foregrip": 0,
       "mod_magazine": 100,
-      "mod_mount": 53,
-      "mod_mount_000": 51,
+      "mod_mount": 90,
+      "mod_mount_000": 56,
       "mod_mount_001": 0,
       "mod_mount_004": 0,
       "mod_muzzle": 0,
@@ -2470,7 +2470,14 @@
         "5a145d4786f7744cbb6f4a12",
         "5a145d7b86f7744cbb6f4a13",
         "5a0eecf686f7740350630097",
-        "5a0eee1486f77402aa773226"
+        "5a0eee1486f77402aa773226",
+        "59e35de086f7741778269d84",
+        "5df8a77486f77412672a1e3f",
+        "5df8a72c86f77412640e2e83",
+        "59e35cbb86f7741778269d83",
+        "59e358a886f7741776641ac3",
+        "59e3596386f774176c10a2a2",
+        "573478bc24597738002c6175"
       ],
       "Pockets": [
         "57838f9f2459774a150289a0",
@@ -2497,7 +2504,8 @@
         "5c10c8fd86f7743d7d706df3",
         "5ed515f6915ec335206e4152",
         "5c0e530286f7747fa1419862",
-        "5fca138c2a7b221b2852a5c6"
+        "5fca138c2a7b221b2852a5c6",
+        "637b60c3b7afa97bfc3d7001"
       ],
       "SecuredContainer": [
         "5e99711486f7744bfc4af328",

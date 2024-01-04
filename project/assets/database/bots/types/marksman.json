@@ -68,7 +68,7 @@
       "Headwear": 26,
       "Holster": 0,
       "Pockets": 100,
-      "Scabbard": 24,
+      "Scabbard": 27,
       "SecondPrimaryWeapon": 0,
       "SecuredContainer": 100,
       "TacticalVest": 100
@@ -2457,7 +2457,7 @@
       },
       "Caliber9x39": {
         "57a0dfb82459774d3078b56c": 1,
-		"6576f96220d53a5b8f3e395e": 1
+        "6576f96220d53a5b8f3e395e": 1
       }
     },
     "equipment": {
@@ -2500,7 +2500,7 @@
         "5df8ce05b11454561e39243b": 21,
         "5f2a9575926fd9352339381f": 16,
         "643ea5b23db6f9f57107d9fd": 543,
-		"645e0c6b3b381ede770e1cc9": 400
+        "645e0c6b3b381ede770e1cc9": 400
       },
       "Headwear": {
         "5a16bb52fcdbcb001a3b00dc": 888,
@@ -2597,28 +2597,6 @@
       ]
     },
     "mods": {
-      "5648a7494bdc2d9d488b4583": {
-        "Soft_armor_back": [
-          "65703fa06584602f7d057a8e"
-        ],
-        "Soft_armor_front": [
-          "65703d866584602f7d057a8a"
-        ],
-        "Soft_armor_left": [
-          "65703fe46a912c8b5c03468b"
-        ],
-        "soft_armor_right": [
-          "657040374e67e8ec7a0d261c"
-        ]
-      },
-      "5df8a2ca86f7740bfe6df777": {
-        "Soft_armor_back": [
-          "656fd89bf5a9631d4e042575"
-        ],
-        "Soft_armor_front": [
-          "656fd7c32668ef0402028fb9"
-        ]
-      },
       "55801eed4bdc2d89578b4588": {
         "mod_magazine": [
           "559ba5b34bdc2d1f1a8b4582"
@@ -2672,6 +2650,20 @@
           "56dff3afd2720bba668b4567",
           "56dff4a2d2720bbd668b456a",
           "56dff061d2720bb5668b4567"
+        ]
+      },
+      "5648a7494bdc2d9d488b4583": {
+        "Soft_armor_back": [
+          "65703fa06584602f7d057a8e"
+        ],
+        "Soft_armor_front": [
+          "65703d866584602f7d057a8a"
+        ],
+        "Soft_armor_left": [
+          "65703fe46a912c8b5c03468b"
+        ],
+        "soft_armor_right": [
+          "657040374e67e8ec7a0d261c"
         ]
       },
       "5649be884bdc2d79388b4577": {
@@ -3223,6 +3215,14 @@
       "5de8e67c4a9f347bc92edbd7": {
         "mod_scope": [
           "5dff77c759400025ea5150cf"
+        ]
+      },
+      "5df8a2ca86f7740bfe6df777": {
+        "Soft_armor_back": [
+          "656fd89bf5a9631d4e042575"
+        ],
+        "Soft_armor_front": [
+          "656fd7c32668ef0402028fb9"
         ]
       },
       "5df8ce05b11454561e39243b": {

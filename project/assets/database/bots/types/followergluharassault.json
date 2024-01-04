@@ -2345,7 +2345,8 @@
         "59e4cf5286f7741778269d8a": 1
       },
       "Caliber762x51": {
-        "5a608bf24f39f98ffc77720e": 1
+        "58dd3ad986f77403051cba8f": 7,
+        "5a608bf24f39f98ffc77720e": 4
       },
       "Caliber9x18PM": {
         "57372140245977611f70ee91": 1
@@ -2358,13 +2359,15 @@
       "ArmBand": {},
       "ArmorVest": {
         "545cdb794bdc2d3a198b456a": 1,
-        "5b44d0de86f774503d30cba8": 1,
-        "5c0e51be86f774598e797894": 13,
-        "5c0e53c886f7747fa54205c7": 25,
-        "5c0e57ba86f7747fa141986d": 10,
-        "5c0e5bab86f77461f55ed1f3": 12,
+        "5b44cf1486f77431723e3d05": 2,
+        "5b44d0de86f774503d30cba8": 2,
+        "5c0e51be86f774598e797894": 32,
+        "5c0e53c886f7747fa54205c7": 35,
+        "5c0e57ba86f7747fa141986d": 25,
+        "5c0e5bab86f77461f55ed1f3": 25,
+        "5ca2151486f774244a3b8d30": 1,
         "5ca21c6986f77479963115a7": 1,
-        "64be79e2bf8412471d0d9bcc": 19
+        "64be79e2bf8412471d0d9bcc": 35
       },
       "Backpack": {},
       "Earpiece": {
@@ -2394,19 +2397,21 @@
         "6499849fc93611967b034949": 1
       },
       "Headwear": {
-        "5645bc214bdc2d363b8b4571": 2,
-        "59e770f986f7742cbe3164ef": 1,
-        "5a7c4850e899ef00150be885": 21,
-        "5aa7cfc0e5b5b00015693143": 6,
-        "5aa7e454e5b5b0214e506fa2": 6,
-        "5aa7e4a4e5b5b000137b76f2": 1,
-        "5b40e2bc5acfc40016388216": 8,
-        "5c091a4e0db834001d5addc8": 1,
+        "5645bc214bdc2d363b8b4571": 11,
+        "572b7fa124597762b472f9d2": 1,
+        "59e770f986f7742cbe3164ef": 8,
+        "5a7c4850e899ef00150be885": 48,
+        "5aa7cfc0e5b5b00015693143": 20,
+        "5aa7e276e5b5b000171d0647": 1,
+        "5aa7e454e5b5b0214e506fa2": 18,
+        "5aa7e4a4e5b5b000137b76f2": 5,
+        "5b40e2bc5acfc40016388216": 17,
+        "5c091a4e0db834001d5addc8": 2,
         "5ca20ee186f774799474abc2": 1,
-        "5f60e6403b85f6263c14558c": 1,
-        "5f60e7788adaa7100c3adb49": 4,
-        "603618feffd42c541047f771": 2,
-        "65719f0775149d62ce0a670b": 11
+        "5f60e6403b85f6263c14558c": 4,
+        "5f60e7788adaa7100c3adb49": 6,
+        "603618feffd42c541047f771": 6,
+        "65719f0775149d62ce0a670b": 23
       },
       "Holster": {},
       "Pockets": {
@@ -2458,7 +2463,8 @@
         "57372140245977611f70ee91",
         "59e6906286f7746c9f75e847",
         "57a0dfb82459774d3078b56c",
-        "5a608bf24f39f98ffc77720e"
+        "5a608bf24f39f98ffc77720e",
+        "58dd3ad986f77403051cba8f"
       ],
       "SpecialLoot": [],
       "TacticalVest": [
@@ -2783,6 +2789,17 @@
           "5a16b8a9fcdbcb00165aa6ca"
         ]
       },
+      "5aa7e276e5b5b000171d0647": {
+        "Helmet_back": [
+          "657bc0d8a1c61ee0c303632f"
+        ],
+        "Helmet_ears": [
+          "657bc107aab96fccee08be9f"
+        ],
+        "Helmet_top": [
+          "657bc06daab96fccee08be9b"
+        ]
+      },
       "5aa7e454e5b5b0214e506fa2": {
         "Helmet_back": [
           "657f92acada5fadd1f07a57e"
@@ -2902,6 +2919,35 @@
         ],
         "Helmet_top": [
           "657112234269e9a568089eac"
+        ]
+      },
+      "5b44cf1486f77431723e3d05": {
+        "Back_plate": [
+          "656fa8d700d62bcd2e024084"
+        ],
+        "Collar": [
+          "6575c3ec52b7f8c76a05ee39"
+        ],
+        "Front_plate": [
+          "656fa8d700d62bcd2e024084"
+        ],
+        "Left_side_plate": [
+          "6557458f83942d705f0c4962"
+        ],
+        "Right_side_plate": [
+          "6557458f83942d705f0c4962"
+        ],
+        "Soft_armor_back": [
+          "6575c3beefc786cd9101a5ed"
+        ],
+        "Soft_armor_front": [
+          "6575c3b3dc9932aed601c5f4"
+        ],
+        "Soft_armor_left": [
+          "6575c3cdc6700bd6b40e8a90"
+        ],
+        "soft_armor_right": [
+          "6575c3dfdc9932aed601c5f8"
         ]
       },
       "5b44d0de86f774503d30cba8": {
@@ -3145,6 +3191,35 @@
           "5ca2113f86f7740b2547e1d2"
         ]
       },
+      "5ca2151486f774244a3b8d30": {
+        "Back_plate": [
+          "65573fa5655447403702a816"
+        ],
+        "Collar": [
+          "6575dd769d3a0ddf660b904b"
+        ],
+        "Front_plate": [
+          "65573fa5655447403702a816"
+        ],
+        "Groin": [
+          "6575dd800546f8b1de093df6"
+        ],
+        "Groin_back": [
+          "6575dd94945bf78edd04c43c"
+        ],
+        "Soft_armor_back": [
+          "6575dd519e27f4a85e081146"
+        ],
+        "Soft_armor_front": [
+          "6575dd3e9e27f4a85e081142"
+        ],
+        "Soft_armor_left": [
+          "6575dd64945bf78edd04c438"
+        ],
+        "soft_armor_right": [
+          "6575dd6e9d3a0ddf660b9047"
+        ]
+      },
       "5ca21c6986f77479963115a7": {
         "Back_plate": [
           "65573fa5655447403702a816"
@@ -3265,7 +3340,8 @@
       },
       "649ec2f3961514b22506b111": {
         "mod_scope": [
-          "609a63b6e2ff132951242d09"
+          "609a63b6e2ff132951242d09",
+          "5c0505e00db834001b735073"
         ]
       },
       "649ec87d8007560a9001ab36": {

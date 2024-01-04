@@ -2768,22 +2768,6 @@
       ]
     },
     "mods": {
-	"5ea17ca01412a1425304d1c0": {
-        "mod_nvg": ["5ea18c84ecf1982c7712d9a2", "5c0558060db834001b735271", "5a16b8a9fcdbcb00165aa6ca"],
-        "Helmet_top": ["657f9a55c6679fefb3051e19"],
-        "Helmet_back": ["657f9a94ada5fadd1f07a589"]
-    },	
-		"5c0e625a86f7742d77340f62": {
-			"Front_plate": ["656f611f94b480b8a500c0db", "656f603f94b480b8a500c0d6", "656f57dc27aed95beb08f628", "656f63c027aed95beb08f62c"],
-			"Back_plate": ["656f9d5900d62bcd2e02407c", "656fa99800d62bcd2e024088", "656fa8d700d62bcd2e024084", "656fae5f7c2d57afe200c0d7", "656faf0ca0dce000a2020f77", "656fa0fb498d1b7e3e071d9c", "656fa76500d62bcd2e024080", "656fafe3498d1b7e3e071da4", "656fa25e94b480b8a500c0e0", "656fad8c498d1b7e3e071da0", "656fac30c6baea13cd07e10c", "656fa61e94b480b8a500c0e8", "656fb21fa0dce000a2020f7c", "656f9fa0498d1b7e3e071d98", "656fb0bd7c2d57afe200c0dc", "656fa53d94b480b8a500c0e4", "655746010177119f4a097ff7", "64afdcb83efdfea28601d041", "65573fa5655447403702a816", "64afc71497cf3a403c01ff38"],
-			"Left_side_plate": ["6557458f83942d705f0c4962", "64afdb577bb3bfe8fe03fd1d", "64afd81707e2cf40e903a316"],
-			"Right_side_plate": ["6557458f83942d705f0c4962", "64afdb577bb3bfe8fe03fd1d", "64afd81707e2cf40e903a316"],
-			"Soft_armor_front": ["65764275d8537eb26a0355e9"],
-			"Soft_armor_back": ["657642b0e6d5dd75f40688a5"],
-			"Soft_armor_left": ["6576434820cc24d17102b148"],
-			"soft_armor_right": ["657643732bc38ef78e076477"],
-			"Collar": ["657643a220cc24d17102b14c"]
-		},
       "5448bd6b4bdc2dfc2f8b4569": {
         "mod_magazine": [
           "5448c12b4bdc2d02308b456f"
@@ -2827,93 +2811,6 @@
         ],
         "soft_armor_right": [
           "6575ce5befc786cd9101a671"
-        ]
-      },
-      "5ab8dced86f774646209ec87": {
-        "Back_plate": [
-          "656fa25e94b480b8a500c0e0"
-        ],
-        "Front_plate": [
-          "656fa25e94b480b8a500c0e0"
-        ],
-        "Soft_armor_back": [
-          "6570f71dd67d0309980a7af8"
-        ],
-        "Soft_armor_front": [
-          "6570f6e774d84423df065f21"
-        ],
-        "Soft_armor_left": [
-          "6570f74774d84423df065f25"
-        ],
-        "soft_armor_right": [
-          "6570f79c4c65ab77a6015121"
-        ]
-      },
-      "5aa7d193e5b5b000171d063f": {
-        "Helmet_back": [
-          "657bb79ba1c61ee0c303631a"
-        ],
-        "Helmet_ears": [
-          "657bb7d7b30eca9763051176"
-        ],
-        "Helmet_top": [
-          "657bb70486c7f9ef7a009936"
-        ]
-      },
-      "5aa7cfc0e5b5b00015693143": {
-        "Helmet_back": [
-          "657bab6ec6f689d3a205b85f"
-        ],
-        "Helmet_ears": [
-          "657babc6f58ba5a6250107a2"
-        ],
-        "Helmet_top": [
-          "657baaf0b7e9ca9a02045c02"
-        ]
-      },
-      "5a7c4850e899ef00150be885": {
-        "Helmet_back": [
-          "657bab6ec6f689d3a205b85f"
-        ],
-        "Helmet_ears": [
-          "657babc6f58ba5a6250107a2"
-        ],
-        "Helmet_top": [
-          "657baaf0b7e9ca9a02045c02"
-        ]
-      },
-      "5aa7d03ae5b5b00016327db5": {
-        "helmet_back": [
-          "654a91068e1ce698150fd1e2"
-        ],
-        "helmet_ears": [
-          "654a9189bcc67a392b056c79"
-        ],
-        "helmet_top": [
-          "654a90aff4f81a421b0a7c86"
-        ]
-      },
-      "5ab8e79e86f7742d8b372e78": {
-        "Back_plate": [
-          "65573fa5655447403702a816"
-        ],
-        "Collar": [
-          "657326bc5d3a3129fb05f36b"
-        ],
-        "Front_plate": [
-          "656f611f94b480b8a500c0db"
-        ],
-        "Soft_armor_back": [
-          "657326978c1cc6dcd9098b56"
-        ],
-        "Soft_armor_front": [
-          "65732688d9d89ff7ac0d9c4c"
-        ],
-        "Soft_armor_left": [
-          "657326a28c1cc6dcd9098b5a"
-        ],
-        "soft_armor_right": [
-          "657326b08c1cc6dcd9098b5e"
         ]
       },
       "5580223e4bdc2d1c128b457f": {
@@ -3769,6 +3666,17 @@
           "58d2947e86f77447aa070d53"
         ]
       },
+      "5a7c4850e899ef00150be885": {
+        "Helmet_back": [
+          "657bab6ec6f689d3a205b85f"
+        ],
+        "Helmet_ears": [
+          "657babc6f58ba5a6250107a2"
+        ],
+        "Helmet_top": [
+          "657baaf0b7e9ca9a02045c02"
+        ]
+      },
       "5a957c3fa2750c00137fa5f7": {
         "mod_foregrip": [
           "5c87ca002e221600114cb150"
@@ -3831,6 +3739,39 @@
           "6272370ee4013c5d7e31f418"
         ]
       },
+      "5aa7cfc0e5b5b00015693143": {
+        "Helmet_back": [
+          "657bab6ec6f689d3a205b85f"
+        ],
+        "Helmet_ears": [
+          "657babc6f58ba5a6250107a2"
+        ],
+        "Helmet_top": [
+          "657baaf0b7e9ca9a02045c02"
+        ]
+      },
+      "5aa7d03ae5b5b00016327db5": {
+        "helmet_back": [
+          "654a91068e1ce698150fd1e2"
+        ],
+        "helmet_ears": [
+          "654a9189bcc67a392b056c79"
+        ],
+        "helmet_top": [
+          "654a90aff4f81a421b0a7c86"
+        ]
+      },
+      "5aa7d193e5b5b000171d063f": {
+        "Helmet_back": [
+          "657bb79ba1c61ee0c303631a"
+        ],
+        "Helmet_ears": [
+          "657bb7d7b30eca9763051176"
+        ],
+        "Helmet_top": [
+          "657bb70486c7f9ef7a009936"
+        ]
+      },
       "5aa7e276e5b5b000171d0647": {
         "mod_equipment": [
           "5aa7e373e5b5b000137b76f0"
@@ -3867,6 +3808,49 @@
       "5ab626e4d8ce87272e4c6e43": {
         "mod_stock": [
           "5a0c59791526d8dba737bba7"
+        ]
+      },
+      "5ab8dced86f774646209ec87": {
+        "Back_plate": [
+          "656fa25e94b480b8a500c0e0"
+        ],
+        "Front_plate": [
+          "656fa25e94b480b8a500c0e0"
+        ],
+        "Soft_armor_back": [
+          "6570f71dd67d0309980a7af8"
+        ],
+        "Soft_armor_front": [
+          "6570f6e774d84423df065f21"
+        ],
+        "Soft_armor_left": [
+          "6570f74774d84423df065f25"
+        ],
+        "soft_armor_right": [
+          "6570f79c4c65ab77a6015121"
+        ]
+      },
+      "5ab8e79e86f7742d8b372e78": {
+        "Back_plate": [
+          "65573fa5655447403702a816"
+        ],
+        "Collar": [
+          "657326bc5d3a3129fb05f36b"
+        ],
+        "Front_plate": [
+          "656f611f94b480b8a500c0db"
+        ],
+        "Soft_armor_back": [
+          "657326978c1cc6dcd9098b56"
+        ],
+        "Soft_armor_front": [
+          "65732688d9d89ff7ac0d9c4c"
+        ],
+        "Soft_armor_left": [
+          "657326a28c1cc6dcd9098b5a"
+        ],
+        "soft_armor_right": [
+          "657326b08c1cc6dcd9098b5e"
         ]
       },
       "5abcbc27d8ce8700182eceeb": {
@@ -4463,6 +4447,9 @@
         ],
         "Helmet_top": [
           "6571133d22996eaf11088200"
+        ],
+        "mod_equipment": [
+          "5c0919b50db834001b7ce3b9"
         ]
       },
       "5c0e3eb886f7742015526062": {
@@ -4574,6 +4561,61 @@
           "657080a212755ae0d907ad04"
         ]
       },
+      "5c0e625a86f7742d77340f62": {
+        "Back_plate": [
+          "656f9d5900d62bcd2e02407c",
+          "656fa99800d62bcd2e024088",
+          "656fa8d700d62bcd2e024084",
+          "656fae5f7c2d57afe200c0d7",
+          "656faf0ca0dce000a2020f77",
+          "656fa0fb498d1b7e3e071d9c",
+          "656fa76500d62bcd2e024080",
+          "656fafe3498d1b7e3e071da4",
+          "656fa25e94b480b8a500c0e0",
+          "656fad8c498d1b7e3e071da0",
+          "656fac30c6baea13cd07e10c",
+          "656fa61e94b480b8a500c0e8",
+          "656fb21fa0dce000a2020f7c",
+          "656f9fa0498d1b7e3e071d98",
+          "656fb0bd7c2d57afe200c0dc",
+          "656fa53d94b480b8a500c0e4",
+          "655746010177119f4a097ff7",
+          "64afdcb83efdfea28601d041",
+          "65573fa5655447403702a816",
+          "64afc71497cf3a403c01ff38"
+        ],
+        "Collar": [
+          "657643a220cc24d17102b14c"
+        ],
+        "Front_plate": [
+          "656f611f94b480b8a500c0db",
+          "656f603f94b480b8a500c0d6",
+          "656f57dc27aed95beb08f628",
+          "656f63c027aed95beb08f62c"
+        ],
+        "Left_side_plate": [
+          "6557458f83942d705f0c4962",
+          "64afdb577bb3bfe8fe03fd1d",
+          "64afd81707e2cf40e903a316"
+        ],
+        "Right_side_plate": [
+          "6557458f83942d705f0c4962",
+          "64afdb577bb3bfe8fe03fd1d",
+          "64afd81707e2cf40e903a316"
+        ],
+        "Soft_armor_back": [
+          "657642b0e6d5dd75f40688a5"
+        ],
+        "Soft_armor_front": [
+          "65764275d8537eb26a0355e9"
+        ],
+        "Soft_armor_left": [
+          "6576434820cc24d17102b148"
+        ],
+        "soft_armor_right": [
+          "657643732bc38ef78e076477"
+        ]
+      },
       "5c0e722886f7740458316a57": {
         "Back_plate": [
           "656fa0fb498d1b7e3e071d9c"
@@ -4671,6 +4713,41 @@
         ],
         "soft_armor_right": [
           "6575dd6e9d3a0ddf660b9047"
+        ]
+      },
+      "5ca21c6986f77479963115a7": {
+        "Back_plate": [
+          "65573fa5655447403702a816"
+        ],
+        "Collar": [
+          "6575d9d8945bf78edd04c42b"
+        ],
+        "Front_plate": [
+          "65573fa5655447403702a816"
+        ],
+        "Groin": [
+          "6575d9e7945bf78edd04c42f"
+        ],
+        "Groin_back": [
+          "6575d9f816c2762fba00588d"
+        ],
+        "Left_side_plate": [
+          "64afd81707e2cf40e903a316"
+        ],
+        "Right_side_plate": [
+          "64afd81707e2cf40e903a316"
+        ],
+        "Soft_armor_back": [
+          "6575d9b8945bf78edd04c427"
+        ],
+        "Soft_armor_front": [
+          "6575d9a79e27f4a85e08112d"
+        ],
+        "Soft_armor_left": [
+          "6575d9c40546f8b1de093dee"
+        ],
+        "soft_armor_right": [
+          "6575d9cf0546f8b1de093df2"
         ]
       },
       "5cbda392ae92155f3c17c39f": {
@@ -4872,6 +4949,19 @@
         ],
         "mod_stock": [
           "5ea03e9400685063ec28bfa4"
+        ]
+      },
+      "5ea17ca01412a1425304d1c0": {
+        "Helmet_back": [
+          "657f9a94ada5fadd1f07a589"
+        ],
+        "Helmet_top": [
+          "657f9a55c6679fefb3051e19"
+        ],
+        "mod_nvg": [
+          "5ea18c84ecf1982c7712d9a2",
+          "5c0558060db834001b735271",
+          "5a16b8a9fcdbcb00165aa6ca"
         ]
       },
       "5f5f41476bdad616ad46d631": {
