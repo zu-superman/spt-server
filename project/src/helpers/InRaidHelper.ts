@@ -229,6 +229,8 @@ export class InRaidHelper
         // Scav client data has standing values of 0 for all traders, DO NOT RUN ON SCAV RAIDS
         this.applyTraderStandingAdjustments(pmcData.TradersInfo, saveProgressRequest.profile.TradersInfo);
 
+        this.updateProfileAchievements(pmcData, saveProgressRequest.profile.Achievements);
+
         this.profileFixerService.checkForAndFixPmcProfileIssues(pmcData);
     }
 
@@ -463,6 +465,24 @@ export class InRaidHelper
                 // Difference found, update server profile with values from client profile
                 tradersServerProfile[traderId].standing = clientProfileTrader.standing;
             }
+        }
+    }
+
+    /**
+     * Transfer client achievements into profile
+     * @param profile Player pmc profile
+     * @param clientAchievements Achievements from client
+     */
+    protected updateProfileAchievements(profile: IPmcData, clientAchievements: Record<string, number>): void
+    {
+        if (!profile.Achievements)
+        {
+            profile.Achievements = {};
+        }
+
+        for (const achievementId in clientAchievements)
+        {
+            profile.Achievements[achievementId] = clientAchievements[achievementId];
         }
     }
 
