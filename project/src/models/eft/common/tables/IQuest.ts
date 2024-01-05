@@ -86,7 +86,11 @@ export interface AvailableForCounter
 export interface CounterCondition
 {
     id: string;
+    completeInSeconds: number
     dynamicLocale: boolean
+    energy?: IValueCompare
+    hydration?: IValueCompare
+    time?: IValueCompare
     target: string[] | string; // TODO: some objects have an array and some are just strings, thanks bsg very cool
     compareMethod?: string;
     value?: string;
@@ -97,14 +101,26 @@ export interface CounterCondition
     weaponModsExclusive?: string[][];
     enemyEquipmentInclusive?: string[][];
     enemyEquipmentExclusive?: string[][];
-    weaponCaliber: string[]
-    savageRole: any[]
+    weaponCaliber?: string[]
+    savageRole: string[]
     status?: string[];
     bodyPart?: string[];
     daytime?: IDaytimeCounter;
     conditionType?: string
-    enemyHealthEffects: any[]
-    resetOnSessionEnd: boolean
+    enemyHealthEffects?: IEnemyHealthEffect[]
+    resetOnSessionEnd?: boolean
+}
+
+export interface IEnemyHealthEffect
+{
+    bodyParts: string[]
+    effects: string[]
+}
+
+export interface IValueCompare
+{
+    compareMethod: string
+    value: number
 }
 
 export interface ICounterConditionDistance
