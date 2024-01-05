@@ -675,22 +675,22 @@ export class QuestController
     }
 
     /**
-     * Returns a list of quests that should be failed when a quest is completed
+     * Return a list of quests that would fail when supplied quest is completed
      * @param completedQuestId quest completed id
-     * @returns array of quests
+     * @returns array of IQuest objects
      */
     protected getQuestsFailedByCompletingQuest(completedQuestId: string): IQuest[]
     {
         const questsInDb = this.questHelper.getQuestsFromDb();
-        return questsInDb.filter((x) =>
+        return questsInDb.filter((quest) =>
         {
             // No fail conditions, exit early
-            if (!x.conditions.Fail || x.conditions.Fail.length === 0)
+            if (!quest.conditions.Fail || quest.conditions.Fail.length === 0)
             {
                 return false;
             }
 
-            return x.conditions.Fail.some((y) => y.target?.includes(completedQuestId));
+            return quest.conditions.Fail.some((condition) => condition.target?.includes(completedQuestId));
         });
     }
 
