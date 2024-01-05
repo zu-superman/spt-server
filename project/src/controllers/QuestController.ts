@@ -526,7 +526,10 @@ export class QuestController
                 currentRepeatable.inactiveQuests.push(repeatableQuest);
 
                 // Need to remove redundant scav quest object as its no longer necessary, is tracked in pmc profile
-                this.removeQuestFromScavProfile(sessionID, repeatableQuest._id);
+                if (repeatableQuest.side === "Scav")
+                {
+                    this.removeQuestFromScavProfile(sessionID, repeatableQuest._id);
+                }
             }
         }
 
