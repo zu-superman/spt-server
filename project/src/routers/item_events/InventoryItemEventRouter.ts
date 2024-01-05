@@ -97,7 +97,7 @@ export class InventoryItemEventRouter extends ItemEventRouterDefinition
             case ItemEventActions.SET_FAVORITE_ITEMS:
                 return this.inventoryCallbacks.setFavoriteItem(pmcData, body, sessionID);
             default:
-                throw new Error(`Unhandled event ${url}`);
+                throw new Error(`Unhandled event ${url} request: ${JSON.stringify(body)}`);
         }
     }
 }
