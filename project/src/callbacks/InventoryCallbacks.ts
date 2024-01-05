@@ -179,6 +179,10 @@ export class InventoryCallbacks
         return this.inventoryController.setFavoriteItem(pmcData, body, sessionId);
     }
 
+    /**
+     * TODO - MOVE INTO QUEST CODE
+     * Handle game/profile/items/moving - QuestFail
+     */
     public failQuest(pmcData: IPmcData, request: IFailQuestRequestData, sessionID: string): IItemEventRouterResponse
     {
         return this.questController.failQuest(pmcData, request, sessionID);
