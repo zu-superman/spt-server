@@ -687,7 +687,7 @@ export class QuestController
                 return false;
             }
 
-            return x.conditions.Fail.some((y) => y.target.includes(completedQuestId));
+            return x.conditions.Fail.some((y) => y.target?.includes(completedQuestId));
         });
     }
 
