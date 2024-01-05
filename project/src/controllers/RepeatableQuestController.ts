@@ -182,7 +182,7 @@ export class RepeatableQuestController
                 }
             }
 
-            // create stupid redundant change requirements from quest data
+            // Create stupid redundant change requirements from quest data
             for (const quest of currentRepeatableQuestType.activeQuests)
             {
                 currentRepeatableQuestType.changeRequirement[quest._id] = {

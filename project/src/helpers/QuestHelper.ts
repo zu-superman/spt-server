@@ -10,7 +10,7 @@ import { TraderHelper } from "@spt-aki/helpers/TraderHelper";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
 import { Common, IQuestStatus } from "@spt-aki/models/eft/common/tables/IBotBase";
 import { Item } from "@spt-aki/models/eft/common/tables/IItem";
-import { AvailableForConditions, IQuest, Reward } from "@spt-aki/models/eft/common/tables/IQuest";
+import { IQuest, IQuestCondition, IQuestReward } from "@spt-aki/models/eft/common/tables/IQuest";
 import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEventRouterResponse";
 import { IAcceptQuestRequestData } from "@spt-aki/models/eft/quests/IAcceptQuestRequestData";
 import { IFailQuestRequestData } from "@spt-aki/models/eft/quests/IFailQuestRequestData";
@@ -78,7 +78,7 @@ export class QuestHelper
      * @param condition Quest condition
      * @returns true if player level is greater than or equal to quest
      */
-    public doesPlayerLevelFulfilCondition(playerLevel: number, condition: AvailableForConditions): boolean
+    public doesPlayerLevelFulfilCondition(playerLevel: number, condition: IQuestCondition): boolean
     {
         if (condition.conditionType === "Level")
         {
@@ -198,7 +198,7 @@ export class QuestHelper
      * @param profile Player profile
      * @returns true if loyalty is high enough to fulfill quest requirement
      */
-    public traderLoyaltyLevelRequirementCheck(questProperties: AvailableForConditions, profile: IPmcData): boolean
+    public traderLoyaltyLevelRequirementCheck(questProperties: IQuestCondition, profile: IPmcData): boolean
     {
         const requiredLoyaltyLevel = Number(questProperties.value);
         const trader = profile.TradersInfo[<string>questProperties.target];
@@ -216,7 +216,7 @@ export class QuestHelper
      * @param profile Player profile
      * @returns true if standing is high enough to fulfill quest requirement
      */
-    public traderStandingRequirementCheck(questProperties: AvailableForConditions, profile: IPmcData): boolean
+    public traderStandingRequirementCheck(questProperties: IQuestCondition, profile: IPmcData): boolean
     {
         const requiredStanding = Number(questProperties.value);
         const trader = profile.TradersInfo[<string>questProperties.target];
@@ -253,17 +253,17 @@ export class QuestHelper
     }
 
     /**
-     * take reward item from quest and set FiR status + fix stack sizes + fix mod Ids
-     * @param reward Reward item to fix
+     * Take reward item from quest and set FiR status + fix stack sizes + fix mod Ids
+     * @param questReward Reward item to fix
      * @returns Fixed rewards
      */
-    protected processReward(reward: Reward): Reward[]
+    protected processReward(questReward: IQuestReward): Item[]
     {
-        let rewardItems: Reward[] = [];
+        let rewardItems: Item[] = [];
         let targets: Item[] = [];
         const mods: Item[] = [];
 
-        for (const item of reward.items)
+        for (const item of questReward.items)
         {
             // reward items are granted Found in Raid status
             if (!item.upd)
@@ -274,7 +274,7 @@ export class QuestHelper
             item.upd.SpawnedInSession = true;
 
             // separate base item and mods, fix stacks
-            if (item._id === reward.target)
+            if (item._id === questReward.target)
             {
                 if (
                     (item.parentId !== undefined) && (item.parentId === "hideout")
@@ -311,7 +311,7 @@ export class QuestHelper
                 items.push(this.jsonUtil.clone(mod));
             }
 
-            rewardItems = rewardItems.concat(<Reward[]>this.ragfairServerHelper.reparentPresets(target, items));
+            rewardItems = rewardItems.concat(this.ragfairServerHelper.reparentPresets(target, items));
         }
 
         return rewardItems;
@@ -323,11 +323,13 @@ export class QuestHelper
      * @param status Quest status that holds the items (Started, Success, Fail)
      * @returns array of items with the correct maxStack
      */
-    public getQuestRewardItems(quest: IQuest, status: QuestStatus): Reward[]
+    public getQuestRewardItems(quest: IQuest, status: QuestStatus): Item[]
     {
         // Iterate over all rewards with the desired status, flatten out items that have a type of Item
-        const questRewards = quest.rewards[QuestStatus[status]].flatMap((reward: Reward) =>
-            reward.type === "Item" ? this.processReward(reward) : []
+        const questRewards = quest.rewards[QuestStatus[status]].flatMap((reward: IQuestReward) =>
+            reward.type === "Item"
+                ? this.processReward(reward)
+                : []
         );
 
         return questRewards;
@@ -410,7 +412,7 @@ export class QuestHelper
             const acceptedQuestCondition = quest.conditions.AvailableForStart.find((x) =>
             {
                 return x.conditionType === "Quest"
-                    && x.target === startedQuestId
+                    && x.target.includes(startedQuestId)
                     && x.status[0] === QuestStatus.Started;
             });
 
@@ -466,7 +468,7 @@ export class QuestHelper
             const acceptedQuestCondition = q.conditions.AvailableForStart.find((c) =>
             {
                 return c.conditionType === "Quest"
-                    && c.target === failedQuestId
+                    && c.target.includes(failedQuestId)
                     && c.status[0] === QuestStatus.Fail;
             });
 
@@ -495,7 +497,7 @@ export class QuestHelper
      */
     public applyMoneyBoost(quest: IQuest, multiplier: number, questStatus: QuestStatus): IQuest
     {
-        const rewards: Reward[] = quest.rewards?.[QuestStatus[questStatus]] ?? [];
+        const rewards: IQuestReward[] = quest.rewards?.[QuestStatus[questStatus]] ?? [];
         for (const reward of rewards)
         {
             if (reward.type === "Item")
@@ -786,7 +788,7 @@ export class QuestHelper
         state: QuestStatus,
         sessionId: string,
         questResponse: IItemEventRouterResponse,
-    ): Reward[]
+    ): Item[]
     {
         // Repeatable quest base data is always in PMCProfile, `profileData` may be scav profile
         // TODO: consider moving repeatable quest data to profile-agnostic location
@@ -809,7 +811,7 @@ export class QuestHelper
 
         // e.g. 'Success' or 'AvailableForFinish'
         const questStateAsString = QuestStatus[state];
-        for (const reward of <Reward[]>questDetails.rewards[questStateAsString])
+        for (const reward of <IQuestReward[]>questDetails.rewards[questStateAsString])
         {
             switch (reward.type)
             {
@@ -873,7 +875,7 @@ export class QuestHelper
      */
     protected findAndAddHideoutProductionIdToProfile(
         pmcData: IPmcData,
-        craftUnlockReward: Reward,
+        craftUnlockReward: IQuestReward,
         questDetails: IQuest,
         sessionID: string,
         response: IItemEventRouterResponse,

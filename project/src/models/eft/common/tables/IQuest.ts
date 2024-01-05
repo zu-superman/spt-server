@@ -9,7 +9,7 @@ export interface IQuest
     QuestName?: string;
     _id: string;
     canShowNotificationsInGame: boolean;
-    conditions: IQuestConditions;
+    conditions: IQuestConditionTypes;
     description: string;
     failMessageText: string;
     name: string;
@@ -26,8 +26,11 @@ export interface IQuest
     secretQuest: boolean;
     startedMessageText: string;
     successMessageText: string;
+    acceptPlayerMessage: string;
+    declinePlayerMessage: string;
+    completePlayerMessage: string;
     templateId: string;
-    rewards: IRewards;
+    rewards: IQuestRewards;
     /** Becomes 'AppearStatus' inside client */
     status: string | number;
     KeyQuest: boolean;
@@ -38,26 +41,27 @@ export interface IQuest
     sptStatus?: QuestStatus;
 }
 
-export interface IQuestConditions
+export interface IQuestConditionTypes
 {
-    Started: AvailableForConditions[];
-    AvailableForFinish: AvailableForConditions[];
-    AvailableForStart: AvailableForConditions[];
-    Success: AvailableForConditions[];
-    Fail: AvailableForConditions[];
+    Started: IQuestCondition[];
+    AvailableForFinish: IQuestCondition[];
+    AvailableForStart: IQuestCondition[];
+    Success: IQuestCondition[];
+    Fail: IQuestCondition[];
 }
 
-export interface AvailableForConditions
+export interface IQuestCondition
 {
     id: string;
-    index: number;
-    parentId: string;
-    isEncoded: boolean;
+    index?: number;
+    compareMethod?: string
     dynamicLocale: boolean;
-    value?: string | number;
-    compareMethod?: string;
     visibilityConditions?: VisibilityCondition[];
-    target?: string | string[]; // TODO: split each availableForX object into each type: FindItem, HandoverItem, Level, Quest, TraderLoyalty etc
+    globalQuestCounterId?: string
+    parentId?: string;
+    target: string[] | string;
+    value?: string | number;
+    type?: boolean;
     status?: QuestStatus[];
     availableAfter?: number;
     dispersion?: number;
@@ -67,42 +71,42 @@ export interface AvailableForConditions
     dogtagLevel?: number;
     maxDurability?: number;
     minDurability?: number;
-    counter?: AvailableForCounter;
+    counter?: IQuestConditionCounter;
     plantTime?: number;
     zoneId?: string;
-    type?: boolean;
     countInRaid?: boolean;
-    globalQuestCounterId?: string;
     completeInSeconds?: number
-    conditionType?: string
+    isEncoded?: boolean;
+    conditionType?: string;
 }
 
-export interface AvailableForCounter
+export interface IQuestConditionCounter
 {
     id: string;
-    conditions: CounterCondition[];
+    conditions: IQuestConditionCounterCondition[];
 }
 
-export interface CounterCondition
+export interface IQuestConditionCounterCondition
 {
     id: string;
-    completeInSeconds: number
     dynamicLocale: boolean
+    target?: string[] | string; // TODO: some objects have an array and some are just strings, thanks bsg very cool
+    completeInSeconds?: number
     energy?: IValueCompare
+    exitName?: string;
     hydration?: IValueCompare
     time?: IValueCompare
-    target: string[] | string; // TODO: some objects have an array and some are just strings, thanks bsg very cool
     compareMethod?: string;
-    value?: string;
+    value?: number;
     weapon?: string[];
-    distance: ICounterConditionDistance
+    distance?: ICounterConditionDistance
     equipmentInclusive?: string[][];
     weaponModsInclusive?: string[][];
     weaponModsExclusive?: string[][];
     enemyEquipmentInclusive?: string[][];
     enemyEquipmentExclusive?: string[][];
     weaponCaliber?: string[]
-    savageRole: string[]
+    savageRole?: string[]
     status?: string[];
     bodyPart?: string[];
     daytime?: IDaytimeCounter;
@@ -138,26 +142,28 @@ export interface IDaytimeCounter
 export interface VisibilityCondition
 {
     id: string;
-    value: number;
-    dynamicLocale: boolean;
+    target: string
+    value?: number;
+    dynamicLocale?: boolean;
     oneSessionOnly: boolean;
+    conditionType: string;
 }
 
-export interface IRewards
+export interface IQuestRewards
 {
-    AvailableForStart: Reward[];
-    AvailableForFinish: Reward[];
-    Started: Reward[];
-    Success: Reward[];
-    Fail: Reward[];
-    FailRestartable: Reward[];
-    Expired: Reward[];
+    AvailableForStart?: IQuestReward[];
+    AvailableForFinish?: IQuestReward[];
+    Started?: IQuestReward[];
+    Success?: IQuestReward[];
+    Fail?: IQuestReward[];
+    FailRestartable?: IQuestReward[];
+    Expired?: IQuestReward[];
 }
 
-export interface Reward extends Item
+export interface IQuestReward
 {
     value?: string | number;
-    id: string;
+    id?: string;
     type: QuestRewardType;
     index: number;
     target?: string;

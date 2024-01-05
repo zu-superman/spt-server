@@ -1,12 +1,12 @@
-import { IQuestConditions, IRewards } from "./IQuest"
+import { IQuestConditionTypes, IQuestRewards } from "./IQuest"
 
 export interface IAchievement
 {
     id: string
     imageUrl: string
     assetPath: string
-    rewards: IRewards
-    conditions: IQuestConditions
+    rewards: IQuestRewards
+    conditions: IQuestConditionTypes
     instantComplete: boolean
     showNotificationsInGame: boolean
     showProgress: boolean

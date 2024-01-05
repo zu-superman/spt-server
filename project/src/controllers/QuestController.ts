@@ -9,7 +9,7 @@ import { TraderHelper } from "@spt-aki/helpers/TraderHelper";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
 import { IQuestStatus } from "@spt-aki/models/eft/common/tables/IBotBase";
 import { Item } from "@spt-aki/models/eft/common/tables/IItem";
-import { AvailableForConditions, IQuest, Reward } from "@spt-aki/models/eft/common/tables/IQuest";
+import { IQuest, IQuestCondition } from "@spt-aki/models/eft/common/tables/IQuest";
 import { IPmcDataRepeatableQuest, IRepeatableQuest } from "@spt-aki/models/eft/common/tables/IRepeatableQuests";
 import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEventRouterResponse";
 import { IAcceptQuestRequestData } from "@spt-aki/models/eft/quests/IAcceptQuestRequestData";
@@ -135,7 +135,7 @@ export class QuestController
             for (const conditionToFulfil of questRequirements)
             {
                 // If the previous quest isn't in the user profile, it hasn't been completed or started
-                const prerequisiteQuest = profile.Quests.find((pq) => pq.qid === conditionToFulfil.target);
+                const prerequisiteQuest = profile.Quests.find((profileQuest) => conditionToFulfil.target.includes(profileQuest.qid));
                 if (!prerequisiteQuest)
                 {
                     haveCompletedPreviousQuest = false;
@@ -609,7 +609,7 @@ export class QuestController
         sessionID: string,
         pmcData: IPmcData,
         completedQuestId: string,
-        questRewards: Reward[],
+        questRewards: Item[],
     ): void
     {
         const quest = this.questHelper.getQuestFromDb(completedQuestId, pmcData);
@@ -637,7 +637,7 @@ export class QuestController
         {
             // If quest has prereq of completed quest + availableAfter value > 0 (quest has wait time)
             const nextQuestWaitCondition = quest.conditions.AvailableForStart.find((x) =>
-                x.target === completedQuestId && x.availableAfter > 0
+                x.target.includes(completedQuestId) && x.availableAfter > 0
             );
             if (nextQuestWaitCondition)
             {
@@ -687,7 +687,7 @@ export class QuestController
                 return false;
             }
 
-            return x.conditions.Fail.some((y) => y.target === completedQuestId);
+            return x.conditions.Fail.some((y) => y.target.includes(completedQuestId));
         });
     }
 
@@ -760,7 +760,7 @@ export class QuestController
         let handedInCount = 0;
 
         // Decrement number of items handed in
-        let handoverRequirements: AvailableForConditions;
+        let handoverRequirements: IQuestCondition;
         for (const condition of quest.conditions.AvailableForFinish)
         {
             if (
@@ -897,7 +897,7 @@ export class QuestController
     protected showQuestItemHandoverMatchError(
         handoverQuestRequest: IHandoverQuestRequestData,
         itemHandedOver: Item,
-        handoverRequirements: AvailableForConditions,
+        handoverRequirements: IQuestCondition,
         output: IItemEventRouterResponse,
     ): IItemEventRouterResponse
     {
