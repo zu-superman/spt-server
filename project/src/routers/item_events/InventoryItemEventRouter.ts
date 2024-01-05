@@ -42,6 +42,7 @@ export class InventoryItemEventRouter extends ItemEventRouterDefinition
             new HandledRoute(ItemEventActions.HIDEOUT_QTE_EVENT, false),
             new HandledRoute(ItemEventActions.REDEEM_PROFILE_REWARD, false),
             new HandledRoute(ItemEventActions.SET_FAVORITE_ITEMS, false),
+            new HandledRoute(ItemEventActions.QUEST_FAIL, false),
         ];
     }
 

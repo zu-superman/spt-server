@@ -317,7 +317,7 @@ export class InRaidHelper
             {
                 // Send failed message
                 const failBody: IFailQuestRequestData = {
-                    Action: "QuestComplete",
+                    Action: "QuestFail",
                     qid: postRaidQuest.qid,
                     removeExcessItems: true,
                 };

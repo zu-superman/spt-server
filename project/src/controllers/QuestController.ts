@@ -718,7 +718,7 @@ export class QuestController
             if (isActiveQuestInPlayerProfile)
             {
                 const failBody: IFailQuestRequestData = {
-                    Action: "QuestComplete",
+                    Action: "QuestFail",
                     qid: questToFail._id,
                     removeExcessItems: true,
                 };
@@ -938,5 +938,17 @@ export class QuestController
             sourceId: questId,
             type: "HandoverItem",
             value: counterValue };
+    }
+
+    /**
+     * Handle /client/game/profile/items/moving - QuestFail
+     * @param pmcData Pmc profile
+     * @param request Fail qeust request
+     * @param sessionID Session id
+     * @returns IItemEventRouterResponse
+     */
+    public failQuest(pmcData: IPmcData, request: IFailQuestRequestData, sessionID: string): IItemEventRouterResponse
+    {
+        return this.questHelper.failQuest(pmcData, request, sessionID);
     }
 }
