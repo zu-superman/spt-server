@@ -89,10 +89,10 @@ export class BotLevelGenerator
     }
 
     /**
-     * Get the highest level a bot can be relative to the players level, but no further than the max size from globals.exp_table
+     * Get the lowest level a bot can be relative to the players level, but no lower than 1
      * @param playerLevel Players current level
-     * @param relativeDeltaMax max delta above player level to go
-     * @returns highest level possible for bot
+     * @param relativeDeltaMin Min delta below player level to go
+     * @returns lowest level possible for bot
      */
     protected getLowestRelativeBotLevel(
         playerLevel: number,
