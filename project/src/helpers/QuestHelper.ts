@@ -412,8 +412,8 @@ export class QuestHelper
             const acceptedQuestCondition = quest.conditions.AvailableForStart.find((x) =>
             {
                 return x.conditionType === "Quest"
-                    && x.target.includes(startedQuestId)
-                    && x.status[0] === QuestStatus.Started;
+                    && x.target?.includes(startedQuestId)
+                    && x.status?.includes(QuestStatus.Started);
             });
 
             // Not found, skip quest

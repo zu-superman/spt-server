@@ -640,7 +640,7 @@ export class QuestController
         {
             // If quest has prereq of completed quest + availableAfter value > 0 (quest has wait time)
             const nextQuestWaitCondition = quest.conditions.AvailableForStart.find((x) =>
-                x.target.includes(completedQuestId) && x.availableAfter > 0
+                x.target?.includes(completedQuestId) && x.availableAfter > 0
             );
             if (nextQuestWaitCondition)
             {
