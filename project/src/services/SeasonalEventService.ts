@@ -27,8 +27,11 @@ export class SeasonalEventService
     protected httpConfig: IHttpConfig;
     protected weatherConfig: IWeatherConfig;
 
-    protected halloweenEventActive = undefined;
-    protected christmasEventActive = undefined;
+    protected halloweenEventActive: boolean = undefined;
+    protected christmasEventActive: boolean = undefined;
+
+    /** All events active at this point in time */
+    protected currentlyActiveEvents: SeasonalEventType[] = undefined;
 
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
@@ -217,14 +220,13 @@ export class SeasonalEventService
     public enableSeasonalEvents(sessionId: string): void
     {
         const globalConfig = this.databaseServer.getTables().globals.config;
-        if (this.christmasEventActive)
-        {
-            this.updateGlobalEvents(sessionId, globalConfig, SeasonalEventType.CHRISTMAS);
-        }
 
-        if (this.halloweenEventActive)
+        if (this.currentlyActiveEvents)
         {
-            this.updateGlobalEvents(sessionId, globalConfig, SeasonalEventType.HALLOWEEN);
+            for (const event of this.currentlyActiveEvents)
+            {
+                this.updateGlobalEvents(sessionId, globalConfig, event);
+            }
         }
     }
 
@@ -241,8 +243,17 @@ export class SeasonalEventService
             // Current date is between start/end dates
             if (currentDate >= eventStartDate && currentDate <= eventEndDate)
             {
-                this.christmasEventActive = SeasonalEventType[event.type] === SeasonalEventType.CHRISTMAS;
-                this.halloweenEventActive = SeasonalEventType[event.type] === SeasonalEventType.HALLOWEEN;
+                this.currentlyActiveEvents.push(SeasonalEventType[event.type]);
+
+                if (SeasonalEventType[event.type] === SeasonalEventType.CHRISTMAS)
+                {
+                    this.christmasEventActive = true;
+                }
+
+                if (SeasonalEventType[event.type] === SeasonalEventType.HALLOWEEN)
+                {
+                    this.halloweenEventActive = true;
+                }
             }
         }
     }
@@ -558,6 +569,6 @@ export class SeasonalEventService
 
     public enableSnow(): void
     {
-        this.weatherConfig.enableWinterEvent = true;
+        this.weatherConfig.forceWinterEvent = true;
     }
 }

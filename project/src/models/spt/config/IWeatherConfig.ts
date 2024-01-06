@@ -7,7 +7,7 @@ export interface IWeatherConfig extends IBaseConfig
     kind: "aki-weather";
     acceleration: number;
     weather: Weather;
-    enableWinterEvent: boolean;
+    forceWinterEvent: boolean;
 }
 
 export interface Weather
