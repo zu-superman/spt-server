@@ -83,6 +83,7 @@ export class BotGenerator
             role: role,
             playerLevel: 0,
             botRelativeLevelDeltaMax: 0,
+            botRelativeLevelDeltaMin: 0,
             botCountToGenerate: 1,
             botDifficulty: difficulty,
             isPlayerScav: true,

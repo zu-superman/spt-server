@@ -173,6 +173,7 @@
     "useDifficultyOverride": false,
     "difficulty": "AsOnline",
     "botRelativeLevelDeltaMax": 10,
+    "botRelativeLevelDeltaMin": 70,
     "_isUsec": "Percentage chance PMC will be USEC",
     "isUsec": 50,
     "chanceSameSideIsHostilePercent": 80,
