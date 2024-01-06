@@ -23,7 +23,6 @@ import { MatchCallbacks } from "@spt-aki/callbacks/MatchCallbacks";
 import { ModCallbacks } from "@spt-aki/callbacks/ModCallbacks";
 import { NoteCallbacks } from "@spt-aki/callbacks/NoteCallbacks";
 import { NotifierCallbacks } from "@spt-aki/callbacks/NotifierCallbacks";
-import { PresetBuildCallbacks } from "@spt-aki/callbacks/PresetBuildCallbacks";
 import { PresetCallbacks } from "@spt-aki/callbacks/PresetCallbacks";
 import { ProfileCallbacks } from "@spt-aki/callbacks/ProfileCallbacks";
 import { QuestCallbacks } from "@spt-aki/callbacks/QuestCallbacks";
@@ -150,7 +149,6 @@ import { HideoutItemEventRouter } from "@spt-aki/routers/item_events/HideoutItem
 import { InsuranceItemEventRouter } from "@spt-aki/routers/item_events/InsuranceItemEventRouter";
 import { InventoryItemEventRouter } from "@spt-aki/routers/item_events/InventoryItemEventRouter";
 import { NoteItemEventRouter } from "@spt-aki/routers/item_events/NoteItemEventRouter";
-import { PresetBuildItemEventRouter } from "@spt-aki/routers/item_events/PresetBuildItemEventRouter";
 import { QuestItemEventRouter } from "@spt-aki/routers/item_events/QuestItemEventRouter";
 import { RagfairItemEventRouter } from "@spt-aki/routers/item_events/RagfairItemEventRouter";
 import { RepairItemEventRouter } from "@spt-aki/routers/item_events/RepairItemEventRouter";
@@ -350,7 +348,6 @@ export class Container
         depContainer.registerType("IERouters", "InsuranceItemEventRouter");
         depContainer.registerType("IERouters", "InventoryItemEventRouter");
         depContainer.registerType("IERouters", "NoteItemEventRouter");
-        depContainer.registerType("IERouters", "PresetBuildItemEventRouter");
         depContainer.registerType("IERouters", "QuestItemEventRouter");
         depContainer.registerType("IERouters", "RagfairItemEventRouter");
         depContainer.registerType("IERouters", "RepairItemEventRouter");
@@ -443,9 +440,6 @@ export class Container
             useClass: InventoryItemEventRouter,
         });
         depContainer.register<NoteItemEventRouter>("NoteItemEventRouter", { useClass: NoteItemEventRouter });
-        depContainer.register<PresetBuildItemEventRouter>("PresetBuildItemEventRouter", {
-            useClass: PresetBuildItemEventRouter,
-        });
         depContainer.register<QuestItemEventRouter>("QuestItemEventRouter", { useClass: QuestItemEventRouter });
         depContainer.register<RagfairItemEventRouter>("RagfairItemEventRouter", { useClass: RagfairItemEventRouter });
         depContainer.register<RepairItemEventRouter>("RepairItemEventRouter", { useClass: RepairItemEventRouter });
@@ -632,7 +626,6 @@ export class Container
         depContainer.register<PostDBModLoader>("PostDBModLoader", { useClass: PostDBModLoader });
         depContainer.register<NoteCallbacks>("NoteCallbacks", { useClass: NoteCallbacks });
         depContainer.register<NotifierCallbacks>("NotifierCallbacks", { useClass: NotifierCallbacks });
-        depContainer.register<PresetBuildCallbacks>("PresetBuildCallbacks", { useClass: PresetBuildCallbacks });
         depContainer.register<PresetCallbacks>("PresetCallbacks", { useClass: PresetCallbacks });
         depContainer.register<ProfileCallbacks>("ProfileCallbacks", { useClass: ProfileCallbacks });
         depContainer.register<QuestCallbacks>("QuestCallbacks", { useClass: QuestCallbacks });

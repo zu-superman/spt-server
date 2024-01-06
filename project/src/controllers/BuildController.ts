@@ -7,7 +7,8 @@ import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
 import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEventRouterResponse";
 import { IPresetBuildActionRequestData } from "@spt-aki/models/eft/presetBuild/IPresetBuildActionRequestData";
 import { IRemoveBuildRequestData } from "@spt-aki/models/eft/presetBuild/IRemoveBuildRequestData";
-import { IMagazineBuild, IUserBuilds, IWeaponBuild } from "@spt-aki/models/eft/profile/IAkiProfile";
+import { IEquipmentBuild, IMagazineBuild, IUserBuilds, IWeaponBuild } from "@spt-aki/models/eft/profile/IAkiProfile";
+import { EquipmentBuildType } from "@spt-aki/models/enums/EquipmentBuildType";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { EventOutputHolder } from "@spt-aki/routers/EventOutputHolder";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
@@ -46,7 +47,7 @@ export class BuildController
         const playerSecureContainer = profile.characters.pmc.Inventory.items?.find((x) =>
             x.slotId === "SecuredContainer"
         );
-        const firstDefaultItemsSecureContainer = defaultEquipmentPresets[0]?.items?.find((x) =>
+        const firstDefaultItemsSecureContainer = defaultEquipmentPresets[0]?.Items?.find((x) =>
             x.slotId === "SecuredContainer"
         );
         if (playerSecureContainer && playerSecureContainer?._tpl !== firstDefaultItemsSecureContainer?._tpl)
@@ -55,7 +56,7 @@ export class BuildController
             for (const defaultPreset of defaultEquipmentPresets)
             {
                 // Find presets secure container
-                const secureContainer = defaultPreset.items.find((x) => x.slotId === "SecuredContainer");
+                const secureContainer = defaultPreset.Items.find((item) => item.slotId === "SecuredContainer");
                 if (secureContainer)
                 {
                     secureContainer._tpl = playerSecureContainer._tpl;
@@ -70,33 +71,29 @@ export class BuildController
         return result;
     }
 
-    /** Handle SaveWeaponBuild event */
+    /** Handle client/builds/weapon/save */
     public saveWeaponBuild(
-        pmcData: IPmcData,
-        body: IPresetBuildActionRequestData,
         sessionId: string,
-    ): IItemEventRouterResponse
+        body: IPresetBuildActionRequestData,
+    ): void
     {
-        // TODO: Could be merged into saveBuild, maybe
-        const output = this.eventOutputHolder.getOutput(sessionId);
+        const pmcData = this.profileHelper.getPmcProfile(sessionId);
 
         // Replace duplicate Id's. The first item is the base item.
         // The root ID and the base item ID need to match.
-        body.items = this.itemHelper.replaceIDs(pmcData, body.items);
-        body.root = body.items[0]._id;
+        body.Items = this.itemHelper.replaceIDs(pmcData, body.Items);
+        body.Root = body.Items[0]._id;
 
         // Create new object ready to save into profile userbuilds.weaponBuilds
-        const newId = this.hashUtil.generate(); // Id is empty, generate it
         const newBuild: IWeaponBuild = {
-            id: newId,
-            name: body.name,
-            root: body.root,
-            items: body.items,
-            type: "weapon",
+            Id: body.Id,
+            Name: body.Name,
+            Root: body.Root,
+            Items: body.Items,
         };
 
         const savedWeaponBuilds = this.saveServer.getProfile(sessionId).userbuilds.weaponBuilds;
-        const existingBuild = savedWeaponBuilds.find((x) => x.id === body.id);
+        const existingBuild = savedWeaponBuilds.find((x) => x.Id === body.Id);
         if (existingBuild)
         {
             // exists, replace
@@ -111,52 +108,37 @@ export class BuildController
             // Add fresh
             this.saveServer.getProfile(sessionId).userbuilds.weaponBuilds.push(newBuild);
         }
-
-        // Inform client of new weapon preset
-        output.profileChanges[sessionId].weaponBuilds.push(newBuild);
-
-        return output;
     }
 
-    /** Handle SaveEquipmentBuild event */
+    /** Handle client/builds/equipment/save event */
     public saveEquipmentBuild(
-        pmcData: IPmcData,
-        body: IPresetBuildActionRequestData,
         sessionID: string,
-    ): IItemEventRouterResponse
+        request: IPresetBuildActionRequestData,
+    ): void
     {
-        return this.saveBuild(pmcData, body, sessionID, "equipmentBuilds");
-    }
+        const buildType = "equipmentBuilds";
+        const pmcData = this.profileHelper.getPmcProfile(sessionID);
 
-    protected saveBuild(
-        pmcData: IPmcData,
-        body: IPresetBuildActionRequestData,
-        sessionID: string,
-        buildType: string,
-    ): IItemEventRouterResponse
-    {
-        const output = this.eventOutputHolder.getOutput(sessionID);
-        const existingSavedBuilds: any[] = this.saveServer.getProfile(sessionID).userbuilds[buildType];
+        const existingSavedEquipmentBuilds: IEquipmentBuild[] = this.saveServer.getProfile(sessionID).userbuilds[buildType];
 
-        // replace duplicate ID's. The first item is the base item.
-        // The root ID and the base item ID need to match.
-        body.items = this.itemHelper.replaceIDs(pmcData, body.items);
+        // Replace duplicate ID's. The first item is the base item.
+        // Root ID and the base item ID need to match.
+        request.Items = this.itemHelper.replaceIDs(pmcData, request.Items);
 
-        const newBuild = {
-            id: this.hashUtil.generate(),
-            name: body.name,
-            buildType: "Custom",
-            root: body.root,
-            fastPanel: [],
-            items: body.items,
+        const newBuild: IEquipmentBuild = {
+            Id: request.Id,
+            Name: request.Name,
+            BuildType: EquipmentBuildType.CUSTOM,
+            Root: request.Root,
+            Items: request.Items,
         };
 
-        const existingBuild = existingSavedBuilds.find((x) => x.name === body.name);
+        const existingBuild = existingSavedEquipmentBuilds.find((x) => x.Name === request.Name);
         if (existingBuild)
         {
             // Already exists, replace
             this.saveServer.getProfile(sessionID).userbuilds[buildType].splice(
-                existingSavedBuilds.indexOf(existingBuild),
+                existingSavedEquipmentBuilds.indexOf(existingBuild),
                 1,
                 newBuild,
             );
@@ -166,68 +148,50 @@ export class BuildController
             // Fresh, add new
             this.saveServer.getProfile(sessionID).userbuilds[buildType].push(newBuild);
         }
-
-        output.profileChanges[sessionID][buildType].push(newBuild);
-
-        return output;
     }
 
-    /** Handle RemoveWeaponBuild event*/
-    public removeBuild(pmcData: IPmcData, body: IRemoveBuildRequestData, sessionID: string): IItemEventRouterResponse
+    /** Handle client/builds/delete*/
+    public removeBuild(sessionID: string, request: IRemoveBuildRequestData): void
     {
-        return this.removePlayerBuild(pmcData, body.id, sessionID);
+        this.removePlayerBuild(request.id, sessionID);
     }
 
-    /** Handle RemoveWeaponBuild event*/
-    public removeWeaponBuild(
-        pmcData: IPmcData,
-        body: IPresetBuildActionRequestData,
-        sessionID: string,
-    ): IItemEventRouterResponse
+    protected removePlayerBuild(id: string, sessionID: string): void
     {
-        // TODO: Does this get called?
-        return this.removePlayerBuild(pmcData, body.id, sessionID);
-    }
-
-    /** Handle RemoveEquipmentBuild event*/
-    public removeEquipmentBuild(
-        pmcData: IPmcData,
-        body: IPresetBuildActionRequestData,
-        sessionID: string,
-    ): IItemEventRouterResponse
-    {
-        // TODO: Does this get called?
-        return this.removePlayerBuild(pmcData, body.id, sessionID);
-    }
-
-    protected removePlayerBuild(pmcData: IPmcData, id: string, sessionID: string): IItemEventRouterResponse
-    {
-        const weaponBuilds = this.saveServer.getProfile(sessionID).userbuilds.weaponBuilds;
-        const equipmentBuilds = this.saveServer.getProfile(sessionID).userbuilds.equipmentBuilds;
+        const profile = this.saveServer.getProfile(sessionID);
+        const weaponBuilds = profile.userbuilds.weaponBuilds;
+        const equipmentBuilds = profile.userbuilds.equipmentBuilds;
+        const magazineBuilds = profile.userbuilds.magazineBuilds;
 
         // Check for id in weapon array first
-        const matchingWeaponBuild = weaponBuilds.find((x) => x.id === id);
+        const matchingWeaponBuild = weaponBuilds.find((x) => x.Id === id);
         if (matchingWeaponBuild)
         {
             weaponBuilds.splice(weaponBuilds.indexOf(matchingWeaponBuild), 1);
 
-            return this.eventOutputHolder.getOutput(sessionID);
+            return;
         }
 
         // Id not found in weapons, try equipment
-        const matchingEquipmentBuild = equipmentBuilds.find((x) => x.id === id);
+        const matchingEquipmentBuild = equipmentBuilds.find((x) => x.Id === id);
         if (matchingEquipmentBuild)
         {
             equipmentBuilds.splice(equipmentBuilds.indexOf(matchingEquipmentBuild), 1);
+
+            return;
         }
 
-        // Not found in weapons or equipment, not good
-        if (!(matchingWeaponBuild || matchingEquipmentBuild))
+        // Id not found in weapons/equipment, try mags
+        const matchingMagazineBuild = magazineBuilds.find((x) => x.Id === id);
+        if (matchingMagazineBuild)
         {
-            this.logger.error(`Unable to delete preset, cannot find ${id} in weapon or equipment presets`);
+            magazineBuilds.splice(magazineBuilds.indexOf(matchingMagazineBuild), 1);
+
+            return;
         }
 
-        return this.eventOutputHolder.getOutput(sessionID);
+        // Not found in weapons,equipment or magazines, not good
+        this.logger.error(`Unable to delete preset, cannot find ${id} in weapon, equipment or magazine presets`);
     }
 
     public createMagazineTemplate(sessionId: string, request: ISetMagazineRequest): void
@@ -239,7 +203,6 @@ export class BuildController
             TopCount: request.TopCount,
             BottomCount: request.BottomCount,
             Items: request.Items,
-            type: "magazine"
         };
 
         const profile = this.profileHelper.getFullProfile(sessionId);

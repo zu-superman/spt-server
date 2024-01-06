@@ -48,6 +48,7 @@ export interface Characters
     scav: IPmcData;
 }
 
+/** used by profile.userbuilds */
 export interface IUserBuilds
 {
     weaponBuilds: IWeaponBuild[];
@@ -55,41 +56,47 @@ export interface IUserBuilds
     magazineBuilds: IMagazineBuild[]
 }
 
-export interface IWeaponBuild
-{
-    id: string;
-    name: string;
-    root: string;
-    items: Item[];
-    type: string;
-}
-
-export interface IEquipmentBuild
-{
-    id: string;
-    name: string;
-    root: string;
-    items: Item[]; // same as PMC inventory items
-    type: string;
-    fastPanel: Record<string, string>;
-    buildType: EquipmentBuildType;
-}
-
-export interface IMagazineBuild
+export interface IUserBuild
 {
     Id: string;
     Name: string;
+}
+
+export interface IWeaponBuild extends IUserBuild
+{
+
+    Root: string;
+    Items: Item[]; // Same as PMC inventory items
+}
+
+export interface IEquipmentBuild extends IUserBuild
+{
+    Root: string;
+    Items: Item[]; // Same as PMC inventory items
+    BuildType: EquipmentBuildType;
+}
+
+export interface IMagazineBuild extends IUserBuild
+{
     Caliber: string
     TopCount: number
     BottomCount: number
     Items: IMagazineTemplateAmmoItem[]
-    type: string
 }
 
 export interface IMagazineTemplateAmmoItem
 {
     TemplateId: string
     Count: number
+}
+
+/** Used by defaultEquipmentPresets.json */
+export interface IDefaultEquipmentPreset extends IUserBuild
+{
+    Items: Item[]
+    Root: string
+    BuildType: EquipmentBuildType
+    type: string
 }
 
 export interface Dialogue

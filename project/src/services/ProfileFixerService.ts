@@ -953,7 +953,7 @@ export class ProfileFixerService
         // Iterate over player-made weapon builds, look for missing items and remove weapon preset if found
         for (const buildId in fullProfile.userbuilds?.weaponBuilds)
         {
-            for (const item of fullProfile.userbuilds.weaponBuilds[buildId].items)
+            for (const item of fullProfile.userbuilds.weaponBuilds[buildId].Items)
             {
                 // Check item exists in itemsDb
                 if (!itemsDb[item._tpl])
