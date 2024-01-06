@@ -34,6 +34,7 @@ export class CommandoDialogueChatBot implements IDialogueChatBot
     {
         return {
             _id: "sptCommando",
+            aid: 1234567,
             Info: { Level: 1, MemberCategory: MemberCategory.DEVELOPER, Nickname: "Commando", Side: "Usec" },
         };
     }

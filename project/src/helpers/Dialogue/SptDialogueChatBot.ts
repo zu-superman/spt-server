@@ -32,6 +32,7 @@ export class SptDialogueChatBot implements IDialogueChatBot
     {
         return {
             _id: "sptFriend",
+            aid: 1234566,
             Info: {
                 Level: 1,
                 MemberCategory: MemberCategory.DEVELOPER,

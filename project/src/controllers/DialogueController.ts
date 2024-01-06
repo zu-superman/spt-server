@@ -141,6 +141,7 @@ export class DialogueController
 
             dialog.Users.push({
                 _id: profile.characters.pmc.sessionId,
+                aid: profile.characters.pmc.aid,
                 Info: {
                     Level: profile.characters.pmc.Info.Level,
                     Nickname: profile.characters.pmc.Info.Nickname,
@@ -235,6 +236,7 @@ export class DialogueController
                 const pmcProfile = fullProfile.characters.pmc;
                 result.push({
                     _id: fullProfile.info.id,
+                    aid: fullProfile.info.aid,
                     Info: {
                         Nickname: pmcProfile.Info.Nickname,
                         Side: pmcProfile.Info.Side,

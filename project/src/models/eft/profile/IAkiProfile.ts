@@ -102,17 +102,18 @@ export interface IDefaultEquipmentPreset extends IUserBuild
 export interface Dialogue
 {
     attachmentsNew: number;
-    type: MessageType;
     new: number;
-    _id: string;
+    type: MessageType;
     Users?: IUserDialogInfo[];
     pinned: boolean;
     messages: Message[];
+    _id: string;
 }
 
 export interface IUserDialogInfo
 {
     _id: string;
+    aid: number;
     Info: IUserDialogDetails;
 }
 
