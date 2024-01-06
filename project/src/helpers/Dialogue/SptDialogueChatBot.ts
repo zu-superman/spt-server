@@ -32,7 +32,7 @@ export class SptDialogueChatBot implements IDialogueChatBot
     {
         return {
             _id: "sptFriend",
-            info: {
+            Info: {
                 Level: 1,
                 MemberCategory: MemberCategory.DEVELOPER,
                 Nickname: this.coreConfig.sptFriendNickname,

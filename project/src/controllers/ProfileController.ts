@@ -21,6 +21,7 @@ import { IProfileCreateRequestData } from "@spt-aki/models/eft/profile/IProfileC
 import { ISearchFriendRequestData } from "@spt-aki/models/eft/profile/ISearchFriendRequestData";
 import { ISearchFriendResponse } from "@spt-aki/models/eft/profile/ISearchFriendResponse";
 import { IValidateNicknameRequestData } from "@spt-aki/models/eft/profile/IValidateNicknameRequestData";
+import { MemberCategory } from "@spt-aki/models/enums/MemberCategory";
 import { MessageType } from "@spt-aki/models/enums/MessageType";
 import { QuestStatus } from "@spt-aki/models/enums/QuestStatus";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
@@ -399,14 +400,41 @@ export class ProfileController
         return {
             id: playerPmc._id,
             aid: playerPmc.aid,
-            info: playerPmc.Info,
-            customization: playerPmc.Customization,
+            info: {
+                nickname: playerPmc.Info.Nickname,
+                side: playerPmc.Info.Side,
+                experience: playerPmc.Info.Experience,
+                memberCategory: playerPmc.Info.MemberCategory,
+                bannedState: playerPmc.Info.BannedState,
+                bannedUntil: playerPmc.Info.BannedUntil,
+                registrationDate: playerPmc.Info.RegistrationDate
+            },
+            customization: {
+                head: playerPmc.Customization.Head,
+                body: playerPmc.Customization.Body,
+                feet: playerPmc.Customization.Feet,
+                hands: playerPmc.Customization.Hands
+            },
             skills: playerPmc.Skills,
-            equipment: playerPmc.Inventory,
+            equipment: {
+                // Default inventory tpl
+                Id: playerPmc.Inventory.items.find(x => x._tpl === "55d7217a4bdc2d86028b456d")._id,
+                Items: playerPmc.Inventory.items
+            },
             achievements: playerPmc.Achievements,
             favoriteItems: playerPmc.Inventory.favoriteItems,
-            pmcStats: playerPmc.Stats,
-            scavStats: player.characters.scav.Stats
+            pmcStats: {
+                eft: {
+                    totalInGameTime: playerPmc.Stats.Eft.TotalInGameTime,
+                    overAllCounters: playerPmc.Stats.Eft.OverallCounters
+                }
+            },
+            scavStats: {
+                eft: {
+                    totalInGameTime: player.characters.scav.Stats.Eft.TotalInGameTime,
+                    overAllCounters: player.characters.scav.Stats.Eft.OverallCounters
+                }
+            }
         };
     }
 }

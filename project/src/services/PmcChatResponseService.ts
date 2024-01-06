@@ -95,7 +95,7 @@ export class PmcChatResponseService
 
         const killerDetails: IUserDialogInfo = {
             _id: killerDetailsInCache._id,
-            info: {
+            Info: {
                 Nickname: killerDetailsInCache.Info.Nickname,
                 Side: killerDetailsInCache.Info.Side,
                 Level: killerDetailsInCache.Info.Level,
@@ -273,7 +273,7 @@ export class PmcChatResponseService
         ];
         return {
             _id: pmcVictim.Name,
-            info: {
+            Info: {
                 Nickname: pmcVictim.Name,
                 Level: pmcVictim.Level,
                 Side: pmcVictim.Side,

@@ -113,7 +113,7 @@ export interface Dialogue
 export interface IUserDialogInfo
 {
     _id: string;
-    info: IUserDialogDetails;
+    Info: IUserDialogDetails;
 }
 
 export interface IUserDialogDetails
