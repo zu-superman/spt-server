@@ -65,6 +65,9 @@
       "TacticalVest": 100
     },
     "mods": {
+      "back_plate": 100,
+      "front_plate": 100,
+      "left_side_plate": 80,
       "mod_barrel": 100,
       "mod_bipod": 100,
       "mod_catch": 25,
@@ -116,7 +119,8 @@
       "mod_tactical_002": 75,
       "mod_tactical_003": 61,
       "mod_tactical_2": 50,
-      "mod_trigger": 25
+      "mod_trigger": 25,
+      "rightside_plate": 80
     }
   },
   "difficulty": {
