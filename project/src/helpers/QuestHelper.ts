@@ -636,14 +636,18 @@ export class QuestHelper
         // Create a dialog message for completing the quest.
         const quest = this.getQuestFromDb(failRequest.qid, pmcData);
 
-        this.mailSendService.sendLocalisedNpcMessageToPlayer(
-            sessionID,
-            this.traderHelper.getTraderById(quest.traderId),
-            MessageType.QUEST_FAIL,
-            quest.failMessageText,
-            questRewards,
-            this.timeUtil.getHoursAsSeconds(this.questConfig.redeemTime),
-        );
+        const questIsRepeatable = pmcData.RepeatableQuests.some(quest => quest.id === failRequest.qid);
+        if (!questIsRepeatable)
+        {
+            this.mailSendService.sendLocalisedNpcMessageToPlayer(
+                sessionID,
+                this.traderHelper.getTraderById(quest.traderId),
+                MessageType.QUEST_FAIL,
+                quest.failMessageText,
+                questRewards,
+                this.timeUtil.getHoursAsSeconds(this.questConfig.redeemTime),
+            );
+        }
 
         output.profileChanges[sessionID].quests.push(this.failedUnlocked(failRequest.qid, sessionID));
 
