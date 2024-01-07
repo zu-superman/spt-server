@@ -1376,6 +1376,62 @@
                     }
                 }
             ],
+			"armorPlateWeighting" : [
+				{
+					"levelRange": {
+                        "min": 1,
+                        "max": 10
+                    },
+					"frontPlateWeights": {
+						"level2": 25,
+						"level3": 20,
+						"level4": 5,
+						"level5": 1,
+						"level6": 1
+					},
+					"backPlateWeights": {
+						"level2": 25,
+						"level3": 20,
+						"level4": 5,
+						"level5": 1,
+						"level6": 1
+					},
+					"sidePlateWeights": {
+						"level2": 25,
+						"level3": 20,
+						"level4": 5,
+						"level5": 1,
+						"level6": 1
+					}
+				},
+				{
+					"levelRange": {
+                        "min": 11,
+                        "max": 14
+                    },
+					"frontPlateWeights": {
+						"level2": 30,
+						"level3": 15,
+						"level4": 5,
+						"level5": 1,
+						"level6": 1
+					},
+					"backPlateWeights": {
+						"level2": 30,
+						"level3": 15,
+						"level4": 5,
+						"level5": 1,
+						"level6": 1
+					},
+					"sidePlateWeights": {
+						"level2": 30,
+						"level3": 15,
+						"level4": 5,
+						"level5": 1,
+						"level6": 1
+					}
+				}
+			],
             "whitelist": [{
                     "levelRange": {
                         "min": 101,
