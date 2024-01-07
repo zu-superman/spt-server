@@ -722,14 +722,21 @@ export class RepeatableQuestGenerator
             // Scav exits are not listed at all in locations.base currently. If that changes at some point, additional filtering will be required
             const mapExits =
                 (this.databaseServer.getTables().locations[locationKey.toLowerCase()].base as ILocationBase).exits;
-            const possibleExists = mapExits.filter((x) =>
-                (!("PassageRequirement" in x)
+
+            // Only get exits that have a greater than 0% chance to spawn
+            const exitPool = mapExits.filter(exit => exit.Chance > 0);
+            const possibleExits = exitPool.filter((exit) =>
+                (!("PassageRequirement" in exit)
                     || repeatableConfig.questConfig.Exploration.specificExits.passageRequirementWhitelist.includes(
-                        x.PassageRequirement,
-                    )) && x.Chance > 0
+                        exit.PassageRequirement
+                    ))
             );
-            const exit = this.randomUtil.drawRandomFromList(possibleExists, 1)[0];
-            const exitCondition = this.generateExplorationExitCondition(exit);
+
+            // Choose one of the exits we filtered above
+            const chosenExit = this.randomUtil.drawRandomFromList(possibleExits, 1)[0];
+
+            // Create a quest condition to leave raid via chosen exit
+            const exitCondition = this.generateExplorationExitCondition(chosenExit);
             quest.conditions.AvailableForFinish[0].counter.conditions.push(exitCondition);
         }
 
