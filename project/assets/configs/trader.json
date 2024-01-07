@@ -87,6 +87,7 @@
             "min": 35,
             "max": 60
         },
+		"chancePlateExistsInArmorPercent": 40,
         "armorMaxDurabilityPercentMinMax": {
             "min": 35,
             "max": 60

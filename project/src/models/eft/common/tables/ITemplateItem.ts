@@ -463,6 +463,7 @@ export interface SlotFilter
 {
     Shift?: number;
     locked?: boolean;
+    Plate?: string;
     armorColliders?: string[];
     armorPlateColliders?: string[];
     Filter: string[];

@@ -3,9 +3,10 @@ import { inject, injectable } from "tsyringe";
 import { HandbookHelper } from "@spt-aki/helpers/HandbookHelper";
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { PresetHelper } from "@spt-aki/helpers/PresetHelper";
+import { MinMax } from "@spt-aki/models/common/MinMax";
 import { IFenceLevel, IPreset } from "@spt-aki/models/eft/common/IGlobals";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
-import { Item } from "@spt-aki/models/eft/common/tables/IItem";
+import { Item, Repairable } from "@spt-aki/models/eft/common/tables/IItem";
 import { ITemplateItem } from "@spt-aki/models/eft/common/tables/ITemplateItem";
 import { ITraderAssort } from "@spt-aki/models/eft/common/tables/ITrader";
 import { BaseClasses } from "@spt-aki/models/enums/BaseClasses";
@@ -457,30 +458,96 @@ export class FenceService
                     continue;
                 }
 
-                // Increment count as item is being added
-                if (itemLimitCount)
-                {
-                    itemLimitCount.current++;
-                }
-
                 if (price > priceLimits[itemDbDetails._parent])
                 {
                     i--;
                     continue;
                 }
 
-                const toPush = this.jsonUtil.clone(desiredAssort);
+                // Increment count as item is being added
+                if (itemLimitCount)
+                {
+                    itemLimitCount.current++;
+                }
 
-                this.randomiseItemUpdProperties(itemDbDetails, toPush);
+                const itemsToPush: Item[] = [];
+                const rootItemToPush = this.jsonUtil.clone(desiredAssort);
+                this.randomiseItemUpdProperties(itemDbDetails, rootItemToPush);
+                itemsToPush.push(rootItemToPush);
 
-                toPush.upd.StackObjectsCount = this.getSingleItemStackCount(itemDbDetails);
-                toPush.upd.BuyRestrictionCurrent = 0;
-                toPush.upd.UnlimitedCount = false;
+                rootItemToPush._id = this.hashUtil.generate();
+                rootItemToPush.upd.StackObjectsCount = this.getSingleItemStackCount(itemDbDetails);
+                rootItemToPush.upd.BuyRestrictionCurrent = 0;
+                rootItemToPush.upd.UnlimitedCount = false;
 
-                toPush._id = this.hashUtil.generate();
-                assorts.items.push(toPush);
-                assorts.barter_scheme[toPush._id] = fenceAssort.barter_scheme[itemTpl];
-                assorts.loyal_level_items[toPush._id] = loyaltyLevel;
+                if (this.itemHelper.isOfBaseclasses(rootItemToPush._tpl, [BaseClasses.HEADWEAR, BaseClasses.VEST, BaseClasses.ARMOR]))
+                {
+                    this.addModsToArmorModSlots(itemsToPush, itemDbDetails);
+                }
+
+                assorts.items.push(...itemsToPush);
+                assorts.barter_scheme[rootItemToPush._id] = fenceAssort.barter_scheme[itemTpl];
+                assorts.loyal_level_items[rootItemToPush._id] = loyaltyLevel;
+            }
+        }
+    }
+
+    protected addModsToArmorModSlots(armor: Item[], itemDbDetails: ITemplateItem): void
+    {
+        const hasMods = itemDbDetails._props.Slots.length >0;
+        if (!hasMods)
+        {
+            return;
+        }
+
+        const requiredSlots = itemDbDetails._props.Slots.filter(slot => slot._required);
+        const hasRequiredSlots = requiredSlots.length > 0;
+        
+        if (hasRequiredSlots)
+        {
+            for (const requiredSlot of requiredSlots)
+            {
+                const modItemDbDetails = this.itemHelper.getItem(requiredSlot._props.filters[0].Plate)[1];
+                const durabilityValues = this.getRandomisedArmorDurabilityValues(modItemDbDetails, this.traderConfig.fence.armorMaxDurabilityPercentMinMax);
+                armor.push({
+                    _id: this.hashUtil.generate(),
+                    _tpl: requiredSlot._props.filters[0].Plate,
+                    parentId: armor[0]._id,
+                    slotId: requiredSlot._name,
+                    upd: {
+                        Repairable: {
+                            Durability: durabilityValues.Durability,
+                            MaxDurability: durabilityValues.MaxDurability
+                        }
+                    }
+                });
+            }
+        }
+
+        const plateSlots = itemDbDetails._props.Slots.filter(slot => ["front_plate", "back_plate", "side_plate"].includes(slot._name.toLowerCase()));
+        const hasPlateSlots = plateSlots.length > 0;
+        if (hasPlateSlots)
+        {
+            for (const plateSlot of plateSlots)
+            {
+                if (this.randomUtil.getChance100(this.traderConfig.fence.chancePlateExistsInArmorPercent))
+                {
+                    continue;
+                }
+                const modItemDbDetails = this.itemHelper.getItem(plateSlot._props.filters[0].Plate)[1];
+                const durabilityValues = this.getRandomisedArmorDurabilityValues(modItemDbDetails, this.traderConfig.fence.armorMaxDurabilityPercentMinMax);
+                armor.push({
+                    _id: this.hashUtil.generate(),
+                    _tpl: plateSlot._props.filters[0].Plate,
+                    parentId: armor[0]._id,
+                    slotId: plateSlot._name,
+                    upd: {
+                        Repairable: {
+                            Durability: durabilityValues.Durability,
+                            MaxDurability: durabilityValues.MaxDurability
+                        }
+                    }
+                });
             }
         }
     }
@@ -685,14 +752,8 @@ export class FenceService
                 || itemDetails._parent === BaseClasses.FACECOVER) && itemDetails._props.MaxDurability > 0
         )
         {
-            const armorMaxDurabilityLimits = this.traderConfig.fence.armorMaxDurabilityPercentMinMax;
-            const duraMin = armorMaxDurabilityLimits.min / 100 * itemDetails._props.MaxDurability;
-            const duraMax = armorMaxDurabilityLimits.max / 100 * itemDetails._props.MaxDurability;
-
-            const maxDurability = this.randomUtil.getInt(duraMin, duraMax);
-            const durability = this.randomUtil.getInt(1, maxDurability);
-
-            itemToAdjust.upd.Repairable = { Durability: durability, MaxDurability: maxDurability };
+            const values = this.getRandomisedArmorDurabilityValues(itemDetails, this.traderConfig.fence.armorMaxDurabilityPercentMinMax);
+            itemToAdjust.upd.Repairable = { Durability: values.Durability, MaxDurability: values.MaxDurability };
 
             return;
         }
@@ -740,6 +801,17 @@ export class FenceService
 
             itemToAdjust.upd.Resource = { Value: resourceMax - resourceCurrent, UnitsConsumed: resourceCurrent };
         }
+    }
+
+    protected getRandomisedArmorDurabilityValues(itemDetails: ITemplateItem, maxDurabilityMinMaxPercent: MinMax): Repairable
+    {
+        const duraMin = maxDurabilityMinMaxPercent.min / 100 * itemDetails._props.MaxDurability;
+        const duraMax = maxDurabilityMinMaxPercent.max / 100 * itemDetails._props.MaxDurability;
+
+        const maxDurability = this.randomUtil.getInt(duraMin, duraMax);
+        const durability = this.randomUtil.getInt(1, maxDurability);
+
+        return { Durability: durability, MaxDurability: maxDurability };
     }
 
     /**
