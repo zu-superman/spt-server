@@ -30,6 +30,8 @@ export interface RaidMenuSettings
     scavWars: boolean;
     taggedAndCursed: boolean;
     enablePve: boolean;
+    randomWeather: boolean;
+    randomTime: boolean;
 }
 
 export interface Save

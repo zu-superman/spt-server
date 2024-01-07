@@ -6,7 +6,9 @@
         "bossEnabled": true,
         "scavWars": false,
         "taggedAndCursed": false,
-        "enablePve": true
+        "enablePve": true,
+        "randomWeather": false,
+        "randomTime": false
     },
     "save": {
         "loot": true,
