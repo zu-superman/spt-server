@@ -12,9 +12,9 @@ import {
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { BotGenerationDetails } from "@spt-aki/models/spt/bots/BotGenerationDetails";
 import {
-    AdjustmentDetails,
     EquipmentFilterDetails,
     EquipmentFilters,
+    IAdjustmentDetails,
     IBotConfig,
     WeightingAdjustmentDetails,
 } from "@spt-aki/models/spt/config/IBotConfig";
@@ -393,7 +393,7 @@ export class BotEquipmentFilterService
      * @param botItemPool Bot item dictionary to adjust
      */
     protected adjustWeighting(
-        weightingAdjustments: AdjustmentDetails,
+        weightingAdjustments: IAdjustmentDetails,
         botItemPool: Record<string, any>,
         showEditWarnings = true,
     ): void

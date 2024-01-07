@@ -116,6 +116,7 @@ export interface EquipmentFilters
     weightingAdjustmentsByPlayerLevel?: WeightingAdjustmentDetails[];
     /** Should the stock mod be forced to spawn on bot */
     forceStock: boolean;
+    armorPlateWeighting?: IArmorPlateWeights[]
 }
 
 export interface ModLimits
@@ -156,17 +157,26 @@ export interface WeightingAdjustmentDetails
     /** Between what levels do these weight settings apply to */
     levelRange: MinMax;
     /** Key: ammo type e.g. Caliber556x45NATO, value: item tpl + weight */
-    ammo?: AdjustmentDetails;
+    ammo?: IAdjustmentDetails;
     /** Key: equipment slot e.g. TacticalVest, value: item tpl + weight */
-    equipment?: AdjustmentDetails;
+    equipment?: IAdjustmentDetails;
     /** Key: clothing slot e.g. feet, value: item tpl + weight */
-    clothing?: AdjustmentDetails;
+    clothing?: IAdjustmentDetails;
+    
 }
 
-export interface AdjustmentDetails
+export interface IAdjustmentDetails
 {
     add: Record<string, Record<string, number>>;
     edit: Record<string, Record<string, number>>;
+}
+
+export interface IArmorPlateWeights
+{
+    levelRange: MinMax;
+    frontPlateWeights: Record<string, number>;
+    backPlateWeights: Record<string, number>;
+    sidePlateWeights: Record<string, number>;
 }
 
 export interface IRandomisedResourceDetails

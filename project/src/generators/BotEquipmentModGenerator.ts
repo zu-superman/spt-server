@@ -23,6 +23,7 @@ import { LocalisationService } from "@spt-aki/services/LocalisationService";
 import { HashUtil } from "@spt-aki/utils/HashUtil";
 import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 import { RandomUtil } from "@spt-aki/utils/RandomUtil";
+import { IGenerateEquipmentProperties } from "./BotInventoryGenerator";
 
 @injectable()
 export class BotEquipmentModGenerator
@@ -65,18 +66,16 @@ export class BotEquipmentModGenerator
      */
     public generateModsForEquipment(
         equipment: Item[],
-        modPool: Mods,
         parentId: string,
         parentTemplate: ITemplateItem,
-        modSpawnChances: ModsChances,
-        botRole: string,
+        settings: IGenerateEquipmentProperties,
         forceSpawn = false,
     ): Item[]
     {
-        const compatibleModsPool = modPool[parentTemplate._id];
+        const compatibleModsPool = settings.modPool[parentTemplate._id];
         if (!compatibleModsPool)
         {
-            this.logger.warning(`bot: ${botRole} lacks a mod slot pool for item: ${parentTemplate._id} ${parentTemplate._name}`);
+            this.logger.warning(`bot: ${settings.botRole} lacks a mod slot pool for item: ${parentTemplate._id} ${parentTemplate._name}`);
         }
 
         // Iterate over mod pool and choose mods to add to item
@@ -90,13 +89,13 @@ export class BotEquipmentModGenerator
                         modSlot: modSlot,
                         parentId: parentTemplate._id,
                         parentName: parentTemplate._name,
-                        botRole: botRole
+                        botRole: settings.botRole
                     }),
                 );
                 continue;
             }
 
-            if (!(this.shouldModBeSpawned(itemSlot, modSlot, modSpawnChances) || forceSpawn))
+            if (!(this.shouldModBeSpawned(itemSlot, modSlot, settings.spawnChances.mods) || forceSpawn))
             {
                 continue;
             }
@@ -107,12 +106,14 @@ export class BotEquipmentModGenerator
                 forceSpawn = true;
             }
 
+            const modPoolToChooseFrom = this.filterPlateModsForSlot(settings.botRole, modSlot, compatibleModsPool[modSlot]);
+
             let modTpl: string;
             let found = false;
 
             // Find random mod and check its compatible
             const exhaustableModPool = new ExhaustableArray(
-                compatibleModsPool[modSlot],
+                modPoolToChooseFrom,
                 this.randomUtil,
                 this.jsonUtil,
             );
@@ -144,30 +145,46 @@ export class BotEquipmentModGenerator
             }
 
             const modTemplate = this.itemHelper.getItem(modTpl);
-            if (!this.isModValidForSlot(modTemplate, itemSlot, modSlot, parentTemplate, botRole))
+            if (!this.isModValidForSlot(modTemplate, itemSlot, modSlot, parentTemplate, settings.botRole))
             {
                 continue;
             }
 
             const modId = this.hashUtil.generate();
-            equipment.push(this.createModItem(modId, modTpl, parentId, modSlot, modTemplate[1], botRole));
+            equipment.push(this.createModItem(modId, modTpl, parentId, modSlot, modTemplate[1], settings.botRole));
 
-            if (Object.keys(modPool).includes(modTpl))
+            if (Object.keys(settings.modPool).includes(modTpl))
             {
                 // Call self recursively
                 this.generateModsForEquipment(
                     equipment,
-                    modPool,
                     modId,
                     modTemplate[1],
-                    modSpawnChances,
-                    botRole,
+                    settings,
                     forceSpawn,
                 );
             }
         }
 
         return equipment;
+    }
+
+    protected filterPlateModsForSlot(botRole: string, modSlot: string, modPool: string[]): string[]
+    {
+        // Not pmc or not a plate slot, return original mod pool array
+        if (!this.botHelper.isBotPmc(botRole) || !this.slotIsPlate(modSlot))
+        {
+            return modPool;
+        }
+
+        const filteredModPool = [];
+
+
+    }
+
+    protected slotIsPlate(modSlot: string): boolean
+    {
+        return ["front_plate", "back_plate", "side_plate"].includes(modSlot.toLowerCase());
     }
 
     /**
