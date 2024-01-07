@@ -425,6 +425,7 @@ export class LocationGenerator
         const locklist = [Money.ROUBLES, Money.DOLLARS, Money.EUROS];
 
         // Choose items to add to container, factor in weighting + lock money down
+        // Filter out items picked that're already in the above `tplsForced` array
         const chosenTpls = containerLootPool.draw(
             itemCountToAdd,
             this.locationConfig.allowDuplicateItemsInStaticContainers,
