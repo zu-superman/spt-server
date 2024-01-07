@@ -42,6 +42,9 @@
 		"followerKolontayAssault": 10,
 		"followerKolontaySecurity": 10,
 		"shooterBTR": 10,
+		"peacefullZryachiyEvent": 5,
+		"ravangeZryachiyEvent": 5,
+		"sectactPriestEvent": 10,
         "sptUsec": 30,
         "sptBear": 30
     },

@@ -62,7 +62,8 @@ export class BotController
         if (!value)
         {
             this.logger.warning(`No value found for bot type ${type}, defaulting to 30`);
-            return value;
+
+            return 30;
         }
         return value;
     }

@@ -219,10 +219,9 @@ export class SeasonalEventService
      */
     public enableSeasonalEvents(sessionId: string): void
     {
-        const globalConfig = this.databaseServer.getTables().globals.config;
-
         if (this.currentlyActiveEvents)
         {
+            const globalConfig = this.databaseServer.getTables().globals.config;
             for (const event of this.currentlyActiveEvents)
             {
                 this.updateGlobalEvents(sessionId, globalConfig, event);
