@@ -480,6 +480,7 @@ export class FenceService
                 rootItemToPush.upd.BuyRestrictionCurrent = 0;
                 rootItemToPush.upd.UnlimitedCount = false;
 
+                // Need to add mods to armors so they dont show as red in the trade screen
                 if (this.itemHelper.isOfBaseclasses(rootItemToPush._tpl, [BaseClasses.HEADWEAR, BaseClasses.VEST, BaseClasses.ARMOR]))
                 {
                     this.addModsToArmorModSlots(itemsToPush, itemDbDetails);
@@ -492,17 +493,23 @@ export class FenceService
         }
     }
 
+    /**
+     * Add soft inserts + armor plates to an armor
+     * @param armor Armor item array to add mods into
+     * @param itemDbDetails Armor items db template
+     */
     protected addModsToArmorModSlots(armor: Item[], itemDbDetails: ITemplateItem): void
     {
-        const hasMods = itemDbDetails._props.Slots.length >0;
+        // Armor has no mods, make no additions
+        const hasMods = itemDbDetails._props.Slots.length > 0;
         if (!hasMods)
         {
             return;
         }
 
+        // Check for and add required soft inserts to armors
         const requiredSlots = itemDbDetails._props.Slots.filter(slot => slot._required);
         const hasRequiredSlots = requiredSlots.length > 0;
-        
         if (hasRequiredSlots)
         {
             for (const requiredSlot of requiredSlots)
@@ -511,7 +518,7 @@ export class FenceService
                 const durabilityValues = this.getRandomisedArmorDurabilityValues(modItemDbDetails, this.traderConfig.fence.armorMaxDurabilityPercentMinMax);
                 armor.push({
                     _id: this.hashUtil.generate(),
-                    _tpl: requiredSlot._props.filters[0].Plate,
+                    _tpl: requiredSlot._props.filters[0].Plate, // `Plate` property appears to be the 'default' item for slot
                     parentId: armor[0]._id,
                     slotId: requiredSlot._name,
                     upd: {
@@ -524,21 +531,24 @@ export class FenceService
             }
         }
 
+        // Check for and add plate items
         const plateSlots = itemDbDetails._props.Slots.filter(slot => ["front_plate", "back_plate", "side_plate"].includes(slot._name.toLowerCase()));
         const hasPlateSlots = plateSlots.length > 0;
         if (hasPlateSlots)
         {
             for (const plateSlot of plateSlots)
             {
-                if (this.randomUtil.getChance100(this.traderConfig.fence.chancePlateExistsInArmorPercent))
+                // Chance to not add plate
+                if (!this.randomUtil.getChance100(this.traderConfig.fence.chancePlateExistsInArmorPercent))
                 {
                     continue;
                 }
+
                 const modItemDbDetails = this.itemHelper.getItem(plateSlot._props.filters[0].Plate)[1];
                 const durabilityValues = this.getRandomisedArmorDurabilityValues(modItemDbDetails, this.traderConfig.fence.armorMaxDurabilityPercentMinMax);
                 armor.push({
                     _id: this.hashUtil.generate(),
-                    _tpl: plateSlot._props.filters[0].Plate,
+                    _tpl: plateSlot._props.filters[0].Plate, // `Plate` property appears to be the 'default' item for slot
                     parentId: armor[0]._id,
                     slotId: plateSlot._name,
                     upd: {
