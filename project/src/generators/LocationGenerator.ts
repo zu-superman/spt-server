@@ -429,7 +429,7 @@ export class LocationGenerator
             itemCountToAdd,
             this.locationConfig.allowDuplicateItemsInStaticContainers,
             locklist,
-        );
+        ).filter(x => !tplsForced.includes(x));
 
         // Add forced loot to chosen item pool
         const tplsToAddToContainer = tplsForced.concat(chosenTpls);
