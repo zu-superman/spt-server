@@ -1376,62 +1376,164 @@
                     }
                 }
             ],
-			"armorPlateWeighting" : [
-				{
-					"levelRange": {
+            "armorPlateWeighting": [{
+                    "levelRange": {
                         "min": 1,
                         "max": 10
                     },
-					"frontPlateWeights": {
-						"level2": 25,
-						"level3": 20,
-						"level4": 5,
-						"level5": 1,
-						"level6": 1
-					},
-					"backPlateWeights": {
-						"level2": 25,
-						"level3": 20,
-						"level4": 5,
-						"level5": 1,
-						"level6": 1
-					},
-					"sidePlateWeights": {
-						"level2": 25,
-						"level3": 20,
-						"level4": 5,
-						"level5": 1,
-						"level6": 1
-					}
-				},
-				{
-					"levelRange": {
+                    "front_plate": {
+                        "2": 25,
+                        "3": 20,
+                        "4": 5,
+                        "5": 1,
+                        "6": 1
+                    },
+                    "back_plate": {
+                        "2": 25,
+                        "3": 20,
+                        "4": 5,
+                        "5": 1,
+                        "6": 1
+                    },
+                    "side_plate": {
+                        "2": 25,
+                        "3": 20,
+                        "4": 5,
+                        "5": 1,
+                        "6": 1
+                    }
+                }, {
+                    "levelRange": {
                         "min": 11,
                         "max": 14
                     },
-					"frontPlateWeights": {
-						"level2": 30,
-						"level3": 15,
-						"level4": 5,
-						"level5": 1,
-						"level6": 1
-					},
-					"backPlateWeights": {
-						"level2": 30,
-						"level3": 15,
-						"level4": 5,
-						"level5": 1,
-						"level6": 1
-					},
-					"sidePlateWeights": {
-						"level2": 30,
-						"level3": 15,
-						"level4": 5,
-						"level5": 1,
-						"level6": 1
-					}
-				}
-			],
+                    "front_plate": {
+                        "2": 30,
+                        "3": 15,
+                        "4": 5,
+                        "5": 1,
+                        "6": 1
+                    },
+                    "back_plate": {
+                        "2": 30,
+                        "3": 15,
+                        "4": 5,
+                        "5": 1,
+                        "6": 1
+                    },
+                    "side_plate": {
+                        "2": 30,
+                        "3": 15,
+                        "4": 5,
+                        "5": 1,
+                        "6": 1
+                    }
+                }, {
+                    "levelRange": {
+                        "min": 15,
+                        "max": 24
+                    },
+                    "front_plate": {
+                        "2": 10,
+                        "3": 15,
+                        "4": 20,
+                        "5": 8,
+                        "6": 4
+                    },
+                    "back_plate": {
+                        "2": 10,
+                        "3": 15,
+                        "4": 20,
+                        "5": 8,
+                        "6": 4
+                    },
+                    "side_plate": {
+                        "2": 10,
+                        "3": 15,
+                        "4": 20,
+                        "5": 8,
+                        "6": 4
+                    }
+                }, {
+                    "levelRange": {
+                        "min": 25,
+                        "max": 35
+                    },
+                    "front_plate": {
+                        "2": 3,
+                        "3": 15,
+                        "4": 30,
+                        "5": 20,
+                        "6": 10
+                    },
+                    "back_plate": {
+                        "2": 3,
+                        "3": 15,
+                        "4": 30,
+                        "5": 20,
+                        "6": 10
+                    },
+                    "side_plate": {
+                        "2": 3,
+                        "3": 15,
+                        "4": 30,
+                        "5": 20,
+                        "6": 10
+                    }
+                }, {
+                    "levelRange": {
+                        "min": 36,
+                        "max": 55
+                    },
+                    "front_plate": {
+                        "2": 1,
+                        "3": 10,
+                        "4": 30,
+                        "5": 40,
+                        "6": 20
+                    },
+                    "back_plate": {
+                        "2": 1,
+                        "3": 10,
+                        "4": 30,
+                        "5": 40,
+                        "6": 20
+                    },
+                    "side_plate": {
+                        "2": 1,
+                        "3": 10,
+                        "4": 30,
+                        "5": 40,
+                        "6": 20
+                    }
+                }, {
+                    "levelRange": {
+                        "min": 56,
+                        "max": 90
+                    },
+                    "front_plate": {
+                        "2": 0,
+                        "3": 0,
+                        "4": 10,
+                        "5": 40,
+                        "6": 50
+                    },
+                    "back_plate": {
+                        "2": 0,
+                        "3": 0,
+                        "4": 10,
+                        "5": 40,
+                        "6": 50
+                    },
+                    "side_plate": {
+                        "2": 0,
+                        "3": 0,
+                        "4": 10,
+                        "5": 40,
+                        "6": 50
+                    }
+                }
+            ],
             "whitelist": [{
                     "levelRange": {
                         "min": 101,

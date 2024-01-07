@@ -6,6 +6,7 @@ import { BotWeaponGeneratorHelper } from "@spt-aki/helpers/BotWeaponGeneratorHel
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { ProbabilityHelper } from "@spt-aki/helpers/ProbabilityHelper";
 import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
+import { WeightedRandomHelper } from "@spt-aki/helpers/WeightedRandomHelper";
 import { Mods, ModsChances } from "@spt-aki/models/eft/common/tables/IBotType";
 import { Item } from "@spt-aki/models/eft/common/tables/IItem";
 import { ITemplateItem, Slot } from "@spt-aki/models/eft/common/tables/ITemplateItem";
@@ -45,6 +46,7 @@ export class BotEquipmentModGenerator
         @inject("BotHelper") protected botHelper: BotHelper,
         @inject("BotGeneratorHelper") protected botGeneratorHelper: BotGeneratorHelper,
         @inject("BotWeaponGeneratorHelper") protected botWeaponGeneratorHelper: BotWeaponGeneratorHelper,
+        @inject("WeightedRandomHelper") protected weightedRandomHelper: WeightedRandomHelper,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("BotEquipmentModPoolService") protected botEquipmentModPoolService: BotEquipmentModPoolService,
         @inject("ConfigServer") protected configServer: ConfigServer,
@@ -59,8 +61,6 @@ export class BotEquipmentModGenerator
      * @param modPool Mod list to choose frm
      * @param parentId parentid of item to add mod to
      * @param parentTemplate template objet of item to add mods to
-     * @param modSpawnChances dictionary of mod items and their chance to spawn for this bot type
-     * @param botRole the bot role being generated for
      * @param forceSpawn should this mod be forced to spawn
      * @returns Item + compatible mods as an array
      */
@@ -106,7 +106,7 @@ export class BotEquipmentModGenerator
                 forceSpawn = true;
             }
 
-            const modPoolToChooseFrom = this.filterPlateModsForSlot(settings.botRole, modSlot, compatibleModsPool[modSlot]);
+            const modPoolToChooseFrom = this.filterPlateModsForSlot(settings, modSlot.toLowerCase(), compatibleModsPool[modSlot], parentTemplate);
 
             let modTpl: string;
             let found = false;
@@ -169,16 +169,58 @@ export class BotEquipmentModGenerator
         return equipment;
     }
 
-    protected filterPlateModsForSlot(botRole: string, modSlot: string, modPool: string[]): string[]
+    /**
+     * Filter a bots plate pool based on its current level
+     * @param settings Bot equipment generation settings
+     * @param modSlot Slot being filtered
+     * @param modPool Plates tpls to choose from
+     * @param armorItem 
+     * @returns Array of plate tpls to choose from
+     */
+    protected filterPlateModsForSlot(settings: IGenerateEquipmentProperties, modSlot: string, modPool: string[], armorItem: ITemplateItem): string[]
     {
         // Not pmc or not a plate slot, return original mod pool array
-        if (!this.botHelper.isBotPmc(botRole) || !this.slotIsPlate(modSlot))
+        if (!this.slotIsPlate(modSlot))
         {
             return modPool;
         }
 
-        const filteredModPool = [];
+        // Get the front/back/side weights based on bots level
+        const plateSlotWeights = settings
+            .botEquipmentConfig
+            ?.armorPlateWeighting
+            ?.find(x => settings.botLevel >= x.levelRange.min && settings.botLevel <= x.levelRange.max);
+        if (!plateSlotWeights)
+        {
+            return modPool;
+        }
 
+        // Get the specific plate slot weights (front/back/side)
+        const plateWeights: Record<string, number> = plateSlotWeights[modSlot];
+        if (!plateWeights)
+        {
+            this.logger.warning(`Plate slot ${modSlot} lacks weight data, skipping`);
+
+            return modPool;
+        }
+
+        // Choose a plate level based on weighting
+        const chosenArmorPlateLevel = this.weightedRandomHelper.getWeightedValue<string>(plateWeights);
+        
+        // Convert the array of ids into database items
+        const platesFromDb = modPool.map(x => this.itemHelper.getItem(x)[1]);
+
+        // Filter plates to the chosen level based on its armorClass property
+        const filteredPlates = platesFromDb.filter(x => x._props.armorClass === chosenArmorPlateLevel);
+        if (!filteredPlates)
+        {
+            this.logger.warning(`Plate filter was too restrictive, unable to find plates of level: ${chosenArmorPlateLevel}. Returning all ${modPool.length} plates instead`);
+
+            return modPool;
+        }
+
+        // Only return the items ids
+        return filteredPlates.map(x => x._id);
 
     }
 
