@@ -87,7 +87,10 @@ export class InventoryHelper
         useSortingTable = false,
     ): IItemEventRouterResponse
     {
-        const itemLib: Item[] = []; // TODO: what is the purpose of this property
+        /** All items to add + their children */ 
+        const itemsToAddPool: Item[] = [];
+
+        /** Root items to add to inventory */
         const itemsToAdd: IAddItemTempObject[] = [];
 
         for (const requestItem of request.items)
@@ -97,13 +100,13 @@ export class InventoryHelper
                 const presetItems = this.jsonUtil.clone(
                     this.databaseServer.getTables().globals.ItemPresets[requestItem.item_id]._items,
                 );
-                itemLib.push(...presetItems);
+                itemsToAddPool.push(...presetItems);
                 requestItem.isPreset = true;
                 requestItem.item_id = presetItems[0]._id;
             }
             else if (this.paymentHelper.isMoneyTpl(requestItem.item_id))
             {
-                itemLib.push({ _id: requestItem.item_id, _tpl: requestItem.item_id });
+                itemsToAddPool.push({ _id: requestItem.item_id, _tpl: requestItem.item_id });
             }
             else if (request.tid === Traders.FENCE)
             {
@@ -121,11 +124,11 @@ export class InventoryHelper
                     requestItem.item_id,
                 );
                 addUpd = purchasedItemWithChildren[0].upd; // Must persist the fence upd properties (e.g. durability/currentHp)
-                itemLib.push(...purchasedItemWithChildren);
+                itemsToAddPool.push(...purchasedItemWithChildren);
             }
             else if (request.tid === "RandomLootContainer")
             {
-                itemLib.push({ _id: requestItem.item_id, _tpl: requestItem.item_id });
+                itemsToAddPool.push({ _id: requestItem.item_id, _tpl: requestItem.item_id });
             }
             else
             {
@@ -133,14 +136,14 @@ export class InventoryHelper
                 const traderItems = this.traderAssortHelper.getAssort(sessionID, request.tid).items;
                 const relevantItems = this.itemHelper.findAndReturnChildrenAsItems(traderItems, requestItem.item_id);
                 const toAdd = relevantItems.filter((traderItem) =>
-                    !itemLib.some((item) => traderItem._id === item._id)
+                    !itemsToAddPool.some((item) => traderItem._id === item._id)
                 ); // what's this
-                itemLib.push(...toAdd);
+                itemsToAddPool.push(...toAdd);
             }
 
             // Split stacks into allowed sizes if needed
             // e.g. when buying 300 ammo from flea but max stack size is 50
-            this.splitStackIntoSmallerStacks(itemLib, requestItem, itemsToAdd);
+            this.splitStackIntoSmallerStacks(itemsToAddPool, requestItem, itemsToAdd);
         }
 
         // Find an empty slot in stash for each of the items being added
@@ -150,11 +153,12 @@ export class InventoryHelper
         for (const itemToAdd of itemsToAdd)
         {
             // Update Items `location` properties
+            const itemWithChildren = this.itemHelper.findAndReturnChildrenAsItems(itemsToAddPool, itemToAdd.itemRef._id);
             const errorOutput = this.placeItemInInventory(
                 itemToAdd,
                 stashFS2D,
                 sortingTableFS2D,
-                itemLib,
+                itemWithChildren,
                 pmcData.Inventory,
                 useSortingTable,
                 output,
@@ -165,7 +169,7 @@ export class InventoryHelper
             }
         }
 
-        // Successfully found slot for every item (stash or sorting table), run callback, catch if it fails (e.g. payMoney() might fail)
+        // Found slot for every item (stash or sorting table), run callback and catch failure (e.g. payMoney() as player doesnt have enough)
         try
         {
             if (typeof callback === "function")
@@ -181,16 +185,23 @@ export class InventoryHelper
             return this.httpResponse.appendErrorToOutput(output, message);
         }
 
+        for (const itemToAdd of itemsToAdd)
+        {
+            const itemWithChildren = this.itemHelper.findAndReturnChildrenAsItems(itemsToAddPool, itemToAdd.itemRef._id);
+        }
+
         // Update UPD properties and add to output.profileChanges/pmcData.Inventory.items arrays
         for (const itemToAdd of itemsToAdd)
         {
+            const itemWithChildren = this.itemHelper.findAndReturnChildrenAsItems(itemsToAddPool, itemToAdd.itemRef._id);
             let idForItemToAdd = this.hashUtil.generate();
-            const toDo: string[][] = [[itemToAdd.itemRef._id, idForItemToAdd]]; // WHAT IS THIS?!
+            const originalKeyToNewKeyMap: string[][] = [[itemToAdd.itemRef._id, idForItemToAdd]]; // Every item id + randomly generated id
             let upd: Upd = { StackObjectsCount: itemToAdd.count };
 
             // If item being added is preset, load preset's upd data too.
             if (itemToAdd.isPreset)
             {
+                // Iterate over properties in upd and add them
                 for (const updID in itemToAdd.itemRef.upd)
                 {
                     upd[updID] = itemToAdd.itemRef.upd[updID];
@@ -198,6 +209,7 @@ export class InventoryHelper
 
                 if (addUpd)
                 {
+                    // Iterate over properties in addUpd and add them
                     for (const updID in addUpd)
                     {
                         upd[updID] = addUpd[updID];
@@ -260,29 +272,33 @@ export class InventoryHelper
 
             if (this.itemHelper.isOfBaseclass(itemToAdd.itemRef._tpl, BaseClasses.AMMO_BOX))
             {
-                this.hydrateAmmoBoxWithAmmo(pmcData, itemToAdd, toDo[0][1], sessionID, output, foundInRaid);
+                this.hydrateAmmoBoxWithAmmo(pmcData, itemToAdd, originalKeyToNewKeyMap[0][1], sessionID, output, foundInRaid);
             }
 
-            while (toDo.length > 0)
-            {
-                for (const tmpKey in itemLib)
+            // Loop over item + children
+            while (originalKeyToNewKeyMap.length > 0)
+            {// Iterate item + children being added
+                for (const arrayIndex in itemsToAddPool)
                 {
-                    if (itemLib[tmpKey]?.parentId !== toDo[0][0])
+                    // Does parent match original key
+                    if (itemsToAddPool[arrayIndex]?.parentId !== originalKeyToNewKeyMap[0][0])
                     {
+                        // Skip when items parent isnt on remap
                         continue;
                     }
 
+                    // Create new id for item
                     idForItemToAdd = this.hashUtil.generate();
-                    const slotID = itemLib[tmpKey].slotId;
+                    const slotID = itemsToAddPool[arrayIndex].slotId;
 
-                    // If its from ItemPreset, load preset's upd data too.
+                    // If its from ItemPreset, load prese's upd data too.
                     if (itemToAdd.isPreset)
                     {
                         upd = { StackObjectsCount: itemToAdd.count };
 
-                        for (const updID in itemLib[tmpKey].upd)
+                        for (const updID in itemsToAddPool[arrayIndex].upd)
                         {
-                            upd[updID] = itemLib[tmpKey].upd[updID];
+                            upd[updID] = itemsToAddPool[arrayIndex].upd[updID];
                         }
 
                         if (foundInRaid || this.inventoryConfig.newItemsMarkedFound)
@@ -290,13 +306,13 @@ export class InventoryHelper
                             upd.SpawnedInSession = true;
                         }
                     }
-
+                    // Is root item
                     if (slotID === "hideout")
                     {
                         output.profileChanges[sessionID].items.new.push({
                             _id: idForItemToAdd,
-                            _tpl: itemLib[tmpKey]._tpl,
-                            parentId: toDo[0][1],
+                            _tpl: itemsToAddPool[arrayIndex]._tpl,
+                            parentId: originalKeyToNewKeyMap[0][1],
                             slotId: slotID,
                             location: { x: itemToAdd.location.x, y: itemToAdd.location.y, r: "Horizontal" },
                             upd: this.jsonUtil.clone(upd),
@@ -304,47 +320,51 @@ export class InventoryHelper
 
                         pmcData.Inventory.items.push({
                             _id: idForItemToAdd,
-                            _tpl: itemLib[tmpKey]._tpl,
-                            parentId: toDo[0][1],
-                            slotId: itemLib[tmpKey].slotId,
+                            _tpl: itemsToAddPool[arrayIndex]._tpl,
+                            parentId: originalKeyToNewKeyMap[0][1],
+                            slotId: itemsToAddPool[arrayIndex].slotId,
                             location: { x: itemToAdd.location.x, y: itemToAdd.location.y, r: "Horizontal" },
                             upd: this.jsonUtil.clone(upd),
                         });
                     }
                     else
                     {
-                        const itemLocation = {};
-
+                        // Child of item being added
+                        
                         // Item already has location property, use it
-                        if (itemLib[tmpKey]["location"] !== undefined)
+                        const itemLocation = {};
+                        if (itemsToAddPool[arrayIndex].location !== undefined)
                         {
-                            itemLocation["location"] = itemLib[tmpKey]["location"];
+                            itemLocation["location"] = itemsToAddPool[arrayIndex].location;
                         }
 
+                        const upd = this.jsonUtil.clone(itemsToAddPool[arrayIndex].upd);
                         output.profileChanges[sessionID].items.new.push({
                             _id: idForItemToAdd,
-                            _tpl: itemLib[tmpKey]._tpl,
-                            parentId: toDo[0][1],
+                            _tpl: itemsToAddPool[arrayIndex]._tpl,
+                            parentId: originalKeyToNewKeyMap[0][1],
                             slotId: slotID,
                             ...itemLocation,
-                            upd: this.jsonUtil.clone(upd),
+                            upd: upd,
                         });
 
                         pmcData.Inventory.items.push({
                             _id: idForItemToAdd,
-                            _tpl: itemLib[tmpKey]._tpl,
-                            parentId: toDo[0][1],
-                            slotId: itemLib[tmpKey].slotId,
+                            _tpl: itemsToAddPool[arrayIndex]._tpl,
+                            parentId: originalKeyToNewKeyMap[0][1],
+                            slotId: itemsToAddPool[arrayIndex].slotId,
                             ...itemLocation,
-                            upd: this.jsonUtil.clone(upd),
+                            upd: upd,
                         });
-                        this.logger.debug(`Added ${itemLib[tmpKey]._tpl} with id: ${idForItemToAdd} to inventory`);
+                        this.logger.debug(`Added ${itemsToAddPool[arrayIndex]._tpl} with id: ${idForItemToAdd} to inventory`);
                     }
 
-                    toDo.push([itemLib[tmpKey]._id, idForItemToAdd]);
+                    // Add mapping of child item to new id
+                    originalKeyToNewKeyMap.push([itemsToAddPool[arrayIndex]._id, idForItemToAdd]);
                 }
 
-                toDo.splice(0, 1);
+                // Remove mapping now we're done with it
+                originalKeyToNewKeyMap.splice(0, 1);
             }
         }
 
@@ -536,7 +556,7 @@ export class InventoryHelper
     protected splitStackIntoSmallerStacks(assortItems: Item[], requestItem: AddItem, result: IAddItemTempObject[]): void
     {
         for (const item of assortItems)
-        {
+        {// Iterated item matches root item
             if (item._id === requestItem.item_id)
             {
                 // Get item details from db
@@ -544,7 +564,7 @@ export class InventoryHelper
                 const itemToAdd: IAddItemTempObject = {
                     itemRef: item,
                     count: requestItem.count,
-                    isPreset: requestItem.isPreset,
+                    isPreset: !!requestItem.isPreset,
                 };
 
                 // Split stacks if the size is higher than allowed by items StackMaxSize property
@@ -566,19 +586,19 @@ export class InventoryHelper
                         // Keep splitting items into stacks until none left
                         if (remainingCountOfItemToAdd > 0)
                         {
-                            const newItemToAdd = this.jsonUtil.clone(itemToAdd);
+                            const newChildItemToAdd = this.jsonUtil.clone(itemToAdd);
                             if (remainingCountOfItemToAdd > itemDetails._props.StackMaxSize)
                             {
                                 // Reduce total count of item purchased by stack size we're going to add to inventory
                                 remainingCountOfItemToAdd -= itemDetails._props.StackMaxSize;
-                                newItemToAdd.count = itemDetails._props.StackMaxSize;
+                                newChildItemToAdd.count = itemDetails._props.StackMaxSize;
                             }
                             else
                             {
-                                newItemToAdd.count = remainingCountOfItemToAdd;
+                                newChildItemToAdd.count = remainingCountOfItemToAdd;
                             }
 
-                            result.push(newItemToAdd);
+                            result.push(newChildItemToAdd);
                         }
                     }
                 }
