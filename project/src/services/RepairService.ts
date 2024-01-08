@@ -68,7 +68,7 @@ export class RepairService
 
         const priceCoef = this.traderHelper.getLoyaltyLevel(traderId, pmcData).repair_price_coef;
         const traderRepairDetails = this.traderHelper.getTrader(traderId, sessionID).repair;
-        const repairQualityMultiplier = traderRepairDetails.quality;
+        const repairQualityMultiplier = Number(traderRepairDetails.quality);
         const repairRate = (priceCoef <= 0) ? 1 : (priceCoef / 100 + 1);
 
         const itemToRepairDetails = this.databaseServer.getTables().templates.items[itemToRepair._tpl];
