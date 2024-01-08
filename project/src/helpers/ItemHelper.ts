@@ -392,30 +392,30 @@ export class ItemHelper
     /**
      * Recursive function that looks at every item from parameter and gets their childrens Ids + includes parent item in results
      * @param items Array of items (item + possible children)
-     * @param itemId Parent items id
+     * @param baseItemId Parent items id
      * @returns an array of strings
      */
-    public findAndReturnChildrenByItems(items: Item[], itemId: string): string[]
+    public findAndReturnChildrenByItems(items: Item[], baseItemId: string): string[]
     {
         const list: string[] = [];
 
         for (const childitem of items)
         {
-            if (childitem.parentId === itemId)
+            if (childitem.parentId === baseItemId)
             {
                 list.push(...this.findAndReturnChildrenByItems(items, childitem._id));
             }
         }
 
-        list.push(itemId); // Required, push original item id onto array
+        list.push(baseItemId); // Required, push original item id onto array
 
         return list;
     }
 
     /**
      * A variant of findAndReturnChildren where the output is list of item objects instead of their ids.
-     * @param items
-     * @param baseItemId
+     * @param items Array of items (item + possible children)
+     * @param baseItemId Parent items id
      * @returns An array of Item objects
      */
     public findAndReturnChildrenAsItems(items: Item[], baseItemId: string): Item[]
@@ -974,10 +974,8 @@ export class ItemHelper
         {
             return true;
         }
-        else
-        {
-            return this.itemIsInsideContainer(parent, desiredContainerSlotId, items);
-        }
+
+        return this.itemIsInsideContainer(parent, desiredContainerSlotId, items);
     }
 
     /**
@@ -1168,6 +1166,53 @@ export class ItemHelper
         return Object.values(this.databaseServer.getTables().templates.items).filter((x) =>
             x._parent === desiredBaseType
         ).map((x) => x._id);
+    }
+
+    /**
+     * Add child slot items to an item, chooses random child item if multiple choices exist
+     * @param itemToAdd array with single object (root item)
+     * @param itemToAddTemplate Db tempalte for root item
+     * @param modSpawnChanceDict Optional dictionary of mod name + % chance mod will be included in item (e.g. front_plate: 100)
+     * @returns 
+     */
+    public addChildSlotItems(itemToAdd: Item[], itemToAddTemplate: ITemplateItem, modSpawnChanceDict: Record<string, number> = null): Item[]
+    {
+        const result = itemToAdd;
+        for (const slot of itemToAddTemplate._props.Slots)
+        {
+            // Roll chance for non-required slot mods
+            if (modSpawnChanceDict && !slot._required)
+            {
+                // only roll chance to not include mod if dict exists and has value for this mod type (e.g. front_plate)
+                const modSpawnChance = modSpawnChanceDict[slot._name.toLowerCase()];
+                if (modSpawnChance)
+                {
+                    if (!this.randomUtil.getChance100(modSpawnChanceDict[slot._name]))
+                    {
+                        continue;
+                    }
+                }
+            }
+
+            const possibleTplsForSlot = slot._props.filters[0].Filter ?? [];
+            if (possibleTplsForSlot.length === 0)
+            {
+                this.logger.warning(`Unable to add mod to item: ${itemToAddTemplate._id} ${itemToAddTemplate._name} slot: ${slot._name} as the db pool is empty, skipping`);
+
+                continue;
+            }
+
+            result.push(
+                {
+                    _id: this.hashUtil.generate(),
+                    _tpl: this.randomUtil.getArrayValue(possibleTplsForSlot), // Choose random tpl from array of compatible
+                    parentId: result[0]._id,
+                    slotId: slot._name
+                }
+            )
+        }
+
+        return result;
     }
 }
 

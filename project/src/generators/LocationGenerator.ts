@@ -826,7 +826,7 @@ export class LocationGenerator
         const itemTemplate = this.itemHelper.getItem(chosenTpl)[1]; 
 
         // Item array to return
-        const itemWithMods: Item[] = [];
+        let itemWithMods: Item[] = [];
 
         // Money/Ammo - don't rely on items in spawnPoint.template.Items so we can randomise it ourselves
         if (this.itemHelper.isOfBaseclasses(chosenTpl, [BaseClasses.MONEY, BaseClasses.AMMO]))
@@ -869,7 +869,7 @@ export class LocationGenerator
             });
             if (itemTemplate._props.Slots?.length > 0)
             {
-                this.addModsToEquipmentItem(itemWithMods, itemTemplate)
+                itemWithMods = this.itemHelper.addChildSlotItems(itemWithMods, itemTemplate, this.locationConfig.equipmentLootSettings.modSpawnChancePercent);
             }
         }
         else
@@ -1075,7 +1075,7 @@ export class LocationGenerator
         {
             if (itemTemplate._props.Slots?.length > 0)
             {
-                this.addModsToEquipmentItem(items, itemTemplate)
+                items = this.itemHelper.addChildSlotItems(items, itemTemplate, this.locationConfig.equipmentLootSettings.modSpawnChancePercent);
             }
         }
 
@@ -1084,45 +1084,5 @@ export class LocationGenerator
             width: width,
             height: height
         };
-    }
-
-    /**
-     * Add mod componenets to an equipment item (head/rig/armor)
-     * @param modItem 
-     * @param itemTemplate 
-     */
-    protected addModsToEquipmentItem(modItem: Item[], itemTemplate: ITemplateItem): void
-    {
-        // Add armor plates
-        for (const slot of itemTemplate._props.Slots)
-        {
-            // Check if mod has % chance to be added
-            const modSpawnChance = this.locationConfig.equipmentLootSettings.modSpawnChancePercent[slot._name.toLowerCase()];
-            if (modSpawnChance && !slot._required)
-            {
-                // only run chance to not add item if its not a required mod
-                if (this.randomUtil.getChance100(modSpawnChance))
-                {
-                    continue;
-                }
-            }
-
-            const possibleTplsForSlot = slot._props.filters[0].Filter ?? [];
-            if (possibleTplsForSlot.length === 0)
-            {
-                this.logger.warning(`Unable to add mod to item: ${itemTemplate._id} ${itemTemplate._name} slot: ${slot._name} as the db pool is empty, skipping`);
-
-                continue;
-            }
-
-            modItem.push(
-                {
-                    _id: this.hashUtil.generate(),
-                    _tpl: this.randomUtil.getArrayValue(possibleTplsForSlot), // Choose random tpl from array of compatible
-                    parentId: modItem[0]._id,
-                    slotId: slot._name
-                }
-            )
-        }
     }
 }

@@ -295,7 +295,7 @@ export class BotLootGenerator
             {
                 const itemToAddTemplate = this.getRandomItemFromPoolByRole(pool, botRole);
                 const id = this.hashUtil.generate();
-                const itemsToAdd: Item[] = [{
+                let itemsToAdd: Item[] = [{
                     _id: id,
                     _tpl: itemToAddTemplate._id,
                     ...this.botGeneratorHelper.generateExtraPropertiesForItem(itemToAddTemplate, botRole),
@@ -343,6 +343,19 @@ export class BotLootGenerator
                 {
                     this.randomiseAmmoStackSize(isPmc, itemToAddTemplate, itemsToAdd[0]);
                 }
+                // Must add soft inserts/plates
+                else if (this.itemHelper.isOfBaseclasses(itemToAddTemplate._id, [BaseClasses.ARMOR, BaseClasses.HEADWEAR, BaseClasses.VEST]))
+                {
+                    // TODO - replace with config values
+                    const modIncludeedChances = {
+                        mod_nvg: 10,
+                        front_plate: 10,
+                        back_plate: 10,
+                        side_plate: 10
+
+                    }
+                    itemsToAdd = this.itemHelper.addChildSlotItems(itemsToAdd, itemToAddTemplate, modIncludeedChances);
+                }
 
                 // Attempt to add item to container(s)
                 const itemAddedResult = this.botWeaponGeneratorHelper.addItemWithChildrenToEquipmentSlot(
@@ -376,11 +389,9 @@ export class BotLootGenerator
                     // Reset loop, try again
                     continue;
                 }
-                else
-                {
-                    // Item added okay, reset counter for next item
-                    fitItemIntoContainerAttempts = 0;
-                }
+
+                // Item added okay, reset counter for next item
+                fitItemIntoContainerAttempts = 0;
 
                 // Stop adding items to bots pool if rolling total is over total limit
                 if (totalValueLimitRub > 0)
