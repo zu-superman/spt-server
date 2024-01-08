@@ -1106,10 +1106,19 @@ export class LocationGenerator
                     continue;
                 }
             }
+
+            const possibleTplsForSlot = slot._props.filters[0].Filter ?? [];
+            if (possibleTplsForSlot.length === 0)
+            {
+                this.logger.warning(`Unable to add mod to item: ${itemTemplate._id} ${itemTemplate._name} slot: ${slot._name} as the db pool is empty, skipping`);
+
+                continue;
+            }
+
             modItem.push(
                 {
                     _id: this.hashUtil.generate(),
-                    _tpl: this.randomUtil.getArrayValue(slot._props.filters[0].Filter), // Choose random tpl from array of compatible
+                    _tpl: this.randomUtil.getArrayValue(possibleTplsForSlot), // Choose random tpl from array of compatible
                     parentId: modItem[0]._id,
                     slotId: slot._name
                 }
