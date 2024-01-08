@@ -185,11 +185,6 @@ export class InventoryHelper
             return this.httpResponse.appendErrorToOutput(output, message);
         }
 
-        for (const itemToAdd of itemsToAdd)
-        {
-            const itemWithChildren = this.itemHelper.findAndReturnChildrenAsItems(itemsToAddPool, itemToAdd.itemRef._id);
-        }
-
         // Update UPD properties and add to output.profileChanges/pmcData.Inventory.items arrays
         for (const itemToAdd of itemsToAdd)
         {
