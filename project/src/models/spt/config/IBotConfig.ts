@@ -132,7 +132,7 @@ export interface RandomisationDetails
     /** Between what levels do these randomisation setting apply to */
     levelRange: MinMax;
     generation?: Record<string, GenerationData>;
-    /** Mod slots that should be fully randomisate -ignores mods from bottype.json */
+    /** Mod slots that should be fully randomised -ignores mods from bottype.json and instaed creates a pool using items.json */
     randomisedWeaponModSlots?: string[];
     /** Armor slots that should be randomised e.g. 'Headwear, Armband' */
     randomisedArmorSlots?: string[];
