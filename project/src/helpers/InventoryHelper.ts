@@ -149,6 +149,7 @@ export class InventoryHelper
 
         for (const itemToAdd of itemsToAdd)
         {
+            // Update Items `location` properties
             const errorOutput = this.placeItemInInventory(
                 itemToAdd,
                 stashFS2D,

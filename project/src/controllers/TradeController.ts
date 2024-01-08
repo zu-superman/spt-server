@@ -259,6 +259,7 @@ export class TradeController
         return totalPrice;
     }
 
+    /** Buy item */
     protected confirmTradingInternal(
         pmcData: IPmcData,
         body: IProcessBaseTradeRequestData,
