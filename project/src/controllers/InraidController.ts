@@ -29,6 +29,13 @@ import { MatchBotDetailsCacheService } from "@spt-aki/services/MatchBotDetailsCa
 import { PmcChatResponseService } from "@spt-aki/services/PmcChatResponseService";
 import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 import { TimeUtil } from "@spt-aki/utils/TimeUtil";
+import { TraderServicesService } from "@spt-aki/services/TraderServicesService";
+import { ITraderServiceModel } from "@spt-aki/models/spt/services/ITraderServiceModel";
+import { Item } from "@spt-aki/models/eft/common/tables/IItem";
+import { MailSendService } from "@spt-aki/services/MailSendService";
+import { RandomUtil } from "@spt-aki/utils/RandomUtil";
+import { ITraderConfig } from "@spt-aki/models/spt/config/ITraderConfig";
+import { MessageType } from "@spt-aki/models/enums/MessageType";
 
 /**
  * Logic for handling In Raid callbacks
@@ -38,6 +45,7 @@ export class InraidController
 {
     protected airdropConfig: IAirdropConfig;
     protected inraidConfig: IInRaidConfig;
+    protected traderConfig: ITraderConfig;
 
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
@@ -53,14 +61,18 @@ export class InraidController
         @inject("PlayerScavGenerator") protected playerScavGenerator: PlayerScavGenerator,
         @inject("HealthHelper") protected healthHelper: HealthHelper,
         @inject("TraderHelper") protected traderHelper: TraderHelper,
+        @inject("TraderServicesService") protected traderServicesService: TraderServicesService,
         @inject("InsuranceService") protected insuranceService: InsuranceService,
         @inject("InRaidHelper") protected inRaidHelper: InRaidHelper,
         @inject("ApplicationContext") protected applicationContext: ApplicationContext,
         @inject("ConfigServer") protected configServer: ConfigServer,
+        @inject("MailSendService") protected mailSendService: MailSendService,
+        @inject("RandomUtil") protected randomUtil: RandomUtil,
     )
     {
         this.airdropConfig = this.configServer.getConfig(ConfigTypes.AIRDROP);
         this.inraidConfig = this.configServer.getConfig(ConfigTypes.IN_RAID);
+        this.traderConfig = this.configServer.getConfig(ConfigTypes.TRADER);
     }
 
     /**
@@ -497,5 +509,33 @@ export class InraidController
     public getAirdropConfig(): IAirdropConfig
     {
         return this.airdropConfig;
+    }
+
+    /**
+     * Handle singleplayer/traderServices/getTraderServices
+     * @returns Trader services data
+     */
+    public getTraderServices(sessionId: string, traderId: string): ITraderServiceModel[]
+    {
+        return this.traderServicesService.getTraderServices(traderId);
+    }
+
+    /**
+     * Handle singleplayer/traderServices/itemDelivery
+     */
+    public itemDelivery(sessionId: string, traderId: string, items: Item[]): void
+    {
+        const dialogueTemplates = this.databaseServer.getTables().traders[traderId].dialogue;
+        const messageId = this.randomUtil.getArrayValue(dialogueTemplates.itemsDelivered);
+        const messageStoreTime = this.timeUtil.getHoursAsSeconds(this.traderConfig.fence.btrDeliveryExpireHours);
+        
+        this.mailSendService.sendLocalisedNpcMessageToPlayer(
+            sessionId,
+            this.traderHelper.getTraderById(traderId),
+            MessageType.BTR_ITEMS_DELIVERY,
+            messageId,
+            items,
+            messageStoreTime,
+        );
     }
 }
