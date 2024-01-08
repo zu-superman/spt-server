@@ -899,18 +899,28 @@ export class FenceService
      */
     public removeFenceOffer(assortIdToRemove: string): void
     {
-        let relatedAssortIndex = this.fenceAssort.items.findIndex((i) => i._id === assortIdToRemove);
-
-        // No offer found in main assort, check discount items
-        if (relatedAssortIndex === -1)
+        // Assort could have child items, remove those too
+        const itemWithChildrenToRemove = this.itemHelper.findAndReturnChildrenAsItems(this.fenceAssort.items, assortIdToRemove);
+        for (const itemToRemove of itemWithChildrenToRemove)
         {
-            relatedAssortIndex = this.fenceDiscountAssort.items.findIndex((i) => i._id === assortIdToRemove);
-            this.fenceDiscountAssort.items.splice(relatedAssortIndex, 1);
+            let indexToRemove = this.fenceAssort.items.findIndex(item => item._id === itemToRemove._id);
 
-            return;
+            // No offer found in main assort, check discount items
+            if (indexToRemove === -1)
+            {
+                indexToRemove = this.fenceDiscountAssort.items.findIndex((i) => i._id === itemToRemove._id);
+                this.fenceDiscountAssort.items.splice(indexToRemove, 1);
+
+                if (indexToRemove === -1)
+                {
+                    this.logger.warning(`unable to remove fence assort item: ${itemToRemove._id} tpl: ${itemToRemove._tpl}`)
+                }
+
+                return;
+            }
+
+            // Remove offer from assort
+            this.fenceAssort.items.splice(indexToRemove, 1);
         }
-
-        // Remove offer from assort
-        this.fenceAssort.items.splice(relatedAssortIndex, 1);
     }
 }
