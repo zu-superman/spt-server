@@ -2549,11 +2549,6 @@
       ]
     },
     "mods": {
-      "634f036a517ccc8a960fc746": {
-        "mod_mount_000": [
-          "634f03d40384a3ba4f06f874"
-        ]
-      },
       "54491c4f4bdc2db1078b4568": {
         "mod_barrel": [
           "55d4491a4bdc2d882f8b456e"
@@ -2885,6 +2880,35 @@
           "6571bab0f41985531a038091"
         ]
       },
+      "5c0e625a86f7742d77340f62": {
+        "Back_plate": [
+          "656fafe3498d1b7e3e071da4"
+        ],
+        "Collar": [
+          "657643a220cc24d17102b14c"
+        ],
+        "Front_plate": [
+          "656f63c027aed95beb08f62c"
+        ],
+        "Left_side_plate": [
+          "64afd81707e2cf40e903a316"
+        ],
+        "Right_side_plate": [
+          "64afd81707e2cf40e903a316"
+        ],
+        "Soft_armor_back": [
+          "657642b0e6d5dd75f40688a5"
+        ],
+        "Soft_armor_front": [
+          "65764275d8537eb26a0355e9"
+        ],
+        "Soft_armor_left": [
+          "6576434820cc24d17102b148"
+        ],
+        "soft_armor_right": [
+          "657643732bc38ef78e076477"
+        ]
+      },
       "5c46fbd72e2216398b5a8c9c": {
         "mod_barrel": [
           "5c471cb32e221602b177afaa"
@@ -3047,6 +3071,11 @@
         ],
         "mod_muzzle": [
           "5cf67cadd7f00c065a5abab7"
+        ]
+      },
+      "634f036a517ccc8a960fc746": {
+        "mod_mount_000": [
+          "634f03d40384a3ba4f06f874"
         ]
       },
       "634f05a21f9f536910079b56": {

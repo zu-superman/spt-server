@@ -2881,7 +2881,10 @@
         "5aa2ba46e5b5b000137b758d",
         "625eb0faa6e3a82193267ad9",
         "5c1793902e221602b21d3de2",
-        "6269545d0e57f218e4548ca2"
+        "6269545d0e57f218e4548ca2",
+        "5ef61964ec7f42238c31e0c1",
+        "5f3e7801153b8571434a924c",
+        "5d0a3e8cd7ad1a6f6a3d35bd"
       ],
       "Pockets": [
         "5f3e77b26cda304dcc634057",
@@ -4179,6 +4182,9 @@
         "Helmet_top": [
           "657f9c78ada5fadd1f07a58d"
         ],
+        "mod_equipment_000": [
+          "5a16b672fcdbcb001912fa83"
+        ],
         "mod_nvg": [
           "5a16b8a9fcdbcb00165aa6ca"
         ]
@@ -4210,6 +4216,9 @@
         ],
         "Helmet_top": [
           "657f9a55c6679fefb3051e19"
+        ],
+        "mod_nvg": [
+          "5ea18c84ecf1982c7712d9a2"
         ]
       },
       "5f2a9575926fd9352339381f": {

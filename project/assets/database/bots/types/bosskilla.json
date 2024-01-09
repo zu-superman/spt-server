@@ -2607,6 +2607,17 @@
         "mod_equipment": [
           "5c0e842486f77443a74d2976"
         ]
+      },
+      "65709d2d21b9f815e208ff95": {
+        "Helmet_back": [
+          "657f9ef6c6679fefb3051e1f"
+        ],
+        "Helmet_top": [
+          "657f9eb7e9433140ad0baf86"
+        ],
+        "mod_equipment_000": [
+          "6570a88c8f221f3b210353b7"
+        ]
       }
     }
   },
