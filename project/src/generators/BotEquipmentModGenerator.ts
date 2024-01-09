@@ -212,11 +212,12 @@ export class BotEquipmentModGenerator
 
         // Filter plates to the chosen level based on its armorClass property
         const filteredPlates = platesFromDb.filter(x => x._props.armorClass === chosenArmorPlateLevel);
-        if (!filteredPlates)
+        if (filteredPlates.length === 0)
         {
-            this.logger.warning(`Plate filter was too restrictive, unable to find plates of level: ${chosenArmorPlateLevel}. Returning all ${modPool.length} plates instead`);
+            this.logger.warning(`Plate filter was too restrictive, unable to find plates of level: ${chosenArmorPlateLevel}. Using mods default`);
 
-            return modPool;
+            const relatedItemDbModSlot = armorItem._props.Slots.find(slot => slot._name.toLowerCase() === modSlot);
+            return [relatedItemDbModSlot._props.filters[0].Plate];
         }
 
         // Only return the items ids
