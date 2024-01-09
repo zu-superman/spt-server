@@ -659,7 +659,7 @@ export class QuestHelper
             );
         }
 
-        output.profileChanges[sessionID].quests.push(this.failedUnlocked(failRequest.qid, sessionID));
+        output.profileChanges[sessionID].quests.push(...this.failedUnlocked(failRequest.qid, sessionID));
 
         return output;
     }
