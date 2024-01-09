@@ -509,33 +509,39 @@ export class ProfileFixerService
         }
     }
 
+    /**
+     * Repeatable quests leave behind TaskConditionCounter objects that make the profile bloat with time, remove them
+     * @param pmcProfile Player profile to check
+     */
     protected removeDanglingTaskConditionCounters(pmcProfile: IPmcData): void
     {
         if (pmcProfile.TaskConditionCounters)
         {
-            const counterKeysToRemove: string[] = [];
-            const activeQuests = this.getActiveRepeatableQuests(pmcProfile.RepeatableQuests);
+            const taskConditionKeysToRemove: string[] = [];
+            const activeRepeatableQuests = this.getActiveRepeatableQuests(pmcProfile.RepeatableQuests);
             const achievements = this.databaseServer.getTables().templates.achievements;
             
-            for (const [key, backendCounter] of Object.entries(pmcProfile.TaskConditionCounters))
+            // Loop over TaskConditionCounters objects and add once we want to remove to counterKeysToRemove
+            for (const [key, taskConditionCounter] of Object.entries(pmcProfile.TaskConditionCounters))
             {
-                if (pmcProfile.RepeatableQuests && activeQuests.length > 0)
+                // Only check if profile has repeatable quests
+                if (pmcProfile.RepeatableQuests && activeRepeatableQuests.length > 0)
                 {
-                    const existsInActiveRepeatableQuests = activeQuests.some((x) => x._id === backendCounter.sourceId);
-                    const existsInQuests = pmcProfile.Quests.some((q) => q.qid === backendCounter.sourceId);
-                    const isAchievementTracker = achievements.some((a) => a.id === backendCounter.sourceId);
+                    const existsInActiveRepeatableQuests = activeRepeatableQuests.some((quest) => quest._id === taskConditionCounter.sourceId);
+                    const existsInQuests = pmcProfile.Quests.some((quest) => quest.qid === taskConditionCounter.sourceId);
+                    const isAchievementTracker = achievements.some((quest) => quest.id === taskConditionCounter.sourceId);
 
-                    // if BackendCounter is neither in activeQuests, quests or achievements - it's stale and should be cleaned up
+                    // If task conditions id is neither in activeQuests, quests or achievements - it's stale and should be cleaned up
                     if (!(existsInActiveRepeatableQuests || existsInQuests || isAchievementTracker))
                     {
-                        counterKeysToRemove.push(key);
+                        taskConditionKeysToRemove.push(key);
                     }
                 }
             }
 
-            for (const counterKeyToRemove of counterKeysToRemove)
+            for (const counterKeyToRemove of taskConditionKeysToRemove)
             {
-                this.logger.debug(`Removed ${counterKeyToRemove} backend count object`);
+                this.logger.debug(`Removed ${counterKeyToRemove} TaskConditionCounter object`);
                 delete pmcProfile.TaskConditionCounters[counterKeyToRemove];
             }
         }
