@@ -106,7 +106,7 @@ export class BotEquipmentModGenerator
                 forceSpawn = true;
             }
 
-            const modPoolToChooseFrom = this.filterPlateModsForSlot(settings, modSlot.toLowerCase(), compatibleModsPool[modSlot], parentTemplate);
+            const modPoolToChooseFrom = this.filterPlateModsForSlotByLevel(settings, modSlot.toLowerCase(), compatibleModsPool[modSlot], parentTemplate);
 
             let modTpl: string;
             let found = false;
@@ -177,7 +177,7 @@ export class BotEquipmentModGenerator
      * @param armorItem 
      * @returns Array of plate tpls to choose from
      */
-    protected filterPlateModsForSlot(settings: IGenerateEquipmentProperties, modSlot: string, modPool: string[], armorItem: ITemplateItem): string[]
+    protected filterPlateModsForSlotByLevel(settings: IGenerateEquipmentProperties, modSlot: string, modPool: string[], armorItem: ITemplateItem): string[]
     {
         // Not pmc or not a plate slot, return original mod pool array
         if (!this.slotIsPlate(modSlot))
