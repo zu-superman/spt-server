@@ -113,7 +113,9 @@ export class BotGenerator
 
             // Get raw json data for bot (Cloned)
             const botJsonTemplate = this.jsonUtil.clone(
-                this.botHelper.getBotTemplate((botGenerationDetails.isPmc) ? bot.Info.Side : botGenerationDetails.role),
+                this.botHelper.getBotTemplate((botGenerationDetails.isPmc)
+                    ? bot.Info.Side
+                    : botGenerationDetails.role),
             );
 
             bot = this.generateBot(sessionId, bot, botJsonTemplate, botGenerationDetails);

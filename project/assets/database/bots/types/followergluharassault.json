@@ -46,37 +46,40 @@
       "SecuredContainer": 100,
       "TacticalVest": 100
     },
-    "mods": {
-      "back_plate": 80,
+    "equipmentMods": {
+      "back_plate": 79,
       "front_plate": 100,
-      "left_side_plate": 100,
+      "left_side_plate": 11,
+      "mod_equipment": 23,
+      "mod_equipment_000": 76,
+      "mod_mount": 0,
+      "mod_nvg": 15,
+      "right_side_plate": 11
+    },
+    "weaponMods": {
       "mod_charge": 0,
-      "mod_equipment": 15,
-      "mod_equipment_000": 81,
       "mod_foregrip": 0,
       "mod_launcher": 0,
       "mod_magazine": 100,
-      "mod_mount": 17,
-      "mod_mount_000": 49,
-      "mod_mount_001": 68,
+      "mod_mount": 19,
+      "mod_mount_000": 46,
+      "mod_mount_001": 72,
       "mod_mount_002": 0,
       "mod_mount_004": 100,
       "mod_muzzle": 55,
-      "mod_nvg": 26,
       "mod_reciever": 100,
-      "mod_scope": 31,
-      "mod_sight_front": 5,
-      "mod_sight_rear": 47,
+      "mod_scope": 33,
+      "mod_sight_front": 10,
+      "mod_sight_rear": 48,
       "mod_stock": 100,
       "mod_stock_000": 100,
       "mod_stock_001": 100,
       "mod_stock_akms": 100,
-      "mod_tactical": 87,
-      "mod_tactical_000": 44,
+      "mod_tactical": 84,
+      "mod_tactical_000": 41,
       "mod_tactical_001": 100,
       "mod_tactical_002": 0,
-      "mod_tactical_003": 0,
-      "right_side_plate": 100
+      "mod_tactical_003": 0
     }
   },
   "difficulty": {
@@ -2518,6 +2521,23 @@
           "56083cba4bdc2de22e8b456f"
         ]
       },
+      "544a5caa4bdc2d1a388b4568": {
+        "Back_plate": [
+          "656f9fa0498d1b7e3e071d98"
+        ],
+        "Front_plate": [
+          "656f9fa0498d1b7e3e071d98"
+        ],
+        "Groin": [
+          "6570e90b3a5689d85f08db97"
+        ],
+        "Soft_armor_back": [
+          "6570e87c23c1f638ef0b0ee2"
+        ],
+        "Soft_armor_front": [
+          "6570e83223c1f638ef0b0ede"
+        ]
+      },
       "545cdb794bdc2d3a198b456a": {
         "Back_plate": [
           "64afc71497cf3a403c01ff38"
@@ -2850,6 +2870,29 @@
         ],
         "mod_stock": [
           "5addbf175acfc408fb13965b"
+        ]
+      },
+      "5ab8e79e86f7742d8b372e78": {
+        "Back_plate": [
+          "65573fa5655447403702a816"
+        ],
+        "Collar": [
+          "657326bc5d3a3129fb05f36b"
+        ],
+        "Front_plate": [
+          "656f611f94b480b8a500c0db"
+        ],
+        "Soft_armor_back": [
+          "657326978c1cc6dcd9098b56"
+        ],
+        "Soft_armor_front": [
+          "65732688d9d89ff7ac0d9c4c"
+        ],
+        "Soft_armor_left": [
+          "657326a28c1cc6dcd9098b5a"
+        ],
+        "soft_armor_right": [
+          "657326b08c1cc6dcd9098b5e"
         ]
       },
       "5ac4cd105acfc40016339859": {

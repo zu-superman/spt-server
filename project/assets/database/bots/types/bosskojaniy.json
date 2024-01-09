@@ -33,7 +33,8 @@
       "SecuredContainer": 100,
       "TacticalVest": 0
     },
-    "mods": {
+    "equipmentMods": {},
+    "weaponMods": {
       "mod_charge": 0,
       "mod_foregrip": 0,
       "mod_launcher": 0,
@@ -44,17 +45,11 @@
       "mod_muzzle": 66,
       "mod_reciever": 100,
       "mod_scope": 100,
-      "mod_scope_000": 100,
-      "mod_scope_001": 0,
-      "mod_scope_002": 0,
       "mod_sight_front": 100,
       "mod_sight_rear": 100,
       "mod_stock": 100,
-      "mod_stock_000": 100,
       "mod_tactical": 100,
-      "mod_tactical_000": 98,
-      "mod_tactical_001": 0,
-      "mod_tactical_002": 0
+      "mod_tactical_000": 100
     }
   },
   "difficulty": {

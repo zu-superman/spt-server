@@ -159,7 +159,7 @@ export class BotLootGenerator
                     botInventory,
                     EquipmentSlots.BACKPACK,
                     botJsonTemplate.inventory,
-                    botJsonTemplate.chances.mods,
+                    botJsonTemplate.chances.weaponMods,
                     botRole,
                     isPmc,
                     botLevel,

@@ -230,7 +230,7 @@ export class PlayerScavGenerator
                 continue;
             }
 
-            baseBotNode.chances.mods[modKey] += karmaSettings.modifiers.mod[modKey];
+            baseBotNode.chances.weaponMods[modKey] += karmaSettings.modifiers.mod[modKey];
         }
 
         // Adjust item spawn quantity values

@@ -63,18 +63,18 @@ export class BotInventoryGenerator
     ): PmcInventory
     {
         const templateInventory = botJsonTemplate.inventory;
-        const equipmentChances = botJsonTemplate.chances;
+        const wornItemChances = botJsonTemplate.chances;
         const itemGenerationLimitsMinMax = botJsonTemplate.generation;
 
         // Generate base inventory with no items
         const botInventory = this.generateInventoryBase();
 
-        this.generateAndAddEquipmentToBot(templateInventory, equipmentChances, botRole, botInventory, botLevel);
+        this.generateAndAddEquipmentToBot(templateInventory, wornItemChances, botRole, botInventory, botLevel);
 
         // Roll weapon spawns (primary/secondary/holster) and generate a weapon for each roll that passed
         this.generateAndAddWeaponsToBot(
             templateInventory,
-            equipmentChances,
+            wornItemChances,
             sessionId,
             botInventory,
             botRole,
@@ -132,14 +132,14 @@ export class BotInventoryGenerator
     /**
      * Add equipment to a bot
      * @param templateInventory bot/x.json data from db
-     * @param equipmentChances Chances items will be added to bot
+     * @param wornItemChances Chances items will be added to bot
      * @param botRole Role bot has (assault/pmcBot)
      * @param botInventory Inventory to add equipment to
      * @param botLevel Level of bot
      */
     protected generateAndAddEquipmentToBot(
         templateInventory: Inventory,
-        equipmentChances: Chances,
+        wornItemChances: Chances,
         botRole: string,
         botInventory: PmcInventory,
         botLevel: number,
@@ -171,7 +171,7 @@ export class BotInventoryGenerator
                 rootEquipmentSlot: equipmentSlot,
                 rootEquipmentPool: templateInventory.equipment[equipmentSlot],
                 modPool: templateInventory.mods,
-                spawnChances: equipmentChances,
+                spawnChances: wornItemChances,
                 botRole: botRole,
                 botLevel: botLevel,
                 inventory: botInventory,
@@ -185,7 +185,7 @@ export class BotInventoryGenerator
             rootEquipmentSlot: EquipmentSlots.FACE_COVER,
             rootEquipmentPool: templateInventory.equipment.FaceCover,
             modPool: templateInventory.mods,
-            spawnChances: equipmentChances,
+            spawnChances: wornItemChances,
             botRole: botRole,
             botLevel: botLevel,
             inventory: botInventory,
@@ -196,7 +196,7 @@ export class BotInventoryGenerator
             rootEquipmentSlot: EquipmentSlots.HEADWEAR,
             rootEquipmentPool: templateInventory.equipment.Headwear,
             modPool: templateInventory.mods,
-            spawnChances: equipmentChances,
+            spawnChances: wornItemChances,
             botRole: botRole,
             botLevel: botLevel,
             inventory: botInventory,
@@ -207,7 +207,7 @@ export class BotInventoryGenerator
             rootEquipmentSlot: EquipmentSlots.EARPIECE,
             rootEquipmentPool: templateInventory.equipment.Earpiece,
             modPool: templateInventory.mods,
-            spawnChances: equipmentChances,
+            spawnChances: wornItemChances,
             botRole: botRole,
             botLevel: botLevel,
             inventory: botInventory,
@@ -218,7 +218,7 @@ export class BotInventoryGenerator
             rootEquipmentSlot: EquipmentSlots.TACTICAL_VEST,
             rootEquipmentPool: templateInventory.equipment.TacticalVest,
             modPool: templateInventory.mods,
-            spawnChances: equipmentChances,
+            spawnChances: wornItemChances,
             botRole: botRole,
             botLevel: botLevel,
             inventory: botInventory,
@@ -229,7 +229,7 @@ export class BotInventoryGenerator
             rootEquipmentSlot: EquipmentSlots.ARMOR_VEST,
             rootEquipmentPool: templateInventory.equipment.ArmorVest,
             modPool: templateInventory.mods,
-            spawnChances: equipmentChances,
+            spawnChances: wornItemChances,
             botRole: botRole,
             botLevel: botLevel,
             inventory: botInventory,
@@ -447,7 +447,7 @@ export class BotInventoryGenerator
             weaponSlot.slot,
             templateInventory,
             botInventory.equipment,
-            equipmentChances.mods,
+            equipmentChances.weaponMods,
             botRole,
             isPmc,
             botLevel,

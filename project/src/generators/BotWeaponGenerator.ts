@@ -666,7 +666,10 @@ export class BotWeaponGenerator
 
         if (weaponTemplate._props.ammoCaliber)
         {
-            return weaponTemplate._props.ammoCaliber;
+            // 9x18pmm has a typo, should be Caliber9x18PM
+            return weaponTemplate._props.ammoCaliber === "Caliber9x18PMM"
+                ? "Caliber9x18PM"
+                : weaponTemplate._props.ammoCaliber;
         }
 
         if (weaponTemplate._props.LinkedWeapon)

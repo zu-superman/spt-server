@@ -25,7 +25,7 @@
       "Eyewear": 0,
       "FaceCover": 100,
       "FirstPrimaryWeapon": 100,
-      "Headwear": 51,
+      "Headwear": 100,
       "Holster": 100,
       "Pockets": 100,
       "Scabbard": 0,
@@ -33,26 +33,23 @@
       "SecuredContainer": 100,
       "TacticalVest": 100
     },
-    "mods": {
+    "equipmentMods": {},
+    "weaponMods": {
       "mod_charge": 0,
-      "mod_flashlight": 50,
       "mod_foregrip": 100,
       "mod_magazine": 100,
       "mod_mount": 0,
       "mod_mount_000": 33,
-      "mod_mount_001": 2,
-      "mod_mount_002": 1,
-      "mod_mount_003": 100,
+      "mod_mount_001": 0,
+      "mod_mount_002": 0,
       "mod_muzzle": 100,
       "mod_reciever": 100,
       "mod_scope": 100,
       "mod_sight_front": 0,
-      "mod_sight_rear": 0,
       "mod_stock": 75,
-      "mod_tactical": 2,
-      "mod_tactical_000": 3,
-      "mod_tactical_001": 0,
-      "mod_tactical_002": 100
+      "mod_tactical": 0,
+      "mod_tactical_000": 0,
+      "mod_tactical_001": 0
     }
   },
   "difficulty": {
@@ -2380,9 +2377,6 @@
           "6197b229af1f5202c57a9bea"
         ]
       },
-	  "6516b129609aaf354b34b3a8": {
-		  "mod_pistolgrip": ["5f6341043ada5942720e2dc5"]
-	  },
       "5c471bfc2e221602b21d4e17": {
         "mod_muzzle": [
           "5e01e9e273d8eb11426f5bc3"
@@ -2479,6 +2473,11 @@
       "628121434fa03b6b6c35dc6a": {
         "mod_muzzle": [
           "5fc23636016cce60e8341b05"
+        ]
+      },
+      "6516b129609aaf354b34b3a8": {
+        "mod_pistolgrip": [
+          "5f6341043ada5942720e2dc5"
         ]
       }
     }
