@@ -138,8 +138,10 @@ export interface RandomisationDetails
     randomisedArmorSlots?: string[];
     /** Equipment chances */
     equipment?: Record<string, number>;
-    /** Mod chances */
-    mods?: Record<string, number>;
+    /** Weapon mod chances */
+    weaponMods?: Record<string, number>;
+    /** Equipment mod chances */
+    equipmentMods?: Record<string, number>;
 }
 
 export interface EquipmentFilterDetails

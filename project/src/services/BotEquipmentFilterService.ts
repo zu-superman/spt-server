@@ -89,7 +89,8 @@ export class BotEquipmentFilterService
         if (randomisationDetails)
         {
             this.adjustChances(randomisationDetails?.equipment, baseBotNode.chances.equipment);
-            this.adjustChances(randomisationDetails?.mods, baseBotNode.chances.weaponMods);
+            this.adjustChances(randomisationDetails?.weaponMods, baseBotNode.chances.weaponMods);
+            this.adjustChances(randomisationDetails?.equipmentMods, baseBotNode.chances.equipmentMods);
             this.adjustGenerationChances(randomisationDetails?.generation, baseBotNode.generation);
         }
     }
