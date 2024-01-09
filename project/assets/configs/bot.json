@@ -10,7 +10,7 @@
         "bossKnight": 5,
         "bossZryachiy": 5,
         "bossTest": 10,
-		"bossKolontay": 5,
+        "bossKolontay": 5,
         "cursedAssault": 50,
         "followerBully": 5,
         "followerGluharAssault": 5,
@@ -37,14 +37,14 @@
         "crazyAssaultEvent": 15,
         "bossBoar": 5,
         "bossBoarSniper": 5,
-		"followerBoarClose1": 10,
-		"followerBoarClose2": 10,
-		"followerKolontayAssault": 10,
-		"followerKolontaySecurity": 10,
-		"shooterBTR": 10,
-		"peacefullZryachiyEvent": 5,
-		"ravangeZryachiyEvent": 5,
-		"sectactPriestEvent": 10,
+        "followerBoarClose1": 10,
+        "followerBoarClose2": 10,
+        "followerKolontayAssault": 10,
+        "followerKolontaySecurity": 10,
+        "shooterBTR": 10,
+        "peacefullZryachiyEvent": 5,
+        "ravangeZryachiyEvent": 5,
+        "sectactPriestEvent": 10,
         "sptUsec": 30,
         "sptBear": 30
     },
@@ -282,7 +282,7 @@
         "bosszryachiy": 3,
         "bossboar": 3,
         "bossboarsniper": 3,
-		"bosskolontay": 3,
+        "bosskolontay": 3,
         "cursedassault": 4,
         "exusec": 4,
         "followerbigpipe": 4,
@@ -298,15 +298,15 @@
         "followertest": 4,
         "followerzryachiy": 4,
         "followerboar": 4,
-		"followerboarclose1": 4,
-		"followerboarclose2": 4,
-		"followerkolontayassault": 4,
-		"followerkolontaysecurity": 4,
+        "followerboarclose1": 4,
+        "followerboarclose2": 4,
+        "followerkolontayassault": 4,
+        "followerkolontaysecurity": 4,
         "gifter": 4,
         "pmcbot": 4,
         "sectantpriest": 4,
         "sectantwarrior": 4,
-		"shooterbtr": 1,
+        "shooterbtr": 1,
         "test": 4
     },
     "chanceAssaultScavHasPlayerScavName": 10,
@@ -348,10 +348,10 @@
         "followerzryachiy": {},
         "followertest": {},
         "followerboar": {},
-		"followerboarclose1": {},
-		"followerboarclose2": {},
-		"followerkolontayassault": {},
-		"followerkolontaysecurity": {},
+        "followerboarclose1": {},
+        "followerboarclose2": {},
+        "followerkolontayassault": {},
+        "followerkolontaysecurity": {},
         "sectantpriest": {},
         "sectantwarrior": {},
         "test": {},
@@ -385,7 +385,7 @@
             "5448f39d4bdc2d0a728b4568": 2,
             "543be6564bdc2df4348b4568": 1
         },
-		"shooterbtr": {}
+        "shooterbtr": {}
     },
     "equipment": {
         "assault": {
@@ -523,17 +523,17 @@
         "bosstest": {},
         "shooterbtr": {},
         "followerkolontayassault": {
-			"faceShieldIsActiveChancePercent": 100,
+            "faceShieldIsActiveChancePercent": 100,
             "lightIsActiveDayChancePercent": 25,
             "lightIsActiveNightChancePercent": 75,
             "laserIsActiveChancePercent": 75
-		},
+        },
         "followerkolontaysecurity": {
-			"faceShieldIsActiveChancePercent": 100,
+            "faceShieldIsActiveChancePercent": 100,
             "lightIsActiveDayChancePercent": 25,
             "lightIsActiveNightChancePercent": 75,
             "laserIsActiveChancePercent": 75
-		},
+        },
         "followerbully": {
             "faceShieldIsActiveChancePercent": 100,
             "lightIsActiveDayChancePercent": 25,
@@ -634,7 +634,7 @@
                 "lightLaserLimit": 1
             }
         },
-		"followerboarclose2": {
+        "followerboarclose2": {
             "nvgIsActiveChanceDayPercent": 20,
             "nvgIsActiveChanceNightPercent": 85,
             "faceShieldIsActiveChancePercent": 80,
@@ -864,16 +864,16 @@
                     },
                     "randomisedWeaponModSlots": [],
                     "equipmentMods": {
-						"back_plate": 60,
-						"left_side_plate": 0,
-						"rightside_plate": 0,
-						"mod_equipment": 3,
-						"mod_equipment_000": 3,
-						"mod_equipment_001": 3,
-						"mod_equipment_002": 3,
-						"mod_nvg": 3
-					},
-					"weaponMods": {
+                        "back_plate": 60,
+                        "left_side_plate": 0,
+                        "rightside_plate": 0,
+                        "mod_equipment": 3,
+                        "mod_equipment_000": 3,
+                        "mod_equipment_001": 3,
+                        "mod_equipment_002": 3,
+                        "mod_nvg": 3
+                    },
+                    "weaponMods": {
                         "mod_barrel": 20,
                         "mod_bipod": 10,
                         "mod_flashlight": 5,
@@ -913,23 +913,22 @@
                         "mod_tactical_003": 10,
                         "mod_tactical_2": 10
                     }
-                },
-				{
-					"levelRange": {
+                }, {
+                    "levelRange": {
                         "min": 15,
                         "max": 22
                     },
-					"equipment": {
+                    "equipment": {
                         "ArmBand": 90,
                         "FirstPrimaryWeapon": 90,
                         "SecondPrimaryWeapon": 0,
                         "Holster": 10,
                         "Earpiece": 35,
                         "Eyewear": 15,
-						"FaceCover": 20,
+                        "FaceCover": 20,
                         "Backpack": 80,
-						"Scabbard": 100,
-						"TacticalVest": 90
+                        "Scabbard": 100,
+                        "TacticalVest": 90
                     },
                     "randomisedArmorSlots": ["Headwear", "ArmorVest", "TacticalVest"],
                     "randomisedWeaponModSlots": ["mod_scope", "mod_scope_000", "mod_scope_001", "mod_scope_002", "mod_scope_003",
@@ -941,16 +940,16 @@
                         "mod_mount_000", "mod_mount_001", "mod_mount_002", "mod_mount_003", "mod_mount_004", "mod_mount_005", "mod_mount_006",
                         "mod_tactical", "mod_tactical_2", "mod_tactical_000", "mod_tactical_001", "mod_tactical_002", "mod_tactical_003"
                     ],
-					"equipmentMods": {
-						"back_plate": 75,
-						"left_side_plate": 25,
-						"rightside_plate": 25,
-						"mod_equipment": 10,
-						"mod_equipment_000": 10,
-						"mod_equipment_001": 10,
-						"mod_equipment_002": 5,
-						"mod_nvg": 15
-					},
+                    "equipmentMods": {
+                        "back_plate": 75,
+                        "left_side_plate": 25,
+                        "rightside_plate": 25,
+                        "mod_equipment": 10,
+                        "mod_equipment_000": 10,
+                        "mod_equipment_001": 10,
+                        "mod_equipment_002": 5,
+                        "mod_nvg": 15
+                    },
                     "weaponMods": {
                         "mod_barrel": 50,
                         "mod_bipod": 15,
@@ -1012,15 +1011,15 @@
                     "equipment": {
                         "SecondPrimaryWeapon": 20
                     },
-					"equipmentMods": {
-						"left_side_plate": 90,
-						"rightside_plate": 90,
-						"mod_equipment": 75,
-						"mod_equipment_000": 80,
-						"mod_equipment_001": 75,
-						"mod_equipment_002": 90,
-						"mod_nvg": 60
-					},
+                    "equipmentMods": {
+                        "left_side_plate": 90,
+                        "rightside_plate": 90,
+                        "mod_equipment": 75,
+                        "mod_equipment_000": 80,
+                        "mod_equipment_001": 75,
+                        "mod_equipment_002": 90,
+                        "mod_nvg": 60
+                    },
                     "randomisedArmorSlots": ["Headwear", "TacticalVest", "ArmorVest"],
                     "randomisedWeaponModSlots": ["mod_scope", "mod_scope_000", "mod_scope_001", "mod_scope_002", "mod_scope_003",
                         "mod_handguard", "mod_magazine", "mod_muzzle", "mod_bipod",
@@ -1180,8 +1179,8 @@
                                 "61f7c9e189e6fb1a5e3ea78d": 110,
                                 "5a38e6bac4a2826c6e06d79b": 90,
                                 "5ea03f7400685063ec28bfa8": 50,
-								"627e14b21713922ded6f2c15": 1,
-								"6275303a9f372d6ea97f9ec7": 1
+                                "627e14b21713922ded6f2c15": 1,
+                                "6275303a9f372d6ea97f9ec7": 1
                             },
                             "SecondPrimaryWeapon": {
                                 "5e81ebcd8e146c7080625e15": 0
@@ -1217,63 +1216,61 @@
                             }
                         }
                     }
-                },
-				{
-					"levelRange": {
+                }, {
+                    "levelRange": {
                         "min": 15,
                         "max": 22
                     },
-					"equipment": {
-						"edit": {
-							"ArmorVest": {
-								"5c0e5bab86f77461f55ed1f3": 135,
+                    "equipment": {
+                        "edit": {
+                            "ArmorVest": {
+                                "5c0e5bab86f77461f55ed1f3": 135,
                                 "5c0e5edb86f77461f55ed1f7": 135,
                                 "5648a7494bdc2d9d488b4583": 135,
                                 "5ab8e4ed86f7742d8e50c7fa": 135
-							},
-							"TacticalVest": {
-								"5c0e3eb886f7742015526062": 40,
-								"64a536392d2c4e6e970f4121": 40,
-								"64a5366719bab53bd203bf33": 40
-							},
-							"Backpack": {
-								"544a5cde4bdc2d39388b456b": 7,
-								"5ca20d5986f774331e7c9602": 7,
-								"60a272cc93ef783291411d8e": 7,
-								"6034d103ca006d2dca39b3f0": 7,
-								"618bb76513f5097c8d5aa2d5": 7,
-								"619cf0335771dd3c390269ae": 7,
-								"628e1ffc83ec92260c0f437f": 7,
-								"62a1b7fbc30cfa1d366af586": 7,
-								"5f5e467b0bc58666c37e7821": 6,
-								"5c0e805e86f774683f3dd637": 6
-							},
-							"Headwear": {
-								"5aa7cfc0e5b5b00015693143": 80,
-								"5a7c4850e899ef00150be885": 80,
-								"5e00c1ad86f774747333222c": 50,
-								"5c06c6a80db834001b735491": 80,
-								"5aa7d03ae5b5b00016327db5": 70,
-								"5d5e7d28a4b936645d161203": 50,
-								"5b432d215acfc4771e1c6624": 60,
-								"5b40e3f35acfc40016388218": 40,
-								"5b40e4035acfc47a87740943": 40,
-								"5a154d5cfcdbcb001a3b00da": 40,
-								"5ac8d6885acfc400180ae7b0": 40
-							},
-							"Earpiece": {
-								"5645bcc04bdc2d363b8b4572": 7
-							},
-							"FirstPrimaryWeapon": {
-								"627e14b21713922ded6f2c15": 1,
-								"6275303a9f372d6ea97f9ec7": 1,
-								"64ca3d3954fc657e230529cc": 1,
-								"64637076203536ad5600c990": 1
-							}
-						}
-					}
-				},
-				{
+                            },
+                            "TacticalVest": {
+                                "5c0e3eb886f7742015526062": 40,
+                                "64a536392d2c4e6e970f4121": 40,
+                                "64a5366719bab53bd203bf33": 40
+                            },
+                            "Backpack": {
+                                "544a5cde4bdc2d39388b456b": 7,
+                                "5ca20d5986f774331e7c9602": 7,
+                                "60a272cc93ef783291411d8e": 7,
+                                "6034d103ca006d2dca39b3f0": 7,
+                                "618bb76513f5097c8d5aa2d5": 7,
+                                "619cf0335771dd3c390269ae": 7,
+                                "628e1ffc83ec92260c0f437f": 7,
+                                "62a1b7fbc30cfa1d366af586": 7,
+                                "5f5e467b0bc58666c37e7821": 6,
+                                "5c0e805e86f774683f3dd637": 6
+                            },
+                            "Headwear": {
+                                "5aa7cfc0e5b5b00015693143": 80,
+                                "5a7c4850e899ef00150be885": 80,
+                                "5e00c1ad86f774747333222c": 50,
+                                "5c06c6a80db834001b735491": 80,
+                                "5aa7d03ae5b5b00016327db5": 70,
+                                "5d5e7d28a4b936645d161203": 50,
+                                "5b432d215acfc4771e1c6624": 60,
+                                "5b40e3f35acfc40016388218": 40,
+                                "5b40e4035acfc47a87740943": 40,
+                                "5a154d5cfcdbcb001a3b00da": 40,
+                                "5ac8d6885acfc400180ae7b0": 40
+                            },
+                            "Earpiece": {
+                                "5645bcc04bdc2d363b8b4572": 7
+                            },
+                            "FirstPrimaryWeapon": {
+                                "627e14b21713922ded6f2c15": 1,
+                                "6275303a9f372d6ea97f9ec7": 1,
+                                "64ca3d3954fc657e230529cc": 1,
+                                "64637076203536ad5600c990": 1
+                            }
+                        }
+                    }
+                }, {
                     "levelRange": {
                         "min": 30,
                         "max": 50
@@ -1791,7 +1788,7 @@
             "crazyAssaultEvent": 0,
             "pmcBot": 0
         },
-		"sandbox": {
+        "sandbox": {
             "bossKilla": 0,
             "bossKnight": 0,
             "bossGluhar": 0,
@@ -1879,7 +1876,7 @@
         "interchange": 20,
         "laboratory": 18,
         "tarkovstreets": 26,
-		"sandbox": 22,
+        "sandbox": 22,
         "default": 16
     }
 }
