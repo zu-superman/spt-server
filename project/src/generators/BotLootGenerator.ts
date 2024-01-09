@@ -344,7 +344,7 @@ export class BotLootGenerator
                     this.randomiseAmmoStackSize(isPmc, itemToAddTemplate, itemsToAdd[0]);
                 }
                 // Must add soft inserts/plates
-                else if (this.itemHelper.isOfBaseclasses(itemToAddTemplate._id, [BaseClasses.ARMOR, BaseClasses.HEADWEAR, BaseClasses.VEST]))
+                else if (this.itemHelper.itemCanRequireArmorInserts(itemToAddTemplate._id))
                 {
                     itemsToAdd = this.itemHelper.addChildSlotItems(itemsToAdd, itemToAddTemplate, null, true);
                 }

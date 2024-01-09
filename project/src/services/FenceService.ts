@@ -481,7 +481,7 @@ export class FenceService
                 rootItemToPush.upd.UnlimitedCount = false;
 
                 // Need to add mods to armors so they dont show as red in the trade screen
-                if (this.itemHelper.isOfBaseclasses(rootItemToPush._tpl, [BaseClasses.HEADWEAR, BaseClasses.VEST, BaseClasses.ARMOR]))
+                if (this.itemHelper.itemCanRequireArmorInserts(rootItemToPush._tpl))
                 {
                     this.addModsToArmorModSlots(itemsToPush, itemDbDetails);
                 }

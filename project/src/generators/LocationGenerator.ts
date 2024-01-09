@@ -861,7 +861,7 @@ export class LocationGenerator
             );
             itemWithMods.push(...magazineItem);
         }
-        else if (this.itemHelper.isOfBaseclasses(chosenTpl, [BaseClasses.VEST, BaseClasses.ARMOR, BaseClasses.HEADWEAR]))
+        else if (this.itemHelper.itemCanRequireArmorInserts(chosenTpl))
         {
             itemWithMods.push({
                 _id: this.objectId.generate(),
@@ -1071,7 +1071,7 @@ export class LocationGenerator
             // Replace existing magazine with above array
             items.splice(items.indexOf(items[0]), 1, ...magazineWithCartridges);
         }
-        else if (this.itemHelper.isOfBaseclasses(chosenTpl, [BaseClasses.VEST, BaseClasses.ARMOR, BaseClasses.HEADWEAR]))
+        else if (this.itemHelper.itemCanRequireArmorInserts(chosenTpl))
         {
             if (itemTemplate._props.Slots?.length > 0)
             {

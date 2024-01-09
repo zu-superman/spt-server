@@ -14,6 +14,7 @@ import { IQuest, IQuestCondition, IQuestReward } from "@spt-aki/models/eft/commo
 import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEventRouterResponse";
 import { IAcceptQuestRequestData } from "@spt-aki/models/eft/quests/IAcceptQuestRequestData";
 import { IFailQuestRequestData } from "@spt-aki/models/eft/quests/IFailQuestRequestData";
+import { BaseClasses } from "@spt-aki/models/enums/BaseClasses";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { MessageType } from "@spt-aki/models/enums/MessageType";
 import { QuestRewardType } from "@spt-aki/models/enums/QuestRewardType";
@@ -262,6 +263,15 @@ export class QuestHelper
         let rewardItems: Item[] = [];
         let targets: Item[] = [];
         const mods: Item[] = [];
+        const rootItem = questReward.items[0];
+
+        // Is armor item that needs inserts
+        if (questReward.items.length === 1 && this.itemHelper.itemCanRequireArmorInserts(rootItem._tpl))
+        {
+            // Add required child mods only to the reward array before being processed below
+            const itemDbData = this.itemHelper.getItem(rootItem._tpl)[1];
+            questReward.items = this.itemHelper.addChildSlotItems(questReward.items, itemDbData, null, true);
+        }
 
         for (const item of questReward.items)
         {
@@ -273,7 +283,7 @@ export class QuestHelper
 
             item.upd.SpawnedInSession = true;
 
-            // separate base item and mods, fix stacks
+            // Separate base item and mods, fix stacks
             if (item._id === questReward.target)
             {
                 if (

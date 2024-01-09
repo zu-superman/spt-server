@@ -99,6 +99,18 @@ export class ItemHelper
     }
 
     /**
+     * Does the provided item have the chance to require soft armor inserts
+     * Only applies to helmets/vest/armors.
+     * Not all head gear needs them
+     * @param itemTpl item to check
+     * @returns Does item have the possibility ot need soft inserts
+     */
+    public itemCanRequireArmorInserts(itemTpl: string): boolean
+    {
+       return this.isOfBaseclasses(itemTpl, [BaseClasses.HEADWEAR, BaseClasses.VEST, BaseClasses.ARMOR]);
+    }
+
+    /**
      * Returns the item price based on the handbook or as a fallback from the prices.json if the item is not
      * found in the handbook. If the price can't be found at all return 0
      * @param tpl Item to look price up of
