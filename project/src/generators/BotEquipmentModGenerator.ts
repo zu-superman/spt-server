@@ -95,7 +95,7 @@ export class BotEquipmentModGenerator
                 continue;
             }
 
-            if (!(this.shouldModBeSpawned(itemSlot, modSlot, settings.spawnChances.equipmentMods) || forceSpawn))
+            if (!(this.shouldModBeSpawned(itemSlot, modSlot.toLowerCase(), settings.spawnChances.equipmentMods) || forceSpawn))
             {
                 continue;
             }
