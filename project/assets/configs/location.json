@@ -1100,9 +1100,13 @@
     },
     "equipmentLootSettings": {
         "modSpawnChancePercent": {
-            "mod_nvg": 20,
+            "mod_nvg": 5,
             "front_plate": 50,
-            "back_plate": 50
+            "back_plate": 50,
+			"mod_equipment_000": 5,
+			"mod_equipment_001": 5,
+			"mod_equipment_002": 5,
+			"mod_mount": 5
         }
     }
 }

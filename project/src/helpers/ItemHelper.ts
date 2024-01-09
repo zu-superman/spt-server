@@ -1173,13 +1173,21 @@ export class ItemHelper
      * @param itemToAdd array with single object (root item)
      * @param itemToAddTemplate Db tempalte for root item
      * @param modSpawnChanceDict Optional dictionary of mod name + % chance mod will be included in item (e.g. front_plate: 100)
-     * @returns 
+     * @param requiredOnly Only add required mods
+     * @returns Item with children
      */
-    public addChildSlotItems(itemToAdd: Item[], itemToAddTemplate: ITemplateItem, modSpawnChanceDict: Record<string, number> = null): Item[]
+    public addChildSlotItems(itemToAdd: Item[], itemToAddTemplate: ITemplateItem, modSpawnChanceDict: Record<string, number> = null, requiredOnly = false): Item[]
     {
         const result = itemToAdd;
+        const incompatibleModTpls: Set<string> = new Set();
         for (const slot of itemToAddTemplate._props.Slots)
         {
+            // If only required mods is requested, skip non-essential
+            if (requiredOnly && !slot._required)
+            {
+                continue;
+            }
+
             // Roll chance for non-required slot mods
             if (modSpawnChanceDict && !slot._required)
             {
@@ -1194,25 +1202,67 @@ export class ItemHelper
                 }
             }
 
-            const possibleTplsForSlot = slot._props.filters[0].Filter ?? [];
-            if (possibleTplsForSlot.length === 0)
+            const itemPool = slot._props.filters[0].Filter  ?? [];
+            const chosenTpl = this.getCompatibleTplFromArray(itemPool, incompatibleModTpls);
+            if (!chosenTpl)
             {
-                this.logger.warning(`Unable to add mod to item: ${itemToAddTemplate._id} ${itemToAddTemplate._name} slot: ${slot._name} as the db pool is empty, skipping`);
+                this.logger.debug(`Unable to add mod to item: ${itemToAddTemplate._id} ${itemToAddTemplate._name} slot: ${slot._name} as no compatible tpl could be found in pool of ${itemPool.length}, skipping`);
 
                 continue;
             }
 
-            result.push(
-                {
-                    _id: this.hashUtil.generate(),
-                    _tpl: this.randomUtil.getArrayValue(possibleTplsForSlot), // Choose random tpl from array of compatible
-                    parentId: result[0]._id,
-                    slotId: slot._name
-                }
-            )
+            const moditemToAdd = {
+                _id: this.hashUtil.generate(),
+                _tpl: chosenTpl,
+                parentId: result[0]._id,
+                slotId: slot._name
+            };
+            result.push(moditemToAdd);
+
+            const modItemDbDetails = this.getItem(moditemToAdd._tpl)[1];
+
+            // Include conflicting items of newly added mod in pool to be used for next mod choice
+            // biome-ignore lint/complexity/noForEach: <explanation>
+            modItemDbDetails._props.ConflictingItems.forEach(incompatibleModTpls.add, incompatibleModTpls);
         }
 
         return result;
+    }
+
+    /**
+     * Get a compatible tpl from the array provided where it is not found in the provided incompatible mod tpls parameter
+     * @param possibleTpls Tpls to randomply choose from
+     * @param incompatibleModTpls Incompatible tpls to not allow
+     * @returns Chosen tpl or null
+     */
+    public getCompatibleTplFromArray(possibleTpls: string[], incompatibleModTpls: Set<string>): string
+    {
+        if (possibleTpls.length === 0)
+        {
+            return null;
+        }
+
+        let chosenTpl = null;
+        let count = 0;
+        while (!chosenTpl)
+        {
+            // Loop over choosing a random tpl until one is found or count varaible reaches the same size as the possible tpls array
+            const tpl = this.randomUtil.getArrayValue(possibleTpls);
+            if (incompatibleModTpls.has(tpl))
+            {
+                // Incompatible tpl was chosen, try again
+                count++
+                if (count >= possibleTpls.length)
+                {
+                    return null;
+                }
+                continue;
+            }
+
+            chosenTpl = tpl;
+        }
+
+        return chosenTpl;
     }
 }
 

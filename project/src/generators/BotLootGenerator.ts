@@ -346,15 +346,7 @@ export class BotLootGenerator
                 // Must add soft inserts/plates
                 else if (this.itemHelper.isOfBaseclasses(itemToAddTemplate._id, [BaseClasses.ARMOR, BaseClasses.HEADWEAR, BaseClasses.VEST]))
                 {
-                    // TODO - replace with config values
-                    const modIncludeedChances = {
-                        mod_nvg: 10,
-                        front_plate: 10,
-                        back_plate: 10,
-                        side_plate: 10
-
-                    }
-                    itemsToAdd = this.itemHelper.addChildSlotItems(itemsToAdd, itemToAddTemplate, modIncludeedChances);
+                    itemsToAdd = this.itemHelper.addChildSlotItems(itemsToAdd, itemToAddTemplate, null, true);
                 }
 
                 // Attempt to add item to container(s)
