@@ -201,7 +201,7 @@ export class BotController
                     }
                 }
 
-                cacheKey = `${botRole}${details.botDifficulty}`;
+                cacheKey = `${details.role}${details.botDifficulty}`;
 
                 // Check for bot in cache, add if not
                 if (!this.botGenerationCacheService.cacheHasBotOfRole(cacheKey))
