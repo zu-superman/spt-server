@@ -67,17 +67,17 @@
       "SecondPrimaryWeapon": 5,
       "TacticalVest": 100
     },
-	"equipmentMods": {
-	  "back_plate": 100,
+    "equipmentMods": {
+      "back_plate": 100,
       "front_plate": 100,
-      "left_side_plate": 75,	
-      "rightside_plate": 75,
-	  "mod_nvg": 40,
-	  "mod_equipment": 25,
+      "left_side_plate": 75,
+      "mod_equipment": 25,
       "mod_equipment_000": 25,
       "mod_equipment_001": 25,
-      "mod_equipment_002": 25
-	},
+      "mod_equipment_002": 25,
+      "mod_nvg": 40,
+      "rightside_plate": 75
+    },
     "weaponMods": {
       "mod_barrel": 100,
       "mod_bipod": 100,
@@ -6367,6 +6367,12 @@
         ]
       },
       "5a154d5cfcdbcb001a3b00da": {
+        "Helmet_back": [
+          "657f8f10f4c82973640b2350"
+        ],
+        "Helmet_top": [
+          "657f8ec5f4c82973640b234c"
+        ],
         "mod_equipment_000": [
           "5a16badafcdbcb001865f72d",
           "5a16b672fcdbcb001912fa83",
@@ -8348,6 +8354,12 @@
         ]
       },
       "5b432d215acfc4771e1c6624": {
+        "Helmet_back": [
+          "657bb99db30eca976305117f"
+        ],
+        "Helmet_top": [
+          "657bb92fa1c61ee0c303631f"
+        ],
         "mod_equipment_000": [
           "5a16badafcdbcb001865f72d",
           "5a16b672fcdbcb001912fa83",
@@ -8361,8 +8373,8 @@
           "5a398ab9c4a282000c5a9842"
         ],
         "mod_nvg": [
-          "5c0558060db834001b735271",
           "5ea058e01dbce517f324b3e2",
+          "5c0558060db834001b735271",
           "5a16b8a9fcdbcb00165aa6ca"
         ]
       },
@@ -9597,11 +9609,20 @@
         ]
       },
       "5c091a4e0db834001d5addc8": {
-        "mod_equipment": ["5c0919b50db834001b7ce3b9", "5c0e842486f77443a74d2976"],
-        "Helmet_top": ["6571133d22996eaf11088200"],
-        "Helmet_back": ["6571138e818110db4600aa71"],
-        "Helmet_ears": ["657112fa818110db4600aa6b"]
-    },
+        "Helmet_back": [
+          "6571138e818110db4600aa71"
+        ],
+        "Helmet_ears": [
+          "657112fa818110db4600aa6b"
+        ],
+        "Helmet_top": [
+          "6571133d22996eaf11088200"
+        ],
+        "mod_equipment": [
+          "5c0919b50db834001b7ce3b9",
+          "5c0e842486f77443a74d2976"
+        ]
+      },
       "5c0d2727d174af02a012cf58": {
         "Helmet_back": [
           "657ba737b7e9ca9a02045bf6"
@@ -11981,6 +12002,12 @@
         ]
       },
       "5d5e7d28a4b936645d161203": {
+        "Helmet_back": [
+          "657f8b05f4c82973640b2348"
+        ],
+        "Helmet_top": [
+          "657f8a8d7db258e5600fe33d"
+        ],
         "mod_equipment_002": [
           "5c0e66e2d174af02a96252f4"
         ],
@@ -12036,6 +12063,15 @@
         ]
       },
       "5d6d3716a4b9361bc8618872": {
+        "Helmet_back": [
+          "657fa04ac6679fefb3051e24"
+        ],
+        "Helmet_ears": [
+          "657fa07387e11c61f70bface"
+        ],
+        "Helmet_top": [
+          "657fa009d4caf976440afe3a"
+        ],
         "mod_equipment_000": [
           "5d6d3829a4b9361bc8618943"
         ],
@@ -12446,6 +12482,12 @@
         ]
       },
       "5e00c1ad86f774747333222c": {
+        "helmet_back": [
+          "655200ba0ef76cf7be09d528"
+        ],
+        "helmet_top": [
+          "6551fec55d0cf82e51014288"
+        ],
         "mod_equipment_000": [
           "5e00cfa786f77469dc6e5685",
           "5e01f31d86f77465cf261343"
@@ -12460,6 +12502,12 @@
         ]
       },
       "5e01ef6886f77445f643baa4": {
+        "helmet_back": [
+          "655200ba0ef76cf7be09d528"
+        ],
+        "helmet_top": [
+          "6551fec55d0cf82e51014288"
+        ],
         "mod_equipment_000": [
           "5e00cfa786f77469dc6e5685",
           "5e01f31d86f77465cf261343"
@@ -12965,6 +13013,12 @@
         ]
       },
       "5ea17ca01412a1425304d1c0": {
+        "Helmet_back": [
+          "657f9a94ada5fadd1f07a589"
+        ],
+        "Helmet_top": [
+          "657f9a55c6679fefb3051e19"
+        ],
         "mod_nvg": [
           "5ea18c84ecf1982c7712d9a2",
           "5c0558060db834001b735271",
@@ -15332,9 +15386,19 @@
         ]
       },
       "61bca7cda0eae612383adf57": {
+        "Helmet_back": [
+          "657bbcffbbd440df880b2dd5"
+        ],
+        "Helmet_top": [
+          "657bbcc9a1c61ee0c3036327"
+        ],
         "mod_equipment_000": [
           "5a16b672fcdbcb001912fa83",
           "5a16b7e1fcdbcb00165aa6c9"
+        ],
+        "mod_mount": [
+          "5a398b75c4a282000a51a266",
+          "5a398ab9c4a282000c5a9842"
         ],
         "mod_nvg": [
           "5c0558060db834001b735271",
