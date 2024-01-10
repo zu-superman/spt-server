@@ -146,7 +146,7 @@ export class HideoutController
         {
             const timestamp = this.timeUtil.getTimestamp();
 
-            hideoutArea.completeTime = timestamp + ctime;
+            hideoutArea.completeTime = Math.round(timestamp + ctime);
             hideoutArea.constructing = true;
         }
 

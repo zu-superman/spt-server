@@ -418,6 +418,7 @@ export interface HideoutArea
     level: number;
     active: boolean;
     passiveBonusesEnabled: boolean;
+    /** Must be integer */
     completeTime: number;
     constructing: boolean;
     slots: HideoutSlot[];
