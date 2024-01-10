@@ -12,30 +12,30 @@ import { TraderHelper } from "@spt-aki/helpers/TraderHelper";
 import { ILocationBase } from "@spt-aki/models/eft/common/ILocationBase";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
 import { BodyPartHealth } from "@spt-aki/models/eft/common/tables/IBotBase";
+import { Item } from "@spt-aki/models/eft/common/tables/IItem";
 import { IRegisterPlayerRequestData } from "@spt-aki/models/eft/inRaid/IRegisterPlayerRequestData";
 import { ISaveProgressRequestData } from "@spt-aki/models/eft/inRaid/ISaveProgressRequestData";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
+import { MessageType } from "@spt-aki/models/enums/MessageType";
 import { PlayerRaidEndState } from "@spt-aki/models/enums/PlayerRaidEndState";
 import { QuestStatus } from "@spt-aki/models/enums/QuestStatus";
 import { Traders } from "@spt-aki/models/enums/Traders";
 import { IAirdropConfig } from "@spt-aki/models/spt/config/IAirdropConfig";
 import { IInRaidConfig } from "@spt-aki/models/spt/config/IInRaidConfig";
+import { ITraderConfig } from "@spt-aki/models/spt/config/ITraderConfig";
+import { ITraderServiceModel } from "@spt-aki/models/spt/services/ITraderServiceModel";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt-aki/servers/ConfigServer";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { SaveServer } from "@spt-aki/servers/SaveServer";
 import { InsuranceService } from "@spt-aki/services/InsuranceService";
+import { MailSendService } from "@spt-aki/services/MailSendService";
 import { MatchBotDetailsCacheService } from "@spt-aki/services/MatchBotDetailsCacheService";
 import { PmcChatResponseService } from "@spt-aki/services/PmcChatResponseService";
-import { JsonUtil } from "@spt-aki/utils/JsonUtil";
-import { TimeUtil } from "@spt-aki/utils/TimeUtil";
 import { TraderServicesService } from "@spt-aki/services/TraderServicesService";
-import { ITraderServiceModel } from "@spt-aki/models/spt/services/ITraderServiceModel";
-import { Item } from "@spt-aki/models/eft/common/tables/IItem";
-import { MailSendService } from "@spt-aki/services/MailSendService";
+import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 import { RandomUtil } from "@spt-aki/utils/RandomUtil";
-import { ITraderConfig } from "@spt-aki/models/spt/config/ITraderConfig";
-import { MessageType } from "@spt-aki/models/enums/MessageType";
+import { TimeUtil } from "@spt-aki/utils/TimeUtil";
 
 /**
  * Logic for handling In Raid callbacks
@@ -234,7 +234,7 @@ export class InraidController
                 );
                 if (Object.keys(questAndFindItemConditionId)?.length > 0)
                 {
-                    this.profileHelper.removeCompletedQuestConditionFromProfile(pmcData, questAndFindItemConditionId);
+                    this.profileHelper.removeQuestConditionFromProfile(pmcData, questAndFindItemConditionId);
                 }
             }
 
