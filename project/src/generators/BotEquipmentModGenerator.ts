@@ -180,7 +180,7 @@ export class BotEquipmentModGenerator
     protected filterPlateModsForSlotByLevel(settings: IGenerateEquipmentProperties, modSlot: string, modPool: string[], armorItem: ITemplateItem): string[]
     {
         // Not pmc or not a plate slot, return original mod pool array
-        if (!this.slotIsPlate(modSlot))
+        if (!this.itemHelper.isRemovablePlateSlot(modSlot))
         {
             return modPool;
         }
@@ -223,11 +223,6 @@ export class BotEquipmentModGenerator
         // Only return the items ids
         return filteredPlates.map(x => x._id);
 
-    }
-
-    protected slotIsPlate(modSlot: string): boolean
-    {
-        return ["front_plate", "back_plate", "side_plate"].includes(modSlot.toLowerCase());
     }
 
     /**

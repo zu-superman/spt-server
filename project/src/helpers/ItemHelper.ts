@@ -1276,6 +1276,25 @@ export class ItemHelper
 
         return chosenTpl;
     }
+
+    /**
+     * Is the provided item._props.Slots._name property a plate slot
+     * @param slotName Name of slot (_name) of Items Slot array
+     * @returns True if its a slot that holds a removable palte
+     */
+    public isRemovablePlateSlot(slotName: string): boolean
+    {
+        return this.getRevovablePlateSlotIds().includes(slotName.toLowerCase());
+    }
+
+    /**
+     * Get a list of slot names that hold removable plates
+     * @returns Array of slot ids (e.g. front_plate)
+     */
+    public getRevovablePlateSlotIds(): string[]
+    {
+        return ["front_plate", "back_plate", "side_plate", "left_side_plate", "right_side_plate"];
+    }
 }
 
 namespace ItemHelper

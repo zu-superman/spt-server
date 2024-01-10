@@ -532,9 +532,8 @@ export class FenceService
         }
 
         // Check for and add plate items
-        const plateSlots = itemDbDetails._props.Slots.filter(slot => ["front_plate", "back_plate", "side_plate"].includes(slot._name.toLowerCase()));
-        const hasPlateSlots = plateSlots.length > 0;
-        if (hasPlateSlots)
+        const plateSlots = itemDbDetails._props.Slots.filter(slot => this.itemHelper.isRemovablePlateSlot(slot._name));
+        if (plateSlots.length > 0)
         {
             for (const plateSlot of plateSlots)
             {
@@ -544,7 +543,14 @@ export class FenceService
                     continue;
                 }
 
-                const modItemDbDetails = this.itemHelper.getItem(plateSlot._props.filters[0].Plate)[1];
+                const plateTpl = plateSlot._props.filters[0].Plate
+                if (!plateTpl)
+                {
+                    this.logger.warning(`Fence generation: item: ${itemDbDetails._id} ${itemDbDetails._name} lacks a default plate for slot: ${plateSlot._name}, skipping`);
+
+                    continue;
+                }
+                const modItemDbDetails = this.itemHelper.getItem(plateTpl)[1];
                 const durabilityValues = this.getRandomisedArmorDurabilityValues(modItemDbDetails, this.traderConfig.fence.armorMaxDurabilityPercentMinMax);
                 armor.push({
                     _id: this.hashUtil.generate(),
