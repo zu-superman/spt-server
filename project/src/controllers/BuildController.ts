@@ -3,8 +3,6 @@ import { inject, injectable } from "tsyringe";
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
 import { ISetMagazineRequest } from "@spt-aki/models/eft/builds/ISetMagazineRequest";
-import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
-import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEventRouterResponse";
 import { IPresetBuildActionRequestData } from "@spt-aki/models/eft/presetBuild/IPresetBuildActionRequestData";
 import { IRemoveBuildRequestData } from "@spt-aki/models/eft/presetBuild/IRemoveBuildRequestData";
 import { IEquipmentBuild, IMagazineBuild, IUserBuilds, IWeaponBuild } from "@spt-aki/models/eft/profile/IAkiProfile";
@@ -34,6 +32,7 @@ export class BuildController
     /** Handle client/handbook/builds/my/list */
     public getUserBuilds(sessionID: string): IUserBuilds
     {
+        const secureContainerSlotId = "SecuredContainer";
         const profile = this.saveServer.getProfile(sessionID);
         if (!profile.userbuilds)
         {
@@ -45,10 +44,10 @@ export class BuildController
             this.databaseServer.getTables().templates.defaultEquipmentPresets,
         );
         const playerSecureContainer = profile.characters.pmc.Inventory.items?.find((x) =>
-            x.slotId === "SecuredContainer"
+            x.slotId === secureContainerSlotId
         );
         const firstDefaultItemsSecureContainer = defaultEquipmentPresets[0]?.Items?.find((x) =>
-            x.slotId === "SecuredContainer"
+            x.slotId === secureContainerSlotId
         );
         if (playerSecureContainer && playerSecureContainer?._tpl !== firstDefaultItemsSecureContainer?._tpl)
         {
@@ -56,7 +55,7 @@ export class BuildController
             for (const defaultPreset of defaultEquipmentPresets)
             {
                 // Find presets secure container
-                const secureContainer = defaultPreset.Items.find((item) => item.slotId === "SecuredContainer");
+                const secureContainer = defaultPreset.Items.find((item) => item.slotId === secureContainerSlotId);
                 if (secureContainer)
                 {
                     secureContainer._tpl = playerSecureContainer._tpl;
