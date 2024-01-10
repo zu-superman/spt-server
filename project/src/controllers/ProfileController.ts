@@ -422,7 +422,7 @@ export class ProfileController
                 Items: playerPmc.Inventory.items
             },
             achievements: playerPmc.Achievements,
-            favoriteItems: playerPmc.Inventory.favoriteItems,
+            favoriteItems: playerPmc.Inventory.favoriteItems ?? [],
             pmcStats: {
                 eft: {
                     totalInGameTime: playerPmc.Stats.Eft.TotalInGameTime,
