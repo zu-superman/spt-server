@@ -317,8 +317,10 @@ export class RagfairServerHelper
                 idMappings[mod._id] = this.hashUtil.generate();
             }
 
+            // Has parentId + no remapping exists for its parent
             if (mod.parentId !== undefined && idMappings[mod.parentId] === undefined)
             {
+                // Make remapping for items parentId
                 idMappings[mod.parentId] = this.hashUtil.generate();
             }
 
