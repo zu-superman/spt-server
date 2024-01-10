@@ -643,8 +643,8 @@
     "maxVestLootTotalRub": 50000,
     "convertIntoPmcChance": {
         "assault": {
-            "min": 20,
-            "max": 30
+            "min": 25,
+            "max": 35
         },
         "cursedassault": {
             "min": 15,

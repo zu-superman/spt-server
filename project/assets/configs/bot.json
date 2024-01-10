@@ -45,8 +45,8 @@
         "peacefullZryachiyEvent": 5,
         "ravangeZryachiyEvent": 5,
         "sectactPriestEvent": 10,
-        "sptUsec": 30,
-        "sptBear": 30
+        "sptUsec": 25,
+        "sptBear": 25
     },
     "bosses": ["bossbully", "bossgluhar", "bosskilla", "bosskojaniy", "bosssanitar", "bosstagilla", "bossknight", "bosszryachiy", "bossboar", "bossboarSniper", "bosskolontay"],
     "durability": {
