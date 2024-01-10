@@ -3,6 +3,7 @@ import { inject, injectable } from "tsyringe";
 import { DialogueHelper } from "@spt-aki/helpers/DialogueHelper";
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { PaymentHelper } from "@spt-aki/helpers/PaymentHelper";
+import { PresetHelper } from "@spt-aki/helpers/PresetHelper";
 import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
 import { QuestConditionHelper } from "@spt-aki/helpers/QuestConditionHelper";
 import { RagfairServerHelper } from "@spt-aki/helpers/RagfairServerHelper";
@@ -14,7 +15,6 @@ import { IQuest, IQuestCondition, IQuestReward } from "@spt-aki/models/eft/commo
 import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEventRouterResponse";
 import { IAcceptQuestRequestData } from "@spt-aki/models/eft/quests/IAcceptQuestRequestData";
 import { IFailQuestRequestData } from "@spt-aki/models/eft/quests/IFailQuestRequestData";
-import { BaseClasses } from "@spt-aki/models/enums/BaseClasses";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { MessageType } from "@spt-aki/models/enums/MessageType";
 import { QuestRewardType } from "@spt-aki/models/enums/QuestRewardType";
@@ -53,6 +53,7 @@ export class QuestHelper
         @inject("PaymentHelper") protected paymentHelper: PaymentHelper,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("TraderHelper") protected traderHelper: TraderHelper,
+        @inject("PresetHelper") protected presetHelper: PresetHelper,
         @inject("MailSendService") protected mailSendService: MailSendService,
         @inject("ConfigServer") protected configServer: ConfigServer,
     )
@@ -260,17 +261,17 @@ export class QuestHelper
      */
     protected processReward(questReward: IQuestReward): Item[]
     {
+        /** item with mods to return */
         let rewardItems: Item[] = [];
         let targets: Item[] = [];
         const mods: Item[] = [];
         const rootItem = questReward.items[0];
 
-        // Is armor item that needs inserts
+        // Is armor item that needs inserts / plates
         if (questReward.items.length === 1 && this.itemHelper.itemCanRequireArmorInserts(rootItem._tpl))
         {
-            // Add required child mods only to the reward array before being processed below
-            const itemDbData = this.itemHelper.getItem(rootItem._tpl)[1];
-            questReward.items = this.itemHelper.addChildSlotItems(questReward.items, itemDbData, null, true);
+            // Attempt to pull default preset from globals and add child items to reward
+            this.generateArmorRewardChildSlots(rootItem, questReward);
         }
 
         for (const item of questReward.items)
@@ -283,13 +284,13 @@ export class QuestHelper
 
             item.upd.SpawnedInSession = true;
 
-            // Separate base item and mods, fix stacks
-            if (item._id === questReward.target)
+            // Separate base item from mods, fix stacks
+            if (item._id === questReward.target) // Is base reward item
             {
                 if (
-                    (item.parentId !== undefined) && (item.parentId === "hideout")
-                    && (item.upd !== undefined) && (item.upd.StackObjectsCount !== undefined)
-                    && (item.upd.StackObjectsCount > 1)
+                    (item.parentId !== undefined) && (item.parentId === "hideout") // Has parentId of hideout
+                    && (item.upd !== undefined) && (item.upd.StackObjectsCount !== undefined) // Has upd with stackobject count
+                    && (item.upd.StackObjectsCount > 1) // More than 1 item in stack
                 )
                 {
                     item.upd.StackObjectsCount = 1;
@@ -304,6 +305,7 @@ export class QuestHelper
             }
             else
             {
+                // Is child mod
                 mods.push(item);
             }
         }
@@ -325,6 +327,33 @@ export class QuestHelper
         }
 
         return rewardItems;
+    }
+
+    /**
+     * Add missing mod items to a quest armor reward
+     * @param originalRewardRootItem Original armor reward item from IQuestReward.items object
+     * @param questReward Armor reward from quest
+     */
+    protected generateArmorRewardChildSlots(originalRewardRootItem: Item, questReward: IQuestReward): void
+    {
+        // Look for a default preset from globals for armor
+        const defaultPreset = this.presetHelper.getDefaultPreset(originalRewardRootItem._tpl);
+        if (defaultPreset)
+        {
+            // Preset exists, use mods to hydrate reward item
+            questReward.items = this.jsonUtil.clone(defaultPreset._items);
+
+            // Remap target id to the new presets id
+            questReward.target = questReward.items.find(item => item._tpl === originalRewardRootItem._tpl)._id;
+
+            return;
+        }
+
+        this.logger.warning(`Unable to find default preset for armor ${originalRewardRootItem._tpl}, adding mods manually`);
+        const itemDbData = this.itemHelper.getItem(originalRewardRootItem._tpl)[1];
+
+        // Hydrate reward with only 'required' mods - necessary for things like helmets otherwise you end up with nvgs/visors etc
+        questReward.items = this.itemHelper.addChildSlotItems(questReward.items, itemDbData, null, true);
     }
 
     /**
