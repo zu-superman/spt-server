@@ -9595,6 +9595,15 @@
         ]
       },
       "5c091a4e0db834001d5addc8": {
+        "Helmet_back": [
+          "6571138e818110db4600aa71"
+        ],
+        "Helmet_ears": [
+          "657112fa818110db4600aa6b"
+        ],
+        "Helmet_top": [
+          "6571133d22996eaf11088200"
+        ],
         "mod_equipment": [
           "5c0919b50db834001b7ce3b9",
           "5c0e842486f77443a74d2976"
