@@ -257,7 +257,7 @@ export class InsuranceService
             }
 
             // Check if item missing in post-raid gear OR player died
-            // Catches both events: player died with item on + player survied but dropped item in raid
+            // Catches both events: player died with item on + player survived but dropped item in raid
             if (!offRaidGearHash[insuredItem.itemId] || playerDied)
             {
                 equipmentToSendToPlayer.push(
