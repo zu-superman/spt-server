@@ -193,6 +193,9 @@ export class BuildController
         this.logger.error(`Unable to delete preset, cannot find ${id} in weapon, equipment or magazine presets`);
     }
 
+    /**
+     * Handle client/builds/magazine/save
+     */
     public createMagazineTemplate(sessionId: string, request: ISetMagazineRequest): void
     {
         const result: IMagazineBuild = {
@@ -205,6 +208,11 @@ export class BuildController
         };
 
         const profile = this.profileHelper.getFullProfile(sessionId);
+
+        if (!profile.userbuilds.magazineBuilds)
+        {
+            profile.userbuilds.magazineBuilds = [];
+        }
 
         const existingArrayId = profile.userbuilds.magazineBuilds.findIndex(item => item.Name === request.Name);
 
