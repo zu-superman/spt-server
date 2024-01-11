@@ -302,7 +302,7 @@ export class InsuranceService
 
             if (itemClientInsuranceData || itemIsSoftInsert)
             {
-                // Get baseline item to return, clone pre raid item
+                // Get baseline item to return, clone pre-raid item
                 const itemToReturn: Item = this.jsonUtil.clone(preRaidItem);
 
                 // Add upd if it doesnt exist
@@ -311,7 +311,7 @@ export class InsuranceService
                     itemToReturn.upd = {};
                 }
 
-                // Check for slotid values that need to be updated and adjust
+                // Check for slotId values that need to be updated and adjust
                 this.updateSlotIdValue(pmcData.Inventory.equipment, itemToReturn);
 
                 // Remove location property

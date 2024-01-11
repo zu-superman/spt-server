@@ -267,8 +267,8 @@ export class QuestHelper
         const mods: Item[] = [];
         const rootItem = questReward.items[0];
 
-        // Is armor item that needs inserts / plates
-        if (questReward.items.length === 1 && this.itemHelper.itemCanRequireArmorInserts(rootItem._tpl))
+        // Is armor item that may need inserts / plates
+        if (questReward.items.length === 1 && this.itemHelper.armorItemCanHoldMods(rootItem._tpl))
         {
             // Attempt to pull default preset from globals and add child items to reward
             this.generateArmorRewardChildSlots(rootItem, questReward);

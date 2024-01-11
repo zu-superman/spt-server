@@ -105,9 +105,45 @@ export class ItemHelper
      * @param itemTpl item to check
      * @returns Does item have the possibility ot need soft inserts
      */
-    public itemCanRequireArmorInserts(itemTpl: string): boolean
+    public armorItemCanHoldMods(itemTpl: string): boolean
     {
        return this.isOfBaseclasses(itemTpl, [BaseClasses.HEADWEAR, BaseClasses.VEST, BaseClasses.ARMOR]);
+    }
+
+    /**
+     * Does the provided item tpl require soft inserts to become a valid armor item
+     * @param itemTpl Item tpl to check
+     * @returns True if it needs armor inserts
+     */
+    public itemRequiresSoftInserts(itemTpl: string): boolean
+    {
+        // not a slot that takes soft-inserts
+        if (!this.armorItemCanHoldMods(itemTpl))
+        {
+            return false;
+        }
+
+        // Check is an item
+        const itemDbDetails = this.getItem(itemTpl);
+        if (!itemDbDetails[0])
+        {
+            return false;
+        }
+
+        // Has no slots
+        if (!(itemDbDetails[1]._props.Slots ?? []).length)
+        {
+            return false;
+        }
+
+        // Check if item has slots that match soft insert name ids
+        const softInsertSlotIds = ["groin", "soft_armor_back", "soft_armor_front", "soft_armor_left", "soft_armor_right", "shoulder_l", "shoulder_r", "collar"];
+        if (itemDbDetails[1]._props.Slots.find(slot => softInsertSlotIds.includes(slot._name.toLowerCase())))
+        {
+            return true;
+        }
+
+        return false;
     }
 
     /**

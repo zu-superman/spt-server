@@ -403,7 +403,7 @@ export class FenceService
     protected createAssorts(assortCount: number, assorts: ITraderAssort, loyaltyLevel: number): void
     {
         const fenceAssort = this.databaseServer.getTables().traders[Traders.FENCE].assort;
-        const defaultWeaponPresets = this.presetHelper.getDefaultPresets();
+        const defaultPresets = this.presetHelper.getDefaultPresets();
         const fenceAssortIds = Object.keys(fenceAssort.loyal_level_items);
         const itemTypeCounts = this.initItemLimitCounter(this.traderConfig.fence.itemTypeLimits);
 
@@ -412,7 +412,7 @@ export class FenceService
         // Add presets
         const maxPresetCount = Math.round(assortCount * (this.traderConfig.fence.maxPresetsPercent / 100));
         const randomisedPresetCount = this.randomUtil.getInt(0, maxPresetCount);
-        this.addPresets(randomisedPresetCount, defaultWeaponPresets, assorts, loyaltyLevel);
+        this.addPresets(randomisedPresetCount, defaultPresets, assorts, loyaltyLevel);
     }
 
     protected addItemAssorts(
@@ -481,7 +481,7 @@ export class FenceService
                 rootItemToPush.upd.UnlimitedCount = false;
 
                 // Need to add mods to armors so they dont show as red in the trade screen
-                if (this.itemHelper.itemCanRequireArmorInserts(rootItemToPush._tpl))
+                if (this.itemHelper.itemRequiresSoftInserts(rootItemToPush._tpl))
                 {
                     this.addModsToArmorModSlots(itemsToPush, itemDbDetails);
                 }
@@ -594,25 +594,25 @@ export class FenceService
     }
 
     /**
-     * Add preset weapons to fence presets
+     * Add weapon/armor presets to fence
      * @param assortCount how many assorts to add to assorts
-     * @param defaultWeaponPresets a dictionary of default weapon presets
+     * @param defaultPresets a dictionary of default weapon presets
      * @param assorts object to add presets to
      * @param loyaltyLevel loyalty level to requre item at
      */
     protected addPresets(
         desiredPresetCount: number,
-        defaultWeaponPresets: Record<string, IPreset>,
+        defaultPresets: Record<string, IPreset>,
         assorts: ITraderAssort,
         loyaltyLevel: number,
     ): void
     {
         let presetCount = 0;
-        const presetKeys = Object.keys(defaultWeaponPresets);
+        const presetKeys = Object.keys(defaultPresets);
         for (let index = 0; index < desiredPresetCount; index++)
         {
             const presetId = presetKeys[this.randomUtil.getInt(0, presetKeys.length - 1)];
-            const preset = defaultWeaponPresets[presetId];
+            const preset = defaultPresets[presetId];
 
             // Check we're under preset limit
             if (presetCount > desiredPresetCount)
@@ -626,12 +626,12 @@ export class FenceService
                 continue;
             }
 
-            // Construct weapon + mods
+            // Construct preset + mods
             const weaponAndMods: Item[] = this.itemHelper.replaceIDs(
                 null,
-                this.jsonUtil.clone(defaultWeaponPresets[preset._id]._items),
+                this.jsonUtil.clone(defaultPresets[preset._id]._items),
             );
-            this.removeRandomPartsOfWeapon(weaponAndMods);
+            this.removeRandomModsOfItem(weaponAndMods);
             for (let i = 0; i < weaponAndMods.length; i++)
             {
                 const mod = weaponAndMods[i];
@@ -676,42 +676,48 @@ export class FenceService
 
     /**
      * Remove parts of a weapon prior to being listed on flea
-     * @param weaponAndMods Weapon to remove parts from
+     * @param itemAndMods Weapon to remove parts from
      */
-    protected removeRandomPartsOfWeapon(weaponAndMods: Item[]): void
+    protected removeRandomModsOfItem(itemAndMods: Item[]): void
     {
         // Items to be removed from inventory
         const toDelete: string[] = [];
 
-        // Loop over insurance items, find items to delete from player inventory
-        for (const weaponMod of weaponAndMods)
+        // Find mods to remove from item that could've been scavenged by other players in-raid
+        for (const itemMod of itemAndMods)
         {
-            if (this.presetModItemWillBeRemoved(weaponMod, toDelete))
+            if (this.presetModItemWillBeRemoved(itemMod, toDelete))
             {
                 // Skip if not an item
-                const itemDbDetails = this.itemHelper.getItem(weaponMod._tpl);
+                const itemDbDetails = this.itemHelper.getItem(itemMod._tpl);
                 if (!itemDbDetails[0])
                 {
                     continue;
                 }
 
                 // Is a mod and can't be edited in-raid
-                if (weaponMod.slotId !== "hideout" && !itemDbDetails[1]._props.RaidModdable)
+                if (itemMod.slotId !== "hideout" && !itemDbDetails[1]._props.RaidModdable)
+                {
+                    continue;
+                }
+
+                const slotDetails = itemDbDetails[1]._props.Slots.find(slot => slot._name === itemMod.slotId);
+                if (slotDetails?._required)
                 {
                     continue;
                 }
 
                 // Remove item and its sub-items to prevent orphans
-                toDelete.push(...this.itemHelper.findAndReturnChildrenByItems(weaponAndMods, weaponMod._id));
+                toDelete.push(...this.itemHelper.findAndReturnChildrenByItems(itemAndMods, itemMod._id));
             }
         }
 
         // Reverse loop and remove items
-        for (let index = weaponAndMods.length - 1; index >= 0; --index)
+        for (let index = itemAndMods.length - 1; index >= 0; --index)
         {
-            if (toDelete.includes(weaponAndMods[index]._id))
+            if (toDelete.includes(itemAndMods[index]._id))
             {
-                weaponAndMods.splice(index, 1);
+                itemAndMods.splice(index, 1);
             }
         }
     }

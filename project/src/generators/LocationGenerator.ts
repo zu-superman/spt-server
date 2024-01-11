@@ -861,7 +861,7 @@ export class LocationGenerator
             );
             itemWithMods.push(...magazineItem);
         }
-        else if (this.itemHelper.itemCanRequireArmorInserts(chosenTpl))
+        else if (this.itemHelper.armorItemCanHoldMods(chosenTpl))
         {
             itemWithMods.push({
                 _id: this.objectId.generate(),
@@ -1071,8 +1071,9 @@ export class LocationGenerator
             // Replace existing magazine with above array
             items.splice(items.indexOf(items[0]), 1, ...magazineWithCartridges);
         }
-        else if (this.itemHelper.itemCanRequireArmorInserts(chosenTpl))
+        else if (this.itemHelper.armorItemCanHoldMods(chosenTpl))
         {
+            // We make base item above, at start of function, no need to do it here
             if (itemTemplate._props.Slots?.length > 0)
             {
                 items = this.itemHelper.addChildSlotItems(items, itemTemplate, this.locationConfig.equipmentLootSettings.modSpawnChancePercent);
