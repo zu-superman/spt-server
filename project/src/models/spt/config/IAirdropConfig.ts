@@ -37,6 +37,7 @@ export interface AirdropChancePercent
     interchange: number;
     reserve: number;
     tarkovStreets: number;
+    sandbox: number;
 }
 
 /** Loot inside crate */

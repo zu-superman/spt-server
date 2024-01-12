@@ -100,6 +100,7 @@ export interface LootMultiplier
     tarkovstreets: number;
     terminal: number;
     town: number;
+    sandbox: number;
 }
 
 export interface IContainerRandomistionSettings
