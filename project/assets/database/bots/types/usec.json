@@ -4550,7 +4550,10 @@
       "5645bc214bdc2d363b8b4571": {
         "mod_equipment": [
           "5b46238386f7741a693bcf9c"
-        ]
+        ],
+		"Helmet_top": ["657bae18b7e9ca9a02045c0a"],
+        "Helmet_back": ["657baeaacfcf63c951052db3"],
+        "Helmet_ears": ["657baecbc6f689d3a205b863"]
       },
       "5648a7494bdc2d9d488b4583": {
         "Soft_armor_back": [
