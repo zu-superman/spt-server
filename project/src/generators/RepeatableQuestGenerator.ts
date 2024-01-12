@@ -559,9 +559,19 @@ export class RepeatableQuestGenerator
 
         // Draw items to ask player to retrieve
         let isAmmo = 0
+		const randomNumbersUsed = [];
         for (let i = 0; i < distinctItemsToRetrieveCount; i++)
         {
-            const itemSelected = itemSelection[this.randomUtil.randInt(itemSelection.length)];
+			let randomNumber = this.randomUtil.randInt(itemSelection.length);
+
+			while (randomNumbersUsed.includes(randomNumber) && randomNumbersUsed.length !== itemSelection.length)
+			{
+				randomNumber = this.randomUtil.randInt(itemSelection.length);
+			}
+			
+			randomNumbersUsed.push(randomNumber);
+
+            const itemSelected = itemSelection[randomNumber];
             const itemUnitPrice = this.itemHelper.getItemPrice(itemSelected[0]);
             let minValue = completionConfig.minRequestedAmount;
             let maxValue = completionConfig.maxRequestedAmount;
