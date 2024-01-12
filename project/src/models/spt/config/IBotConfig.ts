@@ -100,6 +100,8 @@ export interface EquipmentFilters
     lightIsActiveNightChancePercent?: number;
     /** Chance gun laser is active during the day */
     laserIsActiveChancePercent?: number;
+    /** Should plates be filtered by level */
+    filterPlatesByLevel?:boolean
     /** Chance NODS are down/active during the day */
     nvgIsActiveChanceDayPercent?: number;
     /** Chance NODS are down/active during the night */

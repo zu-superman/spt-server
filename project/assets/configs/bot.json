@@ -768,6 +768,7 @@
             "lightIsActiveDayChancePercent": 25,
             "lightIsActiveNightChancePercent": 95,
             "laserIsActiveChancePercent": 85,
+			"filterPlatesByLevel": true,
             "randomisation": [{
                     "levelRange": {
                         "min": 1,

@@ -475,7 +475,7 @@ export interface IGenerateEquipmentProperties
         spawnChances: Chances,
         /** Role being generated for */
         botRole: string,
-        /** level of bot being generated */
+        /** Level of bot being generated */
         botLevel: number,
         inventory: PmcInventory,
         botEquipmentConfig: EquipmentFilters,

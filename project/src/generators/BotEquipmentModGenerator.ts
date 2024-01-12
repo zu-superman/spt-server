@@ -4,6 +4,7 @@ import { BotGeneratorHelper, ExhaustableArray } from "@spt-aki/helpers/BotGenera
 import { BotHelper } from "@spt-aki/helpers/BotHelper";
 import { BotWeaponGeneratorHelper } from "@spt-aki/helpers/BotWeaponGeneratorHelper";
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
+import { PresetHelper } from "@spt-aki/helpers/PresetHelper";
 import { ProbabilityHelper } from "@spt-aki/helpers/ProbabilityHelper";
 import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
 import { WeightedRandomHelper } from "@spt-aki/helpers/WeightedRandomHelper";
@@ -25,6 +26,7 @@ import { HashUtil } from "@spt-aki/utils/HashUtil";
 import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 import { RandomUtil } from "@spt-aki/utils/RandomUtil";
 import { IGenerateEquipmentProperties } from "./BotInventoryGenerator";
+import { IFilterPlateModsForSlotByLevelResult, Result } from "./IFilterPlateModsForSlotByLevelResult";
 
 @injectable()
 export class BotEquipmentModGenerator
@@ -47,6 +49,7 @@ export class BotEquipmentModGenerator
         @inject("BotGeneratorHelper") protected botGeneratorHelper: BotGeneratorHelper,
         @inject("BotWeaponGeneratorHelper") protected botWeaponGeneratorHelper: BotWeaponGeneratorHelper,
         @inject("WeightedRandomHelper") protected weightedRandomHelper: WeightedRandomHelper,
+        @inject("PresetHelper") protected presetHelper: PresetHelper,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("BotEquipmentModPoolService") protected botEquipmentModPoolService: BotEquipmentModPoolService,
         @inject("ConfigServer") protected configServer: ConfigServer,
@@ -106,12 +109,28 @@ export class BotEquipmentModGenerator
                 forceSpawn = true;
             }
 
-            const modPoolToChooseFrom = this.filterPlateModsForSlotByLevel(settings, modSlot.toLowerCase(), compatibleModsPool[modSlot], parentTemplate);
+            let modPoolToChooseFrom = compatibleModsPool[modSlot];
+            if (settings.botEquipmentConfig.filterPlatesByLevel && this.itemHelper.isRemovablePlateSlot(modSlot.toLowerCase()))
+            {
+                const outcome = this.filterPlateModsForSlotByLevel(settings, modSlot.toLowerCase(), compatibleModsPool[modSlot], parentTemplate);
+                if ([Result.UNKNOWN_FAILURE, Result.NO_DEFAULT_FILTER].includes(outcome.result))
+                {
+                    this.logger.warning(`Plate slot: ${modSlot} selection for armor: ${parentTemplate._id} failed: ${Result[outcome.result]}, skipping`);
 
-            let modTpl: string;
-            let found = false;
+                    continue;
+                }
+                
+                if ([Result.LACKS_PLATE_WEIGHTS].includes(outcome.result))
+                {
+                    this.logger.warning(`Plate slot: ${modSlot} lacks weights for armor: ${parentTemplate._id}, unable to adjust plate choice, using existing data`);
+                }
+                
+                modPoolToChooseFrom = outcome.plateModTpls;
+            }
 
             // Find random mod and check its compatible
+            let modTpl: string;
+            let found = false;
             const exhaustableModPool = new ExhaustableArray(
                 modPoolToChooseFrom,
                 this.randomUtil,
@@ -153,9 +172,10 @@ export class BotEquipmentModGenerator
             const modId = this.hashUtil.generate();
             equipment.push(this.createModItem(modId, modTpl, parentId, modSlot, modTemplate[1], settings.botRole));
 
+            // Does the item being added have possible child mods?
             if (Object.keys(settings.modPool).includes(modTpl))
             {
-                // Call self recursively
+                // Call self recursively with item being checkced item we just added to bot
                 this.generateModsForEquipment(
                     equipment,
                     modId,
@@ -172,17 +192,25 @@ export class BotEquipmentModGenerator
     /**
      * Filter a bots plate pool based on its current level
      * @param settings Bot equipment generation settings
-     * @param modSlot Slot being filtered
-     * @param modPool Plates tpls to choose from
+     * @param modSlot Armor slot being filtered
+     * @param existingPlateTplPool Plates tpls to choose from
      * @param armorItem 
      * @returns Array of plate tpls to choose from
      */
-    protected filterPlateModsForSlotByLevel(settings: IGenerateEquipmentProperties, modSlot: string, modPool: string[], armorItem: ITemplateItem): string[]
+    protected filterPlateModsForSlotByLevel(settings: IGenerateEquipmentProperties, modSlot: string, existingPlateTplPool: string[], armorItem: ITemplateItem): IFilterPlateModsForSlotByLevelResult
     {
+        const result: IFilterPlateModsForSlotByLevelResult = {
+            result: Result.UNKNOWN_FAILURE,
+            plateModTpls: null
+        };
+
         // Not pmc or not a plate slot, return original mod pool array
         if (!this.itemHelper.isRemovablePlateSlot(modSlot))
         {
-            return modPool;
+            result.result = Result.NOT_PLATE_HOLDING_SLOT;
+            result.plateModTpls = existingPlateTplPool;
+
+            return result;
         }
 
         // Get the front/back/side weights based on bots level
@@ -192,37 +220,71 @@ export class BotEquipmentModGenerator
             ?.find(x => settings.botLevel >= x.levelRange.min && settings.botLevel <= x.levelRange.max);
         if (!plateSlotWeights)
         {
-            return modPool;
+            // No weights, return original array of plate tpls
+            result.result = Result.LACKS_PLATE_WEIGHTS;
+            result.plateModTpls = existingPlateTplPool;
+
+            return result;
         }
 
         // Get the specific plate slot weights (front/back/side)
         const plateWeights: Record<string, number> = plateSlotWeights[modSlot];
         if (!plateWeights)
         {
-            this.logger.warning(`Plate slot ${modSlot} lacks weight data, skipping`);
+            // No weights, return original array of plate tpls
+            result.result = Result.LACKS_PLATE_WEIGHTS;
+            result.plateModTpls = existingPlateTplPool;
 
-            return modPool;
+            return result;
         }
 
         // Choose a plate level based on weighting
         const chosenArmorPlateLevel = this.weightedRandomHelper.getWeightedValue<string>(plateWeights);
         
         // Convert the array of ids into database items
-        const platesFromDb = modPool.map(x => this.itemHelper.getItem(x)[1]);
+        const platesFromDb = existingPlateTplPool.map(x => this.itemHelper.getItem(x)[1]);
 
         // Filter plates to the chosen level based on its armorClass property
         const filteredPlates = platesFromDb.filter(x => x._props.armorClass === chosenArmorPlateLevel);
         if (filteredPlates.length === 0)
         {
-            this.logger.warning(`Plate filter was too restrictive, unable to find plates of level: ${chosenArmorPlateLevel}. Using mods default`);
+            this.logger.debug(`Plate filter was too restrictive for armor: ${armorItem._id}, unable to find plates of level: ${chosenArmorPlateLevel}. Using mod items default plate`);
 
             const relatedItemDbModSlot = armorItem._props.Slots.find(slot => slot._name.toLowerCase() === modSlot);
-            return [relatedItemDbModSlot._props.filters[0].Plate];
+            if (!relatedItemDbModSlot._props.filters[0].Plate)
+            {
+                // No relevant plate found after filtering AND no default plate
+
+                // Last attempt, get default preset and see if it has a plate default
+                const defaultPreset = this.presetHelper.getDefaultPreset(armorItem._id);
+                if (defaultPreset)
+                {
+                    const relatedPresetSlot = defaultPreset._items.find(item => item.slotId?.toLowerCase() === modSlot);
+                    if (relatedPresetSlot)
+                    {
+                        result.result = Result.SUCCESS;
+                        result.plateModTpls = [relatedPresetSlot._tpl];
+
+                        return result;
+                    }
+                }
+
+                result.result = Result.NO_DEFAULT_FILTER;
+
+                return result;
+            }
+
+            result.result = Result.SUCCESS;
+            result.plateModTpls = [relatedItemDbModSlot._props.filters[0].Plate];
+
+            return result;
         }
 
         // Only return the items ids
-        return filteredPlates.map(x => x._id);
+        result.result = Result.SUCCESS;
+        result.plateModTpls = filteredPlates.map(x => x._id);
 
+        return result;
     }
 
     /**
