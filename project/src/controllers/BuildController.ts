@@ -128,7 +128,7 @@ export class BuildController
             Id: request.Id,
             Name: request.Name,
             BuildType: EquipmentBuildType.CUSTOM,
-            Root: request.Root,
+            Root: request.Items[0]._id,
             Items: request.Items,
         };
 
