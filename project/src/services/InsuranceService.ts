@@ -302,6 +302,12 @@ export class InsuranceService
 
             if (itemClientInsuranceData || itemIsSoftInsert)
             {
+                // Check if item should always be lost
+                if (this.insuranceConfig.slotIdsToAlwaysRemove.includes(preRaidItem.slotId.toLowerCase()))
+                {
+                    continue;
+                }
+
                 // Get baseline item to return, clone pre-raid item
                 const itemToReturn: Item = this.jsonUtil.clone(preRaidItem);
 
