@@ -63,6 +63,7 @@ export class ProfileFixerService
         this.addMissingRepeatableQuestsProperty(pmcProfile);
         this.addLighthouseKeeperIfMissing(pmcProfile);
         this.addUnlockedInfoObjectIfMissing(pmcProfile);
+		this.removeOrphanedQuests(pmcProfile);
 
         if (pmcProfile.Inventory)
         {
@@ -1386,4 +1387,23 @@ export class ProfileFixerService
             this.logger.success("Successfully migrated hideout Improvements data to new location, deleted old data");
         }
     }
+
+	/**
+	 * After removing mods that add quests, the quest panel will break without removing these
+	 * @param pmcProfile Profile to remove dead quests from
+	 */
+	protected removeOrphanedQuests(pmcProfile: IPmcData): void
+	{
+		const quests = this.databaseServer.getTables().templates.quests;
+		const profileQuests = pmcProfile.Quests;
+		
+		for (let i = 0; i < profileQuests.length; i++) 
+		{
+			if (!quests[profileQuests[i].qid])
+			{
+				profileQuests.splice(i, 1);
+				this.logger.success("Successfully removed orphaned quest that doesnt exist in our quest data");
+			}			
+		}
+	}
 }
