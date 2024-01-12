@@ -21,15 +21,15 @@
       "ArmBand": 0,
       "ArmorVest": 0,
       "Backpack": 0,
-      "Earpiece": 100,
-      "Eyewear": 100,
-      "FaceCover": 51,
+      "Earpiece": 74,
+      "Eyewear": 75,
+      "FaceCover": 100,
       "FirstPrimaryWeapon": 100,
       "Headwear": 100,
       "Holster": 100,
       "Pockets": 100,
       "Scabbard": 100,
-      "SecondPrimaryWeapon": 80,
+      "SecondPrimaryWeapon": 82,
       "SecuredContainer": 100,
       "TacticalVest": 100
     },
@@ -41,7 +41,7 @@
       "mod_flashlight": 100,
       "mod_foregrip": 91,
       "mod_magazine": 100,
-      "mod_mount": 38,
+      "mod_mount": 37,
       "mod_mount_000": 0,
       "mod_mount_001": 100,
       "mod_muzzle": 50,
@@ -2178,19 +2178,19 @@
   "inventory": {
     "Ammo": {
       "Caliber1143x23ACP": {
-        "5e81f423763d9f754677bf2e": 3107,
-        "5efb0cabfb3e451d70735af5": 627
+        "5e81f423763d9f754677bf2e": 1091,
+        "5efb0cabfb3e451d70735af5": 190
       },
       "Caliber12g": {
         "5d6e6911a4b9361bd5780d52": 1
       },
       "Caliber40x46": {
-        "5ede474b0c226a66f5402622": 2,
-        "5f0c892565703e5c461894e9": 9
+        "5ede474b0c226a66f5402622": 86,
+        "5f0c892565703e5c461894e9": 351
       },
       "Caliber762x35": {
-        "5fd20ff893a8961fc660a954": 76,
-        "619636be6db0f2477964e710": 1791
+        "5fd20ff893a8961fc660a954": 46,
+        "619636be6db0f2477964e710": 1235
       }
     },
     "equipment": {
@@ -2198,12 +2198,12 @@
       "ArmorVest": {},
       "Backpack": {},
       "Earpiece": {
-        "5645bcc04bdc2d363b8b4572": 911,
-        "628e4e576d783146b124c64d": 956
+        "5645bcc04bdc2d363b8b4572": 27,
+        "628e4e576d783146b124c64d": 26
       },
       "Eyewear": {
-        "603409c80ca681766b6a0fb2": 922,
-        "62a61c988ec41a51b34758d5": 945
+        "603409c80ca681766b6a0fb2": 220,
+        "62a61c988ec41a51b34758d5": 261
       },
       "FaceCover": {
         "62a61bbf8ec41a51b34758d2": 1
@@ -2224,9 +2224,9 @@
         "54491bb74bdc2d09088b4567": 1
       },
       "SecondPrimaryWeapon": {
-        "5a7828548dc32e5a9c28b516": 56,
-        "5e81ebcd8e146c7080625e15": 12,
-        "6275303a9f372d6ea97f9ec7": 9
+        "5a7828548dc32e5a9c28b516": 764,
+        "5e81ebcd8e146c7080625e15": 172,
+        "6275303a9f372d6ea97f9ec7": 117
       },
       "SecuredContainer": {
         "5c0a794586f77461c458f892": 1
@@ -2390,8 +2390,8 @@
         "5ede7b0c6d23e5473e6e8c66",
         "63a39c69af870e651d58e6aa",
         "62987c658081af308d7558c6",
-        "61aa5ba8018e9821b7368da9",
         "5d80c95986f77440351beef3",
+        "61aa5ba8018e9821b7368da9",
         "64ccc2111779ad6ba200a139",
         "6582dc4b6ba9e979af6b79f4",
         "658199972dc4e60f6d556a2f",
@@ -2405,16 +2405,23 @@
         "5a0ee62286f774369454a7ac",
         "5d80ccdd86f77474f7575e02",
         "5a0ee34586f774023b6ee092",
-        "5a13ee1986f774794d4c14cd"
+        "5a13ee1986f774794d4c14cd",
+        "5addaffe86f77470b455f900",
+        "5a0ea64786f7741707720468",
+        "5a0eff2986f7741fd654e684",
+        "62987dfc402c7f69bf010923",
+        "6582dc5740562727a654ebb1",
+        "5a0f08bc86f77478f33b84c2",
+        "64ccc1ec1779ad6ba200a137"
       ],
       "SecuredContainer": [
         "619636be6db0f2477964e710",
+        "5f0c892565703e5c461894e9",
+        "5e81f423763d9f754677bf2e",
+        "5ede474b0c226a66f5402622",
         "5d6e6911a4b9361bd5780d52",
         "5efb0cabfb3e451d70735af5",
-        "5ede474b0c226a66f5402622",
-        "5fd20ff893a8961fc660a954",
-        "5f0c892565703e5c461894e9",
-        "5e81f423763d9f754677bf2e"
+        "5fd20ff893a8961fc660a954"
       ],
       "SpecialLoot": [],
       "TacticalVest": [
@@ -2554,8 +2561,8 @@
           "5fbcc640016cce60e8341acc"
         ],
         "mod_magazine": [
-          "5c6d46132e221601da357d56",
-          "5d1340cad7ad1a0b0b249869"
+          "5d1340cad7ad1a0b0b249869",
+          "5c6d46132e221601da357d56"
         ],
         "mod_pistol_grip": [
           "55802f5d4bdc2dac148b458f"
