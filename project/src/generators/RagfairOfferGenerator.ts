@@ -380,25 +380,25 @@ export class RagfairOfferGenerator
 
     /**
      * Create one flea offer for a specific item
-     * @param items Item to create offer for
+     * @param itemWithChildren Item to create offer for
      * @param isPreset Is item a weapon preset
      * @param itemDetails raw db item details
      * @returns Item array
      */
     protected async createSingleOfferForItem(
-        items: Item[],
+        itemWithChildren: Item[],
         isPreset: boolean,
         itemDetails: [boolean, ITemplateItem],
     ): Promise<void>
     {
         // Set stack size to random value
-        items[0].upd.StackObjectsCount = this.ragfairServerHelper.calculateDynamicStackCount(items[0]._tpl, isPreset);
+        itemWithChildren[0].upd.StackObjectsCount = this.ragfairServerHelper.calculateDynamicStackCount(itemWithChildren[0]._tpl, isPreset);
 
         const isBarterOffer = this.randomUtil.getChance100(this.ragfairConfig.dynamic.barter.chancePercent);
         const isPackOffer = this.randomUtil.getChance100(this.ragfairConfig.dynamic.pack.chancePercent)
             && !isBarterOffer
-            && items.length === 1
-            && this.itemHelper.isOfBaseclasses(items[0]._tpl, this.ragfairConfig.dynamic.pack.itemTypeWhitelist);
+            && itemWithChildren.length === 1
+            && this.itemHelper.isOfBaseclasses(itemWithChildren[0]._tpl, this.ragfairConfig.dynamic.pack.itemTypeWhitelist);
         const randomUserId = this.hashUtil.generate();
 
         let barterScheme: IBarterScheme[];
@@ -409,28 +409,28 @@ export class RagfairOfferGenerator
                 this.ragfairConfig.dynamic.pack.itemCountMin,
                 this.ragfairConfig.dynamic.pack.itemCountMax,
             );
-            items[0].upd.StackObjectsCount = stackSize;
+            itemWithChildren[0].upd.StackObjectsCount = stackSize;
 
             // Don't randomise pack items
-            barterScheme = this.createCurrencyBarterScheme(items, isPackOffer, stackSize);
+            barterScheme = this.createCurrencyBarterScheme(itemWithChildren, isPackOffer, stackSize);
         }
         else if (isBarterOffer)
         {
             // Apply randomised properties
-            items = this.randomiseItemUpdProperties(randomUserId, items, itemDetails[1]);
-            barterScheme = this.createBarterBarterScheme(items);
+            itemWithChildren = this.randomiseItemUpdProperties(randomUserId, itemWithChildren, itemDetails[1]);
+            barterScheme = this.createBarterBarterScheme(itemWithChildren);
         }
         else
         {
             // Apply randomised properties
-            items = this.randomiseItemUpdProperties(randomUserId, items, itemDetails[1]);
-            barterScheme = this.createCurrencyBarterScheme(items, isPackOffer);
+            itemWithChildren = this.randomiseItemUpdProperties(randomUserId, itemWithChildren, itemDetails[1]);
+            barterScheme = this.createCurrencyBarterScheme(itemWithChildren, isPackOffer);
         }
 
         const offer = this.createFleaOffer(
             randomUserId,
             this.timeUtil.getTimestamp(),
-            items,
+            itemWithChildren,
             barterScheme,
             1,
             isPreset || isPackOffer,
@@ -542,7 +542,7 @@ export class RagfairOfferGenerator
             // Roll random chance to randomise item condition
             if (this.randomUtil.getChance100(this.ragfairConfig.dynamic.condition[parentId].conditionChance * 100))
             {
-                this.randomiseItemCondition(parentId, itemWithMods[0], itemDetails);
+                this.randomiseItemCondition(parentId, itemWithMods, itemDetails);
             }
         }
 
@@ -572,62 +572,63 @@ export class RagfairOfferGenerator
     /**
      * Alter an items condition based on its item base type
      * @param conditionSettingsId also the parentId of item being altered
-     * @param item Item to adjust condition details of
+     * @param itemWithMods Item to adjust condition details of
      * @param itemDetails db item details of first item in array
      */
-    protected randomiseItemCondition(conditionSettingsId: string, item: Item, itemDetails: ITemplateItem): void
+    protected randomiseItemCondition(conditionSettingsId: string, itemWithMods: Item[], itemDetails: ITemplateItem): void
     {
+        const rootItem = itemWithMods[0];
+
+        const itemConditionValues = this.ragfairConfig.dynamic.condition[conditionSettingsId];
         const multiplier = this.randomUtil.getFloat(
-            this.ragfairConfig.dynamic.condition[conditionSettingsId].min,
-            this.ragfairConfig.dynamic.condition[conditionSettingsId].max,
+            itemConditionValues.min,
+            itemConditionValues.max,
         );
 
-        // Armor or weapons
-        if (item.upd.Repairable)
+        // Randomise armor
+        if (this.itemHelper.armorItemCanHoldMods(rootItem._tpl))
         {
-            // Randomise non-0 class armor
-            if (itemDetails._props.armorClass && <number>itemDetails._props.armorClass >= 1)
-            {
-                this.randomiseDurabilityValues(item, multiplier);
-            }
-
-            // Randomise Weapons
-            if (this.itemHelper.isOfBaseclass(itemDetails._id, BaseClasses.WEAPON))
-            {
-                this.randomiseDurabilityValues(item, multiplier);
-            }
+            this.randomiseArmorDurabilityValues(itemWithMods);
 
             return;
         }
 
-        if (item.upd.MedKit)
+        // Randomise Weapons
+        if (this.itemHelper.isOfBaseclass(itemDetails._id, BaseClasses.WEAPON))
+        {
+            this.randomiseWeaponDurabilityValues(itemWithMods[0], multiplier);
+
+            return;
+        }
+
+        if (rootItem.upd.MedKit)
         {
             // randomize health
-            item.upd.MedKit.HpResource = Math.round(item.upd.MedKit.HpResource * multiplier) || 1;
+            rootItem.upd.MedKit.HpResource = Math.round(rootItem.upd.MedKit.HpResource * multiplier) || 1;
 
             return;
         }
 
-        if (item.upd.Key && itemDetails._props.MaximumNumberOfUsage > 1)
+        if (rootItem.upd.Key && itemDetails._props.MaximumNumberOfUsage > 1)
         {
             // randomize key uses
-            item.upd.Key.NumberOfUsages = Math.round(itemDetails._props.MaximumNumberOfUsage * (1 - multiplier)) || 0;
+            rootItem.upd.Key.NumberOfUsages = Math.round(itemDetails._props.MaximumNumberOfUsage * (1 - multiplier)) || 0;
 
             return;
         }
 
-        if (item.upd.FoodDrink)
+        if (rootItem.upd.FoodDrink)
         {
             // randomize food/drink value
-            item.upd.FoodDrink.HpPercent = Math.round(itemDetails._props.MaxResource * multiplier) || 1;
+            rootItem.upd.FoodDrink.HpPercent = Math.round(itemDetails._props.MaxResource * multiplier) || 1;
 
             return;
         }
 
-        if (item.upd.RepairKit)
+        if (rootItem.upd.RepairKit)
         {
             // randomize repair kit (armor/weapon) uses
-            item.upd.RepairKit.Resource = Math.round(itemDetails._props.MaxRepairResource * multiplier) || 1;
+            rootItem.upd.RepairKit.Resource = Math.round(itemDetails._props.MaxRepairResource * multiplier) || 1;
 
             return;
         }
@@ -636,7 +637,7 @@ export class RagfairOfferGenerator
         {
             const totalCapacity = itemDetails._props.MaxResource;
             const remainingFuel = Math.round(totalCapacity * multiplier);
-            item.upd.Resource = { UnitsConsumed: totalCapacity - remainingFuel, Value: remainingFuel };
+            rootItem.upd.Resource = { UnitsConsumed: totalCapacity - remainingFuel, Value: remainingFuel };
         }
     }
 
@@ -645,7 +646,7 @@ export class RagfairOfferGenerator
      * @param item item (weapon/armor) to adjust
      * @param multiplier Value to multiple durability by
      */
-    protected randomiseDurabilityValues(item: Item, multiplier: number): void
+    protected randomiseWeaponDurabilityValues(item: Item, multiplier: number): void
     {
         item.upd.Repairable.Durability = Math.round(item.upd.Repairable.Durability * multiplier) || 1;
 
@@ -665,8 +666,44 @@ export class RagfairOfferGenerator
             tempMaxDurability = item.upd.Repairable.Durability;
         }
 
-        // after clamping, finally assign to the item's properties
+        // after clamping, assign to the item's properties
         item.upd.Repairable.MaxDurability = tempMaxDurability;
+    }
+
+    protected randomiseArmorDurabilityValues(armorWithMods: Item[]): void
+    {
+        const childMultiplerValues = {};
+
+        for (const item of armorWithMods)
+        {
+            const itemDbDetails = this.itemHelper.getItem(item._tpl)[1];
+            if ((parseInt(<string>itemDbDetails._props.armorClass)) > 0)
+            {
+                if (!item.upd)
+                {
+                    item.upd = {};
+                }
+
+                // Store mod types durabiltiy multiplier for later use in current/max durability value calculation
+                if (!childMultiplerValues[itemDbDetails._parent])
+                {
+                    childMultiplerValues[itemDbDetails._parent] = Math.round(this.randomUtil.getFloat(
+                        this.ragfairConfig.dynamic.condition[itemDbDetails._parent].min,
+                        this.ragfairConfig.dynamic.condition[itemDbDetails._parent].max,
+                    ));
+                }
+
+                const maxDurability = Math.round(
+                    this.randomUtil.getFloat(itemDbDetails._props.MaxDurability * this.randomUtil.getFloat(childMultiplerValues[itemDbDetails._parent], 1), itemDbDetails._props.MaxDurability),
+                );
+                item.upd.Repairable = {
+                    Durability: Math.round(itemDbDetails._props.MaxDurability * childMultiplerValues[itemDbDetails._parent]) || 1,
+                    MaxDurability: maxDurability
+                };
+
+                const x = 2;
+            }
+        }
     }
 
     /**
@@ -790,15 +827,15 @@ export class RagfairOfferGenerator
 
     /**
      * Create a random currency-based barter scheme for an array of items
-     * @param offerItems Items on offer
+     * @param offerWithChildren Items on offer
      * @param isPackOffer Is the barter scheme being created for a pack offer
      * @param multipler What to multiply the resulting price by
      * @returns Barter scheme for offer
      */
-    protected createCurrencyBarterScheme(offerItems: Item[], isPackOffer: boolean, multipler = 1): IBarterScheme[]
+    protected createCurrencyBarterScheme(offerWithChildren: Item[], isPackOffer: boolean, multipler = 1): IBarterScheme[]
     {
         const currency = this.ragfairServerHelper.getDynamicOfferCurrency();
-        const price = this.ragfairPriceService.getDynamicOfferPriceForOffer(offerItems, currency, isPackOffer)
+        const price = this.ragfairPriceService.getDynamicOfferPriceForOffer(offerWithChildren, currency, isPackOffer)
             * multipler;
 
         return [{ count: price, _tpl: currency }];
