@@ -562,14 +562,13 @@ export class RepeatableQuestGenerator
 		const randomNumbersUsed = [];
         for (let i = 0; i < distinctItemsToRetrieveCount; i++)
         {
-			let randomNumber = this.randomUtil.randInt(itemSelection.length);
+            let randomNumber = this.randomUtil.randInt(itemSelection.length);
+            while (randomNumbersUsed.includes(randomNumber) && randomNumbersUsed.length !== itemSelection.length)
+            {
+                randomNumber = this.randomUtil.randInt(itemSelection.length);
+            }
 
-			while (randomNumbersUsed.includes(randomNumber) && randomNumbersUsed.length !== itemSelection.length)
-			{
-				randomNumber = this.randomUtil.randInt(itemSelection.length);
-			}
-			
-			randomNumbersUsed.push(randomNumber);
+            randomNumbersUsed.push(randomNumber);
 
             const itemSelected = itemSelection[randomNumber];
             const itemUnitPrice = this.itemHelper.getItemPrice(itemSelected[0]);
