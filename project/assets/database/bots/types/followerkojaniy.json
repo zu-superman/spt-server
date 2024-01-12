@@ -2514,7 +2514,9 @@
         "5df8a72c86f77412640e2e83",
         "5ed515f6915ec335206e4152",
         "62a09cb7a04c0c5c6e0a84f8",
-        "5ed5160a87bb8443d10680b5"
+        "5ed5160a87bb8443d10680b5",
+        "5d1b371186f774253763a656",
+        "5af0561e86f7745f5f3ad6ac"
       ],
       "Pockets": [
         "5c503ad32e2216398b5aada2",
@@ -2598,6 +2600,12 @@
         ],
         "Right_side_plate": [
           "64afd81707e2cf40e903a316"
+        ],
+        "Shoulder_l": [
+          "6575ce9db15fef3dd4051628"
+        ],
+        "Shoulder_r": [
+          "6575cea8b15fef3dd405162c"
         ],
         "Soft_armor_back": [
           "6575ce45dc9932aed601c616"

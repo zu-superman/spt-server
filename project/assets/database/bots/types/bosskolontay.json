@@ -90,20 +90,20 @@
       "TacticalVest": {},
       "Backpack": {},
       "FirstPrimaryWeapon": {
-        "5a0ec13bfcdbcb00165aa685": 117,
-        "5e848cc2988a8701445df1e8": 98,
-        "57dc2fa62459775949412633": 108,
-        "65268d8ecb944ff1e90ea385": 51,
-        "57d14d2524597714373db789": 15,
-        "6513ef33e06849f06c0957ca": 67,
-        "57f4c844245977379d5c14d1": 19,
-        "644674a13d52156624001fbc": 6
+        "5a0ec13bfcdbcb00165aa685": 164,
+        "5e848cc2988a8701445df1e8": 159,
+        "57dc2fa62459775949412633": 184,
+        "65268d8ecb944ff1e90ea385": 88,
+        "57d14d2524597714373db789": 27,
+        "6513ef33e06849f06c0957ca": 117,
+        "644674a13d52156624001fbc": 11,
+        "57f4c844245977379d5c14d1": 29
       },
       "SecondPrimaryWeapon": {},
       "Holster": {
-        "602a9740da11d6478d5a06dc": 159,
-        "5448bd6b4bdc2dfc2f8b4569": 155,
-        "5a17f98cfcdbcb0980087290": 167
+        "602a9740da11d6478d5a06dc": 255,
+        "5a17f98cfcdbcb0980087290": 264,
+        "5448bd6b4bdc2dfc2f8b4569": 260
       },
       "Scabbard": {
         "6540d2162ae6d96b540afcaf": 1
@@ -117,37 +117,38 @@
     },
     "Ammo": {
       "Caliber762x39": {
-        "59e0d99486f7744a32234762": 26,
-        "64b7af434b75259c590fa893": 199,
-        "5656d7c34bdc2d9d198b4587": 36,
-        "59e4cf5286f7741778269d8a": 90,
-        "601aa3d2b2bcb34913271e6d": 2
+        "59e0d99486f7744a32234762": 49,
+        "64b7af434b75259c590fa893": 333,
+        "5656d7c34bdc2d9d198b4587": 45,
+        "59e4cf5286f7741778269d8a": 144,
+        "601aa3d2b2bcb34913271e6d": 3
       },
       "Caliber9x19PARA": {
-        "56d59d3ad2720bdb418b4577": 111,
-        "5efb0da7a29a85116f6ea05f": 40,
-        "58864a4f2459770fcc257101": 8
+        "56d59d3ad2720bdb418b4577": 180,
+        "5efb0da7a29a85116f6ea05f": 61,
+        "58864a4f2459770fcc257101": 14
       },
       "Caliber23x75": {
-        "5f647f31b6238e5dd066e196": 29,
-        "5e85aa1a988a8701445df1f5": 47,
-        "5e85a9a6eacf8c039e4e2ac1": 22
-      },
-      "Caliber545x39": {
-        "56dfef82d2720bbd668b4567": 29,
-        "56dff2ced2720bb4668b4567": 28,
-        "56dff061d2720bb5668b4567": 42,
-        "5c0d5e4486f77478390952fe": 9
+        "5e85aa1a988a8701445df1f5": 73,
+        "5f647f31b6238e5dd066e196": 45,
+        "5e85a9a6eacf8c039e4e2ac1": 41
       },
       "Caliber9x18PM": {
-        "573720e02459776143012541": 111,
-        "573719df2459775a626ccbc2": 125,
-        "573718ba2459775a75491131": 114,
-        "57371aab2459775a77142f22": 6
+        "573719df2459775a626ccbc2": 204,
+        "573720e02459776143012541": 182,
+        "573718ba2459775a75491131": 187,
+        "57371aab2459775a77142f22": 7
+      },
+      "Caliber545x39": {
+        "56dfef82d2720bbd668b4567": 57,
+        "56dff2ced2720bb4668b4567": 47,
+        "56dff061d2720bb5668b4567": 69,
+        "5c0d5e4486f77478390952fe": 10,
+        "61962b617c6c7b169525f168": 1
       },
       "Caliber9x39": {
-        "61962d879bb3d20b0946d385": 5,
-        "57a0e5022459774d1673f889": 1
+        "61962d879bb3d20b0946d385": 9,
+        "57a0e5022459774d1673f889": 2
       }
     },
     "mods": {
@@ -160,8 +161,8 @@
           "5998517986f7746017232f7e",
           "5cf50850d7f00c056e24104c",
           "628a664bccaab13006640e47",
-          "5c6bf4aa2e2216001219b0ae",
           "5649ae4a4bdc2d1b2b8b4588",
+          "5c6bf4aa2e2216001219b0ae",
           "623c3be0484b5003161840dc",
           "5b30ac585acfc433000eb79c",
           "5beec8ea0db834001a6f9dbf",
@@ -229,6 +230,7 @@
           "5c1bc4812e22164bef5cfde7",
           "5c1bc7752e221602b1779b34",
           "5cf4fb76d7f00c065703d3ac",
+          "5c1bc5af2e221602b412949b",
           "5c1bc5fb2e221602b1779b32",
           "558032614bdc2de7118b4585"
         ]
@@ -241,8 +243,8 @@
       "5d2c772c48f0355d95672c25": {
         "mod_scope": [
           "591c4efa86f7741030027726",
-          "609a63b6e2ff132951242d09",
-          "5c0505e00db834001b735073"
+          "5c0505e00db834001b735073",
+          "609a63b6e2ff132951242d09"
         ]
       },
       "602a9740da11d6478d5a06dc": {
@@ -290,11 +292,28 @@
           "5f647d9f8499b57dc40ddb93"
         ]
       },
+      "5a17f98cfcdbcb0980087290": {
+        "mod_pistol_grip": [
+          "5a17fc70fcdbcb0176308b3d"
+        ],
+        "mod_sight_front": [
+          "5aba62f8d8ce87001943946b"
+        ],
+        "mod_sight_rear": [
+          "5aba637ad8ce87001773e17f"
+        ],
+        "mod_magazine": [
+          "5a17fb03fcdbcbcae668728f"
+        ],
+        "mod_stock": [
+          "5a17fb9dfcdbcbcae6687291"
+        ]
+      },
       "57dc2fa62459775949412633": {
         "mod_pistol_grip": [
           "5c6bf4aa2e2216001219b0ae",
-          "5947f92f86f77427344a76b1",
           "5649ae4a4bdc2d1b2b8b4588",
+          "5947f92f86f77427344a76b1",
           "5cf50850d7f00c056e24104c",
           "63f4da90f31d4a33b87bd054",
           "5b30ac585acfc433000eb79c",
@@ -317,8 +336,8 @@
         ],
         "mod_muzzle": [
           "615d8f5dd92c473c770212ef",
-          "5f633f791b231926f2329f13",
           "5cc9a96cd7f00c011c04e04a",
+          "5f633f791b231926f2329f13",
           "5649ab884bdc2ded0b8b457f",
           "5943eeeb86f77412d6384f6b"
         ],
@@ -338,8 +357,8 @@
       "5a957c3fa2750c00137fa5f7": {
         "mod_foregrip": [
           "558032614bdc2de7118b4585",
-          "5c1bc5fb2e221602b1779b32",
           "5c1bc5af2e221602b412949b",
+          "5c1bc5fb2e221602b1779b32",
           "588226d124597767ad33f787",
           "5cf4fb76d7f00c065703d3ac",
           "5c1bc4812e22164bef5cfde7",
@@ -382,21 +401,12 @@
           "63c6adcfb4ba094317063742"
         ]
       },
-      "5a17f98cfcdbcb0980087290": {
-        "mod_pistol_grip": [
-          "5a17fc70fcdbcb0176308b3d"
+      "60228924961b8d75ee233c32": {
+        "mod_sight_rear": [
+          "60229948cacb6b0506369e27"
         ],
         "mod_sight_front": [
-          "5aba62f8d8ce87001943946b"
-        ],
-        "mod_sight_rear": [
-          "5aba637ad8ce87001773e17f"
-        ],
-        "mod_magazine": [
-          "5a17fb03fcdbcbcae668728f"
-        ],
-        "mod_stock": [
-          "5a17fb9dfcdbcbcae6687291"
+          "60228a76d62c9b14ed777a66"
         ]
       },
       "65268d8ecb944ff1e90ea385": {
@@ -404,8 +414,8 @@
           "6513f1798cb24472490ee331"
         ],
         "mod_barrel": [
-          "65266fd43341ed9aa903dd56",
-          "6513eff1e06849f06c0957d4"
+          "6513eff1e06849f06c0957d4",
+          "65266fd43341ed9aa903dd56"
         ],
         "mod_handguard": [
           "6513f05a94c72326990a3866"
@@ -426,11 +436,6 @@
           "6513f13a8cb24472490ee32f"
         ]
       },
-      "5cf638cbd7f00c06595bc936": {
-        "mod_tactical": [
-          "5cf639aad7f00c065703d455"
-        ]
-      },
       "6513eff1e06849f06c0957d4": {
         "mod_bipod": [
           "6513f037e06849f06c0957d7"
@@ -439,12 +444,15 @@
           "6513f0f5e63f29908d0ffab8"
         ]
       },
-      "60228924961b8d75ee233c32": {
-        "mod_sight_front": [
-          "60228a76d62c9b14ed777a66"
-        ],
-        "mod_sight_rear": [
-          "60229948cacb6b0506369e27"
+      "5cf638cbd7f00c06595bc936": {
+        "mod_tactical": [
+          "5cf639aad7f00c065703d455"
+        ]
+      },
+      "637b6d610aef6cfc5e02dd14": {
+        "mod_tactical": [
+          "5a7b483fe899ef0016170d15",
+          "5a7b4900e899ef197b331a2a"
         ]
       },
       "57d14d2524597714373db789": {
@@ -473,12 +481,6 @@
       "577d128124597739d65d0e56": {
         "mod_scope": [
           "577d141e24597739c5255e01"
-        ]
-      },
-      "637b6d610aef6cfc5e02dd14": {
-        "mod_tactical": [
-          "5a7b483fe899ef0016170d15",
-          "5a7b4900e899ef197b331a2a"
         ]
       },
       "5e848d99865c0f329958c83b": {
@@ -569,40 +571,6 @@
           "5649ab884bdc2ded0b8b457f"
         ]
       },
-      "618a75c9a3884f56c957ca1b": {
-        "mod_scope": [
-          "618a75f0bd321d49084cd399"
-        ]
-      },
-      "618a75f0bd321d49084cd399": {
-        "mod_tactical": [
-          "618a760e526131765025aae3"
-        ]
-      },
-      "57f4c844245977379d5c14d1": {
-        "mod_pistol_grip": [
-          "57d152ec245977144076ccdf"
-        ],
-        "mod_mount": [
-          "57ee59b42459771c7b045da5"
-        ],
-        "mod_magazine": [
-          "57d1519e24597714373db79d"
-        ]
-      },
-      "58d2664f86f7747fec5834f6": {
-        "mod_scope": [
-          "58d268fc86f774111273f8c2"
-        ]
-      },
-      "57cff947245977638e6f2a19": {
-        "mod_mount_003": [
-          "5b7be4895acfc400170e2dd5"
-        ],
-        "mod_mount_000": [
-          "6269220d70b6c02e665f2635"
-        ]
-      },
       "644674a13d52156624001fbc": {
         "mod_pistol_grip": [
           "6450f21a3d52156624001fcf"
@@ -643,12 +611,46 @@
           "646f62fee779812413011ab7"
         ]
       },
+      "57f4c844245977379d5c14d1": {
+        "mod_pistol_grip": [
+          "57d152ec245977144076ccdf"
+        ],
+        "mod_mount": [
+          "57ee59b42459771c7b045da5"
+        ],
+        "mod_magazine": [
+          "57d1519e24597714373db79d"
+        ]
+      },
+      "58d2664f86f7747fec5834f6": {
+        "mod_scope": [
+          "58d268fc86f774111273f8c2"
+        ]
+      },
       "5a7b4900e899ef197b331a2a": {
         "mod_scope": [
           "57ae0171245977343c27bfcf"
         ],
         "mod_tactical": [
           "560d657b4bdc2da74d8b4572"
+        ]
+      },
+      "57cff947245977638e6f2a19": {
+        "mod_mount_003": [
+          "5b7be4895acfc400170e2dd5"
+        ],
+        "mod_mount_000": [
+          "6269220d70b6c02e665f2635"
+        ]
+      },
+      "618a75c9a3884f56c957ca1b": {
+        "mod_scope": [
+          "618a75f0bd321d49084cd399"
+        ]
+      },
+      "618a75f0bd321d49084cd399": {
+        "mod_tactical": [
+          "618a760e526131765025aae3"
         ]
       },
       "5649b0fc4bdc2d17108b4588": {
@@ -660,11 +662,13 @@
         "mod_foregrip": [
           "588226d124597767ad33f787",
           "5c1bc5fb2e221602b1779b32",
-          "5c1bc5612e221602b5429350",
           "5cf4fb76d7f00c065703d3ac",
+          "5c1bc5612e221602b5429350",
           "5c1bc7752e221602b1779b34",
           "59fc48e086f77463b1118392",
-          "5c1bc7432e221602b412949d"
+          "5c1bc7432e221602b412949d",
+          "5c1bc4812e22164bef5cfde7",
+          "5c1bc5af2e221602b412949b"
         ],
         "mod_tactical": [
           "560d657b4bdc2da74d8b4572"
@@ -678,7 +682,9 @@
           "5c1bc5fb2e221602b1779b32",
           "5c1bc7432e221602b412949d",
           "5c1bc4812e22164bef5cfde7",
-          "5cf4fb76d7f00c065703d3ac"
+          "5cf4fb76d7f00c065703d3ac",
+          "5c1bc7752e221602b1779b34",
+          "59fc48e086f77463b1118392"
         ],
         "mod_tactical_001": [
           "560d657b4bdc2da74d8b4572"
@@ -697,44 +703,45 @@
         "602286df23506e50807090c6",
         "60098ad7c2240c0fe85c570a",
         "5a0c27731526d80618476ac4",
-        "5f647f31b6238e5dd066e196",
-        "55d481904bdc2d8c2f8b456a",
-        "5448c12b4bdc2d02308b456f",
         "5e85aa1a988a8701445df1f5",
         "5a17fb03fcdbcbcae668728f",
+        "55d481904bdc2d8c2f8b456a",
+        "5448c12b4bdc2d02308b456f",
+        "5f647f31b6238e5dd066e196",
+        "5aaa4194e5b5b055d06310a5",
         "6513f0a194c72326990a3868",
         "5df8a77486f77412672a1e3f",
         "57d1519e24597714373db79d",
         "5df8a72c86f77412640e2e83",
-        "5aaa4194e5b5b055d06310a5",
         "59e5f5a486f7746c530b3ce2",
         "5b1fb3e15acfc4001637f068",
-        "5e85a9a6eacf8c039e4e2ac1",
-        "6450ec2e7da7133e5a09ca96"
+        "6450ec2e7da7133e5a09ca96",
+        "5e85a9a6eacf8c039e4e2ac1"
       ],
       "Backpack": [],
       "SecuredContainer": [
         "59e0d99486f7744a32234762",
         "56d59d3ad2720bdb418b4577",
-        "5f647f31b6238e5dd066e196",
-        "56dfef82d2720bbd668b4567",
-        "573720e02459776143012541",
         "5e85aa1a988a8701445df1f5",
         "573719df2459775a626ccbc2",
+        "56dfef82d2720bbd668b4567",
+        "573720e02459776143012541",
+        "5f647f31b6238e5dd066e196",
+        "56dff2ced2720bb4668b4567",
         "64b7af434b75259c590fa893",
         "573718ba2459775a75491131",
-        "56dff2ced2720bb4668b4567",
         "5efb0da7a29a85116f6ea05f",
         "56dff061d2720bb5668b4567",
         "5656d7c34bdc2d9d198b4587",
         "58864a4f2459770fcc257101",
         "59e4cf5286f7741778269d8a",
+        "61962d879bb3d20b0946d385",
         "57371aab2459775a77142f22",
         "5e85a9a6eacf8c039e4e2ac1",
-        "61962d879bb3d20b0946d385",
         "5c0d5e4486f77478390952fe",
         "601aa3d2b2bcb34913271e6d",
-        "57a0e5022459774d1673f889"
+        "57a0e5022459774d1673f889",
+        "61962b617c6c7b169525f168"
       ],
       "SpecialLoot": []
     }
@@ -2996,25 +3003,25 @@
     },
     "weaponMods": {
       "mod_launcher": 0,
-      "mod_muzzle": 70,
+      "mod_muzzle": 69,
       "mod_reciever": 100,
-      "mod_sight_rear": 67,
+      "mod_sight_rear": 69,
       "mod_stock": 84,
       "mod_magazine": 100,
       "mod_charge": 94,
-      "mod_mount_000": 20,
-      "mod_sight_front": 47,
+      "mod_mount_000": 18,
+      "mod_sight_front": 51,
       "mod_foregrip": 99,
       "mod_mount_001": 0,
-      "mod_tactical": 73,
-      "mod_scope": 86,
-      "mod_tactical_000": 78,
-      "mod_tactical_001": 21,
-      "mod_tactical_002": 9,
-      "mod_stock_000": 7,
-      "mod_bipod": 20,
+      "mod_tactical": 74,
+      "mod_scope": 87,
+      "mod_tactical_000": 81,
+      "mod_tactical_001": 18,
+      "mod_tactical_002": 7,
+      "mod_stock_000": 8,
+      "mod_bipod": 18,
       "mod_mount": 100,
-      "mod_mount_003": 83,
+      "mod_mount_003": 85,
       "mod_tactical_003": 0
     },
     "equipmentMods": {}

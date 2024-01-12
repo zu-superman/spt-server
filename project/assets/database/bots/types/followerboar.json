@@ -2658,7 +2658,8 @@
         "5ed5166ad380ab312177c100",
         "5c0e534186f7747fa1419867",
         "5ed515f6915ec335206e4152",
-        "637b60c3b7afa97bfc3d7001"
+        "637b60c3b7afa97bfc3d7001",
+        "5751a89d24597722aa0e8db0"
       ],
       "Pockets": [
         "576a5ed62459771e9c2096cb",
@@ -2803,6 +2804,12 @@
         ],
         "Right_side_plate": [
           "64afd81707e2cf40e903a316"
+        ],
+        "Shoulder_l": [
+          "6575ce9db15fef3dd4051628"
+        ],
+        "Shoulder_r": [
+          "6575cea8b15fef3dd405162c"
         ],
         "Soft_armor_back": [
           "6575ce45dc9932aed601c616"
@@ -4245,6 +4252,12 @@
         "Right_side_plate": [
           "6557458f83942d705f0c4962"
         ],
+        "Shoulder_l": [
+          "6575c2f7efc786cd9101a5e1"
+        ],
+        "Shoulder_r": [
+          "6575c30352b7f8c76a05ee31"
+        ],
         "Soft_armor_back": [
           "6575c2be52b7f8c76a05ee25"
         ],
@@ -4738,6 +4751,12 @@
         "Right_side_plate": [
           "64afd81707e2cf40e903a316"
         ],
+        "Shoulder_l": [
+          "6575da07945bf78edd04c433"
+        ],
+        "Shoulder_r": [
+          "6575da159e27f4a85e081131"
+        ],
         "Soft_armor_back": [
           "6575d9b8945bf78edd04c427"
         ],
@@ -5135,6 +5154,12 @@
         ],
         "Right_side_plate": [
           "64afdb577bb3bfe8fe03fd1d"
+        ],
+        "Shoulder_l": [
+          "6575d5b316c2762fba005824"
+        ],
+        "Shoulder_r": [
+          "6575d5bd16c2762fba005828"
         ],
         "Soft_armor_back": [
           "6575d56b16c2762fba005818"

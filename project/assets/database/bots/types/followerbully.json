@@ -2339,6 +2339,12 @@
         "Right_side_plate": [
           "64afd81707e2cf40e903a316"
         ],
+        "Shoulder_l": [
+          "6575ce9db15fef3dd4051628"
+        ],
+        "Shoulder_r": [
+          "6575cea8b15fef3dd405162c"
+        ],
         "Soft_armor_back": [
           "6575ce45dc9932aed601c616"
         ],
@@ -2480,6 +2486,9 @@
         ],
         "Helmet_top": [
           "657bc06daab96fccee08be9b"
+        ],
+        "mod_equipment": [
+          "5aa7e373e5b5b000137b76f0"
         ]
       },
       "5aa7e454e5b5b0214e506fa2": {
@@ -2624,6 +2633,12 @@
         "Right_side_plate": [
           "6557458f83942d705f0c4962"
         ],
+        "Shoulder_l": [
+          "6575c3fd52b7f8c76a05ee3d"
+        ],
+        "Shoulder_r": [
+          "6575c40c52b7f8c76a05ee41"
+        ],
         "Soft_armor_back": [
           "6575c3beefc786cd9101a5ed"
         ],
@@ -2679,7 +2694,6 @@
         "patron_in_weapon": [
           "59e6906286f7746c9f75e847",
           "5c0d5ae286f7741e46554302",
-          "54527a984bdc2d4e668b4567",
           "59e6920f86f77411d82aa167"
         ]
       },
