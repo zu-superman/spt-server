@@ -20,14 +20,17 @@
         "V-Ex_light",
         "South V-Ex",
         "E7_car",
-        "Sandbox_VExit"
+        "Sandbox_VExit",
+        "Shorl_V-Ex"
     ],
     "coopExtracts": [
         "Interchange Cooperation",
         "tunnel_shared",
         "EXFIL_ScavCooperation",
         "Factory Gate",
-        "Exit_E10_coop"
+        "Exit_E10_coop",
+        "Smugglers_Trail_coop",
+        "Scav_coop_exit"
     ],
     "carExtractBaseStandingGain": 0.4,
     "coopExtractBaseStandingGain": 0.25,
