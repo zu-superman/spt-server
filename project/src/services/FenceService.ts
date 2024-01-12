@@ -701,11 +701,6 @@ export class FenceService
                     continue;
                 }
 
-                const slotDetails = itemDbDetails[1]._props.Slots.find(slot => slot._name === itemMod.slotId);
-                if (slotDetails?._required)
-                {
-                    continue;
-                }
 
                 // Remove item and its sub-items to prevent orphans
                 toDelete.push(...this.itemHelper.findAndReturnChildrenByItems(itemAndMods, itemMod._id));
