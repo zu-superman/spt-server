@@ -60,7 +60,7 @@ export class RagfairAssortGenerator
     protected generateRagfairAssortItems(): Item[]
     {
         const results: Item[] = [];
-        const items = this.itemHelper.getItems();
+        const items = this.itemHelper.getItems().filter(item => item._type !== "Node");
 
         const weaponPresets = (this.ragfairConfig.dynamic.showDefaultPresetsOnly)
             ? this.getDefaultPresets()
@@ -73,18 +73,16 @@ export class RagfairAssortGenerator
             BaseClasses.INVENTORY,
             BaseClasses.STATIONARY_CONTAINER,
             BaseClasses.POCKETS,
-			BaseClasses.BUILT_IN_INSERTS
+			BaseClasses.BUILT_IN_INSERTS,
+            BaseClasses.ARMOR,
+            BaseClasses.VEST,
+            BaseClasses.HEADWEAR,
         ];
 
         const seasonalEventActive = this.seasonalEventService.seasonalEventEnabled();
         const seasonalItemTplBlacklist = this.seasonalEventService.getInactiveSeasonalEventItems();
         for (const item of items)
         {
-            if (item._type === "Node")
-            {
-                continue;
-            }
-
             if (!this.itemHelper.isValidItem(item._id, ragfairItemInvalidBaseTypes))
             {
                 continue;
@@ -103,7 +101,7 @@ export class RagfairAssortGenerator
 
         for (const weapon of weaponPresets)
         {
-            results.push(this.createRagfairAssortItem(weapon._items[0]._tpl, weapon._id)); // preset id must be passed thruogh to ensure flea shows presets
+            results.push(this.createRagfairAssortItem(weapon._items[0]._tpl, weapon._id)); // Preset id must be passed through to ensure flea shows presets
         }
 
         return results;
