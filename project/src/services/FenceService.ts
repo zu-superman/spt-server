@@ -695,13 +695,6 @@ export class FenceService
                     continue;
                 }
 
-                // Is a mod and can't be edited in-raid
-                if (itemMod.slotId !== "hideout" && !itemDbDetails[1]._props.RaidModdable)
-                {
-                    continue;
-                }
-
-
                 // Remove item and its sub-items to prevent orphans
                 toDelete.push(...this.itemHelper.findAndReturnChildrenByItems(itemAndMods, itemMod._id));
             }
