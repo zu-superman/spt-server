@@ -890,6 +890,7 @@
     "minFillStaticMagazinePercent": 50,
     "makeWishingTreeAlwaysGiveGift": true,
     "allowDuplicateItemsInStaticContainers": true,
+	"magazineLootHasAmmoChancePercent": 50,
     "looseLootBlacklist": {},
     "scavRaidTimeSettings": {
         "settings": {

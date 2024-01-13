@@ -850,15 +850,21 @@ export class LocationGenerator
         }
         else if (this.itemHelper.isOfBaseclass(chosenTpl, BaseClasses.MAGAZINE))
         {
-            // Create array with just magazine + randomised amount of cartridges
+            // Create array with just magazine
             const magazineItem: Item[] = [{ _id: this.objectId.generate(), _tpl: chosenTpl }];
-            this.itemHelper.fillMagazineWithRandomCartridge(
-                magazineItem,
-                itemTemplate, // Magazine template
-                staticAmmoDist,
-                null,
-                this.locationConfig.minFillLooseMagazinePercent / 100,
-            );
+
+            if (this.randomUtil.getChance100(this.locationConfig.magazineLootHasAmmoChancePercent))
+            {
+                // Add randomised amount of cartridges
+                this.itemHelper.fillMagazineWithRandomCartridge(
+                    magazineItem,
+                    itemTemplate, // Magazine template
+                    staticAmmoDist,
+                    null,
+                    this.locationConfig.minFillLooseMagazinePercent / 100,
+                );
+            }
+            
             itemWithMods.push(...magazineItem);
         }
         else if (this.itemHelper.armorItemCanHoldMods(chosenTpl))
@@ -1058,18 +1064,21 @@ export class LocationGenerator
         }
         else if (this.itemHelper.isOfBaseclass(chosenTpl, BaseClasses.MAGAZINE))
         {
-            // Create array with just magazine
-            const magazineWithCartridges = [items[0]];
-            this.itemHelper.fillMagazineWithRandomCartridge(
-                magazineWithCartridges,
-                itemTemplate,
-                staticAmmoDist,
-                null,
-                this.locationConfig.minFillStaticMagazinePercent / 100,
-            );
+            if (this.randomUtil.getChance100(this.locationConfig.magazineLootHasAmmoChancePercent))
+            {
+                // Create array with just magazine
+                const magazineWithCartridges = [items[0]];
+                this.itemHelper.fillMagazineWithRandomCartridge(
+                    magazineWithCartridges,
+                    itemTemplate,
+                    staticAmmoDist,
+                    null,
+                    this.locationConfig.minFillStaticMagazinePercent / 100,
+                );
 
-            // Replace existing magazine with above array
-            items.splice(items.indexOf(items[0]), 1, ...magazineWithCartridges);
+                // Replace existing magazine with above array
+                items.splice(items.indexOf(items[0]), 1, ...magazineWithCartridges);
+            }
         }
         else if (this.itemHelper.armorItemCanHoldMods(chosenTpl))
         {
