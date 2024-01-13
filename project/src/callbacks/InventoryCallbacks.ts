@@ -34,7 +34,7 @@ export class InventoryCallbacks
     )
     {}
 
-    /** Handle Move event */
+    /** Handle client/game/profile/items/moving Move event */
     public moveItem(pmcData: IPmcData, body: IInventoryMoveRequestData, sessionID: string): IItemEventRouterResponse
     {
         return this.inventoryController.moveItem(pmcData, body, sessionID);

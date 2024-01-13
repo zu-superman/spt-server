@@ -4,7 +4,7 @@ import { InventoryHelper } from "@spt-aki/helpers/InventoryHelper";
 import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
 import { HideoutArea, IHideoutImprovement, Production, Productive } from "@spt-aki/models/eft/common/tables/IBotBase";
-import { Upd } from "@spt-aki/models/eft/common/tables/IItem";
+import { Item, Upd } from "@spt-aki/models/eft/common/tables/IItem";
 import { StageBonus } from "@spt-aki/models/eft/hideout/IHideoutArea";
 import { IHideoutContinuousProductionStartRequestData } from "@spt-aki/models/eft/hideout/IHideoutContinuousProductionStartRequestData";
 import { IHideoutProduction } from "@spt-aki/models/eft/hideout/IHideoutProduction";
@@ -1042,5 +1042,61 @@ export class HideoutHelper
                 improvementDetails.completed = true;
             }
         }
+    }
+
+    /**
+     * Add/remove bonus combat skill based on number of dogtags in place of fame hideout area
+     * @param pmcData Player profile
+     */
+    public applyPlaceOfFameDogtagBonus(pmcData: IPmcData): void
+    {
+        const fameAreaProfile = pmcData.Hideout.Areas.find(area => area.type === HideoutAreas.PLACE_OF_FAME);
+
+        // Get hideout area 16 bonus array
+        const fameAreaDb = this.databaseServer.getTables().hideout.areas.find((area) => area.type === HideoutAreas.PLACE_OF_FAME);
+
+        // Get SkillGroupLevelingBoost object
+        const combatBoostBonusDb = fameAreaDb.stages[fameAreaProfile.level].bonuses.find(bonus => bonus.type === "SkillGroupLevelingBoost");
+
+        // Get SkillGroupLevelingBoost object in profile
+        const combatBonusProfile = pmcData.Bonuses.find(bonus => bonus.id === combatBoostBonusDb.id);
+
+        // Get all slotted dogtag items
+        const activeDogtags = pmcData.Inventory.items.filter(item => item?.slotId?.startsWith("dogtag"));
+
+        // Calculate bonus percent (apply hideoutManagement bonus)
+        const hideoutManagementSkill = this.profileHelper.getSkillFromProfile(pmcData, SkillTypes.HIDEOUT_MANAGEMENT);
+        const hideoutManagementSkillBonusPercent = 1 + (hideoutManagementSkill.Progress / 10000); // 5100 becomes 0.51, add 1 to it, 1.51
+        const bonus = this.getDogtagCombatSkillBonusPercent(pmcData, activeDogtags) * hideoutManagementSkillBonusPercent; 
+
+        // Update bonus value to above calcualted value
+        combatBonusProfile.value = Number.parseFloat(bonus.toFixed(2));
+    }
+
+    /**
+     * Calculate the raw dogtag combat skill bonus for place of fame based on number of dogtags
+     * Reverse engineered from client code
+     * @param pmcData Player profile
+     * @param activeDogtags Active dogtags in place of fame dogtag slots
+     * @returns combat bonus
+     */
+    protected getDogtagCombatSkillBonusPercent(pmcData: IPmcData, activeDogtags: Item[]): number
+    {
+        // Not own dogtag
+        // Side = opposite of player
+        let result = 0;
+        for (const dogtag of activeDogtags)
+        {
+            if (dogtag.upd.Dogtag.Side === pmcData.Info.Side
+                || Number.parseInt(dogtag.upd.Dogtag.AccountId) === pmcData.aid
+            )
+            {
+                continue;
+            }
+
+            result += 0.01 * dogtag.upd.Dogtag.Level;
+        }
+
+        return result;
     }
 }

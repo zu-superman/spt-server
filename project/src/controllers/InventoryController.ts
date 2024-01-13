@@ -1,6 +1,7 @@
 import { inject, injectable } from "tsyringe";
 
 import { LootGenerator } from "@spt-aki/generators/LootGenerator";
+import { HideoutHelper } from "@spt-aki/helpers/HideoutHelper";
 import { InventoryHelper } from "@spt-aki/helpers/InventoryHelper";
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { PaymentHelper } from "@spt-aki/helpers/PaymentHelper";
@@ -59,6 +60,7 @@ export class InventoryController
         @inject("PresetHelper") protected presetHelper: PresetHelper,
         @inject("InventoryHelper") protected inventoryHelper: InventoryHelper,
         @inject("QuestHelper") protected questHelper: QuestHelper,
+        @inject("HideoutHelper") protected hideoutHelper: HideoutHelper,
         @inject("RagfairOfferService") protected ragfairOfferService: RagfairOfferService,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
         @inject("PaymentHelper") protected paymentHelper: PaymentHelper,
@@ -105,6 +107,7 @@ export class InventoryController
 
             // Check for item in inventory before allowing internal transfer
             const originalItemLocation = ownerInventoryItems.from.find((x) => x._id === moveRequest.item);
+            const originalLocationSlotId = originalItemLocation.slotId;
             if (!originalItemLocation)
             {
                 // Internal item move but item never existed, possible dupe glitch
@@ -115,6 +118,13 @@ export class InventoryController
             if (!moveResult.success)
             {
                 return this.httpResponseUtil.appendErrorToOutput(output, moveResult.errorMessage);
+            }
+
+            // Item is moving into or out of place of fame dogtag slot
+            if (moveRequest.to.container.startsWith("dogtag")
+                || originalLocationSlotId.startsWith("dogtag"))
+            {
+                this.hideoutHelper.applyPlaceOfFameDogtagBonus(pmcData);
             }
         }
         else
