@@ -589,12 +589,27 @@ export class RagfairOfferGenerator
         if (this.itemHelper.armorItemCanHoldMods(rootItem._tpl))
         {
             // Chance to not adjust armor
-            if (!this.randomUtil.getChance100(this.ragfairConfig.dynamic.condition[BaseClasses.ARMORED_EQUIPMENT]))
+            if (!this.randomUtil.getChance100(this.ragfairConfig.dynamic.condition[BaseClasses.ARMORED_EQUIPMENT].conditionChance * 100))
             {
                 return;
             }
 
             this.randomiseArmorDurabilityValues(itemWithMods);
+
+            // Add hits to visor
+            const visorMod = itemWithMods.find(item => item.parentId === BaseClasses.ARMORED_EQUIPMENT && item.slotId === "mod_equipment_000");
+            if (this.randomUtil.getChance100(25)
+                && visorMod)
+            {
+                if (!visorMod.upd)
+                {
+                    visorMod.upd = {};
+                }
+
+                visorMod.upd.FaceShield = {
+                    Hits: this.randomUtil.getInt(1,3)
+                }
+            }
 
             return;
         }

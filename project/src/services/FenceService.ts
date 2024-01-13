@@ -516,9 +516,16 @@ export class FenceService
             {
                 const modItemDbDetails = this.itemHelper.getItem(requiredSlot._props.filters[0].Plate)[1];
                 const durabilityValues = this.getRandomisedArmorDurabilityValues(modItemDbDetails, this.traderConfig.fence.armorMaxDurabilityPercentMinMax);
-                armor.push({
+                const plateTpl = requiredSlot._props.filters[0].Plate; // `Plate` property appears to be the 'default' item for slot
+                if (plateTpl === "")
+                {
+                    // Some bsg plate properties are empty, skip mod
+                    continue;
+                }
+
+                const mod: Item = {
                     _id: this.hashUtil.generate(),
-                    _tpl: requiredSlot._props.filters[0].Plate, // `Plate` property appears to be the 'default' item for slot
+                    _tpl: plateTpl,
                     parentId: armor[0]._id,
                     slotId: requiredSlot._name,
                     upd: {
@@ -527,7 +534,19 @@ export class FenceService
                             MaxDurability: durabilityValues.MaxDurability
                         }
                     }
-                });
+                };
+
+                // 25% chance to add shots to visor when its below max durability
+                if (this.randomUtil.getChance100(25)
+                    && mod.parentId === BaseClasses.ARMORED_EQUIPMENT && mod.slotId === "mod_equipment_000"
+                    && mod.upd.Repairable.Durability < modItemDbDetails._props.MaxDurability)
+                {
+                      mod.upd.FaceShield = {
+                        Hits: this.randomUtil.getInt(1,3)
+                    }
+                }
+
+                armor.push(mod);
             }
         }
 
