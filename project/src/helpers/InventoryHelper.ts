@@ -4,6 +4,7 @@ import { ContainerHelper } from "@spt-aki/helpers/ContainerHelper";
 import { DialogueHelper } from "@spt-aki/helpers/DialogueHelper";
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { PaymentHelper } from "@spt-aki/helpers/PaymentHelper";
+import { PresetHelper } from "@spt-aki/helpers/PresetHelper";
 import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
 import { TraderAssortHelper } from "@spt-aki/helpers/TraderAssortHelper";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
@@ -57,6 +58,7 @@ export class InventoryHelper
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("ContainerHelper") protected containerHelper: ContainerHelper,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
+        @inject("PresetHelper") protected presetHelper: PresetHelper,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("ConfigServer") protected configServer: ConfigServer,
     )
@@ -95,13 +97,14 @@ export class InventoryHelper
 
         for (const requestItem of request.items)
         {
-            if (requestItem.item_id in this.databaseServer.getTables().globals.ItemPresets)
+            if (this.presetHelper.isPreset(requestItem.item_id))
             {
-                const presetItems = this.jsonUtil.clone(
-                    this.databaseServer.getTables().globals.ItemPresets[requestItem.item_id]._items,
-                );
+                const preset = this.jsonUtil.clone(this.presetHelper.getPreset(requestItem.item_id));
+                const presetItems = preset._items;
+
+                // Push preset data into pool array
                 itemsToAddPool.push(...presetItems);
-                requestItem.isPreset = true;
+                requestItem.sptIsPreset = true;
                 requestItem.item_id = presetItems[0]._id;
             }
             else if (this.paymentHelper.isMoneyTpl(requestItem.item_id))
@@ -559,7 +562,7 @@ export class InventoryHelper
                 const itemToAdd: IAddItemTempObject = {
                     itemRef: item,
                     count: requestItem.count,
-                    isPreset: !!requestItem.isPreset,
+                    isPreset: !!requestItem.sptIsPreset,
                 };
 
                 // Split stacks if the size is higher than allowed by items StackMaxSize property

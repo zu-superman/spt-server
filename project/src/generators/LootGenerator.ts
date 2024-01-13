@@ -317,7 +317,7 @@ export class LootGenerator
         }
 
         // Add preset to return object
-        itemsToReturn.push({ count: 1, item_id: chosenWeaponPreset._id, isPreset: true });
+        itemsToReturn.push({ count: 1, item_id: chosenWeaponPreset._id, sptIsPreset: true });
 
         // Get items related to chosen weapon
         const linkedItemsToWeapon = this.ragfairLinkedItemService.getLinkedDbItems(chosenWeaponTpl);
@@ -376,7 +376,7 @@ export class LootGenerator
 
                 // No need to add ammo to box, inventoryHelper.addItem() will handle it
                 const chosenAmmoBox = this.randomUtil.getArrayValue(ammoBoxesMatchingCaliber);
-                rewards.push({ count: rewardCount, item_id: chosenAmmoBox._id, isPreset: false });
+                rewards.push({ count: rewardCount, item_id: chosenAmmoBox._id, sptIsPreset: false });
 
                 continue;
             }
@@ -494,7 +494,7 @@ export class LootGenerator
         }
         else
         {
-            resultsArray.push({ item_id: itemTplToAdd, count: 1, isPreset: false });
+            resultsArray.push({ item_id: itemTplToAdd, count: 1, sptIsPreset: false });
         }
     }
 }
