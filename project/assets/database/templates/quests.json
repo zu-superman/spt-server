@@ -11393,19 +11393,6 @@
           ],
           "target": "5a27d2af86f7744e1115b323",
           "visibilityConditions": []
-        },
-        {
-          "availableAfter": 0,
-          "conditionType": "Quest",
-          "dynamicLocale": false,
-          "id": "235d620f9e55843ca45cc6ac",
-          "index": 2,
-          "parentId": "",
-          "status": [
-            4
-          ],
-          "target": "5a27c99a86f7747d2c6bdd8e",
-          "visibilityConditions": []
         }
       ],
       "Fail": []
@@ -50746,16 +50733,6 @@
           "index": 0,
           "parentId": "",
           "value": 15,
-          "visibilityConditions": []
-        },
-        {
-          "compareMethod": ">=",
-          "conditionType": "Level",
-          "dynamicLocale": false,
-          "id": "dc0d97bd09f8234dec3bd009",
-          "index": 1,
-          "parentId": "",
-          "value": 11,
           "visibilityConditions": []
         }
       ],
