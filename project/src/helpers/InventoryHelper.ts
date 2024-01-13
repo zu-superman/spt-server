@@ -73,7 +73,7 @@ export class InventoryHelper
      * @param output response to send back to client
      * @param sessionID Session id
      * @param callback Code to execute later (function)
-     * @param foundInRaid Will results added to inventory be set as found in raid
+     * @param foundInRaid Item added will be flagged as found in raid
      * @param addUpd Additional upd properties for items being added to inventory
      * @param useSortingTable Allow items to go into sorting table when stash has no space
      * @returns IItemEventRouterResponse
@@ -93,7 +93,7 @@ export class InventoryHelper
         const itemsToAddPool: Item[] = [];
 
         /** Root items to add to inventory */
-        const itemsToAdd: IAddItemTempObject[] = [];
+        const rootItemsToAdd: IAddItemTempObject[] = [];
 
         for (const requestItem of request.items)
         {
@@ -102,9 +102,27 @@ export class InventoryHelper
                 const preset = this.jsonUtil.clone(this.presetHelper.getPreset(requestItem.item_id));
                 const presetItems = preset._items;
 
+                // Add FiR status to preset if needed
+                if (foundInRaid || this.inventoryConfig.newItemsMarkedFound)
+                {
+                    for (const item of presetItems)
+                    {
+                        if (!item.upd)
+                        {
+                            item.upd = {};
+                        }
+                        if (foundInRaid)
+                        {
+                            item.upd.SpawnedInSession = true;
+                        }
+                    }
+                }
+
                 // Push preset data into pool array
                 itemsToAddPool.push(...presetItems);
                 requestItem.sptIsPreset = true;
+
+                // Remap requests item id to preset root items id
                 requestItem.item_id = presetItems[0]._id;
             }
             else if (this.paymentHelper.isMoneyTpl(requestItem.item_id))
@@ -146,14 +164,14 @@ export class InventoryHelper
 
             // Split stacks into allowed sizes if needed
             // e.g. when buying 300 ammo from flea but max stack size is 50
-            this.splitStackIntoSmallerStacks(itemsToAddPool, requestItem, itemsToAdd);
+            this.splitStackIntoSmallerStacks(itemsToAddPool, requestItem, rootItemsToAdd);
         }
 
         // Find an empty slot in stash for each of the items being added
         const stashFS2D = this.getStashSlotMap(pmcData, sessionID);
         const sortingTableFS2D = this.getSortingTableSlotMap(pmcData);
 
-        for (const itemToAdd of itemsToAdd)
+        for (const itemToAdd of rootItemsToAdd)
         {
             // Update Items `location` properties
             const itemWithChildren = this.itemHelper.findAndReturnChildrenAsItems(itemsToAddPool, itemToAdd.itemRef._id);
@@ -189,20 +207,19 @@ export class InventoryHelper
         }
 
         // Update UPD properties and add to output.profileChanges/pmcData.Inventory.items arrays
-        for (const itemToAdd of itemsToAdd)
+        for (const rootItemToAdd of rootItemsToAdd)
         {
-            const itemWithChildren = this.itemHelper.findAndReturnChildrenAsItems(itemsToAddPool, itemToAdd.itemRef._id);
-            let idForItemToAdd = this.hashUtil.generate();
-            const originalKeyToNewKeyMap: string[][] = [[itemToAdd.itemRef._id, idForItemToAdd]]; // Every item id + randomly generated id
-            let upd: Upd = { StackObjectsCount: itemToAdd.count };
+            let newIdForItem = this.hashUtil.generate();
+            const originalKeyToNewKeyMap: string[][] = [[rootItemToAdd.itemRef._id, newIdForItem]]; // Every item id + randomly generated id
+            let rootItemUpd: Upd = { StackObjectsCount: rootItemToAdd.count };
 
             // If item being added is preset, load preset's upd data too.
-            if (itemToAdd.isPreset)
+            if (rootItemToAdd.isPreset)
             {
                 // Iterate over properties in upd and add them
-                for (const updID in itemToAdd.itemRef.upd)
+                for (const updID in rootItemToAdd.itemRef.upd)
                 {
-                    upd[updID] = itemToAdd.itemRef.upd[updID];
+                    rootItemUpd[updID] = rootItemToAdd.itemRef.upd[updID];
                 }
 
                 if (addUpd)
@@ -210,119 +227,113 @@ export class InventoryHelper
                     // Iterate over properties in addUpd and add them
                     for (const updID in addUpd)
                     {
-                        upd[updID] = addUpd[updID];
+                        rootItemUpd[updID] = addUpd[updID];
                     }
                 }
             }
 
             // Item has buff, add to item being sent to player
-            if (itemToAdd.itemRef.upd?.Buff)
+            if (rootItemToAdd.itemRef.upd?.Buff)
             {
-                upd.Buff = this.jsonUtil.clone(itemToAdd.itemRef.upd.Buff);
+                rootItemUpd.Buff = this.jsonUtil.clone(rootItemToAdd.itemRef.upd.Buff);
             }
 
-            // add ragfair upd properties
+            // Add ragfair upd properties
             if (addUpd)
             {
-                upd = { ...addUpd, ...upd };
+                rootItemUpd = { ...addUpd, ...rootItemUpd };
             }
 
             // Hideout items need to be marked as found in raid
             // Or in case people want all items to be marked as found in raid
             if (foundInRaid || this.inventoryConfig.newItemsMarkedFound)
             {
-                upd.SpawnedInSession = true;
+                rootItemUpd.SpawnedInSession = true;
             }
 
             // Remove invalid properties prior to adding to inventory
-            if (upd.UnlimitedCount !== undefined)
-            {
-                delete upd.UnlimitedCount;
-            }
+            this.removeTraderRelatedUpdProperties(rootItemUpd);
 
-            if (upd.BuyRestrictionCurrent !== undefined)
-            {
-                delete upd.BuyRestrictionCurrent;
-            }
-
-            if (upd.BuyRestrictionMax !== undefined)
-            {
-                delete upd.BuyRestrictionMax;
-            }
-
+            // Add root item to client return object
             output.profileChanges[sessionID].items.new.push({
-                _id: idForItemToAdd,
-                _tpl: itemToAdd.itemRef._tpl,
-                parentId: itemToAdd.containerId,
+                _id: newIdForItem,
+                _tpl: rootItemToAdd.itemRef._tpl,
+                parentId: rootItemToAdd.containerId,
                 slotId: "hideout",
-                location: { x: itemToAdd.location.x, y: itemToAdd.location.y, r: itemToAdd.location.rotation ? 1 : 0 },
-                upd: this.jsonUtil.clone(upd),
+                location: { x: rootItemToAdd.location.x, y: rootItemToAdd.location.y, r: rootItemToAdd.location.rotation ? 1 : 0 },
+                upd: this.jsonUtil.clone(rootItemUpd),
             });
 
+            // Add root item to player inventory
             pmcData.Inventory.items.push({
-                _id: idForItemToAdd,
-                _tpl: itemToAdd.itemRef._tpl,
-                parentId: itemToAdd.containerId,
+                _id: newIdForItem,
+                _tpl: rootItemToAdd.itemRef._tpl,
+                parentId: rootItemToAdd.containerId,
                 slotId: "hideout",
-                location: { x: itemToAdd.location.x, y: itemToAdd.location.y, r: itemToAdd.location.rotation ? 1 : 0 },
-                upd: this.jsonUtil.clone(upd), // Clone upd to prevent multi-purchases of same item referencing same upd object in memory
+                location: { x: rootItemToAdd.location.x, y: rootItemToAdd.location.y, r: rootItemToAdd.location.rotation ? 1 : 0 },
+                upd: this.jsonUtil.clone(rootItemUpd), // Clone upd to prevent multi-purchases of same item referencing same upd object in memory
             });
 
-            if (this.itemHelper.isOfBaseclass(itemToAdd.itemRef._tpl, BaseClasses.AMMO_BOX))
+            // Edge case - ammo boxes need cartridges added to result
+            if (this.itemHelper.isOfBaseclass(rootItemToAdd.itemRef._tpl, BaseClasses.AMMO_BOX))
             {
-                this.hydrateAmmoBoxWithAmmo(pmcData, itemToAdd, originalKeyToNewKeyMap[0][1], sessionID, output, foundInRaid);
+                this.hydrateAmmoBoxWithAmmo(pmcData, rootItemToAdd, originalKeyToNewKeyMap[0][1], sessionID, output, foundInRaid);
             }
 
             // Loop over item + children
             while (originalKeyToNewKeyMap.length > 0)
-            {// Iterate item + children being added
+            {
+                // Iterate item + children being added
                 for (const arrayIndex in itemsToAddPool)
                 {
+                    const itemDetails = itemsToAddPool[arrayIndex];
                     // Does parent match original key
-                    if (itemsToAddPool[arrayIndex]?.parentId !== originalKeyToNewKeyMap[0][0])
+                    if (itemDetails?.parentId !== originalKeyToNewKeyMap[0][0])
                     {
-                        // Skip when items parent isnt on remap
+                        // Skip when items parent isnt on remap (root item)
                         continue;
                     }
 
-                    // Create new id for item
-                    idForItemToAdd = this.hashUtil.generate();
-                    const slotID = itemsToAddPool[arrayIndex].slotId;
+                    // Create new id for child item
+                    newIdForItem = this.hashUtil.generate();
+                    const itemSlotId = itemDetails.slotId;
 
-                    // If its from ItemPreset, load prese's upd data too.
-                    if (itemToAdd.isPreset)
+                    // If its from ItemPreset, load presets upd data too.
+                    if (rootItemToAdd.isPreset)
                     {
-                        upd = { StackObjectsCount: itemToAdd.count };
+                        rootItemUpd = { StackObjectsCount: rootItemToAdd.count };
 
-                        for (const updID in itemsToAddPool[arrayIndex].upd)
+                        for (const updID in itemDetails.upd)
                         {
-                            upd[updID] = itemsToAddPool[arrayIndex].upd[updID];
+                            rootItemUpd[updID] = itemDetails.upd[updID];
                         }
 
                         if (foundInRaid || this.inventoryConfig.newItemsMarkedFound)
                         {
-                            upd.SpawnedInSession = true;
+                            rootItemUpd.SpawnedInSession = true;
                         }
                     }
                     // Is root item
-                    if (slotID === "hideout")
+                    if (itemSlotId === "hideout")
                     {
+                        // Add child item to client return object
                         output.profileChanges[sessionID].items.new.push({
-                            _id: idForItemToAdd,
-                            _tpl: itemsToAddPool[arrayIndex]._tpl,
+                            _id: newIdForItem,
+                            _tpl: itemDetails._tpl,
                             parentId: originalKeyToNewKeyMap[0][1],
-                            slotId: slotID,
-                            location: { x: itemToAdd.location.x, y: itemToAdd.location.y, r: "Horizontal" },
-                            upd: this.jsonUtil.clone(upd),
+                            slotId: itemSlotId,
+                            location: { x: rootItemToAdd.location.x, y: rootItemToAdd.location.y, r: "Horizontal" },
+                            upd: this.jsonUtil.clone(rootItemUpd),
                         });
 
+                        // Add child item to player inventory
                         pmcData.Inventory.items.push({
-                            _id: idForItemToAdd,
-                            _tpl: itemsToAddPool[arrayIndex]._tpl,
+                            _id: newIdForItem,
+                            _tpl: itemDetails._tpl,
                             parentId: originalKeyToNewKeyMap[0][1],
-                            slotId: itemsToAddPool[arrayIndex].slotId,
-                            location: { x: itemToAdd.location.x, y: itemToAdd.location.y, r: "Horizontal" },
-                            upd: this.jsonUtil.clone(upd),
+                            slotId: itemDetails.slotId,
+                            location: { x: rootItemToAdd.location.x, y: rootItemToAdd.location.y, r: "Horizontal" },
+                            upd: this.jsonUtil.clone(rootItemUpd),
                         });
                     }
                     else
@@ -331,34 +342,34 @@ export class InventoryHelper
                         
                         // Item already has location property, use it
                         const itemLocation = {};
-                        if (itemsToAddPool[arrayIndex].location !== undefined)
+                        if (itemDetails.location !== undefined)
                         {
-                            itemLocation["location"] = itemsToAddPool[arrayIndex].location;
+                            itemLocation["location"] = itemDetails.location;
                         }
-
-                        const upd = this.jsonUtil.clone(itemsToAddPool[arrayIndex].upd);
+                        // Clone upd so we dont adjust the underlying data
+                        const upd = this.jsonUtil.clone(itemDetails.upd);
                         output.profileChanges[sessionID].items.new.push({
-                            _id: idForItemToAdd,
-                            _tpl: itemsToAddPool[arrayIndex]._tpl,
+                            _id: newIdForItem,
+                            _tpl: itemDetails._tpl,
                             parentId: originalKeyToNewKeyMap[0][1],
-                            slotId: slotID,
+                            slotId: itemSlotId,
                             ...itemLocation,
                             upd: upd,
                         });
 
                         pmcData.Inventory.items.push({
-                            _id: idForItemToAdd,
-                            _tpl: itemsToAddPool[arrayIndex]._tpl,
+                            _id: newIdForItem,
+                            _tpl: itemDetails._tpl,
                             parentId: originalKeyToNewKeyMap[0][1],
-                            slotId: itemsToAddPool[arrayIndex].slotId,
+                            slotId: itemDetails.slotId,
                             ...itemLocation,
                             upd: upd,
                         });
-                        this.logger.debug(`Added ${itemsToAddPool[arrayIndex]._tpl} with id: ${idForItemToAdd} to inventory`);
+                        this.logger.debug(`Added: ${itemDetails._tpl} with id: ${newIdForItem} to inventory`);
                     }
 
                     // Add mapping of child item to new id
-                    originalKeyToNewKeyMap.push([itemsToAddPool[arrayIndex]._id, idForItemToAdd]);
+                    originalKeyToNewKeyMap.push([itemDetails._id, newIdForItem]);
                 }
 
                 // Remove mapping now we're done with it
@@ -367,6 +378,28 @@ export class InventoryHelper
         }
 
         return output;
+    }
+
+    /**
+     * Remove properties from a Upd object used by a trader
+     * @param upd Object to update
+     */
+    protected removeTraderRelatedUpdProperties(upd: Upd): void
+    {
+        if (upd.UnlimitedCount !== undefined)
+        {
+            delete upd.UnlimitedCount;
+        }
+
+        if (upd.BuyRestrictionCurrent !== undefined)
+        {
+            delete upd.BuyRestrictionCurrent;
+        }
+
+        if (upd.BuyRestrictionMax !== undefined)
+        {
+            delete upd.BuyRestrictionMax;
+        }
     }
 
     /**
