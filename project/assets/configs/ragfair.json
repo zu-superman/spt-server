@@ -130,7 +130,7 @@
             },
             "57bef4c42459772e8d35a53b": {
                 "_name": "ARMORED_EQUIPMENT",
-                "conditionChance": 0.6,
+                "conditionChance": 0.25,
                 "min": 0.05,
                 "max": 1
             },

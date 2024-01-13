@@ -588,6 +588,12 @@ export class RagfairOfferGenerator
         // Randomise armor
         if (this.itemHelper.armorItemCanHoldMods(rootItem._tpl))
         {
+            // Chance to not adjust armor
+            if (!this.randomUtil.getChance100(this.ragfairConfig.dynamic.condition[BaseClasses.ARMORED_EQUIPMENT]))
+            {
+                return;
+            }
+
             this.randomiseArmorDurabilityValues(itemWithMods);
 
             return;
@@ -670,40 +676,44 @@ export class RagfairOfferGenerator
         item.upd.Repairable.MaxDurability = tempMaxDurability;
     }
 
+    /**
+     * Randomise the durabiltiy values for an armors plates and soft inserts
+     * @param armorWithMods Armor item with its child mods
+     */
     protected randomiseArmorDurabilityValues(armorWithMods: Item[]): void
     {
-        let childMultiplerValues = {};
-        if (this.randomUtil.getChance100(25)) { // chance the armor is damaged
-            for (const item of armorWithMods)
+        const itemDurabilityConfigDict = this.ragfairConfig.dynamic.condition;
+        const childMultiplerValues = {};
+        for (const item of armorWithMods)
+        {
+            const itemDbDetails = this.itemHelper.getItem(item._tpl)[1];
+            if ((parseInt(<string>itemDbDetails._props.armorClass)) > 0)
             {
-                const itemDbDetails = this.itemHelper.getItem(item._tpl)[1];
-                if ((parseInt(<string>itemDbDetails._props.armorClass)) > 0)
+                if (!item.upd)
                 {
-                    if (!item.upd)
-                    {
-                        item.upd = {};
-                    }
-    
-                    // Store mod types durabiltiy multiplier for later use in current/max durability value calculation
-                    if (!childMultiplerValues[itemDbDetails._parent])
-                    {
-                        childMultiplerValues[itemDbDetails._parent] = this.randomUtil.getFloat(
-                            this.ragfairConfig.dynamic.condition[itemDbDetails._parent].min,
-                            this.ragfairConfig.dynamic.condition[itemDbDetails._parent].max,
-                        )/this.ragfairConfig.dynamic.condition[itemDbDetails._parent].max;
-                    }
-    
-                    let maxDurability = Math.round(
-                        this.randomUtil.getFloat(itemDbDetails._props.MaxDurability * this.randomUtil.getFloat(childMultiplerValues[itemDbDetails._parent], 1), itemDbDetails._props.MaxDurability),
-                    );
-                    let durability = Math.round(
-                        this.randomUtil.getFloat(maxDurability * this.randomUtil.getFloat(childMultiplerValues[itemDbDetails._parent], 1), maxDurability),
-                    );
-                    item.upd.Repairable = {
-                        Durability: durability || 1,
-                        MaxDurability: maxDurability
-                    };
+                    item.upd = {};
                 }
+
+                // Store mod types durabiltiy multiplier for later use in current/max durability value calculation
+                if (!childMultiplerValues[itemDbDetails._parent])
+                {
+                    childMultiplerValues[itemDbDetails._parent] = this.randomUtil.getFloat(
+                        itemDurabilityConfigDict[itemDbDetails._parent].min,
+                        itemDurabilityConfigDict[itemDbDetails._parent].max,
+                    ) / itemDurabilityConfigDict[itemDbDetails._parent].max;
+                }
+                
+                const modMultipler = childMultiplerValues[itemDbDetails._parent];
+                const maxDurability = Math.round(
+                    this.randomUtil.getFloat(itemDbDetails._props.MaxDurability * this.randomUtil.getFloat(modMultipler, 1), itemDbDetails._props.MaxDurability),
+                );
+                const durability = Math.round(
+                    this.randomUtil.getFloat(maxDurability * this.randomUtil.getFloat(modMultipler, 1), maxDurability),
+                );
+                item.upd.Repairable = {
+                    Durability: durability || 1, // Never let value become 0
+                    MaxDurability: maxDurability
+                };
             }
         }
     }
