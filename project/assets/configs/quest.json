@@ -169,7 +169,8 @@
                 "Lighthouse": ["Lighthouse"],
                 "laboratory": ["laboratory"],
                 "RezervBase": ["RezervBase"],
-                "TarkovStreets": ["TarkovStreets"]
+                "TarkovStreets": ["TarkovStreets"],
+				"Sandbox": ["Sandbox"]
             },
             "traderWhitelist": [{
                     "traderId": "54cb50c76803fa8b248b4571",
@@ -840,7 +841,8 @@
                 "Lighthouse": ["Lighthouse"],
                 "laboratory": ["laboratory"],
                 "RezervBase": ["RezervBase"],
-                "TarkovStreets": ["TarkovStreets"]
+                "TarkovStreets": ["TarkovStreets"],
+				"Sandbox": ["Sandbox"]
             },
             "traderWhitelist": [{
                     "traderId": "54cb50c76803fa8b248b4571",
@@ -1576,7 +1578,8 @@
                 "Interchange": ["Interchange"],
                 "Lighthouse": ["Lighthouse"],
                 "RezervBase": ["RezervBase"],
-                "TarkovStreets": ["TarkovStreets"]
+                "TarkovStreets": ["TarkovStreets"],
+				"Sandbox": ["Sandbox"]
             },
             "traderWhitelist": [{
                     "traderId": "579dc571d53a0658a154fbec",
@@ -1916,6 +1919,7 @@
         "Lighthouse": "5704e4dad2720bb55b8b4567",
         "laboratory": "5b0fc42d86f7744a585f9105",
         "RezervBase": "5704e5fad2720bc05b8b4567",
-        "TarkovStreets": "5714dc692459777137212e12"
+        "TarkovStreets": "5714dc692459777137212e12",
+		"Sandbox": "653e6760052c01c1c805532f"
     }
 }
