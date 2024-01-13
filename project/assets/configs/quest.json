@@ -806,7 +806,7 @@
                     }
                 ]
             },
-            "rewardBaseTypeBlacklist": ["543be5e94bdc2df1348b4568", "5b3f15d486f77432d0509248", "59f32c3b86f77472a31742f0", "59f32bb586f774757e1e8442"],
+            "rewardBaseTypeBlacklist": ["543be5e94bdc2df1348b4568", "5b3f15d486f77432d0509248", "59f32c3b86f77472a31742f0", "59f32bb586f774757e1e8442", "65649eb40bf0ed77b8044453"],
             "rewardBlacklist": ["627bce33f21bc425b06ab967"],
             "rewardAmmoStackMinSize": 5
         }, {
@@ -1544,7 +1544,7 @@
                     }
                 ]
             },
-            "rewardBaseTypeBlacklist": ["543be5e94bdc2df1348b4568", "5b3f15d486f77432d0509248", "59f32c3b86f77472a31742f0", "59f32bb586f774757e1e8442"],
+            "rewardBaseTypeBlacklist": ["543be5e94bdc2df1348b4568", "5b3f15d486f77432d0509248", "59f32c3b86f77472a31742f0", "59f32bb586f774757e1e8442", "65649eb40bf0ed77b8044453"],
             "rewardBlacklist": ["627bce33f21bc425b06ab967"],
             "rewardAmmoStackMinSize": 5
         }, {
@@ -1903,7 +1903,7 @@
                     }
                 ]
             },
-            "rewardBaseTypeBlacklist": ["543be5e94bdc2df1348b4568", "5b3f15d486f77432d0509248"],
+            "rewardBaseTypeBlacklist": ["543be5e94bdc2df1348b4568", "5b3f15d486f77432d0509248", "65649eb40bf0ed77b8044453"],
             "rewardBlacklist": ["627bce33f21bc425b06ab967"],
             "rewardAmmoStackMinSize": 5
         }
