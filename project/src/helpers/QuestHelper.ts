@@ -412,9 +412,14 @@ export class QuestHelper
             statusTimers: {},
         };
 
-        // Check if quest has a prereq to be placed in a 'pending' state
+        // Check if quest has a prereq to be placed in a 'pending' state, otherwise set status timers value
         const questDbData = this.getQuestFromDb(acceptedQuest.qid, pmcData);
-        const waitTime = questDbData.conditions.AvailableForStart.find((x) => x.availableAfter > 0);
+        if (!questDbData)
+        {
+            this.logger.error(`Quest: ${acceptedQuest.qid} of type: ${acceptedQuest.type} not found`);
+        }
+
+        const waitTime = questDbData?.conditions.AvailableForStart.find((x) => x.availableAfter > 0);
         if (waitTime && acceptedQuest.type !== "repeatable")
         {
             // Quest should be put into 'pending' state
