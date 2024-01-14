@@ -4,10 +4,10 @@ import { ITraderServiceModel } from "@spt-aki/models/spt/services/ITraderService
 
 export interface ITrader
 {
-    assort: ITraderAssort;
+    assort?: ITraderAssort;
     base: ITraderBase;
     dialogue?: Record<string, string[]>;
-    questassort: Record<string, Record<string, string>>;
+    questassort?: Record<string, Record<string, string>>;
     suits?: ISuit[];
     services?: ITraderServiceModel[];
 }
