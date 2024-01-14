@@ -78,12 +78,9 @@
       "BossName": "bossTagilla",
       "BossPlayer": false,
       "BossZone": "BotZone",
-      "Delay": 0,
       "RandomTimeSpawn": false,
-      "Supports": [],
-      "Time": -1,
-      "TriggerId": "",
-      "TriggerName": ""
+      "Supports": null,
+      "Time": -1
     }
   ],
   "BotAssault": 0,
