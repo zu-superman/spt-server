@@ -592,8 +592,9 @@ export class RagfairOfferGenerator
             itemConditionValues.max,
         );
 
-        // Randomise armor
-        if (this.itemHelper.armorItemCanHoldMods(rootItem._tpl))
+        // Randomise armor + plates + armor related things
+        if (this.itemHelper.armorItemCanHoldMods(rootItem._tpl)
+            || this.itemHelper.isOfBaseclasses(rootItem._tpl, [BaseClasses.ARMOR_PLATE, BaseClasses.ARMORED_EQUIPMENT]))
         {
             // Chance to not adjust armor
             if (!this.randomUtil.getChance100(this.ragfairConfig.dynamic.condition[BaseClasses.ARMORED_EQUIPMENT].conditionChance * 100))
