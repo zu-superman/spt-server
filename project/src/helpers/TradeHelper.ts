@@ -11,6 +11,7 @@ import { IProcessBuyTradeRequestData } from "@spt-aki/models/eft/trade/IProcessB
 import { IProcessSellTradeRequestData } from "@spt-aki/models/eft/trade/IProcessSellTradeRequestData";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { Traders } from "@spt-aki/models/enums/Traders";
+import { IInventoryConfig } from "@spt-aki/models/spt/config/IInventoryConfig";
 import { ITraderConfig } from "@spt-aki/models/spt/config/ITraderConfig";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { EventOutputHolder } from "@spt-aki/routers/EventOutputHolder";
@@ -25,6 +26,7 @@ import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 export class TradeHelper
 {
     protected traderConfig: ITraderConfig;
+    protected inventoryConfig: IInventoryConfig;
 
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
@@ -41,6 +43,7 @@ export class TradeHelper
     )
     {
         this.traderConfig = this.configServer.getConfig(ConfigTypes.TRADER);
+        this.inventoryConfig = this.configServer.getConfig(ConfigTypes.INVENTORY);
     }
 
     /**
@@ -128,17 +131,41 @@ export class TradeHelper
 
         if (buyRequestData.tid.toLocaleLowerCase() === "ragfair")
         {
+            // Get raw offer from ragfair, clone to prevent altering offer itself
             const allOffers = this.ragfairServer.getOffers();
-            const offerWithItem = allOffers.find((x) => x._id === buyRequestData.item_id);
+            const offerWithItemCloned = this.jsonUtil.clone(allOffers.find((x) => x._id === buyRequestData.item_id));
+            const offerItems = offerWithItemCloned.items;
 
-            const request: IAddItemDirectRequest = {
-                itemWithModsToAdd: offerWithItem.items,
-                foundInRaid: true,
-                callback: callback,
-                useSortingTable: true
+
+            // Get item details from db
+            const itemDbDetails = this.itemHelper.getItem(offerItems[0]._tpl)[1];
+            const itemMaxStackSize = itemDbDetails._props.StackMaxSize;
+            const itemsToSendTotalCount = buyRequestData.count;
+            let itemsToSendRemaining = itemsToSendTotalCount;
+            while (itemsToSendRemaining > 0)
+            {
+                // Handle edge case when remaining items to send < max stack size
+                const itemCountToSend = Math.min(itemMaxStackSize, itemsToSendRemaining);
+                offerItems[0].upd.StackObjectsCount = itemCountToSend;
+
+                // Prevent any collisions
+                this.itemHelper.remapRootItemId(offerItems);
+
+                // Construct request
+                const request: IAddItemDirectRequest = {
+                    itemWithModsToAdd: this.itemHelper.reparentItemAndChildren(offerItems[0], offerItems),
+                    foundInRaid: this.inventoryConfig.newItemsMarkedFound,
+                    callback: callback,
+                    useSortingTable: true
+                };
+
+                this.inventoryHelper.addItemToStash(sessionID, request, pmcData, output);
+
+                // Remove amount of items added to player stash
+                itemsToSendRemaining -= itemCountToSend;
             }
 
-            return this.inventoryHelper.addItemToInventory(sessionID, request, pmcData, output);
+            return output;
         }
 
         // TODO - handle traders
