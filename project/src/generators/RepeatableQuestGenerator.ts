@@ -693,16 +693,19 @@ export class RepeatableQuestGenerator
             return null;
         }
 
-        // if the location we draw is factory, it's possible to either get factory4_day and factory4_night or only one
+        // If location drawn is factory, it's possible to either get factory4_day and factory4_night or only one
         // of the both
         const locationKey: string = this.randomUtil.drawRandomFromDict(questTypePool.pool.Exploration.locations)[0];
         const locationTarget = questTypePool.pool.Exploration.locations[locationKey];
 
-        // remove the location from the available pool
+        // Remove the location from the available pool
         delete questTypePool.pool.Exploration.locations[locationKey];
 
         // Different max extract count when specific extract needed
-        const numExtracts = this.randomUtil.randInt(1, requiresSpecificExtract ? explorationConfig.maxExtractsWithSpecificExit : explorationConfig.maxExtracts + 1);
+        const exitTimesMax = requiresSpecificExtract
+            ? explorationConfig.maxExtractsWithSpecificExit
+            : explorationConfig.maxExtracts + 1;
+        const numExtracts = this.randomUtil.randInt(1, exitTimesMax);
 
         const quest = this.generateRepeatableTemplate("Exploration", traderId, repeatableConfig.side);
 
