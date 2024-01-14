@@ -79,7 +79,7 @@ export class InventoryHelper
     {
         const itemWithModsToAddClone = this.jsonUtil.clone(request.itemWithModsToAdd);
 
-        // get stash layouts ready for use
+        // Get stash layouts ready for use
         const stashFS2D = this.getStashSlotMap(pmcData, sessionId);
         const sortingTableFS2D = this.getSortingTableSlotMap(pmcData);
 
@@ -122,11 +122,11 @@ export class InventoryHelper
             return this.httpResponse.appendErrorToOutput(output, message);
         }
 
-        // Add item + mods to output + profile inventory
+        // Add item + mods to output and profile inventory
         output.profileChanges[sessionId].items.new.push(...itemWithModsToAddClone);
         pmcData.Inventory.items.push(...itemWithModsToAddClone);
 
-        this.logger.debug(`Added item ${itemWithModsToAddClone[0]._tpl} with ${itemWithModsToAddClone.length - 1} mods to inventory`);
+        this.logger.debug(`Added ${itemWithModsToAddClone[0].upd?.StackObjectsCount} item: ${itemWithModsToAddClone[0]._tpl} with: ${itemWithModsToAddClone.length - 1} mods to inventory`);
 
         return output;
     }
