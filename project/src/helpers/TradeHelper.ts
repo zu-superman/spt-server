@@ -5,6 +5,7 @@ import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { TraderHelper } from "@spt-aki/helpers/TraderHelper";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
 import { Item, Upd } from "@spt-aki/models/eft/common/tables/IItem";
+import { IAddItemDirectRequest } from "@spt-aki/models/eft/inventory/IAddItemDirectRequest";
 import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEventRouterResponse";
 import { IProcessBuyTradeRequestData } from "@spt-aki/models/eft/trade/IProcessBuyTradeRequestData";
 import { IProcessSellTradeRequestData } from "@spt-aki/models/eft/trade/IProcessSellTradeRequestData";
@@ -18,6 +19,7 @@ import { RagfairServer } from "@spt-aki/servers/RagfairServer";
 import { FenceService } from "@spt-aki/services/FenceService";
 import { PaymentService } from "@spt-aki/services/PaymentService";
 import { HttpResponseUtil } from "@spt-aki/utils/HttpResponseUtil";
+import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 
 @injectable()
 export class TradeHelper
@@ -26,6 +28,7 @@ export class TradeHelper
 
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
+        @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("EventOutputHolder") protected eventOutputHolder: EventOutputHolder,
         @inject("TraderHelper") protected traderHelper: TraderHelper,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
@@ -70,12 +73,14 @@ export class TradeHelper
 
         const callback = () =>
         {
+            // Update assort/flea item values
             let itemPurchased: Item;
             const isRagfair = buyRequestData.tid.toLocaleLowerCase() === "ragfair";
             if (isRagfair)
             {
                 const allOffers = this.ragfairServer.getOffers();
-                const offersWithItem = allOffers.find((x) => x.items[0]._id === buyRequestData.item_id);
+                // We store ragfair offerid in buyRequestData.item_id
+                const offersWithItem = allOffers.find((x) => x._id === buyRequestData.item_id);
                 itemPurchased = offersWithItem.items[0];
             }
             else
@@ -119,9 +124,25 @@ export class TradeHelper
                 // Increment non-fence trader item buy count
                 this.incrementAssortBuyCount(itemPurchased, buyRequestData.count);
             }
-
-            this.logger.debug(`Bought item: ${buyRequestData.item_id} from: ${Traders[buyRequestData.tid]}`);
         };
+
+        if (buyRequestData.tid.toLocaleLowerCase() === "ragfair")
+        {
+            const allOffers = this.ragfairServer.getOffers();
+            const offersWithItem = allOffers.find((x) => x._id === buyRequestData.item_id);
+
+            const request: IAddItemDirectRequest = {
+                itemWithModsToAdd: offersWithItem.items,
+                foundInRaid: true,
+                callback: callback,
+                useSortingTable: true
+            }
+
+            return this.inventoryHelper.addItemToInventory(sessionID, request, pmcData, output);
+        }
+
+        // TODO - handle traders
+        // TODO - handle fence
 
         return this.inventoryHelper.addItem(pmcData, newReq, output, sessionID, callback, foundInRaid, upd);
     }

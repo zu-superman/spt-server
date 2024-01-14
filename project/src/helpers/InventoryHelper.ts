@@ -10,6 +10,7 @@ import { TraderAssortHelper } from "@spt-aki/helpers/TraderAssortHelper";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
 import { Inventory } from "@spt-aki/models/eft/common/tables/IBotBase";
 import { Item, Location, Upd } from "@spt-aki/models/eft/common/tables/IItem";
+import { IAddItemDirectRequest } from "@spt-aki/models/eft/inventory/IAddItemDirectRequest";
 import { AddItem, IAddItemRequestData } from "@spt-aki/models/eft/inventory/IAddItemRequestData";
 import { IAddItemTempObject } from "@spt-aki/models/eft/inventory/IAddItemTempObject";
 import { IInventoryMergeRequestData } from "@spt-aki/models/eft/inventory/IInventoryMergeRequestData";
@@ -67,6 +68,90 @@ export class InventoryHelper
     }
 
     /**
+     * Add whatever is passed in `request.itemWithModsToAdd` into player inventory (if it fits)
+     * @param sessionId Session id
+     * @param request addItemDirect request
+     * @param pmcData Player profile
+     * @param output Client response object
+     * @returns IItemEventRouterResponse
+     */
+    public addItemToInventory(sessionId: string, request: IAddItemDirectRequest, pmcData: IPmcData, output: IItemEventRouterResponse): IItemEventRouterResponse
+    {
+        const itemWithModsToAddClone = this.jsonUtil.clone(request.itemWithModsToAdd);
+
+        // get stash layouts ready for use
+        const stashFS2D = this.getStashSlotMap(pmcData, sessionId);
+        const sortingTableFS2D = this.getSortingTableSlotMap(pmcData);
+
+        // Find an empty slot in stash for item being added - adds 'location' property to root item
+        const errorOutput = this.placeItemInInventory(
+            stashFS2D,
+            sortingTableFS2D,
+            itemWithModsToAddClone,
+            pmcData.Inventory,
+            request.useSortingTable,
+            output,
+        );
+        if (errorOutput)
+        {
+            // Failed to place, error out
+            return errorOutput;
+        }
+
+        // Apply/remove FiR to item + mods
+        for (const item of itemWithModsToAddClone)
+        {
+            if (!item.upd)
+            {
+                item.upd = {};
+            }
+
+            if (request.foundInRaid)
+            {
+                item.upd.SpawnedInSession = request.foundInRaid;
+            }
+            else
+            {
+                if (delete item.upd.SpawnedInSession)
+                {
+                    delete item.upd.SpawnedInSession;
+                }
+            }
+        }
+
+        // Remove trader properties from root item
+        this.removeTraderRagfairRelatedUpdProperties(itemWithModsToAddClone[0].upd);
+
+        // Run callback
+        try
+        {
+            if (typeof request.callback === "function")
+            {
+                request.callback();
+            }
+        }
+        catch (err)
+        {
+            // Callback failed
+            const message = typeof err === "string"
+                ? err
+                : this.localisationService.getText("http-unknown_error");
+
+            return this.httpResponse.appendErrorToOutput(output, message);
+        }
+
+        // Add item + mods to output + profile inventory
+        output.profileChanges[sessionId].items.new.push(...itemWithModsToAddClone);
+        pmcData.Inventory.items.push(...itemWithModsToAddClone);
+
+        this.logger.debug(`Added item ${itemWithModsToAddClone[0]._tpl} with ${itemWithModsToAddClone.length - 1} mods to inventory`);
+
+        return output;
+    }
+
+    /**
+     * @deprecated - use addItemDirect()
+     * 
      * BUG: Passing the same item multiple times with a count of 1 will cause multiples of that item to be added (e.g. x3 separate objects of tar cola with count of 1 = 9 tarcolas being added to inventory)
      * @param pmcData Profile to add items to
      * @param request request data to add items
@@ -175,7 +260,7 @@ export class InventoryHelper
         {
             // Update Items `location` properties
             const itemWithChildren = this.itemHelper.findAndReturnChildrenAsItems(itemsToAddPool, itemToAdd.itemRef._id);
-            const errorOutput = this.placeItemInInventory(
+            const errorOutput = this.placeItemInInventoryLegacy(
                 itemToAdd,
                 stashFS2D,
                 sortingTableFS2D,
@@ -252,7 +337,7 @@ export class InventoryHelper
             }
 
             // Remove invalid properties prior to adding to inventory
-            this.removeTraderRelatedUpdProperties(rootItemUpd);
+            this.removeTraderRagfairRelatedUpdProperties(rootItemUpd);
 
             // Add root item to client return object
             output.profileChanges[sessionID].items.new.push({
@@ -381,10 +466,10 @@ export class InventoryHelper
     }
 
     /**
-     * Remove properties from a Upd object used by a trader
+     * Remove properties from a Upd object used by a trader/ragfair
      * @param upd Object to update
      */
-    protected removeTraderRelatedUpdProperties(upd: Upd): void
+    protected removeTraderRagfairRelatedUpdProperties(upd: Upd): void
     {
         if (upd.UnlimitedCount !== undefined)
         {
@@ -402,6 +487,108 @@ export class InventoryHelper
         }
     }
 
+    protected placeItemInInventory(
+        stashFS2D: number[][],
+        sortingTableFS2D: number[][],
+        itemWithChildren: Item[],
+        playerInventory: Inventory,
+        useSortingTable: boolean,
+        output: IItemEventRouterResponse): IItemEventRouterResponse
+    {
+        const itemSize = this.getItemSize(itemWithChildren[0]._tpl, itemWithChildren[0]._id, itemWithChildren);
+        const findSlotResult = this.containerHelper.findSlotForItem(stashFS2D, itemSize[0], itemSize[1]);
+
+        if (findSlotResult.success)
+        {
+            /* Fill in the StashFS_2D with an imaginary item, to simulate it already being added
+            * so the next item to search for a free slot won't find the same one */
+            const itemSizeX = findSlotResult.rotation ? itemSize[1] : itemSize[0];
+            const itemSizeY = findSlotResult.rotation ? itemSize[0] : itemSize[1];
+
+            try
+            {
+                stashFS2D = this.containerHelper.fillContainerMapWithItem(
+                    stashFS2D,
+                    findSlotResult.x,
+                    findSlotResult.y,
+                    itemSizeX,
+                    itemSizeY,
+                    false,
+                ); // TODO: rotation not passed in, bad?
+            }
+            catch (err)
+            {
+                const errorText = typeof err === "string" ? ` -> ${err}` : "";
+                this.logger.error(this.localisationService.getText("inventory-fill_container_failed", errorText));
+
+                return this.httpResponse.appendErrorToOutput(
+                    output,
+                    this.localisationService.getText("inventory-no_stash_space"),
+                );
+            }
+            // Store details for object, incuding container item will be placed in
+            itemWithChildren[0].parentId = playerInventory.stash;
+            itemWithChildren[0].location = {
+                x: findSlotResult.x,
+                y: findSlotResult.y,
+                r: findSlotResult.rotation ? 1 : 0,
+                rotation: findSlotResult.rotation,
+            };
+
+            // Success! exit
+            return;
+        }
+
+        // Space not found in main stash, use sorting table
+        if (useSortingTable)
+        {
+            const findSortingSlotResult = this.containerHelper.findSlotForItem(
+                sortingTableFS2D,
+                itemSize[0],
+                itemSize[1],
+            );
+            const itemSizeX = findSortingSlotResult.rotation ? itemSize[1] : itemSize[0];
+            const itemSizeY = findSortingSlotResult.rotation ? itemSize[0] : itemSize[1];
+            try
+            {
+                sortingTableFS2D = this.containerHelper.fillContainerMapWithItem(
+                    sortingTableFS2D,
+                    findSortingSlotResult.x,
+                    findSortingSlotResult.y,
+                    itemSizeX,
+                    itemSizeY,
+                    false,
+                ); // TODO: rotation not passed in, bad?
+            }
+            catch (err)
+            {
+                const errorText = typeof err === "string" ? ` -> ${err}` : "";
+                this.logger.error(this.localisationService.getText("inventory-fill_container_failed", errorText));
+
+                return this.httpResponse.appendErrorToOutput(
+                    output,
+                    this.localisationService.getText("inventory-no_stash_space"),
+                );
+            }
+
+            // Store details for object, incuding container item will be placed in
+            itemWithChildren[0].parentId = playerInventory.sortingTable;
+            itemWithChildren[0].location = {
+                x: findSortingSlotResult.x,
+                y: findSortingSlotResult.y,
+                r: findSortingSlotResult.rotation ? 1 : 0,
+                rotation: findSortingSlotResult.rotation,
+            };
+        }
+        else
+        {
+            return this.httpResponse.appendErrorToOutput(
+                output,
+                this.localisationService.getText("inventory-no_stash_space"),
+            );
+        }
+    }
+
     /**
      * Take the given item, find a free slot in passed in inventory and place it there
      * If no space in inventory, place in sorting table
@@ -414,7 +601,7 @@ export class InventoryHelper
      * @param output Client output object
      * @returns Client error output if placing item failed
      */
-    protected placeItemInInventory(
+    protected placeItemInInventoryLegacy(
         itemToAdd: IAddItemTempObject,
         stashFS2D: number[][],
         sortingTableFS2D: number[][],
@@ -796,10 +983,10 @@ export class InventoryHelper
      * inputs Item template ID, Item Id, InventoryItem (item from inventory having _id and _tpl)
      * outputs [width, height]
      */
-    public getItemSize(itemTpl: string, itemID: string, inventoryItem: Item[]): number[]
+    public getItemSize(itemTpl: string, itemID: string, inventoryItems: Item[]): number[]
     {
         // -> Prepares item Width and height returns [sizeX, sizeY]
-        return this.getSizeByInventoryItemHash(itemTpl, itemID, this.getInventoryItemHash(inventoryItem));
+        return this.getSizeByInventoryItemHash(itemTpl, itemID, this.getInventoryItemHash(inventoryItems));
     }
 
     // note from 2027: there IS a thing i didn't explore and that is Merges With Children

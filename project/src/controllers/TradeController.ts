@@ -115,7 +115,7 @@ export class TradeController
                 type: "buy_from_trader",
                 tid: (sellerIsTrader) ? fleaOffer.user.id : "ragfair",
                 // eslint-disable-next-line @typescript-eslint/naming-convention
-                item_id: fleaOffer.root,
+                item_id: fleaOffer._id, // Store ragfair offerId in buyRequestData.item_id
                 count: offer.count,
                 // eslint-disable-next-line @typescript-eslint/naming-convention
                 scheme_id: 0,

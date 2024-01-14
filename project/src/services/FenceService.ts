@@ -565,8 +565,7 @@ export class FenceService
                 const plateTpl = plateSlot._props.filters[0].Plate
                 if (!plateTpl)
                 {
-                    this.logger.warning(`Fence generation: item: ${itemDbDetails._id} ${itemDbDetails._name} lacks a default plate for slot: ${plateSlot._name}, skipping`);
-
+                    // Bsg data lacks a default plate, skip adding mod
                     continue;
                 }
                 const modItemDbDetails = this.itemHelper.getItem(plateTpl)[1];
