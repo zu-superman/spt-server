@@ -80,8 +80,8 @@ export class TradeHelper
             {
                 const allOffers = this.ragfairServer.getOffers();
                 // We store ragfair offerid in buyRequestData.item_id
-                const offersWithItem = allOffers.find((x) => x._id === buyRequestData.item_id);
-                itemPurchased = offersWithItem.items[0];
+                const offerWithItem = allOffers.find((x) => x._id === buyRequestData.item_id);
+                itemPurchased = offerWithItem.items[0];
             }
             else
             {
@@ -129,10 +129,10 @@ export class TradeHelper
         if (buyRequestData.tid.toLocaleLowerCase() === "ragfair")
         {
             const allOffers = this.ragfairServer.getOffers();
-            const offersWithItem = allOffers.find((x) => x._id === buyRequestData.item_id);
+            const offerWithItem = allOffers.find((x) => x._id === buyRequestData.item_id);
 
             const request: IAddItemDirectRequest = {
-                itemWithModsToAdd: offersWithItem.items,
+                itemWithModsToAdd: offerWithItem.items,
                 foundInRaid: true,
                 callback: callback,
                 useSortingTable: true
