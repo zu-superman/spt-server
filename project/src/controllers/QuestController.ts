@@ -495,13 +495,6 @@ export class QuestController
             completeQuestResponse,
         );
 
-        // Check for linked failed + unrestartable quests
-        const questsToFail = this.getQuestsFailedByCompletingQuest(completedQuestId);
-        if (questsToFail?.length > 0)
-        {
-            this.failQuests(sessionID, pmcData, questsToFail, completeQuestResponse);
-        }
-
         // Show modal on player screen
         this.sendSuccessDialogMessageOnQuestComplete(sessionID, pmcData, completedQuestId, questRewards);
 
@@ -509,7 +502,7 @@ export class QuestController
         const questDelta = this.questHelper.getDeltaQuests(beforeQuests, this.getClientQuests(sessionID));
 
         // Check newly available + failed quests for timegates and add them to profile
-        this.addTimeLockedQuestsToProfile(pmcData, [...questDelta, ...questsToFail], body.qid);
+        this.addTimeLockedQuestsToProfile(pmcData, [...questDelta], body.qid);
 
         // Inform client of quest changes
         completeQuestResponse.profileChanges[sessionID].quests.push(...questDelta);
@@ -675,26 +668,6 @@ export class QuestController
     }
 
     /**
-     * Return a list of quests that would fail when supplied quest is completed
-     * @param completedQuestId quest completed id
-     * @returns array of IQuest objects
-     */
-    protected getQuestsFailedByCompletingQuest(completedQuestId: string): IQuest[]
-    {
-        const questsInDb = this.questHelper.getQuestsFromDb();
-        return questsInDb.filter((quest) =>
-        {
-            // No fail conditions, exit early
-            if (!quest.conditions.Fail || quest.conditions.Fail.length === 0)
-            {
-                return false;
-            }
-
-            return quest.conditions.Fail.some((condition) => condition.target?.includes(completedQuestId));
-        });
-    }
-
-    /**
      * Fail the provided quests
      * Update quest in profile, otherwise add fresh quest object with failed status
      * @param sessionID session id
@@ -720,15 +693,19 @@ export class QuestController
             const isActiveQuestInPlayerProfile = pmcData.Quests.find((y) => y.qid === questToFail._id);
             if (isActiveQuestInPlayerProfile)
             {
-                const failBody: IFailQuestRequestData = {
-                    Action: "QuestFail",
-                    qid: questToFail._id,
-                    removeExcessItems: true,
-                };
-                this.questHelper.failQuest(pmcData, failBody, sessionID, output);
+                if (isActiveQuestInPlayerProfile.status !== QuestStatus.Fail)
+                {
+                    const failBody: IFailQuestRequestData = {
+                        Action: "QuestFail",
+                        qid: questToFail._id,
+                        removeExcessItems: true,
+                    };
+                    this.questHelper.failQuest(pmcData, failBody, sessionID, output);
+                }
             }
             else
             {
+                // Failing an entirely new quest that doesnt exist in profile
                 const statusTimers = {};
                 statusTimers[QuestStatus.Fail] = this.timeUtil.getTimestamp();
                 const questData: IQuestStatus = {

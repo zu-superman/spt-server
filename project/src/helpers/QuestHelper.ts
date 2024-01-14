@@ -1077,4 +1077,24 @@ export class QuestHelper
             quests.splice(quests.indexOf(pmcQuestToReplaceStatus, 1));
         }
     }
+
+    /**
+     * Return a list of quests that would fail when supplied quest is completed
+     * @param completedQuestId quest completed id
+     * @returns array of IQuest objects
+     */
+    public getQuestsFailedByCompletingQuest(completedQuestId: string): IQuest[]
+    {
+        const questsInDb = this.getQuestsFromDb();
+        return questsInDb.filter((quest) =>
+        {
+            // No fail conditions, exit early
+            if (!quest.conditions.Fail || quest.conditions.Fail.length === 0)
+            {
+                return false;
+            }
+
+            return quest.conditions.Fail.some((condition) => condition.target?.includes(completedQuestId));
+        });
+    }
 }
