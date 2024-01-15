@@ -160,6 +160,8 @@ export interface Props
     BlocksArmorVest?: boolean;
     speedPenaltyPercent?: number;
     GridLayoutName?: string;
+    ContainerSpawnChanceModifier?: number;
+    SpawnExcludedFilter?: string[];
     SpawnFilter?: any[];
     containType?: any[];
     sizeWidth?: number;
