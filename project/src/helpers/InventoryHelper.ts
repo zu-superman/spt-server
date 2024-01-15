@@ -109,14 +109,14 @@ export class InventoryHelper
         {
             if (typeof request.callback === "function")
             {
-                request.callback();
+                request.callback(itemWithModsToAddClone[0].upd.StackObjectsCount);
             }
         }
         catch (err)
         {
             // Callback failed
-            const message = typeof err === "string"
-                ? err
+            const message = typeof err?.message === "string"
+                ? err.message
                 : this.localisationService.getText("http-unknown_error");
 
             return this.httpResponse.appendErrorToOutput(output, message);

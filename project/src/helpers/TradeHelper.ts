@@ -2,6 +2,7 @@ import { inject, injectable } from "tsyringe";
 
 import { InventoryHelper } from "@spt-aki/helpers/InventoryHelper";
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
+import { TraderAssortHelper } from "@spt-aki/helpers/TraderAssortHelper";
 import { TraderHelper } from "@spt-aki/helpers/TraderHelper";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
 import { Item, Upd } from "@spt-aki/models/eft/common/tables/IItem";
@@ -41,6 +42,7 @@ export class TradeHelper
         @inject("HttpResponseUtil") protected httpResponse: HttpResponseUtil,
         @inject("InventoryHelper") protected inventoryHelper: InventoryHelper,
         @inject("RagfairServer") protected ragfairServer: RagfairServer,
+        @inject("TraderAssortHelper") protected traderAssortHelper: TraderAssortHelper,
         @inject("ConfigServer") protected configServer: ConfigServer,
     )
     {
@@ -67,62 +69,11 @@ export class TradeHelper
     {
         let output = this.eventOutputHolder.getOutput(sessionID);
 
-        const newReq = {
-            items: [{
-                // eslint-disable-next-line @typescript-eslint/naming-convention
-                item_id: buyRequestData.item_id,
-                count: buyRequestData.count,
-            }],
-            tid: buyRequestData.tid,
-        };
-
-        const callback = () =>
-        {
-            // Update assort/flea item values
-            const traderAssorts = this.traderHelper.getTraderAssortsByTraderId(buyRequestData.tid).items;
-            const itemPurchased = traderAssorts.find((x) => x._id === buyRequestData.item_id);
-
-
-            // Ensure purchase does not exceed trader item limit
-            const hasBuyRestrictions = this.itemHelper.hasBuyRestrictions(itemPurchased);
-            if (hasBuyRestrictions)
-            {
-                this.checkPurchaseIsWithinTraderItemLimit(itemPurchased, buyRequestData.item_id, buyRequestData.count);
-            }
-
-            // Decrement trader item count
-            itemPurchased.upd.StackObjectsCount -= buyRequestData.count;
-
-            if (this.traderConfig.persistPurchaseDataInProfile && hasBuyRestrictions)
-            {
-                this.traderHelper.addTraderPurchasesToPlayerProfile(sessionID, newReq);
-            }
-
-            /// Pay for item
-            output = this.paymentService.payMoney(pmcData, buyRequestData, sessionID, output);
-            if (output.warnings.length > 0)
-            {
-                throw new Error(`Transaction failed: ${output.warnings[0].errmsg}`);
-            }
-
-            if (hasBuyRestrictions)
-            {
-                // Increment non-fence trader item buy count
-                this.incrementAssortBuyCount(itemPurchased, buyRequestData.count);
-            }
-        };
-
-        // Handle normal traders old way...for now
-        if (buyRequestData.tid.toLocaleLowerCase() !== "ragfair" && buyRequestData.tid.toLocaleLowerCase() !== Traders.FENCE)
-        {
-            return this.inventoryHelper.addItem(pmcData, newReq, output, sessionID, callback, foundInRaid, upd);
-        }
-
         let offerItems: Item[] = [];
-        let buyCallback;
+        let buyCallback: { (buyCount: number) };
         if (buyRequestData.tid.toLocaleLowerCase() === "ragfair")
         {
-            buyCallback = () =>
+            buyCallback = (buyCount: number) =>
             {
                 const allOffers = this.ragfairServer.getOffers();
 
@@ -131,17 +82,23 @@ export class TradeHelper
                 const itemPurchased = offerWithItem.items[0];
     
                 // Ensure purchase does not exceed trader item limit
-                const hasBuyRestrictions = this.itemHelper.hasBuyRestrictions(itemPurchased);
-                if (hasBuyRestrictions)
+                const assortHasBuyRestrictions = this.itemHelper.hasBuyRestrictions(itemPurchased);
+                if (assortHasBuyRestrictions)
                 {
-                    this.checkPurchaseIsWithinTraderItemLimit(itemPurchased, buyRequestData.item_id, buyRequestData.count);
+                    this.checkPurchaseIsWithinTraderItemLimit(itemPurchased, buyRequestData.item_id, buyCount);
                 }
     
                 // Decrement trader item count
-    
-                if (this.traderConfig.persistPurchaseDataInProfile && hasBuyRestrictions)
+                if (this.traderConfig.persistPurchaseDataInProfile && assortHasBuyRestrictions)
                 {
-                    this.traderHelper.addTraderPurchasesToPlayerProfile(sessionID, newReq);
+                    const itemPurchaseDat = {
+                        items: [{
+                            itemId: buyRequestData.item_id,
+                            count: buyCount
+                        }],
+                        traderId: buyRequestData.tid
+                    };
+                    this.traderHelper.addTraderPurchasesToPlayerProfile(sessionID, itemPurchaseDat);
                 }
     
                 /// Pay for item
@@ -151,10 +108,10 @@ export class TradeHelper
                     throw new Error(`Transaction failed: ${output.warnings[0].errmsg}`);
                 }
 
-                if (hasBuyRestrictions)
+                if (assortHasBuyRestrictions)
                 {
                     // Increment non-fence trader item buy count
-                    this.incrementAssortBuyCount(itemPurchased, buyRequestData.count);
+                    this.incrementAssortBuyCount(itemPurchased, buyCount);
                 }
             };
 
@@ -165,7 +122,7 @@ export class TradeHelper
         }
         else if (buyRequestData.tid === Traders.FENCE)
         {
-            buyCallback = () =>
+            buyCallback = (buyCount: number) =>
             {
                 // Update assort/flea item values
                 const traderAssorts = this.traderHelper.getTraderAssortsByTraderId(buyRequestData.tid).items;
@@ -195,6 +152,59 @@ export class TradeHelper
 
             offerItems = this.itemHelper.findAndReturnChildrenAsItems(fenceItems, buyRequestData.item_id);
         }
+        else
+        {
+            // Non-fence trader
+            buyCallback = (buyCount: number) =>
+            {
+                // Update assort/flea item values
+                const traderAssorts = this.traderHelper.getTraderAssortsByTraderId(buyRequestData.tid).items;
+                const itemPurchased = traderAssorts.find((x) => x._id === buyRequestData.item_id);
+
+
+                // Ensure purchase does not exceed trader item limit
+                const assortHasBuyRestrictions = this.itemHelper.hasBuyRestrictions(itemPurchased);
+                if (assortHasBuyRestrictions)
+                {
+                    this.checkPurchaseIsWithinTraderItemLimit(itemPurchased, buyRequestData.item_id, buyCount);
+                }
+
+                // Decrement trader item count
+                itemPurchased.upd.StackObjectsCount -= buyCount;
+
+                if (this.traderConfig.persistPurchaseDataInProfile && assortHasBuyRestrictions)
+                {
+                    const itemPurchaseDat = {
+                        items: [{
+                            itemId: buyRequestData.item_id,
+                            count: buyCount
+                        }],
+                        traderId: buyRequestData.tid
+                    };
+                    this.traderHelper.addTraderPurchasesToPlayerProfile(sessionID, itemPurchaseDat);
+                }
+
+                /// Pay for item
+                output = this.paymentService.payMoney(pmcData, buyRequestData, sessionID, output);
+                if (output.warnings.length > 0)
+                {
+                    throw new Error(`Transaction failed: ${output.warnings[0].errmsg}`);
+                }
+
+                if (assortHasBuyRestrictions)
+                {
+                    // Increment non-fence trader item buy count
+                    this.incrementAssortBuyCount(itemPurchased, buyCount);
+                }
+            };
+
+            // Get all trader assort items
+            const traderItems = this.traderAssortHelper.getAssort(sessionID, buyRequestData.tid).items;
+            
+            // Get item + children for purchase
+            const relevantItems = this.itemHelper.findAndReturnChildrenAsItems(traderItems, buyRequestData.item_id);
+            offerItems.push(...relevantItems);
+        }
 
         // Get item details from db
         const itemDbDetails = this.itemHelper.getItem(offerItems[0]._tpl)[1];
@@ -220,7 +230,10 @@ export class TradeHelper
 
             // Add item + children to stash
             this.inventoryHelper.addItemToStash(sessionID, request, pmcData, output);
-
+            if (output.warnings.length > 0)
+            {
+                return output;
+            }
             // Remove amount of items added to player stash
             itemsToSendRemaining -= itemCountToSend;
         }  
