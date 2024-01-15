@@ -6765,7 +6765,7 @@
       }
     },
     {
-      "_id": "659c66b3cafc8621330a55dd",
+      "_id": "65a5422f95d8356d8e0d7a29",
       "_tpl": "5df8a4d786f77412672a1e3b",
       "parentId": "hideout",
       "slotId": "hideout",
@@ -6774,8 +6774,8 @@
       }
     },
     {
-      "_id": "64f9c4d2bf50026687012e71",
-      "_tpl": "5e023d48186a883be655e551",
+      "_id": "65a5422f95d8356d8e0d7a72",
+      "_tpl": "545cdb794bdc2d3a198b456a",
       "parentId": "hideout",
       "slotId": "hideout",
       "upd": {
@@ -6783,17 +6783,8 @@
       }
     },
     {
-      "_id": "64f9c4d2bf50026687012d8d",
-      "_tpl": "57a0e5022459774d1673f889",
-      "parentId": "hideout",
-      "slotId": "hideout",
-      "upd": {
-        "StackObjectsCount": 10
-      }
-    },
-    {
-      "_id": "64f9c4d2bf50026687012d8e",
-      "_tpl": "5c1260dc86f7746b106e8748",
+      "_id": "65a5422f95d8356d8e0d7bb1",
+      "_tpl": "61962b617c6c7b169525f168",
       "parentId": "hideout",
       "slotId": "hideout",
       "upd": {
@@ -6886,8 +6877,17 @@
       "slotId": "mod_magazine"
     },
     {
-      "_id": "64f9c4d2bf50026687012d59",
-      "_tpl": "59e0d99486f7744a32234762",
+      "_id": "65a5422f95d8356d8e0d7ef1",
+      "_tpl": "59e77a2386f7742ee578960a",
+      "parentId": "hideout",
+      "slotId": "hideout",
+      "upd": {
+        "StackObjectsCount": 10
+      }
+    },
+    {
+      "_id": "65a5422f95d8356d8e0d7f3f",
+      "_tpl": "57a0e5022459774d1673f889",
       "parentId": "hideout",
       "slotId": "hideout",
       "upd": {
@@ -6901,16 +6901,6 @@
       "slotId": "hideout",
       "upd": {
         "StackObjectsCount": 10
-      }
-    },
-    {
-      "_id": "648a275aa937dd374c0d7399",
-      "_tpl": "5e85a9f4add9fe03027d9bf1",
-      "parentId": "hideout",
-      "slotId": "hideout",
-      "upd": {
-        "StackObjectsCount": 20,
-        "BuyRestrictionMax": 10
       }
     },
     {
@@ -6967,6 +6957,16 @@
       "_tpl": "59f99a7d86f7745b134aa97b",
       "parentId": "64f9c4d2bf50026687012fde",
       "slotId": "mod_magazine"
+    },
+    {
+      "_id": "648a275aa937dd374c0d7399",
+      "_tpl": "5e85a9f4add9fe03027d9bf1",
+      "parentId": "hideout",
+      "slotId": "hideout",
+      "upd": {
+        "StackObjectsCount": 20,
+        "BuyRestrictionMax": 10
+      }
     },
     {
       "_id": "652376e2f6c67195e4061507",
@@ -10131,7 +10131,7 @@
         }
       ]
     ],
-    "659c66b3cafc8621330a55dd": [
+    "65a5422f95d8356d8e0d7a29": [
       [
         {
           "count": 6969,
@@ -10139,7 +10139,7 @@
         }
       ]
     ],
-    "64f9c4d2bf50026687012e71": [
+    "65a5422f95d8356d8e0d7a72": [
       [
         {
           "count": 6969,
@@ -10147,15 +10147,7 @@
         }
       ]
     ],
-    "64f9c4d2bf50026687012d8d": [
-      [
-        {
-          "count": 6969,
-          "_tpl": "5449016a4bdc2d6f028b456f"
-        }
-      ]
-    ],
-    "64f9c4d2bf50026687012d8e": [
+    "65a5422f95d8356d8e0d7bb1": [
       [
         {
           "count": 6969,
@@ -10171,7 +10163,15 @@
         }
       ]
     ],
-    "64f9c4d2bf50026687012d59": [
+    "65a5422f95d8356d8e0d7ef1": [
+      [
+        {
+          "count": 6969,
+          "_tpl": "5449016a4bdc2d6f028b456f"
+        }
+      ]
+    ],
+    "65a5422f95d8356d8e0d7f3f": [
       [
         {
           "count": 6969,
@@ -10183,14 +10183,6 @@
       [
         {
           "count": 6969,
-          "_tpl": "5449016a4bdc2d6f028b456f"
-        }
-      ]
-    ],
-    "648a275aa937dd374c0d7399": [
-      [
-        {
-          "count": 3381,
           "_tpl": "5449016a4bdc2d6f028b456f"
         }
       ]
@@ -10220,6 +10212,14 @@
         {
           "count": 4,
           "_tpl": "6389c6463485cf0eeb260715"
+        }
+      ]
+    ],
+    "648a275aa937dd374c0d7399": [
+      [
+        {
+          "count": 3381,
+          "_tpl": "5449016a4bdc2d6f028b456f"
         }
       ]
     ],
@@ -10629,17 +10629,17 @@
     "658d5e7883b5f011ca09ca25": 4,
     "658d5e7883b5f011ca09ca28": 4,
     "658d5e7883b5f011ca09ca2b": 4,
-    "659c66b3cafc8621330a55dd": 4,
-    "64f9c4d2bf50026687012e71": 4,
-    "64f9c4d2bf50026687012d8d": 4,
-    "64f9c4d2bf50026687012d8e": 4,
+    "65a5422f95d8356d8e0d7a29": 4,
+    "65a5422f95d8356d8e0d7a72": 4,
+    "65a5422f95d8356d8e0d7bb1": 4,
     "64f9c4d2bf50026687012a10": 2,
-    "64f9c4d2bf50026687012d59": 4,
+    "65a5422f95d8356d8e0d7ef1": 3,
+    "65a5422f95d8356d8e0d7f3f": 4,
     "6492e44bf4287b13040fcb9a": 3,
-    "648a275aa937dd374c0d7399": 3,
     "6492e44bf4287b13040fccee": 3,
     "6492e44bf4287b13040fccef": 3,
     "64f9c4d2bf50026687012fde": 4,
+    "648a275aa937dd374c0d7399": 3,
     "652376e2f6c67195e4061507": 4
   }
 }
