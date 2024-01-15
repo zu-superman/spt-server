@@ -731,9 +731,7 @@ export class RepeatableQuestGenerator
         if (requiresSpecificExtract)
         {
             // Filter by whitelist, it's also possible that the field "PassageRequirement" does not exist (e.g. Shoreline)
-            // Scav exits are not listed at all in locations.base currently. If that changes at some point, additional filtering will be required
-            const mapExits =
-                (this.databaseServer.getTables().locations[locationKey.toLowerCase()].base as ILocationBase).exits;
+            const mapExits = this.getLocationExitsForSide(locationKey, repeatableConfig.side);
 
             // Only get exits that have a greater than 0% chance to spawn
             const exitPool = mapExits.filter(exit => exit.Chance > 0);
@@ -758,6 +756,34 @@ export class RepeatableQuestGenerator
         quest.rewards = this.generateReward(pmcLevel, difficulty, traderId, repeatableConfig, explorationConfig);
 
         return quest;
+    }
+
+    /**
+     * Filter a maps exits to just those for the desired side
+     * @param locationKey Map id (e.g. factory4_day)
+     * @param playerSide Scav/Bear
+     * @returns Array of Exit objects
+     */
+    protected getLocationExitsForSide(locationKey: string, playerSide: string): Exit[]
+    {
+        const mapBase = this.databaseServer.getTables().locations[locationKey.toLowerCase()].base as ILocationBase;
+        
+        const infilPointsOfSameSide = new Set();
+        for (const spawnPoint of mapBase.SpawnPointParams)
+        {
+            // Same side
+            if (spawnPoint.Sides.includes(playerSide)
+                || spawnPoint.Sides.includes("All"))
+            {
+                // Has specific start location
+                if (spawnPoint.Infiltration.length > 0)
+                {
+                    infilPointsOfSameSide.add(spawnPoint.Infiltration);
+                }
+            }
+        }
+
+        return mapBase.exits.filter(exit => Array.from(infilPointsOfSameSide).includes(exit.EntryPoints));
     }
 
     protected generatePickupQuest(
