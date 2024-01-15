@@ -403,15 +403,15 @@ export class FenceService
     protected createAssorts(assortCount: number, assorts: ITraderAssort, loyaltyLevel: number): void
     {
         const fenceAssort = this.databaseServer.getTables().traders[Traders.FENCE].assort;
-        const defaultPresets = this.presetHelper.getDefaultPresets();
         const fenceAssortIds = Object.keys(fenceAssort.loyal_level_items);
         const itemTypeCounts = this.initItemLimitCounter(this.traderConfig.fence.itemTypeLimits);
-
+        
         this.addItemAssorts(assortCount, fenceAssortIds, assorts, fenceAssort, itemTypeCounts, loyaltyLevel);
-
+        
         // Add presets
         const maxPresetCount = Math.round(assortCount * (this.traderConfig.fence.maxPresetsPercent / 100));
         const randomisedPresetCount = this.randomUtil.getInt(0, maxPresetCount);
+        const defaultPresets = this.presetHelper.getDefaultPresets();
         this.addPresets(randomisedPresetCount, defaultPresets, assorts, loyaltyLevel);
     }
 
@@ -615,7 +615,7 @@ export class FenceService
      * Add weapon/armor presets to fence
      * @param assortCount how many assorts to add to assorts
      * @param defaultPresets a dictionary of default weapon presets
-     * @param assorts object to add presets to
+     * @param assorts Trader assort object to add preset to
      * @param loyaltyLevel loyalty level to requre item at
      */
     protected addPresets(
@@ -645,19 +645,19 @@ export class FenceService
             }
 
             // Construct preset + mods
-            const weaponAndMods: Item[] = this.itemHelper.replaceIDs(
+            const presetAndMods: Item[] = this.itemHelper.replaceIDs(
                 null,
-                this.jsonUtil.clone(defaultPresets[preset._id]._items),
+                this.jsonUtil.clone(preset._items),
             );
-            this.removeRandomModsOfItem(weaponAndMods);
-            for (let i = 0; i < weaponAndMods.length; i++)
+            this.removeRandomModsOfItem(presetAndMods);
+            for (let i = 0; i < presetAndMods.length; i++)
             {
-                const mod = weaponAndMods[i];
+                const mod = presetAndMods[i];
 
-                // build root Item info
+                // Build root Item info
                 if (!("parentId" in mod))
                 {
-                    mod._id = weaponAndMods[0]._id;
+                    mod._id = presetAndMods[0]._id;
                     mod.parentId = "hideout";
                     mod.slotId = "hideout";
                     mod.upd = {
@@ -666,27 +666,30 @@ export class FenceService
                         BuyRestrictionCurrent: 0,
                         sptPresetId: preset._id, // Store preset id here so we can check it later to prevent preset dupes
                     };
+
+                    // Updated root item, exit loop
+                    break;
                 }
             }
 
-            const weaponItemDb = this.itemHelper.getItem(weaponAndMods[0]._tpl)[1];
-            this.randomiseItemUpdProperties(weaponItemDb, weaponAndMods[0]);
+            const presetDbItem = this.itemHelper.getItem(presetAndMods[0]._tpl)[1];
+            this.randomiseItemUpdProperties(presetDbItem, presetAndMods[0]);
 
-            // Add weapon preset to assorts
-            assorts.items.push(...weaponAndMods);
+            // Add constructed preset to assorts
+            assorts.items.push(...presetAndMods);
 
             // Calculate preset price
             let rub = 0;
-            for (const it of weaponAndMods)
+            for (const it of presetAndMods)
             {
                 rub += this.handbookHelper.getTemplatePrice(it._tpl);
             }
 
             // Multiply weapon+mods rouble price by multipler in config
-            assorts.barter_scheme[weaponAndMods[0]._id] = [[]];
-            assorts.barter_scheme[weaponAndMods[0]._id][0][0] = { _tpl: Money.ROUBLES, count: Math.round(rub) };
+            assorts.barter_scheme[presetAndMods[0]._id] = [[]];
+            assorts.barter_scheme[presetAndMods[0]._id][0][0] = { _tpl: Money.ROUBLES, count: Math.round(rub) };
 
-            assorts.loyal_level_items[weaponAndMods[0]._id] = loyaltyLevel;
+            assorts.loyal_level_items[presetAndMods[0]._id] = loyaltyLevel;
 
             presetCount++;
         }
@@ -778,7 +781,8 @@ export class FenceService
                 || itemDetails._parent === BaseClasses.VEST
                 || itemDetails._parent === BaseClasses.ARMORED_EQUIPMENT
                 || itemDetails._parent === BaseClasses.FACECOVER
-                || itemDetails._parent === BaseClasses.ARMOR_PLATE) && itemDetails._props.MaxDurability > 0
+                || itemDetails._parent === BaseClasses.ARMOR_PLATE
+            ) && itemDetails._props.MaxDurability > 0
         )
         {
             const values = this.getRandomisedArmorDurabilityValues(itemDetails, this.traderConfig.fence.armorMaxDurabilityPercentMinMax);
@@ -832,6 +836,12 @@ export class FenceService
         }
     }
 
+    /**
+     * Generate a randomised current and max durabiltiy value for an armor item
+     * @param itemDetails Item to create values for
+     * @param maxDurabilityMinMaxPercent Max durabiltiy percent min/max values
+     * @returns Durability + MaxDurability values
+     */
     protected getRandomisedArmorDurabilityValues(itemDetails: ITemplateItem, maxDurabilityMinMaxPercent: MinMax): Repairable
     {
         const duraMin = maxDurabilityMinMaxPercent.min / 100 * itemDetails._props.MaxDurability;
@@ -873,6 +883,7 @@ export class FenceService
 
     /**
      * Get fence refresh time in seconds
+     * @returns Refresh time in seconds
      */
     protected getFenceRefreshTime(): number
     {

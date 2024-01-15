@@ -143,6 +143,13 @@ export class ItemHelper
             return true;
         }
 
+        // Also classified as BUILT_IN_INSERTS
+        const helmetInsertSlotIds = ["helmet_top", "helmet_back", "helmet_ears"]
+        if (itemDbDetails[1]._props.Slots.find(slot => helmetInsertSlotIds.includes(slot._name.toLowerCase())))
+        {
+            return true;
+        }
+
         return false;
     }
 
