@@ -155,7 +155,6 @@ export class ProfileFixerService
         }
 
         this.fixNullTraderSalesSums(pmcProfile);
-        this.updateProfilePocketsToNewId(pmcProfile);
         this.updateProfileQuestDataValues(pmcProfile);
 
         if (Object.keys(this.ragfairConfig.dynamic.unreasonableModPrices).length > 0)
@@ -812,23 +811,6 @@ export class ProfileFixerService
         }
 
         return slots;
-    }
-
-    /**
-     * In 18876 bsg changed the pockets tplid to be one that has 3 additional special slots
-     * @param pmcProfile
-     */
-    protected updateProfilePocketsToNewId(pmcProfile: IPmcData): void
-    {
-        const pocketItem = pmcProfile.Inventory?.items?.find((x) => x.slotId === "Pockets");
-        if (pocketItem)
-        {
-            if (pocketItem._tpl === "557ffd194bdc2d28148b457f")
-            {
-                this.logger.success(this.localisationService.getText("fixer-updated_pockets"));
-                pocketItem._tpl = "627a4e6b255f7527fb05a0f6";
-            }
-        }
     }
 
     /**
