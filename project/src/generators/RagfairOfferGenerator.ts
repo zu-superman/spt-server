@@ -119,6 +119,14 @@ export class RagfairOfferGenerator
             offerRequirements.push(requirement);
         }
 
+        const itemsClone = this.jsonUtil.clone(items);
+
+        // Add cartridges to offers for ammo boxes
+        if (this.itemHelper.isOfBaseclass(itemsClone[0]._tpl, BaseClasses.AMMO_BOX))
+        {
+            this.itemHelper.addCartridgesToAmmoBox(itemsClone, this.itemHelper.getItem(items[0]._tpl)[1]);
+        }
+
         const itemCount = items.filter((x) => x.slotId === "hideout").length;
         const roublePrice = Math.round(this.convertOfferRequirementsIntoRoubles(offerRequirements));
 
@@ -136,7 +144,7 @@ export class RagfairOfferGenerator
                 avatar: this.getAvatarUrl(isTrader, userID),
             },
             root: items[0]._id,
-            items: this.jsonUtil.clone(items),
+            items: itemsClone,
             requirements: offerRequirements,
             requirementsCost: roublePrice,
             itemsCost: Math.round(this.handbookHelper.getTemplatePrice(items[0]._tpl)), // Handbook price
