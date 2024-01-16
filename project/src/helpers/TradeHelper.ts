@@ -129,7 +129,7 @@ export class TradeHelper
                 const itemPurchased = traderAssorts.find((x) => x._id === buyRequestData.item_id);
     
                 // Decrement trader item count
-                itemPurchased.upd.StackObjectsCount -= buyRequestData.count;
+                itemPurchased.upd.StackObjectsCount -= buyCount;
     
                 /// Pay for item
                 output = this.paymentService.payMoney(pmcData, buyRequestData, sessionID, output);
