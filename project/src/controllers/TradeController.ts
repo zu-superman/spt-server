@@ -129,7 +129,7 @@ export class TradeController
             }
 
             // Exit loop early if problem found
-            if (output.warnings)
+            if (output.warnings.length > 0)
             {
                 return output;
             }
@@ -145,9 +145,8 @@ export class TradeController
      * @param fleaOffer Offer being purchased
      * @param requestOffer request data from client
      * @param output Output to send back to client
-     * @returns IItemEventRouterResponse
      */
-    protected buyTraderItemFromRagfair(sessionId: string, pmcData: IPmcData, fleaOffer: IRagfairOffer, requestOffer: IOfferRequest, output: IItemEventRouterResponse): IItemEventRouterResponse
+    protected buyTraderItemFromRagfair(sessionId: string, pmcData: IPmcData, fleaOffer: IRagfairOffer, requestOffer: IOfferRequest, output: IItemEventRouterResponse): void
     {
         // Skip buying items when player doesn't have needed loyalty
         if (this.playerLacksTraderLoyaltyLevelToBuyOffer(fleaOffer, pmcData))
@@ -157,7 +156,9 @@ export class TradeController
             } from trader: ${fleaOffer.user.id} as loyalty level too low, skipping`
             this.logger.debug(errorMessage);
 
-            return this.httpResponse.appendErrorToOutput(output, errorMessage, BackendErrorCodes.RAGFAIRUNAVAILABLE);
+            this.httpResponse.appendErrorToOutput(output, errorMessage, BackendErrorCodes.RAGFAIRUNAVAILABLE);
+
+            return;
         }
 
         const buyData: IProcessBuyTradeRequestData = {
@@ -171,8 +172,6 @@ export class TradeController
         };
 
         this.tradeHelper.buyItem(pmcData, buyData, sessionId, this.traderConfig.purchasesAreFoundInRaid, output);
-
-        return output;
     }
 
     /**
@@ -183,7 +182,7 @@ export class TradeController
      * @param requestOffer Request data from client
      * @param output Output to send back to client
      */
-    protected buyPmcItemFromRagfair(sessionId: string, pmcData: IPmcData, fleaOffer: IRagfairOffer, requestOffer: IOfferRequest, output: IItemEventRouterResponse): IItemEventRouterResponse
+    protected buyPmcItemFromRagfair(sessionId: string, pmcData: IPmcData, fleaOffer: IRagfairOffer, requestOffer: IOfferRequest, output: IItemEventRouterResponse): void
     {
         const buyData: IProcessBuyTradeRequestData = {
             Action: "TradingConfirm",
@@ -202,13 +201,11 @@ export class TradeController
         this.tradeHelper.buyItem(pmcData, buyData, sessionId, this.ragfairConfig.dynamic.purchasesAreFoundInRaid, output);
         if (output.warnings.length > 0)
         {
-            return output;
+            return;
         }
 
         // Remove/lower stack count of item purchased from flea offer
         this.ragfairServer.removeOfferStack(fleaOffer._id, requestOffer.count);
-
-        return output;
     }
 
     /**

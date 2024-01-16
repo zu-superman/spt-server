@@ -73,9 +73,8 @@ export class InventoryHelper
      * @param request addItemDirect request
      * @param pmcData Player profile
      * @param output Client response object
-     * @returns IItemEventRouterResponse
      */
-    public addItemToStash(sessionId: string, request: IAddItemDirectRequest, pmcData: IPmcData, output: IItemEventRouterResponse): IItemEventRouterResponse
+    public addItemToStash(sessionId: string, request: IAddItemDirectRequest, pmcData: IPmcData, output: IItemEventRouterResponse): void
     {
         const itemWithModsToAddClone = this.jsonUtil.clone(request.itemWithModsToAdd);
 
@@ -84,7 +83,7 @@ export class InventoryHelper
         const sortingTableFS2D = this.getSortingTableSlotMap(pmcData);
 
         // Find empty slot in stash for item being added - adds 'location' + parentid + slotId properties to root item
-        const errorOutput = this.placeItemInInventory(
+        this.placeItemInInventory(
             stashFS2D,
             sortingTableFS2D,
             itemWithModsToAddClone,
@@ -92,10 +91,10 @@ export class InventoryHelper
             request.useSortingTable,
             output,
         );
-        if (errorOutput)
+        if (output.warnings.length > 0)
         {
             // Failed to place, error out
-            return errorOutput;
+            return;
         }
 
         // Apply/remove FiR to item + mods
@@ -119,7 +118,9 @@ export class InventoryHelper
                 ? err.message
                 : this.localisationService.getText("http-unknown_error");
 
-            return this.httpResponse.appendErrorToOutput(output, message);
+            this.httpResponse.appendErrorToOutput(output, message);
+
+            return;
         }
 
         // Add item + mods to output and profile inventory
@@ -127,8 +128,6 @@ export class InventoryHelper
         pmcData.Inventory.items.push(...itemWithModsToAddClone);
 
         this.logger.debug(`Added ${itemWithModsToAddClone[0].upd?.StackObjectsCount} item: ${itemWithModsToAddClone[0]._tpl} with: ${itemWithModsToAddClone.length - 1} mods to inventory`);
-
-        return output;
     }
 
     /**
@@ -505,7 +504,7 @@ export class InventoryHelper
         itemWithChildren: Item[],
         playerInventory: Inventory,
         useSortingTable: boolean,
-        output: IItemEventRouterResponse): IItemEventRouterResponse
+        output: IItemEventRouterResponse): void
     {
         // Get x/y size of item
         const rootItem = itemWithChildren[0];
@@ -539,10 +538,12 @@ export class InventoryHelper
                     : "";
                 this.logger.error(this.localisationService.getText("inventory-fill_container_failed", errorText));
 
-                return this.httpResponse.appendErrorToOutput(
+                this.httpResponse.appendErrorToOutput(
                     output,
                     this.localisationService.getText("inventory-no_stash_space"),
                 );
+
+                return;
             }
             // Store details for object, incuding container item will be placed in
             rootItem.parentId = playerInventory.stash;
@@ -584,10 +585,12 @@ export class InventoryHelper
                 const errorText = typeof err === "string" ? ` -> ${err}` : "";
                 this.logger.error(this.localisationService.getText("inventory-fill_container_failed", errorText));
 
-                return this.httpResponse.appendErrorToOutput(
+                this.httpResponse.appendErrorToOutput(
                     output,
                     this.localisationService.getText("inventory-no_stash_space"),
                 );
+
+                return;
             }
 
             // Store details for object, incuding container item will be placed in
@@ -601,10 +604,12 @@ export class InventoryHelper
         }
         else
         {
-            return this.httpResponse.appendErrorToOutput(
+            this.httpResponse.appendErrorToOutput(
                 output,
                 this.localisationService.getText("inventory-no_stash_space"),
             );
+
+            return
         }
     }
 
@@ -1107,7 +1112,8 @@ export class InventoryHelper
                         {
                             continue;
                         }
-                        else if (childFoldable && rootFolded && childFolded)
+                        
+                        if (childFoldable && rootFolded && childFolded)
                         {
                             continue;
                         }
