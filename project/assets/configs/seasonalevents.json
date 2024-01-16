@@ -234,7 +234,7 @@
     "eventBotMapping": {
         "peacefullZryachiyEvent": "bossZryachiy",
         "sectactPriestEvent": "sectantPriest",
-        "ravangeZryachiyEvent": "bossZryachiy",
+        "ravangeZryachiyEvent": "ravangeZryachiyEvent",
         "arenaFighterEvent": "arenaFighterEvent",
 		"crazyAssaultEvent": "crazyAssaultEvent"
     },

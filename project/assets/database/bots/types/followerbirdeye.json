@@ -97,8 +97,8 @@
   "inventory": {
     "equipment": {
       "Headwear": {
-        "5a16bb52fcdbcb001a3b00dc": 135,
-        "5c066ef40db834001966a595": 136
+        "5a16bb52fcdbcb001a3b00dc": 779,
+        "5c066ef40db834001966a595": 757
       },
       "Earpiece": {},
       "FaceCover": {},
@@ -114,9 +114,9 @@
         "628bc7fb408e2b2e9c0801b1": 1
       },
       "FirstPrimaryWeapon": {
-        "5bfea6e90db834001b7347f3": 486,
-        "5a367e5dc4a282000e49738f": 359,
-        "5df8ce05b11454561e39243b": 510
+        "5bfea6e90db834001b7347f3": 183,
+        "5a367e5dc4a282000e49738f": 137,
+        "5df8ce05b11454561e39243b": 192
       },
       "SecondPrimaryWeapon": {
         "5447a9cd4bdc2dbd208b4567": 1
@@ -134,15 +134,15 @@
     },
     "Ammo": {
       "Caliber762x51": {
-        "5a6086ea4f39f99cd479502f": 159,
-        "58dd3ad986f77403051cba8f": 428,
-        "5e023e53d4353e3302577c4c": 718,
-        "5efb0c1bd79ff02a1f5e68d9": 50
+        "5a6086ea4f39f99cd479502f": 181,
+        "58dd3ad986f77403051cba8f": 480,
+        "5e023e53d4353e3302577c4c": 812,
+        "5efb0c1bd79ff02a1f5e68d9": 63
       },
       "Caliber556x45NATO": {
-        "54527a984bdc2d4e668b4567": 804,
-        "54527ac44bdc2d36668b4567": 414,
-        "60194943740c5d77f6705eea": 137
+        "54527a984bdc2d4e668b4567": 913,
+        "54527ac44bdc2d36668b4567": 464,
+        "60194943740c5d77f6705eea": 159
       },
       "Caliber9x19PARA": {
         "64b7bbb74b75259c590fa897": 1
@@ -908,8 +908,8 @@
         "655c663a6689c676ce57af85",
         "657025cfbfc87b3a34093253",
         "65702495c5d7d4cb4d078561",
-        "6582dbe43a2e5248357dbe9a",
         "6570240a1419851aef03e6f7",
+        "6582dbe43a2e5248357dbe9a",
         "63a71eb5b7f4570d3a29316b",
         "657024ecc5d7d4cb4d07856d",
         "657025bbcfc010a0f5006a35",
@@ -934,7 +934,10 @@
         "65702524cfc010a0f5006a16",
         "65702610cfc010a0f5006a41",
         "6570254fcfc010a0f5006a22",
-        "657024e8cfc010a0f5006a0d"
+        "657024e8cfc010a0f5006a0d",
+        "657024b8bfc87b3a34093232",
+        "5addaffe86f77470b455f900",
+        "5d80c62a86f7744036212b3f"
       ],
       "SecuredContainer": [
         "5a6086ea4f39f99cd479502f",
@@ -2952,7 +2955,7 @@
       "Headwear": 100,
       "Earpiece": 0,
       "FaceCover": 0,
-      "ArmorVest": 60,
+      "ArmorVest": 61,
       "Eyewear": 0,
       "ArmBand": 0,
       "TacticalVest": 100,

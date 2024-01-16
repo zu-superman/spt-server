@@ -126,8 +126,8 @@
       },
       "Earpiece": {},
       "FaceCover": {
-        "5c1a1e3f2e221602b66cc4c2": 46,
-        "59e7715586f7742ee5789605": 47
+        "5c1a1e3f2e221602b66cc4c2": 230,
+        "59e7715586f7742ee5789605": 281
       },
       "ArmorVest": {},
       "Eyewear": {},
@@ -137,10 +137,10 @@
         "5e997f0b86f7741ac73993e2": 1
       },
       "FirstPrimaryWeapon": {
-        "57838ad32459774a17445cd2": 556,
-        "57f3c6bd24597738e730fa2f": 339,
-        "587e02ff24597743df3deaeb": 181,
-        "5a7828548dc32e5a9c28b516": 32
+        "57838ad32459774a17445cd2": 316,
+        "57f3c6bd24597738e730fa2f": 201,
+        "587e02ff24597743df3deaeb": 107,
+        "5a7828548dc32e5a9c28b516": 19
       },
       "SecondPrimaryWeapon": {},
       "Holster": {
@@ -158,19 +158,19 @@
     },
     "Ammo": {
       "Caliber9x39": {
-        "57a0e5022459774d1673f889": 187,
-        "57a0dfb82459774d3078b56c": 291,
-        "5c0d688c86f77413ae3407b2": 50,
-        "5c0d668f86f7747ccb7f13b2": 28
+        "57a0e5022459774d1673f889": 213,
+        "57a0dfb82459774d3078b56c": 333,
+        "5c0d688c86f77413ae3407b2": 55,
+        "5c0d668f86f7747ccb7f13b2": 31
       },
       "Caliber9x18PM": {
-        "573719762459775a626ccbc1": 2761,
-        "57372140245977611f70ee91": 1017
+        "573719762459775a626ccbc1": 3209,
+        "57372140245977611f70ee91": 1206
       },
       "Caliber762x39": {
-        "5656d7c34bdc2d9d198b4587": 92,
-        "64b7af5a8532cf95ee0a0dbd": 73,
-        "59e0d99486f7744a32234762": 16
+        "5656d7c34bdc2d9d198b4587": 112,
+        "64b7af5a8532cf95ee0a0dbd": 83,
+        "59e0d99486f7744a32234762": 19
       },
       "Caliber12g": {
         "5d6e68a8a4b9360b6c0d54e2": 1
@@ -534,8 +534,8 @@
         "62a09cb7a04c0c5c6e0a84f8",
         "57347cd0245977445a2d6ff1",
         "5bc9be8fd4351e00334cae6e",
-        "590c31c586f774245e3141b2",
         "619cbf476b8a1b37a54eebf8",
+        "590c31c586f774245e3141b2",
         "5af0561e86f7745f5f3ad6ac",
         "5d03784a86f774203e7e0c4d",
         "62a0a043cf4a99369e2624a5",
@@ -2624,9 +2624,9 @@
   },
   "chances": {
     "equipment": {
-      "Headwear": 19,
+      "Headwear": 16,
       "Earpiece": 0,
-      "FaceCover": 41,
+      "FaceCover": 39,
       "ArmorVest": 0,
       "Eyewear": 0,
       "ArmBand": 0,
@@ -2635,7 +2635,7 @@
       "FirstPrimaryWeapon": 100,
       "SecondPrimaryWeapon": 0,
       "Holster": 100,
-      "Scabbard": 10,
+      "Scabbard": 11,
       "Pockets": 100,
       "SecuredContainer": 100
     },
