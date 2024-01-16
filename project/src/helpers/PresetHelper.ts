@@ -52,6 +52,11 @@ export class PresetHelper
         return this.jsonUtil.clone(this.databaseServer.getTables().globals.ItemPresets[id]);
     }
 
+    public getAllPresets(): IPreset[]
+    {
+        return this.jsonUtil.clone(Object.values(this.databaseServer.getTables().globals.ItemPresets));
+    }
+
     public getPresets(templateId: string): IPreset[]
     {
         if (!this.hasPreset(templateId))
