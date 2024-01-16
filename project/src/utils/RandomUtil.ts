@@ -292,8 +292,8 @@ export class RandomUtil
         {
             v = Math.random();
         }
-        const w = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
-        return mu + w * sigma;
+        const w = Math.sqrt(-2.0 * Math.log(u)) * Math.cos((2.0 * Math.PI) * v);
+        return w * sigma + mu;
     }
 
     /**
@@ -309,10 +309,8 @@ export class RandomUtil
         {
             return low + Math.floor(Math.random() * (high - low));
         }
-        else
-        {
-            return Math.floor(Math.random() * low);
-        }
+
+        return Math.floor(Math.random() * low);
     }
 
     /**
