@@ -46,6 +46,7 @@ export class PaymentService
         output: IItemEventRouterResponse,
     ): IItemEventRouterResponse
     {
+        // May need to convert to trader currency
         const trader = this.traderHelper.getTrader(request.tid, sessionID);
 
         // Track the amounts of each type of currency involved in the trade.

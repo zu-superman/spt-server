@@ -615,32 +615,36 @@ export class ItemHelper
     /**
      * Find Barter items from array of items
      * @param {string} by tpl or id
-     * @param {Item[]} items Array of items to iterate over
-     * @param {string} barterItemId
+     * @param {Item[]} itemsToSearch Array of items to iterate over
+     * @param {string} desiredBarterItemIds
      * @returns Array of Item objects
      */
-    public findBarterItems(by: "tpl" | "id", items: Item[], barterItemId: string): Item[]
+    public findBarterItems(by: "tpl" | "id", itemsToSearch: Item[], desiredBarterItemIds: string | string[]): Item[]
     {
-        // find required items to take after buying (handles multiple items)
-        const barterIDs = typeof barterItemId === "string" ? [barterItemId] : barterItemId;
+        // Find required items to take after buying (handles multiple items)
+        const desiredBarterIds = typeof desiredBarterItemIds === "string"
+            ? [desiredBarterItemIds]
+            : desiredBarterItemIds;
 
-        let barterItems: Item[] = [];
-        for (const barterID of barterIDs)
+        const matchingItems: Item[] = [];
+        for (const barterId of desiredBarterIds)
         {
-            const filterResult = items.filter((item) =>
+            const filterResult = itemsToSearch.filter((item) =>
             {
-                return by === "tpl" ? (item._tpl === barterID) : (item._id === barterID);
+                return by === "tpl"
+                    ? (item._tpl === barterId)
+                    : (item._id === barterId);
             });
 
-            barterItems = Object.assign(barterItems, filterResult);
+            matchingItems.push(...this.jsonUtil.clone(filterResult));
         }
 
-        if (barterItems.length === 0)
+        if (matchingItems.length === 0)
         {
-            this.logger.warning(`No items found for barter Id: ${barterIDs}`);
+            this.logger.warning(`No items found for barter Id: ${desiredBarterIds}`);
         }
 
-        return barterItems;
+        return matchingItems;
     }
 
     /**

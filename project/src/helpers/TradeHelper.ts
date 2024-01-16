@@ -99,15 +99,6 @@ export class TradeHelper
                     };
                     this.traderHelper.addTraderPurchasesToPlayerProfile(sessionID, itemPurchaseDat);
                 }
-    
-                /// Pay for item
-                this.paymentService.payMoney(pmcData, buyRequestData, sessionID, output);
-                if (output.warnings.length > 0)
-                {
-                    this.logger.error(`Flea transaction failed: ${output.warnings[0].errmsg}`);
-
-                    return output;
-                }
 
                 if (assortHasBuyRestrictions)
                 {
@@ -131,16 +122,6 @@ export class TradeHelper
     
                 // Decrement trader item count
                 itemPurchased.upd.StackObjectsCount -= buyCount;
-    
-                /// Pay for item
-                this.paymentService.payMoney(pmcData, buyRequestData, sessionID, output);
-                if (output.warnings.length > 0)
-                {
-                    const errorMessage = `Transaction failed: ${output.warnings[0].errmsg}`;
-                    this.httpResponse.appendErrorToOutput(output, errorMessage);
-
-                    return;
-                }
     
                 this.fenceService.removeFenceOffer(buyRequestData.item_id);
             };
@@ -190,13 +171,6 @@ export class TradeHelper
                     this.traderHelper.addTraderPurchasesToPlayerProfile(sessionID, itemPurchaseDat);
                 }
 
-                /// Pay for item
-                this.paymentService.payMoney(pmcData, buyRequestData, sessionID, output);
-                if (output.warnings.length > 0)
-                {
-                    return this.httpResponse.appendErrorToOutput(output, output.warnings[0].errmsg, BackendErrorCodes.UNKNOWN_TRADING_ERROR);
-                }
-
                 if (assortHasBuyRestrictions)
                 {
                     // Increment non-fence trader item buy count
@@ -217,6 +191,8 @@ export class TradeHelper
         const itemMaxStackSize = itemDbDetails._props.StackMaxSize;
         const itemsToSendTotalCount = buyRequestData.count;
         let itemsToSendRemaining = itemsToSendTotalCount;
+
+        // Loop until all items have been sent to player stash
         while (itemsToSendRemaining > 0)
         {
             // Handle edge case when remaining items to send < max stack size
@@ -240,9 +216,18 @@ export class TradeHelper
             {
                 return;
             }
+
             // Remove amount of items added to player stash
             itemsToSendRemaining -= itemCountToSend;
-        }  
+        }
+
+        /// Pay for purchase
+        this.paymentService.payMoney(pmcData, buyRequestData, sessionID, output);
+        if (output.warnings.length > 0)
+        {
+            const errorMessage = `Transaction failed: ${output.warnings[0].errmsg}`;
+            this.httpResponse.appendErrorToOutput(output, errorMessage, BackendErrorCodes.UNKNOWN_TRADING_ERROR);
+        }
     }
 
     /**
