@@ -68,13 +68,31 @@ export class HttpResponseUtil
         return this.getBody([]);
     }
 
+    /**
+     * Add an error into the 'warnings' array of the client response message
+     * @param output IItemEventRouterResponse
+     * @param message Error message
+     * @param errorCode Error code
+     * @returns IItemEventRouterResponse
+     */
     public appendErrorToOutput(
         output: IItemEventRouterResponse,
         message = this.localisationService.getText("http-unknown_error"),
         errorCode = BackendErrorCodes.NONE,
     ): IItemEventRouterResponse
     {
-        output.warnings = [{ index: 0, errmsg: message, code: errorCode.toString() }];
+        if (output.warnings?.length > 0)
+        {
+            output.warnings.push({
+                index: output.warnings?.length - 1,
+                errmsg: message,
+                code: errorCode.toString()
+            })
+        }
+        else
+        {
+            output.warnings = [{ index: 0, errmsg: message, code: errorCode.toString() }];
+        }
 
         return output;
     }
