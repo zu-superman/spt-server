@@ -337,6 +337,10 @@ export class PaymentService
     protected getSortedMoneyItemsInInventory(pmcData: IPmcData, currencyTpl: string, playerStashId: string): Item[]
     {
         const moneyItemsInInventory = this.itemHelper.findBarterItems("tpl", pmcData.Inventory.items, currencyTpl);
+        if (moneyItemsInInventory?.length === 0)
+        {
+            this.logger.debug(`No ${currencyTpl} money items found in inventory`);
+        }
 
         // Prioritise items in stash to top of array
         moneyItemsInInventory.sort((a, b) => this.prioritiseStashSort(a, b, pmcData.Inventory.items, playerStashId));
