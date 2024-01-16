@@ -915,7 +915,7 @@ export class InventoryHelper
         sessionId: string,
         removeRequest: IInventoryRemoveRequestData,
         output: IItemEventRouterResponse,
-    ): IItemEventRouterResponse
+    ): void
     {
         const fullProfile = this.profileHelper.getFullProfile(sessionId);
 
@@ -951,8 +951,6 @@ export class InventoryHelper
                 messageWithReward.rewardCollected = !hasRewardItemsRemaining;
             }
         }
-
-        return output;
     }
 
     public removeItemByCount(

@@ -435,7 +435,7 @@ export class RepeatableQuestController
             break;
         }
 
-        let output = this.eventOutputHolder.getOutput(sessionID);
+        const output = this.eventOutputHolder.getOutput(sessionID);
         if (!repeatableToChange)
         {
             const message = "Unable to find repeatable quest to replace";
@@ -447,7 +447,7 @@ export class RepeatableQuestController
         // Charge player money for replacing quest
         for (const cost of changeRequirement.changeCost)
         {
-            output = this.paymentService.addPaymentToOutput(pmcData, cost.templateId, cost.count, sessionID, output);
+            this.paymentService.addPaymentToOutput(pmcData, cost.templateId, cost.count, sessionID, output);
             if (output.warnings.length > 0)
             {
                 return output;

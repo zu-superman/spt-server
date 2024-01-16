@@ -10,6 +10,7 @@ import { IAddItemDirectRequest } from "@spt-aki/models/eft/inventory/IAddItemDir
 import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEventRouterResponse";
 import { IProcessBuyTradeRequestData } from "@spt-aki/models/eft/trade/IProcessBuyTradeRequestData";
 import { IProcessSellTradeRequestData } from "@spt-aki/models/eft/trade/IProcessSellTradeRequestData";
+import { BackendErrorCodes } from "@spt-aki/models/enums/BackendErrorCodes";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { Traders } from "@spt-aki/models/enums/Traders";
 import { IInventoryConfig } from "@spt-aki/models/spt/config/IInventoryConfig";
@@ -65,7 +66,7 @@ export class TradeHelper
         sessionID: string,
         foundInRaid: boolean,
         output: IItemEventRouterResponse,
-    ): IItemEventRouterResponse
+    ): void
     {
         let offerItems: Item[] = [];
         let buyCallback: { (buyCount: number) };
@@ -132,10 +133,13 @@ export class TradeHelper
                 itemPurchased.upd.StackObjectsCount -= buyCount;
     
                 /// Pay for item
-                output = this.paymentService.payMoney(pmcData, buyRequestData, sessionID, output);
+                this.paymentService.payMoney(pmcData, buyRequestData, sessionID, output);
                 if (output.warnings.length > 0)
                 {
-                    throw new Error(`Transaction failed: ${output.warnings[0].errmsg}`);
+                    const errorMessage = `Transaction failed: ${output.warnings[0].errmsg}`;
+                    this.httpResponse.appendErrorToOutput(output, errorMessage);
+
+                    return;
                 }
     
                 this.fenceService.removeFenceOffer(buyRequestData.item_id);
@@ -147,7 +151,9 @@ export class TradeHelper
             {
                 this.logger.debug(`Tried to buy item ${buyRequestData.item_id} from fence that no longer exists`);
                 const message = this.localisationService.getText("ragfair-offer_no_longer_exists");
-                return this.httpResponse.appendErrorToOutput(output, message);
+                this.httpResponse.appendErrorToOutput(output, message);
+
+                return;
             }
 
             offerItems = this.itemHelper.findAndReturnChildrenAsItems(fenceItems, buyRequestData.item_id);
@@ -185,10 +191,10 @@ export class TradeHelper
                 }
 
                 /// Pay for item
-                output = this.paymentService.payMoney(pmcData, buyRequestData, sessionID, output);
+                this.paymentService.payMoney(pmcData, buyRequestData, sessionID, output);
                 if (output.warnings.length > 0)
                 {
-                    throw new Error(`Transaction failed: ${output.warnings[0].errmsg}`);
+                    return this.httpResponse.appendErrorToOutput(output, output.warnings[0].errmsg, BackendErrorCodes.UNKNOWN_TRADING_ERROR);
                 }
 
                 if (assortHasBuyRestrictions)
@@ -232,13 +238,11 @@ export class TradeHelper
             this.inventoryHelper.addItemToStash(sessionID, request, pmcData, output);
             if (output.warnings.length > 0)
             {
-                return output;
+                return;
             }
             // Remove amount of items added to player stash
             itemsToSendRemaining -= itemCountToSend;
         }  
-
-        return output;
     }
 
     /**
@@ -247,17 +251,16 @@ export class TradeHelper
      * @param profileToReceiveMoney Profile to accept the money for selling item
      * @param sellRequest Request data
      * @param sessionID Session id
-     * @returns IItemEventRouterResponse
+     * @param output IItemEventRouterResponse
      */
     public sellItem(
         profileWithItemsToSell: IPmcData,
         profileToReceiveMoney: IPmcData,
         sellRequest: IProcessSellTradeRequestData,
         sessionID: string,
-    ): IItemEventRouterResponse
+        output: IItemEventRouterResponse,
+    ): void
     {
-        let output = this.eventOutputHolder.getOutput(sessionID);
-
         // Find item in inventory and remove it
         for (const itemToBeRemoved of sellRequest.items)
         {
@@ -270,17 +273,19 @@ export class TradeHelper
                 const errorMessage = `Unable to sell item ${itemToBeRemoved.id}, cannot be found in player inventory`;
                 this.logger.error(errorMessage);
 
-                return this.httpResponse.appendErrorToOutput(output, errorMessage);
+                this.httpResponse.appendErrorToOutput(output, errorMessage);
+
+                return;
             }
 
             this.logger.debug(`Selling: id: ${matchingItemInInventory._id} tpl: ${matchingItemInInventory._tpl}`);
 
             // Also removes children
-            output = this.inventoryHelper.removeItem(profileWithItemsToSell, itemToBeRemoved.id, sessionID, output);
+            this.inventoryHelper.removeItem(profileWithItemsToSell, itemToBeRemoved.id, sessionID, output);
         }
 
         // Give player money for sold item(s)
-        return this.paymentService.getMoney(profileToReceiveMoney, sellRequest.price, sellRequest, output, sessionID);
+        this.paymentService.giveProfileMoney(profileToReceiveMoney, sellRequest.price, sellRequest, output, sessionID);
     }
 
     /**

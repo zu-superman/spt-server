@@ -68,14 +68,18 @@ export class TradeController
         {
             const foundInRaid = this.traderConfig.purchasesAreFoundInRaid;
             const buyData = <IProcessBuyTradeRequestData>request;
-            return this.tradeHelper.buyItem(pmcData, buyData, sessionID, foundInRaid, output);
+            this.tradeHelper.buyItem(pmcData, buyData, sessionID, foundInRaid, output);
+
+            return output;
         }
 
         // Selling
         if (request.type === "sell_to_trader")
         {
             const sellData = <IProcessSellTradeRequestData>request;
-            return this.tradeHelper.sellItem(pmcData, pmcData, sellData, sessionID);
+            this.tradeHelper.sellItem(pmcData, pmcData, sellData, sessionID, output);
+
+            return output;
         }
 
         const errorMessage = `Unhandled trade event: ${request.type}`;
@@ -226,16 +230,19 @@ export class TradeController
         sessionId: string,
     ): IItemEventRouterResponse
     {
+        const output = this.eventOutputHolder.getOutput(sessionId);
         const scavProfile = this.profileHelper.getFullProfile(sessionId)?.characters?.scav;
         if (!scavProfile)
         {
             return this.httpResponse.appendErrorToOutput(
-                this.eventOutputHolder.getOutput(sessionId),
+                output,
                 `Profile ${request.fromOwner.id} has no scav account`,
             );
         }
 
-        return this.sellInventoryToTrader(sessionId, scavProfile, pmcData, Traders.FENCE);
+        this.sellInventoryToTrader(sessionId, scavProfile, pmcData, Traders.FENCE, output);
+
+        return output;
     }
 
     /**
@@ -245,14 +252,15 @@ export class TradeController
      * @param profileWithItemsToSell Profile with items to be sold to trader
      * @param profileThatGetsMoney Profile that gets the money after selling items
      * @param trader Trader to sell items to
-     * @returns IItemEventRouterResponse
+     * @param output IItemEventRouterResponse
      */
     protected sellInventoryToTrader(
         sessionId: string,
         profileWithItemsToSell: IPmcData,
         profileThatGetsMoney: IPmcData,
         trader: Traders,
-    ): IItemEventRouterResponse
+        output: IItemEventRouterResponse
+    ): void
     {
         const handbookPrices = this.ragfairPriceService.getAllStaticPrices();
         // TODO, apply trader sell bonuses?
@@ -291,7 +299,7 @@ export class TradeController
             });
         }
         this.logger.debug(`Selling scav items to fence for ${sellRequest.price} roubles`);
-        return this.tradeHelper.sellItem(profileWithItemsToSell, profileThatGetsMoney, sellRequest, sessionId);
+        this.tradeHelper.sellItem(profileWithItemsToSell, profileThatGetsMoney, sellRequest, sessionId, output);
     }
 
     /**

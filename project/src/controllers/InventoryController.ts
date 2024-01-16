@@ -173,13 +173,17 @@ export class InventoryController
         sessionID: string,
     ): IItemEventRouterResponse
     {
+        const output = this.eventOutputHolder.getOutput(sessionID);
+
         if (body.fromOwner?.type === "Mail")
         {
-            return this.inventoryHelper.removeItemAndChildrenFromMailRewards(
+            this.inventoryHelper.removeItemAndChildrenFromMailRewards(
                 sessionID,
                 body,
-                this.eventOutputHolder.getOutput(sessionID),
+                output,
             );
+
+            return;
         }
 
         const profileToRemoveItemFrom = (!body.fromOwner || body.fromOwner.id === pmcData._id)
@@ -190,7 +194,7 @@ export class InventoryController
             profileToRemoveItemFrom,
             body.item,
             sessionID,
-            this.eventOutputHolder.getOutput(sessionID),
+            output,
         );
     }
 

@@ -368,7 +368,7 @@ export class HideoutController
         sessionID: string,
     ): IItemEventRouterResponse
     {
-        let output = this.eventOutputHolder.getOutput(sessionID);
+        const output = this.eventOutputHolder.getOutput(sessionID);
 
         const itemsToAdd = Object.entries(addItemToHideoutRequest.items).map((kvp) =>
         {
@@ -410,7 +410,7 @@ export class HideoutController
                 upd: item.inventoryItem.upd,
             }];
 
-            output = this.inventoryHelper.removeItem(pmcData, item.inventoryItem._id, sessionID, output);
+            this.inventoryHelper.removeItem(pmcData, item.inventoryItem._id, sessionID, output);
         }
 
         // Trigger a forced update
@@ -609,7 +609,7 @@ export class HideoutController
         sessionID: string,
     ): IItemEventRouterResponse
     {
-        let output = this.eventOutputHolder.getOutput(sessionID);
+        const output = this.eventOutputHolder.getOutput(sessionID);
 
         for (const requestedItem of body.items)
         {
@@ -631,7 +631,7 @@ export class HideoutController
             }
             else
             {
-                output = this.inventoryHelper.removeItem(pmcData, requestedItem.id, sessionID, output);
+                this.inventoryHelper.removeItem(pmcData, requestedItem.id, sessionID, output);
             }
         }
 

@@ -61,7 +61,7 @@ export class PaymentService
                 if (!this.paymentHelper.isMoneyTpl(item._tpl))
                 {
                     // If the item is not money, remove it from the inventory.
-                    output = this.inventoryHelper.removeItem(pmcData, item._id, sessionID, output);
+                    this.inventoryHelper.removeItem(pmcData, item._id, sessionID, output);
                     request.scheme_items[index].count = 0;
                 }
                 else
@@ -91,7 +91,7 @@ export class PaymentService
             if (currencyAmount > 0)
             {
                 // Find money stacks in inventory and remove amount needed + update output object to inform client of changes
-                output = this.addPaymentToOutput(pmcData, currencyTpl, currencyAmount, sessionID, output);
+                this.addPaymentToOutput(pmcData, currencyTpl, currencyAmount, sessionID, output);
 
                 // If there are warnings, exit early.
                 if (output.warnings.length > 0)
@@ -163,13 +163,13 @@ export class PaymentService
      * @param {string} sessionID
      * @returns IItemEventRouterResponse
      */
-    public getMoney(
+    public giveProfileMoney(
         pmcData: IPmcData,
         amount: number,
         body: IProcessSellTradeRequestData,
         output: IItemEventRouterResponse,
         sessionID: string,
-    ): IItemEventRouterResponse
+    ): void
     {
         const trader = this.traderHelper.getTrader(body.tid, sessionID);
         const currency = this.paymentHelper.getCurrency(trader.currency);
@@ -233,8 +233,6 @@ export class PaymentService
 
         pmcData.TradersInfo[body.tid].salesSum = saleSum;
         this.traderHelper.lvlUp(body.tid, pmcData);
-
-        return output;
     }
 
     /**
@@ -269,7 +267,6 @@ export class PaymentService
      * @param amountToPay money value to pay
      * @param sessionID Session id
      * @param output output object to send to client
-     * @returns IItemEventRouterResponse
      */
     public addPaymentToOutput(
         pmcData: IPmcData,
@@ -277,7 +274,7 @@ export class PaymentService
         amountToPay: number,
         sessionID: string,
         output: IItemEventRouterResponse,
-    ): IItemEventRouterResponse
+    ): void
     {
         const moneyItemsInInventory = this.getSortedMoneyItemsInInventory(
             pmcData,
@@ -298,13 +295,13 @@ export class PaymentService
                     amountAvailable: amountAvailable,
                 }),
             );
-            output = this.httpResponse.appendErrorToOutput(
+            this.httpResponse.appendErrorToOutput(
                 output,
                 this.localisationService.getText("payment-not_enough_money_to_complete_transation_short"),
                 BackendErrorCodes.UNKNOWN_TRADING_ERROR,
             );
 
-            return output;
+            return;
         }
 
         let leftToPay = amountToPay;
@@ -314,7 +311,7 @@ export class PaymentService
             if (leftToPay >= itemAmount)
             {
                 leftToPay -= itemAmount;
-                output = this.inventoryHelper.removeItem(pmcData, moneyItem._id, sessionID, output);
+                this.inventoryHelper.removeItem(pmcData, moneyItem._id, sessionID, output);
             }
             else
             {
@@ -328,8 +325,6 @@ export class PaymentService
                 break;
             }
         }
-
-        return output;
     }
 
     /**

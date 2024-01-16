@@ -711,7 +711,7 @@ export class RagfairController
 
     public extendOffer(info: IExtendOfferRequestData, sessionID: string): IItemEventRouterResponse
     {
-        let output = this.eventOutputHolder.getOutput(sessionID);
+        const output = this.eventOutputHolder.getOutput(sessionID);
         const pmcData = this.saveServer.getProfile(sessionID).characters.pmc;
         const offers = pmcData.RagfairInfo.offers;
         const index = offers.findIndex((offer) => offer._id === info.offerId);
@@ -743,7 +743,7 @@ export class RagfairController
             );
 
             const request = this.createBuyTradeRequestObject("RUB", tax);
-            output = this.paymentService.payMoney(pmcData, request, sessionID, output);
+            this.paymentService.payMoney(pmcData, request, sessionID, output);
             if (output.warnings.length > 0)
             {
                 return this.httpResponse.appendErrorToOutput(
