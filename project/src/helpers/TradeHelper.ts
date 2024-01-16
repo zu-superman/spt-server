@@ -56,19 +56,17 @@ export class TradeHelper
      * @param buyRequestData data from client
      * @param sessionID Session id
      * @param foundInRaid Should item be found in raid
-     * @param upd optional item details used when buying from flea
-     * @returns
+     * @param output IItemEventRouterResponse
+     * @returns IItemEventRouterResponse
      */
     public buyItem(
         pmcData: IPmcData,
         buyRequestData: IProcessBuyTradeRequestData,
         sessionID: string,
         foundInRaid: boolean,
-        upd: Upd,
+        output: IItemEventRouterResponse,
     ): IItemEventRouterResponse
     {
-        let output = this.eventOutputHolder.getOutput(sessionID);
-
         let offerItems: Item[] = [];
         let buyCallback: { (buyCount: number) };
         if (buyRequestData.tid.toLocaleLowerCase() === "ragfair")
@@ -102,10 +100,12 @@ export class TradeHelper
                 }
     
                 /// Pay for item
-                output = this.paymentService.payMoney(pmcData, buyRequestData, sessionID, output);
+                this.paymentService.payMoney(pmcData, buyRequestData, sessionID, output);
                 if (output.warnings.length > 0)
                 {
-                    throw new Error(`Transaction failed: ${output.warnings[0].errmsg}`);
+                    this.logger.error(`Flea transaction failed: ${output.warnings[0].errmsg}`);
+
+                    return output;
                 }
 
                 if (assortHasBuyRestrictions)
@@ -223,7 +223,7 @@ export class TradeHelper
             // Construct request
             const request: IAddItemDirectRequest = {
                 itemWithModsToAdd: this.itemHelper.reparentItemAndChildren(offerItems[0], offerItems),
-                foundInRaid: this.inventoryConfig.newItemsMarkedFound,
+                foundInRaid: foundInRaid,
                 callback: buyCallback,
                 useSortingTable: true
             };
@@ -238,7 +238,6 @@ export class TradeHelper
             itemsToSendRemaining -= itemCountToSend;
         }  
 
-        // TODO - handle traders
         return output;
     }
 
