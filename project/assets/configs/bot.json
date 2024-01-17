@@ -311,6 +311,7 @@
     },
     "chanceAssaultScavHasPlayerScavName": 10,
     "secureContainerAmmoStackCount": 20,
+	"botRolesWithDogTags": ["sptbear", "sptusec"],
     "revenge": {
         "assault": ["assault", "marksman", "gifter"],
         "marksman": ["assault", "marksman", "gifter"],

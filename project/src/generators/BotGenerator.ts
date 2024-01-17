@@ -218,8 +218,12 @@ export class BotGenerator
         if (this.botHelper.isBotPmc(botRole))
         {
             this.getRandomisedGameVersionAndCategory(bot.Info);
-            bot = this.generateDogtag(bot);
             bot.Info.IsStreamerModeAvailable = true; // Set to true so client patches can pick it up later - client sometimes alters botrole to assaultGroup
+        }
+
+        if (this.botConfig.botRolesWithDogTags.includes(botRole))
+        {
+            this.addDogtagToBot(bot);
         }
 
         // generate new bot ID
@@ -537,9 +541,9 @@ export class BotGenerator
      * @param bot bot to add dogtag to
      * @returns Bot with dogtag added
      */
-    protected generateDogtag(bot: IBotBase): IBotBase
+    protected addDogtagToBot(bot: IBotBase): void
     {
-        const upd: Upd = {
+        const dogtagUpd: Upd = {
             SpawnedInSession: true,
             Dogtag: {
                 AccountId: bot.sessionId,
@@ -562,11 +566,9 @@ export class BotGenerator
             parentId: bot.Inventory.equipment,
             slotId: "Dogtag",
             location: undefined,
-            upd: upd,
+            upd: dogtagUpd,
         };
 
         bot.Inventory.items.push(inventoryItem);
-
-        return bot;
     }
 }

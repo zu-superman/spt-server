@@ -37,6 +37,8 @@ export interface IBotConfig extends IBaseConfig
     chanceAssaultScavHasPlayerScavName: number;
     /** How many stacks of secret ammo should a bot have in its bot secure container */
     secureContainerAmmoStackCount: number;
+    /** Bot roles in this array will be given a dog tag on generation */
+    botRolesWithDogTags: string[];
 }
 
 /** Number of bots to generate and store in cache on raid start per bot type */
