@@ -157,6 +157,8 @@ export class ProfileController
         pmcData.CoopExtractCounts = {};
         pmcData.Achievements = {};
 
+        this.updateInventoryEquipmentId(pmcData);
+
         if (!pmcData.UnlockedInfo)
         {
             pmcData.UnlockedInfo = { unlockedProductionRecipe: [] };
@@ -225,6 +227,31 @@ export class ProfileController
         this.saveServer.saveProfile(sessionID);
 
         return pmcData._id;
+    }
+
+    /**
+     * make profiles pmcData.Inventory.equipment unique
+     * @param pmcData Profile to update
+     */
+    protected updateInventoryEquipmentId(pmcData: IPmcData): void
+    {
+        const oldEquipmentId = pmcData.Inventory.equipment;
+        pmcData.Inventory.equipment = this.hashUtil.generate();
+
+        for (const item of pmcData.Inventory.items)
+        {
+            if (item.parentId === oldEquipmentId)
+            {
+                item.parentId = pmcData.Inventory.equipment;
+
+                continue;
+            }
+
+            if (item._id === oldEquipmentId)
+            {
+                item._id = pmcData.Inventory.equipment;
+            }
+        }
     }
 
     /**
