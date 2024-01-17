@@ -6831,7 +6831,8 @@
       "parentId": "hideout",
       "slotId": "hideout",
       "upd": {
-        "StackObjectsCount": 10
+        "StackObjectsCount": 14126,
+        "BuyRestrictionMax": 1
       }
     },
     {
@@ -6840,7 +6841,8 @@
       "parentId": "hideout",
       "slotId": "hideout",
       "upd": {
-        "StackObjectsCount": 10
+        "StackObjectsCount": 19840,
+        "BuyRestrictionMax": 1
       }
     },
     {
@@ -6849,7 +6851,8 @@
       "parentId": "hideout",
       "slotId": "hideout",
       "upd": {
-        "StackObjectsCount": 10
+        "StackObjectsCount": 19100,
+        "BuyRestrictionMax": 60
       }
     },
     {
@@ -6858,7 +6861,9 @@
       "parentId": "hideout",
       "slotId": "hideout",
       "upd": {
-        "StackObjectsCount": 10,
+        "StackObjectsCount": 21686,
+        "BuyRestrictionMax": 3,
+        "BuyRestrictionCurrent": 0,
         "Repairable": {
           "Durability": 100,
           "MaxDurability": 100
@@ -6943,7 +6948,8 @@
       "parentId": "hideout",
       "slotId": "hideout",
       "upd": {
-        "StackObjectsCount": 10
+        "StackObjectsCount": 335101,
+        "BuyRestrictionMax": 90
       }
     },
     {
@@ -6952,7 +6958,8 @@
       "parentId": "hideout",
       "slotId": "hideout",
       "upd": {
-        "StackObjectsCount": 10
+        "StackObjectsCount": 195980,
+        "BuyRestrictionMax": 60
       }
     },
     {
@@ -10202,23 +10209,31 @@
     "65a5422f95d8356d8e0d7a29": [
       [
         {
-          "count": 6969,
-          "_tpl": "5449016a4bdc2d6f028b456f"
+          "count": 1,
+          "_tpl": "5e2aee0a86f774755a234b62"
+        },
+        {
+          "count": 2,
+          "_tpl": "5d03784a86f774203e7e0c4d"
         }
       ]
     ],
     "65a5422f95d8356d8e0d7a72": [
       [
         {
-          "count": 6969,
-          "_tpl": "5449016a4bdc2d6f028b456f"
+          "count": 3,
+          "_tpl": "5d03775b86f774203e7e0c4b"
+        },
+        {
+          "count": 3,
+          "_tpl": "5d1b313086f77425227d1678"
         }
       ]
     ],
     "65a5422f95d8356d8e0d7bb1": [
       [
         {
-          "count": 6969,
+          "count": 981,
           "_tpl": "5449016a4bdc2d6f028b456f"
         }
       ]
@@ -10226,7 +10241,7 @@
     "64f9c4d2bf50026687012a10": [
       [
         {
-          "count": 6969,
+          "count": 69734,
           "_tpl": "5449016a4bdc2d6f028b456f"
         }
       ]
@@ -10234,7 +10249,7 @@
     "65a5422f95d8356d8e0d7ef1": [
       [
         {
-          "count": 6969,
+          "count": 1003,
           "_tpl": "5449016a4bdc2d6f028b456f"
         }
       ]
@@ -10242,7 +10257,7 @@
     "65a5422f95d8356d8e0d7f3f": [
       [
         {
-          "count": 6969,
+          "count": 1003,
           "_tpl": "5449016a4bdc2d6f028b456f"
         }
       ]
