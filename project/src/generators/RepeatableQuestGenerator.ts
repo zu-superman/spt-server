@@ -731,10 +731,18 @@ export class RepeatableQuestGenerator
         if (requiresSpecificExtract)
         {
             // Filter by whitelist, it's also possible that the field "PassageRequirement" does not exist (e.g. Shoreline)
-            const mapExits = this.getLocationExitsForSide(locationKey, repeatableConfig.side);
+            let mapExits = this.getLocationExitsForSide(locationKey, repeatableConfig.side);
+            
+            // Exclude scav coop exits when choosing pmc exit
+            if (repeatableConfig.side === "Pmc")
+            {
+                mapExits = mapExits.filter(exit => exit.PassageRequirement !== "ScavCooperation")
+            }
 
             // Only get exits that have a greater than 0% chance to spawn
             const exitPool = mapExits.filter(exit => exit.Chance > 0);
+
+            // Exclude exits with a requirement to leave (e.g. car extracts)
             const possibleExits = exitPool.filter((exit) =>
                 (!("PassageRequirement" in exit)
                     || repeatableConfig.questConfig.Exploration.specificExits.passageRequirementWhitelist.includes(
