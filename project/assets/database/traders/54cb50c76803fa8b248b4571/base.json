@@ -100,6 +100,7 @@
     "currency_coefficient": 1,
     "excluded_category": [],
     "excluded_id_list": [],
+    "price_rate": 0,
     "quality": "1.2"
   },
   "sell_category": [
