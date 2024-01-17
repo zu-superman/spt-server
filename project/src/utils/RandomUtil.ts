@@ -275,12 +275,13 @@ export class RandomUtil
     }
 
     /**
-     * Draw from normal distribution
-     * @param   {number}    mu      Mean of the normal distribution
+     * Generate a normally distributed random number
+     * Uses the Box-Muller transform
+     * @param   {number}    mean    Mean of the normal distribution
      * @param   {number}    sigma   Standard deviation of the normal distribution
      * @returns {number}            The value drawn
      */
-    public randn(mu: number, sigma: number): number
+    public getNormallyDistributedRandomNumber(mean: number, sigma: number, attempt = 0): number
     {
         let u = 0;
         let v = 0;
@@ -293,7 +294,18 @@ export class RandomUtil
             v = Math.random();
         }
         const w = Math.sqrt(-2.0 * Math.log(u)) * Math.cos((2.0 * Math.PI) * v);
-        return w * sigma + mu;
+        const valueDrawn =  mean + w * sigma;
+        if (valueDrawn < 0)
+        {
+          if (attempt > 100)
+          {
+              return this.getFloat(0.01, mean * 2);
+          }
+
+          return this.getNormallyDistributedRandomNumber(mean, sigma, attempt++);
+        }
+
+        return valueDrawn;
     }
 
     /**

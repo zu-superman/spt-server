@@ -603,7 +603,7 @@ export class LocationGenerator
         // Draw from random distribution
         const desiredSpawnpointCount = Math.round(
             this.getLooseLootMultiplerForLocation(locationName)
-                * Math.abs(this.randomUtil.randn(dynamicLootDist.spawnpointCount.mean, dynamicLootDist.spawnpointCount.std)),
+                * this.randomUtil.getNormallyDistributedRandomNumber(dynamicLootDist.spawnpointCount.mean, dynamicLootDist.spawnpointCount.std),
         );
 
         // Positions not in forced but have 100% chance to spawn
