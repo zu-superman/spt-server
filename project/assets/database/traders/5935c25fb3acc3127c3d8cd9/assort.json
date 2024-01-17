@@ -9014,7 +9014,9 @@
         "FireMode": {
           "FireMode": "single"
         },
-        "StackObjectsCount": 10
+        "StackObjectsCount": 21898,
+        "BuyRestrictionMax": 1,
+        "BuyRestrictionCurrent": 0
       }
     },
     {
@@ -9029,7 +9031,9 @@
       "parentId": "hideout",
       "slotId": "hideout",
       "upd": {
-        "StackObjectsCount": 10,
+        "StackObjectsCount": 19705,
+        "BuyRestrictionMax": 3,
+        "BuyRestrictionCurrent": 0,
         "Repairable": {
           "Durability": 100,
           "MaxDurability": 100
@@ -9099,7 +9103,8 @@
       "parentId": "hideout",
       "slotId": "hideout",
       "upd": {
-        "StackObjectsCount": 10
+        "StackObjectsCount": 21509,
+        "BuyRestrictionMax": 3
       }
     },
     {
@@ -9108,7 +9113,8 @@
       "parentId": "hideout",
       "slotId": "hideout",
       "upd": {
-        "StackObjectsCount": 10
+        "StackObjectsCount": 21941,
+        "BuyRestrictionMax": 5
       }
     },
     {
@@ -9135,7 +9141,8 @@
       "parentId": "hideout",
       "slotId": "hideout",
       "upd": {
-        "StackObjectsCount": 10
+        "StackObjectsCount": 18285,
+        "BuyRestrictionMax": 4
       }
     },
     {
@@ -9171,7 +9178,8 @@
       "parentId": "hideout",
       "slotId": "hideout",
       "upd": {
-        "StackObjectsCount": 10
+        "StackObjectsCount": 20453,
+        "BuyRestrictionMax": 5
       }
     },
     {
@@ -13577,16 +13585,32 @@
     "6492e44bf4287b13040fc9fa": [
       [
         {
-          "count": 6969,
-          "_tpl": "5449016a4bdc2d6f028b456f"
+          "count": 1,
+          "_tpl": "5c05300686f7746dce784e5d"
+        },
+        {
+          "count": 5,
+          "_tpl": "5d0376a486f7747d8050965c"
+        },
+        {
+          "count": 5,
+          "_tpl": "5d0375ff86f774186372f685"
         }
       ]
     ],
     "6492e44bf4287b13040fc9e7": [
       [
         {
-          "count": 6969,
-          "_tpl": "5449016a4bdc2d6f028b456f"
+          "count": 8,
+          "_tpl": "59f32bb586f774757e1e8442",
+          "level": 15,
+          "side": "Bear"
+        },
+        {
+          "count": 8,
+          "_tpl": "59f32c3b86f77472a31742f0",
+          "level": 15,
+          "side": "Usec"
         }
       ]
     ],
@@ -13601,16 +13625,16 @@
     "6492e44bf4287b13040fca47": [
       [
         {
-          "count": 6969,
-          "_tpl": "5449016a4bdc2d6f028b456f"
+          "count": 184.49,
+          "_tpl": "5696686a4bdc2da3298b456a"
         }
       ]
     ],
     "6492e44bf4287b13040fca2a": [
       [
         {
-          "count": 6969,
-          "_tpl": "5449016a4bdc2d6f028b456f"
+          "count": 439.97,
+          "_tpl": "5696686a4bdc2da3298b456a"
         }
       ]
     ],
@@ -13633,8 +13657,8 @@
     "6492e44bf4287b13040fca3b": [
       [
         {
-          "count": 6969,
-          "_tpl": "5449016a4bdc2d6f028b456f"
+          "count": 346.12,
+          "_tpl": "5696686a4bdc2da3298b456a"
         }
       ]
     ],
@@ -13665,8 +13689,8 @@
     "65a5422f95d8356d8e0d8173": [
       [
         {
-          "count": 6969,
-          "_tpl": "5449016a4bdc2d6f028b456f"
+          "count": 1,
+          "_tpl": "590c37d286f77443be3d7827"
         }
       ]
     ],

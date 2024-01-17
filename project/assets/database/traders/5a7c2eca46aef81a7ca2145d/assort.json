@@ -8866,7 +8866,9 @@
         "FireMode": {
           "FireMode": "single"
         },
-        "StackObjectsCount": 10
+        "StackObjectsCount": 21992,
+        "BuyRestrictionMax": 1,
+        "BuyRestrictionCurrent": 0
       }
     },
     {
@@ -13264,8 +13266,12 @@
     "6492e44af4287b13040fc8f8": [
       [
         {
-          "count": 6969,
-          "_tpl": "5449016a4bdc2d6f028b456f"
+          "count": 4,
+          "_tpl": "5c052fb986f7746b2101e909"
+        },
+        {
+          "count": 2,
+          "_tpl": "5c05308086f7746b2101e90b"
         }
       ]
     ],
