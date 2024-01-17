@@ -742,6 +742,11 @@ export class RepeatableQuestGenerator
                     ))
             );
 
+            if (possibleExits.length === 0)
+            {
+                this.logger.error("Possible exits was empty");
+            }
+
             // Choose one of the exits we filtered above
             const chosenExit = this.randomUtil.drawRandomFromList(possibleExits, 1)[0];
 
@@ -768,10 +773,10 @@ export class RepeatableQuestGenerator
     {
         const mapBase = this.databaseServer.getTables().locations[locationKey.toLowerCase()].base as ILocationBase;
         
-        const infilPointsOfSameSide = new Set();
+        const infilPointsOfSameSide = new Set<string>();
         for (const spawnPoint of mapBase.SpawnPointParams)
         {
-            // Same side
+            // Same side, add infil to list
             if (spawnPoint.Sides.includes(playerSide)
                 || spawnPoint.Sides.includes("All"))
             {
@@ -783,7 +788,10 @@ export class RepeatableQuestGenerator
             }
         }
 
-        return mapBase.exits.filter(exit => Array.from(infilPointsOfSameSide).includes(exit.EntryPoints));
+        // use list of allowed infils to figure out side of exits
+        const infilPointsArray = Array.from(infilPointsOfSameSide);
+
+        return mapBase.exits.filter(exit => exit.EntryPoints.split(",").some(entryPoint => infilPointsArray.includes(entryPoint)));
     }
 
     protected generatePickupQuest(
