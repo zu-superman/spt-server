@@ -155,6 +155,15 @@ export class LootGenerator
             const plateDb = this.itemHelper.getItem(helmetTop._tpl);
             return options.armorLevelWhitelist.includes(Number.parseInt(plateDb[1]._props.armorClass as any));
         }
+
+        const softArmorFront = armor._items.find(mod => mod?.slotId?.toLowerCase() === "soft_armor_front");
+        if (softArmorFront)
+        {
+            const plateDb = this.itemHelper.getItem(softArmorFront._tpl);
+            return options.armorLevelWhitelist.includes(Number.parseInt(plateDb[1]._props.armorClass as any));
+        }
+
+        return false;
     }
 
     /**
