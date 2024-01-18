@@ -215,8 +215,8 @@ export class BotInventoryGenerator
             randomisationDetails: randomistionDetails
         });
         this.generateEquipment({
-            rootEquipmentSlot: EquipmentSlots.TACTICAL_VEST,
-            rootEquipmentPool: templateInventory.equipment.TacticalVest,
+            rootEquipmentSlot: EquipmentSlots.ARMOR_VEST,
+            rootEquipmentPool: templateInventory.equipment.ArmorVest,
             modPool: templateInventory.mods,
             spawnChances: wornItemChances,
             botRole: botRole,
@@ -226,8 +226,8 @@ export class BotInventoryGenerator
             randomisationDetails: randomistionDetails
         });
         this.generateEquipment({
-            rootEquipmentSlot: EquipmentSlots.ARMOR_VEST,
-            rootEquipmentPool: templateInventory.equipment.ArmorVest,
+            rootEquipmentSlot: EquipmentSlots.TACTICAL_VEST,
+            rootEquipmentPool: templateInventory.equipment.TacticalVest,
             modPool: templateInventory.mods,
             spawnChances: wornItemChances,
             botRole: botRole,
