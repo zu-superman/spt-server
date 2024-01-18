@@ -9,6 +9,7 @@ import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { WeightedRandomHelper } from "@spt-aki/helpers/WeightedRandomHelper";
 import { Inventory as PmcInventory } from "@spt-aki/models/eft/common/tables/IBotBase";
 import { Chances, Generation, IBotType, Inventory, Mods } from "@spt-aki/models/eft/common/tables/IBotType";
+import { ITemplateItem } from "@spt-aki/models/eft/common/tables/ITemplateItem";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { EquipmentSlots } from "@spt-aki/models/enums/EquipmentSlots";
 import { EquipmentFilterDetails, EquipmentFilters, IBotConfig, RandomisationDetails } from "@spt-aki/models/spt/config/IBotConfig";
@@ -240,13 +241,7 @@ export class BotInventoryGenerator
 
     /**
      * Add a piece of equipment with mods to inventory from the provided pools
-     * @param equipmentSlot Slot to select an item for
-     * @param equipmentPool Possible items to choose from
-     * @param modPool Possible mods to apply to item chosen
-     * @param spawnChances Chances items will be chosen to be added
-     * @param botRole Role of bot e.g. assault
-     * @param inventory Inventory to add item into
-     * @param randomisationDetails 
+     * @param settings Values to adjust how item is chosen and added to bot
      */
     protected generateEquipment(settings: IGenerateEquipmentProperties): void
     {
@@ -264,66 +259,96 @@ export class BotInventoryGenerator
         }
 
         const shouldSpawn = this.randomUtil.getChance100(spawnChance);
-        if (Object.keys(settings.rootEquipmentPool).length && shouldSpawn)
+        if (shouldSpawn && Object.keys(settings.rootEquipmentPool).length)
         {
+            let pickedItemDb: ITemplateItem;
+            let found = false;
+            let attempts = 0;
+            while (!found)
+            {
+                if (Object.values(settings.rootEquipmentPool).length === 0)
+                {
+                    return;
+                }
+
+                const chosenItemTpl = this.weightedRandomHelper.getWeightedValue<string>(settings.rootEquipmentPool);
+                const dbResult = this.itemHelper.getItem(chosenItemTpl);
+
+                if (!dbResult[0])
+                {
+                    this.logger.error(this.localisationService.getText("bot-missing_item_template", chosenItemTpl));
+                    this.logger.info(`EquipmentSlot -> ${settings.rootEquipmentSlot}`);
+
+                    // remove picked item
+                    delete settings.rootEquipmentPool[chosenItemTpl];
+
+                    attempts++;
+
+                    continue;
+                }
+
+                if (
+                    this.botGeneratorHelper.isItemIncompatibleWithCurrentItems(
+                        settings.inventory.items,
+                        chosenItemTpl,
+                        settings.rootEquipmentSlot,
+                    ).incompatible)
+                {
+                    if (attempts >= 8)
+                    {
+                        return;
+                    }
+
+                    // remove picked item
+                    delete settings.rootEquipmentPool[chosenItemTpl];
+
+                    attempts++;
+                }
+                else
+                {
+                    // Success
+                    found = true;
+                    pickedItemDb = dbResult[1];
+                }
+            }
+
+            // Create root item
             const id = this.hashUtil.generate();
-            const equipmentItemTpl = this.weightedRandomHelper.getWeightedValue<string>(settings.rootEquipmentPool);
-            const itemTemplate = this.itemHelper.getItem(equipmentItemTpl);
-
-            if (!itemTemplate[0])
-            {
-                this.logger.error(this.localisationService.getText("bot-missing_item_template", equipmentItemTpl));
-                this.logger.info(`EquipmentSlot -> ${settings.rootEquipmentSlot}`);
-
-                return;
-            }
-
-            if (
-                this.botGeneratorHelper.isItemIncompatibleWithCurrentItems(
-                    settings.inventory.items,
-                    equipmentItemTpl,
-                    settings.rootEquipmentSlot,
-                ).incompatible
-            )
-            {
-                // Bad luck - randomly picked item was not compatible with current gear
-                return;
-            }
-
             const item = {
                 _id: id,
-                _tpl: equipmentItemTpl,
+                _tpl: pickedItemDb._id,
                 parentId: settings.inventory.equipment,
                 slotId: settings.rootEquipmentSlot,
-                ...this.botGeneratorHelper.generateExtraPropertiesForItem(itemTemplate[1], settings.botRole),
+                ...this.botGeneratorHelper.generateExtraPropertiesForItem(pickedItemDb, settings.botRole),
             };
 
-            // use dynamic mod pool if enabled in config
+            // Use dynamic mod pool if enabled in config for this bot
             const botEquipmentRole = this.botGeneratorHelper.getBotEquipmentRole(settings.botRole);
             if (
                 this.botConfig.equipment[botEquipmentRole]
                 && settings.randomisationDetails?.randomisedArmorSlots?.includes(settings.rootEquipmentSlot)
             )
             {
-                settings.modPool[equipmentItemTpl] = this.getFilteredDynamicModsForItem(
-                    equipmentItemTpl,
+                settings.modPool[pickedItemDb._id] = this.getFilteredDynamicModsForItem(
+                    pickedItemDb._id,
                     this.botConfig.equipment[botEquipmentRole].blacklist,
                 );
             }
 
             // Item has slots
-            if ( itemTemplate[1]._props.Slots?.length > 0 )
+            if ( pickedItemDb._props.Slots?.length > 0 )
             {
                 const items = this.botEquipmentModGenerator.generateModsForEquipment(
                     [item],
                     id,
-                    itemTemplate[1],
+                    pickedItemDb,
                     settings
                 );
                 settings.inventory.items.push(...items);
             }
             else
             {
+                // No slots, push root item only
                 settings.inventory.items.push(item);
             }
         }

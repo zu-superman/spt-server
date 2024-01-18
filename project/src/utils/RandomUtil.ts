@@ -200,7 +200,9 @@ export class ProbabilityObject<K, V = undefined>
 @injectable()
 export class RandomUtil
 {
-    constructor(@inject("JsonUtil") protected jsonUtil: JsonUtil, @inject("WinstonLogger") protected logger: ILogger)
+    constructor(
+        @inject("JsonUtil") protected jsonUtil: JsonUtil,
+        @inject("WinstonLogger") protected logger: ILogger)
     {
     }
 
