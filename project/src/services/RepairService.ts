@@ -442,7 +442,7 @@ export class RepairService
 
         if (this.shouldBuffItem(repairDetails, pmcData))
         {
-            if (this.itemHelper.isOfBaseclasses(repairDetails.repairedItem._tpl, [BaseClasses.ARMOR, BaseClasses.VEST]))
+            if (this.itemHelper.isOfBaseclasses(repairDetails.repairedItem._tpl, [BaseClasses.ARMOR, BaseClasses.VEST, BaseClasses.HEADWEAR]))
             {
                 const armorConfig = this.repairConfig.repairKit.armor;
                 this.addBuff(armorConfig, repairDetails.repairedItem);
@@ -541,7 +541,7 @@ export class RepairService
      */
     protected getItemSkillType(itemTemplate: ITemplateItem): SkillTypes
     {
-        if (this.itemHelper.isOfBaseclass(itemTemplate._id, BaseClasses.ARMOR))
+        if (this.itemHelper.isOfBaseclasses(itemTemplate._id, [BaseClasses.ARMOR, BaseClasses.VEST, BaseClasses.HEADWEAR]))
         {
             if (itemTemplate._props.ArmorType === "Light")
             {
