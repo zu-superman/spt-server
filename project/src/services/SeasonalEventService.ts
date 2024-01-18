@@ -525,6 +525,12 @@ export class SeasonalEventService
         for (const gifterMapSettings of gifterSettings)
         {
             const mapData: ILocationData = maps[gifterMapSettings.map];
+            // Dont add gifter to map twice
+            if (mapData.base.BossLocationSpawn.some(boss => boss.BossName === "gifter"))
+            {
+                continue;
+            }
+
             mapData.base.BossLocationSpawn.push({
                 BossName: "gifter",
                 BossChance: gifterMapSettings.spawnChance,
