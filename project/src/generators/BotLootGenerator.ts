@@ -205,6 +205,18 @@ export class BotLootGenerator
             this.pmcConfig.maxPocketLootTotalRub,
             isPmc,
         );
+
+        // Secure
+        this.addLootFromPool(
+            this.botLootCacheService.getLootFromCache(botRole, isPmc, LootCacheType.SECURE, botJsonTemplate),
+            [EquipmentSlots.SECURED_CONTAINER],
+            100,
+            botInventory,
+            botRole,
+            false,
+            -1,
+            isPmc,
+        );
     }
 
     /**
