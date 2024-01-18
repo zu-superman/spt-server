@@ -163,7 +163,10 @@ export interface Blacklist
 
 export interface IUnreasonableModPrices
 {
+    /** Enable a system that adjusts very high ragfair prices to be below a max multiple of items the handbook values */
     enabled: boolean;
+    /** Multipler to start adjusting item values from, e.g. a value of 10 means any value over 10x the handbook price gets adjusted  */
     handbookPriceOverMultiplier: number;
+    /** The new multiplier for items found using above property, e.g. a value of 4 means set items price to 4x handbook price */
     newPriceHandbookMultiplier: number;
 }
