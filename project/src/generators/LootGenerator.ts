@@ -105,20 +105,56 @@ export class LootGenerator
             }
         }
 
-        const globalDefaultPresets = Object.entries(tables.globals.ItemPresets).filter((x) =>
-            x[1]._encyclopedia !== undefined
-        );
-        const randomisedPresetCount = this.randomUtil.getInt(options.presetCount.min, options.presetCount.max);
+        const globalDefaultPresets = Object.values(this.presetHelper.getDefaultPresets());
+
+        // Filter default presets to just weapons
+        const weaponDefaultPresets = globalDefaultPresets.filter(preset => this.itemHelper.isOfBaseclass(preset._encyclopedia, BaseClasses.WEAPON));
+        const randomisedWeaponPresetCount = this.randomUtil.getInt(options.weaponPresetCount.min, options.weaponPresetCount.max);
         const itemBlacklistArray = Array.from(itemBlacklist);
-        for (let index = 0; index < randomisedPresetCount; index++)
+        for (let index = 0; index < randomisedWeaponPresetCount; index++)
         {
-            if (!this.findAndAddRandomPresetToLoot(globalDefaultPresets, itemTypeCounts, itemBlacklistArray, result))
+            if (!this.findAndAddRandomPresetToLoot(weaponDefaultPresets, itemTypeCounts, itemBlacklistArray, result))
+            {
+                index--;
+            }
+        }
+
+        // Filter default presets to just armors and then filter again by protection level
+        const armorDefaultPresets = globalDefaultPresets.filter(preset => this.itemHelper.armorItemCanHoldMods(preset._encyclopedia));
+        const levelFilteredArmorPresets = armorDefaultPresets.filter(armor => this.armorIsDesiredProtectionLevel(armor, options));
+        const randomisedArmorPresetCount = this.randomUtil.getInt(options.armorPresetCount.min, options.armorPresetCount.max);
+        for (let index = 0; index < randomisedArmorPresetCount; index++)
+        {
+            if (!this.findAndAddRandomPresetToLoot(levelFilteredArmorPresets, itemTypeCounts, itemBlacklistArray, result))
             {
                 index--;
             }
         }
 
         return result;
+    }
+
+    /**
+     * Filter armor items by their main plates protection level
+     * @param armor Armor preset
+     * @param options Loot request options
+     * @returns True item passes checks
+     */
+    protected armorIsDesiredProtectionLevel(armor: IPreset, options: LootRequest): boolean
+    {
+        const frontPlate = armor._items.find(mod => mod?.slotId?.toLowerCase() === "front_plate");
+        if (frontPlate)
+        {
+            const plateDb = this.itemHelper.getItem(frontPlate._tpl);
+            return options.armorLevelWhitelist.includes(Number.parseInt(plateDb[1]._props.armorClass as any));
+        }
+
+        const helmetTop = armor._items.find(mod => mod?.slotId?.toLowerCase() === "helmet_top");
+        if (helmetTop)
+        {
+            const plateDb = this.itemHelper.getItem(helmetTop._tpl);
+            return options.armorLevelWhitelist.includes(Number.parseInt(plateDb[1]._props.armorClass as any));
+        }
     }
 
     /**
@@ -160,21 +196,18 @@ export class LootGenerator
             return false;
         }
 
+        // Skip armors as they need to come from presets
+        if (this.itemHelper.armorItemCanHoldMods(randomItem._id))
+        {
+            return false;
+        }
+
         const newLootItem: LootItem = {
             id: this.hashUtil.generate(),
             tpl: randomItem._id,
             isPreset: false,
             stackCount: 1,
         };
-
-        // Check if armor has level in allowed whitelist
-        if (randomItem._parent === BaseClasses.ARMOR || randomItem._parent === BaseClasses.VEST)
-        {
-            if (!options.armorLevelWhitelist.includes(Number(randomItem._props.armorClass)))
-            {
-                return false;
-            }
-        }
 
         // Special case - handle items that need a stackcount > 1
         if (randomItem._props.StackMaxSize > 1)
@@ -224,14 +257,14 @@ export class LootGenerator
      * @returns true if preset was valid and added to pool
      */
     protected findAndAddRandomPresetToLoot(
-        globalDefaultPresets: [string, IPreset][],
+        globalDefaultPresets: IPreset[],
         itemTypeCounts: Record<string, { current: number; max: number; }>,
         itemBlacklist: string[],
         result: LootItem[],
     ): boolean
     {
         // Choose random preset and get details from item.json using encyclopedia value (encyclopedia === tplId)
-        const randomPreset = this.randomUtil.getArrayValue(globalDefaultPresets)[1];
+        const randomPreset = this.randomUtil.getArrayValue(globalDefaultPresets);
         if (!randomPreset?._encyclopedia)
         {
             this.logger.debug(`Airdrop - preset with id: ${randomPreset._id} lacks encyclopedia property, skipping`);
