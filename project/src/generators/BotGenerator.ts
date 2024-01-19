@@ -95,41 +95,30 @@ export class BotGenerator
     }
 
     /**
-     * Create x number of bots of the type/side/difficulty defined in botGenerationDetails
+     * Create 1  bots of the type/side/difficulty defined in botGenerationDetails
      * @param sessionId Session id
      * @param botGenerationDetails details on how to generate bots
-     * @returns array of bots
+     * @returns constructed bot
      */
-    public prepareAndGenerateBots(sessionId: string, botGenerationDetails: BotGenerationDetails): IBotBase[]
+    public prepareAndGenerateBot(sessionId: string, botGenerationDetails: BotGenerationDetails): IBotBase
     {
-        const output: IBotBase[] = [];
-        for (let i = 0; i < botGenerationDetails.botCountToGenerate; i++)
-        {
-            let bot = this.getCloneOfBotBase();
+        let bot = this.getCloneOfBotBase();
+        bot.Info.Settings.Role = botGenerationDetails.eventRole
+            ? botGenerationDetails.eventRole
+            : botGenerationDetails.role;
+        bot.Info.Side = botGenerationDetails.side;
+        bot.Info.Settings.BotDifficulty = botGenerationDetails.botDifficulty;
 
-            bot.Info.Settings.Role = botGenerationDetails.role;
-            bot.Info.Side = botGenerationDetails.side;
-            bot.Info.Settings.BotDifficulty = botGenerationDetails.botDifficulty;
-
-            // Get raw json data for bot (Cloned)
-            const botJsonTemplate = this.jsonUtil.clone(
-                this.botHelper.getBotTemplate((botGenerationDetails.isPmc)
-                    ? bot.Info.Side
-                    : botGenerationDetails.role),
-            );
-
-            bot = this.generateBot(sessionId, bot, botJsonTemplate, botGenerationDetails);
-
-            output.push(bot);
-        }
-
-        this.logger.debug(
-            `Generated ${botGenerationDetails.botCountToGenerate} ${output[0].Info.Settings.Role} (${
-                botGenerationDetails.eventRole ?? ""
-            }) bots`,
+        // Get raw json data for bot (Cloned)
+        const botJsonTemplate = this.jsonUtil.clone(
+            this.botHelper.getBotTemplate((botGenerationDetails.isPmc)
+                ? bot.Info.Side
+                : botGenerationDetails.role),
         );
 
-        return output;
+        bot = this.generateBot(sessionId, bot, botJsonTemplate, botGenerationDetails);
+
+        return bot;
     }
 
     /**

@@ -115,7 +115,7 @@ export class BotEquipmentModGenerator
                 const outcome = this.filterPlateModsForSlotByLevel(settings, modSlot.toLowerCase(), compatibleModsPool[modSlot], parentTemplate);
                 if ([Result.UNKNOWN_FAILURE, Result.NO_DEFAULT_FILTER].includes(outcome.result))
                 {
-                    this.logger.warning(`Plate slot: ${modSlot} selection for armor: ${parentTemplate._id} failed: ${Result[outcome.result]}, skipping`);
+                    this.logger.debug(`Plate slot: ${modSlot} selection for armor: ${parentTemplate._id} failed: ${Result[outcome.result]}, skipping`);
 
                     continue;
                 }

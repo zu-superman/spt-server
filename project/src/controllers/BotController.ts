@@ -7,6 +7,7 @@ import { BotDifficultyHelper } from "@spt-aki/helpers/BotDifficultyHelper";
 import { BotHelper } from "@spt-aki/helpers/BotHelper";
 import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
 import { IGenerateBotsRequestData } from "@spt-aki/models/eft/bot/IGenerateBotsRequestData";
+import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
 import { IBotBase } from "@spt-aki/models/eft/common/tables/IBotBase";
 import { IBotCore } from "@spt-aki/models/eft/common/tables/IBotCore";
 import { Difficulty } from "@spt-aki/models/eft/common/tables/IBotType";
@@ -145,8 +146,25 @@ export class BotController
     {
         const pmcProfile = this.profileHelper.getPmcProfile(sessionId);
 
-        const botsToReturn: IBotBase[] = [];
-        for (const condition of info.conditions)
+        const isFirstGen = info.conditions.length > 1;
+        if (isFirstGen)
+        {
+            return this.generateBotsFirstTime(info, pmcProfile, sessionId);
+        }
+        
+        return this.returnSingleBotFromCache(sessionId, info);
+    }
+
+    /**
+     * On first bot generation bots are generated and stored inside a cache, ready to be used later
+     * @param request Bot generation request object
+     * @param pmcProfile Player profile
+     * @param sessionId Session id
+     * @returns 
+     */
+    protected generateBotsFirstTime(request: IGenerateBotsRequestData, pmcProfile: IPmcData, sessionId: string): IBotBase[]
+    {
+        for (const condition of request.conditions)
         {
             const botGenerationDetails: BotGenerationDetails = {
                 isPmc: false,
@@ -167,7 +185,7 @@ export class BotController
                 // Add eventRole data + reassign role property to be base type
                 botGenerationDetails.eventRole = condition.Role;
                 botGenerationDetails.role = this.seasonalEventService.getBaseRoleForEventBot(
-                    botGenerationDetails.eventRole,
+                    botGenerationDetails.eventRole
                 );
             }
 
@@ -179,53 +197,104 @@ export class BotController
                 botGenerationDetails.side = this.botHelper.getPmcSideByRole(condition.Role);
             }
 
-            // Loop over and make x bots for this condition
+            // Loop over and make x bots for this bot wave
             let cacheKey = "";
             for (let i = 0; i < botGenerationDetails.botCountToGenerate; i++)
             {
                 const details = this.jsonUtil.clone(botGenerationDetails);
-                const botRole = isEventBot ? details.eventRole : details.role;
-
-                // Roll chance to be pmc if type is allowed to be one
-                const botConvertRateMinMax = this.pmcConfig.convertIntoPmcChance[botRole.toLowerCase()];
-                if (botConvertRateMinMax)
-                {
-                    // Should bot become PMC
-                    const convertToPmc = this.botHelper.rollChanceToBePmc(details.role, botConvertRateMinMax);
-                    if (convertToPmc)
-                    {
-                        details.isPmc = true;
-                        details.role = this.botHelper.getRandomizedPmcRole();
-                        details.side = this.botHelper.getPmcSideByRole(details.role);
-                        details.botDifficulty = this.getPMCDifficulty(details.botDifficulty);
-                    }
-                }
 
                 cacheKey = `${details.role}${details.botDifficulty}`;
 
-                // Check for bot in cache, add if not
-                if (!this.botGenerationCacheService.cacheHasBotOfRole(cacheKey))
-                {
-                    // Generate and add x bots to cache
-                    const botsToAddToCache = this.botGenerator.prepareAndGenerateBots(sessionId, details);
-                    this.botGenerationCacheService.storeBots(cacheKey, botsToAddToCache);
-                }
+                // Generate and add bot to cache
+                const botToCache = this.botGenerator.prepareAndGenerateBot(sessionId, details);
+                this.botGenerationCacheService.storeBots(cacheKey, [botToCache]);
             }
+
+            this.logger.debug(
+                `Generated ${botGenerationDetails.botCountToGenerate} ${botGenerationDetails.role} (${
+                    botGenerationDetails.eventRole ?? ""
+                }) ${botGenerationDetails.botDifficulty} bots`,
+            );
 
             // Get bot from cache, add to return array
             const botToReturn = this.botGenerationCacheService.getBot(cacheKey);
-
-            if (info.conditions.length === 1)
-            {
-                // Cache bot when we're returning 1 bot, this indicated the bot is being requested to be spawned
-                // Used by PMC response text system
-                this.matchBotDetailsCacheService.cacheBot(botToReturn);
-            }
-
-            botsToReturn.push(botToReturn);
         }
 
-        return botsToReturn;
+        return [];
+    }
+
+    /**
+     * Pull a single bot out of cache and return, if cache is empty add bots to it and then return
+     * @param sessionId Session id
+     * @param request Bot generation request object
+     * @returns Single IBotBase object
+     */
+    protected returnSingleBotFromCache(sessionId: string, request: IGenerateBotsRequestData): IBotBase[]
+    {
+        const pmcProfile = this.profileHelper.getPmcProfile(sessionId);
+        const requestedBot = request.conditions[0];
+
+        // Create gen request for when cache is empty
+        const botGenerationDetails: BotGenerationDetails = {
+            isPmc: false,
+            side: "Savage",
+            role: requestedBot.Role,
+            playerLevel: pmcProfile.Info.Level,
+            botRelativeLevelDeltaMax: this.pmcConfig.botRelativeLevelDeltaMax,
+            botRelativeLevelDeltaMin: this.pmcConfig.botRelativeLevelDeltaMin,
+            botCountToGenerate: this.botConfig.presetBatch[requestedBot.Role],
+            botDifficulty: requestedBot.Difficulty,
+            isPlayerScav: false,
+        };
+
+        // Event bots need special actions to occur, set data up for them
+        const isEventBot = requestedBot.Role.toLowerCase().includes("event");
+        if (isEventBot)
+        {
+            // Add eventRole data + reassign role property
+            botGenerationDetails.eventRole = requestedBot.Role;
+            botGenerationDetails.role = this.seasonalEventService.getBaseRoleForEventBot(
+                botGenerationDetails.eventRole,
+            );
+        }
+
+        // Roll chance to be pmc if type is allowed to be one
+        const botConvertRateMinMax = this.pmcConfig.convertIntoPmcChance[requestedBot.Role.toLowerCase()];
+        if (botConvertRateMinMax)
+        {
+            // Should bot become PMC
+            const convertToPmc = this.botHelper.rollChanceToBePmc(requestedBot.Role, botConvertRateMinMax);
+            if (convertToPmc)
+            {
+                botGenerationDetails.isPmc = true;
+                botGenerationDetails.role = this.botHelper.getRandomizedPmcRole();
+                botGenerationDetails.side = this.botHelper.getPmcSideByRole(requestedBot.Role);
+                botGenerationDetails.botDifficulty = this.getPMCDifficulty(requestedBot.Difficulty);
+                botGenerationDetails.botCountToGenerate = this.botConfig.presetBatch[requestedBot.Role];
+            }
+        }
+
+        // Construct cache key
+        const cacheKey = `${requestedBot.Role}${requestedBot.Difficulty}`;
+
+        // Check cache for bot using above key
+        if (!this.botGenerationCacheService.cacheHasBotOfRole(cacheKey))
+        {
+            // No bot in cache, generate new and return one
+            for (let i = 0; i < botGenerationDetails.botCountToGenerate; i++)
+            {
+                const botToCache = this.botGenerator.prepareAndGenerateBot(sessionId, botGenerationDetails);
+                this.botGenerationCacheService.storeBots(cacheKey, [botToCache]);
+            }
+
+            this.logger.debug(
+                `Generated ${botGenerationDetails.botCountToGenerate} ${botGenerationDetails.role} (${
+                    botGenerationDetails.eventRole ?? ""
+                }) ${botGenerationDetails.botDifficulty} bots`,
+            );
+        }
+
+        return [this.botGenerationCacheService.getBot(cacheKey)];
     }
 
     /**

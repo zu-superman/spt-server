@@ -210,7 +210,7 @@ export class BotLootGenerator
         this.addLootFromPool(
             this.botLootCacheService.getLootFromCache(botRole, isPmc, LootCacheType.SECURE, botJsonTemplate),
             [EquipmentSlots.SECURED_CONTAINER],
-            100,
+            50,
             botInventory,
             botRole,
             false,
