@@ -1374,18 +1374,24 @@ export class ProfileFixerService
 	 * After removing mods that add quests, the quest panel will break without removing these
 	 * @param pmcProfile Profile to remove dead quests from
 	 */
-	protected removeOrphanedQuests(pmcProfile: IPmcData): void
-	{
-		const quests = this.databaseServer.getTables().templates.quests;
-		const profileQuests = pmcProfile.Quests;
-		
-		for (let i = 0; i < profileQuests.length; i++) 
-		{
-			if (!quests[profileQuests[i].qid])
-			{
-				profileQuests.splice(i, 1);
-				this.logger.success("Successfully removed orphaned quest that doesnt exist in our quest data");
-			}			
-		}
-	}
+    protected removeOrphanedQuests(pmcProfile: IPmcData): void
+    {
+        const quests = this.databaseServer.getTables().templates.quests;
+        const profileQuests = pmcProfile.Quests;
+        
+        let repeatableQuests: IRepeatableQuest[] = [];
+        for (const repeatableQuestType of pmcProfile.RepeatableQuests)
+        {
+            repeatableQuests.push(...repeatableQuestType.activeQuests);
+        }
+        
+        for (let i = 0; i < profileQuests.length; i++)
+        {
+            if (!quests[profileQuests[i].qid] && !repeatableQuests.find(x => x._id == profileQuests[i].qid))
+            {
+                profileQuests.splice(i, 1);
+                this.logger.success("Successfully removed orphaned quest that doesnt exist in our quest data");
+            }            
+        }
+    }
 }
