@@ -36,15 +36,15 @@
             },
 			"armorPresetCount": {
                 "min": 1,
-                "max": 3
+                "max": 5
             },
             "itemCount": {
-                "min": 12,
-                "max": 25
+                "min": 15,
+                "max": 35
             },
             "weaponCrateCount": {
-                "min": 0,
-                "max": 2
+                "min": 1,
+                "max": 4
             },
             "itemBlacklist": [
                 "5e997f0b86f7741ac73993e2",
@@ -165,11 +165,11 @@
             },
 			"armorPresetCount": {
                 "min": 3,
-                "max": 5
+                "max": 6
             },
             "itemCount": {
-                "min": 10,
-                "max": 20
+                "min": 11,
+                "max": 22
             },
             "weaponCrateCount": {
                 "min": 0,
@@ -355,8 +355,8 @@
                 "max": 0
             },
             "itemCount": {
-                "min": 16,
-                "max": 25
+                "min": 20,
+                "max": 35
             },
             "weaponCrateCount": {
                 "min": 0,
