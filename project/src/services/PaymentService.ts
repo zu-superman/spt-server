@@ -306,19 +306,19 @@ export class PaymentService
         }
 
         let leftToPay = amountToPay;
-        for (const moneyItem of moneyItemsInInventory)
+        for (const profileMoneyItem of moneyItemsInInventory)
         {
-            const itemAmount = moneyItem.upd.StackObjectsCount;
+            const itemAmount = profileMoneyItem.upd.StackObjectsCount;
             if (leftToPay >= itemAmount)
             {
                 leftToPay -= itemAmount;
-                this.inventoryHelper.removeItem(pmcData, moneyItem._id, sessionID, output);
+                this.inventoryHelper.removeItem(pmcData, profileMoneyItem._id, sessionID, output);
             }
             else
             {
-                moneyItem.upd.StackObjectsCount -= leftToPay;
+                profileMoneyItem.upd.StackObjectsCount -= leftToPay;
                 leftToPay = 0;
-                output.profileChanges[sessionID].items.change.push(moneyItem);
+                output.profileChanges[sessionID].items.change.push(profileMoneyItem);
             }
 
             if (leftToPay === 0)

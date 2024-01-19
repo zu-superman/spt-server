@@ -636,7 +636,7 @@ export class ItemHelper
                     : (item._id === barterId);
             });
 
-            matchingItems.push(...this.jsonUtil.clone(filterResult));
+            matchingItems.push(...filterResult);
         }
 
         if (matchingItems.length === 0)
