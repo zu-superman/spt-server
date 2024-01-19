@@ -307,7 +307,8 @@
         "sectantpriest": 4,
         "sectantwarrior": 4,
         "shooterbtr": 1,
-        "test": 4
+        "test": 4,
+		"ravangezryachiyevent": 4
     },
     "chanceAssaultScavHasPlayerScavName": 10,
     "secureContainerAmmoStackCount": 20,
@@ -514,6 +515,14 @@
             "forceStock": true
         },
         "bossboar": {
+            "nvgIsActiveChanceDayPercent": 10,
+            "nvgIsActiveChanceNightPercent": 90,
+            "lightIsActiveDayChancePercent": 25,
+            "lightIsActiveNightChancePercent": 85,
+            "laserIsActiveChancePercent": 85,
+            "forceStock": true
+        },
+        "ravangezryachiyevent": {
             "nvgIsActiveChanceDayPercent": 10,
             "nvgIsActiveChanceNightPercent": 90,
             "lightIsActiveDayChancePercent": 25,
