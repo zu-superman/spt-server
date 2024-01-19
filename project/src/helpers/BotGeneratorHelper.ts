@@ -286,7 +286,7 @@ export class BotGeneratorHelper
         itemsEquipped: Item[],
         tplToCheck: string,
         equipmentSlot: string,
-    ): { incompatible: boolean; reason: string; }
+    ): { incompatible: boolean; reason: string; slotBlocked?: boolean; }
     {
         // Skip slots that have no incompatibilities
         if (["Scabbard", "Backpack", "SecureContainer", "Holster", "ArmBand"].includes(equipmentSlot))
@@ -333,6 +333,7 @@ export class BotGeneratorHelper
                 incompatible: true,
                 reason:
                     `${tplToCheck} ${itemToEquip._name} in slot: ${equipmentSlot} blocked by: ${blockingItem._id} ${blockingItem._name}`,
+                slotBlocked: true,
             };
         }
 
@@ -345,6 +346,7 @@ export class BotGeneratorHelper
                 incompatible: true,
                 reason:
                     `${tplToCheck} ${itemToEquip._name} in slot: ${equipmentSlot} blocked by: ${blockingItem._id} ${blockingItem._name}`,
+                slotBlocked: true,
             };
         }
 
@@ -358,6 +360,7 @@ export class BotGeneratorHelper
                     incompatible: true,
                     reason:
                         `${tplToCheck} ${itemToEquip._name} is blocked by: ${existingHeadwear._tpl} in slot: ${existingHeadwear.slotId}`,
+                    slotBlocked: true,
                 };
             }
         }
@@ -372,6 +375,7 @@ export class BotGeneratorHelper
                     incompatible: true,
                     reason:
                         `${tplToCheck} ${itemToEquip._name} is blocked by: ${existingFaceCover._tpl} in slot: ${existingFaceCover.slotId}`,
+                    slotBlocked: true,
                 };
             }
         }
@@ -386,6 +390,7 @@ export class BotGeneratorHelper
                     incompatible: true,
                     reason:
                         `${tplToCheck} ${itemToEquip._name} is blocked by: ${existingEarpiece._tpl} in slot: ${existingEarpiece.slotId}`,
+                    slotBlocked: true,
                 };
             }
         }
@@ -400,6 +405,7 @@ export class BotGeneratorHelper
                     incompatible: true,
                     reason:
                         `${tplToCheck} ${itemToEquip._name} is blocked by: ${existingArmorVest._tpl} in slot: ${existingArmorVest.slotId}`,
+                    slotBlocked: true,
                 };
             }
         }

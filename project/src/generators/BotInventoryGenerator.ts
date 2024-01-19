@@ -287,19 +287,25 @@ export class BotInventoryGenerator
                     continue;
                 }
 
-                if (
-                    this.botGeneratorHelper.isItemIncompatibleWithCurrentItems(
-                        settings.inventory.items,
-                        chosenItemTpl,
-                        settings.rootEquipmentSlot,
-                    ).incompatible)
+                const compatabilityResult = this.botGeneratorHelper.isItemIncompatibleWithCurrentItems(
+                    settings.inventory.items,
+                    chosenItemTpl,
+                    settings.rootEquipmentSlot);
+                if (compatabilityResult.incompatible)
                 {
+                    // Entire slot is blocked by another item, no point in checking other items
+                    if (compatabilityResult.slotBlocked)
+                    {
+                        return;
+                    }
+
+                    // Tried 8 different items that failed, stop
                     if (attempts >= 8)
                     {
                         return;
                     }
 
-                    // remove picked item
+                    // Remove picked item
                     delete settings.rootEquipmentPool[chosenItemTpl];
 
                     attempts++;
@@ -335,7 +341,7 @@ export class BotInventoryGenerator
                 );
             }
 
-            // Item has slots
+            // Item has slots, fill them
             if ( pickedItemDb._props.Slots?.length > 0 )
             {
                 const items = this.botEquipmentModGenerator.generateModsForEquipment(

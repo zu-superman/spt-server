@@ -177,7 +177,7 @@ export class BotWeaponGeneratorHelper
         for (const slot of equipmentSlots)
         {
             // Get container to put item into
-            const container = inventory.items.find((i) => i.slotId === slot);
+            const container = inventory.items.find((item) => item.slotId === slot);
             if (!container)
             {
                 missingContainerCount++;
@@ -240,9 +240,9 @@ export class BotWeaponGeneratorHelper
                     break;
                 }
 
-                // Get all root items in backpack
-                const existingContainerItems = inventory.items.filter((i) =>
-                    i.parentId === container._id && i.slotId === slotGrid._name
+                // Get all root items in found container
+                const existingContainerItems = inventory.items.filter((item) =>
+                    item.parentId === container._id && item.slotId === slotGrid._name
                 );
 
                 // Get root items in container we can iterate over to find out what space is free
