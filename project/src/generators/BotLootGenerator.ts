@@ -305,7 +305,7 @@ export class BotLootGenerator
             let fitItemIntoContainerAttempts = 0;
             for (let i = 0; i < totalItemCount; i++)
             {
-                const itemToAddTemplate = this.getRandomItemFromPoolByRole(pool, botRole);
+                const itemToAddTemplate = this.getRandomItemFromPoolByBotRole(pool, botRole);
                 const id = this.hashUtil.generate();
                 let itemsToAdd: Item[] = [{
                     _id: id,
@@ -476,7 +476,7 @@ export class BotLootGenerator
      * @param isPmc Is the bot being created a pmc
      * @returns ITemplateItem object
      */
-    protected getRandomItemFromPoolByRole(pool: ITemplateItem[], botRole: string): ITemplateItem
+    protected getRandomItemFromPoolByBotRole(pool: ITemplateItem[], botRole: string): ITemplateItem
     {
         const itemIndex = this.randomUtil.getBiasedRandomNumber(
             0,
