@@ -275,7 +275,7 @@ export class BotLootGenerator
     }
 
     /**
-     * Take random items from a pool and add to an inventory until totalItemCount or totalValueLimit is reached
+     * Take random items from a pool and add to an inventory until totalItemCount or totalValueLimit or space limit is reached
      * @param pool Pool of items to pick from
      * @param equipmentSlots What equipment slot will the loot items be added to
      * @param totalItemCount Max count of items to add
@@ -301,14 +301,15 @@ export class BotLootGenerator
         {
             let currentTotalRub = 0;
             const itemLimits: Record<string, number> = {};
+            /** Prep limits for items added to the container */
             const itemSpawnLimits: Record<string, Record<string, number>> = {};
             let fitItemIntoContainerAttempts = 0;
             for (let i = 0; i < totalItemCount; i++)
             {
                 const itemToAddTemplate = this.getRandomItemFromPoolByBotRole(pool, botRole);
-                const id = this.hashUtil.generate();
-                let itemsToAdd: Item[] = [{
-                    _id: id,
+                const newRootItemId = this.hashUtil.generate();
+                const itemWithChildrenToAdd: Item[] = [{
+                    _id: newRootItemId,
                     _tpl: itemToAddTemplate._id,
                     ...this.botGeneratorHelper.generateExtraPropertiesForItem(itemToAddTemplate, botRole),
                 }];
@@ -340,33 +341,15 @@ export class BotLootGenerator
                     }
                 }
 
-                // Fill ammo box
-                if (this.itemHelper.isOfBaseclass(itemToAddTemplate._id, BaseClasses.AMMO_BOX))
-                {
-                    this.itemHelper.addCartridgesToAmmoBox(itemsToAdd, itemToAddTemplate);
-                }
-                // Make money a stack
-                else if (this.itemHelper.isOfBaseclass(itemToAddTemplate._id, BaseClasses.MONEY))
-                {
-                    this.randomiseMoneyStackSize(isPmc, itemToAddTemplate, itemsToAdd[0]);
-                }
-                // Make ammo a stack
-                else if (this.itemHelper.isOfBaseclass(itemToAddTemplate._id, BaseClasses.AMMO))
-                {
-                    this.randomiseAmmoStackSize(isPmc, itemToAddTemplate, itemsToAdd[0]);
-                }
-                // Must add soft inserts/plates
-                else if (this.itemHelper.itemRequiresSoftInserts(itemToAddTemplate._id))
-                {
-                    itemsToAdd = this.itemHelper.addChildSlotItems(itemsToAdd, itemToAddTemplate, null, true);
-                }
+
+                this.addRequiredChildItemsToParent(itemToAddTemplate, itemWithChildrenToAdd, isPmc);
 
                 // Attempt to add item to container(s)
                 const itemAddedResult = this.botWeaponGeneratorHelper.addItemWithChildrenToEquipmentSlot(
                     equipmentSlots,
-                    id,
+                    newRootItemId,
                     itemToAddTemplate._id,
-                    itemsToAdd,
+                    itemWithChildrenToAdd,
                     inventoryToAddItemsTo,
                 );
 
@@ -390,7 +373,7 @@ export class BotLootGenerator
                         break;
                     }
 
-                    // Reset loop, try again
+                    // Try again, failed but still under attempt limit
                     continue;
                 }
 
@@ -407,6 +390,36 @@ export class BotLootGenerator
                     }
                 }
             }
+        }
+    }
+
+    /**
+     * Some items need child items to function, add them to the itemToAddChildrenTo array
+     * @param itemToAddTemplate Db template of item to check
+     * @param itemToAddChildrenTo Item to add children to
+     * @param isPmc Is the item being generated for a pmc (affects money/ammo stack sizes)
+     */
+    protected addRequiredChildItemsToParent(itemToAddTemplate: ITemplateItem, itemToAddChildrenTo: Item[], isPmc: boolean): void
+    {
+        // Fill ammo box
+        if (this.itemHelper.isOfBaseclass(itemToAddTemplate._id, BaseClasses.AMMO_BOX))
+        {
+            this.itemHelper.addCartridgesToAmmoBox(itemToAddChildrenTo, itemToAddTemplate);
+        }
+        // Make money a stack
+        else if (this.itemHelper.isOfBaseclass(itemToAddTemplate._id, BaseClasses.MONEY))
+        {
+            this.randomiseMoneyStackSize(isPmc, itemToAddTemplate, itemToAddChildrenTo[0]);
+        }
+        // Make ammo a stack
+        else if (this.itemHelper.isOfBaseclass(itemToAddTemplate._id, BaseClasses.AMMO))
+        {
+            this.randomiseAmmoStackSize(isPmc, itemToAddTemplate, itemToAddChildrenTo[0]);
+        }
+        // Must add soft inserts/plates
+        else if (this.itemHelper.itemRequiresSoftInserts(itemToAddTemplate._id))
+        {
+            itemToAddChildrenTo = this.itemHelper.addChildSlotItems(itemToAddChildrenTo, itemToAddTemplate, null, true);
         }
     }
 
