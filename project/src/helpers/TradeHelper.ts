@@ -207,7 +207,7 @@ export class TradeHelper
                 itemWithModsToAdd: this.itemHelper.reparentItemAndChildren(offerItems[0], offerItems),
                 foundInRaid: foundInRaid,
                 callback: buyCallback,
-                useSortingTable: true
+                useSortingTable: false
             };
 
             // Add item + children to stash
