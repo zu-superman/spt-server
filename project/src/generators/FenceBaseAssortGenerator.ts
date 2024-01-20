@@ -40,7 +40,7 @@ export class FenceBaseAssortGenerator
     }
 
     /**
-     * Create base fence assorts dynamically and store in db
+     * Create base fence assorts dynamically and store in memory
      */
     public generateFenceBaseAssorts(): void
     {
@@ -84,16 +84,8 @@ export class FenceBaseAssortGenerator
                 _tpl: rootItemDb._id,
                 parentId: "hideout",
                 slotId: "hideout",
-                upd: { StackObjectsCount: 9999999, UnlimitedCount: true },
+                upd: { StackObjectsCount: 9999999 },
             }];
-
-            // Need to add mods to armors so they dont show as red in the trade screen
-            let price = this.handbookHelper.getTemplatePrice(rootItemDb._id);
-            if (this.itemHelper.itemRequiresSoftInserts(rootItemDb._id))
-            {
-                this.addChildrenToArmorModSlots(itemWithChildrenToAdd, rootItemDb);
-                price = this.getHandbookItemPriceWithChildren(itemWithChildrenToAdd);
-            }
 
             // Ensure IDs are unique
             this.itemHelper.remapRootItemId(itemWithChildrenToAdd);
@@ -136,6 +128,7 @@ export class FenceBaseAssortGenerator
                 this.jsonUtil.clone(defaultPreset._items),
             );
 
+            // Find root item and add some properties to it
             for (let i = 0; i < presetAndMods.length; i++)
             {
                 const mod = presetAndMods[i];
@@ -143,13 +136,10 @@ export class FenceBaseAssortGenerator
                 // Build root Item info
                 if (!("parentId" in mod))
                 {
-                    mod._id = presetAndMods[0]._id;
                     mod.parentId = "hideout";
                     mod.slotId = "hideout";
                     mod.upd = {
-                        UnlimitedCount: false,
                         StackObjectsCount: 1,
-                        BuyRestrictionCurrent: 0,
                         sptPresetId: defaultPreset._id, // Store preset id here so we can check it later to prevent preset dupes
                     };
 
@@ -158,21 +148,15 @@ export class FenceBaseAssortGenerator
                 }
             }
 
-            const presetDbItem = this.itemHelper.getItem(presetAndMods[0]._tpl)[1];
-
             // Add constructed preset to assorts
             baseFenceAssort.items.push(...presetAndMods);
 
             // Calculate preset price
-            let rub = 0;
-            for (const it of presetAndMods)
-            {
-                rub += this.handbookHelper.getTemplatePrice(it._tpl);
-            }
+            const price = this.getHandbookItemPriceWithChildren(presetAndMods);
 
             // Multiply weapon+mods rouble price by multipler in config
             baseFenceAssort.barter_scheme[presetAndMods[0]._id] = [[]];
-            baseFenceAssort.barter_scheme[presetAndMods[0]._id][0][0] = { _tpl: Money.ROUBLES, count: Math.round(rub) };
+            baseFenceAssort.barter_scheme[presetAndMods[0]._id][0][0] = { _tpl: Money.ROUBLES, count: Math.round(price) * this.traderConfig.fence.presetPriceMult };
 
             baseFenceAssort.loyal_level_items[presetAndMods[0]._id] = 1;
         }

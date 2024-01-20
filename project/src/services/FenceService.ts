@@ -4,14 +4,13 @@ import { HandbookHelper } from "@spt-aki/helpers/HandbookHelper";
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { PresetHelper } from "@spt-aki/helpers/PresetHelper";
 import { MinMax } from "@spt-aki/models/common/MinMax";
-import { IFenceLevel, IPreset } from "@spt-aki/models/eft/common/IGlobals";
+import { IFenceLevel } from "@spt-aki/models/eft/common/IGlobals";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
 import { Item, Repairable } from "@spt-aki/models/eft/common/tables/IItem";
 import { ITemplateItem } from "@spt-aki/models/eft/common/tables/ITemplateItem";
 import { ITraderAssort } from "@spt-aki/models/eft/common/tables/ITrader";
 import { BaseClasses } from "@spt-aki/models/enums/BaseClasses";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
-import { Money } from "@spt-aki/models/enums/Money";
 import { Traders } from "@spt-aki/models/enums/Traders";
 import { ITraderConfig } from "@spt-aki/models/spt/config/ITraderConfig";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
@@ -33,7 +32,7 @@ export class FenceService
 {
     /** Main assorts you see at all rep levels */
     protected fenceAssort: ITraderAssort = undefined;
-    /** Assorts shown on a separte tab when you max out fence rep */
+    /** Assorts shown on a separate tab when you max out fence rep */
     protected fenceDiscountAssort: ITraderAssort = undefined;
     protected traderConfig: ITraderConfig;
     protected nextMiniRefreshTimestamp: number;
@@ -67,11 +66,11 @@ export class FenceService
 
     /**
      * Replace high rep level fence assort with new assort
-     * @param assort New assorts to replace old with
+     * @param discountAssort New assorts to replace old with
      */
-    public setFenceDiscountAssort(assort: ITraderAssort): void
+    public setFenceDiscountAssort(discountAssort: ITraderAssort): void
     {
-        this.fenceDiscountAssort = assort;
+        this.fenceDiscountAssort = discountAssort;
     }
 
     /**
@@ -238,8 +237,8 @@ export class FenceService
 
         itemCountToReplace = this.getCountOfItemsToGenerate(itemCountToReplace);
 
-        const newItems = this.createBaseTraderAssortItem();
-        const newDiscountItems = this.createBaseTraderAssortItem();
+        const newItems = this.createFenceAssortSkeleton();
+        const newDiscountItems = this.createFenceAssortSkeleton();
         this.createAssorts(itemCountToReplace, newItems, 1);
         this.createAssorts(discountItemCountToReplace, newDiscountItems, 2);
 
@@ -366,21 +365,22 @@ export class FenceService
 
     /**
      * Create trader assorts for fence and store in fenceService cache
+     * Uses fence base cache generatedon server start as a base
      */
     public generateFenceAssorts(): void
     {
         // Reset refresh time now assorts are being generated
         this.incrementPartialRefreshTime();
 
-        const assorts = this.createBaseTraderAssortItem();
-        const discountAssorts = this.createBaseTraderAssortItem();
+        const assorts = this.createFenceAssortSkeleton();
+        const discountAssorts = this.createFenceAssortSkeleton();
         // Create basic fence assort
         this.createAssorts(this.traderConfig.fence.assortSize, assorts, 1);
 
         // Create level 2 assorts accessible at rep level 6
         this.createAssorts(this.traderConfig.fence.discountOptions.assortSize, discountAssorts, 2);
 
-        // store in fenceAssort class property
+        // store in fenceAssort class properties
         this.setFenceAssort(assorts);
         this.setFenceDiscountAssort(discountAssorts);
     }
@@ -389,7 +389,7 @@ export class FenceService
      * Create skeleton to hold assort items
      * @returns ITraderAssort object
      */
-    protected createBaseTraderAssortItem(): ITraderAssort
+    protected createFenceAssortSkeleton(): ITraderAssort
     {
         return {
             items: [],
@@ -414,38 +414,7 @@ export class FenceService
         // Add presets
         const maxPresetCount = Math.round(assortCount * (this.traderConfig.fence.maxPresetsPercent / 100));
         const randomisedPresetCount = this.randomUtil.getInt(0, maxPresetCount);
-        this.addPresetsToAssort(randomisedPresetCount, assorts, baseFenceAssort);
-    }
-
-    protected addPresetsToAssort(desiredPresetCount: number, assorts: ITraderAssort, baseFenceAssort: ITraderAssort): void
-    {
-        let presetsAddedCount = 0;
-        if (desiredPresetCount <= 0)
-        {
-            return;
-        }
-
-        const presetRootItems = baseFenceAssort.items.filter(item => item.upd?.sptPresetId);
-        while (presetsAddedCount < desiredPresetCount)
-        {
-            const randomPresetRoot = this.randomUtil.getArrayValue(presetRootItems);
-            const rootItemDb = this.itemHelper.getItem(randomPresetRoot._tpl)[1];
-            const presetWithChildrenClone = this.jsonUtil.clone(this.itemHelper.findAndReturnChildrenAsItems(baseFenceAssort.items, randomPresetRoot._id));
-
-            this.removeRandomModsOfItem(presetWithChildrenClone);
-
-            // Need to add mods to armors so they dont show as red in the trade screen
-            if (this.itemHelper.itemRequiresSoftInserts(randomPresetRoot._tpl))
-            {
-                this.randomiseArmorModDurability(presetWithChildrenClone, rootItemDb);
-            }
-
-            assorts.items.push(...presetWithChildrenClone);
-            assorts.barter_scheme[randomPresetRoot._id] = baseFenceAssort.barter_scheme[randomPresetRoot._id];
-            assorts.loyal_level_items[randomPresetRoot._id] = baseFenceAssort.loyal_level_items[randomPresetRoot._id];
-
-            presetsAddedCount++;
-        }
+        this.addPresetsToAssort(randomisedPresetCount, assorts, baseFenceAssort, loyaltyLevel);
     }
 
     protected addItemAssorts(
@@ -457,7 +426,7 @@ export class FenceService
     ): void
     {
         const priceLimits = this.traderConfig.fence.itemCategoryRoublePriceLimit;
-        const assortRootItems = fenceAssort.items.filter(x => x.parentId === "hideout");
+        const assortRootItems = fenceAssort.items.filter(x => x.parentId === "hideout" && !x.upd?.sptPresetId);
         for (let i = 0; i < assortCount; i++)
         {
             const chosenAssortRoot = this.randomUtil.getArrayValue(assortRootItems);
@@ -500,12 +469,16 @@ export class FenceService
                 itemLimitCount.current++;
             }
 
+            // MUST randomise Ids as its possible to add the same base fence assort twice = duplicate IDs = dead client
+            this.itemHelper.remapRootItemId(desiredAssortItemAndChildrenClone);
+            this.itemHelper.replaceIDs(null, desiredAssortItemAndChildrenClone);
+
             const rootItemBeingAdded = desiredAssortItemAndChildrenClone[0];
             this.randomiseItemUpdProperties(itemDbDetails, rootItemBeingAdded);
 
             rootItemBeingAdded.upd.StackObjectsCount = this.getSingleItemStackCount(itemDbDetails);
-            rootItemBeingAdded.upd.BuyRestrictionCurrent = 0;
-            rootItemBeingAdded.upd.UnlimitedCount = false;
+            //rootItemBeingAdded.upd.BuyRestrictionCurrent = 0;
+            //rootItemBeingAdded.upd.UnlimitedCount = false;
 
             // Need to add mods to armors so they dont show as red in the trade screen
             if (this.itemHelper.itemRequiresSoftInserts(rootItemBeingAdded._tpl))
@@ -516,6 +489,55 @@ export class FenceService
             assorts.items.push(...desiredAssortItemAndChildrenClone);
             assorts.barter_scheme[rootItemBeingAdded._id] = fenceAssort.barter_scheme[chosenAssortRoot._id];
             assorts.loyal_level_items[rootItemBeingAdded._id] = loyaltyLevel;
+        }
+    }
+
+    /**
+     * Find presets in base fence assort and add desired number to 'assorts' parameter
+     * @param desiredPresetCount 
+     * @param assorts 
+     * @param baseFenceAssort 
+     * @param loyaltyLevel Which loyalty level is required to see/buy item
+     */
+    protected addPresetsToAssort(desiredPresetCount: number, assorts: ITraderAssort, baseFenceAssort: ITraderAssort, loyaltyLevel: number): void
+    {
+        let presetsAddedCount = 0;
+        if (desiredPresetCount <= 0)
+        {
+            return;
+        }
+
+        const presetRootItems = baseFenceAssort.items.filter(item => item.upd?.sptPresetId);
+        while (presetsAddedCount < desiredPresetCount)
+        {
+            const randomPresetRoot = this.randomUtil.getArrayValue(presetRootItems);
+            const rootItemDb = this.itemHelper.getItem(randomPresetRoot._tpl)[1];
+            const presetWithChildrenClone = this.jsonUtil.clone(this.itemHelper.findAndReturnChildrenAsItems(baseFenceAssort.items, randomPresetRoot._id));
+
+            // Need to add mods to armors so they dont show as red in the trade screen
+            if (this.itemHelper.itemRequiresSoftInserts(randomPresetRoot._tpl))
+            {
+                this.randomiseArmorModDurability(presetWithChildrenClone, rootItemDb);
+            }
+
+            if (this.itemHelper.isOfBaseclass(rootItemDb._id, BaseClasses.WEAPON))
+            {
+                this.randomiseItemUpdProperties(rootItemDb, presetWithChildrenClone[0]);
+            }
+
+            this.removeRandomModsOfItem(presetWithChildrenClone);
+
+            // MUST randomise Ids as its possible to add the same base fence assort twice = duplicate IDs = dead client
+            this.itemHelper.remapRootItemId(presetWithChildrenClone);
+            this.itemHelper.replaceIDs(null, presetWithChildrenClone);
+
+            assorts.items.push(...presetWithChildrenClone);
+
+            // Must be careful to use correct id as the item has had its IDs regenerated
+            assorts.barter_scheme[presetWithChildrenClone[0]._id] = baseFenceAssort.barter_scheme[randomPresetRoot._id];
+            assorts.loyal_level_items[presetWithChildrenClone[0]._id] = loyaltyLevel;
+
+            presetsAddedCount++;
         }
     }
 
@@ -552,7 +574,7 @@ export class FenceService
                 }
 
                 // Find items mod to apply dura changes to
-                const modItemToAdjust = armor.find(mod => mod.slotId === requiredSlot._name);
+                const modItemToAdjust = armor.find(mod => mod.slotId.toLowerCase() === requiredSlot._name.toLowerCase());
                 if (!modItemToAdjust.upd)
                 {
                     modItemToAdjust.upd = {}
@@ -604,7 +626,7 @@ export class FenceService
                     this.traderConfig.fence.armorMaxDurabilityPercentMinMax);
 
                 // Find items mod to apply dura changes to
-                const modItemToAdjust = armor.find(mod => mod.slotId === plateSlot._name);
+                const modItemToAdjust = armor.find(mod => mod.slotId.toLowerCase() === plateSlot._name.toLowerCase());
                 if (!modItemToAdjust.upd)
                 {
                     modItemToAdjust.upd = {}
@@ -647,90 +669,6 @@ export class FenceService
         }
 
         return 1;
-    }
-
-    /**
-     * Add weapon/armor presets to fence
-     * @param assortCount how many assorts to add to assorts
-     * @param defaultPresets a dictionary of default weapon presets
-     * @param assorts Trader assort object to add preset to
-     * @param loyaltyLevel loyalty level to requre item at
-     */
-    protected addPresets(
-        desiredPresetCount: number,
-        defaultPresets: Record<string, IPreset>,
-        assorts: ITraderAssort,
-        loyaltyLevel: number,
-    ): void
-    {
-        let presetCount = 0;
-        const presetKeys = Object.keys(defaultPresets);
-        for (let index = 0; index < desiredPresetCount; index++)
-        {
-            const presetId = presetKeys[this.randomUtil.getInt(0, presetKeys.length - 1)];
-            const preset = defaultPresets[presetId];
-
-            // Check we're under preset limit
-            if (presetCount > desiredPresetCount)
-            {
-                return;
-            }
-
-            // Skip presets we've already added
-            if (assorts.items.some((i) => i.upd && i.upd.sptPresetId === preset._id))
-            {
-                continue;
-            }
-
-            // Construct preset + mods
-            const presetAndMods: Item[] = this.itemHelper.replaceIDs(
-                null,
-                this.jsonUtil.clone(preset._items),
-            );
-            this.removeRandomModsOfItem(presetAndMods);
-            for (let i = 0; i < presetAndMods.length; i++)
-            {
-                const mod = presetAndMods[i];
-
-                // Build root Item info
-                if (!("parentId" in mod))
-                {
-                    mod._id = presetAndMods[0]._id;
-                    mod.parentId = "hideout";
-                    mod.slotId = "hideout";
-                    mod.upd = {
-                        UnlimitedCount: false,
-                        StackObjectsCount: 1,
-                        BuyRestrictionCurrent: 0,
-                        sptPresetId: preset._id, // Store preset id here so we can check it later to prevent preset dupes
-                    };
-
-                    // Updated root item, exit loop
-                    break;
-                }
-            }
-
-            const presetDbItem = this.itemHelper.getItem(presetAndMods[0]._tpl)[1];
-            this.randomiseItemUpdProperties(presetDbItem, presetAndMods[0]);
-
-            // Add constructed preset to assorts
-            assorts.items.push(...presetAndMods);
-
-            // Calculate preset price
-            let rub = 0;
-            for (const it of presetAndMods)
-            {
-                rub += this.handbookHelper.getTemplatePrice(it._tpl);
-            }
-
-            // Multiply weapon+mods rouble price by multipler in config
-            assorts.barter_scheme[presetAndMods[0]._id] = [[]];
-            assorts.barter_scheme[presetAndMods[0]._id][0][0] = { _tpl: Money.ROUBLES, count: Math.round(rub) };
-
-            assorts.loyal_level_items[presetAndMods[0]._id] = loyaltyLevel;
-
-            presetCount++;
-        }
     }
 
     /**

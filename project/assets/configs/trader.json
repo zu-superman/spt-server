@@ -39,7 +39,7 @@
         "discountOptions": {
             "assortSize": 50,
             "itemPriceMult": 0.8,
-            "presetPriceMult": 1.5
+            "presetPriceMult": 1.3
         },
         "partialRefreshTimeSeconds": 240,
         "partialRefreshChangePercent": 15,
@@ -168,7 +168,11 @@
             "62f10b79e7ee985f386b2f47",
 			"633ffb5d419dbf4bea7004c6",
 			"543be5dd4bdc2deb348b4569",
-			"65649eb40bf0ed77b8044453"
+			"65649eb40bf0ed77b8044453",
+			"5448e54d4bdc2dcc718b4568",
+			"5a341c4086f77401f2541505",
+			"5422acb9af1c889c16000029",
+			"5448e5284bdc2dcb718b4567"
         ],
 		"coopExtractGift": {
 			"sendGift": true,
