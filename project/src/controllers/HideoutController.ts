@@ -25,6 +25,7 @@ import { IHideoutToggleAreaRequestData } from "@spt-aki/models/eft/hideout/IHide
 import { IHideoutUpgradeRequestData } from "@spt-aki/models/eft/hideout/IHideoutUpgradeRequestData";
 import { IQteData } from "@spt-aki/models/eft/hideout/IQteData";
 import { IRecordShootingRangePoints } from "@spt-aki/models/eft/hideout/IRecordShootingRangePoints";
+import { IAddItemDirectRequest } from "@spt-aki/models/eft/inventory/IAddItemDirectRequest";
 import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEventRouterResponse";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { HideoutAreas } from "@spt-aki/models/enums/HideoutAreas";
@@ -491,26 +492,20 @@ export class HideoutController
 
         const itemToReturn = hideoutArea.slots.find((x) => x.locationIndex === slotIndexToRemove).item[0];
 
-        const newReq = {
-            items: [{
-                // eslint-disable-next-line @typescript-eslint/naming-convention
-                item_id: itemToReturn._tpl,
-                count: 1,
-            }],
-            tid: "ragfair",
-        };
-
-        output = this.inventoryHelper.addItem(
-            pmcData,
-            newReq,
-            output,
-            sessionID,
-            null,
-            !!itemToReturn.upd.SpawnedInSession,
-            itemToReturn.upd,
-        );
-
-        // If addItem returned with errors, drop out
+        const request: IAddItemDirectRequest = {
+            itemWithModsToAdd: [
+                {
+                    _id: this.hashUtil.generate(),
+                    _tpl: itemToReturn._tpl
+                }
+            ],
+            foundInRaid: !!itemToReturn.upd.SpawnedInSession,
+            callback: null,
+            useSortingTable: false
+        }
+        
+        // If returned with errors, drop out
+        this.inventoryHelper.addItemToStash(sessionID, request, pmcData, output);
         if (output.warnings && output.warnings.length > 0)
         {
             return output;
