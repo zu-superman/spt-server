@@ -106,28 +106,36 @@ export class LootGenerator
         }
 
         const globalDefaultPresets = Object.values(this.presetHelper.getDefaultPresets());
+        const itemBlacklistArray = Array.from(itemBlacklist);
 
         // Filter default presets to just weapons
-        const weaponDefaultPresets = globalDefaultPresets.filter(preset => this.itemHelper.isOfBaseclass(preset._encyclopedia, BaseClasses.WEAPON));
         const randomisedWeaponPresetCount = this.randomUtil.getInt(options.weaponPresetCount.min, options.weaponPresetCount.max);
-        const itemBlacklistArray = Array.from(itemBlacklist);
-        for (let index = 0; index < randomisedWeaponPresetCount; index++)
+        if (randomisedWeaponPresetCount > 0)
         {
-            if (!this.findAndAddRandomPresetToLoot(weaponDefaultPresets, itemTypeCounts, itemBlacklistArray, result))
+            const weaponDefaultPresets = globalDefaultPresets.filter(preset => this.itemHelper.isOfBaseclass(preset._encyclopedia, BaseClasses.WEAPON));
+        
+            for (let index = 0; index < randomisedWeaponPresetCount; index++)
             {
-                index--;
+                if (!this.findAndAddRandomPresetToLoot(weaponDefaultPresets, itemTypeCounts, itemBlacklistArray, result))
+                {
+                    index--;
+                }
             }
         }
 
+
         // Filter default presets to just armors and then filter again by protection level
-        const armorDefaultPresets = globalDefaultPresets.filter(preset => this.itemHelper.armorItemCanHoldMods(preset._encyclopedia));
-        const levelFilteredArmorPresets = armorDefaultPresets.filter(armor => this.armorIsDesiredProtectionLevel(armor, options));
         const randomisedArmorPresetCount = this.randomUtil.getInt(options.armorPresetCount.min, options.armorPresetCount.max);
-        for (let index = 0; index < randomisedArmorPresetCount; index++)
+        if (randomisedArmorPresetCount > 0)
         {
-            if (!this.findAndAddRandomPresetToLoot(levelFilteredArmorPresets, itemTypeCounts, itemBlacklistArray, result))
+            const armorDefaultPresets = globalDefaultPresets.filter(preset => this.itemHelper.armorItemCanHoldMods(preset._encyclopedia));
+            const levelFilteredArmorPresets = armorDefaultPresets.filter(armor => this.armorIsDesiredProtectionLevel(armor, options));
+            for (let index = 0; index < randomisedArmorPresetCount; index++)
             {
-                index--;
+                if (!this.findAndAddRandomPresetToLoot(levelFilteredArmorPresets, itemTypeCounts, itemBlacklistArray, result))
+                {
+                    index--;
+                }
             }
         }
 
