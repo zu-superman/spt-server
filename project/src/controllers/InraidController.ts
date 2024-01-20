@@ -21,6 +21,7 @@ import { PlayerRaidEndState } from "@spt-aki/models/enums/PlayerRaidEndState";
 import { QuestStatus } from "@spt-aki/models/enums/QuestStatus";
 import { Traders } from "@spt-aki/models/enums/Traders";
 import { IAirdropConfig } from "@spt-aki/models/spt/config/IAirdropConfig";
+import { IBTRConfig } from "@spt-aki/models/spt/config/IBTRConfig";
 import { IInRaidConfig } from "@spt-aki/models/spt/config/IInRaidConfig";
 import { ITraderConfig } from "@spt-aki/models/spt/config/ITraderConfig";
 import { ITraderServiceModel } from "@spt-aki/models/spt/services/ITraderServiceModel";
@@ -44,6 +45,7 @@ import { TimeUtil } from "@spt-aki/utils/TimeUtil";
 export class InraidController
 {
     protected airdropConfig: IAirdropConfig;
+    protected btrConfig: IBTRConfig;
     protected inraidConfig: IInRaidConfig;
     protected traderConfig: ITraderConfig;
 
@@ -71,6 +73,7 @@ export class InraidController
     )
     {
         this.airdropConfig = this.configServer.getConfig(ConfigTypes.AIRDROP);
+        this.btrConfig = this.configServer.getConfig(ConfigTypes.BTR);
         this.inraidConfig = this.configServer.getConfig(ConfigTypes.IN_RAID);
         this.traderConfig = this.configServer.getConfig(ConfigTypes.TRADER);
     }
@@ -509,6 +512,15 @@ export class InraidController
     public getAirdropConfig(): IAirdropConfig
     {
         return this.airdropConfig;
+    }
+
+    /**
+     * Get BTR config from configs/btr.json
+     * @returns Airdrop config
+     */
+    public getBTRConfig(): IBTRConfig
+    {
+        return this.btrConfig;
     }
 
     /**

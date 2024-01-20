@@ -1,12 +1,12 @@
 import { inject, injectable } from "tsyringe";
 
 import { InraidController } from "@spt-aki/controllers/InraidController";
+import { IEmptyRequestData } from "@spt-aki/models/eft/common/IEmptyRequestData";
 import { INullResponseData } from "@spt-aki/models/eft/httpResponse/INullResponseData";
+import { IItemDeliveryRequestData } from "@spt-aki/models/eft/inRaid/IItemDeliveryRequestData";
 import { IRegisterPlayerRequestData } from "@spt-aki/models/eft/inRaid/IRegisterPlayerRequestData";
 import { ISaveProgressRequestData } from "@spt-aki/models/eft/inRaid/ISaveProgressRequestData";
 import { HttpResponseUtil } from "@spt-aki/utils/HttpResponseUtil";
-import { IEmptyRequestData } from "@spt-aki/models/eft/common/IEmptyRequestData";
-import { IItemDeliveryRequestData } from "@spt-aki/models/eft/inRaid/IItemDeliveryRequestData";
 
 /**
  * Handle client requests
@@ -81,6 +81,15 @@ export class InraidCallbacks
     public getAirdropConfig(): string
     {
         return this.httpResponse.noBody(this.inraidController.getAirdropConfig());
+    }
+
+    /**
+     * Handle singleplayer/btr/config
+     * @returns JSON as string
+     */
+    public getBTRConfig(): string
+    {
+        return this.httpResponse.noBody(this.inraidController.getBTRConfig());
     }
 
     /**
