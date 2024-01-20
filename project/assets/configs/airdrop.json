@@ -343,6 +343,7 @@
                     "max": 500
                 }
             },
+			"armorLevelWhitelist": [0],
             "allowBossItems": false
         },
         "barter": {
@@ -432,6 +433,7 @@
                     "max": 500
                 }
             },
+			"armorLevelWhitelist": [0],
             "allowBossItems": false
         }
     }
