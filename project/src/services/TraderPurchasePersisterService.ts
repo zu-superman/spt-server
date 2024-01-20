@@ -62,7 +62,13 @@ export class TraderPurchasePersisterService
             return null;
         }
 
-        return profile.traderPurchases[traderId][assortId];
+        const traderPurchases = profile.traderPurchases[traderId];
+        if (!traderPurchases)
+        {
+            return null;
+        }
+
+        return traderPurchases[assortId];
     }
 
     /**
