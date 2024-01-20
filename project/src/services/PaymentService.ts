@@ -161,64 +161,65 @@ export class PaymentService
     /**
      * Receive money back after selling
      * @param {IPmcData} pmcData
-     * @param {number} amount
-     * @param {IProcessSellTradeRequestData} body
+     * @param {number} amountToSend
+     * @param {IProcessSellTradeRequestData} request
      * @param {IItemEventRouterResponse} output
      * @param {string} sessionID
      * @returns IItemEventRouterResponse
      */
     public giveProfileMoney(
         pmcData: IPmcData,
-        amount: number,
-        body: IProcessSellTradeRequestData,
+        amountToSend: number,
+        request: IProcessSellTradeRequestData,
         output: IItemEventRouterResponse,
         sessionID: string,
     ): void
     {
-        const trader = this.traderHelper.getTrader(body.tid, sessionID);
+        const trader = this.traderHelper.getTrader(request.tid, sessionID);
         const currency = this.paymentHelper.getCurrency(trader.currency);
-        let calcAmount = this.handbookHelper.fromRUB(this.handbookHelper.inRUB(amount, currency), currency);
-        const maxStackSize = this.databaseServer.getTables().templates.items[currency]._props.StackMaxSize;
-        let skip = false;
+        let calcAmount = this.handbookHelper.fromRUB(this.handbookHelper.inRUB(amountToSend, currency), currency);
+        const currencyMaxStackSize = this.databaseServer.getTables().templates.items[currency]._props.StackMaxSize;
+        let skipSendingMoneyToStash = false;
 
         for (const item of pmcData.Inventory.items)
         {
-            // item is not currency
+            // Item is not currency
             if (item._tpl !== currency)
             {
                 continue;
             }
 
-            // item is not in the stash
-            if (!this.isItemInStash(pmcData, item))
+            // Item is not in the stash
+            if (!this.inventoryHelper.isItemInStash(pmcData, item))
             {
                 continue;
             }
 
-            if (item.upd.StackObjectsCount < maxStackSize)
+            // Found currency item
+            if (item.upd.StackObjectsCount < currencyMaxStackSize)
             {
-                if (item.upd.StackObjectsCount + calcAmount > maxStackSize)
+                if (item.upd.StackObjectsCount + calcAmount > currencyMaxStackSize)
                 {
                     // calculate difference
-                    calcAmount -= maxStackSize - item.upd.StackObjectsCount;
-                    item.upd.StackObjectsCount = maxStackSize;
+                    calcAmount -= currencyMaxStackSize - item.upd.StackObjectsCount;
+                    item.upd.StackObjectsCount = currencyMaxStackSize;
                 }
                 else
                 {
-                    skip = true;
+                    skipSendingMoneyToStash = true;
                     item.upd.StackObjectsCount = item.upd.StackObjectsCount + calcAmount;
                 }
 
                 output.profileChanges[sessionID].items.change.push(item);
 
-                if (skip)
+                if (skipSendingMoneyToStash)
                 {
                     break;
                 }
             }
         }
 
-        if (!skip)
+        if (!skipSendingMoneyToStash)
         {
             const addItemToStashRequest: IAddItemDirectRequest = {
                 itemWithModsToAdd: [
@@ -238,35 +239,10 @@ export class PaymentService
         }
 
         // set current sale sum
-        const saleSum = pmcData.TradersInfo[body.tid].salesSum + amount;
+        const saleSum = pmcData.TradersInfo[request.tid].salesSum + amountToSend;
 
-        pmcData.TradersInfo[body.tid].salesSum = saleSum;
-        this.traderHelper.lvlUp(body.tid, pmcData);
-    }
-
-    /**
-     * Recursively checks if the given item is
-     * inside the stash, that is it has the stash as
-     * ancestor with slotId=hideout
-     */
-    protected isItemInStash(pmcData: IPmcData, item: Item): boolean
-    {
-        let container = item;
-
-        while ("parentId" in container)
-        {
-            if (container.parentId === pmcData.Inventory.stash && container.slotId === "hideout")
-            {
-                return true;
-            }
-
-            container = pmcData.Inventory.items.find((i) => i._id === container.parentId);
-            if (!container)
-            {
-                break;
-            }
-        }
-        return false;
+        pmcData.TradersInfo[request.tid].salesSum = saleSum;
+        this.traderHelper.lvlUp(request.tid, pmcData);
     }
 
     /**

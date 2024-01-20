@@ -1521,6 +1521,34 @@ export class InventoryHelper
     {
         return this.inventoryConfig;
     }
+
+    /**
+     * Recursively checks if the given item is
+     * inside the stash, that is it has the stash as
+     * ancestor with slotId=hideout
+     * @param pmcData Player profile
+     * @param itemToCheck Item to look for
+     * @returns True if item exists inside stash
+     */
+    public isItemInStash(pmcData: IPmcData, itemToCheck: Item): boolean
+    {
+        let container = itemToCheck;
+
+        while ("parentId" in container)
+        {
+            if (container.parentId === pmcData.Inventory.stash && container.slotId === "hideout")
+            {
+                return true;
+            }
+
+            container = pmcData.Inventory.items.find((item) => item._id === container.parentId);
+            if (!container)
+            {
+                break;
+            }
+        }
+        return false;
+    }
 }
 
 namespace InventoryHelper
