@@ -10,6 +10,7 @@ import { IHideoutContinuousProductionStartRequestData } from "@spt-aki/models/ef
 import { IHideoutProduction } from "@spt-aki/models/eft/hideout/IHideoutProduction";
 import { IHideoutSingleProductionStartRequestData } from "@spt-aki/models/eft/hideout/IHideoutSingleProductionStartRequestData";
 import { IHideoutTakeProductionRequestData } from "@spt-aki/models/eft/hideout/IHideoutTakeProductionRequestData";
+import { IAddItemDirectRequest } from "@spt-aki/models/eft/inventory/IAddItemDirectRequest";
 import { IAddItemRequestData } from "@spt-aki/models/eft/inventory/IAddItemRequestData";
 import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEventRouterResponse";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
@@ -955,40 +956,44 @@ export class HideoutHelper
             return this.httpResponse.appendErrorToOutput(output, errorMsg);
         }
 
-        const btcCoinCreationRequest = this.createBitcoinRequest(pmcData);
         const coinSlotCount = this.getBTCSlots(pmcData);
-
-        // Run callback after coins are added to player inventory
-        const callback = () =>
-        {
-            // Is at max capacity
-            if (pmcData.Hideout.Production[HideoutHelper.bitcoinFarm].Products.length >= coinSlotCount)
-            {
-                // Set start to now
-                pmcData.Hideout.Production[HideoutHelper.bitcoinFarm].StartTimestamp = this.timeUtil.getTimestamp();
-            }
-
-            // Remove crafted coins from production in profile
-            pmcData.Hideout.Production[HideoutHelper.bitcoinFarm].Products = [];
-        };
+        const btcCoinCreationRequest = this.createBitcoinRequest(pmcData, coinSlotCount);
 
         // Add FiR coins to player inventory
-        return this.inventoryHelper.addItem(pmcData, btcCoinCreationRequest, output, sessionId, callback, true);
+        this.inventoryHelper.addItemToStash(sessionId, btcCoinCreationRequest, pmcData, output);
     }
 
     /**
-     * Create a single bitcoin request object
+     * Create a bitcoin request object
      * @param pmcData Player profile
      * @returns IAddItemRequestData
      */
-    protected createBitcoinRequest(pmcData: IPmcData): IAddItemRequestData
+    protected createBitcoinRequest(pmcData: IPmcData, coinSlotCount: number): IAddItemDirectRequest
     {
         return {
-            items: [{
-                item_id: HideoutHelper.bitcoin,
-                count: pmcData.Hideout.Production[HideoutHelper.bitcoinFarm].Products.length,
-            }],
-            tid: "ragfair",
+            itemWithModsToAdd: [
+                {
+                    _id: this.hashUtil.generate(),
+                    _tpl: HideoutHelper.bitcoin,
+                    upd: {
+                        StackObjectsCount: pmcData.Hideout.Production[HideoutHelper.bitcoinFarm].Products.length
+                    }
+                }
+            ],
+            foundInRaid: true,
+            useSortingTable: true,
+            callback: () =>
+            {
+                // Is at max capacity
+                if (pmcData.Hideout.Production[HideoutHelper.bitcoinFarm].Products.length >= coinSlotCount)
+                {
+                    // Set start to now
+                    pmcData.Hideout.Production[HideoutHelper.bitcoinFarm].StartTimestamp = this.timeUtil.getTimestamp();
+                }
+    
+                // Remove crafted coins from production in profile now they've been collected
+                pmcData.Hideout.Production[HideoutHelper.bitcoinFarm].Products = [];
+            }
         };
     }
 
