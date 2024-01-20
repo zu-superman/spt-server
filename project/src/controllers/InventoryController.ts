@@ -10,6 +10,7 @@ import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
 import { QuestHelper } from "@spt-aki/helpers/QuestHelper";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
 import { Item } from "@spt-aki/models/eft/common/tables/IItem";
+import { IAddItemDirectRequest } from "@spt-aki/models/eft/inventory/IAddItemDirectRequest";
 import { IAddItemRequestData } from "@spt-aki/models/eft/inventory/IAddItemRequestData";
 import { IInventoryBindRequestData } from "@spt-aki/models/eft/inventory/IInventoryBindRequestData";
 import { IInventoryCreateMarkerRequestData } from "@spt-aki/models/eft/inventory/IInventoryCreateMarkerRequestData";
@@ -914,36 +915,50 @@ export class InventoryController
         sessionID: string,
     ): IItemEventRouterResponse
     {
+        const output = this.eventOutputHolder.getOutput(sessionID);
+
+        /** Container player opened in their inventory */
         const openedItem = pmcData.Inventory.items.find((x) => x._id === body.item);
-        const containerDetails = this.itemHelper.getItem(openedItem._tpl);
-        const isSealedWeaponBox = containerDetails[1]._name.includes("event_container_airdrop");
+        const containerDetailsDb = this.itemHelper.getItem(openedItem._tpl);
+        const isSealedWeaponBox = containerDetailsDb[1]._name.includes("event_container_airdrop");
 
-        const newItemRequest: IAddItemRequestData = { tid: "RandomLootContainer", items: [] };
-
-        let foundInRaid = false;
+        let foundInRaid = openedItem.upd?.SpawnedInSession;
+        const rewards: Item[][] = [];
         if (isSealedWeaponBox)
         {
             const containerSettings = this.inventoryHelper.getInventoryConfig().sealedAirdropContainer;
-            newItemRequest.items.push(...this.lootGenerator.getSealedWeaponCaseLoot(containerSettings));
+            rewards.push(...this.lootGenerator.getSealedWeaponCaseLoot(containerSettings));
 
-            foundInRaid = containerSettings.foundInRaid;
+            if (containerSettings.foundInRaid)
+            {
+                foundInRaid = containerSettings.foundInRaid
+            }
         }
         else
         {
-            // Get summary of loot from config
             const rewardContainerDetails = this.inventoryHelper.getRandomLootContainerRewardDetails(openedItem._tpl);
-            newItemRequest.items.push(...this.lootGenerator.getRandomLootContainerLoot(rewardContainerDetails));
+            rewards.push(...this.lootGenerator.getRandomLootContainerLoot(rewardContainerDetails));
 
-            foundInRaid = rewardContainerDetails.foundInRaid;
+            if (rewardContainerDetails.foundInRaid)
+            {
+                foundInRaid = rewardContainerDetails.foundInRaid;
+            }
         }
-
-        const output = this.eventOutputHolder.getOutput(sessionID);
 
         // Find and delete opened item from player inventory
         this.inventoryHelper.removeItem(pmcData, body.item, sessionID, output);
 
         // Add reward items to player inventory
-        this.inventoryHelper.addItem(pmcData, newItemRequest, output, sessionID, null, foundInRaid, null, true);
+        for (const itemWithChildrenToAdd of rewards)
+        {
+            const request: IAddItemDirectRequest = {
+                itemWithModsToAdd: itemWithChildrenToAdd,
+                foundInRaid: foundInRaid,
+                callback: null,
+                useSortingTable: true
+            };
+            this.inventoryHelper.addItemToStash(sessionID, request, pmcData, output);
+        }
 
         return output;
     }

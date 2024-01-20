@@ -5,6 +5,7 @@ import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { PresetHelper } from "@spt-aki/helpers/PresetHelper";
 import { WeightedRandomHelper } from "@spt-aki/helpers/WeightedRandomHelper";
 import { IPreset } from "@spt-aki/models/eft/common/IGlobals";
+import { Item } from "@spt-aki/models/eft/common/tables/IItem";
 import { ITemplateItem } from "@spt-aki/models/eft/common/tables/ITemplateItem";
 import { AddItem } from "@spt-aki/models/eft/inventory/IAddItemRequestData";
 import { BaseClasses } from "@spt-aki/models/enums/BaseClasses";
@@ -17,6 +18,7 @@ import { ItemFilterService } from "@spt-aki/services/ItemFilterService";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
 import { RagfairLinkedItemService } from "@spt-aki/services/RagfairLinkedItemService";
 import { HashUtil } from "@spt-aki/utils/HashUtil";
+import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 import { RandomUtil } from "@spt-aki/utils/RandomUtil";
 
 type ItemLimit = { current: number; max: number; };
@@ -29,6 +31,7 @@ export class LootGenerator
         @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
+        @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("PresetHelper") protected presetHelper: PresetHelper,
         @inject("InventoryHelper") protected inventoryHelper: InventoryHelper,
@@ -335,11 +338,11 @@ export class LootGenerator
     /**
      * Sealed weapon containers have a weapon + associated mods inside them + assortment of other things (food/meds)
      * @param containerSettings sealed weapon container settings
-     * @returns Array of items to add to player inventory
+     * @returns Array of item with children arrays
      */
-    public getSealedWeaponCaseLoot(containerSettings: ISealedAirdropContainerSettings): AddItem[]
+    public getSealedWeaponCaseLoot(containerSettings: ISealedAirdropContainerSettings): Item[][]
     {
-        const itemsToReturn: AddItem[] = [];
+        const itemsToReturn: Item[][] = [];
 
         // choose a weapon to give to the player (weighted)
         const chosenWeaponTpl = this.weightedRandomHelper.getWeightedValue<string>(
@@ -356,7 +359,7 @@ export class LootGenerator
         }
 
         // Get weapon preset - default or choose a random one from all possible
-        let chosenWeaponPreset = containerSettings.defaultPresetsOnly
+        let chosenWeaponPreset = (containerSettings.defaultPresetsOnly)
             ? this.presetHelper.getDefaultPreset(chosenWeaponTpl)
             : this.randomUtil.getArrayValue(this.presetHelper.getPresets(chosenWeaponTpl));
 
@@ -366,8 +369,14 @@ export class LootGenerator
             chosenWeaponPreset = this.randomUtil.getArrayValue(this.presetHelper.getPresets(chosenWeaponTpl));
         }
 
+        const presetAndMods: Item[] = this.itemHelper.replaceIDs(
+            null,
+            this.jsonUtil.clone(chosenWeaponPreset._items),
+        );
+        this.itemHelper.remapRootItemId(presetAndMods);
+
         // Add preset to return object
-        itemsToReturn.push({ count: 1, item_id: chosenWeaponPreset._id, sptIsPreset: true });
+        itemsToReturn.push(presetAndMods);
 
         // Get items related to chosen weapon
         const linkedItemsToWeapon = this.ragfairLinkedItemService.getLinkedDbItems(chosenWeaponTpl);
@@ -385,14 +394,14 @@ export class LootGenerator
      * Get non-weapon mod rewards for a sealed container
      * @param containerSettings Sealed weapon container settings
      * @param weaponDetailsDb Details for the weapon to reward player
-     * @returns AddItem array
+     * @returns Array of item with children arrays
      */
     protected getSealedContainerNonWeaponModRewards(
         containerSettings: ISealedAirdropContainerSettings,
         weaponDetailsDb: ITemplateItem,
-    ): AddItem[]
+    ): Item[][]
     {
-        const rewards: AddItem[] = [];
+        const rewards: Item[][] = [];
 
         for (const rewardTypeId in containerSettings.rewardTypeLimits)
         {
@@ -408,9 +417,9 @@ export class LootGenerator
             if (rewardTypeId === BaseClasses.AMMO_BOX)
             {
                 // Get ammoboxes from db
-                const ammoBoxesDetails = containerSettings.ammoBoxWhitelist.map((x) =>
+                const ammoBoxesDetails = containerSettings.ammoBoxWhitelist.map((tpl) =>
                 {
-                    const itemDetails = this.itemHelper.getItem(x);
+                    const itemDetails = this.itemHelper.getItem(tpl);
                     return itemDetails[1];
                 });
 
@@ -424,9 +433,18 @@ export class LootGenerator
                     continue;
                 }
 
-                // No need to add ammo to box, inventoryHelper.addItem() will handle it
-                const chosenAmmoBox = this.randomUtil.getArrayValue(ammoBoxesMatchingCaliber);
-                rewards.push({ count: rewardCount, item_id: chosenAmmoBox._id, sptIsPreset: false });
+                for (let index = 0; index < rewardCount; index++)
+                {
+                    const chosenAmmoBox = this.randomUtil.getArrayValue(ammoBoxesMatchingCaliber);
+                    const ammoBoxItem: Item[] = [
+                        {
+                            _id: this.hashUtil.generate(),
+                            _tpl: chosenAmmoBox._id
+                        }
+                    ]
+                    this.itemHelper.addCartridgesToAmmoBox(ammoBoxItem, chosenAmmoBox);
+                    rewards.push(ammoBoxItem);
+                }
 
                 continue;
             }
@@ -449,9 +467,16 @@ export class LootGenerator
 
             for (let index = 0; index < rewardCount; index++)
             {
-                // choose a random item from pool
+                // Choose a random item from pool
                 const chosenRewardItem = this.randomUtil.getArrayValue(rewardItemPool);
-                this.addOrIncrementItemToArray(chosenRewardItem._id, rewards);
+                const rewardItem: Item[] = [
+                    {
+                        _id: this.hashUtil.generate(),
+                        _tpl: chosenRewardItem._id
+                    }
+                ]
+
+                rewards.push(rewardItem)
             }
         }
 
@@ -463,15 +488,15 @@ export class LootGenerator
      * @param containerSettings Sealed weapon container settings
      * @param linkedItemsToWeapon All items that can be attached/inserted into weapon
      * @param chosenWeaponPreset The weapon preset given to player as reward
-     * @returns AddItem array
+     * @returns Array of item with children arrays
      */
     protected getSealedContainerWeaponModRewards(
         containerSettings: ISealedAirdropContainerSettings,
         linkedItemsToWeapon: ITemplateItem[],
         chosenWeaponPreset: IPreset,
-    ): AddItem[]
+    ): Item[][]
     {
-        const modRewards: AddItem[] = [];
+        const modRewards: Item[][] = [];
         for (const rewardTypeId in containerSettings.weaponModRewardLimits)
         {
             const settings = containerSettings.weaponModRewardLimits[rewardTypeId];
@@ -499,7 +524,12 @@ export class LootGenerator
             for (let index = 0; index < rewardCount; index++)
             {
                 const chosenItem = this.randomUtil.drawRandomFromList(relatedItems);
-                this.addOrIncrementItemToArray(chosenItem[0]._id, modRewards);
+                const item: Item[] = [{
+                    _id: this.hashUtil.generate(),
+                    _tpl: chosenItem[0]._id
+                }];
+
+                modRewards.push(item)
             }
         }
 
@@ -509,11 +539,11 @@ export class LootGenerator
     /**
      * Handle event-related loot containers - currently just the halloween jack-o-lanterns that give food rewards
      * @param rewardContainerDetails
-     * @returns AddItem array
+     * @returns Array of item with children arrays
      */
-    public getRandomLootContainerLoot(rewardContainerDetails: RewardDetails): AddItem[]
+    public getRandomLootContainerLoot(rewardContainerDetails: RewardDetails): Item[][]
     {
-        const itemsToReturn: AddItem[] = [];
+        const itemsToReturn: Item[][] = [];
 
         // Get random items and add to newItemRequest
         for (let index = 0; index < rewardContainerDetails.rewardCount; index++)
@@ -522,29 +552,15 @@ export class LootGenerator
             const chosenRewardItemTpl = this.weightedRandomHelper.getWeightedValue<string>(
                 rewardContainerDetails.rewardTplPool,
             );
-            this.addOrIncrementItemToArray(chosenRewardItemTpl, itemsToReturn);
+            const rewardItem: Item[] = [
+                {
+                    _id: this.hashUtil.generate(),
+                    _tpl: chosenRewardItemTpl
+                }
+            ]
+            itemsToReturn.push(rewardItem)
         }
 
         return itemsToReturn;
-    }
-
-    /**
-     * A bug in inventoryHelper.addItem() means you cannot add the same item to the array twice with a count of 1, it causes duplication
-     * Default adds 1, or increments count
-     * @param itemTplToAdd items tpl we want to add to array
-     * @param resultsArray Array to add item tpl to
-     */
-    protected addOrIncrementItemToArray(itemTplToAdd: string, resultsArray: AddItem[]): void
-    {
-        const existingItemIndex = resultsArray.findIndex((x) => x.item_id === itemTplToAdd);
-        if (existingItemIndex > -1)
-        {
-            // Exists in array already, increment count
-            resultsArray[existingItemIndex].count++;
-        }
-        else
-        {
-            resultsArray.push({ item_id: itemTplToAdd, count: 1, sptIsPreset: false });
-        }
     }
 }
