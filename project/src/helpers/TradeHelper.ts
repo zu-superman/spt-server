@@ -22,6 +22,7 @@ import { RagfairServer } from "@spt-aki/servers/RagfairServer";
 import { FenceService } from "@spt-aki/services/FenceService";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
 import { PaymentService } from "@spt-aki/services/PaymentService";
+import { TraderPurchasePersisterService } from "@spt-aki/services/TraderPurchasePersisterService";
 import { HttpResponseUtil } from "@spt-aki/utils/HttpResponseUtil";
 import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 
@@ -44,6 +45,7 @@ export class TradeHelper
         @inject("InventoryHelper") protected inventoryHelper: InventoryHelper,
         @inject("RagfairServer") protected ragfairServer: RagfairServer,
         @inject("TraderAssortHelper") protected traderAssortHelper: TraderAssortHelper,
+        @inject("TraderPurchasePersisterService") protected traderPurchasePersisterService: TraderPurchasePersisterService,
         @inject("ConfigServer") protected configServer: ConfigServer,
     )
     {
@@ -84,7 +86,7 @@ export class TradeHelper
                 const assortHasBuyRestrictions = this.itemHelper.hasBuyRestrictions(itemPurchased);
                 if (assortHasBuyRestrictions)
                 {
-                    this.checkPurchaseIsWithinTraderItemLimit(itemPurchased, buyRequestData.item_id, buyCount);
+                    this.checkPurchaseIsWithinTraderItemLimit(sessionID, buyRequestData.tid, itemPurchased, buyRequestData.item_id, buyCount);
                 }
     
                 // Decrement trader item count
@@ -153,7 +155,7 @@ export class TradeHelper
                 const assortHasBuyRestrictions = this.itemHelper.hasBuyRestrictions(itemPurchased);
                 if (assortHasBuyRestrictions)
                 {
-                    this.checkPurchaseIsWithinTraderItemLimit(itemPurchased, buyRequestData.item_id, buyCount);
+                    this.checkPurchaseIsWithinTraderItemLimit(sessionID, buyRequestData.tid, itemPurchased, buyRequestData.item_id, buyCount);
                 }
 
                 // Decrement trader item count
@@ -291,13 +293,16 @@ export class TradeHelper
 
     /**
      * Traders allow a limited number of purchases per refresh cycle (default 60 mins)
+     * @param sessionId Session id
+     * @param traderId Trader assort is purchased from
      * @param assortBeingPurchased the item from trader being bought
      * @param assortId Id of assort being purchased
-     * @param count How many are being bought
+     * @param count How many of the item are being bought
      */
-    protected checkPurchaseIsWithinTraderItemLimit(assortBeingPurchased: Item, assortId: string, count: number): void
+    protected checkPurchaseIsWithinTraderItemLimit(sessionId: string, traderId: string, assortBeingPurchased: Item, assortId: string, count: number): void
     {
-        if ((assortBeingPurchased.upd.BuyRestrictionCurrent + count) > assortBeingPurchased.upd?.BuyRestrictionMax)
+        const traderPurchaseData = this.traderPurchasePersisterService.getProfileTraderPurchase(sessionId, traderId, assortBeingPurchased._id);
+        if ((traderPurchaseData?.count ?? 0 + count) > assortBeingPurchased.upd?.BuyRestrictionMax)
         {
             throw new Error(
                 `Unable to purchase ${count} items, this would exceed your purchase limit of ${assortBeingPurchased.upd.BuyRestrictionMax} from the traders assort: ${assortId} this refresh`,
