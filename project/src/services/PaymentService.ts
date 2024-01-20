@@ -7,6 +7,7 @@ import { PaymentHelper } from "@spt-aki/helpers/PaymentHelper";
 import { TraderHelper } from "@spt-aki/helpers/TraderHelper";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
 import { Item } from "@spt-aki/models/eft/common/tables/IItem";
+import { IAddItemDirectRequest } from "@spt-aki/models/eft/inventory/IAddItemDirectRequest";
 import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEventRouterResponse";
 import { IProcessBuyTradeRequestData } from "@spt-aki/models/eft/trade/IProcessBuyTradeRequestData";
 import { IProcessSellTradeRequestData } from "@spt-aki/models/eft/trade/IProcessSellTradeRequestData";
@@ -14,6 +15,7 @@ import { BackendErrorCodes } from "@spt-aki/models/enums/BackendErrorCodes";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
+import { HashUtil } from "@spt-aki/utils/HashUtil";
 import { HttpResponseUtil } from "@spt-aki/utils/HttpResponseUtil";
 
 @injectable()
@@ -21,6 +23,7 @@ export class PaymentService
 {
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
+        @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("HttpResponseUtil") protected httpResponse: HttpResponseUtil,
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("HandbookHelper") protected handbookHelper: HandbookHelper,
@@ -217,16 +220,21 @@ export class PaymentService
 
         if (!skip)
         {
-            const request = {
-                items: [{
-                    // eslint-disable-next-line @typescript-eslint/naming-convention
-                    item_id: currency,
-                    count: calcAmount,
-                }],
-                tid: body.tid,
+            const addItemToStashRequest: IAddItemDirectRequest = {
+                itemWithModsToAdd: [
+                    {
+                        _id: this.hashUtil.generate(),
+                        _tpl: currency,
+                        upd: {
+                            StackObjectsCount: calcAmount
+                        }
+                    }
+                ],
+                foundInRaid: false,
+                callback: null,
+                useSortingTable: true
             };
-
-            output = this.inventoryHelper.addItem(pmcData, request, output, sessionID, null, false, null, true);
+            this.inventoryHelper.addItemToStash(sessionID, addItemToStashRequest, pmcData, output);
         }
 
         // set current sale sum
