@@ -114,7 +114,7 @@ export class FenceService
 
     /**
      * Adjust all items contained inside an assort by a multiplier
-     * @param assort Assort that contains items with prices to adjust
+     * @param assort (clone)Assort that contains items with prices to adjust
      * @param itemMultipler multipler to use on items
      * @param presetMultiplier preset multipler to use on presets
      */
@@ -325,12 +325,16 @@ export class FenceService
             itemToRemove = this.randomUtil.getArrayValue(assort.items);
         }
 
-        const indexOfItemToRemove = assort.items.findIndex((x) => x._id === itemToRemove._id);
+        const indexOfItemToRemove = assort.items.findIndex((item) => item._id === itemToRemove._id);
         assort.items.splice(indexOfItemToRemove, 1);
 
         // Clean up any mods if item removed was a weapon
-        // TODO: also check for mods attached down the item chain
-        assort.items = assort.items.filter((x) => x.parentId !== itemToRemove._id);
+        const itemWithChildren = this.itemHelper.findAndReturnChildrenAsItems(assort.items, itemToRemove._id);
+        for (const itemToDelete of itemWithChildren)
+        {
+            // Delete item from assort items array
+            assort.items.splice(assort.items.indexOf(itemToDelete), 1);
+        }
 
         delete assort.barter_scheme[itemToRemove._id];
         delete assort.loyal_level_items[itemToRemove._id];
@@ -402,22 +406,50 @@ export class FenceService
      */
     protected createAssorts(assortCount: number, assorts: ITraderAssort, loyaltyLevel: number): void
     {
-        const fenceAssort = this.databaseServer.getTables().traders[Traders.FENCE].assort;
-        const fenceAssortIds = Object.keys(fenceAssort.loyal_level_items);
+        const baseFenceAssort = this.databaseServer.getTables().traders[Traders.FENCE].assort;
         const itemTypeCounts = this.initItemLimitCounter(this.traderConfig.fence.itemTypeLimits);
         
-        this.addItemAssorts(assortCount, fenceAssortIds, assorts, fenceAssort, itemTypeCounts, loyaltyLevel);
+        this.addItemAssorts(assortCount, assorts, baseFenceAssort, itemTypeCounts, loyaltyLevel);
         
         // Add presets
         const maxPresetCount = Math.round(assortCount * (this.traderConfig.fence.maxPresetsPercent / 100));
         const randomisedPresetCount = this.randomUtil.getInt(0, maxPresetCount);
-        const defaultPresets = this.presetHelper.getDefaultPresets();
-        this.addPresets(randomisedPresetCount, defaultPresets, assorts, loyaltyLevel);
+        this.addPresetsToAssort(randomisedPresetCount, assorts, baseFenceAssort);
+    }
+
+    protected addPresetsToAssort(desiredPresetCount: number, assorts: ITraderAssort, baseFenceAssort: ITraderAssort): void
+    {
+        let presetsAddedCount = 0;
+        if (desiredPresetCount <= 0)
+        {
+            return;
+        }
+
+        const presetRootItems = baseFenceAssort.items.filter(item => item.upd?.sptPresetId);
+        while (presetsAddedCount < desiredPresetCount)
+        {
+            const randomPresetRoot = this.randomUtil.getArrayValue(presetRootItems);
+            const rootItemDb = this.itemHelper.getItem(randomPresetRoot._tpl)[1];
+            const presetWithChildrenClone = this.jsonUtil.clone(this.itemHelper.findAndReturnChildrenAsItems(baseFenceAssort.items, randomPresetRoot._id));
+
+            this.removeRandomModsOfItem(presetWithChildrenClone);
+
+            // Need to add mods to armors so they dont show as red in the trade screen
+            if (this.itemHelper.itemRequiresSoftInserts(randomPresetRoot._tpl))
+            {
+                this.randomiseArmorModDurability(presetWithChildrenClone, rootItemDb);
+            }
+
+            assorts.items.push(...presetWithChildrenClone);
+            assorts.barter_scheme[randomPresetRoot._id] = baseFenceAssort.barter_scheme[randomPresetRoot._id];
+            assorts.loyal_level_items[randomPresetRoot._id] = baseFenceAssort.loyal_level_items[randomPresetRoot._id];
+
+            presetsAddedCount++;
+        }
     }
 
     protected addItemAssorts(
         assortCount: number,
-        fenceAssortIds: string[],
         assorts: ITraderAssort,
         fenceAssort: ITraderAssort,
         itemTypeCounts: Record<string, { current: number; max: number; }>,
@@ -425,89 +457,83 @@ export class FenceService
     ): void
     {
         const priceLimits = this.traderConfig.fence.itemCategoryRoublePriceLimit;
+        const assortRootItems = fenceAssort.items.filter(x => x.parentId === "hideout");
         for (let i = 0; i < assortCount; i++)
         {
-            const itemTpl = fenceAssortIds[this.randomUtil.getInt(0, fenceAssortIds.length - 1)];
+            const chosenAssortRoot = this.randomUtil.getArrayValue(assortRootItems);
+            if (!chosenAssortRoot)
+            {
+                this.logger.error(this.localisationService.getText("fence-unable_to_find_assort_by_id", chosenAssortRoot._id));
 
-            const price = this.handbookHelper.getTemplatePrice(itemTpl);
-            const itemIsPreset = this.presetHelper.isPreset(itemTpl);
+                continue;
+            }
+            const desiredAssortItemAndChildrenClone = this.jsonUtil.clone(this.itemHelper.findAndReturnChildrenAsItems(fenceAssort.items, chosenAssortRoot._id));
 
+            const itemDbDetails = this.itemHelper.getItem(chosenAssortRoot._tpl)[1];
+            const itemLimitCount = itemTypeCounts[itemDbDetails._parent];
+            if (itemLimitCount && itemLimitCount.current > itemLimitCount.max)
+            {
+                // Skip adding item as assort as limit reached, decrement i counter so we still get another item
+                i--;
+                continue;
+            }
+            
+            const itemIsPreset = this.presetHelper.isPreset(chosenAssortRoot._id);
+
+            const price = fenceAssort.barter_scheme[chosenAssortRoot._id][0][0].count;
             if (price === 0 || (price === 1 && !itemIsPreset) || price === 100)
             {
                 // Don't allow "special" items
                 i--;
                 continue;
             }
-
-            // It's a normal non-preset item
-            if (!itemIsPreset)
+            
+            if (price > priceLimits[itemDbDetails._parent])
             {
-                const desiredAssort = fenceAssort.items[fenceAssort.items.findIndex((i) => i._id === itemTpl)];
-                if (!desiredAssort)
-                {
-                    this.logger.error(this.localisationService.getText("fence-unable_to_find_assort_by_id", itemTpl));
-                }
-
-                const itemDbDetails = this.itemHelper.getItem(desiredAssort._tpl)[1];
-                const itemLimitCount = itemTypeCounts[itemDbDetails._parent];
-
-                if (itemLimitCount && itemLimitCount.current > itemLimitCount.max)
-                {
-                    // Skip adding item as assort as limit reached, decrement i counter so we still get another item
-                    i--;
-                    continue;
-                }
-
-                if (price > priceLimits[itemDbDetails._parent])
-                {
-                    i--;
-                    continue;
-                }
-
-                // Increment count as item is being added
-                if (itemLimitCount)
-                {
-                    itemLimitCount.current++;
-                }
-
-                const itemsToPush: Item[] = [];
-                const rootItemToPush = this.jsonUtil.clone(desiredAssort);
-                this.randomiseItemUpdProperties(itemDbDetails, rootItemToPush);
-                itemsToPush.push(rootItemToPush);
-
-                rootItemToPush._id = this.hashUtil.generate();
-                rootItemToPush.upd.StackObjectsCount = this.getSingleItemStackCount(itemDbDetails);
-                rootItemToPush.upd.BuyRestrictionCurrent = 0;
-                rootItemToPush.upd.UnlimitedCount = false;
-
-                // Need to add mods to armors so they dont show as red in the trade screen
-                if (this.itemHelper.itemRequiresSoftInserts(rootItemToPush._tpl))
-                {
-                    this.addModsToArmorModSlots(itemsToPush, itemDbDetails);
-                }
-
-                assorts.items.push(...itemsToPush);
-                assorts.barter_scheme[rootItemToPush._id] = fenceAssort.barter_scheme[itemTpl];
-                assorts.loyal_level_items[rootItemToPush._id] = loyaltyLevel;
+                i--;
+                continue;
             }
+
+            // Increment count as item is being added
+            if (itemLimitCount)
+            {
+                itemLimitCount.current++;
+            }
+
+            const rootItemBeingAdded = desiredAssortItemAndChildrenClone[0];
+            this.randomiseItemUpdProperties(itemDbDetails, rootItemBeingAdded);
+
+            rootItemBeingAdded.upd.StackObjectsCount = this.getSingleItemStackCount(itemDbDetails);
+            rootItemBeingAdded.upd.BuyRestrictionCurrent = 0;
+            rootItemBeingAdded.upd.UnlimitedCount = false;
+
+            // Need to add mods to armors so they dont show as red in the trade screen
+            if (this.itemHelper.itemRequiresSoftInserts(rootItemBeingAdded._tpl))
+            {
+                this.randomiseArmorModDurability(desiredAssortItemAndChildrenClone, itemDbDetails);
+            }
+
+            assorts.items.push(...desiredAssortItemAndChildrenClone);
+            assorts.barter_scheme[rootItemBeingAdded._id] = fenceAssort.barter_scheme[chosenAssortRoot._id];
+            assorts.loyal_level_items[rootItemBeingAdded._id] = loyaltyLevel;
         }
     }
 
     /**
-     * Add soft inserts + armor plates to an armor
+     * Adjust plate / soft insert durability values
      * @param armor Armor item array to add mods into
      * @param itemDbDetails Armor items db template
      */
-    protected addModsToArmorModSlots(armor: Item[], itemDbDetails: ITemplateItem): void
+    protected randomiseArmorModDurability(armor: Item[], itemDbDetails: ITemplateItem): void
     {
-        // Armor has no mods, make no additions
+        // Armor has no mods, make no changes
         const hasMods = itemDbDetails._props.Slots.length > 0;
         if (!hasMods)
         {
             return;
         }
 
-        // Check for and add required soft inserts to armors
+        // Check for and adjust soft insert durability values
         const requiredSlots = itemDbDetails._props.Slots.filter(slot => slot._required);
         const hasRequiredSlots = requiredSlots.length > 0;
         if (hasRequiredSlots)
@@ -515,7 +541,9 @@ export class FenceService
             for (const requiredSlot of requiredSlots)
             {
                 const modItemDbDetails = this.itemHelper.getItem(requiredSlot._props.filters[0].Plate)[1];
-                const durabilityValues = this.getRandomisedArmorDurabilityValues(modItemDbDetails, this.traderConfig.fence.armorMaxDurabilityPercentMinMax);
+                const durabilityValues = this.getRandomisedArmorDurabilityValues(
+                    modItemDbDetails,
+                    this.traderConfig.fence.armorMaxDurabilityPercentMinMax);
                 const plateTpl = requiredSlot._props.filters[0].Plate; // `Plate` property appears to be the 'default' item for slot
                 if (plateTpl === "")
                 {
@@ -523,34 +551,36 @@ export class FenceService
                     continue;
                 }
 
-                const mod: Item = {
-                    _id: this.hashUtil.generate(),
-                    _tpl: plateTpl,
-                    parentId: armor[0]._id,
-                    slotId: requiredSlot._name,
-                    upd: {
-                        Repairable: {
-                            Durability: durabilityValues.Durability,
-                            MaxDurability: durabilityValues.MaxDurability
-                        }
-                    }
-                };
+                // Find items mod to apply dura changes to
+                const modItemToAdjust = armor.find(mod => mod.slotId === requiredSlot._name);
+                if (!modItemToAdjust.upd)
+                {
+                    modItemToAdjust.upd = {}
+                }
+
+                if (!modItemToAdjust.upd.Repairable)
+                {
+                    modItemToAdjust.upd.Repairable = {
+                        Durability: modItemDbDetails._props.MaxDurability,
+                        MaxDurability: modItemDbDetails._props.MaxDurability
+                    };
+                }
+                modItemToAdjust.upd.Repairable.Durability = durabilityValues.Durability;
+                modItemToAdjust.upd.Repairable.MaxDurability = durabilityValues.MaxDurability;
 
                 // 25% chance to add shots to visor when its below max durability
                 if (this.randomUtil.getChance100(25)
-                    && mod.parentId === BaseClasses.ARMORED_EQUIPMENT && mod.slotId === "mod_equipment_000"
-                    && mod.upd.Repairable.Durability < modItemDbDetails._props.MaxDurability)
+                    && modItemToAdjust.parentId === BaseClasses.ARMORED_EQUIPMENT && modItemToAdjust.slotId === "mod_equipment_000"
+                    && modItemToAdjust.upd.Repairable.Durability < modItemDbDetails._props.MaxDurability) // Is damaged
                 {
-                      mod.upd.FaceShield = {
+                    modItemToAdjust.upd.FaceShield = {
                         Hits: this.randomUtil.getInt(1,3)
                     }
                 }
-
-                armor.push(mod);
             }
         }
 
-        // Check for and add plate items
+        // Check for and adjust plate durability values
         const plateSlots = itemDbDetails._props.Slots.filter(slot => this.itemHelper.isRemovablePlateSlot(slot._name));
         if (plateSlots.length > 0)
         {
@@ -569,19 +599,27 @@ export class FenceService
                     continue;
                 }
                 const modItemDbDetails = this.itemHelper.getItem(plateTpl)[1];
-                const durabilityValues = this.getRandomisedArmorDurabilityValues(modItemDbDetails, this.traderConfig.fence.armorMaxDurabilityPercentMinMax);
-                armor.push({
-                    _id: this.hashUtil.generate(),
-                    _tpl: plateSlot._props.filters[0].Plate, // `Plate` property appears to be the 'default' item for slot
-                    parentId: armor[0]._id,
-                    slotId: plateSlot._name,
-                    upd: {
-                        Repairable: {
-                            Durability: durabilityValues.Durability,
-                            MaxDurability: durabilityValues.MaxDurability
-                        }
-                    }
-                });
+                const durabilityValues = this.getRandomisedArmorDurabilityValues(
+                    modItemDbDetails,
+                    this.traderConfig.fence.armorMaxDurabilityPercentMinMax);
+
+                // Find items mod to apply dura changes to
+                const modItemToAdjust = armor.find(mod => mod.slotId === plateSlot._name);
+                if (!modItemToAdjust.upd)
+                {
+                    modItemToAdjust.upd = {}
+                }
+
+                if (!modItemToAdjust.upd.Repairable)
+                {
+                    modItemToAdjust.upd.Repairable = {
+                        Durability: modItemDbDetails._props.MaxDurability,
+                        MaxDurability: modItemDbDetails._props.MaxDurability
+                    };
+                }
+
+                modItemToAdjust.upd.Repairable.Durability = durabilityValues.Durability;
+                modItemToAdjust.upd.Repairable.MaxDurability = durabilityValues.MaxDurability;
             }
         }
     }
@@ -776,10 +814,7 @@ export class FenceService
 
         // Randomise armor durability
         if (
-            (itemDetails._parent === BaseClasses.ARMOR
-                || itemDetails._parent === BaseClasses.HEADWEAR
-                || itemDetails._parent === BaseClasses.VEST
-                || itemDetails._parent === BaseClasses.ARMORED_EQUIPMENT
+            (itemDetails._parent === BaseClasses.ARMORED_EQUIPMENT
                 || itemDetails._parent === BaseClasses.FACECOVER
                 || itemDetails._parent === BaseClasses.ARMOR_PLATE
             ) && itemDetails._props.MaxDurability > 0

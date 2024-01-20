@@ -507,7 +507,8 @@ export class ItemHelper
 
         for (const itemFromAssort of assort)
         {
-            if (itemFromAssort.parentId === itemIdToFind && !list.find((item) => itemFromAssort._id === item._id))
+            if (itemFromAssort.parentId === itemIdToFind
+                && !list.find((item) => itemFromAssort._id === item._id))
             {
                 list.push(itemFromAssort);
                 list = list.concat(this.findAndReturnChildrenByAssort(itemFromAssort._id, assort));
