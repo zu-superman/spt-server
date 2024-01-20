@@ -752,15 +752,17 @@ export class RepeatableQuestGenerator
 
             if (possibleExits.length === 0)
             {
-                this.logger.error("Possible exits was empty");
+                this.logger.error(`Unable to choose specific exit on map: ${locationKey}, Possible exit pool was empty`);
             }
+            else
+            {
+                // Choose one of the exits we filtered above
+                const chosenExit = this.randomUtil.drawRandomFromList(possibleExits, 1)[0];
 
-            // Choose one of the exits we filtered above
-            const chosenExit = this.randomUtil.drawRandomFromList(possibleExits, 1)[0];
-
-            // Create a quest condition to leave raid via chosen exit
-            const exitCondition = this.generateExplorationExitCondition(chosenExit);
-            quest.conditions.AvailableForFinish[0].counter.conditions.push(exitCondition);
+                // Create a quest condition to leave raid via chosen exit
+                const exitCondition = this.generateExplorationExitCondition(chosenExit);
+                quest.conditions.AvailableForFinish[0].counter.conditions.push(exitCondition);
+            }
         }
 
         // Difficulty for exploration goes from 1 extract to maxExtracts
