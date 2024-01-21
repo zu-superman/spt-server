@@ -108,16 +108,16 @@
         "628e4dd1f477aa12234918aa": 1
       },
       "Earpiece": {
-        "628e4e576d783146b124c64d": 91,
-        "5645bcc04bdc2d363b8b4572": 93
+        "628e4e576d783146b124c64d": 341,
+        "5645bcc04bdc2d363b8b4572": 351
       },
       "FaceCover": {
         "62a61bbf8ec41a51b34758d2": 1
       },
       "ArmorVest": {},
       "Eyewear": {
-        "62a61c988ec41a51b34758d5": 616,
-        "603409c80ca681766b6a0fb2": 521
+        "62a61c988ec41a51b34758d5": 191,
+        "603409c80ca681766b6a0fb2": 166
       },
       "ArmBand": {},
       "TacticalVest": {
@@ -128,9 +128,9 @@
         "5fbcc1d9016cce60e8341ab3": 1
       },
       "SecondPrimaryWeapon": {
-        "6275303a9f372d6ea97f9ec7": 141,
-        "5a7828548dc32e5a9c28b516": 890,
-        "5e81ebcd8e146c7080625e15": 199
+        "6275303a9f372d6ea97f9ec7": 175,
+        "5a7828548dc32e5a9c28b516": 1135,
+        "5e81ebcd8e146c7080625e15": 241
       },
       "Holster": {
         "5f36a0e5fbf956000b716b65": 1
@@ -147,16 +147,16 @@
     },
     "Ammo": {
       "Caliber762x35": {
-        "619636be6db0f2477964e710": 359,
-        "5fd20ff893a8961fc660a954": 15
+        "619636be6db0f2477964e710": 1813,
+        "5fd20ff893a8961fc660a954": 73
       },
       "Caliber40x46": {
-        "5f0c892565703e5c461894e9": 846,
-        "5ede474b0c226a66f5402622": 199
+        "5f0c892565703e5c461894e9": 1050,
+        "5ede474b0c226a66f5402622": 241
       },
       "Caliber1143x23ACP": {
-        "5e81f423763d9f754677bf2e": 29,
-        "5efb0cabfb3e451d70735af5": 5
+        "5e81f423763d9f754677bf2e": 803,
+        "5efb0cabfb3e451d70735af5": 140
       },
       "Caliber12g": {
         "5d6e6911a4b9361bd5780d52": 1
@@ -550,7 +550,10 @@
         "64ccc1ec1779ad6ba200a137",
         "5d80c62a86f7744036212b3f",
         "5da743f586f7744014504f72",
-        "5c1f79a086f7746ed066fb8f"
+        "5c1f79a086f7746ed066fb8f",
+        "5c1d0efb86f7744baf2e7b7b",
+        "63a39fc0af870e651d58e6ae",
+        "5d80ccac86f77470841ff452"
       ],
       "Backpack": [],
       "SecuredContainer": [
@@ -2543,7 +2546,7 @@
       "Earpiece": 73,
       "FaceCover": 100,
       "ArmorVest": 0,
-      "Eyewear": 76,
+      "Eyewear": 75,
       "ArmBand": 0,
       "TacticalVest": 100,
       "Backpack": 0,

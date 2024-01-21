@@ -4,7 +4,7 @@
       "5fb53cc97b5d1342ee24bd63": 1
     },
     "feet": {
-      "5fb535cf1c69e5198e234126": 1,
+      "5fb535cf1c69e5198e234126": 2,
       "5fb535bd1c69e5198e234125": 3
     },
     "hands": [
@@ -140,16 +140,16 @@
       "TacticalVest": {},
       "Backpack": {},
       "FirstPrimaryWeapon": {
-        "58948c8e86f77409493f7266": 205,
-        "5839a40f24597726f856b511": 696,
-        "57f3c6bd24597738e730fa2f": 224,
-        "5926bb2186f7744b1c6c6e60": 168,
-        "606587252535c57a13424cfd": 73
+        "58948c8e86f77409493f7266": 285,
+        "5839a40f24597726f856b511": 1006,
+        "57f3c6bd24597738e730fa2f": 318,
+        "5926bb2186f7744b1c6c6e60": 242,
+        "606587252535c57a13424cfd": 116
       },
       "SecondPrimaryWeapon": {},
       "Holster": {
-        "59f98b4986f7746f546d2cef": 502,
-        "602a9740da11d6478d5a06dc": 181
+        "59f98b4986f7746f546d2cef": 210,
+        "602a9740da11d6478d5a06dc": 71
       },
       "Scabbard": {
         "5fc64ea372b0dd78d51159dc": 1
@@ -163,9 +163,9 @@
     },
     "Ammo": {
       "Caliber9x19PARA": {
-        "5efb0e16aeb21837e749c7ff": 205,
-        "5c925fa22e221601da359b7b": 468,
-        "5efb0da7a29a85116f6ea05f": 62
+        "5efb0e16aeb21837e749c7ff": 285,
+        "5c925fa22e221601da359b7b": 645,
+        "5efb0da7a29a85116f6ea05f": 94
       },
       "Caliber9x21": {
         "5a26ac0ec4a28200741e1e18": 1
@@ -623,8 +623,8 @@
         "5c0d5e4486f77478390952fe",
         "5737218f245977612125ba51",
         "5c925fa22e221601da359b7b",
-        "59e0d99486f7744a32234762",
-        "5efb0da7a29a85116f6ea05f"
+        "5efb0da7a29a85116f6ea05f",
+        "59e0d99486f7744a32234762"
       ],
       "SpecialLoot": []
     }
@@ -2670,9 +2670,9 @@
       "mod_scope": 0,
       "mod_sight_rear": 46,
       "mod_tactical_000": 0,
-      "mod_sight_front": 32,
-      "mod_mount_000": 21,
-      "mod_mount_001": 73,
+      "mod_sight_front": 31,
+      "mod_mount_000": 20,
+      "mod_mount_001": 71,
       "mod_mount_002": 100,
       "mod_tactical": 0,
       "mod_foregrip": 20,

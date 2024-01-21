@@ -1,10 +1,20 @@
 {
   "appearance": {
-    "body": {},
-    "feet": {},
-    "hands": [],
-    "head": [],
-    "voice": []
+    "body": {
+      "5df8a10486f77412672a1e3a": 1
+    },
+    "feet": {
+      "5f5e410c6bdad616ad46d60b": 1
+    },
+    "hands": [
+      "5df8eac086f77412640e2ea7"
+    ],
+    "head": [
+      "5cc2e4d014c02e000d0115f8"
+    ],
+    "voice": [
+      "Scav_1"
+    ]
   },
   "chances": {
     "equipment": {
@@ -23,7 +33,8 @@
       "SecuredContainer": 100,
       "TacticalVest": 100
     },
-    "mods": {
+    "equipmentMods": {},
+    "weaponMods": {
       "mod_charge": 100,
       "mod_equipment": 100,
       "mod_foregrip": 100,
@@ -1988,7 +1999,9 @@
     },
     "standingForKill": -0.05
   },
-  "firstName": [],
+  "firstName": [
+    "Кирюха"
+  ],
   "generation": {
     "items": {
       "drugs": {
@@ -2074,26 +2087,39 @@
       "Backpack": {},
       "Earpiece": {},
       "Eyewear": {},
-      "FaceCover": {},
+      "FaceCover": {
+        "63626d904aa74b8fe30ab426": 1
+      },
       "FirstPrimaryWeapon": {},
       "Headwear": {},
       "Holster": {},
       "Pockets": {},
       "Scabbard": {},
       "SecondPrimaryWeapon": {},
-      "SecuredContainer": {},
-      "TacticalVest": {}
+      "SecuredContainer": {
+        "5c0a794586f77461c458f892": 1
+      },
+      "TacticalVest": {
+        "63611865ba5b90db0c0399d1": 1
+      }
     },
     "items": {
       "Backpack": [],
-      "Pockets": [],
-      "SecuredContainer": [],
+      "Pockets": [
+        "590c678286f77426c9660122",
+        "60098ad7c2240c0fe85c570a"
+      ],
+      "SecuredContainer": [
+        "5e023d48186a883be655e551"
+      ],
       "SpecialLoot": [],
       "TacticalVest": []
     },
     "mods": {}
   },
-  "lastName": [],
+  "lastName": [
+    "Якубович"
+  ],
   "skills": {
     "Common": {}
   }

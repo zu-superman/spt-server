@@ -102,9 +102,9 @@
       "Headwear": {},
       "Earpiece": {},
       "FaceCover": {
-        "5ab8f4ff86f77431c60d91ba": 550,
-        "635267ab3c89e2112001f826": 331,
-        "5b432b2f5acfc4771e1c6622": 567
+        "5ab8f4ff86f77431c60d91ba": 701,
+        "635267ab3c89e2112001f826": 423,
+        "5b432b2f5acfc4771e1c6622": 714
       },
       "ArmorVest": {},
       "Eyewear": {},
@@ -114,12 +114,12 @@
       },
       "Backpack": {},
       "FirstPrimaryWeapon": {
-        "55801eed4bdc2d89578b4588": 845,
-        "5c46fbd72e2216398b5a8c9c": 603
+        "55801eed4bdc2d89578b4588": 1089,
+        "5c46fbd72e2216398b5a8c9c": 749
       },
       "SecondPrimaryWeapon": {
-        "59984ab886f7743e98271174": 447,
-        "57dc2fa62459775949412633": 673
+        "59984ab886f7743e98271174": 554,
+        "57dc2fa62459775949412633": 859
       },
       "Holster": {},
       "Scabbard": {},
@@ -132,8 +132,8 @@
     },
     "Ammo": {
       "Caliber762x54R": {
-        "5887431f2459777e1612938f": 845,
-        "560d61e84bdc2da74d8b4571": 603
+        "5887431f2459777e1612938f": 1089,
+        "560d61e84bdc2da74d8b4571": 749
       },
       "Caliber9x19PARA": {
         "56d59d3ad2720bdb418b4577": 1
@@ -2275,7 +2275,7 @@
       "TacticalVest": 100,
       "Backpack": 0,
       "FirstPrimaryWeapon": 100,
-      "SecondPrimaryWeapon": 77,
+      "SecondPrimaryWeapon": 76,
       "Holster": 0,
       "Scabbard": 0,
       "Pockets": 100,
@@ -2285,14 +2285,14 @@
       "mod_magazine": 100,
       "mod_scope": 39,
       "mod_sight_rear": 100,
-      "mod_tactical": 15,
+      "mod_tactical": 14,
       "mod_muzzle": 100,
       "mod_handguard": 100,
       "mod_stock_000": 100,
-      "mod_mount_000": 71,
+      "mod_mount_000": 72,
       "mod_mount_001": 100,
       "mod_mount_002": 100,
-      "mod_stock": 76,
+      "mod_stock": 75,
       "mod_mount": 100,
       "mod_sight_front": 0,
       "mod_tactical_000": 0,
