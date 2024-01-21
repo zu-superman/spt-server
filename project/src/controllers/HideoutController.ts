@@ -946,39 +946,32 @@ export class HideoutController
         // Create rewards for scav case
         const scavCaseRewards = this.scavCaseRewardGenerator.generate(request.recipeId);
 
-        // Add scav case rewards to player profile
-        pmcData.Hideout.Production[prodId].Products = scavCaseRewards;
+        for (const itemWithChildren of scavCaseRewards)
+        {
+            const addToStashRequest: IAddItemDirectRequest = {
+                itemWithModsToAdd: itemWithChildren,
+                foundInRaid: true,
+                callback: null,
+                useSortingTable: false
+            }
+            this.inventoryHelper.addItemToStash(sessionID, addToStashRequest, pmcData, output);
+            if (output.warnings.length > 0)
+            {
+                const errorMessage = "Unable to give scavcase reward to player";
+                return this.httpResponse.appendErrorToOutput(output, errorMessage);
+            }
+        }
 
         // Remove the old production from output object before its sent to client
         delete output.profileChanges[sessionID].production[request.recipeId];
 
-        // Get array of item created + count of them after completing hideout craft
-        const itemsToAdd = pmcData.Hideout.Production[prodId].Products.map(
-            (x: { _tpl: string; upd?: { StackObjectsCount?: number; }; }) =>
-            {
-                const itemTpl = this.presetHelper.hasPreset(x._tpl)
-                    ? this.presetHelper.getDefaultPreset(x._tpl)._id
-                    : x._tpl;
+        // Flag as complete - will be cleaned up later by hideoutController.update()
+        pmcData.Hideout.Production[prodId].sptIsComplete = true;
 
-                // Count of items crafted
-                const numOfItems = !x.upd?.StackObjectsCount ? 1 : x.upd.StackObjectsCount;
-                // eslint-disable-next-line @typescript-eslint/naming-convention
-                return { item_id: itemTpl, count: numOfItems };
-            },
-        );
+        // Crafting complete, flag
+        pmcData.Hideout.Production[prodId].inProgress = false;
 
-        const newReq = { items: itemsToAdd, tid: "ragfair" };
-        const callback = () =>
-        {
-            // Flag as complete - will be cleaned up later by hideoutController.update()
-            pmcData.Hideout.Production[prodId].sptIsComplete = true;
-
-            // Crafting complete, flag as such
-            pmcData.Hideout.Production[prodId].inProgress = false;
-        };
-
-        // Add crafted item to player inventory
-        return this.inventoryHelper.addItem(pmcData, newReq, output, sessionID, callback, true);
+        return output;
     }
 
     /**

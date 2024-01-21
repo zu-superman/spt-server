@@ -1271,15 +1271,15 @@ export class ItemHelper
                 continue;
             }
 
-            const moditemToAdd = {
+            const modItemToAdd = {
                 _id: this.hashUtil.generate(),
                 _tpl: chosenTpl,
                 parentId: result[0]._id,
                 slotId: slot._name
             };
-            result.push(moditemToAdd);
+            result.push(modItemToAdd);
 
-            const modItemDbDetails = this.getItem(moditemToAdd._tpl)[1];
+            const modItemDbDetails = this.getItem(modItemToAdd._tpl)[1];
 
             // Include conflicting items of newly added mod in pool to be used for next mod choice
             // biome-ignore lint/complexity/noForEach: <explanation>
