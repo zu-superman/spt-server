@@ -3,12 +3,13 @@ import { inject, injectable } from "tsyringe";
 import { ScavCaseRewardGenerator } from "@spt-aki/generators/ScavCaseRewardGenerator";
 import { HideoutHelper } from "@spt-aki/helpers/HideoutHelper";
 import { InventoryHelper } from "@spt-aki/helpers/InventoryHelper";
+import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { PaymentHelper } from "@spt-aki/helpers/PaymentHelper";
 import { PresetHelper } from "@spt-aki/helpers/PresetHelper";
 import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
 import { HideoutArea, Product, Production, ScavCase } from "@spt-aki/models/eft/common/tables/IBotBase";
-import { Upd } from "@spt-aki/models/eft/common/tables/IItem";
+import { Item } from "@spt-aki/models/eft/common/tables/IItem";
 import { HideoutUpgradeCompleteRequestData } from "@spt-aki/models/eft/hideout/HideoutUpgradeCompleteRequestData";
 import { IHandleQTEEventRequestData } from "@spt-aki/models/eft/hideout/IHandleQTEEventRequestData";
 import { IHideoutArea, Stage } from "@spt-aki/models/eft/hideout/IHideoutArea";
@@ -58,6 +59,7 @@ export class HideoutController
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("InventoryHelper") protected inventoryHelper: InventoryHelper,
+        @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("SaveServer") protected saveServer: SaveServer,
         @inject("PlayerService") protected playerService: PlayerService,
         @inject("PresetHelper") protected presetHelper: PresetHelper,
@@ -779,39 +781,92 @@ export class HideoutController
         }
         let hoursCrafting = counterHoursCrafting.value;
 
-        // create item and throw it into profile
-        let id = recipe.endProduct;
+        /** Array of arrays of item + children */
+        let itemAndChildrenToSendToPlayer: Item[][] = [];
 
-        // replace the base item with its main preset
-        if (this.presetHelper.hasPreset(id))
+        // Reward is weapon/armor preset, handle differently compared to 'normal' items
+        const rewardIsPreset = this.presetHelper.hasPreset(recipe.endProduct);
+        if (rewardIsPreset)
         {
-            id = this.presetHelper.getDefaultPreset(id)._id;
+            const preset = this.presetHelper.getDefaultPreset(recipe.endProduct);
+
+            // Ensure preset has unique ids and is cloned so we don't alter the preset data stored in memory
+            const presetAndMods: Item[] = this.itemHelper.replaceIDs(
+                null,
+                this.jsonUtil.clone(preset._items),
+            );
+
+            this.itemHelper.remapRootItemId(presetAndMods);
+
+            // Store preset items in array
+            itemAndChildrenToSendToPlayer = [presetAndMods];
         }
 
-        const newReq = {
-            items: [{
-                // eslint-disable-next-line @typescript-eslint/naming-convention
-                item_id: id,
-                count: recipe.count,
-            }],
-            tid: "ragfair",
-        };
+        const rewardIsStackable = this.itemHelper.isItemTplStackable(recipe.endProduct);
+        if (rewardIsStackable)
+        {
+            // Add raw item to array without checking stack size
+            itemAndChildrenToSendToPlayer.push([{
+                _id: this.hashUtil.generate(),
+                _tpl: recipe.endProduct,
+                upd: {
+                    StackObjectsCount: recipe.count
+                }
+            }]);
 
+            // Split item into separate items with acceptable stack sizes
+            const splitReward = this.itemHelper.splitStack(itemAndChildrenToSendToPlayer[0][0]);
+            if (splitReward.length > 1)
+            {
+                // Empty out reward array and replace with split items
+                itemAndChildrenToSendToPlayer = [];
+                for (const item of splitReward)
+                {
+                    itemAndChildrenToSendToPlayer.push([item]);
+                }
+            }
+        }
+        else
+        {
+            // Not stackable, send multiple single items
+
+            // Add the initial item to array
+            if (!rewardIsPreset)
+            {
+                itemAndChildrenToSendToPlayer.push([{
+                    _id: this.hashUtil.generate(),
+                    _tpl: recipe.endProduct
+                }]);
+            }
+
+            // Start index at one so we ignore first item in array
+            // (handles preset items already being added)
+            for (let index = 1; index < recipe.count; index++)
+            {
+                const itemAndMods: Item[] = this.itemHelper.replaceIDs(
+                    null,
+                    this.jsonUtil.clone(itemAndChildrenToSendToPlayer[0]),
+                );
+                itemAndChildrenToSendToPlayer.push(...[itemAndMods]);
+            }
+        }
+
+        // Loops over all current productions on profile
         const entries = Object.entries(pmcData.Hideout.Production);
         let prodId: string;
-        for (const x of entries)
+        for (const entry of entries)
         {
             // Skip null production objects
-            if (!x[1])
+            if (!entry[1])
             {
                 continue;
             }
 
-            if (this.hideoutHelper.isProductionType(x[1]))
+            if (this.hideoutHelper.isProductionType(entry[1]))
             { // Production or ScavCase
-                if ((x[1] as Production).RecipeId === request.recipeId)
+                if ((entry[1] as Production).RecipeId === request.recipeId)
                 {
-                    prodId = x[0]; // set to objects key
+                    prodId = entry[0]; // set to objects key
                     break;
                 }
             }
@@ -829,7 +884,7 @@ export class HideoutController
             return this.httpResponse.appendErrorToOutput(output);
         }
 
-        // Check if the recipe is the same as the last one
+        // Check if the recipe is the same as the last one - get bonus when crafting same thing multiple times
         const area = pmcData.Hideout.Areas.find((x) => x.type === recipe.areaType);
         if (area && request.recipeId !== area.lastRecipe)
         {
@@ -846,60 +901,74 @@ export class HideoutController
             hoursCrafting -= this.hideoutConfig.hoursForSkillCrafting * multiplierCrafting;
         }
 
-        // Increment
-        // if addItem passes validation:
-        //  - increment skill point for crafting
-        //  - delete the production in profile Hideout.Production
-        const callback = () =>
+        // Loop over array of sub array (item+children) and add to stash
+        for (const itemAndChildrenToSend of itemAndChildrenToSendToPlayer)
         {
-            // Manager Hideout skill
-            // ? use a configuration variable for the value?
-            const globals = this.databaseServer.getTables().globals;
-            this.profileHelper.addSkillPointsToPlayer(
-                pmcData,
-                SkillTypes.HIDEOUT_MANAGEMENT,
-                globals.config.SkillsSettings.HideoutManagement.SkillPointsPerCraft,
-                true,
-            );
-            // Manager Crafting skill
-            if (craftingExpAmount > 0)
+            // Recipe has an `isEncoded` requirement on reward, make root item adjustment
+            if (recipe.isEncoded)
             {
-                this.profileHelper.addSkillPointsToPlayer(pmcData, SkillTypes.CRAFTING, craftingExpAmount);
-
-                const intellectAmountToGive = 0.5 * (Math.round(craftingExpAmount / 15));
-                if (intellectAmountToGive > 0)
+                if (!itemAndChildrenToSend[0].upd)
                 {
-                    this.profileHelper.addSkillPointsToPlayer(
-                        pmcData,
-                        SkillTypes.INTELLECT,
-                        intellectAmountToGive,
-                    );
+                    itemAndChildrenToSend[0].upd = {}
                 }
 
+                itemAndChildrenToSend[0].upd.RecodableComponent = { IsEncoded: true };
             }
-            area.lastRecipe = request.recipeId;
-            counterHoursCrafting.value = hoursCrafting;
 
-            // Continuous crafts have special handling in EventOutputHolder.updateOutputProperties()
-            pmcData.Hideout.Production[prodId].sptIsComplete = true;
-            pmcData.Hideout.Production[prodId].sptIsContinuous = recipe.continuous;
-
-            // Flag normal crafts as complete
-            if (!recipe.continuous)
+            const additemRequest: IAddItemDirectRequest = {
+                itemWithModsToAdd: itemAndChildrenToSend,
+                foundInRaid: true,
+                callback: null,
+                useSortingTable: false
+            };
+            this.inventoryHelper.addItemToStash(sessionID, additemRequest,pmcData, output)
+            if (output.warnings.length > 0)
             {
-                pmcData.Hideout.Production[prodId].inProgress = false;
+                return output;
             }
-        };
-
-        // Handle the isEncoded flag from recipe
-        if (recipe.isEncoded)
-        {
-            const upd: Upd = { RecodableComponent: { IsEncoded: true } };
-
-            return this.inventoryHelper.addItem(pmcData, newReq, output, sessionID, callback, true, upd);
         }
 
-        return this.inventoryHelper.addItem(pmcData, newReq, output, sessionID, callback, true);
+        //  - increment skill point for crafting
+        //  - delete the production in profile Hideout.Production
+        // Manager Hideout skill
+        // ? use a configuration variable for the value?
+        const globals = this.databaseServer.getTables().globals;
+        this.profileHelper.addSkillPointsToPlayer(
+            pmcData,
+            SkillTypes.HIDEOUT_MANAGEMENT,
+            globals.config.SkillsSettings.HideoutManagement.SkillPointsPerCraft,
+            true,
+        );
+        // Manager Crafting skill
+        if (craftingExpAmount > 0)
+        {
+            this.profileHelper.addSkillPointsToPlayer(pmcData, SkillTypes.CRAFTING, craftingExpAmount);
+
+            const intellectAmountToGive = 0.5 * (Math.round(craftingExpAmount / 15));
+            if (intellectAmountToGive > 0)
+            {
+                this.profileHelper.addSkillPointsToPlayer(
+                    pmcData,
+                    SkillTypes.INTELLECT,
+                    intellectAmountToGive,
+                );
+            }
+
+        }
+        area.lastRecipe = request.recipeId;
+        counterHoursCrafting.value = hoursCrafting;
+
+        // Continuous crafts have special handling in EventOutputHolder.updateOutputProperties()
+        pmcData.Hideout.Production[prodId].sptIsComplete = true;
+        pmcData.Hideout.Production[prodId].sptIsContinuous = recipe.continuous;
+
+        // Flag normal (non continious) crafts as complete
+        if (!recipe.continuous)
+        {
+            pmcData.Hideout.Production[prodId].inProgress = false;
+        }
+
+        return output;
     }
 
     /**
