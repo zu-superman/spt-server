@@ -100,6 +100,9 @@ export class GameController
      */
     public gameStart(_url: string, _info: IEmptyRequestData, sessionID: string, startTimeStampMS: number): void
     {
+        // Store client start time in app context
+        this.applicationContext.addValue(ContextVariableType.CLIENT_START_TIMESTAMP, startTimeStampMS);
+
         if (this.coreConfig.fixes.fixShotgunDispersion)
         {
             this.fixShotgunDispersions();
