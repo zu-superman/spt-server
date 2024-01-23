@@ -159,6 +159,8 @@ export interface Blacklist
     enableQuestList: boolean;
     /** Should trader items that are blacklisted by bsg be listed on flea */
     traderItems: boolean;
+    /** Maximum level an armor plate can be found in a flea-listed armor item */
+    armorPlateMaxProtectionLevel: number;
 }
 
 export interface IUnreasonableModPrices

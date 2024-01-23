@@ -357,7 +357,7 @@ export class RagfairOfferGenerator
             return;
         }
 
-        // Get item + sub-items if preset, otherwise just get item
+        // Get item + sub-items (weapons + armors), otherwise just get item
         const itemWithChildren: Item[] = isPreset
             ? this.ragfairServerHelper.getPresetItems(assortItem)
             : [
@@ -365,6 +365,12 @@ export class RagfairOfferGenerator
                 ...this.itemHelper.findAndReturnChildrenByAssort(assortItem._id, this.ragfairAssortGenerator.getAssortItems(),
                 ),
             ];
+
+        // Armor presets can hold plates above the allowed flea level, remove if necessary
+        if (isPreset && this.ragfairConfig.dynamic.blacklist.enableBsgList)
+        {
+            this.removeBannedPlatesFromPreset(itemWithChildren, this.ragfairConfig.dynamic.blacklist.armorPlateMaxProtectionLevel);
+        }
 
         // Get number of offers to create
         // Limit to 1 offer when processing expired
@@ -376,21 +382,54 @@ export class RagfairOfferGenerator
         const assortSingleOfferProcesses = [];
         for (let index = 0; index < offerCount; index++)
         {
-            delete itemWithChildren[0].parentId;
-            delete itemWithChildren[0].slotId;
-
             if (!isPreset)
             {
-                // presets get unique id generated during getPresetItems() earlier
+                // Presets get unique id generated during getPresetItems() earlier + would require regenerating all children to match
                 itemWithChildren[0]._id = this.hashUtil.generate();
             }
-
+            
             delete itemWithChildren[0].parentId;
+            delete itemWithChildren[0].slotId;
 
             assortSingleOfferProcesses.push(this.createSingleOfferForItem(itemWithChildren, isPreset, itemDetails));
         }
 
         await Promise.all(assortSingleOfferProcesses);
+    }
+
+    /**
+     * iterate over an items chidren and look for plates above desired level and remove them
+     * @param presetWithChildren preset to check for plates
+     * @param plateProtectionLimit Max level of plates an armor can have without being removed
+     * @returns True if plate removed
+     */
+    protected removeBannedPlatesFromPreset(presetWithChildren: Item[], plateProtectionLimit: number): boolean
+    {
+        if (!this.itemHelper.armorItemCanHoldMods(presetWithChildren[0]._tpl))
+        {
+            // Cant hold armor inserts, skip
+            return false;
+        }
+
+        const plateSlots = presetWithChildren.filter(item => this.itemHelper.getRemovablePlateSlotIds().includes(item.slotId?.toLowerCase()));
+        if (plateSlots.length === 0)
+        {
+            // Has no plate slots e.g. "left_side_plate", exit
+            return false;
+        }
+
+        let removedPlate = false;
+        for (const plateSlot of plateSlots)
+        {
+            const plateArmorLevel = Number.parseInt(<string>this.itemHelper.getItem(plateSlot._tpl)[1]._props.armorClass) ?? 0;
+            if (plateArmorLevel > plateProtectionLimit)
+            {
+                presetWithChildren.splice(presetWithChildren.indexOf(plateSlot), 1);
+                removedPlate = true;
+            }
+        }
+
+        return removedPlate
     }
 
     /**

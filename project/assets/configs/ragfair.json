@@ -201,7 +201,8 @@
             "custom": [],
             "enableBsgList": true,
             "enableQuestList": true,
-            "traderItems": false
+            "traderItems": false,
+			"armorPlateMaxProtectionLevel": 4
         },
         "unreasonableModPrices": {
             "5448fe124bdc2da5018b4567": {

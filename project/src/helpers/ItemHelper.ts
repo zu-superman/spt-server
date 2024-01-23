@@ -1332,14 +1332,14 @@ export class ItemHelper
      */
     public isRemovablePlateSlot(slotName: string): boolean
     {
-        return this.getRevovablePlateSlotIds().includes(slotName.toLowerCase());
+        return this.getRemovablePlateSlotIds().includes(slotName.toLowerCase());
     }
 
     /**
      * Get a list of slot names that hold removable plates
      * @returns Array of slot ids (e.g. front_plate)
      */
-    public getRevovablePlateSlotIds(): string[]
+    public getRemovablePlateSlotIds(): string[]
     {
         return ["front_plate", "back_plate", "side_plate", "left_side_plate", "right_side_plate"];
     }

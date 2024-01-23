@@ -98,12 +98,12 @@ export class RagfairAssortGenerator
                 continue;
             }
 
-            results.push(this.createRagfairAssortItem(item._id, item._id)); // tplid and id must be the same so hideout recipe reworks work
+            results.push(this.createRagfairAssortItem(item._id, item._id)); // tplid and id must be the same so hideout recipe rewards work
         }
 
-        for (const weapon of presets)
+        for (const preset of presets)
         {
-            results.push(this.createRagfairAssortItem(weapon._items[0]._tpl, weapon._id)); // Preset id must be passed through to ensure flea shows presets
+            results.push(this.createRagfairAssortItem(preset._items[0]._tpl, preset._id)); // Preset id must be passed through to ensure flea shows preset
         }
 
         return results;
