@@ -403,12 +403,12 @@ export class ItemHelper
      * A variant of findAndReturnChildren where the output is list of item objects instead of their ids.
      * @param items Array of items (item + possible children)
      * @param baseItemId Parent items id
+     * @param modsOnly Include only mod items, exclude items stored inside root item
      * @returns An array of Item objects
      */
-    public findAndReturnChildrenAsItems(items: Item[], baseItemId: string): Item[]
+    public findAndReturnChildrenAsItems(items: Item[], baseItemId: string, modsOnly = false): Item[]
     {
         const list: Item[] = [];
-
         for (const childItem of items)
         {
             // Include itself
@@ -418,6 +418,13 @@ export class ItemHelper
                 continue;
             }
 
+            // Is stored in parent and disallowed
+            if (modsOnly && childItem.location)
+            {
+                continue;
+            }
+
+            // Items parentid matches root item AND returned items doesnt contain current child
             if (childItem.parentId === baseItemId && !list.find((item) => childItem._id === item._id))
             {
                 list.push(...this.findAndReturnChildrenAsItems(items, childItem._id));

@@ -265,7 +265,7 @@ export class InsuranceService
                     pmcData: pmcData,
                     itemsToReturnToPlayer: this.getInsuredItemDetails(
                             pmcData,
-                            this.itemHelper.findAndReturnChildrenAsItems(Object.values(preRaidGearHash), preRaidItem._id),
+                            this.itemHelper.findAndReturnChildrenAsItems(Object.values(preRaidGearHash), preRaidItem._id, true),
                             offraidData.insurance,
                         ),
                     traderId: insuredItem.tid,
