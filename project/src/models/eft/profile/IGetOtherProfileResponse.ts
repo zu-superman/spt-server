@@ -1,6 +1,5 @@
 
-import { Customization, Inventory, OverallCounters, Skills, Stats } from "@spt-aki/models/eft/common/tables/IBotBase"
-import { Info } from "types/models/eft/common/tables/IBotBase"
+import { OverallCounters, Skills } from "@spt-aki/models/eft/common/tables/IBotBase"
 import { Item } from "../common/tables/IItem"
 
 export interface IGetOtherProfileResponse
