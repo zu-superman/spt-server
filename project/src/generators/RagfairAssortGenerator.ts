@@ -19,6 +19,16 @@ export class RagfairAssortGenerator
     protected generatedAssortItems: Item[] = [];
     protected ragfairConfig: IRagfairConfig;
 
+    protected ragfairItemInvalidBaseTypes: string[] = [
+        BaseClasses.LOOT_CONTAINER, // Safe, barrel cache etc
+        BaseClasses.STASH, // Player inventory stash
+        BaseClasses.SORTING_TABLE,
+        BaseClasses.INVENTORY,
+        BaseClasses.STATIONARY_CONTAINER,
+        BaseClasses.POCKETS,
+        BaseClasses.BUILT_IN_INSERTS,
+    ];
+
     constructor(
         @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("HashUtil") protected hashUtil: HashUtil,
@@ -62,34 +72,34 @@ export class RagfairAssortGenerator
     protected generateRagfairAssortItems(): Item[]
     {
         const results: Item[] = [];
-        const items = this.itemHelper.getItems().filter(item => item._type !== "Node");
 
-        const presets = (this.ragfairConfig.dynamic.showDefaultPresetsOnly)
-            ? Object.values(this.presetHelper.getDefaultPresets())
-            : this.presetHelper.getAllPresets()
+        /** Get cloned items from db */
+        const dbItemsClone = this.itemHelper.getItems().filter(item => item._type !== "Node");
 
-        const ragfairItemInvalidBaseTypes: string[] = [
-            BaseClasses.LOOT_CONTAINER, // safe, barrel cache etc
-            BaseClasses.STASH, // player inventory stash
-            BaseClasses.SORTING_TABLE,
-            BaseClasses.INVENTORY,
-            BaseClasses.STATIONARY_CONTAINER,
-            BaseClasses.POCKETS,
-			BaseClasses.BUILT_IN_INSERTS,
-            BaseClasses.ARMOR, // Handled by presets
-            BaseClasses.VEST, // Handled by presets
-            BaseClasses.HEADWEAR, // Handled by presets
-        ];
-
+        const processedArmorItems: string[] = [];
         const seasonalEventActive = this.seasonalEventService.seasonalEventEnabled();
         const seasonalItemTplBlacklist = this.seasonalEventService.getInactiveSeasonalEventItems();
-        for (const item of items)
+        
+        const presets = this.getPresetsToAdd();
+        for (const preset of presets)
         {
-            if (!this.itemHelper.isValidItem(item._id, ragfairItemInvalidBaseTypes))
+            const presetItemTpl = preset._items[0]._tpl;
+
+            // Add presets base item tpl to the processed list so its skipped later on when processing items
+            processedArmorItems.push(presetItemTpl)
+
+            // Preset id must be passed through to ensure flea shows preset
+            results.push(this.createRagfairAssortItem(presetItemTpl, preset._id)); 
+        }
+
+        for (const item of dbItemsClone)
+        {
+            if (!this.itemHelper.isValidItem(item._id, this.ragfairItemInvalidBaseTypes))
             {
                 continue;
             }
 
+            // Skip seasonal items when not in-season
             if (
                 this.ragfairConfig.dynamic.removeSeasonalItemsWhenNotInEvent && !seasonalEventActive
                 && seasonalItemTplBlacklist.includes(item._id)
@@ -98,15 +108,28 @@ export class RagfairAssortGenerator
                 continue;
             }
 
+            if (processedArmorItems.includes(item._id))
+            {
+                // Already processed
+                continue;
+            }
+
             results.push(this.createRagfairAssortItem(item._id, item._id)); // tplid and id must be the same so hideout recipe rewards work
         }
 
-        for (const preset of presets)
-        {
-            results.push(this.createRagfairAssortItem(preset._items[0]._tpl, preset._id)); // Preset id must be passed through to ensure flea shows preset
-        }
-
         return results;
+    }
+
+    /**
+     * Get presets from globals to add to flea
+     * ragfairConfig.dynamic.showDefaultPresetsOnly decides if its all presets or just defaults
+     * @returns IPreset array
+     */
+    protected getPresetsToAdd(): IPreset[]
+    {
+        return (this.ragfairConfig.dynamic.showDefaultPresetsOnly)
+        ? Object.values(this.presetHelper.getDefaultPresets())
+        : this.presetHelper.getAllPresets()
     }
 
     /**
