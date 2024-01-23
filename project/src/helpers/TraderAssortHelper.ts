@@ -261,7 +261,7 @@ export class TraderAssortHelper
     protected getRagfairDataAsTraderAssort(): ITraderAssort
     {
         return {
-            items: this.ragfairAssortGenerator.getAssortItems(),
+            items: this.ragfairAssortGenerator.getAssortItems().flat(),
             barter_scheme: {},
             loyal_level_items: {},
             nextResupply: null,

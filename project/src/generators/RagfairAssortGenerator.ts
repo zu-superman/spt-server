@@ -16,7 +16,7 @@ import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 @injectable()
 export class RagfairAssortGenerator
 {
-    protected generatedAssortItems: Item[] = [];
+    protected generatedAssortItems: Item[][] = [];
     protected ragfairConfig: IRagfairConfig;
 
     protected ragfairItemInvalidBaseTypes: string[] = [
@@ -43,10 +43,11 @@ export class RagfairAssortGenerator
     }
 
     /**
-     * Get an array of unique items that can be sold on the flea
-     * @returns array of unique items
+     * Get an array of arrays that can be sold on the flea
+     * Each sub array contains item + children (if any)
+     * @returns array of arrays
      */
-    public getAssortItems(): Item[]
+    public getAssortItems(): Item[][]
     {
         if (!this.assortsAreGenerated())
         {
@@ -66,16 +67,17 @@ export class RagfairAssortGenerator
     }
 
     /**
-     * Generate an array of items the flea can sell
-     * @returns array of unique items
+     * Generate an array of arrays (item + children) the flea can sell
+     * @returns array of arrays (item + children)
      */
-    protected generateRagfairAssortItems(): Item[]
+    protected generateRagfairAssortItems(): Item[][]
     {
-        const results: Item[] = [];
+        const results: Item[][] = [];
 
         /** Get cloned items from db */
         const dbItemsClone = this.itemHelper.getItems().filter(item => item._type !== "Node");
 
+        /** Store processed preset tpls so we dont add them when procesing non-preset items */
         const processedArmorItems: string[] = [];
         const seasonalEventActive = this.seasonalEventService.seasonalEventEnabled();
         const seasonalItemTplBlacklist = this.seasonalEventService.getInactiveSeasonalEventItems();
@@ -83,13 +85,21 @@ export class RagfairAssortGenerator
         const presets = this.getPresetsToAdd();
         for (const preset of presets)
         {
-            const presetItemTpl = preset._items[0]._tpl;
+            // Update Ids and clone
+            const presetAndMods: Item[] = this.itemHelper.replaceIDs(
+                null,
+                this.jsonUtil.clone(preset._items),
+            );
+            this.itemHelper.remapRootItemId(presetAndMods);
 
             // Add presets base item tpl to the processed list so its skipped later on when processing items
-            processedArmorItems.push(presetItemTpl)
+            processedArmorItems.push(preset._items[0]._tpl);
 
-            // Preset id must be passed through to ensure flea shows preset
-            results.push(this.createRagfairAssortItem(presetItemTpl, preset._id)); 
+            presetAndMods[0].parentId = "hideout";
+            presetAndMods[0].slotId = "hideout";
+            presetAndMods[0].upd = { StackObjectsCount: 99999999, UnlimitedCount: true, sptPresetId:  preset._id};
+
+            results.push(presetAndMods); 
         }
 
         for (const item of dbItemsClone)
@@ -114,7 +124,9 @@ export class RagfairAssortGenerator
                 continue;
             }
 
-            results.push(this.createRagfairAssortItem(item._id, item._id)); // tplid and id must be the same so hideout recipe rewards work
+            const ragfairAssort = this.createRagfairAssortRootItem(item._id, item._id); // tplid and id must be the same so hideout recipe rewards work
+
+            results.push([ragfairAssort]); 
         }
 
         return results;
@@ -136,9 +148,9 @@ export class RagfairAssortGenerator
      * Create a base assort item and return it with populated values + 999999 stack count + unlimited count = true
      * @param tplId tplid to add to item
      * @param id id to add to item
-     * @returns hydrated Item object
+     * @returns Hydrated Item object
      */
-    protected createRagfairAssortItem(tplId: string, id = this.hashUtil.generate()): Item
+    protected createRagfairAssortRootItem(tplId: string, id = this.hashUtil.generate()): Item
     {
         return {
             _id: id,

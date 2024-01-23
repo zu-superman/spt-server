@@ -21,6 +21,7 @@ import { TimeUtil } from "@spt-aki/utils/TimeUtil";
 export class RagfairOfferService
 {
     protected playerOffersLoaded = false;
+    /** Offer id + offer object */
     protected expiredOffers: Record<string, IRagfairOffer> = {};
 
     protected ragfairConfig: IRagfairConfig;
@@ -71,27 +72,35 @@ export class RagfairOfferService
         this.expiredOffers[staleOffer._id] = staleOffer;
     }
 
+    /**
+     * Get total count of current expired offers
+     * @returns Number of expired offers
+     */
     public getExpiredOfferCount(): number
     {
         return Object.keys(this.expiredOffers).length;
     }
 
     /**
-     * Get an array of expired items not yet processed into new offers
-     * @returns items that need to be turned into offers
+     * Get an array of arrays of expired offer items + children
+     * @returns Expired offer assorts
      */
-    public getExpiredOfferItems(): Item[]
+    public getExpiredOfferAssorts(): Item[][]
     {
-        const expiredItems: Item[] = [];
+        const expiredItems: Item[][] = [];
 
         for (const expiredOfferId in this.expiredOffers)
         {
-            expiredItems.push(this.expiredOffers[expiredOfferId].items[0]);
+            const expiredOffer = this.expiredOffers[expiredOfferId];
+            expiredItems.push(expiredOffer.items);
         }
 
         return expiredItems;
     }
 
+    /**
+     * Clear out internal expiredOffers dictionary of all items
+     */
     public resetExpiredOffers(): void
     {
         this.expiredOffers = {};

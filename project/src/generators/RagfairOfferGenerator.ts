@@ -312,21 +312,22 @@ export class RagfairOfferGenerator
      * Create multiple offers for items by using a unique list of items we've generated previously
      * @param expiredOffers optional, expired offers to regenerate
      */
-    public async generateDynamicOffers(expiredOffers: Item[] = null): Promise<void>
+    public async generateDynamicOffers(expiredOffers: Item[][] = null): Promise<void>
     {
+        const replacingExpiredOffers = expiredOffers?.length > 0;
         const config = this.ragfairConfig.dynamic;
 
         // get assort items from param if they exist, otherwise grab freshly generated assorts
-        const assortItemsToProcess: Item[] = expiredOffers
+        const assortItemsToProcess: Item[][] = replacingExpiredOffers
             ? expiredOffers
             : this.ragfairAssortGenerator.getAssortItems();
 
         // Store all functions to create an offer for every item and pass into Promise.all to run async
         const assorOffersForItemsProcesses = [];
-        for (const assortItemIndex in assortItemsToProcess)
+        for (const assortItemWithChildren of assortItemsToProcess)
         {
             assorOffersForItemsProcesses.push(
-                this.createOffersForItems(assortItemIndex, assortItemsToProcess, expiredOffers, config),
+                this.createOffersFromAssort(assortItemWithChildren, replacingExpiredOffers, config),
             );
         }
 
@@ -334,47 +335,34 @@ export class RagfairOfferGenerator
     }
 
     /**
-     * @param assortItemIndex Index of assort item
-     * @param assortItemsToProcess Item array containing index
-     * @param expiredOffers Currently expired offers on flea
+     * @param assortItemWithChildren Item with its children to process into offers
+     * @param isExpiredOffer is an expired offer
      * @param config Ragfair dynamic config
      */
-    protected async createOffersForItems(
-        assortItemIndex: string,
-        assortItemsToProcess: Item[],
-        expiredOffers: Item[],
+    protected async createOffersFromAssort(
+        assortItemWithChildren: Item[],
+        isExpiredOffer: boolean,
         config: Dynamic,
     ): Promise<void>
     {
-        const assortItem = assortItemsToProcess[assortItemIndex];
-        const itemDetails = this.itemHelper.getItem(assortItem._tpl);
-
-        const isPreset = this.presetHelper.isPreset(assortItem._id);
+        const itemDetails = this.itemHelper.getItem(assortItemWithChildren[0]._tpl);
+        const isPreset = this.presetHelper.isPreset(assortItemWithChildren[0].upd.sptPresetId);
 
         // Only perform checks on newly generated items, skip expired items being refreshed
-        if (!(expiredOffers || this.ragfairServerHelper.isItemValidRagfairItem(itemDetails)))
+        if (!(isExpiredOffer || this.ragfairServerHelper.isItemValidRagfairItem(itemDetails)))
         {
             return;
         }
 
-        // Get item + sub-items (weapons + armors), otherwise just get item
-        const itemWithChildren: Item[] = isPreset
-            ? this.ragfairServerHelper.getPresetItems(assortItem)
-            : [
-                ...[assortItem],
-                ...this.itemHelper.findAndReturnChildrenByAssort(assortItem._id, this.ragfairAssortGenerator.getAssortItems(),
-                ),
-            ];
-
         // Armor presets can hold plates above the allowed flea level, remove if necessary
         if (isPreset && this.ragfairConfig.dynamic.blacklist.enableBsgList)
         {
-            this.removeBannedPlatesFromPreset(itemWithChildren, this.ragfairConfig.dynamic.blacklist.armorPlateMaxProtectionLevel);
+            this.removeBannedPlatesFromPreset(assortItemWithChildren, this.ragfairConfig.dynamic.blacklist.armorPlateMaxProtectionLevel);
         }
 
         // Get number of offers to create
-        // Limit to 1 offer when processing expired
-        const offerCount = expiredOffers
+        // Limit to 1 offer when processing expired - like-for-like replacement
+        const offerCount = isExpiredOffer
             ? 1
             : Math.round(this.randomUtil.getInt(config.offerItemCount.min, config.offerItemCount.max));
 
@@ -385,13 +373,13 @@ export class RagfairOfferGenerator
             if (!isPreset)
             {
                 // Presets get unique id generated during getPresetItems() earlier + would require regenerating all children to match
-                itemWithChildren[0]._id = this.hashUtil.generate();
+                assortItemWithChildren[0]._id = this.hashUtil.generate();
             }
             
-            delete itemWithChildren[0].parentId;
-            delete itemWithChildren[0].slotId;
+            delete assortItemWithChildren[0].parentId;
+            delete assortItemWithChildren[0].slotId;
 
-            assortSingleOfferProcesses.push(this.createSingleOfferForItem(itemWithChildren, isPreset, itemDetails));
+            assortSingleOfferProcesses.push(this.createSingleOfferForItem(assortItemWithChildren, isPreset, itemDetails));
         }
 
         await Promise.all(assortSingleOfferProcesses);
