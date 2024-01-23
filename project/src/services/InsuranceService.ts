@@ -285,22 +285,23 @@ export class InsuranceService
      * Take preraid item and update properties to ensure its ready to be given to player in insurance return mail
      * @param pmcData Player profile
      * @param preRaidItemWithChildren Insured item (with children) as it was pre-raid
-     * @param insuredItemFromClient Item data when player left raid (durability values)
+     * @param allItemsFromClient Item data when player left raid (durability values)
      * @returns Item (with children) to send to player
      */
     protected getInsuredItemDetails(
         pmcData: IPmcData,
         preRaidItemWithChildren: Item[],
-        insuredItemsFromClient: IInsuredItemsData[]
+        allItemsFromClient: IInsuredItemsData[]
     ): Item[]
     {
         const itemsToReturn: Item[] = [];
         for (const preRaidItem of preRaidItemWithChildren)
         {
-            const itemClientInsuranceData = insuredItemsFromClient?.find((x) => x.id === preRaidItem._id);
+            const isInsured = pmcData.InsuredItems.some(item => item.itemId === preRaidItem._id);
+            const itemClientInsuranceData = allItemsFromClient?.find((x) => x.id === preRaidItem._id);
             const itemIsSoftInsert = this.itemHelper.isOfBaseclass(preRaidItem._tpl, BaseClasses.BUILT_IN_INSERTS);
 
-            if (itemClientInsuranceData || itemIsSoftInsert)
+            if (isInsured || itemIsSoftInsert)
             {
                 // Check if item should always be lost
                 if (this.insuranceConfig.slotIdsToAlwaysRemove.includes(preRaidItem.slotId.toLowerCase()))
