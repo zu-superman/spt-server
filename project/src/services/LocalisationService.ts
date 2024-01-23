@@ -14,7 +14,6 @@ import { RandomUtil } from "@spt-aki/utils/RandomUtil";
 @injectable()
 export class LocalisationService
 {
-    protected localeConfig: ILocaleConfig;
     protected i18n: I18n;
 
     constructor(
@@ -24,6 +23,7 @@ export class LocalisationService
         @inject("LocaleService") protected localeService: LocaleService,
     )
     {
+
         const localeFileDirectory = path.join(
             process.cwd(),
             globalThis.G_RELEASE_CONFIGURATION
@@ -32,6 +32,7 @@ export class LocalisationService
         );
         this.i18n = new I18n({
             locales: this.localeService.getServerSupportedLocales(),
+            fallbacks: this.localeService.getLocaleFallbacks(),
             defaultLocale: "en",
             directory: localeFileDirectory,
             retryInDefaultLocale: true,

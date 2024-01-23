@@ -82,6 +82,15 @@ export class LocaleService
     }
 
     /**
+     * Get array of languages supported for localisation
+     * @returns array of locales e.g. en/fr/cn
+     */
+    public getLocaleFallbacks(): { [locale: string]: string; }
+    {
+        return this.localeConfig.fallbacks;
+    }
+
+    /**
      * Get the locale of the computer running the server
      * @returns langage part of locale e.g. 'en' part of 'en-US'
      */
@@ -95,8 +104,14 @@ export class LocaleService
             return "en";
         }
 
-        if (!this.localeConfig.serverSupportedLocales.includes(platformLocale.language))
+        if (!this.localeConfig.serverSupportedLocales.includes(platformLocale.baseName.toLowerCase()))
         {
+            // Chek if base language (CN/EN) exists
+            if (this.localeConfig.serverSupportedLocales.includes(platformLocale.language))
+            {
+                return platformLocale.language;
+            }
+
             this.logger.warning(
                 `Unsupported system langauge found ${platformLocale.baseName}, falling back to english`,
             );
@@ -109,6 +124,6 @@ export class LocaleService
             return "cz";
         }
 
-        return platformLocale.language;
+        return platformLocale.baseName;
     }
 }
