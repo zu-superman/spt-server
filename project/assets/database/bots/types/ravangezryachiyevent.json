@@ -23,7 +23,7 @@
             "Backpack": 0,
             "Earpiece": 0,
             "Eyewear": 0,
-            "FaceCover": 0,
+            "FaceCover": 100,
             "FirstPrimaryWeapon": 0,
             "Headwear": 0,
             "Holster": 0,
@@ -2220,7 +2220,9 @@
             "Backpack": {},
             "Earpiece": {},
             "Eyewear": {},
-            "FaceCover": {},
+            "FaceCover": {
+				"6530e8587cbfc1e309011e37"
+			},
             "FirstPrimaryWeapon": {
                 "60339954d62c9b14ed777c06": 1
             },
