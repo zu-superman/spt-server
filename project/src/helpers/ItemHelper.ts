@@ -1198,7 +1198,7 @@ export class ItemHelper
                 const modSpawnChance = modSpawnChanceDict[slot._name.toLowerCase()];
                 if (modSpawnChance)
                 {
-                    if (!this.randomUtil.getChance100(modSpawnChanceDict[slot._name]))
+                    if (!this.randomUtil.getChance100(modSpawnChance))
                     {
                         continue;
                     }
