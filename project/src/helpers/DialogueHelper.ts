@@ -11,6 +11,7 @@ import {
     MessageItems,
     MessagePreview,
 } from "@spt-aki/models/eft/profile/IAkiProfile";
+import { BaseClasses } from "@spt-aki/models/enums/BaseClasses";
 import { MessageType } from "@spt-aki/models/enums/MessageType";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
@@ -104,14 +105,21 @@ export class DialogueHelper
                     continue;
                 }
 
-                items.data.push(reward);
-
                 if ("StackSlots" in itemTemplate._props)
                 {
-                    const stackSlotItems = this.itemHelper.generateItemsFromStackSlot(itemTemplate, reward._id);
-                    for (const itemToAdd of stackSlotItems)
+                    // Boxes can contain sub-items
+                    if (this.itemHelper.isOfBaseclass(itemTemplate._id, BaseClasses.AMMO_BOX))
                     {
-                        items.data.push(itemToAdd);
+                        const boxAndCartridges: Item[] = [reward];
+                        this.itemHelper.addCartridgesToAmmoBox(boxAndCartridges, itemTemplate);
+
+                        // Push box + cartridge children into array
+                        items.data.push(...boxAndCartridges);
+                    }
+                    else
+                    {
+                        // Item is sanitised and ready to be pushed into holding array
+                        items.data.push(reward);
                     }
                 }
             }

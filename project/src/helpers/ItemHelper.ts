@@ -242,74 +242,6 @@ export class ItemHelper
     }
 
     /**
-     * AmmoBoxes contain StackSlots which need to be filled for the AmmoBox to have content.
-     * Here's what a filled AmmoBox looks like:
-     *   {
-     *       _id: "b1bbe982daa00ac841d4ae4d",
-     *       _tpl: "57372c89245977685d4159b1",
-     *       parentId: "5fe49a0e2694b0755a504876",
-     *       slotId: "hideout",
-     *       location: {
-     *           x: 3,
-     *           y: 4,
-     *           r: 0
-     *       },
-     *       upd: {
-     *           StackObjectsCount: 1
-     *       }
-     *   },
-     *   {
-     *       _id: "b997b4117199033afd274a06",
-     *       _tpl: "56dff061d2720bb5668b4567",
-     *       parentId: "b1bbe982daa00ac841d4ae4d",
-     *       slotId: "cartridges",
-     *       location: 0,
-     *       upd: {
-     *           StackObjectsCount: 30
-     *       }
-     *   }
-     * Given the AmmoBox Item (first object) this function generates the StackSlot (second object) and returns it.
-     * StackSlots are only used for AmmoBoxes which only have one element in StackSlots. However, it seems to be generic
-     * to possibly also have more than one StackSlot. As good as possible, without seeing items having more than one
-     * StackSlot, this function takes account of this and creates and returns an array of StackSlotItems
-     *
-     * @param {object}      item            The item template of the AmmoBox as given in items.json
-     * @param {string}      parentId        The id of the AmmoBox instance these StackSlotItems should be children of
-     * @returns {array}                     The array of StackSlotItems
-     */
-    public generateItemsFromStackSlot(item: ITemplateItem, parentId: string): Item[]
-    {
-        const stackSlotItems: Item[] = [];
-        // This is a AmmoBox or something other with Stackslots (nothing exists yet besides AmmoBoxes afaik)
-        for (const stackSlot of item._props.StackSlots)
-        {
-            const slotId = stackSlot._name;
-            const count = stackSlot._max_count;
-            // those are all arrays. For AmmoBoxes it's only one element each so we take 0 hardcoded
-            // not sure if at any point there will be more than one element - but what so take then?
-            const ammoTpl = stackSlot._props.filters[0].Filter[0];
-            if (ammoTpl)
-            {
-                const stackSlotItem: Item = {
-                    _id: this.hashUtil.generate(),
-                    _tpl: ammoTpl,
-                    parentId: parentId,
-                    slotId: slotId,
-                    location: 0,
-                    upd: { StackObjectsCount: count },
-                };
-                stackSlotItems.push(stackSlotItem);
-            }
-            else
-            {
-                this.logger.warning(`No ids found in Filter for StackSlot ${slotId} of Item ${item._id}.`);
-            }
-        }
-
-        return stackSlotItems;
-    }
-
-    /**
      * Get cloned copy of all item data from items.json
      * @returns array of ITemplateItem objects
      */
@@ -1006,7 +938,7 @@ export class ItemHelper
             const cartridgeCountToAdd = (remainingSpace < maxPerStack) ? remainingSpace : maxPerStack;
 
             // Add cartridge item into items array
-            ammoBox.push(this.createCartridges(ammoBox[0]._id, cartridgeTpl, cartridgeCountToAdd, location));
+            ammoBox.push(this.createCartridges(ammoBox[0]._id, cartridgeTpl, cartridgeCountToAdd, location, ammoBox[0].upd?.SpawnedInSession));
 
             currentStoredCartridgeCount += cartridgeCountToAdd;
             location++;
@@ -1129,7 +1061,7 @@ export class ItemHelper
             }
 
             // Add cartridge item object into items array
-            magazine.push(this.createCartridges(magazine[0]._id, cartridgeTpl, cartridgeCountToAdd, location));
+            magazine.push(this.createCartridges(magazine[0]._id, cartridgeTpl, cartridgeCountToAdd, location, magazine[0].upd?.SpawnedInSession));
 
             currentStoredCartridgeCount += cartridgeCountToAdd;
             location++;
@@ -1182,9 +1114,10 @@ export class ItemHelper
      * @param ammoTpl Cartridge to insert
      * @param stackCount Count of cartridges inside parent
      * @param location Location inside parent (e.g. 0, 1)
+     * @param foundInRaid OPTIONAL - Are cartridges found in raid (SpawnedInSession)
      * @returns Item
      */
-    public createCartridges(parentId: string, ammoTpl: string, stackCount: number, location: number): Item
+    public createCartridges(parentId: string, ammoTpl: string, stackCount: number, location: number, foundInRaid = false): Item
     {
         return {
             _id: this.objectId.generate(),
@@ -1192,7 +1125,10 @@ export class ItemHelper
             parentId: parentId,
             slotId: "cartridges",
             location: location,
-            upd: { StackObjectsCount: stackCount },
+            upd: {
+                StackObjectsCount: stackCount,
+                SpawnedInSession: foundInRaid
+            },
         };
     }
 

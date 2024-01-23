@@ -306,6 +306,12 @@ export class QuestHelper
             else
             {
                 // Is child mod
+                if (rootItem.upd.SpawnedInSession)
+                {
+                    // Propigate FiR status into child items
+                    item.upd.SpawnedInSession = rootItem.upd.SpawnedInSession;
+                }
+
                 mods.push(item);
             }
         }
