@@ -41,7 +41,7 @@
         "followerBoarClose2": 10,
         "followerKolontayAssault": 10,
         "followerKolontaySecurity": 10,
-        "shooterBTR": 10,
+        "shooterBTR": 2,
         "peacefullZryachiyEvent": 5,
         "ravangeZryachiyEvent": 5,
         "sectactPriestEvent": 10,
