@@ -22,6 +22,7 @@ import { AccountTypes } from "@spt-aki/models/enums/AccountTypes";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { SkillTypes } from "@spt-aki/models/enums/SkillTypes";
 import { Traders } from "@spt-aki/models/enums/Traders";
+import { IBotConfig } from "@spt-aki/models/spt/config/IBotConfig";
 import { ICoreConfig } from "@spt-aki/models/spt/config/ICoreConfig";
 import { IHttpConfig } from "@spt-aki/models/spt/config/IHttpConfig";
 import { ILocationConfig } from "@spt-aki/models/spt/config/ILocationConfig";
@@ -54,6 +55,7 @@ export class GameController
     protected ragfairConfig: IRagfairConfig;
     protected pmcConfig: IPmcConfig;
     protected lootConfig: ILootConfig;
+    protected botConfig: IBotConfig;
 
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
@@ -84,6 +86,7 @@ export class GameController
         this.ragfairConfig = this.configServer.getConfig(ConfigTypes.RAGFAIR);
         this.pmcConfig = this.configServer.getConfig(ConfigTypes.PMC);
         this.lootConfig = this.configServer.getConfig(ConfigTypes.LOOT);
+        this.botConfig = this.configServer.getConfig(ConfigTypes.BOT);
     }
 
     public load(): void
@@ -126,6 +129,8 @@ export class GameController
         this.adjustLooseLootSpawnProbabilities();
 
         this.checkTraderRepairValuesExist();
+
+        this.adjustLocationBotValues()
 
         // repeatableQuests are stored by in profile.Quests due to the responses of the client (e.g. Quests in
         // offraidData). Since we don't want to clutter the Quests list, we need to remove all completed (failed or
@@ -244,6 +249,25 @@ export class GameController
             {
                 this.flagAllItemsInDbAsSellableOnFlea();
             }
+        }
+    }
+
+    protected adjustLocationBotValues(): void
+    {
+        const mapsDb = this.databaseServer.getTables().locations;
+
+        for (const locationKey in this.botConfig.maxBotCap)
+        {
+            const map: ILocationData = mapsDb[locationKey];
+            if (!map)
+            {
+                continue;
+            }
+
+            map.base.BotMax = this.botConfig.maxBotCap[locationKey];
+
+            // make values no larger than 30 secs
+            map.base.BotStart = Math.min(map.base.BotStart, 30);
         }
     }
 
