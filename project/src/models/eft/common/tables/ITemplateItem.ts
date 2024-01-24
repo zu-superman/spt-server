@@ -177,6 +177,8 @@ export interface Props
     MaxDurability?: number;
     armorZone?: string[];
     armorClass?: string | number;
+    armorColliders: string[];
+    armorPlateColliders: string[];
     mousePenalty?: number;
     weaponErgonomicPenalty?: number;
     BluntThroughput?: number;
