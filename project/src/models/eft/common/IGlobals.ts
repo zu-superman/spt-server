@@ -8,6 +8,7 @@ export interface IGlobals
     config: IConfig;
     bot_presets: IBotPreset[];
     AudioSettings: IAudioSettings;
+    EnvironmentSettings: IEnvironmentSettings;
     BotWeaponScatterings: IBotWeaponScattering[];
     ItemPresets: Record<string, IPreset>;
 }
@@ -1762,6 +1763,17 @@ export interface IAudioGroupPreset
     OcclusionIntensity: number;
     OverallVolume: number;
 }
+
+export interface IEnvironmentSettings
+{
+    SnowStepsVolumeMultiplier: number
+    SurfaceMultipliers: ISurfaceMultiplier[]
+}
+
+export interface ISurfaceMultiplier {
+    SurfaceType: string
+    VolumeMult: number
+  }
 
 export interface IBotWeaponScattering
 {
