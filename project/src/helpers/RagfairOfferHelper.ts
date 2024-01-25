@@ -556,6 +556,14 @@ export class RagfairOfferHelper
             return false;
         }
 
+        // Filter out presets when search request has multiple buildItems
+        // Assuming 1 build item = single item e.g. gun
+        if (searchRequest.buildCount && this.presetHelper.hasPreset(offerRootItem._tpl) && Object.keys(searchRequest.buildItems).length > 1)
+        {
+            // Don't include preset offer
+            return false;
+        }
+
         if (searchRequest.offerOwnerType === OfferOwnerType.TRADEROWNERTYPE && !isTraderOffer)
         {
             // don't include player offers
