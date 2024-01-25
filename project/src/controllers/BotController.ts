@@ -258,6 +258,12 @@ export class BotController
             );
         }
 
+        if (this.botHelper.isBotPmc(botGenerationDetails.role))
+        {
+            botGenerationDetails.isPmc = true;
+            botGenerationDetails.side = this.botHelper.getPmcSideByRole(requestedBot.Role);
+        }
+
         // Roll chance to be pmc if type is allowed to be one
         const botConvertRateMinMax = this.pmcConfig.convertIntoPmcChance[requestedBot.Role.toLowerCase()];
         if (botConvertRateMinMax)
