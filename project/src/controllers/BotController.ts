@@ -24,6 +24,7 @@ import { LocalisationService } from "@spt-aki/services/LocalisationService";
 import { MatchBotDetailsCacheService } from "@spt-aki/services/MatchBotDetailsCacheService";
 import { SeasonalEventService } from "@spt-aki/services/SeasonalEventService";
 import { JsonUtil } from "@spt-aki/utils/JsonUtil";
+import { RandomUtil } from "@spt-aki/utils/RandomUtil";
 
 @injectable()
 export class BotController
@@ -44,6 +45,7 @@ export class BotController
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
         @inject("ConfigServer") protected configServer: ConfigServer,
         @inject("ApplicationContext") protected applicationContext: ApplicationContext,
+        @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("JsonUtil") protected jsonUtil: JsonUtil,
     )
     {
@@ -171,11 +173,13 @@ export class BotController
                 side: "Savage",
                 role: condition.Role,
                 playerLevel: pmcProfile.Info.Level,
+                playerName: pmcProfile.Info.Nickname,
                 botRelativeLevelDeltaMax: this.pmcConfig.botRelativeLevelDeltaMax,
                 botRelativeLevelDeltaMin: this.pmcConfig.botRelativeLevelDeltaMin,
                 botCountToGenerate: this.botConfig.presetBatch[condition.Role],
                 botDifficulty: condition.Difficulty,
                 isPlayerScav: false,
+                allPmcsHaveSameNameAsPlayer: this.randomUtil.getChance100(this.pmcConfig.allPMCsHavePlayerNameWithRandomPrefixChance)
             };
 
             // Event bots need special actions to occur, set data up for them
@@ -240,6 +244,7 @@ export class BotController
             side: "Savage",
             role: requestedBot.Role,
             playerLevel: pmcProfile.Info.Level,
+            playerName: pmcProfile.Info.Nickname,
             botRelativeLevelDeltaMax: this.pmcConfig.botRelativeLevelDeltaMax,
             botRelativeLevelDeltaMin: this.pmcConfig.botRelativeLevelDeltaMin,
             botCountToGenerate: this.botConfig.presetBatch[requestedBot.Role],

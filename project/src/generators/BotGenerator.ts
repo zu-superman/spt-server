@@ -81,7 +81,6 @@ export class BotGenerator
             isPmc: false,
             side: "Savage",
             role: role,
-            playerLevel: 0,
             botRelativeLevelDeltaMax: 0,
             botRelativeLevelDeltaMin: 0,
             botCountToGenerate: 1,
@@ -164,7 +163,7 @@ export class BotGenerator
 
         bot.Info.Nickname = this.generateBotNickname(
             botJsonTemplate,
-            botGenerationDetails.isPlayerScav,
+            botGenerationDetails,
             botRole,
             sessionId,
         );
@@ -247,17 +246,19 @@ export class BotGenerator
     /**
      * Create a bot nickname
      * @param botJsonTemplate x.json from database
-     * @param isPlayerScav Will bot be player scav
+     * @param botGenerationDetails
      * @param botRole role of bot e.g. assault
      * @returns Nickname for bot
      */
     protected generateBotNickname(
         botJsonTemplate: IBotType,
-        isPlayerScav: boolean,
+        botGenerationDetails: BotGenerationDetails,
         botRole: string,
         sessionId: string,
     ): string
     {
+        const isPlayerScav = botGenerationDetails.isPlayerScav;
+
         let name = `${this.randomUtil.getArrayValue(botJsonTemplate.firstName)} ${
             this.randomUtil.getArrayValue(botJsonTemplate.lastName) || ""
         }`;
@@ -285,14 +286,11 @@ export class BotGenerator
             name += ` ${botRole}`;
         }
 
-        // If bot name matches current players name, chance to add localised prefix to name
-        if (name.toLowerCase() === playerProfile.Info.Nickname.toLowerCase())
+        // We want to replace pmc bot names with player name + prefix
+        if (botGenerationDetails.isPmc && botGenerationDetails.allPmcsHaveSameNameAsPlayer)
         {
-            if (this.randomUtil.getChance100(this.pmcConfig.addPrefixToSameNamePMCAsPlayerChance))
-            {
-                const prefix = this.localisationService.getRandomTextThatMatchesPartialKey("pmc-name_prefix_");
-                name = `${prefix} ${name}`;
-            }
+            const prefix = this.localisationService.getRandomTextThatMatchesPartialKey("pmc-name_prefix_");
+            name = `${prefix} ${botGenerationDetails.playerName}`;
         }
 
         return name;
