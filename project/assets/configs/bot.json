@@ -862,7 +862,7 @@
                     },
                     "equipment": {
                         "ArmBand": 90,
-                        "FirstPrimaryWeapon": 80,
+                        "FirstPrimaryWeapon": 85,
                         "SecondPrimaryWeapon": 3,
                         "Holster": 5,
                         "Earpiece": 35,
@@ -1148,7 +1148,8 @@
 								"5b44cf1486f77431723e3d05": 4,
 								"60a283193cb70855c43a381d": 4,
 								"5c0e541586f7747fa54205c9": 4,
-								"545cdb794bdc2d3a198b456a": 4
+								"545cdb794bdc2d3a198b456a": 4,
+								"5ca2151486f774244a3b8d30": 1
                             },
                             "TacticalVest": {
 								"5c0e446786f7742013381639": 210,
@@ -1174,7 +1175,9 @@
                             },
                             "Headwear": {
                                 "5c17a7ed2e2216152142459c": 1,
+                                "61bca7cda0eae612383adf57": 1,
                                 "5e00c1ad86f774747333222c": 1,
+                                "5e01ef6886f77445f643baa4": 1,
                                 "5ea17ca01412a1425304d1c0": 1,
                                 "5c0919b50db834001b7ce3b9": 1,
                                 "5ea05cf85ad9772e6624305d": 330,
@@ -1216,6 +1219,7 @@
                                 "5ea03f7400685063ec28bfa8": 65,
                                 "627e14b21713922ded6f2c15": 1,
                                 "5bb2475ed4351e00853264e3": 1,
+                                "5d43021ca4b9362eab4b5e25": 1,
                                 "6275303a9f372d6ea97f9ec7": 1,
                                 "5fb64bc92b1b027b1f50bcf2": 1,
 								"6499849fc93611967b034949": 140,
