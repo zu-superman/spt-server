@@ -166,6 +166,7 @@ export class BotController
      */
     protected generateBotsFirstTime(request: IGenerateBotsRequestData, pmcProfile: IPmcData, sessionId: string): IBotBase[]
     {
+        const allPmcsHaveSameNameAsPlayer = this.randomUtil.getChance100(this.pmcConfig.allPMCsHavePlayerNameWithRandomPrefixChance);
         for (const condition of request.conditions)
         {
             const botGenerationDetails: BotGenerationDetails = {
@@ -179,7 +180,7 @@ export class BotController
                 botCountToGenerate: this.botConfig.presetBatch[condition.Role],
                 botDifficulty: condition.Difficulty,
                 isPlayerScav: false,
-                allPmcsHaveSameNameAsPlayer: this.randomUtil.getChance100(this.pmcConfig.allPMCsHavePlayerNameWithRandomPrefixChance)
+                allPmcsHaveSameNameAsPlayer: allPmcsHaveSameNameAsPlayer
             };
 
             // Event bots need special actions to occur, set data up for them
