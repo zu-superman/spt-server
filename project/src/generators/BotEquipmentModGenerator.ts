@@ -82,14 +82,14 @@ export class BotEquipmentModGenerator
         }
 
         // Iterate over mod pool and choose mods to add to item
-        for (const modSlot in compatibleModsPool)
+        for (const modSlotName in compatibleModsPool)
         {
-            const itemSlot = this.getModItemSlot(modSlot, parentTemplate);
-            if (!itemSlot)
+            const itemSlotTemplate = this.getModItemSlotFromDb(modSlotName, parentTemplate);
+            if (!itemSlotTemplate)
             {
                 this.logger.error(
                     this.localisationService.getText("bot-mod_slot_missing_from_item", {
-                        modSlot: modSlot,
+                        modSlot: modSlotName,
                         parentId: parentTemplate._id,
                         parentName: parentTemplate._name,
                         botRole: settings.botRole
@@ -98,31 +98,31 @@ export class BotEquipmentModGenerator
                 continue;
             }
 
-            if (!(this.shouldModBeSpawned(itemSlot, modSlot.toLowerCase(), settings.spawnChances.equipmentMods) || forceSpawn))
+            if (!(this.shouldModBeSpawned(itemSlotTemplate, modSlotName.toLowerCase(), settings.spawnChances.equipmentMods) || forceSpawn))
             {
                 continue;
             }
 
             // Ensure submods for nvgs all spawn together
-            if (modSlot === "mod_nvg")
+            if (modSlotName === "mod_nvg")
             {
                 forceSpawn = true;
             }
 
-            let modPoolToChooseFrom = compatibleModsPool[modSlot];
-            if (settings.botEquipmentConfig.filterPlatesByLevel && this.itemHelper.isRemovablePlateSlot(modSlot.toLowerCase()))
+            let modPoolToChooseFrom = compatibleModsPool[modSlotName];
+            if (settings.botEquipmentConfig.filterPlatesByLevel && this.itemHelper.isRemovablePlateSlot(modSlotName.toLowerCase()))
             {
-                const outcome = this.filterPlateModsForSlotByLevel(settings, modSlot.toLowerCase(), compatibleModsPool[modSlot], parentTemplate);
+                const outcome = this.filterPlateModsForSlotByLevel(settings, modSlotName.toLowerCase(), compatibleModsPool[modSlotName], parentTemplate);
                 if ([Result.UNKNOWN_FAILURE, Result.NO_DEFAULT_FILTER].includes(outcome.result))
                 {
-                    this.logger.debug(`Plate slot: ${modSlot} selection for armor: ${parentTemplate._id} failed: ${Result[outcome.result]}, skipping`);
+                    this.logger.debug(`Plate slot: ${modSlotName} selection for armor: ${parentTemplate._id} failed: ${Result[outcome.result]}, skipping`);
 
                     continue;
                 }
                 
                 if ([Result.LACKS_PLATE_WEIGHTS].includes(outcome.result))
                 {
-                    this.logger.warning(`Plate slot: ${modSlot} lacks weights for armor: ${parentTemplate._id}, unable to adjust plate choice, using existing data`);
+                    this.logger.warning(`Plate slot: ${modSlotName} lacks weights for armor: ${parentTemplate._id}, unable to adjust plate choice, using existing data`);
                 }
                 
                 modPoolToChooseFrom = outcome.plateModTpls;
@@ -140,7 +140,7 @@ export class BotEquipmentModGenerator
             {
                 modTpl = exhaustableModPool.getRandomValue();
                 if (
-                    !this.botGeneratorHelper.isItemIncompatibleWithCurrentItems(equipment, modTpl, modSlot).incompatible
+                    !this.botGeneratorHelper.isItemIncompatibleWithCurrentItems(equipment, modTpl, modSlotName).incompatible
                 )
                 {
                     found = true;
@@ -149,28 +149,28 @@ export class BotEquipmentModGenerator
             }
 
             // Compatible item not found but slot REQUIRES item, get random item from db
-            const parentSlot = parentTemplate._props.Slots.find((i) => i._name === modSlot);
-            if (!found && parentSlot !== undefined && parentSlot._required)
+            if (!found && itemSlotTemplate._required)
             {
-                modTpl = this.getModTplFromItemDb(modTpl, parentSlot, modSlot, equipment);
+                modTpl = this.getModTplFromItemDb(modTpl, itemSlotTemplate, modSlotName, equipment);
                 found = !!modTpl;
             }
 
             // Compatible item not found + not required
-            if (!found && parentSlot !== undefined && !parentSlot._required)
+            if (!(found || itemSlotTemplate._required))
             {
                 // Don't add item
                 continue;
             }
 
             const modTemplate = this.itemHelper.getItem(modTpl);
-            if (!this.isModValidForSlot(modTemplate, itemSlot, modSlot, parentTemplate, settings.botRole))
+            if (!this.isModValidForSlot(modTemplate, itemSlotTemplate, modSlotName, parentTemplate, settings.botRole))
             {
                 continue;
             }
 
+            // Generate new id to ensure all items are unique on bot
             const modId = this.hashUtil.generate();
-            equipment.push(this.createModItem(modId, modTpl, parentId, modSlot, modTemplate[1], settings.botRole));
+            equipment.push(this.createModItem(modId, modTpl, parentId, modSlotName, modTemplate[1], settings.botRole));
 
             // Does the item being added have possible child mods?
             if (Object.keys(settings.modPool).includes(modTpl))
@@ -350,7 +350,7 @@ export class BotEquipmentModGenerator
         for (const modSlot of sortedModKeys)
         {
             // Check weapon has slot for mod to fit in
-            const modsParentSlot = this.getModItemSlot(modSlot, parentTemplate);
+            const modsParentSlot = this.getModItemSlotFromDb(modSlot, parentTemplate);
             if (!modsParentSlot)
             {
                 this.logger.error(
@@ -666,7 +666,7 @@ export class BotEquipmentModGenerator
      * @param parentTemplate item template
      * @returns Slot item
      */
-    protected getModItemSlot(modSlot: string, parentTemplate: ITemplateItem): Slot
+    protected getModItemSlotFromDb(modSlot: string, parentTemplate: ITemplateItem): Slot
     {
         const modSlotLower = modSlot.toLowerCase();
         switch (modSlotLower)
