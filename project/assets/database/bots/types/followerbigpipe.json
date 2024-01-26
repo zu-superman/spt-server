@@ -203,6 +203,10 @@
           "58d39b0386f77443380bf13c"
         ]
       },
+	"5fbbfacda56d053a3543f799": {
+		"mod_muzzle": ["5dfa3cd1b33c0951220c079b"],
+		"mod_gas_block": ["5fbc210bf24b94483f726481"]
+		},
       "58d39b0386f77443380bf13c": {
         "mod_scope": [
           "58d399e486f77442e0016fe7"

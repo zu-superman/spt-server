@@ -149,6 +149,10 @@
       }
     },
     "mods": {
+	"55d3632e4bdc2d972f8b4569": {
+			"mod_muzzle": ["5b3a16655acfc40016387a2a"],
+			"mod_gas_block": ["5ae30e795acfc408fb139a0b", "56eabcd4d2720b66698b4574"]
+		},
       "5bfea6e90db834001b7347f3": {
         "mod_stock": [
           "5cde739cd7f00c0010373bd3"
