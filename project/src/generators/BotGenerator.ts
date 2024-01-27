@@ -170,10 +170,14 @@ export class BotGenerator
 
         if (!this.seasonalEventService.christmasEventEnabled())
         {
-            this.seasonalEventService.removeChristmasItemsFromBotInventory(
-                botJsonTemplate.inventory,
-                botGenerationDetails.role,
-            );
+            // Process all bots EXCEPT gifter, he needs christmas items
+            if (botGenerationDetails.role !== "gifter")
+            {
+                this.seasonalEventService.removeChristmasItemsFromBotInventory(
+                    botJsonTemplate.inventory,
+                    botGenerationDetails.role,
+                );
+            }
         }
 
         // Remove hideout data if bot is not a PMC or pscav
