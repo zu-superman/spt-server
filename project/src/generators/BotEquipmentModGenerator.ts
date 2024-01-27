@@ -780,14 +780,28 @@ export class BotEquipmentModGenerator
                 incompatible: false,
                 reason: "",
             };
+            const modParentFilterList = parentSlot._props.filters[0].Filter;
             while (exhaustableModPool.hasValues())
             {
                 modTpl = exhaustableModPool.getRandomValue();
+                if (modSpawnResult === ModSpawn.DEFAULT_MOD && modPool.length === 1)
+                {
+                    // default mod wanted and only one choice
+                    found = true;
+
+                    break;
+                }
+
                 modCompatibilityResult = this.botGeneratorHelper.isItemIncompatibleWithCurrentItems(
                     weapon,
                     modTpl,
                     modSlot,
                 );
+                const isOnModParentFilterList = modParentFilterList.includes(modTpl);
+                if (!isOnModParentFilterList)
+                {
+                    continue;
+                }
                 if (!modCompatibilityResult.incompatible && !this.weaponModComboIsIncompatible(weapon, modTpl))
                 {
                     found = true;
