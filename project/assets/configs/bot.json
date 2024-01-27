@@ -850,6 +850,7 @@
             "lightIsActiveDayChancePercent": 25,
             "lightIsActiveNightChancePercent": 95,
             "laserIsActiveChancePercent": 85,
+			"forceOnlyArmoredRigWhenNoArmor": true,
             "filterPlatesByLevel": true,
             "randomisation": [
                 {
