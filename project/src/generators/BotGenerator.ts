@@ -214,10 +214,10 @@ export class BotGenerator
             this.addDogtagToBot(bot);
         }
 
-        // generate new bot ID
-        bot = this.generateId(bot);
+        // Generate new bot ID
+        this.generateId(bot);
 
-        // generate new inventory ID
+        // Generate new inventory ID
         this.generateInventoryID(bot);
 
         // Set role back to originally requested now its been generated
@@ -442,14 +442,12 @@ export class BotGenerator
      * @param bot bot to update
      * @returns updated IBotBase object
      */
-    protected generateId(bot: IBotBase): IBotBase
+    protected generateId(bot: IBotBase): void
     {
         const botId = this.hashUtil.generate();
 
         bot._id = botId;
         bot.aid = this.hashUtil.generateAccountId();
-
-        return bot;
     }
 
     protected generateInventoryID(profile: IBotBase): void
