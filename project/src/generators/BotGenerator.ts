@@ -494,8 +494,6 @@ export class BotGenerator
                 item.parentId = newInventoryId;
             }
         }
-
-        return profile;
     }
 
     /**
