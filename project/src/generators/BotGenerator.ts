@@ -218,7 +218,7 @@ export class BotGenerator
         bot = this.generateId(bot);
 
         // generate new inventory ID
-        bot = this.generateInventoryID(bot);
+        this.generateInventoryID(bot);
 
         // Set role back to originally requested now its been generated
         if (botGenerationDetails.eventRole)
@@ -452,7 +452,7 @@ export class BotGenerator
         return bot;
     }
 
-    protected generateInventoryID(profile: IBotBase): IBotBase
+    protected generateInventoryID(profile: IBotBase): void
     {
         const defaultInventory = "55d7217a4bdc2d86028b456d";
         const itemsByParentHash: Record<string, Item[]> = {};
