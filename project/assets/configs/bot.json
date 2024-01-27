@@ -356,12 +356,14 @@
         "bossbully": {},
         "bossgluhar": {},
         "bosskilla": {},
-        "bosskojaniy": {},
+        "bosskojaniy": {
+			"5d08d21286f774736e7c94c3": 1
+		},
         "bosssanitar": {},
         "bosstagilla": {},
         "bossknight": {},
         "bosszryachiy": {},
-        "bossjolontay": {},
+        "bosskolontay": {},
         "bosstest": {},
         "followerbully": {},
         "followergluharassault": {},
