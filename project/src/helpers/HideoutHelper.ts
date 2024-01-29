@@ -163,7 +163,7 @@ export class HideoutHelper
 
         // Add bonus to player bonuses array in profile
         // EnergyRegeneration, HealthRegeneration, RagfairCommission, ScavCooldownTimer, SkillGroupLevelingBoost, ExperienceRate, QuestMoneyReward etc
-        this.logger.debug(`Adding bonus: ${bonus.type} to profile, value: ${bonus.value}`);
+        this.logger.debug(`Adding bonus: ${bonus.type} to profile, value: ${bonus.value ?? ""}`);
         pmcData.Bonuses.push(bonus);
     }
 
