@@ -11,6 +11,7 @@ import { IHideoutImprovement } from "@spt-aki/models/eft/common/tables/IBotBase"
 import { IPmcDataRepeatableQuest, IRepeatableQuest } from "@spt-aki/models/eft/common/tables/IRepeatableQuests";
 import { StageBonus } from "@spt-aki/models/eft/hideout/IHideoutArea";
 import { IAkiProfile } from "@spt-aki/models/eft/profile/IAkiProfile";
+import { BonusType } from "@spt-aki/models/enums/BonusType";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { HideoutAreas } from "@spt-aki/models/enums/HideoutAreas";
 import { QuestStatus } from "@spt-aki/models/enums/QuestStatus";
@@ -890,12 +891,12 @@ export class ProfileFixerService
             return profileBonuses.find((x) => x.id === bonus.id);
         }
 
-        if (bonus.type.toLowerCase() === "stashsize")
+        if (bonus.type === BonusType.STASH_SIZE)
         {
             return profileBonuses.find((x) => x.type === bonus.type && x.templateId === bonus.templateId);
         }
 
-        if (bonus.type.toLowerCase() === "additionalslots")
+        if (bonus.type === BonusType.ADDITIONAL_SLOTS)
         {
             return profileBonuses.find((x) =>
                 x.type === bonus.type && x.value === bonus.value && x.visible === bonus.visible

@@ -1,6 +1,7 @@
 import { Item, Upd } from "@spt-aki/models/eft/common/tables/IItem";
 import { IPmcDataRepeatableQuest } from "@spt-aki/models/eft/common/tables/IRepeatableQuests";
 import { IRagfairOffer } from "@spt-aki/models/eft/ragfair/IRagfairOffer";
+import { BonusType } from "@spt-aki/models/enums/BonusType";
 import { HideoutAreas } from "@spt-aki/models/enums/HideoutAreas";
 import { MemberCategory } from "@spt-aki/models/enums/MemberCategory";
 import { QuestStatus } from "@spt-aki/models/enums/QuestStatus";
@@ -493,7 +494,7 @@ export interface RagfairInfo
 export interface Bonus
 {
     id?: string;
-    type: string;
+    type: BonusType;
     templateId?: string;
     passive?: boolean;
     production?: boolean;

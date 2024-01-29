@@ -11,8 +11,8 @@ import { IHideoutProduction } from "@spt-aki/models/eft/hideout/IHideoutProducti
 import { IHideoutSingleProductionStartRequestData } from "@spt-aki/models/eft/hideout/IHideoutSingleProductionStartRequestData";
 import { IHideoutTakeProductionRequestData } from "@spt-aki/models/eft/hideout/IHideoutTakeProductionRequestData";
 import { IAddItemDirectRequest } from "@spt-aki/models/eft/inventory/IAddItemDirectRequest";
-import { IAddItemRequestData } from "@spt-aki/models/eft/inventory/IAddItemRequestData";
 import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEventRouterResponse";
+import { BonusType } from "@spt-aki/models/enums/BonusType";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { HideoutAreas } from "@spt-aki/models/enums/HideoutAreas";
 import { SkillTypes } from "@spt-aki/models/enums/SkillTypes";
@@ -134,7 +134,7 @@ export class HideoutHelper
         // Handle additional changes some bonuses need before being added
         switch (bonus.type)
         {
-            case "StashSize":
+            case BonusType.STASH_SIZE:
             {
                 // Find stash item and adjust tpl to new tpl from bonus
                 const stashItem = pmcData.Inventory.items.find((x) => x._id === pmcData.Inventory.stash);
@@ -148,11 +148,11 @@ export class HideoutHelper
                 stashItem._tpl = bonus.templateId;
                 break;
             }
-            case "MaximumEnergyReserve":
+            case BonusType.MAXIMUM_ENERGY_RESERVE:
                 // Amend max energy in profile
                 pmcData.Health.Energy.Maximum += bonus.value;
                 break;
-            case "TextBonus":
+            case BonusType.TEXT_BONUS:
                 // Delete values before they're added to profile
                 delete bonus.value;
                 delete bonus.passive;
@@ -412,7 +412,7 @@ export class HideoutHelper
         let fuelDrainRate = this.databaseServer.getTables().hideout.settings.generatorFuelFlowRate
             * this.hideoutConfig.runIntervalSeconds;
         // implemented moddable bonus for fuel consumption bonus instead of using solar power variable as before
-        const fuelBonus = pmcData.Bonuses.find((b) => b.type === "FuelConsumption");
+        const fuelBonus = pmcData.Bonuses.find((bonus) => bonus.type === BonusType.FUEL_CONSUMPTION);
         const fuelBonusPercent = 1.0 - (fuelBonus ? Math.abs(fuelBonus.value) : 0) / 100;
         fuelDrainRate *= fuelBonusPercent;
         // Hideout management resource consumption bonus:

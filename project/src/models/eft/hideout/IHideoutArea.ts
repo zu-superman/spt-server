@@ -1,3 +1,5 @@
+import { BonusType } from "@spt-aki/models/enums/BonusType";
+
 export interface IHideoutArea
 {
     _id: string;
@@ -82,7 +84,7 @@ export interface StageBonus
     production: boolean;
     visible: boolean;
     skillType?: string;
-    type: string;
+    type: BonusType;
     filter?: string[];
     icon?: string;
     /** CHANGES PER DUMP */
