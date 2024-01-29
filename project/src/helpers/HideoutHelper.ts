@@ -1,6 +1,7 @@
 import { inject, injectable } from "tsyringe";
 
 import { InventoryHelper } from "@spt-aki/helpers/InventoryHelper";
+import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
 import { HideoutArea, IHideoutImprovement, Production, Productive } from "@spt-aki/models/eft/common/tables/IBotBase";
@@ -49,6 +50,7 @@ export class HideoutHelper
         @inject("InventoryHelper") protected inventoryHelper: InventoryHelper,
         @inject("PlayerService") protected playerService: PlayerService,
         @inject("LocalisationService") protected localisationService: LocalisationService,
+        @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("ConfigServer") protected configServer: ConfigServer,
     )
     {
@@ -388,7 +390,7 @@ export class HideoutHelper
                 case HideoutAreas.GENERATOR:
                     if (hideoutProperties.isGeneratorOn)
                     {
-                        this.updateFuel(area, pmcData);
+                        this.updateFuel(area, pmcData, hideoutProperties.isGeneratorOn);
                     }
                     break;
                 case HideoutAreas.WATER_COLLECTOR:
@@ -405,16 +407,23 @@ export class HideoutHelper
         }
     }
 
-    protected updateFuel(generatorArea: HideoutArea, pmcData: IPmcData): void
+    /**
+     * Decrease fuel from generator slots based on amount of time since last time this occured
+     * @param generatorArea Hideout area
+     * @param pmcData Player profile
+     * @param isGeneratorOn Is the generator turned on since last update
+     */
+    protected updateFuel(generatorArea: HideoutArea, pmcData: IPmcData, isGeneratorOn: boolean): void
     {
         // 1 resource last 14 min 27 sec, 1/14.45/60 = 0.00115
         // 10-10-2021 From wiki, 1 resource last 12 minutes 38 seconds, 1/12.63333/60 = 0.00131
         let fuelDrainRate = this.databaseServer.getTables().hideout.settings.generatorFuelFlowRate
-            * this.hideoutConfig.runIntervalSeconds;
-        // implemented moddable bonus for fuel consumption bonus instead of using solar power variable as before
+            * this.getTimeElapsedSinceLastServerTick(pmcData, isGeneratorOn);
+        
         const fuelBonus = pmcData.Bonuses.find((bonus) => bonus.type === BonusType.FUEL_CONSUMPTION);
         const fuelBonusPercent = 1.0 - (fuelBonus ? Math.abs(fuelBonus.value) : 0) / 100;
         fuelDrainRate *= fuelBonusPercent;
+        
         // Hideout management resource consumption bonus:
         const hideoutManagementConsumptionBonus = 1.0 - this.getHideoutManagementConsumptionBonus(pmcData);
         fuelDrainRate *= hideoutManagementConsumptionBonus;
@@ -423,58 +432,61 @@ export class HideoutHelper
 
         for (let i = 0; i < generatorArea.slots.length; i++)
         {
-            if (generatorArea.slots[i].item)
+            const fuelItemInSlot = generatorArea.slots[i].item[0];
+            if (!fuelItemInSlot)
             {
-                let resourceValue = (generatorArea.slots[i].item[0].upd?.Resource)
-                    ? generatorArea.slots[i].item[0].upd.Resource.Value
-                    : null;
-                if (resourceValue === 0)
-                {
-                    continue;
-                }
-                else if (!resourceValue)
-                {
-                    const fuelItem = HideoutHelper.expeditionaryFuelTank;
-                    resourceValue = generatorArea.slots[i].item[0]._tpl === fuelItem
-                        ? 60 - fuelDrainRate
-                        : 100 - fuelDrainRate;
-                    pointsConsumed = fuelDrainRate;
-                }
-                else
-                {
-                    pointsConsumed = (generatorArea.slots[i].item[0].upd.Resource.UnitsConsumed || 0) + fuelDrainRate;
-                    resourceValue -= fuelDrainRate;
-                }
-
-                resourceValue = Math.round(resourceValue * 10000) / 10000;
-                pointsConsumed = Math.round(pointsConsumed * 10000) / 10000;
-
-                // check unit consumed for increment skill point
-                if (pmcData && Math.floor(pointsConsumed / 10) >= 1)
-                {
-                    this.profileHelper.addSkillPointsToPlayer(pmcData, SkillTypes.HIDEOUT_MANAGEMENT, 1);
-                    pointsConsumed -= 10;
-                }
-
-                if (resourceValue > 0)
-                {
-                    generatorArea.slots[i].item[0].upd = this.getAreaUpdObject(1, resourceValue, pointsConsumed);
-
-                    this.logger.debug(`${pmcData._id} Generator: ${resourceValue} fuel left in slot ${i + 1}`);
-                    hasFuelRemaining = true;
-
-                    break; // Break here to avoid updating all the fuel tanks
-                }
-                else
-                {
-                    generatorArea.slots[i].item[0].upd = this.getAreaUpdObject(1, 0, 0);
-
-                    // Update remaining resources to be subtracted
-                    fuelDrainRate = Math.abs(resourceValue);
-                }
+                // No item in slot, skip
+                continue;
             }
+
+            let fuelRemaining = fuelItemInSlot.upd?.Resource?.Value;
+            if (fuelRemaining === 0)
+            {
+                // No fuel left, skip
+                continue;
+            }
+            
+            // Undefined fuel, fresh fuel item and needs its max fuel amount looked up
+            if (!fuelRemaining)
+            {
+                const fuelItemTemplate = this.itemHelper.getItem(fuelItemInSlot._tpl)[1];
+                pointsConsumed = fuelDrainRate;
+                fuelRemaining =  fuelItemTemplate._props.MaxResource - fuelDrainRate;
+            }
+            else
+            {
+                // Fuel exists already, deduct fuel from item remaining value
+                pointsConsumed = (fuelItemInSlot.upd.Resource.UnitsConsumed || 0) + fuelDrainRate;
+                fuelRemaining -= fuelDrainRate;
+            }
+
+            fuelRemaining = Math.round(fuelRemaining * 10000) / 10000;
+            pointsConsumed = Math.round(pointsConsumed * 10000) / 10000;
+
+            // Fuel consumed / 10 is over 1, add hideout management skill point
+            if (pmcData && Math.floor(pointsConsumed / 10) >= 1)
+            {
+                this.profileHelper.addSkillPointsToPlayer(pmcData, SkillTypes.HIDEOUT_MANAGEMENT, 1);
+                pointsConsumed -= 10;
+            }
+
+            if (fuelRemaining > 0)
+            {
+                fuelItemInSlot.upd = this.getAreaUpdObject(1, fuelRemaining, pointsConsumed);
+
+                this.logger.debug(`$Profile: ${pmcData._id} Generator has: ${fuelRemaining} fuel left in slot ${i + 1}`);
+                hasFuelRemaining = true;
+
+                break; // Break here to avoid updating all the fuel tanks
+            }
+
+            fuelItemInSlot.upd = this.getAreaUpdObject(1, 0, 0);
+
+            // Update remaining resources to be subtracted
+            fuelDrainRate = Math.abs(fuelRemaining);
         }
 
+        // Out of fuel, flag generator as offline
         if (!hasFuelRemaining)
         {
             generatorArea.active = false;
