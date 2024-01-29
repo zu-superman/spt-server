@@ -772,9 +772,8 @@ export class BotEquipmentModGenerator
         }
         
         // Pick random mod that's compatible
-        const chosenModResult = this.chooseRandomCompatibleModTpl(modPool, parentSlot, modSpawnResult, weapon, modSlot);
-
-        if (chosenModResult.slotBlocked)
+        const chosenModResult = this.pickWeaponModTplForSlotFromPool(modPool, parentSlot, modSpawnResult, weapon, modSlot);
+        if (chosenModResult.slotBlocked && !parentSlot._required)
         {
             // Don't bother trying to fit mod, slot is completely blocked
             return null;
@@ -817,7 +816,7 @@ export class BotEquipmentModGenerator
         return this.itemHelper.getItem(chosenModResult.chosenTpl);
     }
 
-    protected chooseRandomCompatibleModTpl(
+    protected pickWeaponModTplForSlotFromPool(
         modPool: string[],
         parentSlot: Slot,
         modSpawnResult: ModSpawn,
@@ -833,6 +832,7 @@ export class BotEquipmentModGenerator
         };
         const modParentFilterList = parentSlot._props.filters[0].Filter;
 
+        let blockedAttemptCount = 0;
         while (exhaustableModPool.hasValues())
         {
             chosenTpl = exhaustableModPool.getRandomValue();
@@ -852,7 +852,7 @@ export class BotEquipmentModGenerator
                 continue;
             }
 
-            chosenModResult = this.botGeneratorHelper.isItemIncompatibleWithCurrentItems(
+            chosenModResult = this.botGeneratorHelper.isWeaponModIncompatibleWithCurrentMods(
                 weapon,
                 chosenTpl,
                 modSlotname,
@@ -860,13 +860,25 @@ export class BotEquipmentModGenerator
 
             if (chosenModResult.slotBlocked)
             {
-                break;
+                // Give max of 8 attempts of picking an item ifs blocked by another item
+                if (blockedAttemptCount > 8)
+                {
+                    this.logger.warning(`Attempted to find mod for slot: ${parentSlot._name} on weapon: ${weapon[0]._tpl} and blocked 8 times`);
+
+                    blockedAttemptCount = 0;
+                    break;
+                }
+
+                blockedAttemptCount++;
+
+                continue;
             }
             
             // Some mod combos will never work, make sure its not happened
             if (!chosenModResult.incompatible && !this.weaponModComboIsIncompatible(weapon, chosenTpl))
             {
                 chosenModResult.found = true;
+                chosenModResult.incompatible = false;
                 chosenModResult.chosenTpl = chosenTpl;
 
                 break;

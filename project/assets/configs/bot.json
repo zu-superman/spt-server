@@ -31,7 +31,7 @@
         "sectantWarrior": 10,
         "gifter": 5,
         "test": 30,
-        "exUsec": 30,
+        "exUsec": 25,
         "arenaFighterEvent": 15,
         "arenaFighter": 15,
         "crazyAssaultEvent": 15,
@@ -41,7 +41,7 @@
         "followerBoarClose2": 10,
         "followerKolontayAssault": 10,
         "followerKolontaySecurity": 10,
-        "shooterBTR": 2,
+        "shooterBTR": 1,
         "peacefullZryachiyEvent": 5,
         "ravangeZryachiyEvent": 5,
         "sectactPriestEvent": 10,
@@ -1728,7 +1728,6 @@
                                 "64abd93857958b4249003418": 10,
                                 "64be79c487d1510151095552": 1,
                                 "5648a7494bdc2d9d488b4583": 1,
-                                "572b7adb24597762ae139821": 1,
                                 "64be79e2bf8412471d0d9bcc": 1
                             },
                             "TacticalVest": {
@@ -1743,6 +1742,7 @@
                                 "5df8a42886f77412640e2e75": 60,
                                 "5648a69d4bdc2ded0b8b457b": 55,
 								"5e4abc1f86f774069619fbaa": 1,
+								"572b7adb24597762ae139821": 1,
                                 "6034d0230ca681766b6a0fb5": 1
                             },
                             "Headwear": {

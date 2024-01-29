@@ -276,6 +276,82 @@ export class BotGeneratorHelper
         return { Durability: currentDurability, MaxDurability: maxDurability };
     }
 
+    public isWeaponModIncompatibleWithCurrentMods(
+        itemsEquipped: Item[],
+        tplToCheck: string,
+        modSlot: string,
+    ): IChooseRandomCompatibleModResult
+    {
+        // TODO: Can probably be optimized to cache itemTemplates as items are added to inventory
+        const equippedItemsDb = itemsEquipped.map((item) => this.databaseServer.getTables().templates.items[item._tpl]);
+        const itemToEquipDb = this.itemHelper.getItem(tplToCheck);
+        const itemToEquip = itemToEquipDb[1];
+
+        if (!itemToEquipDb[0])
+        {
+            this.logger.warning(
+                this.localisationService.getText("bot-invalid_item_compatibility_check", {
+                    itemTpl: tplToCheck,
+                    slot: modSlot,
+                }),
+            );
+
+            return {
+                incompatible: true,
+                found: false,
+                reason: `item: ${tplToCheck} does not exist in the database`
+            }; 
+        }
+
+        // No props property
+        if (!itemToEquip._props)
+        {
+            this.logger.warning(
+                this.localisationService.getText("bot-compatibility_check_missing_props", {
+                    id: itemToEquip._id,
+                    name: itemToEquip._name,
+                    slot: modSlot,
+                }),
+            );
+
+            return {
+                incompatible: true,
+                found: false,
+                reason: `item: ${tplToCheck} does not have a _props field`
+            }; 
+        }
+
+        // Check if any of the current weapon mod templates have the incoming item defined as incompatible
+        const blockingItem = equippedItemsDb.find((x) => x._props.ConflictingItems?.includes(tplToCheck));
+        if (blockingItem)
+        {
+            return {
+                incompatible: true,
+                found: false,
+                reason:
+                    `Cannot add: ${tplToCheck} ${itemToEquip._name} to slot: ${modSlot}. Blocked by: ${blockingItem._id} ${blockingItem._name}`,
+                slotBlocked: true,
+            };
+        }
+
+        // Check inverse to above, if the incoming item has any existing mods in its conflicting items array
+        const blockingModItem = itemsEquipped.find((item) => itemToEquip._props.ConflictingItems?.includes(item._tpl));
+        if (blockingModItem)
+        {
+            return {
+                incompatible: true,
+                found: false,
+                reason:
+                    ` Cannot add: ${tplToCheck} to slot: ${modSlot}. Would block existing item: ${blockingModItem._tpl} in slot: ${blockingModItem.slotId}`,
+            };
+        }
+
+        return {
+            incompatible: false,
+            reason: ""
+        };
+    }
+
     /**
      * Can item be added to another item without conflict
      * @param itemsEquipped Items to check compatibilities with
