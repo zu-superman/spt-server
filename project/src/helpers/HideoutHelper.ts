@@ -498,7 +498,7 @@ export class HideoutHelper
         const prod = pmcData.Hideout.Production[HideoutHelper.waterCollector];
         if (prod && this.isProduction(prod))
         {
-            area = this.updateWaterFilters(area, prod, isGeneratorOn, pmcData);
+            this.updateWaterFilters(area, prod, isGeneratorOn, pmcData);
         }
         else
         {
@@ -521,14 +521,13 @@ export class HideoutHelper
      * @param production production object
      * @param isGeneratorOn is generator enabled
      * @param pmcData Player profile
-     * @returns Updated HideoutArea object
      */
     protected updateWaterFilters(
         waterFilterArea: HideoutArea,
         production: Production,
         isGeneratorOn: boolean,
         pmcData: IPmcData,
-    ): HideoutArea
+    ): void
     {
         let filterDrainRate = this.getWaterFilterDrainRate(pmcData);
         const productionTime = this.getTotalProductionTimeSeconds(HideoutHelper.waterCollector);
@@ -597,8 +596,6 @@ export class HideoutHelper
                 }
             }
         }
-
-        return waterFilterArea;
     }
 
     /**
