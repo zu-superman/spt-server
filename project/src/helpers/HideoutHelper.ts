@@ -433,7 +433,13 @@ export class HideoutHelper
 
         for (let i = 0; i < generatorArea.slots.length; i++)
         {
-            const fuelItemInSlot = generatorArea.slots[i].item[0];
+            if (!generatorArea.slots[i]?.item)
+            {
+                // No item in slot, skip
+                continue;
+            }
+
+            const fuelItemInSlot = generatorArea.slots[i]?.item[0];
             if (!fuelItemInSlot)
             {
                 // No item in slot, skip
