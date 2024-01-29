@@ -372,9 +372,7 @@ export class BotWeaponGenerator
                     continue;
                 }
 
-                const allowedTplsOnSlot = modSlotTemplate._props.filters[0].Filter;
                 const slotName = modSlotTemplate._name;
-
                 const weaponSlotItem = weaponItemArray.find((weaponItem) => weaponItem.parentId === mod._id && weaponItem.slotId === slotName);
                 if (!weaponSlotItem)
                 {

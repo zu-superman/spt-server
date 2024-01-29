@@ -784,7 +784,7 @@ export class BotEquipmentModGenerator
         if (chosenModResult.incompatible && parentSlot._required)
         {
             this.logger.debug(chosenModResult.reason);
-            this.logger.debug(`Weapon: ${weapon.map(x => `${x._tpl} ${x.slotId ?? ""}`).join(",")}`)
+            //this.logger.debug(`Weapon: ${weapon.map(x => `${x._tpl} ${x.slotId ?? ""}`).join(",")}`)
         }
 
         // Get random mod to attach from items db for required slots if none found above
@@ -840,6 +840,7 @@ export class BotEquipmentModGenerator
             {
                 // Default mod wanted and only one choice in pool
                 chosenModResult.found = true;
+                chosenModResult.incompatible = false;
                 chosenModResult.chosenTpl = chosenTpl;
 
                 break;
