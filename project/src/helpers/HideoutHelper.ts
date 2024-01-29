@@ -801,10 +801,8 @@ export class HideoutHelper
 
             return btcProd;
         }
-        else
-        {
-            return null;
-        }
+
+        return null;
     }
 
     /**
