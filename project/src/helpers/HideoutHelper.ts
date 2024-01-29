@@ -1099,8 +1099,12 @@ export class HideoutHelper
         let result = 0;
         for (const dogtag of activeDogtags)
         {
-            if (dogtag.upd.Dogtag.Side === pmcData.Info.Side
-                || Number.parseInt(dogtag.upd.Dogtag.AccountId) === pmcData.aid
+            if (!dogtag.upd.Dogtag)
+            {
+                continue;
+            }
+
+            if (Number.parseInt(dogtag.upd.Dogtag?.AccountId) === pmcData.aid
             )
             {
                 continue;
