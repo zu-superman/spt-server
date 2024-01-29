@@ -832,6 +832,8 @@ export class BotEquipmentModGenerator
         };
         const modParentFilterList = parentSlot._props.filters[0].Filter;
 
+        // How many times can a mod for the slot be blocked before we stop trying
+        const maxBlockedAttempts = Math.round(modPool.length * 0.75); // Roughly 75% of pool size
         let blockedAttemptCount = 0;
         while (exhaustableModPool.hasValues())
         {
@@ -846,9 +848,11 @@ export class BotEquipmentModGenerator
                 break;
             }
 
+            // Check chosen item is on the allowed list of the parent
             const isOnModParentFilterList = modParentFilterList.includes(chosenTpl);
             if (!isOnModParentFilterList)
             {
+                // Try again
                 continue;
             }
 
@@ -861,22 +865,22 @@ export class BotEquipmentModGenerator
             if (chosenModResult.slotBlocked)
             {
                 // Give max of 8 attempts of picking an item ifs blocked by another item
-                if (blockedAttemptCount > 8)
+                if (blockedAttemptCount > maxBlockedAttempts)
                 {
-                    this.logger.warning(`Attempted to find mod for slot: ${parentSlot._name} on weapon: ${weapon[0]._tpl} and blocked 8 times`);
-
                     blockedAttemptCount = 0;
                     break;
                 }
 
                 blockedAttemptCount++;
 
+                // Try again
                 continue;
             }
             
-            // Some mod combos will never work, make sure its not happened
+            // Some mod combos will never work, make sure this isnt the case
             if (!chosenModResult.incompatible && !this.weaponModComboIsIncompatible(weapon, chosenTpl))
             {
+                // Success
                 chosenModResult.found = true;
                 chosenModResult.incompatible = false;
                 chosenModResult.chosenTpl = chosenTpl;
