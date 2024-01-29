@@ -765,10 +765,10 @@ export class ProfileFixerService
 
         for (const areaId of areasToCheck)
         {
-            const area = pmcProfile.Hideout.Areas.find((x) => x.type === areaId);
+            const area = pmcProfile.Hideout.Areas.find((area) => area.type === areaId);
             if (!area)
             {
-                this.logger.debug(`unable to sort ${areaId} slots, no area found`);
+                this.logger.debug(`unable to sort: ${area.type} (${areaId}) slots, no area found`);
                 continue;
             }
 
