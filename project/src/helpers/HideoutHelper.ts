@@ -32,6 +32,7 @@ import { TimeUtil } from "@spt-aki/utils/TimeUtil";
 export class HideoutHelper
 {
     public static bitcoinFarm = "5d5c205bd582a50d042a3c0e";
+    public static bitcoinProductionId = "5d5c205bd582a50d042a3c0e";
     public static waterCollector = "5d5589c1f934db045e6c5492";
     public static bitcoin = "59faff1d86f7746c51718c9c";
     public static expeditionaryFuelTank = "5d1b371186f774253763a656";
@@ -400,7 +401,7 @@ export class HideoutHelper
                 case HideoutAreas.AIR_FILTERING:
                     if (hideoutProperties.isGeneratorOn)
                     {
-                        this.updateAirFilters(area, pmcData);
+                        this.updateAirFilters(area, pmcData, hideoutProperties.isGeneratorOn);
                     }
                     break;
             }
@@ -677,7 +678,7 @@ export class HideoutHelper
         };
     }
 
-    protected updateAirFilters(airFilterArea: HideoutArea, pmcData: IPmcData): void
+    protected updateAirFilters(airFilterArea: HideoutArea, pmcData: IPmcData, isGeneratorOn: boolean): void
     {
         // 300 resources last 20 hrs, 300/20/60/60 = 0.00416
         /* 10-10-2021 from WIKI (https://escapefromtarkov.fandom.com/wiki/FP-100_filter_absorber)
@@ -685,7 +686,8 @@ export class HideoutHelper
             300/17.64694/60/60 = 0.004722
         */
         let filterDrainRate = this.databaseServer.getTables().hideout.settings.airFilterUnitFlowRate
-            * this.hideoutConfig.runIntervalSeconds;
+            * this.getTimeElapsedSinceLastServerTick(pmcData, isGeneratorOn);
+
         // Hideout management resource consumption bonus:
         const hideoutManagementConsumptionBonus = 1.0 - this.getHideoutManagementConsumptionBonus(pmcData);
         filterDrainRate *= hideoutManagementConsumptionBonus;
@@ -727,12 +729,10 @@ export class HideoutHelper
                     this.logger.debug(`Air filter: ${resourceValue} filter left on slot ${i + 1}`);
                     break; // Break here to avoid updating all filters
                 }
-                else
-                {
-                    delete airFilterArea.slots[i].item;
-                    // Update remaining resources to be subtracted
-                    filterDrainRate = Math.abs(resourceValue);
-                }
+
+                delete airFilterArea.slots[i].item;
+                // Update remaining resources to be subtracted
+                filterDrainRate = Math.abs(resourceValue);
             }
         }
     }
@@ -741,7 +741,7 @@ export class HideoutHelper
     {
         const btcProd = pmcData.Hideout.Production[HideoutHelper.bitcoinFarm];
         const bitcoinProdData = this.databaseServer.getTables().hideout.production.find((p) =>
-            p._id === "5d5c205bd582a50d042a3c0e"
+            p._id === HideoutHelper.bitcoinProductionId
         );
         const coinSlotCount = this.getBTCSlots(pmcData);
 
