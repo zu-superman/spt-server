@@ -1380,7 +1380,7 @@ export class ProfileFixerService
         const quests = this.databaseServer.getTables().templates.quests;
         const profileQuests = pmcProfile.Quests;
         
-        let repeatableQuests: IRepeatableQuest[] = [];
+        const repeatableQuests: IRepeatableQuest[] = [];
         for (const repeatableQuestType of pmcProfile.RepeatableQuests)
         {
             repeatableQuests.push(...repeatableQuestType.activeQuests);
