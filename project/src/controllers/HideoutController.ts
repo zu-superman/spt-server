@@ -49,6 +49,7 @@ import { TimeUtil } from "@spt-aki/utils/TimeUtil";
 @injectable()
 export class HideoutController
 {
+    /** Key used in TaskConditionCounters array */
     protected static nameTaskConditionCountersCrafting = "CounterHoursCrafting";
     protected hideoutConfig: IHideoutConfig;
 

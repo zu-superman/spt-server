@@ -239,11 +239,19 @@ export class BotInventoryGenerator
             randomisationDetails: randomistionDetails
         });
 
-        // Bot has no armor vest
-        if (botEquipConfig.forceOnlyArmoredRigWhenNoArmor && !botInventory.items.find(item => item.slotId === "ArmorVest"))
+        // Bot has no armor vest and flagged to be foreced to wear armored rig in this event
+        const hasArmorVest = botInventory.items.some(item => item.slotId === "ArmorVest")
+        if (botEquipConfig.forceOnlyArmoredRigWhenNoArmor && !hasArmorVest)
         {
             // Filter rigs down to only those with armor
-            this.filterRigsToOnlyThoseWithProtection(templateInventory);
+            this.filterRigsToThoseWithProtection(templateInventory);
+        }
+
+        // Optimisation - Remove armored rigs from pool
+        if (hasArmorVest)
+        {
+            // Filter rigs down to only those with armor
+            this.filterRigsToThoseWithoutProtection(templateInventory);
         }
 
         this.generateEquipment({
@@ -263,7 +271,7 @@ export class BotInventoryGenerator
      * Remove non-armored rigs from parameter data
      * @param templateInventory 
      */
-    protected filterRigsToOnlyThoseWithProtection(templateInventory: Inventory): void
+    protected filterRigsToThoseWithProtection(templateInventory: Inventory): void
     {
         const tacVestsWithArmor = Object.entries(templateInventory.equipment.TacticalVest)
             .reduce((newVestDictionary, [tplKey]) =>
@@ -276,6 +284,25 @@ export class BotInventoryGenerator
             }, {});
 
         templateInventory.equipment.TacticalVest = tacVestsWithArmor;
+    }
+
+    /**
+     * Remove armored rigs from parameter data
+     * @param templateInventory 
+     */
+    protected filterRigsToThoseWithoutProtection(templateInventory: Inventory): void
+    {
+        const tacVestsWithoutArmor = Object.entries(templateInventory.equipment.TacticalVest)
+            .reduce((newVestDictionary, [tplKey]) =>
+            {
+                if (this.itemHelper.getItem(tplKey)[1]._props.Slots?.length === 0)
+                {
+                    newVestDictionary[tplKey] = templateInventory.equipment.TacticalVest[tplKey];
+                }
+                return newVestDictionary;
+            }, {});
+
+        templateInventory.equipment.TacticalVest = tacVestsWithoutArmor;
     }
 
     /**
@@ -302,6 +329,8 @@ export class BotInventoryGenerator
         {
             let pickedItemDb: ITemplateItem;
             let found = false;
+
+            const maxAttempts = Math.round(Object.keys(settings.rootEquipmentPool).length * 0.75); // Roughly 75% of pool size
             let attempts = 0;
             while (!found)
             {
@@ -332,14 +361,8 @@ export class BotInventoryGenerator
                     settings.rootEquipmentSlot);
                 if (compatabilityResult.incompatible)
                 {
-                    // Entire slot is blocked by another item, no point in checking other items
-                    if (compatabilityResult.slotBlocked)
-                    {
-                        return;
-                    }
-
-                    // Tried 8 different items that failed, stop
-                    if (attempts >= 8)
+                    // Tried x different items that failed, stop
+                    if (attempts > maxAttempts)
                     {
                         return;
                     }
