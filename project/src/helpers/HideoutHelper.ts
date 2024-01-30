@@ -34,7 +34,7 @@ export class HideoutHelper
     public static bitcoinFarm = "5d5c205bd582a50d042a3c0e";
     public static bitcoinProductionId = "5d5c205bd582a50d042a3c0e";
     public static waterCollector = "5d5589c1f934db045e6c5492";
-    public static bitcoin = "59faff1d86f7746c51718c9c";
+    public static bitcoinTpl = "59faff1d86f7746c51718c9c";
     public static expeditionaryFuelTank = "5d1b371186f774253763a656";
     public static maxSkillPoint = 5000;
 
@@ -832,7 +832,7 @@ export class HideoutHelper
     {
         btcProd.Products.push({
             _id: this.hashUtil.generate(),
-            _tpl: HideoutHelper.bitcoin,
+            _tpl: HideoutHelper.bitcoinTpl,
             upd: { StackObjectsCount: 1 },
         });
 
@@ -968,48 +968,46 @@ export class HideoutHelper
 
             return this.httpResponse.appendErrorToOutput(output, errorMsg);
         }
+        
+        // Add each coin individually to player
+        for (let index = 0; index < craftedCoinCount; index++)
+        {
+            const request = {
+                itemWithModsToAdd: [
+                    {
+                        _id: this.hashUtil.generate(),
+                        _tpl: HideoutHelper.bitcoinTpl,
+                        upd: {
+                            StackObjectsCount: 1
+                        }
+                    }
+                ],
+                foundInRaid: true,
+                useSortingTable: false,
+                callback: null
+            };
 
+            // Add FiR coin to player inventory
+            this.inventoryHelper.addItemToStash(sessionId, request, pmcData, output);
+            if (output.warnings.length > 0)
+            {
+                return output;
+            }
+        }
+
+        // Is at max capacity
         const coinSlotCount = this.getBTCSlots(pmcData);
-        const btcCoinCreationRequest = this.createBitcoinRequest(pmcData, coinSlotCount);
+        if (pmcData.Hideout.Production[HideoutHelper.bitcoinFarm].Products.length >= coinSlotCount)
+        {
+            // Set start to now
+            pmcData.Hideout.Production[HideoutHelper.bitcoinFarm].StartTimestamp = this.timeUtil.getTimestamp();
+        }
 
-        // Add FiR coins to player inventory
-        this.inventoryHelper.addItemToStash(sessionId, btcCoinCreationRequest, pmcData, output);
+        // Remove crafted coins from production in profile now they've been collected
+        // Can only collect all coins, not individially
+        pmcData.Hideout.Production[HideoutHelper.bitcoinFarm].Products = [];
 
         return output;
-    }
-
-    /**
-     * Create a bitcoin request object
-     * @param pmcData Player profile
-     * @returns IAddItemRequestData
-     */
-    protected createBitcoinRequest(pmcData: IPmcData, coinSlotCount: number): IAddItemDirectRequest
-    {
-        return {
-            itemWithModsToAdd: [
-                {
-                    _id: this.hashUtil.generate(),
-                    _tpl: HideoutHelper.bitcoin,
-                    upd: {
-                        StackObjectsCount: pmcData.Hideout.Production[HideoutHelper.bitcoinFarm].Products.length
-                    }
-                }
-            ],
-            foundInRaid: true,
-            useSortingTable: false,
-            callback: () =>
-            {
-                // Is at max capacity
-                if (pmcData.Hideout.Production[HideoutHelper.bitcoinFarm].Products.length >= coinSlotCount)
-                {
-                    // Set start to now
-                    pmcData.Hideout.Production[HideoutHelper.bitcoinFarm].StartTimestamp = this.timeUtil.getTimestamp();
-                }
-    
-                // Remove crafted coins from production in profile now they've been collected
-                pmcData.Hideout.Production[HideoutHelper.bitcoinFarm].Products = [];
-            }
-        };
     }
 
     /**
