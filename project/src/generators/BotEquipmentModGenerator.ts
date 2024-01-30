@@ -864,7 +864,7 @@ export class BotEquipmentModGenerator
 
             if (chosenModResult.slotBlocked)
             {
-                // Give max of 8 attempts of picking an item ifs blocked by another item
+                // Give max of x attempts of picking a mod if blocked by another
                 if (blockedAttemptCount > maxBlockedAttempts)
                 {
                     blockedAttemptCount = 0;
@@ -920,14 +920,30 @@ export class BotEquipmentModGenerator
         {
             const defaultWeaponPreset = this.presetHelper.getDefaultPreset(weaponTemplate._id)
             const matchingMod = defaultWeaponPreset._items.find(item => item?.slotId?.toLowerCase() === modSlot.toLowerCase());
+
+            // Only filter mods down to single default item if it already exists in existing itemModPool, OR the default item has no children
+            // Filtering mod pool to item that wasnt already there can have problems;
+            // You'd have a mod being picked without any sub-mods in its chain, possibly resulting in missing required mods not being added
             if (matchingMod)
             {
-                return [matchingMod._tpl];
+                // Mod isnt in existing mod pool
+                if (itemModPool[modSlot].includes(matchingMod._tpl))
+                {
+                    // Found mod on preset + it already exists in mod pool
+                    return [matchingMod._tpl];
+                }
+
+                // Mod isnt in existing pool, only add if its got no children
+                if (this.itemHelper.getItem(matchingMod._tpl)[1]._props.Slots.length === 0)
+                {
+                    // Mod has no children
+                    return [matchingMod._tpl];
+                }
             }
 
-            this.logger.warning(`No default: ${modSlot} mod found on: ${weaponTemplate._name}`);
+            this.logger.debug(`No default: ${modSlot} mod found on template: ${weaponTemplate._id}`);
 
-            // Couuldnt find default in globals, use existing mod pool data
+            // Couldnt find default in globals, use existing mod pool data
             return itemModPool[modSlot];
         }
 

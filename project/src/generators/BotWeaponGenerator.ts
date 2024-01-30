@@ -311,7 +311,7 @@ export class BotWeaponGenerator
     {
         // Invalid weapon generated, fallback to preset
         this.logger.warning(
-            this.localisationService.getText("bot-weapon_generated_incorrect_using_default", weaponTpl),
+            this.localisationService.getText("bot-weapon_generated_incorrect_using_default", `${weaponTpl} ${itemTemplate._name}`),
         );
         const weaponMods = [];
 
@@ -363,15 +363,9 @@ export class BotWeaponGenerator
                 continue;
             }
 
-            // Iterate over slots in db item, if required, check tpl in that slot matches the filter list
-            for (const modSlotTemplate of modTemplate._props.Slots)
+            // Iterate over required slots in db item, check mod exists for that slot
+            for (const modSlotTemplate of modTemplate._props.Slots.filter(slot => slot._required))
             {
-                // Ignore optional mods
-                if (!modSlotTemplate._required)
-                {
-                    continue;
-                }
-
                 const slotName = modSlotTemplate._name;
                 const weaponSlotItem = weaponItemArray.find((weaponItem) => weaponItem.parentId === mod._id && weaponItem.slotId === slotName);
                 if (!weaponSlotItem)
