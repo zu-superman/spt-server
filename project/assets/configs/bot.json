@@ -1594,7 +1594,7 @@
                     },
                     "equipment": {
                         "edit": {
-							"PrimaryWeapon": {
+							"FirstPrimaryWeapon": {
 								"5c501a4d2e221602b412b540": 2
 							},
                             "ArmorVest": {
