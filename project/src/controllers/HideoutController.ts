@@ -464,7 +464,9 @@ export class HideoutController
         )
         {
             const response = this.removeResourceFromArea(sessionID, pmcData, request, output, hideoutArea);
-            this.update();
+
+            // Force a refresh of productions/hideout areas with resources
+            this.hideoutHelper.updatePlayerHideout(sessionID);
             return response;
         }
 
