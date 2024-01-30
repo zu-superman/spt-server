@@ -492,7 +492,8 @@ export class HideoutController
     {
         const slotIndexToRemove = removeResourceRequest.slots[0];
 
-        const itemToReturn = hideoutArea.slots.find((x) => x.locationIndex === slotIndexToRemove).item[0];
+        // Assume only one item in slot
+        const itemToReturn = hideoutArea.slots.find((slot) => slot.locationIndex === slotIndexToRemove).item[0];
 
         const request: IAddItemDirectRequest = {
             itemWithModsToAdd: [
@@ -507,15 +508,15 @@ export class HideoutController
             useSortingTable: false
         }
         
-        // If returned with errors, drop out
         this.inventoryHelper.addItemToStash(sessionID, request, pmcData, output);
         if (output.warnings && output.warnings.length > 0)
         {
+            // Adding to stash failed, drop out - dont remove item from hideout area slot
             return output;
         }
 
         // Remove items from slot, locationIndex remains
-        const hideoutSlotIndex = hideoutArea.slots.findIndex((x) => x.locationIndex === slotIndexToRemove);
+        const hideoutSlotIndex = hideoutArea.slots.findIndex((slot) => slot.locationIndex === slotIndexToRemove);
         hideoutArea.slots[hideoutSlotIndex].item = undefined;
 
         return output;
@@ -723,7 +724,9 @@ export class HideoutController
 
         if (request.recipeId === HideoutHelper.bitcoinFarm)
         {
-            return this.hideoutHelper.getBTC(pmcData, request, sessionID);
+            // Ensure server and client are in-sync when player presses 'get items' on farm
+            this.hideoutHelper.updatePlayerHideout(sessionID);
+            return this.hideoutHelper.getBTC(pmcData, request, sessionID, output);
         }
 
         const recipe = hideoutDb.production.find((r) => r._id === request.recipeId);

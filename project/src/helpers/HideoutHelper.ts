@@ -832,7 +832,7 @@ export class HideoutHelper
     {
         btcProd.Products.push({
             _id: this.hashUtil.generate(),
-            _tpl: "59faff1d86f7746c51718c9c",
+            _tpl: HideoutHelper.bitcoin,
             upd: { StackObjectsCount: 1 },
         });
 
@@ -869,26 +869,26 @@ export class HideoutHelper
     }
 
     /**
-     * Get a count of how many BTC can be gathered by the profile
+     * Get a count of how many possible BTC can be gathered by the profile
      * @param pmcData Profile to look up
-     * @returns coin slot count
+     * @returns Coin slot count
      */
     protected getBTCSlots(pmcData: IPmcData): number
     {
-        const bitcoinProduction = this.databaseServer.getTables().hideout.production.find((p) =>
-            p._id === HideoutHelper.bitcoinFarm
+        const bitcoinProductions = this.databaseServer.getTables().hideout.production.find((production) =>
+            production._id === HideoutHelper.bitcoinFarm
         );
-        const productionSlots = bitcoinProduction?.productionLimitCount || 3;
+        const productionSlots = bitcoinProductions?.productionLimitCount || 3; // Default to 3 if none found
         const hasManagementSkillSlots = this.profileHelper.hasEliteSkillLevel(SkillTypes.HIDEOUT_MANAGEMENT, pmcData);
-        const managementSlotsCount = this.getBitcoinMinerContainerSlotSize() || 2;
+        const managementSlotsCount = this.getEliteSkillAdditionalBitcoinSlotCount() || 2;
 
         return productionSlots + (hasManagementSkillSlots ? managementSlotsCount : 0);
     }
 
     /**
-     * Get a count of bitcoins player miner can hold
+     * Get a count of how many additional bitcoins player hideout can hold with elite skill
      */
-    protected getBitcoinMinerContainerSlotSize(): number
+    protected getEliteSkillAdditionalBitcoinSlotCount(): number
     {
         return this.databaseServer.getTables().globals.config.SkillsSettings.HideoutManagement.EliteSlots.BitcoinFarm
             .Container;
@@ -949,16 +949,16 @@ export class HideoutHelper
      * @param pmcData Player profile
      * @param request Take production request
      * @param sessionId Session id
+     * @param output Output object to update
      * @returns IItemEventRouterResponse
      */
     public getBTC(
         pmcData: IPmcData,
         request: IHideoutTakeProductionRequestData,
         sessionId: string,
+        output: IItemEventRouterResponse
     ): IItemEventRouterResponse
     {
-        const output = this.eventOutputHolder.getOutput(sessionId);
-
         // Get how many coins were crafted and ready to pick up
         const craftedCoinCount = pmcData.Hideout.Production[HideoutHelper.bitcoinFarm].Products.length;
         if (!craftedCoinCount)
@@ -974,6 +974,8 @@ export class HideoutHelper
 
         // Add FiR coins to player inventory
         this.inventoryHelper.addItemToStash(sessionId, btcCoinCreationRequest, pmcData, output);
+
+        return output;
     }
 
     /**
@@ -994,7 +996,7 @@ export class HideoutHelper
                 }
             ],
             foundInRaid: true,
-            useSortingTable: true,
+            useSortingTable: false,
             callback: () =>
             {
                 // Is at max capacity
