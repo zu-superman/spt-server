@@ -108,6 +108,11 @@ export class ScavCaseRewardGenerator
                 {
                     return false;
                 }
+                
+                if (item._props.QuestItem)
+                {
+                    return false;
+                }
 
                 // Skip item if item id is on blacklist
                 if (
