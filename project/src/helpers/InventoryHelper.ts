@@ -498,6 +498,66 @@ export class InventoryHelper
         }
     }
 
+    public canPlaceItemsInInventory(
+        sessionId: string,
+        itemsWithChildren: Item[][]
+    ): boolean
+    {
+        const pmcData = this.profileHelper.getPmcProfile(sessionId);
+
+        const stashFS2D = this.getStashSlotMap(pmcData, sessionId);
+        for (const itemWithChildren of itemsWithChildren)
+        {
+            if (this.canPlaceItemInInventory(stashFS2D, itemWithChildren))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public canPlaceItemInInventory(
+        stashFS2D: number[][],
+        itemWithChildren: Item[]
+    ): boolean
+    {
+        // Get x/y size of item
+        const rootItem = itemWithChildren[0];
+        const itemSize = this.getItemSize(rootItem._tpl, rootItem._id, itemWithChildren);
+
+        // Look for a place to slot item into
+        const findSlotResult = this.containerHelper.findSlotForItem(stashFS2D, itemSize[0], itemSize[1]);
+        if (findSlotResult.success)
+        {
+            /* Fill in the StashFS_2D with an imaginary item, to simulate it already being added
+            * so the next item to search for a free slot won't find the same one */
+            const itemSizeX = findSlotResult.rotation ? itemSize[1] : itemSize[0];
+            const itemSizeY = findSlotResult.rotation ? itemSize[0] : itemSize[1];
+
+            try
+            {
+                stashFS2D = this.containerHelper.fillContainerMapWithItem(
+                    stashFS2D,
+                    findSlotResult.x,
+                    findSlotResult.y,
+                    itemSizeX,
+                    itemSizeY,
+                    false,
+                ); // TODO: rotation not passed in, bad?
+            }
+            catch (err)
+            {
+                return false;
+            }
+
+            // Success! exit
+            return;
+        }
+
+        return true;
+    }
+
     protected placeItemInInventory(
         stashFS2D: number[][],
         sortingTableFS2D: number[][],

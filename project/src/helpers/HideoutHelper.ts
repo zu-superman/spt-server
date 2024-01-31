@@ -968,20 +968,35 @@ export class HideoutHelper
 
             return this.httpResponse.appendErrorToOutput(output, errorMsg);
         }
-        
-        // Add each coin individually to player
+
+        const itemsToAdd: Item[][] = [];
         for (let index = 0; index < craftedCoinCount; index++)
         {
-            const request = {
-                itemWithModsToAdd: [
-                    {
-                        _id: this.hashUtil.generate(),
-                        _tpl: HideoutHelper.bitcoinTpl,
-                        upd: {
-                            StackObjectsCount: 1
-                        }
+            itemsToAdd.push(
+                [{
+                    _id: this.hashUtil.generate(),
+                    _tpl: HideoutHelper.bitcoinTpl,
+                    upd: {
+                        StackObjectsCount: 1
                     }
-                ],
+                }]
+            )            
+        }
+        
+        // Add each coin individually to player
+        if (!this.inventoryHelper.canPlaceItemsInInventory(sessionId, itemsToAdd))
+        {
+            // no space, exit
+            return this.httpResponse.appendErrorToOutput(
+                output,
+                this.localisationService.getText("inventory-no_stash_space"),
+            )
+        }
+
+        for (const itemToAdd of itemsToAdd)
+        {
+            const request: IAddItemDirectRequest = {
+                itemWithModsToAdd: itemToAdd,
                 foundInRaid: true,
                 useSortingTable: false,
                 callback: null
