@@ -82,9 +82,9 @@ export class RepeatableQuestController
      * The new quests generated are again persisted in profile.RepeatableQuests
      *
      * @param   {string}    _info       Request from client
-     * @param   {string}    sessionID       Player's session id
+     * @param   {string}    sessionID   Player's session id
      * 
-     * @returns  {array}                    array of "repeatableQuestObjects" as descibed above
+     * @returns  {array}                Array of "repeatableQuestObjects" as descibed above
      */
     public getClientRepeatableQuests(_info: IEmptyRequestData, sessionID: string): IPmcDataRepeatableQuest[]
     {

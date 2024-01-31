@@ -21,8 +21,8 @@ import { SaveServer } from "@spt-aki/servers/SaveServer";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
 import { ProfileFixerService } from "@spt-aki/services/ProfileFixerService";
 import { JsonUtil } from "@spt-aki/utils/JsonUtil";
-import { TimeUtil } from "@spt-aki/utils/TimeUtil";
 import { RandomUtil } from "@spt-aki/utils/RandomUtil";
+import { TimeUtil } from "@spt-aki/utils/TimeUtil";
 import { ProfileHelper } from "./ProfileHelper";
 
 @injectable()
@@ -291,7 +291,7 @@ export class InRaidHelper
             const postRaidQuestStatus = <string><unknown>postRaidQuest.status;
 
             // Find matching pre-raid quest
-            const preRaidQuest = preRaidQuests?.find((x) => x.qid === postRaidQuest.qid);
+            const preRaidQuest = preRaidQuests?.find((preRaidQuest) => preRaidQuest.qid === postRaidQuest.qid);
             if (!preRaidQuest)
             {
                 // Some traders gives locked quests (LightKeeper) due to time-gating
@@ -307,6 +307,18 @@ export class InRaidHelper
             // Already completed/failed before raid, skip
             if ([QuestStatus.Fail, QuestStatus.Success].includes(preRaidQuest.status) )
             {
+                // Daily quests get their status altered in-raid to "AvailableForStart",
+                // Copy pre-raid status to post raid data
+                if (preRaidQuest.status === QuestStatus.Success)
+                {
+                    postRaidQuest.status = QuestStatus.Success;
+                }
+
+                if (preRaidQuest.status === QuestStatus.Fail)
+                {
+                    postRaidQuest.status = QuestStatus.Fail;
+                }
+
                 continue;
             }
 
@@ -339,7 +351,7 @@ export class InRaidHelper
                 // Does failed quest have requirement to collect items from raid
                 const questDbData = this.questHelper.getQuestFromDb(postRaidQuest.qid, pmcData);
                 // AvailableForFinish
-                const matchingAffFindConditions = questDbData.conditions.AvailableForFinish.filter(x => x.conditionType === "FindItem");
+                const matchingAffFindConditions = questDbData.conditions.AvailableForFinish.filter(condition => condition.conditionType === "FindItem");
                 const itemsToCollect: string[] = [];
                 if (matchingAffFindConditions)
                 {
@@ -352,7 +364,7 @@ export class InRaidHelper
 
                 // Remove quest items from profile as quest has failed and may still be alive
                 // Required as restarting the quest from main menu does not remove value from CarriedQuestItems array
-                postRaidProfile.Stats.Eft.CarriedQuestItems = postRaidProfile.Stats.Eft.CarriedQuestItems.filter(x => !itemsToCollect.includes(x))
+                postRaidProfile.Stats.Eft.CarriedQuestItems = postRaidProfile.Stats.Eft.CarriedQuestItems.filter(carriedQuestItem => !itemsToCollect.includes(carriedQuestItem))
 
                 // Remove quest item from profile now quest is failed
                 // updateProfileBaseStats() has already passed by ref EFT.Stats, all changes applied to postRaid profile also apply to server profile

@@ -507,17 +507,12 @@ export class QuestController
         // Inform client of quest changes
         completeQuestResponse.profileChanges[sessionID].quests.push(...questDelta);
 
-        // Check if it's a repeatable quest. If so, remove from Quests and repeatable.activeQuests list + move to repeatable.inactiveQuests
+        // Check if it's a repeatable quest. If so, remove from Quests
         for (const currentRepeatable of pmcData.RepeatableQuests)
         {
-            const repeatableQuest = currentRepeatable.activeQuests.find((x) => x._id === completedQuestId);
+            const repeatableQuest = currentRepeatable.activeQuests.find((activeRepeatable) => activeRepeatable._id === completedQuestId);
             if (repeatableQuest)
             {
-                currentRepeatable.activeQuests = currentRepeatable.activeQuests.filter((x) =>
-                    x._id !== completedQuestId
-                );
-                currentRepeatable.inactiveQuests.push(repeatableQuest);
-
                 // Need to remove redundant scav quest object as its no longer necessary, is tracked in pmc profile
                 if (repeatableQuest.side === "Scav")
                 {
