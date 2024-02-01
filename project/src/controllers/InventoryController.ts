@@ -12,6 +12,7 @@ import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
 import { Item } from "@spt-aki/models/eft/common/tables/IItem";
 import { IAddItemDirectRequest } from "@spt-aki/models/eft/inventory/IAddItemDirectRequest";
 import { IAddItemRequestData } from "@spt-aki/models/eft/inventory/IAddItemRequestData";
+import { IAddItemsDirectRequest } from "@spt-aki/models/eft/inventory/IAddItemsDirectRequest";
 import { IInventoryBindRequestData } from "@spt-aki/models/eft/inventory/IInventoryBindRequestData";
 import { IInventoryCreateMarkerRequestData } from "@spt-aki/models/eft/inventory/IInventoryCreateMarkerRequestData";
 import { IInventoryDeleteMarkerRequestData } from "@spt-aki/models/eft/inventory/IInventoryDeleteMarkerRequestData";
@@ -948,17 +949,13 @@ export class InventoryController
         // Find and delete opened item from player inventory
         this.inventoryHelper.removeItem(pmcData, body.item, sessionID, output);
 
-        // Add reward items to player inventory
-        for (const itemWithChildrenToAdd of rewards)
-        {
-            const request: IAddItemDirectRequest = {
-                itemWithModsToAdd: itemWithChildrenToAdd,
-                foundInRaid: foundInRaid,
-                callback: null,
-                useSortingTable: true
-            };
-            this.inventoryHelper.addItemToStash(sessionID, request, pmcData, output);
+        const addItemsRequest: IAddItemsDirectRequest = {
+            itemsWithModsToAdd: rewards,
+            foundInRaid: foundInRaid,
+            callback: null,
+            useSortingTable: true
         }
+        this.inventoryHelper.addItemsToStash(sessionID, addItemsRequest, pmcData, output);
 
         return output;
     }
