@@ -528,8 +528,8 @@ export class FenceService
             this.removeRandomModsOfItem(presetWithChildrenClone);
 
             // MUST randomise Ids as its possible to add the same base fence assort twice = duplicate IDs = dead client
+            this.itemHelper.reparentItemAndChildren(presetWithChildrenClone[0], presetWithChildrenClone);
             this.itemHelper.remapRootItemId(presetWithChildrenClone);
-            this.itemHelper.replaceIDs(null, presetWithChildrenClone);
 
             assorts.items.push(...presetWithChildrenClone);
 
