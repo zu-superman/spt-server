@@ -10,8 +10,6 @@ import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
 import { QuestHelper } from "@spt-aki/helpers/QuestHelper";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
 import { Item } from "@spt-aki/models/eft/common/tables/IItem";
-import { IAddItemDirectRequest } from "@spt-aki/models/eft/inventory/IAddItemDirectRequest";
-import { IAddItemRequestData } from "@spt-aki/models/eft/inventory/IAddItemRequestData";
 import { IAddItemsDirectRequest } from "@spt-aki/models/eft/inventory/IAddItemsDirectRequest";
 import { IInventoryBindRequestData } from "@spt-aki/models/eft/inventory/IInventoryBindRequestData";
 import { IInventoryCreateMarkerRequestData } from "@spt-aki/models/eft/inventory/IInventoryCreateMarkerRequestData";
@@ -919,7 +917,7 @@ export class InventoryController
         const output = this.eventOutputHolder.getOutput(sessionID);
 
         /** Container player opened in their inventory */
-        const openedItem = pmcData.Inventory.items.find((x) => x._id === body.item);
+        const openedItem = pmcData.Inventory.items.find((item) => item._id === body.item);
         const containerDetailsDb = this.itemHelper.getItem(openedItem._tpl);
         const isSealedWeaponBox = containerDetailsDb[1]._name.includes("event_container_airdrop");
 
@@ -946,9 +944,6 @@ export class InventoryController
             }
         }
 
-        // Find and delete opened item from player inventory
-        this.inventoryHelper.removeItem(pmcData, body.item, sessionID, output);
-
         const addItemsRequest: IAddItemsDirectRequest = {
             itemsWithModsToAdd: rewards,
             foundInRaid: foundInRaid,
@@ -956,6 +951,13 @@ export class InventoryController
             useSortingTable: true
         }
         this.inventoryHelper.addItemsToStash(sessionID, addItemsRequest, pmcData, output);
+        if (output.warnings.length > 0)
+        {
+            return output;
+        }
+
+        // Find and delete opened item from player inventory
+        this.inventoryHelper.removeItem(pmcData, body.item, sessionID, output);
 
         return output;
     }
