@@ -514,9 +514,9 @@ export class ItemHelper
     }
 
     /**
-     * split item stack if it exceeds its items StackMaxSize property
+     * Split item stack if it exceeds its items StackMaxSize property
      * @param itemToSplit Item to split into smaller stacks
-     * @returns Array of split items
+     * @returns Array of root item + children
      */
     public splitStack(itemToSplit: Item): Item[]
     {
@@ -525,17 +525,17 @@ export class ItemHelper
             return [itemToSplit];
         }
 
-        const maxStackSize = this.databaseServer.getTables().templates.items[itemToSplit._tpl]._props.StackMaxSize;
+        const maxStackSize = this.getItem(itemToSplit._tpl)[1]._props.StackMaxSize;
         let remainingCount = itemToSplit.upd.StackObjectsCount;
-        const stacks: Item[] = [];
+        const rootAndChildren: Item[] = [];
 
         // If the current count is already equal or less than the max
-        // then just return the item as is.
+        // return the item as is.
         if (remainingCount <= maxStackSize)
         {
-            stacks.push(this.jsonUtil.clone(itemToSplit));
+            rootAndChildren.push(this.jsonUtil.clone(itemToSplit));
 
-            return stacks;
+            return rootAndChildren;
         }
 
         while (remainingCount)
@@ -546,10 +546,10 @@ export class ItemHelper
             newStack._id = this.hashUtil.generate();
             newStack.upd.StackObjectsCount = amount;
             remainingCount -= amount;
-            stacks.push(newStack);
+            rootAndChildren.push(newStack);
         }
 
-        return stacks;
+        return rootAndChildren;
     }
 
     /**

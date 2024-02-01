@@ -27,6 +27,7 @@ import { IHideoutUpgradeRequestData } from "@spt-aki/models/eft/hideout/IHideout
 import { IQteData } from "@spt-aki/models/eft/hideout/IQteData";
 import { IRecordShootingRangePoints } from "@spt-aki/models/eft/hideout/IRecordShootingRangePoints";
 import { IAddItemDirectRequest } from "@spt-aki/models/eft/inventory/IAddItemDirectRequest";
+import { IAddItemsDirectRequest } from "@spt-aki/models/eft/inventory/IAddItemsDirectRequest";
 import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEventRouterResponse";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { HideoutAreas } from "@spt-aki/models/enums/HideoutAreas";
@@ -812,31 +813,23 @@ export class HideoutController
         const rewardIsStackable = this.itemHelper.isItemTplStackable(recipe.endProduct);
         if (rewardIsStackable)
         {
-            // Add raw item to array without checking stack size
-            itemAndChildrenToSendToPlayer.push([{
+            const rewardToAdd: Item[] = [];
+            // Create root item
+            const rootItemToAdd: Item = {
                 _id: this.hashUtil.generate(),
                 _tpl: recipe.endProduct,
                 upd: {
                     StackObjectsCount: recipe.count
                 }
-            }]);
+            };
 
             // Split item into separate items with acceptable stack sizes
-            const splitReward = this.itemHelper.splitStack(itemAndChildrenToSendToPlayer[0][0]);
-            if (splitReward.length > 1)
-            {
-                // Empty out reward array and replace with split items
-                itemAndChildrenToSendToPlayer = [];
-                for (const item of splitReward)
-                {
-                    itemAndChildrenToSendToPlayer.push([item]);
-                }
-            }
+            const splitReward = this.itemHelper.splitStack(rewardToAdd[0]);
+            itemAndChildrenToSendToPlayer.push(splitReward);
         }
         else
         {
             // Not stackable, send multiple single items
-
             // Add the initial item to array
             if (!rewardIsPreset)
             {
@@ -854,7 +847,23 @@ export class HideoutController
                     null,
                     this.jsonUtil.clone(itemAndChildrenToSendToPlayer[0]),
                 );
+
                 itemAndChildrenToSendToPlayer.push(...[itemAndMods]);
+            }
+        }
+
+        // Recipe has an `isEncoded` requirement for reward(s), Add `RecodableComponent` property
+        if (recipe.isEncoded)
+        {
+            for (const reward of itemAndChildrenToSendToPlayer)
+            {
+                
+                if (!reward[0].upd)
+                {
+                    reward[0].upd = {}
+                }
+
+                reward[0].upd.RecodableComponent = { IsEncoded: true };
             }
         }
 
@@ -908,31 +917,19 @@ export class HideoutController
             hoursCrafting -= this.hideoutConfig.hoursForSkillCrafting * multiplierCrafting;
         }
 
-        // Loop over array of sub array (item+children) and add to stash
-        for (const itemAndChildrenToSend of itemAndChildrenToSendToPlayer)
+        // Create request for what we want to add to stash
+        const addItemsRequest: IAddItemsDirectRequest = {
+            itemsWithModsToAdd: itemAndChildrenToSendToPlayer,
+            foundInRaid: true,
+            useSortingTable: false,
+            callback: null
+        };
+
+        // Add FiR crafted items(s) to player inventory
+        this.inventoryHelper.addItemsToStash(sessionID, addItemsRequest, pmcData, output);
+        if (output.warnings.length > 0)
         {
-            // Recipe has an `isEncoded` requirement on reward, make root item adjustment
-            if (recipe.isEncoded)
-            {
-                if (!itemAndChildrenToSend[0].upd)
-                {
-                    itemAndChildrenToSend[0].upd = {}
-                }
-
-                itemAndChildrenToSend[0].upd.RecodableComponent = { IsEncoded: true };
-            }
-
-            const additemRequest: IAddItemDirectRequest = {
-                itemWithModsToAdd: itemAndChildrenToSend,
-                foundInRaid: true,
-                callback: null,
-                useSortingTable: false
-            };
-            this.inventoryHelper.addItemToStash(sessionID, additemRequest,pmcData, output)
-            if (output.warnings.length > 0)
-            {
-                return output;
-            }
+            return output;
         }
 
         //  - increment skill point for crafting
