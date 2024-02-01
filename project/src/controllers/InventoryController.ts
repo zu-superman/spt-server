@@ -956,7 +956,7 @@ export class InventoryController
             return output;
         }
 
-        // Find and delete opened item from player inventory
+        // Find and delete opened container item from player inventory
         this.inventoryHelper.removeItem(pmcData, body.item, sessionID, output);
 
         return output;
