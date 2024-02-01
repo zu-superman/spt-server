@@ -32,7 +32,7 @@ import { HashUtil } from "@spt-aki/utils/HashUtil";
 import { HttpResponseUtil } from "@spt-aki/utils/HttpResponseUtil";
 import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 
-export interface OwnerInventoryItems
+export interface IOwnerInventoryItems
 {
     /** Inventory items from source */
     from: Item[];
@@ -1334,7 +1334,7 @@ export class InventoryHelper
     public getOwnerInventoryItems(
         request: IInventoryMoveRequestData | IInventorySplitRequestData | IInventoryMergeRequestData,
         sessionId: string,
-    ): OwnerInventoryItems
+    ): IOwnerInventoryItems
     {
         let isSameInventory = false;
         const pmcItems = this.profileHelper.getPmcProfile(sessionId).Inventory.items;
