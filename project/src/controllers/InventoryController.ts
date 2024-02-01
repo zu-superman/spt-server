@@ -526,12 +526,10 @@ export class InventoryController
 
             return this.eventOutputHolder.getOutput(sessionID);
         }
-        else
-        {
-            this.logger.warning(
-                this.localisationService.getText("inventory-unable_to_toggle_item_not_found", body.item),
-            );
-        }
+
+        this.logger.warning(
+            this.localisationService.getText("inventory-unable_to_toggle_item_not_found", body.item),
+        );
 
         return { warnings: [], profileChanges: {} };
     }
