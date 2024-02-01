@@ -69,9 +69,9 @@ export class InventoryHelper
     }
 
     /**
-     * Add multiple items to player stash
+     * Add multiple items to player stash (assuming they all fit)
      * @param sessionId Session id
-     * @param request addItemsDirect request
+     * @param request IAddItemsDirectRequest request
      * @param pmcData Player profile
      * @param output Client response object
      */
@@ -80,7 +80,7 @@ export class InventoryHelper
         // Check all items fit into inventory before adding
         if (!this.canPlaceItemsInInventory(sessionId, request.itemsWithModsToAdd))
         {
-            // no space, exit
+            // No space, exit
             this.httpResponse.appendErrorToOutput(
                 output,
                 this.localisationService.getText("inventory-no_stash_space"),
