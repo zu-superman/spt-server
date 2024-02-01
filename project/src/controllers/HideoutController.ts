@@ -8,7 +8,7 @@ import { PaymentHelper } from "@spt-aki/helpers/PaymentHelper";
 import { PresetHelper } from "@spt-aki/helpers/PresetHelper";
 import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
-import { HideoutArea, Product, Production, ScavCase } from "@spt-aki/models/eft/common/tables/IBotBase";
+import { HideoutArea, ITaskConditionCounter, Product, Production, ScavCase } from "@spt-aki/models/eft/common/tables/IBotBase";
 import { Item } from "@spt-aki/models/eft/common/tables/IItem";
 import { HideoutUpgradeCompleteRequestData } from "@spt-aki/models/eft/hideout/HideoutUpgradeCompleteRequestData";
 import { IHandleQTEEventRequestData } from "@spt-aki/models/eft/hideout/IHandleQTEEventRequestData";
@@ -775,18 +775,7 @@ export class HideoutController
         // Variables for managemnet of skill
         let craftingExpAmount = 0;
 
-        // ? move the logic of TaskConditionCounters in new method?
-        let counterHoursCrafting = pmcData.TaskConditionCounters[HideoutController.nameTaskConditionCountersCrafting];
-        if (!counterHoursCrafting)
-        {
-            pmcData.TaskConditionCounters[HideoutController.nameTaskConditionCountersCrafting] = {
-                id: recipe._id,
-                type: HideoutController.nameTaskConditionCountersCrafting,
-                sourceId: "CounterCrafting",
-                value: 0,
-            };
-            counterHoursCrafting = pmcData.TaskConditionCounters[HideoutController.nameTaskConditionCountersCrafting];
-        }
+        const counterHoursCrafting = this.getHoursCraftingTaskConditionCounter(pmcData, recipe);
         let hoursCrafting = counterHoursCrafting.value;
 
         /** Array of arrays of item + children */
@@ -813,15 +802,14 @@ export class HideoutController
         const rewardIsStackable = this.itemHelper.isItemTplStackable(recipe.endProduct);
         if (rewardIsStackable)
         {
-            const rewardToAdd: Item[] = [];
             // Create root item
-            const rootItemToAdd: Item = {
+            const rewardToAdd: Item[] = [{
                 _id: this.hashUtil.generate(),
                 _tpl: recipe.endProduct,
                 upd: {
                     StackObjectsCount: recipe.count
                 }
-            };
+            }];
 
             // Split item into separate items with acceptable stack sizes
             const splitReward = this.itemHelper.splitStack(rewardToAdd[0]);
@@ -829,8 +817,9 @@ export class HideoutController
         }
         else
         {
-            // Not stackable, send multiple single items
-            // Add the initial item to array
+            // Not stackable, may have to send send multiple of reward
+
+            // Add the first reward item to array when not a preset (first preset added above earlier)
             if (!rewardIsPreset)
             {
                 itemAndChildrenToSendToPlayer.push([{
@@ -839,9 +828,10 @@ export class HideoutController
                 }]);
             }
 
+            // Add multiple of item if recipe requests it
             // Start index at one so we ignore first item in array
-            // (handles preset items already being added)
-            for (let index = 1; index < recipe.count; index++)
+            const countOfItemsToReward = recipe.count;
+            for (let index = 1; index < countOfItemsToReward; index++)
             {
                 const itemAndMods: Item[] = this.itemHelper.replaceIDs(
                     null,
@@ -867,22 +857,23 @@ export class HideoutController
             }
         }
 
-        // Loops over all current productions on profile
-        const entries = Object.entries(pmcData.Hideout.Production);
+        // Loops over all current productions on profile - we want to find a matching production
+        const productionDict = Object.entries(pmcData.Hideout.Production);
         let prodId: string;
-        for (const entry of entries)
+        for (const production of productionDict)
         {
             // Skip null production objects
-            if (!entry[1])
+            if (!production[1])
             {
                 continue;
             }
 
-            if (this.hideoutHelper.isProductionType(entry[1]))
-            { // Production or ScavCase
-                if ((entry[1] as Production).RecipeId === request.recipeId)
+            if (this.hideoutHelper.isProductionType(production[1]))
+            {
+                // Production or ScavCase
+                if ((production[1] as Production).RecipeId === request.recipeId)
                 {
-                    prodId = entry[0]; // set to objects key
+                    prodId = production[0]; // Set to objects key
                     break;
                 }
             }
@@ -901,7 +892,7 @@ export class HideoutController
         }
 
         // Check if the recipe is the same as the last one - get bonus when crafting same thing multiple times
-        const area = pmcData.Hideout.Areas.find((x) => x.type === recipe.areaType);
+        const area = pmcData.Hideout.Areas.find((area) => area.type === recipe.areaType);
         if (area && request.recipeId !== area.lastRecipe)
         {
             // 1 point per craft upon the end of production for alternating between 2 different crafting recipes in the same module
@@ -960,6 +951,8 @@ export class HideoutController
 
         }
         area.lastRecipe = request.recipeId;
+
+        // Update profiles hours crafting value
         counterHoursCrafting.value = hoursCrafting;
 
         // Continuous crafts have special handling in EventOutputHolder.updateOutputProperties()
@@ -973,6 +966,29 @@ export class HideoutController
         }
 
         return output;
+    }
+
+    /**
+     * Get the "CounterHoursCrafting" TaskConditionCounter from a profile
+     * @param pmcData Profile to get counter from
+     * @param recipe Recipe being crafted
+     * @returns ITaskConditionCounter
+     */
+    protected getHoursCraftingTaskConditionCounter(pmcData: IPmcData, recipe: IHideoutProduction): ITaskConditionCounter
+    {
+        let counterHoursCrafting = pmcData.TaskConditionCounters[HideoutController.nameTaskConditionCountersCrafting];
+        if (!counterHoursCrafting)
+        {
+            // Doesn't exist, create
+            pmcData.TaskConditionCounters[HideoutController.nameTaskConditionCountersCrafting] = {
+                id: recipe._id,
+                type: HideoutController.nameTaskConditionCountersCrafting,
+                sourceId: "CounterCrafting",
+                value: 0,
+            };
+            counterHoursCrafting = pmcData.TaskConditionCounters[HideoutController.nameTaskConditionCountersCrafting];
+        }
+        return counterHoursCrafting;
     }
 
     /**
