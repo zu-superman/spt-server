@@ -7,5 +7,6 @@ export interface IAddItemsDirectRequest
     foundInRaid: boolean;
     /** Runs after EACH item with children is added */
     callback: (buyCount: number) => void;
+    /** Should sorting table be used when no space found in stash */
     useSortingTable: boolean;
 }

@@ -11,7 +11,7 @@ import { IHideoutContinuousProductionStartRequestData } from "@spt-aki/models/ef
 import { IHideoutProduction } from "@spt-aki/models/eft/hideout/IHideoutProduction";
 import { IHideoutSingleProductionStartRequestData } from "@spt-aki/models/eft/hideout/IHideoutSingleProductionStartRequestData";
 import { IHideoutTakeProductionRequestData } from "@spt-aki/models/eft/hideout/IHideoutTakeProductionRequestData";
-import { IAddItemDirectRequest } from "@spt-aki/models/eft/inventory/IAddItemDirectRequest";
+import { IAddItemsDirectRequest } from "@spt-aki/models/eft/inventory/IAddItemsDirectRequest";
 import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEventRouterResponse";
 import { BonusType } from "@spt-aki/models/enums/BonusType";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
@@ -980,37 +980,25 @@ export class HideoutHelper
                         StackObjectsCount: 1
                     }
                 }]
-            )            
+            );
         }
-        
-        // Add each coin individually to player
-        if (!this.inventoryHelper.canPlaceItemsInInventory(sessionId, itemsToAdd))
+
+        // Create request for what we want to add to stash
+        const addItemsRequest: IAddItemsDirectRequest = {
+            itemsWithModsToAdd: itemsToAdd,
+            foundInRaid: true,
+            useSortingTable: false,
+            callback: null
+        };
+
+        // Add FiR coins to player inventory
+        this.inventoryHelper.addItemsToStash(sessionId, addItemsRequest, pmcData, output);
+        if (output.warnings.length > 0)
         {
-            // no space, exit
-            return this.httpResponse.appendErrorToOutput(
-                output,
-                this.localisationService.getText("inventory-no_stash_space"),
-            )
+            return output;
         }
 
-        for (const itemToAdd of itemsToAdd)
-        {
-            const request: IAddItemDirectRequest = {
-                itemWithModsToAdd: itemToAdd,
-                foundInRaid: true,
-                useSortingTable: false,
-                callback: null
-            };
-
-            // Add FiR coin to player inventory
-            this.inventoryHelper.addItemToStash(sessionId, request, pmcData, output);
-            if (output.warnings.length > 0)
-            {
-                return output;
-            }
-        }
-
-        // Is at max capacity
+        // Is at max capacity + we collected all coins - reset production start time
         const coinSlotCount = this.getBTCSlots(pmcData);
         if (pmcData.Hideout.Production[HideoutHelper.bitcoinFarm].Products.length >= coinSlotCount)
         {
