@@ -131,7 +131,7 @@ export class RepeatableQuestGenerator
         const locationsConfig = repeatableConfig.locations;
         let targetsConfig = this.repeatableQuestHelper.probabilityObjectArray(eliminationConfig.targets);
         const bodypartsConfig = this.repeatableQuestHelper.probabilityObjectArray(eliminationConfig.bodyParts);
-        const weaponCategoryRequirementConfig = this.repeatableQuestHelper.probabilityObjectArray(
+        let weaponCategoryRequirementConfig = this.repeatableQuestHelper.probabilityObjectArray(
             eliminationConfig.weaponCategoryRequirements,
         );
         const weaponRequirementConfig = this.repeatableQuestHelper.probabilityObjectArray(
@@ -253,14 +253,14 @@ export class RepeatableQuestGenerator
             bodyPartDifficulty = 1 / probability;
         }
 
-        // draw a distance condition
+        // Draw a distance condition
         let distance = null;
         let distanceDifficulty = 0;
         let isDistanceRequirementAllowed = !eliminationConfig.distLocationBlacklist.includes(locationKey);
 
         if (targetsConfig.data(targetKey).isBoss)
         {
-            // get all boss spawn information
+            // Get all boss spawn information
             const bossSpawns = Object.values(this.databaseServer.getTables().locations).filter((x) =>
                 "base" in x && "Id" in x.base
             ).map((x) => ({ Id: x.base.Id, BossSpawn: x.base.BossLocationSpawn }));
@@ -277,7 +277,7 @@ export class RepeatableQuestGenerator
 
         if (eliminationConfig.distProb > Math.random() && isDistanceRequirementAllowed)
         {
-            // random distance with lower values more likely; simple distribution for starters...
+            // Random distance with lower values more likely; simple distribution for starters...
             distance = Math.floor(
                 Math.abs(Math.random() - Math.random()) * (1 + eliminationConfig.maxDist - eliminationConfig.minDist)
                     + eliminationConfig.minDist,
@@ -289,7 +289,17 @@ export class RepeatableQuestGenerator
         let allowedWeaponsCategory: string = undefined;
         if (eliminationConfig.weaponCategoryRequirementProb > Math.random())
         {
-            // Pick a weighted weapon categroy
+            // Filter out close range weapons from far distance requirement
+            if (distance > 50)
+            {
+                weaponCategoryRequirementConfig = weaponCategoryRequirementConfig.filter(category => ["Shotgun", "Pistol"].includes(category.key));
+            }
+            else if (distance < 20) // Filter out far range weapons from close distance requirement
+            {
+                weaponCategoryRequirementConfig = weaponCategoryRequirementConfig.filter(category => ["MarksmanRifle", "DMR"].includes(category.key));
+            }
+
+            // Pick a weighted weapon category
             const weaponRequirement = weaponCategoryRequirementConfig.draw(1, false);
 
             // Get the hideout id value stored in the .data array
