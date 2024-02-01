@@ -701,52 +701,56 @@ export class InventoryController
 
     /**
      * Get the tplid of an item from the examine request object
-     * @param body response request
-     * @returns tplid
+     * @param request Response request
+     * @returns tplId
      */
-    protected getExaminedItemTpl(body: IInventoryExamineRequestData): string
+    protected getExaminedItemTpl(request: IInventoryExamineRequestData): string
     {
-        if (this.presetHelper.isPreset(body.item))
+        if (this.presetHelper.isPreset(request.item))
         {
-            return this.presetHelper.getBaseItemTpl(body.item);
+            return this.presetHelper.getBaseItemTpl(request.item);
         }
-        else if (body.fromOwner.id === Traders.FENCE)
+
+        if (request.fromOwner.id === Traders.FENCE)
         {
-            // get tpl from fence assorts
-            return this.fenceService.getRawFenceAssorts().items.find((x) => x._id === body.item)._tpl;
+            // Get tpl from fence assorts
+            return this.fenceService.getRawFenceAssorts().items.find((x) => x._id === request.item)._tpl;
         }
-        else if (body.fromOwner.type === "Trader")
-        { // not fence
+
+        if (request.fromOwner.type === "Trader")
+        {
+            // Not fence
             // get tpl from trader assort
-            return this.databaseServer.getTables().traders[body.fromOwner.id].assort.items.find((item) =>
-                item._id === body.item
+            return this.databaseServer.getTables().traders[request.fromOwner.id].assort.items.find((item) =>
+                item._id === request.item
             )._tpl;
         }
-        else if (body.fromOwner.type === "RagFair")
+
+        if (request.fromOwner.type === "RagFair")
         {
-            // try to get tplid from items.json first
-            const item = this.databaseServer.getTables().templates.items[body.item];
-            if (item)
+            // Try to get tplid from items.json first
+            const item = this.itemHelper.getItem(request.item);
+            if (item[0])
             {
-                return item._id;
+                return item[1]._id;
             }
 
-            // try alternate way of getting offer if first approach fails
-            let offer = this.ragfairOfferService.getOfferByOfferId(body.item);
+            // Try alternate way of getting offer if first approach fails
+            let offer = this.ragfairOfferService.getOfferByOfferId(request.item);
             if (!offer)
             {
-                offer = this.ragfairOfferService.getOfferByOfferId(body.fromOwner.id);
+                offer = this.ragfairOfferService.getOfferByOfferId(request.fromOwner.id);
             }
 
-            // try find examine item inside offer items array
-            const matchingItem = offer.items.find((x) => x._id === body.item);
+            // Try find examine item inside offer items array
+            const matchingItem = offer.items.find((offerItem) => offerItem._id === request.item);
             if (matchingItem)
             {
                 return matchingItem._tpl;
             }
 
-            // unable to find item in database or ragfair
-            throw new Error(this.localisationService.getText("inventory-unable_to_find_item", body.item));
+            // Unable to find item in database or ragfair
+            throw new Error(this.localisationService.getText("inventory-unable_to_find_item", request.item));
         }
     }
 
