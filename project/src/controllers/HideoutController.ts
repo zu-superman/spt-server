@@ -730,19 +730,24 @@ export class HideoutController
         {
             // Ensure server and client are in-sync when player presses 'get items' on farm
             this.hideoutHelper.updatePlayerHideout(sessionID);
-            return this.hideoutHelper.getBTC(pmcData, request, sessionID, output);
+            this.hideoutHelper.getBTC(pmcData, request, sessionID, output);
+
+            return output;
         }
 
         const recipe = hideoutDb.production.find((r) => r._id === request.recipeId);
         if (recipe)
         {
-            return this.handleRecipe(sessionID, recipe, pmcData, request, output);
+            this.handleRecipe(sessionID, recipe, pmcData, request, output);
+
+            return output;
         }
 
         const scavCase = hideoutDb.scavcase.find((r) => r._id === request.recipeId);
         if (scavCase)
         {
             this.handleScavCase(sessionID, pmcData, request, output);
+
             return output;
         }
 
@@ -763,7 +768,6 @@ export class HideoutController
      * @param pmcData Player profile
      * @param request Remove production from area request
      * @param output Output object to update
-     * @returns IItemEventRouterResponse
      */
     protected handleRecipe(
         sessionID: string,
@@ -771,7 +775,7 @@ export class HideoutController
         pmcData: IPmcData,
         request: IHideoutTakeProductionRequestData,
         output: IItemEventRouterResponse,
-    ): IItemEventRouterResponse
+    ): void
     {
         // Variables for managemnet of skill
         let craftingExpAmount = 0;
@@ -889,7 +893,9 @@ export class HideoutController
                 ),
             );
 
-            return this.httpResponse.appendErrorToOutput(output);
+            this.httpResponse.appendErrorToOutput(output);
+
+            return;
         }
 
         // Check if the recipe is the same as the last one - get bonus when crafting same thing multiple times
@@ -923,7 +929,7 @@ export class HideoutController
         this.inventoryHelper.addItemsToStash(sessionID, addItemsRequest, pmcData, output);
         if (output.warnings.length > 0)
         {
-            return output;
+            return;
         }
 
         //  - increment skill point for crafting
@@ -968,8 +974,6 @@ export class HideoutController
         {
             pmcData.Hideout.Production[prodId].inProgress = false;
         }
-
-        return output;
     }
 
     /**
@@ -1032,7 +1036,9 @@ export class HideoutController
                 ),
             );
 
-            return this.httpResponse.appendErrorToOutput(output);
+            this.httpResponse.appendErrorToOutput(output);
+
+            return;
         }
 
         // Create rewards for scav case

@@ -950,14 +950,13 @@ export class HideoutHelper
      * @param request Take production request
      * @param sessionId Session id
      * @param output Output object to update
-     * @returns IItemEventRouterResponse
      */
     public getBTC(
         pmcData: IPmcData,
         request: IHideoutTakeProductionRequestData,
         sessionId: string,
         output: IItemEventRouterResponse
-    ): IItemEventRouterResponse
+    ): void
     {
         // Get how many coins were crafted and ready to pick up
         const craftedCoinCount = pmcData.Hideout.Production[HideoutHelper.bitcoinFarm].Products.length;
@@ -966,7 +965,9 @@ export class HideoutHelper
             const errorMsg = this.localisationService.getText("hideout-no_bitcoins_to_collect");
             this.logger.error(errorMsg);
 
-            return this.httpResponse.appendErrorToOutput(output, errorMsg);
+            this.httpResponse.appendErrorToOutput(output, errorMsg);
+
+            return;
         }
 
         const itemsToAdd: Item[][] = [];
@@ -995,7 +996,7 @@ export class HideoutHelper
         this.inventoryHelper.addItemsToStash(sessionId, addItemsRequest, pmcData, output);
         if (output.warnings.length > 0)
         {
-            return output;
+            return;
         }
 
         // Is at max capacity + we collected all coins - reset production start time
@@ -1009,8 +1010,6 @@ export class HideoutHelper
         // Remove crafted coins from production in profile now they've been collected
         // Can only collect all coins, not individially
         pmcData.Hideout.Production[HideoutHelper.bitcoinFarm].Products = [];
-
-        return output;
     }
 
     /**
