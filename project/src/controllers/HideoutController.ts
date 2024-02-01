@@ -899,10 +899,12 @@ export class HideoutController
             craftingExpAmount += this.hideoutConfig.expCraftAmount; // Default is 10
         }
 
+        // Update variable with time spent crafting item(s)
         // 1 point per 8 hours of crafting
         hoursCrafting += recipe.productionTime;
         if ((hoursCrafting / this.hideoutConfig.hoursForSkillCrafting) >= 1)
         {
+            // Spent enough time crafting to get a bonus xp multipler
             const multiplierCrafting = Math.floor(hoursCrafting / this.hideoutConfig.hoursForSkillCrafting);
             craftingExpAmount += 1 * multiplierCrafting;
             hoursCrafting -= this.hideoutConfig.hoursForSkillCrafting * multiplierCrafting;
