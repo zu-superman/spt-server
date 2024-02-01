@@ -233,7 +233,7 @@
 	"server_start_meme_22": "git gud",
 	"server_start_meme_23": "SPT 2018'den beri bekaretinizi güvende tutuyor",
 	"server_start_meme_24": "Gizli güvenli sığınak sunucusu gerçek! Kimseye söylemeyin!",
-	"server_start_success": "İyi Oynamalar",
+	"server_start_success": "Mutlu oyunlar",
 	"server_start_player_active_botreload_skill": "Karakterinizde 'BotReload' becerisi aktif, bu silahlarınızın doğal olmayan bir şekilde hızlı doldurulmasına neden olacak, eğer bu amaçlanıyorsan bu mesajı dikkate almayın",
 	"started_webserver_success": "Sunucusu %s'de başlatıldı",
 	"trader-missing_durability_threshold_value": "Tüccar için dayanıklılık eşik değeri bulunamıyor: {{traderId}}, varsayılana geri dönüyor: {{value}}",

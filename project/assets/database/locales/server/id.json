@@ -202,6 +202,7 @@
 	"seasonal-missing_loot_container_slot_on_bot": "Tidak bisa menghapus barang natal dari slot: {{lootContainer}} karena tidak ditemukan di bot: {{botRole}}",
 	"server_running": "Server sedang berjalan, jangan dimatikan saat main SPT",
 	"server_start_meme_2": "Wibu bau bawang",
+	"server_start_meme_20": "Kau tahu tidak, 9 dari 10 pengguna tidak bisa baca pesan ini",
 	"server_start_player_active_botreload_skill": "Karakter anda memiliki keahlian 'BotReload' aktif, hal ini akan membuat senjata anda isi ulang cepat sekali, abaikan pesan ini jika disengaja",
 	"started_webserver_success": "Webserver dimulai pada %s",
 	"trader-missing_durability_threshold_value": "Tidak dapat menemukan nilai ambang batas durabilitas untuk vendor: {{traderId}}, kembali ke nilai: {{value}}",
