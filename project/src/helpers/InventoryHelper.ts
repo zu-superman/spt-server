@@ -13,6 +13,7 @@ import { Item, Location, Upd } from "@spt-aki/models/eft/common/tables/IItem";
 import { IAddItemDirectRequest } from "@spt-aki/models/eft/inventory/IAddItemDirectRequest";
 import { AddItem, IAddItemRequestData } from "@spt-aki/models/eft/inventory/IAddItemRequestData";
 import { IAddItemTempObject } from "@spt-aki/models/eft/inventory/IAddItemTempObject";
+import { IAddItemsDirectRequest } from "@spt-aki/models/eft/inventory/IAddItemsDirectRequest";
 import { IInventoryMergeRequestData } from "@spt-aki/models/eft/inventory/IInventoryMergeRequestData";
 import { IInventoryMoveRequestData } from "@spt-aki/models/eft/inventory/IInventoryMoveRequestData";
 import { IInventoryRemoveRequestData } from "@spt-aki/models/eft/inventory/IInventoryRemoveRequestData";
@@ -65,6 +66,45 @@ export class InventoryHelper
     )
     {
         this.inventoryConfig = this.configServer.getConfig(ConfigTypes.INVENTORY);
+    }
+
+    /**
+     * Add multiple items to player stash
+     * @param sessionId Session id
+     * @param request addItemsDirect request
+     * @param pmcData Player profile
+     * @param output Client response object
+     */
+    public addItemsToStash(sessionId: string, request: IAddItemsDirectRequest, pmcData: IPmcData, output: IItemEventRouterResponse): void
+    {
+        // Check all items fit into inventory before adding
+        if (!this.canPlaceItemsInInventory(sessionId, request.itemsWithModsToAdd))
+        {
+            // no space, exit
+            this.httpResponse.appendErrorToOutput(
+                output,
+                this.localisationService.getText("inventory-no_stash_space"),
+            )
+
+            return;
+        }
+
+        for (const itemToAdd of request.itemsWithModsToAdd)
+        {
+            const addItemRequest: IAddItemDirectRequest = {
+                itemWithModsToAdd: itemToAdd,
+                foundInRaid: request.foundInRaid,
+                useSortingTable: request.useSortingTable,
+                callback: request.callback
+            };
+
+            // Add to player inventory
+            this.addItemToStash(sessionId, addItemRequest, pmcData, output);
+            if (output.warnings.length > 0)
+            {
+                return;
+            }
+        }
     }
 
     /**
