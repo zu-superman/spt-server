@@ -500,13 +500,7 @@ export class HideoutController
         const itemToReturn = hideoutArea.slots.find((slot) => slot.locationIndex === slotIndexToRemove).item[0];
 
         const request: IAddItemDirectRequest = {
-            itemWithModsToAdd: [
-                {
-                    _id: this.hashUtil.generate(),
-                    _tpl: itemToReturn._tpl,
-                    upd: itemToReturn.upd
-                }
-            ],
+            itemWithModsToAdd: [itemToReturn],
             foundInRaid: !!itemToReturn.upd.SpawnedInSession,
             callback: null,
             useSortingTable: false
