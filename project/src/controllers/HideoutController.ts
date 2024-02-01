@@ -742,7 +742,8 @@ export class HideoutController
         const scavCase = hideoutDb.scavcase.find((r) => r._id === request.recipeId);
         if (scavCase)
         {
-            return this.handleScavCase(sessionID, pmcData, request, output);
+            this.handleScavCase(sessionID, pmcData, request, output);
+            return output;
         }
 
         this.logger.error(
@@ -936,6 +937,7 @@ export class HideoutController
             globals.config.SkillsSettings.HideoutManagement.SkillPointsPerCraft,
             true,
         );
+
         // Manager Crafting skill
         if (craftingExpAmount > 0)
         {
@@ -999,14 +1001,13 @@ export class HideoutController
      * @param pmcData Player profile
      * @param request Get rewards from scavcase craft request
      * @param output Output object to update
-     * @returns IItemEventRouterResponse
      */
     protected handleScavCase(
         sessionID: string,
         pmcData: IPmcData,
         request: IHideoutTakeProductionRequestData,
         output: IItemEventRouterResponse,
-    ): IItemEventRouterResponse
+    ): void
     {
         const ongoingProductions = Object.entries(pmcData.Hideout.Production);
         let prodId: string;
@@ -1037,20 +1038,17 @@ export class HideoutController
         // Create rewards for scav case
         const scavCaseRewards = this.scavCaseRewardGenerator.generate(request.recipeId);
 
-        for (const itemWithChildren of scavCaseRewards)
+        const addItemsRequest: IAddItemsDirectRequest = {
+            itemsWithModsToAdd: scavCaseRewards,
+            foundInRaid: true,
+            callback: null,
+            useSortingTable: false
+        };
+
+        this.inventoryHelper.addItemsToStash(sessionID, addItemsRequest, pmcData, output);
+        if (output.warnings.length > 0)
         {
-            const addToStashRequest: IAddItemDirectRequest = {
-                itemWithModsToAdd: itemWithChildren,
-                foundInRaid: true,
-                callback: null,
-                useSortingTable: false
-            }
-            this.inventoryHelper.addItemToStash(sessionID, addToStashRequest, pmcData, output);
-            if (output.warnings.length > 0)
-            {
-                const errorMessage = "Unable to give scavcase reward to player";
-                return this.httpResponse.appendErrorToOutput(output, errorMessage);
-            }
+            return;
         }
 
         // Remove the old production from output object before its sent to client
@@ -1061,8 +1059,6 @@ export class HideoutController
 
         // Crafting complete, flag
         pmcData.Hideout.Production[prodId].inProgress = false;
-
-        return output;
     }
 
     /**
