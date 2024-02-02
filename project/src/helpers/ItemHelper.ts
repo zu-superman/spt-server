@@ -514,7 +514,7 @@ export class ItemHelper
     }
 
     /**
-     * Split item stack if it exceeds its items StackMaxSize property
+     * Split item stack if it exceeds its items StackMaxSize property into child items of passed in parent
      * @param itemToSplit Item to split into smaller stacks
      * @returns Array of root item + children
      */
@@ -550,6 +550,39 @@ export class ItemHelper
         }
 
         return rootAndChildren;
+    }
+
+    /**
+     * Turn items like money into separate stacks that adhere to max stack size
+     * @param itemToSplit Item to split into smaller stacks
+     * @returns 
+     */
+    public splitStackIntoSeparateItems(itemToSplit: Item): Item[][]
+    {
+        const itemTemplate = this.getItem(itemToSplit._tpl)[1];
+        const itemMaxStackSize = itemTemplate._props.StackMaxSize ?? 1;
+
+        // item already within bounds of stack size, return it
+        if (itemToSplit.upd?.StackObjectsCount <= itemMaxStackSize)
+        {
+            return [[itemToSplit]];
+        }
+
+        // Split items stack into chunks
+        const result: Item[][] = [];
+        let remainingCount = itemToSplit.upd.StackObjectsCount;
+        while (remainingCount)
+        {
+            const amount = Math.min(remainingCount, itemMaxStackSize);
+            const newItem = this.jsonUtil.clone(itemToSplit);
+
+            newItem._id = this.hashUtil.generate();
+            newItem.upd.StackObjectsCount = amount;
+            remainingCount -= amount;
+            result.push([newItem]);
+        }
+
+        return result;
     }
 
     /**

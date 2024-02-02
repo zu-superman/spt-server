@@ -7,7 +7,7 @@ import { PaymentHelper } from "@spt-aki/helpers/PaymentHelper";
 import { TraderHelper } from "@spt-aki/helpers/TraderHelper";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
 import { Item } from "@spt-aki/models/eft/common/tables/IItem";
-import { IAddItemDirectRequest } from "@spt-aki/models/eft/inventory/IAddItemDirectRequest";
+import { IAddItemsDirectRequest } from "@spt-aki/models/eft/inventory/IAddItemsDirectRequest";
 import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEventRouterResponse";
 import { IProcessBuyTradeRequestData } from "@spt-aki/models/eft/trade/IProcessBuyTradeRequestData";
 import { IProcessSellTradeRequestData } from "@spt-aki/models/eft/trade/IProcessSellTradeRequestData";
@@ -219,23 +219,24 @@ export class PaymentService
             }
         }
 
+        const rootCurrencyReward = {
+            _id: this.hashUtil.generate(),
+            _tpl: currency,
+            upd: {
+                StackObjectsCount: calcAmount
+            }
+        };
+        const rewards = this.itemHelper.splitStackIntoSeparateItems(rootCurrencyReward);
+
         if (!skipSendingMoneyToStash)
         {
-            const addItemToStashRequest: IAddItemDirectRequest = {
-                itemWithModsToAdd: [
-                    {
-                        _id: this.hashUtil.generate(),
-                        _tpl: currency,
-                        upd: {
-                            StackObjectsCount: calcAmount
-                        }
-                    }
-                ],
+            const addItemToStashRequest: IAddItemsDirectRequest = {
+                itemsWithModsToAdd: rewards,
                 foundInRaid: false,
                 callback: null,
                 useSortingTable: true
             };
-            this.inventoryHelper.addItemToStash(sessionID, addItemToStashRequest, pmcData, output);
+            this.inventoryHelper.addItemsToStash(sessionID, addItemToStashRequest, pmcData, output);
         }
 
         // set current sale sum
