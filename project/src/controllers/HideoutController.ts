@@ -802,17 +802,17 @@ export class HideoutController
         if (rewardIsStackable)
         {
             // Create root item
-            const rewardToAdd: Item[] = [{
+            const rewardToAdd: Item = {
                 _id: this.hashUtil.generate(),
                 _tpl: recipe.endProduct,
                 upd: {
                     StackObjectsCount: recipe.count
                 }
-            }];
+            };
 
             // Split item into separate items with acceptable stack sizes
-            const splitReward = this.itemHelper.splitStack(rewardToAdd[0]);
-            itemAndChildrenToSendToPlayer.push(splitReward);
+            const splitReward = this.itemHelper.splitStackIntoSeparateItems(rewardToAdd);
+            itemAndChildrenToSendToPlayer.push(...splitReward);
         }
         else
         {
