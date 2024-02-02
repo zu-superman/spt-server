@@ -1,32 +1,42 @@
 {
-    "updateTime": [{
+    "updateTime": [
+        {
             "traderId": "54cb50c76803fa8b248b4571",
             "seconds": 3600
-        }, {
+        },
+        {
             "traderId": "54cb57776803fa99248b456e",
             "seconds": 3600
-        }, {
+        },
+        {
             "traderId": "579dc571d53a0658a154fbec",
             "seconds": 3600
-        }, {
+        },
+        {
             "traderId": "58330581ace78e27b8b10cee",
             "seconds": 3600
-        }, {
+        },
+        {
             "traderId": "5935c25fb3acc3127c3d8cd9",
             "seconds": 3600
-        }, {
+        },
+        {
             "traderId": "5a7c2eca46aef81a7ca2145d",
             "seconds": 3600
-        }, {
+        },
+        {
             "traderId": "5ac3b934156ae10c4430e83c",
             "seconds": 3600
-        }, {
+        },
+        {
             "traderId": "5c0647fdd443bc2504c2d371",
             "seconds": 3600
-		}, {
+        },
+        {
             "traderId": "656f0f98d80a697f855d34b1",
             "seconds": 3600
-        }, {
+        },
+        {
             "traderId": "ragfair",
             "seconds": 3600
         }
@@ -87,7 +97,7 @@
             "min": 35,
             "max": 60
         },
-		"chancePlateExistsInArmorPercent": 40,
+        "chancePlateExistsInArmorPercent": 40,
         "armorMaxDurabilityPercentMinMax": {
             "min": 35,
             "max": 60
@@ -144,10 +154,10 @@
             "mod_tactical_001": 40,
             "mod_tactical_002": 40,
             "mod_tactical_003": 40,
-			"front_plate": 25,
-			"back_plate": 25,
-			"left_side_plate": 25,
-			"right_side_plate": 25
+            "front_plate": 25,
+            "back_plate": 25,
+            "left_side_plate": 25,
+            "right_side_plate": 25
         },
         "blacklistSeasonalItems": true,
         "blacklist": [
@@ -166,19 +176,23 @@
             "5d52d479a4b936793d58c76b",
             "5e99711486f7744bfc4af328",
             "62f10b79e7ee985f386b2f47",
-			"633ffb5d419dbf4bea7004c6",
-			"543be5dd4bdc2deb348b4569",
-			"65649eb40bf0ed77b8044453",
-			"5448e54d4bdc2dcc718b4568",
-			"5a341c4086f77401f2541505",
-			"5422acb9af1c889c16000029",
-			"5448e5284bdc2dcb718b4567"
+            "633ffb5d419dbf4bea7004c6",
+            "543be5dd4bdc2deb348b4569",
+            "65649eb40bf0ed77b8044453",
+            "5448e54d4bdc2dcc718b4568",
+            "5a341c4086f77401f2541505",
+            "5422acb9af1c889c16000029",
+            "5448e5284bdc2dcb718b4567",
+            "64d0b40fbe2eed70e254e2d4"
         ],
-		"coopExtractGift": {
-			"sendGift": true,
-			"messageLocaleIds": ["5da89b1886f77439d7741002 0", "5da89b3a86f7742f9026cb83 0"],
-			"giftExpiryHours": 168,
-			"presetCount": {
+        "coopExtractGift": {
+            "sendGift": true,
+            "messageLocaleIds": [
+                "5da89b1886f77439d7741002 0",
+                "5da89b3a86f7742f9026cb83 0"
+            ],
+            "giftExpiryHours": 168,
+            "presetCount": {
                 "min": 0,
                 "max": 0
             },
@@ -214,17 +228,15 @@
                 "57864a66245977548f04a81f"
             ],
             "itemLimits": {
-				"5d650c3e815116009f6201d2": 1,
+                "5d650c3e815116009f6201d2": 1,
                 "57864ee62459775490116fc1": 1,
-				"57864ada245977548638de91": 2,
-				"57864bb7245977548b3b66c2": 1,
-				"57864e4c24597754843f8723": 1,
-				"57864a66245977548f04a81f": 1,
-				
+                "57864ada245977548638de91": 2,
+                "57864bb7245977548b3b66c2": 1,
+                "57864e4c24597754843f8723": 1,
+                "57864a66245977548f04a81f": 1,
                 "5448e8d04bdc2ddf718b4569": 1,
                 "5448e8d64bdc2dce718b4568": 1,
                 "5448bc234bdc2d3c308b4569": 1,
-                
                 "5448e5724bdc2ddf718b4568": 1,
                 "55818add4bdc2d5b648b456f": 1,
                 "543be6564bdc2df4348b4568": 1,
@@ -249,8 +261,7 @@
                 }
             },
             "allowBossItems": false
-		},
+        },
         "btrDeliveryExpireHours": 240
     }
-
 }
