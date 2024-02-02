@@ -184,6 +184,11 @@ export class RagfairController
             return this.ragfairOfferHelper.getOffersForBuild(searchRequest, itemsToAdd, traderAssorts, pmcProfile);
         }
 
+        if (searchRequest.neededSearchId?.length > 0)
+        {
+            return this.ragfairOfferHelper.getOffersThatRequireItem(searchRequest);
+        }
+
         // Searching for general items
         return this.ragfairOfferHelper.getValidOffers(searchRequest, itemsToAdd, traderAssorts, pmcProfile);
     }

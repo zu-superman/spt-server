@@ -87,6 +87,13 @@ export class RagfairOfferHelper
         );
     }
 
+    public getOffersThatRequireItem(searchRequest: ISearchRequestData): IRagfairOffer[]
+    {
+        return this.ragfairOfferService.getOffers().filter((offer) =>
+            this.isDisplayableOfferThatNeedsItem(searchRequest, offer)
+        );
+    }
+
     /**
      * Get offers from flea/traders specifically when building weapon preset
      * @param searchRequest Search request data
@@ -671,6 +678,19 @@ export class RagfairOfferHelper
         }
 
         return true;
+    }
+
+    public isDisplayableOfferThatNeedsItem(
+        searchRequest: ISearchRequestData,
+        offer: IRagfairOffer,
+    ): boolean
+    {
+        if (offer.requirements.some(requirement => requirement._tpl === searchRequest.neededSearchId))
+        {
+            return true;
+        }
+
+        return false;
     }
 
     /**
