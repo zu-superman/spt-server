@@ -69,8 +69,9 @@ export class ExternalInventoryMagGen implements IInventoryMagGen
                 // No containers to fit magazines, stop trying
                 break;
             }
+
             // No space for magazine and we haven't reached desired magazine count
-            else if (fitsIntoInventory === ItemAddedResult.NO_SPACE && i < randomizedMagazineCount)
+            if (fitsIntoInventory === ItemAddedResult.NO_SPACE && i < randomizedMagazineCount)
             {
                 // Prevent infinite loop by only allowing 5 attempts at fitting a magazine into inventory
                 if (fitAttempts > 5)
@@ -141,7 +142,7 @@ export class ExternalInventoryMagGen implements IInventoryMagGen
     }
 
     /**
-     * Get a random compatible external magazine for a weapon, excluses internal magazines from possible pool
+     * Get a random compatible external magazine for a weapon, exclude internal magazines from possible pool
      * @param weaponTpl Weapon to get mag for
      * @returns tpl of magazine
      */

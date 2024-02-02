@@ -211,11 +211,9 @@ export class RepairService
                 this.repairConfig.maxIntellectGainPerRepair.kit,
             );
         }
-        else
-        {
-            // Trader repair - Not as accurate as kit, needs data from live
-            return Math.min(repairDetails.repairAmount / 10, this.repairConfig.maxIntellectGainPerRepair.trader);
-        }
+
+        // Trader repair - Not as accurate as kit, needs data from live
+        return Math.min(repairDetails.repairAmount / 10, this.repairConfig.maxIntellectGainPerRepair.trader);
     }
 
     /**
@@ -351,14 +349,12 @@ export class RepairService
 
             return durabilityPointCostArmor * armorBonus * destructability * armorClassMultiplier;
         }
-        else
-        {
-            const repairWeaponBonus = this.getBonusMultiplierValue(BonusType.REPAIR_WEAPON_BONUS, pmcData) - 1;
-            const repairPointMultiplier = 1.0 - repairWeaponBonus - intellectPointReduction;
-            const durabilityPointCostGuns = globals.config.RepairSettings.durabilityPointCostGuns;
 
-            return durabilityPointCostGuns * repairPointMultiplier;
-        }
+        const repairWeaponBonus = this.getBonusMultiplierValue(BonusType.REPAIR_WEAPON_BONUS, pmcData) - 1;
+        const repairPointMultiplier = 1.0 - repairWeaponBonus - intellectPointReduction;
+        const durabilityPointCostGuns = globals.config.RepairSettings.durabilityPointCostGuns;
+
+        return durabilityPointCostGuns * repairPointMultiplier;
     }
 
     /**
@@ -540,30 +536,34 @@ export class RepairService
      * @param itemTemplate Item to check for skill
      * @returns Skill name
      */
-    protected getItemSkillType(itemTemplate: ITemplateItem): SkillTypes
+    protected getItemSkillType(itemTemplate: ITemplateItem): SkillTypes | undefined
     {
-        if (
-            this.itemHelper.isOfBaseclasses(itemTemplate._id, [
-                BaseClasses.ARMOR,
-                BaseClasses.VEST,
-                BaseClasses.HEADWEAR,
-            ])
-        )
+        const isArmorRelated = this.itemHelper.isOfBaseclasses(itemTemplate._id, [
+            BaseClasses.ARMOR,
+            BaseClasses.VEST,
+            BaseClasses.HEADWEAR,
+        ]);
+
+        if (isArmorRelated)
         {
-            if (itemTemplate._props.ArmorType === "Light")
+            const armorType = itemTemplate._props.ArmorType;
+            if (armorType === "Light")
             {
                 return SkillTypes.LIGHT_VESTS;
             }
-            else if (itemTemplate._props.ArmorType === "Heavy")
+
+            if (armorType === "Heavy")
             {
                 return SkillTypes.HEAVY_VESTS;
             }
         }
-        else if (this.itemHelper.isOfBaseclass(itemTemplate._id, BaseClasses.WEAPON))
+
+        if (this.itemHelper.isOfBaseclass(itemTemplate._id, BaseClasses.WEAPON))
         {
             return SkillTypes.WEAPON_TREATMENT;
         }
-        else if (this.itemHelper.isOfBaseclass(itemTemplate._id, BaseClasses.KNIFE))
+
+        if (this.itemHelper.isOfBaseclass(itemTemplate._id, BaseClasses.KNIFE))
         {
             return SkillTypes.MELEE;
         }

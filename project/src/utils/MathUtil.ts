@@ -86,18 +86,17 @@ export class MathUtil
         {
             return y[y.length - 1];
         }
-        else if (xp < x[0])
+
+        if (xp < x[0])
         {
             return y[0];
         }
-        else
+
+        for (let i = 0; i < x.length - 1; i++)
         {
-            for (let i = 0; i < x.length - 1; i++)
+            if (xp >= x[i] && xp <= x[i + 1])
             {
-                if (xp >= x[i] && xp <= x[i + 1])
-                {
-                    return y[i] + (xp - x[i]) * (y[i + 1] - y[i]) / (x[i + 1] - x[i]);
-                }
+                return y[i] + (xp - x[i]) * (y[i + 1] - y[i]) / (x[i + 1] - x[i]);
             }
         }
     }

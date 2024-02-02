@@ -792,7 +792,7 @@ export class QuestController
         for (const itemHandover of handoverQuestRequest.items)
         {
             const matchingItemInProfile = pmcData.Inventory.items.find((item) => item._id === itemHandover.id);
-            if (!matchingItemInProfile || !handoverRequirements.target.includes(matchingItemInProfile._tpl))
+            if (!(matchingItemInProfile && handoverRequirements.target.includes(matchingItemInProfile._tpl)))
             {
                 // Item handed in by player doesnt match what was requested
                 return this.showQuestItemHandoverMatchError(

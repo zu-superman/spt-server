@@ -274,7 +274,8 @@ export class RagfairPriceService implements OnLoad
         {
             return priceRanges.preset;
         }
-        else if (isPack)
+
+        if (isPack)
         {
             return priceRanges.pack;
         }
@@ -283,7 +284,7 @@ export class RagfairPriceService implements OnLoad
     }
 
     /**
-     * Check to see if an items price is below its handbook price and adjust accoring to values set to config/ragfair.json
+     * Check to see if an items price is below its handbook price and adjust according to values set to config/ragfair.json
      * @param itemPrice price of item
      * @param itemTpl item template Id being checked
      * @returns adjusted price value in roubles

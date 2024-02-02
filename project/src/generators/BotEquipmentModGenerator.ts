@@ -895,7 +895,7 @@ export class BotEquipmentModGenerator
             }
 
             // Some mod combos will never work, make sure this isnt the case
-            if (!chosenModResult.incompatible && !this.weaponModComboIsIncompatible(weapon, chosenTpl))
+            if (!(chosenModResult.incompatible || this.weaponModComboIsIncompatible(weapon, chosenTpl)))
             {
                 // Success
                 chosenModResult.found = true;

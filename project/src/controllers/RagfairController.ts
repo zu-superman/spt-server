@@ -366,20 +366,18 @@ export class RagfairController
 
             return { avg: (min + max) / 2, min: min, max: max };
         }
+
         // No offers listed, get price from live ragfair price list prices.json
-        else
+        const templatesDb = this.databaseServer.getTables().templates;
+
+        let tplPrice = templatesDb.prices[getPriceRequest.templateId];
+        if (!tplPrice)
         {
-            const templatesDb = this.databaseServer.getTables().templates;
-
-            let tplPrice = templatesDb.prices[getPriceRequest.templateId];
-            if (!tplPrice)
-            {
-                // No flea price, get handbook price
-                tplPrice = this.handbookHelper.getTemplatePrice(getPriceRequest.templateId);
-            }
-
-            return { avg: tplPrice, min: tplPrice, max: tplPrice };
+            // No flea price, get handbook price
+            tplPrice = this.handbookHelper.getTemplatePrice(getPriceRequest.templateId);
         }
+
+        return { avg: tplPrice, min: tplPrice, max: tplPrice };
     }
 
     /**

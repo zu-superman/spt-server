@@ -1379,7 +1379,7 @@ export class ProfileFixerService
 
         for (let i = 0; i < profileQuests.length; i++)
         {
-            if (!quests[profileQuests[i].qid] && !repeatableQuests.find((x) => x._id == profileQuests[i].qid))
+            if (!(quests[profileQuests[i].qid] || repeatableQuests.find((x) => x._id === profileQuests[i].qid)))
             {
                 profileQuests.splice(i, 1);
                 this.logger.success("Successfully removed orphaned quest that doesnt exist in our quest data");

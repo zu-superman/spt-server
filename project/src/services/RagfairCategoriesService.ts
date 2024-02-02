@@ -34,7 +34,7 @@ export class RagfairCategoriesService
             const isTraderOffer = offer.user.memberType === MemberCategory.TRADER;
 
             // Not level 15 and offer is from player, skip
-            if (!fleaUnlocked && !isTraderOffer)
+            if (!(fleaUnlocked || isTraderOffer))
             {
                 return false;
             }
