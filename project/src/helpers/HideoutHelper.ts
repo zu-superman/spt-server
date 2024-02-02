@@ -157,7 +157,6 @@ export class HideoutHelper
                 break;
             case BonusType.TEXT_BONUS:
                 // Delete values before they're added to profile
-                delete bonus.value;
                 delete bonus.passive;
                 delete bonus.production;
                 delete bonus.visible;
