@@ -45,7 +45,7 @@ export class InRaidHelper
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("ProfileFixerService") protected profileFixerService: ProfileFixerService,
         @inject("ConfigServer") protected configServer: ConfigServer,
-        @inject("RandomUtil") protected randomUtil: RandomUtil
+        @inject("RandomUtil") protected randomUtil: RandomUtil,
     )
     {
         this.lostOnDeathConfig = this.configServer.getConfig(ConfigTypes.LOST_ON_DEATH);
@@ -68,7 +68,7 @@ export class InRaidHelper
      */
     public addUpdToMoneyFromRaid(items: Item[]): void
     {
-        for (const item of items.filter(x => this.paymentHelper.isMoneyTpl(x._tpl)))
+        for (const item of items.filter((x) => this.paymentHelper.isMoneyTpl(x._tpl)))
         {
             if (!item.upd)
             {
@@ -129,9 +129,9 @@ export class InRaidHelper
         let pmcStandingForKill = botTypes[victim.Side.toLowerCase()]?.experience?.standingForKill;
         const pmcKillProbabilityForScavGain = this.inRaidConfig.pmcKillProbabilityForScavGain;
 
-        if(this.randomUtil.rollForChanceProbability(pmcKillProbabilityForScavGain)) 
+        if (this.randomUtil.rollForChanceProbability(pmcKillProbabilityForScavGain))
         {
-            pmcStandingForKill += this.inRaidConfig.scavExtractGain
+            pmcStandingForKill += this.inRaidConfig.scavExtractGain;
         }
 
         return pmcStandingForKill;
@@ -151,7 +151,7 @@ export class InRaidHelper
         saveProgressRequest: ISaveProgressRequestData,
         sessionID: string,
     ): void
-    {      
+    {
         // Remove skill fatigue values
         this.resetSkillPointsEarnedDuringRaid(saveProgressRequest.profile);
 
@@ -214,19 +214,23 @@ export class InRaidHelper
             if (matchingPreRaidCounter.value !== postRaidValue)
             {
                 this.logger.error(
-                    `TaskConditionCounters: ${backendCounterKey} value is different post raid, old: ${matchingPreRaidCounter.value} new: ${postRaidValue}`
+                    `TaskConditionCounters: ${backendCounterKey} value is different post raid, old: ${matchingPreRaidCounter.value} new: ${postRaidValue}`,
                 );
             }
         }
     }
 
     /**
-     * Update various serverPMC profile values; quests/limb hp/trader standing with values post-raic 
+     * Update various serverPMC profile values; quests/limb hp/trader standing with values post-raic
      * @param pmcData Server PMC profile
      * @param saveProgressRequest Post-raid request data
      * @param sessionId Session id
      */
-    public updatePmcProfileDataPostRaid(pmcData: IPmcData, saveProgressRequest: ISaveProgressRequestData, sessionId: string): void
+    public updatePmcProfileDataPostRaid(
+        pmcData: IPmcData,
+        saveProgressRequest: ISaveProgressRequestData,
+        sessionId: string,
+    ): void
     {
         // Process failed quests then copy everything
         this.processAlteredQuests(sessionId, pmcData, pmcData.Quests, saveProgressRequest.profile);
@@ -250,13 +254,19 @@ export class InRaidHelper
      * @param saveProgressRequest Post-raid request data
      * @param sessionId Session id
      */
-    public updateScavProfileDataPostRaid(scavData: IPmcData, saveProgressRequest: ISaveProgressRequestData, sessionId: string): void
+    public updateScavProfileDataPostRaid(
+        scavData: IPmcData,
+        saveProgressRequest: ISaveProgressRequestData,
+        sessionId: string,
+    ): void
     {
         // Only copy active quests into scav profile // Progress will later to copied over to PMC profile
-        const existingActiveQuestIds = scavData.Quests?.filter(x => x.status !== QuestStatus.AvailableForStart).map(x => x.qid);
+        const existingActiveQuestIds = scavData.Quests?.filter((x) => x.status !== QuestStatus.AvailableForStart).map((
+            x,
+        ) => x.qid);
         if (existingActiveQuestIds)
         {
-            scavData.Quests = saveProgressRequest.profile.Quests.filter(x => existingActiveQuestIds.includes(x.qid));
+            scavData.Quests = saveProgressRequest.profile.Quests.filter((x) => existingActiveQuestIds.includes(x.qid));
         }
 
         this.profileFixerService.checkForAndFixScavProfileIssues(scavData);
@@ -305,7 +315,7 @@ export class InRaidHelper
             }
 
             // Already completed/failed before raid, skip
-            if ([QuestStatus.Fail, QuestStatus.Success].includes(preRaidQuest.status) )
+            if ([QuestStatus.Fail, QuestStatus.Success].includes(preRaidQuest.status))
             {
                 // Daily quests get their status altered in-raid to "AvailableForStart",
                 // Copy pre-raid status to post raid data
@@ -323,7 +333,9 @@ export class InRaidHelper
             }
 
             // Quest with time-gate has unlocked
-            if (postRaidQuestStatus === "AvailableAfter" && postRaidQuest.availableAfter <= this.timeUtil.getTimestamp())
+            if (
+                postRaidQuestStatus === "AvailableAfter" && postRaidQuest.availableAfter <= this.timeUtil.getTimestamp()
+            )
             {
                 // Flag as ready to complete
                 postRaidQuest.status = QuestStatus.AvailableForStart;
@@ -351,7 +363,9 @@ export class InRaidHelper
                 // Does failed quest have requirement to collect items from raid
                 const questDbData = this.questHelper.getQuestFromDb(postRaidQuest.qid, pmcData);
                 // AvailableForFinish
-                const matchingAffFindConditions = questDbData.conditions.AvailableForFinish.filter(condition => condition.conditionType === "FindItem");
+                const matchingAffFindConditions = questDbData.conditions.AvailableForFinish.filter((condition) =>
+                    condition.conditionType === "FindItem"
+                );
                 const itemsToCollect: string[] = [];
                 if (matchingAffFindConditions)
                 {
@@ -364,21 +378,25 @@ export class InRaidHelper
 
                 // Remove quest items from profile as quest has failed and may still be alive
                 // Required as restarting the quest from main menu does not remove value from CarriedQuestItems array
-                postRaidProfile.Stats.Eft.CarriedQuestItems = postRaidProfile.Stats.Eft.CarriedQuestItems.filter(carriedQuestItem => !itemsToCollect.includes(carriedQuestItem))
+                postRaidProfile.Stats.Eft.CarriedQuestItems = postRaidProfile.Stats.Eft.CarriedQuestItems.filter((
+                    carriedQuestItem,
+                ) => !itemsToCollect.includes(carriedQuestItem));
 
                 // Remove quest item from profile now quest is failed
                 // updateProfileBaseStats() has already passed by ref EFT.Stats, all changes applied to postRaid profile also apply to server profile
                 for (const itemTpl of itemsToCollect)
                 {
                     // Look for sessioncounter and remove it
-                    const counterIndex = postRaidProfile.Stats.Eft.SessionCounters.Items.findIndex(x => x.Key.includes(itemTpl) && x.Key.includes("LootItem"));
+                    const counterIndex = postRaidProfile.Stats.Eft.SessionCounters.Items.findIndex((x) =>
+                        x.Key.includes(itemTpl) && x.Key.includes("LootItem")
+                    );
                     if (counterIndex > -1)
                     {
                         postRaidProfile.Stats.Eft.SessionCounters.Items.splice(counterIndex, 1);
                     }
 
                     // Look for quest item and remove it
-                    const inventoryItemIndex = postRaidProfile.Inventory.items.findIndex(x => x._tpl === itemTpl);
+                    const inventoryItemIndex = postRaidProfile.Inventory.items.findIndex((x) => x._tpl === itemTpl);
                     if (inventoryItemIndex > -1)
                     {
                         postRaidProfile.Inventory.items.splice(inventoryItemIndex, 1);
@@ -399,13 +417,15 @@ export class InRaidHelper
                 const dbQuest = this.questHelper.getQuestFromDb(lockedQuest.qid, null);
                 if (!dbQuest)
                 {
-                    this.logger.warning(`Unable to adjust locked quest: ${lockedQuest.qid} as it wasnt found in db. It may not become available later on`);
-                    
+                    this.logger.warning(
+                        `Unable to adjust locked quest: ${lockedQuest.qid} as it wasnt found in db. It may not become available later on`,
+                    );
+
                     continue;
                 }
 
                 // Find the time requirement in AvailableForStart array (assuming there is one as quest in locked state === its time-gated)
-                const afsRequirement = dbQuest.conditions.AvailableForStart.find(x => x.conditionType === "Quest");
+                const afsRequirement = dbQuest.conditions.AvailableForStart.find((x) => x.conditionType === "Quest");
                 if (afsRequirement && afsRequirement.availableAfter > 0)
                 {
                     // Prereq quest has a wait

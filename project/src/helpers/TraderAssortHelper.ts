@@ -148,7 +148,7 @@ export class TraderAssortHelper
     protected resetBuyRestrictionCurrentValue(assortItems: Item[]): void
     {
         // iterate over root items
-        for (const assort of assortItems.filter(item => item.slotId === "hideout"))
+        for (const assort of assortItems.filter((item) => item.slotId === "hideout"))
         {
             // no value to adjust
             if (!assort.upd.BuyRestrictionCurrent)

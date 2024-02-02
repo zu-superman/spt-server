@@ -348,7 +348,7 @@ export class InraidController
     {
         for (const quest of scavProfile.Quests)
         {
-            const pmcQuest = pmcProfile.Quests.find(x => x.qid === quest.qid);
+            const pmcQuest = pmcProfile.Quests.find((x) => x.qid === quest.qid);
             if (!pmcQuest)
             {
                 this.logger.warning(`No PMC quest found for ID: ${quest.qid}`);
@@ -546,9 +546,9 @@ export class InraidController
 
         // Remove any items that were returned by the item delivery, but also insured, from the player's insurance list
         // This is to stop items being duplicated by being returned from both the item delivery, and insurance
-        const deliveredItemIds = items.map(x => x._id);
-        pmcData.InsuredItems = pmcData.InsuredItems.filter(x => !deliveredItemIds.includes(x.itemId));
-        
+        const deliveredItemIds = items.map((x) => x._id);
+        pmcData.InsuredItems = pmcData.InsuredItems.filter((x) => !deliveredItemIds.includes(x.itemId));
+
         // Send the items to the player
         this.mailSendService.sendLocalisedNpcMessageToPlayer(
             sessionId,

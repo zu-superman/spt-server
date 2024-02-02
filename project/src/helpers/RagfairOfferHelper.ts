@@ -565,7 +565,10 @@ export class RagfairOfferHelper
 
         // Filter out presets when search request has multiple buildItems
         // Assuming 1 build item = single item e.g. gun
-        if (searchRequest.buildCount && this.presetHelper.hasPreset(offerRootItem._tpl) && Object.keys(searchRequest.buildItems).length > 1)
+        if (
+            searchRequest.buildCount && this.presetHelper.hasPreset(offerRootItem._tpl)
+            && Object.keys(searchRequest.buildItems).length > 1
+        )
         {
             // Don't include preset offer
             return false;
@@ -610,7 +613,8 @@ export class RagfairOfferHelper
             return false;
         }
 
-        if (this.isConditionItem(offerRootItem)
+        if (
+            this.isConditionItem(offerRootItem)
             && !this.itemQualityInRange(offerRootItem, searchRequest.conditionFrom, searchRequest.conditionTo)
         )
         {
@@ -700,9 +704,10 @@ export class RagfairOfferHelper
      */
     protected isConditionItem(item: Item): boolean
     {
-        // thanks typescript, undefined assertion is not returnable since it 
+        // thanks typescript, undefined assertion is not returnable since it
         // tries to return a multitype object
-        return (item.upd.MedKit || item.upd.Repairable || item.upd.Resource || item.upd.FoodDrink || item.upd.Key || item.upd.RepairKit)
+        return (item.upd.MedKit || item.upd.Repairable || item.upd.Resource || item.upd.FoodDrink || item.upd.Key
+                || item.upd.RepairKit)
             ? true
             : false;
     }

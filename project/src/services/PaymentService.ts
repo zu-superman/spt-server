@@ -222,9 +222,7 @@ export class PaymentService
         const rootCurrencyReward = {
             _id: this.hashUtil.generate(),
             _tpl: currency,
-            upd: {
-                StackObjectsCount: calcAmount
-            }
+            upd: { StackObjectsCount: calcAmount },
         };
         const rewards = this.itemHelper.splitStackIntoSeparateItems(rootCurrencyReward);
 
@@ -234,7 +232,7 @@ export class PaymentService
                 itemsWithModsToAdd: rewards,
                 foundInRaid: false,
                 callback: null,
-                useSortingTable: true
+                useSortingTable: true,
             };
             this.inventoryHelper.addItemsToStash(sessionID, addItemToStashRequest, pmcData, output);
         }

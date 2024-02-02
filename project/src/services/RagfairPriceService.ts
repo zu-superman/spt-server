@@ -401,12 +401,12 @@ export class RagfairPriceService implements OnLoad
      */
     protected getWeaponPreset(weapon: Item): { isDefault: boolean; preset: IPreset; }
     {
-        const defaultPreset = this.presetHelper.getDefaultPreset(weapon._tpl)
+        const defaultPreset = this.presetHelper.getDefaultPreset(weapon._tpl);
         if (defaultPreset)
         {
             return { isDefault: true, preset: defaultPreset };
         }
-        const nonDefaultPresets = this.presetHelper.getPresets(weapon._tpl)
+        const nonDefaultPresets = this.presetHelper.getPresets(weapon._tpl);
         if (nonDefaultPresets.length === 1)
         {
             this.logger.debug(

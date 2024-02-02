@@ -485,7 +485,9 @@ export class Container
         depContainer.register<RagfairStaticRouter>("RagfairStaticRouter", { useClass: RagfairStaticRouter });
         depContainer.register<TraderStaticRouter>("TraderStaticRouter", { useClass: TraderStaticRouter });
         depContainer.register<WeatherStaticRouter>("WeatherStaticRouter", { useClass: WeatherStaticRouter });
-        depContainer.register<AchievementStaticRouter>("AchievementStaticRouter", { useClass: AchievementStaticRouter });
+        depContainer.register<AchievementStaticRouter>("AchievementStaticRouter", {
+            useClass: AchievementStaticRouter,
+        });
         depContainer.register<BuildsStaticRouter>("BuildsStaticRouter", { useClass: BuildsStaticRouter });
     }
 

@@ -285,8 +285,8 @@ export class QuestHelper
             item.upd.SpawnedInSession = true;
 
             // Separate base item from mods, fix stacks
-            if (item._id === questReward.target) // Is base reward item
-            {
+            if (item._id === questReward.target)
+            { // Is base reward item
                 if (
                     (item.parentId !== undefined) && (item.parentId === "hideout") // Has parentId of hideout
                     && (item.upd !== undefined) && (item.upd.StackObjectsCount !== undefined) // Has upd with stackobject count
@@ -350,12 +350,14 @@ export class QuestHelper
             questReward.items = this.jsonUtil.clone(defaultPreset._items);
 
             // Remap target id to the new presets id
-            questReward.target = questReward.items.find(item => item._tpl === originalRewardRootItem._tpl)._id;
+            questReward.target = questReward.items.find((item) => item._tpl === originalRewardRootItem._tpl)._id;
 
             return;
         }
 
-        this.logger.warning(`Unable to find default preset for armor ${originalRewardRootItem._tpl}, adding mods manually`);
+        this.logger.warning(
+            `Unable to find default preset for armor ${originalRewardRootItem._tpl}, adding mods manually`,
+        );
         const itemDbData = this.itemHelper.getItem(originalRewardRootItem._tpl)[1];
 
         // Hydrate reward with only 'required' mods - necessary for things like helmets otherwise you end up with nvgs/visors etc
@@ -372,9 +374,7 @@ export class QuestHelper
     {
         // Iterate over all rewards with the desired status, flatten out items that have a type of Item
         const questRewards = quest.rewards[QuestStatus[status]].flatMap((reward: IQuestReward) =>
-            reward.type === "Item"
-                ? this.processReward(reward)
-                : []
+            reward.type === "Item" ? this.processReward(reward) : []
         );
 
         return questRewards;
@@ -654,7 +654,9 @@ export class QuestHelper
     public getQuestWithOnlyLevelRequirementStartCondition(quest: IQuest): IQuest
     {
         quest = this.jsonUtil.clone(quest);
-        quest.conditions.AvailableForStart = quest.conditions.AvailableForStart.filter((q) => q.conditionType === "Level");
+        quest.conditions.AvailableForStart = quest.conditions.AvailableForStart.filter((q) =>
+            q.conditionType === "Level"
+        );
 
         return quest;
     }
@@ -686,7 +688,7 @@ export class QuestHelper
         // Create a dialog message for completing the quest.
         const quest = this.getQuestFromDb(failRequest.qid, pmcData);
 
-        const questIsRepeatable = pmcData.RepeatableQuests.some(quest => quest.id === failRequest.qid);
+        const questIsRepeatable = pmcData.RepeatableQuests.some((quest) => quest.id === failRequest.qid);
         if (!questIsRepeatable)
         {
             this.mailSendService.sendLocalisedNpcMessageToPlayer(
@@ -1007,9 +1009,7 @@ export class QuestHelper
             const questInDb = allQuests.find((x) => x._id === questId);
             if (!questInDb)
             {
-                this.logger.debug(
-                    `Unable to find quest: ${questId} in db, cannot get 'FindItem' condition, skipping`,
-                );
+                this.logger.debug(`Unable to find quest: ${questId} in db, cannot get 'FindItem' condition, skipping`);
                 continue;
             }
 

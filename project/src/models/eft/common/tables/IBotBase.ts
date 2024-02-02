@@ -29,7 +29,7 @@ export interface IBotBase
     UnlockedInfo: IUnlockedInfo;
     RagfairInfo: RagfairInfo;
     /** Achievement id and timestamp */
-    Achievements: Record<string, number>
+    Achievements: Record<string, number>;
     RepeatableQuests: IPmcDataRepeatableQuest[];
     Bonuses: Bonus[];
     Notes: Notes;
@@ -43,11 +43,11 @@ export interface IBotBase
 
 export interface ITaskConditionCounter
 {
-    id: string
-    type: string
-    value: number
+    id: string;
+    type: string;
+    value: number;
     /** Quest id */
-    sourceId: string
+    sourceId: string;
 }
 
 export interface IUnlockedInfo
@@ -165,7 +165,7 @@ export interface Inventory
     /** Key is hideout area enum numeric as string e.g. "24", value is area _id  */
     hideoutAreaStashes: Record<string, string>;
     fastPanel: Record<string, string>;
-    favoriteItems: string[]
+    favoriteItems: string[];
 }
 
 export interface IBaseJsonSkills

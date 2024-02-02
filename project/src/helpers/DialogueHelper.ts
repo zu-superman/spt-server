@@ -4,10 +4,7 @@ import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { NotificationSendHelper } from "@spt-aki/helpers/NotificationSendHelper";
 import { NotifierHelper } from "@spt-aki/helpers/NotifierHelper";
 import { Item } from "@spt-aki/models/eft/common/tables/IItem";
-import {
-    Dialogue,
-    MessagePreview,
-} from "@spt-aki/models/eft/profile/IAkiProfile";
+import { Dialogue, MessagePreview } from "@spt-aki/models/eft/profile/IAkiProfile";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { SaveServer } from "@spt-aki/servers/SaveServer";

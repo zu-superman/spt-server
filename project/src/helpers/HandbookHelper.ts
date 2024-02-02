@@ -37,7 +37,7 @@ export class HandbookHelper
 
     constructor(
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
-        @inject("JsonUtil") protected jsonUtil: JsonUtil
+        @inject("JsonUtil") protected jsonUtil: JsonUtil,
     )
     {}
 
@@ -168,6 +168,6 @@ export class HandbookHelper
 
     public getCategoryById(handbookId: string): Category
     {
-        return this.databaseServer.getTables().templates.handbook.Categories.find(x => x.Id === handbookId);
+        return this.databaseServer.getTables().templates.handbook.Categories.find((x) => x.Id === handbookId);
     }
 }

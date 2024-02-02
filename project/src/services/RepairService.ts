@@ -124,7 +124,7 @@ export class RepairService
         const options: IProcessBuyTradeRequestData = {
             scheme_items: [{
                 id: "5449016a4bdc2d6f028b456f", // Rouble tpl
-                count: Math.round(repairCost)
+                count: Math.round(repairCost),
             }],
             tid: traderId,
             Action: "SptRepair",
@@ -214,10 +214,7 @@ export class RepairService
         else
         {
             // Trader repair - Not as accurate as kit, needs data from live
-            return Math.min(
-                repairDetails.repairAmount / 10,
-                this.repairConfig.maxIntellectGainPerRepair.trader,
-            );
+            return Math.min(repairDetails.repairAmount / 10, this.repairConfig.maxIntellectGainPerRepair.trader);
         }
     }
 
@@ -440,7 +437,13 @@ export class RepairService
 
         if (this.shouldBuffItem(repairDetails, pmcData))
         {
-            if (this.itemHelper.isOfBaseclasses(repairDetails.repairedItem._tpl, [BaseClasses.ARMOR, BaseClasses.VEST, BaseClasses.HEADWEAR]))
+            if (
+                this.itemHelper.isOfBaseclasses(repairDetails.repairedItem._tpl, [
+                    BaseClasses.ARMOR,
+                    BaseClasses.VEST,
+                    BaseClasses.HEADWEAR,
+                ])
+            )
             {
                 const armorConfig = this.repairConfig.repairKit.armor;
                 this.addBuff(armorConfig, repairDetails.repairedItem);
@@ -539,7 +542,13 @@ export class RepairService
      */
     protected getItemSkillType(itemTemplate: ITemplateItem): SkillTypes
     {
-        if (this.itemHelper.isOfBaseclasses(itemTemplate._id, [BaseClasses.ARMOR, BaseClasses.VEST, BaseClasses.HEADWEAR]))
+        if (
+            this.itemHelper.isOfBaseclasses(itemTemplate._id, [
+                BaseClasses.ARMOR,
+                BaseClasses.VEST,
+                BaseClasses.HEADWEAR,
+            ])
+        )
         {
             if (itemTemplate._props.ArmorType === "Light")
             {

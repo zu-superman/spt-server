@@ -153,7 +153,7 @@ export class BotController
         {
             return this.generateBotsFirstTime(info, pmcProfile, sessionId);
         }
-        
+
         return this.returnSingleBotFromCache(sessionId, info);
     }
 
@@ -162,11 +162,17 @@ export class BotController
      * @param request Bot generation request object
      * @param pmcProfile Player profile
      * @param sessionId Session id
-     * @returns 
+     * @returns
      */
-    protected generateBotsFirstTime(request: IGenerateBotsRequestData, pmcProfile: IPmcData, sessionId: string): IBotBase[]
+    protected generateBotsFirstTime(
+        request: IGenerateBotsRequestData,
+        pmcProfile: IPmcData,
+        sessionId: string,
+    ): IBotBase[]
     {
-        const allPmcsHaveSameNameAsPlayer = this.randomUtil.getChance100(this.pmcConfig.allPMCsHavePlayerNameWithRandomPrefixChance);
+        const allPmcsHaveSameNameAsPlayer = this.randomUtil.getChance100(
+            this.pmcConfig.allPMCsHavePlayerNameWithRandomPrefixChance,
+        );
         for (const condition of request.conditions)
         {
             const botGenerationDetails: BotGenerationDetails = {
@@ -180,7 +186,7 @@ export class BotController
                 botCountToGenerate: this.botConfig.presetBatch[condition.Role],
                 botDifficulty: condition.Difficulty,
                 isPlayerScav: false,
-                allPmcsHaveSameNameAsPlayer: allPmcsHaveSameNameAsPlayer
+                allPmcsHaveSameNameAsPlayer: allPmcsHaveSameNameAsPlayer,
             };
 
             // Event bots need special actions to occur, set data up for them
@@ -190,7 +196,7 @@ export class BotController
                 // Add eventRole data + reassign role property to be base type
                 botGenerationDetails.eventRole = condition.Role;
                 botGenerationDetails.role = this.seasonalEventService.getBaseRoleForEventBot(
-                    botGenerationDetails.eventRole
+                    botGenerationDetails.eventRole,
                 );
             }
 
@@ -338,9 +344,9 @@ export class BotController
     public getBotCap(): number
     {
         const defaultMapCapId = "default";
-        const raidConfig = this.applicationContext
-            .getLatestValue(ContextVariableType.RAID_CONFIGURATION)
-            .getValue<IGetRaidConfigurationRequestData>();
+        const raidConfig = this.applicationContext.getLatestValue(ContextVariableType.RAID_CONFIGURATION).getValue<
+            IGetRaidConfigurationRequestData
+        >();
 
         if (!raidConfig)
         {
@@ -366,9 +372,10 @@ export class BotController
 
     public getAiBotBrainTypes(): any
     {
-        return { 
+        return {
             pmc: this.pmcConfig.pmcType,
             assault: this.botConfig.assaultBrainType,
-            playerScav: this.botConfig.playerScavBrainType};
+            playerScav: this.botConfig.playerScavBrainType,
+        };
     }
 }

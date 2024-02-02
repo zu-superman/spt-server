@@ -75,16 +75,18 @@ export class InventoryHelper
      * @param pmcData Player profile
      * @param output Client response object
      */
-    public addItemsToStash(sessionId: string, request: IAddItemsDirectRequest, pmcData: IPmcData, output: IItemEventRouterResponse): void
+    public addItemsToStash(
+        sessionId: string,
+        request: IAddItemsDirectRequest,
+        pmcData: IPmcData,
+        output: IItemEventRouterResponse,
+    ): void
     {
         // Check all items fit into inventory before adding
         if (!this.canPlaceItemsInInventory(sessionId, request.itemsWithModsToAdd))
         {
             // No space, exit
-            this.httpResponse.appendErrorToOutput(
-                output,
-                this.localisationService.getText("inventory-no_stash_space"),
-            )
+            this.httpResponse.appendErrorToOutput(output, this.localisationService.getText("inventory-no_stash_space"));
 
             return;
         }
@@ -95,7 +97,7 @@ export class InventoryHelper
                 itemWithModsToAdd: itemToAdd,
                 foundInRaid: request.foundInRaid,
                 useSortingTable: request.useSortingTable,
-                callback: request.callback
+                callback: request.callback,
             };
 
             // Add to player inventory
@@ -114,7 +116,12 @@ export class InventoryHelper
      * @param pmcData Player profile
      * @param output Client response object
      */
-    public addItemToStash(sessionId: string, request: IAddItemDirectRequest, pmcData: IPmcData, output: IItemEventRouterResponse): void
+    public addItemToStash(
+        sessionId: string,
+        request: IAddItemDirectRequest,
+        pmcData: IPmcData,
+        output: IItemEventRouterResponse,
+    ): void
     {
         const itemWithModsToAddClone = this.jsonUtil.clone(request.itemWithModsToAdd);
 
@@ -167,7 +174,11 @@ export class InventoryHelper
         output.profileChanges[sessionId].items.new.push(...itemWithModsToAddClone);
         pmcData.Inventory.items.push(...itemWithModsToAddClone);
 
-        this.logger.debug(`Added ${itemWithModsToAddClone[0].upd?.StackObjectsCount ?? 1} item: ${itemWithModsToAddClone[0]._tpl} with: ${itemWithModsToAddClone.length - 1} mods to inventory`);
+        this.logger.debug(
+            `Added ${itemWithModsToAddClone[0].upd?.StackObjectsCount ?? 1} item: ${
+                itemWithModsToAddClone[0]._tpl
+            } with: ${itemWithModsToAddClone.length - 1} mods to inventory`,
+        );
     }
 
     /**
@@ -189,7 +200,6 @@ export class InventoryHelper
             {
                 item.upd.SpawnedInSession = foundInRaid;
             }
-
             else
             {
                 if (delete item.upd.SpawnedInSession)
@@ -222,10 +232,7 @@ export class InventoryHelper
         }
     }
 
-    public canPlaceItemsInInventory(
-        sessionId: string,
-        itemsWithChildren: Item[][]
-    ): boolean
+    public canPlaceItemsInInventory(sessionId: string, itemsWithChildren: Item[][]): boolean
     {
         const pmcData = this.profileHelper.getPmcProfile(sessionId);
 
@@ -241,10 +248,7 @@ export class InventoryHelper
         return true;
     }
 
-    public canPlaceItemInInventory(
-        stashFS2D: number[][],
-        itemWithChildren: Item[]
-    ): boolean
+    public canPlaceItemInInventory(stashFS2D: number[][], itemWithChildren: Item[]): boolean
     {
         // Get x/y size of item
         const rootItem = itemWithChildren[0];
@@ -288,7 +292,8 @@ export class InventoryHelper
         itemWithChildren: Item[],
         playerInventory: Inventory,
         useSortingTable: boolean,
-        output: IItemEventRouterResponse): void
+        output: IItemEventRouterResponse,
+    ): void
     {
         // Get x/y size of item
         const rootItem = itemWithChildren[0];
@@ -317,9 +322,7 @@ export class InventoryHelper
             }
             catch (err)
             {
-                const errorText = (typeof err === "string")
-                    ? ` -> ${err}`
-                    : "";
+                const errorText = (typeof err === "string") ? ` -> ${err}` : "";
                 this.logger.error(this.localisationService.getText("inventory-fill_container_failed", errorText));
 
                 this.httpResponse.appendErrorToOutput(
@@ -388,12 +391,9 @@ export class InventoryHelper
         }
         else
         {
-            this.httpResponse.appendErrorToOutput(
-                output,
-                this.localisationService.getText("inventory-no_stash_space"),
-            );
+            this.httpResponse.appendErrorToOutput(output, this.localisationService.getText("inventory-no_stash_space"));
 
-            return
+            return;
         }
     }
 
@@ -896,7 +896,7 @@ export class InventoryHelper
                         {
                             continue;
                         }
-                        
+
                         if (childFoldable && rootFolded && childFolded)
                         {
                             continue;

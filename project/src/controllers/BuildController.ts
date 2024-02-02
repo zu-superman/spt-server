@@ -71,10 +71,7 @@ export class BuildController
     }
 
     /** Handle client/builds/weapon/save */
-    public saveWeaponBuild(
-        sessionId: string,
-        body: IPresetBuildActionRequestData,
-    ): void
+    public saveWeaponBuild(sessionId: string, body: IPresetBuildActionRequestData): void
     {
         const pmcData = this.profileHelper.getPmcProfile(sessionId);
 
@@ -84,12 +81,7 @@ export class BuildController
         body.Root = body.Items[0]._id;
 
         // Create new object ready to save into profile userbuilds.weaponBuilds
-        const newBuild: IWeaponBuild = {
-            Id: body.Id,
-            Name: body.Name,
-            Root: body.Root,
-            Items: body.Items,
-        };
+        const newBuild: IWeaponBuild = { Id: body.Id, Name: body.Name, Root: body.Root, Items: body.Items };
 
         const savedWeaponBuilds = this.saveServer.getProfile(sessionId).userbuilds.weaponBuilds;
         const existingBuild = savedWeaponBuilds.find((x) => x.Id === body.Id);
@@ -110,15 +102,13 @@ export class BuildController
     }
 
     /** Handle client/builds/equipment/save event */
-    public saveEquipmentBuild(
-        sessionID: string,
-        request: IPresetBuildActionRequestData,
-    ): void
+    public saveEquipmentBuild(sessionID: string, request: IPresetBuildActionRequestData): void
     {
         const buildType = "equipmentBuilds";
         const pmcData = this.profileHelper.getPmcProfile(sessionID);
 
-        const existingSavedEquipmentBuilds: IEquipmentBuild[] = this.saveServer.getProfile(sessionID).userbuilds[buildType];
+        const existingSavedEquipmentBuilds: IEquipmentBuild[] =
+            this.saveServer.getProfile(sessionID).userbuilds[buildType];
 
         // Replace duplicate ID's. The first item is the base item.
         // Root ID and the base item ID need to match.
@@ -214,16 +204,15 @@ export class BuildController
             profile.userbuilds.magazineBuilds = [];
         }
 
-        const existingArrayId = profile.userbuilds.magazineBuilds.findIndex(item => item.Name === request.Name);
+        const existingArrayId = profile.userbuilds.magazineBuilds.findIndex((item) => item.Name === request.Name);
 
         if (existingArrayId === -1)
         {
-
             profile.userbuilds.magazineBuilds.push(result);
         }
         else
         {
-            profile.userbuilds.magazineBuilds.splice(existingArrayId, 1, result)
+            profile.userbuilds.magazineBuilds.splice(existingArrayId, 1, result);
         }
     }
 }

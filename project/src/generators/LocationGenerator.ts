@@ -169,7 +169,7 @@ export class LocationGenerator
         const staticContainerGroupData: IStaticContainer = db.locations[locationId].statics;
         if (!staticContainerGroupData)
         {
-            this.logger.warning(`Map: ${locationId} lacks a statics file, skipping container generation.`)
+            this.logger.warning(`Map: ${locationId} lacks a statics file, skipping container generation.`);
 
             return result;
         }
@@ -248,7 +248,6 @@ export class LocationGenerator
                 staticContainerCount++;
 
                 staticLootItemCount += containerWithLoot.template.Items.length;
-
             }
         }
 
@@ -430,7 +429,7 @@ export class LocationGenerator
             itemCountToAdd,
             this.locationConfig.allowDuplicateItemsInStaticContainers,
             locklist,
-        ).filter(x => !tplsForced.includes(x));
+        ).filter((x) => !tplsForced.includes(x));
 
         // Add forced loot to chosen item pool
         const tplsToAddToContainer = tplsForced.concat(chosenTpls);
@@ -516,7 +515,9 @@ export class LocationGenerator
         const countDistribution = staticLootDist[containerTypeId]?.itemcountDistribution;
         if (!countDistribution)
         {
-            this.logger.warning(`Unable to acquire count distrubution for container:  ${containerTypeId} on: ${locationName}. defaulting to 0`);
+            this.logger.warning(
+                `Unable to acquire count distrubution for container:  ${containerTypeId} on: ${locationName}. defaulting to 0`,
+            );
 
             return 0;
         }
@@ -603,7 +604,10 @@ export class LocationGenerator
         // Draw from random distribution
         const desiredSpawnpointCount = Math.round(
             this.getLooseLootMultiplerForLocation(locationName)
-                * this.randomUtil.getNormallyDistributedRandomNumber(dynamicLootDist.spawnpointCount.mean, dynamicLootDist.spawnpointCount.std),
+                * this.randomUtil.getNormallyDistributedRandomNumber(
+                    dynamicLootDist.spawnpointCount.mean,
+                    dynamicLootDist.spawnpointCount.std,
+                ),
         );
 
         // Positions not in forced but have 100% chance to spawn
@@ -823,7 +827,7 @@ export class LocationGenerator
     {
         const chosenItem = spawnPoint.template.Items.find((x) => x._id === chosenComposedKey);
         const chosenTpl = chosenItem._tpl;
-        const itemTemplate = this.itemHelper.getItem(chosenTpl)[1]; 
+        const itemTemplate = this.itemHelper.getItem(chosenTpl)[1];
 
         // Item array to return
         let itemWithMods: Item[] = [];
@@ -864,18 +868,19 @@ export class LocationGenerator
                     this.locationConfig.minFillLooseMagazinePercent / 100,
                 );
             }
-            
+
             itemWithMods.push(...magazineItem);
         }
         else if (this.itemHelper.armorItemCanHoldMods(chosenTpl))
         {
-            itemWithMods.push({
-                _id: this.objectId.generate(),
-                _tpl: chosenTpl,
-            });
+            itemWithMods.push({ _id: this.objectId.generate(), _tpl: chosenTpl });
             if (itemTemplate._props.Slots?.length > 0)
             {
-                itemWithMods = this.itemHelper.addChildSlotItems(itemWithMods, itemTemplate, this.locationConfig.equipmentLootSettings.modSpawnChancePercent);
+                itemWithMods = this.itemHelper.addChildSlotItems(
+                    itemWithMods,
+                    itemTemplate,
+                    this.locationConfig.equipmentLootSettings.modSpawnChancePercent,
+                );
             }
         }
         else
@@ -1004,7 +1009,10 @@ export class LocationGenerator
             if (!rootItem)
             {
                 this.logger.error(
-                    this.localisationService.getText("location-missing_root_item", { tpl: chosenTpl, parentId: parentId }),
+                    this.localisationService.getText("location-missing_root_item", {
+                        tpl: chosenTpl,
+                        parentId: parentId,
+                    }),
                 );
 
                 throw new Error(this.localisationService.getText("location-critical_error_see_log"));
@@ -1085,14 +1093,14 @@ export class LocationGenerator
             // We make base item above, at start of function, no need to do it here
             if (itemTemplate._props.Slots?.length > 0)
             {
-                items = this.itemHelper.addChildSlotItems(items, itemTemplate, this.locationConfig.equipmentLootSettings.modSpawnChancePercent);
+                items = this.itemHelper.addChildSlotItems(
+                    items,
+                    itemTemplate,
+                    this.locationConfig.equipmentLootSettings.modSpawnChancePercent,
+                );
             }
         }
 
-        return {
-            items: items,
-            width: width,
-            height: height
-        };
+        return { items: items, width: width, height: height };
     }
 }

@@ -97,7 +97,7 @@ export class RagfairController
         const pmcProfile = this.profileHelper.getPmcProfile(sessionID);
 
         result.offers = this.getOffersForSearchType(searchRequest, itemsToAdd, traderAssorts, pmcProfile);
-        
+
         if (searchRequest.updateOfferCount)
         {
             result.categories = this.getSpecificCategories(pmcProfile, searchRequest, result.offers);
@@ -158,7 +158,7 @@ export class RagfairController
     public getOfferById(sessionId: string, request: IGetRagfairOfferByIdRequest): IRagfairOffer
     {
         const offers = this.ragfairOfferService.getOffers();
-        const offerToReturn = offers.find(x => x.intId === request.id);
+        const offerToReturn = offers.find((x) => x.intId === request.id);
 
         return offerToReturn;
     }
@@ -199,10 +199,15 @@ export class RagfairController
      * @param offers ragfair offers to get categories for
      * @returns record with templates + counts
      */
-    protected getSpecificCategories(pmcProfile: IPmcData, searchRequest: ISearchRequestData, offers: IRagfairOffer[]): Record<string, number>
+    protected getSpecificCategories(
+        pmcProfile: IPmcData,
+        searchRequest: ISearchRequestData,
+        offers: IRagfairOffer[],
+    ): Record<string, number>
     {
         // Linked/required search categories
-        const playerHasFleaUnlocked = pmcProfile.Info.Level >= this.databaseServer.getTables().globals.config.RagFair.minUserLevel;
+        const playerHasFleaUnlocked =
+            pmcProfile.Info.Level >= this.databaseServer.getTables().globals.config.RagFair.minUserLevel;
         let offerPool = [];
         if (this.isLinkedSearch(searchRequest) || this.isRequiredSearch(searchRequest))
         {
@@ -698,7 +703,9 @@ export class RagfairController
         if (playerOfferIndex === -1)
         {
             this.logger.error(
-                this.localisationService.getText("ragfair-offer_not_found_in_profile", { offerId: removeRequest.offerId }),
+                this.localisationService.getText("ragfair-offer_not_found_in_profile", {
+                    offerId: removeRequest.offerId,
+                }),
             );
             return this.httpResponse.appendErrorToOutput(
                 output,
@@ -735,7 +742,9 @@ export class RagfairController
         if (playerOfferIndex === -1)
         {
             this.logger.warning(
-                this.localisationService.getText("ragfair-offer_not_found_in_profile", { offerId: extendRequest.offerId }),
+                this.localisationService.getText("ragfair-offer_not_found_in_profile", {
+                    offerId: extendRequest.offerId,
+                }),
             );
             return this.httpResponse.appendErrorToOutput(
                 output,

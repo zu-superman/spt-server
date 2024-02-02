@@ -105,9 +105,8 @@ export class GiveSptCommand implements ISptCommand
             {
                 // Make sure IDs are unique before adding to array - prevent collisions
                 const presetToSend = this.itemHelper.replaceIDs(null, this.jsonUtil.clone(preset._items));
-                itemsToSend.push(... presetToSend);
+                itemsToSend.push(...presetToSend);
             }
-            
         }
         else if (this.itemHelper.isOfBaseclass(checkedItem[1]._id, BaseClasses.AMMO_BOX))
         {
@@ -124,10 +123,7 @@ export class GiveSptCommand implements ISptCommand
             const item: Item = {
                 _id: this.hashUtil.generate(),
                 _tpl: checkedItem[1]._id,
-                upd: { 
-                    StackObjectsCount: +quantity,
-                    SpawnedInSession: true
-                },
+                upd: { StackObjectsCount: +quantity, SpawnedInSession: true },
             };
             itemsToSend.push(...this.itemHelper.splitStack(item));
         }

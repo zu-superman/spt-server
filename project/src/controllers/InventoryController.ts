@@ -121,8 +121,7 @@ export class InventoryController
             }
 
             // Item is moving into or out of place of fame dogtag slot
-            if (moveRequest.to.container.startsWith("dogtag")
-                || originalLocationSlotId.startsWith("dogtag"))
+            if (moveRequest.to.container.startsWith("dogtag") || originalLocationSlotId.startsWith("dogtag"))
             {
                 this.hideoutHelper.applyPlaceOfFameDogtagBonus(pmcData);
             }
@@ -177,11 +176,7 @@ export class InventoryController
 
         if (body.fromOwner?.type === "Mail")
         {
-            this.inventoryHelper.removeItemAndChildrenFromMailRewards(
-                sessionID,
-                body,
-                output,
-            );
+            this.inventoryHelper.removeItemAndChildrenFromMailRewards(sessionID, body, output);
 
             return;
         }
@@ -190,12 +185,7 @@ export class InventoryController
             ? pmcData
             : this.profileHelper.getFullProfile(sessionID).characters.scav;
 
-        return this.inventoryHelper.removeItem(
-            profileToRemoveItemFrom,
-            body.item,
-            sessionID,
-            output,
-        );
+        return this.inventoryHelper.removeItem(profileToRemoveItemFrom, body.item, sessionID, output);
     }
 
     /**
@@ -527,9 +517,7 @@ export class InventoryController
             return this.eventOutputHolder.getOutput(sessionID);
         }
 
-        this.logger.warning(
-            this.localisationService.getText("inventory-unable_to_toggle_item_not_found", body.item),
-        );
+        this.logger.warning(this.localisationService.getText("inventory-unable_to_toggle_item_not_found", body.item));
 
         return { warnings: [], profileChanges: {} };
     }
@@ -685,7 +673,7 @@ export class InventoryController
             const item = this.databaseServer.getTables().templates.items[itemTpl];
             if (!item)
             {
-                this.logger.warning(`Unable to find item with id ${itemTpl}, skipping inspection`)
+                this.logger.warning(`Unable to find item with id ${itemTpl}, skipping inspection`);
                 return;
             }
 
@@ -932,7 +920,7 @@ export class InventoryController
 
             if (containerSettings.foundInRaid)
             {
-                foundInRaid = containerSettings.foundInRaid
+                foundInRaid = containerSettings.foundInRaid;
             }
         }
         else
@@ -950,8 +938,8 @@ export class InventoryController
             itemsWithModsToAdd: rewards,
             foundInRaid: foundInRaid,
             callback: null,
-            useSortingTable: true
-        }
+            useSortingTable: true,
+        };
         this.inventoryHelper.addItemsToStash(sessionID, addItemsRequest, pmcData, output);
         if (output.warnings.length > 0)
         {
@@ -964,7 +952,11 @@ export class InventoryController
         return output;
     }
 
-    public redeemProfileReward(pmcData: IPmcData, request: IRedeemProfileRequestData, sessionId: string): IItemEventRouterResponse
+    public redeemProfileReward(
+        pmcData: IPmcData,
+        request: IRedeemProfileRequestData,
+        sessionId: string,
+    ): IItemEventRouterResponse
     {
         const output = this.eventOutputHolder.getOutput(sessionId);
 
@@ -974,8 +966,8 @@ export class InventoryController
             // Hard coded to `SYSTEM` for now
             // TODO: make this dynamic
             const dialog = fullprofile.dialogues["59e7125688a45068a6249071"];
-            const mail = dialog.messages.find(x => x._id === event.MessageId);
-            const mailEvent = mail.profileChangeEvents.find(x => x._id === event.EventId);
+            const mail = dialog.messages.find((x) => x._id === event.MessageId);
+            const mailEvent = mail.profileChangeEvents.find((x) => x._id === event.EventId);
 
             switch (mailEvent.Type)
             {
@@ -994,15 +986,15 @@ export class InventoryController
                     break;
                 case "SkillPoints":
                 {
-                    const profileSkill = pmcData.Skills.Common.find(x => x.Id === mailEvent.entity);
+                    const profileSkill = pmcData.Skills.Common.find((x) => x.Id === mailEvent.entity);
                     profileSkill.Progress = mailEvent.value;
                     this.logger.success(`Set profile skill: ${mailEvent.entity} to: ${mailEvent.value}`);
                     break;
                 }
                 case "ExamineAllItems":
                 {
-                    const itemsToInspect = this.itemHelper.getItems().filter(x => x._type !== "Node");
-                    this.flagItemsAsInspectedAndRewardXp(itemsToInspect.map(x => x._id), pmcData);
+                    const itemsToInspect = this.itemHelper.getItems().filter((x) => x._type !== "Node");
+                    this.flagItemsAsInspectedAndRewardXp(itemsToInspect.map((x) => x._id), pmcData);
                     this.logger.success(`Flagged ${itemsToInspect.length} items as examined`);
                     break;
                 }
@@ -1031,7 +1023,7 @@ export class InventoryController
         for (const itemId of request.items)
         {
             // If id already exists in array, we're removing it
-            const indexOfItemAlreadyFavorited = pmcData.Inventory.favoriteItems.findIndex(x => x === itemId);
+            const indexOfItemAlreadyFavorited = pmcData.Inventory.favoriteItems.findIndex((x) => x === itemId);
             if (indexOfItemAlreadyFavorited > -1)
             {
                 pmcData.Inventory.favoriteItems.splice(indexOfItemAlreadyFavorited, 1);
@@ -1041,7 +1033,7 @@ export class InventoryController
                 pmcData.Inventory.favoriteItems.push(itemId);
             }
         }
-        
+
         return output;
     }
 }

@@ -296,11 +296,7 @@ export class BotGeneratorHelper
                 }),
             );
 
-            return {
-                incompatible: true,
-                found: false,
-                reason: `item: ${tplToCheck} does not exist in the database`
-            }; 
+            return { incompatible: true, found: false, reason: `item: ${tplToCheck} does not exist in the database` };
         }
 
         // No props property
@@ -314,11 +310,7 @@ export class BotGeneratorHelper
                 }),
             );
 
-            return {
-                incompatible: true,
-                found: false,
-                reason: `item: ${tplToCheck} does not have a _props field`
-            }; 
+            return { incompatible: true, found: false, reason: `item: ${tplToCheck} does not have a _props field` };
         }
 
         // Check if any of the current weapon mod templates have the incoming item defined as incompatible
@@ -346,10 +338,7 @@ export class BotGeneratorHelper
             };
         }
 
-        return {
-            incompatible: false,
-            reason: ""
-        };
+        return { incompatible: false, reason: "" };
     }
 
     /**
@@ -385,7 +374,7 @@ export class BotGeneratorHelper
                 }),
             );
 
-            return { incompatible: true, found: false, reason: `item: ${tplToCheck} does not exist in the database` }; 
+            return { incompatible: true, found: false, reason: `item: ${tplToCheck} does not exist in the database` };
         }
 
         if (!itemToEquip._props)
@@ -398,11 +387,7 @@ export class BotGeneratorHelper
                 }),
             );
 
-            return {
-                incompatible: true,
-                found: false,
-                reason: `item: ${tplToCheck} does not have a _props field`
-            }; 
+            return { incompatible: true, found: false, reason: `item: ${tplToCheck} does not have a _props field` };
         }
 
         // Does an equipped item have a property that blocks the desired item - check for prop "BlocksX" .e.g BlocksEarpiece / BlocksFaceCover
@@ -436,7 +421,7 @@ export class BotGeneratorHelper
         // Does item being checked get blocked/block existing item
         if (itemToEquip._props.BlocksHeadwear)
         {
-            const existingHeadwear = itemsEquipped.find(x => x.slotId === "Headwear");
+            const existingHeadwear = itemsEquipped.find((x) => x.slotId === "Headwear");
             if (existingHeadwear)
             {
                 return {
@@ -448,11 +433,11 @@ export class BotGeneratorHelper
                 };
             }
         }
-        
+
         // Does item being checked get blocked/block existing item
         if (itemToEquip._props.BlocksFaceCover)
         {
-            const existingFaceCover = itemsEquipped.find(item => item.slotId === "FaceCover");
+            const existingFaceCover = itemsEquipped.find((item) => item.slotId === "FaceCover");
             if (existingFaceCover)
             {
                 return {
@@ -468,7 +453,7 @@ export class BotGeneratorHelper
         // Does item being checked get blocked/block existing item
         if (itemToEquip._props.BlocksEarpiece)
         {
-            const existingEarpiece = itemsEquipped.find(item => item.slotId === "Earpiece");
+            const existingEarpiece = itemsEquipped.find((item) => item.slotId === "Earpiece");
             if (existingEarpiece)
             {
                 return {
@@ -484,7 +469,7 @@ export class BotGeneratorHelper
         // Does item being checked get blocked/block existing item
         if (itemToEquip._props.BlocksArmorVest)
         {
-            const existingArmorVest = itemsEquipped.find(item => item.slotId === "ArmorVest");
+            const existingArmorVest = itemsEquipped.find((item) => item.slotId === "ArmorVest");
             if (existingArmorVest)
             {
                 return {

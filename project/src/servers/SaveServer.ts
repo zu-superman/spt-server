@@ -27,7 +27,7 @@ export class SaveServer
         @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("WinstonLogger") protected logger: ILogger,
-        @inject("ConfigServer") protected configServer: ConfigServer
+        @inject("ConfigServer") protected configServer: ConfigServer,
     )
     {}
 
@@ -207,7 +207,10 @@ export class SaveServer
         }
 
         const start = performance.now();
-        const jsonProfile = this.jsonUtil.serialize(this.profiles[sessionID], !this.configServer.getConfig<ICoreConfig>(ConfigTypes.CORE).features.compressProfile);
+        const jsonProfile = this.jsonUtil.serialize(
+            this.profiles[sessionID],
+            !this.configServer.getConfig<ICoreConfig>(ConfigTypes.CORE).features.compressProfile,
+        );
         const fmd5 = this.hashUtil.generateMd5ForData(jsonProfile);
         if (typeof (this.saveMd5[sessionID]) !== "string" || this.saveMd5[sessionID] !== fmd5)
         {

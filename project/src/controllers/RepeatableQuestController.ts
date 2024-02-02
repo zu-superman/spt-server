@@ -83,7 +83,7 @@ export class RepeatableQuestController
      *
      * @param   {string}    _info       Request from client
      * @param   {string}    sessionID   Player's session id
-     * 
+     *
      * @returns  {array}                Array of "repeatableQuestObjects" as descibed above
      */
     public getClientRepeatableQuests(_info: IEmptyRequestData, sessionID: string): IPmcDataRepeatableQuest[]
@@ -120,7 +120,7 @@ export class RepeatableQuestController
                     for (const activeQuest of currentRepeatableQuestType.activeQuests)
                     {
                         // Keep finished quests in list so player can hand in
-                        const quest = pmcData.Quests.find(quest => quest.qid === activeQuest._id);
+                        const quest = pmcData.Quests.find((quest) => quest.qid === activeQuest._id);
                         if (quest)
                         {
                             if (quest.status === QuestStatus.AvailableForFinish)
@@ -136,7 +136,7 @@ export class RepeatableQuestController
                         this.profileFixerService.removeDanglingConditionCounters(pmcData);
 
                         // Remove expired quest from pmc.quest array
-                        pmcData.Quests = pmcData.Quests.filter(quest => quest.qid !== activeQuest._id);
+                        pmcData.Quests = pmcData.Quests.filter((quest) => quest.qid !== activeQuest._id);
                         currentRepeatableQuestType.inactiveQuests.push(activeQuest);
                     }
                     currentRepeatableQuestType.activeQuests = questsToKeep;

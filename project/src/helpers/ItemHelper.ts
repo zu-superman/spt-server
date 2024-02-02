@@ -107,7 +107,7 @@ export class ItemHelper
      */
     public armorItemCanHoldMods(itemTpl: string): boolean
     {
-       return this.isOfBaseclasses(itemTpl, [BaseClasses.HEADWEAR, BaseClasses.VEST, BaseClasses.ARMOR]);
+        return this.isOfBaseclasses(itemTpl, [BaseClasses.HEADWEAR, BaseClasses.VEST, BaseClasses.ARMOR]);
     }
 
     /**
@@ -137,15 +137,24 @@ export class ItemHelper
         }
 
         // Check if item has slots that match soft insert name ids
-        const softInsertSlotIds = ["groin", "soft_armor_back", "soft_armor_front", "soft_armor_left", "soft_armor_right", "shoulder_l", "shoulder_r", "collar"];
-        if (itemDbDetails[1]._props.Slots.find(slot => softInsertSlotIds.includes(slot._name.toLowerCase())))
+        const softInsertSlotIds = [
+            "groin",
+            "soft_armor_back",
+            "soft_armor_front",
+            "soft_armor_left",
+            "soft_armor_right",
+            "shoulder_l",
+            "shoulder_r",
+            "collar",
+        ];
+        if (itemDbDetails[1]._props.Slots.find((slot) => softInsertSlotIds.includes(slot._name.toLowerCase())))
         {
             return true;
         }
 
         // Also classified as BUILT_IN_INSERTS
-        const helmetInsertSlotIds = ["helmet_top", "helmet_back", "helmet_ears"]
-        if (itemDbDetails[1]._props.Slots.find(slot => helmetInsertSlotIds.includes(slot._name.toLowerCase())))
+        const helmetInsertSlotIds = ["helmet_top", "helmet_back", "helmet_ears"];
+        if (itemDbDetails[1]._props.Slots.find((slot) => helmetInsertSlotIds.includes(slot._name.toLowerCase())))
         {
             return true;
         }
@@ -446,8 +455,7 @@ export class ItemHelper
 
         for (const itemFromAssort of assort)
         {
-            if (itemFromAssort.parentId === itemIdToFind
-                && !list.find((item) => itemFromAssort._id === item._id))
+            if (itemFromAssort.parentId === itemIdToFind && !list.find((item) => itemFromAssort._id === item._id))
             {
                 list.push(itemFromAssort);
                 list = list.concat(this.findAndReturnChildrenByAssort(itemFromAssort._id, assort));
@@ -555,7 +563,7 @@ export class ItemHelper
     /**
      * Turn items like money into separate stacks that adhere to max stack size
      * @param itemToSplit Item to split into smaller stacks
-     * @returns 
+     * @returns
      */
     public splitStackIntoSeparateItems(itemToSplit: Item): Item[][]
     {
@@ -604,9 +612,7 @@ export class ItemHelper
         {
             const filterResult = itemsToSearch.filter((item) =>
             {
-                return by === "tpl"
-                    ? (item._tpl === barterId)
-                    : (item._id === barterId);
+                return by === "tpl" ? (item._tpl === barterId) : (item._id === barterId);
             });
 
             matchingItems.push(...filterResult);
@@ -978,7 +984,15 @@ export class ItemHelper
             const cartridgeCountToAdd = (remainingSpace < maxPerStack) ? remainingSpace : maxPerStack;
 
             // Add cartridge item into items array
-            ammoBox.push(this.createCartridges(ammoBox[0]._id, cartridgeTpl, cartridgeCountToAdd, location, ammoBox[0].upd?.SpawnedInSession));
+            ammoBox.push(
+                this.createCartridges(
+                    ammoBox[0]._id,
+                    cartridgeTpl,
+                    cartridgeCountToAdd,
+                    location,
+                    ammoBox[0].upd?.SpawnedInSession,
+                ),
+            );
 
             currentStoredCartridgeCount += cartridgeCountToAdd;
             location++;
@@ -1068,7 +1082,9 @@ export class ItemHelper
 
         if (!magazineCartridgeMaxCount)
         {
-            this.logger.warning(`Magazine: ${magTemplate._id} ${magTemplate._name} lacks a Cartridges array, unable to fill magazine with ammo`);
+            this.logger.warning(
+                `Magazine: ${magTemplate._id} ${magTemplate._name} lacks a Cartridges array, unable to fill magazine with ammo`,
+            );
 
             return;
         }
@@ -1104,10 +1120,11 @@ export class ItemHelper
             magazineWithChildCartridges.push(
                 this.createCartridges(
                     magazineWithChildCartridges[0]._id,
-                    cartridgeTpl, cartridgeCountToAdd,
+                    cartridgeTpl,
+                    cartridgeCountToAdd,
                     location,
-                    magazineWithChildCartridges[0].upd?.SpawnedInSession
-                )
+                    magazineWithChildCartridges[0].upd?.SpawnedInSession,
+                ),
             );
 
             currentStoredCartridgeCount += cartridgeCountToAdd;
@@ -1170,7 +1187,13 @@ export class ItemHelper
      * @param foundInRaid OPTIONAL - Are cartridges found in raid (SpawnedInSession)
      * @returns Item
      */
-    public createCartridges(parentId: string, ammoTpl: string, stackCount: number, location: number, foundInRaid = false): Item
+    public createCartridges(
+        parentId: string,
+        ammoTpl: string,
+        stackCount: number,
+        location: number,
+        foundInRaid = false,
+    ): Item
     {
         return {
             _id: this.objectId.generate(),
@@ -1178,10 +1201,7 @@ export class ItemHelper
             parentId: parentId,
             slotId: "cartridges",
             location: location,
-            upd: {
-                StackObjectsCount: stackCount,
-                SpawnedInSession: foundInRaid
-            },
+            upd: { StackObjectsCount: stackCount, SpawnedInSession: foundInRaid },
         };
     }
 
@@ -1225,7 +1245,12 @@ export class ItemHelper
      * @param requiredOnly Only add required mods
      * @returns Item with children
      */
-    public addChildSlotItems(itemToAdd: Item[], itemToAddTemplate: ITemplateItem, modSpawnChanceDict: Record<string, number> = null, requiredOnly = false): Item[]
+    public addChildSlotItems(
+        itemToAdd: Item[],
+        itemToAddTemplate: ITemplateItem,
+        modSpawnChanceDict: Record<string, number> = null,
+        requiredOnly = false,
+    ): Item[]
     {
         const result = itemToAdd;
         const incompatibleModTpls: Set<string> = new Set();
@@ -1251,11 +1276,13 @@ export class ItemHelper
                 }
             }
 
-            const itemPool = slot._props.filters[0].Filter  ?? [];
+            const itemPool = slot._props.filters[0].Filter ?? [];
             const chosenTpl = this.getCompatibleTplFromArray(itemPool, incompatibleModTpls);
             if (!chosenTpl)
             {
-                this.logger.debug(`Unable to add mod to item: ${itemToAddTemplate._id} ${itemToAddTemplate._name} slot: ${slot._name} as no compatible tpl could be found in pool of ${itemPool.length}, skipping`);
+                this.logger.debug(
+                    `Unable to add mod to item: ${itemToAddTemplate._id} ${itemToAddTemplate._name} slot: ${slot._name} as no compatible tpl could be found in pool of ${itemPool.length}, skipping`,
+                );
 
                 continue;
             }
@@ -1264,7 +1291,7 @@ export class ItemHelper
                 _id: this.hashUtil.generate(),
                 _tpl: chosenTpl,
                 parentId: result[0]._id,
-                slotId: slot._name
+                slotId: slot._name,
             };
             result.push(modItemToAdd);
 
@@ -1300,7 +1327,7 @@ export class ItemHelper
             if (incompatibleModTpls.has(tpl))
             {
                 // Incompatible tpl was chosen, try again
-                count++
+                count++;
                 if (count >= possibleTpls.length)
                 {
                     return null;

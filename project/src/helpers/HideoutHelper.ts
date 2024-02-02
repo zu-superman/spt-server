@@ -420,11 +420,11 @@ export class HideoutHelper
         // 10-10-2021 From wiki, 1 resource last 12 minutes 38 seconds, 1/12.63333/60 = 0.00131
         let fuelDrainRate = this.databaseServer.getTables().hideout.settings.generatorFuelFlowRate
             * this.getTimeElapsedSinceLastServerTick(pmcData, isGeneratorOn);
-        
+
         const fuelBonus = pmcData.Bonuses.find((bonus) => bonus.type === BonusType.FUEL_CONSUMPTION);
         const fuelBonusPercent = 1.0 - (fuelBonus ? Math.abs(fuelBonus.value) : 0) / 100;
         fuelDrainRate *= fuelBonusPercent;
-        
+
         // Hideout management resource consumption bonus:
         const hideoutManagementConsumptionBonus = 1.0 - this.getHideoutManagementConsumptionBonus(pmcData);
         fuelDrainRate *= hideoutManagementConsumptionBonus;
@@ -452,13 +452,13 @@ export class HideoutHelper
                 // No fuel left, skip
                 continue;
             }
-            
+
             // Undefined fuel, fresh fuel item and needs its max fuel amount looked up
             if (!fuelRemaining)
             {
                 const fuelItemTemplate = this.itemHelper.getItem(fuelItemInSlot._tpl)[1];
                 pointsConsumed = fuelDrainRate;
-                fuelRemaining =  fuelItemTemplate._props.MaxResource - fuelDrainRate;
+                fuelRemaining = fuelItemTemplate._props.MaxResource - fuelDrainRate;
             }
             else
             {
@@ -481,7 +481,9 @@ export class HideoutHelper
             {
                 fuelItemInSlot.upd = this.getAreaUpdObject(1, fuelRemaining, pointsConsumed);
 
-                this.logger.debug(`$Profile: ${pmcData._id} Generator has: ${fuelRemaining} fuel left in slot ${i + 1}`);
+                this.logger.debug(
+                    `$Profile: ${pmcData._id} Generator has: ${fuelRemaining} fuel left in slot ${i + 1}`,
+                );
                 hasFuelRemaining = true;
 
                 break; // Break here to avoid updating all the fuel tanks
@@ -955,7 +957,7 @@ export class HideoutHelper
         pmcData: IPmcData,
         request: IHideoutTakeProductionRequestData,
         sessionId: string,
-        output: IItemEventRouterResponse
+        output: IItemEventRouterResponse,
     ): void
     {
         // Get how many coins were crafted and ready to pick up
@@ -973,15 +975,11 @@ export class HideoutHelper
         const itemsToAdd: Item[][] = [];
         for (let index = 0; index < craftedCoinCount; index++)
         {
-            itemsToAdd.push(
-                [{
-                    _id: this.hashUtil.generate(),
-                    _tpl: HideoutHelper.bitcoinTpl,
-                    upd: {
-                        StackObjectsCount: 1
-                    }
-                }]
-            );
+            itemsToAdd.push([{
+                _id: this.hashUtil.generate(),
+                _tpl: HideoutHelper.bitcoinTpl,
+                upd: { StackObjectsCount: 1 },
+            }]);
         }
 
         // Create request for what we want to add to stash
@@ -989,7 +987,7 @@ export class HideoutHelper
             itemsWithModsToAdd: itemsToAdd,
             foundInRaid: true,
             useSortingTable: false,
-            callback: null
+            callback: null,
         };
 
         // Add FiR coins to player inventory
@@ -1070,24 +1068,29 @@ export class HideoutHelper
      */
     public applyPlaceOfFameDogtagBonus(pmcData: IPmcData): void
     {
-        const fameAreaProfile = pmcData.Hideout.Areas.find(area => area.type === HideoutAreas.PLACE_OF_FAME);
+        const fameAreaProfile = pmcData.Hideout.Areas.find((area) => area.type === HideoutAreas.PLACE_OF_FAME);
 
         // Get hideout area 16 bonus array
-        const fameAreaDb = this.databaseServer.getTables().hideout.areas.find((area) => area.type === HideoutAreas.PLACE_OF_FAME);
+        const fameAreaDb = this.databaseServer.getTables().hideout.areas.find((area) =>
+            area.type === HideoutAreas.PLACE_OF_FAME
+        );
 
         // Get SkillGroupLevelingBoost object
-        const combatBoostBonusDb = fameAreaDb.stages[fameAreaProfile.level].bonuses.find(bonus => bonus.type === "SkillGroupLevelingBoost");
+        const combatBoostBonusDb = fameAreaDb.stages[fameAreaProfile.level].bonuses.find((bonus) =>
+            bonus.type === "SkillGroupLevelingBoost"
+        );
 
         // Get SkillGroupLevelingBoost object in profile
-        const combatBonusProfile = pmcData.Bonuses.find(bonus => bonus.id === combatBoostBonusDb.id);
+        const combatBonusProfile = pmcData.Bonuses.find((bonus) => bonus.id === combatBoostBonusDb.id);
 
         // Get all slotted dogtag items
-        const activeDogtags = pmcData.Inventory.items.filter(item => item?.slotId?.startsWith("dogtag"));
+        const activeDogtags = pmcData.Inventory.items.filter((item) => item?.slotId?.startsWith("dogtag"));
 
         // Calculate bonus percent (apply hideoutManagement bonus)
         const hideoutManagementSkill = this.profileHelper.getSkillFromProfile(pmcData, SkillTypes.HIDEOUT_MANAGEMENT);
         const hideoutManagementSkillBonusPercent = 1 + (hideoutManagementSkill.Progress / 10000); // 5100 becomes 0.51, add 1 to it, 1.51
-        const bonus = this.getDogtagCombatSkillBonusPercent(pmcData, activeDogtags) * hideoutManagementSkillBonusPercent; 
+        const bonus = this.getDogtagCombatSkillBonusPercent(pmcData, activeDogtags)
+            * hideoutManagementSkillBonusPercent;
 
         // Update bonus value to above calcualted value
         combatBonusProfile.value = Number.parseFloat(bonus.toFixed(2));
@@ -1112,8 +1115,7 @@ export class HideoutHelper
                 continue;
             }
 
-            if (Number.parseInt(dogtag.upd.Dogtag?.AccountId) === pmcData.aid
-            )
+            if (Number.parseInt(dogtag.upd.Dogtag?.AccountId) === pmcData.aid)
             {
                 continue;
             }

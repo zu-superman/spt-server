@@ -114,7 +114,7 @@ export class PlayerScavGenerator
         scavData.Info.Level = this.getScavLevel(existingScavData);
         scavData.Info.Experience = this.getScavExperience(existingScavData);
         scavData.Quests = existingScavData.Quests ?? [];
-        scavData.TaskConditionCounters = existingScavData.TaskConditionCounters ?? { };
+        scavData.TaskConditionCounters = existingScavData.TaskConditionCounters ?? {};
         scavData.Notes = existingScavData.Notes ?? { Notes: [] };
         scavData.WishList = existingScavData.WishList ?? [];
 

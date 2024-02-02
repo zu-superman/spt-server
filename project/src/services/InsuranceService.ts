@@ -108,7 +108,7 @@ export class InsuranceService
             const systemData = {
                 date: this.timeUtil.getDateMailFormat(),
                 time: this.timeUtil.getTimeMailFormat(),
-                location: mapId
+                location: mapId,
             };
             // Send "i will go look for your stuff" message from trader to player
             this.mailSendService.sendLocalisedNpcMessageToPlayer(
@@ -118,7 +118,7 @@ export class InsuranceService
                 this.randomUtil.getArrayValue(dialogueTemplates.insuranceStart),
                 null,
                 null,
-                systemData
+                systemData,
             );
 
             // Store insurance to send to player later in profile
@@ -247,7 +247,7 @@ export class InsuranceService
             }
 
             // Item iterated on could have already been processed previously (as a child of another item)
-            if (equipmentToSendToPlayer.some(item => item.itemsToReturnToPlayer._id === insuredItem.itemId))
+            if (equipmentToSendToPlayer.some((item) => item.itemsToReturnToPlayer._id === insuredItem.itemId))
             {
                 continue;
             }
@@ -256,14 +256,17 @@ export class InsuranceService
             // Catches both events: player died with item on + player survived but dropped item in raid
             if (!offRaidGearHash[insuredItem.itemId] || playerDied)
             {
-                equipmentToSendToPlayer.push(
-                {
+                equipmentToSendToPlayer.push({
                     pmcData: pmcData,
                     itemsToReturnToPlayer: this.getInsuredItemDetails(
-                            pmcData,
-                            this.itemHelper.findAndReturnChildrenAsItems(Object.values(preRaidGearHash), preRaidItem._id, true),
-                            offraidData.insurance,
+                        pmcData,
+                        this.itemHelper.findAndReturnChildrenAsItems(
+                            Object.values(preRaidGearHash),
+                            preRaidItem._id,
+                            true,
                         ),
+                        offraidData.insurance,
+                    ),
                     traderId: insuredItem.tid,
                     sessionID: sessionID,
                 });
@@ -287,13 +290,13 @@ export class InsuranceService
     protected getInsuredItemDetails(
         pmcData: IPmcData,
         preRaidItemWithChildren: Item[],
-        allItemsFromClient: IInsuredItemsData[]
+        allItemsFromClient: IInsuredItemsData[],
     ): Item[]
     {
         const itemsToReturn: Item[] = [];
         for (const preRaidItem of preRaidItemWithChildren)
         {
-            const isInsured = pmcData.InsuredItems.some(item => item.itemId === preRaidItem._id);
+            const isInsured = pmcData.InsuredItems.some((item) => item.itemId === preRaidItem._id);
             const itemClientInsuranceData = allItemsFromClient?.find((x) => x.id === preRaidItem._id);
             const itemIsSoftInsert = this.itemHelper.isOfBaseclass(preRaidItem._tpl, BaseClasses.BUILT_IN_INSERTS);
 
@@ -437,7 +440,7 @@ export class InsuranceService
         this.addInsuranceItemToArray(sessionId, traderId, itemsToReturnToPlayer);
 
         // Remove item from insured items array as its been processed
-        const returnedItemIds = itemsToReturnToPlayer.map(item => item._id);
+        const returnedItemIds = itemsToReturnToPlayer.map((item) => item._id);
         pmcData.InsuredItems = pmcData.InsuredItems.filter((item) => !returnedItemIds.includes(item.itemId));
     }
 

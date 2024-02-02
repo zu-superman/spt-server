@@ -131,7 +131,7 @@ export class GameController
 
         this.checkTraderRepairValuesExist();
 
-        this.adjustLocationBotValues()
+        this.adjustLocationBotValues();
 
         // repeatableQuests are stored by in profile.Quests due to the responses of the client (e.g. Quests in
         // offraidData). Since we don't want to clutter the Quests list, we need to remove all completed (failed or
@@ -151,7 +151,7 @@ export class GameController
 
             if (this.coreConfig.fixes.fixProfileBreakingInventoryItemIssues)
             {
-                this.profileFixerService.fixProfileBreakingInventoryItemIssues(pmcProfile)
+                this.profileFixerService.fixProfileBreakingInventoryItemIssues(pmcProfile);
             }
 
             if (pmcProfile.Health)
@@ -439,7 +439,10 @@ export class GameController
     public getGameConfig(sessionID: string): IGameConfigResponse
     {
         const profile = this.profileHelper.getPmcProfile(sessionID);
-        const gameTime = profile.Stats?.Eft.OverallCounters.Items?.find(counter => counter.Key.includes("LifeTime") && counter.Key.includes("Pmc"))?.Value ?? 0;
+        const gameTime =
+            profile.Stats?.Eft.OverallCounters.Items?.find((counter) =>
+                counter.Key.includes("LifeTime") && counter.Key.includes("Pmc")
+            )?.Value ?? 0;
 
         const config: IGameConfigResponse = {
             languages: this.databaseServer.getTables().locales.languages,
@@ -574,10 +577,8 @@ export class GameController
                 (sum, curr) => sum + curr.value,
                 0,
             );
-            hydrationRegenPerHour += pmcProfile.Bonuses.filter((x) => x.type === BonusType.HYDRATION_REGENERATION).reduce(
-                (sum, curr) => sum + curr.value,
-                0,
-            );
+            hydrationRegenPerHour += pmcProfile.Bonuses.filter((x) => x.type === BonusType.HYDRATION_REGENERATION)
+                .reduce((sum, curr) => sum + curr.value, 0);
             hpRegenPerHour += pmcProfile.Bonuses.filter((x) => x.type === BonusType.HEALTH_REGENERATION).reduce(
                 (sum, curr) => sum + curr.value,
                 0,
@@ -822,7 +823,7 @@ export class GameController
                 dateAdded: Date.now(),
                 name: modDetails.name,
                 version: modDetails.version,
-                url: modDetails.url
+                url: modDetails.url,
             });
         }
     }

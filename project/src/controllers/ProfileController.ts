@@ -185,7 +185,7 @@ export class ProfileController
             inraid: {} as Inraid,
             insurance: [],
             traderPurchases: {},
-            achievements: {}
+            achievements: {},
         };
 
         this.profileFixerService.checkForAndFixPmcProfileIssues(profileDetails.characters.pmc);
@@ -391,7 +391,7 @@ export class ProfileController
         return [{ _id: this.hashUtil.generate(), Info: { Level: 1, Side: "Bear", Nickname: info.nickname } }];
     }
 
-    /** 
+    /**
      * Handle client/profile/status
      */
     public getProfileStatus(sessionId: string): GetProfileStatusResponseData
@@ -399,20 +399,14 @@ export class ProfileController
         const account = this.saveServer.getProfile(sessionId).info;
         const response: GetProfileStatusResponseData = {
             maxPveCountExceeded: false,
-            profiles: [{
-                profileid: account.scavId,
-                profileToken: null,
-                status: "Free",
-                sid: "",
-                ip: "",
-                port: 0,
-            }, {
+            profiles: [{ profileid: account.scavId, profileToken: null, status: "Free", sid: "", ip: "", port: 0 }, {
                 profileid: account.id,
                 profileToken: null,
                 status: "Free",
                 sid: "",
                 ip: "",
-                port: 0 }],
+                port: 0,
+            }],
         };
 
         return response;
@@ -422,7 +416,7 @@ export class ProfileController
     {
         const player = this.profileHelper.getFullProfile(sessionId);
         const playerPmc = player.characters.pmc;
-        
+
         // return player for now
         return {
             id: playerPmc._id,
@@ -434,34 +428,34 @@ export class ProfileController
                 memberCategory: playerPmc.Info.MemberCategory,
                 bannedState: playerPmc.Info.BannedState,
                 bannedUntil: playerPmc.Info.BannedUntil,
-                registrationDate: playerPmc.Info.RegistrationDate
+                registrationDate: playerPmc.Info.RegistrationDate,
             },
             customization: {
                 head: playerPmc.Customization.Head,
                 body: playerPmc.Customization.Body,
                 feet: playerPmc.Customization.Feet,
-                hands: playerPmc.Customization.Hands
+                hands: playerPmc.Customization.Hands,
             },
             skills: playerPmc.Skills,
             equipment: {
                 // Default inventory tpl
-                Id: playerPmc.Inventory.items.find(x => x._tpl === "55d7217a4bdc2d86028b456d")._id,
-                Items: playerPmc.Inventory.items
+                Id: playerPmc.Inventory.items.find((x) => x._tpl === "55d7217a4bdc2d86028b456d")._id,
+                Items: playerPmc.Inventory.items,
             },
             achievements: playerPmc.Achievements,
             favoriteItems: playerPmc.Inventory.favoriteItems ?? [],
             pmcStats: {
                 eft: {
                     totalInGameTime: playerPmc.Stats.Eft.TotalInGameTime,
-                    overAllCounters: playerPmc.Stats.Eft.OverallCounters
-                }
+                    overAllCounters: playerPmc.Stats.Eft.OverallCounters,
+                },
             },
             scavStats: {
                 eft: {
                     totalInGameTime: player.characters.scav.Stats.Eft.TotalInGameTime,
-                    overAllCounters: player.characters.scav.Stats.Eft.OverallCounters
-                }
-            }
+                    overAllCounters: player.characters.scav.Stats.Eft.OverallCounters,
+                },
+            },
         };
     }
 }

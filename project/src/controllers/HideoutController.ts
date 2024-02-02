@@ -8,7 +8,13 @@ import { PaymentHelper } from "@spt-aki/helpers/PaymentHelper";
 import { PresetHelper } from "@spt-aki/helpers/PresetHelper";
 import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
-import { HideoutArea, ITaskConditionCounter, Product, Production, ScavCase } from "@spt-aki/models/eft/common/tables/IBotBase";
+import {
+    HideoutArea,
+    ITaskConditionCounter,
+    Product,
+    Production,
+    ScavCase,
+} from "@spt-aki/models/eft/common/tables/IBotBase";
 import { Item } from "@spt-aki/models/eft/common/tables/IItem";
 import { HideoutUpgradeCompleteRequestData } from "@spt-aki/models/eft/hideout/HideoutUpgradeCompleteRequestData";
 import { IHandleQTEEventRequestData } from "@spt-aki/models/eft/hideout/IHandleQTEEventRequestData";
@@ -503,9 +509,9 @@ export class HideoutController
             itemWithModsToAdd: [itemToReturn],
             foundInRaid: !!itemToReturn.upd.SpawnedInSession,
             callback: null,
-            useSortingTable: false
-        }
-        
+            useSortingTable: false,
+        };
+
         this.inventoryHelper.addItemToStash(sessionID, request, pmcData, output);
         if (output.warnings && output.warnings.length > 0)
         {
@@ -787,10 +793,7 @@ export class HideoutController
             const preset = this.presetHelper.getDefaultPreset(recipe.endProduct);
 
             // Ensure preset has unique ids and is cloned so we don't alter the preset data stored in memory
-            const presetAndMods: Item[] = this.itemHelper.replaceIDs(
-                null,
-                this.jsonUtil.clone(preset._items),
-            );
+            const presetAndMods: Item[] = this.itemHelper.replaceIDs(null, this.jsonUtil.clone(preset._items));
 
             this.itemHelper.remapRootItemId(presetAndMods);
 
@@ -805,9 +808,7 @@ export class HideoutController
             const rewardToAdd: Item = {
                 _id: this.hashUtil.generate(),
                 _tpl: recipe.endProduct,
-                upd: {
-                    StackObjectsCount: recipe.count
-                }
+                upd: { StackObjectsCount: recipe.count },
             };
 
             // Split item into separate items with acceptable stack sizes
@@ -821,10 +822,7 @@ export class HideoutController
             // Add the first reward item to array when not a preset (first preset added above earlier)
             if (!rewardIsPreset)
             {
-                itemAndChildrenToSendToPlayer.push([{
-                    _id: this.hashUtil.generate(),
-                    _tpl: recipe.endProduct
-                }]);
+                itemAndChildrenToSendToPlayer.push([{ _id: this.hashUtil.generate(), _tpl: recipe.endProduct }]);
             }
 
             // Add multiple of item if recipe requests it
@@ -846,10 +844,9 @@ export class HideoutController
         {
             for (const reward of itemAndChildrenToSendToPlayer)
             {
-                
                 if (!reward[0].upd)
                 {
-                    reward[0].upd = {}
+                    reward[0].upd = {};
                 }
 
                 reward[0].upd.RecodableComponent = { IsEncoded: true };
@@ -916,7 +913,7 @@ export class HideoutController
             itemsWithModsToAdd: itemAndChildrenToSendToPlayer,
             foundInRaid: true,
             useSortingTable: false,
-            callback: null
+            callback: null,
         };
 
         // Add FiR crafted items(s) to player inventory
@@ -946,13 +943,8 @@ export class HideoutController
             const intellectAmountToGive = 0.5 * (Math.round(craftingExpAmount / 15));
             if (intellectAmountToGive > 0)
             {
-                this.profileHelper.addSkillPointsToPlayer(
-                    pmcData,
-                    SkillTypes.INTELLECT,
-                    intellectAmountToGive,
-                );
+                this.profileHelper.addSkillPointsToPlayer(pmcData, SkillTypes.INTELLECT, intellectAmountToGive);
             }
-
         }
         area.lastRecipe = request.recipeId;
 
@@ -1042,7 +1034,7 @@ export class HideoutController
             itemsWithModsToAdd: scavCaseRewards,
             foundInRaid: true,
             callback: null,
-            useSortingTable: false
+            useSortingTable: false,
         };
 
         this.inventoryHelper.addItemsToStash(sessionID, addItemsRequest, pmcData, output);

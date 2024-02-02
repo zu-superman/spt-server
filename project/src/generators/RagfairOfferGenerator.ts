@@ -288,7 +288,8 @@ export class RagfairOfferGenerator
         if (this.ragfairServerHelper.isPlayer(userID))
         {
             // Player offer = current time + offerDurationTimeInHour;
-            const offerDurationTimeHours = this.databaseServer.getTables().globals.config.RagFair.offerDurationTimeInHour;
+            const offerDurationTimeHours =
+                this.databaseServer.getTables().globals.config.RagFair.offerDurationTimeInHour;
             return this.timeUtil.getTimestamp() + Math.round(offerDurationTimeHours * TimeUtil.ONE_HOUR_AS_SECONDS);
         }
 
@@ -357,7 +358,10 @@ export class RagfairOfferGenerator
         // Armor presets can hold plates above the allowed flea level, remove if necessary
         if (isPreset && this.ragfairConfig.dynamic.blacklist.enableBsgList)
         {
-            this.removeBannedPlatesFromPreset(assortItemWithChildren, this.ragfairConfig.dynamic.blacklist.armorPlateMaxProtectionLevel);
+            this.removeBannedPlatesFromPreset(
+                assortItemWithChildren,
+                this.ragfairConfig.dynamic.blacklist.armorPlateMaxProtectionLevel,
+            );
         }
 
         // Get number of offers to create
@@ -375,11 +379,13 @@ export class RagfairOfferGenerator
                 // Presets get unique id generated during getPresetItems() earlier + would require regenerating all children to match
                 assortItemWithChildren[0]._id = this.hashUtil.generate();
             }
-            
+
             delete assortItemWithChildren[0].parentId;
             delete assortItemWithChildren[0].slotId;
 
-            assortSingleOfferProcesses.push(this.createSingleOfferForItem(assortItemWithChildren, isPreset, itemDetails));
+            assortSingleOfferProcesses.push(
+                this.createSingleOfferForItem(assortItemWithChildren, isPreset, itemDetails),
+            );
         }
 
         await Promise.all(assortSingleOfferProcesses);
@@ -399,7 +405,9 @@ export class RagfairOfferGenerator
             return false;
         }
 
-        const plateSlots = presetWithChildren.filter(item => this.itemHelper.getRemovablePlateSlotIds().includes(item.slotId?.toLowerCase()));
+        const plateSlots = presetWithChildren.filter((item) =>
+            this.itemHelper.getRemovablePlateSlotIds().includes(item.slotId?.toLowerCase())
+        );
         if (plateSlots.length === 0)
         {
             // Has no plate slots e.g. "left_side_plate", exit
@@ -409,7 +417,8 @@ export class RagfairOfferGenerator
         let removedPlate = false;
         for (const plateSlot of plateSlots)
         {
-            const plateArmorLevel = Number.parseInt(<string>this.itemHelper.getItem(plateSlot._tpl)[1]._props.armorClass) ?? 0;
+            const plateArmorLevel =
+                Number.parseInt(<string>this.itemHelper.getItem(plateSlot._tpl)[1]._props.armorClass) ?? 0;
             if (plateArmorLevel > plateProtectionLimit)
             {
                 presetWithChildren.splice(presetWithChildren.indexOf(plateSlot), 1);
@@ -417,7 +426,7 @@ export class RagfairOfferGenerator
             }
         }
 
-        return removedPlate
+        return removedPlate;
     }
 
     /**
@@ -434,13 +443,19 @@ export class RagfairOfferGenerator
     ): Promise<void>
     {
         // Set stack size to random value
-        itemWithChildren[0].upd.StackObjectsCount = this.ragfairServerHelper.calculateDynamicStackCount(itemWithChildren[0]._tpl, isPreset);
+        itemWithChildren[0].upd.StackObjectsCount = this.ragfairServerHelper.calculateDynamicStackCount(
+            itemWithChildren[0]._tpl,
+            isPreset,
+        );
 
         const isBarterOffer = this.randomUtil.getChance100(this.ragfairConfig.dynamic.barter.chancePercent);
         const isPackOffer = this.randomUtil.getChance100(this.ragfairConfig.dynamic.pack.chancePercent)
             && !isBarterOffer
             && itemWithChildren.length === 1
-            && this.itemHelper.isOfBaseclasses(itemWithChildren[0]._tpl, this.ragfairConfig.dynamic.pack.itemTypeWhitelist);
+            && this.itemHelper.isOfBaseclasses(
+                itemWithChildren[0]._tpl,
+                this.ragfairConfig.dynamic.pack.itemTypeWhitelist,
+            );
         const randomUserId = this.hashUtil.generate();
 
         let barterScheme: IBarterScheme[];
@@ -614,22 +629,29 @@ export class RagfairOfferGenerator
      * @param itemWithMods Item to adjust condition details of
      * @param itemDetails db item details of first item in array
      */
-    protected randomiseItemCondition(conditionSettingsId: string, itemWithMods: Item[], itemDetails: ITemplateItem): void
+    protected randomiseItemCondition(
+        conditionSettingsId: string,
+        itemWithMods: Item[],
+        itemDetails: ITemplateItem,
+    ): void
     {
         const rootItem = itemWithMods[0];
 
         const itemConditionValues = this.ragfairConfig.dynamic.condition[conditionSettingsId];
-        const multiplier = this.randomUtil.getFloat(
-            itemConditionValues.min,
-            itemConditionValues.max,
-        );
+        const multiplier = this.randomUtil.getFloat(itemConditionValues.min, itemConditionValues.max);
 
         // Randomise armor + plates + armor related things
-        if (this.itemHelper.armorItemCanHoldMods(rootItem._tpl)
-            || this.itemHelper.isOfBaseclasses(rootItem._tpl, [BaseClasses.ARMOR_PLATE, BaseClasses.ARMORED_EQUIPMENT]))
+        if (
+            this.itemHelper.armorItemCanHoldMods(rootItem._tpl)
+            || this.itemHelper.isOfBaseclasses(rootItem._tpl, [BaseClasses.ARMOR_PLATE, BaseClasses.ARMORED_EQUIPMENT])
+        )
         {
             // Chance to not adjust armor
-            if (!this.randomUtil.getChance100(this.ragfairConfig.dynamic.condition[BaseClasses.ARMORED_EQUIPMENT].conditionChance * 100))
+            if (
+                !this.randomUtil.getChance100(
+                    this.ragfairConfig.dynamic.condition[BaseClasses.ARMORED_EQUIPMENT].conditionChance * 100,
+                )
+            )
             {
                 return;
             }
@@ -637,18 +659,17 @@ export class RagfairOfferGenerator
             this.randomiseArmorDurabilityValues(itemWithMods);
 
             // Add hits to visor
-            const visorMod = itemWithMods.find(item => item.parentId === BaseClasses.ARMORED_EQUIPMENT && item.slotId === "mod_equipment_000");
-            if (this.randomUtil.getChance100(25)
-                && visorMod)
+            const visorMod = itemWithMods.find((item) =>
+                item.parentId === BaseClasses.ARMORED_EQUIPMENT && item.slotId === "mod_equipment_000"
+            );
+            if (this.randomUtil.getChance100(25) && visorMod)
             {
                 if (!visorMod.upd)
                 {
                     visorMod.upd = {};
                 }
 
-                visorMod.upd.FaceShield = {
-                    Hits: this.randomUtil.getInt(1,3)
-                }
+                visorMod.upd.FaceShield = { Hits: this.randomUtil.getInt(1, 3) };
             }
 
             return;
@@ -673,7 +694,8 @@ export class RagfairOfferGenerator
         if (rootItem.upd.Key && itemDetails._props.MaximumNumberOfUsage > 1)
         {
             // randomize key uses
-            rootItem.upd.Key.NumberOfUsages = Math.round(itemDetails._props.MaximumNumberOfUsage * (1 - multiplier)) || 0;
+            rootItem.upd.Key.NumberOfUsages = Math.round(itemDetails._props.MaximumNumberOfUsage * (1 - multiplier))
+                || 0;
 
             return;
         }
@@ -752,22 +774,26 @@ export class RagfairOfferGenerator
                 // Store mod types durabiltiy multiplier for later use in current/max durability value calculation
                 if (!childMultiplerValues[itemDbDetails._parent])
                 {
-                    childMultiplerValues[itemDbDetails._parent] = this.randomUtil.getFloat(
-                        itemDurabilityConfigDict[itemDbDetails._parent].min,
-                        itemDurabilityConfigDict[itemDbDetails._parent].max,
-                    ) / itemDurabilityConfigDict[itemDbDetails._parent].max;
+                    childMultiplerValues[itemDbDetails._parent] =
+                        this.randomUtil.getFloat(
+                            itemDurabilityConfigDict[itemDbDetails._parent].min,
+                            itemDurabilityConfigDict[itemDbDetails._parent].max,
+                        ) / itemDurabilityConfigDict[itemDbDetails._parent].max;
                 }
-                
+
                 const modMultipler = childMultiplerValues[itemDbDetails._parent];
                 const maxDurability = Math.round(
-                    this.randomUtil.getFloat(itemDbDetails._props.MaxDurability * this.randomUtil.getFloat(modMultipler, 1), itemDbDetails._props.MaxDurability),
+                    this.randomUtil.getFloat(
+                        itemDbDetails._props.MaxDurability * this.randomUtil.getFloat(modMultipler, 1),
+                        itemDbDetails._props.MaxDurability,
+                    ),
                 );
                 const durability = Math.round(
                     this.randomUtil.getFloat(maxDurability * this.randomUtil.getFloat(modMultipler, 1), maxDurability),
                 );
                 item.upd.Repairable = {
                     Durability: durability || 1, // Never let value become 0
-                    MaxDurability: maxDurability
+                    MaxDurability: maxDurability,
                 };
             }
         }
@@ -896,7 +922,11 @@ export class RagfairOfferGenerator
      * @param multipler What to multiply the resulting price by
      * @returns Barter scheme for offer
      */
-    protected createCurrencyBarterScheme(offerWithChildren: Item[], isPackOffer: boolean, multipler = 1): IBarterScheme[]
+    protected createCurrencyBarterScheme(
+        offerWithChildren: Item[],
+        isPackOffer: boolean,
+        multipler = 1,
+    ): IBarterScheme[]
     {
         const currency = this.ragfairServerHelper.getDynamicOfferCurrency();
         const price = this.ragfairPriceService.getDynamicOfferPriceForOffer(offerWithChildren, currency, isPackOffer)

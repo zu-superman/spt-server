@@ -103,7 +103,7 @@ export interface EquipmentFilters
     /** Chance gun laser is active during the day */
     laserIsActiveChancePercent?: number;
     /** Should plates be filtered by level */
-    filterPlatesByLevel?:boolean
+    filterPlatesByLevel?: boolean;
     /** Chance NODS are down/active during the day */
     nvgIsActiveChanceDayPercent?: number;
     /** Chance NODS are down/active during the night */
@@ -121,7 +121,7 @@ export interface EquipmentFilters
     weightingAdjustmentsByPlayerLevel?: WeightingAdjustmentDetails[];
     /** Should the stock mod be forced to spawn on bot */
     forceStock: boolean;
-    armorPlateWeighting?: IArmorPlateWeights[]
+    armorPlateWeighting?: IArmorPlateWeights[];
 }
 
 export interface ModLimits
@@ -169,7 +169,6 @@ export interface WeightingAdjustmentDetails
     equipment?: IAdjustmentDetails;
     /** Key: clothing slot e.g. feet, value: item tpl + weight */
     clothing?: IAdjustmentDetails;
-    
 }
 
 export interface IAdjustmentDetails

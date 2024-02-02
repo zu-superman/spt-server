@@ -341,7 +341,6 @@ export class BotLootGenerator
                     }
                 }
 
-
                 this.addRequiredChildItemsToParent(itemToAddTemplate, itemWithChildrenToAdd, isPmc);
 
                 // Attempt to add item to container(s)
@@ -359,7 +358,9 @@ export class BotLootGenerator
                     if (itemAddedResult === ItemAddedResult.NO_CONTAINERS)
                     {
                         // Bot has no container to put item in, exit
-                        this.logger.debug(`Unable to add: ${totalItemCount} items to bot as it lacks a container to include them`);
+                        this.logger.debug(
+                            `Unable to add: ${totalItemCount} items to bot as it lacks a container to include them`,
+                        );
                         break;
                     }
 
@@ -367,7 +368,11 @@ export class BotLootGenerator
                     if (fitItemIntoContainerAttempts >= 4)
                     {
                         this.logger.debug(
-                            `Failed to place item ${i} of ${totalItemCount} items into ${botRole} containers: ${equipmentSlots.join(",")}. Tried ${fitItemIntoContainerAttempts} times, reason: ${ItemAddedResult[itemAddedResult]}, skipping`,
+                            `Failed to place item ${i} of ${totalItemCount} items into ${botRole} containers: ${
+                                equipmentSlots.join(",")
+                            }. Tried ${fitItemIntoContainerAttempts} times, reason: ${
+                                ItemAddedResult[itemAddedResult]
+                            }, skipping`,
                         );
 
                         break;
@@ -399,7 +404,11 @@ export class BotLootGenerator
      * @param itemToAddChildrenTo Item to add children to
      * @param isPmc Is the item being generated for a pmc (affects money/ammo stack sizes)
      */
-    protected addRequiredChildItemsToParent(itemToAddTemplate: ITemplateItem, itemToAddChildrenTo: Item[], isPmc: boolean): void
+    protected addRequiredChildItemsToParent(
+        itemToAddTemplate: ITemplateItem,
+        itemToAddChildrenTo: Item[],
+        isPmc: boolean,
+    ): void
     {
         // Fill ammo box
         if (this.itemHelper.isOfBaseclass(itemToAddTemplate._id, BaseClasses.AMMO_BOX))
@@ -477,7 +486,11 @@ export class BotLootGenerator
 
                 if (result !== ItemAddedResult.SUCCESS)
                 {
-                    this.logger.debug(`Failed to add additional weapon ${generatedWeapon.weapon[0]._id} to bot backpack, reason: ${ItemAddedResult[result]}`);
+                    this.logger.debug(
+                        `Failed to add additional weapon ${generatedWeapon.weapon[0]._id} to bot backpack, reason: ${
+                            ItemAddedResult[result]
+                        }`,
+                    );
                 }
             }
         }
@@ -631,7 +644,10 @@ export class BotLootGenerator
     {
         const randomSize = itemTemplate._props.StackMaxSize === 1
             ? 1
-            : this.randomUtil.getInt(itemTemplate._props.StackMinRandom, Math.min(itemTemplate._props.StackMaxRandom, 60));
+            : this.randomUtil.getInt(
+                itemTemplate._props.StackMinRandom,
+                Math.min(itemTemplate._props.StackMaxRandom, 60),
+            );
 
         if (!ammoItem.upd)
         {

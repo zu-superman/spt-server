@@ -200,9 +200,7 @@ export class ProbabilityObject<K, V = undefined>
 @injectable()
 export class RandomUtil
 {
-    constructor(
-        @inject("JsonUtil") protected jsonUtil: JsonUtil,
-        @inject("WinstonLogger") protected logger: ILogger)
+    constructor(@inject("JsonUtil") protected jsonUtil: JsonUtil, @inject("WinstonLogger") protected logger: ILogger)
     {
     }
 
@@ -296,15 +294,15 @@ export class RandomUtil
             v = Math.random();
         }
         const w = Math.sqrt(-2.0 * Math.log(u)) * Math.cos((2.0 * Math.PI) * v);
-        const valueDrawn =  mean + w * sigma;
+        const valueDrawn = mean + w * sigma;
         if (valueDrawn < 0)
         {
-          if (attempt > 100)
-          {
-              return this.getFloat(0.01, mean * 2);
-          }
+            if (attempt > 100)
+            {
+                return this.getFloat(0.01, mean * 2);
+            }
 
-          return this.getNormallyDistributedRandomNumber(mean, sigma, attempt++);
+            return this.getNormallyDistributedRandomNumber(mean, sigma, attempt++);
         }
 
         return valueDrawn;
@@ -486,7 +484,7 @@ export class RandomUtil
 
         // Roll a number between 0 and 1
         const rolledChance = this.getInt(0, maxRoll) / 10000;
-        
+
         return rolledChance <= probabilityChance;
     }
 }

@@ -11,7 +11,10 @@ import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEve
 import { IRagfairOffer } from "@spt-aki/models/eft/ragfair/IRagfairOffer";
 import { IProcessBaseTradeRequestData } from "@spt-aki/models/eft/trade/IProcessBaseTradeRequestData";
 import { IProcessBuyTradeRequestData } from "@spt-aki/models/eft/trade/IProcessBuyTradeRequestData";
-import { IOfferRequest, IProcessRagfairTradeRequestData } from "@spt-aki/models/eft/trade/IProcessRagfairTradeRequestData";
+import {
+    IOfferRequest,
+    IProcessRagfairTradeRequestData,
+} from "@spt-aki/models/eft/trade/IProcessRagfairTradeRequestData";
 import { IProcessSellTradeRequestData } from "@spt-aki/models/eft/trade/IProcessSellTradeRequestData";
 import { ISellScavItemsToFenceRequestData } from "@spt-aki/models/eft/trade/ISellScavItemsToFenceRequestData";
 import { BackendErrorCodes } from "@spt-aki/models/enums/BackendErrorCodes";
@@ -146,14 +149,20 @@ export class TradeController
      * @param requestOffer request data from client
      * @param output Output to send back to client
      */
-    protected buyTraderItemFromRagfair(sessionId: string, pmcData: IPmcData, fleaOffer: IRagfairOffer, requestOffer: IOfferRequest, output: IItemEventRouterResponse): void
+    protected buyTraderItemFromRagfair(
+        sessionId: string,
+        pmcData: IPmcData,
+        fleaOffer: IRagfairOffer,
+        requestOffer: IOfferRequest,
+        output: IItemEventRouterResponse,
+    ): void
     {
         // Skip buying items when player doesn't have needed loyalty
         if (this.playerLacksTraderLoyaltyLevelToBuyOffer(fleaOffer, pmcData))
         {
             const errorMessage = `Unable to buy item: ${
                 fleaOffer.items[0]._tpl
-            } from trader: ${fleaOffer.user.id} as loyalty level too low, skipping`
+            } from trader: ${fleaOffer.user.id} as loyalty level too low, skipping`;
             this.logger.debug(errorMessage);
 
             this.httpResponse.appendErrorToOutput(output, errorMessage, BackendErrorCodes.RAGFAIRUNAVAILABLE);
@@ -182,7 +191,13 @@ export class TradeController
      * @param requestOffer Request data from client
      * @param output Output to send back to client
      */
-    protected buyPmcItemFromRagfair(sessionId: string, pmcData: IPmcData, fleaOffer: IRagfairOffer, requestOffer: IOfferRequest, output: IItemEventRouterResponse): void
+    protected buyPmcItemFromRagfair(
+        sessionId: string,
+        pmcData: IPmcData,
+        fleaOffer: IRagfairOffer,
+        requestOffer: IOfferRequest,
+        output: IItemEventRouterResponse,
+    ): void
     {
         const buyData: IProcessBuyTradeRequestData = {
             Action: "TradingConfirm",
@@ -198,7 +213,13 @@ export class TradeController
         };
 
         // buyItem() must occur prior to removing the offer stack, otherwise item inside offer doesn't exist for confirmTrading() to use
-        this.tradeHelper.buyItem(pmcData, buyData, sessionId, this.ragfairConfig.dynamic.purchasesAreFoundInRaid, output);
+        this.tradeHelper.buyItem(
+            pmcData,
+            buyData,
+            sessionId,
+            this.ragfairConfig.dynamic.purchasesAreFoundInRaid,
+            output,
+        );
         if (output.warnings.length > 0)
         {
             return;
@@ -231,10 +252,7 @@ export class TradeController
         const scavProfile = this.profileHelper.getFullProfile(sessionId)?.characters?.scav;
         if (!scavProfile)
         {
-            return this.httpResponse.appendErrorToOutput(
-                output,
-                `Profile ${request.fromOwner.id} has no scav account`,
-            );
+            return this.httpResponse.appendErrorToOutput(output, `Profile ${request.fromOwner.id} has no scav account`);
         }
 
         this.sellInventoryToTrader(sessionId, scavProfile, pmcData, Traders.FENCE, output);
@@ -256,7 +274,7 @@ export class TradeController
         profileWithItemsToSell: IPmcData,
         profileThatGetsMoney: IPmcData,
         trader: Traders,
-        output: IItemEventRouterResponse
+        output: IItemEventRouterResponse,
     ): void
     {
         const handbookPrices = this.ragfairPriceService.getAllStaticPrices();
