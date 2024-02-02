@@ -195,7 +195,7 @@ export class FenceService
      */
     public getRawFenceAssorts(): ITraderAssort
     {
-        return this.mergeAssorts(this.jsonUtil.clone(this.fenceAssort), this.fenceDiscountAssort);
+        return this.mergeAssorts(this.jsonUtil.clone(this.fenceAssort), this.jsonUtil.clone(this.fenceDiscountAssort));
     }
 
     /**
@@ -420,25 +420,25 @@ export class FenceService
     protected addItemAssorts(
         assortCount: number,
         assorts: ITraderAssort,
-        fenceAssort: ITraderAssort,
+        baseFenceAssort: ITraderAssort,
         itemTypeCounts: Record<string, { current: number; max: number; }>,
         loyaltyLevel: number,
     ): void
     {
         const priceLimits = this.traderConfig.fence.itemCategoryRoublePriceLimit;
-        const assortRootItems = fenceAssort.items.filter(x => x.parentId === "hideout" && !x.upd?.sptPresetId);
+        const assortRootItems = baseFenceAssort.items.filter(x => x.parentId === "hideout" && !x.upd?.sptPresetId);
         for (let i = 0; i < assortCount; i++)
         {
-            const chosenAssortRoot = this.randomUtil.getArrayValue(assortRootItems);
-            if (!chosenAssortRoot)
+            const chosenBaseAssortRoot = this.randomUtil.getArrayValue(assortRootItems);
+            if (!chosenBaseAssortRoot)
             {
-                this.logger.error(this.localisationService.getText("fence-unable_to_find_assort_by_id", chosenAssortRoot._id));
+                this.logger.error(this.localisationService.getText("fence-unable_to_find_assort_by_id", chosenBaseAssortRoot._id));
 
                 continue;
             }
-            const desiredAssortItemAndChildrenClone = this.jsonUtil.clone(this.itemHelper.findAndReturnChildrenAsItems(fenceAssort.items, chosenAssortRoot._id));
+            const desiredAssortItemAndChildrenClone = this.jsonUtil.clone(this.itemHelper.findAndReturnChildrenAsItems(baseFenceAssort.items, chosenBaseAssortRoot._id));
 
-            const itemDbDetails = this.itemHelper.getItem(chosenAssortRoot._tpl)[1];
+            const itemDbDetails = this.itemHelper.getItem(chosenBaseAssortRoot._tpl)[1];
             const itemLimitCount = itemTypeCounts[itemDbDetails._parent];
             if (itemLimitCount && itemLimitCount.current > itemLimitCount.max)
             {
@@ -447,18 +447,19 @@ export class FenceService
                 continue;
             }
             
-            const itemIsPreset = this.presetHelper.isPreset(chosenAssortRoot._id);
+            const itemIsPreset = this.presetHelper.isPreset(chosenBaseAssortRoot._id);
 
-            const price = fenceAssort.barter_scheme[chosenAssortRoot._id][0][0].count;
+            const price = baseFenceAssort.barter_scheme[chosenBaseAssortRoot._id][0][0].count;
             if (price === 0 || (price === 1 && !itemIsPreset) || price === 100)
             {
-                // Don't allow "special" items
+                // Don't allow "special" items / presets
                 i--;
                 continue;
             }
             
             if (price > priceLimits[itemDbDetails._parent])
             {
+                // Too expensive for fence, try another item
                 i--;
                 continue;
             }
@@ -470,8 +471,8 @@ export class FenceService
             }
 
             // MUST randomise Ids as its possible to add the same base fence assort twice = duplicate IDs = dead client
-            this.itemHelper.remapRootItemId(desiredAssortItemAndChildrenClone);
             this.itemHelper.replaceIDs(null, desiredAssortItemAndChildrenClone);
+            this.itemHelper.remapRootItemId(desiredAssortItemAndChildrenClone);
 
             const rootItemBeingAdded = desiredAssortItemAndChildrenClone[0];
             this.randomiseItemUpdProperties(itemDbDetails, rootItemBeingAdded);
@@ -487,7 +488,7 @@ export class FenceService
             }
 
             assorts.items.push(...desiredAssortItemAndChildrenClone);
-            assorts.barter_scheme[rootItemBeingAdded._id] = fenceAssort.barter_scheme[chosenAssortRoot._id];
+            assorts.barter_scheme[rootItemBeingAdded._id] = baseFenceAssort.barter_scheme[chosenBaseAssortRoot._id];
             assorts.loyal_level_items[rootItemBeingAdded._id] = loyaltyLevel;
         }
     }
