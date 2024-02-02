@@ -5,7 +5,7 @@ import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { TraderAssortHelper } from "@spt-aki/helpers/TraderAssortHelper";
 import { TraderHelper } from "@spt-aki/helpers/TraderHelper";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
-import { Item, Upd } from "@spt-aki/models/eft/common/tables/IItem";
+import { Item } from "@spt-aki/models/eft/common/tables/IItem";
 import { IAddItemDirectRequest } from "@spt-aki/models/eft/inventory/IAddItemDirectRequest";
 import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEventRouterResponse";
 import { IProcessBuyTradeRequestData } from "@spt-aki/models/eft/trade/IProcessBuyTradeRequestData";
@@ -120,12 +120,12 @@ export class TradeHelper
             {
                 // Update assort/flea item values
                 const traderAssorts = this.traderHelper.getTraderAssortsByTraderId(buyRequestData.tid).items;
-                const itemPurchased = traderAssorts.find((x) => x._id === buyRequestData.item_id);
+                const itemPurchased = traderAssorts.find((assort) => assort._id === buyRequestData.item_id);
     
                 // Decrement trader item count
                 itemPurchased.upd.StackObjectsCount -= buyCount;
     
-                this.fenceService.removeFenceOffer(buyRequestData.item_id);
+                this.fenceService.amendOrRemoveFenceOffer(buyRequestData.item_id, buyCount);
             };
 
             const fenceItems = this.fenceService.getRawFenceAssorts().items;
