@@ -904,6 +904,7 @@ export class FenceService
      */
     public amendOrRemoveFenceOffer(assortId: string, buyCount: number): void
     {
+        let isNormalAssort = true;
         let fenceAssortItem = this.fenceAssort.items.find(item => item._id === assortId);
         if (!fenceAssortItem)
         {
@@ -915,12 +916,13 @@ export class FenceService
 
                 return;
             }
+            isNormalAssort = false;
         }
 
         // Player wants to buy whole stack, delete stack
         if (fenceAssortItem.upd.StackObjectsCount === buyCount)
         {
-            this.deleteOffer(assortId, this.fenceAssort.items);
+            this.deleteOffer(assortId, isNormalAssort ? this.fenceAssort.items : this.fenceDiscountAssort.items);
 
             return;
         }
