@@ -13,7 +13,6 @@ import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEve
 import { ISystemData, Insurance } from "@spt-aki/models/eft/profile/IAkiProfile";
 import { IProcessBuyTradeRequestData } from "@spt-aki/models/eft/trade/IProcessBuyTradeRequestData";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
-import { MessageType } from "@spt-aki/models/enums/MessageType";
 import { SkillTypes } from "@spt-aki/models/enums/SkillTypes";
 import { IInsuranceConfig } from "@spt-aki/models/spt/config/IInsuranceConfig";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
@@ -140,7 +139,7 @@ export class InsuranceController
             this.sendMail(sessionID, insured);
 
             // Remove the fully processed insurance package from the profile.
-            this.removeInsurancePackageFromProfile(sessionID, insured.messageContent.systemData);
+            this.removeInsurancePackageFromProfile(sessionID, insured.systemData);
         }
     }
 
@@ -165,9 +164,9 @@ export class InsuranceController
     {
         const profile = this.saveServer.getProfile(sessionID);
         profile.insurance = profile.insurance.filter((insurance) =>
-            insurance.messageContent.systemData.date !== packageInfo.date
-            || insurance.messageContent.systemData.time !== packageInfo.time
-            || insurance.messageContent.systemData.location !== packageInfo.location
+            insurance.systemData.date !== packageInfo.date
+            || insurance.systemData.time !== packageInfo.time
+            || insurance.systemData.location !== packageInfo.location
         );
 
         this.logger.debug(
@@ -528,18 +527,18 @@ export class InsuranceController
         {
             const insuranceFailedTemplates =
                 this.databaseServer.getTables().traders[insurance.traderId].dialogue.insuranceFailed;
-            insurance.messageContent.templateId = this.randomUtil.getArrayValue(insuranceFailedTemplates);
+            insurance.messageTemplateId = this.randomUtil.getArrayValue(insuranceFailedTemplates);
         }
 
         // Send the insurance message
         this.mailSendService.sendLocalisedNpcMessageToPlayer(
             sessionID,
             this.traderHelper.getTraderById(insurance.traderId),
-            MessageType.INSURANCE_RETURN,
-            insurance.messageContent.templateId,
+            insurance.messageType,
+            insurance.messageTemplateId,
             insurance.items,
-            insurance.messageContent.maxStorageTime,
-            insurance.messageContent.systemData,
+            insurance.maxStorageTime,
+            insurance.systemData,
         );
     }
 

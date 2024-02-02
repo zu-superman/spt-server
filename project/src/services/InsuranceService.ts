@@ -7,7 +7,6 @@ import { SecureContainerHelper } from "@spt-aki/helpers/SecureContainerHelper";
 import { TraderHelper } from "@spt-aki/helpers/TraderHelper";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
 import { Item } from "@spt-aki/models/eft/common/tables/IItem";
-import { ITemplateItem } from "@spt-aki/models/eft/common/tables/ITemplateItem";
 import { ITraderBase } from "@spt-aki/models/eft/common/tables/ITrader";
 import { IInsuredItemsData } from "@spt-aki/models/eft/inRaid/IInsuredItemsData";
 import { ISaveProgressRequestData } from "@spt-aki/models/eft/inRaid/ISaveProgressRequestData";
@@ -99,42 +98,38 @@ export class InsuranceService
      */
     public sendInsuredItems(pmcData: IPmcData, sessionID: string, mapId: string): void
     {
+        // Get insurance items for each trader
         for (const traderId in this.getInsurance(sessionID))
         {
             const traderBase = this.traderHelper.getTrader(traderId, sessionID);
             const insuranceReturnTimestamp = this.getInsuranceReturnTimestamp(pmcData, traderBase);
             const dialogueTemplates = this.databaseServer.getTables().traders[traderId].dialogue;
 
-            // Construct "i will go look for your stuff" message
-            const messageContent = this.dialogueHelper.createMessageContext(
-                this.randomUtil.getArrayValue(dialogueTemplates.insuranceStart),
-                MessageType.NPC_TRADER,
-                traderBase.insurance.max_storage_time,
-            );
-            messageContent.text = ""; // Live insurance returns have an empty string for the text property
-            messageContent.profileChangeEvents = [];
-            messageContent.systemData = {
+            const systemData = {
                 date: this.timeUtil.getDateMailFormat(),
                 time: this.timeUtil.getTimeMailFormat(),
-                location: mapId,
+                location: mapId
             };
+            // Send "i will go look for your stuff" message from trader to player
+            this.mailSendService.sendLocalisedNpcMessageToPlayer(
+                sessionID,
+                this.traderHelper.getTraderById(traderId),
+                MessageType.NPC_TRADER,
+                this.randomUtil.getArrayValue(dialogueTemplates.insuranceStart),
+                null,
+                null,
+                systemData
+            );
 
-            // MUST occur after systemData is hydrated
-            // Store "i will go look for your stuff" message in player profile
-            this.dialogueHelper.addDialogueMessage(traderId, messageContent, sessionID);
-
-            // Remove 'hideout' slotid property on all insurance items
-            this.removeLocationProperty(sessionID, traderId);
-
-            // Reuse existing context for message sent to player with insurance return
-            messageContent.templateId = this.randomUtil.getArrayValue(dialogueTemplates.insuranceFound);
-            messageContent.type = MessageType.INSURANCE_RETURN;
-
-            // Store insurance return details in profile + "hey i found your stuff, here you go!" message details to send player at a later date
+            // Store insurance to send to player later in profile
+            // Store insurance return details in profile + "hey i found your stuff, here you go!" message details to send to player at a later date
             this.saveServer.getProfile(sessionID).insurance.push({
                 scheduledTime: insuranceReturnTimestamp,
                 traderId: traderId,
-                messageContent: messageContent,
+                maxStorageTime: this.timeUtil.getHoursAsSeconds(traderBase.insurance.max_storage_time),
+                systemData: systemData,
+                messageType: MessageType.INSURANCE_RETURN,
+                messageTemplateId: this.randomUtil.getArrayValue(dialogueTemplates.insuranceFound),
                 items: this.getInsurance(sessionID)[traderId],
             });
         }
