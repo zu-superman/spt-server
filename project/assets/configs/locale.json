@@ -30,6 +30,7 @@
         "zh-cn"
     ],
     "fallbacks": {
+		"en-*": "en",
         "pt-*": "pt-pt",
         "zh-*": "zh-cn",
         "es-*": "es-es"
