@@ -18,7 +18,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 1750000
+        "StackObjectsCount": 9999999
       }
     },
     {
@@ -197,7 +197,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 570000,
+        "StackObjectsCount": 9999999,
         "BuyRestrictionMax": 3,
         "BuyRestrictionCurrent": 0
       }
@@ -231,7 +231,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 570000
+        "StackObjectsCount": 9999999
       }
     },
     {
@@ -285,7 +285,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 570000
+        "StackObjectsCount": 9999999
       }
     },
     {
@@ -317,7 +317,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 570000
+        "StackObjectsCount": 9999999
       }
     },
     {
@@ -358,7 +358,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 570000
+        "StackObjectsCount": 9999999
       }
     },
     {
@@ -590,7 +590,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 570000,
+        "StackObjectsCount": 9999999,
         "BuyRestrictionMax": 4,
         "BuyRestrictionCurrent": 0
       }
@@ -665,7 +665,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 570000
+        "StackObjectsCount": 9999999
       }
     },
     {
@@ -824,7 +824,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 570000
+        "StackObjectsCount": 9999999
       }
     },
     {
@@ -874,7 +874,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 5470000
+        "StackObjectsCount": 9999999
       }
     },
     {
@@ -1173,7 +1173,7 @@
           "FireMode": "single"
         },
         "UnlimitedCount": true,
-        "StackObjectsCount": 570000,
+        "StackObjectsCount": 9999999,
         "BuyRestrictionMax": 5,
         "BuyRestrictionCurrent": 0
       }
@@ -1269,7 +1269,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 570000,
+        "StackObjectsCount": 9999999,
         "BuyRestrictionMax": 10,
         "BuyRestrictionCurrent": 0
       }
@@ -1691,7 +1691,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 570000,
+        "StackObjectsCount": 9999999,
         "BuyRestrictionMax": 4,
         "BuyRestrictionCurrent": 0
       }
@@ -1703,7 +1703,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 570000
+        "StackObjectsCount": 9999999
       }
     },
     {
@@ -1713,7 +1713,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 1000000,
+        "StackObjectsCount": 9999999,
         "BuyRestrictionMax": 120,
         "BuyRestrictionCurrent": 0
       }
@@ -1873,7 +1873,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 950000,
+        "StackObjectsCount": 9999999,
         "BuyRestrictionMax": 120,
         "BuyRestrictionCurrent": 0
       }
@@ -1998,7 +1998,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 570000
+        "StackObjectsCount": 9999999
       }
     },
     {
@@ -2264,7 +2264,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 570000,
+        "StackObjectsCount": 9999999,
         "BuyRestrictionMax": 5,
         "BuyRestrictionCurrent": 0
       }
@@ -2407,7 +2407,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 570000,
+        "StackObjectsCount": 9999999,
         "BuyRestrictionMax": 3,
         "BuyRestrictionCurrent": 0,
         "Repairable": {
@@ -2495,7 +2495,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 570000
+        "StackObjectsCount": 9999999
       }
     },
     {
@@ -2703,7 +2703,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 1830000,
+        "StackObjectsCount": 9999999,
         "BuyRestrictionMax": 150,
         "BuyRestrictionCurrent": 0
       }
@@ -2748,7 +2748,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 950000,
+        "StackObjectsCount": 9999999,
         "BuyRestrictionMax": 200,
         "BuyRestrictionCurrent": 0
       }
@@ -2760,7 +2760,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 575000,
+        "StackObjectsCount": 9999999,
         "BuyRestrictionMax": 6,
         "BuyRestrictionCurrent": 0
       }
@@ -2902,7 +2902,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 1310000,
+        "StackObjectsCount": 9999999,
         "BuyRestrictionMax": 210,
         "BuyRestrictionCurrent": 0
       }
@@ -2955,7 +2955,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 570000
+        "StackObjectsCount": 9999999
       }
     },
     {
@@ -3074,7 +3074,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 710000,
+        "StackObjectsCount": 9999999,
         "BuyRestrictionMax": 300,
         "BuyRestrictionCurrent": 0
       }
@@ -3086,7 +3086,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 570000,
+        "StackObjectsCount": 9999999,
         "BuyRestrictionMax": 10,
         "BuyRestrictionCurrent": 0
       }
@@ -3725,7 +3725,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 575000,
+        "StackObjectsCount": 9999999,
         "BuyRestrictionMax": 4,
         "BuyRestrictionCurrent": 0
       }
@@ -3861,7 +3861,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 570000
+        "StackObjectsCount": 9999999
       }
     },
     {
@@ -3882,7 +3882,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 570000
+        "StackObjectsCount": 9999999
       }
     },
     {
@@ -4257,7 +4257,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 1950000,
+        "StackObjectsCount": 9999999,
         "BuyRestrictionMax": 100,
         "BuyRestrictionCurrent": 0
       }
@@ -4481,7 +4481,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 570000,
+        "StackObjectsCount": 9999999,
         "BuyRestrictionMax": 3,
         "BuyRestrictionCurrent": 0
       }
@@ -4648,7 +4648,7 @@
           "FireMode": "single"
         },
         "UnlimitedCount": true,
-        "StackObjectsCount": 570000
+        "StackObjectsCount": 9999999
       }
     },
     {
@@ -4700,7 +4700,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 570000
+        "StackObjectsCount": 9999999
       }
     },
     {
@@ -4770,7 +4770,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 1160000
+        "StackObjectsCount": 9999999
       }
     },
     {
@@ -5053,7 +5053,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 570000,
+        "StackObjectsCount": 9999999,
         "BuyRestrictionMax": 4,
         "BuyRestrictionCurrent": 0
       }
@@ -5151,7 +5151,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 570000
+        "StackObjectsCount": 9999999
       }
     },
     {
@@ -5393,7 +5393,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 570000
+        "StackObjectsCount": 9999999
       }
     },
     {
@@ -5564,7 +5564,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 575000,
+        "StackObjectsCount": 9999999,
         "BuyRestrictionMax": 5,
         "BuyRestrictionCurrent": 0
       }
@@ -5784,7 +5784,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 575000,
+        "StackObjectsCount": 9999999,
         "BuyRestrictionMax": 150,
         "BuyRestrictionCurrent": 0
       }
@@ -5840,7 +5840,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 575000,
+        "StackObjectsCount": 9999999,
         "BuyRestrictionMax": 300,
         "BuyRestrictionCurrent": 0
       }
@@ -6318,7 +6318,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 570000,
+        "StackObjectsCount": 9999999,
         "BuyRestrictionMax": 3,
         "BuyRestrictionCurrent": 0
       }
@@ -6375,7 +6375,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 570000
+        "StackObjectsCount": 9999999
       }
     },
     {
@@ -6491,7 +6491,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 570000
+        "StackObjectsCount": 9999999
       }
     },
     {
@@ -6635,7 +6635,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 575000,
+        "StackObjectsCount": 9999999,
         "BuyRestrictionMax": 8,
         "BuyRestrictionCurrent": 0
       }
@@ -6647,7 +6647,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 570000
+        "StackObjectsCount": 9999999
       }
     },
     {
@@ -6731,7 +6731,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 570000
+        "StackObjectsCount": 9999999
       }
     },
     {
@@ -6774,7 +6774,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 570000,
+        "StackObjectsCount": 9999999,
         "BuyRestrictionMax": 5,
         "BuyRestrictionCurrent": 0
       }
@@ -6819,7 +6819,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 575000,
+        "StackObjectsCount": 9999999,
         "BuyRestrictionMax": 3,
         "BuyRestrictionCurrent": 0
       }
@@ -7058,7 +7058,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 570000
+        "StackObjectsCount": 9999999
       }
     },
     {
@@ -7540,7 +7540,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 575000,
+        "StackObjectsCount": 9999999,
         "BuyRestrictionMax": 3,
         "BuyRestrictionCurrent": 0
       }
@@ -7674,7 +7674,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 575000,
+        "StackObjectsCount": 9999999,
         "BuyRestrictionMax": 5,
         "BuyRestrictionCurrent": 0
       }
@@ -8016,7 +8016,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 575000,
+        "StackObjectsCount": 9999999,
         "BuyRestrictionMax": 100,
         "BuyRestrictionCurrent": 0
       }
@@ -8061,7 +8061,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 575000,
+        "StackObjectsCount": 9999999,
         "BuyRestrictionMax": 5,
         "BuyRestrictionCurrent": 0
       }
@@ -8084,7 +8084,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 570000,
+        "StackObjectsCount": 9999999,
         "BuyRestrictionMax": 20,
         "BuyRestrictionCurrent": 0
       }
@@ -8151,7 +8151,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 575000
+        "StackObjectsCount": 9999999
       }
     },
     {
@@ -8331,7 +8331,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 575000,
+        "StackObjectsCount": 9999999,
         "BuyRestrictionMax": 150,
         "BuyRestrictionCurrent": 0
       }
@@ -8497,7 +8497,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 575000,
+        "StackObjectsCount": 9999999,
         "BuyRestrictionMax": 12,
         "BuyRestrictionCurrent": 0
       }
@@ -8734,7 +8734,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 575000,
+        "StackObjectsCount": 9999999,
         "BuyRestrictionMax": 2,
         "BuyRestrictionCurrent": 0
       }
@@ -9138,7 +9138,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 575000,
+        "StackObjectsCount": 9999999,
         "BuyRestrictionMax": 5,
         "BuyRestrictionCurrent": 0
       }
@@ -9150,7 +9150,7 @@
       "slotId": "hideout",
       "upd": {
         "UnlimitedCount": true,
-        "StackObjectsCount": 570000,
+        "StackObjectsCount": 9999999,
         "BuyRestrictionMax": 8,
         "BuyRestrictionCurrent": 0
       }
