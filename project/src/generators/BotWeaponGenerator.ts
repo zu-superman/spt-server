@@ -200,7 +200,7 @@ export class BotWeaponGenerator
         }
 
         // Fill existing magazines to full and sync ammo type
-        for (const magazine of weaponWithModsArray.filter((x) => x.slotId === this.modMagazineSlotId))
+        for (const magazine of weaponWithModsArray.filter((item) => item.slotId === this.modMagazineSlotId))
         {
             this.fillExistingMagazines(weaponWithModsArray, magazine, ammoTpl);
         }

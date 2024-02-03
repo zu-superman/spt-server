@@ -361,7 +361,7 @@ export class QuestHelper
             // Remap target id to the new presets root id
             questReward.target = rootItem._id;
 
-            // Copy over stack count
+            // Copy over stack count otherwise reward shows as missing in client
             if (!rootItem.upd)
             {
                 rootItem.upd = {};

@@ -290,7 +290,7 @@ export class BotInventoryGenerator
         const tacVestsWithoutArmor = Object.entries(templateInventory.equipment.TacticalVest).reduce(
             (newVestDictionary, [tplKey]) =>
             {
-                if (this.itemHelper.itemHasSlots(tplKey))
+                if (!this.itemHelper.itemHasSlots(tplKey))
                 {
                     newVestDictionary[tplKey] = templateInventory.equipment.TacticalVest[tplKey];
                 }
