@@ -1,7 +1,7 @@
 import { inject, injectable } from "tsyringe";
 
-import { GameController } from "@spt-aki/controllers/GameController";
 import { ProfileController } from "@spt-aki/controllers/ProfileController";
+import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
 import { IEmptyRequestData } from "@spt-aki/models/eft/common/IEmptyRequestData";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
 import { IGetBodyResponseData } from "@spt-aki/models/eft/httpResponse/IGetBodyResponseData";
@@ -20,7 +20,6 @@ import { ISearchFriendResponse } from "@spt-aki/models/eft/profile/ISearchFriend
 import { IValidateNicknameRequestData } from "@spt-aki/models/eft/profile/IValidateNicknameRequestData";
 import { HttpResponseUtil } from "@spt-aki/utils/HttpResponseUtil";
 import { TimeUtil } from "@spt-aki/utils/TimeUtil";
-import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
 
 /** Handle profile related client events */
 @injectable()
@@ -30,8 +29,7 @@ export class ProfileCallbacks
         @inject("HttpResponseUtil") protected httpResponse: HttpResponseUtil,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
         @inject("ProfileController") protected profileController: ProfileController,
-		@inject("GameController") protected gameController: GameController,
-		@inject("ProfileHelper") protected profileHelper: ProfileHelper
+        @inject("ProfileHelper") protected profileHelper: ProfileHelper,
     )
     {}
 
@@ -45,7 +43,6 @@ export class ProfileCallbacks
     ): IGetBodyResponseData<ICreateProfileResponse>
     {
         const id = this.profileController.createProfile(info, sessionID);
-		this.gameController.setHideoutAreasAndCraftsTo40Secs(this.profileHelper.getFullProfile(id));
         return this.httpResponse.getBody({ uid: id });
     }
 

@@ -18,7 +18,6 @@ import { IGetRaidTimeRequest } from "@spt-aki/models/eft/game/IGetRaidTimeReques
 import { IGetRaidTimeResponse } from "@spt-aki/models/eft/game/IGetRaidTimeResponse";
 import { IServerDetails } from "@spt-aki/models/eft/game/IServerDetails";
 import { IAkiProfile } from "@spt-aki/models/eft/profile/IAkiProfile";
-import { AccountTypes } from "@spt-aki/models/enums/AccountTypes";
 import { BonusType } from "@spt-aki/models/enums/BonusType";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { SkillTypes } from "@spt-aki/models/enums/SkillTypes";
@@ -158,8 +157,8 @@ export class GameController
             {
                 this.updateProfileHealthValues(pmcProfile);
             }
-			
-            this.setHideoutAreasAndCraftsTo40Secs(fullProfile);
+
+            this.profileFixerService.setHideoutAreasAndCraftsTo40Secs(fullProfile);
 
             if (this.locationConfig.fixEmptyBotWavesSettings.enabled)
             {
@@ -351,45 +350,6 @@ export class GameController
                 lootPostionToAdjust.probability = mapLootAdjustmentsDict[lootKey];
             }
         }
-    }
-
-    public setHideoutAreasAndCraftsTo40Secs(fullProfile: IAkiProfile): void
-    {
-		if (!fullProfile.info.edition.toLowerCase().startsWith(AccountTypes.SPT_DEVELOPER))
-		{
-			return;
-		}
-		
-        for (const hideoutProd of this.databaseServer.getTables().hideout.production)
-        {
-            if (hideoutProd.productionTime > 40)
-            {
-                hideoutProd.productionTime = 40;
-            }
-        }
-        this.logger.warning("DEVELOPER: SETTING ALL HIDEOUT PRODUCTIONS TO 40 SECONDS");
-
-        for (const hideoutArea of this.databaseServer.getTables().hideout.areas)
-        {
-            for (const stageKey in hideoutArea.stages)
-            {
-                const stage = hideoutArea.stages[stageKey];
-                if (stage.constructionTime > 40)
-                {
-                    stage.constructionTime = 40;
-                }
-            }
-        }
-        this.logger.warning("DEVELOPER: SETTING ALL HIDEOUT AREAS TO 40 SECOND UPGRADES");
-
-        for (const scavCaseCraft of this.databaseServer.getTables().hideout.scavcase)
-        {
-            if (scavCaseCraft.ProductionTime > 40)
-            {
-                scavCaseCraft.ProductionTime = 40;
-            }
-        }
-        this.logger.warning("DEVELOPER: SETTING ALL SCAV CASES TO 40 SECONDS");
     }
 
     /** Apply custom limits on bot types as defined in configs/location.json/botTypeLimits */

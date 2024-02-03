@@ -232,6 +232,9 @@ export class ProfileController
             this.seasonalEventService.enableSeasonalEvents(sessionID);
         }
 
+        const fullProfile = this.profileHelper.getFullProfile(account.id);
+        this.profileFixerService.setHideoutAreasAndCraftsTo40Secs(fullProfile);
+
         return pmcData._id;
     }
 
