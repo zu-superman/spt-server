@@ -535,17 +535,17 @@ export class GameController
             let hpRegenPerHour = 456.6;
 
             // Set new values, whatever is smallest
-            energyRegenPerHour += pmcProfile.Bonuses.filter((x) => x.type === BonusType.ENERGY_REGENERATION).reduce(
-                (sum, curr) => sum + curr.value,
-                0,
-            );
-            hydrationRegenPerHour += pmcProfile.Bonuses.filter((x) => x.type === BonusType.HYDRATION_REGENERATION)
+            energyRegenPerHour += pmcProfile.Bonuses.filter((bonus) => bonus.type === BonusType.ENERGY_REGENERATION)
                 .reduce((sum, curr) => sum + curr.value, 0);
-            hpRegenPerHour += pmcProfile.Bonuses.filter((x) => x.type === BonusType.HEALTH_REGENERATION).reduce(
+            hydrationRegenPerHour += pmcProfile.Bonuses.filter((bonus) =>
+                bonus.type === BonusType.HYDRATION_REGENERATION
+            ).reduce((sum, curr) => sum + curr.value, 0);
+            hpRegenPerHour += pmcProfile.Bonuses.filter((bonus) => bonus.type === BonusType.HEALTH_REGENERATION).reduce(
                 (sum, curr) => sum + curr.value,
                 0,
             );
 
+            // Player has energy deficit
             if (pmcProfile.Health.Energy.Current !== pmcProfile.Health.Energy.Maximum)
             {
                 // Set new value, whatever is smallest
@@ -556,6 +556,7 @@ export class GameController
                 }
             }
 
+            // Player has energy deficit
             if (pmcProfile.Health.Hydration.Current !== pmcProfile.Health.Hydration.Maximum)
             {
                 pmcProfile.Health.Hydration.Current += Math.round(hydrationRegenPerHour * (diffSeconds / 3600));
@@ -589,6 +590,12 @@ export class GameController
                         // Skip effects below 1, .e.g. bleeds at -1
                         if (bodyPart.Effects[effectKey].Time < 1)
                         {
+                            // More than 30 mins has passed
+                            if (diffSeconds > 1800)
+                            {
+                                delete bodyPart.Effects[effectKey];
+                            }
+
                             continue;
                         }
 
