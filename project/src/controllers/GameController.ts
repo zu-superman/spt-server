@@ -517,8 +517,7 @@ export class GameController
 
     /**
      * When player logs in, iterate over all active effects and reduce timer
-     * // TODO: Add body part HP regeneration
-     * @param pmcProfile
+     * @param pmcProfile Profile to adjust values for
      */
     protected updateProfileHealthValues(pmcProfile: IPmcData): void
     {
@@ -526,7 +525,7 @@ export class GameController
         const currentTimeStamp = this.timeUtil.getTimestamp();
         const diffSeconds = currentTimeStamp - healthLastUpdated;
 
-        // last update is in past
+        // Last update is in past
         if (healthLastUpdated < currentTimeStamp)
         {
             // Base values
@@ -556,7 +555,7 @@ export class GameController
                 }
             }
 
-            // Player has energy deficit
+            // Player has hydration deficit
             if (pmcProfile.Health.Hydration.Current !== pmcProfile.Health.Hydration.Maximum)
             {
                 pmcProfile.Health.Hydration.Current += Math.round(hydrationRegenPerHour * (diffSeconds / 3600));
@@ -587,7 +586,7 @@ export class GameController
                     // Decrement effect time value by difference between current time and time health was last updated
                     for (const effectKey in bodyPart.Effects)
                     {
-                        // Skip effects below 1, .e.g. bleeds at -1
+                        // remove effects below 1, .e.g. bleeds at -1
                         if (bodyPart.Effects[effectKey].Time < 1)
                         {
                             // More than 30 mins has passed
