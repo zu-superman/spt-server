@@ -31,6 +31,7 @@ import { LocaleService } from "@spt-aki/services/LocaleService";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
 import { MailSendService } from "@spt-aki/services/MailSendService";
 import { RagfairOfferService } from "@spt-aki/services/RagfairOfferService";
+import { RagfairRequiredItemsService } from "@spt-aki/services/RagfairRequiredItemsService";
 import { HashUtil } from "@spt-aki/utils/HashUtil";
 import { TimeUtil } from "@spt-aki/utils/TimeUtil";
 
@@ -57,6 +58,7 @@ export class RagfairOfferHelper
         @inject("RagfairSortHelper") protected ragfairSortHelper: RagfairSortHelper,
         @inject("RagfairHelper") protected ragfairHelper: RagfairHelper,
         @inject("RagfairOfferService") protected ragfairOfferService: RagfairOfferService,
+        @inject("RagfairRequiredItemsService") protected ragfairRequiredItemsService: RagfairRequiredItemsService,
         @inject("LocaleService") protected localeService: LocaleService,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("MailSendService") protected mailSendService: MailSendService,
@@ -82,16 +84,34 @@ export class RagfairOfferHelper
         pmcProfile: IPmcData,
     ): IRagfairOffer[]
     {
-        return this.ragfairOfferService.getOffers().filter((x) =>
-            this.isDisplayableOffer(searchRequest, itemsToAdd, traderAssorts, x, pmcProfile)
+        return this.ragfairOfferService.getOffers().filter((offer) =>
+            this.isDisplayableOffer(searchRequest, itemsToAdd, traderAssorts, offer, pmcProfile)
         );
     }
 
-    public getOffersThatRequireItem(searchRequest: ISearchRequestData): IRagfairOffer[]
+    /**
+     * Get matching offers that require the desired item and filter out offers from non traders if player is below ragfair unlock level
+     * @param searchRequest Search request from client
+     * @param pmcDataPlayer profile
+     * @returns Matching IRagfairOffer objects
+     */
+    public getOffersThatRequireItem(searchRequest: ISearchRequestData, pmcData: IPmcData): IRagfairOffer[]
     {
-        return this.ragfairOfferService.getOffers().filter((offer) =>
-            this.isDisplayableOfferThatNeedsItem(searchRequest, offer)
-        );
+        // Get all offers that requre the desired item and filter out offers from non traders if player below ragifar unlock
+        const requiredOffers = this.ragfairRequiredItemsService.getRequiredItemsById(searchRequest.neededSearchId);
+        return requiredOffers.filter((offer: IRagfairOffer) =>
+        {
+            if (
+                pmcData.Info.Level < this.databaseServer.getTables().globals.config.RagFair.minUserLevel
+                && offer.user.memberType === MemberCategory.DEFAULT
+            )
+            {
+                // Skip item if player is < global unlock level (default is 15) and item is from a dynamically generated source (non-trader)
+                return false;
+            }
+
+            return true;
+        });
     }
 
     /**
@@ -682,19 +702,6 @@ export class RagfairOfferHelper
         }
 
         return true;
-    }
-
-    public isDisplayableOfferThatNeedsItem(
-        searchRequest: ISearchRequestData,
-        offer: IRagfairOffer,
-    ): boolean
-    {
-        if (offer.requirements.some(requirement => requirement._tpl === searchRequest.neededSearchId))
-        {
-            return true;
-        }
-
-        return false;
     }
 
     /**

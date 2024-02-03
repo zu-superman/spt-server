@@ -103,12 +103,6 @@ export class RagfairController
             result.categories = this.getSpecificCategories(pmcProfile, searchRequest, result.offers);
         }
 
-        // Client requested "required search"
-        if (searchRequest.neededSearchId)
-        {
-            this.addRequiredOffersToResult(searchRequest, traderAssorts, pmcProfile, result);
-        }
-
         this.addIndexValueToOffers(result.offers);
 
         // Sort offers
@@ -186,7 +180,7 @@ export class RagfairController
 
         if (searchRequest.neededSearchId?.length > 0)
         {
-            return this.ragfairOfferHelper.getOffersThatRequireItem(searchRequest);
+            return this.ragfairOfferHelper.getOffersThatRequireItem(searchRequest, pmcProfile);
         }
 
         // Searching for general items
@@ -213,7 +207,7 @@ export class RagfairController
         {
             offerPool = offers;
         }
-        else if ((searchRequest.linkedSearchId === "" && searchRequest.neededSearchId === ""))
+        else if ((!this.isLinkedSearch(searchRequest) && !this.isRequiredSearch(searchRequest)))
         {
             // Get all categories
             offerPool = this.ragfairOfferService.getOffers();
@@ -226,30 +220,6 @@ export class RagfairController
         }
 
         return this.ragfairServer.getAllActiveCategories(playerHasFleaUnlocked, searchRequest, offerPool);
-    }
-
-    /**
-     * Add Required offers to offers result
-     * @param searchRequest Client search request data
-     * @param assorts
-     * @param pmcProfile Player profile
-     * @param result Result object being sent back to client
-     */
-    protected addRequiredOffersToResult(
-        searchRequest: ISearchRequestData,
-        assorts: Record<string, ITraderAssort>,
-        pmcProfile: IPmcData,
-        result: IGetOffersResult,
-    ): void
-    {
-        const requiredOffers = this.ragfairRequiredItemsService.getRequiredItemsById(searchRequest.neededSearchId);
-        for (const requiredOffer of requiredOffers)
-        {
-            if (this.ragfairOfferHelper.isDisplayableOffer(searchRequest, null, assorts, requiredOffer, pmcProfile))
-            {
-                result.offers.push(requiredOffer);
-            }
-        }
     }
 
     /**
