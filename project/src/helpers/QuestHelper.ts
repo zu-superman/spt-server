@@ -272,7 +272,7 @@ export class QuestHelper
             // Only process items with slots
             if (this.itemHelper.itemHasSlots(questReward.items[0]._tpl))
             {
-                // Attempt to pull default preset from globals and add child items to reward
+                // Attempt to pull default preset from globals and add child items to reward (clones questReward.items)
                 this.generateArmorRewardChildSlots(questReward.items[0], questReward);
             }
         }
@@ -283,7 +283,8 @@ export class QuestHelper
             {
                 item.upd = {};
             }
-            // reward items are granted Found in Raid status
+
+            // Reward items are granted Found in Raid status
             item.upd.SpawnedInSession = true;
 
             // Is root item, fix stacks
@@ -349,10 +350,13 @@ export class QuestHelper
         if (defaultPreset)
         {
             // Preset exists, use mods to hydrate reward item
-            questReward.items = this.jsonUtil.clone(defaultPreset._items);
+            const presetAndMods: Item[] = this.itemHelper.replaceIDs(null, this.jsonUtil.clone(defaultPreset._items));
+            const newRootId = this.itemHelper.remapRootItemId(presetAndMods);
+
+            questReward.items = presetAndMods;
 
             // Remap target id to the new presets id
-            questReward.target = questReward.items.find((item) => item._tpl === originalRewardRootItem._tpl)._id;
+            questReward.target = newRootId;
 
             return;
         }

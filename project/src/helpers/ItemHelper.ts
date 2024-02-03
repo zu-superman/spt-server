@@ -1415,8 +1415,9 @@ export class ItemHelper
      * Update a root items _id property value to be unique
      * @param itemWithChildren Item to update root items _id property
      * @param newId Optional: new id to use
+     * @returns New root id
      */
-    public remapRootItemId(itemWithChildren: Item[], newId = this.hashUtil.generate()): void
+    public remapRootItemId(itemWithChildren: Item[], newId = this.hashUtil.generate()): string
     {
         const rootItemExistingId = itemWithChildren[0]._id;
 
@@ -1436,6 +1437,8 @@ export class ItemHelper
                 item.parentId = newId;
             }
         }
+
+        return newId;
     }
 }
 

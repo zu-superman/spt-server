@@ -79,7 +79,7 @@ export class QuestController
         for (const quest of allQuests)
         {
             // Player already accepted the quest, show it regardless of status
-            const questInProfile = profile.Quests.find((x) => x.qid === quest._id);
+            const questInProfile = profile.Quests.find((quest) => quest.qid === quest._id);
             if (questInProfile)
             {
                 quest.sptStatus = questInProfile.status;
