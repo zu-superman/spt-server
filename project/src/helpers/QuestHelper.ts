@@ -349,14 +349,24 @@ export class QuestHelper
         const defaultPreset = this.presetHelper.getDefaultPreset(originalRewardRootItem._tpl);
         if (defaultPreset)
         {
-            // Preset exists, use mods to hydrate reward item
+            // Found preset, use mods to hydrate reward item
             const presetAndMods: Item[] = this.itemHelper.replaceIDs(null, this.jsonUtil.clone(defaultPreset._items));
             const newRootId = this.itemHelper.remapRootItemId(presetAndMods);
 
             questReward.items = presetAndMods;
 
-            // Remap target id to the new presets id
-            questReward.target = newRootId;
+            // Find root item and set its stack count
+            const rootItem = questReward.items.find((item) => item._id === newRootId);
+
+            // Remap target id to the new presets root id
+            questReward.target = rootItem._id;
+
+            // Copy over stack count
+            if (!rootItem.upd)
+            {
+                rootItem.upd = {};
+            }
+            rootItem.upd.StackObjectsCount = originalRewardRootItem.upd.StackObjectsCount;
 
             return;
         }
@@ -1042,10 +1052,10 @@ export class QuestHelper
     {
         // Iterate over all quests in db
         const quests = this.databaseServer.getTables().templates.quests;
-        for (const questKey in quests)
+        for (const questIdKey in quests)
         {
             // Quest from db matches quests in profile, skip
-            const questData = quests[questKey];
+            const questData = quests[questIdKey];
             if (pmcProfile.Quests.find((x) => x.qid === questData._id))
             {
                 continue;
@@ -1058,7 +1068,7 @@ export class QuestHelper
             }
 
             const questRecordToAdd: IQuestStatus = {
-                qid: questKey,
+                qid: questIdKey,
                 startTime: this.timeUtil.getTimestamp(),
                 status: statuses[statuses.length - 1],
                 statusTimers: statusesDict,
@@ -1066,10 +1076,10 @@ export class QuestHelper
                 availableAfter: 0,
             };
 
-            if (pmcProfile.Quests.some((x) => x.qid === questKey))
+            if (pmcProfile.Quests.some((x) => x.qid === questIdKey))
             {
                 // Update existing
-                const existingQuest = pmcProfile.Quests.find((x) => x.qid === questKey);
+                const existingQuest = pmcProfile.Quests.find((x) => x.qid === questIdKey);
                 existingQuest.status = questRecordToAdd.status;
                 existingQuest.statusTimers = questRecordToAdd.statusTimers;
             }
