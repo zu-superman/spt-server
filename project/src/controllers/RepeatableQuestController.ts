@@ -276,11 +276,11 @@ export class RepeatableQuestController
         {
             element._id = this.objectId.generate();
             const conditions = element.conditions.AvailableForFinish;
-            for (const element of conditions)
+            for (const condition of conditions)
             {
-                if ("counter" in element._props)
+                if ("counter" in condition._props)
                 {
-                    element._props.counter.id = this.objectId.generate();
+                    condition._props.counter.id = this.objectId.generate();
                 }
             }
         }

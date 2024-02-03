@@ -327,7 +327,7 @@ export class RagfairOfferHelper
 
                 if (!offer.sellInOnePiece)
                 {
-                    totalItemsCount = offer.items.reduce((sum: number, item) => sum += item.upd.StackObjectsCount, 0);
+                    totalItemsCount = offer.items.reduce((sum: number, item) => sum + item.upd.StackObjectsCount, 0);
                     boughtAmount = offer.sellResult[0].amount;
                 }
 
@@ -727,6 +727,16 @@ export class RagfairOfferHelper
         }
 
         return true;
+    }
+
+    public isDisplayableOfferThatNeedsItem(searchRequest: ISearchRequestData, offer: IRagfairOffer): boolean
+    {
+        if (offer.requirements.some((requirement) => requirement._tpl === searchRequest.neededSearchId))
+        {
+            return true;
+        }
+
+        return false;
     }
 
     /**

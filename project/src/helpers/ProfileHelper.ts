@@ -202,7 +202,6 @@ export class ProfileHelper
             level = expTable.length - 1;
         }
 
-        // TODO: Replace with exp = expTable.slice(0, level).reduce((acc, curr) => acc + curr.exp, 0);
         for (let i = 0; i < level; i++)
         {
             exp += expTable[i].exp;
@@ -413,7 +412,6 @@ export class ProfileHelper
         if (!profileSkills)
         {
             this.logger.warning(`Unable to add ${pointsToAdd} points to ${skill}, profile has no skills`);
-
             return;
         }
 
@@ -421,7 +419,6 @@ export class ProfileHelper
         if (!profileSkill)
         {
             this.logger.error(this.localisationService.getText("quest-no_skill_found", skill));
-
             return;
         }
 
@@ -429,7 +426,7 @@ export class ProfileHelper
         {
             const globals = this.databaseServer.getTables().globals;
             const skillProgressRate = globals.config.SkillsSettings.SkillProgressRate;
-            pointsToAdd = skillProgressRate * pointsToAdd;
+            pointsToAdd *= skillProgressRate;
         }
 
         profileSkill.Progress += pointsToAdd;

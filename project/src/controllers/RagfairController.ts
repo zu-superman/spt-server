@@ -207,7 +207,7 @@ export class RagfairController
         {
             offerPool = offers;
         }
-        else if ((!this.isLinkedSearch(searchRequest) && !this.isRequiredSearch(searchRequest)))
+        else if ((!(this.isLinkedSearch(searchRequest) || this.isRequiredSearch(searchRequest))))
         {
             // Get all categories
             offerPool = this.ragfairOfferService.getOffers();
@@ -509,16 +509,14 @@ export class RagfairController
     {
         if (!offerRequest?.items || offerRequest.items.length === 0)
         {
-            errorMessage = this.localisationService.getText("ragfair-invalid_player_offer_request");
-            this.logger.error(errorMessage);
+            this.logger.error(this.localisationService.getText("ragfair-invalid_player_offer_request"));
 
             return false;
         }
 
         if (!offerRequest.requirements)
         {
-            errorMessage = this.localisationService.getText("ragfair-unable_to_place_offer_with_no_requirements");
-            this.logger.error(errorMessage);
+            this.logger.error(this.localisationService.getText("ragfair-unable_to_place_offer_with_no_requirements"));
 
             return false;
         }
@@ -725,7 +723,11 @@ export class RagfairController
         {
             const count = playerOffers[playerOfferIndex].sellInOnePiece
                 ? 1
-                : playerOffers[playerOfferIndex].items.reduce((sum, item) => sum += item.upd.StackObjectsCount, 0);
+                : playerOffers[playerOfferIndex].items.reduce((sum, item) =>
+                {
+                    return sum + item.upd.StackObjectsCount;
+                }, 0);
+
             const tax = this.ragfairTaxService.calculateTax(
                 playerOffers[playerOfferIndex].items[0],
                 this.profileHelper.getPmcProfile(sessionId),

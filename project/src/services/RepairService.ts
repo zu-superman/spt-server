@@ -573,24 +573,16 @@ export class RepairService
 
     /**
      * Ensure multiplier is between 1 and 0.01
-     * @param receiveDurabilityMaxPercent Max durabiltiy percent
+     * @param receiveDurabilityMaxPercent Max durability percent
      * @param receiveDurabilityPercent current durability percent
-     * @returns durability multipler value
+     * @returns durability multiplier value
      */
     protected getDurabilityMultiplier(receiveDurabilityMaxPercent: number, receiveDurabilityPercent: number): number
     {
-        receiveDurabilityMaxPercent = (receiveDurabilityMaxPercent > 0) ? receiveDurabilityMaxPercent : 0.01;
-        const num = receiveDurabilityPercent / receiveDurabilityMaxPercent;
-        if (num > 1)
-        {
-            return 1.0;
-        }
-        if (num < 0.01)
-        {
-            return 0.01;
-        }
-
-        return num;
+        // Ensure the max percent is at least 0.01
+        const validMaxPercent = Math.max(0.01, receiveDurabilityMaxPercent);
+        // Calculate the ratio and constrain it between 0.01 and 1
+        return Math.min(1, Math.max(0.01, receiveDurabilityPercent / validMaxPercent));
     }
 }
 

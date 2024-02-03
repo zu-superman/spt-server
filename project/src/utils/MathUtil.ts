@@ -22,9 +22,14 @@ export class MathUtil
      */
     public arrayCumsum(values: number[]): number[]
     {
-        // curried function for cumulative sum: (cum, x) => cum += x
-        // and 0 being the initial value for the map
-        return values.map(((cum) => (x) => cum += x)(0));
+        const cumsumArray = [];
+        let sum = 0;
+        for (let i = 0; i < values.length; i++)
+        {
+            sum += values[i];
+            cumsumArray[i] = sum;
+        }
+        return cumsumArray;
     }
 
     /**
