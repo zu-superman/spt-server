@@ -158,11 +158,8 @@ export class GameController
             {
                 this.updateProfileHealthValues(pmcProfile);
             }
-
-            if (fullProfile.info.edition.toLowerCase().startsWith(AccountTypes.SPT_DEVELOPER))
-            {
-                this.setHideoutAreasAndCraftsTo40Secs();
-            }
+			
+            this.setHideoutAreasAndCraftsTo40Secs(fullProfile);
 
             if (this.locationConfig.fixEmptyBotWavesSettings.enabled)
             {
@@ -356,8 +353,13 @@ export class GameController
         }
     }
 
-    protected setHideoutAreasAndCraftsTo40Secs(): void
+    public setHideoutAreasAndCraftsTo40Secs(fullProfile: IAkiProfile): void
     {
+		if (!fullProfile.info.edition.toLowerCase().startsWith(AccountTypes.SPT_DEVELOPER))
+		{
+			return;
+		}
+		
         for (const hideoutProd of this.databaseServer.getTables().hideout.production)
         {
             if (hideoutProd.productionTime > 40)
