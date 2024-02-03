@@ -32038,7 +32038,7 @@
                 "5cd945d71388ce000a659dfb"
             ],
             "trader": {
-                "initialLoyaltyLevel": 4,
+                "initialLoyaltyLevel": 2,
                 "initialSalesSum": 2600000,
                 "initialStanding": 1,
                 "jaegerUnlocked": true,
@@ -35379,7 +35379,7 @@
                 "5cde9e957d6c8b0474535da7"
             ],
             "trader": {
-                "initialLoyaltyLevel": 4,
+                "initialLoyaltyLevel": 2,
                 "initialSalesSum": 2600000,
                 "initialStanding": 1,
                 "jaegerUnlocked": true,
