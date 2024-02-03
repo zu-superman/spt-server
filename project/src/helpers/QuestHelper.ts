@@ -12,6 +12,7 @@ import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
 import { Common, IQuestStatus } from "@spt-aki/models/eft/common/tables/IBotBase";
 import { Item } from "@spt-aki/models/eft/common/tables/IItem";
 import { IQuest, IQuestCondition, IQuestReward } from "@spt-aki/models/eft/common/tables/IQuest";
+import { IRepeatableQuest } from "@spt-aki/models/eft/common/tables/IRepeatableQuests";
 import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEventRouterResponse";
 import { IAcceptQuestRequestData } from "@spt-aki/models/eft/quests/IAcceptQuestRequestData";
 import { IFailQuestRequestData } from "@spt-aki/models/eft/quests/IFailQuestRequestData";
@@ -704,8 +705,10 @@ export class QuestHelper
         // Create a dialog message for completing the quest.
         const quest = this.getQuestFromDb(failRequest.qid, pmcData);
 
-        const questIsRepeatable = pmcData.RepeatableQuests.some((quest) => quest.id === failRequest.qid);
-        if (!questIsRepeatable)
+        const matchingRepeatable = pmcData.RepeatableQuests.flatMap((repeatableType) => repeatableType.activeQuests)
+            .find((activeQuest) => activeQuest._id === failRequest.qid);
+
+        if (!(matchingRepeatable || quest))
         {
             this.mailSendService.sendLocalisedNpcMessageToPlayer(
                 sessionID,
