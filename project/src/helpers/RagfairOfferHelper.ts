@@ -74,19 +74,25 @@ export class RagfairOfferHelper
      * @param searchRequest Data from client
      * @param itemsToAdd ragfairHelper.filterCategories()
      * @param traderAssorts Trader assorts
-     * @param pmcProfile Player profile
+     * @param pmcData Player profile
      * @returns Offers the player should see
      */
     public getValidOffers(
         searchRequest: ISearchRequestData,
         itemsToAdd: string[],
         traderAssorts: Record<string, ITraderAssort>,
-        pmcProfile: IPmcData,
+        pmcData: IPmcData,
     ): IRagfairOffer[]
     {
         return this.ragfairOfferService.getOffers().filter((offer) =>
-            this.isDisplayableOffer(searchRequest, itemsToAdd, traderAssorts, offer, pmcProfile)
-        );
+        {
+            if (!this.passesSearchFilterCriteria(searchRequest, offer, pmcData))
+            {
+                return false;
+            }
+
+            return this.isDisplayableOffer(searchRequest, itemsToAdd, traderAssorts, offer, pmcData);
+        });
     }
 
     /**
@@ -101,12 +107,8 @@ export class RagfairOfferHelper
         const requiredOffers = this.ragfairRequiredItemsService.getRequiredItemsById(searchRequest.neededSearchId);
         return requiredOffers.filter((offer: IRagfairOffer) =>
         {
-            if (
-                pmcData.Info.Level < this.databaseServer.getTables().globals.config.RagFair.minUserLevel
-                && offer.user.memberType === MemberCategory.DEFAULT
-            )
+            if (!this.passesSearchFilterCriteria(searchRequest, offer, pmcData))
             {
-                // Skip item if player is < global unlock level (default is 15) and item is from a dynamically generated source (non-trader)
                 return false;
             }
 
@@ -539,58 +541,29 @@ export class RagfairOfferHelper
     }
 
     /**
-     * Should a ragfair offer be visible to the player
-     * @param searchRequest Search request
-     * @param itemsToAdd ?
-     * @param traderAssorts Trader assort items
-     * @param offer The flea offer
-     * @param pmcProfile Player profile
-     * @returns True = should be shown to player
+     * Check an offer passes the various search criteria the player requested
+     * @param searchRequest
+     * @param offer
+     * @param pmcData
+     * @returns True
      */
-    public isDisplayableOffer(
+    protected passesSearchFilterCriteria(
         searchRequest: ISearchRequestData,
-        itemsToAdd: string[],
-        traderAssorts: Record<string, ITraderAssort>,
         offer: IRagfairOffer,
-        pmcProfile: IPmcData,
+        pmcData: IPmcData,
     ): boolean
     {
+        const isDefaultUserOffer = offer.user.memberType === MemberCategory.DEFAULT;
         const offerRootItem = offer.items[0];
-        /** Currency offer is sold for */
         const moneyTypeTpl = offer.requirements[0]._tpl;
         const isTraderOffer = offer.user.memberType === MemberCategory.TRADER;
-        const isDefaultUserOffer = offer.user.memberType === MemberCategory.DEFAULT;
 
         if (
-            pmcProfile.Info.Level < this.databaseServer.getTables().globals.config.RagFair.minUserLevel
+            pmcData.Info.Level < this.databaseServer.getTables().globals.config.RagFair.minUserLevel
             && isDefaultUserOffer
         )
         {
             // Skip item if player is < global unlock level (default is 15) and item is from a dynamically generated source
-            return false;
-        }
-
-        // Offer root items tpl not in searched for array
-        if (!itemsToAdd?.includes(offerRootItem._tpl))
-        {
-            // skip items we shouldn't include
-            return false;
-        }
-
-        // Performing a required search and offer doesn't have requirement for item
-        if (searchRequest.neededSearchId && !offer.requirements.some((x) => x._tpl === searchRequest.neededSearchId))
-        {
-            return false;
-        }
-
-        // Filter out presets when search request has multiple buildItems
-        // Assuming 1 build item = single item e.g. gun
-        if (
-            searchRequest.buildCount && this.presetHelper.hasPreset(offerRootItem._tpl)
-            && Object.keys(searchRequest.buildItems).length > 1
-        )
-        {
-            // Don't include preset offer
             return false;
         }
 
@@ -641,14 +614,6 @@ export class RagfairOfferHelper
             return false;
         }
 
-        // commented out as required search "which is for checking offers that are barters"
-        // has info.removeBartering as true, this if statement removed barter items.
-        if (searchRequest.removeBartering && !this.paymentHelper.isMoneyTpl(moneyTypeTpl))
-        {
-            // don't include barter offers
-            return false;
-        }
-
         if (searchRequest.currency > 0 && this.paymentHelper.isMoneyTpl(moneyTypeTpl))
         {
             const currencies = ["all", "RUB", "USD", "EUR"];
@@ -669,6 +634,63 @@ export class RagfairOfferHelper
         if (searchRequest.priceTo > 0 && searchRequest.priceTo <= offer.requirementsCost)
         {
             // price is too high
+            return false;
+        }
+
+        // Passes above checks, search criteria filters have not filtered offer out
+        return true;
+    }
+
+    /**
+     * Should a ragfair offer be visible to the player
+     * @param searchRequest Search request
+     * @param itemsToAdd ?
+     * @param traderAssorts Trader assort items
+     * @param offer The flea offer
+     * @param pmcProfile Player profile
+     * @returns True = should be shown to player
+     */
+    public isDisplayableOffer(
+        searchRequest: ISearchRequestData,
+        itemsToAdd: string[],
+        traderAssorts: Record<string, ITraderAssort>,
+        offer: IRagfairOffer,
+        pmcProfile: IPmcData,
+    ): boolean
+    {
+        const offerRootItem = offer.items[0];
+        /** Currency offer is sold for */
+        const moneyTypeTpl = offer.requirements[0]._tpl;
+
+        // Offer root items tpl not in searched for array
+        if (!itemsToAdd?.includes(offerRootItem._tpl))
+        {
+            // skip items we shouldn't include
+            return false;
+        }
+
+        // Performing a required search and offer doesn't have requirement for item
+        if (searchRequest.neededSearchId && !offer.requirements.some((x) => x._tpl === searchRequest.neededSearchId))
+        {
+            return false;
+        }
+
+        // Filter out presets when search request has multiple buildItems
+        // Assuming 1 build item = single item e.g. gun
+        if (
+            searchRequest.buildCount && this.presetHelper.hasPreset(offerRootItem._tpl)
+            && Object.keys(searchRequest.buildItems).length > 1
+        )
+        {
+            // Don't include preset offer
+            return false;
+        }
+
+        // commented out as required search "which is for checking offers that are barters"
+        // has info.removeBartering as true, this if statement removed barter items.
+        if (searchRequest.removeBartering && !this.paymentHelper.isMoneyTpl(moneyTypeTpl))
+        {
+            // don't include barter offers
             return false;
         }
 
