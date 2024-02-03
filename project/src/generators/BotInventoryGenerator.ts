@@ -305,8 +305,9 @@ export class BotInventoryGenerator
     /**
      * Add a piece of equipment with mods to inventory from the provided pools
      * @param settings Values to adjust how item is chosen and added to bot
+     * @returns true when item added
      */
-    protected generateEquipment(settings: IGenerateEquipmentProperties): void
+    protected generateEquipment(settings: IGenerateEquipmentProperties): boolean
     {
         const spawnChance =
             ([EquipmentSlots.POCKETS, EquipmentSlots.SECURED_CONTAINER] as string[]).includes(
@@ -323,7 +324,7 @@ export class BotInventoryGenerator
                 ),
             );
 
-            return;
+            return false;
         }
 
         const shouldSpawn = this.randomUtil.getChance100(spawnChance);
@@ -338,7 +339,7 @@ export class BotInventoryGenerator
             {
                 if (Object.values(settings.rootEquipmentPool).length === 0)
                 {
-                    return;
+                    return false;
                 }
 
                 const chosenItemTpl = this.weightedRandomHelper.getWeightedValue<string>(settings.rootEquipmentPool);
@@ -367,7 +368,7 @@ export class BotInventoryGenerator
                     // Tried x different items that failed, stop
                     if (attempts > maxAttempts)
                     {
-                        return;
+                        return false;
                     }
 
                     // Remove picked item
@@ -422,7 +423,11 @@ export class BotInventoryGenerator
                 // No slots, push root item only
                 settings.inventory.items.push(item);
             }
+
+            return true;
         }
+
+        return false;
     }
 
     /**
