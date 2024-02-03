@@ -269,7 +269,7 @@ export class BotInventoryGenerator
         const tacVestsWithArmor = Object.entries(templateInventory.equipment.TacticalVest).reduce(
             (newVestDictionary, [tplKey]) =>
             {
-                if (this.itemHelper.getItem(tplKey)[1]._props.Slots?.length > 0)
+                if (this.itemHelper.itemHasSlots(tplKey))
                 {
                     newVestDictionary[tplKey] = templateInventory.equipment.TacticalVest[tplKey];
                 }
@@ -290,7 +290,7 @@ export class BotInventoryGenerator
         const tacVestsWithoutArmor = Object.entries(templateInventory.equipment.TacticalVest).reduce(
             (newVestDictionary, [tplKey]) =>
             {
-                if (this.itemHelper.getItem(tplKey)[1]._props.Slots?.length === 0)
+                if (this.itemHelper.itemHasSlots(tplKey))
                 {
                     newVestDictionary[tplKey] = templateInventory.equipment.TacticalVest[tplKey];
                 }

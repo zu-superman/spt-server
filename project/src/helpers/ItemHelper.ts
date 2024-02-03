@@ -275,6 +275,11 @@ export class ItemHelper
         return [false, undefined];
     }
 
+    public itemHasSlots(itemTpl: string): boolean
+    {
+        return this.getItem(itemTpl)[1]._props.Slots?.length > 0;
+    }
+
     public isItemInDb(tpl: string): boolean
     {
         const itemDetails = this.getItem(tpl);

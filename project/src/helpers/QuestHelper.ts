@@ -270,8 +270,12 @@ export class QuestHelper
         // Is armor item that may need inserts / plates
         if (questReward.items.length === 1 && this.itemHelper.armorItemCanHoldMods(rootItem._tpl))
         {
-            // Attempt to pull default preset from globals and add child items to reward
-            this.generateArmorRewardChildSlots(rootItem, questReward);
+            // Only process items with slots
+            if (this.itemHelper.itemHasSlots(rootItem._tpl))
+            {
+                // Attempt to pull default preset from globals and add child items to reward
+                this.generateArmorRewardChildSlots(rootItem, questReward);
+            }
         }
 
         for (const item of questReward.items)
