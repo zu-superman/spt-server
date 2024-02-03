@@ -936,7 +936,12 @@ export class BotEquipmentModGenerator
         // Mod is flagged as being default only, try and find it in globals
         if (modSpawnResult === ModSpawn.DEFAULT_MOD)
         {
-            const defaultWeaponPreset = this.presetHelper.getDefaultPreset(weaponTemplate._id);
+            // Edge case - using mp5sd reciever means default mp5 handguard doesnt fit
+            const isMp5sd = parentTemplate._id === "5926f2e086f7745aae644231";
+
+            const defaultWeaponPreset = isMp5sd
+                ? this.presetHelper.getPreset("59411abb86f77478f702b5d2")
+                : this.presetHelper.getDefaultPreset(weaponTemplate._id);
             const matchingMod = defaultWeaponPreset._items.find((item) =>
                 item?.slotId?.toLowerCase() === modSlot.toLowerCase()
             );
