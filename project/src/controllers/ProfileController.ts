@@ -12,7 +12,6 @@ import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEve
 import { IMiniProfile } from "@spt-aki/models/eft/launcher/IMiniProfile";
 import { GetProfileStatusResponseData } from "@spt-aki/models/eft/profile/GetProfileStatusResponseData";
 import { IAkiProfile, Inraid, Vitality } from "@spt-aki/models/eft/profile/IAkiProfile";
-import { ICompletedAchievementsResponse } from "@spt-aki/models/eft/profile/ICompletedAchievementsResponse";
 import { IGetOtherProfileRequest } from "@spt-aki/models/eft/profile/IGetOtherProfileRequest";
 import { IGetOtherProfileResponse } from "@spt-aki/models/eft/profile/IGetOtherProfileResponse";
 import { IProfileChangeNicknameRequestData } from "@spt-aki/models/eft/profile/IProfileChangeNicknameRequestData";
@@ -21,7 +20,6 @@ import { IProfileCreateRequestData } from "@spt-aki/models/eft/profile/IProfileC
 import { ISearchFriendRequestData } from "@spt-aki/models/eft/profile/ISearchFriendRequestData";
 import { ISearchFriendResponse } from "@spt-aki/models/eft/profile/ISearchFriendResponse";
 import { IValidateNicknameRequestData } from "@spt-aki/models/eft/profile/IValidateNicknameRequestData";
-import { MemberCategory } from "@spt-aki/models/enums/MemberCategory";
 import { MessageType } from "@spt-aki/models/enums/MessageType";
 import { QuestStatus } from "@spt-aki/models/enums/QuestStatus";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
@@ -31,6 +29,7 @@ import { SaveServer } from "@spt-aki/servers/SaveServer";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
 import { MailSendService } from "@spt-aki/services/MailSendService";
 import { ProfileFixerService } from "@spt-aki/services/ProfileFixerService";
+import { SeasonalEventService } from "@spt-aki/services/SeasonalEventService";
 import { HashUtil } from "@spt-aki/utils/HashUtil";
 import { TimeUtil } from "@spt-aki/utils/TimeUtil";
 
@@ -46,6 +45,7 @@ export class ProfileController
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("ProfileFixerService") protected profileFixerService: ProfileFixerService,
         @inject("LocalisationService") protected localisationService: LocalisationService,
+        @inject("SeasonalEventService") protected seasonalEventService: SeasonalEventService,
         @inject("MailSendService") protected mailSendService: MailSendService,
         @inject("PlayerScavGenerator") protected playerScavGenerator: PlayerScavGenerator,
         @inject("EventOutputHolder") protected eventOutputHolder: EventOutputHolder,
@@ -225,6 +225,12 @@ export class ProfileController
         // Completed account creation
         this.saveServer.getProfile(sessionID).info.wipe = false;
         this.saveServer.saveProfile(sessionID);
+
+        // Requires to enable seasonal changes after creating fresh profile
+        if (this.seasonalEventService.isAutomaticEventDetectionEnabled())
+        {
+            this.seasonalEventService.enableSeasonalEvents(sessionID);
+        }
 
         return pmcData._id;
     }
