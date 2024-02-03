@@ -5,6 +5,7 @@ import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
 import { Common, CounterKeyValue, Stats } from "@spt-aki/models/eft/common/tables/IBotBase";
 import { IAkiProfile } from "@spt-aki/models/eft/profile/IAkiProfile";
 import { IValidateNicknameRequestData } from "@spt-aki/models/eft/profile/IValidateNicknameRequestData";
+import { AccountTypes } from "@spt-aki/models/enums/AccountTypes";
 import { SkillTypes } from "@spt-aki/models/enums/SkillTypes";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
@@ -446,5 +447,10 @@ export class ProfileHelper
         }
 
         return skillToReturn;
+    }
+
+    public isDeveloperAccount(sessionID: string): boolean
+    {
+        return this.getFullProfile(sessionID).info.edition.toLowerCase().startsWith(AccountTypes.SPT_DEVELOPER);
     }
 }

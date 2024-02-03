@@ -79,7 +79,7 @@ export class HideoutHelper
             return this.httpResponse.appendErrorToOutput(this.eventOutputHolder.getOutput(sessionID));
         }
 
-        const modifiedProductionTime = recipe.productionTime
+        let modifiedProductionTime = recipe.productionTime
             - this.getCraftingSkillProductionTimeReduction(pmcData, recipe.productionTime);
 
         // @Important: Here we need to be very exact:
@@ -89,6 +89,12 @@ export class HideoutHelper
         {
             pmcData.Hideout.Production = {};
         }
+
+        if (modifiedProductionTime > 0 && this.profileHelper.isDeveloperAccount(sessionID))
+        {
+            modifiedProductionTime = 40;
+        }
+
         pmcData.Hideout.Production[body.recipeId] = this.initProduction(
             body.recipeId,
             modifiedProductionTime,

@@ -158,8 +158,6 @@ export class GameController
                 this.updateProfileHealthValues(pmcProfile);
             }
 
-            this.profileFixerService.setHideoutAreasAndCraftsTo40Secs(fullProfile);
-
             if (this.locationConfig.fixEmptyBotWavesSettings.enabled)
             {
                 this.fixBrokenOfflineMapWaves();

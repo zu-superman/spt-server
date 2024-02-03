@@ -152,9 +152,13 @@ export class HideoutController
             return this.httpResponse.appendErrorToOutput(output);
         }
 
-        const ctime = hideoutData.stages[hideoutArea.level + 1].constructionTime;
+        let ctime = hideoutData.stages[hideoutArea.level + 1].constructionTime;
         if (ctime > 0)
         {
+            if (this.profileHelper.isDeveloperAccount(sessionID))
+            {
+                ctime = 40;
+            }
             const timestamp = this.timeUtil.getTimestamp();
 
             hideoutArea.completeTime = Math.round(timestamp + ctime);
@@ -654,7 +658,7 @@ export class HideoutController
 
         pmcData.Hideout.Production[body.recipeId] = this.hideoutHelper.initProduction(
             body.recipeId,
-            modifiedScavCaseTime,
+            this.profileHelper.isDeveloperAccount(sessionID) ? 40 : modifiedScavCaseTime,
             false,
         );
         pmcData.Hideout.Production[body.recipeId].sptIsScavCase = true;

@@ -1387,43 +1387,4 @@ export class ProfileFixerService
             }
         }
     }
-
-    public setHideoutAreasAndCraftsTo40Secs(fullProfile: IAkiProfile): void
-    {
-        if (!fullProfile.info.edition.toLowerCase().startsWith(AccountTypes.SPT_DEVELOPER))
-        {
-            return;
-        }
-
-        for (const hideoutProd of this.databaseServer.getTables().hideout.production)
-        {
-            if (hideoutProd.productionTime > 40)
-            {
-                hideoutProd.productionTime = 40;
-            }
-        }
-        this.logger.warning("DEVELOPER: SETTING ALL HIDEOUT PRODUCTIONS TO 40 SECONDS");
-
-        for (const hideoutArea of this.databaseServer.getTables().hideout.areas)
-        {
-            for (const stageKey in hideoutArea.stages)
-            {
-                const stage = hideoutArea.stages[stageKey];
-                if (stage.constructionTime > 40)
-                {
-                    stage.constructionTime = 40;
-                }
-            }
-        }
-        this.logger.warning("DEVELOPER: SETTING ALL HIDEOUT AREAS TO 40 SECOND UPGRADES");
-
-        for (const scavCaseCraft of this.databaseServer.getTables().hideout.scavcase)
-        {
-            if (scavCaseCraft.ProductionTime > 40)
-            {
-                scavCaseCraft.ProductionTime = 40;
-            }
-        }
-        this.logger.warning("DEVELOPER: SETTING ALL SCAV CASES TO 40 SECONDS");
-    }
 }
