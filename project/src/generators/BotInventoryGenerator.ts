@@ -220,7 +220,7 @@ export class BotInventoryGenerator
             botEquipmentConfig: botEquipConfig,
             randomisationDetails: randomistionDetails,
         });
-        this.generateEquipment({
+        const hasArmorVest = this.generateEquipment({
             rootEquipmentSlot: EquipmentSlots.ARMOR_VEST,
             rootEquipmentPool: templateInventory.equipment.ArmorVest,
             modPool: templateInventory.mods,
@@ -233,7 +233,6 @@ export class BotInventoryGenerator
         });
 
         // Bot has no armor vest and flagged to be foreced to wear armored rig in this event
-        const hasArmorVest = botInventory.items.some((item) => item.slotId === "ArmorVest");
         if (botEquipConfig.forceOnlyArmoredRigWhenNoArmor && !hasArmorVest)
         {
             // Filter rigs down to only those with armor
