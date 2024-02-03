@@ -4296,7 +4296,17 @@
                 "5cd945d71388ce000a659dfb"
             ],
             "trader": {
-                "initialLoyaltyLevel": 1,
+                "initialLoyaltyLevel": {
+					"54cb50c76803fa8b248b4571": 1,
+					"54cb57776803fa99248b456e": 1,
+					"579dc571d53a0658a154fbec": 1,
+					"58330581ace78e27b8b10cee": 1,
+					"5935c25fb3acc3127c3d8cd9": 1,
+					"5a7c2eca46aef81a7ca2145d": 1,
+					"5ac3b934156ae10c4430e83c": 1,
+					"5c0647fdd443bc2504c2d371": 1,
+					"638f541a29ffd1183d187f57": 1
+				},
                 "initialSalesSum": 0,
                 "initialStanding": 0.2,
                 "jaegerUnlocked": false
@@ -8726,7 +8736,17 @@
                 "5cde9e957d6c8b0474535da7"
             ],
             "trader": {
-                "initialLoyaltyLevel": 1,
+                "initialLoyaltyLevel": {
+					"54cb50c76803fa8b248b4571": 1,
+					"54cb57776803fa99248b456e": 1,
+					"579dc571d53a0658a154fbec": 1,
+					"58330581ace78e27b8b10cee": 1,
+					"5935c25fb3acc3127c3d8cd9": 1,
+					"5a7c2eca46aef81a7ca2145d": 1,
+					"5ac3b934156ae10c4430e83c": 1,
+					"5c0647fdd443bc2504c2d371": 1,
+					"638f541a29ffd1183d187f57": 1
+				},
                 "initialSalesSum": 0,
                 "initialStanding": 0.2,
                 "jaegerUnlocked": false
@@ -11907,7 +11927,17 @@
                 "5cd945d71388ce000a659dfb"
             ],
             "trader": {
-                "initialLoyaltyLevel": 1,
+                "initialLoyaltyLevel": {
+					"54cb50c76803fa8b248b4571": 1,
+					"54cb57776803fa99248b456e": 1,
+					"579dc571d53a0658a154fbec": 1,
+					"58330581ace78e27b8b10cee": 1,
+					"5935c25fb3acc3127c3d8cd9": 1,
+					"5a7c2eca46aef81a7ca2145d": 1,
+					"5ac3b934156ae10c4430e83c": 1,
+					"5c0647fdd443bc2504c2d371": 1,
+					"638f541a29ffd1183d187f57": 1
+				},
                 "initialSalesSum": 0,
                 "initialStanding": 0,
                 "jaegerUnlocked": false
@@ -15187,7 +15217,17 @@
                 "5cde9e957d6c8b0474535da7"
             ],
             "trader": {
-                "initialLoyaltyLevel": 1,
+                "initialLoyaltyLevel": {
+					"54cb50c76803fa8b248b4571": 1,
+					"54cb57776803fa99248b456e": 1,
+					"579dc571d53a0658a154fbec": 1,
+					"58330581ace78e27b8b10cee": 1,
+					"5935c25fb3acc3127c3d8cd9": 1,
+					"5a7c2eca46aef81a7ca2145d": 1,
+					"5ac3b934156ae10c4430e83c": 1,
+					"5c0647fdd443bc2504c2d371": 1,
+					"638f541a29ffd1183d187f57": 1
+				},
                 "initialSalesSum": 0,
                 "initialStanding": 0,
                 "jaegerUnlocked": false
@@ -18826,7 +18866,17 @@
                 "5cd945d71388ce000a659dfb"
             ],
             "trader": {
-                "initialLoyaltyLevel": 1,
+                "initialLoyaltyLevel": {
+					"54cb50c76803fa8b248b4571": 1,
+					"54cb57776803fa99248b456e": 1,
+					"579dc571d53a0658a154fbec": 1,
+					"58330581ace78e27b8b10cee": 1,
+					"5935c25fb3acc3127c3d8cd9": 1,
+					"5a7c2eca46aef81a7ca2145d": 1,
+					"5ac3b934156ae10c4430e83c": 1,
+					"5c0647fdd443bc2504c2d371": 1,
+					"638f541a29ffd1183d187f57": 1
+				},
                 "initialSalesSum": 0,
                 "initialStanding": 0.2,
                 "jaegerUnlocked": false
@@ -22662,7 +22712,17 @@
                 "5cde9e957d6c8b0474535da7"
             ],
             "trader": {
-                "initialLoyaltyLevel": 1,
+                "initialLoyaltyLevel": {
+					"54cb50c76803fa8b248b4571": 1,
+					"54cb57776803fa99248b456e": 1,
+					"579dc571d53a0658a154fbec": 1,
+					"58330581ace78e27b8b10cee": 1,
+					"5935c25fb3acc3127c3d8cd9": 1,
+					"5a7c2eca46aef81a7ca2145d": 1,
+					"5ac3b934156ae10c4430e83c": 1,
+					"5c0647fdd443bc2504c2d371": 1,
+					"638f541a29ffd1183d187f57": 1
+				},
                 "initialSalesSum": 0,
                 "initialStanding": 0.2,
                 "jaegerUnlocked": false
@@ -25695,7 +25755,17 @@
                 "5cd945d71388ce000a659dfb"
             ],
             "trader": {
-                "initialLoyaltyLevel": 4,
+                "initialLoyaltyLevel": {
+					"54cb50c76803fa8b248b4571": 4,
+					"54cb57776803fa99248b456e": 4,
+					"579dc571d53a0658a154fbec": 4,
+					"58330581ace78e27b8b10cee": 4,
+					"5935c25fb3acc3127c3d8cd9": 4,
+					"5a7c2eca46aef81a7ca2145d": 4,
+					"5ac3b934156ae10c4430e83c": 4,
+					"5c0647fdd443bc2504c2d371": 4,
+					"638f541a29ffd1183d187f57": 4
+				},
                 "initialSalesSum": 2600000,
                 "initialStanding": 6,
                 "jaegerUnlocked": true,
@@ -28694,7 +28764,17 @@
                 "5cde9e957d6c8b0474535da7"
             ],
             "trader": {
-                "initialLoyaltyLevel": 4,
+                "initialLoyaltyLevel": {
+					"54cb50c76803fa8b248b4571": 4,
+					"54cb57776803fa99248b456e": 4,
+					"579dc571d53a0658a154fbec": 4,
+					"58330581ace78e27b8b10cee": 4,
+					"5935c25fb3acc3127c3d8cd9": 4,
+					"5a7c2eca46aef81a7ca2145d": 4,
+					"5ac3b934156ae10c4430e83c": 4,
+					"5c0647fdd443bc2504c2d371": 4,
+					"638f541a29ffd1183d187f57": 4
+				},
                 "initialSalesSum": 2600000,
                 "initialStanding": 6,
                 "jaegerUnlocked": true,
@@ -35379,7 +35459,17 @@
                 "5cde9e957d6c8b0474535da7"
             ],
             "trader": {
-                "initialLoyaltyLevel": 2,
+                "initialLoyaltyLevel": {
+					"54cb50c76803fa8b248b4571": 2,
+					"54cb57776803fa99248b456e": 2,
+					"579dc571d53a0658a154fbec": 1,
+					"58330581ace78e27b8b10cee": 2,
+					"5935c25fb3acc3127c3d8cd9": 2,
+					"5a7c2eca46aef81a7ca2145d": 1,
+					"5ac3b934156ae10c4430e83c": 1,
+					"5c0647fdd443bc2504c2d371": 2,
+					"638f541a29ffd1183d187f57": 2
+				},
                 "initialSalesSum": 2600000,
                 "initialStanding": 1,
                 "jaegerUnlocked": true,
@@ -36283,7 +36373,17 @@
                 "5cd945d71388ce000a659dfb"
             ],
             "trader": {
-                "initialLoyaltyLevel": 1,
+                "initialLoyaltyLevel": {
+					"54cb50c76803fa8b248b4571": 1,
+					"54cb57776803fa99248b456e": 1,
+					"579dc571d53a0658a154fbec": 1,
+					"58330581ace78e27b8b10cee": 1,
+					"5935c25fb3acc3127c3d8cd9": 1,
+					"5a7c2eca46aef81a7ca2145d": 1,
+					"5ac3b934156ae10c4430e83c": 1,
+					"5c0647fdd443bc2504c2d371": 1,
+					"638f541a29ffd1183d187f57": 1
+				},
                 "initialSalesSum": 0,
                 "initialStanding": 0,
                 "jaegerUnlocked": false
@@ -37194,7 +37294,17 @@
                 "5cde9e957d6c8b0474535da7"
             ],
             "trader": {
-                "initialLoyaltyLevel": 1,
+                "initialLoyaltyLevel": {
+					"54cb50c76803fa8b248b4571": 1,
+					"54cb57776803fa99248b456e": 1,
+					"579dc571d53a0658a154fbec": 1,
+					"58330581ace78e27b8b10cee": 1,
+					"5935c25fb3acc3127c3d8cd9": 1,
+					"5a7c2eca46aef81a7ca2145d": 1,
+					"5ac3b934156ae10c4430e83c": 1,
+					"5c0647fdd443bc2504c2d371": 1,
+					"638f541a29ffd1183d187f57": 1
+				},
                 "initialSalesSum": 0,
                 "initialStanding": 0,
                 "jaegerUnlocked": false
@@ -42628,7 +42738,17 @@
                 "5cde9e957d6c8b0474535da7"
             ],
             "trader": {
-                "initialLoyaltyLevel": 1,
+                "initialLoyaltyLevel": {
+					"54cb50c76803fa8b248b4571": 2,
+					"54cb57776803fa99248b456e": 2,
+					"579dc571d53a0658a154fbec": 1,
+					"58330581ace78e27b8b10cee": 2,
+					"5935c25fb3acc3127c3d8cd9": 2,
+					"5a7c2eca46aef81a7ca2145d": 1,
+					"5ac3b934156ae10c4430e83c": 1,
+					"5c0647fdd443bc2504c2d371": 2,
+					"638f541a29ffd1183d187f57": 2
+				},
                 "initialSalesSum": 0,
                 "initialStanding": 0,
                 "jaegerUnlocked": false
