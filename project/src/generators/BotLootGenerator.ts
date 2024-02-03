@@ -98,6 +98,7 @@ export class BotLootGenerator
             specialLootItemCount,
             botInventory,
             botRole,
+            true,
         );
 
         // Healing items / Meds
