@@ -265,30 +265,28 @@ export class QuestHelper
         let rewardItems: Item[] = [];
         let targets: Item[] = [];
         const mods: Item[] = [];
-        const rootItem = questReward.items[0];
 
         // Is armor item that may need inserts / plates
-        if (questReward.items.length === 1 && this.itemHelper.armorItemCanHoldMods(rootItem._tpl))
+        if (questReward.items.length === 1 && this.itemHelper.armorItemCanHoldMods(questReward.items[0]._tpl))
         {
             // Only process items with slots
-            if (this.itemHelper.itemHasSlots(rootItem._tpl))
+            if (this.itemHelper.itemHasSlots(questReward.items[0]._tpl))
             {
                 // Attempt to pull default preset from globals and add child items to reward
-                this.generateArmorRewardChildSlots(rootItem, questReward);
+                this.generateArmorRewardChildSlots(questReward.items[0], questReward);
             }
         }
 
         for (const item of questReward.items)
         {
-            // reward items are granted Found in Raid status
             if (!item.upd)
             {
                 item.upd = {};
             }
-
+            // reward items are granted Found in Raid status
             item.upd.SpawnedInSession = true;
 
-            // Separate base item from mods, fix stacks
+            // Is root item, fix stacks
             if (item._id === questReward.target)
             { // Is base reward item
                 if (
@@ -310,10 +308,10 @@ export class QuestHelper
             else
             {
                 // Is child mod
-                if (rootItem.upd.SpawnedInSession)
+                if (questReward.items[0].upd.SpawnedInSession)
                 {
                     // Propigate FiR status into child items
-                    item.upd.SpawnedInSession = rootItem.upd.SpawnedInSession;
+                    item.upd.SpawnedInSession = questReward.items[0].upd.SpawnedInSession;
                 }
 
                 mods.push(item);
