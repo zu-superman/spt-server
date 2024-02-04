@@ -247,30 +247,50 @@ export class InsuranceService
                 continue;
             }
 
-            // Item iterated on could have already been processed previously (as a child of another item)
-            if (equipmentToSendToPlayer.some((item) => item.itemsToReturnToPlayer._id === insuredItem.itemId))
-            {
-                continue;
-            }
-
             // Check if item missing in post-raid gear OR player died
             // Catches both events: player died with item on + player survived but dropped item in raid
             if (!offRaidGearHash[insuredItem.itemId] || playerDied)
             {
                 equipmentToSendToPlayer.push({
                     pmcData: pmcData,
-                    itemsToReturnToPlayer: this.getInsuredItemDetails(
+                    itemToReturnToPlayer: this.getInsuredItemDetails(
                         pmcData,
-                        this.itemHelper.findAndReturnChildrenAsItems(
-                            Object.values(preRaidGearHash),
-                            preRaidItem._id,
-                            true,
-                        ),
-                        offraidData.insurance,
+                        preRaidItem,
+                        offraidData.insurance?.find((insuranceItem) => insuranceItem.id === insuredItem.itemId),
                     ),
                     traderId: insuredItem.tid,
                     sessionID: sessionID,
                 });
+
+                // Armor item with slots, we need to include soft_inserts as they can never be removed from armor items
+                if (this.itemHelper.armorItemCanHoldMods(preRaidItem._tpl))
+                {
+                    if (this.itemHelper.itemHasSlots(preRaidItem._tpl))
+                    {
+                        // Get IDs of all soft insert child items on armor from pre raid gear data
+                        const softInsertChildIds = preRaidGear.filter((item) =>
+                            item.parentId === preRaidItem._id
+                            && this.itemHelper.getSoftInsertSlotIds().includes(item.slotId.toLowerCase())
+                        ).map((x) => x._id);
+
+                        // Add all items found above to return data
+                        for (const softInsertChildModId of softInsertChildIds)
+                        {
+                            equipmentToSendToPlayer.push({
+                                pmcData: pmcData,
+                                itemToReturnToPlayer: this.getInsuredItemDetails(
+                                    pmcData,
+                                    preRaidGear.find((item) => item._id === softInsertChildModId),
+                                    offraidData.insurance?.find((insuranceItem) =>
+                                        insuranceItem.id === softInsertChildModId
+                                    ),
+                                ),
+                                traderId: insuredItem.tid,
+                                sessionID: sessionID,
+                            });
+                        }
+                    }
+                }
             }
         }
 
@@ -300,86 +320,67 @@ export class InsuranceService
      */
     protected getInsuredItemDetails(
         pmcData: IPmcData,
-        preRaidItemWithChildren: Item[],
-        allItemsFromClient: IInsuredItemsData[],
-    ): Item[]
+        preRaidItem: Item,
+        insuredItemFromClient: IInsuredItemsData,
+    ): Item
     {
-        const itemsToReturn: Item[] = [];
-        for (const preRaidItem of preRaidItemWithChildren)
+        // Get baseline item to return, clone pre raid item
+        const itemToReturn: Item = this.jsonUtil.clone(preRaidItem);
+
+        // Add upd if it doesnt exist
+        if (!itemToReturn.upd)
         {
-            const isInsured = pmcData.InsuredItems.some((item) => item.itemId === preRaidItem._id);
-            const itemClientInsuranceData = allItemsFromClient?.find((x) => x.id === preRaidItem._id);
-            const itemIsSoftInsert = this.itemHelper.isOfBaseclass(preRaidItem._tpl, BaseClasses.BUILT_IN_INSERTS);
+            itemToReturn.upd = {};
+        }
 
-            if (isInsured || itemIsSoftInsert)
+        // Check for slotid values that need to be updated and adjust
+        this.updateSlotIdValue(pmcData.Inventory.equipment, itemToReturn);
+
+        // Remove location property
+        if (itemToReturn.slotId === "hideout" && "location" in itemToReturn)
+        {
+            delete itemToReturn.location;
+        }
+
+        // Remove found in raid status when upd exists + SpawnedInSession value exists
+        if ("upd" in itemToReturn && "SpawnedInSession" in itemToReturn.upd)
+        {
+            itemToReturn.upd.SpawnedInSession = false;
+        }
+
+        // Client item has durability values, Ensure values persist into server data
+        if (insuredItemFromClient?.durability)
+        {
+            // Item didnt have Repairable object pre-raid, add it
+            if (!itemToReturn.upd.Repairable)
             {
-                // Check if item should always be lost
-                if (this.insuranceConfig.slotIdsToAlwaysRemove.includes(preRaidItem.slotId.toLowerCase()))
-                {
-                    continue;
-                }
-
-                // Get baseline item to return, clone pre-raid item
-                const itemToReturn: Item = this.jsonUtil.clone(preRaidItem);
-
-                // Add upd if it doesnt exist
-                if (!itemToReturn.upd)
-                {
-                    itemToReturn.upd = {};
-                }
-
-                // Check for slotId values that need to be updated and adjust
-                this.updateSlotIdValue(pmcData.Inventory.equipment, itemToReturn);
-
-                // Remove location property
-                if (itemToReturn.slotId === "hideout" && "location" in itemToReturn)
-                {
-                    delete itemToReturn.location;
-                }
-
-                // Remove found in raid status when upd exists + SpawnedInSession value exists
-                if ("upd" in itemToReturn && "SpawnedInSession" in itemToReturn.upd)
-                {
-                    itemToReturn.upd.SpawnedInSession = false;
-                }
-
-                // Client item has durability values, Ensure values persist into server data
-                if (itemClientInsuranceData?.durability)
-                {
-                    // Item didnt have Repairable object pre-raid, add it
-                    if (!itemToReturn.upd.Repairable)
-                    {
-                        itemToReturn.upd.Repairable = {
-                            Durability: itemClientInsuranceData.durability,
-                            MaxDurability: itemClientInsuranceData.maxDurability,
-                        };
-                    }
-                    else
-                    {
-                        itemToReturn.upd.Repairable.Durability = itemClientInsuranceData.durability;
-                        itemToReturn.upd.Repairable.MaxDurability = itemClientInsuranceData.maxDurability;
-                    }
-                }
-
-                // Client item has FaceShield values, Ensure values persist into server data
-                if (itemClientInsuranceData?.hits)
-                {
-                    // Item didnt have faceshield object pre-raid, add it
-                    if (!itemToReturn.upd.FaceShield)
-                    {
-                        itemToReturn.upd.FaceShield = { Hits: itemClientInsuranceData.hits };
-                    }
-                    else
-                    {
-                        itemToReturn.upd.FaceShield.Hits = itemClientInsuranceData.hits;
-                    }
-                }
-
-                itemsToReturn.push(itemToReturn);
+                itemToReturn.upd.Repairable = {
+                    Durability: insuredItemFromClient.durability,
+                    MaxDurability: insuredItemFromClient.maxDurability,
+                };
+            }
+            else
+            {
+                itemToReturn.upd.Repairable.Durability = insuredItemFromClient.durability;
+                itemToReturn.upd.Repairable.MaxDurability = insuredItemFromClient.maxDurability;
             }
         }
 
-        return itemsToReturn;
+        // Client item has FaceShield values, Ensure values persist into server data
+        if (insuredItemFromClient?.hits)
+        {
+            // Item didnt have faceshield object pre-raid, add it
+            if (!itemToReturn.upd.FaceShield)
+            {
+                itemToReturn.upd.FaceShield = { Hits: insuredItemFromClient.hits };
+            }
+            else
+            {
+                itemToReturn.upd.FaceShield.Hits = insuredItemFromClient.hits;
+            }
+        }
+
+        return itemToReturn;
     }
 
     /**
@@ -428,12 +429,12 @@ export class InsuranceService
      * @param traderId Id of trader item was insured with
      */
     protected addGearToSend(
-        gear: { sessionID: string; pmcData: IPmcData; itemsToReturnToPlayer: Item[]; traderId: string; },
+        gear: { sessionID: string; pmcData: IPmcData; itemToReturnToPlayer: Item; traderId: string; },
     ): void
     {
         const sessionId = gear.sessionID;
         const pmcData = gear.pmcData;
-        const itemsToReturnToPlayer = gear.itemsToReturnToPlayer;
+        const itemToReturnToPlayer = gear.itemToReturnToPlayer;
         const traderId = gear.traderId;
 
         // Ensure insurance array is init
@@ -448,11 +449,13 @@ export class InsuranceService
             this.resetInsuranceTraderArray(sessionId, traderId);
         }
 
-        this.addInsuranceItemToArray(sessionId, traderId, itemsToReturnToPlayer);
+        this.addInsuranceItemToArray(sessionId, traderId, itemToReturnToPlayer);
 
         // Remove item from insured items array as its been processed
-        const returnedItemIds = itemsToReturnToPlayer.map((item) => item._id);
-        pmcData.InsuredItems = pmcData.InsuredItems.filter((item) => !returnedItemIds.includes(item.itemId));
+        pmcData.InsuredItems = pmcData.InsuredItems.filter((item) =>
+        {
+            return item.itemId !== itemToReturnToPlayer._id;
+        });
     }
 
     /**
@@ -480,11 +483,11 @@ export class InsuranceService
      * Store insured item
      * @param sessionId Player id (session id)
      * @param traderId Trader item insured with
-     * @param itemsToAdd Insured item (with children)
+     * @param itemToAdd Insured item (with children)
      */
-    public addInsuranceItemToArray(sessionId: string, traderId: string, itemsToAdd: Item[]): void
+    public addInsuranceItemToArray(sessionId: string, traderId: string, itemToAdd: Item): void
     {
-        this.insured[sessionId][traderId].push(...itemsToAdd);
+        this.insured[sessionId][traderId].push(itemToAdd);
     }
 
     /**

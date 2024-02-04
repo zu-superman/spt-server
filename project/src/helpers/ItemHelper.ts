@@ -137,17 +137,9 @@ export class ItemHelper
         }
 
         // Check if item has slots that match soft insert name ids
-        const softInsertSlotIds = [
-            "groin",
-            "soft_armor_back",
-            "soft_armor_front",
-            "soft_armor_left",
-            "soft_armor_right",
-            "shoulder_l",
-            "shoulder_r",
-            "collar",
-        ];
-        if (itemDbDetails[1]._props.Slots.find((slot) => softInsertSlotIds.includes(slot._name.toLowerCase())))
+        if (
+            itemDbDetails[1]._props.Slots.find((slot) => this.getSoftInsertSlotIds().includes(slot._name.toLowerCase()))
+        )
         {
             return true;
         }
@@ -160,6 +152,21 @@ export class ItemHelper
         }
 
         return false;
+    }
+
+    public getSoftInsertSlotIds(): string[]
+    {
+        return [
+            "groin",
+            "groin_back",
+            "soft_armor_back",
+            "soft_armor_front",
+            "soft_armor_left",
+            "soft_armor_right",
+            "shoulder_l",
+            "shoulder_r",
+            "collar",
+        ];
     }
 
     /**
