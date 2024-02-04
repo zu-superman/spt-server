@@ -1120,7 +1120,7 @@
                         "max": 45
                     },
                     "equipment": {
-                        "SecondPrimaryWeapon": 20
+                        "SecondPrimaryWeapon": 10
                     },
                     "randomisedArmorSlots": [
                         "Headwear",
