@@ -829,7 +829,7 @@ export class GameController
                         traderName: Object.keys(Traders)[Object.values(Traders).indexOf(traderId)],
                         questName: quests[questKey]?.QuestName ?? "UNKNOWN",
                     };
-                    this.logger.debug(
+                    this.logger.warning(
                         this.localisationService.getText("assort-missing_quest_assort_unlock", messageValues),
                     );
                 }
