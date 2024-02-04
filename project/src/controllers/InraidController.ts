@@ -154,13 +154,23 @@ export class InraidController
         this.healthHelper.saveVitality(serverPmcProfile, postRaidRequest.health, sessionID);
 
         // Remove inventory if player died and send insurance items
+        let insuredItemsLostCount = 0;
         if (mapHasInsuranceEnabled)
         {
-            this.insuranceService.storeLostGear(serverPmcProfile, postRaidRequest, preRaidGear, sessionID, isDead);
+            insuredItemsLostCount = this.insuranceService.storeLostGear(
+                serverPmcProfile,
+                postRaidRequest,
+                preRaidGear,
+                sessionID,
+                isDead,
+            );
         }
         else
         {
-            this.insuranceService.sendLostInsuranceMessage(sessionID, locationName);
+            if (insuredItemsLostCount > 0)
+            {
+                this.insuranceService.sendLostInsuranceMessage(sessionID, locationName);
+            }
         }
 
         // Edge case - Handle usec players leaving lighthouse with Rogues angry at them

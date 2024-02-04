@@ -218,6 +218,7 @@ export class InsuranceService
      * @param preRaidGear gear player wore prior to raid
      * @param sessionID Session id
      * @param playerDied did the player die in raid
+     * @returns Count of insured items lost in raid
      */
     public storeLostGear(
         pmcData: IPmcData,
@@ -225,8 +226,9 @@ export class InsuranceService
         preRaidGear: Item[],
         sessionID: string,
         playerDied: boolean,
-    ): void
+    ): number
     {
+        let itemsLostCount = 0;
         const preRaidGearHash = this.createItemHashTable(preRaidGear);
         const offRaidGearHash = this.createItemHashTable(offraidData.profile.Inventory.items);
 
@@ -277,7 +279,10 @@ export class InsuranceService
         for (const gear of equipmentToSendToPlayer)
         {
             this.addGearToSend(gear);
+            itemsLostCount++;
         }
+
+        return itemsLostCount;
     }
 
     /**
