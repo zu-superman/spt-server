@@ -20,28 +20,40 @@ import { ISellScavItemsToFenceRequestData } from "@spt-aki/models/eft/trade/ISel
 import { BackendErrorCodes } from "@spt-aki/models/enums/BackendErrorCodes";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { MemberCategory } from "@spt-aki/models/enums/MemberCategory";
+import { MessageType } from "@spt-aki/models/enums/MessageType";
 import { Traders } from "@spt-aki/models/enums/Traders";
 import { IRagfairConfig } from "@spt-aki/models/spt/config/IRagfairConfig";
 import { ITraderConfig } from "@spt-aki/models/spt/config/ITraderConfig";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { EventOutputHolder } from "@spt-aki/routers/EventOutputHolder";
 import { ConfigServer } from "@spt-aki/servers/ConfigServer";
+import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { RagfairServer } from "@spt-aki/servers/RagfairServer";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
+import { MailSendService } from "@spt-aki/services/MailSendService";
 import { RagfairPriceService } from "@spt-aki/services/RagfairPriceService";
+import { HashUtil } from "@spt-aki/utils/HashUtil";
 import { HttpResponseUtil } from "@spt-aki/utils/HttpResponseUtil";
 import { JsonUtil } from "@spt-aki/utils/JsonUtil";
+import { RandomUtil } from "@spt-aki/utils/RandomUtil";
+import { TimeUtil } from "@spt-aki/utils/TimeUtil";
 
 @injectable()
 export class TradeController
 {
+    protected roubleTpl = "5449016a4bdc2d6f028b456f";
+
     protected ragfairConfig: IRagfairConfig;
     protected traderConfig: ITraderConfig;
 
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
+        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("EventOutputHolder") protected eventOutputHolder: EventOutputHolder,
         @inject("TradeHelper") protected tradeHelper: TradeHelper,
+        @inject("TimeUtil") protected timeUtil: TimeUtil,
+        @inject("RandomUtil") protected randomUtil: RandomUtil,
+        @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
         @inject("TraderHelper") protected traderHelper: TraderHelper,
@@ -50,6 +62,7 @@ export class TradeController
         @inject("HttpResponseUtil") protected httpResponse: HttpResponseUtil,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("RagfairPriceService") protected ragfairPriceService: RagfairPriceService,
+        @inject("MailSendService") protected mailSendService: MailSendService,
         @inject("ConfigServer") protected configServer: ConfigServer,
     )
     {
@@ -255,66 +268,66 @@ export class TradeController
             return this.httpResponse.appendErrorToOutput(output, `Profile ${request.fromOwner.id} has no scav account`);
         }
 
-        this.sellInventoryToTrader(sessionId, scavProfile, pmcData, Traders.FENCE, output);
+        this.calculateCostOfScavInventoryAndMailMoneyToPlayer(sessionId, scavProfile, Traders.FENCE);
 
         return output;
     }
 
     /**
-     * Sell all sellable items to a trader from inventory
-     * WILL DELETE ITEMS FROM INVENTORY + CHILDREN OF ITEMS SOLD
+     * Get cost of items in inventory and send rouble total to player as mail
      * @param sessionId Session id
      * @param profileWithItemsToSell Profile with items to be sold to trader
      * @param profileThatGetsMoney Profile that gets the money after selling items
      * @param trader Trader to sell items to
      * @param output IItemEventRouterResponse
      */
-    protected sellInventoryToTrader(
+    protected calculateCostOfScavInventoryAndMailMoneyToPlayer(
         sessionId: string,
         profileWithItemsToSell: IPmcData,
-        profileThatGetsMoney: IPmcData,
         trader: Traders,
-        output: IItemEventRouterResponse,
     ): void
     {
         const handbookPrices = this.ragfairPriceService.getAllStaticPrices();
         // TODO, apply trader sell bonuses?
         const traderDetails = this.traderHelper.getTrader(trader, sessionId);
 
-        // Prep request object
-        const sellRequest: IProcessSellTradeRequestData = {
-            Action: "sell_to_trader",
-            type: "sell_to_trader",
-            tid: trader,
-            price: 0,
-            items: [],
-        };
-
         // Get all base items that scav has (primaryweapon/backpack/pockets etc)
         // Add items that trader will buy (only sell items that have the container as parent) to request object
-        const containerAndEquipmentItems = profileWithItemsToSell.Inventory.items.filter((x) =>
-            x.parentId === profileWithItemsToSell.Inventory.equipment
+        let roublesToSend = 0;
+        const containerAndEquipmentItems = profileWithItemsToSell.Inventory.items.filter((item) =>
+            item.parentId === profileWithItemsToSell.Inventory.equipment
         );
         for (const itemToSell of containerAndEquipmentItems)
         {
             // Increment sell price in request
-            sellRequest.price += this.getPriceOfItemAndChildren(
+            roublesToSend += this.getPriceOfItemAndChildren(
                 itemToSell._id,
                 profileWithItemsToSell.Inventory.items,
                 handbookPrices,
                 traderDetails,
             );
-
-            // Add item details to request
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            sellRequest.items.push({
-                id: itemToSell._id,
-                count: itemToSell?.upd?.StackObjectsCount ?? 1,
-                scheme_id: 0,
-            });
         }
-        this.logger.debug(`Selling scav items to fence for ${sellRequest.price} roubles`);
-        this.tradeHelper.sellItem(profileWithItemsToSell, profileThatGetsMoney, sellRequest, sessionId, output);
+        this.logger.debug(`Selling scav items to fence for ${roublesToSend} roubles`);
+
+        // Create single currency item with all currency on it
+        const rootCurrencyReward = {
+            _id: this.hashUtil.generate(),
+            _tpl: this.roubleTpl,
+            upd: { StackObjectsCount: roublesToSend },
+        };
+
+        // Ensure money is properly split to follow its max stack size limit
+        const curencyReward = this.itemHelper.splitStackIntoSeparateItems(rootCurrencyReward);
+
+        // Send mail from trader
+        this.mailSendService.sendLocalisedNpcMessageToPlayer(
+            sessionId,
+            this.traderHelper.getTraderById(trader),
+            MessageType.MESSAGE_WITH_ITEMS,
+            this.randomUtil.getArrayValue(this.databaseServer.getTables().traders[trader].dialogue.soldItems),
+            curencyReward.flatMap((x) => x),
+            this.timeUtil.getHoursAsSeconds(72),
+        );
     }
 
     /**

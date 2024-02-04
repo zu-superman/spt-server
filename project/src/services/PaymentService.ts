@@ -210,6 +210,7 @@ export class PaymentService
                     item.upd.StackObjectsCount = item.upd.StackObjectsCount + calcAmount;
                 }
 
+                // Inform client of change to items StackObjectsCount
                 output.profileChanges[sessionID].items.change.push(item);
 
                 if (skipSendingMoneyToStash)
@@ -219,11 +220,14 @@ export class PaymentService
             }
         }
 
+        // Create single currency item with all currency on it
         const rootCurrencyReward = {
             _id: this.hashUtil.generate(),
             _tpl: currency,
             upd: { StackObjectsCount: calcAmount },
         };
+
+        // Ensure money is properly split to follow its max stack size limit
         const rewards = this.itemHelper.splitStackIntoSeparateItems(rootCurrencyReward);
 
         if (!skipSendingMoneyToStash)
@@ -237,7 +241,7 @@ export class PaymentService
             this.inventoryHelper.addItemsToStash(sessionID, addItemToStashRequest, pmcData, output);
         }
 
-        // set current sale sum
+        // Calcualte new total sale sum with trader item sold to
         const saleSum = pmcData.TradersInfo[request.tid].salesSum + amountToSend;
 
         pmcData.TradersInfo[request.tid].salesSum = saleSum;
