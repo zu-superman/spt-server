@@ -883,7 +883,8 @@
                         "healing": {
                             "weights": {
                                 "0": 1,
-                                "1": 2
+                                "1": 4,
+								"2": 3
                             },
                             "whitelist": [
                                 "5e831507ea0a7c419c2f9bd9",
