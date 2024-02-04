@@ -44,7 +44,7 @@
             },
             "weaponCrateCount": {
                 "min": 1,
-                "max": 4
+                "max": 2
             },
             "itemBlacklist": [
                 "5e997f0b86f7741ac73993e2",
