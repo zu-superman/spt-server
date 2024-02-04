@@ -178,7 +178,7 @@ export class InventoryController
         {
             this.inventoryHelper.removeItemAndChildrenFromMailRewards(sessionID, body, output);
 
-            return;
+            return output;
         }
 
         const profileToRemoveItemFrom = (!body.fromOwner || body.fromOwner.id === pmcData._id)
