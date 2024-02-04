@@ -121,21 +121,26 @@ export class RagfairOfferHelper
      * @param searchRequest Search request data
      * @param itemsToAdd string array of item tpls to search for
      * @param traderAssorts All trader assorts player can access/buy
-     * @param pmcProfile Player profile
+     * @param pmcData Player profile
      * @returns IRagfairOffer array
      */
     public getOffersForBuild(
         searchRequest: ISearchRequestData,
         itemsToAdd: string[],
         traderAssorts: Record<string, ITraderAssort>,
-        pmcProfile: IPmcData,
+        pmcData: IPmcData,
     ): IRagfairOffer[]
     {
         const offersMap = new Map<string, IRagfairOffer[]>();
         const offers: IRagfairOffer[] = [];
         for (const offer of this.ragfairOfferService.getOffers())
         {
-            if (this.isDisplayableOffer(searchRequest, itemsToAdd, traderAssorts, offer, pmcProfile))
+            if (!this.passesSearchFilterCriteria(searchRequest, offer, pmcData))
+            {
+                continue;
+            }
+
+            if (this.isDisplayableOffer(searchRequest, itemsToAdd, traderAssorts, offer, pmcData))
             {
                 const isTraderOffer = offer.user.memberType === MemberCategory.TRADER;
 
@@ -154,7 +159,7 @@ export class RagfairOfferHelper
                     continue;
                 }
 
-                if (isTraderOffer && this.traderOfferLockedBehindLoyaltyLevel(offer, pmcProfile))
+                if (isTraderOffer && this.traderOfferLockedBehindLoyaltyLevel(offer, pmcData))
                 {
                     continue;
                 }
@@ -177,7 +182,7 @@ export class RagfairOfferHelper
             // multiple offers for item = is greyed out
             if (possibleOffers.length > 1)
             {
-                const lockedOffers = this.getLoyaltyLockedOffers(possibleOffers, pmcProfile);
+                const lockedOffers = this.getLoyaltyLockedOffers(possibleOffers, pmcData);
 
                 // Exclude locked offers + above loyalty locked offers if at least 1 was found
                 const availableOffers = possibleOffers.filter((x) => !(x.locked || lockedOffers.includes(x._id)));
