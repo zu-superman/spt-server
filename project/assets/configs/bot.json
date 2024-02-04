@@ -949,7 +949,7 @@
                         "Holster": 5,
                         "Earpiece": 35,
                         "Eyewear": 5,
-                        "Backpack": 35,
+                        "Backpack": 65,
                         "FaceCover": 5
                     },
                     "randomisedWeaponModSlots": [],
