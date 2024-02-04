@@ -13368,9 +13368,10 @@
         ]
       },
       "5f60c74e3b85f6263c145586": {
-        "mod_equipment": [
-          "5f60c85b58eff926626a60f7"
-        ]
+        "mod_equipment": ["5f60c85b58eff926626a60f7"],
+        "Helmet_top": ["657bc285aab96fccee08bea3"],
+        "Helmet_back": ["657bc2c5a1c61ee0c3036333"],
+        "Helmet_ears": ["657bc2e7b30eca976305118d"]
       },
       "5fb64bc92b1b027b1f50bcf2": {
         "mod_barrel": [
