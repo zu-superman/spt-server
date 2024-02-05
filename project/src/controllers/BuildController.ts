@@ -122,7 +122,9 @@ export class BuildController
             Items: request.Items,
         };
 
-        const existingBuild = existingSavedEquipmentBuilds.find((x) => x.Name === request.Name);
+        const existingBuild = existingSavedEquipmentBuilds.find((build) =>
+            build.Name === request.Name || build.Id === request.Id
+        );
         if (existingBuild)
         {
             // Already exists, replace
