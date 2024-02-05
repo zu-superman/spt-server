@@ -675,19 +675,17 @@ export class RagfairOfferHelper
         }
 
         // Performing a required search and offer doesn't have requirement for item
-        if (searchRequest.neededSearchId && !offer.requirements.some((x) => x._tpl === searchRequest.neededSearchId))
+        if (
+            searchRequest.neededSearchId
+            && !offer.requirements.some((requirement) => requirement._tpl === searchRequest.neededSearchId)
+        )
         {
             return false;
         }
 
-        // Filter out presets when search request has multiple buildItems
-        // Assuming 1 build item = single item e.g. gun
-        if (
-            searchRequest.buildCount && this.presetHelper.hasPreset(offerRootItem._tpl)
-            && Object.keys(searchRequest.buildItems).length > 1
-        )
+        // weapon/equipment search + offer is preset
+        if (searchRequest.buildCount && this.presetHelper.hasPreset(offerRootItem._tpl))
         {
-            // Don't include preset offer
             return false;
         }
 
