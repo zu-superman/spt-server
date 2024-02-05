@@ -87,27 +87,27 @@ export class LocationGenerator
 
         const db = this.databaseServer.getTables();
 
-        const staticWeaponsOnMap = this.jsonUtil.clone(db.loot.staticContainers[locationBase.Name]?.staticWeapons);
-        if (!staticWeaponsOnMap)
+        const staticWeaponsOnMapClone = this.jsonUtil.clone(db.loot.staticContainers[locationBase.Name]?.staticWeapons);
+        if (!staticWeaponsOnMapClone)
         {
             this.logger.error(`Unable to find static weapon data for map: ${locationBase.Name}`);
         }
 
         // Add mounted weapons to output loot
-        result.push(...staticWeaponsOnMap ?? []);
+        result.push(...staticWeaponsOnMapClone ?? []);
 
-        const allStaticContainersOnMap = this.jsonUtil.clone(
+        const allStaticContainersOnMapClone = this.jsonUtil.clone(
             db.loot.staticContainers[locationBase.Name]?.staticContainers,
         );
-        if (!allStaticContainersOnMap)
+        if (!allStaticContainersOnMapClone)
         {
             this.logger.error(`Unable to find static container data for map: ${locationBase.Name}`);
         }
-        const staticRandomisableContainersOnMap = this.getRandomisableContainersOnMap(allStaticContainersOnMap);
+        const staticRandomisableContainersOnMap = this.getRandomisableContainersOnMap(allStaticContainersOnMapClone);
 
         // Containers that MUST be added to map (quest containers etc)
-        const staticForcedOnMap = this.jsonUtil.clone(db.loot.staticContainers[locationBase.Name]?.staticForced);
-        if (!staticForcedOnMap)
+        const staticForcedOnMapClone = this.jsonUtil.clone(db.loot.staticContainers[locationBase.Name]?.staticForced);
+        if (!staticForcedOnMapClone)
         {
             this.logger.error(`Unable to find forced static data for map: ${locationBase.Name}`);
         }
@@ -117,7 +117,7 @@ export class LocationGenerator
 
         // Find all 100% spawn containers
         const staticLootDist = db.loot.staticLoot;
-        const guaranteedContainers = this.getGuaranteedContainers(allStaticContainersOnMap);
+        const guaranteedContainers = this.getGuaranteedContainers(allStaticContainersOnMapClone);
         staticContainerCount += guaranteedContainers.length;
 
         // Add loot to guaranteed containers and add to result
@@ -125,7 +125,7 @@ export class LocationGenerator
         {
             const containerWithLoot = this.addLootToContainer(
                 container,
-                staticForcedOnMap,
+                staticForcedOnMapClone,
                 staticLootDist,
                 staticAmmoDist,
                 locationId,
@@ -150,7 +150,7 @@ export class LocationGenerator
             {
                 const containerWithLoot = this.addLootToContainer(
                     container,
-                    staticForcedOnMap,
+                    staticForcedOnMapClone,
                     staticLootDist,
                     staticAmmoDist,
                     locationId,
@@ -239,7 +239,7 @@ export class LocationGenerator
                 // Add loot to container and push into result object
                 const containerWithLoot = this.addLootToContainer(
                     containerObject,
-                    staticForcedOnMap,
+                    staticForcedOnMapClone,
                     staticLootDist,
                     staticAmmoDist,
                     locationId,
@@ -400,13 +400,13 @@ export class LocationGenerator
         locationName: string,
     ): IStaticContainerData
     {
-        const container = this.jsonUtil.clone(staticContainer);
-        const containerTpl = container.template.Items[0]._tpl;
+        const containerClone = this.jsonUtil.clone(staticContainer);
+        const containerTpl = containerClone.template.Items[0]._tpl;
 
         // Create new unique parent id to prevent any collisions
         const parentId = this.objectId.generate();
-        container.template.Root = parentId;
-        container.template.Items[0]._id = parentId;
+        containerClone.template.Root = parentId;
+        containerClone.template.Items[0]._id = parentId;
 
         let containerMap = this.getContainerMapping(containerTpl);
 
@@ -417,7 +417,9 @@ export class LocationGenerator
         const containerLootPool = this.getPossibleLootItemsForContainer(containerTpl, staticLootDist);
 
         // Some containers need to have items forced into it (quest keys etc)
-        const tplsForced = staticForced.filter((x) => x.containerId === container.template.Id).map((x) => x.itemTpl);
+        const tplsForced = staticForced.filter((x) => x.containerId === containerClone.template.Id).map((x) =>
+            x.itemTpl
+        );
 
         // Draw random loot
         // Money spawn more than once in container
@@ -473,11 +475,11 @@ export class LocationGenerator
             // Add loot to container before returning
             for (const item of items)
             {
-                container.template.Items.push(item);
+                containerClone.template.Items.push(item);
             }
         }
 
-        return container;
+        return containerClone;
     }
 
     /**

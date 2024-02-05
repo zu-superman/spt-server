@@ -725,17 +725,17 @@ export class GameController
                     for (let index = indexOfWaveToSplit + 1; index < indexOfWaveToSplit + waveSize; index++)
                     {
                         // Clone wave ready to insert into array
-                        const waveToAdd = this.jsonUtil.clone(wave);
+                        const waveToAddClone = this.jsonUtil.clone(wave);
 
                         // Some waves have value of 0 for some reason, preserve
-                        if (waveToAdd.number !== 0)
+                        if (waveToAddClone.number !== 0)
                         {
                             // Update wave number to new location in array
-                            waveToAdd.number = index;
+                            waveToAddClone.number = index;
                         }
 
                         // Place wave into array in just-edited position + 1
-                        location.base.waves.splice(index, 0, waveToAdd);
+                        location.base.waves.splice(index, 0, waveToAddClone);
                         wavesAddedCount++;
                     }
 

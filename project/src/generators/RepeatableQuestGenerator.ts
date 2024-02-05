@@ -996,11 +996,11 @@ export class RepeatableQuestGenerator
         {
             // Add a random default preset weapon as reward
             const defaultPresets = Object.values(this.presetHelper.getDefaultPresets());
-            const defaultPreset = this.jsonUtil.clone(this.randomUtil.getArrayValue(defaultPresets));
+            const defaultPresetClone = this.jsonUtil.clone(this.randomUtil.getArrayValue(defaultPresets));
 
             // use _encyclopedia as its always the base items _tpl, items[0] isnt guaranteed to be base item
             rewards.Success.push(
-                this.generateRewardItem(defaultPreset._encyclopedia, 1, rewardIndex, defaultPreset._items),
+                this.generateRewardItem(defaultPresetClone._encyclopedia, 1, rewardIndex, defaultPresetClone._items),
             );
             rewardIndex++;
         }
@@ -1286,11 +1286,11 @@ export class RepeatableQuestGenerator
     // @Incomplete: define Type for "type".
     protected generateRepeatableTemplate(type: string, traderId: string, side: string): IRepeatableQuest
     {
-        const quest = this.jsonUtil.clone<IRepeatableQuest>(
+        const questClone = this.jsonUtil.clone<IRepeatableQuest>(
             this.databaseServer.getTables().templates.repeatableQuests.templates[type],
         );
-        quest._id = this.objectId.generate();
-        quest.traderId = traderId;
+        questClone._id = this.objectId.generate();
+        questClone.traderId = traderId;
 
         /*  in locale, these id correspond to the text of quests
             template ids -pmc  : Elimination = 616052ea3054fc0e2c24ce6e / Completion = 61604635c725987e815b1a46 / Exploration = 616041eb031af660100c9967
@@ -1298,40 +1298,49 @@ export class RepeatableQuestGenerator
         */
 
         // Get template id from config based on side and type of quest
-        quest.templateId = this.questConfig.questTemplateIds[side.toLowerCase()][type.toLowerCase()];
+        questClone.templateId = this.questConfig.questTemplateIds[side.toLowerCase()][type.toLowerCase()];
 
-        quest.name = quest.name.replace("{traderId}", traderId).replace("{templateId}", quest.templateId);
-        quest.note = quest.note.replace("{traderId}", traderId).replace("{templateId}", quest.templateId);
-        quest.description = quest.description.replace("{traderId}", traderId).replace("{templateId}", quest.templateId);
-        quest.successMessageText = quest.successMessageText.replace("{traderId}", traderId).replace(
+        questClone.name = questClone.name.replace("{traderId}", traderId).replace(
             "{templateId}",
-            quest.templateId,
+            questClone.templateId,
         );
-        quest.failMessageText = quest.failMessageText.replace("{traderId}", traderId).replace(
+        questClone.note = questClone.note.replace("{traderId}", traderId).replace(
             "{templateId}",
-            quest.templateId,
+            questClone.templateId,
         );
-        quest.startedMessageText = quest.startedMessageText.replace("{traderId}", traderId).replace(
+        questClone.description = questClone.description.replace("{traderId}", traderId).replace(
             "{templateId}",
-            quest.templateId,
+            questClone.templateId,
         );
-        quest.changeQuestMessageText = quest.changeQuestMessageText.replace("{traderId}", traderId).replace(
+        questClone.successMessageText = questClone.successMessageText.replace("{traderId}", traderId).replace(
             "{templateId}",
-            quest.templateId,
+            questClone.templateId,
         );
-        quest.acceptPlayerMessage = quest.acceptPlayerMessage.replace("{traderId}", traderId).replace(
+        questClone.failMessageText = questClone.failMessageText.replace("{traderId}", traderId).replace(
             "{templateId}",
-            quest.templateId,
+            questClone.templateId,
         );
-        quest.declinePlayerMessage = quest.declinePlayerMessage.replace("{traderId}", traderId).replace(
+        questClone.startedMessageText = questClone.startedMessageText.replace("{traderId}", traderId).replace(
             "{templateId}",
-            quest.templateId,
+            questClone.templateId,
         );
-        quest.completePlayerMessage = quest.completePlayerMessage.replace("{traderId}", traderId).replace(
+        questClone.changeQuestMessageText = questClone.changeQuestMessageText.replace("{traderId}", traderId).replace(
             "{templateId}",
-            quest.templateId,
+            questClone.templateId,
+        );
+        questClone.acceptPlayerMessage = questClone.acceptPlayerMessage.replace("{traderId}", traderId).replace(
+            "{templateId}",
+            questClone.templateId,
+        );
+        questClone.declinePlayerMessage = questClone.declinePlayerMessage.replace("{traderId}", traderId).replace(
+            "{templateId}",
+            questClone.templateId,
+        );
+        questClone.completePlayerMessage = questClone.completePlayerMessage.replace("{traderId}", traderId).replace(
+            "{templateId}",
+            questClone.templateId,
         );
 
-        return quest;
+        return questClone;
     }
 }

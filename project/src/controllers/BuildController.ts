@@ -40,19 +40,19 @@ export class BuildController
         }
 
         // Ensure the secure container in the default presets match what the player has equipped
-        const defaultEquipmentPresets = this.jsonUtil.clone(
+        const defaultEquipmentPresetsClone = this.jsonUtil.clone(
             this.databaseServer.getTables().templates.defaultEquipmentPresets,
         );
         const playerSecureContainer = profile.characters.pmc.Inventory.items?.find((x) =>
             x.slotId === secureContainerSlotId
         );
-        const firstDefaultItemsSecureContainer = defaultEquipmentPresets[0]?.Items?.find((x) =>
+        const firstDefaultItemsSecureContainer = defaultEquipmentPresetsClone[0]?.Items?.find((x) =>
             x.slotId === secureContainerSlotId
         );
         if (playerSecureContainer && playerSecureContainer?._tpl !== firstDefaultItemsSecureContainer?._tpl)
         {
             // Default equipment presets' secure container tpl doesn't match players secure container tpl
-            for (const defaultPreset of defaultEquipmentPresets)
+            for (const defaultPreset of defaultEquipmentPresetsClone)
             {
                 // Find presets secure container
                 const secureContainer = defaultPreset.Items.find((item) => item.slotId === secureContainerSlotId);
@@ -64,10 +64,10 @@ export class BuildController
         }
 
         // Clone player build data from profile and append the above defaults onto end
-        const result = this.jsonUtil.clone(profile.userbuilds);
-        result.equipmentBuilds.push(...defaultEquipmentPresets);
+        const userBuildsClone = this.jsonUtil.clone(profile.userbuilds);
+        userBuildsClone.equipmentBuilds.push(...defaultEquipmentPresetsClone);
 
-        return result;
+        return userBuildsClone;
     }
 
     /** Handle client/builds/weapon/save */

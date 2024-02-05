@@ -212,12 +212,12 @@ export class BotController
             let cacheKey = "";
             for (let i = 0; i < botGenerationDetails.botCountToGenerate; i++)
             {
-                const details = this.jsonUtil.clone(botGenerationDetails);
+                const detailsClone = this.jsonUtil.clone(botGenerationDetails);
 
-                cacheKey = `${details.role}${details.botDifficulty}`;
+                cacheKey = `${detailsClone.role}${detailsClone.botDifficulty}`;
 
                 // Generate and add bot to cache
-                const botToCache = this.botGenerator.prepareAndGenerateBot(sessionId, details);
+                const botToCache = this.botGenerator.prepareAndGenerateBot(sessionId, detailsClone);
                 this.botGenerationCacheService.storeBots(cacheKey, [botToCache]);
             }
 

@@ -64,11 +64,13 @@ export class PlayerScavGenerator
     {
         // get karma level from profile
         const profile = this.saveServer.getProfile(sessionID);
-        const pmcData = this.jsonUtil.clone(profile.characters.pmc);
-        const existingScavData = this.jsonUtil.clone(profile.characters.scav);
+        const pmcDataClone = this.jsonUtil.clone(profile.characters.pmc);
+        const existingScavDataClone = this.jsonUtil.clone(profile.characters.scav);
 
         // scav profile can be empty on first profile creation
-        const scavKarmaLevel = (Object.keys(existingScavData).length === 0) ? 0 : this.getScavKarmaLevel(pmcData);
+        const scavKarmaLevel = (Object.keys(existingScavDataClone).length === 0)
+            ? 0
+            : this.getScavKarmaLevel(pmcDataClone);
 
         // use karma level to get correct karmaSettings
         const playerScavKarmaSettings = this.playerScavConfig.karmaLevel[scavKarmaLevel];
@@ -95,28 +97,28 @@ export class PlayerScavGenerator
 
         // Add scav metadata
         scavData.savage = null;
-        scavData.aid = pmcData.aid;
-        scavData.TradersInfo = pmcData.TradersInfo;
+        scavData.aid = pmcDataClone.aid;
+        scavData.TradersInfo = pmcDataClone.TradersInfo;
         scavData.Info.Settings = {} as Settings;
         scavData.Info.Bans = [];
-        scavData.Info.RegistrationDate = pmcData.Info.RegistrationDate;
-        scavData.Info.GameVersion = pmcData.Info.GameVersion;
+        scavData.Info.RegistrationDate = pmcDataClone.Info.RegistrationDate;
+        scavData.Info.GameVersion = pmcDataClone.Info.GameVersion;
         scavData.Info.MemberCategory = MemberCategory.UNIQUE_ID;
         scavData.Info.lockedMoveCommands = true;
-        scavData.RagfairInfo = pmcData.RagfairInfo;
-        scavData.UnlockedInfo = pmcData.UnlockedInfo;
+        scavData.RagfairInfo = pmcDataClone.RagfairInfo;
+        scavData.UnlockedInfo = pmcDataClone.UnlockedInfo;
 
         // Persist previous scav data into new scav
-        scavData._id = existingScavData._id ?? pmcData.savage;
-        scavData.sessionId = existingScavData.sessionId ?? pmcData.sessionId;
-        scavData.Skills = this.getScavSkills(existingScavData);
-        scavData.Stats = this.getScavStats(existingScavData);
-        scavData.Info.Level = this.getScavLevel(existingScavData);
-        scavData.Info.Experience = this.getScavExperience(existingScavData);
-        scavData.Quests = existingScavData.Quests ?? [];
-        scavData.TaskConditionCounters = existingScavData.TaskConditionCounters ?? {};
-        scavData.Notes = existingScavData.Notes ?? { Notes: [] };
-        scavData.WishList = existingScavData.WishList ?? [];
+        scavData._id = existingScavDataClone._id ?? pmcDataClone.savage;
+        scavData.sessionId = existingScavDataClone.sessionId ?? pmcDataClone.sessionId;
+        scavData.Skills = this.getScavSkills(existingScavDataClone);
+        scavData.Stats = this.getScavStats(existingScavDataClone);
+        scavData.Info.Level = this.getScavLevel(existingScavDataClone);
+        scavData.Info.Experience = this.getScavExperience(existingScavDataClone);
+        scavData.Quests = existingScavDataClone.Quests ?? [];
+        scavData.TaskConditionCounters = existingScavDataClone.TaskConditionCounters ?? {};
+        scavData.Notes = existingScavDataClone.Notes ?? { Notes: [] };
+        scavData.WishList = existingScavDataClone.WishList ?? [];
 
         // Add an extra labs card to pscav backpack based on config chance
         if (this.randomUtil.getChance100(playerScavKarmaSettings.labsAccessCardChancePercent))
@@ -145,7 +147,7 @@ export class PlayerScavGenerator
         scavData = this.profileHelper.removeSecureContainer(scavData);
 
         // Set cooldown timer
-        scavData = this.setScavCooldownTimer(scavData, pmcData);
+        scavData = this.setScavCooldownTimer(scavData, pmcDataClone);
 
         // Add scav to the profile
         this.saveServer.getProfile(sessionID).characters.scav = scavData;

@@ -492,7 +492,7 @@ export class QuestController
         const preCompleteProfileQuests = this.jsonUtil.clone(pmcData.Quests);
 
         const completedQuestId = body.qid;
-        const beforeQuests = this.jsonUtil.clone(this.getClientQuests(sessionID)); // Must be gathered prior to applyQuestReward() & failQuests()
+        const clientQuestsClone = this.jsonUtil.clone(this.getClientQuests(sessionID)); // Must be gathered prior to applyQuestReward() & failQuests()
 
         const newQuestState = QuestStatus.Success;
         this.questHelper.updateQuestState(pmcData, newQuestState, completedQuestId);
@@ -508,7 +508,7 @@ export class QuestController
         this.sendSuccessDialogMessageOnQuestComplete(sessionID, pmcData, completedQuestId, questRewards);
 
         // Add diff of quests before completion vs after for client response
-        const questDelta = this.questHelper.getDeltaQuests(beforeQuests, this.getClientQuests(sessionID));
+        const questDelta = this.questHelper.getDeltaQuests(clientQuestsClone, this.getClientQuests(sessionID));
 
         // Check newly available + failed quests for timegates and add them to profile
         this.addTimeLockedQuestsToProfile(pmcData, [...questDelta], body.qid);

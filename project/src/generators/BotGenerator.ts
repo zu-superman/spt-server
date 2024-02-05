@@ -109,11 +109,11 @@ export class BotGenerator
         bot.Info.Settings.BotDifficulty = botGenerationDetails.botDifficulty;
 
         // Get raw json data for bot (Cloned)
-        const botJsonTemplate = this.jsonUtil.clone(
+        const botJsonTemplateClone = this.jsonUtil.clone(
             this.botHelper.getBotTemplate((botGenerationDetails.isPmc) ? bot.Info.Side : botGenerationDetails.role),
         );
 
-        bot = this.generateBot(sessionId, bot, botJsonTemplate, botGenerationDetails);
+        bot = this.generateBot(sessionId, bot, botJsonTemplateClone, botGenerationDetails);
 
         return bot;
     }

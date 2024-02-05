@@ -582,14 +582,16 @@ export class HideoutController
         const recipe = this.databaseServer.getTables().hideout.production.find((p) => p._id === body.recipeId);
 
         // Find the actual amount of items we need to remove because body can send weird data
-        const requirements = this.jsonUtil.clone(recipe.requirements.filter((i) => i.type === "Item"));
+        const recipeRequirementsClone = this.jsonUtil.clone(recipe.requirements.filter((i) => i.type === "Item"));
 
         const output = this.eventOutputHolder.getOutput(sessionID);
 
         for (const itemToDelete of body.items)
         {
             const itemToCheck = pmcData.Inventory.items.find((i) => i._id === itemToDelete.id);
-            const requirement = requirements.find((requirement) => requirement.templateId === itemToCheck._tpl);
+            const requirement = recipeRequirementsClone.find((requirement) =>
+                requirement.templateId === itemToCheck._tpl
+            );
             if (requirement.count <= 0)
             {
                 continue;

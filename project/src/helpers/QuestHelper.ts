@@ -324,16 +324,16 @@ export class QuestHelper
         for (const target of targets)
         {
             // This has all the original id relations since we reset the id to the original after the splitStack
-            const items = [this.jsonUtil.clone(target)];
+            const itemsClone = [this.jsonUtil.clone(target)];
             // Here we generate a new id for the root item
             target._id = this.hashUtil.generate();
 
             for (const mod of mods)
             {
-                items.push(this.jsonUtil.clone(mod));
+                itemsClone.push(this.jsonUtil.clone(mod));
             }
 
-            rewardItems = rewardItems.concat(this.itemHelper.reparentItemAndChildren(target, items));
+            rewardItems = rewardItems.concat(this.itemHelper.reparentItemAndChildren(target, itemsClone));
         }
 
         return rewardItems;

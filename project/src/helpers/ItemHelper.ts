@@ -556,12 +556,12 @@ export class ItemHelper
         while (remainingCount)
         {
             const amount = Math.min(remainingCount, maxStackSize);
-            const newStack = this.jsonUtil.clone(itemToSplit);
+            const newStackClone = this.jsonUtil.clone(itemToSplit);
 
-            newStack._id = this.hashUtil.generate();
-            newStack.upd.StackObjectsCount = amount;
+            newStackClone._id = this.hashUtil.generate();
+            newStackClone.upd.StackObjectsCount = amount;
             remainingCount -= amount;
-            rootAndChildren.push(newStack);
+            rootAndChildren.push(newStackClone);
         }
 
         return rootAndChildren;
@@ -589,12 +589,12 @@ export class ItemHelper
         while (remainingCount)
         {
             const amount = Math.min(remainingCount, itemMaxStackSize);
-            const newItem = this.jsonUtil.clone(itemToSplit);
+            const newItemClone = this.jsonUtil.clone(itemToSplit);
 
-            newItem._id = this.hashUtil.generate();
-            newItem.upd.StackObjectsCount = amount;
+            newItemClone._id = this.hashUtil.generate();
+            newItemClone.upd.StackObjectsCount = amount;
             remainingCount -= amount;
-            result.push([newItem]);
+            result.push([newItemClone]);
         }
 
         return result;
