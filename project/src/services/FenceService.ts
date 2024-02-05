@@ -543,6 +543,9 @@ export class FenceService
             this.itemHelper.reparentItemAndChildren(presetWithChildrenClone[0], presetWithChildrenClone);
             this.itemHelper.remapRootItemId(presetWithChildrenClone);
 
+            // Remapping IDs causes parentid to be altered
+            presetWithChildrenClone[0].parentId = "hideout";
+
             assorts.items.push(...presetWithChildrenClone);
 
             // Must be careful to use correct id as the item has had its IDs regenerated
