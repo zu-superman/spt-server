@@ -150,7 +150,7 @@
 	"modloader-async_mod_error": "ModLoader: Erreur pendant le chargement de async mod: %s",
 	"modloader-no_mods_loaded": "Des erreurs ont été trouvées avec certains mods, ATTENTION, AUCUN MOD NE SERA CHARGE",
 	"modloader-outdated_akiversion_field": "Le mod %s n'est pas compatible avec la version actuelle de SPT-AKI. Des erreurs peuvent survenir - aucun support ne sera fourni !",
-	"modloader-outdated_dependency": "Mod {{mod}} a besoin de {{modDependency}} version {{requiredVersion}}. version actuelle : {{currentVersion}}",
+	"modloader-outdated_dependency": "Mod {{mod}} a besoin de {{modDependency}} version {{requiredVersion}}. Version actuelle : {{currentVersion}}",
 	"modloader-user_mod_folder_missing": "ModLoader: dossier user/mod manquant, création en cours...",
 	"modloader-mod_order_missing": "ModLoader: order.json est manquant, création en cours...",
 	"modloader-mod_order_error": "ModLoader: des erreurs ont été trouvées dans order.json, UTILISATION DE L'ORDRE DE CHARGEMENT PAR DEFAUT",
