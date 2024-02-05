@@ -93,10 +93,21 @@ export class InRaidHelper
         // Run callback on every victim, adding up the standings gained/lossed, starting value is existing fence standing
         const newFenceStanding = victims.reduce((acc, victim) =>
         {
+            let additionalReduction = 0;
+            if (existingFenceStanding >= 6 && existingFenceStanding <= 8)
+            {
+                additionalReduction = 1;
+            }
+
+            if (existingFenceStanding > 8)
+            {
+                additionalReduction = 2;
+            }
+
             const standingForKill = this.getFenceStandingChangeForKillAsScav(victim);
             if (standingForKill)
             {
-                return acc + standingForKill;
+                return (acc + standingForKill) - additionalReduction;
             }
             this.logger.warning(
                 this.localisationService.getText("inraid-missing_standing_for_kill", {
