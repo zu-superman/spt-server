@@ -137,16 +137,8 @@ export class ItemHelper
         }
 
         // Check if item has slots that match soft insert name ids
-        if (
-            itemDbDetails[1]._props.Slots.find((slot) => this.getSoftInsertSlotIds().includes(slot._name.toLowerCase()))
-        )
-        {
-            return true;
-        }
-
-        // Also classified as BUILT_IN_INSERTS
-        const helmetInsertSlotIds = ["helmet_top", "helmet_back", "helmet_ears"];
-        if (itemDbDetails[1]._props.Slots.find((slot) => helmetInsertSlotIds.includes(slot._name.toLowerCase())))
+        const softInsertIds = this.getSoftInsertSlotIds();
+        if (itemDbDetails[1]._props.Slots.find((slot) => softInsertIds.includes(slot._name.toLowerCase())))
         {
             return true;
         }
@@ -166,6 +158,9 @@ export class ItemHelper
             "shoulder_l",
             "shoulder_r",
             "collar",
+            "helmet_top",
+            "helmet_back",
+            "helmet_ears",
         ];
     }
 
