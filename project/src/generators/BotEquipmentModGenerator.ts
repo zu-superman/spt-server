@@ -16,7 +16,7 @@ import { BaseClasses } from "@spt-aki/models/enums/BaseClasses";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { ModSpawn } from "@spt-aki/models/enums/ModSpawn";
 import { IChooseRandomCompatibleModResult } from "@spt-aki/models/spt/bots/IChooseRandomCompatibleModResult";
-import { EquipmentFilterDetails, IBotConfig } from "@spt-aki/models/spt/config/IBotConfig";
+import { EquipmentFilterDetails, EquipmentFilters, IBotConfig } from "@spt-aki/models/spt/config/IBotConfig";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt-aki/servers/ConfigServer";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
@@ -386,7 +386,7 @@ export class BotEquipmentModGenerator
             }
 
             // Check spawn chance of mod
-            const modSpawnResult = this.shouldModBeSpawned(modsParentSlot, modSlot, modSpawnChances);
+            const modSpawnResult = this.shouldModBeSpawned(modsParentSlot, modSlot, modSpawnChances, botEquipConfig);
             if (modSpawnResult === ModSpawn.SKIP)
             {
                 continue;
@@ -707,9 +707,15 @@ export class BotEquipmentModGenerator
      * @param itemSlot slot the item sits in
      * @param modSlot slot the mod sits in
      * @param modSpawnChances Chances for various mod spawns
+     * @param botEquipConfig Various config settings for generating this type of bot
      * @returns ModSpawn.SPAWN when mod should be spawned, ModSpawn.DEFAULT_MOD when default mod should spawn, ModSpawn.SKIP when mod is skipped
      */
-    protected shouldModBeSpawned(itemSlot: Slot, modSlot: string, modSpawnChances: ModsChances): ModSpawn
+    protected shouldModBeSpawned(
+        itemSlot: Slot,
+        modSlot: string,
+        modSpawnChances: ModsChances,
+        botEquipConfig: EquipmentFilters,
+    ): ModSpawn
     {
         const slotRequired = itemSlot._required;
         if (this.getAmmoContainers().includes(modSlot))
@@ -717,7 +723,7 @@ export class BotEquipmentModGenerator
             return ModSpawn.SPAWN;
         }
         const spawnMod = this.probabilityHelper.rollChance(modSpawnChances[modSlot]);
-        if (!spawnMod && slotRequired)
+        if (!spawnMod && (slotRequired || botEquipConfig.weaponSlotIdsToMakeRequired.includes(modSlot)))
         {
             // Mod is required but spawn chance roll failed, choose default mod spawn for slot
             return ModSpawn.DEFAULT_MOD;

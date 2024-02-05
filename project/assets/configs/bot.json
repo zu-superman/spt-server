@@ -459,7 +459,8 @@
             "weaponModLimits": {
                 "scopeLimit": 1,
                 "lightLaserLimit": 1
-            }
+            },
+			"forceStock": true
         },
         "cursedassault": {
             "faceShieldIsActiveChancePercent": 90,
@@ -473,7 +474,9 @@
             "faceShieldIsActiveChancePercent": 100,
             "lightIsActiveDayChancePercent": 25,
             "lightIsActiveNightChancePercent": 90,
-            "laserIsActiveChancePercent": 85
+            "laserIsActiveChancePercent": 85,
+			"forceStock": true,
+			"weaponSlotIdsToMakeRequired": ["mod_reciever"]
         },
         "bossbully": {
             "nvgIsActiveChanceDayPercent": 10,
@@ -508,13 +511,15 @@
             "weaponModLimits": {
                 "scopeLimit": 1,
                 "lightLaserLimit": 1
-            }
+            },
+			"forceStock": true
         },
         "bosssanitar": {
             "faceShieldIsActiveChancePercent": 100,
             "lightIsActiveDayChancePercent": 25,
             "lightIsActiveNightChancePercent": 75,
-            "laserIsActiveChancePercent": 85
+            "laserIsActiveChancePercent": 85,
+			"forceStock": true
         },
         "bosstagilla": {
             "faceShieldIsActiveChancePercent": 100,
@@ -562,19 +567,22 @@
             "faceShieldIsActiveChancePercent": 100,
             "lightIsActiveDayChancePercent": 25,
             "lightIsActiveNightChancePercent": 75,
-            "laserIsActiveChancePercent": 75
+            "laserIsActiveChancePercent": 75,
+			"forceStock": true
         },
         "followerkolontaysecurity": {
             "faceShieldIsActiveChancePercent": 100,
             "lightIsActiveDayChancePercent": 25,
             "lightIsActiveNightChancePercent": 75,
-            "laserIsActiveChancePercent": 75
+            "laserIsActiveChancePercent": 75,
+			"forceStock": true
         },
         "followerbully": {
             "faceShieldIsActiveChancePercent": 100,
             "lightIsActiveDayChancePercent": 25,
             "lightIsActiveNightChancePercent": 75,
-            "laserIsActiveChancePercent": 75
+            "laserIsActiveChancePercent": 75,
+			"forceStock": true
         },
         "followergluharassault": {
             "nvgIsActiveChanceDayPercent": 10,
@@ -582,7 +590,8 @@
             "faceShieldIsActiveChancePercent": 100,
             "lightIsActiveDayChancePercent": 25,
             "lightIsActiveNightChancePercent": 75,
-            "laserIsActiveChancePercent": 75
+            "laserIsActiveChancePercent": 75,
+			"forceStock": true
         },
         "followergluharscout": {
             "faceShieldIsActiveChancePercent": 100,
@@ -656,7 +665,8 @@
             "weaponModLimits": {
                 "scopeLimit": 2,
                 "lightLaserLimit": 1
-            }
+            },
+			"forceStock": true
         },
         "followerboarclose1": {
             "nvgIsActiveChanceDayPercent": 20,
@@ -668,7 +678,8 @@
             "weaponModLimits": {
                 "scopeLimit": 2,
                 "lightLaserLimit": 1
-            }
+            },
+			"forceStock": true
         },
         "followerboarclose2": {
             "nvgIsActiveChanceDayPercent": 20,
@@ -680,7 +691,8 @@
             "weaponModLimits": {
                 "scopeLimit": 2,
                 "lightLaserLimit": 1
-            }
+            },
+			"forceStock": true
         },
         "bossboarsniper": {
             "nvgIsActiveChanceDayPercent": 20,
@@ -737,7 +749,8 @@
             "weaponModLimits": {
                 "scopeLimit": 1,
                 "lightLaserLimit": 1
-            }
+            },
+			"weaponSlotIdsToMakeRequired": ["mod_reciever"]
         },
         "arenafighterevent": {
             "nvgIsActiveChanceDayPercent": 10,
@@ -773,7 +786,8 @@
             "weaponModLimits": {
                 "scopeLimit": 1,
                 "lightLaserLimit": 1
-            }
+            },
+			"forceStock": true
         },
         "assaultgroup": {},
         "gifter": {
@@ -855,6 +869,7 @@
             "laserIsActiveChancePercent": 85,
 			"forceOnlyArmoredRigWhenNoArmor": true,
             "filterPlatesByLevel": true,
+			"weaponSlotIdsToMakeRequired": ["mod_reciever", "mod_stock"],
             "randomisation": [
                 {
                     "levelRange": {
