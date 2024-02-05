@@ -422,9 +422,15 @@ export class FenceService
         this.addItemAssorts(assortCount, assorts, baseFenceAssort, itemTypeCounts, loyaltyLevel);
 
         // Add presets
-        const maxPresetCount = Math.round(assortCount * (this.traderConfig.fence.maxPresetsPercent / 100));
-        const randomisedPresetCount = this.randomUtil.getInt(0, maxPresetCount);
-        this.addPresetsToAssort(randomisedPresetCount, assorts, baseFenceAssort, loyaltyLevel);
+        const weaponPresetCount = this.randomUtil.getInt(
+            this.traderConfig.fence.weaponPresetMinMax.min,
+            this.traderConfig.fence.weaponPresetMinMax.max,
+        );
+        const equipmentPresetCount = this.randomUtil.getInt(
+            this.traderConfig.fence.equipmentPresetMinMax.min,
+            this.traderConfig.fence.equipmentPresetMinMax.max,
+        );
+        this.addPresetsToAssort(weaponPresetCount, equipmentPresetCount, assorts, baseFenceAssort, loyaltyLevel);
     }
 
     protected addItemAssorts(
@@ -509,38 +515,36 @@ export class FenceService
 
     /**
      * Find presets in base fence assort and add desired number to 'assorts' parameter
-     * @param desiredPresetCount
+     * @param desiredWeaponPresetsCount
      * @param assorts
      * @param baseFenceAssort
      * @param loyaltyLevel Which loyalty level is required to see/buy item
      */
     protected addPresetsToAssort(
-        desiredPresetCount: number,
+        desiredWeaponPresetsCount: number,
+        desiredEquipmentPresetsCount: number,
         assorts: ITraderAssort,
         baseFenceAssort: ITraderAssort,
         loyaltyLevel: number,
     ): void
     {
-        let presetsAddedCount = 0;
-        if (desiredPresetCount <= 0)
+        let weaponPresetsAddedCount = 0;
+        if (desiredWeaponPresetsCount <= 0)
         {
             return;
         }
 
-        const presetRootItems = baseFenceAssort.items.filter((item) => item.upd?.sptPresetId);
-        while (presetsAddedCount < desiredPresetCount)
+        const weaponPresetRootItems = baseFenceAssort.items.filter((item) =>
+            item.upd?.sptPresetId && this.itemHelper.isOfBaseclass(item._tpl, BaseClasses.WEAPON)
+        );
+        while (weaponPresetsAddedCount < desiredWeaponPresetsCount)
         {
-            const randomPresetRoot = this.randomUtil.getArrayValue(presetRootItems);
+            const randomPresetRoot = this.randomUtil.getArrayValue(weaponPresetRootItems);
             const rootItemDb = this.itemHelper.getItem(randomPresetRoot._tpl)[1];
+
             const presetWithChildrenClone = this.jsonUtil.clone(
                 this.itemHelper.findAndReturnChildrenAsItems(baseFenceAssort.items, randomPresetRoot._id),
             );
-
-            // Need to add mods to armors so they dont show as red in the trade screen
-            if (this.itemHelper.itemRequiresSoftInserts(randomPresetRoot._tpl))
-            {
-                this.randomiseArmorModDurability(presetWithChildrenClone, rootItemDb);
-            }
 
             if (this.itemHelper.isOfBaseclass(rootItemDb._id, BaseClasses.WEAPON))
             {
@@ -548,6 +552,26 @@ export class FenceService
             }
 
             this.removeRandomModsOfItem(presetWithChildrenClone);
+
+            // Check chosen item is below price cap
+            const priceLimitRouble = this.traderConfig.fence.itemCategoryRoublePriceLimit[rootItemDb._parent];
+            if (priceLimitRouble)
+            {
+                if (this.handbookHelper.getTemplatePriceForItems(presetWithChildrenClone) > priceLimitRouble)
+                {
+                    // Too expensive, try again
+                    this.logger.warning(
+                        `Blocked ${rootItemDb._name}, price: ${
+                            this.handbookHelper.getTemplatePriceForItems(presetWithChildrenClone)
+                        } limit: ${priceLimitRouble}`,
+                    );
+                    continue;
+                }
+            }
+            else
+            {
+                this.logger.warning(`No limit ${rootItemDb._name} ${rootItemDb._parent}`);
+            }
 
             // MUST randomise Ids as its possible to add the same base fence assort twice = duplicate IDs = dead client
             this.itemHelper.reparentItemAndChildren(presetWithChildrenClone[0], presetWithChildrenClone);
@@ -562,7 +586,69 @@ export class FenceService
             assorts.barter_scheme[presetWithChildrenClone[0]._id] = baseFenceAssort.barter_scheme[randomPresetRoot._id];
             assorts.loyal_level_items[presetWithChildrenClone[0]._id] = loyaltyLevel;
 
-            presetsAddedCount++;
+            weaponPresetsAddedCount++;
+        }
+
+        let equipmentPresetsAddedCount = 0;
+        if (desiredEquipmentPresetsCount <= 0)
+        {
+            return;
+        }
+
+        const equipmentPresetRootItems = baseFenceAssort.items.filter((item) =>
+            item.upd?.sptPresetId && this.itemHelper.armorItemCanHoldMods(item._tpl)
+        );
+        while (equipmentPresetsAddedCount < desiredEquipmentPresetsCount)
+        {
+            const randomPresetRoot = this.randomUtil.getArrayValue(equipmentPresetRootItems);
+            const rootItemDb = this.itemHelper.getItem(randomPresetRoot._tpl)[1];
+
+            const presetWithChildrenClone = this.jsonUtil.clone(
+                this.itemHelper.findAndReturnChildrenAsItems(baseFenceAssort.items, randomPresetRoot._id),
+            );
+
+            // Need to add mods to armors so they dont show as red in the trade screen
+            if (this.itemHelper.itemRequiresSoftInserts(randomPresetRoot._tpl))
+            {
+                this.randomiseArmorModDurability(presetWithChildrenClone, rootItemDb);
+            }
+
+            this.removeRandomModsOfItem(presetWithChildrenClone);
+
+            // Check chosen item is below price cap
+            const priceLimitRouble = this.traderConfig.fence.itemCategoryRoublePriceLimit[rootItemDb._parent];
+            if (priceLimitRouble)
+            {
+                if (this.handbookHelper.getTemplatePriceForItems(presetWithChildrenClone) > priceLimitRouble)
+                {
+                    // Too expensive, try again
+                    this.logger.warning(
+                        `Blocked ${rootItemDb._name}, price: ${
+                            this.handbookHelper.getTemplatePriceForItems(presetWithChildrenClone)
+                        } limit: ${priceLimitRouble}`,
+                    );
+                    continue;
+                }
+            }
+            else
+            {
+                this.logger.warning(`No limit ${rootItemDb._name} ${rootItemDb._parent}`);
+            }
+
+            // MUST randomise Ids as its possible to add the same base fence assort twice = duplicate IDs = dead client
+            this.itemHelper.reparentItemAndChildren(presetWithChildrenClone[0], presetWithChildrenClone);
+            this.itemHelper.remapRootItemId(presetWithChildrenClone);
+
+            // Remapping IDs causes parentid to be altered
+            presetWithChildrenClone[0].parentId = "hideout";
+
+            assorts.items.push(...presetWithChildrenClone);
+
+            // Must be careful to use correct id as the item has had its IDs regenerated
+            assorts.barter_scheme[presetWithChildrenClone[0]._id] = baseFenceAssort.barter_scheme[randomPresetRoot._id];
+            assorts.loyal_level_items[presetWithChildrenClone[0]._id] = loyaltyLevel;
+
+            equipmentPresetsAddedCount++;
         }
     }
 

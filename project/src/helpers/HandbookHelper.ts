@@ -1,6 +1,7 @@
 import { inject, injectable } from "tsyringe";
 
 import { Category } from "@spt-aki/models/eft/common/tables/IHandbookBase";
+import { Item } from "@spt-aki/models/eft/common/tables/IItem";
 import { Money } from "@spt-aki/models/enums/Money";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { JsonUtil } from "@spt-aki/utils/JsonUtil";
@@ -100,6 +101,17 @@ export class HandbookHelper
         }
 
         return handbookItem.Price;
+    }
+
+    public getTemplatePriceForItems(items: Item[]): number
+    {
+        let total = 0;
+        for (const item of items)
+        {
+            total += this.getTemplatePrice(item._tpl);
+        }
+
+        return total;
     }
 
     /**

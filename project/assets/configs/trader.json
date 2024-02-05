@@ -49,12 +49,19 @@
         "discountOptions": {
             "assortSize": 50,
             "itemPriceMult": 0.8,
-            "presetPriceMult": 1.3
+            "presetPriceMult": 1.2
         },
         "partialRefreshTimeSeconds": 240,
         "partialRefreshChangePercent": 15,
-        "assortSize": 140,
-        "maxPresetsPercent": 10,
+        "assortSize": 150,
+        "weaponPresetMinMax": {
+			"min": 8,
+			"max": 15
+		},
+		"equipmentPresetMinMax": {
+			"min": 8,
+			"max": 15
+		},
         "itemPriceMult": 1.2,
         "presetPriceMult": 2.0,
         "regenerateAssortsOnRefresh": false,
@@ -66,7 +73,7 @@
             "555ef6e44bdc2de9068b457e": 5,
             "5a341c4086f77401f2541505": 5,
             "55818ad54bdc2ddc698b4569": 5,
-            "5448e53e4bdc2d60728b4567": 5,
+            "5448e53e4bdc2d60728b4567": 6,
             "55818ac54bdc2d5b648b456e": 5,
             "55818af64bdc2d5b648b4570": 5,
             "55818a304bdc2db5418b457d": 4,
@@ -97,7 +104,7 @@
             "min": 35,
             "max": 60
         },
-        "chancePlateExistsInArmorPercent": 40,
+        "chancePlateExistsInArmorPercent": 50,
         "armorMaxDurabilityPercentMinMax": {
             "min": 35,
             "max": 60
@@ -119,17 +126,29 @@
             "57864a66245977548f04a81f": 71000,
             "5448e54d4bdc2dcc718b4568": 200000,
             "5a2c3a9486f774688b05e574": 70000,
-            "5a341c4086f77401f2541505": 125000,
             "5448f3a64bdc2d60728b456a": 70000,
             "5447b6194bdc2d67278b4567": 500000,
             "550aa4cd4bdc2dd8348b456c": 70000,
             "57864ee62459775490116fc1": 95000,
             "5448bc234bdc2d3c308b4569": 29000,
+			
+            "5447b6094bdc2dc3278b4567": 35009,
+            "5447bedf4bdc2d87278b4568": 27008,
+            "5447bed64bdc2d97278b4568": 27007,
+            "5447b5e04bdc2d62278b4567": 33006,
+            "5447b5fc4bdc2d87278b4567": 42005,
+            "5447b5f14bdc2d61278b4567": 44004,
+            "5447b5cf4bdc2d65278b4567": 30003,
+            "5447b6254bdc2dc3278b4568": 28002,
+            "5447e1d04bdc2dff2f8b4567": 19001,
+			
             "55818ae44bdc2dde698b456c": 45000,
             "55818add4bdc2d5b648b456f": 35000,
             "590c745b86f7743cc433c5f2": 64000,
-            "57864bb7245977548b3b66c2": 90000,
-            "5c99f98d86f7745c314214b3": 15000
+            "57864bb7245977548b3b66c2": 85000,
+			
+			"5448e5284bdc2dcb718b4567": 40001,
+			"5a341c4086f77401f2541505": 105000
         },
         "presetSlotsToRemoveChancePercent": {
             "mod_scope": 70,

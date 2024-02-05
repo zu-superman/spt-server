@@ -26,7 +26,8 @@ export interface FenceConfig
     partialRefreshTimeSeconds: number;
     partialRefreshChangePercent: number;
     assortSize: number;
-    maxPresetsPercent: number;
+    weaponPresetMinMax: MinMax;
+    equipmentPresetMinMax: MinMax;
     itemPriceMult: number;
     presetPriceMult: number;
     armorMaxDurabilityPercentMinMax: MinMax;
