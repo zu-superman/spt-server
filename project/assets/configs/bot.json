@@ -357,9 +357,9 @@
         "bossgluhar": {},
         "bosskilla": {},
         "bosskojaniy": {
-			"5d08d21286f774736e7c94c3": 1,
-			"5c94bbff86f7747ee735c08f": 1
-		},
+            "5d08d21286f774736e7c94c3": 1,
+            "5c94bbff86f7747ee735c08f": 1
+        },
         "bosssanitar": {},
         "bosstagilla": {},
         "bossknight": {},
@@ -428,8 +428,7 @@
             "lightIsActiveDayChancePercent": 25,
             "lightIsActiveNightChancePercent": 85,
             "laserIsActiveChancePercent": 75,
-            "weightingAdjustmentsByPlayerLevel": [
-                {
+            "weightingAdjustmentsByPlayerLevel": [{
                     "levelRange": {
                         "min": 1,
                         "max": 6
@@ -460,7 +459,7 @@
                 "scopeLimit": 1,
                 "lightLaserLimit": 1
             },
-			"forceStock": true
+            "forceStock": true
         },
         "cursedassault": {
             "faceShieldIsActiveChancePercent": 90,
@@ -475,8 +474,8 @@
             "lightIsActiveDayChancePercent": 25,
             "lightIsActiveNightChancePercent": 90,
             "laserIsActiveChancePercent": 85,
-			"forceStock": true,
-			"weaponSlotIdsToMakeRequired": ["mod_reciever"]
+            "forceStock": true,
+            "weaponSlotIdsToMakeRequired": ["mod_reciever"]
         },
         "bossbully": {
             "nvgIsActiveChanceDayPercent": 10,
@@ -512,14 +511,14 @@
                 "scopeLimit": 1,
                 "lightLaserLimit": 1
             },
-			"forceStock": true
+            "forceStock": true
         },
         "bosssanitar": {
             "faceShieldIsActiveChancePercent": 100,
             "lightIsActiveDayChancePercent": 25,
             "lightIsActiveNightChancePercent": 75,
             "laserIsActiveChancePercent": 85,
-			"forceStock": true
+            "forceStock": true
         },
         "bosstagilla": {
             "faceShieldIsActiveChancePercent": 100,
@@ -568,21 +567,21 @@
             "lightIsActiveDayChancePercent": 25,
             "lightIsActiveNightChancePercent": 75,
             "laserIsActiveChancePercent": 75,
-			"forceStock": true
+            "forceStock": true
         },
         "followerkolontaysecurity": {
             "faceShieldIsActiveChancePercent": 100,
             "lightIsActiveDayChancePercent": 25,
             "lightIsActiveNightChancePercent": 75,
             "laserIsActiveChancePercent": 75,
-			"forceStock": true
+            "forceStock": true
         },
         "followerbully": {
             "faceShieldIsActiveChancePercent": 100,
             "lightIsActiveDayChancePercent": 25,
             "lightIsActiveNightChancePercent": 75,
             "laserIsActiveChancePercent": 75,
-			"forceStock": true
+            "forceStock": true
         },
         "followergluharassault": {
             "nvgIsActiveChanceDayPercent": 10,
@@ -591,7 +590,7 @@
             "lightIsActiveDayChancePercent": 25,
             "lightIsActiveNightChancePercent": 75,
             "laserIsActiveChancePercent": 75,
-			"forceStock": true
+            "forceStock": true
         },
         "followergluharscout": {
             "faceShieldIsActiveChancePercent": 100,
@@ -666,7 +665,7 @@
                 "scopeLimit": 2,
                 "lightLaserLimit": 1
             },
-			"forceStock": true
+            "forceStock": true
         },
         "followerboarclose1": {
             "nvgIsActiveChanceDayPercent": 20,
@@ -679,7 +678,7 @@
                 "scopeLimit": 2,
                 "lightLaserLimit": 1
             },
-			"forceStock": true
+            "forceStock": true
         },
         "followerboarclose2": {
             "nvgIsActiveChanceDayPercent": 20,
@@ -692,7 +691,7 @@
                 "scopeLimit": 2,
                 "lightLaserLimit": 1
             },
-			"forceStock": true
+            "forceStock": true
         },
         "bossboarsniper": {
             "nvgIsActiveChanceDayPercent": 20,
@@ -750,7 +749,7 @@
                 "scopeLimit": 1,
                 "lightLaserLimit": 1
             },
-			"weaponSlotIdsToMakeRequired": ["mod_reciever"]
+            "weaponSlotIdsToMakeRequired": ["mod_reciever"]
         },
         "arenafighterevent": {
             "nvgIsActiveChanceDayPercent": 10,
@@ -787,7 +786,7 @@
                 "scopeLimit": 1,
                 "lightLaserLimit": 1
             },
-			"forceStock": true
+            "forceStock": true
         },
         "assaultgroup": {},
         "gifter": {
@@ -867,11 +866,10 @@
             "lightIsActiveDayChancePercent": 25,
             "lightIsActiveNightChancePercent": 95,
             "laserIsActiveChancePercent": 85,
-			"forceOnlyArmoredRigWhenNoArmor": true,
+            "forceOnlyArmoredRigWhenNoArmor": true,
             "filterPlatesByLevel": true,
-			"weaponSlotIdsToMakeRequired": ["mod_reciever", "mod_stock"],
-            "randomisation": [
-                {
+            "weaponSlotIdsToMakeRequired": ["mod_reciever", "mod_stock"],
+            "randomisation": [{
                     "levelRange": {
                         "min": 1,
                         "max": 14
@@ -899,7 +897,7 @@
                             "weights": {
                                 "0": 1,
                                 "1": 4,
-								"2": 3
+                                "2": 3
                             },
                             "whitelist": [
                                 "5e831507ea0a7c419c2f9bd9",
@@ -1019,8 +1017,7 @@
                         "mod_tactical_003": 10,
                         "mod_tactical_2": 10
                     }
-                },
-                {
+                }, {
                     "levelRange": {
                         "min": 15,
                         "max": 22
@@ -1128,8 +1125,7 @@
                         "mod_tactical_003": 30,
                         "mod_tactical_2": 15
                     }
-                },
-                {
+                }, {
                     "levelRange": {
                         "min": 23,
                         "max": 45
@@ -1183,8 +1179,7 @@
                         "mod_tactical_002",
                         "mod_tactical_003"
                     ]
-                },
-                {
+                }, {
                     "levelRange": {
                         "min": 46,
                         "max": 100
@@ -1201,12 +1196,12 @@
                         "mod_equipment_002": 90,
                         "mod_nvg": 60
                     },
-					"weaponMods": {
-						"mod_scope": 95,
-						"mod_muzzle": 95,
-						"mod_muzzle_000": 95,
-						"mod_muzzle_001": 95
-					},
+                    "weaponMods": {
+                        "mod_scope": 95,
+                        "mod_muzzle": 95,
+                        "mod_muzzle_000": 95,
+                        "mod_muzzle_001": 95
+                    },
                     "randomisedArmorSlots": [
                         "Headwear",
                         "TacticalVest",
@@ -1255,8 +1250,7 @@
                     ]
                 }
             ],
-            "blacklist": [
-                {
+            "blacklist": [{
                     "levelRange": {
                         "min": 1,
                         "max": 100
@@ -1280,8 +1274,8 @@
                             "5a7c74b3e899ef0014332c29",
                             "618b9643526131765025ab35",
                             "618bab21526131765025ab3f",
-							"65392f611406374f82152ba5",
-							"653931da5db71d30ab1d6296"
+                            "65392f611406374f82152ba5",
+                            "653931da5db71d30ab1d6296"
                         ],
                         "mod_nvg": [
                             "5c11046cd174af02a012e42b"
@@ -1310,8 +1304,7 @@
                     }
                 }
             ],
-            "weightingAdjustmentsByBotLevel": [
-                {
+            "weightingAdjustmentsByBotLevel": [{
                     "levelRange": {
                         "min": 1,
                         "max": 14
@@ -1548,8 +1541,7 @@
                             }
                         }
                     }
-                },
-                {
+                }, {
                     "levelRange": {
                         "min": 15,
                         "max": 22
@@ -1561,7 +1553,7 @@
                                 "5c0e5edb86f77461f55ed1f7": 135,
                                 "5648a7494bdc2d9d488b4583": 90,
                                 "5ab8e4ed86f7742d8e50c7fa": 135,
-								"62a09d79de7ac81993580530": 25
+                                "62a09d79de7ac81993580530": 25
                             },
                             "TacticalVest": {
                                 "5c0e3eb886f7742015526062": 40,
@@ -1604,17 +1596,16 @@
                             }
                         }
                     }
-                },
-                {
+                }, {
                     "levelRange": {
                         "min": 30,
                         "max": 50
                     },
                     "equipment": {
                         "edit": {
-							"FirstPrimaryWeapon": {
-								"5c501a4d2e221602b412b540": 2
-							},
+                            "FirstPrimaryWeapon": {
+                                "5c501a4d2e221602b412b540": 2
+                            },
                             "ArmorVest": {
                                 "5ab8e79e86f7742d8b372e78": 40,
                                 "5c0e541586f7747fa54205c9": 40,
@@ -1631,7 +1622,7 @@
                                 "64be79c487d1510151095552": 1,
                                 "64be79e2bf8412471d0d9bcc": 1,
                                 "5648a7494bdc2d9d488b4583": 1,
-								"62a09d79de7ac81993580530": 1
+                                "62a09d79de7ac81993580530": 1
                             },
                             "TacticalVest": {
                                 "5b44cad286f77402a54ae7e5": 70,
@@ -1641,7 +1632,7 @@
                                 "628b9c7d45122232a872358f": 45,
                                 "609e860ebd219504d8507525": 25,
                                 "628cd624459354321c4b7fa2": 35,
-								"572b7adb24597762ae139821": 15,
+                                "572b7adb24597762ae139821": 15,
                                 "5e4abc1f86f774069619fbaa": 1,
                                 "6034d0230ca681766b6a0fb5": 1
                             },
@@ -1658,8 +1649,7 @@
                             }
                         }
                     }
-                },
-                {
+                }, {
                     "levelRange": {
                         "min": 51,
                         "max": 100
@@ -1719,23 +1709,23 @@
                     },
                     "equipment": {
                         "edit": {
-							"FirstPrimaryWeapon": {
-								"65290f395ae2ae97b80fdf2d": 8,
-								"5bb2475ed4351e00853264e3": 8,
-								"5c501a4d2e221602b412b540": 1,
-								"5d2f0d8048f0356c925bc3b0": 0,
-								"59984ab886f7743e98271174": 0,
-								"5ea03f7400685063ec28bfa8": 0,
-								"59f9cabd86f7743a10721f46": 0,
-								"60db29ce99594040e04c4a27": 0,
-								"61f7c9e189e6fb1a5e3ea78d": 0,
-								"5bfd297f0db834001a669119": 0,
-								"5ae08f0a5acfc408fb1398a1": 0,
-								"5de652c31b7e3716273428be": 0
-							},
-							"Holster": {
-								"5d3eb3b0a4b93615055e84d2": 25
-							},
+                            "FirstPrimaryWeapon": {
+                                "65290f395ae2ae97b80fdf2d": 8,
+                                "5bb2475ed4351e00853264e3": 8,
+                                "5c501a4d2e221602b412b540": 1,
+                                "5d2f0d8048f0356c925bc3b0": 0,
+                                "59984ab886f7743e98271174": 0,
+                                "5ea03f7400685063ec28bfa8": 0,
+                                "59f9cabd86f7743a10721f46": 0,
+                                "60db29ce99594040e04c4a27": 0,
+                                "61f7c9e189e6fb1a5e3ea78d": 0,
+                                "5bfd297f0db834001a669119": 0,
+                                "5ae08f0a5acfc408fb1398a1": 0,
+                                "5de652c31b7e3716273428be": 0
+                            },
+                            "Holster": {
+                                "5d3eb3b0a4b93615055e84d2": 25
+                            },
                             "ArmorVest": {
                                 "5ab8e79e86f7742d8b372e78": 60,
                                 "5c0e541586f7747fa54205c9": 60,
@@ -1760,7 +1750,7 @@
                                 "64be79c487d1510151095552": 1,
                                 "5648a7494bdc2d9d488b4583": 1,
                                 "64be79e2bf8412471d0d9bcc": 1,
-								"62a09d79de7ac81993580530": 1
+                                "62a09d79de7ac81993580530": 1
                             },
                             "TacticalVest": {
                                 "5b44cad286f77402a54ae7e5": 90,
@@ -1773,8 +1763,8 @@
                                 "628d0618d1ba6e4fa07ce5a4": 85,
                                 "5df8a42886f77412640e2e75": 60,
                                 "5648a69d4bdc2ded0b8b457b": 55,
-								"5e4abc1f86f774069619fbaa": 1,
-								"572b7adb24597762ae139821": 1,
+                                "5e4abc1f86f774069619fbaa": 1,
+                                "572b7adb24597762ae139821": 1,
                                 "6034d0230ca681766b6a0fb5": 1
                             },
                             "Headwear": {
@@ -1795,7 +1785,7 @@
                                 "5f5e46b96bdad616ad46d613": 15,
                                 "5ab8ebf186f7742d8b372e80": 15,
                                 "639346cc1c8f182ad90c8972": 15,
-								"59e763f286f7742ee57895da": 11
+                                "59e763f286f7742ee57895da": 11
                             },
                             "FaceCover": {
                                 "657089638db3adca1009f4ca": 22
@@ -1804,8 +1794,7 @@
                     }
                 }
             ],
-            "armorPlateWeighting": [
-                {
+            "armorPlateWeighting": [{
                     "levelRange": {
                         "min": 1,
                         "max": 10
@@ -1845,8 +1834,7 @@
                         "5": 1,
                         "6": 1
                     }
-                },
-                {
+                }, {
                     "levelRange": {
                         "min": 11,
                         "max": 14
@@ -1886,8 +1874,7 @@
                         "5": 1,
                         "6": 1
                     }
-                },
-                {
+                }, {
                     "levelRange": {
                         "min": 15,
                         "max": 24
@@ -1927,8 +1914,7 @@
                         "5": 5,
                         "6": 4
                     }
-                },
-                {
+                }, {
                     "levelRange": {
                         "min": 25,
                         "max": 35
@@ -1968,8 +1954,7 @@
                         "5": 15,
                         "6": 5
                     }
-                },
-                {
+                }, {
                     "levelRange": {
                         "min": 36,
                         "max": 55
@@ -2009,8 +1994,7 @@
                         "5": 45,
                         "6": 20
                     }
-                },
-                {
+                }, {
                     "levelRange": {
                         "min": 56,
                         "max": 90
@@ -2052,8 +2036,7 @@
                     }
                 }
             ],
-            "whitelist": [
-                {
+            "whitelist": [{
                     "levelRange": {
                         "min": 101,
                         "max": 101
