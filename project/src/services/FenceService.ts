@@ -568,10 +568,6 @@ export class FenceService
                     continue;
                 }
             }
-            else
-            {
-                this.logger.warning(`No limit ${rootItemDb._name} ${rootItemDb._parent}`);
-            }
 
             // MUST randomise Ids as its possible to add the same base fence assort twice = duplicate IDs = dead client
             this.itemHelper.reparentItemAndChildren(presetWithChildrenClone[0], presetWithChildrenClone);
@@ -629,10 +625,6 @@ export class FenceService
                     );
                     continue;
                 }
-            }
-            else
-            {
-                this.logger.warning(`No limit ${rootItemDb._name} ${rootItemDb._parent}`);
             }
 
             // MUST randomise Ids as its possible to add the same base fence assort twice = duplicate IDs = dead client
