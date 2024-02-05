@@ -186,6 +186,16 @@ export class FenceService
         else
         {
             this.logger.warning(`adjustItemPriceByModifier() - no action taken for item: ${item._tpl}`);
+
+            return;
+        }
+
+        // Adjust price based on durability
+        if (item.upd?.Repairable)
+        {
+            const itemQualityModifier = this.itemHelper.getItemQualityModifier(item);
+            assort.barter_scheme[item._id][0][0].count *= itemQualityModifier;
+            this.logger.warning(`Reduced item ${item._tpl} price to : ${assort.barter_scheme[item._id][0][0].count}`);
         }
     }
 
