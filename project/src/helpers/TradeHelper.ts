@@ -7,6 +7,7 @@ import { TraderHelper } from "@spt-aki/helpers/TraderHelper";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
 import { Item } from "@spt-aki/models/eft/common/tables/IItem";
 import { IAddItemDirectRequest } from "@spt-aki/models/eft/inventory/IAddItemDirectRequest";
+import { IAddItemsDirectRequest } from "@spt-aki/models/eft/inventory/IAddItemsDirectRequest";
 import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEventRouterResponse";
 import { IProcessBuyTradeRequestData } from "@spt-aki/models/eft/trade/IProcessBuyTradeRequestData";
 import { IProcessSellTradeRequestData } from "@spt-aki/models/eft/trade/IProcessSellTradeRequestData";
@@ -200,33 +201,41 @@ export class TradeHelper
         const itemsToSendTotalCount = buyRequestData.count;
         let itemsToSendRemaining = itemsToSendTotalCount;
 
-        // Loop until all items have been sent to player stash
+        // Construct array of items to send to player
+        const itemsToSendToPlayer: Item[][] = [];
         while (itemsToSendRemaining > 0)
         {
-            // Handle edge case when remaining items to send < max stack size
+            const offerClone = this.jsonUtil.clone(offerItems);
+            // Handle stackable items that have a max stack size limit
             const itemCountToSend = Math.min(itemMaxStackSize, itemsToSendRemaining);
-            offerItems[0].upd.StackObjectsCount = itemCountToSend;
+            offerClone[0].upd.StackObjectsCount = itemCountToSend;
 
             // Prevent any collisions
-            this.itemHelper.remapRootItemId(offerItems);
-
-            // Construct request
-            const request: IAddItemDirectRequest = {
-                itemWithModsToAdd: this.itemHelper.reparentItemAndChildren(offerItems[0], offerItems),
-                foundInRaid: foundInRaid,
-                callback: buyCallback,
-                useSortingTable: false,
-            };
-
-            // Add item + children to stash
-            this.inventoryHelper.addItemToStash(sessionID, request, pmcData, output);
-            if (output.warnings.length > 0)
+            this.itemHelper.remapRootItemId(offerClone);
+            if (offerClone.length > 1)
             {
-                return;
+                this.itemHelper.reparentItemAndChildren(offerClone[0], offerClone);
             }
+
+            itemsToSendToPlayer.push(offerClone);
 
             // Remove amount of items added to player stash
             itemsToSendRemaining -= itemCountToSend;
+        }
+
+        // Construct request
+        const request: IAddItemsDirectRequest = {
+            itemsWithModsToAdd: itemsToSendToPlayer,
+            foundInRaid: foundInRaid,
+            callback: buyCallback,
+            useSortingTable: false,
+        };
+
+        // Add items + their children to stash
+        this.inventoryHelper.addItemsToStash(sessionID, request, pmcData, output);
+        if (output.warnings.length > 0)
+        {
+            return;
         }
 
         /// Pay for purchase

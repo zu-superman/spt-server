@@ -1395,7 +1395,6 @@ export class ItemHelper
             }
 
             mod._id = idMappings[mod._id];
-
             if (mod.parentId !== undefined)
             {
                 mod.parentId = idMappings[mod.parentId];
