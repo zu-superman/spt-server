@@ -97,15 +97,12 @@ export class InsuranceController
     protected filterInsuredItems(sessionID: string, time?: number): Insurance[]
     {
         // Use the current time by default.
-        if (!time)
-        {
-            time = this.timeUtil.getTimestamp();
-        }
+        const insuranceTime = time || this.timeUtil.getTimestamp();
 
         const profileInsuranceDetails = this.saveServer.getProfile(sessionID).insurance;
         this.logger.debug(`Found ${profileInsuranceDetails.length} insurance packages in profile ${sessionID}`);
 
-        return profileInsuranceDetails.filter((insured) => time >= insured.scheduledTime);
+        return profileInsuranceDetails.filter((insured) => insuranceTime >= insured.scheduledTime);
     }
 
     /**

@@ -468,13 +468,15 @@ export class InventoryController
      */
     public foldItem(pmcData: IPmcData, body: IInventoryFoldRequestData, sessionID: string): IItemEventRouterResponse
     {
+        let playerData = pmcData;
+
         // Fix for folding weapons while on they're in the Scav inventory
-        if (body.fromOwner && body.fromOwner.type === "Profile" && body.fromOwner.id !== pmcData._id)
+        if (body.fromOwner && body.fromOwner.type === "Profile" && body.fromOwner.id !== playerData._id)
         {
-            pmcData = this.profileHelper.getScavProfile(sessionID);
+            playerData = this.profileHelper.getScavProfile(sessionID);
         }
 
-        for (const item of pmcData.Inventory.items)
+        for (const item of playerData.Inventory.items)
         {
             if (item._id && item._id === body.item)
             {
@@ -495,13 +497,15 @@ export class InventoryController
      */
     public toggleItem(pmcData: IPmcData, body: IInventoryToggleRequestData, sessionID: string): IItemEventRouterResponse
     {
+        let playerData = pmcData;
+
         // Fix for toggling items while on they're in the Scav inventory
-        if (body.fromOwner && body.fromOwner.type === "Profile" && body.fromOwner.id !== pmcData._id)
+        if (body.fromOwner && body.fromOwner.type === "Profile" && body.fromOwner.id !== playerData._id)
         {
-            pmcData = this.profileHelper.getScavProfile(sessionID);
+            playerData = this.profileHelper.getScavProfile(sessionID);
         }
 
-        const itemToToggle = pmcData.Inventory.items.find((x) => x._id === body.item);
+        const itemToToggle = playerData.Inventory.items.find((x) => x._id === body.item);
         if (itemToToggle)
         {
             if (!itemToToggle.upd)

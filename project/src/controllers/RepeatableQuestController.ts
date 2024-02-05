@@ -263,14 +263,16 @@ export class RepeatableQuestController
     public generateDebugDailies(dailiesPool: any, factory: any, number: number): any
     {
         let randomQuests = [];
+        let numberOfQuests = number;
+
         if (factory)
         {
             // First is factory extract always add for debugging
             randomQuests.push(dailiesPool[0]);
-            number -= 1;
+            numberOfQuests -= 1;
         }
 
-        randomQuests = randomQuests.concat(this.randomUtil.drawRandomFromList(dailiesPool, number, false));
+        randomQuests = randomQuests.concat(this.randomUtil.drawRandomFromList(dailiesPool, numberOfQuests, false));
 
         for (const element of randomQuests)
         {

@@ -75,9 +75,11 @@ export class BotEquipmentModGenerator
         parentId: string,
         parentTemplate: ITemplateItem,
         settings: IGenerateEquipmentProperties,
-        forceSpawn = false,
+        shouldForceSpawn = false,
     ): Item[]
     {
+        let forceSpawn = shouldForceSpawn;
+
         const compatibleModsPool = settings.modPool[parentTemplate._id];
         if (!compatibleModsPool)
         {

@@ -193,13 +193,14 @@ export class ProfileHelper
 
     public getExperience(level: number): number
     {
+        let playerLevel = level;
         const expTable = this.databaseServer.getTables().globals.config.exp.level.exp_table;
         let exp = 0;
 
-        if (level >= expTable.length)
+        if (playerLevel >= expTable.length)
         {
             // make sure to not go out of bounds
-            level = expTable.length - 1;
+            playerLevel = expTable.length - 1;
         }
 
         for (let i = 0; i < level; i++)
@@ -400,7 +401,9 @@ export class ProfileHelper
         useSkillProgressRateMultipler = false,
     ): void
     {
-        if (!pointsToAdd || pointsToAdd < 0)
+        let pointsToAddToSkill = pointsToAdd;
+
+        if (!pointsToAddToSkill || pointsToAddToSkill < 0)
         {
             this.logger.warning(
                 this.localisationService.getText("player-attempt_to_increment_skill_with_negative_value", skill),
@@ -411,7 +414,7 @@ export class ProfileHelper
         const profileSkills = pmcProfile?.Skills?.Common;
         if (!profileSkills)
         {
-            this.logger.warning(`Unable to add ${pointsToAdd} points to ${skill}, profile has no skills`);
+            this.logger.warning(`Unable to add ${pointsToAddToSkill} points to ${skill}, profile has no skills`);
             return;
         }
 
@@ -426,10 +429,10 @@ export class ProfileHelper
         {
             const globals = this.databaseServer.getTables().globals;
             const skillProgressRate = globals.config.SkillsSettings.SkillProgressRate;
-            pointsToAdd *= skillProgressRate;
+            pointsToAddToSkill *= skillProgressRate;
         }
 
-        profileSkill.Progress += pointsToAdd;
+        profileSkill.Progress += pointsToAddToSkill;
         profileSkill.Progress = Math.min(profileSkill.Progress, 5100); // Prevent skill from ever going above level 51 (5100)
         profileSkill.LastAccess = this.timeUtil.getTimestamp();
     }
