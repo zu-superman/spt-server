@@ -8,6 +8,7 @@ import { PresetHelper } from "@spt-aki/helpers/PresetHelper";
 import { ProbabilityHelper } from "@spt-aki/helpers/ProbabilityHelper";
 import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
 import { WeightedRandomHelper } from "@spt-aki/helpers/WeightedRandomHelper";
+import { IPreset } from "@spt-aki/models/eft/common/IGlobals";
 import { Mods, ModsChances } from "@spt-aki/models/eft/common/tables/IBotType";
 import { Item } from "@spt-aki/models/eft/common/tables/IItem";
 import { ITemplateItem, Slot } from "@spt-aki/models/eft/common/tables/ITemplateItem";
@@ -936,13 +937,8 @@ export class BotEquipmentModGenerator
         // Mod is flagged as being default only, try and find it in globals
         if (modSpawnResult === ModSpawn.DEFAULT_MOD)
         {
-            // Edge case - using mp5sd reciever means default mp5 handguard doesnt fit
-            const isMp5sd = parentTemplate._id === "5926f2e086f7745aae644231";
-
-            const defaultWeaponPreset = isMp5sd
-                ? this.presetHelper.getPreset("59411abb86f77478f702b5d2")
-                : this.presetHelper.getDefaultPreset(weaponTemplate._id);
-            const matchingMod = defaultWeaponPreset._items.find((item) =>
+            const matchingPreset = this.getMatchingPreset(weaponTemplate, parentTemplate._id);
+            const matchingMod = matchingPreset._items.find((item) =>
                 item?.slotId?.toLowerCase() === modSlot.toLowerCase()
             );
 
@@ -979,6 +975,33 @@ export class BotEquipmentModGenerator
 
         // Required mod is not default or randomisable, use existing pool
         return itemModPool[modSlot];
+    }
+
+    /**
+     * Get default preset for weapon, get specific weapon presets for edge cases (mp5/silenced dvl)
+     * @param weaponTemplate
+     * @param parentItemTpl
+     * @returns
+     */
+    protected getMatchingPreset(weaponTemplate: ITemplateItem, parentItemTpl: string): IPreset
+    {
+        // Edge case - using mp5sd reciever means default mp5 handguard doesnt fit
+        const isMp5sd = parentItemTpl === "5926f2e086f7745aae644231";
+
+        // Edge case - dvl 500mm is the silenced barrel and has specific muzzle mods
+        const isDvl500mmSilencedBarrel = parentItemTpl === "5888945a2459774bf43ba385";
+
+        if (isMp5sd)
+        {
+            return this.presetHelper.getPreset("59411abb86f77478f702b5d2");
+        }
+
+        if (isDvl500mmSilencedBarrel)
+        {
+            return this.presetHelper.getPreset("59e8d2b386f77445830dd299");
+        }
+
+        return this.presetHelper.getDefaultPreset(weaponTemplate._id);
     }
 
     /**
