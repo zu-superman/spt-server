@@ -209,7 +209,7 @@ export class InraidController
     }
 
     /**
-     * Make changes to pmc profile after they've died in raid,
+     * Make changes to PMC profile after they've died in raid,
      * Alter body part hp, handle insurance, delete inventory items, remove carried quest items
      * @param postRaidSaveRequest Post-raid save request
      * @param pmcData Pmc profile
@@ -230,8 +230,8 @@ export class InraidController
             // Find and remove the completed condition from profile if player died, otherwise quest is stuck in limbo
             // and quest items cannot be picked up again
             const allQuests = this.questHelper.getQuestsFromDb();
-            const activeQuestIdsInProfile = pmcData.Quests.filter((x) =>
-                ![QuestStatus.AvailableForStart, QuestStatus.Success, QuestStatus.Expired].includes(x.status)
+            const activeQuestIdsInProfile = pmcData.Quests.filter((profileQuest) =>
+                ![QuestStatus.AvailableForStart, QuestStatus.Success, QuestStatus.Expired].includes(profileQuest.status)
             ).map((x) => x.qid);
             for (const questItem of postRaidSaveRequest.profile.Stats.Eft.CarriedQuestItems)
             {

@@ -603,19 +603,19 @@ export class InRaidHelper
     }
 
     /**
-     * Clear pmc inventory of all items except those that are exempt
+     * Clear PMC inventory of all items except those that are exempt
      * Used post-raid to remove items after death
      * @param pmcData Player profile
-     * @param sessionID Session id
+     * @param sessionId Session id
      */
-    public deleteInventory(pmcData: IPmcData, sessionID: string): void
+    public deleteInventory(pmcData: IPmcData, sessionId: string): void
     {
         // Get inventory item ids to remove from players profile
-        const itemIdsToDeleteFromProfile = this.getInventoryItemsLostOnDeath(pmcData).map((x) => x._id);
-        for (const x of itemIdsToDeleteFromProfile)
+        const itemIdsToDeleteFromProfile = this.getInventoryItemsLostOnDeath(pmcData).map((item) => item._id);
+        for (const itemIdToDelete of itemIdsToDeleteFromProfile)
         {
             // Items inside containers are handled as part of function
-            this.inventoryHelper.removeItem(pmcData, x, sessionID);
+            this.inventoryHelper.removeItem(pmcData, itemIdToDelete, sessionId);
         }
 
         // Remove contents of fast panel
@@ -693,12 +693,14 @@ export class InRaidHelper
         if (itemToCheck.parentId === pmcData.Inventory.equipment)
         {
             // Check slot id against config, true = delete, false = keep, undefined = delete
-            const discard = this.lostOnDeathConfig.equipment[itemToCheck.slotId];
+            const discard: boolean = this.lostOnDeathConfig.equipment[itemToCheck.slotId];
             if (discard === undefined)
             {
+                // Not kept after death
                 return false;
             }
 
+            // True === item is lost on death, return the opposite as we return if item is kept after death
             return !discard;
         }
 
