@@ -2,7 +2,10 @@ import { inject, injectable } from "tsyringe";
 
 import { Category } from "@spt-aki/models/eft/common/tables/IHandbookBase";
 import { Item } from "@spt-aki/models/eft/common/tables/IItem";
+import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { Money } from "@spt-aki/models/enums/Money";
+import { IItemConfig } from "@spt-aki/models/spt/config/IItemConfig";
+import { ConfigServer } from "@spt-aki/servers/ConfigServer";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 
@@ -33,14 +36,18 @@ export class LookupCollection
 @injectable()
 export class HandbookHelper
 {
+    protected itemConfig: IItemConfig;
     protected lookupCacheGenerated = false;
     protected handbookPriceCache = new LookupCollection();
 
     constructor(
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("JsonUtil") protected jsonUtil: JsonUtil,
+        @inject("ConfigServer") protected configServer: ConfigServer,
     )
-    {}
+    {
+        this.itemConfig = this.configServer.getConfig(ConfigTypes.ITEM);
+    }
 
     /**
      * Create an in-memory cache of all items with associated handbook price in handbookPriceCache class
@@ -84,6 +91,11 @@ export class HandbookHelper
         {
             this.hydrateLookup();
             this.lookupCacheGenerated = true;
+        }
+
+        if (this.itemConfig.handbookPriceOverride[tpl])
+        {
+            return this.itemConfig.handbookPriceOverride[tpl];
         }
 
         if (this.handbookPriceCache.items.byId.has(tpl))
