@@ -833,7 +833,7 @@ export class LocationGenerator
         const itemTemplate = this.itemHelper.getItem(chosenTpl)[1];
 
         // Item array to return
-        let itemWithMods: Item[] = [];
+        const itemWithMods: Item[] = [];
 
         // Money/Ammo - don't rely on items in spawnPoint.template.Items so we can randomise it ourselves
         if (this.itemHelper.isOfBaseclasses(chosenTpl, [BaseClasses.MONEY, BaseClasses.AMMO]))
@@ -874,20 +874,9 @@ export class LocationGenerator
 
             itemWithMods.push(...magazineItem);
         }
-        else if (this.itemHelper.armorItemCanHoldMods(chosenTpl))
-        {
-            itemWithMods.push({ _id: this.objectId.generate(), _tpl: chosenTpl });
-            if (itemTemplate._props.Slots?.length > 0)
-            {
-                itemWithMods = this.itemHelper.addChildSlotItems(
-                    itemWithMods,
-                    itemTemplate,
-                    this.locationConfig.equipmentLootSettings.modSpawnChancePercent,
-                );
-            }
-        }
         else
         {
+            // Also used by armors to get child mods
             // Get item + children and add into array we return
             const itemWithChildren = this.itemHelper.findAndReturnChildrenAsItems(
                 spawnPoint.template.Items,
