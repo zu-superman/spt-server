@@ -459,10 +459,33 @@
                         "StackObjectsCount": 1
                     },
                     "parentId": "64b996c9d0de4697180359b6"
-                },
-                {
+                }, {
                     "_id": "a89075c1b188g4dd6404a3d7",
                     "_tpl": "6389c6463485cf0eeb260715",
+                    "slotId": "main",
+                    "upd": {
+                        "StackObjectsCount": 1
+                    },
+                    "parentId": "64b996c9d0de4697180359b6"
+                }, {
+                    "_id": "a89075c1b188g4dd6404a3d6",
+                    "_tpl": "63a8970d7108f713591149f5",
+                    "slotId": "main",
+                    "upd": {
+                        "StackObjectsCount": 1
+                    },
+                    "parentId": "64b996c9d0de4697180359b6"
+                }, {
+                    "_id": "a89075c1b188g4dd6404a3d5",
+                    "_tpl": "63a8970d7108f713591149f5",
+                    "slotId": "main",
+                    "upd": {
+                        "StackObjectsCount": 1
+                    },
+                    "parentId": "64b996c9d0de4697180359b6"
+                }, {
+                    "_id": "a89075c1b188g4dd6404a3d1",
+                    "_tpl": "63a897c6b1ff6e29734fcc95",
                     "slotId": "main",
                     "upd": {
                         "StackObjectsCount": 1
