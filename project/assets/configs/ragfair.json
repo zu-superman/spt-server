@@ -206,11 +206,13 @@
         },
         "unreasonableModPrices": {
             "5448fe124bdc2da5018b4567": {
+				"itemType": "Weapon Mod",
                 "enabled": true,
                 "handbookPriceOverMultiplier": 9,
                 "newPriceHandbookMultiplier": 9
             },
             "57864a66245977548f04a81f": {
+				"itemType": "Electronics",
                 "enabled": true,
                 "handbookPriceOverMultiplier": 11,
                 "newPriceHandbookMultiplier": 11

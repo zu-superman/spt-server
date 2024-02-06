@@ -54,8 +54,29 @@ export class HandbookHelper
      */
     public hydrateLookup(): void
     {
-        const handbookDb = this.jsonUtil.clone(this.databaseServer.getTables().templates.handbook);
-        for (const handbookItem of handbookDb.Items)
+        // Add handbook overrides found in items.json config into db
+        for (const itemTpl in this.itemConfig.handbookPriceOverride)
+        {
+            let itemToUpdate = this.databaseServer.getTables().templates.handbook.Items.find((item) =>
+                item.Id === itemTpl
+            );
+            if (!itemToUpdate)
+            {
+                this.databaseServer.getTables().templates.handbook.Items.push({
+                    Id: itemTpl,
+                    ParentId: this.databaseServer.getTables().templates.items[itemTpl]._parent,
+                    Price: this.itemConfig.handbookPriceOverride[itemTpl],
+                });
+                itemToUpdate = this.databaseServer.getTables().templates.handbook.Items.find((item) =>
+                    item.Id === itemTpl
+                );
+            }
+
+            itemToUpdate.Price = this.itemConfig.handbookPriceOverride[itemTpl];
+        }
+
+        const handbookDbClone = this.jsonUtil.clone(this.databaseServer.getTables().templates.handbook);
+        for (const handbookItem of handbookDbClone.Items)
         {
             this.handbookPriceCache.items.byId.set(handbookItem.Id, handbookItem.Price);
             if (!this.handbookPriceCache.items.byParent.has(handbookItem.ParentId))
@@ -65,7 +86,7 @@ export class HandbookHelper
             this.handbookPriceCache.items.byParent.get(handbookItem.ParentId).push(handbookItem.Id);
         }
 
-        for (const handbookCategory of handbookDb.Categories)
+        for (const handbookCategory of handbookDbClone.Categories)
         {
             this.handbookPriceCache.categories.byId.set(handbookCategory.Id, handbookCategory.ParentId || null);
             if (handbookCategory.ParentId)
@@ -91,11 +112,6 @@ export class HandbookHelper
         {
             this.hydrateLookup();
             this.lookupCacheGenerated = true;
-        }
-
-        if (this.itemConfig.handbookPriceOverride[tpl])
-        {
-            return this.itemConfig.handbookPriceOverride[tpl];
         }
 
         if (this.handbookPriceCache.items.byId.has(tpl))
