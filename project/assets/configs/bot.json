@@ -1106,7 +1106,7 @@
                         "mod_mount_004": 35,
                         "mod_mount_005": 35,
                         "mod_mount_006": 35,
-                        "mod_muzzle": 25,
+                        "mod_muzzle": 20,
                         "mod_muzzle_000": 20,
                         "mod_muzzle_001": 20,
                         "mod_pistol_grip_akms": 35,
@@ -1198,7 +1198,7 @@
                     },
                     "weaponMods": {
                         "mod_scope": 95,
-                        "mod_muzzle": 95,
+                        "mod_muzzle": 75,
                         "mod_muzzle_000": 95,
                         "mod_muzzle_001": 95
                     },
