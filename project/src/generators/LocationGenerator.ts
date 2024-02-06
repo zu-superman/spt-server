@@ -1085,10 +1085,7 @@ export class LocationGenerator
             const defaultPreset = this.presetHelper.getDefaultPreset(chosenTpl);
             if (defaultPreset)
             {
-                const presetAndMods: Item[] = this.itemHelper.replaceIDs(
-                    null,
-                    this.jsonUtil.clone(defaultPreset._items),
-                );
+                const presetAndMods: Item[] = this.itemHelper.replaceIDs(defaultPreset._items);
                 this.itemHelper.remapRootItemId(presetAndMods);
 
                 items = presetAndMods;
