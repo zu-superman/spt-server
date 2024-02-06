@@ -124,12 +124,12 @@ export class FenceBaseAssortGenerator
             }
 
             // Construct preset + mods
-            const presetAndMods: Item[] = this.itemHelper.replaceIDs(null, this.jsonUtil.clone(defaultPreset._items));
+            const itemAndChildren: Item[] = this.itemHelper.replaceIDs(null, this.jsonUtil.clone(defaultPreset._items));
 
             // Find root item and add some properties to it
-            for (let i = 0; i < presetAndMods.length; i++)
+            for (let i = 0; i < itemAndChildren.length; i++)
             {
-                const mod = presetAndMods[i];
+                const mod = itemAndChildren[i];
 
                 // Build root Item info
                 if (!("parentId" in mod))
@@ -147,19 +147,19 @@ export class FenceBaseAssortGenerator
             }
 
             // Add constructed preset to assorts
-            baseFenceAssort.items.push(...presetAndMods);
+            baseFenceAssort.items.push(...itemAndChildren);
 
-            // Calculate preset price
-            const price = this.getHandbookItemPriceWithChildren(presetAndMods);
+            // Calculate preset price (root item + child items)
+            const price = this.handbookHelper.getTemplatePriceForItems(itemAndChildren);
 
-            // Multiply weapon+mods rouble price by multipler in config
-            baseFenceAssort.barter_scheme[presetAndMods[0]._id] = [[]];
-            baseFenceAssort.barter_scheme[presetAndMods[0]._id][0][0] = {
+            // Multiply weapon+mods rouble price by quality modifier
+            baseFenceAssort.barter_scheme[itemAndChildren[0]._id] = [[]];
+            baseFenceAssort.barter_scheme[itemAndChildren[0]._id][0][0] = {
                 _tpl: Money.ROUBLES,
-                count: Math.round(price) * this.traderConfig.fence.presetPriceMult,
+                count: Math.round(price * this.itemHelper.getItemQualityModifierForOfferItems(itemAndChildren)),
             };
 
-            baseFenceAssort.loyal_level_items[presetAndMods[0]._id] = 1;
+            baseFenceAssort.loyal_level_items[itemAndChildren[0]._id] = 1;
         }
     }
 
@@ -238,22 +238,6 @@ export class FenceBaseAssortGenerator
                 });
             }
         }
-    }
-
-    /**
-     * Calculate and return the price of an item and its child mods
-     * @param itemWithChildren Item + mods to calcualte price of
-     * @returns price
-     */
-    protected getHandbookItemPriceWithChildren(itemWithChildren: Item[]): number
-    {
-        let price = 0;
-        for (const item of itemWithChildren)
-        {
-            price += this.handbookHelper.getTemplatePrice(item._tpl);
-        }
-
-        return price;
     }
 
     /**

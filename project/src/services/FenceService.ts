@@ -83,6 +83,7 @@ export class FenceService
     {
         if (this.traderConfig.fence.regenerateAssortsOnRefresh)
         {
+            // Using base assorts made earlier, do some alterations and store in this.fenceAssort
             this.generateFenceAssorts();
         }
 
@@ -382,16 +383,16 @@ export class FenceService
         // Reset refresh time now assorts are being generated
         this.incrementPartialRefreshTime();
 
-        const assorts = this.createFenceAssortSkeleton();
-        const discountAssorts = this.createFenceAssortSkeleton();
         // Create basic fence assort
+        const assorts = this.createFenceAssortSkeleton();
         this.createAssorts(this.traderConfig.fence.assortSize, assorts, 1);
+        // Store in this.fenceAssort
+        this.setFenceAssort(assorts);
 
         // Create level 2 assorts accessible at rep level 6
+        const discountAssorts = this.createFenceAssortSkeleton();
         this.createAssorts(this.traderConfig.fence.discountOptions.assortSize, discountAssorts, 2);
-
-        // store in fenceAssort class properties
-        this.setFenceAssort(assorts);
+        // Store in this.fenceDiscountAssort
         this.setFenceDiscountAssort(discountAssorts);
     }
 
@@ -416,10 +417,10 @@ export class FenceService
      */
     protected createAssorts(assortCount: number, assorts: ITraderAssort, loyaltyLevel: number): void
     {
-        const baseFenceAssort = this.databaseServer.getTables().traders[Traders.FENCE].assort;
+        const baseFenceAssortClone = this.jsonUtil.clone(this.databaseServer.getTables().traders[Traders.FENCE].assort);
         const itemTypeCounts = this.initItemLimitCounter(this.traderConfig.fence.itemTypeLimits);
 
-        this.addItemAssorts(assortCount, assorts, baseFenceAssort, itemTypeCounts, loyaltyLevel);
+        this.addItemAssorts(assortCount, assorts, baseFenceAssortClone, itemTypeCounts, loyaltyLevel);
 
         // Add presets
         const weaponPresetCount = this.randomUtil.getInt(
@@ -430,7 +431,7 @@ export class FenceService
             this.traderConfig.fence.equipmentPresetMinMax.min,
             this.traderConfig.fence.equipmentPresetMinMax.max,
         );
-        this.addPresetsToAssort(weaponPresetCount, equipmentPresetCount, assorts, baseFenceAssort, loyaltyLevel);
+        this.addPresetsToAssort(weaponPresetCount, equipmentPresetCount, assorts, baseFenceAssortClone, loyaltyLevel);
     }
 
     protected addItemAssorts(
@@ -555,16 +556,15 @@ export class FenceService
 
             // Check chosen item is below price cap
             const priceLimitRouble = this.traderConfig.fence.itemCategoryRoublePriceLimit[rootItemDb._parent];
+            const itemPrice = this.handbookHelper.getTemplatePriceForItems(presetWithChildrenClone)
+                * this.itemHelper.getItemQualityModifierForOfferItems(presetWithChildrenClone);
             if (priceLimitRouble)
             {
-                if (this.handbookHelper.getTemplatePriceForItems(presetWithChildrenClone) > priceLimitRouble)
+                if (itemPrice > priceLimitRouble)
                 {
                     // Too expensive, try again
-                    this.logger.warning(
-                        `Blocked ${rootItemDb._name}, price: ${
-                            this.handbookHelper.getTemplatePriceForItems(presetWithChildrenClone)
-                        } limit: ${priceLimitRouble}`,
-                    );
+                    this.logger.warning(`Blocked ${rootItemDb._name}, price: ${itemPrice} limit: ${priceLimitRouble}`);
+
                     continue;
                 }
             }
@@ -578,8 +578,12 @@ export class FenceService
 
             assorts.items.push(...presetWithChildrenClone);
 
+            // Set assort price
             // Must be careful to use correct id as the item has had its IDs regenerated
-            assorts.barter_scheme[presetWithChildrenClone[0]._id] = baseFenceAssort.barter_scheme[randomPresetRoot._id];
+            assorts.barter_scheme[presetWithChildrenClone[0]._id] = [[{
+                _tpl: "5449016a4bdc2d6f028b456f",
+                count: itemPrice,
+            }]];
             assorts.loyal_level_items[presetWithChildrenClone[0]._id] = loyaltyLevel;
 
             weaponPresetsAddedCount++;
@@ -613,16 +617,16 @@ export class FenceService
 
             // Check chosen item is below price cap
             const priceLimitRouble = this.traderConfig.fence.itemCategoryRoublePriceLimit[rootItemDb._parent];
+            const itemPrice = this.handbookHelper.getTemplatePriceForItems(presetWithChildrenClone)
+                * this.itemHelper.getItemQualityModifierForOfferItems(presetWithChildrenClone);
             if (priceLimitRouble)
             {
-                if (this.handbookHelper.getTemplatePriceForItems(presetWithChildrenClone) > priceLimitRouble)
+                // Get new price with random mods now removed
+                if (itemPrice > priceLimitRouble)
                 {
                     // Too expensive, try again
-                    this.logger.warning(
-                        `Blocked ${rootItemDb._name}, price: ${
-                            this.handbookHelper.getTemplatePriceForItems(presetWithChildrenClone)
-                        } limit: ${priceLimitRouble}`,
-                    );
+                    this.logger.warning(`Blocked ${rootItemDb._name}, price: ${itemPrice} limit: ${priceLimitRouble}`);
+
                     continue;
                 }
             }
@@ -637,7 +641,10 @@ export class FenceService
             assorts.items.push(...presetWithChildrenClone);
 
             // Must be careful to use correct id as the item has had its IDs regenerated
-            assorts.barter_scheme[presetWithChildrenClone[0]._id] = baseFenceAssort.barter_scheme[randomPresetRoot._id];
+            assorts.barter_scheme[presetWithChildrenClone[0]._id] = [[{
+                _tpl: "5449016a4bdc2d6f028b456f",
+                count: itemPrice,
+            }]];
             assorts.loyal_level_items[presetWithChildrenClone[0]._id] = loyaltyLevel;
 
             equipmentPresetsAddedCount++;

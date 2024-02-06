@@ -290,6 +290,22 @@ export class ItemHelper
     }
 
     /**
+     * Calcualte the average quality of an item and its children
+     * @param items An offers item to process
+     * @returns % quality modifer between 0 and 1
+     */
+    public getItemQualityModifierForOfferItems(items: Item[]): number
+    {
+        let qualityModifier = 1;
+        for (const item of items)
+        {
+            qualityModifier += this.getItemQualityModifier(item);
+        }
+
+        return Math.min(qualityModifier / items.length, 1);
+    }
+
+    /**
      * get normalized value (0-1) based on item condition
      * @param item
      * @returns number between 0 and 1

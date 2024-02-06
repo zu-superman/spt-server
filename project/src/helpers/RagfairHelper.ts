@@ -199,20 +199,4 @@ export class RagfairHelper
                 return "₽";
         }
     }
-
-    /**
-     * Calcualte the average quality of an item and its children
-     * @param offerItems An offers item to process
-     * @returns % quality modifer between 0 and 1
-     */
-    public getItemQualityModifierForOfferItems(offerItems: Item[]): number
-    {
-        let qualityModifier = 1;
-        for (const item of offerItems)
-        {
-            qualityModifier += this.itemHelper.getItemQualityModifier(item);
-        }
-
-        return Math.min(qualityModifier / offerItems.length, 1);
-    }
 }

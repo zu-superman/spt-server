@@ -392,7 +392,7 @@ export class RagfairController
         const rootItem = offer.items[0];
 
         // Get average of items quality+children
-        const qualityMultiplier = this.ragfairHelper.getItemQualityModifierForOfferItems(offer.items);
+        const qualityMultiplier = this.itemHelper.getItemQualityModifierForOfferItems(offer.items);
         const averageOfferPrice = this.ragfairPriceService.getFleaPriceForOfferItems(offer.items)
             * rootItem.upd.StackObjectsCount * qualityMultiplier;
         const itemStackCount = (offerRequest.sellInOnePiece) ? 1 : rootItem.upd.StackObjectsCount;
