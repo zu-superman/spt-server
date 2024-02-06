@@ -108,6 +108,7 @@ export class BotEquipmentModGenerator
                 itemSlotTemplate,
                 modSlotName.toLowerCase(),
                 settings.spawnChances.equipmentMods,
+                settings.botEquipmentConfig,
             );
             if (modSpawnResult === ModSpawn.SKIP && !forceSpawn)
             {
@@ -725,7 +726,7 @@ export class BotEquipmentModGenerator
             return ModSpawn.SPAWN;
         }
         const spawnMod = this.probabilityHelper.rollChance(modSpawnChances[modSlot]);
-        if (!spawnMod && (slotRequired || botEquipConfig.weaponSlotIdsToMakeRequired.includes(modSlot)))
+        if (!spawnMod && (slotRequired || botEquipConfig.weaponSlotIdsToMakeRequired?.includes(modSlot)))
         {
             // Mod is required but spawn chance roll failed, choose default mod spawn for slot
             return ModSpawn.DEFAULT_MOD;
