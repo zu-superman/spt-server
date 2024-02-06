@@ -1093,14 +1093,28 @@ export class LocationGenerator
         }
         else if (this.itemHelper.armorItemCanHoldMods(chosenTpl))
         {
-            // We make base item above, at start of function, no need to do it here
-            if (itemTemplate._props.Slots?.length > 0)
+            const defaultPreset = this.presetHelper.getDefaultPreset(chosenTpl);
+            if (defaultPreset)
             {
-                items = this.itemHelper.addChildSlotItems(
-                    items,
-                    itemTemplate,
-                    this.locationConfig.equipmentLootSettings.modSpawnChancePercent,
+                const presetAndMods: Item[] = this.itemHelper.replaceIDs(
+                    null,
+                    this.jsonUtil.clone(defaultPreset._items),
                 );
+                this.itemHelper.remapRootItemId(presetAndMods);
+
+                items = presetAndMods;
+            }
+            else
+            {
+                // We make base item above, at start of function, no need to do it here
+                if (itemTemplate._props.Slots?.length > 0)
+                {
+                    items = this.itemHelper.addChildSlotItems(
+                        items,
+                        itemTemplate,
+                        this.locationConfig.equipmentLootSettings.modSpawnChancePercent,
+                    );
+                }
             }
         }
 
