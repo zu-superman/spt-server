@@ -429,7 +429,7 @@ export class BotLootGenerator
         // Must add soft inserts/plates
         else if (this.itemHelper.itemRequiresSoftInserts(itemToAddTemplate._id))
         {
-            this.itemHelper.addChildSlotItems(itemToAddChildrenTo, itemToAddTemplate, null, true);
+            this.itemHelper.addChildSlotItems(itemToAddChildrenTo, itemToAddTemplate, null, false);
         }
     }
 
