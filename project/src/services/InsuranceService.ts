@@ -16,6 +16,7 @@ import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { MessageType } from "@spt-aki/models/enums/MessageType";
 import { Traders } from "@spt-aki/models/enums/Traders";
 import { IInsuranceConfig } from "@spt-aki/models/spt/config/IInsuranceConfig";
+import { ILostOnDeathConfig } from "@spt-aki/models/spt/config/ILostOnDeathConfig";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt-aki/servers/ConfigServer";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
@@ -32,6 +33,7 @@ export class InsuranceService
 {
     protected insured: Record<string, Record<string, Item[]>> = {};
     protected insuranceConfig: IInsuranceConfig;
+    protected lostOnDeathConfig: ILostOnDeathConfig;
 
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
@@ -52,6 +54,7 @@ export class InsuranceService
     )
     {
         this.insuranceConfig = this.configServer.getConfig(ConfigTypes.INSURANCE);
+        this.lostOnDeathConfig = this.configServer.getConfig(ConfigTypes.LOST_ON_DEATH);
     }
 
     /**
@@ -247,9 +250,15 @@ export class InsuranceService
                 continue;
             }
 
-            // Check if item missing in post-raid gear OR player died
+            // Slots can be flagged as never lost on death and shouldn't be sent to player as insurance
+            const itemShouldBeLostOnDeath = this.lostOnDeathConfig.equipment[preRaidItem.slotId] ?? true;
+
+            // Was item found on player inventory post-raid
+            const itemOnPlayerPostRaid = offRaidGearHash[insuredItem.itemId];
+
+            // Check if item missing in post-raid gear OR player died + item slot flagged as lost on death
             // Catches both events: player died with item on + player survived but dropped item in raid
-            if (!offRaidGearHash[insuredItem.itemId] || playerDied)
+            if (!itemOnPlayerPostRaid || (playerDied && itemShouldBeLostOnDeath))
             {
                 equipmentToSendToPlayer.push({
                     pmcData: pmcData,
