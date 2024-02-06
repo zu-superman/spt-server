@@ -70,7 +70,7 @@ export class ItemHelper
         // Is item valid
         return !itemDetails[1]._props.QuestItem
             && itemDetails[1]._type === "Item"
-            && invalidBaseTypes.every((x) => !this.isOfBaseclass(tpl, x))
+            && !this.isOfBaseclasses(tpl, invalidBaseTypes)
             && this.getItemPrice(tpl) > 0
             && !this.itemFilterService.isItemBlacklisted(tpl);
     }
