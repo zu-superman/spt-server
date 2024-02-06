@@ -9,6 +9,7 @@ import { MinMax } from "@spt-aki/models/common/MinMax";
 import { IPreset } from "@spt-aki/models/eft/common/IGlobals";
 import { Item } from "@spt-aki/models/eft/common/tables/IItem";
 import { IBarterScheme } from "@spt-aki/models/eft/common/tables/ITrader";
+import { BaseClasses } from "@spt-aki/models/enums/BaseClasses";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { Money } from "@spt-aki/models/enums/Money";
 import { IRagfairConfig } from "@spt-aki/models/spt/config/IRagfairConfig";
@@ -113,6 +114,28 @@ export class RagfairPriceService implements OnLoad
         itemPrice = itemPrice || 1;
 
         return itemPrice;
+    }
+
+    /**
+     * Get the flea price for an offers items + children
+     * @param offerItems offer item + children to process
+     * @returns Rouble price
+     */
+    public getFleaPriceForOfferItems(offerItems: Item[]): number
+    {
+        // Preset weapons take the direct prices.json value, otherwise they're massivly inflated
+        if (this.itemHelper.isOfBaseclass(offerItems[0]._tpl, BaseClasses.WEAPON))
+        {
+            return this.getFleaPriceForItem(offerItems[0]._tpl);
+        }
+
+        let totalPrice = 0;
+        for (const item of offerItems)
+        {
+            totalPrice += this.getFleaPriceForItem(item._tpl);
+        }
+
+        return totalPrice;
     }
 
     /**
