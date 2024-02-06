@@ -307,6 +307,10 @@ export class TradeController
                 traderDetails,
             );
         }
+
+        // Server-side calcualted isnt matching clientside calcualtion, temp fix to get it to be closer
+        roublesToSend /= 2;
+
         this.logger.debug(`Selling scav items to fence for ${roublesToSend} roubles`);
 
         // Create single currency item with all currency on it
