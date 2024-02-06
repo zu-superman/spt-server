@@ -645,30 +645,36 @@ export class ItemHelper
     }
 
     /**
-     * Regenerate all guids with new ids, exceptions are for items that cannot be altered (e.g. stash/sorting table)
+     * Regenerate all GUIDs with new IDs, for the exception of special item types (e.g. quest, sorting table, etc.) This
+     * function will not mutate the original items array, but will return a new array with new GUIDs.
+     *
+     * @param originalItems Items to adjust the IDs of
      * @param pmcData Player profile
-     * @param items Items to adjust ID values of
-     * @param insuredItems insured items to not replace ids for
-     * @param fastPanel
+     * @param insuredItems Insured items that should not have their IDs replaced
+     * @param fastPanel Quick slot panel
      * @returns Item[]
      */
-    public replaceIDs(pmcData: IPmcData, items: Item[], insuredItems: InsuredItem[] = null, fastPanel = null): Item[]
+    public replaceIDs(
+        originalItems: Item[],
+        pmcData: IPmcData | null = null,
+        insuredItems: InsuredItem[] | null = null,
+        fastPanel = null,
+    ): Item[]
     {
-        // replace bsg shit long ID with proper one
+        let items = this.jsonUtil.clone(originalItems); // Deep-clone the items to avoid mutation.
         let serialisedInventory = this.jsonUtil.serialize(items);
 
         for (const item of items)
         {
             if (pmcData !== null)
             {
-                // Insured items shouldn't be renamed
-                // only works for pmcs.
+                // Insured items should not be renamed. Only works for PMCs.
                 if (insuredItems?.find((insuredItem) => insuredItem.itemId === item._id))
                 {
                     continue;
                 }
 
-                // Do not replace important ID's
+                // Do not replace the IDs of specific types of items.
                 if (
                     item._id === pmcData.Inventory.equipment
                     || item._id === pmcData.Inventory.questRaidItems
@@ -681,10 +687,9 @@ export class ItemHelper
                 }
             }
 
-            // replace id
+            // Replace the ID of the item in the serialised inventory using a regular expression.
             const oldId = item._id;
             const newId = this.hashUtil.generate();
-
             serialisedInventory = serialisedInventory.replace(new RegExp(oldId, "g"), newId);
 
             // Also replace in quick slot if the old ID exists.

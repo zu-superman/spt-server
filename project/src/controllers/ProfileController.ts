@@ -164,10 +164,10 @@ export class ProfileController
             pmcData.UnlockedInfo = { unlockedProductionRecipe: [] };
         }
 
-        // Change item id's to be unique
+        // Change item IDs to be unique
         pmcData.Inventory.items = this.itemHelper.replaceIDs(
-            pmcData,
             pmcData.Inventory.items,
+            pmcData,
             null,
             pmcData.Inventory.fastPanel,
         );

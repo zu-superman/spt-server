@@ -77,7 +77,7 @@ export class BuildController
 
         // Replace duplicate Id's. The first item is the base item.
         // The root ID and the base item ID need to match.
-        body.Items = this.itemHelper.replaceIDs(pmcData, body.Items);
+        body.Items = this.itemHelper.replaceIDs(body.Items, pmcData);
         body.Root = body.Items[0]._id;
 
         // Create new object ready to save into profile userbuilds.weaponBuilds
@@ -112,7 +112,7 @@ export class BuildController
 
         // Replace duplicate ID's. The first item is the base item.
         // Root ID and the base item ID need to match.
-        request.Items = this.itemHelper.replaceIDs(pmcData, request.Items);
+        request.Items = this.itemHelper.replaceIDs(request.Items, pmcData);
 
         const newBuild: IEquipmentBuild = {
             Id: request.Id,

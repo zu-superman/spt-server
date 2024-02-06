@@ -351,7 +351,7 @@ export class QuestHelper
         if (defaultPreset)
         {
             // Found preset, use mods to hydrate reward item
-            const presetAndMods: Item[] = this.itemHelper.replaceIDs(null, this.jsonUtil.clone(defaultPreset._items));
+            const presetAndMods: Item[] = this.itemHelper.replaceIDs(defaultPreset._items);
             const newRootId = this.itemHelper.remapRootItemId(presetAndMods);
 
             questReward.items = presetAndMods;

@@ -311,7 +311,7 @@ export class ScavCaseRewardGenerator
                 }
 
                 // Ensure preset has unique ids and is cloned so we don't alter the preset data stored in memory
-                const presetAndMods: Item[] = this.itemHelper.replaceIDs(null, this.jsonUtil.clone(preset._items));
+                const presetAndMods: Item[] = this.itemHelper.replaceIDs(preset._items);
                 this.itemHelper.remapRootItemId(presetAndMods);
 
                 resultItem = presetAndMods;

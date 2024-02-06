@@ -141,8 +141,8 @@ export class InraidController
         this.markOrRemoveFoundInRaidItems(postRaidRequest);
 
         postRaidRequest.profile.Inventory.items = this.itemHelper.replaceIDs(
-            postRaidRequest.profile,
             postRaidRequest.profile.Inventory.items,
+            postRaidRequest.profile,
             serverPmcProfile.InsuredItems,
             postRaidRequest.profile.Inventory.fastPanel,
         );
@@ -317,8 +317,8 @@ export class InraidController
         this.markOrRemoveFoundInRaidItems(postRaidRequest);
 
         postRaidRequest.profile.Inventory.items = this.itemHelper.replaceIDs(
-            postRaidRequest.profile,
             postRaidRequest.profile.Inventory.items,
+            postRaidRequest.profile,
             serverPmcProfile.InsuredItems,
             postRaidRequest.profile.Inventory.fastPanel,
         );

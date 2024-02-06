@@ -799,7 +799,7 @@ export class HideoutController
             const preset = this.presetHelper.getDefaultPreset(recipe.endProduct);
 
             // Ensure preset has unique ids and is cloned so we don't alter the preset data stored in memory
-            const presetAndMods: Item[] = this.itemHelper.replaceIDs(null, this.jsonUtil.clone(preset._items));
+            const presetAndMods: Item[] = this.itemHelper.replaceIDs(preset._items);
 
             this.itemHelper.remapRootItemId(presetAndMods);
 
@@ -836,11 +836,7 @@ export class HideoutController
             const countOfItemsToReward = recipe.count;
             for (let index = 1; index < countOfItemsToReward; index++)
             {
-                const itemAndMods: Item[] = this.itemHelper.replaceIDs(
-                    null,
-                    this.jsonUtil.clone(itemAndChildrenToSendToPlayer[0]),
-                );
-
+                const itemAndMods: Item[] = this.itemHelper.replaceIDs(itemAndChildrenToSendToPlayer[0]);
                 itemAndChildrenToSendToPlayer.push(...[itemAndMods]);
             }
         }

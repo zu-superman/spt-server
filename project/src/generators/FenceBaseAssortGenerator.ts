@@ -124,7 +124,7 @@ export class FenceBaseAssortGenerator
             }
 
             // Construct preset + mods
-            const itemAndChildren: Item[] = this.itemHelper.replaceIDs(null, this.jsonUtil.clone(defaultPreset._items));
+            const itemAndChildren: Item[] = this.itemHelper.replaceIDs(defaultPreset._items);
 
             // Find root item and add some properties to it
             for (let i = 0; i < itemAndChildren.length; i++)

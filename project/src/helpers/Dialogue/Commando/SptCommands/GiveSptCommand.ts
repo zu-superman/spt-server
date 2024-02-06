@@ -104,7 +104,7 @@ export class GiveSptCommand implements ISptCommand
             for (let i = 0; i < +quantity; i++)
             {
                 // Make sure IDs are unique before adding to array - prevent collisions
-                const presetToSend = this.itemHelper.replaceIDs(null, this.jsonUtil.clone(preset._items));
+                const presetToSend = this.itemHelper.replaceIDs(preset._items);
                 itemsToSend.push(...presetToSend);
             }
         }

@@ -389,7 +389,7 @@ export class LootGenerator
             chosenWeaponPreset = this.randomUtil.getArrayValue(this.presetHelper.getPresets(chosenWeaponTpl));
         }
 
-        const presetAndMods: Item[] = this.itemHelper.replaceIDs(null, this.jsonUtil.clone(chosenWeaponPreset._items));
+        const presetAndMods: Item[] = this.itemHelper.replaceIDs(chosenWeaponPreset._items);
         this.itemHelper.remapRootItemId(presetAndMods);
 
         // Add preset to return object

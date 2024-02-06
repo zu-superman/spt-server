@@ -455,7 +455,7 @@ export class FenceService
 
                 continue;
             }
-            const desiredAssortItemAndChildrenClone = this.jsonUtil.clone(
+            let desiredAssortItemAndChildrenClone = this.jsonUtil.clone(
                 this.itemHelper.findAndReturnChildrenAsItems(baseFenceAssort.items, chosenBaseAssortRoot._id),
             );
 
@@ -492,7 +492,7 @@ export class FenceService
             }
 
             // MUST randomise Ids as its possible to add the same base fence assort twice = duplicate IDs = dead client
-            this.itemHelper.replaceIDs(null, desiredAssortItemAndChildrenClone);
+            desiredAssortItemAndChildrenClone = this.itemHelper.replaceIDs(desiredAssortItemAndChildrenClone);
             this.itemHelper.remapRootItemId(desiredAssortItemAndChildrenClone);
 
             const rootItemBeingAdded = desiredAssortItemAndChildrenClone[0];

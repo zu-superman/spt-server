@@ -86,7 +86,7 @@ export class RagfairAssortGenerator
         for (const preset of presets)
         {
             // Update Ids and clone
-            const presetAndMods: Item[] = this.itemHelper.replaceIDs(null, this.jsonUtil.clone(preset._items));
+            const presetAndMods: Item[] = this.itemHelper.replaceIDs(preset._items);
             this.itemHelper.remapRootItemId(presetAndMods);
 
             // Add presets base item tpl to the processed list so its skipped later on when processing items
