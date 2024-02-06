@@ -868,7 +868,7 @@
             "laserIsActiveChancePercent": 85,
             "forceOnlyArmoredRigWhenNoArmor": true,
             "filterPlatesByLevel": true,
-            "weaponSlotIdsToMakeRequired": ["mod_reciever", "mod_stock"],
+            "weaponSlotIdsToMakeRequired": ["mod_reciever", "mod_stock", "mod_muzzle"],
             "randomisation": [{
                     "levelRange": {
                         "min": 1,
