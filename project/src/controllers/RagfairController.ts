@@ -372,15 +372,11 @@ export class RagfairController
         }
 
         // Get an array of items from player inventory to list on flea
-        const getItemsFromInventoryErrorMessage = "";
-        const itemsInInventoryToList = this.getItemsToListOnFleaFromInventory(
-            pmcData,
-            offerRequest.items,
-            getItemsFromInventoryErrorMessage,
-        );
-        if (!itemsInInventoryToList)
+        const { items: itemsInInventoryToList, errorMessage: itemsInInventoryError } = this
+            .getItemsToListOnFleaFromInventory(pmcData, offerRequest.items);
+        if (!itemsInInventoryToList || itemsInInventoryError)
         {
-            this.httpResponse.appendErrorToOutput(output, getItemsFromInventoryErrorMessage);
+            this.httpResponse.appendErrorToOutput(output, itemsInInventoryError);
         }
 
         // Checks are done, create the offer
@@ -554,16 +550,16 @@ export class RagfairController
      * Using item ids from flea offer request, find corresponding items from player inventory and return as array
      * @param pmcData Player profile
      * @param itemIdsFromFleaOfferRequest Ids from request
-     * @param errorMessage if item is not found, add error message to this parameter
      * @returns Array of items from player inventory
      */
     protected getItemsToListOnFleaFromInventory(
         pmcData: IPmcData,
         itemIdsFromFleaOfferRequest: string[],
-        errorMessage: string,
-    ): Item[]
+    ): { items: Item[] | null; errorMessage: string | null; }
     {
         const itemsToReturn = [];
+        let errorMessage: string | null = null;
+
         // Count how many items are being sold and multiply the requested amount accordingly
         for (const itemId of itemIdsFromFleaOfferRequest)
         {
@@ -575,7 +571,7 @@ export class RagfairController
                 });
                 this.logger.error(errorMessage);
 
-                return null;
+                return { items: null, errorMessage };
             }
 
             item = this.itemHelper.fixItemStackCount(item);
@@ -587,10 +583,10 @@ export class RagfairController
             errorMessage = this.localisationService.getText("ragfair-unable_to_find_requested_items_in_inventory");
             this.logger.error(errorMessage);
 
-            return null;
+            return { items: null, errorMessage };
         }
 
-        return itemsToReturn;
+        return { items: itemsToReturn, errorMessage };
     }
 
     public createPlayerOffer(
