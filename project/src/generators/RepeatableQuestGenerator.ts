@@ -903,12 +903,12 @@ export class RepeatableQuestGenerator
      *
      * There's also a random variation of the reward the spread of which can be also defined in the config.
      *
-     * Additonaly, a scaling factor w.r.t. quest difficulty going from 0.2...1 can be used
+     * Additionally, a scaling factor w.r.t. quest difficulty going from 0.2...1 can be used
      *
      * @param   {integer}   pmcLevel            player's level
-     * @param   {number}    difficulty          a reward scaling factor goint from 0.2 to 1
+     * @param   {number}    difficulty          a reward scaling factor from 0.2 to 1
      * @param   {string}    traderId            the trader for reputation gain (and possible in the future filtering of reward item type based on trader)
-     * @param   {object}    repeatableConfig    The configuration for the repeatably kind (daily, weekly) as configured in QuestConfig for the requestd quest
+     * @param   {object}    repeatableConfig    The configuration for the repeatable kind (daily, weekly) as configured in QuestConfig for the requested quest
      * @returns {object}                        object of "Reward"-type that can be given for a repeatable mission
      */
     protected generateReward(
@@ -919,7 +919,7 @@ export class RepeatableQuestGenerator
         questConfig: IBaseQuestConfig,
     ): IQuestRewards
     {
-        // difficulty could go from 0.2 ... -> for lowest diffuculty receive 0.2*nominal reward
+        // difficulty could go from 0.2 ... -> for lowest difficulty receive 0.2*nominal reward
         const levelsConfig = repeatableConfig.rewardScaling.levels;
         const roublesConfig = repeatableConfig.rewardScaling.roubles;
         const xpConfig = repeatableConfig.rewardScaling.experience;
@@ -929,19 +929,19 @@ export class RepeatableQuestGenerator
         const skillPointRewardConfig = repeatableConfig.rewardScaling.skillPointReward;
         const reputationConfig = repeatableConfig.rewardScaling.reputation;
 
+        const effectiveDifficulty = Number.isNaN(difficulty) ? 1 : difficulty;
         if (Number.isNaN(difficulty))
         {
-            difficulty = 1;
             this.logger.warning(this.localisationService.getText("repeatable-difficulty_was_nan"));
         }
 
         // rewards are generated based on pmcLevel, difficulty and a random spread
         const rewardXP = Math.floor(
-            difficulty * this.mathUtil.interp1(pmcLevel, levelsConfig, xpConfig)
+            effectiveDifficulty * this.mathUtil.interp1(pmcLevel, levelsConfig, xpConfig)
                 * this.randomUtil.getFloat(1 - rewardSpreadConfig, 1 + rewardSpreadConfig),
         );
         const rewardRoubles = Math.floor(
-            difficulty * this.mathUtil.interp1(pmcLevel, levelsConfig, roublesConfig)
+            effectiveDifficulty * this.mathUtil.interp1(pmcLevel, levelsConfig, roublesConfig)
                 * this.randomUtil.getFloat(1 - rewardSpreadConfig, 1 + rewardSpreadConfig),
         );
         const rewardNumItems = this.randomUtil.randInt(
@@ -950,7 +950,7 @@ export class RepeatableQuestGenerator
         );
         const rewardReputation =
             Math.round(
-                100 * difficulty * this.mathUtil.interp1(pmcLevel, levelsConfig, reputationConfig)
+                100 * effectiveDifficulty * this.mathUtil.interp1(pmcLevel, levelsConfig, reputationConfig)
                     * this.randomUtil.getFloat(1 - rewardSpreadConfig, 1 + rewardSpreadConfig),
             ) / 100;
         const skillRewardChance = this.mathUtil.interp1(pmcLevel, levelsConfig, skillRewardChanceConfig);
@@ -998,7 +998,7 @@ export class RepeatableQuestGenerator
             const defaultPresets = Object.values(this.presetHelper.getDefaultPresets());
             const defaultPresetClone = this.jsonUtil.clone(this.randomUtil.getArrayValue(defaultPresets));
 
-            // use _encyclopedia as its always the base items _tpl, items[0] isnt guaranteed to be base item
+            // use _encyclopedia as its always the base items _tpl, items[0] isn't guaranteed to be base item
             rewards.Success.push(
                 this.generateRewardItem(defaultPresetClone._encyclopedia, 1, rewardIndex, defaultPresetClone._items),
             );
@@ -1014,7 +1014,7 @@ export class RepeatableQuestGenerator
 
                 if (this.itemHelper.isOfBaseclass(itemSelected._id, BaseClasses.AMMO))
                 {
-                    // Dont reward ammo that stacks to less than what's defined in config
+                    // Don't reward ammo that stacks to less than what's defined in config
                     if (itemSelected._props.StackMaxSize < repeatableConfig.rewardAmmoStackMinSize)
                     {
                         continue;
@@ -1028,14 +1028,14 @@ export class RepeatableQuestGenerator
                     // Get a stack size of ammo that fits rouble budget
                     const stackSizeThatFitsBudget = Math.round(stackRoubleBudget / singleCartridgePrice);
 
-                    // Get itemDbs max stack size for ammo - dont go above 100 (some mods mess around with stack sizes)
+                    // Get itemDbs max stack size for ammo - don't go above 100 (some mods mess around with stack sizes)
                     const stackMaxCount = Math.min(itemSelected._props.StackMaxSize, 100);
 
                     // Choose smallest value between budget fitting size and stack max
                     rewardItemStackCount = Math.min(stackSizeThatFitsBudget, stackMaxCount);
                 }
 
-                // 25% chance to double,triple quadruple reward stack (Only occurs when item is stackable and not weapon or ammo)
+                // 25% chance to double, triple quadruple reward stack (Only occurs when item is stackable and not weapon or ammo)
                 if (this.canIncreaseRewardItemStackSize(itemSelected, 70000))
                 {
                     rewardItemStackCount = this.getRandomisedRewardItemStackSizeByPrice(itemSelected);

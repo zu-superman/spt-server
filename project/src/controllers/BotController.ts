@@ -85,11 +85,13 @@ export class BotController
      * Get bot difficulty settings
      * adjust PMC settings to ensure they engage the correct bot types
      * @param type what bot the server is requesting settings for
-     * @param difficulty difficulty level server requested settings for
+     * @param diffLevel difficulty level server requested settings for
      * @returns Difficulty object
      */
-    public getBotDifficulty(type: string, difficulty: string): Difficulty
+    public getBotDifficulty(type: string, diffLevel: string): Difficulty
     {
+        let difficulty = diffLevel.toLowerCase();
+
         const raidConfig = this.applicationContext.getLatestValue(ContextVariableType.RAID_CONFIGURATION)?.getValue<
             IGetRaidConfigurationRequestData
         >();

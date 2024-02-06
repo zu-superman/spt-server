@@ -452,11 +452,11 @@ export class InraidController
     ): void
     {
         // Update scav profile inventory
-        scavData = this.inRaidHelper.setInventory(sessionID, scavData, offraidData.profile);
+        const updatedScavData = this.inRaidHelper.setInventory(sessionID, scavData, offraidData.profile);
 
         // Reset scav hp and save to json
         this.healthHelper.resetVitality(sessionID);
-        this.saveServer.getProfile(sessionID).characters.scav = scavData;
+        this.saveServer.getProfile(sessionID).characters.scav = updatedScavData;
 
         // Scav karma
         this.handlePostRaidPlayerScavKarmaChanges(pmcData, offraidData);

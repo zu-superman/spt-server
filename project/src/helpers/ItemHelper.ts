@@ -50,16 +50,12 @@ export class ItemHelper
 
     /**
      * Checks if an id is a valid item. Valid meaning that it's an item that be stored in stash
-     * @param       {string}    tpl       the template id / tpl
-     * @returns                             boolean; true for items that may be in player possession and not quest items
+     * @param    {string}  tpl  the template id / tpl
+     * @returns                 boolean; true for items that may be in player possession and not quest items
      */
     public isValidItem(tpl: string, invalidBaseTypes: string[] = null): boolean
     {
-        if (invalidBaseTypes === null)
-        {
-            invalidBaseTypes = this.defaultInvalidBaseTypes;
-        }
-
+        const baseTypes = invalidBaseTypes || this.defaultInvalidBaseTypes;
         const itemDetails = this.getItem(tpl);
 
         if (!itemDetails[0])
@@ -67,10 +63,9 @@ export class ItemHelper
             return false;
         }
 
-        // Is item valid
         return !itemDetails[1]._props.QuestItem
             && itemDetails[1]._type === "Item"
-            && !this.isOfBaseclasses(tpl, invalidBaseTypes)
+            && baseTypes.every((x) => !this.isOfBaseclass(tpl, x))
             && this.getItemPrice(tpl) > 0
             && !this.itemFilterService.isItemBlacklisted(tpl);
     }
@@ -1063,20 +1058,16 @@ export class ItemHelper
         minSizePercent = 0.25,
     ): void
     {
-        // no caliber defined, choose one at random
-        if (!caliber)
-        {
-            caliber = this.getRandomValidCaliber(magTemplate);
-        }
+        let chosenCaliber = caliber || this.getRandomValidCaliber(magTemplate);
 
         // Edge case for the Klin pp-9, it has a typo in its ammo caliber
-        if (caliber === "Caliber9x18PMM")
+        if (chosenCaliber === "Caliber9x18PMM")
         {
-            caliber = "Caliber9x18PM";
+            chosenCaliber = "Caliber9x18PM";
         }
 
         // Chose a randomly weighted cartridge that fits
-        const cartridgeTpl = this.drawAmmoTpl(caliber, staticAmmoDist);
+        const cartridgeTpl = this.drawAmmoTpl(chosenCaliber, staticAmmoDist);
         this.fillMagazineWithCartridge(magazine, magTemplate, cartridgeTpl, minSizePercent);
     }
 

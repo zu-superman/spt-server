@@ -83,18 +83,20 @@ export class RagfairSellHelper
         const result: SellResult[] = [];
 
         // Value can sometimes be NaN for whatever reason, default to base chance if that happens
+        const effectiveSellChance = Number.isNaN(sellChancePercent)
+            ? this.ragfairConfig.sell.chance.base
+            : sellChancePercent;
         if (Number.isNaN(sellChancePercent))
         {
             this.logger.warning(
-                `Sell chance was not a number: ${sellChancePercent}, defaulting to ${this.ragfairConfig.sell.chance.base} %`,
+                `Sell chance was not a number: ${sellChancePercent}, defaulting to ${this.ragfairConfig.sell.chance.base}%`,
             );
-            sellChancePercent = this.ragfairConfig.sell.chance.base;
         }
 
-        this.logger.debug(`Rolling to sell: ${itemSellCount} items (chance: ${sellChancePercent}%)`);
+        this.logger.debug(`Rolling to sell: ${itemSellCount} items (chance: ${effectiveSellChance}%)`);
 
         // No point rolling for a sale on a 0% chance item, exit early
-        if (sellChancePercent === 0)
+        if (effectiveSellChance === 0)
         {
             return result;
         }
@@ -102,11 +104,11 @@ export class RagfairSellHelper
         while (remainingCount > 0 && sellTime < endTime)
         {
             const boughtAmount = this.randomUtil.getInt(1, remainingCount);
-            if (this.randomUtil.getChance100(sellChancePercent))
+            if (this.randomUtil.getChance100(effectiveSellChance))
             {
                 // Passed roll check, item will be sold
                 // Weight time to sell towards selling faster based on how cheap the item sold
-                const weighting = (100 - sellChancePercent) / 100;
+                const weighting = (100 - effectiveSellChance) / 100;
                 let maximumTime = weighting * (this.ragfairConfig.sell.time.max * 60);
                 const minimumTime = this.ragfairConfig.sell.time.min * 60;
                 if (maximumTime < minimumTime)

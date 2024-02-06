@@ -299,10 +299,10 @@ export class BotGenerator
      */
     protected logPmcGeneratedCount(output: IBotBase[]): void
     {
-        const pmcCount = output.reduce(
-            (acc, cur) => cur.Info.Side === "Bear" || cur.Info.Side === "Usec" ? ++acc : acc,
-            0,
-        );
+        const pmcCount = output.reduce((acc, cur) =>
+        {
+            return cur.Info.Side === "Bear" || cur.Info.Side === "Usec" ? acc + 1 : acc;
+        }, 0);
         this.logger.debug(`Generated ${output.length} total bots. Replaced ${pmcCount} with PMCs`);
     }
 
