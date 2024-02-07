@@ -63,7 +63,7 @@
 			"max": 15
 		},
         "itemPriceMult": 1.2,
-        "presetPriceMult": 2.0,
+        "presetPriceMult": 1.5,
         "regenerateAssortsOnRefresh": false,
         "itemTypeLimits": {
             "550aa4bf4bdc2dd6348b456b": 3,
