@@ -224,7 +224,7 @@ export class PaymentService
         const rootCurrencyReward = {
             _id: this.hashUtil.generate(),
             _tpl: currency,
-            upd: { StackObjectsCount: calcAmount },
+            upd: { StackObjectsCount: Math.round(calcAmount) },
         };
 
         // Ensure money is properly split to follow its max stack size limit
