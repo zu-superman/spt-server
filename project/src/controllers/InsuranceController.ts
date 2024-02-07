@@ -183,7 +183,7 @@ export class InsuranceController
         // Populate a Map object of items for quick lookup by their ID and use it to populate a Map of main-parent items
         // and each of their attachments. For example, a gun mapped to each of its attachments.
         const itemsMap = this.populateItemsMap(insured);
-        const parentAttachmentsMap = this.populateParentAttachmentsMap(insured, itemsMap);
+        let parentAttachmentsMap = this.populateParentAttachmentsMap(insured, itemsMap);
 
         // Check to see if any regular items are present.
         const hasRegularItems = Array.from(itemsMap.values()).some((item) =>
@@ -193,12 +193,16 @@ export class InsuranceController
         // Process all items that are not attached, attachments. Those are handled separately, by value.
         if (hasRegularItems)
         {
-            this.processRegularItems(insured, toDelete);
+            this.processRegularItems(insured, toDelete, parentAttachmentsMap);
         }
 
         // Process attached, attachments, by value, only if there are any.
         if (parentAttachmentsMap.size > 0)
         {
+            // Remove attachments that can not be moddable in-raid from the parentAttachmentsMap. We only want to
+            // process moddable attachments from here on out.
+            parentAttachmentsMap = this.removeNonModdableAttachments(parentAttachmentsMap, itemsMap);
+
             this.processAttachments(parentAttachmentsMap, itemsMap, insured.traderId, toDelete);
         }
 
@@ -256,9 +260,12 @@ export class InsuranceController
             // Check if this is an attachment currently attached to its parent.
             if (this.itemHelper.isAttachmentAttached(insuredItem))
             {
-                // Filter out items not in the database or not raid moddable.
-                if (!this.itemHelper.isRaidModdable(insuredItem, parentItem))
+                // Make sure the template for the item exists.
+                if (!this.itemHelper.getItem(insuredItem._tpl)[0])
                 {
+                    this.logger.warning(
+                        `Could not find insured attachment in the database - ID: ${insuredItem._id}, Template: ${insuredItem._tpl}`,
+                    );
                     continue;
                 }
 
@@ -288,15 +295,56 @@ export class InsuranceController
     }
 
     /**
+     * Remove attachments that can not be moddable in-raid from the parentAttachmentsMap. If no moddable attachments
+     * remain, the parent is removed from the map as well.
+     *
+     * @param parentAttachmentsMap - A Map object containing parent item IDs to arrays of their attachment items.
+     * @param itemsMap - A Map object for quick item look-up by item ID.
+     * @returns A Map object containing parent item IDs to arrays of their attachment items which are not moddable in-raid.
+     */
+    protected removeNonModdableAttachments(
+        parentAttachmentsMap: Map<string, Item[]>,
+        itemsMap: Map<string, Item>,
+    ): Map<string, Item[]>
+    {
+        const updatedMap = new Map<string, Item[]>();
+
+        for (const [parentId, attachmentItems] of parentAttachmentsMap)
+        {
+            const parentItem = itemsMap.get(parentId);
+            const moddableAttachments = [];
+            for (const attachment of attachmentItems)
+            {
+                if (this.itemHelper.isRaidModdable(attachment, parentItem))
+                {
+                    moddableAttachments.push(attachment);
+                }
+            }
+            // Only set the parentId and its attachments in the updatedMap if there are moddable attachments.
+            if (moddableAttachments.length > 0)
+            {
+                updatedMap.set(parentId, moddableAttachments);
+            }
+        }
+
+        return updatedMap;
+    }
+
+    /**
      * Process "regular" insurance items. Any insured item that is not an attached, attachment is considered a "regular"
      * item. This method iterates over them, preforming item deletion rolls to see if they should be deleted. If so,
      * they (and their attached, attachments, if any) are marked for deletion in the toDelete Set.
      *
      * @param insured The insurance object containing the items to evaluate.
      * @param toDelete A Set to keep track of items marked for deletion.
+     * @param parentAttachmentsMap A Map object containing parent item IDs to arrays of their attachment items.
      * @returns void
      */
-    protected processRegularItems(insured: Insurance, toDelete: Set<string>): void
+    protected processRegularItems(
+        insured: Insurance,
+        toDelete: Set<string>,
+        parentAttachmentsMap: Map<string, Item[]>,
+    ): void
     {
         for (const insuredItem of insured.items)
         {
@@ -306,28 +354,32 @@ export class InsuranceController
                 continue;
             }
 
-            // Check if the item has any children
-            const itemAndChildren = this.itemHelper.findAndReturnChildrenAsItems(insured.items, insuredItem._id);
-
             // Roll for item deletion
             const itemRoll = this.rollForDelete(insured.traderId, insuredItem);
             if (itemRoll)
             {
-                // Mark the item for deletion
-                toDelete.add(insuredItem._id);
-
-                // Check if the item has any children and mark those for deletion as well, but only if those
-                // children are currently attached attachments.
-                const directChildren = insured.items.filter((item) => item.parentId === insuredItem._id);
-                const allChildrenAreAttachments = directChildren.every((child) =>
-                    this.itemHelper.isAttachmentAttached(child)
-                );
-                if (allChildrenAreAttachments)
+                // Check to see if this item is a parent in the parentAttachmentsMap. If so, do a look-up for *all* of
+                // its children and mark them for deletion as well. Additionally remove the parent (and its children)
+                // from the parentAttachmentsMap so that it's children are not rolled for later in the process.
+                if (parentAttachmentsMap.has(insuredItem._id))
                 {
+                    // This call will also return the parent item itself, queueing it for deletion as well.
+                    const itemAndChildren = this.itemHelper.findAndReturnChildrenAsItems(
+                        insured.items,
+                        insuredItem._id,
+                    );
                     for (const item of itemAndChildren)
                     {
                         toDelete.add(item._id);
                     }
+
+                    // Remove the parent (and its children) from the parentAttachmentsMap.
+                    parentAttachmentsMap.delete(insuredItem._id);
+                }
+                else
+                {
+                    // This item doesn't have any children. Simply mark it for deletion.
+                    toDelete.add(insuredItem._id);
                 }
             }
         }
@@ -377,7 +429,7 @@ export class InsuranceController
         this.logAttachmentsDetails(sortedAttachments);
 
         const successfulRolls = this.countSuccessfulRolls(sortedAttachments, traderId);
-        this.logger.debug(`Number of successful rolls: ${successfulRolls}`);
+        this.logger.debug(`Number of deletion rolls: ${successfulRolls}`);
 
         this.attachmentDeletionByValue(sortedAttachments, successfulRolls, toDelete);
     }
