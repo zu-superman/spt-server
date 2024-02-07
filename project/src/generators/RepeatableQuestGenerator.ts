@@ -1104,6 +1104,7 @@ export class RepeatableQuestGenerator
     {
         return this.itemHelper.getStaticItemPrice(item._id) < maxRoublePriceToStack
             && !this.itemHelper.isOfBaseclasses(item._id, [BaseClasses.WEAPON, BaseClasses.AMMO])
+            && !this.itemHelper.itemRequiresSoftInserts(item._id)
             && this.randomUtil.getChance100(25);
     }
 
