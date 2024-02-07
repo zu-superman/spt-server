@@ -563,8 +563,6 @@ export class FenceService
                 if (itemPrice > priceLimitRouble)
                 {
                     // Too expensive, try again
-                    this.logger.warning(`Blocked ${rootItemDb._name}, price: ${itemPrice} limit: ${priceLimitRouble}`);
-
                     continue;
                 }
             }
@@ -621,12 +619,9 @@ export class FenceService
                 * this.itemHelper.getItemQualityModifierForOfferItems(presetWithChildrenClone);
             if (priceLimitRouble)
             {
-                // Get new price with random mods now removed
                 if (itemPrice > priceLimitRouble)
                 {
                     // Too expensive, try again
-                    this.logger.warning(`Blocked ${rootItemDb._name}, price: ${itemPrice} limit: ${priceLimitRouble}`);
-
                     continue;
                 }
             }
@@ -640,6 +635,7 @@ export class FenceService
 
             assorts.items.push(...presetWithChildrenClone);
 
+            // Set assort price
             // Must be careful to use correct id as the item has had its IDs regenerated
             assorts.barter_scheme[presetWithChildrenClone[0]._id] = [[{
                 _tpl: "5449016a4bdc2d6f028b456f",
