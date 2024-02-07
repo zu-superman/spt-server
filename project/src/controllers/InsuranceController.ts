@@ -10,7 +10,7 @@ import { IGetInsuranceCostRequestData } from "@spt-aki/models/eft/insurance/IGet
 import { IGetInsuranceCostResponseData } from "@spt-aki/models/eft/insurance/IGetInsuranceCostResponseData";
 import { IInsureRequestData } from "@spt-aki/models/eft/insurance/IInsureRequestData";
 import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEventRouterResponse";
-import { ISystemData, Insurance } from "@spt-aki/models/eft/profile/IAkiProfile";
+import { Insurance } from "@spt-aki/models/eft/profile/IAkiProfile";
 import { IProcessBuyTradeRequestData } from "@spt-aki/models/eft/trade/IProcessBuyTradeRequestData";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { SkillTypes } from "@spt-aki/models/enums/SkillTypes";
@@ -136,7 +136,7 @@ export class InsuranceController
             this.sendMail(sessionID, insured);
 
             // Remove the fully processed insurance package from the profile.
-            this.removeInsurancePackageFromProfile(sessionID, insured.systemData);
+            this.removeInsurancePackageFromProfile(sessionID, insured);
         }
     }
 
@@ -157,18 +157,17 @@ export class InsuranceController
      * @param index The array index of the insurance package to remove.
      * @returns void
      */
-    protected removeInsurancePackageFromProfile(sessionID: string, packageInfo: ISystemData): void
+    protected removeInsurancePackageFromProfile(sessionID: string, insPackage: Insurance): void
     {
         const profile = this.saveServer.getProfile(sessionID);
         profile.insurance = profile.insurance.filter((insurance) =>
-            insurance.systemData.date !== packageInfo.date
-            || insurance.systemData.time !== packageInfo.time
-            || insurance.systemData.location !== packageInfo.location
+            insurance.traderId !== insPackage.traderId
+            || insurance.systemData.date !== insPackage.systemData.date
+            || insurance.systemData.time !== insPackage.systemData.time
+            || insurance.systemData.location !== insPackage.systemData.location
         );
 
-        this.logger.debug(
-            `Removed insurance package with date: ${packageInfo.date}, time: ${packageInfo.time}, and location: ${packageInfo.location} from profile ${sessionID}. Remaining packages: ${profile.insurance.length}`,
-        );
+        this.logger.debug(`Removed processed insurance package. Remaining packages: ${profile.insurance.length}`);
     }
 
     /**
