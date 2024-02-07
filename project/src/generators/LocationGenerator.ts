@@ -1033,7 +1033,7 @@ export class LocationGenerator
             // it can handle revolver ammo (it's not restructured to be used here yet.)
             // General: Make a WeaponController for Ragfair preset stuff and the generating weapons and ammo stuff from
             // BotGenerator
-            const magazine = items.filter((x) => x.slotId === "mod_magazine")[0];
+            const magazine = items.filter((item) => item.slotId === "mod_magazine")[0];
             // some weapon presets come without magazine; only fill the mag if it exists
             if (magazine)
             {
@@ -1047,6 +1047,8 @@ export class LocationGenerator
                     magTemplate,
                     staticAmmoDist,
                     weaponTemplate._props.ammoCaliber,
+                    0.25,
+                    this.itemHelper.getItem(rootItem._tpl)[1],
                 );
 
                 // Replace existing magazine with above array

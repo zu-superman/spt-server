@@ -1054,6 +1054,7 @@ export class ItemHelper
      * @param staticAmmoDist Cartridge distribution
      * @param caliber Caliber of cartridge to add to magazine
      * @param minSizePercent % the magazine must be filled to
+     * @param weapon Weapon the magazine will be used for (if passed in uses Chamber as whitelist)
      */
     public fillMagazineWithRandomCartridge(
         magazine: Item[],
@@ -1061,6 +1062,7 @@ export class ItemHelper
         staticAmmoDist: Record<string, IStaticAmmoDetails[]>,
         caliber: string = undefined,
         minSizePercent = 0.25,
+        weapon: ITemplateItem = null,
     ): void
     {
         let chosenCaliber = caliber || this.getRandomValidCaliber(magTemplate);
@@ -1072,7 +1074,11 @@ export class ItemHelper
         }
 
         // Chose a randomly weighted cartridge that fits
-        const cartridgeTpl = this.drawAmmoTpl(chosenCaliber, staticAmmoDist);
+        const cartridgeTpl = this.drawAmmoTpl(
+            chosenCaliber,
+            staticAmmoDist,
+            weapon?._props?.Chambers[0]?._props?.filters[0]?.Filter,
+        );
         this.fillMagazineWithCartridge(magazine, magTemplate, cartridgeTpl, minSizePercent);
     }
 
@@ -1179,9 +1185,14 @@ export class ItemHelper
      * Chose a randomly weighted cartridge that fits
      * @param caliber Desired caliber
      * @param staticAmmoDist Cartridges and thier weights
+     * @param cartridgeWhitelist OPTIONAL whitelist for cartridges
      * @returns Tpl of cartridge
      */
-    protected drawAmmoTpl(caliber: string, staticAmmoDist: Record<string, IStaticAmmoDetails[]>): string
+    protected drawAmmoTpl(
+        caliber: string,
+        staticAmmoDist: Record<string, IStaticAmmoDetails[]>,
+        cartridgeWhitelist: string[] = null,
+    ): string
     {
         const ammoArray = new ProbabilityObjectArray<string>(this.mathUtil, this.jsonUtil);
         const ammos = staticAmmoDist[caliber];
@@ -1192,6 +1203,13 @@ export class ItemHelper
 
         for (const icd of ammos)
         {
+            // Whitelist exists and tpl not inside it, skip
+            // Fixes 9x18mm kedr issues
+            if (cartridgeWhitelist && !cartridgeWhitelist.includes(icd.tpl))
+            {
+                continue;
+            }
+
             ammoArray.push(new ProbabilityObject(icd.tpl, icd.relativeProbability));
         }
         return ammoArray.draw(1)[0];
