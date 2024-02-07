@@ -1144,9 +1144,20 @@ export class RepeatableQuestGenerator
         const rewardableItemPool = this.getRewardableItems(repeatableConfig, traderId);
         const minPrice = Math.min(25000, 0.5 * roublesBudget);
 
-        let rewardableItemPoolWithinBudget = rewardableItemPool.filter((x) =>
-            this.itemHelper.getItemPrice(x[0]) < roublesBudget && this.itemHelper.getItemPrice(x[0]) > minPrice
-        ).map((x) => x[1]);
+        let rewardableItemPoolWithinBudget = rewardableItemPool.filter((item) =>
+        {
+            // Get default preset if it exists
+            const defaultPreset = this.presetHelper.getDefaultPreset(item[0]);
+
+            // Bundle up tpls we want price for
+            const tpls = defaultPreset ? defaultPreset._items.map((x) => x._tpl) : [item[0]];
+
+            // Get price of tpls
+            const itemPrice = this.itemHelper.getItemAndChildrenPrice(tpls);
+
+            return itemPrice < roublesBudget && itemPrice > minPrice;
+        }).map((x) => x[1]);
+
         if (rewardableItemPoolWithinBudget.length === 0)
         {
             this.logger.warning(

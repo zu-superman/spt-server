@@ -160,6 +160,18 @@ export class ItemHelper
     }
 
     /**
+     * Returns the items total price based on the handbook or as a fallback from the prices.json if the item is not
+     * found in the handbook. If the price can't be found at all return 0
+     * @param tpls item tpls to look up the price of
+     * @returns Total price in roubles
+     */
+    public getItemAndChildrenPrice(tpls: string[]): number
+    {
+        // Run getItemPrice for each tpl in tpls array, return sum
+        return tpls.reduce((total, tpl) => total + this.getItemPrice(tpl), 0);
+    }
+
+    /**
      * Returns the item price based on the handbook or as a fallback from the prices.json if the item is not
      * found in the handbook. If the price can't be found at all return 0
      * @param tpl Item to look price up of
