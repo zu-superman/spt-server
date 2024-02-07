@@ -1020,19 +1020,12 @@ export class RepeatableQuestGenerator
                         continue;
                     }
 
-                    // The budget for this ammo stack
-                    const stackRoubleBudget = roublesBudget / rewardNumItems;
-
-                    const singleCartridgePrice = this.handbookHelper.getTemplatePrice(itemSelected._id);
-
-                    // Get a stack size of ammo that fits rouble budget
-                    const stackSizeThatFitsBudget = Math.round(stackRoubleBudget / singleCartridgePrice);
-
-                    // Get itemDbs max stack size for ammo - don't go above 100 (some mods mess around with stack sizes)
-                    const stackMaxCount = Math.min(itemSelected._props.StackMaxSize, 100);
-
                     // Choose smallest value between budget fitting size and stack max
-                    rewardItemStackCount = Math.min(stackSizeThatFitsBudget, stackMaxCount);
+                    rewardItemStackCount = this.calculateAmmoStackSizeThatFitsBudget(
+                        itemSelected,
+                        roublesBudget,
+                        rewardNumItems,
+                    );
                 }
 
                 // 25% chance to double, triple quadruple reward stack (Only occurs when item is stackable and not weapon or ammo)
@@ -1092,6 +1085,26 @@ export class RepeatableQuestGenerator
         }
 
         return rewards;
+    }
+
+    protected calculateAmmoStackSizeThatFitsBudget(
+        itemSelected: ITemplateItem,
+        roublesBudget: number,
+        rewardNumItems: number,
+    ): number
+    {
+        // The budget for this ammo stack
+        const stackRoubleBudget = roublesBudget / rewardNumItems;
+
+        const singleCartridgePrice = this.handbookHelper.getTemplatePrice(itemSelected._id);
+
+        // Get a stack size of ammo that fits rouble budget
+        const stackSizeThatFitsBudget = Math.round(stackRoubleBudget / singleCartridgePrice);
+
+        // Get itemDbs max stack size for ammo - don't go above 100 (some mods mess around with stack sizes)
+        const stackMaxCount = Math.min(itemSelected._props.StackMaxSize, 100);
+
+        return Math.min(stackSizeThatFitsBudget, stackMaxCount);
     }
 
     /**
