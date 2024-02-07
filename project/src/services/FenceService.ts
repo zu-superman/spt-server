@@ -231,18 +231,20 @@ export class FenceService
         // Iterate x times to remove items (only remove if assort has items)
         if (this.fenceAssort?.items?.length > 0)
         {
+            const rootItems = this.fenceAssort.items.filter((item) => item.slotId === "hideout");
             for (let index = 0; index < itemCountToReplace; index++)
             {
-                this.removeRandomItemFromAssorts(this.fenceAssort);
+                this.removeRandomItemFromAssorts(this.fenceAssort, rootItems);
             }
         }
 
         // Iterate x times to remove items (only remove if assort has items)
         if (this.fenceDiscountAssort?.items?.length > 0)
         {
+            const rootItems = this.fenceDiscountAssort.items.filter((item) => item.slotId === "hideout");
             for (let index = 0; index < discountItemCountToReplace; index++)
             {
-                this.removeRandomItemFromAssorts(this.fenceDiscountAssort);
+                this.removeRandomItemFromAssorts(this.fenceDiscountAssort, rootItems);
             }
         }
 
@@ -314,40 +316,24 @@ export class FenceService
     }
 
     /**
-     * Choose an item (not mod) at random and remove from assorts
+     * Choose an item at random and remove it + mods from assorts
      * @param assort Items to remove from
+     * @param rootItems Assort root items to pick from to remove
      */
-    protected removeRandomItemFromAssorts(assort: ITraderAssort): void
+    protected removeRandomItemFromAssorts(assort: ITraderAssort, rootItems: Item[]): void
     {
-        // Only remove if assort has items
-        if (!assort.items.some((x) => x.slotId === "hideout"))
-        {
-            this.logger.warning(
-                "Unable to remove random assort from trader as they have no assorts with a slotid of `hideout`",
-            );
+        const rootItemToRemove = this.randomUtil.getArrayValue(rootItems);
 
-            return;
-        }
-
-        let itemToRemove: Item;
-        while (!itemToRemove || itemToRemove.slotId !== "hideout")
-        {
-            itemToRemove = this.randomUtil.getArrayValue(assort.items);
-        }
-
-        const indexOfItemToRemove = assort.items.findIndex((item) => item._id === itemToRemove._id);
-        assort.items.splice(indexOfItemToRemove, 1);
-
-        // Clean up any mods if item removed was a weapon
-        const itemWithChildren = this.itemHelper.findAndReturnChildrenAsItems(assort.items, itemToRemove._id);
+        // Clean up any mods if item had them
+        const itemWithChildren = this.itemHelper.findAndReturnChildrenAsItems(assort.items, rootItemToRemove._id);
         for (const itemToDelete of itemWithChildren)
         {
             // Delete item from assort items array
             assort.items.splice(assort.items.indexOf(itemToDelete), 1);
         }
 
-        delete assort.barter_scheme[itemToRemove._id];
-        delete assort.loyal_level_items[itemToRemove._id];
+        delete assort.barter_scheme[rootItemToRemove._id];
+        delete assort.loyal_level_items[rootItemToRemove._id];
     }
 
     /**

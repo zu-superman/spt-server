@@ -53,7 +53,7 @@
         },
         "partialRefreshTimeSeconds": 240,
         "partialRefreshChangePercent": 15,
-        "assortSize": 150,
+        "assortSize": 140,
         "weaponPresetMinMax": {
 			"min": 8,
 			"max": 15
