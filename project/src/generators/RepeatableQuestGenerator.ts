@@ -971,21 +971,7 @@ export class RepeatableQuestGenerator
         }
 
         // Add money reward
-        if (traderId === Traders.PEACEKEEPER || traderId === Traders.FENCE)
-        {
-            // convert to equivalent dollars
-            rewards.Success.push(
-                this.generateRewardItem(
-                    Money.EUROS,
-                    this.handbookHelper.fromRUB(rewardRoubles, Money.EUROS),
-                    rewardIndex,
-                ),
-            );
-        }
-        else
-        {
-            rewards.Success.push(this.generateRewardItem(Money.ROUBLES, rewardRoubles, rewardIndex));
-        }
+        this.addMoneyReward(traderId, rewards, rewardRoubles, rewardIndex);
         rewardIndex++;
 
         const traderWhitelistDetails = repeatableConfig.traderWhitelist.find((x) => x.traderId === traderId);
@@ -1087,6 +1073,26 @@ export class RepeatableQuestGenerator
         return rewards;
     }
 
+    protected addMoneyReward(traderId: string, rewards: IQuestRewards, rewardRoubles: number, rewardIndex: number): void
+    {
+        // PK and Fence use euros
+        if (traderId === Traders.PEACEKEEPER || traderId === Traders.FENCE)
+        {
+            rewards.Success.push(
+                this.generateRewardItem(
+                    Money.EUROS,
+                    this.handbookHelper.fromRUB(rewardRoubles, Money.EUROS),
+                    rewardIndex,
+                ),
+            );
+        }
+        else
+        {
+            // Everyone else uses roubles
+            rewards.Success.push(this.generateRewardItem(Money.ROUBLES, rewardRoubles, rewardIndex));
+        }
+    }
+
     protected calculateAmmoStackSizeThatFitsBudget(
         itemSelected: ITemplateItem,
         roublesBudget: number,
@@ -1164,7 +1170,7 @@ export class RepeatableQuestGenerator
             const defaultPreset = this.presetHelper.getDefaultPreset(item[0]);
 
             // Bundle up tpls we want price for
-            const tpls = defaultPreset ? defaultPreset._items.map((x) => x._tpl) : [item[0]];
+            const tpls = defaultPreset ? defaultPreset._items.map((item) => item._tpl) : [item[0]];
 
             // Get price of tpls
             const itemPrice = this.itemHelper.getItemAndChildrenPrice(tpls);
