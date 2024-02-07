@@ -580,7 +580,7 @@ export class FenceService
             // Must be careful to use correct id as the item has had its IDs regenerated
             assorts.barter_scheme[presetWithChildrenClone[0]._id] = [[{
                 _tpl: "5449016a4bdc2d6f028b456f",
-                count: itemPrice,
+                count: Math.round(itemPrice),
             }]];
             assorts.loyal_level_items[presetWithChildrenClone[0]._id] = loyaltyLevel;
 
@@ -639,7 +639,7 @@ export class FenceService
             // Must be careful to use correct id as the item has had its IDs regenerated
             assorts.barter_scheme[presetWithChildrenClone[0]._id] = [[{
                 _tpl: "5449016a4bdc2d6f028b456f",
-                count: itemPrice,
+                count: Math.round(itemPrice),
             }]];
             assorts.loyal_level_items[presetWithChildrenClone[0]._id] = loyaltyLevel;
 
