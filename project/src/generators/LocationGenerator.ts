@@ -3,7 +3,6 @@ import { inject, injectable } from "tsyringe";
 import { ContainerHelper } from "@spt-aki/helpers/ContainerHelper";
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { PresetHelper } from "@spt-aki/helpers/PresetHelper";
-import { RagfairServerHelper } from "@spt-aki/helpers/RagfairServerHelper";
 import { IContainerMinMax, IStaticContainer } from "@spt-aki/models/eft/common/ILocation";
 import { ILocationBase } from "@spt-aki/models/eft/common/ILocationBase";
 import { ILooseLoot, Spawnpoint, SpawnpointTemplate, SpawnpointsForced } from "@spt-aki/models/eft/common/ILooseLoot";
@@ -14,7 +13,6 @@ import {
     IStaticForcedProps,
     IStaticLootDetails,
 } from "@spt-aki/models/eft/common/tables/ILootBase";
-import { ITemplateItem } from "@spt-aki/models/eft/common/tables/ITemplateItem";
 import { BaseClasses } from "@spt-aki/models/enums/BaseClasses";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { Money } from "@spt-aki/models/enums/Money";
@@ -24,7 +22,6 @@ import { ConfigServer } from "@spt-aki/servers/ConfigServer";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
 import { SeasonalEventService } from "@spt-aki/services/SeasonalEventService";
-import { HashUtil } from "@spt-aki/utils/HashUtil";
 import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 import { MathUtil } from "@spt-aki/utils/MathUtil";
 import { ObjectId } from "@spt-aki/utils/ObjectId";
@@ -54,10 +51,8 @@ export class LocationGenerator
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("JsonUtil") protected jsonUtil: JsonUtil,
-        @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("ObjectId") protected objectId: ObjectId,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
-        @inject("RagfairServerHelper") protected ragfairServerHelper: RagfairServerHelper,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("MathUtil") protected mathUtil: MathUtil,
         @inject("SeasonalEventService") protected seasonalEventService: SeasonalEventService,
@@ -852,7 +847,7 @@ export class LocationGenerator
         {
             // Fill with cartridges
             const ammoBoxItem: Item[] = [{ _id: this.objectId.generate(), _tpl: chosenTpl }];
-            this.itemHelper.addCartridgesToAmmoBox(ammoBoxItem, itemTemplate); // ammo box template
+            this.itemHelper.addSingleStackCartridgesToAmmoBox(ammoBoxItem, itemTemplate);
             itemWithMods.push(...ammoBoxItem);
         }
         else if (this.itemHelper.isOfBaseclass(chosenTpl, BaseClasses.MAGAZINE))
@@ -1062,7 +1057,7 @@ export class LocationGenerator
         // No spawnpoint to fall back on, generate manually
         else if (this.itemHelper.isOfBaseclass(chosenTpl, BaseClasses.AMMO_BOX))
         {
-            this.itemHelper.addCartridgesToAmmoBox(items, itemTemplate);
+            this.itemHelper.addSingleStackCartridgesToAmmoBox(items, itemTemplate);
         }
         else if (this.itemHelper.isOfBaseclass(chosenTpl, BaseClasses.MAGAZINE))
         {

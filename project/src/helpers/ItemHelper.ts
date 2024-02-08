@@ -1035,6 +1035,26 @@ export class ItemHelper
     }
 
     /**
+     * Add a single stack of cartridges to the ammo box
+     * @param ammoBox Box to add cartridges to
+     * @param ammoBoxDetails Item template from items db
+     */
+    public addSingleStackCartridgesToAmmoBox(ammoBox: Item[], ammoBoxDetails: ITemplateItem): void
+    {
+        const ammoBoxMaxCartridgeCount = ammoBoxDetails._props.StackSlots[0]._max_count;
+        const cartridgeTpl = ammoBoxDetails._props.StackSlots[0]._props.filters[0].Filter[0];
+        ammoBox.push(
+            this.createCartridges(
+                ammoBox[0]._id,
+                cartridgeTpl,
+                ammoBoxMaxCartridgeCount,
+                0,
+                ammoBox[0].upd?.SpawnedInSession,
+            ),
+        );
+    }
+
+    /**
      * Check if item is stored inside of a container
      * @param item Item to check is inside of container
      * @param desiredContainerSlotId Name of slot to check item is in e.g. SecuredContainer/Backpack
