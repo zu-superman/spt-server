@@ -162,7 +162,15 @@ export interface Blacklist
     /** Should trader items that are blacklisted by bsg be listed on flea */
     traderItems: boolean;
     /** Maximum level an armor plate can be found in a flea-listed armor item */
-    armorPlateMaxProtectionLevel: number;
+    armorPlate: IArmorPlateBlacklistSettings;
+}
+
+export interface IArmorPlateBlacklistSettings
+{
+    /** Max level of plates an armor can have without being removed */
+    maxProtectionLevel: number;
+    /** Item slots to NOT remove from items on flea */
+    ignoreSlots: string[];
 }
 
 export interface IUnreasonableModPrices

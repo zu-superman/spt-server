@@ -14,7 +14,12 @@ import { BaseClasses } from "@spt-aki/models/enums/BaseClasses";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { MemberCategory } from "@spt-aki/models/enums/MemberCategory";
 import { Money } from "@spt-aki/models/enums/Money";
-import { Condition, Dynamic, IRagfairConfig } from "@spt-aki/models/spt/config/IRagfairConfig";
+import {
+    Condition,
+    Dynamic,
+    IArmorPlateBlacklistSettings,
+    IRagfairConfig,
+} from "@spt-aki/models/spt/config/IRagfairConfig";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt-aki/servers/ConfigServer";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
@@ -358,10 +363,7 @@ export class RagfairOfferGenerator
         // Armor presets can hold plates above the allowed flea level, remove if necessary
         if (isPreset && this.ragfairConfig.dynamic.blacklist.enableBsgList)
         {
-            this.removeBannedPlatesFromPreset(
-                assortItemWithChildren,
-                this.ragfairConfig.dynamic.blacklist.armorPlateMaxProtectionLevel,
-            );
+            this.removeBannedPlatesFromPreset(assortItemWithChildren, this.ragfairConfig.dynamic.blacklist.armorPlate);
         }
 
         // Get number of offers to create
@@ -394,10 +396,13 @@ export class RagfairOfferGenerator
     /**
      * iterate over an items chidren and look for plates above desired level and remove them
      * @param presetWithChildren preset to check for plates
-     * @param plateProtectionLimit Max level of plates an armor can have without being removed
+     * @param plateSettings Settings
      * @returns True if plate removed
      */
-    protected removeBannedPlatesFromPreset(presetWithChildren: Item[], plateProtectionLimit: number): boolean
+    protected removeBannedPlatesFromPreset(
+        presetWithChildren: Item[],
+        plateSettings: IArmorPlateBlacklistSettings,
+    ): boolean
     {
         if (!this.itemHelper.armorItemCanHoldMods(presetWithChildren[0]._tpl))
         {
@@ -410,16 +415,21 @@ export class RagfairOfferGenerator
         );
         if (plateSlots.length === 0)
         {
-            // Has no plate slots e.g. "left_side_plate", exit
+            // Has no plate slots e.g. "front_plate", exit
             return false;
         }
 
         let removedPlate = false;
         for (const plateSlot of plateSlots)
         {
-            const plateArmorLevel =
-                Number.parseInt(<string>this.itemHelper.getItem(plateSlot._tpl)[1]._props.armorClass) ?? 0;
-            if (plateArmorLevel > plateProtectionLimit)
+            const plateDetails = this.itemHelper.getItem(plateSlot._tpl)[1];
+            if (plateSettings.ignoreSlots.includes(plateSlot.slotId.toLowerCase()))
+            {
+                continue;
+            }
+
+            const plateArmorLevel = Number.parseInt(<string>plateDetails._props.armorClass) ?? 0;
+            if (plateArmorLevel > plateSettings.maxProtectionLevel)
             {
                 presetWithChildren.splice(presetWithChildren.indexOf(plateSlot), 1);
                 removedPlate = true;

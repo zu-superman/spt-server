@@ -292,7 +292,10 @@
             "enableBsgList": true,
             "enableQuestList": true,
             "traderItems": false,
-			"armorPlateMaxProtectionLevel": 4
+			"armorPlate": {
+				"maxProtectionLevel": 4,
+				"ignoreSlots": ["right_side_plate", "left_side_plate"]
+			}
         },
         "unreasonableModPrices": {
             "5448fe124bdc2da5018b4567": {

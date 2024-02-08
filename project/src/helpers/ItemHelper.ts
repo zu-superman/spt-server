@@ -1426,7 +1426,7 @@ export class ItemHelper
      */
     public getRemovablePlateSlotIds(): string[]
     {
-        return ["front_plate", "back_plate", "side_plate", "left_side_plate", "right_side_plate"];
+        return ["front_plate", "back_plate", "left_side_plate", "right_side_plate"];
     }
 
     /**
