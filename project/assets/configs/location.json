@@ -302,7 +302,7 @@
             "laboratory": [{
                     "sptId": "sptBearLabsZoneFloor1NormalSpawn",
                     "BossName": "sptBear",
-                    "BossChance": 15,
+                    "BossChance": 30,
                     "BossZone": "BotZoneFloor1",
                     "BossDifficult": "normal",
                     "BossEscortAmount": "1",
@@ -322,7 +322,7 @@
                     "ChanceGroup": 0
                 }, {
                     "sptId": "sptBearLabsZoneFloor2NormalSpawn",
-                    "BossChance": 15,
+                    "BossChance": 30,
                     "BossName": "sptBear",
                     "BossZone": "BotZoneFloor2",
                     "BossDifficult": "normal",
@@ -343,7 +343,7 @@
                     "ChanceGroup": 0
                 }, {
                     "sptId": "sptBearLabsZoneBasementNormalSpawn",
-                    "BossChance": 15,
+                    "BossChance": 30,
                     "BossDifficult": "normal",
                     "BossEscortAmount": "0",
                     "BossEscortDifficult": "normal",
@@ -364,7 +364,7 @@
                     "ChanceGroup": 0
                 }, {
                     "sptId": "sptUsecLabsZoneFloor1NormalSpawn",
-                    "BossChance": 15,
+                    "BossChance": 30,
                     "BossDifficult": "normal",
                     "BossEscortAmount": "1",
                     "BossEscortDifficult": "normal",
@@ -385,7 +385,7 @@
                     "ChanceGroup": 0
                 }, {
                     "sptId": "sptUsecLabsZoneFloor2NormalSpawn",
-                    "BossChance": 15,
+                    "BossChance": 30,
                     "BossDifficult": "normal",
                     "BossEscortAmount": "1",
                     "BossEscortDifficult": "normal",
@@ -406,7 +406,7 @@
                     "ChanceGroup": 0
                 }, {
                     "sptId": "sptUsecLabsZoneBasementNormalSpawn",
-                    "BossChance": 15,
+                    "BossChance": 30,
                     "BossDifficult": "normal",
                     "BossEscortAmount": "0",
                     "BossEscortDifficult": "normal",
