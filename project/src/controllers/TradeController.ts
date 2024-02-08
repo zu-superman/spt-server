@@ -274,11 +274,7 @@ export class TradeController
      * @param trader Trader to sell items to
      * @param output IItemEventRouterResponse
      */
-    protected mailMoneyToPlayer(
-        sessionId: string,
-        roublesToSend: number,
-        trader: Traders,
-    ): void
+    protected mailMoneyToPlayer(sessionId: string, roublesToSend: number, trader: Traders): void
     {
         this.logger.debug(`Selling scav items to fence for ${roublesToSend} roubles`);
 
