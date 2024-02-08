@@ -55,8 +55,8 @@
         "partialRefreshChangePercent": 15,
         "assortSize": 140,
         "weaponPresetMinMax": {
-			"min": 8,
-			"max": 15
+			"min": 12,
+			"max": 19
 		},
 		"equipmentPresetMinMax": {
 			"min": 8,
@@ -66,6 +66,7 @@
         "presetPriceMult": 1.5,
         "regenerateAssortsOnRefresh": false,
         "itemTypeLimits": {
+			"543be5cb4bdc2deb348b4568": 2,
             "550aa4bf4bdc2dd6348b456b": 3,
             "55818add4bdc2d5b648b456f": 5,
             "5448bc234bdc2d3c308b4569": 5,
@@ -113,6 +114,10 @@
             "59e690b686f7746c9f75e848": {
                 "min": 5,
                 "max": 15
+            },
+			"5485a8684bdc2da71d8b4567": {
+                "min": 80,
+                "max": 7000
             }
         },
         "itemCategoryRoublePriceLimit": {
@@ -154,18 +159,20 @@
         },
         "presetSlotsToRemoveChancePercent": {
             "mod_scope": 70,
-            "mod_magazine": 60,
+            "mod_magazine": 50,
             "mod_sight_rear": 20,
             "mod_sight_front": 20,
-            "mod_muzzle": 70,
-            "mod_pistol_grip": 40,
-            "mod_stock": 50,
-            "mod_stock_000": 20,
-            "mod_tactical_2": 40,
+            "mod_muzzle": 40,
+            "mod_pistol_grip": 5,
+            "mod_stock": 5,
+			"mod_handguard": 10,
+			"mod_barrel": 5,
+            "mod_stock_000": 10,
+            "mod_tactical_2": 35,
             "mod_foregrip": 20,
-            "mod_mount": 20,
-            "mod_reciever": 10,
-            "mod_charge": 20,
+            "mod_mount": 40,
+            "mod_reciever": 5,
+            "mod_charge": 5,
             "mod_mount_000": 20,
             "mod_mount_002": 20,
             "mod_mount_003": 20,
@@ -176,14 +183,13 @@
             "mod_tactical_002": 40,
             "mod_tactical_003": 40,
             "front_plate": 25,
-            "back_plate": 25,
-            "left_side_plate": 25,
-            "right_side_plate": 25
+            "back_plate": 75,
+            "left_side_plate": 75,
+			"right_side_plate": 75
         },
         "blacklistSeasonalItems": true,
         "blacklist": [
             "5c164d2286f774194c5e69fa",
-            "543be5cb4bdc2deb348b4568",
             "543be6674bdc2df1348b4569",
             "5448bf274bdc2dfc2f8b456a",
             "5447bedf4bdc2d87278b4568",

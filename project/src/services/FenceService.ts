@@ -196,7 +196,6 @@ export class FenceService
         {
             const itemQualityModifier = this.itemHelper.getItemQualityModifier(item);
             assort.barter_scheme[item._id][0][0].count *= itemQualityModifier;
-            this.logger.warning(`Reduced item ${item._tpl} price to : ${assort.barter_scheme[item._id][0][0].count}`);
         }
     }
 
@@ -527,16 +526,18 @@ export class FenceService
         while (weaponPresetsAddedCount < desiredWeaponPresetsCount)
         {
             const randomPresetRoot = this.randomUtil.getArrayValue(weaponPresetRootItems);
+            if (this.traderConfig.fence.blacklist.includes(randomPresetRoot._tpl))
+            {
+                continue;
+            }
+
             const rootItemDb = this.itemHelper.getItem(randomPresetRoot._tpl)[1];
 
             const presetWithChildrenClone = this.jsonUtil.clone(
                 this.itemHelper.findAndReturnChildrenAsItems(baseFenceAssort.items, randomPresetRoot._id),
             );
 
-            if (this.itemHelper.isOfBaseclass(rootItemDb._id, BaseClasses.WEAPON))
-            {
-                this.randomiseItemUpdProperties(rootItemDb, presetWithChildrenClone[0]);
-            }
+            this.randomiseItemUpdProperties(rootItemDb, presetWithChildrenClone[0]);
 
             this.removeRandomModsOfItem(presetWithChildrenClone);
 
@@ -752,19 +753,25 @@ export class FenceService
      */
     protected getSingleItemStackCount(itemDbDetails: ITemplateItem): number
     {
+        if (this.itemHelper.isOfBaseclass(itemDbDetails._id, BaseClasses.AMMO))
+        {
+            const overrideValues = this.traderConfig.fence.itemStackSizeOverrideMinMax[itemDbDetails._parent];
+            if (overrideValues)
+            {
+                return this.randomUtil.getInt(overrideValues.min, overrideValues.max);
+            }
+
+            // No override, use stack max size from item db
+            return itemDbDetails._props.StackMaxSize === 1
+                ? 1
+                : this.randomUtil.getInt(itemDbDetails._props.StackMinRandom, itemDbDetails._props.StackMaxRandom);
+        }
+
         // Check for override in config, use values if exists
         const overrideValues = this.traderConfig.fence.itemStackSizeOverrideMinMax[itemDbDetails._id];
         if (overrideValues)
         {
             return this.randomUtil.getInt(overrideValues.min, overrideValues.max);
-        }
-
-        if (this.itemHelper.isOfBaseclass(itemDbDetails._id, BaseClasses.AMMO))
-        {
-            // No override, use stack max size from item db
-            return itemDbDetails._props.StackMaxSize === 1
-                ? 1
-                : this.randomUtil.getInt(itemDbDetails._props.StackMinRandom, itemDbDetails._props.StackMaxRandom);
         }
 
         return 1;
@@ -824,7 +831,7 @@ export class FenceService
         // Roll from 0 to 9999, then divide it by 100: 9999 =  99.99%
         const randomChance = this.randomUtil.getInt(0, 9999) / 100;
 
-        return randomChance > removalChance && !itemsBeingDeleted.includes(weaponMod._id);
+        return removalChance > randomChance && !itemsBeingDeleted.includes(weaponMod._id);
     }
 
     /**
