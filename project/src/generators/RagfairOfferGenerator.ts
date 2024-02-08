@@ -14,7 +14,7 @@ import { BaseClasses } from "@spt-aki/models/enums/BaseClasses";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { MemberCategory } from "@spt-aki/models/enums/MemberCategory";
 import { Money } from "@spt-aki/models/enums/Money";
-import { Dynamic, IRagfairConfig } from "@spt-aki/models/spt/config/IRagfairConfig";
+import { Condition, Dynamic, IRagfairConfig } from "@spt-aki/models/spt/config/IRagfairConfig";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt-aki/servers/ConfigServer";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
@@ -637,8 +637,12 @@ export class RagfairOfferGenerator
     {
         const rootItem = itemWithMods[0];
 
-        const itemConditionValues = this.ragfairConfig.dynamic.condition[conditionSettingsId];
-        const multiplier = this.randomUtil.getFloat(itemConditionValues.min, itemConditionValues.max);
+        const itemConditionValues: Condition = this.ragfairConfig.dynamic.condition[conditionSettingsId];
+        const maxMultiplier = this.randomUtil.getFloat(itemConditionValues.max.min, itemConditionValues.max.max);
+        const currentMultiplier = this.randomUtil.getFloat(
+            itemConditionValues.current.min,
+            itemConditionValues.current.max,
+        );
 
         // Randomise armor + plates + armor related things
         if (
@@ -646,17 +650,7 @@ export class RagfairOfferGenerator
             || this.itemHelper.isOfBaseclasses(rootItem._tpl, [BaseClasses.ARMOR_PLATE, BaseClasses.ARMORED_EQUIPMENT])
         )
         {
-            // Chance to not adjust armor
-            if (
-                !this.randomUtil.getChance100(
-                    this.ragfairConfig.dynamic.condition[BaseClasses.ARMORED_EQUIPMENT].conditionChance * 100,
-                )
-            )
-            {
-                return;
-            }
-
-            this.randomiseArmorDurabilityValues(itemWithMods);
+            this.randomiseArmorDurabilityValues(itemWithMods, currentMultiplier, maxMultiplier);
 
             // Add hits to visor
             const visorMod = itemWithMods.find((item) =>
@@ -678,7 +672,7 @@ export class RagfairOfferGenerator
         // Randomise Weapons
         if (this.itemHelper.isOfBaseclass(itemDetails._id, BaseClasses.WEAPON))
         {
-            this.randomiseWeaponDurabilityValues(itemWithMods[0], multiplier);
+            this.randomiseWeaponDurability(itemWithMods[0], itemDetails, maxMultiplier, currentMultiplier);
 
             return;
         }
@@ -686,7 +680,7 @@ export class RagfairOfferGenerator
         if (rootItem.upd.MedKit)
         {
             // randomize health
-            rootItem.upd.MedKit.HpResource = Math.round(rootItem.upd.MedKit.HpResource * multiplier) || 1;
+            rootItem.upd.MedKit.HpResource = Math.round(rootItem.upd.MedKit.HpResource * maxMultiplier) || 1;
 
             return;
         }
@@ -694,7 +688,7 @@ export class RagfairOfferGenerator
         if (rootItem.upd.Key && itemDetails._props.MaximumNumberOfUsage > 1)
         {
             // randomize key uses
-            rootItem.upd.Key.NumberOfUsages = Math.round(itemDetails._props.MaximumNumberOfUsage * (1 - multiplier))
+            rootItem.upd.Key.NumberOfUsages = Math.round(itemDetails._props.MaximumNumberOfUsage * (1 - maxMultiplier))
                 || 0;
 
             return;
@@ -703,7 +697,7 @@ export class RagfairOfferGenerator
         if (rootItem.upd.FoodDrink)
         {
             // randomize food/drink value
-            rootItem.upd.FoodDrink.HpPercent = Math.round(itemDetails._props.MaxResource * multiplier) || 1;
+            rootItem.upd.FoodDrink.HpPercent = Math.round(itemDetails._props.MaxResource * maxMultiplier) || 1;
 
             return;
         }
@@ -711,7 +705,7 @@ export class RagfairOfferGenerator
         if (rootItem.upd.RepairKit)
         {
             // randomize repair kit (armor/weapon) uses
-            rootItem.upd.RepairKit.Resource = Math.round(itemDetails._props.MaxRepairResource * multiplier) || 1;
+            rootItem.upd.RepairKit.Resource = Math.round(itemDetails._props.MaxRepairResource * maxMultiplier) || 1;
 
             return;
         }
@@ -719,81 +713,75 @@ export class RagfairOfferGenerator
         if (this.itemHelper.isOfBaseclass(itemDetails._id, BaseClasses.FUEL))
         {
             const totalCapacity = itemDetails._props.MaxResource;
-            const remainingFuel = Math.round(totalCapacity * multiplier);
+            const remainingFuel = Math.round(totalCapacity * maxMultiplier);
             rootItem.upd.Resource = { UnitsConsumed: totalCapacity - remainingFuel, Value: remainingFuel };
         }
     }
 
     /**
      * Adjust an items durability/maxDurability value
-     * @param item item (weapon/armor) to adjust
-     * @param multiplier Value to multiple durability by
+     * @param item item (weapon/armor) to Adjust
+     * @param itemDbDetails Weapon details from db
+     * @param maxMultiplier Value to multiply max durability by
+     * @param currentMultiplier Value to multiply current durability by
      */
-    protected randomiseWeaponDurabilityValues(item: Item, multiplier: number): void
+    protected randomiseWeaponDurability(
+        item: Item,
+        itemDbDetails: ITemplateItem,
+        maxMultiplier: number,
+        currentMultiplier: number,
+    ): void
     {
-        item.upd.Repairable.Durability = Math.round(item.upd.Repairable.Durability * multiplier) || 1;
+        const lowestMaxDurability = this.randomUtil.getFloat(maxMultiplier, 1) * itemDbDetails._props.MaxDurability;
+        const chosenMaxDurability = Math.round(
+            this.randomUtil.getFloat(lowestMaxDurability, itemDbDetails._props.MaxDurability),
+        );
 
-        // randomize max durability, store to a temporary value so we can still compare the max durability
-        let tempMaxDurability =
-            Math.round(
-                this.randomUtil.getFloat(item.upd.Repairable.Durability - 5, item.upd.Repairable.MaxDurability + 5),
-            ) || item.upd.Repairable.Durability;
+        const lowestCurrentDurability = this.randomUtil.getFloat(currentMultiplier, 1) * chosenMaxDurability;
+        const chosenCurrentDurability = Math.round(
+            this.randomUtil.getFloat(lowestCurrentDurability, chosenMaxDurability),
+        );
 
-        // clamp values to max/current
-        if (tempMaxDurability >= item.upd.Repairable.MaxDurability)
-        {
-            tempMaxDurability = item.upd.Repairable.MaxDurability;
-        }
-        if (tempMaxDurability < item.upd.Repairable.Durability)
-        {
-            tempMaxDurability = item.upd.Repairable.Durability;
-        }
-
-        // after clamping, assign to the item's properties
-        item.upd.Repairable.MaxDurability = tempMaxDurability;
+        item.upd.Repairable.Durability = chosenCurrentDurability || 1; // Never let value become 0
+        item.upd.Repairable.MaxDurability = chosenMaxDurability;
     }
 
     /**
      * Randomise the durabiltiy values for an armors plates and soft inserts
      * @param armorWithMods Armor item with its child mods
+     * @param currentMultiplier Chosen multipler to use for current durability value
+     * @param maxMultiplier Chosen multipler to use for max durability value
      */
-    protected randomiseArmorDurabilityValues(armorWithMods: Item[]): void
+    protected randomiseArmorDurabilityValues(
+        armorWithMods: Item[],
+        currentMultiplier: number,
+        maxMultiplier: number,
+    ): void
     {
-        const itemDurabilityConfigDict = this.ragfairConfig.dynamic.condition;
-        const childMultiplerValues = {};
-        for (const item of armorWithMods)
+        for (const armorItem of armorWithMods)
         {
-            const itemDbDetails = this.itemHelper.getItem(item._tpl)[1];
+            const itemDbDetails = this.itemHelper.getItem(armorItem._tpl)[1];
             if ((parseInt(<string>itemDbDetails._props.armorClass)) > 1)
             {
-                if (!item.upd)
+                if (!armorItem.upd)
                 {
-                    item.upd = {};
+                    armorItem.upd = {};
                 }
 
-                // Store mod types durabiltiy multiplier for later use in current/max durability value calculation
-                if (!childMultiplerValues[itemDbDetails._parent])
-                {
-                    childMultiplerValues[itemDbDetails._parent] =
-                        this.randomUtil.getFloat(
-                            itemDurabilityConfigDict[itemDbDetails._parent].min,
-                            itemDurabilityConfigDict[itemDbDetails._parent].max,
-                        ) / itemDurabilityConfigDict[itemDbDetails._parent].max;
-                }
+                const lowestMaxDurability = this.randomUtil.getFloat(maxMultiplier, 1)
+                    * itemDbDetails._props.MaxDurability;
+                const chosenMaxDurability = Math.round(
+                    this.randomUtil.getFloat(lowestMaxDurability, itemDbDetails._props.MaxDurability),
+                );
 
-                const modMultipler = childMultiplerValues[itemDbDetails._parent];
-                const maxDurability = Math.round(
-                    this.randomUtil.getFloat(
-                        itemDbDetails._props.MaxDurability * this.randomUtil.getFloat(modMultipler, 1),
-                        itemDbDetails._props.MaxDurability,
-                    ),
+                const lowestCurrentDurability = this.randomUtil.getFloat(currentMultiplier, 1) * chosenMaxDurability;
+                const chosenCurrentDurability = Math.round(
+                    this.randomUtil.getFloat(lowestCurrentDurability, chosenMaxDurability),
                 );
-                const durability = Math.round(
-                    this.randomUtil.getFloat(maxDurability * this.randomUtil.getFloat(modMultipler, 1), maxDurability),
-                );
-                item.upd.Repairable = {
-                    Durability: durability || 1, // Never let value become 0
-                    MaxDurability: maxDurability,
+
+                armorItem.upd.Repairable = {
+                    Durability: chosenCurrentDurability || 1, // Never let value become 0
+                    MaxDurability: chosenMaxDurability,
                 };
             }
         }

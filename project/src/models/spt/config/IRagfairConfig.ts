@@ -141,10 +141,12 @@ export interface OfferAdjustment
     priceThreshholdRub: number;
 }
 
-export interface Condition extends MinMax
+export interface Condition
 {
     /** Percentage change durability is altered */
     conditionChance: number;
+    current: MinMax;
+    max: MinMax;
 }
 
 export interface Blacklist
