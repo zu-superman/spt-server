@@ -6,6 +6,7 @@ import { PresetHelper } from "@spt-aki/helpers/PresetHelper";
 import { Item } from "@spt-aki/models/eft/common/tables/IItem";
 import { ITemplateItem } from "@spt-aki/models/eft/common/tables/ITemplateItem";
 import { IBarterScheme } from "@spt-aki/models/eft/common/tables/ITrader";
+import { BaseClasses } from "@spt-aki/models/enums/BaseClasses";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { Money } from "@spt-aki/models/enums/Money";
 import { Traders } from "@spt-aki/models/enums/Traders";
@@ -87,6 +88,11 @@ export class FenceBaseAssortGenerator
                 slotId: "hideout",
                 upd: { StackObjectsCount: 9999999 },
             }];
+
+            if (this.itemHelper.isOfBaseclass(rootItemDb._id, BaseClasses.AMMO_BOX))
+            {
+                this.itemHelper.addCartridgesToAmmoBox(itemWithChildrenToAdd, rootItemDb);
+            }
 
             // Ensure IDs are unique
             this.itemHelper.remapRootItemId(itemWithChildrenToAdd);
