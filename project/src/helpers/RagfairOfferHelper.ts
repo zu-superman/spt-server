@@ -611,12 +611,29 @@ export class RagfairOfferHelper
             return false;
         }
 
-        if (
-            this.isConditionItem(offerRootItem)
-            && !this.itemQualityInRange(offerRootItem, searchRequest.conditionFrom, searchRequest.conditionTo)
-        )
+        if (offer.items.length === 1)
         {
-            return false;
+            // Single item
+            if (
+                this.isConditionItem(offerRootItem)
+                && !this.itemQualityInRange(offerRootItem, searchRequest.conditionFrom, searchRequest.conditionTo)
+            )
+            {
+                return false;
+            }
+        }
+        else
+        {
+            const itemQualityPercent = this.itemHelper.getItemQualityModifierForOfferItems(offer.items) * 100;
+            if (itemQualityPercent < searchRequest.conditionFrom)
+            {
+                return false;
+            }
+
+            if (itemQualityPercent > searchRequest.conditionTo)
+            {
+                return false;
+            }
         }
 
         if (searchRequest.currency > 0 && this.paymentHelper.isMoneyTpl(moneyTypeTpl))
