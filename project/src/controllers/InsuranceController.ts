@@ -23,6 +23,7 @@ import { SaveServer } from "@spt-aki/servers/SaveServer";
 import { InsuranceService } from "@spt-aki/services/InsuranceService";
 import { MailSendService } from "@spt-aki/services/MailSendService";
 import { PaymentService } from "@spt-aki/services/PaymentService";
+import { HashUtil } from "@spt-aki/utils/HashUtil";
 import { MathUtil } from "@spt-aki/utils/MathUtil";
 import { RandomUtil } from "@spt-aki/utils/RandomUtil";
 import { TimeUtil } from "@spt-aki/utils/TimeUtil";
@@ -37,6 +38,7 @@ export class InsuranceController
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("MathUtil") protected mathUtil: MathUtil,
+        @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("EventOutputHolder") protected eventOutputHolder: EventOutputHolder,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
         @inject("SaveServer") protected saveServer: SaveServer,
@@ -120,17 +122,20 @@ export class InsuranceController
             } items, in profile ${sessionID}`,
         );
 
+        // Fetch the root Item parentId property value that should be used for insurance packages.
+        const rootItemParentID = this.insuranceService.getRootItemParentID(sessionID);
+
         // Iterate over each of the insurance packages.
         for (const insured of insuranceDetails)
         {
             // Find items that should be deleted from the insured items.
-            const itemsToDelete = this.findItemsToDelete(insured);
+            const itemsToDelete = this.findItemsToDelete(rootItemParentID, insured);
 
             // Actually remove them.
             this.removeItemsFromInsurance(insured, itemsToDelete);
 
-            // Fix any orphaned items.
-            this.adoptOrphanedItems(insured);
+            // Ensure that all items have a valid parent.
+            insured.items = this.itemHelper.adoptOrphanedItems(rootItemParentID, insured.items);
 
             // Send the mail to the player.
             this.sendMail(sessionID, insured);
@@ -173,17 +178,18 @@ export class InsuranceController
     /**
      * Finds the items that should be deleted based on the given Insurance object.
      *
-     * @param insured The insurance object containing the items to evaluate for deletion.
+     * @param rootItemParentID - The ID that should be assigned to all "hideout"/root items.
+     * @param insured - The insurance object containing the items to evaluate for deletion.
      * @returns A Set containing the IDs of items that should be deleted.
      */
-    protected findItemsToDelete(insured: Insurance): Set<string>
+    protected findItemsToDelete(rootItemParentID: string, insured: Insurance): Set<string>
     {
         const toDelete = new Set<string>();
 
         // Populate a Map object of items for quick lookup by their ID and use it to populate a Map of main-parent items
         // and each of their attachments. For example, a gun mapped to each of its attachments.
-        const itemsMap = this.populateItemsMap(insured);
-        let parentAttachmentsMap = this.populateParentAttachmentsMap(insured, itemsMap);
+        const itemsMap = this.itemHelper.generateItemsMap(insured.items);
+        let parentAttachmentsMap = this.populateParentAttachmentsMap(rootItemParentID, insured, itemsMap);
 
         // Check to see if any regular items are present.
         const hasRegularItems = Array.from(itemsMap.values()).some((item) =>
@@ -216,31 +222,20 @@ export class InsuranceController
     }
 
     /**
-     * Populate a Map object of items for quick lookup by their ID.
-     *
-     * @param insured The insurance object containing the items to populate the map with.
-     * @returns A Map where the keys are the item IDs and the values are the corresponding Item objects.
-     */
-    protected populateItemsMap(insured: Insurance): Map<string, Item>
-    {
-        const itemsMap = new Map<string, Item>();
-        for (const item of insured.items)
-        {
-            itemsMap.set(item._id, item);
-        }
-        return itemsMap;
-    }
-
-    /**
      * Initialize a Map object that holds main-parents to all of their attachments. Note that "main-parent" in this
      * context refers to the parent item that an attachment is attached to. For example, a suppressor attached to a gun,
      * not the backpack that the gun is located in (the gun's parent).
      *
+     * @param rootItemParentID - The ID that should be assigned to all "hideout"/root items.
      * @param insured - The insurance object containing the items to evaluate.
      * @param itemsMap - A Map object for quick item look-up by item ID.
      * @returns A Map object containing parent item IDs to arrays of their attachment items.
      */
-    protected populateParentAttachmentsMap(insured: Insurance, itemsMap: Map<string, Item>): Map<string, Item[]>
+    protected populateParentAttachmentsMap(
+        rootItemParentID: string,
+        insured: Insurance,
+        itemsMap: Map<string, Item>,
+    ): Map<string, Item[]>
     {
         const mainParentToAttachmentsMap = new Map<string, Item[]>();
         for (const insuredItem of insured.items)
@@ -249,7 +244,7 @@ export class InsuranceController
             const parentItem = insured.items.find((item) => item._id === insuredItem.parentId);
 
             // The parent (not the hideout) could not be found. Skip and warn.
-            if (!parentItem && insuredItem.parentId !== this.fetchHideoutItemParent(insured.items))
+            if (!parentItem && insuredItem.parentId !== rootItemParentID)
             {
                 this.logger.warning(
                     `Could not find parent for insured item - ID: ${insuredItem._id}, Template: ${insuredItem._tpl}, Parent ID: ${insuredItem.parentId}`,
@@ -405,7 +400,7 @@ export class InsuranceController
             // Log the parent item's name.
             const parentItem = itemsMap.get(parentId);
             const parentName = this.itemHelper.getItemName(parentItem._tpl);
-            this.logger.debug(`Processing attachments for parent item: ${parentName}`);
+            this.logger.debug(`Processing attachments of parent "${parentName}":`);
 
             // Process the attachments for this individual parent item.
             this.processAttachmentByParent(attachmentItems, traderId, toDelete);
@@ -429,7 +424,7 @@ export class InsuranceController
         this.logAttachmentsDetails(sortedAttachments);
 
         const successfulRolls = this.countSuccessfulRolls(sortedAttachments, traderId);
-        this.logger.debug(`Number of deletion rolls: ${successfulRolls}`);
+        this.logger.debug(`Number of attachments to be deleted: ${successfulRolls}`);
 
         this.attachmentDeletionByValue(sortedAttachments, successfulRolls, toDelete);
     }
@@ -456,9 +451,11 @@ export class InsuranceController
      */
     protected logAttachmentsDetails(attachments: EnrichedItem[]): void
     {
+        let index = 1;
         for (const attachment of attachments)
         {
-            this.logger.debug(`Child Item - Name: ${attachment.name}, Max Price: ${attachment.maxPrice}`);
+            this.logger.debug(`Attachment ${index}: "${attachment.name}" - Price: ${attachment.maxPrice}`);
+            index++;
         }
     }
 
@@ -496,7 +493,7 @@ export class InsuranceController
             if (valuableChild)
             {
                 const { name, maxPrice } = valuableChild;
-                this.logger.debug(`Marked for removal - Child Item: ${name}, Max Price: ${maxPrice}`);
+                this.logger.debug(`Marked attachment "${name}" for removal - Max Price: ${maxPrice}`);
                 toDelete.add(attachmentsId);
             }
         }
@@ -512,52 +509,6 @@ export class InsuranceController
     protected removeItemsFromInsurance(insured: Insurance, toDelete: Set<string>): void
     {
         insured.items = insured.items.filter((item) => !toDelete.has(item._id));
-    }
-
-    /**
-     * Adopts orphaned items by resetting them as base-level items. Helpful in situations where a parent has been
-     * deleted from insurance, but any insured items within the parent should remain. This method will remove the
-     * reference from the children to the parent and set item properties to main-level values.
-     *
-     * @param insured Insurance object containing items.
-     */
-    protected adoptOrphanedItems(insured: Insurance): void
-    {
-        const hideoutParentId = this.fetchHideoutItemParent(insured.items);
-
-        for (const item of insured.items)
-        {
-            // Check if the item's parent exists in the insured items list.
-            const parentExists = insured.items.some((parentItem) => parentItem._id === item.parentId);
-
-            // If the parent does not exist and the item is not already a 'hideout' item, adopt the orphaned item.
-            if (!parentExists && item.parentId !== hideoutParentId && item.slotId !== "hideout")
-            {
-                item.parentId = hideoutParentId;
-                item.slotId = "hideout";
-                delete item.location;
-            }
-        }
-    }
-
-    /**
-     * Fetches the parentId property of an item with a slotId "hideout". Not sure if this is actually dynamic, but this
-     * method should be a reliable way to fetch it, if it ever does change.
-     *
-     * @param items Array of items to search through.
-     * @returns The parentId of an item with slotId 'hideout'. Empty string if not found.
-     */
-    protected fetchHideoutItemParent(items: Item[]): string
-    {
-        const hideoutItem = items.find((item) => item.slotId === "hideout");
-        const hideoutParentId = hideoutItem ? hideoutItem?.parentId : "";
-
-        if (hideoutParentId === "")
-        {
-            this.logger.warning("Unable to find an item with slotId 'hideout' in the insured item package.");
-        }
-
-        return hideoutParentId;
     }
 
     /**
@@ -614,10 +565,10 @@ export class InsuranceController
         const roll = returnChance >= traderReturnChance;
 
         // Log the roll with as much detail as possible.
-        const itemName = insuredItem ? ` for "${this.itemHelper.getItemName(insuredItem._tpl)}"` : "";
+        const itemName = insuredItem ? ` "${this.itemHelper.getItemName(insuredItem._tpl)}"` : "";
         const status = roll ? "Delete" : "Keep";
         this.logger.debug(
-            `Rolling deletion${itemName} with ${trader} - Return ${traderReturnChance}% - Roll: ${returnChance} - Status: ${status}`,
+            `Rolling${itemName} with ${trader} - Return ${traderReturnChance}% - Roll: ${returnChance} - Status: ${status}`,
         );
 
         return roll;

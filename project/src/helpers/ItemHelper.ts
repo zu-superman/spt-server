@@ -7,6 +7,7 @@ import { Item, Location, Repairable } from "@spt-aki/models/eft/common/tables/II
 import { IStaticAmmoDetails } from "@spt-aki/models/eft/common/tables/ILootBase";
 import { ITemplateItem } from "@spt-aki/models/eft/common/tables/ITemplateItem";
 import { BaseClasses } from "@spt-aki/models/enums/BaseClasses";
+import { EquipmentSlots } from "@spt-aki/models/enums/EquipmentSlots";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { ItemBaseClassService } from "@spt-aki/services/ItemBaseClassService";
@@ -891,12 +892,6 @@ export class ItemHelper
      * to traverse, where the keys are the item IDs and the values are the corresponding Item objects. This alleviates
      * some of the performance concerns, as it allows for quick lookups of items by ID.
      *
-     * To generate the map:
-     * ```
-     * const itemsMap = new Map<string, Item>();
-     * items.forEach(item => itemsMap.set(item._id, item));
-     * ```
-     *
      * @param itemId - The unique identifier of the item for which to find the main parent.
      * @param itemsMap - A Map containing item IDs mapped to their corresponding Item objects for quick lookup.
      * @returns The Item object representing the top-most parent of the given item, or `null` if no such parent exists.
@@ -923,7 +918,42 @@ export class ItemHelper
      */
     public isAttachmentAttached(item: Item): boolean
     {
-        return item.slotId !== "hideout" && item.slotId !== "main" && Number.isNaN(Number(item.slotId));
+        const equipmentSlots = Object.values(EquipmentSlots).map((value) => value as string);
+
+        return !(["hideout", "main"].includes(item.slotId)
+            || equipmentSlots.includes(item.slotId)
+            || !Number.isNaN(Number(item.slotId)));
+    }
+
+    /**
+     * Retrieves the equipment parent item for a given item.
+     *
+     * This method traverses up the hierarchy of items starting from a given `itemId`, until it finds the equipment
+     * parent item. In other words, if you pass it an item id of a suppressor, it will traverse up the muzzle brake,
+     * barrel, upper receiver, gun, nested backpack, and finally return the backpack Item that is equipped.
+     *
+     * It's important to note that traversal is expensive, so this method requires that you pass it a Map of the items
+     * to traverse, where the keys are the item IDs and the values are the corresponding Item objects. This alleviates
+     * some of the performance concerns, as it allows for quick lookups of items by ID.
+     *
+     * @param itemId - The unique identifier of the item for which to find the equipment parent.
+     * @param itemsMap - A Map containing item IDs mapped to their corresponding Item objects for quick lookup.
+     * @returns The Item object representing the equipment parent of the given item, or `null` if no such parent exists.
+     */
+    public getEquipmentParent(itemId: string, itemsMap: Map<string, Item>): Item | null
+    {
+        let currentItem = itemsMap.get(itemId);
+        const equipmentSlots = Object.values(EquipmentSlots).map((value) => value as string);
+
+        while (currentItem && !equipmentSlots.includes(currentItem.slotId))
+        {
+            currentItem = itemsMap.get(currentItem.parentId);
+            if (!currentItem)
+            {
+                return null;
+            }
+        }
+        return currentItem;
     }
 
     /**
@@ -1502,6 +1532,51 @@ export class ItemHelper
         }
 
         return newId;
+    }
+
+    /**
+     * Adopts orphaned items by resetting them as root "hideout" items. Helpful in situations where a parent has been
+     * deleted from a group of items and there are children still referencing the missing parent. This method will
+     * remove the reference from the children to the parent and set item properties to root values.
+     *
+     * @param rootId The ID of the "root" of the container.
+     * @param items Array of Items that should be adjusted.
+     * @returns Array of Items that have been adopted.
+     */
+    public adoptOrphanedItems(rootId: string, items: Item[]): Item[]
+    {
+        for (const item of items)
+        {
+            // Check if the item's parent exists.
+            const parentExists = items.some((parentItem) => parentItem._id === item.parentId);
+
+            // If the parent does not exist and the item is not already a 'hideout' item, adopt the orphaned item by
+            // setting the parent ID to the PMCs inventory equipment ID, the slot ID to 'hideout', and remove the location.
+            if (!parentExists && item.parentId !== rootId && item.slotId !== "hideout")
+            {
+                item.parentId = rootId;
+                item.slotId = "hideout";
+                delete item.location;
+            }
+        }
+
+        return items;
+    }
+
+    /**
+     * Populate a Map object of items for quick lookup using their ID.
+     *
+     * @param items An array of Items that should be added to a Map.
+     * @returns A Map where the keys are the item IDs and the values are the corresponding Item objects.
+     */
+    public generateItemsMap(items: Item[]): Map<string, Item>
+    {
+        const itemsMap = new Map<string, Item>();
+        for (const item of items)
+        {
+            itemsMap.set(item._id, item);
+        }
+        return itemsMap;
     }
 }
 

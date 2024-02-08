@@ -10,13 +10,13 @@ import { Item } from "@spt-aki/models/eft/common/tables/IItem";
 import { ITraderBase } from "@spt-aki/models/eft/common/tables/ITrader";
 import { IInsuredItemsData } from "@spt-aki/models/eft/inRaid/IInsuredItemsData";
 import { ISaveProgressRequestData } from "@spt-aki/models/eft/inRaid/ISaveProgressRequestData";
-import { BaseClasses } from "@spt-aki/models/enums/BaseClasses";
 import { BonusType } from "@spt-aki/models/enums/BonusType";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { MessageType } from "@spt-aki/models/enums/MessageType";
 import { Traders } from "@spt-aki/models/enums/Traders";
 import { IInsuranceConfig } from "@spt-aki/models/spt/config/IInsuranceConfig";
 import { ILostOnDeathConfig } from "@spt-aki/models/spt/config/ILostOnDeathConfig";
+import { IInsuranceEquipmentPkg } from "@spt-aki/models/spt/services/IInsuranceEquipmentPkg";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt-aki/servers/ConfigServer";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
@@ -24,6 +24,7 @@ import { SaveServer } from "@spt-aki/servers/SaveServer";
 import { LocaleService } from "@spt-aki/services/LocaleService";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
 import { MailSendService } from "@spt-aki/services/MailSendService";
+import { HashUtil } from "@spt-aki/utils/HashUtil";
 import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 import { RandomUtil } from "@spt-aki/utils/RandomUtil";
 import { TimeUtil } from "@spt-aki/utils/TimeUtil";
@@ -41,6 +42,7 @@ export class InsuranceService
         @inject("SecureContainerHelper") protected secureContainerHelper: SecureContainerHelper,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
+        @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
         @inject("SaveServer") protected saveServer: SaveServer,
@@ -215,7 +217,14 @@ export class InsuranceService
     }
 
     /**
-     * Create an array of insured items lost in a raid player has just exited
+     * Create insurance equipment packages that should be sent to the user. The packages should contain items that have
+     * been lost in a raid and should be returned to the player through the insurance system.
+     *
+     * NOTE: We do not have data on items that were dropped in a raid. This means we have to pull item data from the
+     *       profile at the start of the raid to return to the player in insurance. Because of this, the item
+     *       positioning may differ from the position the item was in when the player died. Apart from removing all
+     *       positioning, this is the best we can do. >:{}
+     *
      * @param pmcData Player profile
      * @param offraidData Post-raid data
      * @param preRaidGear Pre-raid data
@@ -229,20 +238,21 @@ export class InsuranceService
         preRaidGear: Item[],
         sessionID: string,
         playerDied: boolean,
-    ): any[]
+    ): IInsuranceEquipmentPkg[]
     {
-        const preRaidGearHash = this.createItemHashTable(preRaidGear);
-        const offRaidGearHash = this.createItemHashTable(offraidData.profile.Inventory.items);
+        const equipmentPkg: IInsuranceEquipmentPkg[] = [];
+        const preRaidGearMap = this.itemHelper.generateItemsMap(preRaidGear);
+        const offRaidGearMap = this.itemHelper.generateItemsMap(offraidData.profile.Inventory.items);
 
-        const equipmentToSendToPlayer = [];
         for (const insuredItem of pmcData.InsuredItems)
         {
-            // Skip insured items not on player when they started raid
-            const preRaidItem = preRaidGearHash[insuredItem.itemId];
-            if (!preRaidItem)
+            // Skip insured items not on player when they started the raid.
+            if (!preRaidGearMap.has(insuredItem.itemId))
             {
                 continue;
             }
+
+            const preRaidItem = preRaidGearMap.get(insuredItem.itemId);
 
             // Skip slots we should never return as they're never lost on death
             if (this.insuranceConfig.blacklistedEquipment.includes(preRaidItem.slotId))
@@ -250,17 +260,23 @@ export class InsuranceService
                 continue;
             }
 
-            // Slots can be flagged as never lost on death and shouldn't be sent to player as insurance
-            const itemShouldBeLostOnDeath = this.lostOnDeathConfig.equipment[preRaidItem.slotId] ?? true;
+            // Equipment slots can be flagged as never lost on death and shouldn't be saved in an insurance package.
+            // We need to check if the item is directly equipped to an equipment slot, or if it is a child Item of an
+            // equipment slot.
+            const equipmentParentItem = this.itemHelper.getEquipmentParent(preRaidItem._id, preRaidGearMap);
 
-            // Was item found on player inventory post-raid
-            const itemOnPlayerPostRaid = offRaidGearHash[insuredItem.itemId];
+            // Now that we have the equipment parent item, we can check to see if that item is located in an equipment
+            // slot that is flagged as lost on death. If it is, then the itemShouldBeLostOnDeath.
+            const itemShouldBeLostOnDeath = this.lostOnDeathConfig.equipment[equipmentParentItem?.slotId] ?? true;
+
+            // Was the item found in the player inventory post-raid?
+            const itemOnPlayerPostRaid = offRaidGearMap.has(insuredItem.itemId);
 
             // Check if item missing in post-raid gear OR player died + item slot flagged as lost on death
             // Catches both events: player died with item on + player survived but dropped item in raid
             if (!itemOnPlayerPostRaid || (playerDied && itemShouldBeLostOnDeath))
             {
-                equipmentToSendToPlayer.push({
+                equipmentPkg.push({
                     pmcData: pmcData,
                     itemToReturnToPlayer: this.getInsuredItemDetails(
                         pmcData,
@@ -285,7 +301,7 @@ export class InsuranceService
                         // Add all items found above to return data
                         for (const softInsertChildModId of softInsertChildIds)
                         {
-                            equipmentToSendToPlayer.push({
+                            equipmentPkg.push({
                                 pmcData: pmcData,
                                 itemToReturnToPlayer: this.getInsuredItemDetails(
                                     pmcData,
@@ -303,21 +319,40 @@ export class InsuranceService
             }
         }
 
-        return equipmentToSendToPlayer;
+        return equipmentPkg;
+    }
+
+    /**
+     * Take the insurance item packages within a profile session and ensure that each of the items in that package are
+     * not orphaned from their parent ID.
+     *
+     * @param sessionID The session ID to update insurance equipment packages in.
+     * @returns void
+     */
+    protected adoptOrphanedInsEquipment(sessionID: string): void
+    {
+        const rootID = this.getRootItemParentID(sessionID);
+        const insuranceData = this.getInsurance(sessionID);
+        for (const [traderId, items] of Object.entries(insuranceData))
+        {
+            this.insured[sessionID][traderId] = this.itemHelper.adoptOrphanedItems(rootID, items);
+        }
     }
 
     /**
      * Store lost gear post-raid inside profile, ready for later code to pick it up and mail it
-     * @param equipmentToSendToPlayer Gear to store - generated by getGearLostInRaid()
-     * TODO: add type to equipmentToSendToPlayer
+     * @param equipmentPkg Gear to store - generated by getGearLostInRaid()
      */
-    public storeGearLostInRaidToSendLater(equipmentToSendToPlayer: any[]): void
+    public storeGearLostInRaidToSendLater(sessionID: string, equipmentPkg: IInsuranceEquipmentPkg[]): void
     {
         // Process all insured items lost in-raid
-        for (const gear of equipmentToSendToPlayer)
+        for (const gear of equipmentPkg)
         {
             this.addGearToSend(gear);
         }
+
+        // Items are separated into their individual trader packages, now we can ensure that they all have valid parents
+        this.adoptOrphanedInsEquipment(sessionID);
     }
 
     /**
@@ -415,31 +450,13 @@ export class InsuranceService
     }
 
     /**
-     * Create a hash table for an array of items, keyed by items _id
-     * @param items Items to hash
-     * @returns Hashtable
-     */
-    protected createItemHashTable(items: Item[]): Record<string, Item>
-    {
-        const hashTable: Record<string, Item> = {};
-        for (const item of items)
-        {
-            hashTable[item._id] = item;
-        }
-
-        return hashTable;
-    }
-
-    /**
      * Add gear item to InsuredItems array in player profile
      * @param sessionID Session id
      * @param pmcData Player profile
      * @param itemToReturnToPlayer item to store
      * @param traderId Id of trader item was insured with
      */
-    protected addGearToSend(
-        gear: { sessionID: string; pmcData: IPmcData; itemToReturnToPlayer: Item; traderId: string; },
-    ): void
+    protected addGearToSend(gear: IInsuranceEquipmentPkg): void
     {
         const sessionId = gear.sessionID;
         const pmcData = gear.pmcData;
@@ -527,5 +544,16 @@ export class InsuranceService
         }
 
         return Math.round(pricePremium);
+    }
+
+    /**
+     * Returns the ID that should be used for a root-level Item's parentId property value within in the context of insurance.
+     *
+     * @returns The ID.
+     */
+    public getRootItemParentID(sessionID: string): string
+    {
+        // Try to use the equipment id from the profile. I'm not sure this is strictly required, but it feels neat.
+        return this.saveServer.getProfile(sessionID)?.characters?.pmc?.Inventory?.equipment ?? this.hashUtil.generate();
     }
 }

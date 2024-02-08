@@ -165,7 +165,7 @@ export class InraidController
         if (gearToStore.length > 0)
         {
             mapHasInsuranceEnabled
-                ? this.insuranceService.storeGearLostInRaidToSendLater(gearToStore)
+                ? this.insuranceService.storeGearLostInRaidToSendLater(sessionID, gearToStore)
                 : this.insuranceService.sendLostInsuranceMessage(sessionID, locationName);
         }
 
