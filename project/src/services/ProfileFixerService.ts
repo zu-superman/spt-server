@@ -158,11 +158,6 @@ export class ProfileFixerService
 
         this.fixNullTraderSalesSums(pmcProfile);
         this.updateProfileQuestDataValues(pmcProfile);
-
-        if (Object.keys(this.ragfairConfig.dynamic.unreasonableModPrices).length > 0)
-        {
-            this.adjustUnreasonableModFleaPrices();
-        }
     }
 
     /**
@@ -388,47 +383,6 @@ export class ProfileFixerService
                 slots: [],
                 lastRecipe: "",
             });
-        }
-    }
-
-    protected adjustUnreasonableModFleaPrices(): void
-    {
-        const db = this.databaseServer.getTables();
-        const fleaPrices = db.templates.prices;
-        const handbookPrices = db.templates.handbook.Items;
-
-        for (const itemTypeKey in this.ragfairConfig.dynamic.unreasonableModPrices)
-        {
-            const details = this.ragfairConfig.dynamic.unreasonableModPrices[itemTypeKey];
-            if (!details?.enabled)
-            {
-                continue;
-            }
-
-            for (const itemTpl in fleaPrices)
-            {
-                if (!this.itemHelper.isOfBaseclass(itemTpl, itemTypeKey))
-                {
-                    continue;
-                }
-
-                const itemHandbookPrice = handbookPrices.find((x) => x.Id === itemTpl);
-                if (!itemHandbookPrice)
-                {
-                    continue;
-                }
-
-                if (fleaPrices[itemTpl] > (itemHandbookPrice.Price * details.handbookPriceOverMultiplier))
-                {
-                    if (fleaPrices[itemTpl] <= 1)
-                    {
-                        continue;
-                    }
-
-                    // Price is over limit, adjust
-                    fleaPrices[itemTpl] = itemHandbookPrice.Price * details.newPriceHandbookMultiplier;
-                }
-            }
         }
     }
 

@@ -7,12 +7,13 @@ import { PresetHelper } from "@spt-aki/helpers/PresetHelper";
 import { TraderHelper } from "@spt-aki/helpers/TraderHelper";
 import { MinMax } from "@spt-aki/models/common/MinMax";
 import { IPreset } from "@spt-aki/models/eft/common/IGlobals";
+import { HandbookItem } from "@spt-aki/models/eft/common/tables/IHandbookBase";
 import { Item } from "@spt-aki/models/eft/common/tables/IItem";
 import { IBarterScheme } from "@spt-aki/models/eft/common/tables/ITrader";
 import { BaseClasses } from "@spt-aki/models/enums/BaseClasses";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { Money } from "@spt-aki/models/enums/Money";
-import { IRagfairConfig } from "@spt-aki/models/spt/config/IRagfairConfig";
+import { IRagfairConfig, IUnreasonableModPrices } from "@spt-aki/models/spt/config/IRagfairConfig";
 import { IRagfairServerPrices } from "@spt-aki/models/spt/ragfair/IRagfairServerPrices";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt-aki/servers/ConfigServer";
@@ -221,6 +222,8 @@ export class RagfairPriceService implements OnLoad
      */
     public getDynamicOfferPriceForOffer(items: Item[], desiredCurrency: string, isPackOffer: boolean): number
     {
+        const rootItem = items[0];
+
         // Price to return
         let price = 0;
 
@@ -278,12 +281,65 @@ export class RagfairPriceService implements OnLoad
             }
         }
 
+        // Skip items with children
+        if (items.length === 1)
+        {
+            const rootItemDb = this.itemHelper.getItem(rootItem._tpl)[1];
+            const unreasonableItemPriceChange = this.ragfairConfig.dynamic.unreasonableModPrices[rootItemDb._parent];
+            if (unreasonableItemPriceChange?.enabled)
+            {
+                price = this.adjustUnreasonablePrice(
+                    this.databaseServer.getTables().templates.handbook.Items,
+                    unreasonableItemPriceChange,
+                    rootItem._tpl,
+                    price,
+                );
+            }
+        }
+
         const rangeValues = this.getOfferTypeRangeValues(isPreset, isPackOffer);
         price = this.randomiseOfferPrice(price, rangeValues);
 
         if (price < 1)
         {
             price = 1;
+        }
+
+        return price;
+    }
+
+    /**
+     * using data from config, adjust an items price to be relative to its handbook price
+     * @param handbookPrices Prices of items in handbook
+     * @param unreasonableItemChange Change object from config
+     * @param itemTpl Item being adjusted
+     * @param price Current price of item
+     * @returns Adjusted price of item
+     */
+    protected adjustUnreasonablePrice(
+        handbookPrices: HandbookItem[],
+        unreasonableItemChange: IUnreasonableModPrices,
+        itemTpl: string,
+        price: number,
+    ): number
+    {
+        const itemHandbookPrice = handbookPrices.find((handbookItem) => handbookItem.Id === itemTpl);
+        if (!itemHandbookPrice)
+        {
+            return price;
+        }
+
+        // Flea price is over handbook price
+        if (price > (itemHandbookPrice.Price * unreasonableItemChange.handbookPriceOverMultiplier))
+        {
+            // Skip extreme values
+            if (price <= 1)
+            {
+                return price;
+            }
+
+            // Price is over limit, adjust
+            return itemHandbookPrice.Price * unreasonableItemChange.newPriceHandbookMultiplier;
         }
 
         return price;
