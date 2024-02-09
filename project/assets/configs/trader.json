@@ -47,16 +47,16 @@
     "persistPurchaseDataInProfile": true,
     "fence": {
         "discountOptions": {
-            "assortSize": 50,
+            "assortSize": 45,
             "itemPriceMult": 0.8,
             "presetPriceMult": 1.2,
 			"weaponPresetMinMax": {
-				"min": 12,
-				"max": 19
+				"min": 5,
+				"max": 12
 			},
 			"equipmentPresetMinMax": {
-				"min": 8,
-				"max": 15
+				"min": 5,
+				"max": 12
 			}
         },
         "partialRefreshTimeSeconds": 240,
@@ -110,13 +110,13 @@
             "5c164d2286f774194c5e69fa": 0
         },
         "presetMaxDurabilityPercentMinMax": {
-            "min": 35,
+            "min": 39,
             "max": 60
         },
         "chancePlateExistsInArmorPercent": 50,
         "armorMaxDurabilityPercentMinMax": {
             "min": 35,
-            "max": 60
+            "max": 75
         },
         "itemStackSizeOverrideMinMax": {
             "59e690b686f7746c9f75e848": {
@@ -140,7 +140,7 @@
             "5448e54d4bdc2dcc718b4568": 200000,
             "5a2c3a9486f774688b05e574": 70000,
             "5448f3a64bdc2d60728b456a": 70000,
-            "5447b6194bdc2d67278b4567": 500000,
+            "5447b6194bdc2d67278b4567": 195000,
             "550aa4cd4bdc2dd8348b456c": 70000,
             "57864ee62459775490116fc1": 95000,
             "5448bc234bdc2d3c308b4569": 29000,
