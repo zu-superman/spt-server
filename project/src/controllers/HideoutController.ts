@@ -134,17 +134,17 @@ export class HideoutController
         }
 
         // Construction time management
-        const hideoutArea = pmcData.Hideout.Areas.find((area) => area.type === request.areaType);
-        if (!hideoutArea)
+        const profileHideoutArea = pmcData.Hideout.Areas.find((area) => area.type === request.areaType);
+        if (!profileHideoutArea)
         {
             this.logger.error(this.localisationService.getText("hideout-unable_to_find_area", request.areaType));
             return this.httpResponse.appendErrorToOutput(output);
         }
 
-        const hideoutData = this.databaseServer.getTables().hideout.areas.find((area) =>
+        const hideoutDataDb = this.databaseServer.getTables().hideout.areas.find((area) =>
             area.type === request.areaType
         );
-        if (!hideoutData)
+        if (!hideoutDataDb)
         {
             this.logger.error(
                 this.localisationService.getText("hideout-unable_to_find_area_in_database", request.areaType),
@@ -152,7 +152,7 @@ export class HideoutController
             return this.httpResponse.appendErrorToOutput(output);
         }
 
-        let ctime = hideoutData.stages[hideoutArea.level + 1].constructionTime;
+        let ctime = hideoutDataDb.stages[profileHideoutArea.level + 1].constructionTime;
         if (ctime > 0)
         {
             if (this.profileHelper.isDeveloperAccount(sessionID))
@@ -161,8 +161,8 @@ export class HideoutController
             }
             const timestamp = this.timeUtil.getTimestamp();
 
-            hideoutArea.completeTime = Math.round(timestamp + ctime);
-            hideoutArea.constructing = true;
+            profileHideoutArea.completeTime = Math.round(timestamp + ctime);
+            profileHideoutArea.constructing = true;
         }
 
         return output;
