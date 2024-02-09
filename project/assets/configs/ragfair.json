@@ -34,7 +34,6 @@
         "purchasesAreFoundInRaid": false,
         "useTraderPriceForOffersIfHigher": true,
         "barter": {
-            "enable": true,
             "chancePercent": 20,
             "itemCountMin": 1,
             "itemCountMax": 3,
@@ -49,7 +48,6 @@
             ]
         },
         "pack": {
-            "enable": true,
             "chancePercent": 20,
             "itemCountMin": 4,
             "itemCountMax": 12,

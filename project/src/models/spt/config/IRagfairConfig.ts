@@ -101,8 +101,6 @@ export interface IPriceRanges
 
 export interface IBarterDetails
 {
-    /** Should barter offers be generated */
-    enable: boolean;
     /** Percentage change an offer is listed as a barter */
     chancePercent: number;
     /** Min number of required items for a barter requirement */
@@ -119,8 +117,6 @@ export interface IBarterDetails
 
 export interface IPackDetails
 {
-    /** Should pack offers be generated */
-    enable: boolean;
     /** Percentage change an offer is listed as a pack */
     chancePercent: number;
     /** Min number of required items for a pack */
