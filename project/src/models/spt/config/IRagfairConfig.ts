@@ -78,6 +78,8 @@ export interface Dynamic
     nonStackableCount: MinMax;
     /** Range of rating offers for items being listed */
     rating: MinMax;
+    /** A multipler to apply to individual tpls price just prior to item quality adjustment */
+    itemPriceMultiplier: Record<string, number>;
     /** Percentages to sell offers in each currency */
     currencies: Record<string, number>;
     /** Item tpls that should be forced to sell as a single item */

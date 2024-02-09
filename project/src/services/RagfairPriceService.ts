@@ -255,6 +255,12 @@ export class RagfairPriceService implements OnLoad
                 isPreset = true;
             }
 
+            const manualPriceMultipler = this.ragfairConfig.dynamic.itemPriceMultiplier[item._tpl];
+            if (manualPriceMultipler)
+            {
+                itemPrice *= manualPriceMultipler;
+            }
+
             // Convert to different currency if desiredCurrency param is not roubles
             if (desiredCurrency !== Money.ROUBLES)
             {

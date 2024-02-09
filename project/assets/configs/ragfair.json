@@ -267,6 +267,10 @@
             "min": -2,
             "max": 20
         },
+		"itemPriceMultiplier": {
+			"5737292724597765e5728562": 6,
+			"57372ac324597767001bc261": 5
+		},
         "_currencies": "what percentage of the offers are in each currency",
         "currencies": {
             "5449016a4bdc2d6f028b456f": 78,
