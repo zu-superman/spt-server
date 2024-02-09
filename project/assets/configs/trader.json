@@ -49,7 +49,15 @@
         "discountOptions": {
             "assortSize": 50,
             "itemPriceMult": 0.8,
-            "presetPriceMult": 1.2
+            "presetPriceMult": 1.2,
+			"weaponPresetMinMax": {
+				"min": 12,
+				"max": 19
+			},
+			"equipmentPresetMinMax": {
+				"min": 8,
+				"max": 15
+			}
         },
         "partialRefreshTimeSeconds": 240,
         "partialRefreshChangePercent": 15,

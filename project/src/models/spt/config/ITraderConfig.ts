@@ -60,4 +60,6 @@ export interface DiscountOptions
     assortSize: number;
     itemPriceMult: number;
     presetPriceMult: number;
+    weaponPresetMinMax: MinMax;
+    equipmentPresetMinMax: MinMax;
 }
