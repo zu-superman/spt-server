@@ -412,9 +412,9 @@ export class LocationGenerator
         const containerLootPool = this.getPossibleLootItemsForContainer(containerTpl, staticLootDist);
 
         // Some containers need to have items forced into it (quest keys etc)
-        const tplsForced = staticForced.filter((x) => x.containerId === containerClone.template.Id).map((x) =>
-            x.itemTpl
-        );
+        const tplsForced = staticForced.filter((forcedStaticProp) =>
+            forcedStaticProp.containerId === containerClone.template.Id
+        ).map((x) => x.itemTpl);
 
         // Draw random loot
         // Money spawn more than once in container
@@ -427,7 +427,7 @@ export class LocationGenerator
             itemCountToAdd,
             this.locationConfig.allowDuplicateItemsInStaticContainers,
             locklist,
-        ).filter((x) => !tplsForced.includes(x));
+        ).filter((tpl) => !tplsForced.includes(tpl));
 
         // Add forced loot to chosen item pool
         const tplsToAddToContainer = tplsForced.concat(chosenTpls);
@@ -442,9 +442,9 @@ export class LocationGenerator
             const result = this.containerHelper.findSlotForItem(containerMap, width, height);
             if (!result.success)
             {
-                // 2 attempts to fit an item, container is probably full, stop trying to add more
                 if (failedToFitCount >= this.locationConfig.fitLootIntoContainerAttempts)
                 {
+                    // x attempts to fit an item, container is probably full, stop trying to add more
                     break;
                 }
 
@@ -454,7 +454,7 @@ export class LocationGenerator
                 continue;
             }
 
-            containerMap = this.containerHelper.fillContainerMapWithItem(
+            this.containerHelper.fillContainerMapWithItem(
                 containerMap,
                 result.x,
                 result.y,

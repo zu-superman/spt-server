@@ -34,6 +34,12 @@ export class ContainerHelper
         const limitY = containerY - minVolume;
         const limitX = containerX - minVolume;
 
+        // Every slot taken up, exit
+        if (container2D.every((x) => x.every((y) => y === 1)))
+        {
+            return new FindSlotResult(false);
+        }
+
         for (let y = 0; y < limitY; y++)
         {
             for (let x = 0; x < limitX; x++)
@@ -41,21 +47,21 @@ export class ContainerHelper
                 let foundSlot = this.locateSlot(container2D, containerX, containerY, x, y, itemWidth, itemHeight);
 
                 /**
-                 * Try to rotate if there is enough room for the item
-                 * Only occupies one grid of items, no rotation required
+                 * Failed to find slot, rotate item and try again
                  */
                 if (!foundSlot && itemWidth * itemHeight > 1)
-                {
+                { // bigger than 1x1
                     foundSlot = this.locateSlot(container2D, containerX, containerY, x, y, itemHeight, itemWidth);
-
                     if (foundSlot)
                     {
+                        // Found a slot for it when rotated
                         rotation = true;
                     }
                 }
 
                 if (!foundSlot)
                 {
+                    // Didn't fit this hole, try again
                     continue;
                 }
 
@@ -63,7 +69,8 @@ export class ContainerHelper
             }
         }
 
-        return new FindSlotResult();
+        // Tried all possible holes, nothing big enough for the item
+        return new FindSlotResult(false);
     }
 
     /**
@@ -130,7 +137,6 @@ export class ContainerHelper
      * @param itemW Items width
      * @param itemH Items height
      * @param rotate is item rotated
-     * @returns Location to place item
      */
     public fillContainerMapWithItem(
         container2D: number[][],
@@ -139,7 +145,7 @@ export class ContainerHelper
         itemW: number,
         itemH: number,
         rotate: boolean,
-    ): number[][]
+    ): void
     {
         const itemWidth = rotate ? itemH : itemW;
         const itemHeight = rotate ? itemW : itemH;
@@ -158,7 +164,5 @@ export class ContainerHelper
                 }
             }
         }
-
-        return container2D;
     }
 }
