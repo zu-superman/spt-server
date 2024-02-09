@@ -236,7 +236,7 @@ export class InventoryHelper
     {
         const pmcData = this.profileHelper.getPmcProfile(sessionId);
 
-        const stashFS2D = this.getStashSlotMap(pmcData, sessionId);
+        const stashFS2D = this.jsonUtil.clone(this.getStashSlotMap(pmcData, sessionId));
         for (const itemWithChildren of itemsWithChildren)
         {
             if (this.canPlaceItemInInventory(stashFS2D, itemWithChildren))
@@ -258,25 +258,20 @@ export class InventoryHelper
         const findSlotResult = this.containerHelper.findSlotForItem(stashFS2D, itemSize[0], itemSize[1]);
         if (findSlotResult.success)
         {
-            /* Fill in the StashFS_2D with an imaginary item, to simulate it already being added
-            * so the next item to search for a free slot won't find the same one */
-            const itemSizeX = findSlotResult.rotation ? itemSize[1] : itemSize[0];
-            const itemSizeY = findSlotResult.rotation ? itemSize[0] : itemSize[1];
-
             try
             {
                 this.containerHelper.fillContainerMapWithItem(
                     stashFS2D,
                     findSlotResult.x,
                     findSlotResult.y,
-                    itemSizeX,
-                    itemSizeY,
+                    itemSize[0],
+                    itemSize[1],
                     findSlotResult.rotation,
                 );
             }
             catch (err)
             {
-                const errorText = (typeof err === "string") ? ` -> ${err}` : "";
+                const errorText = (typeof err === "string") ? ` -> ${err}` : err.message;
                 this.logger.error(`Unable to fit item into inventory: ${errorText}`);
 
                 return false;
@@ -315,25 +310,20 @@ export class InventoryHelper
         const findSlotResult = this.containerHelper.findSlotForItem(stashFS2D, itemSize[0], itemSize[1]);
         if (findSlotResult.success)
         {
-            /* Fill in the StashFS_2D with an imaginary item, to simulate it already being added
-            * so the next item to search for a free slot won't find the same one */
-            const itemSizeX = findSlotResult.rotation ? itemSize[1] : itemSize[0];
-            const itemSizeY = findSlotResult.rotation ? itemSize[0] : itemSize[1];
-
             try
             {
                 this.containerHelper.fillContainerMapWithItem(
                     stashFS2D,
                     findSlotResult.x,
                     findSlotResult.y,
-                    itemSizeX,
-                    itemSizeY,
+                    itemSize[0],
+                    itemSize[1],
                     findSlotResult.rotation,
                 );
             }
             catch (err)
             {
-                const errorText = (typeof err === "string") ? ` -> ${err}` : "";
+                const errorText = (typeof err === "string") ? ` -> ${err}` : err.message;
                 this.logger.error(this.localisationService.getText("inventory-fill_container_failed", errorText));
 
                 this.httpResponse.appendErrorToOutput(
@@ -365,16 +355,15 @@ export class InventoryHelper
                 itemSize[0],
                 itemSize[1],
             );
-            const itemSizeX = findSortingSlotResult.rotation ? itemSize[1] : itemSize[0];
-            const itemSizeY = findSortingSlotResult.rotation ? itemSize[0] : itemSize[1];
+
             try
             {
                 this.containerHelper.fillContainerMapWithItem(
                     sortingTableFS2D,
                     findSortingSlotResult.x,
                     findSortingSlotResult.y,
-                    itemSizeX,
-                    itemSizeY,
+                    itemSize[0],
+                    itemSize[1],
                     findSortingSlotResult.rotation,
                 );
             }
