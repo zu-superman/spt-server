@@ -413,7 +413,11 @@ export class InventoryHelper
      * @param requestItem Details of purchased item to add to inventory
      * @param result Array split stacks are added to
      */
-    protected splitStackIntoSmallerStacks(assortItems: Item[], requestItem: AddItem, result: IAddItemTempObject[]): void
+    protected splitStackIntoSmallerChildStacks(
+        assortItems: Item[],
+        requestItem: AddItem,
+        result: IAddItemTempObject[],
+    ): void
     {
         for (const item of assortItems)
         {
