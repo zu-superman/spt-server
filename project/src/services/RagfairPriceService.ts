@@ -285,7 +285,16 @@ export class RagfairPriceService implements OnLoad
         if (items.length === 1)
         {
             const rootItemDb = this.itemHelper.getItem(rootItem._tpl)[1];
-            const unreasonableItemPriceChange = this.ragfairConfig.dynamic.unreasonableModPrices[rootItemDb._parent];
+            let unreasonableItemPriceChange: IUnreasonableModPrices;
+            for (const key of Object.keys(this.ragfairConfig.dynamic.unreasonableModPrices))
+            {
+                if (this.itemHelper.isOfBaseclass(rootItemDb._id, key))
+                {
+                    unreasonableItemPriceChange = this.ragfairConfig.dynamic.unreasonableModPrices[key];
+
+                    break;
+                }
+            }
             if (unreasonableItemPriceChange?.enabled)
             {
                 price = this.adjustUnreasonablePrice(
