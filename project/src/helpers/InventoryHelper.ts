@@ -276,6 +276,9 @@ export class InventoryHelper
             }
             catch (err)
             {
+                const errorText = (typeof err === "string") ? ` -> ${err}` : "";
+                this.logger.error(`Unable to fit item into inventory: ${errorText}`);
+
                 return false;
             }
 

@@ -834,7 +834,7 @@
         "enabled": true,
         "ignoreMaps": ["base", "develop", "hideout", "privatearea", "suburbs", "terminal", "town"]
     },
-    "fitLootIntoContainerAttempts": 2,
+    "fitLootIntoContainerAttempts": 3,
     "addOpenZonesToAllMaps": true,
     "addCustomBotWavesToMaps": true,
     "enableBotTypeLimits": true,
