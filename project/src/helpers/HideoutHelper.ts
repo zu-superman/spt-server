@@ -753,8 +753,8 @@ export class HideoutHelper
     protected updateBitcoinFarm(pmcData: IPmcData, btcFarmCGs: number, isGeneratorOn: boolean): Production
     {
         const btcProd = pmcData.Hideout.Production[HideoutHelper.bitcoinFarm];
-        const bitcoinProdData = this.databaseServer.getTables().hideout.production.find((p) =>
-            p._id === HideoutHelper.bitcoinProductionId
+        const bitcoinProdData = this.databaseServer.getTables().hideout.production.find((production) =>
+            production._id === HideoutHelper.bitcoinProductionId
         );
         const coinSlotCount = this.getBTCSlots(pmcData);
 
@@ -807,9 +807,11 @@ export class HideoutHelper
                 }
             */
             // BSG finally fixed their settings, they now get loaded from the settings and used in the client
-            const coinCraftTimeSeconds = bitcoinProdData.productionTime
+            const coinCraftTimeSeconds =
+                ((this.profileHelper.isDeveloperAccount(pmcData.sessionId)) ? 40 : bitcoinProdData.productionTime)
                 / (1 + (btcFarmCGs - 1) * this.databaseServer.getTables().hideout.settings.gpuBoostRate);
-            while (btcProd.Progress > coinCraftTimeSeconds)
+
+            while (btcProd.Progress >= coinCraftTimeSeconds)
             {
                 if (btcProd.Products.length < coinSlotCount)
                 {
@@ -818,6 +820,7 @@ export class HideoutHelper
                 }
                 else
                 {
+                    // Filled up bitcoin storage
                     btcProd.Progress = 0;
                 }
             }
@@ -843,6 +846,7 @@ export class HideoutHelper
             upd: { StackObjectsCount: 1 },
         });
 
+        // Deduct time spent crafting from progress
         btcProd.Progress -= coinCraftTimeSeconds;
     }
 
@@ -863,7 +867,8 @@ export class HideoutHelper
         let timeElapsed = this.timeUtil.getTimestamp() - pmcData.Hideout.sptUpdateLastRunTimestamp;
 
         if (recipe?.areaType === HideoutAreas.LAVATORY)
-        { // Lavatory works at 100% when power is on / off
+        {
+            // Lavatory works at 100% when power is on / off
             return timeElapsed;
         }
 
