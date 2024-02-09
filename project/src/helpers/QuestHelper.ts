@@ -1096,10 +1096,10 @@ export class QuestHelper
 
     public findAndRemoveQuestFromArrayIfExists(questId: string, quests: IQuestStatus[]): void
     {
-        const pmcQuestToReplaceStatus = quests.find((x) => x.qid === questId);
+        const pmcQuestToReplaceStatus = quests.find((quest) => quest.qid === questId);
         if (pmcQuestToReplaceStatus)
         {
-            quests.splice(quests.indexOf(pmcQuestToReplaceStatus, 1));
+            quests.splice(quests.indexOf(pmcQuestToReplaceStatus), 1);
         }
     }
 
