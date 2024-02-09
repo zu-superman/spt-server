@@ -229,6 +229,7 @@ export class RagfairPriceService implements OnLoad
 
         let endLoop = false;
         let isPreset = false;
+        let manuallyAdjusted = false;
         for (const item of items)
         {
             // Get dynamic price, fallback to handbook price if value of 1 found
@@ -261,6 +262,7 @@ export class RagfairPriceService implements OnLoad
             const manualPriceMultipler = this.ragfairConfig.dynamic.itemPriceMultiplier[item._tpl];
             if (manualPriceMultipler)
             {
+                manuallyAdjusted = true;
                 itemPrice *= manualPriceMultipler;
             }
 
@@ -282,7 +284,7 @@ export class RagfairPriceService implements OnLoad
         }
 
         // Skip items with children
-        if (items.length === 1)
+        if (items.length === 1 && !manuallyAdjusted)
         {
             const rootItemDb = this.itemHelper.getItem(rootItem._tpl)[1];
             let unreasonableItemPriceChange: IUnreasonableModPrices;
