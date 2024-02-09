@@ -289,6 +289,15 @@ export class InventoryHelper
         return true;
     }
 
+    /**
+     * Find a location to place an item into inventory and place it
+     * @param stashFS2D 2-dimensional representation of the container slots
+     * @param sortingTableFS2D 2-dimensional representation of the sorting table slots
+     * @param itemWithChildren Item to place
+     * @param playerInventory
+     * @param useSortingTable Should sorting table to be used if main stash has no space
+     * @param output output to send back to client
+     */
     protected placeItemInInventory(
         stashFS2D: number[][],
         sortingTableFS2D: number[][],
@@ -304,7 +313,6 @@ export class InventoryHelper
 
         // Look for a place to slot item into
         const findSlotResult = this.containerHelper.findSlotForItem(stashFS2D, itemSize[0], itemSize[1]);
-
         if (findSlotResult.success)
         {
             /* Fill in the StashFS_2D with an imaginary item, to simulate it already being added
@@ -397,67 +405,6 @@ export class InventoryHelper
             this.httpResponse.appendErrorToOutput(output, this.localisationService.getText("inventory-no_stash_space"));
 
             return;
-        }
-    }
-
-    /**
-     * Add ammo to ammo boxes
-     * @param itemToAdd Item to check is ammo box
-     * @param parentId Ammo box parent id
-     * @param output IItemEventRouterResponse object
-     * @param sessionID Session id
-     * @param pmcData Profile to add ammobox to
-     * @param output object to send to client
-     * @param foundInRaid should ammo be FiR
-     */
-    protected hydrateAmmoBoxWithAmmo(
-        pmcData: IPmcData,
-        itemToAdd: IAddItemTempObject,
-        parentId: string,
-        sessionID: string,
-        output: IItemEventRouterResponse,
-        foundInRaid: boolean,
-    ): void
-    {
-        const itemInfo = this.itemHelper.getItem(itemToAdd.itemRef._tpl)[1];
-        const stackSlots = itemInfo._props.StackSlots;
-        if (stackSlots !== undefined)
-        {
-            // Cartridge info seems to be an array of size 1 for some reason... (See AmmoBox constructor in client code)
-            let maxCount = stackSlots[0]._max_count;
-            const ammoTpl = stackSlots[0]._props.filters[0].Filter[0];
-            const ammoStackMaxSize = this.itemHelper.getItem(ammoTpl)[1]._props.StackMaxSize;
-            const ammos = [];
-            let location = 0;
-
-            // Place stacks in ammo box no larger than StackMaxSize, prevents player when opening item getting stack of ammo > StackMaxSize
-            while (maxCount > 0)
-            {
-                const ammoStackSize = maxCount <= ammoStackMaxSize ? maxCount : ammoStackMaxSize;
-                const ammoItem: Item = {
-                    _id: this.hashUtil.generate(),
-                    _tpl: ammoTpl,
-                    parentId: parentId,
-                    slotId: "cartridges",
-                    location: location,
-                    upd: { StackObjectsCount: ammoStackSize },
-                };
-
-                if (foundInRaid)
-                {
-                    ammoItem.upd.SpawnedInSession = true;
-                }
-
-                ammos.push(ammoItem);
-
-                location++;
-                maxCount -= ammoStackMaxSize;
-            }
-
-            for (const item of [output.profileChanges[sessionID].items.new, pmcData.Inventory.items])
-            {
-                item.push(...ammos);
-            }
         }
     }
 
