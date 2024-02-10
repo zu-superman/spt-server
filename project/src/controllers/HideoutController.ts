@@ -293,8 +293,12 @@ export class HideoutController
         // Add/upgrade stash item in player inventory
         this.addUpdateInventoryItemToProfile(pmcData, dbHideoutArea, hideoutStage);
 
-        // Inform client of changes
-        this.addContainerUpgradeToClientOutput(output, sessionID, dbHideoutArea.type, dbHideoutArea, hideoutStage);
+        // Dont inform client when upgraded area is hall of fame, BSG doesnt inform client upgrade has occurred, will break client if data is sent
+        if (dbHideoutArea.type !== HideoutAreas.PLACE_OF_FAME)
+        {
+            // Inform client of changes
+            this.addContainerUpgradeToClientOutput(output, sessionID, dbHideoutArea.type, dbHideoutArea, hideoutStage);
+        }
 
         // Some areas like gun stand have a child area linked to it, it needs to do the same as above
         const childDbArea = this.databaseServer.getTables().hideout.areas.find((x) =>
