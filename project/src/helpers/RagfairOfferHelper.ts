@@ -15,6 +15,7 @@ import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEve
 import { IAkiProfile, ISystemData } from "@spt-aki/models/eft/profile/IAkiProfile";
 import { IRagfairOffer } from "@spt-aki/models/eft/ragfair/IRagfairOffer";
 import { ISearchRequestData, OfferOwnerType } from "@spt-aki/models/eft/ragfair/ISearchRequestData";
+import { BaseClasses } from "@spt-aki/models/enums/BaseClasses";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { MemberCategory } from "@spt-aki/models/enums/MemberCategory";
 import { MessageType } from "@spt-aki/models/enums/MessageType";
@@ -611,9 +612,9 @@ export class RagfairOfferHelper
             return false;
         }
 
-        if (offer.items.length === 1)
+        if (offer.items.length === 1 || this.itemHelper.isOfBaseclass(offerRootItem._tpl, BaseClasses.WEAPON))
         {
-            // Single item
+            // Single item or weapon
             if (
                 this.isConditionItem(offerRootItem)
                 && !this.itemQualityInRange(offerRootItem, searchRequest.conditionFrom, searchRequest.conditionTo)
