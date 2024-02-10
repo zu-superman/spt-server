@@ -487,7 +487,8 @@ export class HideoutHelper
                 fuelItemInSlot.upd = this.getAreaUpdObject(1, fuelRemaining, pointsConsumed);
 
                 this.logger.debug(
-                    `$Profile: ${pmcData._id} Generator has: ${fuelRemaining} fuel left in slot ${i + 1}`,
+                    `Profile: ${pmcData._id} Generator has: ${fuelRemaining} fuel left in slot ${i + 1}`,
+                    true,
                 );
                 hasFuelRemaining = true;
 
