@@ -86,13 +86,12 @@ export class InventoryController
         pmcData: IPmcData,
         moveRequest: IInventoryMoveRequestData,
         sessionID: string,
-    ): IItemEventRouterResponse
+        output: IItemEventRouterResponse,
+    ): void
     {
-        const output = this.eventOutputHolder.getOutput(sessionID);
-
         if (output.warnings.length > 0)
         {
-            return output;
+            return;
         }
 
         // Changes made to result apply to character inventory
@@ -102,7 +101,8 @@ export class InventoryController
             // Dont move items from trader to profile, this can happen when editing a traders preset weapons
             if (moveRequest.fromOwner?.type === "Trader" && !ownerInventoryItems.isMail)
             {
-                return this.getTraderExploitErrorResponse(output);
+                this.getTraderExploitErrorResponse(output);
+                return;
             }
 
             // Check for item in inventory before allowing internal transfer
@@ -111,13 +111,15 @@ export class InventoryController
             if (!originalItemLocation)
             {
                 // Internal item move but item never existed, possible dupe glitch
-                return this.getTraderExploitErrorResponse(output);
+                this.getTraderExploitErrorResponse(output);
+                return;
             }
 
             const moveResult = this.inventoryHelper.moveItemInternal(pmcData, ownerInventoryItems.from, moveRequest);
             if (!moveResult.success)
             {
-                return this.httpResponseUtil.appendErrorToOutput(output, moveResult.errorMessage);
+                this.httpResponseUtil.appendErrorToOutput(output, moveResult.errorMessage);
+                return;
             }
 
             // Item is moving into or out of place of fame dogtag slot
@@ -130,7 +132,6 @@ export class InventoryController
         {
             this.inventoryHelper.moveItemToProfile(ownerInventoryItems.from, ownerInventoryItems.to, moveRequest);
         }
-        return output;
     }
 
     /**

@@ -35,9 +35,16 @@ export class InventoryCallbacks
     {}
 
     /** Handle client/game/profile/items/moving Move event */
-    public moveItem(pmcData: IPmcData, body: IInventoryMoveRequestData, sessionID: string): IItemEventRouterResponse
+    public moveItem(
+        pmcData: IPmcData,
+        body: IInventoryMoveRequestData,
+        sessionID: string,
+        output: IItemEventRouterResponse,
+    ): IItemEventRouterResponse
     {
-        return this.inventoryController.moveItem(pmcData, body, sessionID);
+        this.inventoryController.moveItem(pmcData, body, sessionID, output);
+
+        return output;
     }
 
     /** Handle Remove event */

@@ -29,7 +29,7 @@ export class ItemEventRouter
     {
         this.eventOutputHolder.resetOutput(sessionID);
 
-        let result = this.eventOutputHolder.getOutput(sessionID);
+        const output = this.eventOutputHolder.getOutput(sessionID);
 
         for (const body of info.data)
         {
@@ -39,7 +39,11 @@ export class ItemEventRouter
             if (eventRouter)
             {
                 this.logger.debug(`event: ${body.Action}`);
-                result = eventRouter.handleItemEvent(body.Action, pmcData, body, sessionID);
+                eventRouter.handleItemEvent(body.Action, pmcData, body, sessionID, output);
+                if (output.warnings.length > 0)
+                {
+                    break;
+                }
             }
             else
             {
@@ -50,6 +54,6 @@ export class ItemEventRouter
 
         this.eventOutputHolder.updateOutputProperties(sessionID);
 
-        return result;
+        return output;
     }
 }

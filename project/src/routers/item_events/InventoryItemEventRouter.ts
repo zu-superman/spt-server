@@ -51,12 +51,13 @@ export class InventoryItemEventRouter extends ItemEventRouterDefinition
         pmcData: IPmcData,
         body: any,
         sessionID: string,
+        output: IItemEventRouterResponse,
     ): IItemEventRouterResponse
     {
         switch (url)
         {
             case ItemEventActions.MOVE:
-                return this.inventoryCallbacks.moveItem(pmcData, body, sessionID);
+                return this.inventoryCallbacks.moveItem(pmcData, body, sessionID, output);
             case ItemEventActions.REMOVE:
                 return this.inventoryCallbacks.removeItem(pmcData, body, sessionID);
             case ItemEventActions.SPLIT:
