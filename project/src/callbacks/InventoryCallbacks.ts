@@ -48,29 +48,45 @@ export class InventoryCallbacks
     }
 
     /** Handle Remove event */
-    public removeItem(pmcData: IPmcData, body: IInventoryRemoveRequestData, sessionID: string): IItemEventRouterResponse
+    public removeItem(
+        pmcData: IPmcData,
+        body: IInventoryRemoveRequestData,
+        sessionID: string,
+        output: IItemEventRouterResponse,
+    ): IItemEventRouterResponse
     {
-        return this.inventoryController.discardItem(pmcData, body, sessionID);
+        return this.inventoryController.discardItem(pmcData, body, sessionID, output);
     }
 
     /** Handle Split event */
-    public splitItem(pmcData: IPmcData, body: IInventorySplitRequestData, sessionID: string): IItemEventRouterResponse
+    public splitItem(
+        pmcData: IPmcData,
+        body: IInventorySplitRequestData,
+        sessionID: string,
+        output: IItemEventRouterResponse,
+    ): IItemEventRouterResponse
     {
-        return this.inventoryController.splitItem(pmcData, body, sessionID);
+        return this.inventoryController.splitItem(pmcData, body, sessionID, output);
     }
 
-    public mergeItem(pmcData: IPmcData, body: IInventoryMergeRequestData, sessionID: string): IItemEventRouterResponse
+    public mergeItem(
+        pmcData: IPmcData,
+        body: IInventoryMergeRequestData,
+        sessionID: string,
+        output: IItemEventRouterResponse,
+    ): IItemEventRouterResponse
     {
-        return this.inventoryController.mergeItem(pmcData, body, sessionID);
+        return this.inventoryController.mergeItem(pmcData, body, sessionID, output);
     }
 
     public transferItem(
         pmcData: IPmcData,
         body: IInventoryTransferRequestData,
         sessionID: string,
+        output: IItemEventRouterResponse,
     ): IItemEventRouterResponse
     {
-        return this.inventoryController.transferItem(pmcData, body, sessionID);
+        return this.inventoryController.transferItem(pmcData, body, sessionID, output);
     }
 
     /** Handle Swap */
@@ -109,9 +125,10 @@ export class InventoryCallbacks
         pmcData: IPmcData,
         body: IInventoryExamineRequestData,
         sessionID: string,
+        output: IItemEventRouterResponse,
     ): IItemEventRouterResponse
     {
-        return this.inventoryController.examineItem(pmcData, body, sessionID);
+        return this.inventoryController.examineItem(pmcData, body, sessionID, output);
     }
 
     /** Handle ReadEncyclopedia */

@@ -171,10 +171,9 @@ export class InventoryController
         pmcData: IPmcData,
         body: IInventoryRemoveRequestData,
         sessionID: string,
+        output: IItemEventRouterResponse,
     ): IItemEventRouterResponse
     {
-        const output = this.eventOutputHolder.getOutput(sessionID);
-
         if (body.fromOwner?.type === "Mail")
         {
             this.inventoryHelper.removeItemAndChildrenFromMailRewards(sessionID, body, output);
@@ -201,10 +200,9 @@ export class InventoryController
         pmcData: IPmcData,
         request: IInventorySplitRequestData,
         sessionID: string,
+        output: IItemEventRouterResponse,
     ): IItemEventRouterResponse
     {
-        const output = this.eventOutputHolder.getOutput(sessionID);
-
         // Changes made to result apply to character inventory
         const inventoryItems = this.inventoryHelper.getOwnerInventoryItems(request, sessionID);
 
@@ -260,10 +258,13 @@ export class InventoryController
      * @param sessionID Player id
      * @returns IItemEventRouterResponse
      */
-    public mergeItem(pmcData: IPmcData, body: IInventoryMergeRequestData, sessionID: string): IItemEventRouterResponse
+    public mergeItem(
+        pmcData: IPmcData,
+        body: IInventoryMergeRequestData,
+        sessionID: string,
+        output: IItemEventRouterResponse,
+    ): IItemEventRouterResponse
     {
-        const output = this.eventOutputHolder.getOutput(sessionID);
-
         // Changes made to result apply to character inventory
         const inventoryItems = this.inventoryHelper.getOwnerInventoryItems(body, sessionID);
 
@@ -339,10 +340,9 @@ export class InventoryController
         pmcData: IPmcData,
         body: IInventoryTransferRequestData,
         sessionID: string,
+        output: IItemEventRouterResponse,
     ): IItemEventRouterResponse
     {
-        const output = this.eventOutputHolder.getOutput(sessionID);
-
         let sourceItem: Item = null;
         let destinationItem: Item = null;
         for (const iterItem of pmcData.Inventory.items)
@@ -618,6 +618,7 @@ export class InventoryController
         pmcData: IPmcData,
         body: IInventoryExamineRequestData,
         sessionID: string,
+        output: IItemEventRouterResponse,
     ): IItemEventRouterResponse
     {
         let itemId = "";
@@ -667,7 +668,7 @@ export class InventoryController
             this.flagItemsAsInspectedAndRewardXp([itemId], pmcData);
         }
 
-        return this.eventOutputHolder.getOutput(sessionID);
+        return output;
     }
 
     protected flagItemsAsInspectedAndRewardXp(itemTpls: string[], pmcProfile: IPmcData): void

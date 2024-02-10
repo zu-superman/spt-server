@@ -59,13 +59,13 @@ export class InventoryItemEventRouter extends ItemEventRouterDefinition
             case ItemEventActions.MOVE:
                 return this.inventoryCallbacks.moveItem(pmcData, body, sessionID, output);
             case ItemEventActions.REMOVE:
-                return this.inventoryCallbacks.removeItem(pmcData, body, sessionID);
+                return this.inventoryCallbacks.removeItem(pmcData, body, sessionID, output);
             case ItemEventActions.SPLIT:
-                return this.inventoryCallbacks.splitItem(pmcData, body, sessionID);
+                return this.inventoryCallbacks.splitItem(pmcData, body, sessionID, output);
             case ItemEventActions.MERGE:
-                return this.inventoryCallbacks.mergeItem(pmcData, body, sessionID);
+                return this.inventoryCallbacks.mergeItem(pmcData, body, sessionID, output);
             case ItemEventActions.TRANSFER:
-                return this.inventoryCallbacks.transferItem(pmcData, body, sessionID);
+                return this.inventoryCallbacks.transferItem(pmcData, body, sessionID, output);
             case ItemEventActions.SWAP:
                 return this.inventoryCallbacks.swapItem(pmcData, body, sessionID);
             case ItemEventActions.FOLD:
@@ -79,7 +79,7 @@ export class InventoryItemEventRouter extends ItemEventRouterDefinition
             case ItemEventActions.UNBIND:
                 return this.inventoryCallbacks.unbindItem(pmcData, body, sessionID);
             case ItemEventActions.EXAMINE:
-                return this.inventoryCallbacks.examineItem(pmcData, body, sessionID);
+                return this.inventoryCallbacks.examineItem(pmcData, body, sessionID, output);
             case ItemEventActions.READ_ENCYCLOPEDIA:
                 return this.inventoryCallbacks.readEncyclopedia(pmcData, body, sessionID);
             case ItemEventActions.APPLY_INVENTORY_CHANGES:
