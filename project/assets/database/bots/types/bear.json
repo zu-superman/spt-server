@@ -8603,8 +8603,20 @@
         ]
       },
       "5b44cf1486f77431723e3d05": {
+        "Back_plate": [
+          "656fa8d700d62bcd2e024084"
+        ],
         "Collar": [
           "6575c3ec52b7f8c76a05ee39"
+        ],
+        "Front_plate": [
+          "656fa8d700d62bcd2e024084"
+        ],
+        "Left_side_plate": [
+          "6557458f83942d705f0c4962"
+        ],
+        "Right_side_plate": [
+          "6557458f83942d705f0c4962"
         ],
         "Shoulder_l": [
           "6575c3fd52b7f8c76a05ee3d"
