@@ -155,27 +155,30 @@ export class InventoryCallbacks
         pmcData: IPmcData,
         body: IInventoryCreateMarkerRequestData,
         sessionID: string,
+        output: IItemEventRouterResponse,
     ): IItemEventRouterResponse
     {
-        return this.inventoryController.createMapMarker(pmcData, body, sessionID);
+        return this.inventoryController.createMapMarker(pmcData, body, sessionID, output);
     }
 
     public deleteMapMarker(
         pmcData: IPmcData,
         body: IInventoryDeleteMarkerRequestData,
         sessionID: string,
+        output: IItemEventRouterResponse,
     ): IItemEventRouterResponse
     {
-        return this.inventoryController.deleteMapMarker(pmcData, body, sessionID);
+        return this.inventoryController.deleteMapMarker(pmcData, body, sessionID, output);
     }
 
     public editMapMarker(
         pmcData: IPmcData,
         body: IInventoryEditMarkerRequestData,
         sessionID: string,
+        output: IItemEventRouterResponse,
     ): IItemEventRouterResponse
     {
-        return this.inventoryController.editMapMarker(pmcData, body, sessionID);
+        return this.inventoryController.editMapMarker(pmcData, body, sessionID, output);
     }
 
     /** Handle OpenRandomLootContainer */
@@ -183,9 +186,10 @@ export class InventoryCallbacks
         pmcData: IPmcData,
         body: IOpenRandomLootContainerRequestData,
         sessionID: string,
+        output: IItemEventRouterResponse,
     ): IItemEventRouterResponse
     {
-        return this.inventoryController.openRandomLootContainer(pmcData, body, sessionID);
+        return this.inventoryController.openRandomLootContainer(pmcData, body, sessionID, output);
     }
 
     public redeemProfileReward(

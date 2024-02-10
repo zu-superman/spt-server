@@ -812,6 +812,7 @@ export class InventoryController
         pmcData: IPmcData,
         request: IInventoryCreateMarkerRequestData,
         sessionID: string,
+        output: IItemEventRouterResponse,
     ): IItemEventRouterResponse
     {
         // Get map from inventory
@@ -823,7 +824,6 @@ export class InventoryController
         mapItem.upd.Map.Markers.push(request.mapMarker);
 
         // sync with client
-        const output = this.eventOutputHolder.getOutput(sessionID);
         output.profileChanges[sessionID].items.change.push(mapItem);
 
         return output;
@@ -840,6 +840,7 @@ export class InventoryController
         pmcData: IPmcData,
         request: IInventoryDeleteMarkerRequestData,
         sessionID: string,
+        output: IItemEventRouterResponse,
     ): IItemEventRouterResponse
     {
         // Get map from inventory
@@ -853,7 +854,6 @@ export class InventoryController
         mapItem.upd.Map.Markers = markers;
 
         // sync with client
-        const output = this.eventOutputHolder.getOutput(sessionID);
         output.profileChanges[sessionID].items.change.push(mapItem);
         return output;
     }
@@ -869,6 +869,7 @@ export class InventoryController
         pmcData: IPmcData,
         request: IInventoryEditMarkerRequestData,
         sessionID: string,
+        output: IItemEventRouterResponse,
     ): IItemEventRouterResponse
     {
         // Get map from inventory
@@ -880,7 +881,6 @@ export class InventoryController
         mapItem.upd.Map.Markers[indexOfExistingNote] = request.mapMarker;
 
         // sync with client
-        const output = this.eventOutputHolder.getOutput(sessionID);
         output.profileChanges[sessionID].items.change.push(mapItem);
 
         return output;
@@ -908,10 +908,9 @@ export class InventoryController
         pmcData: IPmcData,
         body: IOpenRandomLootContainerRequestData,
         sessionID: string,
+        output: IItemEventRouterResponse,
     ): IItemEventRouterResponse
     {
-        const output = this.eventOutputHolder.getOutput(sessionID);
-
         /** Container player opened in their inventory */
         const openedItem = pmcData.Inventory.items.find((item) => item._id === body.item);
         const containerDetailsDb = this.itemHelper.getItem(openedItem._tpl);

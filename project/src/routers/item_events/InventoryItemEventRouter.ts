@@ -85,13 +85,13 @@ export class InventoryItemEventRouter extends ItemEventRouterDefinition
             case ItemEventActions.APPLY_INVENTORY_CHANGES:
                 return this.inventoryCallbacks.sortInventory(pmcData, body, sessionID);
             case ItemEventActions.CREATE_MAP_MARKER:
-                return this.inventoryCallbacks.createMapMarker(pmcData, body, sessionID);
+                return this.inventoryCallbacks.createMapMarker(pmcData, body, sessionID, output);
             case ItemEventActions.DELETE_MAP_MARKER:
-                return this.inventoryCallbacks.deleteMapMarker(pmcData, body, sessionID);
+                return this.inventoryCallbacks.deleteMapMarker(pmcData, body, sessionID, output);
             case ItemEventActions.EDIT_MAP_MARKER:
-                return this.inventoryCallbacks.editMapMarker(pmcData, body, sessionID);
+                return this.inventoryCallbacks.editMapMarker(pmcData, body, sessionID, output);
             case ItemEventActions.OPEN_RANDOM_LOOT_CONTAINER:
-                return this.inventoryCallbacks.openRandomLootContainer(pmcData, body, sessionID);
+                return this.inventoryCallbacks.openRandomLootContainer(pmcData, body, sessionID, output);
             case ItemEventActions.HIDEOUT_QTE_EVENT:
                 return this.hideoutCallbacks.handleQTEEvent(pmcData, body, sessionID);
             case ItemEventActions.REDEEM_PROFILE_REWARD:
