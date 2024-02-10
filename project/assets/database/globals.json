@@ -21798,7 +21798,7 @@
             "SurfaceType": "WoodThin",
             "VolumeMult": 0.5
           }
-      ]
+        ]
       }
     },
     "AzimuthPanelShowsPlayerOrientation": false,
@@ -23176,7 +23176,7 @@
           "ScavEquipmentSpawnChanceModifier": 17
         }
       },
-      "paidExitStandingNumerator": 0.4
+      "paidExitStandingNumerator": 0.2
     },
     "FractureCausedByBulletHit": {
       "B": 0.05,
