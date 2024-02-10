@@ -1122,8 +1122,8 @@
             },
             "tarkovstreets": {
                 "reduceLootByPercent": true,
-                "minDynamicLootPercent": 50,
-                "minStaticLootPercent": 40,
+                "minDynamicLootPercent": 70,
+                "minStaticLootPercent": 60,
                 "reducedChancePercent": 95,
                 "reductionPercentWeights": {
                     "20": 2,
