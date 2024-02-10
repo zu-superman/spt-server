@@ -169,6 +169,93 @@
                     ],
                     "RandomTimeSpawn": false,
                     "ChanceGroup": 0
+                },
+				{
+                    "sptId": "sptBearWoodRoadNormalSpawn",
+                    "BossName": "sptBear",
+                    "BossChance": 25,
+                    "BossZone": "ZoneRoad",
+                    "BossPlayer": false,
+                    "BossDifficult": "normal",
+                    "BossEscortType": "sptBear",
+                    "BossEscortDifficult": "normal",
+                    "BossEscortAmount": "2",
+                    "Time": -1,
+                    "Supports": [{
+                            "BossEscortType": "sptBear",
+                            "BossEscortDifficult": [
+                                "normal"
+                            ],
+                            "BossEscortAmount": "2"
+                        }
+                    ],
+                    "RandomTimeSpawn": false,
+                    "ChanceGroup": 0
+                }, {
+                    "sptId": "sptUsecWoodRoadNormalSpawn",
+                    "BossName": "sptUsec",
+                    "BossChance": 25,
+                    "BossZone": "ZoneRoad",
+                    "BossPlayer": false,
+                    "BossDifficult": "normal",
+                    "BossEscortType": "sptUsec",
+                    "BossEscortDifficult": "normal",
+                    "BossEscortAmount": "2",
+                    "Time": -1,
+                    "Supports": [{
+                            "BossEscortType": "sptUsec",
+                            "BossEscortDifficult": [
+                                "normal"
+                            ],
+                            "BossEscortAmount": "2"
+                        }
+                    ],
+                    "RandomTimeSpawn": false,
+                    "ChanceGroup": 0
+                },
+				
+				{
+                    "sptId": "sptBearWoodVillageNormalSpawn",
+                    "BossName": "sptBear",
+                    "BossChance": 25,
+                    "BossZone": "ZoneClearVill",
+                    "BossPlayer": false,
+                    "BossDifficult": "normal",
+                    "BossEscortType": "sptBear",
+                    "BossEscortDifficult": "normal",
+                    "BossEscortAmount": "2",
+                    "Time": -1,
+                    "Supports": [{
+                            "BossEscortType": "sptBear",
+                            "BossEscortDifficult": [
+                                "normal"
+                            ],
+                            "BossEscortAmount": "2"
+                        }
+                    ],
+                    "RandomTimeSpawn": false,
+                    "ChanceGroup": 0
+                }, {
+                    "sptId": "sptUsecWoodVillageNormalSpawn",
+                    "BossName": "sptUsec",
+                    "BossChance": 25,
+                    "BossZone": "ZoneClearVill",
+                    "BossPlayer": false,
+                    "BossDifficult": "normal",
+                    "BossEscortType": "sptUsec",
+                    "BossEscortDifficult": "normal",
+                    "BossEscortAmount": "2",
+                    "Time": -1,
+                    "Supports": [{
+                            "BossEscortType": "sptUsec",
+                            "BossEscortDifficult": [
+                                "normal"
+                            ],
+                            "BossEscortAmount": "2"
+                        }
+                    ],
+                    "RandomTimeSpawn": false,
+                    "ChanceGroup": 0
                 }
             ],
             "shoreline": [{
