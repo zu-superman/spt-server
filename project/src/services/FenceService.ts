@@ -12,7 +12,7 @@ import { ITraderAssort } from "@spt-aki/models/eft/common/tables/ITrader";
 import { BaseClasses } from "@spt-aki/models/enums/BaseClasses";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { Traders } from "@spt-aki/models/enums/Traders";
-import { ITraderConfig } from "@spt-aki/models/spt/config/ITraderConfig";
+import { IItemDurabilityCurrentMax, ITraderConfig } from "@spt-aki/models/spt/config/ITraderConfig";
 import {
     IFenceAssortGenerationValues,
     IGenerationAssortValues,
@@ -998,14 +998,19 @@ export class FenceService
         // Randomise Weapon durability
         if (this.itemHelper.isOfBaseclass(itemDetails._id, BaseClasses.WEAPON))
         {
-            const presetMaxDurabilityLimits = this.traderConfig.fence.presetMaxDurabilityPercentMinMax;
-            const duraMin = presetMaxDurabilityLimits.min / 100 * itemDetails._props.MaxDurability;
-            const duraMax = presetMaxDurabilityLimits.max / 100 * itemDetails._props.MaxDurability;
+            const weaponDurabilityLimits = this.traderConfig.fence.weaponDurabilityPercentMinMax;
+            const maxDuraMin = weaponDurabilityLimits.max.min / 100 * itemDetails._props.MaxDurability;
+            const maxDuraMax = weaponDurabilityLimits.max.max / 100 * itemDetails._props.MaxDurability;
+            const chosenMaxDurability = this.randomUtil.getInt(maxDuraMin, maxDuraMax);
 
-            const maxDurability = this.randomUtil.getInt(duraMin, duraMax);
-            const durability = this.randomUtil.getInt(1, maxDurability);
+            const currentDuraMin = weaponDurabilityLimits.current.min / 100 * itemDetails._props.MaxDurability;
+            const currentDuraMax = weaponDurabilityLimits.current.max / 100 * itemDetails._props.MaxDurability;
+            const currentDurability = Math.min(
+                this.randomUtil.getInt(currentDuraMin, currentDuraMax),
+                chosenMaxDurability,
+            );
 
-            itemToAdjust.upd.Repairable = { Durability: durability, MaxDurability: maxDurability };
+            itemToAdjust.upd.Repairable = { Durability: currentDurability, MaxDurability: chosenMaxDurability };
 
             return;
         }
@@ -1043,21 +1048,26 @@ export class FenceService
     /**
      * Generate a randomised current and max durabiltiy value for an armor item
      * @param itemDetails Item to create values for
-     * @param maxDurabilityMinMaxPercent Max durabiltiy percent min/max values
+     * @param equipmentDurabilityLimits Max durabiltiy percent min/max values
      * @returns Durability + MaxDurability values
      */
     protected getRandomisedArmorDurabilityValues(
         itemDetails: ITemplateItem,
-        maxDurabilityMinMaxPercent: MinMax,
+        equipmentDurabilityLimits: IItemDurabilityCurrentMax,
     ): Repairable
     {
-        const duraMin = maxDurabilityMinMaxPercent.min / 100 * itemDetails._props.MaxDurability;
-        const duraMax = maxDurabilityMinMaxPercent.max / 100 * itemDetails._props.MaxDurability;
+        const maxDuraMin = equipmentDurabilityLimits.max.min / 100 * itemDetails._props.MaxDurability;
+        const maxDuraMax = equipmentDurabilityLimits.max.max / 100 * itemDetails._props.MaxDurability;
+        const chosenMaxDurability = this.randomUtil.getInt(maxDuraMin, maxDuraMax);
 
-        const maxDurability = this.randomUtil.getInt(duraMin, duraMax);
-        const durability = this.randomUtil.getInt(1, maxDurability);
+        const currentDuraMin = equipmentDurabilityLimits.current.min / 100 * itemDetails._props.MaxDurability;
+        const currentDuraMax = equipmentDurabilityLimits.current.max / 100 * itemDetails._props.MaxDurability;
+        const chosenCurrentDurability = Math.min(
+            this.randomUtil.getInt(currentDuraMin, currentDuraMax),
+            chosenMaxDurability,
+        );
 
-        return { Durability: durability, MaxDurability: maxDurability };
+        return { Durability: chosenCurrentDurability, MaxDurability: chosenMaxDurability };
     }
 
     /**

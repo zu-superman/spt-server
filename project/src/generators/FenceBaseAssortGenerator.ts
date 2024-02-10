@@ -74,6 +74,12 @@ export class FenceBaseAssortGenerator
                 }
             }
 
+            // Only allow  rigs with no slots (carrier rigs)
+            if (this.itemHelper.isOfBaseclass(rootItemDb._id, BaseClasses.VEST) && rootItemDb._props.Slots.length > 0)
+            {
+                continue;
+            }
+
             // Skip seasonal event items when not in seasonal event
             if (this.traderConfig.fence.blacklistSeasonalItems && blockedSeasonalItems.includes(rootItemDb._id))
             {
