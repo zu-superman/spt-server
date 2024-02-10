@@ -700,14 +700,13 @@ export class InRaidHelper
         {
             // Check slot id against config, true = delete, false = keep, undefined = delete
             const discard: boolean = this.lostOnDeathConfig.equipment[itemToCheck.slotId];
-            if (discard === undefined)
+            if (typeof discard === "boolean" && discard === true)
             {
-                // Not kept after death
+                // Lost on death
                 return false;
             }
 
-            // True === item is lost on death, return the opposite as we return if item is kept after death
-            return !discard;
+            return true;
         }
 
         // Is quest item + quest item not lost on death
