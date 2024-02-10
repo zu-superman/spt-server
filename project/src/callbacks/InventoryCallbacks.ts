@@ -206,8 +206,13 @@ export class InventoryCallbacks
      * TODO - MOVE INTO QUEST CODE
      * Handle game/profile/items/moving - QuestFail
      */
-    public failQuest(pmcData: IPmcData, request: IFailQuestRequestData, sessionID: string): IItemEventRouterResponse
+    public failQuest(
+        pmcData: IPmcData,
+        request: IFailQuestRequestData,
+        sessionID: string,
+        output: IItemEventRouterResponse,
+    ): IItemEventRouterResponse
     {
-        return this.questController.failQuest(pmcData, request, sessionID);
+        return this.questController.failQuest(pmcData, request, sessionID, output);
     }
 }

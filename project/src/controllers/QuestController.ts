@@ -842,7 +842,10 @@ export class QuestController
                         // element `location` properties of the parent so they are sequential, while retaining order
                         if (typeof removedItem.location === "number")
                         {
-                            const childItems = this.itemHelper.findAndReturnChildrenAsItems(pmcData.Inventory.items, removedItem.parentId);
+                            const childItems = this.itemHelper.findAndReturnChildrenAsItems(
+                                pmcData.Inventory.items,
+                                removedItem.parentId,
+                            );
                             childItems.shift(); // Remove the parent
 
                             // Sort by the current `location` and update
@@ -948,8 +951,13 @@ export class QuestController
      * @param sessionID Session id
      * @returns IItemEventRouterResponse
      */
-    public failQuest(pmcData: IPmcData, request: IFailQuestRequestData, sessionID: string): IItemEventRouterResponse
+    public failQuest(
+        pmcData: IPmcData,
+        request: IFailQuestRequestData,
+        sessionID: string,
+        output: IItemEventRouterResponse,
+    ): IItemEventRouterResponse
     {
-        return this.questHelper.failQuest(pmcData, request, sessionID);
+        return this.questHelper.failQuest(pmcData, request, sessionID, output);
     }
 }
