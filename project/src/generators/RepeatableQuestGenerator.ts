@@ -1,11 +1,13 @@
 import { inject, injectable } from "tsyringe";
 
+import { ExhaustableArray } from "@spt-aki/helpers/BotGeneratorHelper";
 import { HandbookHelper } from "@spt-aki/helpers/HandbookHelper";
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { PresetHelper } from "@spt-aki/helpers/PresetHelper";
 import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
 import { RagfairServerHelper } from "@spt-aki/helpers/RagfairServerHelper";
 import { RepeatableQuestHelper } from "@spt-aki/helpers/RepeatableQuestHelper";
+import { IPreset } from "@spt-aki/models/eft/common/IGlobals";
 import { Exit, ILocationBase } from "@spt-aki/models/eft/common/ILocationBase";
 import { TraderInfo } from "@spt-aki/models/eft/common/tables/IBotBase";
 import { Item } from "@spt-aki/models/eft/common/tables/IItem";
@@ -981,14 +983,32 @@ export class RepeatableQuestGenerator
         )
         {
             // Add a random default preset weapon as reward
-            const defaultPresets = Object.values(this.presetHelper.getDefaultWeaponPresets());
-            const defaultPresetClone = this.jsonUtil.clone(this.randomUtil.getArrayValue(defaultPresets));
-
-            // use _encyclopedia as its always the base items _tpl, items[0] isn't guaranteed to be base item
-            rewards.Success.push(
-                this.generateRewardItem(defaultPresetClone._encyclopedia, 1, rewardIndex, defaultPresetClone._items),
+            const defaultPresetPool = new ExhaustableArray(
+                Object.values(this.presetHelper.getDefaultWeaponPresets()),
+                this.randomUtil,
+                this.jsonUtil,
             );
-            rewardIndex++;
+            let chosenPreset: IPreset;
+            while (defaultPresetPool.hasValues())
+            {
+                const randomPreset = defaultPresetPool.getRandomValue();
+                const tpls = randomPreset._items.map((item) => item._tpl);
+                const presetPrice = this.itemHelper.getItemAndChildrenPrice(tpls);
+                if (presetPrice <= roublesBudget)
+                {
+                    chosenPreset = this.jsonUtil.clone(randomPreset);
+                    break;
+                }
+            }
+
+            if (chosenPreset)
+            {
+                // use _encyclopedia as its always the base items _tpl, items[0] isn't guaranteed to be base item
+                rewards.Success.push(
+                    this.generateRewardItem(chosenPreset._encyclopedia, 1, rewardIndex, chosenPreset._items),
+                );
+                rewardIndex++;
+            }
         }
 
         if (rewardItemPool.length > 0)
