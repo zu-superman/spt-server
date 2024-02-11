@@ -111,8 +111,8 @@
         },
         "weaponDurabilityPercentMinMax": {
             "current": {
-                "min": 1,
-                "max": 90
+                "min": 40,
+                "max": 100
             },
             "max": {
                 "min": 89,
