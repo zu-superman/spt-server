@@ -113,6 +113,7 @@ export class InRaidHelper
 
             if (standingForKill)
             {
+                this.logger.warning(`Lost: ${standingForKill} - additional:${additionalReduction}`);
                 return (acc + standingForKill) - additionalReduction;
             }
             this.logger.warning(
