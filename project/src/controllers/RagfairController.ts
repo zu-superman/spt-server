@@ -402,7 +402,7 @@ export class RagfairController
             averageOfferPrice *= itemPriceModifer;
         }
 
-        // Multipler single item price by stack count and quality
+        // Multiply single item price by stack count and quality
         averageOfferPrice *= rootItem.upd.StackObjectsCount * qualityMultiplier;
 
         const itemStackCount = (offerRequest.sellInOnePiece) ? 1 : rootItem.upd.StackObjectsCount;

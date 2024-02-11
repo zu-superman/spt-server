@@ -59,7 +59,7 @@
             "handbookPriceMultipier": 1.1,
             "priceThreshholdRub": 20000
         },
-        "expiredOfferThreshold": 1500,
+        "expiredOfferThreshold": 1400,
         "offerItemCount": {
             "min": 7,
             "max": 30
