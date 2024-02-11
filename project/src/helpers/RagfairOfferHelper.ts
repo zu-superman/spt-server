@@ -612,9 +612,9 @@ export class RagfairOfferHelper
             return false;
         }
 
-        if (offer.items.length === 1 || this.itemHelper.isOfBaseclass(offerRootItem._tpl, BaseClasses.WEAPON))
+        if (offer.items.length === 1)
         {
-            // Single item or weapon
+            // Single item
             if (
                 this.isConditionItem(offerRootItem)
                 && !this.itemQualityInRange(offerRootItem, searchRequest.conditionFrom, searchRequest.conditionTo)

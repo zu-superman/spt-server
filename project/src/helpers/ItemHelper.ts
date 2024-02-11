@@ -304,7 +304,12 @@ export class ItemHelper
      */
     public getItemQualityModifierForOfferItems(items: Item[]): number
     {
-        let qualityModifier = 1;
+        if (this.isOfBaseclass(items[0]._tpl, BaseClasses.WEAPON))
+        {
+            return this.getItemQualityModifier(items[0]);
+        }
+
+        let qualityModifier = 0;
         for (const item of items)
         {
             qualityModifier += this.getItemQualityModifier(item);
@@ -370,9 +375,11 @@ export class ItemHelper
                 // make item non-zero but still very low
                 result = 0.01;
             }
+
+            return result;
         }
 
-        return result;
+        return 1;
     }
 
     /**

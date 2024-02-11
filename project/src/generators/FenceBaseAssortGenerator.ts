@@ -163,12 +163,13 @@ export class FenceBaseAssortGenerator
 
             // Calculate preset price (root item + child items)
             const price = this.handbookHelper.getTemplatePriceForItems(itemAndChildren);
+            const itemQualityModifier = this.itemHelper.getItemQualityModifierForOfferItems(itemAndChildren);
 
             // Multiply weapon+mods rouble price by quality modifier
             baseFenceAssort.barter_scheme[itemAndChildren[0]._id] = [[]];
             baseFenceAssort.barter_scheme[itemAndChildren[0]._id][0][0] = {
                 _tpl: Money.ROUBLES,
-                count: Math.round(price * this.itemHelper.getItemQualityModifierForOfferItems(itemAndChildren)),
+                count: Math.round(price * itemQualityModifier),
             };
 
             baseFenceAssort.loyal_level_items[itemAndChildren[0]._id] = 1;
