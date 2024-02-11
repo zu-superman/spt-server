@@ -88,45 +88,44 @@ export class InRaidHelper
      * @param victims Array of kills player performed
      * @returns adjusted karma level after kills are taken into account
      */
-    public calculateFenceStandingChangeFromKills(existingFenceStanding: number, victims: Victim[]): number
+    public calculateFenceStandingChangeFromKillsAsScav(existingFenceStanding: number, victims: Victim[]): number
     {
         // Run callback on every victim, adding up the standings gained/lossed, starting value is existing fence standing
-        const newFenceStanding = victims.reduce((acc, victim) =>
+        let fenceStanding = existingFenceStanding;
+        for (const victim of victims)
         {
-            const standingForKill = this.getFenceStandingChangeForKillAsScav(victim);
+            const standingChangeForKill = this.getFenceStandingChangeForKillAsScav(victim);
+            const additionalLossForKill = this.getAdditionalLossForKill(fenceStanding, standingChangeForKill);
 
-            let additionalReduction = 0;
+            this.logger.warning(`rep change: ${standingChangeForKill} - additional: ${additionalLossForKill}`);
+            fenceStanding += standingChangeForKill + additionalLossForKill;
+        }
 
-            // Only subtract (up to) 2 reputation on penalties, not on rewards
-            if (standingForKill < 0)
-            {
-                if (acc >= 6 && acc <= 8)
-                {
-                    // Reset fence rep to 6 before subtracting penalty
-                    additionalReduction = acc - 6.0;
-                }
-                else
-                {
-                    additionalReduction = 2;
-                }
-            }
+        return fenceStanding;
+    }
 
-            if (standingForKill)
-            {
-                this.logger.warning(`Lost: ${standingForKill} - additional:${additionalReduction}`);
-                return (acc + standingForKill) - additionalReduction;
-            }
-            this.logger.warning(
-                this.localisationService.getText("inraid-missing_standing_for_kill", {
-                    victimSide: victim.Side,
-                    victimRole: victim.Role,
-                }),
-            );
+    protected getAdditionalLossForKill(fenceStanding: number, repChangeForKill: number): number
+    {
+        // No loss for kill, skip
+        if (repChangeForKill >= 0)
+        {
+            return 0;
+        }
 
-            return acc;
-        }, existingFenceStanding);
+        // Over 8, big penalty
+        if (fenceStanding > 8)
+        {
+            return -2.0;
+        }
 
-        return newFenceStanding;
+        // Fence rep is between 6 and 8, appy additional penalty
+        if (fenceStanding >= 6)
+        {
+            return -1;
+        }
+
+        // No additional penalty
+        return 0;
     }
 
     /**

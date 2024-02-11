@@ -487,7 +487,7 @@ export class InraidController
 
         let fenceStanding = Number(pmcData.TradersInfo[fenceId].standing);
         this.logger.debug(`pre-raid fence standing: ${fenceStanding}`);
-        fenceStanding = this.inRaidHelper.calculateFenceStandingChangeFromKills(
+        fenceStanding = this.inRaidHelper.calculateFenceStandingChangeFromKillsAsScav(
             fenceStanding,
             offraidData.profile.Stats.Eft.Victims,
         );
