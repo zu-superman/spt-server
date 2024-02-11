@@ -1047,11 +1047,10 @@ export class ItemHelper
 
         // Add new stack-size-correct items to ammo box
         let currentStoredCartridgeCount = 0;
-        // Location in ammoBox cartridges will be placed
-        let location = 0;
         const maxPerStack = Math.min(ammoBoxMaxCartridgeCount, cartridgeMaxStackSize);
+        // Find location based on Max ammo box size
+        let location = Math.ceil(ammoBoxMaxCartridgeCount / maxPerStack) - 1;
 
-        const ammoStacksToAdd: Item[] = [];
         while (currentStoredCartridgeCount < ammoBoxMaxCartridgeCount)
         {
             const remainingSpace = ammoBoxMaxCartridgeCount - currentStoredCartridgeCount;
@@ -1072,15 +1071,11 @@ export class ItemHelper
                 delete cartridgeItemToAdd.location;
             }
 
-            ammoStacksToAdd.push(cartridgeItemToAdd);
+            ammoBox.push(cartridgeItemToAdd);
 
             currentStoredCartridgeCount += cartridgeCountToAdd;
-            location++;
+            location--;
         }
-
-        // Ammo must be reversed so location 2 goes first, then location 1 etc, prevents being unable to open ammo boxes in live in one click
-        ammoStacksToAdd.reverse();
-        ammoBox.push(...ammoStacksToAdd);
     }
 
     /**
