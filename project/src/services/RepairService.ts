@@ -162,7 +162,10 @@ export class RepairService
         // Handle kit repair of armor
         if (
             repairDetails.repairedByKit
-            && this.itemHelper.isOfBaseclasses(repairDetails.repairedItem._tpl, [BaseClasses.ARMOR, BaseClasses.VEST])
+            && this.itemHelper.isOfBaseclasses(repairDetails.repairedItem._tpl, [
+                BaseClasses.ARMOR_PLATE,
+                BaseClasses.BUILT_IN_INSERTS,
+            ])
         )
         {
             const itemDetails = this.itemHelper.getItem(repairDetails.repairedItem._tpl);
