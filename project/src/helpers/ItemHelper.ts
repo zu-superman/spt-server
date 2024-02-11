@@ -1049,15 +1049,21 @@ export class ItemHelper
             const cartridgeCountToAdd = (remainingSpace < maxPerStack) ? remainingSpace : maxPerStack;
 
             // Add cartridge item into items array
-            ammoBox.push(
-                this.createCartridges(
-                    ammoBox[0]._id,
-                    cartridgeTpl,
-                    cartridgeCountToAdd,
-                    location,
-                    ammoBox[0].upd?.SpawnedInSession,
-                ),
+            const cartridgeItemToAdd = this.createCartridges(
+                ammoBox[0]._id,
+                cartridgeTpl,
+                cartridgeCountToAdd,
+                location,
+                ammoBox[0].upd?.SpawnedInSession,
             );
+
+            // In live no ammo box has the first cartridge item with a location
+            if (location === 0)
+            {
+                delete cartridgeItemToAdd.location;
+            }
+
+            ammoBox.push(cartridgeItemToAdd);
 
             currentStoredCartridgeCount += cartridgeCountToAdd;
             location++;

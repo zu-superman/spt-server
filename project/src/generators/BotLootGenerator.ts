@@ -414,7 +414,7 @@ export class BotLootGenerator
         // Fill ammo box
         if (this.itemHelper.isOfBaseclass(itemToAddTemplate._id, BaseClasses.AMMO_BOX))
         {
-            this.itemHelper.addSingleStackCartridgesToAmmoBox(itemToAddChildrenTo, itemToAddTemplate);
+            this.itemHelper.addCartridgesToAmmoBox(itemToAddChildrenTo, itemToAddTemplate);
         }
         // Make money a stack
         else if (this.itemHelper.isOfBaseclass(itemToAddTemplate._id, BaseClasses.MONEY))

@@ -847,7 +847,7 @@ export class LocationGenerator
         {
             // Fill with cartridges
             const ammoBoxItem: Item[] = [{ _id: this.objectId.generate(), _tpl: chosenTpl }];
-            this.itemHelper.addSingleStackCartridgesToAmmoBox(ammoBoxItem, itemTemplate);
+            this.itemHelper.addCartridgesToAmmoBox(ammoBoxItem, itemTemplate);
             itemWithMods.push(...ammoBoxItem);
         }
         else if (this.itemHelper.isOfBaseclass(chosenTpl, BaseClasses.MAGAZINE))
@@ -1057,7 +1057,7 @@ export class LocationGenerator
         // No spawnpoint to fall back on, generate manually
         else if (this.itemHelper.isOfBaseclass(chosenTpl, BaseClasses.AMMO_BOX))
         {
-            this.itemHelper.addSingleStackCartridgesToAmmoBox(items, itemTemplate);
+            this.itemHelper.addCartridgesToAmmoBox(items, itemTemplate);
         }
         else if (this.itemHelper.isOfBaseclass(chosenTpl, BaseClasses.MAGAZINE))
         {
