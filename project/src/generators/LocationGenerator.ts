@@ -403,7 +403,7 @@ export class LocationGenerator
         containerClone.template.Root = parentId;
         containerClone.template.Items[0]._id = parentId;
 
-        let containerMap = this.getContainerMapping(containerTpl);
+        const containerMap = this.getContainerMapping(containerTpl);
 
         // Choose count of items to add to container
         const itemCountToAdd = this.getWeightedCountOfContainerItems(containerTpl, staticLootDist, locationName);
