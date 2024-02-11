@@ -337,7 +337,7 @@ export class InraidController
      */
     protected profileHasConditionCounters(profile: IPmcData): boolean
     {
-        if (!profile.TaskConditionCounters?.Counters)
+        if (!profile.TaskConditionCounters)
         {
             return false;
         }
@@ -391,7 +391,7 @@ export class InraidController
             this.logger.debug(
                 `Processing counter: ${scavCounter.id} value: ${scavCounter.value} quest: ${scavCounter.sourceId}`,
             );
-            const counterInPmcProfile = pmcProfile.TaskConditionCounters.Counters[scavCounter.id];
+            const counterInPmcProfile = pmcProfile.TaskConditionCounters[scavCounter.id];
             if (!counterInPmcProfile)
             {
                 // Doesn't exist yet, push it straight in
@@ -400,7 +400,7 @@ export class InraidController
             }
 
             this.logger.debug(
-                `Counter id: ${scavCounter.id} already exists in pmc profile! with value: ${counterInPmcProfile.value} for quest: ${counterInPmcProfile.qid}`,
+                `Counter id: ${scavCounter.id} already exists in pmc profile! with value: ${counterInPmcProfile.value} for quest: ${counterInPmcProfile.id}`,
             );
 
             // Only adjust counter value if its changed
