@@ -1085,6 +1085,8 @@ export class LocationGenerator
                 const presetAndMods: Item[] = this.itemHelper.replaceIDs(defaultPreset._items);
                 this.itemHelper.remapRootItemId(presetAndMods);
 
+                // TODO: Improve retaining parentID
+                presetAndMods[0].parentId = items[0].parentId;
                 items = presetAndMods;
             }
             else
