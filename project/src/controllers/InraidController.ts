@@ -565,4 +565,9 @@ export class InraidController
             messageStoreTime,
         );
     }
+
+    public getTraitorScavHostileChance(url: string, sessionID: string): number
+    {
+        return this.inRaidConfig.playerScavHostileChancePercent;
+    }
 }

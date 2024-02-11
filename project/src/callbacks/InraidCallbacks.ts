@@ -110,4 +110,9 @@ export class InraidCallbacks
         this.inraidController.itemDelivery(sessionId, request.traderId, request.items);
         return this.httpResponse.nullResponse();
     }
+
+    public getTraitorScavHostileChance(url: string, info: IEmptyRequestData, sessionId: string): string
+    {
+        return this.httpResponse.noBody(this.inraidController.getTraitorScavHostileChance(url, sessionId));
+    }
 }
