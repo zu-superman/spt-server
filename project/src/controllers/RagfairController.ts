@@ -393,8 +393,18 @@ export class RagfairController
 
         // Get average of items quality+children
         const qualityMultiplier = this.itemHelper.getItemQualityModifierForOfferItems(offer.items);
-        const averageOfferPrice = this.ragfairPriceService.getFleaPriceForOfferItems(offer.items)
-            * rootItem.upd.StackObjectsCount * qualityMultiplier;
+        let averageOfferPrice = this.ragfairPriceService.getFleaPriceForOfferItems(offer.items);
+
+        // Check for and apply item price modifer if it exists
+        const itemPriceModifer = this.ragfairConfig.dynamic.itemPriceMultiplier[rootItem._tpl];
+        if (itemPriceModifer)
+        {
+            averageOfferPrice *= itemPriceModifer;
+        }
+
+        // Multipler single item price by stack count and quality
+        averageOfferPrice *= rootItem.upd.StackObjectsCount * qualityMultiplier;
+
         const itemStackCount = (offerRequest.sellInOnePiece) ? 1 : rootItem.upd.StackObjectsCount;
 
         // Get averaged price of a single item being listed
