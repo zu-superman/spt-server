@@ -940,11 +940,12 @@ export class LocationGenerator
         let width = itemTemplate._props.Width;
         let height = itemTemplate._props.Height;
         let items: Item[] = [{ _id: this.objectId.generate(), _tpl: chosenTpl }];
+        const rootItem = items[0];
 
         // Use passed in parentId as override for new item
         if (parentId)
         {
-            items[0].parentId = parentId;
+            rootItem.parentId = parentId;
         }
 
         if (
@@ -956,7 +957,8 @@ export class LocationGenerator
             const stackCount = itemTemplate._props.StackMaxSize === 1
                 ? 1
                 : this.randomUtil.getInt(itemTemplate._props.StackMinRandom, itemTemplate._props.StackMaxRandom);
-            items[0].upd = { StackObjectsCount: stackCount };
+
+            rootItem.upd = { StackObjectsCount: stackCount };
         }
         // No spawn point, use default template
         else if (this.itemHelper.isOfBaseclass(chosenTpl, BaseClasses.WEAPON))
@@ -1064,7 +1066,7 @@ export class LocationGenerator
             if (this.randomUtil.getChance100(this.locationConfig.magazineLootHasAmmoChancePercent))
             {
                 // Create array with just magazine
-                const magazineWithCartridges = [items[0]];
+                const magazineWithCartridges = [rootItem];
                 this.itemHelper.fillMagazineWithRandomCartridge(
                     magazineWithCartridges,
                     itemTemplate,
@@ -1074,7 +1076,7 @@ export class LocationGenerator
                 );
 
                 // Replace existing magazine with above array
-                items.splice(items.indexOf(items[0]), 1, ...magazineWithCartridges);
+                items.splice(items.indexOf(rootItem), 1, ...magazineWithCartridges);
             }
         }
         else if (this.itemHelper.armorItemCanHoldMods(chosenTpl))
@@ -1085,8 +1087,8 @@ export class LocationGenerator
                 const presetAndMods: Item[] = this.itemHelper.replaceIDs(defaultPreset._items);
                 this.itemHelper.remapRootItemId(presetAndMods);
 
-                // TODO: Improve retaining parentID
-                presetAndMods[0].parentId = items[0].parentId;
+                // Use original items parentId otherwise item doesnt get added to container correctly
+                presetAndMods[0].parentId = rootItem.parentId;
                 items = presetAndMods;
             }
             else
