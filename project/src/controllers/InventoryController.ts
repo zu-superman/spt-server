@@ -106,14 +106,15 @@ export class InventoryController
             }
 
             // Check for item in inventory before allowing internal transfer
-            const originalItemLocation = ownerInventoryItems.from.find((x) => x._id === moveRequest.item);
-            const originalLocationSlotId = originalItemLocation.slotId;
+            const originalItemLocation = ownerInventoryItems.from.find((item) => item._id === moveRequest.item);
             if (!originalItemLocation)
             {
                 // Internal item move but item never existed, possible dupe glitch
                 this.getTraderExploitErrorResponse(output);
                 return;
             }
+
+            const originalLocationSlotId = originalItemLocation?.slotId;
 
             const moveResult = this.inventoryHelper.moveItemInternal(pmcData, ownerInventoryItems.from, moveRequest);
             if (!moveResult.success)
@@ -123,7 +124,7 @@ export class InventoryController
             }
 
             // Item is moving into or out of place of fame dogtag slot
-            if (moveRequest.to.container.startsWith("dogtag") || originalLocationSlotId.startsWith("dogtag"))
+            if (moveRequest.to.container.startsWith("dogtag") || originalLocationSlotId?.startsWith("dogtag"))
             {
                 this.hideoutHelper.applyPlaceOfFameDogtagBonus(pmcData);
             }
