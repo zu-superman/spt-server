@@ -193,6 +193,22 @@ export class InraidController
 
             serverPmcProfile = this.performPostRaidActionsWhenDead(postRaidRequest, serverPmcProfile, sessionID);
         }
+        else
+        {
+            // Not dead
+            // Check for cultist amulet
+            const amuletOnPlayer = serverPmcProfile.Inventory.items.filter((item) =>
+                item.slotId.startsWith("SpecialSlot")
+            ).find((item) => item._tpl === "64d0b40fbe2eed70e254e2d4");
+            if (amuletOnPlayer)
+            {
+                // Decrement usages remaing
+                if (amuletOnPlayer.upd.CultistAmulet.NumberOfUsages > 0)
+                {
+                    amuletOnPlayer.upd.CultistAmulet.NumberOfUsages--;
+                }
+            }
+        }
 
         const victims = postRaidRequest.profile.Stats.Eft.Victims.filter((x) =>
             ["sptbear", "sptusec"].includes(x.Role.toLowerCase())
