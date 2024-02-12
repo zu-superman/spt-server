@@ -196,7 +196,7 @@ export class InraidController
         else
         {
             // Not dead
-            // Check for cultist amulet
+            // Check for cultist amulets in special slot (only slot it can fit)
             const amuletOnPlayer = serverPmcProfile.Inventory.items.filter((item) =>
                 item.slotId.startsWith("SpecialSlot")
             ).find((item) => item._tpl === "64d0b40fbe2eed70e254e2d4");
