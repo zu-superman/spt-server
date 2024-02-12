@@ -184,7 +184,7 @@ export class FenceService
         {
             if (assort.barter_scheme[item._id])
             {
-                assort.barter_scheme[item._id][0][0].count *= modifier + presetModifier;
+                assort.barter_scheme[item._id][0][0].count *= presetModifier;
             }
         }
         else if (assort.barter_scheme[item._id])

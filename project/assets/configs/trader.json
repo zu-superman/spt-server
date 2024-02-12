@@ -49,7 +49,7 @@
         "discountOptions": {
             "assortSize": 45,
             "itemPriceMult": 0.8,
-            "presetPriceMult": 1.2,
+            "presetPriceMult": 1.15,
 			"weaponPresetMinMax": {
 				"min": 5,
 				"max": 12
@@ -71,7 +71,7 @@
 			"max": 15
 		},
         "itemPriceMult": 1.2,
-        "presetPriceMult": 1.5,
+        "presetPriceMult": 1.35,
         "regenerateAssortsOnRefresh": false,
         "itemTypeLimits": {
 			"543be5cb4bdc2deb348b4568": 2,
