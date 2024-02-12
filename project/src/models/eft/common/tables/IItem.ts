@@ -36,7 +36,7 @@ export interface Upd
     Foldable?: Foldable;
     SideEffect?: SideEffect;
     RepairKit?: RepairKit;
-    CultistAmulet: ICultistAmulet;
+    CultistAmulet?: ICultistAmulet;
 }
 
 export interface Buff
