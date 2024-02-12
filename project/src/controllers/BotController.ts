@@ -314,7 +314,10 @@ export class BotController
             );
         }
 
-        return [this.botGenerationCacheService.getBot(cacheKey)];
+        const desiredBot = this.botGenerationCacheService.getBot(cacheKey);
+        this.botGenerationCacheService.storeUsedBot(desiredBot);
+
+        return [desiredBot];
     }
 
     /**
