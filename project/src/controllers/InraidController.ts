@@ -196,15 +196,24 @@ export class InraidController
         else
         {
             // Not dead
+
             // Check for cultist amulets in special slot (only slot it can fit)
             const amuletOnPlayer = serverPmcProfile.Inventory.items.filter((item) =>
                 item.slotId?.startsWith("SpecialSlot")
             ).find((item) => item._tpl === "64d0b40fbe2eed70e254e2d4");
             if (amuletOnPlayer)
             {
-                // Decrement usages remaing
-                if (amuletOnPlayer.upd.CultistAmulet.NumberOfUsages > 0)
+                // No charges left, delete it
+                if (amuletOnPlayer.upd.CultistAmulet.NumberOfUsages <= 0)
                 {
+                    serverPmcProfile.Inventory.items.splice(
+                        serverPmcProfile.Inventory.items.indexOf(amuletOnPlayer),
+                        1,
+                    );
+                }
+                else if (amuletOnPlayer.upd.CultistAmulet.NumberOfUsages > 0)
+                {
+                    // Charges left, reduce by 1
                     amuletOnPlayer.upd.CultistAmulet.NumberOfUsages--;
                 }
             }
