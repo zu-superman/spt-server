@@ -94,6 +94,11 @@ export class InRaidHelper
         let fenceStanding = existingFenceStanding;
         for (const victim of victims)
         {
+            if (victim.Name?.includes(")") && victim.Side === "Savage")
+            {
+                continue;
+            }
+
             const standingChangeForKill = this.getFenceStandingChangeForKillAsScav(victim);
             const additionalLossForKill = this.getAdditionalLossForKill(fenceStanding, standingChangeForKill);
 
