@@ -712,7 +712,7 @@ export class QuestHelper
         {
             this.mailSendService.sendLocalisedNpcMessageToPlayer(
                 sessionID,
-                this.traderHelper.getTraderById(quest.traderId),
+                this.traderHelper.getTraderById(quest?.traderId ?? matchingRepeatable.traderId), // can be null when repeatable quest has been moved to inactiveQuests
                 MessageType.QUEST_FAIL,
                 quest.failMessageText,
                 questRewards,
