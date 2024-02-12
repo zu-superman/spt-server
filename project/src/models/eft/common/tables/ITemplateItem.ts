@@ -179,6 +179,7 @@ export interface Props
     armorClass?: string | number;
     armorColliders?: string[];
     armorPlateColliders?: string[];
+    bluntDamageReduceFromSoftArmor?: boolean;
     mousePenalty?: number;
     weaponErgonomicPenalty?: number;
     BluntThroughput?: number;
