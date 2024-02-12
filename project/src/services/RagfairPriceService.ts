@@ -232,6 +232,11 @@ export class RagfairPriceService implements OnLoad
         let manuallyAdjusted = false;
         for (const item of items)
         {
+            if (this.itemHelper.isOfBaseclass(item._tpl, BaseClasses.BUILT_IN_INSERTS))
+            {
+                continue;
+            }
+
             // Get dynamic price, fallback to handbook price if value of 1 found
             let itemPrice = this.getFleaPriceForItem(item._tpl);
 
