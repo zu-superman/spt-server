@@ -31,6 +31,7 @@ import { IOpenRandomLootContainerRequestData } from "@spt-aki/models/eft/invento
 import { IRedeemProfileRequestData } from "@spt-aki/models/eft/inventory/IRedeemProfileRequestData";
 import { ISetFavoriteItems } from "@spt-aki/models/eft/inventory/ISetFavoriteItems";
 import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEventRouterResponse";
+import { IAkiProfile } from "@spt-aki/models/eft/profile/IAkiProfile";
 import { BackendErrorCodes } from "@spt-aki/models/enums/BackendErrorCodes";
 import { SkillTypes } from "@spt-aki/models/enums/SkillTypes";
 import { Traders } from "@spt-aki/models/enums/Traders";
@@ -666,13 +667,14 @@ export class InventoryController
 
         if (itemId)
         {
-            this.flagItemsAsInspectedAndRewardXp([itemId], pmcData);
+            const fullProfile = this.profileHelper.getFullProfile(sessionID);
+            this.flagItemsAsInspectedAndRewardXp([itemId], fullProfile);
         }
 
         return output;
     }
 
-    protected flagItemsAsInspectedAndRewardXp(itemTpls: string[], pmcProfile: IPmcData): void
+    protected flagItemsAsInspectedAndRewardXp(itemTpls: string[], fullProfile: IAkiProfile): void
     {
         for (const itemTpl of itemTpls)
         {
@@ -684,12 +686,19 @@ export class InventoryController
                 return;
             }
 
-            pmcProfile.Info.Experience += item._props.ExamineExperience;
-            pmcProfile.Encyclopedia[itemTpl] = false;
+            fullProfile.characters.pmc.Info.Experience += item._props.ExamineExperience;
+            fullProfile.characters.pmc.Encyclopedia[itemTpl] = false;
+
+            fullProfile.characters.scav.Info.Experience += item._props.ExamineExperience;
+            fullProfile.characters.scav.Encyclopedia[itemTpl] = false;
         }
 
         // TODO: update this with correct calculation using values from globals json
-        this.profileHelper.addSkillPointsToPlayer(pmcProfile, SkillTypes.INTELLECT, 0.05 * itemTpls.length);
+        this.profileHelper.addSkillPointsToPlayer(
+            fullProfile.characters.pmc,
+            SkillTypes.INTELLECT,
+            0.05 * itemTpls.length,
+        );
     }
 
     /**
@@ -966,12 +975,12 @@ export class InventoryController
     {
         const output = this.eventOutputHolder.getOutput(sessionId);
 
-        const fullprofile = this.profileHelper.getFullProfile(sessionId);
+        const fullProfile = this.profileHelper.getFullProfile(sessionId);
         for (const event of request.events)
         {
             // Hard coded to `SYSTEM` for now
             // TODO: make this dynamic
-            const dialog = fullprofile.dialogues["59e7125688a45068a6249071"];
+            const dialog = fullProfile.dialogues["59e7125688a45068a6249071"];
             const mail = dialog.messages.find((x) => x._id === event.MessageId);
             const mailEvent = mail.profileChangeEvents.find((x) => x._id === event.EventId);
 
@@ -1000,7 +1009,7 @@ export class InventoryController
                 case "ExamineAllItems":
                 {
                     const itemsToInspect = this.itemHelper.getItems().filter((x) => x._type !== "Node");
-                    this.flagItemsAsInspectedAndRewardXp(itemsToInspect.map((x) => x._id), pmcData);
+                    this.flagItemsAsInspectedAndRewardXp(itemsToInspect.map((x) => x._id), fullProfile);
                     this.logger.success(`Flagged ${itemsToInspect.length} items as examined`);
                     break;
                 }
