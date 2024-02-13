@@ -140,7 +140,7 @@ export class InraidController
         this.inRaidHelper.updateProfileBaseStats(serverPmcProfile, postRaidRequest, sessionID);
         this.inRaidHelper.updatePmcProfileDataPostRaid(serverPmcProfile, postRaidRequest, sessionID);
 
-        this.mergePmcAndScavEncyclopedias(serverPmcProfile.Encyclopedia, serverScavProfile.Encyclopedia);
+        this.mergePmcAndScavEncyclopedias(serverPmcProfile, serverScavProfile);
 
         // Check for exit status
         this.markOrRemoveFoundInRaidItems(postRaidRequest);
@@ -336,7 +336,7 @@ export class InraidController
         this.inRaidHelper.updateProfileBaseStats(serverScavProfile, postRaidRequest, sessionID);
         this.inRaidHelper.updateScavProfileDataPostRaid(serverScavProfile, postRaidRequest, sessionID);
 
-        this.mergePmcAndScavEncyclopedias(serverScavProfile.Encyclopedia, serverPmcProfile.Encyclopedia);
+        this.mergePmcAndScavEncyclopedias(serverScavProfile, serverPmcProfile);
 
         // Completing scav quests create ConditionCounters, these values need to be transported to the PMC profile
         if (this.profileHasConditionCounters(serverScavProfile))
@@ -368,7 +368,7 @@ export class InraidController
      * @param primary main dictionary
      * @param secondary Secondary dictionary
      */
-    protected mergePmcAndScavEncyclopedias(primary: Record<string, boolean>, secondary: Record<string, boolean>): void
+    protected mergePmcAndScavEncyclopedias(primary: IPmcData, secondary: IPmcData): void
     {
         function extend(target: { [key: string]: boolean; }, source: Record<string, boolean>)
         {
@@ -382,9 +382,9 @@ export class InraidController
             return target;
         }
 
-        const merged = extend(extend({}, primary), secondary);
-        primary = merged;
-        secondary = merged;
+        const merged = extend(extend({}, primary.Encyclopedia), secondary.Encyclopedia);
+        primary.Encyclopedia = merged;
+        secondary.Encyclopedia = merged;
     }
 
     /**
