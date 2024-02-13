@@ -123,12 +123,15 @@ export class InraidController
     protected savePmcProgress(sessionID: string, postRaidRequest: ISaveProgressRequestData): void
     {
         const serverProfile = this.saveServer.getProfile(sessionID);
+
         const locationName = serverProfile.inraid.location.toLowerCase();
 
         const map: ILocationBase = this.databaseServer.getTables().locations[locationName].base;
         const mapHasInsuranceEnabled = map.Insurance;
 
-        let serverPmcProfile = serverProfile.characters.pmc;
+        const serverPmcProfile = serverProfile.characters.pmc;
+        const serverScavProfile = serverProfile.characters.scav;
+
         const isDead = this.isPlayerDead(postRaidRequest.exit);
         const preRaidGear = this.inRaidHelper.getPlayerGear(serverPmcProfile.Inventory.items);
 
@@ -136,6 +139,8 @@ export class InraidController
 
         this.inRaidHelper.updateProfileBaseStats(serverPmcProfile, postRaidRequest, sessionID);
         this.inRaidHelper.updatePmcProfileDataPostRaid(serverPmcProfile, postRaidRequest, sessionID);
+
+        this.mergePmcAndScavEncyclopedias(serverPmcProfile.Encyclopedia, serverScavProfile.Encyclopedia);
 
         // Check for exit status
         this.markOrRemoveFoundInRaidItems(postRaidRequest);
@@ -149,7 +154,7 @@ export class InraidController
         this.inRaidHelper.addUpdToMoneyFromRaid(postRaidRequest.profile.Inventory.items);
 
         // Purge profile of equipment/container items
-        serverPmcProfile = this.inRaidHelper.setInventory(sessionID, serverPmcProfile, postRaidRequest.profile);
+        this.inRaidHelper.setInventory(sessionID, serverPmcProfile, postRaidRequest.profile);
 
         this.healthHelper.saveVitality(serverPmcProfile, postRaidRequest.health, sessionID);
 
@@ -191,7 +196,7 @@ export class InraidController
             );
             this.matchBotDetailsCacheService.clearCache();
 
-            serverPmcProfile = this.performPostRaidActionsWhenDead(postRaidRequest, serverPmcProfile, sessionID);
+            this.performPostRaidActionsWhenDead(postRaidRequest, serverPmcProfile, sessionID);
         }
         else
         {
@@ -504,11 +509,11 @@ export class InraidController
     ): void
     {
         // Update scav profile inventory
-        const updatedScavData = this.inRaidHelper.setInventory(sessionID, scavData, offraidData.profile);
+        this.inRaidHelper.setInventory(sessionID, scavData, offraidData.profile);
 
         // Reset scav hp and save to json
         this.healthHelper.resetVitality(sessionID);
-        this.saveServer.getProfile(sessionID).characters.scav = updatedScavData;
+        this.saveServer.getProfile(sessionID).characters.scav = scavData;
 
         // Scav karma
         this.handlePostRaidPlayerScavKarmaChanges(pmcData, offraidData);

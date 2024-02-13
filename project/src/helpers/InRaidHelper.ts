@@ -181,6 +181,7 @@ export class InRaidHelper
         profileData.Info.Level = saveProgressRequest.profile.Info.Level;
         profileData.Skills = saveProgressRequest.profile.Skills;
         profileData.Stats.Eft = saveProgressRequest.profile.Stats.Eft;
+
         profileData.Encyclopedia = saveProgressRequest.profile.Encyclopedia;
         profileData.TaskConditionCounters = saveProgressRequest.profile.TaskConditionCounters;
 
@@ -593,9 +594,8 @@ export class InRaidHelper
      * @param sessionID Session id
      * @param serverProfile Profile to update
      * @param postRaidProfile Profile returned by client after a raid
-     * @returns Updated profile
      */
-    public setInventory(sessionID: string, serverProfile: IPmcData, postRaidProfile: IPmcData): IPmcData
+    public setInventory(sessionID: string, serverProfile: IPmcData, postRaidProfile: IPmcData): void
     {
         // Store insurance (as removeItem() removes insurance also)
         const insured = this.jsonUtil.clone(serverProfile.InsuredItems);
@@ -609,8 +609,6 @@ export class InRaidHelper
         serverProfile.Inventory.items = [...postRaidProfile.Inventory.items, ...serverProfile.Inventory.items];
         serverProfile.Inventory.fastPanel = postRaidProfile.Inventory.fastPanel; // Quick access items bar
         serverProfile.InsuredItems = insured;
-
-        return serverProfile;
     }
 
     /**
