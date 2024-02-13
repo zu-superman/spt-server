@@ -331,6 +331,8 @@ export class InraidController
         this.inRaidHelper.updateProfileBaseStats(serverScavProfile, postRaidRequest, sessionID);
         this.inRaidHelper.updateScavProfileDataPostRaid(serverScavProfile, postRaidRequest, sessionID);
 
+        this.mergePmcAndScavEncyclopedias(serverScavProfile.Encyclopedia, serverPmcProfile.Encyclopedia);
+
         // Completing scav quests create ConditionCounters, these values need to be transported to the PMC profile
         if (this.profileHasConditionCounters(serverScavProfile))
         {
@@ -353,6 +355,31 @@ export class InraidController
 
         // Reset hp/regenerate loot
         this.handlePostRaidPlayerScavProcess(serverScavProfile, sessionID, postRaidRequest, serverPmcProfile, isDead);
+    }
+
+    /**
+     * merge two dictionaries together
+     * Prioritise pair that has true as a value
+     * @param primary main dictionary
+     * @param secondary Secondary dictionary
+     */
+    protected mergePmcAndScavEncyclopedias(primary: Record<string, boolean>, secondary: Record<string, boolean>): void
+    {
+        function extend(target: { [key: string]: boolean; }, source: Record<string, boolean>)
+        {
+            for (const key in source)
+            {
+                if (Object.hasOwn(source, key))
+                {
+                    target[key] = source[key];
+                }
+            }
+            return target;
+        }
+
+        const merged = extend(extend({}, primary), secondary);
+        primary = merged;
+        secondary = merged;
     }
 
     /**
