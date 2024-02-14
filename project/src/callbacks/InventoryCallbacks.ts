@@ -55,7 +55,9 @@ export class InventoryCallbacks
         output: IItemEventRouterResponse,
     ): IItemEventRouterResponse
     {
-        return this.inventoryController.discardItem(pmcData, body, sessionID, output);
+        this.inventoryController.discardItem(pmcData, body, sessionID, output);
+
+        return output;
     }
 
     /** Handle Split event */
@@ -81,12 +83,12 @@ export class InventoryCallbacks
 
     public transferItem(
         pmcData: IPmcData,
-        body: IInventoryTransferRequestData,
+        request: IInventoryTransferRequestData,
         sessionID: string,
         output: IItemEventRouterResponse,
     ): IItemEventRouterResponse
     {
-        return this.inventoryController.transferItem(pmcData, body, sessionID, output);
+        return this.inventoryController.transferItem(pmcData, request, sessionID, output);
     }
 
     /** Handle Swap */
@@ -111,14 +113,28 @@ export class InventoryCallbacks
         return this.inventoryController.tagItem(pmcData, body, sessionID);
     }
 
-    public bindItem(pmcData: IPmcData, body: IInventoryBindRequestData, sessionID: string): IItemEventRouterResponse
+    public bindItem(
+        pmcData: IPmcData,
+        body: IInventoryBindRequestData,
+        sessionID: string,
+        output: IItemEventRouterResponse,
+    ): IItemEventRouterResponse
     {
-        return this.inventoryController.bindItem(pmcData, body, sessionID);
+        this.inventoryController.bindItem(pmcData, body, sessionID);
+
+        return output;
     }
 
-    public unbindItem(pmcData: IPmcData, body: IInventoryBindRequestData, sessionID: string): IItemEventRouterResponse
+    public unbindItem(
+        pmcData: IPmcData,
+        body: IInventoryBindRequestData,
+        sessionID: string,
+        output: IItemEventRouterResponse,
+    ): IItemEventRouterResponse
     {
-        return this.inventoryController.unbindItem(pmcData, body, sessionID);
+        this.inventoryController.unbindItem(pmcData, body, sessionID, output);
+
+        return output;
     }
 
     public examineItem(
@@ -146,9 +162,12 @@ export class InventoryCallbacks
         pmcData: IPmcData,
         body: IInventorySortRequestData,
         sessionID: string,
+        output: IItemEventRouterResponse,
     ): IItemEventRouterResponse
     {
-        return this.inventoryController.sortInventory(pmcData, body, sessionID);
+        this.inventoryController.sortInventory(pmcData, body, sessionID);
+
+        return output;
     }
 
     public createMapMarker(
@@ -158,7 +177,9 @@ export class InventoryCallbacks
         output: IItemEventRouterResponse,
     ): IItemEventRouterResponse
     {
-        return this.inventoryController.createMapMarker(pmcData, body, sessionID, output);
+        this.inventoryController.createMapMarker(pmcData, body, sessionID, output);
+
+        return output;
     }
 
     public deleteMapMarker(
@@ -168,7 +189,9 @@ export class InventoryCallbacks
         output: IItemEventRouterResponse,
     ): IItemEventRouterResponse
     {
-        return this.inventoryController.deleteMapMarker(pmcData, body, sessionID, output);
+        this.inventoryController.deleteMapMarker(pmcData, body, sessionID, output);
+
+        return output;
     }
 
     public editMapMarker(
@@ -178,7 +201,9 @@ export class InventoryCallbacks
         output: IItemEventRouterResponse,
     ): IItemEventRouterResponse
     {
-        return this.inventoryController.editMapMarker(pmcData, body, sessionID, output);
+        this.inventoryController.editMapMarker(pmcData, body, sessionID, output);
+
+        return output;
     }
 
     /** Handle OpenRandomLootContainer */
@@ -189,21 +214,33 @@ export class InventoryCallbacks
         output: IItemEventRouterResponse,
     ): IItemEventRouterResponse
     {
-        return this.inventoryController.openRandomLootContainer(pmcData, body, sessionID, output);
+        this.inventoryController.openRandomLootContainer(pmcData, body, sessionID, output);
+
+        return output;
     }
 
     public redeemProfileReward(
         pmcData: IPmcData,
         body: IRedeemProfileRequestData,
         sessionId: string,
+        output: IItemEventRouterResponse,
     ): IItemEventRouterResponse
     {
-        return this.inventoryController.redeemProfileReward(pmcData, body, sessionId);
+        this.inventoryController.redeemProfileReward(pmcData, body, sessionId);
+
+        return output;
     }
 
-    public setFavoriteItem(pmcData: IPmcData, body: ISetFavoriteItems, sessionId: string): IItemEventRouterResponse
+    public setFavoriteItem(
+        pmcData: IPmcData,
+        body: ISetFavoriteItems,
+        sessionId: string,
+        output: IItemEventRouterResponse,
+    ): IItemEventRouterResponse
     {
-        return this.inventoryController.setFavoriteItem(pmcData, body, sessionId);
+        this.inventoryController.setFavoriteItem(pmcData, body, sessionId);
+
+        return output;
     }
 
     /**

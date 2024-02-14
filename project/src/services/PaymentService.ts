@@ -37,17 +37,17 @@ export class PaymentService
 
     /**
      * Take money and insert items into return to server request
-     * @param {IPmcData} pmcData Player profile
-     * @param {IProcessBuyTradeRequestData} request
-     * @param {string} sessionID
-     * @returns IItemEventRouterResponse
+     * @param pmcData Pmc profile
+     * @param request Buy item request
+     * @param sessionID Session id
+     * @param output Client response
      */
     public payMoney(
         pmcData: IPmcData,
         request: IProcessBuyTradeRequestData,
         sessionID: string,
         output: IItemEventRouterResponse,
-    ): IItemEventRouterResponse
+    ): void
     {
         // May need to convert to trader currency
         const trader = this.traderHelper.getTrader(request.tid, sessionID);
@@ -100,7 +100,7 @@ export class PaymentService
                 // If there are warnings, exit early.
                 if (output.warnings.length > 0)
                 {
-                    return output;
+                    return;
                 }
 
                 // Convert the amount to the trader's currency and update the sales sum.
@@ -128,7 +128,6 @@ export class PaymentService
         this.traderHelper.lvlUp(request.tid, pmcData);
 
         this.logger.debug("Item(s) taken. Status OK.");
-        return output;
     }
 
     /**

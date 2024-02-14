@@ -81,7 +81,7 @@ export class InventoryController
      * @param pmcData Profile
      * @param moveRequest Move request data
      * @param sessionID Session id
-     * @returns IItemEventRouterResponse
+     * @param output Client response
      */
     public moveItem(
         pmcData: IPmcData,
@@ -102,7 +102,7 @@ export class InventoryController
             // Dont move items from trader to profile, this can happen when editing a traders preset weapons
             if (moveRequest.fromOwner?.type === "Trader" && !ownerInventoryItems.isMail)
             {
-                this.getTraderExploitErrorResponse(output);
+                this.appendTraderExploitErrorResponse(output);
                 return;
             }
 
@@ -111,7 +111,7 @@ export class InventoryController
             if (!originalItemLocation)
             {
                 // Internal item move but item never existed, possible dupe glitch
-                this.getTraderExploitErrorResponse(output);
+                this.appendTraderExploitErrorResponse(output);
                 return;
             }
 
@@ -141,27 +141,13 @@ export class InventoryController
      * @param output Item event router response
      * @returns Item event router response
      */
-    protected getTraderExploitErrorResponse(output: IItemEventRouterResponse): IItemEventRouterResponse
+    protected appendTraderExploitErrorResponse(output: IItemEventRouterResponse): void
     {
-        return this.httpResponseUtil.appendErrorToOutput(
+        this.httpResponseUtil.appendErrorToOutput(
             output,
             this.localisationService.getText("inventory-edit_trader_item"),
             <BackendErrorCodes>228,
         );
-    }
-
-    /**
-     * Remove Item from Profile
-     * Deep tree item deletion, also removes items from insurance list
-     */
-    public removeItem(
-        pmcData: IPmcData,
-        itemId: string,
-        sessionID: string,
-        output: IItemEventRouterResponse = undefined,
-    ): IItemEventRouterResponse
-    {
-        return this.inventoryHelper.removeItem(pmcData, itemId, sessionID, output);
     }
 
     /**
@@ -171,23 +157,23 @@ export class InventoryController
      */
     public discardItem(
         pmcData: IPmcData,
-        body: IInventoryRemoveRequestData,
+        request: IInventoryRemoveRequestData,
         sessionID: string,
         output: IItemEventRouterResponse,
-    ): IItemEventRouterResponse
+    ): void
     {
-        if (body.fromOwner?.type === "Mail")
+        if (request.fromOwner?.type === "Mail")
         {
-            this.inventoryHelper.removeItemAndChildrenFromMailRewards(sessionID, body, output);
+            this.inventoryHelper.removeItemAndChildrenFromMailRewards(sessionID, request, output);
 
-            return output;
+            return;
         }
 
-        const profileToRemoveItemFrom = (!body.fromOwner || body.fromOwner.id === pmcData._id)
+        const profileToRemoveItemFrom = (!request.fromOwner || request.fromOwner.id === pmcData._id)
             ? pmcData
             : this.profileHelper.getFullProfile(sessionID).characters.scav;
 
-        return this.inventoryHelper.removeItem(profileToRemoveItemFrom, body.item, sessionID, output);
+        this.inventoryHelper.removeItem(profileToRemoveItemFrom, request.item, sessionID, output);
     }
 
     /**
@@ -196,6 +182,7 @@ export class InventoryController
      * @param pmcData Player profile (unused, getOwnerInventoryItems() gets profile)
      * @param request Split request
      * @param sessionID Session/player id
+     * @param output Client response
      * @returns IItemEventRouterResponse
      */
     public splitItem(
@@ -258,6 +245,7 @@ export class InventoryController
      * @param pmcData Player profile (unused, getOwnerInventoryItems() gets profile)
      * @param body Merge request
      * @param sessionID Player id
+     * @param output Client response
      * @returns IItemEventRouterResponse
      */
     public mergeItem(
@@ -277,7 +265,9 @@ export class InventoryController
             const errorMessage = `Unable to merge stacks as source item: ${body.with} cannot be found`;
             this.logger.error(errorMessage);
 
-            return this.httpResponseUtil.appendErrorToOutput(output, errorMessage);
+            this.httpResponseUtil.appendErrorToOutput(output, errorMessage);
+
+            return output;
         }
 
         // Get item being merged into
@@ -287,7 +277,9 @@ export class InventoryController
             const errorMessage = `Unable to merge stacks as destination item: ${body.with} cannot be found`;
             this.logger.error(errorMessage);
 
-            return this.httpResponseUtil.appendErrorToOutput(output, errorMessage);
+            this.httpResponseUtil.appendErrorToOutput(output, errorMessage);
+
+            return output;
         }
 
         if (!(destinationItem.upd?.StackObjectsCount))
@@ -321,7 +313,9 @@ export class InventoryController
             const errorMessage = `Unable to find item: ${sourceItem._id} to remove from sender inventory`;
             this.logger.error(errorMessage);
 
-            return this.httpResponseUtil.appendErrorToOutput(output, errorMessage);
+            this.httpResponseUtil.appendErrorToOutput(output, errorMessage);
+
+            return output;
         }
         inventoryItems.from.splice(indexOfItemToRemove, 1); // remove source item from 'from' inventory
 
@@ -336,6 +330,7 @@ export class InventoryController
      * @param pmcData Player profile
      * @param body Transfer request
      * @param sessionID Session id
+     * @param output Client response
      * @returns IItemEventRouterResponse
      */
     public transferItem(
@@ -347,6 +342,7 @@ export class InventoryController
     {
         let sourceItem: Item = null;
         let destinationItem: Item = null;
+
         for (const iterItem of pmcData.Inventory.items)
         {
             if (iterItem._id === body.item)
@@ -372,7 +368,9 @@ export class InventoryController
             const errorMessage = `Unable to transfer stack, cannot find source: ${body.item}`;
             this.logger.error(errorMessage);
 
-            return this.httpResponseUtil.appendErrorToOutput(output, errorMessage);
+            this.httpResponseUtil.appendErrorToOutput(output, errorMessage);
+
+            return output;
         }
 
         if (destinationItem === null)
@@ -380,7 +378,9 @@ export class InventoryController
             const errorMessage = `Unable to transfer stack, cannot find destination: ${body.with} `;
             this.logger.error(errorMessage);
 
-            return this.httpResponseUtil.appendErrorToOutput(output, errorMessage);
+            this.httpResponseUtil.appendErrorToOutput(output, errorMessage);
+
+            return output;
         }
 
         let sourceStackCount = 1;
@@ -479,6 +479,7 @@ export class InventoryController
             playerData = this.profileHelper.getScavProfile(sessionID);
         }
 
+        // TODO - replace with single .find() call
         for (const item of playerData.Inventory.items)
         {
             if (item._id && item._id === body.item)
@@ -500,6 +501,7 @@ export class InventoryController
      */
     public toggleItem(pmcData: IPmcData, body: IInventoryToggleRequestData, sessionID: string): IItemEventRouterResponse
     {
+        // May need to reassign to scav profile
         let playerData = pmcData;
 
         // Fix for toggling items while on they're in the Scav inventory
@@ -538,6 +540,7 @@ export class InventoryController
      */
     public tagItem(pmcData: IPmcData, body: IInventoryTagRequestData, sessionID: string): IItemEventRouterResponse
     {
+        // TODO - replace with single .find() call
         for (const item of pmcData.Inventory.items)
         {
             if (item._id === body.item)
@@ -566,12 +569,9 @@ export class InventoryController
      * @param sessionID Session id
      * @returns IItemEventRouterResponse
      */
-    public bindItem(
-        pmcData: IPmcData,
-        bindRequest: IInventoryBindRequestData,
-        sessionID: string,
-    ): IItemEventRouterResponse
+    public bindItem(pmcData: IPmcData, bindRequest: IInventoryBindRequestData, sessionID: string): void
     {
+        // TODO - replace with single .find() call
         for (const index in pmcData.Inventory.fastPanel)
         {
             // Find item with existing item in it and remove existing binding, you cant have same item bound to more than 1 slot
@@ -585,8 +585,6 @@ export class InventoryController
 
         // Create link between fast panel slot and requested item
         pmcData.Inventory.fastPanel[bindRequest.index] = bindRequest.item;
-
-        return this.eventOutputHolder.getOutput(sessionID);
     }
 
     /**
@@ -595,18 +593,17 @@ export class InventoryController
      * @param pmcData Player profile
      * @param bindRequest Request object
      * @param sessionID Session id
-     * @returns IItemEventRouterResponse
+     * @param output Client response
      */
     public unbindItem(
         pmcData: IPmcData,
         request: IInventoryBindRequestData,
         sessionID: string,
-    ): IItemEventRouterResponse
+        output: IItemEventRouterResponse,
+    ): void
     {
         // Remove kvp from requested fast panel index
         delete pmcData.Inventory.fastPanel[request.index];
-
-        return this.eventOutputHolder.getOutput(sessionID);
     }
 
     /**
@@ -614,6 +611,7 @@ export class InventoryController
      * @param pmcData player profile
      * @param body request object
      * @param sessionID session id
+     * @param output Client response
      * @returns response
      */
     public examineItem(
@@ -776,13 +774,8 @@ export class InventoryController
      * @param pmcData Player profile
      * @param request sort request
      * @param sessionID Session id
-     * @returns IItemEventRouterResponse
      */
-    public sortInventory(
-        pmcData: IPmcData,
-        request: IInventorySortRequestData,
-        sessionID: string,
-    ): IItemEventRouterResponse
+    public sortInventory(pmcData: IPmcData, request: IInventorySortRequestData, sessionID: string): void
     {
         for (const change of request.changedItems)
         {
@@ -807,8 +800,6 @@ export class InventoryController
                 delete inventoryItem.location;
             }
         }
-
-        return this.eventOutputHolder.getOutput(sessionID);
     }
 
     /**
@@ -816,6 +807,7 @@ export class InventoryController
      * @param pmcData Player profile
      * @param request Add marker request
      * @param sessionID Session id
+     * @param output Client response
      * @returns IItemEventRouterResponse
      */
     public createMapMarker(
@@ -823,7 +815,7 @@ export class InventoryController
         request: IInventoryCreateMarkerRequestData,
         sessionID: string,
         output: IItemEventRouterResponse,
-    ): IItemEventRouterResponse
+    ): void
     {
         // Get map from inventory
         const mapItem = pmcData.Inventory.items.find((i) => i._id === request.item);
@@ -835,8 +827,6 @@ export class InventoryController
 
         // sync with client
         output.profileChanges[sessionID].items.change.push(mapItem);
-
-        return output;
     }
 
     /**
@@ -844,14 +834,14 @@ export class InventoryController
      * @param pmcData Player profile
      * @param request Delete marker request
      * @param sessionID Session id
-     * @returns IItemEventRouterResponse
+     * @param output Client response
      */
     public deleteMapMarker(
         pmcData: IPmcData,
         request: IInventoryDeleteMarkerRequestData,
         sessionID: string,
         output: IItemEventRouterResponse,
-    ): IItemEventRouterResponse
+    ): void
     {
         // Get map from inventory
         const mapItem = pmcData.Inventory.items.find((i) => i._id === request.item);
@@ -865,7 +855,6 @@ export class InventoryController
 
         // sync with client
         output.profileChanges[sessionID].items.change.push(mapItem);
-        return output;
     }
 
     /**
@@ -873,14 +862,14 @@ export class InventoryController
      * @param pmcData Player profile
      * @param request Edit marker request
      * @param sessionID Session id
-     * @returns IItemEventRouterResponse
+     * @param output Client response
      */
     public editMapMarker(
         pmcData: IPmcData,
         request: IInventoryEditMarkerRequestData,
         sessionID: string,
         output: IItemEventRouterResponse,
-    ): IItemEventRouterResponse
+    ): void
     {
         // Get map from inventory
         const mapItem = pmcData.Inventory.items.find((i) => i._id === request.item);
@@ -892,8 +881,6 @@ export class InventoryController
 
         // sync with client
         output.profileChanges[sessionID].items.change.push(mapItem);
-
-        return output;
     }
 
     /**
@@ -910,16 +897,16 @@ export class InventoryController
      * Handle OpenRandomLootContainer event
      * Handle event fired when a container is unpacked (currently only the halloween pumpkin)
      * @param pmcData Profile data
-     * @param body open loot container request data
+     * @param body Open loot container request data
      * @param sessionID Session id
-     * @returns IItemEventRouterResponse
+     * @param output Client response
      */
     public openRandomLootContainer(
         pmcData: IPmcData,
         body: IOpenRandomLootContainerRequestData,
         sessionID: string,
         output: IItemEventRouterResponse,
-    ): IItemEventRouterResponse
+    ): void
     {
         /** Container player opened in their inventory */
         const openedItem = pmcData.Inventory.items.find((item) => item._id === body.item);
@@ -958,23 +945,15 @@ export class InventoryController
         this.inventoryHelper.addItemsToStash(sessionID, addItemsRequest, pmcData, output);
         if (output.warnings.length > 0)
         {
-            return output;
+            return;
         }
 
         // Find and delete opened container item from player inventory
         this.inventoryHelper.removeItem(pmcData, body.item, sessionID, output);
-
-        return output;
     }
 
-    public redeemProfileReward(
-        pmcData: IPmcData,
-        request: IRedeemProfileRequestData,
-        sessionId: string,
-    ): IItemEventRouterResponse
+    public redeemProfileReward(pmcData: IPmcData, request: IRedeemProfileRequestData, sessionId: string): void
     {
-        const output = this.eventOutputHolder.getOutput(sessionId);
-
         const fullProfile = this.profileHelper.getFullProfile(sessionId);
         for (const event of request.events)
         {
@@ -1022,14 +1001,10 @@ export class InventoryController
                     break;
             }
         }
-
-        return output;
     }
 
-    public setFavoriteItem(pmcData: IPmcData, request: ISetFavoriteItems, sessionId: string): IItemEventRouterResponse
+    public setFavoriteItem(pmcData: IPmcData, request: ISetFavoriteItems, sessionId: string): void
     {
-        const output = this.eventOutputHolder.getOutput(sessionId);
-
         if (!pmcData.Inventory.favoriteItems)
         {
             pmcData.Inventory.favoriteItems = [];
@@ -1048,7 +1023,5 @@ export class InventoryController
                 pmcData.Inventory.favoriteItems.push(itemId);
             }
         }
-
-        return output;
     }
 }

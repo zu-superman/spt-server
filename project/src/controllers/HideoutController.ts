@@ -1099,7 +1099,8 @@ export class HideoutController
         sessionId: string,
         pmcData: IPmcData,
         request: IHandleQTEEventRequestData,
-    ): IItemEventRouterResponse
+        output: IItemEventRouterResponse,
+    ): void
     {
         // {
         //     "Action": "HideoutQuickTimeEvent",
@@ -1122,8 +1123,6 @@ export class HideoutController
         {
             pmcData.Health.Hydration.Current = 1;
         }
-
-        return this.eventOutputHolder.getOutput(sessionId);
     }
 
     /**

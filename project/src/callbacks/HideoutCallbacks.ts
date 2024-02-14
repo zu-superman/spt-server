@@ -145,9 +145,12 @@ export class HideoutCallbacks implements OnUpdate
         pmcData: IPmcData,
         request: IHandleQTEEventRequestData,
         sessionId: string,
+        output: IItemEventRouterResponse,
     ): IItemEventRouterResponse
     {
-        return this.hideoutController.handleQTEEventOutcome(sessionId, pmcData, request);
+        this.hideoutController.handleQTEEventOutcome(sessionId, pmcData, request, output);
+
+        return output;
     }
 
     /**

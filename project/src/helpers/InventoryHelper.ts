@@ -472,21 +472,20 @@ export class InventoryHelper
      * @param profile Profile to remove item from (pmc or scav)
      * @param itemId Items id to remove
      * @param sessionID Session id
-     * @param output Existing IItemEventRouterResponse object to append data to, creates new one by default if not supplied
-     * @returns IItemEventRouterResponse
+     * @param output OPTIONAL - IItemEventRouterResponse
      */
     public removeItem(
         profile: IPmcData,
         itemId: string,
         sessionID: string,
         output: IItemEventRouterResponse = undefined,
-    ): IItemEventRouterResponse
+    ): void
     {
         if (!itemId)
         {
             this.logger.warning("No itemId supplied, unable to remove item from inventory");
 
-            return output;
+            return;
         }
 
         // Get children of item, they get deleted too
@@ -523,8 +522,6 @@ export class InventoryHelper
                 insuredItems.splice(insuredIndex, 1);
             }
         }
-
-        return output;
     }
 
     public removeItemAndChildrenFromMailRewards(

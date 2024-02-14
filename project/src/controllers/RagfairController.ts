@@ -512,10 +512,10 @@ export class RagfairController
         this.ragfairTaxService.clearStoredOfferTaxById(offerRequest.items[0]);
 
         const buyTradeRequest = this.createBuyTradeRequestObject("RUB", tax);
-        output = this.paymentService.payMoney(pmcData, buyTradeRequest, sessionID, output);
+        this.paymentService.payMoney(pmcData, buyTradeRequest, sessionID, output);
         if (output.warnings.length > 0)
         {
-            output = this.httpResponse.appendErrorToOutput(
+            this.httpResponse.appendErrorToOutput(
                 output,
                 this.localisationService.getText("ragfair-unable_to_pay_commission_fee", tax),
             );
