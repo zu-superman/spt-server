@@ -702,7 +702,11 @@ export class RagfairOfferHelper
         }
 
         // weapon/equipment search + offer is preset
-        if (searchRequest.buildCount && this.presetHelper.hasPreset(offerRootItem._tpl))
+        if (
+            Object.keys(searchRequest.buildItems).length === 0 // Prevent equipment loadout searches filtering out presets
+            && searchRequest.buildCount
+            && this.presetHelper.hasPreset(offerRootItem._tpl)
+        )
         {
             return false;
         }

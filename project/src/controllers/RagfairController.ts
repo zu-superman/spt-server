@@ -86,6 +86,8 @@ export class RagfairController
 
     public getOffers(sessionID: string, searchRequest: ISearchRequestData): IGetOffersResult
     {
+        const pmcProfile = this.profileHelper.getPmcProfile(sessionID);
+
         const itemsToAdd = this.ragfairHelper.filterCategories(sessionID, searchRequest);
         const traderAssorts = this.ragfairHelper.getDisplayableAssorts(sessionID);
         const result: IGetOffersResult = {
@@ -94,10 +96,9 @@ export class RagfairController
             selectedCategory: searchRequest.handbookId,
         };
 
-        const pmcProfile = this.profileHelper.getPmcProfile(sessionID);
-
         result.offers = this.getOffersForSearchType(searchRequest, itemsToAdd, traderAssorts, pmcProfile);
 
+        // Client requested a category refresh
         if (searchRequest.updateOfferCount)
         {
             result.categories = this.getSpecificCategories(pmcProfile, searchRequest, result.offers);
