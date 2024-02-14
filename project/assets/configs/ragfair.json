@@ -265,6 +265,10 @@
             "min": -2,
             "max": 20
         },
+		"armor": {
+			"removeRemovablePlateChance": 40,
+			"plateSlotIdToRemovePool": ["front_plate", "back_plate"]
+		},
 		"itemPriceMultiplier": {
 			"5737292724597765e5728562": 6,
 			"57372ac324597767001bc261": 5,

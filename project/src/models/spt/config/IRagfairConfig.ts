@@ -78,6 +78,8 @@ export interface Dynamic
     nonStackableCount: MinMax;
     /** Range of rating offers for items being listed */
     rating: MinMax;
+    /** Armor specific flea settings */
+    armor: IArmorSettings;
     /** A multipler to apply to individual tpls price just prior to item quality adjustment */
     itemPriceMultiplier: Record<string, number>;
     /** Percentages to sell offers in each currency */
@@ -179,4 +181,12 @@ export interface IUnreasonableModPrices
     handbookPriceOverMultiplier: number;
     /** The new multiplier for items found using above property, e.g. a value of 4 means set items price to 4x handbook price */
     newPriceHandbookMultiplier: number;
+}
+
+export interface IArmorSettings
+{
+    /** % chance / 100 that armor plates will be removed from an offer before listing */
+    removeRemovablePlateChance: number;
+    /** What slots are to be removed when removeRemovablePlateChance is true */
+    plateSlotIdToRemovePool: string[];
 }

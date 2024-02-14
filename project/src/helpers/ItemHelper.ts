@@ -107,6 +107,19 @@ export class ItemHelper
     }
 
     /**
+     * Does the pased in tpl have ability to hold removable plate items
+     * @param itemTpl item tpl to check for plate support
+     * @returns True when armor can hold plates
+     */
+    public armorItemHasRemovablePlateSlots(itemTpl: string): boolean
+    {
+        const itemTemplate = this.getItem(itemTpl);
+        const plateSlotIds = this.getRemovablePlateSlotIds();
+
+        return itemTemplate[1]._props.Slots.some((slot) => plateSlotIds.includes(slot._name.toLowerCase()));
+    }
+
+    /**
      * Does the provided item tpl require soft inserts to become a valid armor item
      * @param itemTpl Item tpl to check
      * @returns True if it needs armor inserts

@@ -384,9 +384,7 @@ export class RagfairOfferGenerator
             delete clonedAssort[0].parentId;
             delete clonedAssort[0].slotId;
 
-            assortSingleOfferProcesses.push(
-                this.createSingleOfferForItem(clonedAssort, isPreset, itemDetails),
-            );
+            assortSingleOfferProcesses.push(this.createSingleOfferForItem(clonedAssort, isPreset, itemDetails));
         }
 
         await Promise.all(assortSingleOfferProcesses);
@@ -465,7 +463,27 @@ export class RagfairOfferGenerator
                 itemWithChildren[0]._tpl,
                 this.ragfairConfig.dynamic.pack.itemTypeWhitelist,
             );
+
         const randomUserId = this.hashUtil.generate();
+
+        // Remove removable plates if % check passes
+        if (this.itemHelper.armorItemCanHoldMods(itemWithChildren[0]._tpl))
+        {
+            const armorConfig = this.ragfairConfig.dynamic.armor;
+
+            const shouldRemovePlates = this.randomUtil.getChance100(armorConfig.removeRemovablePlateChance);
+            if (shouldRemovePlates && this.itemHelper.armorItemHasRemovablePlateSlots(itemWithChildren[0]._tpl))
+            {
+                const offerItemPlatesToRemove = itemWithChildren.filter((item) =>
+                    armorConfig.plateSlotIdToRemovePool.includes(item.slotId?.toLowerCase())
+                );
+
+                for (const plateItem of offerItemPlatesToRemove)
+                {
+                    itemWithChildren.splice(itemWithChildren.indexOf(plateItem), 1);
+                }
+            }
+        }
 
         let barterScheme: IBarterScheme[];
         if (isPackOffer)
