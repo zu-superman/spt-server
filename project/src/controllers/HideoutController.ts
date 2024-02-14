@@ -92,15 +92,15 @@ export class HideoutController
      * @param pmcData Player profile
      * @param request upgrade start request
      * @param sessionID Session id
-     * @returns IItemEventRouterResponse
+     * @param output Client response
      */
     public startUpgrade(
         pmcData: IPmcData,
         request: IHideoutUpgradeRequestData,
         sessionID: string,
-    ): IItemEventRouterResponse
+        output: IItemEventRouterResponse,
+    ): void
     {
-        const output = this.eventOutputHolder.getOutput(sessionID);
         const items = request.items.map((reqItem) =>
         {
             const item = pmcData.Inventory.items.find((invItem) => invItem._id === reqItem.id);
@@ -115,7 +115,9 @@ export class HideoutController
                 this.logger.error(
                     this.localisationService.getText("hideout-unable_to_find_item_in_inventory", item.requestedItem.id),
                 );
-                return this.httpResponse.appendErrorToOutput(output);
+                this.httpResponse.appendErrorToOutput(output);
+
+                return;
             }
 
             if (
@@ -138,7 +140,9 @@ export class HideoutController
         if (!profileHideoutArea)
         {
             this.logger.error(this.localisationService.getText("hideout-unable_to_find_area", request.areaType));
-            return this.httpResponse.appendErrorToOutput(output);
+            this.httpResponse.appendErrorToOutput(output);
+
+            return;
         }
 
         const hideoutDataDb = this.databaseServer.getTables().hideout.areas.find((area) =>
@@ -149,7 +153,9 @@ export class HideoutController
             this.logger.error(
                 this.localisationService.getText("hideout-unable_to_find_area_in_database", request.areaType),
             );
-            return this.httpResponse.appendErrorToOutput(output);
+            this.httpResponse.appendErrorToOutput(output);
+
+            return;
         }
 
         let ctime = hideoutDataDb.stages[profileHideoutArea.level + 1].constructionTime;
@@ -164,8 +170,6 @@ export class HideoutController
             profileHideoutArea.completeTime = Math.round(timestamp + ctime);
             profileHideoutArea.constructing = true;
         }
-
-        return output;
     }
 
     /**
@@ -174,22 +178,24 @@ export class HideoutController
      * @param pmcData Player profile
      * @param request Completed upgrade request
      * @param sessionID Session id
-     * @returns IItemEventRouterResponse
+     * @param output Client response
      */
     public upgradeComplete(
         pmcData: IPmcData,
         request: HideoutUpgradeCompleteRequestData,
         sessionID: string,
-    ): IItemEventRouterResponse
+        output: IItemEventRouterResponse,
+    ): void
     {
-        const output = this.eventOutputHolder.getOutput(sessionID);
         const db = this.databaseServer.getTables();
 
         const profileHideoutArea = pmcData.Hideout.Areas.find((area) => area.type === request.areaType);
         if (!profileHideoutArea)
         {
             this.logger.error(this.localisationService.getText("hideout-unable_to_find_area", request.areaType));
-            return this.httpResponse.appendErrorToOutput(output);
+            this.httpResponse.appendErrorToOutput(output);
+
+            return;
         }
 
         // Upgrade profile values
@@ -203,7 +209,9 @@ export class HideoutController
             this.logger.error(
                 this.localisationService.getText("hideout-unable_to_find_area_in_database", request.areaType),
             );
-            return this.httpResponse.appendErrorToOutput(output);
+            this.httpResponse.appendErrorToOutput(output);
+
+            return;
         }
 
         // Apply bonuses
@@ -245,8 +253,6 @@ export class HideoutController
             SkillTypes.HIDEOUT_MANAGEMENT,
             db.globals.config.SkillsSettings.HideoutManagement.SkillPointsPerAreaUpgrade,
         );
-
-        return output;
     }
 
     /**
@@ -1132,11 +1138,7 @@ export class HideoutController
      * @param request shooting range score request
      * @returns IItemEventRouterResponse
      */
-    public recordShootingRangePoints(
-        sessionId: string,
-        pmcData: IPmcData,
-        request: IRecordShootingRangePoints,
-    ): IItemEventRouterResponse
+    public recordShootingRangePoints(sessionId: string, pmcData: IPmcData, request: IRecordShootingRangePoints): void
     {
         // Check if counter exists, add placeholder if it doesnt
         if (!pmcData.Stats.Eft.OverallCounters.Items.find((x) => x.Key.includes("ShootingRangePoints")))
@@ -1149,9 +1151,6 @@ export class HideoutController
             x.Key.includes("ShootingRangePoints")
         );
         shootingRangeHighScore.Value = request.points;
-
-        // Check against live, maybe a response isnt necessary
-        return this.eventOutputHolder.getOutput(sessionId);
     }
 
     /**
