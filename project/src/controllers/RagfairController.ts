@@ -308,9 +308,15 @@ export class RagfairController
      */
     public update(): void
     {
+        const profilesDict = this.saveServer.getProfiles();
         for (const sessionID in this.saveServer.getProfiles())
         {
-            if (this.saveServer.getProfile(sessionID).characters.pmc.RagfairInfo !== undefined)
+            // Check profile is capable of creating offers
+            const pmcProfile = profilesDict[sessionID].characters.pmc;
+            if (
+                pmcProfile.RagfairInfo !== undefined
+                && pmcProfile.Info.Level >= this.databaseServer.getTables().globals.config.RagFair.minUserLevel
+            )
             {
                 this.ragfairOfferHelper.processOffersOnProfile(sessionID);
             }
