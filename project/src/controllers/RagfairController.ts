@@ -382,6 +382,7 @@ export class RagfairController
     ): IItemEventRouterResponse
     {
         const output = this.eventOutputHolder.getOutput(sessionID);
+        const fullProfile = this.saveServer.getProfile(sessionID);
 
         const validationMessage = "";
         if (!this.isValidPlayerOfferRequest(offerRequest, validationMessage))
@@ -399,13 +400,11 @@ export class RagfairController
 
         // Checks are done, create the offer
         const playerListedPriceInRub = this.calculateRequirementsPriceInRub(offerRequest.requirements);
-        const fullProfile = this.saveServer.getProfile(sessionID);
         const offer = this.createPlayerOffer(
-            fullProfile,
+            sessionID,
             offerRequest.requirements,
             this.ragfairHelper.mergeStackable(itemsInInventoryToList),
             offerRequest.sellInOnePiece,
-            playerListedPriceInRub,
         );
         const rootItem = offer.items[0];
 
@@ -621,11 +620,10 @@ export class RagfairController
     }
 
     public createPlayerOffer(
-        profile: IAkiProfile,
+        sessionId: string,
         requirements: Requirement[],
         items: Item[],
         sellInOnePiece: boolean,
-        amountToSend: number,
     ): IRagfairOffer
     {
         const loyalLevel = 1;
@@ -648,7 +646,7 @@ export class RagfairController
         });
 
         return this.ragfairOfferGenerator.createFleaOffer(
-            profile.characters.pmc.sessionId,
+            sessionId,
             this.timeUtil.getTimestamp(),
             formattedItems,
             formattedRequirements,
