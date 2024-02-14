@@ -86,7 +86,7 @@ export class RagfairController
 
     public getOffers(sessionID: string, searchRequest: ISearchRequestData): IGetOffersResult
     {
-        const pmcProfile = this.profileHelper.getPmcProfile(sessionID);
+        const profile = this.profileHelper.getFullProfile(sessionID);
 
         const itemsToAdd = this.ragfairHelper.filterCategories(sessionID, searchRequest);
         const traderAssorts = this.ragfairHelper.getDisplayableAssorts(sessionID);
@@ -96,12 +96,12 @@ export class RagfairController
             selectedCategory: searchRequest.handbookId,
         };
 
-        result.offers = this.getOffersForSearchType(searchRequest, itemsToAdd, traderAssorts, pmcProfile);
+        result.offers = this.getOffersForSearchType(searchRequest, itemsToAdd, traderAssorts, profile.characters.pmc);
 
         // Client requested a category refresh
         if (searchRequest.updateOfferCount)
         {
-            result.categories = this.getSpecificCategories(pmcProfile, searchRequest, result.offers);
+            result.categories = this.getSpecificCategories(profile.characters.pmc, searchRequest, result.offers);
         }
 
         this.addIndexValueToOffers(result.offers);
@@ -114,7 +114,6 @@ export class RagfairController
         );
 
         // Match offers with quests and lock unfinished quests
-        const profile = this.profileHelper.getFullProfile(sessionID);
         for (const offer of result.offers)
         {
             if (offer.user.memberType === MemberCategory.TRADER)
@@ -241,20 +240,20 @@ export class RagfairController
     /**
      * Update a trader flea offer with buy restrictions stored in the traders assort
      * @param offer flea offer to update
-     * @param profile full profile of player
+     * @param fullProfile Players full profile
      */
-    protected setTraderOfferPurchaseLimits(offer: IRagfairOffer, profile: IAkiProfile): void
+    protected setTraderOfferPurchaseLimits(offer: IRagfairOffer, fullProfile: IAkiProfile): void
     {
         // pre 3.6.x profiles lack this object, create it
-        if (!profile.traderPurchases)
+        if (!fullProfile.traderPurchases)
         {
-            profile.traderPurchases = {};
+            fullProfile.traderPurchases = {};
         }
 
         // No trader found, create a blank record for them
-        if (!profile.traderPurchases[offer.user.id])
+        if (!fullProfile.traderPurchases[offer.user.id])
         {
-            profile.traderPurchases[offer.user.id] = {};
+            fullProfile.traderPurchases[offer.user.id] = {};
         }
 
         const traderAssorts = this.traderHelper.getTraderAssortsByTraderId(offer.user.id).items;
@@ -262,8 +261,8 @@ export class RagfairController
         const assortData = traderAssorts.find((x) => x._id === assortId);
 
         // Use value stored in profile, otherwise use value directly from in-memory trader assort data
-        offer.buyRestrictionCurrent = profile.traderPurchases[offer.user.id][assortId]
-            ? profile.traderPurchases[offer.user.id][assortId].count
+        offer.buyRestrictionCurrent = fullProfile.traderPurchases[offer.user.id][assortId]
+            ? fullProfile.traderPurchases[offer.user.id][assortId].count
             : assortData.upd.BuyRestrictionCurrent;
 
         offer.buyRestrictionMax = assortData.upd.BuyRestrictionMax;
