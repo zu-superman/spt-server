@@ -120,7 +120,8 @@
             "5b3f15d486f77432d0509248": 3,
             "543be6564bdc2df4348b4568": 0,
             "5448ecbe4bdc2d60728b4568": 0,
-            "5671435f4bdc2d96058b4569": 0
+            "5671435f4bdc2d96058b4569": 0,
+            "543be5cb4bdc2deb348b4568": 3
         },
         "weaponDurabilityPercentMinMax": {
             "current": {
@@ -205,7 +206,8 @@
             "616eb7aea207f41933308f46": 40000,
             "5b3f15d486f77432d0509248": 5000,
             "5448f3ac4bdc2dce718b4569": 42000,
-            "5448f3a14bdc2d27728b4569": 20000
+            "5448f3a14bdc2d27728b4569": 20000,
+            "543be5cb4bdc2deb348b4568": 15000
         },
         "presetSlotsToRemoveChancePercent": {
             "mod_scope": 70,

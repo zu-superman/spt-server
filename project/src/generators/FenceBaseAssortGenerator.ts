@@ -105,13 +105,12 @@ export class FenceBaseAssortGenerator
             if (itemWithChildrenToAdd.length > 1)
             {
                 this.itemHelper.reparentItemAndChildren(itemWithChildrenToAdd[0], itemWithChildrenToAdd);
+                itemWithChildrenToAdd[0].parentId = "hideout";
             }
 
             // Create barter scheme (price)
             const barterSchemeToAdd: IBarterScheme = {
-                count: Math.round(
-                    this.handbookHelper.getTemplatePrice(rootItemDb._id) * this.traderConfig.fence.itemPriceMult,
-                ),
+                count: Math.round(this.getItemPrice(rootItemDb._id, itemWithChildrenToAdd)),
                 _tpl: Money.ROUBLES,
             };
 
@@ -174,6 +173,27 @@ export class FenceBaseAssortGenerator
 
             baseFenceAssort.loyal_level_items[itemAndChildren[0]._id] = 1;
         }
+    }
+
+    protected getItemPrice(itemTpl: string, items: Item[]): number
+    {
+        return this.itemHelper.isOfBaseclass(itemTpl, BaseClasses.AMMO_BOX)
+            ? this.getAmmoBoxPrice(items) * this.traderConfig.fence.itemPriceMult
+            : this.handbookHelper.getTemplatePrice(itemTpl) * this.traderConfig.fence.itemPriceMult;
+    }
+
+    protected getAmmoBoxPrice(items: Item[]): number
+    {
+        let total = 0;
+        for (const item of items)
+        {
+            if (this.itemHelper.isOfBaseclass(item._tpl, BaseClasses.AMMO))
+            {
+                total += this.handbookHelper.getTemplatePrice(item._tpl) * (item.upd.StackObjectsCount ?? 1);
+            }
+        }
+
+        return total;
     }
 
     /**
