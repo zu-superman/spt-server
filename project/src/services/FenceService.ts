@@ -541,14 +541,14 @@ export class FenceService
      * @param assortCount Number to add
      * @param assorts Assorts data to add to
      * @param baseFenceAssort Base data to draw from
-     * @param itemTypeCounts
+     * @param itemTypeLimits
      * @param loyaltyLevel Loyalty level to set new item to
      */
     protected addItemAssorts(
         assortCount: number,
         assorts: ITraderAssort,
         baseFenceAssort: ITraderAssort,
-        itemTypeCounts: Record<string, { current: number; max: number; }>,
+        itemTypeLimits: Record<string, { current: number; max: number; }>,
         loyaltyLevel: number,
     ): void
     {
@@ -570,8 +570,8 @@ export class FenceService
             );
 
             const itemDbDetails = this.itemHelper.getItem(chosenBaseAssortRoot._tpl)[1];
-            const itemLimitCount = itemTypeCounts[itemDbDetails._parent];
-            if (itemLimitCount && itemLimitCount.current > itemLimitCount.max)
+            const itemLimitCount = this.getMatchingItemLimit(itemTypeLimits, itemDbDetails._id);
+            if (itemLimitCount?.current >= itemLimitCount?.max)
             {
                 // Skip adding item as assort as limit reached, decrement i counter so we still get another item
                 i--;
@@ -621,6 +621,20 @@ export class FenceService
             assorts.items.push(...desiredAssortItemAndChildrenClone);
             assorts.barter_scheme[rootItemBeingAdded._id] = baseFenceAssort.barter_scheme[chosenBaseAssortRoot._id];
             assorts.loyal_level_items[rootItemBeingAdded._id] = loyaltyLevel;
+        }
+    }
+
+    protected getMatchingItemLimit(
+        itemTypeLimits: Record<string, { current: number; max: number; }>,
+        itemTpl: string,
+    ): { current: number; max: number; }
+    {
+        for (const baseTypeKey in itemTypeLimits)
+        {
+            if (this.itemHelper.isOfBaseclass(itemTpl, baseTypeKey))
+            {
+                return itemTypeLimits[baseTypeKey];
+            }
         }
     }
 
