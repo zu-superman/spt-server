@@ -539,11 +539,7 @@ export class InraidController
     {
         const fenceId = Traders.FENCE;
 
-        const postRaidFenceRep = offraidData.profile.TradersInfo[fenceId].standing;
-        this.logger.debug(`post-raid standing: ${postRaidFenceRep}`);
-
         let fenceStanding = Number(pmcData.TradersInfo[fenceId].standing);
-        this.logger.debug(`pre-raid fence standing: ${fenceStanding}`);
         fenceStanding = this.inRaidHelper.calculateFenceStandingChangeFromKillsAsScav(
             fenceStanding,
             offraidData.profile.Stats.Eft.Victims,
