@@ -70,7 +70,7 @@
 			"min": 8,
 			"max": 15
 		},
-        "itemPriceMult": 1.2,
+        "itemPriceMult": 1.3,
         "presetPriceMult": 1.3,
         "regenerateAssortsOnRefresh": false,
         "itemTypeLimits": {
