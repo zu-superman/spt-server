@@ -919,6 +919,34 @@
                     "WildSpawnType": "assault",
                     "isPlayers": true
                 }
+            ],
+            "shoreline": [
+                {
+                    "sptId": "shorelineScav1",
+                    "number": 1,
+                    "time_min": 20,
+                    "time_max": 180,
+                    "slots_min": 1,
+                    "slots_max": 3,
+                    "SpawnPoints": "ZoneSmuglers",
+                    "BotSide": "Savage",
+                    "BotPreset": "normal",
+                    "WildSpawnType": "assault",
+                    "isPlayers": true
+                },
+                {
+                    "sptId": "shorelineScav2",
+                    "number": 1,
+                    "time_min": 600,
+                    "time_max": 720,
+                    "slots_min": 1,
+                    "slots_max": 4,
+                    "SpawnPoints": "ZoneSmuglers",
+                    "BotSide": "Savage",
+                    "BotPreset": "normal",
+                    "WildSpawnType": "assault",
+                    "isPlayers": true
+                }
             ]
         }
     },
