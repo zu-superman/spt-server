@@ -46,6 +46,9 @@ export class FenceService
     /** Hydrated on initial assort generation as part of generateFenceAssorts() */
     protected desiredAssortCounts: IFenceAssortGenerationValues;
 
+    /** Items that have a multi-stack */
+    protected multiStackItems: Record<string, boolean> = {};
+
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("JsonUtil") protected jsonUtil: JsonUtil,
@@ -554,6 +557,10 @@ export class FenceService
     {
         const priceLimits = this.traderConfig.fence.itemCategoryRoublePriceLimit;
         const assortRootItems = baseFenceAssort.items.filter((x) => x.parentId === "hideout" && !x.upd?.sptPresetId);
+
+        // Clear cache of multi-stack items
+        this.multiStackItems = {};
+
         for (let i = 0; i < assortCount; i++)
         {
             const chosenBaseAssortRoot = this.randomUtil.getArrayValue(assortRootItems);
@@ -606,11 +613,28 @@ export class FenceService
             this.itemHelper.remapRootItemId(desiredAssortItemAndChildrenClone);
 
             const rootItemBeingAdded = desiredAssortItemAndChildrenClone[0];
-            this.randomiseItemUpdProperties(itemDbDetails, rootItemBeingAdded);
 
             rootItemBeingAdded.upd.StackObjectsCount = this.getSingleItemStackCount(itemDbDetails);
             // rootItemBeingAdded.upd.BuyRestrictionCurrent = 0;
             // rootItemBeingAdded.upd.UnlimitedCount = false;
+
+            // Only randomise single items
+            if (rootItemBeingAdded.upd.StackObjectsCount === 1)
+            {
+                this.randomiseItemUpdProperties(itemDbDetails, rootItemBeingAdded);
+            }
+            else
+            {
+                // Already have multi-stack, skip
+                if (this.multiStackItems[itemDbDetails._id])
+                {
+                    i--;
+                    continue;
+                }
+
+                // Flag item as added as multi stack
+                this.multiStackItems[itemDbDetails._id] = true;
+            }
 
             // Need to add mods to armors so they dont show as red in the trade screen
             if (this.itemHelper.itemRequiresSoftInserts(rootItemBeingAdded._tpl))
