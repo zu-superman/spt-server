@@ -366,7 +366,7 @@ export class ItemHelper
                 // food & drink
                 result = foodDrink.HpPercent / itemDetails._props.MaxResource;
             }
-            else if (key && key.NumberOfUsages > 0)
+            else if (key && key.NumberOfUsages > 0 && itemDetails._props.MaximumNumberOfUsage > 0)
             {
                 // keys - keys count upwards, not down like everything else
                 const maxNumOfUsages = itemDetails._props.MaximumNumberOfUsage;
