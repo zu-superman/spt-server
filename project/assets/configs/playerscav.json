@@ -77,7 +77,9 @@
                     "whitelist": []
                 }
             },
-            "labsAccessCardChancePercent": 0
+            "labsAccessCardChancePercent": 0,
+			"lootItemsToAddChancePercent": {
+			}
         },
         "-6": {
             "botTypeForLoot": "assault",
@@ -162,7 +164,8 @@
                     "whitelist": []
                 }
             },
-            "labsAccessCardChancePercent": 0
+            "lootItemsToAddChancePercent": {
+			}
         },
         "-5": {
             "botTypeForLoot": "assault",
@@ -247,7 +250,8 @@
                     "whitelist": []
                 }
             },
-            "labsAccessCardChancePercent": 0
+            "lootItemsToAddChancePercent": {
+			}
         },
         "-4": {
             "botTypeForLoot": "assault",
@@ -332,7 +336,8 @@
                     "whitelist": []
                 }
             },
-            "labsAccessCardChancePercent": 0
+            "lootItemsToAddChancePercent": {
+			}
         },
         "-3": {
             "botTypeForLoot": "assault",
@@ -417,7 +422,8 @@
                     "whitelist": []
                 }
             },
-            "labsAccessCardChancePercent": 0
+            "lootItemsToAddChancePercent": {
+			}
         },
         "-2": {
             "botTypeForLoot": "assault",
@@ -502,7 +508,8 @@
                     "whitelist": []
                 }
             },
-            "labsAccessCardChancePercent": 0
+            "lootItemsToAddChancePercent": {
+			}
         },
         "-1": {
             "botTypeForLoot": "assault",
@@ -587,7 +594,8 @@
                     "whitelist": []
                 }
             },
-            "labsAccessCardChancePercent": 0
+            "lootItemsToAddChancePercent": {
+			}
         },
         "0": {
             "botTypeForLoot": "assault",
@@ -672,7 +680,8 @@
                     "whitelist": []
                 }
             },
-            "labsAccessCardChancePercent": 0
+            "lootItemsToAddChancePercent": {
+			}
         },
         "1": {
             "botTypeForLoot": "assault",
@@ -759,7 +768,9 @@
                     "whitelist": []
                 }
             },
-            "labsAccessCardChancePercent": 3
+            "lootItemsToAddChancePercent": {
+				"5c94bbff86f7747ee735c08f": 3
+			}
         },
         "2": {
             "botTypeForLoot": "assault",
@@ -842,7 +853,10 @@
                     "whitelist": []
                 }
             },
-            "labsAccessCardChancePercent": 6
+            "lootItemsToAddChancePercent": {
+				"5c94bbff86f7747ee735c08f": 6,
+				"62178c4d4ecf221597654e3d": 3
+			}
         },
         "3": {
             "botTypeForLoot": "assault",
@@ -928,7 +942,10 @@
                     "whitelist": []
                 }
             },
-            "labsAccessCardChancePercent": 11
+            "lootItemsToAddChancePercent": {
+				"5c94bbff86f7747ee735c08f": 11,
+				"62178c4d4ecf221597654e3d": 8
+			}
         },
         "4": {
             "botTypeForLoot": "assault",
@@ -1013,7 +1030,11 @@
                     "whitelist": []
                 }
             },
-            "labsAccessCardChancePercent": 17
+            "lootItemsToAddChancePercent": {
+				"5c94bbff86f7747ee735c08f": 17,
+				"62178c4d4ecf221597654e3d": 13
+				
+			}
         },
         "5": {
             "botTypeForLoot": "assault",
@@ -1098,7 +1119,10 @@
                     "whitelist": []
                 }
             },
-            "labsAccessCardChancePercent": 22
+            "lootItemsToAddChancePercent": {
+				"5c94bbff86f7747ee735c08f": 22,
+				"62178c4d4ecf221597654e3d": 18
+			}
         },
         "6": {
             "botTypeForLoot": "assault",
@@ -1182,7 +1206,10 @@
                     "whitelist": []
                 }
             },
-            "labsAccessCardChancePercent": 27
+            "lootItemsToAddChancePercent": {
+				"5c94bbff86f7747ee735c08f": 27,
+				"62178c4d4ecf221597654e3d": 23
+			}
         }
     }
 }

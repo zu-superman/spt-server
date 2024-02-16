@@ -214,9 +214,9 @@ export class ProfileController
             this.givePlayerStartingQuestRewards(profileDetails, sessionID, response);
         }
 
-        this.saveServer.getProfile(sessionID).characters.scav = this.generatePlayerScav(sessionID);
-
         this.resetAllTradersInProfile(sessionID);
+
+        this.saveServer.getProfile(sessionID).characters.scav = this.generatePlayerScav(sessionID);
 
         // Store minimal profile and reload it
         this.saveServer.saveProfile(sessionID);

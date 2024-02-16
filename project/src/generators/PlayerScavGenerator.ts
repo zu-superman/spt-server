@@ -7,7 +7,7 @@ import { BotWeaponGeneratorHelper } from "@spt-aki/helpers/BotWeaponGeneratorHel
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
-import { Settings, Skills, Stats } from "@spt-aki/models/eft/common/tables/IBotBase";
+import { IBotBase, Settings, Skills, Stats } from "@spt-aki/models/eft/common/tables/IBotBase";
 import { IBotType } from "@spt-aki/models/eft/common/tables/IBotType";
 import { Item } from "@spt-aki/models/eft/common/tables/IItem";
 import { AccountTypes } from "@spt-aki/models/enums/AccountTypes";
@@ -67,10 +67,7 @@ export class PlayerScavGenerator
         const pmcDataClone = this.jsonUtil.clone(profile.characters.pmc);
         const existingScavDataClone = this.jsonUtil.clone(profile.characters.scav);
 
-        // scav profile can be empty on first profile creation
-        const scavKarmaLevel = (Object.keys(existingScavDataClone).length === 0)
-            ? 0
-            : this.getScavKarmaLevel(pmcDataClone);
+        const scavKarmaLevel = this.getScavKarmaLevel(pmcDataClone);
 
         // use karma level to get correct karmaSettings
         const playerScavKarmaSettings = this.playerScavConfig.karmaLevel[scavKarmaLevel];
@@ -121,28 +118,12 @@ export class PlayerScavGenerator
         scavData.WishList = existingScavDataClone.WishList ?? [];
         scavData.Encyclopedia = pmcDataClone.Encyclopedia;
 
-        // Add an extra labs card to pscav backpack based on config chance
-        if (this.randomUtil.getChance100(playerScavKarmaSettings.labsAccessCardChancePercent))
-        {
-            const labsCard = this.itemHelper.getItem("5c94bbff86f7747ee735c08f")[1];
-            const itemsToAdd: Item[] = [{
-                _id: this.hashUtil.generate(),
-                _tpl: labsCard._id,
-                ...this.botGeneratorHelper.generateExtraPropertiesForItem(labsCard),
-            }];
-            const result = this.botWeaponGeneratorHelper.addItemWithChildrenToEquipmentSlot(
-                ["TacticalVest", "Pockets", "Backpack"],
-                itemsToAdd[0]._id,
-                labsCard._id,
-                itemsToAdd,
-                scavData.Inventory,
-            );
-
-            if (result !== ItemAddedResult.SUCCESS)
-            {
-                this.logger.debug(`Unable to add keycard to bot. Reason: ${ItemAddedResult[result]}`);
-            }
-        }
+        // Add additional items to player scav as loot
+        this.addAdditionalLootToPlayerScavContainers(playerScavKarmaSettings.lootItemsToAddChancePercent, scavData, [
+            "TacticalVest",
+            "Pockets",
+            "Backpack",
+        ]);
 
         // Remove secure container
         scavData = this.profileHelper.removeSecureContainer(scavData);
@@ -154,6 +135,55 @@ export class PlayerScavGenerator
         this.saveServer.getProfile(sessionID).characters.scav = scavData;
 
         return scavData;
+    }
+
+    /**
+     * Add items picked from `playerscav.lootItemsToAddChancePercent`
+     * @param possibleItemsToAdd dict of tpl + % chance to be added
+     * @param scavData
+     * @param containersToAddTo Possible slotIds to add loot to
+     */
+    protected addAdditionalLootToPlayerScavContainers(
+        possibleItemsToAdd: Record<string, number>,
+        scavData: IBotBase,
+        containersToAddTo: string[],
+    ): void
+    {
+        for (const tpl in possibleItemsToAdd)
+        {
+            const shouldAdd = this.randomUtil.getChance100(possibleItemsToAdd[tpl]);
+            if (!shouldAdd)
+            {
+                continue;
+            }
+
+            const itemResult = this.itemHelper.getItem(tpl);
+            if (!itemResult[0])
+            {
+                this.logger.warning(`Unable to add ${tpl} to player scav, not an item`);
+                continue;
+            }
+
+            const itemTemplate = itemResult[1];
+            const itemsToAdd: Item[] = [{
+                _id: this.hashUtil.generate(),
+                _tpl: itemTemplate._id,
+                ...this.botGeneratorHelper.generateExtraPropertiesForItem(itemTemplate),
+            }];
+
+            const result = this.botWeaponGeneratorHelper.addItemWithChildrenToEquipmentSlot(
+                containersToAddTo,
+                itemsToAdd[0]._id,
+                itemTemplate._id,
+                itemsToAdd,
+                scavData.Inventory,
+            );
+
+            if (result !== ItemAddedResult.SUCCESS)
+            {
+                this.logger.debug(`Unable to add keycard to bot. Reason: ${ItemAddedResult[result]}`);
+            }
+        }
     }
 
     /**
