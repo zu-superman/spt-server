@@ -23,6 +23,7 @@ import { Traders } from "@spt-aki/models/enums/Traders";
 import { IAirdropConfig } from "@spt-aki/models/spt/config/IAirdropConfig";
 import { IBTRConfig } from "@spt-aki/models/spt/config/IBTRConfig";
 import { IInRaidConfig } from "@spt-aki/models/spt/config/IInRaidConfig";
+import { ILocationConfig } from "@spt-aki/models/spt/config/ILocationConfig";
 import { ITraderConfig } from "@spt-aki/models/spt/config/ITraderConfig";
 import { ITraderServiceModel } from "@spt-aki/models/spt/services/ITraderServiceModel";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
@@ -48,6 +49,7 @@ export class InraidController
     protected btrConfig: IBTRConfig;
     protected inRaidConfig: IInRaidConfig;
     protected traderConfig: ITraderConfig;
+    protected locationConfig: ILocationConfig;
 
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
@@ -76,6 +78,7 @@ export class InraidController
         this.btrConfig = this.configServer.getConfig(ConfigTypes.BTR);
         this.inRaidConfig = this.configServer.getConfig(ConfigTypes.IN_RAID);
         this.traderConfig = this.configServer.getConfig(ConfigTypes.TRADER);
+        this.locationConfig = this.configServer.getConfig(ConfigTypes.LOCATION);
     }
 
     /**
@@ -625,5 +628,10 @@ export class InraidController
     public getTraitorScavHostileChance(url: string, sessionID: string): number
     {
         return this.inRaidConfig.playerScavHostileChancePercent;
+    }
+
+    public getSandboxMaxPatrolValue(url: string, sessionID: string): number
+    {
+        return this.locationConfig.sandboxMaxPatrolvalue;
     }
 }

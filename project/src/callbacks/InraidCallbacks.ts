@@ -115,4 +115,9 @@ export class InraidCallbacks
     {
         return this.httpResponse.noBody(this.inraidController.getTraitorScavHostileChance(url, sessionId));
     }
+
+    public getSandboxMaxPatrolValue(url: string, info: IEmptyRequestData, sessionId: string): string
+    {
+        return this.httpResponse.noBody(this.inraidController.getSandboxMaxPatrolValue(url, sessionId));
+    }
 }
