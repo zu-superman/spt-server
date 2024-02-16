@@ -94,12 +94,13 @@ export class InRaidHelper
         let fenceStanding = existingFenceStanding;
         for (const victim of victims)
         {
+            let standingChangeForKill = this.getFenceStandingChangeForKillAsScav(victim);
             if (victim.Name?.includes(")") && victim.Side === "Savage")
             {
-                continue;
+                // Make value positive if traitor scav
+                standingChangeForKill = Math.abs(standingChangeForKill);
             }
 
-            const standingChangeForKill = this.getFenceStandingChangeForKillAsScav(victim);
             const additionalLossForKill = this.getAdditionalLossForKill(fenceStanding, standingChangeForKill);
 
             this.logger.warning(`rep change: ${standingChangeForKill} - additional: ${additionalLossForKill}`);
