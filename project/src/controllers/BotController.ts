@@ -172,6 +172,9 @@ export class BotController
         sessionId: string,
     ): IBotBase[]
     {
+        // Clear bot cache before any work starts
+        this.botGenerationCacheService.clearStoredBots();
+
         const allPmcsHaveSameNameAsPlayer = this.randomUtil.getChance100(
             this.pmcConfig.allPMCsHavePlayerNameWithRandomPrefixChance,
         );
