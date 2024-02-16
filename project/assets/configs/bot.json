@@ -94,9 +94,9 @@
         },
         "boss": {
             "armor": {
-                "maxDelta": 10,
+                "maxDelta": 0,
                 "minDelta": 0,
-                "minLimitPercent": 15
+                "minLimitPercent": 100
             },
             "weapon": {
                 "lowestMax": 80,
