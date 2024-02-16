@@ -155,6 +155,7 @@ export class RepairService
 
             if (skillPoints > 0)
             {
+                this.logger.debug(`Added: ${skillPoints} WEAPON_TREATMENT skill`);
                 this.profileHelper.addSkillPointsToPlayer(pmcData, SkillTypes.WEAPON_TREATMENT, skillPoints, true);
             }
         }
@@ -187,6 +188,7 @@ export class RepairService
             const pointsToAddToVestSkill = repairDetails.repairPoints
                 * this.repairConfig.armorKitSkillPointGainPerRepairPointMultiplier;
 
+            this.logger.debug(`Added: ${pointsToAddToVestSkill} ${vestSkillToLevel} skill`);
             this.profileHelper.addSkillPointsToPlayer(pmcData, vestSkillToLevel, pointsToAddToVestSkill);
         }
 
@@ -194,6 +196,7 @@ export class RepairService
         const intellectGainedFromRepair = this.getIntellectGainedFromRepair(repairDetails);
         if (intellectGainedFromRepair > 0)
         {
+            this.logger.debug(`Added: ${intellectGainedFromRepair} intellect skill`);
             this.profileHelper.addSkillPointsToPlayer(pmcData, SkillTypes.INTELLECT, intellectGainedFromRepair);
         }
     }
