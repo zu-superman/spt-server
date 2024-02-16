@@ -698,7 +698,7 @@
                 "equipment": {
                     "Headwear": 4,
                     "ArmorVest": 10,
-                    "Backpack": 8,
+                    "Backpack": 15,
                     "FirstPrimaryWeapon": 2,
                     "Holster": 5,
                     "Scabbard": 3
@@ -787,7 +787,7 @@
                 "equipment": {
                     "Headwear": 8,
                     "ArmorVest": 20,
-                    "Backpack": 15,
+                    "Backpack": 25,
                     "FirstPrimaryWeapon": 4,
                     "Holster": 15,
                     "Scabbard": 6
@@ -873,7 +873,7 @@
                 "equipment": {
                     "Headwear": 12,
                     "ArmorVest": 30,
-                    "Backpack": 22,
+                    "Backpack": 35,
                     "FirstPrimaryWeapon": 6,
                     "Holster": 25,
                     "Scabbard": 9
@@ -962,7 +962,7 @@
                 "equipment": {
                     "Headwear": 16,
                     "ArmorVest": 40,
-                    "Backpack": 30,
+                    "Backpack": 40,
                     "FirstPrimaryWeapon": 8,
                     "Holster": 35,
                     "Scabbard": 12
@@ -1051,7 +1051,7 @@
                 "equipment": {
                     "Headwear": 20,
                     "ArmorVest": 50,
-                    "Backpack": 39,
+                    "Backpack": 48,
                     "FirstPrimaryWeapon": 8,
                     "Holster": 45,
                     "Scabbard": 15
