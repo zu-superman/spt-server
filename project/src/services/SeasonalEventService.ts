@@ -61,6 +61,7 @@ export class SeasonalEventService
             "5df8a72c86f77412640e2e83", // Silver bauble
             "5a43943586f77416ad2f06e2", // Ded moroz hat
             "5a43957686f7742a2c2f11b0", // Santa hat
+            "61b9e1aaef9a1b5d6a79899a", // Santas's bag
         ];
     }
 
