@@ -416,7 +416,7 @@ export class ItemHelper
         // Armor
         if (itemDetails._props.armorClass)
         {
-            return repairable.Durability / itemDetails._props.MaxDurability;
+            return repairable.MaxDurability / itemDetails._props.MaxDurability;
         }
 
         // Weapon
