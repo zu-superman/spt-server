@@ -147,7 +147,8 @@ export class QuestController
                 }
 
                 // Prereq does not have its status requirement fulfilled
-                if (!conditionToFulfil.status.includes(prerequisiteQuest.status))
+                // Some bsg status ids are strings, MUST convert to number before doing includes check
+                if (!conditionToFulfil.status.map((status) => Number(status)).includes(prerequisiteQuest.status))
                 {
                     haveCompletedPreviousQuest = false;
                     break;
