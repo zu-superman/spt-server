@@ -423,28 +423,30 @@ export class HideoutHelper
     {
         // 1 resource last 14 min 27 sec, 1/14.45/60 = 0.00115
         // 10-10-2021 From wiki, 1 resource last 12 minutes 38 seconds, 1/12.63333/60 = 0.00131
-        let fuelDrainRate = this.databaseServer.getTables().hideout.settings.generatorFuelFlowRate
+        let fuelUsedSinceLastTick = this.databaseServer.getTables().hideout.settings.generatorFuelFlowRate
             * this.getTimeElapsedSinceLastServerTick(pmcData, isGeneratorOn);
 
-        const fuelBonus = pmcData.Bonuses.find((bonus) => bonus.type === BonusType.FUEL_CONSUMPTION);
-        const fuelBonusPercent = 1.0 - (fuelBonus ? Math.abs(fuelBonus.value) : 0) / 100;
-        fuelDrainRate *= fuelBonusPercent;
+        const fuelConsumptionBonus = pmcData.Bonuses.find((bonus) => bonus.type === BonusType.FUEL_CONSUMPTION);
+        const fuelConsumptionBonusPercent = 1.0
+            - (fuelConsumptionBonus ? Math.abs(fuelConsumptionBonus.value) : 0) / 100;
+        fuelUsedSinceLastTick *= fuelConsumptionBonusPercent;
 
         // Hideout management resource consumption bonus:
         const hideoutManagementConsumptionBonus = 1.0 - this.getHideoutManagementConsumptionBonus(pmcData);
-        fuelDrainRate *= hideoutManagementConsumptionBonus;
+        fuelUsedSinceLastTick *= hideoutManagementConsumptionBonus;
+
         let hasFuelRemaining = false;
         let pointsConsumed = 0;
-
         for (let i = 0; i < generatorArea.slots.length; i++)
         {
-            if (!generatorArea.slots[i]?.item)
+            const generatorSlot = generatorArea.slots[i];
+            if (!generatorSlot?.item)
             {
                 // No item in slot, skip
                 continue;
             }
 
-            const fuelItemInSlot = generatorArea.slots[i]?.item[0];
+            const fuelItemInSlot = generatorSlot?.item[0];
             if (!fuelItemInSlot)
             {
                 // No item in slot, skip
@@ -462,14 +464,14 @@ export class HideoutHelper
             if (!fuelRemaining)
             {
                 const fuelItemTemplate = this.itemHelper.getItem(fuelItemInSlot._tpl)[1];
-                pointsConsumed = fuelDrainRate;
-                fuelRemaining = fuelItemTemplate._props.MaxResource - fuelDrainRate;
+                pointsConsumed = fuelUsedSinceLastTick;
+                fuelRemaining = fuelItemTemplate._props.MaxResource - fuelUsedSinceLastTick;
             }
             else
             {
                 // Fuel exists already, deduct fuel from item remaining value
-                pointsConsumed = (fuelItemInSlot.upd.Resource.UnitsConsumed || 0) + fuelDrainRate;
-                fuelRemaining -= fuelDrainRate;
+                pointsConsumed = (fuelItemInSlot.upd.Resource.UnitsConsumed || 0) + fuelUsedSinceLastTick;
+                fuelRemaining -= fuelUsedSinceLastTick;
             }
 
             fuelRemaining = Math.round(fuelRemaining * 10000) / 10000;
@@ -484,6 +486,7 @@ export class HideoutHelper
 
             if (fuelRemaining > 0)
             {
+                // Deducted all used fuel from this container, clean up and exit loop
                 fuelItemInSlot.upd = this.getAreaUpdObject(1, fuelRemaining, pointsConsumed);
 
                 this.logger.debug(
@@ -492,13 +495,14 @@ export class HideoutHelper
                 );
                 hasFuelRemaining = true;
 
-                break; // Break here to avoid updating all the fuel tanks
+                break; // Break to avoid updating all the fuel tanks
             }
 
             fuelItemInSlot.upd = this.getAreaUpdObject(1, 0, 0);
 
-            // Update remaining resources to be subtracted
-            fuelDrainRate = Math.abs(fuelRemaining);
+            // Ran out of fuel items to deduct fuel from
+            fuelUsedSinceLastTick = Math.abs(fuelRemaining);
+            this.logger.debug(`Profile: ${pmcData._id} Generator ran out of fuel`, true);
         }
 
         // Out of fuel, flag generator as offline
