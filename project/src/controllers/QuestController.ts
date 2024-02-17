@@ -505,6 +505,13 @@ export class QuestController
             completeQuestResponse,
         );
 
+        // Check for linked failed + unrestartable quests (only get quests not already failed
+        const questsToFail = this.getQuestsFailedByCompletingQuest(completedQuestId, pmcData);
+        if (questsToFail?.length > 0)
+        {
+            this.failQuests(sessionID, pmcData, questsToFail, completeQuestResponse);
+        }
+
         // Show modal on player screen
         this.sendSuccessDialogMessageOnQuestComplete(sessionID, pmcData, completedQuestId, questRewards);
 
@@ -544,6 +551,36 @@ export class QuestController
         pmcData.Info.Level = this.playerService.calculateLevel(pmcData);
 
         return completeQuestResponse;
+    }
+
+    /**
+     * Return a list of quests that would fail when supplied quest is completed
+     * @param completedQuestId quest completed id
+     * @returns array of IQuest objects
+     */
+    protected getQuestsFailedByCompletingQuest(completedQuestId: string, pmcProfile: IPmcData): IQuest[]
+    {
+        const questsInDb = this.questHelper.getQuestsFromDb();
+        return questsInDb.filter((quest) =>
+        {
+            // No fail conditions, skip
+            if (!quest.conditions.Fail || quest.conditions.Fail.length === 0)
+            {
+                return false;
+            }
+
+            // Quest already failed in profile, skip
+            if (
+                pmcProfile.Quests.some((profileQuest) =>
+                    profileQuest.qid === quest._id && profileQuest.status === QuestStatus.Fail
+                )
+            )
+            {
+                return false;
+            }
+
+            return quest.conditions.Fail.some((condition) => condition.target?.includes(completedQuestId));
+        });
     }
 
     /**
@@ -691,12 +728,12 @@ export class QuestController
         for (const questToFail of questsToFail)
         {
             // Skip failing a quest that has a fail status of something other than success
-            if (questToFail.conditions.Fail?.some((x) => x.status?.some((y) => y !== QuestStatus.Success)))
+            if (questToFail.conditions.Fail?.some((x) => x.status?.some((status) => status !== QuestStatus.Success)))
             {
                 continue;
             }
 
-            const isActiveQuestInPlayerProfile = pmcData.Quests.find((y) => y.qid === questToFail._id);
+            const isActiveQuestInPlayerProfile = pmcData.Quests.find((quest) => quest.qid === questToFail._id);
             if (isActiveQuestInPlayerProfile)
             {
                 if (isActiveQuestInPlayerProfile.status !== QuestStatus.Fail)
