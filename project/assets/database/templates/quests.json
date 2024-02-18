@@ -5309,9 +5309,6 @@
               "_id": "65ba7538bf3fc35a9a0a00b0",
               "_tpl": "587e02ff24597743df3deaeb",
               "upd": {
-                "FireMode": {
-                  "FireMode": "single"
-                },
                 "Repairable": {
                   "Durability": 100,
                   "MaxDurability": 100
@@ -5338,6 +5335,18 @@
               "slotId": "mod_stock"
             },
             {
+              "_id": "65ba7538bf3fc35a9a0a00b4",
+              "_tpl": "587df3a12459772c28142567",
+              "parentId": "65ba7538bf3fc35a9a0a00b0",
+              "slotId": "mod_magazine"
+            },
+            {
+              "_id": "65ba7538bf3fc35a9a0a00b5",
+              "_tpl": "587e08ee245977446b4410cf",
+              "parentId": "65ba7538bf3fc35a9a0a00b0",
+              "slotId": "mod_mount"
+            },
+            {
               "_id": "65ba7538bf3fc35a9a0a00b6",
               "_tpl": "634eff66517ccc8a960fc735",
               "parentId": "65ba7538bf3fc35a9a0a00b0",
@@ -5356,9 +5365,9 @@
               "slotId": "mod_gas_block"
             },
             {
-              "_id": "65ca059b799cffcc8f0f67a8",
-              "_tpl": "653ece125a1690d9d90491e8",
-              "parentId": "65ca059b799cffcc8f0f67a7",
+              "_id": "65ba7538bf3fc35a9a0a00b9",
+              "_tpl": "634f03d40384a3ba4f06f874",
+              "parentId": "65ba7538bf3fc35a9a0a00b8",
               "slotId": "mod_mount_000"
             },
             {
@@ -5366,18 +5375,6 @@
               "_tpl": "574db213245977459a2f3f5d",
               "parentId": "65ba7538bf3fc35a9a0a00b7",
               "slotId": "mod_sight_rear"
-            },
-            {
-              "_id": "65ba7538bf3fc35a9a0a00b4",
-              "_tpl": "587df3a12459772c28142567",
-              "parentId": "65ba7538bf3fc35a9a0a00b0",
-              "slotId": "mod_magazine"
-            },
-            {
-              "_id": "65ba7538bf3fc35a9a0a00b5",
-              "_tpl": "587e08ee245977446b4410cf",
-              "parentId": "65ba7538bf3fc35a9a0a00b0",
-              "slotId": "mod_mount"
             },
             {
               "_id": "65ba7538bf3fc35a9a0a00bb",
@@ -70545,7 +70542,7 @@
       ],
       "AvailableForStart": [
         {
-          "availableAfter": 86400,
+          "availableAfter": 36000,
           "conditionType": "Quest",
           "dispersion": 0,
           "dynamicLocale": false,
@@ -70889,17 +70886,39 @@
     "conditions": {
       "AvailableForFinish": [
         {
+          "completeInSeconds": 0,
           "conditionType": "CounterCreator",
           "counter": {
             "conditions": [
               {
+                "bodyPart": [],
+                "compareMethod": ">=",
                 "conditionType": "Kills",
+                "daytime": {
+                  "from": 0,
+                  "to": 0
+                },
+                "distance": {
+                  "compareMethod": ">=",
+                  "value": 0
+                },
                 "dynamicLocale": false,
+                "enemyEquipmentExclusive": [],
+                "enemyEquipmentInclusive": [],
+                "enemyHealthEffects": [],
                 "id": "639a76ebdbf1d842d260cda5",
-                "target": "Any"
+                "resetOnSessionEnd": false,
+                "savageRole": [],
+                "target": "Any",
+                "value": 0,
+                "weapon": [],
+                "weaponCaliber": [],
+                "weaponModsExclusive": [],
+                "weaponModsInclusive": []
               },
               {
                 "conditionType": "InZone",
+                "dynamicLocale": false,
                 "id": "639a77086402c537c15d012e",
                 "zoneIds": [
                   "quest_zone_keeper6_kiba_kill"
@@ -70916,7 +70935,7 @@
           "oneSessionOnly": false,
           "parentId": "",
           "type": "Elimination",
-          "value": "20",
+          "value": 20,
           "visibilityConditions": []
         },
         {
@@ -70931,11 +70950,11 @@
           "minDurability": 0,
           "onlyFoundInRaid": false,
           "parentId": "",
-          "plantTime": "25",
+          "plantTime": 25,
           "target": [
             "635a758bfefc88a93f021b8a"
           ],
-          "value": "1",
+          "value": 1,
           "visibilityConditions": [
             {
               "conditionType": "CompleteCondition",
@@ -70957,11 +70976,11 @@
           "minDurability": 0,
           "onlyFoundInRaid": false,
           "parentId": "",
-          "plantTime": "25",
+          "plantTime": 25,
           "target": [
             "5d1b376e86f774252519444e"
           ],
-          "value": "1",
+          "value": 1,
           "visibilityConditions": [
             {
               "conditionType": "CompleteCondition",
@@ -70983,11 +71002,11 @@
           "minDurability": 0,
           "onlyFoundInRaid": false,
           "parentId": "",
-          "plantTime": "25",
+          "plantTime": 25,
           "target": [
             "5c13cef886f774072e618e82"
           ],
-          "value": "1",
+          "value": 1,
           "visibilityConditions": [
             {
               "conditionType": "CompleteCondition",
@@ -70998,6 +71017,7 @@
           "zoneId": "quest_zone_keeper6_cont_hide"
         },
         {
+          "completeInSeconds": 0,
           "conditionType": "CounterCreator",
           "counter": {
             "conditions": [
@@ -71028,7 +71048,7 @@
           "oneSessionOnly": false,
           "parentId": "",
           "type": "Completion",
-          "value": "1",
+          "value": 1,
           "visibilityConditions": [
             {
               "conditionType": "CompleteCondition",
@@ -71050,7 +71070,7 @@
       ],
       "AvailableForStart": [
         {
-          "availableAfter": 86400,
+          "availableAfter": 36000,
           "conditionType": "Quest",
           "dispersion": 0,
           "dynamicLocale": false,
@@ -71123,7 +71143,7 @@
           "index": 2,
           "target": "638f541a29ffd1183d187f57",
           "type": "TraderStanding",
-          "value": "0.01"
+          "value": "0.03"
         }
       ]
     },
@@ -71144,17 +71164,37 @@
     "conditions": {
       "AvailableForFinish": [
         {
+          "completeInSeconds": 0,
           "conditionType": "CounterCreator",
           "counter": {
             "conditions": [
               {
+                "bodyPart": [],
+                "compareMethod": ">=",
                 "conditionType": "Kills",
+                "daytime": {
+                  "from": 0,
+                  "to": 0
+                },
+                "distance": {
+                  "compareMethod": ">=",
+                  "value": 0
+                },
                 "dynamicLocale": false,
+                "enemyEquipmentExclusive": [],
+                "enemyEquipmentInclusive": [],
+                "enemyHealthEffects": [],
                 "id": "639adf867cb1a8023d49f686",
+                "resetOnSessionEnd": false,
                 "savageRole": [
                   "pmcBot"
                 ],
-                "target": "Savage"
+                "target": "Savage",
+                "value": 0,
+                "weapon": [],
+                "weaponCaliber": [],
+                "weaponModsExclusive": [],
+                "weaponModsInclusive": []
               }
             ],
             "id": "639adf3edbf1d842d260cda7"
@@ -71167,18 +71207,20 @@
           "oneSessionOnly": false,
           "parentId": "",
           "type": "Elimination",
-          "value": "20",
+          "value": 20,
           "visibilityConditions": []
         },
         {
+          "completeInSeconds": 0,
           "conditionType": "CounterCreator",
           "counter": {
             "conditions": [
               {
                 "conditionType": "VisitPlace",
+                "dynamicLocale": false,
                 "id": "63a7cfbcf32fa1316250c3d1",
                 "target": "quest_zone_keeper7_saferoom",
-                "value": "1"
+                "value": 1
               }
             ],
             "id": "63a7cf9f04d3dc28a52a20fb"
@@ -71191,7 +71233,7 @@
           "oneSessionOnly": false,
           "parentId": "",
           "type": "Discover",
-          "value": "1",
+          "value": 1,
           "visibilityConditions": [
             {
               "conditionType": "CompleteCondition",
@@ -71201,14 +71243,16 @@
           ]
         },
         {
+          "completeInSeconds": 0,
           "conditionType": "CounterCreator",
           "counter": {
             "conditions": [
               {
                 "conditionType": "VisitPlace",
+                "dynamicLocale": false,
                 "id": "63a7cffbcc389e31a64596db",
                 "target": "quest_zone_keeper7_test",
-                "value": "1"
+                "value": 1
               }
             ],
             "id": "63a7cfe104d3dc28a52a20fd"
@@ -71221,7 +71265,7 @@
           "oneSessionOnly": false,
           "parentId": "",
           "type": "Discover",
-          "value": "1",
+          "value": 1,
           "visibilityConditions": [
             {
               "conditionType": "CompleteCondition",
@@ -71246,7 +71290,7 @@
           "target": [
             "6398a4cfb5992f573c6562b3"
           ],
-          "value": "1",
+          "value": 1,
           "visibilityConditions": [
             {
               "conditionType": "CompleteCondition",
@@ -71275,7 +71319,7 @@
           "target": [
             "6398a4cfb5992f573c6562b3"
           ],
-          "value": "1",
+          "value": 1,
           "visibilityConditions": [
             {
               "conditionType": "CompleteCondition",
@@ -71287,7 +71331,7 @@
       ],
       "AvailableForStart": [
         {
-          "availableAfter": 86400,
+          "availableAfter": 36000,
           "conditionType": "Quest",
           "dispersion": 0,
           "dynamicLocale": false,
@@ -71356,7 +71400,7 @@
           "index": 2,
           "target": "638f541a29ffd1183d187f57",
           "type": "TraderStanding",
-          "value": "0.01"
+          "value": "0.04"
         }
       ]
     },
@@ -71377,14 +71421,16 @@
     "conditions": {
       "AvailableForFinish": [
         {
+          "completeInSeconds": 0,
           "conditionType": "CounterCreator",
           "counter": {
             "conditions": [
               {
                 "conditionType": "VisitPlace",
+                "dynamicLocale": false,
                 "id": "63a7d2deee7b4d0d5507baf4",
                 "target": "quest_zone_keeper8_1",
-                "value": "1"
+                "value": 1
               }
             ],
             "id": "63a7d2acee7b4d0d5507baf3"
@@ -71397,7 +71443,7 @@
           "oneSessionOnly": false,
           "parentId": "",
           "type": "Discover",
-          "value": "1",
+          "value": 1,
           "visibilityConditions": []
         },
         {
@@ -71412,11 +71458,11 @@
           "minDurability": 0,
           "onlyFoundInRaid": false,
           "parentId": "",
-          "plantTime": "40",
+          "plantTime": 40,
           "target": [
             "62811fa609427b40ab14e765"
           ],
-          "value": "1",
+          "value": 1,
           "visibilityConditions": [
             {
               "conditionType": "CompleteCondition",
@@ -71427,14 +71473,16 @@
           "zoneId": "quest_zone_keeper8_1_hide1"
         },
         {
+          "completeInSeconds": 0,
           "conditionType": "CounterCreator",
           "counter": {
             "conditions": [
               {
                 "conditionType": "VisitPlace",
+                "dynamicLocale": false,
                 "id": "63a7d3323e491955e65fb885",
                 "target": "quest_zone_keeper8_2",
-                "value": "1"
+                "value": 1
               }
             ],
             "id": "63a7d315f32fa1316250c3d3"
@@ -71447,7 +71495,7 @@
           "oneSessionOnly": false,
           "parentId": "",
           "type": "Discover",
-          "value": "1",
+          "value": 1,
           "visibilityConditions": []
         },
         {
@@ -71462,11 +71510,11 @@
           "minDurability": 0,
           "onlyFoundInRaid": false,
           "parentId": "",
-          "plantTime": "40",
+          "plantTime": 40,
           "target": [
             "5a1eaa87fcdbcb001865f75e"
           ],
-          "value": "1",
+          "value": 1,
           "visibilityConditions": [
             {
               "conditionType": "CompleteCondition",
@@ -71477,6 +71525,7 @@
           "zoneId": "quest_zone_keeper8_1_hide2"
         },
         {
+          "completeInSeconds": 0,
           "conditionType": "CounterCreator",
           "counter": {
             "conditions": [
@@ -71507,7 +71556,7 @@
           "oneSessionOnly": false,
           "parentId": "",
           "type": "Completion",
-          "value": "1",
+          "value": 1,
           "visibilityConditions": [
             {
               "conditionType": "CompleteCondition",
@@ -71524,7 +71573,7 @@
       ],
       "AvailableForStart": [
         {
-          "availableAfter": 86400,
+          "availableAfter": 36000,
           "conditionType": "Quest",
           "dispersion": 0,
           "dynamicLocale": false,
@@ -71597,7 +71646,7 @@
           "index": 2,
           "target": "638f541a29ffd1183d187f57",
           "type": "TraderStanding",
-          "value": "0.01"
+          "value": "0.04"
         }
       ]
     },
