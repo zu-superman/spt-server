@@ -644,7 +644,7 @@ export class FenceService
                 baseFenceAssortClone.barter_scheme[chosenBaseAssortRoot._id],
             );
 
-            // Only adjust item price by quality for solo items, enver multi-stack
+            // Only adjust item price by quality for solo items, never multi-stack
             if (isSingleStack)
             {
                 this.adjustItemPriceByQuality(assorts.barter_scheme, rootItemBeingAdded, itemDbDetails);
