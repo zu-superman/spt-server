@@ -8,7 +8,7 @@ import { IFenceLevel } from "@spt-aki/models/eft/common/IGlobals";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
 import { Item, Repairable } from "@spt-aki/models/eft/common/tables/IItem";
 import { ITemplateItem } from "@spt-aki/models/eft/common/tables/ITemplateItem";
-import { ITraderAssort } from "@spt-aki/models/eft/common/tables/ITrader";
+import { IBarterScheme, ITraderAssort } from "@spt-aki/models/eft/common/tables/ITrader";
 import { BaseClasses } from "@spt-aki/models/enums/BaseClasses";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { Traders } from "@spt-aki/models/enums/Traders";
@@ -99,17 +99,13 @@ export class FenceService
 
         // Clone assorts so we can adjust prices before sending to client
         const assort = this.jsonUtil.clone(this.fenceAssort);
-        this.adjustAssortItemPrices(
-            assort,
-            this.getFenceInfo(pmcProfile).PriceModifier,
-            this.traderConfig.fence.presetPriceMult,
-        );
+        this.adjustAssortItemPricesByConfigMultiplier(assort, 1, this.traderConfig.fence.presetPriceMult);
 
         // merge normal fence assorts + discount assorts if player standing is large enough
         if (pmcProfile.TradersInfo[Traders.FENCE].standing >= 6)
         {
             const discountAssort = this.jsonUtil.clone(this.fenceDiscountAssort);
-            this.adjustAssortItemPrices(
+            this.adjustAssortItemPricesByConfigMultiplier(
                 discountAssort,
                 this.traderConfig.fence.discountOptions.itemPriceMult,
                 this.traderConfig.fence.discountOptions.presetPriceMult,
@@ -128,7 +124,11 @@ export class FenceService
      * @param itemMultipler multipler to use on items
      * @param presetMultiplier preset multipler to use on presets
      */
-    protected adjustAssortItemPrices(assort: ITraderAssort, itemMultipler: number, presetMultiplier: number): void
+    protected adjustAssortItemPricesByConfigMultiplier(
+        assort: ITraderAssort,
+        itemMultipler: number,
+        presetMultiplier: number,
+    ): void
     {
         for (const item of assort.items)
         {
@@ -199,13 +199,6 @@ export class FenceService
             this.logger.warning(`adjustItemPriceByModifier() - no action taken for item: ${item._tpl}`);
 
             return;
-        }
-
-        // Adjust price based on durability
-        if (item.upd?.Repairable)
-        {
-            const itemQualityModifier = this.itemHelper.getItemQualityModifier(item);
-            assort.barter_scheme[item._id][0][0].count *= itemQualityModifier;
         }
     }
 
@@ -543,20 +536,22 @@ export class FenceService
      * Add item assorts to existing assort data
      * @param assortCount Number to add
      * @param assorts Assorts data to add to
-     * @param baseFenceAssort Base data to draw from
+     * @param baseFenceAssortClone Base data to draw from
      * @param itemTypeLimits
      * @param loyaltyLevel Loyalty level to set new item to
      */
     protected addItemAssorts(
         assortCount: number,
         assorts: ITraderAssort,
-        baseFenceAssort: ITraderAssort,
+        baseFenceAssortClone: ITraderAssort,
         itemTypeLimits: Record<string, { current: number; max: number; }>,
         loyaltyLevel: number,
     ): void
     {
         const priceLimits = this.traderConfig.fence.itemCategoryRoublePriceLimit;
-        const assortRootItems = baseFenceAssort.items.filter((x) => x.parentId === "hideout" && !x.upd?.sptPresetId);
+        const assortRootItems = baseFenceAssortClone.items.filter((x) =>
+            x.parentId === "hideout" && !x.upd?.sptPresetId
+        );
 
         // Clear cache of multi-stack items
         this.multiStackItems = {};
@@ -573,7 +568,7 @@ export class FenceService
                 continue;
             }
             let desiredAssortItemAndChildrenClone = this.jsonUtil.clone(
-                this.itemHelper.findAndReturnChildrenAsItems(baseFenceAssort.items, chosenBaseAssortRoot._id),
+                this.itemHelper.findAndReturnChildrenAsItems(baseFenceAssortClone.items, chosenBaseAssortRoot._id),
             );
 
             const itemDbDetails = this.itemHelper.getItem(chosenBaseAssortRoot._tpl)[1];
@@ -587,7 +582,7 @@ export class FenceService
 
             const itemIsPreset = this.presetHelper.isPreset(chosenBaseAssortRoot._id);
 
-            const price = baseFenceAssort.barter_scheme[chosenBaseAssortRoot._id][0][0].count;
+            const price = baseFenceAssortClone.barter_scheme[chosenBaseAssortRoot._id][0][0].count;
             if (price === 0 || (price === 1 && !itemIsPreset) || price === 100)
             {
                 // Don't allow "special" items / presets
@@ -619,7 +614,8 @@ export class FenceService
             // rootItemBeingAdded.upd.UnlimitedCount = false;
 
             // Only randomise single items
-            if (rootItemBeingAdded.upd.StackObjectsCount === 1)
+            const isSingleStack = rootItemBeingAdded.upd.StackObjectsCount === 1;
+            if (isSingleStack)
             {
                 this.randomiseItemUpdProperties(itemDbDetails, rootItemBeingAdded);
             }
@@ -632,7 +628,7 @@ export class FenceService
                     continue;
                 }
 
-                // Flag item as added as multi stack
+                // Flag item as added as multi-stack
                 this.multiStackItems[itemDbDetails._id] = true;
             }
 
@@ -643,8 +639,60 @@ export class FenceService
             }
 
             assorts.items.push(...desiredAssortItemAndChildrenClone);
-            assorts.barter_scheme[rootItemBeingAdded._id] = baseFenceAssort.barter_scheme[chosenBaseAssortRoot._id];
+
+            assorts.barter_scheme[rootItemBeingAdded._id] = this.jsonUtil.clone(
+                baseFenceAssortClone.barter_scheme[chosenBaseAssortRoot._id],
+            );
+
+            // Only adjust item price by quality for solo items, enver multi-stack
+            if (isSingleStack)
+            {
+                this.adjustItemPriceByQuality(assorts.barter_scheme, rootItemBeingAdded, itemDbDetails);
+            }
+
             assorts.loyal_level_items[rootItemBeingAdded._id] = loyaltyLevel;
+        }
+    }
+
+    /**
+     * Adjust price of item based on what is left to buy (resource/uses left)
+     * @param barterSchemes All barter scheme for item having price adjusted
+     * @param itemRoot Root item having price adjusted
+     * @param itemTemplate Db template of item
+     */
+    protected adjustItemPriceByQuality(
+        barterSchemes: Record<string, IBarterScheme[][]>,
+        itemRoot: Item,
+        itemTemplate: ITemplateItem,
+    ): void
+    {
+        // Healing items
+        if (itemRoot.upd?.MedKit)
+        {
+            const itemTotalMax = itemTemplate._props.MaxHpResource;
+            const current = itemRoot.upd.MedKit.HpResource;
+
+            // Current and max match, no adjustment necessary
+            if (itemTotalMax === current)
+            {
+                return;
+            }
+
+            const multipler = current / itemTotalMax;
+
+            // Multiply item cost by desired multiplier
+            const basePrice = barterSchemes[itemRoot._id][0][0].count;
+            barterSchemes[itemRoot._id][0][0].count = Math.round(basePrice * multipler);
+
+            return;
+        }
+
+        // Adjust price based on durability
+        if (itemRoot.upd?.Repairable)
+        {
+            const itemQualityModifier = this.itemHelper.getItemQualityModifier(itemRoot);
+            const basePrice = barterSchemes[itemRoot._id][0][0].count;
+            barterSchemes[itemRoot._id][0][0].count = Math.round(basePrice * itemQualityModifier);
         }
     }
 
