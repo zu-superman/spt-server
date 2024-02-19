@@ -6,6 +6,7 @@ import { BotDifficultyHelper } from "@spt-aki/helpers/BotDifficultyHelper";
 import { BotHelper } from "@spt-aki/helpers/BotHelper";
 import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
 import { WeightedRandomHelper } from "@spt-aki/helpers/WeightedRandomHelper";
+import { IWildBody } from "@spt-aki/models/eft/common/IGlobals";
 import {
     Common,
     Health as PmcHealth,
@@ -238,6 +239,18 @@ export class BotGenerator
         bot.Customization.Body = this.weightedRandomHelper.getWeightedValue<string>(appearance.body);
         bot.Customization.Feet = this.weightedRandomHelper.getWeightedValue<string>(appearance.feet);
         bot.Customization.Hands = this.weightedRandomHelper.getWeightedValue<string>(appearance.hands);
+
+        const tables = this.databaseServer.getTables();
+        const bodyGlobalDict = tables.globals.config.Customization.SavageBody;
+        const chosenBodyTemplate = tables.templates.customization[bot.Customization.Body];
+
+        // Find the body/hands mapping
+        const matchingBody: IWildBody = bodyGlobalDict[chosenBodyTemplate?._name];
+        if (matchingBody?.isNotRandom)
+        {
+            // Has fixed hands for this body, set them
+            bot.Customization.Hands = matchingBody.hands;
+        }
     }
 
     /**
