@@ -688,7 +688,7 @@ export class FenceService
         }
 
         // Adjust price based on durability
-        if (itemRoot.upd?.Repairable)
+        if (itemRoot.upd?.Repairable || this.itemHelper.isOfBaseclass(itemRoot._tpl, BaseClasses.KEY_MECHANICAL))
         {
             const itemQualityModifier = this.itemHelper.getItemQualityModifier(itemRoot);
             const basePrice = barterSchemes[itemRoot._id][0][0].count;
