@@ -340,8 +340,8 @@ export class InventoryController
     ): IItemEventRouterResponse
     {
         const inventoryItems = this.inventoryHelper.getOwnerInventoryItems(body, sessionID);
-        const sourceItem = inventoryItems.from.find(item => item._id == body.item);
-        const destinationItem = inventoryItems.to.find(item => item._id == body.with);
+        const sourceItem = inventoryItems.from.find((item) => item._id == body.item);
+        const destinationItem = inventoryItems.to.find((item) => item._id == body.with);
 
         if (sourceItem === null)
         {
@@ -458,6 +458,11 @@ export class InventoryController
         {
             if (item._id && item._id === body.item)
             {
+                if (!item.upd)
+                {
+                    item.upd = {};
+                }
+
                 item.upd.Foldable = { Folded: body.value };
                 return this.eventOutputHolder.getOutput(sessionID);
             }
