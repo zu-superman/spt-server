@@ -1287,7 +1287,14 @@ export class ItemHelper
         const ammos = staticAmmoDist[caliber];
         if (!ammos)
         {
-            this.logger.error(`missing caliber data for: ${caliber}`);
+            this.logger.error(`Missing caliber data for: ${caliber}`);
+        }
+
+        if (!Array.isArray(ammos))
+        {
+            this.logger.error(
+                `Unable to pick a cartridge for caliber ${caliber}, chosen staticAmmoDist data is not an array: ${ammos}`,
+            );
         }
 
         for (const icd of ammos)
