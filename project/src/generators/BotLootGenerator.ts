@@ -401,7 +401,7 @@ export class BotLootGenerator
                 if (weightedItemTpl === "5783c43d2459774bbe137486")
                 {
                     const addCurrency = this.randomUtil.getChance100(25);
-                    if (!addCurrency)
+                    if (addCurrency)
                     {
                         itemWithChildrenToAdd.push(...this.createWalletLoot(newRootItemId));
                     }
