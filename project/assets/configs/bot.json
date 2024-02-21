@@ -2343,5 +2343,18 @@
         "tarkovstreets": 26,
         "sandbox": 16,
         "default": 16
-    }
+    },
+	"walletLoot": {
+		"itemCount": {
+			"min": 1,
+			"max": 3
+		},
+		"stackSizeWeight": {
+			"25000": 1,
+			"20000": 2,
+			"15000": 4,
+			"10000": 7,
+			"5000": 10
+		}
+	}
 }

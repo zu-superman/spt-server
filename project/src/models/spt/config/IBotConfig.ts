@@ -37,6 +37,8 @@ export interface IBotConfig extends IBaseConfig
     secureContainerAmmoStackCount: number;
     /** Bot roles in this array will be given a dog tag on generation */
     botRolesWithDogTags: string[];
+    /** Settings to control the items that get added into wallets on bots */
+    walletLoot: IWalletLootSettings;
 }
 
 /** Number of bots to generate and store in cache on raid start per bot type */
@@ -78,6 +80,12 @@ export interface PresetBatch
     bossBoarSniper: number;
     sptUsec: number;
     sptBear: number;
+}
+
+export interface IWalletLootSettings
+{
+    itemCount: number;
+    stackSizeWeight: Record<string, number>;
 }
 
 export interface EquipmentFilters

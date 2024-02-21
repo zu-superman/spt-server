@@ -397,6 +397,16 @@ export class BotLootGenerator
                     }
                 }
 
+                // Is Simple-Wallet
+                if (weightedItemTpl === "5783c43d2459774bbe137486")
+                {
+                    const addCurrency = this.randomUtil.getChance100(25);
+                    if (!addCurrency)
+                    {
+                        itemWithChildrenToAdd.push(...this.createWalletLoot(newRootItemId));
+                    }
+                }
+
                 this.addRequiredChildItemsToParent(itemToAddTemplate, itemWithChildrenToAdd, isPmc);
 
                 // Attempt to add item to container(s)
@@ -452,6 +462,29 @@ export class BotLootGenerator
                 }
             }
         }
+    }
+
+    protected createWalletLoot(walletId: string): Item[]
+    {
+        const result: Item[] = [];
+
+        // Choose how many stacks of currency will be added to wallet
+        const itemCount = this.randomUtil.getInt(1, this.botConfig.walletLoot.itemCount);
+        for (let index = 0; index < itemCount; index++)
+        {
+            // Choose the size of the currency stack
+            const chosenStackCount = Number(
+                this.weightedRandomHelper.getWeightedValue<string>(this.botConfig.walletLoot.stackSizeWeight),
+            );
+            result.push({
+                _id: this.hashUtil.generate(),
+                _tpl: "5449016a4bdc2d6f028b456f", // TODO - extend to be more than just roubles
+                parentId: walletId,
+                upd: { StackObjectsCount: chosenStackCount },
+            });
+        }
+
+        return result;
     }
 
     /**
