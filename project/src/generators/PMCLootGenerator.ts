@@ -16,9 +16,9 @@ import { SeasonalEventService } from "@spt-aki/services/SeasonalEventService";
 @injectable()
 export class PMCLootGenerator
 {
-    protected pocketLootPool: string[] = [];
-    protected vestLootPool: string[] = [];
-    protected backpackLootPool: string[] = [];
+    protected pocketLootPool: Record<string, number> = {};
+    protected vestLootPool: Record<string, number> = {};
+    protected backpackLootPool: Record<string, number> = {};
     protected pmcConfig: IPmcConfig;
 
     constructor(
@@ -36,7 +36,7 @@ export class PMCLootGenerator
      * Create an array of loot items a PMC can have in their pockets
      * @returns string array of tpls
      */
-    public generatePMCPocketLootPool(): string[]
+    public generatePMCPocketLootPool(): Record<string, number>
     {
         // Hydrate loot dictionary if empty
         if (Object.keys(this.pocketLootPool).length === 0)
@@ -64,7 +64,10 @@ export class PMCLootGenerator
                 && item._props.Height === 1
             );
 
-            this.pocketLootPool = itemsToAdd.map((x) => x._id);
+            for (const itemToAdd of itemsToAdd)
+            {
+                this.pocketLootPool[itemToAdd._id] = 1;
+            }
         }
 
         return this.pocketLootPool;
@@ -74,7 +77,7 @@ export class PMCLootGenerator
      * Create an array of loot items a PMC can have in their vests
      * @returns string array of tpls
      */
-    public generatePMCVestLootPool(): string[]
+    public generatePMCVestLootPool(): Record<string, number>
     {
         // Hydrate loot dictionary if empty
         if (Object.keys(this.vestLootPool).length === 0)
@@ -101,7 +104,10 @@ export class PMCLootGenerator
                 && this.itemFitsInto2By2Slot(item)
             );
 
-            this.vestLootPool = itemsToAdd.map((x) => x._id);
+            for (const itemToAdd of itemsToAdd)
+            {
+                this.vestLootPool[itemToAdd._id] = 1;
+            }
         }
 
         return this.vestLootPool;
@@ -122,7 +128,7 @@ export class PMCLootGenerator
      * Create an array of loot items a PMC can have in their backpack
      * @returns string array of tpls
      */
-    public generatePMCBackpackLootPool(): string[]
+    public generatePMCBackpackLootPool(): Record<string, number>
     {
         // Hydrate loot dictionary if empty
         if (Object.keys(this.backpackLootPool).length === 0)
@@ -147,7 +153,10 @@ export class PMCLootGenerator
                 && !itemBlacklist.includes(item._id)
             );
 
-            this.backpackLootPool = itemsToAdd.map((x) => x._id);
+            for (const itemToAdd of itemsToAdd)
+            {
+                this.backpackLootPool[itemToAdd._id] = 1;
+            }
         }
 
         return this.backpackLootPool;

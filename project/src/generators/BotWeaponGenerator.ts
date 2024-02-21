@@ -475,7 +475,7 @@ export class BotWeaponGenerator
         const ubglMinMax: GenerationData = {
             // eslint-disable-next-line @typescript-eslint/naming-convention
             weights: { "1": 1, "2": 1 },
-            whitelist: [],
+            whitelist: {},
         };
 
         // get ammo template from db

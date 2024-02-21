@@ -72,16 +72,20 @@ export class BotLootGenerator
         // Limits on item types to be added as loot
         const itemCounts = botJsonTemplate.generation.items;
 
-        const backpackLootCount = this.weightedRandomHelper.getWeightedValue<number>(itemCounts.backpackLoot.weights);
-        const pocketLootCount = this.weightedRandomHelper.getWeightedValue<number>(itemCounts.pocketLoot.weights);
-        const vestLootCount = this.weightedRandomHelper.getWeightedValue<number>(itemCounts.vestLoot.weights);
-        const specialLootItemCount = this.weightedRandomHelper.getWeightedValue<number>(
-            itemCounts.specialItems.weights,
+        const backpackLootCount = Number(
+            this.weightedRandomHelper.getWeightedValue<number>(itemCounts.backpackLoot.weights),
         );
-        const healingItemCount = this.weightedRandomHelper.getWeightedValue<number>(itemCounts.healing.weights);
-        const drugItemCount = this.weightedRandomHelper.getWeightedValue<number>(itemCounts.drugs.weights);
-        const stimItemCount = this.weightedRandomHelper.getWeightedValue<number>(itemCounts.stims.weights);
-        const grenadeCount = this.weightedRandomHelper.getWeightedValue<number>(itemCounts.grenades.weights);
+        const pocketLootCount = Number(
+            this.weightedRandomHelper.getWeightedValue<number>(itemCounts.pocketLoot.weights),
+        );
+        const vestLootCount = this.weightedRandomHelper.getWeightedValue<number>(itemCounts.vestLoot.weights);
+        const specialLootItemCount = Number(
+            this.weightedRandomHelper.getWeightedValue<number>(itemCounts.specialItems.weights),
+        );
+        const healingItemCount = Number(this.weightedRandomHelper.getWeightedValue<number>(itemCounts.healing.weights));
+        const drugItemCount = Number(this.weightedRandomHelper.getWeightedValue<number>(itemCounts.drugs.weights));
+        const stimItemCount = Number(this.weightedRandomHelper.getWeightedValue<number>(itemCounts.stims.weights));
+        const grenadeCount = Number(this.weightedRandomHelper.getWeightedValue<number>(itemCounts.grenades.weights));
 
         // Forced pmc healing loot
         if (isPmc && this.pmcConfig.forceHealingItemsIntoSecure)
@@ -229,12 +233,12 @@ export class BotLootGenerator
     {
         const result = [EquipmentSlots.POCKETS];
 
-        if (botInventory.items.find((x) => x.slotId === EquipmentSlots.TACTICAL_VEST))
+        if (botInventory.items.find((item) => item.slotId === EquipmentSlots.TACTICAL_VEST))
         {
             result.push(EquipmentSlots.TACTICAL_VEST);
         }
 
-        if (botInventory.items.find((x) => x.slotId === EquipmentSlots.BACKPACK))
+        if (botInventory.items.find((item) => item.slotId === EquipmentSlots.BACKPACK))
         {
             result.push(EquipmentSlots.BACKPACK);
         }
@@ -249,17 +253,57 @@ export class BotLootGenerator
      */
     protected addForcedMedicalItemsToPmcSecure(botInventory: PmcInventory, botRole: string): void
     {
-        const grizzly = this.itemHelper.getItem("590c657e86f77412b013051d")[1];
-        this.addLootFromPool([grizzly], [EquipmentSlots.SECURED_CONTAINER], 1, botInventory, botRole, false, 0, true);
+        // Grizzly
+        this.addLootFromPool(
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            { "590c657e86f77412b013051d": 1 },
+            [EquipmentSlots.SECURED_CONTAINER],
+            1,
+            botInventory,
+            botRole,
+            false,
+            0,
+            true,
+        );
 
-        const surv12 = this.itemHelper.getItem("5d02797c86f774203f38e30a")[1];
-        this.addLootFromPool([surv12], [EquipmentSlots.SECURED_CONTAINER], 1, botInventory, botRole, false, 0, true);
+        // surv12
+        this.addLootFromPool(
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            { "5d02797c86f774203f38e30a": 1 },
+            [EquipmentSlots.SECURED_CONTAINER],
+            1,
+            botInventory,
+            botRole,
+            false,
+            0,
+            true,
+        );
 
-        const morphine = this.itemHelper.getItem("544fb3f34bdc2d03748b456a")[1];
-        this.addLootFromPool([morphine], [EquipmentSlots.SECURED_CONTAINER], 2, botInventory, botRole, false, 0, true);
+        // Morphine
+        this.addLootFromPool(
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            { "544fb3f34bdc2d03748b456a": 1 },
+            [EquipmentSlots.SECURED_CONTAINER],
+            2,
+            botInventory,
+            botRole,
+            false,
+            0,
+            true,
+        );
 
-        const afak = this.itemHelper.getItem("60098ad7c2240c0fe85c570a")[1];
-        this.addLootFromPool([afak], [EquipmentSlots.SECURED_CONTAINER], 2, botInventory, botRole, false, 0, true);
+        // AFAK
+        this.addLootFromPool(
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            { "60098ad7c2240c0fe85c570a": 1 },
+            [EquipmentSlots.SECURED_CONTAINER],
+            2,
+            botInventory,
+            botRole,
+            false,
+            0,
+            true,
+        );
     }
 
     /**
@@ -277,7 +321,7 @@ export class BotLootGenerator
 
     /**
      * Take random items from a pool and add to an inventory until totalItemCount or totalValueLimit or space limit is reached
-     * @param pool Pool of items to pick from
+     * @param pool Pool of items to pick from with weight
      * @param equipmentSlots What equipment slot will the loot items be added to
      * @param totalItemCount Max count of items to add
      * @param inventoryToAddItemsTo Bot inventory loot will be added to
@@ -287,7 +331,7 @@ export class BotLootGenerator
      * @param isPmc Is bot being generated for a pmc
      */
     protected addLootFromPool(
-        pool: ITemplateItem[],
+        pool: Record<string, number>,
         equipmentSlots: string[],
         totalItemCount: number,
         inventoryToAddItemsTo: PmcInventory,
@@ -298,7 +342,7 @@ export class BotLootGenerator
     ): void
     {
         // Loot pool has items
-        if (pool.length)
+        if (Object.keys(pool).length > 0)
         {
             let currentTotalRub = 0;
             const itemLimits: Record<string, number> = {};
@@ -307,7 +351,18 @@ export class BotLootGenerator
             let fitItemIntoContainerAttempts = 0;
             for (let i = 0; i < totalItemCount; i++)
             {
-                const itemToAddTemplate = this.getRandomItemFromPoolByBotRole(pool, botRole);
+                const weightedItemTpl = this.weightedRandomHelper.getWeightedValue<string>(pool);
+                const itemResult = this.itemHelper.getItem(weightedItemTpl);
+                const itemToAddTemplate = itemResult[1];
+                if (!itemResult[0])
+                {
+                    this.logger.warning(
+                        `Unable to process item tpl: ${weightedItemTpl} for slots: ${equipmentSlots} on bot: ${botRole}`,
+                    );
+
+                    continue;
+                }
+
                 const newRootItemId = this.hashUtil.generate();
                 const itemWithChildrenToAdd: Item[] = [{
                     _id: newRootItemId,
@@ -495,41 +550,6 @@ export class BotLootGenerator
                 }
             }
         }
-    }
-
-    /**
-     * Get a random item from the pool parameter using the biasedRandomNumber system
-     * @param pool Pool of items to pick an item from
-     * @param isPmc Is the bot being created a pmc
-     * @returns ITemplateItem object
-     */
-    protected getRandomItemFromPoolByBotRole(pool: ITemplateItem[], botRole: string): ITemplateItem
-    {
-        const itemIndex = this.randomUtil.getBiasedRandomNumber(
-            0,
-            pool.length - 1,
-            pool.length - 1,
-            this.getBotLootNValueByRole(botRole),
-        );
-        return pool[itemIndex];
-    }
-
-    /**
-     * Get the loot nvalue from botconfig
-     * @param botRole Role of bot e.g. assault/bosstagilla/sptBear
-     * @returns nvalue as number
-     */
-    protected getBotLootNValueByRole(botRole: string): number
-    {
-        const result = this.botConfig.lootNValue[botRole];
-        if (!result)
-        {
-            this.logger.warning(this.localisationService.getText("bot-unable_to_find_loot_n_value_for_bot", botRole));
-
-            return this.botConfig.lootNValue.scav;
-        }
-
-        return result;
     }
 
     /**

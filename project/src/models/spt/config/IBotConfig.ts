@@ -16,8 +16,6 @@ export interface IBotConfig extends IBaseConfig
     durability: IBotDurability;
     /** Controls the percentage values of randomization item resources */
     lootItemResourceRandomization: Record<string, IRandomisedResourceDetails>;
-    /** Control the weighting of how expensive an average loot item is on a PMC or Scav */
-    lootNValue: LootNvalue;
     /** Control what bots are added to a bots revenge list key: bottype, value: bottypes to revenge on seeing their death */
     revenge: Record<string, string[]>;
     /** Control how many items are allowed to spawn on a bot
@@ -80,12 +78,6 @@ export interface PresetBatch
     bossBoarSniper: number;
     sptUsec: number;
     sptBear: number;
-}
-
-export interface LootNvalue
-{
-    scav: number;
-    pmc: number;
 }
 
 export interface EquipmentFilters

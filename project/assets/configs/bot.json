@@ -273,55 +273,6 @@
             }
         }
     },
-    "lootNValue": {
-        "scav": 4,
-        "pmc": 3,
-        "assault": 4,
-        "marksman": 4,
-        "arenafighterevent": 4,
-        "arenafighter": 4,
-        "crazyassaultevent": 4,
-        "bossbully": 4,
-        "sptbear": 3,
-        "sptusec": 3,
-        "bossgluhar": 3,
-        "bosskilla": 3,
-        "bossknight": 3,
-        "bosskojaniy": 3,
-        "bosssanitar": 3,
-        "bosstagilla": 3,
-        "bosstest": 4,
-        "bosszryachiy": 3,
-        "bossboar": 3,
-        "bossboarsniper": 3,
-        "bosskolontay": 3,
-        "cursedassault": 4,
-        "exusec": 4,
-        "followerbigpipe": 4,
-        "followerbirdeye": 4,
-        "followerbully": 4,
-        "followergluharassault": 4,
-        "followergluharscout": 4,
-        "followergluharsecurity": 4,
-        "followergluharsnipe": 4,
-        "followerkojaniy": 4,
-        "followersanitar": 4,
-        "followertagilla": 4,
-        "followertest": 4,
-        "followerzryachiy": 4,
-        "followerboar": 4,
-        "followerboarclose1": 4,
-        "followerboarclose2": 4,
-        "followerkolontayassault": 4,
-        "followerkolontaysecurity": 4,
-        "gifter": 4,
-        "pmcbot": 4,
-        "sectantpriest": 4,
-        "sectantwarrior": 4,
-        "shooterbtr": 1,
-        "test": 4,
-        "ravangezryachiyevent": 4
-    },
     "chanceAssaultScavHasPlayerScavName": 10,
     "secureContainerAmmoStackCount": 20,
     "botRolesWithDogTags": [
@@ -883,18 +834,18 @@
                                 "0": 1,
                                 "1": 1
                             },
-                            "whitelist": []
+                            "whitelist": {}
                         },
                         "grenades": {
                             "weights": {
                                 "0": 25,
                                 "1": 11
                             },
-                            "whitelist": [
-                                "5710c24ad2720bc3458b45a3",
-                                "58d3db5386f77426186285a0",
-                                "5448be9a4bdc2dfd2f8b456a"
-                            ]
+                            "whitelist": {
+                                "5710c24ad2720bc3458b45a3": 1,
+                                "58d3db5386f77426186285a0": 1,
+                                "5448be9a4bdc2dfd2f8b456a": 1
+                            }
                         },
                         "healing": {
                             "weights": {
@@ -902,15 +853,15 @@
                                 "1": 4,
                                 "2": 3
                             },
-                            "whitelist": [
-                                "5e831507ea0a7c419c2f9bd9",
-                                "5755356824597772cb798962",
-                                "590c661e86f7741e566b646a",
-                                "590c657e86f77412b013051d",
-                                "544fb37f4bdc2dee738b4567",
-                                "544fb3364bdc2d34748b456a",
-                                "544fb25a4bdc2dfb738b4567"
-                            ]
+                            "whitelist": {
+                                "5e831507ea0a7c419c2f9bd9": 1,
+                                "5755356824597772cb798962": 1,
+                                "590c661e86f7741e566b646a": 1,
+                                "590c657e86f77412b013051d": 1,
+                                "544fb37f4bdc2dee738b4567": 1,
+                                "544fb3364bdc2d34748b456a": 1,
+                                "544fb25a4bdc2dfb738b4567": 1
+                            }
                         },
                         "backpackLoot": {
                             "weights": {
@@ -922,7 +873,7 @@
                                 "5": 2,
                                 "10": 1
                             },
-                            "whitelist": []
+                            "whitelist": {}
                         },
                         "pocketLoot": {
                             "weights": {
@@ -931,7 +882,7 @@
                                 "2": 1,
                                 "3": 1
                             },
-                            "whitelist": []
+                            "whitelist": {}
                         },
                         "vestLoot": {
                             "weights": {
@@ -941,7 +892,7 @@
                                 "3": 1,
                                 "4": 1
                             },
-                            "whitelist": []
+                            "whitelist": {}
                         },
                         "magazines": {
                             "weights": {
@@ -949,13 +900,13 @@
                                 "1": 2,
                                 "2": 1
                             },
-                            "whitelist": []
+                            "whitelist": {}
                         },
                         "stims": {
                             "weights": {
                                 "0": 1
                             },
-                            "whitelist": []
+                            "whitelist": {}
                         }
                     },
                     "equipment": {
