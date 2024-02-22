@@ -390,7 +390,7 @@ export class BotLootGenerator
                 {
                     if (this.itemHasReachedSpawnLimit(itemToAddTemplate, botRole, itemSpawnLimits))
                     {
-                        // Only remove if pool has some other items to pick
+                        // Remove item from pool to prevent it being picked again
                         delete pool[weightedItemTpl];
 
                         i--;
