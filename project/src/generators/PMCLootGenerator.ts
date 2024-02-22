@@ -38,18 +38,20 @@ export class PMCLootGenerator
      * Create an array of loot items a PMC can have in their pockets
      * @returns string array of tpls
      */
-    public generatePMCPocketLootPool(): Record<string, number>
+    public generatePMCPocketLootPool(botRole: string): Record<string, number>
     {
         // Hydrate loot dictionary if empty
         if (Object.keys(this.pocketLootPool).length === 0)
         {
             const items = this.databaseServer.getTables().templates.items;
+            const pmcPriceOverrides =
+                this.databaseServer.getTables().bots.types[botRole === "sptBear" ? "bear" : "usec"].inventory.items
+                    .Pockets;
 
             const allowedItemTypes = this.pmcConfig.pocketLoot.whitelist;
             const pmcItemBlacklist = this.pmcConfig.pocketLoot.blacklist;
             const itemBlacklist = this.itemFilterService.getBlacklistedItems();
 
-            // Blacklist seasonal items if not inside seasonal event
             // Blacklist seasonal items if not inside seasonal event
             if (!this.seasonalEventService.seasonalEventEnabled())
             {
@@ -68,12 +70,17 @@ export class PMCLootGenerator
 
             for (const itemToAdd of itemsToAdd)
             {
-                this.pocketLootPool[itemToAdd._id] = 1;
-            }
-
-            for (const itemToAdd of itemsToAdd)
-            {
-                this.pocketLootPool[itemToAdd._id] = 1;
+                // If pmc has override, use that. Otherwise use flea price
+                if (pmcPriceOverrides[itemToAdd._id])
+                {
+                    this.pocketLootPool[itemToAdd._id] = pmcPriceOverrides[itemToAdd._id];
+                }
+                else
+                {
+                    // Set price of item as its weight
+                    const price = this.ragfairPriceService.getFleaPriceForItem(itemToAdd._id);
+                    this.pocketLootPool[itemToAdd._id] = price;
+                }
             }
 
             const highestPrice = Math.max(...Object.values(this.backpackLootPool));
@@ -94,12 +101,15 @@ export class PMCLootGenerator
      * Create an array of loot items a PMC can have in their vests
      * @returns string array of tpls
      */
-    public generatePMCVestLootPool(): Record<string, number>
+    public generatePMCVestLootPool(botRole: string): Record<string, number>
     {
         // Hydrate loot dictionary if empty
         if (Object.keys(this.vestLootPool).length === 0)
         {
             const items = this.databaseServer.getTables().templates.items;
+            const pmcPriceOverrides =
+                this.databaseServer.getTables().bots.types[botRole === "sptBear" ? "bear" : "usec"].inventory.items
+                    .TacticalVest;
 
             const allowedItemTypes = this.pmcConfig.vestLoot.whitelist;
             const pmcItemBlacklist = this.pmcConfig.vestLoot.blacklist;
@@ -123,7 +133,17 @@ export class PMCLootGenerator
 
             for (const itemToAdd of itemsToAdd)
             {
-                this.vestLootPool[itemToAdd._id] = 1;
+                // If pmc has override, use that. Otherwise use flea price
+                if (pmcPriceOverrides[itemToAdd._id])
+                {
+                    this.vestLootPool[itemToAdd._id] = pmcPriceOverrides[itemToAdd._id];
+                }
+                else
+                {
+                    // Set price of item as its weight
+                    const price = this.ragfairPriceService.getFleaPriceForItem(itemToAdd._id);
+                    this.vestLootPool[itemToAdd._id] = price;
+                }
             }
 
             const highestPrice = Math.max(...Object.values(this.backpackLootPool));
@@ -155,12 +175,15 @@ export class PMCLootGenerator
      * Create an array of loot items a PMC can have in their backpack
      * @returns string array of tpls
      */
-    public generatePMCBackpackLootPool(): Record<string, number>
+    public generatePMCBackpackLootPool(botRole: string): Record<string, number>
     {
         // Hydrate loot dictionary if empty
         if (Object.keys(this.backpackLootPool).length === 0)
         {
             const items = this.databaseServer.getTables().templates.items;
+            const pmcPriceOverrides =
+                this.databaseServer.getTables().bots.types[botRole === "sptBear" ? "bear" : "usec"].inventory.items
+                    .Backpack;
 
             const allowedItemTypes = this.pmcConfig.backpackLoot.whitelist;
             const pmcItemBlacklist = this.pmcConfig.backpackLoot.blacklist;
@@ -182,9 +205,17 @@ export class PMCLootGenerator
 
             for (const itemToAdd of itemsToAdd)
             {
-                // Set price of item as its weight
-                const price = this.ragfairPriceService.getFleaPriceForItem(itemToAdd._id);
-                this.backpackLootPool[itemToAdd._id] = price;
+                // If pmc has override, use that. Otherwise use flea price
+                if (pmcPriceOverrides[itemToAdd._id])
+                {
+                    this.backpackLootPool[itemToAdd._id] = pmcPriceOverrides[itemToAdd._id];
+                }
+                else
+                {
+                    // Set price of item as its weight
+                    const price = this.ragfairPriceService.getFleaPriceForItem(itemToAdd._id);
+                    this.backpackLootPool[itemToAdd._id] = price;
+                }
             }
 
             const highestPrice = Math.max(...Object.values(this.backpackLootPool));

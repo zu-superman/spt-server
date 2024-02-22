@@ -115,9 +115,9 @@ export class BotLootCacheService
         if (isPmc)
         {
             // Replace lootPool from bot json with our own generated list for PMCs
-            lootPool.Backpack = this.jsonUtil.clone(this.pmcLootGenerator.generatePMCBackpackLootPool());
-            lootPool.Pockets = this.jsonUtil.clone(this.pmcLootGenerator.generatePMCPocketLootPool());
-            lootPool.TacticalVest = this.jsonUtil.clone(this.pmcLootGenerator.generatePMCVestLootPool());
+            lootPool.Backpack = this.jsonUtil.clone(this.pmcLootGenerator.generatePMCBackpackLootPool(botRole));
+            lootPool.Pockets = this.jsonUtil.clone(this.pmcLootGenerator.generatePMCPocketLootPool(botRole));
+            lootPool.TacticalVest = this.jsonUtil.clone(this.pmcLootGenerator.generatePMCVestLootPool(botRole));
         }
 
         // Backpack/Pockets etc
@@ -130,7 +130,6 @@ export class BotLootCacheService
             }
 
             // Sort loot pool into separate buckets
-            const items = this.itemHelper.getItems();
             switch (slot.toLowerCase())
             {
                 case "specialloot":
@@ -300,17 +299,6 @@ export class BotLootCacheService
             }
         }
 
-        // // Get pocket loot
-        // const pocketLootItems = pocketLootPool.filter((template) =>
-        //     // biome-ignore lint/complexity/useSimplifiedLogicExpression: <explanation>
-        //     !this.isBulletOrGrenade(template._props)
-        //     && !this.isMagazine(template._props)
-        //     && !this.isMedicalItem(template._props)
-        //     && !this.isGrenade(template._props)
-        //     && ("Height" in template._props)
-        //     && ("Width" in template._props)
-        // );
-
         // Get vest loot (excluding magazines, bullets, grenades, medical and healing items)
         const filteredVestItems = {};
         for (const itemKey of Object.keys(vestLootPool))
@@ -331,15 +319,6 @@ export class BotLootCacheService
                 filteredVestItems[itemKey] = vestLootPool[itemKey];
             }
         }
-
-        // // Get vest loot items
-        // const vestLootItems = vestLootPool.filter((template) =>
-        //     // biome-ignore lint/complexity/useSimplifiedLogicExpression: <explanation>
-        //     !this.isBulletOrGrenade(template._props)
-        //     && !this.isMagazine(template._props)
-        //     && !this.isMedicalItem(template._props)
-        //     && !this.isGrenade(template._props)
-        // );
 
         this.lootCache[botRole].healingItems = healingItems;
         this.lootCache[botRole].drugItems = drugItems;
