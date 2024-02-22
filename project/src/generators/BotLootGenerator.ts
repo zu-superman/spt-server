@@ -368,6 +368,12 @@ export class BotLootGenerator
             let fitItemIntoContainerAttempts = 0;
             for (let i = 0; i < totalItemCount; i++)
             {
+                // Pool can become empty if item spawn limits keep removing items
+                if (Object.keys(pool).length === 0)
+                {
+                    return;
+                }
+
                 const weightedItemTpl = this.weightedRandomHelper.getWeightedValue<string>(pool);
                 const itemResult = this.itemHelper.getItem(weightedItemTpl);
                 const itemToAddTemplate = itemResult[1];
@@ -380,27 +386,24 @@ export class BotLootGenerator
                     continue;
                 }
 
+                if (itemSpawnLimits)
+                {
+                    if (this.itemHasReachedSpawnLimit(itemToAddTemplate, botRole, itemSpawnLimits))
+                    {
+                        // Only remove if pool has some other items to pick
+                        delete pool[weightedItemTpl];
+
+                        i--;
+                        continue;
+                    }
+                }
+
                 const newRootItemId = this.hashUtil.generate();
                 const itemWithChildrenToAdd: Item[] = [{
                     _id: newRootItemId,
                     _tpl: itemToAddTemplate._id,
                     ...this.botGeneratorHelper.generateExtraPropertiesForItem(itemToAddTemplate, botRole),
                 }];
-
-                if (itemSpawnLimits)
-                {
-                    if (this.itemHasReachedSpawnLimit(itemToAddTemplate, botRole, itemSpawnLimits))
-                    {
-                        // Delete item from pool so it cant be picked again
-                        if (poolSize > 5)
-                        { // Only remove if pool has some other items to pick
-                            delete pool[weightedItemTpl];
-                        }
-
-                        i--;
-                        continue;
-                    }
-                }
 
                 // Is Simple-Wallet
                 if (weightedItemTpl === "5783c43d2459774bbe137486")
