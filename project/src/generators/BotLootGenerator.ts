@@ -407,18 +407,24 @@ export class BotLootGenerator
                     const addCurrency = this.randomUtil.getChance100(25);
                     if (addCurrency)
                     {
+                        // Create the currency items we want to add to wallet
                         const itemsToAdd = this.createWalletLoot(newRootItemId);
-                        const stashFS2D = this.inventoryHelper.getContainerSlotMap(weightedItemTpl);
+
+                        // Get the container grid for the wallet
+                        const containerGrid = this.inventoryHelper.getContainerSlotMap(weightedItemTpl);
+
+                        // Check if all the chosen currency items fit into wallet
                         const canAddToContainer = this.inventoryHelper.canPlaceItemsInContainer(
-                            this.jsonUtil.clone(stashFS2D),
+                            this.jsonUtil.clone(containerGrid), // MUST clone grid before passing in as function modifies grid
                             itemsToAdd,
                         );
                         if (canAddToContainer)
                         {
+                            // Add each currency to wallet
                             for (const itemToAdd of itemsToAdd)
                             {
                                 this.inventoryHelper.placeItemInContainer(
-                                    stashFS2D,
+                                    containerGrid,
                                     itemToAdd,
                                     itemWithChildrenToAdd[0]._id,
                                 );
