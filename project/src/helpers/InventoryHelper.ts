@@ -233,6 +233,12 @@ export class InventoryHelper
         }
     }
 
+    /**
+     * Can all probided items be added into player inventory
+     * @param sessionId Player id
+     * @param itemsWithChildren array of items with children to try and fit
+     * @returns True all items fit
+     */
     public canPlaceItemsInInventory(sessionId: string, itemsWithChildren: Item[][]): boolean
     {
         const pmcData = this.profileHelper.getPmcProfile(sessionId);
@@ -240,7 +246,7 @@ export class InventoryHelper
         const stashFS2D = this.jsonUtil.clone(this.getStashSlotMap(pmcData, sessionId));
         for (const itemWithChildren of itemsWithChildren)
         {
-            if (this.canPlaceItemInInventory(stashFS2D, itemWithChildren))
+            if (this.canPlaceItemInContainer(stashFS2D, itemWithChildren))
             {
                 return false;
             }
@@ -249,20 +255,45 @@ export class InventoryHelper
         return true;
     }
 
-    public canPlaceItemInInventory(stashFS2D: number[][], itemWithChildren: Item[]): boolean
+    /**
+     * Do the provided items all fit into the grid
+     * @param containerFS2D Container grid to fit items into
+     * @param itemsWithChildren items to try and fit into grid
+     * @returns True all fit
+     */
+    public canPlaceItemsInContainer(containerFS2D: number[][], itemsWithChildren: Item[][]): boolean
+    {
+        for (const itemWithChildren of itemsWithChildren)
+        {
+            if (this.canPlaceItemInContainer(containerFS2D, itemWithChildren))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Does an item fit into a container grid
+     * @param containerFS2D Container grid
+     * @param itemWithChildren item to check fits
+     * @returns True it fits
+     */
+    public canPlaceItemInContainer(containerFS2D: number[][], itemWithChildren: Item[]): boolean
     {
         // Get x/y size of item
         const rootItem = itemWithChildren[0];
         const itemSize = this.getItemSize(rootItem._tpl, rootItem._id, itemWithChildren);
 
         // Look for a place to slot item into
-        const findSlotResult = this.containerHelper.findSlotForItem(stashFS2D, itemSize[0], itemSize[1]);
+        const findSlotResult = this.containerHelper.findSlotForItem(containerFS2D, itemSize[0], itemSize[1]);
         if (findSlotResult.success)
         {
             try
             {
                 this.containerHelper.fillContainerMapWithItem(
-                    stashFS2D,
+                    containerFS2D,
                     findSlotResult.x,
                     findSlotResult.y,
                     itemSize[0],
@@ -283,6 +314,55 @@ export class InventoryHelper
         }
 
         return true;
+    }
+
+    /**
+     * Find a free location inside a container to fit the item
+     * @param containerFS2D Container grid to add item to
+     * @param itemWithChildren Item to add to grid
+     * @param containerId Id of the container we're fitting item into
+     */
+    public placeItemInContainer(containerFS2D: number[][], itemWithChildren: Item[], containerId: string): void
+    {
+        // Get x/y size of item
+        const rootItemAdded = itemWithChildren[0];
+        const itemSize = this.getItemSize(rootItemAdded._tpl, rootItemAdded._id, itemWithChildren);
+
+        // Look for a place to slot item into
+        const findSlotResult = this.containerHelper.findSlotForItem(containerFS2D, itemSize[0], itemSize[1]);
+        if (findSlotResult.success)
+        {
+            try
+            {
+                this.containerHelper.fillContainerMapWithItem(
+                    containerFS2D,
+                    findSlotResult.x,
+                    findSlotResult.y,
+                    itemSize[0],
+                    itemSize[1],
+                    findSlotResult.rotation,
+                );
+            }
+            catch (err)
+            {
+                const errorText = (typeof err === "string") ? ` -> ${err}` : err.message;
+                this.logger.error(this.localisationService.getText("inventory-fill_container_failed", errorText));
+
+                return;
+            }
+            // Store details for object, incuding container item will be placed in
+            rootItemAdded.parentId = containerId;
+            rootItemAdded.slotId = "hideout";
+            rootItemAdded.location = {
+                x: findSlotResult.x,
+                y: findSlotResult.y,
+                r: findSlotResult.rotation ? 1 : 0,
+                rotation: findSlotResult.rotation,
+            };
+
+            // Success! exit
+            return;
+        }
     }
 
     /**
@@ -777,9 +857,14 @@ export class InventoryHelper
         return inventoryItemHash;
     }
 
-    public getContainerMap(containerW: number, containerH: number, itemList: Item[], containerId: string): number[][]
+    protected getBlankContainerMap(containerH: number, containerY: number): number[][]
     {
-        const container2D: number[][] = Array(containerH).fill(0).map(() => Array(containerW).fill(0));
+        return Array(containerY).fill(0).map(() => Array(containerH).fill(0));
+    }
+
+    public getContainerMap(containerH: number, containerV: number, itemList: Item[], containerId: string): number[][]
+    {
+        const container2D: number[][] = this.getBlankContainerMap(containerH, containerV);
         const inventoryItemHash = this.getInventoryItemHash(itemList);
         const containerItemHash = inventoryItemHash.byParentId[containerId];
 
@@ -841,7 +926,11 @@ export class InventoryHelper
      * @returns OwnerInventoryItems with inventory of player/scav to adjust
      */
     public getOwnerInventoryItems(
-        request: IInventoryMoveRequestData | IInventorySplitRequestData | IInventoryMergeRequestData | IInventoryTransferRequestData,
+        request:
+            | IInventoryMoveRequestData
+            | IInventorySplitRequestData
+            | IInventoryMergeRequestData
+            | IInventoryTransferRequestData,
         sessionId: string,
     ): IOwnerInventoryItems
     {
@@ -910,6 +999,16 @@ export class InventoryHelper
         );
     }
 
+    public getContainerSlotMap(containerTpl: string): number[][]
+    {
+        const containerTemplate = this.itemHelper.getItem(containerTpl)[1];
+
+        const containerH = containerTemplate._props.Grids[0]._props.cellsH;
+        const containerV = containerTemplate._props.Grids[0]._props.cellsV;
+
+        return this.getBlankContainerMap(containerH, containerV);
+    }
+
     protected getSortingTableSlotMap(pmcData: IPmcData): number[][]
     {
         return this.getContainerMap(10, 45, pmcData.Inventory.items, pmcData.Inventory.sortingTable);
@@ -934,13 +1033,13 @@ export class InventoryHelper
             this.logger.error(this.localisationService.getText("inventory-stash_not_found", stashTPL));
         }
 
-        const stashX = stashItemDetails[1]._props.Grids[0]._props.cellsH !== 0
+        const stashH = stashItemDetails[1]._props.Grids[0]._props.cellsH !== 0
             ? stashItemDetails[1]._props.Grids[0]._props.cellsH
             : 10;
         const stashY = stashItemDetails[1]._props.Grids[0]._props.cellsV !== 0
             ? stashItemDetails[1]._props.Grids[0]._props.cellsV
             : 66;
-        return [stashX, stashY];
+        return [stashH, stashY];
     }
 
     /**

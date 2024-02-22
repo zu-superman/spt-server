@@ -4,6 +4,7 @@ import { BotWeaponGenerator } from "@spt-aki/generators/BotWeaponGenerator";
 import { BotGeneratorHelper } from "@spt-aki/helpers/BotGeneratorHelper";
 import { BotWeaponGeneratorHelper } from "@spt-aki/helpers/BotWeaponGeneratorHelper";
 import { HandbookHelper } from "@spt-aki/helpers/HandbookHelper";
+import { InventoryHelper } from "@spt-aki/helpers/InventoryHelper";
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { WeightedRandomHelper } from "@spt-aki/helpers/WeightedRandomHelper";
 import { Inventory as PmcInventory } from "@spt-aki/models/eft/common/tables/IBotBase";
@@ -23,6 +24,7 @@ import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { BotLootCacheService } from "@spt-aki/services/BotLootCacheService";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
 import { HashUtil } from "@spt-aki/utils/HashUtil";
+import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 import { RandomUtil } from "@spt-aki/utils/RandomUtil";
 
 @injectable()
@@ -36,6 +38,8 @@ export class BotLootGenerator
         @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
+        @inject("JsonUtil") protected jsonUtil: JsonUtil,
+        @inject("InventoryHelper") protected inventoryHelper: InventoryHelper,
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("HandbookHelper") protected handbookHelper: HandbookHelper,
         @inject("BotGeneratorHelper") protected botGeneratorHelper: BotGeneratorHelper,
@@ -403,7 +407,25 @@ export class BotLootGenerator
                     const addCurrency = this.randomUtil.getChance100(25);
                     if (addCurrency)
                     {
-                        itemWithChildrenToAdd.push(...this.createWalletLoot(newRootItemId));
+                        const itemsToAdd = this.createWalletLoot(newRootItemId);
+                        const stashFS2D = this.inventoryHelper.getContainerSlotMap(weightedItemTpl);
+                        const canAddToContainer = this.inventoryHelper.canPlaceItemsInContainer(
+                            this.jsonUtil.clone(stashFS2D),
+                            itemsToAdd,
+                        );
+                        if (canAddToContainer)
+                        {
+                            for (const itemToAdd of itemsToAdd)
+                            {
+                                this.inventoryHelper.placeItemInContainer(
+                                    stashFS2D,
+                                    itemToAdd,
+                                    itemWithChildrenToAdd[0]._id,
+                                );
+                            }
+
+                            itemWithChildrenToAdd.push(...itemsToAdd.flatMap((x) => x));
+                        }
                     }
                 }
 
@@ -464,9 +486,9 @@ export class BotLootGenerator
         }
     }
 
-    protected createWalletLoot(walletId: string): Item[]
+    protected createWalletLoot(walletId: string): Item[][]
     {
-        const result: Item[] = [];
+        const result: Item[][] = [];
 
         // Choose how many stacks of currency will be added to wallet
         const itemCount = this.randomUtil.getInt(1, this.botConfig.walletLoot.itemCount);
@@ -476,12 +498,12 @@ export class BotLootGenerator
             const chosenStackCount = Number(
                 this.weightedRandomHelper.getWeightedValue<string>(this.botConfig.walletLoot.stackSizeWeight),
             );
-            result.push({
+            result.push([{
                 _id: this.hashUtil.generate(),
                 _tpl: "5449016a4bdc2d6f028b456f", // TODO - extend to be more than just roubles
                 parentId: walletId,
                 upd: { StackObjectsCount: chosenStackCount },
-            });
+            }]);
         }
 
         return result;
