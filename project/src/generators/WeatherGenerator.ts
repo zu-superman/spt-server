@@ -73,12 +73,10 @@ export class WeatherGenerator
     {
         // tarkov time = (real time * 7 % 24 hr) + 3 hour
         const russiaOffset = (this.timeUtil.getHoursAsSeconds(3)) * 1000;
-        const tarkovTime = new Date(
+        return new Date(
             (russiaOffset + (new Date().getTime() * this.weatherConfig.acceleration))
                 % (this.timeUtil.getHoursAsSeconds(24) * 1000),
         );
-
-        return new Date(tarkovTime);
     }
 
     /**
