@@ -44,6 +44,6 @@ export class WeatherController
      */
     public getCurrentInRaidTime(): Date
     {
-        return this.weatherGenerator.getInRaidTime(new Date());
+        return this.weatherGenerator.getInRaidTime();
     }
 }
