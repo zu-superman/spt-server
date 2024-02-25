@@ -22,9 +22,14 @@ export class PresetController
 
         for (const [id, preset] of presets)
         {
-            if (id != preset._id)
+            if (id !== preset._id)
             {
-                this.logger.error(`Preset for template '${preset._items[0]._tpl}' has invalid id (${id} != ${preset._id}). Skipping`);
+                this.logger.error(
+                    `Preset for template tpl: '${
+                        preset._items[0]._tpl
+                    } ${preset._name}' has invalid key: (${id} != ${preset._id}). Skipping`,
+                );
+
                 continue;
             }
 
