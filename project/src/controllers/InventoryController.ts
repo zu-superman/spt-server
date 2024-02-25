@@ -443,32 +443,34 @@ export class InventoryController
     /**
      * Handles folding of Weapons
      */
-    public foldItem(pmcData: IPmcData, body: IInventoryFoldRequestData, sessionID: string): IItemEventRouterResponse
+    public foldItem(pmcData: IPmcData, request: IInventoryFoldRequestData, sessionID: string): IItemEventRouterResponse
     {
+        // May need to reassign to scav profile
         let playerData = pmcData;
 
-        // Fix for folding weapons while on they're in the Scav inventory
-        if (body.fromOwner && body.fromOwner.type === "Profile" && body.fromOwner.id !== playerData._id)
+        // We may be folding data on scav profile, get that profile instead
+        if (request.fromOwner && request.fromOwner.type === "Profile" && request.fromOwner.id !== playerData._id)
         {
             playerData = this.profileHelper.getScavProfile(sessionID);
         }
 
-        // TODO - replace with single .find() call
-        for (const item of playerData.Inventory.items)
+        const itemToFold = playerData.Inventory.items.find((item) => item?._id === request.item);
+        if (!itemToFold)
         {
-            if (item._id && item._id === body.item)
-            {
-                if (!item.upd)
-                {
-                    item.upd = {};
-                }
-
-                item.upd.Foldable = { Folded: body.value };
-                return this.eventOutputHolder.getOutput(sessionID);
-            }
+            // Item not found
+            this.logger.warning(`Unable to fold item: ${request.item}. Not found`);
+            return { warnings: [], profileChanges: {} };
         }
 
-        return { warnings: [], profileChanges: {} };
+        // Item may not have upd object
+        if (!itemToFold.upd)
+        {
+            itemToFold.upd = {};
+        }
+
+        itemToFold.upd.Foldable = { Folded: request.value };
+
+        return this.eventOutputHolder.getOutput(sessionID);
     }
 
     /**
