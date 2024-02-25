@@ -514,7 +514,7 @@ export class BotWeaponGenerator
         for (let i = 0; i < stackCount; i++)
         {
             const id = this.hashUtil.generate();
-            this.botWeaponGeneratorHelper.addItemWithChildrenToEquipmentSlot(
+            this.botGeneratorHelper.addItemWithChildrenToEquipmentSlot(
                 [EquipmentSlots.SECURED_CONTAINER],
                 id,
                 ammoTpl,

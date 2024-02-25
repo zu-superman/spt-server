@@ -3,7 +3,6 @@ import { inject, injectable } from "tsyringe";
 import { BotWeaponGenerator } from "@spt-aki/generators/BotWeaponGenerator";
 import { BotGeneratorHelper } from "@spt-aki/helpers/BotGeneratorHelper";
 import { BotHelper } from "@spt-aki/helpers/BotHelper";
-import { BotWeaponGeneratorHelper } from "@spt-aki/helpers/BotWeaponGeneratorHelper";
 import { HandbookHelper } from "@spt-aki/helpers/HandbookHelper";
 import { InventoryHelper } from "@spt-aki/helpers/InventoryHelper";
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
@@ -46,7 +45,6 @@ export class BotLootGenerator
         @inject("HandbookHelper") protected handbookHelper: HandbookHelper,
         @inject("BotGeneratorHelper") protected botGeneratorHelper: BotGeneratorHelper,
         @inject("BotWeaponGenerator") protected botWeaponGenerator: BotWeaponGenerator,
-        @inject("BotWeaponGeneratorHelper") protected botWeaponGeneratorHelper: BotWeaponGeneratorHelper,
         @inject("WeightedRandomHelper") protected weightedRandomHelper: WeightedRandomHelper,
         @inject("BotHelper") protected botHelper: BotHelper,
         @inject("BotLootCacheService") protected botLootCacheService: BotLootCacheService,
@@ -442,7 +440,7 @@ export class BotLootGenerator
                 this.addRequiredChildItemsToParent(itemToAddTemplate, itemWithChildrenToAdd, isPmc);
 
                 // Attempt to add item to container(s)
-                const itemAddedResult = this.botWeaponGeneratorHelper.addItemWithChildrenToEquipmentSlot(
+                const itemAddedResult = this.botGeneratorHelper.addItemWithChildrenToEquipmentSlot(
                     equipmentSlots,
                     newRootItemId,
                     itemToAddTemplate._id,
@@ -597,7 +595,7 @@ export class BotLootGenerator
                     isPmc,
                     botLevel,
                 );
-                const result = this.botWeaponGeneratorHelper.addItemWithChildrenToEquipmentSlot(
+                const result = this.botGeneratorHelper.addItemWithChildrenToEquipmentSlot(
                     [equipmentSlot],
                     generatedWeapon.weapon[0]._id,
                     generatedWeapon.weapon[0]._tpl,

@@ -3,7 +3,6 @@ import { inject, injectable } from "tsyringe";
 import { BotGenerator } from "@spt-aki/generators/BotGenerator";
 import { BotGeneratorHelper } from "@spt-aki/helpers/BotGeneratorHelper";
 import { BotHelper } from "@spt-aki/helpers/BotHelper";
-import { BotWeaponGeneratorHelper } from "@spt-aki/helpers/BotWeaponGeneratorHelper";
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
@@ -39,7 +38,6 @@ export class PlayerScavGenerator
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
-        @inject("BotWeaponGeneratorHelper") protected botWeaponGeneratorHelper: BotWeaponGeneratorHelper,
         @inject("BotGeneratorHelper") protected botGeneratorHelper: BotGeneratorHelper,
         @inject("SaveServer") protected saveServer: SaveServer,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
@@ -171,7 +169,7 @@ export class PlayerScavGenerator
                 ...this.botGeneratorHelper.generateExtraPropertiesForItem(itemTemplate),
             }];
 
-            const result = this.botWeaponGeneratorHelper.addItemWithChildrenToEquipmentSlot(
+            const result = this.botGeneratorHelper.addItemWithChildrenToEquipmentSlot(
                 containersToAddTo,
                 itemsToAdd[0]._id,
                 itemTemplate._id,

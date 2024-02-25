@@ -2,6 +2,7 @@ import { inject, injectable } from "tsyringe";
 
 import { IInventoryMagGen } from "@spt-aki/generators/weapongen/IInventoryMagGen";
 import { InventoryMagGen } from "@spt-aki/generators/weapongen/InventoryMagGen";
+import { BotGeneratorHelper } from "@spt-aki/helpers/BotGeneratorHelper";
 import { BotWeaponGeneratorHelper } from "@spt-aki/helpers/BotWeaponGeneratorHelper";
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { ITemplateItem } from "@spt-aki/models/eft/common/tables/ITemplateItem";
@@ -19,6 +20,7 @@ export class ExternalInventoryMagGen implements IInventoryMagGen
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("BotWeaponGeneratorHelper") protected botWeaponGeneratorHelper: BotWeaponGeneratorHelper,
+        @inject("BotGeneratorHelper") protected botGeneratorHelper: BotGeneratorHelper,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
     )
     {}
@@ -56,7 +58,7 @@ export class ExternalInventoryMagGen implements IInventoryMagGen
                 magTemplate,
             );
 
-            const fitsIntoInventory = this.botWeaponGeneratorHelper.addItemWithChildrenToEquipmentSlot(
+            const fitsIntoInventory = this.botGeneratorHelper.addItemWithChildrenToEquipmentSlot(
                 [EquipmentSlots.TACTICAL_VEST, EquipmentSlots.POCKETS],
                 magazineWithAmmo[0]._id,
                 magazineTpl,
