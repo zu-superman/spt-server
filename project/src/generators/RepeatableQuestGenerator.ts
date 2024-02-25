@@ -1,6 +1,5 @@
 import { inject, injectable } from "tsyringe";
 
-import { ExhaustableArray } from "@spt-aki/helpers/BotGeneratorHelper";
 import { HandbookHelper } from "@spt-aki/helpers/HandbookHelper";
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { PresetHelper } from "@spt-aki/helpers/PresetHelper";
@@ -32,6 +31,7 @@ import {
     IRepeatableQuestConfig,
 } from "@spt-aki/models/spt/config/IQuestConfig";
 import { IQuestTypePool } from "@spt-aki/models/spt/repeatable/IQuestTypePool";
+import { ExhaustableArray } from "@spt-aki/models/spt/server/ExhaustableArray";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { EventOutputHolder } from "@spt-aki/routers/EventOutputHolder";
 import { ConfigServer } from "@spt-aki/servers/ConfigServer";
