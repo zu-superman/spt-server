@@ -144,8 +144,14 @@ export class InRaidHelper
         const botTypes = this.databaseServer.getTables().bots.types;
         if (victim.Side.toLowerCase() === "savage")
         {
+            const standing = botTypes[victim.Role.toLowerCase()]?.experience?.standingForKill;
+            if (standing === undefined)
+            {
+                this.logger.warning(`Unable to find standing for kill for: ${victim.Role}, side: ${victim.Side}`);
+            }
+
             // Scavs and bosses
-            return botTypes[victim.Role.toLowerCase()]?.experience?.standingForKill;
+            return standing;
         }
 
         // PMCs - get by bear/usec
