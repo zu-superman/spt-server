@@ -126,10 +126,15 @@ export class RagfairOfferGenerator
 
         const itemsClone = this.jsonUtil.clone(items);
 
+
         // Add cartridges to offers for ammo boxes
         if (this.itemHelper.isOfBaseclass(itemsClone[0]._tpl, BaseClasses.AMMO_BOX))
         {
-            this.itemHelper.addCartridgesToAmmoBox(itemsClone, this.itemHelper.getItem(items[0]._tpl)[1]);
+            // On offer refresh dont re-add cartidges to ammobox that already has cartidges
+            if (Object.keys(itemsClone).length === 1)
+            {
+                this.itemHelper.addCartridgesToAmmoBox(itemsClone, this.itemHelper.getItem(items[0]._tpl)[1]);
+            }
         }
 
         const itemCount = items.filter((x) => x.slotId === "hideout").length;
