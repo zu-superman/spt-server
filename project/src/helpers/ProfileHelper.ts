@@ -6,12 +6,14 @@ import { Common, CounterKeyValue, Stats } from "@spt-aki/models/eft/common/table
 import { IAkiProfile } from "@spt-aki/models/eft/profile/IAkiProfile";
 import { IValidateNicknameRequestData } from "@spt-aki/models/eft/profile/IValidateNicknameRequestData";
 import { AccountTypes } from "@spt-aki/models/enums/AccountTypes";
+import { BonusType } from "@spt-aki/models/enums/BonusType";
 import { SkillTypes } from "@spt-aki/models/enums/SkillTypes";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { SaveServer } from "@spt-aki/servers/SaveServer";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
 import { ProfileSnapshotService } from "@spt-aki/services/ProfileSnapshotService";
+import { HashUtil } from "@spt-aki/utils/HashUtil";
 import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 import { TimeUtil } from "@spt-aki/utils/TimeUtil";
 import { Watermark } from "@spt-aki/utils/Watermark";
@@ -22,6 +24,7 @@ export class ProfileHelper
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("JsonUtil") protected jsonUtil: JsonUtil,
+        @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("Watermark") protected watermark: Watermark,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
         @inject("SaveServer") protected saveServer: SaveServer,
@@ -452,5 +455,26 @@ export class ProfileHelper
     public isDeveloperAccount(sessionID: string): boolean
     {
         return this.getFullProfile(sessionID).info.edition.toLowerCase().startsWith(AccountTypes.SPT_DEVELOPER);
+    }
+
+    public addStashRowsBonusToProfile(sessionId: string, rowsToAdd: number): void
+    {
+        const profile = this.getPmcProfile(sessionId);
+        const existingBonus = profile.Bonuses.find((bonus) => bonus.type === BonusType.STASH_ROWS);
+        if (!existingBonus)
+        {
+            profile.Bonuses.push({
+                id: this.hashUtil.generate(),
+                value: rowsToAdd,
+                type: BonusType.STASH_ROWS,
+                passive: true,
+                visible: true,
+                production: false,
+            });
+        }
+        else
+        {
+            existingBonus.value += rowsToAdd;
+        }
     }
 }

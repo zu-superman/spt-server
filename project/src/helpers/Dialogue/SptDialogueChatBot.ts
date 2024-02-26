@@ -162,6 +162,17 @@ export class SptDialogueChatBot implements IDialogueChatBot
             );
         }
 
+        if (request.text.toLowerCase() === "givemespace")
+        {
+            this.profileHelper.addStashRowsBonusToProfile(sessionId, 2);
+
+            this.mailSendService.sendUserMessageToPlayer(
+                sessionId,
+                sptFriendUser,
+                this.randomUtil.getArrayValue(["Added 2 rows to stash, please restart your game to see them"]),
+            );
+        }
+
         return request.dialogId;
     }
 }
