@@ -2581,7 +2581,13 @@
         ],
         "Front_plate": [
           "656fae5f7c2d57afe200c0d7"
-        ]
+        ],
+		"Left_side_plate": [
+			"64afdb577bb3bfe8fe03fd1d"
+		],
+		"Right_side_plate": [
+			"64afdb577bb3bfe8fe03fd1d"
+		]
       }
     }
   },

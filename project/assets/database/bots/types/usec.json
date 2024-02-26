@@ -15719,7 +15719,15 @@
           "656fa53d94b480b8a500c0e4",
           "655746010177119f4a097ff7",
           "64afdcb83efdfea28601d041"
-        ]
+        ],
+		"Left_side_plate": [
+			"6557458f83942d705f0c4962",
+			"64afdb577bb3bfe8fe03fd1d"
+		],
+		"Right_side_plate": [
+			"6557458f83942d705f0c4962",
+			"64afdb577bb3bfe8fe03fd1d"
+		]
       },
       "628b9a40717774443b15e9f2": {
         "mod_stock": [
