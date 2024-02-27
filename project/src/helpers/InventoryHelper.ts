@@ -1015,31 +1015,43 @@ export class InventoryHelper
     }
 
     /**
-     * Get Player Stash Proper Size
-     * @param sessionID Playerid
-     * @returns Array of 2 values, x and y stash size
+     * Get Players Stash Size
+     * @param sessionID Players id
+     * @returns Array of 2 values, horizontal and vertical stash size
      */
     protected getPlayerStashSize(sessionID: string): Record<number, number>
     {
+        const profile = this.profileHelper.getPmcProfile(sessionID);
+        const stashRowBonus = profile.Bonuses.find((bonus) => bonus.type === BonusType.STASH_ROWS);
+
         // this sets automatically a stash size from items.json (its not added anywhere yet cause we still use base stash)
         const stashTPL = this.getStashType(sessionID);
         if (!stashTPL)
         {
             this.logger.error(this.localisationService.getText("inventory-missing_stash_size"));
         }
-        const stashItemDetails = this.itemHelper.getItem(stashTPL);
-        if (!stashItemDetails[0])
+
+        const stashItemResult = this.itemHelper.getItem(stashTPL);
+        if (!stashItemResult[0])
         {
             this.logger.error(this.localisationService.getText("inventory-stash_not_found", stashTPL));
+
+            return;
         }
 
-        const stashH = stashItemDetails[1]._props.Grids[0]._props.cellsH !== 0
-            ? stashItemDetails[1]._props.Grids[0]._props.cellsH
-            : 10;
-        const stashY = stashItemDetails[1]._props.Grids[0]._props.cellsV !== 0
-            ? stashItemDetails[1]._props.Grids[0]._props.cellsV
-            : 66;
-        return [stashH, stashY];
+        const stashItemDetails = stashItemResult[1];
+        const firstStashItemGrid = stashItemDetails._props.Grids[0];
+
+        const stashH = firstStashItemGrid._props.cellsH !== 0 ? firstStashItemGrid._props.cellsH : 10;
+        let stashV = firstStashItemGrid._props.cellsV !== 0 ? firstStashItemGrid._props.cellsV : 66;
+
+        // Player has a bonus, apply to vertical size
+        if (stashRowBonus)
+        {
+            stashV += stashRowBonus.value;
+        }
+
+        return [stashH, stashV];
     }
 
     /**
