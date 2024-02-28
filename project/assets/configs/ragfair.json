@@ -9,7 +9,6 @@
             "minSellChancePercent": 0
         },
         "time": {
-            "base": 1.5,
             "min": 0,
             "max": 1.0
         },
