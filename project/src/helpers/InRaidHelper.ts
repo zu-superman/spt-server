@@ -95,6 +95,11 @@ export class InRaidHelper
         for (const victim of victims)
         {
             let standingChangeForKill = this.getFenceStandingChangeForKillAsScav(victim);
+            if (standingChangeForKill === 0)
+            {
+                // Nothing to do, skip
+                continue;
+            }
             if (victim.Name?.includes(")") && victim.Side === "Savage")
             {
                 // Make value positive if traitor scav
@@ -144,10 +149,13 @@ export class InRaidHelper
         const botTypes = this.databaseServer.getTables().bots.types;
         if (victim.Side.toLowerCase() === "savage")
         {
-            const standing = botTypes[victim.Role.toLowerCase()]?.experience?.standingForKill;
+            let standing = botTypes[victim.Role.toLowerCase()]?.experience?.standingForKill;
             if (standing === undefined)
             {
-                this.logger.warning(`Unable to find standing for kill for: ${victim.Role}, side: ${victim.Side}`);
+                this.logger.warning(
+                    `Unable to find standing for kill for: ${victim.Role}, side: ${victim.Side}, setting to: 0`,
+                );
+                standing = 0;
             }
 
             // Scavs and bosses
