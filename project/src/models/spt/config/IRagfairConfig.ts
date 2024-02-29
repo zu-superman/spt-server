@@ -21,8 +21,6 @@ export interface Sell
     chance: Chance;
     /** Settings to control how long it takes for a player offer to sell */
     time: MinMax;
-    /** Player offer reputation gain/loss settings */
-    reputation: Reputation;
     /**Seconds from clicking remove to remove offer from market */
     expireSeconds: number;
 }
@@ -37,12 +35,6 @@ export interface Chance
     maxSellChancePercent: number;
     /** Min possible sell chance % for a player listed offer */
     minSellChancePercent: number;
-}
-
-export interface Reputation
-{
-    gain: number;
-    loss: number;
 }
 
 export interface Dynamic

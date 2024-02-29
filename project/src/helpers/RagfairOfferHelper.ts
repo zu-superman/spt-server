@@ -359,7 +359,8 @@ export class RagfairOfferHelper
 
             return;
         }
-        profile.characters.pmc.RagfairInfo.rating += this.ragfairConfig.sell.reputation.gain * amountToIncrementBy;
+        profile.characters.pmc.RagfairInfo.rating +=
+            this.databaseServer.getTables().globals.config.RagFair.ratingIncreaseCount + amountToIncrementBy;
     }
 
     /**
@@ -670,10 +671,7 @@ export class RagfairOfferHelper
      * @param offer The flea offer
      * @returns True if the given item is functional
      */
-    public isItemFunctional(
-        offerRootItem: Item,
-        offer: IRagfairOffer
-    ): boolean
+    public isItemFunctional(offerRootItem: Item, offer: IRagfairOffer): boolean
     {
         // Non-presets are always functional
         if (!this.presetHelper.hasPreset(offerRootItem._tpl))
@@ -685,7 +683,7 @@ export class RagfairOfferHelper
         if (this.itemHelper.armorItemCanHoldMods(offerRootItem._tpl))
         {
             const offerRootTemplate = this.itemHelper.getItem(offerRootItem._tpl)[1];
-            const requiredPlateCount = offerRootTemplate._props.Slots?.filter(item => item._required)?.length;
+            const requiredPlateCount = offerRootTemplate._props.Slots?.filter((item) => item._required)?.length;
 
             return offer.items.length > requiredPlateCount;
         }
