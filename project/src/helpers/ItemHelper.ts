@@ -155,6 +155,10 @@ export class ItemHelper
         return false;
     }
 
+    /**
+     * Get all soft insert slot ids
+     * @returns An array of soft insert ids (e.g. soft_armor_back, helmet_top)
+     */
     public getSoftInsertSlotIds(): string[]
     {
         return [
@@ -169,6 +173,8 @@ export class ItemHelper
             "collar",
             "helmet_top",
             "helmet_back",
+            "helmet_eyes",
+            "helmet_jaw",
             "helmet_ears",
         ];
     }
