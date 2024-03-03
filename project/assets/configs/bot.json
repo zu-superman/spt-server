@@ -1143,7 +1143,8 @@
                         "max": 45
                     },
                     "equipment": {
-                        "SecondPrimaryWeapon": 10
+                        "SecondPrimaryWeapon": 10,
+                        "FaceCover": 50
                     },
                     "randomisedArmorSlots": [
                         "Headwear",
@@ -1197,7 +1198,8 @@
                         "max": 100
                     },
                     "equipment": {
-                        "SecondPrimaryWeapon": 10
+                        "SecondPrimaryWeapon": 10,
+                        "FaceCover": 75
                     },
                     "equipmentMods": {
                         "left_side_plate": 90,
