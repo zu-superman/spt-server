@@ -84,8 +84,13 @@ export interface PresetBatch
 
 export interface IWalletLootSettings
 {
-    itemCount: number;
+    /** Chance wallets have loot in them */
+    chancePercent: number;
+    itemCount: MinMax;
     stackSizeWeight: Record<string, number>;
+    currencyWeight: Record<string, number>;
+    /** What wallets will have money in them */
+    walletTplPool: string[];
 }
 
 export interface EquipmentFilters

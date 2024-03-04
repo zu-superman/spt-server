@@ -2486,6 +2486,7 @@
         "default": 16
     },
 	"walletLoot": {
+        "chancePercent": 35,
 		"itemCount": {
 			"min": 1,
 			"max": 3
@@ -2496,6 +2497,12 @@
 			"15000": 4,
 			"10000": 7,
 			"5000": 10
-		}
+		},
+        "currencyWeight": {
+            "5449016a4bdc2d6f028b456f": 1,
+            "569668774bdc2da2298b4568": 0,
+            "5696686a4bdc2da3298b456a": 0
+        },
+        "walletTplPool": ["5783c43d2459774bbe137486", "60b0f6c058e0b0481a09ad11"]
 	}
 }

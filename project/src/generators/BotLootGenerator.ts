@@ -404,10 +404,10 @@ export class BotLootGenerator
                 }];
 
                 // Is Simple-Wallet
-                if (weightedItemTpl === "5783c43d2459774bbe137486")
+                if (this.botConfig.walletLoot.walletTplPool.includes(weightedItemTpl))
                 {
-                    const addCurrency = this.randomUtil.getChance100(25);
-                    if (addCurrency)
+                    const addCurrencyToWallet = this.randomUtil.getChance100(this.botConfig.walletLoot.chancePercent);
+                    if (addCurrencyToWallet)
                     {
                         // Create the currency items we want to add to wallet
                         const itemsToAdd = this.createWalletLoot(newRootItemId);
@@ -499,16 +499,19 @@ export class BotLootGenerator
         const result: Item[][] = [];
 
         // Choose how many stacks of currency will be added to wallet
-        const itemCount = this.randomUtil.getInt(1, this.botConfig.walletLoot.itemCount);
+        const itemCount = this.randomUtil.getInt(
+            this.botConfig.walletLoot.itemCount.min,
+            this.botConfig.walletLoot.itemCount.max,
+        );
         for (let index = 0; index < itemCount; index++)
         {
-            // Choose the size of the currency stack
+            // Choose the size of the currency stack - default is 5k, 10k, 15k, 20k, 25k
             const chosenStackCount = Number(
                 this.weightedRandomHelper.getWeightedValue<string>(this.botConfig.walletLoot.stackSizeWeight),
             );
             result.push([{
                 _id: this.hashUtil.generate(),
-                _tpl: "5449016a4bdc2d6f028b456f", // TODO - extend to be more than just roubles
+                _tpl: this.weightedRandomHelper.getWeightedValue<string>(this.botConfig.walletLoot.currencyWeight),
                 parentId: walletId,
                 upd: { StackObjectsCount: chosenStackCount },
             }]);
