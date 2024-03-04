@@ -62,6 +62,7 @@ export interface Info
     LowerNickname: string;
     Side: string;
     SquadInviteRestriction: boolean;
+    HasCoopExtension: boolean;
     Voice: string;
     Level: number;
     Experience: number;
