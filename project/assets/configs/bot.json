@@ -425,6 +425,8 @@
             "forceStock": true
         },
         "cursedassault": {
+            "nvgIsActiveChanceDayPercent": 20,
+            "nvgIsActiveChanceNightPercent": 60,
             "faceShieldIsActiveChancePercent": 90,
             "lightIsActiveDayChancePercent": 25,
             "lightIsActiveNightChancePercent": 75,
