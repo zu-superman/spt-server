@@ -437,7 +437,7 @@ export class BotLootGenerator
                     }
                 }
 
-                this.addRequiredChildItemsToParent(itemToAddTemplate, itemWithChildrenToAdd, isPmc);
+                this.addRequiredChildItemsToParent(itemToAddTemplate, itemWithChildrenToAdd, isPmc, botRole);
 
                 // Attempt to add item to container(s)
                 const itemAddedResult = this.botGeneratorHelper.addItemWithChildrenToEquipmentSlot(
@@ -525,11 +525,13 @@ export class BotLootGenerator
      * @param itemToAddTemplate Db template of item to check
      * @param itemToAddChildrenTo Item to add children to
      * @param isPmc Is the item being generated for a pmc (affects money/ammo stack sizes)
+     * @param botRole role bot has that owns item
      */
     protected addRequiredChildItemsToParent(
         itemToAddTemplate: ITemplateItem,
         itemToAddChildrenTo: Item[],
         isPmc: boolean,
+        botRole: string,
     ): void
     {
         // Fill ammo box
@@ -540,7 +542,7 @@ export class BotLootGenerator
         // Make money a stack
         else if (this.itemHelper.isOfBaseclass(itemToAddTemplate._id, BaseClasses.MONEY))
         {
-            this.randomiseMoneyStackSize(isPmc, itemToAddTemplate, itemToAddChildrenTo[0]);
+            this.randomiseMoneyStackSize(botRole, itemToAddTemplate, itemToAddChildrenTo[0]);
         }
         // Make ammo a stack
         else if (this.itemHelper.isOfBaseclass(itemToAddTemplate._id, BaseClasses.AMMO))
@@ -695,25 +697,26 @@ export class BotLootGenerator
 
     /**
      * Randomise the stack size of a money object, uses different values for pmc or scavs
-     * @param isPmc Is money on a PMC bot
+     * @param botRole Role bot has that has money stack
      * @param itemTemplate item details from db
      * @param moneyItem Money item to randomise
      */
-    protected randomiseMoneyStackSize(isPmc: boolean, itemTemplate: ITemplateItem, moneyItem: Item): void
+    protected randomiseMoneyStackSize(botRole: string, itemTemplate: ITemplateItem, moneyItem: Item): void
     {
-        // PMCs have a different stack max size
-        const minStackSize = itemTemplate._props.StackMinRandom;
-        const maxStackSize = isPmc
-            ? this.pmcConfig.dynamicLoot.moneyStackLimits[itemTemplate._id]
-            : itemTemplate._props.StackMaxRandom;
-        const randomSize = this.randomUtil.getInt(minStackSize, maxStackSize);
+        // Get all currency weights for this bot type
+        let currencyWeights = this.botConfig.currencyStackSize[botRole];
+        if (!currencyWeights)
+        {
+            currencyWeights = this.botConfig.currencyStackSize.default;
+        }
+
+        const currencyWeight = currencyWeights[moneyItem._tpl];
 
         if (!moneyItem.upd)
         {
             moneyItem.upd = {};
         }
-
-        moneyItem.upd.StackObjectsCount = randomSize;
+        moneyItem.upd.StackObjectsCount = Number.parseInt(this.weightedRandomHelper.getWeightedValue(currencyWeight));
     }
 
     /**
