@@ -608,16 +608,14 @@ export class FenceService
             this.itemHelper.remapRootItemId(desiredAssortItemAndChildrenClone);
 
             const rootItemBeingAdded = desiredAssortItemAndChildrenClone[0];
-
             rootItemBeingAdded.upd.StackObjectsCount = this.getSingleItemStackCount(itemDbDetails);
-            // rootItemBeingAdded.upd.BuyRestrictionCurrent = 0;
-            // rootItemBeingAdded.upd.UnlimitedCount = false;
 
             // Skip items already in the assort if it exists in the prevent duplicate list
             if (
                 assorts.items.some((item) => item._tpl === rootItemBeingAdded._tpl)
-                && this.traderConfig.fence.preventDuplicateOffersOfCategory.includes(
-                    this.itemHelper.getItem(rootItemBeingAdded._tpl)[1]._parent,
+                && this.itemHelper.isOfBaseclasses(
+                    rootItemBeingAdded._tpl,
+                    this.traderConfig.fence.preventDuplicateOffersOfCategory,
                 )
             )
             {
