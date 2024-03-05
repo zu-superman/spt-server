@@ -7,9 +7,12 @@ import pkgfetch from "@yao-pkg/pkg-fetch";
 import gulp from "gulp";
 import { exec } from "gulp-execa";
 import rename from "gulp-rename";
+// eslint-disable-next-line @typescript-eslint/naming-convention
 import * as ResEdit from "resedit";
 import manifest from "./package.json" assert { type: "json" };
 
+const arch = "x64";
+const platform = "win32";
 const nodeVersion = "node20"; // As of @yao-pkg/pkg-fetch v3.5.7, it's v20.10.0
 const stdio = "inherit";
 const buildDir = "build/";
@@ -36,9 +39,9 @@ const fetchPackageImage = async () =>
     {
         const output = "./.pkg-cache/v3.5";
         const fetchedPkg = await pkgfetch.need({
-            arch: process.arch,
+            arch: arch,
             nodeRange: nodeVersion,
-            platform: process.platform,
+            platform: platform,
             output,
         });
         console.log(`fetched node binary at ${fetchedPkg}`);
@@ -56,7 +59,8 @@ const updateBuildProperties = async () =>
 {
     if (os.platform() !== "win32")
     {
-        return;
+        console.debug("Attempting to update Windows executable properties on non-Windows platform.");
+        // Refringe was here. He's not sorry.
     }
 
     const exe = ResEdit.NtExecutable.from(await fs.readFile(serverExe));
@@ -279,7 +283,7 @@ const build = (packagingType) =>
 // Packaging Arguments
 const packaging = async (entry) =>
 {
-    const target = `${nodeVersion}-${process.platform}-${process.arch}`;
+    const target = `${nodeVersion}-${platform}-${arch}`;
     try
     {
         await pkg.exec([
