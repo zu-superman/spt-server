@@ -125,7 +125,11 @@
         },
         "preventDuplicateOffersOfCategory": [
             "543be5cb4bdc2deb348b4568",
-            "5485a8684bdc2da71d8b4567"
+            "5485a8684bdc2da71d8b4567",
+			"5448f3ac4bdc2dce718b4569",
+			"5448f39d4bdc2d0a728b4568",
+			"5448f3a14bdc2d27728b4569",
+			"5448bc234bdc2d3c308b4569"
         ],
         "weaponDurabilityPercentMinMax": {
             "current": {
@@ -180,6 +184,14 @@
 			"544fb3364bdc2d34748b456a": {
 				"min": 1,
 				"max": 800
+			},
+			"5448bc234bdc2d3c308b4569": {
+				"min": 1,
+				"max": 50
+			},
+			"5448f3a14bdc2d27728b4569": {
+				"min": 1,
+				"max": 25
 			}
         },
         "itemCategoryRoublePriceLimit": {

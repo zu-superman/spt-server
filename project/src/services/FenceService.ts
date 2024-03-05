@@ -46,9 +46,6 @@ export class FenceService
     /** Hydrated on initial assort generation as part of generateFenceAssorts() */
     protected desiredAssortCounts: IFenceAssortGenerationValues;
 
-    /** Items that have a multi-stack */
-    protected multiStackItems: Record<string, boolean> = {};
-
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("JsonUtil") protected jsonUtil: JsonUtil,
@@ -553,9 +550,6 @@ export class FenceService
             x.parentId === "hideout" && !x.upd?.sptPresetId
         );
 
-        // Clear cache of multi-stack items
-        this.multiStackItems = {};
-
         for (let i = 0; i < assortCount; i++)
         {
             const chosenBaseAssortRoot = this.randomUtil.getArrayValue(assortRootItems);
@@ -611,15 +605,11 @@ export class FenceService
             rootItemBeingAdded.upd.StackObjectsCount = this.getSingleItemStackCount(itemDbDetails);
 
             // Skip items already in the assort if it exists in the prevent duplicate list
-            if (
-                assorts.items.some((item) => item._tpl === rootItemBeingAdded._tpl)
-                && this.itemHelper.isOfBaseclasses(
-                    rootItemBeingAdded._tpl,
-                    this.traderConfig.fence.preventDuplicateOffersOfCategory,
-                )
-            )
+            const existingItem = assorts.items.find((item) => item._tpl === rootItemBeingAdded._tpl);
+            if (this.itemShouldBeForceStacked(existingItem, itemDbDetails))
             {
                 i--;
+
                 continue;
             }
 
@@ -629,20 +619,8 @@ export class FenceService
             {
                 this.randomiseItemUpdProperties(itemDbDetails, rootItemBeingAdded);
             }
-            else
-            {
-                // Already have multi-stack, skip
-                if (this.multiStackItems[itemDbDetails._id])
-                {
-                    i--;
-                    continue;
-                }
 
-                // Flag item as added as multi-stack
-                this.multiStackItems[itemDbDetails._id] = true;
-            }
-
-            // Need to add mods to armors so they dont show as red in the trade screen
+            // Add mods to armors so they dont show as red in the trade screen
             if (this.itemHelper.itemRequiresSoftInserts(rootItemBeingAdded._tpl))
             {
                 this.randomiseArmorModDurability(desiredAssortItemAndChildrenClone, itemDbDetails);
@@ -662,6 +640,52 @@ export class FenceService
 
             assorts.loyal_level_items[rootItemBeingAdded._id] = loyaltyLevel;
         }
+    }
+
+    /**
+     * Should this item be forced into only 1 stack on fence
+     * @param existingItem Existing item from fence assort
+     * @param itemDbDetails Item we want to add db details
+     * @returns True item should be force stacked
+     */
+    protected itemShouldBeForceStacked(existingItem: Item, itemDbDetails: ITemplateItem): boolean
+    {
+        // No existing item in assort
+        if (!existingItem)
+        {
+            return false;
+        }
+
+        // Item type not in config list
+        if (
+            !this.itemHelper.isOfBaseclasses(
+                itemDbDetails._id,
+                this.traderConfig.fence.preventDuplicateOffersOfCategory,
+            )
+        )
+        {
+            return false;
+        }
+
+        // Don't stack armored rigs
+        if (this.itemHelper.isOfBaseclass(itemDbDetails._id, BaseClasses.VEST) && itemDbDetails._props.Slots.length > 0)
+        {
+            return false;
+        }
+
+        // Don't stack meds (e.g. bandages) with unequal usages remaining
+        // TODO - Doesnt look beyond the first matching fence item, e.g. bandage A has 1 usage left = not a match, but bandage B has 2 uses, would have matched
+        if (
+            this.itemHelper.isOfBaseclasses(itemDbDetails._id, [BaseClasses.MEDICAL, BaseClasses.MEDKIT])
+            && existingItem.upd.MedKit?.HpResource // null medkit object means its brand new/max resource
+            && (itemDbDetails._props.MaxHpResource !== existingItem.upd.MedKit.HpResource)
+        )
+        {
+            return false;
+        }
+
+        // Passed all checks, will be forced stacked
+        return true;
     }
 
     /**
@@ -987,7 +1011,14 @@ export class FenceService
         }
 
         // Check for override in config, use values if exists
-        const overrideValues = this.traderConfig.fence.itemStackSizeOverrideMinMax[itemDbDetails._id];
+        let overrideValues = this.traderConfig.fence.itemStackSizeOverrideMinMax[itemDbDetails._id];
+        if (overrideValues)
+        {
+            return this.randomUtil.getInt(overrideValues.min, overrideValues.max);
+        }
+
+        // Check for parent override
+        overrideValues = this.traderConfig.fence.itemStackSizeOverrideMinMax[itemDbDetails._parent];
         if (overrideValues)
         {
             return this.randomUtil.getInt(overrideValues.min, overrideValues.max);
