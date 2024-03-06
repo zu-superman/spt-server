@@ -609,7 +609,7 @@ export class FenceService
             if (this.itemShouldBeForceStacked(existingItem, itemDbDetails))
             {
                 i--;
-
+                existingItem.upd.StackObjectsCount++;
                 continue;
             }
 
@@ -667,8 +667,11 @@ export class FenceService
             return false;
         }
 
-        // Don't stack armored rigs
-        if (this.itemHelper.isOfBaseclass(itemDbDetails._id, BaseClasses.VEST) && itemDbDetails._props.Slots.length > 0)
+        // Don't stack armor with slots (plates/inserts etc)
+        if (
+            this.itemHelper.isOfBaseclass(itemDbDetails._id, BaseClasses.ARMORED_EQUIPMENT)
+            && itemDbDetails._props.Slots.length > 0
+        )
         {
             return false;
         }
