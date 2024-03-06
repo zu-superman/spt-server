@@ -60,5 +60,4 @@ export interface SlotLootSettings
 {
     whitelist: string[];
     blacklist: string[];
-    moneyStackLimits: Record<string, number>;
 }
