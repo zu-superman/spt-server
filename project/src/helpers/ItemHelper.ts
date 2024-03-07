@@ -1648,7 +1648,11 @@ export class ItemHelper
         if (!item.upd)
         {
             item.upd = {};
-            this.logger.warning(warningMessageWhenMissing);
+
+            if (warningMessageWhenMissing)
+            {
+                this.logger.warning(warningMessageWhenMissing);
+            }
 
             return true;
         }
