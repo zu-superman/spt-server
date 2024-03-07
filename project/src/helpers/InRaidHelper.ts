@@ -68,16 +68,13 @@ export class InRaidHelper
      */
     public addUpdToMoneyFromRaid(items: Item[]): void
     {
-        for (const item of items.filter((x) => this.paymentHelper.isMoneyTpl(x._tpl)))
+        for (const moneyItem of items.filter((item) => this.paymentHelper.isMoneyTpl(item._tpl)))
         {
-            if (!item.upd)
-            {
-                item.upd = {};
-            }
+            this.itemHelper.addUpdObjectToItem(moneyItem);
 
-            if (!item.upd.StackObjectsCount)
+            if (!moneyItem.upd.StackObjectsCount)
             {
-                item.upd.StackObjectsCount = 1;
+                moneyItem.upd.StackObjectsCount = 1;
             }
         }
     }

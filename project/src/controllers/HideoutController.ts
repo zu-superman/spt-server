@@ -592,7 +592,9 @@ export class HideoutController
         const recipe = this.databaseServer.getTables().hideout.production.find((p) => p._id === body.recipeId);
 
         // Find the actual amount of items we need to remove because body can send weird data
-        const recipeRequirementsClone = this.jsonUtil.clone(recipe.requirements.filter((i) => i.type === "Item" || i.type === "Tool"));
+        const recipeRequirementsClone = this.jsonUtil.clone(
+            recipe.requirements.filter((i) => i.type === "Item" || i.type === "Tool"),
+        );
 
         const output = this.eventOutputHolder.getOutput(sessionID);
         const itemsToDelete = body.items.concat(body.tools);
@@ -833,10 +835,13 @@ export class HideoutController
                 ),
             );
 
-            this.httpResponse.appendErrorToOutput(output, this.localisationService.getText(
-                "hideout-unable_to_find_production_in_profile_by_recipie_id",
-                request.recipeId,
-            ));
+            this.httpResponse.appendErrorToOutput(
+                output,
+                this.localisationService.getText(
+                    "hideout-unable_to_find_production_in_profile_by_recipie_id",
+                    request.recipeId,
+                ),
+            );
 
             return;
         }
@@ -904,10 +909,7 @@ export class HideoutController
         {
             for (const reward of itemAndChildrenToSendToPlayer)
             {
-                if (!reward[0].upd)
-                {
-                    reward[0].upd = {};
-                }
+                this.itemHelper.addUpdObjectToItem(reward[0]);
 
                 reward[0].upd.RecodableComponent = { IsEncoded: true };
             }

@@ -712,10 +712,8 @@ export class BotLootGenerator
 
         const currencyWeight = currencyWeights[moneyItem._tpl];
 
-        if (!moneyItem.upd)
-        {
-            moneyItem.upd = {};
-        }
+        this.itemHelper.addUpdObjectToItem(moneyItem);
+
         moneyItem.upd.StackObjectsCount = Number.parseInt(this.weightedRandomHelper.getWeightedValue(currencyWeight));
     }
 
@@ -734,10 +732,7 @@ export class BotLootGenerator
                 Math.min(itemTemplate._props.StackMaxRandom, 60),
             );
 
-        if (!ammoItem.upd)
-        {
-            ammoItem.upd = {};
-        }
+        this.itemHelper.addUpdObjectToItem(ammoItem);
 
         ammoItem.upd.StackObjectsCount = randomSize;
     }

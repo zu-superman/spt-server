@@ -917,10 +917,8 @@ export class FenceService
                 const modItemToAdjust = armor.find((mod) =>
                     mod.slotId.toLowerCase() === requiredSlot._name.toLowerCase()
                 );
-                if (!modItemToAdjust.upd)
-                {
-                    modItemToAdjust.upd = {};
-                }
+
+                this.itemHelper.addUpdObjectToItem(modItemToAdjust);
 
                 if (!modItemToAdjust.upd.Repairable)
                 {
@@ -973,10 +971,7 @@ export class FenceService
 
                 // Find items mod to apply dura changes to
                 const modItemToAdjust = armor.find((mod) => mod.slotId.toLowerCase() === plateSlot._name.toLowerCase());
-                if (!modItemToAdjust.upd)
-                {
-                    modItemToAdjust.upd = {};
-                }
+                this.itemHelper.addUpdObjectToItem(modItemToAdjust);
 
                 if (!modItemToAdjust.upd.Repairable)
                 {

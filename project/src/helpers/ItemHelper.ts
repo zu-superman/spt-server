@@ -1636,6 +1636,25 @@ export class ItemHelper
         }
         return itemsMap;
     }
+
+    /**
+     * Add a blank upd object to passed in item if it does not exist already
+     * @param item item to add upd to
+     * @param warningMessageWhenMissing text to write to log when upd object was not found
+     * @returns True when upd object was added
+     */
+    public addUpdObjectToItem(item: Item, warningMessageWhenMissing: string = null): boolean
+    {
+        if (!item.upd)
+        {
+            item.upd = {};
+            this.logger.warning(warningMessageWhenMissing);
+
+            return true;
+        }
+
+        return false;
+    }
 }
 
 namespace ItemHelper

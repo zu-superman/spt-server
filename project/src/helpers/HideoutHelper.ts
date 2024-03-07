@@ -110,10 +110,8 @@ export class HideoutHelper
                 const toolItem = this.jsonUtil.clone(pmcData.Inventory.items.find((x) => x._id === tool.id));
 
                 // Make sure we only return as many as we took
-                if (!toolItem.upd)
-                {
-                    toolItem.upd = {};
-                }
+                this.itemHelper.addUpdObjectToItem(toolItem);
+
                 toolItem.upd.StackObjectsCount = tool.count;
 
                 production.sptRequiredTools.push({

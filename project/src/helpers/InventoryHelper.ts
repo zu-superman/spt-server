@@ -193,10 +193,7 @@ export class InventoryHelper
         for (const item of itemWithChildren)
         {
             // Ensure item has upd object
-            if (!item.upd)
-            {
-                item.upd = {};
-            }
+            this.itemHelper.addUpdObjectToItem(item);
 
             if (foundInRaid)
             {
