@@ -7,12 +7,28 @@ import pkgfetch from "@yao-pkg/pkg-fetch";
 import gulp from "gulp";
 import { exec } from "gulp-execa";
 import rename from "gulp-rename";
+import download from "gulp-download";
+import decompress from "gulp-decompress";
+import minimist from "minimist";
 // eslint-disable-next-line @typescript-eslint/naming-convention
 import * as ResEdit from "resedit";
 import manifest from "./package.json" assert { type: "json" };
 
-const arch = "x64";
-const platform = "win32";
+const knownOptions = {
+    string: ["arch", "platform"],
+    default: {
+        arch: process.arch,
+        platform: process.platform
+    }
+}
+
+const options = minimist(process.argv.slice(2), knownOptions)
+
+const targetArch = options.arch;
+const targetPlatform = options.platform;
+
+console.log(`target arch: ${targetArch}, target platform: ${targetPlatform}`)
+
 const nodeVersion = "node20"; // As of @yao-pkg/pkg-fetch v3.5.7, it's v20.10.0
 const stdio = "inherit";
 const buildDir = "build/";
@@ -39,9 +55,9 @@ const fetchPackageImage = async () =>
     {
         const output = "./.pkg-cache/v3.5";
         const fetchedPkg = await pkgfetch.need({
-            arch: arch,
+            arch: targetArch,
             nodeRange: nodeVersion,
-            platform: platform,
+            platform: targetPlatform,
             output,
         });
         console.log(`fetched node binary at ${fetchedPkg}`);
@@ -57,10 +73,10 @@ const fetchPackageImage = async () =>
 
 const updateBuildProperties = async () =>
 {
-    if (os.platform() !== "win32")
+    if (targetPlatform !== "win32")
     {
-        console.debug("Attempting to update Windows executable properties on non-Windows platform.");
-        // Refringe was here. He's not sorry.
+        // can't modify executable's resource on non-windows build
+        return
     }
 
     const exe = ResEdit.NtExecutable.from(await fs.readFile(serverExe));
@@ -102,10 +118,16 @@ const copyAssets = () =>
     );
 
 /**
- * Copy executables from node_modules
+ * Download pnpm executable
  */
-const copyExecutables = () =>
-    gulp.src(["node_modules/@pnpm/exe/**/*"]).pipe(gulp.dest(path.join(dataDir, "@pnpm", "exe")));
+const downloadPnpm = async () => {
+    const pnpmVersion = manifest.devDependencies["@pnpm/exe"];
+    const pnpmPackageName = `@pnpm/${targetPlatform === "win32" ? "win" : targetPlatform}-${targetArch}`;
+    const npmResult = await exec(`npm view ${pnpmPackageName}@${pnpmVersion} dist.tarball`, {stdout: "pipe"});
+    const pnpmLink = npmResult.stdout.trim()
+    console.log(`Downloading pnpm binary from ${pnpmLink}`)
+    download(pnpmLink).pipe(decompress({strip: 1})).pipe(gulp.dest(path.join(dataDir, "@pnpm", "exe")));
+}
 
 /**
  * Rename and copy the license file
@@ -153,7 +175,7 @@ const createHashFile = async () =>
 };
 
 // Combine all tasks into addAssets
-const addAssets = gulp.series(copyAssets, copyExecutables, copyLicense, writeCommitHashToCoreJSON, createHashFile);
+const addAssets = gulp.series(copyAssets, downloadPnpm, copyLicense, writeCommitHashToCoreJSON, createHashFile);
 
 /**
  * Cleans the build directory.
@@ -283,7 +305,7 @@ const build = (packagingType) =>
 // Packaging Arguments
 const packaging = async (entry) =>
 {
-    const target = `${nodeVersion}-${platform}-${arch}`;
+    const target = `${nodeVersion}-${targetPlatform}-${targetArch}`;
     try
     {
         await pkg.exec([
