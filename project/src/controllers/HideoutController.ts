@@ -35,6 +35,7 @@ import { IRecordShootingRangePoints } from "@spt-aki/models/eft/hideout/IRecordS
 import { IAddItemDirectRequest } from "@spt-aki/models/eft/inventory/IAddItemDirectRequest";
 import { IAddItemsDirectRequest } from "@spt-aki/models/eft/inventory/IAddItemsDirectRequest";
 import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEventRouterResponse";
+import { BackendErrorCodes } from "@spt-aki/models/enums/BackendErrorCodes";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { HideoutAreas } from "@spt-aki/models/enums/HideoutAreas";
 import { SkillTypes } from "@spt-aki/models/enums/SkillTypes";
@@ -674,9 +675,11 @@ export class HideoutController
         }
 
         // @Important: Here we need to be very exact:
-        // - normal recipe: Production time value is stored in attribute "productionType" with small "p"
-        // - scav case recipe: Production time value is stored in attribute "ProductionType" with capital "P"
-        const modifiedScavCaseTime = this.getScavCaseTime(pmcData, recipe.ProductionTime);
+        // - normal recipe: Production time value is stored in attribute "productionTime" with small "p"
+        // - scav case recipe: Production time value is stored in attribute "ProductionTime" with capital "P"
+        const adjustedCraftTime = recipe.ProductionTime
+            - this.hideoutHelper.getCraftingSkillProductionTimeReduction(pmcData, recipe.ProductionTime);
+        const modifiedScavCaseTime = this.getScavCaseTime(pmcData, adjustedCraftTime);
 
         pmcData.Hideout.Production[body.recipeId] = this.hideoutHelper.initProduction(
             body.recipeId,
@@ -949,7 +952,11 @@ export class HideoutController
         const totalResultItems = toolsToSendToPlayer.concat(itemAndChildrenToSendToPlayer);
         if (!this.inventoryHelper.canPlaceItemsInInventory(sessionID, totalResultItems))
         {
-            this.httpResponse.appendErrorToOutput(output, this.localisationService.getText("inventory-no_stash_space"));
+            this.httpResponse.appendErrorToOutput(
+                output,
+                this.localisationService.getText("inventory-no_stash_space"),
+                BackendErrorCodes.NOTENOUGHSPACE,
+            );
             return;
         }
 
