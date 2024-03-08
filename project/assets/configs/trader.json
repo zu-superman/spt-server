@@ -61,7 +61,7 @@
         },
         "partialRefreshTimeSeconds": 240,
         "partialRefreshChangePercent": 15,
-        "assortSize": 140,
+        "assortSize": 120,
         "weaponPresetMinMax": {
 			"min": 12,
 			"max": 19
@@ -116,12 +116,13 @@
             "5485a8684bdc2da71d8b4567": 23,
             "5f4fbaaca5573a5ac31db429": 0,
             "5447e0e74bdc2d3c308b4567": 4,
-            "57bef4c42459772e8d35a53b": 1,
+            "57bef4c42459772e8d35a53b": 2,
             "5b3f15d486f77432d0509248": 3,
             "543be6564bdc2df4348b4568": 0,
             "5448ecbe4bdc2d60728b4568": 0,
             "5671435f4bdc2d96058b4569": 0,
-            "543be5cb4bdc2deb348b4568": 3
+            "543be5cb4bdc2deb348b4568": 3,
+            "5448e53e4bdc2d60728b4567": 7
         },
         "preventDuplicateOffersOfCategory": [
             "543be5cb4bdc2deb348b4568",
@@ -134,9 +135,17 @@
             "543be5e94bdc2df1348b4568",
             "5448eb774bdc2d0a728b4567",
             "5447e1d04bdc2dff2f8b4567",
+            "5448e53e4bdc2d60728b4567",
             "5448ecbe4bdc2d60728b4568",
             "543be6674bdc2df1348b4569",
-            "5448fe124bdc2da5018b4567"
+            "5448fe124bdc2da5018b4567",
+            "567849dd4bdc2d150f8b456e",
+            "5a341c4686f77469e155819e",
+            "5448e5284bdc2dcb718b4567",
+            "5447e0e74bdc2d3c308b4567",
+            "5b3f15d486f77432d0509248",
+            "5645bcb74bdc2ded0b8b4578",
+            "5795f317245977243854e041"
         ],
         "weaponDurabilityPercentMinMax": {
             "current": {

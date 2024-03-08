@@ -6,7 +6,7 @@ import { PresetHelper } from "@spt-aki/helpers/PresetHelper";
 import { MinMax } from "@spt-aki/models/common/MinMax";
 import { IFenceLevel } from "@spt-aki/models/eft/common/IGlobals";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
-import { Item, Repairable } from "@spt-aki/models/eft/common/tables/IItem";
+import { Item, Repairable, Upd } from "@spt-aki/models/eft/common/tables/IItem";
 import { ITemplateItem } from "@spt-aki/models/eft/common/tables/ITemplateItem";
 import { IBarterScheme, ITraderAssort } from "@spt-aki/models/eft/common/tables/ITrader";
 import { BaseClasses } from "@spt-aki/models/enums/BaseClasses";
@@ -602,22 +602,26 @@ export class FenceService
             this.itemHelper.remapRootItemId(desiredAssortItemAndChildrenClone);
 
             const rootItemBeingAdded = desiredAssortItemAndChildrenClone[0];
+
+            // Set stack size based on possible overrides, e.g. ammos, otherwise set to 1
             rootItemBeingAdded.upd.StackObjectsCount = this.getSingleItemStackCount(itemDbDetails);
 
-            // Skip items already in the assort if it exists in the prevent duplicate list
-            const existingItem = assorts.items.find((item) => item._tpl === rootItemBeingAdded._tpl);
-            if (this.itemShouldBeForceStacked(existingItem, itemDbDetails))
-            {
-                i--;
-                existingItem.upd.StackObjectsCount++;
-                continue;
-            }
-
-            // Only randomise single items
+            // Only randomise upd values for single
             const isSingleStack = rootItemBeingAdded.upd.StackObjectsCount === 1;
             if (isSingleStack)
             {
                 this.randomiseItemUpdProperties(itemDbDetails, rootItemBeingAdded);
+            }
+
+            // Skip items already in the assort if it exists in the prevent duplicate list
+            const existingItemThatMatches = this.getMatchingItem(rootItemBeingAdded, itemDbDetails, assorts.items);
+            const shouldBeStacked = this.itemShouldBeForceStacked(existingItemThatMatches, itemDbDetails);
+            if (shouldBeStacked && existingItemThatMatches)
+            { // Decrement loop counter so another items gets added
+                i--;
+                existingItemThatMatches.upd.StackObjectsCount++;
+
+                continue;
             }
 
             // Add mods to armors so they dont show as red in the trade screen
@@ -643,6 +647,63 @@ export class FenceService
     }
 
     /**
+     * Find an assort item that matches the first parameter, also matches based on upd properties
+     * e.g. salewa hp resource units left
+     * @param rootItemBeingAdded item to look for a match against
+     * @param itemDbDetails Db details of matching item
+     * @param fenceItemAssorts Items to search through
+     * @returns Matching assort item
+     */
+    protected getMatchingItem(rootItemBeingAdded: Item, itemDbDetails: ITemplateItem, fenceItemAssorts: Item[]): Item
+    {
+        const matchingItems = fenceItemAssorts.filter((item) => item._tpl === rootItemBeingAdded._tpl);
+        if (matchingItems.length === 0)
+        {
+            // Nothing matches by tpl, exit early
+            return null;
+        }
+
+        const isMedical = this.itemHelper.isOfBaseclasses(rootItemBeingAdded._tpl, [
+            BaseClasses.MEDICAL,
+            BaseClasses.MEDKIT,
+        ]);
+        const isGearAndHasSlots =
+            this.itemHelper.isOfBaseclasses(rootItemBeingAdded._tpl, [
+                BaseClasses.ARMORED_EQUIPMENT,
+                BaseClasses.SEARCHABLE_ITEM,
+            ]) && itemDbDetails._props.Slots.length > 0;
+
+        // Only one match and its not medical or armored gear
+        if (matchingItems.length === 1 && (!(isMedical || isGearAndHasSlots)))
+        {
+            return matchingItems[0];
+        }
+
+        // Items have sub properties that need to be checked against
+        for (const item of matchingItems)
+        {
+            if (isMedical && rootItemBeingAdded.upd.MedKit?.HpResource === item.upd.MedKit?.HpResource)
+            {
+                // e.g. bandages with multiple use
+                // Both null === both max resoruce left
+                return item;
+            }
+
+            // Armors/helmets etc
+            if (
+                isGearAndHasSlots
+                && rootItemBeingAdded.upd.Repairable?.Durability === item.upd.Repairable?.Durability
+                && rootItemBeingAdded.upd.Repairable?.MaxDurability === item.upd.Repairable?.MaxDurability
+            )
+            {
+                return item;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Should this item be forced into only 1 stack on fence
      * @param existingItem Existing item from fence assort
      * @param itemDbDetails Item we want to add db details
@@ -656,39 +717,11 @@ export class FenceService
             return false;
         }
 
-        // Item type not in config list
-        if (
-            !this.itemHelper.isOfBaseclasses(
-                itemDbDetails._id,
-                this.traderConfig.fence.preventDuplicateOffersOfCategory,
-            )
-        )
-        {
-            return false;
-        }
-
-        // Don't stack armor with slots (plates/inserts etc)
-        if (
-            this.itemHelper.isOfBaseclass(itemDbDetails._id, BaseClasses.ARMORED_EQUIPMENT)
-            && itemDbDetails._props.Slots.length > 0
-        )
-        {
-            return false;
-        }
-
-        // Don't stack meds (e.g. bandages) with unequal usages remaining
-        // TODO - Doesnt look beyond the first matching fence item, e.g. bandage A has 1 usage left = not a match, but bandage B has 2 uses, would have matched
-        if (
-            this.itemHelper.isOfBaseclasses(itemDbDetails._id, [BaseClasses.MEDICAL, BaseClasses.MEDKIT])
-            && existingItem.upd.MedKit?.HpResource // null medkit object means its brand new/max resource
-            && (itemDbDetails._props.MaxHpResource !== existingItem.upd.MedKit.HpResource)
-        )
-        {
-            return false;
-        }
-
-        // Passed all checks, will be forced stacked
-        return true;
+        // Item type in config list
+        return this.itemHelper.isOfBaseclasses(
+            itemDbDetails._id,
+            this.traderConfig.fence.preventDuplicateOffersOfCategory,
+        );
     }
 
     /**
