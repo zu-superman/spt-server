@@ -2386,7 +2386,7 @@
     "DevilFlippy",
     "BaddestDragon",
     "JaydanCan",
-    "MacrossMX#7167",
+    "MacrossMX7167",
     "Borkel",
     "Capataina",
     "ChiNoel",
@@ -2865,8 +2865,8 @@
         "628e1ffc83ec92260c0f437f": 5,
         "62a1b7fbc30cfa1d366af586": 5,
         "639346cc1c8f182ad90c8972": 3,
-		"656e0436d44a1bb4220303a0": 4,
-		"656f198fb27298d6fd005466": 3
+        "656e0436d44a1bb4220303a0": 4,
+        "656f198fb27298d6fd005466": 3
       },
       "Earpiece": {
         "5645bcc04bdc2d363b8b4572": 5,
@@ -2906,10 +2906,10 @@
         "5c1a1e3f2e221602b66cc4c2": 0,
         "5e54f76986f7740366043752": 2,
         "5fd8d28367cb5e077335170f": 5,
+        "60363c0c92ec1c31037959f5": 2,
         "60a7ad2a2198820d95707a2e": 2,
         "62a09dd4621468534a797ac7": 2,
-        "657089638db3adca1009f4ca": 2,
-        "60363c0c92ec1c31037959f5": 2
+        "657089638db3adca1009f4ca": 2
       },
       "FirstPrimaryWeapon": {
         "5447a9cd4bdc2dbd208b4567": 4,
@@ -3057,7 +3057,7 @@
         "5f60b34a41e30a4ab12a6947": 21,
         "5f60c74e3b85f6263c145586": 5,
         "61bca7cda0eae612383adf57": 43,
-		"65719f0775149d62ce0a670b": 29
+        "65719f0775149d62ce0a670b": 29
       },
       "Holster": {
         "56d59856d2720bd8418b456a": 5,
@@ -12879,14 +12879,6 @@
           "5f60c85b58eff926626a60f7"
         ]
       },
-	"65719f0775149d62ce0a670b": {
-        "mod_equipment_000": ["65719f9ef392ad76c50a2ec8"],
-        "mod_nvg": ["5c0558060db834001b735271", "5a16b8a9fcdbcb00165aa6ca"],
-        "mod_mount": ["5a398b75c4a282000a51a266", "5a398ab9c4a282000c5a9842"],
-        "Helmet_top": ["657fa0fcd4caf976440afe3e"],
-        "Helmet_back": ["657fa168e9433140ad0baf8e"],
-        "Helmet_ears": ["657fa186d4caf976440afe42"]
-    },
       "5fb64bc92b1b027b1f50bcf2": {
         "mod_barrel": [
           "5fb653962b1b027b1f50bd03",
@@ -15732,14 +15724,14 @@
           "655746010177119f4a097ff7",
           "64afdcb83efdfea28601d041"
         ],
-		"Left_side_plate": [
-			"6557458f83942d705f0c4962",
-			"64afdb577bb3bfe8fe03fd1d"
-		],
-		"Right_side_plate": [
-			"6557458f83942d705f0c4962",
-			"64afdb577bb3bfe8fe03fd1d"
-		]
+        "Left_side_plate": [
+          "6557458f83942d705f0c4962",
+          "64afdb577bb3bfe8fe03fd1d"
+        ],
+        "Right_side_plate": [
+          "6557458f83942d705f0c4962",
+          "64afdb577bb3bfe8fe03fd1d"
+        ]
       },
       "628b9a40717774443b15e9f2": {
         "mod_stock": [
@@ -17156,6 +17148,28 @@
         ],
         "mod_sight_rear": [
           "5bb20e49d4351e3bac1212de"
+        ]
+      },
+      "65719f0775149d62ce0a670b": {
+        "Helmet_back": [
+          "657fa168e9433140ad0baf8e"
+        ],
+        "Helmet_ears": [
+          "657fa186d4caf976440afe42"
+        ],
+        "Helmet_top": [
+          "657fa0fcd4caf976440afe3e"
+        ],
+        "mod_equipment_000": [
+          "65719f9ef392ad76c50a2ec8"
+        ],
+        "mod_mount": [
+          "5a398b75c4a282000a51a266",
+          "5a398ab9c4a282000c5a9842"
+        ],
+        "mod_nvg": [
+          "5c0558060db834001b735271",
+          "5a16b8a9fcdbcb00165aa6ca"
         ]
       }
     }
