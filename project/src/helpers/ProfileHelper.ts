@@ -74,6 +74,11 @@ export class ProfileHelper
         return this.saveServer.getProfiles();
     }
 
+    /**
+     * Get the pmc and scav profiles as an array by profile id
+     * @param sessionID
+     * @returns Array of IPmcData objects
+     */
     public getCompleteProfile(sessionID: string): IPmcData[]
     {
         const output: IPmcData[] = [];
@@ -107,7 +112,7 @@ export class ProfileHelper
      * @param output pmc and scav profiles array
      * @param pmcProfile post-raid pmc profile
      * @param scavProfile post-raid scav profile
-     * @returns updated profile array
+     * @returns Updated profile array
      */
     protected postRaidXpWorkaroundFix(
         sessionId: string,
@@ -136,7 +141,7 @@ export class ProfileHelper
 
     /**
      * Check if a nickname is used by another profile loaded by the server
-     * @param nicknameRequest
+     * @param nicknameRequest nickname request object
      * @param sessionID Session id
      * @returns True if already used
      */
@@ -150,9 +155,13 @@ export class ProfileHelper
                 continue;
             }
 
+            // SessionIds dont match + nicknames do
             if (
-                !this.sessionIdMatchesProfileId(profile.info.id, sessionID)
-                && this.nicknameMatches(profile.characters.pmc.Info.LowerNickname, nicknameRequest.nickname)
+                !this.stringsMatch(profile.info.id, sessionID)
+                && this.stringsMatch(
+                    profile.characters.pmc.Info.LowerNickname.toLowerCase(),
+                    nicknameRequest.nickname.toLowerCase(),
+                )
             )
             {
                 return true;
@@ -167,14 +176,9 @@ export class ProfileHelper
         return !!(profile?.characters?.pmc?.Info);
     }
 
-    protected nicknameMatches(profileName: string, nicknameRequest: string): boolean
+    protected stringsMatch(stringA: string, stringB: string): boolean
     {
-        return profileName.toLowerCase() === nicknameRequest.toLowerCase();
-    }
-
-    protected sessionIdMatchesProfileId(profileId: string, sessionId: string): boolean
-    {
-        return profileId === sessionId;
+        return stringA === stringB;
     }
 
     /**
@@ -188,6 +192,11 @@ export class ProfileHelper
         pmcData.Info.Experience += experienceToAdd;
     }
 
+    /**
+     * Iterate all profiles and find matching pmc profile by provided id
+     * @param pmcId Profile id to find
+     * @returns IPmcData
+     */
     public getProfileByPmcId(pmcId: string): IPmcData
     {
         for (const sessionID in this.saveServer.getProfiles())
@@ -202,6 +211,11 @@ export class ProfileHelper
         return undefined;
     }
 
+    /**
+     * Get the experiecne for the given level
+     * @param level level to get xp for
+     * @returns Number of xp points for level
+     */
     public getExperience(level: number): number
     {
         let playerLevel = level;
@@ -222,6 +236,10 @@ export class ProfileHelper
         return exp;
     }
 
+    /**
+     * Get the max level a player can be
+     * @returns Max level
+     */
     public getMaxLevel(): number
     {
         return this.databaseServer.getTables().globals.config.exp.level.exp_table.length - 1;
@@ -232,6 +250,11 @@ export class ProfileHelper
         return { version: this.getServerVersion() };
     }
 
+    /**
+     * Get full representation of a players profile json
+     * @param sessionID Profile id to get
+     * @returns IAkiProfile object
+     */
     public getFullProfile(sessionID: string): IAkiProfile
     {
         if (this.saveServer.getProfile(sessionID) === undefined)
@@ -242,6 +265,11 @@ export class ProfileHelper
         return this.saveServer.getProfile(sessionID);
     }
 
+    /**
+     * Get a PMC profile by its session id
+     * @param sessionID Profile id to return
+     * @returns IPmcData object
+     */
     public getPmcProfile(sessionID: string): IPmcData
     {
         const fullProfile = this.getFullProfile(sessionID);
@@ -253,6 +281,11 @@ export class ProfileHelper
         return this.saveServer.getProfile(sessionID).characters.pmc;
     }
 
+    /**
+     * Get a full profiles scav-specific sub-profile
+     * @param sessionID Profiles id
+     * @returns IPmcData object
+     */
     public getScavProfile(sessionID: string): IPmcData
     {
         return this.saveServer.getProfile(sessionID).characters.scav;
@@ -260,7 +293,7 @@ export class ProfileHelper
 
     /**
      * Get baseline counter values for a fresh profile
-     * @returns Stats
+     * @returns Default profile Stats object
      */
     public getDefaultCounters(): Stats
     {
@@ -284,6 +317,11 @@ export class ProfileHelper
         };
     }
 
+    /**
+     * is this profile flagged for data removal
+     * @param sessionID Profile id
+     * @returns True if profile is to be wiped of data/progress
+     */
     protected isWiped(sessionID: string): boolean
     {
         return this.saveServer.getProfile(sessionID).info.wipe;
@@ -454,6 +492,12 @@ export class ProfileHelper
         profileSkill.LastAccess = this.timeUtil.getTimestamp();
     }
 
+    /**
+     * Get a speciic common skill from supplied profile
+     * @param pmcData Player profile
+     * @param skill Skill get get
+     * @returns Common skill object from desired profile
+     */
     public getSkillFromProfile(pmcData: IPmcData, skill: SkillTypes): Common
     {
         const skillToReturn = pmcData.Skills.Common.find((x) => x.Id === skill);
@@ -466,11 +510,21 @@ export class ProfileHelper
         return skillToReturn;
     }
 
+    /**
+     * Is the provided session id for a developer account
+     * @param sessionID Profile id ot check
+     * @returns True if account is developer
+     */
     public isDeveloperAccount(sessionID: string): boolean
     {
         return this.getFullProfile(sessionID).info.edition.toLowerCase().startsWith(AccountTypes.SPT_DEVELOPER);
     }
 
+    /**
+     * Add stash row bonus to profile or increments rows given count if it already exists
+     * @param sessionId Profile id to give rows to
+     * @param rowsToAdd How many rows to give profile
+     */
     public addStashRowsBonusToProfile(sessionId: string, rowsToAdd: number): void
     {
         const profile = this.getPmcProfile(sessionId);
