@@ -71,12 +71,6 @@ export class MatchController
         return this.matchConfig.enabled;
     }
 
-    /** Handle client/match/group/create */
-    public createGroup(sessionID: string, info: ICreateGroupRequestData): any
-    {
-        return this.matchLocationService.createGroup(sessionID, info);
-    }
-
     /** Handle client/match/group/delete */
     public deleteGroup(info: any): void
     {

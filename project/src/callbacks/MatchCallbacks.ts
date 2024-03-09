@@ -162,13 +162,6 @@ export class MatchCallbacks
         return this.httpResponse.getBody(this.matchController.getGroupStatus(info));
     }
 
-    /** Handle client/match/group/create */
-    // TODO: may have been removed from client
-    public createGroup(url: string, info: ICreateGroupRequestData, sessionID: string): IGetBodyResponseData<any>
-    {
-        return this.httpResponse.getBody(this.matchController.createGroup(sessionID, info));
-    }
-
     /** Handle client/match/group/delete */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public deleteGroup(url: string, info: any, sessionID: string): INullResponseData
