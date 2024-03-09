@@ -7,8 +7,11 @@ import { IAkiProfile } from "@spt-aki/models/eft/profile/IAkiProfile";
 import { IValidateNicknameRequestData } from "@spt-aki/models/eft/profile/IValidateNicknameRequestData";
 import { AccountTypes } from "@spt-aki/models/enums/AccountTypes";
 import { BonusType } from "@spt-aki/models/enums/BonusType";
+import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { SkillTypes } from "@spt-aki/models/enums/SkillTypes";
+import { IInventoryConfig } from "@spt-aki/models/spt/config/IInventoryConfig";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
+import { ConfigServer } from "@spt-aki/servers/ConfigServer";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { SaveServer } from "@spt-aki/servers/SaveServer";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
@@ -21,6 +24,8 @@ import { Watermark } from "@spt-aki/utils/Watermark";
 @injectable()
 export class ProfileHelper
 {
+    protected inventoryConfig: IInventoryConfig;
+
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("JsonUtil") protected jsonUtil: JsonUtil,
@@ -32,8 +37,11 @@ export class ProfileHelper
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("ProfileSnapshotService") protected profileSnapshotService: ProfileSnapshotService,
         @inject("LocalisationService") protected localisationService: LocalisationService,
+        @inject("ConfigServer") protected configServer: ConfigServer,
     )
-    {}
+    {
+        this.inventoryConfig = this.configServer.getConfig(ConfigTypes.INVENTORY);
+    }
 
     /**
      * Remove/reset a completed quest condtion from players profile quest data
@@ -421,7 +429,7 @@ export class ProfileHelper
             return;
         }
 
-        const profileSkill = profileSkills.find((x) => x.Id === skill);
+        const profileSkill = profileSkills.find((profileSkill) => profileSkill.Id === skill);
         if (!profileSkill)
         {
             this.logger.error(this.localisationService.getText("quest-no_skill_found", skill));
@@ -433,6 +441,12 @@ export class ProfileHelper
             const globals = this.databaseServer.getTables().globals;
             const skillProgressRate = globals.config.SkillsSettings.SkillProgressRate;
             pointsToAddToSkill *= skillProgressRate;
+        }
+
+        // Apply custom multipler to skill amount gained, if exists
+        if (this.inventoryConfig.skillGainMultiplers[skill])
+        {
+            pointsToAddToSkill *= this.inventoryConfig.skillGainMultiplers[skill];
         }
 
         profileSkill.Progress += pointsToAddToSkill;
