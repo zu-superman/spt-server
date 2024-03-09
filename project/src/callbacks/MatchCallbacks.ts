@@ -9,6 +9,7 @@ import { IAcceptGroupInviteRequest } from "@spt-aki/models/eft/match/IAcceptGrou
 import { IAcceptGroupInviteResponse } from "@spt-aki/models/eft/match/IAcceptGroupInviteResponse";
 import { ICancelGroupInviteRequest } from "@spt-aki/models/eft/match/ICancelGroupInviteRequest";
 import { ICreateGroupRequestData } from "@spt-aki/models/eft/match/ICreateGroupRequestData";
+import { IDeclineGroupInviteRequest } from "@spt-aki/models/eft/match/IDeclineGroupInviteRequest";
 import { IEndOfflineRaidRequestData } from "@spt-aki/models/eft/match/IEndOfflineRaidRequestData";
 import { IGetGroupStatusRequestData } from "@spt-aki/models/eft/match/IGetGroupStatusRequestData";
 import { IGetGroupStatusResponse } from "@spt-aki/models/eft/match/IGetGroupStatusResponse";
@@ -88,6 +89,17 @@ export class MatchCallbacks
         result.push({});
 
         return this.httpResponse.getBody(result);
+    }
+
+    /** Handle client/match/group/invite/decline */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    public declineGroupInvite(
+        url: string,
+        info: IDeclineGroupInviteRequest,
+        sessionID: string,
+    ): IGetBodyResponseData<any>
+    {
+        return null;
     }
 
     /** Handle client/match/group/invite/cancel */

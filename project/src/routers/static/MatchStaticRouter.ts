@@ -95,6 +95,13 @@ export class MatchStaticRouter extends StaticRouter
                 },
             ),
             new RouteAction(
+                "/client/match/group/invite/decline",
+                (url: string, info: any, sessionID: string, output: string): any =>
+                {
+                    return this.matchCallbacks.declineGroupInvite(url, info, sessionID);
+                },
+            ),
+            new RouteAction(
                 "/client/match/group/invite/cancel",
                 (url: string, info: any, sessionID: string, output: string): any =>
                 {
