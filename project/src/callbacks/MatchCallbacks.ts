@@ -121,13 +121,6 @@ export class MatchCallbacks
         return this.httpResponse.nullResponse();
     }
 
-    /** Handle raid/profile/list */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public getProfile(url: string, info: IGetProfileRequestData, sessionID: string): IGetBodyResponseData<IPmcData[]>
-    {
-        return this.httpResponse.getBody(this.matchController.getProfile(info));
-    }
-
     // Handle client/match/available
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public serverAvailable(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<boolean>

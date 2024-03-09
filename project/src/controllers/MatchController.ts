@@ -71,22 +71,6 @@ export class MatchController
         return this.matchConfig.enabled;
     }
 
-    /** Handle raid/profile/list */
-    public getProfile(info: IGetProfileRequestData): IPmcData[]
-    {
-        if (info.profileId.includes("pmcAID"))
-        {
-            return this.profileHelper.getCompleteProfile(info.profileId.replace("pmcAID", "AID"));
-        }
-
-        if (info.profileId.includes("scavAID"))
-        {
-            return this.profileHelper.getCompleteProfile(info.profileId.replace("scavAID", "AID"));
-        }
-
-        return [];
-    }
-
     /** Handle client/match/group/create */
     public createGroup(sessionID: string, info: ICreateGroupRequestData): any
     {

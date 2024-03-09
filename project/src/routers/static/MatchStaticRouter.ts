@@ -9,10 +9,6 @@ export class MatchStaticRouter extends StaticRouter
     constructor(@inject("MatchCallbacks") protected matchCallbacks: MatchCallbacks)
     {
         super([
-            new RouteAction("/raid/profile/list", (url: string, info: any, sessionID: string, output: string): any =>
-            {
-                return this.matchCallbacks.getProfile(url, info, sessionID);
-            }),
             new RouteAction(
                 "/client/match/available",
                 (url: string, info: any, sessionID: string, output: string): any =>
