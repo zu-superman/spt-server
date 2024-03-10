@@ -20,7 +20,6 @@ import { IQuestTypePool } from "@spt-aki/models/spt/repeatable/IQuestTypePool";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt-aki/servers/ConfigServer";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
-import { ItemFilterService } from "@spt-aki/services/ItemFilterService";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
 import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 import { MathUtil } from "@spt-aki/utils/MathUtil";
@@ -41,7 +40,6 @@ export class RepeatableQuestGenerator
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("ObjectId") protected objectId: ObjectId,
-        @inject("ItemFilterService") protected itemFilterService: ItemFilterService,
         @inject("RepeatableQuestHelper") protected repeatableQuestHelper: RepeatableQuestHelper,
         @inject("RepeatableQuestRewardGenerator") protected repeatableQuestRewardGenerator:
             RepeatableQuestRewardGenerator,
