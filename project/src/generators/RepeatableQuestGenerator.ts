@@ -1036,7 +1036,7 @@ export class RepeatableQuestGenerator
                     );
                 }
 
-                // 25% chance to double, triple quadruple reward stack (Only occurs when item is stackable and not weapon or ammo)
+                // 25% chance to double, triple quadruple reward stack (Only occurs when item is stackable and not weapon, armor or ammo)
                 if (this.canIncreaseRewardItemStackSize(itemSelected, 70000))
                 {
                     rewardItemStackCount = this.getRandomisedRewardItemStackSizeByPrice(itemSelected);
@@ -1144,7 +1144,11 @@ export class RepeatableQuestGenerator
     protected canIncreaseRewardItemStackSize(item: ITemplateItem, maxRoublePriceToStack: number): boolean
     {
         return this.itemHelper.getStaticItemPrice(item._id) < maxRoublePriceToStack
-            && !this.itemHelper.isOfBaseclasses(item._id, [BaseClasses.WEAPON, BaseClasses.AMMO])
+            && !this.itemHelper.isOfBaseclasses(item._id, [
+                BaseClasses.WEAPON,
+                BaseClasses.ARMORED_EQUIPMENT,
+                BaseClasses.AMMO,
+            ])
             && !this.itemHelper.itemRequiresSoftInserts(item._id)
             && this.randomUtil.getChance100(25);
     }
