@@ -149,7 +149,7 @@ export class LocaleService
             return "cz";
         }
 
-        // BSG map De to GE some reason
+        // BSG map DE to GE some reason
         if (platformLocale.language === "de")
         {
             return "ge";

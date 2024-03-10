@@ -403,7 +403,7 @@ export class BotLootGenerator
                     ...this.botGeneratorHelper.generateExtraPropertiesForItem(itemToAddTemplate, botRole),
                 }];
 
-                // Is Simple-Wallet
+                // Is Simple-Wallet / WZ wallet
                 if (this.botConfig.walletLoot.walletTplPool.includes(weightedItemTpl))
                 {
                     const addCurrencyToWallet = this.randomUtil.getChance100(this.botConfig.walletLoot.chancePercent);
@@ -429,14 +429,15 @@ export class BotLootGenerator
                                     containerGrid,
                                     itemToAdd,
                                     itemWithChildrenToAdd[0]._id,
+                                    "main",
                                 );
                             }
 
-                            itemWithChildrenToAdd.push(...itemsToAdd.flatMap((x) => x));
+                            itemWithChildrenToAdd.push(...itemsToAdd.flatMap((moneyStack) => moneyStack));
                         }
                     }
                 }
-
+                // Some items (ammBox/ammo) need extra changes
                 this.addRequiredChildItemsToParent(itemToAddTemplate, itemWithChildrenToAdd, isPmc, botRole);
 
                 // Attempt to add item to container(s)

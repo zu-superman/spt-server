@@ -324,8 +324,14 @@ export class InventoryHelper
      * @param containerFS2D Container grid to add item to
      * @param itemWithChildren Item to add to grid
      * @param containerId Id of the container we're fitting item into
+     * @param desiredSlotId slot id value to use, default is "hideout"
      */
-    public placeItemInContainer(containerFS2D: number[][], itemWithChildren: Item[], containerId: string): void
+    public placeItemInContainer(
+        containerFS2D: number[][],
+        itemWithChildren: Item[],
+        containerId: string,
+        desiredSlotId = "hideout",
+    ): void
     {
         // Get x/y size of item
         const rootItemAdded = itemWithChildren[0];
@@ -355,7 +361,7 @@ export class InventoryHelper
             }
             // Store details for object, incuding container item will be placed in
             rootItemAdded.parentId = containerId;
-            rootItemAdded.slotId = "hideout";
+            rootItemAdded.slotId = desiredSlotId;
             rootItemAdded.location = {
                 x: findSlotResult.x,
                 y: findSlotResult.y,

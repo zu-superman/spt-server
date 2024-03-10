@@ -867,7 +867,9 @@ export class ProfileFixerService
 
         // Get items placed in root of stash
         // TODO: extend to other areas / sub items
-        const inventoryItemsToCheck = pmcProfile.Inventory.items.filter((x) => ["hideout", "main"].includes(x.slotId));
+        const inventoryItemsToCheck = pmcProfile.Inventory.items.filter((item) =>
+            ["hideout", "main"].includes(item.slotId)
+        );
         if (!inventoryItemsToCheck)
         {
             return;
