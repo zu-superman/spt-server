@@ -3,7 +3,7 @@
         {
             "_name": "prapor",
             "traderId": "54cb50c76803fa8b248b4571",
-            "seconds": 3600
+            "seconds": 11100
         },
         {
             "_name": "therapist",
@@ -13,7 +13,7 @@
         {
             "_name": "fence",
             "traderId": "579dc571d53a0658a154fbec",
-            "seconds": 3600
+            "seconds": 5220
         },
         {
             "_name": "skier",
@@ -23,7 +23,7 @@
         {
             "_name": "peacekeeper",
             "traderId": "5935c25fb3acc3127c3d8cd9",
-            "seconds": 3600
+            "seconds": 8580
         },
         {
             "_name": "mechanic",
