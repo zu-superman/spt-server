@@ -1,38 +1,47 @@
 {
     "updateTime": [
         {
+            "_name": "prapor",
             "traderId": "54cb50c76803fa8b248b4571",
             "seconds": 3600
         },
         {
+            "_name": "therapist",
             "traderId": "54cb57776803fa99248b456e",
-            "seconds": 3600
+            "seconds": 8040
         },
         {
+            "_name": "fence",
             "traderId": "579dc571d53a0658a154fbec",
             "seconds": 3600
         },
         {
+            "_name": "skier",
             "traderId": "58330581ace78e27b8b10cee",
-            "seconds": 3600
+            "seconds": 6240
         },
         {
+            "_name": "peacekeeper",
             "traderId": "5935c25fb3acc3127c3d8cd9",
             "seconds": 3600
         },
         {
+            "_name": "mechanic",
             "traderId": "5a7c2eca46aef81a7ca2145d",
-            "seconds": 3600
+            "seconds": 8160
         },
         {
+            "_name": "ragman",
             "traderId": "5ac3b934156ae10c4430e83c",
-            "seconds": 3600
+            "seconds": 8220
         },
         {
+            "_name": "jaeger",
             "traderId": "5c0647fdd443bc2504c2d371",
-            "seconds": 3600
+            "seconds": 5100
         },
         {
+            "_name": "btr",
             "traderId": "656f0f98d80a697f855d34b1",
             "seconds": 3600
         },
