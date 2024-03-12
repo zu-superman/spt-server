@@ -686,7 +686,7 @@ export class QuestHelper
         output: IItemEventRouterResponse = null,
     ): IItemEventRouterResponse
     {
-        // Prepare response to send back client
+        // Prepare response to send back to client
         if (!output)
         {
             output = this.eventOutputHolder.getOutput(sessionID);
@@ -698,14 +698,16 @@ export class QuestHelper
         // Create a dialog message for completing the quest.
         const quest = this.getQuestFromDb(failRequest.qid, pmcData);
 
-        const matchingRepeatable = pmcData.RepeatableQuests.flatMap((repeatableType) => repeatableType.activeQuests)
-            .find((activeQuest) => activeQuest._id === failRequest.qid);
+        // Merge all daily/weekly/scav daily quests into one array and look for the matching quest by id
+        const matchingRepeatableQuest = pmcData.RepeatableQuests.flatMap((repeatableType) =>
+            repeatableType.activeQuests
+        ).find((activeQuest) => activeQuest._id === failRequest.qid);
 
-        if (!(matchingRepeatable || quest))
+        if (matchingRepeatableQuest || quest)
         {
             this.mailSendService.sendLocalisedNpcMessageToPlayer(
                 sessionID,
-                this.traderHelper.getTraderById(quest?.traderId ?? matchingRepeatable.traderId), // can be null when repeatable quest has been moved to inactiveQuests
+                this.traderHelper.getTraderById(quest?.traderId ?? matchingRepeatableQuest?.traderId), // Can be null when repeatable quest has been moved to inactiveQuests
                 MessageType.QUEST_FAIL,
                 quest.failMessageText,
                 questRewards,
