@@ -7,6 +7,8 @@ export interface ITraderConfig extends IBaseConfig
     kind: "aki-trader";
     updateTime: UpdateTime[];
     purchasesAreFoundInRaid: boolean;
+    /** Should trader reset times be set based on server start time (false = bsg time - on the hour) */
+    tradersResetFromServerStart: boolean;
     updateTimeDefault: number;
     traderPriceMultipler: number;
     /** Keep track of purchased trader-limited items beyond server restarts to prevent server-restart item scumming */

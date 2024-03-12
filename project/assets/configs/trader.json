@@ -42,6 +42,7 @@
         }
     ],
     "updateTimeDefault": 3600,
+    "tradersResetFromServerStart": false,
     "purchasesAreFoundInRaid": false,
     "traderPriceMultipler": 1,
     "persistPurchaseDataInProfile": true,
