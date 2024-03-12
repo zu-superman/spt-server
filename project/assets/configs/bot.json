@@ -515,6 +515,10 @@
             "lightIsActiveDayChancePercent": 25,
             "lightIsActiveNightChancePercent": 85,
             "laserIsActiveChancePercent": 85,
+			"weaponModLimits": {
+                "scopeLimit": 1,
+                "lightLaserLimit": 1
+            },
             "forceStock": true
         },
         "ravangezryachiyevent": {
