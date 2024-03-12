@@ -677,14 +677,13 @@ export class QuestHelper
      * @param failRequest Fail quest request data
      * @param sessionID Session id
      * @param output Client output
-     * @returns Item event router response
      */
     public failQuest(
         pmcData: IPmcData,
         failRequest: IFailQuestRequestData,
         sessionID: string,
         output: IItemEventRouterResponse = null,
-    ): IItemEventRouterResponse
+    ): void
     {
         // Prepare response to send back to client
         if (!output)
@@ -716,8 +715,6 @@ export class QuestHelper
         }
 
         output.profileChanges[sessionID].quests.push(...this.failedUnlocked(failRequest.qid, sessionID));
-
-        return output;
     }
 
     /**

@@ -997,6 +997,8 @@ export class QuestController
         output: IItemEventRouterResponse,
     ): IItemEventRouterResponse
     {
-        return this.questHelper.failQuest(pmcData, request, sessionID, output);
+        this.questHelper.failQuest(pmcData, request, sessionID, output);
+
+        return output;
     }
 }
