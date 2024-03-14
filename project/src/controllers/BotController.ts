@@ -214,14 +214,13 @@ export class BotController
             }
 
             // Loop over and make x bots for this bot wave
-            let cacheKey = "";
+            const cacheKey = `${
+                botGenerationDetails.eventRole ?? botGenerationDetails.role
+            }${botGenerationDetails.botDifficulty}`;
             for (let i = 0; i < botGenerationDetails.botCountToGenerate; i++)
             {
-                const detailsClone = this.jsonUtil.clone(botGenerationDetails);
-
-                cacheKey = `${detailsClone.role}${detailsClone.botDifficulty}`;
-
                 // Generate and add bot to cache
+                const detailsClone = this.jsonUtil.clone(botGenerationDetails);
                 const botToCache = this.botGenerator.prepareAndGenerateBot(sessionId, detailsClone);
                 this.botGenerationCacheService.storeBots(cacheKey, [botToCache]);
             }
@@ -231,9 +230,6 @@ export class BotController
                     botGenerationDetails.eventRole ?? ""
                 }) ${botGenerationDetails.botDifficulty} bots`,
             );
-
-            // Get bot from cache, add to return array
-            const botToReturn = this.botGenerationCacheService.getBot(cacheKey);
         }
 
         return [];
