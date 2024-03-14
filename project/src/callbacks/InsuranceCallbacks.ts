@@ -52,7 +52,8 @@ export class InsuranceCallbacks implements OnUpdate
 
     public async onUpdate(secondsSinceLastRun: number): Promise<boolean>
     {
-        if (secondsSinceLastRun > this.insuranceConfig.runIntervalSeconds)
+        // People edit the config value to be 0 and break it, force value to no lower than 1
+        if (secondsSinceLastRun > Math.max(this.insuranceConfig.runIntervalSeconds, 1))
         {
             this.insuranceController.processReturn();
             return true;
