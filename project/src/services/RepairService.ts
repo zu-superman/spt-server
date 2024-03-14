@@ -510,6 +510,24 @@ export class RepairService
             return false;
         }
 
+        // Skill < level 10 + repairing weapon
+        if (
+            itemSkillType === SkillTypes.WEAPON_TREATMENT
+            && this.profileHelper.getSkillFromProfile(pmcData, SkillTypes.WEAPON_TREATMENT)?.Progress < 1000
+        )
+        {
+            return false;
+        }
+
+        // Skill < level 10 + repairing armor
+        if (
+            ([SkillTypes.LIGHT_VESTS, SkillTypes.HEAVY_VESTS].includes(itemSkillType))
+            && this.profileHelper.getSkillFromProfile(pmcData, itemSkillType)?.Progress < 1000
+        )
+        {
+            return false;
+        }
+
         const commonBuffMinChanceValue =
             globals.config.SkillsSettings[itemSkillType as string].BuffSettings.CommonBuffMinChanceValue;
         const commonBuffChanceLevelBonus =

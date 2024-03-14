@@ -100,11 +100,7 @@ export class RepairController
             output,
         );
 
-        // Bonuses only get applied when players weapon maintenance skill is over level 10
-        if (this.profileHelper.getSkillFromProfile(pmcData, SkillTypes.WEAPON_TREATMENT)?.Progress >= 1000)
-        {
-            this.repairService.addBuffToItem(repairDetails, pmcData);
-        }
+        this.repairService.addBuffToItem(repairDetails, pmcData);
 
         // add repaired item to send to client
         output.profileChanges[sessionID].items.change.push(repairDetails.repairedItem);
