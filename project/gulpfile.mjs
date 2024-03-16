@@ -31,6 +31,7 @@ const entries = {
     release: path.join("obj", "ide", "ReleaseEntry.js"),
     debug: path.join("obj", "ide", "DebugEntry.js"),
     bleeding: path.join("obj", "ide", "BleedingEdgeEntry.js"),
+    bleedingmods: path.join("obj", "ide", "BleedingEdgeModsEntry.js"),
 };
 const licenseFile = "../LICENSE.md";
 
@@ -349,6 +350,7 @@ const packaging = async (entry) =>
 gulp.task("build:debug", build("debug"));
 gulp.task("build:release", build("release"));
 gulp.task("build:bleeding", build("bleeding"));
+gulp.task("build:bleedingmods", build("bleedingmods"));
 
 gulp.task("run:build", async () => await exec("Aki.Server.exe", { stdio, cwd: buildDir }));
 gulp.task(
