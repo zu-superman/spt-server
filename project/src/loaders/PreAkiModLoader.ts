@@ -338,6 +338,7 @@ export class PreAkiModLoader implements IModLoader
         if (!mod.akiVersion)
         {
             this.logger.error(this.localisationService.getText("modloader-missing_akiversion_field", modName));
+
             return false;
         }
 
@@ -345,14 +346,16 @@ export class PreAkiModLoader implements IModLoader
         if (!(semver.valid(mod.akiVersion) || semver.validRange(mod.akiVersion)))
         {
             this.logger.error(this.localisationService.getText("modloader-invalid_akiversion_field", modName));
+
             return false;
         }
 
-        // Warn and allow loading if semver is not satisfied
+        // Error and prevent loading if semver is not satisfied
         if (!semver.satisfies(akiVersion, mod.akiVersion))
         {
-            this.logger.warning(this.localisationService.getText("modloader-outdated_akiversion_field", modName));
-            return true;
+            this.logger.error(this.localisationService.getText("modloader-outdated_akiversion_field", modName));
+
+            return false;
         }
 
         return true;
