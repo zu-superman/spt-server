@@ -22,6 +22,7 @@ slnx.sqlite
 slnx-journal.sqlite
 
 ## nodejs
+package-lock.json
 node_modules
 node.exe
 pnpm-lock.yaml
