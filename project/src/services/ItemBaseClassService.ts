@@ -101,7 +101,7 @@ export class ItemBaseClassService
         if (!this.itemBaseClassesCache[itemTpl])
         {
             // Hydrate again
-            this.logger.warning(this.localisationService.getText("baseclass-item_not_found", itemTpl));
+            this.logger.debug(this.localisationService.getText("baseclass-item_not_found", itemTpl));
             this.hydrateItemBaseClassCache();
 
             // Check for item again, throw exception if not found
