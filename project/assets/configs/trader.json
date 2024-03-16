@@ -3,51 +3,81 @@
         {
             "_name": "prapor",
             "traderId": "54cb50c76803fa8b248b4571",
-            "seconds": 11100
+            "seconds": {
+                "min": 7000,
+                "max": 13500
+            }
         },
         {
             "_name": "therapist",
             "traderId": "54cb57776803fa99248b456e",
-            "seconds": 8040
+            "seconds": {
+                "min": 3000,
+                "max": 9500
+            }
         },
         {
             "_name": "fence",
             "traderId": "579dc571d53a0658a154fbec",
-            "seconds": 5220
+            "seconds": {
+                "min": 3000,
+                "max": 9000
+            }
         },
         {
             "_name": "skier",
             "traderId": "58330581ace78e27b8b10cee",
-            "seconds": 6240
+            "seconds": {
+                "min": 5000,
+                "max": 8500
+            }
         },
         {
             "_name": "peacekeeper",
             "traderId": "5935c25fb3acc3127c3d8cd9",
-            "seconds": 8580
+            "seconds": {
+                "min": 2000,
+                "max": 14000
+            }
         },
         {
             "_name": "mechanic",
             "traderId": "5a7c2eca46aef81a7ca2145d",
-            "seconds": 8160
+            "seconds": {
+                "min": 7000,
+                "max": 13500
+            }
         },
         {
             "_name": "ragman",
             "traderId": "5ac3b934156ae10c4430e83c",
-            "seconds": 8220
+            "seconds": {
+                "min": 6500,
+                "max": 15000
+            }
         },
         {
             "_name": "jaeger",
             "traderId": "5c0647fdd443bc2504c2d371",
-            "seconds": 5100
+            "seconds": {
+                "min": 2000,
+                "max": 5500
+            }
         },
         {
             "_name": "btr",
             "traderId": "656f0f98d80a697f855d34b1",
-            "seconds": 3600
+            "seconds": {
+                "min": 3000,
+                "max": 7500
+            }
         },
         {
             "traderId": "ragfair",
-            "seconds": 3600
+            "seconds": {
+                "min": 3600,
+                "max": 3600
+            }
         }
     ],
     "updateTimeDefault": 3600,

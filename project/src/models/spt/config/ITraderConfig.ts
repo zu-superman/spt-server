@@ -20,7 +20,7 @@ export interface UpdateTime
 {
     traderId: string;
     /** Seconds between trader resets */
-    seconds: number;
+    seconds: MinMax;
 }
 
 export interface FenceConfig

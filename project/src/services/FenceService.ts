@@ -1262,7 +1262,9 @@ export class FenceService
      */
     protected getFenceRefreshTime(): number
     {
-        return this.traderConfig.updateTime.find((x) => x.traderId === Traders.FENCE).seconds;
+        const fence = this.traderConfig.updateTime.find((x) => x.traderId === Traders.FENCE).seconds;
+
+        return this.randomUtil.getInt(fence.min, fence.max);
     }
 
     /**

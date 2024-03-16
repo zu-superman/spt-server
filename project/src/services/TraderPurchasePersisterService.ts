@@ -7,6 +7,7 @@ import { ITraderConfig } from "@spt-aki/models/spt/config/ITraderConfig";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt-aki/servers/ConfigServer";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
+import { RandomUtil } from "@spt-aki/utils/RandomUtil";
 import { TimeUtil } from "@spt-aki/utils/TimeUtil";
 
 /**
@@ -20,6 +21,7 @@ export class TraderPurchasePersisterService
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
+        @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("ConfigServer") protected configServer: ConfigServer,
@@ -134,7 +136,8 @@ export class TraderPurchasePersisterService
                 }
 
                 const purchaseDetails = profile.traderPurchases[traderId][purchaseKey];
-                const resetTimeForItem = purchaseDetails.purchaseTimestamp + traderUpdateDetails.seconds;
+                const resetTimeForItem = purchaseDetails.purchaseTimestamp
+                    + this.randomUtil.getInt(traderUpdateDetails.seconds.min, traderUpdateDetails.seconds.max);
                 if (resetTimeForItem < this.timeUtil.getTimestamp())
                 {
                     // Item was purchased far enough in past a trader refresh would have occured, remove purchase record from profile

@@ -275,12 +275,15 @@ export class TraderHelper
             );
 
             this.traderConfig.updateTime.push( // create temporary entry to prevent logger spam
-                { traderId: traderId, seconds: this.traderConfig.updateTimeDefault },
+                {
+                    traderId: traderId,
+                    seconds: { min: this.traderConfig.updateTimeDefault, max: this.traderConfig.updateTimeDefault },
+                },
             );
         }
         else
         {
-            return traderDetails.seconds;
+            return this.randomUtil.getInt(traderDetails.seconds.min, traderDetails.seconds.max);
         }
     }
 
