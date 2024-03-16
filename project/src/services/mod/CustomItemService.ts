@@ -12,6 +12,7 @@ import {
 import { IDatabaseTables } from "@spt-aki/models/spt/server/IDatabaseTables";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
+import { ItemBaseClassService } from "@spt-aki/services/ItemBaseClassService";
 import { HashUtil } from "@spt-aki/utils/HashUtil";
 import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 
@@ -26,6 +27,7 @@ export class CustomItemService
         @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
+        @inject("ItemBaseClassService") protected itemBaseClassService: ItemBaseClassService,
     )
     {
         this.tables = this.databaseServer.getTables();
@@ -73,6 +75,8 @@ export class CustomItemService
 
         this.addToFleaPriceDb(newItemId, newItemDetails.fleaPriceRoubles);
 
+        this.itemBaseClassService.hydrateItemBaseClassCache();
+
         if (this.itemHelper.isOfBaseclass(itemClone._id, BaseClasses.WEAPON))
         {
             this.addToWeaponShelf(newItemId);
@@ -114,6 +118,8 @@ export class CustomItemService
         this.addToLocaleDbs(newItemDetails.locales, newItem._id);
 
         this.addToFleaPriceDb(newItem._id, newItemDetails.fleaPriceRoubles);
+
+        this.itemBaseClassService.hydrateItemBaseClassCache();
 
         if (this.itemHelper.isOfBaseclass(newItem._id, BaseClasses.WEAPON))
         {
