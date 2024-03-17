@@ -52,12 +52,8 @@ export class PMCLootGenerator
             const pmcItemBlacklist = this.pmcConfig.pocketLoot.blacklist;
             const itemBlacklist = this.itemFilterService.getBlacklistedItems();
 
-            // Blacklist seasonal items if not inside seasonal event
-            if (!this.seasonalEventService.seasonalEventEnabled())
-            {
-                // Blacklist seasonal items
-                itemBlacklist.push(...this.seasonalEventService.getInactiveSeasonalEventItems());
-            }
+            // Blacklist inactive seasonal items
+            itemBlacklist.push(...this.seasonalEventService.getInactiveSeasonalEventItems());
 
             const itemsToAdd = Object.values(items).filter((item) =>
                 allowedItemTypes.includes(item._parent)
@@ -115,13 +111,8 @@ export class PMCLootGenerator
             const pmcItemBlacklist = this.pmcConfig.vestLoot.blacklist;
             const itemBlacklist = this.itemFilterService.getBlacklistedItems();
 
-            // Blacklist seasonal items if not inside seasonal event
-            // Blacklist seasonal items if not inside seasonal event
-            if (!this.seasonalEventService.seasonalEventEnabled())
-            {
-                // Blacklist seasonal items
-                itemBlacklist.push(...this.seasonalEventService.getInactiveSeasonalEventItems());
-            }
+            // Blacklist seasonal items
+            itemBlacklist.push(...this.seasonalEventService.getInactiveSeasonalEventItems());
 
             const itemsToAdd = Object.values(items).filter((item) =>
                 allowedItemTypes.includes(item._parent)
@@ -189,12 +180,8 @@ export class PMCLootGenerator
             const pmcItemBlacklist = this.pmcConfig.backpackLoot.blacklist;
             const itemBlacklist = this.itemFilterService.getBlacklistedItems();
 
-            // blacklist event items if not inside seasonal event
-            if (!this.seasonalEventService.seasonalEventEnabled())
-            {
-                // Blacklist seasonal items
-                itemBlacklist.push(...this.seasonalEventService.getInactiveSeasonalEventItems());
-            }
+            // Blacklist seasonal items
+            itemBlacklist.push(...this.seasonalEventService.getInactiveSeasonalEventItems());
 
             const itemsToAdd = Object.values(items).filter((item) =>
                 allowedItemTypes.includes(item._parent)
