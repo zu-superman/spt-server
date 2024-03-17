@@ -500,22 +500,20 @@ export class PreAkiModLoader implements IModLoader
 
     protected autoInstallDependencies(modPath: string, pkg: IPackageJsonData): void
     {
-        const dependenciesToInstall: [string, string][] = Object.entries(pkg.dependencies);
+        const dependenciesToInstall: [string, string][] = [];
 
-        let depIdx = 0;
-        for (const [depName, depVersion] of dependenciesToInstall)
+        for (const [depName, depVersion] of Object.entries(pkg.dependencies))
         {
             // currently not checking for version mismatches, but we could check it, just don't know what we would do afterwards, some options would be:
             // 1 - throw an error
             // 2 - use the server's version (which is what's currently happening by not checking the version)
             // 3 - use the mod's version (don't know the reprecursions this would have, or if it would even work)
 
-            // if a dependency from the mod exists in the server dependencies we can safely remove it from the list of dependencies to install since it already comes bundled in the server.
-            if (this.serverDependencies[depName])
+            // if a mod's dependency does not exist in the server's dependencies we can add it to the list of dependencies to install.
+            if (!this.serverDependencies[depName])
             {
-                dependenciesToInstall.splice(depIdx, 1);
+                dependenciesToInstall.push([depName, depVersion]);
             }
-            depIdx++;
         }
 
         // If the mod has no extra dependencies return as there's nothing that needs to be done.
