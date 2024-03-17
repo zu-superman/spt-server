@@ -1,5 +1,9 @@
 {
-    "runIntervalSeconds": 45,
+    "runIntervalSeconds": 8,
+	"runIntervalValues": {
+		"inRaid": 60,
+		"outOfRaid": 8
+	},
     "sell": {
         "fees": true,
         "chance": {

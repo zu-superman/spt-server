@@ -465,6 +465,9 @@ export class GameController
      */
     public getRaidTime(sessionId: string, request: IGetRaidTimeRequest): IGetRaidTimeResponse
     {
+        // Set flea interval time to in-raid value
+        this.ragfairConfig.runIntervalSeconds = this.ragfairConfig.runIntervalValues.inRaid;
+
         return this.raidTimeAdjustmentService.getRaidAdjustments(sessionId, request);
     }
 
