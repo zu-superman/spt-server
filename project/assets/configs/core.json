@@ -24,7 +24,7 @@
             "sptFriendEnabled": true,
             "commandoEnabled": true,
             "commandoFeatures": {
-                "giveCommandEnabled": false
+                "giveCommandEnabled": true
             }
         }
     }
