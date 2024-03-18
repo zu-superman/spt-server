@@ -216,14 +216,14 @@ export class RagfairPriceService implements OnLoad
 
     /**
      * Generate a currency cost for an item and its mods
-     * @param items Item with mods to get price for
+     * @param offerItems Item with mods to get price for
      * @param desiredCurrency Currency price desired in
      * @param isPackOffer Price is for a pack type offer
      * @returns cost of item in desired currency
      */
-    public getDynamicOfferPriceForOffer(items: Item[], desiredCurrency: string, isPackOffer: boolean): number
+    public getDynamicOfferPriceForOffer(offerItems: Item[], desiredCurrency: string, isPackOffer: boolean): number
     {
-        const rootItem = items[0];
+        const rootItem = offerItems[0];
 
         // Price to return
         let price = 0;
@@ -231,8 +231,9 @@ export class RagfairPriceService implements OnLoad
         let endLoop = false;
         let isPreset = false;
         let manuallyAdjusted = false;
-        for (const item of items)
+        for (const item of offerItems)
         {
+            // Armor insert, skip - we dont factor these into an items price
             if (this.itemHelper.isOfBaseclass(item._tpl, BaseClasses.BUILT_IN_INSERTS))
             {
                 continue;
@@ -260,22 +261,17 @@ export class RagfairPriceService implements OnLoad
             const itemDetails = this.itemHelper.getItem(item._tpl);
             if (this.presetHelper.isPreset(item.upd?.sptPresetId) && itemDetails[1]._props.weapFireType)
             {
-                itemPrice = this.getWeaponPresetPrice(item, items, itemPrice);
+                itemPrice = this.getWeaponPresetPrice(item, offerItems, itemPrice);
                 endLoop = true;
                 isPreset = true;
             }
 
+            // Check for existance of manual price adjustment multiplier
             const manualPriceMultipler = this.ragfairConfig.dynamic.itemPriceMultiplier[item._tpl];
             if (manualPriceMultipler)
             {
                 manuallyAdjusted = true;
                 itemPrice *= manualPriceMultipler;
-            }
-
-            // Convert to different currency if desiredCurrency param is not roubles
-            if (desiredCurrency !== Money.ROUBLES)
-            {
-                itemPrice = this.handbookHelper.fromRUB(itemPrice, desiredCurrency);
             }
 
             // Multiply dynamic price by quality modifier
@@ -289,8 +285,8 @@ export class RagfairPriceService implements OnLoad
             }
         }
 
-        // Skip items with children
-        if (items.length === 1 && !manuallyAdjusted)
+        // Check for unreasonable price on singular items
+        if (offerItems.length === 1 && !manuallyAdjusted)
         {
             const rootItemDb = this.itemHelper.getItem(rootItem._tpl)[1];
             let unreasonableItemPriceChange: IUnreasonableModPrices;
@@ -314,9 +310,17 @@ export class RagfairPriceService implements OnLoad
             }
         }
 
+        // Get price multiplier min/max to vary price
         const rangeValues = this.getOfferTypeRangeValues(isPreset, isPackOffer);
         price = this.randomiseOfferPrice(price, rangeValues);
 
+        // Convert to different currency if desiredCurrency param is not roubles
+        if (desiredCurrency !== Money.ROUBLES)
+        {
+            price = this.handbookHelper.fromRUB(price, desiredCurrency);
+        }
+
+        // Guard against weird prices
         if (price < 1)
         {
             price = 1;

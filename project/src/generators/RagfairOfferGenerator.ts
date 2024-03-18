@@ -129,7 +129,7 @@ export class RagfairOfferGenerator
         // Add cartridges to offers for ammo boxes
         if (this.itemHelper.isOfBaseclass(itemsClone[0]._tpl, BaseClasses.AMMO_BOX))
         {
-            // On offer refresh dont re-add cartidges to ammobox that already has cartidges
+            // On offer refresh dont re-add cartridges to ammo box that already has cartridges
             if (Object.keys(itemsClone).length === 1)
             {
                 this.itemHelper.addCartridgesToAmmoBox(itemsClone, this.itemHelper.getItem(items[0]._tpl)[1]);
@@ -154,9 +154,9 @@ export class RagfairOfferGenerator
             },
             root: items[0]._id,
             items: itemsClone,
+            itemsCost: Math.round(this.handbookHelper.getTemplatePrice(items[0]._tpl)), // Handbook price
             requirements: offerRequirements,
             requirementsCost: roublePrice,
-            itemsCost: Math.round(this.handbookHelper.getTemplatePrice(items[0]._tpl)), // Handbook price
             summaryCost: roublePrice,
             startTime: time,
             endTime: this.getOfferEndTime(userID, time),
