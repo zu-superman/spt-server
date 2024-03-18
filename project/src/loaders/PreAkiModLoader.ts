@@ -500,26 +500,24 @@ export class PreAkiModLoader implements IModLoader
 
     protected autoInstallDependencies(modPath: string, pkg: IPackageJsonData): void
     {
-        const dependenciesToInstall: [string, string][] = Object.entries(pkg.dependencies);
+        const dependenciesToInstall = new Map<string, string>();
 
-        let depIdx = 0;
-        for (const [depName, depVersion] of dependenciesToInstall)
+        for (const [depName, depVersion] of Object.entries(pkg.dependencies))
         {
             // currently not checking for version mismatches, but we could check it, just don't know what we would do afterwards, some options would be:
             // 1 - throw an error
             // 2 - use the server's version (which is what's currently happening by not checking the version)
             // 3 - use the mod's version (don't know the reprecursions this would have, or if it would even work)
 
-            // if a dependency from the mod exists in the server dependencies we can safely remove it from the list of dependencies to install since it already comes bundled in the server.
-            if (this.serverDependencies[depName])
+            // if a mod's dependency does not exist in the server's dependencies we can add it to the list of dependencies to install.
+            if (!this.serverDependencies[depName])
             {
-                dependenciesToInstall.splice(depIdx, 1);
+                dependenciesToInstall.set(depName, depVersion);
             }
-            depIdx++;
         }
 
         // If the mod has no extra dependencies return as there's nothing that needs to be done.
-        if (dependenciesToInstall.length === 0)
+        if (dependenciesToInstall.size === 0)
         {
             return;
         }
@@ -559,8 +557,13 @@ export class PreAkiModLoader implements IModLoader
             globalThis.G_RELEASE_CONFIGURATION ? "Aki_Data/Server/@pnpm/exe" : "node_modules/@pnpm/exe",
             os.platform() === "win32" ? "pnpm.exe" : "pnpm",
         );
+
         let command = `${pnpmPath} install `;
-        command += dependenciesToInstall.map(([depName, depVersion]) => `${depName}@${depVersion}`).join(" ");
+        for (const [depName, depVersion] of dependenciesToInstall)
+        {
+            command += `${depName}@${depVersion} `;
+        }
+
         execSync(command, { cwd: modPath });
 
         // Delete the new blank package.json then rename the backup back to the original name
