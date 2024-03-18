@@ -19,6 +19,7 @@ import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { MessageType } from "@spt-aki/models/enums/MessageType";
 import { PlayerRaidEndState } from "@spt-aki/models/enums/PlayerRaidEndState";
 import { QuestStatus } from "@spt-aki/models/enums/QuestStatus";
+import { SkillTypes } from "@spt-aki/models/enums/SkillTypes";
 import { Traders } from "@spt-aki/models/enums/Traders";
 import { IAirdropConfig } from "@spt-aki/models/spt/config/IAirdropConfig";
 import { IBTRConfig } from "@spt-aki/models/spt/config/IBTRConfig";
@@ -334,6 +335,10 @@ export class InraidController
         const serverPmcProfile = this.profileHelper.getPmcProfile(sessionID);
         const serverScavProfile = this.profileHelper.getScavProfile(sessionID);
         const isDead = this.isPlayerDead(postRaidRequest.exit);
+        const preRaidScavCharismaProgress = this.profileHelper.getSkillFromProfile(
+            serverScavProfile,
+            SkillTypes.CHARISMA,
+        )?.Progress;
 
         this.saveServer.getProfile(sessionID).inraid.character = "scav";
 
@@ -341,6 +346,8 @@ export class InraidController
         this.inRaidHelper.updateScavProfileDataPostRaid(serverScavProfile, postRaidRequest, sessionID);
 
         this.mergePmcAndScavEncyclopedias(serverScavProfile, serverPmcProfile);
+
+        this.updatePmcCharismaSkillPostScavRaid(serverScavProfile, serverPmcProfile, preRaidScavCharismaProgress);
 
         // Completing scav quests create ConditionCounters, these values need to be transported to the PMC profile
         if (this.profileHasConditionCounters(serverScavProfile))
@@ -389,6 +396,33 @@ export class InraidController
         const merged = extend(extend({}, primary.Encyclopedia), secondary.Encyclopedia);
         primary.Encyclopedia = merged;
         secondary.Encyclopedia = merged;
+    }
+
+    /**
+     * Post-scav-raid any charisma increase must be propigated into PMC profile
+     * @param postRaidServerScavProfile Scav profile after adjustments made from raid
+     * @param postRaidServerPmcProfile Pmc profile after raid
+     * @param preRaidScavCharismaProgress charisma progress value pre-raid
+     */
+    protected updatePmcCharismaSkillPostScavRaid(
+        postRaidServerScavProfile: IPmcData,
+        postRaidServerPmcProfile: IPmcData,
+        preRaidScavCharismaProgress: number,
+    ): void
+    {
+        const postRaidScavCharismaSkill = this.profileHelper.getSkillFromProfile(
+            postRaidServerScavProfile,
+            SkillTypes.CHARISMA,
+        );
+        const pmcCharismaSkill = this.profileHelper.getSkillFromProfile(postRaidServerPmcProfile, SkillTypes.CHARISMA);
+        const postRaidScavCharismaGain = postRaidScavCharismaSkill?.Progress - preRaidScavCharismaProgress ?? 0;
+
+        // Scav gained charisma, add to pmc
+        if (postRaidScavCharismaGain > 0)
+        {
+            this.logger.debug(`Applying ${postRaidScavCharismaGain} Charisma skill gained in scav raid to PMC profile`);
+            pmcCharismaSkill.Progress += postRaidScavCharismaGain;
+        }
     }
 
     /**
