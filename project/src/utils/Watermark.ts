@@ -155,8 +155,6 @@ export class Watermark
         // Calculate size, add 10% for spacing to the right
         const longestLength = this.text.reduce((a, b) =>
         {
-            const a2 = String(a).replace(/[\u0391-\uFFE5]/g, "ab");
-            const b2 = String(b).replace(/[\u0391-\uFFE5]/g, "ab");
             return a.length > b.length ? a : b;
         }).length * 1.1;
 
