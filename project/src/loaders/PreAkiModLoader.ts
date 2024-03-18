@@ -500,7 +500,7 @@ export class PreAkiModLoader implements IModLoader
 
     protected autoInstallDependencies(modPath: string, pkg: IPackageJsonData): void
     {
-        const dependenciesToInstall: [string, string][] = [];
+        const dependenciesToInstall = new Map<string, string>();
 
         for (const [depName, depVersion] of Object.entries(pkg.dependencies))
         {
@@ -512,12 +512,12 @@ export class PreAkiModLoader implements IModLoader
             // if a mod's dependency does not exist in the server's dependencies we can add it to the list of dependencies to install.
             if (!this.serverDependencies[depName])
             {
-                dependenciesToInstall.push([depName, depVersion]);
+                dependenciesToInstall.set(depName, depVersion);
             }
         }
 
         // If the mod has no extra dependencies return as there's nothing that needs to be done.
-        if (dependenciesToInstall.length === 0)
+        if (dependenciesToInstall.size === 0)
         {
             return;
         }
@@ -557,8 +557,13 @@ export class PreAkiModLoader implements IModLoader
             globalThis.G_RELEASE_CONFIGURATION ? "Aki_Data/Server/@pnpm/exe" : "node_modules/@pnpm/exe",
             os.platform() === "win32" ? "pnpm.exe" : "pnpm",
         );
+
         let command = `${pnpmPath} install `;
-        command += dependenciesToInstall.map(([depName, depVersion]) => `${depName}@${depVersion}`).join(" ");
+        for (const [depName, depVersion] of dependenciesToInstall)
+        {
+            command += `${depName}@${depVersion} `;
+        }
+
         execSync(command, { cwd: modPath });
 
         // Delete the new blank package.json then rename the backup back to the original name
