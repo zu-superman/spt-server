@@ -497,6 +497,7 @@ export class HideoutHelper
                 fuelRemaining -= fuelUsedSinceLastTick;
             }
 
+            // Round values to keep accuracy
             fuelRemaining = Math.round(fuelRemaining * 10000) / 10000;
             pointsConsumed = Math.round(pointsConsumed * 10000) / 10000;
 
@@ -507,8 +508,7 @@ export class HideoutHelper
                 pointsConsumed -= 10;
             }
 
-            const isFuelItemFoundInRaid = fuelItemInSlot.upd.SpawnedInSession ?? false;
-
+            const isFuelItemFoundInRaid = fuelItemInSlot.upd?.SpawnedInSession ?? false;
             if (fuelRemaining > 0)
             {
                 // Deducted all used fuel from this container, clean up and exit loop
@@ -656,8 +656,7 @@ export class HideoutHelper
                 }
                 else
                 {
-                    pointsConsumed = (waterFilterItemInSlot.upd.Resource.UnitsConsumed || 0)
-                        + filterDrainRate;
+                    pointsConsumed = (waterFilterItemInSlot.upd.Resource.UnitsConsumed || 0) + filterDrainRate;
                     resourceValue -= filterDrainRate;
                 }
 
@@ -678,7 +677,12 @@ export class HideoutHelper
                     const isWaterFilterFoundInRaid = waterFilterItemInSlot.upd.SpawnedInSession ?? false;
 
                     // Set filters consumed amount
-                    waterFilterItemInSlot.upd = this.getAreaUpdObject(1, resourceValue, pointsConsumed, isWaterFilterFoundInRaid);
+                    waterFilterItemInSlot.upd = this.getAreaUpdObject(
+                        1,
+                        resourceValue,
+                        pointsConsumed,
+                        isWaterFilterFoundInRaid,
+                    );
                     this.logger.debug(`Water filter has: ${resourceValue} units left in slot ${i + 1}`);
 
                     break; // Break here to avoid iterating other filters now w're done
@@ -749,7 +753,12 @@ export class HideoutHelper
      * @param resourceUnitsConsumed
      * @returns Upd
      */
-    protected getAreaUpdObject(stackCount: number, resourceValue: number, resourceUnitsConsumed: number, isFoundInRaid: boolean): Upd
+    protected getAreaUpdObject(
+        stackCount: number,
+        resourceValue: number,
+        resourceUnitsConsumed: number,
+        isFoundInRaid: boolean,
+    ): Upd
     {
         return {
             StackObjectsCount: stackCount,
