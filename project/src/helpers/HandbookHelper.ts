@@ -203,7 +203,7 @@ export class HandbookHelper
 
         // Get price of currency from handbook
         const price = this.getTemplatePrice(currencyTypeTo);
-        return price ? Math.round(roubleCurrencyCount / price) : 0;
+        return price ? Math.max(1, Math.round(roubleCurrencyCount / price)) : 0;
     }
 
     public getCategoryById(handbookId: string): Category
