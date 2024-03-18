@@ -152,50 +152,45 @@ export class Watermark
     {
         const result = [];
 
-        // calculate size
+        // Calculate size, add 10% for spacing to the right
         const longestLength = this.text.reduce((a, b) =>
         {
             const a2 = String(a).replace(/[\u0391-\uFFE5]/g, "ab");
             const b2 = String(b).replace(/[\u0391-\uFFE5]/g, "ab");
-            return a2.length > b2.length ? a2 : b2;
-        }).length;
+            return a.length > b.length ? a : b;
+        }).length * 1.1;
 
-        // get top-bottom line
+        // Create line of - to add top/bottom of watermark
         let line = "";
-
         for (let i = 0; i < longestLength; ++i)
         {
             line += "─";
         }
 
-        // get watermark to draw
+        // Opening line
         result.push(`┌─${line}─┐`);
 
-        for (const text of this.text)
+        // Add content of watermark to screen
+        for (const watermarkText of this.text)
         {
-            const spacingSize = longestLength - this.textLength(text);
-            let spacingText = text;
+            const spacingSize = longestLength - watermarkText.length;
+            let textWithRightPadding = watermarkText;
 
             for (let i = 0; i < spacingSize; ++i)
             {
-                spacingText += " ";
+                textWithRightPadding += " ";
             }
 
-            result.push(`│ ${spacingText} │`);
+            result.push(`│ ${textWithRightPadding} │`);
         }
 
+        // Closing line
         result.push(`└─${line}─┘`);
 
-        // draw the watermark
+        // Log watermark to screen
         for (const text of result)
         {
             this.logger.logWithColor(text, LogTextColor.YELLOW);
         }
-    }
-
-    /** Caculate text length */
-    protected textLength(s: string): number
-    {
-        return String(s).replace(/[\u0391-\uFFE5]/g, "ab").length;
     }
 }
