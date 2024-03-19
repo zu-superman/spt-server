@@ -269,19 +269,6 @@ export class BotLootGenerator
      */
     protected addForcedMedicalItemsToPmcSecure(botInventory: PmcInventory, botRole: string): void
     {
-        // Grizzly
-        this.addLootFromPool(
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            { "590c657e86f77412b013051d": 1 },
-            [EquipmentSlots.SECURED_CONTAINER],
-            1,
-            botInventory,
-            botRole,
-            null,
-            0,
-            true,
-        );
-
         // surv12
         this.addLootFromPool(
             // eslint-disable-next-line @typescript-eslint/naming-convention
