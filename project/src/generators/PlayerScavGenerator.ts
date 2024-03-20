@@ -114,7 +114,7 @@ export class PlayerScavGenerator
         scavData.TaskConditionCounters = existingScavDataClone.TaskConditionCounters ?? {};
         scavData.Notes = existingScavDataClone.Notes ?? { Notes: [] };
         scavData.WishList = existingScavDataClone.WishList ?? [];
-        scavData.Encyclopedia = pmcDataClone.Encyclopedia;
+        scavData.Encyclopedia = pmcDataClone.Encyclopedia ?? {};
 
         // Add additional items to player scav as loot
         this.addAdditionalLootToPlayerScavContainers(playerScavKarmaSettings.lootItemsToAddChancePercent, scavData, [
