@@ -312,7 +312,9 @@
             "62a09d3bcf4a99369e262447": 1
 		},
         "cursedassault": {},
-        "exusec": {},
+        "exusec": {
+			"60098ad7c2240c0fe85c570a": 2
+		},
         "bossbully": {},
         "bossgluhar": {},
         "bosskilla": {},
@@ -350,7 +352,9 @@
         "sectantpriest": {},
         "sectantwarrior": {},
         "test": {},
-        "pmcbot": {},
+        "pmcbot": {
+			"60098ad7c2240c0fe85c570a": 2
+		},
         "arenafighterevent": {},
         "arenafighter": {},
         "crazyassaultevent": {},
