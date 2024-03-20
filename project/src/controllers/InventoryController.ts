@@ -663,6 +663,11 @@ export class InventoryController
             fullProfile.characters.pmc.Encyclopedia[itemTpl] = false;
 
             fullProfile.characters.scav.Info.Experience += item._props.ExamineExperience;
+
+            if (!fullProfile.characters.scav.Encyclopedia)
+            {
+                fullProfile.characters.scav.Encyclopedia = {};
+            }
             fullProfile.characters.scav.Encyclopedia[itemTpl] = false;
         }
 
