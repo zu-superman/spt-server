@@ -282,10 +282,10 @@ export class BotLootGenerator
             true,
         );
 
-        // Morphine
+        // eTG regen stim
         this.addLootFromPool(
             // eslint-disable-next-line @typescript-eslint/naming-convention
-            { "544fb3f34bdc2d03748b456a": 1 },
+            { "5c0e534186f7747fa1419867": 1 },
             [EquipmentSlots.SECURED_CONTAINER],
             2,
             botInventory,
@@ -300,7 +300,7 @@ export class BotLootGenerator
             // eslint-disable-next-line @typescript-eslint/naming-convention
             { "60098ad7c2240c0fe85c570a": 1 },
             [EquipmentSlots.SECURED_CONTAINER],
-            2,
+            10,
             botInventory,
             botRole,
             null,
