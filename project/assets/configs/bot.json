@@ -331,10 +331,18 @@
         "followerbully": {
 			"5448e8d64bdc2dce718b4568": 2
 		},
-        "followergluharassault": {},
-        "followergluharscout": {},
-        "followergluharsecurity": {},
-        "followergluharsnipe": {},
+        "followergluharassault": {
+			"5c0fa877d174af02a012e1cf": 1
+		},
+        "followergluharscout": {
+			"5c0fa877d174af02a012e1cf": 1
+		},
+        "followergluharsecurity": {
+			"5c0fa877d174af02a012e1cf": 1
+		},
+        "followergluharsnipe": {
+			"5c0fa877d174af02a012e1cf": 1
+		},
         "followerkojaniy": {
 			"5448e8d64bdc2dce718b4568": 2
 		},
