@@ -223,6 +223,7 @@ export interface IEftStats
     LastPlayerState?: LastPlayerState;
     TotalInGameTime: number;
     SurvivorClass?: string;
+    sptLastRaidFenceRepChange?: number;
 }
 
 export interface IDroppedItem

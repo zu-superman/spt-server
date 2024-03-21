@@ -586,8 +586,8 @@ export class InraidController
     {
         const fenceId = Traders.FENCE;
 
-        let fenceStanding = Number(pmcData.TradersInfo[fenceId].standing);
-        fenceStanding = this.inRaidHelper.calculateFenceStandingChangeFromKillsAsScav(
+        const fenceStanding = Number(pmcData.TradersInfo[fenceId].standing);
+        let adjustedFenceStanding = this.inRaidHelper.calculateFenceStandingChangeFromKillsAsScav(
             fenceStanding,
             offraidData.profile.Stats.Eft.Victims,
         );
@@ -595,11 +595,14 @@ export class InraidController
         // Successful extract with scav adds 0.01 standing
         if (offraidData.exit === PlayerRaidEndState.SURVIVED)
         {
-            fenceStanding += this.inRaidConfig.scavExtractGain;
+            adjustedFenceStanding += this.inRaidConfig.scavExtractGain;
         }
 
+        // Store diff in profile for later retreval by client end-of-raid screen
+        pmcData.Stats.Eft.sptLastRaidFenceRepChange = adjustedFenceStanding - fenceStanding;
+
         // Make standing changes to pmc profile
-        pmcData.TradersInfo[fenceId].standing = Math.min(Math.max(fenceStanding, -7), 15); // Ensure it stays between -7 and 15
+        pmcData.TradersInfo[fenceId].standing = Math.min(Math.max(adjustedFenceStanding, -7), 15); // Ensure it stays between -7 and 15
         this.logger.debug(`New fence standing: ${pmcData.TradersInfo[fenceId].standing}`);
         this.traderHelper.lvlUp(fenceId, pmcData);
         pmcData.TradersInfo[fenceId].loyaltyLevel = Math.max(pmcData.TradersInfo[fenceId].loyaltyLevel, 1);
@@ -630,6 +633,21 @@ export class InraidController
     public getBTRConfig(): IBTRConfig
     {
         return this.btrConfig;
+    }
+
+    /**
+     * Get the rep diff stored post-raid
+     * @param sessionId Player id
+     * @returns Fence rep difference
+     */
+    public getPostRaidFenceRepDifference(sessionId: string): number
+    {
+        const profile = this.profileHelper.getPmcProfile(sessionId);
+        const valueToReturn = profile.Stats?.Eft?.sptLastRaidFenceRepChange ?? 0;
+
+        delete profile.Stats?.Eft?.sptLastRaidFenceRepChange;
+
+        return valueToReturn;
     }
 
     /**

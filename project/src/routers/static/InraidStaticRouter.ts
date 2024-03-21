@@ -49,6 +49,13 @@ export class InraidStaticRouter extends StaticRouter
                 },
             ),
             new RouteAction(
+                "/singleplayer/getfencerepdiff",
+                (url: string, info: any, sessionID: string, output: string): any =>
+                {
+                    return this.inraidCallbacks.getPostRaidFenceRepDifference(sessionID);
+                },
+            ),
+            new RouteAction(
                 "/singleplayer/traderServices/itemDelivery",
                 (url: string, info: any, sessionID: string, output: string): any =>
                 {
