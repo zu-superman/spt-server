@@ -92,11 +92,6 @@ export class InraidCallbacks
         return this.httpResponse.noBody(this.inraidController.getBTRConfig());
     }
 
-    public getPostRaidFenceRepDifference(sessionId: string): number
-    {
-        return this.httpResponse.noBody(this.inraidController.getPostRaidFenceRepDifference(sessionId));
-    }
-
     /**
      * Handle singleplayer/traderServices/getTraderServices
      */
