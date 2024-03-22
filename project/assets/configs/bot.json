@@ -355,8 +355,12 @@
         "followerboar": {},
         "followerboarclose1": {},
         "followerboarclose2": {},
-        "followerkolontayassault": {},
-        "followerkolontaysecurity": {},
+        "followerkolontayassault": {
+			"544fb62a4bdc2dfb738b4568": 2
+		},
+        "followerkolontaysecurity": {
+			"544fb62a4bdc2dfb738b4568": 2
+		},
         "sectantpriest": {},
         "sectantwarrior": {},
         "test": {},
