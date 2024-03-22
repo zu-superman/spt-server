@@ -653,7 +653,7 @@
             ],
             "rezervbase": [
                 {
-                    "sptId": "sptBearReserveNormalSpawn",
+                    "sptId": "sptBearReserveNormalSpawnA",
                     "BossName": "sptBear",
                     "BossChance": 15,
                     "BossZone": "ZoneBarrack,ZonePTOR1,ZonePTOR2,ZoneSubCommand,ZoneSubStorage,ZoneRailStrorage",
@@ -676,7 +676,53 @@
                     "ChanceGroup": 0
                 },
                 {
-                    "sptId": "sptUsecReserveNormalSpawn",
+                    "sptId": "sptBearReserveNormalSpawnB",
+                    "BossName": "sptBear",
+                    "BossChance": 15,
+                    "BossZone": "ZoneBarrack,ZonePTOR1,ZonePTOR2,ZoneSubCommand,ZoneSubStorage,ZoneRailStrorage",
+                    "BossPlayer": false,
+                    "BossDifficult": "normal",
+                    "BossEscortType": "sptBear",
+                    "BossEscortDifficult": "normal",
+                    "BossEscortAmount": "1",
+                    "Time": -1,
+                    "Supports": [
+                        {
+                            "BossEscortType": "sptBear",
+                            "BossEscortDifficult": [
+                                "normal"
+                            ],
+                            "BossEscortAmount": "1"
+                        }
+                    ],
+                    "RandomTimeSpawn": false,
+                    "ChanceGroup": 0
+                },
+                {
+                    "sptId": "sptUsecReserveNormalSpawnA",
+                    "BossName": "sptUsec",
+                    "BossChance": 15,
+                    "BossZone": "ZoneBarrack,ZonePTOR1,ZonePTOR2,ZoneSubCommand,ZoneSubStorage,ZoneRailStrorage",
+                    "BossPlayer": false,
+                    "BossDifficult": "normal",
+                    "BossEscortType": "sptUsec",
+                    "BossEscortDifficult": "normal",
+                    "BossEscortAmount": "1",
+                    "Time": -1,
+                    "Supports": [
+                        {
+                            "BossEscortType": "sptUsec",
+                            "BossEscortDifficult": [
+                                "normal"
+                            ],
+                            "BossEscortAmount": "1"
+                        }
+                    ],
+                    "RandomTimeSpawn": false,
+                    "ChanceGroup": 0
+                },
+                {
+                    "sptId": "sptUsecReserveNormalSpawnB",
                     "BossName": "sptUsec",
                     "BossChance": 15,
                     "BossZone": "ZoneBarrack,ZonePTOR1,ZonePTOR2,ZoneSubCommand,ZoneSubStorage,ZoneRailStrorage",
