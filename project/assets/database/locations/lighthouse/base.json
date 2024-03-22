@@ -60,7 +60,7 @@
       "TriggerName": ""
     },
     {
-      "BossChance": 15,
+      "BossChance": 30,
       "BossDifficult": "normal",
       "BossEscortAmount": "2",
       "BossEscortDifficult": "normal",
@@ -100,7 +100,7 @@
       "TriggerName": ""
     },
     {
-      "BossChance": 100,
+      "BossChance": 80,
       "BossDifficult": "normal",
       "BossEscortAmount": "1",
       "BossEscortDifficult": "normal",
@@ -118,7 +118,7 @@
       "TriggerName": ""
     },
     {
-      "BossChance": 100,
+      "BossChance": 80,
       "BossDifficult": "normal",
       "BossEscortAmount": "1,2",
       "BossEscortDifficult": "normal",
