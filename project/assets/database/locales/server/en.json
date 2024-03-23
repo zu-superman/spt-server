@@ -52,6 +52,7 @@
 	"bot-unable_to_find_bot_in_cache": "Unable to find bot in cache with name: %s",
 	"bot-missing_application_context": "applicationContext could not find %s value. Did you restart the server without restarting the game?",
 	"client_request": "[Client Request] %s",
+	"client_request_ip": "[Client Request] {{ip}} {{url}}",
 	"customisation-item_already_purchased": "Clothing item {{itemId}} {{itemName}} already purchased",
 	"customisation-unable_to_find_suit_by_id": "Unable to find trader suit offer with id: %s",
 	"customisation-unable_to_find_clothing_item_in_inventory": "Clothing item not found in inventory with id: %s",

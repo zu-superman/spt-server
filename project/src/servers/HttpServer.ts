@@ -77,10 +77,21 @@ export class HttpServer
         const sessionId = this.getCookies(req).PHPSESSID;
         this.applicationContext.addValue(ContextVariableType.SESSION_ID, sessionId);
 
-        // http.json logRequests boolean option to allow the user/server to choose to not log requests
         if (this.httpConfig.logRequests)
         {
-            this.logger.info(this.localisationService.getText("client_request", req.url));
+            // TODO: Extend to include 192.168 / 10.10 ranges or check subnet
+            const isLocalRequest = req.socket.remoteAddress.startsWith("127.0.0");
+            if (isLocalRequest)
+            {
+                this.logger.info(this.localisationService.getText("client_request", req.url));
+            }
+            else
+            {
+                this.logger.info(this.localisationService.getText("client_request_ip", {
+                    ip: req.socket.remoteAddress,
+                    url: req.url.replaceAll("/", "\\"), // Localisation service escapes `/` into hex code `&#x2f;`
+                }));
+            }
         }
 
         for (const listener of this.httpListeners)
