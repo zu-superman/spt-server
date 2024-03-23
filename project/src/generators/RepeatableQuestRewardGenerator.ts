@@ -336,7 +336,8 @@ export class RepeatableQuestRewardGenerator
         // Get itemDbs max stack size for ammo - don't go above 100 (some mods mess around with stack sizes)
         const stackMaxCount = Math.min(itemSelected._props.StackMaxSize, 100);
 
-        return Math.min(stackSizeThatFitsBudget, stackMaxCount);
+        // Don't let result fall below 1
+        return Math.max(1, Math.min(stackSizeThatFitsBudget, stackMaxCount));
     }
 
     /**
