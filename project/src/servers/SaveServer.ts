@@ -85,7 +85,10 @@ export class SaveServer
             totalTime += this.saveProfile(sessionID);
         }
 
-        this.logger.debug(`Saved ${Object.keys(this.profiles).length} profiles, took: ${totalTime.toFixed(2)}ms`, true);
+        this.logger.debug(
+            `Saved ${Object.keys(this.profiles).length} profiles, took: ${totalTime.toFixed(2)}ms`,
+            false,
+        );
     }
 
     /**
