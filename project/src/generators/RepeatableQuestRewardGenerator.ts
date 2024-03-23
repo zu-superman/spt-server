@@ -462,6 +462,12 @@ export class RepeatableQuestRewardGenerator
             return false;
         }
 
+        // item is reward blacklisted
+        if (this.itemFilterService.isItemRewardBlacklisted(tpl))
+        {
+            return false;
+        }
+
         // Item is on repeatable or global blacklist
         if (repeatableQuestConfig.rewardBlacklist.includes(tpl) || this.itemFilterService.isItemBlacklisted(tpl))
         {
