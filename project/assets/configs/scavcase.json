@@ -23,25 +23,6 @@
         "65649eb40bf0ed77b8044453"
     ],
     "rewardItemBlacklist": [
-        "5e997f0b86f7741ac73993e2",
-        "5ede4739e0350d05467f73e8",
-        "5ede47405b097655935d7d16",
-        "5ede474b0c226a66f5402622",
-        "5ede475339ee016e8c534742",
-        "5ede475b549eed7c6d5c18fb",
-        "62e910aaf957f2915e0a5e36",
-        "619bc61e86e01e16f839a999",
-        "619bddc6c9546643a67df6ee",
-        "6241c316234b593b5676b637",
-        "5d70e500a4b9364de70d38ce",
-        "619bde3dc9546643a67df6f2",
-        "619bdeb986e01e16f839a99e",
-        "619bddffc9546643a67df6f0",
-        "619bdf9cc9546643a67df6f8",
-        "63a0b2eabea67a6d93009e52",
-        "64d0b40fbe2eed70e254e2d4",
-		"5d2f2ab648f03550091993ca",
-        "5cde8864d7f00c0010373be1"
     ],
     "moneyRewards": {
         "moneyRewardChancePercent": 5,

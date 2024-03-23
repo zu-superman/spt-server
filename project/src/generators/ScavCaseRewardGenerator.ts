@@ -129,6 +129,12 @@ export class ScavCaseRewardGenerator
                     return false;
                 }
 
+                // Globally blacklisted
+                if (this.itemFilterService.isItemRewardBlacklisted(item._id))
+                {
+                    return false;
+                }
+
                 if (!this.scavCaseConfig.allowBossItemsAsRewards && this.itemFilterService.isBossItem(item._id))
                 {
                     return false;
