@@ -3,7 +3,7 @@ import { inject, injectable } from "tsyringe";
 import { RepeatableQuestRewardGenerator } from "@spt-aki/generators/RepeatableQuestRewardGenerator";
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { RepeatableQuestHelper } from "@spt-aki/helpers/RepeatableQuestHelper";
-import { Exit, ILocationBase } from "@spt-aki/models/eft/common/ILocationBase";
+import { Exit } from "@spt-aki/models/eft/common/ILocationBase";
 import { TraderInfo } from "@spt-aki/models/eft/common/tables/IBotBase";
 import { IQuestCondition, IQuestConditionCounterCondition } from "@spt-aki/models/eft/common/tables/IQuest";
 import { IRepeatableQuest } from "@spt-aki/models/eft/common/tables/IRepeatableQuests";
@@ -529,11 +529,13 @@ export class RepeatableQuestGenerator
         {
             const itemBlacklist =
                 this.databaseServer.getTables().templates.repeatableQuests.data.Completion.itemsBlacklist;
+
             // we filter and concatenate the arrays according to current player level
             const itemIdsBlacklisted = itemBlacklist.filter((p) => p.minPlayerLevel <= pmcLevel).reduce(
                 (a, p) => a.concat(p.itemIds),
                 [],
             );
+
             itemSelection = itemSelection.filter((x) =>
             {
                 return itemIdsBlacklisted.every((v) => !this.itemHelper.isOfBaseclass(x[0], v))
