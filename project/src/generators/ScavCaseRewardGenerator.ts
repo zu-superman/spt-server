@@ -314,7 +314,7 @@ export class ScavCaseRewardGenerator
             }
             // Armor or weapon = use default preset from globals.json
             else if (
-                this.itemHelper.armorItemCanHoldMods(rewardItemDb._id)
+                this.itemHelper.armorItemHasRemovableOrSoftInsertSlots(rewardItemDb._id)
                 || this.itemHelper.isOfBaseclass(rewardItemDb._id, BaseClasses.WEAPON)
             )
             {

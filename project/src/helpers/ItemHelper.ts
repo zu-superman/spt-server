@@ -107,6 +107,21 @@ export class ItemHelper
     }
 
     /**
+     * Does the provided item tpl need soft/removable inserts to function
+     * @param itemTpl Armor item
+     * @returns True if item needs some kind of insert
+     */
+    public armorItemHasRemovableOrSoftInsertSlots(itemTpl: string): boolean
+    {
+        if (!this.armorItemCanHoldMods(itemTpl))
+        {
+            return false;
+        }
+
+        return (this.armorItemHasRemovablePlateSlots(itemTpl) || this.itemRequiresSoftInserts(itemTpl));
+    }
+
+    /**
      * Does the pased in tpl have ability to hold removable plate items
      * @param itemTpl item tpl to check for plate support
      * @returns True when armor can hold plates
