@@ -21,6 +21,7 @@ import { LootRequest } from "@spt-aki/models/spt/services/LootRequest";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt-aki/servers/ConfigServer";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
+import { ItemFilterService } from "@spt-aki/services/ItemFilterService";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
 import { RaidTimeAdjustmentService } from "@spt-aki/services/RaidTimeAdjustmentService";
 import { HashUtil } from "@spt-aki/utils/HashUtil";
@@ -43,6 +44,7 @@ export class LocationController
         @inject("LocationGenerator") protected locationGenerator: LocationGenerator,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("RaidTimeAdjustmentService") protected raidTimeAdjustmentService: RaidTimeAdjustmentService,
+        @inject("ItemFilterService") protected itemFilterService: ItemFilterService,
         @inject("LootGenerator") protected lootGenerator: LootGenerator,
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
@@ -214,7 +216,11 @@ export class LocationController
             armorPresetCount: lootSettingsByType.armorPresetCount,
             itemCount: lootSettingsByType.itemCount,
             weaponCrateCount: lootSettingsByType.weaponCrateCount,
-            itemBlacklist: lootSettingsByType.itemBlacklist,
+            itemBlacklist: [
+                ...lootSettingsByType.itemBlacklist,
+                ...this.itemFilterService.getItemRewardBlacklist(),
+                ...this.itemFilterService.getBossItems(),
+            ],
             itemTypeWhitelist: lootSettingsByType.itemTypeWhitelist,
             itemLimits: lootSettingsByType.itemLimits,
             itemStackLimits: lootSettingsByType.itemStackLimits,
