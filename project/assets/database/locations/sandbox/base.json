@@ -30,7 +30,7 @@
     "Scattering": 1,
     "VisibleDistance": 1
   },
-  "BotMarksman": 15,
+  "BotMarksman": 0,
   "BotMax": 10,
   "BotMaxPlayer": 10,
   "BotMaxTimePlayer": 1000,
