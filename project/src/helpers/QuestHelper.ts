@@ -464,7 +464,7 @@ export class QuestHelper
     {
         // Get quest acceptance data from profile
         const profile: IPmcData = this.profileHelper.getPmcProfile(sessionID);
-        const startedQuestInProfile = profile.Quests.find((x) => x.qid === startedQuestId);
+        const startedQuestInProfile = profile.Quests.find((profileQuest) => profileQuest.qid === startedQuestId);
 
         // Get quests that
         const eligibleQuests = this.getQuestsFromDb().filter((quest) =>
@@ -480,6 +480,12 @@ export class QuestHelper
 
             // Not found, skip quest
             if (!acceptedQuestCondition)
+            {
+                return false;
+            }
+
+            // Skip quest if its flagged as for other side
+            if (this.questIsForOtherSide(profile.Info.Side, quest._id))
             {
                 return false;
             }
@@ -512,6 +518,29 @@ export class QuestHelper
         });
 
         return this.getQuestsWithOnlyLevelRequirementStartCondition(eligibleQuests);
+    }
+
+    /**
+     * Is the quest for the opposite side the player is on
+     * @param playerSide Player side (usec/bear)
+     * @param questId QuestId to check
+     */
+    public questIsForOtherSide(playerSide: string, questId: string): boolean
+    {
+        const isUsec = playerSide.toLowerCase() === "usec";
+        if (isUsec && this.questConfig.bearOnlyQuests.includes(questId))
+        {
+            // player is usec and quest is bear only, skip
+            return true;
+        }
+
+        if (!isUsec && this.questConfig.usecOnlyQuests.includes(questId))
+        {
+            // player is bear and quest is usec only, skip
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -890,10 +919,14 @@ export class QuestHelper
                     );
                     break;
                 case QuestRewardType.EXPERIENCE:
-                    this.profileHelper.addExperienceToPmc(sessionId, parseInt(<string>reward.value)); // this must occur first as the output object needs to take the modified profile exp value
+                    this.profileHelper.addExperienceToPmc(sessionId, Number.parseInt(<string>reward.value)); // this must occur first as the output object needs to take the modified profile exp value
                     break;
                 case QuestRewardType.TRADER_STANDING:
-                    this.traderHelper.addStandingToTrader(sessionId, reward.target, parseFloat(<string>reward.value));
+                    this.traderHelper.addStandingToTrader(
+                        sessionId,
+                        reward.target,
+                        Number.parseFloat(<string>reward.value),
+                    );
                     break;
                 case QuestRewardType.TRADER_UNLOCK:
                     this.traderHelper.setTraderUnlockedState(reward.target, true, sessionId);

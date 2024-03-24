@@ -88,7 +88,7 @@ export class QuestController
             }
 
             // Filter out bear quests for usec and vice versa
-            if (this.questIsForOtherSide(profile.Info.Side, quest._id))
+            if (this.questHelper.questIsForOtherSide(profile.Info.Side, quest._id))
             {
                 continue;
             }
@@ -270,29 +270,6 @@ export class QuestController
         }
 
         return true;
-    }
-
-    /**
-     * Is the quest for the opposite side the player is on
-     * @param playerSide Player side (usec/bear)
-     * @param questId QuestId to check
-     */
-    protected questIsForOtherSide(playerSide: string, questId: string): boolean
-    {
-        const isUsec = playerSide.toLowerCase() === "usec";
-        if (isUsec && this.questConfig.bearOnlyQuests.includes(questId))
-        {
-            // player is usec and quest is bear only, skip
-            return true;
-        }
-
-        if (!isUsec && this.questConfig.usecOnlyQuests.includes(questId))
-        {
-            // player is bear and quest is usec only, skip
-            return true;
-        }
-
-        return false;
     }
 
     /**
