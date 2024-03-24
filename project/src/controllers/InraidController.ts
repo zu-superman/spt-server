@@ -473,7 +473,7 @@ export class InraidController
                 pmcQuest.statusTimers = quest.statusTimers;
                 for (const statusTimerKey in quest.statusTimers)
                 {
-                    if (Number.isNaN(parseInt(statusTimerKey)))
+                    if (Number.isNaN(Number.parseInt(statusTimerKey)))
                     {
                         quest.statusTimers[QuestStatus[statusTimerKey]] = quest.statusTimers[statusTimerKey];
                         delete quest.statusTimers[statusTimerKey];
@@ -563,7 +563,7 @@ export class InraidController
         this.saveServer.getProfile(sessionID).characters.scav = scavData;
 
         // Scav karma
-        this.handlePostRaidPlayerScavKarmaChanges(pmcData, offraidData);
+        this.handlePostRaidPlayerScavKarmaChanges(pmcData, offraidData, scavData);
 
         // Scav died, regen scav loadout and set timer
         if (isDead)
@@ -581,14 +581,20 @@ export class InraidController
      * Update profile with scav karma values based on in-raid actions
      * @param pmcData Pmc profile
      * @param offraidData Post-raid save request
+     * @param scavData Scav profile
      */
-    protected handlePostRaidPlayerScavKarmaChanges(pmcData: IPmcData, offraidData: ISaveProgressRequestData): void
+    protected handlePostRaidPlayerScavKarmaChanges(
+        pmcData: IPmcData,
+        offraidData: ISaveProgressRequestData,
+        scavData: IPmcData,
+    ): void
     {
         const fenceId = Traders.FENCE;
 
         let fenceStanding = Number(offraidData.profile.TradersInfo[fenceId].standing);
 
-        // Successful extract with scav adds 0.01 standing
+        // Client doesn't calcualte car extract rep changes, must be done manually
+        // Successful extracts give rep
         if (offraidData.exit === PlayerRaidEndState.SURVIVED)
         {
             fenceStanding += this.inRaidConfig.scavExtractGain;
@@ -597,8 +603,13 @@ export class InraidController
         // Make standing changes to pmc profile
         pmcData.TradersInfo[fenceId].standing = Math.min(Math.max(fenceStanding, -7), 15); // Ensure it stays between -7 and 15
         this.logger.debug(`New fence standing: ${pmcData.TradersInfo[fenceId].standing}`);
+
         this.traderHelper.lvlUp(fenceId, pmcData);
         pmcData.TradersInfo[fenceId].loyaltyLevel = Math.max(pmcData.TradersInfo[fenceId].loyaltyLevel, 1);
+
+        // Copy updated fence rep values into scav profile to ensure consistency
+        scavData.TradersInfo[fenceId].standing = pmcData.TradersInfo[fenceId].standing;
+        scavData.TradersInfo[fenceId].loyaltyLevel = pmcData.TradersInfo[fenceId].loyaltyLevel;
     }
 
     /**
