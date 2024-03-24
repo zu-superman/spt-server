@@ -180,19 +180,26 @@ export class TraderHelper
 
     /**
      * Add standing to a trader and level them up if exp goes over level threshold
-     * @param sessionId Session id
-     * @param traderId Traders id
+     * @param sessionId Session id of player
+     * @param traderId Traders id to add standing to
      * @param standingToAdd Standing value to add to trader
      */
     public addStandingToTrader(sessionId: string, traderId: string, standingToAdd: number): void
     {
-        const pmcData = this.profileHelper.getPmcProfile(sessionId);
-        const traderInfo = pmcData.TradersInfo[traderId];
+        const fullProfile = this.profileHelper.getFullProfile(sessionId);
+        const pmcTraderInfo = fullProfile.characters.pmc.TradersInfo[traderId];
 
         // Add standing to trader
-        traderInfo.standing = this.addStandingValuesTogether(traderInfo.standing, standingToAdd);
+        pmcTraderInfo.standing = this.addStandingValuesTogether(pmcTraderInfo.standing, standingToAdd);
 
-        this.lvlUp(traderId, pmcData);
+        if (traderId === Traders.FENCE)
+        {
+            // Must add rep to scav profile to ensure consistency
+            const fullProfile = this.profileHelper.getFullProfile(sessionId);
+            fullProfile.characters.scav.TradersInfo[traderId].standing = pmcTraderInfo.standing;
+        }
+
+        this.lvlUp(traderId, fullProfile.characters.pmc);
     }
 
     /**
