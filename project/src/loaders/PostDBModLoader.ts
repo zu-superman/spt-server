@@ -1,6 +1,7 @@
 import { DependencyContainer, inject, injectable } from "tsyringe";
 
 import { OnLoad } from "@spt-aki/di/OnLoad";
+import { BundleLoader } from "@spt-aki/loaders/BundleLoader";
 import { ModTypeCheck } from "@spt-aki/loaders/ModTypeCheck";
 import { PreAkiModLoader } from "@spt-aki/loaders/PreAkiModLoader";
 import { IPostDBLoadMod } from "@spt-aki/models/external/IPostDBLoadMod";
@@ -11,8 +12,11 @@ import { LocalisationService } from "@spt-aki/services/LocalisationService";
 @injectable()
 export class PostDBModLoader implements OnLoad
 {
+    protected container: DependencyContainer;
+
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
+        @inject("BundleLoader") protected bundleLoader: BundleLoader,
         @inject("PreAkiModLoader") protected preAkiModLoader: PreAkiModLoader,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("ModTypeCheck") protected modTypeCheck: ModTypeCheck,
@@ -23,7 +27,9 @@ export class PostDBModLoader implements OnLoad
     {
         if (globalThis.G_MODS_ENABLED)
         {
-            await this.executeMods(this.preAkiModLoader.getContainer());
+            this.container = this.preAkiModLoader.getContainer();
+            await this.executeModsAsync();
+            this.addBundles();
         }
     }
 
@@ -37,7 +43,7 @@ export class PostDBModLoader implements OnLoad
         return this.preAkiModLoader.getModPath(mod);
     }
 
-    protected async executeMods(container: DependencyContainer): Promise<void>
+    protected async executeModsAsync(): Promise<void>
     {
         const mods = this.preAkiModLoader.sortModsLoadOrder();
         for (const modName of mods)
@@ -54,7 +60,7 @@ export class PostDBModLoader implements OnLoad
             {
                 try
                 {
-                    await (mod.mod as IPostDBLoadModAsync).postDBLoadAsync(container);
+                    await (mod.mod as IPostDBLoadModAsync).postDBLoadAsync(this.container);
                 }
                 catch (err)
                 {
@@ -69,7 +75,21 @@ export class PostDBModLoader implements OnLoad
 
             if (this.modTypeCheck.isPostDBAkiLoad(mod.mod))
             {
-                (mod.mod as IPostDBLoadMod).postDBLoad(container);
+                (mod.mod as IPostDBLoadMod).postDBLoad(this.container);
+            }
+        }
+    }
+
+    protected addBundles(): void
+    {
+        const importedMods = this.preAkiModLoader.getImportedModDetails();
+        for (const [mod, pkg] of Object.entries(importedMods))
+        {
+            const modPath = this.preAkiModLoader.getModPath(mod);
+
+            if (pkg.isBundleMod ?? false)
+            {
+                this.bundleLoader.addBundles(modPath);
             }
         }
     }

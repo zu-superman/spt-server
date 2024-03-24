@@ -1,6 +1,5 @@
 import { DependencyContainer, inject, injectable } from "tsyringe";
 
-import { BundleLoader } from "@spt-aki/loaders/BundleLoader";
 import { ModTypeCheck } from "@spt-aki/loaders/ModTypeCheck";
 import { PreAkiModLoader } from "@spt-aki/loaders/PreAkiModLoader";
 import { IPostAkiLoadMod } from "@spt-aki/models/external/IPostAkiLoadMod";
@@ -8,15 +7,14 @@ import { IPostAkiLoadModAsync } from "@spt-aki/models/external/IPostAkiLoadModAs
 import { IModLoader } from "@spt-aki/models/spt/mod/IModLoader";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
-import { VFS } from "@spt-aki/utils/VFS";
 
 @injectable()
 export class PostAkiModLoader implements IModLoader
 {
+    protected container: DependencyContainer;
+
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
-        @inject("BundleLoader") protected bundleLoader: BundleLoader,
-        @inject("VFS") protected vfs: VFS,
         @inject("PreAkiModLoader") protected preAkiModLoader: PreAkiModLoader,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("ModTypeCheck") protected modTypeCheck: ModTypeCheck,
@@ -32,12 +30,12 @@ export class PostAkiModLoader implements IModLoader
     {
         if (globalThis.G_MODS_ENABLED)
         {
-            await this.executeMods(this.preAkiModLoader.getContainer());
-            this.addBundles();
+            this.container = this.preAkiModLoader.getContainer();
+            await this.executeModsAsync();
         }
     }
 
-    protected async executeMods(container: DependencyContainer): Promise<void>
+    protected async executeModsAsync(): Promise<void>
     {
         const mods = this.preAkiModLoader.sortModsLoadOrder();
         for (const modName of mods)
@@ -54,7 +52,7 @@ export class PostAkiModLoader implements IModLoader
             {
                 try
                 {
-                    await (mod.mod as IPostAkiLoadModAsync).postAkiLoadAsync(container);
+                    await (mod.mod as IPostAkiLoadModAsync).postAkiLoadAsync(this.container);
                 }
                 catch (err)
                 {
@@ -69,21 +67,7 @@ export class PostAkiModLoader implements IModLoader
 
             if (this.modTypeCheck.isPostAkiLoad(mod.mod))
             {
-                (mod.mod as IPostAkiLoadMod).postAkiLoad(container);
-            }
-        }
-    }
-
-    protected addBundles(): void
-    {
-        const mods = this.preAkiModLoader.sortModsLoadOrder();
-        for (const modName of mods)
-        {
-            // add mod bundles
-            const modpath = this.preAkiModLoader.getModPath(modName);
-            if (this.vfs.exists(`${modpath}bundles.json`))
-            {
-                this.bundleLoader.addBundles(modpath);
+                (mod.mod as IPostAkiLoadMod).postAkiLoad(this.container);
             }
         }
     }

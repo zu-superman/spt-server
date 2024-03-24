@@ -4,7 +4,6 @@ import path from "node:path";
 import semver from "semver";
 import { DependencyContainer, inject, injectable } from "tsyringe";
 
-import { BundleLoader } from "@spt-aki/loaders/BundleLoader";
 import { ModLoadOrder } from "@spt-aki/loaders/ModLoadOrder";
 import { ModTypeCheck } from "@spt-aki/loaders/ModTypeCheck";
 import { ModDetails } from "@spt-aki/models/eft/profile/IAkiProfile";
@@ -24,7 +23,7 @@ import { VFS } from "@spt-aki/utils/VFS";
 @injectable()
 export class PreAkiModLoader implements IModLoader
 {
-    protected static container: DependencyContainer;
+    protected container: DependencyContainer;
 
     protected readonly basepath = "user/mods/";
     protected readonly modOrderPath = "user/mods/order.json";
@@ -39,7 +38,6 @@ export class PreAkiModLoader implements IModLoader
         @inject("VFS") protected vfs: VFS,
         @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("ModCompilerService") protected modCompilerService: ModCompilerService,
-        @inject("BundleLoader") protected bundleLoader: BundleLoader,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("ConfigServer") protected configServer: ConfigServer,
         @inject("ModLoadOrder") protected modLoadOrder: ModLoadOrder,
@@ -57,9 +55,9 @@ export class PreAkiModLoader implements IModLoader
     {
         if (globalThis.G_MODS_ENABLED)
         {
-            PreAkiModLoader.container = container;
+            this.container = container;
             await this.importModsAsync();
-            await this.executeModsAsync(container);
+            await this.executeModsAsync();
         }
     }
 
@@ -363,10 +361,9 @@ export class PreAkiModLoader implements IModLoader
 
     /**
      * Execute each mod found in this.imported
-     * @param container Dependence container to give to mod when it runs
      * @returns void promise
      */
-    protected async executeModsAsync(container: DependencyContainer): Promise<void>
+    protected async executeModsAsync(): Promise<void>
     {
         // Sort mods load order
         const source = this.sortModsLoadOrder();
@@ -401,7 +398,7 @@ export class PreAkiModLoader implements IModLoader
             {
                 try
                 {
-                    await (requiredMod.mod as IPreAkiLoadModAsync).preAkiLoadAsync(container);
+                    await (requiredMod.mod as IPreAkiLoadModAsync).preAkiLoadAsync(this.container);
                     globalThis[mod] = requiredMod;
                 }
                 catch (err)
@@ -420,7 +417,7 @@ export class PreAkiModLoader implements IModLoader
             // Perform sync load of mod
             if (this.modTypeCheck.isPreAkiLoad(requiredMod.mod))
             {
-                (requiredMod.mod as IPreAkiLoadMod).preAkiLoad(container);
+                (requiredMod.mod as IPreAkiLoadMod).preAkiLoad(this.container);
                 globalThis[mod] = requiredMod;
             }
         }
@@ -449,13 +446,6 @@ export class PreAkiModLoader implements IModLoader
     protected async addModAsync(mod: string, pkg: IPackageJsonData): Promise<void>
     {
         const modPath = this.getModPath(mod);
-
-        const isBundleMod = pkg.isBundleMod ?? false;
-
-        if (isBundleMod)
-        {
-            this.bundleLoader.addBundles(modPath);
-        }
 
         const typeScriptFiles = this.vfs.getFilesOfType(`${modPath}src`, ".ts");
 
@@ -736,9 +726,9 @@ export class PreAkiModLoader implements IModLoader
 
     public getContainer(): DependencyContainer
     {
-        if (PreAkiModLoader.container)
+        if (this.container)
         {
-            return PreAkiModLoader.container;
+            return this.container;
         }
 
         throw new Error(this.localisationService.getText("modloader-dependency_container_not_initalized"));
