@@ -4,7 +4,7 @@ import { HttpServerHelper } from "@spt-aki/helpers/HttpServerHelper";
 import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 import { VFS } from "@spt-aki/utils/VFS";
 
-class BundleInfo
+export class BundleInfo
 {
     modPath: string;
     key: string;
