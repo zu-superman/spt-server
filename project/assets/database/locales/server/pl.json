@@ -52,6 +52,7 @@
 	"bot-unable_to_find_bot_in_cache": "Nie można znaleźć bota w cache o nazwie: %s",
 	"bot-missing_application_context": "applicationContex nie znalazł wartości %s. Czy zrestartowałeś serwer bez restartowania gry?",
 	"client_request": "[Żądanie klienta] %s",
+	"client_request_ip": "[Żądanie klienta] {{ip}} {{url}}",
 	"customisation-item_already_purchased": "Przedmiot ubioru {{itemId}} {{itemName}} już zakupiony",
 	"customisation-unable_to_find_suit_by_id": "Nie można znaleźć dostępnej oferty stroju w sprzedaży dla id: %s",
 	"customisation-unable_to_find_clothing_item_in_inventory": "Przedmiot ubioru nie znaleziony w ekwipunku z id: %s",
@@ -598,5 +599,12 @@
 	"launcher-profile_sptzerotohero": "Zacznij praktycznie od zera, bez rubli/dolarów/euro, bez reputacji u handlarzy, 1 nóż, żadne zadania nie zostały ukończone",
 	"launcher-profile_sptdeveloper": "Profil testowy, początkowy poziom to 69, dużo rubli/dolarów/euro, USEC zaczyna z wszystkimi zadaniami gotowymi do rozpoczęcia, BEAR zaczyna z wszystkimi zadaniami gotowymi do oddania, kominiarka nieśmiertelności",
 	"launcher-missing_property": "Profil: %s nie ma właściwości descriptionLocaleKey",
-	"beta-disclaimer": "Naciskająć \"OK\" zgadasz się, iż żadne wsprawie nie jest oferowane i że jest tylko do testowania błędów. Nie jest to aktualna gra. Modyfikacje są wyłączone. Nowe profile mogą być wymagane często. Zgłaszaj wszystkie błędy na discordzie na kanałach report lub w sekcji zgłoszeń na stronie. Jeśli nie naciśniesz OK w określonym czasie, gra zostanie zamknięta."
+	"release-beta-disclaimer": "Naciskając OK, akceptujesz informację o braku wsparcia dla tej wersji. Jest to wersja do testowania błędów, NIE służy do faktycznej rozgrywki. Modyfikacje są wyłączone. Tworzenie nowych profili może być często wymagane. Wszelkie błędy proszę zgłaszać na kanale zgłoszeń na Discordzie lub na stronie internetowej w sekcji zgłoszeń. Jeśli nie naciśniesz OK w określonym czasie, gra zostanie zamknięta.",
+	"release-beta-disclaimer-accept": "Użytkownik zaakceptował sprostowanie o wersji beta",
+	"release-server-mods-loaded": "Jedna lub więcej wtyczek serwerowych istnieje w wersji z włączonymi modyfikacjami, raporty będą nieprawidłowe do czasu usunięcia. Zobacz poniższą listę, w celu dowiedzenia się co usunąć, aby móc zgłaszać problemy.",
+	"release-server-mods-debug-message": "Wczytano modyfikacje serwera",
+	"release-plugins-loaded": "Jedna lub więcej wtyczek istnieje w wersji z włączonymi modyfikacjami, raporty będą nieprawidłowe do czasu usunięcia. Zobacz poniższą listę, w celu dowiedzenia się co usunąć, aby móc zgłaszać problemy:",
+	"release-plugins-loaded-debug-message": "Wczytano modyfikacje klienta",
+	"release-illegal-plugins-loaded": "Wykryto jedną lub więcej wtyczek nie znajdujących się na białej liście. Modyfikacje nie są dozwolone w wersjach BleedingEdge SPT. Nieprawidłowe wtyczki:",
+	"release-illegal-plugins-exception": "Wykryto modyfikacje klienta nie dotyczące debugowania. Modyfikacje nie są dozwolone w wersjach SPT BleedingEdge - usuń je przed uruchomieniem gry!"
 }

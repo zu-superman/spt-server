@@ -40,6 +40,7 @@
 	"bot-unable_to_find_spawn_limits_fallback_to_defaults": "No se puede encontrar el límite de aparición para: %s, volviendo a valores por defecto.",
 	"bot-unable_to_get_bot_difficulty_fallback_to_assault": "No se puede encontrar el bot: {{botType}} dificultad {{difficulty}}, usando dificultad asalto por defecto.",
 	"bot-unable_to_get_bot_fallback_to_assault": "No se puede encontrar el bot: %s JSON, usando bot asalto por defecto.",
+	"bot-weapon_contains_invalid_item": "Ranura requerida: '{{modSlot}}' en el arma: {{weaponTpl}} tiene un objeto inválido: {{modName}}",
 	"bot-weapon_generated_incorrect_using_default": "Arma %s ha sido generada incorrectamente, volviendo a plantila por defecto del arma.",
 	"bot-weapon_missing_magazine_or_chamber": "Arma con tpl: %s no tiene cargador o cámara.",
 	"bot-weapon_missing_mod_slot": "Ranura: {{modSlot}}' no existe para el arma: {{weaponId}} {{weaponName}} en {{botRole}}",
@@ -592,7 +593,16 @@
 	"launcher-profile_leftbehind": "Igual que Standard plus; mayor tamaño de inventario(10x38), equipamiento extra, 500 dólares",
 	"launcher-profile_preparetoescape": "Igual que Left Behind plus; mayor tamaño de inventario (10x48), equipamiento adicional/artículos, mayor reputación inicial con los comerciantes, 250 euros",
 	"launcher-profile-edgeofdarkness": "Igual que Prepare to Escape plus; mayor tamaño de escondite (10x68), equipo adicional/artículos, mayor reputación inicial con los comerciantes, 1000 dólares, 500 euros",
+	"launcher-profile_spteasystart": "Muchos Rublos/Dólares/Euros, Algunas mejoras de calidad de vida, habilidades a nivel 20, máxima reputación con los comerciantes, nivel de inicio 15, Sin misiones completadas",
 	"launcher-profile_sptzerotohero": "Comienza con casi nada, sin rublos/dólares/euros, sin reputación de comerciantes, 1 cuchillo y sin misiones completadas",
 	"launcher-profile_sptdeveloper": "Prefil de prueba, el nivel inicial es 69, muchos rublos/dólares/euros, USEC comienza con todas las misiones listas para empezar, BEAR comienza con todas las misiones listas para entregar, pasamontañas de invencibilidad",
-	"launcher-missing_property": "Profile: %s no dispone de la propiedad descriptionLocaleKey"
+	"launcher-missing_property": "Profile: %s no dispone de la propiedad descriptionLocaleKey",
+	"release-beta-disclaimer": "Al presionar OK aceptas que no se ofrecerá ningún tipo de soporte y que esto es solo para búsqueda de errores. NO para jugar. Los mods están deshabilitados. Puede que se requieran nuevos perfiles frecuentemente. Reporta todos los errores en el canal de reportes de discord, o en la página de problemas en el sitio web. Si no presionas OK en el tiempo especificado el juego se cerrará.",
+	"release-beta-disclaimer-accept": "El usuario aceptó el descargo de responsabilidad de la beta",
+	"release-server-mods-loaded": "Se encontraron uno o más mods de servidor en una versión habilitada para mods, los reportes serán inválidos hasta que los mods sean removidos. Revisa al inicio de la consola del servidor para ver que mods fueron cargados, remuévelos para poder reportar problemas de nuevo.",
+	"release-server-mods-debug-message": "Mods de servidor cargados",
+	"release-plugins-loaded": "Se encontraron uno o más plugins en una versión habilitada para mods, los reportes serán inválidos hasta que los plugins sean removidos. Revisa la siguiente lista para ver qué remover y así poder reportar problemas de nuevo:",
+	"release-plugins-loaded-debug-message": "Mods de cliente cargados",
+	"release-illegal-plugins-loaded": "Uno o más plugins no permitidos han sido detectados. Los mods no están habilitados para las versiones BleedingEdge de SPT. Plugins no permitidos:",
+	"release-illegal-plugins-exception": "Se detectaron mods de cliente que no son para depuración. Los mods no están habilitados para las versiones BleedingEdge de SPT - por favor remuévelos antes de jugar!"
 }

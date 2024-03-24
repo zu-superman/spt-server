@@ -52,6 +52,7 @@
 	"bot-unable_to_find_bot_in_cache": "Önbellekte adı: %s olan bot bulunamıyor",
 	"bot-missing_application_context": "applicationContext %s değerini bulamadı. Oyunu yeniden başlatmadan sunucuyu yeniden başlattınız mı?",
 	"client_request": "[İstemci İsteği] %s",
+	"client_request_ip": "[İstemci İsteği] {{ip}} {{url}}",
 	"customisation-item_already_purchased": "Giyim ürünü {{itemId}} {{itemName}} zaten satın alındı",
 	"customisation-unable_to_find_suit_by_id": "Id: %s ile tüccar takım teklifi bulunamıyor",
 	"customisation-unable_to_find_clothing_item_in_inventory": "Envanterde id: %s ile giyim eşyası bulunamadı",
@@ -598,5 +599,13 @@
 	"launcher-profile_sptzerotohero": "Neredeyse hiçbir şey olmadan başlayın, Ruble/Dolar/Euro yok, tüccar repliği yok, 1 bıçak, tamamlanmış görev yok",
 	"launcher-profile_sptdeveloper": "Test profili, başlangıç seviyesi 69, çok sayıda Ruble/Dolar/Euro, USEC başlangıcı tüm görevler hazır, BEAR başlangıcı tüm görevler teslim edilmeye hazır, yenilmezlik kar maskesi",
 	"launcher-missing_property": "Profil: %s için bir descriptionLocaleKey özelliği eksik",
-	"beta-disclaimer": "Tamam'a basarak, hiçbir destek sunulmadığını ve bu yalnızca hata testi için olduğunu kabul edersiniz. GERÇEK oyun oynanmaz. Modlar devre dışı bırakılmıştır. Yeni profiller sık sık gerekebilir. Tüm hataları Discord'daki raporlar kanalına veya web sitesindeki sorunlar sayfasına bildirin. Belirtilen süre dolmadan OK tuşuna basmazsanız, oyun kapanacaktır."
+	"release-beta-disclaimer": "Tamam'a basarak hiçbir destek sunulmadığını ve bunun yalnızca hata testi için olduğunu kabul edersiniz. Gerçek oyun DEĞİL. Modlar devre dışıdır. Sık sık yeni profiller gerekebilir. Tüm hataları discord'daki raporlar kanalında veya web sitesindeki sorunlar sayfasında bildirin. Belirtilen süreye kadar Tamam'a basmazsanız oyun kapanacaktır.",
+	"release-beta-disclaimer-mods-enabled": "Tamam'a basarak hiçbir destek sunulmadığını ve bunun yalnızca hata testi için olduğunu kabul edersiniz. Gerçek oyun için DEĞİL. Modlar etkinleştirilmiştir, modlarla ilgili sorunları bildirmeyin. Mod yazarlarından güncellenmiş modlar İSTEMEYİN. Tüm hataları discord'daki raporlar kanalında veya web sitesindeki sorunlar sayfasında bildirin. Belirtilen zamana kadar Tamam'a basmazsanız, oyun kapanacaktır.",
+	"release-beta-disclaimer-accept": "Kullanıcı beta feragatnamesini kabul etti",
+	"release-server-mods-loaded": "Mod etkin bir yapıda bir veya daha fazla sunucu modu var, raporlar kaldırılana kadar geçersiz olacaktır. Sorunları tekrar raporlamak için kaldırılacak yüklü sunucu modları için sunucunun üst kısmına bakın.",
+	"release-server-mods-debug-message": "Sunucu modları yüklendi",
+	"release-plugins-loaded": "Mod etkin bir yapıda bir veya daha fazla eklenti var, raporlar kaldırılana kadar geçersiz olacaktır. Sorunları tekrar raporlamak için nelerin kaldırılacağını öğrenmek için aşağıdaki listeye bakın:",
+	"release-plugins-loaded-debug-message": "İstemci modları yüklendi",
+	"release-illegal-plugins-loaded": "Bir veya daha fazla beyaz listede olmayan eklenti tespit edildi. SPT'nin BleedingEdge yapılarında modlara izin verilmez. Yasadışı eklentiler:",
+	"release-illegal-plugins-exception": "Hata ayıklamayan istemci modları tespit edildi. SPT'nin BleedingEdge sürümlerinde modlara izin verilmez - lütfen oynamadan önce bunları kaldırın!"
 }

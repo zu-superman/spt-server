@@ -598,5 +598,12 @@
 	"launcher-profile_sptzerotohero": "Comece com quase nada, sem rublos/dólares/euros, sem reputação de comerciante, 1 faca, nenhuma missão concluída",
 	"launcher-profile_sptdeveloper": "Perfil de teste, nível inicial é 69, muitos rublos/dólares/euros, início USEC com todas as missões prontas para começar, início BEAR com todas as missões prontas para entregar, balaclava de invencibilidade",
 	"launcher-missing_property": "O perfil: %s está sem a propriedade descriptionLocaleKey",
-	"beta-disclaimer": "Ao pressionar OK, você concorda que nenhum suporte será oferecido e que isso é apenas para teste de bugs. NÃO é um jogo de fato. Os mods estão desativados. Novos perfis podem ser necessários com frequência. Relate todos os bugs no canal de relatórios no Discord ou na página de problemas no site. Se você não pressionar OK até o horário especificado, o jogo será encerrado."
+	"release-beta-disclaimer": "Ao pressionar OK você concorda que nenhum suporte será oferecido e que isso é apenas para teste de bugs. NÃO jogabilidade real. Os mods estão desativados. Novos perfis podem ser necessários com frequência. Relate todos os bugs no canal de relatórios em discord ou na página de problemas do site. Se você não pressionar OK no horário especificado, o jogo será encerrado.",
+	"release-beta-disclaimer-accept": "O usuário aceitou o aviso de isenção de responsabilidade da versão beta",
+	"release-server-mods-loaded": "Existem um ou mais mods de servidor em uma compilação habilitada para mod. Os relatórios serão inválidos até que sejam removidos. Consulte a parte superior do servidor para saber quais mods de servidor carregados devem ser removidos para relatar problemas novamente.",
+	"release-server-mods-debug-message": "Mods do servidor carregados",
+	"release-plugins-loaded": "Existem um ou mais plug-ins em uma versão habilitada para mod, os relatórios serão inválidos até serem removidos. Consulte a lista a seguir para saber o que remover para relatar problemas novamente:",
+	"release-plugins-loaded-debug-message": "Mods de cliente carregados",
+	"release-illegal-plugins-loaded": "Um ou mais plug-ins não incluídos na lista de permissões foram detectados. Mods não são permitidos em compilações BleedingEdge do SPT. Plug-ins ilegais:",
+	"release-illegal-plugins-exception": "Mods de cliente sem depuração foram detectados. Os mods não são permitidos nas compilações BleedingEdge do SPT - remova-os antes de jogar!"
 }

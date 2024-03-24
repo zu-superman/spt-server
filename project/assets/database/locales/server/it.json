@@ -20,7 +20,7 @@
 	"bot-missing_item_template": "Impossibile trovare lo schema dell'oggetto con tpl: %s",
 	"bot-missing_saved_match_info": "getBotCap() Impossibile recuperare i dati di salvataggio, ripristinato su predefinito. Hai riavviato il server e non il client?",
 	"bot-missing_weapon_preset": "Impossibile trovare il preset dell'arma con tpl: %s",
-	"bot-mod_not_in_slot_filter_list": "Accessorio: {{modId}} non è compatibile per la posizione: '{{modSlot}}' dell'oggetto: {{parentName}}, saltato - {{botRole}}",
+	"bot-mod_not_in_slot_filter_list": "Accessorio: {{modId}} non trovato nel filtro degli item compatibili per lo slot: '{{modSlot}}' dell'oggetto: {{parentName}}, skippato - {{botRole}}",
 	"bot-mod_slot_missing_from_item": "Posizione '{{modSlot}}' non esiste per l'oggetto: {{parentId}} {{parentName}} on {{botRole}}",
 	"bot-no_ammo_found_in_bot_json": "Impossibile trovare munizioni per il bot di tipo: %s",
 	"bot-no_bot_cap_found_for_location": "Impossibile trovare il numero massimo bot per la zona: %s, verrà usato quello predefinito",
@@ -598,5 +598,12 @@
 	"launcher-profile_sptzerotohero": "Inizi con quasi nulla, niente Rubli/Dollari/Euro, reputazione mercanti a zero, un coltello, nessuna missione completata",
 	"launcher-profile_sptdeveloper": "Profilo di prova, i PMC iniziano al livello 69, molti Rubli/Dollari/Euro, gli USEC cominciano con tutte le quest pronte a cominciare, i BEAR cominciano con tutte le quest pronte per essere consegnate, Balaclava dell'invincibilità incluso",
 	"launcher-missing_property": "Al profilo: %s manca la property descriptionLocaleKey",
-	"beta-disclaimer": "Premendo OK accetti che non ti venga offerto nessun supporto perchè questa versione è sperimentale e solo per testare bug. NON è una versione da giocare! Le mod sono disabilitate. Non affezionarti al tuo profilo perché potrebbe essere necessario crearne spesso di nuovi. Segnala i bug che trovi nell'apposito canale su discord o sulla pagina web dev.sp-tarkov.com/SPT-AKI/Issues/issues. Se non premi il tasto OK in tempo, il gioco si chiuderà."
+	"release-beta-disclaimer": "Premendo OK accetti che non ti venga offerto nessun supporto perchè questa versione è sperimentale e solo per testare bug. NON è una versione da giocare! Le mod sono disabilitate. Non affezionarti al tuo profilo perché potrebbe essere necessario crearne spesso di nuovi. Segnala i bug che trovi nell'apposito canale su discord o sulla pagina web dev.sp-tarkov.com/SPT-AKI/Issues/issues. Se non premi il tasto OK in tempo, il gioco si chiuderà.",
+	"release-beta-disclaimer-accept": "L'utente ha accettato i termini della beta",
+	"release-server-mods-loaded": "Sono state rilevate una o più mod del server su una versione con mod abilitate, rimuovile se vuoi che le tue segnalazioni tornino a funzionare. Controlla le prime voci sulla finestra del server per sapere quali sono quelle da rimuovere.",
+	"release-server-mods-debug-message": "Mod del server caricate",
+	"release-plugins-loaded": "Sono stati rilevati uno o più plugin su una versione con mod abilitate, rimuovili se vuoi che le tue segnalazioni tornino a funzionare. Controlla il seguente elenco per sapere quali sono quelli da rimuovere:",
+	"release-plugins-loaded-debug-message": "Mod del client caricate",
+	"release-illegal-plugins-loaded": "Sono stati rilevati uno o più plugin non appartenenti alla lista dei plugin utilizzabili. Le mod non sono autorizzate nelle versioni BleedingEdge di SPT. I plugin non autorizzati sono:",
+	"release-illegal-plugins-exception": "Sono stati rilevate mod del client non a scopo di debug. Le mod non sono autorizzate nelle versioni BleedingEdge di SPT - sei pregato di rimuoverle prima di avviare il gioco!"
 }

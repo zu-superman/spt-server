@@ -598,5 +598,12 @@
 	"launcher-profile_sptzerotohero": "开局几乎没有物资，没有卢布、美元或欧元，没有商人声望，就一把刀，没有已完成任务",
 	"launcher-profile_sptdeveloper": "测试用存档，初始等级69，大量卢布、美元和欧元，USEC开局所有的任务已准备开始，BEAR开局所有任务已准备接取，无敌面罩",
 	"launcher-missing_property": "存档：%s缺少descriptionLocaleKey属性",
-	"beta-disclaimer": "按下“OK”即表示您同意您不会获得任何技术支持，且该版本仅用于错误测试。 此版本不代表实际游戏体验，模组已被禁用，可能需要用户频繁新建存档。 在SPT官方Discord的报告频道里报告所有错误，或在SPT网站的问题页面报告。 如果您在指定时间内不按下“OK”，游戏将自动关闭。"
+	"release-beta-disclaimer": "按下“OK”即表示您同意您不会获得任何技术支持，且该版本仅用于错误测试。 此版本不代表实际游戏体验，模组已被禁用，可能需要用户频繁新建存档。 在SPT官方Discord的报告频道里报告所有错误，或在SPT网站的问题页面报告。 如果您在指定时间内不按下“OK”，游戏将自动关闭。",
+	"release-beta-disclaimer-accept": "用户已接受测试版免责声明",
+	"release-server-mods-loaded": "一个或多个服务器模组存在于模组已启用的版本中，报告将被视为无效直至模组被移除。 请翻至服务器顶页，检查已加载的服务器模组，并删除模组以便再次报告问题。",
+	"release-server-mods-debug-message": "服务器模组已加载",
+	"release-plugins-loaded": "一个或多个插件存在于模组已启用的版本中，报告将被视为无效直至插件被移除。 请参阅下面的列表来删除插件以便再次报告问题：",
+	"release-plugins-loaded-debug-message": "客户端模组已加载完毕",
+	"release-illegal-plugins-loaded": "检测到一个或多个非白名单内插件。血色边缘测试版SPT尚未允许模组。非法插件：",
+	"release-illegal-plugins-exception": "检测到非测试用客户端模组。血色边缘测试版SPT尚未允许模组 - 请在启动游戏前移除模组！"
 }

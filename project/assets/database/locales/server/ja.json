@@ -88,6 +88,7 @@
 	"inventory-invalid_item_missing_from_db": "データベースからアイテム %s を取得できません。",
 	"inventory-no_stash_space": "十分な保管スペースがありません",
 	"inventory-unable_to_fill_container": "[OOB] アイテム: {{id}}; エラー メッセージ: ${error}",
+	"inventory-unable_to_find_item": "getExaminedItemTpl() tpl: %s のアイテムがデータベースまたはフリーマーケットから見つけられませんでした",
 	"inventory-unable_to_find_stash": "隠し場所が見つかりません。",
 	"linux_use_priviledged_port_non_root": "非ルート プロセスは 1024 未満のポートにバインドできません。",
 	"location-containers_generated_success": "合計 %s 個の静的コンテナーが生成されました。",

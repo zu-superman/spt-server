@@ -595,6 +595,5 @@
 	"launcher-profile_spteasystart": "Beaucoup de Roubles/Dollars/Euros, quelques skills QdV au level 20, la réputation des marchands est maxée, démarrage level 15, pas de quêtes complétées. ",
 	"launcher-profile_sptzerotohero": "SPT zero to hero ! Tu démarres avec rien, juste ta bite et ton couteau ! Aucune quête validée",
 	"launcher-profile_sptdeveloper": "SPT dév/testing/debug, lvl 69, max Roubles/Dollars/Euros, USEC ==> toutes les quêtes prêtes à être débutées, BEAR ==> toutes les quêtes terminées prêtes à être validées, item balaclava d'invincibilité",
-	"launcher-missing_property": "Profile: %s, propriété descriptionLocaleKey manquante",
-	"beta-disclaimer": "En appuyant sur OK vous acceptez qu'aucun support ne sera disponible et que cette version est uniquement prévue pour du bug testing. PAS de réel gameplay. Désactivation forcée des mods. Un nouveau profil peut être nécessaire régulièrement (perte de progression). Reportez tous les bugs dans le channel discord adéquat ou sur les pages dédiées du site web. Si vous ne pressez pas OK dans le temps imparti, le jeu se fermera."
+	"launcher-missing_property": "Profile: %s, propriété descriptionLocaleKey manquante"
 }
