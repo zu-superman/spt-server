@@ -195,7 +195,6 @@ export class TraderHelper
         if (traderId === Traders.FENCE)
         {
             // Must add rep to scav profile to ensure consistency
-            const fullProfile = this.profileHelper.getFullProfile(sessionId);
             fullProfile.characters.scav.TradersInfo[traderId].standing = pmcTraderInfo.standing;
         }
 
