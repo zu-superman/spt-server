@@ -109,7 +109,7 @@ export class TraderHelper
         }
 
         // Find specific assort in traders data
-        const purchasedAssort = traderAssorts.items.find((x) => x._id === assortId);
+        const purchasedAssort = traderAssorts.items.find((item) => item._id === assortId);
         if (!purchasedAssort)
         {
             this.logger.debug(`No assort ${assortId} on trader: ${traderId} found`);
@@ -123,7 +123,7 @@ export class TraderHelper
     /**
      * Reset a profiles trader data back to its initial state as seen by a level 1 player
      * Does NOT take into account different profile levels
-     * @param sessionID session id
+     * @param sessionID session id of player
      * @param traderID trader id to reset
      */
     public resetTrader(sessionID: string, traderID: string): void
@@ -158,7 +158,7 @@ export class TraderHelper
     protected getStartingStanding(traderId: string, rawProfileTemplate: ProfileTraderTemplate): number
     {
         // Edge case for Lightkeeper, 0 standing means seeing `Make Amends - Buyout` quest
-        if (traderId === "638f541a29ffd1183d187f57" && rawProfileTemplate.initialStanding === 0)
+        if (traderId === Traders.LIGHTHOUSEKEEPER && rawProfileTemplate.initialStanding === 0)
         {
             return 0.01;
         }
@@ -170,7 +170,7 @@ export class TraderHelper
      * Alter a traders unlocked status
      * @param traderId Trader to alter
      * @param status New status to use
-     * @param sessionId Session id
+     * @param sessionId Session id of player
      */
     public setTraderUnlockedState(traderId: string, status: boolean, sessionId: string): void
     {
@@ -211,6 +211,7 @@ export class TraderHelper
     {
         const newStanding = currentStanding + standingToAdd;
 
+        // Never let standing fall below 0
         return newStanding < 0 ? 0 : newStanding;
     }
 
