@@ -313,6 +313,10 @@ export class MatchController
         this.logger.debug(
             `Car extract: ${extractName} used, total times taken: ${pmcData.CarExtractCounts[extractName]}`,
         );
+        // Copy updated fence rep values into scav profile to ensure consistency
+        const scavData: IPmcData = this.profileHelper.getScavProfile(sessionId);
+        scavData.TradersInfo[fenceId].standing = pmcData.TradersInfo[fenceId].standing;
+        scavData.TradersInfo[fenceId].loyaltyLevel = pmcData.TradersInfo[fenceId].loyaltyLevel;
     }
 
     /**
