@@ -436,8 +436,8 @@
             ]
         },
         "marksman": {
-            "nvgIsActiveChanceDayPercent": 60,
-            "nvgIsActiveChanceNightPercent": 60,
+            "nvgIsActiveChanceDayPercent": 20,
+            "nvgIsActiveChanceNightPercent": 90,
             "faceShieldIsActiveChancePercent": 100,
             "lightIsActiveDayChancePercent": 25,
             "lightIsActiveNightChancePercent": 85,
