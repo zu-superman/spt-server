@@ -2,6 +2,7 @@ import { inject, injectable } from "tsyringe";
 
 import { MatchCallbacks } from "@spt-aki/callbacks/MatchCallbacks";
 import { RouteAction, StaticRouter } from "@spt-aki/di/Router";
+import { IEmptyRequestData } from "@spt-aki/models/eft/common/IEmptyRequestData";
 
 @injectable()
 export class MatchStaticRouter extends StaticRouter
@@ -110,7 +111,7 @@ export class MatchStaticRouter extends StaticRouter
             ),
             new RouteAction(
                 "/client/match/group/invite/cancel-all",
-                (url: string, info: any, sessionID: string, output: string): any =>
+                (url: string, info: IEmptyRequestData, sessionID: string, output: string): any =>
                 {
                     return this.matchCallbacks.cancelAllGroupInvite(url, info, sessionID);
                 },

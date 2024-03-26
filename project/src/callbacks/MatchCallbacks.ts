@@ -121,7 +121,7 @@ export class MatchCallbacks
 
     /** Handle client/match/group/invite/cancel-all */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public cancelAllGroupInvite(url: string, info: any, sessionID: string): INullResponseData
+    public cancelAllGroupInvite(url: string, info: IEmptyRequestData, sessionID: string): INullResponseData
     {
         return this.httpResponse.nullResponse();
     }
@@ -160,7 +160,7 @@ export class MatchCallbacks
     }
 
     /**
-     * @deprecated - not called on raid start/end or game start/exit
+     * Called periodically while in a group
      * Handle client/match/group/status
      * @returns
      */
