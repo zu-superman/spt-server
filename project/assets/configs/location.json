@@ -1012,13 +1012,13 @@
         ],
         "lighthouse": [
             "6331bb0d1aa9f42b804997a6",
-            "6398a072e301557ae24cec92",
             "6398a0861c712b1e1d4dadf1",
             "6399f54b0a36db13c823ad21",
             "64e74a64aac4cd0a7264ecdf"
         ],
         "rezervbase": [
-            "64e74a4baac4cd0a7264ecdd"
+            "64e74a4baac4cd0a7264ecdd",
+			"6398a072e301557ae24cec92"
         ],
         "shoreline": [
             "64e74a534d49d23b2c39d31b"
