@@ -413,6 +413,8 @@
             "lightIsActiveDayChancePercent": 25,
             "lightIsActiveNightChancePercent": 85,
             "laserIsActiveChancePercent": 75,
+			"nvgIsActiveChanceDayPercent": 20,
+			"nvgIsActiveChanceNightPercent": 90,
             "weightingAdjustmentsByPlayerLevel": [{
                     "levelRange": {
                         "min": 1,
