@@ -26,12 +26,12 @@
         "followerTest": 10,
         "followerBoar": 15,
         "marksman": 30,
-        "pmcBot": 50,
+        "pmcBot": 40,
         "sectantPriest": 10,
         "sectantWarrior": 10,
         "gifter": 5,
         "test": 30,
-        "exUsec": 25,
+        "exUsec": 15,
         "arenaFighterEvent": 15,
         "arenaFighter": 15,
         "crazyAssaultEvent": 15,
@@ -45,8 +45,8 @@
         "peacefullZryachiyEvent": 5,
         "ravangeZryachiyEvent": 5,
         "sectactPriestEvent": 10,
-        "sptUsec": 25,
-        "sptBear": 25
+        "sptUsec": 15,
+        "sptBear": 15
     },
     "bosses": [
         "bossbully",
