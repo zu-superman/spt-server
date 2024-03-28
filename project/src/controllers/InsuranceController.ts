@@ -413,6 +413,13 @@ export class InsuranceController
     {
         for (const [parentId, attachmentItems] of mainParentToAttachmentsMap)
         {
+            // Skip processing if parentId is already marked for deletion, as all attachments for that parent will
+            // already be marked for deletion as well.
+            if (toDelete.has(parentId))
+            {
+                continue;
+            }
+
             // Log the parent item's name.
             const parentItem = itemsMap.get(parentId);
             const parentName = this.itemHelper.getItemName(parentItem._tpl);
