@@ -23,10 +23,9 @@ export class BundleSerializer extends Serializer
         this.logger.info(`[BUNDLE]: ${req.url}`);
 
         const key = req.url.split("/bundle/")[1];
-        const bundle = this.bundleLoader.getBundle(key, true);
+        const bundle = this.bundleLoader.getBundle(key);
 
-        // send bundle
-        this.httpFileUtil.sendFile(resp, bundle.path);
+        this.httpFileUtil.sendFile(resp, `${bundle.modpath}/bundles/${bundle.filename}`);
     }
 
     public override canHandle(route: string): boolean

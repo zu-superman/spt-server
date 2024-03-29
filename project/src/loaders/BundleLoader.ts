@@ -1,25 +1,24 @@
+import path from "node:path";
 import { inject, injectable } from "tsyringe";
 
-import path from "path";
 import { HttpServerHelper } from "@spt-aki/helpers/HttpServerHelper";
+import { BundleHashCacheService } from "@spt-aki/services/cache/BundleHashCacheService";
 import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 import { VFS } from "@spt-aki/utils/VFS";
 
 export class BundleInfo
 {
-    modPath: string;
-    key: string;
-    path: string;
-    filepath: string;
-    dependencyKeys: string[];
+    modpath: string;
+    filename: string;
+    crc: number;
+    dependencies: string[];
 
-    constructor(modpath: string, bundle: any, bundlePath: string, bundleFilepath: string)
+    constructor(modpath: string, bundle: BundleManifestEntry, bundleHash: number)
     {
-        this.modPath = modpath;
-        this.key = bundle.key;
-        this.path = bundlePath;
-        this.filepath = bundleFilepath;
-        this.dependencyKeys = bundle.dependencyKeys || [];
+        this.modpath = modpath;
+        this.filename = bundle.key;
+        this.crc = bundleHash;
+        this.dependencies = bundle.dependencyKeys || [];
     }
 }
 
@@ -32,47 +31,48 @@ export class BundleLoader
         @inject("HttpServerHelper") protected httpServerHelper: HttpServerHelper,
         @inject("VFS") protected vfs: VFS,
         @inject("JsonUtil") protected jsonUtil: JsonUtil,
+        @inject("BundleHashCacheService") protected bundleHashCacheService: BundleHashCacheService,
     )
     {}
 
     /**
      * Handle singleplayer/bundles
      */
-    public getBundles(local: boolean): BundleInfo[]
+    public getBundles(): BundleInfo[]
     {
         const result: BundleInfo[] = [];
 
         for (const bundle in this.bundles)
         {
-            result.push(this.getBundle(bundle, local));
+            result.push(this.getBundle(bundle));
         }
 
         return result;
     }
 
-    public getBundle(key: string, local: boolean): BundleInfo
+    public getBundle(key: string): BundleInfo
     {
-        const bundle = this.jsonUtil.clone(this.bundles[key]);
-
-        if (local)
-        {
-            bundle.path = path.join(process.cwd(), bundle.filepath);
-        }
-
-        delete bundle.filepath;
-        return bundle;
+        return this.jsonUtil.clone(this.bundles[key]);
     }
 
     public addBundles(modpath: string): void
     {
-        const manifest =
+        const bundleManifestArr =
             this.jsonUtil.deserialize<BundleManifest>(this.vfs.readFile(`${modpath}bundles.json`)).manifest;
 
-        for (const bundle of manifest)
+        for (const bundleManifest of bundleManifestArr)
         {
-            const bundlePath = `${this.httpServerHelper.getBackendUrl()}/files/bundle/${bundle.key}`;
-            const bundleFilepath = bundle.path || `${modpath}bundles/${bundle.key}`.replace(/\\/g, "/");
-            this.addBundle(bundle.key, new BundleInfo(modpath, bundle, bundlePath, bundleFilepath));
+            const absoluteModPath = path.join(process.cwd(), modpath).slice(0, -1).replace(/\\/g, "/");
+            const bundleLocalPath = `${modpath}bundles/${bundleManifest.key}`.replace(/\\/g, "/");
+
+            if (!this.bundleHashCacheService.calculateAndMatchHash(bundleLocalPath))
+            {
+                this.bundleHashCacheService.calculateAndStoreHash(bundleLocalPath);
+            }
+
+            const bundleHash = this.bundleHashCacheService.getStoredValue(bundleLocalPath);
+
+            this.addBundle(bundleManifest.key, new BundleInfo(absoluteModPath, bundleManifest, bundleHash));
         }
     }
 
@@ -84,11 +84,11 @@ export class BundleLoader
 
 export interface BundleManifest
 {
-    manifest: Array<BundleManifestEntry>;
+    manifest: BundleManifestEntry[];
 }
 
 export interface BundleManifestEntry
 {
     key: string;
-    path: string;
+    dependencyKeys: string[];
 }
