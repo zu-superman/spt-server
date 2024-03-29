@@ -20247,50 +20247,6 @@
               "target": "5ac7a8d386f7741321499e3c"
             }
           ]
-        },
-        {
-          "completeInSeconds": 0,
-          "conditionType": "CounterCreator",
-          "counter": {
-            "conditions": [
-              {
-                "bodyPartsWithEffects": [
-                  {
-                    "bodyParts": [
-                      "Head"
-                    ],
-                    "effects": []
-                  }
-                ],
-                "conditionType": "HealthEffect",
-                "dynamicLocale": false,
-                "energy": {
-                  "compareMethod": ">=",
-                  "value": 0
-                },
-                "hydration": {
-                  "compareMethod": ">=",
-                  "value": 0
-                },
-                "id": "65e1d9b314184073040ecd21",
-                "time": {
-                  "compareMethod": ">=",
-                  "value": 0
-                }
-              }
-            ],
-            "id": "65e1d96b1f11a4d966c538a8"
-          },
-          "doNotResetIfCounterCompleted": false,
-          "dynamicLocale": false,
-          "globalQuestCounterId": "",
-          "id": "65e1d96be98d9d2f49f87238",
-          "index": 4,
-          "oneSessionOnly": false,
-          "parentId": "",
-          "type": "Completion",
-          "value": 5,
-          "visibilityConditions": []
         }
       ],
       "AvailableForStart": [
