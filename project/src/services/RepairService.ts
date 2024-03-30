@@ -349,7 +349,7 @@ export class RepairService
             const materialType = itemToRepairDetails._props.ArmorMaterial ?? "";
             const armorMaterial = globals.config.ArmorMaterials[materialType] as IArmorType;
             const destructability = 1 + armorMaterial.Destructibility;
-            const armorClass = parseInt(`${itemToRepairDetails._props.armorClass}`);
+            const armorClass = Number.parseInt(`${itemToRepairDetails._props.armorClass}`);
             const armorClassDivisor = globals.config.RepairSettings.armorClassDivisor;
             const armorClassMultiplier = 1.0 + armorClass / armorClassDivisor;
 

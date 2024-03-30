@@ -263,7 +263,7 @@ export class BotGeneratorHelper
     {
         let maxDurability: number;
         let currentDurability: number;
-        if (parseInt(`${itemTemplate._props.armorClass}`) === 0)
+        if (Number.parseInt(`${itemTemplate._props.armorClass}`) === 0)
         {
             maxDurability = itemTemplate._props.MaxDurability;
             currentDurability = itemTemplate._props.MaxDurability;

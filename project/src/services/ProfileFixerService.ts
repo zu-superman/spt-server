@@ -560,7 +560,7 @@ export class ProfileFixerService
                 continue;
             }
 
-            if (quest.status && Number.isNaN(parseInt(<string><unknown>quest.status)))
+            if (quest.status && Number.isNaN(Number.parseInt(<string><unknown>quest.status)))
             {
                 fixes[quest.status] = (fixes[quest.status] ?? 0) + 1;
 
@@ -570,7 +570,7 @@ export class ProfileFixerService
 
             for (const statusTimer in quest.statusTimers)
             {
-                if (Number.isNaN(parseInt(statusTimer)))
+                if (Number.isNaN(Number.parseInt(statusTimer)))
                 {
                     timerFixes[statusTimer] = (timerFixes[statusTimer] ?? 0) + 1;
 

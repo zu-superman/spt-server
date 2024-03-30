@@ -9,11 +9,11 @@ import { WeightedRandomHelper } from "@spt-aki/helpers/WeightedRandomHelper";
 import { IWildBody } from "@spt-aki/models/eft/common/IGlobals";
 import {
     Common,
-    Health as PmcHealth,
     IBaseJsonSkills,
     IBaseSkill,
     IBotBase,
     Info,
+    Health as PmcHealth,
     Skills as botSkills,
 } from "@spt-aki/models/eft/common/tables/IBotBase";
 import { Appearance, Health, IBotType } from "@spt-aki/models/eft/common/tables/IBotType";
