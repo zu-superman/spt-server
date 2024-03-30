@@ -25,6 +25,7 @@ import { SkillTypes } from "@spt-aki/models/enums/SkillTypes";
 import { Traders } from "@spt-aki/models/enums/Traders";
 import { IBotConfig } from "@spt-aki/models/spt/config/IBotConfig";
 import { ICoreConfig } from "@spt-aki/models/spt/config/ICoreConfig";
+import { IHideoutConfig } from "@spt-aki/models/spt/config/IHideoutConfig";
 import { IHttpConfig } from "@spt-aki/models/spt/config/IHttpConfig";
 import { ILocationConfig } from "@spt-aki/models/spt/config/ILocationConfig";
 import { ILootConfig } from "@spt-aki/models/spt/config/ILootConfig";
@@ -53,6 +54,7 @@ export class GameController
     protected coreConfig: ICoreConfig;
     protected locationConfig: ILocationConfig;
     protected ragfairConfig: IRagfairConfig;
+    protected hideoutConfig: IHideoutConfig;
     protected pmcConfig: IPmcConfig;
     protected lootConfig: ILootConfig;
     protected botConfig: IBotConfig;
@@ -84,6 +86,7 @@ export class GameController
         this.coreConfig = this.configServer.getConfig(ConfigTypes.CORE);
         this.locationConfig = this.configServer.getConfig(ConfigTypes.LOCATION);
         this.ragfairConfig = this.configServer.getConfig(ConfigTypes.RAGFAIR);
+        this.hideoutConfig = this.configServer.getConfig(ConfigTypes.HIDEOUT);
         this.pmcConfig = this.configServer.getConfig(ConfigTypes.PMC);
         this.lootConfig = this.configServer.getConfig(ConfigTypes.LOOT);
         this.botConfig = this.configServer.getConfig(ConfigTypes.BOT);
@@ -465,8 +468,10 @@ export class GameController
      */
     public getRaidTime(sessionId: string, request: IGetRaidTimeRequest): IGetRaidTimeResponse
     {
-        // Set flea interval time to in-raid value
+        // Set interval times to in-raid value
         this.ragfairConfig.runIntervalSeconds = this.ragfairConfig.runIntervalValues.inRaid;
+
+        this.hideoutConfig.runIntervalSeconds = this.hideoutConfig.runIntervalValues.inRaid;
 
         return this.raidTimeAdjustmentService.getRaidAdjustments(sessionId, request);
     }

@@ -23,6 +23,7 @@ import { SkillTypes } from "@spt-aki/models/enums/SkillTypes";
 import { Traders } from "@spt-aki/models/enums/Traders";
 import { IAirdropConfig } from "@spt-aki/models/spt/config/IAirdropConfig";
 import { IBTRConfig } from "@spt-aki/models/spt/config/IBTRConfig";
+import { IHideoutConfig } from "@spt-aki/models/spt/config/IHideoutConfig";
 import { IInRaidConfig } from "@spt-aki/models/spt/config/IInRaidConfig";
 import { ILocationConfig } from "@spt-aki/models/spt/config/ILocationConfig";
 import { IRagfairConfig } from "@spt-aki/models/spt/config/IRagfairConfig";
@@ -53,6 +54,7 @@ export class InraidController
     protected traderConfig: ITraderConfig;
     protected locationConfig: ILocationConfig;
     protected ragfairConfig: IRagfairConfig;
+    protected hideoutConfig: IHideoutConfig;
 
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
@@ -83,6 +85,7 @@ export class InraidController
         this.traderConfig = this.configServer.getConfig(ConfigTypes.TRADER);
         this.locationConfig = this.configServer.getConfig(ConfigTypes.LOCATION);
         this.ragfairConfig = this.configServer.getConfig(ConfigTypes.RAGFAIR);
+        this.hideoutConfig = this.configServer.getConfig(ConfigTypes.HIDEOUT);
     }
 
     /**
@@ -123,6 +126,7 @@ export class InraidController
 
         // Set flea interval time to out-of-raid value
         this.ragfairConfig.runIntervalSeconds = this.ragfairConfig.runIntervalValues.outOfRaid;
+        this.hideoutConfig.runIntervalSeconds = this.hideoutConfig.runIntervalValues.outOfRaid;
     }
 
     /**

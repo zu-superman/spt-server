@@ -1,5 +1,5 @@
 import { MinMax } from "@spt-aki/models/common/MinMax";
-import { IBaseConfig } from "@spt-aki/models/spt/config/IBaseConfig";
+import { IBaseConfig, IRunIntervalValues } from "@spt-aki/models/spt/config/IBaseConfig";
 
 export interface IRagfairConfig extends IBaseConfig
 {
@@ -13,12 +13,6 @@ export interface IRagfairConfig extends IBaseConfig
     /** Trader ids + should their assorts be listed on flea*/
     traders: Record<string, boolean>;
     dynamic: Dynamic;
-}
-
-export interface IRunIntervalValues
-{
-    inRaid: number;
-    outOfRaid: number;
 }
 
 export interface Sell
