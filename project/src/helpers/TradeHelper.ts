@@ -94,11 +94,8 @@ export class TradeHelper
                         buyRequestData.item_id,
                         buyCount,
                     );
-                }
 
-                // Decrement trader item count
-                if (assortHasBuyRestrictions)
-                {
+                    // Decrement trader item count
                     const itemPurchaseDetails = {
                         items: [{ itemId: buyRequestData.item_id, count: buyCount }],
                         traderId: buyRequestData.tid,
