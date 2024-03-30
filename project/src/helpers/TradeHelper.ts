@@ -168,9 +168,6 @@ export class TradeHelper
                         traderId: buyRequestData.tid,
                     };
                     this.traderHelper.addTraderPurchasesToPlayerProfile(sessionID, itemPurchaseDat, itemPurchased);
-
-                    // Increment non-fence trader item buy count
-                    this.incrementAssortBuyCount(itemPurchased, buyCount);
                 }
             };
 
@@ -275,22 +272,6 @@ export class TradeHelper
 
         // Give player money for sold item(s)
         this.paymentService.giveProfileMoney(profileToReceiveMoney, sellRequest.price, sellRequest, output, sessionID);
-    }
-
-    /**
-     * Increment the assorts buy count by number of items purchased
-     * Show error on screen if player attempts to buy more than what the buy max allows
-     * @param assortBeingPurchased assort being bought
-     * @param itemsPurchasedCount number of items being bought
-     */
-    protected incrementAssortBuyCount(assortBeingPurchased: Item, itemsPurchasedCount: number): void
-    {
-        assortBeingPurchased.upd.BuyRestrictionCurrent += itemsPurchasedCount;
-
-        if (assortBeingPurchased.upd.BuyRestrictionCurrent > assortBeingPurchased.upd.BuyRestrictionMax)
-        {
-            throw new Error("Unable to purchase item, Purchase limit reached");
-        }
     }
 
     /**
