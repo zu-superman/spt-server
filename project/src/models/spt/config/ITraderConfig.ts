@@ -11,8 +11,6 @@ export interface ITraderConfig extends IBaseConfig
     tradersResetFromServerStart: boolean;
     updateTimeDefault: number;
     traderPriceMultipler: number;
-    /** Keep track of purchased trader-limited items beyond server restarts to prevent server-restart item scumming */
-    persistPurchaseDataInProfile: boolean;
     fence: FenceConfig;
 }
 

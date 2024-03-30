@@ -97,7 +97,7 @@ export class TradeHelper
                 }
 
                 // Decrement trader item count
-                if (this.traderConfig.persistPurchaseDataInProfile && assortHasBuyRestrictions)
+                if (assortHasBuyRestrictions)
                 {
                     const itemPurchaseDetails = {
                         items: [{ itemId: buyRequestData.item_id, count: buyCount }],
@@ -170,7 +170,7 @@ export class TradeHelper
                 // Decrement trader item count
                 itemPurchased.upd.StackObjectsCount -= buyCount;
 
-                if (this.traderConfig.persistPurchaseDataInProfile && assortHasBuyRestrictions)
+                if (assortHasBuyRestrictions)
                 {
                     const itemPurchaseDat = {
                         items: [{ itemId: buyRequestData.item_id, count: buyCount }],
