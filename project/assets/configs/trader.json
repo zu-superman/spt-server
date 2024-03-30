@@ -84,7 +84,6 @@
     "tradersResetFromServerStart": true,
     "purchasesAreFoundInRaid": false,
     "traderPriceMultipler": 1,
-    "persistPurchaseDataInProfile": true,
     "fence": {
         "discountOptions": {
             "assortSize": 45,
