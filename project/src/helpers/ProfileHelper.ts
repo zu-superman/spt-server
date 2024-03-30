@@ -495,12 +495,12 @@ export class ProfileHelper
     /**
      * Get a speciic common skill from supplied profile
      * @param pmcData Player profile
-     * @param skill Skill get get
+     * @param skill Skill to look up and return value from
      * @returns Common skill object from desired profile
      */
     public getSkillFromProfile(pmcData: IPmcData, skill: SkillTypes): Common
     {
-        const skillToReturn = pmcData.Skills.Common.find((x) => x.Id === skill);
+        const skillToReturn = pmcData.Skills.Common.find((commonSkill) => commonSkill.Id === skill);
         if (!skillToReturn)
         {
             this.logger.warning(`Profile ${pmcData.sessionId} does not have a skill named: ${skill}`);

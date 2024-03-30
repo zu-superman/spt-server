@@ -678,7 +678,13 @@ export class HideoutController
         // - normal recipe: Production time value is stored in attribute "productionTime" with small "p"
         // - scav case recipe: Production time value is stored in attribute "ProductionTime" with capital "P"
         const adjustedCraftTime = recipe.ProductionTime
-            - this.hideoutHelper.getCraftingSkillProductionTimeReduction(pmcData, recipe.ProductionTime);
+            - this.hideoutHelper.getSkillProductionTimeReduction(
+                pmcData,
+                recipe.ProductionTime,
+                SkillTypes.CRAFTING,
+                this.databaseServer.getTables().globals.config.SkillsSettings.Crafting.CraftTimeReductionPerLevel,
+            );
+
         const modifiedScavCaseTime = this.getScavCaseTime(pmcData, adjustedCraftTime);
 
         pmcData.Hideout.Production[body.recipeId] = this.hideoutHelper.initProduction(

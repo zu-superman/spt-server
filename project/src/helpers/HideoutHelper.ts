@@ -221,14 +221,14 @@ export class HideoutHelper
         pmcData: IPmcData,
     ): { btcFarmCGs: number; isGeneratorOn: boolean; waterCollectorHasFilter: boolean; }
     {
-        const bitcoinFarm = pmcData.Hideout.Areas.find((x) => x.type === HideoutAreas.BITCOIN_FARM);
+        const bitcoinFarm = pmcData.Hideout.Areas.find((area) => area.type === HideoutAreas.BITCOIN_FARM);
         const bitcoinCount = bitcoinFarm?.slots.filter((slot) => slot.item).length ?? 0; // Get slots with an item property
 
         const hideoutProperties = {
             btcFarmCGs: bitcoinCount,
-            isGeneratorOn: pmcData.Hideout.Areas.find((x) => x.type === HideoutAreas.GENERATOR)?.active ?? false,
+            isGeneratorOn: pmcData.Hideout.Areas.find((area) => area.type === HideoutAreas.GENERATOR)?.active ?? false,
             waterCollectorHasFilter: this.doesWaterCollectorHaveFilter(
-                pmcData.Hideout.Areas.find((x) => x.type === HideoutAreas.WATER_COLLECTOR),
+                pmcData.Hideout.Areas.find((area) => area.type === HideoutAreas.WATER_COLLECTOR),
             ),
         };
 
@@ -237,10 +237,11 @@ export class HideoutHelper
 
     protected doesWaterCollectorHaveFilter(waterCollector: HideoutArea): boolean
     {
+        // Can put filters in from L3
         if (waterCollector.level === 3)
-        { // can put filters in from L3
+        {
             // Has filter in at least one slot
-            return waterCollector.slots.some((x) => x.item);
+            return waterCollector.slots.some((slot) => slot.item);
         }
 
         // No Filter
@@ -423,7 +424,7 @@ export class HideoutHelper
                     }
                     break;
                 case HideoutAreas.WATER_COLLECTOR:
-                    this.updateWaterCollector(sessionID, pmcData, area, hideoutProperties.isGeneratorOn);
+                    this.updateWaterCollector(sessionID, pmcData, area, hideoutProperties);
                     break;
 
                 case HideoutAreas.AIR_FILTERING:
@@ -544,7 +545,7 @@ export class HideoutHelper
         sessionId: string,
         pmcData: IPmcData,
         area: HideoutArea,
-        isGeneratorOn: boolean,
+        hideoutProperties: { btcFarmCGs: number; isGeneratorOn: boolean; waterCollectorHasFilter: boolean; },
     ): void
     {
         // Skip water collector when not level 3 (cant collect until 3)
@@ -553,14 +554,23 @@ export class HideoutHelper
             return;
         }
 
+        if (!hideoutProperties.waterCollectorHasFilter)
+        {
+            return;
+        }
+
         // Canister with purified water craft exists
-        const prod = pmcData.Hideout.Production[HideoutHelper.waterCollector];
-        if (prod && this.isProduction(prod))
+        const purifiedWaterCraft = pmcData.Hideout.Production[HideoutHelper.waterCollector];
+        if (purifiedWaterCraft && this.isProduction(purifiedWaterCraft))
         {
             // Update craft time to account for increases in players craft time skill
-            prod.ProductionTime = this.getAdjustedCraftTimeWithSkills(pmcData, prod.RecipeId);
+            purifiedWaterCraft.ProductionTime = this.getAdjustedCraftTimeWithSkills(
+                pmcData,
+                purifiedWaterCraft.RecipeId,
+                true,
+            );
 
-            this.updateWaterFilters(area, prod, isGeneratorOn, pmcData);
+            this.updateWaterFilters(area, purifiedWaterCraft, hideoutProperties.isGeneratorOn, pmcData);
         }
         else
         {
@@ -582,10 +592,17 @@ export class HideoutHelper
      * Get craft time and make adjustments to account for dev profile + crafting skill level
      * @param pmcData Player profile making craft
      * @param recipeId Recipe being crafted
-     * @returns
+     * @param applyHideoutManagementBonus should the hideout mgmt bonus be appled to the calculation
+     * @returns Items craft time with bonuses subtracted
      */
-    protected getAdjustedCraftTimeWithSkills(pmcData: IPmcData, recipeId: string): number
+    protected getAdjustedCraftTimeWithSkills(
+        pmcData: IPmcData,
+        recipeId: string,
+        applyHideoutManagementBonus = false,
+    ): number
     {
+        const globalSkillsDb = this.databaseServer.getTables().globals.config.SkillsSettings;
+
         const recipe = this.databaseServer.getTables().hideout.production.find((production) =>
             production._id === recipeId
         );
@@ -596,9 +613,26 @@ export class HideoutHelper
             return undefined;
         }
 
-        let modifiedProductionTime = recipe.productionTime
-            - this.getCraftingSkillProductionTimeReduction(pmcData, recipe.productionTime);
+        // Seconds to deduct from crafts total time
+        let timeReductionSeconds = this.getSkillProductionTimeReduction(
+            pmcData,
+            recipe.productionTime,
+            SkillTypes.CRAFTING,
+            globalSkillsDb.Crafting.ProductionTimeReductionPerLevel,
+        );
 
+        // Some crafts take into account hideout management, e.g. fuel, water/air filters
+        if (applyHideoutManagementBonus)
+        {
+            timeReductionSeconds += this.getSkillProductionTimeReduction(
+                pmcData,
+                recipe.productionTime,
+                SkillTypes.HIDEOUT_MANAGEMENT,
+                globalSkillsDb.HideoutManagement.ConsumptionReductionPerLevel,
+            );
+        }
+
+        let modifiedProductionTime = recipe.productionTime - timeReductionSeconds;
         if (modifiedProductionTime > 0 && this.profileHelper.isDeveloperAccount(pmcData._id))
         {
             modifiedProductionTime = 40;
@@ -625,7 +659,7 @@ export class HideoutHelper
         const productionTime = this.getTotalProductionTimeSeconds(HideoutHelper.waterCollector);
         const secondsSinceServerTick = this.getTimeElapsedSinceLastServerTick(pmcData, isGeneratorOn);
 
-        filterDrainRate = this.getAdjustWaterFilterDrainRate(
+        filterDrainRate = this.getTimeAdjustedWaterFilterDrainRate(
             secondsSinceServerTick,
             productionTime,
             production.Progress,
@@ -708,7 +742,7 @@ export class HideoutHelper
      * @param baseFilterDrainRate Base drain rate
      * @returns drain rate (adjusted)
      */
-    protected getAdjustWaterFilterDrainRate(
+    protected getTimeAdjustedWaterFilterDrainRate(
         secondsSinceServerTick: number,
         totalProductionTime: number,
         productionProgress: number,
@@ -716,10 +750,10 @@ export class HideoutHelper
     ): number
     {
         const drainTimeSeconds = secondsSinceServerTick > totalProductionTime
-            ? (totalProductionTime - productionProgress) // more time passed than prod time, get total minus the current progress
+            ? (totalProductionTime - productionProgress) // More time passed than prod time, get total minus the current progress
             : secondsSinceServerTick;
 
-        // Multiply drain rate by calculated multiplier
+        // Multiply base drain rate by time passed
         return baseFilterDrainRate * drainTimeSeconds;
     }
 
@@ -730,11 +764,28 @@ export class HideoutHelper
      */
     protected getWaterFilterDrainRate(pmcData: IPmcData): number
     {
+        const globalSkillsDb = this.databaseServer.getTables().globals.config.SkillsSettings;
+
         // 100 resources last 8 hrs 20 min, 100/8.33/60/60 = 0.00333
         const filterDrainRate = 0.00333;
-        const hideoutManagementConsumptionBonus = 1.0 - this.getHideoutManagementConsumptionBonus(pmcData);
 
-        return filterDrainRate * hideoutManagementConsumptionBonus;
+        const hideoutManagementConsumptionBonus = this.getSkillBonusMultipliedBySkillLevel(
+            pmcData,
+            SkillTypes.HIDEOUT_MANAGEMENT,
+            globalSkillsDb.HideoutManagement.ConsumptionReductionPerLevel,
+        );
+        const craftSkillTimeReductionMultipler = this.getSkillBonusMultipliedBySkillLevel(
+            pmcData,
+            SkillTypes.CRAFTING,
+            globalSkillsDb.Crafting.CraftTimeReductionPerLevel,
+        );
+
+        // Never let bonus become 0
+        const reductionBonus = hideoutManagementConsumptionBonus + craftSkillTimeReductionMultipler === 0
+            ? 1
+            : 1 - (hideoutManagementConsumptionBonus + craftSkillTimeReductionMultipler);
+
+        return filterDrainRate * reductionBonus;
     }
 
     /**
@@ -1013,22 +1064,46 @@ export class HideoutHelper
     }
 
     /**
-     * Adjust craft time based on crafting skill level found in player profile
+     * Get a multipler based on players skill level and value per level
+     * @param pmcData Player profile
+     * @param skill Player skill from profile
+     * @param valuePerLevel Value from globals.config.SkillsSettings - `PerLevel`
+     * @returns Multipler from 0 to 1
+     */
+    protected getSkillBonusMultipliedBySkillLevel(pmcData: IPmcData, skill: SkillTypes, valuePerLevel: number): number
+    {
+        const profileSkill = this.profileHelper.getSkillFromProfile(pmcData, skill);
+        if (!profileSkill || profileSkill.Progress === 0)
+        {
+            return 0;
+        }
+
+        // If the level is 51 we need to round it at 50 so on elite you dont get 25.5%
+        // at level 1 you already get 0.5%, so it goes up until level 50. For some reason the wiki
+        // says that it caps at level 51 with 25% but as per dump data that is incorrect apparently
+        let roundedLevel = Math.floor(profileSkill.Progress / 100);
+        roundedLevel = (roundedLevel === 51) ? roundedLevel - 1 : roundedLevel;
+
+        return (roundedLevel * valuePerLevel) / 100;
+    }
+
+    /**
      * @param pmcData Player profile
      * @param productionTime Time to complete hideout craft in seconds
-     * @returns Adjusted craft time in seconds
+     * @param skill Skill bonus to get reduction from
+     * @param amountPerLevel Skill bonus amount to apply
+     * @returns Seconds to reduce craft time by
      */
-    public getCraftingSkillProductionTimeReduction(pmcData: IPmcData, productionTime: number): number
+    public getSkillProductionTimeReduction(
+        pmcData: IPmcData,
+        productionTime: number,
+        skill: SkillTypes,
+        amountPerLevel: number,
+    ): number
     {
-        const craftingSkill = pmcData.Skills.Common.find((skill) => skill.Id === SkillTypes.CRAFTING);
-        if (!craftingSkill)
-        {
-            return productionTime;
-        }
-        const roundedLevel = Math.floor(Math.min(HideoutHelper.maxSkillPoint, craftingSkill.Progress) / 100);
-        const percentageToDrop = roundedLevel * 0.75;
+        const skillTimeReductionMultipler = this.getSkillBonusMultipliedBySkillLevel(pmcData, skill, amountPerLevel);
 
-        return (productionTime * percentageToDrop) / 100;
+        return productionTime * skillTimeReductionMultipler;
     }
 
     public isProduction(productive: Productive): productive is Production
