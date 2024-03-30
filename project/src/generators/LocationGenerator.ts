@@ -597,7 +597,7 @@ export class LocationGenerator
 
         // Build the list of forced loot from both `spawnpointsForced` and any point marked `IsAlwaysSpawn`
         dynamicForcedSpawnPoints.push(...dynamicLootDist.spawnpointsForced);
-        dynamicForcedSpawnPoints.push(...dynamicLootDist.spawnpoints.filter(point => point.template.IsAlwaysSpawn));
+        dynamicForcedSpawnPoints.push(...dynamicLootDist.spawnpoints.filter((point) => point.template.IsAlwaysSpawn));
 
         // Add forced loot
         this.addForcedLoot(loot, dynamicForcedSpawnPoints, locationName);
@@ -647,7 +647,7 @@ export class LocationGenerator
         // Add ALL loose loot with 100% chance to pool
         let chosenSpawnpoints: Spawnpoint[] = [...guaranteedLoosePoints];
 
-        const randomSpawnpointCount = desiredSpawnpointCount - chosenSpawnpoints.length
+        const randomSpawnpointCount = desiredSpawnpointCount - chosenSpawnpoints.length;
         // only draw random spawn points if needed
         if (randomSpawnpointCount > 0 && spawnpointArray.length > 0)
         {

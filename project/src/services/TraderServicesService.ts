@@ -57,7 +57,7 @@ export class TraderServicesService
         }
 
         // Clear any unavailable services from the list
-        traderServices = traderServices.filter(x => !servicesToDelete.includes(x.serviceType));
+        traderServices = traderServices.filter((x) => !servicesToDelete.includes(x.serviceType));
 
         return traderServices;
     }
