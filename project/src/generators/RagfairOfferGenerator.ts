@@ -789,7 +789,7 @@ export class RagfairOfferGenerator
         for (const armorItem of armorWithMods)
         {
             const itemDbDetails = this.itemHelper.getItem(armorItem._tpl)[1];
-            if ((parseInt(<string>itemDbDetails._props.armorClass)) > 1)
+            if ((Number.parseInt(<string>itemDbDetails._props.armorClass)) > 1)
             {
                 this.itemHelper.addUpdObjectToItem(armorItem);
 

@@ -340,8 +340,8 @@ export class InventoryController
     ): IItemEventRouterResponse
     {
         const inventoryItems = this.inventoryHelper.getOwnerInventoryItems(body, sessionID);
-        const sourceItem = inventoryItems.from.find((item) => item._id == body.item);
-        const destinationItem = inventoryItems.to.find((item) => item._id == body.with);
+        const sourceItem = inventoryItems.from.find((item) => item._id === body.item);
+        const destinationItem = inventoryItems.to.find((item) => item._id === body.with);
 
         if (sourceItem === null)
         {

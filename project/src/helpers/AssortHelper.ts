@@ -158,7 +158,7 @@ export class AssortHelper
             {
                 if (assort.items[a]._id === idsToRemove[i])
                 {
-                    assort.items.splice(parseInt(a), 1);
+                    assort.items.splice(Number.parseInt(a), 1);
                 }
             }
         }

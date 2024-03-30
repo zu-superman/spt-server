@@ -175,7 +175,7 @@ export class WeatherGenerator
 
     protected getRandomFloat(node: string): number
     {
-        return parseFloat(
+        return Number.parseFloat(
             this.randomUtil.getFloat(this.weatherConfig.weather[node].min, this.weatherConfig.weather[node].max)
                 .toPrecision(3),
         );
