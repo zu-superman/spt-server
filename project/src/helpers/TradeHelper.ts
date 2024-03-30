@@ -99,11 +99,11 @@ export class TradeHelper
                 // Decrement trader item count
                 if (this.traderConfig.persistPurchaseDataInProfile && assortHasBuyRestrictions)
                 {
-                    const itemPurchaseDat = {
+                    const itemPurchaseDetails = {
                         items: [{ itemId: buyRequestData.item_id, count: buyCount }],
                         traderId: buyRequestData.tid,
                     };
-                    this.traderHelper.addTraderPurchasesToPlayerProfile(sessionID, itemPurchaseDat, itemPurchased);
+                    this.traderHelper.addTraderPurchasesToPlayerProfile(sessionID, itemPurchaseDetails, itemPurchased);
                 }
 
                 if (assortHasBuyRestrictions)
@@ -178,7 +178,6 @@ export class TradeHelper
                     };
                     this.traderHelper.addTraderPurchasesToPlayerProfile(sessionID, itemPurchaseDat, itemPurchased);
                 }
-
                 else if (assortHasBuyRestrictions)
                 {
                     // Increment non-fence trader item buy count
