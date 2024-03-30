@@ -101,9 +101,6 @@ export class TradeHelper
                         traderId: buyRequestData.tid,
                     };
                     this.traderHelper.addTraderPurchasesToPlayerProfile(sessionID, itemPurchaseDetails, itemPurchased);
-
-                    // Increment non-fence trader item buy count
-                    this.incrementAssortBuyCount(itemPurchased, buyCount);
                 }
             };
 
