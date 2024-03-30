@@ -656,10 +656,13 @@ export class FenceService
      */
     protected getMatchingItem(rootItemBeingAdded: Item, itemDbDetails: ITemplateItem, fenceItemAssorts: Item[]): Item
     {
-        const matchingItems = fenceItemAssorts.filter((item) => item._tpl === rootItemBeingAdded._tpl);
+        // Get matching root items
+        const matchingItems = fenceItemAssorts.filter((item) =>
+            item._tpl === rootItemBeingAdded._tpl && item.parentId === "hideout"
+        );
         if (matchingItems.length === 0)
         {
-            // Nothing matches by tpl, exit early
+            // Nothing matches by tpl and is root item, exit early
             return null;
         }
 
@@ -713,6 +716,12 @@ export class FenceService
     {
         // No existing item in assort
         if (!existingItem)
+        {
+            return false;
+        }
+
+        // Don't stack child items, only root items
+        if (existingItem.parentId !== "hideout")
         {
             return false;
         }
