@@ -587,7 +587,7 @@ export class HideoutController
     ): IItemEventRouterResponse
     {
         // Start production
-        this.registerProduction(pmcData, body, sessionID);
+        this.hideoutHelper.registerProduction(pmcData, body, sessionID);
 
         // Find the recipe of the production
         const recipe = this.databaseServer.getTables().hideout.production.find((p) => p._id === body.recipeId);
@@ -739,7 +739,7 @@ export class HideoutController
         sessionID: string,
     ): IItemEventRouterResponse
     {
-        this.registerProduction(pmcData, request, sessionID);
+        this.hideoutHelper.registerProduction(pmcData, request, sessionID);
 
         return this.eventOutputHolder.getOutput(sessionID);
     }
@@ -999,7 +999,7 @@ export class HideoutController
 
         //  - increment skill point for crafting
         //  - delete the production in profile Hideout.Production
-        // Manager Hideout skill
+        // Hideout Management skill
         // ? use a configuration variable for the value?
         const globals = this.databaseServer.getTables().globals;
         this.profileHelper.addSkillPointsToPlayer(
@@ -1009,7 +1009,7 @@ export class HideoutController
             true,
         );
 
-        // Manager Crafting skill
+        // Add Crafting skill to player profile
         if (craftingExpAmount > 0)
         {
             this.profileHelper.addSkillPointsToPlayer(pmcData, SkillTypes.CRAFTING, craftingExpAmount);
@@ -1125,22 +1125,6 @@ export class HideoutController
 
         // Crafting complete, flag
         pmcData.Hideout.Production[prodId].inProgress = false;
-    }
-
-    /**
-     * Start area production for item by adding production to profiles' Hideout.Production array
-     * @param pmcData Player profile
-     * @param request Start production request
-     * @param sessionID Session id
-     * @returns IItemEventRouterResponse
-     */
-    public registerProduction(
-        pmcData: IPmcData,
-        request: IHideoutSingleProductionStartRequestData | IHideoutContinuousProductionStartRequestData,
-        sessionID: string,
-    ): IItemEventRouterResponse
-    {
-        return this.hideoutHelper.registerProduction(pmcData, request, sessionID);
     }
 
     /**
