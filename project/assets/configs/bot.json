@@ -489,7 +489,7 @@
         },
         "bosskilla": {
             "faceShieldIsActiveChancePercent": 100,
-            "lightIsActiveDayChancePercent": 35,
+            "lightIsActiveDayChancePercent": 75,
             "lightIsActiveNightChancePercent": 85,
             "laserIsActiveChancePercent": 85,
             "forceStock": true
