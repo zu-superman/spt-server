@@ -235,7 +235,7 @@ export class FenceService
         const itemCountsToReplace = this.getCountOfItemsToGenerate();
 
         const newItems = this.createFenceAssortSkeleton();
-        this.createAssorts(itemCountsToReplace.normal, newItems, 2);
+        this.createAssorts(itemCountsToReplace.normal, newItems, 1);
         this.fenceAssort.items.push(...newItems.items);
 
         const newDiscountItems = this.createFenceAssortSkeleton();
