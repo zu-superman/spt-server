@@ -10,8 +10,8 @@
         "sandbox": 20
     },
     "airdropTypeWeightings": {
-        "mixed": 2,
-        "weaponArmor": 1,
+        "mixed": 5,
+        "weaponArmor": 2,
         "foodMedical": 1,
         "barter": 1
     },
