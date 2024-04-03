@@ -331,7 +331,8 @@
         "bosskolontay": {},
         "bosstest": {},
         "followerbully": {
-            "5448e8d64bdc2dce718b4568": 2
+            "5448e8d64bdc2dce718b4568": 1,
+            "5448ba0b4bdc2d02308b456c": 1
         },
         "followergluharassault": {
             "5c0fa877d174af02a012e1cf": 1
@@ -354,14 +355,31 @@
         "followerbigpipe": {},
         "followerzryachiy": {},
         "followertest": {},
-        "followerboar": {},
-        "followerboarclose1": {},
-        "followerboarclose2": {},
+        "followerboar": {
+            "5448e8d04bdc2ddf718b4569": 1,
+            "544fb37f4bdc2dee738b4567": 1,
+            "5448e8d64bdc2dce718b4568": 1,
+            "5c94bbff86f7747ee735c08f": 1
+        },
+        "followerboarclose1": {
+            "5448e8d04bdc2ddf718b4569": 1,
+            "5448e8d64bdc2dce718b4568": 1,
+            "5c94bbff86f7747ee735c08f": 1
+        },
+        "followerboarclose2": {
+            "5448e8d04bdc2ddf718b4569": 1,
+            "5448e8d64bdc2dce718b4568": 1,
+            "5c94bbff86f7747ee735c08f": 1
+        },
         "followerkolontayassault": {
-            "544fb62a4bdc2dfb738b4568": 2
+            "5448e8d04bdc2ddf718b4569": 2,
+            "5c94bbff86f7747ee735c08f": 1,
+            "5448e8d64bdc2dce718b4568": 2
         },
         "followerkolontaysecurity": {
-            "544fb62a4bdc2dfb738b4568": 2
+            "5448e8d04bdc2ddf718b4569": 2,
+            "5c94bbff86f7747ee735c08f": 1,
+            "5448e8d64bdc2dce718b4568": 2
         },
         "sectantpriest": {},
         "sectantwarrior": {},
@@ -648,7 +666,8 @@
             "nvgIsActiveChanceNightPercent": 90,
             "lightIsActiveDayChancePercent": 25,
             "lightIsActiveNightChancePercent": 85,
-            "laserIsActiveChancePercent": 85
+            "laserIsActiveChancePercent": 85,
+            "forceStock": true
         },
         "followerboar": {
             "nvgIsActiveChanceDayPercent": 20,
