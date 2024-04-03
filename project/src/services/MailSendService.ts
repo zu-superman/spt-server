@@ -455,7 +455,7 @@ export class MailSendService
                 }
 
                 // Ensure every 'base/root' item has the same parentId + has a slotid of 'main'
-                if (!("slotId" in reward) || reward.slotId === "hideout")
+                if (!("slotId" in reward) || reward.slotId === "hideout" || reward.parentId === parentItem.parentId)
                 {
                     // Reward items NEED a parent id + slotid
                     reward.parentId = parentItem.parentId;
