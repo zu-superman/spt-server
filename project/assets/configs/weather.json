@@ -119,9 +119,17 @@
 		},
 		{
 			"seasonType": 2,
-			"name": "WINTER",
+			"name": "WINTER_END",
 			"startDay": "2",
             "startMonth": "11",
+            "endDay": "31",
+            "endMonth": "12"
+		},
+		{
+			"seasonType": 2,
+			"name": "WINTER_START",
+			"startDay": "1",
+            "startMonth": "1",
             "endDay": "1",
             "endMonth": "3"
 		},
