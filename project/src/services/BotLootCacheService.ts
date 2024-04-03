@@ -59,28 +59,39 @@ export class BotLootCacheService
             this.addLootToCache(botRole, isPmc, botJsonTemplate);
         }
 
+        let result = undefined;
         switch (lootType)
         {
             case LootCacheType.SPECIAL:
-                return this.lootCache[botRole].specialItems;
+                result = this.lootCache[botRole].specialItems;
+                break;
             case LootCacheType.BACKPACK:
-                return this.lootCache[botRole].backpackLoot;
+                result = this.lootCache[botRole].backpackLoot;
+                break;
             case LootCacheType.POCKET:
-                return this.lootCache[botRole].pocketLoot;
+                result = this.lootCache[botRole].pocketLoot;
+                break;
             case LootCacheType.VEST:
-                return this.lootCache[botRole].vestLoot;
+                result = this.lootCache[botRole].vestLoot;
+                break;
             case LootCacheType.SECURE:
-                return this.lootCache[botRole].secureLoot;
+                result = this.lootCache[botRole].secureLoot;
+                break;
             case LootCacheType.COMBINED:
-                return this.lootCache[botRole].combinedPoolLoot;
+                result = this.lootCache[botRole].combinedPoolLoot;
+                break;
             case LootCacheType.HEALING_ITEMS:
-                return this.lootCache[botRole].healingItems;
+                result = this.lootCache[botRole].healingItems;
+                break;
             case LootCacheType.GRENADE_ITEMS:
-                return this.lootCache[botRole].grenadeItems;
+                result = this.lootCache[botRole].grenadeItems;
+                break;
             case LootCacheType.DRUG_ITEMS:
-                return this.lootCache[botRole].drugItems;
+                result = this.lootCache[botRole].drugItems;
+                break;
             case LootCacheType.STIM_ITEMS:
-                return this.lootCache[botRole].stimItems;
+                result = this.lootCache[botRole].stimItems;
+                break;
             default:
                 this.logger.error(
                     this.localisationService.getText("bot-loot_type_not_found", {
@@ -91,6 +102,8 @@ export class BotLootCacheService
                 );
                 break;
         }
+
+        return this.jsonUtil.clone(result);
     }
 
     /**
