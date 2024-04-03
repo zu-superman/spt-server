@@ -31,6 +31,7 @@ export interface Config
     WeaponOverlapDistanceCulling: number;
     WebDiagnosticsEnabled: boolean;
     NetworkStateView: INetworkStateView;
+    WsReconnectionDelays: number[];
 }
 
 export interface FramerateLimit
