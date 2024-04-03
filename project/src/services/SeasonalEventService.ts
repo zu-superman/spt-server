@@ -7,6 +7,7 @@ import { ILocation } from "@spt-aki/models/eft/common/ILocation";
 import { BossLocationSpawn } from "@spt-aki/models/eft/common/ILocationBase";
 import { Inventory } from "@spt-aki/models/eft/common/tables/IBotType";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
+import { Season } from "@spt-aki/models/enums/Season";
 import { SeasonalEventType } from "@spt-aki/models/enums/SeasonalEventType";
 import { IHttpConfig } from "@spt-aki/models/spt/config/IHttpConfig";
 import { IQuestConfig } from "@spt-aki/models/spt/config/IQuestConfig";
@@ -597,6 +598,6 @@ export class SeasonalEventService
 
     public enableSnow(): void
     {
-        this.weatherConfig.forceWinterEvent = true;
+        this.weatherConfig.season = Season.WINTER;
     }
 }

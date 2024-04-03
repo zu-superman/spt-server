@@ -46,7 +46,6 @@ export class WeatherGenerator
         data.date = formattedDate;
         data.time = this.getBsgFormattedInRaidTime();
         data.acceleration = this.weatherConfig.acceleration;
-        data.winterEventEnabled = this.weatherConfig.forceWinterEvent;
 
         return data;
     }
