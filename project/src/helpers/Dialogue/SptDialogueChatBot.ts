@@ -154,7 +154,7 @@ export class SptDialogueChatBot implements IDialogueChatBot
 
         if (request.text.toLowerCase() === "itsonlysnowalan")
         {
-            this.weatherConfig.season = Season.WINTER;
+            this.weatherConfig.overrideSeason = Season.WINTER;
 
             this.mailSendService.sendUserMessageToPlayer(
                 sessionId,

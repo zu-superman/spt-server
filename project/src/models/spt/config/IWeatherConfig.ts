@@ -8,7 +8,18 @@ export interface IWeatherConfig extends IBaseConfig
     kind: "aki-weather";
     acceleration: number;
     weather: Weather;
-    season: Season;
+    seasonDates: ISeasonDateTimes[];
+    overrideSeason?: Season;
+}
+
+export interface ISeasonDateTimes
+{
+    seasonType: Season;
+    name: string;
+    startDay: number;
+    startMonth: number;
+    endDay: number;
+    endMonth: number;
 }
 
 export interface Weather

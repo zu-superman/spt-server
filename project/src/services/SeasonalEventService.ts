@@ -259,6 +259,31 @@ export class SeasonalEventService
         }
     }
 
+    public getActiveWeatherSeason(): Season
+    {
+        const currentDate = new Date();
+        for (const seasonRange of this.weatherConfig.seasonDates)
+        {
+            // Figure out start and end dates to get range of season
+            const eventStartDate = new Date(
+                currentDate.getFullYear(),
+                seasonRange.startMonth - 1, // Month value starts at 0
+                seasonRange.startDay,
+            );
+            const eventEndDate = new Date(currentDate.getFullYear(), seasonRange.endMonth - 1, seasonRange.endDay);
+
+            // Does todays date fit inside the above range
+            if (currentDate >= eventStartDate && currentDate <= eventEndDate)
+            {
+                return seasonRange.seasonType;
+            }
+        }
+
+        this.logger.warning("Unable to find a season using current date, defaulting to Summer");
+
+        return Season.SUMMER;
+    }
+
     /**
      * Iterate through bots inventory and loot to find and remove christmas items (as defined in SeasonalEventService)
      * @param botInventory Bots inventory to iterate over
@@ -598,6 +623,6 @@ export class SeasonalEventService
 
     public enableSnow(): void
     {
-        this.weatherConfig.season = Season.WINTER;
+        this.weatherConfig.overrideSeason = Season.WINTER;
     }
 }

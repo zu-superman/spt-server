@@ -6,8 +6,8 @@ export interface IWeatherData
     acceleration: number;
     time: string;
     date: string;
-    weather?: IWeather;
-    season?: Season;
+    weather: IWeather;
+    season: Season;
 }
 
 export interface IWeather

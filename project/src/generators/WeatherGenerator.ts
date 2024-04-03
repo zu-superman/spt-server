@@ -5,10 +5,12 @@ import { ContextVariableType } from "@spt-aki/context/ContextVariableType";
 import { WeightedRandomHelper } from "@spt-aki/helpers/WeightedRandomHelper";
 import { IWeather, IWeatherData } from "@spt-aki/models/eft/weather/IWeatherData";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
+import { Season } from "@spt-aki/models/enums/Season";
 import { WindDirection } from "@spt-aki/models/enums/WindDirection";
 import { IWeatherConfig } from "@spt-aki/models/spt/config/IWeatherConfig";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt-aki/servers/ConfigServer";
+import { SeasonalEventService } from "@spt-aki/services/SeasonalEventService";
 import { RandomUtil } from "@spt-aki/utils/RandomUtil";
 import { TimeUtil } from "@spt-aki/utils/TimeUtil";
 
@@ -26,6 +28,7 @@ export class WeatherGenerator
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
+        @inject("SeasonalEventService") protected seasonalEventService: SeasonalEventService,
         @inject("ApplicationContext") protected applicationContext: ApplicationContext,
         @inject("ConfigServer") protected configServer: ConfigServer,
     )
@@ -46,6 +49,10 @@ export class WeatherGenerator
         data.date = formattedDate;
         data.time = this.getBsgFormattedInRaidTime();
         data.acceleration = this.weatherConfig.acceleration;
+
+        data.season = this.weatherConfig.overrideSeason
+            ? this.weatherConfig.overrideSeason
+            : this.seasonalEventService.getActiveWeatherSeason();
 
         return data;
     }
