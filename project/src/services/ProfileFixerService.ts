@@ -282,7 +282,11 @@ export class ProfileFixerService
         }
 
         const db = this.databaseServer.getTables();
-        const placeOfFameAreaDb = db.hideout.areas.find((x) => x.type === HideoutAreas.PLACE_OF_FAME);
+        const placeOfFameAreaDb = db.hideout.areas.find((area) => area.type === HideoutAreas.PLACE_OF_FAME);
+        if (!placeOfFameAreaDb)
+        {
+            return;
+        }
         const stageCurrentlyAt = placeOfFameAreaDb.stages[placeOfFameArea.level];
         const placeOfFameStashId = pmcProfile.Inventory.hideoutAreaStashes[HideoutAreas.PLACE_OF_FAME];
 
