@@ -209,6 +209,9 @@ export class GameController
 
             this.adjustLabsRaiderSpawnRate();
 
+            this.adjustHideoutCraftTimes();
+            this.adjustHideoutBuildTimes();
+
             this.removePraporTestMessage();
 
             this.saveActiveModsToProfile(fullProfile);
@@ -236,6 +239,46 @@ export class GameController
             if (!this.ragfairConfig.dynamic.blacklist.enableBsgList)
             {
                 this.flagAllItemsInDbAsSellableOnFlea();
+            }
+        }
+    }
+
+    protected adjustHideoutCraftTimes(): void
+    {
+        const craftTimeOverrideSeconds = this.hideoutConfig.overrideCraftTimeSeconds;
+        if (craftTimeOverrideSeconds === -1)
+        {
+            return;
+        }
+
+        for (const craft of this.databaseServer.getTables().hideout.production)
+        {
+            // Only adjust crafts ABOVE the override
+            if (craft.productionTime > craftTimeOverrideSeconds)
+            {
+                craft.productionTime = craftTimeOverrideSeconds;
+            }
+        }
+    }
+
+    protected adjustHideoutBuildTimes(): void
+    {
+        const craftTimeOverrideSeconds = this.hideoutConfig.overrideBuildTimeSeconds;
+        if (craftTimeOverrideSeconds === -1)
+        {
+            return;
+        }
+
+        for (const area of this.databaseServer.getTables().hideout.areas)
+        {
+            for (const stageKey of Object.keys(area.stages))
+            {
+                const stage = area.stages[stageKey];
+                // Only adjust crafts ABOVE the override
+                if (stage.constructionTime > craftTimeOverrideSeconds)
+                {
+                    stage.constructionTime = craftTimeOverrideSeconds;
+                }
             }
         }
     }

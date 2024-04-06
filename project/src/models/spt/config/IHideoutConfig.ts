@@ -9,4 +9,6 @@ export interface IHideoutConfig extends IBaseConfig
     runIntervalValues: IRunIntervalValues;
     hoursForSkillCrafting: number;
     expCraftAmount: number;
+    overrideCraftTimeSeconds: number;
+    overrideBuildTimeSeconds: number;
 }
