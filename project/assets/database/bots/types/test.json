@@ -1939,6 +1939,22 @@
         "max": 1,
         "min": 0
       },
+	  "drink": {
+        "weights": {
+          "0": 10,
+          "1": 5,
+          "2": 2
+        },
+        "whitelist": []
+      },
+	  "food": {
+        "weights": {
+          "0": 10,
+          "1": 5,
+          "2": 2
+        },
+        "whitelist": []
+      },
       "grenades": {
         "max": 5,
         "min": 0

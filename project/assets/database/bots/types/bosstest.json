@@ -1947,6 +1947,22 @@
         "max": 2,
         "min": 1
       },
+	  "food": {
+        "weights": {
+          "0": 10,
+          "1": 5,
+          "2": 2
+        },
+        "whitelist": []
+      },
+	  "drink": {
+        "weights": {
+          "0": 10,
+          "1": 5,
+          "2": 2
+        },
+        "whitelist": []
+      },
       "looseLoot": {
         "max": 3,
         "min": 0

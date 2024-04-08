@@ -2317,10 +2317,26 @@
         },
         "whitelist": []
       },
+      "drink": {
+        "weights": {
+          "0": 10,
+          "1": 5,
+          "2": 2
+        },
+        "whitelist": []
+      },
       "drugs": {
         "weights": {
           "0": 1,
           "1": 2
+        },
+        "whitelist": []
+      },
+      "food": {
+        "weights": {
+          "0": 10,
+          "1": 5,
+          "2": 2
         },
         "whitelist": []
       },

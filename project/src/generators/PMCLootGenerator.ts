@@ -192,7 +192,7 @@ export class PMCLootGenerator
 
             for (const itemToAdd of itemsToAdd)
             {
-                // If pmc has override, use that. Otherwise use flea price
+                // If pmc has price override, use that. Otherwise use flea price
                 if (pmcPriceOverrides[itemToAdd._id])
                 {
                     this.backpackLootPool[itemToAdd._id] = pmcPriceOverrides[itemToAdd._id];
