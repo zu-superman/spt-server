@@ -74,7 +74,7 @@ export class FenceBaseAssortGenerator
                 }
             }
 
-            // Only allow  rigs with no slots (carrier rigs)
+            // Only allow rigs with no slots (carrier rigs)
             if (this.itemHelper.isOfBaseclass(rootItemDb._id, BaseClasses.VEST) && rootItemDb._props.Slots.length > 0)
             {
                 continue;
@@ -94,6 +94,15 @@ export class FenceBaseAssortGenerator
                 slotId: "hideout",
                 upd: { StackObjectsCount: 9999999 },
             }];
+
+            // Ensure ammo is not above penetration limit value
+            if (this.itemHelper.isOfBaseclasses(rootItemDb._id, [BaseClasses.AMMO_BOX, BaseClasses.AMMO]))
+            {
+                if (this.isAmmoAbovePenetrationLimit(rootItemDb))
+                {
+                    continue;
+                }
+            }
 
             if (this.itemHelper.isOfBaseclass(rootItemDb._id, BaseClasses.AMMO_BOX))
             {
@@ -173,6 +182,43 @@ export class FenceBaseAssortGenerator
 
             baseFenceAssort.loyal_level_items[itemAndChildren[0]._id] = 1;
         }
+    }
+
+    /**
+     * Check ammo in boxes + loose ammos has a penetration value above the configured value in trader.json / ammoMaxPenLimit
+     * @param rootItemDb Item to check penetration value of
+     * @returns True if penetration value is above limit set in config
+     */
+    protected isAmmoAbovePenetrationLimit(rootItemDb: ITemplateItem): boolean
+    {
+        if (this.itemHelper.isOfBaseclass(rootItemDb._id, BaseClasses.AMMO_BOX))
+        {
+            // Get ammo inside box
+            const ammoTplInBox = rootItemDb._props.StackSlots[0]._props.filters[0].Filter[0];
+            const ammoItemDb = this.itemHelper.getItem(ammoTplInBox);
+            if (!ammoItemDb[0])
+            {
+                this.logger.warning(`Ammo: ${ammoTplInBox} not an item, skipping`);
+
+                return true;
+            }
+
+            // Check if above limit
+            if (ammoItemDb[1]._props.PenetrationPower > this.traderConfig.fence.ammoMaxPenLimit)
+            {
+                return true;
+            }
+        }
+        else if (this.itemHelper.isOfBaseclass(rootItemDb._id, BaseClasses.AMMO))
+        {
+            // Just a normal ammo, check if above limit
+            if (rootItemDb._props.PenetrationPower > this.traderConfig.fence.ammoMaxPenLimit)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     protected getItemPrice(itemTpl: string, items: Item[]): number
