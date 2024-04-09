@@ -186,39 +186,49 @@ export class FenceBaseAssortGenerator
 
     /**
      * Check ammo in boxes + loose ammos has a penetration value above the configured value in trader.json / ammoMaxPenLimit
-     * @param rootItemDb Item to check penetration value of
+     * @param rootItemDb Ammo box or ammo item from items.db
      * @returns True if penetration value is above limit set in config
      */
     protected isAmmoAbovePenetrationLimit(rootItemDb: ITemplateItem): boolean
     {
+        const ammoPenetrationPower = this.getAmmoPenetrationPower(rootItemDb);
+        if (ammoPenetrationPower === null)
+        {
+            this.logger.warning(`Ammo: ${rootItemDb._id} has no penetration value, skipping`);
+            return false;
+        }
+
+        return ammoPenetrationPower > this.traderConfig.fence.ammoMaxPenLimit;
+    }
+
+    /**
+     * Get the penetration power value of an ammo, works with ammo boxes and raw ammos
+     * @param rootItemDb Ammo box or ammo item from items.db
+     * @returns Penetration power of passed in item, null if it doesnt have a power
+     */
+    protected getAmmoPenetrationPower(rootItemDb: ITemplateItem): number
+    {
         if (this.itemHelper.isOfBaseclass(rootItemDb._id, BaseClasses.AMMO_BOX))
         {
-            // Get ammo inside box
             const ammoTplInBox = rootItemDb._props.StackSlots[0]._props.filters[0].Filter[0];
             const ammoItemDb = this.itemHelper.getItem(ammoTplInBox);
             if (!ammoItemDb[0])
             {
                 this.logger.warning(`Ammo: ${ammoTplInBox} not an item, skipping`);
-
-                return true;
+                return null;
             }
 
-            // Check if above limit
-            if (ammoItemDb[1]._props.PenetrationPower > this.traderConfig.fence.ammoMaxPenLimit)
-            {
-                return true;
-            }
+            return ammoItemDb[1]._props.PenetrationPower;
         }
-        else if (this.itemHelper.isOfBaseclass(rootItemDb._id, BaseClasses.AMMO))
+
+        // Plain old ammo, get its pen property
+        if (this.itemHelper.isOfBaseclass(rootItemDb._id, BaseClasses.AMMO))
         {
-            // Just a normal ammo, check if above limit
-            if (rootItemDb._props.PenetrationPower > this.traderConfig.fence.ammoMaxPenLimit)
-            {
-                return true;
-            }
+            return rootItemDb._props.PenetrationPower;
         }
 
-        return false;
+        // Not an ammobox or ammo
+        return null;
     }
 
     protected getItemPrice(itemTpl: string, items: Item[]): number
