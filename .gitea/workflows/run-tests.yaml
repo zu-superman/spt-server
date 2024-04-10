@@ -25,16 +25,17 @@ jobs:
       run: |
         cd /workspace/SPT-AKI/Build/server
         git lfs pull
+        git lfs ls-files
       shell: bash
 
     - name: Install NPM Dependencies
       run: |
-        cd /workspace/SPT-AKI/Build/server
+        cd /workspace/SPT-AKI/Build/server/project
         npm install
       shell: bash
 
     - name: Run Tests
       run: |
-        cd /workspace/SPT-AKI/Build/server
+        cd /workspace/SPT-AKI/Build/server/project
         npm run test
       shell: bash
