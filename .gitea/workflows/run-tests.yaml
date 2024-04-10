@@ -10,7 +10,7 @@ jobs:
   trigger-main-build:
     runs-on: ubuntu-latest
     container:
-      image: node:20.11.1-alpine
+      image: node:20.11.1-bookworm
     steps:
     - uses: actions/checkout@v3
       with:
