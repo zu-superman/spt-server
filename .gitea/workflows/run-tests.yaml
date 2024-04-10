@@ -12,15 +12,32 @@ jobs:
     container:
       image: refringe/spt-build-node:1.0.7
     steps:
-    - uses: actions/checkout@v3
-      with:
-        lfs: true
-        fetch-depth: 1
+    - name: Clone
+      run: |
+        COMMIT_SHA="<commit-sha>"
+        REPO_URL="https://dev.sp-tarkov.com/SPT-AKI/Server.git"
 
-    - name: Install Dependencies
-      working-directory: /workspace/SPT-AKI/Server/project
-      run: npm install
+        rm -rf /workspace/SPT-AKI/Build/server
+        git clone ${REPO_URL} --branch master /workspace/SPT-AKI/Build/server
+
+        cd /workspace/SPT-AKI/Build/server
+        git checkout ${COMMIT_SHA}
+      shell: bash
+
+    - name: Pull LFS Files
+      run: |
+        cd /workspace/SPT-AKI/Build/server
+        git lfs pull
+      shell: bash
+
+    - name: Install NPM Dependencies
+      run: |
+        cd /workspace/SPT-AKI/Build/server
+        npm install
+      shell: bash
 
     - name: Run Tests
-      working-directory: /workspace/SPT-AKI/Server/project
-      run: npm run test
+      run: |
+        cd /workspace/SPT-AKI/Build/server
+        npm run test
+      shell: bash
