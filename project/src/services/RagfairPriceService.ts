@@ -223,109 +223,129 @@ export class RagfairPriceService implements OnLoad
      */
     public getDynamicOfferPriceForOffer(offerItems: Item[], desiredCurrency: string, isPackOffer: boolean): number
     {
-        const rootItem = offerItems[0];
-
-        // Price to return
+        // Price to return.
         let price = 0;
 
-        let endLoop = false;
-        let isPreset = false;
-        let manuallyAdjusted = false;
+        // Iterate over each item in the offer.
         for (const item of offerItems)
         {
-            // Armor insert, skip - we dont factor these into an items price
+            // Skip over armour inserts as those are not factored into item prices.
             if (this.itemHelper.isOfBaseclass(item._tpl, BaseClasses.BUILT_IN_INSERTS))
             {
                 continue;
             }
 
-            // Get dynamic price, fallback to handbook price if value of 1 found
-            let itemPrice = this.getFleaPriceForItem(item._tpl);
+            price += this.getDynamicItemPrice(item._tpl, desiredCurrency, item, offerItems, isPackOffer);
 
-            if (this.ragfairConfig.dynamic.offerAdjustment.adjustPriceWhenBelowHandbookPrice)
+            // Check if the item is a weapon preset.
+            if (item?.upd?.sptPresetId && this.presetHelper.isPresetBaseClass(item.upd.sptPresetId, BaseClasses.WEAPON))
             {
-                itemPrice = this.adjustPriceIfBelowHandbook(itemPrice, item._tpl);
-            }
-
-            if (this.ragfairConfig.dynamic.useTraderPriceForOffersIfHigher)
-            {
-                // Get highest trader price for item, if greater than value found so far, use it
-                const traderPrice = this.traderHelper.getHighestSellToTraderPrice(item._tpl);
-                if (traderPrice > itemPrice)
-                {
-                    itemPrice = traderPrice;
-                }
-            }
-
-            // Check if item type is weapon preset, handle differently
-            const itemDetails = this.itemHelper.getItem(item._tpl);
-            if (this.presetHelper.isPreset(item.upd?.sptPresetId) && itemDetails[1]._props.weapFireType)
-            {
-                itemPrice = this.getWeaponPresetPrice(item, offerItems, itemPrice);
-                endLoop = true;
-                isPreset = true;
-            }
-
-            // Check for existance of manual price adjustment multiplier
-            const manualPriceMultipler = this.ragfairConfig.dynamic.itemPriceMultiplier[item._tpl];
-            if (manualPriceMultipler)
-            {
-                manuallyAdjusted = true;
-                itemPrice *= manualPriceMultipler;
-            }
-
-            // Multiply dynamic price by quality modifier
-            const itemQualityModifier = this.itemHelper.getItemQualityModifier(item);
-            price += itemPrice * itemQualityModifier;
-
-            // Stop loop if weapon preset price function has been run
-            if (endLoop)
-            {
+                // This is a weapon preset, which has it's own price calculation that takes into account the mods in the
+                // preset. Since we've already calculated the price for the preset entire preset in
+                // `getDynamicItemPrice`, we can skip the rest of the items in the offer.
                 break;
             }
         }
 
-        // Check for unreasonable price on singular items
-        if (offerItems.length === 1 && !manuallyAdjusted)
-        {
-            const rootItemDb = this.itemHelper.getItem(rootItem._tpl)[1];
-            let unreasonableItemPriceChange: IUnreasonableModPrices;
-            for (const key of Object.keys(this.ragfairConfig.dynamic.unreasonableModPrices))
-            {
-                if (this.itemHelper.isOfBaseclass(rootItemDb._id, key))
-                {
-                    unreasonableItemPriceChange = this.ragfairConfig.dynamic.unreasonableModPrices[key];
+        return Math.round(price);
+    }
 
-                    break;
-                }
-            }
-            if (unreasonableItemPriceChange?.enabled)
+    /**
+     * @param itemTemplateId
+     * @param desiredCurrency
+     * @param item
+     * @param offerItems
+     * @param isPackOffer
+     * @returns
+     */
+    public getDynamicItemPrice(
+        itemTemplateId: string,
+        desiredCurrency: string,
+        item?: Item,
+        offerItems?: Item[],
+        isPackOffer?: boolean,
+    ): number
+    {
+        let isPreset = false;
+        let price = this.getFleaPriceForItem(itemTemplateId);
+
+        // Adjust price if below handbook price, based on config.
+        if (this.ragfairConfig.dynamic.offerAdjustment.adjustPriceWhenBelowHandbookPrice)
+        {
+            price = this.adjustPriceIfBelowHandbook(price, itemTemplateId);
+        }
+
+        // Use trader price if higher, based on config.
+        if (this.ragfairConfig.dynamic.useTraderPriceForOffersIfHigher)
+        {
+            const traderPrice = this.traderHelper.getHighestSellToTraderPrice(itemTemplateId);
+            if (traderPrice > price)
             {
-                price = this.adjustUnreasonablePrice(
-                    this.databaseServer.getTables().templates.handbook.Items,
-                    unreasonableItemPriceChange,
-                    rootItem._tpl,
-                    price,
-                );
+                price = traderPrice;
             }
         }
 
-        // Get price multiplier min/max to vary price
-        const rangeValues = this.getOfferTypeRangeValues(isPreset, isPackOffer);
-        price = this.randomiseOfferPrice(price, rangeValues);
+        // Prices for weapon presets are handled differently.
+        if (
+            item?.upd?.sptPresetId
+            && offerItems
+            && this.presetHelper.isPresetBaseClass(item.upd.sptPresetId, BaseClasses.WEAPON)
+        )
+        {
+            price = this.getWeaponPresetPrice(item, offerItems, price);
+            isPreset = true;
+        }
 
-        // Convert to different currency if desiredCurrency param is not roubles
-        if (desiredCurrency !== Money.ROUBLES)
+        // Check for existence of manual price adjustment multiplier
+        const multiplier = this.ragfairConfig.dynamic.itemPriceMultiplier[itemTemplateId];
+        if (multiplier)
+        {
+            price *= multiplier;
+        }
+
+        // The quality of the item affects the price.
+        if (item)
+        {
+            const qualityModifier = this.itemHelper.getItemQualityModifier(item);
+            price *= qualityModifier;
+        }
+
+        // Make adjustments for unreasonably priced items.
+        for (const baseClassTemplateId of Object.keys(this.ragfairConfig.dynamic.unreasonableModPrices))
+        {
+            if (this.itemHelper.isOfBaseclass(itemTemplateId, baseClassTemplateId))
+            {
+                // Found an unreasonable price type.
+                const unreasonableModifier: IUnreasonableModPrices =
+                    this.ragfairConfig.dynamic.unreasonableModPrices[baseClassTemplateId];
+
+                if (unreasonableModifier.enabled)
+                {
+                    price = this.adjustUnreasonablePrice(
+                        this.databaseServer.getTables().templates.handbook.Items,
+                        unreasonableModifier,
+                        itemTemplateId,
+                        price,
+                    );
+                }
+            }
+        }
+
+        // Vary the price based on the type of offer.
+        const range = this.getOfferTypeRangeValues(isPreset, isPackOffer);
+        price = this.randomiseOfferPrice(price, range);
+
+        // Convert to different currency if required.
+        const roublesId = Money.ROUBLES;
+        if (desiredCurrency !== roublesId)
         {
             price = this.handbookHelper.fromRUB(price, desiredCurrency);
         }
 
-        // Guard against weird prices
         if (price < 1)
         {
-            price = 1;
+            return 1;
         }
-
         return price;
     }
 
@@ -400,7 +420,7 @@ export class RagfairPriceService implements OnLoad
         const itemHandbookPrice = this.getStaticPriceForItem(itemTpl);
         const priceDifferencePercent = this.getPriceDifference(itemHandbookPrice, itemPrice);
 
-        // Only adjust price if difference is > a percent AND item price passes threshhold set in config
+        // Only adjust price if difference is > a percent AND item price passes threshold set in config
         if (
             priceDifferencePercent > this.ragfairConfig.dynamic.offerAdjustment.maxPriceDifferenceBelowHandbookPercent
             && itemPrice >= this.ragfairConfig.dynamic.offerAdjustment.priceThreshholdRub
