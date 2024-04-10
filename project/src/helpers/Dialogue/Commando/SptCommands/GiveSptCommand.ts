@@ -1,4 +1,5 @@
 import { ISptCommand } from "@spt-aki/helpers/Dialogue/Commando/SptCommands/ISptCommand";
+import { SavedCommand } from "@spt-aki/helpers/Dialogue/Commando/SptCommands/SavedCommand";
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { PresetHelper } from "@spt-aki/helpers/PresetHelper";
 import { Item } from "@spt-aki/models/eft/common/tables/IItem";
@@ -6,14 +7,30 @@ import { ISendMessageRequest } from "@spt-aki/models/eft/dialog/ISendMessageRequ
 import { IUserDialogInfo } from "@spt-aki/models/eft/profile/IAkiProfile";
 import { BaseClasses } from "@spt-aki/models/enums/BaseClasses";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
+import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
+import { LocaleService } from "@spt-aki/services/LocaleService";
 import { MailSendService } from "@spt-aki/services/MailSendService";
 import { HashUtil } from "@spt-aki/utils/HashUtil";
 import { JsonUtil } from "@spt-aki/utils/JsonUtil";
+import { closestMatch, distance } from "closest-match";
 import { inject, injectable } from "tsyringe";
 
 @injectable()
 export class GiveSptCommand implements ISptCommand
 {
+    /**
+     * Regex to account for all these cases:
+     * spt give "item name" 5
+     * spt give templateId 5
+     * spt give en "item name in english" 5
+     * spt give es "nombre en español" 5
+     * spt give 5 <== this is the reply when the algo isn't sure about an item
+     */
+    private static commandRegex = /^spt give (((([a-z]{2,5}) )?"(.+)"|\w+) )?([0-9]+)$/;
+    private static maxAllowedDistance = 1.5;
+
+    protected savedCommand: SavedCommand;
+
     public constructor(
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
@@ -21,6 +38,8 @@ export class GiveSptCommand implements ISptCommand
         @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("PresetHelper") protected presetHelper: PresetHelper,
         @inject("MailSendService") protected mailSendService: MailSendService,
+        @inject("LocaleService") protected localeService: LocaleService,
+        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
     )
     {
     }
@@ -32,49 +51,135 @@ export class GiveSptCommand implements ISptCommand
 
     public getCommandHelp(): string
     {
-        return "Usage: spt give tplId quantity";
+        return "spt give\n========\nSends items to the player through the message system.\n\n\tspt give [template ID] [quantity]\n\t\tEx: spt give 544fb25a4bdc2dfb738b4567 2\n\n\tspt give [\"item name\"] [quantity]\n\t\tEx: spt give \"pack of sugar\" 10\n\n\tspt give [locale] [\"item name\"] [quantity]\n\t\tEx: spt give fr \"figurine de chat\" 3";
     }
 
     public performAction(commandHandler: IUserDialogInfo, sessionId: string, request: ISendMessageRequest): string
     {
-        const giveCommand = request.text.split(" ");
-        if (giveCommand[1] !== "give")
-        {
-            this.logger.error("Invalid action received for give command!");
-            return request.dialogId;
-        }
-
-        if (!giveCommand[2])
+        if (!GiveSptCommand.commandRegex.test(request.text))
         {
             this.mailSendService.sendUserMessageToPlayer(
                 sessionId,
                 commandHandler,
-                "Invalid use of give command! Template ID is missing. Use \"Help\" for more info",
+                "Invalid use of give command. Use \"help\" for more information.",
             );
             return request.dialogId;
         }
-        const tplId = giveCommand[2];
 
-        if (!giveCommand[3])
-        {
-            this.mailSendService.sendUserMessageToPlayer(
-                sessionId,
-                commandHandler,
-                "Invalid use of give command! Quantity is missing. Use \"Help\" for more info",
-            );
-            return request.dialogId;
-        }
-        const quantity = giveCommand[3];
+        const result = GiveSptCommand.commandRegex.exec(request.text);
 
-        if (Number.isNaN(+quantity))
+        let item: string;
+        let quantity: number;
+        let isItemName: boolean;
+        let locale: string;
+
+        // This is a reply to a give request previously made pending a reply
+        if (result[1] === undefined)
         {
-            this.mailSendService.sendUserMessageToPlayer(
-                sessionId,
-                commandHandler,
-                "Invalid use of give command! Quantity is not a valid integer. Use \"Help\" for more info",
-            );
-            return request.dialogId;
+            if (this.savedCommand === undefined)
+            {
+                this.mailSendService.sendUserMessageToPlayer(
+                    sessionId,
+                    commandHandler,
+                    "Invalid use of give command. Use \"help\" for more information.",
+                );
+                return request.dialogId;
+            }
+            if (+result[6] > this.savedCommand.potentialItemNames.length)
+            {
+                this.mailSendService.sendUserMessageToPlayer(
+                    sessionId,
+                    commandHandler,
+                    "Invalid selection. Outside of bounds! Use \"help\" for more information.",
+                );
+                return request.dialogId;
+            }
+            item = this.savedCommand.potentialItemNames[+result[6] - 1];
+            quantity = this.savedCommand.quantity;
+            locale = this.savedCommand.locale;
+            isItemName = true;
+            this.savedCommand = undefined;
         }
+        else
+        {
+            // A new give request was entered, we need to ignore the old saved command
+            this.savedCommand = undefined;
+            isItemName = result[5] !== undefined;
+            item = result[5] ? result[5] : result[2];
+            quantity = +result[6];
+
+            if (isItemName)
+            {
+                locale = result[4] ? result[4] : this.localeService.getDesiredGameLocale();
+                if (!this.localeService.getServerSupportedLocales().includes(locale))
+                {
+                    this.mailSendService.sendUserMessageToPlayer(
+                        sessionId,
+                        commandHandler,
+                        `Unknown locale "${locale}". Use \"help\" for more information.`,
+                    );
+                    return request.dialogId;
+                }
+
+                const localizedGlobal = this.databaseServer.getTables().locales.global[locale];
+
+                const closestItemsMatchedByName = closestMatch(
+                    item.toLowerCase(),
+                    this.itemHelper.getItems().filter((i) => i._type !== "Node").map((i) =>
+                        localizedGlobal[`${i?._id} Name`]?.toLowerCase()
+                    ).filter((i) => i !== undefined),
+                    true,
+                ) as string[];
+
+                if (closestItemsMatchedByName === undefined || closestItemsMatchedByName.length === 0)
+                {
+                    this.mailSendService.sendUserMessageToPlayer(
+                        sessionId,
+                        commandHandler,
+                        "That item could not be found. Please refine your request and try again.",
+                    );
+                    return request.dialogId;
+                }
+
+                if (closestItemsMatchedByName.length > 1)
+                {
+                    let i = 1;
+                    const slicedItems = closestItemsMatchedByName.slice(0, 10);
+                    // max 10 item names and map them
+                    const itemList = slicedItems.map((itemName) => `${i++}. ${itemName}`).join("\n");
+                    this.savedCommand = new SavedCommand(quantity, slicedItems, locale);
+                    this.mailSendService.sendUserMessageToPlayer(
+                        sessionId,
+                        commandHandler,
+                        `Could not find exact match. Closest matches are:\n\n${itemList}\n\nUse "spt give [number]" to select one.`,
+                    );
+                    return request.dialogId;
+                }
+
+                const dist = distance(item, closestItemsMatchedByName[0]);
+                if (dist > GiveSptCommand.maxAllowedDistance)
+                {
+                    this.mailSendService.sendUserMessageToPlayer(
+                        sessionId,
+                        commandHandler,
+                        `Found a possible match for "${item}" but uncertain. Match: "${
+                            closestItemsMatchedByName[0]
+                        }". Please refine your request and try again.`,
+                    );
+                    return request.dialogId;
+                }
+                // Only one available so we get that entry and use it
+                item = closestItemsMatchedByName[0];
+            }
+        }
+
+        // If item is an item name, we need to search using that item name and the locale which one we want otherwise
+        // item is just the tplId.
+        const tplId = isItemName
+            ? this.itemHelper.getItems().find((i) =>
+                this.databaseServer.getTables().locales.global[locale][`${i?._id} Name`]?.toLowerCase() === item
+            )._id
+            : item;
 
         const checkedItem = this.itemHelper.getItem(tplId);
         if (!checkedItem[0])
@@ -82,21 +187,25 @@ export class GiveSptCommand implements ISptCommand
             this.mailSendService.sendUserMessageToPlayer(
                 sessionId,
                 commandHandler,
-                "Invalid template ID requested for give command. The item doesn't exist in the DB.",
+                "That item could not be found. Please refine your request and try again.",
             );
             return request.dialogId;
         }
 
         const itemsToSend: Item[] = [];
-        const preset = this.presetHelper.getDefaultPreset(checkedItem[1]._id);
-        if (preset)
+        if (this.itemHelper.isOfBaseclass(checkedItem[1]._id, BaseClasses.WEAPON))
         {
-            for (let i = 0; i < +quantity; i++)
+            const preset = this.presetHelper.getDefaultPreset(checkedItem[1]._id);
+            if (!preset)
             {
-                // Make sure IDs are unique before adding to array - prevent collisions
-                const presetToSend = this.itemHelper.replaceIDs(preset._items);
-                itemsToSend.push(...presetToSend);
+                this.mailSendService.sendUserMessageToPlayer(
+                    sessionId,
+                    commandHandler,
+                    "That weapon template ID could not be found. Please refine your request and try again.",
+                );
+                return request.dialogId;
             }
+            itemsToSend.push(...this.jsonUtil.clone(preset._items));
         }
         else if (this.itemHelper.isOfBaseclass(checkedItem[1]._id, BaseClasses.AMMO_BOX))
         {
@@ -115,13 +224,25 @@ export class GiveSptCommand implements ISptCommand
                 _tpl: checkedItem[1]._id,
                 upd: { StackObjectsCount: +quantity, SpawnedInSession: true },
             };
-            itemsToSend.push(...this.itemHelper.splitStack(item));
+            try
+            {
+                itemsToSend.push(...this.itemHelper.splitStack(item));
+            }
+            catch
+            {
+                this.mailSendService.sendUserMessageToPlayer(
+                    sessionId,
+                    commandHandler,
+                    "Too many items requested. Please lower the amount and try again.",
+                );
+                return request.dialogId;
+            }
         }
 
         // Flag the items as FiR
         this.itemHelper.setFoundInRaid(itemsToSend);
 
-        this.mailSendService.sendSystemMessageToPlayer(sessionId, "Give command!", itemsToSend);
+        this.mailSendService.sendSystemMessageToPlayer(sessionId, "SPT GIVE", itemsToSend);
         return request.dialogId;
     }
 }
