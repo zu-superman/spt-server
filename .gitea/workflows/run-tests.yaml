@@ -14,13 +14,12 @@ jobs:
     steps:
     - uses: actions/checkout@v3
       with:
-        path: 'server'
         fetch-depth: 1
 
     - name: Install Dependencies
-      working-directory: server
-      run: npm ci
+      working-directory: /workspace/SPT-AKI/Server/project
+      run: npm install
 
     - name: Run Tests
-      working-directory: server
+      working-directory: /workspace/SPT-AKI/Server/project
       run: npm run test
