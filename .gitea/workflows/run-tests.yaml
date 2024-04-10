@@ -1,0 +1,25 @@
+name: Run Tests
+
+on:
+  push:
+    branches: '*'
+  pull_request:
+    branches: '*'
+
+jobs:
+  trigger-main-build:
+    runs-on: ubuntu-latest
+    container:
+      image: node:20.11.1-bookworm
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 1
+
+    - name: Install Dependencies
+      working-directory: /workspace/SPT-AKI/Server/project
+      run: npm install
+
+    - name: Run Tests
+      working-directory: /workspace/SPT-AKI/Server/project
+      run: npm run test
