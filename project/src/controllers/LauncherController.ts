@@ -172,8 +172,18 @@ export class LauncherController
         return sessionID;
     }
 
+    /**
+     * Handle launcher requesting profile be wiped
+     * @param info IRegisterData
+     * @returns Session id
+     */
     public wipe(info: IRegisterData): string
     {
+        if (!this.coreConfig.allowProfileWipe)
+        {
+            return;
+        }
+
         const sessionID = this.login(info);
 
         if (sessionID)
