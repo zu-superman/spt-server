@@ -14,14 +14,11 @@ jobs:
     steps:
     - name: Clone
       run: |
-        COMMIT_SHA="<commit-sha>"
-        REPO_URL="https://dev.sp-tarkov.com/SPT-AKI/Server.git"
-
         rm -rf /workspace/SPT-AKI/Build/server
-        git clone ${REPO_URL} --branch master /workspace/SPT-AKI/Build/server
+        git clone https://dev.sp-tarkov.com/SPT-AKI/Server.git --branch master /workspace/SPT-AKI/Build/server
 
         cd /workspace/SPT-AKI/Build/server
-        git checkout ${COMMIT_SHA}
+        git checkout ${GITHUB_SHA}
       shell: bash
 
     - name: Pull LFS Files
