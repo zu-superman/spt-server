@@ -7,7 +7,7 @@ on:
     branches: '*'
 
 jobs:
-  run-vitest-tests:
+  vitest:
     runs-on: ubuntu-latest
     container:
       image: refringe/spt-build-node:1.0.7
@@ -28,9 +28,18 @@ jobs:
         git lfs ls-files
       shell: bash
 
+    - name: Cache NPM Dependencies
+      id: cache-npm-dependencies
+      uses: actions/cache@v4
+      with:
+        path: /workspace/SPT-AKI/Build/server/project/node_modules
+        key: npm-dependencies-${{ hashFiles('/workspace/SPT-AKI/Build/server/project/package.json') }}
+
     - name: Install NPM Dependencies
+      if: steps.cache-npm-dependencies.outputs.cache-hit != 'true'
       run: |
         cd /workspace/SPT-AKI/Build/server/project
+        rm -rf node_modules
         npm install
       shell: bash
 
