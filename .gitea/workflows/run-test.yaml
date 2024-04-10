@@ -53,7 +53,6 @@ jobs:
     - name: Fix Instructions
       if: failure() && steps.run-tests.outcome == 'failure'
       run: |
-        echo "Automated tests have failed. This could point to an issue with the commited code, or an updated test that has yet to be updated. Please look into resolving these test failures.\n\n"
-        echo "The testing suite has a GUI to aid in writing tests. You can launch this by running the following command from within the `project` directory.\n`npm run test:ui`\n\n"
-        echo "A test written today is a bug prevented tomorrow.™"
+        echo -e "Automated tests have failed. This could point to an issue with the commited code, or an updated test that has yet to be updated. Please look into resolving these test failures. The testing suite has a GUI to aid in writing tests. You can launch this by running the following command from within the 'project' directory.\nnpm run test:ui\n\n"
+        echo -e "A test written today is a bug prevented tomorrow.™"
       shell: bash
