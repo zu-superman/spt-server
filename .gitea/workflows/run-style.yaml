@@ -53,7 +53,7 @@ jobs:
     - name: Fix Instructions
       if: failure() && steps.check-code-style.outcome == 'failure'
       run: |
-        echo -e "The code style check has failed. To fix this, please ensure your code adheres to the project's style guidelines. You can automatically format the project code by running the following command from within the 'project' directory.\nnpm run style:fix\n\n"
-        echo -e "To automatically format code on-save in your IDE, please install the recommended VSCode plugins listed within the 'project/Server.code-workspace' file."
+        echo -e "The code style check has failed. To fix this, please ensure your code adheres to the project's style guidelines. You can automatically format the project code by running the following command from within the 'project' directory.\n\nnpm run style:fix\n"
+        echo -e "To automatically format code on-save in your IDE, please install the recommended VSCode plugins listed within the 'project/Server.code-workspace' file.\n"
         echo -e "Thank you for keeping our house clean. ♥"
       shell: bash

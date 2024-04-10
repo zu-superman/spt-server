@@ -53,6 +53,6 @@ jobs:
     - name: Fix Instructions
       if: failure() && steps.run-tests.outcome == 'failure'
       run: |
-        echo -e "Code linting has failed. The linter has been configured to look for coding errors, defects, and questionable patterns. Please look into resolving these errors. The linter may be able to resolve some of these issues automatically. You can launch the automatic fixer by running the following command from within the 'project' directory. Anything not resolved by running this command must be resolved manually.\nnpm run lint:fix\n\n"
+        echo -e "Code linting has failed. The linter has been configured to look for coding errors, defects, and questionable patterns. Please look into resolving these errors. The linter may be able to resolve some of these issues automatically. You can launch the automatic fixer by running the following command from within the 'project' directory. Anything not resolved by running this command must be resolved manually.\n\nnpm run lint:fix\n"
         echo -e "Consistency is professionalism.™"
       shell: bash
