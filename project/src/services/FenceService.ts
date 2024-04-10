@@ -330,8 +330,6 @@ export class FenceService
      */
     protected getCountOfItemsToGenerate(): IFenceAssortGenerationValues
     {
-        const currentItemAssortCount = Object.keys(this.fenceAssort.loyal_level_items).length;
-
         const rootPresetItems = this.fenceAssort.items.filter((item) =>
             item.slotId === "hideout" && item.upd.sptPresetId
         );
@@ -348,7 +346,12 @@ export class FenceService
             return this.itemHelper.armorItemCanHoldMods(item._tpl) ? count + 1 : count;
         }, 0);
 
-        const itemCountToGenerate = Math.max(this.desiredAssortCounts.normal.item - currentItemAssortCount, 0);
+        // Normal item count is total count minus weapon + armor count
+        const itemAssortCount = Object.keys(this.fenceAssort.loyal_level_items).length
+            - (currentWeaponPresetCount + currentEquipmentPresetCount);
+
+        // Get counts of items to generate, never let values fall below 0
+        const itemCountToGenerate = Math.max(this.desiredAssortCounts.normal.item - itemAssortCount, 0);
         const weaponCountToGenerate = Math.max(
             this.desiredAssortCounts.normal.weaponPreset - currentWeaponPresetCount,
             0,
@@ -365,7 +368,6 @@ export class FenceService
         };
 
         // Discount tab handling
-        const currentDiscountItemAssortCount = Object.keys(this.fenceDiscountAssort.loyal_level_items).length;
         const rootDiscountPresetItems = this.fenceDiscountAssort.items.filter((item) =>
             item.slotId === "hideout" && item.upd.sptPresetId
         );
@@ -382,8 +384,12 @@ export class FenceService
             return this.itemHelper.armorItemCanHoldMods(item._tpl) ? count + 1 : count;
         }, 0);
 
+        // Normal item count is total count minus weapon + armor count
+        const discountItemAssortCount = Object.keys(this.fenceAssort.loyal_level_items).length
+            - (currentDiscountWeaponPresetCount + currentDiscountEquipmentPresetCount);
+
         const itemDiscountCountToGenerate = Math.max(
-            this.desiredAssortCounts.discount.item - currentDiscountItemAssortCount,
+            this.desiredAssortCounts.discount.item - discountItemAssortCount,
             0,
         );
         const weaponDiscountCountToGenerate = Math.max(
