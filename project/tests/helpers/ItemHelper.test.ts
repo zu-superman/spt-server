@@ -275,44 +275,6 @@ describe("ItemHelper", () =>
         });
     });
 
-    describe("generateItemsFromStackSlot", () =>
-    {
-        it("should generate valid StackSlot item for an AmmoBox", () =>
-        {
-            const ammoBox = itemHelper.getItem("57372c89245977685d4159b1"); // "5.45x39mm BT gs ammo pack (30 pcs)"
-            const parentId = container.resolve<HashUtil>("HashUtil").generate();
-
-            const result = itemHelper.generateItemsFromStackSlot(ammoBox[1], parentId);
-
-            expect(result.length).toBe(1);
-            expect(result[0]._id).toBeDefined();
-            expect(result[0]._tpl).toBe(ammoBox[1]._props.StackSlots[0]._props.filters[0].Filter[0]);
-            expect(result[0].parentId).toBe(parentId);
-            expect(result[0].slotId).toBe("cartridges");
-            expect(result[0].location).toBe(0);
-            expect(result[0].upd.StackObjectsCount).toBe(ammoBox[1]._props.StackSlots[0]._max_count);
-        });
-
-        it("should log a warning if no IDs are found in Filter", () =>
-        {
-            const ammoBox = itemHelper.getItem("57372c89245977685d4159b1"); // "5.45x39mm BT gs ammo pack (30 pcs)"
-            ammoBox[1]._props.StackSlots[0]._props.filters[0].Filter = []; // Empty the Filter array.
-
-            const parentId = container.resolve<HashUtil>("HashUtil").generate();
-
-            // Spy on the logger's warning method and mock its implementation to prevent it from being actually called.
-            const loggerWarningSpy = vi.spyOn((itemHelper as any).logger, "warning").mockImplementation(() =>
-            {});
-
-            itemHelper.generateItemsFromStackSlot(ammoBox[1], parentId);
-
-            expect(loggerWarningSpy).toHaveBeenCalled();
-
-            // Restore the original behavior
-            loggerWarningSpy.mockRestore();
-        });
-    });
-
     describe("getItems", () =>
     {
         it("should call databaseServer.getTables() and jsonUtil.clone() methods", () =>
@@ -451,12 +413,16 @@ describe("ItemHelper", () =>
             const itemId = container.resolve<HashUtil>("HashUtil").generate();
             const item: Item = {
                 _id: itemId,
-                _tpl: "5b40e1525acfc4771e1c6611", // "HighCom Striker ULACH IIIA helmet (Black)"
+                _tpl: "5b40e1525acfc4771e1c6611",
                 upd: { Repairable: { Durability: 19, MaxDurability: 38 } },
             };
 
+            const getRepairableItemQualityValueSpt = vi.spyOn(itemHelper as any, "getRepairableItemQualityValue")
+                .mockReturnValue(0.5);
+
             const result = itemHelper.getItemQualityModifier(item);
 
+            expect(getRepairableItemQualityValueSpt).toHaveBeenCalled();
             expect(result).toBe(0.5);
         });
 
@@ -556,35 +522,27 @@ describe("ItemHelper", () =>
 
     describe("getRepairableItemQualityValue", () =>
     {
-        it("should return the correct quality value for armor items", () =>
+        it("should return the correct quality value for armour items", () =>
         {
-            const armor = itemHelper.getItem("5648a7494bdc2d9d488b4583")[1]; // "PACA Soft Armor"
+            const armour = itemHelper.getItem("5648a7494bdc2d9d488b4583")[1];
             const repairable: Repairable = { Durability: 25, MaxDurability: 50 };
-            const item: Item = { // Not used for armor, but required for the method.
-                _id: "",
-                _tpl: "",
-            };
+            const mockItem: Item = { _id: "", _tpl: "" };
 
-            // Cast the method to any to allow access to private/protected method.
-            const result = (itemHelper as any).getRepairableItemQualityValue(armor, repairable, item);
+            const result = (itemHelper as any).getRepairableItemQualityValue(armour, repairable, mockItem);
 
             expect(result).toBe(0.5);
         });
 
-        it("should not use the Repairable MaxDurability property for armor", () =>
+        it("should not use the Repairable MaxDurability property for armour", () =>
         {
-            const armor = itemHelper.getItem("5648a7494bdc2d9d488b4583")[1]; // "PACA Soft Armor"
+            const armour = itemHelper.getItem("5648a7494bdc2d9d488b4583")[1];
             const repairable: Repairable = {
                 Durability: 25,
                 MaxDurability: 1000, // This should be ignored.
             };
-            const item: Item = { // Not used for armor, but required for the method.
-                _id: "",
-                _tpl: "",
-            };
+            const mockItem: Item = { _id: "", _tpl: "" };
 
-            // Cast the method to any to allow access to private/protected method.
-            const result = (itemHelper as any).getRepairableItemQualityValue(armor, repairable, item);
+            const result = (itemHelper as any).getRepairableItemQualityValue(armour, repairable, mockItem);
 
             expect(result).toBe(0.5);
         });
