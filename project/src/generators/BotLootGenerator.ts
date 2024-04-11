@@ -310,19 +310,6 @@ export class BotLootGenerator
             true,
         );
 
-        // eTG regen stim
-        this.addLootFromPool(
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            { "5c0e534186f7747fa1419867": 1 },
-            [EquipmentSlots.SECURED_CONTAINER],
-            2,
-            botInventory,
-            botRole,
-            null,
-            0,
-            true,
-        );
-
         // AFAK
         this.addLootFromPool(
             // eslint-disable-next-line @typescript-eslint/naming-convention
