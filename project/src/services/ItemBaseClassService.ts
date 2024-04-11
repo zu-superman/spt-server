@@ -91,8 +91,9 @@ export class ItemBaseClassService
             return false;
         }
 
-        // Edge case, the cache is only generated for items with `_type === "Item"`, so return false for any other type
-        if (this.items[itemTpl]?._type !== "Item")
+        // The cache is only generated for item templates with `_type === "Item"`, so return false for any other type,
+        // including item templates that simply don't exist.
+        if (!this.cachedItemIsOfItemType(itemTpl))
         {
             return false;
         }
@@ -112,6 +113,16 @@ export class ItemBaseClassService
         }
 
         return this.itemBaseClassesCache[itemTpl].some((x) => baseClasses.includes(x));
+    }
+
+    /**
+     * Check if cached item template is of type Item
+     * @param itemTemplateId item to check
+     * @returns true if item is of type Item
+     */
+    private cachedItemIsOfItemType(itemTemplateId: string): boolean
+    {
+        return this.items[itemTemplateId]?._type === "Item";
     }
 
     /**
