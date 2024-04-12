@@ -429,19 +429,12 @@ export class ItemHelper
         if (repairable.Durability > repairable.MaxDurability)
         {
             this.logger.warning(
-                `Max durability: ${repairable.MaxDurability} for item id: ${item._id} was below Durability: ${repairable.Durability}, adjusting values to match`,
+                `Max durability: ${repairable.MaxDurability} for item id: ${item._id} was below durability: ${repairable.Durability}, adjusting values to match`,
             );
             repairable.MaxDurability = repairable.Durability;
         }
 
-        // Armor
-        if (itemDetails._props.armorClass)
-        {
-            return repairable.MaxDurability / itemDetails._props.MaxDurability;
-        }
-
-        // Weapon
-        // Get max dura from props, if it isnt there use repairable max dura value
+        // Attempt to get the max durability from _props. If not available, use Repairable max durability value instead.
         const maxDurability = (itemDetails._props.MaxDurability)
             ? itemDetails._props.MaxDurability
             : repairable.MaxDurability;
