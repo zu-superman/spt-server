@@ -45,9 +45,6 @@ export class HttpServer
             this.handleRequest(req, res);
         });
 
-        this.databaseServer.getTables().server.ip = this.httpConfig.ip;
-        this.databaseServer.getTables().server.port = this.httpConfig.port;
-
         /* Config server to listen on a port */
         httpServer.listen(this.httpConfig.port, this.httpConfig.ip, () =>
         {
