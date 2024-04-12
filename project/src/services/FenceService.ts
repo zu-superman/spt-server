@@ -330,9 +330,8 @@ export class FenceService
      */
     protected getCountOfItemsToGenerate(): IFenceAssortGenerationValues
     {
-        const rootPresetItems = this.fenceAssort.items.filter((item) =>
-            item.slotId === "hideout" && item.upd.sptPresetId
-        );
+        const allRootItems = this.fenceAssort.items.filter((item) => item.slotId === "hideout");
+        const rootPresetItems = allRootItems.filter((item) => item.upd.sptPresetId);
 
         // Get count of weapons
         const currentWeaponPresetCount = rootPresetItems.reduce((count, item) =>
@@ -347,8 +346,7 @@ export class FenceService
         }, 0);
 
         // Normal item count is total count minus weapon + armor count
-        const itemAssortCount = Object.keys(this.fenceAssort.loyal_level_items).length
-            - (currentWeaponPresetCount + currentEquipmentPresetCount);
+        const itemAssortCount = allRootItems.length - (currentWeaponPresetCount + currentEquipmentPresetCount);
 
         // Get counts of items to generate, never let values fall below 0
         const itemCountToGenerate = Math.max(this.desiredAssortCounts.normal.item - itemAssortCount, 0);
