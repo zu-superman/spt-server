@@ -43,7 +43,7 @@ export class FenceService
     /** Assorts shown on a separate tab when you max out fence rep */
     protected fenceDiscountAssort: ITraderAssort = undefined;
 
-    /** Hydrated on initial assort generation as part of generateFenceAssorts() */
+    /** Desired baseline counts - Hydrated on initial assort generation as part of generateFenceAssorts() */
     protected desiredAssortCounts: IFenceAssortGenerationValues;
 
     constructor(
@@ -231,15 +231,20 @@ export class FenceService
         this.deleteRandomAssorts(itemCountToReplace, this.fenceAssort);
         this.deleteRandomAssorts(discountItemCountToReplace, this.fenceDiscountAssort);
 
-        // Get count of what item pools need new items (item/weapon/equipment)
-        const itemCountsToReplace = this.getCountOfItemsToGenerate();
-
-        const newItems = this.createAssorts(itemCountsToReplace.normal, 1);
+        const normalItemCountsToGenerate = this.getItemCountsToGenerate(
+            this.fenceAssort.items,
+            this.desiredAssortCounts.normal,
+        );
+        const newItems = this.createAssorts(normalItemCountsToGenerate, 1);
 
         // Push newly generated assorts into existing data
         this.updateFenceAssorts(newItems, this.fenceAssort);
 
-        const newDiscountItems = this.createAssorts(itemCountsToReplace.discount, 2);
+        const discountItemCountsToGenerate = this.getItemCountsToGenerate(
+            this.fenceDiscountAssort.items,
+            this.desiredAssortCounts.discount,
+        );
+        const newDiscountItems = this.createAssorts(discountItemCountsToGenerate, 2);
 
         // Push newly generated discount assorts into existing data
         this.updateFenceAssorts(newDiscountItems, this.fenceDiscountAssort);
@@ -323,14 +328,17 @@ export class FenceService
     }
 
     /**
-     * Compare the current fence offer count to what the config wants it to be,
-     * If value is lower add extra count to value to generate more items to fill gap
-     * @param existingItemCountToReplace count of items to generate
-     * @returns number of items to generate
+     * Get values that will hydrate the passed in assorts back to the desired counts
+     * @param assortItems Current assorts after items have been removed
+     * @param generationValues Base counts assorts should be adjusted to
+     * @returns IGenerationAssortValues object with adjustments needed to reach desired state
      */
-    protected getCountOfItemsToGenerate(): IFenceAssortGenerationValues
+    protected getItemCountsToGenerate(
+        assortItems: Item[],
+        generationValues: IGenerationAssortValues,
+    ): IGenerationAssortValues
     {
-        const allRootItems = this.fenceAssort.items.filter((item) => item.slotId === "hideout");
+        const allRootItems = assortItems.filter((item) => item.slotId === "hideout");
         const rootPresetItems = allRootItems.filter((item) => item.upd.sptPresetId);
 
         // Get count of weapons
@@ -346,66 +354,18 @@ export class FenceService
         }, 0);
 
         // Normal item count is total count minus weapon + armor count
-        const itemAssortCount = allRootItems.length - (currentWeaponPresetCount + currentEquipmentPresetCount);
+        const nonPresetItemAssortCount = allRootItems.length - (currentWeaponPresetCount + currentEquipmentPresetCount);
 
         // Get counts of items to generate, never let values fall below 0
-        const itemCountToGenerate = Math.max(this.desiredAssortCounts.normal.item - itemAssortCount, 0);
-        const weaponCountToGenerate = Math.max(
-            this.desiredAssortCounts.normal.weaponPreset - currentWeaponPresetCount,
-            0,
-        );
-        const equipmentCountToGenerate = Math.max(
-            this.desiredAssortCounts.normal.equipmentPreset - currentEquipmentPresetCount,
-            0,
-        );
+        const itemCountToGenerate = Math.max(generationValues.item - nonPresetItemAssortCount, 0);
+        const weaponCountToGenerate = Math.max(generationValues.weaponPreset - currentWeaponPresetCount, 0);
+        const equipmentCountToGenerate = Math.max(generationValues.equipmentPreset - currentEquipmentPresetCount, 0);
 
-        const normalValues: IGenerationAssortValues = {
+        return {
             item: itemCountToGenerate,
             weaponPreset: weaponCountToGenerate,
             equipmentPreset: equipmentCountToGenerate,
         };
-
-        // Discount tab handling
-        const rootDiscountPresetItems = this.fenceDiscountAssort.items.filter((item) =>
-            item.slotId === "hideout" && item.upd.sptPresetId
-        );
-
-        // Get count of weapons
-        const currentDiscountWeaponPresetCount = rootDiscountPresetItems.reduce((count, item) =>
-        {
-            return this.itemHelper.isOfBaseclass(item._tpl, BaseClasses.WEAPON) ? count + 1 : count;
-        }, 0);
-
-        // Get count of equipment
-        const currentDiscountEquipmentPresetCount = rootDiscountPresetItems.reduce((count, item) =>
-        {
-            return this.itemHelper.armorItemCanHoldMods(item._tpl) ? count + 1 : count;
-        }, 0);
-
-        // Normal item count is total count minus weapon + armor count
-        const discountItemAssortCount = Object.keys(this.fenceAssort.loyal_level_items).length
-            - (currentDiscountWeaponPresetCount + currentDiscountEquipmentPresetCount);
-
-        const itemDiscountCountToGenerate = Math.max(
-            this.desiredAssortCounts.discount.item - discountItemAssortCount,
-            0,
-        );
-        const weaponDiscountCountToGenerate = Math.max(
-            this.desiredAssortCounts.discount.weaponPreset - currentDiscountWeaponPresetCount,
-            0,
-        );
-        const equipmentDiscountCountToGenerate = Math.max(
-            this.desiredAssortCounts.discount.equipmentPreset - currentDiscountEquipmentPresetCount,
-            0,
-        );
-
-        const discountValues: IGenerationAssortValues = {
-            item: itemDiscountCountToGenerate,
-            weaponPreset: weaponDiscountCountToGenerate,
-            equipmentPreset: equipmentDiscountCountToGenerate,
-        };
-
-        return { normal: normalValues, discount: discountValues };
     }
 
     /**
