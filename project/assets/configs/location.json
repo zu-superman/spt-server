@@ -1143,7 +1143,7 @@
         "containerGroupMaxSizeMultiplier": 1
     },
     "minFillLooseMagazinePercent": 50,
-    "minFillStaticMagazinePercent": 50,
+    "minFillStaticMagazinePercent": 0,
     "allowDuplicateItemsInStaticContainers": true,
     "magazineLootHasAmmoChancePercent": 50,
     "looseLootBlacklist": {},
