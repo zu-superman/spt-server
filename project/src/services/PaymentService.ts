@@ -315,7 +315,7 @@ export class PaymentService
     }
 
     /**
-     * Get all money stacks in inventory and prioritse items in stash
+     * Get all money stacks in inventory and prioritise items in stash
      * @param pmcData
      * @param currencyTpl
      * @param playerStashId Players stash id
