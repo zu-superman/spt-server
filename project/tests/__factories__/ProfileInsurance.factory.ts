@@ -24,7 +24,7 @@ export class ProfileInsuranceFactory
     }
 
     /**
-     * Adjusts the scheduledTime and messageContent.systemData.date and messageContent.systemData.time, otherwise the
+     * Adjusts the scheduledTime, messageContent.systemData.date, and messageContent.systemData.time, otherwise the
      * dates in the original fixture will likely be expired.
      */
     public adjustPackageDates(dateInput?: DateInput): this
@@ -45,8 +45,8 @@ export class ProfileInsuranceFactory
             }
 
             insurance.scheduledTime = date;
-            insurance.messageContent.systemData.date = format(date, "MM.dd.yyyy");
-            insurance.messageContent.systemData.time = format(date, "HH:mm");
+            insurance.systemData.date = format(date, "MM.dd.yyyy");
+            insurance.systemData.time = format(date, "HH:mm");
             return insurance;
         });
 
