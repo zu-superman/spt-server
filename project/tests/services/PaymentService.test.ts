@@ -71,48 +71,50 @@ describe("PaymentService", () =>
 
             const itemEventRouterResponse = {
                 warnings: [],
-                profileChanges: { sessionID: { _id: sessionID, items: { new: [], change: [], del: [] } } },
+                profileChanges: { [sessionID]: { _id: sessionID, items: { new: [], change: [], del: [] } } },
             } as unknown as IItemEventRouterResponse;
 
             // Mock the logger debug method to return void.
-            vi.spyOn((paymentService as any).logger, "debug").mockImplementation(() =>
-            {});
+            vi.spyOn((paymentService as any).logger, "debug").mockResolvedValue(undefined);
 
             // Mock the trader helper to return a trader with the currency of Roubles.
-            const traderHelperGetTraderSpy = vi.spyOn((paymentService as any).traderHelper, "getTrader")
-                .mockReturnValue({ tid: traderId, currency: "RUB" } as unknown as ITraderBase);
+            const getTraderSpy = vi.spyOn((paymentService as any).traderHelper, "getTrader").mockReturnValue(
+                { tid: traderId, currency: "RUB" } as unknown as ITraderBase,
+            );
 
             // Mock the addPaymentToOutput method to subtract the item cost from the money stack.
-            const addPaymentToOutputSpy = vi.spyOn(paymentService as any, "addPaymentToOutput").mockImplementation(() =>
-            {
-                moneyItem.upd.StackObjectsCount -= costAmount;
-                return { warnings: [], profileChanges: { [sessionID]: { items: { change: [moneyItem] } } } };
-            });
+            const addPaymentToOutputSpy = vi.spyOn(paymentService as any, "addPaymentToOutput").mockImplementation(
+                (
+                    pmcData: IPmcData,
+                    currencyTpl: string,
+                    amountToPay: number,
+                    sessionIdentifier: string,
+                    output: IItemEventRouterResponse,
+                ) =>
+                {
+                    moneyItem.upd.StackObjectsCount -= costAmount;
+                    output.profileChanges[sessionIdentifier].items.change.push(moneyItem);
+                },
+            );
 
             // Mock the traderHelper lvlUp method to return void.
-            const traderHelperLvlUpSpy = vi.spyOn((paymentService as any).traderHelper, "lvlUp").mockImplementation(
-                () =>
-                {},
-            );
+            const lvlUpSpy = vi.spyOn((paymentService as any).traderHelper, "lvlUp").mockResolvedValue(undefined);
 
-            const output = paymentService.payMoney(
-                pmcData,
-                processBuyTradeRequestData,
-                sessionID,
-                itemEventRouterResponse,
-            );
+            paymentService.payMoney(pmcData, processBuyTradeRequestData, sessionID, itemEventRouterResponse);
 
             // Check for absence of output warnings.
-            expect(output.warnings).toHaveLength(0);
+            expect(itemEventRouterResponse.warnings).toHaveLength(0);
 
             // Check that the currency change was correctly handled.
-            expect(output.profileChanges[sessionID].items.change).toHaveLength(1);
-            expect(output.profileChanges[sessionID].items.change[0]._id).toBe(costItemId);
-            expect(output.profileChanges[sessionID].items.change[0]._tpl).toBe(costItemTpl);
-            expect(output.profileChanges[sessionID].items.change[0].upd.StackObjectsCount).toBe(costAmount * 3);
+            expect(itemEventRouterResponse.profileChanges[sessionID].items.change).toHaveLength(1);
+            expect(itemEventRouterResponse.profileChanges[sessionID].items.change[0]._id).toBe(costItemId);
+            expect(itemEventRouterResponse.profileChanges[sessionID].items.change[0]._tpl).toBe(costItemTpl);
+            expect(itemEventRouterResponse.profileChanges[sessionID].items.change[0].upd.StackObjectsCount).toBe(
+                costAmount * 3,
+            );
 
             // Check if mocked methods were called as expected.
-            expect(traderHelperGetTraderSpy).toBeCalledTimes(1);
+            expect(getTraderSpy).toBeCalledTimes(1);
             expect(addPaymentToOutputSpy).toBeCalledWith(
                 expect.anything(),
                 costItemTpl,
@@ -120,7 +122,7 @@ describe("PaymentService", () =>
                 sessionID,
                 expect.anything(),
             );
-            expect(traderHelperLvlUpSpy).toBeCalledTimes(1);
+            expect(lvlUpSpy).toBeCalledTimes(1);
         });
     });
 
