@@ -731,7 +731,8 @@ export class QuestHelper
             repeatableType.activeQuests
         ).find((activeQuest) => activeQuest._id === failRequest.qid);
 
-        if (matchingRepeatableQuest || quest)
+        // Quest found and no repeatable found
+        if (quest && !matchingRepeatableQuest)
         {
             this.mailSendService.sendLocalisedNpcMessageToPlayer(
                 sessionID,
