@@ -871,7 +871,7 @@ export class LocationGenerator
             // Create array with just magazine
             const magazineItem: Item[] = [{ _id: this.objectId.generate(), _tpl: chosenTpl }];
 
-            if (this.randomUtil.getChance100(this.locationConfig.magazineLootHasAmmoChancePercent))
+            if (this.randomUtil.getChance100(this.locationConfig.staticMagazineLootHasAmmoChancePercent))
             {
                 // Add randomised amount of cartridges
                 this.itemHelper.fillMagazineWithRandomCartridge(

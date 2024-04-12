@@ -169,6 +169,7 @@ export interface IQuestReward
     target?: string;
     items?: Item[];
     loyaltyLevel?: number;
+    /** Hideout area id */
     traderId?: string;
     unknown?: boolean;
     findInRaid?: boolean;
