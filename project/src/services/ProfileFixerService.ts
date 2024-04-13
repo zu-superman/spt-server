@@ -9,9 +9,9 @@ import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
 import { Bonus, HideoutSlot, IQuestStatus } from "@spt-aki/models/eft/common/tables/IBotBase";
 import { IHideoutImprovement } from "@spt-aki/models/eft/common/tables/IBotBase";
 import { IPmcDataRepeatableQuest, IRepeatableQuest } from "@spt-aki/models/eft/common/tables/IRepeatableQuests";
+import { ITemplateItem } from "@spt-aki/models/eft/common/tables/ITemplateItem";
 import { StageBonus } from "@spt-aki/models/eft/hideout/IHideoutArea";
-import { IAkiProfile } from "@spt-aki/models/eft/profile/IAkiProfile";
-import { AccountTypes } from "@spt-aki/models/enums/AccountTypes";
+import { IAkiProfile, IEquipmentBuild, IMagazineBuild, IWeaponBuild } from "@spt-aki/models/eft/profile/IAkiProfile";
 import { BonusType } from "@spt-aki/models/enums/BonusType";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { HideoutAreas } from "@spt-aki/models/enums/HideoutAreas";
@@ -874,52 +874,46 @@ export class ProfileFixerService
         const inventoryItemsToCheck = pmcProfile.Inventory.items.filter((item) =>
             ["hideout", "main"].includes(item.slotId)
         );
-        if (!inventoryItemsToCheck)
+        if (inventoryItemsToCheck)
         {
-            return;
-        }
-
-        // Check each item in inventory to ensure item exists in itemdb
-        for (const item of inventoryItemsToCheck)
-        {
-            if (!itemsDb[item._tpl])
+            // Check each item in inventory to ensure item exists in itemdb
+            for (const item of inventoryItemsToCheck)
             {
-                this.logger.error(this.localisationService.getText("fixer-mod_item_found", item._tpl));
-
-                if (this.coreConfig.fixes.removeModItemsFromProfile)
-                {
-                    this.logger.success(
-                        `Deleting item from inventory and insurance with id: ${item._id} tpl: ${item._tpl}`,
-                    );
-
-                    // Also deletes from insured array
-                    this.inventoryHelper.removeItem(pmcProfile, item._id, sessionId);
-                }
-            }
-        }
-
-        // Iterate over player-made weapon builds, look for missing items and remove weapon preset if found
-        for (const buildId in fullProfile.userbuilds?.weaponBuilds)
-        {
-            for (const item of fullProfile.userbuilds.weaponBuilds[buildId].Items)
-            {
-                // Check item exists in itemsDb
                 if (!itemsDb[item._tpl])
                 {
                     this.logger.error(this.localisationService.getText("fixer-mod_item_found", item._tpl));
 
                     if (this.coreConfig.fixes.removeModItemsFromProfile)
                     {
-                        delete fullProfile.userbuilds.weaponBuilds[buildId];
-                        this.logger.warning(
-                            `Item: ${item._tpl} has resulted in the deletion of weapon build: ${buildId}`,
+                        this.logger.success(
+                            `Deleting item from inventory and insurance with id: ${item._id} tpl: ${item._tpl}`,
                         );
-                    }
 
-                    break;
+                        // Also deletes from insured array
+                        this.inventoryHelper.removeItem(pmcProfile, item._id, sessionId);
+                    }
                 }
             }
         }
+
+        // Remove invalid builds from weapon, equipment and magazine build lists
+        const weaponBuilds = fullProfile.userbuilds?.weaponBuilds || [];
+        fullProfile.userbuilds.weaponBuilds = weaponBuilds.filter((weaponBuild) =>
+        {
+            return !this.shouldRemoveWeaponEquipmentBuild("weapon", weaponBuild, itemsDb);
+        });
+
+        const equipmentBuilds = fullProfile.userbuilds?.equipmentBuilds || [];
+        fullProfile.userbuilds.equipmentBuilds = equipmentBuilds.filter((equipmentBuild) =>
+        {
+            return !this.shouldRemoveWeaponEquipmentBuild("equipment", equipmentBuild, itemsDb);
+        });
+
+        const magazineBuilds = fullProfile.userbuilds?.magazineBuilds || [];
+        fullProfile.userbuilds.magazineBuilds = magazineBuilds.filter((magazineBuild) =>
+        {
+            return !this.shouldRemoveMagazineBuild(magazineBuild, itemsDb);
+        });
 
         // Iterate over dialogs, looking for messages with items not found in item db, remove message if item found
         for (const dialogId in fullProfile.dialogues)
@@ -931,7 +925,7 @@ export class ProfileFixerService
             }
 
             // Iterate over all messages in dialog
-            for (const message of dialog.messages)
+            for (const [_, message] of Object.entries(dialog.messages))
             {
                 if (!message.items?.data)
                 {
@@ -969,7 +963,7 @@ export class ProfileFixerService
         }
 
         const clothing = this.databaseServer.getTables().templates.customization;
-        for (const suitId of fullProfile.suits)
+        for (const [_, suitId] of Object.entries(fullProfile.suits))
         {
             if (!clothing[suitId])
             {
@@ -984,7 +978,7 @@ export class ProfileFixerService
 
         for (const repeatable of fullProfile.characters.pmc.RepeatableQuests ?? [])
         {
-            for (const activeQuest of repeatable.activeQuests ?? [])
+            for (const [_, activeQuest] of Object.entries(repeatable.activeQuests ?? []))
             {
                 if (!this.traderHelper.traderEnumHasValue(activeQuest.traderId))
                 {
@@ -1043,6 +1037,77 @@ export class ProfileFixerService
                 }
             }
         }
+    }
+
+    /**
+     * @param buildType The type of build, used for logging only
+     * @param build The build to check for invalid items
+     * @param itemsDb The items database to use for item lookup
+     * @returns True if the build should be removed from the build list, false otherwise
+     */
+    protected shouldRemoveWeaponEquipmentBuild(
+        buildType: string,
+        build: IWeaponBuild | IEquipmentBuild,
+        itemsDb: Record<string, ITemplateItem>,
+    ): boolean
+    {
+        for (const item of build.Items)
+        {
+            // Check item exists in itemsDb
+            if (!itemsDb[item._tpl])
+            {
+                this.logger.error(this.localisationService.getText("fixer-mod_item_found", item._tpl));
+
+                if (this.coreConfig.fixes.removeModItemsFromProfile)
+                {
+                    this.logger.warning(
+                        `Item: ${item._tpl} has resulted in the deletion of ${buildType} build: ${build.Name}`,
+                    );
+
+                    return true;
+                }
+
+                break;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param magazineBuild The magazine build to check for validity
+     * @param itemsDb The items database to use for item lookup
+     * @returns True if the build should be removed from the build list, false otherwise
+     */
+    protected shouldRemoveMagazineBuild(magazineBuild: IMagazineBuild, itemsDb: Record<string, ITemplateItem>): boolean
+    {
+        for (const item of magazineBuild.Items)
+        {
+            // Magazine builds can have null items in them, skip those
+            if (!item)
+            {
+                continue;
+            }
+
+            // Check item exists in itemsDb
+            if (!itemsDb[item.TemplateId])
+            {
+                this.logger.error(this.localisationService.getText("fixer-mod_item_found", item.TemplateId));
+
+                if (this.coreConfig.fixes.removeModItemsFromProfile)
+                {
+                    this.logger.warning(
+                        `Item: ${item.TemplateId} has resulted in the deletion of magazine build: ${magazineBuild.Name}`,
+                    );
+
+                    return true;
+                }
+
+                break;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -1356,7 +1421,7 @@ export class ProfileFixerService
             repeatableQuests.push(...repeatableQuestType.activeQuests);
         }
 
-        for (let i = 0; i < profileQuests.length; i++)
+        for (let i = profileQuests.length - 1; i >= 0; i--)
         {
             if (!(quests[profileQuests[i].qid] || repeatableQuests.find((x) => x._id === profileQuests[i].qid)))
             {
