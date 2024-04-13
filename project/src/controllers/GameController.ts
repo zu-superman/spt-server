@@ -39,6 +39,7 @@ import { GiftService } from "@spt-aki/services/GiftService";
 import { ItemBaseClassService } from "@spt-aki/services/ItemBaseClassService";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
 import { OpenZoneService } from "@spt-aki/services/OpenZoneService";
+import { ProfileActivityService } from "@spt-aki/services/ProfileActivityService";
 import { ProfileFixerService } from "@spt-aki/services/ProfileFixerService";
 import { RaidTimeAdjustmentService } from "@spt-aki/services/RaidTimeAdjustmentService";
 import { SeasonalEventService } from "@spt-aki/services/SeasonalEventService";
@@ -78,6 +79,7 @@ export class GameController
         @inject("ItemBaseClassService") protected itemBaseClassService: ItemBaseClassService,
         @inject("GiftService") protected giftService: GiftService,
         @inject("RaidTimeAdjustmentService") protected raidTimeAdjustmentService: RaidTimeAdjustmentService,
+        @inject("ProfileActivityService") protected profileActivityService: ProfileActivityService,
         @inject("ApplicationContext") protected applicationContext: ApplicationContext,
         @inject("ConfigServer") protected configServer: ConfigServer,
     )
@@ -108,6 +110,8 @@ export class GameController
     {
         // Store client start time in app context
         this.applicationContext.addValue(ContextVariableType.CLIENT_START_TIMESTAMP, startTimeStampMS);
+
+        this.profileActivityService.setActivityTimestamp(sessionID);
 
         if (this.coreConfig.fixes.fixShotgunDispersion)
         {
@@ -504,6 +508,7 @@ export class GameController
      */
     public getKeepAlive(sessionId: string): IGameKeepAliveResponse
     {
+        this.profileActivityService.setActivityTimestamp(sessionId);
         return { msg: "OK", utc_time: new Date().getTime() / 1000 };
     }
 

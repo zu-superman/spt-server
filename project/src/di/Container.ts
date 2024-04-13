@@ -213,6 +213,7 @@ import { OpenZoneService } from "@spt-aki/services/OpenZoneService";
 import { PaymentService } from "@spt-aki/services/PaymentService";
 import { PlayerService } from "@spt-aki/services/PlayerService";
 import { PmcChatResponseService } from "@spt-aki/services/PmcChatResponseService";
+import { ProfileActivityService } from "@spt-aki/services/ProfileActivityService";
 import { ProfileFixerService } from "@spt-aki/services/ProfileFixerService";
 import { ProfileSnapshotService } from "@spt-aki/services/ProfileSnapshotService";
 import { RagfairCategoriesService } from "@spt-aki/services/RagfairCategoriesService";
@@ -747,6 +748,10 @@ export class Container
         depContainer.register<GiftService>("GiftService", GiftService);
         depContainer.register<MailSendService>("MailSendService", MailSendService);
         depContainer.register<RaidTimeAdjustmentService>("RaidTimeAdjustmentService", RaidTimeAdjustmentService);
+
+        depContainer.register<ProfileActivityService>("ProfileActivityService", ProfileActivityService, {
+            lifecycle: Lifecycle.Singleton,
+        });
     }
 
     private static registerServers(depContainer: DependencyContainer): void

@@ -7,5 +7,6 @@
     },
     "expCraftAmount": 10,
     "overrideCraftTimeSeconds": -1,
-    "overrideBuildTimeSeconds": -1
+    "overrideBuildTimeSeconds": -1,
+	"updateProfileHideoutWhenActiveWithinMinutes": 90
 }
