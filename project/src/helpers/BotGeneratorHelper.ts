@@ -700,7 +700,7 @@ export class BotGeneratorHelper
             }
 
             // If allowed filter has something in it + filter doesnt have basetype 'item', not allowed
-            if (filter.length > 0 && !filter.includes(itemDetails._parent))
+            if (filter?.length > 0 && !filter.includes(itemDetails._parent))
             {
                 return false;
             }
