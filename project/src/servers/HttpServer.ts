@@ -79,17 +79,20 @@ export class HttpServer
         if (this.httpConfig.logRequests)
         {
             // TODO: Extend to include 192.168 / 10.10 ranges or check subnet
-            const isLocalRequest = req.socket.remoteAddress.startsWith("127.0.0");
-            if (isLocalRequest)
+            const isLocalRequest = req.socket.remoteAddress?.startsWith("127.0.0");
+            if (typeof isLocalRequest !== "undefined")
             {
-                this.logger.info(this.localisationService.getText("client_request", req.url));
-            }
-            else
-            {
-                this.logger.info(this.localisationService.getText("client_request_ip", {
-                    ip: req.socket.remoteAddress,
-                    url: req.url.replaceAll("/", "\\"), // Localisation service escapes `/` into hex code `&#x2f;`
-                }));
+                if (isLocalRequest)
+                {
+                    this.logger.info(this.localisationService.getText("client_request", req.url));
+                }
+                else
+                {
+                    this.logger.info(this.localisationService.getText("client_request_ip", {
+                        ip: req.socket.remoteAddress,
+                        url: req.url.replaceAll("/", "\\"), // Localisation service escapes `/` into hex code `&#x2f;`
+                    }));
+                }
             }
         }
 
