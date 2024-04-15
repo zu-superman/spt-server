@@ -35,6 +35,7 @@ describe("BotLevelGenerator", () =>
                 side: "",
                 playerLevel: 5,
                 botRelativeLevelDeltaMax: 0,
+                botRelativeLevelDeltaMin: 0,
                 botCountToGenerate: 0,
                 botDifficulty: "",
                 isPlayerScav: false,

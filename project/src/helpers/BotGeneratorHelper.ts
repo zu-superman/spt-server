@@ -688,19 +688,19 @@ export class BotGeneratorHelper
             const itemDetails = this.itemHelper.getItem(itemTpl)[1];
 
             // if item to add is found in exclude filter, not allowed
-            if (excludedFilter.includes(itemDetails._parent))
+            if (excludedFilter?.includes(itemDetails._parent))
             {
                 return false;
             }
 
             // If Filter array only contains 1 filter and its for basetype 'item', allow it
-            if (filter.length === 1 && filter.includes(BaseClasses.ITEM))
+            if (filter?.length === 1 && filter.includes(BaseClasses.ITEM))
             {
                 return true;
             }
 
             // If allowed filter has something in it + filter doesnt have basetype 'item', not allowed
-            if (filter.length > 0 && !filter.includes(itemDetails._parent))
+            if (filter?.length > 0 && !filter.includes(itemDetails._parent))
             {
                 return false;
             }

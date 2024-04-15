@@ -13,6 +13,7 @@ import { LocalisationService } from "@spt-aki/services/LocalisationService";
 export class ItemBaseClassService
 {
     protected itemBaseClassesCache: Record<string, string[]> = {};
+    protected items: Record<string, ITemplateItem>;
     protected cacheGenerated = false;
 
     constructor(
@@ -31,15 +32,15 @@ export class ItemBaseClassService
         // Clear existing cache
         this.itemBaseClassesCache = {};
 
-        const allDbItems = this.databaseServer.getTables().templates.items;
-        if (!allDbItems)
+        this.items = this.databaseServer.getTables().templates.items;
+        if (!this.items)
         {
             this.logger.warning(this.localisationService.getText("baseclass-missing_db_no_cache"));
 
             return;
         }
 
-        const filteredDbItems = Object.values(allDbItems).filter((x) => x._type === "Item");
+        const filteredDbItems = Object.values(this.items).filter((x) => x._type === "Item");
         for (const item of filteredDbItems)
         {
             const itemIdToUpdate = item._id;
@@ -48,7 +49,7 @@ export class ItemBaseClassService
                 this.itemBaseClassesCache[item._id] = [];
             }
 
-            this.addBaseItems(itemIdToUpdate, item, allDbItems);
+            this.addBaseItems(itemIdToUpdate, item);
         }
 
         this.cacheGenerated = true;
@@ -58,16 +59,15 @@ export class ItemBaseClassService
      * Helper method, recursivly iterate through items parent items, finding and adding ids to dictionary
      * @param itemIdToUpdate item tpl to store base ids against in dictionary
      * @param item item being checked
-     * @param allDbItems all items in db
      */
-    protected addBaseItems(itemIdToUpdate: string, item: ITemplateItem, allDbItems: Record<string, ITemplateItem>): void
+    protected addBaseItems(itemIdToUpdate: string, item: ITemplateItem): void
     {
         this.itemBaseClassesCache[itemIdToUpdate].push(item._parent);
-        const parent = allDbItems[item._parent];
+        const parent = this.items[item._parent];
 
         if (parent._parent !== "")
         {
-            this.addBaseItems(itemIdToUpdate, parent, allDbItems);
+            this.addBaseItems(itemIdToUpdate, parent);
         }
     }
 
@@ -91,8 +91,9 @@ export class ItemBaseClassService
             return false;
         }
 
-        // Edge case - this is the 'root' item that all other items inherit from
-        if (itemTpl === BaseClasses.ITEM)
+        // The cache is only generated for item templates with `_type === "Item"`, so return false for any other type,
+        // including item templates that simply don't exist.
+        if (!this.cachedItemIsOfItemType(itemTpl))
         {
             return false;
         }
@@ -112,6 +113,16 @@ export class ItemBaseClassService
         }
 
         return this.itemBaseClassesCache[itemTpl].some((x) => baseClasses.includes(x));
+    }
+
+    /**
+     * Check if cached item template is of type Item
+     * @param itemTemplateId item to check
+     * @returns true if item is of type Item
+     */
+    private cachedItemIsOfItemType(itemTemplateId: string): boolean
+    {
+        return this.items[itemTemplateId]?._type === "Item";
     }
 
     /**

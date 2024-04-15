@@ -147,7 +147,7 @@ export class BuildController
         this.removePlayerBuild(request.id, sessionID);
     }
 
-    protected removePlayerBuild(id: string, sessionID: string): void
+    protected removePlayerBuild(idToRemove: string, sessionID: string): void
     {
         const profile = this.saveServer.getProfile(sessionID);
         const weaponBuilds = profile.userbuilds.weaponBuilds;
@@ -155,7 +155,7 @@ export class BuildController
         const magazineBuilds = profile.userbuilds.magazineBuilds;
 
         // Check for id in weapon array first
-        const matchingWeaponBuild = weaponBuilds.find((x) => x.Id === id);
+        const matchingWeaponBuild = weaponBuilds.find((weaponBuild) => weaponBuild.Id === idToRemove);
         if (matchingWeaponBuild)
         {
             weaponBuilds.splice(weaponBuilds.indexOf(matchingWeaponBuild), 1);
@@ -164,7 +164,7 @@ export class BuildController
         }
 
         // Id not found in weapons, try equipment
-        const matchingEquipmentBuild = equipmentBuilds.find((x) => x.Id === id);
+        const matchingEquipmentBuild = equipmentBuilds.find((equipmentBuild) => equipmentBuild.Id === idToRemove);
         if (matchingEquipmentBuild)
         {
             equipmentBuilds.splice(equipmentBuilds.indexOf(matchingEquipmentBuild), 1);
@@ -173,7 +173,7 @@ export class BuildController
         }
 
         // Id not found in weapons/equipment, try mags
-        const matchingMagazineBuild = magazineBuilds.find((x) => x.Id === id);
+        const matchingMagazineBuild = magazineBuilds.find((magBuild) => magBuild.Id === idToRemove);
         if (matchingMagazineBuild)
         {
             magazineBuilds.splice(magazineBuilds.indexOf(matchingMagazineBuild), 1);
@@ -182,7 +182,9 @@ export class BuildController
         }
 
         // Not found in weapons,equipment or magazines, not good
-        this.logger.error(`Unable to delete preset, cannot find ${id} in weapon, equipment or magazine presets`);
+        this.logger.error(
+            `Unable to delete preset, cannot find ${idToRemove} in weapon, equipment or magazine presets`,
+        );
     }
 
     /**

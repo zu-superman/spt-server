@@ -61,11 +61,11 @@ describe("PlayerService", () =>
             expect(result).toBe(25);
         });
 
-        it("should return 79 when player xp is 68,206,066", () =>
+        it("should return 79 when player xp is 81,126,895", () =>
         {
             const playerProfile = {
                 Info: {
-                    Experience: 68206066, // Via wiki: https://escapefromtarkov.fandom.com/wiki/Character_skills#Levels
+                    Experience: 81126895, // Via wiki: https://escapefromtarkov.fandom.com/wiki/Character_skills#Levels
                 },
             };
 

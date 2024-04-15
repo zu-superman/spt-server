@@ -3,16 +3,16 @@ import { inject, injectable } from "tsyringe";
 import { HandbookHelper } from "@spt-aki/helpers/HandbookHelper";
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { PresetHelper } from "@spt-aki/helpers/PresetHelper";
-import { MinMax } from "@spt-aki/models/common/MinMax";
 import { IFenceLevel } from "@spt-aki/models/eft/common/IGlobals";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
-import { Item, Repairable, Upd } from "@spt-aki/models/eft/common/tables/IItem";
+import { Item, Repairable } from "@spt-aki/models/eft/common/tables/IItem";
 import { ITemplateItem } from "@spt-aki/models/eft/common/tables/ITemplateItem";
 import { IBarterScheme, ITraderAssort } from "@spt-aki/models/eft/common/tables/ITrader";
 import { BaseClasses } from "@spt-aki/models/enums/BaseClasses";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { Traders } from "@spt-aki/models/enums/Traders";
 import { IItemDurabilityCurrentMax, ITraderConfig } from "@spt-aki/models/spt/config/ITraderConfig";
+import { ICreateFenceAssortsResult } from "@spt-aki/models/spt/fence/ICreateFenceAssortsResult";
 import {
     IFenceAssortGenerationValues,
     IGenerationAssortValues,
@@ -43,7 +43,7 @@ export class FenceService
     /** Assorts shown on a separate tab when you max out fence rep */
     protected fenceDiscountAssort: ITraderAssort = undefined;
 
-    /** Hydrated on initial assort generation as part of generateFenceAssorts() */
+    /** Desired baseline counts - Hydrated on initial assort generation as part of generateFenceAssorts() */
     protected desiredAssortCounts: IFenceAssortGenerationValues;
 
     constructor(
@@ -231,16 +231,23 @@ export class FenceService
         this.deleteRandomAssorts(itemCountToReplace, this.fenceAssort);
         this.deleteRandomAssorts(discountItemCountToReplace, this.fenceDiscountAssort);
 
-        // Get count of what item pools need new items (item/weapon/equipment)
-        const itemCountsToReplace = this.getCountOfItemsToGenerate();
+        const normalItemCountsToGenerate = this.getItemCountsToGenerate(
+            this.fenceAssort.items,
+            this.desiredAssortCounts.normal,
+        );
+        const newItems = this.createAssorts(normalItemCountsToGenerate, 1);
 
-        const newItems = this.createFenceAssortSkeleton();
-        this.createAssorts(itemCountsToReplace.normal, newItems, 1);
-        this.fenceAssort.items.push(...newItems.items);
+        // Push newly generated assorts into existing data
+        this.updateFenceAssorts(newItems, this.fenceAssort);
 
-        const newDiscountItems = this.createFenceAssortSkeleton();
-        this.createAssorts(itemCountsToReplace.discount, newDiscountItems, 2);
-        this.fenceDiscountAssort.items.push(...newDiscountItems.items);
+        const discountItemCountsToGenerate = this.getItemCountsToGenerate(
+            this.fenceDiscountAssort.items,
+            this.desiredAssortCounts.discount,
+        );
+        const newDiscountItems = this.createAssorts(discountItemCountsToGenerate, 2);
+
+        // Push newly generated discount assorts into existing data
+        this.updateFenceAssorts(newDiscountItems, this.fenceDiscountAssort);
 
         // Add new barter items to fence barter scheme
         for (const barterItemKey in newItems.barter_scheme)
@@ -272,6 +279,46 @@ export class FenceService
     }
 
     /**
+     * Handle the process of folding new assorts into existing assorts, when a new assort exists already, increment its StackObjectsCount instead
+     * @param newFenceAssorts Assorts to fold into existing fence assorts
+     * @param existingFenceAssorts Current fence assorts new assorts will be added to
+     */
+    protected updateFenceAssorts(newFenceAssorts: ICreateFenceAssortsResult, existingFenceAssorts: ITraderAssort): void
+    {
+        for (const itemWithChildren of newFenceAssorts.sptItems)
+        {
+            // Find the root item
+            const newRootItem = itemWithChildren.find((item) => item.slotId === "hideout");
+
+            // Find a matching root item with same tpl in existing assort
+            const existingRootItem = existingFenceAssorts.items.find((item) =>
+                item._tpl === newRootItem._tpl && item.slotId === "hideout"
+            );
+
+            // Check if same type of item exists + its on list of item types to always stack
+            if (existingRootItem && this.itemInPreventDupeCategoryList(newRootItem._tpl))
+            {
+                // Guard against a missing stack count
+                if (!existingRootItem.upd.StackObjectsCount)
+                {
+                    existingRootItem.upd.StackObjectsCount = 1;
+                }
+
+                // Merge new items count into existing, dont add new loyalty/barter data as it already exists
+                existingRootItem.upd.StackObjectsCount += newRootItem.upd.StackObjectsCount;
+
+                continue;
+            }
+
+            // New assort to be added to existing assorts
+            existingFenceAssorts.items.push(...itemWithChildren);
+            existingFenceAssorts.barter_scheme[newRootItem._id] = newFenceAssorts.barter_scheme[newRootItem._id];
+            existingFenceAssorts.loyal_level_items[newRootItem._id] =
+                newFenceAssorts.loyal_level_items[newRootItem._id];
+        }
+    }
+
+    /**
      * Increment fence next refresh timestamp by current timestamp + partialRefreshTimeSeconds from config
      */
     protected incrementPartialRefreshTime(): void
@@ -281,18 +328,18 @@ export class FenceService
     }
 
     /**
-     * Compare the current fence offer count to what the config wants it to be,
-     * If value is lower add extra count to value to generate more items to fill gap
-     * @param existingItemCountToReplace count of items to generate
-     * @returns number of items to generate
+     * Get values that will hydrate the passed in assorts back to the desired counts
+     * @param assortItems Current assorts after items have been removed
+     * @param generationValues Base counts assorts should be adjusted to
+     * @returns IGenerationAssortValues object with adjustments needed to reach desired state
      */
-    protected getCountOfItemsToGenerate(): IFenceAssortGenerationValues
+    protected getItemCountsToGenerate(
+        assortItems: Item[],
+        generationValues: IGenerationAssortValues,
+    ): IGenerationAssortValues
     {
-        const currentItemAssortCount = Object.keys(this.fenceAssort.loyal_level_items).length;
-
-        const rootPresetItems = this.fenceAssort.items.filter((item) =>
-            item.slotId === "hideout" && item.upd.sptPresetId
-        );
+        const allRootItems = assortItems.filter((item) => item.slotId === "hideout");
+        const rootPresetItems = allRootItems.filter((item) => item.upd.sptPresetId);
 
         // Get count of weapons
         const currentWeaponPresetCount = rootPresetItems.reduce((count, item) =>
@@ -306,60 +353,19 @@ export class FenceService
             return this.itemHelper.armorItemCanHoldMods(item._tpl) ? count + 1 : count;
         }, 0);
 
-        const itemCountToGenerate = Math.max(this.desiredAssortCounts.normal.item - currentItemAssortCount, 0);
-        const weaponCountToGenerate = Math.max(
-            this.desiredAssortCounts.normal.weaponPreset - currentWeaponPresetCount,
-            0,
-        );
-        const equipmentCountToGenerate = Math.max(
-            this.desiredAssortCounts.normal.equipmentPreset - currentEquipmentPresetCount,
-            0,
-        );
+        // Normal item count is total count minus weapon + armor count
+        const nonPresetItemAssortCount = allRootItems.length - (currentWeaponPresetCount + currentEquipmentPresetCount);
 
-        const normalValues: IGenerationAssortValues = {
+        // Get counts of items to generate, never let values fall below 0
+        const itemCountToGenerate = Math.max(generationValues.item - nonPresetItemAssortCount, 0);
+        const weaponCountToGenerate = Math.max(generationValues.weaponPreset - currentWeaponPresetCount, 0);
+        const equipmentCountToGenerate = Math.max(generationValues.equipmentPreset - currentEquipmentPresetCount, 0);
+
+        return {
             item: itemCountToGenerate,
             weaponPreset: weaponCountToGenerate,
             equipmentPreset: equipmentCountToGenerate,
         };
-
-        // Discount tab handling
-        const currentDiscountItemAssortCount = Object.keys(this.fenceDiscountAssort.loyal_level_items).length;
-        const rootDiscountPresetItems = this.fenceDiscountAssort.items.filter((item) =>
-            item.slotId === "hideout" && item.upd.sptPresetId
-        );
-
-        // Get count of weapons
-        const currentDiscountWeaponPresetCount = rootDiscountPresetItems.reduce((count, item) =>
-        {
-            return this.itemHelper.isOfBaseclass(item._tpl, BaseClasses.WEAPON) ? count + 1 : count;
-        }, 0);
-
-        // Get count of equipment
-        const currentDiscountEquipmentPresetCount = rootDiscountPresetItems.reduce((count, item) =>
-        {
-            return this.itemHelper.armorItemCanHoldMods(item._tpl) ? count + 1 : count;
-        }, 0);
-
-        const itemDiscountCountToGenerate = Math.max(
-            this.desiredAssortCounts.discount.item - currentDiscountItemAssortCount,
-            0,
-        );
-        const weaponDiscountCountToGenerate = Math.max(
-            this.desiredAssortCounts.discount.weaponPreset - currentDiscountWeaponPresetCount,
-            0,
-        );
-        const equipmentDiscountCountToGenerate = Math.max(
-            this.desiredAssortCounts.discount.equipmentPreset - currentDiscountEquipmentPresetCount,
-            0,
-        );
-
-        const discountValues: IGenerationAssortValues = {
-            item: itemDiscountCountToGenerate,
-            weaponPreset: weaponDiscountCountToGenerate,
-            equipmentPreset: equipmentDiscountCountToGenerate,
-        };
-
-        return { normal: normalValues, discount: discountValues };
     }
 
     /**
@@ -386,18 +392,26 @@ export class FenceService
      */
     protected removeRandomItemFromAssorts(assort: ITraderAssort, rootItems: Item[]): void
     {
-        const rootItemToRemove = this.randomUtil.getArrayValue(rootItems);
-
-        // Clean up any mods if item had them
-        const itemWithChildren = this.itemHelper.findAndReturnChildrenAsItems(assort.items, rootItemToRemove._id);
-        for (const itemToDelete of itemWithChildren)
-        {
-            // Delete item from assort items array
-            assort.items.splice(assort.items.indexOf(itemToDelete), 1);
+        const rootItemToAdjust = this.randomUtil.getArrayValue(rootItems);
+        const itemCountToRemove = this.randomUtil.getInt(1, rootItemToAdjust.upd.StackObjectsCount);
+        if (itemCountToRemove > 1 && itemCountToRemove < rootItemToAdjust.upd.StackObjectsCount)
+        { // More than 1 + less then full stack
+            // Reduce stack size but keep stack
+            rootItemToAdjust.upd.StackObjectsCount -= itemCountToRemove;
         }
+        else
+        {
+            // Remove up item + any mods
+            const itemWithChildren = this.itemHelper.findAndReturnChildrenAsItems(assort.items, rootItemToAdjust._id);
+            for (const itemToDelete of itemWithChildren)
+            {
+                // Delete item from assort items array
+                assort.items.splice(assort.items.indexOf(itemToDelete), 1);
+            }
 
-        delete assort.barter_scheme[rootItemToRemove._id];
-        delete assort.loyal_level_items[rootItemToRemove._id];
+            delete assort.barter_scheme[rootItemToAdjust._id];
+            delete assort.loyal_level_items[rootItemToAdjust._id];
+        }
     }
 
     /**
@@ -437,16 +451,35 @@ export class FenceService
         this.createInitialFenceAssortGenerationValues();
 
         // Create basic fence assort
-        const assorts = this.createFenceAssortSkeleton();
-        this.createAssorts(this.desiredAssortCounts.normal, assorts, 1);
+        const assorts = this.createAssorts(this.desiredAssortCounts.normal, 1);
+
         // Store in this.fenceAssort
-        this.setFenceAssort(assorts);
+        this.setFenceAssort(this.convertIntoFenceAssort(assorts));
 
         // Create level 2 assorts accessible at rep level 6
-        const discountAssorts = this.createFenceAssortSkeleton();
-        this.createAssorts(this.desiredAssortCounts.discount, discountAssorts, 2);
+        const discountAssorts = this.createAssorts(this.desiredAssortCounts.discount, 2);
+
         // Store in this.fenceDiscountAssort
-        this.setFenceDiscountAssort(discountAssorts);
+        this.setFenceDiscountAssort(this.convertIntoFenceAssort(discountAssorts));
+    }
+
+    /**
+     * Convert the intermediary assort data generated into format client can process
+     * @param intermediaryAssorts Generated assorts that will be converted
+     * @returns ITraderAssort
+     */
+    protected convertIntoFenceAssort(intermediaryAssorts: ICreateFenceAssortsResult): ITraderAssort
+    {
+        const result = this.createFenceAssortSkeleton();
+        for (const itemWithChilden of intermediaryAssorts.sptItems)
+        {
+            result.items.push(...itemWithChilden);
+        }
+
+        result.barter_scheme = intermediaryAssorts.barter_scheme;
+        result.loyal_level_items = intermediaryAssorts.loyal_level_items;
+
+        return result;
     }
 
     /**
@@ -506,14 +539,22 @@ export class FenceService
      * @param assortCount Number of assorts to generate
      * @param assorts object to add created assorts to
      */
-    protected createAssorts(itemCounts: IGenerationAssortValues, assorts: ITraderAssort, loyaltyLevel: number): void
+    protected createAssorts(itemCounts: IGenerationAssortValues, loyaltyLevel: number): ICreateFenceAssortsResult
     {
+        const result: ICreateFenceAssortsResult = { sptItems: [], barter_scheme: {}, loyal_level_items: {} };
+
         const baseFenceAssortClone = this.jsonUtil.clone(this.databaseServer.getTables().traders[Traders.FENCE].assort);
         const itemTypeLimitCounts = this.initItemLimitCounter(this.traderConfig.fence.itemTypeLimits);
 
         if (itemCounts.item > 0)
         {
-            this.addItemAssorts(itemCounts.item, assorts, baseFenceAssortClone, itemTypeLimitCounts, loyaltyLevel);
+            const itemResult = this.addItemAssorts(
+                itemCounts.item,
+                result,
+                baseFenceAssortClone,
+                itemTypeLimitCounts,
+                loyaltyLevel,
+            );
         }
 
         if (itemCounts.weaponPreset > 0 || itemCounts.equipmentPreset > 0)
@@ -522,11 +563,13 @@ export class FenceService
             this.addPresetsToAssort(
                 itemCounts.weaponPreset,
                 itemCounts.equipmentPreset,
-                assorts,
+                result,
                 baseFenceAssortClone,
                 loyaltyLevel,
             );
         }
+
+        return result;
     }
 
     /**
@@ -539,15 +582,15 @@ export class FenceService
      */
     protected addItemAssorts(
         assortCount: number,
-        assorts: ITraderAssort,
+        assorts: ICreateFenceAssortsResult,
         baseFenceAssortClone: ITraderAssort,
         itemTypeLimits: Record<string, { current: number; max: number; }>,
         loyaltyLevel: number,
     ): void
     {
         const priceLimits = this.traderConfig.fence.itemCategoryRoublePriceLimit;
-        const assortRootItems = baseFenceAssortClone.items.filter((x) =>
-            x.parentId === "hideout" && !x.upd?.sptPresetId
+        const assortRootItems = baseFenceAssortClone.items.filter((item) =>
+            item.parentId === "hideout" && !item.upd?.sptPresetId
         );
 
         for (let i = 0; i < assortCount; i++)
@@ -614,7 +657,7 @@ export class FenceService
             }
 
             // Skip items already in the assort if it exists in the prevent duplicate list
-            const existingItemThatMatches = this.getMatchingItem(rootItemBeingAdded, itemDbDetails, assorts.items);
+            const existingItemThatMatches = this.getMatchingItem(rootItemBeingAdded, itemDbDetails, assorts.sptItems);
             const shouldBeStacked = this.itemShouldBeForceStacked(existingItemThatMatches, itemDbDetails);
             if (shouldBeStacked && existingItemThatMatches)
             { // Decrement loop counter so another items gets added
@@ -630,7 +673,7 @@ export class FenceService
                 this.randomiseArmorModDurability(desiredAssortItemAndChildrenClone, itemDbDetails);
             }
 
-            assorts.items.push(...desiredAssortItemAndChildrenClone);
+            assorts.sptItems.push(desiredAssortItemAndChildrenClone);
 
             assorts.barter_scheme[rootItemBeingAdded._id] = this.jsonUtil.clone(
                 baseFenceAssortClone.barter_scheme[chosenBaseAssortRoot._id],
@@ -651,15 +694,15 @@ export class FenceService
      * e.g. salewa hp resource units left
      * @param rootItemBeingAdded item to look for a match against
      * @param itemDbDetails Db details of matching item
-     * @param fenceItemAssorts Items to search through
+     * @param itemsWithChildren Items to search through
      * @returns Matching assort item
      */
-    protected getMatchingItem(rootItemBeingAdded: Item, itemDbDetails: ITemplateItem, fenceItemAssorts: Item[]): Item
+    protected getMatchingItem(rootItemBeingAdded: Item, itemDbDetails: ITemplateItem, itemsWithChildren: Item[][]): Item
     {
         // Get matching root items
-        const matchingItems = fenceItemAssorts.filter((item) =>
-            item._tpl === rootItemBeingAdded._tpl && item.parentId === "hideout"
-        );
+        const matchingItems = itemsWithChildren.filter((itemWithChildren) =>
+            itemWithChildren.find((item) => item._tpl === rootItemBeingAdded._tpl && item.parentId === "hideout")
+        ).flatMap((x) => x);
         if (matchingItems.length === 0)
         {
             // Nothing matches by tpl and is root item, exit early
@@ -726,11 +769,13 @@ export class FenceService
             return false;
         }
 
+        return this.itemInPreventDupeCategoryList(itemDbDetails._id);
+    }
+
+    protected itemInPreventDupeCategoryList(tpl: string): boolean
+    {
         // Item type in config list
-        return this.itemHelper.isOfBaseclasses(
-            itemDbDetails._id,
-            this.traderConfig.fence.preventDuplicateOffersOfCategory,
-        );
+        return this.itemHelper.isOfBaseclasses(tpl, this.traderConfig.fence.preventDuplicateOffersOfCategory);
     }
 
     /**
@@ -799,7 +844,7 @@ export class FenceService
     protected addPresetsToAssort(
         desiredWeaponPresetsCount: number,
         desiredEquipmentPresetsCount: number,
-        assorts: ITraderAssort,
+        assorts: ICreateFenceAssortsResult,
         baseFenceAssort: ITraderAssort,
         loyaltyLevel: number,
     ): void
@@ -848,7 +893,7 @@ export class FenceService
                 // Remapping IDs causes parentid to be altered
                 presetWithChildrenClone[0].parentId = "hideout";
 
-                assorts.items.push(...presetWithChildrenClone);
+                assorts.sptItems.push(presetWithChildrenClone);
 
                 // Set assort price
                 // Must be careful to use correct id as the item has had its IDs regenerated
@@ -908,7 +953,7 @@ export class FenceService
             // Remapping IDs causes parentid to be altered
             presetWithChildrenClone[0].parentId = "hideout";
 
-            assorts.items.push(...presetWithChildrenClone);
+            assorts.sptItems.push(presetWithChildrenClone);
 
             // Set assort price
             // Must be careful to use correct id as the item has had its IDs regenerated

@@ -275,44 +275,6 @@ describe("ItemHelper", () =>
         });
     });
 
-    describe("generateItemsFromStackSlot", () =>
-    {
-        it("should generate valid StackSlot item for an AmmoBox", () =>
-        {
-            const ammoBox = itemHelper.getItem("57372c89245977685d4159b1"); // "5.45x39mm BT gs ammo pack (30 pcs)"
-            const parentId = container.resolve<HashUtil>("HashUtil").generate();
-
-            const result = itemHelper.generateItemsFromStackSlot(ammoBox[1], parentId);
-
-            expect(result.length).toBe(1);
-            expect(result[0]._id).toBeDefined();
-            expect(result[0]._tpl).toBe(ammoBox[1]._props.StackSlots[0]._props.filters[0].Filter[0]);
-            expect(result[0].parentId).toBe(parentId);
-            expect(result[0].slotId).toBe("cartridges");
-            expect(result[0].location).toBe(0);
-            expect(result[0].upd.StackObjectsCount).toBe(ammoBox[1]._props.StackSlots[0]._max_count);
-        });
-
-        it("should log a warning if no IDs are found in Filter", () =>
-        {
-            const ammoBox = itemHelper.getItem("57372c89245977685d4159b1"); // "5.45x39mm BT gs ammo pack (30 pcs)"
-            ammoBox[1]._props.StackSlots[0]._props.filters[0].Filter = []; // Empty the Filter array.
-
-            const parentId = container.resolve<HashUtil>("HashUtil").generate();
-
-            // Spy on the logger's warning method and mock its implementation to prevent it from being actually called.
-            const loggerWarningSpy = vi.spyOn((itemHelper as any).logger, "warning").mockImplementation(() =>
-            {});
-
-            itemHelper.generateItemsFromStackSlot(ammoBox[1], parentId);
-
-            expect(loggerWarningSpy).toHaveBeenCalled();
-
-            // Restore the original behavior
-            loggerWarningSpy.mockRestore();
-        });
-    });
-
     describe("getItems", () =>
     {
         it("should call databaseServer.getTables() and jsonUtil.clone() methods", () =>
@@ -451,12 +413,16 @@ describe("ItemHelper", () =>
             const itemId = container.resolve<HashUtil>("HashUtil").generate();
             const item: Item = {
                 _id: itemId,
-                _tpl: "5b40e1525acfc4771e1c6611", // "HighCom Striker ULACH IIIA helmet (Black)"
+                _tpl: "5b40e1525acfc4771e1c6611",
                 upd: { Repairable: { Durability: 19, MaxDurability: 38 } },
             };
 
+            const getRepairableItemQualityValueSpt = vi.spyOn(itemHelper as any, "getRepairableItemQualityValue")
+                .mockReturnValue(0.5);
+
             const result = itemHelper.getItemQualityModifier(item);
 
+            expect(getRepairableItemQualityValueSpt).toHaveBeenCalled();
             expect(result).toBe(0.5);
         });
 
@@ -556,40 +522,7 @@ describe("ItemHelper", () =>
 
     describe("getRepairableItemQualityValue", () =>
     {
-        it("should return the correct quality value for armor items", () =>
-        {
-            const armor = itemHelper.getItem("5648a7494bdc2d9d488b4583")[1]; // "PACA Soft Armor"
-            const repairable: Repairable = { Durability: 25, MaxDurability: 50 };
-            const item: Item = { // Not used for armor, but required for the method.
-                _id: "",
-                _tpl: "",
-            };
-
-            // Cast the method to any to allow access to private/protected method.
-            const result = (itemHelper as any).getRepairableItemQualityValue(armor, repairable, item);
-
-            expect(result).toBe(0.5);
-        });
-
-        it("should not use the Repairable MaxDurability property for armor", () =>
-        {
-            const armor = itemHelper.getItem("5648a7494bdc2d9d488b4583")[1]; // "PACA Soft Armor"
-            const repairable: Repairable = {
-                Durability: 25,
-                MaxDurability: 1000, // This should be ignored.
-            };
-            const item: Item = { // Not used for armor, but required for the method.
-                _id: "",
-                _tpl: "",
-            };
-
-            // Cast the method to any to allow access to private/protected method.
-            const result = (itemHelper as any).getRepairableItemQualityValue(armor, repairable, item);
-
-            expect(result).toBe(0.5);
-        });
-
-        it("should return the correct quality value for weapon items", () =>
+        it("should return the correct quality value", () =>
         {
             const weapon = itemHelper.getItem("5a38e6bac4a2826c6e06d79b")[1]; // "TOZ-106 20ga bolt-action shotgun"
             const repairable: Repairable = { Durability: 50, MaxDurability: 100 };
@@ -601,7 +534,7 @@ describe("ItemHelper", () =>
             expect(result).toBe(Math.sqrt(0.5));
         });
 
-        it("should fall back to using Repairable MaxDurability for weapon items", () =>
+        it("should fall back to using Repairable MaxDurability", () =>
         {
             const weapon = itemHelper.getItem("5a38e6bac4a2826c6e06d79b")[1]; // "TOZ-106 20ga bolt-action shotgun"
             weapon._props.MaxDurability = undefined; // Remove the MaxDurability property.
@@ -938,6 +871,74 @@ describe("ItemHelper", () =>
             const result = itemHelper.getItemName(undefined);
 
             expect(result).toBe(undefined);
+        });
+    });
+
+    describe("adoptOrphanedItems", () =>
+    {
+        it("should adopt orphaned items by resetting them as base-level items", () =>
+        {
+            const rootId = "root-id";
+            const items = [
+                { _id: "first-id", _tpl: "anything1", parentId: "does-not-exist", slotId: "main" },
+                { _id: "second-id", _tpl: "anything2", parentId: "first-id", slotId: "slot-id" },
+                { _id: "third-id", _tpl: "anything3", parentId: "second-id", slotId: "slot-id" },
+                { _id: "forth-id", _tpl: "anything4", parentId: "third-id", slotId: "slot-id" },
+            ];
+
+            // Iterate over the items and find the individual orphaned item.
+            const orphanedItem = items.find((item) => !items.some((parent) => parent._id === item.parentId));
+
+            // Setup tests to verify that the orphaned item is in fact orphaned.
+            expect(orphanedItem.parentId).toBe(items[0].parentId);
+            expect(orphanedItem.slotId).toBe(items[0].slotId);
+
+            // Execute the method.
+            (itemHelper as any).adoptOrphanedItems(rootId, items);
+
+            // Verify that the orphaned items have been adopted.
+            expect(orphanedItem.parentId).toBe(rootId);
+            expect(orphanedItem.slotId).toBe("hideout");
+        });
+
+        it("should not adopt items that are not orphaned", () =>
+        {
+            const rootId = "root-id";
+            const items = [
+                { _id: "first-id", _tpl: "anything1", parentId: rootId, slotId: "hideout" },
+                { _id: "second-id", _tpl: "anything2", parentId: "first-id", slotId: "slot-id" },
+                { _id: "third-id", _tpl: "anything3", parentId: "second-id", slotId: "slot-id" },
+                { _id: "forth-id", _tpl: "anything4", parentId: "third-id", slotId: "slot-id" },
+            ];
+
+            // Execute the method.
+            const adopted = (itemHelper as any).adoptOrphanedItems(rootId, items);
+
+            // Verify that the orphaned items have been adopted.
+            expect(adopted).toStrictEqual(items);
+        });
+
+        it("should remove location data from adopted items", () =>
+        {
+            const rootId = "root-id";
+            const items = [
+                {
+                    _id: "first-id",
+                    _tpl: "anything1",
+                    parentId: "does-not-exist",
+                    slotId: "main",
+                    location: { x: 1, y: 2, r: 3, isSearched: true }, // Should be removed.
+                },
+                { _id: "second-id", _tpl: "anything2", parentId: "first-id", slotId: "slot-id" },
+                { _id: "third-id", _tpl: "anything3", parentId: "second-id", slotId: "slot-id" },
+                { _id: "forth-id", _tpl: "anything4", parentId: "third-id", slotId: "slot-id" },
+            ];
+
+            // Execute the method.
+            (itemHelper as any).adoptOrphanedItems(rootId, items);
+
+            // Verify that the location property has been removed.
+            expect(items).not.toHaveProperty("location");
         });
     });
 

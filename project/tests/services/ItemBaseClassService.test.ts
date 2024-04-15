@@ -42,23 +42,23 @@ describe("ItemBaseClassService", () =>
         it("should return false when the base item type is passed in", () =>
         {
             // Remove item from base cache
-            const result = itemBaseClassService.itemHasBaseClass("54009119af1c881c07000029", []); // "Base item"
+            const result = itemBaseClassService.itemHasBaseClass("54009119af1c881c07000029", []);
 
             expect(result).toBe(false);
         });
 
-        it("should return true when an item is passed in", () =>
+        it("should return true when a med item is passed in with the meds base class", () =>
         {
             const salewaTpl = "544fb45d4bdc2dee738b4568";
 
             // Remove item from base cache
             delete itemBaseClassService.itemBaseClassesCache[salewaTpl];
-            const result = itemBaseClassService.itemHasBaseClass(salewaTpl, ["543be5664bdc2dd4348b4569"]); // "Meds" type
+            const result = itemBaseClassService.itemHasBaseClass(salewaTpl, ["543be5664bdc2dd4348b4569"]);
 
             expect(result).toBe(true);
         });
 
-        it("should return true when an item and 2 matching base classes are passed in", () =>
+        it("should return true when an item and two matching base classes are passed in", () =>
         {
             const salewaTpl = "544fb45d4bdc2dee738b4568";
 
@@ -67,7 +67,7 @@ describe("ItemBaseClassService", () =>
             const result = itemBaseClassService.itemHasBaseClass(salewaTpl, [
                 "543be5664bdc2dd4348b4569",
                 "54009119af1c881c07000029",
-            ]); // "Meds" and "Item" type
+            ]); // "Meds" and "Item" base classes
 
             expect(result).toBe(true);
         });
@@ -84,15 +84,28 @@ describe("ItemBaseClassService", () =>
             delete itemBaseClassService.itemBaseClassesCache[salewaTpl];
 
             // Perform check
-            const result = itemBaseClassService.itemHasBaseClass(salewaTpl, ["543be5664bdc2dd4348b4569"]); // "Meds" type
+            const result = itemBaseClassService.itemHasBaseClass(salewaTpl, ["543be5664bdc2dd4348b4569"]);
 
             expect(result).toBe(true);
             expect(hydrateItemBaseClassCacheSpy).toHaveBeenCalled();
         });
 
-        it("should throw an exception when an invalid item is passed in", () =>
+        it("should return false for any item template ID that does not exist", () =>
         {
-            expect(() => itemBaseClassService.itemHasBaseClass("fakeTpl", ["543be5664bdc2dd4348b4569"])).toThrowError();
+            const result = itemBaseClassService.itemHasBaseClass("not-a-valid-template-id", [
+                "543be5664bdc2dd4348b4569",
+            ]);
+
+            expect(result).toBe(false);
+        });
+
+        it("should return false for any item template ID without the Item type ", () =>
+        {
+            const result = itemBaseClassService.itemHasBaseClass("54009119af1c881c07000029", [
+                "543be5664bdc2dd4348b4569",
+            ]);
+
+            expect(result).toBe(false);
         });
     });
 

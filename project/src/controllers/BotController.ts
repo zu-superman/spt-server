@@ -83,7 +83,7 @@ export class BotController
 
     /**
      * Get bot difficulty settings
-     * adjust PMC settings to ensure they engage the correct bot types
+     * Adjust PMC settings to ensure they engage the correct bot types
      * @param type what bot the server is requesting settings for
      * @param diffLevel difficulty level server requested settings for
      * @returns Difficulty object
@@ -104,7 +104,7 @@ export class BotController
 
         // Check value chosen in pre-raid difficulty dropdown
         // If value is not 'asonline', change requested difficulty to be what was chosen in dropdown
-        const botDifficultyDropDownValue = raidConfig.wavesSettings.botDifficulty.toLowerCase();
+        const botDifficultyDropDownValue = raidConfig?.wavesSettings.botDifficulty.toLowerCase() ?? "asonline";
         if (botDifficultyDropDownValue !== "asonline")
         {
             difficulty = this.botDifficultyHelper.convertBotDifficultyDropdownToBotDifficulty(
@@ -138,6 +138,31 @@ export class BotController
         }
 
         return difficultySettings;
+    }
+
+    public getAllBotDifficulties(): Record<string, any>
+    {
+        const result = {};
+
+        const botDb = this.databaseServer.getTables().bots.types;
+        const botTypes = Object.keys(botDb);
+        for (const botType of botTypes)
+        {
+            const botDetails = botDb[botType];
+            if (!botDetails.difficulty)
+            {
+                continue;
+            }
+            const botDifficulties = Object.keys(botDetails.difficulty);
+
+            result[botType] = {};
+            for (const difficulty of botDifficulties)
+            {
+                result[botType][difficulty] = this.getBotDifficulty(botType, difficulty);
+            }
+        }
+
+        return result;
     }
 
     /**

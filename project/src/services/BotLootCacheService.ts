@@ -89,6 +89,12 @@ export class BotLootCacheService
             case LootCacheType.DRUG_ITEMS:
                 result = this.lootCache[botRole].drugItems;
                 break;
+            case LootCacheType.FOOD_ITEMS:
+                result = this.lootCache[botRole].foodItems;
+                break;
+            case LootCacheType.DRINK_ITEMS:
+                result = this.lootCache[botRole].drinkItems;
+                break;
             case LootCacheType.STIM_ITEMS:
                 result = this.lootCache[botRole].stimItems;
                 break;
@@ -219,7 +225,7 @@ export class BotLootCacheService
                 ? botJsonTemplate.generation.items.drugs.whitelist
                 : {};
 
-        // no whitelist, find and assign from combined item pool
+        // no drugs whitelist, find and assign from combined item pool
         if (Object.keys(drugItems).length === 0)
         {
             for (const [tpl, weight] of Object.entries(combinedLootPool))
@@ -228,6 +234,44 @@ export class BotLootCacheService
                 if (this.isMedicalItem(itemTemplate._props) && itemTemplate._parent === BaseClasses.DRUGS)
                 {
                     drugItems[tpl] = weight;
+                }
+            }
+        }
+
+        // Assign whitelisted food to bot if any exist
+        const foodItems: Record<string, number> =
+            (Object.keys(botJsonTemplate.generation.items.food.whitelist)?.length > 0)
+                ? botJsonTemplate.generation.items.food.whitelist
+                : {};
+
+        // No food whitelist, find and assign from combined item pool
+        if (Object.keys(foodItems).length === 0)
+        {
+            for (const [tpl, weight] of Object.entries(combinedLootPool))
+            {
+                const itemTemplate = this.itemHelper.getItem(tpl)[1];
+                if (this.itemHelper.isOfBaseclass(itemTemplate._id, BaseClasses.FOOD))
+                {
+                    foodItems[tpl] = weight;
+                }
+            }
+        }
+
+        // Assign whitelisted drink to bot if any exist
+        const drinkItems: Record<string, number> =
+            (Object.keys(botJsonTemplate.generation.items.food.whitelist)?.length > 0)
+                ? botJsonTemplate.generation.items.food.whitelist
+                : {};
+
+        // No drink whitelist, find and assign from combined item pool
+        if (Object.keys(drinkItems).length === 0)
+        {
+            for (const [tpl, weight] of Object.entries(combinedLootPool))
+            {
+                const itemTemplate = this.itemHelper.getItem(tpl)[1];
+                if (this.itemHelper.isOfBaseclass(itemTemplate._id, BaseClasses.DRINK))
+                {
+                    drinkItems[tpl] = weight;
                 }
             }
         }
@@ -270,7 +314,7 @@ export class BotLootCacheService
             }
         }
 
-        // Get backpack loot (excluding magazines, bullets, grenades and healing items)
+        // Get backpack loot (excluding magazines, bullets, grenades, drink, food and healing/stim items)
         const filteredBackpackItems = {};
         for (const itemKey of Object.keys(backpackLootPool))
         {
@@ -285,6 +329,8 @@ export class BotLootCacheService
                 || this.isMagazine(itemTemplate._props)
                 || this.isMedicalItem(itemTemplate._props)
                 || this.isGrenade(itemTemplate._props)
+                || this.isFood(itemTemplate._id)
+                || this.isDrink(itemTemplate._id)
             )
             {
                 // Is type we dont want as backpack loot, skip
@@ -294,7 +340,7 @@ export class BotLootCacheService
             filteredBackpackItems[itemKey] = backpackLootPool[itemKey];
         }
 
-        // Get pocket loot (excluding magazines, bullets, grenades, medical and healing items)
+        // Get pocket loot (excluding magazines, bullets, grenades, drink, food medical and healing/stim items)
         const filteredPocketItems = {};
         for (const itemKey of Object.keys(pocketLootPool))
         {
@@ -309,6 +355,8 @@ export class BotLootCacheService
                 || this.isMagazine(itemTemplate._props)
                 || this.isMedicalItem(itemTemplate._props)
                 || this.isGrenade(itemTemplate._props)
+                || this.isFood(itemTemplate._id)
+                || this.isDrink(itemTemplate._id)
                 || !("Height" in itemTemplate._props) // lacks height
                 || !("Width" in itemTemplate._props) // lacks width
             )
@@ -319,7 +367,7 @@ export class BotLootCacheService
             filteredPocketItems[itemKey] = pocketLootPool[itemKey];
         }
 
-        // Get vest loot (excluding magazines, bullets, grenades, medical and healing items)
+        // Get vest loot (excluding magazines, bullets, grenades, medical and healing/stim items)
         const filteredVestItems = {};
         for (const itemKey of Object.keys(vestLootPool))
         {
@@ -334,6 +382,8 @@ export class BotLootCacheService
                 || this.isMagazine(itemTemplate._props)
                 || this.isMedicalItem(itemTemplate._props)
                 || this.isGrenade(itemTemplate._props)
+                || this.isFood(itemTemplate._id)
+                || this.isDrink(itemTemplate._id)
             )
             {
                 continue;
@@ -344,6 +394,8 @@ export class BotLootCacheService
 
         this.lootCache[botRole].healingItems = healingItems;
         this.lootCache[botRole].drugItems = drugItems;
+        this.lootCache[botRole].foodItems = foodItems;
+        this.lootCache[botRole].drinkItems = drinkItems;
         this.lootCache[botRole].stimItems = stimItems;
         this.lootCache[botRole].grenadeItems = grenadeItems;
 
@@ -429,6 +481,16 @@ export class BotLootCacheService
         return ("ThrowType" in props);
     }
 
+    protected isFood(tpl: string): boolean
+    {
+        return this.itemHelper.isOfBaseclass(tpl, BaseClasses.FOOD);
+    }
+
+    protected isDrink(tpl: string): boolean
+    {
+        return this.itemHelper.isOfBaseclass(tpl, BaseClasses.DRINK);
+    }
+
     /**
      * Check if a bot type exists inside the loot cache
      * @param botRole role to check for
@@ -455,6 +517,8 @@ export class BotLootCacheService
             specialItems: {},
             grenadeItems: {},
             drugItems: {},
+            foodItems: {},
+            drinkItems: {},
             healingItems: {},
             stimItems: {},
         };

@@ -98,6 +98,10 @@ export class BotLootGenerator
         );
         const healingItemCount = Number(this.weightedRandomHelper.getWeightedValue<number>(itemCounts.healing.weights));
         const drugItemCount = Number(this.weightedRandomHelper.getWeightedValue<number>(itemCounts.drugs.weights));
+
+        const foodItemCount = Number(this.weightedRandomHelper.getWeightedValue<number>(itemCounts.food.weights));
+        const drinkItemCount = Number(this.weightedRandomHelper.getWeightedValue<number>(itemCounts.drink.weights));
+
         const stimItemCount = Number(this.weightedRandomHelper.getWeightedValue<number>(itemCounts.stims.weights));
         const grenadeCount = Number(this.weightedRandomHelper.getWeightedValue<number>(itemCounts.grenades.weights));
 
@@ -138,6 +142,30 @@ export class BotLootGenerator
             this.botLootCacheService.getLootFromCache(botRole, isPmc, LootCacheType.DRUG_ITEMS, botJsonTemplate),
             containersBotHasAvailable,
             drugItemCount,
+            botInventory,
+            botRole,
+            null,
+            0,
+            isPmc,
+        );
+
+        // Food
+        this.addLootFromPool(
+            this.botLootCacheService.getLootFromCache(botRole, isPmc, LootCacheType.FOOD_ITEMS, botJsonTemplate),
+            containersBotHasAvailable,
+            foodItemCount,
+            botInventory,
+            botRole,
+            null,
+            0,
+            isPmc,
+        );
+
+        // Drink
+        this.addLootFromPool(
+            this.botLootCacheService.getLootFromCache(botRole, isPmc, LootCacheType.DRINK_ITEMS, botJsonTemplate),
+            containersBotHasAvailable,
+            drinkItemCount,
             botInventory,
             botRole,
             null,
@@ -275,19 +303,6 @@ export class BotLootGenerator
             { "5d02797c86f774203f38e30a": 1 },
             [EquipmentSlots.SECURED_CONTAINER],
             1,
-            botInventory,
-            botRole,
-            null,
-            0,
-            true,
-        );
-
-        // eTG regen stim
-        this.addLootFromPool(
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            { "5c0e534186f7747fa1419867": 1 },
-            [EquipmentSlots.SECURED_CONTAINER],
-            2,
             botInventory,
             botRole,
             null,

@@ -2188,7 +2188,7 @@
     "Basuro",
     "Bepis",
     "Baliston",
-    "Pessin",
+    "Crow",
     "Aki-chan",
     "Fin",
     "Gatsu66",
@@ -2481,9 +2481,11 @@
     "Brin",
     "Belette",
     "Agnotology",
-    "All_Heil_Lord_Ppepe",
-	"ixcetotis",
-	"btdc00"
+    "All_Heil_Lord_Pepe",
+    "ixcetotis",
+    "btdc00",
+    "Bnuy",
+    "Choccy"
   ],
   "generation": {
     "items": {
@@ -2509,10 +2511,26 @@
         },
         "whitelist": []
       },
+	  "food": {
+        "weights": {
+          "0": 6,
+          "1": 5,
+          "2": 2
+        },
+        "whitelist": []
+      },
+	  "drink": {
+        "weights": {
+          "0": 6,
+          "1": 5,
+          "2": 1
+        },
+        "whitelist": []
+      },
       "grenades": {
         "weights": {
-          "0": 1,
-          "1": 4,
+          "0": 2,
+          "1": 6,
           "2": 5,
           "3": 2,
           "4": 1
@@ -2988,9 +3006,9 @@
         "5ac66d9b5acfc4001633997a": 5,
         "5ae08f0a5acfc408fb1398a1": 4,
         "5b0bbe4e5acfc40dc528a72d": 4,
-        "5ba26383d4351e00334c93d9": 5,
+        "5ba26383d4351e00334c93d9": 4,
         "5bb2475ed4351e00853264e3": 4,
-        "5bd70322209c4d00d7167b8f": 5,
+        "5bd70322209c4d00d7167b8f": 4,
         "5beed0f50db834001c062b12": 3,
         "5bf3e03b0db834001d2c4a9c": 5,
         "5bf3e0490db83400196199af": 5,

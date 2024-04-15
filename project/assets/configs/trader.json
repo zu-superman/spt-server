@@ -157,7 +157,7 @@
             "543be6564bdc2df4348b4568": 0,
             "5448ecbe4bdc2d60728b4568": 0,
             "5671435f4bdc2d96058b4569": 0,
-            "543be5cb4bdc2deb348b4568": 3,
+            "543be5cb4bdc2deb348b4568": 5,
             "5448e53e4bdc2d60728b4567": 7
         },
         "preventDuplicateOffersOfCategory": [
@@ -319,6 +319,7 @@
             "left_side_plate": 75,
             "right_side_plate": 75
         },
+        "ammoMaxPenLimit": 20,
         "blacklistSeasonalItems": true,
         "blacklist": [
             "5c164d2286f774194c5e69fa",
@@ -342,7 +343,8 @@
             "5a341c4086f77401f2541505",
             "5422acb9af1c889c16000029",
             "64d0b40fbe2eed70e254e2d4",
-            "5fc22d7c187fea44d52eda44"
+            "5fc22d7c187fea44d52eda44",
+            "646372518610c40fc20204e8"
         ],
         "coopExtractGift": {
             "sendGift": true,
@@ -351,7 +353,11 @@
                 "5da89b3a86f7742f9026cb83 0"
             ],
             "giftExpiryHours": 168,
-            "presetCount": {
+            "weaponPresetCount": {
+                "min": 0,
+                "max": 0
+            },
+            "armorPresetCount": {
                 "min": 0,
                 "max": 0
             },

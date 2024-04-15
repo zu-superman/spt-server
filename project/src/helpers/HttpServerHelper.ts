@@ -32,12 +32,12 @@ export class HttpServerHelper
     }
 
     /**
-     * Combine ip and port into url
+     * Combine ip and port into address
      * @returns url
      */
     public buildUrl(): string
     {
-        return `${this.httpConfig.ip}:${this.httpConfig.port}`;
+        return `${this.httpConfig.backendIp}:${this.httpConfig.backendPort}`;
     }
 
     /**

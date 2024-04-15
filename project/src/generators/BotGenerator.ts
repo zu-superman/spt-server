@@ -258,13 +258,15 @@ export class BotGenerator
      * @param botJsonTemplate x.json from database
      * @param botGenerationDetails
      * @param botRole role of bot e.g. assault
+     * @param sessionId profile session id
      * @returns Nickname for bot
      */
+    // TODO: Remove sessionId parameter from this function in v3.9.0
     protected generateBotNickname(
         botJsonTemplate: IBotType,
         botGenerationDetails: BotGenerationDetails,
         botRole: string,
-        sessionId: string,
+        sessionId?: string, // @deprecated as of v3.8.1
     ): string
     {
         const isPlayerScav = botGenerationDetails.isPlayerScav;
@@ -273,9 +275,9 @@ export class BotGenerator
             this.randomUtil.getArrayValue(botJsonTemplate.lastName) || ""
         }`;
         name = name.trim();
-        const playerProfile = this.profileHelper.getPmcProfile(sessionId);
 
-        // Simulate bot looking like a Player scav with the pmc name in brackets
+        // Simulate bot looking like a player scav with the PMC name in brackets.
+        // E.g. "ScavName (PMCName)"
         if (botRole === "assault" && this.randomUtil.getChance100(this.botConfig.chanceAssaultScavHasPlayerScavName))
         {
             if (isPlayerScav)
@@ -300,7 +302,7 @@ export class BotGenerator
         if (botGenerationDetails.isPmc && botGenerationDetails.allPmcsHaveSameNameAsPlayer)
         {
             const prefix = this.localisationService.getRandomTextThatMatchesPartialKey("pmc-name_prefix_");
-            name = `${prefix} ${botGenerationDetails.playerName}`;
+            name = `${prefix} ${name}`;
         }
 
         return name;

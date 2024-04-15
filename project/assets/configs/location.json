@@ -1146,6 +1146,7 @@
     "minFillStaticMagazinePercent": 50,
     "allowDuplicateItemsInStaticContainers": true,
     "magazineLootHasAmmoChancePercent": 50,
+	"staticMagazineLootHasAmmoChancePercent": 0,
     "looseLootBlacklist": {},
     "scavRaidTimeSettings": {
         "settings": {

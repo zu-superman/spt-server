@@ -114,8 +114,8 @@ export class ModCompilerService
             if (output.sourceMapText)
             {
                 output.outputText = output.outputText.replace(
-                    "//# sourceMappingURL=module.js.map",
-                    `//# sourceMappingURL=${parsedDestPath.base}.map`,
+                    "//# sourceMappingURL\=module.js.map",
+                    `//# sourceMappingURL\=${parsedDestPath.base}.map`,
                 );
 
                 const sourceMap = JSON.parse(output.sourceMapText);

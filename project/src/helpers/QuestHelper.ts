@@ -731,16 +731,20 @@ export class QuestHelper
             repeatableType.activeQuests
         ).find((activeQuest) => activeQuest._id === failRequest.qid);
 
-        if (matchingRepeatableQuest || quest)
+        // Quest found and no repeatable found
+        if (quest && !matchingRepeatableQuest)
         {
-            this.mailSendService.sendLocalisedNpcMessageToPlayer(
-                sessionID,
-                this.traderHelper.getTraderById(quest?.traderId ?? matchingRepeatableQuest?.traderId), // Can be null when repeatable quest has been moved to inactiveQuests
-                MessageType.QUEST_FAIL,
-                quest.failMessageText,
-                questRewards,
-                this.timeUtil.getHoursAsSeconds(this.questConfig.redeemTime),
-            );
+            if (quest.failMessageText.trim().length > 0)
+            {
+                this.mailSendService.sendLocalisedNpcMessageToPlayer(
+                    sessionID,
+                    this.traderHelper.getTraderById(quest?.traderId ?? matchingRepeatableQuest?.traderId), // Can be null when repeatable quest has been moved to inactiveQuests
+                    MessageType.QUEST_FAIL,
+                    quest.failMessageText,
+                    questRewards,
+                    this.timeUtil.getHoursAsSeconds(this.questConfig.redeemTime),
+                );
+            }
         }
 
         output.profileChanges[sessionID].quests.push(...this.failedUnlocked(failRequest.qid, sessionID));

@@ -66,15 +66,6 @@ export class InraidCallbacks
     }
 
     /**
-     * Handle singleplayer/settings/weapon/durability
-     * @returns
-     */
-    public getWeaponDurability(): string
-    {
-        return this.httpResponse.noBody(this.inraidController.getInraidConfig().save.durability);
-    }
-
-    /**
      * Handle singleplayer/airdrop/config
      * @returns JSON as string
      */

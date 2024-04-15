@@ -196,7 +196,7 @@ export class InsuranceController
             !this.itemHelper.isAttachmentAttached(item)
         );
 
-        // Process all items that are not attached, attachments. Those are handled separately, by value.
+        // Process all items that are not attached, attachments; those are handled separately, by value.
         if (hasRegularItems)
         {
             this.processRegularItems(insured, toDelete, parentAttachmentsMap);

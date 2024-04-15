@@ -42,5 +42,4 @@ export interface Save
 {
     /** Should loot gained from raid be saved */
     loot: boolean;
-    durability: boolean;
 }

@@ -1,4 +1,4 @@
-import { ICommandoCommand } from "@spt-aki/helpers/Dialogue/Commando/ICommandoCommand";
+import { IChatCommand } from "@spt-aki/helpers/Dialogue/Commando/IChatCommand";
 import { ISptCommand } from "@spt-aki/helpers/Dialogue/Commando/SptCommands/ISptCommand";
 import { ISendMessageRequest } from "@spt-aki/models/eft/dialog/ISendMessageRequest";
 import { IUserDialogInfo } from "@spt-aki/models/eft/profile/IAkiProfile";
@@ -8,7 +8,7 @@ import { ConfigServer } from "@spt-aki/servers/ConfigServer";
 import { inject, injectAll, injectable } from "tsyringe";
 
 @injectable()
-export class SptCommandoCommands implements ICommandoCommand
+export class SptCommandoCommands implements IChatCommand
 {
     constructor(
         @inject("ConfigServer") protected configServer: ConfigServer,
@@ -31,7 +31,7 @@ export class SptCommandoCommands implements ICommandoCommand
     {
         if (this.sptCommands.some((c) => c.getCommand() === command.getCommand()))
         {
-            throw new Error(`The command ${command.getCommand()} being registered for SPT Commands already exists!`);
+            throw new Error(`The command "${command.getCommand()}" attempting to be registered already exists.`);
         }
         this.sptCommands.push(command);
     }
