@@ -661,6 +661,12 @@ export class InraidController
         const pmcData = serverProfile.characters.pmc;
 
         const dialogueTemplates = this.databaseServer.getTables().traders[traderId].dialogue;
+        if (!dialogueTemplates)
+        {
+            this.logger.error(`Unable to deliver items as trader ${traderId} has no "dialogue" data`);
+
+            return;
+        }
         const messageId = this.randomUtil.getArrayValue(dialogueTemplates.itemsDelivered);
         const messageStoreTime = this.timeUtil.getHoursAsSeconds(this.traderConfig.fence.btrDeliveryExpireHours);
 
