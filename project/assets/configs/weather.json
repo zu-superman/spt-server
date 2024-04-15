@@ -1,5 +1,6 @@
 {
     "acceleration": 7,
+    "forceWinterEvent": false,
     "weather": {
         "clouds": {
             "values": [
@@ -99,56 +100,5 @@
             "min": 760,
             "max": 764
         }
-    },
-	"seasonDates": [
-		{
-			"seasonType": 0,
-			"name": "SUMMER",
-			"startDay": "2",
-            "startMonth": "5",
-            "endDay": "1",
-            "endMonth": "8"
-		},
-		{
-			"seasonType": 1,
-			"name": "AUTUMN",
-			"startDay": "2",
-            "startMonth": "8",
-            "endDay": "1",
-            "endMonth": "11"
-		},
-		{
-			"seasonType": 2,
-			"name": "WINTER_END",
-			"startDay": "2",
-            "startMonth": "11",
-            "endDay": "31",
-            "endMonth": "12"
-		},
-		{
-			"seasonType": 2,
-			"name": "WINTER_START",
-			"startDay": "1",
-            "startMonth": "1",
-            "endDay": "1",
-            "endMonth": "3"
-		},
-		{
-			"seasonType": 3,
-			"name": "SPRING",
-			"startDay": "2",
-            "startMonth": "3",
-            "endDay": "1",
-            "endMonth": "5"
-		},
-		{
-			"seasonType": 4,
-			"name": "STORM",
-			"startDay": "24",
-            "startMonth": "10",
-            "endDay": "4",
-            "endMonth": "11"
-		}
-	],
-	"overrideSeason": null
+    }
 }

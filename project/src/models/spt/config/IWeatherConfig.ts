@@ -1,5 +1,4 @@
 import { MinMax } from "@spt-aki/models/common/MinMax";
-import { Season } from "@spt-aki/models/enums/Season";
 import { WindDirection } from "@spt-aki/models/enums/WindDirection";
 import { IBaseConfig } from "@spt-aki/models/spt/config/IBaseConfig";
 
@@ -8,18 +7,7 @@ export interface IWeatherConfig extends IBaseConfig
     kind: "aki-weather";
     acceleration: number;
     weather: Weather;
-    seasonDates: ISeasonDateTimes[];
-    overrideSeason?: Season;
-}
-
-export interface ISeasonDateTimes
-{
-    seasonType: Season;
-    name: string;
-    startDay: number;
-    startMonth: number;
-    endDay: number;
-    endMonth: number;
+    forceWinterEvent: boolean;
 }
 
 export interface Weather

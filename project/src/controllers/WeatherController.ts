@@ -24,7 +24,13 @@ export class WeatherController
     /** Handle client/weather */
     public generate(): IWeatherData
     {
-        let result: IWeatherData = { acceleration: 0, time: "", date: "", weather: null, season: 1 }; // defaults, hydrated below
+        let result: IWeatherData = {
+            acceleration: 0,
+            time: "",
+            date: "",
+            weather: null,
+            winterEventEnabled: this.weatherConfig.forceWinterEvent,
+        };
 
         result = this.weatherGenerator.calculateGameTime(result);
         result.weather = this.weatherGenerator.generateWeather();

@@ -7,7 +7,6 @@ import { ILocation } from "@spt-aki/models/eft/common/ILocation";
 import { BossLocationSpawn } from "@spt-aki/models/eft/common/ILocationBase";
 import { Inventory } from "@spt-aki/models/eft/common/tables/IBotType";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
-import { Season } from "@spt-aki/models/enums/Season";
 import { SeasonalEventType } from "@spt-aki/models/enums/SeasonalEventType";
 import { IHttpConfig } from "@spt-aki/models/spt/config/IHttpConfig";
 import { IQuestConfig } from "@spt-aki/models/spt/config/IQuestConfig";
@@ -257,31 +256,6 @@ export class SeasonalEventService
                 }
             }
         }
-    }
-
-    public getActiveWeatherSeason(): Season
-    {
-        const currentDate = new Date();
-        for (const seasonRange of this.weatherConfig.seasonDates)
-        {
-            // Figure out start and end dates to get range of season
-            const eventStartDate = new Date(
-                currentDate.getFullYear(),
-                seasonRange.startMonth - 1, // Month value starts at 0
-                seasonRange.startDay,
-            );
-            const eventEndDate = new Date(currentDate.getFullYear(), seasonRange.endMonth - 1, seasonRange.endDay);
-
-            // Does todays date fit inside the above range
-            if (currentDate >= eventStartDate && currentDate <= eventEndDate)
-            {
-                return seasonRange.seasonType;
-            }
-        }
-
-        this.logger.warning("Unable to find a season using current date, defaulting to Summer");
-
-        return Season.SUMMER;
     }
 
     /**
@@ -623,6 +597,6 @@ export class SeasonalEventService
 
     public enableSnow(): void
     {
-        this.weatherConfig.overrideSeason = Season.WINTER;
+        this.weatherConfig.forceWinterEvent = true;
     }
 }

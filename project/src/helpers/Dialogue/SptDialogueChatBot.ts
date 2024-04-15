@@ -7,7 +7,6 @@ import { IUserDialogInfo } from "@spt-aki/models/eft/profile/IAkiProfile";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { GiftSentResult } from "@spt-aki/models/enums/GiftSentResult";
 import { MemberCategory } from "@spt-aki/models/enums/MemberCategory";
-import { Season } from "@spt-aki/models/enums/Season";
 import { ICoreConfig } from "@spt-aki/models/spt/config/ICoreConfig";
 import { IWeatherConfig } from "@spt-aki/models/spt/config/IWeatherConfig";
 import { ConfigServer } from "@spt-aki/servers/ConfigServer";
@@ -154,7 +153,7 @@ export class SptDialogueChatBot implements IDialogueChatBot
 
         if (request.text.toLowerCase() === "itsonlysnowalan")
         {
-            this.weatherConfig.overrideSeason = Season.WINTER;
+            this.weatherConfig.forceWinterEvent = true;
 
             this.mailSendService.sendUserMessageToPlayer(
                 sessionId,
