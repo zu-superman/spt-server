@@ -184,6 +184,7 @@ export interface IExp
     kill: IKill;
     level: ILevel;
     loot_attempts: ILootAttempt[];
+    expForLevelOneDogtag: number;
     expForLockedDoorOpen: number;
     expForLockedDoorBreach: number;
     triggerMult: number;
@@ -1116,12 +1117,26 @@ export interface IBTRSettings
 
 export interface IBtrMapConfig
 {
+    BtrSkin: string;
+    CheckSurfaceForWheelsTimer: number;
+    DiameterWheel: number;
+    HeightWheel: number;
+    HeightWheelMaxPosLimit: number;
+    HeightWheelMinPosLimit: number;
+    HeightWheelOffset: number;
+    SnapToSurfaceWheelsSpeed: number;
+    SuspensionDamperStiffness: number;
+    SuspensionRestLength: number;
+    SuspensionSpringStiffness: number;
+    SuspensionTravel: number;
+    SuspensionWheelRadius: number;
     mapID: string;
-    pathsConfigurations: IBtrMapConfig[];
+    pathsConfigurations: IPathConfig[];
 }
 
-export interface IBtrMapConfig
+export interface IPathConfig
 {
+    active: boolean;
     id: string;
     enterPoint: string;
     exitPoint: string;
@@ -1141,6 +1156,7 @@ export interface ISquadSettings
 export interface IInsurance
 {
     MaxStorageTimeInHour: number;
+    CoefOfHavingMarkOfUnknown: number;
 }
 
 export interface ISkillsSettings
@@ -1628,6 +1644,7 @@ export interface IFenceSettings
 
 export interface IFenceLevel
 {
+    ReachOnMarkOnUnknowns: boolean;
     SavageCooldownModifier: number;
     ScavCaseTimeModifier: number;
     PaidExitCostModifier: number;
