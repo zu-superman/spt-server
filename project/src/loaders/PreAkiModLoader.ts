@@ -348,12 +348,12 @@ export class PreAkiModLoader implements IModLoader
             return false;
         }
 
-        // Error and prevent loading if semver is not satisfied
+        // Warning and allow loading if semver is not satisfied
         if (!semver.satisfies(akiVersion, mod.akiVersion))
         {
-            this.logger.error(this.localisationService.getText("modloader-outdated_akiversion_field", modName));
+            this.logger.warning(this.localisationService.getText("modloader-outdated_akiversion_field", modName));
 
-            return false;
+            return true;
         }
 
         return true;
