@@ -15,8 +15,8 @@
     }
   ],
   "Area": 0,
-  "AveragePlayTime": 50,
-  "AveragePlayerLevel": 40,
+  "AveragePlayTime": 35,
+  "AveragePlayerLevel": 20,
   "Banners": [],
   "BossLocationSpawn": [],
   "BotAssault": 100,
@@ -49,7 +49,7 @@
   "DisabledScavExits": "",
   "EnableCoop": true,
   "Enabled": true,
-  "EscapeTimeLimit": 50,
+  "EscapeTimeLimit": 35,
   "EscapeTimeLimitCoop": 30,
   "ExitZones": {
     "$oid": "5c82534488a45046451a2386"
@@ -5776,7 +5776,7 @@
   "UnixDateTime": 1621511450,
   "_Id": "653e6760052c01c1c805532f",
   "doors": [],
-  "exit_access_time": 40,
+  "exit_access_time": 35,
   "exit_count": 1,
   "exit_time": 2,
   "exits": [
