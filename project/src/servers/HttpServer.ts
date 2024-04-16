@@ -82,8 +82,7 @@ export class HttpServer
 
         if (this.httpConfig.logRequests)
         {
-            // TODO: Extend to include 192.168 / 10.10 ranges or check subnet
-            const isLocalRequest = req.socket.remoteAddress?.startsWith("127.0.0");
+            const isLocalRequest = this.isLocalRequest(req.socket.remoteAddress);
             if (typeof isLocalRequest !== "undefined")
             {
                 if (isLocalRequest)
@@ -108,6 +107,23 @@ export class HttpServer
                 break;
             }
         }
+    }
+
+    /**
+     * Check against hardcoded values that determine its from a local address
+     * @param remoteAddress Address to check
+     * @returns True if its local
+     */
+    protected isLocalRequest(remoteAddress: string): boolean
+    {
+        if (!remoteAddress)
+        {
+            return undefined;
+        }
+
+        return remoteAddress.startsWith("127.0.0")
+            || remoteAddress.startsWith("192.168.")
+            || remoteAddress.startsWith("localhost");
     }
 
     protected getCookies(req: IncomingMessage): Record<string, string>
