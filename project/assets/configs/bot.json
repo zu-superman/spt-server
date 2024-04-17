@@ -784,6 +784,7 @@
             "lightIsActiveDayChancePercent": 35,
             "lightIsActiveNightChancePercent": 95,
             "laserIsActiveChancePercent": 95,
+			"forceStock": true,
             "weaponModLimits": {
                 "scopeLimit": 1,
                 "lightLaserLimit": 1
@@ -796,6 +797,7 @@
             "lightIsActiveDayChancePercent": 35,
             "lightIsActiveNightChancePercent": 95,
             "laserIsActiveChancePercent": 95,
+            "forceStock": true,
             "weaponModLimits": {
                 "scopeLimit": 1,
                 "lightLaserLimit": 1
