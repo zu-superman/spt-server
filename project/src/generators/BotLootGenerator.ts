@@ -102,6 +102,10 @@ export class BotLootGenerator
         const foodItemCount = Number(this.weightedRandomHelper.getWeightedValue<number>(itemCounts.food.weights));
         const drinkItemCount = Number(this.weightedRandomHelper.getWeightedValue<number>(itemCounts.drink.weights));
 
+        const currencyItemCount = Number(
+            this.weightedRandomHelper.getWeightedValue<number>(itemCounts.currency.weights),
+        );
+
         const stimItemCount = Number(this.weightedRandomHelper.getWeightedValue<number>(itemCounts.stims.weights));
         const grenadeCount = Number(this.weightedRandomHelper.getWeightedValue<number>(itemCounts.grenades.weights));
 
@@ -166,6 +170,18 @@ export class BotLootGenerator
             this.botLootCacheService.getLootFromCache(botRole, isPmc, LootCacheType.DRINK_ITEMS, botJsonTemplate),
             containersBotHasAvailable,
             drinkItemCount,
+            botInventory,
+            botRole,
+            null,
+            0,
+            isPmc,
+        );
+
+        // Currency
+        this.addLootFromPool(
+            this.botLootCacheService.getLootFromCache(botRole, isPmc, LootCacheType.CURRENCY_ITEMS, botJsonTemplate),
+            containersBotHasAvailable,
+            currencyItemCount,
             botInventory,
             botRole,
             null,
