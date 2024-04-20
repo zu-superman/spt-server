@@ -64,7 +64,7 @@ export class AkiHttpListener implements IHttpListener
                     // determine if the payload is compressed. All PUT requests are, and POST requests without
                     // debug = 1 are as well. This should be fixed.
                     // let compressed = req.headers["content-encoding"] === "deflate";
-                    const requestIsCompressed = req.headers.requestcompressed !== "0";
+                    const requestIsCompressed = req.headers.requestcompressed === "1";
                     const requestCompressed = req.method === "PUT" || requestIsCompressed;
 
                     const value = requestCompressed ? zlib.inflateSync(buffer) : buffer;
