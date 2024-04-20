@@ -673,8 +673,8 @@ export class BotGeneratorHelper
     protected itemAllowedInContainer(slotGrid: Grid, itemTpl: string): boolean
     {
         const propFilters = slotGrid._props.filters;
-        const excludedFilter = propFilters[0]?.ExcludedFilter;
-        const filter = propFilters[0]?.Filter;
+        const excludedFilter = propFilters[0]?.ExcludedFilter ?? [];
+        const filter = propFilters[0]?.Filter ?? [];
 
         if (propFilters.length === 0)
         {
