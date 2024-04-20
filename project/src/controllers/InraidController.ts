@@ -110,7 +110,7 @@ export class InraidController
             return;
         }
 
-        profile.inraid.location;
+        profile.inraid.location = info.locationId;
     }
 
     /**
