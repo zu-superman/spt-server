@@ -7,6 +7,7 @@ import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { ICoreConfig } from "@spt-aki/models/spt/config/ICoreConfig";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt-aki/servers/ConfigServer";
+import { HttpServer } from "@spt-aki/servers/HttpServer";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
 import { EncodingUtil } from "@spt-aki/utils/EncodingUtil";
 import { TimeUtil } from "@spt-aki/utils/TimeUtil";
@@ -23,6 +24,7 @@ export class App
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("ConfigServer") protected configServer: ConfigServer,
         @inject("EncodingUtil") protected encodingUtil: EncodingUtil,
+        @inject("HttpServer") protected httpServer: HttpServer,
         @injectAll("OnLoad") protected onLoadComponents: OnLoad[],
         @injectAll("OnUpdate") protected onUpdateComponents: OnUpdate[],
     )
@@ -40,15 +42,15 @@ export class App
         this.logger.debug(`RAM: ${(os.totalmem() / 1024 / 1024 / 1024).toFixed(2)}GB`);
         this.logger.debug(`PATH: ${this.encodingUtil.toBase64(process.argv[0])}`);
         this.logger.debug(`PATH: ${this.encodingUtil.toBase64(process.execPath)}`);
-        this.logger.debug(`Server: ${this.coreConfig.akiVersion}`);
-        if (this.coreConfig.buildTime)
+        this.logger.debug(`Server: ${globalThis.G_AKIVERSION || this.coreConfig.akiVersion}`);
+        if (globalThis.G_BUILDTIME)
         {
-            this.logger.debug(`Date: ${this.coreConfig.buildTime}`);
+            this.logger.debug(`Date: ${globalThis.G_BUILDTIME}`);
         }
 
-        if (this.coreConfig.commit)
+        if (globalThis.G_COMMIT)
         {
-            this.logger.debug(`Commit: ${this.coreConfig.commit}`);
+            this.logger.debug(`Commit: ${globalThis.G_COMMIT}`);
         }
 
         for (const onLoad of this.onLoadComponents)
@@ -64,6 +66,12 @@ export class App
 
     protected async update(onUpdateComponents: OnUpdate[]): Promise<void>
     {
+        // If the server has failed to start, skip any update calls
+        if (!this.httpServer.isStarted())
+        {
+            return;
+        }
+
         for (const updateable of onUpdateComponents)
         {
             let success = false;

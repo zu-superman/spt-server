@@ -11,6 +11,7 @@ export interface IBotLootCache
     drugItems: Record<string, number>;
     foodItems: Record<string, number>;
     drinkItems: Record<string, number>;
+    currencyItems: Record<string, number>;
     stimItems: Record<string, number>;
     grenadeItems: Record<string, number>;
 }
@@ -29,4 +30,5 @@ export enum LootCacheType
     GRENADE_ITEMS = "GrenadeItems",
     FOOD_ITEMS = "FoodItems",
     DRINK_ITEMS = "DrinkItems",
+    CURRENCY_ITEMS = "CurrencyItems",
 }

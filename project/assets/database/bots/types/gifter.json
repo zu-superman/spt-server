@@ -2064,6 +2064,14 @@
         },
         "whitelist": []
       },
+      "currency": {
+        "weights": {
+          "0": 20,
+          "1": 5,
+          "2": 1
+        },
+        "whitelist": []
+      },
       "drink": {
         "weights": {
           "0": 10,

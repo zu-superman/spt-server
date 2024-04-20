@@ -56,13 +56,11 @@ export class RagfairPriceService implements OnLoad
         if (!this.generatedStaticPrices)
         {
             this.generateStaticPrices();
-            this.generatedStaticPrices = true;
         }
 
         if (!this.generatedDynamicPrices)
         {
             this.generateDynamicPrices();
-            this.generatedDynamicPrices = true;
         }
     }
 
@@ -84,14 +82,18 @@ export class RagfairPriceService implements OnLoad
         {
             this.prices.static[item._id] = Math.round(this.handbookHelper.getTemplatePrice(item._id));
         }
+
+        this.generatedStaticPrices = true;
     }
 
     /**
      * Create a dictionary and store prices from prices.json in it
      */
-    protected generateDynamicPrices(): void
+    public generateDynamicPrices(): void
     {
         Object.assign(this.prices.dynamic, this.databaseServer.getTables().templates.prices);
+
+        this.generatedDynamicPrices = true;
     }
 
     /**
@@ -428,9 +430,7 @@ export class RagfairPriceService implements OnLoad
         {
             // const itemDetails = this.itemHelper.getItem(itemTpl);
             // this.logger.debug(`item below handbook price ${itemDetails[1]._name} handbook: ${itemHandbookPrice} flea: ${itemPrice} ${priceDifferencePercent}%`);
-            itemPrice = Math.round(
-                itemHandbookPrice * this.ragfairConfig.dynamic.offerAdjustment.handbookPriceMultipier,
-            );
+            return Math.round(itemHandbookPrice * this.ragfairConfig.dynamic.offerAdjustment.handbookPriceMultipier);
         }
 
         return itemPrice;

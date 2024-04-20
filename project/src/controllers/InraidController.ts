@@ -96,7 +96,21 @@ export class InraidController
     public addPlayer(sessionID: string, info: IRegisterPlayerRequestData): void
     {
         this.applicationContext.addValue(ContextVariableType.REGISTER_PLAYER_REQUEST, info);
-        this.saveServer.getProfile(sessionID).inraid.location = info.locationId;
+        const profile = this.saveServer.getProfile(sessionID);
+        if (!profile)
+        {
+            this.logger.error(`No profile found with Id of: ${sessionID}`);
+
+            return;
+        }
+        if (!profile.inraid)
+        {
+            profile.inraid = { character: sessionID, location: info.locationId };
+
+            return;
+        }
+
+        profile.inraid.location = info.locationId;
     }
 
     /**
@@ -661,6 +675,12 @@ export class InraidController
         const pmcData = serverProfile.characters.pmc;
 
         const dialogueTemplates = this.databaseServer.getTables().traders[traderId].dialogue;
+        if (!dialogueTemplates)
+        {
+            this.logger.error(`Unable to deliver items as trader ${traderId} has no "dialogue" data`);
+
+            return;
+        }
         const messageId = this.randomUtil.getArrayValue(dialogueTemplates.itemsDelivered);
         const messageStoreTime = this.timeUtil.getHoursAsSeconds(this.traderConfig.fence.btrDeliveryExpireHours);
 

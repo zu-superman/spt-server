@@ -95,6 +95,9 @@ export class BotLootCacheService
             case LootCacheType.DRINK_ITEMS:
                 result = this.lootCache[botRole].drinkItems;
                 break;
+            case LootCacheType.CURRENCY_ITEMS:
+                result = this.lootCache[botRole].currencyItems;
+                break;
             case LootCacheType.STIM_ITEMS:
                 result = this.lootCache[botRole].stimItems;
                 break;
@@ -276,6 +279,25 @@ export class BotLootCacheService
             }
         }
 
+        // Assign whitelisted currency to bot if any exist
+        const currencyItems: Record<string, number> =
+            (Object.keys(botJsonTemplate.generation.items.currency.whitelist)?.length > 0)
+                ? botJsonTemplate.generation.items.currency.whitelist
+                : {};
+
+        // No currency whitelist, find and assign from combined item pool
+        if (Object.keys(currencyItems).length === 0)
+        {
+            for (const [tpl, weight] of Object.entries(combinedLootPool))
+            {
+                const itemTemplate = this.itemHelper.getItem(tpl)[1];
+                if (this.itemHelper.isOfBaseclass(itemTemplate._id, BaseClasses.MONEY))
+                {
+                    currencyItems[tpl] = weight;
+                }
+            }
+        }
+
         // Assign whitelisted stims to bot if any exist
         const stimItems: Record<string, number> =
             (Object.keys(botJsonTemplate.generation.items.stims.whitelist)?.length > 0)
@@ -331,6 +353,7 @@ export class BotLootCacheService
                 || this.isGrenade(itemTemplate._props)
                 || this.isFood(itemTemplate._id)
                 || this.isDrink(itemTemplate._id)
+                || this.isCurrency(itemTemplate._id)
             )
             {
                 // Is type we dont want as backpack loot, skip
@@ -357,6 +380,7 @@ export class BotLootCacheService
                 || this.isGrenade(itemTemplate._props)
                 || this.isFood(itemTemplate._id)
                 || this.isDrink(itemTemplate._id)
+                || this.isCurrency(itemTemplate._id)
                 || !("Height" in itemTemplate._props) // lacks height
                 || !("Width" in itemTemplate._props) // lacks width
             )
@@ -384,6 +408,7 @@ export class BotLootCacheService
                 || this.isGrenade(itemTemplate._props)
                 || this.isFood(itemTemplate._id)
                 || this.isDrink(itemTemplate._id)
+                || this.isCurrency(itemTemplate._id)
             )
             {
                 continue;
@@ -396,6 +421,7 @@ export class BotLootCacheService
         this.lootCache[botRole].drugItems = drugItems;
         this.lootCache[botRole].foodItems = foodItems;
         this.lootCache[botRole].drinkItems = drinkItems;
+        this.lootCache[botRole].currencyItems = currencyItems;
         this.lootCache[botRole].stimItems = stimItems;
         this.lootCache[botRole].grenadeItems = grenadeItems;
 
@@ -491,6 +517,11 @@ export class BotLootCacheService
         return this.itemHelper.isOfBaseclass(tpl, BaseClasses.DRINK);
     }
 
+    protected isCurrency(tpl: string): boolean
+    {
+        return this.itemHelper.isOfBaseclass(tpl, BaseClasses.MONEY);
+    }
+
     /**
      * Check if a bot type exists inside the loot cache
      * @param botRole role to check for
@@ -519,6 +550,7 @@ export class BotLootCacheService
             drugItems: {},
             foodItems: {},
             drinkItems: {},
+            currencyItems: {},
             healingItems: {},
             stimItems: {},
         };
