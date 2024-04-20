@@ -393,7 +393,12 @@ export class FenceService
     protected removeRandomItemFromAssorts(assort: ITraderAssort, rootItems: Item[]): void
     {
         const rootItemToAdjust = this.randomUtil.getArrayValue(rootItems);
-        const itemCountToRemove = this.randomUtil.getInt(1, rootItemToAdjust.upd.StackObjectsCount);
+
+        // Items added by mods may not have a upd object, assume item stack size is 1
+        const stackSize = rootItemToAdjust.upd?.StackObjectsCount ?? 1;
+
+        // Get a random count of the chosen item to remove
+        const itemCountToRemove = this.randomUtil.getInt(1, stackSize);
         if (itemCountToRemove > 1 && itemCountToRemove < rootItemToAdjust.upd.StackObjectsCount)
         { // More than 1 + less then full stack
             // Reduce stack size but keep stack
