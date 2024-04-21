@@ -38,7 +38,8 @@
     "category": [],
     "id_list": [
       "62e910aaf957f2915e0a5e36",
-      "64d0b40fbe2eed70e254e2d4"
+      "64d0b40fbe2eed70e254e2d4",
+      "65ddcc9cfa85b9f17d0dfb07"
     ]
   },
   "location": "Таможня",
@@ -94,7 +95,6 @@
     "currency_coefficient": 1,
     "excluded_category": [],
     "excluded_id_list": [],
-    "price_rate": 0,
     "quality": "1"
   },
   "sell_category": [

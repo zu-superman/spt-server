@@ -8851,7 +8851,13 @@
     }
   ],
   "filter_ex": [],
-  "limits": [],
+  "limits": [
+    {
+      "items": [],
+      "max": 0,
+      "min": 0
+    }
+  ],
   "matching_min_seconds": 60,
   "maxItemCountInLocation": [
     {

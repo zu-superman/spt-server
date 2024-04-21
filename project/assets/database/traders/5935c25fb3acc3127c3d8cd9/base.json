@@ -90,10 +90,8 @@
   "nickname": "Peacekeeper",
   "repair": {
     "availability": false,
-    "currency_coefficient": 0,
     "excluded_category": [],
     "excluded_id_list": [],
-    "price_rate": 0,
     "quality": "2"
   },
   "sell_category": [

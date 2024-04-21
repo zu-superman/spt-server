@@ -8832,7 +8832,15 @@
     }
   ],
   "filter_ex": [],
-  "limits": [],
+  "limits": [
+    {
+      "items": [
+        "6389c8c5dbfd5e4b95197e6b"
+      ],
+      "max": 1,
+      "min": 0
+    }
+  ],
   "matching_min_seconds": 60,
   "maxItemCountInLocation": [],
   "sav_summon_seconds": 60,
