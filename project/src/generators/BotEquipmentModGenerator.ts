@@ -1106,12 +1106,12 @@ export class BotEquipmentModGenerator
     }
 
     /**
-     * Log errors if mod is not compatible with slot
-     * @param modToAdd template of mod to check
-     * @param slotAddedToTemplate slot the item will be placed in
-     * @param modSlot slot the mod will fill
-     * @param parentTemplate template of the mods being added
-     * @param botRole
+     * Check if mod exists in db + is for a required slot
+     * @param modToAdd Db template of mod to check
+     * @param slotAddedToTemplate Slot object the item will be placed as child into
+     * @param modSlot Slot the mod will fill
+     * @param parentTemplate Db template of the mods being added
+     * @param botRole Bots wildspawntype (assault/pmcBot etc)
      * @returns true if valid
      */
     protected isModValidForSlot(
@@ -1122,31 +1122,31 @@ export class BotEquipmentModGenerator
         botRole: string,
     ): boolean
     {
-        const modBeingAddedTemplate = modToAdd[1];
+        const modBeingAddedDbTemplate = modToAdd[1];
 
-        // Mod lacks template item
-        if (!modBeingAddedTemplate)
+        // Mod lacks db template object
+        if (!modBeingAddedDbTemplate)
         {
             this.logger.error(
                 this.localisationService.getText("bot-no_item_template_found_when_adding_mod", {
-                    modId: modBeingAddedTemplate._id,
+                    modId: modBeingAddedDbTemplate?._id ?? "UNKNOWN",
                     modSlot: modSlot,
                 }),
             );
-            this.logger.debug(`Item -> ${parentTemplate._id}; Slot -> ${modSlot}`);
+            this.logger.debug(`Item -> ${parentTemplate?._id}; Slot -> ${modSlot}`);
 
             return false;
         }
 
-        // Mod isn't a valid item
+        // Mod has invalid db item
         if (!modToAdd[0])
         {
-            // Slot must be filled, show warning
+            // Parent slot must be filled but db object is invalid, show warning and return false
             if (slotAddedToTemplate._required)
             {
                 this.logger.warning(
                     this.localisationService.getText("bot-unable_to_add_mod_item_invalid", {
-                        itemName: modBeingAddedTemplate._name,
+                        itemName: modBeingAddedDbTemplate?._name ?? "UNKNOWN",
                         modSlot: modSlot,
                         parentItemName: parentTemplate._name,
                         botRole: botRole,
@@ -1157,6 +1157,7 @@ export class BotEquipmentModGenerator
             return false;
         }
 
+        // Mod was found in db
         return true;
     }
 
