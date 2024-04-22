@@ -387,8 +387,8 @@ export class FenceService
 
     /**
      * Choose an item at random and remove it + mods from assorts
-     * @param assort Items to remove from
-     * @param rootItems Assort root items to pick from to remove
+     * @param assort Trader assort to remove item from
+     * @param rootItems Pool of root items to pick from to remove
      */
     protected removeRandomItemFromAssorts(assort: ITraderAssort, rootItems: Item[]): void
     {
@@ -399,24 +399,34 @@ export class FenceService
 
         // Get a random count of the chosen item to remove
         const itemCountToRemove = this.randomUtil.getInt(1, stackSize);
-        if (itemCountToRemove > 1 && itemCountToRemove < rootItemToAdjust.upd.StackObjectsCount)
-        { // More than 1 + less then full stack
-            // Reduce stack size but keep stack
-            rootItemToAdjust.upd.StackObjectsCount -= itemCountToRemove;
-        }
-        else
+
+        const isEntireStackToBeRemoved = itemCountToRemove === stackSize;
+
+        // Partial stack reduction
+        if (!isEntireStackToBeRemoved)
         {
-            // Remove up item + any mods
-            const itemWithChildren = this.itemHelper.findAndReturnChildrenAsItems(assort.items, rootItemToAdjust._id);
-            for (const itemToDelete of itemWithChildren)
+            if (!rootItemToAdjust.upd)
             {
-                // Delete item from assort items array
-                assort.items.splice(assort.items.indexOf(itemToDelete), 1);
+                rootItemToAdjust.upd = {};
             }
 
-            delete assort.barter_scheme[rootItemToAdjust._id];
-            delete assort.loyal_level_items[rootItemToAdjust._id];
+            // Reduce stack to at smallest, 1
+            rootItemToAdjust.upd.StackObjectsCount -= Math.max(1, itemCountToRemove);
+
+            return;
         }
+
+        // Remove item + child mods (if any)
+        const itemWithChildren = this.itemHelper.findAndReturnChildrenAsItems(assort.items, rootItemToAdjust._id);
+        for (const itemToDelete of itemWithChildren)
+        {
+            // Delete item from assort items array
+            assort.items.splice(assort.items.indexOf(itemToDelete), 1);
+        }
+
+        // Need to remove item from all areas of trader assort
+        delete assort.barter_scheme[rootItemToAdjust._id];
+        delete assort.loyal_level_items[rootItemToAdjust._id];
     }
 
     /**
