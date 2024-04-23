@@ -41,6 +41,8 @@
 	"bot-unable_to_get_bot_fallback_to_assault": "Kan ikke finde bot: %s JSON, ved hjælp af angreb bot som tilbagefald",
 	"bot-weapon_generated_incorrect_using_default": "Våben %s blev genereret forkert, og faldt tilbage til forudindstillede våben se fejl ovenfor",
 	"bot-weapon_missing_magazine_or_chamber": "Våben med tpl: {{weaponId}} har ingen magasin eller kammer - {{botRole}}",
+	"bot-unable_to_find_loot_n_value_for_bot": "Kunne ikke lokalisere loot N værdi for bot: %s, udnytter scav n værdi istedet",
+	"event-unhandled_event": "[UHÅNDTERET EVENT]%s",
 	"executing_startup_callbacks": "Server: udførelse af opstartstilbagekald...",
 	"gameevent-bot_not_found": "addEventGearToScavs() - kan ikke finde bot af typen %s i databasen, spring over",
 	"gameevent-no_gear_data": "Ingen geardata i sæsonhændelser.json config til begivenhed %s",
