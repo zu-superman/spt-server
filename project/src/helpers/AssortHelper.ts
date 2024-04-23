@@ -37,6 +37,8 @@ export class AssortHelper
         flea = false,
     ): ITraderAssort
     {
+        let strippedTraderAssorts = traderAssorts;
+
         // Trader assort does not always contain loyal_level_items
         if (!traderAssorts.loyal_level_items)
         {
@@ -59,11 +61,11 @@ export class AssortHelper
             const questStatusInProfile = this.questHelper.getQuestStatus(pmcProfile, unlockValues.questId);
             if (!unlockValues.status.includes(questStatusInProfile))
             {
-                traderAssorts = this.removeItemFromAssort(traderAssorts, assortId, flea);
+                strippedTraderAssorts = this.removeItemFromAssort(traderAssorts, assortId, flea);
             }
         }
 
-        return traderAssorts;
+        return strippedTraderAssorts;
     }
 
     /**
@@ -108,12 +110,14 @@ export class AssortHelper
      */
     public stripLockedLoyaltyAssort(pmcProfile: IPmcData, traderId: string, assort: ITraderAssort): ITraderAssort
     {
+        let strippedAssort = assort;
+
         // Trader assort does not always contain loyal_level_items
         if (!assort.loyal_level_items)
         {
             this.logger.warning(this.localisationService.getText("assort-missing_loyalty_level_object", traderId));
 
-            return assort;
+            return strippedAssort;
         }
 
         // Remove items restricted by loyalty levels above those reached by the player
@@ -121,11 +125,11 @@ export class AssortHelper
         {
             if (assort.loyal_level_items[itemId] > pmcProfile.TradersInfo[traderId].loyaltyLevel)
             {
-                assort = this.removeItemFromAssort(assort, itemId);
+                strippedAssort = this.removeItemFromAssort(assort, itemId);
             }
         }
 
-        return assort;
+        return strippedAssort;
     }
 
     /**

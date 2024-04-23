@@ -1198,6 +1198,7 @@ export class ItemHelper
         const cartridgeTpl = this.drawAmmoTpl(
             chosenCaliber,
             staticAmmoDist,
+            weapon?._props.defAmmo,
             weapon?._props?.Chambers[0]?._props?.filters[0]?.Filter,
         );
         this.fillMagazineWithCartridge(magazine, magTemplate, cartridgeTpl, minSizePercent);
@@ -1306,12 +1307,14 @@ export class ItemHelper
      * Chose a randomly weighted cartridge that fits
      * @param caliber Desired caliber
      * @param staticAmmoDist Cartridges and thier weights
+     * @param fallbackCartridgeTpl If a cartridge cannot be found in the above staticAmmoDist param, use this instead
      * @param cartridgeWhitelist OPTIONAL whitelist for cartridges
      * @returns Tpl of cartridge
      */
     protected drawAmmoTpl(
         caliber: string,
         staticAmmoDist: Record<string, IStaticAmmoDetails[]>,
+        fallbackCartridgeTpl: string,
         cartridgeWhitelist: string[] = null,
     ): string
     {
@@ -1319,14 +1322,20 @@ export class ItemHelper
         const ammos = staticAmmoDist[caliber];
         if (!ammos)
         {
-            this.logger.error(`Missing caliber data for: ${caliber}`);
+            this.logger.error(
+                `Unable to pick a cartridge for caliber: ${caliber} as staticAmmoDist has no data. using fallback value of ${fallbackCartridgeTpl}`,
+            );
+
+            return fallbackCartridgeTpl;
         }
 
         if (!Array.isArray(ammos))
         {
             this.logger.error(
-                `Unable to pick a cartridge for caliber ${caliber}, chosen staticAmmoDist data is not an array: ${ammos}`,
+                `Unable to pick a cartridge for caliber: ${caliber}, the chosen staticAmmoDist data is not an array. Using fallback value of ${fallbackCartridgeTpl}`,
             );
+
+            return fallbackCartridgeTpl;
         }
 
         for (const icd of ammos)
@@ -1463,7 +1472,6 @@ export class ItemHelper
             const modItemDbDetails = this.getItem(modItemToAdd._tpl)[1];
 
             // Include conflicting items of newly added mod in pool to be used for next mod choice
-            // biome-ignore lint/complexity/noForEach: <explanation>
             modItemDbDetails._props.ConflictingItems.forEach(incompatibleModTpls.add, incompatibleModTpls);
         }
 
@@ -1472,7 +1480,7 @@ export class ItemHelper
 
     /**
      * Get a compatible tpl from the array provided where it is not found in the provided incompatible mod tpls parameter
-     * @param possibleTpls Tpls to randomply choose from
+     * @param possibleTpls Tpls to randomly choose from
      * @param incompatibleModTpls Incompatible tpls to not allow
      * @returns Chosen tpl or null
      */

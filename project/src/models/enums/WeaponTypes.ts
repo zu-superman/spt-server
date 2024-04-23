@@ -15,7 +15,7 @@ export enum Weapons9x39
     AS_VAL = "57c44b372459772d2b39b8ce",
     VSS_VINTOREZ = "57838ad32459774a17445cd2",
     KBP_9A_91 = "644674a13d52156624001fbc",
-    VSK_94 = "645e0c6b3b381ede770e1cc9", 
+    VSK_94 = "645e0c6b3b381ede770e1cc9",
 }
 
 export enum Weapons762x54R
@@ -26,9 +26,9 @@ export enum Weapons762x54R
     MOSIN_SNIPER = "5ae08f0a5acfc408fb1398a1",
     SV_98 = "55801eed4bdc2d89578b4588",
     AVT_40 = "6410733d5dd49d77bd07847e",
-	SVT_40 = "643ea5b23db6f9f57107d9fd",
-	PKM = "64637076203536ad5600c990",
-	PKP = "64ca3d3954fc657e230529cc",
+    SVT_40 = "643ea5b23db6f9f57107d9fd",
+    PKM = "64637076203536ad5600c990",
+    PKP = "64ca3d3954fc657e230529cc",
 }
 
 export enum Weapons762x51
@@ -68,7 +68,7 @@ export enum Weapons762x39
     RD_704 = "628a60ae6b1d481ff772e9c8",
     VPO_136 = "59e6152586f77473dc057aa1",
     RPD = "6513ef33e06849f06c0957ca",
-	RPDN = "65268d8ecb944ff1e90ea385",
+    RPDN = "65268d8ecb944ff1e90ea385",
 }
 
 export enum Weapons762x35
@@ -89,7 +89,7 @@ export enum Weapons556x45
     SCARL_FDE = "618428466ef05c2ce828f218",
     TX15_DML = "5d43021ca4b9362eab4b5e25",
     AUG_A1 = "62e7c4fba689e8c9c50dfc38",
-	AUG_A3 = "63171672192e68c5460cebc5",
+    AUG_A3 = "63171672192e68c5460cebc5",
 }
 
 export enum Weapons545x39
