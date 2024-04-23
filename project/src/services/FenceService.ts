@@ -407,6 +407,7 @@ export class FenceService
         {
             if (!rootItemToAdjust.upd)
             {
+                this.logger.warning(`Fence Item: ${rootItemToAdjust._tpl} lacks a upd object, adding`);
                 rootItemToAdjust.upd = {};
             }
 
