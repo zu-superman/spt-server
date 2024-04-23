@@ -86,16 +86,17 @@ export class BotController
      * Adjust PMC settings to ensure they engage the correct bot types
      * @param type what bot the server is requesting settings for
      * @param diffLevel difficulty level server requested settings for
+     * @param ignoreRaidSettings should raid settings chosen pre-raid be ignored
      * @returns Difficulty object
      */
-    public getBotDifficulty(type: string, diffLevel: string): Difficulty
+    public getBotDifficulty(type: string, diffLevel: string, ignoreRaidSettings = false): Difficulty
     {
         let difficulty = diffLevel.toLowerCase();
 
         const raidConfig = this.applicationContext.getLatestValue(ContextVariableType.RAID_CONFIGURATION)?.getValue<
             IGetRaidConfigurationRequestData
         >();
-        if (!raidConfig)
+        if (!(raidConfig || ignoreRaidSettings))
         {
             this.logger.error(
                 this.localisationService.getText("bot-missing_application_context", "RAID_CONFIGURATION"),
@@ -158,7 +159,7 @@ export class BotController
             result[botType] = {};
             for (const difficulty of botDifficulties)
             {
-                result[botType][difficulty] = this.getBotDifficulty(botType, difficulty);
+                result[botType][difficulty] = this.getBotDifficulty(botType, difficulty, true);
             }
         }
 
