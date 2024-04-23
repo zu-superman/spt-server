@@ -180,7 +180,7 @@ export class FenceService
     ): void
     {
         // Is preset
-        if (item.upd.sptPresetId)
+        if (item.upd?.sptPresetId)
         {
             if (assort.barter_scheme[item._id])
             {
