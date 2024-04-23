@@ -1,10 +1,10 @@
 import { inject, injectable } from "tsyringe";
 
 import { HandbookHelper } from "@spt-aki/helpers/HandbookHelper";
+import { IStaticAmmoDetails } from "@spt-aki/models/eft/common/ILocation";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
 import { InsuredItem } from "@spt-aki/models/eft/common/tables/IBotBase";
 import { Item, Location, Repairable } from "@spt-aki/models/eft/common/tables/IItem";
-import { IStaticAmmoDetails } from "@spt-aki/models/eft/common/tables/ILootBase";
 import { ITemplateItem } from "@spt-aki/models/eft/common/tables/ITemplateItem";
 import { BaseClasses } from "@spt-aki/models/enums/BaseClasses";
 import { EquipmentSlots } from "@spt-aki/models/enums/EquipmentSlots";

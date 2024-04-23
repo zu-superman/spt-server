@@ -10,7 +10,6 @@ export class DatabaseServer
         hideout: undefined,
         locales: undefined,
         locations: undefined,
-        loot: undefined,
         match: undefined,
         templates: undefined,
         traders: undefined,

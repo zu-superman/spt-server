@@ -3,16 +3,18 @@ import { inject, injectable } from "tsyringe";
 import { ContainerHelper } from "@spt-aki/helpers/ContainerHelper";
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { PresetHelper } from "@spt-aki/helpers/PresetHelper";
-import { IContainerMinMax, IStaticContainer } from "@spt-aki/models/eft/common/ILocation";
-import { ILocationBase } from "@spt-aki/models/eft/common/ILocationBase";
-import { ILooseLoot, Spawnpoint, SpawnpointTemplate, SpawnpointsForced } from "@spt-aki/models/eft/common/ILooseLoot";
-import { Item } from "@spt-aki/models/eft/common/tables/IItem";
 import {
+    IContainerMinMax,
+    ILocation,
     IStaticAmmoDetails,
+    IStaticContainer,
     IStaticContainerData,
     IStaticForcedProps,
     IStaticLootDetails,
-} from "@spt-aki/models/eft/common/tables/ILootBase";
+} from "@spt-aki/models/eft/common/ILocation";
+import { ILocationBase } from "@spt-aki/models/eft/common/ILocationBase";
+import { ILooseLoot, Spawnpoint, SpawnpointTemplate, SpawnpointsForced } from "@spt-aki/models/eft/common/ILooseLoot";
+import { Item } from "@spt-aki/models/eft/common/tables/IItem";
 import { BaseClasses } from "@spt-aki/models/enums/BaseClasses";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { Money } from "@spt-aki/models/enums/Money";
@@ -81,8 +83,9 @@ export class LocationGenerator
         const locationId = locationBase.Id.toLowerCase();
 
         const db = this.databaseServer.getTables();
+        const mapData: ILocation = db.locations[locationId];
 
-        const staticWeaponsOnMapClone = this.jsonUtil.clone(db.loot.staticContainers[locationBase.Name]?.staticWeapons);
+        const staticWeaponsOnMapClone = this.jsonUtil.clone(mapData.staticContainers.staticWeapons);
         if (!staticWeaponsOnMapClone)
         {
             this.logger.error(`Unable to find static weapon data for map: ${locationBase.Name}`);
@@ -91,9 +94,7 @@ export class LocationGenerator
         // Add mounted weapons to output loot
         result.push(...staticWeaponsOnMapClone ?? []);
 
-        const allStaticContainersOnMapClone = this.jsonUtil.clone(
-            db.loot.staticContainers[locationBase.Name]?.staticContainers,
-        );
+        const allStaticContainersOnMapClone = this.jsonUtil.clone(mapData.staticContainers.staticContainers);
         if (!allStaticContainersOnMapClone)
         {
             this.logger.error(`Unable to find static container data for map: ${locationBase.Name}`);
@@ -101,7 +102,7 @@ export class LocationGenerator
         const staticRandomisableContainersOnMap = this.getRandomisableContainersOnMap(allStaticContainersOnMapClone);
 
         // Containers that MUST be added to map (quest containers etc)
-        const staticForcedOnMapClone = this.jsonUtil.clone(db.loot.staticContainers[locationBase.Name]?.staticForced);
+        const staticForcedOnMapClone = this.jsonUtil.clone(mapData.staticContainers.staticForced);
         if (!staticForcedOnMapClone)
         {
             this.logger.error(`Unable to find forced static data for map: ${locationBase.Name}`);
@@ -111,7 +112,7 @@ export class LocationGenerator
         let staticContainerCount = 0;
 
         // Find all 100% spawn containers
-        const staticLootDist = db.loot.staticLoot;
+        const staticLootDist = mapData.staticLoot;
         const guaranteedContainers = this.getGuaranteedContainers(allStaticContainersOnMapClone);
         staticContainerCount += guaranteedContainers.length;
 

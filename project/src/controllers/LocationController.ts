@@ -102,7 +102,7 @@ export class LocationController
             this.raidTimeAdjustmentService.makeAdjustmentsToMap(raidAdjustments, locationBaseClone);
         }
 
-        const staticAmmoDist = this.jsonUtil.clone(db.loot.staticAmmo);
+        const staticAmmoDist = this.jsonUtil.clone(location.staticAmmo);
 
         // Create containers and add loot to them
         const staticLoot = this.locationGenerator.generateStaticContainers(locationBaseClone, staticAmmoDist);
