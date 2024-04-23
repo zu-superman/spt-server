@@ -131,7 +131,7 @@ export class DialogueController
         // User to user messages are special in that they need the player to exist in them, add if they don't
         if (
             messageType === MessageType.USER_MESSAGE
-            && !dialog.Users?.find((x) => x._id === profile.characters.pmc.sessionId)
+            && !dialog.Users?.find((userDialog) => userDialog._id === profile.characters.pmc.sessionId)
         )
         {
             if (!dialog.Users)
@@ -230,9 +230,9 @@ export class DialogueController
         {
             result.push(...dialogUsers);
 
-            // Player doesnt exist, add them in before returning
-            if (!result.find((x) => x._id === fullProfile.info.id))
+            if (!result.find((userDialog) => userDialog._id === fullProfile.info.id))
             {
+                // Player doesnt exist, add them in before returning
                 const pmcProfile = fullProfile.characters.pmc;
                 result.push({
                     _id: fullProfile.info.id,
@@ -278,7 +278,7 @@ export class DialogueController
      */
     protected messagesHaveUncollectedRewards(messages: Message[]): boolean
     {
-        return messages.some((x) => x.items?.data?.length > 0);
+        return messages.some((message) => message.items?.data?.length > 0);
     }
 
     /**
@@ -391,7 +391,7 @@ export class DialogueController
     {
         const timeNow = this.timeUtil.getTimestamp();
         const dialogs = this.dialogueHelper.getDialogsForProfile(sessionId);
-        return dialogs[dialogueId].messages.filter((x) => timeNow < (x.dt + x.maxStorageTime));
+        return dialogs[dialogueId].messages.filter((message) => timeNow < (message.dt + message.maxStorageTime));
     }
 
     /**
@@ -401,7 +401,7 @@ export class DialogueController
      */
     protected getMessagesWithAttachments(messages: Message[]): Message[]
     {
-        return messages.filter((x) => x.items?.data?.length > 0);
+        return messages.filter((message) => message.items?.data?.length > 0);
     }
 
     /**
