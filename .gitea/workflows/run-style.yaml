@@ -15,7 +15,7 @@ jobs:
     - name: Clone
       run: |
         rm -rf /workspace/SPT-AKI/Build/server
-        git clone https://dev.sp-tarkov.com/SPT-AKI/Server.git --branch master /workspace/SPT-AKI/Build/server
+        git clone https://dev.sp-tarkov.com/${GITHUB_REPOSITORY}.git --branch master /workspace/SPT-AKI/Build/server
 
         cd /workspace/SPT-AKI/Build/server
         git checkout ${GITHUB_SHA}

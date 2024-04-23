@@ -1472,7 +1472,6 @@ export class ItemHelper
             const modItemDbDetails = this.getItem(modItemToAdd._tpl)[1];
 
             // Include conflicting items of newly added mod in pool to be used for next mod choice
-            // biome-ignore lint/complexity/noForEach: <explanation>
             modItemDbDetails._props.ConflictingItems.forEach(incompatibleModTpls.add, incompatibleModTpls);
         }
 
@@ -1481,7 +1480,7 @@ export class ItemHelper
 
     /**
      * Get a compatible tpl from the array provided where it is not found in the provided incompatible mod tpls parameter
-     * @param possibleTpls Tpls to randomply choose from
+     * @param possibleTpls Tpls to randomly choose from
      * @param incompatibleModTpls Incompatible tpls to not allow
      * @returns Chosen tpl or null
      */

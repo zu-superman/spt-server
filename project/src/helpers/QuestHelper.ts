@@ -692,12 +692,12 @@ export class QuestHelper
      */
     public getQuestWithOnlyLevelRequirementStartCondition(quest: IQuest): IQuest
     {
-        quest = this.jsonUtil.clone(quest);
-        quest.conditions.AvailableForStart = quest.conditions.AvailableForStart.filter((q) =>
+        const updatedQuest = this.jsonUtil.clone(quest);
+        updatedQuest.conditions.AvailableForStart = updatedQuest.conditions.AvailableForStart.filter((q) =>
             q.conditionType === "Level"
         );
 
-        return quest;
+        return updatedQuest;
     }
 
     /**
@@ -714,14 +714,22 @@ export class QuestHelper
         output: IItemEventRouterResponse = null,
     ): void
     {
+        let updatedOutput = output;
+
         // Prepare response to send back to client
-        if (!output)
+        if (!updatedOutput)
         {
-            output = this.eventOutputHolder.getOutput(sessionID);
+            updatedOutput = this.eventOutputHolder.getOutput(sessionID);
         }
 
         this.updateQuestState(pmcData, QuestStatus.Fail, failRequest.qid);
-        const questRewards = this.applyQuestReward(pmcData, failRequest.qid, QuestStatus.Fail, sessionID, output);
+        const questRewards = this.applyQuestReward(
+            pmcData,
+            failRequest.qid,
+            QuestStatus.Fail,
+            sessionID,
+            updatedOutput,
+        );
 
         // Create a dialog message for completing the quest.
         const quest = this.getQuestFromDb(failRequest.qid, pmcData);
@@ -747,7 +755,7 @@ export class QuestHelper
             }
         }
 
-        output.profileChanges[sessionID].quests.push(...this.failedUnlocked(failRequest.qid, sessionID));
+        updatedOutput.profileChanges[sessionID].quests.push(...this.failedUnlocked(failRequest.qid, sessionID));
     }
 
     /**

@@ -72,7 +72,7 @@ export class TradeHelper
     ): void
     {
         let offerItems: Item[] = [];
-        let buyCallback: { (buyCount: number); };
+        let buyCallback: (buyCount: number) => void;
         if (buyRequestData.tid.toLocaleLowerCase() === "ragfair")
         {
             buyCallback = (buyCount: number) =>
