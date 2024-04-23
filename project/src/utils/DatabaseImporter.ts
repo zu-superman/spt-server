@@ -134,7 +134,7 @@ export class DatabaseImporter implements OnLoad
         try
         {
             const finalPath = filePathAndName.replace(this.filepath, "").replace(".json", "");
-            let tempObject;
+            let tempObject: any;
             for (const prop of finalPath.split("/"))
             {
                 if (!tempObject)
