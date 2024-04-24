@@ -13,6 +13,7 @@ import { IBotCore } from "@spt-aki/models/eft/common/tables/IBotCore";
 import { Difficulty } from "@spt-aki/models/eft/common/tables/IBotType";
 import { IGetRaidConfigurationRequestData } from "@spt-aki/models/eft/match/IGetRaidConfigurationRequestData";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
+import { WildSpawnTypeNumber } from "@spt-aki/models/enums/WildSpawnTypeNumber";
 import { BotGenerationDetails } from "@spt-aki/models/spt/bots/BotGenerationDetails";
 import { IBotConfig } from "@spt-aki/models/spt/config/IBotConfig";
 import { IPmcConfig } from "@spt-aki/models/spt/config/IPmcConfig";
@@ -86,16 +87,17 @@ export class BotController
      * Adjust PMC settings to ensure they engage the correct bot types
      * @param type what bot the server is requesting settings for
      * @param diffLevel difficulty level server requested settings for
+     * @param ignoreRaidSettings should raid settings chosen pre-raid be ignored
      * @returns Difficulty object
      */
-    public getBotDifficulty(type: string, diffLevel: string): Difficulty
+    public getBotDifficulty(type: string, diffLevel: string, ignoreRaidSettings = false): Difficulty
     {
         let difficulty = diffLevel.toLowerCase();
 
         const raidConfig = this.applicationContext.getLatestValue(ContextVariableType.RAID_CONFIGURATION)?.getValue<
             IGetRaidConfigurationRequestData
         >();
-        if (!raidConfig)
+        if (!(raidConfig || ignoreRaidSettings))
         {
             this.logger.error(
                 this.localisationService.getText("bot-missing_application_context", "RAID_CONFIGURATION"),
@@ -145,20 +147,26 @@ export class BotController
         const result = {};
 
         const botDb = this.databaseServer.getTables().bots.types;
-        const botTypes = Object.keys(botDb);
-        for (const botType of botTypes)
+        const botTypes = Object.keys(WildSpawnTypeNumber).filter((v) => Number.isNaN(Number(v)));
+        for (let botType of botTypes)
         {
+            const enumType = botType.toLowerCase();
+            // sptBear/sptUsec need to be converted into `usec`/`bear` so we can read difficulty settings from bots/types
+            botType = this.botHelper.isBotPmc(botType)
+                ? this.botHelper.getPmcSideByRole(botType).toLowerCase()
+                : botType.toLowerCase();
+
             const botDetails = botDb[botType];
-            if (!botDetails.difficulty)
+            if (!botDetails?.difficulty)
             {
                 continue;
             }
-            const botDifficulties = Object.keys(botDetails.difficulty);
 
-            result[botType] = {};
+            const botDifficulties = Object.keys(botDetails.difficulty);
+            result[enumType] = {};
             for (const difficulty of botDifficulties)
             {
-                result[botType][difficulty] = this.getBotDifficulty(botType, difficulty);
+                result[enumType][difficulty] = this.getBotDifficulty(enumType, difficulty, true);
             }
         }
 

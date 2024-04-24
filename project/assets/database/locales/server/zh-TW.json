@@ -60,6 +60,7 @@
 	"importing_database": "正在導入資料庫…",
 	"importing_database_finish": "資料庫導入完成",
 	"importing_spt_configs": "導入配置中…",
+	"inventory-edit_trader_item": "無法編輯商人的物品",
 	"modloader-checked": "已檢查",
 	"modloader-checking_mod": "檢查中: %s",
 	"modloader-cyclic_dependency": "發現Cyclic dependency(循環依賴). 此錯誤必須修復. 修復前伺服器無法啟動, 伺服器將關閉",

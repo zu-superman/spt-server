@@ -219,8 +219,8 @@ export class LocationGenerator
             for (const chosenContainerId of chosenContainerIds)
             {
                 // Look up container object from full list of containers on map
-                const containerObject = staticRandomisableContainersOnMap.find((x) =>
-                    x.template.Id === chosenContainerId
+                const containerObject = staticRandomisableContainersOnMap.find((staticContainer) =>
+                    staticContainer.template.Id === chosenContainerId
                 );
                 if (!containerObject)
                 {
@@ -263,10 +263,10 @@ export class LocationGenerator
      */
     protected getRandomisableContainersOnMap(staticContainers: IStaticContainerData[]): IStaticContainerData[]
     {
-        return staticContainers.filter((x) =>
-            x.probability !== 1 && !x.template.IsAlwaysSpawn
+        return staticContainers.filter((staticContainer) =>
+            staticContainer.probability !== 1 && !staticContainer.template.IsAlwaysSpawn
             && !this.locationConfig.containerRandomisationSettings.containerTypesToNotRandomise.includes(
-                x.template.Items[0]._tpl,
+                staticContainer.template.Items[0]._tpl,
             )
         );
     }
@@ -278,10 +278,10 @@ export class LocationGenerator
      */
     protected getGuaranteedContainers(staticContainersOnMap: IStaticContainerData[]): IStaticContainerData[]
     {
-        return staticContainersOnMap.filter((x) =>
-            x.probability === 1 || x.template.IsAlwaysSpawn
+        return staticContainersOnMap.filter((staticContainer) =>
+            staticContainer.probability === 1 || staticContainer.template.IsAlwaysSpawn
             || this.locationConfig.containerRandomisationSettings.containerTypesToNotRandomise.includes(
-                x.template.Items[0]._tpl,
+                staticContainer.template.Items[0]._tpl,
             )
         );
     }
@@ -660,7 +660,9 @@ export class LocationGenerator
         }
 
         // Filter out duplicate locationIds
-        chosenSpawnpoints = [...new Map(chosenSpawnpoints.map((x) => [x.locationId, x])).values()];
+        chosenSpawnpoints = [
+            ...new Map(chosenSpawnpoints.map((spawnPoint) => [spawnPoint.locationId, spawnPoint])).values(),
+        ];
 
         // Do we have enough items in pool to fulfill requirement
         const tooManySpawnPointsRequested = (desiredSpawnpointCount - chosenSpawnpoints.length) > 0;
@@ -703,7 +705,7 @@ export class LocationGenerator
             {
                 if (
                     !seasonalEventActive && seasonalItemTplBlacklist.includes(
-                        spawnPoint.template.Items.find((x) => x._id === itemDist.composedKey.key)._tpl,
+                        spawnPoint.template.Items.find((item) => item._id === itemDist.composedKey.key)._tpl,
                     )
                 )
                 {
@@ -754,7 +756,9 @@ export class LocationGenerator
             for (const itemTpl of lootToForceSingleAmountOnMap)
             {
                 // Get all spawn positions for item tpl in forced loot array
-                const items = forcedSpawnPoints.filter((x) => x.template.Items[0]._tpl === itemTpl);
+                const items = forcedSpawnPoints.filter((forcedSpawnPoint) =>
+                    forcedSpawnPoint.template.Items[0]._tpl === itemTpl
+                );
                 if (!items || items.length === 0)
                 {
                     this.logger.debug(
@@ -777,7 +781,7 @@ export class LocationGenerator
                 // Choose 1 out of all found spawn positions for spawn id and add to loot array
                 for (const spawnPointLocationId of spawnpointArray.draw(1, false))
                 {
-                    const itemToAdd = items.find((x) => x.locationId === spawnPointLocationId);
+                    const itemToAdd = items.find((item) => item.locationId === spawnPointLocationId);
                     const lootItem = itemToAdd.template;
                     lootItem.Root = this.objectId.generate();
                     lootItem.Items[0]._id = lootItem.Root;
@@ -813,7 +817,9 @@ export class LocationGenerator
             locationTemplateToAdd.Items[0]._id = locationTemplateToAdd.Root;
 
             // Push forced location into array as long as it doesnt exist already
-            const existingLocation = lootLocationTemplates.find((x) => x.Id === locationTemplateToAdd.Id);
+            const existingLocation = lootLocationTemplates.find((spawnPoint) =>
+                spawnPoint.Id === locationTemplateToAdd.Id
+            );
             if (!existingLocation)
             {
                 lootLocationTemplates.push(locationTemplateToAdd);
@@ -840,7 +846,7 @@ export class LocationGenerator
         staticAmmoDist: Record<string, IStaticAmmoDetails[]>,
     ): IContainerItem
     {
-        const chosenItem = spawnPoint.template.Items.find((x) => x._id === chosenComposedKey);
+        const chosenItem = spawnPoint.template.Items.find((item) => item._id === chosenComposedKey);
         const chosenTpl = chosenItem._tpl;
         const itemTemplate = this.itemHelper.getItem(chosenTpl)[1];
 
@@ -943,7 +949,7 @@ export class LocationGenerator
             return items.find((v) => v._tpl === chosenTpl && v.parentId === undefined);
         }
 
-        return items.find((x) => x._tpl === chosenTpl);
+        return items.find((item) => item._tpl === chosenTpl);
     }
 
     // TODO: rewrite, BIG yikes

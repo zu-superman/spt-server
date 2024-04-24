@@ -617,7 +617,7 @@ export class PreAkiModLoader implements IModLoader
                 this.logger.error(
                     this.localisationService.getText("modloader-incompatible_mod_found", {
                         author: mod.author,
-                        modName: mod.name,
+                        name: mod.name,
                         incompatibleModName: incompatibleModName,
                     }),
                 );
