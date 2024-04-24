@@ -170,8 +170,6 @@ export class BotController
             }
         }
 
-        result["core"] = this.getBotCoreDifficulty();
-
         return result;
     }
 
