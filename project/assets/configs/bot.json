@@ -320,7 +320,9 @@
         "bossbully": {
             "5448ba0b4bdc2d02308b456c": 1
         },
-        "bossgluhar": {},
+        "bossgluhar": {
+            "5c94bbff86f7747ee735c08f": 1
+        },
         "bosskilla": {},
         "bosskojaniy": {
             "5d08d21286f774736e7c94c3": 1,
@@ -340,16 +342,20 @@
             "5448ba0b4bdc2d02308b456c": 1
         },
         "followergluharassault": {
-            "5c0fa877d174af02a012e1cf": 1
+            "5c0fa877d174af02a012e1cf": 1,
+            "5c94bbff86f7747ee735c08f": 1
         },
         "followergluharscout": {
-            "5c0fa877d174af02a012e1cf": 1
+            "5c0fa877d174af02a012e1cf": 1,
+            "5c94bbff86f7747ee735c08f": 1
         },
         "followergluharsecurity": {
-            "5c0fa877d174af02a012e1cf": 1
+            "5c0fa877d174af02a012e1cf": 1,
+            "5c94bbff86f7747ee735c08f": 1
         },
         "followergluharsnipe": {
-            "5c0fa877d174af02a012e1cf": 1
+            "5c0fa877d174af02a012e1cf": 1,
+            "5c94bbff86f7747ee735c08f": 1
         },
         "followerkojaniy": {
             "5448e8d64bdc2dce718b4568": 2
