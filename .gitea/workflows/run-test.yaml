@@ -17,11 +17,14 @@ jobs:
     steps:
       - name: Clone
         run: |
+          echo "github.repository = ${{ github.repository }}"
+          echo "github.ref = ${{ github.ref }}"
+
           rm -rf /workspace/SPT-AKI/Server
-          git clone https://dev.sp-tarkov.com/${{ GITHUB_REPOSITORY }}.git --branch master /workspace/SPT-AKI/Server
+          git clone --progress --verbose https://dev.sp-tarkov.com/${{ github.repository }}.git --branch master /workspace/SPT-AKI/Server
 
           cd /workspace/SPT-AKI/Server && ls -lah
-          git checkout ${{ GITHUB_REF }}
+          git checkout ${{ github.ref }}
         shell: bash
 
       - name: Pull LFS Files
