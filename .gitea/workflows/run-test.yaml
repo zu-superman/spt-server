@@ -18,10 +18,7 @@ jobs:
       - name: Clone
         run: |
           rm -rf ${{ github.workspace }}/current
-          git clone --progress --verbose https://dev.sp-tarkov.com/${{ github.repository }}.git --branch master ${{ github.workspace }}/current
-
-          cd ${{ github.workspace }}/current && ls -lah
-          git checkout ${{ github.ref }}
+          git clone --progress https://dev.sp-tarkov.com/${{ github.repository }}.git --branch ${{ github.ref }} ${{ github.workspace }}/current
         shell: bash
 
       - name: Pull LFS Files
