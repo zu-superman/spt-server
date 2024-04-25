@@ -9,22 +9,24 @@ on:
 jobs:
   vitest:
     runs-on: ubuntu-latest
-    if: >  # Conditional to limit runs: it checks if it's NOT a push to a branch with an open PR
+    if: >  # Conditional to limit runs: checks if it's NOT a push to a branch with an open PR
       github.event_name == 'push' ||
       github.event.pull_request.head.repo.full_name != github.repository
     container:
       image: refringe/spt-build-node:1.0.7
     steps:
+      - name: Clone
+        run: |
+          rm -rf /workspace/SPT-AKI/Server
+          git clone https://dev.sp-tarkov.com/${{ GITHUB_REPOSITORY }}.git --branch master /workspace/SPT-AKI/Server
 
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-        with:
-          lfs: false
-          github-server-url: 'https://dev.sp-tarkov.com'
+          cd /workspace/SPT-AKI/Server
+          git checkout ${{ GITHUB_REF }}
+        shell: bash
 
       - name: Pull LFS Files
         run: |
-          ls -lah
+          cd /workspace/SPT-AKI/Server
           git lfs pull
           git lfs ls-files
         shell: bash
