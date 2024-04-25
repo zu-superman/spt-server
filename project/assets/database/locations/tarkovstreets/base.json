@@ -42,7 +42,7 @@
   ],
   "BossLocationSpawn": [
     {
-      "BossChance": 30,
+      "BossChance": 35,
       "BossDifficult": "normal",
       "BossEscortAmount": "2",
       "BossEscortDifficult": "normal",
@@ -52,8 +52,12 @@
       "BossZone": "ZoneClimova,ZoneMvd",
       "Delay": 0,
       "ForceSpawn": false,
-      "IgnoreMaxBots": false,
+      "IgnoreMaxBots": true,
       "RandomTimeSpawn": false,
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "Supports": [
         {
           "BossEscortAmount": "2",
@@ -82,7 +86,7 @@
       "TriggerName": ""
     },
     {
-      "BossChance": 30,
+      "BossChance": 35,
       "BossDifficult": "normal",
       "BossEscortAmount": "6",
       "BossEscortDifficult": "normal",
@@ -92,8 +96,12 @@
       "BossZone": "ZoneCarShowroom",
       "Delay": 0,
       "ForceSpawn": false,
-      "IgnoreMaxBots": false,
+      "IgnoreMaxBots": true,
       "RandomTimeSpawn": false,
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "Supports": [
         {
           "BossEscortAmount": "4",
@@ -132,8 +140,12 @@
       "BossZone": "ZoneSnipeCarShowroom",
       "Delay": 0,
       "ForceSpawn": false,
-      "IgnoreMaxBots": false,
+      "IgnoreMaxBots": true,
       "RandomTimeSpawn": false,
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "Supports": null,
       "Time": 99999,
       "TriggerId": "BossBoarBorn",
@@ -152,8 +164,9 @@
     "VisibleDistance": 1
   },
   "BotMarksman": 20,
-  "BotMax": 30,
+  "BotMax": 23,
   "BotMaxPlayer": 10,
+  "BotMaxPvE": 48,
   "BotMaxTimePlayer": 1000,
   "BotNormal": 40,
   "BotSpawnCountStep": 3,
@@ -163,7 +176,7 @@
   "BotSpawnTimeOnMax": 360,
   "BotSpawnTimeOnMin": 290,
   "BotStart": 122,
-  "BotStartPlayer": 186,
+  "BotStartPlayer": 550,
   "BotStop": 2200,
   "Description": "The downtown Tarkov with banks, malls, hotels and all the other things a striving modern city could have needed.",
   "DisabledForScav": false,
@@ -178,6 +191,7 @@
   "GenerateLocalLootCache": true,
   "GlobalContainerChanceModifier": 1,
   "GlobalLootChanceModifier": 0.37,
+  "GlobalLootChanceModifierPvE": 1,
   "IconX": 670,
   "IconY": 620,
   "Id": "TarkovStreets",

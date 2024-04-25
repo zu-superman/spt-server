@@ -84,7 +84,7 @@
   ],
   "BossLocationSpawn": [
     {
-      "BossChance": 30,
+      "BossChance": 35,
       "BossDifficult": "normal",
       "BossEscortAmount": "2",
       "BossEscortDifficult": "normal",
@@ -94,8 +94,12 @@
       "BossZone": "ZoneScavBase",
       "Delay": 0,
       "ForceSpawn": false,
-      "IgnoreMaxBots": false,
+      "IgnoreMaxBots": true,
       "RandomTimeSpawn": true,
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "Supports": [
         {
           "BossEscortAmount": "1",
@@ -124,7 +128,7 @@
       "TriggerName": ""
     },
     {
-      "BossChance": 30,
+      "BossChance": 35,
       "BossDifficult": "normal",
       "BossEscortAmount": "4",
       "BossEscortDifficult": "normal",
@@ -134,8 +138,12 @@
       "BossZone": "ZoneDormitory,ZoneGasStation,ZoneScavBase",
       "Delay": 0,
       "ForceSpawn": false,
-      "IgnoreMaxBots": false,
+      "IgnoreMaxBots": true,
       "RandomTimeSpawn": false,
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "Supports": null,
       "Time": -1,
       "TriggerId": "",
@@ -152,8 +160,12 @@
       "BossZone": "ZoneScavBase",
       "Delay": 0,
       "ForceSpawn": false,
-      "IgnoreMaxBots": false,
+      "IgnoreMaxBots": true,
       "RandomTimeSpawn": false,
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "Supports": [],
       "Time": -1,
       "TriggerId": "",
@@ -170,6 +182,10 @@
       "BossZone": "ZoneFactoryCenter,ZoneScavBase",
       "Delay": 0,
       "RandomTimeSpawn": false,
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "Supports": [],
       "Time": -1,
       "TriggerId": "",
@@ -195,6 +211,7 @@
   "BotMarksman": 20,
   "BotMax": 17,
   "BotMaxPlayer": 9,
+  "BotMaxPvE": 30,
   "BotMaxTimePlayer": 1000,
   "BotNormal": 50,
   "BotSpawnCountStep": 4,
@@ -216,6 +233,7 @@
   "GenerateLocalLootCache": true,
   "GlobalContainerChanceModifier": 1,
   "GlobalLootChanceModifier": 0.8,
+  "GlobalLootChanceModifierPvE": 1,
   "IconX": 550,
   "IconY": 460,
   "Id": "bigmap",

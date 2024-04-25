@@ -25,6 +25,7 @@ export interface IConfig
     armor: IArmor;
     SessionsToShowHotKeys: number;
     MaxBotsAliveOnMap: number;
+    MaxBotsAliveOnMapPvE: number;
     SavagePlayCooldown: number;
     SavagePlayCooldownNdaFree: number;
     MarksmanAccuracy: number;
@@ -35,6 +36,7 @@ export interface IConfig
     TradingUnlimitedItems: boolean;
     MaxLoyaltyLevelForAll: boolean;
     GlobalLootChanceModifier: number;
+    GlobalLootChanceModifierPvE: number;
     GraphicSettings: IGraphicSettings;
     TimeBeforeDeploy: number;
     TimeBeforeDeployLocal: number;
@@ -46,6 +48,7 @@ export interface IConfig
     BaseUnloadTime: number;
     BaseCheckTime: number;
     BluntDamageReduceFromSoftArmorMod: number;
+    BodyPartColliderSettings: IBodyPartColliderSettings;
     Customization: ICustomization;
     UncheckOnShot: boolean;
     BotsEnabled: boolean;
@@ -57,6 +60,7 @@ export interface IConfig
     Health: IHealth;
     rating: IRating;
     tournament: ITournament;
+    QuestSettings: IQuestSettings;
     RagFair: IRagFair;
     handbook: IHandbook;
     FractureCausedByFalling: IProbability;
@@ -102,6 +106,43 @@ export interface IConfig
     Inertia: IInertia;
     Ballistic: IBallistic;
     RepairSettings: IRepairSettings;
+}
+
+export interface IBodyPartColliderSettings
+{
+    BackHead: IBodyPartColliderPart;
+    Ears: IBodyPartColliderPart;
+    Eyes: IBodyPartColliderPart;
+    HeadCommon: IBodyPartColliderPart;
+    Jaw: IBodyPartColliderPart;
+    LeftCalf: IBodyPartColliderPart;
+    LeftForearm: IBodyPartColliderPart;
+    LeftSideChestDown: IBodyPartColliderPart;
+    LeftSideChestUp: IBodyPartColliderPart;
+    LeftThigh: IBodyPartColliderPart;
+    LeftUpperArm: IBodyPartColliderPart;
+    NeckBack: IBodyPartColliderPart;
+    NeckFront: IBodyPartColliderPart;
+    ParietalHead: IBodyPartColliderPart;
+    Pelvis: IBodyPartColliderPart;
+    PelvisBack: IBodyPartColliderPart;
+    RibcageLow: IBodyPartColliderPart;
+    RibcageUp: IBodyPartColliderPart;
+    RightCalf: IBodyPartColliderPart;
+    RightForearm: IBodyPartColliderPart;
+    RightSideChestDown: IBodyPartColliderPart;
+    RightSideChestUp: IBodyPartColliderPart;
+    RightThigh: IBodyPartColliderPart;
+    RightUpperArm: IBodyPartColliderPart;
+    SpineDown: IBodyPartColliderPart;
+    SpineTop: IBodyPartColliderPart;
+}
+
+export interface IBodyPartColliderPart
+{
+    PenetrationChance: number;
+    PenetrationDamageMod: number;
+    PenetrationLevel: number;
 }
 
 export interface IWeaponFastDrawSettings
@@ -704,6 +745,7 @@ export interface IBuffs
     Buffs_food_alyonka: IBuff[];
     Buffs_food_slippers: IBuff[];
     Buffs_knife: IBuff[];
+    Buffs_EndOfWinterBonfire: IBuff[];
 }
 
 export interface IBuff
@@ -927,6 +969,7 @@ export interface IMaxActiveOfferCount
     from: number;
     to: number;
     count: number;
+    countForSpecialEditions: number;
 }
 
 export interface IMaxSumForRarity
@@ -1156,6 +1199,7 @@ export interface ISquadSettings
 export interface IInsurance
 {
     MaxStorageTimeInHour: number;
+    CoefOfSendingMessageTime: number;
     CoefOfHavingMarkOfUnknown: number;
 }
 

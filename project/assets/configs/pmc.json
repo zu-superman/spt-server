@@ -3,7 +3,8 @@
         "standard": 6,
         "left_behind": 1,
         "prepare_for_escape": 1,
-        "edge_of_darkness": 4
+        "edge_of_darkness": 4,
+		"unheard_edition": 1
     },
     "accountTypeWeight": {
         "0": 75,

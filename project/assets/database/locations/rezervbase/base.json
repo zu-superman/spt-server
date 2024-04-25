@@ -42,7 +42,7 @@
   ],
   "BossLocationSpawn": [
     {
-      "BossChance": 30,
+      "BossChance": 35,
       "BossDifficult": "normal",
       "BossEscortAmount": "0",
       "BossEscortDifficult": "normal",
@@ -52,8 +52,12 @@
       "BossZone": "ZoneRailStrorage,ZonePTOR2,ZoneBarrack,ZoneSubStorage",
       "Delay": 0,
       "ForceSpawn": false,
-      "IgnoreMaxBots": false,
+      "IgnoreMaxBots": true,
       "RandomTimeSpawn": false,
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "Supports": [
         {
           "BossEscortAmount": "2",
@@ -92,8 +96,12 @@
       "BossZone": "ZoneRailStrorage",
       "Delay": 0,
       "ForceSpawn": false,
-      "IgnoreMaxBots": false,
+      "IgnoreMaxBots": true,
       "RandomTimeSpawn": false,
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "Supports": null,
       "Time": 1470,
       "TriggerId": "",
@@ -110,8 +118,12 @@
       "BossZone": "ZoneRailStrorage",
       "Delay": 0,
       "ForceSpawn": false,
-      "IgnoreMaxBots": false,
+      "IgnoreMaxBots": true,
       "RandomTimeSpawn": false,
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "Supports": null,
       "Time": -1,
       "TriggerId": "autoId_00632_EXFIL",
@@ -128,8 +140,12 @@
       "BossZone": "ZoneSubCommand",
       "Delay": 0,
       "ForceSpawn": false,
-      "IgnoreMaxBots": false,
+      "IgnoreMaxBots": true,
       "RandomTimeSpawn": false,
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "Supports": null,
       "Time": -1,
       "TriggerId": "autoId_00000_D2_LEVER",
@@ -146,8 +162,12 @@
       "BossZone": "ZoneSubCommand",
       "Delay": 0,
       "ForceSpawn": false,
-      "IgnoreMaxBots": false,
+      "IgnoreMaxBots": true,
       "RandomTimeSpawn": false,
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "Supports": null,
       "Time": 3,
       "TriggerId": "raider_simple_patroling",
@@ -172,6 +192,7 @@
   "BotMarksman": 0,
   "BotMax": 16,
   "BotMaxPlayer": 7,
+  "BotMaxPvE": 28,
   "BotMaxTimePlayer": 1000,
   "BotNormal": 50,
   "BotSpawnCountStep": 3,
@@ -193,6 +214,7 @@
   "GenerateLocalLootCache": true,
   "GlobalContainerChanceModifier": 1,
   "GlobalLootChanceModifier": 0.33,
+  "GlobalLootChanceModifierPvE": 1,
   "IconX": 360,
   "IconY": 410,
   "Id": "RezervBase",

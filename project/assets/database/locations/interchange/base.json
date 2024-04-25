@@ -42,7 +42,7 @@
   ],
   "BossLocationSpawn": [
     {
-      "BossChance": 30,
+      "BossChance": 35,
       "BossDifficult": "normal",
       "BossEscortAmount": "0",
       "BossEscortDifficult": "normal",
@@ -52,8 +52,12 @@
       "BossZone": "ZoneCenterBot,ZoneCenter,ZoneOLI,ZoneIDEA,ZoneGoshan",
       "Delay": 0,
       "ForceSpawn": false,
-      "IgnoreMaxBots": false,
+      "IgnoreMaxBots": true,
       "RandomTimeSpawn": false,
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "Supports": null,
       "Time": -1,
       "TriggerId": "",
@@ -76,6 +80,7 @@
   "BotMarksman": 0,
   "BotMax": 17,
   "BotMaxPlayer": 9,
+  "BotMaxPvE": 32,
   "BotMaxTimePlayer": 1000,
   "BotNormal": 50,
   "BotSpawnCountStep": 4,
@@ -97,6 +102,7 @@
   "GenerateLocalLootCache": true,
   "GlobalContainerChanceModifier": 1,
   "GlobalLootChanceModifier": 0.64,
+  "GlobalLootChanceModifierPvE": 1,
   "IconX": 660,
   "IconY": 360,
   "Id": "Interchange",

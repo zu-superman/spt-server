@@ -589,6 +589,8 @@ export class SeasonalEventService
                 BossEscortType: "gifter",
                 BossEscortDifficult: "normal",
                 BossEscortAmount: "0",
+                ForceSpawn: true,
+                spawnMode: ["regular", "pve"],
                 Time: -1,
                 TriggerId: "",
                 TriggerName: "",

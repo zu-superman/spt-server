@@ -2,7 +2,7 @@
   "AccessKeys": [],
   "Area": 0.9,
   "AveragePlayTime": 15,
-  "AveragePlayerLevel": 1,
+  "AveragePlayerLevel": 15,
   "Banners": [
     {
       "id": "5464e0404bdc2d2a708b4567",
@@ -70,7 +70,7 @@
   ],
   "BossLocationSpawn": [
     {
-      "BossChance": 30,
+      "BossChance": 35,
       "BossDifficult": "normal",
       "BossEscortAmount": "0",
       "BossEscortDifficult": "normal",
@@ -78,11 +78,15 @@
       "BossName": "bossTagilla",
       "BossPlayer": false,
       "BossZone": "BotZone",
-      "RandomTimeSpawn": false,
+      "IgnoreMaxBots": true,
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "Time": -1
     },
     {
-      "BossChance": 10,
+      "BossChance": 2,
       "BossDifficult": "normal",
       "BossEscortAmount": "2",
       "BossEscortDifficult": "normal",
@@ -90,7 +94,11 @@
       "BossName": "sectantPriest",
       "BossPlayer": false,
       "BossZone": "BotZone",
-      "RandomTimeSpawn": false,
+      "IgnoreMaxBots": true,
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "Time": -1
     }
   ],
@@ -113,6 +121,7 @@
   "BotMarksman": 0,
   "BotMax": 16,
   "BotMaxPlayer": 0,
+  "BotMaxPvE": 22,
   "BotMaxTimePlayer": 0,
   "BotNormal": 0,
   "BotSpawnCountStep": 3,
@@ -134,6 +143,7 @@
   "GenerateLocalLootCache": true,
   "GlobalContainerChanceModifier": 1,
   "GlobalLootChanceModifier": 0.4,
+  "GlobalLootChanceModifierPvE": 1,
   "IconX": 318,
   "IconY": 359,
   "Id": "factory4_night",
@@ -3859,7 +3869,7 @@
       ]
     }
   ],
-  "UnixDateTime": 1622491709,
+  "UnixDateTime": 1707142640,
   "_Id": "59fc81d786f774390775787e",
   "doors": [],
   "exit_access_time": 60,
@@ -3869,6 +3879,7 @@
     {
       "Chance": 100,
       "EntryPoints": "Factory",
+      "EventAvailable": false,
       "ExfiltrationTime": 10,
       "Id": "",
       "MaxTime": 0,
@@ -3879,6 +3890,7 @@
     {
       "Chance": 100,
       "EntryPoints": "Factory",
+      "EventAvailable": false,
       "ExfiltrationTime": 10,
       "Id": "",
       "MaxTime": 0,
@@ -3889,6 +3901,7 @@
     {
       "Chance": 100,
       "EntryPoints": "Factory",
+      "EventAvailable": false,
       "ExfiltrationTime": 10,
       "Id": "",
       "MaxTime": 0,
@@ -3899,6 +3912,7 @@
     {
       "Chance": 100,
       "EntryPoints": "Factory",
+      "EventAvailable": false,
       "ExfiltrationTime": 10,
       "Id": "",
       "MaxTime": 0,
@@ -3923,12 +3937,12 @@
       "BotSide": "Savage",
       "SpawnPoints": "BotZone",
       "WildSpawnType": "assault",
-      "isPlayers": false,
+      "isPlayers": true,
       "number": 0,
-      "slots_max": 2,
-      "slots_min": 1,
-      "time_max": 100,
-      "time_min": 40
+      "slots_max": 4,
+      "slots_min": 2,
+      "time_max": 50,
+      "time_min": 15
     },
     {
       "BotPreset": "normal",
@@ -3938,12 +3952,12 @@
       "isPlayers": false,
       "number": 1,
       "slots_max": 4,
-      "slots_min": 1,
-      "time_max": -1,
-      "time_min": -1
+      "slots_min": 2,
+      "time_max": 5,
+      "time_min": 0
     },
     {
-      "BotPreset": "hard",
+      "BotPreset": "normal",
       "BotSide": "Savage",
       "SpawnPoints": "BotZone",
       "WildSpawnType": "assault",
@@ -3952,10 +3966,10 @@
       "slots_max": 4,
       "slots_min": 2,
       "time_max": 300,
-      "time_min": 210
+      "time_min": 50
     },
     {
-      "BotPreset": "normal",
+      "BotPreset": "hard",
       "BotSide": "Savage",
       "SpawnPoints": "BotZone",
       "WildSpawnType": "assault",
@@ -3964,10 +3978,10 @@
       "slots_max": 4,
       "slots_min": 2,
       "time_max": 350,
-      "time_min": 260
+      "time_min": 160
     },
     {
-      "BotPreset": "normal",
+      "BotPreset": "hard",
       "BotSide": "Savage",
       "SpawnPoints": "BotZone",
       "WildSpawnType": "assault",
@@ -3997,10 +4011,10 @@
       "WildSpawnType": "assault",
       "isPlayers": false,
       "number": 6,
-      "slots_max": 3,
+      "slots_max": 2,
       "slots_min": 1,
       "time_max": 1500,
-      "time_min": 1200
+      "time_min": 1400
     },
     {
       "BotPreset": "hard",

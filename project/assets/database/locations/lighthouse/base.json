@@ -52,8 +52,12 @@
       "BossZone": "Zone_Island",
       "Delay": 0,
       "ForceSpawn": false,
-      "IgnoreMaxBots": false,
+      "IgnoreMaxBots": true,
       "RandomTimeSpawn": false,
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "Supports": null,
       "Time": -1,
       "TriggerId": "",
@@ -70,8 +74,12 @@
       "BossZone": "Zone_TreatmentContainers,Zone_Chalet",
       "Delay": 0,
       "ForceSpawn": false,
-      "IgnoreMaxBots": false,
+      "IgnoreMaxBots": true,
       "RandomTimeSpawn": true,
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "Supports": [
         {
           "BossEscortAmount": "1",
@@ -110,8 +118,12 @@
       "BossZone": "Zone_Blockpost",
       "Delay": 0,
       "ForceSpawn": false,
-      "IgnoreMaxBots": false,
+      "IgnoreMaxBots": true,
       "RandomTimeSpawn": false,
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "Supports": null,
       "Time": -1,
       "TriggerId": "",
@@ -128,8 +140,12 @@
       "BossZone": "Zone_RoofContainers",
       "Delay": 0,
       "ForceSpawn": false,
-      "IgnoreMaxBots": false,
+      "IgnoreMaxBots": true,
       "RandomTimeSpawn": false,
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "Supports": null,
       "Time": -1,
       "TriggerId": "",
@@ -146,8 +162,12 @@
       "BossZone": "Zone_TreatmentRocks",
       "Delay": 0,
       "ForceSpawn": false,
-      "IgnoreMaxBots": false,
+      "IgnoreMaxBots": true,
       "RandomTimeSpawn": false,
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "Supports": null,
       "Time": -1,
       "TriggerId": "",
@@ -164,8 +184,12 @@
       "BossZone": "Zone_TreatmentBeach",
       "Delay": 0,
       "ForceSpawn": false,
-      "IgnoreMaxBots": false,
+      "IgnoreMaxBots": true,
       "RandomTimeSpawn": false,
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "Supports": null,
       "Time": -1,
       "TriggerId": "",
@@ -182,8 +206,12 @@
       "BossZone": "Zone_Island",
       "Delay": 0,
       "ForceSpawn": false,
-      "IgnoreMaxBots": false,
+      "IgnoreMaxBots": true,
       "RandomTimeSpawn": false,
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "Supports": null,
       "Time": -1,
       "TriggerId": "",
@@ -200,8 +228,12 @@
       "BossZone": "Zone_RoofRocks",
       "Delay": 0,
       "ForceSpawn": false,
-      "IgnoreMaxBots": false,
+      "IgnoreMaxBots": true,
       "RandomTimeSpawn": false,
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "Supports": null,
       "Time": -1,
       "TriggerId": "",
@@ -218,8 +250,12 @@
       "BossZone": "Zone_RoofBeach",
       "Delay": 0,
       "ForceSpawn": false,
-      "IgnoreMaxBots": false,
+      "IgnoreMaxBots": true,
       "RandomTimeSpawn": false,
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "Supports": null,
       "Time": -1,
       "TriggerId": "",
@@ -236,9 +272,13 @@
       "BossZone": "Zone_Hellicopter",
       "Delay": 0,
       "ForceSpawn": false,
-      "IgnoreMaxBots": false,
+      "IgnoreMaxBots": true,
       "RandomTimeSpawn": false,
-      "Supports": [],
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
+      "Supports": null,
       "Time": -1,
       "TriggerId": "",
       "TriggerName": ""
@@ -254,8 +294,12 @@
       "BossZone": "Zone_OldHouse",
       "Delay": 0,
       "ForceSpawn": false,
-      "IgnoreMaxBots": false,
+      "IgnoreMaxBots": true,
       "RandomTimeSpawn": false,
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "Supports": [],
       "Time": -1,
       "TriggerId": "",
@@ -280,6 +324,7 @@
   "BotMarksman": 0,
   "BotMax": 17,
   "BotMaxPlayer": 7,
+  "BotMaxPvE": 29,
   "BotMaxTimePlayer": 1000,
   "BotNormal": 50,
   "BotSpawnCountStep": 3,
@@ -301,6 +346,7 @@
   "GenerateLocalLootCache": true,
   "GlobalContainerChanceModifier": 1,
   "GlobalLootChanceModifier": 0.17,
+  "GlobalLootChanceModifierPvE": 1,
   "IconX": 120,
   "IconY": 450,
   "Id": "Lighthouse",
