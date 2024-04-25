@@ -17,11 +17,7 @@ jobs:
     steps:
       - name: Clone
         run: |
-          echo "github.repository = ${{ github.repository }}"
-          echo "github.ref = ${{ github.ref }}"
-          echo "github.ref = ${{ github.ref }}"
-          echo "github.workspace = ${{ github.workspace }}"
-
+          cd /workspace
           rm -rf ${{ github.workspace }}
           git clone --progress --verbose https://dev.sp-tarkov.com/${{ github.repository }}.git --branch master ${{ github.workspace }}
 
