@@ -19,19 +19,20 @@ jobs:
         run: |
           echo "github.repository = ${{ github.repository }}"
           echo "github.ref = ${{ github.ref }}"
+          echo "github.ref = ${{ github.ref }}"
+          echo "github.workspace = ${{ github.workspace }}"
 
-          rm -rf /workspace/SPT-AKI/Server
-          git clone --progress --verbose https://dev.sp-tarkov.com/${{ github.repository }}.git --branch master /workspace/SPT-AKI/Server
+          rm -rf ${{ github.workspace }}
+          git clone --progress --verbose https://dev.sp-tarkov.com/${{ github.repository }}.git --branch master ${{ github.workspace }}
 
-          cd /workspace/SPT-AKI/Server && ls -lah
+          cd ${{ github.workspace }} && ls -lah
           git checkout ${{ github.ref }}
         shell: bash
 
       - name: Pull LFS Files
         run: |
-          cd /workspace/SPT-AKI/Server && ls -lah
-          git lfs pull
-          git lfs ls-files
+          cd ${{ github.workspace }} && ls -lah
+          git lfs pull && git lfs ls-files
         shell: bash
 
       - name: Cache NPM Dependencies
