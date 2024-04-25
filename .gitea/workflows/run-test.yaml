@@ -20,13 +20,13 @@ jobs:
           rm -rf /workspace/SPT-AKI/Server
           git clone https://dev.sp-tarkov.com/${{ GITHUB_REPOSITORY }}.git --branch master /workspace/SPT-AKI/Server
 
-          cd /workspace/SPT-AKI/Server
+          cd /workspace/SPT-AKI/Server && ls -lah
           git checkout ${{ GITHUB_REF }}
         shell: bash
 
       - name: Pull LFS Files
         run: |
-          cd /workspace/SPT-AKI/Server
+          cd /workspace/SPT-AKI/Server && ls -lah
           git lfs pull
           git lfs ls-files
         shell: bash
