@@ -17,17 +17,16 @@ jobs:
     steps:
       - name: Clone
         run: |
-          cd /workspace
-          rm -rf ${{ github.workspace }}
-          git clone --progress --verbose https://dev.sp-tarkov.com/${{ github.repository }}.git --branch master ${{ github.workspace }}
+          rm -rf ${{ github.workspace }}/current
+          git clone --progress --verbose https://dev.sp-tarkov.com/${{ github.repository }}.git --branch master ${{ github.workspace }}/current
 
-          cd ${{ github.workspace }} && ls -lah
+          cd ${{ github.workspace }}/current && ls -lah
           git checkout ${{ github.ref }}
         shell: bash
 
       - name: Pull LFS Files
         run: |
-          cd ${{ github.workspace }} && ls -lah
+          cd ${{ github.workspace }}/current && ls -lah
           git lfs pull && git lfs ls-files
         shell: bash
 
@@ -35,13 +34,13 @@ jobs:
         id: cache-npm-dependencies
         uses: actions/cache@v4
         with:
-          path: project/node_modules
-          key: npm-dependencies-${{ hashFiles('project/package.json') }}
+          path: current/project/node_modules
+          key: npm-dependencies-${{ hashFiles('current/project/package.json') }}
 
       - name: Install NPM Dependencies
         if: steps.cache-npm-dependencies.outputs.cache-hit != 'true'
         run: |
-          rm -rf project/node_modules
+          rm -rf current/project/node_modules
           npm install
         shell: bash
 
