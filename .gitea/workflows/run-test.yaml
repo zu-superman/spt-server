@@ -19,8 +19,15 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
         with:
-          lfs: true
+          lfs: false
           github-server-url: 'https://dev.sp-tarkov.com'
+
+      - name: Pull LFS Files
+        run: |
+          ls -lah
+          git lfs pull
+          git lfs ls-files
+        shell: bash
 
       - name: Cache NPM Dependencies
         id: cache-npm-dependencies
