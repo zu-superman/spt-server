@@ -25,10 +25,10 @@ jobs:
             REF=${GITHUB_REF_NAME}
           fi
 
-          rm -rf ${{ github.workspace }}/current
-          git clone https://dev.sp-tarkov.com/${{ github.repository }}.git ${{ github.workspace }}/current
+          rm -rf /workspace/SPT-AKI/Server/current
+          git clone https://dev.sp-tarkov.com/${{ github.repository }}.git /workspace/SPT-AKI/Server/current
 
-          cd ${{ github.workspace }}/current
+          cd /workspace/SPT-AKI/Server/current
           git checkout $REF
         env:
           GITHUB_SHA: ${{ github.sha }}
@@ -38,7 +38,7 @@ jobs:
 
       - name: Pull LFS Files
         run: |
-          cd ${{ github.workspace }}/current && ls -lah
+          cd /workspace/SPT-AKI/Server/current && ls -lah
           git lfs pull && git lfs ls-files
         shell: bash
 
@@ -46,19 +46,21 @@ jobs:
         id: cache-npm-dependencies
         uses: actions/cache@v4
         with:
-          path: current/project/node_modules
-          key: npm-dependencies-${{ hashFiles('current/project/package.json') }}
+          path: /workspace/SPT-AKI/Server/current/project/node_modules
+          key: npm-dependencies-${{ hashFiles('/workspace/SPT-AKI/Server/current/project/package.json') }}
 
       - name: Install NPM Dependencies
         if: steps.cache-npm-dependencies.outputs.cache-hit != 'true'
         run: |
-          rm -rf current/project/node_modules
+          cd /workspace/SPT-AKI/Server/current/project
+          rm -rf /workspace/SPT-AKI/Server/current/project/node_modules
           npm install
         shell: bash
 
       - name: Run Tests
         id: run-tests
         run: |
+          cd /workspace/SPT-AKI/Server/current/project
           npm run test
         shell: bash
 
