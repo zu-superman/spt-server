@@ -1667,7 +1667,7 @@ export class ItemHelper
 
             if (warningMessageWhenMissing)
             {
-                this.logger.warning(warningMessageWhenMissing);
+                this.logger.debug(warningMessageWhenMissing);
             }
 
             return true;

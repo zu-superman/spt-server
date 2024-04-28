@@ -127,10 +127,8 @@ export class HealthController
         const consumedItemMaxResource = this.itemHelper.getItem(itemToConsume._tpl)[1]._props.MaxResource;
         if (consumedItemMaxResource > 1)
         {
-            if (!itemToConsume.upd)
-            {
-                itemToConsume.upd = {};
-            }
+            // Ensure item has a upd object
+            this.itemHelper.addUpdObjectToItem(itemToConsume);
 
             if (itemToConsume.upd.FoodDrink === undefined)
             {
