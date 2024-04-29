@@ -107,3 +107,13 @@ project/assets/database/locations/laboratory/staticLoot.json filter=lfs diff=lfs
 project/assets/database/locations/laboratory/staticContainers.json filter=lfs diff=lfs merge=lfs -text
 project/assets/database/locations/laboratory/staticAmmo.json filter=lfs diff=lfs merge=lfs -text
 
+project/assets/database/locations/sandbox/looseLoot.json filter=lfs diff=lfs merge=lfs -text
+project/assets/database/locations/sandbox/staticLoot.json filter=lfs diff=lfs merge=lfs -text
+project/assets/database/locations/sandbox/staticContainers.json filter=lfs diff=lfs merge=lfs -text
+project/assets/database/locations/sandbox/staticAmmo.json filter=lfs diff=lfs merge=lfs -text
+
+project/assets/database/locations/sandbox_high/looseLoot.json filter=lfs diff=lfs merge=lfs -text
+project/assets/database/locations/sandbox_high/staticLoot.json filter=lfs diff=lfs merge=lfs -text
+project/assets/database/locations/sandbox_high/staticContainers.json filter=lfs diff=lfs merge=lfs -text
+project/assets/database/locations/sandbox_high/staticAmmo.json filter=lfs diff=lfs merge=lfs -text
+
