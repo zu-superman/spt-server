@@ -127,6 +127,9 @@ export class HealthController
         const consumedItemMaxResource = this.itemHelper.getItem(itemToConsume._tpl)[1]._props.MaxResource;
         if (consumedItemMaxResource > 1)
         {
+            // Ensure item has a upd object
+            this.itemHelper.addUpdObjectToItem(itemToConsume);
+
             if (itemToConsume.upd.FoodDrink === undefined)
             {
                 itemToConsume.upd.FoodDrink = { HpPercent: consumedItemMaxResource - request.count };

@@ -106,7 +106,11 @@ export class FenceBaseAssortGenerator
 
             if (this.itemHelper.isOfBaseclass(rootItemDb._id, BaseClasses.AMMO_BOX))
             {
-                this.itemHelper.addCartridgesToAmmoBox(itemWithChildrenToAdd, rootItemDb);
+                // Only add cartridges to box if box has no children
+                if (itemWithChildrenToAdd.length === 1)
+                {
+                    this.itemHelper.addCartridgesToAmmoBox(itemWithChildrenToAdd, rootItemDb);
+                }
             }
 
             // Ensure IDs are unique

@@ -1090,6 +1090,12 @@ export class ItemHelper
         const cartridgeDetails = this.getItem(cartridgeTpl);
         const cartridgeMaxStackSize = cartridgeDetails[1]._props.StackMaxSize;
 
+        // Exit if ammo already exists in box
+        if (ammoBox.find((item) => item._tpl === cartridgeTpl))
+        {
+            return;
+        }
+
         // Add new stack-size-correct items to ammo box
         let currentStoredCartridgeCount = 0;
         const maxPerStack = Math.min(ammoBoxMaxCartridgeCount, cartridgeMaxStackSize);
@@ -1667,7 +1673,7 @@ export class ItemHelper
 
             if (warningMessageWhenMissing)
             {
-                this.logger.warning(warningMessageWhenMissing);
+                this.logger.debug(warningMessageWhenMissing);
             }
 
             return true;

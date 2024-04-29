@@ -20138,7 +20138,12 @@
                             "y": 0,
                             "r": 0,
                             "isSearched": true
-                        }
+                        },
+						"upd": {
+                                "FoodDrink": {
+                                    "HpPercent": 60
+                                }
+                            }
                     }, {
                         "_id": "6613bb72b5b0ba138a0fa9e8",
                         "_tpl": "590c5d4b86f774784e1b9c45",
@@ -20938,7 +20943,12 @@
                             "y": 32,
                             "r": 0,
                             "isSearched": true
-                        }
+                        },
+						"upd": {
+                                "FoodDrink": {
+                                    "HpPercent": 60
+                                }
+                            }
                     }, {
                         "_id": "6613bb72b5b0ba138a0faa3c",
                         "_tpl": "5448fee04bdc2dbc018b4567",
@@ -20949,7 +20959,12 @@
                             "y": 32,
                             "r": 0,
                             "isSearched": true
-                        }
+                        },
+						"upd": {
+                                "FoodDrink": {
+                                    "HpPercent": 60
+                                }
+                            }
                     }, {
                         "_id": "6613bb72b5b0ba138a0faa3d",
                         "_tpl": "5448fee04bdc2dbc018b4567",
@@ -20960,7 +20975,12 @@
                             "y": 32,
                             "r": 0,
                             "isSearched": true
-                        }
+                        },
+						"upd": {
+                                "FoodDrink": {
+                                    "HpPercent": 60
+                                }
+                            }
                     }, {
                         "_id": "6613bb72b5b0ba138a0faa3e",
                         "_tpl": "57347da92459774491567cf5",
@@ -23798,7 +23818,12 @@
                             "y": 0,
                             "r": 0,
                             "isSearched": true
-                        }
+                        },
+						"upd": {
+                                "FoodDrink": {
+                                    "HpPercent": 60
+                                }
+                            }
                     }, {
                         "_id": "6613e1cf291a2e76b002699b",
                         "_tpl": "590c5f0d86f77413997acfab",
@@ -25430,7 +25455,12 @@
                             "y": 29,
                             "r": 0,
                             "isSearched": true
-                        }
+                        },
+						"upd": {
+                                "FoodDrink": {
+                                    "HpPercent": 60
+                                }
+                            }
                     }, {
                         "_id": "6613e1cf291a2e76b0026a3f",
                         "_tpl": "5d02778e86f774203e7dedbe",
@@ -25668,7 +25698,12 @@
                             "y": 29,
                             "r": 0,
                             "isSearched": true
-                        }
+                        },
+						"upd": {
+                                "FoodDrink": {
+                                    "HpPercent": 60
+                                }
+                            }
                     }, {
                         "_id": "6613e1cf291a2e76b0026a59",
                         "_tpl": "5e8488fa988a8701445df1e4",
@@ -25839,7 +25874,12 @@
                             "y": 29,
                             "r": 0,
                             "isSearched": true
-                        }
+                        },
+						"upd": {
+                                "FoodDrink": {
+                                    "HpPercent": 60
+                                }
+                            }
                     }, {
                         "_id": "6613e1cf291a2e76b0026a68",
                         "_tpl": "544fb3364bdc2d34748b456a",
