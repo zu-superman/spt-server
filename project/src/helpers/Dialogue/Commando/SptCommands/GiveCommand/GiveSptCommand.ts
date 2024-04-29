@@ -8,6 +8,7 @@ import { IUserDialogInfo } from "@spt-aki/models/eft/profile/IAkiProfile";
 import { BaseClasses } from "@spt-aki/models/enums/BaseClasses";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
+import { ItemFilterService } from "@spt-aki/services/ItemFilterService";
 import { LocaleService } from "@spt-aki/services/LocaleService";
 import { MailSendService } from "@spt-aki/services/MailSendService";
 import { HashUtil } from "@spt-aki/utils/HashUtil";
@@ -29,7 +30,7 @@ export class GiveSptCommand implements ISptCommand
     private static commandRegex = /^spt give (((([a-z]{2,5}) )?"(.+)"|\w+) )?([0-9]+)$/;
     private static maxAllowedDistance = 1.5;
 
-    protected savedCommand: SavedCommand;
+    protected savedCommand: Map<string, SavedCommand> = new Map<string, SavedCommand>();
 
     public constructor(
         @inject("WinstonLogger") protected logger: ILogger,
@@ -40,6 +41,7 @@ export class GiveSptCommand implements ISptCommand
         @inject("MailSendService") protected mailSendService: MailSendService,
         @inject("LocaleService") protected localeService: LocaleService,
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("ItemFilterService") protected itemFilterService: ItemFilterService,
     )
     {
     }
@@ -76,7 +78,7 @@ export class GiveSptCommand implements ISptCommand
         // This is a reply to a give request previously made pending a reply
         if (result[1] === undefined)
         {
-            if (this.savedCommand === undefined)
+            if (!this.savedCommand.has(sessionId))
             {
                 this.mailSendService.sendUserMessageToPlayer(
                     sessionId,
@@ -85,7 +87,8 @@ export class GiveSptCommand implements ISptCommand
                 );
                 return request.dialogId;
             }
-            if (+result[6] > this.savedCommand.potentialItemNames.length)
+            const savedCommand = this.savedCommand.get(sessionId);
+            if (+result[6] > savedCommand.potentialItemNames.length)
             {
                 this.mailSendService.sendUserMessageToPlayer(
                     sessionId,
@@ -94,16 +97,19 @@ export class GiveSptCommand implements ISptCommand
                 );
                 return request.dialogId;
             }
-            item = this.savedCommand.potentialItemNames[+result[6] - 1];
-            quantity = this.savedCommand.quantity;
-            locale = this.savedCommand.locale;
+            item = savedCommand.potentialItemNames[+result[6] - 1];
+            quantity = savedCommand.quantity;
+            locale = savedCommand.locale;
             isItemName = true;
-            this.savedCommand = undefined;
+            this.savedCommand.delete(sessionId);
         }
         else
         {
             // A new give request was entered, we need to ignore the old saved command
-            this.savedCommand = undefined;
+            if (this.savedCommand.has(sessionId))
+            {
+                this.savedCommand.delete(sessionId);
+            }
             isItemName = result[5] !== undefined;
             item = result[5] ? result[5] : result[2];
             quantity = +result[6];
@@ -134,9 +140,9 @@ export class GiveSptCommand implements ISptCommand
 
                 const closestItemsMatchedByName = closestMatch(
                     item.toLowerCase(),
-                    this.itemHelper.getItems().filter((i) => i._type !== "Node").map((i) =>
-                        localizedGlobal[`${i?._id} Name`]?.toLowerCase()
-                    ).filter((i) => i !== undefined),
+                    this.itemHelper.getItems().filter((i) => i._type !== "Node").filter((i) =>
+                        !this.itemFilterService.isItemBlacklisted(i._id)
+                    ).map((i) => localizedGlobal[`${i?._id} Name`]?.toLowerCase()).filter((i) => i !== undefined),
                     true,
                 ) as string[];
 
@@ -156,7 +162,7 @@ export class GiveSptCommand implements ISptCommand
                     const slicedItems = closestItemsMatchedByName.slice(0, 10);
                     // max 10 item names and map them
                     const itemList = slicedItems.map((itemName) => `${i++}. ${itemName}`).join("\n");
-                    this.savedCommand = new SavedCommand(quantity, slicedItems, locale);
+                    this.savedCommand.set(sessionId, new SavedCommand(quantity, slicedItems, locale));
                     this.mailSendService.sendUserMessageToPlayer(
                         sessionId,
                         commandHandler,
@@ -185,7 +191,7 @@ export class GiveSptCommand implements ISptCommand
         // If item is an item name, we need to search using that item name and the locale which one we want otherwise
         // item is just the tplId.
         const tplId = isItemName
-            ? this.itemHelper.getItems().find((i) =>
+            ? this.itemHelper.getItems().filter((i) => !this.itemFilterService.isItemBlacklisted(i._id)).find((i) =>
                 this.databaseServer.getTables().locales.global[locale][`${i?._id} Name`]?.toLowerCase() === item
             )._id
             : item;
