@@ -21,9 +21,9 @@ export class BotLevelGenerator
 
     /**
      * Return a randomised bot level and exp value
-     * @param levelDetails min and max of level for bot
+     * @param levelDetails Min and max of level for bot
      * @param botGenerationDetails Deatils to help generate a bot
-     * @param bot being level is being generated for
+     * @param bot Bot the level is being generated for
      * @returns IRandomisedBotLevelResult object
      */
     public generateBotLevel(
@@ -39,12 +39,7 @@ export class BotLevelGenerator
             levelDetails,
             expTable,
         );
-        const lowestLevel = this.getLowestRelativeBotLevel(
-            botGenerationDetails.playerLevel,
-            botGenerationDetails.botRelativeLevelDeltaMin,
-            levelDetails,
-            expTable,
-        );
+        const lowestLevel = this.getLowestRelativeBotLevel(botGenerationDetails, levelDetails, expTable);
 
         // Get random level based on the exp table.
         let exp = 0;
@@ -93,19 +88,30 @@ export class BotLevelGenerator
      * Get the lowest level a bot can be relative to the players level, but no lower than 1
      * @param playerLevel Players current level
      * @param relativeDeltaMin Min delta below player level to go
+     * @param expTable exp table to calculate level
      * @returns lowest level possible for bot
      */
     protected getLowestRelativeBotLevel(
-        playerLevel: number,
-        relativeDeltaMin: number,
+        botGenerationDetails: BotGenerationDetails,
         levelDetails: MinMax,
         expTable: IExpTable[],
     ): number
     {
-        // Some bots have a max level of 1
-        const minPossibleLevel = Math.min(levelDetails.min, expTable.length);
+        let minPossibleLevel: number;
+        if (botGenerationDetails.isPmc)
+        {
+            minPossibleLevel = Math.min(
+                Math.max(levelDetails.min, botGenerationDetails.minimumPmcLevel),
+                expTable.length,
+            );
+        }
+        else
+        {
+            // Some bots have a max level of 1
+            minPossibleLevel = Math.min(levelDetails.min, expTable.length);
+        }
 
-        let level = playerLevel - relativeDeltaMin;
+        let level = botGenerationDetails.playerLevel - botGenerationDetails.botRelativeLevelDeltaMin;
         if (level < minPossibleLevel)
         {
             level = minPossibleLevel;

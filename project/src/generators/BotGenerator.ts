@@ -86,6 +86,7 @@ export class BotGenerator
             botRelativeLevelDeltaMin: 0,
             botCountToGenerate: 1,
             botDifficulty: difficulty,
+            minimumPmcLevel: 1, // unused here
             isPlayerScav: true,
         };
 
