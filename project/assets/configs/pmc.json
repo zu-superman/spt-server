@@ -705,5 +705,16 @@
     ],
     "forceHealingItemsIntoSecure": true,
     "addPrefixToSameNamePMCAsPlayerChance": 40,
-    "allPMCsHavePlayerNameWithRandomPrefixChance": 1
+    "allPMCsHavePlayerNameWithRandomPrefixChance": 1,
+    "locationSpecificPmcLevelOverride": {
+		"sandbox_high": {
+            "min": 1,
+            "max": 20
+        },
+        "sandbox_high": {
+            "min": 21,
+            "max": 100
+        }
+    }
+
 }

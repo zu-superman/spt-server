@@ -2,7 +2,6 @@ import { inject, injectable } from "tsyringe";
 
 import { MinMax } from "@spt-aki/models/common/MinMax";
 import { IRandomisedBotLevelResult } from "@spt-aki/models/eft/bot/IRandomisedBotLevelResult";
-import { IExpTable } from "@spt-aki/models/eft/common/IGlobals";
 import { IBotBase } from "@spt-aki/models/eft/common/tables/IBotBase";
 import { BotGenerationDetails } from "@spt-aki/models/spt/bots/BotGenerationDetails";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
@@ -22,7 +21,7 @@ export class BotLevelGenerator
     /**
      * Return a randomised bot level and exp value
      * @param levelDetails Min and max of level for bot
-     * @param botGenerationDetails Deatils to help generate a bot
+     * @param botGenerationDetails Details to help generate a bot
      * @param bot Bot the level is being generated for
      * @returns IRandomisedBotLevelResult object
      */
@@ -33,13 +32,8 @@ export class BotLevelGenerator
     ): IRandomisedBotLevelResult
     {
         const expTable = this.databaseServer.getTables().globals.config.exp.level.exp_table;
-        const highestLevel = this.getHighestRelativeBotLevel(
-            botGenerationDetails.playerLevel,
-            botGenerationDetails.botRelativeLevelDeltaMax,
-            levelDetails,
-            expTable,
-        );
-        const lowestLevel = this.getLowestRelativeBotLevel(botGenerationDetails, levelDetails, expTable);
+        const highestLevel = this.getHighestRelativeBotLevel(botGenerationDetails, levelDetails, expTable.length);
+        const lowestLevel = this.getLowestRelativeBotLevel(botGenerationDetails, levelDetails, expTable.length);
 
         // Get random level based on the exp table.
         let exp = 0;
@@ -61,21 +55,22 @@ export class BotLevelGenerator
 
     /**
      * Get the highest level a bot can be relative to the players level, but no further than the max size from globals.exp_table
-     * @param playerLevel Players current level
-     * @param relativeDeltaMax max delta above player level to go
-     * @returns highest level possible for bot
+     * @param botGenerationDetails Details to help generate a bot
+     * @param levelDetails
+     * @param maxLevel Max possible level
+     * @returns Highest level possible for bot
      */
     protected getHighestRelativeBotLevel(
-        playerLevel: number,
-        relativeDeltaMax: number,
+        botGenerationDetails: BotGenerationDetails,
         levelDetails: MinMax,
-        expTable: IExpTable[],
+        maxLevel: number,
     ): number
     {
-        // Some bots have a max level of 1
-        const maxPossibleLevel = Math.min(levelDetails.max, expTable.length);
+        const maxPossibleLevel = (botGenerationDetails.isPmc && botGenerationDetails.locationSpecificPmcLevelOverride)
+            ? Math.min(botGenerationDetails.locationSpecificPmcLevelOverride.max, maxLevel) // Was a PMC and they have a level override
+            : Math.min(levelDetails.max, maxLevel); // Not pmc with override or non-pmc
 
-        let level = playerLevel + relativeDeltaMax;
+        let level = botGenerationDetails.playerLevel + botGenerationDetails.botRelativeLevelDeltaMax;
         if (level > maxPossibleLevel)
         {
             level = maxPossibleLevel;
@@ -86,30 +81,23 @@ export class BotLevelGenerator
 
     /**
      * Get the lowest level a bot can be relative to the players level, but no lower than 1
-     * @param playerLevel Players current level
-     * @param relativeDeltaMin Min delta below player level to go
-     * @param expTable exp table to calculate level
-     * @returns lowest level possible for bot
+     * @param botGenerationDetails Details to help generate a bot
+     * @param levelDetails
+     * @param maxlevel Max level allowed
+     * @returns Lowest level possible for bot
      */
     protected getLowestRelativeBotLevel(
         botGenerationDetails: BotGenerationDetails,
         levelDetails: MinMax,
-        expTable: IExpTable[],
+        maxlevel: number,
     ): number
     {
-        let minPossibleLevel: number;
-        if (botGenerationDetails.isPmc)
-        {
-            minPossibleLevel = Math.min(
-                Math.max(levelDetails.min, botGenerationDetails.minimumPmcLevel),
-                expTable.length,
-            );
-        }
-        else
-        {
-            // Some bots have a max level of 1
-            minPossibleLevel = Math.min(levelDetails.min, expTable.length);
-        }
+        const minPossibleLevel = (botGenerationDetails.isPmc && botGenerationDetails.locationSpecificPmcLevelOverride)
+            ? Math.min(
+                Math.max(levelDetails.min, botGenerationDetails.locationSpecificPmcLevelOverride.min), // Biggest between json min and the botgen min
+                maxlevel, // Fallback if value above is crazy (default is 79)
+            )
+            : Math.min(levelDetails.min, maxlevel); // Not pmc with override or non-pmc
 
         let level = botGenerationDetails.playerLevel - botGenerationDetails.botRelativeLevelDeltaMin;
         if (level < minPossibleLevel)

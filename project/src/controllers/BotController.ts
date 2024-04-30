@@ -209,11 +209,11 @@ export class BotController
         // Clear bot cache before any work starts
         this.botGenerationCacheService.clearStoredBots();
 
-        const minimumPmcLevel = this.getMinimumPmcLevelForRaid(
-            this.applicationContext.getLatestValue(ContextVariableType.RAID_CONFIGURATION)?.getValue<
-                IGetRaidConfigurationRequestData
-            >(),
-        );
+        const raidSettings = this.applicationContext.getLatestValue(ContextVariableType.RAID_CONFIGURATION)?.getValue<
+            IGetRaidConfigurationRequestData
+        >();
+        const pmcLevelRangeForMap =
+            this.pmcConfig.locationSpecificPmcLevelOverride[raidSettings?.location.toLowerCase()];
 
         const allPmcsHaveSameNameAsPlayer = this.randomUtil.getChance100(
             this.pmcConfig.allPMCsHavePlayerNameWithRandomPrefixChance,
@@ -231,7 +231,7 @@ export class BotController
                 botRelativeLevelDeltaMin: this.pmcConfig.botRelativeLevelDeltaMin,
                 botCountToGenerate: this.botConfig.presetBatch[condition.Role],
                 botDifficulty: condition.Difficulty,
-                minimumPmcLevel: minimumPmcLevel,
+                locationSpecificPmcLevelOverride: pmcLevelRangeForMap,
                 isPlayerScav: false,
                 allPmcsHaveSameNameAsPlayer: allPmcsHaveSameNameAsPlayer,
             };
@@ -242,21 +242,6 @@ export class BotController
         await Promise.all(conditionPromises).then((p) => Promise.all(p));
 
         return [];
-    }
-
-    /**
-     * Get the lowest level a bot can be generated with
-     * @param raidConfig IGetRaidConfigurationRequestData from applicationContext.getLatestValue(ContextVariableType.RAID_CONFIGURATION)
-     * @returns Number
-     */
-    protected getMinimumPmcLevelForRaid(raidConfig: IGetRaidConfigurationRequestData): number
-    {
-        if (raidConfig?.location.toLowerCase() === "sandbox_high")
-        {
-            return 20;
-        }
-
-        return 1;
     }
 
     /**
@@ -338,11 +323,11 @@ export class BotController
         const pmcProfile = this.profileHelper.getPmcProfile(sessionId);
         const requestedBot = request.conditions[0];
 
-        const minimumPmcLevel = this.getMinimumPmcLevelForRaid(
-            this.applicationContext.getLatestValue(ContextVariableType.RAID_CONFIGURATION)?.getValue<
-                IGetRaidConfigurationRequestData
-            >(),
-        );
+        const raidSettings = this.applicationContext.getLatestValue(ContextVariableType.RAID_CONFIGURATION)?.getValue<
+            IGetRaidConfigurationRequestData
+        >();
+        const pmcLevelRangeForMap =
+            this.pmcConfig.locationSpecificPmcLevelOverride[raidSettings.location.toLowerCase()];
 
         // Create gen request for when cache is empty
         const botGenerationDetails: BotGenerationDetails = {
@@ -355,7 +340,7 @@ export class BotController
             botRelativeLevelDeltaMin: this.pmcConfig.botRelativeLevelDeltaMin,
             botCountToGenerate: this.botConfig.presetBatch[requestedBot.Role],
             botDifficulty: requestedBot.Difficulty,
-            minimumPmcLevel: minimumPmcLevel,
+            locationSpecificPmcLevelOverride: pmcLevelRangeForMap,
             isPlayerScav: false,
         };
 

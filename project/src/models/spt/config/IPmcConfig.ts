@@ -48,6 +48,7 @@ export interface IPmcConfig extends IBaseConfig
     /** Force a number of healing items into PMCs secure container to ensure they can heal */
     forceHealingItemsIntoSecure: boolean;
     allPMCsHavePlayerNameWithRandomPrefixChance: number;
+    locationSpecificPmcLevelOverride: Record<string, MinMax>;
 }
 
 export interface PmcTypes

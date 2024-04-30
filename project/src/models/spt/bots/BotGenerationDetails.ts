@@ -1,3 +1,5 @@
+import { MinMax } from "@spt-aki/models/common/MinMax";
+
 export interface BotGenerationDetails
 {
     /** Should the bot be generated as a PMC */
@@ -9,8 +11,8 @@ export interface BotGenerationDetails
     /** Active players current level */
     playerLevel?: number;
     playerName?: string;
-    /** Lowest level a PMC can be generated with */
-    minimumPmcLevel: number;
+    /** Level specific overrides for PMC level */
+    locationSpecificPmcLevelOverride?: MinMax;
     /** Delta of highest level of bot e.g. 50 means 50 levels above player */
     botRelativeLevelDeltaMax: number;
     /** Delta of lowest level of bot e.g. 50 means 50 levels below player */
