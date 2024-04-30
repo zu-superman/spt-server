@@ -124,7 +124,7 @@
     "path": "",
     "rcid": ""
   },
-  "RequiredPlayerLevelMax": 100,
+  "RequiredPlayerLevelMax": 20,
   "RequiredPlayerLevelMin": 0,
   "Rules": "Normal",
   "SafeLocation": false,
