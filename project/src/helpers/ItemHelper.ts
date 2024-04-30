@@ -1181,6 +1181,7 @@ export class ItemHelper
      * @param staticAmmoDist Cartridge distribution
      * @param caliber Caliber of cartridge to add to magazine
      * @param minSizePercent % the magazine must be filled to
+     * @param defaultCartridgeTpl Cartridge to use when none found
      * @param weapon Weapon the magazine will be used for (if passed in uses Chamber as whitelist)
      */
     public fillMagazineWithRandomCartridge(
@@ -1189,7 +1190,8 @@ export class ItemHelper
         staticAmmoDist: Record<string, IStaticAmmoDetails[]>,
         caliber: string = undefined,
         minSizePercent = 0.25,
-        weapon: ITemplateItem = null,
+        defaultCartridgeTpl?: string,
+        weapon?: ITemplateItem,
     ): void
     {
         let chosenCaliber = caliber || this.getRandomValidCaliber(magTemplate);
@@ -1204,9 +1206,15 @@ export class ItemHelper
         const cartridgeTpl = this.drawAmmoTpl(
             chosenCaliber,
             staticAmmoDist,
-            weapon?._props.defAmmo,
+            defaultCartridgeTpl,
             weapon?._props?.Chambers[0]?._props?.filters[0]?.Filter,
         );
+
+        if (!cartridgeTpl)
+        {
+            return;
+        }
+
         this.fillMagazineWithCartridge(magazine, magTemplate, cartridgeTpl, minSizePercent);
     }
 
@@ -1324,9 +1332,8 @@ export class ItemHelper
         cartridgeWhitelist: string[] = null,
     ): string
     {
-        const ammoArray = new ProbabilityObjectArray<string>(this.mathUtil, this.jsonUtil);
         const ammos = staticAmmoDist[caliber];
-        if (!ammos)
+        if (!ammos && fallbackCartridgeTpl)
         {
             this.logger.error(
                 `Unable to pick a cartridge for caliber: ${caliber} as staticAmmoDist has no data. using fallback value of ${fallbackCartridgeTpl}`,
@@ -1335,7 +1342,7 @@ export class ItemHelper
             return fallbackCartridgeTpl;
         }
 
-        if (!Array.isArray(ammos))
+        if (!Array.isArray(ammos) && fallbackCartridgeTpl)
         {
             this.logger.error(
                 `Unable to pick a cartridge for caliber: ${caliber}, the chosen staticAmmoDist data is not an array. Using fallback value of ${fallbackCartridgeTpl}`,
@@ -1344,6 +1351,16 @@ export class ItemHelper
             return fallbackCartridgeTpl;
         }
 
+        if (!ammos && !fallbackCartridgeTpl)
+        {
+            this.logger.error(
+                `Unable to pick a cartridge for caliber: ${caliber} as staticAmmoDist has no data. No fallback value provided`,
+            );
+
+            return;
+        }
+
+        const ammoArray = new ProbabilityObjectArray<string>(this.mathUtil, this.jsonUtil);
         for (const icd of ammos)
         {
             // Whitelist exists and tpl not inside it, skip

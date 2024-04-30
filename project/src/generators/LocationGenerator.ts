@@ -1061,6 +1061,7 @@ export class LocationGenerator
                 const weaponTemplate = this.itemHelper.getItem(chosenTpl)[1];
 
                 // Create array with just magazine
+                const defaultWeapon = this.itemHelper.getItem(rootItem._tpl)[1];
                 const magazineWithCartridges = [magazine];
                 this.itemHelper.fillMagazineWithRandomCartridge(
                     magazineWithCartridges,
@@ -1068,7 +1069,8 @@ export class LocationGenerator
                     staticAmmoDist,
                     weaponTemplate._props.ammoCaliber,
                     0.25,
-                    this.itemHelper.getItem(rootItem._tpl)[1],
+                    defaultWeapon._props.defAmmo,
+                    defaultWeapon,
                 );
 
                 // Replace existing magazine with above array
