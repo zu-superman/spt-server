@@ -704,5 +704,6 @@
     ],
     "forceHealingItemsIntoSecure": true,
     "addPrefixToSameNamePMCAsPlayerChance": 40,
-    "allPMCsHavePlayerNameWithRandomPrefixChance": 1
+    "allPMCsHavePlayerNameWithRandomPrefixChance": 1,
+	"addSecureContainerLootFromBotConfig": false
 }
