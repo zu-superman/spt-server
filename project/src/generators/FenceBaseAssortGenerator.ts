@@ -14,6 +14,7 @@ import { ITraderConfig } from "@spt-aki/models/spt/config/ITraderConfig";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt-aki/servers/ConfigServer";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
+import { FenceService } from "@spt-aki/services/FenceService";
 import { ItemFilterService } from "@spt-aki/services/ItemFilterService";
 import { SeasonalEventService } from "@spt-aki/services/SeasonalEventService";
 import { HashUtil } from "@spt-aki/utils/HashUtil";
@@ -35,6 +36,7 @@ export class FenceBaseAssortGenerator
         @inject("ItemFilterService") protected itemFilterService: ItemFilterService,
         @inject("SeasonalEventService") protected seasonalEventService: SeasonalEventService,
         @inject("ConfigServer") protected configServer: ConfigServer,
+        @inject("FenceService") protected fenceService: FenceService,
     )
     {
         this.traderConfig = this.configServer.getConfig(ConfigTypes.TRADER);
@@ -74,7 +76,7 @@ export class FenceBaseAssortGenerator
                 }
             }
 
-            // Only allow  rigs with no slots (carrier rigs)
+            // Only allow rigs with no slots (carrier rigs)
             if (this.itemHelper.isOfBaseclass(rootItemDb._id, BaseClasses.VEST) && rootItemDb._props.Slots.length > 0)
             {
                 continue;
@@ -95,9 +97,22 @@ export class FenceBaseAssortGenerator
                 upd: { StackObjectsCount: 9999999 },
             }];
 
+            // Ensure ammo is not above penetration limit value
+            if (this.itemHelper.isOfBaseclasses(rootItemDb._id, [BaseClasses.AMMO_BOX, BaseClasses.AMMO]))
+            {
+                if (this.isAmmoAbovePenetrationLimit(rootItemDb))
+                {
+                    continue;
+                }
+            }
+
             if (this.itemHelper.isOfBaseclass(rootItemDb._id, BaseClasses.AMMO_BOX))
             {
-                this.itemHelper.addCartridgesToAmmoBox(itemWithChildrenToAdd, rootItemDb);
+                // Only add cartridges to box if box has no children
+                if (itemWithChildrenToAdd.length === 1)
+                {
+                    this.itemHelper.addCartridgesToAmmoBox(itemWithChildrenToAdd, rootItemDb);
+                }
             }
 
             // Ensure IDs are unique
@@ -110,7 +125,7 @@ export class FenceBaseAssortGenerator
 
             // Create barter scheme (price)
             const barterSchemeToAdd: IBarterScheme = {
-                count: Math.round(this.getItemPrice(rootItemDb._id, itemWithChildrenToAdd)),
+                count: Math.round(this.fenceService.getItemPrice(rootItemDb._id, itemWithChildrenToAdd)),
                 _tpl: Money.ROUBLES,
             };
 
@@ -175,25 +190,51 @@ export class FenceBaseAssortGenerator
         }
     }
 
-    protected getItemPrice(itemTpl: string, items: Item[]): number
+    /**
+     * Check ammo in boxes + loose ammos has a penetration value above the configured value in trader.json / ammoMaxPenLimit
+     * @param rootItemDb Ammo box or ammo item from items.db
+     * @returns True if penetration value is above limit set in config
+     */
+    protected isAmmoAbovePenetrationLimit(rootItemDb: ITemplateItem): boolean
     {
-        return this.itemHelper.isOfBaseclass(itemTpl, BaseClasses.AMMO_BOX)
-            ? this.getAmmoBoxPrice(items) * this.traderConfig.fence.itemPriceMult
-            : this.handbookHelper.getTemplatePrice(itemTpl) * this.traderConfig.fence.itemPriceMult;
-    }
-
-    protected getAmmoBoxPrice(items: Item[]): number
-    {
-        let total = 0;
-        for (const item of items)
+        const ammoPenetrationPower = this.getAmmoPenetrationPower(rootItemDb);
+        if (ammoPenetrationPower === null)
         {
-            if (this.itemHelper.isOfBaseclass(item._tpl, BaseClasses.AMMO))
-            {
-                total += this.handbookHelper.getTemplatePrice(item._tpl) * (item.upd.StackObjectsCount ?? 1);
-            }
+            this.logger.warning(`Ammo: ${rootItemDb._id} has no penetration value, skipping`);
+            return false;
         }
 
-        return total;
+        return ammoPenetrationPower > this.traderConfig.fence.ammoMaxPenLimit;
+    }
+
+    /**
+     * Get the penetration power value of an ammo, works with ammo boxes and raw ammos
+     * @param rootItemDb Ammo box or ammo item from items.db
+     * @returns Penetration power of passed in item, null if it doesnt have a power
+     */
+    protected getAmmoPenetrationPower(rootItemDb: ITemplateItem): number
+    {
+        if (this.itemHelper.isOfBaseclass(rootItemDb._id, BaseClasses.AMMO_BOX))
+        {
+            const ammoTplInBox = rootItemDb._props.StackSlots[0]._props.filters[0].Filter[0];
+            const ammoItemDb = this.itemHelper.getItem(ammoTplInBox);
+            if (!ammoItemDb[0])
+            {
+                this.logger.warning(`Ammo: ${ammoTplInBox} not an item, skipping`);
+                return null;
+            }
+
+            return ammoItemDb[1]._props.PenetrationPower;
+        }
+
+        // Plain old ammo, get its pen property
+        if (this.itemHelper.isOfBaseclass(rootItemDb._id, BaseClasses.AMMO))
+        {
+            return rootItemDb._props.PenetrationPower;
+        }
+
+        // Not an ammobox or ammo
+        return null;
     }
 
     /**

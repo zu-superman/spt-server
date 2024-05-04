@@ -65,7 +65,13 @@ export class PaymentService
                 if (!this.paymentHelper.isMoneyTpl(item._tpl))
                 {
                     // If the item is not money, remove it from the inventory.
-                    this.inventoryHelper.removeItem(pmcData, item._id, sessionID, output);
+                    this.inventoryHelper.removeItemByCount(
+                        pmcData,
+                        item._id,
+                        request.scheme_items[index].count,
+                        sessionID,
+                        output,
+                    );
                     request.scheme_items[index].count = 0;
                 }
                 else
@@ -315,7 +321,7 @@ export class PaymentService
     }
 
     /**
-     * Get all money stacks in inventory and prioritse items in stash
+     * Get all money stacks in inventory and prioritise items in stash
      * @param pmcData
      * @param currencyTpl
      * @param playerStashId Players stash id

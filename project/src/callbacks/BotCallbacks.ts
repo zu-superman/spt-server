@@ -4,6 +4,7 @@ import { BotController } from "@spt-aki/controllers/BotController";
 import { IGenerateBotsRequestData } from "@spt-aki/models/eft/bot/IGenerateBotsRequestData";
 import { IEmptyRequestData } from "@spt-aki/models/eft/common/IEmptyRequestData";
 import { IBotBase } from "@spt-aki/models/eft/common/tables/IBotBase";
+import { Difficulties } from "@spt-aki/models/eft/common/tables/IBotType";
 import { IGetBodyResponseData } from "@spt-aki/models/eft/httpResponse/IGetBodyResponseData";
 import { HttpResponseUtil } from "@spt-aki/utils/HttpResponseUtil";
 
@@ -42,6 +43,15 @@ export class BotCallbacks
             return this.httpResponse.noBody(this.botController.getBotCoreDifficulty());
         }
         return this.httpResponse.noBody(this.botController.getBotDifficulty(type, difficulty));
+    }
+
+    /**
+     * Handle singleplayer/settings/bot/difficulties
+     * @returns dictionary of every bot and its diffiulty settings
+     */
+    public getAllBotDifficulties(url: string, info: IEmptyRequestData, sessionID: string): Record<string, Difficulties>
+    {
+        return this.httpResponse.noBody(this.botController.getAllBotDifficulties());
     }
 
     /**

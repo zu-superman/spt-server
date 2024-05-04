@@ -48,6 +48,7 @@ import { SaveServer } from "@spt-aki/servers/SaveServer";
 import { FenceService } from "@spt-aki/services/FenceService";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
 import { PlayerService } from "@spt-aki/services/PlayerService";
+import { ProfileActivityService } from "@spt-aki/services/ProfileActivityService";
 import { HashUtil } from "@spt-aki/utils/HashUtil";
 import { HttpResponseUtil } from "@spt-aki/utils/HttpResponseUtil";
 import { JsonUtil } from "@spt-aki/utils/JsonUtil";
@@ -79,6 +80,7 @@ export class HideoutController
         @inject("HideoutHelper") protected hideoutHelper: HideoutHelper,
         @inject("ScavCaseRewardGenerator") protected scavCaseRewardGenerator: ScavCaseRewardGenerator,
         @inject("LocalisationService") protected localisationService: LocalisationService,
+        @inject("ProfileActivityService") protected profileActivityService: ProfileActivityService,
         @inject("ConfigServer") protected configServer: ConfigServer,
         @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("FenceService") protected fenceService: FenceService,
@@ -1323,7 +1325,13 @@ export class HideoutController
     {
         for (const sessionID in this.saveServer.getProfiles())
         {
-            if ("Hideout" in this.saveServer.getProfile(sessionID).characters.pmc)
+            if (
+                "Hideout" in this.saveServer.getProfile(sessionID).characters.pmc
+                && this.profileActivityService.activeWithinLastMinutes(
+                    sessionID,
+                    this.hideoutConfig.updateProfileHideoutWhenActiveWithinMinutes,
+                )
+            )
             {
                 this.hideoutHelper.updatePlayerHideout(sessionID);
             }

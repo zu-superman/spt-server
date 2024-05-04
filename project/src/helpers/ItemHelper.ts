@@ -3,7 +3,7 @@ import { inject, injectable } from "tsyringe";
 import { HandbookHelper } from "@spt-aki/helpers/HandbookHelper";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
 import { InsuredItem } from "@spt-aki/models/eft/common/tables/IBotBase";
-import { Item, Location, Repairable } from "@spt-aki/models/eft/common/tables/IItem";
+import { Item, Location, Repairable, Upd } from "@spt-aki/models/eft/common/tables/IItem";
 import { IStaticAmmoDetails } from "@spt-aki/models/eft/common/tables/ILootBase";
 import { ITemplateItem } from "@spt-aki/models/eft/common/tables/ITemplateItem";
 import { BaseClasses } from "@spt-aki/models/enums/BaseClasses";
@@ -14,6 +14,7 @@ import { ItemBaseClassService } from "@spt-aki/services/ItemBaseClassService";
 import { ItemFilterService } from "@spt-aki/services/ItemFilterService";
 import { LocaleService } from "@spt-aki/services/LocaleService";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
+import { CompareUtil } from "@spt-aki/utils/CompareUtil";
 import { HashUtil } from "@spt-aki/utils/HashUtil";
 import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 import { MathUtil } from "@spt-aki/utils/MathUtil";
@@ -46,8 +47,136 @@ export class ItemHelper
         @inject("ItemFilterService") protected itemFilterService: ItemFilterService,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("LocaleService") protected localeService: LocaleService,
+        @inject("CompareUtil") protected compareUtil: CompareUtil,
     )
     {}
+
+    /**
+     * This method will compare two items (with all its children) and see if the are equivalent.
+     * This method will NOT compare IDs on the items
+     * @param item1 first item with all its children to compare
+     * @param item2 second item with all its children to compare
+     * @param compareUpdProperties Upd properties to compare between the items
+     * @returns true if they are the same, false if they arent
+     */
+    public isSameItems(item1: Item[], item2: Item[], compareUpdProperties?: Set<string>): boolean
+    {
+        if (item1.length !== item2.length)
+        {
+            return false;
+        }
+        for (const itemOf1 of item1)
+        {
+            const itemOf2 = item2.find((i2) => i2._tpl === itemOf1._tpl);
+            if (itemOf2 === undefined)
+            {
+                return false;
+            }
+            if (!this.isSameItem(itemOf1, itemOf2, compareUpdProperties))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * This method will compare two items and see if the are equivalent.
+     * This method will NOT compare IDs on the items
+     * @param item1 first item to compare
+     * @param item2 second item to compare
+     * @param compareUpdProperties Upd properties to compare between the items
+     * @returns true if they are the same, false if they arent
+     */
+    public isSameItem(item1: Item, item2: Item, compareUpdProperties?: Set<string>): boolean
+    {
+        if (item1._tpl !== item2._tpl)
+        {
+            return false;
+        }
+
+        if (compareUpdProperties)
+        {
+            return Array.from(compareUpdProperties.values()).every((p) =>
+                this.compareUtil.recursiveCompare(item1.upd?.[p], item2.upd?.[p])
+            );
+        }
+
+        return this.compareUtil.recursiveCompare(item1.upd, item2.upd);
+    }
+
+    /**
+     * Helper method to generate a Upd based on a template
+     * @param itemTemplate the item template to generate a Upd for
+     * @returns A Upd with all the default properties set
+     */
+    public generateUpdForItem(itemTemplate: ITemplateItem): Upd
+    {
+        const itemProperties: Upd = {};
+
+        // armors, etc
+        if (itemTemplate._props.MaxDurability)
+        {
+            itemProperties.Repairable = {
+                Durability: itemTemplate._props.MaxDurability,
+                MaxDurability: itemTemplate._props.MaxDurability,
+            };
+        }
+
+        if (itemTemplate._props.HasHinge)
+        {
+            itemProperties.Togglable = { On: true };
+        }
+
+        if (itemTemplate._props.Foldable)
+        {
+            itemProperties.Foldable = { Folded: false };
+        }
+
+        if (itemTemplate._props.weapFireType?.length)
+        {
+            if (itemTemplate._props.weapFireType.includes("fullauto"))
+            {
+                itemProperties.FireMode = { FireMode: "fullauto" };
+            }
+            else
+            {
+                itemProperties.FireMode = { FireMode: this.randomUtil.getArrayValue(itemTemplate._props.weapFireType) };
+            }
+        }
+
+        if (itemTemplate._props.MaxHpResource)
+        {
+            itemProperties.MedKit = { HpResource: itemTemplate._props.MaxHpResource };
+        }
+
+        if (itemTemplate._props.MaxResource && itemTemplate._props.foodUseTime)
+        {
+            itemProperties.FoodDrink = { HpPercent: itemTemplate._props.MaxResource };
+        }
+
+        if (itemTemplate._parent === BaseClasses.FLASHLIGHT)
+        {
+            itemProperties.Light = { IsActive: false, SelectedMode: 0 };
+        }
+        else if (itemTemplate._parent === BaseClasses.TACTICAL_COMBO)
+        {
+            itemProperties.Light = { IsActive: false, SelectedMode: 0 };
+        }
+
+        if (itemTemplate._parent === BaseClasses.NIGHTVISION)
+        {
+            itemProperties.Togglable = { On: false };
+        }
+
+        // Togglable face shield
+        if (itemTemplate._props.HasHinge && itemTemplate._props.FaceShieldComponent)
+        {
+            itemProperties.Togglable = { On: false };
+        }
+
+        return itemProperties;
+    }
 
     /**
      * Checks if an id is a valid item. Valid meaning that it's an item that be stored in stash
@@ -429,19 +558,12 @@ export class ItemHelper
         if (repairable.Durability > repairable.MaxDurability)
         {
             this.logger.warning(
-                `Max durability: ${repairable.MaxDurability} for item id: ${item._id} was below Durability: ${repairable.Durability}, adjusting values to match`,
+                `Max durability: ${repairable.MaxDurability} for item id: ${item._id} was below durability: ${repairable.Durability}, adjusting values to match`,
             );
             repairable.MaxDurability = repairable.Durability;
         }
 
-        // Armor
-        if (itemDetails._props.armorClass)
-        {
-            return repairable.MaxDurability / itemDetails._props.MaxDurability;
-        }
-
-        // Weapon
-        // Get max dura from props, if it isnt there use repairable max dura value
+        // Attempt to get the max durability from _props. If not available, use Repairable max durability value instead.
         const maxDurability = (itemDetails._props.MaxDurability)
             ? itemDetails._props.MaxDurability
             : repairable.MaxDurability;
@@ -1097,6 +1219,12 @@ export class ItemHelper
         const cartridgeDetails = this.getItem(cartridgeTpl);
         const cartridgeMaxStackSize = cartridgeDetails[1]._props.StackMaxSize;
 
+        // Exit if ammo already exists in box
+        if (ammoBox.find((item) => item._tpl === cartridgeTpl))
+        {
+            return;
+        }
+
         // Add new stack-size-correct items to ammo box
         let currentStoredCartridgeCount = 0;
         const maxPerStack = Math.min(ammoBoxMaxCartridgeCount, cartridgeMaxStackSize);
@@ -1205,6 +1333,7 @@ export class ItemHelper
         const cartridgeTpl = this.drawAmmoTpl(
             chosenCaliber,
             staticAmmoDist,
+            weapon?._props.defAmmo,
             weapon?._props?.Chambers[0]?._props?.filters[0]?.Filter,
         );
         this.fillMagazineWithCartridge(magazine, magTemplate, cartridgeTpl, minSizePercent);
@@ -1313,12 +1442,14 @@ export class ItemHelper
      * Chose a randomly weighted cartridge that fits
      * @param caliber Desired caliber
      * @param staticAmmoDist Cartridges and thier weights
+     * @param fallbackCartridgeTpl If a cartridge cannot be found in the above staticAmmoDist param, use this instead
      * @param cartridgeWhitelist OPTIONAL whitelist for cartridges
      * @returns Tpl of cartridge
      */
     protected drawAmmoTpl(
         caliber: string,
         staticAmmoDist: Record<string, IStaticAmmoDetails[]>,
+        fallbackCartridgeTpl: string,
         cartridgeWhitelist: string[] = null,
     ): string
     {
@@ -1326,14 +1457,20 @@ export class ItemHelper
         const ammos = staticAmmoDist[caliber];
         if (!ammos)
         {
-            this.logger.error(`Missing caliber data for: ${caliber}`);
+            this.logger.error(
+                `Unable to pick a cartridge for caliber: ${caliber} as staticAmmoDist has no data. using fallback value of ${fallbackCartridgeTpl}`,
+            );
+
+            return fallbackCartridgeTpl;
         }
 
         if (!Array.isArray(ammos))
         {
             this.logger.error(
-                `Unable to pick a cartridge for caliber ${caliber}, chosen staticAmmoDist data is not an array: ${ammos}`,
+                `Unable to pick a cartridge for caliber: ${caliber}, the chosen staticAmmoDist data is not an array. Using fallback value of ${fallbackCartridgeTpl}`,
             );
+
+            return fallbackCartridgeTpl;
         }
 
         for (const icd of ammos)
@@ -1470,7 +1607,6 @@ export class ItemHelper
             const modItemDbDetails = this.getItem(modItemToAdd._tpl)[1];
 
             // Include conflicting items of newly added mod in pool to be used for next mod choice
-            // biome-ignore lint/complexity/noForEach: <explanation>
             modItemDbDetails._props.ConflictingItems.forEach(incompatibleModTpls.add, incompatibleModTpls);
         }
 
@@ -1479,7 +1615,7 @@ export class ItemHelper
 
     /**
      * Get a compatible tpl from the array provided where it is not found in the provided incompatible mod tpls parameter
-     * @param possibleTpls Tpls to randomply choose from
+     * @param possibleTpls Tpls to randomly choose from
      * @param incompatibleModTpls Incompatible tpls to not allow
      * @returns Chosen tpl or null
      */
@@ -1666,7 +1802,7 @@ export class ItemHelper
 
             if (warningMessageWhenMissing)
             {
-                this.logger.warning(warningMessageWhenMissing);
+                this.logger.debug(warningMessageWhenMissing);
             }
 
             return true;

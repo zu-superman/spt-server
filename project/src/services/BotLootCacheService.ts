@@ -59,28 +59,48 @@ export class BotLootCacheService
             this.addLootToCache(botRole, isPmc, botJsonTemplate);
         }
 
+        let result = undefined;
         switch (lootType)
         {
             case LootCacheType.SPECIAL:
-                return this.lootCache[botRole].specialItems;
+                result = this.lootCache[botRole].specialItems;
+                break;
             case LootCacheType.BACKPACK:
-                return this.lootCache[botRole].backpackLoot;
+                result = this.lootCache[botRole].backpackLoot;
+                break;
             case LootCacheType.POCKET:
-                return this.lootCache[botRole].pocketLoot;
+                result = this.lootCache[botRole].pocketLoot;
+                break;
             case LootCacheType.VEST:
-                return this.lootCache[botRole].vestLoot;
+                result = this.lootCache[botRole].vestLoot;
+                break;
             case LootCacheType.SECURE:
-                return this.lootCache[botRole].secureLoot;
+                result = this.lootCache[botRole].secureLoot;
+                break;
             case LootCacheType.COMBINED:
-                return this.lootCache[botRole].combinedPoolLoot;
+                result = this.lootCache[botRole].combinedPoolLoot;
+                break;
             case LootCacheType.HEALING_ITEMS:
-                return this.lootCache[botRole].healingItems;
+                result = this.lootCache[botRole].healingItems;
+                break;
             case LootCacheType.GRENADE_ITEMS:
-                return this.lootCache[botRole].grenadeItems;
+                result = this.lootCache[botRole].grenadeItems;
+                break;
             case LootCacheType.DRUG_ITEMS:
-                return this.lootCache[botRole].drugItems;
+                result = this.lootCache[botRole].drugItems;
+                break;
+            case LootCacheType.FOOD_ITEMS:
+                result = this.lootCache[botRole].foodItems;
+                break;
+            case LootCacheType.DRINK_ITEMS:
+                result = this.lootCache[botRole].drinkItems;
+                break;
+            case LootCacheType.CURRENCY_ITEMS:
+                result = this.lootCache[botRole].currencyItems;
+                break;
             case LootCacheType.STIM_ITEMS:
-                return this.lootCache[botRole].stimItems;
+                result = this.lootCache[botRole].stimItems;
+                break;
             default:
                 this.logger.error(
                     this.localisationService.getText("bot-loot_type_not_found", {
@@ -91,6 +111,8 @@ export class BotLootCacheService
                 );
                 break;
         }
+
+        return this.jsonUtil.clone(result);
     }
 
     /**
@@ -206,7 +228,7 @@ export class BotLootCacheService
                 ? botJsonTemplate.generation.items.drugs.whitelist
                 : {};
 
-        // no whitelist, find and assign from combined item pool
+        // no drugs whitelist, find and assign from combined item pool
         if (Object.keys(drugItems).length === 0)
         {
             for (const [tpl, weight] of Object.entries(combinedLootPool))
@@ -215,6 +237,63 @@ export class BotLootCacheService
                 if (this.isMedicalItem(itemTemplate._props) && itemTemplate._parent === BaseClasses.DRUGS)
                 {
                     drugItems[tpl] = weight;
+                }
+            }
+        }
+
+        // Assign whitelisted food to bot if any exist
+        const foodItems: Record<string, number> =
+            (Object.keys(botJsonTemplate.generation.items.food.whitelist)?.length > 0)
+                ? botJsonTemplate.generation.items.food.whitelist
+                : {};
+
+        // No food whitelist, find and assign from combined item pool
+        if (Object.keys(foodItems).length === 0)
+        {
+            for (const [tpl, weight] of Object.entries(combinedLootPool))
+            {
+                const itemTemplate = this.itemHelper.getItem(tpl)[1];
+                if (this.itemHelper.isOfBaseclass(itemTemplate._id, BaseClasses.FOOD))
+                {
+                    foodItems[tpl] = weight;
+                }
+            }
+        }
+
+        // Assign whitelisted drink to bot if any exist
+        const drinkItems: Record<string, number> =
+            (Object.keys(botJsonTemplate.generation.items.food.whitelist)?.length > 0)
+                ? botJsonTemplate.generation.items.food.whitelist
+                : {};
+
+        // No drink whitelist, find and assign from combined item pool
+        if (Object.keys(drinkItems).length === 0)
+        {
+            for (const [tpl, weight] of Object.entries(combinedLootPool))
+            {
+                const itemTemplate = this.itemHelper.getItem(tpl)[1];
+                if (this.itemHelper.isOfBaseclass(itemTemplate._id, BaseClasses.DRINK))
+                {
+                    drinkItems[tpl] = weight;
+                }
+            }
+        }
+
+        // Assign whitelisted currency to bot if any exist
+        const currencyItems: Record<string, number> =
+            (Object.keys(botJsonTemplate.generation.items.currency.whitelist)?.length > 0)
+                ? botJsonTemplate.generation.items.currency.whitelist
+                : {};
+
+        // No currency whitelist, find and assign from combined item pool
+        if (Object.keys(currencyItems).length === 0)
+        {
+            for (const [tpl, weight] of Object.entries(combinedLootPool))
+            {
+                const itemTemplate = this.itemHelper.getItem(tpl)[1];
+                if (this.itemHelper.isOfBaseclass(itemTemplate._id, BaseClasses.MONEY))
+                {
+                    currencyItems[tpl] = weight;
                 }
             }
         }
@@ -257,7 +336,7 @@ export class BotLootCacheService
             }
         }
 
-        // Get backpack loot (excluding magazines, bullets, grenades and healing items)
+        // Get backpack loot (excluding magazines, bullets, grenades, drink, food and healing/stim items)
         const filteredBackpackItems = {};
         for (const itemKey of Object.keys(backpackLootPool))
         {
@@ -272,6 +351,9 @@ export class BotLootCacheService
                 || this.isMagazine(itemTemplate._props)
                 || this.isMedicalItem(itemTemplate._props)
                 || this.isGrenade(itemTemplate._props)
+                || this.isFood(itemTemplate._id)
+                || this.isDrink(itemTemplate._id)
+                || this.isCurrency(itemTemplate._id)
             )
             {
                 // Is type we dont want as backpack loot, skip
@@ -281,7 +363,7 @@ export class BotLootCacheService
             filteredBackpackItems[itemKey] = backpackLootPool[itemKey];
         }
 
-        // Get pocket loot (excluding magazines, bullets, grenades, medical and healing items)
+        // Get pocket loot (excluding magazines, bullets, grenades, drink, food medical and healing/stim items)
         const filteredPocketItems = {};
         for (const itemKey of Object.keys(pocketLootPool))
         {
@@ -296,6 +378,9 @@ export class BotLootCacheService
                 || this.isMagazine(itemTemplate._props)
                 || this.isMedicalItem(itemTemplate._props)
                 || this.isGrenade(itemTemplate._props)
+                || this.isFood(itemTemplate._id)
+                || this.isDrink(itemTemplate._id)
+                || this.isCurrency(itemTemplate._id)
                 || !("Height" in itemTemplate._props) // lacks height
                 || !("Width" in itemTemplate._props) // lacks width
             )
@@ -306,7 +391,7 @@ export class BotLootCacheService
             filteredPocketItems[itemKey] = pocketLootPool[itemKey];
         }
 
-        // Get vest loot (excluding magazines, bullets, grenades, medical and healing items)
+        // Get vest loot (excluding magazines, bullets, grenades, medical and healing/stim items)
         const filteredVestItems = {};
         for (const itemKey of Object.keys(vestLootPool))
         {
@@ -321,6 +406,9 @@ export class BotLootCacheService
                 || this.isMagazine(itemTemplate._props)
                 || this.isMedicalItem(itemTemplate._props)
                 || this.isGrenade(itemTemplate._props)
+                || this.isFood(itemTemplate._id)
+                || this.isDrink(itemTemplate._id)
+                || this.isCurrency(itemTemplate._id)
             )
             {
                 continue;
@@ -331,6 +419,9 @@ export class BotLootCacheService
 
         this.lootCache[botRole].healingItems = healingItems;
         this.lootCache[botRole].drugItems = drugItems;
+        this.lootCache[botRole].foodItems = foodItems;
+        this.lootCache[botRole].drinkItems = drinkItems;
+        this.lootCache[botRole].currencyItems = currencyItems;
         this.lootCache[botRole].stimItems = stimItems;
         this.lootCache[botRole].grenadeItems = grenadeItems;
 
@@ -416,6 +507,21 @@ export class BotLootCacheService
         return ("ThrowType" in props);
     }
 
+    protected isFood(tpl: string): boolean
+    {
+        return this.itemHelper.isOfBaseclass(tpl, BaseClasses.FOOD);
+    }
+
+    protected isDrink(tpl: string): boolean
+    {
+        return this.itemHelper.isOfBaseclass(tpl, BaseClasses.DRINK);
+    }
+
+    protected isCurrency(tpl: string): boolean
+    {
+        return this.itemHelper.isOfBaseclass(tpl, BaseClasses.MONEY);
+    }
+
     /**
      * Check if a bot type exists inside the loot cache
      * @param botRole role to check for
@@ -442,6 +548,9 @@ export class BotLootCacheService
             specialItems: {},
             grenadeItems: {},
             drugItems: {},
+            foodItems: {},
+            drinkItems: {},
+            currencyItems: {},
             healingItems: {},
             stimItems: {},
         };

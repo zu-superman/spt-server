@@ -90,7 +90,9 @@ import { BotHelper } from "@spt-aki/helpers/BotHelper";
 import { BotWeaponGeneratorHelper } from "@spt-aki/helpers/BotWeaponGeneratorHelper";
 import { ContainerHelper } from "@spt-aki/helpers/ContainerHelper";
 import { SptCommandoCommands } from "@spt-aki/helpers/Dialogue/Commando/SptCommandoCommands";
-import { GiveSptCommand } from "@spt-aki/helpers/Dialogue/Commando/SptCommands/GiveSptCommand";
+import { GiveSptCommand } from "@spt-aki/helpers/Dialogue/Commando/SptCommands/GiveCommand/GiveSptCommand";
+import { ProfileSptCommand } from "@spt-aki/helpers/Dialogue/Commando/SptCommands/ProfileCommand/ProfileSptCommand";
+import { TraderSptCommand } from "@spt-aki/helpers/Dialogue/Commando/SptCommands/TraderCommand/TraderSptCommand";
 import { CommandoDialogueChatBot } from "@spt-aki/helpers/Dialogue/CommandoDialogueChatBot";
 import { SptDialogueChatBot } from "@spt-aki/helpers/Dialogue/SptDialogueChatBot";
 import { DialogueHelper } from "@spt-aki/helpers/DialogueHelper";
@@ -213,6 +215,7 @@ import { OpenZoneService } from "@spt-aki/services/OpenZoneService";
 import { PaymentService } from "@spt-aki/services/PaymentService";
 import { PlayerService } from "@spt-aki/services/PlayerService";
 import { PmcChatResponseService } from "@spt-aki/services/PmcChatResponseService";
+import { ProfileActivityService } from "@spt-aki/services/ProfileActivityService";
 import { ProfileFixerService } from "@spt-aki/services/ProfileFixerService";
 import { ProfileSnapshotService } from "@spt-aki/services/ProfileSnapshotService";
 import { RagfairCategoriesService } from "@spt-aki/services/RagfairCategoriesService";
@@ -238,6 +241,7 @@ import { OnUpdateModService } from "@spt-aki/services/mod/onUpdate/OnUpdateModSe
 import { StaticRouterModService } from "@spt-aki/services/mod/staticRouter/StaticRouterModService";
 import { App } from "@spt-aki/utils/App";
 import { AsyncQueue } from "@spt-aki/utils/AsyncQueue";
+import { CompareUtil } from "@spt-aki/utils/CompareUtil";
 import { DatabaseImporter } from "@spt-aki/utils/DatabaseImporter";
 import { EncodingUtil } from "@spt-aki/utils/EncodingUtil";
 import { HashUtil } from "@spt-aki/utils/HashUtil";
@@ -374,6 +378,8 @@ export class Container
 
         // SptCommando Commands
         depContainer.registerType("SptCommand", "GiveSptCommand");
+        depContainer.registerType("SptCommand", "TraderSptCommand");
+        depContainer.registerType("SptCommand", "ProfileSptCommand");
     }
 
     private static registerUtils(depContainer: DependencyContainer): void
@@ -405,6 +411,7 @@ export class Container
         depContainer.register<HttpFileUtil>("HttpFileUtil", HttpFileUtil, { lifecycle: Lifecycle.Singleton });
         depContainer.register<ModLoadOrder>("ModLoadOrder", ModLoadOrder, { lifecycle: Lifecycle.Singleton });
         depContainer.register<ModTypeCheck>("ModTypeCheck", ModTypeCheck, { lifecycle: Lifecycle.Singleton });
+        depContainer.register<CompareUtil>("CompareUtil", CompareUtil, { lifecycle: Lifecycle.Singleton });
     }
 
     private static registerRouters(depContainer: DependencyContainer): void
@@ -596,7 +603,13 @@ export class Container
             lifecycle: Lifecycle.Singleton,
         });
         // SptCommands
-        depContainer.register<GiveSptCommand>("GiveSptCommand", GiveSptCommand);
+        depContainer.register<GiveSptCommand>("GiveSptCommand", GiveSptCommand, { lifecycle: Lifecycle.Singleton });
+        depContainer.register<TraderSptCommand>("TraderSptCommand", TraderSptCommand, {
+            lifecycle: Lifecycle.Singleton,
+        });
+        depContainer.register<ProfileSptCommand>("ProfileSptCommand", ProfileSptCommand, {
+            lifecycle: Lifecycle.Singleton,
+        });
     }
 
     private static registerLoaders(depContainer: DependencyContainer): void
@@ -747,6 +760,10 @@ export class Container
         depContainer.register<GiftService>("GiftService", GiftService);
         depContainer.register<MailSendService>("MailSendService", MailSendService);
         depContainer.register<RaidTimeAdjustmentService>("RaidTimeAdjustmentService", RaidTimeAdjustmentService);
+
+        depContainer.register<ProfileActivityService>("ProfileActivityService", ProfileActivityService, {
+            lifecycle: Lifecycle.Singleton,
+        });
     }
 
     private static registerServers(depContainer: DependencyContainer): void

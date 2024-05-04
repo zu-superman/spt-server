@@ -2343,11 +2343,35 @@
         },
         "whitelist": []
       },
+      "currency": {
+        "weights": {
+          "0": 20,
+          "1": 5,
+          "2": 1
+        },
+        "whitelist": []
+      },
+      "drink": {
+        "weights": {
+          "0": 10,
+          "1": 5,
+          "2": 2
+        },
+        "whitelist": []
+      },
       "drugs": {
         "weights": {
           "0": 30,
           "1": 9,
           "2": 1
+        },
+        "whitelist": []
+      },
+      "food": {
+        "weights": {
+          "0": 10,
+          "1": 5,
+          "2": 2
         },
         "whitelist": []
       },

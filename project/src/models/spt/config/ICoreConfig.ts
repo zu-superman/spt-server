@@ -9,6 +9,7 @@ export interface ICoreConfig extends IBaseConfig
     serverName: string;
     profileSaveIntervalSeconds: number;
     sptFriendNickname: string;
+    allowProfileWipe: boolean;
     bsgLogging: IBsgLogging;
     release: IRelease;
     fixes: IGameFixes;

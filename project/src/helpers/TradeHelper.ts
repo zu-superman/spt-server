@@ -72,7 +72,7 @@ export class TradeHelper
     ): void
     {
         let offerItems: Item[] = [];
-        let buyCallback: { (buyCount: number); };
+        let buyCallback: (buyCount: number) => void;
         if (buyRequestData.tid.toLocaleLowerCase() === "ragfair")
         {
             buyCallback = (buyCount: number) =>
@@ -155,6 +155,14 @@ export class TradeHelper
                         itemPurchased,
                         buyRequestData.item_id,
                         buyCount,
+                    );
+                }
+
+                // Check if trader has enough stock
+                if (itemPurchased.upd.StackObjectsCount < buyCount)
+                {
+                    throw new Error(
+                        `Unable to purchase ${buyCount} items, this would exceed the remaining stock left ${itemPurchased.upd.StackObjectsCount} from the traders assort: ${buyRequestData.tid} this refresh`,
                     );
                 }
 
@@ -265,6 +273,14 @@ export class TradeHelper
             }
 
             this.logger.debug(`Selling: id: ${matchingItemInInventory._id} tpl: ${matchingItemInInventory._tpl}`);
+
+            if (sellRequest.tid === Traders.FENCE)
+            {
+                this.fenceService.addItemsToFenceAssort(
+                    profileWithItemsToSell.Inventory.items,
+                    matchingItemInInventory,
+                );
+            }
 
             // Also removes children
             this.inventoryHelper.removeItem(profileWithItemsToSell, itemToBeRemoved.id, sessionID, output);

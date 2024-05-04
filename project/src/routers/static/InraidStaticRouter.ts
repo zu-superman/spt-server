@@ -21,13 +21,6 @@ export class InraidStaticRouter extends StaticRouter
                 },
             ),
             new RouteAction(
-                "/singleplayer/settings/weapon/durability",
-                (url: string, info: any, sessionID: string, output: string): any =>
-                {
-                    return this.inraidCallbacks.getWeaponDurability();
-                },
-            ),
-            new RouteAction(
                 "/singleplayer/settings/raid/menu",
                 (url: string, info: any, sessionID: string, output: string): any =>
                 {

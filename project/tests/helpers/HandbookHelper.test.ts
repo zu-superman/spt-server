@@ -88,10 +88,26 @@ describe("HandbookHelper", () =>
             expect(result).toBe(0);
         });
 
-        it("should return roughly 1380 roubles when given 10 euros ", () =>
+        it("should lookup currency value and multiply the input by the value", () =>
         {
-            const result = handbookHelper.inRUB(10, Money.EUROS);
-            expect(result).closeTo(1379, 10);
+            // Mock the getTemplatePrice method to return a value of 100 roubles
+            const getTemplatePriceSpy = vi.spyOn(handbookHelper, "getTemplatePrice").mockReturnValue(100);
+
+            const result = handbookHelper.inRUB(5, Money.EUROS);
+
+            expect(getTemplatePriceSpy).toHaveBeenCalled();
+            expect(result).toBe(500);
+        });
+
+        it("should always return a whole number", () =>
+        {
+            // Mock the getTemplatePrice method to return a value of 100 roubles
+            const getTemplatePriceSpy = vi.spyOn(handbookHelper, "getTemplatePrice").mockReturnValue(123.321);
+
+            const result = handbookHelper.inRUB(12.21, Money.EUROS);
+
+            expect(getTemplatePriceSpy).toHaveBeenCalled();
+            expect(result).toBe(1506);
         });
     });
 

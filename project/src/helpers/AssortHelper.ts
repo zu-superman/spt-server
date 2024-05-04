@@ -37,6 +37,8 @@ export class AssortHelper
         flea = false,
     ): ITraderAssort
     {
+        let strippedTraderAssorts = traderAssorts;
+
         // Trader assort does not always contain loyal_level_items
         if (!traderAssorts.loyal_level_items)
         {
@@ -45,7 +47,7 @@ export class AssortHelper
             return traderAssorts;
         }
 
-        // Iterate over all assorts, removing items that don't fulfil the requirements
+        // Iterate over all assorts, removing items that haven't yet been unlocked by quests (ASSORTMENT_UNLOCK)
         for (const assortId in traderAssorts.loyal_level_items)
         {
             // Get quest id that unlocks assort + statuses quest can be in to show assort
@@ -59,11 +61,11 @@ export class AssortHelper
             const questStatusInProfile = this.questHelper.getQuestStatus(pmcProfile, unlockValues.questId);
             if (!unlockValues.status.includes(questStatusInProfile))
             {
-                traderAssorts = this.removeItemFromAssort(traderAssorts, assortId, flea);
+                strippedTraderAssorts = this.removeItemFromAssort(traderAssorts, assortId, flea);
             }
         }
 
-        return traderAssorts;
+        return strippedTraderAssorts;
     }
 
     /**
@@ -108,24 +110,26 @@ export class AssortHelper
      */
     public stripLockedLoyaltyAssort(pmcProfile: IPmcData, traderId: string, assort: ITraderAssort): ITraderAssort
     {
+        let strippedAssort = assort;
+
         // Trader assort does not always contain loyal_level_items
         if (!assort.loyal_level_items)
         {
             this.logger.warning(this.localisationService.getText("assort-missing_loyalty_level_object", traderId));
 
-            return assort;
+            return strippedAssort;
         }
 
-        // Remove items not unlocked from quest status change (ASSORTMENT_UNLOCK)
+        // Remove items restricted by loyalty levels above those reached by the player
         for (const itemId in assort.loyal_level_items)
         {
             if (assort.loyal_level_items[itemId] > pmcProfile.TradersInfo[traderId].loyaltyLevel)
             {
-                assort = this.removeItemFromAssort(assort, itemId);
+                strippedAssort = this.removeItemFromAssort(assort, itemId);
             }
         }
 
-        return assort;
+        return strippedAssort;
     }
 
     /**

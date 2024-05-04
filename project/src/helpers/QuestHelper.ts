@@ -692,12 +692,12 @@ export class QuestHelper
      */
     public getQuestWithOnlyLevelRequirementStartCondition(quest: IQuest): IQuest
     {
-        quest = this.jsonUtil.clone(quest);
-        quest.conditions.AvailableForStart = quest.conditions.AvailableForStart.filter((q) =>
+        const updatedQuest = this.jsonUtil.clone(quest);
+        updatedQuest.conditions.AvailableForStart = updatedQuest.conditions.AvailableForStart.filter((q) =>
             q.conditionType === "Level"
         );
 
-        return quest;
+        return updatedQuest;
     }
 
     /**
@@ -714,14 +714,22 @@ export class QuestHelper
         output: IItemEventRouterResponse = null,
     ): void
     {
+        let updatedOutput = output;
+
         // Prepare response to send back to client
-        if (!output)
+        if (!updatedOutput)
         {
-            output = this.eventOutputHolder.getOutput(sessionID);
+            updatedOutput = this.eventOutputHolder.getOutput(sessionID);
         }
 
         this.updateQuestState(pmcData, QuestStatus.Fail, failRequest.qid);
-        const questRewards = this.applyQuestReward(pmcData, failRequest.qid, QuestStatus.Fail, sessionID, output);
+        const questRewards = this.applyQuestReward(
+            pmcData,
+            failRequest.qid,
+            QuestStatus.Fail,
+            sessionID,
+            updatedOutput,
+        );
 
         // Create a dialog message for completing the quest.
         const quest = this.getQuestFromDb(failRequest.qid, pmcData);
@@ -731,19 +739,23 @@ export class QuestHelper
             repeatableType.activeQuests
         ).find((activeQuest) => activeQuest._id === failRequest.qid);
 
-        if (matchingRepeatableQuest || quest)
+        // Quest found and no repeatable found
+        if (quest && !matchingRepeatableQuest)
         {
-            this.mailSendService.sendLocalisedNpcMessageToPlayer(
-                sessionID,
-                this.traderHelper.getTraderById(quest?.traderId ?? matchingRepeatableQuest?.traderId), // Can be null when repeatable quest has been moved to inactiveQuests
-                MessageType.QUEST_FAIL,
-                quest.failMessageText,
-                questRewards,
-                this.timeUtil.getHoursAsSeconds(this.questConfig.redeemTime),
-            );
+            if (quest.failMessageText.trim().length > 0)
+            {
+                this.mailSendService.sendLocalisedNpcMessageToPlayer(
+                    sessionID,
+                    this.traderHelper.getTraderById(quest?.traderId ?? matchingRepeatableQuest?.traderId), // Can be null when repeatable quest has been moved to inactiveQuests
+                    MessageType.QUEST_FAIL,
+                    quest.failMessageText,
+                    questRewards,
+                    this.timeUtil.getHoursAsSeconds(this.questConfig.redeemTime),
+                );
+            }
         }
 
-        output.profileChanges[sessionID].quests.push(...this.failedUnlocked(failRequest.qid, sessionID));
+        updatedOutput.profileChanges[sessionID].quests.push(...this.failedUnlocked(failRequest.qid, sessionID));
     }
 
     /**
@@ -938,7 +950,7 @@ export class QuestHelper
                     // Handled elsewhere, TODO: find and say here
                     break;
                 case QuestRewardType.STASH_ROWS:
-                    this.logger.debug("Not implemented stash rows reward yet");
+                    this.profileHelper.addStashRowsBonusToProfile(sessionId, Number.parseInt(<string>reward.value)); // add specified stash rows from quest reward - requires client restart
                     break;
                 case QuestRewardType.PRODUCTIONS_SCHEME:
                     this.findAndAddHideoutProductionIdToProfile(

@@ -317,33 +317,45 @@
         "exusec": {
             "60098ad7c2240c0fe85c570a": 2
         },
-        "bossbully": {},
-        "bossgluhar": {},
+        "bossbully": {
+            "5448ba0b4bdc2d02308b456c": 1
+        },
+        "bossgluhar": {
+            "5c94bbff86f7747ee735c08f": 1
+        },
         "bosskilla": {},
         "bosskojaniy": {
             "5d08d21286f774736e7c94c3": 1,
             "5c94bbff86f7747ee735c08f": 1
         },
-        "bosssanitar": {},
+        "bosssanitar": {
+            "5efde6b4f5448336730dbd61": 1,
+            "5eff09cd30a7dc22fd1ddfed": 1
+        },
         "bosstagilla": {},
         "bossknight": {},
         "bosszryachiy": {},
         "bosskolontay": {},
         "bosstest": {},
         "followerbully": {
-            "5448e8d64bdc2dce718b4568": 2
+            "5448e8d64bdc2dce718b4568": 1,
+            "5448ba0b4bdc2d02308b456c": 1
         },
         "followergluharassault": {
-            "5c0fa877d174af02a012e1cf": 1
+            "5c0fa877d174af02a012e1cf": 1,
+            "5c94bbff86f7747ee735c08f": 0
         },
         "followergluharscout": {
-            "5c0fa877d174af02a012e1cf": 1
+            "5c0fa877d174af02a012e1cf": 1,
+            "5c94bbff86f7747ee735c08f": 0
         },
         "followergluharsecurity": {
-            "5c0fa877d174af02a012e1cf": 1
+            "5c0fa877d174af02a012e1cf": 1,
+            "5c94bbff86f7747ee735c08f": 0
         },
         "followergluharsnipe": {
-            "5c0fa877d174af02a012e1cf": 1
+            "5c0fa877d174af02a012e1cf": 1,
+            "5c94bbff86f7747ee735c08f": 0
         },
         "followerkojaniy": {
             "5448e8d64bdc2dce718b4568": 2
@@ -354,14 +366,31 @@
         "followerbigpipe": {},
         "followerzryachiy": {},
         "followertest": {},
-        "followerboar": {},
-        "followerboarclose1": {},
-        "followerboarclose2": {},
+        "followerboar": {
+            "5448e8d04bdc2ddf718b4569": 1,
+            "544fb37f4bdc2dee738b4567": 1,
+            "5448e8d64bdc2dce718b4568": 1,
+            "5c94bbff86f7747ee735c08f": 1
+        },
+        "followerboarclose1": {
+            "5448e8d04bdc2ddf718b4569": 1,
+            "5448e8d64bdc2dce718b4568": 1,
+            "5c94bbff86f7747ee735c08f": 1
+        },
+        "followerboarclose2": {
+            "5448e8d04bdc2ddf718b4569": 1,
+            "5448e8d64bdc2dce718b4568": 1,
+            "5c94bbff86f7747ee735c08f": 1
+        },
         "followerkolontayassault": {
-            "544fb62a4bdc2dfb738b4568": 2
+            "5448e8d04bdc2ddf718b4569": 2,
+            "5c94bbff86f7747ee735c08f": 1,
+            "5448e8d64bdc2dce718b4568": 2
         },
         "followerkolontaysecurity": {
-            "544fb62a4bdc2dfb738b4568": 2
+            "5448e8d04bdc2ddf718b4569": 2,
+            "5c94bbff86f7747ee735c08f": 1,
+            "5448e8d64bdc2dce718b4568": 2
         },
         "sectantpriest": {},
         "sectantwarrior": {},
@@ -369,8 +398,12 @@
         "pmcbot": {
             "60098ad7c2240c0fe85c570a": 2
         },
-        "arenafighterevent": {},
-        "arenafighter": {},
+        "arenafighterevent": {
+            "5734758f24597738025ee253": 1
+        },
+        "arenafighter": {
+            "5734758f24597738025ee253": 1
+        },
         "crazyassaultevent": {},
         "assaultgroup": {},
         "gifter": {},
@@ -648,7 +681,8 @@
             "nvgIsActiveChanceNightPercent": 90,
             "lightIsActiveDayChancePercent": 25,
             "lightIsActiveNightChancePercent": 85,
-            "laserIsActiveChancePercent": 85
+            "laserIsActiveChancePercent": 85,
+            "forceStock": true
         },
         "followerboar": {
             "nvgIsActiveChanceDayPercent": 20,
@@ -756,6 +790,7 @@
             "lightIsActiveDayChancePercent": 35,
             "lightIsActiveNightChancePercent": 95,
             "laserIsActiveChancePercent": 95,
+            "forceStock": true,
             "weaponModLimits": {
                 "scopeLimit": 1,
                 "lightLaserLimit": 1
@@ -768,6 +803,7 @@
             "lightIsActiveDayChancePercent": 35,
             "lightIsActiveNightChancePercent": 95,
             "laserIsActiveChancePercent": 95,
+            "forceStock": true,
             "weaponModLimits": {
                 "scopeLimit": 1,
                 "lightLaserLimit": 1
@@ -977,7 +1013,8 @@
                         "mod_equipment_000": 3,
                         "mod_equipment_001": 3,
                         "mod_equipment_002": 3,
-                        "mod_nvg": 3
+                        "mod_nvg": 3,
+                        "mod_mount": 1
                     },
                     "weaponMods": {
                         "mod_barrel": 5,
@@ -1618,18 +1655,18 @@
                                 "5bffdc370db834001d23eca8": 100,
                                 "54491bb74bdc2d09088b4567": 100
                             }
-                        },
-                        "clothing": {
-                            "add": {},
-                            "edit": {
-                                "body": {
-                                    "5cc0858d14c02e000c6bea66": 20,
-                                    "5cde95d97d6c8b647a3769b0": 20
-                                },
-                                "feet": {
-                                    "5cc085bb14c02e000e67a5c5": 20,
-                                    "5cde95ef7d6c8b04713c4f2d": 20
-                                }
+                        }
+                    },
+                    "clothing": {
+                        "add": {},
+                        "edit": {
+                            "body": {
+                                "5cc0858d14c02e000c6bea66": 20,
+                                "5cde95d97d6c8b647a3769b0": 20
+                            },
+                            "feet": {
+                                "5cc085bb14c02e000e67a5c5": 20,
+                                "5cde95ef7d6c8b04713c4f2d": 20
                             }
                         }
                     }
@@ -1738,6 +1775,7 @@
                         }
                     },
                     "equipment": {
+                        "add": {},
                         "edit": {
                             "ArmorVest": {
                                 "5c0e5bab86f77461f55ed1f3": 135,
@@ -1804,6 +1842,7 @@
                         "max": 50
                     },
                     "equipment": {
+                        "add": {},
                         "edit": {
                             "FirstPrimaryWeapon": {
                                 "5c501a4d2e221602b412b540": 2
@@ -1911,6 +1950,7 @@
                         }
                     },
                     "equipment": {
+                        "add": {},
                         "edit": {
                             "FirstPrimaryWeapon": {
                                 "65290f395ae2ae97b80fdf2d": 8,
@@ -2601,15 +2641,15 @@
                 "20000": 13,
                 "15000": 28,
                 "10000": 51,
-                "5000": 100
+                "5000": 200
             },
             "5696686a4bdc2da3298b456a": {
-                "50": 10,
+                "50": 20,
                 "100": 5,
                 "250": 1
             },
             "569668774bdc2da2298b4568": {
-                "50": 10,
+                "50": 20,
                 "100": 5,
                 "250": 1
             }

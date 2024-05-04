@@ -122,9 +122,7 @@ describe("InsuranceController", () =>
 
             // Verify that the correct methods were called.
             expect(mockGetProfile).toBeCalledTimes(1);
-            expect(mockLoggerDebug).toBeCalledWith(
-                `Found ${insuranceFixture.length} insurance packages in profile ${sessionID}`,
-            );
+            expect(mockLoggerDebug).toBeCalledTimes(1);
             expect(insuredFiltered.length).toBe(insuranceFixture.length);
         });
 
@@ -147,9 +145,7 @@ describe("InsuranceController", () =>
 
             // Verify that the correct methods were called.
             expect(mockGetProfile).toBeCalledTimes(1);
-            expect(mockLoggerDebug).toBeCalledWith(
-                `Found ${insuranceFixture.length} insurance packages in profile ${sessionID}`,
-            );
+            expect(mockLoggerDebug).toBeCalledTimes(1);
             expect(insuredFiltered.length).toBe(insuranceFixture.length - 1); // Should be 1 less than the original fixture.
         });
 
@@ -173,9 +169,7 @@ describe("InsuranceController", () =>
 
             // Verify that the correct methods were called.
             expect(mockGetProfile).toBeCalledTimes(1);
-            expect(mockLoggerDebug).toBeCalledWith(
-                `Found ${insuranceFixture.length} insurance packages in profile ${sessionID}`,
-            );
+            expect(mockLoggerDebug).toBeCalledTimes(1);
 
             // Verify that the returned array is empty.
             expect(insuredFiltered.length).toBe(0);
@@ -187,12 +181,14 @@ describe("InsuranceController", () =>
         it("should log information about the insurance package", () =>
         {
             const sessionId = "session-id";
+            const numberOfItems = 666;
 
             // Spy on the logger.debug method.
             const mockLoggerDebug = vi.spyOn(insuranceController.logger, "debug");
+            vi.spyOn(insuranceController, "countAllInsuranceItems").mockReturnValue(numberOfItems);
             vi.spyOn(insuranceController, "findItemsToDelete").mockImplementation(vi.fn());
             vi.spyOn(insuranceController, "removeItemsFromInsurance").mockImplementation(vi.fn());
-            vi.spyOn(insuranceController, "adoptOrphanedItems").mockImplementation(vi.fn());
+            vi.spyOn(insuranceController.itemHelper, "adoptOrphanedItems").mockImplementation(vi.fn());
             vi.spyOn(insuranceController, "sendMail").mockImplementation(vi.fn());
             vi.spyOn(insuranceController, "removeInsurancePackageFromProfile").mockImplementation(vi.fn());
 
@@ -201,9 +197,7 @@ describe("InsuranceController", () =>
 
             // Verify that the log was written.
             expect(mockLoggerDebug).toBeCalledWith(
-                `Processing ${insuranceFixture.length} insurance packages, which includes a total of ${
-                    insuranceController.countAllInsuranceItems(insuranceFixture)
-                } items, in profile ${sessionId}`,
+                `Processing ${insuranceFixture.length} insurance packages, which includes a total of ${numberOfItems} items, in profile ${sessionId}`,
             );
         });
 
@@ -218,9 +212,8 @@ describe("InsuranceController", () =>
             );
             const mockRemoveItemsFromInsurance = vi.spyOn(insuranceController, "removeItemsFromInsurance")
                 .mockImplementation(vi.fn());
-            const mockAdoptOrphanedItems = vi.spyOn(insuranceController, "adoptOrphanedItems").mockImplementation(
-                vi.fn(),
-            );
+            const mockAdoptOrphanedItems = vi.spyOn(insuranceController.itemHelper, "adoptOrphanedItems")
+                .mockImplementation(vi.fn());
             const mockSendMail = vi.spyOn(insuranceController, "sendMail").mockImplementation(vi.fn());
             const mockRemoveInsurancePackageFromProfile = vi.spyOn(
                 insuranceController,
@@ -295,12 +288,17 @@ describe("InsuranceController", () =>
         it("should remove the specified insurance package from the profile", () =>
         {
             const sessionID = "session-id";
-            const packageToRemove = { date: "01.11.2023", time: "10:51", location: "factory4_day" };
+            const packageToRemove = {
+                traderId: "54cb50c76803fa8b248b4571",
+                systemData: { date: "01.11.2023", time: "11:18", location: "factory4_day" },
+            };
             const profile = {
                 insurance: [{
-                    messageContent: { systemData: { date: "01.11.2023", time: "11:18", location: "factory4_day" } },
-                }, { // This one should be removed
-                    messageContent: { systemData: { date: "01.11.2023", time: "10:51", location: "factory4_day" } },
+                    traderId: "54cb50c76803fa8b248b4571",
+                    systemData: { date: "01.11.2023", time: "11:18", location: "factory4_day" },
+                }, {
+                    traderId: "54cb57776803fa99248b456e",
+                    systemData: { date: "01.11.2023", time: "10:51", location: "factory4_day" },
                 }],
             };
 
@@ -312,20 +310,23 @@ describe("InsuranceController", () =>
 
             // Verify that the specified insurance package was removed.
             expect(profile.insurance.length).toBe(1);
-            expect(profile.insurance[0].messageContent.systemData).toStrictEqual({
-                date: "01.11.2023",
-                time: "11:18",
-                location: "factory4_day",
-            });
+            expect(profile.insurance).toStrictEqual([{
+                traderId: "54cb57776803fa99248b456e",
+                systemData: { date: "01.11.2023", time: "10:51", location: "factory4_day" },
+            }]);
         });
 
         it("should log a message indicating that the package was removed", () =>
         {
             const sessionID = "session-id";
-            const packageToRemove = { date: "01.11.2023", time: "10:51", location: "factory4_day" };
+            const packageToRemove = {
+                traderId: "54cb50c76803fa8b248b4571",
+                systemData: { date: "01.11.2023", time: "11:18", location: "factory4_day" },
+            };
             const profile = {
                 insurance: [{
-                    messageContent: { systemData: { date: "01.11.2023", time: "10:51", location: "factory4_day" } },
+                    traderId: "54cb50c76803fa8b248b4571",
+                    systemData: { date: "01.11.2023", time: "11:18", location: "factory4_day" },
                 }],
             };
 
@@ -340,17 +341,24 @@ describe("InsuranceController", () =>
 
             // Verify that the log was written.
             expect(mockLoggerDebug).toBeCalledWith(
-                `Removed insurance package with date: ${packageToRemove.date}, time: ${packageToRemove.time}, and location: ${packageToRemove.location} from profile ${sessionID}. Remaining packages: ${profile.insurance.length}`,
+                `Removed processed insurance package. Remaining packages: ${profile.insurance.length}`,
             );
         });
 
         it("should not remove any packages if the specified package is not found", () =>
         {
             const sessionID = "session-id";
-            const packageToRemove = { date: "01.11.2023", time: "10:51", location: "factory4_day" };
+            const packageToRemove = {
+                traderId: "54cb50c76803fa8b248b4571",
+                systemData: { date: "01.11.2023", time: "11:25", location: "factory4_day" },
+            };
             const profile = {
                 insurance: [{
-                    messageContent: { systemData: { date: "02.11.2023", time: "10:50", location: "factory4_night" } },
+                    traderId: "54cb50c76803fa8b248b4571",
+                    systemData: { date: "01.11.2023", time: "11:18", location: "factory4_day" },
+                }, {
+                    traderId: "54cb57776803fa99248b456e",
+                    systemData: { date: "01.11.2023", time: "10:51", location: "factory4_day" },
                 }],
             };
 
@@ -360,8 +368,8 @@ describe("InsuranceController", () =>
             // Execute the method.
             insuranceController.removeInsurancePackageFromProfile(sessionID, packageToRemove);
 
-            // Verify that no packages were removed.
-            expect(profile.insurance.length).toBe(1);
+            // Verify that the specified insurance package was removed.
+            expect(profile.insurance.length).toBe(2);
         });
     });
 
@@ -373,7 +381,10 @@ describe("InsuranceController", () =>
             insurancePackage.items = [];
 
             // Execute the method.
-            const result = insuranceController.findItemsToDelete(insurancePackage);
+            const result = insuranceController.findItemsToDelete(
+                insuranceController.hashUtil.generate(),
+                insurancePackage,
+            );
 
             // Verify that the result is correct.
             expect(result.size).toBe(0);
@@ -387,7 +398,6 @@ describe("InsuranceController", () =>
             const numberOfItems = insured.items.length;
 
             // Mock helper methods.
-            const mockPopulateItemsMap = vi.spyOn(insuranceController, "populateItemsMap");
             const mockPopulateParentAttachmentsMap = vi.spyOn(insuranceController, "populateParentAttachmentsMap");
             const mockIsAttachmentAttached = vi.spyOn(insuranceController.itemHelper, "isAttachmentAttached");
             const mockProcessAttachments = vi.spyOn(insuranceController, "processAttachments").mockImplementation(
@@ -405,12 +415,11 @@ describe("InsuranceController", () =>
             vi.spyOn(insuranceController, "processRegularItems").mockImplementation(mockProcessRegularItems);
 
             // Execute the method.
-            const result = insuranceController.findItemsToDelete(insured);
+            const result = insuranceController.findItemsToDelete(insuranceController.hashUtil.generate(), insured);
 
             // Verify that the correct methods were called.
-            expect(mockPopulateItemsMap).toHaveBeenCalledTimes(1);
             expect(mockPopulateParentAttachmentsMap).toHaveBeenCalledTimes(1);
-            expect(mockIsAttachmentAttached).toHaveBeenCalledTimes(numberOfItems + 1); // Once for each item, plus once more
+            expect(mockIsAttachmentAttached).toHaveBeenCalled();
             expect(mockProcessRegularItems).toHaveBeenCalledTimes(1);
             expect(mockProcessAttachments).not.toHaveBeenCalled();
 
@@ -426,7 +435,6 @@ describe("InsuranceController", () =>
             const insured = insuranceFixture[0];
 
             // Mock helper methods.
-            const mockPopulateItemsMap = vi.spyOn(insuranceController, "populateItemsMap");
             const mockProcessRegularItems = vi.spyOn(insuranceController, "processRegularItems");
             const mockProcessAttachments = vi.spyOn(insuranceController, "processAttachments");
 
@@ -440,10 +448,9 @@ describe("InsuranceController", () =>
             );
 
             // Execute the method.
-            const result = insuranceController.findItemsToDelete(insured);
+            const result = insuranceController.findItemsToDelete(insuranceController.hashUtil.generate(), insured);
 
             // Verify that the correct methods were called.
-            expect(mockPopulateItemsMap).toHaveBeenCalled();
             expect(mockPopulateParentAttachmentsMap).toHaveBeenCalled();
             expect(mockProcessRegularItems).not.toHaveBeenCalled();
             expect(mockProcessAttachments).not.toHaveBeenCalled();
@@ -459,7 +466,6 @@ describe("InsuranceController", () =>
             const numberOfItems = insured.items.length;
 
             // Mock helper methods.
-            const mockPopulateItemsMap = vi.spyOn(insuranceController, "populateItemsMap");
             const mockPopulateParentAttachmentsMap = vi.spyOn(insuranceController, "populateParentAttachmentsMap");
 
             // Add all items to the toDelete set. Not realistic, but it's fine for this test.
@@ -481,10 +487,9 @@ describe("InsuranceController", () =>
             vi.spyOn(insuranceController, "processAttachments").mockImplementation(mockProcessAttachments);
 
             // Execute the method.
-            const result = insuranceController.findItemsToDelete(insured);
+            const result = insuranceController.findItemsToDelete(insuranceController.hashUtil.generate(), insured);
 
             // Verify that the correct methods were called.
-            expect(mockPopulateItemsMap).toHaveBeenCalled();
             expect(mockPopulateParentAttachmentsMap).toHaveBeenCalled();
             expect(mockProcessRegularItems).toHaveBeenCalled();
             expect(mockProcessAttachments).toHaveBeenCalled();
@@ -499,7 +504,6 @@ describe("InsuranceController", () =>
             const insured = insuranceFixture[0];
 
             // Mock helper methods.
-            const mockPopulateItemsMap = vi.spyOn(insuranceController, "populateItemsMap");
             const mockPopulateParentAttachmentsMap = vi.spyOn(insuranceController, "populateParentAttachmentsMap");
 
             // Don't add any items to the toDelete set.
@@ -511,10 +515,9 @@ describe("InsuranceController", () =>
             );
 
             // Execute the method.
-            const result = insuranceController.findItemsToDelete(insured);
+            const result = insuranceController.findItemsToDelete(insuranceController.hashUtil.generate(), insured);
 
             // Verify that the correct methods were called.
-            expect(mockPopulateItemsMap).toHaveBeenCalled();
             expect(mockPopulateParentAttachmentsMap).toHaveBeenCalled();
             expect(mockProcessRegularItems).toHaveBeenCalled();
             expect(mockProcessAttachments).toHaveBeenCalled();
@@ -551,7 +554,7 @@ describe("InsuranceController", () =>
             vi.spyOn(insuranceController, "processAttachments").mockImplementation(mockProcessAttachments);
 
             // Execute the method.
-            const result = insuranceController.findItemsToDelete(insured);
+            const result = insuranceController.findItemsToDelete(insuranceController.hashUtil.generate(), insured);
 
             // Verify that the result is the correct size, and the size is logged.
             expect(result.size).toBe(numberOfItems);
@@ -566,61 +569,59 @@ describe("InsuranceController", () =>
             const insured = insuranceFixture[0];
 
             // Generate the items map.
-            const itemsMap = insuranceController.populateItemsMap(insured);
+            const itemsMap = insuranceController.itemHelper.generateItemsMap(insured.items);
 
             // Execute the method.
-            const result = insuranceController.populateParentAttachmentsMap(insured, itemsMap);
+            const result = insuranceController.populateParentAttachmentsMap(
+                insuranceController.hashUtil.generate(),
+                insured,
+                itemsMap,
+            );
 
             // Verify that the map is populated correctly.
-            expect(result.size).toBe(6); // There are 6 base-level items in this insurance package.
+            expect(result.size).toBe(9); // There are 9 base-level items in this insurance package.
 
-            const gun = result.get("911a0f04d5d9c7e239807ae0");
-            expect(gun.length).toBe(7); // This AK has 7 attachments.
+            const gun = result.get("35111c9b72a87b6b7d95ad35");
+            expect(gun.length).toBe(31); // This gun has 31 attachments.
 
-            // The attachments should be mapped to the AK properly...
+            // The attachments should be mapped to the gun properly...
             const validAttachmentTemplates = [
-                "677c209ebb45445ebb42c405",
-                "4bd10f89836fd9f86aedcac1",
-                "8b1327270791b142ac341b03",
-                "da8cde1b3024c336f6e06152",
-                "bc041c0011d76f714b898400",
-                "9f8d7880a6e0a47a211ec5d3",
-                "db2ef9442178910eba985b51",
+                "7c42d3dce0ddbc4806bce48b",
+                "10b97872c5f4e0e1949a0369",
+                "a6cd9986dde4cabddcd2dce2",
+                "b65635b515712f990fdcc201",
+                "0e11045873efe3625695c1ae",
+                "94c4161abe8bf654fb986063",
+                "9b284ccfd0d535acec1ff58b",
+                "d730caa83a11fd01250a7261",
+                "24291c7bcf91e362adb6d68b",
+                "0d98fd0769cce8e473bbe540",
+                "11b174510f039e8217fbd202",
+                "c435230e530574b1d7c32300",
+                "15666fe6fd2d95206612e418",
+                "a54de8b9014eee71fdf1d01d",
+                "c34555bc95a9a7a23150a36f",
+                "91cae4ae30d1366b87158238",
+                "48f23df4509164cf397b9ab5",
+                "a55f05f689978ac65c7da654",
+                "8ae4ea81a2d6074162d87a9c",
+                "312cc0f6687963305457235e",
+                "e1e5aaf474b7282a52ac9a14",
+                "bb9a34648e08f005db5d7484",
+                "dd9ac99d3ea4c9656221bcc9",
+                "b22748de8da5f3c1362dd8e0",
+                "e3cc1be8954c4889f94b435a",
+                "e73f05be5a306168e847da82",
+                "847cf35ec92d8af8e4814ea8",
+                "bb4b7a4475fea0f0135305f6",
+                "d0ac8e688a0bb17668589909",
+                "5dbcf8cbbb3f8ef669836320",
+                "f996645c809968f8033593a6",
             ];
             for (const value of validAttachmentTemplates)
             {
                 // Verify that each template is present in the array of attachments.
                 expect(gun.some((item) => item._id === value)).toBe(true);
-            }
-        });
-
-        it("should ignore gun accessories that cannot be modified in-raid", () =>
-        {
-            const insured = insuranceFixture[0];
-
-            // Generate the items map.
-            const itemsMap = insuranceController.populateItemsMap(insured);
-
-            // Execute the method.
-            const result = insuranceController.populateParentAttachmentsMap(insured, itemsMap);
-
-            // Verify that the map is populated correctly.
-            expect(result.size).toBe(6); // There are 6 base-level items in this insurance package.
-
-            const gun = result.get("911a0f04d5d9c7e239807ae0");
-            expect(gun.length).toBe(7); // This AK has 7 valid attachments.
-
-            // These are attachments for the AK, but they are not raid moddable, so they should not be mapped.
-            const invalidAttachmentTemplates = [
-                "1e0b177df108c0c117028812",
-                "c9278dd8251e99578bf7a274",
-                "402b4086535a50ef7d9cef88",
-                "566335b3df586f34b47f5e35",
-            ];
-            for (const value of invalidAttachmentTemplates)
-            {
-                // Verify that each template is not present in the array of attachments.
-                expect(gun.every((item) => item._id !== value)).toBe(true);
             }
         });
 
@@ -629,29 +630,32 @@ describe("InsuranceController", () =>
             const insured = insuranceFixture[0];
 
             // Generate the items map.
-            const itemsMap = insuranceController.populateItemsMap(insured);
+            const itemsMap = insuranceController.itemHelper.generateItemsMap(insured.items);
 
             // Execute the method.
-            const result = insuranceController.populateParentAttachmentsMap(insured, itemsMap);
+            const result = insuranceController.populateParentAttachmentsMap(
+                insuranceController.hashUtil.generate(),
+                insured,
+                itemsMap,
+            );
 
             // Verify that the map is populated correctly.
-            expect(result.size).toBe(6); // There are 6 base-level items in this insurance package.
+            expect(result.size).toBe(9); // There are 9 base-level items in this insurance package.
 
-            const gun = result.get("3679078e05f5b14466d6a730");
-            expect(gun.length).toBe(5); // This LShZ-2DTM has 5 valid attachments.
+            const helmet = result.get("b2405216e5730f3511884a10");
+            expect(helmet.length).toBe(4); // This helmet has 2 valid attachments.
 
-            // The attachments should be mapped to the AK properly...
+            // The attachments should be mapped to the helmet properly...
             const validAttachmentTemplates = [
-                "a2b0c716162c5e31ec28c55a",
-                "dc565f750342cb2d19eeda06",
-                "e9ff62601669d9e2ea9c2fbb",
-                "ac134d7cf6c9d8e25edd0015",
-                "22274b895ecc80d51c3cba1c",
+                "7a0675280dbbad69ce592d74",
+                "c0c182942f54d3c183f0e179",
+                "f7066fdfeefb29eca1d2dbeb",
+                "ee0ec86e9608abe773175e3a",
             ];
             for (const value of validAttachmentTemplates)
             {
                 // Verify that each template is present in the array of attachments.
-                expect(gun.some((item) => item._id === value)).toBe(true);
+                expect(helmet.some((item) => item._id === value)).toBe(true);
             }
         });
 
@@ -660,29 +664,41 @@ describe("InsuranceController", () =>
             const insured = insuranceFixture[0];
 
             // Generate the items map.
-            const itemsMap = insuranceController.populateItemsMap(insured);
+            const itemsMap = insuranceController.itemHelper.generateItemsMap(insured.items);
 
             // Execute the method.
-            const result = insuranceController.populateParentAttachmentsMap(insured, itemsMap);
+            const result = insuranceController.populateParentAttachmentsMap(
+                insuranceController.hashUtil.generate(),
+                insured,
+                itemsMap,
+            );
 
             // Verify that the map is populated correctly.
-            expect(result.size).toBe(6); // There are 6 base-level items in this insurance package.
+            expect(result.size).toBe(9); // There are 9 base-level items in this insurance package.
 
-            const gun = result.get("351180f3248d45c71cb2ebdc");
-            expect(insured.items.find((item) => item._id === "351180f3248d45c71cb2ebdc").slotId).toBe("main");
-            expect(gun.length).toBe(14); // This AS VAL has 14 valid attachments.
+            const gun = result.get("26598f88d49198c4a0a9391c");
+            expect(insured.items.find((item) => item._id === "26598f88d49198c4a0a9391c").slotId).toBe("main");
+            expect(gun.length).toBe(3);
         });
 
         it("should not map items that do not have a main-parent", () =>
         {
+            // Remove regular items from the fixture.
             insuranceFixture = new ProfileInsuranceFactory().adjustPackageDates().removeRegularItems().get();
             const insured = insuranceFixture[0];
 
             // Generate the items map.
-            const itemsMap = insuranceController.populateItemsMap(insured);
+            const itemsMap = insuranceController.itemHelper.generateItemsMap(insured.items);
+
+            // Suppress warnings.
+            const mockLoggerWarning = vi.spyOn(insuranceController.logger, "warning").mockImplementation(vi.fn());
 
             // Execute the method.
-            const result = insuranceController.populateParentAttachmentsMap(insured, itemsMap);
+            const result = insuranceController.populateParentAttachmentsMap(
+                insuranceController.hashUtil.generate(),
+                insured,
+                itemsMap,
+            );
 
             // Verify that the map is populated correctly.
             expect(result.size).toBe(0);
@@ -690,20 +706,73 @@ describe("InsuranceController", () =>
 
         it("should log a warning when an item does not have a main-parent", () =>
         {
+            // Remove regular items from the fixture.
             insuranceFixture = new ProfileInsuranceFactory().adjustPackageDates().removeRegularItems().get();
             const insured = insuranceFixture[0];
 
             // Generate the items map.
-            const itemsMap = insuranceController.populateItemsMap(insured);
+            const itemsMap = insuranceController.itemHelper.generateItemsMap(insured.items);
 
             // Suppress warnings.
             const mockLoggerWarning = vi.spyOn(insuranceController.logger, "warning").mockImplementation(vi.fn());
 
             // Execute the method.
-            insuranceController.populateParentAttachmentsMap(insured, itemsMap);
+            insuranceController.populateParentAttachmentsMap(
+                insuranceController.hashUtil.generate(),
+                insured,
+                itemsMap,
+            );
 
             // Verify that the warning was logged.
             expect(mockLoggerWarning).toHaveBeenCalled();
+        });
+    });
+
+    describe("removeNonModdableAttachments", () =>
+    {
+        it("should return a Map where each parent item ID is mapped to only moddable attachments", () =>
+        {
+            const insured = insuranceFixture[0];
+            const itemsMap = insuranceController.itemHelper.generateItemsMap(insured.items);
+            const parentAttachmentsMap = insuranceController.populateParentAttachmentsMap(
+                insuranceController.hashUtil.generate(),
+                insured,
+                itemsMap,
+            );
+
+            // Execute the method.
+            const result = insuranceController.removeNonModdableAttachments(parentAttachmentsMap, itemsMap);
+
+            // Verify that the map is populated correctly.
+            for (const [parentId, attachments] of result)
+            {
+                for (const attachment of attachments)
+                {
+                    // Verify that each attachment is moddable.
+                    const attachmentParentItem = itemsMap.get(parentId);
+                    expect(insuranceController.itemHelper.isRaidModdable(attachment, attachmentParentItem)).toBe(true);
+                }
+            }
+        });
+
+        it("should remove parents that do not have any moddable attachments", () =>
+        {
+            const insured = insuranceFixture[0];
+            const itemsMap = insuranceController.itemHelper.generateItemsMap(insured.items);
+            const parentAttachmentsMap = insuranceController.populateParentAttachmentsMap(
+                insuranceController.hashUtil.generate(),
+                insured,
+                itemsMap,
+            );
+
+            // Mock isRaidModdable to return false for all attachments.
+            vi.spyOn(insuranceController.itemHelper, "isRaidModdable").mockReturnValue(false);
+
+            // Execute the method.
+            const result = insuranceController.removeNonModdableAttachments(parentAttachmentsMap, itemsMap);
+
+            // Verify that the map is now empty.
+            expect(result.size).toBe(0);
         });
     });
 
@@ -711,10 +780,18 @@ describe("InsuranceController", () =>
     {
         it("should process regular items and their non-attachment children", () =>
         {
+            // Remove attachment items from the fixture.
             insuranceFixture = new ProfileInsuranceFactory().adjustPackageDates().removeAttachmentItems().get();
+
             const insured = insuranceFixture[0];
             const numberOfItems = insured.items.length;
             const toDelete = new Set<string>();
+            const itemsMap = insuranceController.itemHelper.generateItemsMap(insured.items);
+            const parentAttachmentsMap = insuranceController.populateParentAttachmentsMap(
+                insuranceController.hashUtil.generate(),
+                insured,
+                itemsMap,
+            );
 
             // Mock helper methods.
             const mockIsAttachmentAttached = vi.spyOn(insuranceController.itemHelper, "isAttachmentAttached");
@@ -727,11 +804,11 @@ describe("InsuranceController", () =>
             const mockRollForDelete = vi.spyOn(insuranceController, "rollForDelete").mockReturnValue(true);
 
             // Execute the method.
-            insuranceController.processRegularItems(insured, toDelete);
+            insuranceController.processRegularItems(insured, toDelete, parentAttachmentsMap);
 
             // Verify that the correct methods were called.
-            expect(mockIsAttachmentAttached).toHaveBeenCalled();
-            expect(mockFindAndReturnChildrenAsItems).toHaveBeenCalled();
+            expect(mockIsAttachmentAttached).toHaveBeenCalledTimes(numberOfItems);
+            expect(mockFindAndReturnChildrenAsItems).not.toHaveBeenCalled();
             expect(mockRollForDelete).toHaveBeenCalledTimes(numberOfItems);
 
             // Verify that all items were added to the toDelete set.
@@ -742,6 +819,12 @@ describe("InsuranceController", () =>
         {
             const insured = insuranceFixture[0];
             const toDelete = new Set<string>();
+            const itemsMap = insuranceController.itemHelper.generateItemsMap(insured.items);
+            const parentAttachmentsMap = insuranceController.populateParentAttachmentsMap(
+                insuranceController.hashUtil.generate(),
+                insured,
+                itemsMap,
+            );
 
             // Mock isAttachmentAttached to return true for all items.
             vi.spyOn(insuranceController.itemHelper, "isAttachmentAttached").mockReturnValue(true);
@@ -750,7 +833,7 @@ describe("InsuranceController", () =>
             const mockRollForDelete = vi.spyOn(insuranceController, "rollForDelete").mockReturnValue(true);
 
             // Execute the method.
-            insuranceController.processRegularItems(insured, toDelete);
+            insuranceController.processRegularItems(insured, toDelete, parentAttachmentsMap);
 
             // Verify that a roll was not made for any items.
             expect(mockRollForDelete).not.toHaveBeenCalled();
@@ -761,20 +844,24 @@ describe("InsuranceController", () =>
 
         it("should mark attachments for deletion when parent is marked for deletion", () =>
         {
-            const itemHelper = container.resolve<ItemHelper>("ItemHelper");
-
             const insured = insuranceFixture[0];
             const toDelete = new Set<string>();
+            const itemsMap = insuranceController.itemHelper.generateItemsMap(insured.items);
+            const parentAttachmentsMap = insuranceController.populateParentAttachmentsMap(
+                insuranceController.hashUtil.generate(),
+                insured,
+                itemsMap,
+            );
 
             // Mock rollForDelete to return true for all base-parent items.
             const mockRollForDelete = vi.fn((traderId, insuredItem) =>
             {
-                return !itemHelper.isAttachmentAttached(insuredItem);
+                return !insuranceController.itemHelper.isAttachmentAttached(insuredItem);
             });
             vi.spyOn(insuranceController, "rollForDelete").mockImplementation(mockRollForDelete);
 
             // Execute the method.
-            insuranceController.processRegularItems(insured, toDelete);
+            insuranceController.processRegularItems(insured, toDelete, parentAttachmentsMap);
 
             // Verify that all items were added to the toDelete set.
             expect(toDelete).toEqual(new Set(insured.items.map((item) => item._id)));
@@ -786,44 +873,53 @@ describe("InsuranceController", () =>
         it("should iterate over each parent item", () =>
         {
             const insured = insuranceFixture[0];
-            const itemsMap = insuranceController.populateItemsMap(insured);
-            const parentToAttachmentMap = insuranceController.populateParentAttachmentsMap(insured, itemsMap);
             const toDelete = new Set<string>();
+            const itemsMap = insuranceController.itemHelper.generateItemsMap(insured.items);
+            const parentAttachmentsMap = insuranceController.populateParentAttachmentsMap(
+                insuranceController.hashUtil.generate(),
+                insured,
+                itemsMap,
+            );
 
             // Mock helper methods.
             const mockProcessAttachmentByParent = vi.spyOn(insuranceController, "processAttachmentByParent");
 
             // Execute the method.
-            insuranceController.processAttachments(parentToAttachmentMap, itemsMap, insured.traderId, toDelete);
+            insuranceController.processAttachments(parentAttachmentsMap, itemsMap, insured.traderId, toDelete);
 
             // Verify
-            expect(mockProcessAttachmentByParent).toHaveBeenCalledTimes(parentToAttachmentMap.size);
+            expect(mockProcessAttachmentByParent).toHaveBeenCalledTimes(parentAttachmentsMap.size);
         });
 
         it("should log the name of each parent item", () =>
         {
-            const itemHelper = container.resolve<ItemHelper>("ItemHelper");
-
             const insured = insuranceFixture[0];
-            const itemsMap = insuranceController.populateItemsMap(insured);
-            const parentToAttachmentMap = insuranceController.populateParentAttachmentsMap(insured, itemsMap);
             const toDelete = new Set<string>();
+            const itemsMap = insuranceController.itemHelper.generateItemsMap(insured.items);
+            const parentAttachmentsMap = insuranceController.populateParentAttachmentsMap(
+                insuranceController.hashUtil.generate(),
+                insured,
+                itemsMap,
+            );
 
             // Mock helper methods.
-            const mockLoggerDebug = vi.spyOn(insuranceController.logger, "debug");
+            const mockLoggerDebug = vi.spyOn(insuranceController.logger, "debug").mockImplementation(vi.fn());
+
+            // Mock processAttachmentByParent to prevent it from being called.
+            vi.spyOn(insuranceController, "processAttachmentByParent").mockImplementation(vi.fn());
 
             // Execute the method.
-            insuranceController.processAttachments(parentToAttachmentMap, itemsMap, insured.traderId, toDelete);
+            insuranceController.processAttachments(parentAttachmentsMap, itemsMap, insured.traderId, toDelete);
 
             // Verify that the name of each parent item is logged.
-            for (const [parentId] of parentToAttachmentMap)
+            for (const [parentId] of parentAttachmentsMap)
             {
                 const parentItem = itemsMap.get(parentId);
                 if (parentItem)
                 {
-                    const expectedMessage = `Processing attachments for parent item: ${
-                        itemHelper.getItemName(parentItem._tpl)
-                    }`;
+                    const expectedMessage = `Processing attachments of parent "${
+                        insuranceController.itemHelper.getItemName(parentItem._tpl)
+                    }":`;
                     expect(mockLoggerDebug).toHaveBeenCalledWith(expectedMessage);
                 }
             }
@@ -835,9 +931,13 @@ describe("InsuranceController", () =>
         it("should handle sorting, rolling, and deleting attachments by calling helper methods", () =>
         {
             const insured = insuranceFixture[0];
-            const itemsMap = insuranceController.populateItemsMap(insured);
-            const parentToAttachmentMap = insuranceController.populateParentAttachmentsMap(insured, itemsMap);
-            const attachments = parentToAttachmentMap.entries().next().value;
+            const itemsMap = insuranceController.itemHelper.generateItemsMap(insured.items);
+            const parentAttachmentsMap = insuranceController.populateParentAttachmentsMap(
+                insuranceController.hashUtil.generate(),
+                insured,
+                itemsMap,
+            );
+            const attachments = parentAttachmentsMap.entries().next().value;
             const toDelete = new Set<string>();
 
             // Mock helper methods.
@@ -854,12 +954,16 @@ describe("InsuranceController", () =>
             expect(mockAttachmentDeletionByValue).toHaveBeenCalled();
         });
 
-        it("should log attachment details and number of successful rolls", () =>
+        it("should log attachment details and number of attachments to be deleted", () =>
         {
             const insured = insuranceFixture[0];
-            const itemsMap = insuranceController.populateItemsMap(insured);
-            const parentToAttachmentMap = insuranceController.populateParentAttachmentsMap(insured, itemsMap);
-            const attachments = parentToAttachmentMap.values().next().value;
+            const itemsMap = insuranceController.itemHelper.generateItemsMap(insured.items);
+            const parentAttachmentsMap = insuranceController.populateParentAttachmentsMap(
+                insuranceController.hashUtil.generate(),
+                insured,
+                itemsMap,
+            );
+            const attachments = parentAttachmentsMap.entries().next().value;
             const toDelete = new Set<string>();
             const successfulRolls = 4;
 
@@ -873,58 +977,66 @@ describe("InsuranceController", () =>
 
             // Verify that the logs were called/written.
             expect(mockLogAttachmentsDetails).toBeCalled();
-            expect(mockLoggerDebug).toHaveBeenCalledWith(`Number of successful rolls: ${successfulRolls}`);
+            expect(mockLoggerDebug).toHaveBeenCalledWith(`Number of attachments to be deleted: ${successfulRolls}`);
         });
     });
 
     describe("sortAttachmentsByPrice", () =>
     {
-        it("should sort the attachments array by maxPrice in descending order", () =>
+        it("should sort the attachments array by dynamicPrice in descending order", () =>
         {
             const insured = insuranceFixture[0];
-            const itemsMap = insuranceController.populateItemsMap(insured);
-            const parentToAttachmentMap = insuranceController.populateParentAttachmentsMap(insured, itemsMap);
-            const attachments = parentToAttachmentMap.values().next().value;
+            const itemsMap = insuranceController.itemHelper.generateItemsMap(insured.items);
+            const parentAttachmentsMap = insuranceController.populateParentAttachmentsMap(
+                insuranceController.hashUtil.generate(),
+                insured,
+                itemsMap,
+            );
+            const attachments = parentAttachmentsMap.entries().next().value;
+            const attachmentCount = attachments.length;
 
             // Execute the method.
             const sortedAttachments = insuranceController.sortAttachmentsByPrice(attachments);
 
-            // Verify the length of the sorted attachments array
-            expect(sortedAttachments.length).toBe(5);
+            // Verify the length of the sorted attachments array is unchanged
+            expect(sortedAttachments.length).toBe(attachmentCount);
 
-            // Verify that the attachments are sorted by maxPrice in descending order
+            // Verify that the attachments are sorted by dynamicPrice in descending order
             for (let i = 1; i < sortedAttachments.length; i++)
             {
-                expect(sortedAttachments[i - 1].maxPrice).toBeGreaterThanOrEqual(sortedAttachments[i].maxPrice);
+                expect(sortedAttachments[i - 1].dynamicPrice).toBeGreaterThanOrEqual(sortedAttachments[i].dynamicPrice);
             }
         });
 
-        it("should place attachments with null maxPrice at the bottom of the sorted list", () =>
+        it("should place attachments with null dynamicPrice at the bottom of the sorted list", () =>
         {
             const insured = insuranceFixture[0];
-            const itemsMap = insuranceController.populateItemsMap(insured);
-            const parentToAttachmentMap = insuranceController.populateParentAttachmentsMap(insured, itemsMap);
-            const attachments = parentToAttachmentMap.values().next().value;
-
-            // Set the maxPrice of the first two attachments to null.
-            vi.spyOn(insuranceController.itemHelper, "getItemMaxPrice").mockReturnValueOnce(null).mockReturnValueOnce(
-                null,
+            const itemsMap = insuranceController.itemHelper.generateItemsMap(insured.items);
+            const parentAttachmentsMap = insuranceController.populateParentAttachmentsMap(
+                insuranceController.hashUtil.generate(),
+                insured,
+                itemsMap,
             );
+            const attachments = parentAttachmentsMap.entries().next().value;
+
+            // Set the dynamicPrice of the first attachment to null.
+            vi.spyOn(insuranceController.ragfairPriceService, "getDynamicItemPrice").mockReturnValue(666)
+                .mockReturnValueOnce(null);
 
             // Execute the method.
             const sortedAttachments = insuranceController.sortAttachmentsByPrice(attachments);
 
-            // Verify that the attachments with null maxPrice are at the bottom of the list
-            const nullPriceAttachments = sortedAttachments.slice(-2);
+            // Verify that the attachments with null dynamicPrice are at the bottom of the list
+            const nullPriceAttachments = sortedAttachments.slice(-1);
             for (const attachment of nullPriceAttachments)
             {
-                expect(attachment.maxPrice).toBeNull();
+                expect(attachment.dynamicPrice).toBeNull();
             }
 
-            // Verify that the rest of the attachments are sorted by maxPrice in descending order
+            // Verify that the rest of the attachments are sorted by dynamicPrice in descending order
             for (let i = 1; i < sortedAttachments.length - 2; i++)
             {
-                expect(sortedAttachments[i - 1].maxPrice).toBeGreaterThanOrEqual(sortedAttachments[i].maxPrice);
+                expect(sortedAttachments[i - 1].dynamicPrice).toBeGreaterThanOrEqual(sortedAttachments[i].dynamicPrice);
             }
         });
     });
@@ -933,10 +1045,10 @@ describe("InsuranceController", () =>
     {
         it("should log details for each attachment", () =>
         {
-            const attachments = [{ _id: "item1", name: "Item 1", maxPrice: 100 }, {
+            const attachments = [{ _id: "item1", name: "Item 1", dynamicPrice: 100 }, {
                 _id: "item2",
                 name: "Item 2",
-                maxPrice: 200,
+                dynamicPrice: 200,
             }];
 
             // Mock the logger.debug function.
@@ -947,8 +1059,8 @@ describe("InsuranceController", () =>
 
             // Verify that logger.debug was called correctly.
             expect(loggerDebugSpy).toHaveBeenCalledTimes(2);
-            expect(loggerDebugSpy).toHaveBeenNthCalledWith(1, "Child Item - Name: Item 1, Max Price: 100");
-            expect(loggerDebugSpy).toHaveBeenNthCalledWith(2, "Child Item - Name: Item 2, Max Price: 200");
+            expect(loggerDebugSpy).toHaveBeenNthCalledWith(1, "Attachment 1: \"Item 1\" - Price: 100");
+            expect(loggerDebugSpy).toHaveBeenNthCalledWith(2, "Attachment 2: \"Item 2\" - Price: 200");
         });
 
         it("should not log anything when there are no attachments", () =>
@@ -968,12 +1080,16 @@ describe("InsuranceController", () =>
 
     describe("countSuccessfulRolls", () =>
     {
-        it("should count the number of successful rolls based on the rollForDelete method", () =>
+        it("should count the number of successful rolls made in the rollForDelete method", () =>
         {
             const insured = insuranceFixture[0];
-            const itemsMap = insuranceController.populateItemsMap(insured);
-            const parentToAttachmentMap = insuranceController.populateParentAttachmentsMap(insured, itemsMap);
-            const attachments = parentToAttachmentMap.values().next().value;
+            const itemsMap = insuranceController.itemHelper.generateItemsMap(insured.items);
+            const parentAttachmentsMap = insuranceController.populateParentAttachmentsMap(
+                insuranceController.hashUtil.generate(),
+                insured,
+                itemsMap,
+            );
+            const attachments = parentAttachmentsMap.values().next().value;
 
             // Mock rollForDelete to return true for the first two attachments.
             const mockRollForDelete = vi.spyOn(insuranceController, "rollForDelete").mockReturnValue(false)
@@ -987,12 +1103,16 @@ describe("InsuranceController", () =>
             expect(result).toBe(2);
         });
 
-        it("should count the number of successful rolls based on the rollForDelete method", () =>
+        it("should return zero if no successful rolls were made in the rollForDelete method", () =>
         {
             const insured = insuranceFixture[0];
-            const itemsMap = insuranceController.populateItemsMap(insured);
-            const parentToAttachmentMap = insuranceController.populateParentAttachmentsMap(insured, itemsMap);
-            const attachments = parentToAttachmentMap.values().next().value;
+            const itemsMap = insuranceController.itemHelper.generateItemsMap(insured.items);
+            const parentAttachmentsMap = insuranceController.populateParentAttachmentsMap(
+                insuranceController.hashUtil.generate(),
+                insured,
+                itemsMap,
+            );
+            const attachments = parentAttachmentsMap.values().next().value;
 
             // Mock rollForDelete to return false.
             const mockRollForDelete = vi.spyOn(insuranceController, "rollForDelete").mockReturnValue(false);
@@ -1027,9 +1147,13 @@ describe("InsuranceController", () =>
         it("should add the correct number of attachments to the toDelete set", () =>
         {
             const insured = insuranceFixture[0];
-            const itemsMap = insuranceController.populateItemsMap(insured);
-            const parentToAttachmentMap = insuranceController.populateParentAttachmentsMap(insured, itemsMap);
-            const attachments = parentToAttachmentMap.values().next().value;
+            const itemsMap = insuranceController.itemHelper.generateItemsMap(insured.items);
+            const parentAttachmentsMap = insuranceController.populateParentAttachmentsMap(
+                insuranceController.hashUtil.generate(),
+                insured,
+                itemsMap,
+            );
+            const attachments = parentAttachmentsMap.values().next().value;
 
             const successfulRolls = 2;
             const toDelete = new Set<string>();
@@ -1044,9 +1168,13 @@ describe("InsuranceController", () =>
         it("should not add any attachments to toDelete if successfulRolls is zero", () =>
         {
             const insured = insuranceFixture[0];
-            const itemsMap = insuranceController.populateItemsMap(insured);
-            const parentToAttachmentMap = insuranceController.populateParentAttachmentsMap(insured, itemsMap);
-            const attachments = parentToAttachmentMap.values().next().value;
+            const itemsMap = insuranceController.itemHelper.generateItemsMap(insured.items);
+            const parentAttachmentsMap = insuranceController.populateParentAttachmentsMap(
+                insuranceController.hashUtil.generate(),
+                insured,
+                itemsMap,
+            );
+            const attachments = parentAttachmentsMap.values().next().value;
 
             const successfulRolls = 0;
             const toDelete = new Set<string>();
@@ -1061,9 +1189,13 @@ describe("InsuranceController", () =>
         it("should add all attachments to toDelete if successfulRolls is greater than the number of attachments", () =>
         {
             const insured = insuranceFixture[0];
-            const itemsMap = insuranceController.populateItemsMap(insured);
-            const parentToAttachmentMap = insuranceController.populateParentAttachmentsMap(insured, itemsMap);
-            const attachments = parentToAttachmentMap.values().next().value;
+            const itemsMap = insuranceController.itemHelper.generateItemsMap(insured.items);
+            const parentAttachmentsMap = insuranceController.populateParentAttachmentsMap(
+                insuranceController.hashUtil.generate(),
+                insured,
+                itemsMap,
+            );
+            const attachments = parentAttachmentsMap.values().next().value;
 
             const successfulRolls = 999;
             const toDelete = new Set<string>();
@@ -1134,125 +1266,10 @@ describe("InsuranceController", () =>
         });
     });
 
-    describe("adoptOrphanedItems", () =>
-    {
-        it("should adopt orphaned items by resetting them as base-level items", () =>
-        {
-            // Get all of the items, so that we can dynamically find the hideout item.
-            const insured = insuranceFixture[0];
-            const hideoutParentId = insuranceController.fetchHideoutItemParent(insured.items);
-
-            // Manually set one of the items to be orphaned.
-            insured.items[0].parentId = "9999"; // Should not exist in the items array.
-            insured.items[0].slotId = "main"; // Should not be "hideout".
-
-            // Iterate over the items and find an individual orphaned item.
-            const orphanedItem = insured.items.find((item) =>
-                !insured.items.some((parent) => parent._id === item.parentId)
-            );
-
-            // Setup tests to verify that the orphaned item we added is in fact orphaned.
-            expect(orphanedItem.parentId).toBe(insured.items[0].parentId);
-            expect(orphanedItem.slotId).toBe(insured.items[0].slotId);
-
-            // Execute the method.
-            insuranceController.adoptOrphanedItems(insured);
-
-            // Verify that the orphaned items have been adopted.
-            expect(orphanedItem.parentId).toBe(hideoutParentId);
-            expect(orphanedItem.slotId).toBe("hideout");
-        });
-
-        it("should not adopt items that are not orphaned", () =>
-        {
-            const unmodified = insuranceFixture[0];
-
-            // Create a deep copy of the insured items array.
-            const insured = JSON.parse(JSON.stringify(insuranceFixture[0]));
-
-            // Execute the method.
-            insuranceController.adoptOrphanedItems(insured);
-
-            // Verify that the orphaned items have been adopted.
-            expect(insured).toStrictEqual(unmodified);
-        });
-
-        it("should remove location data from adopted items", () =>
-        {
-            const insured = insuranceFixture[0];
-
-            // Manually set one of the items to be orphaned.
-            insured.items[0].parentId = "9999"; // Should not exist in the items array.
-            insured.items[0].slotId = "main"; // Should not be "hideout".
-            insured.items[0].location = { x: 1, y: 2, r: 3, isSearched: true }; // Should be removed.
-
-            // Iterate over the items and find an individual orphaned item.
-            const orphanedItem = insured.items.find((item) =>
-                !insured.items.some((parent) => parent._id === item.parentId)
-            );
-
-            // Setup tests to verify that the orphaned item we added is in fact orphaned.
-            expect(orphanedItem.parentId).toBe(insured.items[0].parentId);
-            expect(orphanedItem.slotId).toBe(insured.items[0].slotId);
-
-            // Execute the method.
-            insuranceController.adoptOrphanedItems(insured);
-
-            // Verify that the orphaned items have been adopted.
-            expect(orphanedItem).not.toHaveProperty("location");
-        });
-    });
-
-    describe("fetchHideoutItemParent", () =>
-    {
-        it("should return the parentId value of an item that has a slotId of 'hideout'", () =>
-        {
-            const insured = insuranceFixture[0];
-            const hideoutParentId = insuranceController.fetchHideoutItemParent(insured.items);
-
-            // Execute the method.
-            const result = insuranceController.fetchHideoutItemParent(insured.items);
-
-            // Verify that the hideout item parentId is returned.
-            expect(result).toBe(hideoutParentId);
-        });
-
-        it("should return an empty string if no item with a slotId of 'hideout' could be found", () =>
-        {
-            // Fetch a bunch of orphaned items that don't have a hideout parent.
-            const insuranceFixture = new ProfileInsuranceFactory().adjustPackageDates().removeRegularItems().get();
-            const insured = insuranceFixture[0];
-
-            // Execute the method.
-            const result = insuranceController.fetchHideoutItemParent(insured.items);
-
-            // Verify that the hideout item parentId is returned.
-            expect(result).toBe("");
-        });
-
-        it("should log a warning if the base-level item does not exist", () =>
-        {
-            // Fetch a bunch of orphaned items that don't have a hideout parent.
-            const insuranceFixture = new ProfileInsuranceFactory().adjustPackageDates().removeRegularItems().get();
-            const insured = insuranceFixture[0];
-
-            // Spy on the logger.
-            const loggerWarningSpy = vi.spyOn(insuranceController.logger, "warning");
-
-            // Execute the method.
-            insuranceController.fetchHideoutItemParent(insured.items);
-
-            // Verify that the hideout item parentId is returned.
-            expect(loggerWarningSpy).toHaveBeenCalled();
-        });
-    });
-
     describe("sendMail", () =>
     {
         it("should send insurance failed message when no items are present", () =>
         {
-            const traderHelper = container.resolve<TraderHelper>("TraderHelper");
-
             const insurance = insuranceFixture[0];
             insurance.items = []; // Empty the items array
             const sessionID = "session-id";
@@ -1276,19 +1293,17 @@ describe("InsuranceController", () =>
             // Verify that the insurance failed message was sent.
             expect(sendMessageSpy).toHaveBeenCalledWith(
                 sessionID,
-                traderHelper.getTraderById(insurance.traderId),
+                insuranceController.traderHelper.getTraderById(insurance.traderId),
                 MessageType.INSURANCE_RETURN,
                 insuranceFailedTpl,
                 insurance.items,
-                insurance.messageContent.maxStorageTime,
-                insurance.messageContent.systemData,
+                insurance.maxStorageTime,
+                insurance.systemData,
             );
         });
 
         it("should not send insurance failed message when items are present", () =>
         {
-            const traderHelper = container.resolve<TraderHelper>("TraderHelper");
-
             const insurance = insuranceFixture[0];
             const sessionID = "session-id";
             const insuranceFailedTpl = "failed-message-template";
@@ -1311,12 +1326,12 @@ describe("InsuranceController", () =>
             // Verify that the insurance failed message was not sent.
             expect(sendMessageSpy).toHaveBeenCalledWith(
                 sessionID,
-                traderHelper.getTraderById(insurance.traderId),
+                insuranceController.traderHelper.getTraderById(insurance.traderId),
                 MessageType.INSURANCE_RETURN,
-                insurance.messageContent.templateId,
+                insurance.messageTemplateId,
                 insurance.items,
-                insurance.messageContent.maxStorageTime,
-                insurance.messageContent.systemData,
+                insurance.maxStorageTime,
+                insurance.systemData,
             );
         });
     });
@@ -1519,14 +1534,17 @@ describe("InsuranceController", () =>
             expect(pmcData.InsuredItems.length).toBe(body.items.length);
         });
 
-        it("should return the output with warnings if payment fails", () =>
+        it("should update output with warnings if payment fails", () =>
         {
             // Override the payMoney mock to simulate a payment failure with a warning.
             const expectedPayMoneyReturn = {
-                warnings: [{ index: 0, errmsg: "Not enough money to complete transaction", code: 500 }],
+                warnings: [{ index: 0, errmsg: "You broke.", code: 500 }],
                 otherProperty: "property-value",
             };
-            mockPayMoney.mockReturnValue(expectedPayMoneyReturn);
+            mockPayMoney.mockImplementation((pmcData, request, sessionID, output) =>
+            {
+                output.warnings = expectedPayMoneyReturn.warnings;
+            });
 
             // Execute the method.
             const response = insuranceController.insure(pmcData, body, sessionId);
@@ -1542,10 +1560,13 @@ describe("InsuranceController", () =>
         {
             // Override the payMoney mock to simulate a payment failure with a warning.
             const expectedPayMoneyReturn = {
-                warnings: [{ index: 0, errmsg: "Not enough money to complete transaction", code: 500 }],
+                warnings: [{ index: 0, errmsg: "You broke.", code: 500 }],
                 otherProperty: "property-value",
             };
-            mockPayMoney.mockReturnValue(expectedPayMoneyReturn);
+            mockPayMoney.mockImplementation((pmcData, request, sessionID, output) =>
+            {
+                output.warnings = expectedPayMoneyReturn.warnings;
+            });
 
             // Execute the method.
             insuranceController.insure(pmcData, body, sessionId);

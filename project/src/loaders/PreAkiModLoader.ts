@@ -329,7 +329,7 @@ export class PreAkiModLoader implements IModLoader
      */
     protected isModCombatibleWithAki(mod: IPackageJsonData): boolean
     {
-        const akiVersion = this.akiConfig.akiVersion;
+        const akiVersion = globalThis.G_AKIVERSION || this.akiConfig.akiVersion;
         const modName = `${mod.author}-${mod.name}`;
 
         // Error and prevent loading If no akiVersion property exists
@@ -348,12 +348,12 @@ export class PreAkiModLoader implements IModLoader
             return false;
         }
 
-        // Error and prevent loading if semver is not satisfied
+        // Warning and allow loading if semver is not satisfied
         if (!semver.satisfies(akiVersion, mod.akiVersion))
         {
-            this.logger.error(this.localisationService.getText("modloader-outdated_akiversion_field", modName));
+            this.logger.warning(this.localisationService.getText("modloader-outdated_akiversion_field", modName));
 
-            return false;
+            return true;
         }
 
         return true;
@@ -617,7 +617,7 @@ export class PreAkiModLoader implements IModLoader
                 this.logger.error(
                     this.localisationService.getText("modloader-incompatible_mod_found", {
                         author: mod.author,
-                        modName: mod.name,
+                        name: mod.name,
                         incompatibleModName: incompatibleModName,
                     }),
                 );

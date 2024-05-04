@@ -39,6 +39,7 @@ import { GiftService } from "@spt-aki/services/GiftService";
 import { ItemBaseClassService } from "@spt-aki/services/ItemBaseClassService";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
 import { OpenZoneService } from "@spt-aki/services/OpenZoneService";
+import { ProfileActivityService } from "@spt-aki/services/ProfileActivityService";
 import { ProfileFixerService } from "@spt-aki/services/ProfileFixerService";
 import { RaidTimeAdjustmentService } from "@spt-aki/services/RaidTimeAdjustmentService";
 import { SeasonalEventService } from "@spt-aki/services/SeasonalEventService";
@@ -78,6 +79,7 @@ export class GameController
         @inject("ItemBaseClassService") protected itemBaseClassService: ItemBaseClassService,
         @inject("GiftService") protected giftService: GiftService,
         @inject("RaidTimeAdjustmentService") protected raidTimeAdjustmentService: RaidTimeAdjustmentService,
+        @inject("ProfileActivityService") protected profileActivityService: ProfileActivityService,
         @inject("ApplicationContext") protected applicationContext: ApplicationContext,
         @inject("ConfigServer") protected configServer: ConfigServer,
     )
@@ -108,6 +110,8 @@ export class GameController
     {
         // Store client start time in app context
         this.applicationContext.addValue(ContextVariableType.CLIENT_START_TIMESTAMP, startTimeStampMS);
+
+        this.profileActivityService.setActivityTimestamp(sessionID);
 
         if (this.coreConfig.fixes.fixShotgunDispersion)
         {
@@ -203,11 +207,15 @@ export class GameController
                 this.hideoutHelper.setHideoutImprovementsToCompleted(pmcProfile);
                 this.hideoutHelper.unlockHideoutWallInProfile(pmcProfile);
                 this.profileFixerService.addMissingIdsToBonuses(pmcProfile);
+                this.profileFixerService.fixBitcoinProductionTime(pmcProfile);
             }
 
             this.logProfileDetails(fullProfile);
 
             this.adjustLabsRaiderSpawnRate();
+
+            this.adjustHideoutCraftTimes();
+            this.adjustHideoutBuildTimes();
 
             this.removePraporTestMessage();
 
@@ -236,6 +244,46 @@ export class GameController
             if (!this.ragfairConfig.dynamic.blacklist.enableBsgList)
             {
                 this.flagAllItemsInDbAsSellableOnFlea();
+            }
+        }
+    }
+
+    protected adjustHideoutCraftTimes(): void
+    {
+        const craftTimeOverrideSeconds = this.hideoutConfig.overrideCraftTimeSeconds;
+        if (craftTimeOverrideSeconds === -1)
+        {
+            return;
+        }
+
+        for (const craft of this.databaseServer.getTables().hideout.production)
+        {
+            // Only adjust crafts ABOVE the override
+            if (craft.productionTime > craftTimeOverrideSeconds)
+            {
+                craft.productionTime = craftTimeOverrideSeconds;
+            }
+        }
+    }
+
+    protected adjustHideoutBuildTimes(): void
+    {
+        const craftTimeOverrideSeconds = this.hideoutConfig.overrideBuildTimeSeconds;
+        if (craftTimeOverrideSeconds === -1)
+        {
+            return;
+        }
+
+        for (const area of this.databaseServer.getTables().hideout.areas)
+        {
+            for (const stageKey of Object.keys(area.stages))
+            {
+                const stage = area.stages[stageKey];
+                // Only adjust crafts ABOVE the override
+                if (stage.constructionTime > craftTimeOverrideSeconds)
+                {
+                    stage.constructionTime = craftTimeOverrideSeconds;
+                }
             }
         }
     }
@@ -436,7 +484,7 @@ export class GameController
      */
     public getServer(sessionId: string): IServerDetails[]
     {
-        return [{ ip: this.httpConfig.ip, port: this.httpConfig.port }];
+        return [{ ip: this.httpConfig.backendIp, port: Number.parseInt(this.httpConfig.backendPort) }];
     }
 
     /**
@@ -460,6 +508,7 @@ export class GameController
      */
     public getKeepAlive(sessionId: string): IGameKeepAliveResponse
     {
+        this.profileActivityService.setActivityTimestamp(sessionId);
         return { msg: "OK", utc_time: new Date().getTime() / 1000 };
     }
 
@@ -915,7 +964,9 @@ export class GameController
     protected logProfileDetails(fullProfile: IAkiProfile): void
     {
         this.logger.debug(`Profile made with: ${fullProfile.aki.version}`);
-        this.logger.debug(`Server version: ${this.coreConfig.akiVersion} ${this.coreConfig.commit}`);
+        this.logger.debug(
+            `Server version: ${globalThis.G_AKIVERSION || this.coreConfig.akiVersion} ${globalThis.G_COMMIT}`,
+        );
         this.logger.debug(`Debug enabled: ${globalThis.G_DEBUG_CONFIGURATION}`);
         this.logger.debug(`Mods enabled: ${globalThis.G_MODS_ENABLED}`);
     }

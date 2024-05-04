@@ -11,8 +11,7 @@
         "randomTime": false
     },
     "save": {
-        "loot": true,
-        "durability": true
+        "loot": true
     },
     "carExtracts": [
         "Dorms V-Ex",

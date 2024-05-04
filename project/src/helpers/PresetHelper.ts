@@ -85,6 +85,17 @@ export class PresetHelper
         return id in this.databaseServer.getTables().globals.ItemPresets;
     }
 
+    /**
+     * Checks to see if the preset is of the given base class.
+     * @param id The id of the preset
+     * @param baseClass The BaseClasses enum to check against
+     * @returns True if the preset is of the given base class, false otherwise
+     */
+    public isPresetBaseClass(id: string, baseClass: BaseClasses): boolean
+    {
+        return this.isPreset(id) && this.itemHelper.isOfBaseclass(this.getPreset(id)._encyclopedia, baseClass);
+    }
+
     public hasPreset(templateId: string): boolean
     {
         return templateId in this.lookup;
