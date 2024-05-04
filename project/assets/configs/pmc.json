@@ -715,6 +715,6 @@
             "min": 21,
             "max": 100
         }
-    }
-
+    },
+	"addSecureContainerLootFromBotConfig": false
 }

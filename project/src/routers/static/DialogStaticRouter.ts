@@ -210,6 +210,13 @@ export class DialogStaticRouter extends StaticRouter
                 },
             ),
             new RouteAction(
+                "/client/friend/request/accept-all",
+                (url: string, info: any, sessionID: string, output: string): any =>
+                {
+                    return this.dialogueCallbacks.acceptAllFriendRequests(url, info, sessionID);
+                },
+            ),
+            new RouteAction(
                 "/client/friend/request/accept",
                 async (
                     url: string,
@@ -219,6 +226,13 @@ export class DialogStaticRouter extends StaticRouter
                 ): Promise<IGetBodyResponseData<boolean>> =>
                 {
                     return this.dialogueCallbacks.acceptFriendRequest(url, info, sessionID);
+                },
+            ),
+            new RouteAction(
+                "/client/friend/request/decline",
+                (url: string, info: any, sessionID: string, output: string): any =>
+                {
+                    return this.dialogueCallbacks.declineFriendRequest(url, info, sessionID);
                 },
             ),
             new RouteAction(

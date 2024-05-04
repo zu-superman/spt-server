@@ -106,10 +106,7 @@ export class InsuranceController
         const profileInsuranceDetails = this.saveServer.getProfile(sessionID).insurance;
         if (profileInsuranceDetails.length > 0)
         {
-            this.logger.debug(
-                `Found ${profileInsuranceDetails.length} insurance packages in profile ${sessionID}`,
-                true,
-            );
+            this.logger.debug(`Found ${profileInsuranceDetails.length} insurance packages in profile ${sessionID}`);
         }
 
         return profileInsuranceDetails.filter((insured) => insuranceTime >= insured.scheduledTime);

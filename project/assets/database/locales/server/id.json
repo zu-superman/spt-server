@@ -189,7 +189,6 @@
 	"repeatable-difficulty_was_nan": "Pembuatan hadiah yang diulang: Kesulitan merupakan NaN. Diubah menjadi 1.",
 	"repeatable-no_reward_item_found_in_price_range": "Pembuatan Hadiah yang Diulang: Tidak ditemukan barang dengan jarak harga {{minPrice}} sampai {{roublesBudget}}",
 	"repeatable-quest_handover_failed_condition_already_satisfied": "Permasalahan dalam penyerahan quest: kondisi sudah terpenuhi? qid: {{questId}}, kondisi: {{conditionId}}, profileCounter: {{profileCounter}}, nilai: {{value}}",
-	"repeatable-quest_handover_failed_condition_invalid": "Permasalahan dalam penyerahan quest: kondisi tidak ditemukan atau nilai salah. qid: {{body.qid}, kondisi: {{body.conditionId}}",
 	"repeatable-unable_to_accept_quest_see_log": "Tidak dapat menerima quest, lihat catatn server untuk detil",
 	"repeatable-unable_to_accept_quest_starting_message_not_found": "Tidak dapat menerima quest: {{questId}} tidak dapat mencari pesan quest mulai dengan id: {{messageId}}",
 	"route_onupdate_no_response": "onUpdate: rute %s tidak melaporkan sukses atau gagal",
