@@ -23,6 +23,8 @@ export class PMCLootGenerator
     protected backpackLootPool: Record<string, number> = {};
     protected pmcConfig: IPmcConfig;
 
+    protected roubleTpl = "5449016a4bdc2d6f028b456f";
+
     constructor(
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
@@ -76,7 +78,7 @@ export class PMCLootGenerator
                 else
                 {
                     // Set price of item as its weight
-                    const price = this.ragfairPriceService.getFleaPriceForItem(itemToAdd._id);
+                    const price = this.ragfairPriceService.getDynamicItemPrice(itemToAdd._id, this.roubleTpl);
                     this.pocketLootPool[itemToAdd._id] = price;
                 }
             }
@@ -134,7 +136,7 @@ export class PMCLootGenerator
                 else
                 {
                     // Set price of item as its weight
-                    const price = this.ragfairPriceService.getFleaPriceForItem(itemToAdd._id);
+                    const price = this.ragfairPriceService.getDynamicItemPrice(itemToAdd._id, this.roubleTpl);
                     this.vestLootPool[itemToAdd._id] = price;
                 }
             }
@@ -202,7 +204,7 @@ export class PMCLootGenerator
                 else
                 {
                     // Set price of item as its weight
-                    const price = this.ragfairPriceService.getFleaPriceForItem(itemToAdd._id);
+                    const price = this.ragfairPriceService.getDynamicItemPrice(itemToAdd._id, this.roubleTpl);
                     this.backpackLootPool[itemToAdd._id] = price;
                 }
             }
