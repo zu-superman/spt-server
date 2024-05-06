@@ -474,7 +474,27 @@ export class InsuranceController
             toDelete.add(attachmentId);
         }
 
+        this.logAttachmentsBeingRemoved(attachmentIdsToRemove, attachments, weightedAttachmentByPrice);
+
         this.logger.debug(`Number of attachments to be deleted: ${attachmentIdsToRemove.length}`);
+    }
+
+    protected logAttachmentsBeingRemoved(
+        attachmentIdsToRemove: string[],
+        attachments: Item[],
+        attachmentPrices: Record<string, number>,
+    ): void
+    {
+        let index = 1;
+        for (const attachmentId of attachmentIdsToRemove)
+        {
+            this.logger.debug(
+                `Attachment ${index} Id: ${attachmentId} Tpl: ${
+                    attachments.find((x) => x._id === attachmentId)?._tpl
+                } - Price: ${attachmentPrices[attachmentId]}`,
+            );
+            index++;
+        }
     }
 
     protected weightAttachmentsByPrice(attachments: Item[]): Record<string, number>
@@ -485,7 +505,10 @@ export class InsuranceController
         for (const attachment of attachments)
         {
             const price = this.ragfairPriceService.getDynamicItemPrice(attachment._tpl, this.roubleTpl);
-            result[attachment._id] = Math.round(price);
+            if (price)
+            {
+                result[attachment._id] = Math.round(price);
+            }
         }
 
         this.weightedRandomHelper.reduceWeightValues(result);
