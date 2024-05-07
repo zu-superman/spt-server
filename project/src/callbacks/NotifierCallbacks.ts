@@ -3,7 +3,7 @@ import { inject, injectable } from "tsyringe";
 import { NotifierController } from "@spt-aki/controllers/NotifierController";
 import { HttpServerHelper } from "@spt-aki/helpers/HttpServerHelper";
 import { IEmptyRequestData } from "@spt-aki/models/eft/common/IEmptyRequestData";
-import { IUIDRequestData } from "@spt-aki/models/eft/common/request/IUidRequestData";
+import { IUIDRequestData } from "@spt-aki/models/eft/common/request/IUIDRequestData";
 import { IGetBodyResponseData } from "@spt-aki/models/eft/httpResponse/IGetBodyResponseData";
 import { INotifierChannel } from "@spt-aki/models/eft/notifier/INotifier";
 import { ISelectProfileResponse } from "@spt-aki/models/eft/notifier/ISelectProfileResponse";

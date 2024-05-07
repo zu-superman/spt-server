@@ -3,7 +3,7 @@ import { inject, injectable } from "tsyringe";
 import { GameController } from "@spt-aki/controllers/GameController";
 import { OnLoad } from "@spt-aki/di/OnLoad";
 import { IEmptyRequestData } from "@spt-aki/models/eft/common/IEmptyRequestData";
-import { IUIDRequestData } from "@spt-aki/models/eft/common/request/IUidRequestData";
+import { IUIDRequestData } from "@spt-aki/models/eft/common/request/IUIDRequestData";
 import { ICheckVersionResponse } from "@spt-aki/models/eft/game/ICheckVersionResponse";
 import { ICurrentGroupResponse } from "@spt-aki/models/eft/game/ICurrentGroupResponse";
 import { IGameConfigResponse } from "@spt-aki/models/eft/game/IGameConfigResponse";

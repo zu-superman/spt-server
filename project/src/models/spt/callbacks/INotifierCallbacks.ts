@@ -1,7 +1,7 @@
 import { IEmptyRequestData } from "@spt-aki/models/eft/common/IEmptyRequestData";
+import { IUIDRequestData } from "@spt-aki/models/eft/common/request/IUIDRequestData";
 import { IGetBodyResponseData } from "@spt-aki/models/eft/httpResponse/IGetBodyResponseData";
 import { INotifierChannel } from "@spt-aki/models/eft/notifier/INotifier";
-import { ISelectProfileRequestData } from "@spt-aki/models/eft/notifier/ISelectProfileRequestData";
 
 export interface INotifierCallbacks
 {
@@ -18,6 +18,6 @@ export interface INotifierCallbacks
         info: IEmptyRequestData,
         sessionID: string,
     ): IGetBodyResponseData<INotifierChannel>;
-    selectProfile(url: string, info: ISelectProfileRequestData, sessionID: string): IGetBodyResponseData<any>;
+    selectProfile(url: string, info: IUIDRequestData, sessionID: string): IGetBodyResponseData<any>;
     notify(url: string, info: any, sessionID: string): string;
 }

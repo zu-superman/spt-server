@@ -3,7 +3,7 @@ import { inject, injectable } from "tsyringe";
 import { DialogueController } from "@spt-aki/controllers/DialogueController";
 import { OnUpdate } from "@spt-aki/di/OnUpdate";
 import { IEmptyRequestData } from "@spt-aki/models/eft/common/IEmptyRequestData";
-import { IUIDRequestData } from "@spt-aki/models/eft/common/request/IUidRequestData";
+import { IUIDRequestData } from "@spt-aki/models/eft/common/request/IUIDRequestData";
 import {
     IAcceptFriendRequestData,
     ICancelFriendRequestData,
