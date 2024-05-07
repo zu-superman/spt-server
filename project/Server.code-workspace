@@ -12,6 +12,6 @@
             "source.fixAll.eslint": "explicit"
         },
         "eslint.debug": true,
-        "eslint.experimental.useFlatConfig": true
+        "eslint.experimental.useFlatConfig": false
     }
 }
