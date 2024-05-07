@@ -3,6 +3,7 @@ import { inject, injectable } from "tsyringe";
 import { DialogueController } from "@spt-aki/controllers/DialogueController";
 import { OnUpdate } from "@spt-aki/di/OnUpdate";
 import { IEmptyRequestData } from "@spt-aki/models/eft/common/IEmptyRequestData";
+import { IUIDRequestData } from "@spt-aki/models/eft/common/request/IUidRequestData";
 import {
     IAcceptFriendRequestData,
     ICancelFriendRequestData,
@@ -247,14 +248,14 @@ export class DialogueCallbacks implements OnUpdate
 
     /** Handle client/friend/ignore/set */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public ignoreFriend(url: string, request: { uid: string; }, sessionID: string): INullResponseData
+    public ignoreFriend(url: string, request: IUIDRequestData, sessionID: string): INullResponseData
     {
         return this.httpResponse.nullResponse();
     }
 
     /** Handle client/friend/ignore/remove */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public unIgnoreFriend(url: string, request: { uid: string; }, sessionID: string): INullResponseData
+    public unIgnoreFriend(url: string, request: IUIDRequestData, sessionID: string): INullResponseData
     {
         return this.httpResponse.nullResponse();
     }
