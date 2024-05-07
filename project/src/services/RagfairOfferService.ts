@@ -168,6 +168,13 @@ export class RagfairOfferService
     {
         const trader = this.databaseServer.getTables().traders[traderID];
 
+        if (!trader || !trader.base)
+        {
+            this.logger.error(`Trader ${traderID} lacks a base file, cannot check for refresh status`);
+
+            return false;
+        }
+
         // No value, occurs when first run, trader offers need to be added to flea
         if (typeof trader.base.refreshTraderRagfairOffers !== "boolean")
         {

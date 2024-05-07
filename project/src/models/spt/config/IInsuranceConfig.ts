@@ -15,4 +15,8 @@ export interface IInsuranceConfig extends IBaseConfig
     returnTimeOverrideSeconds: number;
     /** How often server should process insurance in seconds */
     runIntervalSeconds: number;
+    // Lowest rouble price for an attachment to be allowed to be taken
+    minAttachmentRoublePriceToBeTaken: number;
+    // Chance out of 100% no attachments from a parent are taken
+    chanceNoAttachmentsTakenPercent: number;
 }
