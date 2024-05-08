@@ -7,9 +7,11 @@
     "settings": {
         "window.title": "SPT-AKI Server",
         "editor.formatOnSave": true,
-        "editor.defaultFormatter": "dprint.dprint",
-        "editor.codeActionsOnSave": [
-            "source.organizeImports.biome"
-        ]
+        "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+        "editor.codeActionsOnSave": {
+            "source.fixAll.eslint": "explicit"
+        },
+        "eslint.debug": true,
+        "eslint.experimental.useFlatConfig": false
     }
 }

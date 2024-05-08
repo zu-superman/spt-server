@@ -1,10 +1,8 @@
 {
     "recommendations": [
         "EditorConfig.EditorConfig",
-        "dprint.dprint",
-        "dbaeumer.vscode-eslint",
-        "biomejs.biome",
         "vitest.explorer",
-        "refringe.spt-id-highlighter"
+        "refringe.spt-id-highlighter",
+        "dbaeumer.vscode-eslint"
     ]
 }
