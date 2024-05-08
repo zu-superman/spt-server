@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { Category } from "@spt-aki/models/eft/common/tables/IHandbookBase";
 import { Item } from "@spt-aki/models/eft/common/tables/IItem";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
@@ -57,8 +56,8 @@ export class HandbookHelper
         // Add handbook overrides found in items.json config into db
         for (const itemTpl in this.itemConfig.handbookPriceOverride)
         {
-            let itemToUpdate = this.databaseServer.getTables().templates.handbook.Items.find((item) =>
-                item.Id === itemTpl
+            let itemToUpdate = this.databaseServer.getTables().templates.handbook.Items.find(item =>
+                item.Id === itemTpl,
             );
             if (!itemToUpdate)
             {
@@ -67,8 +66,8 @@ export class HandbookHelper
                     ParentId: this.databaseServer.getTables().templates.items[itemTpl]._parent,
                     Price: this.itemConfig.handbookPriceOverride[itemTpl],
                 });
-                itemToUpdate = this.databaseServer.getTables().templates.handbook.Items.find((item) =>
-                    item.Id === itemTpl
+                itemToUpdate = this.databaseServer.getTables().templates.handbook.Items.find(item =>
+                    item.Id === itemTpl,
                 );
             }
 
@@ -119,7 +118,7 @@ export class HandbookHelper
             return this.handbookPriceCache.items.byId.get(tpl);
         }
 
-        const handbookItem = this.databaseServer.getTables().templates.handbook.Items.find((x) => x.Id === tpl);
+        const handbookItem = this.databaseServer.getTables().templates.handbook.Items.find(x => x.Id === tpl);
         if (!handbookItem)
         {
             const newValue = 0;
@@ -208,6 +207,6 @@ export class HandbookHelper
 
     public getCategoryById(handbookId: string): Category
     {
-        return this.databaseServer.getTables().templates.handbook.Categories.find((x) => x.Id === handbookId);
+        return this.databaseServer.getTables().templates.handbook.Categories.find(x => x.Id === handbookId);
     }
 }

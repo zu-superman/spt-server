@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { DynamicRouter, RouteAction } from "@spt-aki/di/Router";
 import { ImageRouter } from "@spt-aki/routers/ImageRouter";
 

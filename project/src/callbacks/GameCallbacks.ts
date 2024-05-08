@@ -1,8 +1,8 @@
 import { inject, injectable } from "tsyringe";
-
 import { GameController } from "@spt-aki/controllers/GameController";
 import { OnLoad } from "@spt-aki/di/OnLoad";
 import { IEmptyRequestData } from "@spt-aki/models/eft/common/IEmptyRequestData";
+import { IUIDRequestData } from "@spt-aki/models/eft/common/request/IUIDRequestData";
 import { ICheckVersionResponse } from "@spt-aki/models/eft/game/ICheckVersionResponse";
 import { ICurrentGroupResponse } from "@spt-aki/models/eft/game/ICurrentGroupResponse";
 import { IGameConfigResponse } from "@spt-aki/models/eft/game/IGameConfigResponse";
@@ -14,7 +14,6 @@ import { IGameModeResponse } from "@spt-aki/models/eft/game/IGameModeResponse";
 import { IGameStartResponse } from "@spt-aki/models/eft/game/IGameStartResponse";
 import { IGetRaidTimeRequest } from "@spt-aki/models/eft/game/IGetRaidTimeRequest";
 import { IGetRaidTimeResponse } from "@spt-aki/models/eft/game/IGetRaidTimeResponse";
-import { IReportNicknameRequestData } from "@spt-aki/models/eft/game/IReportNicknameRequestData";
 import { IServerDetails } from "@spt-aki/models/eft/game/IServerDetails";
 import { IVersionValidateRequestData } from "@spt-aki/models/eft/game/IVersionValidateRequestData";
 import { IGetBodyResponseData } from "@spt-aki/models/eft/httpResponse/IGetBodyResponseData";
@@ -160,7 +159,7 @@ export class GameCallbacks implements OnLoad
         return this.httpResponse.noBody({ Version: this.watermark.getInGameVersionLabel() });
     }
 
-    public reportNickname(url: string, info: IReportNicknameRequestData, sessionID: string): INullResponseData
+    public reportNickname(url: string, info: IUIDRequestData, sessionID: string): INullResponseData
     {
         return this.httpResponse.nullResponse();
     }

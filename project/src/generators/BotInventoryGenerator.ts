@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { BotEquipmentModGenerator } from "@spt-aki/generators/BotEquipmentModGenerator";
 import { BotLootGenerator } from "@spt-aki/generators/BotLootGenerator";
 import { BotWeaponGenerator } from "@spt-aki/generators/BotWeaponGenerator";
@@ -308,12 +307,11 @@ export class BotInventoryGenerator
      */
     protected generateEquipment(settings: IGenerateEquipmentProperties): boolean
     {
-        const spawnChance =
-            ([EquipmentSlots.POCKETS, EquipmentSlots.SECURED_CONTAINER] as string[]).includes(
-                    settings.rootEquipmentSlot,
-                )
-                ? 100
-                : settings.spawnChances.equipment[settings.rootEquipmentSlot];
+        const spawnChance = ([EquipmentSlots.POCKETS, EquipmentSlots.SECURED_CONTAINER] as string[])
+            .includes(settings.rootEquipmentSlot)
+            ? 100
+            : settings.spawnChances.equipment[settings.rootEquipmentSlot];
+
         if (typeof spawnChance === "undefined")
         {
             this.logger.warning(
@@ -444,7 +442,7 @@ export class BotInventoryGenerator
         for (const modSlot of Object.keys(modPool ?? []))
         {
             const blacklistedMods = equipmentBlacklist[0]?.equipment[modSlot] || [];
-            const filteredMods = modPool[modSlot].filter((x) => !blacklistedMods.includes(x));
+            const filteredMods = modPool[modSlot].filter(x => !blacklistedMods.includes(x));
 
             if (filteredMods.length > 0)
             {
@@ -503,7 +501,7 @@ export class BotInventoryGenerator
      * @param equipmentChances Chances bot has certain equipment
      * @returns What slots bot should have weapons generated for
      */
-    protected getDesiredWeaponsForBot(equipmentChances: Chances): { slot: EquipmentSlots; shouldSpawn: boolean; }[]
+    protected getDesiredWeaponsForBot(equipmentChances: Chances): { slot: EquipmentSlots, shouldSpawn: boolean }[]
     {
         const shouldSpawnPrimary = this.randomUtil.getChance100(equipmentChances.equipment.FirstPrimaryWeapon);
         return [{ slot: EquipmentSlots.FIRST_PRIMARY_WEAPON, shouldSpawn: shouldSpawnPrimary }, {
@@ -532,7 +530,7 @@ export class BotInventoryGenerator
      */
     protected addWeaponAndMagazinesToInventory(
         sessionId: string,
-        weaponSlot: { slot: EquipmentSlots; shouldSpawn: boolean; },
+        weaponSlot: { slot: EquipmentSlots, shouldSpawn: boolean },
         templateInventory: Inventory,
         botInventory: PmcInventory,
         equipmentChances: Chances,
@@ -567,18 +565,18 @@ export class BotInventoryGenerator
 export interface IGenerateEquipmentProperties
 {
     /** Root Slot being generated */
-    rootEquipmentSlot: string;
+    rootEquipmentSlot: string
     /** Equipment pool for root slot being generated */
-    rootEquipmentPool: Record<string, number>;
-    modPool: Mods;
+    rootEquipmentPool: Record<string, number>
+    modPool: Mods
     /** Dictionary of mod items and their chance to spawn for this bot type */
-    spawnChances: Chances;
+    spawnChances: Chances
     /** Role being generated for */
-    botRole: string;
+    botRole: string
     /** Level of bot being generated */
-    botLevel: number;
-    inventory: PmcInventory;
-    botEquipmentConfig: EquipmentFilters;
+    botLevel: number
+    inventory: PmcInventory
+    botEquipmentConfig: EquipmentFilters
     /** Settings from bot.json to adjust how item is generated */
-    randomisationDetails: RandomisationDetails;
+    randomisationDetails: RandomisationDetails
 }

@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { BotGenerator } from "@spt-aki/generators/BotGenerator";
 import { BotGeneratorHelper } from "@spt-aki/helpers/BotGeneratorHelper";
 import { BotHelper } from "@spt-aki/helpers/BotHelper";
@@ -310,7 +309,7 @@ export class PlayerScavGenerator
     protected getScavLevel(scavProfile: IPmcData): number
     {
         // Info can be null on initial account creation
-        if (!(scavProfile.Info?.Level))
+        if (!scavProfile.Info?.Level)
         {
             return 1;
         }
@@ -321,7 +320,7 @@ export class PlayerScavGenerator
     protected getScavExperience(scavProfile: IPmcData): number
     {
         // Info can be null on initial account creation
-        if (!(scavProfile.Info?.Experience))
+        if (!scavProfile.Info?.Experience)
         {
             return 0;
         }
@@ -364,7 +363,7 @@ export class PlayerScavGenerator
             scavLockDuration = 10;
         }
 
-        scavData.Info.SavageLockTime = (Date.now() / 1000) + scavLockDuration;
+        scavData.Info.SavageLockTime = Date.now() / 1000 + scavLockDuration;
 
         return scavData;
     }

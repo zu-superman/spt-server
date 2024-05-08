@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { IPreset } from "@spt-aki/models/eft/common/IGlobals";
 import { BaseClasses } from "@spt-aki/models/enums/BaseClasses";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
@@ -45,15 +44,19 @@ export class PresetHelper
     {
         if (!this.defaultWeaponPresets)
         {
-            this.defaultWeaponPresets = Object.values(this.databaseServer.getTables().globals.ItemPresets).filter((
-                preset,
-            ) => preset._encyclopedia !== undefined
-                && this.itemHelper.isOfBaseclass(preset._encyclopedia, BaseClasses.WEAPON)
-            ).reduce((acc, cur) =>
-            {
-                acc[cur._id] = cur;
-                return acc;
-            }, {});
+            this.defaultWeaponPresets = Object.values(
+                this.databaseServer.getTables().globals.ItemPresets,
+            )
+                .filter(
+                    preset =>
+                        preset._encyclopedia !== undefined
+                        && this.itemHelper.isOfBaseclass(preset._encyclopedia, BaseClasses.WEAPON),
+                )
+                .reduce((acc, cur) =>
+                {
+                    acc[cur._id] = cur;
+                    return acc;
+                }, {});
         }
 
         return this.defaultWeaponPresets;
@@ -67,9 +70,7 @@ export class PresetHelper
     {
         if (!this.defaultEquipmentPresets)
         {
-            this.defaultEquipmentPresets = Object.values(this.databaseServer.getTables().globals.ItemPresets).filter((
-                preset,
-            ) => preset._encyclopedia !== undefined && this.itemHelper.armorItemCanHoldMods(preset._encyclopedia))
+            this.defaultEquipmentPresets = Object.values(this.databaseServer.getTables().globals.ItemPresets).filter(preset => preset._encyclopedia !== undefined && this.itemHelper.armorItemCanHoldMods(preset._encyclopedia))
                 .reduce((acc, cur) =>
                 {
                     acc[cur._id] = cur;
@@ -183,7 +184,7 @@ export class PresetHelper
         const defaultPreset = this.getDefaultPreset(tpl);
 
         // Bundle up tpls we want price for
-        const tpls = defaultPreset ? defaultPreset._items.map((item) => item._tpl) : [tpl];
+        const tpls = defaultPreset ? defaultPreset._items.map(item => item._tpl) : [tpl];
 
         // Get price of tpls
         return this.itemHelper.getItemAndChildrenPrice(tpls);

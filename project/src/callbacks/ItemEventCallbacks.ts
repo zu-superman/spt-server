@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { IGetBodyResponseData } from "@spt-aki/models/eft/httpResponse/IGetBodyResponseData";
 import { Warning } from "@spt-aki/models/eft/itemEvent/IItemEventRouterBase";
 import { IItemEventRouterRequest } from "@spt-aki/models/eft/itemEvent/IItemEventRouterRequest";
@@ -24,7 +23,7 @@ export class ItemEventCallbacks
     ): Promise<IGetBodyResponseData<IItemEventRouterResponse>>
     {
         const eventResponse = await this.itemEventRouter.handleEvents(info, sessionID);
-        const result = (this.isCriticalError(eventResponse.warnings))
+        const result = this.isCriticalError(eventResponse.warnings)
             ? this.httpResponse.getBody(
                 eventResponse,
                 this.getErrorCode(eventResponse.warnings),

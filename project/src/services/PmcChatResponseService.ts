@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { NotificationSendHelper } from "@spt-aki/helpers/NotificationSendHelper";
 import { WeightedRandomHelper } from "@spt-aki/helpers/WeightedRandomHelper";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
@@ -230,7 +229,7 @@ export class PmcChatResponseService
         const keyBase = isVictim ? "pmcresponse-victim_" : "pmcresponse-killer_";
         const keys = this.localisationService.getKeys();
 
-        return keys.filter((x) => x.startsWith(`${keyBase}${keyType}`));
+        return keys.filter(x => x.startsWith(`${keyBase}${keyType}`));
     }
 
     /**
@@ -241,7 +240,7 @@ export class PmcChatResponseService
     {
         const keys = this.localisationService.getKeys();
 
-        return keys.filter((x) => x.startsWith("pmcresponse-suffix"));
+        return keys.filter(x => x.startsWith("pmcresponse-suffix"));
     }
 
     /**

@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { RandomUtil } from "@spt-aki/utils/RandomUtil";
 
@@ -20,6 +19,6 @@ export class ProbabilityHelper
      */
     public rollChance(chance: number, scale = 1): boolean
     {
-        return (this.randomUtil.getInt(1, 100 * scale) / (1 * scale)) <= chance;
+        return this.randomUtil.getInt(1, 100 * scale) / (1 * scale) <= chance;
     }
 }

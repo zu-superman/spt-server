@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { QuestCallbacks } from "@spt-aki/callbacks/QuestCallbacks";
 import { RouteAction, StaticRouter } from "@spt-aki/di/Router";
 import { IQuest } from "@spt-aki/models/eft/common/tables/IQuest";

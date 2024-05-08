@@ -1,6 +1,5 @@
 import { IncomingMessage, ServerResponse } from "node:http";
 import { inject, injectable } from "tsyringe";
-
 import { ImageRouteService } from "@spt-aki/services/mod/image/ImageRouteService";
 import { HttpFileUtil } from "@spt-aki/utils/HttpFileUtil";
 import { VFS } from "@spt-aki/utils/VFS";

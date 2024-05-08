@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { BotController } from "@spt-aki/controllers/BotController";
 import { IGenerateBotsRequestData } from "@spt-aki/models/eft/bot/IGenerateBotsRequestData";
 import { IEmptyRequestData } from "@spt-aki/models/eft/common/IEmptyRequestData";

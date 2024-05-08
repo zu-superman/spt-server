@@ -1,6 +1,5 @@
 import { IncomingMessage, ServerResponse } from "node:http";
 import { inject, injectable } from "tsyringe";
-
 import { NotifierController } from "@spt-aki/controllers/NotifierController";
 import { Serializer } from "@spt-aki/di/Serializer";
 import { HttpServerHelper } from "@spt-aki/helpers/HttpServerHelper";
@@ -28,8 +27,8 @@ export class NotifySerializer extends Serializer
          *  be sent to client as NEWLINE separated strings... yup.
          */
         this.notifierController.notifyAsync(tmpSessionID).then((messages: any) =>
-            messages.map((message: any) => this.jsonUtil.serialize(message)).join("\n")
-        ).then((text) => this.httpServerHelper.sendTextJson(resp, text));
+            messages.map((message: any) => this.jsonUtil.serialize(message)).join("\n"),
+        ).then(text => this.httpServerHelper.sendTextJson(resp, text));
     }
 
     public override canHandle(route: string): boolean

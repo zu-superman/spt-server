@@ -5,7 +5,7 @@ import {
 
 export interface IInventoryAddRequestData extends IInventoryBaseActionRequestData
 {
-    Action: "Add";
-    item: string;
-    container: Container;
+    Action: "Add"
+    item: string
+    container: Container
 }

@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 import { MathUtil } from "@spt-aki/utils/MathUtil";
@@ -70,7 +69,7 @@ export class ProbabilityObjectArray<K, V = undefined> extends Array<ProbabilityO
      */
     drop(key: K): ProbabilityObjectArray<K, V>
     {
-        return this.filter((r) => r.key !== key);
+        return this.filter(r => r.key !== key);
     }
 
     /**
@@ -80,7 +79,7 @@ export class ProbabilityObjectArray<K, V = undefined> extends Array<ProbabilityO
      */
     data(key: K): V
     {
-        return this.filter((r) => r.key === key)[0]?.data;
+        return this.filter(r => r.key === key)[0]?.data;
     }
 
     /**
@@ -95,7 +94,7 @@ export class ProbabilityObjectArray<K, V = undefined> extends Array<ProbabilityO
      */
     probability(key: K): number
     {
-        return this.filter((r) => r.key === key)[0].relativeProbability;
+        return this.filter(r => r.key === key)[0].relativeProbability;
     }
 
     /**
@@ -109,7 +108,7 @@ export class ProbabilityObjectArray<K, V = undefined> extends Array<ProbabilityO
      */
     maxProbability(): number
     {
-        return Math.max(...this.map((x) => x.relativeProbability));
+        return Math.max(...this.map(x => x.relativeProbability));
     }
 
     /**
@@ -123,7 +122,7 @@ export class ProbabilityObjectArray<K, V = undefined> extends Array<ProbabilityO
      */
     minProbability(): number
     {
-        return Math.min(...this.map((x) => x.relativeProbability));
+        return Math.min(...this.map(x => x.relativeProbability));
     }
 
     /**
@@ -153,7 +152,7 @@ export class ProbabilityObjectArray<K, V = undefined> extends Array<ProbabilityO
         for (let i = 0; i < count; i++)
         {
             const rand = Math.random();
-            const randomIndex = probCumsum.findIndex((x) => x > rand);
+            const randomIndex = probCumsum.findIndex(x => x > rand);
             // We cannot put Math.random() directly in the findIndex because then it draws anew for each of its iteration
             if (replacement || locklist.includes(keyArray[randomIndex]))
             {
@@ -213,12 +212,12 @@ export class RandomUtil
     {
         const minimum = Math.ceil(min);
         const maximum = Math.floor(max);
-        return (maximum > minimum) ? Math.floor(Math.random() * (maximum - minimum + 1) + minimum) : minimum;
+        return maximum > minimum ? Math.floor(Math.random() * (maximum - minimum + 1) + minimum) : minimum;
     }
 
     public getIntEx(max: number): number
     {
-        return (max > 1) ? Math.floor(Math.random() * (max - 2) + 1) : 1;
+        return max > 1 ? Math.floor(Math.random() * (max - 2) + 1) : 1;
     }
 
     public getFloat(min: number, max: number): number
@@ -233,7 +232,7 @@ export class RandomUtil
 
     public getPercentOfValue(percent: number, number: number, toFixed = 2): number
     {
-        return Number.parseFloat(((percent * number) / 100).toFixed(toFixed));
+        return Number.parseFloat((percent * number / 100).toFixed(toFixed));
     }
 
     /**
@@ -274,7 +273,7 @@ export class RandomUtil
         return this.getArrayValue(Object.keys(node));
     }
 
-    public getKeyValue(node: { [x: string]: any; }): any
+    public getKeyValue(node: { [x: string]: any }): any
     {
         return node[this.getKey(node)];
     }
@@ -298,7 +297,7 @@ export class RandomUtil
         {
             v = Math.random();
         }
-        const w = Math.sqrt(-2.0 * Math.log(u)) * Math.cos((2.0 * Math.PI) * v);
+        const w = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
         const valueDrawn = mean + w * sigma;
         if (valueDrawn < 0)
         {
@@ -410,7 +409,7 @@ export class RandomUtil
             return min;
         }
 
-        if (shift > (max - min))
+        if (shift > max - min)
         {
             /* If a rolled number is out of bounds (due to bias being applied), we simply roll it again.
              * As the shifting increases, the chance of rolling a number within bounds decreases.
@@ -432,7 +431,7 @@ export class RandomUtil
                 rand += Math.random();
             }
 
-            return (rand / n);
+            return rand / n;
         };
 
         const boundedGaussian = (start: number, end: number, n: number) =>

@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { PMCLootGenerator } from "@spt-aki/generators/PMCLootGenerator";
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { IBotType } from "@spt-aki/models/eft/common/tables/IBotType";
@@ -181,8 +180,8 @@ export class BotLootCacheService
         }
 
         // Assign whitelisted special items to bot if any exist
-        const specialLootItems: Record<string, number> =
-            (Object.keys(botJsonTemplate.generation.items.specialItems.whitelist)?.length > 0)
+        const specialLootItems: Record<string, number>
+            = Object.keys(botJsonTemplate.generation.items.specialItems.whitelist)?.length > 0
                 ? botJsonTemplate.generation.items.specialItems.whitelist
                 : {};
 
@@ -200,8 +199,8 @@ export class BotLootCacheService
         }
 
         // Assign whitelisted healing items to bot if any exist
-        const healingItems: Record<string, number> =
-            (Object.keys(botJsonTemplate.generation.items.healing.whitelist)?.length > 0)
+        const healingItems: Record<string, number>
+            = Object.keys(botJsonTemplate.generation.items.healing.whitelist)?.length > 0
                 ? botJsonTemplate.generation.items.healing.whitelist
                 : {};
 
@@ -223,8 +222,8 @@ export class BotLootCacheService
         }
 
         // Assign whitelisted drugs to bot if any exist
-        const drugItems: Record<string, number> =
-            (Object.keys(botJsonTemplate.generation.items.drugs.whitelist)?.length > 0)
+        const drugItems: Record<string, number>
+            = Object.keys(botJsonTemplate.generation.items.drugs.whitelist)?.length > 0
                 ? botJsonTemplate.generation.items.drugs.whitelist
                 : {};
 
@@ -242,8 +241,8 @@ export class BotLootCacheService
         }
 
         // Assign whitelisted food to bot if any exist
-        const foodItems: Record<string, number> =
-            (Object.keys(botJsonTemplate.generation.items.food.whitelist)?.length > 0)
+        const foodItems: Record<string, number>
+            = Object.keys(botJsonTemplate.generation.items.food.whitelist)?.length > 0
                 ? botJsonTemplate.generation.items.food.whitelist
                 : {};
 
@@ -261,8 +260,8 @@ export class BotLootCacheService
         }
 
         // Assign whitelisted drink to bot if any exist
-        const drinkItems: Record<string, number> =
-            (Object.keys(botJsonTemplate.generation.items.food.whitelist)?.length > 0)
+        const drinkItems: Record<string, number>
+            = Object.keys(botJsonTemplate.generation.items.food.whitelist)?.length > 0
                 ? botJsonTemplate.generation.items.food.whitelist
                 : {};
 
@@ -280,8 +279,8 @@ export class BotLootCacheService
         }
 
         // Assign whitelisted currency to bot if any exist
-        const currencyItems: Record<string, number> =
-            (Object.keys(botJsonTemplate.generation.items.currency.whitelist)?.length > 0)
+        const currencyItems: Record<string, number>
+            = Object.keys(botJsonTemplate.generation.items.currency.whitelist)?.length > 0
                 ? botJsonTemplate.generation.items.currency.whitelist
                 : {};
 
@@ -299,8 +298,8 @@ export class BotLootCacheService
         }
 
         // Assign whitelisted stims to bot if any exist
-        const stimItems: Record<string, number> =
-            (Object.keys(botJsonTemplate.generation.items.stims.whitelist)?.length > 0)
+        const stimItems: Record<string, number>
+            = Object.keys(botJsonTemplate.generation.items.stims.whitelist)?.length > 0
                 ? botJsonTemplate.generation.items.stims.whitelist
                 : {};
 
@@ -318,8 +317,8 @@ export class BotLootCacheService
         }
 
         // Assign whitelisted grenades to bot if any exist
-        const grenadeItems: Record<string, number> =
-            (Object.keys(botJsonTemplate.generation.items.grenades.whitelist)?.length > 0)
+        const grenadeItems: Record<string, number>
+            = Object.keys(botJsonTemplate.generation.items.grenades.whitelist)?.length > 0
                 ? botJsonTemplate.generation.items.grenades.whitelist
                 : {};
 
@@ -474,7 +473,7 @@ export class BotLootCacheService
      */
     protected isBulletOrGrenade(props: Props): boolean
     {
-        return ("ammoType" in props);
+        return "ammoType" in props;
     }
 
     /**
@@ -484,7 +483,7 @@ export class BotLootCacheService
      */
     protected isMagazine(props: Props): boolean
     {
-        return ("ReloadMagType" in props);
+        return "ReloadMagType" in props;
     }
 
     /**
@@ -494,7 +493,7 @@ export class BotLootCacheService
      */
     protected isMedicalItem(props: Props): boolean
     {
-        return ("medUseTime" in props);
+        return "medUseTime" in props;
     }
 
     /**
@@ -504,7 +503,7 @@ export class BotLootCacheService
      */
     protected isGrenade(props: Props): boolean
     {
-        return ("ThrowType" in props);
+        return "ThrowType" in props;
     }
 
     protected isFood(tpl: string): boolean

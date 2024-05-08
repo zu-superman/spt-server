@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { ISeasonalEventConfig } from "@spt-aki/models/spt/config/ISeasonalEventConfig";
 import { ConfigServer } from "@spt-aki/servers/ConfigServer";

@@ -2,8 +2,8 @@ import { IBaseInteractionRequestData } from "@spt-aki/models/eft/common/request/
 
 export interface IOffraidEatRequestData extends IBaseInteractionRequestData
 {
-    Action: "Eat";
-    item: string;
-    count: number;
-    time: number;
+    Action: "Eat"
+    item: string
+    count: number
+    time: number
 }

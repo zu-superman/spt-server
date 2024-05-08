@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { PresetHelper } from "@spt-aki/helpers/PresetHelper";
 import { IPreset } from "@spt-aki/models/eft/common/IGlobals";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";

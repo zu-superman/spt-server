@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { ApplicationContext } from "@spt-aki/context/ApplicationContext";
 import { ContextVariableType } from "@spt-aki/context/ContextVariableType";
 import { BotGenerator } from "@spt-aki/generators/BotGenerator";
@@ -62,7 +61,7 @@ export class BotController
      */
     public getBotPresetGenerationLimit(type: string): number
     {
-        const value = this.botConfig.presetBatch[(type === "assaultGroup") ? "assault" : type];
+        const value = this.botConfig.presetBatch[type === "assaultGroup" ? "assault" : type];
 
         if (!value)
         {
@@ -148,7 +147,7 @@ export class BotController
         const result = {};
 
         const botDb = this.databaseServer.getTables().bots.types;
-        const botTypes = Object.keys(WildSpawnTypeNumber).filter((v) => Number.isNaN(Number(v)));
+        const botTypes = Object.keys(WildSpawnTypeNumber).filter(v => Number.isNaN(Number(v)));
         for (let botType of botTypes)
         {
             const enumType = botType.toLowerCase();
@@ -212,8 +211,8 @@ export class BotController
         const raidSettings = this.applicationContext.getLatestValue(ContextVariableType.RAID_CONFIGURATION)?.getValue<
             IGetRaidConfigurationRequestData
         >();
-        const pmcLevelRangeForMap =
-            this.pmcConfig.locationSpecificPmcLevelOverride[raidSettings?.location.toLowerCase()];
+        const pmcLevelRangeForMap
+            = this.pmcConfig.locationSpecificPmcLevelOverride[raidSettings?.location.toLowerCase()];
 
         const allPmcsHaveSameNameAsPlayer = this.randomUtil.getChance100(
             this.pmcConfig.allPMCsHavePlayerNameWithRandomPrefixChance,
@@ -239,7 +238,7 @@ export class BotController
             conditionPromises.push(this.generateWithBotDetails(condition, botGenerationDetails, sessionId));
         }
 
-        await Promise.all(conditionPromises).then((p) => Promise.all(p));
+        await Promise.all(conditionPromises).then(p => Promise.all(p));
 
         return [];
     }
@@ -326,8 +325,8 @@ export class BotController
         const raidSettings = this.applicationContext.getLatestValue(ContextVariableType.RAID_CONFIGURATION)?.getValue<
             IGetRaidConfigurationRequestData
         >();
-        const pmcLevelRangeForMap =
-            this.pmcConfig.locationSpecificPmcLevelOverride[raidSettings.location.toLowerCase()];
+        const pmcLevelRangeForMap
+            = this.pmcConfig.locationSpecificPmcLevelOverride[raidSettings.location.toLowerCase()];
 
         // Create gen request for when cache is empty
         const botGenerationDetails: BotGenerationDetails = {

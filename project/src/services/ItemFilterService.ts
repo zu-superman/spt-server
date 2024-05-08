@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { IItemConfig } from "@spt-aki/models/spt/config/IItemConfig";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";

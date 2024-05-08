@@ -2,7 +2,7 @@ import { IInventoryBaseActionRequestData } from "@spt-aki/models/eft/inventory/I
 
 export interface IInventoryToggleRequestData extends IInventoryBaseActionRequestData
 {
-    Action: "Toggle";
-    item: string;
-    value: boolean;
+    Action: "Toggle"
+    item: string
+    value: boolean
 }

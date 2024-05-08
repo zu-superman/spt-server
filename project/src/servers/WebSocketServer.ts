@@ -1,7 +1,6 @@
 import http, { IncomingMessage } from "node:http";
 import { inject, injectable } from "tsyringe";
 import WebSocket from "ws";
-
 import { HttpServerHelper } from "@spt-aki/helpers/HttpServerHelper";
 import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
 import { INotification, NotificationType } from "@spt-aki/models/eft/notifier/INotifier";
@@ -90,7 +89,7 @@ export class WebSocketServer
             return this.localisationService.getRandomTextThatMatchesPartialKey("server_start_meme_");
         }
 
-        return (globalThis.G_RELEASE_CONFIGURATION)
+        return globalThis.G_RELEASE_CONFIGURATION
             ? `${this.localisationService.getText("server_start_success")}!`
             : this.localisationService.getText("server_start_success");
     }

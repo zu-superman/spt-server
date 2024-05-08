@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { BotHelper } from "@spt-aki/helpers/BotHelper";
 import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
 import { IConfig } from "@spt-aki/models/eft/common/IGlobals";
@@ -343,7 +342,7 @@ export class SeasonalEventService
             }
 
             // Get non-christmas items
-            const nonChristmasTpls = Object.keys(containerItems).filter((tpl) => !christmasItems.includes(tpl));
+            const nonChristmasTpls = Object.keys(containerItems).filter(tpl => !christmasItems.includes(tpl));
             const intermediaryDict = {};
 
             for (const tpl of nonChristmasTpls)
@@ -369,7 +368,7 @@ export class SeasonalEventService
         switch (eventType.toLowerCase())
         {
             case SeasonalEventType.HALLOWEEN.toLowerCase():
-                globalConfig.EventType = globalConfig.EventType.filter((x) => x !== "None");
+                globalConfig.EventType = globalConfig.EventType.filter(x => x !== "None");
                 globalConfig.EventType.push("Halloween");
                 globalConfig.EventType.push("HalloweenIllumination");
                 globalConfig.Health.ProfileHealthSettings.DefaultStimulatorBuff = "Buffs_Halloween";
@@ -381,7 +380,7 @@ export class SeasonalEventService
                 this.adjustTraderIcons(eventType);
                 break;
             case SeasonalEventType.CHRISTMAS.toLowerCase():
-                globalConfig.EventType = globalConfig.EventType.filter((x) => x !== "None");
+                globalConfig.EventType = globalConfig.EventType.filter(x => x !== "None");
                 globalConfig.EventType.push("Christmas");
                 this.addEventGearToBots(eventType);
                 this.addGifterBotToMaps();
@@ -434,9 +433,9 @@ export class SeasonalEventService
             }
             for (const boss of bossesToAdd)
             {
-                const mapBosses: BossLocationSpawn[] =
-                    this.databaseServer.getTables().locations[mapKey].base.BossLocationSpawn;
-                if (!mapBosses.find((x) => x.BossName === boss.BossName))
+                const mapBosses: BossLocationSpawn[]
+                    = this.databaseServer.getTables().locations[mapKey].base.BossLocationSpawn;
+                if (!mapBosses.find(x => x.BossName === boss.BossName))
                 {
                     this.databaseServer.getTables().locations[mapKey].base.BossLocationSpawn.push(...bossesToAdd);
                 }
@@ -453,22 +452,22 @@ export class SeasonalEventService
         switch (eventType.toLowerCase())
         {
             case SeasonalEventType.HALLOWEEN.toLowerCase():
-                this.httpConfig.serverImagePathOverride["./assets/images/traders/5a7c2ebb86f7746e324a06ab.png"] =
-                    "./assets/images/traders/halloween/5a7c2ebb86f7746e324a06ab.png";
-                this.httpConfig.serverImagePathOverride["./assets/images/traders/5ac3b86a86f77461491d1ad8.png"] =
-                    "./assets/images/traders/halloween/5ac3b86a86f77461491d1ad8.png";
-                this.httpConfig.serverImagePathOverride["./assets/images/traders/5c06531a86f7746319710e1b.png"] =
-                    "./assets/images/traders/halloween/5c06531a86f7746319710e1b.png";
-                this.httpConfig.serverImagePathOverride["./assets/images/traders/59b91ca086f77469a81232e4.png"] =
-                    "./assets/images/traders/halloween/59b91ca086f77469a81232e4.png";
-                this.httpConfig.serverImagePathOverride["./assets/images/traders/59b91cab86f77469aa5343ca.png"] =
-                    "./assets/images/traders/halloween/59b91cab86f77469aa5343ca.png";
-                this.httpConfig.serverImagePathOverride["./assets/images/traders/59b91cb486f77469a81232e5.png"] =
-                    "./assets/images/traders/halloween/59b91cb486f77469a81232e5.png";
-                this.httpConfig.serverImagePathOverride["./assets/images/traders/59b91cbd86f77469aa5343cb.png"] =
-                    "./assets/images/traders/halloween/59b91cbd86f77469aa5343cb.png";
-                this.httpConfig.serverImagePathOverride["./assets/images/traders/579dc571d53a0658a154fbec.png"] =
-                    "./assets/images/traders/halloween/579dc571d53a0658a154fbec.png";
+                this.httpConfig.serverImagePathOverride["./assets/images/traders/5a7c2ebb86f7746e324a06ab.png"]
+                    = "./assets/images/traders/halloween/5a7c2ebb86f7746e324a06ab.png";
+                this.httpConfig.serverImagePathOverride["./assets/images/traders/5ac3b86a86f77461491d1ad8.png"]
+                    = "./assets/images/traders/halloween/5ac3b86a86f77461491d1ad8.png";
+                this.httpConfig.serverImagePathOverride["./assets/images/traders/5c06531a86f7746319710e1b.png"]
+                    = "./assets/images/traders/halloween/5c06531a86f7746319710e1b.png";
+                this.httpConfig.serverImagePathOverride["./assets/images/traders/59b91ca086f77469a81232e4.png"]
+                    = "./assets/images/traders/halloween/59b91ca086f77469a81232e4.png";
+                this.httpConfig.serverImagePathOverride["./assets/images/traders/59b91cab86f77469aa5343ca.png"]
+                    = "./assets/images/traders/halloween/59b91cab86f77469aa5343ca.png";
+                this.httpConfig.serverImagePathOverride["./assets/images/traders/59b91cb486f77469a81232e5.png"]
+                    = "./assets/images/traders/halloween/59b91cb486f77469a81232e5.png";
+                this.httpConfig.serverImagePathOverride["./assets/images/traders/59b91cbd86f77469aa5343cb.png"]
+                    = "./assets/images/traders/halloween/59b91cbd86f77469aa5343cb.png";
+                this.httpConfig.serverImagePathOverride["./assets/images/traders/579dc571d53a0658a154fbec.png"]
+                    = "./assets/images/traders/halloween/579dc571d53a0658a154fbec.png";
                 break;
             case SeasonalEventType.CHRISTMAS.toLowerCase():
                 // TODO: find christmas trader icons
@@ -575,7 +574,7 @@ export class SeasonalEventService
         {
             const mapData: ILocation = maps[gifterMapSettings.map];
             // Dont add gifter to map twice
-            if (mapData.base.BossLocationSpawn.some((boss) => boss.BossName === "gifter"))
+            if (mapData.base.BossLocationSpawn.some(boss => boss.BossName === "gifter"))
             {
                 continue;
             }

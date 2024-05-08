@@ -2,22 +2,22 @@ import { IBaseConfig } from "@spt-aki/models/spt/config/IBaseConfig";
 
 export interface ICoreConfig extends IBaseConfig
 {
-    kind: "aki-core";
-    akiVersion: string;
-    projectName: string;
-    compatibleTarkovVersion: string;
-    serverName: string;
-    profileSaveIntervalSeconds: number;
-    sptFriendNickname: string;
-    allowProfileWipe: boolean;
-    bsgLogging: IBsgLogging;
-    release: IRelease;
-    fixes: IGameFixes;
-    features: IServerFeatures;
+    kind: "aki-core"
+    akiVersion: string
+    projectName: string
+    compatibleTarkovVersion: string
+    serverName: string
+    profileSaveIntervalSeconds: number
+    sptFriendNickname: string
+    allowProfileWipe: boolean
+    bsgLogging: IBsgLogging
+    release: IRelease
+    fixes: IGameFixes
+    features: IServerFeatures
     /** Commit hash build server was created from */
-    commit?: string;
+    commit?: string
     /** Timestamp of server build */
-    buildTime?: string;
+    buildTime?: string
 }
 
 export interface IBsgLogging
@@ -34,67 +34,67 @@ export interface IBsgLogging
      * 5 - fatal
      * 6 - off
      */
-    verbosity: number;
+    verbosity: number
     // Should we send the logging to the server
-    sendToServer: boolean;
+    sendToServer: boolean
 }
 
 export interface IRelease
 {
     // Disclaimer outlining the intended usage of bleeding edge
-    betaDisclaimerText?: string;
+    betaDisclaimerText?: string
     // Text logged when users agreed to terms
-    betaDisclaimerAcceptText: string;
+    betaDisclaimerAcceptText: string
     // Server mods loaded message
-    serverModsLoadedText: string;
+    serverModsLoadedText: string
     // Server mods loaded debug message text
-    serverModsLoadedDebugText: string;
+    serverModsLoadedDebugText: string
     // Client mods loaded message
-    clientModsLoadedText: string;
+    clientModsLoadedText: string
     // Client mods loaded debug message text
-    clientModsLoadedDebugText: string;
+    clientModsLoadedDebugText: string
     // Illegal plugins log message
-    illegalPluginsLoadedText: string;
+    illegalPluginsLoadedText: string
     // Illegal plugins exception
-    illegalPluginsExceptionText: string;
+    illegalPluginsExceptionText: string
     // Summary of release changes
-    releaseSummaryText?: string;
+    releaseSummaryText?: string
     // Enables the cool watermark in-game
-    isBeta?: boolean;
+    isBeta?: boolean
     // Whether mods are enabled
-    isModdable?: boolean;
+    isModdable?: boolean
     // Are mods loaded on the server?
-    isModded: boolean;
+    isModded: boolean
     // How long before the messagebox times out and closes the game
-    betaDisclaimerTimeoutDelay: number;
+    betaDisclaimerTimeoutDelay: number
 }
 
 export interface IGameFixes
 {
     /** Shotguns use a different value than normal guns causing huge pellet dispersion  */
-    fixShotgunDispersion: boolean;
-    /** Remove items added by mods when the mod no longer exists - can fix dead profiles stuck at game load*/
-    removeModItemsFromProfile: boolean;
+    fixShotgunDispersion: boolean
+    /** Remove items added by mods when the mod no longer exists - can fix dead profiles stuck at game load */
+    removeModItemsFromProfile: boolean
     /** Fix issues that cause the game to not start due to inventory item issues */
-    fixProfileBreakingInventoryItemIssues: boolean;
+    fixProfileBreakingInventoryItemIssues: boolean
 }
 
 export interface IServerFeatures
 {
     /* Controls whether or not the server attempts to download mod dependencies not included in the server's executable */
-    autoInstallModDependencies: boolean;
-    compressProfile: boolean;
-    chatbotFeatures: IChatbotFeatures;
+    autoInstallModDependencies: boolean
+    compressProfile: boolean
+    chatbotFeatures: IChatbotFeatures
 }
 
 export interface IChatbotFeatures
 {
-    sptFriendEnabled: boolean;
-    commandoEnabled: boolean;
-    commandoFeatures: ICommandoFeatures;
+    sptFriendEnabled: boolean
+    commandoEnabled: boolean
+    commandoFeatures: ICommandoFeatures
 }
 
 export interface ICommandoFeatures
 {
-    giveCommandEnabled: boolean;
+    giveCommandEnabled: boolean
 }

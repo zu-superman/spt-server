@@ -12,5 +12,5 @@ export interface IDeclineFriendRequestData extends IBaseFriendRequest
 
 export interface IBaseFriendRequest
 {
-    profileId: string;
+    profileId: string
 }

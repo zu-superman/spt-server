@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { HideoutController } from "@spt-aki/controllers/HideoutController";
 import { OnUpdate } from "@spt-aki/di/OnUpdate";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";

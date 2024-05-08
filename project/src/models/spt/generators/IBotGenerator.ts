@@ -9,5 +9,5 @@ export interface IBotGenerator
         generation: Generation,
         botRole: string,
         isPmc: boolean,
-    ): PmcInventory;
+    ): PmcInventory
 }

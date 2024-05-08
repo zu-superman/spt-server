@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { PresetController } from "@spt-aki/controllers/PresetController";
 import { OnLoad } from "@spt-aki/di/OnLoad";
 

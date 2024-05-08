@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { OnLoad } from "@spt-aki/di/OnLoad";
 import { PostAkiModLoader } from "@spt-aki/loaders/PostAkiModLoader";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";

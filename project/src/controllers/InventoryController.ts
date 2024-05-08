@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { LootGenerator } from "@spt-aki/generators/LootGenerator";
 import { HideoutHelper } from "@spt-aki/helpers/HideoutHelper";
 import { InventoryHelper } from "@spt-aki/helpers/InventoryHelper";
@@ -107,7 +106,7 @@ export class InventoryController
             }
 
             // Check for item in inventory before allowing internal transfer
-            const originalItemLocation = ownerInventoryItems.from.find((item) => item._id === moveRequest.item);
+            const originalItemLocation = ownerInventoryItems.from.find(item => item._id === moveRequest.item);
             if (!originalItemLocation)
             {
                 // Internal item move but item never existed, possible dupe glitch
@@ -169,7 +168,7 @@ export class InventoryController
             return;
         }
 
-        const profileToRemoveItemFrom = (!request.fromOwner || request.fromOwner.id === pmcData._id)
+        const profileToRemoveItemFrom = !request.fromOwner || request.fromOwner.id === pmcData._id
             ? pmcData
             : this.profileHelper.getFullProfile(sessionID).characters.scav;
 
@@ -198,12 +197,12 @@ export class InventoryController
         // Handle cartridge edge-case
         if (!request.container.location && request.container.container === "cartridges")
         {
-            const matchingItems = inventoryItems.to.filter((x) => x.parentId === request.container.id);
+            const matchingItems = inventoryItems.to.filter(x => x.parentId === request.container.id);
             request.container.location = matchingItems.length; // Wrong location for first cartridge
         }
 
         // The item being merged has three possible sources: pmc, scav or mail, getOwnerInventoryItems() handles getting correct one
-        const itemToSplit = inventoryItems.from.find((x) => x._id === request.splitItem);
+        const itemToSplit = inventoryItems.from.find(x => x._id === request.splitItem);
         if (!itemToSplit)
         {
             const errorMessage = `Unable to split stack as source item: ${request.splitItem} cannot be found`;
@@ -259,7 +258,7 @@ export class InventoryController
         const inventoryItems = this.inventoryHelper.getOwnerInventoryItems(body, sessionID);
 
         // Get source item (can be from player or trader or mail)
-        const sourceItem = inventoryItems.from.find((x) => x._id === body.item);
+        const sourceItem = inventoryItems.from.find(x => x._id === body.item);
         if (!sourceItem)
         {
             const errorMessage = `Unable to merge stacks as source item: ${body.with} cannot be found`;
@@ -271,7 +270,7 @@ export class InventoryController
         }
 
         // Get item being merged into
-        const destinationItem = inventoryItems.to.find((x) => x._id === body.with);
+        const destinationItem = inventoryItems.to.find(x => x._id === body.with);
         if (!destinationItem)
         {
             const errorMessage = `Unable to merge stacks as destination item: ${body.with} cannot be found`;
@@ -282,7 +281,7 @@ export class InventoryController
             return output;
         }
 
-        if (!(destinationItem.upd?.StackObjectsCount))
+        if (!destinationItem.upd?.StackObjectsCount)
         {
             // No stackcount on destination, add one
             destinationItem.upd = { StackObjectsCount: 1 };
@@ -307,7 +306,7 @@ export class InventoryController
         destinationItem.upd.StackObjectsCount += sourceItem.upd.StackObjectsCount; // Add source stackcount to destination
         output.profileChanges[sessionID].items.del.push({ _id: sourceItem._id }); // Inform client source item being deleted
 
-        const indexOfItemToRemove = inventoryItems.from.findIndex((x) => x._id === sourceItem._id);
+        const indexOfItemToRemove = inventoryItems.from.findIndex(x => x._id === sourceItem._id);
         if (indexOfItemToRemove === -1)
         {
             const errorMessage = `Unable to find item: ${sourceItem._id} to remove from sender inventory`;
@@ -340,8 +339,8 @@ export class InventoryController
     ): IItemEventRouterResponse
     {
         const inventoryItems = this.inventoryHelper.getOwnerInventoryItems(body, sessionID);
-        const sourceItem = inventoryItems.from.find((item) => item._id === body.item);
-        const destinationItem = inventoryItems.to.find((item) => item._id === body.with);
+        const sourceItem = inventoryItems.from.find(item => item._id === body.item);
+        const destinationItem = inventoryItems.to.find(item => item._id === body.with);
 
         if (sourceItem === null)
         {
@@ -397,13 +396,13 @@ export class InventoryController
      */
     public swapItem(pmcData: IPmcData, request: IInventorySwapRequestData, sessionID: string): IItemEventRouterResponse
     {
-        const itemOne = pmcData.Inventory.items.find((x) => x._id === request.item);
+        const itemOne = pmcData.Inventory.items.find(x => x._id === request.item);
         if (!itemOne)
         {
             this.logger.error(`Unable to find item: ${request.item} to swap positions with: ${request.item2}`);
         }
 
-        const itemTwo = pmcData.Inventory.items.find((x) => x._id === request.item2);
+        const itemTwo = pmcData.Inventory.items.find(x => x._id === request.item2);
         if (!itemTwo)
         {
             this.logger.error(`Unable to find item: ${request.item2} to swap positions with: ${request.item}`);
@@ -454,7 +453,7 @@ export class InventoryController
             playerData = this.profileHelper.getScavProfile(sessionID);
         }
 
-        const itemToFold = playerData.Inventory.items.find((item) => item?._id === request.item);
+        const itemToFold = playerData.Inventory.items.find(item => item?._id === request.item);
         if (!itemToFold)
         {
             // Item not found
@@ -488,7 +487,7 @@ export class InventoryController
             playerData = this.profileHelper.getScavProfile(sessionID);
         }
 
-        const itemToToggle = playerData.Inventory.items.find((x) => x._id === body.item);
+        const itemToToggle = playerData.Inventory.items.find(x => x._id === body.item);
         if (itemToToggle)
         {
             this.itemHelper.addUpdObjectToItem(
@@ -689,15 +688,15 @@ export class InventoryController
         if (request.fromOwner.id === Traders.FENCE)
         {
             // Get tpl from fence assorts
-            return this.fenceService.getRawFenceAssorts().items.find((x) => x._id === request.item)._tpl;
+            return this.fenceService.getRawFenceAssorts().items.find(x => x._id === request.item)._tpl;
         }
 
         if (request.fromOwner.type === "Trader")
         {
             // Not fence
             // get tpl from trader assort
-            return this.databaseServer.getTables().traders[request.fromOwner.id].assort.items.find((item) =>
-                item._id === request.item
+            return this.databaseServer.getTables().traders[request.fromOwner.id].assort.items.find(item =>
+                item._id === request.item,
             )._tpl;
         }
 
@@ -718,7 +717,7 @@ export class InventoryController
             }
 
             // Try find examine item inside offer items array
-            const matchingItem = offer.items.find((offerItem) => offerItem._id === request.item);
+            const matchingItem = offer.items.find(offerItem => offerItem._id === request.item);
             if (matchingItem)
             {
                 return matchingItem._tpl;
@@ -754,7 +753,7 @@ export class InventoryController
     {
         for (const change of request.changedItems)
         {
-            const inventoryItem = pmcData.Inventory.items.find((x) => x._id === change._id);
+            const inventoryItem = pmcData.Inventory.items.find(x => x._id === change._id);
             if (!inventoryItem)
             {
                 this.logger.error(
@@ -793,7 +792,7 @@ export class InventoryController
     ): void
     {
         // Get map from inventory
-        const mapItem = pmcData.Inventory.items.find((i) => i._id === request.item);
+        const mapItem = pmcData.Inventory.items.find(i => i._id === request.item);
 
         // add marker
         mapItem.upd.Map = mapItem.upd.Map || { Markers: [] };
@@ -819,7 +818,7 @@ export class InventoryController
     ): void
     {
         // Get map from inventory
-        const mapItem = pmcData.Inventory.items.find((i) => i._id === request.item);
+        const mapItem = pmcData.Inventory.items.find(i => i._id === request.item);
 
         // remove marker
         const markers = mapItem.upd.Map.Markers.filter((marker) =>
@@ -847,10 +846,10 @@ export class InventoryController
     ): void
     {
         // Get map from inventory
-        const mapItem = pmcData.Inventory.items.find((i) => i._id === request.item);
+        const mapItem = pmcData.Inventory.items.find(i => i._id === request.item);
 
         // edit marker
-        const indexOfExistingNote = mapItem.upd.Map.Markers.findIndex((m) => m.X === request.X && m.Y === request.Y);
+        const indexOfExistingNote = mapItem.upd.Map.Markers.findIndex(m => m.X === request.X && m.Y === request.Y);
         request.mapMarker.Note = this.sanitiseMapMarkerText(request.mapMarker.Note);
         mapItem.upd.Map.Markers[indexOfExistingNote] = request.mapMarker;
 
@@ -884,7 +883,7 @@ export class InventoryController
     ): void
     {
         /** Container player opened in their inventory */
-        const openedItem = pmcData.Inventory.items.find((item) => item._id === body.item);
+        const openedItem = pmcData.Inventory.items.find(item => item._id === body.item);
         const containerDetailsDb = this.itemHelper.getItem(openedItem._tpl);
         const isSealedWeaponBox = containerDetailsDb[1]._name.includes("event_container_airdrop");
 
@@ -935,8 +934,8 @@ export class InventoryController
             // Hard coded to `SYSTEM` for now
             // TODO: make this dynamic
             const dialog = fullProfile.dialogues["59e7125688a45068a6249071"];
-            const mail = dialog.messages.find((x) => x._id === event.MessageId);
-            const mailEvent = mail.profileChangeEvents.find((x) => x._id === event.EventId);
+            const mail = dialog.messages.find(x => x._id === event.MessageId);
+            const mailEvent = mail.profileChangeEvents.find(x => x._id === event.EventId);
 
             switch (mailEvent.Type)
             {
@@ -955,15 +954,15 @@ export class InventoryController
                     break;
                 case "SkillPoints":
                 {
-                    const profileSkill = pmcData.Skills.Common.find((x) => x.Id === mailEvent.entity);
+                    const profileSkill = pmcData.Skills.Common.find(x => x.Id === mailEvent.entity);
                     profileSkill.Progress = mailEvent.value;
                     this.logger.success(`Set profile skill: ${mailEvent.entity} to: ${mailEvent.value}`);
                     break;
                 }
                 case "ExamineAllItems":
                 {
-                    const itemsToInspect = this.itemHelper.getItems().filter((x) => x._type !== "Node");
-                    this.flagItemsAsInspectedAndRewardXp(itemsToInspect.map((x) => x._id), fullProfile);
+                    const itemsToInspect = this.itemHelper.getItems().filter(x => x._type !== "Node");
+                    this.flagItemsAsInspectedAndRewardXp(itemsToInspect.map(x => x._id), fullProfile);
                     this.logger.success(`Flagged ${itemsToInspect.length} items as examined`);
                     break;
                 }
@@ -988,7 +987,7 @@ export class InventoryController
         for (const itemId of request.items)
         {
             // If id already exists in array, we're removing it
-            const indexOfItemAlreadyFavorited = pmcData.Inventory.favoriteItems.findIndex((x) => x === itemId);
+            const indexOfItemAlreadyFavorited = pmcData.Inventory.favoriteItems.findIndex(x => x === itemId);
             if (indexOfItemAlreadyFavorited > -1)
             {
                 pmcData.Inventory.favoriteItems.splice(indexOfItemAlreadyFavorited, 1);

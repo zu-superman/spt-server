@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { ItemEventCallbacks } from "@spt-aki/callbacks/ItemEventCallbacks";
 import { RouteAction, StaticRouter } from "@spt-aki/di/Router";
 import { IGetBodyResponseData } from "@spt-aki/models/eft/httpResponse/IGetBodyResponseData";

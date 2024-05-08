@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { IEliminationConfig, IQuestConfig, IRepeatableQuestConfig } from "@spt-aki/models/spt/config/IQuestConfig";
 import { ConfigServer } from "@spt-aki/servers/ConfigServer";
@@ -32,8 +31,8 @@ export class RepeatableQuestHelper
         repeatableConfig: IRepeatableQuestConfig,
     ): IEliminationConfig
     {
-        return repeatableConfig.questConfig.Elimination.find((x) =>
-            pmcLevel >= x.levelRange.min && pmcLevel <= x.levelRange.max
+        return repeatableConfig.questConfig.Elimination.find(x =>
+            pmcLevel >= x.levelRange.min && pmcLevel <= x.levelRange.max,
         );
     }
 

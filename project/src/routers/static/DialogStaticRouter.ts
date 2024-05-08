@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { DialogueCallbacks } from "@spt-aki/callbacks/DialogueCallbacks";
 import { RouteAction, StaticRouter } from "@spt-aki/di/Router";
 import { IChatServer } from "@spt-aki/models/eft/dialog/IChatServer";

@@ -2,11 +2,11 @@ import { IBaseInteractionRequestData } from "@spt-aki/models/eft/common/request/
 
 export interface IOffraidHealRequestData extends IBaseInteractionRequestData
 {
-    Action: "Heal";
-    item: string;
-    part: BodyPart;
-    count: number;
-    time: number;
+    Action: "Heal"
+    item: string
+    part: BodyPart
+    count: number
+    time: number
 }
 
 export enum BodyPart

@@ -2,6 +2,6 @@ import { IInventoryBaseActionRequestData } from "@spt-aki/models/eft/inventory/I
 
 export interface IInventoryReadEncyclopediaRequestData extends IInventoryBaseActionRequestData
 {
-    Action: "ReadEncyclopedia";
-    ids: string[];
+    Action: "ReadEncyclopedia"
+    ids: string[]
 }

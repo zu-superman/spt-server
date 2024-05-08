@@ -113,7 +113,7 @@ export class TimeUtil
     {
         const now = new Date();
         const millisecondsUntilNextHour = (60 - now.getMinutes()) * 60 * 1000 - now.getSeconds() * 1000
-            - now.getMilliseconds();
+          - now.getMilliseconds();
         return (now.getTime() + millisecondsUntilNextHour) / 1000;
     }
 }

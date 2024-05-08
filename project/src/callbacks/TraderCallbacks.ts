@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { TraderController } from "@spt-aki/controllers/TraderController";
 import { OnLoad } from "@spt-aki/di/OnLoad";
 import { OnUpdate } from "@spt-aki/di/OnUpdate";

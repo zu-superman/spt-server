@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { HandbookHelper } from "@spt-aki/helpers/HandbookHelper";
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { PresetHelper } from "@spt-aki/helpers/PresetHelper";
@@ -50,7 +49,7 @@ export class FenceBaseAssortGenerator
         const blockedSeasonalItems = this.seasonalEventService.getInactiveSeasonalEventItems();
         const baseFenceAssort = this.databaseServer.getTables().traders[Traders.FENCE].assort;
 
-        for (const rootItemDb of this.itemHelper.getItems().filter((item) => this.isValidFenceItem(item)))
+        for (const rootItemDb of this.itemHelper.getItems().filter(item => this.isValidFenceItem(item)))
         {
             // Skip blacklisted items
             if (this.itemFilterService.isItemBlacklisted(rootItemDb._id))
@@ -144,7 +143,7 @@ export class FenceBaseAssortGenerator
         for (const defaultPreset of defaultPresets)
         {
             // Skip presets we've already added
-            if (baseFenceAssort.items.some((item) => item.upd && item.upd.sptPresetId === defaultPreset._id))
+            if (baseFenceAssort.items.some(item => item.upd && item.upd.sptPresetId === defaultPreset._id))
             {
                 continue;
             }
@@ -252,7 +251,7 @@ export class FenceBaseAssortGenerator
         }
 
         // Check for and add required soft inserts to armors
-        const requiredSlots = itemDbDetails._props.Slots.filter((slot) => slot._required);
+        const requiredSlots = itemDbDetails._props.Slots.filter(slot => slot._required);
         const hasRequiredSlots = requiredSlots.length > 0;
         if (hasRequiredSlots)
         {
@@ -284,8 +283,8 @@ export class FenceBaseAssortGenerator
         }
 
         // Check for and add plate items
-        const plateSlots = itemDbDetails._props.Slots.filter((slot) =>
-            this.itemHelper.isRemovablePlateSlot(slot._name)
+        const plateSlots = itemDbDetails._props.Slots.filter(slot =>
+            this.itemHelper.isRemovablePlateSlot(slot._name),
         );
         if (plateSlots.length > 0)
         {

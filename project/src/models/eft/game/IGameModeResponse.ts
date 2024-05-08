@@ -6,6 +6,6 @@ export enum ESessionMode
 
 export interface IGameModeResponse
 {
-    gameMode: ESessionMode;
-    backendUrl: string;
+    gameMode: ESessionMode
+    backendUrl: string
 }

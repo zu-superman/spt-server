@@ -3,6 +3,6 @@ import { IUserDialogInfo } from "@spt-aki/models/eft/profile/IAkiProfile";
 
 export interface IDialogueChatBot
 {
-    getChatBot(): IUserDialogInfo;
-    handleMessage(sessionId: string, request: ISendMessageRequest): string;
+    getChatBot(): IUserDialogInfo
+    handleMessage(sessionId: string, request: ISendMessageRequest): string
 }

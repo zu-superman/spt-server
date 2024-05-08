@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { BotCallbacks } from "@spt-aki/callbacks/BotCallbacks";
 import { DynamicRouter, RouteAction } from "@spt-aki/di/Router";
 import { Difficulties } from "@spt-aki/models/eft/common/tables/IBotType";

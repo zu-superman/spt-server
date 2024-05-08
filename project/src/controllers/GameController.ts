@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { ApplicationContext } from "@spt-aki/context/ApplicationContext";
 import { ContextVariableType } from "@spt-aki/context/ContextVariableType";
 import { HideoutHelper } from "@spt-aki/helpers/HideoutHelper";
@@ -360,8 +359,8 @@ export class GameController
             for (const positionToAdd of positionsToAdd)
             {
                 // Exists already, add new items to existing positions pool
-                const existingLootPosition = mapLooseLoot.spawnpoints.find((x) =>
-                    x.template.Id === positionToAdd.template.Id
+                const existingLootPosition = mapLooseLoot.spawnpoints.find(x =>
+                    x.template.Id === positionToAdd.template.Id,
                 );
                 if (existingLootPosition)
                 {
@@ -391,7 +390,7 @@ export class GameController
             const mapLootAdjustmentsDict = adjustments[mapId];
             for (const lootKey in mapLootAdjustmentsDict)
             {
-                const lootPostionToAdjust = mapLooseLootData.spawnpoints.find((x) => x.template.Id === lootKey);
+                const lootPostionToAdjust = mapLooseLootData.spawnpoints.find(x => x.template.Id === lootKey);
                 if (!lootPostionToAdjust)
                 {
                     this.logger.warning(`Unable to adjust loot position: ${lootKey} on map: ${mapId}`);
@@ -424,7 +423,7 @@ export class GameController
 
             for (const botToLimit of this.locationConfig.botTypeLimits[mapId])
             {
-                const index = map.base.MinMaxBots.findIndex((x) => x.WildSpawnType === botToLimit.type);
+                const index = map.base.MinMaxBots.findIndex(x => x.WildSpawnType === botToLimit.type);
                 if (index !== -1)
                 {
                     // Existing bot type found in MinMaxBots array, edit
@@ -452,9 +451,9 @@ export class GameController
     public getGameConfig(sessionID: string): IGameConfigResponse
     {
         const profile = this.profileHelper.getPmcProfile(sessionID);
-        const gameTime =
-            profile.Stats?.Eft.OverallCounters.Items?.find((counter) =>
-                counter.Key.includes("LifeTime") && counter.Key.includes("Pmc")
+        const gameTime
+            = profile.Stats?.Eft.OverallCounters.Items?.find(counter =>
+                counter.Key.includes("LifeTime") && counter.Key.includes("Pmc"),
             )?.Value ?? 0;
 
         const config: IGameConfigResponse = {
@@ -599,12 +598,12 @@ export class GameController
             let hpRegenPerHour = 456.6;
 
             // Set new values, whatever is smallest
-            energyRegenPerHour += pmcProfile.Bonuses.filter((bonus) => bonus.type === BonusType.ENERGY_REGENERATION)
+            energyRegenPerHour += pmcProfile.Bonuses.filter(bonus => bonus.type === BonusType.ENERGY_REGENERATION)
                 .reduce((sum, curr) => sum + curr.value, 0);
-            hydrationRegenPerHour += pmcProfile.Bonuses.filter((bonus) =>
-                bonus.type === BonusType.HYDRATION_REGENERATION
+            hydrationRegenPerHour += pmcProfile.Bonuses.filter(bonus =>
+                bonus.type === BonusType.HYDRATION_REGENERATION,
             ).reduce((sum, curr) => sum + curr.value, 0);
-            hpRegenPerHour += pmcProfile.Bonuses.filter((bonus) => bonus.type === BonusType.HEALTH_REGENERATION).reduce(
+            hpRegenPerHour += pmcProfile.Bonuses.filter(bonus => bonus.type === BonusType.HEALTH_REGENERATION).reduce(
                 (sum, curr) => sum + curr.value,
                 0,
             );
@@ -701,7 +700,7 @@ export class GameController
 
             for (const wave of location.base.waves ?? [])
             {
-                if ((wave.slots_max - wave.slots_min === 0))
+                if (wave.slots_max - wave.slots_min === 0)
                 {
                     this.logger.debug(
                         `Fixed ${wave.WildSpawnType} Spawn: ${locationKey} wave: ${wave.number} of type: ${wave.WildSpawnType} in zone: ${wave.SpawnPoints} with Max Slots of ${wave.slots_max}`,
@@ -739,13 +738,13 @@ export class GameController
         const currentTimeStamp = this.timeUtil.getTimestamp();
 
         // One day post-profile creation
-        if (currentTimeStamp > (timeStampProfileCreated + oneDaySeconds))
+        if (currentTimeStamp > timeStampProfileCreated + oneDaySeconds)
         {
             this.giftService.sendPraporStartingGift(pmcProfile.sessionId, 1);
         }
 
         // Two day post-profile creation
-        if (currentTimeStamp > (timeStampProfileCreated + (oneDaySeconds * 2)))
+        if (currentTimeStamp > timeStampProfileCreated + oneDaySeconds * 2)
         {
             this.giftService.sendPraporStartingGift(pmcProfile.sessionId, 2);
         }
@@ -771,7 +770,7 @@ export class GameController
                 // Wave has size that makes it candidate for splitting
                 if (
                     wave.slots_max - wave.slots_min
-                        >= this.locationConfig.splitWaveIntoSingleSpawnsSettings.waveSizeThreshold
+                    >= this.locationConfig.splitWaveIntoSingleSpawnsSettings.waveSizeThreshold
                 )
                 {
                     // Get count of bots to be spawned in wave
@@ -842,8 +841,8 @@ export class GameController
         {
             const modDetails = activeMods[modKey];
             if (
-                fullProfile.aki.mods.some((x) =>
-                    x.author === modDetails.author && x.name === modDetails.name && x.version === modDetails.version
+                fullProfile.aki.mods.some(x =>
+                    x.author === modDetails.author && x.name === modDetails.name && x.version === modDetails.version,
                 )
             )
             {
@@ -958,8 +957,8 @@ export class GameController
     protected adjustLabsRaiderSpawnRate(): void
     {
         const labsBase = this.databaseServer.getTables().locations.laboratory.base;
-        const nonTriggerLabsBossSpawns = labsBase.BossLocationSpawn.filter((x) =>
-            x.TriggerId === "" && x.TriggerName === ""
+        const nonTriggerLabsBossSpawns = labsBase.BossLocationSpawn.filter(x =>
+            x.TriggerId === "" && x.TriggerName === "",
         );
         if (nonTriggerLabsBossSpawns)
         {

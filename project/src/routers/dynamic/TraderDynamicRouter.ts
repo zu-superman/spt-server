@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { TraderCallbacks } from "@spt-aki/callbacks/TraderCallbacks";
 import { DynamicRouter, RouteAction } from "@spt-aki/di/Router";
 import { ITraderAssort, ITraderBase } from "@spt-aki/models/eft/common/tables/ITrader";

@@ -1,6 +1,6 @@
 export interface IFriendRequestSendResponse
 {
-    status: number;
-    requestId: string;
-    retryAfter: number;
+    status: number
+    requestId: string
+    retryAfter: number
 }

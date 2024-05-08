@@ -1,5 +1,4 @@
 import { inject, injectAll, injectable } from "tsyringe";
-
 import { ItemEventRouterDefinition } from "@spt-aki/di/Router";
 import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
 import { IItemEventRouterRequest } from "@spt-aki/models/eft/itemEvent/IItemEventRouterRequest";
@@ -35,7 +34,7 @@ export class ItemEventRouter
         {
             const pmcData = this.profileHelper.getPmcProfile(sessionID);
 
-            const eventRouter = this.itemEventRouters.find((r) => r.canHandle(body.Action));
+            const eventRouter = this.itemEventRouters.find(r => r.canHandle(body.Action));
             if (eventRouter)
             {
                 this.logger.debug(`event: ${body.Action}`);

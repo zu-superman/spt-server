@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { BotHelper } from "@spt-aki/helpers/BotHelper";
 import { ITemplateItem } from "@spt-aki/models/eft/common/tables/ITemplateItem";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
@@ -84,7 +83,7 @@ export class DurabilityLimitsHelper
      */
     public getRandomizedWeaponDurability(itemTemplate: ITemplateItem, botRole: string, maxDurability: number): number
     {
-        if (botRole && (this.botHelper.isBotPmc(botRole)))
+        if (botRole && this.botHelper.isBotPmc(botRole))
         {
             return this.generateWeaponDurability("pmc", maxDurability);
         }
@@ -111,7 +110,7 @@ export class DurabilityLimitsHelper
      */
     public getRandomizedArmorDurability(itemTemplate: ITemplateItem, botRole: string, maxDurability: number): number
     {
-        if (botRole && (this.botHelper.isBotPmc(botRole)))
+        if (botRole && this.botHelper.isBotPmc(botRole))
         {
             return this.generateArmorDurability("pmc", maxDurability);
         }
@@ -173,11 +172,11 @@ export class DurabilityLimitsHelper
         const delta = this.randomUtil.getInt(minDelta, maxDelta);
         const result = Number((maxDurability - delta).toFixed(2));
         const durabilityValueMinLimit = Math.round(
-            (this.getMinWeaponLimitPercentFromConfig(botRole) / 100) * maxDurability,
+            this.getMinWeaponLimitPercentFromConfig(botRole) / 100 * maxDurability,
         );
 
         // Dont let weapon dura go below the percent defined in config
-        return (result >= durabilityValueMinLimit) ? result : durabilityValueMinLimit;
+        return result >= durabilityValueMinLimit ? result : durabilityValueMinLimit;
     }
 
     protected generateArmorDurability(botRole: string, maxDurability: number): number
@@ -187,11 +186,11 @@ export class DurabilityLimitsHelper
         const delta = this.randomUtil.getInt(minDelta, maxDelta);
         const result = Number((maxDurability - delta).toFixed(2));
         const durabilityValueMinLimit = Math.round(
-            (this.getMinArmorLimitPercentFromConfig(botRole) / 100) * maxDurability,
+            this.getMinArmorLimitPercentFromConfig(botRole) / 100 * maxDurability,
         );
 
         // Dont let armor dura go below the percent defined in config
-        return (result >= durabilityValueMinLimit) ? result : durabilityValueMinLimit;
+        return result >= durabilityValueMinLimit ? result : durabilityValueMinLimit;
     }
 
     protected getMinWeaponDeltaFromConfig(botRole: string): number

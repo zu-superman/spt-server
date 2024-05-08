@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { DialogueHelper } from "@spt-aki/helpers/DialogueHelper";
 import { HandbookHelper } from "@spt-aki/helpers/HandbookHelper";
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
@@ -153,7 +152,7 @@ export class InsuranceService
         for (const insuredItem of this.getInsurance(sessionId)[traderId])
         {
             // Find insured items parent
-            const insuredItemsParent = insuredItems.find((x) => x._id === insuredItem.parentId);
+            const insuredItemsParent = insuredItems.find(x => x._id === insuredItem.parentId);
             if (!insuredItemsParent)
             {
                 // Remove location + set slotId of insured items parent
@@ -181,16 +180,16 @@ export class InsuranceService
             return this.timeUtil.getTimestamp() + this.insuranceConfig.returnTimeOverrideSeconds;
         }
 
-        const insuranceReturnTimeBonus = pmcData.Bonuses.find((b) => b.type === BonusType.INSURANCE_RETURN_TIME);
+        const insuranceReturnTimeBonus = pmcData.Bonuses.find(b => b.type === BonusType.INSURANCE_RETURN_TIME);
         const insuranceReturnTimeBonusPercent = 1.0
-            - (insuranceReturnTimeBonus ? Math.abs(insuranceReturnTimeBonus.value) : 0) / 100;
+          - (insuranceReturnTimeBonus ? Math.abs(insuranceReturnTimeBonus.value) : 0) / 100;
 
         const traderMinReturnAsSeconds = trader.insurance.min_return_hour * TimeUtil.ONE_HOUR_AS_SECONDS;
         const traderMaxReturnAsSeconds = trader.insurance.max_return_hour * TimeUtil.ONE_HOUR_AS_SECONDS;
         const randomisedReturnTimeSeconds = this.randomUtil.getInt(traderMinReturnAsSeconds, traderMaxReturnAsSeconds);
 
         // Current time + randomised time calculated above
-        return this.timeUtil.getTimestamp() + (randomisedReturnTimeSeconds * insuranceReturnTimeBonusPercent);
+        return this.timeUtil.getTimestamp() + randomisedReturnTimeSeconds * insuranceReturnTimeBonusPercent;
     }
 
     /**
@@ -251,14 +250,14 @@ export class InsuranceService
 
             // Check if item missing in post-raid gear OR player died + item slot flagged as lost on death
             // Catches both events: player died with item on + player survived but dropped item in raid
-            if (!itemOnPlayerPostRaid || (playerDied && itemShouldBeLostOnDeath))
+            if (!itemOnPlayerPostRaid || playerDied && itemShouldBeLostOnDeath)
             {
                 equipmentPkg.push({
                     pmcData: pmcData,
                     itemToReturnToPlayer: this.getInsuredItemDetails(
                         pmcData,
                         preRaidItem,
-                        offraidData.insurance?.find((insuranceItem) => insuranceItem.id === insuredItem.itemId),
+                        offraidData.insurance?.find(insuranceItem => insuranceItem.id === insuredItem.itemId),
                     ),
                     traderId: insuredItem.tid,
                     sessionID: sessionID,
@@ -270,10 +269,10 @@ export class InsuranceService
                     if (this.itemHelper.itemHasSlots(preRaidItem._tpl))
                     {
                         // Get IDs of all soft insert child items on armor from pre raid gear data
-                        const softInsertChildIds = preRaidGear.filter((item) =>
+                        const softInsertChildIds = preRaidGear.filter(item =>
                             item.parentId === preRaidItem._id
-                            && this.itemHelper.getSoftInsertSlotIds().includes(item.slotId.toLowerCase())
-                        ).map((x) => x._id);
+                            && this.itemHelper.getSoftInsertSlotIds().includes(item.slotId.toLowerCase()),
+                        ).map(x => x._id);
 
                         // Add all items found above to return data
                         for (const softInsertChildModId of softInsertChildIds)
@@ -282,9 +281,9 @@ export class InsuranceService
                                 pmcData: pmcData,
                                 itemToReturnToPlayer: this.getInsuredItemDetails(
                                     pmcData,
-                                    preRaidGear.find((item) => item._id === softInsertChildModId),
-                                    offraidData.insurance?.find((insuranceItem) =>
-                                        insuranceItem.id === softInsertChildModId
+                                    preRaidGear.find(item => item._id === softInsertChildModId),
+                                    offraidData.insurance?.find(insuranceItem =>
+                                        insuranceItem.id === softInsertChildModId,
                                     ),
                                 ),
                                 traderId: insuredItem.tid,

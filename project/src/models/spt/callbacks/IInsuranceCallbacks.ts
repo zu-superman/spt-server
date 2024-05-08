@@ -5,8 +5,8 @@ import { IAkiProfile } from "@spt-aki/models/eft/profile/IAkiProfile";
 
 export interface IInsuranceCallbacks
 {
-    onLoad(sessionID: string): IAkiProfile;
-    getInsuranceCost(url: string, info: IGetInsuranceCostRequestData, sessionID: string): any;
-    insure(pmcData: IPmcData, body: IInsureRequestData, sessionID: string): any;
-    update(secondsSinceLastRun: number): boolean;
+    onLoad(sessionID: string): IAkiProfile
+    getInsuranceCost(url: string, info: IGetInsuranceCostRequestData, sessionID: string): any
+    insure(pmcData: IPmcData, body: IInsureRequestData, sessionID: string): any
+    update(secondsSinceLastRun: number): boolean
 }

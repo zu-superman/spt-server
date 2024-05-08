@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { GiftSenderType } from "@spt-aki/models/enums/GiftSenderType";

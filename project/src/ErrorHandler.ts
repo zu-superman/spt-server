@@ -1,5 +1,4 @@
 import readline from "node:readline";
-
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { AsyncQueue } from "@spt-aki/utils/AsyncQueue";
 import { WinstonMainLogger } from "@spt-aki/utils/logging/WinstonMainLogger";
@@ -24,7 +23,7 @@ export class ErrorHandler
             this.logger.error(`\nStacktrace:\n${err.stack}`);
         }
 
-        this.readLine.question("Press Enter to close the window", (_ans) => this.readLine.close());
+        this.readLine.question("Press Enter to close the window", _ans => this.readLine.close());
         this.readLine.on("close", () => process.exit(1));
     }
 }

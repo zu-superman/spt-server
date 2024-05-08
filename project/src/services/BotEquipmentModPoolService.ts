@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { Mods } from "@spt-aki/models/eft/common/tables/IBotType";
 import { ITemplateItem } from "@spt-aki/models/eft/common/tables/ITemplateItem";
@@ -92,7 +91,7 @@ export class BotEquipmentModPoolService
                     }
 
                     // only add item to pool if it doesnt already exist
-                    if (!pool[item._id][slot._name].some((x) => x === itemToAdd))
+                    if (!pool[item._id][slot._name].some(x => x === itemToAdd))
                     {
                         pool[item._id][slot._name].push(itemToAdd);
 
@@ -186,8 +185,8 @@ export class BotEquipmentModPoolService
      */
     protected generateWeaponPool(): void
     {
-        const weapons = Object.values(this.databaseServer.getTables().templates.items).filter((x) =>
-            x._type === "Item" && this.itemHelper.isOfBaseclass(x._id, BaseClasses.WEAPON)
+        const weapons = Object.values(this.databaseServer.getTables().templates.items).filter(x =>
+            x._type === "Item" && this.itemHelper.isOfBaseclass(x._id, BaseClasses.WEAPON),
         );
         this.generatePool(weapons, "weapon");
 
@@ -200,14 +199,14 @@ export class BotEquipmentModPoolService
      */
     protected generateGearPool(): void
     {
-        const gear = Object.values(this.databaseServer.getTables().templates.items).filter((x) =>
+        const gear = Object.values(this.databaseServer.getTables().templates.items).filter(x =>
             x._type === "Item"
             && this.itemHelper.isOfBaseclasses(x._id, [
                 BaseClasses.ARMORED_EQUIPMENT,
                 BaseClasses.VEST,
                 BaseClasses.ARMOR,
                 BaseClasses.HEADWEAR,
-            ])
+            ]),
         );
         this.generatePool(gear, "gear");
 

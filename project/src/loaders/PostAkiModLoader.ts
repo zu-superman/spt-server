@@ -1,5 +1,4 @@
 import { DependencyContainer, inject, injectable } from "tsyringe";
-
 import { ModTypeCheck } from "@spt-aki/loaders/ModTypeCheck";
 import { PreAkiModLoader } from "@spt-aki/loaders/PreAkiModLoader";
 import { IPostAkiLoadMod } from "@spt-aki/models/external/IPostAkiLoadMod";

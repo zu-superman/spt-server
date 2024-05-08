@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { ClientLogCallbacks } from "@spt-aki/callbacks/ClientLogCallbacks";
 import { RouteAction, StaticRouter } from "@spt-aki/di/Router";
 import { INullResponseData } from "@spt-aki/models/eft/httpResponse/INullResponseData";

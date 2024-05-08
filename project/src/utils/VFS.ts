@@ -1,27 +1,28 @@
 import "reflect-metadata";
-import { inject, injectable } from "tsyringe";
 
 import crypto from "node:crypto";
 import fs from "node:fs";
 import path, { resolve } from "node:path";
 import { promisify } from "node:util";
-import { IAsyncQueue } from "@spt-aki/models/spt/utils/IAsyncQueue";
 import { writeFileSync } from "atomically";
 import lockfile from "proper-lockfile";
+import { inject, injectable } from "tsyringe";
+import { IAsyncQueue } from "@spt-aki/models/spt/utils/IAsyncQueue";
 
 @injectable()
 export class VFS
 {
     accessFilePromisify: (path: fs.PathLike, mode?: number) => Promise<void>;
     copyFilePromisify: (src: fs.PathLike, dst: fs.PathLike, flags?: number) => Promise<void>;
-    mkdirPromisify: (path: fs.PathLike, options: fs.MakeDirectoryOptions & { recursive: true; }) => Promise<string>;
+    mkdirPromisify: (path: fs.PathLike, options: fs.MakeDirectoryOptions & { recursive: true }) => Promise<string>;
     readFilePromisify: (path: fs.PathLike) => Promise<Buffer>;
     writeFilePromisify: (path: fs.PathLike, data: string, options?: any) => Promise<void>;
     readdirPromisify: (
         path: fs.PathLike,
-        options?: BufferEncoding | { encoding: BufferEncoding; withFileTypes?: false; },
+        options?: BufferEncoding | { encoding: BufferEncoding, withFileTypes?: false },
     ) => Promise<string[]>;
-    statPromisify: (path: fs.PathLike, options?: fs.StatOptions & { bigint?: false; }) => Promise<fs.Stats>;
+
+    statPromisify: (path: fs.PathLike, options?: fs.StatOptions & { bigint?: false }) => Promise<fs.Stats>;
     unlinkPromisify: (path: fs.PathLike) => Promise<void>;
     rmdirPromisify: (path: fs.PathLike) => Promise<void>;
     renamePromisify: (oldPath: fs.PathLike, newPath: fs.PathLike) => Promise<void>;
@@ -331,7 +332,7 @@ export class VFS
 
     public async minifyAllJsonInDirRecursive(filepath: string): Promise<void>
     {
-        const files = this.getFiles(filepath).filter((item) => this.getFileExtension(item) === "json");
+        const files = this.getFiles(filepath).filter(item => this.getFileExtension(item) === "json");
         for (const file of files)
         {
             const filePathAndName = path.join(filepath, file);
@@ -348,7 +349,7 @@ export class VFS
 
     public async minifyAllJsonInDirRecursiveAsync(filepath: string): Promise<void>
     {
-        const files = this.getFiles(filepath).filter((item) => this.getFileExtension(item) === "json");
+        const files = this.getFiles(filepath).filter(item => this.getFileExtension(item) === "json");
         for (const file of files)
         {
             const filePathAndName = path.join(filepath, file);

@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { LocationController } from "@spt-aki/controllers/LocationController";
 import { IEmptyRequestData } from "@spt-aki/models/eft/common/IEmptyRequestData";
 import { ILocationBase } from "@spt-aki/models/eft/common/ILocationBase";

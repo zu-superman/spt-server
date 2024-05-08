@@ -1,5 +1,4 @@
 import { inject, injectAll, injectable } from "tsyringe";
-
 import { SaveLoadRouter } from "@spt-aki/di/Router";
 import { IAkiProfile, Info } from "@spt-aki/models/eft/profile/IAkiProfile";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
@@ -219,7 +218,7 @@ export class SaveServer
             !this.configServer.getConfig<ICoreConfig>(ConfigTypes.CORE).features.compressProfile,
         );
         const fmd5 = this.hashUtil.generateMd5ForData(jsonProfile);
-        if (typeof (this.saveMd5[sessionID]) !== "string" || this.saveMd5[sessionID] !== fmd5)
+        if (typeof this.saveMd5[sessionID] !== "string" || this.saveMd5[sessionID] !== fmd5)
         {
             this.saveMd5[sessionID] = String(fmd5);
             // save profile to disk

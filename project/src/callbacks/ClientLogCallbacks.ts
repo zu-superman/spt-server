@@ -1,3 +1,4 @@
+import { inject, injectable } from "tsyringe";
 import { ClientLogController } from "@spt-aki/controllers/ClientLogController";
 import { ModLoadOrder } from "@spt-aki/loaders/ModLoadOrder";
 import { INullResponseData } from "@spt-aki/models/eft/httpResponse/INullResponseData";
@@ -7,7 +8,6 @@ import { IClientLogRequest } from "@spt-aki/models/spt/logging/IClientLogRequest
 import { ConfigServer } from "@spt-aki/servers/ConfigServer";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
 import { HttpResponseUtil } from "@spt-aki/utils/HttpResponseUtil";
-import { inject, injectable } from "tsyringe";
 
 /** Handle client logging related events */
 @injectable()

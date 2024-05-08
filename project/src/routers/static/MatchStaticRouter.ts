@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { MatchCallbacks } from "@spt-aki/callbacks/MatchCallbacks";
 import { RouteAction, StaticRouter } from "@spt-aki/di/Router";
 import { IEmptyRequestData } from "@spt-aki/models/eft/common/IEmptyRequestData";

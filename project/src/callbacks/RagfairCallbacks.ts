@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { RagfairController } from "@spt-aki/controllers/RagfairController";
 import { OnLoad } from "@spt-aki/di/OnLoad";
 import { OnUpdate } from "@spt-aki/di/OnUpdate";

@@ -2,8 +2,8 @@ import { IInventoryBaseActionRequestData } from "@spt-aki/models/eft/inventory/I
 
 export interface IInventoryTransferRequestData extends IInventoryBaseActionRequestData
 {
-    Action: "Transfer";
-    item: string;
-    with: string;
-    count: number;
+    Action: "Transfer"
+    item: string
+    with: string
+    count: number
 }

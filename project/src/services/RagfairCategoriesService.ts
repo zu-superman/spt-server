@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { PaymentHelper } from "@spt-aki/helpers/PaymentHelper";
 import { IRagfairOffer } from "@spt-aki/models/eft/ragfair/IRagfairOffer";
 import { ISearchRequestData, OfferOwnerType } from "@spt-aki/models/eft/ragfair/ISearchRequestData";

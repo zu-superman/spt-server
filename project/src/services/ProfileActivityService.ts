@@ -22,7 +22,7 @@ export class ProfileActivityService
         }
 
         // True if difference since last timestamp to now is below desired amount
-        return (currentTimestamp - storedActivityTimestamp) < (minutes * 60); // convert minutes to seconds to compare
+        return currentTimestamp - storedActivityTimestamp < minutes * 60; // convert minutes to seconds to compare
     }
 
     /**
@@ -44,7 +44,7 @@ export class ProfileActivityService
             }
 
             // Profile was active in last x minutes, add to return list
-            if ((currentTimestamp - lastActiveTimestamp) < (minutes * 60))
+            if (currentTimestamp - lastActiveTimestamp < minutes * 60)
             {
                 result.push(id);
             }

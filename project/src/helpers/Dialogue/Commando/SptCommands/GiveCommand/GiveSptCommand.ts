@@ -1,3 +1,5 @@
+import { stringSimilarity } from "string-similarity-js";
+import { inject, injectable } from "tsyringe";
 import { SavedCommand } from "@spt-aki/helpers/Dialogue/Commando/SptCommands/GiveCommand/SavedCommand";
 import { ISptCommand } from "@spt-aki/helpers/Dialogue/Commando/SptCommands/ISptCommand";
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
@@ -14,8 +16,6 @@ import { LocaleService } from "@spt-aki/services/LocaleService";
 import { MailSendService } from "@spt-aki/services/MailSendService";
 import { HashUtil } from "@spt-aki/utils/HashUtil";
 import { JsonUtil } from "@spt-aki/utils/JsonUtil";
-import { stringSimilarity } from "string-similarity-js";
-import { inject, injectable } from "tsyringe";
 
 @injectable()
 export class GiveSptCommand implements ISptCommand
@@ -119,7 +119,7 @@ export class GiveSptCommand implements ISptCommand
                 this.mailSendService.sendUserMessageToPlayer(
                     sessionId,
                     commandHandler,
-                    `Invalid quantity! Must be 1 or higher. Use \"help\" for more information.`,
+                    "Invalid quantity! Must be 1 or higher. Use \"help\" for more information.",
                 );
                 return request.dialogId;
             }
@@ -128,7 +128,7 @@ export class GiveSptCommand implements ISptCommand
             {
                 try
                 {
-                    locale = result[4] ? result[4] : (this.localeService.getDesiredGameLocale() ?? "en");
+                    locale = result[4] ? result[4] : this.localeService.getDesiredGameLocale() ?? "en";
                     if (!this.localeService.getServerSupportedLocales().includes(locale))
                     {
                         this.mailSendService.sendUserMessageToPlayer(
@@ -144,20 +144,23 @@ export class GiveSptCommand implements ISptCommand
                     this.mailSendService.sendUserMessageToPlayer(
                         sessionId,
                         commandHandler,
-                        `An error occurred while trying to use localized text. Locale will be defaulted to 'en'.`,
+                        "An error occurred while trying to use localized text. Locale will be defaulted to 'en'.",
                     );
                     this.logger.warning(e);
                     locale = "en";
                 }
 
-                const localizedGlobal = this.databaseServer.getTables().locales.global[locale] ??
-                    this.databaseServer.getTables().locales.global.en;
+                const localizedGlobal = this.databaseServer.getTables().locales.global[locale]
+                  ?? this.databaseServer.getTables().locales.global.en;
 
                 const closestItemsMatchedByName = this.itemHelper.getItems()
-                    .filter((i) => this.isItemAllowed(i))
-                    .map((i) => localizedGlobal[`${i?._id} Name`]?.toLowerCase() ?? i._props.Name)
-                    .filter((i) => i !== undefined && i !== "")
-                    .map(i => ({match: stringSimilarity(item.toLocaleLowerCase(), i.toLocaleLowerCase()), itemName: i}))
+                    .filter(i => this.isItemAllowed(i))
+                    .map(i => localizedGlobal[`${i?._id} Name`]?.toLowerCase() ?? i._props.Name)
+                    .filter(i => i !== undefined && i !== "")
+                    .map(i => ({ match: stringSimilarity(
+                        item.toLocaleLowerCase(),
+                        i.toLocaleLowerCase(),
+                    ), itemName: i }))
                     .sort((a1, a2) => a2.match - a1.match);
 
                 if (closestItemsMatchedByName[0].match >= GiveSptCommand.acceptableConfidence)
@@ -165,13 +168,16 @@ export class GiveSptCommand implements ISptCommand
                     item = closestItemsMatchedByName[0].itemName;
                 }
                 else
-                {    
+                {
                     let i = 1;
                     const slicedItems = closestItemsMatchedByName.slice(0, 10);
                     // max 10 item names and map them
-                    const itemList = slicedItems.map((match) => `${i++}. ${match.itemName} (conf: ${(match.match * 100).toFixed(2)})`)
+                    const itemList = slicedItems.map(match => `${i++}. ${match.itemName} (conf: ${(match.match * 100).toFixed(2)})`)
                         .join("\n");
-                    this.savedCommand.set(sessionId, new SavedCommand(quantity, slicedItems.map(i => i.itemName), locale));
+                    this.savedCommand.set(
+                        sessionId,
+                        new SavedCommand(quantity, slicedItems.map(i => i.itemName), locale),
+                    );
                     this.mailSendService.sendUserMessageToPlayer(
                         sessionId,
                         commandHandler,
@@ -186,8 +192,8 @@ export class GiveSptCommand implements ISptCommand
         // item is just the tplId.
         const tplId = isItemName
             ? this.itemHelper.getItems()
-                .filter((i) => this.isItemAllowed(i))
-                .find((i) => (this.databaseServer.getTables().locales.global[locale][`${i?._id} Name`]?.toLowerCase() ?? i._props.Name) === item)._id
+                .filter(i => this.isItemAllowed(i))
+                .find(i => (this.databaseServer.getTables().locales.global[locale][`${i?._id} Name`]?.toLowerCase() ?? i._props.Name) === item)._id
             : item;
 
         const checkedItem = this.itemHelper.getItem(tplId);
@@ -203,9 +209,12 @@ export class GiveSptCommand implements ISptCommand
 
         const itemsToSend: Item[] = [];
         if (
-            this.itemHelper.isOfBaseclass(checkedItem[1]._id, BaseClasses.WEAPON)
+            (this.itemHelper.isOfBaseclass(checkedItem[1]._id, BaseClasses.WEAPON)
             || this.itemHelper.isOfBaseclass(checkedItem[1]._id, BaseClasses.ARMOR)
-            || this.itemHelper.isOfBaseclass(checkedItem[1]._id, BaseClasses.VEST)
+            || this.itemHelper.isOfBaseclass(checkedItem[1]._id, BaseClasses.VEST))
+            && !["62178c4d4ecf221597654e3d", "6217726288ed9f0845317459", "624c0b3340357b5f566e8766"].includes(
+                checkedItem[1]._id,
+            ) // edge case for handheld flares
         )
         {
             const preset = this.presetHelper.getDefaultPreset(checkedItem[1]._id);
@@ -287,13 +296,13 @@ export class GiveSptCommand implements ISptCommand
      */
     protected isItemAllowed(templateItem: ITemplateItem): boolean
     {
-        return templateItem._type !== "Node" && 
-            !this.itemHelper.isQuestItem(templateItem._id) &&
-            !this.itemFilterService.isItemBlacklisted(templateItem._id) && 
-            (templateItem._props?.Prefab?.path ?? "") !== "" && 
-            !this.itemHelper.isOfBaseclass(templateItem._id, BaseClasses.HIDEOUT_AREA_CONTAINER) &&
-            !this.itemHelper.isOfBaseclass(templateItem._id, BaseClasses.LOOT_CONTAINER) &&
-            !this.itemHelper.isOfBaseclass(templateItem._id, BaseClasses.RANDOM_LOOT_CONTAINER) &&
-            !this.itemHelper.isOfBaseclass(templateItem._id, BaseClasses.MOB_CONTAINER);
+        return templateItem._type !== "Node"
+          && !this.itemHelper.isQuestItem(templateItem._id)
+          && !this.itemFilterService.isItemBlacklisted(templateItem._id)
+          && (templateItem._props?.Prefab?.path ?? "") !== ""
+          && !this.itemHelper.isOfBaseclass(templateItem._id, BaseClasses.HIDEOUT_AREA_CONTAINER)
+          && !this.itemHelper.isOfBaseclass(templateItem._id, BaseClasses.LOOT_CONTAINER)
+          && !this.itemHelper.isOfBaseclass(templateItem._id, BaseClasses.RANDOM_LOOT_CONTAINER)
+          && !this.itemHelper.isOfBaseclass(templateItem._id, BaseClasses.MOB_CONTAINER);
     }
 }

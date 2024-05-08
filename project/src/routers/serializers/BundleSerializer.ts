@@ -1,6 +1,5 @@
 import { IncomingMessage, ServerResponse } from "node:http";
 import { inject, injectable } from "tsyringe";
-
 import { Serializer } from "@spt-aki/di/Serializer";
 import { BundleLoader } from "@spt-aki/loaders/BundleLoader";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";

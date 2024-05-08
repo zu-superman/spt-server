@@ -39,7 +39,7 @@ export class MathUtil
      */
     public arrayProd(values: number[], factor: number): number[]
     {
-        return values.map((x) => x * factor);
+        return values.map(x => x * factor);
     }
 
     /**
@@ -49,7 +49,7 @@ export class MathUtil
      */
     public arrayAdd(values: number[], summand: number): number[]
     {
-        return values.map((x) => x + summand);
+        return values.map(x => x + summand);
     }
 
     /**

@@ -35,7 +35,7 @@ export enum SkillTypes
     NIGHT_OPS = "NightOps",
     SILENT_OPS = "SilentOps",
     LOCKPICKING = "Lockpicking",
-    /** Also called Weapon Maintenance*/
+    /** Also called Weapon Maintenance */
     WEAPON_TREATMENT = "WeaponTreatment",
     MAG_DRILLS = "MagDrills",
     FREE_TRADING = "Freetrading",

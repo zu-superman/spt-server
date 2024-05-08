@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { HttpServerHelper } from "@spt-aki/helpers/HttpServerHelper";
 import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
 import { PreAkiModLoader } from "@spt-aki/loaders/PreAkiModLoader";

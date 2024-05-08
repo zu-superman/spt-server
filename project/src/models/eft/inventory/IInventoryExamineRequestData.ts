@@ -3,7 +3,7 @@ import { IInventoryBaseActionRequestData } from "@spt-aki/models/eft/inventory/I
 
 export interface IInventoryExamineRequestData extends IInventoryBaseActionRequestData
 {
-    Action: "Examine";
-    item: string;
-    fromOwner: OwnerInfo;
+    Action: "Examine"
+    item: string
+    fromOwner: OwnerInfo
 }

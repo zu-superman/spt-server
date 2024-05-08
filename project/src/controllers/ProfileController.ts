@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { PlayerScavGenerator } from "@spt-aki/generators/PlayerScavGenerator";
 import { DialogueHelper } from "@spt-aki/helpers/DialogueHelper";
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
@@ -81,7 +80,7 @@ export class ProfileController
         const pmc = profile.characters.pmc;
 
         // make sure character completed creation
-        if (!(pmc?.Info?.Level))
+        if (!pmc?.Info?.Level)
         {
             return {
                 username: profile.info.username,
@@ -104,7 +103,7 @@ export class ProfileController
             side: pmc.Info.Side,
             currlvl: pmc.Info.Level,
             currexp: pmc.Info.Experience ?? 0,
-            prevexp: (currlvl === 0) ? 0 : this.profileHelper.getExperience(currlvl),
+            prevexp: currlvl === 0 ? 0 : this.profileHelper.getExperience(currlvl),
             nextlvl: nextlvl,
             maxlvl: maxlvl,
             akiData: profile.aki,
@@ -130,8 +129,10 @@ export class ProfileController
     public createProfile(info: IProfileCreateRequestData, sessionID: string): string
     {
         const account = this.saveServer.getProfile(sessionID).info;
-        const profile: ITemplateSide =
-            this.databaseServer.getTables().templates.profiles[account.edition][info.side.toLowerCase()];
+        const profile: ITemplateSide = this.databaseServer
+            .getTables()
+            .templates
+            .profiles[account.edition][info.side.toLowerCase()];
         const pmcData = profile.character;
 
         // Delete existing profile
@@ -151,7 +152,7 @@ export class ProfileController
         pmcData.Customization.Head = info.headId;
         pmcData.Health.UpdateTime = this.timeUtil.getTimestamp();
         pmcData.Quests = [];
-        pmcData.Hideout.Seed = this.timeUtil.getTimestamp() + (8 * 60 * 60 * 24 * 365); // 8 years in future why? who knows, we saw it in live
+        pmcData.Hideout.Seed = this.timeUtil.getTimestamp() + 8 * 60 * 60 * 24 * 365; // 8 years in future why? who knows, we saw it in live
         pmcData.RepeatableQuests = [];
         pmcData.CarExtractCounts = {};
         pmcData.CoopExtractCounts = {};
@@ -458,7 +459,7 @@ export class ProfileController
             skills: playerPmc.Skills,
             equipment: {
                 // Default inventory tpl
-                Id: playerPmc.Inventory.items.find((x) => x._tpl === "55d7217a4bdc2d86028b456d")._id,
+                Id: playerPmc.Inventory.items.find(x => x._tpl === "55d7217a4bdc2d86028b456d")._id,
                 Items: playerPmc.Inventory.items,
             },
             achievements: playerPmc.Achievements,

@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { HideoutCallbacks } from "@spt-aki/callbacks/HideoutCallbacks";
 import { InventoryCallbacks } from "@spt-aki/callbacks/InventoryCallbacks";
 import { HandledRoute, ItemEventRouterDefinition } from "@spt-aki/di/Router";

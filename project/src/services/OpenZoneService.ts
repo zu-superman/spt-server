@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { ILocationBase } from "@spt-aki/models/eft/common/ILocationBase";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { ILocationConfig } from "@spt-aki/models/spt/config/ILocationConfig";

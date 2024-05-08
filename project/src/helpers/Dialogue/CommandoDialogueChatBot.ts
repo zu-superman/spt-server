@@ -1,5 +1,4 @@
 import { inject, injectAll, injectable } from "tsyringe";
-
 import { AbstractDialogueChatBot } from "@spt-aki/helpers/Dialogue/AbstractDialogueChatBot";
 import { IChatCommand } from "@spt-aki/helpers/Dialogue/Commando/IChatCommand";
 import { IUserDialogInfo } from "@spt-aki/models/eft/profile/IAkiProfile";
@@ -11,7 +10,7 @@ import { MailSendService } from "@spt-aki/services/MailSendService";
 export class CommandoDialogueChatBot extends AbstractDialogueChatBot
 {
     public constructor(
-        @inject("WinstonLogger") logger: ILogger,
+    @inject("WinstonLogger") logger: ILogger,
         @inject("MailSendService") mailSendService: MailSendService,
         @injectAll("CommandoCommand") chatCommands: IChatCommand[],
     )
@@ -30,6 +29,6 @@ export class CommandoDialogueChatBot extends AbstractDialogueChatBot
 
     protected getUnrecognizedCommandMessage(): string
     {
-        return `I'm sorry soldier, I don't recognize the command you are trying to use! Type "help" to see available commands.`;
+        return "I'm sorry soldier, I don't recognize the command you are trying to use! Type \"help\" to see available commands.";
     }
 }

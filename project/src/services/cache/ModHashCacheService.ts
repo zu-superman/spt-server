@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { HashUtil } from "@spt-aki/utils/HashUtil";
 import { JsonUtil } from "@spt-aki/utils/JsonUtil";

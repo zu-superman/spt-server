@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { INotification, NotificationType } from "@spt-aki/models/eft/notifier/INotifier";
 import { Dialogue, IUserDialogInfo, Message } from "@spt-aki/models/eft/profile/IAkiProfile";
 import { MemberCategory } from "@spt-aki/models/enums/MemberCategory";
@@ -85,7 +84,7 @@ export class NotificationSendHelper
     protected getDialog(sessionId: string, messageType: MessageType, senderDetails: IUserDialogInfo): Dialogue
     {
         // Use trader id if sender is trader, otherwise use nickname
-        const key = (senderDetails.Info.MemberCategory === MemberCategory.TRADER)
+        const key = senderDetails.Info.MemberCategory === MemberCategory.TRADER
             ? senderDetails._id
             : senderDetails.Info.Nickname;
         const dialogueData = this.saveServer.getProfile(sessionId).dialogues;
@@ -102,7 +101,7 @@ export class NotificationSendHelper
                 pinned: false,
                 new: 0,
                 attachmentsNew: 0,
-                Users: (senderDetails.Info.MemberCategory === MemberCategory.TRADER) ? undefined : [senderDetails],
+                Users: senderDetails.Info.MemberCategory === MemberCategory.TRADER ? undefined : [senderDetails],
             };
 
             dialogueData[key] = dialogue;

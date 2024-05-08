@@ -1,5 +1,5 @@
 # Exclude these folders from linting
-node_modules
+node_modules/
 out/
 obj/
 build/
