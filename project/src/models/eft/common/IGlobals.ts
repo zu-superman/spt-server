@@ -1120,7 +1120,7 @@ export interface IBtrMapConfig
     pathsConfigurations: IBtrMapConfig[]
 }
 
-export interface IBtrMapConfig
+export interface IBtrPathConfig
 {
     id: string
     enterPoint: string
