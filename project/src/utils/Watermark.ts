@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { ICoreConfig } from "@spt-aki/models/spt/config/ICoreConfig";
 import { LogTextColor } from "@spt-aki/models/spt/logging/LogTextColor";
@@ -109,7 +108,7 @@ export class Watermark
     public getVersionTag(withEftVersion = false): string
     {
         const akiVersion = globalThis.G_AKIVERSION || this.akiConfig.akiVersion;
-        const versionTag = (globalThis.G_DEBUG_CONFIGURATION)
+        const versionTag = globalThis.G_DEBUG_CONFIGURATION
             ? `${akiVersion} - ${this.localisationService.getText("bleeding_edge_build")}`
             : akiVersion;
 
@@ -130,7 +129,7 @@ export class Watermark
     public getInGameVersionLabel(): string
     {
         const akiVersion = globalThis.G_AKIVERSION || this.akiConfig.akiVersion;
-        const versionTag = (globalThis.G_DEBUG_CONFIGURATION)
+        const versionTag = globalThis.G_DEBUG_CONFIGURATION
             ? `${akiVersion} - BLEEDINGEDGE ${globalThis.G_COMMIT?.slice(0, 6) ?? ""}`
             : `${akiVersion} - ${globalThis.G_COMMIT?.slice(0, 6) ?? ""}`;
 

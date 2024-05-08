@@ -1,3 +1,4 @@
+import { inject, injectable } from "tsyringe";
 import { BuildController } from "@spt-aki/controllers/BuildController";
 import { ISetMagazineRequest } from "@spt-aki/models/eft/builds/ISetMagazineRequest";
 import { IEmptyRequestData } from "@spt-aki/models/eft/common/IEmptyRequestData";
@@ -7,7 +8,6 @@ import { IPresetBuildActionRequestData } from "@spt-aki/models/eft/presetBuild/I
 import { IRemoveBuildRequestData } from "@spt-aki/models/eft/presetBuild/IRemoveBuildRequestData";
 import { IUserBuilds } from "@spt-aki/models/eft/profile/IAkiProfile";
 import { HttpResponseUtil } from "@spt-aki/utils/HttpResponseUtil";
-import { inject, injectable } from "tsyringe";
 
 @injectable()
 export class BuildsCallbacks

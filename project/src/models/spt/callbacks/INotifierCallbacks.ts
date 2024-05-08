@@ -11,13 +11,13 @@ export interface INotifierCallbacks
      * until we actually have something to send because otherwise we'd spam the client
      * and the client would abort the connection due to spam.
      */
-    sendNotification(sessionID: string, req: any, resp: any, data: any): void;
-    getNotifier(url: string, info: any, sessionID: string): IGetBodyResponseData<any[]>;
+    sendNotification(sessionID: string, req: any, resp: any, data: any): void
+    getNotifier(url: string, info: any, sessionID: string): IGetBodyResponseData<any[]>
     createNotifierChannel(
         url: string,
         info: IEmptyRequestData,
         sessionID: string,
-    ): IGetBodyResponseData<INotifierChannel>;
-    selectProfile(url: string, info: IUIDRequestData, sessionID: string): IGetBodyResponseData<any>;
-    notify(url: string, info: any, sessionID: string): string;
+    ): IGetBodyResponseData<INotifierChannel>
+    selectProfile(url: string, info: IUIDRequestData, sessionID: string): IGetBodyResponseData<any>
+    notify(url: string, info: any, sessionID: string): string
 }

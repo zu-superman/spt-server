@@ -7,16 +7,16 @@ import { INullResponseData } from "@spt-aki/models/eft/httpResponse/INullRespons
 
 export interface IGameCallbacks
 {
-    versionValidate(url: string, info: IVersionValidateRequestData, sessionID: string): INullResponseData;
-    gameStart(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<any>;
-    gameLogout(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<any>;
+    versionValidate(url: string, info: IVersionValidateRequestData, sessionID: string): INullResponseData
+    gameStart(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<any>
+    gameLogout(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<any>
     getGameConfig(
         url: string,
         info: IGameEmptyCrcRequestData,
         sessionID: string,
-    ): IGetBodyResponseData<IGameConfigResponse>;
-    getServer(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<any>;
-    validateGameVersion(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<any>;
-    gameKeepalive(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<any>;
-    getVersion(url: string, info: IEmptyRequestData, sessionID: string): string;
+    ): IGetBodyResponseData<IGameConfigResponse>
+    getServer(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<any>
+    validateGameVersion(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<any>
+    gameKeepalive(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<any>
+    getVersion(url: string, info: IEmptyRequestData, sessionID: string): string
 }

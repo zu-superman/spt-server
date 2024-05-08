@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { BossLocationSpawn, ILocationBase, Wave } from "@spt-aki/models/eft/common/ILocationBase";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { ILocationConfig } from "@spt-aki/models/spt/config/ILocationConfig";
@@ -76,7 +75,7 @@ export class CustomLocationWaveService
             const location: ILocationBase = this.databaseServer.getTables().locations[mapKey].base;
             for (const bossWave of bossWavesToApply[mapKey])
             {
-                if (location.BossLocationSpawn.find((x) => x.sptId === bossWave.sptId))
+                if (location.BossLocationSpawn.find(x => x.sptId === bossWave.sptId))
                 {
                     // Already exists, skip
                     continue;
@@ -93,7 +92,7 @@ export class CustomLocationWaveService
             const location: ILocationBase = this.databaseServer.getTables().locations[mapKey].base;
             for (const normalWave of normalWavesToApply[mapKey])
             {
-                if (location.waves.find((x) => x.sptId === normalWave.sptId))
+                if (location.waves.find(x => x.sptId === normalWave.sptId))
                 {
                     // Already exists, skip
                     continue;

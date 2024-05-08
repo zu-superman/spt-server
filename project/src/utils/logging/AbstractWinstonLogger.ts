@@ -4,7 +4,6 @@ import { promisify } from "node:util";
 import winston, { createLogger, format, transports } from "winston";
 // eslint-disable-next-line @typescript-eslint/naming-convention
 import DailyRotateFile from "winston-daily-rotate-file";
-
 import { Daum } from "@spt-aki/models/eft/itemEvent/IItemEventRouterRequest";
 import { LogBackgroundColor } from "@spt-aki/models/spt/logging/LogBackgroundColor";
 import { LogTextColor } from "@spt-aki/models/spt/logging/LogTextColor";
@@ -32,6 +31,7 @@ export abstract class AbstractWinstonLogger implements ILogger
             whiteBG: "whiteBG",
         },
     };
+
     protected logger: winston.Logger & SptLogger;
     protected writeFilePromisify: (path: fs.PathLike, data: string, options?: any) => Promise<void>;
 

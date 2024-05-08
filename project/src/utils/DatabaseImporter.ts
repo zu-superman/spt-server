@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { OnLoad } from "@spt-aki/di/OnLoad";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { IHttpConfig } from "@spt-aki/models/spt/config/IHttpConfig";
@@ -45,7 +44,7 @@ export class DatabaseImporter implements OnLoad
      */
     public getSptDataPath(): string
     {
-        return (globalThis.G_RELEASE_CONFIGURATION) ? "Aki_Data/Server/" : "./assets/";
+        return globalThis.G_RELEASE_CONFIGURATION ? "Aki_Data/Server/" : "./assets/";
     }
 
     public async onLoad(): Promise<void>
@@ -108,7 +107,7 @@ export class DatabaseImporter implements OnLoad
             (fileWithPath: string, data: string) => this.onReadValidate(fileWithPath, data),
         );
 
-        const validation = (this.valid === VaildationResult.FAILED || this.valid === VaildationResult.NOT_FOUND)
+        const validation = this.valid === VaildationResult.FAILED || this.valid === VaildationResult.NOT_FOUND
             ? "."
             : "";
         this.logger.info(`${this.localisationService.getText("importing_database_finish")}${validation}`);

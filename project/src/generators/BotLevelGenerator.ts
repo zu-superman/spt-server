@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { MinMax } from "@spt-aki/models/common/MinMax";
 import { IRandomisedBotLevelResult } from "@spt-aki/models/eft/bot/IRandomisedBotLevelResult";
 import { IExpTable } from "@spt-aki/models/eft/common/IGlobals";

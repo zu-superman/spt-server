@@ -14,10 +14,10 @@ export interface ILocationGenerator
         staticLootDist: Record<string, IStaticLootDetails>,
         staticAmmoDist: Record<string, IStaticAmmoDetails[]>,
         locationName: string,
-    ): IStaticContainerProps;
+    ): IStaticContainerProps
     generateDynamicLoot(
         dynamicLootDist: ILooseLoot,
         staticAmmoDist: Record<string, IStaticAmmoDetails[]>,
         locationName: string,
-    ): SpawnpointTemplate[];
+    ): SpawnpointTemplate[]
 }

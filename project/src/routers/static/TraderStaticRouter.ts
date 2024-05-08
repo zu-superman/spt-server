@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { TraderCallbacks } from "@spt-aki/callbacks/TraderCallbacks";
 import { RouteAction, StaticRouter } from "@spt-aki/di/Router";
 

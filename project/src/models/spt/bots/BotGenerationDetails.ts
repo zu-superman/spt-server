@@ -1,24 +1,24 @@
 export interface BotGenerationDetails
 {
     /** Should the bot be generated as a PMC */
-    isPmc: boolean;
+    isPmc: boolean
     /** assault/pmcBot etc */
-    role: string;
+    role: string
     /** Side of bot */
-    side: string;
+    side: string
     /** Active players current level */
-    playerLevel?: number;
-    playerName?: string;
+    playerLevel?: number
+    playerName?: string
     /** Delta of highest level of bot e.g. 50 means 50 levels above player */
-    botRelativeLevelDeltaMax: number;
+    botRelativeLevelDeltaMax: number
     /** Delta of lowest level of bot e.g. 50 means 50 levels below player */
-    botRelativeLevelDeltaMin: number;
+    botRelativeLevelDeltaMin: number
     /** How many to create and store */
-    botCountToGenerate: number;
+    botCountToGenerate: number
     /** Desired difficulty of the bot */
-    botDifficulty: string;
+    botDifficulty: string
     /** Will the generated bot be a player scav */
-    isPlayerScav: boolean;
-    eventRole?: string;
-    allPmcsHaveSameNameAsPlayer?: boolean;
+    isPlayerScav: boolean
+    eventRole?: string
+    allPmcsHaveSameNameAsPlayer?: boolean
 }

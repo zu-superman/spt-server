@@ -3,7 +3,6 @@ import fs from "node:fs";
 import path from "node:path";
 import { inject, injectable } from "tsyringe";
 import ts from "typescript";
-
 import type { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { ModHashCacheService } from "@spt-aki/services/cache/ModHashCacheService";
 import { VFS } from "@spt-aki/utils/VFS";
@@ -86,7 +85,8 @@ export class ModCompilerService
     protected async compile(fileNames: string[], options: ts.CompilerOptions): Promise<void>
     {
         // C:/snapshot/project || /snapshot/project
-        const baseDir: string = __dirname.replace(/\\/g, "/").split("/").slice(0, 3).join("/");
+        const baseDir: string = __dirname.replace(/\\/g, "/").split("/").slice(0, 3)
+            .join("/");
 
         for (const filePath of fileNames)
         {
@@ -140,7 +140,7 @@ export class ModCompilerService
      */
     protected areFilesReady(fileNames: string[]): boolean
     {
-        return fileNames.filter((x) => !this.vfs.exists(x.replace(".ts", ".js"))).length === 0;
+        return fileNames.filter(x => !this.vfs.exists(x.replace(".ts", ".js"))).length === 0;
     }
 
     /**
@@ -150,6 +150,6 @@ export class ModCompilerService
      */
     protected delay(ms: number): Promise<unknown>
     {
-        return new Promise((resolve) => setTimeout(resolve, ms));
+        return new Promise(resolve => setTimeout(resolve, ms));
     }
 }

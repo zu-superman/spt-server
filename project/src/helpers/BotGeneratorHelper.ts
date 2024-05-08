@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { ApplicationContext } from "@spt-aki/context/ApplicationContext";
 import { ContextVariableType } from "@spt-aki/context/ContextVariableType";
 import { ContainerHelper } from "@spt-aki/helpers/ContainerHelper";
@@ -52,7 +51,7 @@ export class BotGeneratorHelper
      * @param botRole Used by weapons to randomize the durability values. Null for non-equipped items
      * @returns Item Upd object with extra properties
      */
-    public generateExtraPropertiesForItem(itemTemplate: ITemplateItem, botRole?: string): { upd?: Upd; }
+    public generateExtraPropertiesForItem(itemTemplate: ITemplateItem, botRole?: string): { upd?: Upd }
     {
         // Get raid settings, if no raid, default to day
         const raidSettings = this.applicationContext.getLatestValue(ContextVariableType.RAID_CONFIGURATION)?.getValue<
@@ -123,7 +122,7 @@ export class BotGeneratorHelper
                 ? this.getBotEquipmentSettingFromConfig(botRole, "lightIsActiveNightChancePercent", 50)
                 : this.getBotEquipmentSettingFromConfig(botRole, "lightIsActiveDayChancePercent", 25);
             itemProperties.Light = {
-                IsActive: (this.randomUtil.getChance100(lightLaserActiveChance)),
+                IsActive: this.randomUtil.getChance100(lightLaserActiveChance),
                 SelectedMode: 0,
             };
         }
@@ -136,7 +135,7 @@ export class BotGeneratorHelper
                 50,
             );
             itemProperties.Light = {
-                IsActive: (this.randomUtil.getChance100(lightLaserActiveChance)),
+                IsActive: this.randomUtil.getChance100(lightLaserActiveChance),
                 SelectedMode: 0,
             };
         }
@@ -147,7 +146,7 @@ export class BotGeneratorHelper
             const nvgActiveChance = raidIsNight
                 ? this.getBotEquipmentSettingFromConfig(botRole, "nvgIsActiveChanceNightPercent", 90)
                 : this.getBotEquipmentSettingFromConfig(botRole, "nvgIsActiveChanceDayPercent", 15);
-            itemProperties.Togglable = { On: (this.randomUtil.getChance100(nvgActiveChance)) };
+            itemProperties.Togglable = { On: this.randomUtil.getChance100(nvgActiveChance) };
         }
 
         // Togglable face shield
@@ -159,7 +158,7 @@ export class BotGeneratorHelper
                 "faceShieldIsActiveChancePercent",
                 75,
             );
-            itemProperties.Togglable = { On: (this.randomUtil.getChance100(faceShieldActiveChance)) };
+            itemProperties.Togglable = { On: this.randomUtil.getChance100(faceShieldActiveChance) };
         }
 
         return Object.keys(itemProperties).length ? { upd: itemProperties } : {};
@@ -288,7 +287,7 @@ export class BotGeneratorHelper
     ): IChooseRandomCompatibleModResult
     {
         // TODO: Can probably be optimized to cache itemTemplates as items are added to inventory
-        const equippedItemsDb = itemsEquipped.map((item) => this.databaseServer.getTables().templates.items[item._tpl]);
+        const equippedItemsDb = itemsEquipped.map(item => this.databaseServer.getTables().templates.items[item._tpl]);
         const itemToEquipDb = this.itemHelper.getItem(tplToCheck);
         const itemToEquip = itemToEquipDb[1];
 
@@ -319,7 +318,7 @@ export class BotGeneratorHelper
         }
 
         // Check if any of the current weapon mod templates have the incoming item defined as incompatible
-        const blockingItem = equippedItemsDb.find((x) => x._props.ConflictingItems?.includes(tplToCheck));
+        const blockingItem = equippedItemsDb.find(x => x._props.ConflictingItems?.includes(tplToCheck));
         if (blockingItem)
         {
             return {
@@ -332,7 +331,7 @@ export class BotGeneratorHelper
         }
 
         // Check inverse to above, if the incoming item has any existing mods in its conflicting items array
-        const blockingModItem = itemsEquipped.find((item) => itemToEquip._props.ConflictingItems?.includes(item._tpl));
+        const blockingModItem = itemsEquipped.find(item => itemToEquip._props.ConflictingItems?.includes(item._tpl));
         if (blockingModItem)
         {
             return {
@@ -366,7 +365,7 @@ export class BotGeneratorHelper
         }
 
         // TODO: Can probably be optimized to cache itemTemplates as items are added to inventory
-        const equippedItemsDb = itemsEquipped.map((i) => this.databaseServer.getTables().templates.items[i._tpl]);
+        const equippedItemsDb = itemsEquipped.map(i => this.databaseServer.getTables().templates.items[i._tpl]);
         const itemToEquipDb = this.itemHelper.getItem(tplToCheck);
         const itemToEquip = itemToEquipDb[1];
 
@@ -396,7 +395,7 @@ export class BotGeneratorHelper
         }
 
         // Does an equipped item have a property that blocks the desired item - check for prop "BlocksX" .e.g BlocksEarpiece / BlocksFaceCover
-        let blockingItem = equippedItemsDb.find((x) => x._props[`Blocks${equipmentSlot}`]);
+        let blockingItem = equippedItemsDb.find(x => x._props[`Blocks${equipmentSlot}`]);
         if (blockingItem)
         {
             // this.logger.warning(`1 incompatibility found between - ${itemToEquip[1]._name} and ${blockingItem._name} - ${equipmentSlot}`);
@@ -410,7 +409,7 @@ export class BotGeneratorHelper
         }
 
         // Check if any of the current inventory templates have the incoming item defined as incompatible
-        blockingItem = equippedItemsDb.find((x) => x._props.ConflictingItems?.includes(tplToCheck));
+        blockingItem = equippedItemsDb.find(x => x._props.ConflictingItems?.includes(tplToCheck));
         if (blockingItem)
         {
             // this.logger.warning(`2 incompatibility found between - ${itemToEquip[1]._name} and ${blockingItem._props.Name} - ${equipmentSlot}`);
@@ -426,7 +425,7 @@ export class BotGeneratorHelper
         // Does item being checked get blocked/block existing item
         if (itemToEquip._props.BlocksHeadwear)
         {
-            const existingHeadwear = itemsEquipped.find((x) => x.slotId === "Headwear");
+            const existingHeadwear = itemsEquipped.find(x => x.slotId === "Headwear");
             if (existingHeadwear)
             {
                 return {
@@ -442,7 +441,7 @@ export class BotGeneratorHelper
         // Does item being checked get blocked/block existing item
         if (itemToEquip._props.BlocksFaceCover)
         {
-            const existingFaceCover = itemsEquipped.find((item) => item.slotId === "FaceCover");
+            const existingFaceCover = itemsEquipped.find(item => item.slotId === "FaceCover");
             if (existingFaceCover)
             {
                 return {
@@ -458,7 +457,7 @@ export class BotGeneratorHelper
         // Does item being checked get blocked/block existing item
         if (itemToEquip._props.BlocksEarpiece)
         {
-            const existingEarpiece = itemsEquipped.find((item) => item.slotId === "Earpiece");
+            const existingEarpiece = itemsEquipped.find(item => item.slotId === "Earpiece");
             if (existingEarpiece)
             {
                 return {
@@ -474,7 +473,7 @@ export class BotGeneratorHelper
         // Does item being checked get blocked/block existing item
         if (itemToEquip._props.BlocksArmorVest)
         {
-            const existingArmorVest = itemsEquipped.find((item) => item.slotId === "ArmorVest");
+            const existingArmorVest = itemsEquipped.find(item => item.slotId === "ArmorVest");
             if (existingArmorVest)
             {
                 return {
@@ -488,7 +487,7 @@ export class BotGeneratorHelper
         }
 
         // Check if the incoming item has any inventory items defined as incompatible
-        const blockingInventoryItem = itemsEquipped.find((x) => itemToEquip._props.ConflictingItems?.includes(x._tpl));
+        const blockingInventoryItem = itemsEquipped.find(x => itemToEquip._props.ConflictingItems?.includes(x._tpl));
         if (blockingInventoryItem)
         {
             // this.logger.warning(`3 incompatibility found between - ${itemToEquip[1]._name} and ${blockingInventoryItem._tpl} - ${equipmentSlot}`)
@@ -510,9 +509,9 @@ export class BotGeneratorHelper
      */
     public getBotEquipmentRole(botRole: string): string
     {
-        return ([this.pmcConfig.usecType.toLowerCase(), this.pmcConfig.bearType.toLowerCase()].includes(
-                botRole.toLowerCase(),
-            ))
+        return [this.pmcConfig.usecType.toLowerCase(), this.pmcConfig.bearType.toLowerCase()].includes(
+            botRole.toLowerCase(),
+        )
             ? "pmc"
             : botRole;
     }
@@ -544,7 +543,7 @@ export class BotGeneratorHelper
                 continue;
             }
             // Get container to put item into
-            const container = inventory.items.find((item) => item.slotId === equipmentSlotId);
+            const container = inventory.items.find(item => item.slotId === equipmentSlotId);
             if (!container)
             {
                 missingContainerCount++;
@@ -590,8 +589,8 @@ export class BotGeneratorHelper
             {
                 // Grid is empty, skip or item size is bigger than grid
                 if (
-                    (slotGrid._props.cellsH === 0 || slotGrid._props.cellsV === 0)
-                    || (itemSize[0] * itemSize[1] > slotGrid._props.cellsV * slotGrid._props.cellsH)
+                    slotGrid._props.cellsH === 0 || slotGrid._props.cellsV === 0
+                    || itemSize[0] * itemSize[1] > slotGrid._props.cellsV * slotGrid._props.cellsH
                 )
                 {
                     continue;
@@ -605,12 +604,12 @@ export class BotGeneratorHelper
                 }
 
                 // Get all root items in found container
-                const existingContainerItems = inventory.items.filter((item) =>
-                    item.parentId === container._id && item.slotId === slotGrid._name
+                const existingContainerItems = inventory.items.filter(item =>
+                    item.parentId === container._id && item.slotId === slotGrid._name,
                 );
 
                 // Get root items in container we can iterate over to find out what space is free
-                const containerItemsToCheck = existingContainerItems.filter((x) => x.slotId === slotGrid._name);
+                const containerItemsToCheck = existingContainerItems.filter(x => x.slotId === slotGrid._name);
                 for (const item of containerItemsToCheck)
                 {
                     // Look for children on items, insert into array if found
@@ -636,7 +635,7 @@ export class BotGeneratorHelper
                 // Open slot found, add item to inventory
                 if (findSlotResult.success)
                 {
-                    const parentItem = itemWithChildren.find((i) => i._id === rootItemId);
+                    const parentItem = itemWithChildren.find(i => i._id === rootItemId);
 
                     // Set items parent to container id
                     parentItem.parentId = container._id;
@@ -666,7 +665,7 @@ export class BotGeneratorHelper
             if (containersIdFull)
             {
                 // if the item was a one by one, we know it must be full. Or if the maps cant find a slot for a one by one
-                if ((itemSize[0] === 1 && itemSize[1] === 1))
+                if (itemSize[0] === 1 && itemSize[1] === 1)
                 {
                     containersIdFull.add(equipmentSlotId);
                 }

@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { DataCallbacks } from "@spt-aki/callbacks/DataCallbacks";
 import { DynamicRouter, RouteAction } from "@spt-aki/di/Router";
 

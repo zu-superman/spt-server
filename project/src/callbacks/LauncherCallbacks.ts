@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { LauncherController } from "@spt-aki/controllers/LauncherController";
 import { IEmptyRequestData } from "@spt-aki/models/eft/common/IEmptyRequestData";
 import { IChangeRequestData } from "@spt-aki/models/eft/launcher/IChangeRequestData";
@@ -29,13 +28,13 @@ export class LauncherCallbacks
     public login(url: string, info: ILoginRequestData, sessionID: string): string
     {
         const output = this.launcherController.login(info);
-        return (!output) ? "FAILED" : output;
+        return !output ? "FAILED" : output;
     }
 
     public register(url: string, info: IRegisterData, sessionID: string): "FAILED" | "OK"
     {
         const output = this.launcherController.register(info);
-        return (!output) ? "FAILED" : "OK";
+        return !output ? "FAILED" : "OK";
     }
 
     public get(url: string, info: ILoginRequestData, sessionID: string): string
@@ -47,19 +46,19 @@ export class LauncherCallbacks
     public changeUsername(url: string, info: IChangeRequestData, sessionID: string): "FAILED" | "OK"
     {
         const output = this.launcherController.changeUsername(info);
-        return (!output) ? "FAILED" : "OK";
+        return !output ? "FAILED" : "OK";
     }
 
     public changePassword(url: string, info: IChangeRequestData, sessionID: string): "FAILED" | "OK"
     {
         const output = this.launcherController.changePassword(info);
-        return (!output) ? "FAILED" : "OK";
+        return !output ? "FAILED" : "OK";
     }
 
     public wipe(url: string, info: IRegisterData, sessionID: string): "FAILED" | "OK"
     {
         const output = this.launcherController.wipe(info);
-        return (!output) ? "FAILED" : "OK";
+        return !output ? "FAILED" : "OK";
     }
 
     public getServerVersion(): string

@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { InraidController } from "@spt-aki/controllers/InraidController";
 import { IEmptyRequestData } from "@spt-aki/models/eft/common/IEmptyRequestData";
 import { INullResponseData } from "@spt-aki/models/eft/httpResponse/INullResponseData";

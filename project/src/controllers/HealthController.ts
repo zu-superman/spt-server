@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { HealthHelper } from "@spt-aki/helpers/HealthHelper";
 import { InventoryHelper } from "@spt-aki/helpers/InventoryHelper";
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
@@ -66,7 +65,7 @@ export class HealthController
         const output = this.eventOutputHolder.getOutput(sessionID);
 
         // Update medkit used (hpresource)
-        const healingItemToUse = pmcData.Inventory.items.find((item) => item._id === request.item);
+        const healingItemToUse = pmcData.Inventory.items.find(item => item._id === request.item);
         if (!healingItemToUse)
         {
             const errorMessage = this.localisationService.getText(
@@ -114,7 +113,7 @@ export class HealthController
         const output = this.eventOutputHolder.getOutput(sessionID);
         let resourceLeft = 0;
 
-        const itemToConsume = pmcData.Inventory.items.find((x) => x._id === request.item);
+        const itemToConsume = pmcData.Inventory.items.find(x => x._id === request.item);
         if (!itemToConsume)
         {
             // Item not found, very bad

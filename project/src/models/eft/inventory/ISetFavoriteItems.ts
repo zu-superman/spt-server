@@ -2,7 +2,7 @@ import { IInventoryBaseActionRequestData } from "./IInventoryBaseActionRequestDa
 
 export interface ISetFavoriteItems extends IInventoryBaseActionRequestData
 {
-    Action: "SetFavoriteItems";
-    items: any[];
-    timestamp: number;
+    Action: "SetFavoriteItems"
+    items: any[]
+    timestamp: number
 }

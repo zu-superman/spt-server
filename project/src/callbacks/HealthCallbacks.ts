@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { HealthController } from "@spt-aki/controllers/HealthController";
 import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";

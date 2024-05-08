@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { HideoutController } from "@spt-aki/controllers/HideoutController";
 import { RagfairController } from "@spt-aki/controllers/RagfairController";
 import { IEmptyRequestData } from "@spt-aki/models/eft/common/IEmptyRequestData";

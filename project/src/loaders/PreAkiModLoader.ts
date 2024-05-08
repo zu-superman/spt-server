@@ -1,9 +1,8 @@
 import { execSync } from "node:child_process";
 import os from "node:os";
 import path from "node:path";
-import semver from "semver";
+import { maxSatisfying, valid, validRange, satisfies } from "semver";
 import { DependencyContainer, inject, injectable } from "tsyringe";
-
 import { ModLoadOrder } from "@spt-aki/loaders/ModLoadOrder";
 import { ModTypeCheck } from "@spt-aki/loaders/ModTypeCheck";
 import { ModDetails } from "@spt-aki/models/eft/profile/IAkiProfile";
@@ -94,10 +93,10 @@ export class PreAkiModLoader implements IModLoader
         for (const modName in modsGroupedByName)
         {
             const modDatas = modsGroupedByName[modName];
-            const modVersions = modDatas.map((x) => x.version);
-            const highestVersion = semver.maxSatisfying(modVersions, "*");
+            const modVersions = modDatas.map(x => x.version);
+            const highestVersion = maxSatisfying(modVersions, "*");
 
-            const chosenVersion = modDatas.find((x) => x.name === modName && x.version === highestVersion);
+            const chosenVersion = modDatas.find(x => x.name === modName && x.version === highestVersion);
             if (!chosenVersion)
             {
                 continue;
@@ -268,7 +267,7 @@ export class PreAkiModLoader implements IModLoader
         for (const mod of modPackageData.values())
         {
             const name = `${mod.author}-${mod.name}`;
-            grouppedMods.set(name, [...(grouppedMods.get(name) ?? []), mod]);
+            grouppedMods.set(name, [...grouppedMods.get(name) ?? [], mod]);
 
             // if there's more than one entry for a given mod it means there's at least 2 mods with the same author and name trying to load.
             if (grouppedMods.get(name).length > 1 && !this.skippedMods.has(name))
@@ -341,7 +340,7 @@ export class PreAkiModLoader implements IModLoader
         }
 
         // Error and prevent loading if akiVersion property is not a valid semver string
-        if (!(semver.valid(mod.akiVersion) || semver.validRange(mod.akiVersion)))
+        if (!(valid(mod.akiVersion) || validRange(mod.akiVersion)))
         {
             this.logger.error(this.localisationService.getText("modloader-invalid_akiversion_field", modName));
 
@@ -349,7 +348,7 @@ export class PreAkiModLoader implements IModLoader
         }
 
         // Warning and allow loading if semver is not satisfied
-        if (!semver.satisfies(akiVersion, mod.akiVersion))
+        if (!satisfies(akiVersion, mod.akiVersion))
         {
             this.logger.warning(this.localisationService.getText("modloader-outdated_akiversion_field", modName));
 
@@ -584,7 +583,7 @@ export class PreAkiModLoader implements IModLoader
                 return false;
             }
 
-            if (!semver.satisfies(loadedMods.get(modDependency).version, requiredVersion))
+            if (!satisfies(loadedMods.get(modDependency).version, requiredVersion))
             {
                 this.logger.error(
                     this.localisationService.getText("modloader-outdated_dependency", {
@@ -642,7 +641,7 @@ export class PreAkiModLoader implements IModLoader
         const modIsCalledSrc = modName.toLowerCase() === "src";
         const modIsCalledDb = modName.toLowerCase() === "db";
         const hasBepinExFolderStructure = this.vfs.exists(`${modPath}/plugins`);
-        const containsDll = this.vfs.getFiles(`${modPath}`).find((x) => x.includes(".dll"));
+        const containsDll = this.vfs.getFiles(`${modPath}`).find(x => x.includes(".dll"));
 
         if (modIsCalledSrc || modIsCalledDb || modIsCalledUser)
         {
@@ -683,7 +682,7 @@ export class PreAkiModLoader implements IModLoader
             }
         }
 
-        if (!semver.valid(config.version))
+        if (!valid(config.version))
         {
             this.logger.error(this.localisationService.getText("modloader-invalid_version_property", modName));
             issue = true;

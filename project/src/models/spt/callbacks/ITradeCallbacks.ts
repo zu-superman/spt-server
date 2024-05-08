@@ -5,10 +5,10 @@ import { IProcessRagfairTradeRequestData } from "@spt-aki/models/eft/trade/IProc
 
 export interface ITradeCallbacks
 {
-    processTrade(pmcData: IPmcData, body: IProcessBaseTradeRequestData, sessionID: string): IItemEventRouterResponse;
+    processTrade(pmcData: IPmcData, body: IProcessBaseTradeRequestData, sessionID: string): IItemEventRouterResponse
     processRagfairTrade(
         pmcData: IPmcData,
         body: IProcessRagfairTradeRequestData,
         sessionID: string,
-    ): IItemEventRouterResponse;
+    ): IItemEventRouterResponse
 }

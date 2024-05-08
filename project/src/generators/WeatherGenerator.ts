@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { ApplicationContext } from "@spt-aki/context/ApplicationContext";
 import { ContextVariableType } from "@spt-aki/context/ContextVariableType";
 import { WeightedRandomHelper } from "@spt-aki/helpers/WeightedRandomHelper";
@@ -72,10 +71,10 @@ export class WeatherGenerator
     public getInRaidTime(): Date
     {
         // tarkov time = (real time * 7 % 24 hr) + 3 hour
-        const russiaOffset = (this.timeUtil.getHoursAsSeconds(3)) * 1000;
+        const russiaOffset = this.timeUtil.getHoursAsSeconds(3) * 1000;
         return new Date(
-            (russiaOffset + (new Date().getTime() * this.weatherConfig.acceleration))
-                % (this.timeUtil.getHoursAsSeconds(24) * 1000),
+            (russiaOffset + new Date().getTime() * this.weatherConfig.acceleration)
+            % (this.timeUtil.getHoursAsSeconds(24) * 1000),
         );
     }
 
@@ -103,7 +102,7 @@ export class WeatherGenerator
             wind_direction: this.getWeightedWindDirection(),
             wind_gustiness: this.getRandomFloat("windGustiness"),
             rain: rain,
-            rain_intensity: (rain > 1) ? this.getRandomFloat("rainIntensity") : 0,
+            rain_intensity: rain > 1 ? this.getRandomFloat("rainIntensity") : 0,
             fog: this.getWeightedFog(),
             temp: this.getRandomFloat("temp"),
             pressure: this.getRandomFloat("pressure"),

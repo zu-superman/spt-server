@@ -1,8 +1,7 @@
 import { inject, injectable } from "tsyringe";
-
+import { Queue } from "@spt-aki/utils/collections/queue/Queue";
 import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 import { VFS } from "@spt-aki/utils/VFS";
-import { Queue } from "@spt-aki/utils/collections/queue/Queue";
 
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/brace-style */
@@ -56,7 +55,7 @@ export class ImporterUtil
 
         // set all loadRecursive to be executed asynchronously
         const resEntries = Object.entries(result);
-        const resResolved = await Promise.all(resEntries.map((ent) => ent[1]));
+        const resResolved = await Promise.all(resEntries.map(ent => ent[1]));
         for (let resIdx = 0; resIdx < resResolved.length; resIdx++)
         {
             resEntries[resIdx][1] = resResolved[resIdx];
@@ -124,14 +123,14 @@ export class ImporterUtil
         const files = this.vfs.getFiles(filepath);
         const directories = this.vfs.getDirs(filepath);
 
-        directoriesToRead.enqueueAll(directories.map((d) => `${filepath}${d}`));
-        filesToProcess.enqueueAll(files.map((f) => new VisitNode(filepath, f)));
+        directoriesToRead.enqueueAll(directories.map(d => `${filepath}${d}`));
+        filesToProcess.enqueueAll(files.map(f => new VisitNode(filepath, f)));
 
         while (directoriesToRead.length !== 0)
         {
             const directory = directoriesToRead.dequeue();
-            filesToProcess.enqueueAll(this.vfs.getFiles(directory).map((f) => new VisitNode(`${directory}/`, f)));
-            directoriesToRead.enqueueAll(this.vfs.getDirs(directory).map((d) => `${directory}/${d}`));
+            filesToProcess.enqueueAll(this.vfs.getFiles(directory).map(f => new VisitNode(`${directory}/`, f)));
+            directoriesToRead.enqueueAll(this.vfs.getDirs(directory).map(d => `${directory}/${d}`));
         }
 
         while (filesToProcess.length !== 0)
@@ -155,7 +154,7 @@ export class ImporterUtil
             }
         }
 
-        await Promise.all(promises).catch((e) => console.error(e));
+        await Promise.all(promises).catch(e => console.error(e));
 
         return result;
     }
@@ -169,7 +168,7 @@ export class ImporterUtil
         {
             const property = propertiesToVisit[i];
 
-            if (i === (propertiesToVisit.length - 1))
+            if (i === propertiesToVisit.length - 1)
             {
                 temp[property] = fileDeserialized;
             }

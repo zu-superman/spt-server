@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { Money } from "@spt-aki/models/enums/Money";
 import { IInventoryConfig } from "@spt-aki/models/spt/config/IInventoryConfig";
@@ -22,8 +21,8 @@ export class PaymentHelper
      */
     public isMoneyTpl(tpl: string): boolean
     {
-        return [Money.DOLLARS, Money.EUROS, Money.ROUBLES, ...this.inventoryConfig.customMoneyTpls].some((element) =>
-            element === tpl
+        return [Money.DOLLARS, Money.EUROS, Money.ROUBLES, ...this.inventoryConfig.customMoneyTpls].some(element =>
+            element === tpl,
         );
     }
 

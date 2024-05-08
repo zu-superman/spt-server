@@ -29,9 +29,9 @@ export class Router
     {
         if (partialMatch)
         {
-            return this.getInternalHandledRoutes().filter((r) => r.dynamic).some((r) => url.includes(r.route));
+            return this.getInternalHandledRoutes().filter(r => r.dynamic).some(r => url.includes(r.route));
         }
-        return this.getInternalHandledRoutes().filter((r) => !r.dynamic).some((r) => r.route === url);
+        return this.getInternalHandledRoutes().filter(r => !r.dynamic).some(r => r.route === url);
     }
 }
 
@@ -44,12 +44,12 @@ export class StaticRouter extends Router
 
     public handleStatic(url: string, info: any, sessionID: string, output: string): any
     {
-        return this.routes.find((route) => route.url === url).action(url, info, sessionID, output);
+        return this.routes.find(route => route.url === url).action(url, info, sessionID, output);
     }
 
     public override getHandledRoutes(): HandledRoute[]
     {
-        return this.routes.map((route) => new HandledRoute(route.url, false));
+        return this.routes.map(route => new HandledRoute(route.url, false));
     }
 }
 
@@ -62,12 +62,12 @@ export class DynamicRouter extends Router
 
     public handleDynamic(url: string, info: any, sessionID: string, output: string): any
     {
-        return this.routes.find((r) => url.includes(r.url)).action(url, info, sessionID, output);
+        return this.routes.find(r => url.includes(r.url)).action(url, info, sessionID, output);
     }
 
     public override getHandledRoutes(): HandledRoute[]
     {
-        return this.routes.map((route) => new HandledRoute(route.url, true));
+        return this.routes.map(route => new HandledRoute(route.url, true));
     }
 }
 

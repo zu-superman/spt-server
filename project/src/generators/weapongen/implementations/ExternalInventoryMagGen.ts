@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { IInventoryMagGen } from "@spt-aki/generators/weapongen/IInventoryMagGen";
 import { InventoryMagGen } from "@spt-aki/generators/weapongen/InventoryMagGen";
 import { BotGeneratorHelper } from "@spt-aki/helpers/BotGeneratorHelper";
@@ -154,15 +153,15 @@ export class ExternalInventoryMagGen implements IInventoryMagGen
     ): ITemplateItem
     {
         // The mag Slot data for the weapon
-        const magSlot = this.itemHelper.getItem(weaponTpl)[1]._props.Slots.find((x) => x._name === "mod_magazine");
+        const magSlot = this.itemHelper.getItem(weaponTpl)[1]._props.Slots.find(x => x._name === "mod_magazine");
         if (!magSlot)
         {
             return null;
         }
 
         // All possible mags that fit into the weapon excluding blacklisted
-        const magazinePool = magSlot._props.filters[0].Filter.filter((x) => !magazineBlacklist.includes(x)).map((x) =>
-            this.itemHelper.getItem(x)[1]
+        const magazinePool = magSlot._props.filters[0].Filter.filter(x => !magazineBlacklist.includes(x)).map(x =>
+            this.itemHelper.getItem(x)[1],
         );
         if (!magazinePool)
         {
@@ -170,7 +169,7 @@ export class ExternalInventoryMagGen implements IInventoryMagGen
         }
 
         // Non-internal magazines that fit into the weapon
-        const externalMagazineOnlyPool = magazinePool.filter((x) => x._props.ReloadMagType !== "InternalMagazine");
+        const externalMagazineOnlyPool = magazinePool.filter(x => x._props.ReloadMagType !== "InternalMagazine");
         if (!externalMagazineOnlyPool || externalMagazineOnlyPool?.length === 0)
         {
             return null;

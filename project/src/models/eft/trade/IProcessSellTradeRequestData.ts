@@ -2,16 +2,16 @@ import { IProcessBaseTradeRequestData } from "@spt-aki/models/eft/trade/IProcess
 
 export interface IProcessSellTradeRequestData extends IProcessBaseTradeRequestData
 {
-    Action: "sell_to_trader";
-    type: string;
-    tid: string;
-    price: number;
-    items: Item[];
+    Action: "sell_to_trader"
+    type: string
+    tid: string
+    price: number
+    items: Item[]
 }
 
 export interface Item
 {
-    id: string;
-    count: number;
-    scheme_id: number;
+    id: string
+    count: number
+    scheme_id: number
 }

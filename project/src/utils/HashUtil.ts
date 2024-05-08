@@ -2,7 +2,6 @@ import crypto from "node:crypto";
 import fs from "node:fs";
 import crc32 from "buffer-crc32";
 import { inject, injectable } from "tsyringe";
-
 import { TimeUtil } from "@spt-aki/utils/TimeUtil";
 
 @injectable()
@@ -56,6 +55,6 @@ export class HashUtil
     {
         const min = 1000000;
         const max = 1999999;
-        return (max > min) ? Math.floor(Math.random() * (max - min + 1) + min) : min;
+        return max > min ? Math.floor(Math.random() * (max - min + 1) + min) : min;
     }
 }

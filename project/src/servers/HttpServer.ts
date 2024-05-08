@@ -1,6 +1,5 @@
 import http, { IncomingMessage, ServerResponse, Server } from "node:http";
 import { inject, injectAll, injectable } from "tsyringe";
-
 import { ApplicationContext } from "@spt-aki/context/ApplicationContext";
 import { ContextVariableType } from "@spt-aki/context/ContextVariableType";
 import { HttpServerHelper } from "@spt-aki/helpers/HttpServerHelper";
@@ -9,8 +8,8 @@ import { IHttpConfig } from "@spt-aki/models/spt/config/IHttpConfig";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt-aki/servers/ConfigServer";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
-import { WebSocketServer } from "@spt-aki/servers/WebSocketServer";
 import { IHttpListener } from "@spt-aki/servers/http/IHttpListener";
+import { WebSocketServer } from "@spt-aki/servers/WebSocketServer";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
 
 @injectable()
@@ -122,8 +121,8 @@ export class HttpServer
         }
 
         return remoteAddress.startsWith("127.0.0")
-            || remoteAddress.startsWith("192.168.")
-            || remoteAddress.startsWith("localhost");
+          || remoteAddress.startsWith("192.168.")
+          || remoteAddress.startsWith("localhost");
     }
 
     protected getCookies(req: IncomingMessage): Record<string, string>

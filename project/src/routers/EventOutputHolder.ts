@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
 import { IHideoutImprovement, Productive, TraderInfo } from "@spt-aki/models/eft/common/tables/IBotBase";
@@ -12,7 +11,7 @@ import { TimeUtil } from "@spt-aki/utils/TimeUtil";
 export class EventOutputHolder
 {
     /** What has client been informed of this game session */
-    protected clientActiveSessionStorage: Record<string, { clientInformed: boolean; }> = {};
+    protected clientActiveSessionStorage: Record<string, { clientInformed: boolean }> = {};
 
     constructor(
         @inject("JsonUtil") protected jsonUtil: JsonUtil,
@@ -184,7 +183,7 @@ export class EventOutputHolder
         }
 
         // Return null if there's no crafts to send to client to match live behaviour
-        return (Object.keys(productions).length > 0) ? productions : null;
+        return Object.keys(productions).length > 0 ? productions : null;
     }
 
     /**

@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { IAsyncQueue } from "@spt-aki/models/spt/utils/IAsyncQueue";
 import { AbstractWinstonLogger } from "@spt-aki/utils/logging/AbstractWinstonLogger";
 

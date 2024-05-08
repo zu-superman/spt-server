@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { HandbookHelper } from "@spt-aki/helpers/HandbookHelper";
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { TraderAssortHelper } from "@spt-aki/helpers/TraderAssortHelper";
@@ -157,7 +156,7 @@ export class RagfairHelper
         for (let item of items)
         {
             item = this.itemHelper.fixItemStackCount(item);
-            const isChild = items.find((it) => it._id === item.parentId);
+            const isChild = items.find(it => it._id === item.parentId);
 
             if (!isChild)
             {

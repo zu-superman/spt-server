@@ -1,19 +1,19 @@
 export interface IBotLootCache
 {
-    backpackLoot: Record<string, number>;
-    pocketLoot: Record<string, number>;
-    vestLoot: Record<string, number>;
-    secureLoot: Record<string, number>;
-    combinedPoolLoot: Record<string, number>;
+    backpackLoot: Record<string, number>
+    pocketLoot: Record<string, number>
+    vestLoot: Record<string, number>
+    secureLoot: Record<string, number>
+    combinedPoolLoot: Record<string, number>
 
-    specialItems: Record<string, number>;
-    healingItems: Record<string, number>;
-    drugItems: Record<string, number>;
-    foodItems: Record<string, number>;
-    drinkItems: Record<string, number>;
-    currencyItems: Record<string, number>;
-    stimItems: Record<string, number>;
-    grenadeItems: Record<string, number>;
+    specialItems: Record<string, number>
+    healingItems: Record<string, number>
+    drugItems: Record<string, number>
+    foodItems: Record<string, number>
+    drinkItems: Record<string, number>
+    currencyItems: Record<string, number>
+    stimItems: Record<string, number>
+    grenadeItems: Record<string, number>
 }
 
 export enum LootCacheType

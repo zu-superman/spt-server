@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { WeatherCallbacks } from "@spt-aki/callbacks/WeatherCallbacks";
 import { RouteAction, StaticRouter } from "@spt-aki/di/Router";
 

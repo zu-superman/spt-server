@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { HttpServerHelper } from "@spt-aki/helpers/HttpServerHelper";
 import { NotifierHelper } from "@spt-aki/helpers/NotifierHelper";
 import { INotifierChannel } from "@spt-aki/models/eft/notifier/INotifier";

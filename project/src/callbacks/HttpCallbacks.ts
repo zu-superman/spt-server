@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { OnLoad } from "@spt-aki/di/OnLoad";
 import { HttpServer } from "@spt-aki/servers/HttpServer";
 

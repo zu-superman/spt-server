@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { BotInventoryGenerator } from "@spt-aki/generators/BotInventoryGenerator";
 import { BotLevelGenerator } from "@spt-aki/generators/BotLevelGenerator";
 import { BotDifficultyHelper } from "@spt-aki/helpers/BotDifficultyHelper";
@@ -111,7 +110,7 @@ export class BotGenerator
 
         // Get raw json data for bot (Cloned)
         const botJsonTemplateClone = this.jsonUtil.clone(
-            this.botHelper.getBotTemplate((botGenerationDetails.isPmc) ? bot.Info.Side : botGenerationDetails.role),
+            this.botHelper.getBotTemplate(botGenerationDetails.isPmc ? bot.Info.Side : botGenerationDetails.role),
         );
 
         bot = this.generateBot(sessionId, bot, botJsonTemplateClone, botGenerationDetails);
@@ -446,7 +445,7 @@ export class BotGenerator
             }
 
             return skillToAdd;
-        }).filter((x) => x !== null);
+        }).filter(x => x !== null);
     }
 
     /**
@@ -546,7 +545,7 @@ export class BotGenerator
                 Nickname: bot.Info.Nickname,
                 Side: bot.Info.Side,
                 Level: bot.Info.Level,
-                Time: (new Date().toISOString()),
+                Time: new Date().toISOString(),
                 Status: "Killed by ",
                 KillerAccountId: "Unknown",
                 KillerProfileId: "Unknown",
@@ -557,7 +556,7 @@ export class BotGenerator
 
         const inventoryItem: Item = {
             _id: this.hashUtil.generate(),
-            _tpl: ((bot.Info.Side === "Usec") ? BaseClasses.DOG_TAG_USEC : BaseClasses.DOG_TAG_BEAR),
+            _tpl: bot.Info.Side === "Usec" ? BaseClasses.DOG_TAG_USEC : BaseClasses.DOG_TAG_BEAR,
             parentId: bot.Inventory.equipment,
             slotId: "Dogtag",
             location: undefined,

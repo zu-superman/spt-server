@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { BundleLoader } from "@spt-aki/loaders/BundleLoader";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { IHttpConfig } from "@spt-aki/models/spt/config/IHttpConfig";

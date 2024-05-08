@@ -26,7 +26,7 @@ export abstract class AbstractDialogueChatBot implements IDialogueChatBot
 
     public registerChatCommand(chatCommand: IChatCommand | ICommandoCommand): void
     {
-        if (this.chatCommands.some((cc) => cc.getCommandPrefix() === chatCommand.getCommandPrefix()))
+        if (this.chatCommands.some(cc => cc.getCommandPrefix() === chatCommand.getCommandPrefix()))
         {
             throw new Error(
                 `The command "${chatCommand.getCommandPrefix()}" attempting to be registered already exists.`,
@@ -49,7 +49,7 @@ export abstract class AbstractDialogueChatBot implements IDialogueChatBot
 
         const splitCommand = request.text.split(" ");
 
-        const commandos = this.chatCommands.filter((c) => c.getCommandPrefix() === splitCommand[0]);
+        const commandos = this.chatCommands.filter(c => c.getCommandPrefix() === splitCommand[0]);
         if (commandos[0]?.getCommands().has(splitCommand[1]))
         {
             return commandos[0].handle(splitCommand[1], this.getChatBot(), sessionId, request);

@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { RagfairOfferGenerator } from "@spt-aki/generators/RagfairOfferGenerator";
 import { HandbookHelper } from "@spt-aki/helpers/HandbookHelper";
 import { InventoryHelper } from "@spt-aki/helpers/InventoryHelper";
@@ -160,7 +159,7 @@ export class RagfairController
     public getOfferById(sessionId: string, request: IGetRagfairOfferByIdRequest): IRagfairOffer
     {
         const offers = this.ragfairOfferService.getOffers();
-        const offerToReturn = offers.find((x) => x.intId === request.id);
+        const offerToReturn = offers.find(x => x.intId === request.id);
 
         return offerToReturn;
     }
@@ -208,14 +207,18 @@ export class RagfairController
     ): Record<string, number>
     {
         // Linked/required search categories
-        const playerHasFleaUnlocked =
-            pmcProfile.Info.Level >= this.databaseServer.getTables().globals.config.RagFair.minUserLevel;
+        const playerHasFleaUnlocked = pmcProfile.Info.Level >= this.databaseServer
+            .getTables()
+            .globals
+            .config
+            .RagFair
+            .minUserLevel;
         let offerPool = [];
         if (this.isLinkedSearch(searchRequest) || this.isRequiredSearch(searchRequest))
         {
             offerPool = offers;
         }
-        else if ((!(this.isLinkedSearch(searchRequest) || this.isRequiredSearch(searchRequest))))
+        else if (!(this.isLinkedSearch(searchRequest) || this.isRequiredSearch(searchRequest)))
         {
             // Get all categories
             offerPool = this.ragfairOfferService.getOffers();
@@ -260,7 +263,7 @@ export class RagfairController
 
         const traderAssorts = this.traderHelper.getTraderAssortsByTraderId(offer.user.id).items;
         const assortId = offer.items[0]._id;
-        const assortData = traderAssorts.find((x) => x._id === assortId);
+        const assortData = traderAssorts.find(x => x._id === assortId);
 
         // Use value stored in profile, otherwise use value directly from in-memory trader assort data
         offer.buyRestrictionCurrent = fullProfile.traderPurchases[offer.user.id][assortId]
@@ -279,7 +282,7 @@ export class RagfairController
         const firstItem = offer.items[0];
         const traderAssorts = this.traderHelper.getTraderAssortsByTraderId(offer.user.id).items;
 
-        const assortPurchased = traderAssorts.find((x) => x._id === offer.items[0]._id);
+        const assortPurchased = traderAssorts.find(x => x._id === offer.items[0]._id);
         if (!assortPurchased)
         {
             this.logger.warning(
@@ -357,7 +360,7 @@ export class RagfairController
             const avg = offers.reduce((sum, offer) =>
             {
                 // Exclude barter items, they tend to have outrageous equivalent prices
-                if (offer.requirements.some((req) => !this.paymentHelper.isMoneyTpl(req._tpl)))
+                if (offer.requirements.some(req => !this.paymentHelper.isMoneyTpl(req._tpl)))
                 {
                     return sum;
                 }
@@ -456,15 +459,15 @@ export class RagfairController
         // Multiply single item price by stack count and quality
         averageOfferPrice *= rootItem.upd.StackObjectsCount * qualityMultiplier;
 
-        const itemStackCount = (offerRequest.sellInOnePiece) ? 1 : rootItem.upd.StackObjectsCount;
+        const itemStackCount = offerRequest.sellInOnePiece ? 1 : rootItem.upd.StackObjectsCount;
 
         // Get averaged price of a single item being listed
-        const averageSingleItemPrice = (offerRequest.sellInOnePiece)
+        const averageSingleItemPrice = offerRequest.sellInOnePiece
             ? averageOfferPrice / rootItem.upd.StackObjectsCount // Packs are a single offer made of many items
             : averageOfferPrice / itemStackCount;
 
         // Get averaged price of listing
-        const averagePlayerListedPriceInRub = (offerRequest.sellInOnePiece)
+        const averagePlayerListedPriceInRub = offerRequest.sellInOnePiece
             ? playerListedPriceInRub / rootItem.upd.StackObjectsCount
             : playerListedPriceInRub;
 
@@ -540,7 +543,7 @@ export class RagfairController
                 offerRequest.sellInOnePiece,
             );
 
-        this.logger.debug(`Offer tax to charge: ${tax}, pulled from client: ${(!!storedClientTaxValue)}`);
+        this.logger.debug(`Offer tax to charge: ${tax}, pulled from client: ${!!storedClientTaxValue}`);
 
         // cleanup of cache now we've used the tax value from it
         this.ragfairTaxService.clearStoredOfferTaxById(offerRequest.items[0]);
@@ -602,8 +605,8 @@ export class RagfairController
             }
             else
             {
-                requirementsPriceInRub += this.ragfairPriceService.getDynamicPriceForItem(requestedItemTpl)
-                    * item.count;
+                requirementsPriceInRub += this.ragfairPriceService
+                    .getDynamicPriceForItem(requestedItemTpl) * item.count;
             }
         }
 
@@ -619,7 +622,7 @@ export class RagfairController
     protected getItemsToListOnFleaFromInventory(
         pmcData: IPmcData,
         itemIdsFromFleaOfferRequest: string[],
-    ): { items: Item[] | null; errorMessage: string | null; }
+    ): { items: Item[] | null, errorMessage: string | null }
     {
         const itemsToReturn = [];
         let errorMessage: string | null = null;
@@ -627,7 +630,7 @@ export class RagfairController
         // Count how many items are being sold and multiply the requested amount accordingly
         for (const itemId of itemIdsFromFleaOfferRequest)
         {
-            let item = pmcData.Inventory.items.find((i) => i._id === itemId);
+            let item = pmcData.Inventory.items.find(i => i._id === itemId);
             if (!item)
             {
                 errorMessage = this.localisationService.getText("ragfair-unable_to_find_item_in_inventory", {
@@ -663,7 +666,7 @@ export class RagfairController
         const loyalLevel = 1;
         const formattedItems: Item[] = items.map((item) =>
         {
-            const isChild = items.find((it) => it._id === item.parentId);
+            const isChild = items.find(it => it._id === item.parentId);
 
             return {
                 _id: item._id,
@@ -724,7 +727,7 @@ export class RagfairController
             pmcData.RagfairInfo.offers = [];
         }
 
-        const playerOfferIndex = playerProfileOffers.findIndex((offer) => offer._id === removeRequest.offerId);
+        const playerOfferIndex = playerProfileOffers.findIndex(offer => offer._id === removeRequest.offerId);
         if (playerOfferIndex === -1)
         {
             this.logger.error(
@@ -761,7 +764,7 @@ export class RagfairController
 
         const pmcData = this.saveServer.getProfile(sessionId).characters.pmc;
         const playerOffers = pmcData.RagfairInfo.offers;
-        const playerOfferIndex = playerOffers.findIndex((offer) => offer._id === extendRequest.offerId);
+        const playerOfferIndex = playerOffers.findIndex(offer => offer._id === extendRequest.offerId);
         const secondsToAdd = extendRequest.renewalTime * TimeUtil.ONE_HOUR_AS_SECONDS;
 
         if (playerOfferIndex === -1)

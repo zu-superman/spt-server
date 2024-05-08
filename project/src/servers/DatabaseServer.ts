@@ -1,5 +1,4 @@
 import { injectable } from "tsyringe";
-
 import { IDatabaseTables } from "@spt-aki/models/spt/server/IDatabaseTables";
 
 @injectable()

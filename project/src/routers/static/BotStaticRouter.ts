@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { BotCallbacks } from "@spt-aki/callbacks/BotCallbacks";
 import { RouteAction, StaticRouter } from "@spt-aki/di/Router";
 

@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { IInventoryMagGen } from "@spt-aki/generators/weapongen/IInventoryMagGen";
 import { InventoryMagGen } from "@spt-aki/generators/weapongen/InventoryMagGen";
 import { BotWeaponGeneratorHelper } from "@spt-aki/helpers/BotWeaponGeneratorHelper";

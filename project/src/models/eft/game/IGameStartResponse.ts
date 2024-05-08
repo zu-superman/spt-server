@@ -1,4 +1,4 @@
 export interface IGameStartResponse
 {
-    utc_time: number;
+    utc_time: number
 }

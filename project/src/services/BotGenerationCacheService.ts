@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { BotHelper } from "@spt-aki/helpers/BotHelper";
 import { IBotBase } from "@spt-aki/models/eft/common/tables/IBotBase";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
@@ -82,7 +81,7 @@ export class BotGenerationCacheService
      */
     public getUsedBot(profileId: string): IBotBase
     {
-        return this.activeBotsInRaid.find((x) => x._id === profileId);
+        return this.activeBotsInRaid.find(x => x._id === profileId);
     }
 
     /**

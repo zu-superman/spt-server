@@ -1,3 +1,4 @@
+import { inject, injectable } from "tsyringe";
 import { SavedCommand } from "@spt-aki/helpers/Dialogue/Commando/SptCommands/GiveCommand/SavedCommand";
 import { ISptCommand } from "@spt-aki/helpers/Dialogue/Commando/SptCommands/ISptCommand";
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
@@ -13,7 +14,6 @@ import { LocaleService } from "@spt-aki/services/LocaleService";
 import { MailSendService } from "@spt-aki/services/MailSendService";
 import { HashUtil } from "@spt-aki/utils/HashUtil";
 import { JsonUtil } from "@spt-aki/utils/JsonUtil";
-import { inject, injectable } from "tsyringe";
 
 @injectable()
 export class ProfileSptCommand implements ISptCommand
@@ -23,8 +23,8 @@ export class ProfileSptCommand implements ISptCommand
      * spt profile level 20
      * spt profile skill metabolism 10
      */
-    private static commandRegex =
-        /^spt profile (?<command>level|skill)((?<=.*skill) (?<skill>[\w]+)){0,1} (?<quantity>(?!0+)[0-9]+)$/;
+    private static commandRegex
+        = /^spt profile (?<command>level|skill)((?<=.*skill) (?<skill>[\w]+)){0,1} (?<quantity>(?!0+)[0-9]+)$/;
 
     protected savedCommand: SavedCommand;
 
@@ -87,8 +87,8 @@ export class ProfileSptCommand implements ISptCommand
                 break;
             case "skill":
             {
-                const enumSkill = Object.values(SkillTypes).find((t) =>
-                    t.toLocaleLowerCase() === skill.toLocaleLowerCase()
+                const enumSkill = Object.values(SkillTypes).find(t =>
+                    t.toLocaleLowerCase() === skill.toLocaleLowerCase(),
                 );
 
                 if (enumSkill === undefined)

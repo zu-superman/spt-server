@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { CustomizationController } from "@spt-aki/controllers/CustomizationController";
 import { IEmptyRequestData } from "@spt-aki/models/eft/common/IEmptyRequestData";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";

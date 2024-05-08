@@ -1,5 +1,4 @@
 import { DependencyContainer, inject, injectable } from "tsyringe";
-
 import { OnLoad } from "@spt-aki/di/OnLoad";
 import { BundleLoader } from "@spt-aki/loaders/BundleLoader";
 import { ModTypeCheck } from "@spt-aki/loaders/ModTypeCheck";

@@ -2,14 +2,14 @@ import { IInventoryBaseActionRequestData } from "@spt-aki/models/eft/inventory/I
 
 export interface IOpenRandomLootContainerRequestData extends IInventoryBaseActionRequestData
 {
-    Action: "OpenRandomLootContainer";
+    Action: "OpenRandomLootContainer"
     /** Container item id being opened */
-    item: string;
-    to: To[];
+    item: string
+    to: To[]
 }
 
 export interface To
 {
     /** Player character (pmc/scav) id items will be sent to */
-    id: string;
+    id: string
 }

@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { IPackageJsonData } from "@spt-aki/models/spt/mod/IPackageJsonData";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";

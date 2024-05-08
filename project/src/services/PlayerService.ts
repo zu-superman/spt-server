@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";

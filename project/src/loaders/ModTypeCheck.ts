@@ -1,5 +1,4 @@
 import { injectable } from "tsyringe";
-
 import { IPostAkiLoadMod } from "@spt-aki/models/external/IPostAkiLoadMod";
 import { IPostAkiLoadModAsync } from "@spt-aki/models/external/IPostAkiLoadModAsync";
 import { IPostDBLoadMod } from "@spt-aki/models/external/IPostDBLoadMod";
@@ -71,10 +70,10 @@ export class ModTypeCheck
     public isPostV3Compatible(mod: any): boolean
     {
         return this.isPreAkiLoad(mod)
-            || this.isPostAkiLoad(mod)
-            || this.isPostDBAkiLoad(mod)
-            || this.isPreAkiLoadAsync(mod)
-            || this.isPostAkiLoadAsync(mod)
-            || this.isPostDBAkiLoadAsync(mod);
+          || this.isPostAkiLoad(mod)
+          || this.isPostDBAkiLoad(mod)
+          || this.isPreAkiLoadAsync(mod)
+          || this.isPostAkiLoadAsync(mod)
+          || this.isPostDBAkiLoadAsync(mod);
     }
 }

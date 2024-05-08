@@ -5,9 +5,9 @@ import { PlayerRaidEndState } from "@spt-aki/models/enums/PlayerRaidEndState";
 
 export interface ISaveProgressRequestData
 {
-    exit: PlayerRaidEndState; // survived" | "killed" | "left" | "runner" | "missinginaction
-    profile: IPostRaidPmcData;
-    isPlayerScav: boolean;
-    health: ISyncHealthRequestData;
-    insurance: IInsuredItemsData[];
+    exit: PlayerRaidEndState // survived" | "killed" | "left" | "runner" | "missinginaction
+    profile: IPostRaidPmcData
+    isPlayerScav: boolean
+    health: ISyncHealthRequestData
+    insurance: IInsuredItemsData[]
 }

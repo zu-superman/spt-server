@@ -1,10 +1,10 @@
+import { inject, injectable } from "tsyringe";
 import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
 import { QuestStatus } from "@spt-aki/models/enums/QuestStatus";
 import { ITraderServiceModel } from "@spt-aki/models/spt/services/ITraderServiceModel";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { JsonUtil } from "@spt-aki/utils/JsonUtil";
-import { inject, injectable } from "tsyringe";
 
 @injectable()
 export class TraderServicesService
@@ -46,7 +46,7 @@ export class TraderServicesService
             {
                 for (const questId of service.requirements.completedQuests)
                 {
-                    const quest = pmcData.Quests.find((x) => x.qid === questId);
+                    const quest = pmcData.Quests.find(x => x.qid === questId);
                     if (!quest || quest.status !== QuestStatus.Success)
                     {
                         servicesToDelete.push(service.serviceType);
@@ -57,7 +57,7 @@ export class TraderServicesService
         }
 
         // Clear any unavailable services from the list
-        traderServices = traderServices.filter((x) => !servicesToDelete.includes(x.serviceType));
+        traderServices = traderServices.filter(x => !servicesToDelete.includes(x.serviceType));
 
         return traderServices;
     }

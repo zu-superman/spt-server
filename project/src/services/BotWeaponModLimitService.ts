@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { Item } from "@spt-aki/models/eft/common/tables/IItem";
 import { ITemplateItem } from "@spt-aki/models/eft/common/tables/ITemplateItem";
@@ -91,12 +90,12 @@ export class BotWeaponModLimitService
         {
             // If weapon already has a longer ranged scope on it, allow ncstar to be spawned
             if (
-                weapon.some((x) =>
+                weapon.some(x =>
                     this.itemHelper.isOfBaseclasses(x._tpl, [
                         BaseClasses.ASSAULT_SCOPE,
                         BaseClasses.OPTIC_SCOPE,
                         BaseClasses.SPECIAL_SCOPE,
-                    ])
+                    ]),
                 )
             )
             {
@@ -122,7 +121,7 @@ export class BotWeaponModLimitService
         // Mod is a mount that can hold only scopes and limit is reached (dont want to add empty mounts if limit is reached)
         if (
             this.itemHelper.isOfBaseclass(modTemplate._id, BaseClasses.MOUNT)
-            && modTemplate._props.Slots.some((x) => x._name === "mod_scope")
+            && modTemplate._props.Slots.some(x => x._name === "mod_scope")
             && modTemplate._props.Slots.length === 1
             && modLimits.scope.count >= modLimits.scopeMax
         )
@@ -145,7 +144,7 @@ export class BotWeaponModLimitService
         // Mod is a mount that can hold only flashlights ad limit is reached (dont want to add empty mounts if limit is reached)
         if (
             this.itemHelper.isOfBaseclass(modTemplate._id, BaseClasses.MOUNT)
-            && modTemplate._props.Slots.some((x) => x._name === "mod_flashlight")
+            && modTemplate._props.Slots.some(x => x._name === "mod_flashlight")
             && modTemplate._props.Slots.length === 1
             && modLimits.scope.count >= modLimits.scopeMax
         )
@@ -166,7 +165,7 @@ export class BotWeaponModLimitService
      */
     protected weaponModLimitReached(
         modTpl: string,
-        currentCount: { count: number; },
+        currentCount: { count: number },
         maxLimit: number,
         botRole: string,
     ): boolean

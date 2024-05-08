@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { IBotBase } from "@spt-aki/models/eft/common/tables/IBotBase";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";

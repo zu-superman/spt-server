@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { ITemplateItem, Props } from "@spt-aki/models/eft/common/tables/ITemplateItem";
 import { BaseClasses } from "@spt-aki/models/enums/BaseClasses";
@@ -142,7 +141,7 @@ export class CustomItemService
      */
     protected getOrGenerateIdForItem(newId: string): string
     {
-        return (newId === "") ? this.hashUtil.generate() : newId;
+        return newId === "" ? this.hashUtil.generate() : newId;
     }
 
     /**

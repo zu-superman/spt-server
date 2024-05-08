@@ -4,7 +4,7 @@ import { INoteActionData } from "@spt-aki/models/eft/notes/INoteActionData";
 
 export interface INoteCallbacks
 {
-    addNote(pmcData: IPmcData, body: INoteActionData, sessionID: string): IItemEventRouterResponse;
-    editNote(pmcData: IPmcData, body: INoteActionData, sessionID: string): IItemEventRouterResponse;
-    deleteNote(pmcData: IPmcData, body: INoteActionData, sessionID: string): IItemEventRouterResponse;
+    addNote(pmcData: IPmcData, body: INoteActionData, sessionID: string): IItemEventRouterResponse
+    editNote(pmcData: IPmcData, body: INoteActionData, sessionID: string): IItemEventRouterResponse
+    deleteNote(pmcData: IPmcData, body: INoteActionData, sessionID: string): IItemEventRouterResponse
 }

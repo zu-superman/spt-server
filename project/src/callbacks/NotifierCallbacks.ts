@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { NotifierController } from "@spt-aki/controllers/NotifierController";
 import { HttpServerHelper } from "@spt-aki/helpers/HttpServerHelper";
 import { IEmptyRequestData } from "@spt-aki/models/eft/common/IEmptyRequestData";
@@ -38,8 +37,8 @@ export class NotifierCallbacks
          *  be sent to client as NEWLINE separated strings... yup.
          */
         this.notifierController.notifyAsync(tmpSessionID).then((messages: any) =>
-            messages.map((message: any) => this.jsonUtil.serialize(message)).join("\n")
-        ).then((text) => this.httpServerHelper.sendTextJson(resp, text));
+            messages.map((message: any) => this.jsonUtil.serialize(message)).join("\n"),
+        ).then(text => this.httpServerHelper.sendTextJson(resp, text));
     }
 
     /** Handle push/notifier/get */

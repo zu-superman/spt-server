@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { MatchController } from "@spt-aki/controllers/MatchController";
 import { IEmptyRequestData } from "@spt-aki/models/eft/common/IEmptyRequestData";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
@@ -112,6 +111,7 @@ export class MatchCallbacks
     {
         return this.httpResponse.getBody(true);
     }
+
     /** Handle client/match/group/transfer */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public transferGroup(url: string, info: ITransferGroupRequest, sessionID: string): IGetBodyResponseData<boolean>

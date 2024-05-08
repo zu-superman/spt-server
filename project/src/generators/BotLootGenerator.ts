@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { BotWeaponGenerator } from "@spt-aki/generators/BotWeaponGenerator";
 import { BotGeneratorHelper } from "@spt-aki/helpers/BotGeneratorHelper";
 import { BotHelper } from "@spt-aki/helpers/BotHelper";
@@ -292,7 +291,7 @@ export class BotLootGenerator
         // Secure
 
         // only add if not a pmc or is pmc and flag is true
-        if (!isPmc || (isPmc && this.pmcConfig.addSecureContainerLootFromBotConfig))
+        if (!isPmc || isPmc && this.pmcConfig.addSecureContainerLootFromBotConfig)
         {
             this.addLootFromPool(
                 this.botLootCacheService.getLootFromCache(botRole, isPmc, LootCacheType.SECURE, botJsonTemplate),
@@ -317,12 +316,12 @@ export class BotLootGenerator
     {
         const result = [EquipmentSlots.POCKETS];
 
-        if (botInventory.items.find((item) => item.slotId === EquipmentSlots.TACTICAL_VEST))
+        if (botInventory.items.find(item => item.slotId === EquipmentSlots.TACTICAL_VEST))
         {
             result.push(EquipmentSlots.TACTICAL_VEST);
         }
 
-        if (botInventory.items.find((item) => item.slotId === EquipmentSlots.BACKPACK))
+        if (botInventory.items.find(item => item.slotId === EquipmentSlots.BACKPACK))
         {
             result.push(EquipmentSlots.BACKPACK);
         }
@@ -476,7 +475,7 @@ export class BotLootGenerator
                                 );
                             }
 
-                            itemWithChildrenToAdd.push(...itemsToAdd.flatMap((moneyStack) => moneyStack));
+                            itemWithChildrenToAdd.push(...itemsToAdd.flatMap(moneyStack => moneyStack));
                         }
                     }
                 }

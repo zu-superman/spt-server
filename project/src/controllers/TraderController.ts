@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { FenceBaseAssortGenerator } from "@spt-aki/generators/FenceBaseAssortGenerator";
 import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
 import { TraderAssortHelper } from "@spt-aki/helpers/TraderAssortHelper";
@@ -30,8 +29,7 @@ export class TraderController
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
         @inject("TraderHelper") protected traderHelper: TraderHelper,
         @inject("TraderAssortService") protected traderAssortService: TraderAssortService,
-        @inject("TraderPurchasePersisterService") protected traderPurchasePersisterService:
-            TraderPurchasePersisterService,
+        @inject("TraderPurchasePersisterService") protected traderPurchasePersisterService: TraderPurchasePersisterService,
         @inject("FenceService") protected fenceService: FenceService,
         @inject("FenceBaseAssortGenerator") protected fenceBaseAssortGenerator: FenceBaseAssortGenerator,
         @inject("JsonUtil") protected jsonUtil: JsonUtil,

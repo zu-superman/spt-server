@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { GameController } from "@spt-aki/controllers/GameController";
 import { OnLoad } from "@spt-aki/di/OnLoad";
 import { IEmptyRequestData } from "@spt-aki/models/eft/common/IEmptyRequestData";

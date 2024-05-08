@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { CustomizationCallbacks } from "@spt-aki/callbacks/CustomizationCallbacks";
 import { HandledRoute, ItemEventRouterDefinition } from "@spt-aki/di/Router";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";

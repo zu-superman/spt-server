@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { HandbookHelper } from "@spt-aki/helpers/HandbookHelper";
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { PresetHelper } from "@spt-aki/helpers/PresetHelper";
@@ -376,8 +375,8 @@ export class FenceService
         // Add loyalty items to fence discount assorts loyalty object
         for (const loyaltyItemKey in newDiscountItems.loyal_level_items)
         {
-            this.fenceDiscountAssort.loyal_level_items[loyaltyItemKey] =
-                newDiscountItems.loyal_level_items[loyaltyItemKey];
+            this.fenceDiscountAssort.loyal_level_items[loyaltyItemKey]
+                = newDiscountItems.loyal_level_items[loyaltyItemKey];
         }
 
         // Reset the clock
@@ -394,11 +393,11 @@ export class FenceService
         for (const itemWithChildren of newFenceAssorts.sptItems)
         {
             // Find the root item
-            const newRootItem = itemWithChildren.find((item) => item.slotId === "hideout");
+            const newRootItem = itemWithChildren.find(item => item.slotId === "hideout");
 
             // Find a matching root item with same tpl in existing assort
-            const existingRootItem = existingFenceAssorts.items.find((item) =>
-                item._tpl === newRootItem._tpl && item.slotId === "hideout"
+            const existingRootItem = existingFenceAssorts.items.find(item =>
+                item._tpl === newRootItem._tpl && item.slotId === "hideout",
             );
 
             // Check if same type of item exists + its on list of item types to always stack
@@ -437,8 +436,8 @@ export class FenceService
             // New assort to be added to existing assorts
             existingFenceAssorts.items.push(...itemWithChildren);
             existingFenceAssorts.barter_scheme[newRootItem._id] = newFenceAssorts.barter_scheme[newRootItem._id];
-            existingFenceAssorts.loyal_level_items[newRootItem._id] =
-                newFenceAssorts.loyal_level_items[newRootItem._id];
+            existingFenceAssorts.loyal_level_items[newRootItem._id]
+                = newFenceAssorts.loyal_level_items[newRootItem._id];
         }
     }
 
@@ -448,7 +447,7 @@ export class FenceService
     protected incrementPartialRefreshTime(): void
     {
         this.nextPartialRefreshTimestamp = this.timeUtil.getTimestamp()
-            + this.traderConfig.fence.partialRefreshTimeSeconds;
+        + this.traderConfig.fence.partialRefreshTimeSeconds;
     }
 
     /**
@@ -462,8 +461,8 @@ export class FenceService
         generationValues: IGenerationAssortValues,
     ): IGenerationAssortValues
     {
-        const allRootItems = assortItems.filter((item) => item.slotId === "hideout");
-        const rootPresetItems = allRootItems.filter((item) => item?.upd?.sptPresetId);
+        const allRootItems = assortItems.filter(item => item.slotId === "hideout");
+        const rootPresetItems = allRootItems.filter(item => item?.upd?.sptPresetId);
 
         // Get count of weapons
         const currentWeaponPresetCount = rootPresetItems.reduce((count, item) =>
@@ -501,7 +500,7 @@ export class FenceService
     {
         if (assort?.items?.length > 0)
         {
-            const rootItems = assort.items.filter((item) => item.slotId === "hideout");
+            const rootItems = assort.items.filter(item => item.slotId === "hideout");
             for (let index = 0; index < itemCountToReplace; index++)
             {
                 this.removeRandomItemFromAssorts(assort, rootItems);
@@ -724,13 +723,13 @@ export class FenceService
         assortCount: number,
         assorts: ICreateFenceAssortsResult,
         baseFenceAssortClone: ITraderAssort,
-        itemTypeLimits: Record<string, { current: number; max: number; }>,
+        itemTypeLimits: Record<string, { current: number, max: number }>,
         loyaltyLevel: number,
     ): void
     {
         const priceLimits = this.traderConfig.fence.itemCategoryRoublePriceLimit;
-        const assortRootItems = baseFenceAssortClone.items.filter((item) =>
-            item.parentId === "hideout" && !item.upd?.sptPresetId
+        const assortRootItems = baseFenceAssortClone.items.filter(item =>
+            item.parentId === "hideout" && !item.upd?.sptPresetId,
         );
 
         for (let i = 0; i < assortCount; i++)
@@ -760,7 +759,7 @@ export class FenceService
             const itemIsPreset = this.presetHelper.isPreset(chosenBaseAssortRoot._id);
 
             const price = baseFenceAssortClone.barter_scheme[chosenBaseAssortRoot._id][0][0].count;
-            if (price === 0 || (price === 1 && !itemIsPreset) || price === 100)
+            if (price === 0 || price === 1 && !itemIsPreset || price === 100)
             {
                 // Don't allow "special" items / presets
                 i--;
@@ -840,9 +839,9 @@ export class FenceService
     protected getMatchingItem(rootItemBeingAdded: Item, itemDbDetails: ITemplateItem, itemsWithChildren: Item[][]): Item
     {
         // Get matching root items
-        const matchingItems = itemsWithChildren.filter((itemWithChildren) =>
-            itemWithChildren.find((item) => item._tpl === rootItemBeingAdded._tpl && item.parentId === "hideout")
-        ).flatMap((x) => x);
+        const matchingItems = itemsWithChildren.filter(itemWithChildren =>
+            itemWithChildren.find(item => item._tpl === rootItemBeingAdded._tpl && item.parentId === "hideout"),
+        ).flatMap(x => x);
         if (matchingItems.length === 0)
         {
             // Nothing matches by tpl and is root item, exit early
@@ -853,14 +852,14 @@ export class FenceService
             BaseClasses.MEDICAL,
             BaseClasses.MEDKIT,
         ]);
-        const isGearAndHasSlots =
-            this.itemHelper.isOfBaseclasses(rootItemBeingAdded._tpl, [
+        const isGearAndHasSlots
+            = this.itemHelper.isOfBaseclasses(rootItemBeingAdded._tpl, [
                 BaseClasses.ARMORED_EQUIPMENT,
                 BaseClasses.SEARCHABLE_ITEM,
             ]) && itemDbDetails._props.Slots.length > 0;
 
         // Only one match and its not medical or armored gear
-        if (matchingItems.length === 1 && (!(isMedical || isGearAndHasSlots)))
+        if (matchingItems.length === 1 && !(isMedical || isGearAndHasSlots))
         {
             return matchingItems[0];
         }
@@ -961,9 +960,9 @@ export class FenceService
     }
 
     protected getMatchingItemLimit(
-        itemTypeLimits: Record<string, { current: number; max: number; }>,
+        itemTypeLimits: Record<string, { current: number, max: number }>,
         itemTpl: string,
-    ): { current: number; max: number; }
+    ): { current: number, max: number }
     {
         for (const baseTypeKey in itemTypeLimits)
         {
@@ -992,8 +991,8 @@ export class FenceService
         let weaponPresetsAddedCount = 0;
         if (desiredWeaponPresetsCount > 0)
         {
-            const weaponPresetRootItems = baseFenceAssort.items.filter((item) =>
-                item.upd?.sptPresetId && this.itemHelper.isOfBaseclass(item._tpl, BaseClasses.WEAPON)
+            const weaponPresetRootItems = baseFenceAssort.items.filter(item =>
+                item.upd?.sptPresetId && this.itemHelper.isOfBaseclass(item._tpl, BaseClasses.WEAPON),
             );
             while (weaponPresetsAddedCount < desiredWeaponPresetsCount)
             {
@@ -1016,7 +1015,7 @@ export class FenceService
                 // Check chosen item is below price cap
                 const priceLimitRouble = this.traderConfig.fence.itemCategoryRoublePriceLimit[rootItemDb._parent];
                 const itemPrice = this.handbookHelper.getTemplatePriceForItems(presetWithChildrenClone)
-                    * this.itemHelper.getItemQualityModifierForOfferItems(presetWithChildrenClone);
+                  * this.itemHelper.getItemQualityModifierForOfferItems(presetWithChildrenClone);
                 if (priceLimitRouble)
                 {
                     if (itemPrice > priceLimitRouble)
@@ -1053,8 +1052,8 @@ export class FenceService
             return;
         }
 
-        const equipmentPresetRootItems = baseFenceAssort.items.filter((item) =>
-            item.upd?.sptPresetId && this.itemHelper.armorItemCanHoldMods(item._tpl)
+        const equipmentPresetRootItems = baseFenceAssort.items.filter(item =>
+            item.upd?.sptPresetId && this.itemHelper.armorItemCanHoldMods(item._tpl),
         );
         while (equipmentPresetsAddedCount < desiredEquipmentPresetsCount)
         {
@@ -1076,7 +1075,7 @@ export class FenceService
             // Check chosen item is below price cap
             const priceLimitRouble = this.traderConfig.fence.itemCategoryRoublePriceLimit[rootItemDb._parent];
             const itemPrice = this.handbookHelper.getTemplatePriceForItems(presetWithChildrenClone)
-                * this.itemHelper.getItemQualityModifierForOfferItems(presetWithChildrenClone);
+              * this.itemHelper.getItemQualityModifierForOfferItems(presetWithChildrenClone);
             if (priceLimitRouble)
             {
                 if (itemPrice > priceLimitRouble)
@@ -1122,7 +1121,7 @@ export class FenceService
         }
 
         // Check for and adjust soft insert durability values
-        const requiredSlots = itemDbDetails._props.Slots.filter((slot) => slot._required);
+        const requiredSlots = itemDbDetails._props.Slots.filter(slot => slot._required);
         const hasRequiredSlots = requiredSlots.length > 0;
         if (hasRequiredSlots)
         {
@@ -1141,8 +1140,8 @@ export class FenceService
                 }
 
                 // Find items mod to apply dura changes to
-                const modItemToAdjust = armor.find((mod) =>
-                    mod.slotId.toLowerCase() === requiredSlot._name.toLowerCase()
+                const modItemToAdjust = armor.find(mod =>
+                    mod.slotId.toLowerCase() === requiredSlot._name.toLowerCase(),
                 );
 
                 this.itemHelper.addUpdObjectToItem(modItemToAdjust);
@@ -1171,8 +1170,8 @@ export class FenceService
         }
 
         // Check for and adjust plate durability values
-        const plateSlots = itemDbDetails._props.Slots.filter((slot) =>
-            this.itemHelper.isRemovablePlateSlot(slot._name)
+        const plateSlots = itemDbDetails._props.Slots.filter(slot =>
+            this.itemHelper.isRemovablePlateSlot(slot._name),
         );
         if (plateSlots.length > 0)
         {
@@ -1197,7 +1196,7 @@ export class FenceService
                 );
 
                 // Find items mod to apply dura changes to
-                const modItemToAdjust = armor.find((mod) => mod.slotId.toLowerCase() === plateSlot._name.toLowerCase());
+                const modItemToAdjust = armor.find(mod => mod.slotId.toLowerCase() === plateSlot._name.toLowerCase());
                 this.itemHelper.addUpdObjectToItem(modItemToAdjust);
 
                 if (!modItemToAdjust.upd.Repairable)
@@ -1334,8 +1333,8 @@ export class FenceService
         // Randomise armor durability
         if (
             (itemDetails._parent === BaseClasses.ARMORED_EQUIPMENT
-                || itemDetails._parent === BaseClasses.FACECOVER
-                || itemDetails._parent === BaseClasses.ARMOR_PLATE) && itemDetails._props.MaxDurability > 0
+            || itemDetails._parent === BaseClasses.FACECOVER
+            || itemDetails._parent === BaseClasses.ARMOR_PLATE) && itemDetails._props.MaxDurability > 0
         )
         {
             const values = this.getRandomisedArmorDurabilityValues(
@@ -1427,9 +1426,9 @@ export class FenceService
      * @param limits limits as defined in config
      * @returns record, key: item tplId, value: current/max item count allowed
      */
-    protected initItemLimitCounter(limits: Record<string, number>): Record<string, { current: number; max: number; }>
+    protected initItemLimitCounter(limits: Record<string, number>): Record<string, { current: number, max: number }>
     {
-        const itemTypeCounts: Record<string, { current: number; max: number; }> = {};
+        const itemTypeCounts: Record<string, { current: number, max: number }> = {};
 
         for (const x in limits)
         {
@@ -1456,7 +1455,7 @@ export class FenceService
      */
     protected getFenceRefreshTime(): number
     {
-        const fence = this.traderConfig.updateTime.find((x) => x.traderId === Traders.FENCE).seconds;
+        const fence = this.traderConfig.updateTime.find(x => x.traderId === Traders.FENCE).seconds;
 
         return this.randomUtil.getInt(fence.min, fence.max);
     }
@@ -1476,7 +1475,7 @@ export class FenceService
             return fenceSettings.Levels["0"];
         }
 
-        const fenceLevels = (Object.keys(fenceSettings.Levels)).map((value) => Number.parseInt(value));
+        const fenceLevels = Object.keys(fenceSettings.Levels).map(value => Number.parseInt(value));
         const minLevel = Math.min(...fenceLevels);
         const maxLevel = Math.max(...fenceLevels);
         const pmcFenceLevel = Math.floor(pmcFenceInfo.standing);
@@ -1502,11 +1501,11 @@ export class FenceService
     public amendOrRemoveFenceOffer(assortId: string, buyCount: number): void
     {
         let isNormalAssort = true;
-        let fenceAssortItem = this.fenceAssort.items.find((item) => item._id === assortId);
+        let fenceAssortItem = this.fenceAssort.items.find(item => item._id === assortId);
         if (!fenceAssortItem)
         {
             // Not in main assorts, check secondary section
-            fenceAssortItem = this.fenceDiscountAssort.items.find((item) => item._id === assortId);
+            fenceAssortItem = this.fenceDiscountAssort.items.find(item => item._id === assortId);
             if (!fenceAssortItem)
             {
                 this.logger.error(`Offer with id: ${assortId} not found`);
@@ -1534,12 +1533,12 @@ export class FenceService
         const itemWithChildrenToRemove = this.itemHelper.findAndReturnChildrenAsItems(assorts, assortId);
         for (const itemToRemove of itemWithChildrenToRemove)
         {
-            let indexToRemove = assorts.findIndex((item) => item._id === itemToRemove._id);
+            let indexToRemove = assorts.findIndex(item => item._id === itemToRemove._id);
 
             // No offer found in main assort, check discount items
             if (indexToRemove === -1)
             {
-                indexToRemove = this.fenceDiscountAssort.items.findIndex((item) => item._id === itemToRemove._id);
+                indexToRemove = this.fenceDiscountAssort.items.findIndex(item => item._id === itemToRemove._id);
                 this.fenceDiscountAssort.items.splice(indexToRemove, 1);
 
                 if (indexToRemove === -1)

@@ -1,4 +1,4 @@
 export interface IValidateNicknameRequestData
 {
-    nickname: string;
+    nickname: string
 }

@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { ICoreConfig } from "@spt-aki/models/spt/config/ICoreConfig";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
@@ -36,7 +35,7 @@ export class ConfigServer
         this.logger.debug("Importing configs...");
 
         // Get all filepaths
-        const filepath = (globalThis.G_RELEASE_CONFIGURATION) ? "Aki_Data/Server/configs/" : "./assets/configs/";
+        const filepath = globalThis.G_RELEASE_CONFIGURATION ? "Aki_Data/Server/configs/" : "./assets/configs/";
         const files = this.vfs.getFiles(filepath);
 
         // Add file content to result
