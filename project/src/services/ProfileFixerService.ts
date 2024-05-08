@@ -897,24 +897,27 @@ export class ProfileFixerService
             }
         }
 
-        // Remove invalid builds from weapon, equipment and magazine build lists
-        const weaponBuilds = fullProfile.userbuilds?.weaponBuilds || [];
-        fullProfile.userbuilds.weaponBuilds = weaponBuilds.filter((weaponBuild) =>
+        if (fullProfile.userbuilds)
         {
-            return !this.shouldRemoveWeaponEquipmentBuild("weapon", weaponBuild, itemsDb);
-        });
+            // Remove invalid builds from weapon, equipment and magazine build lists
+            const weaponBuilds = fullProfile.userbuilds?.weaponBuilds || [];
+            fullProfile.userbuilds.weaponBuilds = weaponBuilds.filter((weaponBuild) =>
+            {
+                return !this.shouldRemoveWeaponEquipmentBuild("weapon", weaponBuild, itemsDb);
+            });
 
-        const equipmentBuilds = fullProfile.userbuilds?.equipmentBuilds || [];
-        fullProfile.userbuilds.equipmentBuilds = equipmentBuilds.filter((equipmentBuild) =>
-        {
-            return !this.shouldRemoveWeaponEquipmentBuild("equipment", equipmentBuild, itemsDb);
-        });
+            const equipmentBuilds = fullProfile.userbuilds?.equipmentBuilds || [];
+            fullProfile.userbuilds.equipmentBuilds = equipmentBuilds.filter((equipmentBuild) =>
+            {
+                return !this.shouldRemoveWeaponEquipmentBuild("equipment", equipmentBuild, itemsDb);
+            });
 
-        const magazineBuilds = fullProfile.userbuilds?.magazineBuilds || [];
-        fullProfile.userbuilds.magazineBuilds = magazineBuilds.filter((magazineBuild) =>
-        {
-            return !this.shouldRemoveMagazineBuild(magazineBuild, itemsDb);
-        });
+            const magazineBuilds = fullProfile.userbuilds?.magazineBuilds || [];
+            fullProfile.userbuilds.magazineBuilds = magazineBuilds.filter((magazineBuild) =>
+            {
+                return !this.shouldRemoveMagazineBuild(magazineBuild, itemsDb);
+            });
+        }
 
         // Iterate over dialogs, looking for messages with items not found in item db, remove message if item found
         for (const dialogId in fullProfile.dialogues)

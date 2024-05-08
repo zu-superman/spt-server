@@ -22,7 +22,7 @@ export class BundleSerializer extends Serializer
     {
         this.logger.info(`[BUNDLE]: ${req.url}`);
 
-        const key = req.url.split("/bundle/")[1];
+        const key = decodeURI(req.url.split("/bundle/")[1]);
         const bundle = this.bundleLoader.getBundle(key);
 
         this.httpFileUtil.sendFile(resp, `${bundle.modpath}/bundles/${bundle.filename}`);
