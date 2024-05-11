@@ -85,6 +85,24 @@ export class BotLootGenerator
         // Limits on item types to be added as loot
         const itemCounts = botJsonTemplate.generation.items;
 
+        if(!itemCounts.backpackLoot.weights
+            || !itemCounts.pocketLoot.weights
+            || !itemCounts.vestLoot.weights
+            || !itemCounts.specialItems.weights
+            || !itemCounts.healing.weights
+            || !itemCounts.drugs.weights
+            || !itemCounts.food.weights
+            || !itemCounts.drink.weights
+            || !itemCounts.currency.weights
+            || !itemCounts.stims.weights
+            || !itemCounts.grenades.weights
+        )
+        {
+            this.logger.warning(`Unable to generate bot loot for ${botRole} as bot.generation.items lacks data, skipping`);
+
+            return;
+        }
+
         const backpackLootCount = Number(
             this.weightedRandomHelper.getWeightedValue<number>(itemCounts.backpackLoot.weights),
         );
