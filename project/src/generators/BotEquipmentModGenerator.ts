@@ -548,8 +548,9 @@ export class BotEquipmentModGenerator
      */
     protected modIsFrontOrRearSight(modSlot: string, tpl: string): boolean
     {
-        if (modSlot === "mod_gas_block" && tpl === "5ae30e795acfc408fb139a0b")
-        { // M4A1 front sight with gas block
+        // Gas block /w front sight is special case, deem it a 'front sight' too
+        if (modSlot === "mod_gas_block" && tpl === "5ae30e795acfc408fb139a0b") // M4A1 front sight with gas block
+        { 
             return true;
         }
 
