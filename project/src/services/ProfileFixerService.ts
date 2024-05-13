@@ -699,7 +699,7 @@ export class ProfileFixerService
             // Have an item property and it has at least one item in it
             // Or
             // Have no item property
-            area.slots = area.slots.filter(x => "item" in x && x.item?.length > 0 || !("item" in x));
+            area.slots = area.slots.filter(x => ("item" in x && x.item?.length > 0) || !("item" in x));
         }
     }
 

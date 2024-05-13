@@ -152,7 +152,7 @@ export class ProfileController
         pmcData.Customization.Head = info.headId;
         pmcData.Health.UpdateTime = this.timeUtil.getTimestamp();
         pmcData.Quests = [];
-        pmcData.Hideout.Seed = this.timeUtil.getTimestamp() + 8 * 60 * 60 * 24 * 365; // 8 years in future why? who knows, we saw it in live
+        pmcData.Hideout.Seed = this.timeUtil.getTimestamp() + (8 * 60 * 60 * 24 * 365); // 8 years in future why? who knows, we saw it in live
         pmcData.RepeatableQuests = [];
         pmcData.CarExtractCounts = {};
         pmcData.CoopExtractCounts = {};

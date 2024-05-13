@@ -385,7 +385,7 @@ export class QuestHelper
     {
         // Iterate over all rewards with the desired status, flatten out items that have a type of Item
         const questRewards = quest.rewards[QuestStatus[status]].flatMap((reward: IQuestReward) =>
-            reward.type === "Item" ? this.processReward(reward) : [],
+            (reward.type === "Item" ? this.processReward(reward) : []),
         );
 
         return questRewards;

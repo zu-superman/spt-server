@@ -68,7 +68,13 @@
             "ignoreRegExpLiterals": true
         }],
         "@stylistic/multiline-ternary": ["error", "always-multiline"],
-        "@stylistic/no-extra-parens": ["error", "all"],
+        "@stylistic/no-confusing-arrow": ["error", {"allowParens": true}],
+        "@stylistic/no-extra-parens": ["error", "all", {
+            "returnAssign": false,
+            "nestedBinaryExpressions": false,
+            "ternaryOperandBinaryExpressions": false,
+            "enforceForArrowConditionals": false
+        }],
         "@stylistic/new-parens": "error",
         "@stylistic/newline-per-chained-call": ["error", { "ignoreChainWithDepth": 3 }],
         "@stylistic/no-extra-semi": "error",

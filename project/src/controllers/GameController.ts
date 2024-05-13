@@ -738,13 +738,13 @@ export class GameController
         const currentTimeStamp = this.timeUtil.getTimestamp();
 
         // One day post-profile creation
-        if (currentTimeStamp > timeStampProfileCreated + oneDaySeconds)
+        if (currentTimeStamp > (timeStampProfileCreated + oneDaySeconds))
         {
             this.giftService.sendPraporStartingGift(pmcProfile.sessionId, 1);
         }
 
         // Two day post-profile creation
-        if (currentTimeStamp > timeStampProfileCreated + oneDaySeconds * 2)
+        if (currentTimeStamp > (timeStampProfileCreated + oneDaySeconds * 2))
         {
             this.giftService.sendPraporStartingGift(pmcProfile.sessionId, 2);
         }

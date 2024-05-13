@@ -759,7 +759,7 @@ export class FenceService
             const itemIsPreset = this.presetHelper.isPreset(chosenBaseAssortRoot._id);
 
             const price = baseFenceAssortClone.barter_scheme[chosenBaseAssortRoot._id][0][0].count;
-            if (price === 0 || price === 1 && !itemIsPreset || price === 100)
+            if (price === 0 || (price === 1 && !itemIsPreset) || price === 100)
             {
                 // Don't allow "special" items / presets
                 i--;

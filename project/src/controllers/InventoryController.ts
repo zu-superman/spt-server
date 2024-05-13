@@ -168,7 +168,7 @@ export class InventoryController
             return;
         }
 
-        const profileToRemoveItemFrom = !request.fromOwner || request.fromOwner.id === pmcData._id
+        const profileToRemoveItemFrom = (!request.fromOwner || request.fromOwner.id === pmcData._id)
             ? pmcData
             : this.profileHelper.getFullProfile(sessionID).characters.scav;
 

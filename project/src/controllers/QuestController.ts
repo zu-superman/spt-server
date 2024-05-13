@@ -863,7 +863,7 @@ export class QuestController
                             childItems.shift(); // Remove the parent
 
                             // Sort by the current `location` and update
-                            childItems.sort((a, b) => a.location > b.location ? 1 : -1);
+                            childItems.sort((a, b) => (a.location > b.location ? 1 : -1));
                             for (const [index, item] of childItems.entries())
                             {
                                 item.location = index;

@@ -291,7 +291,7 @@ export class BotLootGenerator
         // Secure
 
         // only add if not a pmc or is pmc and flag is true
-        if (!isPmc || isPmc && this.pmcConfig.addSecureContainerLootFromBotConfig)
+        if (!isPmc || (isPmc && this.pmcConfig.addSecureContainerLootFromBotConfig))
         {
             this.addLootFromPool(
                 this.botLootCacheService.getLootFromCache(botRole, isPmc, LootCacheType.SECURE, botJsonTemplate),

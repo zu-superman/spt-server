@@ -249,7 +249,7 @@ export class InsuranceService
 
             // Check if item missing in post-raid gear OR player died + item slot flagged as lost on death
             // Catches both events: player died with item on + player survived but dropped item in raid
-            if (!itemOnPlayerPostRaid || playerDied && itemShouldBeLostOnDeath)
+            if (!itemOnPlayerPostRaid || (playerDied && itemShouldBeLostOnDeath))
             {
                 equipmentPkg.push({
                     pmcData: pmcData,
