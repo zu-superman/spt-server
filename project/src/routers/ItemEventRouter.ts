@@ -6,18 +6,18 @@ import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEve
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { EventOutputHolder } from "@spt-aki/routers/EventOutputHolder";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
-import { JsonUtil } from "@spt-aki/utils/JsonUtil";
+import { ICloner } from "@spt-aki/utils/cloners/ICloner";
 
 @injectable()
 export class ItemEventRouter
 {
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
-        @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
         @injectAll("IERouters") protected itemEventRouters: ItemEventRouterDefinition[],
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("EventOutputHolder") protected eventOutputHolder: EventOutputHolder,
+        @inject("RecursiveCloner") protected cloner: ICloner,
     )
     {}
 
@@ -54,7 +54,7 @@ export class ItemEventRouter
         this.eventOutputHolder.updateOutputProperties(sessionID);
 
         // Clone output before resetting the output object ready for use next time
-        const outputClone = this.jsonUtil.clone(output);
+        const outputClone = this.cloner.clone(output);
         this.eventOutputHolder.resetOutput(sessionID);
 
         return outputClone;

@@ -25,8 +25,8 @@ import { BotEquipmentModPoolService } from "@spt-aki/services/BotEquipmentModPoo
 import { BotModLimits, BotWeaponModLimitService } from "@spt-aki/services/BotWeaponModLimitService";
 import { ItemFilterService } from "@spt-aki/services/ItemFilterService";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
+import { ICloner } from "@spt-aki/utils/cloners/ICloner";
 import { HashUtil } from "@spt-aki/utils/HashUtil";
-import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 import { RandomUtil } from "@spt-aki/utils/RandomUtil";
 import { IGenerateEquipmentProperties } from "./BotInventoryGenerator";
 import { IFilterPlateModsForSlotByLevelResult, Result } from "./IFilterPlateModsForSlotByLevelResult";
@@ -38,7 +38,6 @@ export class BotEquipmentModGenerator
 
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
-        @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("ProbabilityHelper") protected probabilityHelper: ProbabilityHelper,
@@ -56,6 +55,7 @@ export class BotEquipmentModGenerator
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("BotEquipmentModPoolService") protected botEquipmentModPoolService: BotEquipmentModPoolService,
         @inject("ConfigServer") protected configServer: ConfigServer,
+        @inject("RecursiveCloner") protected cloner: ICloner,
     )
     {
         this.botConfig = this.configServer.getConfig(ConfigTypes.BOT);
@@ -157,7 +157,7 @@ export class BotEquipmentModGenerator
             // Find random mod and check its compatible
             let modTpl: string;
             let found = false;
-            const exhaustableModPool = new ExhaustableArray(modPoolToChooseFrom, this.randomUtil, this.jsonUtil);
+            const exhaustableModPool = new ExhaustableArray(modPoolToChooseFrom, this.randomUtil, this.cloner);
             while (exhaustableModPool.hasValues())
             {
                 modTpl = exhaustableModPool.getRandomValue();
@@ -857,7 +857,7 @@ export class BotEquipmentModGenerator
     ): IChooseRandomCompatibleModResult
     {
         let chosenTpl: string;
-        const exhaustableModPool = new ExhaustableArray(modPool, this.randomUtil, this.jsonUtil);
+        const exhaustableModPool = new ExhaustableArray(modPool, this.randomUtil, this.cloner);
         let chosenModResult: IChooseRandomCompatibleModResult = { incompatible: true, found: false, reason: "unknown" };
         const modParentFilterList = parentSlot._props.filters[0].Filter;
 
@@ -1091,7 +1091,7 @@ export class BotEquipmentModGenerator
         const allowedItems = parentSlot._props.filters[0].Filter;
 
         // Find mod item that fits slot from sorted mod array
-        const exhaustableModPool = new ExhaustableArray(allowedItems, this.randomUtil, this.jsonUtil);
+        const exhaustableModPool = new ExhaustableArray(allowedItems, this.randomUtil, this.cloner);
         let tmpModTpl = modTpl;
         while (exhaustableModPool.hasValues())
         {
@@ -1221,7 +1221,7 @@ export class BotEquipmentModGenerator
         botEquipBlacklist: EquipmentFilterDetails,
     ): string[]
     {
-        const modsFromDynamicPool = this.jsonUtil.clone(
+        const modsFromDynamicPool = this.cloner.clone(
             this.botEquipmentModPoolService.getCompatibleModsForWeaponSlot(parentItemId, modSlot),
         );
 
@@ -1303,7 +1303,7 @@ export class BotEquipmentModGenerator
         const camoraFirstSlot = "camora_000";
         if (modSlot in itemModPool)
         {
-            exhaustableModPool = new ExhaustableArray(itemModPool[modSlot], this.randomUtil, this.jsonUtil);
+            exhaustableModPool = new ExhaustableArray(itemModPool[modSlot], this.randomUtil, this.cloner);
         }
         else if (camoraFirstSlot in itemModPool)
         {
@@ -1311,7 +1311,7 @@ export class BotEquipmentModGenerator
             exhaustableModPool = new ExhaustableArray(
                 this.mergeCamoraPoolsTogether(itemModPool),
                 this.randomUtil,
-                this.jsonUtil,
+                this.cloner,
             );
         }
         else

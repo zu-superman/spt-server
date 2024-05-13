@@ -1,13 +1,12 @@
 import { inject, injectable } from "tsyringe";
 import { Item } from "@spt-aki/models/eft/common/tables/IItem";
 import { ITemplateItem, Props } from "@spt-aki/models/eft/common/tables/ITemplateItem";
-import { BaseClasses } from "@spt-aki/models/enums/BaseClasses";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { IRepairConfig } from "@spt-aki/models/spt/config/IRepairConfig";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt-aki/servers/ConfigServer";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
-import { JsonUtil } from "@spt-aki/utils/JsonUtil";
+import { ICloner } from "@spt-aki/utils/cloners/ICloner";
 import { RandomUtil } from "@spt-aki/utils/RandomUtil";
 
 @injectable()
@@ -17,10 +16,10 @@ export class RepairHelper
 
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
-        @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("ConfigServer") protected configServer: ConfigServer,
+        @inject("RecursiveCloner") protected cloner: ICloner,
     )
     {
         this.repairConfig = this.configServer.getConfig(ConfigTypes.REPAIR);
@@ -48,9 +47,9 @@ export class RepairHelper
     {
         this.logger.debug(`Adding ${amountToRepair} to ${itemToRepairDetails._name} using kit: ${useRepairKit}`);
 
-        const itemMaxDurability = this.jsonUtil.clone(itemToRepair.upd.Repairable.MaxDurability);
-        const itemCurrentDurability = this.jsonUtil.clone(itemToRepair.upd.Repairable.Durability);
-        const itemCurrentMaxDurability = this.jsonUtil.clone(itemToRepair.upd.Repairable.MaxDurability);
+        const itemMaxDurability = this.cloner.clone(itemToRepair.upd.Repairable.MaxDurability);
+        const itemCurrentDurability = this.cloner.clone(itemToRepair.upd.Repairable.Durability);
+        const itemCurrentMaxDurability = this.cloner.clone(itemToRepair.upd.Repairable.MaxDurability);
 
         let newCurrentDurability = itemCurrentDurability + amountToRepair;
         let newCurrentMaxDurability = itemCurrentMaxDurability + amountToRepair;

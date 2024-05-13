@@ -24,8 +24,8 @@ import { InsuranceService } from "@spt-aki/services/InsuranceService";
 import { MailSendService } from "@spt-aki/services/MailSendService";
 import { PaymentService } from "@spt-aki/services/PaymentService";
 import { RagfairPriceService } from "@spt-aki/services/RagfairPriceService";
+import { ICloner } from "@spt-aki/utils/cloners/ICloner";
 import { HashUtil } from "@spt-aki/utils/HashUtil";
-import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 import { MathUtil } from "@spt-aki/utils/MathUtil";
 import { ProbabilityObject, ProbabilityObjectArray, RandomUtil } from "@spt-aki/utils/RandomUtil";
 import { TimeUtil } from "@spt-aki/utils/TimeUtil";
@@ -40,7 +40,6 @@ export class InsuranceController
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("MathUtil") protected mathUtil: MathUtil,
-        @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("EventOutputHolder") protected eventOutputHolder: EventOutputHolder,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
@@ -56,6 +55,7 @@ export class InsuranceController
         @inject("MailSendService") protected mailSendService: MailSendService,
         @inject("RagfairPriceService") protected ragfairPriceService: RagfairPriceService,
         @inject("ConfigServer") protected configServer: ConfigServer,
+        @inject("RecursiveCloner") protected cloner: ICloner,
     )
     {
         this.insuranceConfig = this.configServer.getConfig(ConfigTypes.INSURANCE);
@@ -458,7 +458,7 @@ export class InsuranceController
         const countOfAttachmentsToRemove = this.getAttachmentCountToRemove(weightedAttachmentByPrice, traderId);
 
         // Create prob array and add all attachments with rouble price as the weight
-        const attachmentsProbabilityArray = new ProbabilityObjectArray<string, number>(this.mathUtil, this.jsonUtil);
+        const attachmentsProbabilityArray = new ProbabilityObjectArray<string, number>(this.mathUtil, this.cloner);
         for (const attachmentTpl of Object.keys(weightedAttachmentByPrice))
         {
             attachmentsProbabilityArray.push(

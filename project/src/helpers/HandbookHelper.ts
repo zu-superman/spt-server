@@ -6,7 +6,7 @@ import { Money } from "@spt-aki/models/enums/Money";
 import { IItemConfig } from "@spt-aki/models/spt/config/IItemConfig";
 import { ConfigServer } from "@spt-aki/servers/ConfigServer";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
-import { JsonUtil } from "@spt-aki/utils/JsonUtil";
+import { ICloner } from "@spt-aki/utils/cloners/ICloner";
 
 class LookupItem<T, I>
 {
@@ -41,8 +41,8 @@ export class HandbookHelper
 
     constructor(
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
-        @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("ConfigServer") protected configServer: ConfigServer,
+        @inject("RecursiveCloner") protected cloner: ICloner,
     )
     {
         this.itemConfig = this.configServer.getConfig(ConfigTypes.ITEM);
@@ -74,7 +74,7 @@ export class HandbookHelper
             itemToUpdate.Price = this.itemConfig.handbookPriceOverride[itemTpl];
         }
 
-        const handbookDbClone = this.jsonUtil.clone(this.databaseServer.getTables().templates.handbook);
+        const handbookDbClone = this.cloner.clone(this.databaseServer.getTables().templates.handbook);
         for (const handbookItem of handbookDbClone.Items)
         {
             this.handbookPriceCache.items.byId.set(handbookItem.Id, handbookItem.Price);

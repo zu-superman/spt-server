@@ -22,8 +22,8 @@ import { SaveServer } from "@spt-aki/servers/SaveServer";
 import { BotLootCacheService } from "@spt-aki/services/BotLootCacheService";
 import { FenceService } from "@spt-aki/services/FenceService";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
+import { ICloner } from "@spt-aki/utils/cloners/ICloner";
 import { HashUtil } from "@spt-aki/utils/HashUtil";
-import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 import { RandomUtil } from "@spt-aki/utils/RandomUtil";
 
 @injectable()
@@ -41,12 +41,12 @@ export class PlayerScavGenerator
         @inject("SaveServer") protected saveServer: SaveServer,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
         @inject("BotHelper") protected botHelper: BotHelper,
-        @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("FenceService") protected fenceService: FenceService,
         @inject("BotLootCacheService") protected botLootCacheService: BotLootCacheService,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("BotGenerator") protected botGenerator: BotGenerator,
         @inject("ConfigServer") protected configServer: ConfigServer,
+        @inject("RecursiveCloner") protected cloner: ICloner,
     )
     {
         this.playerScavConfig = this.configServer.getConfig(ConfigTypes.PLAYERSCAV);
@@ -61,8 +61,8 @@ export class PlayerScavGenerator
     {
         // get karma level from profile
         const profile = this.saveServer.getProfile(sessionID);
-        const pmcDataClone = this.jsonUtil.clone(profile.characters.pmc);
-        const existingScavDataClone = this.jsonUtil.clone(profile.characters.scav);
+        const pmcDataClone = this.cloner.clone(profile.characters.pmc);
+        const existingScavDataClone = this.cloner.clone(profile.characters.scav);
 
         const scavKarmaLevel = this.getScavKarmaLevel(pmcDataClone);
 
@@ -219,7 +219,7 @@ export class PlayerScavGenerator
     protected constructBotBaseTemplate(botTypeForLoot: string): IBotType
     {
         const baseScavType = "assault";
-        const assaultBase = this.jsonUtil.clone(this.botHelper.getBotTemplate(baseScavType));
+        const assaultBase = this.cloner.clone(this.botHelper.getBotTemplate(baseScavType));
 
         // Loot bot is same as base bot, return base with no modification
         if (botTypeForLoot === baseScavType)
@@ -227,7 +227,7 @@ export class PlayerScavGenerator
             return assaultBase;
         }
 
-        const lootBase = this.jsonUtil.clone(this.botHelper.getBotTemplate(botTypeForLoot));
+        const lootBase = this.cloner.clone(this.botHelper.getBotTemplate(botTypeForLoot));
         assaultBase.inventory = lootBase.inventory;
         assaultBase.chances = lootBase.chances;
         assaultBase.generation = lootBase.generation;

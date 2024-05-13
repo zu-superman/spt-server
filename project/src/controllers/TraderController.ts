@@ -13,7 +13,7 @@ import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { FenceService } from "@spt-aki/services/FenceService";
 import { TraderAssortService } from "@spt-aki/services/TraderAssortService";
 import { TraderPurchasePersisterService } from "@spt-aki/services/TraderPurchasePersisterService";
-import { JsonUtil } from "@spt-aki/utils/JsonUtil";
+import { ICloner } from "@spt-aki/utils/cloners/ICloner";
 import { TimeUtil } from "@spt-aki/utils/TimeUtil";
 
 @injectable()
@@ -32,8 +32,8 @@ export class TraderController
         @inject("TraderPurchasePersisterService") protected traderPurchasePersisterService: TraderPurchasePersisterService,
         @inject("FenceService") protected fenceService: FenceService,
         @inject("FenceBaseAssortGenerator") protected fenceBaseAssortGenerator: FenceBaseAssortGenerator,
-        @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("ConfigServer") protected configServer: ConfigServer,
+        @inject("RecursiveCloner") protected cloner: ICloner,
     )
     {
         this.traderConfig = this.configServer.getConfig(ConfigTypes.TRADER);
@@ -67,7 +67,7 @@ export class TraderController
             // Create dict of trader assorts on server start
             if (!this.traderAssortService.getPristineTraderAssort(traderId))
             {
-                const assortsClone = this.jsonUtil.clone(trader.assort);
+                const assortsClone = this.cloner.clone(trader.assort);
                 this.traderAssortService.setPristineTraderAssort(traderId, assortsClone);
             }
 

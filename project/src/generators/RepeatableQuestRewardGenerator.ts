@@ -19,7 +19,7 @@ import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { ItemFilterService } from "@spt-aki/services/ItemFilterService";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
 import { SeasonalEventService } from "@spt-aki/services/SeasonalEventService";
-import { JsonUtil } from "@spt-aki/utils/JsonUtil";
+import { ICloner } from "@spt-aki/utils/cloners/ICloner";
 import { MathUtil } from "@spt-aki/utils/MathUtil";
 import { ObjectId } from "@spt-aki/utils/ObjectId";
 import { RandomUtil } from "@spt-aki/utils/RandomUtil";
@@ -33,7 +33,6 @@ export class RepeatableQuestRewardGenerator
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("MathUtil") protected mathUtil: MathUtil,
-        @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("PresetHelper") protected presetHelper: PresetHelper,
@@ -43,6 +42,7 @@ export class RepeatableQuestRewardGenerator
         @inject("ItemFilterService") protected itemFilterService: ItemFilterService,
         @inject("SeasonalEventService") protected seasonalEventService: SeasonalEventService,
         @inject("ConfigServer") protected configServer: ConfigServer,
+        @inject("RecursiveCloner") protected cloner: ICloner,
     )
     {
         this.questConfig = this.configServer.getConfig(ConfigTypes.QUEST);
@@ -144,7 +144,7 @@ export class RepeatableQuestRewardGenerator
             const defaultPresetPool = new ExhaustableArray(
                 Object.values(this.presetHelper.getDefaultWeaponPresets()),
                 this.randomUtil,
-                this.jsonUtil,
+                this.cloner,
             );
             let chosenPreset: IPreset;
             while (defaultPresetPool.hasValues())
@@ -156,7 +156,7 @@ export class RepeatableQuestRewardGenerator
                 {
                     this.logger.debug(`  Added weapon ${tpls[0]} with price ${presetPrice}`);
                     roublesBudget -= presetPrice;
-                    chosenPreset = this.jsonUtil.clone(randomPreset);
+                    chosenPreset = this.cloner.clone(randomPreset);
                     break;
                 }
             }

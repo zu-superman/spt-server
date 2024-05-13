@@ -14,8 +14,8 @@ import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { ItemFilterService } from "@spt-aki/services/ItemFilterService";
 import { LocaleService } from "@spt-aki/services/LocaleService";
 import { MailSendService } from "@spt-aki/services/MailSendService";
+import { ICloner } from "@spt-aki/utils/cloners/ICloner";
 import { HashUtil } from "@spt-aki/utils/HashUtil";
-import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 
 @injectable()
 export class GiveSptCommand implements ISptCommand
@@ -37,12 +37,12 @@ export class GiveSptCommand implements ISptCommand
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("HashUtil") protected hashUtil: HashUtil,
-        @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("PresetHelper") protected presetHelper: PresetHelper,
         @inject("MailSendService") protected mailSendService: MailSendService,
         @inject("LocaleService") protected localeService: LocaleService,
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("ItemFilterService") protected itemFilterService: ItemFilterService,
+        @inject("RecursiveCloner") protected cloner: ICloner,
     )
     {
     }
@@ -188,12 +188,14 @@ export class GiveSptCommand implements ISptCommand
             }
         }
 
+        const localizedGlobal = this.databaseServer.getTables().locales.global[locale]
+          ?? this.databaseServer.getTables().locales.global.en;
         // If item is an item name, we need to search using that item name and the locale which one we want otherwise
         // item is just the tplId.
         const tplId = isItemName
             ? this.itemHelper.getItems()
                 .filter(i => this.isItemAllowed(i))
-                .find(i => (this.databaseServer.getTables().locales.global[locale][`${i?._id} Name`]?.toLowerCase() ?? i._props.Name) === item)._id
+                .find(i => (localizedGlobal[`${i?._id} Name`]?.toLowerCase() ?? i._props.Name) === item)._id
             : item;
 
         const checkedItem = this.itemHelper.getItem(tplId);
@@ -229,7 +231,7 @@ export class GiveSptCommand implements ISptCommand
             }
             for (let i = 0; i < quantity; i++)
             {
-                let items = this.jsonUtil.clone(preset._items);
+                let items = this.cloner.clone(preset._items);
                 items = this.itemHelper.replaceIDs(items);
                 itemsToSend.push(...items);
             }

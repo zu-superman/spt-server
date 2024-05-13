@@ -7,7 +7,7 @@ import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt-aki/servers/ConfigServer";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
-import { JsonUtil } from "@spt-aki/utils/JsonUtil";
+import { ICloner } from "@spt-aki/utils/cloners/ICloner";
 import { RandomUtil } from "@spt-aki/utils/RandomUtil";
 
 @injectable()
@@ -17,12 +17,12 @@ export class BotDifficultyHelper
 
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
-        @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("BotHelper") protected botHelper: BotHelper,
         @inject("ConfigServer") protected configServer: ConfigServer,
+        @inject("RecursiveCloner") protected cloner: ICloner,
     )
     {
         this.pmcConfig = this.configServer.getConfig(ConfigTypes.PMC);
@@ -61,7 +61,7 @@ export class BotDifficultyHelper
         {
             // get fallback
             this.logger.warning(this.localisationService.getText("bot-unable_to_get_bot_fallback_to_assault", type));
-            this.databaseServer.getTables().bots.types[type] = this.jsonUtil.clone(
+            this.databaseServer.getTables().bots.types[type] = this.cloner.clone(
                 this.databaseServer.getTables().bots.types.assault,
             );
         }
@@ -75,12 +75,12 @@ export class BotDifficultyHelper
                     difficulty: difficulty,
                 }),
             );
-            this.databaseServer.getTables().bots.types[type].difficulty[difficulty] = this.jsonUtil.clone(
+            this.databaseServer.getTables().bots.types[type].difficulty[difficulty] = this.cloner.clone(
                 this.databaseServer.getTables().bots.types.assault.difficulty[difficulty],
             );
         }
 
-        return this.jsonUtil.clone(difficultySettings);
+        return this.cloner.clone(difficultySettings);
     }
 
     /**
@@ -97,7 +97,7 @@ export class BotDifficultyHelper
 
         difficultySetting = this.convertBotDifficultyDropdownToBotDifficulty(difficultySetting);
 
-        return this.jsonUtil.clone(this.databaseServer.getTables().bots.types[type].difficulty[difficultySetting]);
+        return this.cloner.clone(this.databaseServer.getTables().bots.types[type].difficulty[difficultySetting]);
     }
 
     /**

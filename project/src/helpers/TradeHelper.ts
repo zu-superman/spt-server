@@ -22,8 +22,8 @@ import { FenceService } from "@spt-aki/services/FenceService";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
 import { PaymentService } from "@spt-aki/services/PaymentService";
 import { TraderPurchasePersisterService } from "@spt-aki/services/TraderPurchasePersisterService";
+import { ICloner } from "@spt-aki/utils/cloners/ICloner";
 import { HttpResponseUtil } from "@spt-aki/utils/HttpResponseUtil";
-import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 
 @injectable()
 export class TradeHelper
@@ -33,7 +33,6 @@ export class TradeHelper
 
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
-        @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("EventOutputHolder") protected eventOutputHolder: EventOutputHolder,
         @inject("TraderHelper") protected traderHelper: TraderHelper,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
@@ -47,6 +46,7 @@ export class TradeHelper
         @inject("TraderPurchasePersisterService") protected traderPurchasePersisterService:
         TraderPurchasePersisterService,
         @inject("ConfigServer") protected configServer: ConfigServer,
+        @inject("RecursiveCloner") protected cloner: ICloner,
     )
     {
         this.traderConfig = this.configServer.getConfig(ConfigTypes.TRADER);
@@ -105,7 +105,7 @@ export class TradeHelper
 
             // Get raw offer from ragfair, clone to prevent altering offer itself
             const allOffers = this.ragfairServer.getOffers();
-            const offerWithItemCloned = this.jsonUtil.clone(allOffers.find(x => x._id === buyRequestData.item_id));
+            const offerWithItemCloned = this.cloner.clone(allOffers.find(x => x._id === buyRequestData.item_id));
             offerItems = offerWithItemCloned.items;
         }
         else if (buyRequestData.tid === Traders.FENCE)
@@ -196,7 +196,7 @@ export class TradeHelper
         const itemsToSendToPlayer: Item[][] = [];
         while (itemsToSendRemaining > 0)
         {
-            const offerClone = this.jsonUtil.clone(offerItems);
+            const offerClone = this.cloner.clone(offerItems);
             // Handle stackable items that have a max stack size limit
             const itemCountToSend = Math.min(itemMaxStackSize, itemsToSendRemaining);
             offerClone[0].upd.StackObjectsCount = itemCountToSend;

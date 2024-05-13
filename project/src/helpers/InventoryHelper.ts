@@ -30,9 +30,9 @@ import { ConfigServer } from "@spt-aki/servers/ConfigServer";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { FenceService } from "@spt-aki/services/FenceService";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
+import { ICloner } from "@spt-aki/utils/cloners/ICloner";
 import { HashUtil } from "@spt-aki/utils/HashUtil";
 import { HttpResponseUtil } from "@spt-aki/utils/HttpResponseUtil";
-import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 
 export interface IOwnerInventoryItems
 {
@@ -51,7 +51,6 @@ export class InventoryHelper
 
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
-        @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("HttpResponseUtil") protected httpResponse: HttpResponseUtil,
         @inject("FenceService") protected fenceService: FenceService,
@@ -65,6 +64,7 @@ export class InventoryHelper
         @inject("PresetHelper") protected presetHelper: PresetHelper,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("ConfigServer") protected configServer: ConfigServer,
+        @inject("RecursiveCloner") protected cloner: ICloner,
     )
     {
         this.inventoryConfig = this.configServer.getConfig(ConfigTypes.INVENTORY);
@@ -129,7 +129,7 @@ export class InventoryHelper
         output: IItemEventRouterResponse,
     ): void
     {
-        const itemWithModsToAddClone = this.jsonUtil.clone(request.itemWithModsToAdd);
+        const itemWithModsToAddClone = this.cloner.clone(request.itemWithModsToAdd);
 
         // Get stash layouts ready for use
         const stashFS2D = this.getStashSlotMap(pmcData, sessionId);
@@ -245,7 +245,7 @@ export class InventoryHelper
     {
         const pmcData = this.profileHelper.getPmcProfile(sessionId);
 
-        const stashFS2D = this.jsonUtil.clone(this.getStashSlotMap(pmcData, sessionId));
+        const stashFS2D = this.cloner.clone(this.getStashSlotMap(pmcData, sessionId));
         for (const itemWithChildren of itemsWithChildren)
         {
             if (this.canPlaceItemInContainer(stashFS2D, itemWithChildren))
@@ -534,7 +534,7 @@ export class InventoryHelper
                         // Keep splitting items into stacks until none left
                         if (remainingCountOfItemToAdd > 0)
                         {
-                            const newChildItemToAdd = this.jsonUtil.clone(itemToAdd);
+                            const newChildItemToAdd = this.cloner.clone(itemToAdd);
                             if (remainingCountOfItemToAdd > itemDetails._props.StackMaxSize)
                             {
                                 // Reduce total count of item purchased by stack size we're going to add to inventory
@@ -1327,6 +1327,7 @@ export class InventoryHelper
     }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-namespace
 namespace InventoryHelper
 {
     export interface InventoryItemHash

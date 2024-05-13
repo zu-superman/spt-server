@@ -23,8 +23,8 @@ import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { BotWeaponModLimitService } from "@spt-aki/services/BotWeaponModLimitService";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
 import { RepairService } from "@spt-aki/services/RepairService";
+import { ICloner } from "@spt-aki/utils/cloners/ICloner";
 import { HashUtil } from "@spt-aki/utils/HashUtil";
-import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 import { RandomUtil } from "@spt-aki/utils/RandomUtil";
 
 @injectable()
@@ -36,7 +36,6 @@ export class BotWeaponGenerator
     protected repairConfig: IRepairConfig;
 
     constructor(
-        @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
@@ -51,6 +50,7 @@ export class BotWeaponGenerator
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("RepairService") protected repairService: RepairService,
         @injectAll("InventoryMagGen") protected inventoryMagGenComponents: IInventoryMagGen[],
+        @inject("RecursiveCloner") protected cloner: ICloner,
     )
     {
         this.botConfig = this.configServer.getConfig(ConfigTypes.BOT);
@@ -323,7 +323,7 @@ export class BotWeaponGenerator
         {
             if (presetObj._items[0]._tpl === weaponTpl)
             {
-                preset = this.jsonUtil.clone(presetObj);
+                preset = this.cloner.clone(presetObj);
                 break;
             }
         }
@@ -582,7 +582,7 @@ export class BotWeaponGenerator
     {
         const desiredCaliber = this.getWeaponCaliber(weaponTemplate);
 
-        const compatibleCartridges = this.jsonUtil.clone(ammo[desiredCaliber]);
+        const compatibleCartridges = this.cloner.clone(ammo[desiredCaliber]);
         if (!compatibleCartridges || compatibleCartridges?.length === 0)
         {
             this.logger.debug(

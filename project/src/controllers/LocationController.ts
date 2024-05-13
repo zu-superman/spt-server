@@ -23,8 +23,8 @@ import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { ItemFilterService } from "@spt-aki/services/ItemFilterService";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
 import { RaidTimeAdjustmentService } from "@spt-aki/services/RaidTimeAdjustmentService";
+import { ICloner } from "@spt-aki/utils/cloners/ICloner";
 import { HashUtil } from "@spt-aki/utils/HashUtil";
-import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 import { RandomUtil } from "@spt-aki/utils/RandomUtil";
 import { TimeUtil } from "@spt-aki/utils/TimeUtil";
 
@@ -35,7 +35,6 @@ export class LocationController
     protected locationConfig: ILocationConfig;
 
     constructor(
-        @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("WeightedRandomHelper") protected weightedRandomHelper: WeightedRandomHelper,
@@ -49,6 +48,7 @@ export class LocationController
         @inject("TimeUtil") protected timeUtil: TimeUtil,
         @inject("ConfigServer") protected configServer: ConfigServer,
         @inject("ApplicationContext") protected applicationContext: ApplicationContext,
+        @inject("RecursiveCloner") protected cloner: ICloner,
     )
     {
         this.airdropConfig = this.configServer.getConfig(ConfigTypes.AIRDROP);
@@ -80,7 +80,7 @@ export class LocationController
     {
         const db = this.databaseServer.getTables();
         const location: ILocation = db.locations[name];
-        const locationBaseClone: ILocationBase = this.jsonUtil.clone(location.base);
+        const locationBaseClone: ILocationBase = this.cloner.clone(location.base);
 
         locationBaseClone.UnixDateTime = this.timeUtil.getTimestamp();
 
@@ -97,18 +97,18 @@ export class LocationController
         >();
         if (raidAdjustments)
         {
-            locationConfigCopy = this.jsonUtil.clone(this.locationConfig); // Clone values so they can be used to reset originals later
+            locationConfigCopy = this.cloner.clone(this.locationConfig); // Clone values so they can be used to reset originals later
             this.raidTimeAdjustmentService.makeAdjustmentsToMap(raidAdjustments, locationBaseClone);
         }
 
-        const staticAmmoDist = this.jsonUtil.clone(location.staticAmmo);
+        const staticAmmoDist = this.cloner.clone(location.staticAmmo);
 
         // Create containers and add loot to them
         const staticLoot = this.locationGenerator.generateStaticContainers(locationBaseClone, staticAmmoDist);
         locationBaseClone.Loot.push(...staticLoot);
 
         // Add dynamic loot to output loot
-        const dynamicLootDistClone: ILooseLoot = this.jsonUtil.clone(location.looseLoot);
+        const dynamicLootDistClone: ILooseLoot = this.cloner.clone(location.looseLoot);
         const dynamicSpawnPoints: SpawnpointTemplate[] = this.locationGenerator.generateDynamicLoot(
             dynamicLootDistClone,
             staticAmmoDist,

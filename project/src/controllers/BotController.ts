@@ -16,7 +16,6 @@ import { WildSpawnTypeNumber } from "@spt-aki/models/enums/WildSpawnTypeNumber";
 import { BotGenerationDetails } from "@spt-aki/models/spt/bots/BotGenerationDetails";
 import { IBotConfig } from "@spt-aki/models/spt/config/IBotConfig";
 import { IPmcConfig } from "@spt-aki/models/spt/config/IPmcConfig";
-import { IRaidChanges } from "@spt-aki/models/spt/location/IRaidChanges";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt-aki/servers/ConfigServer";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
@@ -24,7 +23,7 @@ import { BotGenerationCacheService } from "@spt-aki/services/BotGenerationCacheS
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
 import { MatchBotDetailsCacheService } from "@spt-aki/services/MatchBotDetailsCacheService";
 import { SeasonalEventService } from "@spt-aki/services/SeasonalEventService";
-import { JsonUtil } from "@spt-aki/utils/JsonUtil";
+import { ICloner } from "@spt-aki/utils/cloners/ICloner";
 import { RandomUtil } from "@spt-aki/utils/RandomUtil";
 
 @injectable()
@@ -47,7 +46,7 @@ export class BotController
         @inject("ConfigServer") protected configServer: ConfigServer,
         @inject("ApplicationContext") protected applicationContext: ApplicationContext,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
-        @inject("JsonUtil") protected jsonUtil: JsonUtil,
+        @inject("RecursiveCloner") protected cloner: ICloner,
     )
     {
         this.botConfig = this.configServer.getConfig(ConfigTypes.BOT);
@@ -281,7 +280,7 @@ export class BotController
         const botPromises: Promise<void>[] = [];
         for (let i = 0; i < botGenerationDetails.botCountToGenerate; i++)
         {
-            const detailsClone = this.jsonUtil.clone(botGenerationDetails);
+            const detailsClone = this.cloner.clone(botGenerationDetails);
             botPromises.push(this.generateSingleBotAndStoreInCache(detailsClone, sessionId, cacheKey));
         }
         return Promise.all(botPromises).then(() =>
