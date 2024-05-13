@@ -120,7 +120,7 @@ export class InsuranceService
                 MessageType.NPC_TRADER,
                 this.randomUtil.getArrayValue(dialogueTemplates.insuranceStart),
                 null,
-                null,
+                this.timeUtil.getHoursAsSeconds(this.databaseServer.getTables().globals.config.Insurance.MaxStorageTimeInHour),
                 systemData,
             );
 
