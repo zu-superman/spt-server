@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { ApplicationContext } from "@spt-aki/context/ApplicationContext";
 import { ContextVariableType } from "@spt-aki/context/ContextVariableType";
 import { LootGenerator } from "@spt-aki/generators/LootGenerator";
@@ -191,7 +190,7 @@ export class MatchController
             return false;
         }
 
-        return (this.inRaidConfig.coopExtracts.includes(extractName.trim()));
+        return this.inRaidConfig.coopExtracts.includes(extractName.trim());
     }
 
     protected sendCoopTakenFenceMessage(sessionId: string): void

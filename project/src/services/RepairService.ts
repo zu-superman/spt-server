@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
 import { RepairHelper } from "@spt-aki/helpers/RepairHelper";
@@ -61,7 +60,7 @@ export class RepairService
         traderId: string,
     ): RepairDetails
     {
-        const itemToRepair = pmcData.Inventory.items.find((x) => x._id === repairItemDetails._id);
+        const itemToRepair = pmcData.Inventory.items.find(x => x._id === repairItemDetails._id);
         if (itemToRepair === undefined)
         {
             throw new Error(`Item ${repairItemDetails._id} not found in profile inventory, unable to repair`);
@@ -70,7 +69,7 @@ export class RepairService
         const priceCoef = this.traderHelper.getLoyaltyLevel(traderId, pmcData).repair_price_coef;
         const traderRepairDetails = this.traderHelper.getTrader(traderId, sessionID).repair;
         const repairQualityMultiplier = Number(traderRepairDetails.quality);
-        const repairRate = (priceCoef <= 0) ? 1 : (priceCoef / 100 + 1);
+        const repairRate = priceCoef <= 0 ? 1 : priceCoef / 100 + 1;
 
         const itemToRepairDetails = this.databaseServer.getTables().templates.items[itemToRepair._tpl];
         const repairItemIsArmor = !!itemToRepairDetails._props.ArmorMaterial;
@@ -88,7 +87,7 @@ export class RepairService
         // get repair price
         const itemRepairCost = this.databaseServer.getTables().templates.items[itemToRepair._tpl]._props.RepairCost;
         const repairCost = Math.round(
-            (itemRepairCost * repairItemDetails.count * repairRate) * this.repairConfig.priceMultiplier,
+            itemRepairCost * repairItemDetails.count * repairRate * this.repairConfig.priceMultiplier,
         );
 
         this.logger.debug(`item base repair cost: ${itemRepairCost}`, true);
@@ -186,7 +185,7 @@ export class RepairService
             const isHeavyArmor = itemDetails[1]._props.ArmorType === "Heavy";
             const vestSkillToLevel = isHeavyArmor ? SkillTypes.HEAVY_VESTS : SkillTypes.LIGHT_VESTS;
             const pointsToAddToVestSkill = repairDetails.repairPoints
-                * this.repairConfig.armorKitSkillPointGainPerRepairPointMultiplier;
+              * this.repairConfig.armorKitSkillPointGainPerRepairPointMultiplier;
 
             this.logger.debug(`Added: ${pointsToAddToVestSkill} ${vestSkillToLevel} skill`);
             this.profileHelper.addSkillPointsToPlayer(pmcData, vestSkillToLevel, pointsToAddToVestSkill);
@@ -206,8 +205,8 @@ export class RepairService
         if (repairDetails.repairedByKit)
         {
             // Weapons/armor have different multipliers
-            const intRepairMultiplier =
-                (this.itemHelper.isOfBaseclass(repairDetails.repairedItem._tpl, BaseClasses.WEAPON))
+            const intRepairMultiplier
+                = this.itemHelper.isOfBaseclass(repairDetails.repairedItem._tpl, BaseClasses.WEAPON)
                     ? this.repairConfig.repairKitIntellectGainMultiplier.weapon
                     : this.repairConfig.repairKitIntellectGainMultiplier.armor;
 
@@ -275,7 +274,7 @@ export class RepairService
     ): RepairDetails
     {
         // Find item to repair in inventory
-        const itemToRepair = pmcData.Inventory.items.find((x: { _id: string; }) => x._id === itemToRepairId);
+        const itemToRepair = pmcData.Inventory.items.find((x: { _id: string }) => x._id === itemToRepairId);
         if (itemToRepair === undefined)
         {
             throw new Error(`Item ${itemToRepairId} not found, unable to repair`);
@@ -303,7 +302,7 @@ export class RepairService
         // Find and use repair kit defined in body
         for (const repairKit of repairKits)
         {
-            const repairKitInInventory = pmcData.Inventory.items.find((x) => x._id === repairKit._id);
+            const repairKitInInventory = pmcData.Inventory.items.find(x => x._id === repairKit._id);
             const repairKitDetails = itemsDb[repairKitInInventory._tpl];
             const repairKitReductionAmount = repairKit.count;
 
@@ -338,7 +337,7 @@ export class RepairService
 
         const intellectRepairPointsPerLevel = globals.config.SkillsSettings.Intellect.RepairPointsCostReduction;
         const profileIntellectLevel = this.profileHelper.getSkillFromProfile(pmcData, SkillTypes.INTELLECT)?.Progress
-            ?? 0;
+          ?? 0;
         const intellectPointReduction = intellectRepairPointsPerLevel * Math.trunc(profileIntellectLevel / 100);
 
         if (isArmor)
@@ -371,11 +370,11 @@ export class RepairService
      */
     protected getBonusMultiplierValue(skillBonus: BonusType, pmcData: IPmcData): number
     {
-        const bonusesMatched = pmcData?.Bonuses?.filter((b) => b.type === skillBonus);
+        const bonusesMatched = pmcData?.Bonuses?.filter(b => b.type === skillBonus);
         let value = 1;
         if (bonusesMatched != null)
         {
-            const sumedPercentage = bonusesMatched.map((b) => b.value).reduce((v1, v2) => v1 + v2, 0);
+            const sumedPercentage = bonusesMatched.map(b => b.value).reduce((v1, v2) => v1 + v2, 0);
             value = 1 + sumedPercentage / 100;
         }
 
@@ -521,19 +520,19 @@ export class RepairService
 
         // Skill < level 10 + repairing armor
         if (
-            ([SkillTypes.LIGHT_VESTS, SkillTypes.HEAVY_VESTS].includes(itemSkillType))
+            [SkillTypes.LIGHT_VESTS, SkillTypes.HEAVY_VESTS].includes(itemSkillType)
             && this.profileHelper.getSkillFromProfile(pmcData, itemSkillType)?.Progress < 1000
         )
         {
             return false;
         }
 
-        const commonBuffMinChanceValue =
-            globals.config.SkillsSettings[itemSkillType as string].BuffSettings.CommonBuffMinChanceValue;
-        const commonBuffChanceLevelBonus =
-            globals.config.SkillsSettings[itemSkillType as string].BuffSettings.CommonBuffChanceLevelBonus;
-        const receivedDurabilityMaxPercent =
-            globals.config.SkillsSettings[itemSkillType as string].BuffSettings.ReceivedDurabilityMaxPercent;
+        const commonBuffMinChanceValue
+            = globals.config.SkillsSettings[itemSkillType as string].BuffSettings.CommonBuffMinChanceValue;
+        const commonBuffChanceLevelBonus
+            = globals.config.SkillsSettings[itemSkillType as string].BuffSettings.CommonBuffChanceLevelBonus;
+        const receivedDurabilityMaxPercent
+            = globals.config.SkillsSettings[itemSkillType as string].BuffSettings.ReceivedDurabilityMaxPercent;
 
         const skillLevel = Math.trunc(
             (this.profileHelper.getSkillFromProfile(pmcData, itemSkillType)?.Progress ?? 0) / 100,

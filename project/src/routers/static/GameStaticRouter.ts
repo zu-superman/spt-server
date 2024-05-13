@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { GameCallbacks } from "@spt-aki/callbacks/GameCallbacks";
 import { RouteAction, StaticRouter } from "@spt-aki/di/Router";
 

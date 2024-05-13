@@ -1,7 +1,7 @@
 export interface IFilterPlateModsForSlotByLevelResult
 {
-    result: Result;
-    plateModTpls: string[];
+    result: Result
+    plateModTpls: string[]
 }
 
 export enum Result

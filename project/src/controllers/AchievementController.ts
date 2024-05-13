@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { ICompletedAchievementsResponse } from "@spt-aki/models/eft/profile/ICompletedAchievementsResponse";
 import { IGetAchievementsResponse } from "@spt-aki/models/eft/profile/IGetAchievementsResponse";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";

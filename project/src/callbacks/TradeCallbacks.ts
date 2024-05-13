@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { TradeController } from "@spt-aki/controllers/TradeController";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
 import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEventRouterResponse";

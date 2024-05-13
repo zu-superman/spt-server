@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { BotGeneratorHelper } from "@spt-aki/helpers/BotGeneratorHelper";
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { WeightedRandomHelper } from "@spt-aki/helpers/WeightedRandomHelper";
@@ -46,7 +45,7 @@ export class BotWeaponGeneratorHelper
         {
             const firstSlotAmmoTpl = magTemplate._props.Cartridges[0]._props.filters[0].Filter[0];
             const ammoMaxStackSize = this.itemHelper.getItem(firstSlotAmmoTpl)[1]?._props?.StackMaxSize ?? 1;
-            chamberBulletCount = (ammoMaxStackSize === 1)
+            chamberBulletCount = ammoMaxStackSize === 1
                 ? 1 // Rotating grenade launcher
                 : magTemplate._props.Slots.length; // Shotguns/revolvers. We count the number of camoras as the _max_count of the magazine is 0
         }

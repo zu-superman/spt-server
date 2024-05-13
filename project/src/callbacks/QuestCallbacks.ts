@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { QuestController } from "@spt-aki/controllers/QuestController";
 import { RepeatableQuestController } from "@spt-aki/controllers/RepeatableQuestController";
 import { IEmptyRequestData } from "@spt-aki/models/eft/common/IEmptyRequestData";

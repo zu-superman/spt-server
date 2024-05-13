@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { MinMax } from "@spt-aki/models/common/MinMax";
 import { Difficulty, IBotType } from "@spt-aki/models/eft/common/tables/IBotType";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
@@ -64,12 +63,12 @@ export class BotHelper
      */
     public isBotPmc(botRole: string): boolean
     {
-        return (["usec", "bear", "pmc", "sptbear", "sptusec"].includes(botRole?.toLowerCase()));
+        return ["usec", "bear", "pmc", "sptbear", "sptusec"].includes(botRole?.toLowerCase());
     }
 
     public isBotBoss(botRole: string): boolean
     {
-        return this.botConfig.bosses.some((x) => x.toLowerCase() === botRole?.toLowerCase());
+        return this.botConfig.bosses.some(x => x.toLowerCase() === botRole?.toLowerCase());
     }
 
     public isBotFollower(botRole: string): boolean
@@ -186,7 +185,7 @@ export class BotHelper
     public rollChanceToBePmc(role: string, botConvertMinMax: MinMax): boolean
     {
         return role.toLowerCase() in this.pmcConfig.convertIntoPmcChance
-            && this.randomUtil.getChance100(this.randomUtil.getInt(botConvertMinMax.min, botConvertMinMax.max));
+          && this.randomUtil.getChance100(this.randomUtil.getInt(botConvertMinMax.min, botConvertMinMax.max));
     }
 
     public botRoleIsPmc(botRole: string): boolean
@@ -210,7 +209,7 @@ export class BotHelper
             return null;
         }
 
-        return botEquipConfig.randomisation.find((x) => botLevel >= x.levelRange.min && botLevel <= x.levelRange.max);
+        return botEquipConfig.randomisation.find(x => botLevel >= x.levelRange.min && botLevel <= x.levelRange.max);
     }
 
     /**
@@ -219,7 +218,7 @@ export class BotHelper
      */
     public getRandomizedPmcRole(): string
     {
-        return (this.randomUtil.getChance100(this.pmcConfig.isUsec))
+        return this.randomUtil.getChance100(this.pmcConfig.isUsec)
             ? this.pmcConfig.usecType
             : this.pmcConfig.bearType;
     }
@@ -248,6 +247,6 @@ export class BotHelper
      */
     protected getRandomizedPmcSide(): string
     {
-        return (this.randomUtil.getChance100(this.pmcConfig.isUsec)) ? "Usec" : "Bear";
+        return this.randomUtil.getChance100(this.pmcConfig.isUsec) ? "Usec" : "Bear";
     }
 }

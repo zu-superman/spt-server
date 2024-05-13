@@ -1,9 +1,9 @@
 import { inject, injectable } from "tsyringe";
-
 import { DialogueHelper } from "@spt-aki/helpers/DialogueHelper";
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
 import { TraderHelper } from "@spt-aki/helpers/TraderHelper";
+import { WeightedRandomHelper } from "@spt-aki/helpers/WeightedRandomHelper";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
 import { Item } from "@spt-aki/models/eft/common/tables/IItem";
 import { IGetInsuranceCostRequestData } from "@spt-aki/models/eft/insurance/IGetInsuranceCostRequestData";
@@ -25,8 +25,9 @@ import { MailSendService } from "@spt-aki/services/MailSendService";
 import { PaymentService } from "@spt-aki/services/PaymentService";
 import { RagfairPriceService } from "@spt-aki/services/RagfairPriceService";
 import { HashUtil } from "@spt-aki/utils/HashUtil";
+import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 import { MathUtil } from "@spt-aki/utils/MathUtil";
-import { RandomUtil } from "@spt-aki/utils/RandomUtil";
+import { ProbabilityObject, ProbabilityObjectArray, RandomUtil } from "@spt-aki/utils/RandomUtil";
 import { TimeUtil } from "@spt-aki/utils/TimeUtil";
 
 @injectable()
@@ -39,6 +40,7 @@ export class InsuranceController
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("MathUtil") protected mathUtil: MathUtil,
+        @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("EventOutputHolder") protected eventOutputHolder: EventOutputHolder,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
@@ -47,6 +49,7 @@ export class InsuranceController
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
         @inject("DialogueHelper") protected dialogueHelper: DialogueHelper,
+        @inject("WeightedRandomHelper") protected weightedRandomHelper: WeightedRandomHelper,
         @inject("TraderHelper") protected traderHelper: TraderHelper,
         @inject("PaymentService") protected paymentService: PaymentService,
         @inject("InsuranceService") protected insuranceService: InsuranceService,
@@ -109,7 +112,7 @@ export class InsuranceController
             this.logger.debug(`Found ${profileInsuranceDetails.length} insurance packages in profile ${sessionID}`);
         }
 
-        return profileInsuranceDetails.filter((insured) => insuranceTime >= insured.scheduledTime);
+        return profileInsuranceDetails.filter(insured => insuranceTime >= insured.scheduledTime);
     }
 
     /**
@@ -157,7 +160,7 @@ export class InsuranceController
      */
     protected countAllInsuranceItems(insurance: Insurance[]): number
     {
-        return this.mathUtil.arraySum(insurance.map((ins) => ins.items.length));
+        return this.mathUtil.arraySum(insurance.map(ins => ins.items.length));
     }
 
     /**
@@ -170,11 +173,11 @@ export class InsuranceController
     protected removeInsurancePackageFromProfile(sessionID: string, insPackage: Insurance): void
     {
         const profile = this.saveServer.getProfile(sessionID);
-        profile.insurance = profile.insurance.filter((insurance) =>
+        profile.insurance = profile.insurance.filter(insurance =>
             insurance.traderId !== insPackage.traderId
             || insurance.systemData.date !== insPackage.systemData.date
             || insurance.systemData.time !== insPackage.systemData.time
-            || insurance.systemData.location !== insPackage.systemData.location
+            || insurance.systemData.location !== insPackage.systemData.location,
         );
 
         this.logger.debug(`Removed processed insurance package. Remaining packages: ${profile.insurance.length}`);
@@ -197,8 +200,8 @@ export class InsuranceController
         let parentAttachmentsMap = this.populateParentAttachmentsMap(rootItemParentID, insured, itemsMap);
 
         // Check to see if any regular items are present.
-        const hasRegularItems = Array.from(itemsMap.values()).some((item) =>
-            !this.itemHelper.isAttachmentAttached(item)
+        const hasRegularItems = Array.from(itemsMap.values()).some(item =>
+            !this.itemHelper.isAttachmentAttached(item),
         );
 
         // Process all items that are not attached, attachments; those are handled separately, by value.
@@ -246,7 +249,7 @@ export class InsuranceController
         for (const insuredItem of insured.items)
         {
             // Use the parent ID from the item to get the parent item.
-            const parentItem = insured.items.find((item) => item._id === insuredItem.parentId);
+            const parentItem = insured.items.find(item => item._id === insuredItem.parentId);
 
             // The parent (not the hideout) could not be found. Skip and warn.
             if (!parentItem && insuredItem.parentId !== rootItemParentID)
@@ -448,83 +451,100 @@ export class InsuranceController
      */
     protected processAttachmentByParent(attachments: Item[], traderId: string, toDelete: Set<string>): void
     {
-        const sortedAttachments = this.sortAttachmentsByPrice(attachments);
-        this.logAttachmentsDetails(sortedAttachments);
+        // Create dict of item ids + their flea/handbook price (highest is chosen)
+        const weightedAttachmentByPrice = this.weightAttachmentsByPrice(attachments);
 
-        const successfulRolls = this.countSuccessfulRolls(sortedAttachments, traderId);
-        this.logger.debug(`Number of attachments to be deleted: ${successfulRolls}`);
+        // Get how many attachments we want to pull off parent
+        const countOfAttachmentsToRemove = this.getAttachmentCountToRemove(weightedAttachmentByPrice, traderId);
 
-        this.attachmentDeletionByValue(sortedAttachments, successfulRolls, toDelete);
+        // Create prob array and add all attachments with rouble price as the weight
+        const attachmentsProbabilityArray = new ProbabilityObjectArray<string, number>(this.mathUtil, this.jsonUtil);
+        for (const attachmentTpl of Object.keys(weightedAttachmentByPrice))
+        {
+            attachmentsProbabilityArray.push(
+                new ProbabilityObject(attachmentTpl, weightedAttachmentByPrice[attachmentTpl]),
+            );
+        }
+
+        // Draw x attachments from weighted array to remove from parent, remove from pool after being picked
+        const attachmentIdsToRemove = attachmentsProbabilityArray.draw(countOfAttachmentsToRemove, false);
+        for (const attachmentId of attachmentIdsToRemove)
+        {
+            toDelete.add(attachmentId);
+        }
+
+        this.logAttachmentsBeingRemoved(attachmentIdsToRemove, attachments, weightedAttachmentByPrice);
+
+        this.logger.debug(`Number of attachments to be deleted: ${attachmentIdsToRemove.length}`);
     }
 
-    /**
-     * Sorts the attachment items by their dynamic price in descending order.
-     *
-     * @param attachments The array of attachments items.
-     * @returns An array of items enriched with their max price and common locale-name.
-     */
-    protected sortAttachmentsByPrice(attachments: Item[]): EnrichedItem[]
-    {
-        return attachments.map((item) => ({
-            ...item,
-            name: this.itemHelper.getItemName(item._tpl),
-            dynamicPrice: this.ragfairPriceService.getDynamicItemPrice(item._tpl, this.roubleTpl, item, null, false),
-        })).sort((a, b) => b.dynamicPrice - a.dynamicPrice);
-    }
-
-    /**
-     * Logs the details of each attachment item.
-     *
-     * @param attachments The array of attachment items.
-     */
-    protected logAttachmentsDetails(attachments: EnrichedItem[]): void
+    protected logAttachmentsBeingRemoved(
+        attachmentIdsToRemove: string[],
+        attachments: Item[],
+        attachmentPrices: Record<string, number>,
+    ): void
     {
         let index = 1;
-        for (const attachment of attachments)
+        for (const attachmentId of attachmentIdsToRemove)
         {
-            this.logger.debug(`Attachment ${index}: "${attachment.name}" - Price: ${attachment.dynamicPrice}`);
+            this.logger.debug(
+                `Attachment ${index} Id: ${attachmentId} Tpl: ${
+                    attachments.find(x => x._id === attachmentId)?._tpl
+                } - Price: ${attachmentPrices[attachmentId]}`,
+            );
             index++;
         }
     }
 
-    /**
-     * Counts the number of successful rolls for the attachment items.
-     *
-     * @param attachments The array of attachment items.
-     * @param traderId The ID of the trader that has insured these attachments.
-     * @returns The number of successful rolls.
-     */
-    protected countSuccessfulRolls(attachments: Item[], traderId: string): number
+    protected weightAttachmentsByPrice(attachments: Item[]): Record<string, number>
     {
-        const rolls = Array.from({ length: attachments.length }, () => this.rollForDelete(traderId));
-        return rolls.filter(Boolean).length;
+        const result: Record<string, number> = {};
+
+        // Get a dictionary of item tpls + their rouble price
+        for (const attachment of attachments)
+        {
+            const price = this.ragfairPriceService.getDynamicItemPrice(attachment._tpl, this.roubleTpl);
+            if (price)
+            {
+                result[attachment._id] = Math.round(price);
+            }
+        }
+
+        this.weightedRandomHelper.reduceWeightValues(result);
+
+        return result;
     }
 
     /**
-     * Marks the most valuable attachments for deletion based on the number of successful rolls made.
-     *
-     * @param attachments The array of attachment items.
-     * @param successfulRolls The number of successful rolls.
-     * @param toDelete The array that accumulates the IDs of the items to be deleted.
+     * Get count of items to remove from weapon (take into account trader + price of attachment)
+     * @param weightedAttachmentByPrice Dict of item Tpls and thier rouble price
+     * @param traderId Trader attachment insured against
+     * @returns Attachment count to remove
      */
-    protected attachmentDeletionByValue(
-        attachments: EnrichedItem[],
-        successfulRolls: number,
-        toDelete: Set<string>,
-    ): void
+    protected getAttachmentCountToRemove(weightedAttachmentByPrice: Record<string, number>, traderId: string): number
     {
-        const valuableToDelete = attachments.slice(0, successfulRolls).map(({ _id }) => _id);
+        let removeCount = 0;
 
-        for (const attachmentsId of valuableToDelete)
+        if (this.randomUtil.getChance100(this.insuranceConfig.chanceNoAttachmentsTakenPercent))
         {
-            const valuableChild = attachments.find(({ _id }) => _id === attachmentsId);
-            if (valuableChild)
+            return removeCount;
+        }
+
+        for (const attachmentId of Object.keys(weightedAttachmentByPrice))
+        {
+            // Below min price to be taken, skip
+            if (weightedAttachmentByPrice[attachmentId] < this.insuranceConfig.minAttachmentRoublePriceToBeTaken)
             {
-                const { name, dynamicPrice } = valuableChild;
-                this.logger.debug(`Marked attachment "${name}" for removal - Dyanmic Price: ${dynamicPrice}`);
-                toDelete.add(attachmentsId);
+                continue;
+            }
+
+            if (this.rollForDelete(traderId))
+            {
+                removeCount++;
             }
         }
+
+        return removeCount;
     }
 
     /**
@@ -536,7 +556,7 @@ export class InsuranceController
      */
     protected removeItemsFromInsurance(insured: Insurance, toDelete: Set<string>): void
     {
-        insured.items = insured.items.filter((item) => !toDelete.has(item._id));
+        insured.items = insured.items.filter(item => !toDelete.has(item._id));
     }
 
     /**
@@ -588,7 +608,7 @@ export class InsuranceController
     }
 
     /**
-     * Determines whether a insured item should be removed from the player's inventory based on a random roll and
+     * Determines whether an insured item should be removed from the player's inventory based on a random roll and
      * trader-specific return chance.
      *
      * @param traderId The ID of the trader who insured the item.
@@ -725,6 +745,6 @@ export class InsuranceController
 // Represents an insurance item that has had it's common locale-name and value added to it.
 interface EnrichedItem extends Item
 {
-    name: string;
-    dynamicPrice: number;
+    name: string
+    dynamicPrice: number
 }

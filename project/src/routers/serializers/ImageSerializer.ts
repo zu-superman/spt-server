@@ -1,6 +1,5 @@
 import { IncomingMessage, ServerResponse } from "node:http";
 import { inject, injectable } from "tsyringe";
-
 import { Serializer } from "@spt-aki/di/Serializer";
 import { ImageRouter } from "@spt-aki/routers/ImageRouter";
 

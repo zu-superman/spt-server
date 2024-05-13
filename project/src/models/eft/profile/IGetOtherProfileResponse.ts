@@ -3,50 +3,50 @@ import { Item } from "@spt-aki/models/eft/common/tables/IItem";
 
 export interface IGetOtherProfileResponse
 {
-    id: string;
-    aid: number;
-    info: IOtherProfileInfo;
-    customization: IOtherProfileCustomization;
-    skills: Skills;
-    equipment: IOtherProfileEquipment;
-    achievements: Record<string, number>;
-    favoriteItems: string[];
-    pmcStats: IOtherProfileStats;
-    scavStats: IOtherProfileStats;
+    id: string
+    aid: number
+    info: IOtherProfileInfo
+    customization: IOtherProfileCustomization
+    skills: Skills
+    equipment: IOtherProfileEquipment
+    achievements: Record<string, number>
+    favoriteItems: string[]
+    pmcStats: IOtherProfileStats
+    scavStats: IOtherProfileStats
 }
 
 export interface IOtherProfileInfo
 {
-    nickname: string;
-    side: string;
-    experience: number;
-    memberCategory: number;
-    bannedState: boolean;
-    bannedUntil: number;
-    registrationDate: number;
+    nickname: string
+    side: string
+    experience: number
+    memberCategory: number
+    bannedState: boolean
+    bannedUntil: number
+    registrationDate: number
 }
 
 export interface IOtherProfileCustomization
 {
-    head: string;
-    body: string;
-    feet: string;
-    hands: string;
+    head: string
+    body: string
+    feet: string
+    hands: string
 }
 
 export interface IOtherProfileEquipment
 {
-    Id: string;
-    Items: Item[];
+    Id: string
+    Items: Item[]
 }
 
 export interface IOtherProfileStats
 {
-    eft: IOtherProfileSubStats;
+    eft: IOtherProfileSubStats
 }
 
 export interface IOtherProfileSubStats
 {
-    totalInGameTime: number;
-    overAllCounters: OverallCounters;
+    totalInGameTime: number
+    overAllCounters: OverallCounters
 }

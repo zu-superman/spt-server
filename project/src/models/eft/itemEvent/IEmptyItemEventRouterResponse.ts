@@ -2,5 +2,5 @@ import { IItemEventRouterBase } from "@spt-aki/models/eft/itemEvent/IItemEventRo
 
 export interface IEmptyItemEventRouterResponse extends IItemEventRouterBase
 {
-    profileChanges: "";
+    profileChanges: ""
 }

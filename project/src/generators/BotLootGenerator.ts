@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { BotWeaponGenerator } from "@spt-aki/generators/BotWeaponGenerator";
 import { BotGeneratorHelper } from "@spt-aki/helpers/BotGeneratorHelper";
 import { BotHelper } from "@spt-aki/helpers/BotHelper";
@@ -85,6 +84,24 @@ export class BotLootGenerator
     {
         // Limits on item types to be added as loot
         const itemCounts = botJsonTemplate.generation.items;
+
+        if(!itemCounts.backpackLoot.weights
+            || !itemCounts.pocketLoot.weights
+            || !itemCounts.vestLoot.weights
+            || !itemCounts.specialItems.weights
+            || !itemCounts.healing.weights
+            || !itemCounts.drugs.weights
+            || !itemCounts.food.weights
+            || !itemCounts.drink.weights
+            || !itemCounts.currency.weights
+            || !itemCounts.stims.weights
+            || !itemCounts.grenades.weights
+        )
+        {
+            this.logger.warning(`Unable to generate bot loot for ${botRole} as bot.generation.items lacks data, skipping`);
+
+            return;
+        }
 
         const backpackLootCount = Number(
             this.weightedRandomHelper.getWeightedValue<number>(itemCounts.backpackLoot.weights),
@@ -292,7 +309,7 @@ export class BotLootGenerator
         // Secure
 
         // only add if not a pmc or is pmc and flag is true
-        if (!isPmc || (isPmc && this.pmcConfig.addSecureContainerLootFromBotConfig))
+        if (!isPmc || isPmc && this.pmcConfig.addSecureContainerLootFromBotConfig)
         {
             this.addLootFromPool(
                 this.botLootCacheService.getLootFromCache(botRole, isPmc, LootCacheType.SECURE, botJsonTemplate),
@@ -317,12 +334,12 @@ export class BotLootGenerator
     {
         const result = [EquipmentSlots.POCKETS];
 
-        if (botInventory.items.find((item) => item.slotId === EquipmentSlots.TACTICAL_VEST))
+        if (botInventory.items.find(item => item.slotId === EquipmentSlots.TACTICAL_VEST))
         {
             result.push(EquipmentSlots.TACTICAL_VEST);
         }
 
-        if (botInventory.items.find((item) => item.slotId === EquipmentSlots.BACKPACK))
+        if (botInventory.items.find(item => item.slotId === EquipmentSlots.BACKPACK))
         {
             result.push(EquipmentSlots.BACKPACK);
         }
@@ -476,7 +493,7 @@ export class BotLootGenerator
                                 );
                             }
 
-                            itemWithChildrenToAdd.push(...itemsToAdd.flatMap((moneyStack) => moneyStack));
+                            itemWithChildrenToAdd.push(...itemsToAdd.flatMap(moneyStack => moneyStack));
                         }
                     }
                 }

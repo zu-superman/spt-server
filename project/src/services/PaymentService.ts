@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { HandbookHelper } from "@spt-aki/helpers/HandbookHelper";
 import { InventoryHelper } from "@spt-aki/helpers/InventoryHelper";
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
@@ -53,13 +52,13 @@ export class PaymentService
         const trader = this.traderHelper.getTrader(request.tid, sessionID);
 
         // Track the amounts of each type of currency involved in the trade.
-        const currencyAmounts: { [key: string]: number; } = {};
+        const currencyAmounts: { [key: string]: number } = {};
 
         // Delete barter items and track currencies
         for (const index in request.scheme_items)
         {
             // Find the corresponding item in the player's inventory.
-            const item = pmcData.Inventory.items.find((i) => i._id === request.scheme_items[index].id);
+            const item = pmcData.Inventory.items.find(i => i._id === request.scheme_items[index].id);
             if (item !== undefined)
             {
                 if (!this.paymentHelper.isMoneyTpl(item._tpl))
@@ -397,7 +396,7 @@ export class PaymentService
      */
     protected isInStash(itemId: string, inventoryItems: Item[], playerStashId: string): boolean
     {
-        const itemParent = inventoryItems.find((x) => x._id === itemId);
+        const itemParent = inventoryItems.find(x => x._id === itemId);
 
         if (itemParent)
         {

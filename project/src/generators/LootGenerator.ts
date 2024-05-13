@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { InventoryHelper } from "@spt-aki/helpers/InventoryHelper";
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { PresetHelper } from "@spt-aki/helpers/PresetHelper";
@@ -21,7 +20,7 @@ import { HashUtil } from "@spt-aki/utils/HashUtil";
 import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 import { RandomUtil } from "@spt-aki/utils/RandomUtil";
 
-type ItemLimit = { current: number; max: number; };
+type ItemLimit = { current: number, max: number };
 
 @injectable()
 export class LootGenerator
@@ -74,8 +73,8 @@ export class LootGenerator
         if (desiredWeaponCrateCount > 0)
         {
             // Get list of all sealed containers from db
-            const sealedWeaponContainerPool = Object.values(tables.templates.items).filter((x) =>
-                x._name.includes("event_container_airdrop")
+            const sealedWeaponContainerPool = Object.values(tables.templates.items).filter(x =>
+                x._name.includes("event_container_airdrop"),
             );
 
             for (let index = 0; index < desiredWeaponCrateCount; index++)
@@ -92,11 +91,11 @@ export class LootGenerator
         }
 
         // Get items from items.json that have a type of item + not in global blacklist + basetype is in whitelist
-        const items = Object.entries(tables.templates.items).filter((x) =>
+        const items = Object.entries(tables.templates.items).filter(x =>
             !itemBlacklist.has(x[1]._id)
             && x[1]._type.toLowerCase() === "item"
             && !x[1]._props.QuestItem
-            && options.itemTypeWhitelist.includes(x[1]._parent)
+            && options.itemTypeWhitelist.includes(x[1]._parent),
         );
 
         if (items.length > 0)
@@ -122,8 +121,8 @@ export class LootGenerator
         );
         if (randomisedWeaponPresetCount > 0)
         {
-            const weaponDefaultPresets = globalDefaultPresets.filter((preset) =>
-                this.itemHelper.isOfBaseclass(preset._encyclopedia, BaseClasses.WEAPON)
+            const weaponDefaultPresets = globalDefaultPresets.filter(preset =>
+                this.itemHelper.isOfBaseclass(preset._encyclopedia, BaseClasses.WEAPON),
             );
 
             if (weaponDefaultPresets.length > 0)
@@ -153,11 +152,11 @@ export class LootGenerator
         );
         if (randomisedArmorPresetCount > 0)
         {
-            const armorDefaultPresets = globalDefaultPresets.filter((preset) =>
-                this.itemHelper.armorItemCanHoldMods(preset._encyclopedia)
+            const armorDefaultPresets = globalDefaultPresets.filter(preset =>
+                this.itemHelper.armorItemCanHoldMods(preset._encyclopedia),
             );
-            const levelFilteredArmorPresets = armorDefaultPresets.filter((armor) =>
-                this.armorIsDesiredProtectionLevel(armor, options)
+            const levelFilteredArmorPresets = armorDefaultPresets.filter(armor =>
+                this.armorIsDesiredProtectionLevel(armor, options),
             );
 
             // Add some armors to rewards
@@ -192,21 +191,21 @@ export class LootGenerator
      */
     protected armorIsDesiredProtectionLevel(armor: IPreset, options: LootRequest): boolean
     {
-        const frontPlate = armor._items.find((mod) => mod?.slotId?.toLowerCase() === "front_plate");
+        const frontPlate = armor._items.find(mod => mod?.slotId?.toLowerCase() === "front_plate");
         if (frontPlate)
         {
             const plateDb = this.itemHelper.getItem(frontPlate._tpl);
             return options.armorLevelWhitelist.includes(Number.parseInt(plateDb[1]._props.armorClass as any));
         }
 
-        const helmetTop = armor._items.find((mod) => mod?.slotId?.toLowerCase() === "helmet_top");
+        const helmetTop = armor._items.find(mod => mod?.slotId?.toLowerCase() === "helmet_top");
         if (helmetTop)
         {
             const plateDb = this.itemHelper.getItem(helmetTop._tpl);
             return options.armorLevelWhitelist.includes(Number.parseInt(plateDb[1]._props.armorClass as any));
         }
 
-        const softArmorFront = armor._items.find((mod) => mod?.slotId?.toLowerCase() === "soft_armor_front");
+        const softArmorFront = armor._items.find(mod => mod?.slotId?.toLowerCase() === "soft_armor_front");
         if (softArmorFront)
         {
             const plateDb = this.itemHelper.getItem(softArmorFront._tpl);
@@ -242,7 +241,7 @@ export class LootGenerator
      */
     protected findAndAddRandomItemToLoot(
         items: [string, ITemplateItem][],
-        itemTypeCounts: Record<string, { current: number; max: number; }>,
+        itemTypeCounts: Record<string, { current: number, max: number }>,
         options: LootRequest,
         result: LootItem[],
     ): boolean
@@ -317,7 +316,7 @@ export class LootGenerator
      */
     protected findAndAddRandomPresetToLoot(
         presetPool: IPreset[],
-        itemTypeCounts: Record<string, { current: number; max: number; }>,
+        itemTypeCounts: Record<string, { current: number, max: number }>,
         itemBlacklist: string[],
         result: LootItem[],
     ): boolean
@@ -408,7 +407,7 @@ export class LootGenerator
         }
 
         // Get weapon preset - default or choose a random one from globals.json preset pool
-        let chosenWeaponPreset = (containerSettings.defaultPresetsOnly)
+        let chosenWeaponPreset = containerSettings.defaultPresetsOnly
             ? this.presetHelper.getDefaultPreset(chosenWeaponTpl)
             : this.randomUtil.getArrayValue(this.presetHelper.getPresets(chosenWeaponTpl));
 
@@ -473,7 +472,7 @@ export class LootGenerator
 
                 // Need to find boxes that matches weapons caliber
                 const weaponCaliber = weaponDetailsDb._props.ammoCaliber;
-                const ammoBoxesMatchingCaliber = ammoBoxesDetails.filter((x) => x._props.ammoCaliber === weaponCaliber);
+                const ammoBoxesMatchingCaliber = ammoBoxesDetails.filter(x => x._props.ammoCaliber === weaponCaliber);
                 if (ammoBoxesMatchingCaliber.length === 0)
                 {
                     this.logger.debug(`No ammo box with caliber ${weaponCaliber} found, skipping`);
@@ -493,12 +492,12 @@ export class LootGenerator
             }
 
             // Get all items of the desired type + not quest items + not globally blacklisted
-            const rewardItemPool = Object.values(this.databaseServer.getTables().templates.items).filter((x) =>
+            const rewardItemPool = Object.values(this.databaseServer.getTables().templates.items).filter(x =>
                 x._parent === rewardTypeId
                 && x._type.toLowerCase() === "item"
                 && !this.itemFilterService.isItemBlacklisted(x._id)
-                && (!(containerSettings.allowBossItems || this.itemFilterService.isBossItem(x._id)))
-                && !x._props.QuestItem
+                && !(containerSettings.allowBossItems || this.itemFilterService.isBossItem(x._id))
+                && !x._props.QuestItem,
             );
 
             if (rewardItemPool.length === 0)
@@ -547,8 +546,8 @@ export class LootGenerator
             }
 
             // Get items that fulfil reward type criteria from items that fit on gun
-            const relatedItems = linkedItemsToWeapon.filter((x) =>
-                x._parent === rewardTypeId && !this.itemFilterService.isItemBlacklisted(x._id)
+            const relatedItems = linkedItemsToWeapon.filter(x =>
+                x._parent === rewardTypeId && !this.itemFilterService.isItemBlacklisted(x._id),
             );
             if (!relatedItems || relatedItems.length === 0)
             {

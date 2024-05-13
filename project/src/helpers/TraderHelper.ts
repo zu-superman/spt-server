@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { HandbookHelper } from "@spt-aki/helpers/HandbookHelper";
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
@@ -109,7 +108,7 @@ export class TraderHelper
         }
 
         // Find specific assort in traders data
-        const purchasedAssort = traderAssorts.items.find((item) => item._id === assortId);
+        const purchasedAssort = traderAssorts.items.find(item => item._id === assortId);
         if (!purchasedAssort)
         {
             this.logger.debug(`No assort ${assortId} on trader: ${traderId} found`);
@@ -130,8 +129,8 @@ export class TraderHelper
     {
         const account = this.saveServer.getProfile(sessionID);
         const pmcData = this.profileHelper.getPmcProfile(sessionID);
-        const rawProfileTemplate: ProfileTraderTemplate =
-            this.databaseServer.getTables().templates.profiles[account.info.edition][pmcData.Info.Side.toLowerCase()]
+        const rawProfileTemplate: ProfileTraderTemplate
+            = this.databaseServer.getTables().templates.profiles[account.info.edition][pmcData.Info.Side.toLowerCase()]
                 .trader;
 
         pmcData.TradersInfo[traderID] = {
@@ -238,9 +237,9 @@ export class TraderHelper
             const loyalty = loyaltyLevels[level];
 
             if (
-                (loyalty.minLevel <= pmcData.Info.Level
-                    && loyalty.minSalesSum <= pmcData.TradersInfo[traderID].salesSum
-                    && loyalty.minStanding <= pmcData.TradersInfo[traderID].standing) && targetLevel < 4
+                loyalty.minLevel <= pmcData.Info.Level
+                && loyalty.minSalesSum <= pmcData.TradersInfo[traderID].salesSum
+                && loyalty.minStanding <= pmcData.TradersInfo[traderID].standing && targetLevel < 4
             )
             {
                 // level reached
@@ -271,7 +270,7 @@ export class TraderHelper
      */
     public getTraderUpdateSeconds(traderId: string): number
     {
-        const traderDetails = this.traderConfig.updateTime.find((x) => x.traderId === traderId);
+        const traderDetails = this.traderConfig.updateTime.find(x => x.traderId === traderId);
         if (!traderDetails || traderDetails.seconds.min === undefined || traderDetails.seconds.max === undefined)
         {
             this.logger.warning(
@@ -319,7 +318,7 @@ export class TraderHelper
      */
     public addTraderPurchasesToPlayerProfile(
         sessionID: string,
-        newPurchaseDetails: { items: { itemId: string; count: number; }[]; traderId: string; },
+        newPurchaseDetails: { items: { itemId: string, count: number }[], traderId: string },
         itemPurchased: Item,
     ): void
     {
@@ -353,7 +352,7 @@ export class TraderHelper
 
             if (
                 profile.traderPurchases[traderId][purchasedItem.itemId].count + purchasedItem.count
-                    > itemPurchased.upd.BuyRestrictionMax
+                > itemPurchased.upd.BuyRestrictionMax
             )
             {
                 throw new Error("Unable to purchase item, Purchase limit reached");
@@ -398,7 +397,7 @@ export class TraderHelper
             }
 
             // Get all item assorts that have parentid of hideout (base item and not a mod of other item)
-            for (const item of traderAssorts.items.filter((x) => x.parentId === "hideout"))
+            for (const item of traderAssorts.items.filter(x => x.parentId === "hideout"))
             {
                 // Get barter scheme (contains cost of item)
                 const barterScheme = traderAssorts.barter_scheme[item._id][0][0];
@@ -479,7 +478,7 @@ export class TraderHelper
      */
     public getTraderById(traderId: string): Traders
     {
-        const keys = Object.keys(Traders).filter((x) => Traders[x] === traderId);
+        const keys = Object.keys(Traders).filter(x => Traders[x] === traderId);
 
         if (keys.length === 0)
         {
@@ -524,7 +523,7 @@ export class TraderHelper
      */
     public traderEnumHasKey(key: string): boolean
     {
-        return Object.keys(Traders).some((x) => x === key);
+        return Object.keys(Traders).some(x => x === key);
     }
 
     /**
@@ -534,6 +533,6 @@ export class TraderHelper
      */
     public traderEnumHasValue(traderId: string): boolean
     {
-        return Object.values(Traders).some((x) => x === traderId);
+        return Object.values(Traders).some(x => x === traderId);
     }
 }

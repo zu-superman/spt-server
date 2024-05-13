@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { WeatherController } from "@spt-aki/controllers/WeatherController";
 import { IEmptyRequestData } from "@spt-aki/models/eft/common/IEmptyRequestData";
 import { IGetBodyResponseData } from "@spt-aki/models/eft/httpResponse/IGetBodyResponseData";

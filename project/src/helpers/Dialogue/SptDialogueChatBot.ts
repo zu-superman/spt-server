@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { IDialogueChatBot } from "@spt-aki/helpers/Dialogue/IDialogueChatBot";
 import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
 import { ISendMessageRequest } from "@spt-aki/models/eft/dialog/ISendMessageRequest";

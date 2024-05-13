@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { ApplicationContext } from "@spt-aki/context/ApplicationContext";
 import { ContextVariableType } from "@spt-aki/context/ContextVariableType";
 import { BotGenerator } from "@spt-aki/generators/BotGenerator";
@@ -61,7 +60,7 @@ export class BotController
      */
     public getBotPresetGenerationLimit(type: string): number
     {
-        const value = this.botConfig.presetBatch[(type === "assaultGroup") ? "assault" : type];
+        const value = this.botConfig.presetBatch[type === "assaultGroup" ? "assault" : type];
 
         if (!value)
         {
@@ -147,7 +146,7 @@ export class BotController
         const result = {};
 
         const botDb = this.databaseServer.getTables().bots.types;
-        const botTypes = Object.keys(WildSpawnTypeNumber).filter((v) => Number.isNaN(Number(v)));
+        const botTypes = Object.keys(WildSpawnTypeNumber).filter(v => Number.isNaN(Number(v)));
         for (let botType of botTypes)
         {
             const enumType = botType.toLowerCase();

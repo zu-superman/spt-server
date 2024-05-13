@@ -1,6 +1,5 @@
 import http, { IncomingMessage, ServerResponse, Server } from "node:http";
 import { inject, injectAll, injectable } from "tsyringe";
-
 import { ApplicationContext } from "@spt-aki/context/ApplicationContext";
 import { ContextVariableType } from "@spt-aki/context/ContextVariableType";
 import { HttpServerHelper } from "@spt-aki/helpers/HttpServerHelper";
@@ -9,8 +8,8 @@ import { IHttpConfig } from "@spt-aki/models/spt/config/IHttpConfig";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt-aki/servers/ConfigServer";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
-import { WebSocketServer } from "@spt-aki/servers/WebSocketServer";
 import { IHttpListener } from "@spt-aki/servers/http/IHttpListener";
+import { WebSocketServer } from "@spt-aki/servers/WebSocketServer";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
 
 @injectable()
@@ -80,9 +79,14 @@ export class HttpServer
         const sessionId = this.getCookies(req).PHPSESSID;
         this.applicationContext.addValue(ContextVariableType.SESSION_ID, sessionId);
 
+        // Extract headers for original IP detection
+        const realIp = req.headers["x-real-ip"] as string;
+        const forwardedFor = req.headers["x-forwarded-for"] as string;
+        const clientIp = realIp || (forwardedFor ? forwardedFor.split(",")[0].trim() : req.socket.remoteAddress);
+
         if (this.httpConfig.logRequests)
         {
-            const isLocalRequest = this.isLocalRequest(req.socket.remoteAddress);
+            const isLocalRequest = this.isLocalRequest(clientIp);
             if (typeof isLocalRequest !== "undefined")
             {
                 if (isLocalRequest)
@@ -92,7 +96,7 @@ export class HttpServer
                 else
                 {
                     this.logger.info(this.localisationService.getText("client_request_ip", {
-                        ip: req.socket.remoteAddress,
+                        ip: clientIp,
                         url: req.url.replaceAll("/", "\\"), // Localisation service escapes `/` into hex code `&#x2f;`
                     }));
                 }
@@ -122,8 +126,8 @@ export class HttpServer
         }
 
         return remoteAddress.startsWith("127.0.0")
-            || remoteAddress.startsWith("192.168.")
-            || remoteAddress.startsWith("localhost");
+          || remoteAddress.startsWith("192.168.")
+          || remoteAddress.startsWith("localhost");
     }
 
     protected getCookies(req: IncomingMessage): Record<string, string>

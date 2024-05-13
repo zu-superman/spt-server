@@ -928,7 +928,7 @@ describe("InsuranceController", () =>
 
     describe("processAttachmentByParent", () =>
     {
-        it("should handle sorting, rolling, and deleting attachments by calling helper methods", () =>
+        it("should handle weighing and counting of attachments by calling helper methods", () =>
         {
             const insured = insuranceFixture[0];
             const itemsMap = insuranceController.itemHelper.generateItemsMap(insured.items);
@@ -941,49 +941,24 @@ describe("InsuranceController", () =>
             const toDelete = new Set<string>();
 
             // Mock helper methods.
-            const mockSortAttachmentsByPrice = vi.spyOn(insuranceController, "sortAttachmentsByPrice");
-            const mockCountSuccessfulRolls = vi.spyOn(insuranceController, "countSuccessfulRolls").mockReturnValue(4);
-            const mockAttachmentDeletionByValue = vi.spyOn(insuranceController, "attachmentDeletionByValue");
+            const weightAttachmentsByPrice = vi.spyOn(insuranceController, "weightAttachmentsByPrice");
+            const getAttachmentCountToRemove = vi.spyOn(insuranceController, "getAttachmentCountToRemove")
+                .mockReturnValue(4);
+            const logAttachmentsBeingRemoved = vi.spyOn(insuranceController, "logAttachmentsBeingRemoved");
 
             // Execute the method.
             insuranceController.processAttachmentByParent(attachments, insured.traderId, toDelete);
 
             // Verify that helper methods are called.
-            expect(mockSortAttachmentsByPrice).toHaveBeenCalledWith(attachments);
-            expect(mockCountSuccessfulRolls).toHaveBeenCalled();
-            expect(mockAttachmentDeletionByValue).toHaveBeenCalled();
-        });
-
-        it("should log attachment details and number of attachments to be deleted", () =>
-        {
-            const insured = insuranceFixture[0];
-            const itemsMap = insuranceController.itemHelper.generateItemsMap(insured.items);
-            const parentAttachmentsMap = insuranceController.populateParentAttachmentsMap(
-                insuranceController.hashUtil.generate(),
-                insured,
-                itemsMap,
-            );
-            const attachments = parentAttachmentsMap.entries().next().value;
-            const toDelete = new Set<string>();
-            const successfulRolls = 4;
-
-            // Mock helper methods.
-            const mockLogAttachmentsDetails = vi.spyOn(insuranceController, "logAttachmentsDetails");
-            vi.spyOn(insuranceController, "countSuccessfulRolls").mockReturnValue(successfulRolls);
-            const mockLoggerDebug = vi.spyOn(insuranceController.logger, "debug").mockImplementation(vi.fn());
-
-            // Execute the method.
-            insuranceController.processAttachmentByParent(attachments, insured.traderId, toDelete);
-
-            // Verify that the logs were called/written.
-            expect(mockLogAttachmentsDetails).toBeCalled();
-            expect(mockLoggerDebug).toHaveBeenCalledWith(`Number of attachments to be deleted: ${successfulRolls}`);
+            expect(weightAttachmentsByPrice).toHaveBeenCalledWith(attachments);
+            expect(getAttachmentCountToRemove).toHaveBeenCalled();
+            expect(logAttachmentsBeingRemoved).toHaveBeenCalled();
         });
     });
 
-    describe("sortAttachmentsByPrice", () =>
+    describe("getAttachmentCountToRemove", () =>
     {
-        it("should sort the attachments array by dynamicPrice in descending order", () =>
+        it("should handle returning a count of attachments that should be removed that is below the total attachment count", () =>
         {
             const insured = insuranceFixture[0];
             const itemsMap = insuranceController.itemHelper.generateItemsMap(insured.items);
@@ -995,20 +970,12 @@ describe("InsuranceController", () =>
             const attachments = parentAttachmentsMap.entries().next().value;
             const attachmentCount = attachments.length;
 
-            // Execute the method.
-            const sortedAttachments = insuranceController.sortAttachmentsByPrice(attachments);
+            const result = insuranceController.getAttachmentCountToRemove(attachments, insured.traderId);
 
-            // Verify the length of the sorted attachments array is unchanged
-            expect(sortedAttachments.length).toBe(attachmentCount);
-
-            // Verify that the attachments are sorted by dynamicPrice in descending order
-            for (let i = 1; i < sortedAttachments.length; i++)
-            {
-                expect(sortedAttachments[i - 1].dynamicPrice).toBeGreaterThanOrEqual(sortedAttachments[i].dynamicPrice);
-            }
+            expect(result).lessThanOrEqual(attachmentCount);
         });
 
-        it("should place attachments with null dynamicPrice at the bottom of the sorted list", () =>
+        it("should handle returning 0 when chanceNoAttachmentsTakenPercent is 100%", () =>
         {
             const insured = insuranceFixture[0];
             const itemsMap = insuranceController.itemHelper.generateItemsMap(insured.items);
@@ -1018,133 +985,36 @@ describe("InsuranceController", () =>
                 itemsMap,
             );
             const attachments = parentAttachmentsMap.entries().next().value;
+            insuranceController.insuranceConfig.chanceNoAttachmentsTakenPercent = 100;
 
-            // Set the dynamicPrice of the first attachment to null.
-            vi.spyOn(insuranceController.ragfairPriceService, "getDynamicItemPrice").mockReturnValue(666)
-                .mockReturnValueOnce(null);
+            const result = insuranceController.getAttachmentCountToRemove(attachments, insured.traderId);
 
-            // Execute the method.
-            const sortedAttachments = insuranceController.sortAttachmentsByPrice(attachments);
-
-            // Verify that the attachments with null dynamicPrice are at the bottom of the list
-            const nullPriceAttachments = sortedAttachments.slice(-1);
-            for (const attachment of nullPriceAttachments)
-            {
-                expect(attachment.dynamicPrice).toBeNull();
-            }
-
-            // Verify that the rest of the attachments are sorted by dynamicPrice in descending order
-            for (let i = 1; i < sortedAttachments.length - 2; i++)
-            {
-                expect(sortedAttachments[i - 1].dynamicPrice).toBeGreaterThanOrEqual(sortedAttachments[i].dynamicPrice);
-            }
-        });
-    });
-
-    describe("logAttachmentsDetails", () =>
-    {
-        it("should log details for each attachment", () =>
-        {
-            const attachments = [{ _id: "item1", name: "Item 1", dynamicPrice: 100 }, {
-                _id: "item2",
-                name: "Item 2",
-                dynamicPrice: 200,
-            }];
-
-            // Mock the logger.debug function.
-            const loggerDebugSpy = vi.spyOn(insuranceController.logger, "debug");
-
-            // Execute the method.
-            insuranceController.logAttachmentsDetails(attachments);
-
-            // Verify that logger.debug was called correctly.
-            expect(loggerDebugSpy).toHaveBeenCalledTimes(2);
-            expect(loggerDebugSpy).toHaveBeenNthCalledWith(1, "Attachment 1: \"Item 1\" - Price: 100");
-            expect(loggerDebugSpy).toHaveBeenNthCalledWith(2, "Attachment 2: \"Item 2\" - Price: 200");
-        });
-
-        it("should not log anything when there are no attachments", () =>
-        {
-            const attachments = [];
-
-            // Mock the logger.debug function.
-            const loggerDebugSpy = vi.spyOn(insuranceController.logger, "debug");
-
-            // Execute the method.
-            insuranceController.logAttachmentsDetails(attachments);
-
-            // Verify that logger.debug was called correctly.
-            expect(loggerDebugSpy).not.toHaveBeenCalled();
-        });
-    });
-
-    describe("countSuccessfulRolls", () =>
-    {
-        it("should count the number of successful rolls made in the rollForDelete method", () =>
-        {
-            const insured = insuranceFixture[0];
-            const itemsMap = insuranceController.itemHelper.generateItemsMap(insured.items);
-            const parentAttachmentsMap = insuranceController.populateParentAttachmentsMap(
-                insuranceController.hashUtil.generate(),
-                insured,
-                itemsMap,
-            );
-            const attachments = parentAttachmentsMap.values().next().value;
-
-            // Mock rollForDelete to return true for the first two attachments.
-            const mockRollForDelete = vi.spyOn(insuranceController, "rollForDelete").mockReturnValue(false)
-                .mockReturnValueOnce(true).mockReturnValueOnce(true);
-
-            // Execute the method.
-            const result = insuranceController.countSuccessfulRolls(attachments, insured.traderId);
-
-            // Verify that two successful rolls were counted.
-            expect(mockRollForDelete).toHaveBeenCalledTimes(attachments.length);
-            expect(result).toBe(2);
-        });
-
-        it("should return zero if no successful rolls were made in the rollForDelete method", () =>
-        {
-            const insured = insuranceFixture[0];
-            const itemsMap = insuranceController.itemHelper.generateItemsMap(insured.items);
-            const parentAttachmentsMap = insuranceController.populateParentAttachmentsMap(
-                insuranceController.hashUtil.generate(),
-                insured,
-                itemsMap,
-            );
-            const attachments = parentAttachmentsMap.values().next().value;
-
-            // Mock rollForDelete to return false.
-            const mockRollForDelete = vi.spyOn(insuranceController, "rollForDelete").mockReturnValue(false);
-
-            // Execute the method.
-            const result = insuranceController.countSuccessfulRolls(attachments, insured.traderId);
-
-            // Verify that zero successful rolls were counted.
-            expect(mockRollForDelete).toHaveBeenCalledTimes(attachments.length);
             expect(result).toBe(0);
         });
 
-        it("should return zero if there are no attachments", () =>
+        it("should handle returning 0 when all attachments are below configured threshold price", () =>
         {
             const insured = insuranceFixture[0];
-            const attachments = [];
+            const itemsMap = insuranceController.itemHelper.generateItemsMap(insured.items);
+            const parentAttachmentsMap = insuranceController.populateParentAttachmentsMap(
+                insuranceController.hashUtil.generate(),
+                insured,
+                itemsMap,
+            );
+            const attachments = parentAttachmentsMap.values().next().value;
+            insuranceController.insuranceConfig.minAttachmentRoublePriceToBeTaken = 2;
+            vi.spyOn(insuranceController.ragfairPriceService, "getDynamicItemPrice").mockReturnValue(1);
 
-            // Spy on rollForDelete to ensure it is not called.
-            const mockRollForDelete = vi.spyOn(insuranceController, "rollForDelete");
+            const weightedAttachments = insuranceController.weightAttachmentsByPrice(attachments);
+            const result = insuranceController.getAttachmentCountToRemove(weightedAttachments, insured.traderId);
 
-            // Execute the method.
-            const result = insuranceController.countSuccessfulRolls(attachments, insured.traderId);
-
-            // Verify that zero successful rolls were returned.
-            expect(mockRollForDelete).not.toHaveBeenCalled();
             expect(result).toBe(0);
         });
     });
 
-    describe("attachmentDeletionByValue", () =>
+    describe("weightAttachmentsByPrice", () =>
     {
-        it("should add the correct number of attachments to the toDelete set", () =>
+        it("Should create a dictionary of 2 items with weights of 1 for each", () =>
         {
             const insured = insuranceFixture[0];
             const itemsMap = insuranceController.itemHelper.generateItemsMap(insured.items);
@@ -1155,57 +1025,11 @@ describe("InsuranceController", () =>
             );
             const attachments = parentAttachmentsMap.values().next().value;
 
-            const successfulRolls = 2;
-            const toDelete = new Set<string>();
+            vi.spyOn(insuranceController.ragfairPriceService, "getDynamicItemPrice").mockReturnValue(1);
 
-            // Execute the method.
-            insuranceController.attachmentDeletionByValue(attachments, successfulRolls, toDelete);
-
-            // Should add the first two valuable attachments to the toDelete set.
-            expect(toDelete.size).toEqual(successfulRolls);
-        });
-
-        it("should not add any attachments to toDelete if successfulRolls is zero", () =>
-        {
-            const insured = insuranceFixture[0];
-            const itemsMap = insuranceController.itemHelper.generateItemsMap(insured.items);
-            const parentAttachmentsMap = insuranceController.populateParentAttachmentsMap(
-                insuranceController.hashUtil.generate(),
-                insured,
-                itemsMap,
-            );
-            const attachments = parentAttachmentsMap.values().next().value;
-
-            const successfulRolls = 0;
-            const toDelete = new Set<string>();
-
-            // Execute the method.
-            insuranceController.attachmentDeletionByValue(attachments, successfulRolls, toDelete);
-
-            // Should be empty.
-            expect(toDelete.size).toEqual(successfulRolls);
-        });
-
-        it("should add all attachments to toDelete if successfulRolls is greater than the number of attachments", () =>
-        {
-            const insured = insuranceFixture[0];
-            const itemsMap = insuranceController.itemHelper.generateItemsMap(insured.items);
-            const parentAttachmentsMap = insuranceController.populateParentAttachmentsMap(
-                insuranceController.hashUtil.generate(),
-                insured,
-                itemsMap,
-            );
-            const attachments = parentAttachmentsMap.values().next().value;
-
-            const successfulRolls = 999;
-            const toDelete = new Set<string>();
-
-            // Execute the method.
-            insuranceController.attachmentDeletionByValue(attachments, successfulRolls, toDelete);
-
-            // Should be empty.
-            expect(toDelete.size).toBeLessThan(successfulRolls);
-            expect(toDelete.size).toEqual(attachments.length);
+            const result = insuranceController.weightAttachmentsByPrice(attachments);
+            expect(Object.keys(result).length).toBe(2);
+            expect(Object.values(result)).toStrictEqual([1, 1]);
         });
     });
 

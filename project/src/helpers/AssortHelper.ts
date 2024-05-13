@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { QuestHelper } from "@spt-aki/helpers/QuestHelper";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
@@ -77,7 +76,7 @@ export class AssortHelper
     protected getQuestIdAndStatusThatShowAssort(
         mergedQuestAssorts: Record<string, Record<string, string>>,
         assortId: string,
-    ): { questId: string; status: QuestStatus[]; }
+    ): { questId: string, status: QuestStatus[] }
     {
         if (assortId in mergedQuestAssorts.started)
         {

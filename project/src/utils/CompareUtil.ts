@@ -42,7 +42,7 @@ export class CompareUtil
                 {
                     return false;
                 }
-                return arr1.every((vOf1) => arr2.find((vOf2) => this.recursiveCompare(vOf1, vOf2)));
+                return arr1.every(vOf1 => arr2.find(vOf2 => this.recursiveCompare(vOf1, vOf2)));
             }
             for (const propOf1 in v1)
             {
@@ -57,6 +57,7 @@ export class CompareUtil
         {
             return v1 === v2;
         }
-        throw new Error(`could not detect type match for ${typeOfv1} and ${typeOfv2}`);
+
+        return false;
     }
 }

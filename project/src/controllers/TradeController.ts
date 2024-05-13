@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
 import { TradeHelper } from "@spt-aki/helpers/TradeHelper";
@@ -294,7 +293,7 @@ export class TradeController
             this.traderHelper.getTraderById(trader),
             MessageType.MESSAGE_WITH_ITEMS,
             this.randomUtil.getArrayValue(this.databaseServer.getTables().traders[trader].dialogue.soldItems),
-            curencyReward.flatMap((x) => x),
+            curencyReward.flatMap(x => x),
             this.timeUtil.getHoursAsSeconds(72),
         );
     }
@@ -320,12 +319,12 @@ export class TradeController
         for (const itemToSell of itemWithChildren)
         {
             const itemDetails = this.itemHelper.getItem(itemToSell._tpl);
-            if (
-                !(itemDetails[0]
-                    && this.itemHelper.isOfBaseclasses(itemDetails[1]._id, traderDetails.items_buy.category))
-            )
+            if (!(itemDetails[0] && this.itemHelper.isOfBaseclasses(
+                itemDetails[1]._id,
+                traderDetails.items_buy.category,
+            )))
             {
-                // Skip if tpl isnt item OR item doesn't fulfill match traders buy categories
+                // Skip if tpl isn't item OR item doesn't fulfil match traders buy categories
                 continue;
             }
 

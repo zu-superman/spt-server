@@ -1,6 +1,5 @@
 import { IncomingMessage, ServerResponse } from "node:http";
 import { inject, injectable } from "tsyringe";
-
 import { Serializer } from "@spt-aki/di/Serializer";
 import { BundleLoader } from "@spt-aki/loaders/BundleLoader";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
@@ -20,10 +19,14 @@ export class BundleSerializer extends Serializer
 
     public override serialize(sessionID: string, req: IncomingMessage, resp: ServerResponse, body: any): void
     {
-        this.logger.info(`[BUNDLE]: ${req.url}`);
-
-        const key = req.url.split("/bundle/")[1];
+        const key = decodeURI(req.url.split("/bundle/")[1]);
         const bundle = this.bundleLoader.getBundle(key);
+        if (!bundle)
+        {
+            return;
+        }
+
+        this.logger.info(`[BUNDLE]: ${req.url}`);
 
         this.httpFileUtil.sendFile(resp, `${bundle.modpath}/bundles/${bundle.filename}`);
     }

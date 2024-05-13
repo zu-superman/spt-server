@@ -1,3 +1,4 @@
+import { inject, injectable } from "tsyringe";
 import { SavedCommand } from "@spt-aki/helpers/Dialogue/Commando/SptCommands/GiveCommand/SavedCommand";
 import { ISptCommand } from "@spt-aki/helpers/Dialogue/Commando/SptCommands/ISptCommand";
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
@@ -11,7 +12,6 @@ import { LocaleService } from "@spt-aki/services/LocaleService";
 import { MailSendService } from "@spt-aki/services/MailSendService";
 import { HashUtil } from "@spt-aki/utils/HashUtil";
 import { JsonUtil } from "@spt-aki/utils/JsonUtil";
-import { inject, injectable } from "tsyringe";
 
 @injectable()
 export class TraderSptCommand implements ISptCommand
@@ -66,8 +66,8 @@ export class TraderSptCommand implements ISptCommand
         const command: string = result.groups.command;
         const quantity: number = +result.groups.quantity;
 
-        const dbTrader = Object.values(this.databaseServer.getTables().traders).find((t) =>
-            t.base.nickname.toLocaleLowerCase() === trader.toLocaleLowerCase()
+        const dbTrader = Object.values(this.databaseServer.getTables().traders).find(t =>
+            t.base.nickname.toLocaleLowerCase() === trader.toLocaleLowerCase(),
         );
         if (dbTrader === undefined)
         {

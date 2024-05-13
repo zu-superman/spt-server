@@ -2,7 +2,7 @@ import { IInventoryBaseActionRequestData } from "@spt-aki/models/eft/inventory/I
 
 export interface IInventoryFoldRequestData extends IInventoryBaseActionRequestData
 {
-    Action: "Fold";
-    item: string;
-    value: boolean;
+    Action: "Fold"
+    item: string
+    value: boolean
 }

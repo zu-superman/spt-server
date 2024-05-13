@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { IGetBodyResponseData } from "@spt-aki/models/eft/httpResponse/IGetBodyResponseData";
 import { INullResponseData } from "@spt-aki/models/eft/httpResponse/INullResponseData";
 import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEventRouterResponse";
@@ -18,10 +17,12 @@ export class HttpResponseUtil
 
     protected clearString(s: string): any
     {
-        return s.replace(/[\b]/g, "").replace(/[\f]/g, "").replace(/[\n]/g, "").replace(/[\r]/g, "").replace(
-            /[\t]/g,
-            "",
-        );
+        return s.replace(/[\b]/g, "").replace(/[\f]/g, "").replace(/[\n]/g, "")
+            .replace(/[\r]/g, "")
+            .replace(
+                /[\t]/g,
+                "",
+            );
     }
 
     /**

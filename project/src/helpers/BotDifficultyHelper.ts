@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { BotHelper } from "@spt-aki/helpers/BotHelper";
 import { Difficulty } from "@spt-aki/models/eft/common/tables/IBotType";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";

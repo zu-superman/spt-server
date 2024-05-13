@@ -48,7 +48,7 @@ export class ExhaustableArray<T> implements IExhaustableArray<T>
 
 export interface IExhaustableArray<T>
 {
-    getRandomValue(): T;
-    getFirstValue(): T;
-    hasValues(): boolean;
+    getRandomValue(): T
+    getFirstValue(): T
+    hasValues(): boolean
 }

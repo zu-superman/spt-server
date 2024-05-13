@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { IncomingMessage, ServerResponse } from "node:http";
 import { injectable } from "tsyringe";
-
 import { HttpMethods } from "@spt-aki/servers/http/HttpMethods";
 
 export type HandleFn = (_: string, req: IncomingMessage, resp: ServerResponse) => void;
@@ -13,7 +12,7 @@ export type HandleFn = (_: string, req: IncomingMessage, resp: ServerResponse) =
  */
 export const Listen = (basePath: string) =>
 {
-    return <T extends { new(...args: any[]): any; }>(Base: T): T =>
+    return <T extends { new(...args: any[]): any }>(Base: T): T =>
     {
         // Used for the base class to be able to use DI
         injectable()(Base);
@@ -62,8 +61,8 @@ export const Listen = (basePath: string) =>
             {
                 const routesHandles = this.handlers[req.method];
 
-                return Object.keys(this.handlers).some((meth) => meth === req.method)
-                    && Object.keys(routesHandles).some((route) => (new RegExp(route)).test(req.url));
+                return Object.keys(this.handlers).some(meth => meth === req.method)
+                  && Object.keys(routesHandles).some(route => new RegExp(route).test(req.url));
             };
 
             // The actual handle method dispatches the request to the registered handlers
@@ -82,7 +81,7 @@ export const Listen = (basePath: string) =>
                 routes.sort((routeA, routeB) => routeB.length - routeA.length);
 
                 // Filter to select valid routes but only use the first element since it's the most precise
-                const validRoutes = routes.filter((handlerKey) => (new RegExp(handlerKey)).test(route));
+                const validRoutes = routes.filter(handlerKey => new RegExp(handlerKey).test(route));
                 if (validRoutes.length > 0)
                 {
                     routesHandles[validRoutes[0]](sessionID, req, resp);

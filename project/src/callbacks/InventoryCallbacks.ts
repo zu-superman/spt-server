@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { InventoryController } from "@spt-aki/controllers/InventoryController";
 import { QuestController } from "@spt-aki/controllers/QuestController";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";

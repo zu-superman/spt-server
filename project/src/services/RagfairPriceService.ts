@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { OnLoad } from "@spt-aki/di/OnLoad";
 import { HandbookHelper } from "@spt-aki/helpers/HandbookHelper";
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
@@ -75,8 +74,8 @@ export class RagfairPriceService implements OnLoad
     public generateStaticPrices(): void
     {
         for (
-            const item of Object.values(this.databaseServer.getTables().templates.items).filter((x) =>
-                x._type === "Item"
+            const item of Object.values(this.databaseServer.getTables().templates.items).filter(x =>
+                x._type === "Item",
             )
         )
         {
@@ -253,9 +252,9 @@ export class RagfairPriceService implements OnLoad
     }
 
     /**
-     * @param itemTemplateId
-     * @param desiredCurrency
-     * @param item
+     * @param itemTemplateId items tpl value
+     * @param desiredCurrency Currency to return result in
+     * @param item Item object (used for weapon presets)
      * @param offerItems
      * @param isPackOffer
      * @returns
@@ -318,8 +317,8 @@ export class RagfairPriceService implements OnLoad
             if (this.itemHelper.isOfBaseclass(itemTemplateId, baseClassTemplateId))
             {
                 // Found an unreasonable price type.
-                const unreasonableModifier: IUnreasonableModPrices =
-                    this.ragfairConfig.dynamic.unreasonableModPrices[baseClassTemplateId];
+                const unreasonableModifier: IUnreasonableModPrices
+                    = this.ragfairConfig.dynamic.unreasonableModPrices[baseClassTemplateId];
 
                 if (unreasonableModifier.enabled)
                 {
@@ -366,14 +365,14 @@ export class RagfairPriceService implements OnLoad
         price: number,
     ): number
     {
-        const itemHandbookPrice = handbookPrices.find((handbookItem) => handbookItem.Id === itemTpl);
+        const itemHandbookPrice = handbookPrices.find(handbookItem => handbookItem.Id === itemTpl);
         if (!itemHandbookPrice)
         {
             return price;
         }
 
         // Flea price is over handbook price
-        if (price > (itemHandbookPrice.Price * unreasonableItemChange.handbookPriceOverMultiplier))
+        if (price > itemHandbookPrice.Price * unreasonableItemChange.handbookPriceOverMultiplier)
         {
             // Skip extreme values
             if (price <= 1)
@@ -468,8 +467,8 @@ export class RagfairPriceService implements OnLoad
         }
 
         // Get mods on current gun not in default preset
-        const newOrReplacedModsInPresetVsDefault = weaponWithChildren.filter((x) =>
-            !presetResult.preset._items.some((y) => y._tpl === x._tpl)
+        const newOrReplacedModsInPresetVsDefault = weaponWithChildren.filter(x =>
+            !presetResult.preset._items.some(y => y._tpl === x._tpl),
         );
 
         // Add up extra mods price
@@ -484,8 +483,8 @@ export class RagfairPriceService implements OnLoad
         if (newOrReplacedModsInPresetVsDefault.length >= 1)
         {
             // Add up cost of mods replaced
-            const modsReplacedByNewMods = newOrReplacedModsInPresetVsDefault.filter((x) =>
-                presetResult.preset._items.some((y) => y.slotId === x.slotId)
+            const modsReplacedByNewMods = newOrReplacedModsInPresetVsDefault.filter(x =>
+                presetResult.preset._items.some(y => y.slotId === x.slotId),
             );
 
             // Add up replaced mods price
@@ -526,7 +525,7 @@ export class RagfairPriceService implements OnLoad
      * @param presets weapon presets to choose from
      * @returns Default preset object
      */
-    protected getWeaponPreset(weapon: Item): { isDefault: boolean; preset: IPreset; }
+    protected getWeaponPreset(weapon: Item): { isDefault: boolean, preset: IPreset }
     {
         const defaultPreset = this.presetHelper.getDefaultPreset(weapon._tpl);
         if (defaultPreset)

@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { PresetHelper } from "@spt-aki/helpers/PresetHelper";
 import { IPreset } from "@spt-aki/models/eft/common/IGlobals";
@@ -75,7 +74,7 @@ export class RagfairAssortGenerator
         const results: Item[][] = [];
 
         /** Get cloned items from db */
-        const dbItemsClone = this.itemHelper.getItems().filter((item) => item._type !== "Node");
+        const dbItemsClone = this.itemHelper.getItems().filter(item => item._type !== "Node");
 
         /** Store processed preset tpls so we dont add them when procesing non-preset items */
         const processedArmorItems: string[] = [];
@@ -136,7 +135,7 @@ export class RagfairAssortGenerator
      */
     protected getPresetsToAdd(): IPreset[]
     {
-        return (this.ragfairConfig.dynamic.showDefaultPresetsOnly)
+        return this.ragfairConfig.dynamic.showDefaultPresetsOnly
             ? Object.values(this.presetHelper.getDefaultPresets())
             : this.presetHelper.getAllPresets();
     }

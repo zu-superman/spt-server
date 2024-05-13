@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { Item } from "@spt-aki/models/eft/common/tables/IItem";
 import { ITemplateItem, Props } from "@spt-aki/models/eft/common/tables/ITemplateItem";
 import { BaseClasses } from "@spt-aki/models/enums/BaseClasses";
@@ -133,7 +132,7 @@ export class RepairHelper
             : armorMaterialSettings.MaxRepairDegradation;
 
         const duraLossPercent = this.randomUtil.getFloat(minMultiplier, maxMultiplier);
-        const duraLossMultipliedByTraderMultiplier = (duraLossPercent * armorMax) * traderQualityMultipler;
+        const duraLossMultipliedByTraderMultiplier = duraLossPercent * armorMax * traderQualityMultipler;
 
         return Number(duraLossMultipliedByTraderMultiplier.toFixed(2));
     }
@@ -163,7 +162,7 @@ export class RepairHelper
         }
 
         const duraLossPercent = this.randomUtil.getFloat(minRepairDeg, maxRepairDeg);
-        const duraLossMultipliedByTraderMultiplier = (duraLossPercent * weaponMax) * traderQualityMultipler;
+        const duraLossMultipliedByTraderMultiplier = duraLossPercent * weaponMax * traderQualityMultipler;
 
         return Number(duraLossMultipliedByTraderMultiplier.toFixed(2));
     }

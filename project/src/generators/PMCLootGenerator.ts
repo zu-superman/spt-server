@@ -1,6 +1,6 @@
 import { inject, injectable } from "tsyringe";
-
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
+import { WeightedRandomHelper } from "@spt-aki/helpers/WeightedRandomHelper";
 import { ITemplateItem } from "@spt-aki/models/eft/common/tables/ITemplateItem";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { IPmcConfig } from "@spt-aki/models/spt/config/IPmcConfig";
@@ -22,6 +22,8 @@ export class PMCLootGenerator
     protected backpackLootPool: Record<string, number> = {};
     protected pmcConfig: IPmcConfig;
 
+    protected roubleTpl = "5449016a4bdc2d6f028b456f";
+
     constructor(
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
@@ -29,6 +31,7 @@ export class PMCLootGenerator
         @inject("ItemFilterService") protected itemFilterService: ItemFilterService,
         @inject("RagfairPriceService") protected ragfairPriceService: RagfairPriceService,
         @inject("SeasonalEventService") protected seasonalEventService: SeasonalEventService,
+        @inject("WeightedRandomHelper") protected weightedRandomHelper: WeightedRandomHelper,
     )
     {
         this.pmcConfig = this.configServer.getConfig(ConfigTypes.PMC);
@@ -44,8 +47,8 @@ export class PMCLootGenerator
         if (Object.keys(this.pocketLootPool).length === 0)
         {
             const items = this.databaseServer.getTables().templates.items;
-            const pmcPriceOverrides =
-                this.databaseServer.getTables().bots.types[botRole === "sptBear" ? "bear" : "usec"].inventory.items
+            const pmcPriceOverrides
+                = this.databaseServer.getTables().bots.types[botRole === "sptBear" ? "bear" : "usec"].inventory.items
                     .Pockets;
 
             const allowedItemTypes = this.pmcConfig.pocketLoot.whitelist;
@@ -55,13 +58,13 @@ export class PMCLootGenerator
             // Blacklist inactive seasonal items
             itemBlacklist.push(...this.seasonalEventService.getInactiveSeasonalEventItems());
 
-            const itemsToAdd = Object.values(items).filter((item) =>
+            const itemsToAdd = Object.values(items).filter(item =>
                 allowedItemTypes.includes(item._parent)
                 && this.itemHelper.isValidItem(item._id)
                 && !pmcItemBlacklist.includes(item._id)
                 && !itemBlacklist.includes(item._id)
                 && item._props.Width === 1
-                && item._props.Height === 1
+                && item._props.Height === 1,
             );
 
             for (const itemToAdd of itemsToAdd)
@@ -74,7 +77,7 @@ export class PMCLootGenerator
                 else
                 {
                     // Set price of item as its weight
-                    const price = this.ragfairPriceService.getFleaPriceForItem(itemToAdd._id);
+                    const price = this.ragfairPriceService.getDynamicItemPrice(itemToAdd._id, this.roubleTpl);
                     this.pocketLootPool[itemToAdd._id] = price;
                 }
             }
@@ -84,10 +87,10 @@ export class PMCLootGenerator
             {
                 // Invert price so cheapest has a larger weight
                 // Times by highest price so most expensive item has weight of 1
-                this.pocketLootPool[key] = Math.round((1 / this.pocketLootPool[key]) * highestPrice);
+                this.pocketLootPool[key] = Math.round(1 / this.pocketLootPool[key] * highestPrice);
             }
 
-            this.reduceWeightValues(this.pocketLootPool);
+            this.weightedRandomHelper.reduceWeightValues(this.pocketLootPool);
         }
 
         return this.pocketLootPool;
@@ -103,8 +106,8 @@ export class PMCLootGenerator
         if (Object.keys(this.vestLootPool).length === 0)
         {
             const items = this.databaseServer.getTables().templates.items;
-            const pmcPriceOverrides =
-                this.databaseServer.getTables().bots.types[botRole === "sptBear" ? "bear" : "usec"].inventory.items
+            const pmcPriceOverrides
+                = this.databaseServer.getTables().bots.types[botRole === "sptBear" ? "bear" : "usec"].inventory.items
                     .TacticalVest;
 
             const allowedItemTypes = this.pmcConfig.vestLoot.whitelist;
@@ -114,12 +117,12 @@ export class PMCLootGenerator
             // Blacklist seasonal items
             itemBlacklist.push(...this.seasonalEventService.getInactiveSeasonalEventItems());
 
-            const itemsToAdd = Object.values(items).filter((item) =>
+            const itemsToAdd = Object.values(items).filter(item =>
                 allowedItemTypes.includes(item._parent)
                 && this.itemHelper.isValidItem(item._id)
                 && !pmcItemBlacklist.includes(item._id)
                 && !itemBlacklist.includes(item._id)
-                && this.itemFitsInto2By2Slot(item)
+                && this.itemFitsInto2By2Slot(item),
             );
 
             for (const itemToAdd of itemsToAdd)
@@ -132,7 +135,7 @@ export class PMCLootGenerator
                 else
                 {
                     // Set price of item as its weight
-                    const price = this.ragfairPriceService.getFleaPriceForItem(itemToAdd._id);
+                    const price = this.ragfairPriceService.getDynamicItemPrice(itemToAdd._id, this.roubleTpl);
                     this.vestLootPool[itemToAdd._id] = price;
                 }
             }
@@ -142,10 +145,10 @@ export class PMCLootGenerator
             {
                 // Invert price so cheapest has a larger weight
                 // Times by highest price so most expensive item has weight of 1
-                this.vestLootPool[key] = Math.round((1 / this.vestLootPool[key]) * highestPrice);
+                this.vestLootPool[key] = Math.round(1 / this.vestLootPool[key] * highestPrice);
             }
 
-            this.reduceWeightValues(this.vestLootPool);
+            this.weightedRandomHelper.reduceWeightValues(this.vestLootPool);
         }
 
         return this.vestLootPool;
@@ -172,8 +175,8 @@ export class PMCLootGenerator
         if (Object.keys(this.backpackLootPool).length === 0)
         {
             const items = this.databaseServer.getTables().templates.items;
-            const pmcPriceOverrides =
-                this.databaseServer.getTables().bots.types[botRole === "sptBear" ? "bear" : "usec"].inventory.items
+            const pmcPriceOverrides
+                = this.databaseServer.getTables().bots.types[botRole === "sptBear" ? "bear" : "usec"].inventory.items
                     .Backpack;
 
             const allowedItemTypes = this.pmcConfig.backpackLoot.whitelist;
@@ -183,11 +186,11 @@ export class PMCLootGenerator
             // Blacklist seasonal items
             itemBlacklist.push(...this.seasonalEventService.getInactiveSeasonalEventItems());
 
-            const itemsToAdd = Object.values(items).filter((item) =>
+            const itemsToAdd = Object.values(items).filter(item =>
                 allowedItemTypes.includes(item._parent)
                 && this.itemHelper.isValidItem(item._id)
                 && !pmcItemBlacklist.includes(item._id)
-                && !itemBlacklist.includes(item._id)
+                && !itemBlacklist.includes(item._id),
             );
 
             for (const itemToAdd of itemsToAdd)
@@ -200,7 +203,7 @@ export class PMCLootGenerator
                 else
                 {
                     // Set price of item as its weight
-                    const price = this.ragfairPriceService.getFleaPriceForItem(itemToAdd._id);
+                    const price = this.ragfairPriceService.getDynamicItemPrice(itemToAdd._id, this.roubleTpl);
                     this.backpackLootPool[itemToAdd._id] = price;
                 }
             }
@@ -210,74 +213,12 @@ export class PMCLootGenerator
             {
                 // Invert price so cheapest has a larger weight
                 // Times by highest price so most expensive item has weight of 1
-                this.backpackLootPool[key] = Math.round((1 / this.backpackLootPool[key]) * highestPrice);
+                this.backpackLootPool[key] = Math.round(1 / this.backpackLootPool[key] * highestPrice);
             }
 
-            this.reduceWeightValues(this.backpackLootPool);
+            this.weightedRandomHelper.reduceWeightValues(this.backpackLootPool);
         }
 
         return this.backpackLootPool;
-    }
-
-    /**
-     * Find the greated common divisor of all weights and use it on the passed in dictionary
-     * @param weightedDict
-     */
-    protected reduceWeightValues(weightedDict: Record<string, number>): void
-    {
-        // No values, nothing to reduce
-        if (Object.keys(weightedDict).length === 0)
-        {
-            return;
-        }
-
-        // Only one value, set to 1 and exit
-        if (Object.keys(weightedDict).length === 1)
-        {
-            const key = Object.keys(weightedDict)[0];
-            weightedDict[key] = 1;
-            return;
-        }
-
-        const weights = Object.values(weightedDict).slice();
-        const commonDivisor = this.commonDivisor(weights);
-
-        // No point in dividing by  1
-        if (commonDivisor === 1)
-        {
-            return;
-        }
-
-        for (const key in weightedDict)
-        {
-            if (Object.hasOwn(weightedDict, key))
-            {
-                weightedDict[key] /= commonDivisor;
-            }
-        }
-    }
-
-    protected commonDivisor(numbers: number[]): number
-    {
-        let result = numbers[0];
-        for (let i = 1; i < numbers.length; i++)
-        {
-            result = this.gcd(result, numbers[i]);
-        }
-
-        return result;
-    }
-
-    protected gcd(a: number, b: number): number
-    {
-        let x = a;
-        let y = b;
-        while (y !== 0)
-        {
-            const temp = y;
-            y = x % y;
-            x = temp;
-        }
-        return x;
     }
 }

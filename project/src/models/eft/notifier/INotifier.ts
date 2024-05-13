@@ -2,19 +2,19 @@ import { Message } from "@spt-aki/models/eft/profile/IAkiProfile";
 
 export interface INotifierChannel
 {
-    server: string;
-    channel_id: string;
-    url: string;
-    notifierServer: string;
-    ws: string;
+    server: string
+    channel_id: string
+    url: string
+    notifierServer: string
+    ws: string
 }
 
 export interface INotification
 {
-    type: NotificationType;
-    eventId: string;
-    dialogId?: string;
-    message?: Message;
+    type: NotificationType
+    eventId: string
+    dialogId?: string
+    message?: Message
 }
 
 export enum NotificationType

@@ -2,6 +2,6 @@ import { IInventoryBaseActionRequestData } from "@spt-aki/models/eft/inventory/I
 
 export interface IInventoryRemoveRequestData extends IInventoryBaseActionRequestData
 {
-    Action: "Remove";
-    item: string;
+    Action: "Remove"
+    item: string
 }

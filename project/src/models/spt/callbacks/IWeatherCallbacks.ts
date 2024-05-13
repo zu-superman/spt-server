@@ -3,5 +3,5 @@ import { IGetBodyResponseData } from "@spt-aki/models/eft/httpResponse/IGetBodyR
 
 export interface IWeatherCallbacks
 {
-    getWeather(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<any>;
+    getWeather(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<any>
 }

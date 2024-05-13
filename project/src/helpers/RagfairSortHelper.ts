@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { IRagfairOffer } from "@spt-aki/models/eft/ragfair/IRagfairOffer";
 import { RagfairSort } from "@spt-aki/models/enums/RagfairSort";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
@@ -75,7 +74,7 @@ export class RagfairSortHelper
         const nameA = locale[`${tplA} Name`] || tplA;
         const nameB = locale[`${tplB} Name`] || tplB;
 
-        return (nameA < nameB) ? -1 : (nameA > nameB) ? 1 : 0;
+        return nameA < nameB ? -1 : nameA > nameB ? 1 : 0;
     }
 
     /**

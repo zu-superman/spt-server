@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { ProfileController } from "@spt-aki/controllers/ProfileController";
 import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
 import { IEmptyRequestData } from "@spt-aki/models/eft/common/IEmptyRequestData";

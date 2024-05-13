@@ -1,5 +1,4 @@
 import { injectable } from "tsyringe";
-
 import { INotification } from "@spt-aki/models/eft/notifier/INotifier";
 
 @injectable()

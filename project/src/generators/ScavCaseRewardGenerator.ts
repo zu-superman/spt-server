@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { PresetHelper } from "@spt-aki/helpers/PresetHelper";
 import { Product } from "@spt-aki/models/eft/common/tables/IBotBase";
@@ -61,7 +60,7 @@ export class ScavCaseRewardGenerator
         this.cacheDbItems();
 
         // Get scavcase details from hideout/scavcase.json
-        const scavCaseDetails = this.databaseServer.getTables().hideout.scavcase.find((r) => r._id === recipeId);
+        const scavCaseDetails = this.databaseServer.getTables().hideout.scavcase.find(r => r._id === recipeId);
         const rewardItemCounts = this.getScavCaseRewardCountsAndPrices(scavCaseDetails);
 
         // Get items that fit the price criteria as set by the scavCase config
@@ -122,7 +121,7 @@ export class ScavCaseRewardGenerator
 
                 // Skip item if item id is on blacklist
                 if (
-                    (item._type !== "Item")
+                    item._type !== "Item"
                     || this.scavCaseConfig.rewardItemBlacklist.includes(item._id)
                     || this.itemFilterService.isItemBlacklisted(item._id)
                 )

@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { BotHelper } from "@spt-aki/helpers/BotHelper";
 import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
 import {
@@ -54,7 +53,7 @@ export class BotEquipmentFilterService
     {
         const pmcProfile = this.profileHelper.getPmcProfile(sessionId);
 
-        const botRole = (botGenerationDetails.isPmc) ? "pmc" : botGenerationDetails.role;
+        const botRole = botGenerationDetails.isPmc ? "pmc" : botGenerationDetails.role;
         const botEquipmentBlacklist = this.getBotEquipmentBlacklist(botRole, botLevel);
         const botEquipmentWhitelist = this.getBotEquipmentWhitelist(botRole, botLevel);
         const botWeightingAdjustments = this.getBotWeightingAdjustments(botRole, botLevel);
@@ -181,8 +180,8 @@ export class BotEquipmentFilterService
             return null;
         }
 
-        return blacklistDetailsForBot.blacklist.find((x) =>
-            playerLevel >= x.levelRange.min && playerLevel <= x.levelRange.max
+        return blacklistDetailsForBot.blacklist.find(x =>
+            playerLevel >= x.levelRange.min && playerLevel <= x.levelRange.max,
         );
     }
 
@@ -202,8 +201,8 @@ export class BotEquipmentFilterService
             return null;
         }
 
-        return botEquipmentConfig.whitelist.find((x) =>
-            playerLevel >= x.levelRange.min && playerLevel <= x.levelRange.max
+        return botEquipmentConfig.whitelist.find(x =>
+            playerLevel >= x.levelRange.min && playerLevel <= x.levelRange.max,
         );
     }
 
@@ -226,8 +225,8 @@ export class BotEquipmentFilterService
             return null;
         }
 
-        return botEquipmentConfig.weightingAdjustmentsByBotLevel.find((x) =>
-            botLevel >= x.levelRange.min && botLevel <= x.levelRange.max
+        return botEquipmentConfig.weightingAdjustmentsByBotLevel.find(x =>
+            botLevel >= x.levelRange.min && botLevel <= x.levelRange.max,
         );
     }
 
@@ -250,8 +249,8 @@ export class BotEquipmentFilterService
             return null;
         }
 
-        return botEquipmentConfig.weightingAdjustmentsByPlayerLevel.find((x) =>
-            playerlevel >= x.levelRange.min && playerlevel <= x.levelRange.max
+        return botEquipmentConfig.weightingAdjustmentsByPlayerLevel.find(x =>
+            playerlevel >= x.levelRange.min && playerlevel <= x.levelRange.max,
         );
     }
 

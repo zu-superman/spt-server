@@ -8,5 +8,5 @@ export interface IItemEventCallbacks
         url: string,
         info: IItemEventRouterRequest,
         sessionID: string,
-    ): IGetBodyResponseData<IItemEventRouterResponse>;
+    ): IGetBodyResponseData<IItemEventRouterResponse>
 }

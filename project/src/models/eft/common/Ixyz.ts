@@ -1,6 +1,6 @@
 export interface Ixyz
 {
-    x: number;
-    y: number;
-    z: number;
+    x: number
+    y: number
+    z: number
 }

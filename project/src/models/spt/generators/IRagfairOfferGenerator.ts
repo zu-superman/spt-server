@@ -12,5 +12,5 @@ export interface IRagfairOfferGenerator
         loyalLevel: number,
         price: number,
         sellInOnePiece: boolean,
-    ): IRagfairOffer;
+    ): IRagfairOffer
 }

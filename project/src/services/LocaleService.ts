@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { ILocaleConfig } from "@spt-aki/models/spt/config/ILocaleConfig";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
@@ -85,7 +84,7 @@ export class LocaleService
      * Get array of languages supported for localisation
      * @returns array of locales e.g. en/fr/cn
      */
-    public getLocaleFallbacks(): { [locale: string]: string; }
+    public getLocaleFallbacks(): { [locale: string]: string }
     {
         return this.localeConfig.fallbacks;
     }

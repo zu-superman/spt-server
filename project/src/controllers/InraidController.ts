@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { ApplicationContext } from "@spt-aki/context/ApplicationContext";
 import { ContextVariableType } from "@spt-aki/context/ContextVariableType";
 import { PlayerScavGenerator } from "@spt-aki/generators/PlayerScavGenerator";
@@ -204,8 +203,8 @@ export class InraidController
         if (locationName === "lighthouse" && postRaidRequest.profile.Info.Side.toLowerCase() === "usec")
         {
             // Decrement counter if it exists, don't go below 0
-            const remainingCounter = serverPmcProfile?.Stats.Eft.OverallCounters.Items.find((x) =>
-                x.Key.includes("UsecRaidRemainKills")
+            const remainingCounter = serverPmcProfile?.Stats.Eft.OverallCounters.Items.find(x =>
+                x.Key.includes("UsecRaidRemainKills"),
             );
             if (remainingCounter?.Value > 0)
             {
@@ -229,9 +228,9 @@ export class InraidController
             // Not dead
 
             // Check for cultist amulets in special slot (only slot it can fit)
-            const amuletOnPlayer = serverPmcProfile.Inventory.items.filter((item) =>
-                item.slotId?.startsWith("SpecialSlot")
-            ).find((item) => item._tpl === "64d0b40fbe2eed70e254e2d4");
+            const amuletOnPlayer = serverPmcProfile.Inventory.items.filter(item =>
+                item.slotId?.startsWith("SpecialSlot"),
+            ).find(item => item._tpl === "64d0b40fbe2eed70e254e2d4");
             if (amuletOnPlayer)
             {
                 // No charges left, delete it
@@ -250,8 +249,8 @@ export class InraidController
             }
         }
 
-        const victims = postRaidRequest.profile.Stats.Eft.Victims.filter((x) =>
-            ["sptbear", "sptusec"].includes(x.Role.toLowerCase())
+        const victims = postRaidRequest.profile.Stats.Eft.Victims.filter(x =>
+            ["sptbear", "sptusec"].includes(x.Role.toLowerCase()),
         );
         if (victims?.length > 0)
         {
@@ -283,9 +282,13 @@ export class InraidController
             // Find and remove the completed condition from profile if player died, otherwise quest is stuck in limbo
             // and quest items cannot be picked up again
             const allQuests = this.questHelper.getQuestsFromDb();
-            const activeQuestIdsInProfile = pmcData.Quests.filter((profileQuest) =>
-                ![QuestStatus.AvailableForStart, QuestStatus.Success, QuestStatus.Expired].includes(profileQuest.status)
-            ).map((x) => x.qid);
+            const activeQuestIdsInProfile = pmcData.Quests.filter(
+                profileQuest => ![
+                    QuestStatus.AvailableForStart,
+                    QuestStatus.Success,
+                    QuestStatus.Expired,
+                ].includes(profileQuest.status),
+            ).map(x => x.qid);
             for (const questItem of postRaidSaveRequest.profile.Stats.Eft.CarriedQuestItems)
             {
                 // Get quest/find condition for carried quest item
@@ -399,7 +402,7 @@ export class InraidController
      */
     protected mergePmcAndScavEncyclopedias(primary: IPmcData, secondary: IPmcData): void
     {
-        function extend(target: { [key: string]: boolean; }, source: Record<string, boolean>)
+        function extend(target: { [key: string]: boolean }, source: Record<string, boolean>)
         {
             for (const key in source)
             {
@@ -469,7 +472,7 @@ export class InraidController
 
         for (const quest of scavProfile.Quests)
         {
-            const pmcQuest = pmcProfile.Quests.find((x) => x.qid === quest.qid);
+            const pmcQuest = pmcProfile.Quests.find(x => x.qid === quest.qid);
             if (!pmcQuest)
             {
                 this.logger.warning(`No PMC quest found for ID: ${quest.qid}`);
@@ -504,7 +507,7 @@ export class InraidController
         for (const scavCounter of Object.values(scavProfile.TaskConditionCounters))
         {
             // If this is an achievement that isn't for the scav, don't process it
-            const achievement = achievements.find((achievement) => achievement.id === scavCounter.sourceId);
+            const achievement = achievements.find(achievement => achievement.id === scavCounter.sourceId);
             if (achievement && achievement.side !== "Savage")
             {
                 continue;
@@ -541,7 +544,7 @@ export class InraidController
      */
     protected isPlayerDead(statusOnExit: PlayerRaidEndState): boolean
     {
-        return (statusOnExit !== PlayerRaidEndState.SURVIVED && statusOnExit !== PlayerRaidEndState.RUNNER);
+        return statusOnExit !== PlayerRaidEndState.SURVIVED && statusOnExit !== PlayerRaidEndState.RUNNER;
     }
 
     /**
@@ -686,8 +689,8 @@ export class InraidController
 
         // Remove any items that were returned by the item delivery, but also insured, from the player's insurance list
         // This is to stop items being duplicated by being returned from both the item delivery, and insurance
-        const deliveredItemIds = items.map((x) => x._id);
-        pmcData.InsuredItems = pmcData.InsuredItems.filter((x) => !deliveredItemIds.includes(x.itemId));
+        const deliveredItemIds = items.map(x => x._id);
+        pmcData.InsuredItems = pmcData.InsuredItems.filter(x => !deliveredItemIds.includes(x.itemId));
 
         // Send the items to the player
         this.mailSendService.sendLocalisedNpcMessageToPlayer(

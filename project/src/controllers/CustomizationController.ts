@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
 import { ISuit } from "@spt-aki/models/eft/common/tables/ITrader";
@@ -43,10 +42,10 @@ export class CustomizationController
         const suits = this.databaseServer.getTables().traders[traderID].suits;
 
         // Get an inner join of clothing from templates.customization and Ragman's suits array
-        const matchingSuits = suits.filter((x) => x.suiteId in templates);
+        const matchingSuits = suits.filter(x => x.suiteId in templates);
 
         // Return all suits that have a side array containing the players side (usec/bear)
-        return matchingSuits.filter((x) => templates[x.suiteId]._props.Side.includes(pmcData.Info.Side));
+        return matchingSuits.filter(x => templates[x.suiteId]._props.Side.includes(pmcData.Info.Side));
     }
 
     /**
@@ -133,7 +132,7 @@ export class CustomizationController
 
     protected getTraderClothingOffer(sessionId: string, offerId: string): ISuit
     {
-        return this.getAllTraderSuits(sessionId).find((x) => x._id === offerId);
+        return this.getAllTraderSuits(sessionId).find(x => x._id === offerId);
     }
 
     /**
@@ -181,7 +180,7 @@ export class CustomizationController
         output: IItemEventRouterResponse,
     ): void
     {
-        const relatedItem = pmcData.Inventory.items.find((x) => x._id === clothingItem.id);
+        const relatedItem = pmcData.Inventory.items.find(x => x._id === clothingItem.id);
         if (!relatedItem)
         {
             this.logger.error(

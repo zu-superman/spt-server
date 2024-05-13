@@ -2,7 +2,7 @@ import { IInventoryBaseActionRequestData } from "@spt-aki/models/eft/inventory/I
 
 export interface IInventoryMergeRequestData extends IInventoryBaseActionRequestData
 {
-    Action: "Merge";
-    item: string;
-    with: string;
+    Action: "Merge"
+    item: string
+    with: string
 }

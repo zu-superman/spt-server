@@ -1,6 +1,5 @@
 import path from "node:path";
 import { inject, injectable } from "tsyringe";
-
 import { HttpServerHelper } from "@spt-aki/helpers/HttpServerHelper";
 import { BundleHashCacheService } from "@spt-aki/services/cache/BundleHashCacheService";
 import { JsonUtil } from "@spt-aki/utils/JsonUtil";
@@ -57,8 +56,7 @@ export class BundleLoader
 
     public addBundles(modpath: string): void
     {
-        const bundleManifestArr =
-            this.jsonUtil.deserialize<BundleManifest>(this.vfs.readFile(`${modpath}bundles.json`)).manifest;
+        const bundleManifestArr = this.jsonUtil.deserialize<BundleManifest>(this.vfs.readFile(`${modpath}bundles.json`)).manifest;
 
         for (const bundleManifest of bundleManifestArr)
         {
@@ -84,11 +82,11 @@ export class BundleLoader
 
 export interface BundleManifest
 {
-    manifest: BundleManifestEntry[];
+    manifest: BundleManifestEntry[]
 }
 
 export interface BundleManifestEntry
 {
-    key: string;
-    dependencyKeys: string[];
+    key: string
+    dependencyKeys: string[]
 }

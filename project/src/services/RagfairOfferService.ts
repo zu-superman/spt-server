@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
 import { RagfairServerHelper } from "@spt-aki/helpers/RagfairServerHelper";
 import { Item } from "@spt-aki/models/eft/common/tables/IItem";
@@ -168,6 +167,13 @@ export class RagfairOfferService
     {
         const trader = this.databaseServer.getTables().traders[traderID];
 
+        if (!trader || !trader.base)
+        {
+            this.logger.error(`Trader ${traderID} lacks a base file, cannot check for refresh status`);
+
+            return false;
+        }
+
         // No value, occurs when first run, trader offers need to be added to flea
         if (typeof trader.base.refreshTraderRagfairOffers !== "boolean")
         {
@@ -245,7 +251,7 @@ export class RagfairOfferService
         const pmcId = String(playerOffer.user.id);
         const profile = this.profileHelper.getProfileByPmcId(pmcId);
 
-        const offerinProfileIndex = profile.RagfairInfo.offers.findIndex((o) => o._id === playerOffer._id);
+        const offerinProfileIndex = profile.RagfairInfo.offers.findIndex(o => o._id === playerOffer._id);
         if (offerinProfileIndex === -1)
         {
             this.logger.warning(

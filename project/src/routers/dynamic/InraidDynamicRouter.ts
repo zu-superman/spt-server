@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { InraidCallbacks } from "@spt-aki/callbacks/InraidCallbacks";
 import { DynamicRouter, RouteAction } from "@spt-aki/di/Router";
 

@@ -14,6 +14,6 @@ export class ImageRouteService
 
     public existsByKey(urlKey: string): boolean
     {
-        return (this.routes[urlKey] !== undefined);
+        return this.routes[urlKey] !== undefined;
     }
 }

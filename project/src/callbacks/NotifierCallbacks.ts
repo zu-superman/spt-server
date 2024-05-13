@@ -1,11 +1,10 @@
 import { inject, injectable } from "tsyringe";
-
 import { NotifierController } from "@spt-aki/controllers/NotifierController";
 import { HttpServerHelper } from "@spt-aki/helpers/HttpServerHelper";
 import { IEmptyRequestData } from "@spt-aki/models/eft/common/IEmptyRequestData";
+import { IUIDRequestData } from "@spt-aki/models/eft/common/request/IUIDRequestData";
 import { IGetBodyResponseData } from "@spt-aki/models/eft/httpResponse/IGetBodyResponseData";
 import { INotifierChannel } from "@spt-aki/models/eft/notifier/INotifier";
-import { ISelectProfileRequestData } from "@spt-aki/models/eft/notifier/ISelectProfileRequestData";
 import { ISelectProfileResponse } from "@spt-aki/models/eft/notifier/ISelectProfileResponse";
 import { HttpResponseUtil } from "@spt-aki/utils/HttpResponseUtil";
 import { JsonUtil } from "@spt-aki/utils/JsonUtil";
@@ -38,8 +37,8 @@ export class NotifierCallbacks
          *  be sent to client as NEWLINE separated strings... yup.
          */
         this.notifierController.notifyAsync(tmpSessionID).then((messages: any) =>
-            messages.map((message: any) => this.jsonUtil.serialize(message)).join("\n")
-        ).then((text) => this.httpServerHelper.sendTextJson(resp, text));
+            messages.map((message: any) => this.jsonUtil.serialize(message)).join("\n"),
+        ).then(text => this.httpServerHelper.sendTextJson(resp, text));
     }
 
     /** Handle push/notifier/get */
@@ -68,7 +67,7 @@ export class NotifierCallbacks
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public selectProfile(
         url: string,
-        info: ISelectProfileRequestData,
+        info: IUIDRequestData,
         sessionID: string,
     ): IGetBodyResponseData<ISelectProfileResponse>
     {

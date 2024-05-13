@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { DialogueHelper } from "@spt-aki/helpers/DialogueHelper";
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
@@ -218,7 +217,7 @@ export class RagfairServerHelper
             this.randomUtil.getInt(config.stackablePercent.min, config.stackablePercent.max),
         );
 
-        return Math.round((maxStackCount / 100) * stackPercent);
+        return Math.round(maxStackCount / 100 * stackPercent);
     }
 
     /**
@@ -280,9 +279,9 @@ export class RagfairServerHelper
 
         // generated offer
         // recurivse if name is longer than max characters allowed (15 characters)
-        const type = (this.randomUtil.getInt(0, 1) === 0) ? "usec" : "bear";
+        const type = this.randomUtil.getInt(0, 1) === 0 ? "usec" : "bear";
         const name = this.randomUtil.getStringArrayValue(this.databaseServer.getTables().bots.types[type].firstName);
-        return (name.length > 15) ? this.getNickname(userID) : name;
+        return name.length > 15 ? this.getNickname(userID) : name;
     }
 
     /**

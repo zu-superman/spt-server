@@ -9,7 +9,7 @@ export class WeightedRandomHelper
      * @param {tplId: weighting[]} itemArray
      * @returns tplId
      */
-    public getWeightedInventoryItem(itemArray: { [tplId: string]: unknown; } | ArrayLike<unknown>): string
+    public getWeightedInventoryItem(itemArray: { [tplId: string]: unknown } | ArrayLike<unknown>): string
     {
         const itemKeys = Object.keys(itemArray);
         const weights = Object.values(itemArray);
@@ -23,7 +23,7 @@ export class WeightedRandomHelper
      * @param itemArray Items and weights to use
      * @returns Chosen item from array
      */
-    public getWeightedValue<T>(itemArray: { [key: string]: unknown; } | ArrayLike<unknown>): T
+    public getWeightedValue<T>(itemArray: { [key: string]: unknown } | ArrayLike<unknown>): T
     {
         const itemKeys = Object.keys(itemArray);
         const weights = Object.values(itemArray);
@@ -47,7 +47,7 @@ export class WeightedRandomHelper
      * @param {number[]} weights
      * @returns {{item: any, index: number}}
      */
-    public weightedRandom(items: any[], weights: any[]): { item: any; index: number; }
+    public weightedRandom(items: any[], weights: any[]): { item: any, index: number }
     {
         if (!items || items.length === 0)
         {
@@ -91,5 +91,67 @@ export class WeightedRandomHelper
                 return { item: items[itemIndex], index: itemIndex };
             }
         }
+    }
+
+    /**
+     * Find the greated common divisor of all weights and use it on the passed in dictionary
+     * @param weightedDict values to reduce
+     */
+    public reduceWeightValues(weightedDict: Record<string, number>): void
+    {
+        // No values, nothing to reduce
+        if (Object.keys(weightedDict).length === 0)
+        {
+            return;
+        }
+
+        // Only one value, set to 1 and exit
+        if (Object.keys(weightedDict).length === 1)
+        {
+            const key = Object.keys(weightedDict)[0];
+            weightedDict[key] = 1;
+            return;
+        }
+
+        const weights = Object.values(weightedDict).slice();
+        const commonDivisor = this.commonDivisor(weights);
+
+        // No point in dividing by  1
+        if (commonDivisor === 1)
+        {
+            return;
+        }
+
+        for (const key in weightedDict)
+        {
+            if (Object.hasOwn(weightedDict, key))
+            {
+                weightedDict[key] /= commonDivisor;
+            }
+        }
+    }
+
+    protected commonDivisor(numbers: number[]): number
+    {
+        let result = numbers[0];
+        for (let i = 1; i < numbers.length; i++)
+        {
+            result = this.gcd(result, numbers[i]);
+        }
+
+        return result;
+    }
+
+    protected gcd(a: number, b: number): number
+    {
+        let x = a;
+        let y = b;
+        while (y !== 0)
+        {
+            const temp = y;
+            y = x % y;
+            x = temp;
+        }
+        return x;
     }
 }

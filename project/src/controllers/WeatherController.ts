@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { WeatherGenerator } from "@spt-aki/generators/WeatherGenerator";
 import { IWeatherData } from "@spt-aki/models/eft/weather/IWeatherData";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";

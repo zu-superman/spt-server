@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { ITemplateItem } from "@spt-aki/models/eft/common/tables/ITemplateItem";
 import { BaseClasses } from "@spt-aki/models/enums/BaseClasses";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
@@ -40,7 +39,7 @@ export class ItemBaseClassService
             return;
         }
 
-        const filteredDbItems = Object.values(this.items).filter((x) => x._type === "Item");
+        const filteredDbItems = Object.values(this.items).filter(x => x._type === "Item");
         for (const item of filteredDbItems)
         {
             const itemIdToUpdate = item._id;
@@ -112,7 +111,7 @@ export class ItemBaseClassService
             }
         }
 
-        return this.itemBaseClassesCache[itemTpl].some((x) => baseClasses.includes(x));
+        return this.itemBaseClassesCache[itemTpl].some(x => baseClasses.includes(x));
     }
 
     /**

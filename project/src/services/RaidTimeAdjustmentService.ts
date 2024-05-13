@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { ApplicationContext } from "@spt-aki/context/ApplicationContext";
 import { ContextVariableType } from "@spt-aki/context/ContextVariableType";
 import { WeightedRandomHelper } from "@spt-aki/helpers/WeightedRandomHelper";
@@ -81,7 +80,7 @@ export class RaidTimeAdjustmentService
     {
         // Remove waves that spawned before the player joined
         const originalWaveCount = mapBase.waves.length;
-        mapBase.waves = mapBase.waves.filter((x) => x.time_max > raidAdjustments.simulatedRaidStartSeconds);
+        mapBase.waves = mapBase.waves.filter(x => x.time_max > raidAdjustments.simulatedRaidStartSeconds);
 
         // Adjust wave min/max times to match new simulated start
         for (const wave of mapBase.waves)
@@ -168,7 +167,7 @@ export class RaidTimeAdjustmentService
 
         // Calculate how long player needs to be in raid to get a `survived` extract status
         result.NewSurviveTimeSeconds = Math.max(
-            result.OriginalSurvivalTimeSeconds - ((baseEscapeTimeMinutes - newRaidTimeMinutes) * 60),
+            result.OriginalSurvivalTimeSeconds - (baseEscapeTimeMinutes - newRaidTimeMinutes) * 60,
             0,
         );
 
@@ -238,12 +237,12 @@ export class RaidTimeAdjustmentService
             //
             // I added 2 seconds just to be safe...
             //
-            const trainArrivalDelaySeconds =
-                this.locationConfig.scavRaidTimeSettings.settings.trainArrivalDelayObservedSeconds;
+            const trainArrivalDelaySeconds
+                = this.locationConfig.scavRaidTimeSettings.settings.trainArrivalDelayObservedSeconds;
 
             // Determine the earliest possible time in the raid when the train would leave
-            const earliestPossibleDepartureMinutes =
-                (exit.MinTime + exit.Count + exit.ExfiltrationTime + trainArrivalDelaySeconds) / 60;
+            const earliestPossibleDepartureMinutes
+                = (exit.MinTime + exit.Count + exit.ExfiltrationTime + trainArrivalDelaySeconds) / 60;
 
             // If raid is after last moment train can leave, assume train has already left, disable extract
             const mostPossibleTimeRemainingAfterDeparture = mapBase.EscapeTimeLimit - earliestPossibleDepartureMinutes;

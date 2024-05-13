@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
 import { ISyncHealthRequestData } from "@spt-aki/models/eft/health/ISyncHealthRequestData";
 import { Effects, IAkiProfile } from "@spt-aki/models/eft/profile/IAkiProfile";
@@ -106,7 +105,7 @@ export class HealthHelper
             else
             {
                 profileHealth[bodyPart] = pmcData.Health.BodyParts[bodyPart].Health.Maximum
-                    * this.healthConfig.healthMultipliers.death;
+                * this.healthConfig.healthMultipliers.death;
             }
         }
 
@@ -170,7 +169,7 @@ export class HealthHelper
                     // Blacked body part
                     target = Math.round(
                         pmcData.Health.BodyParts[healthModifier].Health.Maximum
-                            * this.healthConfig.healthMultipliers.blacked,
+                        * this.healthConfig.healthMultipliers.blacked,
                     );
                 }
 
@@ -264,7 +263,7 @@ export class HealthHelper
         }
     }
 
-    protected isEmpty(map: Record<string, { Time: number; }>): boolean
+    protected isEmpty(map: Record<string, { Time: number }>): boolean
     {
         for (const key in map)
         {

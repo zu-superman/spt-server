@@ -1,5 +1,4 @@
 import { DependencyContainer, injectable } from "tsyringe";
-
 import { OnUpdateMod } from "@spt-aki/services/mod/onUpdate/OnUpdateMod";
 
 @injectable()
