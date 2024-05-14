@@ -56,26 +56,27 @@ export class BotDifficultyHelper
      */
     public getBotDifficultySettings(type: string, difficulty: string): Difficulty
     {
-        const bot = this.databaseServer.getTables().bots.types[type];
+        const desiredType = type.toLowerCase();
+        const bot = this.databaseServer.getTables().bots.types[desiredType];
         if (!bot)
         {
             // get fallback
             this.logger.warning(this.localisationService.getText("bot-unable_to_get_bot_fallback_to_assault", type));
-            this.databaseServer.getTables().bots.types[type] = this.cloner.clone(
+            this.databaseServer.getTables().bots.types[desiredType] = this.cloner.clone(
                 this.databaseServer.getTables().bots.types.assault,
             );
         }
 
-        const difficultySettings = this.botHelper.getBotTemplate(type).difficulty[difficulty];
+        const difficultySettings = this.botHelper.getBotTemplate(desiredType).difficulty[difficulty];
         if (!difficultySettings)
         {
             this.logger.warning(
                 this.localisationService.getText("bot-unable_to_get_bot_difficulty_fallback_to_assault", {
-                    botType: type,
+                    botType: desiredType,
                     difficulty: difficulty,
                 }),
             );
-            this.databaseServer.getTables().bots.types[type].difficulty[difficulty] = this.cloner.clone(
+            this.databaseServer.getTables().bots.types[desiredType].difficulty[difficulty] = this.cloner.clone(
                 this.databaseServer.getTables().bots.types.assault.difficulty[difficulty],
             );
         }
