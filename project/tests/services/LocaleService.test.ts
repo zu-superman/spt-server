@@ -87,7 +87,7 @@ describe("LocaleService", () =>
                 undefined
             );
 
-            const warningLogSpy = vi.spyOn(localeService.logger, "warning")
+            const warningLogSpy = vi.spyOn(localeService.logger, "warning");
 
             expect(localeService.getPlatformForServerLocale()).toBe("en");
             expect(warningLogSpy).toHaveBeenCalledTimes(1);
