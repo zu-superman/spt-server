@@ -25,6 +25,7 @@ import { MatchBotDetailsCacheService } from "@spt-aki/services/MatchBotDetailsCa
 import { SeasonalEventService } from "@spt-aki/services/SeasonalEventService";
 import { ICloner } from "@spt-aki/utils/cloners/ICloner";
 import { RandomUtil } from "@spt-aki/utils/RandomUtil";
+import { MinMax } from "@spt-aki/models/common/MinMax";
 
 @injectable()
 export class BotController
@@ -219,20 +220,12 @@ export class BotController
         const conditionPromises: Promise<void>[] = [];
         for (const condition of request.conditions)
         {
-            const botGenerationDetails: BotGenerationDetails = {
-                isPmc: false,
-                side: "Savage",
-                role: condition.Role,
-                playerLevel: pmcProfile.Info.Level,
-                playerName: pmcProfile.Info.Nickname,
-                botRelativeLevelDeltaMax: this.pmcConfig.botRelativeLevelDeltaMax,
-                botRelativeLevelDeltaMin: this.pmcConfig.botRelativeLevelDeltaMin,
-                botCountToGenerate: this.botConfig.presetBatch[condition.Role],
-                botDifficulty: condition.Difficulty,
-                locationSpecificPmcLevelOverride: pmcLevelRangeForMap,
-                isPlayerScav: false,
-                allPmcsHaveSameNameAsPlayer: allPmcsHaveSameNameAsPlayer,
-            };
+            const botGenerationDetails = this.getBotGenerationDetailsForWave(
+                condition,
+                pmcProfile,
+                allPmcsHaveSameNameAsPlayer,
+                pmcLevelRangeForMap,
+                false);
 
             conditionPromises.push(this.generateWithBotDetails(condition, botGenerationDetails, sessionId));
         }
@@ -240,6 +233,35 @@ export class BotController
         await Promise.all(conditionPromises).then(p => Promise.all(p));
 
         return [];
+    }
+
+    protected getBotGenerationDetailsForWave(
+        condition: Condition,
+        pmcProfile: IPmcData,
+        allPmcsHaveSameNameAsPlayer: boolean,
+        pmcLevelRangeForMap: MinMax,
+        generateAsPmc: boolean): BotGenerationDetails
+        
+    {
+        return {
+            isPmc: generateAsPmc,
+            side: "Savage",
+            role: condition.Role,
+            playerLevel: this.getPlayerLevelFromProfile(pmcProfile),
+            playerName: pmcProfile.Info.Nickname,
+            botRelativeLevelDeltaMax: this.pmcConfig.botRelativeLevelDeltaMax,
+            botRelativeLevelDeltaMin: this.pmcConfig.botRelativeLevelDeltaMin,
+            botCountToGenerate: this.botConfig.presetBatch[condition.Role],
+            botDifficulty: condition.Difficulty,
+            locationSpecificPmcLevelOverride: pmcLevelRangeForMap,
+            isPlayerScav: false,
+            allPmcsHaveSameNameAsPlayer: allPmcsHaveSameNameAsPlayer,
+        };
+    }
+
+    protected getPlayerLevelFromProfile(pmcProfile: IPmcData): number
+    {
+        return pmcProfile.Info.Level;
     }
 
     /**
