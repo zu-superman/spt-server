@@ -208,15 +208,17 @@ export class BotController
         // Clear bot cache before any work starts
         this.botGenerationCacheService.clearStoredBots();
 
-        const raidSettings = this.applicationContext.getLatestValue(ContextVariableType.RAID_CONFIGURATION)?.getValue<
-            IGetRaidConfigurationRequestData
-        >();
+        const raidSettings = this.applicationContext
+            .getLatestValue(ContextVariableType.RAID_CONFIGURATION)
+            ?.getValue<IGetRaidConfigurationRequestData>();
+
         const pmcLevelRangeForMap
             = this.pmcConfig.locationSpecificPmcLevelOverride[raidSettings?.location.toLowerCase()];
 
         const allPmcsHaveSameNameAsPlayer = this.randomUtil.getChance100(
             this.pmcConfig.allPMCsHavePlayerNameWithRandomPrefixChance,
         );
+
         const conditionPromises: Promise<void>[] = [];
         for (const condition of request.conditions)
         {
@@ -225,6 +227,7 @@ export class BotController
                 pmcProfile,
                 allPmcsHaveSameNameAsPlayer,
                 pmcLevelRangeForMap,
+                this.botConfig.presetBatch[condition.Role],
                 false);
 
             conditionPromises.push(this.generateWithBotDetails(condition, botGenerationDetails, sessionId));
@@ -235,11 +238,22 @@ export class BotController
         return [];
     }
 
+    /**
+     * Create a BotGenerationDetails for the bot generator to use
+     * @param condition Client data defining bot type and difficulty
+     * @param pmcProfile Player who is generating bots
+     * @param allPmcsHaveSameNameAsPlayer Should all PMCs have same name as player
+     * @param pmcLevelRangeForMap Min/max levels for PMCs to generate within
+     * @param botCountToGenerate How many bots to generate
+     * @param generateAsPmc Force bot being generated a PMC
+     * @returns BotGenerationDetails
+     */
     protected getBotGenerationDetailsForWave(
         condition: Condition,
         pmcProfile: IPmcData,
         allPmcsHaveSameNameAsPlayer: boolean,
         pmcLevelRangeForMap: MinMax,
+        botCountToGenerate: number,
         generateAsPmc: boolean): BotGenerationDetails
         
     {
@@ -251,7 +265,7 @@ export class BotController
             playerName: pmcProfile.Info.Nickname,
             botRelativeLevelDeltaMax: this.pmcConfig.botRelativeLevelDeltaMax,
             botRelativeLevelDeltaMin: this.pmcConfig.botRelativeLevelDeltaMin,
-            botCountToGenerate: this.botConfig.presetBatch[condition.Role],
+            botCountToGenerate: botCountToGenerate,
             botDifficulty: condition.Difficulty,
             locationSpecificPmcLevelOverride: pmcLevelRangeForMap,
             isPlayerScav: false,
@@ -259,6 +273,11 @@ export class BotController
         };
     }
 
+    /**
+     * Get players profile level
+     * @param pmcProfile Profile to get level from
+     * @returns Level as number
+     */
     protected getPlayerLevelFromProfile(pmcProfile: IPmcData): number
     {
         return pmcProfile.Info.Level;
@@ -350,19 +369,18 @@ export class BotController
             = this.pmcConfig.locationSpecificPmcLevelOverride[raidSettings.location.toLowerCase()];
 
         // Create gen request for when cache is empty
-        const botGenerationDetails: BotGenerationDetails = {
-            isPmc: false,
-            side: "Savage",
-            role: requestedBot.Role,
-            playerLevel: pmcProfile.Info.Level,
-            playerName: pmcProfile.Info.Nickname,
-            botRelativeLevelDeltaMax: this.pmcConfig.botRelativeLevelDeltaMax,
-            botRelativeLevelDeltaMin: this.pmcConfig.botRelativeLevelDeltaMin,
-            botCountToGenerate: this.botConfig.presetBatch[requestedBot.Role],
-            botDifficulty: requestedBot.Difficulty,
-            locationSpecificPmcLevelOverride: pmcLevelRangeForMap,
-            isPlayerScav: false,
+        const condition: Condition = {
+            Role: requestedBot.Role,
+            Limit: 5,
+            Difficulty: requestedBot.Difficulty
         };
+        const botGenerationDetails = this.getBotGenerationDetailsForWave(
+            condition,
+            pmcProfile,
+            false,
+            pmcLevelRangeForMap,
+            this.botConfig.presetBatch[requestedBot.Role],
+            false);
 
         // Event bots need special actions to occur, set data up for them
         const isEventBot = requestedBot.Role.toLowerCase().includes("event");
