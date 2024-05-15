@@ -11,6 +11,7 @@ import { IEndOfflineRaidRequestData } from "@spt-aki/models/eft/match/IEndOfflin
 import { IGetGroupStatusRequestData } from "@spt-aki/models/eft/match/IGetGroupStatusRequestData";
 import { IGetGroupStatusResponse } from "@spt-aki/models/eft/match/IGetGroupStatusResponse";
 import { IGetRaidConfigurationRequestData } from "@spt-aki/models/eft/match/IGetRaidConfigurationRequestData";
+import { IGroupCurrentResponse } from "@spt-aki/models/eft/match/IGroupCurrentResponse";
 import { IJoinMatchRequestData } from "@spt-aki/models/eft/match/IJoinMatchRequestData";
 import { IJoinMatchResult } from "@spt-aki/models/eft/match/IJoinMatchResult";
 import { IPutMetricsRequestData } from "@spt-aki/models/eft/match/IPutMetricsRequestData";
@@ -21,12 +22,10 @@ import { IUpdatePingRequestData } from "@spt-aki/models/eft/match/IUpdatePingReq
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { HttpResponseUtil } from "@spt-aki/utils/HttpResponseUtil";
 import { JsonUtil } from "@spt-aki/utils/JsonUtil";
-import { IGroupCurrentResponse } from "@spt-aki/models/eft/match/IGroupCurrentResponse";
 
 @injectable()
 export class MatchCallbacks
 {
-    
     constructor(
         @inject("HttpResponseUtil") protected httpResponse: HttpResponseUtil,
         @inject("JsonUtil") protected jsonUtil: JsonUtil,
@@ -59,7 +58,7 @@ export class MatchCallbacks
     public groupCurrent(
         url: string,
         info: IEmptyRequestData,
-        sessionID: string
+        sessionID: string,
     ): IGetBodyResponseData<IGroupCurrentResponse>
     {
         throw new Error("Method not implemented.");
@@ -125,7 +124,7 @@ export class MatchCallbacks
     public transferGroup(
         url: string,
         info: ITransferGroupRequest,
-        sessionId: string
+        sessionId: string,
     ): IGetBodyResponseData<boolean>
     {
         return this.httpResponse.getBody(true);
@@ -136,7 +135,7 @@ export class MatchCallbacks
     public cancelAllGroupInvite(
         url: string,
         info: IEmptyRequestData,
-        sessionId: string
+        sessionId: string,
     ): IGetBodyResponseData<boolean>
     {
         return this.httpResponse.getBody(true);
@@ -207,7 +206,11 @@ export class MatchCallbacks
 
     /** Handle client/match/group/player/remove */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public removePlayerFromGroup(url: string, info: IRemovePlayerFromGroupRequest, sessionID: string): IGetBodyResponseData<boolean>
+    public removePlayerFromGroup(
+        url: string,
+        info: IRemovePlayerFromGroupRequest,
+        sessionID: string,
+    ): IGetBodyResponseData<boolean>
     {
         return this.httpResponse.getBody(true);
     }
@@ -244,7 +247,7 @@ export class MatchCallbacks
     public raidReady(
         url: string,
         info: IEmptyRequestData,
-        sessionId: string
+        sessionId: string,
     ): IGetBodyResponseData<boolean>
     {
         return this.httpResponse.getBody(true);
@@ -254,7 +257,7 @@ export class MatchCallbacks
     public notRaidReady(
         url: string,
         info: IEmptyRequestData,
-        sessionId: string
+        sessionId: string,
     ): IGetBodyResponseData<boolean>
     {
         return this.httpResponse.getBody(true);

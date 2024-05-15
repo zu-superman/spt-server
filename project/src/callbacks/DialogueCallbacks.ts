@@ -8,8 +8,11 @@ import {
     ICancelFriendRequestData,
     IDeclineFriendRequestData,
 } from "@spt-aki/models/eft/dialog/IAcceptFriendRequestData";
+import { IAddUserGroupMailRequest } from "@spt-aki/models/eft/dialog/IAddUserGroupMailRequest";
+import { IChangeGroupMailOwnerRequest } from "@spt-aki/models/eft/dialog/IChangeGroupMailOwnerRequest";
 import { IChatServer } from "@spt-aki/models/eft/dialog/IChatServer";
 import { IClearMailMessageRequest } from "@spt-aki/models/eft/dialog/IClearMailMessageRequest";
+import { ICreateGroupMailRequest } from "@spt-aki/models/eft/dialog/ICreateGroupMailRequest";
 import { IDeleteFriendRequest } from "@spt-aki/models/eft/dialog/IDeleteFriendRequest";
 import { IFriendRequestData } from "@spt-aki/models/eft/dialog/IFriendRequestData";
 import { IFriendRequestSendResponse } from "@spt-aki/models/eft/dialog/IFriendRequestSendResponse";
@@ -24,6 +27,7 @@ import { IGetMailDialogViewResponseData } from "@spt-aki/models/eft/dialog/IGetM
 import { IPinDialogRequestData } from "@spt-aki/models/eft/dialog/IPinDialogRequestData";
 import { IRemoveDialogRequestData } from "@spt-aki/models/eft/dialog/IRemoveDialogRequestData";
 import { IRemoveMailMessageRequest } from "@spt-aki/models/eft/dialog/IRemoveMailMessageRequest";
+import { IRemoveUserGroupMailRequest } from "@spt-aki/models/eft/dialog/IRemoveUserGroupMailRequest";
 import { ISendMessageRequest } from "@spt-aki/models/eft/dialog/ISendMessageRequest";
 import { ISetDialogReadRequestData } from "@spt-aki/models/eft/dialog/ISetDialogReadRequestData";
 import { IGetBodyResponseData } from "@spt-aki/models/eft/httpResponse/IGetBodyResponseData";
@@ -32,10 +36,6 @@ import { DialogueInfo } from "@spt-aki/models/eft/profile/IAkiProfile";
 import { HashUtil } from "@spt-aki/utils/HashUtil";
 import { HttpResponseUtil } from "@spt-aki/utils/HttpResponseUtil";
 import { TimeUtil } from "@spt-aki/utils/TimeUtil";
-import { ICreateGroupMailRequest } from "@spt-aki/models/eft/dialog/ICreateGroupMailRequest";
-import { IChangeGroupMailOwnerRequest } from "@spt-aki/models/eft/dialog/IChangeGroupMailOwnerRequest";
-import { IAddUserGroupMailRequest } from "@spt-aki/models/eft/dialog/IAddUserGroupMailRequest";
-import { IRemoveUserGroupMailRequest } from "@spt-aki/models/eft/dialog/IRemoveUserGroupMailRequest";
 
 @injectable()
 export class DialogueCallbacks implements OnUpdate
@@ -279,7 +279,7 @@ export class DialogueCallbacks implements OnUpdate
     public createGroupMail(
         url: string,
         info: ICreateGroupMailRequest,
-        sessionID: string
+        sessionID: string,
     ): IGetBodyResponseData<any[]>
     {
         throw new Error("Method not implemented.");
@@ -288,7 +288,7 @@ export class DialogueCallbacks implements OnUpdate
     public changeMailGroupOwner(
         url: string,
         info: IChangeGroupMailOwnerRequest,
-        sessionID: string
+        sessionID: string,
     ): IGetBodyResponseData<any[]>
     {
         throw new Error("Method not implemented.");
@@ -297,7 +297,7 @@ export class DialogueCallbacks implements OnUpdate
     public addUserToMail(
         url: string,
         info: IAddUserGroupMailRequest,
-        sessionID: string
+        sessionID: string,
     ): IGetBodyResponseData<any[]>
     {
         throw new Error("Method not implemented.");
@@ -306,7 +306,7 @@ export class DialogueCallbacks implements OnUpdate
     public removeUserFromMail(
         url: string,
         info: IRemoveUserGroupMailRequest,
-        sessionID: string
+        sessionID: string,
     ): IGetBodyResponseData<any[]>
     {
         throw new Error("Method not implemented.");

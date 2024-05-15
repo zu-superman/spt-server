@@ -9,10 +9,10 @@ import { IGameLogoutResponseData } from "@spt-aki/models/eft/game/IGameLogoutRes
 import { IGameModeResponse } from "@spt-aki/models/eft/game/IGameModeResponse";
 import { IGameStartResponse } from "@spt-aki/models/eft/game/IGameStartResponse";
 import { IGetRaidTimeResponse } from "@spt-aki/models/eft/game/IGetRaidTimeResponse";
+import { ISendReportRequest } from "@spt-aki/models/eft/game/ISendReportRequest";
 import { IServerDetails } from "@spt-aki/models/eft/game/IServerDetails";
 import { IGetBodyResponseData } from "@spt-aki/models/eft/httpResponse/IGetBodyResponseData";
 import { INullResponseData } from "@spt-aki/models/eft/httpResponse/INullResponseData";
-import { ISendReportRequest } from "@spt-aki/models/eft/game/ISendReportRequest";
 
 @injectable()
 export class GameStaticRouter extends StaticRouter
@@ -139,7 +139,12 @@ export class GameStaticRouter extends StaticRouter
             ),
             new RouteAction(
                 "/client/report/send",
-                async (url: string, info: ISendReportRequest, sessionID: string, output: string): Promise<INullResponseData> =>
+                async (
+                    url: string,
+                    info: ISendReportRequest,
+                    sessionID: string,
+                    output: string,
+                ): Promise<INullResponseData> =>
                 {
                     return null;
                 },

@@ -1,18 +1,18 @@
 import { inject, injectable } from "tsyringe";
 import { DialogueCallbacks } from "@spt-aki/callbacks/DialogueCallbacks";
 import { RouteAction, StaticRouter } from "@spt-aki/di/Router";
+import { IAddUserGroupMailRequest } from "@spt-aki/models/eft/dialog/IAddUserGroupMailRequest";
+import { IChangeGroupMailOwnerRequest } from "@spt-aki/models/eft/dialog/IChangeGroupMailOwnerRequest";
 import { IChatServer } from "@spt-aki/models/eft/dialog/IChatServer";
+import { ICreateGroupMailRequest } from "@spt-aki/models/eft/dialog/ICreateGroupMailRequest";
 import { IFriendRequestSendResponse } from "@spt-aki/models/eft/dialog/IFriendRequestSendResponse";
 import { IGetAllAttachmentsResponse } from "@spt-aki/models/eft/dialog/IGetAllAttachmentsResponse";
 import { IGetFriendListDataResponse } from "@spt-aki/models/eft/dialog/IGetFriendListDataResponse";
 import { IGetMailDialogViewResponseData } from "@spt-aki/models/eft/dialog/IGetMailDialogViewResponseData";
+import { IRemoveUserGroupMailRequest } from "@spt-aki/models/eft/dialog/IRemoveUserGroupMailRequest";
 import { IGetBodyResponseData } from "@spt-aki/models/eft/httpResponse/IGetBodyResponseData";
 import { INullResponseData } from "@spt-aki/models/eft/httpResponse/INullResponseData";
 import { DialogueInfo } from "@spt-aki/models/eft/profile/IAkiProfile";
-import { ICreateGroupMailRequest } from "@spt-aki/models/eft/dialog/ICreateGroupMailRequest";
-import { IChangeGroupMailOwnerRequest } from "@spt-aki/models/eft/dialog/IChangeGroupMailOwnerRequest";
-import { IAddUserGroupMailRequest } from "@spt-aki/models/eft/dialog/IAddUserGroupMailRequest";
-import { IRemoveUserGroupMailRequest } from "@spt-aki/models/eft/dialog/IRemoveUserGroupMailRequest";
 
 @injectable()
 export class DialogStaticRouter extends StaticRouter
