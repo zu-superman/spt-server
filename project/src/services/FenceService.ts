@@ -394,6 +394,13 @@ export class FenceService
         {
             // Find the root item
             const newRootItem = itemWithChildren.find(item => item.slotId === "hideout");
+            if (!newRootItem)
+            {
+                const firstItem = itemWithChildren.find(x => x);
+                this.logger.error(`Unable to process fence assort as root item is missing, ${firstItem?._tpl}, skipping`);
+
+                continue;
+            }
 
             // Find a matching root item with same tpl in existing assort
             const existingRootItem = existingFenceAssorts.items.find(item =>

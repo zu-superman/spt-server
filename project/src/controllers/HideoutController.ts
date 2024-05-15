@@ -523,7 +523,7 @@ export class HideoutController
 
         const request: IAddItemDirectRequest = {
             itemWithModsToAdd: [itemToReturn],
-            foundInRaid: !!itemToReturn.upd.SpawnedInSession,
+            foundInRaid: !!itemToReturn.upd?.SpawnedInSession,
             callback: null,
             useSortingTable: false,
         };

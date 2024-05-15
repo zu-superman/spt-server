@@ -263,11 +263,11 @@ export class BotEquipmentModGenerator
         const platesFromDb = existingPlateTplPool.map(plateTpl => this.itemHelper.getItem(plateTpl)[1]);
 
         // Filter plates to the chosen level based on its armorClass property
-        const filteredPlates = platesFromDb.filter(item => item._props.armorClass === chosenArmorPlateLevel);
-        if (filteredPlates.length === 0)
+        const platesOfDesiredLevel = platesFromDb.filter(item => item._props.armorClass === chosenArmorPlateLevel);
+        if (platesOfDesiredLevel.length === 0)
         {
             this.logger.debug(
-                `Plate filter was too restrictive for armor: ${armorItem._id}, unable to find plates of level: ${chosenArmorPlateLevel}. Using mod items default plate`,
+                `Plate filter was too restrictive for armor: ${armorItem._name} ${armorItem._id}, unable to find plates of level: ${chosenArmorPlateLevel}. Using mod items default plate`,
             );
 
             const relatedItemDbModSlot = armorItem._props.Slots.find(slot => slot._name.toLowerCase() === modSlot);
@@ -305,7 +305,7 @@ export class BotEquipmentModGenerator
 
         // Only return the items ids
         result.result = Result.SUCCESS;
-        result.plateModTpls = filteredPlates.map(item => item._id);
+        result.plateModTpls = platesOfDesiredLevel.map(item => item._id);
 
         return result;
     }
@@ -548,8 +548,9 @@ export class BotEquipmentModGenerator
      */
     protected modIsFrontOrRearSight(modSlot: string, tpl: string): boolean
     {
-        if (modSlot === "mod_gas_block" && tpl === "5ae30e795acfc408fb139a0b")
-        { // M4A1 front sight with gas block
+        // Gas block /w front sight is special case, deem it a 'front sight' too
+        if (modSlot === "mod_gas_block" && tpl === "5ae30e795acfc408fb139a0b") // M4A1 front sight with gas block
+        { 
             return true;
         }
 
@@ -949,22 +950,23 @@ export class BotEquipmentModGenerator
         if (modSpawnResult === ModSpawn.DEFAULT_MOD)
         {
             const matchingPreset = this.getMatchingPreset(weaponTemplate, parentTemplate._id);
-            const matchingMod = matchingPreset._items.find(item =>
+            const matchingModFromPreset = matchingPreset?._items.find(item =>
                 item?.slotId?.toLowerCase() === modSlot.toLowerCase(),
             );
 
             // Only filter mods down to single default item if it already exists in existing itemModPool, OR the default item has no children
             // Filtering mod pool to item that wasnt already there can have problems;
             // You'd have a mod being picked without any sub-mods in its chain, possibly resulting in missing required mods not being added
-            if (matchingMod)
+            if (matchingModFromPreset)
             {
                 // Mod is in existing mod pool
-                if (itemModPool[modSlot].includes(matchingMod._tpl))
+                if (itemModPool[modSlot].includes(matchingModFromPreset._tpl))
                 {
                     // Found mod on preset + it already exists in mod pool
-                    return [matchingMod._tpl];
+                    return [matchingModFromPreset._tpl];
                 }
 
+                // Get an array of items that are allowed in slot from parent item
                 // Check the filter of the slot to ensure a chosen mod fits
                 const parentSlotCompatibleItems = parentTemplate._props.Slots?.find(slot =>
                     slot._name.toLowerCase() === modSlot.toLowerCase(),
@@ -972,16 +974,19 @@ export class BotEquipmentModGenerator
 
                 // Mod isnt in existing pool, only add if it has no children and matches parent filter
                 if (
-                    this.itemHelper.getItem(matchingMod._tpl)[1]._props.Slots.length === 0
-                    && parentSlotCompatibleItems.includes(matchingMod._tpl)
+                    parentSlotCompatibleItems.includes(matchingModFromPreset._tpl)
+                    && this.itemHelper.getItem(matchingModFromPreset._tpl)[1]._props.Slots.length === 0
                 )
                 {
                     // Mod has no children and matches parent filters, can be used
-                    return [matchingMod._tpl];
+                    return [matchingModFromPreset._tpl];
                 }
             }
 
-            this.logger.debug(`No default: ${modSlot} mod found on template: ${weaponTemplate._id}`);
+            if (itemModPool[modSlot]?.length > 1)
+            {
+                this.logger.debug(`No default: ${modSlot} mod found on template: ${weaponTemplate._name} and multiple items found in existing pool`);
+            }
 
             // Couldnt find default in globals, use existing mod pool data
             return itemModPool[modSlot];
@@ -1000,21 +1005,19 @@ export class BotEquipmentModGenerator
      * Get default preset for weapon, get specific weapon presets for edge cases (mp5/silenced dvl)
      * @param weaponTemplate
      * @param parentItemTpl
-     * @returns
+     * @returns Default preset found
      */
     protected getMatchingPreset(weaponTemplate: ITemplateItem, parentItemTpl: string): IPreset
     {
         // Edge case - using mp5sd reciever means default mp5 handguard doesnt fit
         const isMp5sd = parentItemTpl === "5926f2e086f7745aae644231";
-
-        // Edge case - dvl 500mm is the silenced barrel and has specific muzzle mods
-        const isDvl500mmSilencedBarrel = parentItemTpl === "5888945a2459774bf43ba385";
-
         if (isMp5sd)
         {
             return this.presetHelper.getPreset("59411abb86f77478f702b5d2");
         }
 
+        // Edge case - dvl 500mm is the silenced barrel and has specific muzzle mods
+        const isDvl500mmSilencedBarrel = parentItemTpl === "5888945a2459774bf43ba385";
         if (isDvl500mmSilencedBarrel)
         {
             return this.presetHelper.getPreset("59e8d2b386f77445830dd299");

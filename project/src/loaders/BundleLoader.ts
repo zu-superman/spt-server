@@ -58,8 +58,7 @@ export class BundleLoader
 
     public addBundles(modpath: string): void
     {
-        const bundleManifestArr
-            = this.jsonUtil.deserialize<BundleManifest>(this.vfs.readFile(`${modpath}bundles.json`)).manifest;
+        const bundleManifestArr = this.jsonUtil.deserialize<BundleManifest>(this.vfs.readFile(`${modpath}bundles.json`)).manifest;
 
         for (const bundleManifest of bundleManifestArr)
         {
