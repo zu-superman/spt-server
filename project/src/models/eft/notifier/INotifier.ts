@@ -45,5 +45,5 @@ export enum NotificationType
     FRIEND_LIST_NEW_REQUEST = "friendListNewRequest",
     FRIEND_LIST_REMOVED_FROM_FRIEND_LIST = "youAreRemovedFromFriendList",
     YOU_ARE_ADDED_TO_IGNORE_LIST = "YouWereAddedToIgnoreList",
-    YOU_ARE_REMOVED_FROM_IGNORE_LIST = "youAreRemoveFromIgnoreList"
+    YOU_ARE_REMOVED_FROM_IGNORE_LIST = "youAreRemoveFromIgnoreList",
 }
