@@ -10,6 +10,9 @@ import { IGetBodyResponseData } from "@spt-aki/models/eft/httpResponse/IGetBodyR
 import { INullResponseData } from "@spt-aki/models/eft/httpResponse/INullResponseData";
 import { DialogueInfo } from "@spt-aki/models/eft/profile/IAkiProfile";
 import { ICreateGroupMailRequest } from "@spt-aki/models/eft/dialog/ICreateGroupMailRequest";
+import { IChangeGroupMailOwnerRequest } from "@spt-aki/models/eft/dialog/IChangeGroupMailOwnerRequest";
+import { IAddUserGroupMailRequest } from "@spt-aki/models/eft/dialog/IAddUserGroupMailRequest";
+import { IRemoveUserGroupMailRequest } from "@spt-aki/models/eft/dialog/IRemoveUserGroupMailRequest";
 
 @injectable()
 export class DialogStaticRouter extends StaticRouter
@@ -171,6 +174,42 @@ export class DialogStaticRouter extends StaticRouter
                 ): Promise<IGetBodyResponseData<any[]>> =>
                 {
                     return this.dialogueCallbacks.createGroupMail(url, info, sessionID);
+                },
+            ),
+            new RouteAction(
+                "/client/mail/dialog/group/owner/change",
+                async (
+                    url: string,
+                    info: IChangeGroupMailOwnerRequest,
+                    sessionID: string,
+                    output: string,
+                ): Promise<IGetBodyResponseData<any[]>> =>
+                {
+                    return this.dialogueCallbacks.changeMailGroupOwner(url, info, sessionID);
+                },
+            ),
+            new RouteAction(
+                "/client/mail/dialog/group/users/add",
+                async (
+                    url: string,
+                    info: IAddUserGroupMailRequest,
+                    sessionID: string,
+                    output: string,
+                ): Promise<IGetBodyResponseData<any[]>> =>
+                {
+                    return this.dialogueCallbacks.addUserToMail(url, info, sessionID);
+                },
+            ),
+            new RouteAction(
+                "/client/mail/dialog/group/users/remove",
+                async (
+                    url: string,
+                    info: IRemoveUserGroupMailRequest,
+                    sessionID: string,
+                    output: string,
+                ): Promise<IGetBodyResponseData<any[]>> =>
+                {
+                    return this.dialogueCallbacks.removeUserFromMail(url, info, sessionID);
                 },
             ),
             new RouteAction(

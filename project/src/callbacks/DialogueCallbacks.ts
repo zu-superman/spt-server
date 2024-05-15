@@ -33,10 +33,14 @@ import { HashUtil } from "@spt-aki/utils/HashUtil";
 import { HttpResponseUtil } from "@spt-aki/utils/HttpResponseUtil";
 import { TimeUtil } from "@spt-aki/utils/TimeUtil";
 import { ICreateGroupMailRequest } from "@spt-aki/models/eft/dialog/ICreateGroupMailRequest";
+import { IChangeGroupMailOwnerRequest } from "@spt-aki/models/eft/dialog/IChangeGroupMailOwnerRequest";
+import { IAddUserGroupMailRequest } from "@spt-aki/models/eft/dialog/IAddUserGroupMailRequest";
+import { IRemoveUserGroupMailRequest } from "@spt-aki/models/eft/dialog/IRemoveUserGroupMailRequest";
 
 @injectable()
 export class DialogueCallbacks implements OnUpdate
 {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     constructor(
         @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
@@ -275,6 +279,33 @@ export class DialogueCallbacks implements OnUpdate
     public createGroupMail(
         url: string,
         info: ICreateGroupMailRequest,
+        sessionID: string
+    ): IGetBodyResponseData<any[]>
+    {
+        throw new Error("Method not implemented.");
+    }
+
+    public changeMailGroupOwner(
+        url: string,
+        info: IChangeGroupMailOwnerRequest,
+        sessionID: string
+    ): IGetBodyResponseData<any[]>
+    {
+        throw new Error("Method not implemented.");
+    }
+
+    public addUserToMail(
+        url: string,
+        info: IAddUserGroupMailRequest,
+        sessionID: string
+    ): IGetBodyResponseData<any[]>
+    {
+        throw new Error("Method not implemented.");
+    }
+
+    public removeUserFromMail(
+        url: string,
+        info: IRemoveUserGroupMailRequest,
         sessionID: string
     ): IGetBodyResponseData<any[]>
     {
