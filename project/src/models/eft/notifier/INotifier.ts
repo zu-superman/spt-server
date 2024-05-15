@@ -27,4 +27,7 @@ export enum NotificationType
     TRADER_SUPPLY = "TraderSupply",
     TRADER_STANDING = "TraderStanding",
     UNLOCK_TRADER = "UnlockTrader",
+    GROUP_MATCH_RAID_NOT_READY = "groupMatchRaidNotReady",
+    GROUP_MATCH_RAID_READY = "groupMatchRaidReady"
+
 }

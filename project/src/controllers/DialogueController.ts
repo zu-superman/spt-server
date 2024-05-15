@@ -15,6 +15,8 @@ import { ConfigServer } from "@spt-aki/servers/ConfigServer";
 import { SaveServer } from "@spt-aki/servers/SaveServer";
 import { MailSendService } from "@spt-aki/services/MailSendService";
 import { TimeUtil } from "@spt-aki/utils/TimeUtil";
+import { IFriendRequestData } from "@spt-aki/models/eft/dialog/IFriendRequestData";
+import { IFriendRequestSendResponse } from "@spt-aki/models/eft/dialog/IFriendRequestSendResponse";
 
 @injectable()
 export class DialogueController
@@ -448,5 +450,15 @@ export class DialogueController
     protected messageHasExpired(message: Message): boolean
     {
         return this.timeUtil.getTimestamp() > message.dt + message.maxStorageTime;
+    }
+
+    /** Handle client/friend/request/send  */
+    public sendFriendRequest(
+        sessionID: string,
+        request: IFriendRequestData
+
+    ): IFriendRequestSendResponse
+    {
+        return { status: 0, requestId: "12345", retryAfter: 600 }
     }
 }

@@ -1,18 +1,15 @@
 import { inject, injectable } from "tsyringe";
 import { MatchController } from "@spt-aki/controllers/MatchController";
 import { IEmptyRequestData } from "@spt-aki/models/eft/common/IEmptyRequestData";
-import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
 import { IGetBodyResponseData } from "@spt-aki/models/eft/httpResponse/IGetBodyResponseData";
 import { INullResponseData } from "@spt-aki/models/eft/httpResponse/INullResponseData";
 import { IAcceptGroupInviteRequest } from "@spt-aki/models/eft/match/IAcceptGroupInviteRequest";
 import { IAcceptGroupInviteResponse } from "@spt-aki/models/eft/match/IAcceptGroupInviteResponse";
 import { ICancelGroupInviteRequest } from "@spt-aki/models/eft/match/ICancelGroupInviteRequest";
-import { ICreateGroupRequestData } from "@spt-aki/models/eft/match/ICreateGroupRequestData";
 import { IDeclineGroupInviteRequest } from "@spt-aki/models/eft/match/IDeclineGroupInviteRequest";
 import { IEndOfflineRaidRequestData } from "@spt-aki/models/eft/match/IEndOfflineRaidRequestData";
 import { IGetGroupStatusRequestData } from "@spt-aki/models/eft/match/IGetGroupStatusRequestData";
 import { IGetGroupStatusResponse } from "@spt-aki/models/eft/match/IGetGroupStatusResponse";
-import { IGetProfileRequestData } from "@spt-aki/models/eft/match/IGetProfileRequestData";
 import { IGetRaidConfigurationRequestData } from "@spt-aki/models/eft/match/IGetRaidConfigurationRequestData";
 import { IJoinMatchRequestData } from "@spt-aki/models/eft/match/IJoinMatchRequestData";
 import { IJoinMatchResult } from "@spt-aki/models/eft/match/IJoinMatchResult";
@@ -24,10 +21,12 @@ import { IUpdatePingRequestData } from "@spt-aki/models/eft/match/IUpdatePingReq
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { HttpResponseUtil } from "@spt-aki/utils/HttpResponseUtil";
 import { JsonUtil } from "@spt-aki/utils/JsonUtil";
+import { IGroupCurrentResponse } from "@spt-aki/models/eft/match/IGroupCurrentResponse";
 
 @injectable()
 export class MatchCallbacks
 {
+    
     constructor(
         @inject("HttpResponseUtil") protected httpResponse: HttpResponseUtil,
         @inject("JsonUtil") protected jsonUtil: JsonUtil,
@@ -57,6 +56,15 @@ export class MatchCallbacks
         return this.httpResponse.nullResponse();
     }
 
+    public groupCurrent(
+        url: string,
+        info: IEmptyRequestData,
+        sessionID: string
+    ): IGetBodyResponseData<IGroupCurrentResponse>
+    {
+        throw new Error("Method not implemented.");
+    }
+
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public startGroupSearch(url: string, info: IEmptyRequestData, sessionID: string): INullResponseData
     {
@@ -81,7 +89,7 @@ export class MatchCallbacks
     public acceptGroupInvite(
         url: string,
         info: IAcceptGroupInviteRequest,
-        sessionID: string,
+        sessionId: string,
     ): IGetBodyResponseData<IAcceptGroupInviteResponse[]>
     {
         const result = [];
@@ -95,10 +103,10 @@ export class MatchCallbacks
     public declineGroupInvite(
         url: string,
         info: IDeclineGroupInviteRequest,
-        sessionID: string,
-    ): IGetBodyResponseData<any>
+        sessionId: string,
+    ): IGetBodyResponseData<boolean>
     {
-        return null;
+        return this.httpResponse.getBody(true);
     }
 
     /** Handle client/match/group/invite/cancel */
@@ -114,28 +122,36 @@ export class MatchCallbacks
 
     /** Handle client/match/group/transfer */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public transferGroup(url: string, info: ITransferGroupRequest, sessionID: string): IGetBodyResponseData<boolean>
+    public transferGroup(
+        url: string,
+        info: ITransferGroupRequest,
+        sessionId: string
+    ): IGetBodyResponseData<boolean>
     {
         return this.httpResponse.getBody(true);
     }
 
     /** Handle client/match/group/invite/cancel-all */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public cancelAllGroupInvite(url: string, info: IEmptyRequestData, sessionID: string): INullResponseData
+    public cancelAllGroupInvite(
+        url: string,
+        info: IEmptyRequestData,
+        sessionId: string
+    ): IGetBodyResponseData<boolean>
     {
-        return this.httpResponse.nullResponse();
+        return this.httpResponse.getBody(true);
     }
 
     /** @deprecated - not called on raid start/end or game start/exit */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public putMetrics(url: string, info: IPutMetricsRequestData, sessionID: string): INullResponseData
+    public putMetrics(url: string, info: IPutMetricsRequestData, sessionId: string): INullResponseData
     {
         return this.httpResponse.nullResponse();
     }
 
     // Handle client/match/available
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public serverAvailable(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<boolean>
+    public serverAvailable(url: string, info: IEmptyRequestData, sessionId: string): IGetBodyResponseData<boolean>
     {
         const output = this.matchController.getEnabled();
 
@@ -176,10 +192,10 @@ export class MatchCallbacks
 
     /** Handle client/match/group/delete */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public deleteGroup(url: string, info: any, sessionID: string): INullResponseData
+    public deleteGroup(url: string, info: any, sessionID: string): IGetBodyResponseData<boolean>
     {
         this.matchController.deleteGroup(info);
-        return this.httpResponse.nullResponse();
+        return this.httpResponse.getBody(true);
     }
 
     // Handle client/match/group/leave
@@ -191,9 +207,9 @@ export class MatchCallbacks
 
     /** Handle client/match/group/player/remove */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public removePlayerFromGroup(url: string, info: IRemovePlayerFromGroupRequest, sessionID: string): INullResponseData
+    public removePlayerFromGroup(url: string, info: IRemovePlayerFromGroupRequest, sessionID: string): IGetBodyResponseData<boolean>
     {
-        return this.httpResponse.nullResponse();
+        return this.httpResponse.getBody(true);
     }
 
     /** Handle client/match/offline/end */
@@ -222,5 +238,25 @@ export class MatchCallbacks
     ): INullResponseData
     {
         return this.httpResponse.nullResponse();
+    }
+
+    /** Handle client/match/group/raid/ready */
+    public raidReady(
+        url: string,
+        info: IEmptyRequestData,
+        sessionId: string
+    ): IGetBodyResponseData<boolean>
+    {
+        return this.httpResponse.getBody(true);
+    }
+
+    /** Handle client/match/group/raid/not-ready */
+    public notRaidReady(
+        url: string,
+        info: IEmptyRequestData,
+        sessionId: string
+    ): IGetBodyResponseData<boolean>
+    {
+        return this.httpResponse.getBody(true);
     }
 }

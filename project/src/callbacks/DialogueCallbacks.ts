@@ -32,6 +32,7 @@ import { DialogueInfo } from "@spt-aki/models/eft/profile/IAkiProfile";
 import { HashUtil } from "@spt-aki/utils/HashUtil";
 import { HttpResponseUtil } from "@spt-aki/utils/HttpResponseUtil";
 import { TimeUtil } from "@spt-aki/utils/TimeUtil";
+import { ICreateGroupMailRequest } from "@spt-aki/models/eft/dialog/ICreateGroupMailRequest";
 
 @injectable()
 export class DialogueCallbacks implements OnUpdate
@@ -187,7 +188,7 @@ export class DialogueCallbacks implements OnUpdate
         sessionID: string,
     ): IGetBodyResponseData<IFriendRequestSendResponse>
     {
-        return this.httpResponse.getBody({ status: 0, requestId: "12345", retryAfter: 600 });
+        return this.httpResponse.getBody(this.dialogueController.sendFriendRequest(sessionID, request));
     }
 
     /**
@@ -269,6 +270,15 @@ export class DialogueCallbacks implements OnUpdate
     public removeMail(url: string, request: IRemoveMailMessageRequest, sessionID: string): IGetBodyResponseData<any[]>
     {
         return this.httpResponse.emptyArrayResponse();
+    }
+
+    public createGroupMail(
+        url: string,
+        info: ICreateGroupMailRequest,
+        sessionID: string
+    ): IGetBodyResponseData<any[]>
+    {
+        throw new Error("Method not implemented.");
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

@@ -9,6 +9,7 @@ import { IGetMailDialogViewResponseData } from "@spt-aki/models/eft/dialog/IGetM
 import { IGetBodyResponseData } from "@spt-aki/models/eft/httpResponse/IGetBodyResponseData";
 import { INullResponseData } from "@spt-aki/models/eft/httpResponse/INullResponseData";
 import { DialogueInfo } from "@spt-aki/models/eft/profile/IAkiProfile";
+import { ICreateGroupMailRequest } from "@spt-aki/models/eft/dialog/ICreateGroupMailRequest";
 
 @injectable()
 export class DialogStaticRouter extends StaticRouter
@@ -158,6 +159,18 @@ export class DialogStaticRouter extends StaticRouter
                 ): Promise<IGetBodyResponseData<any[]>> =>
                 {
                     return this.dialogueCallbacks.clearMail(url, info, sessionID);
+                },
+            ),
+            new RouteAction(
+                "/client/mail/dialog/group/create",
+                async (
+                    url: string,
+                    info: ICreateGroupMailRequest,
+                    sessionID: string,
+                    output: string,
+                ): Promise<IGetBodyResponseData<any[]>> =>
+                {
+                    return this.dialogueCallbacks.createGroupMail(url, info, sessionID);
                 },
             ),
             new RouteAction(

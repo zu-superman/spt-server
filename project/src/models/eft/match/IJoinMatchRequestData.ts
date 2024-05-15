@@ -1,6 +1,6 @@
 export interface IJoinMatchRequestData
 {
-    groupid: string
+    groupId: string
     servers: Server[]
 }
 
