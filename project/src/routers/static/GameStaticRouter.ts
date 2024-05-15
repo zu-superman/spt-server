@@ -12,6 +12,7 @@ import { IGetRaidTimeResponse } from "@spt-aki/models/eft/game/IGetRaidTimeRespo
 import { IServerDetails } from "@spt-aki/models/eft/game/IServerDetails";
 import { IGetBodyResponseData } from "@spt-aki/models/eft/httpResponse/IGetBodyResponseData";
 import { INullResponseData } from "@spt-aki/models/eft/httpResponse/INullResponseData";
+import { ISendReportRequest } from "@spt-aki/models/eft/game/ISendReportRequest";
 
 @injectable()
 export class GameStaticRouter extends StaticRouter
@@ -134,6 +135,13 @@ export class GameStaticRouter extends StaticRouter
                 async (url: string, info: any, sessionID: string, output: string): Promise<INullResponseData> =>
                 {
                     return this.gameCallbacks.reportNickname(url, info, sessionID);
+                },
+            ),
+            new RouteAction(
+                "/client/report/send",
+                async (url: string, info: ISendReportRequest, sessionID: string, output: string): Promise<INullResponseData> =>
+                {
+                    return null;
                 },
             ),
             new RouteAction(
