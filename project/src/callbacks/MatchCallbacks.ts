@@ -61,7 +61,7 @@ export class MatchCallbacks
         sessionID: string,
     ): IGetBodyResponseData<IGroupCurrentResponse>
     {
-        throw new Error("Method not implemented.");
+        return this.httpResponse.getBody({ squad: [] });
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
