@@ -1,32 +1,32 @@
 {
   "appearance": {
     "body": {
-      "5d28ad6986f77429275dba22": 9,
-      "5cde9f337d6c8b0474535da8": 1,
-      "5cc2e59214c02e000f16684e": 2
+      "5cde9f337d6c8b0474535da8": 2,
+      "5d28ad6986f77429275dba22": 26,
+      "5cc2e59214c02e000f16684e": 7
     },
     "feet": {
-      "5d5e7f8986f7742798716582": 6,
-      "61922589bb2cea6f7a22d964": 4,
-      "5f5e410c6bdad616ad46d60b": 1
+      "5f5e410c6bdad616ad46d60b": 1,
+      "5d5e7f8986f7742798716582": 8,
+      "61922589bb2cea6f7a22d964": 4
     },
     "hands": {
       "5cc2e68f14c02e28b47de290": 1
     },
     "head": {
-      "5f68c4a7c174a17c0f4c8945": 3,
-      "5cde9ff17d6c8b0474535daa": 3,
-      "5d28afe786f774292668618d": 4,
-      "5f68c4c217d579077152a252": 2,
-      "5cc2e4d014c02e000d0115f8": 1
+      "5f68c4a7c174a17c0f4c8945": 9,
+      "5cde9ff17d6c8b0474535daa": 14,
+      "5f68c4c217d579077152a252": 13,
+      "5d28afe786f774292668618d": 9,
+      "5cc2e4d014c02e000d0115f8": 14
     },
     "voice": {
-      "Scav_2": 5,
-      "Scav_6": 2,
-      "Scav_1": 6,
-      "Scav_3": 4,
-      "Scav_5": 4,
-      "Scav_4": 4
+      "Scav_2": 30,
+      "Scav_3": 18,
+      "Scav_1": 24,
+      "Scav_5": 37,
+      "Scav_6": 18,
+      "Scav_4": 21
     }
   },
   "experience": {
@@ -97,43 +97,50 @@
       },
       "Earpiece": {},
       "FaceCover": {
-        "572b7fa524597762b747ce82": 8,
-        "5b432b6c5acfc4001a599bf0": 2,
+        "572b7fa524597762b747ce82": 28,
+        "5b432b6c5acfc4001a599bf0": 5,
         "62a5c2c98ec41a51b34739c0": 1,
-        "5ab8f4ff86f77431c60d91ba": 2,
-        "59e7715586f7742ee5789605": 1,
-        "5e54f76986f7740366043752": 1,
-        "5b432f3d5acfc4704b4a1dfb": 1
+        "5ab8f4ff86f77431c60d91ba": 20,
+        "59e7715586f7742ee5789605": 12,
+        "5e54f76986f7740366043752": 5,
+        "5b432f3d5acfc4704b4a1dfb": 9,
+        "5b432b2f5acfc4771e1c6622": 3,
+        "5bd073a586f7747e6f135799": 3,
+        "62a09e08de7ac81993580532": 3,
+        "5e54f79686f7744022011103": 1
       },
       "ArmorVest": {
         "5ab8e4ed86f7742d8e50c7fa": 1
       },
       "Eyewear": {
-        "603409c80ca681766b6a0fb2": 1,
-        "59e770b986f7742cbd762754": 7,
-        "62a09e410b9d3c46de5b6e78": 1,
-        "5d6d2ef3a4b93618084f58bd": 1
+        "59e770b986f7742cbd762754": 34,
+        "603409c80ca681766b6a0fb2": 3,
+        "62a09e410b9d3c46de5b6e78": 3,
+        "5d6d2ef3a4b93618084f58bd": 5,
+        "557ff21e4bdc2d89578b4586": 16,
+        "61c18d83b00456371a66814b": 4
       },
       "ArmBand": {},
       "TacticalVest": {
-        "5d5d8ca986f7742798716522": 8,
-        "64be7095047e826eae02b0c1": 17
+        "64be7095047e826eae02b0c1": 59,
+        "5d5d8ca986f7742798716522": 30
       },
       "Backpack": {
-        "544a5cde4bdc2d39388b456b": 7,
-        "5e9dcf5986f7746c417435b3": 4
+        "544a5cde4bdc2d39388b456b": 25,
+        "5e9dcf5986f7746c417435b3": 12
       },
       "FirstPrimaryWeapon": {
-        "5447a9cd4bdc2dbd208b4567": 11,
-        "62e7c4fba689e8c9c50dfc38": 8,
-        "623063e994fc3f7b302a9696": 6
+        "5447a9cd4bdc2dbd208b4567": 93,
+        "62e7c4fba689e8c9c50dfc38": 48,
+        "623063e994fc3f7b302a9696": 37
       },
       "SecondPrimaryWeapon": {},
       "Holster": {},
       "Scabbard": {
-        "54491bb74bdc2d09088b4567": 4,
-        "57e26fc7245977162a14b800": 13,
-        "57e26ea924597715ca604a09": 3
+        "57e26fc7245977162a14b800": 55,
+        "57e26ea924597715ca604a09": 46,
+        "54491bb74bdc2d09088b4567": 24,
+        "5bc9c1e2d4351e00367fbcf0": 3
       },
       "Pockets": {
         "557ffd194bdc2d28148b457f": 1
@@ -144,33 +151,35 @@
     },
     "Ammo": {
       "Caliber556x45NATO": {
-        "59e6920f86f77411d82aa167": 13,
-        "59e6918f86f7746c9f75e849": 3,
-        "54527a984bdc2d4e668b4567": 6,
-        "59e6927d86f77411da468256": 3
+        "59e6918f86f7746c9f75e849": 29,
+        "59e6920f86f77411d82aa167": 73,
+        "54527a984bdc2d4e668b4567": 57,
+        "59e6927d86f77411da468256": 19
       }
     },
     "mods": {
       "5447a9cd4bdc2dbd208b4567": {
         "mod_pistol_grip": [
-          "55d4b9964bdc2d1d4e8b456e",
-          "5c6d7b3d2e221600114c9b7d",
           "5bb20e0ed4351e3bac1212dc",
-          "6193dcd0f8ee7e52e4210a28"
+          "5c6d7b3d2e221600114c9b7d",
+          "55d4b9964bdc2d1d4e8b456e",
+          "6193dcd0f8ee7e52e4210a28",
+          "602e71bd53a60014f9705bfa"
         ],
         "mod_reciever": [
           "55d355e64bdc2d962f8b4569"
         ],
         "mod_stock": [
-          "602e3f1254072b51b239f713",
           "5c0faeddd174af02a962601f",
+          "602e3f1254072b51b239f713",
           "5649be884bdc2d79388b4577"
         ],
         "mod_charge": [
+          "5bb20dbcd4351e44f824c04e",
           "5c0faf68d174af02a96260b8",
-          "56ea7165d2720b6e518b4583",
           "6033749e88382f4fab3fd2c5",
-          "5bb20dbcd4351e44f824c04e"
+          "56ea7165d2720b6e518b4583",
+          "55d44fd14bdc2d962f8b456e"
         ],
         "mod_magazine": [
           "5448c1d04bdc2dff2f8b4569",
@@ -184,7 +193,8 @@
         ],
         "mod_handguard": [
           "5ae30db85acfc408fb139a05",
-          "55d459824bdc2d892f8b4573"
+          "55d459824bdc2d892f8b4573",
+          "5c9a26332e2216001219ea70"
         ],
         "mod_sight_rear": [
           "5ae30bad5acfc400185c2dc4",
@@ -202,22 +212,13 @@
           "637f57a68d137b27f70c4968"
         ]
       },
-      "602e3f1254072b51b239f713": {
+      "5c0faeddd174af02a962601f": {
         "mod_stock_000": [
-          "5beec8c20db834001d2c465c",
+          "5ae30c9a5acfc408fb139a03",
+          "55d4ae6c4bdc2d8b2f8b456e",
+          "628a85ee6b1d481ff772e9d5",
           "5bfe86df0db834001b734685",
-          "55d4ae6c4bdc2d8b2f8b456e"
-        ]
-      },
-      "5aa7d03ae5b5b00016327db5": {
-        "helmet_top": [
-          "654a90aff4f81a421b0a7c86"
-        ],
-        "helmet_back": [
-          "654a91068e1ce698150fd1e2"
-        ],
-        "helmet_ears": [
-          "654a9189bcc67a392b056c79"
+          "5beec8c20db834001d2c465c"
         ]
       },
       "5ab8e4ed86f7742d8e50c7fa": {
@@ -234,20 +235,24 @@
           "6570460471369562b300ce9f"
         ]
       },
-      "5c0faeddd174af02a962601f": {
+      "602e3f1254072b51b239f713": {
         "mod_stock_000": [
+          "5beec8c20db834001d2c465c",
           "55d4ae6c4bdc2d8b2f8b456e",
+          "5bfe86df0db834001b734685",
+          "628a85ee6b1d481ff772e9d5",
           "5ae30c9a5acfc408fb139a03"
         ]
       },
-      "56ea8d2fd2720b7c698b4570": {
-        "mod_sight_front": [
-          "55d4af3a4bdc2d972f8b456f"
-        ]
-      },
-      "55d459824bdc2d892f8b4573": {
-        "mod_handguard": [
-          "637f57b78d137b27f70c496a"
+      "5aa7d03ae5b5b00016327db5": {
+        "helmet_top": [
+          "654a90aff4f81a421b0a7c86"
+        ],
+        "helmet_back": [
+          "654a91068e1ce698150fd1e2"
+        ],
+        "helmet_ears": [
+          "654a9189bcc67a392b056c79"
         ]
       },
       "62e7c4fba689e8c9c50dfc38": {
@@ -272,6 +277,11 @@
         ],
         "mod_foregrip": [
           "634e61b0767cb15c4601a877"
+        ]
+      },
+      "55d459824bdc2d892f8b4573": {
+        "mod_handguard": [
+          "637f57b78d137b27f70c496a"
         ]
       },
       "623063e994fc3f7b302a9696": {
@@ -309,69 +319,195 @@
       },
       "5649be884bdc2d79388b4577": {
         "mod_stock_000": [
-          "5beec8c20db834001d2c465c"
+          "5beec8c20db834001d2c465c",
+          "5bfe86df0db834001b734685",
+          "55d4ae6c4bdc2d8b2f8b456e",
+          "628a85ee6b1d481ff772e9d5"
+        ]
+      },
+      "56ea8d2fd2720b7c698b4570": {
+        "mod_sight_front": [
+          "55d4af3a4bdc2d972f8b456f"
         ]
       }
     },
     "items": {
       "TacticalVest": {
-        "5448c1d04bdc2dff2f8b4569": 5,
-        "5aaa5e60e5b5b000140293d6": 9,
-        "62e7c98b550c8218d602cbb4": 15,
+        "5448c1d04bdc2dff2f8b4569": 61,
+        "5aaa5e60e5b5b000140293d6": 43,
+        "5e831507ea0a7c419c2f9bd9": 34,
         "60098b1705871270cd5352a1": 1,
-        "62307b7b10d2321fa8741921": 11,
-        "55d4887d4bdc2d962f8b4570": 5,
-        "5e831507ea0a7c419c2f9bd9": 1,
-        "57347d7224597744596b4e72": 1,
-        "544fb62a4bdc2dfb738b4568": 1,
-        "544fb3364bdc2d34748b456a": 1,
-        "57347d692459774491567cf1": 1
+        "62e7c98b550c8218d602cbb4": 95,
+        "55d4887d4bdc2d962f8b4570": 79,
+        "62307b7b10d2321fa8741921": 73,
+        "544fb62a4bdc2dfb738b4568": 3,
+        "57505f6224597709a92585a9": 3,
+        "544fb3364bdc2d34748b456a": 3,
+        "57347d692459774491567cf1": 2,
+        "57347d5f245977448b40fa81": 2,
+        "5751487e245977207e26a315": 1,
+        "575146b724597720a27126d5": 2,
+        "57347d90245977448f7b7f65": 1,
+        "5751496424597720a27126da": 4,
+        "57513f07245977207e26a311": 2,
+        "656df4fec921ad01000481a2": 2,
+        "590c5d4b86f774784e1b9c45": 1,
+        "5ed515e03a40a50460332579": 1,
+        "544fb37f4bdc2dee738b4567": 1,
+        "5673de654bdc2d180f8b456d": 2,
+        "5bc9c29cd4351e003562b8a3": 1,
+        "5bc9b156d4351e00367fbce9": 1,
+        "5c0fa877d174af02a012e1cf": 1,
+        "65815f0e647e3d7246384e14": 1,
+        "5751a25924597722c463c472": 1,
+        "544fb45d4bdc2dee738b4568": 1,
+        "57513fcc24597720a31c09a6": 1,
+        "57513f9324597720a7128161": 1,
+        "59e3577886f774176a362503": 1,
+        "544fb6cc4bdc2d34748b456e": 1,
+        "57347da92459774491567cf5": 1,
+        "5ed515c8d380ab312177c0fa": 1
       },
       "Pockets": {
         "5c0e531286f7747fa54205c2": 1,
-        "62a09d3bcf4a99369e262447": 2,
-        "5448be9a4bdc2dfd2f8b456a": 6,
-        "590c678286f77426c9660122": 1,
-        "57347d8724597744596b4e76": 1,
-        "5bc9c29cd4351e003562b8a3": 1,
-        "544fb3364bdc2d34748b456a": 2,
-        "5751a25924597722c463c472": 1
+        "590c678286f77426c9660122": 2,
+        "5448be9a4bdc2dfd2f8b456a": 18,
+        "62a09d3bcf4a99369e262447": 6,
+        "57347d8724597744596b4e76": 4,
+        "5bc9c29cd4351e003562b8a3": 2,
+        "544fb3364bdc2d34748b456a": 5,
+        "5751a25924597722c463c472": 7,
+        "60b0f6c058e0b0481a09ad11": 5,
+        "57505f6224597709a92585a9": 1,
+        "57347d9c245977448b40fa85": 1,
+        "5af0454c86f7746bf20992e8": 3,
+        "57347d7224597744596b4e72": 1,
+        "544fb25a4bdc2dfb738b4567": 3,
+        "5755356824597772cb798962": 4,
+        "5c0e534186f7747fa1419867": 1,
+        "5751496424597720a27126da": 1,
+        "5e831507ea0a7c419c2f9bd9": 1,
+        "60098ad7c2240c0fe85c570a": 1,
+        "656df4fec921ad01000481a2": 4,
+        "57347d5f245977448b40fa81": 1,
+        "5448ff904bdc2d6f028b456e": 1,
+        "5ed5166ad380ab312177c100": 1,
+        "637b612fb7afa97bfc3d7005": 1,
+        "5e8488fa988a8701445df1e4": 2,
+        "575062b524597720a31c09a1": 1,
+        "5783c43d2459774bbe137486": 2,
+        "5c0e531d86f7747fa23f4d42": 1,
+        "5751487e245977207e26a315": 1,
+        "5449016a4bdc2d6f028b456f": 5,
+        "5ed5160a87bb8443d10680b5": 1,
+        "5c0e530286f7747fa1419862": 1,
+        "60098af40accd37ef2175f27": 1,
+        "544fb3f34bdc2d03748b456a": 1,
+        "60b0f93284c20f0feb453da7": 1,
+        "544fb6cc4bdc2d34748b456e": 1
       },
       "Backpack": {
-        "57505f6224597709a92585a9": 1,
-        "544fb3364bdc2d34748b456a": 1,
-        "5c0e531d86f7747fa23f4d42": 1,
+        "544fb3364bdc2d34748b456a": 2,
+        "57505f6224597709a92585a9": 2,
+        "5c0e531d86f7747fa23f4d42": 2,
         "5ae35b315acfc4001714e8b0": 1,
         "57347d90245977448f7b7f65": 2,
+        "5d40407c86f774318526545a": 1,
         "63a399193901f439517cafb6": 1,
-        "5d40407c86f774318526545a": 1
+        "57513f07245977207e26a311": 2,
+        "56dff0bed2720bb0668b4567": 1,
+        "57347d7224597744596b4e72": 1,
+        "59e4cf5286f7741778269d8a": 1,
+        "5a0ee76686f7743698200d5c": 1,
+        "625ff2eb9f5537057932257d": 1,
+        "544fb62a4bdc2dfb738b4568": 1,
+        "5751496424597720a27126da": 1,
+        "590c621186f774138d11ea29": 4,
+        "5734773724597737fd047c14": 1,
+        "5e85aa1a988a8701445df1f5": 1,
+        "651a8bf3a8520e48047bf708": 1,
+        "5751487e245977207e26a315": 4,
+        "59e655cb86f77411dc52a77b": 1,
+        "57513f9324597720a7128161": 1,
+        "5ad5d20586f77449be26d877": 1,
+        "5cbdc23eae9215001136a407": 1,
+        "5448ff904bdc2d6f028b456e": 2,
+        "5bc9c29cd4351e003562b8a3": 1,
+        "5ed5160a87bb8443d10680b5": 1,
+        "5e8f3423fd7471236e6e3b64": 2,
+        "57347d692459774491567cf1": 1,
+        "544fb25a4bdc2dfb738b4567": 1,
+        "5c0fa877d174af02a012e1cf": 1,
+        "590c5d4b86f774784e1b9c45": 1,
+        "544fb37f4bdc2dee738b4567": 2,
+        "5af0454c86f7746bf20992e8": 1,
+        "5780cf942459777df90dcb72": 1,
+        "5d1b31ce86f7742523398394": 1,
+        "60098b1705871270cd5352a1": 1,
+        "590c5f0d86f77413997acfab": 1,
+        "64b8f7968532cf95ee0a0dbf": 1,
+        "5783c43d2459774bbe137486": 1,
+        "590c657e86f77412b013051d": 1,
+        "57347d9c245977448b40fa85": 1
       },
       "SecuredContainer": {
-        "59e6920f86f77411d82aa167": 241,
-        "59e6918f86f7746c9f75e849": 41,
-        "54527a984bdc2d4e668b4567": 101,
-        "59e6927d86f77411da468256": 41
+        "59e6918f86f7746c9f75e849": 561,
+        "59e6920f86f77411d82aa167": 1441,
+        "54527a984bdc2d4e668b4567": 1121,
+        "59e6927d86f77411da468256": 361
       },
       "SpecialLoot": {}
     }
   },
   "firstName": [
+    "Martin",
+    "Niilo",
     "Ivar",
     "Nordpol",
-    "Kalle",
     "Urban",
+    "Bertta",
     "Iivari",
     "Friedrich",
-    "Viktor",
-    "Niilo",
-    "Martin",
-    "Bertta",
+    "Kalle",
     "Aarne",
     "Dora",
+    "Viktor",
     "Eemeli",
     "Petter",
+    "Gustav",
     "Matti",
-    "Gustav"
+    "Tore",
+    "Risto",
+    "Helge",
+    "Ludwig",
+    "Julius",
+    "Ludvig",
+    "Heinrich",
+    "Martha",
+    "Cäsar",
+    "Paavo",
+    "Faarao",
+    "Emil",
+    "Olof",
+    "Rudolf",
+    "Johan",
+    "kuu",
+    "Gideon",
+    "Otto",
+    "Niklas",
+    "Paula",
+    "Lauri",
+    "Daavid",
+    "Qvintus",
+    "Ida",
+    "Theodor",
+    "Ulrich",
+    "Jussi",
+    "Heikki",
+    "Celsius",
+    "Berta",
+    "Richard",
+    "Sigurd"
   ],
   "lastName": [],
   "difficulty": {
@@ -2354,39 +2490,42 @@
   },
   "chances": {
     "equipment": {
-      "Headwear": 32,
+      "Headwear": 27,
       "Earpiece": 0,
-      "FaceCover": 64,
+      "FaceCover": 50,
       "ArmorVest": 100,
-      "Eyewear": 40,
+      "Eyewear": 36,
       "ArmBand": 0,
       "TacticalVest": 100,
-      "Backpack": 44,
+      "Backpack": 41,
       "FirstPrimaryWeapon": 100,
       "SecondPrimaryWeapon": 0,
       "Holster": 0,
-      "Scabbard": 80,
+      "Scabbard": 71,
       "Pockets": 100,
       "SecuredContainer": 100
     },
     "weaponMods": {
       "mod_magazine": 100,
-      "mod_scope": 38,
+      "mod_scope": 30,
       "mod_sight_rear": 100,
-      "mod_muzzle": 35,
+      "mod_muzzle": 28,
       "mod_launcher": 0,
       "mod_handguard": 100,
-      "mod_stock_000": 100,
-      "mod_sight_front": 100,
+      "mod_stock_000": 95,
+      "mod_muzzle_000": 100,
+      "mod_muzzle_001": 0,
+      "mod_foregrip": 68,
       "mod_tactical": 0,
       "mod_tactical_2": 0,
       "mod_mount": 0,
       "mod_tactical_003": 0,
-      "mod_foregrip": 72,
-      "mod_muzzle_000": 100,
-      "mod_muzzle_001": 0,
       "mod_stock": 100,
-      "mod_bipod": 0
+      "mod_bipod": 0,
+      "mod_sight_front": 100,
+      "mod_tactical_001": 0,
+      "mod_tactical_002": 0,
+      "mod_tactical_000": 0
     },
     "equipmentMods": {}
   },
