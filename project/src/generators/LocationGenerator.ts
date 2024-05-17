@@ -997,7 +997,7 @@ export class LocationGenerator
         {
             let children: Item[] = [];
             const defaultPreset = this.cloner.clone(this.presetHelper.getDefaultPreset(chosenTpl));
-            if (defaultPreset)
+            if (defaultPreset?._items)
             {
                 try
                 {
