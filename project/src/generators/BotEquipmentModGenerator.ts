@@ -233,8 +233,9 @@ export class BotEquipmentModGenerator
         }
 
         // Get the front/back/side weights based on bots level
-        const plateSlotWeights = settings.botEquipmentConfig?.armorPlateWeighting?.find(armorWeight =>
-            settings.botLevel >= armorWeight.levelRange.min && settings.botLevel <= armorWeight.levelRange.max,
+        const plateSlotWeights = settings.botEquipmentConfig?.armorPlateWeighting?.find(
+            (armorWeight) =>
+                settings.botLevel >= armorWeight.levelRange.min && settings.botLevel <= armorWeight.levelRange.max,
         );
         if (!plateSlotWeights)
         {
@@ -260,17 +261,17 @@ export class BotEquipmentModGenerator
         const chosenArmorPlateLevel = this.weightedRandomHelper.getWeightedValue<string>(plateWeights);
 
         // Convert the array of ids into database items
-        const platesFromDb = existingPlateTplPool.map(plateTpl => this.itemHelper.getItem(plateTpl)[1]);
+        const platesFromDb = existingPlateTplPool.map((plateTpl) => this.itemHelper.getItem(plateTpl)[1]);
 
         // Filter plates to the chosen level based on its armorClass property
-        const platesOfDesiredLevel = platesFromDb.filter(item => item._props.armorClass === chosenArmorPlateLevel);
+        const platesOfDesiredLevel = platesFromDb.filter((item) => item._props.armorClass === chosenArmorPlateLevel);
         if (platesOfDesiredLevel.length === 0)
         {
             this.logger.debug(
                 `Plate filter was too restrictive for armor: ${armorItem._name} ${armorItem._id}, unable to find plates of level: ${chosenArmorPlateLevel}. Using mod items default plate`,
             );
 
-            const relatedItemDbModSlot = armorItem._props.Slots.find(slot => slot._name.toLowerCase() === modSlot);
+            const relatedItemDbModSlot = armorItem._props.Slots.find((slot) => slot._name.toLowerCase() === modSlot);
             const defaultPlate = relatedItemDbModSlot._props.filters[0].Plate;
             if (!defaultPlate)
             {
@@ -280,8 +281,8 @@ export class BotEquipmentModGenerator
                 const defaultPreset = this.presetHelper.getDefaultPreset(armorItem._id);
                 if (defaultPreset)
                 {
-                    const relatedPresetSlot = defaultPreset._items.find(item =>
-                        item.slotId?.toLowerCase() === modSlot,
+                    const relatedPresetSlot = defaultPreset._items.find(
+                        (item) => item.slotId?.toLowerCase() === modSlot,
                     );
                     if (relatedPresetSlot)
                     {
@@ -305,7 +306,7 @@ export class BotEquipmentModGenerator
 
         // Only return the items ids
         result.result = Result.SUCCESS;
-        result.plateModTpls = platesOfDesiredLevel.map(item => item._id);
+        result.plateModTpls = platesOfDesiredLevel.map((item) => item._id);
 
         return result;
     }
@@ -345,8 +346,11 @@ export class BotEquipmentModGenerator
         const compatibleModsPool = modPool[parentTemplate._id];
 
         if (
-            !(parentTemplate._props.Slots.length || parentTemplate._props.Cartridges?.length
-            || parentTemplate._props.Chambers?.length)
+            !(
+                parentTemplate._props.Slots.length
+                || parentTemplate._props.Cartridges?.length
+                || parentTemplate._props.Chambers?.length
+            )
         )
         {
             this.logger.error(
@@ -467,10 +471,9 @@ export class BotEquipmentModGenerator
             // Handguard mod can take a sub handguard mod + weapon has no UBGL (takes same slot)
             // Force spawn chance to be 100% to ensure it gets added
             if (
-                modSlot === "mod_handguard" && modToAddTemplate._props.Slots.find(slot =>
-                    slot._name === "mod_handguard",
-                )
-                && !weapon.find(item => item.slotId === "mod_launcher")
+                modSlot === "mod_handguard"
+                && modToAddTemplate._props.Slots.find((slot) => slot._name === "mod_handguard")
+                && !weapon.find((item) => item.slotId === "mod_launcher")
             )
             {
                 // Needed for handguards with lower
@@ -480,8 +483,9 @@ export class BotEquipmentModGenerator
             // If stock mod can take a sub stock mod, force spawn chance to be 100% to ensure sub-stock gets added
             // Or if mod_stock is configured to be forced on
             if (
-                modSlot === "mod_stock" && modToAddTemplate._props.Slots.find(slot =>
-                    slot._name.includes("mod_stock") || botEquipConfig.forceStock,
+                modSlot === "mod_stock"
+                && modToAddTemplate._props.Slots.find(
+                    (slot) => slot._name.includes("mod_stock") || botEquipConfig.forceStock,
                 )
             )
             {
@@ -549,8 +553,9 @@ export class BotEquipmentModGenerator
     protected modIsFrontOrRearSight(modSlot: string, tpl: string): boolean
     {
         // Gas block /w front sight is special case, deem it a 'front sight' too
-        if (modSlot === "mod_gas_block" && tpl === "5ae30e795acfc408fb139a0b") // M4A1 front sight with gas block
-        { 
+        if (modSlot === "mod_gas_block" && tpl === "5ae30e795acfc408fb139a0b")
+        {
+            // M4A1 front sight with gas block
             return true;
         }
 
@@ -565,15 +570,17 @@ export class BotEquipmentModGenerator
      */
     protected modSlotCanHoldScope(modSlot: string, modsParentId: string): boolean
     {
-        return [
-            "mod_scope",
-            "mod_mount",
-            "mod_mount_000",
-            "mod_scope_000",
-            "mod_scope_001",
-            "mod_scope_002",
-            "mod_scope_003",
-        ].includes(modSlot.toLowerCase()) && modsParentId === BaseClasses.MOUNT;
+        return (
+            [
+                "mod_scope",
+                "mod_mount",
+                "mod_mount_000",
+                "mod_scope_000",
+                "mod_scope_001",
+                "mod_scope_002",
+                "mod_scope_003",
+            ].includes(modSlot.toLowerCase()) && modsParentId === BaseClasses.MOUNT
+        );
     }
 
     /**
@@ -700,11 +707,11 @@ export class BotEquipmentModGenerator
             case "patron_in_weapon":
             case "patron_in_weapon_000":
             case "patron_in_weapon_001":
-                return parentTemplate._props.Chambers.find(chamber => chamber._name.includes(modSlotLower));
+                return parentTemplate._props.Chambers.find((chamber) => chamber._name.includes(modSlotLower));
             case "cartridges":
-                return parentTemplate._props.Cartridges.find(c => c._name.toLowerCase() === modSlotLower);
+                return parentTemplate._props.Cartridges.find((c) => c._name.toLowerCase() === modSlotLower);
             default:
-                return parentTemplate._props.Slots.find(s => s._name.toLowerCase() === modSlotLower);
+                return parentTemplate._props.Slots.find((s) => s._name.toLowerCase() === modSlotLower);
         }
     }
 
@@ -762,7 +769,7 @@ export class BotEquipmentModGenerator
     ): [boolean, ITemplateItem]
     {
         /** Slot mod will fill */
-        const parentSlot = parentTemplate._props.Slots.find(i => i._name === modSlot);
+        const parentSlot = parentTemplate._props.Slots.find((i) => i._name === modSlot);
         const weaponTemplate = this.itemHelper.getItem(weapon[0]._tpl)[1];
 
         // It's ammo, use predefined ammo parameter
@@ -837,9 +844,7 @@ export class BotEquipmentModGenerator
             if (parentSlot._required)
             {
                 this.logger.warning(
-                    `Required slot unable to be filled, ${modSlot} on ${parentTemplate._name} ${parentTemplate._id} for weapon: ${
-                        weapon[0]._tpl
-                    }`,
+                    `Required slot unable to be filled, ${modSlot} on ${parentTemplate._name} ${parentTemplate._id} for weapon: ${weapon[0]._tpl}`,
                 );
             }
 
@@ -950,8 +955,8 @@ export class BotEquipmentModGenerator
         if (modSpawnResult === ModSpawn.DEFAULT_MOD)
         {
             const matchingPreset = this.getMatchingPreset(weaponTemplate, parentTemplate._id);
-            const matchingModFromPreset = matchingPreset?._items.find(item =>
-                item?.slotId?.toLowerCase() === modSlot.toLowerCase(),
+            const matchingModFromPreset = matchingPreset?._items.find(
+                (item) => item?.slotId?.toLowerCase() === modSlot.toLowerCase(),
             );
 
             // Only filter mods down to single default item if it already exists in existing itemModPool, OR the default item has no children
@@ -968,8 +973,8 @@ export class BotEquipmentModGenerator
 
                 // Get an array of items that are allowed in slot from parent item
                 // Check the filter of the slot to ensure a chosen mod fits
-                const parentSlotCompatibleItems = parentTemplate._props.Slots?.find(slot =>
-                    slot._name.toLowerCase() === modSlot.toLowerCase(),
+                const parentSlotCompatibleItems = parentTemplate._props.Slots?.find(
+                    (slot) => slot._name.toLowerCase() === modSlot.toLowerCase(),
                 )._props.filters[0].Filter;
 
                 // Mod isnt in existing pool, only add if it has no children and matches parent filter
@@ -985,7 +990,9 @@ export class BotEquipmentModGenerator
 
             if (itemModPool[modSlot]?.length > 1)
             {
-                this.logger.debug(`No default: ${modSlot} mod found on template: ${weaponTemplate._name} and multiple items found in existing pool`);
+                this.logger.debug(
+                    `No default: ${modSlot} mod found on template: ${weaponTemplate._name} and multiple items found in existing pool`,
+                );
             }
 
             // Couldnt find default in globals, use existing mod pool data
@@ -1178,7 +1185,7 @@ export class BotEquipmentModGenerator
         botEquipBlacklist: EquipmentFilterDetails,
     ): void
     {
-        const desiredSlotObject = modTemplate._props.Slots.find(slot => slot._name.includes(desiredSlotName));
+        const desiredSlotObject = modTemplate._props.Slots.find((slot) => slot._name.includes(desiredSlotName));
         if (desiredSlotObject)
         {
             const supportedSubMods = desiredSlotObject._props.filters[0].Filter;
@@ -1261,10 +1268,10 @@ export class BotEquipmentModGenerator
         let result: string[] = [];
 
         // Get item blacklist and mod equipment blacklist as one array
-        const blacklist = this.itemFilterService.getBlacklistedItems().concat(
-            botEquipBlacklist.equipment[modSlot] || [],
-        );
-        result = allowedMods.filter(tpl => !blacklist.includes(tpl));
+        const blacklist = this.itemFilterService
+            .getBlacklistedItems()
+            .concat(botEquipBlacklist.equipment[modSlot] || []);
+        result = allowedMods.filter((tpl) => !blacklist.includes(tpl));
 
         return result;
     }
@@ -1290,7 +1297,7 @@ export class BotEquipmentModGenerator
                     weaponName: parentTemplate._name,
                 }),
             );
-            const camoraSlots = parentTemplate._props.Slots.filter(slot => slot._name.startsWith("camora"));
+            const camoraSlots = parentTemplate._props.Slots.filter((slot) => slot._name.startsWith("camora"));
 
             // Attempt to generate camora slots for item
             modPool[parentTemplate._id] = {};
@@ -1397,9 +1404,7 @@ export class BotEquipmentModGenerator
         if (!whitelistedSightTypes)
         {
             this.logger.debug(
-                `Unable to find whitelist for weapon type: ${weaponDetails[1]._parent} ${
-                    weaponDetails[1]._name
-                }, skipping sight filtering`,
+                `Unable to find whitelist for weapon type: ${weaponDetails[1]._parent} ${weaponDetails[1]._name}, skipping sight filtering`,
             );
 
             return scopes;
@@ -1424,16 +1429,17 @@ export class BotEquipmentModGenerator
             {
                 // Check to see if mount has a scope slot (only include primary slot, ignore the rest like the backup sight slots)
                 // Should only find 1 as there's currently no items with a mod_scope AND a mod_scope_000
-                const scopeSlot = itemDetails._props.Slots.filter(slot =>
+                const scopeSlot = itemDetails._props.Slots.filter((slot) =>
                     ["mod_scope", "mod_scope_000"].includes(slot._name),
                 );
 
                 // Mods scope slot found must allow ALL whitelisted scope types OR be a mount
                 if (
-                    scopeSlot?.every(slot =>
-                        slot._props.filters[0].Filter.every(tpl =>
-                            this.itemHelper.isOfBaseclasses(tpl, whitelistedSightTypes)
-                            || this.itemHelper.isOfBaseclass(tpl, BaseClasses.MOUNT),
+                    scopeSlot?.every((slot) =>
+                        slot._props.filters[0].Filter.every(
+                            (tpl) =>
+                                this.itemHelper.isOfBaseclasses(tpl, whitelistedSightTypes)
+                                || this.itemHelper.isOfBaseclass(tpl, BaseClasses.MOUNT),
                         ),
                     )
                 )

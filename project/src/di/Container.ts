@@ -791,9 +791,13 @@ export class Container
         depContainer.register<CustomizationController>("CustomizationController", {
             useClass: CustomizationController,
         });
-        depContainer.register<DialogueController>("DialogueController", { useClass: DialogueController }, {
-            lifecycle: Lifecycle.Singleton,
-        });
+        depContainer.register<DialogueController>(
+            "DialogueController",
+            { useClass: DialogueController },
+            {
+                lifecycle: Lifecycle.Singleton,
+            },
+        );
         depContainer.register<GameController>("GameController", { useClass: GameController });
         depContainer.register<HandbookController>("HandbookController", { useClass: HandbookController });
         depContainer.register<HealthController>("HealthController", { useClass: HealthController });

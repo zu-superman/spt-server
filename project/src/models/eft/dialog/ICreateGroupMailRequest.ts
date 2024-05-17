@@ -1,5 +1,5 @@
 export interface ICreateGroupMailRequest
 {
-    Name: string;
-    Users: string[];
+    Name: string
+    Users: string[]
 }

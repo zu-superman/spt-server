@@ -29,7 +29,7 @@ export class RecursiveCloner implements ICloner
             {
                 // biome-ignore lint/suspicious/noExplicitAny: used for clone
                 const objArr = obj as Array<any>;
-                return objArr.map(v => this.clone(v)) as T;
+                return objArr.map((v) => this.clone(v)) as T;
             }
 
             const newObj = {};

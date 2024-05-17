@@ -160,7 +160,12 @@ export class MatchStaticRouter extends StaticRouter
             ),
             new RouteAction(
                 "/client/match/group/invite/decline",
-                async (url: string, info: any, sessionID: string, output: string): Promise<IGetBodyResponseData<any>> =>
+                async (
+                    url: string,
+                    info: any,
+                    sessionID: string,
+                    output: string,
+                ): Promise<IGetBodyResponseData<any>> =>
                 {
                     return this.matchCallbacks.declineGroupInvite(url, info, sessionID);
                 },

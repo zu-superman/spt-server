@@ -2,6 +2,4 @@ import { IWsNotificationEvent } from "@spt-aki/models/eft/ws/IWsNotificationEven
 import { IGroupCharacter } from "../match/IGroupCharacter";
 
 export interface IWsGroupMatchInviteAccept extends IWsNotificationEvent, IGroupCharacter
-{
-
-}
+{}

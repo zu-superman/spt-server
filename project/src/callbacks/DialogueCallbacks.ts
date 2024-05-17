@@ -47,8 +47,7 @@ export class DialogueCallbacks implements OnUpdate
         @inject("HttpResponseUtil") protected httpResponse: HttpResponseUtil,
         @inject("DialogueController") protected dialogueController: DialogueController,
     )
-    {
-    }
+    {}
 
     /**
      * Handle client/friend/list
@@ -276,11 +275,7 @@ export class DialogueCallbacks implements OnUpdate
         return this.httpResponse.emptyArrayResponse();
     }
 
-    public createGroupMail(
-        url: string,
-        info: ICreateGroupMailRequest,
-        sessionID: string,
-    ): IGetBodyResponseData<any[]>
+    public createGroupMail(url: string, info: ICreateGroupMailRequest, sessionID: string): IGetBodyResponseData<any[]>
     {
         throw new Error("Method not implemented.");
     }
@@ -294,11 +289,7 @@ export class DialogueCallbacks implements OnUpdate
         throw new Error("Method not implemented.");
     }
 
-    public addUserToMail(
-        url: string,
-        info: IAddUserGroupMailRequest,
-        sessionID: string,
-    ): IGetBodyResponseData<any[]>
+    public addUserToMail(url: string, info: IAddUserGroupMailRequest, sessionID: string): IGetBodyResponseData<any[]>
     {
         throw new Error("Method not implemented.");
     }

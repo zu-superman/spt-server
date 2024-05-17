@@ -1,5 +1,5 @@
 export interface IAddUserGroupMailRequest
 {
-    dialogId: string;
-    uid: string;
+    dialogId: string
+    uid: string
 }

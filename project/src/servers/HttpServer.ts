@@ -95,10 +95,12 @@ export class HttpServer
                 }
                 else
                 {
-                    this.logger.info(this.localisationService.getText("client_request_ip", {
-                        ip: clientIp,
-                        url: req.url.replaceAll("/", "\\"), // Localisation service escapes `/` into hex code `&#x2f;`
-                    }));
+                    this.logger.info(
+                        this.localisationService.getText("client_request_ip", {
+                            ip: clientIp,
+                            url: req.url.replaceAll("/", "\\"), // Localisation service escapes `/` into hex code `&#x2f;`
+                        }),
+                    );
                 }
             }
         }
@@ -125,9 +127,11 @@ export class HttpServer
             return undefined;
         }
 
-        return remoteAddress.startsWith("127.0.0")
-          || remoteAddress.startsWith("192.168.")
-          || remoteAddress.startsWith("localhost");
+        return (
+            remoteAddress.startsWith("127.0.0")
+            || remoteAddress.startsWith("192.168.")
+            || remoteAddress.startsWith("localhost")
+        );
     }
 
     protected getCookies(req: IncomingMessage): Record<string, string>

@@ -86,9 +86,10 @@ export class NotificationSendHelper
     protected getDialog(sessionId: string, messageType: MessageType, senderDetails: IUserDialogInfo): Dialogue
     {
         // Use trader id if sender is trader, otherwise use nickname
-        const key = senderDetails.Info.MemberCategory === MemberCategory.TRADER
-            ? senderDetails._id
-            : senderDetails.Info.Nickname;
+        const key
+            = senderDetails.Info.MemberCategory === MemberCategory.TRADER
+                ? senderDetails._id
+                : senderDetails.Info.Nickname;
         const dialogueData = this.saveServer.getProfile(sessionId).dialogues;
         const isNewDialogue = !(key in dialogueData);
         let dialogue: Dialogue = dialogueData[key];

@@ -101,22 +101,14 @@ export class MatchCallbacks
 
     /** Handle client/match/group/invite/decline */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public declineGroupInvite(
-        url: string,
-        info: IRequestIdRequest,
-        sessionId: string,
-    ): IGetBodyResponseData<boolean>
+    public declineGroupInvite(url: string, info: IRequestIdRequest, sessionId: string): IGetBodyResponseData<boolean>
     {
         return this.httpResponse.getBody(true);
     }
 
     /** Handle client/match/group/invite/cancel */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public cancelGroupInvite(
-        url: string,
-        info: IRequestIdRequest,
-        sessionID: string,
-    ): IGetBodyResponseData<boolean>
+    public cancelGroupInvite(url: string, info: IRequestIdRequest, sessionID: string): IGetBodyResponseData<boolean>
     {
         return this.httpResponse.getBody(true);
     }
@@ -246,21 +238,13 @@ export class MatchCallbacks
     }
 
     /** Handle client/match/group/raid/ready */
-    public raidReady(
-        url: string,
-        info: IEmptyRequestData,
-        sessionId: string,
-    ): IGetBodyResponseData<boolean>
+    public raidReady(url: string, info: IEmptyRequestData, sessionId: string): IGetBodyResponseData<boolean>
     {
         return this.httpResponse.getBody(true);
     }
 
     /** Handle client/match/group/raid/not-ready */
-    public notRaidReady(
-        url: string,
-        info: IEmptyRequestData,
-        sessionId: string,
-    ): IGetBodyResponseData<boolean>
+    public notRaidReady(url: string, info: IEmptyRequestData, sessionId: string): IGetBodyResponseData<boolean>
     {
         return this.httpResponse.getBody(true);
     }
