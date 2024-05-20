@@ -148,7 +148,14 @@
             "startTimestamp": 1341615600000,
             "endTimestamp": "",
             "yearly": false
-        }
+        },
+		"65e85198e32da31f2b30978e": {
+			"name": "Evil Spirits",
+			"season": "None",
+			"startTimestamp": 1341615600000,
+            "endTimestamp": "",
+            "yearly": false
+		}
     },
     "repeatableQuests": [
         {
