@@ -130,13 +130,13 @@
 			"name": "WINTER_START",
 			"startDay": "1",
             "startMonth": "1",
-            "endDay": "1",
+            "endDay": "24",
             "endMonth": "3"
 		},
 		{
 			"seasonType": 3,
 			"name": "SPRING",
-			"startDay": "2",
+			"startDay": "25",
             "startMonth": "3",
             "endDay": "1",
             "endMonth": "5"
