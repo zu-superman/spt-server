@@ -105,7 +105,7 @@
 			"seasonType": 0,
 			"name": "SUMMER",
 			"startDay": "2",
-            "startMonth": "5",
+            "startMonth": "6",
             "endDay": "1",
             "endMonth": "8"
 		},
@@ -139,7 +139,7 @@
 			"startDay": "25",
             "startMonth": "3",
             "endDay": "1",
-            "endMonth": "5"
+            "endMonth": "6"
 		},
 		{
 			"seasonType": 4,
