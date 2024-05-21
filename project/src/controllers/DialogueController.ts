@@ -15,6 +15,7 @@ import { ICoreConfig } from "@spt-aki/models/spt/config/ICoreConfig";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt-aki/servers/ConfigServer";
 import { SaveServer } from "@spt-aki/servers/SaveServer";
+import { LocalisationService } from "@spt-aki/services/LocalisationService";
 import { MailSendService } from "@spt-aki/services/MailSendService";
 import { TimeUtil } from "@spt-aki/utils/TimeUtil";
 
@@ -27,6 +28,7 @@ export class DialogueController
         @inject("TimeUtil") protected timeUtil: TimeUtil,
         @inject("DialogueHelper") protected dialogueHelper: DialogueHelper,
         @inject("MailSendService") protected mailSendService: MailSendService,
+        @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("ConfigServer") protected configServer: ConfigServer,
         @injectAll("DialogueChatBot") protected dialogueChatBots: IDialogueChatBot[],
     )
@@ -296,7 +298,7 @@ export class DialogueController
         const dialog = profile.dialogues[dialogueId];
         if (!dialog)
         {
-            this.logger.error(`No dialog in profile: ${sessionId} found with id: ${dialogueId}`);
+            this.logger.error(this.localisationService.getText("dialogue-unable_to_find_in_profile", { sessionId: sessionId, dialogueId: dialogueId }));
 
             return;
         }
@@ -310,7 +312,7 @@ export class DialogueController
         const dialog = this.dialogueHelper.getDialogsForProfile(sessionId)[dialogueId];
         if (!dialog)
         {
-            this.logger.error(`No dialog in profile: ${sessionId} found with id: ${dialogueId}`);
+            this.logger.error(this.localisationService.getText("dialogue-unable_to_find_in_profile", { sessionId: sessionId, dialogueId: dialogueId }));
 
             return;
         }
@@ -329,7 +331,7 @@ export class DialogueController
         const dialogs = this.dialogueHelper.getDialogsForProfile(sessionId);
         if (!dialogs)
         {
-            this.logger.error(`No dialog object in profile: ${sessionId}`);
+            this.logger.error(this.localisationService.getText("dialogue-unable_to_find_dialogs_in_profile", { sessionId: sessionId }));
 
             return;
         }
@@ -354,7 +356,7 @@ export class DialogueController
         const dialog = dialogs[dialogueId];
         if (!dialog)
         {
-            this.logger.error(`No dialog in profile: ${sessionId} found with id: ${dialogueId}`);
+            this.logger.error(this.localisationService.getText("dialogue-unable_to_find_in_profile", { sessionId: sessionId, dialogueId: dialogueId }));
 
             return;
         }

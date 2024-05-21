@@ -10,6 +10,7 @@ import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { EventOutputHolder } from "@spt-aki/routers/EventOutputHolder";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { SaveServer } from "@spt-aki/servers/SaveServer";
+import { LocalisationService } from "@spt-aki/services/LocalisationService";
 import { ICloner } from "@spt-aki/utils/cloners/ICloner";
 import { HashUtil } from "@spt-aki/utils/HashUtil";
 
@@ -22,6 +23,7 @@ export class BuildController
         @inject("EventOutputHolder") protected eventOutputHolder: EventOutputHolder,
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
+        @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("SaveServer") protected saveServer: SaveServer,
         @inject("RecursiveCloner") protected cloner: ICloner,
@@ -177,9 +179,7 @@ export class BuildController
         }
 
         // Not found in weapons,equipment or magazines, not good
-        this.logger.error(
-            `Unable to delete preset, cannot find ${idToRemove} in weapon, equipment or magazine presets`,
-        );
+        this.logger.error(this.localisationService.getText("build-unable_to_delete_preset", idToRemove));
     }
 
     /**

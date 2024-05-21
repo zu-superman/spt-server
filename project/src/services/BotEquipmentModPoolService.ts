@@ -41,7 +41,7 @@ export class BotEquipmentModPoolService
     {
         if (!items)
         {
-            this.logger.error(`No items provided when attempting to generate ${poolType} pool, skipping`);
+            this.logger.error(this.localisationService.getText("bot-unable_to_generate_item_pool_no_items", poolType));
 
             return;
         }

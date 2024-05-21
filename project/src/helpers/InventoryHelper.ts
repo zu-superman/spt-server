@@ -304,7 +304,7 @@ export class InventoryHelper
             catch (err)
             {
                 const errorText = typeof err === "string" ? ` -> ${err}` : err.message;
-                this.logger.error(`Unable to fit item into inventory: ${errorText}`);
+                this.logger.error(this.localisationService.getText("inventory-unable_to_fit_item_into_inventory", errorText));
 
                 return false;
             }
@@ -1147,7 +1147,7 @@ export class InventoryHelper
             const itemToMove = fromItems.find((x) => x._id === itemId);
             if (!itemToMove)
             {
-                this.logger.error(`Unable to find item to move: ${itemId}`);
+                this.logger.error(this.localisationService.getText("inventory-unable_to_find_item_to_move", itemId));
             }
 
             // Only adjust the values for parent item, not children (their values are already correctly tied to parent)

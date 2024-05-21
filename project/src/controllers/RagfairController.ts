@@ -220,7 +220,7 @@ export class RagfairController
         }
         else
         {
-            this.logger.error("Unable to get categories from search criteria, see log for request data");
+            this.logger.error(this.localisationService.getText("ragfair-unable_to_get_categories"));
             this.logger.debug(JSON.stringify(searchRequest));
             return {};
         }

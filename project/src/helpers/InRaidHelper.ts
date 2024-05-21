@@ -151,16 +151,15 @@ export class InRaidHelper
             const matchingPreRaidCounter = profileData.TaskConditionCounters[backendCounterKey];
             if (!matchingPreRaidCounter)
             {
-                this.logger.error(`TaskConditionCounters: ${backendCounterKey} cannot be found in pre-raid data`);
+                this.logger.error(this.localisationService.getText("inraid-unable_to_find_key_in_taskconditioncounters", backendCounterKey));
 
                 continue;
             }
 
             if (matchingPreRaidCounter.value !== postRaidValue)
             {
-                this.logger.error(
-                    `TaskConditionCounters: ${backendCounterKey} value is different post raid, old: ${matchingPreRaidCounter.value} new: ${postRaidValue}`,
-                );
+                this.logger.error(this.localisationService.getText("inraid-taskconditioncounter_keys_differ",
+                    { key: backendCounterKey, oldValue: matchingPreRaidCounter.value, newValue: postRaidValue }));
             }
         }
     }

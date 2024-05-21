@@ -33,6 +33,7 @@ import { ConfigServer } from "@spt-aki/servers/ConfigServer";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { SaveServer } from "@spt-aki/servers/SaveServer";
 import { InsuranceService } from "@spt-aki/services/InsuranceService";
+import { LocalisationService } from "@spt-aki/services/LocalisationService";
 import { MailSendService } from "@spt-aki/services/MailSendService";
 import { MatchBotDetailsCacheService } from "@spt-aki/services/MatchBotDetailsCacheService";
 import { PmcChatResponseService } from "@spt-aki/services/PmcChatResponseService";
@@ -68,6 +69,7 @@ export class InraidController
         @inject("HealthHelper") protected healthHelper: HealthHelper,
         @inject("TraderHelper") protected traderHelper: TraderHelper,
         @inject("TraderServicesService") protected traderServicesService: TraderServicesService,
+        @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("InsuranceService") protected insuranceService: InsuranceService,
         @inject("InRaidHelper") protected inRaidHelper: InRaidHelper,
         @inject("ApplicationContext") protected applicationContext: ApplicationContext,
@@ -96,7 +98,7 @@ export class InraidController
         const profile = this.saveServer.getProfile(sessionID);
         if (!profile)
         {
-            this.logger.error(`No profile found with Id of: ${sessionID}`);
+            this.logger.error(this.localisationService.getText("inraid-no_profile_found", sessionID));
 
             return;
         }
@@ -677,7 +679,7 @@ export class InraidController
         const dialogueTemplates = this.databaseServer.getTables().traders[traderId].dialogue;
         if (!dialogueTemplates)
         {
-            this.logger.error(`Unable to deliver items as trader ${traderId} has no "dialogue" data`);
+            this.logger.error(this.localisationService.getText("inraid-unable_to_deliver_item_no_trader_found", traderId));
 
             return;
         }

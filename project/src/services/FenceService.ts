@@ -1539,7 +1539,7 @@ export class FenceService
             fenceAssortItem = this.fenceDiscountAssort.items.find((item) => item._id === assortId);
             if (!fenceAssortItem)
             {
-                this.logger.error(`Offer with id: ${assortId} not found`);
+                this.logger.error(this.localisationService.getText("fence-unable_to_find_offer_by_id", assortId));
 
                 return;
             }

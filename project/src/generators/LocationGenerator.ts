@@ -85,10 +85,9 @@ export class LocationGenerator
         const mapData: ILocation = db.locations[locationId];
 
         const staticWeaponsOnMapClone = this.cloner.clone(mapData.staticContainers.staticWeapons);
-
         if (!staticWeaponsOnMapClone)
         {
-            this.logger.error(`Unable to find static weapon data for map: ${locationBase.Name}`);
+            this.logger.error(this.localisationService.getText("location-unable_to_find_static_weapon_for_map", locationBase.Name));
         }
 
         // Add mounted weapons to output loot
@@ -98,7 +97,7 @@ export class LocationGenerator
 
         if (!allStaticContainersOnMapClone)
         {
-            this.logger.error(`Unable to find static container data for map: ${locationBase.Name}`);
+            this.logger.error(this.localisationService.getText("location-unable_to_find_static_container_for_map", locationBase.Name));
         }
         const staticRandomisableContainersOnMap = this.getRandomisableContainersOnMap(allStaticContainersOnMapClone);
 
@@ -107,7 +106,7 @@ export class LocationGenerator
 
         if (!staticForcedOnMapClone)
         {
-            this.logger.error(`Unable to find forced static data for map: ${locationBase.Name}`);
+            this.logger.error(this.localisationService.getText("location-unable_to_find_forced_static_data_for_map", locationBase.Name));
         }
 
         // Keep track of static loot count
@@ -367,7 +366,8 @@ export class LocationGenerator
             const groupData = staticContainerGroupData.containers[container.template.Id];
             if (!groupData)
             {
-                this.logger.error(`Container ${container.template.Id} not found in statics.json, this is bad`);
+                this.logger.error(this.localisationService.getText("location-unable_to_find_container_in_statics_json", container.template.Id));
+
                 continue;
             }
 
@@ -376,6 +376,7 @@ export class LocationGenerator
                 this.logger.debug(
                     `Container ${container.template.Id} with group ${groupData.groupId} had 100% chance to spawn was picked as random container, skipping`,
                 );
+
                 continue;
             }
             mapping[groupData.groupId].containerIdsWithProbability[container.template.Id] = container.probability;

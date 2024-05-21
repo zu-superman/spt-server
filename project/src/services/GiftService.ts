@@ -9,6 +9,7 @@ import { Gift, IGiftsConfig } from "@spt-aki/models/spt/config/IGiftsConfig";
 import { ISendMessageDetails } from "@spt-aki/models/spt/dialog/ISendMessageDetails";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt-aki/servers/ConfigServer";
+import { LocalisationService } from "@spt-aki/services/LocalisationService";
 import { MailSendService } from "@spt-aki/services/MailSendService";
 import { HashUtil } from "@spt-aki/utils/HashUtil";
 import { TimeUtil } from "@spt-aki/utils/TimeUtil";
@@ -21,6 +22,7 @@ export class GiftService
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("MailSendService") protected mailSendService: MailSendService,
+        @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
@@ -190,7 +192,7 @@ export class GiftService
             case GiftSenderType.USER:
                 return MessageType.USER_MESSAGE;
             default:
-                this.logger.error(`Gift message type: ${giftData.sender} not handled`);
+                this.logger.error(this.localisationService.getText("gift-unable_to_handle_message_type_command", giftData.sender));
                 break;
         }
     }

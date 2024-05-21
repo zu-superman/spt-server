@@ -482,7 +482,7 @@ export class MailSendService
                 {
                     if ("StackSlots" in itemTemplate._props)
                     {
-                        this.logger.error(`Reward: ${itemTemplate._id} not handled`);
+                        this.logger.error(this.localisationService.getText("mail-unable_to_give_gift_not_handled", itemTemplate._id));
                     }
 
                     // Item is sanitised and ready to be pushed into holding array

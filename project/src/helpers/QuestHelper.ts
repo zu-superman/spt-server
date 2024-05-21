@@ -205,7 +205,7 @@ export class QuestHelper
         const trader = profile.TradersInfo[<string>questProperties.target];
         if (!trader)
         {
-            this.logger.error(`Unable to find trader: ${questProperties.target} in profile`);
+            this.logger.error(this.localisationService.getText("quest-unable_to_find_trader_in_profile", questProperties.target));
         }
 
         return this.compareAvailableForValues(trader.loyaltyLevel, requiredLoyaltyLevel, questProperties.compareMethod);
@@ -223,7 +223,7 @@ export class QuestHelper
         const trader = profile.TradersInfo[<string>questProperties.target];
         if (!trader)
         {
-            this.logger.error(`Unable to find trader: ${questProperties.target} in profile`);
+            this.localisationService.getText("quest-unable_to_find_trader_in_profile", questProperties.target);
         }
 
         return this.compareAvailableForValues(trader.standing, requiredStanding, questProperties.compareMethod);
@@ -435,7 +435,7 @@ export class QuestHelper
         const questDbData = this.getQuestFromDb(acceptedQuest.qid, pmcData);
         if (!questDbData)
         {
-            this.logger.error(`Quest: ${acceptedQuest.qid} of type: ${acceptedQuest.type} not found`);
+            this.logger.error(this.localisationService.getText("quest-unable_to_find_quest_in_db", { questId: acceptedQuest.qid, questType: acceptedQuest.type }));
         }
 
         const waitTime = questDbData?.conditions.AvailableForStart.find((x) => x.availableAfter > 0);

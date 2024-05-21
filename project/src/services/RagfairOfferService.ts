@@ -165,10 +165,9 @@ export class RagfairOfferService
     public traderOffersNeedRefreshing(traderID: string): boolean
     {
         const trader = this.databaseServer.getTables().traders[traderID];
-
         if (!trader || !trader.base)
         {
-            this.logger.error(`Trader ${traderID} lacks a base file, cannot check for refresh status`);
+            this.logger.error(this.localisationService.getText("ragfair-trader_missing_base_file", traderID));
 
             return false;
         }

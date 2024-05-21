@@ -411,13 +411,13 @@ export class InventoryController
         const itemOne = playerData.Inventory.items.find((x) => x._id === request.item);
         if (!itemOne)
         {
-            this.logger.error(`Unable to find item: ${request.item} to swap positions with: ${request.item2}`);
+            this.logger.error(this.localisationService.getText("inventory-unable_to_find_item_to_swap", { item1Id: request.item, item2Id: request.item2 }));
         }
 
         const itemTwo = playerData.Inventory.items.find((x) => x._id === request.item2);
         if (!itemTwo)
         {
-            this.logger.error(`Unable to find item: ${request.item2} to swap positions with: ${request.item}`);
+            this.logger.error(this.localisationService.getText("inventory-unable_to_find_item_to_swap", { item1Id: request.item2, item2Id: request.item }));
         }
 
         // to.id is the parentid

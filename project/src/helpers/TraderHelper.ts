@@ -59,7 +59,7 @@ export class TraderHelper
         const pmcData = this.profileHelper.getPmcProfile(sessionID);
         if (!pmcData)
         {
-            this.logger.error(`No profile with sessionId: ${sessionID}`);
+            this.logger.error(this.localisationService.getText("trader-unable_to_find_profile_with_id", sessionID));
         }
 
         // Profile has traderInfo dict (profile beyond creation stage) but no requested trader in profile
@@ -73,7 +73,7 @@ export class TraderHelper
         const trader = this.databaseServer.getTables().traders?.[traderID]?.base;
         if (!trader)
         {
-            this.logger.error(`No trader with Id: ${traderID} found`);
+            this.logger.error(this.localisationService.getText("trader-unable_to_find_trader_by_id", traderID));
         }
 
         return trader;
@@ -485,7 +485,7 @@ export class TraderHelper
 
         if (keys.length === 0)
         {
-            this.logger.error(`Unable to find trader: ${traderId} in Traders enum`);
+            this.logger.error(this.localisationService.getText("trader-unable_to_find_trader_in_enum", traderId));
 
             return null;
         }
@@ -511,7 +511,7 @@ export class TraderHelper
     {
         if (!this.traderEnumHasKey(traderEnumValue))
         {
-            this.logger.error(`Unable to find trader value: ${traderEnumValue} in Traders enum`);
+            this.logger.error(this.localisationService.getText("trader-unable_to_find_trader_in_enum", traderEnumValue));
 
             return "";
         }
