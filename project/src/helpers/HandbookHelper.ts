@@ -6,7 +6,7 @@ import { Money } from "@spt-aki/models/enums/Money";
 import { IItemConfig } from "@spt-aki/models/spt/config/IItemConfig";
 import { ConfigServer } from "@spt-aki/servers/ConfigServer";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
-import { JsonUtil } from "@spt-aki/utils/JsonUtil";
+import { ICloner } from "@spt-aki/utils/cloners/ICloner";
 
 class LookupItem<T, I>
 {
@@ -41,8 +41,8 @@ export class HandbookHelper
 
     constructor(
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
-        @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("ConfigServer") protected configServer: ConfigServer,
+        @inject("RecursiveCloner") protected cloner: ICloner,
     )
     {
         this.itemConfig = this.configServer.getConfig(ConfigTypes.ITEM);
@@ -56,9 +56,9 @@ export class HandbookHelper
         // Add handbook overrides found in items.json config into db
         for (const itemTpl in this.itemConfig.handbookPriceOverride)
         {
-            let itemToUpdate = this.databaseServer.getTables().templates.handbook.Items.find(item =>
-                item.Id === itemTpl,
-            );
+            let itemToUpdate = this.databaseServer
+                .getTables()
+                .templates.handbook.Items.find((item) => item.Id === itemTpl);
             if (!itemToUpdate)
             {
                 this.databaseServer.getTables().templates.handbook.Items.push({
@@ -66,15 +66,15 @@ export class HandbookHelper
                     ParentId: this.databaseServer.getTables().templates.items[itemTpl]._parent,
                     Price: this.itemConfig.handbookPriceOverride[itemTpl],
                 });
-                itemToUpdate = this.databaseServer.getTables().templates.handbook.Items.find(item =>
-                    item.Id === itemTpl,
-                );
+                itemToUpdate = this.databaseServer
+                    .getTables()
+                    .templates.handbook.Items.find((item) => item.Id === itemTpl);
             }
 
             itemToUpdate.Price = this.itemConfig.handbookPriceOverride[itemTpl];
         }
 
-        const handbookDbClone = this.jsonUtil.clone(this.databaseServer.getTables().templates.handbook);
+        const handbookDbClone = this.cloner.clone(this.databaseServer.getTables().templates.handbook);
         for (const handbookItem of handbookDbClone.Items)
         {
             this.handbookPriceCache.items.byId.set(handbookItem.Id, handbookItem.Price);
@@ -101,7 +101,7 @@ export class HandbookHelper
 
     /**
      * Get price from internal cache, if cache empty look up price directly in handbook (expensive)
-     * If no values found, return 1
+     * If no values found, return 0
      * @param tpl item tpl to look up price for
      * @returns price in roubles
      */
@@ -118,7 +118,7 @@ export class HandbookHelper
             return this.handbookPriceCache.items.byId.get(tpl);
         }
 
-        const handbookItem = this.databaseServer.getTables().templates.handbook.Items.find(x => x.Id === tpl);
+        const handbookItem = this.databaseServer.getTables().templates.handbook.Items.find((x) => x.Id === tpl);
         if (!handbookItem)
         {
             const newValue = 0;
@@ -127,6 +127,7 @@ export class HandbookHelper
             return newValue;
         }
 
+        this.handbookPriceCache.items.byId.set(tpl, handbookItem.Price);
         return handbookItem.Price;
     }
 
@@ -207,6 +208,6 @@ export class HandbookHelper
 
     public getCategoryById(handbookId: string): Category
     {
-        return this.databaseServer.getTables().templates.handbook.Categories.find(x => x.Id === handbookId);
+        return this.databaseServer.getTables().templates.handbook.Categories.find((x) => x.Id === handbookId);
     }
 }

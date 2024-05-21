@@ -1,8 +1,7 @@
 import { inject, injectable } from "tsyringe";
 import { ItemHelper } from "@spt-aki/helpers/ItemHelper";
 import { PresetHelper } from "@spt-aki/helpers/PresetHelper";
-import { Product } from "@spt-aki/models/eft/common/tables/IBotBase";
-import { Item, Upd } from "@spt-aki/models/eft/common/tables/IItem";
+import { Item } from "@spt-aki/models/eft/common/tables/IItem";
 import { ITemplateItem } from "@spt-aki/models/eft/common/tables/ITemplateItem";
 import { IHideoutScavCase } from "@spt-aki/models/eft/hideout/IHideoutScavCase";
 import { BaseClasses } from "@spt-aki/models/enums/BaseClasses";
@@ -20,7 +19,6 @@ import { ItemFilterService } from "@spt-aki/services/ItemFilterService";
 import { RagfairPriceService } from "@spt-aki/services/RagfairPriceService";
 import { SeasonalEventService } from "@spt-aki/services/SeasonalEventService";
 import { HashUtil } from "@spt-aki/utils/HashUtil";
-import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 import { RandomUtil } from "@spt-aki/utils/RandomUtil";
 
 /**
@@ -36,7 +34,6 @@ export class ScavCaseRewardGenerator
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
-        @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("PresetHelper") protected presetHelper: PresetHelper,
@@ -60,7 +57,7 @@ export class ScavCaseRewardGenerator
         this.cacheDbItems();
 
         // Get scavcase details from hideout/scavcase.json
-        const scavCaseDetails = this.databaseServer.getTables().hideout.scavcase.find(r => r._id === recipeId);
+        const scavCaseDetails = this.databaseServer.getTables().hideout.scavcase.find((r) => r._id === recipeId);
         const rewardItemCounts = this.getScavCaseRewardCountsAndPrices(scavCaseDetails);
 
         // Get items that fit the price criteria as set by the scavCase config
@@ -233,7 +230,8 @@ export class ScavCaseRewardGenerator
         for (let i = 0; i < randomCount; i++)
         {
             if (this.rewardShouldBeMoney() && !rewardWasMoney)
-            { // Only allow one reward to be money
+            {
+                // Only allow one reward to be money
                 result.push(this.getRandomMoney());
                 if (!this.scavCaseConfig.allowMultipleMoneyRewardsPerRarity)
                 {
@@ -241,7 +239,8 @@ export class ScavCaseRewardGenerator
                 }
             }
             else if (this.rewardShouldBeAmmo() && !rewardWasAmmo)
-            { // Only allow one reward to be ammo
+            {
+                // Only allow one reward to be ammo
                 result.push(this.getRandomAmmo(rarity));
                 if (!this.scavCaseConfig.allowMultipleAmmoRewardsPerRarity)
                 {

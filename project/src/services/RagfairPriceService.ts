@@ -27,8 +27,6 @@ import { RandomUtil } from "@spt-aki/utils/RandomUtil";
 export class RagfairPriceService implements OnLoad
 {
     protected ragfairConfig: IRagfairConfig;
-    protected generatedDynamicPrices: boolean;
-    protected generatedStaticPrices: boolean;
 
     protected prices: IRagfairServerPrices = { static: {}, dynamic: {} };
 
@@ -52,15 +50,8 @@ export class RagfairPriceService implements OnLoad
      */
     public async onLoad(): Promise<void>
     {
-        if (!this.generatedStaticPrices)
-        {
-            this.generateStaticPrices();
-        }
-
-        if (!this.generatedDynamicPrices)
-        {
-            this.generateDynamicPrices();
-        }
+        this.refreshStaticPrices();
+        this.refreshDynamicPrices();
     }
 
     public getRoute(): string
@@ -71,28 +62,23 @@ export class RagfairPriceService implements OnLoad
     /**
      * Iterate over all items of type "Item" in db and get template price, store in cache
      */
-    public generateStaticPrices(): void
+    public refreshStaticPrices(): void
     {
-        for (
-            const item of Object.values(this.databaseServer.getTables().templates.items).filter(x =>
-                x._type === "Item",
-            )
-        )
+        for (const item of Object.values(this.databaseServer.getTables().templates.items).filter(
+            (x) => x._type === "Item",
+        ))
         {
             this.prices.static[item._id] = Math.round(this.handbookHelper.getTemplatePrice(item._id));
         }
-
-        this.generatedStaticPrices = true;
     }
 
     /**
-     * Create a dictionary and store prices from prices.json in it
+     * Copy the prices.json data into our dynamic price dictionary
      */
-    public generateDynamicPrices(): void
+    public refreshDynamicPrices(): void
     {
-        Object.assign(this.prices.dynamic, this.databaseServer.getTables().templates.prices);
-
-        this.generatedDynamicPrices = true;
+        const pricesTable = this.databaseServer.getTables().templates.prices;
+        this.prices.dynamic = { ...this.prices.dynamic, ...pricesTable };
     }
 
     /**
@@ -142,15 +128,15 @@ export class RagfairPriceService implements OnLoad
 
     /**
      * get the dynamic (flea) price for an item
-     * Grabs prices from prices.json and stores in class if none currently exist
      * @param itemTpl item template id to look up
      * @returns price in roubles
      */
     public getDynamicPriceForItem(itemTpl: string): number
     {
-        if (!this.generatedDynamicPrices)
+        // If the price doesn't exist in the cache yet, try to find it
+        if (!this.prices.dynamic[itemTpl])
         {
-            this.generateDynamicPrices();
+            this.prices.dynamic[itemTpl] = this.databaseServer.getTables().templates.prices[itemTpl];
         }
 
         return this.prices.dynamic[itemTpl];
@@ -163,9 +149,15 @@ export class RagfairPriceService implements OnLoad
      */
     public getStaticPriceForItem(itemTpl: string): number
     {
-        if (!this.generatedStaticPrices)
+        // If the price doesn't exist in the cache yet, try to find it
+        if (!this.prices.static[itemTpl])
         {
-            this.generateStaticPrices();
+            // Store the price in the cache only if it exists
+            const itemPrice = Math.round(this.handbookHelper.getTemplatePrice(itemTpl));
+            if (itemPrice !== 0)
+            {
+                this.prices.static[itemTpl] = itemPrice;
+            }
         }
 
         return this.prices.static[itemTpl];
@@ -173,10 +165,15 @@ export class RagfairPriceService implements OnLoad
 
     /**
      * Get prices for all items on flea, prioritize handbook prices first, use prices from prices.json if missing
+     * This will refresh the caches prior to building the output
      * @returns Dictionary of item tpls and rouble cost
      */
     public getAllFleaPrices(): Record<string, number>
     {
+        // Refresh the caches so we include any newly added custom items
+        this.refreshDynamicPrices();
+        this.refreshStaticPrices();
+
         // assign dynamic (prices.json) values first, then overwrite them with static (handbook.json)
         // any values not stored in static data will be covered by dynamic data
         return { ...this.prices.dynamic, ...this.prices.static };
@@ -184,6 +181,9 @@ export class RagfairPriceService implements OnLoad
 
     public getAllStaticPrices(): Record<string, number>
     {
+        // Refresh the cache so we include any newly added custom items
+        this.refreshStaticPrices();
+
         return { ...this.prices.static };
     }
 
@@ -195,7 +195,7 @@ export class RagfairPriceService implements OnLoad
      */
     protected getPriceDifference(a: number, b: number): number
     {
-        return 100 * a / (a + b);
+        return (100 * a) / (a + b);
     }
 
     /**
@@ -209,7 +209,7 @@ export class RagfairPriceService implements OnLoad
 
         for (const item of barterScheme)
         {
-            price += this.prices.static[item._tpl] * item.count;
+            price += this.getStaticPriceForItem(item._tpl) * item.count;
         }
 
         return Math.round(price);
@@ -239,7 +239,10 @@ export class RagfairPriceService implements OnLoad
             price += this.getDynamicItemPrice(item._tpl, desiredCurrency, item, offerItems, isPackOffer);
 
             // Check if the item is a weapon preset.
-            if (item?.upd?.sptPresetId && this.presetHelper.isPresetBaseClass(item.upd.sptPresetId, BaseClasses.WEAPON))
+            if (
+                item?.upd?.sptPresetId
+                && this.presetHelper.isPresetBaseClass(item.upd.sptPresetId, BaseClasses.WEAPON)
+            )
             {
                 // This is a weapon preset, which has it's own price calculation that takes into account the mods in the
                 // preset. Since we've already calculated the price for the preset entire preset in
@@ -365,7 +368,7 @@ export class RagfairPriceService implements OnLoad
         price: number,
     ): number
     {
-        const itemHandbookPrice = handbookPrices.find(handbookItem => handbookItem.Id === itemTpl);
+        const itemHandbookPrice = handbookPrices.find((handbookItem) => handbookItem.Id === itemTpl);
         if (!itemHandbookPrice)
         {
             return price;
@@ -423,7 +426,8 @@ export class RagfairPriceService implements OnLoad
 
         // Only adjust price if difference is > a percent AND item price passes threshold set in config
         if (
-            priceDifferencePercent > this.ragfairConfig.dynamic.offerAdjustment.maxPriceDifferenceBelowHandbookPercent
+            priceDifferencePercent
+            > this.ragfairConfig.dynamic.offerAdjustment.maxPriceDifferenceBelowHandbookPercent
             && itemPrice >= this.ragfairConfig.dynamic.offerAdjustment.priceThreshholdRub
         )
         {
@@ -467,8 +471,8 @@ export class RagfairPriceService implements OnLoad
         }
 
         // Get mods on current gun not in default preset
-        const newOrReplacedModsInPresetVsDefault = weaponWithChildren.filter(x =>
-            !presetResult.preset._items.some(y => y._tpl === x._tpl),
+        const newOrReplacedModsInPresetVsDefault = weaponWithChildren.filter(
+            (x) => !presetResult.preset._items.some((y) => y._tpl === x._tpl),
         );
 
         // Add up extra mods price
@@ -483,8 +487,8 @@ export class RagfairPriceService implements OnLoad
         if (newOrReplacedModsInPresetVsDefault.length >= 1)
         {
             // Add up cost of mods replaced
-            const modsReplacedByNewMods = newOrReplacedModsInPresetVsDefault.filter(x =>
-                presetResult.preset._items.some(y => y.slotId === x.slotId),
+            const modsReplacedByNewMods = newOrReplacedModsInPresetVsDefault.filter((x) =>
+                presetResult.preset._items.some((y) => y.slotId === x.slotId),
             );
 
             // Add up replaced mods price
@@ -536,17 +540,13 @@ export class RagfairPriceService implements OnLoad
         if (nonDefaultPresets.length === 1)
         {
             this.logger.debug(
-                `Item Id: ${weapon._tpl} has no default encyclopedia entry but only one preset (${
-                    nonDefaultPresets[0]._name
-                }), choosing preset (${nonDefaultPresets[0]._name})`,
+                `Item Id: ${weapon._tpl} has no default encyclopedia entry but only one preset (${nonDefaultPresets[0]._name}), choosing preset (${nonDefaultPresets[0]._name})`,
             );
         }
         else
         {
             this.logger.debug(
-                `Item Id: ${weapon._tpl} has no default encyclopedia entry, choosing first preset (${
-                    nonDefaultPresets[0]._name
-                }) of ${nonDefaultPresets.length}`,
+                `Item Id: ${weapon._tpl} has no default encyclopedia entry, choosing first preset (${nonDefaultPresets[0]._name}) of ${nonDefaultPresets.length}`,
             );
         }
 

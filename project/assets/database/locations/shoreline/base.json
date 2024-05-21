@@ -42,7 +42,29 @@
   ],
   "BossLocationSpawn": [
     {
-      "BossChance": 30,
+      "BossChance": 0,
+      "BossDifficult": "normal",
+      "BossEscortAmount": "2,2,3,3,3,4,4,5",
+      "BossEscortDifficult": "normal",
+      "BossEscortType": "peacemaker",
+      "BossName": "peacemaker",
+      "BossPlayer": false,
+      "BossZone": "ZoneGreenHouses,ZonePort,ZoneSanatorium1,ZoneSanatorium2,ZoneSmuglers",
+      "Delay": 0,
+      "ForceSpawn": false,
+      "IgnoreMaxBots": true,
+      "RandomTimeSpawn": false,
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
+      "Supports": null,
+      "Time": -1,
+      "TriggerId": "",
+      "TriggerName": ""
+    },
+    {
+      "BossChance": 37,
       "BossDifficult": "normal",
       "BossEscortAmount": "2",
       "BossEscortDifficult": "normal",
@@ -52,8 +74,12 @@
       "BossZone": "ZoneMeteoStation",
       "Delay": 0,
       "ForceSpawn": false,
-      "IgnoreMaxBots": false,
+      "IgnoreMaxBots": true,
       "RandomTimeSpawn": true,
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "Supports": [
         {
           "BossEscortAmount": "1",
@@ -82,7 +108,7 @@
       "TriggerName": ""
     },
     {
-      "BossChance": 30,
+      "BossChance": 37,
       "BossDifficult": "normal",
       "BossEscortAmount": "2,3",
       "BossEscortDifficult": "normal",
@@ -92,8 +118,12 @@
       "BossZone": "ZoneGreenHouses,ZoneSanatorium1,ZoneGreenHouses,ZoneSanatorium2,ZonePort",
       "Delay": 0,
       "ForceSpawn": false,
-      "IgnoreMaxBots": false,
+      "IgnoreMaxBots": true,
       "RandomTimeSpawn": false,
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "Supports": null,
       "Time": -1,
       "TriggerId": "",
@@ -110,8 +140,12 @@
       "BossZone": "ZoneSanatorium1,ZoneSanatorium2",
       "Delay": 0,
       "ForceSpawn": false,
-      "IgnoreMaxBots": false,
+      "IgnoreMaxBots": true,
       "RandomTimeSpawn": false,
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "Supports": null,
       "Time": -1,
       "TriggerId": "",
@@ -128,8 +162,12 @@
       "BossZone": "ZoneForestSpawn",
       "Delay": 0,
       "ForceSpawn": false,
-      "IgnoreMaxBots": false,
+      "IgnoreMaxBots": true,
       "RandomTimeSpawn": false,
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "Supports": null,
       "Time": -1,
       "TriggerId": "",
@@ -155,6 +193,7 @@
   "BotMarksman": 20,
   "BotMax": 17,
   "BotMaxPlayer": 9,
+  "BotMaxPvE": 32,
   "BotMaxTimePlayer": 1000,
   "BotNormal": 50,
   "BotSpawnCountStep": 4,
@@ -173,9 +212,11 @@
   "Enabled": true,
   "EscapeTimeLimit": 45,
   "EscapeTimeLimitCoop": 35,
+  "EscapeTimeLimitPVE": 28,
   "GenerateLocalLootCache": true,
   "GlobalContainerChanceModifier": 1,
-  "GlobalLootChanceModifier": 0.45,
+  "GlobalLootChanceModifier": 0.55,
+  "GlobalLootChanceModifierPvE": 1,
   "IconX": 220,
   "IconY": 300,
   "Id": "Shoreline",
@@ -216,7 +257,7 @@
   "MaxBotPerZone": 4,
   "MaxCoopGroup": 13,
   "MaxDistToFreePoint": 200,
-  "MaxPlayers": 13,
+  "MaxPlayers": 14,
   "MinDistToExitPoint": 30,
   "MinDistToFreePoint": 60,
   "MinMaxBots": [],
@@ -8851,7 +8892,13 @@
     }
   ],
   "filter_ex": [],
-  "limits": [],
+  "limits": [
+    {
+      "items": [],
+      "max": 0,
+      "min": 0
+    }
+  ],
   "matching_min_seconds": 60,
   "maxItemCountInLocation": [
     {

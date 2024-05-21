@@ -19,7 +19,7 @@ import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { ItemFilterService } from "@spt-aki/services/ItemFilterService";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
 import { SeasonalEventService } from "@spt-aki/services/SeasonalEventService";
-import { JsonUtil } from "@spt-aki/utils/JsonUtil";
+import { ICloner } from "@spt-aki/utils/cloners/ICloner";
 import { MathUtil } from "@spt-aki/utils/MathUtil";
 import { ObjectId } from "@spt-aki/utils/ObjectId";
 import { RandomUtil } from "@spt-aki/utils/RandomUtil";
@@ -33,7 +33,6 @@ export class RepeatableQuestRewardGenerator
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("MathUtil") protected mathUtil: MathUtil,
-        @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("PresetHelper") protected presetHelper: PresetHelper,
@@ -43,6 +42,7 @@ export class RepeatableQuestRewardGenerator
         @inject("ItemFilterService") protected itemFilterService: ItemFilterService,
         @inject("SeasonalEventService") protected seasonalEventService: SeasonalEventService,
         @inject("ConfigServer") protected configServer: ConfigServer,
+        @inject("RecursiveCloner") protected cloner: ICloner,
     )
     {
         this.questConfig = this.configServer.getConfig(ConfigTypes.QUEST);
@@ -94,11 +94,13 @@ export class RepeatableQuestRewardGenerator
 
         // rewards are generated based on pmcLevel, difficulty and a random spread
         const rewardXP = Math.floor(
-            effectiveDifficulty * this.mathUtil.interp1(pmcLevel, levelsConfig, xpConfig)
+            effectiveDifficulty
+            * this.mathUtil.interp1(pmcLevel, levelsConfig, xpConfig)
             * this.randomUtil.getFloat(1 - rewardSpreadConfig, 1 + rewardSpreadConfig),
         );
         const rewardRoubles = Math.floor(
-            effectiveDifficulty * this.mathUtil.interp1(pmcLevel, levelsConfig, roublesConfig)
+            effectiveDifficulty
+            * this.mathUtil.interp1(pmcLevel, levelsConfig, roublesConfig)
             * this.randomUtil.getFloat(1 - rewardSpreadConfig, 1 + rewardSpreadConfig),
         );
         const rewardNumItems = this.randomUtil.randInt(
@@ -107,7 +109,9 @@ export class RepeatableQuestRewardGenerator
         );
         const rewardReputation
             = Math.round(
-                100 * effectiveDifficulty * this.mathUtil.interp1(pmcLevel, levelsConfig, reputationConfig)
+                100
+                * effectiveDifficulty
+                * this.mathUtil.interp1(pmcLevel, levelsConfig, reputationConfig)
                 * this.randomUtil.getFloat(1 - rewardSpreadConfig, 1 + rewardSpreadConfig),
             ) / 100;
         const skillRewardChance = this.mathUtil.interp1(pmcLevel, levelsConfig, skillRewardChanceConfig);
@@ -134,7 +138,7 @@ export class RepeatableQuestRewardGenerator
         this.addMoneyReward(traderId, rewards, rewardRoubles, rewardIndex);
         rewardIndex++;
 
-        const traderWhitelistDetails = repeatableConfig.traderWhitelist.find(x => x.traderId === traderId);
+        const traderWhitelistDetails = repeatableConfig.traderWhitelist.find((x) => x.traderId === traderId);
         if (
             traderWhitelistDetails.rewardCanBeWeapon
             && this.randomUtil.getChance100(traderWhitelistDetails.weaponRewardChancePercent)
@@ -144,19 +148,19 @@ export class RepeatableQuestRewardGenerator
             const defaultPresetPool = new ExhaustableArray(
                 Object.values(this.presetHelper.getDefaultWeaponPresets()),
                 this.randomUtil,
-                this.jsonUtil,
+                this.cloner,
             );
             let chosenPreset: IPreset;
             while (defaultPresetPool.hasValues())
             {
                 const randomPreset = defaultPresetPool.getRandomValue();
-                const tpls = randomPreset._items.map(item => item._tpl);
+                const tpls = randomPreset._items.map((item) => item._tpl);
                 const presetPrice = this.itemHelper.getItemAndChildrenPrice(tpls);
                 if (presetPrice <= roublesBudget)
                 {
                     this.logger.debug(`  Added weapon ${tpls[0]} with price ${presetPrice}`);
                     roublesBudget -= presetPrice;
-                    chosenPreset = this.jsonUtil.clone(randomPreset);
+                    chosenPreset = this.cloner.clone(randomPreset);
                     break;
                 }
             }
@@ -307,14 +311,16 @@ export class RepeatableQuestRewardGenerator
      */
     protected canIncreaseRewardItemStackSize(item: ITemplateItem, maxRoublePriceToStack: number): boolean
     {
-        return this.presetHelper.getDefaultPresetOrItemPrice(item._id) < maxRoublePriceToStack
-          && !this.itemHelper.isOfBaseclasses(item._id, [
-              BaseClasses.WEAPON,
-              BaseClasses.ARMORED_EQUIPMENT,
-              BaseClasses.AMMO,
-          ])
-          && !this.itemHelper.itemRequiresSoftInserts(item._id)
-          && this.randomUtil.getChance100(25);
+        return (
+            this.presetHelper.getDefaultPresetOrItemPrice(item._id) < maxRoublePriceToStack
+            && !this.itemHelper.isOfBaseclasses(item._id, [
+                BaseClasses.WEAPON,
+                BaseClasses.ARMORED_EQUIPMENT,
+                BaseClasses.AMMO,
+            ])
+            && !this.itemHelper.itemRequiresSoftInserts(item._id)
+            && this.randomUtil.getChance100(25)
+        );
     }
 
     protected calculateAmmoStackSizeThatFitsBudget(
@@ -354,7 +360,7 @@ export class RepeatableQuestRewardGenerator
         const rewardableItemPool = this.getRewardableItems(repeatableConfig, traderId);
         const minPrice = Math.min(25000, 0.5 * roublesBudget);
 
-        let rewardableItemPoolWithinBudget = rewardableItemPool.map(x => x[1]);
+        let rewardableItemPoolWithinBudget = rewardableItemPool.map((x) => x[1]);
         rewardableItemPoolWithinBudget = this.filterRewardPoolWithinBudget(
             rewardableItemPoolWithinBudget,
             roublesBudget,
@@ -369,9 +375,9 @@ export class RepeatableQuestRewardGenerator
                 }),
             );
             // In case we don't find any items in the price range
-            rewardableItemPoolWithinBudget = rewardableItemPool.filter(x =>
-                this.itemHelper.getItemPrice(x[0]) < roublesBudget,
-            ).map(x => x[1]);
+            rewardableItemPoolWithinBudget = rewardableItemPool
+                .filter((x) => this.itemHelper.getItemPrice(x[0]) < roublesBudget)
+                .map((x) => x[1]);
         }
 
         return rewardableItemPoolWithinBudget;
@@ -392,7 +398,7 @@ export class RepeatableQuestRewardGenerator
 
         if (preset)
         {
-            const rootItem = preset.find(x => x._tpl === tpl);
+            const rootItem = preset.find((x) => x._tpl === tpl);
             rewardItem.items = this.itemHelper.reparentItemAndChildren(rootItem, preset);
             rewardItem.target = rootItem._id; // Target property and root items id must match
         }
@@ -435,8 +441,8 @@ export class RepeatableQuestRewardGenerator
                     return false;
                 }
 
-                const traderWhitelist = repeatableQuestConfig.traderWhitelist.find(trader =>
-                    trader.traderId === traderId,
+                const traderWhitelist = repeatableQuestConfig.traderWhitelist.find(
+                    (trader) => trader.traderId === traderId,
                 );
                 return this.isValidRewardItem(tpl, repeatableQuestConfig, traderWhitelist?.rewardBaseWhitelist);
             },
@@ -502,7 +508,12 @@ export class RepeatableQuestRewardGenerator
         return true;
     }
 
-    protected addMoneyReward(traderId: string, rewards: IQuestRewards, rewardRoubles: number, rewardIndex: number): void
+    protected addMoneyReward(
+        traderId: string,
+        rewards: IQuestRewards,
+        rewardRoubles: number,
+        rewardIndex: number,
+    ): void
     {
         // PK and Fence use euros
         if (traderId === Traders.PEACEKEEPER || traderId === Traders.FENCE)

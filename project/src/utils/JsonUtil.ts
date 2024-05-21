@@ -178,7 +178,8 @@ export class JsonUtil
             {
                 const { data, changed } = fixJson(jsonString);
                 if (changed)
-                { // data invalid, return it
+                {
+                    // data invalid, return it
                     this.logger.error(`${filePath} - Detected faulty json, please fix your json file using VSCodium`);
                 }
                 else
@@ -242,6 +243,7 @@ export class JsonUtil
      * Convert into string and back into object to clone object
      * @param objectToClone Item to clone
      * @returns Cloned parameter
+     * @deprecated Use ICloner implementations, such as RecursiveCloner or StructuredCloner
      */
     public clone<T>(objectToClone: T): T
     {

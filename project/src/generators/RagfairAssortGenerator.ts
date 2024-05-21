@@ -10,7 +10,6 @@ import { ConfigServer } from "@spt-aki/servers/ConfigServer";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { SeasonalEventService } from "@spt-aki/services/SeasonalEventService";
 import { HashUtil } from "@spt-aki/utils/HashUtil";
-import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 
 @injectable()
 export class RagfairAssortGenerator
@@ -29,7 +28,6 @@ export class RagfairAssortGenerator
     ];
 
     constructor(
-        @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("PresetHelper") protected presetHelper: PresetHelper,
@@ -74,7 +72,7 @@ export class RagfairAssortGenerator
         const results: Item[][] = [];
 
         /** Get cloned items from db */
-        const dbItemsClone = this.itemHelper.getItems().filter(item => item._type !== "Node");
+        const dbItemsClone = this.itemHelper.getItems().filter((item) => item._type !== "Node");
 
         /** Store processed preset tpls so we dont add them when procesing non-preset items */
         const processedArmorItems: string[] = [];
@@ -107,7 +105,8 @@ export class RagfairAssortGenerator
 
             // Skip seasonal items when not in-season
             if (
-                this.ragfairConfig.dynamic.removeSeasonalItemsWhenNotInEvent && !seasonalEventActive
+                this.ragfairConfig.dynamic.removeSeasonalItemsWhenNotInEvent
+                && !seasonalEventActive
                 && seasonalItemTplBlacklist.includes(item._id)
             )
             {

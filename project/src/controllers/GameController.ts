@@ -14,6 +14,8 @@ import { ICheckVersionResponse } from "@spt-aki/models/eft/game/ICheckVersionRes
 import { ICurrentGroupResponse } from "@spt-aki/models/eft/game/ICurrentGroupResponse";
 import { IGameConfigResponse } from "@spt-aki/models/eft/game/IGameConfigResponse";
 import { IGameKeepAliveResponse } from "@spt-aki/models/eft/game/IGameKeepAliveResponse";
+import { IGameModeRequestData } from "@spt-aki/models/eft/game/IGameModeRequestData";
+import { ESessionMode } from "@spt-aki/models/eft/game/IGameModeResponse";
 import { IGetRaidTimeRequest } from "@spt-aki/models/eft/game/IGetRaidTimeRequest";
 import { IGetRaidTimeResponse } from "@spt-aki/models/eft/game/IGetRaidTimeResponse";
 import { IServerDetails } from "@spt-aki/models/eft/game/IServerDetails";
@@ -42,8 +44,8 @@ import { ProfileActivityService } from "@spt-aki/services/ProfileActivityService
 import { ProfileFixerService } from "@spt-aki/services/ProfileFixerService";
 import { RaidTimeAdjustmentService } from "@spt-aki/services/RaidTimeAdjustmentService";
 import { SeasonalEventService } from "@spt-aki/services/SeasonalEventService";
+import { ICloner } from "@spt-aki/utils/cloners/ICloner";
 import { HashUtil } from "@spt-aki/utils/HashUtil";
-import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 import { RandomUtil } from "@spt-aki/utils/RandomUtil";
 import { TimeUtil } from "@spt-aki/utils/TimeUtil";
 
@@ -62,7 +64,6 @@ export class GameController
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
-        @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
         @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("PreAkiModLoader") protected preAkiModLoader: PreAkiModLoader,
@@ -81,6 +82,7 @@ export class GameController
         @inject("ProfileActivityService") protected profileActivityService: ProfileActivityService,
         @inject("ApplicationContext") protected applicationContext: ApplicationContext,
         @inject("ConfigServer") protected configServer: ConfigServer,
+        @inject("RecursiveCloner") protected cloner: ICloner,
     )
     {
         this.httpConfig = this.configServer.getConfig(ConfigTypes.HTTP);
@@ -316,20 +318,18 @@ export class GameController
             const trader = this.databaseServer.getTables().traders[traderKey];
             if (!trader?.base?.repair)
             {
-                this.logger.warning(
-                    `Trader ${trader.base._id} ${trader.base.nickname} is missing a repair object, adding in default values`,
-                );
-                trader.base.repair = this.jsonUtil.clone(this.databaseServer.getTables().traders.ragfair.base.repair);
+                this.logger.warning(this.localisationService.getText("trader-missing_repair_property_using_default",
+                    { traderId: trader.base._id, nickname: trader.base.nickname }));
+                trader.base.repair = this.cloner.clone(this.databaseServer.getTables().traders.ragfair.base.repair);
 
                 return;
             }
 
             if (trader.base.repair?.quality === undefined)
             {
-                this.logger.warning(
-                    `Trader ${trader.base._id} ${trader.base.nickname} is missing a repair quality value, adding in default value`,
-                );
-                trader.base.repair.quality = this.jsonUtil.clone(
+                this.logger.warning(this.localisationService.getText("trader-missing_repair_quality_property_using_default",
+                    { traderId: trader.base._id, nickname: trader.base.nickname }));
+                trader.base.repair.quality = this.cloner.clone(
                     this.databaseServer.getTables().traders.ragfair.base.repair.quality,
                 );
                 trader.base.repair.quality = this.databaseServer.getTables().traders.ragfair.base.repair.quality;
@@ -344,22 +344,27 @@ export class GameController
         {
             if (!mapId)
             {
-                this.logger.warning(`Unable to add loot positions to map: ${mapId}, skipping`);
+                this.logger.warning(this.localisationService.getText("location-unable_to_add_custom_loot_position", mapId));
+
                 continue;
             }
+
             const mapLooseLoot: ILooseLoot = this.databaseServer.getTables().locations[mapId]?.looseLoot;
             if (!mapLooseLoot)
             {
-                this.logger.warning(`Map: ${mapId} has no loose loot data, skipping`);
+                this.logger.warning(this.localisationService.getText("location-map_has_no_loose_loot_data", mapId));
+
                 continue;
             }
+
             const positionsToAdd = looseLootPositionsToAdd[mapId];
             for (const positionToAdd of positionsToAdd)
             {
                 // Exists already, add new items to existing positions pool
-                const existingLootPosition = mapLooseLoot.spawnpoints.find(x =>
-                    x.template.Id === positionToAdd.template.Id,
+                const existingLootPosition = mapLooseLoot.spawnpoints.find(
+                    (x) => x.template.Id === positionToAdd.template.Id,
                 );
+
                 if (existingLootPosition)
                 {
                     existingLootPosition.template.Items.push(...positionToAdd.template.Items);
@@ -382,16 +387,19 @@ export class GameController
             const mapLooseLootData: ILooseLoot = this.databaseServer.getTables().locations[mapId]?.looseLoot;
             if (!mapLooseLootData)
             {
-                this.logger.warning(`Unable to adjust loot positions on map: ${mapId}`);
+                this.logger.warning(this.localisationService.getText("location-map_has_no_loose_loot_data", mapId));
+
                 continue;
             }
             const mapLootAdjustmentsDict = adjustments[mapId];
             for (const lootKey in mapLootAdjustmentsDict)
             {
-                const lootPostionToAdjust = mapLooseLootData.spawnpoints.find(x => x.template.Id === lootKey);
+                const lootPostionToAdjust = mapLooseLootData.spawnpoints
+                    .find((spawnPoint) => spawnPoint.template.Id === lootKey);
                 if (!lootPostionToAdjust)
                 {
-                    this.logger.warning(`Unable to adjust loot position: ${lootKey} on map: ${mapId}`);
+                    this.logger.warning(this.localisationService.getText("location-unable_to_adjust_loot_position_on_map", { lootKey: lootKey, mapId: mapId }));
+
                     continue;
                 }
 
@@ -421,7 +429,7 @@ export class GameController
 
             for (const botToLimit of this.locationConfig.botTypeLimits[mapId])
             {
-                const index = map.base.MinMaxBots.findIndex(x => x.WildSpawnType === botToLimit.type);
+                const index = map.base.MinMaxBots.findIndex((x) => x.WildSpawnType === botToLimit.type);
                 if (index !== -1)
                 {
                     // Existing bot type found in MinMaxBots array, edit
@@ -450,8 +458,8 @@ export class GameController
     {
         const profile = this.profileHelper.getPmcProfile(sessionID);
         const gameTime
-            = profile.Stats?.Eft.OverallCounters.Items?.find(counter =>
-                counter.Key.includes("LifeTime") && counter.Key.includes("Pmc"),
+            = profile.Stats?.Eft.OverallCounters.Items?.find(
+                (counter) => counter.Key.includes("LifeTime") && counter.Key.includes("Pmc"),
             )?.Value ?? 0;
 
         const config: IGameConfigResponse = {
@@ -476,6 +484,14 @@ export class GameController
         };
 
         return config;
+    }
+
+    /**
+     * Handle client/game/mode
+     */
+    public getGameMode(sessionID: string, info: IGameModeRequestData): any
+    {
+        return { gameMode: ESessionMode.REGULAR, backendUrl: this.httpServerHelper.getBackendUrl() };
     }
 
     /**
@@ -588,12 +604,13 @@ export class GameController
             let hpRegenPerHour = 456.6;
 
             // Set new values, whatever is smallest
-            energyRegenPerHour += pmcProfile.Bonuses.filter(bonus => bonus.type === BonusType.ENERGY_REGENERATION)
-                .reduce((sum, curr) => sum + curr.value, 0);
-            hydrationRegenPerHour += pmcProfile.Bonuses.filter(bonus =>
-                bonus.type === BonusType.HYDRATION_REGENERATION,
+            energyRegenPerHour += pmcProfile.Bonuses.filter(
+                (bonus) => bonus.type === BonusType.ENERGY_REGENERATION,
             ).reduce((sum, curr) => sum + curr.value, 0);
-            hpRegenPerHour += pmcProfile.Bonuses.filter(bonus => bonus.type === BonusType.HEALTH_REGENERATION).reduce(
+            hydrationRegenPerHour += pmcProfile.Bonuses.filter(
+                (bonus) => bonus.type === BonusType.HYDRATION_REGENERATION,
+            ).reduce((sum, curr) => sum + curr.value, 0);
+            hpRegenPerHour += pmcProfile.Bonuses.filter((bonus) => bonus.type === BonusType.HEALTH_REGENERATION).reduce(
                 (sum, curr) => sum + curr.value,
                 0,
             );
@@ -781,7 +798,7 @@ export class GameController
                     for (let index = indexOfWaveToSplit + 1; index < indexOfWaveToSplit + waveSize; index++)
                     {
                         // Clone wave ready to insert into array
-                        const waveToAddClone = this.jsonUtil.clone(wave);
+                        const waveToAddClone = this.cloner.clone(wave);
 
                         // Some waves have value of 0 for some reason, preserve
                         if (waveToAddClone.number !== 0)
@@ -831,8 +848,11 @@ export class GameController
         {
             const modDetails = activeMods[modKey];
             if (
-                fullProfile.aki.mods.some(x =>
-                    x.author === modDetails.author && x.name === modDetails.name && x.version === modDetails.version,
+                fullProfile.aki.mods.some(
+                    (x) =>
+                        x.author === modDetails.author
+                        && x.name === modDetails.name
+                        && x.version === modDetails.version,
                 )
             )
             {
@@ -947,8 +967,8 @@ export class GameController
     protected adjustLabsRaiderSpawnRate(): void
     {
         const labsBase = this.databaseServer.getTables().locations.laboratory.base;
-        const nonTriggerLabsBossSpawns = labsBase.BossLocationSpawn.filter(x =>
-            x.TriggerId === "" && x.TriggerName === "",
+        const nonTriggerLabsBossSpawns = labsBase.BossLocationSpawn.filter(
+            (x) => x.TriggerId === "" && x.TriggerName === "",
         );
         if (nonTriggerLabsBossSpawns)
         {

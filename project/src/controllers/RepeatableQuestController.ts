@@ -26,8 +26,8 @@ import { ConfigServer } from "@spt-aki/servers/ConfigServer";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { PaymentService } from "@spt-aki/services/PaymentService";
 import { ProfileFixerService } from "@spt-aki/services/ProfileFixerService";
+import { ICloner } from "@spt-aki/utils/cloners/ICloner";
 import { HttpResponseUtil } from "@spt-aki/utils/HttpResponseUtil";
-import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 import { ObjectId } from "@spt-aki/utils/ObjectId";
 import { RandomUtil } from "@spt-aki/utils/RandomUtil";
 import { TimeUtil } from "@spt-aki/utils/TimeUtil";
@@ -43,7 +43,6 @@ export class RepeatableQuestController
         @inject("TimeUtil") protected timeUtil: TimeUtil,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("HttpResponseUtil") protected httpResponse: HttpResponseUtil,
-        @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
         @inject("ProfileFixerService") protected profileFixerService: ProfileFixerService,
         @inject("EventOutputHolder") protected eventOutputHolder: EventOutputHolder,
@@ -53,6 +52,7 @@ export class RepeatableQuestController
         @inject("RepeatableQuestHelper") protected repeatableQuestHelper: RepeatableQuestHelper,
         @inject("QuestHelper") protected questHelper: QuestHelper,
         @inject("ConfigServer") protected configServer: ConfigServer,
+        @inject("RecursiveCloner") protected cloner: ICloner,
     )
     {
         this.questConfig = this.configServer.getConfig(ConfigTypes.QUEST);
@@ -90,7 +90,7 @@ export class RepeatableQuestController
         const pmcData = this.profileHelper.getPmcProfile(sessionID);
         const time = this.timeUtil.getTimestamp();
         const scavQuestUnlocked
-            = pmcData?.Hideout?.Areas?.find(hideoutArea => hideoutArea.type === HideoutAreas.INTEL_CENTER)?.level >= 1;
+            = pmcData?.Hideout?.Areas?.find((hideoutArea) => hideoutArea.type === HideoutAreas.INTEL_CENTER)?.level >= 1;
 
         // Daily / weekly / Daily_Savage
         for (const repeatableConfig of this.questConfig.repeatableQuests)
@@ -99,8 +99,8 @@ export class RepeatableQuestController
             const currentRepeatableQuestType = this.getRepeatableQuestSubTypeFromProfile(repeatableConfig, pmcData);
 
             if (
-                repeatableConfig.side === "Pmc" && pmcData.Info.Level >= repeatableConfig.minPlayerLevel
-                || repeatableConfig.side === "Scav" && scavQuestUnlocked
+                (repeatableConfig.side === "Pmc" && pmcData.Info.Level >= repeatableConfig.minPlayerLevel)
+                || (repeatableConfig.side === "Scav" && scavQuestUnlocked)
             )
             {
                 if (time > currentRepeatableQuestType.endTime - 1)
@@ -118,7 +118,7 @@ export class RepeatableQuestController
                     for (const activeQuest of currentRepeatableQuestType.activeQuests)
                     {
                         // Keep finished quests in list so player can hand in
-                        const quest = pmcData.Quests.find(quest => quest.qid === activeQuest._id);
+                        const quest = pmcData.Quests.find((quest) => quest.qid === activeQuest._id);
                         if (quest)
                         {
                             if (quest.status === QuestStatus.AvailableForFinish)
@@ -134,7 +134,7 @@ export class RepeatableQuestController
                         this.profileFixerService.removeDanglingConditionCounters(pmcData);
 
                         // Remove expired quest from pmc.quest array
-                        pmcData.Quests = pmcData.Quests.filter(quest => quest.qid !== activeQuest._id);
+                        pmcData.Quests = pmcData.Quests.filter((quest) => quest.qid !== activeQuest._id);
                         currentRepeatableQuestType.inactiveQuests.push(activeQuest);
                     }
                     currentRepeatableQuestType.activeQuests = questsToKeep;
@@ -216,14 +216,11 @@ export class RepeatableQuestController
         )
         {
             // Elite charisma skill gives extra daily quest(s)
-            return repeatableConfig.numQuests + this.databaseServer.getTables()
-                .globals
-                .config
-                .SkillsSettings
-                .Charisma
-                .BonusSettings
-                .EliteBonusSettings
-                .RepeatableQuestExtraCount;
+            return (
+                repeatableConfig.numQuests
+                + this.databaseServer.getTables().globals.config.SkillsSettings.Charisma.BonusSettings.EliteBonusSettings
+                    .RepeatableQuestExtraCount
+            );
         }
 
         return repeatableConfig.numQuests;
@@ -241,7 +238,7 @@ export class RepeatableQuestController
     ): IPmcDataRepeatableQuest
     {
         // Get from profile, add if missing
-        let repeatableQuestDetails = pmcData.RepeatableQuests.find(x => x.name === repeatableConfig.name);
+        let repeatableQuestDetails = pmcData.RepeatableQuests.find((x) => x.name === repeatableConfig.name);
         if (!repeatableQuestDetails)
         {
             repeatableQuestDetails = {
@@ -331,9 +328,10 @@ export class RepeatableQuestController
                 const possibleLocations = Object.keys(locations);
 
                 // Set possible locations for elimination task, if target is savage, exclude labs from locations
-                questPool.pool.Elimination.targets[probabilityObject.key] = probabilityObject.key === "Savage"
-                    ? { locations: possibleLocations.filter(x => x !== "laboratory") }
-                    : { locations: possibleLocations };
+                questPool.pool.Elimination.targets[probabilityObject.key]
+                    = probabilityObject.key === "Savage"
+                        ? { locations: possibleLocations.filter((x) => x !== "laboratory") }
+                        : { locations: possibleLocations };
             }
         }
 
@@ -443,7 +441,7 @@ export class RepeatableQuestController
         for (const currentRepeatablePool of pmcData.RepeatableQuests)
         {
             // Check for existing quest in (daily/weekly/scav arrays)
-            const questToReplace = currentRepeatablePool.activeQuests.find(x => x._id === changeRequest.qid);
+            const questToReplace = currentRepeatablePool.activeQuests.find((x) => x._id === changeRequest.qid);
             if (!questToReplace)
             {
                 continue;
@@ -453,17 +451,17 @@ export class RepeatableQuestController
             replacedQuestTraderId = questToReplace.traderId;
 
             // Update active quests to exclude the quest we're replacing
-            currentRepeatablePool.activeQuests = currentRepeatablePool.activeQuests.filter(x =>
-                x._id !== changeRequest.qid,
+            currentRepeatablePool.activeQuests = currentRepeatablePool.activeQuests.filter(
+                (x) => x._id !== changeRequest.qid,
             );
 
             // Get cost to replace existing quest
-            changeRequirement = this.jsonUtil.clone(currentRepeatablePool.changeRequirement[changeRequest.qid]);
+            changeRequirement = this.cloner.clone(currentRepeatablePool.changeRequirement[changeRequest.qid]);
             delete currentRepeatablePool.changeRequirement[changeRequest.qid];
             // TODO: somehow we need to reduce the questPool by the currently active quests (for all repeatables)
 
-            const repeatableConfig = this.questConfig.repeatableQuests.find(x =>
-                x.name === currentRepeatablePool.name,
+            const repeatableConfig = this.questConfig.repeatableQuests.find(
+                (x) => x.name === currentRepeatablePool.name,
             );
             const questTypePool = this.generateQuestPool(repeatableConfig, pmcData.Info.Level);
             const newRepeatableQuest = this.attemptToGenerateRepeatableQuest(pmcData, questTypePool, repeatableConfig);
@@ -490,7 +488,7 @@ export class RepeatableQuestController
             }
 
             // Found and replaced the quest in current repeatable
-            repeatableToChange = this.jsonUtil.clone(currentRepeatablePool);
+            repeatableToChange = this.cloner.clone(currentRepeatablePool);
             delete repeatableToChange.inactiveQuests;
 
             break;

@@ -84,7 +84,29 @@
   ],
   "BossLocationSpawn": [
     {
-      "BossChance": 30,
+      "BossChance": 0,
+      "BossDifficult": "normal",
+      "BossEscortAmount": "2,2,3,3,3,4,4,5",
+      "BossEscortDifficult": "normal",
+      "BossEscortType": "skier",
+      "BossName": "skier",
+      "BossPlayer": false,
+      "BossZone": "ZoneScavBase,ZoneDormitory,ZoneFactoryCenter,ZoneCustoms,ZoneBrige",
+      "Delay": 0,
+      "ForceSpawn": false,
+      "IgnoreMaxBots": true,
+      "RandomTimeSpawn": false,
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
+      "Supports": null,
+      "Time": -1,
+      "TriggerId": "",
+      "TriggerName": ""
+    },
+    {
+      "BossChance": 35,
       "BossDifficult": "normal",
       "BossEscortAmount": "2",
       "BossEscortDifficult": "normal",
@@ -94,8 +116,12 @@
       "BossZone": "ZoneScavBase",
       "Delay": 0,
       "ForceSpawn": false,
-      "IgnoreMaxBots": false,
+      "IgnoreMaxBots": true,
       "RandomTimeSpawn": true,
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "Supports": [
         {
           "BossEscortAmount": "1",
@@ -124,7 +150,7 @@
       "TriggerName": ""
     },
     {
-      "BossChance": 30,
+      "BossChance": 35,
       "BossDifficult": "normal",
       "BossEscortAmount": "4",
       "BossEscortDifficult": "normal",
@@ -134,15 +160,19 @@
       "BossZone": "ZoneDormitory,ZoneGasStation,ZoneScavBase",
       "Delay": 0,
       "ForceSpawn": false,
-      "IgnoreMaxBots": false,
+      "IgnoreMaxBots": true,
       "RandomTimeSpawn": false,
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "Supports": null,
       "Time": -1,
       "TriggerId": "",
       "TriggerName": ""
     },
     {
-      "BossChance": 15,
+      "BossChance": 20,
       "BossDifficult": "normal",
       "BossEscortAmount": "4",
       "BossEscortDifficult": "normal",
@@ -152,9 +182,13 @@
       "BossZone": "ZoneScavBase",
       "Delay": 0,
       "ForceSpawn": false,
-      "IgnoreMaxBots": false,
+      "IgnoreMaxBots": true,
       "RandomTimeSpawn": false,
-      "Supports": [],
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
+      "Supports": null,
       "Time": -1,
       "TriggerId": "",
       "TriggerName": ""
@@ -170,6 +204,10 @@
       "BossZone": "ZoneFactoryCenter,ZoneScavBase",
       "Delay": 0,
       "RandomTimeSpawn": false,
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "Supports": [],
       "Time": -1,
       "TriggerId": "",
@@ -195,6 +233,7 @@
   "BotMarksman": 20,
   "BotMax": 17,
   "BotMaxPlayer": 9,
+  "BotMaxPvE": 30,
   "BotMaxTimePlayer": 1000,
   "BotNormal": 50,
   "BotSpawnCountStep": 4,
@@ -213,9 +252,11 @@
   "Enabled": true,
   "EscapeTimeLimit": 40,
   "EscapeTimeLimitCoop": 25,
+  "EscapeTimeLimitPVE": 26,
   "GenerateLocalLootCache": true,
   "GlobalContainerChanceModifier": 1,
-  "GlobalLootChanceModifier": 0.8,
+  "GlobalLootChanceModifier": 0.9,
+  "GlobalLootChanceModifierPvE": 1,
   "IconX": 550,
   "IconY": 460,
   "Id": "bigmap",
@@ -8148,7 +8189,7 @@
       ]
     }
   ],
-  "UnixDateTime": 1707142711,
+  "UnixDateTime": 1636382469,
   "_Id": "56f40101d2720b2a4d8b45d6",
   "doors": [],
   "exit_access_time": 60,

@@ -1,9 +1,9 @@
 import { inject, injectable } from "tsyringe";
 import { HandbookHelper } from "@spt-aki/helpers/HandbookHelper";
+import { IStaticAmmoDetails } from "@spt-aki/models/eft/common/ILocation";
 import { IPmcData } from "@spt-aki/models/eft/common/IPmcData";
 import { InsuredItem } from "@spt-aki/models/eft/common/tables/IBotBase";
 import { Item, Location, Repairable, Upd } from "@spt-aki/models/eft/common/tables/IItem";
-import { IStaticAmmoDetails } from "@spt-aki/models/eft/common/tables/ILootBase";
 import { ITemplateItem } from "@spt-aki/models/eft/common/tables/ITemplateItem";
 import { BaseClasses } from "@spt-aki/models/enums/BaseClasses";
 import { EquipmentSlots } from "@spt-aki/models/enums/EquipmentSlots";
@@ -13,6 +13,7 @@ import { ItemBaseClassService } from "@spt-aki/services/ItemBaseClassService";
 import { ItemFilterService } from "@spt-aki/services/ItemFilterService";
 import { LocaleService } from "@spt-aki/services/LocaleService";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
+import { ICloner } from "@spt-aki/utils/cloners/ICloner";
 import { CompareUtil } from "@spt-aki/utils/CompareUtil";
 import { HashUtil } from "@spt-aki/utils/HashUtil";
 import { JsonUtil } from "@spt-aki/utils/JsonUtil";
@@ -47,6 +48,7 @@ export class ItemHelper
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("LocaleService") protected localeService: LocaleService,
         @inject("CompareUtil") protected compareUtil: CompareUtil,
+        @inject("RecursiveCloner") protected cloner: ICloner,
     )
     {}
 
@@ -66,7 +68,7 @@ export class ItemHelper
         }
         for (const itemOf1 of item1)
         {
-            const itemOf2 = item2.find(i2 => i2._tpl === itemOf1._tpl);
+            const itemOf2 = item2.find((i2) => i2._tpl === itemOf1._tpl);
             if (itemOf2 === undefined)
             {
                 return false;
@@ -96,7 +98,7 @@ export class ItemHelper
 
         if (compareUpdProperties)
         {
-            return Array.from(compareUpdProperties.values()).every(p =>
+            return Array.from(compareUpdProperties.values()).every((p) =>
                 this.compareUtil.recursiveCompare(item1.upd?.[p], item2.upd?.[p]),
             );
         }
@@ -192,11 +194,13 @@ export class ItemHelper
             return false;
         }
 
-        return !itemDetails[1]._props.QuestItem
-          && itemDetails[1]._type === "Item"
-          && baseTypes.every(x => !this.isOfBaseclass(tpl, x))
-          && this.getItemPrice(tpl) > 0
-          && !this.itemFilterService.isItemBlacklisted(tpl);
+        return (
+            !itemDetails[1]._props.QuestItem
+            && itemDetails[1]._type === "Item"
+            && baseTypes.every((x) => !this.isOfBaseclass(tpl, x))
+            && this.getItemPrice(tpl) > 0
+            && !this.itemFilterService.isItemBlacklisted(tpl)
+        );
     }
 
     /**
@@ -259,7 +263,7 @@ export class ItemHelper
         const itemTemplate = this.getItem(itemTpl);
         const plateSlotIds = this.getRemovablePlateSlotIds();
 
-        return itemTemplate[1]._props.Slots.some(slot => plateSlotIds.includes(slot._name.toLowerCase()));
+        return itemTemplate[1]._props.Slots.some((slot) => plateSlotIds.includes(slot._name.toLowerCase()));
     }
 
     /**
@@ -290,7 +294,7 @@ export class ItemHelper
 
         // Check if item has slots that match soft insert name ids
         const softInsertIds = this.getSoftInsertSlotIds();
-        if (itemDbDetails[1]._props.Slots.find(slot => softInsertIds.includes(slot._name.toLowerCase())))
+        if (itemDbDetails[1]._props.Slots.find((slot) => softInsertIds.includes(slot._name.toLowerCase())))
         {
             return true;
         }
@@ -428,7 +432,7 @@ export class ItemHelper
      */
     public getItems(): ITemplateItem[]
     {
-        return this.jsonUtil.clone(Object.values(this.databaseServer.getTables().templates.items));
+        return this.cloner.clone(Object.values(this.databaseServer.getTables().templates.items));
     }
 
     /**
@@ -627,7 +631,7 @@ export class ItemHelper
             }
 
             // Items parentid matches root item AND returned items doesnt contain current child
-            if (childItem.parentId === baseItemId && !list.find(item => childItem._id === item._id))
+            if (childItem.parentId === baseItemId && !list.find((item) => childItem._id === item._id))
             {
                 list.push(...this.findAndReturnChildrenAsItems(items, childItem._id));
             }
@@ -648,7 +652,7 @@ export class ItemHelper
 
         for (const itemFromAssort of assort)
         {
-            if (itemFromAssort.parentId === itemIdToFind && !list.find(item => itemFromAssort._id === item._id))
+            if (itemFromAssort.parentId === itemIdToFind && !list.find((item) => itemFromAssort._id === item._id))
             {
                 list.push(itemFromAssort);
                 list = list.concat(this.findAndReturnChildrenByAssort(itemFromAssort._id, assort));
@@ -734,7 +738,7 @@ export class ItemHelper
         // return the item as is.
         if (remainingCount <= maxStackSize)
         {
-            rootAndChildren.push(this.jsonUtil.clone(itemToSplit));
+            rootAndChildren.push(this.cloner.clone(itemToSplit));
 
             return rootAndChildren;
         }
@@ -742,7 +746,7 @@ export class ItemHelper
         while (remainingCount)
         {
             const amount = Math.min(remainingCount, maxStackSize);
-            const newStackClone = this.jsonUtil.clone(itemToSplit);
+            const newStackClone = this.cloner.clone(itemToSplit);
 
             newStackClone._id = this.hashUtil.generate();
             newStackClone.upd.StackObjectsCount = amount;
@@ -775,7 +779,7 @@ export class ItemHelper
         while (remainingCount)
         {
             const amount = Math.min(remainingCount, itemMaxStackSize);
-            const newItemClone = this.jsonUtil.clone(itemToSplit);
+            const newItemClone = this.cloner.clone(itemToSplit);
 
             newItemClone._id = this.hashUtil.generate();
             newItemClone.upd.StackObjectsCount = amount;
@@ -796,9 +800,8 @@ export class ItemHelper
     public findBarterItems(by: "tpl" | "id", itemsToSearch: Item[], desiredBarterItemIds: string | string[]): Item[]
     {
         // Find required items to take after buying (handles multiple items)
-        const desiredBarterIds = typeof desiredBarterItemIds === "string"
-            ? [desiredBarterItemIds]
-            : desiredBarterItemIds;
+        const desiredBarterIds
+            = typeof desiredBarterItemIds === "string" ? [desiredBarterItemIds] : desiredBarterItemIds;
 
         const matchingItems: Item[] = [];
         for (const barterId of desiredBarterIds)
@@ -836,7 +839,7 @@ export class ItemHelper
         fastPanel = null,
     ): Item[]
     {
-        let items = this.jsonUtil.clone(originalItems); // Deep-clone the items to avoid mutation.
+        let items = this.cloner.clone(originalItems); // Deep-clone the items to avoid mutation.
         let serialisedInventory = this.jsonUtil.serialize(items);
 
         for (const item of items)
@@ -844,7 +847,7 @@ export class ItemHelper
             if (pmcData !== null)
             {
                 // Insured items should not be renamed. Only works for PMCs.
-                if (insuredItems?.find(insuredItem => insuredItem.itemId === item._id))
+                if (insuredItems?.find((insuredItem) => insuredItem.itemId === item._id))
                 {
                     continue;
                 }
@@ -1052,8 +1055,8 @@ export class ItemHelper
         let isRequiredSlot = false;
         if (parentTemplate[0] && parentTemplate[1]?._props?.Slots)
         {
-            isRequiredSlot = parentTemplate[1]._props.Slots.some(slot =>
-                slot._name === item.slotId && slot._required,
+            isRequiredSlot = parentTemplate[1]._props.Slots.some(
+                (slot) => slot._name === item.slotId && slot._required,
             );
         }
 
@@ -1098,11 +1101,13 @@ export class ItemHelper
      */
     public isAttachmentAttached(item: Item): boolean
     {
-        const equipmentSlots = Object.values(EquipmentSlots).map(value => value as string);
+        const equipmentSlots = Object.values(EquipmentSlots).map((value) => value as string);
 
-        return !(["hideout", "main"].includes(item.slotId)
-          || equipmentSlots.includes(item.slotId)
-          || !Number.isNaN(Number(item.slotId)));
+        return !(
+            ["hideout", "main"].includes(item.slotId)
+            || equipmentSlots.includes(item.slotId)
+            || !Number.isNaN(Number(item.slotId))
+        );
     }
 
     /**
@@ -1123,7 +1128,7 @@ export class ItemHelper
     public getEquipmentParent(itemId: string, itemsMap: Map<string, Item>): Item | null
     {
         let currentItem = itemsMap.get(itemId);
-        const equipmentSlots = Object.values(EquipmentSlots).map(value => value as string);
+        const equipmentSlots = Object.values(EquipmentSlots).map((value) => value as string);
 
         while (currentItem && !equipmentSlots.includes(currentItem.slotId))
         {
@@ -1144,7 +1149,7 @@ export class ItemHelper
      */
     public getItemSize(items: Item[], rootItemId: string): ItemHelper.ItemSize
     {
-        const rootTemplate = this.getItem(items.filter(x => x._id === rootItemId)[0]._tpl)[1];
+        const rootTemplate = this.getItem(items.filter((x) => x._id === rootItemId)[0]._tpl)[1];
         const width = rootTemplate._props.Width;
         const height = rootTemplate._props.Height;
 
@@ -1176,9 +1181,8 @@ export class ItemHelper
                 sizeUp = sizeUp < itemTemplate._props.ExtraSizeUp ? itemTemplate._props.ExtraSizeUp : sizeUp;
                 sizeDown = sizeDown < itemTemplate._props.ExtraSizeDown ? itemTemplate._props.ExtraSizeDown : sizeDown;
                 sizeLeft = sizeLeft < itemTemplate._props.ExtraSizeLeft ? itemTemplate._props.ExtraSizeLeft : sizeLeft;
-                sizeRight = sizeRight < itemTemplate._props.ExtraSizeRight
-                    ? itemTemplate._props.ExtraSizeRight
-                    : sizeRight;
+                sizeRight
+                    = sizeRight < itemTemplate._props.ExtraSizeRight ? itemTemplate._props.ExtraSizeRight : sizeRight;
             }
         }
 
@@ -1219,7 +1223,7 @@ export class ItemHelper
         const cartridgeMaxStackSize = cartridgeDetails[1]._props.StackMaxSize;
 
         // Exit if ammo already exists in box
-        if (ammoBox.find(item => item._tpl === cartridgeTpl))
+        if (ammoBox.find((item) => item._tpl === cartridgeTpl))
         {
             return;
         }
@@ -1287,7 +1291,7 @@ export class ItemHelper
     public itemIsInsideContainer(item: Item, desiredContainerSlotId: string, items: Item[]): boolean
     {
         // Get items parent
-        const parent = items.find(x => x._id === item.parentId);
+        const parent = items.find((x) => x._id === item.parentId);
         if (!parent)
         {
             // No parent, end of line, not inside container
@@ -1309,6 +1313,7 @@ export class ItemHelper
      * @param staticAmmoDist Cartridge distribution
      * @param caliber Caliber of cartridge to add to magazine
      * @param minSizePercent % the magazine must be filled to
+     * @param defaultCartridgeTpl Cartridge to use when none found
      * @param weapon Weapon the magazine will be used for (if passed in uses Chamber as whitelist)
      */
     public fillMagazineWithRandomCartridge(
@@ -1317,7 +1322,8 @@ export class ItemHelper
         staticAmmoDist: Record<string, IStaticAmmoDetails[]>,
         caliber: string = undefined,
         minSizePercent = 0.25,
-        weapon: ITemplateItem = null,
+        defaultCartridgeTpl?: string,
+        weapon?: ITemplateItem,
     ): void
     {
         let chosenCaliber = caliber || this.getRandomValidCaliber(magTemplate);
@@ -1332,9 +1338,13 @@ export class ItemHelper
         const cartridgeTpl = this.drawAmmoTpl(
             chosenCaliber,
             staticAmmoDist,
-            weapon?._props.defAmmo,
+            defaultCartridgeTpl,
             weapon?._props?.Chambers[0]?._props?.filters[0]?.Filter,
         );
+        if (!cartridgeTpl)
+        {
+            return;
+        }
         this.fillMagazineWithCartridge(magazine, magTemplate, cartridgeTpl, minSizePercent);
     }
 
@@ -1386,9 +1396,8 @@ export class ItemHelper
         while (currentStoredCartridgeCount < desiredStackCount)
         {
             // Get stack size of cartridges
-            let cartridgeCountToAdd = desiredStackCount <= cartridgeMaxStackSize
-                ? desiredStackCount
-                : cartridgeMaxStackSize;
+            let cartridgeCountToAdd
+                = desiredStackCount <= cartridgeMaxStackSize ? desiredStackCount : cartridgeMaxStackSize;
 
             // Ensure we don't go over the max stackcount size
             const remainingSpace = desiredStackCount - currentStoredCartridgeCount;
@@ -1429,9 +1438,9 @@ export class ItemHelper
         const ammoTpls = magTemplate._props.Cartridges[0]._props.filters[0].Filter;
         const calibers = [
             ...new Set(
-                ammoTpls.filter((x: string) => this.getItem(x)[0]).map((x: string) =>
-                    this.getItem(x)[1]._props.Caliber,
-                ),
+                ammoTpls
+                    .filter((x: string) => this.getItem(x)[0])
+                    .map((x: string) => this.getItem(x)[1]._props.Caliber),
             ),
         ];
         return this.randomUtil.drawRandomFromList(calibers)[0];
@@ -1452,9 +1461,8 @@ export class ItemHelper
         cartridgeWhitelist: string[] = null,
     ): string
     {
-        const ammoArray = new ProbabilityObjectArray<string>(this.mathUtil, this.jsonUtil);
         const ammos = staticAmmoDist[caliber];
-        if (!ammos)
+        if (!ammos && fallbackCartridgeTpl)
         {
             this.logger.error(
                 `Unable to pick a cartridge for caliber: ${caliber} as staticAmmoDist has no data. using fallback value of ${fallbackCartridgeTpl}`,
@@ -1463,7 +1471,7 @@ export class ItemHelper
             return fallbackCartridgeTpl;
         }
 
-        if (!Array.isArray(ammos))
+        if (!Array.isArray(ammos) && fallbackCartridgeTpl)
         {
             this.logger.error(
                 `Unable to pick a cartridge for caliber: ${caliber}, the chosen staticAmmoDist data is not an array. Using fallback value of ${fallbackCartridgeTpl}`,
@@ -1472,6 +1480,14 @@ export class ItemHelper
             return fallbackCartridgeTpl;
         }
 
+        if (!ammos && !fallbackCartridgeTpl)
+        {
+            this.logger.error(
+                `Unable to pick a cartridge for caliber: ${caliber} as staticAmmoDist has no data. No fallback value provided`,
+            );
+            return;
+        }
+        const ammoArray = new ProbabilityObjectArray<string>(this.mathUtil, this.cloner);
         for (const icd of ammos)
         {
             // Whitelist exists and tpl not inside it, skip
@@ -1540,9 +1556,9 @@ export class ItemHelper
 
     public getItemTplsOfBaseType(desiredBaseType: string): string[]
     {
-        return Object.values(this.databaseServer.getTables().templates.items).filter(x =>
-            x._parent === desiredBaseType,
-        ).map(x => x._id);
+        return Object.values(this.databaseServer.getTables().templates.items)
+            .filter((x) => x._parent === desiredBaseType)
+            .map((x) => x._id);
     }
 
     /**
@@ -1756,7 +1772,7 @@ export class ItemHelper
         for (const item of items)
         {
             // Check if the item's parent exists.
-            const parentExists = items.some(parentItem => parentItem._id === item.parentId);
+            const parentExists = items.some((parentItem) => parentItem._id === item.parentId);
 
             // If the parent does not exist and the item is not already a 'hideout' item, adopt the orphaned item by
             // setting the parent ID to the PMCs inventory equipment ID, the slot ID to 'hideout', and remove the location.
@@ -1811,6 +1827,7 @@ export class ItemHelper
     }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-namespace
 namespace ItemHelper
 {
     export interface ItemSize

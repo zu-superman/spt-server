@@ -23,16 +23,15 @@ import { BackendErrorCodes } from "@spt-aki/models/enums/BackendErrorCodes";
 import { BaseClasses } from "@spt-aki/models/enums/BaseClasses";
 import { BonusType } from "@spt-aki/models/enums/BonusType";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
-import { Traders } from "@spt-aki/models/enums/Traders";
 import { IInventoryConfig, RewardDetails } from "@spt-aki/models/spt/config/IInventoryConfig";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt-aki/servers/ConfigServer";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { FenceService } from "@spt-aki/services/FenceService";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
+import { ICloner } from "@spt-aki/utils/cloners/ICloner";
 import { HashUtil } from "@spt-aki/utils/HashUtil";
 import { HttpResponseUtil } from "@spt-aki/utils/HttpResponseUtil";
-import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 
 export interface IOwnerInventoryItems
 {
@@ -51,7 +50,6 @@ export class InventoryHelper
 
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
-        @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("HttpResponseUtil") protected httpResponse: HttpResponseUtil,
         @inject("FenceService") protected fenceService: FenceService,
@@ -65,6 +63,7 @@ export class InventoryHelper
         @inject("PresetHelper") protected presetHelper: PresetHelper,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("ConfigServer") protected configServer: ConfigServer,
+        @inject("RecursiveCloner") protected cloner: ICloner,
     )
     {
         this.inventoryConfig = this.configServer.getConfig(ConfigTypes.INVENTORY);
@@ -129,7 +128,7 @@ export class InventoryHelper
         output: IItemEventRouterResponse,
     ): void
     {
-        const itemWithModsToAddClone = this.jsonUtil.clone(request.itemWithModsToAdd);
+        const itemWithModsToAddClone = this.cloner.clone(request.itemWithModsToAdd);
 
         // Get stash layouts ready for use
         const stashFS2D = this.getStashSlotMap(pmcData, sessionId);
@@ -167,9 +166,8 @@ export class InventoryHelper
         catch (err)
         {
             // Callback failed
-            const message = typeof err?.message === "string"
-                ? err.message
-                : this.localisationService.getText("http-unknown_error");
+            const message
+                = typeof err?.message === "string" ? err.message : this.localisationService.getText("http-unknown_error");
 
             this.httpResponse.appendErrorToOutput(output, message);
 
@@ -245,7 +243,7 @@ export class InventoryHelper
     {
         const pmcData = this.profileHelper.getPmcProfile(sessionId);
 
-        const stashFS2D = this.jsonUtil.clone(this.getStashSlotMap(pmcData, sessionId));
+        const stashFS2D = this.cloner.clone(this.getStashSlotMap(pmcData, sessionId));
         for (const itemWithChildren of itemsWithChildren)
         {
             if (this.canPlaceItemInContainer(stashFS2D, itemWithChildren))
@@ -306,7 +304,7 @@ export class InventoryHelper
             catch (err)
             {
                 const errorText = typeof err === "string" ? ` -> ${err}` : err.message;
-                this.logger.error(`Unable to fit item into inventory: ${errorText}`);
+                this.logger.error(this.localisationService.getText("inventory-unable_to_fit_item_into_inventory", errorText));
 
                 return false;
             }
@@ -520,13 +518,15 @@ export class InventoryHelper
                 if (requestItem.count > itemDetails._props.StackMaxSize)
                 {
                     let remainingCountOfItemToAdd = requestItem.count;
-                    const calc = requestItem.count
-                      - Math.floor(requestItem.count / itemDetails._props.StackMaxSize)
-                      * itemDetails._props.StackMaxSize;
+                    const calc
+                        = requestItem.count
+                        - Math.floor(requestItem.count / itemDetails._props.StackMaxSize)
+                        * itemDetails._props.StackMaxSize;
 
-                    maxStackCount = calc > 0
-                        ? maxStackCount + Math.floor(remainingCountOfItemToAdd / itemDetails._props.StackMaxSize)
-                        : Math.floor(remainingCountOfItemToAdd / itemDetails._props.StackMaxSize);
+                    maxStackCount
+                        = calc > 0
+                            ? maxStackCount + Math.floor(remainingCountOfItemToAdd / itemDetails._props.StackMaxSize)
+                            : Math.floor(remainingCountOfItemToAdd / itemDetails._props.StackMaxSize);
 
                     // Iterate until totalCountOfPurchasedItem is 0
                     for (let i = 0; i < maxStackCount; i++)
@@ -534,7 +534,7 @@ export class InventoryHelper
                         // Keep splitting items into stacks until none left
                         if (remainingCountOfItemToAdd > 0)
                         {
-                            const newChildItemToAdd = this.jsonUtil.clone(itemToAdd);
+                            const newChildItemToAdd = this.cloner.clone(itemToAdd);
                             if (remainingCountOfItemToAdd > itemDetails._props.StackMaxSize)
                             {
                                 // Reduce total count of item purchased by stack size we're going to add to inventory
@@ -597,7 +597,7 @@ export class InventoryHelper
         {
             // We expect that each inventory item and each insured item has unique "_id", respective "itemId".
             // Therefore we want to use a NON-Greedy function and escape the iteration as soon as we find requested item.
-            const inventoryIndex = inventoryItems.findIndex(item => item._id === childId);
+            const inventoryIndex = inventoryItems.findIndex((item) => item._id === childId);
             if (inventoryIndex > -1)
             {
                 inventoryItems.splice(inventoryIndex, 1);
@@ -610,7 +610,7 @@ export class InventoryHelper
                 );
             }
 
-            const insuredIndex = insuredItems.findIndex(item => item.itemId === childId);
+            const insuredIndex = insuredItems.findIndex((item) => item.itemId === childId);
             if (insuredIndex > -1)
             {
                 insuredItems.splice(insuredIndex, 1);
@@ -636,7 +636,7 @@ export class InventoryHelper
         const dialogs = Object.values(fullProfile.dialogues);
         for (const dialog of dialogs)
         {
-            const messageWithReward = dialog.messages.find(x => x._id === removeRequest.fromOwner.id);
+            const messageWithReward = dialog.messages.find((x) => x._id === removeRequest.fromOwner.id);
             if (messageWithReward)
             {
                 // Find item + any possible children and remove them from mails items array
@@ -876,7 +876,9 @@ export class InventoryHelper
      */
     protected getBlankContainerMap(containerH: number, containerY: number): number[][]
     {
-        return Array(containerY).fill(0).map(() => Array(containerH).fill(0));
+        return Array(containerY)
+            .fill(0)
+            .map(() => Array(containerH).fill(0));
     }
 
     /**
@@ -909,12 +911,14 @@ export class InventoryHelper
             const iW = tmpSize[0]; // x
             const iH = tmpSize[1]; // y
             const fH
-                = (item.location as Location).r === 1 || (item.location as Location).r === "Vertical"
+                = (item.location as Location).r === 1
+                || (item.location as Location).r === "Vertical"
                 || (item.location as Location).rotation === "Vertical"
                     ? iW
                     : iH;
             const fW
-                = (item.location as Location).r === 1 || (item.location as Location).r === "Vertical"
+                = (item.location as Location).r === 1
+                || (item.location as Location).r === "Vertical"
                 || (item.location as Location).rotation === "Vertical"
                     ? iH
                     : iW;
@@ -1078,7 +1082,7 @@ export class InventoryHelper
     protected getPlayerStashSize(sessionID: string): Record<number, number>
     {
         const profile = this.profileHelper.getPmcProfile(sessionID);
-        const stashRowBonus = profile.Bonuses.find(bonus => bonus.type === BonusType.STASH_ROWS);
+        const stashRowBonus = profile.Bonuses.find((bonus) => bonus.type === BonusType.STASH_ROWS);
 
         // this sets automatically a stash size from items.json (its not added anywhere yet cause we still use base stash)
         const stashTPL = this.getStashType(sessionID);
@@ -1118,7 +1122,7 @@ export class InventoryHelper
     protected getStashType(sessionID: string): string
     {
         const pmcData = this.profileHelper.getPmcProfile(sessionID);
-        const stashObj = pmcData.Inventory.items.find(item => item._id === pmcData.Inventory.stash);
+        const stashObj = pmcData.Inventory.items.find((item) => item._id === pmcData.Inventory.stash);
         if (!stashObj)
         {
             this.logger.error(this.localisationService.getText("inventory-unable_to_find_stash"));
@@ -1140,10 +1144,10 @@ export class InventoryHelper
         const idsToMove = this.itemHelper.findAndReturnChildrenByItems(fromItems, body.item);
         for (const itemId of idsToMove)
         {
-            const itemToMove = fromItems.find(x => x._id === itemId);
+            const itemToMove = fromItems.find((x) => x._id === itemId);
             if (!itemToMove)
             {
-                this.logger.error(`Unable to find item to move: ${itemId}`);
+                this.logger.error(this.localisationService.getText("inventory-unable_to_find_item_to_move", itemId));
             }
 
             // Only adjust the values for parent item, not children (their values are already correctly tied to parent)
@@ -1188,7 +1192,7 @@ export class InventoryHelper
         this.handleCartridges(inventoryItems, moveRequest);
 
         // Find item we want to 'move'
-        const matchingInventoryItem = inventoryItems.find(x => x._id === moveRequest.item);
+        const matchingInventoryItem = inventoryItems.find((x) => x._id === moveRequest.item);
         if (!matchingInventoryItem)
         {
             const errorMesage = `Unable to move item: ${moveRequest.item}, cannot find in inventory`;
@@ -1248,7 +1252,7 @@ export class InventoryHelper
             if (pmcData.Inventory.fastPanel[itemKey] === itemBeingMoved._id)
             {
                 // Get moved items parent
-                const itemParent = pmcData.Inventory.items.find(x => x._id === itemBeingMoved.parentId);
+                const itemParent = pmcData.Inventory.items.find((x) => x._id === itemBeingMoved.parentId);
 
                 // Empty out id if item is moved to a container other than pocket/rig
                 if (itemParent && !(itemParent.slotId?.startsWith("Pockets") || itemParent.slotId === "TacticalVest"))
@@ -1317,7 +1321,7 @@ export class InventoryHelper
                 return true;
             }
 
-            container = pmcData.Inventory.items.find(item => item._id === container.parentId);
+            container = pmcData.Inventory.items.find((item) => item._id === container.parentId);
             if (!container)
             {
                 break;
@@ -1327,6 +1331,7 @@ export class InventoryHelper
     }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-namespace
 namespace InventoryHelper
 {
     export interface InventoryItemHash

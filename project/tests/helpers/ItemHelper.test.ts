@@ -280,12 +280,12 @@ describe("ItemHelper", () =>
         it("should call databaseServer.getTables() and jsonUtil.clone() methods", () =>
         {
             const databaseServerGetTablesSpy = vi.spyOn((itemHelper as any).databaseServer, "getTables");
-            const jsonUtilCloneSpy = vi.spyOn((itemHelper as any).jsonUtil, "clone");
+            const clonerSpy = vi.spyOn((itemHelper as any).cloner, "clone");
 
             itemHelper.getItems();
 
             expect(databaseServerGetTablesSpy).toHaveBeenCalled();
-            expect(jsonUtilCloneSpy).toHaveBeenCalled();
+            expect(clonerSpy).toHaveBeenCalled();
         });
 
         it("should return a new array, not a reference to the original", () =>

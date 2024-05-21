@@ -1,5 +1,8 @@
 {
-    "redeemTime": 48,
+    "mailRedeemTimeHours": {
+		"default": 48,
+		"unheard_edition": 72
+	},
     "usecOnlyQuests": [
         "6179b5eabca27a099552e052",
         "5e383a6386f77465910ce1f3",
@@ -145,7 +148,14 @@
             "startTimestamp": 1341615600000,
             "endTimestamp": "",
             "yearly": false
-        }
+        },
+		"65e85198e32da31f2b30978e": {
+			"name": "Evil Spirits",
+			"season": "None",
+			"startTimestamp": 1341615600000,
+            "endTimestamp": "",
+            "yearly": false
+		}
     },
     "repeatableQuests": [
         {

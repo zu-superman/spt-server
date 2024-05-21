@@ -2972,119 +2972,6 @@
     "enableAreaRequirements": false
   },
   {
-    "_id": "5d494a0e5b56502f18c98a02",
-    "type": 13,
-    "enabled": true,
-    "needsFuel": true,
-    "takeFromSlotLocked": false,
-    "craftGivesExp": true,
-    "displayLevel": true,
-    "requirements": [],
-    "stages": {
-      "0": {
-        "requirements": [],
-        "bonuses": [],
-        "slots": 0,
-        "constructionTime": 0,
-        "description": "",
-        "container": "",
-        "autoUpgrade": false,
-        "displayInterface": true,
-        "improvements": []
-      },
-      "1": {
-        "requirements": [
-          {
-            "areaType": 9,
-            "requiredLevel": 3,
-            "type": "Area"
-          },
-          {
-            "templateId": "5449016a4bdc2d6f028b456f",
-            "count": 400000,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          },
-          {
-            "skillName": "Memory",
-            "skillLevel": 8,
-            "type": "Skill"
-          },
-          {
-            "templateId": "573478bc24597738002c6175",
-            "count": 1,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          },
-          {
-            "templateId": "573474f924597738002c6174",
-            "count": 2,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          },
-          {
-            "templateId": "590c639286f774151567fa95",
-            "count": 5,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          },
-          {
-            "templateId": "590c645c86f77412b01304d9",
-            "count": 2,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          },
-          {
-            "templateId": "590c651286f7741e566b6461",
-            "count": 2,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          },
-          {
-            "templateId": "62a09e73af34e73a266d932a",
-            "count": 1,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          }
-        ],
-        "bonuses": [
-          {
-            "id": "64f5b9e5fa34f11b380756f7",
-            "value": 15,
-            "passive": true,
-            "production": false,
-            "visible": true,
-            "type": "ExperienceRate"
-          },
-          {
-            "id": "64f5b9e5fa34f11b380756f8",
-            "value": 30,
-            "passive": true,
-            "production": false,
-            "visible": true,
-            "skillType": "Practical",
-            "type": "SkillGroupLevelingBoost"
-          }
-        ],
-        "slots": 0,
-        "constructionTime": 194400,
-        "description": "",
-        "container": "",
-        "autoUpgrade": false,
-        "displayInterface": true,
-        "improvements": []
-      }
-    },
-    "enableAreaRequirements": false
-  },
-  {
     "_id": "5d494a175b56502f18c98a04",
     "type": 14,
     "enabled": true,
@@ -3329,354 +3216,6 @@
       }
     },
     "enableAreaRequirements": false
-  },
-  {
-    "_id": "5d494a295b56502f18c98a08",
-    "type": 16,
-    "enabled": true,
-    "needsFuel": false,
-    "takeFromSlotLocked": false,
-    "craftGivesExp": true,
-    "displayLevel": true,
-    "requirements": [
-      {
-        "areaType": 22,
-        "requiredLevel": 6,
-        "type": "Area"
-      }
-    ],
-    "stages": {
-      "0": {
-        "requirements": [],
-        "bonuses": [],
-        "slots": 0,
-        "constructionTime": 0,
-        "description": "",
-        "container": "",
-        "autoUpgrade": false,
-        "displayInterface": true,
-        "improvements": []
-      },
-      "1": {
-        "requirements": [
-          {
-            "areaType": 15,
-            "requiredLevel": 2,
-            "type": "Area"
-          },
-          {
-            "traderId": "5a7c2eca46aef81a7ca2145d",
-            "loyaltyLevel": 2,
-            "type": "TraderLoyalty"
-          },
-          {
-            "templateId": "5d1b31ce86f7742523398394",
-            "count": 1,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          },
-          {
-            "templateId": "5e2af47786f7746d404f3aaa",
-            "count": 5,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          },
-          {
-            "templateId": "59e3658a86f7741776641ac4",
-            "count": 1,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          },
-          {
-            "templateId": "5d1b392c86f77425243e98fe",
-            "count": 5,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          },
-          {
-            "templateId": "590c31c586f774245e3141b2",
-            "count": 5,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          },
-          {
-            "templateId": "5734795124597738002c6176",
-            "count": 2,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          }
-        ],
-        "bonuses": [
-          {
-            "id": "6548ae1b0d23be12146d70ee",
-            "value": 0,
-            "passive": true,
-            "production": false,
-            "visible": true,
-            "skillType": "Combat",
-            "type": "SkillGroupLevelingBoost"
-          },
-          {
-            "id": "6548afcae28f7800b02d2004",
-            "value": 3,
-            "passive": true,
-            "production": false,
-            "visible": true,
-            "icon": "/files/Hideout/icon_hideout_videocardslots.png",
-            "type": "TextBonus"
-          },
-          {
-            "id": "6548afd9eb937c71d7776652",
-            "value": 6,
-            "passive": true,
-            "production": false,
-            "visible": true,
-            "icon": "/files/Hideout/icon_hideout_videocardslots.png",
-            "type": "TextBonus"
-          },
-          {
-            "id": "6548afe3e7726b6d1b4317d5",
-            "value": 6,
-            "passive": true,
-            "production": false,
-            "visible": true,
-            "icon": "/files/Hideout/icon_hideout_videocardslots.png",
-            "type": "TextBonus"
-          }
-        ],
-        "slots": 0,
-        "constructionTime": 43207.2,
-        "description": "",
-        "container": "63dbd45917fff4dee40fe16e",
-        "autoUpgrade": false,
-        "displayInterface": true,
-        "improvements": []
-      },
-      "2": {
-        "requirements": [
-          {
-            "templateId": "590c639286f774151567fa95",
-            "count": 1,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          },
-          {
-            "templateId": "5af04b6486f774195a3ebb49",
-            "count": 1,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          },
-          {
-            "templateId": "590c2e1186f77425357b6124",
-            "count": 1,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          },
-          {
-            "templateId": "5bc9bc53d4351e00367fbcee",
-            "count": 1,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          },
-          {
-            "templateId": "590a3cd386f77436f20848cb",
-            "count": 10,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          },
-          {
-            "templateId": "59e35ef086f7741777737012",
-            "count": 6,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          },
-          {
-            "templateId": "57347c1124597737fb1379e3",
-            "count": 3,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          },
-          {
-            "templateId": "590c346786f77423e50ed342",
-            "count": 2,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          },
-          {
-            "templateId": "5e2af22086f7746d3f3c33fa",
-            "count": 2,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          }
-        ],
-        "bonuses": [
-          {
-            "id": "6548ae2c84d9162bba1fbb04",
-            "value": 0,
-            "passive": true,
-            "production": false,
-            "visible": true,
-            "skillType": "Combat",
-            "type": "SkillGroupLevelingBoost"
-          },
-          {
-            "id": "6549f1926b29cf3df65ea139",
-            "value": 6,
-            "passive": true,
-            "production": false,
-            "visible": true,
-            "icon": "/files/Hideout/icon_hideout_videocardslots.png",
-            "type": "TextBonus"
-          },
-          {
-            "id": "6549f19ae28f7800b02d204f",
-            "value": 12,
-            "passive": true,
-            "production": false,
-            "visible": true,
-            "icon": "/files/Hideout/icon_hideout_videocardslots.png",
-            "type": "TextBonus"
-          },
-          {
-            "id": "6549f1a284d9162bba1fbbb1",
-            "value": 12,
-            "passive": true,
-            "production": false,
-            "visible": true,
-            "icon": "/files/Hideout/icon_hideout_videocardslots.png",
-            "type": "TextBonus"
-          }
-        ],
-        "slots": 0,
-        "constructionTime": 64800,
-        "description": "",
-        "container": "65424185a57eea37ed6562e9",
-        "autoUpgrade": false,
-        "displayInterface": true,
-        "improvements": []
-      },
-      "3": {
-        "requirements": [
-          {
-            "templateId": "62a0a0bb621468534a797ad5",
-            "count": 1,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          },
-          {
-            "templateId": "59e35de086f7741778269d84",
-            "count": 1,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          },
-          {
-            "templateId": "59e3639286f7741777737013",
-            "count": 1,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          },
-          {
-            "templateId": "590a3cd386f77436f20848cb",
-            "count": 15,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          },
-          {
-            "templateId": "5e2af29386f7746d4159f077",
-            "count": 3,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          },
-          {
-            "templateId": "57347cd0245977445a2d6ff1",
-            "count": 3,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          },
-          {
-            "templateId": "61bf7b6302b3924be92fa8c3",
-            "count": 15,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          },
-          {
-            "templateId": "59e36c6f86f774176c10a2a7",
-            "count": 5,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          }
-        ],
-        "bonuses": [
-          {
-            "id": "6548ad85d520b562b66d65d9",
-            "value": 0,
-            "passive": true,
-            "production": false,
-            "visible": true,
-            "skillType": "Combat",
-            "type": "SkillGroupLevelingBoost"
-          },
-          {
-            "id": "6549f1c405b256642e3e9131",
-            "value": 10,
-            "passive": true,
-            "production": false,
-            "visible": true,
-            "icon": "/files/Hideout/icon_hideout_videocardslots.png",
-            "type": "TextBonus"
-          },
-          {
-            "id": "6549f1cdde376a2fc737e8a8",
-            "value": 24,
-            "passive": true,
-            "production": false,
-            "visible": true,
-            "icon": "/files/Hideout/icon_hideout_videocardslots.png",
-            "type": "TextBonus"
-          },
-          {
-            "id": "6549f1d37d6e4756c83afa77",
-            "value": 24,
-            "passive": true,
-            "production": false,
-            "visible": true,
-            "icon": "/files/Hideout/icon_hideout_videocardslots.png",
-            "type": "TextBonus"
-          }
-        ],
-        "slots": 0,
-        "constructionTime": 86400,
-        "description": "",
-        "container": "6542435ea57eea37ed6562f0",
-        "autoUpgrade": false,
-        "displayInterface": true,
-        "improvements": []
-      }
-    },
-    "enableAreaRequirements": true
   },
   {
     "_id": "5d494a315b56502f18c98a0a",
@@ -5293,5 +4832,466 @@
       }
     },
     "enableAreaRequirements": false
+  },
+  {
+    "_id": "5d494a0e5b56502f18c98a02",
+    "type": 13,
+    "enabled": true,
+    "needsFuel": true,
+    "takeFromSlotLocked": false,
+    "craftGivesExp": true,
+    "displayLevel": true,
+    "requirements": [],
+    "stages": {
+      "0": {
+        "requirements": [],
+        "bonuses": [],
+        "slots": 0,
+        "constructionTime": 0,
+        "description": "",
+        "container": "",
+        "autoUpgrade": false,
+        "displayInterface": true,
+        "improvements": []
+      },
+      "1": {
+        "requirements": [
+          {
+            "areaType": 9,
+            "requiredLevel": 3,
+            "type": "Area"
+          },
+          {
+            "templateId": "5449016a4bdc2d6f028b456f",
+            "count": 400000,
+            "isFunctional": false,
+            "isEncoded": false,
+            "type": "Item"
+          },
+          {
+            "skillName": "HideoutManagement",
+            "skillLevel": 5,
+            "type": "Skill"
+          },
+          {
+            "templateId": "573478bc24597738002c6175",
+            "count": 1,
+            "isFunctional": false,
+            "isEncoded": false,
+            "type": "Item"
+          },
+          {
+            "templateId": "573474f924597738002c6174",
+            "count": 2,
+            "isFunctional": false,
+            "isEncoded": false,
+            "type": "Item"
+          },
+          {
+            "templateId": "590c639286f774151567fa95",
+            "count": 5,
+            "isFunctional": false,
+            "isEncoded": false,
+            "type": "Item"
+          },
+          {
+            "templateId": "590c645c86f77412b01304d9",
+            "count": 2,
+            "isFunctional": false,
+            "isEncoded": false,
+            "type": "Item"
+          },
+          {
+            "templateId": "590c651286f7741e566b6461",
+            "count": 2,
+            "isFunctional": false,
+            "isEncoded": false,
+            "type": "Item"
+          },
+          {
+            "templateId": "62a09e73af34e73a266d932a",
+            "count": 1,
+            "isFunctional": false,
+            "isEncoded": false,
+            "type": "Item"
+          }
+        ],
+        "bonuses": [
+          {
+            "id": "64f5b9e5fa34f11b380756f7",
+            "value": 15,
+            "passive": true,
+            "production": false,
+            "visible": true,
+            "type": "ExperienceRate"
+          },
+          {
+            "id": "64f5b9e5fa34f11b380756f8",
+            "value": 30,
+            "passive": true,
+            "production": false,
+            "visible": true,
+            "skillType": "Practical",
+            "type": "SkillGroupLevelingBoost"
+          }
+        ],
+        "slots": 0,
+        "constructionTime": 194400,
+        "description": "",
+        "container": "",
+        "autoUpgrade": false,
+        "displayInterface": true,
+        "improvements": []
+      }
+    },
+    "enableAreaRequirements": false
+  },
+  {
+    "_id": "5d494a295b56502f18c98a08",
+    "type": 16,
+    "enabled": true,
+    "needsFuel": false,
+    "takeFromSlotLocked": false,
+    "craftGivesExp": true,
+    "displayLevel": true,
+    "requirements": [
+      {
+        "areaType": 22,
+        "requiredLevel": 6,
+        "type": "Area"
+      }
+    ],
+    "stages": {
+      "0": {
+        "requirements": [],
+        "bonuses": [],
+        "slots": 0,
+        "constructionTime": 0,
+        "description": "",
+        "container": "",
+        "autoUpgrade": false,
+        "displayInterface": true,
+        "improvements": []
+      },
+      "1": {
+        "requirements": [
+          {
+            "areaType": 15,
+            "requiredLevel": 2,
+            "type": "Area"
+          },
+          {
+            "traderId": "5a7c2eca46aef81a7ca2145d",
+            "loyaltyLevel": 2,
+            "type": "TraderLoyalty"
+          },
+          {
+            "templateId": "5d1b31ce86f7742523398394",
+            "count": 1,
+            "isFunctional": false,
+            "isEncoded": false,
+            "type": "Item"
+          },
+          {
+            "templateId": "5e2af47786f7746d404f3aaa",
+            "count": 5,
+            "isFunctional": false,
+            "isEncoded": false,
+            "type": "Item"
+          },
+          {
+            "templateId": "59e3658a86f7741776641ac4",
+            "count": 1,
+            "isFunctional": false,
+            "isEncoded": false,
+            "type": "Item"
+          },
+          {
+            "templateId": "5d1b392c86f77425243e98fe",
+            "count": 5,
+            "isFunctional": false,
+            "isEncoded": false,
+            "type": "Item"
+          },
+          {
+            "templateId": "590c31c586f774245e3141b2",
+            "count": 5,
+            "isFunctional": false,
+            "isEncoded": false,
+            "type": "Item"
+          },
+          {
+            "templateId": "5734795124597738002c6176",
+            "count": 2,
+            "isFunctional": false,
+            "isEncoded": false,
+            "type": "Item"
+          }
+        ],
+        "bonuses": [
+          {
+            "id": "6548ae1b0d23be12146d70ee",
+            "value": 0,
+            "passive": true,
+            "production": false,
+            "visible": true,
+            "skillType": "Combat",
+            "type": "SkillGroupLevelingBoost"
+          },
+          {
+            "id": "6548afcae28f7800b02d2004",
+            "value": 3,
+            "passive": true,
+            "production": false,
+            "visible": true,
+            "icon": "/files/Hideout/EfT_UI_Icons_DogTag.png",
+            "type": "TextBonus"
+          },
+          {
+            "id": "6548afd9eb937c71d7776652",
+            "value": 6,
+            "passive": true,
+            "production": false,
+            "visible": true,
+            "icon": "/files/Hideout/EfT_UI_Icons_SmallTrophy.png",
+            "type": "TextBonus"
+          },
+          {
+            "id": "6548afe3e7726b6d1b4317d5",
+            "value": 6,
+            "passive": true,
+            "production": false,
+            "visible": true,
+            "icon": "/files/Hideout/EfT_UI_Icons_BigTrophy.png",
+            "type": "TextBonus"
+          }
+        ],
+        "slots": 0,
+        "constructionTime": 43207.2,
+        "description": "",
+        "container": "63dbd45917fff4dee40fe16e",
+        "autoUpgrade": false,
+        "displayInterface": true,
+        "improvements": []
+      },
+      "2": {
+        "requirements": [
+          {
+            "templateId": "590c639286f774151567fa95",
+            "count": 1,
+            "isFunctional": false,
+            "isEncoded": false,
+            "type": "Item"
+          },
+          {
+            "templateId": "5af04b6486f774195a3ebb49",
+            "count": 1,
+            "isFunctional": false,
+            "isEncoded": false,
+            "type": "Item"
+          },
+          {
+            "templateId": "590c2e1186f77425357b6124",
+            "count": 1,
+            "isFunctional": false,
+            "isEncoded": false,
+            "type": "Item"
+          },
+          {
+            "templateId": "5bc9bc53d4351e00367fbcee",
+            "count": 1,
+            "isFunctional": false,
+            "isEncoded": false,
+            "type": "Item"
+          },
+          {
+            "templateId": "590a3cd386f77436f20848cb",
+            "count": 10,
+            "isFunctional": false,
+            "isEncoded": false,
+            "type": "Item"
+          },
+          {
+            "templateId": "59e35ef086f7741777737012",
+            "count": 6,
+            "isFunctional": false,
+            "isEncoded": false,
+            "type": "Item"
+          },
+          {
+            "templateId": "57347c1124597737fb1379e3",
+            "count": 3,
+            "isFunctional": false,
+            "isEncoded": false,
+            "type": "Item"
+          },
+          {
+            "templateId": "590c346786f77423e50ed342",
+            "count": 2,
+            "isFunctional": false,
+            "isEncoded": false,
+            "type": "Item"
+          },
+          {
+            "templateId": "5e2af22086f7746d3f3c33fa",
+            "count": 2,
+            "isFunctional": false,
+            "isEncoded": false,
+            "type": "Item"
+          }
+        ],
+        "bonuses": [
+          {
+            "id": "6548ae2c84d9162bba1fbb04",
+            "value": 0,
+            "passive": true,
+            "production": false,
+            "visible": true,
+            "skillType": "Combat",
+            "type": "SkillGroupLevelingBoost"
+          },
+          {
+            "id": "6549f1926b29cf3df65ea139",
+            "value": 6,
+            "passive": true,
+            "production": false,
+            "visible": true,
+            "icon": "/files/Hideout/EfT_UI_Icons_DogTag.png",
+            "type": "TextBonus"
+          },
+          {
+            "id": "6549f19ae28f7800b02d204f",
+            "value": 12,
+            "passive": true,
+            "production": false,
+            "visible": true,
+            "icon": "/files/Hideout/EfT_UI_Icons_SmallTrophy.png",
+            "type": "TextBonus"
+          },
+          {
+            "id": "6549f1a284d9162bba1fbbb1",
+            "value": 12,
+            "passive": true,
+            "production": false,
+            "visible": true,
+            "icon": "/files/Hideout/EfT_UI_Icons_BigTrophy.png",
+            "type": "TextBonus"
+          }
+        ],
+        "slots": 0,
+        "constructionTime": 64800,
+        "description": "",
+        "container": "65424185a57eea37ed6562e9",
+        "autoUpgrade": false,
+        "displayInterface": true,
+        "improvements": []
+      },
+      "3": {
+        "requirements": [
+          {
+            "templateId": "62a0a0bb621468534a797ad5",
+            "count": 1,
+            "isFunctional": false,
+            "isEncoded": false,
+            "type": "Item"
+          },
+          {
+            "templateId": "59e35de086f7741778269d84",
+            "count": 1,
+            "isFunctional": false,
+            "isEncoded": false,
+            "type": "Item"
+          },
+          {
+            "templateId": "59e3639286f7741777737013",
+            "count": 1,
+            "isFunctional": false,
+            "isEncoded": false,
+            "type": "Item"
+          },
+          {
+            "templateId": "590a3cd386f77436f20848cb",
+            "count": 15,
+            "isFunctional": false,
+            "isEncoded": false,
+            "type": "Item"
+          },
+          {
+            "templateId": "5e2af29386f7746d4159f077",
+            "count": 3,
+            "isFunctional": false,
+            "isEncoded": false,
+            "type": "Item"
+          },
+          {
+            "templateId": "57347cd0245977445a2d6ff1",
+            "count": 3,
+            "isFunctional": false,
+            "isEncoded": false,
+            "type": "Item"
+          },
+          {
+            "templateId": "61bf7b6302b3924be92fa8c3",
+            "count": 15,
+            "isFunctional": false,
+            "isEncoded": false,
+            "type": "Item"
+          },
+          {
+            "templateId": "59e36c6f86f774176c10a2a7",
+            "count": 5,
+            "isFunctional": false,
+            "isEncoded": false,
+            "type": "Item"
+          }
+        ],
+        "bonuses": [
+          {
+            "id": "6548ad85d520b562b66d65d9",
+            "value": 0,
+            "passive": true,
+            "production": false,
+            "visible": true,
+            "skillType": "Combat",
+            "type": "SkillGroupLevelingBoost"
+          },
+          {
+            "id": "6549f1c405b256642e3e9131",
+            "value": 10,
+            "passive": true,
+            "production": false,
+            "visible": true,
+            "icon": "/files/Hideout/EfT_UI_Icons_DogTag.png",
+            "type": "TextBonus"
+          },
+          {
+            "id": "6549f1cdde376a2fc737e8a8",
+            "value": 24,
+            "passive": true,
+            "production": false,
+            "visible": true,
+            "icon": "/files/Hideout/EfT_UI_Icons_SmallTrophy.png",
+            "type": "TextBonus"
+          },
+          {
+            "id": "6549f1d37d6e4756c83afa77",
+            "value": 24,
+            "passive": true,
+            "production": false,
+            "visible": true,
+            "icon": "/files/Hideout/EfT_UI_Icons_BigTrophy.png",
+            "type": "TextBonus"
+          }
+        ],
+        "slots": 0,
+        "constructionTime": 86400,
+        "description": "",
+        "container": "6542435ea57eea37ed6562f0",
+        "autoUpgrade": false,
+        "displayInterface": true,
+        "improvements": []
+      }
+    },
+    "enableAreaRequirements": true
   }
 ]

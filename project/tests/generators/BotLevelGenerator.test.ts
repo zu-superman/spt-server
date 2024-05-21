@@ -52,10 +52,19 @@ describe("BotLevelGenerator", () =>
         it("should return 10 when player level is 5 and delta is 5", () =>
         {
             const levelDetails: MinMax = { min: 5, max: 10 };
+            const botGenDetails: BotGenerationDetails = {
+                isPmc: false,
+                role: "",
+                side: "",
+                botRelativeLevelDeltaMax: 5,
+                botRelativeLevelDeltaMin: 5,
+                playerLevel: 5,
+                botCountToGenerate: 0,
+                botDifficulty: "",
+                isPlayerScav: false
+            };
 
-            const expTable = databaseServer.getTables().globals.config.exp.level.exp_table;
-
-            const result = botLevelGenerator.getHighestRelativeBotLevel(5, 5, levelDetails, expTable);
+            const result = botLevelGenerator.getHighestRelativeBotLevel(botGenDetails, levelDetails, 79);
 
             expect(result).toBe(10);
         });
@@ -63,16 +72,22 @@ describe("BotLevelGenerator", () =>
         it("should return 79 when player level is above possible max (100), desired max is 100 and delta is 5", () =>
         {
             const levelDetails: MinMax = { min: 100, max: 100 };
-
-            const expTable = databaseServer.getTables().globals.config.exp.level.exp_table;
-            const playerLevel = 100;
-            const relativeDeltaMax = 5;
+            const botGenDetails: BotGenerationDetails = {
+                isPmc: false,
+                role: "",
+                side: "",
+                botRelativeLevelDeltaMax: 5,
+                botRelativeLevelDeltaMin: 5,
+                playerLevel: 100,
+                botCountToGenerate: 0,
+                botDifficulty: "",
+                isPlayerScav: false
+            };
 
             const result = botLevelGenerator.getHighestRelativeBotLevel(
-                playerLevel,
-                relativeDeltaMax,
+                botGenDetails,
                 levelDetails,
-                expTable,
+                79
             );
 
             expect(result).toBe(79);

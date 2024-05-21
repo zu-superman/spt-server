@@ -4,23 +4,23 @@ import { QuestStatus } from "@spt-aki/models/enums/QuestStatus";
 import { ITraderServiceModel } from "@spt-aki/models/spt/services/ITraderServiceModel";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
-import { JsonUtil } from "@spt-aki/utils/JsonUtil";
+import { ICloner } from "@spt-aki/utils/cloners/ICloner";
 
 @injectable()
 export class TraderServicesService
 {
     constructor(
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
-        @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("RecursiveCloner") protected cloner: ICloner,
     )
     {}
 
     public getTraderServices(sessionId: string, traderId: string): ITraderServiceModel[]
     {
         const pmcData = this.profileHelper.getPmcProfile(sessionId);
-        let traderServices = this.jsonUtil.clone(this.databaseServer.getTables().traders[traderId]?.services);
+        let traderServices = this.cloner.clone(this.databaseServer.getTables().traders[traderId]?.services);
         if (!traderServices)
         {
             return [];
@@ -46,7 +46,7 @@ export class TraderServicesService
             {
                 for (const questId of service.requirements.completedQuests)
                 {
-                    const quest = pmcData.Quests.find(x => x.qid === questId);
+                    const quest = pmcData.Quests.find((x) => x.qid === questId);
                     if (!quest || quest.status !== QuestStatus.Success)
                     {
                         servicesToDelete.push(service.serviceType);
@@ -57,7 +57,7 @@ export class TraderServicesService
         }
 
         // Clear any unavailable services from the list
-        traderServices = traderServices.filter(x => !servicesToDelete.includes(x.serviceType));
+        traderServices = traderServices.filter((x) => !servicesToDelete.includes(x.serviceType));
 
         return traderServices;
     }

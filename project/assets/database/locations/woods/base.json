@@ -42,7 +42,7 @@
   ],
   "BossLocationSpawn": [
     {
-      "BossChance": 30,
+      "BossChance": 37,
       "BossDifficult": "normal",
       "BossEscortAmount": "2",
       "BossEscortDifficult": "normal",
@@ -52,8 +52,12 @@
       "BossZone": "ZoneScavBase2",
       "Delay": 0,
       "ForceSpawn": false,
-      "IgnoreMaxBots": false,
+      "IgnoreMaxBots": true,
       "RandomTimeSpawn": true,
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "Supports": [
         {
           "BossEscortAmount": "1",
@@ -82,7 +86,7 @@
       "TriggerName": ""
     },
     {
-      "BossChance": 30,
+      "BossChance": 37,
       "BossDifficult": "normal",
       "BossEscortAmount": "2",
       "BossEscortDifficult": "normal",
@@ -92,8 +96,12 @@
       "BossZone": "ZoneWoodCutter",
       "Delay": 0,
       "ForceSpawn": false,
-      "IgnoreMaxBots": false,
+      "IgnoreMaxBots": true,
       "RandomTimeSpawn": false,
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "Supports": null,
       "Time": -1,
       "TriggerId": "",
@@ -110,8 +118,12 @@
       "BossZone": "ZoneMiniHouse,ZoneBrokenVill",
       "Delay": 0,
       "ForceSpawn": false,
-      "IgnoreMaxBots": false,
+      "IgnoreMaxBots": true,
       "RandomTimeSpawn": false,
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "Supports": null,
       "Time": -1,
       "TriggerId": "",
@@ -150,6 +162,7 @@
   "BotMarksman": 20,
   "BotMax": 17,
   "BotMaxPlayer": 9,
+  "BotMaxPvE": 32,
   "BotMaxTimePlayer": 1000,
   "BotNormal": 50,
   "BotSpawnCountStep": 4,
@@ -168,9 +181,11 @@
   "Enabled": true,
   "EscapeTimeLimit": 40,
   "EscapeTimeLimitCoop": 30,
+  "EscapeTimeLimitPVE": 26,
   "GenerateLocalLootCache": true,
   "GlobalContainerChanceModifier": 1,
-  "GlobalLootChanceModifier": 0.9,
+  "GlobalLootChanceModifier": 0.95,
+  "GlobalLootChanceModifierPvE": 1,
   "IconX": 460,
   "IconY": 660,
   "Id": "Woods",
@@ -3454,7 +3469,7 @@
           "Radius": 158.9
         }
       },
-      "CorePointId": 10,
+      "CorePointId": 5,
       "DelayToCanSpawnSec": 4,
       "Id": "6969a351-e6f7-4f1a-a109-1e0d0da8f3e7",
       "Infiltration": "",
@@ -8832,7 +8847,15 @@
     }
   ],
   "filter_ex": [],
-  "limits": [],
+  "limits": [
+    {
+      "items": [
+        "6389c8c5dbfd5e4b95197e6b"
+      ],
+      "max": 1,
+      "min": 0
+    }
+  ],
   "matching_min_seconds": 60,
   "maxItemCountInLocation": [],
   "sav_summon_seconds": 60,

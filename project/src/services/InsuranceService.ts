@@ -12,7 +12,6 @@ import { ISaveProgressRequestData } from "@spt-aki/models/eft/inRaid/ISaveProgre
 import { BonusType } from "@spt-aki/models/enums/BonusType";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { MessageType } from "@spt-aki/models/enums/MessageType";
-import { Traders } from "@spt-aki/models/enums/Traders";
 import { IInsuranceConfig } from "@spt-aki/models/spt/config/IInsuranceConfig";
 import { ILostOnDeathConfig } from "@spt-aki/models/spt/config/ILostOnDeathConfig";
 import { IInsuranceEquipmentPkg } from "@spt-aki/models/spt/services/IInsuranceEquipmentPkg";
@@ -23,8 +22,8 @@ import { SaveServer } from "@spt-aki/servers/SaveServer";
 import { LocaleService } from "@spt-aki/services/LocaleService";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
 import { MailSendService } from "@spt-aki/services/MailSendService";
+import { ICloner } from "@spt-aki/utils/cloners/ICloner";
 import { HashUtil } from "@spt-aki/utils/HashUtil";
-import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 import { RandomUtil } from "@spt-aki/utils/RandomUtil";
 import { TimeUtil } from "@spt-aki/utils/TimeUtil";
 
@@ -42,7 +41,6 @@ export class InsuranceService
         @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("HashUtil") protected hashUtil: HashUtil,
-        @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
         @inject("SaveServer") protected saveServer: SaveServer,
         @inject("TraderHelper") protected traderHelper: TraderHelper,
@@ -52,6 +50,7 @@ export class InsuranceService
         @inject("LocaleService") protected localeService: LocaleService,
         @inject("MailSendService") protected mailSendService: MailSendService,
         @inject("ConfigServer") protected configServer: ConfigServer,
+        @inject("RecursiveCloner") protected cloner: ICloner,
     )
     {
         this.insuranceConfig = this.configServer.getConfig(ConfigTypes.INSURANCE);
@@ -102,11 +101,20 @@ export class InsuranceService
      */
     public sendInsuredItems(pmcData: IPmcData, sessionID: string, mapId: string): void
     {
+        // Check for Mark of The Unheard in special slot (only slot it can fit)
+        const markOfTheUnheardOnPlayer = pmcData.Inventory.items
+            .filter((item) => item.slotId?.startsWith("SpecialSlot"))
+            .find((item) => item._tpl === "65ddcc9cfa85b9f17d0dfb07");
         // Get insurance items for each trader
         for (const traderId in this.getInsurance(sessionID))
         {
             const traderBase = this.traderHelper.getTrader(traderId, sessionID);
-            const insuranceReturnTimestamp = this.getInsuranceReturnTimestamp(pmcData, traderBase);
+            let insuranceReturnTimestamp = this.getInsuranceReturnTimestamp(pmcData, traderBase);
+            if (markOfTheUnheardOnPlayer)
+            {
+                insuranceReturnTimestamp *= this.databaseServer.getTables()
+                    .globals.config.Insurance.CoefOfHavingMarkOfUnknown;
+            }
             const dialogueTemplates = this.databaseServer.getTables().traders[traderId].dialogue;
 
             const systemData = {
@@ -121,7 +129,9 @@ export class InsuranceService
                 MessageType.NPC_TRADER,
                 this.randomUtil.getArrayValue(dialogueTemplates.insuranceStart),
                 null,
-                null,
+                this.timeUtil.getHoursAsSeconds(
+                    this.databaseServer.getTables().globals.config.Insurance.MaxStorageTimeInHour,
+                ),
                 systemData,
             );
 
@@ -152,7 +162,7 @@ export class InsuranceService
         for (const insuredItem of this.getInsurance(sessionId)[traderId])
         {
             // Find insured items parent
-            const insuredItemsParent = insuredItems.find(x => x._id === insuredItem.parentId);
+            const insuredItemsParent = insuredItems.find((x) => x._id === insuredItem.parentId);
             if (!insuredItemsParent)
             {
                 // Remove location + set slotId of insured items parent
@@ -180,9 +190,9 @@ export class InsuranceService
             return this.timeUtil.getTimestamp() + this.insuranceConfig.returnTimeOverrideSeconds;
         }
 
-        const insuranceReturnTimeBonus = pmcData.Bonuses.find(b => b.type === BonusType.INSURANCE_RETURN_TIME);
-        const insuranceReturnTimeBonusPercent = 1.0
-          - (insuranceReturnTimeBonus ? Math.abs(insuranceReturnTimeBonus.value) : 0) / 100;
+        const insuranceReturnTimeBonus = pmcData.Bonuses.find((b) => b.type === BonusType.INSURANCE_RETURN_TIME);
+        const insuranceReturnTimeBonusPercent
+            = 1.0 - (insuranceReturnTimeBonus ? Math.abs(insuranceReturnTimeBonus.value) : 0) / 100;
 
         const traderMinReturnAsSeconds = trader.insurance.min_return_hour * TimeUtil.ONE_HOUR_AS_SECONDS;
         const traderMaxReturnAsSeconds = trader.insurance.max_return_hour * TimeUtil.ONE_HOUR_AS_SECONDS;
@@ -250,14 +260,14 @@ export class InsuranceService
 
             // Check if item missing in post-raid gear OR player died + item slot flagged as lost on death
             // Catches both events: player died with item on + player survived but dropped item in raid
-            if (!itemOnPlayerPostRaid || playerDied && itemShouldBeLostOnDeath)
+            if (!itemOnPlayerPostRaid || (playerDied && itemShouldBeLostOnDeath))
             {
                 equipmentPkg.push({
                     pmcData: pmcData,
                     itemToReturnToPlayer: this.getInsuredItemDetails(
                         pmcData,
                         preRaidItem,
-                        offraidData.insurance?.find(insuranceItem => insuranceItem.id === insuredItem.itemId),
+                        offraidData.insurance?.find((insuranceItem) => insuranceItem.id === insuredItem.itemId),
                     ),
                     traderId: insuredItem.tid,
                     sessionID: sessionID,
@@ -269,10 +279,13 @@ export class InsuranceService
                     if (this.itemHelper.itemHasSlots(preRaidItem._tpl))
                     {
                         // Get IDs of all soft insert child items on armor from pre raid gear data
-                        const softInsertChildIds = preRaidGear.filter(item =>
-                            item.parentId === preRaidItem._id
-                            && this.itemHelper.getSoftInsertSlotIds().includes(item.slotId.toLowerCase()),
-                        ).map(x => x._id);
+                        const softInsertChildIds = preRaidGear
+                            .filter(
+                                (item) =>
+                                    item.parentId === preRaidItem._id
+                                    && this.itemHelper.getSoftInsertSlotIds().includes(item.slotId.toLowerCase()),
+                            )
+                            .map((x) => x._id);
 
                         // Add all items found above to return data
                         for (const softInsertChildModId of softInsertChildIds)
@@ -281,9 +294,9 @@ export class InsuranceService
                                 pmcData: pmcData,
                                 itemToReturnToPlayer: this.getInsuredItemDetails(
                                     pmcData,
-                                    preRaidGear.find(item => item._id === softInsertChildModId),
-                                    offraidData.insurance?.find(insuranceItem =>
-                                        insuranceItem.id === softInsertChildModId,
+                                    preRaidGear.find((item) => item._id === softInsertChildModId),
+                                    offraidData.insurance?.find(
+                                        (insuranceItem) => insuranceItem.id === softInsertChildModId,
                                     ),
                                 ),
                                 traderId: insuredItem.tid,
@@ -345,7 +358,7 @@ export class InsuranceService
     ): Item
     {
         // Get baseline item to return, clone pre raid item
-        const itemToReturnClone: Item = this.jsonUtil.clone(preRaidItem);
+        const itemToReturnClone: Item = this.cloner.clone(preRaidItem);
 
         // Add upd if it doesnt exist
         this.itemHelper.addUpdObjectToItem(itemToReturnClone);

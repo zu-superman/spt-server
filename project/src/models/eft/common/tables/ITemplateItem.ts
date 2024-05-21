@@ -67,6 +67,7 @@ export interface Props
     DiscardingBlock?: boolean
     DropSoundType?: string
     RagFairCommissionModifier?: number
+    RarityPvE: string
     IsAlwaysAvailableForInsurance?: boolean
     DiscardLimit?: number
     MaxResource?: number
@@ -356,7 +357,8 @@ export interface Props
     casingMass?: number
     casingSounds?: string
     ProjectileCount?: number
-    PenetrationChance?: number
+    PenetrationChanceObstacle?: number
+    PenetrationDamageMod?: number
     RicochetChance?: number
     FragmentationChance?: number
     Deterioration?: number

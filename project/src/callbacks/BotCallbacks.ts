@@ -48,7 +48,11 @@ export class BotCallbacks
      * Handle singleplayer/settings/bot/difficulties
      * @returns dictionary of every bot and its diffiulty settings
      */
-    public getAllBotDifficulties(url: string, info: IEmptyRequestData, sessionID: string): Record<string, Difficulties>
+    public getAllBotDifficulties(
+        url: string,
+        info: IEmptyRequestData,
+        sessionID: string,
+    ): Record<string, Difficulties>
     {
         return this.httpResponse.noBody(this.botController.getAllBotDifficulties());
     }
@@ -57,13 +61,13 @@ export class BotCallbacks
      * Handle client/game/bot/generate
      * @returns IGetBodyResponseData
      */
-    public generateBots(
+    public async generateBots(
         url: string,
         info: IGenerateBotsRequestData,
         sessionID: string,
-    ): IGetBodyResponseData<IBotBase[]>
+    ): Promise<IGetBodyResponseData<IBotBase[]>>
     {
-        return this.httpResponse.getBody(this.botController.generate(sessionID, info));
+        return this.httpResponse.getBody(await this.botController.generate(sessionID, info));
     }
 
     /**

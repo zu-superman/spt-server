@@ -17,7 +17,7 @@ import { FenceService } from "@spt-aki/services/FenceService";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
 import { TraderAssortService } from "@spt-aki/services/TraderAssortService";
 import { TraderPurchasePersisterService } from "@spt-aki/services/TraderPurchasePersisterService";
-import { JsonUtil } from "@spt-aki/utils/JsonUtil";
+import { ICloner } from "@spt-aki/utils/cloners/ICloner";
 import { MathUtil } from "@spt-aki/utils/MathUtil";
 import { TimeUtil } from "@spt-aki/utils/TimeUtil";
 
@@ -30,7 +30,6 @@ export class TraderAssortHelper
 
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
-        @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("MathUtil") protected mathUtil: MathUtil,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
@@ -41,11 +40,12 @@ export class TraderAssortHelper
         @inject("RagfairOfferGenerator") protected ragfairOfferGenerator: RagfairOfferGenerator,
         @inject("TraderAssortService") protected traderAssortService: TraderAssortService,
         @inject("LocalisationService") protected localisationService: LocalisationService,
-        @inject("TraderPurchasePersisterService") protected traderPurchasePersisterService:
-        TraderPurchasePersisterService,
+        @inject("TraderPurchasePersisterService")
+        protected traderPurchasePersisterService: TraderPurchasePersisterService,
         @inject("TraderHelper") protected traderHelper: TraderHelper,
         @inject("FenceService") protected fenceService: FenceService,
         @inject("ConfigServer") protected configServer: ConfigServer,
+        @inject("RecursiveCloner") protected cloner: ICloner,
     )
     {
         this.traderConfig = this.configServer.getConfig(ConfigTypes.TRADER);
@@ -68,7 +68,7 @@ export class TraderAssortHelper
             return this.getRagfairDataAsTraderAssort();
         }
 
-        const traderClone = this.jsonUtil.clone(this.databaseServer.getTables().traders[traderId]);
+        const traderClone = this.cloner.clone(this.databaseServer.getTables().traders[traderId]);
         const pmcProfile = this.profileHelper.getPmcProfile(sessionId);
 
         if (traderId === Traders.FENCE)
@@ -95,7 +95,7 @@ export class TraderAssortHelper
         for (const assortId in assortPurchasesfromTrader)
         {
             // Find assort we want to update current buy count of
-            const assortToAdjust = traderClone.assort.items.find(x => x._id === assortId);
+            const assortToAdjust = traderClone.assort.items.find((x) => x._id === assortId);
             if (!assortToAdjust)
             {
                 this.logger.debug(
@@ -147,7 +147,7 @@ export class TraderAssortHelper
     protected resetBuyRestrictionCurrentValue(assortItems: Item[]): void
     {
         // iterate over root items
-        for (const assort of assortItems.filter(item => item.slotId === "hideout"))
+        for (const assort of assortItems.filter((item) => item.slotId === "hideout"))
         {
             // no value to adjust
             if (!assort.upd.BuyRestrictionCurrent)
@@ -250,7 +250,7 @@ export class TraderAssortHelper
      */
     protected getPristineTraderAssorts(traderId: string): Item[]
     {
-        return this.jsonUtil.clone(this.traderAssortService.getPristineTraderAssort(traderId).items);
+        return this.cloner.clone(this.traderAssortService.getPristineTraderAssort(traderId).items);
     }
 
     /**

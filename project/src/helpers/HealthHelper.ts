@@ -7,7 +7,7 @@ import { IHealthConfig } from "@spt-aki/models/spt/config/IHealthConfig";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt-aki/servers/ConfigServer";
 import { SaveServer } from "@spt-aki/servers/SaveServer";
-import { JsonUtil } from "@spt-aki/utils/JsonUtil";
+import { ICloner } from "@spt-aki/utils/cloners/ICloner";
 import { TimeUtil } from "@spt-aki/utils/TimeUtil";
 
 @injectable()
@@ -16,11 +16,11 @@ export class HealthHelper
     protected healthConfig: IHealthConfig;
 
     constructor(
-        @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
         @inject("SaveServer") protected saveServer: SaveServer,
         @inject("ConfigServer") protected configServer: ConfigServer,
+        @inject("RecursiveCloner") protected cloner: ICloner,
     )
     {
         this.healthConfig = this.configServer.getConfig(ConfigTypes.HEALTH);
@@ -36,7 +36,8 @@ export class HealthHelper
         const profile = this.saveServer.getProfile(sessionID);
 
         if (!profile.vitality)
-        { // Occurs on newly created profiles
+        {
+            // Occurs on newly created profiles
             profile.vitality = { health: null, effects: null };
         }
         profile.vitality.health = {
@@ -99,13 +100,14 @@ export class HealthHelper
                 profileEffects[bodyPart] = postRaidBodyParts[bodyPart].Effects;
             }
             if (request.IsAlive === true)
-            { // is player alive, not is limb alive
+            {
+                // is player alive, not is limb alive
                 profileHealth[bodyPart] = postRaidBodyParts[bodyPart].Current;
             }
             else
             {
-                profileHealth[bodyPart] = pmcData.Health.BodyParts[bodyPart].Health.Maximum
-                * this.healthConfig.healthMultipliers.death;
+                profileHealth[bodyPart]
+                    = pmcData.Health.BodyParts[bodyPart].Health.Maximum * this.healthConfig.healthMultipliers.death;
             }
         }
 
@@ -115,7 +117,7 @@ export class HealthHelper
             this.saveEffects(
                 pmcData,
                 sessionID,
-                this.jsonUtil.clone(this.saveServer.getProfile(sessionID).vitality.effects),
+                this.cloner.clone(this.saveServer.getProfile(sessionID).vitality.effects),
                 deleteExistingEffects,
             );
         }

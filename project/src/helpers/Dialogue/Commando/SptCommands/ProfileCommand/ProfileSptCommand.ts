@@ -13,7 +13,6 @@ import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { LocaleService } from "@spt-aki/services/LocaleService";
 import { MailSendService } from "@spt-aki/services/MailSendService";
 import { HashUtil } from "@spt-aki/utils/HashUtil";
-import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 
 @injectable()
 export class ProfileSptCommand implements ISptCommand
@@ -32,15 +31,13 @@ export class ProfileSptCommand implements ISptCommand
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("HashUtil") protected hashUtil: HashUtil,
-        @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("PresetHelper") protected presetHelper: PresetHelper,
         @inject("MailSendService") protected mailSendService: MailSendService,
         @inject("LocaleService") protected localeService: LocaleService,
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
     )
-    {
-    }
+    {}
 
     public getCommand(): string
     {
@@ -59,7 +56,7 @@ export class ProfileSptCommand implements ISptCommand
             this.mailSendService.sendUserMessageToPlayer(
                 sessionId,
                 commandHandler,
-                "Invalid use of trader command. Use \"help\" for more information.",
+                'Invalid use of trader command. Use "help" for more information.',
             );
             return request.dialogId;
         }
@@ -79,7 +76,7 @@ export class ProfileSptCommand implements ISptCommand
                     this.mailSendService.sendUserMessageToPlayer(
                         sessionId,
                         commandHandler,
-                        "Invalid use of profile command, the level was outside bounds: 1 to 70. Use \"help\" for more information.",
+                        'Invalid use of profile command, the level was outside bounds: 1 to 70. Use "help" for more information.',
                     );
                     return request.dialogId;
                 }
@@ -87,8 +84,8 @@ export class ProfileSptCommand implements ISptCommand
                 break;
             case "skill":
             {
-                const enumSkill = Object.values(SkillTypes).find(t =>
-                    t.toLocaleLowerCase() === skill.toLocaleLowerCase(),
+                const enumSkill = Object.values(SkillTypes).find(
+                    (t) => t.toLocaleLowerCase() === skill.toLocaleLowerCase(),
                 );
 
                 if (enumSkill === undefined)
@@ -96,7 +93,7 @@ export class ProfileSptCommand implements ISptCommand
                     this.mailSendService.sendUserMessageToPlayer(
                         sessionId,
                         commandHandler,
-                        "Invalid use of profile command, the skill was not found. Use \"help\" for more information.",
+                        'Invalid use of profile command, the skill was not found. Use "help" for more information.',
                     );
                     return request.dialogId;
                 }
@@ -106,7 +103,7 @@ export class ProfileSptCommand implements ISptCommand
                     this.mailSendService.sendUserMessageToPlayer(
                         sessionId,
                         commandHandler,
-                        "Invalid use of profile command, the skill level was outside bounds: 1 to 51. Use \"help\" for more information.",
+                        'Invalid use of profile command, the skill level was outside bounds: 1 to 51. Use "help" for more information.',
                     );
                     return request.dialogId;
                 }
@@ -125,13 +122,15 @@ export class ProfileSptCommand implements ISptCommand
         this.mailSendService.sendSystemMessageToPlayer(
             sessionId,
             "A single ruble is being attached, required by BSG logic.",
-            [{
-                _id: this.hashUtil.generate(),
-                _tpl: "5449016a4bdc2d6f028b456f",
-                upd: { StackObjectsCount: 1 },
-                parentId: this.hashUtil.generate(),
-                slotId: "main",
-            }],
+            [
+                {
+                    _id: this.hashUtil.generate(),
+                    _tpl: "5449016a4bdc2d6f028b456f",
+                    upd: { StackObjectsCount: 1 },
+                    parentId: this.hashUtil.generate(),
+                    slotId: "main",
+                },
+            ],
             undefined,
             [event],
         );

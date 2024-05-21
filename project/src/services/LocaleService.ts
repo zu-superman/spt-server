@@ -95,29 +95,30 @@ export class LocaleService
      */
     protected getPlatformForServerLocale(): string
     {
-        const platformLocale = new Intl.Locale(Intl.DateTimeFormat().resolvedOptions().locale);
+        const platformLocale = this.getPlatformLocale();
         if (!platformLocale)
         {
-            this.logger.warning("System langauge could not be found, falling back to english");
+            this.logger.warning("System language could not be found, falling back to english");
 
             return "en";
         }
 
-        const localeCode = platformLocale.baseName.toLowerCase();
-        if (!this.localeConfig.serverSupportedLocales.includes(localeCode))
+        const baseNameCode = platformLocale.baseName.toLowerCase();
+        if (!this.localeConfig.serverSupportedLocales.includes(baseNameCode))
         {
             // Chek if base language (e.g. CN / EN / DE) exists
-            if (this.localeConfig.serverSupportedLocales.includes(platformLocale.language))
+            const languageCode = platformLocale.language.toLocaleLowerCase();
+            if (this.localeConfig.serverSupportedLocales.includes(languageCode))
             {
-                return platformLocale.language;
+                return languageCode;
             }
 
-            this.logger.warning(`Unsupported system langauge found: ${localeCode}, falling back to english`);
+            this.logger.warning(`Unsupported system language found: ${baseNameCode}, falling back to english`);
 
             return "en";
         }
 
-        return localeCode;
+        return baseNameCode;
     }
 
     /**
@@ -126,26 +127,29 @@ export class LocaleService
      */
     protected getPlatformForClientLocale(): string
     {
-        const platformLocale = new Intl.Locale(Intl.DateTimeFormat().resolvedOptions().locale);
+        const platformLocale = this.getPlatformLocale();
         if (!platformLocale)
         {
-            this.logger.warning("System langauge could not be found, falling back to english");
-
+            this.logger.warning("System language could not be found, falling back to english");
             return "en";
         }
 
-        const langaugeCode = platformLocale.language.toLowerCase();
-        if (!this.localeConfig.serverSupportedLocales.includes(langaugeCode))
+        const baseNameCode = platformLocale.baseName?.toLocaleLowerCase();
+        if (baseNameCode && this.databaseServer.getTables().locales.global[baseNameCode])
         {
-            this.logger.warning(`Unsupported system langauge found: ${langaugeCode}, falling back to english`);
-
-            return "en";
+            return baseNameCode;
         }
 
-        // BSG map Czech to CZ for some reason
-        if (platformLocale.language === "cs")
+        const languageCode = platformLocale.language?.toLowerCase();
+        if (languageCode && this.databaseServer.getTables().locales.global[languageCode])
         {
-            return "cz";
+            return languageCode;
+        }
+
+        const regionCode = platformLocale.region?.toLocaleLowerCase();
+        if (regionCode && this.databaseServer.getTables().locales.global[regionCode])
+        {
+            return regionCode;
         }
 
         // BSG map DE to GE some reason
@@ -154,6 +158,16 @@ export class LocaleService
             return "ge";
         }
 
-        return langaugeCode;
+        this.logger.warning(`Unsupported system language found: ${languageCode}, falling back to english`);
+        return "en";
+    }
+
+    /**
+     * This is in a function so we can overwrite it during testing
+     * @returns The current platform locale
+     */
+    protected getPlatformLocale(): Intl.Locale
+    {
+        return new Intl.Locale(Intl.DateTimeFormat().resolvedOptions().locale);
     }
 }

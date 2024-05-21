@@ -1,13 +1,13 @@
 import { inject, injectable } from "tsyringe";
 import { IAkiProfile } from "@spt-aki/models/eft/profile/IAkiProfile";
-import { JsonUtil } from "@spt-aki/utils/JsonUtil";
+import { ICloner } from "@spt-aki/utils/cloners/ICloner";
 
 @injectable()
 export class ProfileSnapshotService
 {
     protected storedProfileSnapshots: Record<string, IAkiProfile> = {};
 
-    constructor(@inject("JsonUtil") protected jsonUtil: JsonUtil)
+    constructor(@inject("RecursiveCloner") protected cloner: ICloner)
     {}
 
     /**
@@ -17,7 +17,7 @@ export class ProfileSnapshotService
      */
     public storeProfileSnapshot(sessionID: string, profile: IAkiProfile): void
     {
-        this.storedProfileSnapshots[sessionID] = this.jsonUtil.clone(profile);
+        this.storedProfileSnapshots[sessionID] = this.cloner.clone(profile);
     }
 
     /**

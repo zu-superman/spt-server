@@ -42,7 +42,7 @@
   ],
   "BossLocationSpawn": [
     {
-      "BossChance": 30,
+      "BossChance": 35,
       "BossDifficult": "normal",
       "BossEscortAmount": "0",
       "BossEscortDifficult": "normal",
@@ -52,8 +52,12 @@
       "BossZone": "ZoneRailStrorage,ZonePTOR2,ZoneBarrack,ZoneSubStorage",
       "Delay": 0,
       "ForceSpawn": false,
-      "IgnoreMaxBots": false,
+      "IgnoreMaxBots": true,
       "RandomTimeSpawn": false,
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "Supports": [
         {
           "BossEscortAmount": "2",
@@ -82,7 +86,7 @@
       "TriggerName": ""
     },
     {
-      "BossChance": 35,
+      "BossChance": 40,
       "BossDifficult": "normal",
       "BossEscortAmount": "2,2,2,2,3",
       "BossEscortDifficult": "normal",
@@ -92,8 +96,12 @@
       "BossZone": "ZoneRailStrorage",
       "Delay": 0,
       "ForceSpawn": false,
-      "IgnoreMaxBots": false,
+      "IgnoreMaxBots": true,
       "RandomTimeSpawn": false,
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "Supports": null,
       "Time": 1470,
       "TriggerId": "",
@@ -110,8 +118,12 @@
       "BossZone": "ZoneRailStrorage",
       "Delay": 0,
       "ForceSpawn": false,
-      "IgnoreMaxBots": false,
+      "IgnoreMaxBots": true,
       "RandomTimeSpawn": false,
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "Supports": null,
       "Time": -1,
       "TriggerId": "autoId_00632_EXFIL",
@@ -128,8 +140,12 @@
       "BossZone": "ZoneSubCommand",
       "Delay": 0,
       "ForceSpawn": false,
-      "IgnoreMaxBots": false,
+      "IgnoreMaxBots": true,
       "RandomTimeSpawn": false,
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "Supports": null,
       "Time": -1,
       "TriggerId": "autoId_00000_D2_LEVER",
@@ -146,8 +162,12 @@
       "BossZone": "ZoneSubCommand",
       "Delay": 0,
       "ForceSpawn": false,
-      "IgnoreMaxBots": false,
+      "IgnoreMaxBots": true,
       "RandomTimeSpawn": false,
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "Supports": null,
       "Time": 3,
       "TriggerId": "raider_simple_patroling",
@@ -172,6 +192,7 @@
   "BotMarksman": 0,
   "BotMax": 16,
   "BotMaxPlayer": 7,
+  "BotMaxPvE": 28,
   "BotMaxTimePlayer": 1000,
   "BotNormal": 50,
   "BotSpawnCountStep": 3,
@@ -190,9 +211,11 @@
   "Enabled": true,
   "EscapeTimeLimit": 40,
   "EscapeTimeLimitCoop": 30,
+  "EscapeTimeLimitPVE": 30,
   "GenerateLocalLootCache": true,
   "GlobalContainerChanceModifier": 1,
-  "GlobalLootChanceModifier": 0.33,
+  "GlobalLootChanceModifier": 0.4,
+  "GlobalLootChanceModifierPvE": 1,
   "IconX": 360,
   "IconY": 410,
   "Id": "RezervBase",
@@ -233,12 +256,12 @@
   "MaxBotPerZone": 4,
   "MaxCoopGroup": 12,
   "MaxDistToFreePoint": 200,
-  "MaxPlayers": 12,
+  "MaxPlayers": 11,
   "MinDistToExitPoint": 30,
   "MinDistToFreePoint": 60,
   "MinMaxBots": [],
   "MinPlayerLvlAccessKeys": 0,
-  "MinPlayers": 10,
+  "MinPlayers": 9,
   "Name": "ReserveBase",
   "NewSpawn": false,
   "NonWaveGroupScenario": {
@@ -6030,7 +6053,7 @@
       ]
     }
   ],
-  "UnixDateTime": 1636384173,
+  "UnixDateTime": 1706874543,
   "_Id": "5704e5fad2720bc05b8b4567",
   "doors": [],
   "exit_access_time": 50,
@@ -6039,13 +6062,13 @@
   "exits": [
     {
       "Chance": 100,
-      "Count": 420,
+      "Count": 400,
       "EntryPoints": "Common",
       "EventAvailable": false,
       "ExfiltrationTime": 5,
       "ExfiltrationType": "SharedTimer",
       "Id": "0",
-      "MaxTime": 1500,
+      "MaxTime": 1250,
       "MinTime": 1200,
       "Name": "EXFIL_Train",
       "PassageRequirement": "Train",

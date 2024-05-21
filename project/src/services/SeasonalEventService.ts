@@ -6,6 +6,7 @@ import { ILocation } from "@spt-aki/models/eft/common/ILocation";
 import { BossLocationSpawn } from "@spt-aki/models/eft/common/ILocationBase";
 import { Inventory } from "@spt-aki/models/eft/common/tables/IBotType";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
+import { Season } from "@spt-aki/models/enums/Season";
 import { SeasonalEventType } from "@spt-aki/models/enums/SeasonalEventType";
 import { IHttpConfig } from "@spt-aki/models/spt/config/IHttpConfig";
 import { IQuestConfig } from "@spt-aki/models/spt/config/IQuestConfig";
@@ -257,6 +258,31 @@ export class SeasonalEventService
         }
     }
 
+    public getActiveWeatherSeason(): Season
+    {
+        const currentDate = new Date();
+        for (const seasonRange of this.weatherConfig.seasonDates)
+        {
+            // Figure out start and end dates to get range of season
+            const eventStartDate = new Date(
+                currentDate.getFullYear(),
+                seasonRange.startMonth - 1, // Month value starts at 0
+                seasonRange.startDay,
+            );
+            const eventEndDate = new Date(currentDate.getFullYear(), seasonRange.endMonth - 1, seasonRange.endDay);
+
+            // Does todays date fit inside the above range
+            if (currentDate >= eventStartDate && currentDate <= eventEndDate)
+            {
+                return seasonRange.seasonType;
+            }
+        }
+
+        this.logger.warning("Unable to find a season using current date, defaulting to Summer");
+
+        return Season.SUMMER;
+    }
+
     /**
      * Iterate through bots inventory and loot to find and remove christmas items (as defined in SeasonalEventService)
      * @param botInventory Bots inventory to iterate over
@@ -316,7 +342,7 @@ export class SeasonalEventService
             }
 
             // Get non-christmas items
-            const nonChristmasTpls = Object.keys(containerItems).filter(tpl => !christmasItems.includes(tpl));
+            const nonChristmasTpls = Object.keys(containerItems).filter((tpl) => !christmasItems.includes(tpl));
             const intermediaryDict = {};
 
             for (const tpl of nonChristmasTpls)
@@ -342,7 +368,7 @@ export class SeasonalEventService
         switch (eventType.toLowerCase())
         {
             case SeasonalEventType.HALLOWEEN.toLowerCase():
-                globalConfig.EventType = globalConfig.EventType.filter(x => x !== "None");
+                globalConfig.EventType = globalConfig.EventType.filter((x) => x !== "None");
                 globalConfig.EventType.push("Halloween");
                 globalConfig.EventType.push("HalloweenIllumination");
                 globalConfig.Health.ProfileHealthSettings.DefaultStimulatorBuff = "Buffs_Halloween";
@@ -354,7 +380,7 @@ export class SeasonalEventService
                 this.adjustTraderIcons(eventType);
                 break;
             case SeasonalEventType.CHRISTMAS.toLowerCase():
-                globalConfig.EventType = globalConfig.EventType.filter(x => x !== "None");
+                globalConfig.EventType = globalConfig.EventType.filter((x) => x !== "None");
                 globalConfig.EventType.push("Christmas");
                 this.addEventGearToBots(eventType);
                 this.addGifterBotToMaps();
@@ -392,7 +418,7 @@ export class SeasonalEventService
         const botsToAddPerMap = this.seasonalEventConfig.eventBossSpawns[eventType.toLowerCase()];
         if (!botsToAddPerMap)
         {
-            this.logger.warning(`Unable to add ${eventType} bosses, eventBossSpawns is missing`);
+            this.logger.warning(`Unable to add: ${eventType} bosses, eventBossSpawns is missing`);
             return;
         }
         const mapKeys = Object.keys(botsToAddPerMap) ?? [];
@@ -402,14 +428,14 @@ export class SeasonalEventService
             const bossesToAdd = botsToAddPerMap[mapKey];
             if (!bossesToAdd)
             {
-                this.logger.warning(`Unable to add ${eventType} bosses to ${mapKey}`);
+                this.logger.warning(`Unable to add: ${eventType} bosses to: ${mapKey}`);
                 continue;
             }
             for (const boss of bossesToAdd)
             {
                 const mapBosses: BossLocationSpawn[]
                     = this.databaseServer.getTables().locations[mapKey].base.BossLocationSpawn;
-                if (!mapBosses.find(x => x.BossName === boss.BossName))
+                if (!mapBosses.find((x) => x.BossName === boss.BossName))
                 {
                     this.databaseServer.getTables().locations[mapKey].base.BossLocationSpawn.push(...bossesToAdd);
                 }
@@ -448,9 +474,11 @@ export class SeasonalEventService
                 break;
         }
 
-        this.databaseImporter.loadImages(`${this.databaseImporter.getSptDataPath()}images/`, ["traders"], [
-            "/files/trader/avatar/",
-        ]);
+        this.databaseImporter.loadImages(
+            `${this.databaseImporter.getSptDataPath()}images/`,
+            ["traders"],
+            ["/files/trader/avatar/"],
+        );
     }
 
     /**
@@ -461,8 +489,9 @@ export class SeasonalEventService
         const gifterBot = this.databaseServer.getTables().bots.types.gifter;
         for (const difficulty in gifterBot.difficulty)
         {
-            gifterBot.difficulty[difficulty].Patrol.ITEMS_TO_DROP = Object.keys(gifterBot.inventory.items.Backpack)
-                .join(", ");
+            gifterBot.difficulty[difficulty].Patrol.ITEMS_TO_DROP = Object.keys(
+                gifterBot.inventory.items.Backpack,
+            ).join(", ");
         }
     }
 
@@ -548,7 +577,7 @@ export class SeasonalEventService
         {
             const mapData: ILocation = maps[gifterMapSettings.map];
             // Dont add gifter to map twice
-            if (mapData.base.BossLocationSpawn.some(boss => boss.BossName === "gifter"))
+            if (mapData.base.BossLocationSpawn.some((boss) => boss.BossName === "gifter"))
             {
                 continue;
             }
@@ -562,6 +591,8 @@ export class SeasonalEventService
                 BossEscortType: "gifter",
                 BossEscortDifficult: "normal",
                 BossEscortAmount: "0",
+                ForceSpawn: true,
+                spawnMode: ["regular", "pve"],
                 Time: -1,
                 TriggerId: "",
                 TriggerName: "",
@@ -596,6 +627,6 @@ export class SeasonalEventService
 
     public enableSnow(): void
     {
-        this.weatherConfig.forceWinterEvent = true;
+        this.weatherConfig.overrideSeason = Season.WINTER;
     }
 }

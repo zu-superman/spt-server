@@ -22,8 +22,8 @@ import { FenceService } from "@spt-aki/services/FenceService";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
 import { PaymentService } from "@spt-aki/services/PaymentService";
 import { TraderPurchasePersisterService } from "@spt-aki/services/TraderPurchasePersisterService";
+import { ICloner } from "@spt-aki/utils/cloners/ICloner";
 import { HttpResponseUtil } from "@spt-aki/utils/HttpResponseUtil";
-import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 
 @injectable()
 export class TradeHelper
@@ -33,7 +33,6 @@ export class TradeHelper
 
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
-        @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("EventOutputHolder") protected eventOutputHolder: EventOutputHolder,
         @inject("TraderHelper") protected traderHelper: TraderHelper,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
@@ -44,9 +43,10 @@ export class TradeHelper
         @inject("InventoryHelper") protected inventoryHelper: InventoryHelper,
         @inject("RagfairServer") protected ragfairServer: RagfairServer,
         @inject("TraderAssortHelper") protected traderAssortHelper: TraderAssortHelper,
-        @inject("TraderPurchasePersisterService") protected traderPurchasePersisterService:
-        TraderPurchasePersisterService,
+        @inject("TraderPurchasePersisterService")
+        protected traderPurchasePersisterService: TraderPurchasePersisterService,
         @inject("ConfigServer") protected configServer: ConfigServer,
+        @inject("RecursiveCloner") protected cloner: ICloner,
     )
     {
         this.traderConfig = this.configServer.getConfig(ConfigTypes.TRADER);
@@ -79,7 +79,7 @@ export class TradeHelper
                 const allOffers = this.ragfairServer.getOffers();
 
                 // We store ragfair offerid in buyRequestData.item_id
-                const offerWithItem = allOffers.find(x => x._id === buyRequestData.item_id);
+                const offerWithItem = allOffers.find((x) => x._id === buyRequestData.item_id);
                 const itemPurchased = offerWithItem.items[0];
 
                 // Ensure purchase does not exceed trader item limit
@@ -105,7 +105,7 @@ export class TradeHelper
 
             // Get raw offer from ragfair, clone to prevent altering offer itself
             const allOffers = this.ragfairServer.getOffers();
-            const offerWithItemCloned = this.jsonUtil.clone(allOffers.find(x => x._id === buyRequestData.item_id));
+            const offerWithItemCloned = this.cloner.clone(allOffers.find((x) => x._id === buyRequestData.item_id));
             offerItems = offerWithItemCloned.items;
         }
         else if (buyRequestData.tid === Traders.FENCE)
@@ -114,7 +114,7 @@ export class TradeHelper
             {
                 // Update assort/flea item values
                 const traderAssorts = this.traderHelper.getTraderAssortsByTraderId(buyRequestData.tid).items;
-                const itemPurchased = traderAssorts.find(assort => assort._id === buyRequestData.item_id);
+                const itemPurchased = traderAssorts.find((assort) => assort._id === buyRequestData.item_id);
 
                 // Decrement trader item count
                 itemPurchased.upd.StackObjectsCount -= buyCount;
@@ -123,7 +123,7 @@ export class TradeHelper
             };
 
             const fenceItems = this.fenceService.getRawFenceAssorts().items;
-            const rootItemIndex = fenceItems.findIndex(item => item._id === buyRequestData.item_id);
+            const rootItemIndex = fenceItems.findIndex((item) => item._id === buyRequestData.item_id);
             if (rootItemIndex === -1)
             {
                 this.logger.debug(`Tried to buy item ${buyRequestData.item_id} from fence that no longer exists`);
@@ -142,7 +142,7 @@ export class TradeHelper
             {
                 // Update assort/flea item values
                 const traderAssorts = this.traderHelper.getTraderAssortsByTraderId(buyRequestData.tid).items;
-                const itemPurchased = traderAssorts.find(x => x._id === buyRequestData.item_id);
+                const itemPurchased = traderAssorts.find((x) => x._id === buyRequestData.item_id);
 
                 // Ensure purchase does not exceed trader item limit
                 const assortHasBuyRestrictions = this.itemHelper.hasBuyRestrictions(itemPurchased);
@@ -196,7 +196,7 @@ export class TradeHelper
         const itemsToSendToPlayer: Item[][] = [];
         while (itemsToSendRemaining > 0)
         {
-            const offerClone = this.jsonUtil.clone(offerItems);
+            const offerClone = this.cloner.clone(offerItems);
             // Handle stackable items that have a max stack size limit
             const itemCountToSend = Math.min(itemMaxStackSize, itemsToSendRemaining);
             offerClone[0].upd.StackObjectsCount = itemCountToSend;
@@ -260,7 +260,7 @@ export class TradeHelper
             const itemIdToFind = itemToBeRemoved.id.replace(/\s+/g, ""); // Strip out whitespace
 
             // Find item in player inventory, or show error to player if not found
-            const matchingItemInInventory = profileWithItemsToSell.Inventory.items.find(x => x._id === itemIdToFind);
+            const matchingItemInInventory = profileWithItemsToSell.Inventory.items.find((x) => x._id === itemIdToFind);
             if (!matchingItemInInventory)
             {
                 const errorMessage = `Unable to sell item ${itemToBeRemoved.id}, cannot be found in player inventory`;

@@ -2,7 +2,7 @@ import { inject, injectable } from "tsyringe";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { IEliminationConfig, IQuestConfig, IRepeatableQuestConfig } from "@spt-aki/models/spt/config/IQuestConfig";
 import { ConfigServer } from "@spt-aki/servers/ConfigServer";
-import { JsonUtil } from "@spt-aki/utils/JsonUtil";
+import { ICloner } from "@spt-aki/utils/cloners/ICloner";
 import { MathUtil } from "@spt-aki/utils/MathUtil";
 import { ProbabilityObject, ProbabilityObjectArray } from "@spt-aki/utils/RandomUtil";
 
@@ -13,8 +13,8 @@ export class RepeatableQuestHelper
 
     constructor(
         @inject("MathUtil") protected mathUtil: MathUtil,
-        @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("ConfigServer") protected configServer: ConfigServer,
+        @inject("RecursiveCloner") protected cloner: ICloner,
     )
     {
         this.questConfig = this.configServer.getConfig(ConfigTypes.QUEST);
@@ -31,15 +31,15 @@ export class RepeatableQuestHelper
         repeatableConfig: IRepeatableQuestConfig,
     ): IEliminationConfig
     {
-        return repeatableConfig.questConfig.Elimination.find(x =>
-            pmcLevel >= x.levelRange.min && pmcLevel <= x.levelRange.max,
+        return repeatableConfig.questConfig.Elimination.find(
+            (x) => pmcLevel >= x.levelRange.min && pmcLevel <= x.levelRange.max,
         );
     }
 
     public probabilityObjectArray<K, V>(configArrayInput: ProbabilityObject<K, V>[]): ProbabilityObjectArray<K, V>
     {
-        const configArray = this.jsonUtil.clone(configArrayInput);
-        const probabilityArray = new ProbabilityObjectArray<K, V>(this.mathUtil, this.jsonUtil);
+        const configArray = this.cloner.clone(configArrayInput);
+        const probabilityArray = new ProbabilityObjectArray<K, V>(this.mathUtil, this.cloner);
         for (const configObject of configArray)
         {
             probabilityArray.push(

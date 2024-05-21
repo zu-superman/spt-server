@@ -2588,6 +2588,7 @@
         "laboratory": 20,
         "tarkovstreets": 26,
         "sandbox": 16,
+        "sandbox_high": 16,
         "default": 16
     },
     "walletLoot": {

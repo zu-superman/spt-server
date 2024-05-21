@@ -29,8 +29,8 @@ import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { BotEquipmentFilterService } from "@spt-aki/services/BotEquipmentFilterService";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
 import { SeasonalEventService } from "@spt-aki/services/SeasonalEventService";
+import { ICloner } from "@spt-aki/utils/cloners/ICloner";
 import { HashUtil } from "@spt-aki/utils/HashUtil";
-import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 import { RandomUtil } from "@spt-aki/utils/RandomUtil";
 import { TimeUtil } from "@spt-aki/utils/TimeUtil";
 
@@ -45,7 +45,6 @@ export class BotGenerator
         @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
-        @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("BotInventoryGenerator") protected botInventoryGenerator: BotInventoryGenerator,
@@ -57,6 +56,7 @@ export class BotGenerator
         @inject("SeasonalEventService") protected seasonalEventService: SeasonalEventService,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("ConfigServer") protected configServer: ConfigServer,
+        @inject("RecursiveCloner") protected cloner: ICloner,
     )
     {
         this.botConfig = this.configServer.getConfig(ConfigTypes.BOT);
@@ -109,7 +109,7 @@ export class BotGenerator
         bot.Info.Settings.BotDifficulty = botGenerationDetails.botDifficulty;
 
         // Get raw json data for bot (Cloned)
-        const botJsonTemplateClone = this.jsonUtil.clone(
+        const botJsonTemplateClone = this.cloner.clone(
             this.botHelper.getBotTemplate(botGenerationDetails.isPmc ? bot.Info.Side : botGenerationDetails.role),
         );
 
@@ -124,7 +124,7 @@ export class BotGenerator
      */
     protected getCloneOfBotBase(): IBotBase
     {
-        return this.jsonUtil.clone(this.databaseServer.getTables().bots.base);
+        return this.cloner.clone(this.databaseServer.getTables().bots.base);
     }
 
     /**
@@ -232,7 +232,11 @@ export class BotGenerator
      * @param appearance Appearance settings to choose from
      * @param botGenerationDetails Generation details
      */
-    protected setBotAppearance(bot: IBotBase, appearance: Appearance, botGenerationDetails: BotGenerationDetails): void
+    protected setBotAppearance(
+        bot: IBotBase,
+        appearance: Appearance,
+        botGenerationDetails: BotGenerationDetails,
+    ): void
     {
         bot.Customization.Head = this.weightedRandomHelper.getWeightedValue<string>(appearance.head);
         bot.Customization.Body = this.weightedRandomHelper.getWeightedValue<string>(appearance.body);
@@ -425,27 +429,29 @@ export class BotGenerator
             return [];
         }
 
-        return Object.keys(skills).map((skillKey): IBaseSkill =>
-        {
-            // Get skill from dict, skip if not found
-            const skill = skills[skillKey];
-            if (!skill)
+        return Object.keys(skills)
+            .map((skillKey): IBaseSkill =>
             {
-                return null;
-            }
+                // Get skill from dict, skip if not found
+                const skill = skills[skillKey];
+                if (!skill)
+                {
+                    return null;
+                }
 
-            // All skills have id and progress props
-            const skillToAdd: IBaseSkill = { Id: skillKey, Progress: this.randomUtil.getInt(skill.min, skill.max) };
+                // All skills have id and progress props
+                const skillToAdd: IBaseSkill = { Id: skillKey, Progress: this.randomUtil.getInt(skill.min, skill.max) };
 
-            // Common skills have additional props
-            if (isCommonSkills)
-            {
-                (skillToAdd as Common).PointsEarnedDuringSession = 0;
-                (skillToAdd as Common).LastAccess = 0;
-            }
+                // Common skills have additional props
+                if (isCommonSkills)
+                {
+                    (skillToAdd as Common).PointsEarnedDuringSession = 0;
+                    (skillToAdd as Common).LastAccess = 0;
+                }
 
-            return skillToAdd;
-        }).filter(x => x !== null);
+                return skillToAdd;
+            })
+            .filter((x) => x !== null);
     }
 
     /**

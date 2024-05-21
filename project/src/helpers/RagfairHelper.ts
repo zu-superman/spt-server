@@ -13,7 +13,7 @@ import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt-aki/servers/ConfigServer";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { RagfairLinkedItemService } from "@spt-aki/services/RagfairLinkedItemService";
-import { JsonUtil } from "@spt-aki/utils/JsonUtil";
+import { ICloner } from "@spt-aki/utils/cloners/ICloner";
 
 @injectable()
 export class RagfairHelper
@@ -22,7 +22,6 @@ export class RagfairHelper
 
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
-        @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("TraderAssortHelper") protected traderAssortHelper: TraderAssortHelper,
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("HandbookHelper") protected handbookHelper: HandbookHelper,
@@ -30,6 +29,7 @@ export class RagfairHelper
         @inject("RagfairLinkedItemService") protected ragfairLinkedItemService: RagfairLinkedItemService,
         @inject("UtilityHelper") protected utilityHelper: UtilityHelper,
         @inject("ConfigServer") protected configServer: ConfigServer,
+        @inject("RecursiveCloner") protected cloner: ICloner,
     )
     {
         this.ragfairConfig = this.configServer.getConfig(ConfigTypes.RAGFAIR);
@@ -156,13 +156,13 @@ export class RagfairHelper
         for (let item of items)
         {
             item = this.itemHelper.fixItemStackCount(item);
-            const isChild = items.find(it => it._id === item.parentId);
+            const isChild = items.find((it) => it._id === item.parentId);
 
             if (!isChild)
             {
                 if (!rootItem)
                 {
-                    rootItem = this.jsonUtil.clone(item);
+                    rootItem = this.cloner.clone(item);
                     rootItem.upd.OriginalStackObjectsCount = rootItem.upd.StackObjectsCount;
                 }
                 else

@@ -29,9 +29,13 @@ export class Router
     {
         if (partialMatch)
         {
-            return this.getInternalHandledRoutes().filter(r => r.dynamic).some(r => url.includes(r.route));
+            return this.getInternalHandledRoutes()
+                .filter((r) => r.dynamic)
+                .some((r) => url.includes(r.route));
         }
-        return this.getInternalHandledRoutes().filter(r => !r.dynamic).some(r => r.route === url);
+        return this.getInternalHandledRoutes()
+            .filter((r) => !r.dynamic)
+            .some((r) => r.route === url);
     }
 }
 
@@ -42,14 +46,14 @@ export class StaticRouter extends Router
         super();
     }
 
-    public handleStatic(url: string, info: any, sessionID: string, output: string): any
+    public async handleStatic(url: string, info: any, sessionID: string, output: string): Promise<any>
     {
-        return this.routes.find(route => route.url === url).action(url, info, sessionID, output);
+        return this.routes.find((route) => route.url === url).action(url, info, sessionID, output);
     }
 
     public override getHandledRoutes(): HandledRoute[]
     {
-        return this.routes.map(route => new HandledRoute(route.url, false));
+        return this.routes.map((route) => new HandledRoute(route.url, false));
     }
 }
 
@@ -60,14 +64,14 @@ export class DynamicRouter extends Router
         super();
     }
 
-    public handleDynamic(url: string, info: any, sessionID: string, output: string): any
+    public async handleDynamic(url: string, info: any, sessionID: string, output: string): Promise<any>
     {
-        return this.routes.find(r => url.includes(r.url)).action(url, info, sessionID, output);
+        return this.routes.find((r) => url.includes(r.url)).action(url, info, sessionID, output);
     }
 
     public override getHandledRoutes(): HandledRoute[]
     {
-        return this.routes.map(route => new HandledRoute(route.url, true));
+        return this.routes.map((route) => new HandledRoute(route.url, true));
     }
 }
 
@@ -75,13 +79,13 @@ export class DynamicRouter extends Router
 // So instead I added the definition
 export class ItemEventRouterDefinition extends Router
 {
-    public handleItemEvent(
+    public async handleItemEvent(
         url: string,
         pmcData: IPmcData,
         body: any,
         sessionID: string,
         output: IItemEventRouterResponse,
-    ): void
+    ): Promise<any>
     {
         throw new Error("This method needs to be overrode by the router classes");
     }
@@ -97,12 +101,18 @@ export class SaveLoadRouter extends Router
 
 export class HandledRoute
 {
-    constructor(public route: string, public dynamic: boolean)
+    constructor(
+        public route: string,
+        public dynamic: boolean,
+    )
     {}
 }
 
 export class RouteAction
 {
-    constructor(public url: string, public action: (url: string, info: any, sessionID: string, output: string) => any)
+    constructor(
+        public url: string,
+        public action: (url: string, info: any, sessionID: string, output: string) => Promise<any>,
+    )
     {}
 }

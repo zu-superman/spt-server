@@ -2,7 +2,6 @@ import { inject, injectable } from "tsyringe";
 import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
 import { RagfairServerHelper } from "@spt-aki/helpers/RagfairServerHelper";
 import { Item } from "@spt-aki/models/eft/common/tables/IItem";
-import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEventRouterResponse";
 import { IRagfairOffer } from "@spt-aki/models/eft/ragfair/IRagfairOffer";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { IRagfairConfig } from "@spt-aki/models/spt/config/IRagfairConfig";
@@ -166,10 +165,9 @@ export class RagfairOfferService
     public traderOffersNeedRefreshing(traderID: string): boolean
     {
         const trader = this.databaseServer.getTables().traders[traderID];
-
         if (!trader || !trader.base)
         {
-            this.logger.error(`Trader ${traderID} lacks a base file, cannot check for refresh status`);
+            this.logger.error(this.localisationService.getText("ragfair-trader_missing_base_file", traderID));
 
             return false;
         }
@@ -251,7 +249,7 @@ export class RagfairOfferService
         const pmcId = String(playerOffer.user.id);
         const profile = this.profileHelper.getProfileByPmcId(pmcId);
 
-        const offerinProfileIndex = profile.RagfairInfo.offers.findIndex(o => o._id === playerOffer._id);
+        const offerinProfileIndex = profile.RagfairInfo.offers.findIndex((o) => o._id === playerOffer._id);
         if (offerinProfileIndex === -1)
         {
             this.logger.warning(

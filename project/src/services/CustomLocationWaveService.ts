@@ -5,7 +5,6 @@ import { ILocationConfig } from "@spt-aki/models/spt/config/ILocationConfig";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt-aki/servers/ConfigServer";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
-import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 import { RandomUtil } from "@spt-aki/utils/RandomUtil";
 
 @injectable()
@@ -16,7 +15,6 @@ export class CustomLocationWaveService
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
-        @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("ConfigServer") protected configServer: ConfigServer,
     )
@@ -75,7 +73,7 @@ export class CustomLocationWaveService
             const location: ILocationBase = this.databaseServer.getTables().locations[mapKey].base;
             for (const bossWave of bossWavesToApply[mapKey])
             {
-                if (location.BossLocationSpawn.find(x => x.sptId === bossWave.sptId))
+                if (location.BossLocationSpawn.find((x) => x.sptId === bossWave.sptId))
                 {
                     // Already exists, skip
                     continue;
@@ -92,7 +90,7 @@ export class CustomLocationWaveService
             const location: ILocationBase = this.databaseServer.getTables().locations[mapKey].base;
             for (const normalWave of normalWavesToApply[mapKey])
             {
-                if (location.waves.find(x => x.sptId === normalWave.sptId))
+                if (location.waves.find((x) => x.sptId === normalWave.sptId))
                 {
                     // Already exists, skip
                     continue;

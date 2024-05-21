@@ -6,18 +6,18 @@ import { IItemEventRouterResponse } from "@spt-aki/models/eft/itemEvent/IItemEve
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { EventOutputHolder } from "@spt-aki/routers/EventOutputHolder";
 import { LocalisationService } from "@spt-aki/services/LocalisationService";
-import { JsonUtil } from "@spt-aki/utils/JsonUtil";
+import { ICloner } from "@spt-aki/utils/cloners/ICloner";
 
 @injectable()
 export class ItemEventRouter
 {
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
-        @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
         @injectAll("IERouters") protected itemEventRouters: ItemEventRouterDefinition[],
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("EventOutputHolder") protected eventOutputHolder: EventOutputHolder,
+        @inject("RecursiveCloner") protected cloner: ICloner,
     )
     {}
 
@@ -26,7 +26,7 @@ export class ItemEventRouter
      * @param sessionID Session id
      * @returns Item response
      */
-    public handleEvents(info: IItemEventRouterRequest, sessionID: string): IItemEventRouterResponse
+    public async handleEvents(info: IItemEventRouterRequest, sessionID: string): Promise<IItemEventRouterResponse>
     {
         const output = this.eventOutputHolder.getOutput(sessionID);
 
@@ -34,11 +34,11 @@ export class ItemEventRouter
         {
             const pmcData = this.profileHelper.getPmcProfile(sessionID);
 
-            const eventRouter = this.itemEventRouters.find(r => r.canHandle(body.Action));
+            const eventRouter = this.itemEventRouters.find((r) => r.canHandle(body.Action));
             if (eventRouter)
             {
                 this.logger.debug(`event: ${body.Action}`);
-                eventRouter.handleItemEvent(body.Action, pmcData, body, sessionID, output);
+                await eventRouter.handleItemEvent(body.Action, pmcData, body, sessionID, output);
                 if (output.warnings.length > 0)
                 {
                     break;
@@ -54,7 +54,7 @@ export class ItemEventRouter
         this.eventOutputHolder.updateOutputProperties(sessionID);
 
         // Clone output before resetting the output object ready for use next time
-        const outputClone = this.jsonUtil.clone(output);
+        const outputClone = this.cloner.clone(output);
         this.eventOutputHolder.resetOutput(sessionID);
 
         return outputClone;

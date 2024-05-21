@@ -33,11 +33,11 @@ import { ConfigServer } from "@spt-aki/servers/ConfigServer";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { SaveServer } from "@spt-aki/servers/SaveServer";
 import { InsuranceService } from "@spt-aki/services/InsuranceService";
+import { LocalisationService } from "@spt-aki/services/LocalisationService";
 import { MailSendService } from "@spt-aki/services/MailSendService";
 import { MatchBotDetailsCacheService } from "@spt-aki/services/MatchBotDetailsCacheService";
 import { PmcChatResponseService } from "@spt-aki/services/PmcChatResponseService";
 import { TraderServicesService } from "@spt-aki/services/TraderServicesService";
-import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 import { RandomUtil } from "@spt-aki/utils/RandomUtil";
 import { TimeUtil } from "@spt-aki/utils/TimeUtil";
 
@@ -58,7 +58,6 @@ export class InraidController
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("SaveServer") protected saveServer: SaveServer,
-        @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("PmcChatResponseService") protected pmcChatResponseService: PmcChatResponseService,
@@ -70,6 +69,7 @@ export class InraidController
         @inject("HealthHelper") protected healthHelper: HealthHelper,
         @inject("TraderHelper") protected traderHelper: TraderHelper,
         @inject("TraderServicesService") protected traderServicesService: TraderServicesService,
+        @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("InsuranceService") protected insuranceService: InsuranceService,
         @inject("InRaidHelper") protected inRaidHelper: InRaidHelper,
         @inject("ApplicationContext") protected applicationContext: ApplicationContext,
@@ -98,7 +98,7 @@ export class InraidController
         const profile = this.saveServer.getProfile(sessionID);
         if (!profile)
         {
-            this.logger.error(`No profile found with Id of: ${sessionID}`);
+            this.logger.error(this.localisationService.getText("inraid-no_profile_found", sessionID));
 
             return;
         }
@@ -203,7 +203,7 @@ export class InraidController
         if (locationName === "lighthouse" && postRaidRequest.profile.Info.Side.toLowerCase() === "usec")
         {
             // Decrement counter if it exists, don't go below 0
-            const remainingCounter = serverPmcProfile?.Stats.Eft.OverallCounters.Items.find(x =>
+            const remainingCounter = serverPmcProfile?.Stats.Eft.OverallCounters.Items.find((x) =>
                 x.Key.includes("UsecRaidRemainKills"),
             );
             if (remainingCounter?.Value > 0)
@@ -228,9 +228,9 @@ export class InraidController
             // Not dead
 
             // Check for cultist amulets in special slot (only slot it can fit)
-            const amuletOnPlayer = serverPmcProfile.Inventory.items.filter(item =>
-                item.slotId?.startsWith("SpecialSlot"),
-            ).find(item => item._tpl === "64d0b40fbe2eed70e254e2d4");
+            const amuletOnPlayer = serverPmcProfile.Inventory.items
+                .filter((item) => item.slotId?.startsWith("SpecialSlot"))
+                .find((item) => item._tpl === "64d0b40fbe2eed70e254e2d4");
             if (amuletOnPlayer)
             {
                 // No charges left, delete it
@@ -249,7 +249,7 @@ export class InraidController
             }
         }
 
-        const victims = postRaidRequest.profile.Stats.Eft.Victims.filter(x =>
+        const victims = postRaidRequest.profile.Stats.Eft.Victims.filter((x) =>
             ["sptbear", "sptusec"].includes(x.Role.toLowerCase()),
         );
         if (victims?.length > 0)
@@ -283,12 +283,11 @@ export class InraidController
             // and quest items cannot be picked up again
             const allQuests = this.questHelper.getQuestsFromDb();
             const activeQuestIdsInProfile = pmcData.Quests.filter(
-                profileQuest => ![
-                    QuestStatus.AvailableForStart,
-                    QuestStatus.Success,
-                    QuestStatus.Expired,
-                ].includes(profileQuest.status),
-            ).map(x => x.qid);
+                (profileQuest) =>
+                    ![QuestStatus.AvailableForStart, QuestStatus.Success, QuestStatus.Expired].includes(
+                        profileQuest.status,
+                    ),
+            ).map((x) => x.qid);
             for (const questItem of postRaidSaveRequest.profile.Stats.Eft.CarriedQuestItems)
             {
                 // Get quest/find condition for carried quest item
@@ -472,10 +471,10 @@ export class InraidController
 
         for (const quest of scavProfile.Quests)
         {
-            const pmcQuest = pmcProfile.Quests.find(x => x.qid === quest.qid);
+            const pmcQuest = pmcProfile.Quests.find((x) => x.qid === quest.qid);
             if (!pmcQuest)
             {
-                this.logger.warning(`No PMC quest found for ID: ${quest.qid}`);
+                this.logger.warning(this.localisationService.getText("inraid-unable_to_migrate_pmc_quest_not_found_in_profile", quest.qid));
                 continue;
             }
 
@@ -507,7 +506,7 @@ export class InraidController
         for (const scavCounter of Object.values(scavProfile.TaskConditionCounters))
         {
             // If this is an achievement that isn't for the scav, don't process it
-            const achievement = achievements.find(achievement => achievement.id === scavCounter.sourceId);
+            const achievement = achievements.find((achievement) => achievement.id === scavCounter.sourceId);
             if (achievement && achievement.side !== "Savage")
             {
                 continue;
@@ -680,7 +679,7 @@ export class InraidController
         const dialogueTemplates = this.databaseServer.getTables().traders[traderId].dialogue;
         if (!dialogueTemplates)
         {
-            this.logger.error(`Unable to deliver items as trader ${traderId} has no "dialogue" data`);
+            this.logger.error(this.localisationService.getText("inraid-unable_to_deliver_item_no_trader_found", traderId));
 
             return;
         }
@@ -689,8 +688,8 @@ export class InraidController
 
         // Remove any items that were returned by the item delivery, but also insured, from the player's insurance list
         // This is to stop items being duplicated by being returned from both the item delivery, and insurance
-        const deliveredItemIds = items.map(x => x._id);
-        pmcData.InsuredItems = pmcData.InsuredItems.filter(x => !deliveredItemIds.includes(x.itemId));
+        const deliveredItemIds = items.map((x) => x._id);
+        pmcData.InsuredItems = pmcData.InsuredItems.filter((x) => !deliveredItemIds.includes(x.itemId));
 
         // Send the items to the player
         this.mailSendService.sendLocalisedNpcMessageToPlayer(

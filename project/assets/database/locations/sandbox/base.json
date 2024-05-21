@@ -15,8 +15,8 @@
     }
   ],
   "Area": 0,
-  "AveragePlayTime": 50,
-  "AveragePlayerLevel": 40,
+  "AveragePlayTime": 35,
+  "AveragePlayerLevel": 20,
   "Banners": [],
   "BossLocationSpawn": [],
   "BotAssault": 100,
@@ -33,6 +33,7 @@
   "BotMarksman": 0,
   "BotMax": 10,
   "BotMaxPlayer": 10,
+  "BotMaxPvE": 20,
   "BotMaxTimePlayer": 1000,
   "BotNormal": 50,
   "BotSpawnCountStep": 3,
@@ -49,14 +50,16 @@
   "DisabledScavExits": "",
   "EnableCoop": true,
   "Enabled": true,
-  "EscapeTimeLimit": 50,
+  "EscapeTimeLimit": 35,
   "EscapeTimeLimitCoop": 30,
+  "EscapeTimeLimitPVE": 24,
   "ExitZones": {
     "$oid": "5c82534488a45046451a2386"
   },
   "GenerateLocalLootCache": true,
   "GlobalContainerChanceModifier": 1,
-  "GlobalLootChanceModifier": 0.6,
+  "GlobalLootChanceModifier": 0.72,
+  "GlobalLootChanceModifierPvE": 1,
   "IconX": 760,
   "IconY": 740,
   "Id": "Sandbox",
@@ -122,7 +125,7 @@
     "path": "",
     "rcid": ""
   },
-  "RequiredPlayerLevelMax": 100,
+  "RequiredPlayerLevelMax": 20,
   "RequiredPlayerLevelMin": 0,
   "Rules": "Normal",
   "SafeLocation": false,
@@ -5773,10 +5776,10 @@
       ]
     }
   ],
-  "UnixDateTime": 1621511450,
+  "UnixDateTime": 1707141759,
   "_Id": "653e6760052c01c1c805532f",
   "doors": [],
-  "exit_access_time": 40,
+  "exit_access_time": 35,
   "exit_count": 1,
   "exit_time": 2,
   "exits": [

@@ -12,8 +12,8 @@ import { IDatabaseTables } from "@spt-aki/models/spt/server/IDatabaseTables";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { ItemBaseClassService } from "@spt-aki/services/ItemBaseClassService";
+import { ICloner } from "@spt-aki/utils/cloners/ICloner";
 import { HashUtil } from "@spt-aki/utils/HashUtil";
-import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 
 @injectable()
 export class CustomItemService
@@ -23,10 +23,10 @@ export class CustomItemService
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("HashUtil") protected hashUtil: HashUtil,
-        @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("ItemBaseClassService") protected itemBaseClassService: ItemBaseClassService,
+        @inject("RecursiveCloner") protected cloner: ICloner,
     )
     {
         this.tables = this.databaseServer.getTables();
@@ -61,7 +61,7 @@ export class CustomItemService
         }
 
         // Clone existing item
-        const itemClone = this.jsonUtil.clone(tables.templates.items[newItemDetails.itemTplToClone]);
+        const itemClone = this.cloner.clone(tables.templates.items[newItemDetails.itemTplToClone]);
 
         // Update id and parentId of item
         itemClone._id = newItemId;

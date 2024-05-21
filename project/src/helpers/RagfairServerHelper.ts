@@ -19,8 +19,8 @@ import { SaveServer } from "@spt-aki/servers/SaveServer";
 import { ItemFilterService } from "@spt-aki/services/ItemFilterService";
 import { LocaleService } from "@spt-aki/services/LocaleService";
 import { MailSendService } from "@spt-aki/services/MailSendService";
+import { ICloner } from "@spt-aki/utils/cloners/ICloner";
 import { HashUtil } from "@spt-aki/utils/HashUtil";
-import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 import { RandomUtil } from "@spt-aki/utils/RandomUtil";
 import { TimeUtil } from "@spt-aki/utils/TimeUtil";
 
@@ -46,10 +46,10 @@ export class RagfairServerHelper
         @inject("LocaleService") protected localeService: LocaleService,
         @inject("DialogueHelper") protected dialogueHelper: DialogueHelper,
         @inject("TraderHelper") protected traderHelper: TraderHelper,
-        @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("MailSendService") protected mailSendService: MailSendService,
         @inject("ItemFilterService") protected itemFilterService: ItemFilterService,
         @inject("ConfigServer") protected configServer: ConfigServer,
+        @inject("RecursiveCloner") protected cloner: ICloner,
     )
     {
         this.ragfairConfig = this.configServer.getConfig(ConfigTypes.RAGFAIR);
@@ -106,7 +106,8 @@ export class RagfairServerHelper
 
         // Don't include damaged ammo packs
         if (
-            this.ragfairConfig.dynamic.blacklist.damagedAmmoPacks && itemDetails[1]._parent === BaseClasses.AMMO_BOX
+            this.ragfairConfig.dynamic.blacklist.damagedAmmoPacks
+            && itemDetails[1]._parent === BaseClasses.AMMO_BOX
             && itemDetails[1]._name.includes("_damaged")
         )
         {
@@ -217,7 +218,7 @@ export class RagfairServerHelper
             this.randomUtil.getInt(config.stackablePercent.min, config.stackablePercent.max),
         );
 
-        return Math.round(maxStackCount / 100 * stackPercent);
+        return Math.round((maxStackCount / 100) * stackPercent);
     }
 
     /**
@@ -291,7 +292,7 @@ export class RagfairServerHelper
      */
     public getPresetItems(item: Item): Item[]
     {
-        const preset = this.jsonUtil.clone(this.databaseServer.getTables().globals.ItemPresets[item._id]._items);
+        const preset = this.cloner.clone(this.databaseServer.getTables().globals.ItemPresets[item._id]._items);
         return this.itemHelper.reparentItemAndChildren(item, preset);
     }
 
@@ -307,7 +308,7 @@ export class RagfairServerHelper
         {
             if (this.databaseServer.getTables().globals.ItemPresets[itemId]._items[0]._tpl === item._tpl)
             {
-                const presetItems = this.jsonUtil.clone(
+                const presetItems = this.cloner.clone(
                     this.databaseServer.getTables().globals.ItemPresets[itemId]._items,
                 );
                 presets.push(this.itemHelper.reparentItemAndChildren(item, presetItems));

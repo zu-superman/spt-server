@@ -70,7 +70,7 @@
   ],
   "BossLocationSpawn": [
     {
-      "BossChance": 30,
+      "BossChance": 35,
       "BossDifficult": "normal",
       "BossEscortAmount": "0",
       "BossEscortDifficult": "normal",
@@ -78,7 +78,12 @@
       "BossName": "bossTagilla",
       "BossPlayer": false,
       "BossZone": "BotZone",
+      "IgnoreMaxBots": true,
       "RandomTimeSpawn": false,
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "Supports": null,
       "Time": -1
     }
@@ -102,6 +107,7 @@
   "BotMarksman": 0,
   "BotMax": 0,
   "BotMaxPlayer": 0,
+  "BotMaxPvE": 20,
   "BotMaxTimePlayer": 0,
   "BotNormal": 0,
   "BotSpawnCountStep": 3,
@@ -120,9 +126,11 @@
   "Enabled": true,
   "EscapeTimeLimit": 20,
   "EscapeTimeLimitCoop": 15,
+  "EscapeTimeLimitPVE": 16,
   "GenerateLocalLootCache": true,
   "GlobalContainerChanceModifier": 1,
-  "GlobalLootChanceModifier": 0.2,
+  "GlobalLootChanceModifier": 0.3,
+  "GlobalLootChanceModifierPvE": 1,
   "IconX": 470,
   "IconY": 510,
   "Id": "factory4_day",
@@ -3848,7 +3856,7 @@
       ]
     }
   ],
-  "UnixDateTime": 1636379319,
+  "UnixDateTime": 1707142653,
   "_Id": "55f2d3fd4bdc2d5f408b4567",
   "doors": [],
   "exit_access_time": 60,
