@@ -156,6 +156,13 @@ export class GameController
 
             this.logger.debug(`Started game with sessionId: ${sessionID} ${pmcProfile.Info?.Nickname}`);
 
+            // Migrate aki object data into spt for 3.9.0 release
+            if ((fullProfile as any).aki)
+            {
+                fullProfile.spt = this.cloner.clone((fullProfile as any).aki);
+                delete (fullProfile as any).aki;
+            }
+
             if (this.coreConfig.fixes.fixProfileBreakingInventoryItemIssues)
             {
                 this.profileFixerService.fixProfileBreakingInventoryItemIssues(pmcProfile);
