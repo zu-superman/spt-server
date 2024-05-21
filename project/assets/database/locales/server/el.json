@@ -142,7 +142,7 @@
 	"modloader-loading_mods": "ModLoader: φόρτωση πρόσθετων %s διακομιστή...",
 	"modloader-main_property_not_js": "Η κύρια ιδιότητα του πρόσθετου %s package.json πρέπει να είναι ένα αρχείο .js",
 	"modloader-main_property_points_to_nothing": "Η κύρια ιδιότητα του πρόσθετου %s package.json πρέπει να παραπέμπει σε μη υπάρχον αρχείο",
-	"modloader-missing_sptVersion_field": "Το Πρόσθετο %s λείπει από το πεδίο sptVersion, πιθανότατα λόγω έλλειψης ενημέρωσης και μη συμβατότητας με την τρέχουσα έκδοση του SPT",
+	"modloader-missing_sptversion_field": "Το Πρόσθετο %s λείπει από το πεδίο sptVersion, πιθανότατα λόγω έλλειψης ενημέρωσης και μη συμβατότητας με την τρέχουσα έκδοση του SPT",
 	"modloader-missing_dependency": "Το πρόσθετο {{mod}} απαιτεί την εγκατάσταση του {{modDependency}}.",
 	"modloader-missing_package_json": "Το Πρόσθετο (%s) λείπει το package.json. Βεβαιωθείτε ότι έχετε ελέγξει την κομβική σελίδα πρόσθετων για τις οδηγίες εγκατάστασης",
 	"modloader-missing_package_json_property": "Το πρόσθετο {{modName}} package.json απαιτεί την ιδιότητα {{prop}}",

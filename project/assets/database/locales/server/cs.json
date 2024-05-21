@@ -142,7 +142,7 @@
 	"modloader-loading_mods": "ModLoader: načítání modů %s serveru...",
 	"modloader-main_property_not_js": "Mód %s package.json musí bát soubor typu .js",
 	"modloader-main_property_points_to_nothing": "Hlavní vlastnost módu %s package.json odkazuje na neexistující soubor",
-	"modloader-missing_sptVersion_field": "Módu %s chybí pole sptVersion s největší pravděpodobností z důvodu že je zastaralý a nekompatibilní s aktuální verzí SPT",
+	"modloader-missing_sptversion_field": "Módu %s chybí pole sptVersion s největší pravděpodobností z důvodu že je zastaralý a nekompatibilní s aktuální verzí SPT",
 	"modloader-missing_dependency": "Mód {{mod}} vyžaduje instalaci {{modDependency}}.",
 	"modloader-missing_package_json": "Módu (%s) chybí package.json. Ujistěte se, že jste zkontrolovali stránku módu pro návod k instalaci",
 	"modloader-missing_package_json_property": "Mod {{modName}} package.json vyžaduje vlastnost {{prop}}",

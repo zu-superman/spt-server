@@ -142,7 +142,7 @@
 	"modloader-loading_mods": "ModLoader: carregando %s mods de servidor...",
 	"modloader-main_property_not_js": "A propriedade main no package.json do mod %s deve ser um ficheiro .js",
 	"modloader-main_property_points_to_nothing": "A propriedade main no package.json do mod %s aponta para um ficheiro que não existe",
-	"modloader-missing_sptVersion_field": "Mod %s tem o campo sptVersion em falta, muito provavelmente por estar desatualizado e incompatível com a versão atual do SPT",
+	"modloader-missing_sptversion_field": "Mod %s tem o campo sptVersion em falta, muito provavelmente por estar desatualizado e incompatível com a versão atual do SPT",
 	"modloader-missing_dependency": "Mod {{mod}} requer que {{modDependency}} seja instalado.",
 	"modloader-missing_package_json": "Mod (%s) está faltando package.json. Tenha certeza que você checou a página de mods hub para as intruções de instalação",
 	"modloader-missing_package_json_property": "O package.json do mod {{modName}} requer a propriedade {{prop}}",

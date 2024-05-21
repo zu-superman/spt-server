@@ -142,7 +142,7 @@
 	"modloader-loading_mods": "محمل الإضافات: جاري تحميل %s إضافة إلى الخادم...",
 	"modloader-main_property_not_js": "يجب أن تكون الخاصية الرئيسية للإضافة %s ملفًا من نوع .js في الملف package.json",
 	"modloader-main_property_points_to_nothing": "الخاصية الرئيسية للملف package.json الخاص بالإضافة %s يشير إلى ملف غير موجود",
-	"modloader-missing_sptVersion_field": "الإضافة %s تفتقد لحقل نسخة الإصدار ، على الأرجح بسبب كونه قديم العهد وغير متوافق مع الإصدار الحالي من SPT",
+	"modloader-missing_sptversion_field": "الإضافة %s تفتقد لحقل نسخة الإصدار ، على الأرجح بسبب كونه قديم العهد وغير متوافق مع الإصدار الحالي من SPT",
 	"modloader-missing_dependency": "الإضافة {{mod}} تتطلب تثبيت {{modDependency}}.",
 	"modloader-missing_package_json": "الإضافة (%s) تفتقد ملف package.json الخاص بها. تأكد من التحقق من صفحة تحميل الإضافة للحصول على تعليمات التثبيت",
 	"modloader-missing_package_json_property": "ملف package.json الخاص بالإضافة {{modName}} يتطلب خاصية {{prop}}",

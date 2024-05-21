@@ -142,7 +142,7 @@
 	"modloader-loading_mods": "ModLoader: Chargement des mods du serveur %s...",
 	"modloader-main_property_not_js": "Mod %s package.json : la propriété principale doit être un fichier .js",
 	"modloader-main_property_points_to_nothing": "La propriété principale du mod %s package.json pointe vers un fichier inexistant",
-	"modloader-missing_sptVersion_field": "Le mod %s n'a pas de champ sptVersion , il est possible que le mod ne soit plus à jour et donc incompatible avec la version actuelle de SPT",
+	"modloader-missing_sptversion_field": "Le mod %s n'a pas de champ sptVersion , il est possible que le mod ne soit plus à jour et donc incompatible avec la version actuelle de SPT",
 	"modloader-missing_dependency": "Le mod : {{mod}}, nécessite {{modDependency}} pour être installé.",
 	"modloader-missing_package_json": "Mod (%s) n'a pas de fichier package.json. Assurez-vous d'avoir vérifié les instructions d'installation sur la page du mod",
 	"modloader-missing_package_json_property": "Mod {{modName}} package.json requiert la propriété {{prop}}",

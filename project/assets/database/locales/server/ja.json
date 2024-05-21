@@ -142,7 +142,7 @@
 	"modloader-loading_mods": "モッド読み込むツール: %s 個のモッド読み込む中...",
 	"modloader-main_property_not_js": "モッド %s のpackage.jsonの主要プロパティは .js ファイルである必要があります。",
 	"modloader-main_property_points_to_nothing": "モッド %s のpackage.jsonの主要プロパティは存在しないファイルを指定仕様としています。",
-	"modloader-missing_sptVersion_field": "モッド %s のsptVersion区域が未設定されています。多くの場合、これは古いモッドで、現バージョンのSPTに互換性の問題が生じる恐れがあります。",
+	"modloader-missing_sptversion_field": "モッド %s のsptVersion区域が未設定されています。多くの場合、これは古いモッドで、現バージョンのSPTに互換性の問題が生じる恐れがあります。",
 	"modloader-missing_dependency": "モッド {{mod}} の前提条件である {{modDependency}} をインストール必要があります。",
 	"modloader-missing_package_json": "モッド %s のpackage.jsonが見つかりません。",
 	"modloader-missing_package_json_property": "モッド {{modName}} のpackage.json のプロパティ {{prop}} の設定が必要となります。",

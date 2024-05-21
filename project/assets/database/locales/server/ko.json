@@ -142,7 +142,7 @@
 	"modloader-loading_mods": "ModLoader: 총 %s 개의 모드 불러오는 중...",
 	"modloader-main_property_not_js": "모드 %s 의 package.json 파일 중 main 속성은 무조건 .js 파일을 설정해야합니다",
 	"modloader-main_property_points_to_nothing": "모드 %s 의 package.json 파일 중 'main' 속성이 존재하지 않는 파일로 설정되어있습니다",
-	"modloader-missing_sptVersion_field": "모드 %s 안에 'sptVersion' 속성이 없습니다, 호환이 되지 않는 SPT 버전이거나 오래된 버전일 가능성이 높습니다",
+	"modloader-missing_sptversion_field": "모드 %s 안에 'sptVersion' 속성이 없습니다, 호환이 되지 않는 SPT 버전이거나 오래된 버전일 가능성이 높습니다",
 	"modloader-missing_dependency": "모드 {{mod}} 는 {{modDependency}} 모드를 요구하며 설치되어있어야 합니다",
 	"modloader-missing_package_json": "모드 (%s) 의 package.json 파일이 없습니다",
 	"modloader-missing_package_json_property": "모드 {{modName}} 의 package.json 파일 중 '{{prop}}' 속성의 값이 요구됩니다",

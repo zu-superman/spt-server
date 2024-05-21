@@ -133,7 +133,7 @@
 	"modloader-loading_mods": "ModLoader: loading %s server mods...",
 	"modloader-main_property_not_js": "Mod %s properti utama package.json harus berupa file .js",
 	"modloader-main_property_points_to_nothing": "Mod %s properti utama package.json mengarah ke file yang tidak ada",
-	"modloader-missing_sptVersion_field": "Mod %s kekurangan laman sptVersion, kemungkinan besar karena sudah ketinggalan jauh dan tidak kompatible dengan versi SPT sekarang",
+	"modloader-missing_sptversion_field": "Mod %s kekurangan laman sptVersion, kemungkinan besar karena sudah ketinggalan jauh dan tidak kompatible dengan versi SPT sekarang",
 	"modloader-missing_dependency": "Mod {{mod}} memerlukan dependesi {{modDependency}} dipasang.",
 	"modloader-missing_package_json": "Mod (%s) kehilangan package.json. Pastikan anda sudah mengecek halaman hub mod untuk panduan instal",
 	"modloader-missing_package_json_property": "Mod package.json {{modName}} memerlukan data {{prop}}",

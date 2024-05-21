@@ -142,7 +142,7 @@
 	"modloader-loading_mods": "ModLoader: %s mods worden ingeladen op server...",
 	"modloader-main_property_not_js": "Mod %s package.json main property moet een .js bestand zijn",
 	"modloader-main_property_points_to_nothing": "Mod %s package.json main property wijst naar een niet bestaand bestand",
-	"modloader-missing_sptVersion_field": "Mod %s mist een sptVersion veld, zeer waarschijnlijk omdat deze verouderd en niet comptatibel is met de huide SPT versie",
+	"modloader-missing_sptversion_field": "Mod %s mist een sptVersion veld, zeer waarschijnlijk omdat deze verouderd en niet comptatibel is met de huide SPT versie",
 	"modloader-missing_dependency": "Voor mod {{mod}} moet {{modDependency}} geïnstalleerd zijn.",
 	"modloader-missing_package_json": "Mod (%s) mist een package.json",
 	"modloader-missing_package_json_property": "Mod {{modName}} package.json vereist {{prop}} property",

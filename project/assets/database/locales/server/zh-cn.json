@@ -142,7 +142,7 @@
 	"modloader-loading_mods": "模组加载器：正在加载%s个客户端模组……",
 	"modloader-main_property_not_js": "模组 %s package.json的main属性必须时一个.js文件",
 	"modloader-main_property_points_to_nothing": "模组 %s package.json的main属性指向了一个不存在的文件",
-	"modloader-missing_sptVersion_field": "模组 %s 缺少sptVersion字段，很可能由于过期且不兼容当前版本的SPT",
+	"modloader-missing_sptversion_field": "模组 %s 缺少sptVersion字段，很可能由于过期且不兼容当前版本的SPT",
 	"modloader-missing_dependency": "模组 {{mod}} 需要安装 {{modDependency}}。",
 	"modloader-missing_package_json": "模组（%s）缺少package.json",
 	"modloader-missing_package_json_property": "模组{{modName}} package.json需要{{prop}}属性",

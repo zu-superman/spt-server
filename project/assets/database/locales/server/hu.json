@@ -142,7 +142,7 @@
 	"modloader-loading_mods": "ModLoader: %s szervermodok betöltése...",
 	"modloader-main_property_not_js": "A mod %s package.json fő tulajdonsága egy .js fájl kell legyen",
 	"modloader-main_property_points_to_nothing": "A %s mod package.json fő tulajdonsága egy nem létező fájlra mutat",
-	"modloader-missing_sptVersion_field": "%s modnak hiányzik az sptVersion mezője, valószínűleg azért, mert elavult és nem kompatibilis az SPT jelenlegi verziójával",
+	"modloader-missing_sptversion_field": "%s modnak hiányzik az sptVersion mezője, valószínűleg azért, mert elavult és nem kompatibilis az SPT jelenlegi verziójával",
 	"modloader-missing_dependency": "{{mod}} mod a következőnek a telepítését igényli {{modDependency}}.",
 	"modloader-missing_package_json": "%s mod a package.json fájlt hiányolja. Győződj meg róla, hogy ellenőrizted a mod oldalát a telepítési utasításokért",
 	"modloader-missing_package_json_property": "A mod {{modName}} package.json megköveteli a {{prop}} jellemzőket",

@@ -142,7 +142,7 @@
 	"modloader-loading_mods": "Загрузчик модов: загружаем %s мод(ов/а)...",
 	"modloader-main_property_not_js": "В файле package.json мода %s в свойстве 'main' должен быть указан .js файл",
 	"modloader-main_property_points_to_nothing": "В файле package.json мода %s свойство 'main' указывает на несуществующий файл",
-	"modloader-missing_sptVersion_field": "Мод %s не имеет строки sptVersion, скорее всего данный мод является очень старым и несовместим с текущей версией SPT",
+	"modloader-missing_sptversion_field": "Мод %s не имеет строки sptVersion, скорее всего данный мод является очень старым и несовместим с текущей версией SPT",
 	"modloader-missing_dependency": "Мод {{mod}} требует {{modDependency}} для правильной работы.",
 	"modloader-missing_package_json": "В моде (%s) отсутствует package.json",
 	"modloader-missing_package_json_property": "В моде {{modName}} файл package.json требует следующее свойство: {{prop}} ",

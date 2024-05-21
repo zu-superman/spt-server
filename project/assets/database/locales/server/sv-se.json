@@ -142,7 +142,7 @@
 	"modloader-loading_mods": "ModLoader: laddar %s mods...",
 	"modloader-main_property_not_js": "Mod %s package.json huvudegenskap måste vara en .js-fil",
 	"modloader-main_property_points_to_nothing": "Mod %s package.json huvudegenskap pekar på en icke-existerande fil",
-	"modloader-missing_sptVersion_field": "Mod %s saknar sptVersion-fältet, troligen på grund av att den är inaktuell och inkompatibel med den aktuella versionen av SPT",
+	"modloader-missing_sptversion_field": "Mod %s saknar sptVersion-fältet, troligen på grund av att den är inaktuell och inkompatibel med den aktuella versionen av SPT",
 	"modloader-missing_dependency": "Mod {{mod}} kräver att {{modDependency}} är installerad.",
 	"modloader-missing_package_json": "Mod (%s) saknas package.json",
 	"modloader-missing_package_json_property": "Mod {{modName}} package.json kräver egenskapen {{prop}}",

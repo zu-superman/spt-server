@@ -142,7 +142,7 @@
 	"modloader-loading_mods": "ModLoader: %s sunucu modları yükleniyor...",
 	"modloader-main_property_not_js": "Mod %s package.json ana özelliği bir .js dosyası olmalıdır",
 	"modloader-main_property_points_to_nothing": "Mod %s package.json ana özelliği mevcut olmayan dosyaya işaret ediyor",
-	"modloader-missing_sptVersion_field": "Mod %s'de sptVersion alanı eksik, bunun nedeni büyük olasılıkla güncel olmaması ve mevcut SPT sürümüyle uyumsuz olması",
+	"modloader-missing_sptversion_field": "Mod %s'de sptVersion alanı eksik, bunun nedeni büyük olasılıkla güncel olmaması ve mevcut SPT sürümüyle uyumsuz olması",
 	"modloader-missing_dependency": "Mod {{mod}}, {{modDependency}}'nin yüklenmesini gerektirir.",
 	"modloader-missing_package_json": "Mod (%s) eksik package.json. Yükleme talimatları için mods hub sayfasını kontrol ettiğinizden emin olun",
 	"modloader-missing_package_json_property": "Mod {{modName}} package.json {{prop}} özelliği gerektirir",

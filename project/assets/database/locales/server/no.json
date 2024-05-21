@@ -140,7 +140,7 @@
 	"modloader-loading_mods": "ModLoader: laster inn %s server mods...",
 	"modloader-main_property_not_js": "Mod %s package.json hovedegenskap må være en .js-fil",
 	"modloader-main_property_points_to_nothing": "Mod %s package.json hovedegenskap peker til en ikke-eksisterende fil",
-	"modloader-missing_sptVersion_field": "Mod %s mangler sptVersion feltet, sannsynligvis fordi den er foreldet og er inkompatibel med gjeldende versjon av SPT",
+	"modloader-missing_sptversion_field": "Mod %s mangler sptVersion feltet, sannsynligvis fordi den er foreldet og er inkompatibel med gjeldende versjon av SPT",
 	"modloader-missing_dependency": "Mod {{mod}} krever at {{modDependency}} er installert.",
 	"modloader-missing_package_json": "Mod (%s) mangler package.json. Sørg for at du har sjekket mods hub-siden for installasjonsinstruksjoner",
 	"modloader-missing_package_json_property": "Mod {{modName}} package.json krever {{prop}} egenskap",

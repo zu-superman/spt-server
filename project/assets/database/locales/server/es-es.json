@@ -141,7 +141,7 @@
 	"modloader-loading_mods": "ModLoader: cargando %s modificaciones...",
 	"modloader-main_property_not_js": "La propiedad 'main' de la modificacion %s package.json debe ser un archivo .js",
 	"modloader-main_property_points_to_nothing": "La propiedad 'main' de la modificacion %s package.json apunta a un archivo inexistente",
-	"modloader-missing_sptVersion_field": "La modificacion %s no contiene el campo sptVersion, es posible que esto se deba a que la misma esta desactualizada o no es compatible con la version de SPT utilizada",
+	"modloader-missing_sptversion_field": "La modificacion %s no contiene el campo sptVersion, es posible que esto se deba a que la misma esta desactualizada o no es compatible con la version de SPT utilizada",
 	"modloader-missing_dependency": "La modificación {{mod}} requiere que la modificación {{modDependency}} sea instalada también.",
 	"modloader-missing_package_json": "La modificacion (%s) le falta el archivo package.json",
 	"modloader-missing_package_json_property": "La modificacion {{modName}} requiere la propiedad {{prop}} en el archivo package.json",
