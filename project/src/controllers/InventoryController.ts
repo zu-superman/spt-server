@@ -473,7 +473,8 @@ export class InventoryController
         if (!itemToFold)
         {
             // Item not found
-            this.logger.warning(`Unable to fold item: ${request.item}. Not found`);
+            this.logger.warning(this.localisationService.getText("inventory-unable_to_fold_item_not_found_in_inventory", request.item));
+
             return { warnings: [], profileChanges: {} };
         }
 
@@ -666,22 +667,27 @@ export class InventoryController
         return output;
     }
 
+    /**
+     * Flag an item as seen in profiles encyclopedia + add inspect xp to profile
+     * @param itemTpls Inspected item tpls
+     * @param fullProfile Profile to add xp to
+     */
     protected flagItemsAsInspectedAndRewardXp(itemTpls: string[], fullProfile: IAkiProfile): void
     {
         for (const itemTpl of itemTpls)
         {
-            // item found
-            const item = this.databaseServer.getTables().templates.items[itemTpl];
-            if (!item)
+            const item = this.itemHelper.getItem(itemTpl);
+            if (!item[0])
             {
-                this.logger.warning(`Unable to find item with id ${itemTpl}, skipping inspection`);
+                this.logger.warning(this.localisationService.getText("inventory-unable_to_inspect_item_not_in_db", itemTpl));
+
                 return;
             }
 
-            fullProfile.characters.pmc.Info.Experience += item._props.ExamineExperience;
+            fullProfile.characters.pmc.Info.Experience += item[1]._props.ExamineExperience;
             fullProfile.characters.pmc.Encyclopedia[itemTpl] = false;
 
-            fullProfile.characters.scav.Info.Experience += item._props.ExamineExperience;
+            fullProfile.characters.scav.Info.Experience += item[1]._props.ExamineExperience;
             fullProfile.characters.scav.Encyclopedia[itemTpl] = false;
         }
 
@@ -773,12 +779,10 @@ export class InventoryController
     {
         for (const change of request.changedItems)
         {
-            const inventoryItem = pmcData.Inventory.items.find((x) => x._id === change._id);
+            const inventoryItem = pmcData.Inventory.items.find((item) => item._id === change._id);
             if (!inventoryItem)
             {
-                this.logger.error(
-                    `Unable to find inventory item: ${change._id} to auto-sort, YOU MUST RELOAD YOUR GAME`,
-                );
+                this.logger.error(this.localisationService.getText("inventory-unable_to_sort_inventory_restart_game", change._id));
 
                 continue;
             }

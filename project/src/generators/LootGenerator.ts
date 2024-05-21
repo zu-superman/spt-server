@@ -412,7 +412,7 @@ export class LootGenerator
         // No default preset found for weapon, choose a random one
         if (!chosenWeaponPreset)
         {
-            this.logger.warning(`Default preset for weapon ${chosenWeaponTpl} not found, choosing random instead`);
+            this.logger.warning(this.localisationService.getText("loot-default_preset_not_found_using_random", chosenWeaponTpl));
             chosenWeaponPreset = this.randomUtil.getArrayValue(this.presetHelper.getPresets(chosenWeaponTpl));
         }
 

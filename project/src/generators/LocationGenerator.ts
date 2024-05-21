@@ -168,7 +168,7 @@ export class LocationGenerator
         const staticContainerGroupData: IStaticContainer = db.locations[locationId].statics;
         if (!staticContainerGroupData)
         {
-            this.logger.warning(`Map: ${locationId} lacks a statics file, skipping container generation.`);
+            this.logger.warning(this.localisationService.getText("location-unable_to_generate_static_loot", locationId));
 
             return result;
         }
@@ -559,7 +559,7 @@ export class LocationGenerator
         const itemContainerDistribution = staticLootDist[containerTypeId]?.itemDistribution;
         if (!itemContainerDistribution)
         {
-            this.logger.warning(`Unable to acquire item distrubution for container:  ${containerTypeId}`);
+            this.logger.warning(this.localisationService.getText("location-missing_item_distribution_data", containerTypeId));
 
             return itemDistribution;
         }
@@ -726,7 +726,7 @@ export class LocationGenerator
 
             if (itemArray.length === 0)
             {
-                this.logger.warning(`Loot pool for position: ${spawnPoint.template.Id} is empty. Skipping`);
+                this.logger.warning(this.localisationService.getText("location-loot_pool_is_empty_skipping", spawnPoint.template.Id));
 
                 continue;
             }

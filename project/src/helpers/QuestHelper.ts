@@ -911,7 +911,7 @@ export class QuestHelper
         let questDetails = this.getQuestFromDb(questId, pmcProfile);
         if (!questDetails)
         {
-            this.logger.warning(`Unable to find quest: ${questId} from db, unable to give quest rewards`);
+            this.logger.warning(this.localisationService.getText("quest-unable_to_find_quest_in_db_no_quest_rewards", questId));
 
             return [];
         }

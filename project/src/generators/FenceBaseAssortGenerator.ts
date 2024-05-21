@@ -15,6 +15,7 @@ import { ConfigServer } from "@spt-aki/servers/ConfigServer";
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { FenceService } from "@spt-aki/services/FenceService";
 import { ItemFilterService } from "@spt-aki/services/ItemFilterService";
+import { LocalisationService } from "@spt-aki/services/LocalisationService";
 import { SeasonalEventService } from "@spt-aki/services/SeasonalEventService";
 import { HashUtil } from "@spt-aki/utils/HashUtil";
 
@@ -32,6 +33,7 @@ export class FenceBaseAssortGenerator
         @inject("PresetHelper") protected presetHelper: PresetHelper,
         @inject("ItemFilterService") protected itemFilterService: ItemFilterService,
         @inject("SeasonalEventService") protected seasonalEventService: SeasonalEventService,
+        @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("ConfigServer") protected configServer: ConfigServer,
         @inject("FenceService") protected fenceService: FenceService,
     )
@@ -199,7 +201,8 @@ export class FenceBaseAssortGenerator
         const ammoPenetrationPower = this.getAmmoPenetrationPower(rootItemDb);
         if (ammoPenetrationPower === null)
         {
-            this.logger.warning(`Ammo: ${rootItemDb._id} has no penetration value, skipping`);
+            this.logger.warning(this.localisationService.getText("fence-unable_to_get_ammo_penetration_value", rootItemDb._id));
+
             return false;
         }
 
@@ -215,11 +218,15 @@ export class FenceBaseAssortGenerator
     {
         if (this.itemHelper.isOfBaseclass(rootItemDb._id, BaseClasses.AMMO_BOX))
         {
-            const ammoTplInBox = rootItemDb._props.StackSlots[0]._props.filters[0].Filter[0];
-            const ammoItemDb = this.itemHelper.getItem(ammoTplInBox);
+            // Get the cartridge tpl found inside ammo box
+            const cartridgeTplInBox = rootItemDb._props.StackSlots[0]._props.filters[0].Filter[0];
+
+            // Look up cartridge tpl in db
+            const ammoItemDb = this.itemHelper.getItem(cartridgeTplInBox);
             if (!ammoItemDb[0])
             {
-                this.logger.warning(`Ammo: ${ammoTplInBox} not an item, skipping`);
+                this.logger.warning(this.localisationService.getText("fence-ammo_not_found_in_db", cartridgeTplInBox));
+
                 return null;
             }
 

@@ -318,9 +318,8 @@ export class GameController
             const trader = this.databaseServer.getTables().traders[traderKey];
             if (!trader?.base?.repair)
             {
-                this.logger.warning(
-                    `Trader ${trader.base._id} ${trader.base.nickname} is missing a repair object, adding in default values`,
-                );
+                this.logger.warning(this.localisationService.getText("trader-missing_repair_property_using_default",
+                    { traderId: trader.base._id, nickname: trader.base.nickname }));
                 trader.base.repair = this.cloner.clone(this.databaseServer.getTables().traders.ragfair.base.repair);
 
                 return;
@@ -328,9 +327,8 @@ export class GameController
 
             if (trader.base.repair?.quality === undefined)
             {
-                this.logger.warning(
-                    `Trader ${trader.base._id} ${trader.base.nickname} is missing a repair quality value, adding in default value`,
-                );
+                this.logger.warning(this.localisationService.getText("trader-missing_repair_quality_property_using_default",
+                    { traderId: trader.base._id, nickname: trader.base.nickname }));
                 trader.base.repair.quality = this.cloner.clone(
                     this.databaseServer.getTables().traders.ragfair.base.repair.quality,
                 );
@@ -346,15 +344,19 @@ export class GameController
         {
             if (!mapId)
             {
-                this.logger.warning(`Unable to add loot positions to map: ${mapId}, skipping`);
+                this.logger.warning(this.localisationService.getText("location-unable_to_add_custom_loot_position", mapId));
+
                 continue;
             }
+
             const mapLooseLoot: ILooseLoot = this.databaseServer.getTables().locations[mapId]?.looseLoot;
             if (!mapLooseLoot)
             {
-                this.logger.warning(`Map: ${mapId} has no loose loot data, skipping`);
+                this.logger.warning(this.localisationService.getText("location-map_has_no_loose_loot_data", mapId));
+
                 continue;
             }
+
             const positionsToAdd = looseLootPositionsToAdd[mapId];
             for (const positionToAdd of positionsToAdd)
             {
@@ -362,6 +364,7 @@ export class GameController
                 const existingLootPosition = mapLooseLoot.spawnpoints.find(
                     (x) => x.template.Id === positionToAdd.template.Id,
                 );
+
                 if (existingLootPosition)
                 {
                     existingLootPosition.template.Items.push(...positionToAdd.template.Items);
@@ -384,16 +387,19 @@ export class GameController
             const mapLooseLootData: ILooseLoot = this.databaseServer.getTables().locations[mapId]?.looseLoot;
             if (!mapLooseLootData)
             {
-                this.logger.warning(`Unable to adjust loot positions on map: ${mapId}`);
+                this.logger.warning(this.localisationService.getText("location-map_has_no_loose_loot_data", mapId));
+
                 continue;
             }
             const mapLootAdjustmentsDict = adjustments[mapId];
             for (const lootKey in mapLootAdjustmentsDict)
             {
-                const lootPostionToAdjust = mapLooseLootData.spawnpoints.find((x) => x.template.Id === lootKey);
+                const lootPostionToAdjust = mapLooseLootData.spawnpoints
+                    .find((spawnPoint) => spawnPoint.template.Id === lootKey);
                 if (!lootPostionToAdjust)
                 {
-                    this.logger.warning(`Unable to adjust loot position: ${lootKey} on map: ${mapId}`);
+                    this.logger.warning(this.localisationService.getText("location-unable_to_adjust_loot_position_on_map", { lootKey: lootKey, mapId: mapId }));
+
                     continue;
                 }
 

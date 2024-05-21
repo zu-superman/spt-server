@@ -65,10 +65,11 @@ export class BotController
 
         if (!value)
         {
-            this.logger.warning(`No value found for bot type ${type}, defaulting to 30`);
+            this.logger.warning(this.localisationService.getText("bot-bot_preset_count_value_missing", type));
 
             return 30;
         }
+
         return value;
     }
 

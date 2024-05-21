@@ -474,7 +474,7 @@ export class InraidController
             const pmcQuest = pmcProfile.Quests.find((x) => x.qid === quest.qid);
             if (!pmcQuest)
             {
-                this.logger.warning(`No PMC quest found for ID: ${quest.qid}`);
+                this.logger.warning(this.localisationService.getText("inraid-unable_to_migrate_pmc_quest_not_found_in_profile", quest.qid));
                 continue;
             }
 

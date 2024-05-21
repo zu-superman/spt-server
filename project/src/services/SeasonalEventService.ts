@@ -418,7 +418,7 @@ export class SeasonalEventService
         const botsToAddPerMap = this.seasonalEventConfig.eventBossSpawns[eventType.toLowerCase()];
         if (!botsToAddPerMap)
         {
-            this.logger.warning(`Unable to add ${eventType} bosses, eventBossSpawns is missing`);
+            this.logger.warning(`Unable to add: ${eventType} bosses, eventBossSpawns is missing`);
             return;
         }
         const mapKeys = Object.keys(botsToAddPerMap) ?? [];
@@ -428,7 +428,7 @@ export class SeasonalEventService
             const bossesToAdd = botsToAddPerMap[mapKey];
             if (!bossesToAdd)
             {
-                this.logger.warning(`Unable to add ${eventType} bosses to ${mapKey}`);
+                this.logger.warning(`Unable to add: ${eventType} bosses to: ${mapKey}`);
                 continue;
             }
             for (const boss of bossesToAdd)
