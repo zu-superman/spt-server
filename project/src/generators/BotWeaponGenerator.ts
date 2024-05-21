@@ -14,6 +14,7 @@ import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { EquipmentSlots } from "@spt/models/enums/EquipmentSlots";
 import { GenerateWeaponResult } from "@spt/models/spt/bots/GenerateWeaponResult";
+import { IGenerateWeaponRequest } from "@spt/models/spt/bots/IGenerateWeaponRequest";
 import { IBotConfig } from "@spt/models/spt/config/IBotConfig";
 import { IPmcConfig } from "@spt/models/spt/config/IPmcConfig";
 import { IRepairConfig } from "@spt/models/spt/config/IRepairConfig";
@@ -170,18 +171,21 @@ export class BotWeaponGenerator
         {
             const botEquipmentRole = this.botGeneratorHelper.getBotEquipmentRole(botRole);
             const modLimits = this.botWeaponModLimitService.getWeaponModLimits(botEquipmentRole);
+
+            const generateWeaponModsRequest: IGenerateWeaponRequest = {
+                weapon: weaponWithModsArray, // Will become hydrated array of weapon + mods
+                modPool: modPool,
+                weaponId: weaponWithModsArray[0]._id, // Weapon root id
+                parentTemplate: weaponItemTemplate,
+                modSpawnChances: modChances,
+                ammoTpl: ammoTpl,
+                botData: { role: botRole, level: botLevel, equipmentRole: botEquipmentRole },
+                modLimits: modLimits,
+                weaponStats: {},
+            };
             weaponWithModsArray = this.botEquipmentModGenerator.generateModsForWeapon(
                 sessionId,
-                weaponWithModsArray,
-                modPool,
-                weaponWithModsArray[0]._id, // Weapon root id
-                weaponItemTemplate,
-                modChances,
-                ammoTpl,
-                botRole,
-                botLevel,
-                modLimits,
-                botEquipmentRole,
+                generateWeaponModsRequest,
             );
         }
 
