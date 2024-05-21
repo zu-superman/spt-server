@@ -978,7 +978,7 @@ export class ProfileFixerService
         {
             if (!clothing[suitId])
             {
-                this.logger.error(this.localisationService.getText("fixer-mod_item_found", suitId));
+                this.logger.error(this.localisationService.getText("fixer-clothing_item_found", suitId));
                 if (this.coreConfig.fixes.removeModItemsFromProfile)
                 {
                     fullProfile.suits.splice(fullProfile.suits.indexOf(suitId), 1);
@@ -993,7 +993,7 @@ export class ProfileFixerService
             {
                 if (!this.traderHelper.traderEnumHasValue(activeQuest.traderId))
                 {
-                    this.logger.error(this.localisationService.getText("fixer-mod_item_found", activeQuest.traderId));
+                    this.logger.error(this.localisationService.getText("fixer-trader_found", activeQuest.traderId));
                     if (this.coreConfig.fixes.removeModItemsFromProfile)
                     {
                         this.logger.warning(
@@ -1040,7 +1040,7 @@ export class ProfileFixerService
         {
             if (!this.traderHelper.traderEnumHasValue(traderId))
             {
-                this.logger.error(this.localisationService.getText("fixer-mod_item_found", traderId));
+                this.logger.error(this.localisationService.getText("fixer-trader_found", traderId));
                 if (this.coreConfig.fixes.removeModItemsFromProfile)
                 {
                     this.logger.warning(`Non-default trader: ${traderId} removed from traderPurchases list in profile`);
