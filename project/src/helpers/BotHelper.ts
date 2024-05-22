@@ -7,7 +7,6 @@ import { IPmcConfig } from "@spt/models/spt/config/IPmcConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
 import { DatabaseServer } from "@spt/servers/DatabaseServer";
-import { LocalisationService } from "@spt/services/LocalisationService";
 import { RandomUtil } from "@spt/utils/RandomUtil";
 
 @injectable()
@@ -20,7 +19,6 @@ export class BotHelper
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
-        @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("ConfigServer") protected configServer: ConfigServer,
     )
     {
@@ -246,5 +244,16 @@ export class BotHelper
     protected getRandomizedPmcSide(): string
     {
         return this.randomUtil.getChance100(this.pmcConfig.isUsec) ? "Usec" : "Bear";
+    }
+
+    public getPmcNicknameOfMaxLength(userId: string, maxLength: number): string
+    {
+        // recurivse if name is longer than max characters allowed (15 characters)
+        const randomType = this.randomUtil.getInt(0, 1) === 0 ? "usec" : "bear";
+        const name
+            = this.randomUtil.getStringArrayValue(this.databaseServer.getTables().bots.types[randomType].firstName);
+        return name.length > maxLength
+            ? this.getPmcNicknameOfMaxLength(userId, maxLength)
+            : name;
     }
 }

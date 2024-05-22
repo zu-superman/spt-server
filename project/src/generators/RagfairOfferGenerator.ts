@@ -1,14 +1,16 @@
 import { inject, injectable } from "tsyringe";
 import { RagfairAssortGenerator } from "@spt/generators/RagfairAssortGenerator";
+import { BotHelper } from "@spt/helpers/BotHelper";
 import { HandbookHelper } from "@spt/helpers/HandbookHelper";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { PaymentHelper } from "@spt/helpers/PaymentHelper";
 import { PresetHelper } from "@spt/helpers/PresetHelper";
+import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { RagfairServerHelper } from "@spt/helpers/RagfairServerHelper";
 import { Item } from "@spt/models/eft/common/tables/IItem";
 import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
 import { IBarterScheme } from "@spt/models/eft/common/tables/ITrader";
-import { IRagfairOffer, OfferRequirement } from "@spt/models/eft/ragfair/IRagfairOffer";
+import { IRagfairOffer, IRagfairOfferUser, OfferRequirement } from "@spt/models/eft/ragfair/IRagfairOffer";
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { MemberCategory } from "@spt/models/enums/MemberCategory";
@@ -48,7 +50,9 @@ export class RagfairOfferGenerator
         @inject("TimeUtil") protected timeUtil: TimeUtil,
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("RagfairServerHelper") protected ragfairServerHelper: RagfairServerHelper,
+        @inject("ProfileHelper") protected profileHelper: ProfileHelper,
         @inject("HandbookHelper") protected handbookHelper: HandbookHelper,
+        @inject("BotHelper") protected botHelper: BotHelper,
         @inject("SaveServer") protected saveServer: SaveServer,
         @inject("PresetHelper") protected presetHelper: PresetHelper,
         @inject("RagfairAssortGenerator") protected ragfairAssortGenerator: RagfairAssortGenerator,
@@ -135,22 +139,13 @@ export class RagfairOfferGenerator
             }
         }
 
-        const itemCount = items.filter((x) => x.slotId === "hideout").length;
+        const itemRootCount = items.filter((item) => item.slotId === "hideout").length;
         const roublePrice = Math.round(this.convertOfferRequirementsIntoRoubles(offerRequirements));
 
         const offer: IRagfairOffer = {
             _id: this.hashUtil.generate(),
             intId: this.offerCounter,
-            user: {
-                id: this.getTraderId(userID),
-                memberType:
-                    userID === "ragfair" ? MemberCategory.DEFAULT : this.ragfairServerHelper.getMemberType(userID),
-                nickname: this.ragfairServerHelper.getNickname(userID),
-                rating: this.getRating(userID),
-                isRatingGrowing: this.getRatingGrowing(userID),
-                avatar: this.getAvatarUrl(isTrader, userID),
-                aid: this.ragfairServerHelper.getUserAid(userID),
-            },
+            user: this.createUserDataForFleaOffer(userID, isTrader),
             root: items[0]._id,
             items: itemsClone,
             itemsCost: Math.round(this.handbookHelper.getTemplatePrice(items[0]._tpl)), // Handbook price
@@ -165,12 +160,58 @@ export class RagfairOfferGenerator
             locked: false,
             unlimitedCount: false,
             notAvailable: false,
-            CurrentItemCount: itemCount,
+            CurrentItemCount: itemRootCount,
         };
 
         this.offerCounter++;
 
         return offer;
+    }
+
+    /**
+     * Create the user object stored inside each flea offer object
+     * @param userID user creating the offer
+     * @param isTrader Is the user creating the offer a trader
+     * @returns IRagfairOfferUser
+     */
+    createUserDataForFleaOffer(userID: string, isTrader: boolean): IRagfairOfferUser
+    {
+        // Trader offer
+        if (isTrader)
+        {
+            return {
+                id: userID,
+                memberType: MemberCategory.TRADER,
+            };
+        }
+
+        const isPlayerOffer = this.ragfairServerHelper.isPlayer(userID);
+        if (isPlayerOffer)
+        {
+            const playerProfile = this.profileHelper.getPmcProfile(userID);
+            return {
+                id: playerProfile._id,
+                memberType: MemberCategory.DEFAULT,
+                nickname: playerProfile.Info.Nickname,
+                rating: playerProfile.RagfairInfo.rating,
+                isRatingGrowing: playerProfile.RagfairInfo.isRatingGrowing,
+                avatar: null,
+                aid: playerProfile.aid,
+            };
+        }
+
+        // Regular old fake pmc offer
+        return {
+            id: userID,
+            memberType: MemberCategory.DEFAULT,
+            nickname: this.botHelper.getPmcNicknameOfMaxLength(userID, 50),
+            rating: this.randomUtil.getFloat(
+                this.ragfairConfig.dynamic.rating.min,
+                this.ragfairConfig.dynamic.rating.max),
+            isRatingGrowing: this.randomUtil.getBool(),
+            avatar: null,
+            aid: this.hashUtil.generateAccountId(),
+        };
     }
 
     /**

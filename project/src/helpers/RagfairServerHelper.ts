@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-import { DialogueHelper } from "@spt/helpers/DialogueHelper";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { TraderHelper } from "@spt/helpers/TraderHelper";
@@ -7,7 +6,6 @@ import { Item } from "@spt/models/eft/common/tables/IItem";
 import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
-import { MemberCategory } from "@spt/models/enums/MemberCategory";
 import { MessageType } from "@spt/models/enums/MessageType";
 import { Traders } from "@spt/models/enums/Traders";
 import { IQuestConfig } from "@spt/models/spt/config/IQuestConfig";
@@ -17,10 +15,8 @@ import { ConfigServer } from "@spt/servers/ConfigServer";
 import { DatabaseServer } from "@spt/servers/DatabaseServer";
 import { SaveServer } from "@spt/servers/SaveServer";
 import { ItemFilterService } from "@spt/services/ItemFilterService";
-import { LocaleService } from "@spt/services/LocaleService";
 import { MailSendService } from "@spt/services/MailSendService";
 import { ICloner } from "@spt/utils/cloners/ICloner";
-import { HashUtil } from "@spt/utils/HashUtil";
 import { RandomUtil } from "@spt/utils/RandomUtil";
 import { TimeUtil } from "@spt/utils/TimeUtil";
 
@@ -37,14 +33,11 @@ export class RagfairServerHelper
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
-        @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
         @inject("SaveServer") protected saveServer: SaveServer,
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
-        @inject("LocaleService") protected localeService: LocaleService,
-        @inject("DialogueHelper") protected dialogueHelper: DialogueHelper,
         @inject("TraderHelper") protected traderHelper: TraderHelper,
         @inject("MailSendService") protected mailSendService: MailSendService,
         @inject("ItemFilterService") protected itemFilterService: ItemFilterService,
@@ -239,68 +232,6 @@ export class RagfairServerHelper
         }
 
         return bias[Math.floor(Math.random() * bias.length)];
-    }
-
-    public getMemberType(userID: string): MemberCategory
-    {
-        if (this.isPlayer(userID))
-        {
-            // Player offer
-            return this.saveServer.getProfile(userID).characters.pmc.Info.AccountType;
-        }
-
-        if (this.isTrader(userID))
-        {
-            // trader offer
-            return MemberCategory.TRADER;
-        }
-
-        // generated PMC offer
-        return MemberCategory.DEFAULT;
-    }
-
-    public getUserAid(userID: string): number
-    {
-        if (this.isPlayer(userID))
-        {
-            // Player offer
-            return this.saveServer.getProfile(userID).characters.pmc.aid;
-        }
-
-        if (this.isTrader(userID))
-        {
-            // trader offer
-            return undefined;
-        }
-
-        // Generated PMC offer
-        return this.hashUtil.generateAccountId();
-    }
-
-    /**
-     * Get a player or traders nickname from their profile by their user id
-     * @param userID Sessionid/userid
-     * @returns Nickname of individual
-     */
-    public getNickname(userID: string): string
-    {
-        if (this.isPlayer(userID))
-        {
-            // player offer
-            return this.saveServer.getProfile(userID).characters.pmc.Info.Nickname;
-        }
-
-        if (this.isTrader(userID))
-        {
-            // trader offer
-            return this.databaseServer.getTables().traders[userID].base.nickname;
-        }
-
-        // generated offer
-        // recurivse if name is longer than max characters allowed (15 characters)
-        const type = this.randomUtil.getInt(0, 1) === 0 ? "usec" : "bear";
-        const name = this.randomUtil.getStringArrayValue(this.databaseServer.getTables().bots.types[type].firstName);
-        return name.length > 15 ? this.getNickname(userID) : name;
     }
 
     /**

@@ -1,4 +1,5 @@
 import { inject, injectable } from "tsyringe";
+import { BotHelper } from "@spt/helpers/BotHelper";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { PaymentHelper } from "@spt/helpers/PaymentHelper";
 import { PresetHelper } from "@spt/helpers/PresetHelper";
@@ -51,6 +52,7 @@ export class RagfairOfferHelper
         @inject("TraderHelper") protected traderHelper: TraderHelper,
         @inject("SaveServer") protected saveServer: SaveServer,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
+        @inject("BotHelper") protected botHelper: BotHelper,
         @inject("PaymentHelper") protected paymentHelper: PaymentHelper,
         @inject("PresetHelper") protected presetHelper: PresetHelper,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
@@ -538,7 +540,7 @@ export class RagfairOfferHelper
         // Used to replace tokens in sold message sent to player
         const tplVars: ISystemData = {
             soldItem: globalLocales[`${itemTpl} Name`] || itemTpl,
-            buyerNickname: this.ragfairServerHelper.getNickname(this.hashUtil.generate()),
+            buyerNickname: this.botHelper.getPmcNicknameOfMaxLength(this.hashUtil.generate(), 50),
             itemCount: boughtAmount,
         };
 
