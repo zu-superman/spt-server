@@ -351,7 +351,7 @@ export class PreSptModLoader implements IModLoader
         // Warning and allow loading if semver is not satisfied
         if (!satisfies(sptVersion, mod.sptVersion))
         {
-            this.logger.warning(this.localisationService.getText("modloader-outdated_sptversion_field", modName));
+            this.logger.warning(this.localisationService.getText("modloader-outdated_sptversion_field", { modName: modName, modVersion: mod.version, desiredSptVersion: mod.sptVersion }));
 
             return true;
         }

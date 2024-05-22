@@ -191,7 +191,7 @@
 	"modloader-mod_order_missing_from_json": "ModLoader: Mod %s is missing from order.json, adding",
 	"modloader-no_mods_loaded": "Errors were found with mods, NO MODS WILL BE LOADED",
 	"modloader-not_correct_mod_folder": "A folder called (%s) exists in your mods folder. You incorrectly installed a mod. You may have extracted the contents of a mod directly into the mod folder by mistake. Refer to the websites FAQ and the mods hub page on how to install mods correctly",
-	"modloader-outdated_sptVersion_field": "Mod %s is not compatible with the current version of SPT. You may encounter issues - no support will be provided!",
+	"modloader-outdated_sptversion_field": "Mod {{modName}} {{modVersion}} is not compatible with the current version of SPT. It was made for SPT: {{desiredSptVersion}} Please check for an updated version of this mod. You may encounter issues - no support will be provided!",
 	"modloader-outdated_dependency": "Mod {{mod}} requires {{modDependency}} version {{requiredVersion}}. Current installed version is {{currentVersion}}",
 	"modloader-skipped_mod": "Skipping loading of Mod: {{mod}}",
 	"modloader-user_mod_folder_missing": "ModLoader: user/mod folder missing, creating...",
