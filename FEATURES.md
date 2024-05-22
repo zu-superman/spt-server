@@ -13,7 +13,7 @@
 - [Flea market](#flea-market)
 - [Quests](#quests)
 - [Hideout](#hideout)
-- [presets](presets)
+- [Presets](#presets)
 - [Raids](#raids)
 - [Messages](#messages)
 - [Friend](#friend)
