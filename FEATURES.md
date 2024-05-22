@@ -1,3 +1,4 @@
+
 # Features
 
 ## Table of Contents
@@ -12,9 +13,10 @@
 - [Flea market](#flea-market)
 - [Quests](#quests)
 - [Hideout](#hideout)
-- [Weapon Building](#weapon-building)
+- [presets](presets)
 - [Raids](#raids)
 - [Messages](#messages)
+- [Friend](#friend)
 - [Events](#events)
 - [Modding](#modding)
 
@@ -49,6 +51,7 @@ The following profile types are available to start with when creating an account
 	- Left Behind
 	- Prepare To Escape
 	- Edge Of Darkness
+	- Unheard
 - Custom profiles
 	- SPT Easy Start
 		- Lots of money, quality of life skills to level 20, and player to level 69.
@@ -91,11 +94,18 @@ Bot data is emulated to mimic live bots as closely as possible. This includes th
 	- Kaban (*bossBoar*)
 		- Sniper Guard (*bossBoarSniper*)
 		- Guard (*followerBoar*)
+	- Kolontay (*bosskolontay*)
+		- Guard (*followerkolontayassault*)
+		- Guard (*followerkolontaysecurity*)
+	- Event bosses:
+		- Peacefull Zryachiy (*peacefullzryachiyevent*)
+		- Vengeful Zryachiy (*ravangezryachiyevent*)
 - Cultists
 	- Priest (*sectantPriest*)
 	- Warrior (*sectantWarrior*)
 - Raiders (*pmcBot*)
 - Rogues (*exUsec*)
+- Arena fighters (*arenaFighter*)
 - Santa (*gifter*) - *partially implemented*
 
 *PMCs are generated with a random type from a sub-set of the above list.*
@@ -111,20 +121,30 @@ Bots are generated with the following characteristics:
 	- Ammunition - *Weighted, semi-randomly selected*
 	- Gear - *Weighted, semi-randomly selected*
 	- Headgear Attachments - *Weighted, semi-randomly selected*
-- PMC Bots
-	- AI Type - *Randomly chosen from sub-set of possible bot types*
+	- Randomised durability - *Based on level and bot type*
+- PMC Bots:
+	- AI Type - * Weighted, randomly chosen from sub-set of possible bot types*
 	- Dogtags - *Random level & name*
-		- Chance of name being the name of a contributor to the project
+		- *Chance of name being the name of a contributor to the project*
+	- Names
+		- Chosen from list of community members/contributors/modders
+	- Level - *Chosen at random between Level 1 and player level + 10*
 	- Voices - *Randomly chosen Bear/USEC voices for each faction*
+	- Weapon optics - *Tied to weapon type e.g. No scopes on SMGs*
+	- Ammo - *Tied to level with more deadly ammo chosen at higher level*
+	- Gear - *Gear is tiered to progressivly improve the higher level they are*
+		- *Level-relative gear for PMCs*
+			- *Level  1- 15 Bots have lower-tier items*
+			- *Level 15- 22 Bots have access to flea gear but highly weighted to trader gear*
+			- *Level 23- 29 Bots have better access to mid-range gear*
+			- *Level 30- 50 Bots have access to high-tier gear but are slightly weighted to mid-tier*
+			- *Level 51- 100 Bots have Access to everything*
+		- *Randomisation system that picks from pool of all possible items in game to create weapon combos*
 
 Other bot generation systems/features include:
-
-- Loot item blacklist & whitelist
+- Loot item blacklists & whitelists
 - Loot items can be configured to be limited to a certain number based on bot type
-- Level-relative gear for PMCs from levels 1-15 and 15+
-	- Level 1-15 bots have lower-tier items
-	- Level 15+ bots have access to almost anything
-- Randomised gear and weapon durability based on bot type and level
+- Randomised weapon and equipment durability based on bot type and level*
 
 ## Inventory
 
@@ -199,7 +219,7 @@ The quest system includes the following features:
 - Daily Quests - *Accept, Replace, Turn-in Items, Complete*
 	- Simulates Daily and Weekly Quests
 	- Quest Replacement Fee
-- Scav Quests
+- Scav daily Quests
 - Trader items unlock through completion of quests
 - Receive messages from traders after interacting with a quest
 - Item rewards passed through messages
@@ -221,10 +241,11 @@ The hideout has the following features implemented:
 	- Heating
 		- Energy Regeneration
 		- Negative Effects Removal
+	- Hall of Fame
 	- Illumination
 	- Intel Centre
 		- ~~Unlocks Fence's Scav Quests~~ *not implemented - workaround: unlocks at level 5*
-		- ~~Reduces Insurance Return Time~~ *not implemented*
+		- Reduces Insurance Return Time
 		- Quest Currency Reward Boost
 	- Lavatory
 	- Library
@@ -232,12 +253,12 @@ The hideout has the following features implemented:
 	- Nutrition Unit
 	- Rest Space
 	- Scav Case
-		- Custom Reward System
+		- Custom Reward System that simulates live rewards
 	- Security
 	- Shooting Range
 	- Solar Power
 	- Stash
-		- Upgrades grant larger stash sizes
+		- Upgrades give larger stash sizes
 	- Vents
 	- Water Collector
 	- Workbench
@@ -247,11 +268,11 @@ The hideout has the following features implemented:
 	- Items are marked found-in-raid on completion
 	- Continues to track crafting progress even when server is not running
 
-## Weapon Building
-
-The weapon building system has been fully implemented:
+## Presets
 
 - Create Weapon Presets
+- Create equipment loadouts
+- Create magazine loadouts
 - Saving Presets
 - Load Presets
 
@@ -263,7 +284,8 @@ The in-raid systems included are as follows:
 	- Customs
 	- Factory Day
 	- Factory Night
-	- Ground Zero
+	- Ground Zero (Level 1-19)
+	- Ground Zero (Level 20+)
 	- Interchange
 	- Laboratory
 	- Lighthouse
@@ -275,8 +297,10 @@ The in-raid systems included are as follows:
 	- Loot spawning has been generated using over 100,000 EFT offline loot runs.
 	- Static Loot (in containers)
 		- Each container type can contain items appropriate to that container type found in offline EFT.
+		- Simulated container spawn chance system, *not all containers spawn every raid*
 	- Loose Loot (on map)
-		- Randomised loose items found on map in offline EFT.
+		- Randomised loose items found on map
+			- Based on loot dump data taken from many offline-raids in live EFT
 - Airdrops
 	- Randomised Spawn Chance
 	- Request with Red Flare
@@ -293,8 +317,10 @@ The in-raid systems included are as follows:
 		- Shoreline
 		- Streets
 		- Woods
-- Persisted Raid Damage - *extracting with injury will persist injury out of raid*
-- Scav Raids - *raid time and items are reduced to simulate entering a raid late*
+- Persisted Raid Damage - *extracting with injuries will persist injury out of raid*
+- Scav Raids
+	- *Customizable system of adjusting loot and time remaining to simulate joining an in-progress raid*
+	- *'Traitor' scavs that will attack you to take your loot*
 
 ## Messages
 
@@ -305,15 +331,23 @@ A messaging system has been implemented to allow for the following functionality
 - Receive all (or individual) attachments
 - Send messages to "Commando" friend to execute server commands
 
+## Friend
+Accessible via game menu / friend list
+- Responds to commands
+	- Give items
+	- Adjust player stats
+	- 'Gift' system
+		- Many hidden gift codes
+
 ## Events
 
 The following events have been implemented and have a set time period for when they will be active:
 
-- Snow
+- Weather seasons
 - Halloween
 - Christmas
 
 ## Modding
 
 - The Server project has been built to allow for extensive modifications to nearly any aspect and system used.
-- [Example mods](https://dev.sp-tarkov.com/chomp/ModExamples) are provided that cover the most common modding methods.
+- [Example mods](https://dev.sp-tarkov.com/chomp/ModExamples) are provided that cover the most common server modding methods.
