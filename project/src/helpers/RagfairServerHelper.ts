@@ -245,7 +245,7 @@ export class RagfairServerHelper
     {
         if (this.isPlayer(userID))
         {
-            // player offer
+            // Player offer
             return this.saveServer.getProfile(userID).characters.pmc.Info.AccountType;
         }
 
@@ -255,8 +255,26 @@ export class RagfairServerHelper
             return MemberCategory.TRADER;
         }
 
-        // generated offer
+        // generated PMC offer
         return MemberCategory.DEFAULT;
+    }
+
+    public getUserAid(userID: string): number
+    {
+        if (this.isPlayer(userID))
+        {
+            // Player offer
+            return this.saveServer.getProfile(userID).characters.pmc.aid;
+        }
+
+        if (this.isTrader(userID))
+        {
+            // trader offer
+            return undefined;
+        }
+
+        // Generated PMC offer
+        return this.hashUtil.generateAccountId();
     }
 
     /**
