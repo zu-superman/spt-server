@@ -73,9 +73,9 @@ export class RagfairOfferGenerator
      * @param barterScheme Cost of item (currency or barter)
      * @param loyalLevel Loyalty level needed to buy item
      * @param sellInOnePiece Flags sellInOnePiece to be true
-     * @returns IRagfairOffer
+     * @returns Created flea offer
      */
-    public createFleaOffer(
+    public createAndAddFleaOffer(
         userID: string,
         time: number,
         items: Item[],
@@ -515,7 +515,7 @@ export class RagfairOfferGenerator
             barterScheme = this.createCurrencyBarterScheme(itemWithChildren, isPackOffer);
         }
 
-        const offer = this.createFleaOffer(
+        const offer = this.createAndAddFleaOffer(
             randomUserId,
             this.timeUtil.getTimestamp(),
             itemWithChildren,
@@ -598,7 +598,7 @@ export class RagfairOfferGenerator
             const barterSchemeItems = assorts.barter_scheme[item._id][0];
             const loyalLevel = assorts.loyal_level_items[item._id];
 
-            const offer = this.createFleaOffer(traderID, time, items, barterSchemeItems, loyalLevel, false);
+            const offer = this.createAndAddFleaOffer(traderID, time, items, barterSchemeItems, loyalLevel, false);
 
             // Refresh complete, reset flag to false
             trader.base.refreshTraderRagfairOffers = false;

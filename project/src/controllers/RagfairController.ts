@@ -680,7 +680,7 @@ export class RagfairController
             return { _tpl: item._tpl, count: item.count, onlyFunctional: item.onlyFunctional };
         });
 
-        return this.ragfairOfferGenerator.createFleaOffer(
+        return this.ragfairOfferGenerator.createAndAddFleaOffer(
             sessionId,
             this.timeUtil.getTimestamp(),
             formattedItems,
