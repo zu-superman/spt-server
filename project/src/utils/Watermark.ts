@@ -95,6 +95,14 @@ export class Watermark
             this.text = this.text.concat([...modding]);
         }
 
+        if (this.sptConfig.customWatermarkLocaleKeys?.length > 0)
+        {
+            for (const key of this.sptConfig.customWatermarkLocaleKeys)
+            {
+                this.text.push(...["", this.localisationService.getText(key)]);
+            }
+        }
+
         this.setTitle();
         this.resetCursor();
         this.draw();
