@@ -21,6 +21,7 @@ import { ConfigServer } from "@spt/servers/ConfigServer";
 import { DatabaseServer } from "@spt/servers/DatabaseServer";
 import { SaveServer } from "@spt/servers/SaveServer";
 import { InsuranceService } from "@spt/services/InsuranceService";
+import { LocalisationService } from "@spt/services/LocalisationService";
 import { MailSendService } from "@spt/services/MailSendService";
 import { PaymentService } from "@spt/services/PaymentService";
 import { RagfairPriceService } from "@spt/services/RagfairPriceService";
@@ -54,6 +55,7 @@ export class InsuranceController
         @inject("InsuranceService") protected insuranceService: InsuranceService,
         @inject("MailSendService") protected mailSendService: MailSendService,
         @inject("RagfairPriceService") protected ragfairPriceService: RagfairPriceService,
+        @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("ConfigServer") protected configServer: ConfigServer,
         @inject("RecursiveCloner") protected cloner: ICloner,
     )
@@ -255,9 +257,14 @@ export class InsuranceController
             // The parent (not the hideout) could not be found. Skip and warn.
             if (!parentItem && insuredItem.parentId !== rootItemParentID)
             {
-                this.logger.warning(
-                    `Could not find parent for insured item - ID: ${insuredItem._id}, Template: ${insuredItem._tpl}, Parent ID: ${insuredItem.parentId}`,
-                );
+                this.logger.warning(this.localisationService
+                    .getText("insurance-unable_to_find_parent_of_item",
+                        {
+                            insuredItemId: insuredItem._id,
+                            insuredItemTpl: insuredItem._tpl,
+                            parentId: insuredItem.parentId,
+                        }));
+
                 continue;
             }
 
@@ -267,9 +274,12 @@ export class InsuranceController
                 // Make sure the template for the item exists.
                 if (!this.itemHelper.getItem(insuredItem._tpl)[0])
                 {
-                    this.logger.warning(
-                        `Could not find insured attachment in the database - ID: ${insuredItem._id}, Template: ${insuredItem._tpl}`,
-                    );
+                    this.logger.warning(this.localisationService.getText("insurance-unable_to_find_attachment_in_db",
+                        {
+                            insuredItemId: insuredItem._id,
+                            insuredItemTpl: insuredItem._tpl,
+                        }));
+
                     continue;
                 }
 
@@ -278,9 +288,13 @@ export class InsuranceController
                 if (!mainParent)
                 {
                     // Odd. The parent couldn't be found. Skip this attachment and warn.
-                    this.logger.warning(
-                        `Could not find main-parent for insured attachment - ID: ${insuredItem._id}, Template: ${insuredItem._tpl}, Parent ID: ${insuredItem.parentId}`,
-                    );
+                    this.logger.warning(this.localisationService.getText("insurance-unable_to_find_main_parent_for_attachment",
+                        {
+                            insuredItemId: insuredItem._id,
+                            insuredItemTpl: insuredItem._tpl,
+                            parentId: insuredItem.parentId,
+                        }));
+
                     continue;
                 }
 

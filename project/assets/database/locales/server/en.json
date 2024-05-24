@@ -657,5 +657,8 @@
 	"websocket-player_connected": "[WS] Player: %s has connected",
 	"websocket-received_message": "[WS] Received message from user %s ",
 	"websocket-socket_lost_deleting_handle": "[WS] Socket lost, deleting handle",
-	"websocket-started": "Started websocket at %s"
+	"websocket-started": "Started websocket at %s",
+	"insurance-unable_to_find_parent_of_item": "Could not find parent for insured item - ID: {{insuredItemId}}, Template: {{insuredItemTpl}}, Parent ID: {{parentId}}",
+	"insurance-unable_to_find_attachment_in_db": "Could not find insured attachment in the database - ID: {{insuredItemId}}, Template: {{insuredItemTpl}}",
+	"insurance-unable_to_find_main_parent_for_attachment": "Could not find main-parent for insured attachment - ID: {{insuredItemId}}, Template: {{insuredItemTpl}}, Parent ID: {{parentId}}"
 }
