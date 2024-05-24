@@ -289,7 +289,7 @@ export class PaymentService
             );
             this.httpResponse.appendErrorToOutput(
                 output,
-                this.localisationService.getText("payment-not_enough_money_to_complete_transation_short"),
+                this.localisationService.getText("payment-not_enough_money_to_complete_transation_short", amountToPay),
                 BackendErrorCodes.UNKNOWN_TRADING_ERROR,
             );
 
