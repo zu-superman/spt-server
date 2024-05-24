@@ -28,6 +28,14 @@ export class BotDifficultyHelper
         this.pmcConfig = this.configServer.getConfig(ConfigTypes.PMC);
     }
 
+    /**
+     * Get a difficulty object modified to handle fighting other PMCs
+     * @param pmcType 'bear or 'usec'
+     * @param difficulty easy / normal / hard / impossible
+     * @param usecType sptUsec
+     * @param bearType sptBear
+     * @returns Difficulty object
+     */
     public getPmcDifficultySettings(
         pmcType: "bear" | "usec",
         difficulty: string,
@@ -40,12 +48,69 @@ export class BotDifficultyHelper
         const friendlyType = pmcType === "bear" ? bearType : usecType;
         const enemyType = pmcType === "bear" ? usecType : bearType;
 
-        this.botHelper.addBotToEnemyList(difficultySettings, this.pmcConfig.enemyTypes, friendlyType); // Add generic bot types to enemy list
-        this.botHelper.addBotToEnemyList(difficultySettings, [enemyType, friendlyType], ""); // add same/opposite side to enemy list
+        // Is PMC hostile to other PMC side
+        const hostileToSameSide = this.randomUtil.getChance100(this.pmcConfig.chanceSameSideIsHostilePercent);
 
-        this.botHelper.randomizePmcHostility(difficultySettings);
+        // Add all non-PMC types to PMCs enemy list
+        this.addBotToEnemyList(difficultySettings, this.pmcConfig.enemyTypes, friendlyType);
+
+        // Add same/opposite side to enemy list
+        const hostilePMCTypes = hostileToSameSide
+            ? [enemyType, friendlyType]
+            : [enemyType];
+        this.addBotToEnemyList(difficultySettings, hostilePMCTypes);
+
+        if (hostileToSameSide)
+        {
+            this.setDifficultyToHostileToBearAndUsec(difficultySettings);
+        }
 
         return difficultySettings;
+    }
+
+    /**
+     * Add bot types to ENEMY_BOT_TYPES array
+     * @param difficultySettings Bot settings to alter
+     * @param typesToAdd Bot types to add to enemy list
+     * @param typeBeingEdited Bot type to ignore and not add to enemy list
+     */
+    protected addBotToEnemyList(difficultySettings: Difficulty, typesToAdd: string[], typeBeingEdited?: string): void
+    {
+        const enemyBotTypesKey = "ENEMY_BOT_TYPES";
+
+        // Null guard
+        if (!difficultySettings.Mind[enemyBotTypesKey])
+        {
+            difficultySettings.Mind[enemyBotTypesKey] = [];
+        }
+
+        const enemyArray = <string[]>difficultySettings.Mind[enemyBotTypesKey];
+        for (const botTypeToAdd of typesToAdd)
+        {
+            if (typeBeingEdited?.toLowerCase() === botTypeToAdd.toLowerCase())
+            {
+                this.logger.debug(`unable to add enemy ${botTypeToAdd} to its own enemy list, skipping`);
+                continue;
+            }
+
+            if (!enemyArray.includes(botTypeToAdd))
+            {
+                enemyArray.push(botTypeToAdd);
+            }
+        }
+    }
+
+    /**
+     * Configure difficulty settings to be hostile to USEC and BEAR
+     * Look up value in bot.json/chanceSameSideIsHostilePercent
+     * @param difficultySettings pmc difficulty settings
+     */
+    protected setDifficultyToHostileToBearAndUsec(difficultySettings: Difficulty): void
+    {
+        difficultySettings.Mind.CAN_RECEIVE_PLAYER_REQUESTS_BEAR = false;
+        difficultySettings.Mind.CAN_RECEIVE_PLAYER_REQUESTS_USEC = false;
+        difficultySettings.Mind.DEFAULT_USEC_BEHAVIOUR = "Attack";
+        difficultySettings.Mind.DEFAULT_BEAR_BEHAVIOUR = "Attack";
     }
 
     /**
@@ -56,29 +121,30 @@ export class BotDifficultyHelper
      */
     public getBotDifficultySettings(type: string, difficulty: string): Difficulty
     {
+        const botDb = this.databaseServer.getTables().bots;
+
         const desiredType = type.toLowerCase();
-        const bot = this.databaseServer.getTables().bots.types[desiredType];
+        const bot = botDb.types[desiredType];
         if (!bot)
         {
-            // get fallback
+            // No bot found, get fallback difficulty values
             this.logger.warning(this.localisationService.getText("bot-unable_to_get_bot_fallback_to_assault", type));
-            this.databaseServer.getTables().bots.types[desiredType] = this.cloner.clone(
-                this.databaseServer.getTables().bots.types.assault,
-            );
+            botDb.types[desiredType] = this.cloner.clone(botDb.types.assault);
         }
 
+        // Get settings from raw bot json template file
         const difficultySettings = this.botHelper.getBotTemplate(desiredType).difficulty[difficulty];
         if (!difficultySettings)
         {
+            // No bot settings found, use 'assault' bot difficulty instead
             this.logger.warning(
                 this.localisationService.getText("bot-unable_to_get_bot_difficulty_fallback_to_assault", {
                     botType: desiredType,
                     difficulty: difficulty,
                 }),
             );
-            this.databaseServer.getTables().bots.types[desiredType].difficulty[difficulty] = this.cloner.clone(
-                this.databaseServer.getTables().bots.types.assault.difficulty[difficulty],
-            );
+            botDb.types[desiredType].difficulty[difficulty]
+                = this.cloner.clone(botDb.types.assault.difficulty[difficulty]);
         }
 
         return this.cloner.clone(difficultySettings);

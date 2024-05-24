@@ -37,22 +37,6 @@ export class BotHelper
     }
 
     /**
-     * Randomize the chance the PMC will attack their own side
-     * Look up value in bot.json/chanceSameSideIsHostilePercent
-     * @param difficultySettings pmc difficulty settings
-     */
-    public randomizePmcHostility(difficultySettings: Difficulty): void
-    {
-        if (this.randomUtil.getChance100(this.pmcConfig.chanceSameSideIsHostilePercent))
-        {
-            difficultySettings.Mind.CAN_RECEIVE_PLAYER_REQUESTS_BEAR = false;
-            difficultySettings.Mind.CAN_RECEIVE_PLAYER_REQUESTS_USEC = false;
-            difficultySettings.Mind.DEFAULT_USEC_BEHAVIOUR = "Attack";
-            difficultySettings.Mind.DEFAULT_BEAR_BEHAVIOUR = "Attack";
-        }
-    }
-
-    /**
      * Is the passed in bot role a PMC (usec/bear/pmc)
      * @param botRole bot role to check
      * @returns true if is pmc
@@ -88,37 +72,6 @@ export class BotHelper
         }
 
         (<string[]>difficultySettings.Mind[friendlyBotTypesKey]).push(typeToAdd);
-    }
-
-    /**
-     * Add a bot to the ENEMY_BOT_TYPES array, do not add itself if its on the enemy list
-     * @param difficultySettings bot settings to alter
-     * @param typesToAdd bot type to add to enemy list
-     */
-    public addBotToEnemyList(difficultySettings: Difficulty, typesToAdd: string[], typeBeingEdited: string): void
-    {
-        const enemyBotTypesKey = "ENEMY_BOT_TYPES";
-
-        // Null guard
-        if (!difficultySettings.Mind[enemyBotTypesKey])
-        {
-            difficultySettings.Mind[enemyBotTypesKey] = [];
-        }
-
-        const enemyArray = <string[]>difficultySettings.Mind[enemyBotTypesKey];
-        for (const botTypeToAdd of typesToAdd)
-        {
-            if (botTypeToAdd.toLowerCase() === typeBeingEdited.toLowerCase())
-            {
-                this.logger.debug(`unable to add enemy ${botTypeToAdd} to its own enemy list, skipping`);
-                continue;
-            }
-
-            if (!enemyArray.includes(botTypeToAdd))
-            {
-                enemyArray.push(botTypeToAdd);
-            }
-        }
     }
 
     /**
