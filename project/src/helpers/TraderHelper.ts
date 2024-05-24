@@ -357,7 +357,13 @@ export class TraderHelper
                 > itemPurchased.upd.BuyRestrictionMax
             )
             {
-                throw new Error("Unable to purchase item, Purchase limit reached");
+                throw new Error(
+                    this.localisationService.getText("trader-unable_to_purchase_item_limit_reached",
+                        {
+                            traderId: traderId,
+                            limit: itemPurchased.upd.BuyRestrictionMax,
+                        }),
+                );
             }
             profile.traderPurchases[traderId][purchasedItem.itemId].count += purchasedItem.count;
             profile.traderPurchases[traderId][purchasedItem.itemId].purchaseTimestamp = currentTime;

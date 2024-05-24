@@ -24,6 +24,7 @@ import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { EventOutputHolder } from "@spt/routers/EventOutputHolder";
 import { ConfigServer } from "@spt/servers/ConfigServer";
 import { DatabaseServer } from "@spt/servers/DatabaseServer";
+import { LocalisationService } from "@spt/services/LocalisationService";
 import { PaymentService } from "@spt/services/PaymentService";
 import { ProfileFixerService } from "@spt/services/ProfileFixerService";
 import { ICloner } from "@spt/utils/cloners/ICloner";
@@ -45,6 +46,7 @@ export class RepeatableQuestController
         @inject("HttpResponseUtil") protected httpResponse: HttpResponseUtil,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
         @inject("ProfileFixerService") protected profileFixerService: ProfileFixerService,
+        @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("EventOutputHolder") protected eventOutputHolder: EventOutputHolder,
         @inject("PaymentService") protected paymentService: PaymentService,
         @inject("ObjectId") protected objectId: ObjectId,
@@ -497,7 +499,7 @@ export class RepeatableQuestController
         const output = this.eventOutputHolder.getOutput(sessionID);
         if (!repeatableToChange)
         {
-            const message = "Unable to find repeatable quest to replace";
+            const message = this.localisationService.getText("quest-unable_to_find_repeatable_to_replace");
             this.logger.error(message);
 
             return this.httpResponse.appendErrorToOutput(output, message);

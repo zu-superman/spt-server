@@ -521,9 +521,11 @@ export class LocationGenerator
         const countDistribution = staticLootDist[containerTypeId]?.itemcountDistribution;
         if (!countDistribution)
         {
-            this.logger.warning(
-                `Unable to acquire count distrubution for container:  ${containerTypeId} on: ${locationName}. defaulting to 0`,
-            );
+            this.logger.warning(this.localisationService.getText("location-unable_to_find_count_distribution_for_container",
+                {
+                    containerId: containerTypeId,
+                    locationName: locationName,
+                }));
 
             return 0;
         }

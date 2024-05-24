@@ -99,9 +99,7 @@ export class BotLootGenerator
             || !itemCounts.grenades.weights
         )
         {
-            this.logger.warning(
-                `Unable to generate bot loot for ${botRole} as bot.generation.items lacks data, skipping`,
-            );
+            this.logger.warning(this.localisationService.getText("bot-unable_to_generate_bot_loot", botRole));
 
             return;
         }

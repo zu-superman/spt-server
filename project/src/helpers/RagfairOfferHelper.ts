@@ -261,6 +261,7 @@ export class RagfairOfferHelper
                     offer.items[0]._tpl,
                 )} ${offer.items[0]._tpl}, cannot check if buy restriction reached`,
             );
+
             return false;
         }
 

@@ -278,7 +278,7 @@ export class SeasonalEventService
             }
         }
 
-        this.logger.warning("Unable to find a season using current date, defaulting to Summer");
+        this.logger.warning(this.localisationService.getText("season-no_matching_season_found_for_date"));
 
         return Season.SUMMER;
     }

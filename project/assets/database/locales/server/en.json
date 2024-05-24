@@ -660,5 +660,16 @@
 	"websocket-started": "Started websocket at %s",
 	"insurance-unable_to_find_parent_of_item": "Could not find parent for insured item - ID: {{insuredItemId}}, Template: {{insuredItemTpl}}, Parent ID: {{parentId}}",
 	"insurance-unable_to_find_attachment_in_db": "Could not find insured attachment in the database - ID: {{insuredItemId}}, Template: {{insuredItemTpl}}",
-	"insurance-unable_to_find_main_parent_for_attachment": "Could not find main-parent for insured attachment - ID: {{insuredItemId}}, Template: {{insuredItemTpl}}, Parent ID: {{parentId}}"
+	"insurance-unable_to_find_main_parent_for_attachment": "Could not find main-parent for insured attachment - ID: {{insuredItemId}}, Template: {{insuredItemTpl}}, Parent ID: {{parentId}}",
+	"quest-unable_to_remove_scav_quest_from_profile": "Unable to remove scav quest: {{questIdToRemove}} from profile: {{profileId}}",
+	"bot-unable_to_generate_bot_loot": "Unable to generate bot loot for: %s as the bots generation.items property lacks data, skipping bot",
+	"location-unable_to_find_count_distribution_for_container": "Unable to acquire count distrubution data for container: {{containerTypeId}} on: {{locationName}}. defaulting to 0",
+	"scav-unable_to_add_item_to_player_scav": "Unable to add: %s to player scav, not an item",
+	"hideout-unable_to_apply_stashsize_bonus_no_stash_found": "Unable to apply StashSize bonus, stash with id: %s not found in profile",
+	"hideout-craft_has_undefined_progress_value_defaulting": "Hideout craft: %s has an undefined progress property value, defaulting to 0",
+	"inventory-unable_to_remove_item_no_id_given": "Unable to remove item as no itemId supplied",
+	"inventory-unable_to_remove_item_id_not_found": "Unable to remove item with Id: {{childId}} from profile: {{profileId}} as it could not be found",
+	"season-no_matching_season_found_for_date": "Unable to find a season using the current date, defaulting to Summer",
+	"trader-unable_to_purchase_item_limit_reached": "Unable to purchase item from trader: {{traderId}} as their purchase limit of: {{limit}} has been reached",
+	"quest-unable_to_find_repeatable_to_replace": "Unable to find repeatable quest in profile to replace, skipping"
 }

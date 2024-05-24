@@ -157,7 +157,8 @@ export class PlayerScavGenerator
             const itemResult = this.itemHelper.getItem(tpl);
             if (!itemResult[0])
             {
-                this.logger.warning(`Unable to add ${tpl} to player scav, not an item`);
+                this.logger.warning(this.localisationService.getText("scav-unable_to_add_item_to_player_scav", tpl));
+
                 continue;
             }
 

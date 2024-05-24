@@ -171,12 +171,11 @@ export class HideoutHelper
                 const stashItem = pmcData.Inventory.items.find((x) => x._id === pmcData.Inventory.stash);
                 if (!stashItem)
                 {
-                    this.logger.warning(
-                        `Unable to apply StashSize bonus, stash with id: ${pmcData.Inventory.stash} not found`,
-                    );
+                    this.logger.warning(this.localisationService.getText("hideout-unable_to_apply_stashsize_bonus_no_stash_found", pmcData.Inventory.stash));
                 }
 
                 stashItem._tpl = bonus.templateId;
+
                 break;
             }
             case BonusType.MAXIMUM_ENERGY_RESERVE:
@@ -275,7 +274,7 @@ export class HideoutHelper
 
             if (craft.Progress === undefined || craft.Progress === null)
             {
-                this.logger.warning(`Craft ${prodId} has an undefined progress value, defaulting to 0`);
+                this.logger.warning(this.localisationService.getText("hideout-craft_has_undefined_progress_value_defaulting", prodId));
                 craft.Progress = 0;
             }
 

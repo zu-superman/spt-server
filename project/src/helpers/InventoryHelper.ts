@@ -577,7 +577,7 @@ export class InventoryHelper
     {
         if (!itemId)
         {
-            this.logger.warning("No itemId supplied, unable to remove item from inventory");
+            this.logger.warning(this.localisationService.getText("inventory-unable_to_remove_item_no_id_given"));
 
             return;
         }
@@ -605,9 +605,11 @@ export class InventoryHelper
 
             if (inventoryIndex === -1)
             {
-                this.logger.warning(
-                    `Unable to remove item with Id: ${childId} as it was not found in inventory ${profile._id}`,
-                );
+                this.logger.warning(this.localisationService.getText("inventory-unable_to_remove_item_id_not_found",
+                    {
+                        childId: childId,
+                        profileId: profile._id,
+                    }));
             }
 
             const insuredIndex = insuredItems.findIndex((item) => item.itemId === childId);
