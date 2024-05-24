@@ -177,7 +177,7 @@ export class DataCallbacks
 
         if (result === undefined)
         {
-            result = tables.locales.global[localeId];
+            result = tables.locales.global["en"];
         }
 
         return this.httpResponse.getUnclearedBody(result);
