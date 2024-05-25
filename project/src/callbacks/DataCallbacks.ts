@@ -202,6 +202,7 @@ export class DataCallbacks
         sessionID: string,
     ): IGetBodyResponseData<IGetItemPricesResponse>
     {
+        const traderId = url.replace("/client/items/prices/", "");
         const handbookPrices = this.ragfairController.getStaticPrices();
         const response: IGetItemPricesResponse = {
             supplyNextTime: 1672236024, // todo: get trader refresh time?
@@ -214,6 +215,7 @@ export class DataCallbacks
                 /* eslint-enable @typescript-eslint/naming-convention */
             },
         };
+
         return this.httpResponse.getBody(response);
     }
 }
