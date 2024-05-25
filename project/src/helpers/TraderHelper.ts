@@ -145,11 +145,20 @@ export class TraderHelper
 
         if (rawProfileTemplate.fleaBlockedDays > 0)
         {
-            pmcData.Info.Bans.push(
-                {
-                    banType: BanType.RAGFAIR,
-                    dateTime: this.timeUtil.getTimeStampFromNowDays(rawProfileTemplate.fleaBlockedDays),
-                });
+            const newBanDateTime = this.timeUtil.getTimeStampFromNowDays(rawProfileTemplate.fleaBlockedDays);
+            const existingBan = pmcData.Info.Bans.find((ban) => ban.banType === BanType.RAGFAIR);
+            if (existingBan)
+            {
+                existingBan.dateTime = newBanDateTime;
+            }
+            else
+            {
+                pmcData.Info.Bans.push(
+                    {
+                        banType: BanType.RAGFAIR,
+                        dateTime: newBanDateTime,
+                    });
+            }
         }
 
         if (traderID === Traders.JAEGER)
