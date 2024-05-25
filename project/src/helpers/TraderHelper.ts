@@ -128,10 +128,11 @@ export class TraderHelper
      */
     public resetTrader(sessionID: string, traderID: string): void
     {
+        const db = this.databaseServer.getTables();
         const account = this.saveServer.getProfile(sessionID);
         const pmcData = this.profileHelper.getPmcProfile(sessionID);
         const rawProfileTemplate: ProfileTraderTemplate
-            = this.databaseServer.getTables().templates.profiles[account.info.edition][pmcData.Info.Side.toLowerCase()]
+            = db.templates.profiles[account.info.edition][pmcData.Info.Side.toLowerCase()]
                 .trader;
 
         pmcData.TradersInfo[traderID] = {
@@ -139,9 +140,15 @@ export class TraderHelper
             loyaltyLevel: rawProfileTemplate.initialLoyaltyLevel[traderID] ?? 1,
             salesSum: rawProfileTemplate.initialSalesSum,
             standing: this.getStartingStanding(traderID, rawProfileTemplate),
-            nextResupply: this.databaseServer.getTables().traders[traderID].base.nextResupply,
-            unlocked: this.databaseServer.getTables().traders[traderID].base.unlockedByDefault,
+            nextResupply: db.traders[traderID].base.nextResupply,
+            unlocked: db.traders[traderID].base.unlockedByDefault,
         };
+
+        // Check if trader should be locked by default
+        if (rawProfileTemplate.lockedByDefaultOverride?.includes(traderID))
+        {
+            pmcData.TradersInfo[traderID].unlocked = false;
+        }
 
         if (rawProfileTemplate.fleaBlockedDays > 0)
         {

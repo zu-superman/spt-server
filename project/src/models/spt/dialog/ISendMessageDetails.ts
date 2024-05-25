@@ -47,4 +47,5 @@ export enum ProfileChangeEventType
     SKILL_POINTS = "SkillPoints",
     EXAMINE_ALL_ITEMS = "ExamineAllItems",
     UNLOCK_TRADER = "UnlockTrader",
+    ASSORT_UNLOCK_RULE = "AssortmentUnlockRule",
 }

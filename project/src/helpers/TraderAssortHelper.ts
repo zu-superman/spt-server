@@ -69,7 +69,8 @@ export class TraderAssortHelper
         }
 
         const traderClone = this.cloner.clone(this.databaseServer.getTables().traders[traderId]);
-        const pmcProfile = this.profileHelper.getPmcProfile(sessionId);
+        const fullProfile = this.profileHelper.getFullProfile(sessionId);
+        const pmcProfile = fullProfile.characters.pmc;
 
         if (traderId === Traders.FENCE)
         {
@@ -131,6 +132,12 @@ export class TraderAssortHelper
             flea,
         );
 
+        // Filter out root assorts that are blacklisted for this profile
+        if (fullProfile.spt.blacklistedItemTpls?.length > 0)
+        {
+            this.removeItemsFromAssort(traderClone.assort, fullProfile.spt.blacklistedItemTpls);
+        }
+
         // Multiply price if multiplier is other than 1
         if (this.traderConfig.traderPriceMultipler !== 1)
         {
@@ -138,6 +145,28 @@ export class TraderAssortHelper
         }
 
         return traderClone.assort;
+    }
+
+    /**
+     * Given the blacklist provided, remove root items from assort
+     * @param assortToFilter Trader assort to modify
+     * @param itemsTplsToRemove Item TPLs the assort should not have
+     */
+    protected removeItemsFromAssort(assortToFilter: ITraderAssort, itemsTplsToRemove: string[]): void
+    {
+        function isValid(item: Item, blacklist: string[]): boolean
+        {
+            // Is root item + blacklisted
+            if (item.parentId === "hideout" && blacklist.includes(item._tpl))
+            {
+                // We want it gone
+                return false;
+            }
+
+            return true;
+        }
+
+        assortToFilter.items = assortToFilter.items.filter((item) => isValid(item, itemsTplsToRemove));
     }
 
     /**

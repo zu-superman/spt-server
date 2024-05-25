@@ -40,5 +40,8 @@ export interface ProfileTraderTemplate
     initialStanding: number
     initialSalesSum: number
     jaegerUnlocked: boolean
+    /** How many days is usage of the flea blocked for upon profile creation */
     fleaBlockedDays?: number
+    /** What traders default to being locked on profile creation */
+    lockedByDefaultOverride?: string[]
 }

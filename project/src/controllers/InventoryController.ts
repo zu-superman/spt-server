@@ -1007,6 +1007,14 @@ export class InventoryController
                     pmcData.TradersInfo[mailEvent.entity].unlocked = true;
                     this.logger.success(`Trader ${mailEvent.entity} Unlocked`);
                     break;
+                case "AssortmentUnlockRule":
+                    if (!fullProfile.spt.blacklistedItemTpls)
+                    {
+                        fullProfile.spt.blacklistedItemTpls = [];
+                    }
+                    fullProfile.spt.blacklistedItemTpls.push(mailEvent.entity);
+                    this.logger.success(`Item ${mailEvent.entity} is now blacklisted`);
+                    break;
                 default:
                     this.logger.warning(`Unhandled profile reward event: ${mailEvent.Type}`);
                     break;

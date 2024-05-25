@@ -207,9 +207,14 @@ export interface DateTime
 
 export interface Spt
 {
+    /** What version of SPT was this profile made with */
     version: string
+    /** What mods has this profile loaded at any point in time */
     mods?: ModDetails[]
+    /** What gifts has this profile received and how many */
     receivedGifts: ReceivedGift[]
+    /** item TPLs blacklisted from being sold on flea for this profile */
+    blacklistedItemTpls?: string[]
 }
 
 export interface ModDetails
