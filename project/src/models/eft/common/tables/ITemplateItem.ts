@@ -466,6 +466,7 @@ export interface Slot
     _id: string
     _parent: string
     _props: SlotProps
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     _max_count?: number
     _required?: boolean
     _mergeSlotWithChildren?: boolean
@@ -493,6 +494,7 @@ export interface StackSlot
     _name?: string
     _id: string
     _parent: string
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     _max_count: number
     _props: StackSlotProps
     _proto: string
