@@ -89,6 +89,7 @@ export class GiftService
                     giftData.messageText,
                     giftData.items,
                     this.timeUtil.getHoursAsSeconds(giftData.collectionTimeHours),
+                    giftData.profileChangeEvents,
                 );
             }
         }
