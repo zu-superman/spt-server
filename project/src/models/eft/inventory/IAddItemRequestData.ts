@@ -9,5 +9,6 @@ export interface AddItem
 {
     count: number
     sptIsPreset?: boolean
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     item_id: string
 }

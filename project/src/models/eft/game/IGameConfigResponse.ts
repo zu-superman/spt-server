@@ -8,6 +8,7 @@ export interface IGameConfigResponse
     activeProfileId: string
     backend: Backend
     useProtobuf: boolean
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     utc_time: number
     /** Total in game time */
     totalInGame: number

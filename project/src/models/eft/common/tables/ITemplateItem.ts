@@ -294,7 +294,9 @@ export interface Props
     foodUseTime?: number
     foodEffectType?: string
     StimulatorBuffs?: string
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     effects_health?: IHealthEffect[] | Record<string, Record<string, number>>
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     effects_damage?: Record<string, IEffectDamageProps>
     MaximumNumberOfUsage?: number
     knifeHitDelay?: number
