@@ -225,9 +225,24 @@ export class TraderHelper
     }
 
     /**
+     * iterate over a profiles traders and ensure they have the correct loyaltyLevel for the player
+     * @param sessionId Profile to check
+     */
+    public validateTraderStandingsAndPlayerLevelForProfile(sessionId: string): void
+    {
+        const profile = this.profileHelper.getPmcProfile(sessionId);
+        const traders = Object.keys(this.databaseServer.getTables().traders);
+        for (const trader of traders)
+        {
+            this.lvlUp(trader, profile);
+        }
+    }
+
+    /**
      * Calculate traders level based on exp amount and increments level if over threshold
-     * @param traderID trader to check standing of
-     * @param pmcData profile to update trader in
+     * Also validates and updates player level if not correct based on XP value
+     * @param traderID Trader to check standing of
+     * @param pmcData Profile to update trader in
      */
     public lvlUp(traderID: string, pmcData: IPmcData): void
     {

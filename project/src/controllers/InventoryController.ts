@@ -7,6 +7,7 @@ import { PaymentHelper } from "@spt/helpers/PaymentHelper";
 import { PresetHelper } from "@spt/helpers/PresetHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { QuestHelper } from "@spt/helpers/QuestHelper";
+import { TraderHelper } from "@spt/helpers/TraderHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { Item } from "@spt/models/eft/common/tables/IItem";
 import { IAddItemsDirectRequest } from "@spt/models/eft/inventory/IAddItemsDirectRequest";
@@ -63,6 +64,7 @@ export class InventoryController
         @inject("RagfairOfferService") protected ragfairOfferService: RagfairOfferService,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
         @inject("PaymentHelper") protected paymentHelper: PaymentHelper,
+        @inject("TraderHelper") protected traderHelper: TraderHelper,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("PlayerService") protected playerService: PlayerService,
         @inject("LootGenerator") protected lootGenerator: LootGenerator,
@@ -965,15 +967,18 @@ export class InventoryController
             {
                 case "TraderSalesSum":
                     pmcData.TradersInfo[mailEvent.entity].salesSum = mailEvent.value;
+                    this.traderHelper.lvlUp(mailEvent.entity, pmcData);
                     this.logger.success(`Set trader ${mailEvent.entity}: Sales Sum to: ${mailEvent.value}`);
                     break;
                 case "TraderStanding":
                     pmcData.TradersInfo[mailEvent.entity].standing = mailEvent.value;
+                    this.traderHelper.lvlUp(mailEvent.entity, pmcData);
                     this.logger.success(`Set trader ${mailEvent.entity}: Standing to: ${mailEvent.value}`);
                     break;
                 case "ProfileLevel":
                     pmcData.Info.Experience = mailEvent.value;
-                    pmcData.Info.Level = this.playerService.calculateLevel(pmcData);
+                    // Will calculate level below
+                    this.traderHelper.validateTraderStandingsAndPlayerLevelForProfile(sessionId);
                     this.logger.success(`Set profile xp to: ${mailEvent.value}`);
                     break;
                 case "SkillPoints":
