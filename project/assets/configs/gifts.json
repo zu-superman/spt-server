@@ -5433,7 +5433,13 @@
                         "Type": "AssortmentUnlockRule",
                         "entity": "65573fa5655447403702a816",
                         "data": "65573fa5655447403702a816"
-                    }
+                    },
+					{
+						"_id": "6571e74a4a27570f5926ecee",
+						"Type": "UnlockTrader",
+						"value": 1,
+						"entity": "5c0647fdd443bc2504c2d371"
+					}
                 ]
 		}
     }
