@@ -36321,11 +36321,7 @@
                     "AccountType": 0,
                     "BannedState": false,
                     "BannedUntil": 0,
-                    "Bans": [{
-							"banType": "RagFair",
-							"dateTime": 1746651600
-						}
-					],
+                    "Bans": [],
                     "Experience": 0,
                     "GameVersion": "tournament_live",
                     "IsStreamerModeAvailable": false,
@@ -36760,7 +36756,8 @@
                 },
                 "initialSalesSum": 0,
                 "initialStanding": 0.2,
-                "jaegerUnlocked": false
+                "jaegerUnlocked": false,
+				"fleaBlockedDays": 365
             },
             "weaponbuilds": {}
         },
@@ -37263,11 +37260,7 @@
                     "AccountType": 0,
                     "BannedState": false,
                     "BannedUntil": 0,
-                    "Bans": [{
-							"banType": "RagFair",
-							"dateTime": 1746651600
-						}
-					],
+                    "Bans": [],
                     "Experience": 0,
                     "GameVersion": "tournament_live",
                     "IsStreamerModeAvailable": false,
@@ -37700,7 +37693,8 @@
                 },
                 "initialSalesSum": 0,
                 "initialStanding": 0.2,
-                "jaegerUnlocked": false
+                "jaegerUnlocked": false,
+				"fleaBlockedDays": 365
             },
             "weaponbuilds": {}
         }

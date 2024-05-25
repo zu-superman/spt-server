@@ -79,6 +79,18 @@ export class TimeUtil
     }
 
     /**
+     * Get timestamp of today + passed in day count
+     * @param daysFromNow Days from now
+     */
+    public getTimeStampFromNowDays(daysFromNow: number): number
+    {
+        const currentTimeStamp = this.getTimestamp();
+        const desiredDaysAsSeconds = this.getHoursAsSeconds(daysFromNow * 24);
+
+        return currentTimeStamp + desiredDaysAsSeconds;
+    }
+
+    /**
      * Gets the current time in UTC in a format suitable for mail in EFT.
      *
      * @returns {string} The current time as 'HH:MM' in UTC.

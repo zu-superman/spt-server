@@ -3,6 +3,7 @@ import { HandbookHelper } from "@spt/helpers/HandbookHelper";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
+import { BanType } from "@spt/models/eft/common/tables/IBotBase";
 import { Item } from "@spt/models/eft/common/tables/IItem";
 import { ProfileTraderTemplate } from "@spt/models/eft/common/tables/IProfileTemplate";
 import { ITraderAssort, ITraderBase, LoyaltyLevel } from "@spt/models/eft/common/tables/ITrader";
@@ -141,6 +142,15 @@ export class TraderHelper
             nextResupply: this.databaseServer.getTables().traders[traderID].base.nextResupply,
             unlocked: this.databaseServer.getTables().traders[traderID].base.unlockedByDefault,
         };
+
+        if (rawProfileTemplate.fleaBlockedDays > 0)
+        {
+            pmcData.Info.Bans.push(
+                {
+                    banType: BanType.RAGFAIR,
+                    dateTime: this.timeUtil.getTimeStampFromNowDays(rawProfileTemplate.fleaBlockedDays),
+                });
+        }
 
         if (traderID === Traders.JAEGER)
         {

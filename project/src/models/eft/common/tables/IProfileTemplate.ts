@@ -8,6 +8,8 @@ export interface IProfileTemplates
     "Left Behind": IProfileSides
     "Prepare To Escape": IProfileSides
     "Edge Of Darkness": IProfileSides
+    "Unheard": IProfileSides
+    "Tournament": IProfileSides
     "SPT Developer": IProfileSides
     "SPT Easy start": IProfileSides
     "SPT Zero to hero": IProfileSides
@@ -38,4 +40,5 @@ export interface ProfileTraderTemplate
     initialStanding: number
     initialSalesSum: number
     jaegerUnlocked: boolean
+    fleaBlockedDays?: number
 }

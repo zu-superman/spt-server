@@ -95,7 +95,7 @@ export interface Settings
 
 export interface IBan
 {
-    type: BanType
+    banType: BanType
     dateTime: number
 }
 
