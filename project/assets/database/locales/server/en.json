@@ -131,6 +131,7 @@
 	"launcher-profile_spteasystart": "Lots of Roubles/Dollars/Euros, Some QoL skills are level 20, trader rep maxed, starting level is 15, no quests completed",
 	"launcher-profile_sptzerotohero": "Start with almost nothing, no Roubles/Dollars/Euros, no trader rep, 1 knife, no quests completed",
 	"launcher-profile_standard": "Same as live, basic stash size (10x28), 500,000 roubles",
+	"launcher-profile-tournament": "Has a tournament secure container and ER Fulcrum Bayonet melee weapon. Flea blacklisted. Send code 'TOURNAMENTGIFT' to SPT on friend list to acquire all profile items.",
 	"linux_use_priviledged_port_non_root": "Non-root processes cannot bind to ports below 1024",
 	"location-containers_generated_success": "A total of: %s static containers generated",
 	"location-critical_error_see_log": "A critical error occurred when generating loot, see server log for details",

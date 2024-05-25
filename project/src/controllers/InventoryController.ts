@@ -1003,7 +1003,7 @@ export class InventoryController
                     this.logger.success(`Trader ${mailEvent.entity} Unlocked`);
                     break;
                 default:
-                    this.logger.success(`Unhandled profile reward event: ${mailEvent.Type}`);
+                    this.logger.warning(`Unhandled profile reward event: ${mailEvent.Type}`);
                     break;
             }
         }
