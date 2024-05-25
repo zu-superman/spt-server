@@ -979,6 +979,11 @@ export class InventoryController
                 case "SkillPoints":
                 {
                     const profileSkill = pmcData.Skills.Common.find((x) => x.Id === mailEvent.entity);
+                    if (!profileSkill)
+                    {
+                        this.logger.warning(`Unable to find skill with name: ${mailEvent.entity}`);
+                        continue;
+                    }
                     profileSkill.Progress = mailEvent.value;
                     this.logger.success(`Set profile skill: ${mailEvent.entity} to: ${mailEvent.value}`);
                     break;
