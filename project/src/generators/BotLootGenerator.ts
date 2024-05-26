@@ -104,13 +104,13 @@ export class BotLootGenerator
             return;
         }
 
-        const backpackLootCount = Number(
+        let backpackLootCount = Number(
             this.weightedRandomHelper.getWeightedValue<number>(itemCounts.backpackLoot.weights),
         );
-        const pocketLootCount = Number(
+        let pocketLootCount = Number(
             this.weightedRandomHelper.getWeightedValue<number>(itemCounts.pocketLoot.weights),
         );
-        const vestLootCount = this.weightedRandomHelper.getWeightedValue<number>(itemCounts.vestLoot.weights);
+        let vestLootCount = this.weightedRandomHelper.getWeightedValue<number>(itemCounts.vestLoot.weights);
         const specialLootItemCount = Number(
             this.weightedRandomHelper.getWeightedValue<number>(itemCounts.specialItems.weights),
         );
@@ -120,14 +120,23 @@ export class BotLootGenerator
         const foodItemCount = Number(this.weightedRandomHelper.getWeightedValue<number>(itemCounts.food.weights));
         const drinkItemCount = Number(this.weightedRandomHelper.getWeightedValue<number>(itemCounts.drink.weights));
 
-        const currencyItemCount = Number(
+        let currencyItemCount = Number(
             this.weightedRandomHelper.getWeightedValue<number>(itemCounts.currency.weights),
         );
 
         const stimItemCount = Number(this.weightedRandomHelper.getWeightedValue<number>(itemCounts.stims.weights));
         const grenadeCount = Number(this.weightedRandomHelper.getWeightedValue<number>(itemCounts.grenades.weights));
 
-        // Forced pmc healing loot
+        // If bot has been flagged as not having loot, set below counts to 0
+        if (this.botConfig.disableLootOnBotTypes?.includes(botRole.toLowerCase()))
+        {
+            backpackLootCount = 0;
+            pocketLootCount = 0;
+            vestLootCount = 0;
+            currencyItemCount = 0;
+        }
+
+        // Forced pmc healing loot into secure container
         if (isPmc && this.pmcConfig.forceHealingItemsIntoSecure)
         {
             this.addForcedMedicalItemsToPmcSecure(botInventory, botRole);

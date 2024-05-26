@@ -43,6 +43,8 @@ export interface IBotConfig extends IBaseConfig
     currencyStackSize: Record<string, Record<string, Record<string, number>>>
     /** Tpls for low profile gas blocks */
     lowProfileGasBlockTpls: string[]
+    /** What bottypes should be excluded from having loot generated on them (backpack/pocket/vest) */
+    disableLootOnBotTypes: string[]
 }
 
 /** Number of bots to generate and store in cache on raid start per bot type */
