@@ -5441,6 +5441,23 @@
 						"entity": "5c0647fdd443bc2504c2d371"
 					}
                 ]
-		}
+		},
+		"HIDEOUTCAT": {
+            "items": [
+                {
+                    "_id": "64b93751523fc8b45103fa54",
+                    "_tpl": "6638a5474e92f038531e210e",
+                    "upd": {
+                        "StackObjectsCount": 1
+                    },
+                    "parentId": "62b997444agc8eb4cf013234",
+                    "slotId": "main"
+                }
+            ],
+            "sender": "System",
+            "associatedEvent": "Promo",
+            "collectionTimeHours": 72,
+            "messageText": "Hideout cat."
+        }
     }
 }
