@@ -1364,7 +1364,16 @@ export class ItemHelper
     {
         // Get cartridge properties and max allowed stack size
         const cartridgeDetails = this.getItem(cartridgeTpl);
-        const cartridgeMaxStackSize = cartridgeDetails[1]._props.StackMaxSize;
+        if (!cartridgeDetails[0])
+        {
+            this.logger.error(this.localisationService.getText("item-invalid_tpl_item", cartridgeTpl));
+        }
+
+        const cartridgeMaxStackSize = cartridgeDetails[1]._props?.StackMaxSize;
+        if (!cartridgeMaxStackSize)
+        {
+            this.logger.error(`Item with tpl: ${cartridgeTpl} lacks a _props or StackMaxSize property`);
+        }
 
         // Get max number of cartridges in magazine, choose random value between min/max
         const magazineCartridgeMaxCount = this.isOfBaseclass(magTemplate._id, BaseClasses.SPRING_DRIVEN_CYLINDER)
