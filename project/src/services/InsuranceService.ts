@@ -517,33 +517,18 @@ export class InsuranceService
      * @param traderId Trader item is insured with
      * @returns price in roubles
      */
-    public getPremium(pmcData: IPmcData, inventoryItem: Item, traderId: string): number
+    public getRoublePriceToInsureItemWithTrader(pmcData: IPmcData, inventoryItem: Item, traderId: string): number
     {
-        let insuranceMultiplier = this.insuranceConfig.insuranceMultiplier[traderId];
-        if (!insuranceMultiplier)
-        {
-            insuranceMultiplier = 0.3;
-            this.logger.warning(
-                this.localisationService.getText("insurance-missing_insurance_price_multiplier", traderId),
-            );
-        }
+        const price = this.itemHelper.getStaticItemPrice(inventoryItem._tpl)
+          * (this.traderHelper.getLoyaltyLevel(traderId, pmcData).insurance_price_coef / 100);
 
-        // Multiply item handbook price by multiplier in config to get the new insurance price
-        let pricePremium = this.itemHelper.getStaticItemPrice(inventoryItem._tpl) * insuranceMultiplier;
-        const coef = this.traderHelper.getLoyaltyLevel(traderId, pmcData).insurance_price_coef;
-
-        if (coef > 0)
-        {
-            pricePremium *= 1 - this.traderHelper.getLoyaltyLevel(traderId, pmcData).insurance_price_coef / 100;
-        }
-
-        return Math.round(pricePremium);
+        return Math.ceil(price);
     }
 
     /**
      * Returns the ID that should be used for a root-level Item's parentId property value within in the context of insurance.
-     *
-     * @returns The ID.
+     * @param sessionID Players id
+     * @returns The root item Id.
      */
     public getRootItemParentID(sessionID: string): string
     {

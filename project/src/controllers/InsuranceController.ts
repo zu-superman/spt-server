@@ -681,7 +681,9 @@ export class InsuranceController
         {
             itemsToPay.push({
                 id: this.roubleTpl, // TODO: update to handle different currencies
-                count: Math.round(this.insuranceService.getPremium(pmcData, inventoryItemsHash[key], body.tid)),
+                count: this.insuranceService.getRoublePriceToInsureItemWithTrader(
+                    pmcData, inventoryItemsHash[key],
+                    body.tid),
             });
         }
 
@@ -745,9 +747,9 @@ export class InsuranceController
                     this.logger.debug(`Item with id: ${itemId} missing from player inventory, skipping`);
                     continue;
                 }
-                items[inventoryItemsHash[itemId]._tpl] = Math.round(
-                    this.insuranceService.getPremium(pmcData, inventoryItemsHash[itemId], trader),
-                );
+                items[inventoryItemsHash[itemId]._tpl] = this.insuranceService.getRoublePriceToInsureItemWithTrader(
+                    pmcData, inventoryItemsHash[itemId],
+                    trader);
             }
 
             response[trader] = items;
