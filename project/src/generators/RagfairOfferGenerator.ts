@@ -185,17 +185,17 @@ export class RagfairOfferGenerator
             };
         }
 
-        const isPlayerOffer = this.ragfairServerHelper.isPlayer(userID);
+        const isPlayerOffer = this.profileHelper.isPlayer(userID);
         if (isPlayerOffer)
         {
-            const playerProfile = this.profileHelper.getPmcProfile(userID);
+            const playerProfile = this.profileHelper.getPmcProfile(userID)!;
             return {
                 id: playerProfile._id,
                 memberType: MemberCategory.DEFAULT,
                 nickname: playerProfile.Info.Nickname,
                 rating: playerProfile.RagfairInfo.rating,
                 isRatingGrowing: playerProfile.RagfairInfo.isRatingGrowing,
-                avatar: null,
+                avatar: undefined,
                 aid: playerProfile.aid,
             };
         }
@@ -209,7 +209,7 @@ export class RagfairOfferGenerator
                 this.ragfairConfig.dynamic.rating.min,
                 this.ragfairConfig.dynamic.rating.max),
             isRatingGrowing: this.randomUtil.getBool(),
-            avatar: null,
+            avatar: undefined,
             aid: this.hashUtil.generateAccountId(),
         };
     }
@@ -271,7 +271,7 @@ export class RagfairOfferGenerator
      */
     protected getTraderId(userId: string): string
     {
-        if (this.ragfairServerHelper.isPlayer(userId))
+        if (this.profileHelper.isPlayer(userId))
         {
             return this.saveServer.getProfile(userId).characters.pmc._id;
         }
@@ -286,7 +286,7 @@ export class RagfairOfferGenerator
      */
     protected getRating(userId: string): number
     {
-        if (this.ragfairServerHelper.isPlayer(userId))
+        if (this.profileHelper.isPlayer(userId))
         {
             // Player offer
             return this.saveServer.getProfile(userId).characters.pmc.RagfairInfo.rating;
@@ -309,7 +309,7 @@ export class RagfairOfferGenerator
      */
     protected getRatingGrowing(userID: string): boolean
     {
-        if (this.ragfairServerHelper.isPlayer(userID))
+        if (this.profileHelper.isPlayer(userID))
         {
             // player offer
             return this.saveServer.getProfile(userID).characters.pmc.RagfairInfo.isRatingGrowing;
@@ -334,18 +334,18 @@ export class RagfairOfferGenerator
      */
     protected getOfferEndTime(userID: string, time: number): number
     {
-        if (this.ragfairServerHelper.isPlayer(userID))
+        if (this.profileHelper.isPlayer(userID))
         {
             // Player offer = current time + offerDurationTimeInHour;
             const offerDurationTimeHours
-                = this.databaseServer.getTables().globals.config.RagFair.offerDurationTimeInHour;
+                = this.databaseServer.getTables().globals!.config.RagFair.offerDurationTimeInHour;
             return this.timeUtil.getTimestamp() + Math.round(offerDurationTimeHours * TimeUtil.ONE_HOUR_AS_SECONDS);
         }
 
         if (this.ragfairServerHelper.isTrader(userID))
         {
             // Trader offer
-            return this.databaseServer.getTables().traders[userID].base.nextResupply;
+            return this.databaseServer.getTables().traders![userID].base.nextResupply;
         }
 
         // Generated fake-player offer
@@ -362,14 +362,14 @@ export class RagfairOfferGenerator
      * Create multiple offers for items by using a unique list of items we've generated previously
      * @param expiredOffers optional, expired offers to regenerate
      */
-    public async generateDynamicOffers(expiredOffers: Item[][] = null): Promise<void>
+    public async generateDynamicOffers(expiredOffers?: Item[][]): Promise<void>
     {
-        const replacingExpiredOffers = expiredOffers?.length > 0;
+        const replacingExpiredOffers = (expiredOffers?.length ?? 0) > 0;
         const config = this.ragfairConfig.dynamic;
 
         // get assort items from param if they exist, otherwise grab freshly generated assorts
         const assortItemsToProcess: Item[][] = replacingExpiredOffers
-            ? expiredOffers
+            ? expiredOffers!
             : this.ragfairAssortGenerator.getAssortItems();
 
         // Store all functions to create an offer for every item and pass into Promise.all to run async
@@ -658,7 +658,7 @@ export class RagfairOfferGenerator
         // Add any missing properties to first item in array
         this.addMissingConditions(itemWithMods[0]);
 
-        if (!(this.ragfairServerHelper.isPlayer(userID) || this.ragfairServerHelper.isTrader(userID)))
+        if (!(this.profileHelper.isPlayer(userID) || this.ragfairServerHelper.isTrader(userID)))
         {
             const parentId = this.getDynamicConditionIdForTpl(itemDetails._id);
             if (!parentId)
