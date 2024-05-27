@@ -41,11 +41,11 @@
     },
     "head": {
       "5cc084dd14c02e000b0550a3": 1,
-      "5fdb7571e4ed5b5ea251e529": 1,
-      "62a9e7d15ea3b87d6f642a28": 1,
-      "619f94f5b90286142b59d45f": 1,
-      "60a6aaad42fd2735e4589978": 1,
       "5fdb50bb2b730a787b3f78cf": 1,
+      "5fdb7571e4ed5b5ea251e529": 1,
+      "60a6aaad42fd2735e4589978": 1,
+      "619f94f5b90286142b59d45f": 1,
+      "62a9e7d15ea3b87d6f642a28": 1,
       "6574aa9a1b144de18c0fba45": 1
     },
     "voice": {
@@ -79,8 +79,8 @@
       "mod_equipment_000": 25,
       "mod_equipment_001": 25,
       "mod_equipment_002": 25,
-      "mod_nvg": 40,
       "mod_mount": 20,
+      "mod_nvg": 40,
       "right_side_plate": 75
     },
     "weaponMods": {
@@ -2215,7 +2215,6 @@
     "Jester_Stacks",
     "Ninjaweb",
     "Clodan",
-    "Bepis",
     "Wrecker",
     "Andrudis",
     "王哈桑ザ",
@@ -2246,7 +2245,6 @@
     "ColonelPeePantz",
     "Aethas",
     "cinna.toastie",
-    "kova",
     "Claus1978",
     "NugentGL",
     "Spock",
@@ -2387,12 +2385,10 @@
     "Echo55",
     "Arokar",
     "Skwizzy",
-    "AshleyShcaefferBMW",
     "DevilFlippy",
     "BaddestDragon",
     "JaydanCan",
     "MacrossMX7167",
-    "Borkel",
     "Capataina",
     "ChiNoel",
     "igorir3",
@@ -2502,15 +2498,30 @@
       "backpackLoot": {
         "weights": {
           "0": 1,
-          "3": 5,
-          "4": 7,
-          "5": 6,
-          "8": 6,
           "10": 5,
           "12": 4,
           "15": 4,
           "20": 3,
-          "23": 1
+          "23": 1,
+          "3": 5,
+          "4": 7,
+          "5": 6,
+          "8": 6
+        },
+        "whitelist": []
+      },
+      "currency": {
+        "weights": {
+          "0": 5,
+          "1": 1
+        },
+        "whitelist": []
+      },
+      "drink": {
+        "weights": {
+          "0": 5,
+          "1": 5,
+          "2": 1
         },
         "whitelist": []
       },
@@ -2522,26 +2533,11 @@
         },
         "whitelist": []
       },
-	  "food": {
+      "food": {
         "weights": {
           "0": 5,
           "1": 5,
           "2": 2
-        },
-        "whitelist": []
-      },
-	  "drink": {
-        "weights": {
-          "0": 5,
-          "1": 5,
-          "2": 1
-        },
-        "whitelist": []
-      },
-	  "currency": {
-        "weights": {
-          "0": 5,
-          "1": 1
         },
         "whitelist": []
       },
