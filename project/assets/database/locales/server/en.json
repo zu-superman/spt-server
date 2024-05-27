@@ -572,7 +572,7 @@
     "ragfair-trader_missing_base_file": "Unable to check refresh status as trader: %s lacks a base file",
     "ragfair-unable_to_adjust_stack_count_assort_not_found": "Trader: {{traderId}} flea offer: {{offerId}} could not have its stack count adjusted to match traders assort value (assort not found)",
     "ragfair-unable_to_find_item_in_inventory": "Unable to find item with id: {{id}} in inventory",
-    "ragfair-unable_to_find_item_price_for_item_in_flea_handbook": "Unable to find live-flea or handbook price for %s, defaulting to 1, if this is a modded item contact the mod author",
+    "ragfair-unable_to_find_item_price_for_item_in_flea_handbook": "Unable to find live-flea or handbook price for: {{tpl}} {{itemName}}, defaulting to 1, if this is a modded item contact the mod author",
     "ragfair-unable_to_find_locale_by_key": "Unable to find EFT locale with key: %s",
     "ragfair-unable_to_find_offer_to_remove": "Unable to find offer with id: %s to remove",
     "ragfair-unable_to_find_preset_with_id": "Unable to find preset with id: %s, using existing price of existing weapon base",

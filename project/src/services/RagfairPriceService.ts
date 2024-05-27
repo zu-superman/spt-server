@@ -93,8 +93,10 @@ export class RagfairPriceService implements OnLoad
         let itemPrice = this.getDynamicPriceForItem(tplId) || this.getStaticPriceForItem(tplId);
         if (itemPrice === undefined)
         {
+            const itemFromDb = this.itemHelper.getItem(tplId);
+            const itemName = itemFromDb[0] ? itemFromDb[1]?._name : "";
             this.logger.warning(
-                this.localisationService.getText("ragfair-unable_to_find_item_price_for_item_in_flea_handbook", tplId),
+                this.localisationService.getText("ragfair-unable_to_find_item_price_for_item_in_flea_handbook", { tpl: tplId, name: itemName }),
             );
         }
 
