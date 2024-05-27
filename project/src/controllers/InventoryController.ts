@@ -33,6 +33,7 @@ import { ISetFavoriteItems } from "@spt/models/eft/inventory/ISetFavoriteItems";
 import { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRouterResponse";
 import { ISptProfile } from "@spt/models/eft/profile/ISptProfile";
 import { BackendErrorCodes } from "@spt/models/enums/BackendErrorCodes";
+import { HideoutAreas } from "@spt/models/enums/HideoutAreas";
 import { SkillTypes } from "@spt/models/enums/SkillTypes";
 import { Traders } from "@spt/models/enums/Traders";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
@@ -1001,11 +1002,13 @@ export class InventoryController
                         fullProfile,
                     );
                     this.logger.success(`Flagged ${itemsToInspect.length} items as examined`);
+
                     break;
                 }
                 case "UnlockTrader":
                     pmcData.TradersInfo[mailEvent.entity].unlocked = true;
                     this.logger.success(`Trader ${mailEvent.entity} Unlocked`);
+
                     break;
                 case "AssortmentUnlockRule":
                     if (!fullProfile.spt.blacklistedItemTpls)
@@ -1014,9 +1017,25 @@ export class InventoryController
                     }
                     fullProfile.spt.blacklistedItemTpls.push(mailEvent.entity);
                     this.logger.success(`Item ${mailEvent.entity} is now blacklisted`);
+
+                    break;
+                case "HideoutAreaLevel":
+                    const areaName = mailEvent.entity;
+                    const newValue = mailEvent.value;
+                    const hideoutAreaCode = HideoutAreas[areaName.toUpperCase()];
+                    if (hideoutAreaCode !== undefined)
+                    {
+                        const desiredArea = pmcData.Hideout.Areas.find((area) => area.type === hideoutAreaCode);
+                        if (desiredArea)
+                        {
+                            desiredArea.level = newValue;
+                        }
+                    }
+
                     break;
                 default:
                     this.logger.warning(`Unhandled profile reward event: ${mailEvent.Type}`);
+
                     break;
             }
         }

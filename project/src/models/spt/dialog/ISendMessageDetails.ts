@@ -48,4 +48,5 @@ export enum ProfileChangeEventType
     EXAMINE_ALL_ITEMS = "ExamineAllItems",
     UNLOCK_TRADER = "UnlockTrader",
     ASSORT_UNLOCK_RULE = "AssortmentUnlockRule",
+    HIDEOUT_AREA_LEVEL = "HideoutAreaLevel",
 }
