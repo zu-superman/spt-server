@@ -133,7 +133,7 @@
     "item-invalid_tpl_item": "Unable to find an item with tpl of: %s in Db",
     "launcher-missing_property": "Profile: %s is missing a descriptionLocaleKey property",
     "launcher-profile-edgeofdarkness": "Same as Prepare To Escape plus; larger stash size (10x68), extra equipment/items, higher starting reputation with traders, 1000 dollars, 500 euros",
-    "launcher-profile-tournament": "Has a tournament secure container and ER Fulcrum Bayonet melee weapon. Flea blacklisted. Send code 'TOURNAMENTGIFT' to SPT on friend list to acquire all profile items.",
+    "launcher-profile-tournament": "Has a tournament secure container and ER Fulcrum Bayonet melee weapon. Flea and fence blacklisted. All Ragman clothing unlocked. Send code 'TOURNAMENTGIFT' to SPT on friend list to unlock all profile functionality.",
     "launcher-profile-unheard": "Same as Edge Of Darkness plus; Expanded PMC pockets, increased fence standing, more slots on the flea market, Unique in-game melee weapon, Increased mail retention time, additional background screen option, additional equipment and resources in stash",
     "launcher-profile_leftbehind": "Same as Standard plus; larger stash size (10x38), extra equipment/items, 500 dollars",
     "launcher-profile_preparetoescape": "Same as Left Behind plus; larger stash size (10x48), extra equipment/items, higher starting reputation with traders, 250 euros",
