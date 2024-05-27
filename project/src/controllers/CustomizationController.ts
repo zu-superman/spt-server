@@ -47,7 +47,8 @@ export class CustomizationController
         // Return all suits that have a side array containing the players side (usec/bear)
         const matchedSuits = matchingSuits?.filter((x) => templates[x.suiteId]._props.Side.includes(pmcData.Info.Side));
         if (matchingSuits === undefined)
-            throw new Error(`Unable to get trader suits for trader ${traderID}`);
+            throw new Error(this.localisationService.getText("customisation-unable_to_get_trader_suits", traderID));
+
         return matchedSuits!;
     }
 
@@ -138,8 +139,9 @@ export class CustomizationController
         const foundSuit = this.getAllTraderSuits(sessionId).find((x) => x._id === offerId);
         if (foundSuit === undefined)
         {
-            throw new Error(`Unable to find suit with offer id ${offerId}`);
+            throw new Error(this.localisationService.getText("customisation-unable_to_find_suit_with_id", offerId));
         }
+
         return foundSuit;
     }
 
@@ -209,7 +211,7 @@ export class CustomizationController
 
         if (!relatedItem.upd || !relatedItem.upd.StackObjectsCount)
         {
-            throw new Error(`Suit with tpl id ${relatedItem._tpl} does not have upd or stack object count properties`);
+            throw new Error(this.localisationService.getText("customisation-suit_lacks_upd_or_stack_property", relatedItem._tpl));
         }
 
         if (relatedItem.upd.StackObjectsCount > clothingItem.count)

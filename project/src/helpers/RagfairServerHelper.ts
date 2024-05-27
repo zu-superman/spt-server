@@ -15,6 +15,7 @@ import { ConfigServer } from "@spt/servers/ConfigServer";
 import { DatabaseServer } from "@spt/servers/DatabaseServer";
 import { SaveServer } from "@spt/servers/SaveServer";
 import { ItemFilterService } from "@spt/services/ItemFilterService";
+import { LocalisationService } from "@spt/services/LocalisationService";
 import { MailSendService } from "@spt/services/MailSendService";
 import { ICloner } from "@spt/utils/cloners/ICloner";
 import { RandomUtil } from "@spt/utils/RandomUtil";
@@ -40,6 +41,7 @@ export class RagfairServerHelper
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("TraderHelper") protected traderHelper: TraderHelper,
         @inject("MailSendService") protected mailSendService: MailSendService,
+        @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("ItemFilterService") protected itemFilterService: ItemFilterService,
         @inject("ConfigServer") protected configServer: ConfigServer,
         @inject("RecursiveCloner") protected cloner: ICloner,
@@ -186,7 +188,7 @@ export class RagfairServerHelper
         const itemDetails = this.itemHelper.getItem(tplId);
         if (!itemDetails[0])
         {
-            throw new Error(`Item with tpl ${tplId} not found. Unable to generate a dynamic stack count.`);
+            throw new Error(this.localisationService.getText("ragfair-item_not_in_db_unable_to_generate_dynamic_stack_count", tplId));
         }
 
         // Item Types to return one of
@@ -241,7 +243,7 @@ export class RagfairServerHelper
      */
     public getPresetItems(item: Item): Item[]
     {
-        const preset = this.cloner.clone(this.databaseServer.getTables().globals.ItemPresets[item._id]._items);
+        const preset = this.cloner.clone(this.databaseServer.getTables().globals!.ItemPresets[item._id]._items);
         return this.itemHelper.reparentItemAndChildren(item, preset);
     }
 
@@ -253,12 +255,12 @@ export class RagfairServerHelper
     public getPresetItemsByTpl(item: Item): Item[]
     {
         const presets = [];
-        for (const itemId in this.databaseServer.getTables().globals.ItemPresets)
+        for (const itemId in this.databaseServer.getTables().globals!.ItemPresets)
         {
-            if (this.databaseServer.getTables().globals.ItemPresets[itemId]._items[0]._tpl === item._tpl)
+            if (this.databaseServer.getTables().globals!.ItemPresets[itemId]._items[0]._tpl === item._tpl)
             {
                 const presetItems = this.cloner.clone(
-                    this.databaseServer.getTables().globals.ItemPresets[itemId]._items,
+                    this.databaseServer.getTables().globals!.ItemPresets[itemId]._items,
                 );
                 presets.push(this.itemHelper.reparentItemAndChildren(item, presetItems));
             }

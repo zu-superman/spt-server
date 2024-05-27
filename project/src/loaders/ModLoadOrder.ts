@@ -48,7 +48,7 @@ export class ModLoadOrder
     {
         if (!this.mods.has(mod))
         {
-            throw new Error(`Mod: ${mod} isn't present.`);
+            throw new Error(this.localisationService.getText("modloader-mod_isnt_present", mod));
         }
 
         const config = this.mods.get(mod);
@@ -70,7 +70,7 @@ export class ModLoadOrder
     {
         if (!this.mods.has(mod))
         {
-            throw new Error(`Mod: ${mod} isn't present.`);
+            throw new Error(this.localisationService.getText("modloader-mod_isnt_present", mod));
         }
 
         const config = this.mods.get(mod);

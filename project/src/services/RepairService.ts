@@ -60,17 +60,17 @@ export class RepairService
         traderId: string,
     ): RepairDetails
     {
-        const itemToRepair = pmcData.Inventory.items.find((x) => x._id === repairItemDetails._id);
+        const itemToRepair = pmcData.Inventory.items.find((item) => item._id === repairItemDetails._id);
         if (!itemToRepair)
         {
-            throw new Error(`Item ${repairItemDetails._id} not found in profile inventory, unable to repair`);
+            throw new Error(this.localisationService.getText("repair-unable_to_find_item_in_inventory_cant_repair", repairItemDetails._id));
         }
 
         const priceCoef = this.traderHelper.getLoyaltyLevel(traderId, pmcData).repair_price_coef;
         const traderRepairDetails = this.traderHelper.getTrader(traderId, sessionID)?.repair;
         if (!traderRepairDetails)
         {
-            throw new Error(`Trader details for ${traderId} was not found`);
+            throw new Error(this.localisationService.getText("repair-unable_to_find_trader_details_by_id", traderId));
         }
         const repairQualityMultiplier = Number(traderRepairDetails.quality);
         const repairRate = priceCoef <= 0 ? 1 : priceCoef / 100 + 1;
@@ -92,7 +92,7 @@ export class RepairService
         const itemRepairCost = this.databaseServer.getTables().templates!.items[itemToRepair._tpl]._props.RepairCost;
         if (!itemRepairCost)
         {
-            throw new Error(`Item with tpl ${itemToRepair._tpl} has no repair cost`);
+            throw new Error(this.localisationService.getText("repair-unable_to_find_item_repair_cost", itemToRepair._tpl));
         }
         const repairCost = Math.round(
             itemRepairCost * repairItemDetails.count * repairRate * this.repairConfig.priceMultiplier,
@@ -196,7 +196,7 @@ export class RepairService
             const vestSkillToLevel = isHeavyArmor ? SkillTypes.HEAVY_VESTS : SkillTypes.LIGHT_VESTS;
             if (!repairDetails.repairPoints)
             {
-                throw new Error(`Repair for ${repairDetails.repairedItem._tpl} has no repair points`);
+                throw new Error(this.localisationService.getText("repair-item_has_no_repair_points", repairDetails.repairedItem._tpl));
             }
             const pointsToAddToVestSkill
                 = repairDetails.repairPoints * this.repairConfig.armorKitSkillPointGainPerRepairPointMultiplier;
@@ -229,8 +229,9 @@ export class RepairService
             // Limit gain to a max value defined in config.maxIntellectGainPerRepair
             if (!repairDetails.repairPoints)
             {
-                throw new Error(`Repair for ${repairDetails.repairedItem._tpl} has no repair points`);
+                throw new Error(this.localisationService.getText("repair-item_has_no_repair_points", repairDetails.repairedItem._tpl));
             }
+
             return Math.min(
                 repairDetails.repairPoints * intRepairMultiplier,
                 this.repairConfig.maxIntellectGainPerRepair.kit,
@@ -297,7 +298,7 @@ export class RepairService
         const itemToRepair = pmcData.Inventory.items.find((x: { _id: string }) => x._id === itemToRepairId);
         if (itemToRepair === undefined)
         {
-            throw new Error(`Item ${itemToRepairId} not found, unable to repair`);
+            throw new Error(this.localisationService.getText("repair-item_not_found_unable_to_repair", itemToRepairId));
         }
 
         const itemsDb = this.databaseServer.getTables().templates!.items;
@@ -322,10 +323,10 @@ export class RepairService
         // Find and use repair kit defined in body
         for (const repairKit of repairKits)
         {
-            const repairKitInInventory = pmcData.Inventory.items.find((x) => x._id === repairKit._id);
+            const repairKitInInventory = pmcData.Inventory.items.find((item) => item._id === repairKit._id);
             if (!repairKitInInventory)
             {
-                throw new Error(`Repair kit with id ${repairKit._id} was not found in the inventory`);
+                throw new Error(this.localisationService.getText("repair-repair_kit_not_found_in_inventory", repairKit._id));
             }
             const repairKitDetails = itemsDb[repairKitInInventory._tpl];
             const repairKitReductionAmount = repairKit.count;
@@ -564,7 +565,7 @@ export class RepairService
 
         if (!repairDetails.repairPoints)
         {
-            throw new Error(`Repair for ${repairDetails.repairedItem._tpl} has no repair points`);
+            throw new Error(this.localisationService.getText("repair-item_has_no_repair_points", repairDetails.repairedItem._tpl));
         }
         const durabilityToRestorePercent = repairDetails.repairPoints / template._props.MaxDurability!;
         const durabilityMultiplier = this.getDurabilityMultiplier(

@@ -544,7 +544,7 @@ export class MailSendService
         const senderId = this.getMessageSenderIdByType(messageDetails);
         if (!senderId)
         {
-            throw new Error(`Unable to find sender id for details ${messageDetails.sender}`);
+            throw new Error(this.localisationService.getText("mail-unable_to_find_message_sender_by_id", messageDetails.sender));
         }
         // Does dialog exist
         let senderDialog = dialogsInProfile[senderId];

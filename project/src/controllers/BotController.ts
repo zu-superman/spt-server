@@ -214,7 +214,7 @@ export class BotController
 
         if (raidSettings === undefined)
         {
-            throw new Error("Raid settings could not be loaded from ApplicationContext");
+            throw new Error(this.localisationService.getText("bot-unable_to_load_raid_settings_from_appcontext"));
         }
         const pmcLevelRangeForMap
             = this.pmcConfig.locationSpecificPmcLevelOverride[raidSettings.location.toLowerCase()];
@@ -376,7 +376,7 @@ export class BotController
 
         if (raidSettings === undefined)
         {
-            throw new Error("Raid settings could not be loaded from ApplicationContext");
+            throw new Error(this.localisationService.getText("bot-unable_to_load_raid_settings_from_appcontext"));
         }
         const pmcLevelRangeForMap
             = this.pmcConfig.locationSpecificPmcLevelOverride[raidSettings.location.toLowerCase()];

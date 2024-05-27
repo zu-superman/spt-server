@@ -51,7 +51,7 @@ export class DialogueController
     {
         if (this.dialogueChatBots.some((cb) => cb.getChatBot()._id === chatBot.getChatBot()._id))
         {
-            throw new Error(`The chat bot ${chatBot.getChatBot()._id} being registered already exists!`);
+            throw new Error(this.localisationService.getText("dialog-chatbot_id_already_exists", chatBot.getChatBot()._id));
         }
         this.dialogueChatBots.push(chatBot);
     }

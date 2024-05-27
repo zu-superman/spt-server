@@ -6,12 +6,14 @@ import { IUserDialogInfo } from "@spt/models/eft/profile/ISptProfile";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { ICoreConfig } from "@spt/models/spt/config/ICoreConfig";
 import { ConfigServer } from "@spt/servers/ConfigServer";
+import { LocalisationService } from "@spt/services/LocalisationService";
 
 @injectable()
 export class SptCommandoCommands implements IChatCommand
 {
     constructor(
         @inject("ConfigServer") protected configServer: ConfigServer,
+        @inject("LocalisationService") protected localisationService: LocalisationService,
         @injectAll("SptCommand") protected sptCommands: ISptCommand[],
     )
     {
@@ -33,7 +35,7 @@ export class SptCommandoCommands implements IChatCommand
     {
         if (this.sptCommands.some((c) => c.getCommand() === command.getCommand()))
         {
-            throw new Error(`The command "${command.getCommand()}" attempting to be registered already exists.`);
+            throw new Error(this.localisationService.getText("chat-unable_to_register_command_already_registered", command.getCommand()));
         }
         this.sptCommands.push(command);
     }

@@ -105,14 +105,16 @@ export class InsuranceService
         const markOfTheUnheardOnPlayer = pmcData.Inventory.items
             .filter((item) => item.slotId?.startsWith("SpecialSlot"))
             .find((item) => item._tpl === "65ddcc9cfa85b9f17d0dfb07");
+
         // Get insurance items for each trader
         for (const traderId in this.getInsurance(sessionID))
         {
             const traderBase = this.traderHelper.getTrader(traderId, sessionID);
             if (!traderBase)
             {
-                throw new Error(`The trader id ${traderId} was not found!`);
+                throw new Error(this.localisationService.getText("insurance-unable_to_find_trader_by_id", traderId));
             }
+
             let insuranceReturnTimestamp = this.getInsuranceReturnTimestamp(pmcData, traderBase);
             if (markOfTheUnheardOnPlayer)
             {
@@ -120,10 +122,9 @@ export class InsuranceService
                     .globals!.config.Insurance.CoefOfHavingMarkOfUnknown;
             }
             const dialogueTemplates = this.databaseServer.getTables().traders![traderId].dialogue;
-
             if (!dialogueTemplates)
             {
-                throw new Error(`The trader id ${traderId} does not have dialogues for insurance`);
+                throw new Error(this.localisationService.getText("insurance-trader_lacks_dialogue_property", traderId));
             }
 
             const systemData = {
@@ -131,10 +132,11 @@ export class InsuranceService
                 time: this.timeUtil.getTimeMailFormat(),
                 location: mapId,
             };
+
             const traderEnum = this.traderHelper.getTraderById(traderId);
             if (!traderEnum)
             {
-                throw new Error(`The trader id ${traderId} is missing from Traders enum`);
+                throw new Error(this.localisationService.getText("insurance-trader_missing_from_enum", traderId));
             }
             // Send "i will go look for your stuff" message from trader to player
             this.mailSendService.sendLocalisedNpcMessageToPlayer(
@@ -290,8 +292,9 @@ export class InsuranceService
                     ?.find((insuranceItem) => insuranceItem.id === insuredItem.itemId);
                 if (!inventoryInsuredItem)
                 {
-                    throw new Error(`Inventory insured item id ${insuredItem.itemId} was not found`);
+                    throw new Error(this.localisationService.getText("insurance-item_not_found_in_post_raid_data", insuredItem.itemId));
                 }
+
                 equipmentPkg.push({
                     pmcData: pmcData,
                     itemToReturnToPlayer: this.getInsuredItemDetails(
@@ -323,14 +326,14 @@ export class InsuranceService
                             const preRaidInventoryItem = preRaidGear.find((item) => item._id === softInsertChildModId);
                             if (!preRaidInventoryItem)
                             {
-                                throw new Error(`Preraid inventory item ${softInsertChildModId} was not found`);
+                                throw new Error(this.localisationService.getText("insurance-pre_raid_item_not_found", softInsertChildModId));
                             }
                             const inventoryInsuredItem = offraidData.insurance?.find(
                                 (insuranceItem) => insuranceItem.id === softInsertChildModId,
                             );
                             if (!inventoryInsuredItem)
                             {
-                                throw new Error(`Inventory insured item ${softInsertChildModId} was not found`);
+                                throw new Error(this.localisationService.getText("insurance-post_raid_item_not_found", softInsertChildModId));
                             }
                             equipmentPkg.push({
                                 pmcData: pmcData,
