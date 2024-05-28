@@ -30,8 +30,8 @@ import { ITraderConfig } from "@spt/models/spt/config/ITraderConfig";
 import { ITraderServiceModel } from "@spt/models/spt/services/ITraderServiceModel";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
 import { SaveServer } from "@spt/servers/SaveServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { InsuranceService } from "@spt/services/InsuranceService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { MailSendService } from "@spt/services/MailSendService";
@@ -59,7 +59,7 @@ export class InraidController
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("SaveServer") protected saveServer: SaveServer,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("PmcChatResponseService") protected pmcChatResponseService: PmcChatResponseService,
         @inject("MatchBotDetailsCacheService") protected matchBotDetailsCacheService: MatchBotDetailsCacheService,
         @inject("QuestHelper") protected questHelper: QuestHelper,
@@ -153,8 +153,7 @@ export class InraidController
 
         const locationName = serverProfile.inraid.location.toLowerCase();
 
-        const map: ILocationBase = this.databaseServer.getTables().locations[locationName].base;
-        const mapHasInsuranceEnabled = map.Insurance;
+        const map: ILocationBase = this.databaseService.getLocations()[locationName].base;
 
         const serverPmcProfile = serverProfile.characters.pmc;
         const serverScavProfile = serverProfile.characters.scav;
@@ -467,7 +466,7 @@ export class InraidController
      */
     protected migrateScavQuestProgressToPmcProfile(scavProfile: IPmcData, pmcProfile: IPmcData): void
     {
-        const achievements = this.databaseServer.getTables().templates.achievements;
+        const achievements = this.databaseService.getAchievements();
 
         for (const quest of scavProfile.Quests)
         {
@@ -676,7 +675,7 @@ export class InraidController
         const serverProfile = this.saveServer.getProfile(sessionId);
         const pmcData = serverProfile.characters.pmc;
 
-        const dialogueTemplates = this.databaseServer.getTables().traders[traderId].dialogue;
+        const dialogueTemplates = this.databaseService.getTraders()[traderId].dialogue;
         if (!dialogueTemplates)
         {
             this.logger.error(this.localisationService.getText("inraid-unable_to_deliver_item_no_trader_found", traderId));

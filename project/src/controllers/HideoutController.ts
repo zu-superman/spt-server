@@ -41,8 +41,8 @@ import { IHideoutConfig } from "@spt/models/spt/config/IHideoutConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { EventOutputHolder } from "@spt/routers/EventOutputHolder";
 import { ConfigServer } from "@spt/servers/ConfigServer";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
 import { SaveServer } from "@spt/servers/SaveServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { FenceService } from "@spt/services/FenceService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { PlayerService } from "@spt/services/PlayerService";
@@ -64,7 +64,7 @@ export class HideoutController
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("InventoryHelper") protected inventoryHelper: InventoryHelper,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
@@ -146,7 +146,7 @@ export class HideoutController
             return;
         }
 
-        const hideoutDataDb = this.databaseServer
+        const hideoutDataDb = this.databaseService
             .getTables()
             .hideout.areas.find((area) => area.type === request.areaType);
         if (!hideoutDataDb)
@@ -188,7 +188,8 @@ export class HideoutController
         output: IItemEventRouterResponse,
     ): void
     {
-        const db = this.databaseServer.getTables();
+        const hideout = this.databaseService.getHideout();
+        const globals = this.databaseService.getGlobals();
 
         const profileHideoutArea = pmcData.Hideout.Areas.find((area) => area.type === request.areaType);
         if (!profileHideoutArea)
@@ -204,7 +205,7 @@ export class HideoutController
         profileHideoutArea.completeTime = 0;
         profileHideoutArea.constructing = false;
 
-        const hideoutData = db.hideout.areas.find((area) => area.type === profileHideoutArea.type);
+        const hideoutData = hideout.areas.find((area) => area.type === profileHideoutArea.type);
         if (!hideoutData)
         {
             this.logger.error(
@@ -252,7 +253,7 @@ export class HideoutController
         this.profileHelper.addSkillPointsToPlayer(
             pmcData,
             SkillTypes.HIDEOUT_MANAGEMENT,
-            db.globals.config.SkillsSettings.HideoutManagement.SkillPointsPerAreaUpgrade,
+            globals.config.SkillsSettings.HideoutManagement.SkillPointsPerAreaUpgrade,
         );
     }
 
@@ -308,9 +309,8 @@ export class HideoutController
         }
 
         // Some areas like gun stand have a child area linked to it, it needs to do the same as above
-        const childDbArea = this.databaseServer
-            .getTables()
-            .hideout.areas.find((x) => x.parentArea === dbHideoutArea._id);
+        const childDbArea = this.databaseService.getHideout().areas
+            .find((area) => area.parentArea === dbHideoutArea._id);
         if (childDbArea)
         {
             // Add key/value to `hideoutAreaStashes` dictionary - used to link hideout area to inventory stash by its id
@@ -320,9 +320,10 @@ export class HideoutController
             }
 
             // Set child area level to same as parent area
-            pmcData.Hideout.Areas.find((x) => x.type === childDbArea.type).level = pmcData.Hideout.Areas.find(
-                (x) => x.type === profileParentHideoutArea.type,
-            ).level;
+            pmcData.Hideout.Areas
+                .find((x) => x.type === childDbArea.type).level = pmcData.Hideout.Areas
+                    .find((x) => x.type === profileParentHideoutArea.type,
+                    ).level;
 
             // Add/upgrade stash item in player inventory
             const childDbAreaStage = childDbArea.stages[profileParentHideoutArea.level];
@@ -524,7 +525,8 @@ export class HideoutController
         const slotIndexToRemove = removeResourceRequest.slots[0];
 
         // Assume only one item in slot
-        const itemToReturn = hideoutArea.slots.find((slot) => slot.locationIndex === slotIndexToRemove).item[0];
+        const itemToReturn = hideoutArea.slots
+            .find((slot) => slot.locationIndex === slotIndexToRemove).item[0];
 
         const request: IAddItemDirectRequest = {
             itemWithModsToAdd: [itemToReturn],
@@ -596,7 +598,8 @@ export class HideoutController
         this.hideoutHelper.registerProduction(pmcData, body, sessionID);
 
         // Find the recipe of the production
-        const recipe = this.databaseServer.getTables().hideout.production.find((p) => p._id === body.recipeId);
+        const recipe = this.databaseService.getHideout().production
+            .find((p) => p._id === body.recipeId);
 
         // Find the actual amount of items we need to remove because body can send weird data
         const recipeRequirementsClone = this.cloner.clone(
@@ -671,12 +674,14 @@ export class HideoutController
             }
         }
 
-        const recipe = this.databaseServer.getTables().hideout.scavcase.find((r) => r._id === body.recipeId);
+        const recipe = this.databaseService.getHideout().scavcase
+            .find((r) => r._id === body.recipeId);
         if (!recipe)
         {
             this.logger.error(
                 this.localisationService.getText("hideout-unable_to_find_scav_case_recipie_in_database", body.recipeId),
             );
+
             return this.httpResponse.appendErrorToOutput(output);
         }
 
@@ -689,7 +694,7 @@ export class HideoutController
                 pmcData,
                 recipe.ProductionTime,
                 SkillTypes.CRAFTING,
-                this.databaseServer.getTables().globals.config.SkillsSettings.Crafting.CraftTimeReductionPerLevel,
+                this.databaseService.getGlobals().config.SkillsSettings.Crafting.CraftTimeReductionPerLevel,
             );
 
         const modifiedScavCaseTime = this.getScavCaseTime(pmcData, adjustedCraftTime);
@@ -766,7 +771,7 @@ export class HideoutController
     ): IItemEventRouterResponse
     {
         const output = this.eventOutputHolder.getOutput(sessionID);
-        const hideoutDb = this.databaseServer.getTables().hideout;
+        const hideoutDb = this.databaseService.getHideout();
 
         if (request.recipeId === HideoutHelper.bitcoinFarm)
         {
@@ -1008,7 +1013,7 @@ export class HideoutController
         //  - delete the production in profile Hideout.Production
         // Hideout Management skill
         // ? use a configuration variable for the value?
-        const globals = this.databaseServer.getTables().globals;
+        const globals = this.databaseService.getGlobals();
         this.profileHelper.addSkillPointsToPlayer(
             pmcData,
             SkillTypes.HIDEOUT_MANAGEMENT,
@@ -1147,7 +1152,7 @@ export class HideoutController
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public getQteList(sessionId: string): IQteData[]
     {
-        return this.databaseServer.getTables().hideout.qte;
+        return this.databaseService.getHideout().qte;
     }
 
     /**
@@ -1204,9 +1209,9 @@ export class HideoutController
         }
 
         // Find counter by key and update value
-        const shootingRangeHighScore = pmcData.Stats.Eft.OverallCounters.Items.find((x) =>
-            x.Key.includes("ShootingRangePoints"),
-        );
+        const shootingRangeHighScore = pmcData.Stats.Eft.OverallCounters.Items
+            .find((counter) => counter.Key.includes("ShootingRangePoints"),
+            );
         shootingRangeHighScore.Value = request.points;
     }
 
@@ -1264,7 +1269,8 @@ export class HideoutController
             return this.httpResponse.appendErrorToOutput(output);
         }
 
-        const hideoutDbData = this.databaseServer.getTables().hideout.areas.find((x) => x.type === request.areaType);
+        const hideoutDbData = this.databaseService.getHideout().areas
+            .find((area) => area.type === request.areaType);
         if (!hideoutDbData)
         {
             this.logger.error(

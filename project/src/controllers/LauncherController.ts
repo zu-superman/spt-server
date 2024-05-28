@@ -12,8 +12,8 @@ import { ICoreConfig } from "@spt/models/spt/config/ICoreConfig";
 import { IPackageJsonData } from "@spt/models/spt/mod/IPackageJsonData";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
 import { SaveServer } from "@spt/servers/SaveServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { HashUtil } from "@spt/utils/HashUtil";
 import { RandomUtil } from "@spt/utils/RandomUtil";
@@ -32,7 +32,7 @@ export class LauncherController
         @inject("SaveServer") protected saveServer: SaveServer,
         @inject("HttpServerHelper") protected httpServerHelper: HttpServerHelper,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseServer: DatabaseService,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("PreSptModLoader") protected preSptModLoader: PreSptModLoader,
         @inject("ConfigServer") protected configServer: ConfigServer,
@@ -46,7 +46,7 @@ export class LauncherController
         return {
             backendUrl: this.httpServerHelper.getBackendUrl(),
             name: this.coreConfig.serverName,
-            editions: Object.keys(this.databaseServer.getTables().templates.profiles),
+            editions: Object.keys(this.databaseServer.getProfiles()),
             profileDescriptions: this.getProfileDescriptions(),
         };
     }
@@ -58,7 +58,7 @@ export class LauncherController
     protected getProfileDescriptions(): Record<string, string>
     {
         const result = {};
-        const dbProfiles = this.databaseServer.getTables().templates.profiles;
+        const dbProfiles = this.databaseServer.getProfiles();
         for (const profileKey in dbProfiles)
         {
             const localeKey = dbProfiles[profileKey]?.descriptionLocaleKey;

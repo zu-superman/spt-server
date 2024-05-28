@@ -13,7 +13,7 @@ import { IHideoutSettingsBase } from "@spt/models/eft/hideout/IHideoutSettingsBa
 import { IGetBodyResponseData } from "@spt/models/eft/httpResponse/IGetBodyResponseData";
 import { Money } from "@spt/models/enums/Money";
 import { ISettingsBase } from "@spt/models/spt/server/ISettingsBase";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { HttpResponseUtil } from "@spt/utils/HttpResponseUtil";
 
 /**
@@ -24,7 +24,7 @@ export class DataCallbacks
 {
     constructor(
         @inject("HttpResponseUtil") protected httpResponse: HttpResponseUtil,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseServer: DatabaseService,
         @inject("RagfairController") protected ragfairController: RagfairController,
         @inject("HideoutController") protected hideoutController: HideoutController,
     )
@@ -36,7 +36,7 @@ export class DataCallbacks
      */
     public getSettings(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<ISettingsBase>
     {
-        return this.httpResponse.getBody(this.databaseServer.getTables().settings!);
+        return this.httpResponse.getBody(this.databaseServer.getSettings());
     }
 
     /**
@@ -45,8 +45,10 @@ export class DataCallbacks
      */
     public getGlobals(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<IGlobals>
     {
-        this.databaseServer.getTables().globals!.time = Date.now() / 1000;
-        return this.httpResponse.getBody(this.databaseServer.getTables().globals!);
+        const globals = this.databaseServer.getGlobals();
+        globals.time = Date.now() / 1000;
+
+        return this.httpResponse.getBody(this.databaseServer.getGlobals());
     }
 
     /**
@@ -55,7 +57,7 @@ export class DataCallbacks
      */
     public getTemplateItems(url: string, info: IEmptyRequestData, sessionID: string): string
     {
-        return this.httpResponse.getUnclearedBody(this.databaseServer.getTables().templates!.items);
+        return this.httpResponse.getUnclearedBody(this.databaseServer.getItems());
     }
 
     /**
@@ -68,7 +70,7 @@ export class DataCallbacks
         sessionID: string,
     ): IGetBodyResponseData<IHandbookBase>
     {
-        return this.httpResponse.getBody(this.databaseServer.getTables().templates!.handbook);
+        return this.httpResponse.getBody(this.databaseServer.getHandbook());
     }
 
     /**
@@ -81,7 +83,7 @@ export class DataCallbacks
         sessionID: string,
     ): IGetBodyResponseData<Record<string, ICustomizationItem>>
     {
-        return this.httpResponse.getBody(this.databaseServer.getTables().templates!.customization);
+        return this.httpResponse.getBody(this.databaseServer.getTemplates().customization);
     }
 
     /**
@@ -94,7 +96,7 @@ export class DataCallbacks
         sessionID: string,
     ): IGetBodyResponseData<string[]>
     {
-        return this.httpResponse.getBody(this.databaseServer.getTables().templates!.character);
+        return this.httpResponse.getBody(this.databaseServer.getTemplates().character);
     }
 
     /**
@@ -107,7 +109,7 @@ export class DataCallbacks
         sessionID: string,
     ): IGetBodyResponseData<IHideoutSettingsBase>
     {
-        return this.httpResponse.getBody(this.databaseServer.getTables().hideout!.settings);
+        return this.httpResponse.getBody(this.databaseServer.getHideout().settings);
     }
 
     public getHideoutAreas(
@@ -116,7 +118,7 @@ export class DataCallbacks
         sessionID: string,
     ): IGetBodyResponseData<IHideoutArea[]>
     {
-        return this.httpResponse.getBody(this.databaseServer.getTables().hideout!.areas);
+        return this.httpResponse.getBody(this.databaseServer.getHideout().areas);
     }
 
     public gethideoutProduction(
@@ -125,7 +127,7 @@ export class DataCallbacks
         sessionID: string,
     ): IGetBodyResponseData<IHideoutProduction[]>
     {
-        return this.httpResponse.getBody(this.databaseServer.getTables().hideout!.production);
+        return this.httpResponse.getBody(this.databaseServer.getHideout().production);
     }
 
     public getHideoutScavcase(
@@ -134,7 +136,7 @@ export class DataCallbacks
         sessionID: string,
     ): IGetBodyResponseData<IHideoutScavCase[]>
     {
-        return this.httpResponse.getBody(this.databaseServer.getTables().hideout!.scavcase);
+        return this.httpResponse.getBody(this.databaseServer.getHideout().scavcase);
     }
 
     /**
@@ -146,7 +148,7 @@ export class DataCallbacks
         sessionID: string,
     ): IGetBodyResponseData<Record<string, string>>
     {
-        return this.httpResponse.getBody(this.databaseServer.getTables().locales!.languages);
+        return this.httpResponse.getBody(this.databaseServer.getLocales().languages);
     }
 
     /**
@@ -155,12 +157,12 @@ export class DataCallbacks
     public getLocalesMenu(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<string>
     {
         const localeId = url.replace("/client/menu/locale/", "");
-        const tables = this.databaseServer.getTables();
-        let result = tables.locales?.menu[localeId];
+        const locales = this.databaseServer.getLocales();
+        let result = locales.menu[localeId];
 
         if (result === undefined)
         {
-            result = tables.locales?.menu.en;
+            result = locales.menu.en;
         }
 
         if (result === undefined)
@@ -175,12 +177,12 @@ export class DataCallbacks
     public getLocalesGlobal(url: string, info: IEmptyRequestData, sessionID: string): string
     {
         const localeId = url.replace("/client/locale/", "");
-        const tables = this.databaseServer.getTables();
-        let result = tables.locales?.global[localeId];
+        const locales = this.databaseServer.getLocales();
+        let result = locales.global[localeId];
 
         if (result === undefined)
         {
-            result = tables.locales?.global["en"];
+            result = locales.global["en"];
         }
 
         return this.httpResponse.getUnclearedBody(result);

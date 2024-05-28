@@ -7,8 +7,8 @@ import { IWearClothingRequestData } from "@spt/models/eft/customization/IWearClo
 import { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRouterResponse";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { EventOutputHolder } from "@spt/routers/EventOutputHolder";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
 import { SaveServer } from "@spt/servers/SaveServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 
 @injectable()
@@ -22,7 +22,7 @@ export class CustomizationController
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("EventOutputHolder") protected eventOutputHolder: EventOutputHolder,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("SaveServer") protected saveServer: SaveServer,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
@@ -37,15 +37,15 @@ export class CustomizationController
      */
     public getTraderSuits(traderID: string, sessionID: string): ISuit[]
     {
-        const pmcData: IPmcData = this.profileHelper.getPmcProfile(sessionID);
-        const templates = this.databaseServer.getTables().templates!.customization;
-        const suits = this.databaseServer.getTables().traders![traderID].suits;
+        const pmcData = this.profileHelper.getPmcProfile(sessionID);
+        const clothing = this.databaseService.getCustomization();
+        const suits = this.databaseService.getTraders()[traderID].suits;
 
         // Get an inner join of clothing from templates.customization and Ragman's suits array
-        const matchingSuits = suits?.filter((x) => x.suiteId in templates);
+        const matchingSuits = suits?.filter((suit) => suit.suiteId in clothing);
 
         // Return all suits that have a side array containing the players side (usec/bear)
-        const matchedSuits = matchingSuits?.filter((x) => templates[x.suiteId]._props.Side.includes(pmcData.Info.Side));
+        const matchedSuits = matchingSuits?.filter((matchingSuit) => clothing[matchingSuit.suiteId]._props.Side.includes(pmcData.Info.Side));
         if (matchingSuits === undefined)
             throw new Error(this.localisationService.getText("customisation-unable_to_get_trader_suits", traderID));
 
@@ -65,7 +65,7 @@ export class CustomizationController
         for (const suitId of wearClothingRequest.suites)
         {
             // Find desired clothing item in db
-            const dbSuit = this.databaseServer.getTables().templates!.customization[suitId];
+            const dbSuit = this.databaseService.getCustomization()[suitId];
 
             // Legs
             if (dbSuit._parent === this.clothingIds.lowerParentId)
@@ -98,7 +98,6 @@ export class CustomizationController
         sessionId: string,
     ): IItemEventRouterResponse
     {
-        const db = this.databaseServer.getTables();
         const output = this.eventOutputHolder.getOutput(sessionId);
 
         const traderOffer = this.getTraderClothingOffer(sessionId, buyClothingRequest.offer);
@@ -114,7 +113,7 @@ export class CustomizationController
         const suitId = traderOffer.suiteId;
         if (this.outfitAlreadyPurchased(suitId, sessionId))
         {
-            const suitDetails = db.templates!.customization[suitId];
+            const suitDetails = this.databaseService.getCustomization()[suitId];
             this.logger.error(
                 this.localisationService.getText("customisation-item_already_purchased", {
                     itemId: suitDetails._id,
@@ -230,7 +229,7 @@ export class CustomizationController
 
     protected getAllTraderSuits(sessionID: string): ISuit[]
     {
-        const traders = this.databaseServer.getTables().traders;
+        const traders = this.databaseService.getTraders();
         let result: ISuit[] = [];
 
         for (const traderID in traders)

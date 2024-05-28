@@ -14,7 +14,7 @@ import { ISeasonalEvent, ISeasonalEventConfig } from "@spt/models/spt/config/ISe
 import { IWeatherConfig } from "@spt/models/spt/config/IWeatherConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { GiftService } from "@spt/services/GiftService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { DatabaseImporter } from "@spt/utils/DatabaseImporter";
@@ -35,7 +35,7 @@ export class SeasonalEventService
 
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("DatabaseImporter") protected databaseImporter: DatabaseImporter,
         @inject("GiftService") protected giftService: GiftService,
         @inject("LocalisationService") protected localisationService: LocalisationService,
@@ -222,7 +222,7 @@ export class SeasonalEventService
     {
         if (this.currentlyActiveEvents)
         {
-            const globalConfig = this.databaseServer.getTables().globals!.config;
+            const globalConfig = this.databaseService.getGlobals().config;
             for (const event of this.currentlyActiveEvents)
             {
                 this.updateGlobalEvents(sessionId, globalConfig, event);
@@ -405,12 +405,12 @@ export class SeasonalEventService
 
     protected adjustZryachiyMeleeChance(): void
     {
-        this.databaseServer.getTables().bots!.types.bosszryachiy.chances.equipment.Scabbard = 100;
+        this.databaseService.getBots().types.bosszryachiy.chances.equipment.Scabbard = 100;
     }
 
     protected enableHalloweenSummonEvent(): void
     {
-        this.databaseServer.getTables().globals!.config.EventSettings.EventActive = true;
+        this.databaseService.getGlobals().config.EventSettings.EventActive = true;
     }
 
     protected addEventBossesToMaps(eventType: SeasonalEventType): void
@@ -433,11 +433,12 @@ export class SeasonalEventService
             }
             for (const boss of bossesToAdd)
             {
-                const mapBosses: BossLocationSpawn[]
-                    = this.databaseServer.getTables().locations![mapKey].base.BossLocationSpawn;
-                if (!mapBosses.find((x) => x.BossName === boss.BossName))
+                const locations = this.databaseService.getLocations();
+
+                const mapBosses: BossLocationSpawn[] = locations[mapKey].base.BossLocationSpawn;
+                if (!mapBosses.find((bossSpawn) => bossSpawn.BossName === boss.BossName))
                 {
-                    this.databaseServer.getTables().locations![mapKey].base.BossLocationSpawn.push(...bossesToAdd);
+                    locations[mapKey].base.BossLocationSpawn.push(...bossesToAdd);
                 }
             }
         }
@@ -486,7 +487,7 @@ export class SeasonalEventService
      */
     protected addLootItemsToGifterDropItemsList(): void
     {
-        const gifterBot = this.databaseServer.getTables().bots!.types.gifter;
+        const gifterBot = this.databaseService.getBots().types.gifter;
         for (const difficulty in gifterBot.difficulty)
         {
             gifterBot.difficulty[difficulty].Patrol.ITEMS_TO_DROP = Object.keys(
@@ -512,7 +513,7 @@ export class SeasonalEventService
         // Iterate over bots with changes to apply
         for (const bot in botGearChanges)
         {
-            const botToUpdate = this.databaseServer.getTables().bots!.types[bot.toLowerCase()];
+            const botToUpdate = this.databaseService.getBots().types[bot.toLowerCase()];
             if (!botToUpdate)
             {
                 this.logger.warning(this.localisationService.getText("gameevent-bot_not_found", bot));
@@ -541,7 +542,7 @@ export class SeasonalEventService
 
     protected addPumpkinsToScavBackpacks(): void
     {
-        this.databaseServer.getTables().bots!.types.assault.inventory.items.Backpack["634959225289190e5e773b3b"] = 400;
+        this.databaseService.getBots().types.assault.inventory.items.Backpack["634959225289190e5e773b3b"] = 400;
     }
 
     /**
@@ -549,7 +550,7 @@ export class SeasonalEventService
      */
     protected enableDancingTree(): void
     {
-        const maps = this.databaseServer.getTables().locations;
+        const maps = this.databaseService.getLocations();
         for (const mapName in maps)
         {
             // Skip maps that have no tree
@@ -572,7 +573,7 @@ export class SeasonalEventService
     protected addGifterBotToMaps(): void
     {
         const gifterSettings = this.seasonalEventConfig.gifterSettings;
-        const maps = this.databaseServer.getTables().locations!;
+        const maps = this.databaseService.getLocations();
         for (const gifterMapSettings of gifterSettings)
         {
             const mapData: ILocation = maps[gifterMapSettings.map];

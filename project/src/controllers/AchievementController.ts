@@ -2,7 +2,7 @@ import { inject, injectable } from "tsyringe";
 import { ICompletedAchievementsResponse } from "@spt/models/eft/profile/ICompletedAchievementsResponse";
 import { IGetAchievementsResponse } from "@spt/models/eft/profile/IGetAchievementsResponse";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 
 /**
  * Logic for handling In Raid callbacks
@@ -12,7 +12,7 @@ export class AchievementController
 {
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
     )
     {}
 
@@ -22,7 +22,7 @@ export class AchievementController
      */
     public getAchievements(sessionID: string): IGetAchievementsResponse
     {
-        return { elements: this.databaseServer.getTables().templates!.achievements };
+        return { elements: this.databaseService.getAchievements() };
     }
 
     /**
@@ -32,7 +32,7 @@ export class AchievementController
      */
     public getAchievementStatistics(sessionId: string): ICompletedAchievementsResponse
     {
-        const achievements = this.databaseServer.getTables().templates!.achievements;
+        const achievements = this.databaseService.getAchievements();
         const stats = {};
 
         for (const achievement of achievements)

@@ -38,7 +38,7 @@ import { SkillTypes } from "@spt/models/enums/SkillTypes";
 import { Traders } from "@spt/models/enums/Traders";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { EventOutputHolder } from "@spt/routers/EventOutputHolder";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { FenceService } from "@spt/services/FenceService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { PlayerService } from "@spt/services/PlayerService";
@@ -56,7 +56,7 @@ export class InventoryController
         @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("FenceService") protected fenceService: FenceService,
         @inject("PresetHelper") protected presetHelper: PresetHelper,
         @inject("InventoryHelper") protected inventoryHelper: InventoryHelper,
@@ -641,7 +641,7 @@ export class InventoryController
         if (!itemId)
         {
             // item template
-            if (body.item in this.databaseServer.getTables().templates.items)
+            if (body.item in this.databaseService.getItems())
             {
                 itemId = body.item;
             }
@@ -724,9 +724,8 @@ export class InventoryController
         {
             // Not fence
             // get tpl from trader assort
-            return this.databaseServer
-                .getTables()
-                .traders[request.fromOwner.id].assort.items.find((item) => item._id === request.item)._tpl;
+            return this.databaseService.getTraders()[request.fromOwner.id].assort.items
+                .find((item) => item._id === request.item)._tpl;
         }
 
         if (request.fromOwner.type === "RagFair")

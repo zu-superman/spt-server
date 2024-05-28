@@ -2,7 +2,10 @@ import { error } from "console";
 import { inject, injectable } from "tsyringe";
 import { IGlobals } from "@spt/models/eft/common/IGlobals";
 import { IAchievement } from "@spt/models/eft/common/tables/IAchievement";
+import { ICustomizationItem } from "@spt/models/eft/common/tables/ICustomizationItem";
+import { IHandbookBase } from "@spt/models/eft/common/tables/IHandbookBase";
 import { IMatch } from "@spt/models/eft/common/tables/IMatch";
+import { IProfileTemplates } from "@spt/models/eft/common/tables/IProfileTemplate";
 import { IQuest } from "@spt/models/eft/common/tables/IQuest";
 import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
 import { ITrader } from "@spt/models/eft/common/tables/ITrader";
@@ -171,6 +174,32 @@ export class DatabaseService
     }
 
     /**
+     * @returns assets/database/templates/customisation.json
+     */
+    public getCustomization(): Record<string, ICustomizationItem>
+    {
+        if (!this.databaseServer.getTables().templates!.customization)
+        {
+            throw new error(this.localisationService.getText("database-data_at_path_missing", "assets/database/templates/customization.json"));
+        }
+
+        return this.databaseServer.getTables().templates!.customization!;
+    }
+
+    /**
+     * @returns assets/database/templates/items.json
+     */
+    public getHandbook(): IHandbookBase
+    {
+        if (!this.databaseServer.getTables().templates!.handbook)
+        {
+            throw new error(this.localisationService.getText("database-data_at_path_missing", "assets/database/templates/handbook.json"));
+        }
+
+        return this.databaseServer.getTables().templates!.handbook!;
+    }
+
+    /**
      * @returns assets/database/templates/items.json
      */
     public getItems(): Record<string, ITemplateItem>
@@ -181,6 +210,32 @@ export class DatabaseService
         }
 
         return this.databaseServer.getTables().templates!.items!;
+    }
+
+    /**
+     * @returns assets/database/templates/prices.json
+     */
+    public getPrices(): Record<string, number>
+    {
+        if (!this.databaseServer.getTables().templates!.prices)
+        {
+            throw new error(this.localisationService.getText("database-data_at_path_missing", "assets/database/templates/prices.json"));
+        }
+
+        return this.databaseServer.getTables().templates!.prices!;
+    }
+
+    /**
+     * @returns assets/database/templates/profiles.json
+     */
+    public getProfiles(): IProfileTemplates
+    {
+        if (!this.databaseServer.getTables().templates!.profiles)
+        {
+            throw new error(this.localisationService.getText("database-data_at_path_missing", "assets/database/templates/profiles.json"));
+        }
+
+        return this.databaseServer.getTables().templates!.profiles!;
     }
 
     /**

@@ -8,8 +8,8 @@ import { IEquipmentBuild, IMagazineBuild, IUserBuilds, IWeaponBuild } from "@spt
 import { EquipmentBuildType } from "@spt/models/enums/EquipmentBuildType";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { EventOutputHolder } from "@spt/routers/EventOutputHolder";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
 import { SaveServer } from "@spt/servers/SaveServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { ICloner } from "@spt/utils/cloners/ICloner";
 import { HashUtil } from "@spt/utils/HashUtil";
@@ -21,7 +21,7 @@ export class BuildController
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("EventOutputHolder") protected eventOutputHolder: EventOutputHolder,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
@@ -42,7 +42,7 @@ export class BuildController
 
         // Ensure the secure container in the default presets match what the player has equipped
         const defaultEquipmentPresetsClone = this.cloner.clone(
-            this.databaseServer.getTables().templates!.defaultEquipmentPresets,
+            this.databaseService.getTemplates().defaultEquipmentPresets,
         );
         const playerSecureContainer = profile.characters.pmc.Inventory.items?.find(
             (x) => x.slotId === secureContainerSlotId,

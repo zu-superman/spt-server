@@ -23,7 +23,7 @@ import { IQuestTypePool } from "@spt/models/spt/repeatable/IQuestTypePool";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { EventOutputHolder } from "@spt/routers/EventOutputHolder";
 import { ConfigServer } from "@spt/servers/ConfigServer";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { PaymentService } from "@spt/services/PaymentService";
 import { ProfileFixerService } from "@spt/services/ProfileFixerService";
@@ -40,7 +40,7 @@ export class RepeatableQuestController
 
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("HttpResponseUtil") protected httpResponse: HttpResponseUtil,
@@ -220,7 +220,7 @@ export class RepeatableQuestController
             // Elite charisma skill gives extra daily quest(s)
             return (
                 repeatableConfig.numQuests
-                + this.databaseServer.getTables().globals.config.SkillsSettings.Charisma.BonusSettings.EliteBonusSettings
+                + this.databaseService.getGlobals().config.SkillsSettings.Charisma.BonusSettings.EliteBonusSettings
                     .RepeatableQuestExtraCount
             );
         }
@@ -394,7 +394,7 @@ export class RepeatableQuestController
             return true;
         }
 
-        const locationBase: ILocationBase = this.databaseServer.getTables().locations[location.toLowerCase()]?.base;
+        const locationBase: ILocationBase = this.databaseService.getLocations()[location.toLowerCase()]?.base;
         if (!locationBase)
         {
             return true;

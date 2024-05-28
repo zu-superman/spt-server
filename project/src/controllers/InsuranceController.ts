@@ -18,8 +18,8 @@ import { IInsuranceConfig } from "@spt/models/spt/config/IInsuranceConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { EventOutputHolder } from "@spt/routers/EventOutputHolder";
 import { ConfigServer } from "@spt/servers/ConfigServer";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
 import { SaveServer } from "@spt/servers/SaveServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { InsuranceService } from "@spt/services/InsuranceService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { MailSendService } from "@spt/services/MailSendService";
@@ -45,7 +45,7 @@ export class InsuranceController
         @inject("EventOutputHolder") protected eventOutputHolder: EventOutputHolder,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
         @inject("SaveServer") protected saveServer: SaveServer,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseServer: DatabaseService,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
         @inject("DialogueHelper") protected dialogueHelper: DialogueHelper,
@@ -586,12 +586,12 @@ export class InsuranceController
         const labsId = "laboratory";
         // After all of the item filtering that we've done, if there are no items remaining, the insurance has
         // successfully "failed" to return anything and an appropriate message should be sent to the player.
-        const traderDialogMessages = this.databaseServer.getTables().traders[insurance.traderId].dialogue;
+        const traderDialogMessages = this.databaseServer.getTraders()[insurance.traderId].dialogue;
 
         // Map is labs + insurance is disabled in base.json
         if (
-            insurance.systemData?.location.toLowerCase() === labsId
-            && !this.databaseServer.getTables().locations[labsId].base.Insurance
+            insurance.systemData?.location?.toLowerCase() === labsId
+            && !(this.databaseServer.getLocations()[labsId].base.Insurance)
         )
         {
             // Trader has labs-specific messages

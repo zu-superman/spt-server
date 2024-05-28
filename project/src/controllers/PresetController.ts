@@ -2,7 +2,7 @@ import { inject, injectable } from "tsyringe";
 import { PresetHelper } from "@spt/helpers/PresetHelper";
 import { IPreset } from "@spt/models/eft/common/IGlobals";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 
 @injectable()
 export class PresetController
@@ -10,13 +10,13 @@ export class PresetController
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("PresetHelper") protected presetHelper: PresetHelper,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
     )
     {}
 
     public initialize(): void
     {
-        const presets: [string, IPreset][] = Object.entries(this.databaseServer.getTables().globals.ItemPresets);
+        const presets: [string, IPreset][] = Object.entries(this.databaseService.getGlobals().ItemPresets);
         const reverse: Record<string, string[]> = {};
 
         for (const [id, preset] of presets)

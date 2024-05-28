@@ -19,8 +19,8 @@ import { IBotConfig } from "@spt/models/spt/config/IBotConfig";
 import { IPmcConfig } from "@spt/models/spt/config/IPmcConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
 import { BotGenerationCacheService } from "@spt/services/BotGenerationCacheService";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { MatchBotDetailsCacheService } from "@spt/services/MatchBotDetailsCacheService";
 import { SeasonalEventService } from "@spt/services/SeasonalEventService";
@@ -35,7 +35,7 @@ export class BotController
 
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("BotGenerator") protected botGenerator: BotGenerator,
         @inject("BotHelper") protected botHelper: BotHelper,
         @inject("BotDifficultyHelper") protected botDifficultyHelper: BotDifficultyHelper,
@@ -80,7 +80,7 @@ export class BotController
      */
     public getBotCoreDifficulty(): IBotCore
     {
-        return this.databaseServer.getTables().bots!.core;
+        return this.databaseService.getBots().core;
     }
 
     /**
@@ -146,7 +146,7 @@ export class BotController
     {
         const result = {};
 
-        const botDb = this.databaseServer.getTables().bots!.types;
+        const botTypesDb = this.databaseService.getBots().types;
         const botTypes = Object.keys(WildSpawnTypeNumber).filter((v) => Number.isNaN(Number(v)));
         for (let botType of botTypes)
         {
@@ -156,7 +156,7 @@ export class BotController
                 ? this.botHelper.getPmcSideByRole(botType).toLowerCase()
                 : botType.toLowerCase();
 
-            const botDetails = botDb[botType];
+            const botDetails = botTypesDb[botType];
             if (!botDetails?.difficulty)
             {
                 continue;
@@ -183,6 +183,9 @@ export class BotController
     {
         const pmcProfile = this.profileHelper.getPmcProfile(sessionId);
 
+        // If there's more than 1 condition, this is the first time client has requested bots
+        // Client sends every bot type it will need in raid
+        // Use this opportunity to create and cache bots for later retreval
         const isFirstGen = info.conditions.length > 1;
         if (isFirstGen)
         {

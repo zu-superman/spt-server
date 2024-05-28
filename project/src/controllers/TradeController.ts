@@ -26,8 +26,8 @@ import { ITraderConfig } from "@spt/models/spt/config/ITraderConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { EventOutputHolder } from "@spt/routers/EventOutputHolder";
 import { ConfigServer } from "@spt/servers/ConfigServer";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
 import { RagfairServer } from "@spt/servers/RagfairServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { MailSendService } from "@spt/services/MailSendService";
 import { RagfairPriceService } from "@spt/services/RagfairPriceService";
@@ -46,7 +46,7 @@ export class TradeController
 
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("EventOutputHolder") protected eventOutputHolder: EventOutputHolder,
         @inject("TradeHelper") protected tradeHelper: TradeHelper,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
@@ -288,7 +288,7 @@ export class TradeController
             sessionId,
             this.traderHelper.getTraderById(trader),
             MessageType.MESSAGE_WITH_ITEMS,
-            this.randomUtil.getArrayValue(this.databaseServer.getTables().traders[trader].dialogue.soldItems),
+            this.randomUtil.getArrayValue(this.databaseService.getTraders()[trader].dialogue.soldItems),
             curencyReward.flatMap((x) => x),
             this.timeUtil.getHoursAsSeconds(72),
         );

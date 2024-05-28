@@ -23,8 +23,8 @@ import { MessageType } from "@spt/models/enums/MessageType";
 import { QuestStatus } from "@spt/models/enums/QuestStatus";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { EventOutputHolder } from "@spt/routers/EventOutputHolder";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
 import { SaveServer } from "@spt/servers/SaveServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { MailSendService } from "@spt/services/MailSendService";
 import { ProfileFixerService } from "@spt/services/ProfileFixerService";
@@ -35,12 +35,14 @@ import { TimeUtil } from "@spt/utils/TimeUtil";
 @injectable()
 export class ProfileController
 {
+    protected defaultInventoryTpl = "55d7217a4bdc2d86028b456d";
+
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
         @inject("SaveServer") protected saveServer: SaveServer,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("ProfileFixerService") protected profileFixerService: ProfileFixerService,
         @inject("LocalisationService") protected localisationService: LocalisationService,
@@ -130,7 +132,7 @@ export class ProfileController
     {
         const account = this.saveServer.getProfile(sessionID).info;
         const profile: ITemplateSide
-            = this.databaseServer.getTables().templates.profiles[account.edition][info.side.toLowerCase()];
+            = this.databaseService.getProfiles()[account.edition][info.side.toLowerCase()];
         const pmcData = profile.character;
 
         // Delete existing profile
@@ -144,7 +146,7 @@ export class ProfileController
         pmcData.Info.Nickname = info.nickname;
         pmcData.Info.LowerNickname = info.nickname.toLowerCase();
         pmcData.Info.RegistrationDate = this.timeUtil.getTimestamp();
-        pmcData.Info.Voice = this.databaseServer.getTables().templates.customization[info.voiceId]._name;
+        pmcData.Info.Voice = this.databaseService.getCustomization()[info.voiceId]._name;
         pmcData.Stats = this.profileHelper.getDefaultCounters();
         pmcData.Info.NeedWipeOptions = [];
         pmcData.Customization.Head = info.headId;
@@ -321,13 +323,13 @@ export class ProfileController
 
     /**
      * For each trader reset their state to what a level 1 player would see
-     * @param sessionID Session id of profile to reset
+     * @param sessionId Session id of profile to reset
      */
-    protected resetAllTradersInProfile(sessionID: string): void
+    protected resetAllTradersInProfile(sessionId: string): void
     {
-        for (const traderID in this.databaseServer.getTables().traders)
+        for (const traderId in this.databaseService.getTraders())
         {
-            this.traderHelper.resetTrader(sessionID, traderID);
+            this.traderHelper.resetTrader(sessionId, traderId);
         }
     }
 
@@ -462,7 +464,7 @@ export class ProfileController
             skills: playerPmc.Skills,
             equipment: {
                 // Default inventory tpl
-                Id: playerPmc.Inventory.items.find((x) => x._tpl === "55d7217a4bdc2d86028b456d")._id,
+                Id: playerPmc.Inventory.items.find((item) => item._tpl === this.defaultInventoryTpl)._id,
                 Items: playerPmc.Inventory.items,
             },
             achievements: playerPmc.Achievements,

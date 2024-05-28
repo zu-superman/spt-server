@@ -31,9 +31,9 @@ import { IRagfairConfig } from "@spt/models/spt/config/IRagfairConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { EventOutputHolder } from "@spt/routers/EventOutputHolder";
 import { ConfigServer } from "@spt/servers/ConfigServer";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
 import { RagfairServer } from "@spt/servers/RagfairServer";
 import { SaveServer } from "@spt/servers/SaveServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { PaymentService } from "@spt/services/PaymentService";
 import { RagfairOfferService } from "@spt/services/RagfairOfferService";
@@ -58,7 +58,7 @@ export class RagfairController
         @inject("EventOutputHolder") protected eventOutputHolder: EventOutputHolder,
         @inject("RagfairServer") protected ragfairServer: RagfairServer,
         @inject("RagfairPriceService") protected ragfairPriceService: RagfairPriceService,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("SaveServer") protected saveServer: SaveServer,
         @inject("RagfairSellHelper") protected ragfairSellHelper: RagfairSellHelper,
@@ -207,7 +207,7 @@ export class RagfairController
     {
         // Linked/required search categories
         const playerHasFleaUnlocked
-            = pmcProfile.Info.Level >= this.databaseServer.getTables().globals.config.RagFair.minUserLevel;
+            = pmcProfile.Info.Level >= this.databaseService.getGlobals().config.RagFair.minUserLevel;
         let offerPool = [];
         if (this.isLinkedSearch(searchRequest) || this.isRequiredSearch(searchRequest))
         {
@@ -325,7 +325,7 @@ export class RagfairController
             const pmcProfile = profilesDict[sessionID].characters.pmc;
             if (
                 pmcProfile.RagfairInfo !== undefined
-                && pmcProfile.Info.Level >= this.databaseServer.getTables().globals.config.RagFair.minUserLevel
+                && pmcProfile.Info.Level >= this.databaseService.getGlobals().config.RagFair.minUserLevel
             )
             {
                 this.ragfairOfferHelper.processOffersOnProfile(sessionID);
@@ -391,9 +391,7 @@ export class RagfairController
         }
 
         // No offers listed, get price from live ragfair price list prices.json
-        const templatesDb = this.databaseServer.getTables().templates;
-
-        let tplPrice = templatesDb.prices[getPriceRequest.templateId];
+        let tplPrice = this.databaseService.getPrices()[getPriceRequest.templateId];
         if (!tplPrice)
         {
             // No flea price, get handbook price

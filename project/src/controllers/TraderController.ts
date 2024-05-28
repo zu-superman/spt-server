@@ -9,7 +9,7 @@ import { Traders } from "@spt/models/enums/Traders";
 import { ITraderConfig } from "@spt/models/spt/config/ITraderConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { FenceService } from "@spt/services/FenceService";
 import { TraderAssortService } from "@spt/services/TraderAssortService";
 import { TraderPurchasePersisterService } from "@spt/services/TraderPurchasePersisterService";
@@ -24,7 +24,7 @@ export class TraderController
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("TraderAssortHelper") protected traderAssortHelper: TraderAssortHelper,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
         @inject("TraderHelper") protected traderHelper: TraderHelper,
@@ -49,7 +49,9 @@ export class TraderController
     {
         const nextHourTimestamp = this.timeUtil.getTimestampOfNextHour();
         const traderResetStartsWithServer = this.traderConfig.tradersResetFromServerStart;
-        for (const traderId in this.databaseServer.getTables().traders)
+
+        const traders = this.databaseService.getTraders();
+        for (const traderId in traders)
         {
             if (traderId === "ragfair" || traderId === Traders.LIGHTHOUSEKEEPER)
             {
@@ -63,7 +65,7 @@ export class TraderController
                 continue;
             }
 
-            const trader = this.databaseServer.getTables().traders[traderId];
+            const trader = traders[traderId];
 
             // Create dict of trader assorts on server start
             if (!this.traderAssortService.getPristineTraderAssort(traderId))
@@ -78,7 +80,7 @@ export class TraderController
             trader.base.nextResupply = traderResetStartsWithServer
                 ? this.traderHelper.getNextUpdateTimestamp(trader.base._id)
                 : nextHourTimestamp;
-            this.databaseServer.getTables().traders[trader.base._id].base = trader.base;
+            traders[trader.base._id].base = trader.base;
         }
     }
 
@@ -90,7 +92,7 @@ export class TraderController
      */
     public update(): boolean
     {
-        for (const traderId in this.databaseServer.getTables().traders)
+        for (const traderId in this.databaseService.getTables().traders)
         {
             if (traderId === "ragfair" || traderId === Traders.LIGHTHOUSEKEEPER)
             {
@@ -107,7 +109,7 @@ export class TraderController
                 continue;
             }
 
-            const trader = this.databaseServer.getTables().traders[traderId];
+            const trader = this.databaseService.getTables().traders[traderId];
 
             // trader needs to be refreshed
             if (this.traderAssortHelper.traderAssortsHaveExpired(traderId))
@@ -132,9 +134,9 @@ export class TraderController
     {
         const traders: ITraderBase[] = [];
         const pmcData = this.profileHelper.getPmcProfile(sessionID);
-        for (const traderID in this.databaseServer.getTables().traders)
+        for (const traderID in this.databaseService.getTables().traders)
         {
-            if (this.databaseServer.getTables().traders[traderID].base._id === "ragfair")
+            if (this.databaseService.getTables().traders[traderID].base._id === "ragfair")
             {
                 continue;
             }

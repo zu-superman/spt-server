@@ -19,7 +19,7 @@ import { ILocations } from "@spt/models/spt/server/ILocations";
 import { LootRequest } from "@spt/models/spt/services/LootRequest";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { ItemFilterService } from "@spt/services/ItemFilterService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { RaidTimeAdjustmentService } from "@spt/services/RaidTimeAdjustmentService";
@@ -44,7 +44,7 @@ export class LocationController
         @inject("RaidTimeAdjustmentService") protected raidTimeAdjustmentService: RaidTimeAdjustmentService,
         @inject("ItemFilterService") protected itemFilterService: ItemFilterService,
         @inject("LootGenerator") protected lootGenerator: LootGenerator,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
         @inject("ConfigServer") protected configServer: ConfigServer,
         @inject("ApplicationContext") protected applicationContext: ApplicationContext,
@@ -72,16 +72,16 @@ export class LocationController
     }
 
     /**
-     * Generate a maps base location with loot
+     * Generate a maps base location and loot
      * @param name Map name
      * @returns ILocationBase
      */
     protected generate(name: string): ILocationBase
     {
-        const db = this.databaseServer.getTables();
-        const location: ILocation = db.locations[name];
+        const location: ILocation = this.databaseService.getLocations()[name];
         const locationBaseClone: ILocationBase = this.cloner.clone(location.base);
 
+        // Update datetime property to now
         locationBaseClone.UnixDateTime = this.timeUtil.getTimestamp();
 
         // Don't generate loot for hideout
@@ -146,7 +146,7 @@ export class LocationController
      */
     public generateAll(sessionId: string): ILocationsGenerateAllResponse
     {
-        const locationsFromDb = this.databaseServer.getTables().locations;
+        const locationsFromDb = this.databaseService.getLocations();
         const locations: ILocations = {};
         for (const mapName in locationsFromDb)
         {
