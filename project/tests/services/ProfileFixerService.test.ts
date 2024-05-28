@@ -18,16 +18,16 @@ describe("ProfileFixerService", () =>
 
     describe("FixPmcProfileIssues", () =>
     {
-        it("should reset nextResupply to 0 when it is null", () =>
+        it("should reset nextResupply to 0 when it is undefined", () =>
         {
-            const pmcProfile = { TradersInfo: { traderId: { nextResupply: null } } };
+            const pmcProfile = { TradersInfo: { traderId: { nextResupply: undefined } } };
 
             profileFixerService.fixNullTraderNextResupply(pmcProfile);
 
             expect(pmcProfile.TradersInfo.traderId.nextResupply).toBe(0);
         });
 
-        it("should not reset nextResupply to 0 when it is not null", () =>
+        it("should not reset nextResupply to 0 when it is not undefined", () =>
         {
             const pmcProfile = { TradersInfo: { traderId: { nextResupply: 1234 } } };
 

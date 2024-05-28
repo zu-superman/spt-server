@@ -188,6 +188,7 @@ describe("InsuranceController", () =>
             vi.spyOn(insuranceController.itemHelper, "adoptOrphanedItems").mockImplementation(vi.fn());
             vi.spyOn(insuranceController, "sendMail").mockImplementation(vi.fn());
             vi.spyOn(insuranceController, "removeInsurancePackageFromProfile").mockImplementation(vi.fn());
+            vi.spyOn(insuranceController.insuranceService.saveServer, "getProfile").mockImplementation(vi.fn());
 
             // Execute the method.
             insuranceController.processInsuredItems(insuranceFixture, sessionId);
@@ -216,6 +217,8 @@ describe("InsuranceController", () =>
                 insuranceController,
                 "removeInsurancePackageFromProfile",
             ).mockImplementation(vi.fn());
+
+            vi.spyOn(insuranceController.insuranceService.saveServer, "getProfile").mockReturnValue({});
 
             // Execute the method.
             insuranceController.processInsuredItems(insuranceFixture, sessionId);
@@ -1231,7 +1234,7 @@ describe("InsuranceController", () =>
             const result = insuranceController.rollForDelete(traderId);
 
             // Verify that the result is null.
-            expect(result).toBe(null);
+            expect(result).toBe(undefined);
         });
     });
 

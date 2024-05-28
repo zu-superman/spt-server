@@ -1040,14 +1040,14 @@ describe("ItemHelper", () =>
             const fakeTemplateItem = { _props: { Cartridges: [{}] } };
             const result = itemHelper.getRandomCompatibleCaliberTemplateId(fakeTemplateItem as ITemplateItem);
 
-            expect(result).toBe(null);
+            expect(result).toBe(undefined);
         });
 
         it("should return null when undefined passed in", () =>
         {
             const result = itemHelper.getRandomCompatibleCaliberTemplateId(undefined as ITemplateItem);
 
-            expect(result).toBe(null);
+            expect(result).toBe(undefined);
         });
 
         it("should log a warning when the template cartridge can not be found", () =>

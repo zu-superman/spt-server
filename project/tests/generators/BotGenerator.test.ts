@@ -197,8 +197,8 @@ describe("BotGenerator", () =>
             const botRole = "assault";
 
             botGenerator.botConfig.chanceAssaultScavHasPlayerScavName = 100;
-            botGenerator.databaseServer.getTables().bots.types.usec.firstName = ["player"];
-            botGenerator.databaseServer.getTables().bots.types.bear.firstName = [];
+            botGenerator.databaseService.getBots().types.usec.firstName = ["player"];
+            botGenerator.databaseService.getBots().types.bear.firstName = [];
 
             const mockPlayerProfile = { Info: { Nickname: "Player", Level: 1 } };
             vi.spyOn(botGenerator.profileHelper, "getPmcProfile").mockReturnValue(<IPmcData>mockPlayerProfile);
