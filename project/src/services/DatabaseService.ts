@@ -1,5 +1,6 @@
 import { inject, injectable } from "tsyringe";
 import { IGlobals } from "@spt/models/eft/common/IGlobals";
+import { ILocation } from "@spt/models/eft/common/ILocation";
 import { IAchievement } from "@spt/models/eft/common/tables/IAchievement";
 import { ICustomizationItem } from "@spt/models/eft/common/tables/ICustomizationItem";
 import { IHandbookBase } from "@spt/models/eft/common/tables/IHandbookBase";
@@ -105,6 +106,23 @@ export class DatabaseService
         }
 
         return this.databaseServer.getTables().locations!;
+    }
+
+    /**
+     * Get specific location by its Id
+     * @param locationId Desired trader id
+     * @returns assets/database/locations/
+     */
+    public getLocation(locationId: string): ILocation
+    {
+        const locations = this.getLocations();
+        const desiredLocation = locations[locationId];
+        if (!desiredLocation)
+        {
+            throw new Error(this.localisationService.getText("database-no_location_found_with_id", locationId));
+        }
+
+        return desiredLocation!;
     }
 
     /**

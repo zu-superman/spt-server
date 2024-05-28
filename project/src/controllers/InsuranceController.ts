@@ -591,7 +591,7 @@ export class InsuranceController
         // Map is labs + insurance is disabled in base.json
         if (
             insurance.systemData?.location?.toLowerCase() === labsId
-            && !(this.databaseServer.getLocations()[labsId].base.Insurance)
+            && !(this.databaseServer.getLocation(labsId).base.Insurance)
         )
         {
             // Trader has labs-specific messages

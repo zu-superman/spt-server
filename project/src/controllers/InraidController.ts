@@ -153,7 +153,7 @@ export class InraidController
 
         const locationName = serverProfile.inraid.location.toLowerCase();
 
-        const map: ILocationBase = this.databaseService.getLocations()[locationName].base;
+        const map: ILocationBase = this.databaseService.getLocation(locationName).base;
 
         const serverPmcProfile = serverProfile.characters.pmc;
         const serverScavProfile = serverProfile.characters.scav;

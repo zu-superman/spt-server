@@ -357,7 +357,7 @@ export class GameController
                 continue;
             }
 
-            const mapLooseLoot: ILooseLoot = this.databaseService.getLocations()[mapId]?.looseLoot;
+            const mapLooseLoot: ILooseLoot = this.databaseService.getLocation(mapId).looseLoot;
             if (!mapLooseLoot)
             {
                 this.logger.warning(this.localisationService.getText("location-map_has_no_loose_loot_data", mapId));
@@ -392,7 +392,7 @@ export class GameController
         const adjustments = this.lootConfig.looseLootSpawnPointAdjustments;
         for (const mapId in adjustments)
         {
-            const mapLooseLootData: ILooseLoot = this.databaseService.getLocations()[mapId]?.looseLoot;
+            const mapLooseLootData: ILooseLoot = this.databaseService.getLocation(mapId).looseLoot;
             if (!mapLooseLootData)
             {
                 this.logger.warning(this.localisationService.getText("location-map_has_no_loose_loot_data", mapId));

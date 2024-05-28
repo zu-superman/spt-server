@@ -78,7 +78,7 @@ export class LocationController
      */
     protected generate(name: string): ILocationBase
     {
-        const location: ILocation = this.databaseService.getLocations()[name];
+        const location: ILocation = this.databaseService.getLocation(name);
         const locationBaseClone: ILocationBase = this.cloner.clone(location.base);
 
         // Update datetime property to now

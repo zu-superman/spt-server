@@ -394,7 +394,7 @@ export class RepeatableQuestController
             return true;
         }
 
-        const locationBase: ILocationBase = this.databaseService.getLocations()[location.toLowerCase()]?.base;
+        const locationBase: ILocationBase = this.databaseService.getLocation(location.toLowerCase()).base;
         if (!locationBase)
         {
             return true;
