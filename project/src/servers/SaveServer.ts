@@ -66,10 +66,15 @@ export class SaveServer
         });
 
         // load profiles
+        const start = performance.now();
+        let loadTimeCount = 0;
         for (const file of files)
         {
             this.loadProfile(this.vfs.stripExtension(file));
+            loadTimeCount += (performance.now() - start);
         }
+
+        this.logger.debug(`${files.length} Profiles took: ${loadTimeCount.toFixed(2)}ms to load.`);
     }
 
     /**
@@ -180,9 +185,7 @@ export class SaveServer
         if (this.vfs.exists(filePath))
         {
             // File found, store in profiles[]
-            const start = performance.now();
             this.profiles[sessionID] = this.jsonUtil.deserialize(this.vfs.readFile(filePath), filename);
-            this.logger.debug(`Profile: ${sessionID} took: ${(performance.now() - start).toFixed(2)}ms to load.`, true);
         }
 
         // Run callbacks
