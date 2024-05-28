@@ -1,3 +1,4 @@
+import { error } from "node:console";
 import { inject, injectable } from "tsyringe";
 import { HandbookHelper } from "@spt/helpers/HandbookHelper";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
@@ -59,7 +60,7 @@ export class TraderHelper
         const pmcData = this.profileHelper.getPmcProfile(sessionID);
         if (!pmcData)
         {
-            this.logger.error(this.localisationService.getText("trader-unable_to_find_profile_with_id", sessionID));
+            throw new error(this.localisationService.getText("trader-unable_to_find_profile_with_id", sessionID));
         }
 
         // Profile has traderInfo dict (profile beyond creation stage) but no requested trader in profile
@@ -129,6 +130,11 @@ export class TraderHelper
     {
         const db = this.databaseServer.getTables();
         const fullProfile = this.profileHelper.getFullProfile(sessionID);
+        if (!fullProfile)
+        {
+            throw new error(this.localisationService.getText("trader-unable_to_find_profile_by_id", sessionID));
+        }
+
         const pmcData = fullProfile.characters.pmc;
         const rawProfileTemplate: ProfileTraderTemplate
             = db.templates!.profiles[fullProfile.info.edition][pmcData.Info.Side.toLowerCase()]

@@ -144,7 +144,7 @@ export class RagfairServerHelper
      */
     public isTrader(traderId: string): boolean
     {
-        return traderId in this.databaseServer.getTables().traders;
+        return traderId in this.databaseServer.getTables().traders!;
     }
 
     /**
@@ -161,7 +161,7 @@ export class RagfairServerHelper
             RagfairServerHelper.goodsReturnedTemplate,
             returnedItems,
             this.timeUtil.getHoursAsSeconds(
-                this.databaseServer.getTables().globals.config.RagFair.yourOfferDidNotSellMaxStorageTimeInHour,
+                this.databaseServer.getTables().globals!.config.RagFair.yourOfferDidNotSellMaxStorageTimeInHour,
             ),
         );
     }

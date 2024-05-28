@@ -68,7 +68,7 @@ export class TraderAssortHelper
             return this.getRagfairDataAsTraderAssort();
         }
 
-        const traderClone = this.cloner.clone(this.databaseServer.getTables().traders[traderId]);
+        const traderClone = this.cloner.clone(this.databaseServer.getTables().traders![traderId]);
         const fullProfile = this.profileHelper.getFullProfile(sessionId);
         const pmcProfile = fullProfile.characters.pmc;
 
@@ -245,7 +245,7 @@ export class TraderAssortHelper
     public traderAssortsHaveExpired(traderID: string): boolean
     {
         const time = this.timeUtil.getTimestamp();
-        const trader = this.databaseServer.getTables().traders[traderID];
+        const trader = this.databaseServer.getTables().traders![traderID];
 
         return trader.base.nextResupply <= time;
     }

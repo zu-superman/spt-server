@@ -96,8 +96,8 @@ export class BotEquipmentModPoolService
                         pool[item._id][slot._name].push(itemToAdd);
 
                         // Check item added into array for slots, need to iterate over those
-                        const subItemDetails = this.databaseServer.getTables().templates.items[itemToAdd];
-                        const hasSubItemsToAdd = subItemDetails?._props?.Slots?.length > 0;
+                        const subItemDetails = this.databaseServer.getTables().templates!.items[itemToAdd];
+                        const hasSubItemsToAdd = subItemDetails?._props?.Slots?.length ?? 0 > 0;
                         if (hasSubItemsToAdd && !pool[subItemDetails._id])
                         {
                             // Recursive call
@@ -185,7 +185,7 @@ export class BotEquipmentModPoolService
      */
     protected generateWeaponPool(): void
     {
-        const weapons = Object.values(this.databaseServer.getTables().templates.items).filter(
+        const weapons = Object.values(this.databaseServer.getTables().templates!.items).filter(
             (x) => x._type === "Item" && this.itemHelper.isOfBaseclass(x._id, BaseClasses.WEAPON),
         );
         this.generatePool(weapons, "weapon");
@@ -199,7 +199,7 @@ export class BotEquipmentModPoolService
      */
     protected generateGearPool(): void
     {
-        const gear = Object.values(this.databaseServer.getTables().templates.items).filter(
+        const gear = Object.values(this.databaseServer.getTables().templates!.items).filter(
             (x) =>
                 x._type === "Item"
                 && this.itemHelper.isOfBaseclasses(x._id, [

@@ -120,7 +120,7 @@ export class RepairHelper
     ): number
     {
         // Degradation value is based on the armor material
-        const armorMaterialSettings = this.databaseServer.getTables().globals.config.ArmorMaterials[armorMaterial];
+        const armorMaterialSettings = this.databaseServer.getTables().globals!.config.ArmorMaterials[armorMaterial];
 
         const minMultiplier = isRepairKit
             ? armorMaterialSettings.MinRepairKitDegradation

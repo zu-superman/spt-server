@@ -770,7 +770,7 @@ export class QuestHelper
      */
     public getQuestsFromDb(): IQuest[]
     {
-        return Object.values(this.databaseServer.getTables().templates.quests);
+        return Object.values(this.databaseServer.getTables().templates!.quests);
     }
 
     /**
@@ -781,7 +781,7 @@ export class QuestHelper
      */
     public getQuestFromDb(questId: string, pmcData: IPmcData): IQuest
     {
-        let quest = this.databaseServer.getTables().templates.quests[questId];
+        let quest = this.databaseServer.getTables().templates!.quests[questId];
 
         // May be a repeatable quest
         if (!quest)
@@ -1001,7 +1001,7 @@ export class QuestHelper
     ): void
     {
         // Get hideout crafts and find those that match by areatype/required level/end product tpl - hope for just one match
-        const hideoutProductions = this.databaseServer.getTables().hideout.production;
+        const hideoutProductions = this.databaseServer.getTables().hideout!.production;
         const matchingProductions = hideoutProductions.filter(
             (x) =>
                 x.areaType === Number.parseInt(craftUnlockReward.traderId)
@@ -1099,7 +1099,7 @@ export class QuestHelper
     public addAllQuestsToProfile(pmcProfile: IPmcData, statuses: QuestStatus[]): void
     {
         // Iterate over all quests in db
-        const quests = this.databaseServer.getTables().templates.quests;
+        const quests = this.databaseServer.getTables().templates!.quests;
         for (const questIdKey in quests)
         {
             // Quest from db matches quests in profile, skip

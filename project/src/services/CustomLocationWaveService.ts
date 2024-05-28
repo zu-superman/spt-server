@@ -70,7 +70,14 @@ export class CustomLocationWaveService
 
         for (const mapKey in bossWavesToApply)
         {
-            const location: ILocationBase = this.databaseServer.getTables().locations[mapKey].base;
+            const location: ILocationBase = this.databaseServer.getTables().locations![mapKey]?.base;
+            if (!location)
+            {
+                this.logger.warning(`Unable to add custom boss wave to location: ${mapKey}, location not found`);
+
+                continue;
+            }
+
             for (const bossWave of bossWavesToApply[mapKey])
             {
                 if (location.BossLocationSpawn.find((x) => x.sptId === bossWave.sptId))
@@ -87,7 +94,14 @@ export class CustomLocationWaveService
 
         for (const mapKey in normalWavesToApply)
         {
-            const location: ILocationBase = this.databaseServer.getTables().locations[mapKey].base;
+            const location: ILocationBase = this.databaseServer.getTables().locations![mapKey]?.base;
+            if (!location)
+            {
+                this.logger.warning(`Unable to add custom wave to location: ${mapKey}, location not found`);
+
+                continue;
+            }
+
             for (const normalWave of normalWavesToApply[mapKey])
             {
                 if (location.waves.find((x) => x.sptId === normalWave.sptId))

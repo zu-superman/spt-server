@@ -75,7 +75,7 @@ export class RagfairSellHelper
         const endTime
             = startTime
             + this.timeUtil.getHoursAsSeconds(
-                this.databaseServer.getTables().globals.config.RagFair.offerDurationTimeInHour,
+                this.databaseServer.getTables().globals!.config.RagFair.offerDurationTimeInHour,
             );
 
         let sellTime = startTime;

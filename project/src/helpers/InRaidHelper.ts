@@ -453,7 +453,7 @@ export class InRaidHelper
      */
     public removeSpawnedInSessionPropertyFromItems(postRaidProfile: IPostRaidPmcData): IPostRaidPmcData
     {
-        const dbItems = this.databaseServer.getTables().templates.items;
+        const dbItems = this.databaseServer.getTables().templates!.items;
         const itemsToRemovePropertyFrom = postRaidProfile.Inventory.items.filter((x) =>
         {
             // Has upd object + upd.SpawnedInSession property + not a quest item

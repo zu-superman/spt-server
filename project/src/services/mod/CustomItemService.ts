@@ -266,8 +266,8 @@ export class CustomItemService
         }
 
         // Get PMCs
-        const usec = this.databaseServer.getTables().bots.types.usec;
-        const bear = this.databaseServer.getTables().bots.types.bear;
+        const usec = this.databaseServer.getTables().bots!.types.usec;
+        const bear = this.databaseServer.getTables().bots!.types.bear;
 
         // Add weapon base+mods into bear/usec data
         usec.inventory.mods[weaponTpl] = baseWeaponModObject;

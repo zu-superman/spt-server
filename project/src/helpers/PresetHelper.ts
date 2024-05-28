@@ -44,7 +44,7 @@ export class PresetHelper
     {
         if (!this.defaultWeaponPresets)
         {
-            this.defaultWeaponPresets = Object.values(this.databaseServer.getTables().globals.ItemPresets)
+            this.defaultWeaponPresets = Object.values(this.databaseServer.getTables().globals!.ItemPresets)
                 .filter(
                     (preset) =>
                         preset._encyclopedia !== undefined
@@ -68,7 +68,7 @@ export class PresetHelper
     {
         if (!this.defaultEquipmentPresets)
         {
-            this.defaultEquipmentPresets = Object.values(this.databaseServer.getTables().globals.ItemPresets)
+            this.defaultEquipmentPresets = Object.values(this.databaseServer.getTables().globals!.ItemPresets)
                 .filter(
                     (preset) =>
                         preset._encyclopedia !== undefined
@@ -86,7 +86,7 @@ export class PresetHelper
 
     public isPreset(id: string): boolean
     {
-        return id in this.databaseServer.getTables().globals.ItemPresets;
+        return id in this.databaseServer.getTables().globals!.ItemPresets;
     }
 
     /**
@@ -107,12 +107,12 @@ export class PresetHelper
 
     public getPreset(id: string): IPreset
     {
-        return this.cloner.clone(this.databaseServer.getTables().globals.ItemPresets[id]);
+        return this.cloner.clone(this.databaseServer.getTables().globals!.ItemPresets[id]);
     }
 
     public getAllPresets(): IPreset[]
     {
-        return this.cloner.clone(Object.values(this.databaseServer.getTables().globals.ItemPresets));
+        return this.cloner.clone(Object.values(this.databaseServer.getTables().globals!.ItemPresets));
     }
 
     public getPresets(templateId: string): IPreset[]

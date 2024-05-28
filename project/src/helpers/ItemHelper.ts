@@ -398,7 +398,7 @@ export class ItemHelper
      */
     public getDynamicItemPrice(tpl: string): number
     {
-        const dynamicPrice = this.databaseServer.getTables().templates.prices[tpl];
+        const dynamicPrice = this.databaseServer.getTables().templates!.prices[tpl];
         if (dynamicPrice)
         {
             return dynamicPrice;
@@ -432,7 +432,7 @@ export class ItemHelper
      */
     public getItems(): ITemplateItem[]
     {
-        return this.cloner.clone(Object.values(this.databaseServer.getTables().templates.items));
+        return this.cloner.clone(Object.values(this.databaseServer.getTables().templates!.items));
     }
 
     /**
@@ -443,9 +443,9 @@ export class ItemHelper
     public getItem(tpl: string): [boolean, ITemplateItem]
     {
         // -> Gets item from <input: _tpl>
-        if (tpl in this.databaseServer.getTables().templates.items)
+        if (tpl in this.databaseServer.getTables().templates!.items)
         {
-            return [true, this.databaseServer.getTables().templates.items[tpl]];
+            return [true, this.databaseServer.getTables().templates!.items[tpl]];
         }
 
         return [false, undefined];
@@ -709,7 +709,7 @@ export class ItemHelper
      */
     public isItemTplStackable(tpl: string): boolean
     {
-        const item = this.databaseServer.getTables().templates.items[tpl];
+        const item = this.databaseServer.getTables().templates!.items[tpl];
         if (!item)
         {
             return undefined;
@@ -1565,7 +1565,7 @@ export class ItemHelper
 
     public getItemTplsOfBaseType(desiredBaseType: string): string[]
     {
-        return Object.values(this.databaseServer.getTables().templates.items)
+        return Object.values(this.databaseServer.getTables().templates!.items)
             .filter((x) => x._parent === desiredBaseType)
             .map((x) => x._id);
     }

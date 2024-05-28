@@ -355,7 +355,7 @@ export class RagfairOfferHelper
      */
     public increaseProfileRagfairRating(profile: ISptProfile, amountToIncrementBy: number): void
     {
-        const ragfairConfig = this.databaseServer.getTables().globals.config.RagFair;
+        const ragfairConfig = this.databaseServer.getTables().globals!.config.RagFair;
 
         profile.characters.pmc.RagfairInfo.isRatingGrowing = true;
         if (Number.isNaN(amountToIncrementBy))
@@ -572,7 +572,7 @@ export class RagfairOfferHelper
         const isTraderOffer = offer.user.memberType === MemberCategory.TRADER;
 
         if (
-            pmcData.Info.Level < this.databaseServer.getTables().globals.config.RagFair.minUserLevel
+            pmcData.Info.Level < this.databaseServer.getTables().globals!.config.RagFair.minUserLevel
             && isDefaultUserOffer
         )
         {
@@ -762,7 +762,7 @@ export class RagfairOfferHelper
         // handle trader items to remove items that are not available to the user right now
         // required search for "lamp" shows 4 items, 3 of which are not available to a new player
         // filter those out
-        if (offer.user.id in this.databaseServer.getTables().traders)
+        if (offer.user.id in this.databaseServer.getTables().traders!)
         {
             if (!(offer.user.id in traderAssorts))
             {

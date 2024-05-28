@@ -482,7 +482,7 @@ export class ProfileHelper
 
         if (useSkillProgressRateMultipler)
         {
-            const globals = this.databaseServer.getTables().globals;
+            const globals = this.databaseServer.getTables().globals!;
             const skillProgressRate = globals.config.SkillsSettings.SkillProgressRate;
             pointsToAddToSkill *= skillProgressRate;
         }

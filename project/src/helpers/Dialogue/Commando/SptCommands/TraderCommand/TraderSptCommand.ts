@@ -63,7 +63,7 @@ export class TraderSptCommand implements ISptCommand
         const command: string = result.groups.command;
         const quantity: number = +result.groups.quantity;
 
-        const dbTrader = Object.values(this.databaseServer.getTables().traders).find(
+        const dbTrader = Object.values(this.databaseServer.getTables().traders!).find(
             (t) => t.base.nickname.toLocaleLowerCase() === trader.toLocaleLowerCase(),
         );
         if (dbTrader === undefined)
