@@ -18,7 +18,7 @@ import {
 import { IQuestTypePool } from "@spt/models/spt/repeatable/IQuestTypePool";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { ICloner } from "@spt/utils/cloners/ICloner";
 import { MathUtil } from "@spt/utils/MathUtil";
@@ -34,7 +34,7 @@ export class RepeatableQuestGenerator
         @inject("PrimaryLogger") protected logger: ILogger,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("MathUtil") protected mathUtil: MathUtil,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("ObjectId") protected objectId: ObjectId,
@@ -238,7 +238,7 @@ export class RepeatableQuestGenerator
         if (targetsConfig.data(targetKey).isBoss)
         {
             // Get all boss spawn information
-            const bossSpawns = Object.values(this.databaseServer.getTables().locations)
+            const bossSpawns = Object.values(this.databaseService.getLocations())
                 .filter((x) => "base" in x && "Id" in x.base)
                 .map((x) => ({ Id: x.base.Id, BossSpawn: x.base.BossLocationSpawn }));
             // filter for the current boss to spawn on map
@@ -509,7 +509,7 @@ export class RepeatableQuestGenerator
         if (repeatableConfig.questConfig.Completion.useWhitelist)
         {
             const itemWhitelist
-                = this.databaseServer.getTables().templates.repeatableQuests.data.Completion.itemsWhitelist;
+                = this.databaseService.getTemplates().repeatableQuests.data.Completion.itemsWhitelist;
 
             // Filter and concatenate the arrays according to current player level
             const itemIdsWhitelisted = itemWhitelist
@@ -531,7 +531,7 @@ export class RepeatableQuestGenerator
         if (repeatableConfig.questConfig.Completion.useBlacklist)
         {
             const itemBlacklist
-                = this.databaseServer.getTables().templates.repeatableQuests.data.Completion.itemsBlacklist;
+                = this.databaseService.getTemplates().repeatableQuests.data.Completion.itemsBlacklist;
 
             // we filter and concatenate the arrays according to current player level
             const itemIdsBlacklisted = itemBlacklist
@@ -792,8 +792,9 @@ export class RepeatableQuestGenerator
      */
     protected getLocationExitsForSide(locationKey: string, playerSide: string): Exit[]
     {
-        const mapExtracts = this.databaseServer.getTables().locations[locationKey.toLocaleLowerCase()]
-            .allExtracts as Exit[];
+        const mapExtracts = this.databaseService
+            .getLocation(locationKey.toLocaleLowerCase())
+            .allExtracts;
 
         return mapExtracts.filter((exit) => exit.Side === playerSide);
     }
@@ -881,7 +882,7 @@ export class RepeatableQuestGenerator
     protected generateRepeatableTemplate(type: string, traderId: string, side: string): IRepeatableQuest
     {
         const questClone = this.cloner.clone<IRepeatableQuest>(
-            this.databaseServer.getTables().templates.repeatableQuests.templates[type],
+            this.databaseService.getTemplates().repeatableQuests.templates[type],
         );
         questClone._id = this.objectId.generate();
         questClone.traderId = traderId;

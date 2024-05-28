@@ -8,7 +8,7 @@ import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
 import { EquipmentSlots } from "@spt/models/enums/EquipmentSlots";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { ItemBaseClassService } from "@spt/services/ItemBaseClassService";
 import { ItemFilterService } from "@spt/services/ItemFilterService";
 import { LocaleService } from "@spt/services/LocaleService";
@@ -41,7 +41,7 @@ export class ItemHelper
         @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("ObjectId") protected objectId: ObjectId,
         @inject("MathUtil") protected mathUtil: MathUtil,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("HandbookHelper") protected handbookHelper: HandbookHelper,
         @inject("ItemBaseClassService") protected itemBaseClassService: ItemBaseClassService,
         @inject("ItemFilterService") protected itemFilterService: ItemFilterService,
@@ -398,7 +398,7 @@ export class ItemHelper
      */
     public getDynamicItemPrice(tpl: string): number
     {
-        const dynamicPrice = this.databaseServer.getTables().templates!.prices[tpl];
+        const dynamicPrice = this.databaseService.getPrices()[tpl];
         if (dynamicPrice)
         {
             return dynamicPrice;
@@ -432,7 +432,7 @@ export class ItemHelper
      */
     public getItems(): ITemplateItem[]
     {
-        return this.cloner.clone(Object.values(this.databaseServer.getTables().templates!.items));
+        return this.cloner.clone(Object.values(this.databaseService.getItems()));
     }
 
     /**
@@ -443,9 +443,9 @@ export class ItemHelper
     public getItem(tpl: string): [boolean, ITemplateItem]
     {
         // -> Gets item from <input: _tpl>
-        if (tpl in this.databaseServer.getTables().templates!.items)
+        if (tpl in this.databaseService.getItems())
         {
-            return [true, this.databaseServer.getTables().templates!.items[tpl]];
+            return [true, this.databaseService.getItems()[tpl]];
         }
 
         return [false, undefined];
@@ -709,7 +709,7 @@ export class ItemHelper
      */
     public isItemTplStackable(tpl: string): boolean
     {
-        const item = this.databaseServer.getTables().templates!.items[tpl];
+        const item = this.databaseService.getItems()[tpl];
         if (!item)
         {
             return undefined;
@@ -1563,11 +1563,16 @@ export class ItemHelper
         return this.localeService.getLocaleDb()[`${itemTpl} Name`];
     }
 
+    /**
+     * Get all item tpls with a desired base type
+     * @param desiredBaseType Item base type wanted
+     * @returns Array of tpls
+     */
     public getItemTplsOfBaseType(desiredBaseType: string): string[]
     {
-        return Object.values(this.databaseServer.getTables().templates!.items)
-            .filter((x) => x._parent === desiredBaseType)
-            .map((x) => x._id);
+        return Object.values(this.databaseService.getItems())
+            .filter((item) => item._parent === desiredBaseType)
+            .map((item) => item._id);
     }
 
     /**

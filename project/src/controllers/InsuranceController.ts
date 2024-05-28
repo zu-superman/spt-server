@@ -45,7 +45,7 @@ export class InsuranceController
         @inject("EventOutputHolder") protected eventOutputHolder: EventOutputHolder,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
         @inject("SaveServer") protected saveServer: SaveServer,
-        @inject("DatabaseService") protected databaseServer: DatabaseService,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
         @inject("DialogueHelper") protected dialogueHelper: DialogueHelper,
@@ -586,12 +586,12 @@ export class InsuranceController
         const labsId = "laboratory";
         // After all of the item filtering that we've done, if there are no items remaining, the insurance has
         // successfully "failed" to return anything and an appropriate message should be sent to the player.
-        const traderDialogMessages = this.databaseServer.getTrader(insurance.traderId).dialogue;
+        const traderDialogMessages = this.databaseService.getTrader(insurance.traderId).dialogue;
 
         // Map is labs + insurance is disabled in base.json
         if (
             insurance.systemData?.location?.toLowerCase() === labsId
-            && !(this.databaseServer.getLocation(labsId).base.Insurance)
+            && !(this.databaseService.getLocation(labsId).base.Insurance)
         )
         {
             // Trader has labs-specific messages

@@ -15,7 +15,7 @@ import { IBaseQuestConfig, IQuestConfig, IRepeatableQuestConfig } from "@spt/mod
 import { ExhaustableArray } from "@spt/models/spt/server/ExhaustableArray";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { ItemFilterService } from "@spt/services/ItemFilterService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { SeasonalEventService } from "@spt/services/SeasonalEventService";
@@ -33,7 +33,7 @@ export class RepeatableQuestRewardGenerator
         @inject("PrimaryLogger") protected logger: ILogger,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("MathUtil") protected mathUtil: MathUtil,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("PresetHelper") protected presetHelper: PresetHelper,
         @inject("HandbookHelper") protected handbookHelper: HandbookHelper,
@@ -426,7 +426,7 @@ export class RepeatableQuestRewardGenerator
         // check for specific baseclasses which don't make sense as reward item
         // also check if the price is greater than 0; there are some items whose price can not be found
         // those are not in the game yet (e.g. AGS grenade launcher)
-        return Object.entries(this.databaseServer.getTables().templates.items).filter(
+        return Object.entries(this.databaseService.getItems()).filter(
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             ([tpl, itemTemplate]) =>
             {

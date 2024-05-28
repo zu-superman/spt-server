@@ -277,9 +277,9 @@ describe("ItemHelper", () =>
 
     describe("getItems", () =>
     {
-        it("should call databaseServer.getTables() and jsonUtil.clone() methods", () =>
+        it("should call databaseService.getItems() and jsonUtil.clone() methods", () =>
         {
-            const databaseServerGetTablesSpy = vi.spyOn((itemHelper as any).databaseServer, "getTables");
+            const databaseServerGetTablesSpy = vi.spyOn((itemHelper as any).databaseService, "getItems");
             const clonerSpy = vi.spyOn((itemHelper as any).cloner, "clone");
 
             itemHelper.getItems();

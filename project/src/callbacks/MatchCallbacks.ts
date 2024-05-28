@@ -17,7 +17,7 @@ import { IProfileStatusResponse } from "@spt/models/eft/match/IProfileStatusResp
 import { IPutMetricsRequestData } from "@spt/models/eft/match/IPutMetricsRequestData";
 import { IRequestIdRequest } from "@spt/models/eft/match/IRequestIdRequest";
 import { IUpdatePingRequestData } from "@spt/models/eft/match/IUpdatePingRequestData";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { HttpResponseUtil } from "@spt/utils/HttpResponseUtil";
 import { JsonUtil } from "@spt/utils/JsonUtil";
 
@@ -28,7 +28,7 @@ export class MatchCallbacks
         @inject("HttpResponseUtil") protected httpResponse: HttpResponseUtil,
         @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("MatchController") protected matchController: MatchController,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
     )
     {}
 
@@ -166,7 +166,7 @@ export class MatchCallbacks
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public getMetrics(url: string, info: any, sessionID: string): IGetBodyResponseData<string>
     {
-        return this.httpResponse.getBody(this.jsonUtil.serialize(this.databaseServer.getTables().match!.metrics));
+        return this.httpResponse.getBody(this.jsonUtil.serialize(this.databaseService.getMatch().metrics));
     }
 
     /**

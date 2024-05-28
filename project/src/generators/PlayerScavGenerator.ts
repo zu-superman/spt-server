@@ -17,9 +17,9 @@ import { Traders } from "@spt/models/enums/Traders";
 import { IPlayerScavConfig, KarmaLevel } from "@spt/models/spt/config/IPlayerScavConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
 import { SaveServer } from "@spt/servers/SaveServer";
 import { BotLootCacheService } from "@spt/services/BotLootCacheService";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { FenceService } from "@spt/services/FenceService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { ICloner } from "@spt/utils/cloners/ICloner";
@@ -34,7 +34,7 @@ export class PlayerScavGenerator
     constructor(
         @inject("PrimaryLogger") protected logger: ILogger,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("BotGeneratorHelper") protected botGeneratorHelper: BotGeneratorHelper,
@@ -342,7 +342,7 @@ export class PlayerScavGenerator
     {
         // Set cooldown time.
         // Make sure to apply ScavCooldownTimer bonus from Hideout if the player has it.
-        let scavLockDuration = this.databaseServer.getTables().globals.config.SavagePlayCooldown;
+        let scavLockDuration = this.databaseService.getGlobals().config.SavagePlayCooldown;
         let modifier = 1;
 
         for (const bonus of pmcData.Bonuses)

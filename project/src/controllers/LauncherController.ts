@@ -32,7 +32,7 @@ export class LauncherController
         @inject("SaveServer") protected saveServer: SaveServer,
         @inject("HttpServerHelper") protected httpServerHelper: HttpServerHelper,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
-        @inject("DatabaseService") protected databaseServer: DatabaseService,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("PreSptModLoader") protected preSptModLoader: PreSptModLoader,
         @inject("ConfigServer") protected configServer: ConfigServer,
@@ -46,7 +46,7 @@ export class LauncherController
         return {
             backendUrl: this.httpServerHelper.getBackendUrl(),
             name: this.coreConfig.serverName,
-            editions: Object.keys(this.databaseServer.getProfiles()),
+            editions: Object.keys(this.databaseService.getProfiles()),
             profileDescriptions: this.getProfileDescriptions(),
         };
     }
@@ -58,7 +58,7 @@ export class LauncherController
     protected getProfileDescriptions(): Record<string, string>
     {
         const result = {};
-        const dbProfiles = this.databaseServer.getProfiles();
+        const dbProfiles = this.databaseService.getProfiles();
         for (const profileKey in dbProfiles)
         {
             const localeKey = dbProfiles[profileKey]?.descriptionLocaleKey;

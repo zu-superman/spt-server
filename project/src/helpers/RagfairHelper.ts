@@ -11,7 +11,7 @@ import { Money } from "@spt/models/enums/Money";
 import { IRagfairConfig } from "@spt/models/spt/config/IRagfairConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { RagfairLinkedItemService } from "@spt/services/RagfairLinkedItemService";
 import { ICloner } from "@spt/utils/cloners/ICloner";
 
@@ -23,7 +23,7 @@ export class RagfairHelper
     constructor(
         @inject("PrimaryLogger") protected logger: ILogger,
         @inject("TraderAssortHelper") protected traderAssortHelper: TraderAssortHelper,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("HandbookHelper") protected handbookHelper: HandbookHelper,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("RagfairLinkedItemService") protected ragfairLinkedItemService: RagfairLinkedItemService,
@@ -96,7 +96,7 @@ export class RagfairHelper
     {
         const result: Record<string, ITraderAssort> = {};
 
-        for (const traderID in this.databaseServer.getTables().traders)
+        for (const traderID in this.databaseService.getTraders())
         {
             if (this.ragfairConfig.traders[traderID])
             {

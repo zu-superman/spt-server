@@ -20,7 +20,7 @@ import { IHideoutConfig } from "@spt/models/spt/config/IHideoutConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { EventOutputHolder } from "@spt/routers/EventOutputHolder";
 import { ConfigServer } from "@spt/servers/ConfigServer";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { PlayerService } from "@spt/services/PlayerService";
 import { ICloner } from "@spt/utils/cloners/ICloner";
@@ -44,7 +44,7 @@ export class HideoutHelper
         @inject("PrimaryLogger") protected logger: ILogger,
         @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("EventOutputHolder") protected eventOutputHolder: EventOutputHolder,
         @inject("HttpResponseUtil") protected httpResponse: HttpResponseUtil,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
@@ -72,9 +72,8 @@ export class HideoutHelper
         sessionID: string,
     ): IItemEventRouterResponse
     {
-        const recipe = this.databaseServer
-            .getTables()
-            .hideout.production.find((production) => production._id === body.recipeId);
+        const recipe = this.databaseService.getHideout().production
+            .find((production) => production._id === body.recipeId);
         if (!recipe)
         {
             this.logger.error(this.localisationService.getText("hideout-missing_recipe_in_db", body.recipeId));
@@ -258,7 +257,7 @@ export class HideoutHelper
         hideoutProperties: { btcFarmCGs: number, isGeneratorOn: boolean, waterCollectorHasFilter: boolean },
     ): void
     {
-        const recipes = this.databaseServer.getTables().hideout.production;
+        const recipes = this.databaseService.getHideout().production;
 
         // Check each production
         for (const prodId in pmcData.Hideout.Production)
@@ -449,7 +448,7 @@ export class HideoutHelper
         // 1 resource last 14 min 27 sec, 1/14.45/60 = 0.00115
         // 10-10-2021 From wiki, 1 resource last 12 minutes 38 seconds, 1/12.63333/60 = 0.00131
         let fuelUsedSinceLastTick
-            = this.databaseServer.getTables().hideout.settings.generatorFuelFlowRate
+            = this.databaseService.getHideout().settings.generatorFuelFlowRate
             * this.getTimeElapsedSinceLastServerTick(pmcData, isGeneratorOn);
 
         const profileFuelConsumptionBonus = pmcData.Bonuses.find((bonus) => bonus.type === BonusType.FUEL_CONSUMPTION);
@@ -603,11 +602,10 @@ export class HideoutHelper
         applyHideoutManagementBonus = false,
     ): number
     {
-        const globalSkillsDb = this.databaseServer.getTables().globals.config.SkillsSettings;
+        const globalSkillsDb = this.databaseService.getGlobals().config.SkillsSettings;
 
-        const recipe = this.databaseServer
-            .getTables()
-            .hideout.production.find((production) => production._id === recipeId);
+        const recipe = this.databaseService.getHideout().production
+            .find((production) => production._id === recipeId);
         if (!recipe)
         {
             this.logger.error(this.localisationService.getText("hideout-missing_recipe_in_db", recipeId));
@@ -773,7 +771,7 @@ export class HideoutHelper
      */
     protected getWaterFilterDrainRate(pmcData: IPmcData): number
     {
-        const globalSkillsDb = this.databaseServer.getTables().globals.config.SkillsSettings;
+        const globalSkillsDb = this.databaseService.getGlobals().config.SkillsSettings;
 
         // 100 resources last 8 hrs 20 min, 100/8.33/60/60 = 0.00333
         const filterDrainRate = 0.00333;
@@ -805,7 +803,7 @@ export class HideoutHelper
      */
     protected getTotalProductionTimeSeconds(prodId: string): number
     {
-        const recipe = this.databaseServer.getTables().hideout.production.find((prod) => prod._id === prodId);
+        const recipe = this.databaseService.getHideout().production.find((prod) => prod._id === prodId);
 
         return recipe.productionTime || 0;
     }
@@ -839,7 +837,7 @@ export class HideoutHelper
             300/17.64694/60/60 = 0.004722
         */
         let filterDrainRate
-            = this.databaseServer.getTables().hideout.settings.airFilterUnitFlowRate
+            = this.databaseService.getHideout().settings.airFilterUnitFlowRate
             * this.getTimeElapsedSinceLastServerTick(pmcData, isGeneratorOn);
 
         // Hideout management resource consumption bonus:
@@ -894,10 +892,8 @@ export class HideoutHelper
     protected updateBitcoinFarm(pmcData: IPmcData, btcFarmCGs: number, isGeneratorOn: boolean): Production | undefined
     {
         const btcProd = pmcData.Hideout.Production[HideoutHelper.bitcoinFarm];
-        const bitcoinProdData = this.databaseServer
-            .getTables()
-            .hideout!
-            .production.find((production) => production._id === HideoutHelper.bitcoinProductionId);
+        const bitcoinProdData = this.databaseService.getHideout().production
+            .find((production) => production._id === HideoutHelper.bitcoinProductionId);
         const coinSlotCount = this.getBTCSlots(pmcData);
 
         // Full on bitcoins, halt progress
@@ -948,7 +944,7 @@ export class HideoutHelper
             // BSG finally fixed their settings, they now get loaded from the settings and used in the client
             const adjustedCraftTime
                 = (this.profileHelper.isDeveloperAccount(pmcData.sessionId) ? 40 : bitcoinProdData.productionTime)
-                / (1 + (btcFarmCGs - 1) * this.databaseServer.getTables().hideout.settings.gpuBoostRate);
+                / (1 + (btcFarmCGs - 1) * this.databaseService.getHideout().settings.gpuBoostRate);
 
             // The progress should be adjusted based on the GPU boost rate, but the target is still the base productionTime
             const timeMultiplier = bitcoinProdData.productionTime / adjustedCraftTime;
@@ -1018,7 +1014,7 @@ export class HideoutHelper
 
         if (!isGeneratorOn)
         {
-            timeElapsed *= this.databaseServer.getTables().hideout!.settings.generatorSpeedWithoutFuel;
+            timeElapsed *= this.databaseService.getHideout().settings.generatorSpeedWithoutFuel;
         }
 
         return timeElapsed;
@@ -1031,9 +1027,8 @@ export class HideoutHelper
      */
     protected getBTCSlots(pmcData: IPmcData): number
     {
-        const bitcoinProductions = this.databaseServer
-            .getTables()
-            .hideout.production.find((production) => production._id === HideoutHelper.bitcoinFarm);
+        const bitcoinProductions = this.databaseService.getHideout().production
+            .find((production) => production._id === HideoutHelper.bitcoinFarm);
         const productionSlots = bitcoinProductions?.productionLimitCount || 3; // Default to 3 if none found
         const hasManagementSkillSlots = this.profileHelper.hasEliteSkillLevel(SkillTypes.HIDEOUT_MANAGEMENT, pmcData);
         const managementSlotsCount = this.getEliteSkillAdditionalBitcoinSlotCount() || 2;
@@ -1046,7 +1041,7 @@ export class HideoutHelper
      */
     protected getEliteSkillAdditionalBitcoinSlotCount(): number
     {
-        return this.databaseServer.getTables().globals.config.SkillsSettings.HideoutManagement.EliteSlots.BitcoinFarm
+        return this.databaseService.getGlobals().config.SkillsSettings.HideoutManagement.EliteSlots.BitcoinFarm
             .Container;
     }
 
@@ -1072,7 +1067,7 @@ export class HideoutHelper
 
         return (
             (roundedLevel
-            * this.databaseServer.getTables().globals.config.SkillsSettings.HideoutManagement
+            * this.databaseService.getGlobals().config.SkillsSettings.HideoutManagement
                 .ConsumptionReductionPerLevel)
                 / 100
         );
@@ -1254,9 +1249,8 @@ export class HideoutHelper
         const fameAreaProfile = pmcData.Hideout.Areas.find((area) => area.type === HideoutAreas.PLACE_OF_FAME);
 
         // Get hideout area 16 bonus array
-        const fameAreaDb = this.databaseServer
-            .getTables()
-            .hideout.areas.find((area) => area.type === HideoutAreas.PLACE_OF_FAME);
+        const fameAreaDb = this.databaseService.getHideout().areas
+            .find((area) => area.type === HideoutAreas.PLACE_OF_FAME);
 
         // Get SkillGroupLevelingBoost object
         const combatBoostBonusDb = fameAreaDb.stages[fameAreaProfile.level].bonuses.find(

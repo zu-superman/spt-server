@@ -19,7 +19,7 @@ import {
 } from "@spt/models/spt/fence/IFenceAssortGenerationValues";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { ICloner } from "@spt/utils/cloners/ICloner";
 import { RandomUtil } from "@spt/utils/RandomUtil";
@@ -62,7 +62,7 @@ export class FenceService
         @inject("PrimaryLogger") protected logger: ILogger,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("HandbookHelper") protected handbookHelper: HandbookHelper,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("PresetHelper") protected presetHelper: PresetHelper,
@@ -694,7 +694,7 @@ export class FenceService
     {
         const result: ICreateFenceAssortsResult = { sptItems: [], barter_scheme: {}, loyal_level_items: {} };
 
-        const baseFenceAssortClone = this.cloner.clone(this.databaseServer.getTables().traders![Traders.FENCE].assort!);
+        const baseFenceAssortClone = this.cloner.clone(this.databaseService.getTrader(Traders.FENCE).assort);
         const itemTypeLimitCounts = this.initItemLimitCounter(this.traderConfig.fence.itemTypeLimits);
 
         if (itemCounts.item > 0)
@@ -1498,7 +1498,7 @@ export class FenceService
      */
     public getFenceInfo(pmcData: IPmcData): IFenceLevel
     {
-        const fenceSettings = this.databaseServer.getTables().globals!.config.FenceSettings;
+        const fenceSettings = this.databaseService.getGlobals().config.FenceSettings;
         const pmcFenceInfo = pmcData.TradersInfo[fenceSettings.FenceId];
 
         if (!pmcFenceInfo)

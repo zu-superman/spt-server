@@ -14,7 +14,7 @@ import {
 } from "@spt/models/spt/hideout/ScavCaseRewardCountsAndPrices";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { ItemFilterService } from "@spt/services/ItemFilterService";
 import { RagfairPriceService } from "@spt/services/RagfairPriceService";
 import { SeasonalEventService } from "@spt/services/SeasonalEventService";
@@ -37,7 +37,7 @@ export class ScavCaseRewardGenerator
         @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("PresetHelper") protected presetHelper: PresetHelper,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("RagfairPriceService") protected ragfairPriceService: RagfairPriceService,
         @inject("SeasonalEventService") protected seasonalEventService: SeasonalEventService,
         @inject("ItemFilterService") protected itemFilterService: ItemFilterService,
@@ -57,7 +57,7 @@ export class ScavCaseRewardGenerator
         this.cacheDbItems();
 
         // Get scavcase details from hideout/scavcase.json
-        const scavCaseDetails = this.databaseServer.getTables().hideout.scavcase.find((r) => r._id === recipeId);
+        const scavCaseDetails = this.databaseService.getHideout().scavcase.find((r) => r._id === recipeId);
         const rewardItemCounts = this.getScavCaseRewardCountsAndPrices(scavCaseDetails);
 
         // Get items that fit the price criteria as set by the scavCase config
@@ -98,7 +98,7 @@ export class ScavCaseRewardGenerator
         const inactiveSeasonalItems = this.seasonalEventService.getInactiveSeasonalEventItems();
         if (!this.dbItemsCache)
         {
-            this.dbItemsCache = Object.values(this.databaseServer.getTables().templates.items).filter((item) =>
+            this.dbItemsCache = Object.values(this.databaseService.getItems()).filter((item) =>
             {
                 // Base "Item" item has no parent, ignore it
                 if (item._parent === "")
@@ -154,7 +154,7 @@ export class ScavCaseRewardGenerator
 
         if (!this.dbAmmoItemsCache)
         {
-            this.dbAmmoItemsCache = Object.values(this.databaseServer.getTables().templates.items).filter((item) =>
+            this.dbAmmoItemsCache = Object.values(this.databaseService.getItems()).filter((item) =>
             {
                 // Base "Item" item has no parent, ignore it
                 if (item._parent === "")
@@ -280,9 +280,10 @@ export class ScavCaseRewardGenerator
     protected getRandomMoney(): ITemplateItem
     {
         const money: ITemplateItem[] = [];
-        money.push(this.databaseServer.getTables().templates.items["5449016a4bdc2d6f028b456f"]); // rub
-        money.push(this.databaseServer.getTables().templates.items["569668774bdc2da2298b4568"]); // euro
-        money.push(this.databaseServer.getTables().templates.items["5696686a4bdc2da3298b456a"]); // dollar
+        const items = this.databaseService.getItems();
+        money.push(items["5449016a4bdc2d6f028b456f"]); // rub
+        money.push(items["569668774bdc2da2298b4568"]); // euro
+        money.push(items["5696686a4bdc2da3298b456a"]); // dollar
 
         return this.randomUtil.getArrayValue(money);
     }

@@ -7,7 +7,7 @@ import { ISendMessageRequest } from "@spt/models/eft/dialog/ISendMessageRequest"
 import { IUserDialogInfo } from "@spt/models/eft/profile/ISptProfile";
 import { IProfileChangeEvent, ProfileChangeEventType } from "@spt/models/spt/dialog/ISendMessageDetails";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { LocaleService } from "@spt/services/LocaleService";
 import { MailSendService } from "@spt/services/MailSendService";
 import { HashUtil } from "@spt/utils/HashUtil";
@@ -31,7 +31,7 @@ export class TraderSptCommand implements ISptCommand
         @inject("PresetHelper") protected presetHelper: PresetHelper,
         @inject("MailSendService") protected mailSendService: MailSendService,
         @inject("LocaleService") protected localeService: LocaleService,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
     )
     {}
 
@@ -63,7 +63,7 @@ export class TraderSptCommand implements ISptCommand
         const command: string = result.groups.command;
         const quantity: number = +result.groups.quantity;
 
-        const dbTrader = Object.values(this.databaseServer.getTables().traders!).find(
+        const dbTrader = Object.values(this.databaseService.getTraders()).find(
             (t) => t.base.nickname.toLocaleLowerCase() === trader.toLocaleLowerCase(),
         );
         if (dbTrader === undefined)

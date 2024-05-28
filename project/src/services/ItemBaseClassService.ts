@@ -1,7 +1,7 @@
 import { inject, injectable } from "tsyringe";
 import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 
 /**
@@ -17,7 +17,7 @@ export class ItemBaseClassService
     constructor(
         @inject("PrimaryLogger") protected logger: ILogger,
         @inject("LocalisationService") protected localisationService: LocalisationService,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
     )
     {}
 
@@ -30,7 +30,7 @@ export class ItemBaseClassService
         // Clear existing cache
         this.itemBaseClassesCache = {};
 
-        this.items = this.databaseServer.getTables().templates!.items;
+        this.items = this.databaseService.getItems();
         if (!this.items)
         {
             this.logger.warning(this.localisationService.getText("baseclass-missing_db_no_cache"));

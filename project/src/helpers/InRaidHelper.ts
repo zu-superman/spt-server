@@ -15,8 +15,8 @@ import { IInRaidConfig } from "@spt/models/spt/config/IInRaidConfig";
 import { ILostOnDeathConfig } from "@spt/models/spt/config/ILostOnDeathConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
 import { SaveServer } from "@spt/servers/SaveServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { ProfileFixerService } from "@spt/services/ProfileFixerService";
 import { ICloner } from "@spt/utils/cloners/ICloner";
@@ -35,7 +35,7 @@ export class InRaidHelper
         @inject("TimeUtil") protected timeUtil: TimeUtil,
         @inject("SaveServer") protected saveServer: SaveServer,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("InventoryHelper") protected inventoryHelper: InventoryHelper,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
         @inject("QuestHelper") protected questHelper: QuestHelper,
@@ -453,17 +453,17 @@ export class InRaidHelper
      */
     public removeSpawnedInSessionPropertyFromItems(postRaidProfile: IPostRaidPmcData): IPostRaidPmcData
     {
-        const dbItems = this.databaseServer.getTables().templates!.items;
-        const itemsToRemovePropertyFrom = postRaidProfile.Inventory.items.filter((x) =>
+        const dbItems = this.databaseService.getItems();
+        const itemsToRemovePropertyFrom = postRaidProfile.Inventory.items.filter((item) =>
         {
             // Has upd object + upd.SpawnedInSession property + not a quest item
             return (
-                "upd" in x
-                && "SpawnedInSession" in x.upd
-                && !dbItems[x._tpl]._props.QuestItem
+                "upd" in item
+                && "SpawnedInSession" in item.upd
+                && !dbItems[item._tpl]._props.QuestItem
                 && !(
                     this.inRaidConfig.keepFiRSecureContainerOnDeath
-                    && this.itemHelper.itemIsInsideContainer(x, "SecuredContainer", postRaidProfile.Inventory.items)
+                    && this.itemHelper.itemIsInsideContainer(item, "SecuredContainer", postRaidProfile.Inventory.items)
                 )
             );
         });

@@ -5,7 +5,7 @@ import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { IPmcConfig } from "@spt/models/spt/config/IPmcConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { ICloner } from "@spt/utils/cloners/ICloner";
 import { RandomUtil } from "@spt/utils/RandomUtil";
@@ -17,7 +17,7 @@ export class BotDifficultyHelper
 
     constructor(
         @inject("PrimaryLogger") protected logger: ILogger,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("BotHelper") protected botHelper: BotHelper,
@@ -121,7 +121,7 @@ export class BotDifficultyHelper
      */
     public getBotDifficultySettings(type: string, difficulty: string): Difficulty
     {
-        const botDb = this.databaseServer.getTables().bots;
+        const botDb = this.databaseService.getBots();
 
         const desiredType = type.toLowerCase();
         const bot = botDb.types[desiredType];
@@ -165,7 +165,7 @@ export class BotDifficultyHelper
 
         difficultySetting = this.convertBotDifficultyDropdownToBotDifficulty(difficultySetting);
 
-        return this.cloner.clone(this.databaseServer.getTables().bots.types[type].difficulty[difficultySetting]);
+        return this.cloner.clone(this.databaseService.getBots().types[type].difficulty[difficultySetting]);
     }
 
     /**

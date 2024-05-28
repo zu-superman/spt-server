@@ -24,7 +24,7 @@ export class DataCallbacks
 {
     constructor(
         @inject("HttpResponseUtil") protected httpResponse: HttpResponseUtil,
-        @inject("DatabaseService") protected databaseServer: DatabaseService,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("RagfairController") protected ragfairController: RagfairController,
         @inject("HideoutController") protected hideoutController: HideoutController,
     )
@@ -36,7 +36,7 @@ export class DataCallbacks
      */
     public getSettings(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<ISettingsBase>
     {
-        return this.httpResponse.getBody(this.databaseServer.getSettings());
+        return this.httpResponse.getBody(this.databaseService.getSettings());
     }
 
     /**
@@ -45,10 +45,10 @@ export class DataCallbacks
      */
     public getGlobals(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<IGlobals>
     {
-        const globals = this.databaseServer.getGlobals();
+        const globals = this.databaseService.getGlobals();
         globals.time = Date.now() / 1000;
 
-        return this.httpResponse.getBody(this.databaseServer.getGlobals());
+        return this.httpResponse.getBody(this.databaseService.getGlobals());
     }
 
     /**
@@ -57,7 +57,7 @@ export class DataCallbacks
      */
     public getTemplateItems(url: string, info: IEmptyRequestData, sessionID: string): string
     {
-        return this.httpResponse.getUnclearedBody(this.databaseServer.getItems());
+        return this.httpResponse.getUnclearedBody(this.databaseService.getItems());
     }
 
     /**
@@ -70,7 +70,7 @@ export class DataCallbacks
         sessionID: string,
     ): IGetBodyResponseData<IHandbookBase>
     {
-        return this.httpResponse.getBody(this.databaseServer.getHandbook());
+        return this.httpResponse.getBody(this.databaseService.getHandbook());
     }
 
     /**
@@ -83,7 +83,7 @@ export class DataCallbacks
         sessionID: string,
     ): IGetBodyResponseData<Record<string, ICustomizationItem>>
     {
-        return this.httpResponse.getBody(this.databaseServer.getTemplates().customization);
+        return this.httpResponse.getBody(this.databaseService.getTemplates().customization);
     }
 
     /**
@@ -96,7 +96,7 @@ export class DataCallbacks
         sessionID: string,
     ): IGetBodyResponseData<string[]>
     {
-        return this.httpResponse.getBody(this.databaseServer.getTemplates().character);
+        return this.httpResponse.getBody(this.databaseService.getTemplates().character);
     }
 
     /**
@@ -109,7 +109,7 @@ export class DataCallbacks
         sessionID: string,
     ): IGetBodyResponseData<IHideoutSettingsBase>
     {
-        return this.httpResponse.getBody(this.databaseServer.getHideout().settings);
+        return this.httpResponse.getBody(this.databaseService.getHideout().settings);
     }
 
     public getHideoutAreas(
@@ -118,7 +118,7 @@ export class DataCallbacks
         sessionID: string,
     ): IGetBodyResponseData<IHideoutArea[]>
     {
-        return this.httpResponse.getBody(this.databaseServer.getHideout().areas);
+        return this.httpResponse.getBody(this.databaseService.getHideout().areas);
     }
 
     public gethideoutProduction(
@@ -127,7 +127,7 @@ export class DataCallbacks
         sessionID: string,
     ): IGetBodyResponseData<IHideoutProduction[]>
     {
-        return this.httpResponse.getBody(this.databaseServer.getHideout().production);
+        return this.httpResponse.getBody(this.databaseService.getHideout().production);
     }
 
     public getHideoutScavcase(
@@ -136,7 +136,7 @@ export class DataCallbacks
         sessionID: string,
     ): IGetBodyResponseData<IHideoutScavCase[]>
     {
-        return this.httpResponse.getBody(this.databaseServer.getHideout().scavcase);
+        return this.httpResponse.getBody(this.databaseService.getHideout().scavcase);
     }
 
     /**
@@ -148,7 +148,7 @@ export class DataCallbacks
         sessionID: string,
     ): IGetBodyResponseData<Record<string, string>>
     {
-        return this.httpResponse.getBody(this.databaseServer.getLocales().languages);
+        return this.httpResponse.getBody(this.databaseService.getLocales().languages);
     }
 
     /**
@@ -157,7 +157,7 @@ export class DataCallbacks
     public getLocalesMenu(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<string>
     {
         const localeId = url.replace("/client/menu/locale/", "");
-        const locales = this.databaseServer.getLocales();
+        const locales = this.databaseService.getLocales();
         let result = locales.menu[localeId];
 
         if (result === undefined)
@@ -177,7 +177,7 @@ export class DataCallbacks
     public getLocalesGlobal(url: string, info: IEmptyRequestData, sessionID: string): string
     {
         const localeId = url.replace("/client/locale/", "");
-        const locales = this.databaseServer.getLocales();
+        const locales = this.databaseService.getLocales();
         let result = locales.global[localeId];
 
         if (result === undefined)

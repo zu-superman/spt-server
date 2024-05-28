@@ -17,7 +17,7 @@ import { EquipmentFilters, IBotConfig, IRandomisedResourceValues } from "@spt/mo
 import { IPmcConfig } from "@spt/models/spt/config/IPmcConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { RandomUtil } from "@spt/utils/RandomUtil";
 
@@ -30,7 +30,7 @@ export class BotGeneratorHelper
     constructor(
         @inject("PrimaryLogger") protected logger: ILogger,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("DurabilityLimitsHelper") protected durabilityLimitsHelper: DurabilityLimitsHelper,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("InventoryHelper") protected inventoryHelper: InventoryHelper,
@@ -289,7 +289,7 @@ export class BotGeneratorHelper
     ): IChooseRandomCompatibleModResult
     {
         // TODO: Can probably be optimized to cache itemTemplates as items are added to inventory
-        const equippedItemsDb = itemsEquipped.map((item) => this.databaseServer.getTables().templates.items[item._tpl]);
+        const equippedItemsDb = itemsEquipped.map((item) => this.itemHelper.getItem(item._tpl)[1]);
         const itemToEquipDb = this.itemHelper.getItem(tplToCheck);
         const itemToEquip = itemToEquipDb[1];
 
@@ -365,7 +365,7 @@ export class BotGeneratorHelper
         }
 
         // TODO: Can probably be optimized to cache itemTemplates as items are added to inventory
-        const equippedItemsDb = itemsEquipped.map((i) => this.databaseServer.getTables().templates.items[i._tpl]);
+        const equippedItemsDb = itemsEquipped.map((equippedItem) => this.itemHelper.getItem(equippedItem._tpl)[1]);
         const itemToEquipDb = this.itemHelper.getItem(tplToCheck);
         const itemToEquip = itemToEquipDb[1];
 
@@ -395,7 +395,7 @@ export class BotGeneratorHelper
         }
 
         // Does an equipped item have a property that blocks the desired item - check for prop "BlocksX" .e.g BlocksEarpiece / BlocksFaceCover
-        let blockingItem = equippedItemsDb.find((x) => x._props[`Blocks${equipmentSlot}`]);
+        let blockingItem = equippedItemsDb.find((item) => item._props[`Blocks${equipmentSlot}`]);
         if (blockingItem)
         {
             // this.logger.warning(`1 incompatibility found between - ${itemToEquip[1]._name} and ${blockingItem._name} - ${equipmentSlot}`);

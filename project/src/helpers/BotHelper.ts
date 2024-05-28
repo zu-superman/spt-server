@@ -6,7 +6,7 @@ import { EquipmentFilters, IBotConfig, RandomisationDetails } from "@spt/models/
 import { IPmcConfig } from "@spt/models/spt/config/IPmcConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { RandomUtil } from "@spt/utils/RandomUtil";
 
 @injectable()
@@ -17,7 +17,7 @@ export class BotHelper
 
     constructor(
         @inject("PrimaryLogger") protected logger: ILogger,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("ConfigServer") protected configServer: ConfigServer,
     )
@@ -33,7 +33,7 @@ export class BotHelper
      */
     public getBotTemplate(role: string): IBotType
     {
-        return this.databaseServer.getTables().bots.types[role.toLowerCase()];
+        return this.databaseService.getBots().types[role.toLowerCase()];
     }
 
     /**
@@ -207,7 +207,7 @@ export class BotHelper
         // recurivse if name is longer than max characters allowed (15 characters)
         const randomType = this.randomUtil.getInt(0, 1) === 0 ? "usec" : "bear";
         const name
-            = this.randomUtil.getStringArrayValue(this.databaseServer.getTables().bots.types[randomType].firstName);
+            = this.randomUtil.getStringArrayValue(this.databaseService.getBots().types[randomType].firstName);
         return name.length > maxLength
             ? this.getPmcNicknameOfMaxLength(userId, maxLength)
             : name;

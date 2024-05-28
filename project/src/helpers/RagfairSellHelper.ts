@@ -4,7 +4,7 @@ import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { IRagfairConfig } from "@spt/models/spt/config/IRagfairConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { RandomUtil } from "@spt/utils/RandomUtil";
 import { TimeUtil } from "@spt/utils/TimeUtil";
 
@@ -17,7 +17,7 @@ export class RagfairSellHelper
         @inject("PrimaryLogger") protected logger: ILogger,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("ConfigServer") protected configServer: ConfigServer,
     )
     {
@@ -75,7 +75,7 @@ export class RagfairSellHelper
         const endTime
             = startTime
             + this.timeUtil.getHoursAsSeconds(
-                this.databaseServer.getTables().globals!.config.RagFair.offerDurationTimeInHour,
+                this.databaseService.getGlobals().config.RagFair.offerDurationTimeInHour,
             );
 
         let sellTime = startTime;

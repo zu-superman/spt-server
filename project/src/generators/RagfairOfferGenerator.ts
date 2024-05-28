@@ -23,8 +23,8 @@ import {
 } from "@spt/models/spt/config/IRagfairConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
 import { SaveServer } from "@spt/servers/SaveServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { FenceService } from "@spt/services/FenceService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { RagfairOfferService } from "@spt/services/RagfairOfferService";
@@ -48,7 +48,7 @@ export class RagfairOfferGenerator
         @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("RagfairServerHelper") protected ragfairServerHelper: RagfairServerHelper,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
         @inject("HandbookHelper") protected handbookHelper: HandbookHelper,
@@ -242,7 +242,7 @@ export class RagfairOfferGenerator
     {
         if (isTrader)
         {
-            return this.databaseServer.getTables().traders[userId].base.avatar;
+            return this.databaseService.getTrader(userId).base.avatar;
         }
 
         return "/files/trader/avatar/unknown.jpg";
@@ -338,14 +338,14 @@ export class RagfairOfferGenerator
         {
             // Player offer = current time + offerDurationTimeInHour;
             const offerDurationTimeHours
-                = this.databaseServer.getTables().globals!.config.RagFair.offerDurationTimeInHour;
+                = this.databaseService.getGlobals().config.RagFair.offerDurationTimeInHour;
             return this.timeUtil.getTimestamp() + Math.round(offerDurationTimeHours * TimeUtil.ONE_HOUR_AS_SECONDS);
         }
 
         if (this.ragfairServerHelper.isTrader(userID))
         {
             // Trader offer
-            return this.databaseServer.getTables().traders![userID].base.nextResupply;
+            return this.databaseService.getTrader(userID).base.nextResupply;
         }
 
         // Generated fake-player offer
@@ -577,7 +577,7 @@ export class RagfairOfferGenerator
 
         // Add trader offers
         const time = this.timeUtil.getTimestamp();
-        const trader = this.databaseServer.getTables().traders[traderID];
+        const trader = this.databaseService.getTrader(traderID);
         const assorts = trader.assort;
 
         // Trader assorts / assort items are missing
@@ -957,7 +957,7 @@ export class RagfairOfferGenerator
         // Generate if needed
         if (!this.allowedFleaPriceItemsForBarter)
         {
-            const fleaPrices = this.databaseServer.getTables().templates.prices;
+            const fleaPrices = this.databaseService.getPrices();
             const fleaArray = Object.entries(fleaPrices).map(([tpl, price]) => ({ tpl: tpl, price: price }));
 
             // Only get item prices for items that also exist in items.json
