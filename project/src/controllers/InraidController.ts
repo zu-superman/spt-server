@@ -675,7 +675,7 @@ export class InraidController
         const serverProfile = this.saveServer.getProfile(sessionId);
         const pmcData = serverProfile.characters.pmc;
 
-        const dialogueTemplates = this.databaseService.getTraders()[traderId].dialogue;
+        const dialogueTemplates = this.databaseService.getTrader(traderId).dialogue;
         if (!dialogueTemplates)
         {
             this.logger.error(this.localisationService.getText("inraid-unable_to_deliver_item_no_trader_found", traderId));

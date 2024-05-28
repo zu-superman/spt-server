@@ -263,4 +263,21 @@ export class DatabaseService
 
         return this.databaseServer.getTables().traders!;
     }
+
+    /**
+     * Get specific trader by their Id
+     * @param traderId Desired trader id
+     * @returns assets/database/traders/
+     */
+    public getTrader(traderId: string): ITrader
+    {
+        const traders = this.getTraders();
+        const desiredTrader = traders[traderId];
+        if (!desiredTrader)
+        {
+            throw new error(this.localisationService.getText("database-no_trader_found_with_id", traderId));
+        }
+
+        return desiredTrader!;
+    }
 }

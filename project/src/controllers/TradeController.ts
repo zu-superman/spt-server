@@ -288,7 +288,7 @@ export class TradeController
             sessionId,
             this.traderHelper.getTraderById(trader),
             MessageType.MESSAGE_WITH_ITEMS,
-            this.randomUtil.getArrayValue(this.databaseService.getTraders()[trader].dialogue.soldItems),
+            this.randomUtil.getArrayValue(this.databaseService.getTrader(trader).dialogue.soldItems),
             curencyReward.flatMap((x) => x),
             this.timeUtil.getHoursAsSeconds(72),
         );

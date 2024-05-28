@@ -586,7 +586,7 @@ export class InsuranceController
         const labsId = "laboratory";
         // After all of the item filtering that we've done, if there are no items remaining, the insurance has
         // successfully "failed" to return anything and an appropriate message should be sent to the player.
-        const traderDialogMessages = this.databaseServer.getTraders()[insurance.traderId].dialogue;
+        const traderDialogMessages = this.databaseServer.getTrader(insurance.traderId).dialogue;
 
         // Map is labs + insurance is disabled in base.json
         if (

@@ -724,7 +724,7 @@ export class InventoryController
         {
             // Not fence
             // get tpl from trader assort
-            return this.databaseService.getTraders()[request.fromOwner.id].assort.items
+            return this.databaseService.getTrader(request.fromOwner.id).assort.items
                 .find((item) => item._id === request.item)._tpl;
         }
 

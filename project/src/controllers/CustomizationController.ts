@@ -39,7 +39,7 @@ export class CustomizationController
     {
         const pmcData = this.profileHelper.getPmcProfile(sessionID);
         const clothing = this.databaseService.getCustomization();
-        const suits = this.databaseService.getTraders()[traderID].suits;
+        const suits = this.databaseService.getTrader(traderID).suits;
 
         // Get an inner join of clothing from templates.customization and Ragman's suits array
         const matchingSuits = suits?.filter((suit) => suit.suiteId in clothing);
