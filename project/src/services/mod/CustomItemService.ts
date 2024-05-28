@@ -8,9 +8,8 @@ import {
     NewItemDetails,
     NewItemFromCloneDetails,
 } from "@spt/models/spt/mod/NewItemDetails";
-import { IDatabaseTables } from "@spt/models/spt/server/IDatabaseTables";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { ItemBaseClassService } from "@spt/services/ItemBaseClassService";
 import { ICloner } from "@spt/utils/cloners/ICloner";
 import { HashUtil } from "@spt/utils/HashUtil";
@@ -18,18 +17,15 @@ import { HashUtil } from "@spt/utils/HashUtil";
 @injectable()
 export class CustomItemService
 {
-    protected tables: IDatabaseTables;
-
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("HashUtil") protected hashUtil: HashUtil,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseServer: DatabaseService,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("ItemBaseClassService") protected itemBaseClassService: ItemBaseClassService,
         @inject("RecursiveCloner") protected cloner: ICloner,
     )
     {
-        this.tables = this.databaseServer.getTables();
     }
 
     /**
@@ -165,7 +161,7 @@ export class CustomItemService
      */
     protected addToItemsDb(newItemId: string, itemToAdd: ITemplateItem): void
     {
-        this.tables.templates.items[newItemId] = itemToAdd;
+        this.databaseServer.getItems()[newItemId] = itemToAdd;
     }
 
     /**
@@ -176,7 +172,7 @@ export class CustomItemService
      */
     protected addToHandbookDb(newItemId: string, parentId: string, priceRoubles: number): void
     {
-        this.tables.templates.handbook.Items.push({ Id: newItemId, ParentId: parentId, Price: priceRoubles });
+        this.databaseServer.getTemplates().handbook.Items.push({ Id: newItemId, ParentId: parentId, Price: priceRoubles });
     }
 
     /**
@@ -192,7 +188,7 @@ export class CustomItemService
      */
     protected addToLocaleDbs(localeDetails: Record<string, LocaleDetails>, newItemId: string): void
     {
-        const languages = this.tables.locales.languages;
+        const languages = this.databaseServer.getLocales().languages;
         for (const shortNameKey in languages)
         {
             // Get locale details passed in, if not provided by caller use first record in newItemDetails.locales
@@ -203,9 +199,10 @@ export class CustomItemService
             }
 
             // Create new record in locale file
-            this.tables.locales.global[shortNameKey][`${newItemId} Name`] = newLocaleDetails.name;
-            this.tables.locales.global[shortNameKey][`${newItemId} ShortName`] = newLocaleDetails.shortName;
-            this.tables.locales.global[shortNameKey][`${newItemId} Description`] = newLocaleDetails.description;
+            const globals = this.databaseServer.getLocales();
+            globals.global[shortNameKey][`${newItemId} Name`] = newLocaleDetails.name;
+            globals.global[shortNameKey][`${newItemId} ShortName`] = newLocaleDetails.shortName;
+            globals.global[shortNameKey][`${newItemId} Description`] = newLocaleDetails.description;
         }
     }
 
@@ -216,7 +213,7 @@ export class CustomItemService
      */
     protected addToFleaPriceDb(newItemId: string, fleaPriceRoubles: number): void
     {
-        this.tables.templates.prices[newItemId] = fleaPriceRoubles;
+        this.databaseServer.getTemplates().prices[newItemId] = fleaPriceRoubles;
     }
 
     /**
@@ -225,8 +222,6 @@ export class CustomItemService
      */
     protected addToWeaponShelf(newItemId: string): void
     {
-        this.databaseServer.getTables().templates.items;
-
         // Ids for wall stashes in db
         const wallStashIds = ["6401c7b213d9b818bf0e7dd7", "64381b582bb1c5dedd0fc925", "64381b6e44b37a080d0245b9"];
         for (const wallId of wallStashIds)
@@ -259,22 +254,21 @@ export class CustomItemService
         const baseWeaponModObject = {};
 
         // Get all slots weapon has and create a dictionary of them with possible mods that slot into each
-        const weaponSltos = weapon[1]._props.Slots;
-        for (const slot of weaponSltos)
+        const weaponSlots = weapon[1]._props.Slots;
+        for (const slot of weaponSlots)
         {
             baseWeaponModObject[slot._name] = slot._props.filters[0].Filter;
         }
 
         // Get PMCs
-        const usec = this.databaseServer.getTables().bots!.types.usec;
-        const bear = this.databaseServer.getTables().bots!.types.bear;
+        const botTypes = this.databaseServer.getBots().types;
 
         // Add weapon base+mods into bear/usec data
-        usec.inventory.mods[weaponTpl] = baseWeaponModObject;
-        bear.inventory.mods[weaponTpl] = baseWeaponModObject;
+        botTypes.usec.inventory.mods[weaponTpl] = baseWeaponModObject;
+        botTypes.bear.inventory.mods[weaponTpl] = baseWeaponModObject;
 
         // Add weapon to array of allowed weapons + weighting to be picked
-        usec.inventory.equipment[weaponSlot][weaponTpl] = weaponWeight;
-        bear.inventory.equipment[weaponSlot][weaponTpl] = weaponWeight;
+        botTypes.usec.inventory.equipment[weaponSlot][weaponTpl] = weaponWeight;
+        botTypes.bear.inventory.equipment[weaponSlot][weaponTpl] = weaponWeight;
     }
 }

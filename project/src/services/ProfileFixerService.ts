@@ -19,7 +19,7 @@ import { ICoreConfig } from "@spt/models/spt/config/ICoreConfig";
 import { IRagfairConfig } from "@spt/models/spt/config/IRagfairConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { ICloner } from "@spt/utils/cloners/ICloner";
 import { HashUtil } from "@spt/utils/HashUtil";
@@ -36,6 +36,7 @@ export class ProfileFixerService
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
         @inject("Watermark") protected watermark: Watermark,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("HideoutHelper") protected hideoutHelper: HideoutHelper,
         @inject("InventoryHelper") protected inventoryHelper: InventoryHelper,
         @inject("TraderHelper") protected traderHelper: TraderHelper,
@@ -45,7 +46,6 @@ export class ProfileFixerService
         @inject("TimeUtil") protected timeUtil: TimeUtil,
         @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("HashUtil") protected hashUtil: HashUtil,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("ConfigServer") protected configServer: ConfigServer,
         @inject("RecursiveCloner") protected cloner: ICloner,
     )
@@ -74,6 +74,8 @@ export class ProfileFixerService
 
         if (pmcProfile.Hideout)
         {
+            const globals = this.databaseService.getGlobals();
+
             this.migrateImprovements(pmcProfile);
             this.addMissingBonusesProperty(pmcProfile);
             this.addMissingWallImprovements(pmcProfile);
@@ -88,7 +90,7 @@ export class ProfileFixerService
 
             if (pmcProfile.Hideout.Areas.find((x) => x.type === HideoutAreas.GENERATOR)!.slots.length
               < 6
-              + this.databaseServer.getTables().globals!.config.SkillsSettings.HideoutManagement.EliteSlots.Generator
+              + globals.config.SkillsSettings.HideoutManagement.EliteSlots.Generator
                   .Slots
             )
             {
@@ -96,7 +98,7 @@ export class ProfileFixerService
                 this.addEmptyObjectsToHideoutAreaSlots(
                     HideoutAreas.GENERATOR,
                     6
-                    + this.databaseServer.getTables().globals!.config.SkillsSettings.HideoutManagement.EliteSlots
+                    + globals.config.SkillsSettings.HideoutManagement.EliteSlots
                         .Generator.Slots,
                     pmcProfile,
                 );
@@ -105,7 +107,7 @@ export class ProfileFixerService
             if (
                 pmcProfile.Hideout.Areas.find((x) => x.type === HideoutAreas.WATER_COLLECTOR)!.slots.length
                 < 1
-                + this.databaseServer.getTables().globals!.config.SkillsSettings.HideoutManagement.EliteSlots
+                + globals.config.SkillsSettings.HideoutManagement.EliteSlots
                     .WaterCollector.Slots
             )
             {
@@ -113,7 +115,7 @@ export class ProfileFixerService
                 this.addEmptyObjectsToHideoutAreaSlots(
                     HideoutAreas.WATER_COLLECTOR,
                     1
-                    + this.databaseServer.getTables().globals!.config.SkillsSettings.HideoutManagement.EliteSlots
+                    + globals.config.SkillsSettings.HideoutManagement.EliteSlots
                         .WaterCollector.Slots,
                     pmcProfile,
                 );
@@ -122,7 +124,7 @@ export class ProfileFixerService
             if (
                 pmcProfile.Hideout.Areas.find((x) => x.type === HideoutAreas.AIR_FILTERING)!.slots.length
                 < 3
-                + this.databaseServer.getTables().globals!.config.SkillsSettings.HideoutManagement.EliteSlots
+                + globals.config.SkillsSettings.HideoutManagement.EliteSlots
                     .AirFilteringUnit.Slots
             )
             {
@@ -130,7 +132,7 @@ export class ProfileFixerService
                 this.addEmptyObjectsToHideoutAreaSlots(
                     HideoutAreas.AIR_FILTERING,
                     3
-                    + this.databaseServer.getTables().globals!.config.SkillsSettings.HideoutManagement.EliteSlots
+                    + globals.config.SkillsSettings.HideoutManagement.EliteSlots
                         .AirFilteringUnit.Slots,
                     pmcProfile,
                 );
@@ -140,7 +142,7 @@ export class ProfileFixerService
             if (
                 pmcProfile.Hideout.Areas.find((x) => x.type === HideoutAreas.BITCOIN_FARM)!.slots.length
                 < 50
-                + this.databaseServer.getTables().globals!.config.SkillsSettings.HideoutManagement.EliteSlots
+                + globals.config.SkillsSettings.HideoutManagement.EliteSlots
                     .BitcoinFarm.Slots
             )
             {
@@ -148,7 +150,7 @@ export class ProfileFixerService
                 this.addEmptyObjectsToHideoutAreaSlots(
                     HideoutAreas.BITCOIN_FARM,
                     50
-                    + this.databaseServer.getTables().globals!.config.SkillsSettings.HideoutManagement.EliteSlots
+                    + globals.config.SkillsSettings.HideoutManagement.EliteSlots
                         .BitcoinFarm.Slots,
                     pmcProfile,
                 );
@@ -178,9 +180,9 @@ export class ProfileFixerService
             return;
         }
 
-        const db = this.databaseServer.getTables();
-        const hideoutStandAreaDb = db.hideout!.areas.find((x) => x.type === HideoutAreas.WEAPON_STAND)!;
-        const hideoutStandSecondaryAreaDb = db.hideout!.areas.find((x) => x.parentArea === hideoutStandAreaDb._id)!;
+        const hideout = this.databaseService.getHideout();
+        const hideoutStandAreaDb = hideout.areas.find((area) => area.type === HideoutAreas.WEAPON_STAND)!;
+        const hideoutStandSecondaryAreaDb = hideout.areas.find((x) => x.parentArea === hideoutStandAreaDb._id)!;
         const stageCurrentAt = hideoutStandAreaDb.stages[weaponStandArea.level];
         const hideoutStandStashId = pmcProfile.Inventory.hideoutAreaStashes[HideoutAreas.WEAPON_STAND];
         const hideoutSecondaryStashId = pmcProfile.Inventory.hideoutAreaStashes[HideoutAreas.WEAPON_STAND_SECONDARY];
@@ -281,8 +283,8 @@ export class ProfileFixerService
             return;
         }
 
-        const db = this.databaseServer.getTables();
-        const placeOfFameAreaDb = db.hideout!.areas.find((area) => area.type === HideoutAreas.PLACE_OF_FAME);
+        const placeOfFameAreaDb = this.databaseService.getHideout().areas
+            .find((area) => area.type === HideoutAreas.PLACE_OF_FAME);
         if (!placeOfFameAreaDb)
         {
             return;
@@ -464,7 +466,7 @@ export class ProfileFixerService
         {
             const taskConditionKeysToRemove: string[] = [];
             const activeRepeatableQuests = this.getActiveRepeatableQuests(pmcProfile.RepeatableQuests);
-            const achievements = this.databaseServer.getTables().templates!.achievements;
+            const achievements = this.databaseService.getAchievements();
 
             // Loop over TaskConditionCounters objects and add once we want to remove to counterKeysToRemove
             for (const [key, taskConditionCounter] of Object.entries(pmcProfile.TaskConditionCounters))
@@ -648,9 +650,8 @@ export class ProfileFixerService
     protected addMissingWallImprovements(pmcProfile: IPmcData): void
     {
         const profileWallArea = pmcProfile.Hideout.Areas.find((x) => x.type === HideoutAreas.EMERGENCY_WALL)!;
-        const wallDb = this.databaseServer
-            .getTables()
-            .hideout!.areas.find((x) => x.type === HideoutAreas.EMERGENCY_WALL);
+        const wallDb = this.databaseService.getHideout().areas
+            .find((x) => x.type === HideoutAreas.EMERGENCY_WALL);
 
         if (profileWallArea.level > 0)
         {
@@ -779,7 +780,7 @@ export class ProfileFixerService
     {
         const profileHideoutAreas = pmcProfile.Hideout.Areas;
         const profileBonuses = pmcProfile.Bonuses;
-        const dbHideoutAreas = this.databaseServer.getTables().hideout!.areas;
+        const dbHideoutAreas = this.databaseService.getHideout().areas;
 
         for (const area of profileHideoutAreas)
         {
@@ -870,7 +871,7 @@ export class ProfileFixerService
      */
     public checkForOrphanedModdedItems(sessionId: string, fullProfile: ISptProfile): void
     {
-        const itemsDb = this.databaseServer.getTables().templates!.items;
+        const itemsDb = this.databaseService.getItems();
         const pmcProfile = fullProfile.characters.pmc;
 
         // Get items placed in root of stash
@@ -972,7 +973,7 @@ export class ProfileFixerService
             }
         }
 
-        const clothing = this.databaseServer.getTables().templates!.customization;
+        const clothing = this.databaseService.getTemplates().customization;
         for (const [_, suitId] of Object.entries(fullProfile.suits))
         {
             if (!clothing[suitId])
@@ -1196,8 +1197,8 @@ export class ProfileFixerService
         }
 
         // Iterate over clothing
-        const customizationDb = this.databaseServer.getTables().templates!.customization;
-        const customizationDbArray = Object.values(this.databaseServer.getTables().templates!.customization);
+        const customizationDb = this.databaseService.getTemplates().customization;
+        const customizationDbArray = Object.values(customizationDb);
         const playerIsUsec = pmcProfile.Info.Side.toLowerCase() === "usec";
 
         // Check Head
@@ -1265,7 +1266,7 @@ export class ProfileFixerService
             return;
         }
 
-        const profileTemplates = this.databaseServer.getTables().templates?.profiles[fullProfile.info.edition];
+        const profileTemplates = this.databaseService.getTemplates().profiles[fullProfile.info.edition];
         if (!profileTemplates)
         {
             return;
@@ -1363,7 +1364,7 @@ export class ProfileFixerService
             }
 
             // Bonus lacks id, find matching hideout area / stage / bonus
-            for (const area of this.databaseServer.getTables().hideout!.areas)
+            for (const area of this.databaseService.getHideout().areas)
             {
                 // TODO: skip if no stages
                 for (const stageIndex in area.stages)
@@ -1428,7 +1429,7 @@ export class ProfileFixerService
      */
     protected removeOrphanedQuests(pmcProfile: IPmcData): void
     {
-        const quests = this.databaseServer.getTables().templates!.quests;
+        const quests = this.databaseService.getQuests();
         const profileQuests = pmcProfile.Quests;
 
         const repeatableQuests: IRepeatableQuest[] = [];

@@ -1,7 +1,9 @@
 import { error } from "console";
 import { inject, injectable } from "tsyringe";
 import { IGlobals } from "@spt/models/eft/common/IGlobals";
+import { IAchievement } from "@spt/models/eft/common/tables/IAchievement";
 import { IMatch } from "@spt/models/eft/common/tables/IMatch";
+import { IQuest } from "@spt/models/eft/common/tables/IQuest";
 import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
 import { ITrader } from "@spt/models/eft/common/tables/ITrader";
 import { IBots } from "@spt/models/spt/bots/IBots";
@@ -156,6 +158,19 @@ export class DatabaseService
     }
 
     /**
+     * @returns assets/database/templates/achievements.json
+     */
+    public getAchievements(): IAchievement[]
+    {
+        if (!this.databaseServer.getTables().templates!.achievements)
+        {
+            throw new error(this.localisationService.getText("database-data_at_path_missing", "assets/database/templates/achievements.json"));
+        }
+
+        return this.databaseServer.getTables().templates!.achievements!;
+    }
+
+    /**
      * @returns assets/database/templates/items.json
      */
     public getItems(): Record<string, ITemplateItem>
@@ -166,6 +181,19 @@ export class DatabaseService
         }
 
         return this.databaseServer.getTables().templates!.items!;
+    }
+
+    /**
+     * @returns assets/database/templates/items.json
+     */
+    public getQuests(): Record<string, IQuest>
+    {
+        if (!this.databaseServer.getTables().templates!.quests)
+        {
+            throw new error(this.localisationService.getText("database-data_at_path_missing", "assets/database/templates/quests.json"));
+        }
+
+        return this.databaseServer.getTables().templates!.quests!;
     }
 
     /**
