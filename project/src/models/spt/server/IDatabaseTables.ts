@@ -8,13 +8,9 @@ import { IQuest } from "@spt/models/eft/common/tables/IQuest";
 import { IRepeatableQuestDatabase } from "@spt/models/eft/common/tables/IRepeatableQuests";
 import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
 import { ITrader } from "@spt/models/eft/common/tables/ITrader";
-import { IHideoutArea } from "@spt/models/eft/hideout/IHideoutArea";
-import { IHideoutProduction } from "@spt/models/eft/hideout/IHideoutProduction";
-import { IHideoutScavCase } from "@spt/models/eft/hideout/IHideoutScavCase";
-import { IHideoutSettingsBase } from "@spt/models/eft/hideout/IHideoutSettingsBase";
-import { IQteData } from "@spt/models/eft/hideout/IQteData";
 import { IDefaultEquipmentPreset } from "@spt/models/eft/profile/ISptProfile";
 import { IBots } from "@spt/models/spt/bots/IBots";
+import { IHideout } from "@spt/models/spt/hideout/IHideout";
 import { ILocaleBase } from "@spt/models/spt/server/ILocaleBase";
 import { ILocations } from "@spt/models/spt/server/ILocations";
 import { IServerBase } from "@spt/models/spt/server/IServerBase";
@@ -23,13 +19,7 @@ import { ISettingsBase } from "@spt/models/spt/server/ISettingsBase";
 export interface IDatabaseTables
 {
     bots?: IBots
-    hideout?: {
-        areas: IHideoutArea[]
-        production: IHideoutProduction[]
-        scavcase: IHideoutScavCase[]
-        settings: IHideoutSettingsBase
-        qte: IQteData[]
-    }
+    hideout?: IHideout
     locales?: ILocaleBase
     locations?: ILocations
     match?: IMatch
