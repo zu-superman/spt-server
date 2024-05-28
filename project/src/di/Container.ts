@@ -204,6 +204,7 @@ import { BotWeaponModLimitService } from "@spt/services/BotWeaponModLimitService
 import { BundleHashCacheService } from "@spt/services/cache/BundleHashCacheService";
 import { ModHashCacheService } from "@spt/services/cache/ModHashCacheService";
 import { CustomLocationWaveService } from "@spt/services/CustomLocationWaveService";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { FenceService } from "@spt/services/FenceService";
 import { GiftService } from "@spt/services/GiftService";
 import { InsuranceService } from "@spt/services/InsuranceService";
@@ -680,6 +681,7 @@ export class Container
     private static registerServices(depContainer: DependencyContainer): void
     {
         // Services
+        depContainer.register<DatabaseService>("DatabaseService", DatabaseService, { lifecycle: Lifecycle.Singleton });
         depContainer.register<ImageRouteService>("ImageRouteService", ImageRouteService, {
             lifecycle: Lifecycle.Singleton,
         });
