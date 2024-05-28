@@ -34,8 +34,8 @@ import { IPmcConfig } from "@spt/models/spt/config/IPmcConfig";
 import { IRagfairConfig } from "@spt/models/spt/config/IRagfairConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
 import { CustomLocationWaveService } from "@spt/services/CustomLocationWaveService";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { GiftService } from "@spt/services/GiftService";
 import { ItemBaseClassService } from "@spt/services/ItemBaseClassService";
 import { LocalisationService } from "@spt/services/LocalisationService";
@@ -63,7 +63,7 @@ export class GameController
 
     constructor(
         @inject("WinstonLogger") protected logger: ILogger,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
         @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("PreSptModLoader") protected preSptModLoader: PreSptModLoader,
@@ -264,7 +264,7 @@ export class GameController
             return;
         }
 
-        for (const craft of this.databaseServer.getTables().hideout!.production)
+        for (const craft of this.databaseService.getHideout().production)
         {
             // Only adjust crafts ABOVE the override
             if (craft.productionTime > craftTimeOverrideSeconds)
@@ -282,7 +282,7 @@ export class GameController
             return;
         }
 
-        for (const area of this.databaseServer.getTables().hideout!.areas)
+        for (const area of this.databaseService.getHideout().areas)
         {
             for (const stageKey of Object.keys(area.stages))
             {
@@ -298,7 +298,7 @@ export class GameController
 
     protected adjustLocationBotValues(): void
     {
-        const mapsDb = this.databaseServer.getTables().locations!;
+        const mapsDb = this.databaseService.getLocations();
 
         for (const locationKey in this.botConfig.maxBotCap)
         {
@@ -320,14 +320,15 @@ export class GameController
      */
     protected checkTraderRepairValuesExist(): void
     {
-        for (const traderKey in this.databaseServer.getTables().traders)
+        const traders = this.databaseService.getTraders();
+        for (const traderKey in traders)
         {
-            const trader = this.databaseServer.getTables().traders![traderKey];
+            const trader = traders[traderKey];
             if (!trader?.base?.repair)
             {
                 this.logger.warning(this.localisationService.getText("trader-missing_repair_property_using_default",
                     { traderId: trader.base._id, nickname: trader.base.nickname }));
-                trader.base.repair = this.cloner.clone(this.databaseServer.getTables().traders!.ragfair.base.repair);
+                trader.base.repair = this.cloner.clone(traders.ragfair.base.repair);
 
                 return;
             }
@@ -337,9 +338,9 @@ export class GameController
                 this.logger.warning(this.localisationService.getText("trader-missing_repair_quality_property_using_default",
                     { traderId: trader.base._id, nickname: trader.base.nickname }));
                 trader.base.repair.quality = this.cloner.clone(
-                    this.databaseServer.getTables().traders!.ragfair.base.repair.quality,
+                    traders.ragfair.base.repair.quality,
                 );
-                trader.base.repair.quality = this.databaseServer.getTables().traders!.ragfair.base.repair.quality;
+                trader.base.repair.quality = traders.ragfair.base.repair.quality;
             }
         }
     }
@@ -356,7 +357,7 @@ export class GameController
                 continue;
             }
 
-            const mapLooseLoot: ILooseLoot = this.databaseServer.getTables().locations![mapId]?.looseLoot;
+            const mapLooseLoot: ILooseLoot = this.databaseService.getLocations()[mapId]?.looseLoot;
             if (!mapLooseLoot)
             {
                 this.logger.warning(this.localisationService.getText("location-map_has_no_loose_loot_data", mapId));
@@ -391,7 +392,7 @@ export class GameController
         const adjustments = this.lootConfig.looseLootSpawnPointAdjustments;
         for (const mapId in adjustments)
         {
-            const mapLooseLootData: ILooseLoot = this.databaseServer.getTables().locations![mapId]?.looseLoot;
+            const mapLooseLootData: ILooseLoot = this.databaseService.getLocations()[mapId]?.looseLoot;
             if (!mapLooseLootData)
             {
                 this.logger.warning(this.localisationService.getText("location-map_has_no_loose_loot_data", mapId));
@@ -418,7 +419,7 @@ export class GameController
     /** Apply custom limits on bot types as defined in configs/location.json/botTypeLimits */
     protected adjustMapBotLimits(): void
     {
-        const mapsDb = this.databaseServer.getTables().locations!;
+        const mapsDb = this.databaseService.getLocations();
         if (!this.locationConfig.botTypeLimits)
         {
             return;
@@ -470,7 +471,7 @@ export class GameController
             )?.Value ?? 0;
 
         const config: IGameConfigResponse = {
-            languages: this.databaseServer.getTables().locales!.languages,
+            languages: this.databaseService.getLocales().languages,
             ndaFree: false,
             reportAvailable: false,
             twitchEventMember: false,
@@ -552,7 +553,7 @@ export class GameController
      */
     protected fixShotgunDispersions(): void
     {
-        const itemDb = this.databaseServer.getTables().templates!.items;
+        const itemDb = this.databaseService.getItems();
 
         // Saiga 12ga
         // Toz 106
@@ -582,7 +583,7 @@ export class GameController
 
     protected flagAllItemsInDbAsSellableOnFlea(): void
     {
-        const dbItems = Object.values(this.databaseServer.getTables().templates!.items);
+        const dbItems = Object.values(this.databaseService.getItems());
         for (const item of dbItems)
         {
             if (item._type === "Item" && !item._props?.CanSellOnRagfair)
@@ -694,7 +695,8 @@ export class GameController
      */
     protected fixBrokenOfflineMapWaves(): void
     {
-        for (const locationKey in this.databaseServer.getTables().locations)
+        const locations = this.databaseService.getLocations();
+        for (const locationKey in locations)
         {
             // Skip ignored maps
             if (this.locationConfig.fixEmptyBotWavesSettings.ignoreMaps.includes(locationKey))
@@ -703,7 +705,7 @@ export class GameController
             }
 
             // Loop over all of the locations waves and look for waves with identical min and max slots
-            const location: ILocation = this.databaseServer.getTables().locations![locationKey];
+            const location: ILocation = locations[locationKey];
             if (!location.base)
             {
                 this.logger.warning(
@@ -730,7 +732,7 @@ export class GameController
      */
     protected fixRoguesSpawningInstantlyOnLighthouse(): void
     {
-        const lighthouse = this.databaseServer.getTables().locations!.lighthouse!.base;
+        const lighthouse = this.databaseService.getLocations().lighthouse!.base;
         for (const wave of lighthouse.BossLocationSpawn)
         {
             // Find Rogues that spawn instantly
@@ -770,7 +772,8 @@ export class GameController
      */
     protected splitBotWavesIntoSingleWaves(): void
     {
-        for (const locationKey in this.databaseServer.getTables().locations)
+        const locations = this.databaseService.getLocations();
+        for (const locationKey in locations)
         {
             if (this.locationConfig.splitWaveIntoSingleSpawnsSettings.ignoreMaps.includes(locationKey))
             {
@@ -778,7 +781,7 @@ export class GameController
             }
 
             // Iterate over all maps
-            const location: ILocation = this.databaseServer.getTables().locations![locationKey];
+            const location: ILocation = locations[locationKey];
             for (const wave of location.base.waves)
             {
                 // Wave has size that makes it candidate for splitting
@@ -882,7 +885,7 @@ export class GameController
      */
     protected validateQuestAssortUnlocksExist(): void
     {
-        const db = this.databaseServer.getTables();
+        const db = this.databaseService.getTables();
         const traders = db.traders!;
         const quests = db.templates!.quests;
         for (const traderId of Object.values(Traders))
@@ -929,7 +932,7 @@ export class GameController
         const playerName = pmcProfile.Info.Nickname;
         if (playerName)
         {
-            const bots = this.databaseServer.getTables().bots!.types;
+            const bots = this.databaseService.getBots().types;
 
             if (bots.bear)
             {
@@ -962,9 +965,10 @@ export class GameController
     protected removePraporTestMessage(): void
     {
         // Iterate over all languages (e.g. "en", "fr")
-        for (const localeKey in this.databaseServer.getTables().locales!.global)
+        const locales = this.databaseService.getLocales();
+        for (const localeKey in locales.global)
         {
-            this.databaseServer.getTables().locales!.global[localeKey]["61687e2c3e526901fa76baf9"] = "";
+            locales.global[localeKey]["61687e2c3e526901fa76baf9"] = "";
         }
     }
 
@@ -973,7 +977,7 @@ export class GameController
      */
     protected adjustLabsRaiderSpawnRate(): void
     {
-        const labsBase = this.databaseServer.getTables().locations!.laboratory!.base;
+        const labsBase = this.databaseService.getLocations().laboratory!.base;
         const nonTriggerLabsBossSpawns = labsBase.BossLocationSpawn.filter(
             (x) => x.TriggerId === "" && x.TriggerName === "",
         );

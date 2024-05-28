@@ -12,8 +12,8 @@ import { IQuestConfig } from "@spt/models/spt/config/IQuestConfig";
 import { IRagfairConfig } from "@spt/models/spt/config/IRagfairConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
 import { SaveServer } from "@spt/servers/SaveServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { ItemFilterService } from "@spt/services/ItemFilterService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { MailSendService } from "@spt/services/MailSendService";
@@ -36,7 +36,7 @@ export class RagfairServerHelper
         @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
         @inject("SaveServer") protected saveServer: SaveServer,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("TraderHelper") protected traderHelper: TraderHelper,
@@ -144,7 +144,7 @@ export class RagfairServerHelper
      */
     public isTrader(traderId: string): boolean
     {
-        return traderId in this.databaseServer.getTables().traders!;
+        return traderId in this.databaseService.getTraders();
     }
 
     /**
@@ -161,7 +161,7 @@ export class RagfairServerHelper
             RagfairServerHelper.goodsReturnedTemplate,
             returnedItems,
             this.timeUtil.getHoursAsSeconds(
-                this.databaseServer.getTables().globals!.config.RagFair.yourOfferDidNotSellMaxStorageTimeInHour,
+                this.databaseService.getGlobals().config.RagFair.yourOfferDidNotSellMaxStorageTimeInHour,
             ),
         );
     }
@@ -229,7 +229,7 @@ export class RagfairServerHelper
      */
     public getPresetItems(item: Item): Item[]
     {
-        const preset = this.cloner.clone(this.databaseServer.getTables().globals!.ItemPresets[item._id]._items);
+        const preset = this.cloner.clone(this.databaseService.getGlobals().ItemPresets[item._id]._items);
         return this.itemHelper.reparentItemAndChildren(item, preset);
     }
 
@@ -241,12 +241,12 @@ export class RagfairServerHelper
     public getPresetItemsByTpl(item: Item): Item[]
     {
         const presets = [];
-        for (const itemId in this.databaseServer.getTables().globals!.ItemPresets)
+        for (const itemId in this.databaseService.getGlobals().ItemPresets)
         {
-            if (this.databaseServer.getTables().globals!.ItemPresets[itemId]._items[0]._tpl === item._tpl)
+            if (this.databaseService.getGlobals().ItemPresets[itemId]._items[0]._tpl === item._tpl)
             {
                 const presetItems = this.cloner.clone(
-                    this.databaseServer.getTables().globals!.ItemPresets[itemId]._items,
+                    this.databaseService.getGlobals().ItemPresets[itemId]._items,
                 );
                 presets.push(this.itemHelper.reparentItemAndChildren(item, presetItems));
             }
