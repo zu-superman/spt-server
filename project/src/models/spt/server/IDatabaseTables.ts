@@ -1,8 +1,5 @@
 import { IGlobals } from "@spt/models/eft/common/IGlobals";
 import { IAchievement } from "@spt/models/eft/common/tables/IAchievement";
-import { IBotBase } from "@spt/models/eft/common/tables/IBotBase";
-import { IBotCore } from "@spt/models/eft/common/tables/IBotCore";
-import { IBotType } from "@spt/models/eft/common/tables/IBotType";
 import { ICustomizationItem } from "@spt/models/eft/common/tables/ICustomizationItem";
 import { IHandbookBase } from "@spt/models/eft/common/tables/IHandbookBase";
 import { IMatch } from "@spt/models/eft/common/tables/IMatch";
@@ -17,6 +14,7 @@ import { IHideoutScavCase } from "@spt/models/eft/hideout/IHideoutScavCase";
 import { IHideoutSettingsBase } from "@spt/models/eft/hideout/IHideoutSettingsBase";
 import { IQteData } from "@spt/models/eft/hideout/IQteData";
 import { IDefaultEquipmentPreset } from "@spt/models/eft/profile/ISptProfile";
+import { IBots } from "@spt/models/spt/bots/IBots";
 import { ILocaleBase } from "@spt/models/spt/server/ILocaleBase";
 import { ILocations } from "@spt/models/spt/server/ILocations";
 import { IServerBase } from "@spt/models/spt/server/IServerBase";
@@ -24,7 +22,7 @@ import { ISettingsBase } from "@spt/models/spt/server/ISettingsBase";
 
 export interface IDatabaseTables
 {
-    bots?: { types: Record<string, IBotType>, base: IBotBase, core: IBotCore }
+    bots?: IBots
     hideout?: {
         areas: IHideoutArea[]
         production: IHideoutProduction[]
