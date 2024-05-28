@@ -182,7 +182,7 @@ export class SaveServer
             // File found, store in profiles[]
             const start = performance.now();
             this.profiles[sessionID] = this.jsonUtil.deserialize(this.vfs.readFile(filePath), filename);
-            this.logger.debug(`Profile: ${sessionID} took: ${performance.now() - start}ms to load.`, true);
+            this.logger.debug(`Profile: ${sessionID} took: ${(performance.now() - start).toFixed(2)}ms to load.`, true);
         }
 
         // Run callbacks
