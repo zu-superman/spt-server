@@ -421,7 +421,7 @@ export class BotLootGenerator
         totalItemCount: number,
         inventoryToAddItemsTo: PmcInventory,
         botRole: string,
-        itemSpawnLimits: IItemSpawnLimitSettings = undefined,
+        itemSpawnLimits?: IItemSpawnLimitSettings,
         totalValueLimitRub = 0,
         isPmc = false,
         containersIdFull = new Set<string>(),

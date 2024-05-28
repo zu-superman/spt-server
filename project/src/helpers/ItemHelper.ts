@@ -1320,7 +1320,7 @@ export class ItemHelper
         magazine: Item[],
         magTemplate: ITemplateItem,
         staticAmmoDist: Record<string, IStaticAmmoDetails[]>,
-        caliber: string = undefined,
+        caliber?: string,
         minSizePercent = 0.25,
         defaultCartridgeTpl?: string,
         weapon?: ITemplateItem,

@@ -572,7 +572,7 @@ export class InventoryHelper
         profile: IPmcData,
         itemId: string,
         sessionID: string,
-        output: IItemEventRouterResponse = undefined,
+        output?: IItemEventRouterResponse,
     ): void
     {
         if (!itemId)
@@ -629,7 +629,7 @@ export class InventoryHelper
     public removeItemAndChildrenFromMailRewards(
         sessionId: string,
         removeRequest: IInventoryRemoveRequestData,
-        output: IItemEventRouterResponse = undefined,
+        output?: IItemEventRouterResponse,
     ): void
     {
         const fullProfile = this.profileHelper.getFullProfile(sessionId);
@@ -682,7 +682,7 @@ export class InventoryHelper
         itemId: string,
         countToRemove: number,
         sessionID: string,
-        output: IItemEventRouterResponse = undefined,
+        output?: IItemEventRouterResponse,
     ): IItemEventRouterResponse
     {
         if (!itemId)
