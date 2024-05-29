@@ -67,7 +67,7 @@ export interface Props
     DiscardingBlock?: boolean
     DropSoundType?: string
     RagFairCommissionModifier?: number
-    RarityPvE: string
+    RarityPvE?: string
     IsAlwaysAvailableForInsurance?: boolean
     DiscardLimit?: number
     MaxResource?: number
