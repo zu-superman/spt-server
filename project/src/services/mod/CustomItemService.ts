@@ -20,7 +20,7 @@ export class CustomItemService
     constructor(
         @inject("PrimaryLogger") protected logger: ILogger,
         @inject("HashUtil") protected hashUtil: HashUtil,
-        @inject("DatabaseService") protected databaseServer: DatabaseService,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("ItemBaseClassService") protected itemBaseClassService: ItemBaseClassService,
         @inject("PrimaryCloner") protected cloner: ICloner,
@@ -41,7 +41,7 @@ export class CustomItemService
     public createItemFromClone(newItemDetails: NewItemFromCloneDetails): CreateItemResult
     {
         const result = new CreateItemResult();
-        const tables = this.databaseServer.getTables();
+        const tables = this.databaseService.getTables();
 
         // Generate new id for item if none supplied
         const newItemId = this.getOrGenerateIdForItem(newItemDetails.newId);
@@ -98,7 +98,7 @@ export class CustomItemService
     public createItem(newItemDetails: NewItemDetails): CreateItemResult
     {
         const result = new CreateItemResult();
-        const tables = this.databaseServer.getTables();
+        const tables = this.databaseService.getTables();
 
         const newItem = newItemDetails.newItem;
 
@@ -161,7 +161,7 @@ export class CustomItemService
      */
     protected addToItemsDb(newItemId: string, itemToAdd: ITemplateItem): void
     {
-        this.databaseServer.getItems()[newItemId] = itemToAdd;
+        this.databaseService.getItems()[newItemId] = itemToAdd;
     }
 
     /**
@@ -172,7 +172,7 @@ export class CustomItemService
      */
     protected addToHandbookDb(newItemId: string, parentId: string, priceRoubles: number): void
     {
-        this.databaseServer.getTemplates().handbook.Items.push({ Id: newItemId, ParentId: parentId, Price: priceRoubles });
+        this.databaseService.getTemplates().handbook.Items.push({ Id: newItemId, ParentId: parentId, Price: priceRoubles });
     }
 
     /**
@@ -188,7 +188,7 @@ export class CustomItemService
      */
     protected addToLocaleDbs(localeDetails: Record<string, LocaleDetails>, newItemId: string): void
     {
-        const languages = this.databaseServer.getLocales().languages;
+        const languages = this.databaseService.getLocales().languages;
         for (const shortNameKey in languages)
         {
             // Get locale details passed in, if not provided by caller use first record in newItemDetails.locales
@@ -199,7 +199,7 @@ export class CustomItemService
             }
 
             // Create new record in locale file
-            const globals = this.databaseServer.getLocales();
+            const globals = this.databaseService.getLocales();
             globals.global[shortNameKey][`${newItemId} Name`] = newLocaleDetails.name;
             globals.global[shortNameKey][`${newItemId} ShortName`] = newLocaleDetails.shortName;
             globals.global[shortNameKey][`${newItemId} Description`] = newLocaleDetails.description;
@@ -213,7 +213,7 @@ export class CustomItemService
      */
     protected addToFleaPriceDb(newItemId: string, fleaPriceRoubles: number): void
     {
-        this.databaseServer.getTemplates().prices[newItemId] = fleaPriceRoubles;
+        this.databaseService.getTemplates().prices[newItemId] = fleaPriceRoubles;
     }
 
     /**
@@ -261,7 +261,7 @@ export class CustomItemService
         }
 
         // Get PMCs
-        const botTypes = this.databaseServer.getBots().types;
+        const botTypes = this.databaseService.getBots().types;
 
         // Add weapon base+mods into bear/usec data
         botTypes.usec.inventory.mods[weaponTpl] = baseWeaponModObject;

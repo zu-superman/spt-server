@@ -23,7 +23,7 @@ import { IQuestConfig } from "@spt/models/spt/config/IQuestConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { EventOutputHolder } from "@spt/routers/EventOutputHolder";
 import { ConfigServer } from "@spt/servers/ConfigServer";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { LocaleService } from "@spt/services/LocaleService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { MailSendService } from "@spt/services/MailSendService";
@@ -41,9 +41,9 @@ export class QuestHelper
         @inject("TimeUtil") protected timeUtil: TimeUtil,
         @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("QuestConditionHelper") protected questConditionHelper: QuestConditionHelper,
         @inject("EventOutputHolder") protected eventOutputHolder: EventOutputHolder,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("LocaleService") protected localeService: LocaleService,
         @inject("RagfairServerHelper") protected ragfairServerHelper: RagfairServerHelper,
         @inject("DialogueHelper") protected dialogueHelper: DialogueHelper,
@@ -770,7 +770,7 @@ export class QuestHelper
      */
     public getQuestsFromDb(): IQuest[]
     {
-        return Object.values(this.databaseServer.getTables().templates!.quests);
+        return Object.values(this.databaseService.getQuests());
     }
 
     /**
@@ -781,15 +781,14 @@ export class QuestHelper
      */
     public getQuestFromDb(questId: string, pmcData: IPmcData): IQuest
     {
-        let quest = this.databaseServer.getTables().templates!.quests[questId];
-
         // May be a repeatable quest
+        let quest = this.databaseService.getQuests()[questId];
         if (!quest)
         {
             // Check daily/weekly objects
             for (const repeatableType of pmcData.RepeatableQuests)
             {
-                quest = <IQuest>(<unknown>repeatableType.activeQuests.find((x) => x._id === questId));
+                quest = <IQuest>(<unknown>repeatableType.activeQuests.find((repeatable) => repeatable._id === questId));
                 if (quest)
                 {
                     break;
@@ -1001,12 +1000,12 @@ export class QuestHelper
     ): void
     {
         // Get hideout crafts and find those that match by areatype/required level/end product tpl - hope for just one match
-        const hideoutProductions = this.databaseServer.getTables().hideout!.production;
+        const hideoutProductions = this.databaseService.getHideout().production;
         const matchingProductions = hideoutProductions.filter(
-            (x) =>
-                x.areaType === Number.parseInt(craftUnlockReward.traderId)
-                && x.requirements.some((x) => x.requiredLevel === craftUnlockReward.loyaltyLevel)
-                && x.endProduct === craftUnlockReward.items[0]._tpl,
+            (prod) =>
+                prod.areaType === Number.parseInt(craftUnlockReward.traderId)
+                && prod.requirements.some((x) => x.requiredLevel === craftUnlockReward.loyaltyLevel)
+                && prod.endProduct === craftUnlockReward.items[0]._tpl,
         );
 
         // More/less than 1 match, above filtering wasn't strict enough
@@ -1099,7 +1098,7 @@ export class QuestHelper
     public addAllQuestsToProfile(pmcProfile: IPmcData, statuses: QuestStatus[]): void
     {
         // Iterate over all quests in db
-        const quests = this.databaseServer.getTables().templates!.quests;
+        const quests = this.databaseService.getQuests();
         for (const questIdKey in quests)
         {
             // Quest from db matches quests in profile, skip

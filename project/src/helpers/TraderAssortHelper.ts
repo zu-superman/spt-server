@@ -12,7 +12,7 @@ import { Traders } from "@spt/models/enums/Traders";
 import { ITraderConfig } from "@spt/models/spt/config/ITraderConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { FenceService } from "@spt/services/FenceService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { TraderAssortService } from "@spt/services/TraderAssortService";
@@ -32,7 +32,7 @@ export class TraderAssortHelper
         @inject("PrimaryLogger") protected logger: ILogger,
         @inject("MathUtil") protected mathUtil: MathUtil,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
         @inject("AssortHelper") protected assortHelper: AssortHelper,
         @inject("PaymentHelper") protected paymentHelper: PaymentHelper,
@@ -68,7 +68,7 @@ export class TraderAssortHelper
             return this.getRagfairDataAsTraderAssort();
         }
 
-        const traderClone = this.cloner.clone(this.databaseServer.getTables().traders![traderId]);
+        const traderClone = this.cloner.clone(this.databaseService.getTrader(traderId));
         const fullProfile = this.profileHelper.getFullProfile(sessionId);
         const pmcProfile = fullProfile.characters.pmc;
 
@@ -193,9 +193,8 @@ export class TraderAssortHelper
      */
     protected hydrateMergedQuestAssorts(): void
     {
-        const traders = this.databaseServer.getTables().traders;
-
         // Loop every trader
+        const traders = this.databaseService.getTraders();
         for (const traderId in traders)
         {
             // Trader has quest assort data
@@ -245,7 +244,7 @@ export class TraderAssortHelper
     public traderAssortsHaveExpired(traderID: string): boolean
     {
         const time = this.timeUtil.getTimestamp();
-        const trader = this.databaseServer.getTables().traders![traderID];
+        const trader = this.databaseService.getTables().traders![traderID];
 
         return trader.base.nextResupply <= time;
     }

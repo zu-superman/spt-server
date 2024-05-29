@@ -2,7 +2,7 @@ import { inject, injectable } from "tsyringe";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 
 @injectable()
 export class RagfairLinkedItemService
@@ -10,7 +10,7 @@ export class RagfairLinkedItemService
     protected linkedItemsCache: Record<string, Set<string>> = {};
 
     constructor(
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
     )
     {}
@@ -55,7 +55,7 @@ export class RagfairLinkedItemService
             return linkedItems[id];
         };
 
-        for (const item of Object.values(this.databaseServer.getTables().templates!.items))
+        for (const item of Object.values(this.databaseService.getItems()))
         {
             const itemLinkedSet = getLinkedItems(item._id);
 

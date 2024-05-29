@@ -6,7 +6,7 @@ import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
 import { IStorePlayerOfferTaxAmountRequestData } from "@spt/models/eft/ragfair/IStorePlayerOfferTaxAmountRequestData";
 import { BonusType } from "@spt/models/enums/BonusType";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { RagfairPriceService } from "@spt/services/RagfairPriceService";
 
 @injectable()
@@ -16,7 +16,7 @@ export class RagfairTaxService
 
     constructor(
         @inject("PrimaryLogger") protected logger: ILogger,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("RagfairPriceService") protected ragfairPriceService: RagfairPriceService,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
     )
@@ -65,13 +65,14 @@ export class RagfairTaxService
             return 0;
         }
 
+        const globals = this.databaseService.getGlobals();
+
         const itemTemplate = this.itemHelper.getItem(item._tpl)[1];
         const itemWorth = this.calculateItemWorth(item, itemTemplate, offerItemCount, pmcData);
         const requirementsPrice = requirementsValue * (sellInOnePiece ? 1 : offerItemCount);
 
-        const itemTaxMult = this.databaseServer.getTables().globals!.config.RagFair.communityItemTax / 100.0;
-        const requirementTaxMult
-            = this.databaseServer.getTables().globals!.config.RagFair.communityRequirementTax / 100.0;
+        const itemTaxMult = globals.config.RagFair.communityItemTax / 100.0;
+        const requirementTaxMult = globals!.config.RagFair.communityRequirementTax / 100.0;
 
         let itemPriceMult = Math.log10(itemWorth / requirementsPrice);
         let requirementPriceMult = Math.log10(requirementsPrice / itemWorth);

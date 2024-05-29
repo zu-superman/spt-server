@@ -5,7 +5,7 @@ import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { IRepairConfig } from "@spt/models/spt/config/IRepairConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { ICloner } from "@spt/utils/cloners/ICloner";
 import { RandomUtil } from "@spt/utils/RandomUtil";
 
@@ -17,7 +17,7 @@ export class RepairHelper
     constructor(
         @inject("PrimaryLogger") protected logger: ILogger,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("ConfigServer") protected configServer: ConfigServer,
         @inject("PrimaryCloner") protected cloner: ICloner,
     )
@@ -120,7 +120,7 @@ export class RepairHelper
     ): number
     {
         // Degradation value is based on the armor material
-        const armorMaterialSettings = this.databaseServer.getTables().globals!.config.ArmorMaterials[armorMaterial];
+        const armorMaterialSettings = this.databaseService.getGlobals().config.ArmorMaterials[armorMaterial];
 
         const minMultiplier = isRepairKit
             ? armorMaterialSettings.MinRepairKitDegradation

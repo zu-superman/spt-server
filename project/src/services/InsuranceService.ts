@@ -17,8 +17,8 @@ import { ILostOnDeathConfig } from "@spt/models/spt/config/ILostOnDeathConfig";
 import { IInsuranceEquipmentPkg } from "@spt/models/spt/services/IInsuranceEquipmentPkg";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
 import { SaveServer } from "@spt/servers/SaveServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { LocaleService } from "@spt/services/LocaleService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { MailSendService } from "@spt/services/MailSendService";
@@ -36,7 +36,7 @@ export class InsuranceService
 
     constructor(
         @inject("PrimaryLogger") protected logger: ILogger,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("SecureContainerHelper") protected secureContainerHelper: SecureContainerHelper,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
@@ -109,6 +109,8 @@ export class InsuranceService
         // Get insurance items for each trader
         for (const traderId in this.getInsurance(sessionID))
         {
+            const globals = this.databaseService.getGlobals();
+
             const traderBase = this.traderHelper.getTrader(traderId, sessionID);
             if (!traderBase)
             {
@@ -118,10 +120,9 @@ export class InsuranceService
             let insuranceReturnTimestamp = this.getInsuranceReturnTimestamp(pmcData, traderBase);
             if (markOfTheUnheardOnPlayer)
             {
-                insuranceReturnTimestamp *= this.databaseServer.getTables()
-                    .globals!.config.Insurance.CoefOfHavingMarkOfUnknown;
+                insuranceReturnTimestamp *= globals.config.Insurance.CoefOfHavingMarkOfUnknown;
             }
-            const dialogueTemplates = this.databaseServer.getTables().traders![traderId].dialogue;
+            const dialogueTemplates = this.databaseService.getTrader(traderId).dialogue;
             if (!dialogueTemplates)
             {
                 throw new Error(this.localisationService.getText("insurance-trader_lacks_dialogue_property", traderId));
@@ -146,7 +147,7 @@ export class InsuranceService
                 this.randomUtil.getArrayValue(dialogueTemplates?.insuranceStart),
                 undefined,
                 this.timeUtil.getHoursAsSeconds(
-                    this.databaseServer.getTables().globals!.config.Insurance.MaxStorageTimeInHour,
+                    globals.config.Insurance.MaxStorageTimeInHour,
                 ),
                 systemData,
             );

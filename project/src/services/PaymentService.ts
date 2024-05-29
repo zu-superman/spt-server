@@ -12,7 +12,7 @@ import { IProcessBuyTradeRequestData } from "@spt/models/eft/trade/IProcessBuyTr
 import { IProcessSellTradeRequestData } from "@spt/models/eft/trade/IProcessSellTradeRequestData";
 import { BackendErrorCodes } from "@spt/models/enums/BackendErrorCodes";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { HashUtil } from "@spt/utils/HashUtil";
 import { HttpResponseUtil } from "@spt/utils/HttpResponseUtil";
@@ -24,7 +24,7 @@ export class PaymentService
         @inject("PrimaryLogger") protected logger: ILogger,
         @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("HttpResponseUtil") protected httpResponse: HttpResponseUtil,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("HandbookHelper") protected handbookHelper: HandbookHelper,
         @inject("TraderHelper") protected traderHelper: TraderHelper,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
@@ -180,15 +180,15 @@ export class PaymentService
     ): void
     {
         const trader = this.traderHelper.getTrader(request.tid, sessionID);
-        const currency = this.paymentHelper.getCurrency(trader.currency);
-        let calcAmount = this.handbookHelper.fromRUB(this.handbookHelper.inRUB(amountToSend, currency), currency);
-        const currencyMaxStackSize = this.databaseServer.getTables().templates!.items[currency]._props.StackMaxSize!;
+        const currencyTpl = this.paymentHelper.getCurrency(trader.currency);
+        let calcAmount = this.handbookHelper.fromRUB(this.handbookHelper.inRUB(amountToSend, currencyTpl), currencyTpl);
+        const currencyMaxStackSize = this.itemHelper.getItem(currencyTpl)[1]._props.StackMaxSize!;
         let skipSendingMoneyToStash = false;
 
         for (const item of pmcData.Inventory.items)
         {
             // Item is not currency
-            if (item._tpl !== currency)
+            if (item._tpl !== currencyTpl)
             {
                 continue;
             }
@@ -227,7 +227,7 @@ export class PaymentService
         // Create single currency item with all currency on it
         const rootCurrencyReward = {
             _id: this.hashUtil.generate(),
-            _tpl: currency,
+            _tpl: currencyTpl,
             upd: { StackObjectsCount: Math.round(calcAmount) },
         };
 

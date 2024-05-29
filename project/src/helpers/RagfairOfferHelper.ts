@@ -25,8 +25,8 @@ import { IRagfairConfig } from "@spt/models/spt/config/IRagfairConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { EventOutputHolder } from "@spt/routers/EventOutputHolder";
 import { ConfigServer } from "@spt/servers/ConfigServer";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
 import { SaveServer } from "@spt/servers/SaveServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { LocaleService } from "@spt/services/LocaleService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { MailSendService } from "@spt/services/MailSendService";
@@ -48,7 +48,7 @@ export class RagfairOfferHelper
         @inject("TimeUtil") protected timeUtil: TimeUtil,
         @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("EventOutputHolder") protected eventOutputHolder: EventOutputHolder,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("TraderHelper") protected traderHelper: TraderHelper,
         @inject("SaveServer") protected saveServer: SaveServer,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
@@ -355,7 +355,7 @@ export class RagfairOfferHelper
      */
     public increaseProfileRagfairRating(profile: ISptProfile, amountToIncrementBy: number): void
     {
-        const ragfairConfig = this.databaseServer.getTables().globals!.config.RagFair;
+        const ragfairGlobalsConfig = this.databaseService.getGlobals().config.RagFair;
 
         profile.characters.pmc.RagfairInfo.isRatingGrowing = true;
         if (Number.isNaN(amountToIncrementBy))
@@ -365,7 +365,9 @@ export class RagfairOfferHelper
             return;
         }
         profile.characters.pmc.RagfairInfo.rating
-            += (ragfairConfig.ratingIncreaseCount / ragfairConfig.ratingSumForIncrease) * amountToIncrementBy;
+            += (ragfairGlobalsConfig.ratingIncreaseCount
+            / ragfairGlobalsConfig.ratingSumForIncrease)
+            * amountToIncrementBy;
     }
 
     /**
@@ -572,7 +574,7 @@ export class RagfairOfferHelper
         const isTraderOffer = offer.user.memberType === MemberCategory.TRADER;
 
         if (
-            pmcData.Info.Level < this.databaseServer.getTables().globals!.config.RagFair.minUserLevel
+            pmcData.Info.Level < this.databaseService.getGlobals().config.RagFair.minUserLevel
             && isDefaultUserOffer
         )
         {
@@ -759,10 +761,10 @@ export class RagfairOfferHelper
             return false;
         }
 
-        // handle trader items to remove items that are not available to the user right now
+        // Handle trader items to remove items that are not available to the user right now
         // required search for "lamp" shows 4 items, 3 of which are not available to a new player
         // filter those out
-        if (offer.user.id in this.databaseServer.getTables().traders!)
+        if (offer.user.id in this.databaseService.getTraders())
         {
             if (!(offer.user.id in traderAssorts))
             {

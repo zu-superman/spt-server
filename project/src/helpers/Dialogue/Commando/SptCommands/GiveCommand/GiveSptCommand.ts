@@ -10,7 +10,7 @@ import { ISendMessageRequest } from "@spt/models/eft/dialog/ISendMessageRequest"
 import { IUserDialogInfo } from "@spt/models/eft/profile/ISptProfile";
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { ItemFilterService } from "@spt/services/ItemFilterService";
 import { LocaleService } from "@spt/services/LocaleService";
 import { MailSendService } from "@spt/services/MailSendService";
@@ -46,7 +46,7 @@ export class GiveSptCommand implements ISptCommand
         @inject("PresetHelper") protected presetHelper: PresetHelper,
         @inject("MailSendService") protected mailSendService: MailSendService,
         @inject("LocaleService") protected localeService: LocaleService,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("ItemFilterService") protected itemFilterService: ItemFilterService,
         @inject("PrimaryCloner") protected cloner: ICloner,
     )
@@ -147,8 +147,8 @@ export class GiveSptCommand implements ISptCommand
                 }
 
                 const localizedGlobal
-                    = this.databaseServer.getTables().locales!.global[locale]
-                    ?? this.databaseServer.getTables().locales!.global.en;
+                    = this.databaseService.getLocales().global[locale]
+                    ?? this.databaseService.getLocales().global.en;
 
                 const closestItemsMatchedByName = this.itemHelper
                     .getItems()
@@ -191,8 +191,8 @@ export class GiveSptCommand implements ISptCommand
             }
         }
 
-        const localizedGlobal = this.databaseServer.getTables().locales!.global[locale]
-          ?? this.databaseServer.getTables().locales!.global.en;
+        const localizedGlobal = this.databaseService.getLocales().global[locale]
+          ?? this.databaseService.getLocales().global.en;
         // If item is an item name, we need to search using that item name and the locale which one we want otherwise
         // item is just the tplId.
         const tplId = isItemName

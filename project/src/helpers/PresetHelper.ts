@@ -1,7 +1,7 @@
 import { inject, injectable } from "tsyringe";
 import { IPreset } from "@spt/models/eft/common/IGlobals";
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { ICloner } from "@spt/utils/cloners/ICloner";
 import { ItemHelper } from "./ItemHelper";
 
@@ -13,7 +13,7 @@ export class PresetHelper
     protected defaultWeaponPresets: Record<string, IPreset>;
 
     constructor(
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("PrimaryCloner") protected cloner: ICloner,
     )
@@ -44,7 +44,7 @@ export class PresetHelper
     {
         if (!this.defaultWeaponPresets)
         {
-            this.defaultWeaponPresets = Object.values(this.databaseServer.getTables().globals!.ItemPresets)
+            this.defaultWeaponPresets = Object.values(this.databaseService.getGlobals().ItemPresets)
                 .filter(
                     (preset) =>
                         preset._encyclopedia !== undefined
@@ -68,7 +68,7 @@ export class PresetHelper
     {
         if (!this.defaultEquipmentPresets)
         {
-            this.defaultEquipmentPresets = Object.values(this.databaseServer.getTables().globals!.ItemPresets)
+            this.defaultEquipmentPresets = Object.values(this.databaseService.getGlobals().ItemPresets)
                 .filter(
                     (preset) =>
                         preset._encyclopedia !== undefined
@@ -86,7 +86,7 @@ export class PresetHelper
 
     public isPreset(id: string): boolean
     {
-        return id in this.databaseServer.getTables().globals!.ItemPresets;
+        return id in this.databaseService.getGlobals().ItemPresets;
     }
 
     /**
@@ -107,12 +107,12 @@ export class PresetHelper
 
     public getPreset(id: string): IPreset
     {
-        return this.cloner.clone(this.databaseServer.getTables().globals!.ItemPresets[id]);
+        return this.cloner.clone(this.databaseService.getGlobals().ItemPresets[id]);
     }
 
     public getAllPresets(): IPreset[]
     {
-        return this.cloner.clone(Object.values(this.databaseServer.getTables().globals!.ItemPresets));
+        return this.cloner.clone(Object.values(this.databaseService.getGlobals().ItemPresets));
     }
 
     public getPresets(templateId: string): IPreset[]

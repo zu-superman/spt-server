@@ -14,7 +14,7 @@ import {
 import { IRaidChanges } from "@spt/models/spt/location/IRaidChanges";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { RandomUtil } from "@spt/utils/RandomUtil";
 
 @injectable()
@@ -24,7 +24,7 @@ export class RaidTimeAdjustmentService
 
     constructor(
         @inject("PrimaryLogger") protected logger: ILogger,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("WeightedRandomHelper") protected weightedRandomHelper: WeightedRandomHelper,
         @inject("ApplicationContext") protected applicationContext: ApplicationContext,
@@ -105,9 +105,8 @@ export class RaidTimeAdjustmentService
      */
     public getRaidAdjustments(sessionId: string, request: IGetRaidTimeRequest): IGetRaidTimeResponse
     {
-        const db = this.databaseServer.getTables();
-
-        const mapBase: ILocationBase = db.locations![request.Location.toLowerCase()].base;
+        const globals = this.databaseService.getGlobals();
+        const mapBase: ILocationBase = this.databaseService.getLocation(request.Location.toLowerCase()).base;
         const baseEscapeTimeMinutes = mapBase.EscapeTimeLimit;
 
         // Prep result object to return
@@ -115,7 +114,7 @@ export class RaidTimeAdjustmentService
             RaidTimeMinutes: baseEscapeTimeMinutes,
             ExitChanges: [],
             NewSurviveTimeSeconds: undefined,
-            OriginalSurvivalTimeSeconds: db.globals!.config.exp.match_end.survived_seconds_requirement,
+            OriginalSurvivalTimeSeconds: globals.config.exp.match_end.survived_seconds_requirement,
         };
 
         // Pmc raid, send default

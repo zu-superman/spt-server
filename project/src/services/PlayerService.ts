@@ -1,7 +1,7 @@
 import { inject, injectable } from "tsyringe";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { TimeUtil } from "@spt/utils/TimeUtil";
 
@@ -12,7 +12,7 @@ export class PlayerService
         @inject("PrimaryLogger") protected logger: ILogger,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
         @inject("LocalisationService") protected localisationService: LocalisationService,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
     )
     {}
 
@@ -25,7 +25,7 @@ export class PlayerService
     {
         let accExp = 0;
 
-        for (const [level, { exp }] of this.databaseServer.getTables().globals!.config.exp.level.exp_table.entries())
+        for (const [level, { exp }] of this.databaseService.getGlobals().config.exp.level.exp_table.entries())
         {
             accExp += exp;
 

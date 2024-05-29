@@ -16,7 +16,7 @@ import { IRagfairConfig, IUnreasonableModPrices } from "@spt/models/spt/config/I
 import { IRagfairServerPrices } from "@spt/models/spt/ragfair/IRagfairServerPrices";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { RandomUtil } from "@spt/utils/RandomUtil";
 
@@ -32,7 +32,7 @@ export class RagfairPriceService implements OnLoad
 
     constructor(
         @inject("HandbookHelper") protected handbookHelper: HandbookHelper,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("PrimaryLogger") protected logger: ILogger,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("PresetHelper") protected presetHelper: PresetHelper,
@@ -64,7 +64,7 @@ export class RagfairPriceService implements OnLoad
      */
     public refreshStaticPrices(): void
     {
-        for (const item of Object.values(this.databaseServer.getTables().templates!.items).filter(
+        for (const item of Object.values(this.databaseService.getItems()).filter(
             (x) => x._type === "Item",
         ))
         {
@@ -77,7 +77,7 @@ export class RagfairPriceService implements OnLoad
      */
     public refreshDynamicPrices(): void
     {
-        const pricesTable = this.databaseServer.getTables().templates!.prices;
+        const pricesTable = this.databaseService.getPrices();
         this.prices.dynamic = { ...this.prices.dynamic, ...pricesTable };
     }
 
@@ -138,7 +138,7 @@ export class RagfairPriceService implements OnLoad
         // If the price doesn't exist in the cache yet, try to find it
         if (!this.prices.dynamic[itemTpl])
         {
-            this.prices.dynamic[itemTpl] = this.databaseServer.getTables().templates!.prices[itemTpl];
+            this.prices.dynamic[itemTpl] = this.databaseService.getPrices()[itemTpl];
         }
 
         return this.prices.dynamic[itemTpl];
@@ -328,7 +328,7 @@ export class RagfairPriceService implements OnLoad
                 if (unreasonableModifier.enabled)
                 {
                     price = this.adjustUnreasonablePrice(
-                        this.databaseServer.getTables().templates!.handbook.Items,
+                        this.databaseService.getHandbook().Items,
                         unreasonableModifier,
                         itemTemplateId,
                         price,

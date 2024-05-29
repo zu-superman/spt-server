@@ -8,8 +8,8 @@ import { IRagfairConfig } from "@spt/models/spt/config/IRagfairConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { EventOutputHolder } from "@spt/routers/EventOutputHolder";
 import { ConfigServer } from "@spt/servers/ConfigServer";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
 import { SaveServer } from "@spt/servers/SaveServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { HttpResponseUtil } from "@spt/utils/HttpResponseUtil";
 import { RagfairOfferHolder } from "@spt/utils/RagfairOfferHolder";
@@ -28,7 +28,7 @@ export class RagfairOfferService
     constructor(
         @inject("PrimaryLogger") protected logger: ILogger,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("SaveServer") protected saveServer: SaveServer,
         @inject("RagfairServerHelper") protected ragfairServerHelper: RagfairServerHelper,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
@@ -168,7 +168,7 @@ export class RagfairOfferService
      */
     public traderOffersNeedRefreshing(traderID: string): boolean
     {
-        const trader = this.databaseServer.getTables().traders![traderID];
+        const trader = this.databaseService.getTrader(traderID);
         if (!trader || !trader.base)
         {
             this.logger.error(this.localisationService.getText("ragfair-trader_missing_base_file", traderID));
@@ -263,7 +263,7 @@ export class RagfairOfferService
         }
 
         // Reduce player ragfair rep
-        profile.RagfairInfo.rating -= this.databaseServer.getTables().globals!.config.RagFair.ratingDecreaseCount;
+        profile.RagfairInfo.rating -= this.databaseService.getGlobals().config.RagFair.ratingDecreaseCount;
         profile.RagfairInfo.isRatingGrowing = false;
 
         const firstOfferItem = playerOffer.items[0];

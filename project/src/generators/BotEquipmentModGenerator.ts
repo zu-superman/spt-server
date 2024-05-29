@@ -514,7 +514,7 @@ export class BotEquipmentModGenerator
             // However, the recursion doesn't go over the slots of the parent mod but over the modPool which is given by the bot config
             // where we decided to keep cartridges instead of camoras. And since a CylinderMagazine only has one cartridge entry and
             // this entry is not to be filled, we need a special handling for the CylinderMagazine
-            const modParentItem = this.databaseService.getItems()[modToAddTemplate._parent];
+            const modParentItem = this.itemHelper.getItem(modToAddTemplate._parent)[1];
             if (this.botWeaponGeneratorHelper.magazineIsCylinderRelated(modParentItem._name))
             {
                 // We don't have child mods, we need to create the camoras for the magazines instead

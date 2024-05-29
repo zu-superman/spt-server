@@ -11,8 +11,8 @@ import { MessageType } from "@spt/models/enums/MessageType";
 import { Traders } from "@spt/models/enums/Traders";
 import { IProfileChangeEvent, ISendMessageDetails } from "@spt/models/spt/dialog/ISendMessageDetails";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
 import { SaveServer } from "@spt/servers/SaveServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { HashUtil } from "@spt/utils/HashUtil";
 import { TimeUtil } from "@spt/utils/TimeUtil";
@@ -27,7 +27,7 @@ export class MailSendService
         @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
         @inject("SaveServer") protected saveServer: SaveServer,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("NotifierHelper") protected notifierHelper: NotifierHelper,
         @inject("DialogueHelper") protected dialogueHelper: DialogueHelper,
         @inject("NotificationSendHelper") protected notificationSendHelper: NotificationSendHelper,
@@ -416,7 +416,7 @@ export class MailSendService
         messageDetails: ISendMessageDetails,
     ): MessageItems
     {
-        const db = this.databaseServer.getTables().templates!.items;
+        const items = this.databaseService.getItems();
 
         let itemsToSendToPlayer: MessageItems = {};
         if ((messageDetails.items?.length ?? 0) > 0)
@@ -447,7 +447,7 @@ export class MailSendService
             for (const reward of messageDetails.items)
             {
                 // Ensure item exists in items db
-                const itemTemplate = db[reward._tpl];
+                const itemTemplate = items[reward._tpl];
                 if (!itemTemplate)
                 {
                     // Can happen when modded items are insured + mod is removed

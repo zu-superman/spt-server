@@ -11,8 +11,8 @@ import { SkillTypes } from "@spt/models/enums/SkillTypes";
 import { IInventoryConfig } from "@spt/models/spt/config/IInventoryConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
 import { SaveServer } from "@spt/servers/SaveServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { ProfileSnapshotService } from "@spt/services/ProfileSnapshotService";
 import { ICloner } from "@spt/utils/cloners/ICloner";
@@ -31,7 +31,7 @@ export class ProfileHelper
         @inject("Watermark") protected watermark: Watermark,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
         @inject("SaveServer") protected saveServer: SaveServer,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("ProfileSnapshotService") protected profileSnapshotService: ProfileSnapshotService,
         @inject("LocalisationService") protected localisationService: LocalisationService,
@@ -218,7 +218,7 @@ export class ProfileHelper
     public getExperience(level: number): number
     {
         let playerLevel = level;
-        const expTable = this.databaseServer.getTables().globals!.config.exp.level.exp_table;
+        const expTable = this.databaseService.getGlobals().config.exp.level.exp_table;
         let exp = 0;
 
         if (playerLevel >= expTable.length)
@@ -241,7 +241,7 @@ export class ProfileHelper
      */
     public getMaxLevel(): number
     {
-        return this.databaseServer.getTables().globals!.config.exp.level.exp_table.length - 1;
+        return this.databaseService.getGlobals().config.exp.level.exp_table.length - 1;
     }
 
     public getDefaultSptDataObject(): any
@@ -482,8 +482,7 @@ export class ProfileHelper
 
         if (useSkillProgressRateMultipler)
         {
-            const globals = this.databaseServer.getTables().globals!;
-            const skillProgressRate = globals.config.SkillsSettings.SkillProgressRate;
+            const skillProgressRate = this.databaseService.getGlobals().config.SkillsSettings.SkillProgressRate;
             pointsToAddToSkill *= skillProgressRate;
         }
 

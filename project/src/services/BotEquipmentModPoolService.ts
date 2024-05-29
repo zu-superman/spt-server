@@ -7,7 +7,7 @@ import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { IBotConfig } from "@spt/models/spt/config/IBotConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { VFS } from "@spt/utils/VFS";
 
@@ -25,7 +25,7 @@ export class BotEquipmentModPoolService
         @inject("PrimaryLogger") protected logger: ILogger,
         @inject("VFS") protected vfs: VFS,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("ConfigServer") protected configServer: ConfigServer,
     )
@@ -96,7 +96,7 @@ export class BotEquipmentModPoolService
                         pool[item._id][slot._name].push(itemToAdd);
 
                         // Check item added into array for slots, need to iterate over those
-                        const subItemDetails = this.databaseServer.getTables().templates!.items[itemToAdd];
+                        const subItemDetails = this.itemHelper.getItem(itemToAdd)[1];
                         const hasSubItemsToAdd = subItemDetails?._props?.Slots?.length ?? 0 > 0;
                         if (hasSubItemsToAdd && !pool[subItemDetails._id])
                         {
@@ -185,8 +185,8 @@ export class BotEquipmentModPoolService
      */
     protected generateWeaponPool(): void
     {
-        const weapons = Object.values(this.databaseServer.getTables().templates!.items).filter(
-            (x) => x._type === "Item" && this.itemHelper.isOfBaseclass(x._id, BaseClasses.WEAPON),
+        const weapons = Object.values(this.databaseService.getItems()).filter(
+            (item) => item._type === "Item" && this.itemHelper.isOfBaseclass(item._id, BaseClasses.WEAPON),
         );
         this.generatePool(weapons, "weapon");
 
@@ -199,10 +199,10 @@ export class BotEquipmentModPoolService
      */
     protected generateGearPool(): void
     {
-        const gear = Object.values(this.databaseServer.getTables().templates!.items).filter(
-            (x) =>
-                x._type === "Item"
-                && this.itemHelper.isOfBaseclasses(x._id, [
+        const gear = Object.values(this.databaseService.getItems()).filter(
+            (item) =>
+                item._type === "Item"
+                && this.itemHelper.isOfBaseclasses(item._id, [
                     BaseClasses.ARMORED_EQUIPMENT,
                     BaseClasses.VEST,
                     BaseClasses.ARMOR,

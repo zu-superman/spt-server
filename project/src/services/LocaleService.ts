@@ -134,20 +134,21 @@ export class LocaleService
             return "en";
         }
 
+        const locales = this.databaseServer.getTables().locales!;
         const baseNameCode = platformLocale.baseName?.toLocaleLowerCase();
-        if (baseNameCode && this.databaseServer.getTables().locales!.global[baseNameCode])
+        if (baseNameCode && locales.global[baseNameCode])
         {
             return baseNameCode;
         }
 
         const languageCode = platformLocale.language?.toLowerCase();
-        if (languageCode && this.databaseServer.getTables().locales!.global[languageCode])
+        if (languageCode && locales.global[languageCode])
         {
             return languageCode;
         }
 
         const regionCode = platformLocale.region?.toLocaleLowerCase();
-        if (regionCode && this.databaseServer.getTables().locales!.global[regionCode])
+        if (regionCode && locales.global[regionCode])
         {
             return regionCode;
         }

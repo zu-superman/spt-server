@@ -15,7 +15,7 @@ import { Traders } from "@spt/models/enums/Traders";
 import { ITraderConfig } from "@spt/models/spt/config/ITraderConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { FenceService } from "@spt/services/FenceService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { PlayerService } from "@spt/services/PlayerService";
@@ -33,7 +33,7 @@ export class TraderHelper
 
     constructor(
         @inject("PrimaryLogger") protected logger: ILogger,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
         @inject("HandbookHelper") protected handbookHelper: HandbookHelper,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
@@ -71,13 +71,13 @@ export class TraderHelper
             this.lvlUp(traderID, pmcData);
         }
 
-        const trader = this.databaseServer.getTables().traders?.[traderID]?.base;
-        if (!trader)
+        const traderBase = this.databaseService.getTrader(traderID).base;
+        if (!traderBase)
         {
             this.logger.error(this.localisationService.getText("trader-unable_to_find_trader_by_id", traderID));
         }
 
-        return trader;
+        return traderBase;
     }
 
     /**
@@ -89,7 +89,7 @@ export class TraderHelper
     {
         return traderId === Traders.FENCE
             ? this.fenceService.getRawFenceAssorts()
-            : this.databaseServer.getTables().traders![traderId].assort!;
+            : this.databaseService.getTrader(traderId).assort;
     }
 
     /**
@@ -128,7 +128,9 @@ export class TraderHelper
      */
     public resetTrader(sessionID: string, traderID: string): void
     {
-        const db = this.databaseServer.getTables();
+        const profiles = this.databaseService.getProfiles();
+        const trader = this.databaseService.getTrader(traderID);
+
         const fullProfile = this.profileHelper.getFullProfile(sessionID);
         if (!fullProfile)
         {
@@ -137,7 +139,7 @@ export class TraderHelper
 
         const pmcData = fullProfile.characters.pmc;
         const rawProfileTemplate: ProfileTraderTemplate
-            = db.templates!.profiles[fullProfile.info.edition][pmcData.Info.Side.toLowerCase()]
+            = profiles[fullProfile.info.edition][pmcData.Info.Side.toLowerCase()]
                 .trader;
 
         pmcData.TradersInfo[traderID] = {
@@ -145,8 +147,8 @@ export class TraderHelper
             loyaltyLevel: rawProfileTemplate.initialLoyaltyLevel[traderID] ?? 1,
             salesSum: rawProfileTemplate.initialSalesSum,
             standing: this.getStartingStanding(traderID, rawProfileTemplate),
-            nextResupply: db.traders![traderID].base.nextResupply,
-            unlocked: db.traders![traderID].base.unlockedByDefault,
+            nextResupply: trader.base.nextResupply,
+            unlocked: trader.base.unlockedByDefault,
         };
 
         // Check if trader should be locked by default
@@ -158,10 +160,12 @@ export class TraderHelper
         if (rawProfileTemplate.purchaseAllClothingByDefaultForTrader?.includes(traderID))
         {
             // Get traders clothing
-            const clothing = this.databaseServer.getTables().traders![traderID].suits!;
-
-            // Force suit ids into profile
-            this.addSuitsToProfile(fullProfile, clothing.map((x) => x.suiteId));
+            const clothing = this.databaseService.getTrader(traderID).suits;
+            if (clothing?.length > 0)
+            {
+                // Force suit ids into profile
+                this.addSuitsToProfile(fullProfile, clothing!.map((suit) => suit.suiteId));
+            }
         }
 
         if ((rawProfileTemplate.fleaBlockedDays ?? 0) > 0)
@@ -283,7 +287,7 @@ export class TraderHelper
     public validateTraderStandingsAndPlayerLevelForProfile(sessionId: string): void
     {
         const profile = this.profileHelper.getPmcProfile(sessionId);
-        const traders = Object.keys(this.databaseServer.getTables().traders!);
+        const traders = Object.keys(this.databaseService.getTraders());
         for (const trader of traders)
         {
             this.lvlUp(trader, profile);
@@ -298,7 +302,7 @@ export class TraderHelper
      */
     public lvlUp(traderID: string, pmcData: IPmcData): void
     {
-        const loyaltyLevels = this.databaseServer.getTables().traders![traderID].base.loyaltyLevels;
+        const loyaltyLevels = this.databaseService.getTrader(traderID).base.loyaltyLevels;
 
         // Level up player
         pmcData.Info.Level = this.playerService.calculateLevel(pmcData);
@@ -375,7 +379,7 @@ export class TraderHelper
 
     public getLoyaltyLevel(traderID: string, pmcData: IPmcData): LoyaltyLevel
     {
-        const trader = this.databaseServer.getTables().traders![traderID].base;
+        const traderBase = this.databaseService.getTrader(traderID).base;
         let loyaltyLevel = pmcData.TradersInfo[traderID].loyaltyLevel;
 
         if (!loyaltyLevel || loyaltyLevel < 1)
@@ -383,12 +387,12 @@ export class TraderHelper
             loyaltyLevel = 1;
         }
 
-        if (loyaltyLevel > trader.loyaltyLevels.length)
+        if (loyaltyLevel > traderBase.loyaltyLevels.length)
         {
-            loyaltyLevel = trader.loyaltyLevels.length;
+            loyaltyLevel = traderBase.loyaltyLevels.length;
         }
 
-        return trader.loyaltyLevels[loyaltyLevel - 1];
+        return traderBase.loyaltyLevels[loyaltyLevel - 1];
     }
 
     /**
@@ -476,7 +480,7 @@ export class TraderHelper
             }
 
             // Get assorts for trader, skip trader if no assorts found
-            const traderAssorts = this.databaseServer.getTables().traders![Traders[traderName]].assort;
+            const traderAssorts = this.databaseService.getTrader(Traders[traderName]).assort;
             if (!traderAssorts)
             {
                 continue;
@@ -528,7 +532,7 @@ export class TraderHelper
         for (const traderName in Traders)
         {
             // Get trader and check buy category allows tpl
-            const traderBase = this.databaseServer.getTables().traders![Traders[traderName]]?.base;
+            const traderBase = this.databaseService.getTrader(Traders[traderName]).base;
             if (traderBase && this.itemHelper.isOfBaseclasses(tpl, traderBase.items_buy.category))
             {
                 // Get loyalty level details player has achieved with this trader

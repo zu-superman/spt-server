@@ -19,7 +19,7 @@ import { SkillTypes } from "@spt/models/enums/SkillTypes";
 import { BonusSettings, IRepairConfig } from "@spt/models/spt/config/IRepairConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { PaymentService } from "@spt/services/PaymentService";
 import { RandomUtil } from "@spt/utils/RandomUtil";
@@ -30,7 +30,7 @@ export class RepairService
     protected repairConfig: IRepairConfig;
     constructor(
         @inject("PrimaryLogger") protected logger: ILogger,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
@@ -75,7 +75,8 @@ export class RepairService
         const repairQualityMultiplier = Number(traderRepairDetails.quality);
         const repairRate = priceCoef <= 0 ? 1 : priceCoef / 100 + 1;
 
-        const itemToRepairDetails = this.databaseServer.getTables().templates!.items[itemToRepair._tpl];
+        const items = this.databaseService.getItems();
+        const itemToRepairDetails = items[itemToRepair._tpl];
         const repairItemIsArmor = !!itemToRepairDetails._props.ArmorMaterial;
 
         this.repairHelper.updateItemDurability(
@@ -89,7 +90,7 @@ export class RepairService
         );
 
         // get repair price
-        const itemRepairCost = this.databaseServer.getTables().templates!.items[itemToRepair._tpl]._props.RepairCost;
+        const itemRepairCost = items[itemToRepair._tpl]._props.RepairCost;
         if (!itemRepairCost)
         {
             throw new Error(this.localisationService.getText("repair-unable_to_find_item_repair_cost", itemToRepair._tpl));
@@ -301,7 +302,7 @@ export class RepairService
             throw new Error(this.localisationService.getText("repair-item_not_found_unable_to_repair", itemToRepairId));
         }
 
-        const itemsDb = this.databaseServer.getTables().templates!.items;
+        const itemsDb = this.databaseService.getItems();
         const itemToRepairDetails = itemsDb[itemToRepair._tpl];
         const repairItemIsArmor = !!itemToRepairDetails._props.ArmorMaterial;
         const repairAmount = repairKits[0].count / this.getKitDivisor(itemToRepairDetails, repairItemIsArmor, pmcData);
@@ -357,7 +358,7 @@ export class RepairService
      */
     protected getKitDivisor(itemToRepairDetails: ITemplateItem, isArmor: boolean, pmcData: IPmcData): number
     {
-        const globals = this.databaseServer.getTables().globals!;
+        const globals = this.databaseService.getGlobals();
         const globalRepairSettings = globals.config.RepairSettings;
 
         const intellectRepairPointsPerLevel = globals.config.SkillsSettings.Intellect.RepairPointsCostReduction;
@@ -519,7 +520,7 @@ export class RepairService
      */
     protected shouldBuffItem(repairDetails: RepairDetails, pmcData: IPmcData): boolean
     {
-        const globals = this.databaseServer.getTables().globals!;
+        const globals = this.databaseService.getGlobals();
 
         const hasTemplate = this.itemHelper.getItem(repairDetails.repairedItem._tpl);
         if (!hasTemplate[0])

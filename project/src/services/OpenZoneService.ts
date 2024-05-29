@@ -4,7 +4,7 @@ import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { ILocationConfig } from "@spt/models/spt/config/ILocationConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { RandomUtil } from "@spt/utils/RandomUtil";
 
@@ -17,7 +17,7 @@ export class OpenZoneService
     constructor(
         @inject("PrimaryLogger") protected logger: ILogger,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("ConfigServer") protected configServer: ConfigServer,
     )
@@ -49,7 +49,7 @@ export class OpenZoneService
      */
     public applyZoneChangesToAllMaps(): void
     {
-        const dbLocations = this.databaseServer.getTables().locations!;
+        const dbLocations = this.databaseService.getLocations();
         for (const mapKey in this.locationConfig.openZones)
         {
             if (!dbLocations[mapKey])
