@@ -231,18 +231,24 @@ export interface Exit
 {
     /** % Chance out of 100 exit will appear in raid */
     Chance: number
+    ChancePVE: number
     Count: number
+    CountPVE: number
     EntryPoints: string
     EventAvailable: boolean
     ExfiltrationTime: number
+    ExfiltrationTimePVE: number
     ExfiltrationType: string
     RequiredSlot?: string
     Id: string
     MaxTime: number
+    MaxTimePVE: number
     MinTime: number
+    MinTimePVE: number
     Name: string
     PassageRequirement: string
     PlayersCount: number
+    PlayersCountPVE: number
     RequirementTip: string
     Side?: string
 }

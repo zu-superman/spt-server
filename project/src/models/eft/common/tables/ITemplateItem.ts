@@ -420,6 +420,12 @@ export interface Props
     LayoutName?: string
     Lower75Prefab?: Prefab
     MaxUsages?: number
+    ScavKillExpPenalty?: number
+    ScavKillExpPenaltyPVE?: number
+    ScavKillStandingPenalty?: number
+    ScavKillStandingPenaltyPVE?: number
+    TradersDiscount?: number
+    TradersDiscountPVE?: number
 }
 
 export interface IHealthEffect

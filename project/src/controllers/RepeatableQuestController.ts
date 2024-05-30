@@ -197,6 +197,8 @@ export class RepeatableQuestController
                 activeQuests: currentRepeatableQuestType.activeQuests,
                 inactiveQuests: currentRepeatableQuestType.inactiveQuests,
                 changeRequirement: currentRepeatableQuestType.changeRequirement,
+                freeChanges: currentRepeatableQuestType.freeChanges,
+                freeChangesAvailable: currentRepeatableQuestType.freeChangesAvailable,
             });
         }
 
@@ -249,6 +251,8 @@ export class RepeatableQuestController
                 inactiveQuests: [],
                 endTime: 0,
                 changeRequirement: {},
+                freeChanges: 0,
+                freeChangesAvailable: 0,
             };
 
             // Add base object that holds repeatable data to profile

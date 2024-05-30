@@ -955,6 +955,10 @@ export class QuestHelper
                 case QuestRewardType.ASSORTMENT_UNLOCK:
                     // Handled elsewhere, TODO: find and say here
                     break;
+                case QuestRewardType.ACHIEVEMENT:
+                    this.logger.warning(`TODO - achievement: ${reward.target} reward for quest completion not implemented yet`);
+                    // TODO - Implement
+                    break;
                 case QuestRewardType.STASH_ROWS:
                     this.profileHelper.addStashRowsBonusToProfile(sessionId, Number.parseInt(<string>reward.value)); // add specified stash rows from quest reward - requires client restart
                     break;

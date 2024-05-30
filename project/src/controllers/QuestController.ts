@@ -418,6 +418,8 @@ export class QuestController
             changeRequirement: change,
             activeQuests: [repeatableQuestProfile],
             inactiveQuests: [],
+            freeChanges: repeatableSettings.freeChanges,
+            freeChangesAvailable: repeatableSettings.freeChangesAvailable,
         };
 
         if (!acceptQuestResponse.profileChanges[sessionID].repeatableQuests)

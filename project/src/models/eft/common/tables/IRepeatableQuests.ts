@@ -26,10 +26,13 @@ export interface IPmcDataRepeatableQuest
 {
     id?: string
     name: string
+    unavailableTime?: string
     activeQuests: IRepeatableQuest[]
     inactiveQuests: IRepeatableQuest[]
     endTime: number
     changeRequirement: Record<string, IChangeRequirement> // What it costs to reset <QuestId, ChangeRequirement> redundant to change requirements within IRepeatableQuest
+    freeChanges: number
+    freeChangesAvailable: number
 }
 
 export interface IChangeRequirement

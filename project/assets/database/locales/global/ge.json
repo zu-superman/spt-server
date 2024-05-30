@@ -12182,6 +12182,9 @@
   "6638a5474e92f038531e210e Name": "Mr Kerman's cat hologram",
   "6638a5474e92f038531e210e ShortName": "Mr Kerman",
   "6638a5474e92f038531e210e Description": "Greetings from Mr. Kerman.",
+  "66507eabf5ddb0818b085b68 Name": "2A2-(b-TG) stimulant injector",
+  "66507eabf5ddb0818b085b68 ShortName": "2A2-(b-TG)",
+  "66507eabf5ddb0818b085b68 Description": "TerraGroup's next development after the 3-(b-TG) stimulant. The goal of the project was to obtain a drug that would give an advantage in reconnaissance and crossing combat zones far away from supply points. At the same time, the drug is required to be manufacturable in handicraft conditions. The obtained substance allows to keep the CNS in tone for a long period of time, which positively affects the fighter's efficiency to assess the environment, and also enhances their ability to carry equipment. The stimulant’s effective duration is accompanied by increased loss of hydration.",
   " V-ex_light": "Auto zur Straße der Militärbasis",
   " Voip/DisabledForOffline": "VoIP ist im Offline-Modus nicht verfügbar.",
   " kg": "Kg",
@@ -13406,6 +13409,7 @@
   "Foregrip": "Handschutz",
   "FoundInRaid": "Im Raid gefunden",
   "Free cam": "Freie Kamera",
+  "FreeChangeQuest": "Free of charge",
   "Freetrading": "Freier Handel",
   "Freetradingdescription": "Freier Handel",
   "Friend invite to {0} was sent succesfully": "Eine Freundschaftsanfrage wurde an {0} gesendet!",
@@ -23320,5 +23324,9 @@
   "6634ca69ee506a5c3e61be56 name": "INVOLVED IN PEACE",
   "6634ca69ee506a5c3e61be56 description": "Complete the event by picking the Peacekeeper's side",
   "6634cae870af846d2868dada name": "Local strong man",
-  "6634cae870af846d2868dada description": "Complete the event by picking the Skier's side"
+  "6634cae870af846d2868dada description": "Complete the event by picking the Skier's side",
+  "664f1f8768508d74604bf556 name": "The Kappa path",
+  "664f1f8768508d74604bf556 description": "Obtain \"Kappa\" secure container",
+  "664f23e44702fd5db50ee732 name": "Jack of all trades",
+  "664f23e44702fd5db50ee732 description": "Complete \"Gunsmith\" questline"
 }
