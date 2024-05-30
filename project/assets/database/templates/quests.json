@@ -40997,6 +40997,12 @@
           "type": "Item",
           "unknown": true,
           "value": "1"
+        },
+        {
+          "id": "664f249468508d74604bf55f",
+          "index": 2,
+          "target": "664f1f8768508d74604bf556",
+          "type": "Achievement"
         }
       ]
     },
@@ -57498,7 +57504,7 @@
     "image": "/files/quest/icon/5ac4dbb086f7743e7c61ca09.jpg",
     "instantComplete": false,
     "isKey": false,
-    "location": "any",
+    "location": "56f40101d2720b2a4d8b45d6",
     "name": "60e71d6d7fcf9c556f325055 name",
     "note": "60e71d6d7fcf9c556f325055 note",
     "restartable": false,
@@ -62601,13 +62607,13 @@
           "dispersion": 0,
           "dynamicLocale": false,
           "globalQuestCounterId": "",
-          "id": "63a828651f06d111271f5b01",
+          "id": "66422c3fb7d8c4ce2c235c55",
           "index": 0,
           "parentId": "",
           "status": [
             4
           ],
-          "target": "59ca29fb86f77445ab465c87",
+          "target": "59ca264786f77445a80ed044",
           "visibilityConditions": []
         },
         {
@@ -62616,13 +62622,13 @@
           "dispersion": 0,
           "dynamicLocale": false,
           "globalQuestCounterId": "",
-          "id": "63a828781095093b925e8355",
+          "id": "66422c49778c85262894116f",
           "index": 1,
           "parentId": "",
           "status": [
             4
           ],
-          "target": "5c0bbaa886f7746941031d82",
+          "target": "597a0f5686f774273b74f676",
           "visibilityConditions": []
         },
         {
@@ -62661,13 +62667,13 @@
           "dispersion": 0,
           "dynamicLocale": false,
           "globalQuestCounterId": "",
-          "id": "63a828c41095093b925e8356",
+          "id": "66422c70e1bbb13492febd48",
           "index": 4,
           "parentId": "",
           "status": [
             4
           ],
-          "target": "5c0d4c12d09282029f539173",
+          "target": "5a27ba1c86f77461ea5a3c56",
           "visibilityConditions": []
         },
         {
@@ -62676,13 +62682,13 @@
           "dispersion": 0,
           "dynamicLocale": false,
           "globalQuestCounterId": "",
-          "id": "63a828ce1f06d111271f5b02",
+          "id": "66422c7ad7194d26bad1f7e9",
           "index": 5,
           "parentId": "",
           "status": [
             4
           ],
-          "target": "5c1141f386f77430ff393792",
+          "target": "608974d01a66564e74191fc0",
           "visibilityConditions": []
         },
         {
@@ -62691,13 +62697,13 @@
           "dispersion": 0,
           "dynamicLocale": false,
           "globalQuestCounterId": "",
-          "id": "63a828da9c01847a6d21f895",
+          "id": "66422c82586efeea12398e4f",
           "index": 6,
           "parentId": "",
           "status": [
             4
           ],
-          "target": "5c10f94386f774227172c572",
+          "target": "5ae4493d86f7744b8e15aa8f",
           "visibilityConditions": []
         },
         {
@@ -62706,13 +62712,28 @@
           "dispersion": 0,
           "dynamicLocale": false,
           "globalQuestCounterId": "",
-          "id": "63a828ed10b7a13eb015964d",
+          "id": "66422c8c8552f0cf49734bd6",
+          "index": 7,
+          "parentId": "",
+          "status": [
+            4
+          ],
+          "target": "5d25e48186f77443e625e386",
+          "visibilityConditions": []
+        },
+        {
+          "availableAfter": 0,
+          "conditionType": "Quest",
+          "dispersion": 0,
+          "dynamicLocale": false,
+          "globalQuestCounterId": "",
+          "id": "66422c9aed30c5920de049dd",
           "index": 8,
           "parentId": "",
           "status": [
             4
           ],
-          "target": "5bc4856986f77454c317bea7",
+          "target": "5ae327c886f7745c7b3f2f3f",
           "visibilityConditions": []
         },
         {
@@ -62721,23 +62742,8 @@
           "dispersion": 0,
           "dynamicLocale": false,
           "globalQuestCounterId": "",
-          "id": "63a828f81943b749b5021f80",
+          "id": "66422ca4e1e67daba074e2dc",
           "index": 9,
-          "parentId": "",
-          "status": [
-            4
-          ],
-          "target": "5ae3280386f7742a41359364",
-          "visibilityConditions": []
-        },
-        {
-          "availableAfter": 0,
-          "conditionType": "Quest",
-          "dispersion": 0,
-          "dynamicLocale": false,
-          "globalQuestCounterId": "",
-          "id": "63a829251095093b925e8357",
-          "index": 10,
           "parentId": "",
           "status": [
             4
@@ -62751,13 +62757,13 @@
           "dispersion": 0,
           "dynamicLocale": false,
           "globalQuestCounterId": "",
-          "id": "63a829311f06d111271f5b03",
-          "index": 11,
+          "id": "66422caf38d542d4a00faa94",
+          "index": 10,
           "parentId": "",
           "status": [
             4
           ],
-          "target": "5c0d1c4cd0928202a02a6f5c",
+          "target": "6179ad56c760af5ad2053587",
           "visibilityConditions": []
         },
         {
@@ -62766,13 +62772,28 @@
           "dispersion": 0,
           "dynamicLocale": false,
           "globalQuestCounterId": "",
-          "id": "63a82939ee7b4d0d5507bb15",
+          "id": "66422cbc84b8097795d9ff85",
+          "index": 11,
+          "parentId": "",
+          "status": [
+            4
+          ],
+          "target": "6179afd0bca27a099552e040",
+          "visibilityConditions": []
+        },
+        {
+          "availableAfter": 0,
+          "conditionType": "Quest",
+          "dispersion": 0,
+          "dynamicLocale": false,
+          "globalQuestCounterId": "",
+          "id": "66422ccbe23ac53086c3601e",
           "index": 12,
           "parentId": "",
           "status": [
             4
           ],
-          "target": "626bd75b05f287031503c7f6",
+          "target": "5d25e2cc86f77443e47ae019",
           "visibilityConditions": []
         },
         {
@@ -62784,22 +62805,7 @@
           "index": 13,
           "parentId": "",
           "target": "579dc571d53a0658a154fbec",
-          "value": 2,
-          "visibilityConditions": []
-        },
-        {
-          "availableAfter": 0,
-          "conditionType": "Quest",
-          "dispersion": 0,
-          "dynamicLocale": false,
-          "globalQuestCounterId": "",
-          "id": "63c91d35f33b005f1a03444c",
-          "index": 14,
-          "parentId": "",
-          "status": [
-            4
-          ],
-          "target": "5d25e2cc86f77443e47ae019",
+          "value": 1,
           "visibilityConditions": []
         }
       ],
@@ -63060,7 +63066,7 @@
           "oneSessionOnly": false,
           "parentId": "",
           "type": "Elimination",
-          "value": 20,
+          "value": 15,
           "visibilityConditions": []
         }
       ],
@@ -63305,7 +63311,7 @@
           "oneSessionOnly": false,
           "parentId": "",
           "type": "Elimination",
-          "value": 10,
+          "value": 7,
           "visibilityConditions": []
         },
         {
@@ -63323,7 +63329,7 @@
           "target": [
             "5c0e531286f7747fa54205c2"
           ],
-          "value": 20,
+          "value": 15,
           "visibilityConditions": []
         },
         {
@@ -63341,7 +63347,7 @@
           "target": [
             "5c0e531d86f7747fa23f4d42"
           ],
-          "value": 8,
+          "value": 5,
           "visibilityConditions": []
         },
         {
@@ -63359,7 +63365,7 @@
           "target": [
             "5fca13ca637ee0341a484f46"
           ],
-          "value": 2,
+          "value": 1,
           "visibilityConditions": []
         }
       ],
@@ -70484,18 +70490,52 @@
               "_id": "6492e44bf4287b13040fccc8",
               "_tpl": "5c05300686f7746dce784e5d",
               "upd": {
-                "StackObjectsCount": 3
+                "StackObjectsCount": 1
               }
             }
           ],
           "target": "6492e44bf4287b13040fccc8",
           "type": "Item",
           "unknown": true,
-          "value": "3"
+          "value": "1"
+        },
+        {
+          "findInRaid": true,
+          "id": "66422e16ecb13e080d43ec59",
+          "index": 1,
+          "items": [
+            {
+              "_id": "665875c63c9432af3d0532c7",
+              "_tpl": "5c05300686f7746dce784e5d",
+              "upd": {
+                "StackObjectsCount": 1
+              }
+            }
+          ],
+          "target": "665875c63c9432af3d0532c7",
+          "type": "Item",
+          "value": "1"
+        },
+        {
+          "findInRaid": true,
+          "id": "66422e1c87cfc674d3593d25",
+          "index": 2,
+          "items": [
+            {
+              "_id": "665875c63c9432af3d0532c8",
+              "_tpl": "5c05300686f7746dce784e5d",
+              "upd": {
+                "StackObjectsCount": 1
+              }
+            }
+          ],
+          "target": "665875c63c9432af3d0532c8",
+          "type": "Item",
+          "value": "1"
         },
         {
           "id": "63a233f5423c8970de41982f",
-          "index": 1,
+          "index": 3,
           "items": [
             {
               "_id": "6492e44bf4287b13040fccca",
@@ -70514,14 +70554,14 @@
         },
         {
           "id": "63a6ceadb7f4570d3a293167",
-          "index": 2,
+          "index": 4,
           "target": "638f541a29ffd1183d187f57",
           "type": "TraderStanding",
           "value": "0.01"
         },
         {
           "id": "658065c5baa3942bf871691f",
-          "index": 3,
+          "index": 5,
           "items": [
             {
               "_id": "65a5422f95d8356d8e0d8114",
@@ -75833,8 +75873,7 @@
                   "5c010e350db83400232feec7",
                   "57cd379a24597778e7682ecf",
                   "5c012ffc0db834001d23f03f",
-                  "5bead2e00db834001c062938",
-                  "5bc9c1e2d4351e00367fbcf0"
+                  "5bead2e00db834001c062938"
                 ],
                 "weaponCaliber": [],
                 "weaponModsExclusive": [],
