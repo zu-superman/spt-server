@@ -48,7 +48,7 @@ export class PMCLootGenerator
         {
             const items = this.databaseService.getItems();
             const pmcPriceOverrides
-                = this.databaseService.getBots()[botRole === "sptBear" ? "bear" : "usec"].inventory.items
+                = this.databaseService.getBots().types[botRole === "sptBear" ? "bear" : "usec"].inventory.items
                     .Pockets;
 
             const allowedItemTypes = this.pmcConfig.pocketLoot.whitelist;
