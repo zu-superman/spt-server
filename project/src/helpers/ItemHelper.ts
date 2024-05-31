@@ -1556,11 +1556,18 @@ export class ItemHelper
     /**
      * Get the name of an item from the locale file using the item tpl
      * @param itemTpl Tpl of item to get name of
-     * @returns Name of item
+     * @returns Full name, short name if not found
      */
     public getItemName(itemTpl: string): string
     {
-        return this.localeService.getLocaleDb()[`${itemTpl} Name`];
+        const localeDb = this.localeService.getLocaleDb();
+        const result = localeDb[`${itemTpl} Name`];
+        if (result?.length > 0)
+        {
+            return result;
+        }
+
+        return localeDb[`${itemTpl} ShortName`];
     }
 
     /**

@@ -852,6 +852,24 @@ describe("ItemHelper", () =>
             expect(result).toBe("Roubles");
         });
 
+        it("should return item short name for a valid item with empty full name", () =>
+        {
+            const databaseServer = container.resolve<DatabaseServer>("DatabaseServer");
+            databaseServer.getTables().locales.global.en["5449016a4bdc2d6f028b456f Name"] = "";
+            const result = itemHelper.getItemName("5449016a4bdc2d6f028b456f"); // "Roubles"
+
+            expect(result).toBe("RUB");
+        });
+
+        it("should return item short name for a valid item with undefined full name", () =>
+        {
+            const databaseServer = container.resolve<DatabaseServer>("DatabaseServer");
+            databaseServer.getTables().locales.global.en["5449016a4bdc2d6f028b456f Name"] = undefined;
+            const result = itemHelper.getItemName("5449016a4bdc2d6f028b456f"); // "Roubles"
+
+            expect(result).toBe("RUB");
+        });
+
         it("should return undefined for invalid item", () =>
         {
             const result = itemHelper.getItemName("fake tpl");
