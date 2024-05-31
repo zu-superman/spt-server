@@ -15,6 +15,7 @@ export class EventOutputHolder
      * Key = sessionId, then second key is prod id
     */
     protected clientActiveSessionStorage: Record<string, Record<string, { clientInformed: boolean }>> = {};
+    protected outputStore: Record<string, IItemEventRouterResponse> = {};
 
     constructor(
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
@@ -23,17 +24,14 @@ export class EventOutputHolder
     )
     {}
 
-    // TODO REMEMBER TO CHANGE OUTPUT
-    protected output: IItemEventRouterResponse = { warnings: [], profileChanges: {} };
-
     public getOutput(sessionID: string): IItemEventRouterResponse
     {
-        if (!this.output.profileChanges[sessionID])
+        if (!this.outputStore[sessionID]?.profileChanges[sessionID])
         {
             this.resetOutput(sessionID);
         }
 
-        return this.output;
+        return this.outputStore[sessionID];
     }
 
     /**
@@ -45,8 +43,8 @@ export class EventOutputHolder
     {
         const pmcData: IPmcData = this.profileHelper.getPmcProfile(sessionID);
 
-        this.output.warnings = [];
-        this.output.profileChanges[sessionID] = {
+        this.outputStore[sessionID] = { warnings: [], profileChanges: {} };
+        this.outputStore[sessionID].profileChanges[sessionID] = {
             _id: sessionID,
             experience: pmcData.Info.Experience,
             quests: [],
@@ -72,7 +70,7 @@ export class EventOutputHolder
     public updateOutputProperties(sessionId: string): void
     {
         const pmcData: IPmcData = this.profileHelper.getPmcProfile(sessionId);
-        const profileChanges: ProfileChange = this.output.profileChanges[sessionId];
+        const profileChanges: ProfileChange = this.outputStore[sessionId].profileChanges[sessionId];
 
         profileChanges.experience = pmcData.Info.Experience;
         profileChanges.health = this.cloner.clone(pmcData.Health);
