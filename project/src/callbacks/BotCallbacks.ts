@@ -74,9 +74,11 @@ export class BotCallbacks
      * Handle singleplayer/settings/bot/maxCap
      * @returns string
      */
-    public getBotCap(): string
+    public getBotCap(url: string, info: any, sessionID: string): string
     {
-        return this.httpResponse.noBody(this.botController.getBotCap());
+        const splitUrl = url.split("/");
+        const location = splitUrl[splitUrl.length - 1];
+        return this.httpResponse.noBody(this.botController.getBotCap(location));
     }
 
     /**

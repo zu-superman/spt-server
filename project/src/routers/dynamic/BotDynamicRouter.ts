@@ -39,7 +39,7 @@ export class BotDynamicRouter extends DynamicRouter
                 "/singleplayer/settings/bot/maxCap",
                 async (url: string, info: any, sessionID: string, output: string): Promise<string> =>
                 {
-                    return this.botCallbacks.getBotCap();
+                    return this.botCallbacks.getBotCap(url, info, sessionID);
                 },
             ),
             new RouteAction(

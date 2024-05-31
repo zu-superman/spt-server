@@ -487,32 +487,20 @@ export class BotController
     /**
      * Get the max number of bots allowed on a map
      * Looks up location player is entering when getting cap value
+     * @param location The map location cap was requested for
      * @returns cap number
      */
-    public getBotCap(): number
+    public getBotCap(location: string): number
     {
-        const defaultMapCapId = "default";
-        const raidConfig = this.applicationContext
-            .getLatestValue(ContextVariableType.RAID_CONFIGURATION)
-            ?.getValue<IGetRaidConfigurationRequestData>();
-
-        if (!raidConfig)
-        {
-            this.logger.warning(this.localisationService.getText("bot-missing_saved_match_info"));
-        }
-
-        const mapName = raidConfig ? raidConfig.location : defaultMapCapId;
-
-        let botCap = this.botConfig.maxBotCap[mapName.toLowerCase()];
-        if (!botCap)
+        const botCap = this.botConfig.maxBotCap[location.toLowerCase()];
+        if (location === "default")
         {
             this.logger.warning(
                 this.localisationService.getText(
                     "bot-no_bot_cap_found_for_location",
-                    raidConfig?.location.toLowerCase(),
+                    location.toLowerCase(),
                 ),
             );
-            botCap = this.botConfig.maxBotCap[defaultMapCapId];
         }
 
         return botCap;
