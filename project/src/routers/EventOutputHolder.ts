@@ -10,8 +10,11 @@ import { TimeUtil } from "@spt/utils/TimeUtil";
 @injectable()
 export class EventOutputHolder
 {
-    /** What has client been informed of this game session */
-    protected clientActiveSessionStorage: Record<string, { clientInformed: boolean }> = {};
+    /**
+     * What has client been informed of this game session
+     * Key = sessionId, then second key is prod id
+    */
+    protected clientActiveSessionStorage: Record<string, Record<string, { clientInformed: boolean }>> = {};
 
     constructor(
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
@@ -79,6 +82,7 @@ export class EventOutputHolder
         // Clone productions to ensure we preseve the profile jsons data
         profileChanges.production = this.getProductionsFromProfileAndFlagComplete(
             this.cloner.clone(pmcData.Hideout.Production),
+            sessionId,
         );
         profileChanges.improvements = this.cloner.clone(this.getImprovementsFromProfileAndFlagComplete(pmcData));
         profileChanges.traderRelations = this.constructTraderRelations(pmcData.TradersInfo);
@@ -144,6 +148,7 @@ export class EventOutputHolder
      */
     protected getProductionsFromProfileAndFlagComplete(
         productions: Record<string, Productive>,
+        sessionId: string,
     ): Record<string, Productive> | undefined
     {
         for (const productionKey in productions)
@@ -168,7 +173,8 @@ export class EventOutputHolder
             }
 
             // Client informed of craft, remove from data returned
-            if (this.clientActiveSessionStorage[productionKey]?.clientInformed)
+            const storageForSessionId = this.clientActiveSessionStorage[sessionId];
+            if (storageForSessionId[productionKey]?.clientInformed)
             {
                 delete productions[productionKey];
 
@@ -176,9 +182,9 @@ export class EventOutputHolder
             }
 
             // Flag started craft as having been seen by client
-            if (production.Progress > 0 && !this.clientActiveSessionStorage[productionKey]?.clientInformed)
+            if (production.Progress > 0 && !storageForSessionId[productionKey]?.clientInformed)
             {
-                this.clientActiveSessionStorage[productionKey] = { clientInformed: true };
+                storageForSessionId[productionKey] = { clientInformed: true };
             }
         }
 
