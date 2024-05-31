@@ -15,6 +15,7 @@ import { Money } from "@spt/models/enums/Money";
 import { ISettingsBase } from "@spt/models/spt/server/ISettingsBase";
 import { DatabaseService } from "@spt/services/DatabaseService";
 import { HttpResponseUtil } from "@spt/utils/HttpResponseUtil";
+import { TimeUtil } from "@spt/utils/TimeUtil";
 
 /**
  * Handle client requests
@@ -24,6 +25,7 @@ export class DataCallbacks
 {
     constructor(
         @inject("HttpResponseUtil") protected httpResponse: HttpResponseUtil,
+        @inject("TimeUtil") protected timeUtil: TimeUtil,
         @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("RagfairController") protected ragfairController: RagfairController,
         @inject("HideoutController") protected hideoutController: HideoutController,
@@ -208,9 +210,14 @@ export class DataCallbacks
     ): IGetBodyResponseData<IGetItemPricesResponse>
     {
         const traderId = url.replace("/client/items/prices/", "");
+
+        // All traders share same item prices, unkonown how to tell what items are shown for each trader
+        // Shown items listed are likely linked to traders items_buy/category array
         const handbookPrices = this.ragfairController.getStaticPrices();
-        const response: IGetItemPricesResponse = {
-            supplyNextTime: 1672236024, // todo: get trader refresh time?
+
+        const response: IGetItemPricesResponse
+        = {
+            supplyNextTime: this.timeUtil.getTimestamp() + this.timeUtil.getHoursAsSeconds(1), // Not trader refresh time, still unknown
             prices: handbookPrices,
             currencyCourses: {
                 /* eslint-disable @typescript-eslint/naming-convention */
