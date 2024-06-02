@@ -161,7 +161,8 @@ export class JsonUtil
     }
 
     /**
-     * From json string to object
+     * Take json from file and convert into object
+     * Perform valadation on json during process if json file has not been processed before
      * @param jsonString String to turn into object
      * @param filePath Path to json file being processed
      * @returns Object
