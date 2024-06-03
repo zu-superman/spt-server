@@ -363,8 +363,6 @@ export class QuestController
         sessionID: string,
     ): IItemEventRouterResponse
     {
-        const acceptQuestResponse = this.eventOutputHolder.getOutput(sessionID);
-
         // Create and store quest status object inside player profile
         const newRepeatableQuest = this.questHelper.getQuestReadyForProfile(
             pmcData,
@@ -402,16 +400,27 @@ export class QuestController
             fullProfile.characters.scav.Quests.push(newRepeatableQuest);
         }
 
-        const repeatableSettings = pmcData.RepeatableQuests.find(
-            (x) => x.name === repeatableQuestProfile.sptRepatableGroupName,
-        );
+        const response = this.createAcceptedQuestClientResponse(sessionID, pmcData, repeatableQuestProfile);
+
+        return response;
+    }
+
+    protected createAcceptedQuestClientResponse(
+        sessionID: string,
+        pmcData: IPmcData,
+        repeatableQuestProfile: IRepeatableQuest): IItemEventRouterResponse
+    {
+        const repeatableSettings = pmcData.RepeatableQuests
+            .find((quest) => quest.name === repeatableQuestProfile.sptRepatableGroupName);
 
         const change = {};
-        change[repeatableQuestProfile._id] = repeatableSettings.changeRequirement[repeatableQuestProfile._id];
-        const responseData: IPmcDataRepeatableQuest = {
+        change[repeatableQuestProfile._id] = repeatableSettings!.changeRequirement[repeatableQuestProfile._id];
+
+        const repeatableData: IPmcDataRepeatableQuest = {
             id:
                 repeatableSettings.id
-                ?? this.questConfig.repeatableQuests.find((x) => x.name === repeatableQuestProfile.sptRepatableGroupName)
+                ?? this.questConfig.repeatableQuests
+                    .find((repeatableQuest) => repeatableQuest.name === repeatableQuestProfile.sptRepatableGroupName)
                     .id,
             name: repeatableSettings.name,
             endTime: repeatableSettings.endTime,
@@ -422,11 +431,15 @@ export class QuestController
             freeChangesAvailable: repeatableSettings.freeChangesAvailable,
         };
 
+        // Nullguard
+        const acceptQuestResponse = this.eventOutputHolder.getOutput(sessionID);
         if (!acceptQuestResponse.profileChanges[sessionID].repeatableQuests)
         {
             acceptQuestResponse.profileChanges[sessionID].repeatableQuests = [];
         }
-        acceptQuestResponse.profileChanges[sessionID].repeatableQuests.push(responseData);
+
+        // Add constructed objet into response
+        acceptQuestResponse.profileChanges[sessionID].repeatableQuests.push(repeatableData);
 
         return acceptQuestResponse;
     }
