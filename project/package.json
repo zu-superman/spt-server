@@ -8,7 +8,7 @@
     "description": "The single-player modding framework for Escape From Tarkov.",
     "icon": "assets/images/icon.ico",
     "engines": {
-        "node": "20.14.0"
+        "node": "20.11.1"
     },
     "scripts": {
         "check:circular": "madge --circular --ts-config tsconfig.json --extensions ts ./src/",
