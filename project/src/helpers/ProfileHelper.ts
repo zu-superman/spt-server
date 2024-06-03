@@ -1,7 +1,7 @@
 import { inject, injectable } from "tsyringe";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
-import { Common, CounterKeyValue, Stats } from "@spt/models/eft/common/tables/IBotBase";
+import { BanType, Common, CounterKeyValue, Stats } from "@spt/models/eft/common/tables/IBotBase";
 import { ISptProfile } from "@spt/models/eft/profile/ISptProfile";
 import { IValidateNicknameRequestData } from "@spt/models/eft/profile/IValidateNicknameRequestData";
 import { AccountTypes } from "@spt/models/enums/AccountTypes";
@@ -549,5 +549,12 @@ export class ProfileHelper
         {
             existingBonus.value += rowsToAdd;
         }
+    }
+
+    public playerIsFleaBanned(pmcProfile: IPmcData): boolean
+    {
+        const currentTimestamp = this.timeUtil.getTimestamp();
+        return pmcProfile.Info.Bans
+            .some((ban) => ban.banType === BanType.RAGFAIR && currentTimestamp < ban.dateTime);
     }
 }

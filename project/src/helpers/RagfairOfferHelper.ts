@@ -87,6 +87,7 @@ export class RagfairOfferHelper
         pmcData: IPmcData,
     ): IRagfairOffer[]
     {
+        const playerIsFleaBanned = this.profileHelper.playerIsFleaBanned(pmcData);
         return this.ragfairOfferService.getOffers().filter((offer) =>
         {
             if (!this.passesSearchFilterCriteria(searchRequest, offer, pmcData))
@@ -94,7 +95,7 @@ export class RagfairOfferHelper
                 return false;
             }
 
-            return this.isDisplayableOffer(searchRequest, itemsToAdd, traderAssorts, offer, pmcData);
+            return this.isDisplayableOffer(searchRequest, itemsToAdd, traderAssorts, offer, pmcData, playerIsFleaBanned);
         });
     }
 
@@ -136,6 +137,7 @@ export class RagfairOfferHelper
     {
         const offersMap = new Map<string, IRagfairOffer[]>();
         const offers: IRagfairOffer[] = [];
+        const playerIsFleaBanned = this.profileHelper.playerIsFleaBanned(pmcData);
         for (const offer of this.ragfairOfferService.getOffers())
         {
             if (!this.passesSearchFilterCriteria(searchRequest, offer, pmcData))
@@ -143,7 +145,7 @@ export class RagfairOfferHelper
                 continue;
             }
 
-            if (this.isDisplayableOffer(searchRequest, itemsToAdd, traderAssorts, offer, pmcData))
+            if (this.isDisplayableOffer(searchRequest, itemsToAdd, traderAssorts, offer, pmcData, playerIsFleaBanned))
             {
                 const isTraderOffer = offer.user.memberType === MemberCategory.TRADER;
 
@@ -715,11 +717,18 @@ export class RagfairOfferHelper
         traderAssorts: Record<string, ITraderAssort>,
         offer: IRagfairOffer,
         pmcProfile: IPmcData,
+        playerIsFleaBanned?: boolean,
     ): boolean
     {
         const offerRootItem = offer.items[0];
         /** Currency offer is sold for */
         const moneyTypeTpl = offer.requirements[0]._tpl;
+        const isTraderOffer = offer.user.id in this.databaseService.getTraders();
+
+        if (!isTraderOffer && playerIsFleaBanned)
+        {
+            return false;
+        }
 
         // Offer root items tpl not in searched for array
         if (!itemsToAdd?.includes(offerRootItem._tpl))
@@ -764,7 +773,7 @@ export class RagfairOfferHelper
         // Handle trader items to remove items that are not available to the user right now
         // required search for "lamp" shows 4 items, 3 of which are not available to a new player
         // filter those out
-        if (offer.user.id in this.databaseService.getTraders())
+        if (isTraderOffer)
         {
             if (!(offer.user.id in traderAssorts))
             {
