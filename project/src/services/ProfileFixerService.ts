@@ -401,7 +401,11 @@ export class ProfileFixerService
         if (!fullProfile.spt)
         {
             this.logger.debug("Adding spt object to profile");
-            fullProfile.spt = { version: this.watermark.getVersionTag(), receivedGifts: [] };
+            fullProfile.spt = {
+                version: this.watermark.getVersionTag(),
+                receivedGifts: [],
+                freeRepeatableChangeCount: {},
+            };
         }
     }
 
