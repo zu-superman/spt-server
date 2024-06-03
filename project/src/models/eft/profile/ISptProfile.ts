@@ -215,6 +215,8 @@ export interface Spt
     receivedGifts: ReceivedGift[]
     /** item TPLs blacklisted from being sold on flea for this profile */
     blacklistedItemTpls?: string[]
+    /** key: daily type */
+    freeRepeatableChangeCount: Record<string, number>
 }
 
 export interface ModDetails
