@@ -81,6 +81,7 @@ export interface IConfig
     SkillPointsBeforeFatigue: number
     SkillFatigueReset: number
     DiscardLimitsEnabled: boolean
+    EnvironmentSettings: IEnvironmentSetting2
     EventSettings: IEventSettings
     FavoriteItemsSettings: IFavoriteItemsSettings
     VaultingSettings: IVaultingSettings
@@ -106,6 +107,16 @@ export interface IConfig
     Inertia: IInertia
     Ballistic: IBallistic
     RepairSettings: IRepairSettings
+}
+
+export interface IEnvironmentSetting2
+{
+    EnvironmentUIData: IEnvironmentUIData
+}
+
+export interface IEnvironmentUIData
+{
+    TheUnheardEditionEnvironmentUiType: string[]
 }
 
 export interface IBodyPartColliderSettings
@@ -969,6 +980,7 @@ export interface IMaxActiveOfferCount
     from: number
     to: number
     count: number
+    countForSpecialEditions: number
 }
 
 export interface IMaxSumForRarity
