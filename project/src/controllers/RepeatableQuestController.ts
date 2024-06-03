@@ -89,9 +89,7 @@ export class RepeatableQuestController
     {
         const returnData: Array<IPmcDataRepeatableQuest> = [];
         const pmcData = this.profileHelper.getPmcProfile(sessionID);
-        const time = this.timeUtil.getTimestamp();
-        const scavQuestUnlocked
-            = pmcData?.Hideout?.Areas?.find((hideoutArea) => hideoutArea.type === HideoutAreas.INTEL_CENTER)?.level >= 1;
+        const currentTime = this.timeUtil.getTimestamp();
 
         // Daily / weekly / Daily_Savage
         for (const repeatableConfig of this.questConfig.repeatableQuests)
@@ -99,14 +97,16 @@ export class RepeatableQuestController
             // get daily/weekly data from profile, add empty object if missing
             const currentRepeatableQuestType = this.getRepeatableQuestSubTypeFromProfile(repeatableConfig, pmcData);
 
-            if (
-                (repeatableConfig.side === "Pmc" && pmcData.Info.Level >= repeatableConfig.minPlayerLevel)
-                || (repeatableConfig.side === "Scav" && scavQuestUnlocked)
+            // Has repeatable unlocked
+            if ((repeatableConfig.side === "Pmc" && this.playerHasDailyPmcQuestsUnlocked(pmcData, repeatableConfig))
+              || (repeatableConfig.side === "Scav" && this.playerHasDailyScavQuestsUnlocked(pmcData))
             )
             {
-                if (time > currentRepeatableQuestType.endTime - 1)
+                // Current time is past expiry time
+                if (currentTime > currentRepeatableQuestType.endTime - 1)
                 {
-                    currentRepeatableQuestType.endTime = time + repeatableConfig.resetTime;
+                    // Adjust endtime to be now + new duration
+                    currentRepeatableQuestType.endTime = currentTime + repeatableConfig.resetTime;
                     currentRepeatableQuestType.inactiveQuests = [];
                     this.logger.debug(`Generating new ${repeatableConfig.name}`);
 
@@ -186,7 +186,7 @@ export class RepeatableQuestController
             {
                 currentRepeatableQuestType.changeRequirement[quest._id] = {
                     changeCost: quest.changeCost,
-                    changeStandingCost: this.randomUtil.getArrayValue([0, 0.01]),
+                    changeStandingCost: this.randomUtil.getArrayValue([0, 0.01]), // Randomise standing cost to replace
                 };
             }
 
@@ -203,6 +203,18 @@ export class RepeatableQuestController
         }
 
         return returnData;
+    }
+
+    protected playerHasDailyScavQuestsUnlocked(pmcData: IPmcData): boolean
+    {
+        return pmcData?.Hideout?.Areas
+            ?.find((hideoutArea) => hideoutArea.type === HideoutAreas.INTEL_CENTER)
+            ?.level >= 1;
+    }
+
+    protected playerHasDailyPmcQuestsUnlocked(pmcData: IPmcData, repeatableConfig: IRepeatableQuestConfig): boolean
+    {
+        return pmcData.Info.Level >= repeatableConfig.minPlayerLevel;
     }
 
     /**
