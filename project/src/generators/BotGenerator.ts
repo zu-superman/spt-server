@@ -15,7 +15,7 @@ import {
     Health as PmcHealth,
     Skills as botSkills,
 } from "@spt/models/eft/common/tables/IBotBase";
-import { Appearance, Health, IBotType } from "@spt/models/eft/common/tables/IBotType";
+import { Appearance, Health, IBotType, Inventory } from "@spt/models/eft/common/tables/IBotType";
 import { Item, Upd } from "@spt/models/eft/common/tables/IItem";
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
@@ -27,6 +27,7 @@ import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
 import { BotEquipmentFilterService } from "@spt/services/BotEquipmentFilterService";
 import { DatabaseService } from "@spt/services/DatabaseService";
+import { ItemFilterService } from "@spt/services/ItemFilterService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { SeasonalEventService } from "@spt/services/SeasonalEventService";
 import { ICloner } from "@spt/utils/cloners/ICloner";
@@ -55,6 +56,7 @@ export class BotGenerator
         @inject("BotDifficultyHelper") protected botDifficultyHelper: BotDifficultyHelper,
         @inject("SeasonalEventService") protected seasonalEventService: SeasonalEventService,
         @inject("LocalisationService") protected localisationService: LocalisationService,
+        @inject("ItemFilterService") protected itemFilterService: ItemFilterService,
         @inject("ConfigServer") protected configServer: ConfigServer,
         @inject("PrimaryCloner") protected cloner: ICloner,
     )
@@ -130,7 +132,7 @@ export class BotGenerator
     /**
      * Create a IBotBase object with equipment/loot/exp etc
      * @param sessionId Session id
-     * @param bot bots base file
+     * @param bot Bots base file
      * @param botJsonTemplate Bot template from db/bots/x.json
      * @param botGenerationDetails details on how to generate the bot
      * @returns IBotBase object
@@ -172,6 +174,8 @@ export class BotGenerator
                 );
             }
         }
+
+        this.removeBlacklistedLootFromBotTemplate(botJsonTemplate.inventory);
 
         // Remove hideout data if bot is not a PMC or pscav
         if (!(botGenerationDetails.isPmc || botGenerationDetails.isPlayerScav))
@@ -224,6 +228,40 @@ export class BotGenerator
         }
 
         return bot;
+    }
+
+    /**
+     * Remove items from item.json/lootableItemBlacklist from bots inventory
+     * @param botInventory Bot to filter
+     */
+    protected removeBlacklistedLootFromBotTemplate(botInventory: Inventory): void
+    {
+        const lootContainersToFilter = ["Backpack", "Pockets", "TacticalVest"];
+
+        // Remove blacklisted loot from loot containers
+        for (const lootContainerKey of lootContainersToFilter)
+        {
+            // No container, skip
+            if (botInventory.items[lootContainerKey]?.length === 0)
+            {
+                continue;
+            }
+
+            const tplsToRemove: string[] = [];
+            const containerItems = botInventory.items[lootContainerKey];
+            for (const tplKey of Object.keys(containerItems))
+            {
+                if (this.itemFilterService.isLootableItemBlacklisted(tplKey))
+                {
+                    tplsToRemove.push(tplKey);
+                }
+            }
+
+            for (const blacklistedTplToRemove of tplsToRemove)
+            {
+                delete containerItems[blacklistedTplToRemove];
+            }
+        }
     }
 
     /**

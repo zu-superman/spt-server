@@ -572,7 +572,8 @@ export class LocationGenerator
                 continue;
             }
 
-            if (this.itemFilterService.isItemBlacklisted(icd.tpl))
+            // Ensure no blacklisted lootable items are in pool
+            if (this.itemFilterService.isLootableItemBlacklisted(icd.tpl))
             {
                 continue;
             }
@@ -704,9 +705,9 @@ export class LocationGenerator
                 continue;
             }
 
-            // Ensure no blacklisted items are in pool
+            // Ensure no blacklisted lootable items are in pool
             spawnPoint.template.Items = spawnPoint.template.Items
-                .filter((item) => !this.itemFilterService.isItemBlacklisted(item._tpl));
+                .filter((item) => !this.itemFilterService.isLootableItemBlacklisted(item._tpl));
 
             // Ensure no seasonal items are in pool
             if (!seasonalEventActive)

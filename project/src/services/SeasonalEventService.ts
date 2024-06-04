@@ -343,6 +343,10 @@ export class SeasonalEventService
 
             // Get non-christmas items
             const nonChristmasTpls = Object.keys(containerItems).filter((tpl) => !christmasItems.includes(tpl));
+            if (nonChristmasTpls.length === 0)
+            {
+                continue;
+            }
             const intermediaryDict = {};
 
             for (const tpl of nonChristmasTpls)

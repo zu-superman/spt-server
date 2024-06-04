@@ -11,7 +11,8 @@ import { ICloner } from "@spt/utils/cloners/ICloner";
 export class ItemFilterService
 {
     protected itemConfig: IItemConfig;
-    protected itemBlacklist: Set<string> = new Set<string>();
+    protected itemBlacklistCache: Set<string> = new Set<string>();
+    protected lootableItemBlacklistCache: Set<string> = new Set<string>();
 
     constructor(
         @inject("PrimaryLogger") protected logger: ILogger,
@@ -24,18 +25,33 @@ export class ItemFilterService
     }
 
     /**
-     * Check if the provided template id is blacklisted in config/item.json
+     * Check if the provided template id is blacklisted in config/item.json/blacklist
      * @param tpl template id
      * @returns true if blacklisted
      */
     public isItemBlacklisted(tpl: string): boolean
     {
-        if (this.itemBlacklist.size === 0)
+        if (this.itemBlacklistCache.size === 0)
         {
-            this.itemConfig.blacklist.forEach((item) => this.itemBlacklist.add(item));
+            this.itemConfig.blacklist.forEach((item) => this.itemBlacklistCache.add(item));
         }
 
-        return this.itemBlacklist.has(tpl);
+        return this.itemBlacklistCache.has(tpl);
+    }
+
+    /**
+     * Check if the provided template id is blacklisted in config/item.json/lootableItemBlacklist
+     * @param tpl template id
+     * @returns true if blacklisted
+     */
+    public isLootableItemBlacklisted(tpl: string): boolean
+    {
+        if (this.lootableItemBlacklistCache.size === 0)
+        {
+            this.itemConfig.lootableItemBlacklist.forEach((item) => this.itemBlacklistCache.add(item));
+        }
+
+        return this.lootableItemBlacklistCache.has(tpl);
     }
 
     /**
@@ -64,6 +80,15 @@ export class ItemFilterService
     public getBlacklistedItems(): string[]
     {
         return this.cloner.clone(this.itemConfig.blacklist);
+    }
+
+    /**
+     * Return every template id blacklisted in config/item.json/lootableItemBlacklist
+     * @returns string array of blacklisted tempalte ids
+     */
+    public getBlacklistedLootableItems(): string[]
+    {
+        return this.cloner.clone(this.itemConfig.lootableItemBlacklist);
     }
 
     /**
