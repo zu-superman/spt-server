@@ -4,6 +4,7 @@ import { IItemConfig } from "@spt/models/spt/config/IItemConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
 import { DatabaseServer } from "@spt/servers/DatabaseServer";
+import { ICloner } from "@spt/utils/cloners/ICloner";
 
 /** Centralise the handling of blacklisting items, uses blacklist found in config/item.json, stores items that should not be used by players / broken items */
 @injectable()
@@ -13,6 +14,7 @@ export class ItemFilterService
 
     constructor(
         @inject("PrimaryLogger") protected logger: ILogger,
+        @inject("PrimaryCloner") protected cloner: ICloner,
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("ConfigServer") protected configServer: ConfigServer,
     )
@@ -46,7 +48,7 @@ export class ItemFilterService
      */
     public getItemRewardBlacklist(): string[]
     {
-        return this.itemConfig.rewardItemBlacklist;
+        return this.cloner.clone(this.itemConfig.rewardItemBlacklist);
     }
 
     /**
@@ -55,7 +57,7 @@ export class ItemFilterService
      */
     public getBlacklistedItems(): string[]
     {
-        return this.itemConfig.blacklist;
+        return this.cloner.clone(this.itemConfig.blacklist);
     }
 
     /**
@@ -74,6 +76,6 @@ export class ItemFilterService
      */
     public getBossItems(): string[]
     {
-        return this.itemConfig.bossItems;
+        return this.cloner.clone(this.itemConfig.bossItems);
     }
 }
