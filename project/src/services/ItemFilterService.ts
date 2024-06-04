@@ -11,6 +11,7 @@ import { ICloner } from "@spt/utils/cloners/ICloner";
 export class ItemFilterService
 {
     protected itemConfig: IItemConfig;
+    protected itemBlacklist: Set<string> = new Set<string>();
 
     constructor(
         @inject("PrimaryLogger") protected logger: ILogger,
@@ -29,7 +30,12 @@ export class ItemFilterService
      */
     public isItemBlacklisted(tpl: string): boolean
     {
-        return this.itemConfig.blacklist.includes(tpl);
+        if (this.itemBlacklist.size === 0)
+        {
+            this.itemConfig.blacklist.forEach((item) => this.itemBlacklist.add(item));
+        }
+
+        return this.itemBlacklist.has(tpl);
     }
 
     /**
