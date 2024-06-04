@@ -155,6 +155,13 @@
 			"startTimestamp": 1341615600000,
             "endTimestamp": "",
             "yearly": false
+		},
+		"6603fe74e773dcf3b0099f88": {
+			"name": "The Tarkov Mystery",
+			"season": "None",
+			"startTimestamp": 1341615600000,
+            "endTimestamp": "",
+            "yearly": false
 		}
     },
     "repeatableQuests": [
