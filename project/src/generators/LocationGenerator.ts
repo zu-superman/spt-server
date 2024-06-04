@@ -20,6 +20,7 @@ import { ILocationConfig } from "@spt/models/spt/config/ILocationConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
 import { DatabaseService } from "@spt/services/DatabaseService";
+import { ItemFilterService } from "@spt/services/ItemFilterService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { SeasonalEventService } from "@spt/services/SeasonalEventService";
 import { ICloner } from "@spt/utils/cloners/ICloner";
@@ -58,6 +59,7 @@ export class LocationGenerator
         @inject("ContainerHelper") protected containerHelper: ContainerHelper,
         @inject("PresetHelper") protected presetHelper: PresetHelper,
         @inject("LocalisationService") protected localisationService: LocalisationService,
+        @inject("ItemFilterService") protected itemFilterService: ItemFilterService,
         @inject("ConfigServer") protected configServer: ConfigServer,
         @inject("PrimaryCloner") protected cloner: ICloner,
     )
@@ -570,6 +572,11 @@ export class LocationGenerator
                 continue;
             }
 
+            if (this.itemFilterService.isItemBlacklisted(icd.tpl))
+            {
+                continue;
+            }
+
             itemDistribution.push(new ProbabilityObject(icd.tpl, icd.relativeProbability));
         }
 
@@ -697,29 +704,31 @@ export class LocationGenerator
                 continue;
             }
 
+            // Ensure no blacklisted items are in pool
+            spawnPoint.template.Items = spawnPoint.template.Items
+                .filter((item) => !this.itemFilterService.isItemBlacklisted(item._tpl));
+
+            // Ensure no seasonal items are in pool
+            if (!seasonalEventActive)
+            {
+                spawnPoint.template.Items = spawnPoint.template.Items
+                    .filter((item) => !seasonalItemTplBlacklist.includes(item._tpl));
+            }
+
+            // Has no items, useless
             if (!spawnPoint.template.Items || spawnPoint.template.Items.length === 0)
             {
-                this.logger.error(
+                this.logger.warning(
                     this.localisationService.getText("location-spawnpoint_missing_items", spawnPoint.template.Id),
                 );
 
                 continue;
             }
 
+            // Construct container to hold above filtered items, letting us pick an item for the spot
             const itemArray = new ProbabilityObjectArray<string>(this.mathUtil, this.cloner);
             for (const itemDist of spawnPoint.itemDistribution)
             {
-                if (
-                    !seasonalEventActive
-                    && seasonalItemTplBlacklist.includes(
-                        spawnPoint.template.Items.find((item) => item._id === itemDist.composedKey.key)?._tpl ?? "",
-                    )
-                )
-                {
-                    // Skip seasonal event items if they're not enabled
-                    continue;
-                }
-
                 itemArray.push(new ProbabilityObject(itemDist.composedKey.key, itemDist.relativeProbability));
             }
 
@@ -734,8 +743,10 @@ export class LocationGenerator
             const chosenComposedKey = itemArray.draw(1)[0];
             const createItemResult = this.createDynamicLootItem(chosenComposedKey, spawnPoint, staticAmmoDist);
 
-            // Root id can change when generating a weapon
+            // Root id can change when generating a weapon, ensure ids match
             spawnPoint.template.Root = createItemResult.items[0]._id;
+
+            // Overwrite entire pool with chosen item
             spawnPoint.template.Items = createItemResult.items;
 
             loot.push(spawnPoint.template);
