@@ -50,7 +50,8 @@
         "5580239d4bdc2de7118b4583"
     ],
 	"lootableItemBlacklist": [
-        "660bbc47c38b837877075e47"
+        "660bbc47c38b837877075e47",
+        "660bc341c38b837877075e4c"
 	],
     "rewardItemBlacklist": [
         "58ac60eb86f77401897560ff",
