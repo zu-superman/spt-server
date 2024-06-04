@@ -171,7 +171,14 @@ export class EventOutputHolder
             }
 
             // Client informed of craft, remove from data returned
-            const storageForSessionId = this.clientActiveSessionStorage[sessionId];
+            let storageForSessionId = this.clientActiveSessionStorage[sessionId];
+            if (typeof storageForSessionId === "undefined")
+            {
+                this.clientActiveSessionStorage[sessionId] = {};
+                storageForSessionId = this.clientActiveSessionStorage[sessionId];
+            }
+
+            // Ensure we don't inform client of production again
             if (storageForSessionId[productionKey]?.clientInformed)
             {
                 delete productions[productionKey];
@@ -179,7 +186,7 @@ export class EventOutputHolder
                 continue;
             }
 
-            // Flag started craft as having been seen by client
+            // Flag started craft as having been seen by client so it won't happen subsequent times
             if (production.Progress > 0 && !storageForSessionId[productionKey]?.clientInformed)
             {
                 storageForSessionId[productionKey] = { clientInformed: true };
