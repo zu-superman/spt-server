@@ -557,4 +557,14 @@ export class ProfileHelper
         return pmcProfile.Info.Bans
             .some((ban) => ban.banType === BanType.RAGFAIR && currentTimestamp < ban.dateTime);
     }
+
+    /**
+     * Add an achievement to player profile
+     * @param pmcProfile Profile to add achievement to
+     * @param achievementId Id of achievement to add
+     */
+    public addAchievementToProfile(pmcProfile: IPmcData, achievementId: string): void
+    {
+        pmcProfile.Achievements[achievementId] = this.timeUtil.getTimestamp();
+    }
 }

@@ -956,8 +956,7 @@ export class QuestHelper
                     // Handled elsewhere, TODO: find and say here
                     break;
                 case QuestRewardType.ACHIEVEMENT:
-                    this.logger.warning(`TODO - achievement: ${reward.target} reward for quest completion not implemented yet`);
-                    // TODO - Implement (rewards for completion of Gunsmith P25)
+                    this.profileHelper.addAchievementToProfile(pmcProfile, reward.target);
                     break;
                 case QuestRewardType.STASH_ROWS:
                     this.profileHelper.addStashRowsBonusToProfile(sessionId, Number.parseInt(<string>reward.value)); // add specified stash rows from quest reward - requires client restart
