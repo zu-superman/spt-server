@@ -1,6 +1,7 @@
 import { inject, injectable } from "tsyringe";
 import { HideoutController } from "@spt/controllers/HideoutController";
 import { RagfairController } from "@spt/controllers/RagfairController";
+import { TraderHelper } from "@spt/helpers/TraderHelper";
 import { IEmptyRequestData } from "@spt/models/eft/common/IEmptyRequestData";
 import { IGlobals } from "@spt/models/eft/common/IGlobals";
 import { ICustomizationItem } from "@spt/models/eft/common/tables/ICustomizationItem";
@@ -26,6 +27,7 @@ export class DataCallbacks
     constructor(
         @inject("HttpResponseUtil") protected httpResponse: HttpResponseUtil,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
+        @inject("TraderHelper") protected traderHelper: TraderHelper,
         @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("RagfairController") protected ragfairController: RagfairController,
         @inject("HideoutController") protected hideoutController: HideoutController,
@@ -211,13 +213,13 @@ export class DataCallbacks
     {
         const traderId = url.replace("/client/items/prices/", "");
 
-        // All traders share same item prices, unkonown how to tell what items are shown for each trader
+        // All traders share same item prices, unknown how to tell what items are shown for each trader
         // Shown items listed are likely linked to traders items_buy/category array
         const handbookPrices = this.ragfairController.getStaticPrices();
 
         const response: IGetItemPricesResponse
         = {
-            supplyNextTime: this.timeUtil.getTimestamp() + this.timeUtil.getHoursAsSeconds(1), // Not trader refresh time, still unknown
+            supplyNextTime: this.traderHelper.getNextUpdateTimestamp(traderId),
             prices: handbookPrices,
             currencyCourses: {
                 /* eslint-disable @typescript-eslint/naming-convention */
