@@ -108,20 +108,10 @@ export class PmcChatResponseService
             },
         };
 
-        let message = this.chooseMessage(false, pmcData);
+        const message = this.chooseMessage(false, pmcData);
         if (!message)
         {
             return;
-        }
-
-        // Give the player a gift code if they were killed.
-        const regex: RegExp = /(%giftcode%)/gi;
-        if (regex.test(message))
-        {
-            const giftKeys = Object.keys(this.giftConfig.gifts);
-            const randomGiftKey = this.randomUtil.getStringArrayValue(giftKeys);
-
-            message = message.replace(regex, randomGiftKey);
         }
 
         this.notificationSendHelper.sendMessageToPlayer(sessionId, killerDetails, message, MessageType.USER_MESSAGE);
@@ -153,6 +143,16 @@ export class PmcChatResponseService
             playerLevel: pmcData.Info.Level,
             playerSide: pmcData.Info.Side,
         });
+
+        // Give the player a gift code if they were killed adn response is 'pity'.
+        if (responseType === "pity")
+        {
+            const giftKeys = Object.keys(this.giftConfig.gifts);
+            const randomGiftKey = this.randomUtil.getStringArrayValue(giftKeys);
+
+            const regex: RegExp = /(%giftcode%)/gi;
+            responseText = responseText.replace(regex, randomGiftKey);
+        }
 
         if (this.appendSuffixToMessageEnd(isVictim))
         {
