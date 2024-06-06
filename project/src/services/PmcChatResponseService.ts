@@ -7,6 +7,7 @@ import { IUserDialogInfo } from "@spt/models/eft/profile/ISptProfile";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { MemberCategory } from "@spt/models/enums/MemberCategory";
 import { MessageType } from "@spt/models/enums/MessageType";
+import { IGiftsConfig } from "@spt/models/spt/config/IGiftsConfig";
 import { IPmcChatResponse } from "@spt/models/spt/config/IPmChatResponse";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
@@ -19,6 +20,7 @@ import { RandomUtil } from "@spt/utils/RandomUtil";
 export class PmcChatResponseService
 {
     protected pmcResponsesConfig: IPmcChatResponse;
+    protected giftConfig: IGiftsConfig;
 
     constructor(
         @inject("PrimaryLogger") protected logger: ILogger,
@@ -32,6 +34,7 @@ export class PmcChatResponseService
     )
     {
         this.pmcResponsesConfig = this.configServer.getConfig(ConfigTypes.PMC_CHAT_RESPONSE);
+        this.giftConfig = this.configServer.getConfig(ConfigTypes.GIFTS);
     }
 
     /**
@@ -82,10 +85,7 @@ export class PmcChatResponseService
         }
 
         // find bot by name in cache
-        const killerDetailsInCache = this.matchBotDetailsCacheService.getBotByNameAndSide(
-            killer.Name,
-            killer.Side,
-        );
+        const killerDetailsInCache = this.matchBotDetailsCacheService.getBotByNameAndSide(killer.Name, killer.Side);
         if (!killerDetailsInCache)
         {
             return;
@@ -108,10 +108,20 @@ export class PmcChatResponseService
             },
         };
 
-        const message = this.chooseMessage(false, pmcData);
+        let message = this.chooseMessage(false, pmcData);
         if (!message)
         {
             return;
+        }
+
+        // Give the player a gift code if they were killed.
+        const regex: RegExp = /(%giftcode%)/gi;
+        if (regex.test(message))
+        {
+            const giftKeys = Object.keys(this.giftConfig.gifts);
+            const randomGiftKey = this.randomUtil.getStringArrayValue(giftKeys);
+
+            message = message.replace(regex, randomGiftKey);
         }
 
         this.notificationSendHelper.sendMessageToPlayer(sessionId, killerDetails, message, MessageType.USER_MESSAGE);
