@@ -28,8 +28,6 @@ export class TraderHelper
     protected traderConfig: ITraderConfig;
     /** Dictionary of item tpl and the highest trader sell rouble price */
     protected highestTraderPriceItems?: Record<string, number> = undefined;
-    /** Dictionary of item tpl and the highest trader buy back rouble price */
-    protected highestTraderBuyPriceItems?: Record<string, number> = undefined;
 
     constructor(
         @inject("PrimaryLogger") protected logger: ILogger,
@@ -516,50 +514,37 @@ export class TraderHelper
      */
     public getHighestSellToTraderPrice(tpl: string): number
     {
-        // Init dict if doesn't exist
-        if (!this.highestTraderBuyPriceItems)
-        {
-            this.highestTraderBuyPriceItems = {};
-        }
-
-        // Return result if it exists
-        if (this.highestTraderBuyPriceItems[tpl])
-        {
-            return this.highestTraderBuyPriceItems[tpl];
-        }
-
         // Find highest trader price for item
+        let highestPrice = 1; // Default price
         for (const traderName in Traders)
         {
             // Get trader and check buy category allows tpl
             const traderBase = this.databaseService.getTrader(Traders[traderName]).base;
-            if (traderBase && this.itemHelper.isOfBaseclasses(tpl, traderBase.items_buy.category))
+
+            // Skip traders that dont sell
+            if (!traderBase || !this.itemHelper.isOfBaseclasses(tpl, traderBase.items_buy.category))
             {
-                // Get loyalty level details player has achieved with this trader
-                // Uses lowest loyalty level as this function is used before a player has logged into server - we have no idea what player loyalty is with traders
-                const relevantLoyaltyData = traderBase.loyaltyLevels[0];
-                const traderBuyBackPricePercent = relevantLoyaltyData.buy_price_coef;
+                continue;
+            }
 
-                const itemHandbookPrice = this.handbookHelper.getTemplatePrice(tpl);
-                const priceTraderBuysItemAt = Math.round(
-                    this.randomUtil.getPercentOfValue(traderBuyBackPricePercent, itemHandbookPrice),
-                );
+            // Get loyalty level details player has achieved with this trader
+            // Uses lowest loyalty level as this function is used before a player has logged into server
+            // We have no idea what player loyalty is with traders
+            const traderBuyBackPricePercent = traderBase.loyaltyLevels[0].buy_price_coef;
 
-                // Set new item to 1 rouble as default
-                if (!this.highestTraderBuyPriceItems[tpl])
-                {
-                    this.highestTraderBuyPriceItems[tpl] = 1;
-                }
+            const itemHandbookPrice = this.handbookHelper.getTemplatePrice(tpl);
+            const priceTraderBuysItemAt = Math.round(
+                this.randomUtil.getPercentOfValue(traderBuyBackPricePercent, itemHandbookPrice),
+            );
 
-                // Existing price smaller in dict than current iteration, overwrite
-                if (this.highestTraderBuyPriceItems[tpl] < priceTraderBuysItemAt)
-                {
-                    this.highestTraderBuyPriceItems[tpl] = priceTraderBuysItemAt;
-                }
+            // Price from this trader is higher than highest found, update
+            if (priceTraderBuysItemAt > highestPrice)
+            {
+                highestPrice = priceTraderBuysItemAt;
             }
         }
 
-        return this.highestTraderBuyPriceItems[tpl];
+        return highestPrice;
     }
 
     /**
