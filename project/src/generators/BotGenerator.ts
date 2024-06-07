@@ -103,21 +103,35 @@ export class BotGenerator
      */
     public prepareAndGenerateBot(sessionId: string, botGenerationDetails: BotGenerationDetails): IBotBase
     {
-        let bot = this.getCloneOfBotBase();
-        bot.Info.Settings.Role = botGenerationDetails.eventRole
-            ? botGenerationDetails.eventRole
-            : botGenerationDetails.role;
-        bot.Info.Side = botGenerationDetails.side;
-        bot.Info.Settings.BotDifficulty = botGenerationDetails.botDifficulty;
+        const preparedBotBase = this.getPreparedBotBase(
+            botGenerationDetails.eventRole ?? botGenerationDetails.role, // Use eventRole if provided,
+            botGenerationDetails.side,
+            botGenerationDetails.botDifficulty);
 
         // Get raw json data for bot (Cloned)
-        const botJsonTemplateClone = this.cloner.clone(
-            this.botHelper.getBotTemplate(botGenerationDetails.isPmc ? bot.Info.Side : botGenerationDetails.role),
-        );
+        const botRole = botGenerationDetails.isPmc
+            ? preparedBotBase.Info.Side // Use side to get usec.json or bear.json when bot will be PMC
+            : botGenerationDetails.role;
+        const botJsonTemplateClone = this.cloner.clone(this.botHelper.getBotTemplate(botRole));
 
-        bot = this.generateBot(sessionId, bot, botJsonTemplateClone, botGenerationDetails);
+        return this.generateBot(sessionId, preparedBotBase, botJsonTemplateClone, botGenerationDetails);
+    }
 
-        return bot;
+    /**
+     * Get a clone of the default bot base object and adjust its role/side/difficulty values
+     * @param botRole Role bot should have
+     * @param botSide Side bot should have
+     * @param difficulty Difficult bot should have
+     * @returns Cloned bot base
+     */
+    protected getPreparedBotBase(botRole: string, botSide: string, difficulty: string): IBotBase
+    {
+        const botBaseClone = this.getCloneOfBotBase();
+        botBaseClone.Info.Settings.Role = botRole;
+        botBaseClone.Info.Side = botSide;
+        botBaseClone.Info.Settings.BotDifficulty = difficulty;
+
+        return botBaseClone;
     }
 
     /**
@@ -216,7 +230,7 @@ export class BotGenerator
         }
 
         // Generate new bot ID
-        this.generateId(bot);
+        this.addIdsToBot(bot);
 
         // Generate new inventory ID
         this.generateInventoryID(bot);
@@ -298,15 +312,14 @@ export class BotGenerator
      * @param botJsonTemplate x.json from database
      * @param botGenerationDetails
      * @param botRole role of bot e.g. assault
-     * @param sessionId profile session id
+     * @param sessionId OPTIONAL: profile session id
      * @returns Nickname for bot
      */
-    // TODO: Remove sessionId parameter from this function in v3.9.0
     protected generateBotNickname(
         botJsonTemplate: IBotType,
         botGenerationDetails: BotGenerationDetails,
         botRole: string,
-        sessionId?: string, // @deprecated as of v3.8.1
+        sessionId?: string,
     ): string
     {
         const isPlayerScav = botGenerationDetails.isPlayerScav;
@@ -318,20 +331,9 @@ export class BotGenerator
 
         // Simulate bot looking like a player scav with the PMC name in brackets.
         // E.g. "ScavName (PMCName)"
-        if (botRole === "assault" && this.randomUtil.getChance100(this.botConfig.chanceAssaultScavHasPlayerScavName))
+        if (this.shouldSimulatePlayerScavName(botRole, isPlayerScav))
         {
-            if (isPlayerScav)
-            {
-                return name;
-            }
-
-            const botTypes = this.databaseService.getBots().types; ;
-            const pmcNames = [
-                ...botTypes.usec.firstName,
-                ...botTypes.bear.firstName,
-            ];
-
-            return `${name} (${this.randomUtil.getArrayValue(pmcNames)})`;
+            return this.addPlayerScavNameSimulationSuffix(name);
         }
 
         if (this.botConfig.showTypeInNickname && !isPlayerScav)
@@ -347,6 +349,22 @@ export class BotGenerator
         }
 
         return name;
+    }
+
+    protected shouldSimulatePlayerScavName(botRole: string, isPlayerScav: boolean): boolean
+    {
+        return botRole === "assault"
+          && this.randomUtil.getChance100(this.botConfig.chanceAssaultScavHasPlayerScavName)
+          && !isPlayerScav;
+    }
+
+    protected addPlayerScavNameSimulationSuffix(nickname: string): string
+    {
+        const pmcNames = [
+            ...this.databaseService.getBots().types.usec.firstName,
+            ...this.databaseService.getBots().types.bear.firstName,
+        ];
+        return `${nickname} (${this.randomUtil.getArrayValue(pmcNames)})`;
     }
 
     /**
@@ -489,15 +507,15 @@ export class BotGenerator
 
                 return skillToAdd;
             })
-            .filter((x) => x !== undefined);
+            .filter((baseSkill) => baseSkill !== undefined);
     }
 
     /**
-     * Generate a random Id for a bot and apply to bots _id and aid value
+     * Generate an id+aid for a bot and apply
      * @param bot bot to update
      * @returns updated IBotBase object
      */
-    protected generateId(bot: IBotBase): void
+    protected addIdsToBot(bot: IBotBase): void
     {
         const botId = this.hashUtil.generate();
 
@@ -536,12 +554,12 @@ export class BotGenerator
             itemsByParentHash[item.parentId].push(item);
         }
 
-        // update inventoryId
+        // Update inventoryId
         const newInventoryId = this.hashUtil.generate();
         inventoryItemHash[inventoryId]._id = newInventoryId;
         profile.Inventory.equipment = newInventoryId;
 
-        // update inventoryItem id
+        // Update inventoryItem id
         if (inventoryId in itemsByParentHash)
         {
             for (const item of itemsByParentHash[inventoryId])
