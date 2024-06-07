@@ -10,7 +10,8 @@ import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { Money } from "@spt/models/enums/Money";
 import { QuestRewardType } from "@spt/models/enums/QuestRewardType";
 import { Traders } from "@spt/models/enums/Traders";
-import { IBaseQuestConfig, IQuestConfig, IRepeatableQuestConfig } from "@spt/models/spt/config/IQuestConfig";
+import { IBaseQuestConfig, IQuestConfig, IRepeatableQuestConfig, IRewardScaling } from "@spt/models/spt/config/IQuestConfig";
+import { IQuestRewardValues } from "@spt/models/spt/repeatable/IQuestRewardValues";
 import { ExhaustableArray } from "@spt/models/spt/server/ExhaustableArray";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
@@ -75,56 +76,11 @@ export class RepeatableQuestRewardGenerator
         questConfig: IBaseQuestConfig,
     ): IQuestRewards
     {
-        // difficulty could go from 0.2 ... -> for lowest difficulty receive 0.2*nominal reward
-        const levelsConfig = repeatableConfig.rewardScaling.levels;
-        const roublesConfig = repeatableConfig.rewardScaling.roubles;
-        const gpCoinConfig = repeatableConfig.rewardScaling.gpCoins;
-        const xpConfig = repeatableConfig.rewardScaling.experience;
-        const itemsConfig = repeatableConfig.rewardScaling.items;
-        const rewardSpreadConfig = repeatableConfig.rewardScaling.rewardSpread;
-        const skillRewardChanceConfig = repeatableConfig.rewardScaling.skillRewardChance;
-        const skillPointRewardConfig = repeatableConfig.rewardScaling.skillPointReward;
-        const reputationConfig = repeatableConfig.rewardScaling.reputation;
+        // Get vars to configure rewards with
+        const rewardParams = this.getQuestRewardValues(repeatableConfig.rewardScaling, difficulty, pmcLevel);
 
-        const effectiveDifficulty = Number.isNaN(difficulty) ? 1 : difficulty;
-        if (Number.isNaN(difficulty))
-        {
-            this.logger.warning(this.localisationService.getText("repeatable-difficulty_was_nan"));
-        }
-
-        // rewards are generated based on pmcLevel, difficulty and a random spread
-        const rewardXP = Math.floor(
-            effectiveDifficulty
-            * this.mathUtil.interp1(pmcLevel, levelsConfig, xpConfig)
-            * this.randomUtil.getFloat(1 - rewardSpreadConfig, 1 + rewardSpreadConfig),
-        );
-
-        const gpCoinRewardCount = Math.floor(
-            effectiveDifficulty
-            * this.mathUtil.interp1(pmcLevel, levelsConfig, gpCoinConfig)
-            * this.randomUtil.getFloat(1 - rewardSpreadConfig, 1 + rewardSpreadConfig),
-        );
-
-        const rewardRoubles = Math.floor(
-            effectiveDifficulty
-            * this.mathUtil.interp1(pmcLevel, levelsConfig, roublesConfig)
-            * this.randomUtil.getFloat(1 - rewardSpreadConfig, 1 + rewardSpreadConfig),
-        );
-        // Get budget to spend on item rewards
-        let itemRewardBudget = rewardRoubles;
-        const rewardNumItems = this.randomUtil.randInt(
-            1,
-            Math.round(this.mathUtil.interp1(pmcLevel, levelsConfig, itemsConfig)) + 1,
-        );
-        const rewardReputation
-            = Math.round(
-                100
-                * effectiveDifficulty
-                * this.mathUtil.interp1(pmcLevel, levelsConfig, reputationConfig)
-                * this.randomUtil.getFloat(1 - rewardSpreadConfig, 1 + rewardSpreadConfig),
-            ) / 100;
-        const skillRewardChance = this.mathUtil.interp1(pmcLevel, levelsConfig, skillRewardChanceConfig);
-        const skillPointReward = this.mathUtil.interp1(pmcLevel, levelsConfig, skillPointRewardConfig);
+        // Get budget to spend on item rewards (copy of raw roubles given)
+        let itemRewardBudget = rewardParams.rewardRoubles;
 
         // Possible improvement -> draw trader-specific items e.g. with this.itemHelper.isOfBaseclass(val._id, ItemHelper.BASECLASS.FoodDrink)
         const rewards: IQuestRewards = { Started: [], Success: [], Fail: [] };
@@ -133,20 +89,20 @@ export class RepeatableQuestRewardGenerator
         let rewardIndex = 0;
 
         // Add xp reward
-        if (rewardXP > 0)
+        if (rewardParams.rewardXP > 0)
         {
-            rewards.Success.push({ value: rewardXP, type: QuestRewardType.EXPERIENCE, index: rewardIndex });
+            rewards.Success.push({ value: rewardParams.rewardXP, type: QuestRewardType.EXPERIENCE, index: rewardIndex });
             rewardIndex++;
         }
 
         // Add money reward
-        rewards.Success.push(this.getMoneyReward(traderId, rewardRoubles, rewardIndex));
+        rewards.Success.push(this.getMoneyReward(traderId, rewardParams.rewardRoubles, rewardIndex));
         rewardIndex++;
 
         // Add GP coin reward
         rewards.Success.push(this.generateRewardItem(
             Money.GP,
-            gpCoinRewardCount,
+            rewardParams.gpCoinRewardCount,
             rewardIndex,
         ));
         rewardIndex++;
@@ -170,99 +126,199 @@ export class RepeatableQuestRewardGenerator
             }
         }
 
-        let inBudgetRewardItemPool = this.chooseRewardItemsWithinBudget(repeatableConfig, itemRewardBudget, traderId);
+        const inBudgetRewardItemPool = this.chooseRewardItemsWithinBudget(repeatableConfig, itemRewardBudget, traderId);
         this.logger.debug(
-            `Generating daily quest for: ${traderId} with budget: ${itemRewardBudget} totalling: ${rewardNumItems} items`,
+            `Generating daily quest for: ${traderId} with budget: ${itemRewardBudget} totalling: ${rewardParams.rewardNumItems} items`,
         );
         if (inBudgetRewardItemPool.length > 0)
         {
-            for (let i = 0; i < rewardNumItems; i++)
+            const itemsToReward = this.getRewardableItemsFromPoolWithinBudget(
+                inBudgetRewardItemPool,
+                rewardParams.rewardNumItems,
+                itemRewardBudget,
+                repeatableConfig,
+            );
+
+            // Add item rewards
+            for (const itemReward of itemsToReward)
             {
-                let rewardItemStackCount = 1;
-                // TODO: replace with use of ExhaustableArray
-                const itemSelected = inBudgetRewardItemPool[this.randomUtil.randInt(inBudgetRewardItemPool.length)];
-
-                if (this.itemHelper.isOfBaseclass(itemSelected._id, BaseClasses.AMMO))
-                {
-                    // Don't reward ammo that stacks to less than what's defined in config
-                    if (itemSelected._props.StackMaxSize < repeatableConfig.rewardAmmoStackMinSize)
-                    {
-                        i--;
-                        continue;
-                    }
-
-                    // Choose smallest value between budget fitting size and stack max
-                    rewardItemStackCount = this.calculateAmmoStackSizeThatFitsBudget(
-                        itemSelected,
-                        itemRewardBudget,
-                        rewardNumItems,
-                    );
-                }
-
-                // 25% chance to double, triple or quadruple reward stack
-                // (Only occurs when item is stackable and not weapon, armor or ammo)
-                if (this.canIncreaseRewardItemStackSize(itemSelected, 70000, 25))
-                {
-                    rewardItemStackCount = this.getRandomisedRewardItemStackSizeByPrice(itemSelected);
-                }
-
-                // Add item reward
-                rewards.Success.push(this.generateRewardItem(itemSelected._id, rewardItemStackCount, rewardIndex));
+                rewards.Success.push(this.generateRewardItem(itemReward.item._id, itemReward.stackSize, rewardIndex));
                 rewardIndex++;
-
-                const itemCost = this.presetHelper.getDefaultPresetOrItemPrice(itemSelected._id);
-                itemRewardBudget -= rewardItemStackCount * itemCost;
-                this.logger.debug(`  Added item ${itemSelected._id} with price ${rewardItemStackCount * itemCost}`);
-
-                // If we still have budget narrow down possible items
-                if (itemRewardBudget > 0)
-                {
-                    // Filter possible reward items to only items with a price below the remaining budget
-                    inBudgetRewardItemPool = this.filterRewardPoolWithinBudget(inBudgetRewardItemPool, itemRewardBudget, 0);
-                    if (inBudgetRewardItemPool.length === 0)
-                    {
-                        this.logger.debug(`  Reward pool empty with ${itemRewardBudget} remaining`);
-                        break; // No reward items left, exit
-                    }
-                }
-                else
-                {
-                    break;
-                }
             }
         }
 
         // Add rep reward to rewards array
-        if (rewardReputation > 0)
+        if (rewardParams.rewardReputation > 0)
         {
             const reward: IQuestReward = {
                 target: traderId,
-                value: rewardReputation,
+                value: rewardParams.rewardReputation,
                 type: QuestRewardType.TRADER_STANDING,
                 index: rewardIndex,
             };
             rewards.Success.push(reward);
             rewardIndex++;
 
-            this.logger.debug(`  Adding ${rewardReputation} trader reputation reward`);
+            this.logger.debug(`  Adding ${rewardParams.rewardReputation} trader reputation reward`);
         }
 
         // Chance of adding skill reward
-        if (this.randomUtil.getChance100(skillRewardChance * 100))
+        if (this.randomUtil.getChance100(rewardParams.skillRewardChance * 100))
         {
             const targetSkill = this.randomUtil.getArrayValue(questConfig.possibleSkillRewards);
             const reward: IQuestReward = {
                 target: targetSkill,
-                value: skillPointReward,
+                value: rewardParams.skillPointReward,
                 type: QuestRewardType.SKILL,
                 index: rewardIndex,
             };
             rewards.Success.push(reward);
 
-            this.logger.debug(`  Adding ${skillPointReward} skill points to ${targetSkill}`);
+            this.logger.debug(`  Adding ${rewardParams.skillPointReward} skill points to ${targetSkill}`);
         }
 
         return rewards;
+    }
+
+    protected getQuestRewardValues(
+        rewardScaling: IRewardScaling,
+        difficulty: number,
+        pmcLevel: number): IQuestRewardValues
+    {
+        // difficulty could go from 0.2 ... -> for lowest difficulty receive 0.2*nominal reward
+        const levelsConfig = rewardScaling.levels;
+        const roublesConfig = rewardScaling.roubles;
+        const gpCoinConfig = rewardScaling.gpCoins;
+        const xpConfig = rewardScaling.experience;
+        const itemsConfig = rewardScaling.items;
+        const rewardSpreadConfig = rewardScaling.rewardSpread;
+        const skillRewardChanceConfig = rewardScaling.skillRewardChance;
+        const skillPointRewardConfig = rewardScaling.skillPointReward;
+        const reputationConfig = rewardScaling.reputation;
+
+        const effectiveDifficulty = Number.isNaN(difficulty) ? 1 : difficulty;
+        if (Number.isNaN(difficulty))
+        {
+            this.logger.warning(this.localisationService.getText("repeatable-difficulty_was_nan"));
+        }
+
+        return {
+            skillPointReward: this.mathUtil.interp1(pmcLevel, levelsConfig, skillPointRewardConfig),
+            skillRewardChance: this.mathUtil.interp1(pmcLevel, levelsConfig, skillRewardChanceConfig),
+            rewardReputation: Math.round(
+                100
+                * effectiveDifficulty
+                * this.mathUtil.interp1(pmcLevel, levelsConfig, reputationConfig)
+                * this.randomUtil.getFloat(1 - rewardSpreadConfig, 1 + rewardSpreadConfig),
+            ) / 100,
+            rewardNumItems: this.randomUtil.randInt(
+                1,
+                Math.round(this.mathUtil.interp1(pmcLevel, levelsConfig, itemsConfig)) + 1,
+            ),
+            rewardRoubles: Math.floor(
+                effectiveDifficulty
+                * this.mathUtil.interp1(pmcLevel, levelsConfig, roublesConfig)
+                * this.randomUtil.getFloat(1 - rewardSpreadConfig, 1 + rewardSpreadConfig),
+            ),
+            gpCoinRewardCount: Math.floor(
+                effectiveDifficulty
+                * this.mathUtil.interp1(pmcLevel, levelsConfig, gpCoinConfig)
+                * this.randomUtil.getFloat(1 - rewardSpreadConfig, 1 + rewardSpreadConfig),
+            ),
+            rewardXP: Math.floor(
+                effectiveDifficulty
+                * this.mathUtil.interp1(pmcLevel, levelsConfig, xpConfig)
+                * this.randomUtil.getFloat(1 - rewardSpreadConfig, 1 + rewardSpreadConfig),
+            ),
+        };
+    }
+
+    /**
+     * Get an array of items + stack size to give to player as reward that fit inside of a rouble budget
+     * @param itemPool All possible items to choose rewards from
+     * @param maxItemCount Total number of items to reward
+     * @param itemRewardBudget Rouble buget all item rewards must fit in
+     * @param repeatableConfig config for quest type
+     * @returns Items and stack size
+     */
+    protected getRewardableItemsFromPoolWithinBudget(
+        itemPool: ITemplateItem[],
+        maxItemCount: number,
+        itemRewardBudget: number,
+        repeatableConfig: IRepeatableQuestConfig): { item: ITemplateItem, stackSize: number }[]
+    {
+        const itemsToReturn: { item: ITemplateItem, stackSize: number }[] = [];
+        let exhausableItemPool = new ExhaustableArray(
+            itemPool,
+            this.randomUtil,
+            this.cloner,
+        );
+
+        for (let i = 0; i < maxItemCount; i++)
+        {
+            // Default stack size to 1
+            let rewardItemStackCount = 1;
+
+            // Get a random item
+            const chosenItemFromPool = exhausableItemPool.getRandomValue();
+            if (!exhausableItemPool.hasValues())
+            {
+                break;
+            }
+
+            // Handle edge case - ammo
+            if (this.itemHelper.isOfBaseclass(chosenItemFromPool._id, BaseClasses.AMMO))
+            {
+                // Don't reward ammo that stacks to less than what's allowed in config
+                if (chosenItemFromPool._props.StackMaxSize < repeatableConfig.rewardAmmoStackMinSize)
+                {
+                    i--;
+                    continue;
+                }
+
+                // Choose smallest value between budget, fitting size and stack max
+                rewardItemStackCount = this.calculateAmmoStackSizeThatFitsBudget(
+                    chosenItemFromPool,
+                    itemRewardBudget,
+                    maxItemCount,
+                );
+            }
+
+            // 25% chance to double, triple or quadruple reward stack
+            // (Only occurs when item is stackable and not weapon, armor or ammo)
+            if (this.canIncreaseRewardItemStackSize(chosenItemFromPool, 70000, 25))
+            {
+                rewardItemStackCount = this.getRandomisedRewardItemStackSizeByPrice(chosenItemFromPool);
+            }
+
+            itemsToReturn.push({ item: chosenItemFromPool, stackSize: rewardItemStackCount });
+
+            const itemCost = this.presetHelper.getDefaultPresetOrItemPrice(chosenItemFromPool._id);
+            itemRewardBudget -= rewardItemStackCount * itemCost;
+            this.logger.debug(`Added item: ${chosenItemFromPool._id} with price: ${rewardItemStackCount * itemCost}`);
+
+            // If we still have budget narrow down possible items
+            if (itemRewardBudget > 0)
+            {
+                // Filter possible reward items to only items with a price below the remaining budget
+                exhausableItemPool = new ExhaustableArray(
+                    this.filterRewardPoolWithinBudget(itemPool, itemRewardBudget, 0),
+                    this.randomUtil,
+                    this.cloner,
+                );
+
+                if (!exhausableItemPool.hasValues())
+                {
+                    this.logger.debug(`Reward pool empty with: ${itemRewardBudget} roubles of budget remaining`);
+                    break; // No reward items left, exit
+                }
+            }
+
+            // No budget for more items, end loop
+            break;
+        }
+
+        return itemsToReturn;
     }
 
     /**
