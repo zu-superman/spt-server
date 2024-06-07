@@ -3,7 +3,6 @@ import { RepeatableQuestGenerator } from "@spt/generators/RepeatableQuestGenerat
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { QuestHelper } from "@spt/helpers/QuestHelper";
 import { RepeatableQuestHelper } from "@spt/helpers/RepeatableQuestHelper";
-import { IEmptyRequestData } from "@spt/models/eft/common/IEmptyRequestData";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import {
     IChangeRequirement,
@@ -80,12 +79,11 @@ export class RepeatableQuestController
      * (if the are on "Succeed" but not "Completed" we keep them, to allow the player to complete them and get the rewards)
      * The new quests generated are again persisted in profile.RepeatableQuests
      *
-     * @param   {string}    _info       Request from client
      * @param   {string}    sessionID   Player's session id
      *
      * @returns  {array}                Array of "repeatableQuestObjects" as described above
      */
-    public getClientRepeatableQuests(_info: IEmptyRequestData, sessionID: string): IPmcDataRepeatableQuest[]
+    public getClientRepeatableQuests(sessionID: string): IPmcDataRepeatableQuest[]
     {
         const returnData: Array<IPmcDataRepeatableQuest> = [];
         const fullProfile = this.profileHelper.getFullProfile(sessionID)!;
@@ -99,14 +97,8 @@ export class RepeatableQuestController
             const currentRepeatableQuestType = this.getRepeatableQuestSubTypeFromProfile(repeatableConfig, pmcData);
             const repeatableType = repeatableConfig.name.toLowerCase();
 
-            // Is PMC and can't see dailies yet, skip
-            if ((repeatableConfig.side === "Pmc" && !this.playerHasDailyPmcQuestsUnlocked(pmcData, repeatableConfig)))
-            {
-                continue;
-            }
-
-            // Is Scav and can't see dailies yet, skip
-            if ((repeatableConfig.side === "Scav" && !this.playerHasDailyScavQuestsUnlocked(pmcData)))
+            const canAccessRepeatables = this.canProfileAccessRepeatableQuests(repeatableConfig, pmcData);
+            if (!canAccessRepeatables)
             {
                 continue;
             }
@@ -220,6 +212,29 @@ export class RepeatableQuestController
         }
 
         return returnData;
+    }
+
+    /**
+     * Check if a repeatable quest type (daily/weekly) is active for the given profile
+     * @param repeatableConfig Repeatable quest config
+     * @param pmcData Player profile
+     * @returns True if profile is allowed to access dailies
+     */
+    protected canProfileAccessRepeatableQuests(repeatableConfig: IRepeatableQuestConfig, pmcData: IPmcData): boolean
+    {
+        // PMC and daily quests not unlocked yet
+        if (repeatableConfig.side === "Pmc" && !this.playerHasDailyPmcQuestsUnlocked(pmcData, repeatableConfig))
+        {
+            return false;
+        }
+
+        // Scav and daily quests not unlocked yet
+        if (repeatableConfig.side === "Scav" && !this.playerHasDailyScavQuestsUnlocked(pmcData))
+        {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -346,7 +361,10 @@ export class RepeatableQuestController
     {
         const questPool = this.createBaseQuestPool(repeatableConfig);
 
-        const locations = this.getAllowedLocations(repeatableConfig.locations, pmcLevel);
+        // Get the allowed locations based on the PMC's level
+        const locations = this.getAllowedLocationsForPmcLevel(repeatableConfig.locations, pmcLevel);
+
+        // Populate Exploration and Pickup quest locations
         for (const location in locations)
         {
             if (location !== ELocationName.ANY)
@@ -361,22 +379,25 @@ export class RepeatableQuestController
 
         const eliminationConfig = this.repeatableQuestHelper.getEliminationConfigByPmcLevel(pmcLevel, repeatableConfig);
         const targetsConfig = this.repeatableQuestHelper.probabilityObjectArray(eliminationConfig.targets);
-        for (const probabilityObject of targetsConfig)
+
+        // Populate Elimination quest targets and their locations
+        for (const { data: target, key: targetKey } of targetsConfig)
         {
             // Target is boss
-            if (probabilityObject.data.isBoss)
+            if (target.isBoss)
             {
-                questPool.pool.Elimination.targets[probabilityObject.key] = { locations: ["any"] };
+                questPool.pool.Elimination.targets[targetKey] = { locations: ["any"] };
             }
             else
             {
+                // Non-boss targets
                 const possibleLocations = Object.keys(locations);
 
-                // Set possible locations for elimination task, if target is savage, exclude labs from locations
-                questPool.pool.Elimination.targets[probabilityObject.key]
-                    = probabilityObject.key === "Savage"
-                        ? { locations: possibleLocations.filter((x) => x !== "laboratory") }
-                        : { locations: possibleLocations };
+                const allowedLocations = (targetKey === "Savage")
+                    ? possibleLocations.filter((location) => location !== "laboratory") // Exclude labs for Savage targets.
+                    : possibleLocations;
+
+                questPool.pool.Elimination.targets[targetKey] = { locations: allowedLocations };
             }
         }
 
@@ -394,10 +415,10 @@ export class RepeatableQuestController
     /**
      * Return the locations this PMC is allowed to get daily quests for based on their level
      * @param locations The original list of locations
-     * @param pmcLevel The level of the player PMC
+     * @param pmcLevel The players level
      * @returns A filtered list of locations that allow the player PMC level to access it
      */
-    protected getAllowedLocations(
+    protected getAllowedLocationsForPmcLevel(
         locations: Record<ELocationName, string[]>,
         pmcLevel: number,
     ): Partial<Record<ELocationName, string[]>>
@@ -432,12 +453,13 @@ export class RepeatableQuestController
      */
     protected isPmcLevelAllowedOnLocation(location: string, pmcLevel: number): boolean
     {
+        // All PMC levels are allowed for 'any' location requirement
         if (location === ELocationName.ANY)
         {
             return true;
         }
 
-        const locationBase = this.databaseService.getLocation(location.toLowerCase()).base;
+        const locationBase = this.databaseService.getLocation(location.toLowerCase())?.base;
         if (!locationBase)
         {
             return true;
@@ -469,6 +491,12 @@ export class RepeatableQuestController
 
     /**
      * Handle RepeatableQuestChange event
+     *
+     * Replace a players repeatable quest
+     * @param pmcData Player profile
+     * @param changeRequest Request object
+     * @param sessionID Session id
+     * @returns IItemEventRouterResponse
      */
     public changeRepeatableQuest(
         pmcData: IPmcData,
@@ -476,9 +504,12 @@ export class RepeatableQuestController
         sessionID: string,
     ): IItemEventRouterResponse
     {
+        const output = this.eventOutputHolder.getOutput(sessionID);
+
+        const fullProfile = this.profileHelper.getFullProfile(sessionID);
+
         let repeatableToChange: IPmcDataRepeatableQuest;
         let changeRequirement: IChangeRequirement;
-        const fullProfile = this.profileHelper.getFullProfile(sessionID);
 
         // The trader existing quest is linked to
         let replacedQuestTraderId: string;
@@ -521,8 +552,6 @@ export class RepeatableQuestController
                     changeStandingCost: this.randomUtil.getArrayValue([0, 0.01]),
                 };
 
-                const fullProfile = this.profileHelper.getFullProfile(sessionID);
-
                 // Find quest we're replacing in pmc profile quests array and remove it
                 this.questHelper.findAndRemoveQuestFromArrayIfExists(questToReplace._id, pmcData.Quests);
 
@@ -544,7 +573,6 @@ export class RepeatableQuestController
             break;
         }
 
-        const output = this.eventOutputHolder.getOutput(sessionID);
         if (!repeatableToChange)
         {
             // Unable to find quest being replaced
@@ -584,9 +612,11 @@ export class RepeatableQuestController
         repeatableConfig: IRepeatableQuestConfig,
     ): IRepeatableQuest
     {
+        const maxAttempts = 10;
         let newRepeatableQuest: IRepeatableQuest = undefined;
-        let attemptsToGenerateQuest = 0;
-        while (!newRepeatableQuest && questTypePool.types.length > 0)
+        let attempts = 0;
+        while (attempts < maxAttempts
+          && questTypePool.types.length > 0)
         {
             newRepeatableQuest = this.repeatableQuestGenerator.generateRepeatableQuest(
                 pmcData.Info.Level,
@@ -594,14 +624,21 @@ export class RepeatableQuestController
                 questTypePool,
                 repeatableConfig,
             );
-            attemptsToGenerateQuest++;
-            if (attemptsToGenerateQuest > 10)
+
+            if (newRepeatableQuest)
             {
-                this.logger.debug(
-                    "We were stuck in repeatable quest generation. This should never happen. Please report",
-                );
+                // Successfully generated a quest, exit loop
                 break;
             }
+
+            attempts++;
+        }
+
+        if (attempts > maxAttempts)
+        {
+            this.logger.debug(
+                "We were stuck in repeatable quest generation. This should never happen. Please report",
+            );
         }
 
         return newRepeatableQuest;

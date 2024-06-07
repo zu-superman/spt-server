@@ -89,6 +89,6 @@ export class QuestCallbacks
         sessionID: string,
     ): IGetBodyResponseData<IPmcDataRepeatableQuest[]>
     {
-        return this.httpResponse.getBody(this.repeatableQuestController.getClientRepeatableQuests(info, sessionID));
+        return this.httpResponse.getBody(this.repeatableQuestController.getClientRepeatableQuests(sessionID));
     }
 }
