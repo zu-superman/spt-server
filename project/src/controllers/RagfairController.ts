@@ -251,14 +251,11 @@ export class RagfairController
     protected setTraderOfferPurchaseLimits(offer: IRagfairOffer, fullProfile: ISptProfile): void
     {
         // No trader found, create a blank record for them
-        if (!fullProfile.traderPurchases[offer.user.id])
-        {
-            fullProfile.traderPurchases[offer.user.id] = {};
-        }
+        fullProfile.traderPurchases[offer.user.id] ||= {};
 
         const traderAssorts = this.traderHelper.getTraderAssortsByTraderId(offer.user.id).items;
         const assortId = offer.items[0]._id;
-        const assortData = traderAssorts.find((x) => x._id === assortId);
+        const assortData = traderAssorts.find((item) => item._id === assortId);
 
         // Use value stored in profile, otherwise use value directly from in-memory trader assort data
         offer.buyRestrictionCurrent = fullProfile.traderPurchases[offer.user.id][assortId]
