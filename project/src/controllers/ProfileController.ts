@@ -12,6 +12,7 @@ import { IMiniProfile } from "@spt/models/eft/launcher/IMiniProfile";
 import { GetProfileStatusResponseData } from "@spt/models/eft/profile/GetProfileStatusResponseData";
 import { IGetOtherProfileRequest } from "@spt/models/eft/profile/IGetOtherProfileRequest";
 import { IGetOtherProfileResponse } from "@spt/models/eft/profile/IGetOtherProfileResponse";
+import { IGetProfileSettingsRequest } from "@spt/models/eft/profile/IGetProfileSettingsRequest";
 import { IProfileChangeNicknameRequestData } from "@spt/models/eft/profile/IProfileChangeNicknameRequestData";
 import { IProfileChangeVoiceRequestData } from "@spt/models/eft/profile/IProfileChangeVoiceRequestData";
 import { IProfileCreateRequestData } from "@spt/models/eft/profile/IProfileCreateRequestData";
@@ -484,5 +485,19 @@ export class ProfileController
                 },
             },
         };
+    }
+
+    /**
+     * Handle client/profile/settings
+     */
+    public setChosenProfileIcon(sessionId: string, request: IGetProfileSettingsRequest): void
+    {
+        const profileToUpdate = this.profileHelper.getPmcProfile(sessionId);
+        if (!profileToUpdate)
+        {
+            return;
+        }
+
+        profileToUpdate.Info.SelectedMemberCategory = request.memberCategory;
     }
 }
