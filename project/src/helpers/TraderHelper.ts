@@ -410,18 +410,15 @@ export class TraderHelper
         // Iterate over assorts bought and add to profile
         for (const purchasedItem of newPurchaseDetails.items)
         {
-            if (!profile.traderPurchases)
-            {
-                profile.traderPurchases = {};
-            }
+            const currentTime = this.timeUtil.getTimestamp();
 
-            if (!profile.traderPurchases[traderId])
-            {
-                profile.traderPurchases[traderId] = {};
-            }
+            // Nullguard traderPurchases
+            profile.traderPurchases ||= {};
+            // Nullguard traderPurchases for this trader
+            profile.traderPurchases[traderId] ||= {};
 
             // Null guard when dict doesnt exist
-            const currentTime = this.timeUtil.getTimestamp();
+
             if (!profile.traderPurchases[traderId][purchasedItem.itemId])
             {
                 profile.traderPurchases[traderId][purchasedItem.itemId] = {
@@ -434,7 +431,9 @@ export class TraderHelper
 
             if (
                 profile.traderPurchases[traderId][purchasedItem.itemId].count + purchasedItem.count
-                > itemPurchased.upd!.BuyRestrictionMax!
+                > this.getAccountTypeAdjustedTraderPurchaseLimit(
+                    itemPurchased.upd!.BuyRestrictionMax!,
+                    profile.characters.pmc.Info.GameVersion)
             )
             {
                 throw new Error(
@@ -448,6 +447,22 @@ export class TraderHelper
             profile.traderPurchases[traderId][purchasedItem.itemId].count += purchasedItem.count;
             profile.traderPurchases[traderId][purchasedItem.itemId].purchaseTimestamp = currentTime;
         }
+    }
+
+    /**
+     * EoD and Unheard get a 20% bonus to personal trader limit purchases
+     * @param buyRestrictionMax Existing value from trader item
+     * @param gameVersion Profiles game version
+     * @returns buyRestrictionMax value
+     */
+    public getAccountTypeAdjustedTraderPurchaseLimit(buyRestrictionMax: number, gameVersion: string): number
+    {
+        if (["edge_of_darkness", "unheard"].includes(gameVersion))
+        {
+            return Math.floor(buyRestrictionMax * 1.2);
+        }
+
+        return buyRestrictionMax;
     }
 
     /**

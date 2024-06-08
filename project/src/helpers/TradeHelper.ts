@@ -88,6 +88,7 @@ export class TradeHelper
                 {
                     this.checkPurchaseIsWithinTraderItemLimit(
                         sessionID,
+                        pmcData,
                         buyRequestData.tid,
                         itemPurchased,
                         buyRequestData.item_id,
@@ -151,6 +152,7 @@ export class TradeHelper
                     // Will throw error if check fails
                     this.checkPurchaseIsWithinTraderItemLimit(
                         sessionID,
+                        pmcData,
                         buyRequestData.tid,
                         itemPurchased,
                         buyRequestData.item_id,
@@ -293,6 +295,7 @@ export class TradeHelper
     /**
      * Traders allow a limited number of purchases per refresh cycle (default 60 mins)
      * @param sessionId Session id
+     * @param pmcData Profile making the purchase
      * @param traderId Trader assort is purchased from
      * @param assortBeingPurchased the item from trader being bought
      * @param assortId Id of assort being purchased
@@ -300,21 +303,27 @@ export class TradeHelper
      */
     protected checkPurchaseIsWithinTraderItemLimit(
         sessionId: string,
+        pmcData: IPmcData,
         traderId: string,
         assortBeingPurchased: Item,
         assortId: string,
         count: number,
     ): void
     {
-        const traderPurchaseData = this.traderPurchasePersisterService.getProfileTraderPurchase(
-            sessionId,
-            traderId,
-            assortBeingPurchased._id,
-        );
-        if ((traderPurchaseData?.count ?? 0 + count) > assortBeingPurchased.upd?.BuyRestrictionMax)
+        const traderPurchaseData
+            = this.traderPurchasePersisterService.getProfileTraderPurchase(
+                sessionId,
+                traderId,
+                assortBeingPurchased._id,
+            );
+        const traderItemPurchaseLimit
+            = this.traderHelper.getAccountTypeAdjustedTraderPurchaseLimit(
+                assortBeingPurchased.upd?.BuyRestrictionMax,
+                pmcData.Info.GameVersion);
+        if ((traderPurchaseData?.count ?? 0 + count) > traderItemPurchaseLimit)
         {
             throw new Error(
-                `Unable to purchase ${count} items, this would exceed your purchase limit of ${assortBeingPurchased.upd.BuyRestrictionMax} from the traders assort: ${assortId} this refresh`,
+                `Unable to purchase: ${count} items, this would exceed your purchase limit of ${traderItemPurchaseLimit} from the trader: ${traderId} assort: ${assortId} this refresh`,
             );
         }
     }
