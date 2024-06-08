@@ -253,7 +253,9 @@ export class RagfairOfferHelper
     protected traderBuyRestrictionReached(offer: IRagfairOffer): boolean
     {
         const traderAssorts = this.traderHelper.getTraderAssortsByTraderId(offer.user.id).items;
-        const assortData = traderAssorts.find((x) => x._id === offer.items[0]._id);
+
+        // Find item being purchased from traders assorts
+        const assortData = traderAssorts.find((item) => item._id === offer.items[0]._id);
 
         // No trader assort data
         if (!assortData)
@@ -267,15 +269,21 @@ export class RagfairOfferHelper
             return false;
         }
 
+        if (!assortData.upd)
+        {
+            return false;
+        }
+
         // No restriction values
         // Can't use !assortData.upd.BuyRestrictionX as value could be 0
-        if (assortData.upd.BuyRestrictionMax === undefined || assortData.upd.BuyRestrictionCurrent === undefined)
+        const assortUpd = assortData.upd;
+        if (assortUpd.BuyRestrictionMax === undefined || assortUpd.BuyRestrictionCurrent === undefined)
         {
             return false;
         }
 
         // Current equals max, limit reached
-        if (assortData?.upd.BuyRestrictionCurrent === assortData.upd.BuyRestrictionMax)
+        if (assortUpd.BuyRestrictionCurrent >= assortUpd.BuyRestrictionMax)
         {
             return true;
         }
