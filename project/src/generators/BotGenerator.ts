@@ -233,7 +233,7 @@ export class BotGenerator
         this.addIdsToBot(bot);
 
         // Generate new inventory ID
-        this.generateInventoryID(bot);
+        this.generateInventoryId(bot);
 
         // Set role back to originally requested now its been generated
         if (botGenerationDetails.eventRole)
@@ -523,50 +523,42 @@ export class BotGenerator
         bot.aid = this.hashUtil.generateAccountId();
     }
 
-    protected generateInventoryID(profile: IBotBase): void
+    /**
+     * Update a profiles profile.Inventory.equipment value with a freshly generated one
+     * Update all inventory items that make use of this value too
+     * @param profile Profile to update
+     */
+    protected generateInventoryId(profile: IBotBase): void
     {
-        const defaultInventory = "55d7217a4bdc2d86028b456d";
-        const itemsByParentHash: Record<string, Item[]> = {};
-        const inventoryItemHash: Record<string, Item> = {};
+        const rootInventoryItemTpl = "55d7217a4bdc2d86028b456d";
+        const newInventoryItemId = this.hashUtil.generate();
 
-        // Generate inventoryItem list
-        let inventoryId = "";
         for (const item of profile.Inventory.items)
         {
-            inventoryItemHash[item._id] = item;
-
-            if (item._tpl === defaultInventory)
+            // Root item found, update its _id value to newly generated id
+            if (item._tpl === rootInventoryItemTpl)
             {
-                inventoryId = item._id;
+                item._id = newInventoryItemId;
+
                 continue;
             }
 
-            if (!("parentId" in item))
+            // Optimisation - skip items without a parentId
+            // They are never linked to root inventory item + we already handled root item above
+            if (!item.parentId)
             {
                 continue;
             }
 
-            if (!(item.parentId in itemsByParentHash))
+            // Item is a child of root inventory item, update its parentId value to newly generated id
+            if (item.parentId === profile.Inventory.equipment)
             {
-                itemsByParentHash[item.parentId] = [];
-            }
-
-            itemsByParentHash[item.parentId].push(item);
-        }
-
-        // Update inventoryId
-        const newInventoryId = this.hashUtil.generate();
-        inventoryItemHash[inventoryId]._id = newInventoryId;
-        profile.Inventory.equipment = newInventoryId;
-
-        // Update inventoryItem id
-        if (inventoryId in itemsByParentHash)
-        {
-            for (const item of itemsByParentHash[inventoryId])
-            {
-                item.parentId = newInventoryId;
+                item.parentId = newInventoryItemId;
             }
         }
+
+        // Update inventory equipment id to new one we generated
+        profile.Inventory.equipment = newInventoryItemId;
     }
 
     /**
