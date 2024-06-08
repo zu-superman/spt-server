@@ -614,7 +614,7 @@ export class SeasonalEventService
      */
     protected giveGift(playerId: string, giftkey: string): void
     {
-        if (!this.profileHelper.playerHasRecievedGift(playerId, giftkey))
+        if (!this.profileHelper.playerHasRecievedMaxNumberOfGift(playerId, giftkey))
         {
             this.giftService.sendGiftToPlayer(playerId, giftkey);
         }

@@ -231,7 +231,9 @@ export interface ModDetails
 export interface ReceivedGift
 {
     giftId: string
-    timestampAccepted: number
+    timestampLastAccepted: number
+    current: number
+    max: number
 }
 
 export interface Vitality

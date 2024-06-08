@@ -59,6 +59,8 @@ export class SptDialogueChatBot implements IDialogueChatBot
 
         const giftSent = this.giftService.sendGiftToPlayer(sessionId, request.text);
 
+        const requestInput = request.text.toLowerCase();
+
         if (giftSent === GiftSentResult.SUCCESS)
         {
             this.mailSendService.sendUserMessageToPlayer(
@@ -85,7 +87,7 @@ export class SptDialogueChatBot implements IDialogueChatBot
             return;
         }
 
-        if (request.text.toLowerCase().includes("love you"))
+        if (requestInput.includes("love you"))
         {
             this.mailSendService.sendUserMessageToPlayer(
                 sessionId,
@@ -99,7 +101,7 @@ export class SptDialogueChatBot implements IDialogueChatBot
             );
         }
 
-        if (request.text.toLowerCase() === "spt")
+        if (requestInput === "spt")
         {
             this.mailSendService.sendUserMessageToPlayer(
                 sessionId,
@@ -108,7 +110,7 @@ export class SptDialogueChatBot implements IDialogueChatBot
             );
         }
 
-        if (["hello", "hi", "sup", "yo", "hey"].includes(request.text.toLowerCase()))
+        if (["hello", "hi", "sup", "yo", "hey"].includes(requestInput))
         {
             this.mailSendService.sendUserMessageToPlayer(
                 sessionId,
@@ -128,7 +130,7 @@ export class SptDialogueChatBot implements IDialogueChatBot
             );
         }
 
-        if (request.text.toLowerCase() === "nikita")
+        if (requestInput === "nikita")
         {
             this.mailSendService.sendUserMessageToPlayer(
                 sessionId,
@@ -137,12 +139,12 @@ export class SptDialogueChatBot implements IDialogueChatBot
                     "I know that guy!",
                     "Cool guy, he made EFT!",
                     "Legend",
-                    "Remember when he said webel-webel-webel-webel, classic nikita moment",
+                    "Remember when he said webel-webel-webel-webel, classic Nikita moment",
                 ]),
             );
         }
 
-        if (request.text.toLowerCase() === "are you a bot")
+        if (requestInput === "are you a bot")
         {
             this.mailSendService.sendUserMessageToPlayer(
                 sessionId,
@@ -151,7 +153,7 @@ export class SptDialogueChatBot implements IDialogueChatBot
             );
         }
 
-        if (request.text.toLowerCase() === "itsonlysnowalan")
+        if (requestInput === "itsonlysnowalan")
         {
             this.weatherConfig.overrideSeason = Season.WINTER;
 
@@ -162,15 +164,34 @@ export class SptDialogueChatBot implements IDialogueChatBot
             );
         }
 
-        if (request.text.toLowerCase() === "givemespace")
+        if (requestInput === "givemespace")
         {
-            this.profileHelper.addStashRowsBonusToProfile(sessionId, 2);
+            const stashRowGiftId = "StashRows";
+            if (
+                this.profileHelper.playerHasRecievedMaxNumberOfGift(sessionId, stashRowGiftId))
+            {
+                this.mailSendService.sendUserMessageToPlayer(
+                    sessionId,
+                    sptFriendUser,
+                    "You cannot accept any more of this gift",
+                );
+            }
+            else
+            {
+                this.profileHelper.addStashRowsBonusToProfile(sessionId, 2);
 
-            this.mailSendService.sendUserMessageToPlayer(
-                sessionId,
-                sptFriendUser,
-                this.randomUtil.getArrayValue(["Added 2 rows to stash, please restart your game to see them"]),
-            );
+                this.mailSendService.sendUserMessageToPlayer(
+                    sessionId,
+                    sptFriendUser,
+                    this.randomUtil.getArrayValue(["Added 2 rows to stash, please restart your game to see them"]),
+                );
+
+                this.profileHelper.flagGiftReceivedInProfile(
+                    sessionId,
+                    stashRowGiftId,
+                    this.coreConfig.features.chatbotFeatures.commandUseLimits[stashRowGiftId],
+                );
+            }
         }
 
         return request.dialogId;

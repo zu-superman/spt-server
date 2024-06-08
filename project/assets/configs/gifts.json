@@ -219,7 +219,8 @@
                     "parentId": "658efad286f149afb701c2cc",
                     "slotId": "Helmet_back"
                 }
-            ]
+            ],
+			"maxToSendPlayer": 1
         },
         "NewYear2021": {
             "sender": "System",
@@ -447,7 +448,8 @@
                     "parentId": "64b4473f3b4c4dd8cdf9999",
                     "slotId": "mod_charge"
                 }
-            ]
+            ],
+			"maxToSendPlayer": 1
         },
         "Christmas2022": {
             "items": [
@@ -501,7 +503,8 @@
             "messageText": "Merry christmas!",
             "timestampToSend": 42069,
             "associatedEvent": "Christmas",
-            "collectionTimeHours": 48
+            "collectionTimeHours": 48,
+			"maxToSendPlayer": 1
         },
         "1CLICKDRESSUP": {
             "items": [
@@ -665,7 +668,8 @@
             "messageText": "1CLICKDRESSUP",
             "timestampToSend": 42069,
             "collectionTimeHours": 48,
-            "associatedEvent": "Promo"
+            "associatedEvent": "Promo",
+			"maxToSendPlayer": 1
         },
         "BARMALEY": {
             "items": [
@@ -826,7 +830,8 @@
             "messageText": "BARMALEY",
             "timestampToSend": 42069,
             "collectionTimeHours": 48,
-            "associatedEvent": "Promo"
+            "associatedEvent": "Promo",
+			"maxToSendPlayer": 1
         },
         "S00NS00N": {
             "items": [
@@ -907,7 +912,8 @@
             "messageText": "S00NS00N",
             "timestampToSend": 42069,
             "collectionTimeHours": 48,
-            "associatedEvent": "Promo"
+            "associatedEvent": "Promo",
+			"maxToSendPlayer": 1
         },
         "TRAMBON": {
             "items": [
@@ -1084,7 +1090,8 @@
             "messageText": "TRAMBON",
             "timestampToSend": 42069,
             "collectionTimeHours": 48,
-            "associatedEvent": "Promo"
+            "associatedEvent": "Promo",
+			"maxToSendPlayer": 1
         },
         "PINEWOOD": {
             "items": [
@@ -1173,7 +1180,8 @@
             "messageText": "PINEWOOD",
             "timestampToSend": 42069,
             "collectionTimeHours": 48,
-            "associatedEvent": "Promo"
+            "associatedEvent": "Promo",
+			"maxToSendPlayer": 1
         },
         "HESOYAM": {
             "items": [
@@ -1190,7 +1198,8 @@
             "sender": "System",
             "messageText": "HESOYAM",
             "collectionTimeHours": 48,
-            "associatedEvent": "Promo"
+            "associatedEvent": "Promo",
+			"maxToSendPlayer": 1
         },
         "PraporGiftDay1": {
             "items": [
@@ -1225,7 +1234,8 @@
             "sender": "Trader",
             "trader": "PRAPOR",
             "localeTextId": "5fd4c8b59e4b2a58b34bbd28 0",
-            "collectionTimeHours": 48
+            "collectionTimeHours": 48,
+			"maxToSendPlayer": 1
         },
         "PraporGiftDay2": {
             "items": [
@@ -1260,7 +1270,8 @@
             "sender": "Trader",
             "trader": "PRAPOR",
             "localeTextId": "5fd4c8d49e4b2a58b34bbd29 0",
-            "collectionTimeHours": 48
+            "collectionTimeHours": 48,
+			"maxToSendPlayer": 1
         },
         "KAPPA4U": {
             "items": [
@@ -1277,7 +1288,8 @@
             "sender": "System",
             "messageText": "Easy Kappa",
             "collectionTimeHours": 48,
-            "associatedEvent": "Promo"
+            "associatedEvent": "Promo",
+			"maxToSendPlayer": 1
         },
         "ENDOFWIPE": {
             "items": [
@@ -1303,7 +1315,8 @@
             "sender": "System",
             "localeTextId": "626e5d63bc92c87fd22a943f 0",
             "collectionTimeHours": 48,
-            "associatedEvent": "Promo"
+            "associatedEvent": "Promo",
+			"maxToSendPlayer": 1
         },
         "IAMADIRTYLITTLEGOBLIN": {
             "items": [
@@ -1320,7 +1333,8 @@
             "sender": "System",
             "messageText": "You dirty little cheating goblin",
             "collectionTimeHours": 48,
-            "associatedEvent": "Promo"
+            "associatedEvent": "Promo",
+			"maxToSendPlayer": 5
         },
         "CHOMP": {
             "items": [
@@ -1337,7 +1351,8 @@
             "sender": "System",
             "messageText": "caw caw",
             "collectionTimeHours": 48,
-            "associatedEvent": "Promo"
+            "associatedEvent": "Promo",
+			"maxToSendPlayer": 1
         },
         "CWX": {
             "items": [
@@ -1354,7 +1369,8 @@
             "sender": "System",
             "messageText": "un oh stinky",
             "collectionTimeHours": 48,
-            "associatedEvent": "Promo"
+            "associatedEvent": "Promo",
+			"maxToSendPlayer": 1
         },
         "VALENS": {
             "items": [
@@ -1494,7 +1510,8 @@
             "sender": "System",
             "messageText": "It's time to pew pew.",
             "collectionTimeHours": 48,
-            "associatedEvent": "Promo"
+            "associatedEvent": "Promo",
+			"maxToSendPlayer": 1
         },
         "TERKOIZ": {
             "items": [
@@ -1511,7 +1528,8 @@
             "sender": "System",
             "messageText": "Out of the way, i'm a motorist",
             "collectionTimeHours": 48,
-            "associatedEvent": "Promo"
+            "associatedEvent": "Promo",
+			"maxToSendPlayer": 1
         },
         "WAFFLE": {
             "items": [
@@ -1537,7 +1555,8 @@
             "sender": "System",
             "messageText": "JONKLER NO",
             "collectionTimeHours": 48,
-            "associatedEvent": "Promo"
+            "associatedEvent": "Promo",
+			"maxToSendPlayer": 1
         },
         "NIGHTWING": {
             "items": [
@@ -1563,7 +1582,9 @@
             "sender": "System",
             "messageText": "JONKLER NO",
             "collectionTimeHours": 48,
-            "associatedEvent": "Promo"
+            "associatedEvent": "Promo",
+			"maxToSendToPlayer": 1,
+			"maxToSendPlayer": 1
         },
         "BSGBIRTHDAY2023": {
             "sender": "System",
@@ -1709,7 +1730,8 @@
                     "parentId": "652a6f5c35258f985804aa0b",
                     "slotId": "main"
                 }
-            ]
+            ],
+			"maxToSendPlayer": 1
         },
         "GROUNDZERO": {
             "items": [
@@ -1722,7 +1744,8 @@
             "sender": "System",
             "messageText": "GROUNDZERO",
             "collectionTimeHours": 48,
-            "associatedEvent": "Promo"
+            "associatedEvent": "Promo",
+			"maxToSendPlayer": 1
         },
         "IAMMIGHTY": {
             "items": [
@@ -1962,7 +1985,8 @@
             "sender": "System",
             "messageText": "IAMMIGHTY",
             "collectionTimeHours": 48,
-            "associatedEvent": "Promo"
+            "associatedEvent": "Promo",
+			"maxToSendPlayer": 1
         },
         "ARMORPLATES": {
             "items": [
@@ -2096,7 +2120,8 @@
             "sender": "System",
             "messageText": "ARMORPLATES",
             "collectionTimeHours": 48,
-            "associatedEvent": "Promo"
+            "associatedEvent": "Promo",
+			"maxToSendPlayer": 1
         },
         "RICHANDEXPENSIVE": {
             "items": [
@@ -2164,7 +2189,8 @@
             "sender": "System",
             "messageText": "RICHANDEXPENSIVE",
             "collectionTimeHours": 48,
-            "associatedEvent": "Promo"
+            "associatedEvent": "Promo",
+			"maxToSendPlayer": 1
         },
         "LEFTHANDHEADEYES": {
             "items": [
@@ -2190,7 +2216,8 @@
             "sender": "System",
             "messageText": "LEFTHANDHEADEYES",
             "collectionTimeHours": 48,
-            "associatedEvent": "Promo"
+            "associatedEvent": "Promo",
+			"maxToSendPlayer": 1
         },
         "EDITPROFILE": {
             "items": [
@@ -2612,7 +2639,8 @@
             "sender": "System",
             "localeTextId": "5a2d28f786f77436023be4a5 0",
             "collectionTimeHours": 72,
-            "associatedEvent": "Promo"
+            "associatedEvent": "Promo",
+			"maxToSendPlayer": 1
         },
         "TWITCHNEWYEARS2023": {
             "items": [
@@ -3026,7 +3054,8 @@
             "sender": "System",
             "localeTextId": "5e0653ba86f774478f700632 3",
             "collectionTimeHours": 72,
-            "associatedEvent": "Promo"
+            "associatedEvent": "Promo",
+			"maxToSendPlayer": 1
         },
         "LUNARNEWYEAR2024": {
             "items": [
@@ -3219,7 +3248,8 @@
             "sender": "System",
             "associatedEvent": "Promo",
             "collectionTimeHours": 72,
-            "messageText": "<ch>Thank you for activating the code.</ch><cz>Thank you for activating the code.</cz><en>Thank you for activating the code.</en><fr>Thank you for activating the code.</fr><ge>Thank you for activating the code.</ge><hu>Thank you for activating the code.</hu><it>Thank you for activating the code.</it><jp>Thank you for activating the code.</jp><kr>Thank you for activating the code.</kr><pl>Thank you for activating the code.</pl><po>Thank you for activating the code.</po><sk>Thank you for activating the code.</sk><es>Thank you for activating the code.</es><es-mx>Thank you for activating the code.</es-mx><tu>Thank you for activating the code.</tu><ru>Thank you for activating the code.</ru><ro>Thank you for activating the code.</ro>"
+            "messageText": "<ch>Thank you for activating the code.</ch><cz>Thank you for activating the code.</cz><en>Thank you for activating the code.</en><fr>Thank you for activating the code.</fr><ge>Thank you for activating the code.</ge><hu>Thank you for activating the code.</hu><it>Thank you for activating the code.</it><jp>Thank you for activating the code.</jp><kr>Thank you for activating the code.</kr><pl>Thank you for activating the code.</pl><po>Thank you for activating the code.</po><sk>Thank you for activating the code.</sk><es>Thank you for activating the code.</es><es-mx>Thank you for activating the code.</es-mx><tu>Thank you for activating the code.</tu><ru>Thank you for activating the code.</ru><ro>Thank you for activating the code.</ro>",
+			"maxToSendPlayer": 1
         },
         "ETSREWARD": {
             "items": [
@@ -3466,7 +3496,8 @@
             "sender": "System",
             "associatedEvent": "Promo",
             "collectionTimeHours": 72,
-            "messageText": "<ch>Greetings, warrior. I've heard you've been helping out our local hard workers with their stuff, testing everything out, so to speak. That's a good deed, soldier, great job. The higher-ups sent you a little present as a token of gratitude. Keep it up!</ch><cz>Greetings, warrior. I've heard you've been helping out our local hard workers with their stuff, testing everything out, so to speak. That's a good deed, soldier, great job. The higher-ups sent you a little present as a token of gratitude. Keep it up!</cz><en>Greetings, warrior. I've heard you've been helping out our local hard workers with their stuff, testing everything out, so to speak. That's a good deed, soldier, great job. The higher-ups sent you a little present as a token of gratitude. Keep it up!</en><fr>Greetings, warrior. I've heard you've been helping out our local hard workers with their stuff, testing everything out, so to speak. That's a good deed, soldier, great job. The higher-ups sent you a little present as a token of gratitude. Keep it up!</fr><ge>Greetings, warrior. I've heard you've been helping out our local hard workers with their stuff, testing everything out, so to speak. That's a good deed, soldier, great job. The higher-ups sent you a little present as a token of gratitude. Keep it up!</ge><hu>Greetings, warrior. I've heard you've been helping out our local hard workers with their stuff, testing everything out, so to speak. That's a good deed, soldier, great job. The higher-ups sent you a little present as a token of gratitude. Keep it up!</hu><it>Greetings, warrior. I've heard you've been helping out our local hard workers with their stuff, testing everything out, so to speak. That's a good deed, soldier, great job. The higher-ups sent you a little present as a token of gratitude. Keep it up!</it><jp>Greetings, warrior. I've heard you've been helping out our local hard workers with their stuff, testing everything out, so to speak. That's a good deed, soldier, great job. The higher-ups sent you a little present as a token of gratitude. Keep it up!</jp><kr>Greetings, warrior. I've heard you've been helping out our local hard workers with their stuff, testing everything out, so to speak. That's a good deed, soldier, great job. The higher-ups sent you a little present as a token of gratitude. Keep it up!</kr><pl>Greetings, warrior. I've heard you've been helping out our local hard workers with their stuff, testing everything out, so to speak. That's a good deed, soldier, great job. The higher-ups sent you a little present as a token of gratitude. Keep it up!</pl><po>Greetings, warrior. I've heard you've been helping out our local hard workers with their stuff, testing everything out, so to speak. That's a good deed, soldier, great job. The higher-ups sent you a little present as a token of gratitude. Keep it up!</po><sk>Greetings, warrior. I've heard you've been helping out our local hard workers with their stuff, testing everything out, so to speak. That's a good deed, soldier, great job. The higher-ups sent you a little present as a token of gratitude. Keep it up!</sk><es>Greetings, warrior. I've heard you've been helping out our local hard workers with their stuff, testing everything out, so to speak. That's a good deed, soldier, great job. The higher-ups sent you a little present as a token of gratitude. Keep it up!</es><es-mx>Greetings, warrior. I've heard you've been helping out our local hard workers with their stuff, testing everything out, so to speak. That's a good deed, soldier, great job. The higher-ups sent you a little present as a token of gratitude. Keep it up!</es-mx><tu>Greetings, warrior. I've heard you've been helping out our local hard workers with their stuff, testing everything out, so to speak. That's a good deed, soldier, great job. The higher-ups sent you a little present as a token of gratitude. Keep it up!</tu><ru>Привет, боец. Слыхал, ты местным работягам активно помогал, проверял всё на прочность, так сказать. Это дело правильное, молодец, вояка. Ребята сверху тебе за это подарочек передали в знак благодарности. Продолжай в том же духе!</ru><ro>Promo code is activated</ro>"
+            "messageText": "<ch>Greetings, warrior. I've heard you've been helping out our local hard workers with their stuff, testing everything out, so to speak. That's a good deed, soldier, great job. The higher-ups sent you a little present as a token of gratitude. Keep it up!</ch><cz>Greetings, warrior. I've heard you've been helping out our local hard workers with their stuff, testing everything out, so to speak. That's a good deed, soldier, great job. The higher-ups sent you a little present as a token of gratitude. Keep it up!</cz><en>Greetings, warrior. I've heard you've been helping out our local hard workers with their stuff, testing everything out, so to speak. That's a good deed, soldier, great job. The higher-ups sent you a little present as a token of gratitude. Keep it up!</en><fr>Greetings, warrior. I've heard you've been helping out our local hard workers with their stuff, testing everything out, so to speak. That's a good deed, soldier, great job. The higher-ups sent you a little present as a token of gratitude. Keep it up!</fr><ge>Greetings, warrior. I've heard you've been helping out our local hard workers with their stuff, testing everything out, so to speak. That's a good deed, soldier, great job. The higher-ups sent you a little present as a token of gratitude. Keep it up!</ge><hu>Greetings, warrior. I've heard you've been helping out our local hard workers with their stuff, testing everything out, so to speak. That's a good deed, soldier, great job. The higher-ups sent you a little present as a token of gratitude. Keep it up!</hu><it>Greetings, warrior. I've heard you've been helping out our local hard workers with their stuff, testing everything out, so to speak. That's a good deed, soldier, great job. The higher-ups sent you a little present as a token of gratitude. Keep it up!</it><jp>Greetings, warrior. I've heard you've been helping out our local hard workers with their stuff, testing everything out, so to speak. That's a good deed, soldier, great job. The higher-ups sent you a little present as a token of gratitude. Keep it up!</jp><kr>Greetings, warrior. I've heard you've been helping out our local hard workers with their stuff, testing everything out, so to speak. That's a good deed, soldier, great job. The higher-ups sent you a little present as a token of gratitude. Keep it up!</kr><pl>Greetings, warrior. I've heard you've been helping out our local hard workers with their stuff, testing everything out, so to speak. That's a good deed, soldier, great job. The higher-ups sent you a little present as a token of gratitude. Keep it up!</pl><po>Greetings, warrior. I've heard you've been helping out our local hard workers with their stuff, testing everything out, so to speak. That's a good deed, soldier, great job. The higher-ups sent you a little present as a token of gratitude. Keep it up!</po><sk>Greetings, warrior. I've heard you've been helping out our local hard workers with their stuff, testing everything out, so to speak. That's a good deed, soldier, great job. The higher-ups sent you a little present as a token of gratitude. Keep it up!</sk><es>Greetings, warrior. I've heard you've been helping out our local hard workers with their stuff, testing everything out, so to speak. That's a good deed, soldier, great job. The higher-ups sent you a little present as a token of gratitude. Keep it up!</es><es-mx>Greetings, warrior. I've heard you've been helping out our local hard workers with their stuff, testing everything out, so to speak. That's a good deed, soldier, great job. The higher-ups sent you a little present as a token of gratitude. Keep it up!</es-mx><tu>Greetings, warrior. I've heard you've been helping out our local hard workers with their stuff, testing everything out, so to speak. That's a good deed, soldier, great job. The higher-ups sent you a little present as a token of gratitude. Keep it up!</tu><ru>Привет, боец. Слыхал, ты местным работягам активно помогал, проверял всё на прочность, так сказать. Это дело правильное, молодец, вояка. Ребята сверху тебе за это подарочек передали в знак благодарности. Продолжай в том же духе!</ru><ro>Promo code is activated</ro>",
+			"maxToSendPlayer": 1
         },
         "KONTOROVICH": {
             "items": [
@@ -3662,7 +3693,8 @@
             "sender": "System",
             "associatedEvent": "Promo",
             "collectionTimeHours": 72,
-            "messageText": "Thank you for purchasing of the first book in EFT series by A, Kontorovich. We are glad to give you this theme package with ingame items."
+            "messageText": "Thank you for purchasing of the first book in EFT series by A, Kontorovich. We are glad to give you this theme package with ingame items.",
+			"maxToSendPlayer": 1
         },
         "UNHEARD": {
             "items": [
@@ -3679,7 +3711,8 @@
             "sender": "System",
             "messageText": "Have a nice 20 minute adventure in the blatant plagiarist game. In and out",
             "collectionTimeHours": 72,
-            "associatedEvent": "Promo"
+            "associatedEvent": "Promo",
+			"maxToSendPlayer": 1
         },
 		"TOURNAMENTGIFT": {
 			"items": [{
@@ -5440,7 +5473,8 @@
 						"value": 1,
 						"entity": "5c0647fdd443bc2504c2d371"
 					}
-                ]
+                ],
+			"maxToSendPlayer": 1
 		},
 		"HIDEOUTCAT": {
             "items": [
@@ -5457,7 +5491,8 @@
             "sender": "System",
             "associatedEvent": "Promo",
             "collectionTimeHours": 72,
-            "messageText": "Hideout cat."
+            "messageText": "Hideout cat.",
+			"maxToSendPlayer": 1
         },
 		"KILLA": {
             "items": [{
@@ -5481,7 +5516,8 @@
             "sender": "System",
             "messageText": "TarkovTV May 2024 gift",
             "collectionTimeHours": 48,
-            "associatedEvent": "Promo"
+            "associatedEvent": "Promo",
+			"maxToSendPlayer": 1
         },
 		"BITCOIN": {
             "items": [{
@@ -5709,7 +5745,8 @@
             "sender": "System",
             "messageText": "TarkovTV May 2024 gift",
             "collectionTimeHours": 48,
-            "associatedEvent": "Promo"
+            "associatedEvent": "Promo",
+			"maxToSendPlayer": 1
         },
 		"GROUNDZERO2": {
             "items": [{
@@ -5865,7 +5902,8 @@
             "sender": "System",
             "messageText": "TarkovTV May 2024 gift",
             "collectionTimeHours": 48,
-            "associatedEvent": "Promo"
+            "associatedEvent": "Promo",
+			"maxToSendPlayer": 1
         },
 		"OBDOLBOS": {
             "items": [{
@@ -6001,7 +6039,8 @@
             "sender": "System",
             "messageText": "TarkovTV May 2024 gift",
             "collectionTimeHours": 48,
-            "associatedEvent": "Promo"
+            "associatedEvent": "Promo",
+			"maxToSendPlayer": 1
         },
 		"THICC": {
             "items": [{
@@ -6136,7 +6175,8 @@
             "sender": "System",
             "messageText": "TarkovTV May 2024 gift",
             "collectionTimeHours": 48,
-            "associatedEvent": "Promo"
+            "associatedEvent": "Promo",
+			"maxToSendPlayer": 1
         }
     }
 }

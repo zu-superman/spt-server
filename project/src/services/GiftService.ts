@@ -56,7 +56,7 @@ export class GiftService
             return GiftSentResult.FAILED_GIFT_DOESNT_EXIST;
         }
 
-        if (this.profileHelper.playerHasRecievedGift(playerId, giftId))
+        if (this.profileHelper.playerHasRecievedMaxNumberOfGift(playerId, giftId))
         {
             this.logger.debug(`Player already recieved gift: ${giftId}`);
 
@@ -154,7 +154,7 @@ export class GiftService
             this.mailSendService.sendMessageToPlayer(details);
         }
 
-        this.profileHelper.addGiftReceivedFlagToProfile(playerId, giftId);
+        this.profileHelper.flagGiftReceivedInProfile(playerId, giftId, giftData.maxToSendPlayer ?? 1);
 
         return GiftSentResult.SUCCESS;
     }
@@ -208,13 +208,13 @@ export class GiftService
         switch (day)
         {
             case 1:
-                if (this.profileHelper.playerHasRecievedGift(sessionId, "PraporGiftDay1"))
+                if (this.profileHelper.playerHasRecievedMaxNumberOfGift(sessionId, "PraporGiftDay1"))
                 {
                     this.sendGiftToPlayer(sessionId, "PraporGiftDay1");
                 }
                 break;
             case 2:
-                if (this.profileHelper.playerHasRecievedGift(sessionId, "PraporGiftDay2"))
+                if (this.profileHelper.playerHasRecievedMaxNumberOfGift(sessionId, "PraporGiftDay2"))
                 {
                     this.sendGiftToPlayer(sessionId, "PraporGiftDay2");
                 }

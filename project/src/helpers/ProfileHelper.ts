@@ -367,17 +367,32 @@ export class ProfileHelper
      * Store giftid in profile spt object
      * @param playerId Player to add gift flag to
      * @param giftId Gift player received
+     * @param maxCount Limit of how many of this gift a player can have
      */
-    public addGiftReceivedFlagToProfile(playerId: string, giftId: string): void
+    public flagGiftReceivedInProfile(playerId: string, giftId: string, maxCount: number): void
     {
         const profileToUpdate = this.getFullProfile(playerId);
-        const giftHistory = profileToUpdate.spt.receivedGifts;
-        if (!giftHistory)
-        {
-            profileToUpdate.spt.receivedGifts = [];
-        }
 
-        profileToUpdate.spt.receivedGifts.push({ giftId: giftId, timestampAccepted: this.timeUtil.getTimestamp() });
+        // nullguard receivedGifts
+        profileToUpdate.spt.receivedGifts ||= [];
+
+        const giftData = profileToUpdate.spt.receivedGifts.find((gift) => gift.giftId === giftId);
+        if (giftData)
+        {
+            // Increment counter
+            giftData.current++;
+        }
+        else
+        {
+            // Player has never received gift, make a new object
+            profileToUpdate.spt.receivedGifts.push(
+                {
+                    giftId: giftId,
+                    timestampLastAccepted: this.timeUtil.getTimestamp(),
+                    max: maxCount,
+                    current: 1,
+                });
+        }
     }
 
     /**
@@ -386,7 +401,7 @@ export class ProfileHelper
      * @param giftId Gift to check for
      * @returns True if player has recieved gift previously
      */
-    public playerHasRecievedGift(playerId: string, giftId: string): boolean
+    public playerHasRecievedMaxNumberOfGift(playerId: string, giftId: string): boolean
     {
         const profile = this.getFullProfile(playerId);
         if (!profile)
@@ -400,7 +415,13 @@ export class ProfileHelper
             return false;
         }
 
-        return !!profile.spt.receivedGifts.find((x) => x.giftId === giftId);
+        const giftDataFromProfile = profile.spt.receivedGifts.find((x) => x.giftId === giftId);
+        if (!giftDataFromProfile)
+        {
+            return false;
+        }
+
+        return giftDataFromProfile.current >= giftDataFromProfile.max;
     }
 
     /**
