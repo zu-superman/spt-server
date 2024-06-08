@@ -529,6 +529,7 @@ export class RepairService
         }
         const template = hasTemplate[1];
 
+        // Returns SkillTypes.LIGHT_VESTS/HEAVY_VESTS/WEAPON_TREATMENT
         const itemSkillType = this.getItemSkillType(template);
         if (!itemSkillType)
         {
@@ -595,6 +596,7 @@ export class RepairService
             BaseClasses.ARMOR,
             BaseClasses.VEST,
             BaseClasses.HEADWEAR,
+            BaseClasses.ARMOR_PLATE,
         ]);
 
         if (isArmorRelated)
