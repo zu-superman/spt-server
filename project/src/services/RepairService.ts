@@ -469,6 +469,7 @@ export class RepairService
                     BaseClasses.ARMOR,
                     BaseClasses.VEST,
                     BaseClasses.HEADWEAR,
+                    BaseClasses.ARMOR_PLATE,
                 ])
             )
             {
