@@ -21,6 +21,11 @@ export class ConfigServer
 
     public getConfig<T>(configType: ConfigTypes): T
     {
+        if (!this.configs[configType])
+        {
+            throw new Error(`Config: ${configType} is undefined. Ensure you have not broken it via editing`);
+        }
+
         return this.configs[configType];
     }
 

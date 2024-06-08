@@ -142,12 +142,13 @@ export class TradeHelper
             {
                 // Update assort/flea item values
                 const traderAssorts = this.traderHelper.getTraderAssortsByTraderId(buyRequestData.tid).items;
-                const itemPurchased = traderAssorts.find((x) => x._id === buyRequestData.item_id);
+                const itemPurchased = traderAssorts.find((item) => item._id === buyRequestData.item_id);
 
                 // Ensure purchase does not exceed trader item limit
                 const assortHasBuyRestrictions = this.itemHelper.hasBuyRestrictions(itemPurchased);
                 if (assortHasBuyRestrictions)
                 {
+                    // Will throw error if check fails
                     this.checkPurchaseIsWithinTraderItemLimit(
                         sessionID,
                         buyRequestData.tid,
