@@ -3023,6 +3023,7 @@
       "_tpl": "56dff0bed2720bb0668b4567",
       "parentId": "6661c52a81bbfcdd2c071e5d",
       "slotId": "cartridges",
+      "location": 0,
       "upd": {
         "StackObjectsCount": 30
       }
@@ -3044,6 +3045,7 @@
       "_tpl": "5e023e6e34d52a55c3304f71",
       "parentId": "6661c52781bbfcdd2c071bcf",
       "slotId": "cartridges",
+      "location": 0,
       "upd": {
         "StackObjectsCount": 20
       }
@@ -3065,6 +3067,7 @@
       "_tpl": "5cadf6ddae9215051e1c23b2",
       "parentId": "6661c52a81bbfcdd2c071e9b",
       "slotId": "cartridges",
+      "location": 0,
       "upd": {
         "StackObjectsCount": 10
       }
@@ -3086,6 +3089,7 @@
       "_tpl": "58dd3ad986f77403051cba8f",
       "parentId": "6661c52781bbfcdd2c071bf9",
       "slotId": "cartridges",
+      "location": 0,
       "upd": {
         "StackObjectsCount": 20
       }
@@ -3107,6 +3111,7 @@
       "_tpl": "5cc80f8fe4a949033b0224a2",
       "parentId": "6661c52881bbfcdd2c071cea",
       "slotId": "cartridges",
+      "location": 0,
       "upd": {
         "StackObjectsCount": 50
       }
@@ -3140,6 +3145,7 @@
       "_tpl": "5a26ac0ec4a28200741e1e18",
       "parentId": "6661c52981bbfcdd2c071d89",
       "slotId": "cartridges",
+      "location": 0,
       "upd": {
         "StackObjectsCount": 30
       }
@@ -3161,6 +3167,7 @@
       "_tpl": "57a0e5022459774d1673f889",
       "parentId": "6661c52781bbfcdd2c071c31",
       "slotId": "cartridges",
+      "location": 0,
       "upd": {
         "StackObjectsCount": 20
       }
@@ -3182,6 +3189,7 @@
       "_tpl": "59e0d99486f7744a32234762",
       "parentId": "6661c52981bbfcdd2c071dbe",
       "slotId": "cartridges",
+      "location": 0,
       "upd": {
         "StackObjectsCount": 20
       }
@@ -3203,6 +3211,7 @@
       "_tpl": "5efb0cabfb3e451d70735af5",
       "parentId": "6661c52a81bbfcdd2c071eba",
       "slotId": "cartridges",
+      "location": 0,
       "upd": {
         "StackObjectsCount": 50
       }
@@ -3224,6 +3233,7 @@
       "_tpl": "60194943740c5d77f6705eea",
       "parentId": "6661c52a81bbfcdd2c071e38",
       "slotId": "cartridges",
+      "location": 0,
       "upd": {
         "StackObjectsCount": 60
       }
@@ -3233,6 +3243,7 @@
       "_tpl": "60194943740c5d77f6705eea",
       "parentId": "6661c52a81bbfcdd2c071e38",
       "slotId": "cartridges",
+      "location": 1,
       "upd": {
         "StackObjectsCount": 40
       }
@@ -3254,6 +3265,7 @@
       "_tpl": "56dff2ced2720bb4668b4567",
       "parentId": "6661c52781bbfcdd2c071be3",
       "slotId": "cartridges",
+      "location": 0,
       "upd": {
         "StackObjectsCount": 60
       }
@@ -3263,6 +3275,7 @@
       "_tpl": "56dff2ced2720bb4668b4567",
       "parentId": "6661c52781bbfcdd2c071be3",
       "slotId": "cartridges",
+      "location": 1,
       "upd": {
         "StackObjectsCount": 60
       }
@@ -3284,6 +3297,7 @@
       "_tpl": "5cadf6eeae921500134b2799",
       "parentId": "6661c52a81bbfcdd2c071e31",
       "slotId": "cartridges",
+      "location": 0,
       "upd": {
         "StackObjectsCount": 10
       }
