@@ -42,6 +42,29 @@ export class GiftService
         return !!this.giftConfig.gifts[giftId];
     }
 
+    public getGiftById(giftId: string): Gift
+    {
+        return this.giftConfig.gifts[giftId];
+    }
+
+    /**
+     * Get dictionary of all gifts
+     * @returns Dict keyed by gift id
+     */
+    public getGifts(): Record<string, Gift>
+    {
+        return this.giftConfig.gifts;
+    }
+
+    /**
+     * Get an array of all gift ids
+     * @returns string array of gift ids
+     */
+    public getGiftIds(): string[]
+    {
+        return Object.keys(this.giftConfig.gifts);
+    }
+
     /**
      * Send player a gift from a range of sources
      * @param playerId Player to send gift to / sessionId
@@ -55,8 +78,8 @@ export class GiftService
         {
             return GiftSentResult.FAILED_GIFT_DOESNT_EXIST;
         }
-
-        if (this.profileHelper.playerHasRecievedMaxNumberOfGift(playerId, giftId))
+        const maxGiftsToSendCount = giftData.maxToSendPlayer ?? 1;
+        if (this.profileHelper.playerHasRecievedMaxNumberOfGift(playerId, giftId, maxGiftsToSendCount))
         {
             this.logger.debug(`Player already recieved gift: ${giftId}`);
 
@@ -154,7 +177,7 @@ export class GiftService
             this.mailSendService.sendMessageToPlayer(details);
         }
 
-        this.profileHelper.flagGiftReceivedInProfile(playerId, giftId, giftData.maxToSendPlayer ?? 1);
+        this.profileHelper.flagGiftReceivedInProfile(playerId, giftId, maxGiftsToSendCount);
 
         return GiftSentResult.SUCCESS;
     }
@@ -205,20 +228,30 @@ export class GiftService
      */
     public sendPraporStartingGift(sessionId: string, day: number): void
     {
+        let giftId: string;
         switch (day)
         {
             case 1:
-                if (this.profileHelper.playerHasRecievedMaxNumberOfGift(sessionId, "PraporGiftDay1"))
-                {
-                    this.sendGiftToPlayer(sessionId, "PraporGiftDay1");
-                }
+            {
+                giftId = "PraporGiftDay1";
+
                 break;
+            }
             case 2:
-                if (this.profileHelper.playerHasRecievedMaxNumberOfGift(sessionId, "PraporGiftDay2"))
-                {
-                    this.sendGiftToPlayer(sessionId, "PraporGiftDay2");
-                }
+            {
+                giftId = "PraporGiftDay2";
+
                 break;
+            }
+        }
+
+        if (giftId)
+        {
+            const giftData = this.getGiftById(giftId);
+            if (!this.profileHelper.playerHasRecievedMaxNumberOfGift(sessionId, giftId, giftData.maxToSendPlayer ?? 5))
+            {
+                this.sendGiftToPlayer(sessionId, giftId);
+            }
         }
     }
 }

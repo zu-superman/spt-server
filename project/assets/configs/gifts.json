@@ -1235,7 +1235,7 @@
             "trader": "PRAPOR",
             "localeTextId": "5fd4c8b59e4b2a58b34bbd28 0",
             "collectionTimeHours": 48,
-			"maxToSendPlayer": 1
+			"maxToSendPlayer": 5
         },
         "PraporGiftDay2": {
             "items": [
@@ -1271,7 +1271,7 @@
             "trader": "PRAPOR",
             "localeTextId": "5fd4c8d49e4b2a58b34bbd29 0",
             "collectionTimeHours": 48,
-			"maxToSendPlayer": 1
+			"maxToSendPlayer": 5
         },
         "KAPPA4U": {
             "items": [

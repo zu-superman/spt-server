@@ -233,7 +233,6 @@ export interface ReceivedGift
     giftId: string
     timestampLastAccepted: number
     current: number
-    max: number
 }
 
 export interface Vitality

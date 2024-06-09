@@ -610,13 +610,14 @@ export class SeasonalEventService
     /**
      * Send gift to player if they'e not already received it
      * @param playerId Player to send gift to
-     * @param giftkey Key of gift to give
+     * @param giftKey Key of gift to give
      */
-    protected giveGift(playerId: string, giftkey: string): void
+    protected giveGift(playerId: string, giftKey: string): void
     {
-        if (!this.profileHelper.playerHasRecievedMaxNumberOfGift(playerId, giftkey))
+        const gitftData = this.giftService.getGiftById(giftKey);
+        if (!this.profileHelper.playerHasRecievedMaxNumberOfGift(playerId, giftKey, gitftData.maxToSendPlayer ?? 5))
         {
-            this.giftService.sendGiftToPlayer(playerId, giftkey);
+            this.giftService.sendGiftToPlayer(playerId, giftKey);
         }
     }
 

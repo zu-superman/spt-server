@@ -381,27 +381,27 @@ export class ProfileHelper
         {
             // Increment counter
             giftData.current++;
+
+            return;
         }
-        else
-        {
-            // Player has never received gift, make a new object
-            profileToUpdate.spt.receivedGifts.push(
-                {
-                    giftId: giftId,
-                    timestampLastAccepted: this.timeUtil.getTimestamp(),
-                    max: maxCount,
-                    current: 1,
-                });
-        }
+
+        // Player has never received gift, make a new object
+        profileToUpdate.spt.receivedGifts.push(
+            {
+                giftId: giftId,
+                timestampLastAccepted: this.timeUtil.getTimestamp(),
+                current: 1,
+            });
     }
 
     /**
      * Check if profile has recieved a gift by id
      * @param playerId Player profile to check for gift
      * @param giftId Gift to check for
+     * @param maxGiftCount Max times gift can be given to player
      * @returns True if player has recieved gift previously
      */
-    public playerHasRecievedMaxNumberOfGift(playerId: string, giftId: string): boolean
+    public playerHasRecievedMaxNumberOfGift(playerId: string, giftId: string, maxGiftCount: number): boolean
     {
         const profile = this.getFullProfile(playerId);
         if (!profile)
@@ -421,7 +421,7 @@ export class ProfileHelper
             return false;
         }
 
-        return giftDataFromProfile.current >= giftDataFromProfile.max;
+        return giftDataFromProfile.current >= maxGiftCount;
     }
 
     /**

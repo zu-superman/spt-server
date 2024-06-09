@@ -167,8 +167,12 @@ export class SptDialogueChatBot implements IDialogueChatBot
         if (requestInput === "givemespace")
         {
             const stashRowGiftId = "StashRows";
+            const maxGiftsToSendCount = this.coreConfig.features.chatbotFeatures.commandUseLimits[stashRowGiftId] ?? 5;
             if (
-                this.profileHelper.playerHasRecievedMaxNumberOfGift(sessionId, stashRowGiftId))
+                this.profileHelper.playerHasRecievedMaxNumberOfGift(
+                    sessionId,
+                    stashRowGiftId,
+                    maxGiftsToSendCount))
             {
                 this.mailSendService.sendUserMessageToPlayer(
                     sessionId,
@@ -189,7 +193,7 @@ export class SptDialogueChatBot implements IDialogueChatBot
                 this.profileHelper.flagGiftReceivedInProfile(
                     sessionId,
                     stashRowGiftId,
-                    this.coreConfig.features.chatbotFeatures.commandUseLimits[stashRowGiftId],
+                    maxGiftsToSendCount,
                 );
             }
         }

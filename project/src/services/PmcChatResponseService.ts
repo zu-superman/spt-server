@@ -11,6 +11,7 @@ import { IGiftsConfig } from "@spt/models/spt/config/IGiftsConfig";
 import { IPmcChatResponse } from "@spt/models/spt/config/IPmChatResponse";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
+import { GiftService } from "@spt/services/GiftService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { MatchBotDetailsCacheService } from "@spt/services/MatchBotDetailsCacheService";
 import { HashUtil } from "@spt/utils/HashUtil";
@@ -29,6 +30,7 @@ export class PmcChatResponseService
         @inject("NotificationSendHelper") protected notificationSendHelper: NotificationSendHelper,
         @inject("MatchBotDetailsCacheService") protected matchBotDetailsCacheService: MatchBotDetailsCacheService,
         @inject("LocalisationService") protected localisationService: LocalisationService,
+        @inject("GiftService") protected giftService: GiftService,
         @inject("WeightedRandomHelper") protected weightedRandomHelper: WeightedRandomHelper,
         @inject("ConfigServer") protected configServer: ConfigServer,
     )
@@ -147,7 +149,7 @@ export class PmcChatResponseService
         // Give the player a gift code if they were killed adn response is 'pity'.
         if (responseType === "pity")
         {
-            const giftKeys = Object.keys(this.giftConfig.gifts);
+            const giftKeys = this.giftService.getGiftIds();
             const randomGiftKey = this.randomUtil.getStringArrayValue(giftKeys);
 
             const regex: RegExp = /(%giftcode%)/gi;
