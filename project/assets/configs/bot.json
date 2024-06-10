@@ -280,20 +280,7 @@
         "pmcusec"
     ],
     "revenge": {
-        "assault": [
-            "assault",
-            "marksman",
-            "gifter"
-        ],
-        "marksman": [
-            "assault",
-            "marksman",
-            "gifter"
-        ],
-        "pmcBot": [
-            "pmcBot",
-            "gifter"
-        ],
+        "pmcBot": ["pmcBot","gifter"],
         "arenaFighter": ["pmcBot", "gifter"],
         "arenaFighterEvent": ["pmcBot", "gifter"],
         "bossKnight": ["exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye"],
