@@ -293,7 +293,13 @@
         "pmcBot": [
             "pmcBot",
             "gifter"
-        ]
+        ],
+        "arenaFighter": ["pmcBot", "gifter"],
+        "arenaFighterEvent": ["pmcBot", "gifter"],
+        "bossKnight": ["exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye"],
+        "followerBigPipe": ["exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye"],
+        "exUsec": ["exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye"],
+        "spiritWinter": ["pmcBot", "gifter"]
     },
     "itemSpawnLimits": {
         "default": {},
