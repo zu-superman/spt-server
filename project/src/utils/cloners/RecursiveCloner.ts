@@ -16,6 +16,9 @@ export class RecursiveCloner implements ICloner
 
     public clone<T>(obj: T): T
     {
+        // if null or undefined return it as is
+        if (obj === null || obj === undefined)
+            return obj;
         const typeOfObj = typeof obj;
         // no need to clone these types, they are primitives
         if (RecursiveCloner.primitives.has(typeOfObj))
@@ -39,7 +42,7 @@ export class RecursiveCloner implements ICloner
                 // This fixes an issue where null arrays were incorrectly being converted to empty objects
                 if (obj[propOf1] === null || obj[propOf1] === undefined)
                 {
-                    newObj[propOf1.toString()] = undefined;
+                    newObj[propOf1.toString()] = obj[propOf1];
                     continue;
                 }
 
