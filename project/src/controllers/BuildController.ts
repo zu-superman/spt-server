@@ -198,13 +198,9 @@ export class BuildController
 
         const profile = this.profileHelper.getFullProfile(sessionId);
 
-        if (!profile.userbuilds.magazineBuilds)
-        {
-            profile.userbuilds.magazineBuilds = [];
-        }
+        profile.userbuilds.magazineBuilds ||= [];
 
         const existingArrayId = profile.userbuilds.magazineBuilds.findIndex((item) => item.Name === request.Name);
-
         if (existingArrayId === -1)
         {
             profile.userbuilds.magazineBuilds.push(result);
