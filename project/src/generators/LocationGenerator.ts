@@ -70,7 +70,7 @@ export class LocationGenerator
     /**
      * Create an array of container objects with randomised loot
      * @param locationBase Map base to generate containers for
-     * @param staticAmmoDist Static ammo distribution - database.loot.staticAmmo
+     * @param staticAmmoDist Static ammo distribution
      * @returns Array of container objects
      */
     public generateStaticContainers(
