@@ -1055,7 +1055,8 @@
         "bigmap": [
             "5ac620eb86f7743a8e6e0da0",
             "5939e5a786f77461f11c0098",
-            "64e74a3d4d49d23b2c39d319"
+            "64e74a3d4d49d23b2c39d319",
+			"6614230055afee107f05e998"
         ],
         "interchange": [
             "64e74a5ac2b4f829615ec336"
@@ -1064,14 +1065,18 @@
             "6331bb0d1aa9f42b804997a6",
             "6398a0861c712b1e1d4dadf1",
             "6399f54b0a36db13c823ad21",
-            "64e74a64aac4cd0a7264ecdf"
+            "64e74a64aac4cd0a7264ecdf",
+			"661666458c2aa9cb1602503b"
         ],
         "rezervbase": [
             "64e74a4baac4cd0a7264ecdd",
             "6398a072e301557ae24cec92"
         ],
         "shoreline": [
-            "64e74a534d49d23b2c39d31b"
+            "64e74a534d49d23b2c39d31b",
+			"661421c7c1f2f548c50ee649",
+			"6614217b6d9d5abcad0ff098",
+			"661423200d240a5f5d0f679b"
         ],
         "tarkovstreets": [
             "638df4cc7b560b03794a18d2",
