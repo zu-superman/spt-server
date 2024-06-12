@@ -177,7 +177,7 @@ export class InraidController
             serverPmcProfile.InsuredItems,
             postRaidRequest.profile.Inventory.fastPanel,
         );
-        this.inRaidHelper.addUpdToMoneyFromRaid(postRaidRequest.profile.Inventory.items);
+        this.inRaidHelper.addStackCountToMoneyFromRaid(postRaidRequest.profile.Inventory.items);
 
         // Purge profile of equipment/container items
         this.inRaidHelper.setInventory(sessionID, serverPmcProfile, postRaidRequest.profile);
@@ -276,7 +276,7 @@ export class InraidController
         this.updatePmcHealthPostRaid(postRaidSaveRequest, pmcData);
         this.inRaidHelper.deleteInventory(pmcData, sessionID);
 
-        if (this.inRaidHelper.removeQuestItemsOnDeath())
+        if (this.inRaidHelper.shouldQuestItemsBeRemovedOnDeath())
         {
             // Find and remove the completed condition from profile if player died, otherwise quest is stuck in limbo
             // and quest items cannot be picked up again
@@ -386,7 +386,7 @@ export class InraidController
         );
 
         // Some items from client profile don't have upd objects when they're single stack items
-        this.inRaidHelper.addUpdToMoneyFromRaid(postRaidRequest.profile.Inventory.items);
+        this.inRaidHelper.addStackCountToMoneyFromRaid(postRaidRequest.profile.Inventory.items);
 
         // Reset hp/regenerate loot
         this.handlePostRaidPlayerScavProcess(serverScavProfile, sessionID, postRaidRequest, serverPmcProfile, isDead);

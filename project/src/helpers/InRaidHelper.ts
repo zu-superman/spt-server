@@ -55,7 +55,7 @@ export class InRaidHelper
      * Lookup quest item loss from lostOnDeath config
      * @returns True if items should be removed from inventory
      */
-    public removeQuestItemsOnDeath(): boolean
+    public shouldQuestItemsBeRemovedOnDeath(): boolean
     {
         return this.lostOnDeathConfig.questItems;
     }
@@ -65,7 +65,7 @@ export class InRaidHelper
      * Single stack money items have no upd object and thus no StackObjectsCount, causing issues
      * @param items Items array to check
      */
-    public addUpdToMoneyFromRaid(items: Item[]): void
+    public addStackCountToMoneyFromRaid(items: Item[]): void
     {
         for (const moneyItem of items.filter((item) => this.paymentHelper.isMoneyTpl(item._tpl)))
         {
@@ -205,12 +205,13 @@ export class InRaidHelper
     ): void
     {
         // Only copy active quests into scav profile // Progress will later to copied over to PMC profile
-        const existingActiveQuestIds = scavData.Quests?.filter((x) => x.status !== QuestStatus.AvailableForStart).map(
-            (x) => x.qid,
-        );
+        const existingActiveQuestIds = scavData.Quests
+            ?.filter((quest) => quest.status !== QuestStatus.AvailableForStart)
+            .map((x) => x.qid);
         if (existingActiveQuestIds)
         {
-            scavData.Quests = saveProgressRequest.profile.Quests.filter((x) => existingActiveQuestIds.includes(x.qid));
+            scavData.Quests = saveProgressRequest.profile.Quests
+                .filter((quest) => existingActiveQuestIds.includes(quest.qid));
         }
 
         this.profileFixerService.checkForAndFixScavProfileIssues(scavData);
@@ -298,53 +299,62 @@ export class InRaidHelper
             // Restartable quests need special actions
             else if (postRaidQuestStatus === "FailRestartable")
             {
-                // Does failed quest have requirement to collect items from raid
-                const questDbData = this.questHelper.getQuestFromDb(postRaidQuest.qid, pmcData);
-                // AvailableForFinish
-                const matchingAffFindConditions = questDbData.conditions.AvailableForFinish.filter(
-                    (condition) => condition.conditionType === "FindItem",
-                );
-                const itemsToCollect: string[] = [];
-                if (matchingAffFindConditions)
-                {
-                    // Find all items the failed quest wanted
-                    for (const condition of matchingAffFindConditions)
-                    {
-                        itemsToCollect.push(...condition.target);
-                    }
-                }
-
-                // Remove quest items from profile as quest has failed and may still be alive
-                // Required as restarting the quest from main menu does not remove value from CarriedQuestItems array
-                postRaidProfile.Stats.Eft.CarriedQuestItems = postRaidProfile.Stats.Eft.CarriedQuestItems.filter(
-                    (carriedQuestItem) => !itemsToCollect.includes(carriedQuestItem),
-                );
-
-                // Remove quest item from profile now quest is failed
-                // updateProfileBaseStats() has already passed by ref EFT.Stats, all changes applied to postRaid profile also apply to server profile
-                for (const itemTpl of itemsToCollect)
-                {
-                    // Look for sessioncounter and remove it
-                    const counterIndex = postRaidProfile.Stats.Eft.SessionCounters.Items.findIndex(
-                        (x) => x.Key.includes(itemTpl) && x.Key.includes("LootItem"),
-                    );
-                    if (counterIndex > -1)
-                    {
-                        postRaidProfile.Stats.Eft.SessionCounters.Items.splice(counterIndex, 1);
-                    }
-
-                    // Look for quest item and remove it
-                    const inventoryItemIndex = postRaidProfile.Inventory.items.findIndex((x) => x._tpl === itemTpl);
-                    if (inventoryItemIndex > -1)
-                    {
-                        postRaidProfile.Inventory.items.splice(inventoryItemIndex, 1);
-                    }
-                }
-
-                // Clear out any completed conditions
-                postRaidQuest.completedConditions = [];
+                this.handleFailRestartableQuestStatus(pmcData, postRaidProfile, postRaidQuest);
             }
         }
+    }
+
+    protected handleFailRestartableQuestStatus(
+        pmcData: IPmcData,
+        postRaidProfile: IPostRaidPmcData,
+        postRaidQuest: IQuestStatus): void
+    {
+        // Does failed quest have requirement to collect items from raid
+        const questDbData = this.questHelper.getQuestFromDb(postRaidQuest.qid, pmcData);
+
+        // AvailableForFinish
+        const matchingAffFindConditions = questDbData.conditions.AvailableForFinish.filter(
+            (condition) => condition.conditionType === "FindItem",
+        );
+        const itemsToCollect: string[] = [];
+        if (matchingAffFindConditions)
+        {
+            // Find all items the failed quest wanted
+            for (const condition of matchingAffFindConditions)
+            {
+                itemsToCollect.push(...condition.target);
+            }
+        }
+
+        // Remove quest items from profile as quest has failed and may still be alive
+        // Required as restarting the quest from main menu does not remove value from CarriedQuestItems array
+        postRaidProfile.Stats.Eft.CarriedQuestItems = postRaidProfile.Stats.Eft.CarriedQuestItems.filter(
+            (carriedQuestItem) => !itemsToCollect.includes(carriedQuestItem),
+        );
+
+        // Remove quest item from profile now quest is failed
+        // updateProfileBaseStats() has already passed by ref EFT.Stats, all changes applied to postRaid profile also apply to server profile
+        for (const itemTpl of itemsToCollect)
+        {
+            // Look for sessioncounter and remove it
+            const counterIndex = postRaidProfile.Stats.Eft.SessionCounters.Items.findIndex(
+                (counter) => counter.Key.includes(itemTpl) && counter.Key.includes("LootItem"),
+            );
+            if (counterIndex > -1)
+            {
+                postRaidProfile.Stats.Eft.SessionCounters.Items.splice(counterIndex, 1);
+            }
+
+            // Look for quest item and remove it
+            const inventoryItemIndex = postRaidProfile.Inventory.items.findIndex((x) => x._tpl === itemTpl);
+            if (inventoryItemIndex > -1)
+            {
+                postRaidProfile.Inventory.items.splice(inventoryItemIndex, 1);
+            }
+        }
+
+        // Clear out any completed conditions
+        postRaidQuest.completedConditions = [];
     }
 
     /**
@@ -425,10 +435,7 @@ export class InRaidHelper
      */
     protected updateProfileAchievements(profile: IPmcData, clientAchievements: Record<string, number>): void
     {
-        if (!profile.Achievements)
-        {
-            profile.Achievements = {};
-        }
+        profile.Achievements ||= {};
 
         for (const achievementId in clientAchievements)
         {
@@ -563,13 +570,14 @@ export class InRaidHelper
      */
     protected getBaseItemsInRigPocketAndBackpack(pmcData: IPmcData): Item[]
     {
-        const rig = pmcData.Inventory.items.find((x) => x.slotId === "TacticalVest");
-        const pockets = pmcData.Inventory.items.find((x) => x.slotId === "Pockets");
-        const backpack = pmcData.Inventory.items.find((x) => x.slotId === "Backpack");
+        const items = pmcData.Inventory.items;
+        const rig = items.find((x) => x.slotId === "TacticalVest");
+        const pockets = items.find((x) => x.slotId === "Pockets");
+        const backpack = items.find((x) => x.slotId === "Backpack");
 
-        const baseItemsInRig = pmcData.Inventory.items.filter((x) => x.parentId === rig?._id);
-        const baseItemsInPockets = pmcData.Inventory.items.filter((x) => x.parentId === pockets?._id);
-        const baseItemsInBackpack = pmcData.Inventory.items.filter((x) => x.parentId === backpack?._id);
+        const baseItemsInRig = items.filter((x) => x.parentId === rig?._id);
+        const baseItemsInPockets = items.filter((x) => x.parentId === pockets?._id);
+        const baseItemsInBackpack = items.filter((x) => x.parentId === backpack?._id);
 
         return [...baseItemsInRig, ...baseItemsInPockets, ...baseItemsInBackpack];
     }
@@ -585,7 +593,7 @@ export class InRaidHelper
         // Use pocket slotId's otherwise it deletes the root pocket item.
         const pocketSlots = ["pocket1", "pocket2", "pocket3", "pocket4"];
 
-        // No parentId = base inventory item, always keep
+        // Base inventory items are always kept
         if (!itemToCheck.parentId)
         {
             return true;
@@ -623,6 +631,7 @@ export class InRaidHelper
             return true;
         }
 
+        // All other cases item is lost
         return false;
     }
 
