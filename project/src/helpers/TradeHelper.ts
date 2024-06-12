@@ -186,6 +186,10 @@ export class TradeHelper
 
             // Get item + children for purchase
             const relevantItems = this.itemHelper.findAndReturnChildrenAsItems(traderItems, buyRequestData.item_id);
+            if (relevantItems.length === 0)
+            {
+                this.logger.error(`Purchased trader: ${buyRequestData.tid} offer: ${buyRequestData.item_id} has no items`);
+            }
             offerItems.push(...relevantItems);
         }
 
