@@ -41,6 +41,7 @@ import { EventOutputHolder } from "@spt/routers/EventOutputHolder";
 import { DatabaseService } from "@spt/services/DatabaseService";
 import { FenceService } from "@spt/services/FenceService";
 import { LocalisationService } from "@spt/services/LocalisationService";
+import { MapMarkerService } from "@spt/services/MapMarkerService";
 import { PlayerService } from "@spt/services/PlayerService";
 import { RagfairOfferService } from "@spt/services/RagfairOfferService";
 import { ICloner } from "@spt/utils/cloners/ICloner";
@@ -63,6 +64,7 @@ export class InventoryController
         @inject("QuestHelper") protected questHelper: QuestHelper,
         @inject("HideoutHelper") protected hideoutHelper: HideoutHelper,
         @inject("RagfairOfferService") protected ragfairOfferService: RagfairOfferService,
+        @inject("MapMarkerService") protected mapMarkerService: MapMarkerService,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
         @inject("PaymentHelper") protected paymentHelper: PaymentHelper,
         @inject("TraderHelper") protected traderHelper: TraderHelper,
@@ -817,16 +819,10 @@ export class InventoryController
         output: IItemEventRouterResponse,
     ): void
     {
-        // Get map from inventory
-        const mapItem = pmcData.Inventory.items.find((i) => i._id === request.item);
+        const adjustedMapItem = this.mapMarkerService.createMarkerOnMap(pmcData, request);
 
-        // add marker
-        mapItem.upd.Map = mapItem.upd.Map || { Markers: [] };
-        request.mapMarker.Note = this.sanitiseMapMarkerText(request.mapMarker.Note);
-        mapItem.upd.Map.Markers.push(request.mapMarker);
-
-        // sync with client
-        output.profileChanges[sessionID].items.change.push(mapItem);
+        // Sync with client
+        output.profileChanges[sessionID].items.change.push(adjustedMapItem);
     }
 
     /**
@@ -843,15 +839,7 @@ export class InventoryController
         output: IItemEventRouterResponse,
     ): void
     {
-        // Get map from inventory
-        const mapItem = pmcData.Inventory.items.find((i) => i._id === request.item);
-
-        // remove marker
-        const markers = mapItem.upd.Map.Markers.filter((marker) =>
-        {
-            return marker.X !== request.X && marker.Y !== request.Y;
-        });
-        mapItem.upd.Map.Markers = markers;
+        const mapItem = this.mapMarkerService.deleteMarkerFromMap(pmcData, request);
 
         // sync with client
         output.profileChanges[sessionID].items.change.push(mapItem);
@@ -871,26 +859,10 @@ export class InventoryController
         output: IItemEventRouterResponse,
     ): void
     {
-        // Get map from inventory
-        const mapItem = pmcData.Inventory.items.find((i) => i._id === request.item);
-
-        // edit marker
-        const indexOfExistingNote = mapItem.upd.Map.Markers.findIndex((m) => m.X === request.X && m.Y === request.Y);
-        request.mapMarker.Note = this.sanitiseMapMarkerText(request.mapMarker.Note);
-        mapItem.upd.Map.Markers[indexOfExistingNote] = request.mapMarker;
+        const mapItem = this.mapMarkerService.editMarkerOnMap(pmcData, request);
 
         // sync with client
         output.profileChanges[sessionID].items.change.push(mapItem);
-    }
-
-    /**
-     * Strip out characters from note string that are not: letter/numbers/unicode/spaces
-     * @param mapNoteText Marker text to sanitise
-     * @returns Sanitised map marker text
-     */
-    protected sanitiseMapMarkerText(mapNoteText: string): string
-    {
-        return mapNoteText.replace(/[^\p{L}\d ]/gu, "");
     }
 
     /**

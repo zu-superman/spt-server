@@ -214,6 +214,7 @@ import { ItemFilterService } from "@spt/services/ItemFilterService";
 import { LocaleService } from "@spt/services/LocaleService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { MailSendService } from "@spt/services/MailSendService";
+import { MapMarkerService } from "@spt/services/MapMarkerService";
 import { MatchBotDetailsCacheService } from "@spt/services/MatchBotDetailsCacheService";
 import { MatchLocationService } from "@spt/services/MatchLocationService";
 import { CustomItemService } from "@spt/services/mod/CustomItemService";
@@ -789,6 +790,7 @@ export class Container
         depContainer.register<GiftService>("GiftService", GiftService);
         depContainer.register<MailSendService>("MailSendService", MailSendService);
         depContainer.register<RaidTimeAdjustmentService>("RaidTimeAdjustmentService", RaidTimeAdjustmentService);
+        depContainer.register<MapMarkerService>("MapMarkerService", MapMarkerService);
 
         depContainer.register<ProfileActivityService>("ProfileActivityService", ProfileActivityService, {
             lifecycle: Lifecycle.Singleton,
