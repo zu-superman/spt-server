@@ -75,28 +75,34 @@ export class ProfileHelper
 
     /**
      * Get the pmc and scav profiles as an array by profile id
-     * @param sessionID
+     * @param sessionId
      * @returns Array of IPmcData objects
      */
-    public getCompleteProfile(sessionID: string): IPmcData[]
+    public getCompleteProfile(sessionId: string): IPmcData[]
     {
         const output: IPmcData[] = [];
 
-        if (this.isWiped(sessionID))
+        if (this.isWiped(sessionId))
         {
             return output;
         }
 
-        const pmcProfile = this.getPmcProfile(sessionID);
-        const scavProfile = this.getScavProfile(sessionID);
+        const fullProfile = this.getFullProfile(sessionId);
 
-        if (this.profileSnapshotService.hasProfileSnapshot(sessionID))
+        // Edge-case, true post raid
+        if (this.profileSnapshotService.hasProfileSnapshot(sessionId))
         {
-            return this.postRaidXpWorkaroundFix(sessionID, output, pmcProfile, scavProfile);
+            return this.postRaidXpWorkaroundFix(
+                sessionId,
+                fullProfile.characters.pmc,
+                fullProfile.characters.scav,
+                output,
+            );
         }
 
-        output.push(pmcProfile);
-        output.push(scavProfile);
+        // PMC must be at array index 0, scav at 1
+        output.push(fullProfile.characters.pmc);
+        output.push(fullProfile.characters.scav);
 
         return output;
     }
@@ -115,9 +121,9 @@ export class ProfileHelper
      */
     protected postRaidXpWorkaroundFix(
         sessionId: string,
-        output: IPmcData[],
         pmcProfile: IPmcData,
         scavProfile: IPmcData,
+        output: IPmcData[],
     ): IPmcData[]
     {
         const clonedPmc = this.cloner.clone(pmcProfile);
@@ -142,32 +148,21 @@ export class ProfileHelper
      * Check if a nickname is used by another profile loaded by the server
      * @param nicknameRequest nickname request object
      * @param sessionID Session id
-     * @returns True if already used
+     * @returns True if already in use
      */
     public isNicknameTaken(nicknameRequest: IValidateNicknameRequestData, sessionID: string): boolean
     {
-        for (const id in this.saveServer.getProfiles())
-        {
-            const profile = this.saveServer.getProfile(id);
-            if (!this.profileHasInfoProperty(profile))
-            {
-                continue;
-            }
+        const allProfiles = Object.values(this.saveServer.getProfiles());
 
-            // SessionIds dont match + nicknames do
-            if (
-                !this.stringsMatch(profile.info.id, sessionID)
-                && this.stringsMatch(
-                    profile.characters.pmc.Info.LowerNickname.toLowerCase(),
-                    nicknameRequest.nickname.toLowerCase(),
-                )
-            )
-            {
-                return true;
-            }
-        }
-
-        return false;
+        // Find a profile that doesn't have same session id but has same name
+        return allProfiles.some((profile) =>
+            this.profileHasInfoProperty(profile)
+            && !this.stringsMatch(profile.info.id, sessionID) // SessionIds dont match
+            && this.stringsMatch( // Nicknames do
+                profile.characters.pmc.Info.LowerNickname.toLowerCase(),
+                nicknameRequest.nickname.toLowerCase(),
+            ),
+        );
     }
 
     protected profileHasInfoProperty(profile: ISptProfile): boolean
@@ -196,23 +191,15 @@ export class ProfileHelper
      * @param pmcId Profile id to find
      * @returns IPmcData
      */
-    public getProfileByPmcId(pmcId: string): IPmcData
+    public getProfileByPmcId(pmcId: string): IPmcData | undefined
     {
-        for (const sessionID in this.saveServer.getProfiles())
-        {
-            const profile = this.saveServer.getProfile(sessionID);
-            if (profile.characters.pmc._id === pmcId)
-            {
-                return profile.characters.pmc;
-            }
-        }
-
-        return undefined;
+        return Object.values(this.saveServer.getProfiles())
+            .find((profile) => profile.characters.pmc?._id === pmcId)?.characters.pmc;
     }
 
     /**
-     * Get the experiecne for the given level
-     * @param level level to get xp for
+     * Get experience value for given level
+     * @param level Level to get xp for
      * @returns Number of xp points for level
      */
     public getExperience(level: number): number
@@ -246,7 +233,7 @@ export class ProfileHelper
 
     public getDefaultSptDataObject(): any
     {
-        return { version: this.getServerVersion() };
+        return { version: this.watermark.getVersionTag(true) };
     }
 
     /**
@@ -278,9 +265,9 @@ export class ProfileHelper
     }
 
     /**
-     * Is this user id the logged in player
-     * @param userId Id to test
-     * @returns True is the current player
+     * Is given user id a player
+     * @param userId Id to validate
+     * @returns True is a player
      */
     public isPlayer(userId: string): boolean
     {
@@ -331,11 +318,6 @@ export class ProfileHelper
     protected isWiped(sessionID: string): boolean
     {
         return this.saveServer.getProfile(sessionID).info.wipe;
-    }
-
-    protected getServerVersion(): string
-    {
-        return this.watermark.getVersionTag(true);
     }
 
     /**

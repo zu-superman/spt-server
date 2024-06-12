@@ -65,26 +65,21 @@ export class ProfileController
      */
     public getMiniProfiles(): IMiniProfile[]
     {
-        const miniProfiles: IMiniProfile[] = [];
+        const allProfiles = Object.keys(this.saveServer.getProfiles());
 
-        for (const sessionIdKey in this.saveServer.getProfiles())
-        {
-            miniProfiles.push(this.getMiniProfile(sessionIdKey));
-        }
-
-        return miniProfiles;
+        return allProfiles.map((sessionId) => this.getMiniProfile(sessionId));
     }
 
     /**
      * Handle launcher/profile/info
      */
-    public getMiniProfile(sessionID: string): any
+    public getMiniProfile(sessionID: string): IMiniProfile
     {
-        const maxlvl = this.profileHelper.getMaxLevel();
         const profile = this.saveServer.getProfile(sessionID);
         const pmc = profile.characters.pmc;
+        const maxlvl = this.profileHelper.getMaxLevel();
 
-        // make sure character completed creation
+        // Player hasn't completed profile creation process, send defaults
         if (!pmc?.Info?.Level)
         {
             return {
@@ -102,19 +97,19 @@ export class ProfileController
 
         const currlvl = pmc.Info.Level;
         const nextlvl = this.profileHelper.getExperience(currlvl + 1);
-        const result = {
+        return {
             username: profile.info.username,
             nickname: pmc.Info.Nickname,
             side: pmc.Info.Side,
             currlvl: pmc.Info.Level,
             currexp: pmc.Info.Experience ?? 0,
-            prevexp: currlvl === 0 ? 0 : this.profileHelper.getExperience(currlvl),
+            prevexp: currlvl === 0
+                ? 0
+                : this.profileHelper.getExperience(currlvl),
             nextlvl: nextlvl,
             maxlvl: maxlvl,
             sptData: profile.spt,
         };
-
-        return result;
     }
 
     /**

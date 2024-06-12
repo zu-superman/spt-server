@@ -74,14 +74,9 @@ export class LauncherController
         return result;
     }
 
-    public find(sessionIdKey: string): Info
+    public find(sessionId: string): Info
     {
-        if (sessionIdKey in this.saveServer.getProfiles())
-        {
-            return this.saveServer.getProfile(sessionIdKey).info;
-        }
-
-        return undefined;
+        return this.saveServer.getProfiles()[sessionId]?.info;
     }
 
     public login(info: ILoginRequestData): string
