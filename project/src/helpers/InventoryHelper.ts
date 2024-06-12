@@ -24,6 +24,7 @@ import { BaseClasses } from "@spt/models/enums/BaseClasses";
 import { BonusType } from "@spt/models/enums/BonusType";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { IInventoryConfig, RewardDetails } from "@spt/models/spt/config/IInventoryConfig";
+import { IOwnerInventoryItems } from "@spt/models/spt/inventory/IOwnerInventoryItems";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
 import { DatabaseServer } from "@spt/servers/DatabaseServer";
@@ -32,16 +33,6 @@ import { LocalisationService } from "@spt/services/LocalisationService";
 import { ICloner } from "@spt/utils/cloners/ICloner";
 import { HashUtil } from "@spt/utils/HashUtil";
 import { HttpResponseUtil } from "@spt/utils/HttpResponseUtil";
-
-export interface IOwnerInventoryItems
-{
-    /** Inventory items from source */
-    from: Item[]
-    /** Inventory items at destination */
-    to: Item[]
-    sameInventory: boolean
-    isMail: boolean
-}
 
 @injectable()
 export class InventoryHelper
@@ -203,10 +194,7 @@ export class InventoryHelper
             }
             else
             {
-                if (delete item.upd.SpawnedInSession)
-                {
-                    delete item.upd.SpawnedInSession;
-                }
+                delete item.upd.SpawnedInSession;
             }
         }
     }
@@ -1134,34 +1122,35 @@ export class InventoryHelper
     }
 
     /**
-     * Internal helper function to transfer an item from one profile to another.
-     * @param fromItems Inventory of the source (can be non-player)
+     * Internal helper function to transfer an item + children from one profile to another.
+     * @param sourceItems Inventory of the source (can be non-player)
      * @param toItems Inventory of the destination
-     * @param body Move request
+     * @param request Move request
      */
-    public moveItemToProfile(fromItems: Item[], toItems: Item[], body: IInventoryMoveRequestData): void
+    public moveItemToProfile(sourceItems: Item[], toItems: Item[], request: IInventoryMoveRequestData): void
     {
-        this.handleCartridges(fromItems, body);
+        this.handleCartridges(sourceItems, request);
+
         // Get all children item has, they need to move with item
-        const idsToMove = this.itemHelper.findAndReturnChildrenByItems(fromItems, body.item);
+        const idsToMove = this.itemHelper.findAndReturnChildrenByItems(sourceItems, request.item);
         for (const itemId of idsToMove)
         {
-            const itemToMove = fromItems.find((x) => x._id === itemId);
+            const itemToMove = sourceItems.find((item) => item._id === itemId);
             if (!itemToMove)
             {
                 this.logger.error(this.localisationService.getText("inventory-unable_to_find_item_to_move", itemId));
             }
 
             // Only adjust the values for parent item, not children (their values are already correctly tied to parent)
-            if (itemId === body.item)
+            if (itemId === request.item)
             {
-                itemToMove.parentId = body.to.id;
-                itemToMove.slotId = body.to.container;
+                itemToMove.parentId = request.to.id;
+                itemToMove.slotId = request.to.container;
 
-                if (body.to.location)
+                if (request.to.location)
                 {
                     // Update location object
-                    itemToMove.location = body.to.location;
+                    itemToMove.location = request.to.location;
                 }
                 else
                 {
@@ -1174,7 +1163,7 @@ export class InventoryHelper
             }
 
             toItems.push(itemToMove);
-            fromItems.splice(fromItems.indexOf(itemToMove), 1);
+            sourceItems.splice(sourceItems.indexOf(itemToMove), 1);
         }
     }
 
@@ -1182,7 +1171,7 @@ export class InventoryHelper
      * Internal helper function to move item within the same profile_f.
      * @param pmcData profile to edit
      * @param inventoryItems
-     * @param moveRequest
+     * @param moveRequest client move request
      * @returns True if move was successful
      */
     public moveItemInternal(
@@ -1194,7 +1183,7 @@ export class InventoryHelper
         this.handleCartridges(inventoryItems, moveRequest);
 
         // Find item we want to 'move'
-        const matchingInventoryItem = inventoryItems.find((x) => x._id === moveRequest.item);
+        const matchingInventoryItem = inventoryItems.find((item) => item._id === moveRequest.item);
         if (!matchingInventoryItem)
         {
             const errorMesage = `Unable to move item: ${moveRequest.item}, cannot find in inventory`;
@@ -1207,8 +1196,8 @@ export class InventoryHelper
             `${moveRequest.Action} item: ${moveRequest.item} from slotid: ${matchingInventoryItem.slotId} to container: ${moveRequest.to.container}`,
         );
 
-        // don't move shells from camora to cartridges (happens when loading shells into mts-255 revolver shotgun)
-        if (matchingInventoryItem.slotId.includes("camora_") && moveRequest.to.container === "cartridges")
+        // Don't move shells from camora to cartridges (happens when loading shells into mts-255 revolver shotgun)
+        if (matchingInventoryItem.slotId?.includes("camora_") && moveRequest.to.container === "cartridges")
         {
             this.logger.warning(
                 this.localisationService.getText("inventory-invalid_move_to_container", {
@@ -1224,14 +1213,17 @@ export class InventoryHelper
         matchingInventoryItem.parentId = moveRequest.to.id;
         matchingInventoryItem.slotId = moveRequest.to.container;
 
+        // Ensure fastpanel dict updates when item was moved out of fast-panel-accessible slot
         this.updateFastPanelBinding(pmcData, matchingInventoryItem);
 
+        // Item has location propery, ensure its value is handled
         if ("location" in moveRequest.to)
         {
             matchingInventoryItem.location = moveRequest.to.location;
         }
         else
         {
+            // Moved from slot with location to one without, clean up
             if (matchingInventoryItem.location)
             {
                 delete matchingInventoryItem.location;
@@ -1248,45 +1240,44 @@ export class InventoryHelper
      */
     protected updateFastPanelBinding(pmcData: IPmcData, itemBeingMoved: Item): void
     {
-        // Find matching itemid in fast panel
-        for (const itemKey in pmcData.Inventory.fastPanel)
+        // Find matching _id in fast panel
+        const fastPanelSlot = Object.entries(pmcData.Inventory.fastPanel)
+            .find(([itemId]) => itemId === itemBeingMoved._id);
+        if (!fastPanelSlot)
         {
-            if (pmcData.Inventory.fastPanel[itemKey] === itemBeingMoved._id)
-            {
-                // Get moved items parent
-                const itemParent = pmcData.Inventory.items.find((x) => x._id === itemBeingMoved.parentId);
+            return;
+        }
 
-                // Empty out id if item is moved to a container other than pocket/rig
-                if (itemParent && !(itemParent.slotId?.startsWith("Pockets") || itemParent.slotId === "TacticalVest"))
-                {
-                    pmcData.Inventory.fastPanel[itemKey] = "";
-                }
+        // Get moved items parent (should be container item was put into)
+        const itemParent = pmcData.Inventory.items.find((item) => item._id === itemBeingMoved.parentId);
+        if (!itemParent)
+        {
+            return;
+        }
 
-                break;
-            }
+        // Reset fast panel value if item was moved to a container other than pocket/rig (cant be used from fastpanel)
+        const wasMovedToFastPanelAccessibleContainer = ["pockets", "tacticalvest"].includes(itemParent?.slotId?.toLowerCase() ?? "");
+        if (!wasMovedToFastPanelAccessibleContainer)
+        {
+            pmcData.Inventory.fastPanel[fastPanelSlot[0]] = "";
         }
     }
 
     /**
      * Internal helper function to handle cartridges in inventory if any of them exist.
      */
-    protected handleCartridges(items: Item[], body: IInventoryMoveRequestData): void
+    protected handleCartridges(items: Item[], request: IInventoryMoveRequestData): void
     {
-        // -> Move item to different place - counts with equipping filling magazine etc
-        if (body.to.container === "cartridges")
+        // Not moving item into a cartridge slot, skip
+        if (request.to.container !== "cartridges")
         {
-            let tmpCounter = 0;
-
-            for (const itemAmmo in items)
-            {
-                if (body.to.id === items[itemAmmo].parentId)
-                {
-                    tmpCounter++;
-                }
-            }
-            // wrong location for first cartridge
-            body.to.location = tmpCounter;
+            return;
         }
+
+        // Get a count of cartridges in existing magazine
+        const cartridgeCount = items.filter((item) => item.parentId === request.to.id).length;
+
+        request.to.location = cartridgeCount;
     }
 
     /**
