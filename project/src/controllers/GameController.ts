@@ -221,8 +221,8 @@ export class GameController
 
             this.adjustLabsRaiderSpawnRate();
 
-            this.adjustHideoutCraftTimes();
-            this.adjustHideoutBuildTimes();
+            this.adjustHideoutCraftTimes(this.hideoutConfig.overrideCraftTimeSeconds);
+            this.adjustHideoutBuildTimes(this.hideoutConfig.overrideBuildTimeSeconds);
 
             this.removePraporTestMessage();
 
@@ -250,15 +250,14 @@ export class GameController
             // Flea bsg blacklist is off
             if (!this.ragfairConfig.dynamic.blacklist.enableBsgList)
             {
-                this.flagAllItemsInDbAsSellableOnFlea();
+                this.setAllDbItemsAsSellableOnFlea();
             }
         }
     }
 
-    protected adjustHideoutCraftTimes(): void
+    protected adjustHideoutCraftTimes(overrideSeconds: number): void
     {
-        const craftTimeOverrideSeconds = this.hideoutConfig.overrideCraftTimeSeconds;
-        if (craftTimeOverrideSeconds === -1)
+        if (overrideSeconds === -1)
         {
             return;
         }
@@ -266,31 +265,26 @@ export class GameController
         for (const craft of this.databaseService.getHideout().production)
         {
             // Only adjust crafts ABOVE the override
-            if (craft.productionTime > craftTimeOverrideSeconds)
-            {
-                craft.productionTime = craftTimeOverrideSeconds;
-            }
+            craft.productionTime = Math.min(craft.productionTime, overrideSeconds);
         }
     }
 
-    protected adjustHideoutBuildTimes(): void
+    /**
+     * Adjust all hideout craft times to be no higher than the override
+     */
+    protected adjustHideoutBuildTimes(overrideSeconds: number): void
     {
-        const craftTimeOverrideSeconds = this.hideoutConfig.overrideBuildTimeSeconds;
-        if (craftTimeOverrideSeconds === -1)
+        if (overrideSeconds === -1)
         {
             return;
         }
 
         for (const area of this.databaseService.getHideout().areas)
         {
-            for (const stageKey of Object.keys(area.stages))
+            for (const stage of Object.values(area.stages))
             {
-                const stage = area.stages[stageKey];
                 // Only adjust crafts ABOVE the override
-                if (stage.constructionTime > craftTimeOverrideSeconds)
-                {
-                    stage.constructionTime = craftTimeOverrideSeconds;
-                }
+                stage.constructionTime = Math.min(stage.constructionTime, overrideSeconds);
             }
         }
     }
@@ -320,13 +314,14 @@ export class GameController
     protected checkTraderRepairValuesExist(): void
     {
         const traders = this.databaseService.getTraders();
-        for (const traderKey in traders)
+        for (const trader of Object.values(traders))
         {
-            const trader = traders[traderKey];
             if (!trader?.base?.repair)
             {
                 this.logger.warning(this.localisationService.getText("trader-missing_repair_property_using_default",
                     { traderId: trader.base._id, nickname: trader.base.nickname }));
+
+                // use ragfair trader as a default
                 trader.base.repair = this.cloner.clone(traders.ragfair.base.repair);
 
                 return;
@@ -336,6 +331,8 @@ export class GameController
             {
                 this.logger.warning(this.localisationService.getText("trader-missing_repair_quality_property_using_default",
                     { traderId: trader.base._id, nickname: trader.base.nickname }));
+
+                // use ragfair trader as a default
                 trader.base.repair.quality = this.cloner.clone(
                     traders.ragfair.base.repair.quality,
                 );
@@ -347,7 +344,7 @@ export class GameController
     protected addCustomLooseLootPositions(): void
     {
         const looseLootPositionsToAdd = this.lootConfig.looseLoot;
-        for (const mapId in looseLootPositionsToAdd)
+        for (const [mapId, positionsToAdd] of Object.entries(looseLootPositionsToAdd))
         {
             if (!mapId)
             {
@@ -364,7 +361,6 @@ export class GameController
                 continue;
             }
 
-            const positionsToAdd = looseLootPositionsToAdd[mapId];
             for (const positionToAdd of positionsToAdd)
             {
                 // Exists already, add new items to existing positions pool
@@ -389,7 +385,7 @@ export class GameController
     protected adjustLooseLootSpawnProbabilities(): void
     {
         const adjustments = this.lootConfig.looseLootSpawnPointAdjustments;
-        for (const mapId in adjustments)
+        for (const [mapId, mapAdjustments] of Object.entries(adjustments))
         {
             const mapLooseLootData = this.databaseService.getLocation(mapId).looseLoot;
             if (!mapLooseLootData)
@@ -398,19 +394,20 @@ export class GameController
 
                 continue;
             }
-            const mapLootAdjustmentsDict = adjustments[mapId];
-            for (const lootKey in mapLootAdjustmentsDict)
+
+            for (const [lootKey, newChanceValue] of Object.entries(mapAdjustments))
             {
                 const lootPostionToAdjust = mapLooseLootData.spawnpoints
                     .find((spawnPoint) => spawnPoint.template.Id === lootKey);
                 if (!lootPostionToAdjust)
                 {
-                    this.logger.warning(this.localisationService.getText("location-unable_to_adjust_loot_position_on_map", { lootKey: lootKey, mapId: mapId }));
+                    this.logger.warning(this.localisationService.getText("location-unable_to_adjust_loot_position_on_map",
+                        { lootKey: lootKey, mapId: mapId }));
 
                     continue;
                 }
 
-                lootPostionToAdjust.probability = mapLootAdjustmentsDict[lootKey];
+                lootPostionToAdjust.probability = newChanceValue;
             }
         }
     }
@@ -580,7 +577,7 @@ export class GameController
         }
     }
 
-    protected flagAllItemsInDbAsSellableOnFlea(): void
+    protected setAllDbItemsAsSellableOnFlea(): void
     {
         const dbItems = Object.values(this.databaseService.getItems());
         for (const item of dbItems)
@@ -731,14 +728,20 @@ export class GameController
      */
     protected fixRoguesSpawningInstantlyOnLighthouse(): void
     {
-        const lighthouse = this.databaseService.getLocations().lighthouse!.base;
-        for (const wave of lighthouse.BossLocationSpawn)
+        const rogueSpawnDelaySeconds = this.locationConfig.rogueLighthouseSpawnTimeSettings.waitTimeSeconds;
+        const lighthouse = this.databaseService.getLocations().lighthouse?.base;
+        if (!lighthouse)
         {
-            // Find Rogues that spawn instantly
-            if (wave.BossName === "exUsec" && wave.Time === -1)
-            {
-                wave.Time = this.locationConfig.rogueLighthouseSpawnTimeSettings.waitTimeSeconds;
-            }
+            return;
+        }
+
+        // Find Rogues that spawn instantly
+        const instantRogueBossSpawns = lighthouse.BossLocationSpawn
+            .filter((spawn) => spawn.BossName === "exUsec"
+            && spawn.Time === -1);
+        for (const wave of instantRogueBossSpawns)
+        {
+            wave.Time = rogueSpawnDelaySeconds;
         }
     }
 
@@ -858,10 +861,10 @@ export class GameController
             const modDetails = activeMods[modKey];
             if (
                 fullProfile.spt.mods.some(
-                    (x) =>
-                        x.author === modDetails.author
-                        && x.name === modDetails.name
-                        && x.version === modDetails.version,
+                    (mod) =>
+                        mod.author === modDetails.author
+                        && mod.name === modDetails.name
+                        && mod.version === modDetails.version,
                 )
             )
             {
@@ -977,16 +980,16 @@ export class GameController
     protected adjustLabsRaiderSpawnRate(): void
     {
         const labsBase = this.databaseService.getLocations().laboratory!.base;
-        const nonTriggerLabsBossSpawns = labsBase.BossLocationSpawn.filter(
-            (x) => x.TriggerId === "" && x.TriggerName === "",
-        );
-        if (nonTriggerLabsBossSpawns)
+
+        // Find spawns with empty string for triggerId/TriggerName
+        const nonTriggerLabsBossSpawns = labsBase.BossLocationSpawn
+            .filter((bossSpawn) => !bossSpawn.TriggerId
+            && !bossSpawn.TriggerName);
+
+        for (const boss of nonTriggerLabsBossSpawns)
         {
-            for (const boss of nonTriggerLabsBossSpawns)
-            {
-                boss.BossChance = 100;
-                boss.Time /= 10;
-            }
+            boss.BossChance = 100;
+            boss.Time /= 10;
         }
     }
 

@@ -154,7 +154,7 @@ export class LootGenerator
                 this.itemHelper.armorItemCanHoldMods(preset._encyclopedia),
             );
             const levelFilteredArmorPresets = armorDefaultPresets.filter((armor) =>
-                this.armorIsDesiredProtectionLevel(armor, options),
+                this.isArmorOfDesiredProtectionLevel(armor, options),
             );
 
             // Add some armors to rewards
@@ -187,27 +187,21 @@ export class LootGenerator
      * @param options Loot request options - armor level etc
      * @returns True if item has desired armor level
      */
-    protected armorIsDesiredProtectionLevel(armor: IPreset, options: LootRequest): boolean
+    protected isArmorOfDesiredProtectionLevel(armor: IPreset, options: LootRequest): boolean
     {
-        const frontPlate = armor._items.find((mod) => mod?.slotId?.toLowerCase() === "front_plate");
-        if (frontPlate)
+        const relevantSlots = ["front_plate", "helmet_top", "soft_armor_front"];
+        for (const slotId of relevantSlots)
         {
-            const plateDb = this.itemHelper.getItem(frontPlate._tpl);
-            return options.armorLevelWhitelist.includes(Number.parseInt(plateDb[1]._props.armorClass as any));
-        }
+            const armorItem = armor._items.find((item) => item?.slotId?.toLowerCase() === slotId);
+            if (!armorItem)
+            {
+                continue;
+            }
 
-        const helmetTop = armor._items.find((mod) => mod?.slotId?.toLowerCase() === "helmet_top");
-        if (helmetTop)
-        {
-            const plateDb = this.itemHelper.getItem(helmetTop._tpl);
-            return options.armorLevelWhitelist.includes(Number.parseInt(plateDb[1]._props.armorClass as any));
-        }
+            const armorDetails = this.itemHelper.getItem(armorItem._tpl);
+            const armorClass = Number.parseInt(armorDetails[1]._props.armorClass as any, 10);
 
-        const softArmorFront = armor._items.find((mod) => mod?.slotId?.toLowerCase() === "soft_armor_front");
-        if (softArmorFront)
-        {
-            const plateDb = this.itemHelper.getItem(softArmorFront._tpl);
-            return options.armorLevelWhitelist.includes(Number.parseInt(plateDb[1]._props.armorClass as any));
+            return options.armorLevelWhitelist.includes(armorClass);
         }
 
         return false;
