@@ -1,5 +1,6 @@
 import { inject, injectable } from "tsyringe";
 import { IRagfairOffer } from "@spt/models/eft/ragfair/IRagfairOffer";
+import { Money } from "@spt/models/enums/Money";
 import { RagfairSort } from "@spt/models/enums/RagfairSort";
 import { DatabaseServer } from "@spt/servers/DatabaseServer";
 import { LocaleService } from "@spt/services/LocaleService";
@@ -27,6 +28,10 @@ export class RagfairSortHelper
         {
             case RagfairSort.ID:
                 offers.sort(this.sortOffersByID);
+                break;
+
+            case RagfairSort.BARTER:
+                offers.sort(this.sortOffersByBarter);
                 break;
 
             case RagfairSort.RATING:
@@ -58,6 +63,14 @@ export class RagfairSortHelper
     protected sortOffersByID(a: IRagfairOffer, b: IRagfairOffer): number
     {
         return a.intId - b.intId;
+    }
+
+    protected sortOffersByBarter(a: IRagfairOffer, b: IRagfairOffer): number
+    {
+        const moneyTpls = Object.values<string>(Money);
+        const aIsOnlyMoney = a.requirements.length == 1 && moneyTpls.includes(a.requirements[0]._tpl) ? 1 : 0;
+        const bIsOnlyMoney = b.requirements.length == 1 && moneyTpls.includes(b.requirements[0]._tpl) ? 1 : 0;
+        return aIsOnlyMoney - bIsOnlyMoney;
     }
 
     protected sortOffersByRating(a: IRagfairOffer, b: IRagfairOffer): number
