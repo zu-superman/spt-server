@@ -35625,7 +35625,7 @@
                             "Id": "Charisma",
                             "LastAccess": 0,
                             "PointsEarnedDuringSession": 0,
-                            "Progress": 0
+                            "Progress": 300
                         }, {
                             "Id": "Memory",
                             "LastAccess": 0,
@@ -36578,7 +36578,7 @@
                             "Id": "Charisma",
                             "LastAccess": 0,
                             "PointsEarnedDuringSession": 0,
-                            "Progress": 0
+                            "Progress": 300
                         }, {
                             "Id": "Memory",
                             "LastAccess": 0,
