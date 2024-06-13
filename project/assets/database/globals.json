@@ -21570,9 +21570,9 @@
       "CreditPriceTaxMultiplier": 0.05,
       "RubTaxMultiplier": 0.1,
       "TransferLimitsByGameEdition": {
-        "default": 700000,
-        "edge_of_darkness": 1000000,
-        "unheard_edition": 1000000
+        "default": 1500000,
+        "edge_of_darkness": 2500000,
+        "unheard_edition": 2500000
       },
       "TransferLimitsSettings": {
         "ResetInterval": 86400
@@ -23517,7 +23517,7 @@
             "z": 0
           },
           "ExfiltrationPriceModifier": 1.25,
-          "HostileBosses": false,
+          "HostileBosses": true,
           "HostileScavs": false,
           "PaidExitCostModifier": 1.25,
           "PriceModCleanUp": -2000,
@@ -23525,8 +23525,9 @@
           "PriceModTaxi": -200,
           "PriceModifier": 1.05,
           "ReactOnMarkOnUnknowns": false,
-          "SavageCooldownModifier": 0.2,
-          "ScavAttackSupport": true,
+          "ReactOnMarkOnUnknownsPVE": false,
+          "SavageCooldownModifier": 1.25,
+          "ScavAttackSupport": false,
           "ScavCaseTimeModifier": 1.25,
           "ScavEquipmentSpawnChanceModifier": 0
         },
@@ -23545,7 +23546,7 @@
             "z": 0
           },
           "ExfiltrationPriceModifier": 1.5,
-          "HostileBosses": false,
+          "HostileBosses": true,
           "HostileScavs": false,
           "PaidExitCostModifier": 1.5,
           "PriceModCleanUp": -4000,
@@ -23553,8 +23554,9 @@
           "PriceModTaxi": -400,
           "PriceModifier": 1.08,
           "ReactOnMarkOnUnknowns": false,
-          "SavageCooldownModifier": 0.2,
-          "ScavAttackSupport": true,
+          "ReactOnMarkOnUnknownsPVE": false,
+          "SavageCooldownModifier": 1.5,
+          "ScavAttackSupport": false,
           "ScavCaseTimeModifier": 1.5,
           "ScavEquipmentSpawnChanceModifier": -1
         },
@@ -23573,7 +23575,7 @@
             "z": 0
           },
           "ExfiltrationPriceModifier": 2,
-          "HostileBosses": false,
+          "HostileBosses": true,
           "HostileScavs": false,
           "PaidExitCostModifier": 2,
           "PriceModCleanUp": -6000,
@@ -23581,8 +23583,9 @@
           "PriceModTaxi": -600,
           "PriceModifier": 1.1,
           "ReactOnMarkOnUnknowns": false,
-          "SavageCooldownModifier": 0.2,
-          "ScavAttackSupport": true,
+          "ReactOnMarkOnUnknownsPVE": false,
+          "SavageCooldownModifier": 2,
+          "ScavAttackSupport": false,
           "ScavCaseTimeModifier": 2,
           "ScavEquipmentSpawnChanceModifier": -2
         },
@@ -23601,7 +23604,7 @@
             "z": 0
           },
           "ExfiltrationPriceModifier": 2.5,
-          "HostileBosses": false,
+          "HostileBosses": true,
           "HostileScavs": false,
           "PaidExitCostModifier": 2.5,
           "PriceModCleanUp": -8000,
@@ -23609,8 +23612,9 @@
           "PriceModTaxi": -800,
           "PriceModifier": 1.12,
           "ReactOnMarkOnUnknowns": false,
-          "SavageCooldownModifier": 0.2,
-          "ScavAttackSupport": true,
+          "ReactOnMarkOnUnknownsPVE": false,
+          "SavageCooldownModifier": 2.5,
+          "ScavAttackSupport": false,
           "ScavCaseTimeModifier": 3,
           "ScavEquipmentSpawnChanceModifier": -2
         },
@@ -23629,7 +23633,7 @@
             "z": 0
           },
           "ExfiltrationPriceModifier": 3,
-          "HostileBosses": false,
+          "HostileBosses": true,
           "HostileScavs": false,
           "PaidExitCostModifier": 3,
           "PriceModCleanUp": -10000,
@@ -23637,8 +23641,9 @@
           "PriceModTaxi": -1000,
           "PriceModifier": 1.15,
           "ReactOnMarkOnUnknowns": false,
-          "SavageCooldownModifier": 0.2,
-          "ScavAttackSupport": true,
+          "ReactOnMarkOnUnknownsPVE": false,
+          "SavageCooldownModifier": 3,
+          "ScavAttackSupport": false,
           "ScavCaseTimeModifier": 3.5,
           "ScavEquipmentSpawnChanceModifier": -3
         },
@@ -23657,16 +23662,17 @@
             "z": 0
           },
           "ExfiltrationPriceModifier": 3.5,
-          "HostileBosses": false,
-          "HostileScavs": false,
+          "HostileBosses": true,
+          "HostileScavs": true,
           "PaidExitCostModifier": 3.5,
           "PriceModCleanUp": -10000,
           "PriceModDelivery": -2000,
           "PriceModTaxi": -1000,
           "PriceModifier": 1.17,
           "ReactOnMarkOnUnknowns": false,
-          "SavageCooldownModifier": 0.2,
-          "ScavAttackSupport": true,
+          "ReactOnMarkOnUnknownsPVE": false,
+          "SavageCooldownModifier": 4,
+          "ScavAttackSupport": false,
           "ScavCaseTimeModifier": 5.5,
           "ScavEquipmentSpawnChanceModifier": -4
         },
@@ -23685,16 +23691,17 @@
             "z": 0
           },
           "ExfiltrationPriceModifier": 4,
-          "HostileBosses": false,
-          "HostileScavs": false,
+          "HostileBosses": true,
+          "HostileScavs": true,
           "PaidExitCostModifier": 4,
           "PriceModCleanUp": -10000,
           "PriceModDelivery": -2000,
           "PriceModTaxi": -1000,
           "PriceModifier": 1.2,
           "ReactOnMarkOnUnknowns": false,
-          "SavageCooldownModifier": 0.2,
-          "ScavAttackSupport": true,
+          "ReactOnMarkOnUnknownsPVE": false,
+          "SavageCooldownModifier": 6,
+          "ScavAttackSupport": false,
           "ScavCaseTimeModifier": 9,
           "ScavEquipmentSpawnChanceModifier": -5
         },
@@ -23713,7 +23720,7 @@
             "z": 0
           },
           "ExfiltrationPriceModifier": 1,
-          "HostileBosses": false,
+          "HostileBosses": true,
           "HostileScavs": false,
           "PaidExitCostModifier": 1,
           "PriceModCleanUp": 0,
@@ -23721,8 +23728,9 @@
           "PriceModTaxi": 0,
           "PriceModifier": 1,
           "ReactOnMarkOnUnknowns": false,
-          "SavageCooldownModifier": 0.2,
-          "ScavAttackSupport": true,
+          "ReactOnMarkOnUnknownsPVE": false,
+          "SavageCooldownModifier": 1,
+          "ScavAttackSupport": false,
           "ScavCaseTimeModifier": 1,
           "ScavEquipmentSpawnChanceModifier": 0
         },
@@ -23741,7 +23749,7 @@
             "z": 0
           },
           "ExfiltrationPriceModifier": 0.95,
-          "HostileBosses": false,
+          "HostileBosses": true,
           "HostileScavs": false,
           "PaidExitCostModifier": 0.95,
           "PriceModCleanUp": 1000,
@@ -23749,8 +23757,9 @@
           "PriceModTaxi": 100,
           "PriceModifier": 0.97,
           "ReactOnMarkOnUnknowns": false,
-          "SavageCooldownModifier": 0.2,
-          "ScavAttackSupport": true,
+          "ReactOnMarkOnUnknownsPVE": false,
+          "SavageCooldownModifier": 0.9,
+          "ScavAttackSupport": false,
           "ScavCaseTimeModifier": 0.95,
           "ScavEquipmentSpawnChanceModifier": 2
         },
@@ -23769,7 +23778,7 @@
             "z": 0
           },
           "ExfiltrationPriceModifier": 0.9,
-          "HostileBosses": false,
+          "HostileBosses": true,
           "HostileScavs": false,
           "PaidExitCostModifier": 0.9,
           "PriceModCleanUp": 2000,
@@ -23777,8 +23786,9 @@
           "PriceModTaxi": 200,
           "PriceModifier": 0.95,
           "ReactOnMarkOnUnknowns": false,
-          "SavageCooldownModifier": 0.2,
-          "ScavAttackSupport": true,
+          "ReactOnMarkOnUnknownsPVE": false,
+          "SavageCooldownModifier": 0.8,
+          "ScavAttackSupport": false,
           "ScavCaseTimeModifier": 0.9,
           "ScavEquipmentSpawnChanceModifier": 6
         },
@@ -23797,7 +23807,7 @@
             "z": 0
           },
           "ExfiltrationPriceModifier": 0.7,
-          "HostileBosses": false,
+          "HostileBosses": true,
           "HostileScavs": false,
           "PaidExitCostModifier": 0.8,
           "PriceModCleanUp": 4000,
@@ -23805,8 +23815,9 @@
           "PriceModTaxi": 400,
           "PriceModifier": 0.92,
           "ReactOnMarkOnUnknowns": false,
-          "SavageCooldownModifier": 0.2,
-          "ScavAttackSupport": true,
+          "ReactOnMarkOnUnknownsPVE": false,
+          "SavageCooldownModifier": 0.7,
+          "ScavAttackSupport": false,
           "ScavCaseTimeModifier": 0.8,
           "ScavEquipmentSpawnChanceModifier": 9
         },
@@ -23825,7 +23836,7 @@
             "z": 0
           },
           "ExfiltrationPriceModifier": 0.5,
-          "HostileBosses": false,
+          "HostileBosses": true,
           "HostileScavs": false,
           "PaidExitCostModifier": 0.7,
           "PriceModCleanUp": 6000,
@@ -23833,8 +23844,9 @@
           "PriceModTaxi": 600,
           "PriceModifier": 0.9,
           "ReactOnMarkOnUnknowns": false,
-          "SavageCooldownModifier": 0.2,
-          "ScavAttackSupport": true,
+          "ReactOnMarkOnUnknownsPVE": false,
+          "SavageCooldownModifier": 0.6,
+          "ScavAttackSupport": false,
           "ScavCaseTimeModifier": 0.7,
           "ScavEquipmentSpawnChanceModifier": 12
         },
@@ -23853,7 +23865,7 @@
             "z": 0
           },
           "ExfiltrationPriceModifier": 0.4,
-          "HostileBosses": false,
+          "HostileBosses": true,
           "HostileScavs": false,
           "PaidExitCostModifier": 0.6,
           "PriceModCleanUp": 8000,
@@ -23861,8 +23873,9 @@
           "PriceModTaxi": 800,
           "PriceModifier": 0.85,
           "ReactOnMarkOnUnknowns": false,
-          "SavageCooldownModifier": 0.2,
-          "ScavAttackSupport": true,
+          "ReactOnMarkOnUnknownsPVE": false,
+          "SavageCooldownModifier": 0.5,
+          "ScavAttackSupport": false,
           "ScavCaseTimeModifier": 0.6,
           "ScavEquipmentSpawnChanceModifier": 15
         },
@@ -23888,8 +23901,9 @@
           "PriceModDelivery": 2000,
           "PriceModTaxi": 1000,
           "PriceModifier": 0.8,
-          "ReactOnMarkOnUnknowns": true,
-          "SavageCooldownModifier": 0.2,
+          "ReactOnMarkOnUnknowns": false,
+          "ReactOnMarkOnUnknownsPVE": true,
+          "SavageCooldownModifier": 0.4,
           "ScavAttackSupport": true,
           "ScavCaseTimeModifier": 0.5,
           "ScavEquipmentSpawnChanceModifier": 17
@@ -26420,6 +26434,14 @@
     "Insurance": {
       "CoefOfHavingMarkOfUnknown": 0.7,
       "CoefOfSendingMessageTime": 1,
+      "EditionSendingMessageTime": {
+        "edge_of_darkness": {
+          "multiplier": 0.7
+        },
+        "eod_tue_edition": {
+          "multiplier": 0.7
+        }
+      },
       "MaxStorageTimeInHour": 72
     },
     "ItemsCommonSettings": {
