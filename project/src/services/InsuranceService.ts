@@ -206,6 +206,7 @@ export class InsuranceService
         let randomisedReturnTimeSeconds = this.randomUtil.getInt(traderMinReturnAsSeconds, traderMaxReturnAsSeconds);
 
         // Check for Mark of The Unheard in players special slots (only slot item can fit)
+        const globals = this.databaseService.getGlobals();
         const hasMarkOfUnheard = this.itemHelper.hasItemWithTpl(
             pmcData.Inventory.items,
             ItemTpl.MARK_OF_UNHEARD,
@@ -213,8 +214,14 @@ export class InsuranceService
         if (hasMarkOfUnheard)
         {
             // Reduce return time by globals multipler value
-            const globals = this.databaseService.getGlobals();
             randomisedReturnTimeSeconds *= globals.config.Insurance.CoefOfHavingMarkOfUnknown;
+        }
+
+        // EoD has 30% faster returns
+        const editionModifier = globals.config.Insurance.EditionSendingMessageTime[pmcData.Info.GameVersion];
+        if (editionModifier)
+        {
+            randomisedReturnTimeSeconds *= editionModifier.multiplier;
         }
 
         // Current time + randomised time calculated above
