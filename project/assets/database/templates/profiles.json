@@ -31351,7 +31351,8 @@
             "equipmentBuilds": {},
             "suits": [
                 "5cd946231388ce000d572fe3",
-                "5cd945d71388ce000a659dfb"
+                "5cd945d71388ce000a659dfb",
+				"666841a02537107dc508b704"
             ],
             "trader": {
                 "initialLoyaltyLevel": {
@@ -35906,7 +35907,8 @@
             "equipmentBuilds": {},
             "suits": [
                 "5cde9ec17d6c8b04723cf479",
-                "5cde9e957d6c8b0474535da7"
+                "5cde9e957d6c8b0474535da7",
+				"666841a02537107dc508b704"
             ],
             "trader": {
                 "initialLoyaltyLevel": {
