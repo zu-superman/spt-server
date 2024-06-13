@@ -80,7 +80,7 @@ export class CustomLocationWaveService
 
             for (const bossWave of bossWavesToApply[mapKey])
             {
-                if (locationBase.BossLocationSpawn.find((x) => x.sptId === bossWave.sptId))
+                if (locationBase.BossLocationSpawn.some((x) => x.sptId === bossWave.sptId))
                 {
                     // Already exists, skip
                     continue;
@@ -104,7 +104,7 @@ export class CustomLocationWaveService
 
             for (const normalWave of normalWavesToApply[mapKey])
             {
-                if (locationBase.waves.find((x) => x.sptId === normalWave.sptId))
+                if (locationBase.waves.some((x) => x.sptId === normalWave.sptId))
                 {
                     // Already exists, skip
                     continue;

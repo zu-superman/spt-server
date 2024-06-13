@@ -540,25 +540,20 @@ export class InventoryController
      */
     public tagItem(pmcData: IPmcData, body: IInventoryTagRequestData, sessionID: string): IItemEventRouterResponse
     {
-        // TODO - replace with single .find() call
-        for (const item of pmcData.Inventory.items)
+        const itemToTag = pmcData.Inventory.items.find((item) => item._id === body.item);
+        if (!itemToTag)
         {
-            if (item._id === body.item)
-            {
-                if ("upd" in item)
-                {
-                    item.upd.Tag = { Color: body.TagColor, Name: body.TagName };
-                }
-                else
-                {
-                    item.upd = { Tag: { Color: body.TagColor, Name: body.TagName } };
-                }
-
-                return this.eventOutputHolder.getOutput(sessionID);
-            }
+            return { warnings: [], profileChanges: {} };
         }
 
-        return { warnings: [], profileChanges: {} };
+        if (!itemToTag.upd)
+        {
+            itemToTag.upd = {};
+        }
+
+        itemToTag.upd.Tag = { Color: body.TagColor, Name: body.TagName };
+
+        return this.eventOutputHolder.getOutput(sessionID);
     }
 
     /**
@@ -651,12 +646,8 @@ export class InventoryController
 
         if (!itemId)
         {
-            // player inventory
-            const target = pmcData.Inventory.items.find((item) =>
-            {
-                return body.item === item._id;
-            });
-
+            // Player inventory
+            const target = pmcData.Inventory.items.find((item) => item._id === body.item);
             if (target)
             {
                 itemId = target._tpl;
@@ -719,7 +710,7 @@ export class InventoryController
         if (request.fromOwner.id === Traders.FENCE)
         {
             // Get tpl from fence assorts
-            return this.fenceService.getRawFenceAssorts().items.find((x) => x._id === request.item)._tpl;
+            return this.fenceService.getRawFenceAssorts().items.find((x) => x._id === request.item)?._tpl;
         }
 
         if (request.fromOwner.type === "Trader")
@@ -727,7 +718,7 @@ export class InventoryController
             // Not fence
             // get tpl from trader assort
             return this.databaseService.getTrader(request.fromOwner.id).assort.items
-                .find((item) => item._id === request.item)._tpl;
+                .find((item) => item._id === request.item)?._tpl;
         }
 
         if (request.fromOwner.type === "RagFair")
@@ -932,8 +923,8 @@ export class InventoryController
             // Hard coded to `SYSTEM` for now
             // TODO: make this dynamic
             const dialog = fullProfile.dialogues["59e7125688a45068a6249071"];
-            const mail = dialog.messages.find((x) => x._id === event.MessageId);
-            const mailEvent = mail.profileChangeEvents.find((x) => x._id === event.EventId);
+            const mail = dialog.messages.find((message) => message._id === event.MessageId);
+            const mailEvent = mail.profileChangeEvents.find((changeEvent) => changeEvent._id === event.EventId);
 
             switch (mailEvent.Type)
             {

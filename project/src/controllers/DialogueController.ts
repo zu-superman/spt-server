@@ -133,7 +133,7 @@ export class DialogueController
         // User to user messages are special in that they need the player to exist in them, add if they don't
         if (
             messageType === MessageType.USER_MESSAGE
-            && !dialog.Users?.find((userDialog) => userDialog._id === profile.characters.pmc.sessionId)
+            && !dialog.Users?.some((userDialog) => userDialog._id === profile.characters.pmc.sessionId)
         )
         {
             if (!dialog.Users)
@@ -237,7 +237,7 @@ export class DialogueController
         {
             result.push(...dialogUsers);
 
-            if (!result.find((userDialog) => userDialog._id === fullProfile.info.id))
+            if (!result.some((userDialog) => userDialog._id === fullProfile.info.id))
             {
                 // Player doesnt exist, add them in before returning
                 const pmcProfile = fullProfile.characters.pmc;

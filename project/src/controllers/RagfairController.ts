@@ -158,7 +158,7 @@ export class RagfairController
     public getOfferById(sessionId: string, request: IGetRagfairOfferByIdRequest): IRagfairOffer
     {
         const offers = this.ragfairOfferService.getOffers();
-        const offerToReturn = offers.find((x) => x.intId === request.id);
+        const offerToReturn = offers.find((offer) => offer.intId === request.id);
 
         return offerToReturn;
     }
@@ -659,7 +659,7 @@ export class RagfairController
         const loyalLevel = 1;
         const formattedItems: Item[] = items.map((item) =>
         {
-            const isChild = items.find((it) => it._id === item.parentId);
+            const isChild = items.some((it) => it._id === item.parentId);
 
             return {
                 _id: item._id,

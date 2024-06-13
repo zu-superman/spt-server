@@ -331,7 +331,7 @@ export class ItemHelper
 
         // Check if item has slots that match soft insert name ids
         const softInsertIds = this.getSoftInsertSlotIds();
-        if (itemDbDetails[1]._props.Slots.find((slot) => softInsertIds.includes(slot._name.toLowerCase())))
+        if (itemDbDetails[1]._props.Slots.some((slot) => softInsertIds.includes(slot._name.toLowerCase())))
         {
             return true;
         }
@@ -668,7 +668,7 @@ export class ItemHelper
             }
 
             // Items parentid matches root item AND returned items doesnt contain current child
-            if (childItem.parentId === baseItemId && !list.find((item) => childItem._id === item._id))
+            if (childItem.parentId === baseItemId && !list.some((item) => childItem._id === item._id))
             {
                 list.push(...this.findAndReturnChildrenAsItems(items, childItem._id));
             }
@@ -689,7 +689,7 @@ export class ItemHelper
 
         for (const itemFromAssort of assort)
         {
-            if (itemFromAssort.parentId === itemIdToFind && !list.find((item) => itemFromAssort._id === item._id))
+            if (itemFromAssort.parentId === itemIdToFind && !list.some((item) => itemFromAssort._id === item._id))
             {
                 list.push(itemFromAssort);
                 list = list.concat(this.findAndReturnChildrenByAssort(itemFromAssort._id, assort));
@@ -1260,7 +1260,7 @@ export class ItemHelper
         const cartridgeMaxStackSize = cartridgeDetails[1]._props.StackMaxSize;
 
         // Exit if ammo already exists in box
-        if (ammoBox.find((item) => item._tpl === cartridgeTpl))
+        if (ammoBox.some((item) => item._tpl === cartridgeTpl))
         {
             return;
         }

@@ -375,10 +375,10 @@ export class BotWeaponGenerator
             for (const modSlotTemplate of modTemplate._props.Slots.filter((slot) => slot._required))
             {
                 const slotName = modSlotTemplate._name;
-                const weaponSlotItem = weaponItemArray.find(
+                const hasWeaponSlotItem = weaponItemArray.some(
                     (weaponItem) => weaponItem.parentId === mod._id && weaponItem.slotId === slotName,
                 );
-                if (!weaponSlotItem)
+                if (!hasWeaponSlotItem)
                 {
                     this.logger.warning(
                         this.localisationService.getText("bot-weapons_required_slot_missing_item", {

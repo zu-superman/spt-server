@@ -461,8 +461,8 @@ export class BotEquipmentModGenerator
             // Force spawn chance to be 100% to ensure it gets added
             if (
                 modSlot === "mod_handguard"
-                && modToAddTemplate._props.Slots.find((slot) => slot._name === "mod_handguard")
-                && !request.weapon.find((item) => item.slotId === "mod_launcher")
+                && modToAddTemplate._props.Slots.some((slot) => slot._name === "mod_handguard")
+                && !request.weapon.some((item) => item.slotId === "mod_launcher")
             )
             {
                 // Needed for handguards with lower
@@ -473,7 +473,7 @@ export class BotEquipmentModGenerator
             // Or if mod_stock is configured to be forced on
             if (
                 modSlot === "mod_stock"
-                && modToAddTemplate._props.Slots.find(
+                && modToAddTemplate._props.Slots.some(
                     (slot) => slot._name.includes("mod_stock") || botEquipConfig.forceStock,
                 )
             )

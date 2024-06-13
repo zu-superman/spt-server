@@ -441,7 +441,7 @@ export class SeasonalEventService
                 const locations = this.databaseService.getLocations();
 
                 const mapBosses: BossLocationSpawn[] = locations[mapKey].base.BossLocationSpawn;
-                if (!mapBosses.find((bossSpawn) => bossSpawn.BossName === boss.BossName))
+                if (!mapBosses.some((bossSpawn) => bossSpawn.BossName === boss.BossName))
                 {
                     locations[mapKey].base.BossLocationSpawn.push(...bossesToAdd);
                 }

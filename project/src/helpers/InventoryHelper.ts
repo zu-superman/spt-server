@@ -1305,7 +1305,7 @@ export class InventoryHelper
      */
     public isItemInStash(pmcData: IPmcData, itemToCheck: Item): boolean
     {
-        let container = itemToCheck;
+        const container = itemToCheck;
 
         while ("parentId" in container)
         {
@@ -1314,12 +1314,12 @@ export class InventoryHelper
                 return true;
             }
 
-            container = pmcData.Inventory.items.find((item) => item._id === container.parentId);
-            if (!container)
+            if (!pmcData.Inventory.items.some((item) => item._id === container.parentId))
             {
                 break;
             }
         }
+
         return false;
     }
 }

@@ -802,9 +802,7 @@ export class HideoutHelper
      */
     protected getTotalProductionTimeSeconds(prodId: string): number
     {
-        const recipe = this.databaseService.getHideout().production.find((prod) => prod._id === prodId);
-
-        return recipe.productionTime || 0;
+        return this.databaseService.getHideout().production.find((prod) => prod._id === prodId)?.productionTime ?? 0;
     }
 
     /**

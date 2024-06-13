@@ -321,9 +321,10 @@ export class HideoutController
 
             // Set child area level to same as parent area
             pmcData.Hideout.Areas
-                .find((x) => x.type === childDbArea.type).level = pmcData.Hideout.Areas
-                    .find((x) => x.type === profileParentHideoutArea.type,
-                    ).level;
+                .find((hideoutArea) => hideoutArea.type === childDbArea.type).level
+                = pmcData.Hideout.Areas
+                        .find((x) => x.type === profileParentHideoutArea.type,
+                        ).level;
 
             // Add/upgrade stash item in player inventory
             const childDbAreaStage = childDbArea.stages[profileParentHideoutArea.level];
@@ -346,7 +347,7 @@ export class HideoutController
         hideoutStage: Stage,
     ): void
     {
-        const existingInventoryItem = pmcData.Inventory.items.find((x) => x._id === dbHideoutData._id);
+        const existingInventoryItem = pmcData.Inventory.items.find((item) => item._id === dbHideoutData._id);
         if (existingInventoryItem)
         {
             // Update existing items container tpl to point to new id (tpl)
@@ -599,7 +600,7 @@ export class HideoutController
 
         // Find the recipe of the production
         const recipe = this.databaseService.getHideout().production
-            .find((p) => p._id === body.recipeId);
+            .find((production) => production._id === body.recipeId);
 
         // Find the actual amount of items we need to remove because body can send weird data
         const recipeRequirementsClone = this.cloner.clone(
@@ -1203,7 +1204,7 @@ export class HideoutController
     public recordShootingRangePoints(sessionId: string, pmcData: IPmcData, request: IRecordShootingRangePoints): void
     {
         // Check if counter exists, add placeholder if it doesnt
-        if (!pmcData.Stats.Eft.OverallCounters.Items.find((x) => x.Key.includes("ShootingRangePoints")))
+        if (!pmcData.Stats.Eft.OverallCounters.Items.some((counter) => counter.Key.includes("ShootingRangePoints")))
         {
             pmcData.Stats.Eft.OverallCounters.Items.push({ Key: ["ShootingRangePoints"], Value: 0 });
         }

@@ -790,7 +790,7 @@ export class RagfairOfferHelper
             }
 
             if (
-                !traderAssorts[offer.user.id].items.find((item) =>
+                !traderAssorts[offer.user.id].items.some((item) =>
                 {
                     return item._id === offer.root;
                 })

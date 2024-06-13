@@ -169,7 +169,7 @@ export class InsuranceService
         for (const insuredItem of this.getInsurance(sessionId)[traderId])
         {
             // Find insured items parent
-            const insuredItemsParent = insuredItems.find((x) => x._id === insuredItem.parentId);
+            const insuredItemsParent = insuredItems.some((x) => x._id === insuredItem.parentId);
             if (!insuredItemsParent)
             {
                 // Remove location + set slotId of insured items parent

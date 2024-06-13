@@ -196,7 +196,7 @@ export class ProfileFixerService
                 = hideoutStandSecondaryAreaDb._id;
 
             // Add stash item to profile
-            const gunStandStashItem = pmcProfile.Inventory.items.find((x) => x._id === hideoutStandAreaDb._id);
+            const gunStandStashItem = pmcProfile.Inventory.items.find((item) => item._id === hideoutStandAreaDb._id);
             if (gunStandStashItem)
             {
                 gunStandStashItem._tpl = stageCurrentAt.container!;
@@ -214,7 +214,7 @@ export class ProfileFixerService
 
             // Add secondary stash item to profile
             const gunStandStashSecondaryItem = pmcProfile.Inventory.items.find(
-                (x) => x._id === hideoutStandSecondaryAreaDb._id,
+                (item) => item._id === hideoutStandSecondaryAreaDb._id,
             )!;
             if (gunStandStashItem)
             {
@@ -299,7 +299,7 @@ export class ProfileFixerService
             pmcProfile.Inventory.hideoutAreaStashes[HideoutAreas.PLACE_OF_FAME] = placeOfFameAreaDb._id;
 
             // Add stash item to profile
-            const placeOfFameStashItem = pmcProfile.Inventory.items.find((x) => x._id === placeOfFameAreaDb._id);
+            const placeOfFameStashItem = pmcProfile.Inventory.items.find((item) => item._id === placeOfFameAreaDb._id);
             if (placeOfFameStashItem)
             {
                 placeOfFameStashItem._tpl = stageCurrentlyAt.container!;
@@ -363,7 +363,7 @@ export class ProfileFixerService
 
     protected addMissingHideoutWallAreas(pmcProfile: IPmcData): void
     {
-        if (!pmcProfile.Hideout.Areas.find((x) => x.type === HideoutAreas.WEAPON_STAND))
+        if (!pmcProfile.Hideout.Areas.some((x) => x.type === HideoutAreas.WEAPON_STAND))
         {
             pmcProfile.Hideout.Areas.push({
                 type: 24,
@@ -377,7 +377,7 @@ export class ProfileFixerService
             });
         }
 
-        if (!pmcProfile.Hideout.Areas.find((x) => x.type === HideoutAreas.WEAPON_STAND_SECONDARY))
+        if (!pmcProfile.Hideout.Areas.some((x) => x.type === HideoutAreas.WEAPON_STAND_SECONDARY))
         {
             pmcProfile.Hideout.Areas.push({
                 type: 25,
@@ -767,7 +767,7 @@ export class ProfileFixerService
     {
         for (let i = 0; i < count; i++)
         {
-            if (!slots.find((x) => x.locationIndex === i))
+            if (!slots.some((x) => x.locationIndex === i))
             {
                 slots.push({ locationIndex: i });
             }
@@ -1168,9 +1168,9 @@ export class ProfileFixerService
                 const itemsHaveChildren = pmcProfile.Inventory.items.some((x) => x.parentId === key);
                 if (!itemsHaveChildren)
                 {
-                    const itemToAdjustId = pmcProfile.Inventory.items.find((x) => x._id === key)!;
-                    itemToAdjustId._id = this.hashUtil.generate();
-                    this.logger.warning(`Replace duplicate item Id: ${key} with ${itemToAdjustId._id}`);
+                    const itemToAdjust = pmcProfile.Inventory.items.find((x) => x._id === key)!;
+                    itemToAdjust._id = this.hashUtil.generate();
+                    this.logger.warning(`Replace duplicate item Id: ${key} with ${itemToAdjust._id}`);
                 }
             }
         }
@@ -1285,7 +1285,7 @@ export class ProfileFixerService
         // Get all areas from templates/profiles.json
         for (const area of profileTemplate.character.Hideout.Areas)
         {
-            if (!pmcProfile.Hideout.Areas.find((x) => x.type === area.type))
+            if (!pmcProfile.Hideout.Areas.some((x) => x.type === area.type))
             {
                 pmcProfile.Hideout.Areas.push(area);
                 this.logger.debug(`Added missing hideout area ${area.type} to profile`);
@@ -1444,7 +1444,7 @@ export class ProfileFixerService
 
         for (let i = profileQuests.length - 1; i >= 0; i--)
         {
-            if (!(quests[profileQuests[i].qid] || repeatableQuests.find((x) => x._id === profileQuests[i].qid)))
+            if (!(quests[profileQuests[i].qid] || repeatableQuests.some((x) => x._id === profileQuests[i].qid)))
             {
                 profileQuests.splice(i, 1);
                 this.logger.success("Successfully removed orphaned quest that doesnt exist in our quest data");

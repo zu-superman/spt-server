@@ -117,7 +117,7 @@ export class HealthController
         const output = this.eventOutputHolder.getOutput(sessionID);
         let resourceLeft = 0;
 
-        const itemToConsume = pmcData.Inventory.items.find((x) => x._id === request.item);
+        const itemToConsume = pmcData.Inventory.items.find((item) => item._id === request.item);
         if (!itemToConsume)
         {
             // Item not found, very bad

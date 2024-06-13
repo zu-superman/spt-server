@@ -344,12 +344,12 @@ export class BotLootGenerator
     {
         const result = [EquipmentSlots.POCKETS];
 
-        if (botInventory.items.find((item) => item.slotId === EquipmentSlots.TACTICAL_VEST))
+        if (botInventory.items.some((item) => item.slotId === EquipmentSlots.TACTICAL_VEST))
         {
             result.push(EquipmentSlots.TACTICAL_VEST);
         }
 
-        if (botInventory.items.find((item) => item.slotId === EquipmentSlots.BACKPACK))
+        if (botInventory.items.some((item) => item.slotId === EquipmentSlots.BACKPACK))
         {
             result.push(EquipmentSlots.BACKPACK);
         }

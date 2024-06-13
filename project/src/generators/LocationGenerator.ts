@@ -841,7 +841,7 @@ export class LocationGenerator
             locationTemplateToAdd.Items[0]._id = locationTemplateToAdd.Root;
 
             // Push forced location into array as long as it doesnt exist already
-            const existingLocation = lootLocationTemplates.find(
+            const existingLocation = lootLocationTemplates.some(
                 (spawnPoint) => spawnPoint.Id === locationTemplateToAdd.Id,
             );
             if (!existingLocation)

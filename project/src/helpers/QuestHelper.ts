@@ -1107,7 +1107,7 @@ export class QuestHelper
         {
             // Quest from db matches quests in profile, skip
             const questData = quests[questIdKey];
-            if (pmcProfile.Quests.find((x) => x.qid === questData._id))
+            if (pmcProfile.Quests.some((x) => x.qid === questData._id))
             {
                 continue;
             }
