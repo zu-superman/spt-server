@@ -5,6 +5,7 @@ import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { PresetHelper } from "@spt/helpers/PresetHelper";
 import { ISendMessageRequest } from "@spt/models/eft/dialog/ISendMessageRequest";
 import { IUserDialogInfo } from "@spt/models/eft/profile/ISptProfile";
+import { Money } from "@spt/models/enums/Money";
 import { IProfileChangeEvent, ProfileChangeEventType } from "@spt/models/spt/dialog/ISendMessageDetails";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { DatabaseService } from "@spt/services/DatabaseService";
@@ -99,7 +100,7 @@ export class TraderSptCommand implements ISptCommand
             [
                 {
                     _id: this.hashUtil.generate(),
-                    _tpl: "5449016a4bdc2d6f028b456f",
+                    _tpl: Money.ROUBLES,
                     upd: { StackObjectsCount: 1 },
                     parentId: this.hashUtil.generate(),
                     slotId: "main",

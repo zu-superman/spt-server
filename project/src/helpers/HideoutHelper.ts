@@ -15,6 +15,7 @@ import { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRo
 import { BonusType } from "@spt/models/enums/BonusType";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { HideoutAreas } from "@spt/models/enums/HideoutAreas";
+import { ItemTpl } from "@spt/models/enums/ItemTpl";
 import { SkillTypes } from "@spt/models/enums/SkillTypes";
 import { IHideoutConfig } from "@spt/models/spt/config/IHideoutConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
@@ -34,8 +35,6 @@ export class HideoutHelper
     public static bitcoinFarm = "5d5c205bd582a50d042a3c0e";
     public static bitcoinProductionId = "5d5c205bd582a50d042a3c0e";
     public static waterCollector = "5d5589c1f934db045e6c5492";
-    public static bitcoinTpl = "59faff1d86f7746c51718c9c";
-    public static expeditionaryFuelTank = "5d1b371186f774253763a656";
     public static maxSkillPoint = 5000;
 
     protected hideoutConfig: IHideoutConfig;
@@ -982,7 +981,7 @@ export class HideoutHelper
     {
         btcProd.Products.push({
             _id: this.hashUtil.generate(),
-            _tpl: HideoutHelper.bitcoinTpl,
+            _tpl: ItemTpl.BITCOIN,
             upd: { StackObjectsCount: 1 },
         });
 
@@ -1154,7 +1153,7 @@ export class HideoutHelper
             itemsToAdd.push([
                 {
                     _id: this.hashUtil.generate(),
-                    _tpl: HideoutHelper.bitcoinTpl,
+                    _tpl: ItemTpl.BITCOIN,
                     upd: { StackObjectsCount: 1 },
                 },
             ]);

@@ -44,14 +44,16 @@ export class RagfairHelper
     {
         switch (currency)
         {
-            case "569668774bdc2da2298b4568":
+            case Money.EUROS:
                 return "EUR";
 
-            case "5696686a4bdc2da3298b456a":
+            case Money.DOLLARS:
                 return "USD";
 
-            case "5449016a4bdc2d6f028b456f":
+            case Money.ROUBLES:
                 return "RUB";
+            case Money.GP:
+                return "GP";
             default:
                 return "";
         }

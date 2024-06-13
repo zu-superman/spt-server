@@ -281,10 +281,10 @@ export class ScavCaseRewardGenerator
     {
         const money: ITemplateItem[] = [];
         const items = this.databaseService.getItems();
-        money.push(items["5449016a4bdc2d6f028b456f"]); // rub
-        money.push(items["569668774bdc2da2298b4568"]); // euro
-        money.push(items["5696686a4bdc2da3298b456a"]); // dollar
-        money.push(items["5d235b4d86f7742e017bc88a"]); // GP
+        money.push(items[Money.ROUBLES]);
+        money.push(items[Money.EUROS]);
+        money.push(items[Money.DOLLARS]);
+        money.push(items[Money.GP]);
 
         return this.randomUtil.getArrayValue(money);
     }

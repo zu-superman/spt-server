@@ -2,6 +2,7 @@ import { inject, injectable } from "tsyringe";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { ITemplateItem, Props } from "@spt/models/eft/common/tables/ITemplateItem";
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
+import { ItemTpl } from "@spt/models/enums/ItemTpl";
 import {
     CreateItemResult,
     LocaleDetails,
@@ -223,7 +224,7 @@ export class CustomItemService
     protected addToWeaponShelf(newItemId: string): void
     {
         // Ids for wall stashes in db
-        const wallStashIds = ["6401c7b213d9b818bf0e7dd7", "64381b582bb1c5dedd0fc925", "64381b6e44b37a080d0245b9"];
+        const wallStashIds = [ItemTpl.WEAPON_STAND_STASH_1, ItemTpl.WEAPON_STAND_STASH_2, ItemTpl.WEAPON_STAND_STASH_3];
         for (const wallId of wallStashIds)
         {
             const wall = this.itemHelper.getItem(wallId);

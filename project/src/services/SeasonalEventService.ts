@@ -6,6 +6,7 @@ import { ILocation } from "@spt/models/eft/common/ILocation";
 import { BossLocationSpawn } from "@spt/models/eft/common/ILocationBase";
 import { Inventory } from "@spt/models/eft/common/tables/IBotType";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
+import { ItemTpl } from "@spt/models/enums/ItemTpl";
 import { Season } from "@spt/models/enums/Season";
 import { SeasonalEventType } from "@spt/models/enums/SeasonalEventType";
 import { IHttpConfig } from "@spt/models/spt/config/IHttpConfig";
@@ -55,30 +56,30 @@ export class SeasonalEventService
     protected get christmasEventItems(): string[]
     {
         return [
-            "5c1a1e3f2e221602b66cc4c2", // White beard
-            "5df8a6a186f77412640e2e80", // Red bauble
-            "5df8a77486f77412672a1e3f", // Violet bauble
-            "5df8a72c86f77412640e2e83", // Silver bauble
-            "5a43943586f77416ad2f06e2", // Ded moroz hat
-            "5a43957686f7742a2c2f11b0", // Santa hat
-            "61b9e1aaef9a1b5d6a79899a", // Santas's bag
+            ItemTpl.FAKE_WHITE_BEARD,
+            ItemTpl.CHRISTMAS_TREE_ORNAMENT_RED,
+            ItemTpl.CHRISTMAS_TREE_ORNAMENT_VIOLET,
+            ItemTpl.CHRISTMAS_TREE_ORNAMENT_SILVER,
+            ItemTpl.DED_MOROZ_HAT,
+            ItemTpl.SANTA_HAT,
+            ItemTpl.SANTAS_BAG,
         ];
     }
 
     protected get halloweenEventItems(): string[]
     {
         return [
-            "635267ab3c89e2112001f826", // Halloween skull mask
-            "634959225289190e5e773b3b", // Pumpkin loot box
-            "59ef13ca86f77445fd0e2483", // Jack'o'lantern helmet
-            "6176a48d732a664031271438", // Faceless mask
-            "5bd071d786f7747e707b93a3", // Jason mask
-            "5bd0716d86f774171822ef4b", // Misha Mayorov mask
-            "5bd06f5d86f77427101ad47c", // Slender mask
-            "6176a40f0b8c0312ac75a3d3", // Ghoul mask
-            "62a5c2c98ec41a51b34739c0", // Hockey player mask "Captain"
-            "62a5c333ec21e50cad3b5dc6", // Hockey player mask "Brawler"
-            "62a5c41e8ec41a51b34739c3", // Hockey player mask "Quiet"
+            ItemTpl.SPOOKY_SKULL_MASK,
+            ItemTpl.PUMPKIN_WITH_SWEETS,
+            ItemTpl.JACK_LANTERN_PUMPKIN_HELMET,
+            ItemTpl.FACELESS_MASK,
+            ItemTpl.JASON_MASK,
+            ItemTpl.MISHA_MAYOROV_MASK,
+            ItemTpl.SLENDER_MASK,
+            ItemTpl.GHOUL_MASK,
+            ItemTpl.HOCKEY_CAPTAIN_MASK,
+            ItemTpl.HOCKEY_BRAWLER_MASK,
+            ItemTpl.HOCKEY_QUIET_MASK,
         ];
     }
 
@@ -546,7 +547,7 @@ export class SeasonalEventService
 
     protected addPumpkinsToScavBackpacks(): void
     {
-        this.databaseService.getBots().types.assault.inventory.items.Backpack["634959225289190e5e773b3b"] = 400;
+        this.databaseService.getBots().types.assault.inventory.items.Backpack[ItemTpl.PUMPKIN_WITH_SWEETS] = 400;
     }
 
     /**

@@ -4,6 +4,7 @@ import { Item } from "@spt/models/eft/common/tables/IItem";
 import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
+import { ItemTpl } from "@spt/models/enums/ItemTpl";
 import { IBotConfig } from "@spt/models/spt/config/IBotConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
@@ -85,13 +86,13 @@ export class BotWeaponModLimitService
     ): boolean
     {
         // If mod or mods parent is the NcSTAR MPR45 Backup mount, allow it as it looks cool
-        const ncSTARTpl = "5649a2464bdc2d91118b45a8";
-        if (modsParent._id === ncSTARTpl || modTemplate._id === ncSTARTpl)
+        if (modsParent._id === ItemTpl.NCSTAR_MPR45_BACKUP_MOUNT
+          || modTemplate._id === ItemTpl.NCSTAR_MPR45_BACKUP_MOUNT)
         {
             // If weapon already has a longer ranged scope on it, allow ncstar to be spawned
             if (
-                weapon.some((x) =>
-                    this.itemHelper.isOfBaseclasses(x._tpl, [
+                weapon.some((item) =>
+                    this.itemHelper.isOfBaseclasses(item._tpl, [
                         BaseClasses.ASSAULT_SCOPE,
                         BaseClasses.OPTIC_SCOPE,
                         BaseClasses.SPECIAL_SCOPE,

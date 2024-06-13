@@ -1059,7 +1059,7 @@ export class FenceService
                 assorts.barter_scheme[presetWithChildrenClone[0]._id] = [
                     [
                         {
-                            _tpl: "5449016a4bdc2d6f028b456f",
+                            _tpl: Money.ROUBLES,
                             count: Math.round(itemPrice),
                         },
                     ],
@@ -1124,7 +1124,7 @@ export class FenceService
             assorts.barter_scheme[presetWithChildrenClone[0]._id] = [
                 [
                     {
-                        _tpl: "5449016a4bdc2d6f028b456f",
+                        _tpl: Money.ROUBLES,
                         count: Math.round(itemPrice),
                     },
                 ],

@@ -15,6 +15,7 @@ import { IProcessBuyTradeRequestData } from "@spt/models/eft/trade/IProcessBuyTr
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
 import { BonusType } from "@spt/models/enums/BonusType";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
+import { Money } from "@spt/models/enums/Money";
 import { SkillTypes } from "@spt/models/enums/SkillTypes";
 import { BonusSettings, IRepairConfig } from "@spt/models/spt/config/IRepairConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
@@ -132,7 +133,7 @@ export class RepairService
         const options: IProcessBuyTradeRequestData = {
             scheme_items: [
                 {
-                    id: "5449016a4bdc2d6f028b456f", // Rouble tpl
+                    id: Money.ROUBLES,
                     count: Math.round(repairCost),
                 },
             ],

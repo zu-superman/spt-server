@@ -6,6 +6,7 @@ import { PresetHelper } from "@spt/helpers/PresetHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { ISendMessageRequest } from "@spt/models/eft/dialog/ISendMessageRequest";
 import { IUserDialogInfo } from "@spt/models/eft/profile/ISptProfile";
+import { Money } from "@spt/models/enums/Money";
 import { SkillTypes } from "@spt/models/enums/SkillTypes";
 import { IProfileChangeEvent, ProfileChangeEventType } from "@spt/models/spt/dialog/ISendMessageDetails";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
@@ -125,7 +126,7 @@ export class ProfileSptCommand implements ISptCommand
             [
                 {
                     _id: this.hashUtil.generate(),
-                    _tpl: "5449016a4bdc2d6f028b456f",
+                    _tpl: Money.ROUBLES,
                     upd: { StackObjectsCount: 1 },
                     parentId: this.hashUtil.generate(),
                     slotId: "main",

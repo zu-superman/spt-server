@@ -20,6 +20,7 @@ import { ISearchFriendRequestData } from "@spt/models/eft/profile/ISearchFriendR
 import { ISearchFriendResponse } from "@spt/models/eft/profile/ISearchFriendResponse";
 import { ISptProfile, Inraid, Vitality } from "@spt/models/eft/profile/ISptProfile";
 import { IValidateNicknameRequestData } from "@spt/models/eft/profile/IValidateNicknameRequestData";
+import { ItemTpl } from "@spt/models/enums/ItemTpl";
 import { MessageType } from "@spt/models/enums/MessageType";
 import { QuestStatus } from "@spt/models/enums/QuestStatus";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
@@ -37,8 +38,6 @@ import { TimeUtil } from "@spt/utils/TimeUtil";
 @injectable()
 export class ProfileController
 {
-    protected defaultInventoryTpl = "55d7217a4bdc2d86028b456d";
-
     constructor(
         @inject("PrimaryLogger") protected logger: ILogger,
         @inject("HashUtil") protected hashUtil: HashUtil,
@@ -462,7 +461,7 @@ export class ProfileController
             skills: playerPmc.Skills,
             equipment: {
                 // Default inventory tpl
-                Id: playerPmc.Inventory.items.find((item) => item._tpl === this.defaultInventoryTpl)._id,
+                Id: playerPmc.Inventory.items.find((item) => item._tpl === ItemTpl.DEFAULT_INVENTORY)._id,
                 Items: playerPmc.Inventory.items,
             },
             achievements: playerPmc.Achievements,

@@ -3,6 +3,7 @@ import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { WeightedRandomHelper } from "@spt/helpers/WeightedRandomHelper";
 import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
+import { Money } from "@spt/models/enums/Money";
 import { IPmcConfig } from "@spt/models/spt/config/IPmcConfig";
 import { ConfigServer } from "@spt/servers/ConfigServer";
 import { DatabaseService } from "@spt/services/DatabaseService";
@@ -21,8 +22,6 @@ export class PMCLootGenerator
     protected vestLootPool: Record<string, number> = {};
     protected backpackLootPool: Record<string, number> = {};
     protected pmcConfig: IPmcConfig;
-
-    protected roubleTpl = "5449016a4bdc2d6f028b456f";
 
     constructor(
         @inject("ItemHelper") protected itemHelper: ItemHelper,
@@ -78,7 +77,7 @@ export class PMCLootGenerator
                 else
                 {
                     // Set price of item as its weight
-                    const price = this.ragfairPriceService.getDynamicItemPrice(itemToAdd._id, this.roubleTpl);
+                    const price = this.ragfairPriceService.getDynamicItemPrice(itemToAdd._id, Money.ROUBLES);
                     this.pocketLootPool[itemToAdd._id] = price;
                 }
             }
@@ -137,7 +136,7 @@ export class PMCLootGenerator
                 else
                 {
                     // Set price of item as its weight
-                    const price = this.ragfairPriceService.getDynamicItemPrice(itemToAdd._id, this.roubleTpl);
+                    const price = this.ragfairPriceService.getDynamicItemPrice(itemToAdd._id, Money.ROUBLES);
                     this.vestLootPool[itemToAdd._id] = price;
                 }
             }
@@ -206,7 +205,7 @@ export class PMCLootGenerator
                 else
                 {
                     // Set price of item as its weight
-                    const price = this.ragfairPriceService.getDynamicItemPrice(itemToAdd._id, this.roubleTpl);
+                    const price = this.ragfairPriceService.getDynamicItemPrice(itemToAdd._id, Money.ROUBLES);
                     this.backpackLootPool[itemToAdd._id] = price;
                 }
             }

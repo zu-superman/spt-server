@@ -13,6 +13,7 @@ import { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRo
 import { Insurance } from "@spt/models/eft/profile/ISptProfile";
 import { IProcessBuyTradeRequestData } from "@spt/models/eft/trade/IProcessBuyTradeRequestData";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
+import { Money } from "@spt/models/enums/Money";
 import { SkillTypes } from "@spt/models/enums/SkillTypes";
 import { IInsuranceConfig } from "@spt/models/spt/config/IInsuranceConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
@@ -35,7 +36,6 @@ import { TimeUtil } from "@spt/utils/TimeUtil";
 export class InsuranceController
 {
     protected insuranceConfig: IInsuranceConfig;
-    protected roubleTpl = "5449016a4bdc2d6f028b456f";
 
     constructor(
         @inject("PrimaryLogger") protected logger: ILogger,
@@ -518,7 +518,7 @@ export class InsuranceController
         // Get a dictionary of item tpls + their rouble price
         for (const attachment of attachments)
         {
-            const price = this.ragfairPriceService.getDynamicItemPrice(attachment._tpl, this.roubleTpl);
+            const price = this.ragfairPriceService.getDynamicItemPrice(attachment._tpl, Money.ROUBLES);
             if (price)
             {
                 result[attachment._id] = Math.round(price);
@@ -680,7 +680,7 @@ export class InsuranceController
         for (const key of body.items)
         {
             itemsToPay.push({
-                id: this.roubleTpl, // TODO: update to handle different currencies
+                id: Money.ROUBLES, // TODO: update to handle different currencies
                 count: this.insuranceService.getRoublePriceToInsureItemWithTrader(
                     pmcData, inventoryItemsHash[key],
                     body.tid),

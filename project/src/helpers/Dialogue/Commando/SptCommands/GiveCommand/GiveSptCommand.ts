@@ -9,6 +9,7 @@ import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
 import { ISendMessageRequest } from "@spt/models/eft/dialog/ISendMessageRequest";
 import { IUserDialogInfo } from "@spt/models/eft/profile/ISptProfile";
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
+import { ItemTpl } from "@spt/models/enums/ItemTpl";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { DatabaseService } from "@spt/services/DatabaseService";
 import { ItemFilterService } from "@spt/services/ItemFilterService";
@@ -32,9 +33,9 @@ export class GiveSptCommand implements ISptCommand
     private static acceptableConfidence = 0.9;
     // exception for flares
     private static excludedPresetItems = new Set<string>([
-        "62178c4d4ecf221597654e3d",
-        "6217726288ed9f0845317459",
-        "624c0b3340357b5f566e8766",
+        ItemTpl.RSP30_SIGNAL_CARTRIDGE_RED,
+        ItemTpl.RSP30_SIGNAL_CARTRIDGE_GREEN,
+        ItemTpl.RSP30_SIGNAL_CARTRIDGE_YELLOW,
     ]);
 
     protected savedCommand: Map<string, SavedCommand> = new Map<string, SavedCommand>();

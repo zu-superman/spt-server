@@ -20,6 +20,7 @@ import { BackendErrorCodes } from "@spt/models/enums/BackendErrorCodes";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { MemberCategory } from "@spt/models/enums/MemberCategory";
 import { MessageType } from "@spt/models/enums/MessageType";
+import { Money } from "@spt/models/enums/Money";
 import { Traders } from "@spt/models/enums/Traders";
 import { IRagfairConfig } from "@spt/models/spt/config/IRagfairConfig";
 import { ITraderConfig } from "@spt/models/spt/config/ITraderConfig";
@@ -39,8 +40,6 @@ import { TimeUtil } from "@spt/utils/TimeUtil";
 @injectable()
 export class TradeController
 {
-    protected roubleTpl = "5449016a4bdc2d6f028b456f";
-
     protected ragfairConfig: IRagfairConfig;
     protected traderConfig: ITraderConfig;
 
@@ -276,7 +275,7 @@ export class TradeController
         // Create single currency item with all currency on it
         const rootCurrencyReward = {
             _id: this.hashUtil.generate(),
-            _tpl: this.roubleTpl,
+            _tpl: Money.ROUBLES,
             upd: { StackObjectsCount: roublesToSend },
         };
 

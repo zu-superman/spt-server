@@ -72,6 +72,24 @@ export class ItemHelper
     }
 
     /**
+     * Get the desired item from provided pool
+     * @param itemPool Item collection to search
+     * @param item Item to look for
+     * @param slotId OPTIONAL - slotid of desired item
+     * @returns Item or undefined
+     */
+    public getItemFromPool(itemPool: Item[], item: ItemTpl, slotId?: string): Item | undefined
+    {
+    // Filter the pool by slotId if provided
+        const filteredPool = (slotId)
+            ? itemPool.filter((item) => item.slotId?.startsWith(slotId))
+            : itemPool;
+
+        // Check if any item in the filtered pool matches the provided item
+        return filteredPool.find((poolItem) => poolItem._tpl === item);
+    }
+
+    /**
      * This method will compare two items (with all its children) and see if the are equivalent.
      * This method will NOT compare IDs on the items
      * @param item1 first item with all its children to compare

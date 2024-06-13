@@ -19,6 +19,7 @@ import { Appearance, Health, IBotType, Inventory } from "@spt/models/eft/common/
 import { Item, Upd } from "@spt/models/eft/common/tables/IItem";
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
+import { ItemTpl } from "@spt/models/enums/ItemTpl";
 import { MemberCategory } from "@spt/models/enums/MemberCategory";
 import { BotGenerationDetails } from "@spt/models/spt/bots/BotGenerationDetails";
 import { IBotConfig } from "@spt/models/spt/config/IBotConfig";
@@ -530,13 +531,12 @@ export class BotGenerator
      */
     protected generateInventoryId(profile: IBotBase): void
     {
-        const rootInventoryItemTpl = "55d7217a4bdc2d86028b456d";
         const newInventoryItemId = this.hashUtil.generate();
 
         for (const item of profile.Inventory.items)
         {
             // Root item found, update its _id value to newly generated id
-            if (item._tpl === rootInventoryItemTpl)
+            if (item._tpl === ItemTpl.DEFAULT_INVENTORY)
             {
                 item._id = newInventoryItemId;
 

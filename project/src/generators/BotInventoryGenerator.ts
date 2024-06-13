@@ -11,6 +11,7 @@ import { Chances, Generation, IBotType, Inventory, Mods } from "@spt/models/eft/
 import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { EquipmentSlots } from "@spt/models/enums/EquipmentSlots";
+import { ItemTpl } from "@spt/models/enums/ItemTpl";
 import {
     EquipmentFilterDetails,
     EquipmentFilters,
@@ -101,27 +102,18 @@ export class BotInventoryGenerator
     protected generateInventoryBase(): PmcInventory
     {
         const equipmentId = this.hashUtil.generate();
-        const equipmentTpl = "55d7217a4bdc2d86028b456d";
-
         const stashId = this.hashUtil.generate();
-        const stashTpl = "566abbc34bdc2d92178b4576";
-
         const questRaidItemsId = this.hashUtil.generate();
-        const questRaidItemsTpl = "5963866286f7747bf429b572";
-
         const questStashItemsId = this.hashUtil.generate();
-        const questStashItemsTpl = "5963866b86f7747bfa1c4462";
-
         const sortingTableId = this.hashUtil.generate();
-        const sortingTableTpl = "602543c13fee350cd564d032";
 
         return {
             items: [
-                { _id: equipmentId, _tpl: equipmentTpl },
-                { _id: stashId, _tpl: stashTpl },
-                { _id: questRaidItemsId, _tpl: questRaidItemsTpl },
-                { _id: questStashItemsId, _tpl: questStashItemsTpl },
-                { _id: sortingTableId, _tpl: sortingTableTpl },
+                { _id: equipmentId, _tpl: ItemTpl.DEFAULT_INVENTORY },
+                { _id: stashId, _tpl: ItemTpl.STASH },
+                { _id: questRaidItemsId, _tpl: ItemTpl.STASH_QUEST_RAID_ITEMS },
+                { _id: questStashItemsId, _tpl: ItemTpl.STASH_QUEST_ITEMS },
+                { _id: sortingTableId, _tpl: ItemTpl.SORTING_TABLE },
             ],
             equipment: equipmentId,
             stash: stashId,

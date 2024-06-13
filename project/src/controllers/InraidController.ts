@@ -15,6 +15,7 @@ import { Item } from "@spt/models/eft/common/tables/IItem";
 import { IRegisterPlayerRequestData } from "@spt/models/eft/inRaid/IRegisterPlayerRequestData";
 import { ISaveProgressRequestData } from "@spt/models/eft/inRaid/ISaveProgressRequestData";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
+import { ItemTpl } from "@spt/models/enums/ItemTpl";
 import { MessageType } from "@spt/models/enums/MessageType";
 import { PlayerRaidEndState } from "@spt/models/enums/PlayerRaidEndState";
 import { QuestStatus } from "@spt/models/enums/QuestStatus";
@@ -227,23 +228,24 @@ export class InraidController
             // Not dead
 
             // Check for cultist amulets in special slot (only slot it can fit)
-            const amuletOnPlayer = serverPmcProfile.Inventory.items
-                .filter((item) => item.slotId?.startsWith("SpecialSlot"))
-                .find((item) => item._tpl === "64d0b40fbe2eed70e254e2d4");
-            if (amuletOnPlayer)
+            const sacredAmulet = this.itemHelper.getItemFromPool(
+                serverPmcProfile.Inventory.items,
+                ItemTpl.SACRED_AMULET,
+                "SpecialSlot");
+            if (sacredAmulet)
             {
                 // No charges left, delete it
-                if (amuletOnPlayer.upd.CultistAmulet.NumberOfUsages <= 0)
+                if (sacredAmulet.upd.CultistAmulet.NumberOfUsages <= 0)
                 {
                     serverPmcProfile.Inventory.items.splice(
-                        serverPmcProfile.Inventory.items.indexOf(amuletOnPlayer),
+                        serverPmcProfile.Inventory.items.indexOf(sacredAmulet),
                         1,
                     );
                 }
-                else if (amuletOnPlayer.upd.CultistAmulet.NumberOfUsages > 0)
+                else if (sacredAmulet.upd.CultistAmulet.NumberOfUsages > 0)
                 {
                     // Charges left, reduce by 1
-                    amuletOnPlayer.upd.CultistAmulet.NumberOfUsages--;
+                    sacredAmulet.upd.CultistAmulet.NumberOfUsages--;
                 }
             }
         }
