@@ -228,7 +228,7 @@ export class InraidController
             // Not dead
 
             // Check for cultist amulets in special slot (only slot it can fit)
-            const sacredAmulet = this.itemHelper.getItemFromPool(
+            const sacredAmulet = this.itemHelper.getItemFromPoolByTpl(
                 serverPmcProfile.Inventory.items,
                 ItemTpl.SACRED_AMULET,
                 "SpecialSlot");

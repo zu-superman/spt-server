@@ -206,7 +206,7 @@ export class InsuranceService
         let randomisedReturnTimeSeconds = this.randomUtil.getInt(traderMinReturnAsSeconds, traderMaxReturnAsSeconds);
 
         // Check for Mark of The Unheard in players special slots (only slot item can fit)
-        const hasMarkOfUnheard = this.itemHelper.hasItem(
+        const hasMarkOfUnheard = this.itemHelper.hasItemWithTpl(
             pmcData.Inventory.items,
             ItemTpl.MARK_OF_UNHEARD,
             "SpecialSlot");

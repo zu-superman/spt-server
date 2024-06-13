@@ -60,7 +60,7 @@ export class ItemHelper
      * @param slotId OPTIONAL - slotid of desired item
      * @returns True if pool contains item
      */
-    public hasItem(itemPool: Item[], item: ItemTpl, slotId?: string): boolean
+    public hasItemWithTpl(itemPool: Item[], item: ItemTpl, slotId?: string): boolean
     {
         // Filter the pool by slotId if provided
         const filteredPool = (slotId)
@@ -72,13 +72,13 @@ export class ItemHelper
     }
 
     /**
-     * Get the desired item from provided pool
+     * Get the first item from provided pool with the desired tpl
      * @param itemPool Item collection to search
      * @param item Item to look for
      * @param slotId OPTIONAL - slotid of desired item
      * @returns Item or undefined
      */
-    public getItemFromPool(itemPool: Item[], item: ItemTpl, slotId?: string): Item | undefined
+    public getItemFromPoolByTpl(itemPool: Item[], item: ItemTpl, slotId?: string): Item | undefined
     {
     // Filter the pool by slotId if provided
         const filteredPool = (slotId)
