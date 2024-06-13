@@ -7,6 +7,7 @@ import { Item, Location, Repairable, Upd } from "@spt/models/eft/common/tables/I
 import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
 import { EquipmentSlots } from "@spt/models/enums/EquipmentSlots";
+import { ItemTpl } from "@spt/models/enums/ItemTpl";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { DatabaseService } from "@spt/services/DatabaseService";
 import { ItemBaseClassService } from "@spt/services/ItemBaseClassService";
@@ -51,6 +52,24 @@ export class ItemHelper
         @inject("PrimaryCloner") protected cloner: ICloner,
     )
     {}
+
+    /**
+     * Does the provided pool of items contain the desired item
+     * @param itemPool Item collection to check
+     * @param item Item to look for
+     * @param slotId OPTIONAL - slotid of desired item
+     * @returns True if pool contains item
+     */
+    public hasItem(itemPool: Item[], item: ItemTpl, slotId?: string): boolean
+    {
+        // Filter the pool by slotId if provided
+        const filteredPool = (slotId)
+            ? itemPool.filter((item) => item.slotId?.startsWith(slotId))
+            : itemPool;
+
+        // Check if any item in the filtered pool matches the provided item
+        return filteredPool.some((poolItem) => poolItem._tpl === item);
+    }
 
     /**
      * This method will compare two items (with all its children) and see if the are equivalent.

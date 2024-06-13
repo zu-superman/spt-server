@@ -11,6 +11,7 @@ import { IInsuredItemsData } from "@spt/models/eft/inRaid/IInsuredItemsData";
 import { ISaveProgressRequestData } from "@spt/models/eft/inRaid/ISaveProgressRequestData";
 import { BonusType } from "@spt/models/enums/BonusType";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
+import { ItemTpl } from "@spt/models/enums/ItemTpl";
 import { MessageType } from "@spt/models/enums/MessageType";
 import { IInsuranceConfig } from "@spt/models/spt/config/IInsuranceConfig";
 import { ILostOnDeathConfig } from "@spt/models/spt/config/ILostOnDeathConfig";
@@ -101,27 +102,16 @@ export class InsuranceService
      */
     public sendInsuredItems(pmcData: IPmcData, sessionID: string, mapId: string): void
     {
-        // Check for Mark of The Unheard in special slot (only slot it can fit)
-        const markOfTheUnheardOnPlayer = pmcData.Inventory.items
-            .filter((item) => item.slotId?.startsWith("SpecialSlot"))
-            .find((item) => item._tpl === "65ddcc9cfa85b9f17d0dfb07");
-
         // Get insurance items for each trader
+        const globals = this.databaseService.getGlobals();
         for (const traderId in this.getInsurance(sessionID))
         {
-            const globals = this.databaseService.getGlobals();
-
             const traderBase = this.traderHelper.getTrader(traderId, sessionID);
             if (!traderBase)
             {
                 throw new Error(this.localisationService.getText("insurance-unable_to_find_trader_by_id", traderId));
             }
 
-            let insuranceReturnTimestamp = this.getInsuranceReturnTimestamp(pmcData, traderBase);
-            if (markOfTheUnheardOnPlayer)
-            {
-                insuranceReturnTimestamp *= globals.config.Insurance.CoefOfHavingMarkOfUnknown;
-            }
             const dialogueTemplates = this.databaseService.getTrader(traderId).dialogue;
             if (!dialogueTemplates)
             {
@@ -155,7 +145,7 @@ export class InsuranceService
             // Store insurance to send to player later in profile
             // Store insurance return details in profile + "hey i found your stuff, here you go!" message details to send to player at a later date
             this.saveServer.getProfile(sessionID).insurance.push({
-                scheduledTime: insuranceReturnTimestamp,
+                scheduledTime: this.getInsuranceReturnTimestamp(pmcData, traderBase),
                 traderId: traderId,
                 maxStorageTime: this.timeUtil.getHoursAsSeconds(traderBase.insurance.max_storage_time),
                 systemData: systemData,
@@ -198,7 +188,7 @@ export class InsuranceService
      */
     protected getInsuranceReturnTimestamp(pmcData: IPmcData, trader: ITraderBase): number
     {
-        // If override inconfig is non-zero, use that instead of trader values
+        // If override in config is non-zero, use that instead of trader values
         if (this.insuranceConfig.returnTimeOverrideSeconds > 0)
         {
             this.logger.debug(
@@ -207,13 +197,25 @@ export class InsuranceService
             return this.timeUtil.getTimestamp() + this.insuranceConfig.returnTimeOverrideSeconds;
         }
 
-        const insuranceReturnTimeBonus = pmcData.Bonuses.find((b) => b.type === BonusType.INSURANCE_RETURN_TIME);
+        const insuranceReturnTimeBonus = pmcData.Bonuses.find((bonus) => bonus.type === BonusType.INSURANCE_RETURN_TIME);
         const insuranceReturnTimeBonusPercent
             = 1.0 - (insuranceReturnTimeBonus ? Math.abs(insuranceReturnTimeBonus!.value ?? 0) : 0) / 100;
 
         const traderMinReturnAsSeconds = trader.insurance.min_return_hour * TimeUtil.ONE_HOUR_AS_SECONDS;
         const traderMaxReturnAsSeconds = trader.insurance.max_return_hour * TimeUtil.ONE_HOUR_AS_SECONDS;
-        const randomisedReturnTimeSeconds = this.randomUtil.getInt(traderMinReturnAsSeconds, traderMaxReturnAsSeconds);
+        let randomisedReturnTimeSeconds = this.randomUtil.getInt(traderMinReturnAsSeconds, traderMaxReturnAsSeconds);
+
+        // Check for Mark of The Unheard in players special slots (only slot item can fit)
+        const hasMarkOfUnheard = this.itemHelper.hasItem(
+            pmcData.Inventory.items,
+            ItemTpl.MARK_OF_UNHEARD,
+            "SpecialSlot");
+        if (hasMarkOfUnheard)
+        {
+            // Reduce return time by globals multipler value
+            const globals = this.databaseService.getGlobals();
+            randomisedReturnTimeSeconds *= globals.config.Insurance.CoefOfHavingMarkOfUnknown;
+        }
 
         // Current time + randomised time calculated above
         return this.timeUtil.getTimestamp() + randomisedReturnTimeSeconds * insuranceReturnTimeBonusPercent;
