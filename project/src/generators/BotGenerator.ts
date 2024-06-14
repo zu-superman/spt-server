@@ -634,7 +634,7 @@ export class BotGenerator
                 case "edge_of_darkness":
                     return ItemTpl.DOG_TAG_USEC_EOD;
                 case "unheard_edition":
-                    return ItemTpl.DOG_TAG_USEC_EOD;
+                    return ItemTpl.DOG_TAG_USEC_UNHEARD;
                 default:
                     return ItemTpl.DOG_TAG_USEC;
             }
@@ -645,7 +645,7 @@ export class BotGenerator
             case "edge_of_darkness":
                 return ItemTpl.DOG_TAG_BEAR_EOD;
             case "unheard_edition":
-                return ItemTpl.DOG_TAG_BEAR_EOD;
+                return ItemTpl.DOG_TAG_BEAR_UNHEARD;
             default:
                 return ItemTpl.DOG_TAG_BEAR;
         }
