@@ -198,13 +198,15 @@ export class TraderHelper
      */
     protected getStartingStanding(traderId: string, rawProfileTemplate: ProfileTraderTemplate): number
     {
+        const initialStanding = rawProfileTemplate.initialStanding[traderId]
+          ?? rawProfileTemplate.initialStanding.default;
         // Edge case for Lightkeeper, 0 standing means seeing `Make Amends - Buyout` quest
-        if (traderId === Traders.LIGHTHOUSEKEEPER && rawProfileTemplate.initialStanding === 0)
+        if (traderId === Traders.LIGHTHOUSEKEEPER && initialStanding === 0)
         {
             return 0.01;
         }
 
-        return rawProfileTemplate.initialStanding;
+        return initialStanding;
     }
 
     /**

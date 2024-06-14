@@ -2630,8 +2630,10 @@
                     "5c0647fdd443bc2504c2d371": 1,
                     "638f541a29ffd1183d187f57": 1
                 },
+				"initialStanding": {
+					"default": 0
+				},
                 "initialSalesSum": 0,
-                "initialStanding": 0,
                 "jaegerUnlocked": false,
                 "lockedByDefaultOverride": [
 					"579dc571d53a0658a154fbec"
@@ -5461,8 +5463,10 @@
                     "5c0647fdd443bc2504c2d371": 1,
                     "638f541a29ffd1183d187f57": 1
                 },
+				"initialStanding": {
+					"default": 0
+				},
                 "initialSalesSum": 0,
-                "initialStanding": 0,
                 "jaegerUnlocked": false,
                 "lockedByDefaultOverride": [
 					"579dc571d53a0658a154fbec"
@@ -8661,8 +8665,10 @@
                     "5c0647fdd443bc2504c2d371": 1,
                     "638f541a29ffd1183d187f57": 1
                 },
+				"initialStanding": {
+					"default": 0
+				},
                 "initialSalesSum": 0,
-                "initialStanding": 0,
                 "jaegerUnlocked": false,
                 "lockedByDefaultOverride": [
 					"579dc571d53a0658a154fbec"
@@ -11960,8 +11966,10 @@
                     "5c0647fdd443bc2504c2d371": 1,
                     "638f541a29ffd1183d187f57": 1
                 },
+				"initialStanding": {
+					"default": 0
+				},
                 "initialSalesSum": 0,
-                "initialStanding": 0,
                 "jaegerUnlocked": false,
                 "lockedByDefaultOverride": [
 					"579dc571d53a0658a154fbec"
@@ -15618,8 +15626,10 @@
                     "5c0647fdd443bc2504c2d371": 1,
                     "638f541a29ffd1183d187f57": 1
                 },
+				"initialStanding": {
+					"default": 0.2
+				},
                 "initialSalesSum": 0,
-                "initialStanding": 0.2,
                 "jaegerUnlocked": false,
                 "lockedByDefaultOverride": [
 					"579dc571d53a0658a154fbec"
@@ -19473,8 +19483,10 @@
                     "5c0647fdd443bc2504c2d371": 1,
                     "638f541a29ffd1183d187f57": 1
                 },
+				"initialStanding": {
+					"default": 0.2
+				},
                 "initialSalesSum": 0,
-                "initialStanding": 0.2,
                 "jaegerUnlocked": false,
                 "lockedByDefaultOverride": [
 					"579dc571d53a0658a154fbec"
@@ -23171,8 +23183,10 @@
                     "5c0647fdd443bc2504c2d371": 1,
                     "638f541a29ffd1183d187f57": 1
                 },
+				"initialStanding": {
+					"default": 0.2
+				},
                 "initialSalesSum": 0,
-                "initialStanding": 0.2,
                 "jaegerUnlocked": false,
                 "lockedByDefaultOverride": [
 					"579dc571d53a0658a154fbec"
@@ -27026,8 +27040,10 @@
                     "5c0647fdd443bc2504c2d371": 1,
                     "638f541a29ffd1183d187f57": 1
                 },
+				"initialStanding": {
+					"default": 0.2
+				},
                 "initialSalesSum": 0,
-                "initialStanding": 0.2,
                 "jaegerUnlocked": false,
                 "lockedByDefaultOverride": [
 					"579dc571d53a0658a154fbec"
@@ -31366,8 +31382,11 @@
                     "5c0647fdd443bc2504c2d371": 1,
                     "638f541a29ffd1183d187f57": 1
                 },
+				"initialStanding": {
+					"default": 0.2,
+					"579dc571d53a0658a154fbec": 0.5
+				},
                 "initialSalesSum": 0,
-                "initialStanding": 0.2,
                 "jaegerUnlocked": false,
                 "lockedByDefaultOverride": [
 					"579dc571d53a0658a154fbec"
@@ -35922,8 +35941,11 @@
                     "5c0647fdd443bc2504c2d371": 1,
                     "638f541a29ffd1183d187f57": 1
                 },
+				"initialStanding": {
+					"default": 0.2,
+					"579dc571d53a0658a154fbec": 0.5
+				},
                 "initialSalesSum": 0,
-                "initialStanding": 0.2,
                 "jaegerUnlocked": false,
                 "lockedByDefaultOverride": [
 					"579dc571d53a0658a154fbec"
@@ -36874,8 +36896,10 @@
                     "5c0647fdd443bc2504c2d371": 1,
                     "638f541a29ffd1183d187f57": 1
                 },
+				"initialStanding": {
+					"default": 0.2
+				},
                 "initialSalesSum": 0,
-                "initialStanding": 0.2,
                 "jaegerUnlocked": false,
 				"fleaBlockedDays": 365,
 				"purchaseAllClothingByDefaultForTrader":[
@@ -37822,8 +37846,10 @@
                     "5c0647fdd443bc2504c2d371": 1,
                     "638f541a29ffd1183d187f57": 1
                 },
+				"initialStanding": {
+					"default": 0.2
+				},
                 "initialSalesSum": 0,
-                "initialStanding": 0.2,
                 "jaegerUnlocked": false,
 				"fleaBlockedDays": 365,
 				"purchaseAllClothingByDefaultForTrader":[
@@ -40875,8 +40901,10 @@
                     "5c0647fdd443bc2504c2d371": 4,
                     "638f541a29ffd1183d187f57": 4
                 },
+				"initialStanding": {
+					"default": 6
+				},
                 "initialSalesSum": 2600000,
-                "initialStanding": 6,
                 "jaegerUnlocked": true,
                 "lockedByDefaultOverride": [
 					"579dc571d53a0658a154fbec"
@@ -43893,8 +43921,10 @@
                     "5c0647fdd443bc2504c2d371": 4,
                     "638f541a29ffd1183d187f57": 4
                 },
+				"initialStanding": {
+					"default": 6
+				},
                 "initialSalesSum": 2600000,
-                "initialStanding": 6,
                 "jaegerUnlocked": true,
                 "lockedByDefaultOverride": [
 					"579dc571d53a0658a154fbec"
@@ -47256,8 +47286,10 @@
                     "5c0647fdd443bc2504c2d371": 2,
                     "638f541a29ffd1183d187f57": 2
                 },
+				"initialStanding": {
+					"default": 1
+				},
                 "initialSalesSum": 2600000,
-                "initialStanding": 1,
                 "jaegerUnlocked": true,
                 "lockedByDefaultOverride": [
 					"579dc571d53a0658a154fbec"
@@ -50616,8 +50648,10 @@
                     "5c0647fdd443bc2504c2d371": 2,
                     "638f541a29ffd1183d187f57": 2
                 },
+				"initialStanding": {
+					"default": 1
+				},
                 "initialSalesSum": 2600000,
-                "initialStanding": 1,
                 "jaegerUnlocked": true,
                 "lockedByDefaultOverride": [
 					"579dc571d53a0658a154fbec"
@@ -51539,8 +51573,10 @@
                     "5c0647fdd443bc2504c2d371": 1,
                     "638f541a29ffd1183d187f57": 1
                 },
+				"initialStanding": {
+					"default": 0
+				},
                 "initialSalesSum": 0,
-                "initialStanding": 0,
                 "jaegerUnlocked": false,
                 "lockedByDefaultOverride": [
 					"579dc571d53a0658a154fbec"
@@ -52469,8 +52505,10 @@
                     "5c0647fdd443bc2504c2d371": 1,
                     "638f541a29ffd1183d187f57": 1
                 },
+				"initialStanding": {
+					"default": 0
+				},
                 "initialSalesSum": 0,
-                "initialStanding": 0,
                 "jaegerUnlocked": false,
                 "lockedByDefaultOverride": [
 					"579dc571d53a0658a154fbec"
