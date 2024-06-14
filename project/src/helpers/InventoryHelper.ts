@@ -1305,22 +1305,28 @@ export class InventoryHelper
      */
     public isItemInStash(pmcData: IPmcData, itemToCheck: Item): boolean
     {
-        const container = itemToCheck;
-
-        while ("parentId" in container)
+        // Create recursive helper function
+        const isParentInStash = (itemId: string): boolean =>
         {
-            if (container.parentId === pmcData.Inventory.stash && container.slotId === "hideout")
+            // Item not found / has no parent
+            const item = pmcData.Inventory.items.find((item) => item._id === itemId);
+            if (!item || !item.parentId)
+            {
+                return false;
+            }
+
+            // Root level. Items parent is the stash with slotId "hideout"
+            if (item.parentId === pmcData.Inventory.stash && item.slotId === "hideout")
             {
                 return true;
             }
 
-            if (!pmcData.Inventory.items.some((item) => item._id === container.parentId))
-            {
-                break;
-            }
-        }
+            // Recursive case: Check the items parent
+            return isParentInStash(item.parentId);
+        };
 
-        return false;
+        // Start recursive check
+        return isParentInStash(itemToCheck._id);
     }
 }
 
