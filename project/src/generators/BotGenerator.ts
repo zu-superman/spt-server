@@ -17,7 +17,6 @@ import {
 } from "@spt/models/eft/common/tables/IBotBase";
 import { Appearance, Health, IBotType, Inventory } from "@spt/models/eft/common/tables/IBotType";
 import { Item, Upd } from "@spt/models/eft/common/tables/IItem";
-import { BaseClasses } from "@spt/models/enums/BaseClasses";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { ItemTpl } from "@spt/models/enums/ItemTpl";
 import { MemberCategory } from "@spt/models/enums/MemberCategory";
@@ -610,7 +609,7 @@ export class BotGenerator
 
         const inventoryItem: Item = {
             _id: this.hashUtil.generate(),
-            _tpl: bot.Info.Side === "Usec" ? BaseClasses.DOG_TAG_USEC : BaseClasses.DOG_TAG_BEAR,
+            _tpl: this.getDogtagTplByGameVersionAndSide(bot.Info.Side, bot.Info.GameVersion),
             parentId: bot.Inventory.equipment,
             slotId: "Dogtag",
             location: undefined,
@@ -618,5 +617,37 @@ export class BotGenerator
         };
 
         bot.Inventory.items.push(inventoryItem);
+    }
+
+    /**
+     * Get a dogtag tpl that matches the bots game version and side
+     * @param side Usec/Bear
+     * @param gameVersion edge_of_darkness / standard
+     * @returns item tpl
+     */
+    protected getDogtagTplByGameVersionAndSide(side: string, gameVersion: string): string
+    {
+        if (side.toLowerCase() == "usec")
+        {
+            switch (gameVersion)
+            {
+                case "edge_of_darkness":
+                    return ItemTpl.DOG_TAG_USEC_EOD;
+                case "unheard_edition":
+                    return ItemTpl.DOG_TAG_USEC_EOD;
+                default:
+                    return ItemTpl.DOG_TAG_USEC;
+            }
+        }
+
+        switch (gameVersion)
+        {
+            case "edge_of_darkness":
+                return ItemTpl.DOG_TAG_BEAR_EOD;
+            case "unheard_edition":
+                return ItemTpl.DOG_TAG_BEAR_EOD;
+            default:
+                return ItemTpl.DOG_TAG_BEAR;
+        }
     }
 }

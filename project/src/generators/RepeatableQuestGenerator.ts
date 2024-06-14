@@ -650,10 +650,7 @@ export class RepeatableQuestGenerator
         }
 
         // By default all collected items must be FiR, except dog tags
-        if (
-            this.itemHelper.isOfBaseclass(itemTpl, BaseClasses.DOG_TAG_USEC)
-            || this.itemHelper.isOfBaseclass(itemTpl, BaseClasses.DOG_TAG_BEAR)
-        )
+        if (this.itemHelper.isDogtag(itemTpl))
         {
             onlyFoundInRaid = false;
         }
