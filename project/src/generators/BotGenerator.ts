@@ -220,8 +220,9 @@ export class BotGenerator
 
         if (this.botHelper.isBotPmc(botRole))
         {
-            this.getRandomisedGameVersionAndCategory(bot.Info);
+            this.setRandomisedGameVersionAndCategory(bot.Info);
             bot.Info.IsStreamerModeAvailable = true; // Set to true so client patches can pick it up later - client sometimes alters botrole to assaultGroup
+            this.setPmcPocketsByGameVersion(bot);
         }
 
         if (this.botConfig.botRolesWithDogTags.includes(botRole))
@@ -566,7 +567,7 @@ export class BotGenerator
      * Chooses account type (default, Sherpa, etc)
      * @param botInfo bot info object to update
      */
-    protected getRandomisedGameVersionAndCategory(botInfo: Info): void
+    protected setRandomisedGameVersionAndCategory(botInfo: Info): void
     {
         if (botInfo.Nickname.toLowerCase() === "nikita")
         {
@@ -648,6 +649,19 @@ export class BotGenerator
                 return ItemTpl.DOG_TAG_BEAR_UNHEARD;
             default:
                 return ItemTpl.DOG_TAG_BEAR;
+        }
+    }
+
+    /**
+     * Adjust a PMCs pocket tpl to UHD if necessary, otherwise do nothing
+     * @param bot Pmc object to adjust
+     */
+    protected setPmcPocketsByGameVersion(bot: IBotBase): void
+    {
+        if (bot.Info.GameVersion === "unheard_edition")
+        {
+            const pockets = bot.Inventory.items.find((item) => item.slotId === "Pockets");
+            pockets._tpl = "65e080be269cbd5c5005e529";
         }
     }
 }
