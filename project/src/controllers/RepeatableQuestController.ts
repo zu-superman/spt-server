@@ -100,6 +100,7 @@ export class RepeatableQuestController
             const canAccessRepeatables = this.canProfileAccessRepeatableQuests(repeatableConfig, pmcData);
             if (!canAccessRepeatables)
             {
+                // Dont send any repeatables, even existing ones
                 continue;
             }
 
@@ -115,45 +116,21 @@ export class RepeatableQuestController
 
             // Current time is past expiry time
 
-            // Adjust endtime to be now + new duration
+            // Set endtime to be now + new duration
             generatedRepeatables.endTime = currentTime + repeatableConfig.resetTime;
             generatedRepeatables.inactiveQuests = [];
             this.logger.debug(`Generating new ${repeatableTypeLower}`);
 
             // Put old quests to inactive (this is required since only then the client makes them fail due to non-completion)
-            // we also need to push them to the "inactiveQuests" list since we need to remove them from offraidData.profile.Quests
+            // Also need to push them to the "inactiveQuests" list since we need to remove them from offraidData.profile.Quests
             // after a raid (the client seems to keep quests internally and we want to get rid of old repeatable quests)
             // and remove them from the PMC's Quests and RepeatableQuests[i].activeQuests
-            const questsToKeep = [];
-            // for (let i = 0; i < currentRepeatable.activeQuests.length; i++)
-            for (const activeQuest of generatedRepeatables.activeQuests)
-            {
-                // Keep finished quests in list so player can hand in
-                const quest = pmcData.Quests.find((quest) => quest.qid === activeQuest._id);
-                if (quest)
-                {
-                    if (quest.status === QuestStatus.AvailableForFinish)
-                    {
-                        questsToKeep.push(activeQuest);
-                        this.logger.debug(
-                            `Keeping repeatable quest ${activeQuest._id} in activeQuests since it is available to hand in`,
-                        );
+            this.processExpiredQuests(generatedRepeatables, pmcData);
 
-                        continue;
-                    }
-                }
-                this.profileFixerService.removeDanglingConditionCounters(pmcData);
-
-                // Remove expired quest from pmc.quest array
-                pmcData.Quests = pmcData.Quests.filter((quest) => quest.qid !== activeQuest._id);
-                generatedRepeatables.inactiveQuests.push(activeQuest);
-            }
-            generatedRepeatables.activeQuests = questsToKeep;
-
-            // introduce a dynamic quest pool to avoid duplicates
+            // Create dynamic quest pool to avoid generating duplicates
             const questTypePool = this.generateQuestPool(repeatableConfig, pmcData.Info.Level);
 
-            // Add daily quests
+            // Add repeatable quests of this loops sub-type (daily/weekly)
             for (let i = 0; i < this.getQuestCount(repeatableConfig, pmcData); i++)
             {
                 let quest: IRepeatableQuest | undefined = undefined;
@@ -214,6 +191,46 @@ export class RepeatableQuestController
         }
 
         return returnData;
+    }
+
+    /**
+     * Expire quests and replace expired quests with ready-to-hand-in quests inside generatedRepeatables.activeQuests
+     * @param generatedRepeatables Repeatables to process (daily/weekly)
+     * @param pmcData Player profile
+     */
+    protected processExpiredQuests(generatedRepeatables: IPmcDataRepeatableQuest, pmcData: IPmcData): void
+    {
+        const questsToKeep = [];
+        for (const activeQuest of generatedRepeatables.activeQuests)
+        {
+            const questStatusInProfile = pmcData.Quests.find((quest) => quest.qid === activeQuest._id);
+            if (!questStatusInProfile)
+            {
+                continue;
+            }
+
+            // Keep finished quests in list so player can hand in
+            if (questStatusInProfile.status === QuestStatus.AvailableForFinish)
+            {
+                questsToKeep.push(activeQuest);
+                this.logger.debug(
+                    `Keeping repeatable quest: ${activeQuest._id} in activeQuests since it is available to hand in`,
+                );
+
+                continue;
+            }
+
+            // Clean up quest-related counters being left in profile
+            this.profileFixerService.removeDanglingConditionCounters(pmcData);
+
+            // Remove expired quest from pmc.quest array
+            pmcData.Quests = pmcData.Quests.filter((quest) => quest.qid !== activeQuest._id);
+
+            // Store in inactive array
+            generatedRepeatables.inactiveQuests.push(activeQuest);
+        }
+
+        generatedRepeatables.activeQuests = questsToKeep;
     }
 
     /**
