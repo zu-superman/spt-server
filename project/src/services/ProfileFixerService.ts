@@ -404,7 +404,7 @@ export class ProfileFixerService
             fullProfile.spt = {
                 version: this.watermark.getVersionTag(),
                 receivedGifts: [],
-                freeRepeatableChangeCount: {},
+                freeRepeatableRefreshUsedCount: {},
             };
         }
     }
