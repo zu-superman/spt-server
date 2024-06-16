@@ -18,6 +18,7 @@ import {
 import { Appearance, Health, IBotType, Inventory } from "@spt/models/eft/common/tables/IBotType";
 import { Item, Upd } from "@spt/models/eft/common/tables/IItem";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
+import { GameEditions } from "@spt/models/enums/GameEditions";
 import { ItemTpl } from "@spt/models/enums/ItemTpl";
 import { MemberCategory } from "@spt/models/enums/MemberCategory";
 import { BotGenerationDetails } from "@spt/models/spt/bots/BotGenerationDetails";
@@ -213,7 +214,7 @@ export class BotGenerator
         {
             bot.Info.IsStreamerModeAvailable = true; // Set to true so client patches can pick it up later - client sometimes alters botrole to assaultGroup
             chosenGameVersion = this.setRandomisedGameVersionAndCategory(bot.Info);
-            if (chosenGameVersion === "unheard_edition")
+            if (chosenGameVersion === GameEditions.UNHEARD)
             {
                 this.addAdditionalPocketLootWeightsForUnheardBot(botJsonTemplate);
             }
@@ -585,7 +586,7 @@ export class BotGenerator
     {
         if (botInfo.Nickname.toLowerCase() === "nikita")
         {
-            botInfo.GameVersion = "unheard_edition";
+            botInfo.GameVersion = GameEditions.UNHEARD;
             botInfo.MemberCategory = MemberCategory.DEVELOPER;
 
             return botInfo.GameVersion;
@@ -648,9 +649,9 @@ export class BotGenerator
         {
             switch (gameVersion)
             {
-                case "edge_of_darkness":
+                case GameEditions.EDGE_OF_DARKNESS:
                     return ItemTpl.BARTER_DOGTAG_USEC_EOD;
-                case "unheard_edition":
+                case GameEditions.UNHEARD:
                     return ItemTpl.BARTER_DOGTAG_USEC_TUE;
                 default:
                     return ItemTpl.BARTER_DOGTAG_USEC;
@@ -659,9 +660,9 @@ export class BotGenerator
 
         switch (gameVersion)
         {
-            case "edge_of_darkness":
+            case GameEditions.EDGE_OF_DARKNESS:
                 return ItemTpl.BARTER_DOGTAG_BEAR_EOD;
-            case "unheard_edition":
+            case GameEditions.UNHEARD:
                 return ItemTpl.BARTER_DOGTAG_BEAR_TUE;
             default:
                 return ItemTpl.BARTER_DOGTAG_BEAR;
@@ -674,7 +675,7 @@ export class BotGenerator
      */
     protected setPmcPocketsByGameVersion(bot: IBotBase): void
     {
-        if (bot.Info.GameVersion === "unheard_edition")
+        if (bot.Info.GameVersion === GameEditions.UNHEARD)
         {
             const pockets = bot.Inventory.items.find((item) => item.slotId === "Pockets");
             pockets._tpl = ItemTpl.POCKETS_1X4_TUE;

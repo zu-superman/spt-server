@@ -10,6 +10,7 @@ import { ProfileTraderTemplate } from "@spt/models/eft/common/tables/IProfileTem
 import { ITraderAssort, ITraderBase, LoyaltyLevel } from "@spt/models/eft/common/tables/ITrader";
 import { ISptProfile } from "@spt/models/eft/profile/ISptProfile";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
+import { GameEditions } from "@spt/models/enums/GameEditions";
 import { Money } from "@spt/models/enums/Money";
 import { Traders } from "@spt/models/enums/Traders";
 import { ITraderConfig } from "@spt/models/spt/config/ITraderConfig";
@@ -459,7 +460,7 @@ export class TraderHelper
      */
     public getAccountTypeAdjustedTraderPurchaseLimit(buyRestrictionMax: number, gameVersion: string): number
     {
-        if (["edge_of_darkness", "unheard"].includes(gameVersion))
+        if ([GameEditions.EDGE_OF_DARKNESS, GameEditions.UNHEARD].includes(<any>gameVersion))
         {
             return Math.floor(buyRestrictionMax * 1.2);
         }

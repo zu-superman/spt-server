@@ -7,6 +7,7 @@ import { IValidateNicknameRequestData } from "@spt/models/eft/profile/IValidateN
 import { AccountTypes } from "@spt/models/enums/AccountTypes";
 import { BonusType } from "@spt/models/enums/BonusType";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
+import { GameEditions } from "@spt/models/enums/GameEditions";
 import { SkillTypes } from "@spt/models/enums/SkillTypes";
 import { IInventoryConfig } from "@spt/models/spt/config/IInventoryConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
@@ -573,7 +574,7 @@ export class ProfileHelper
 
     public hasAccessToRepeatableFreeRefreshSystem(pmcProfile: IPmcData): boolean
     {
-        return ["edge_of_darkness", "unheard_edition"]
-            .includes(pmcProfile.Info?.GameVersion);
+        return [GameEditions.EDGE_OF_DARKNESS, GameEditions.UNHEARD]
+            .includes(<any>pmcProfile.Info?.GameVersion);
     }
 }

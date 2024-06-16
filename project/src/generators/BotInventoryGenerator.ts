@@ -11,6 +11,7 @@ import { Chances, Generation, IBotType, Inventory, Mods } from "@spt/models/eft/
 import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { EquipmentSlots } from "@spt/models/enums/EquipmentSlots";
+import { GameEditions } from "@spt/models/enums/GameEditions";
 import { ItemTpl } from "@spt/models/enums/ItemTpl";
 import {
     EquipmentFilterDetails,
@@ -191,7 +192,9 @@ export class BotInventoryGenerator
         // Generate below in specific order
         this.generateEquipment({
             rootEquipmentSlot: EquipmentSlots.POCKETS,
-            rootEquipmentPool: chosenGameVersion === "unheard_edition" ? { [ItemTpl.POCKETS_1X4_TUE]: 1 } : templateInventory.equipment.Pockets,
+            rootEquipmentPool: chosenGameVersion === GameEditions.UNHEARD
+                ? { [ItemTpl.POCKETS_1X4_TUE]: 1 }
+                : templateInventory.equipment.Pockets,
             modPool: templateInventory.mods,
             spawnChances: wornItemChances,
             botRole: botRole,
