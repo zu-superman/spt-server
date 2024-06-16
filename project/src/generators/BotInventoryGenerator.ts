@@ -58,6 +58,7 @@ export class BotInventoryGenerator
      * @param botRole Role bot has (assault/pmcBot)
      * @param isPmc Is bot being converted into a pmc
      * @param botLevel Level of bot being generated
+     * @param chosenGameVersion Game version for bot, only really applies for PMCs
      * @returns PmcInventory object with equipment/weapons/loot
      */
     public generateInventory(
@@ -66,6 +67,7 @@ export class BotInventoryGenerator
         botRole: string,
         isPmc: boolean,
         botLevel: number,
+        chosenGameVersion: string,
     ): PmcInventory
     {
         const templateInventory = botJsonTemplate.inventory;
@@ -75,7 +77,13 @@ export class BotInventoryGenerator
         // Generate base inventory with no items
         const botInventory = this.generateInventoryBase();
 
-        this.generateAndAddEquipmentToBot(templateInventory, wornItemChances, botRole, botInventory, botLevel);
+        this.generateAndAddEquipmentToBot(
+            templateInventory,
+            wornItemChances,
+            botRole,
+            botInventory,
+            botLevel,
+            chosenGameVersion);
 
         // Roll weapon spawns (primary/secondary/holster) and generate a weapon for each roll that passed
         this.generateAndAddWeaponsToBot(
@@ -133,6 +141,7 @@ export class BotInventoryGenerator
      * @param botRole Role bot has (assault/pmcBot)
      * @param botInventory Inventory to add equipment to
      * @param botLevel Level of bot
+     * @param chosenGameVersion Game version for bot, only really applies for PMCs
      */
     protected generateAndAddEquipmentToBot(
         templateInventory: Inventory,
@@ -140,10 +149,12 @@ export class BotInventoryGenerator
         botRole: string,
         botInventory: PmcInventory,
         botLevel: number,
+        chosenGameVersion: string,
     ): void
     {
         // These will be handled later
         const excludedSlots: string[] = [
+            EquipmentSlots.POCKETS,
             EquipmentSlots.FIRST_PRIMARY_WEAPON,
             EquipmentSlots.SECOND_PRIMARY_WEAPON,
             EquipmentSlots.HOLSTER,
@@ -178,6 +189,18 @@ export class BotInventoryGenerator
         }
 
         // Generate below in specific order
+        this.generateEquipment({
+            rootEquipmentSlot: EquipmentSlots.POCKETS,
+            rootEquipmentPool: chosenGameVersion === "unheard_edition" ? { [ItemTpl.POCKETS_1X4_TUE]: 1 } : templateInventory.equipment.Pockets,
+            modPool: templateInventory.mods,
+            spawnChances: wornItemChances,
+            botRole: botRole,
+            botLevel: botLevel,
+            inventory: botInventory,
+            botEquipmentConfig: botEquipConfig,
+            randomisationDetails: randomistionDetails,
+            generateModsBlacklist: [ItemTpl.POCKETS_1X4_TUE],
+        });
         this.generateEquipment({
             rootEquipmentSlot: EquipmentSlots.FACE_COVER,
             rootEquipmentPool: templateInventory.equipment.FaceCover,
@@ -398,7 +421,7 @@ export class BotInventoryGenerator
             }
 
             // Item has slots, fill them
-            if (pickedItemDb._props.Slots?.length > 0)
+            if (pickedItemDb._props.Slots?.length > 0 && !settings.generateModsBlacklist?.includes(pickedItemDb._id))
             {
                 const items = this.botEquipmentModGenerator.generateModsForEquipment(
                     [item],
@@ -576,4 +599,6 @@ export interface IGenerateEquipmentProperties
     botEquipmentConfig: EquipmentFilters
     /** Settings from bot.json to adjust how item is generated */
     randomisationDetails: RandomisationDetails
+    /** OPTIONAL - Do not generate mods for tpls in this array */
+    generateModsBlacklist?: string[]
 }

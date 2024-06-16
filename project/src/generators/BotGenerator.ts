@@ -191,7 +191,7 @@ export class BotGenerator
 
         this.removeBlacklistedLootFromBotTemplate(botJsonTemplate.inventory);
 
-        // Remove hideout data if bot is not a PMC or pscav
+        // Remove hideout data if bot is not a PMC or pscav - match what live sends
         if (!(botGenerationDetails.isPmc || botGenerationDetails.isPlayerScav))
         {
             bot.Hideout = undefined;
@@ -208,6 +208,17 @@ export class BotGenerator
         bot.Health = this.generateHealth(botJsonTemplate.health, bot.Info.Side === "Savage");
         bot.Skills = this.generateSkills(<any>botJsonTemplate.skills); // TODO: fix bad type, bot jsons store skills in dict, output needs to be array
 
+        let chosenGameVersion = bot.Info.GameVersion;
+        if (botGenerationDetails.isPmc)
+        {
+            bot.Info.IsStreamerModeAvailable = true; // Set to true so client patches can pick it up later - client sometimes alters botrole to assaultGroup
+            chosenGameVersion = this.setRandomisedGameVersionAndCategory(bot.Info);
+            if (chosenGameVersion === "unheard_edition")
+            {
+                this.addAdditionalPocketLootWeightsForUnheardBot(botJsonTemplate);
+            }
+        }
+
         this.setBotAppearance(bot, botJsonTemplate.appearance, botGenerationDetails);
 
         bot.Inventory = this.botInventoryGenerator.generateInventory(
@@ -216,14 +227,8 @@ export class BotGenerator
             botRole,
             botGenerationDetails.isPmc,
             botLevel.level,
+            chosenGameVersion,
         );
-
-        if (this.botHelper.isBotPmc(botRole))
-        {
-            this.setRandomisedGameVersionAndCategory(bot.Info);
-            bot.Info.IsStreamerModeAvailable = true; // Set to true so client patches can pick it up later - client sometimes alters botrole to assaultGroup
-            this.setPmcPocketsByGameVersion(bot);
-        }
 
         if (this.botConfig.botRolesWithDogTags.includes(botRole))
         {
@@ -243,6 +248,14 @@ export class BotGenerator
         }
 
         return bot;
+    }
+
+    protected addAdditionalPocketLootWeightsForUnheardBot(botJsonTemplate: IBotType): void
+    {
+        // Adjust pocket loot weights to allow for 5 or 6 items
+        const pocketWeights = botJsonTemplate.generation.items.pocketLoot.weights;
+        pocketWeights["5"] = 1;
+        pocketWeights["6"] = 1;
     }
 
     /**
@@ -566,22 +579,25 @@ export class BotGenerator
      * Chooses from all the game versions (standard, eod etc)
      * Chooses account type (default, Sherpa, etc)
      * @param botInfo bot info object to update
+     * @returns Chosen game version
      */
-    protected setRandomisedGameVersionAndCategory(botInfo: Info): void
+    protected setRandomisedGameVersionAndCategory(botInfo: Info): string
     {
         if (botInfo.Nickname.toLowerCase() === "nikita")
         {
             botInfo.GameVersion = "edge_of_darkness";
             botInfo.MemberCategory = MemberCategory.DEVELOPER;
 
-            return;
+            return botInfo.GameVersion;
         }
 
-        // more color = more op
+        // More color = more op
         botInfo.GameVersion = this.weightedRandomHelper.getWeightedValue(this.pmcConfig.gameVersionWeight);
         botInfo.MemberCategory = Number.parseInt(
             this.weightedRandomHelper.getWeightedValue(this.pmcConfig.accountTypeWeight),
         );
+
+        return botInfo.GameVersion;
     }
 
     /**
