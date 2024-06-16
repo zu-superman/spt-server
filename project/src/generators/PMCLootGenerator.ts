@@ -63,8 +63,7 @@ export class PMCLootGenerator
                     && this.itemHelper.isValidItem(item._id)
                     && !pmcItemBlacklist.includes(item._id)
                     && !itemBlacklist.includes(item._id)
-                    && item._props.Width === 1
-                    && item._props.Height === 1,
+                    && this.itemFitsInto1By2Slot(item),
             );
 
             for (const itemToAdd of itemsToAdd)
@@ -164,6 +163,26 @@ export class PMCLootGenerator
     protected itemFitsInto2By2Slot(item: ITemplateItem): boolean
     {
         return item._props.Width <= 2 && item._props.Height <= 2;
+    }
+
+    /**
+     * Check if item has a width/height that lets it fit into a 1x2 slot
+     * 1x1 / 1x2 / 2x1
+     * @param item Item to check size of
+     * @returns true if it fits
+     */
+    protected itemFitsInto1By2Slot(item: ITemplateItem): boolean
+    {
+        switch (`{${item._props.Width}x${item._props.Height}}`)
+        {
+            case "1x1":
+            case "1x2":
+            case "2x1":
+                return true;
+
+            default:
+                return false;
+        }
     }
 
     /**
