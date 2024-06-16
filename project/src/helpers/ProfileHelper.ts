@@ -570,4 +570,10 @@ export class ProfileHelper
     {
         pmcProfile.Achievements[achievementId] = this.timeUtil.getTimestamp();
     }
+
+    public hasAccessToRepeatableFreeRefreshSystem(pmcProfile: IPmcData): boolean
+    {
+        return ["edge_of_darkness", "unheard_edition"]
+            .includes(pmcProfile.Info?.GameVersion);
+    }
 }

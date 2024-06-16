@@ -10,6 +10,7 @@ import {
     IRepeatableQuest,
 } from "@spt/models/eft/common/tables/IRepeatableQuests";
 import { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRouterResponse";
+import { ISptProfile } from "@spt/models/eft/profile/ISptProfile";
 import { IRepeatableQuestChangeRequest } from "@spt/models/eft/quests/IRepeatableQuestChangeRequest";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { ELocationName } from "@spt/models/enums/ELocationName";
@@ -317,9 +318,11 @@ export class RepeatableQuestController
     ): IPmcDataRepeatableQuest
     {
         // Get from profile, add if missing
-        let repeatableQuestDetails = pmcData.RepeatableQuests.find((x) => x.name === repeatableConfig.name);
-        if (!repeatableQuestDetails)
+        let repeatableQuestDetails = pmcData.RepeatableQuests
+            .find((repeatable) => repeatable.name === repeatableConfig.name);
+        if (!repeatableQuestDetails) // Not in profile, generate
         {
+            const hasAccess = this.profileHelper.hasAccessToRepeatableFreeRefreshSystem(pmcData);
             repeatableQuestDetails = {
                 id: repeatableConfig.id,
                 name: repeatableConfig.name,
@@ -327,8 +330,8 @@ export class RepeatableQuestController
                 inactiveQuests: [],
                 endTime: 0,
                 changeRequirement: {},
-                freeChanges: 0,
-                freeChangesAvailable: 0,
+                freeChanges: hasAccess ? repeatableConfig.freeChanges : 0,
+                freeChangesAvailable: hasAccess ? repeatableConfig.freeChangesAvailable : 0,
             };
 
             // Add base object that holds repeatable data to profile
@@ -589,13 +592,7 @@ export class RepeatableQuestController
                     fullProfile.characters.scav?.Quests ?? [],
                 );
 
-                // Increment the count in profile now we've replaced a daily
-                const repeatableRefreshCounts = fullProfile.spt.freeRepeatableRefreshUsedCount;
-                repeatableRefreshCounts[repeatableTypeLower]++;
-
-                // Set client return objects avail count to total minus how many used so far
-                repeatablesInProfile.freeChangesAvailable
-                    = repeatablesInProfile.freeChanges - repeatableRefreshCounts[repeatableTypeLower];
+                this.handleFreeRefreshUses(fullProfile, repeatablesInProfile, repeatableTypeLower);
             }
 
             // Not sure why we clone but we do
@@ -675,5 +672,43 @@ export class RepeatableQuestController
         }
 
         return newRepeatableQuest;
+    }
+
+    /**
+     * Some accounts have access to repeatable quest refreshes for free
+     * Track the usage of them inside players profile
+     * @param fullProfile Profile of player
+     * @param repeatableSubType Can be daily/weekly/scav repeatables
+     * @param repeatableTypeName Subtype of repeatables: daily / weekly / scav
+     */
+    protected handleFreeRefreshUses(
+        fullProfile: ISptProfile,
+        repeatableSubType: IPmcDataRepeatableQuest,
+        repeatableTypeName: string): void
+    {
+        // Only certain game versions have access
+        const hasAccessToFreeRefreshSystem
+            = this.profileHelper.hasAccessToRepeatableFreeRefreshSystem(fullProfile.characters.pmc);
+        // Initialize/retrieve free refresh count for the desired subtype: daily/weekly
+        fullProfile.spt.freeRepeatableRefreshUsedCount ||= {};
+        const repeatableRefreshCounts = fullProfile.spt.freeRepeatableRefreshUsedCount;
+        repeatableRefreshCounts[repeatableTypeName] ||= 0; // Set to 0 if undefined
+
+        if (!hasAccessToFreeRefreshSystem)
+        {
+            // Reset the available count if the player does not have free refreshes.
+            repeatableSubType.freeChangesAvailable = 0;
+
+            return;
+        }
+
+        if (repeatableSubType.freeChangesAvailable > 0)
+        {
+            // Increment the used count if the player has free refreshes and available changes.
+            repeatableRefreshCounts[repeatableTypeName]++;
+
+            // Update the available count.
+            repeatableSubType.freeChangesAvailable--;
+        }
     }
 }
