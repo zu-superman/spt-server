@@ -661,7 +661,7 @@ export class BotGenerator
         if (bot.Info.GameVersion === "unheard_edition")
         {
             const pockets = bot.Inventory.items.find((item) => item.slotId === "Pockets");
-            pockets._tpl = "65e080be269cbd5c5005e529";
+            pockets._tpl = ItemTpl.POCKETS_1X4_TUE;
         }
     }
 }
