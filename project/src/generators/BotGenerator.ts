@@ -585,7 +585,7 @@ export class BotGenerator
     {
         if (botInfo.Nickname.toLowerCase() === "nikita")
         {
-            botInfo.GameVersion = "edge_of_darkness";
+            botInfo.GameVersion = "unheard_edition";
             botInfo.MemberCategory = MemberCategory.DEVELOPER;
 
             return botInfo.GameVersion;
