@@ -27,6 +27,12 @@ export class BundleSerializer extends Serializer
         }
 
         this.logger.info(`[BUNDLE]: ${req.url}`);
+        if (!bundle.modpath)
+        {
+            this.logger.error(`Mod: ${key} lacks a modPath property, skipped loading`);
+
+            return;
+        }
 
         this.httpFileUtil.sendFile(resp, `${bundle.modpath}/bundles/${bundle.filename}`);
     }
