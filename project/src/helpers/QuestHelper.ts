@@ -587,24 +587,27 @@ export class QuestHelper
     /**
      * Adjust quest money rewards by passed in multiplier
      * @param quest Quest to multiple money rewards
-     * @param multiplier Value to adjust money rewards by
+     * @param bonusPercent Value to adjust money rewards by
      * @param questStatus Status of quest to apply money boost to rewards of
      * @returns Updated quest
      */
-    public applyMoneyBoost(quest: IQuest, multiplier: number, questStatus: QuestStatus): IQuest
+    public applyMoneyBoost(quest: IQuest, bonusPercent: number, questStatus: QuestStatus): IQuest
     {
         const rewards: IQuestReward[] = quest.rewards?.[QuestStatus[questStatus]] ?? [];
+        const multipler = (bonusPercent / 100) + 1;
         for (const reward of rewards)
         {
-            if (reward.type === "Item")
+            // Skip non-money items
+            if (reward.type !== "Item" || !this.paymentHelper.isMoneyTpl(reward.items[0]._tpl))
             {
-                if (this.paymentHelper.isMoneyTpl(reward.items[0]._tpl))
-                {
-                    reward.items[0].upd.StackObjectsCount += Math.round(
-                        (reward.items[0].upd.StackObjectsCount * multiplier) / 100,
-                    );
-                }
+                continue;
             }
+
+            // Add % bonus to existing StackObjectsCount
+            const rewardItem = reward.items[0];
+            const newCurrencyAmount = Math.floor(rewardItem.upd.StackObjectsCount * multipler);
+            rewardItem.upd.StackObjectsCount = newCurrencyAmount;
+            reward.value = newCurrencyAmount;
         }
 
         return quest;
@@ -916,11 +919,11 @@ export class QuestHelper
         }
 
         // Check for and apply intel center money bonus if it exists
-        const questMoneyRewardBonus = this.getQuestMoneyRewardBonus(pmcProfile);
-        if (questMoneyRewardBonus > 0)
+        const questMoneyRewardBonusPercent = this.getQuestMoneyRewardBonus(pmcProfile);
+        if (questMoneyRewardBonusPercent > 0)
         {
             // Apply additional bonus from hideout skill
-            questDetails = this.applyMoneyBoost(questDetails, questMoneyRewardBonus, state); // money = money + (money * intelCenterBonus / 100)
+            questDetails = this.applyMoneyBoost(questDetails, questMoneyRewardBonusPercent, state); // money = money + (money * intelCenterBonus / 100)
         }
 
         // e.g. 'Success' or 'AvailableForFinish'
