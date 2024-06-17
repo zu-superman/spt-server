@@ -100,7 +100,7 @@ export class RepeatableQuestRewardGenerator
         rewardIndex++;
 
         // Add GP coin reward
-        rewards.Success.push(this.generateRewardItem(
+        rewards.Success.push(this.generateItemReward(
             Money.GP,
             rewardParams.gpCoinRewardCount,
             rewardIndex,
@@ -142,7 +142,7 @@ export class RepeatableQuestRewardGenerator
             // Add item rewards
             for (const itemReward of itemsToReward)
             {
-                rewards.Success.push(this.generateRewardItem(itemReward.item._id, itemReward.stackSize, rewardIndex));
+                rewards.Success.push(this.generateItemReward(itemReward.item._id, itemReward.stackSize, rewardIndex));
                 rewardIndex++;
             }
         }
@@ -358,7 +358,7 @@ export class RepeatableQuestRewardGenerator
                 const chosenPreset = this.cloner.clone(randomPreset);
 
                 return {
-                    weapon: this.generateRewardItem(chosenPreset._encyclopedia, 1, rewardIndex, chosenPreset._items),
+                    weapon: this.generatePresetReward(chosenPreset._encyclopedia, 1, rewardIndex, chosenPreset._items),
                     price: presetPrice };
             }
         }
@@ -505,38 +505,55 @@ export class RepeatableQuestRewardGenerator
      * Helper to create a reward item structured as required by the client
      *
      * @param   {string}    tpl             ItemId of the rewarded item
-     * @param   {integer}   value           Amount of items to give
+     * @param   {integer}   count           Amount of items to give
      * @param   {integer}   index           All rewards will be appended to a list, for unknown reasons the client wants the index
      * @param preset Optional array of preset items
      * @returns {object}                    Object of "Reward"-item-type
      */
-    protected generateRewardItem(tpl: string, value: number, index: number, preset?: Item[]): IQuestReward
+    protected generateItemReward(tpl: string, count: number, index: number): IQuestReward
     {
         const id = this.objectId.generate();
         const questRewardItem: IQuestReward = {
             target: id,
-            value: value,
+            value: count,
             type: QuestRewardType.ITEM,
             index: index,
             items: [] };
 
-        if (preset)
-        {
-            // Get presets root item
-            const rootItem = preset.find((item) => item._tpl === tpl);
-            if (!rootItem)
-            {
-                this.logger.warning(`Root item of preset: ${tpl} not found`);
-            }
+        const rootItem = { _id: id, _tpl: tpl, upd: { StackObjectsCount: count, SpawnedInSession: true } };
+        questRewardItem.items = [rootItem];
 
-            questRewardItem.items = this.itemHelper.reparentItemAndChildren(rootItem, preset);
-            questRewardItem.target = rootItem._id; // Target property and root items id must match
-        }
-        else
+        return questRewardItem;
+    }
+
+    /**
+     * Helper to create a reward item structured as required by the client
+     *
+     * @param   {string}    tpl             ItemId of the rewarded item
+     * @param   {integer}   count           Amount of items to give
+     * @param   {integer}   index           All rewards will be appended to a list, for unknown reasons the client wants the index
+     * @param preset Optional array of preset items
+     * @returns {object}                    Object of "Reward"-item-type
+     */
+    protected generatePresetReward(tpl: string, count: number, index: number, preset?: Item[]): IQuestReward
+    {
+        const id = this.objectId.generate();
+        const questRewardItem: IQuestReward = {
+            target: id,
+            value: count,
+            type: QuestRewardType.ITEM,
+            index: index,
+            items: [] };
+
+        // Get presets root item
+        const rootItem = preset.find((item) => item._tpl === tpl);
+        if (!rootItem)
         {
-            const rootItem = { _id: id, _tpl: tpl, upd: { StackObjectsCount: value, SpawnedInSession: true } };
-            questRewardItem.items = [rootItem];
+            this.logger.warning(`Root item of preset: ${tpl} not found`);
         }
+
+        questRewardItem.items = this.itemHelper.reparentItemAndChildren(rootItem, preset);
+        questRewardItem.target = rootItem._id; // Target property and root items id must match
 
         return questRewardItem;
     }
@@ -653,6 +670,6 @@ export class RepeatableQuestRewardGenerator
             : rewardRoubles;
 
         // Get chosen currency + amount and return
-        return this.generateRewardItem(currency, rewardAmountToGivePlayer, rewardIndex);
+        return this.generateItemReward(currency, rewardAmountToGivePlayer, rewardIndex);
     }
 }
