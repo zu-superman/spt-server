@@ -1003,11 +1003,14 @@ export class HideoutHelper
         // Reduce time elapsed (and progress) when generator is off
         let timeElapsed = this.timeUtil.getTimestamp() - pmcData.Hideout.sptUpdateLastRunTimestamp;
 
-        const hideoutArea = this.databaseService.getHideout().areas.find((area) => area.type === recipe.areaType);
-        if (!hideoutArea.needsFuel)
+        if (recipe)
         {
-            // e.g. Lavatory works at 100% when power is on / off
-            return timeElapsed;
+            const hideoutArea = this.databaseService.getHideout().areas.find((area) => area.type === recipe.areaType);
+            if (!hideoutArea.needsFuel)
+            {
+                // e.g. Lavatory works at 100% when power is on / off
+                return timeElapsed;
+            }
         }
 
         if (!isGeneratorOn)
