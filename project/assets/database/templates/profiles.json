@@ -40887,7 +40887,8 @@
             "equipmentBuilds": {},
             "suits": [
                 "5cd946231388ce000d572fe3",
-                "5cd945d71388ce000a659dfb"
+                "5cd945d71388ce000a659dfb",
+				"666841a02537107dc508b704"
             ],
             "trader": {
                 "initialLoyaltyLevel": {
@@ -40899,7 +40900,8 @@
                     "5a7c2eca46aef81a7ca2145d": 4,
                     "5ac3b934156ae10c4430e83c": 4,
                     "5c0647fdd443bc2504c2d371": 4,
-                    "638f541a29ffd1183d187f57": 4
+                    "638f541a29ffd1183d187f57": 4,
+					"6617beeaa9cfa777ca915b7c": 4
                 },
 				"initialStanding": {
 					"default": 6
@@ -43907,7 +43909,8 @@
             "equipmentBuilds": {},
             "suits": [
                 "5cde9ec17d6c8b04723cf479",
-                "5cde9e957d6c8b0474535da7"
+                "5cde9e957d6c8b0474535da7",
+				"666841a02537107dc508b704"
             ],
             "trader": {
                 "initialLoyaltyLevel": {
@@ -43919,7 +43922,8 @@
                     "5a7c2eca46aef81a7ca2145d": 4,
                     "5ac3b934156ae10c4430e83c": 4,
                     "5c0647fdd443bc2504c2d371": 4,
-                    "638f541a29ffd1183d187f57": 4
+                    "638f541a29ffd1183d187f57": 4,
+					"6617beeaa9cfa777ca915b7c": 4
                 },
 				"initialStanding": {
 					"default": 6
