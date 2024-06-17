@@ -220,7 +220,7 @@ export class RepeatableQuestRewardGenerator
                 * this.mathUtil.interp1(pmcLevel, levelsConfig, roublesConfig)
                 * this.randomUtil.getFloat(1 - rewardSpreadConfig, 1 + rewardSpreadConfig),
             ),
-            gpCoinRewardCount: Math.floor(
+            gpCoinRewardCount: Math.ceil( // Ceil value to ensure it never drops below 1
                 effectiveDifficulty
                 * this.mathUtil.interp1(pmcLevel, levelsConfig, gpCoinConfig)
                 * this.randomUtil.getFloat(1 - rewardSpreadConfig, 1 + rewardSpreadConfig),
