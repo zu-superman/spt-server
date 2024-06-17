@@ -583,6 +583,7 @@ export class BotGenerator
      */
     protected setRandomisedGameVersionAndCategory(botInfo: Info): string
     {
+        // Special case
         if (botInfo.Nickname.toLowerCase() === "nikita")
         {
             botInfo.GameVersion = GameEditions.UNHEARD;
@@ -593,9 +594,20 @@ export class BotGenerator
 
         // More color = more op
         botInfo.GameVersion = this.weightedRandomHelper.getWeightedValue(this.pmcConfig.gameVersionWeight);
-        botInfo.MemberCategory = Number.parseInt(
-            this.weightedRandomHelper.getWeightedValue(this.pmcConfig.accountTypeWeight),
-        );
+
+        // EOD and UhD must have a category of 2 for their unique icons to show
+        if ([GameEditions.EDGE_OF_DARKNESS, GameEditions.UNHEARD].includes(<any>botInfo.GameVersion))
+        {
+            botInfo.MemberCategory = 2;
+        }
+        else
+        {
+            // Everyone else gets a weighted randomised category
+            botInfo.MemberCategory = Number.parseInt(
+                this.weightedRandomHelper.getWeightedValue(this.pmcConfig.accountTypeWeight),
+                10,
+            );
+        }
 
         return botInfo.GameVersion;
     }
