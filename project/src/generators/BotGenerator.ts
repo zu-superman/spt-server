@@ -592,21 +592,24 @@ export class BotGenerator
             return botInfo.GameVersion;
         }
 
-        // More color = more op
+        // Choose random weighted game version for bot
         botInfo.GameVersion = this.weightedRandomHelper.getWeightedValue(this.pmcConfig.gameVersionWeight);
 
-        // EOD and UhD must have a category of 2 for their unique icons to show
-        if ([GameEditions.EDGE_OF_DARKNESS, GameEditions.UNHEARD].includes(<any>botInfo.GameVersion))
+        // Choose appropriate member category value
+        switch (botInfo.GameVersion)
         {
-            botInfo.MemberCategory = 2;
-        }
-        else
-        {
-            // Everyone else gets a weighted randomised category
-            botInfo.MemberCategory = Number.parseInt(
-                this.weightedRandomHelper.getWeightedValue(this.pmcConfig.accountTypeWeight),
-                10,
-            );
+            case GameEditions.EDGE_OF_DARKNESS:
+                botInfo.MemberCategory = MemberCategory.UNIQUE_ID;
+                break;
+            case GameEditions.UNHEARD:
+                botInfo.MemberCategory = MemberCategory.UNHEARD;
+                break;
+            default:
+                // Everyone else gets a weighted randomised category
+                botInfo.MemberCategory = Number.parseInt(
+                    this.weightedRandomHelper.getWeightedValue(this.pmcConfig.accountTypeWeight),
+                    10,
+                );
         }
 
         return botInfo.GameVersion;
