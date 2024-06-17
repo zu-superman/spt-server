@@ -209,12 +209,11 @@ export class BotGenerator
         bot.Health = this.generateHealth(botJsonTemplate.health, bot.Info.Side === "Savage");
         bot.Skills = this.generateSkills(<any>botJsonTemplate.skills); // TODO: fix bad type, bot jsons store skills in dict, output needs to be array
 
-        let chosenGameVersion = bot.Info.GameVersion;
         if (botGenerationDetails.isPmc)
         {
             bot.Info.IsStreamerModeAvailable = true; // Set to true so client patches can pick it up later - client sometimes alters botrole to assaultGroup
-            chosenGameVersion = this.setRandomisedGameVersionAndCategory(bot.Info);
-            if (chosenGameVersion === GameEditions.UNHEARD)
+            this.setRandomisedGameVersionAndCategory(bot.Info);
+            if (bot.Info.GameVersion === GameEditions.UNHEARD)
             {
                 this.addAdditionalPocketLootWeightsForUnheardBot(botJsonTemplate);
             }
@@ -228,7 +227,7 @@ export class BotGenerator
             botRole,
             botGenerationDetails.isPmc,
             botLevel.level,
-            chosenGameVersion,
+            bot.Info.GameVersion,
         );
 
         if (this.botConfig.botRolesWithDogTags.includes(botRole))
@@ -294,7 +293,7 @@ export class BotGenerator
     }
 
     /**
-     * Choose various appearance settings for a bot using weights
+     * Choose various appearance settings for a bot using weights: head/body/feet/hands
      * @param bot Bot to adjust
      * @param appearance Appearance settings to choose from
      * @param botGenerationDetails Generation details
