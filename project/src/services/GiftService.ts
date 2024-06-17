@@ -248,7 +248,7 @@ export class GiftService
         if (giftId)
         {
             const giftData = this.getGiftById(giftId);
-            if (!this.profileHelper.playerHasRecievedMaxNumberOfGift(sessionId, giftId, giftData.maxToSendPlayer ?? 5))
+            if (!this.profileHelper.playerHasRecievedMaxNumberOfGift(sessionId, giftId, 1)) // Hard-coded to send only one
             {
                 this.sendGiftToPlayer(sessionId, giftId);
             }
