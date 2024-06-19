@@ -1352,7 +1352,7 @@ export class BotEquipmentModGenerator
         {
             modSlot = camoraFirstSlot;
             exhaustableModPool = new ExhaustableArray(
-                this.mergeCamoraPoolsTogether(itemModPool),
+                this.mergeCamoraPools(itemModPool),
                 this.randomUtil,
                 this.cloner,
             );
@@ -1383,36 +1383,29 @@ export class BotEquipmentModGenerator
             return;
         }
 
-        for (const slot of parentTemplate._props.Slots)
+        for (const slot of cylinderMagTemplate._props.Slots)
         {
             const modSlotId = slot._name;
             const modId = this.hashUtil.generate();
-            items.push({ _id: modId, _tpl: modTpl, parentId: parentId, slotId: modSlotId });
+            items.push({ _id: modId, _tpl: modTpl, parentId: cylinderMagParentId, slotId: modSlotId });
         }
     }
 
     /**
      * Take a record of camoras and merge the compatible shells into one array
-     * @param camorasWithShells camoras we want to merge into one array
-     * @returns string array of shells for multiple camora sources
+     * @param camorasWithShells Dictionary of camoras we want to merge into one array
+     * @returns String array of shells for multiple camora sources
      */
-    protected mergeCamoraPoolsTogether(camorasWithShells: Record<string, string[]>): string[]
+    protected mergeCamoraPools(camorasWithShells: Record<string, string[]>): string[]
     {
-        const poolResult: string[] = [];
-        for (const camoraKey in camorasWithShells)
+        const uniqueShells = new Set<string>();
+        for (const shells of Object.values(camorasWithShells))
         {
-            const shells = camorasWithShells[camoraKey];
-            for (const shell of shells)
-            {
-                // Only add distinct shells
-                if (!poolResult.includes(shell))
-                {
-                    poolResult.push(shell);
-                }
-            }
+            // Add all shells to the set.
+            shells.forEach((shell) => uniqueShells.add(shell));
         }
 
-        return poolResult;
+        return Array.from(uniqueShells);
     }
 
     /**
