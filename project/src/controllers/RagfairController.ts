@@ -420,7 +420,7 @@ export class RagfairController
             return this.httpResponse.appendErrorToOutput(output, validationMessage);
         }
 
-        // Get an array of items from player inventory to list on flea
+        // Find items to be listed on flea from player inventory
         const { items: itemsInInventoryToList, errorMessage: itemsInInventoryError }
             = this.getItemsToListOnFleaFromInventory(pmcData, offerRequest.items);
         if (!itemsInInventoryToList || itemsInInventoryError)
