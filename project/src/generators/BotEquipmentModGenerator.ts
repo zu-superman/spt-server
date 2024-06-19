@@ -15,6 +15,8 @@ import { BaseClasses } from "@spt/models/enums/BaseClasses";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { ModSpawn } from "@spt/models/enums/ModSpawn";
 import { IChooseRandomCompatibleModResult } from "@spt/models/spt/bots/IChooseRandomCompatibleModResult";
+import { IFilterPlateModsForSlotByLevelResult, Result } from "@spt/models/spt/bots/IFilterPlateModsForSlotByLevelResult";
+import { IGenerateEquipmentProperties } from "@spt/models/spt/bots/IGenerateEquipmentProperties";
 import { IGenerateWeaponRequest } from "@spt/models/spt/bots/IGenerateWeaponRequest";
 import { IModToSpawnRequest } from "@spt/models/spt/bots/IModToSpawnRequest";
 import { EquipmentFilterDetails, EquipmentFilters, IBotConfig } from "@spt/models/spt/config/IBotConfig";
@@ -30,8 +32,6 @@ import { LocalisationService } from "@spt/services/LocalisationService";
 import { ICloner } from "@spt/utils/cloners/ICloner";
 import { HashUtil } from "@spt/utils/HashUtil";
 import { RandomUtil } from "@spt/utils/RandomUtil";
-import { IFilterPlateModsForSlotByLevelResult, Result } from "../models/spt/bots/IFilterPlateModsForSlotByLevelResult";
-import { IGenerateEquipmentProperties } from "./BotInventoryGenerator";
 
 @injectable()
 export class BotEquipmentModGenerator
@@ -159,7 +159,7 @@ export class BotEquipmentModGenerator
             // Find random mod and check its compatible
             let modTpl: string | undefined;
             let found = false;
-            const exhaustableModPool = new ExhaustableArray(modPoolToChooseFrom, this.randomUtil, this.cloner);
+            const exhaustableModPool = new ExhaustableArray<string>(modPoolToChooseFrom, this.randomUtil, this.cloner);
             while (exhaustableModPool.hasValues())
             {
                 modTpl = exhaustableModPool.getRandomValue();
