@@ -439,7 +439,7 @@ export class RagfairController
         const rootItem = offer.items[0];
 
         // Get average of items quality+children
-        const qualityMultiplier = this.itemHelper.getItemQualityModifierForOfferItems(offer.items);
+        const qualityMultiplier = this.itemHelper.getItemQualityModifierForItems(offer.items, true);
         let averageOfferPrice = this.ragfairPriceService.getFleaPriceForOfferItems(offer.items);
 
         // Check for and apply item price modifer if it exists

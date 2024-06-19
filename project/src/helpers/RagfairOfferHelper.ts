@@ -644,7 +644,7 @@ export class RagfairOfferHelper
         }
         else
         {
-            const itemQualityPercent = this.itemHelper.getItemQualityModifierForOfferItems(offer.items) * 100;
+            const itemQualityPercent = this.itemHelper.getItemQualityModifierForItems(offer.items) * 100;
             if (itemQualityPercent < searchRequest.conditionFrom)
             {
                 return false;

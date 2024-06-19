@@ -503,9 +503,10 @@ export class ItemHelper
     /**
      * Calcualte the average quality of an item and its children
      * @param items An offers item to process
+     * @param nonQualityItemsReturnNegative Treat items without a quality property as non-existant
      * @returns % quality modifer between 0 and 1
      */
-    public getItemQualityModifierForOfferItems(items: Item[]): number
+    public getItemQualityModifierForItems(items: Item[], nonQualityItemsReturnNegative = false): number
     {
         if (this.isOfBaseclass(items[0]._tpl, BaseClasses.WEAPON))
         {
@@ -513,12 +514,20 @@ export class ItemHelper
         }
 
         let qualityModifier = 0;
+        let itemsWithQualityCount = 0;
         for (const item of items)
         {
-            qualityModifier += this.getItemQualityModifier(item);
+            const result = this.getItemQualityModifier(item, nonQualityItemsReturnNegative);
+            if (result === -1)
+            {
+                continue;
+            }
+
+            qualityModifier += result;
+            itemsWithQualityCount++;
         }
 
-        return Math.min(qualityModifier / items.length, 1);
+        return Math.min(qualityModifier / itemsWithQualityCount, 1);
     }
 
     /**
@@ -526,7 +535,7 @@ export class ItemHelper
      * @param item
      * @returns number between 0 and 1
      */
-    public getItemQualityModifier(item: Item): number
+    public getItemQualityModifier(item: Item, nonQualityItemsReturnNegative = false): number
     {
         // Default to 100%
         let result = 1;
@@ -573,6 +582,12 @@ export class ItemHelper
                 result = repairKit.Resource / itemDetails._props.MaxRepairResource;
             }
 
+            // Not handled by any of the above + default value
+            if (nonQualityItemsReturnNegative && result === 1)
+            {
+                return -1;
+            }
+
             if (result === 0)
             {
                 // make item non-zero but still very low
@@ -582,7 +597,7 @@ export class ItemHelper
             return result;
         }
 
-        return 1;
+        return result;
     }
 
     /**
