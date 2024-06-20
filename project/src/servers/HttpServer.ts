@@ -66,8 +66,7 @@ export class HttpServer
             else
             {
                 const message = this.localisationService.getText("port_already_in_use", e.port);
-                this.logger.debug(`${message} [${e.message}]`);
-                throw new Error(`${message} [${e.message}]`);
+                this.logger.error(`${message} [${e.message}]`);
             }
         });
 
