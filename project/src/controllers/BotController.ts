@@ -5,6 +5,7 @@ import { BotGenerator } from "@spt/generators/BotGenerator";
 import { BotDifficultyHelper } from "@spt/helpers/BotDifficultyHelper";
 import { BotHelper } from "@spt/helpers/BotHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
+import { WeightedRandomHelper } from "@spt/helpers/WeightedRandomHelper";
 import { MinMax } from "@spt/models/common/MinMax";
 import { Condition, IGenerateBotsRequestData } from "@spt/models/eft/bot/IGenerateBotsRequestData";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
@@ -39,6 +40,7 @@ export class BotController
         @inject("BotGenerator") protected botGenerator: BotGenerator,
         @inject("BotHelper") protected botHelper: BotHelper,
         @inject("BotDifficultyHelper") protected botDifficultyHelper: BotDifficultyHelper,
+        @inject("WeightedRandomHelper") protected weightedRandomHelper: WeightedRandomHelper,
         @inject("BotGenerationCacheService") protected botGenerationCacheService: BotGenerationCacheService,
         @inject("MatchBotDetailsCacheService") protected matchBotDetailsCacheService: MatchBotDetailsCacheService,
         @inject("LocalisationService") protected localisationService: LocalisationService,
@@ -434,6 +436,26 @@ export class BotController
                 botGenerationDetails.botCountToGenerate = this.botConfig.presetBatch[botGenerationDetails.role];
             }
         }
+        // Only convert to boss when not already converted to PMC & Boss Convert is enabled
+        const {
+            bossConvertEnabled,
+            bossConvertMinMax,
+            bossesToConvertToWeights } = this.botConfig.assaultToBossConversion;
+        if (bossConvertEnabled && !botGenerationDetails.isPmc)
+        {
+            const bossConvertPercent = bossConvertMinMax[requestedBot.Role.toLowerCase()];
+            if (bossConvertPercent)
+            {
+                // Roll a percentage check if we should convert scav to boss
+                if (this.randomUtil.getChance100(
+                    this.randomUtil.getInt(bossConvertPercent.min, bossConvertPercent.max)))
+                {
+                    this.updateBotGenerationDetailsToRandomBoss(
+                        botGenerationDetails,
+                        bossesToConvertToWeights);
+                }
+            }
+        }
 
         // Construct cache key
         const cacheKey = `${
@@ -464,6 +486,19 @@ export class BotController
         this.botGenerationCacheService.storeUsedBot(desiredBot);
 
         return [desiredBot];
+    }
+
+    protected updateBotGenerationDetailsToRandomBoss(
+        botGenerationDetails: BotGenerationDetails,
+        possibleBossTypeWeights: Record<string, number>): void
+    {
+        // Seems Actual bosses have the same Brain issues like PMC gaining Boss Brains We cant use all bosses
+        botGenerationDetails.role
+                        = this.weightedRandomHelper.getWeightedValue(possibleBossTypeWeights);
+
+        // Bosses are only ever 'normal'
+        botGenerationDetails.botDifficulty = "normal";
+        botGenerationDetails.botCountToGenerate = this.botConfig.presetBatch[botGenerationDetails.role];
     }
 
     /**
