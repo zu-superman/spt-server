@@ -42,7 +42,7 @@
       "Holster": 0,
       "Pockets": 100,
       "Scabbard": 0,
-      "SecondPrimaryWeapon": 92,
+      "SecondPrimaryWeapon": 93,
       "SecuredContainer": 100,
       "TacticalVest": 100
     },
@@ -50,8 +50,8 @@
       "back_plate": 79,
       "front_plate": 100,
       "left_side_plate": 10,
-      "mod_equipment": 18,
-      "mod_equipment_000": 75,
+      "mod_equipment": 20,
+      "mod_equipment_000": 76,
       "mod_mount": 0,
       "mod_nvg": 20,
       "right_side_plate": 10
@@ -2386,17 +2386,17 @@
     "equipment": {
       "ArmBand": {},
       "ArmorVest": {
-        "545cdb794bdc2d3a198b456a": 17,
-        "5ab8e79e86f7742d8b372e78": 40,
-        "5b44cf1486f77431723e3d05": 10,
-        "5b44d0de86f774503d30cba8": 16,
-        "5c0e51be86f774598e797894": 501,
-        "5c0e53c886f7747fa54205c7": 399,
-        "5c0e57ba86f7747fa141986d": 475,
-        "5c0e5bab86f77461f55ed1f3": 468,
-        "5ca2151486f774244a3b8d30": 16,
-        "5ca21c6986f77479963115a7": 19,
-        "64be79e2bf8412471d0d9bcc": 427
+        "545cdb794bdc2d3a198b456a": 19,
+        "5ab8e79e86f7742d8b372e78": 47,
+        "5b44cf1486f77431723e3d05": 11,
+        "5b44d0de86f774503d30cba8": 21,
+        "5c0e51be86f774598e797894": 607,
+        "5c0e53c886f7747fa54205c7": 507,
+        "5c0e57ba86f7747fa141986d": 578,
+        "5c0e5bab86f77461f55ed1f3": 575,
+        "5ca2151486f774244a3b8d30": 20,
+        "5ca21c6986f77479963115a7": 21,
+        "64be79e2bf8412471d0d9bcc": 520
       },
       "Backpack": {},
       "Earpiece": {
@@ -2414,16 +2414,16 @@
         "5bd073a586f7747e6f135799": 124
       },
       "FirstPrimaryWeapon": {
-        "5447a9cd4bdc2dbd208b4567": 263,
-        "57c44b372459772d2b39b8ce": 42,
-        "59d6088586f774275f37482f": 437,
-        "59ff346386f77477562ff5e2": 444,
-        "5a0ec13bfcdbcb00165aa685": 422,
-        "5aafa857e5b5b00018480968": 167,
-        "5ac4cd105acfc40016339859": 437,
-        "5ac66d725acfc43b321d4b60": 422,
-        "5beed0f50db834001c062b12": 125,
-        "6499849fc93611967b034949": 34
+        "5447a9cd4bdc2dbd208b4567": 316,
+        "57c44b372459772d2b39b8ce": 52,
+        "59d6088586f774275f37482f": 539,
+        "59ff346386f77477562ff5e2": 532,
+        "5a0ec13bfcdbcb00165aa685": 525,
+        "5aafa857e5b5b00018480968": 201,
+        "5ac4cd105acfc40016339859": 542,
+        "5ac66d725acfc43b321d4b60": 506,
+        "5beed0f50db834001c062b12": 154,
+        "6499849fc93611967b034949": 40
       },
       "Headwear": {
         "5645bc214bdc2d363b8b4571": 159,
