@@ -5,7 +5,7 @@ import { PresetHelper } from "@spt/helpers/PresetHelper";
 import { IFenceLevel } from "@spt/models/eft/common/IGlobals";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { Item, Repairable } from "@spt/models/eft/common/tables/IItem";
-import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
+import { ITemplateItem, Slot } from "@spt/models/eft/common/tables/ITemplateItem";
 import { IBarterScheme, ITraderAssort } from "@spt/models/eft/common/tables/ITrader";
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
@@ -1142,8 +1142,8 @@ export class FenceService
      */
     protected randomiseArmorModDurability(armor: Item[], itemDbDetails: ITemplateItem): void
     {
-        // Armor has no mods, make no changes
-        const hasMods = (itemDbDetails._props.Slots?.length ?? 0) > 0;
+        // Armor has no mods, nothing to randomise
+        const hasMods = Boolean(itemDbDetails._props.Slots);
         if (!hasMods)
         {
             return;
@@ -1151,95 +1151,116 @@ export class FenceService
 
         // Check for and adjust soft insert durability values
         const requiredSlots = itemDbDetails._props.Slots?.filter((slot) => slot._required);
-        const hasRequiredSlots = (requiredSlots?.length ?? 0) > 0;
-        if (hasRequiredSlots)
+        if (Boolean(requiredSlots?.length))
         {
-            for (const requiredSlot of requiredSlots!)
-            {
-                const modItemDbDetails = this.itemHelper.getItem(requiredSlot._props.filters[0].Plate!)[1];
-                const durabilityValues = this.getRandomisedArmorDurabilityValues(
-                    modItemDbDetails,
-                    this.traderConfig.fence.armorMaxDurabilityPercentMinMax,
-                );
-                const plateTpl = requiredSlot._props.filters[0].Plate; // `Plate` property appears to be the 'default' item for slot
-                if (plateTpl === "")
-                {
-                    // Some bsg plate properties are empty, skip mod
-                    continue;
-                }
-
-                // Find items mod to apply dura changes to
-                const modItemToAdjust = armor.find(
-                    (mod) => mod.slotId!.toLowerCase() === requiredSlot._name.toLowerCase(),
-                )!;
-
-                this.itemHelper.addUpdObjectToItem(modItemToAdjust);
-
-                if (!modItemToAdjust.upd!.Repairable)
-                {
-                    modItemToAdjust.upd!.Repairable = {
-                        Durability: modItemDbDetails._props.MaxDurability!,
-                        MaxDurability: modItemDbDetails._props.MaxDurability!,
-                    };
-                }
-                modItemToAdjust.upd!.Repairable.Durability = durabilityValues.Durability;
-                modItemToAdjust.upd!.Repairable.MaxDurability = durabilityValues.MaxDurability;
-
-                // 25% chance to add shots to visor when its below max durability
-                if (
-                    this.randomUtil.getChance100(25)
-                    && modItemToAdjust.parentId === BaseClasses.ARMORED_EQUIPMENT
-                    && modItemToAdjust.slotId === "mod_equipment_000"
-                    && modItemToAdjust.upd!.Repairable.Durability < modItemDbDetails._props.MaxDurability!
-                )
-                {
-                    // Is damaged
-                    modItemToAdjust.upd!.FaceShield = { Hits: this.randomUtil.getInt(1, 3) };
-                }
-            }
+            this.randomiseArmorSoftInsertDurabilities(requiredSlots, armor);
         }
 
         // Check for and adjust plate durability values
         const plateSlots = itemDbDetails._props.Slots?.filter((slot) =>
             this.itemHelper.isRemovablePlateSlot(slot._name),
         );
-        if ((plateSlots?.length ?? 0) > 0)
+        if (Boolean(plateSlots?.length))
         {
-            for (const plateSlot of plateSlots!)
+            this.randomiseArmorInsertsDurabilities(plateSlots, armor);
+        }
+    }
+
+    /**
+     * Randomise the durability values of items on armor with a passed in slot
+     * @param softInsertSlots Slots of items to randomise
+     * @param armorItemAndMods Array of armor + inserts to get items from
+     */
+    protected randomiseArmorSoftInsertDurabilities(softInsertSlots: Slot[], armorItemAndMods: Item[]): void
+    {
+        for (const requiredSlot of softInsertSlots!)
+        {
+            const modItemDbDetails = this.itemHelper.getItem(requiredSlot._props.filters[0].Plate!)[1];
+            const durabilityValues = this.getRandomisedArmorDurabilityValues(
+                modItemDbDetails,
+                this.traderConfig.fence.armorMaxDurabilityPercentMinMax,
+            );
+            const plateTpl = requiredSlot._props.filters[0].Plate; // `Plate` property appears to be the 'default' item for slot
+            if (plateTpl === "")
             {
-                // Chance to not add plate
-                if (!this.randomUtil.getChance100(this.traderConfig.fence.chancePlateExistsInArmorPercent))
-                {
-                    continue;
-                }
-
-                const plateTpl = plateSlot._props.filters[0].Plate;
-                if (!plateTpl)
-                {
-                    // Bsg data lacks a default plate, skip adding mod
-                    continue;
-                }
-                const modItemDbDetails = this.itemHelper.getItem(plateTpl)[1];
-                const durabilityValues = this.getRandomisedArmorDurabilityValues(
-                    modItemDbDetails,
-                    this.traderConfig.fence.armorMaxDurabilityPercentMinMax,
-                );
-
-                // Find items mod to apply dura changes to
-                const modItemToAdjust = armor.find((mod) => mod.slotId!.toLowerCase() === plateSlot._name.toLowerCase());
-                this.itemHelper.addUpdObjectToItem(modItemToAdjust!);
-
-                if (!modItemToAdjust?.upd?.Repairable)
-                {
-                    modItemToAdjust!.upd!.Repairable = {
-                        Durability: modItemDbDetails._props.MaxDurability!,
-                        MaxDurability: modItemDbDetails._props.MaxDurability!,
-                    };
-                }
-
-                modItemToAdjust!.upd!.Repairable.Durability = durabilityValues.Durability;
-                modItemToAdjust!.upd!.Repairable.MaxDurability = durabilityValues.MaxDurability;
+                // Some bsg plate properties are empty, skip mod
+                continue;
             }
+
+            // Find items mod to apply dura changes to
+            const modItemToAdjust = armorItemAndMods.find(
+                (mod) => mod.slotId!.toLowerCase() === requiredSlot._name.toLowerCase(),
+            )!;
+
+            this.itemHelper.addUpdObjectToItem(modItemToAdjust);
+
+            if (!modItemToAdjust.upd!.Repairable)
+            {
+                modItemToAdjust.upd!.Repairable = {
+                    Durability: modItemDbDetails._props.MaxDurability!,
+                    MaxDurability: modItemDbDetails._props.MaxDurability!,
+                };
+            }
+            modItemToAdjust.upd!.Repairable.Durability = durabilityValues.Durability;
+            modItemToAdjust.upd!.Repairable.MaxDurability = durabilityValues.MaxDurability;
+
+            // 25% chance to add shots to visor items when its below max durability
+            if (
+                this.randomUtil.getChance100(25)
+                && modItemToAdjust.parentId === BaseClasses.ARMORED_EQUIPMENT
+                && modItemToAdjust.slotId === "mod_equipment_000"
+                && modItemToAdjust.upd!.Repairable.Durability < modItemDbDetails._props.MaxDurability!
+            )
+            {
+                // Is damaged
+                modItemToAdjust.upd!.FaceShield = { Hits: this.randomUtil.getInt(1, 3) };
+            }
+        }
+    }
+
+    /**
+     * Randomise the durability values of plate items in armor
+     * @param plateSlots Slots of items to randomise
+     * @param armorItemAndMods Array of armor + inserts to get items from
+     */
+    protected randomiseArmorInsertsDurabilities(plateSlots: Slot[], armorItemAndMods: Item[]): void
+    {
+        for (const plateSlot of plateSlots!)
+        {
+            // Chance to not add plate
+            if (!this.randomUtil.getChance100(this.traderConfig.fence.chancePlateExistsInArmorPercent))
+            {
+                continue;
+            }
+
+            const plateTpl = plateSlot._props.filters[0].Plate;
+            if (!plateTpl)
+            {
+                // Bsg data lacks a default plate, skip adding mod
+                continue;
+            }
+
+            const modItemDbDetails = this.itemHelper.getItem(plateTpl)[1];
+            const durabilityValues = this.getRandomisedArmorDurabilityValues(
+                modItemDbDetails,
+                this.traderConfig.fence.armorMaxDurabilityPercentMinMax,
+            );
+
+            // Find items mod to apply dura changes to
+            const modItemToAdjust = armorItemAndMods
+                .find((mod) => mod.slotId!.toLowerCase() === plateSlot._name.toLowerCase());
+            this.itemHelper.addUpdObjectToItem(modItemToAdjust!);
+
+            if (!modItemToAdjust?.upd?.Repairable)
+            {
+                modItemToAdjust!.upd!.Repairable = {
+                    Durability: modItemDbDetails._props.MaxDurability!,
+                    MaxDurability: modItemDbDetails._props.MaxDurability!,
+                };
+            }
+
+            modItemToAdjust!.upd!.Repairable.Durability = durabilityValues.Durability;
+            modItemToAdjust!.upd!.Repairable.MaxDurability = durabilityValues.MaxDurability;
         }
     }
 
