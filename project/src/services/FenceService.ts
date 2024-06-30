@@ -1220,6 +1220,7 @@ export class FenceService
 
     /**
      * Randomise the durability values of plate items in armor
+     * Has chance to remove plate
      * @param plateSlots Slots of items to randomise
      * @param armorItemAndMods Array of armor + inserts to get items from
      */
@@ -1227,23 +1228,27 @@ export class FenceService
     {
         for (const plateSlot of plateSlots!)
         {
-            // Chance to not add plate
-            if (!this.randomUtil.getChance100(this.traderConfig.fence.chancePlateExistsInArmorPercent))
-            {
-                // Remove plate from armor
-                armorItemAndMods = armorItemAndMods
-                    .filter((item) => item.slotId!.toLowerCase() !== plateSlot._name.toLowerCase());
-                continue;
-            }
-
             const plateTpl = plateSlot._props.filters[0].Plate;
             if (!plateTpl)
             {
-                // Bsg data lacks a default plate, skip adding mod
+                // Bsg data lacks a default plate, skip randomisng for this mod
                 continue;
             }
 
             const modItemDbDetails = this.itemHelper.getItem(plateTpl)[1];
+
+            // Chance to remove plate
+            const plateExistsChance = this.traderConfig
+                .fence.chancePlateExistsInArmorPercent[modItemDbDetails._props?.armorClass ?? "3"];
+            if (!this.randomUtil.getChance100(plateExistsChance))
+            {
+                // Remove plate from armor
+                armorItemAndMods = armorItemAndMods
+                    .filter((item) => item.slotId!.toLowerCase() !== plateSlot._name.toLowerCase());
+
+                continue;
+            }
+
             const durabilityValues = this.getRandomisedArmorDurabilityValues(
                 modItemDbDetails,
                 this.traderConfig.fence.armorMaxDurabilityPercentMinMax,
