@@ -1203,16 +1203,18 @@ export class HideoutController
      */
     public recordShootingRangePoints(sessionId: string, pmcData: IPmcData, request: IRecordShootingRangePoints): void
     {
-        // Check if counter exists, add placeholder if it doesnt
-        if (!pmcData.Stats.Eft.OverallCounters.Items.some((counter) => counter.Key.includes("ShootingRangePoints")))
+        const shootingRangeKey = "ShootingRangePoints";
+        const overallCounterItems = pmcData.Stats.Eft.OverallCounters.Items;
+
+        // Find counter by key
+        let shootingRangeHighScore = overallCounterItems.find((counter) => counter.Key.includes(shootingRangeKey));
+        if (!shootingRangeHighScore)
         {
-            pmcData.Stats.Eft.OverallCounters.Items.push({ Key: ["ShootingRangePoints"], Value: 0 });
+            // Counter not found, add blank one
+            overallCounterItems.push({ Key: [shootingRangeKey], Value: 0 });
+            shootingRangeHighScore = overallCounterItems.find((counter) => counter.Key.includes(shootingRangeKey));
         }
 
-        // Find counter by key and update value
-        const shootingRangeHighScore = pmcData.Stats.Eft.OverallCounters.Items
-            .find((counter) => counter.Key.includes("ShootingRangePoints"),
-            );
         shootingRangeHighScore.Value = request.points;
     }
 

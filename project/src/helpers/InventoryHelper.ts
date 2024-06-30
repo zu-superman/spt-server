@@ -10,9 +10,7 @@ import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { Inventory } from "@spt/models/eft/common/tables/IBotBase";
 import { Item, Location, Upd } from "@spt/models/eft/common/tables/IItem";
 import { IAddItemDirectRequest } from "@spt/models/eft/inventory/IAddItemDirectRequest";
-import { AddItem } from "@spt/models/eft/inventory/IAddItemRequestData";
 import { IAddItemsDirectRequest } from "@spt/models/eft/inventory/IAddItemsDirectRequest";
-import { IAddItemTempObject } from "@spt/models/eft/inventory/IAddItemTempObject";
 import { IInventoryMergeRequestData } from "@spt/models/eft/inventory/IInventoryMergeRequestData";
 import { IInventoryMoveRequestData } from "@spt/models/eft/inventory/IInventoryMoveRequestData";
 import { IInventoryRemoveRequestData } from "@spt/models/eft/inventory/IInventoryRemoveRequestData";
@@ -363,8 +361,8 @@ export class InventoryHelper
      * Find a location to place an item into inventory and place it
      * @param stashFS2D 2-dimensional representation of the container slots
      * @param sortingTableFS2D 2-dimensional representation of the sorting table slots
-     * @param itemWithChildren Item to place
-     * @param playerInventory
+     * @param itemWithChildren Item to place with children
+     * @param playerInventory Players inventory
      * @param useSortingTable Should sorting table to be used if main stash has no space
      * @param output output to send back to client
      */
@@ -398,13 +396,7 @@ export class InventoryHelper
             }
             catch (err)
             {
-                const errorText = typeof err === "string" ? ` -> ${err}` : err.message;
-                this.logger.error(this.localisationService.getText("inventory-fill_container_failed", errorText));
-
-                this.httpResponse.appendErrorToOutput(
-                    output,
-                    this.localisationService.getText("inventory-no_stash_space"),
-                );
+                handleContainerPlacementError(err, output);
 
                 return;
             }
@@ -444,13 +436,7 @@ export class InventoryHelper
             }
             catch (err)
             {
-                const errorText = typeof err === "string" ? ` -> ${err}` : "";
-                this.logger.error(this.localisationService.getText("inventory-fill_container_failed", errorText));
-
-                this.httpResponse.appendErrorToOutput(
-                    output,
-                    this.localisationService.getText("inventory-no_stash_space"),
-                );
+                handleContainerPlacementError(err, output);
 
                 return;
             }
@@ -474,76 +460,16 @@ export class InventoryHelper
 
             return;
         }
-    }
 
-    /**
-     * Split an items stack size based on its StackMaxSize value
-     * @param assortItems Items to add to inventory
-     * @param requestItem Details of purchased item to add to inventory
-     * @param result Array split stacks are appended to
-     */
-    protected splitStackIntoSmallerChildStacks(
-        assortItems: Item[],
-        requestItem: AddItem,
-        result: IAddItemTempObject[],
-    ): void
-    {
-        for (const item of assortItems)
+        function handleContainerPlacementError(err: any, output: IItemEventRouterResponse): void
         {
-            // Iterated item matches root item
-            if (item._id === requestItem.item_id)
-            {
-                // Get item details from db
-                const itemDetails = this.itemHelper.getItem(item._tpl)[1];
-                const itemToAdd: IAddItemTempObject = {
-                    itemRef: item,
-                    count: requestItem.count,
-                    isPreset: !!requestItem.sptIsPreset,
-                };
+            const errorText = typeof err === "string" ? ` -> ${err}` : err.message;
+            this.logger.error(this.localisationService.getText("inventory-fill_container_failed", errorText));
 
-                // Split stacks if the size is higher than allowed by items StackMaxSize property
-                let maxStackCount = 1;
-                if (requestItem.count > itemDetails._props.StackMaxSize)
-                {
-                    let remainingCountOfItemToAdd = requestItem.count;
-                    const calc
-                        = requestItem.count
-                        - Math.floor(requestItem.count / itemDetails._props.StackMaxSize)
-                        * itemDetails._props.StackMaxSize;
-
-                    maxStackCount
-                        = calc > 0
-                            ? maxStackCount + Math.floor(remainingCountOfItemToAdd / itemDetails._props.StackMaxSize)
-                            : Math.floor(remainingCountOfItemToAdd / itemDetails._props.StackMaxSize);
-
-                    // Iterate until totalCountOfPurchasedItem is 0
-                    for (let i = 0; i < maxStackCount; i++)
-                    {
-                        // Keep splitting items into stacks until none left
-                        if (remainingCountOfItemToAdd > 0)
-                        {
-                            const newChildItemToAdd = this.cloner.clone(itemToAdd);
-                            if (remainingCountOfItemToAdd > itemDetails._props.StackMaxSize)
-                            {
-                                // Reduce total count of item purchased by stack size we're going to add to inventory
-                                remainingCountOfItemToAdd -= itemDetails._props.StackMaxSize;
-                                newChildItemToAdd.count = itemDetails._props.StackMaxSize;
-                            }
-                            else
-                            {
-                                newChildItemToAdd.count = remainingCountOfItemToAdd;
-                            }
-
-                            result.push(newChildItemToAdd);
-                        }
-                    }
-                }
-                else
-                {
-                    // Item count is within allowed stack size, just add it
-                    result.push(itemToAdd);
-                }
-            }
+            this.httpResponse.appendErrorToOutput(
+                output,
+                this.localisationService.getText("inventory-no_stash_space"),
+            );
         }
     }
 
@@ -586,12 +512,11 @@ export class InventoryHelper
             // We expect that each inventory item and each insured item has unique "_id", respective "itemId".
             // Therefore we want to use a NON-Greedy function and escape the iteration as soon as we find requested item.
             const inventoryIndex = inventoryItems.findIndex((item) => item._id === childId);
-            if (inventoryIndex > -1)
+            if (inventoryIndex !== -1)
             {
                 inventoryItems.splice(inventoryIndex, 1);
             }
-
-            if (inventoryIndex === -1)
+            else
             {
                 this.logger.warning(this.localisationService.getText("inventory-unable_to_remove_item_id_not_found",
                     {
@@ -601,7 +526,7 @@ export class InventoryHelper
             }
 
             const insuredIndex = insuredItems.findIndex((item) => item.itemId === childId);
-            if (insuredIndex > -1)
+            if (insuredIndex !== -1)
             {
                 insuredItems.splice(insuredIndex, 1);
             }
@@ -724,8 +649,14 @@ export class InventoryHelper
         return this.getSizeByInventoryItemHash(itemTpl, itemID, this.getInventoryItemHash(inventoryItems));
     }
 
-    // note from 2027: there IS a thing i didn't explore and that is Merges With Children
-    // -> Prepares item Width and height returns [sizeX, sizeY]
+    /**
+     * Calculates the size of an item including attachements
+     * takes into account if item is folded
+     * @param itemTpl Items template id
+     * @param itemID Items id
+     * @param inventoryItemHash Hashmap of inventory items
+     * @returns An array representing the [width, height] of the item
+     */
     protected getSizeByInventoryItemHash(
         itemTpl: string,
         itemID: string,
@@ -757,7 +688,7 @@ export class InventoryHelper
             // return default size of 1x1
             this.logger.error(this.localisationService.getText("inventory-return_default_size", itemTpl));
 
-            return [1, 1];
+            return [1, 1]; // Invalid input data, return defaults
         }
 
         const rootItem = inventoryItemHash.byItemId[itemID];
@@ -775,6 +706,8 @@ export class InventoryHelper
         let forcedRight = 0;
         let outX = tmpItem._props.Width;
         const outY = tmpItem._props.Height;
+
+        // Item types to ignore
         const skipThisItems: string[] = [
             BaseClasses.BACKPACK,
             BaseClasses.SEARCHABLE_ITEM,
@@ -788,6 +721,7 @@ export class InventoryHelper
             outX -= tmpItem._props.SizeReduceRight;
         }
 
+        // Calculate size contribution from child items/attachments
         if (!skipThisItems.includes(tmpItem._parent))
         {
             while (toDo.length > 0)
