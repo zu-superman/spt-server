@@ -67,12 +67,12 @@ export class HealthHelper
     }
 
     /**
-     * Update player profile with changes from request object
+     * Update player profile vitality values with changes from client request object
      * @param pmcData Player profile
      * @param request Heal request
      * @param sessionID Session id
-     * @param addEffects Should effects be added or removed (default - add)
-     * @param deleteExistingEffects Should all prior effects be removed before apply new ones
+     * @param addEffects Should effects be added to profile (default - true)
+     * @param deleteExistingEffects Should all prior effects be removed before apply new ones  (default - true)
      */
     public saveVitality(
         pmcData: IPmcData,
@@ -91,7 +91,7 @@ export class HealthHelper
         profileHealth.Energy = request.Energy!;
         profileHealth.Temperature = request.Temperature!;
 
-        // Transfer properties from request to profile
+        // Process request data into profile
         for (const bodyPart in postRaidBodyParts)
         {
             // Transfer effects from request to profile
@@ -99,9 +99,10 @@ export class HealthHelper
             {
                 profileEffects[bodyPart] = postRaidBodyParts[bodyPart].Effects;
             }
-            if (request.IsAlive === true)
+
+            if (request.IsAlive)
             {
-                // is player alive, not is limb alive
+                // Player alive, not is limb alive
                 profileHealth[bodyPart] = postRaidBodyParts[bodyPart].Current;
             }
             else
@@ -111,7 +112,7 @@ export class HealthHelper
             }
         }
 
-        // Add effects to body parts
+        // Add effects to body parts if enabled
         if (addEffects)
         {
             this.saveEffects(
@@ -127,6 +128,7 @@ export class HealthHelper
 
         this.resetVitality(sessionID);
 
+        // Update last edited timestamp
         pmcData.Health.UpdateTime = this.timeUtil.getTimestamp();
     }
 
