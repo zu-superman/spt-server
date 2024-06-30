@@ -1230,6 +1230,9 @@ export class FenceService
             // Chance to not add plate
             if (!this.randomUtil.getChance100(this.traderConfig.fence.chancePlateExistsInArmorPercent))
             {
+                // Remove plate from armor
+                armorItemAndMods = armorItemAndMods
+                    .filter((item) => item.slotId!.toLowerCase() !== plateSlot._name.toLowerCase());
                 continue;
             }
 
