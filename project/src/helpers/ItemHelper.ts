@@ -527,6 +527,12 @@ export class ItemHelper
             itemsWithQualityCount++;
         }
 
+        if (itemsWithQualityCount === 0)
+        {
+            // Can happen when rigs without soft inserts or plates are listed
+            return 1;
+        }
+
         return Math.min(qualityModifier / itemsWithQualityCount, 1);
     }
 
