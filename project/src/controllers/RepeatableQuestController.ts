@@ -535,7 +535,7 @@ export class RepeatableQuestController
 
         const fullProfile = this.profileHelper.getFullProfile(sessionID);
 
-        let repeatableToChange: IPmcDataRepeatableQuest;
+        let repeatableToChange: IPmcDataRepeatableQuest = undefined;
         let changeRequirement: IChangeRequirement;
 
         // The trader existing quest is linked to
@@ -545,7 +545,8 @@ export class RepeatableQuestController
         for (const repeatablesInProfile of pmcData.RepeatableQuests)
         {
             // Check for existing quest in (daily/weekly/scav arrays)
-            const questToReplace = repeatablesInProfile.activeQuests.find((x) => x._id === changeRequest.qid);
+            const questToReplace = repeatablesInProfile.activeQuests
+                .find((repeatable) => repeatable._id === changeRequest.qid);
             if (!questToReplace)
             {
                 // Not found, skip to next repeatable sub-type
@@ -581,10 +582,6 @@ export class RepeatableQuestController
                 // Add newly generated quest to daily/weekly/scav type array
                 newRepeatableQuest.side = repeatableConfig.side;
                 repeatablesInProfile.activeQuests.push(newRepeatableQuest);
-                repeatablesInProfile.changeRequirement[newRepeatableQuest._id] = {
-                    changeCost: newRepeatableQuest.changeCost,
-                    changeStandingCost: this.randomUtil.getArrayValue([0, 0.01]),
-                };
 
                 // Find quest we're replacing in pmc profile quests array and remove it
                 this.questHelper.findAndRemoveQuestFromArrayIfExists(questToReplace._id, pmcData.Quests);
@@ -595,13 +592,21 @@ export class RepeatableQuestController
                     fullProfile.characters.scav?.Quests ?? [],
                 );
 
-                this.handleFreeRefreshUses(fullProfile, repeatablesInProfile, repeatableTypeLower);
+                const isFreeToReplace = this.useFreeRefreshIfAvailable(fullProfile, repeatablesInProfile, repeatableTypeLower);
+                if (!isFreeToReplace)
+                {
+                    // not free, add change requirement cost
+                    repeatablesInProfile.changeRequirement[newRepeatableQuest._id] = {
+                        changeCost: newRepeatableQuest.changeCost,
+                        changeStandingCost: this.randomUtil.getArrayValue([0, 0.01]),
+                    };
+                }
             }
 
             // Not sure why we clone but we do
             repeatableToChange = this.cloner.clone(repeatablesInProfile);
 
-            // Get rid of inactives
+            // Purge inactive repeatables
             repeatableToChange.inactiveQuests = [];
 
             break;
@@ -616,7 +621,6 @@ export class RepeatableQuestController
             return this.httpResponse.appendErrorToOutput(output, message);
         }
 
-        // Charge player money for replacing quest
         for (const cost of changeRequirement.changeCost)
         {
             this.paymentService.addPaymentToOutput(pmcData, cost.templateId, cost.count, sessionID, output);
@@ -678,40 +682,46 @@ export class RepeatableQuestController
     }
 
     /**
-     * Some accounts have access to repeatable quest refreshes for free
+     * Some accounts have access to free repeatable quest refreshes
      * Track the usage of them inside players profile
-     * @param fullProfile Profile of player
-     * @param repeatableSubType Can be daily/weekly/scav repeatables
-     * @param repeatableTypeName Subtype of repeatables: daily / weekly / scav
+     * @param fullProfile Player profile
+     * @param repeatableSubType Can be daily / weekly / scav repeatable
+     * @param repeatableTypeName Subtype of repeatable quest: daily / weekly / scav
+     * @returns Is the repeatable being replaced for free
      */
-    protected handleFreeRefreshUses(
+    protected useFreeRefreshIfAvailable(
         fullProfile: ISptProfile,
         repeatableSubType: IPmcDataRepeatableQuest,
-        repeatableTypeName: string): void
+        repeatableTypeName: string): boolean
     {
-        // Only certain game versions have access
-        const hasAccessToFreeRefreshSystem
-            = this.profileHelper.hasAccessToRepeatableFreeRefreshSystem(fullProfile.characters.pmc);
-        // Initialize/retrieve free refresh count for the desired subtype: daily/weekly
-        fullProfile.spt.freeRepeatableRefreshUsedCount ||= {};
-        const repeatableRefreshCounts = fullProfile.spt.freeRepeatableRefreshUsedCount;
-        repeatableRefreshCounts[repeatableTypeName] ||= 0; // Set to 0 if undefined
-
-        if (!hasAccessToFreeRefreshSystem)
+        // No free refreshes, exit early
+        if (repeatableSubType.freeChangesAvailable <= 0)
         {
-            // Reset the available count if the player does not have free refreshes.
+            // Reset counter to 0
             repeatableSubType.freeChangesAvailable = 0;
 
-            return;
+            return false;
         }
 
-        if (repeatableSubType.freeChangesAvailable > 0)
+        // Only certain game versions have access to free refreshes
+        const hasAccessToFreeRefreshSystem
+            = this.profileHelper.hasAccessToRepeatableFreeRefreshSystem(fullProfile.characters.pmc);
+
+        // If the player has access and available refreshes:
+        if (hasAccessToFreeRefreshSystem)
         {
-            // Increment the used count if the player has free refreshes and available changes.
-            repeatableRefreshCounts[repeatableTypeName]++;
+            // Initialize/retrieve free refresh count for the desired subtype: daily/weekly
+            fullProfile.spt.freeRepeatableRefreshUsedCount ||= {};
+            const repeatableRefreshCounts = fullProfile.spt.freeRepeatableRefreshUsedCount;
+            repeatableRefreshCounts[repeatableTypeName] ||= 0; // Set to 0 if undefined
 
-            // Update the available count.
+            // Increment the used count and decrement the available count.
+            repeatableRefreshCounts[repeatableTypeName]++;
             repeatableSubType.freeChangesAvailable--;
+
+            return true;
         }
+
+        return false;
     }
 }
