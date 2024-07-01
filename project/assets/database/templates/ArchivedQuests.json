@@ -1690,5 +1690,261 @@
       "Fail": []
     },
     "side": "Pmc"
+  },
+  "65e851a98f0b5f70ff393d90": {
+    "QuestName": "Unknown quest",
+    "_id": "65e851a98f0b5f70ff393d90",
+    "acceptPlayerMessage": "65e851a98f0b5f70ff393d90 acceptPlayerMessage",
+    "canShowNotificationsInGame": true,
+    "changeQuestMessageText": "65e851a98f0b5f70ff393d90 changeQuestMessageText",
+    "completePlayerMessage": "65e851a98f0b5f70ff393d90 completePlayerMessage",
+    "conditions": {
+      "AvailableForFinish": [
+        {
+          "completeInSeconds": 0,
+          "conditionType": "CounterCreator",
+          "counter": {
+            "conditions": [
+              {
+                "bodyPart": [],
+                "compareMethod": ">=",
+                "conditionType": "Kills",
+                "daytime": {
+                  "from": 0,
+                  "to": 0
+                },
+                "distance": {
+                  "compareMethod": ">=",
+                  "value": 0
+                },
+                "dynamicLocale": false,
+                "enemyEquipmentExclusive": [],
+                "enemyEquipmentInclusive": [],
+                "enemyHealthEffects": [],
+                "id": "65e86c8d6f37b61f9188f850",
+                "resetOnSessionEnd": false,
+                "savageRole": [
+                  "spiritSpring",
+                  "spiritWinter"
+                ],
+                "target": "Savage",
+                "value": 0,
+                "weapon": [],
+                "weaponCaliber": [],
+                "weaponModsExclusive": [],
+                "weaponModsInclusive": []
+              }
+            ],
+            "id": "65e86c7f3816f5eb6c616b28"
+          },
+          "doNotResetIfCounterCompleted": false,
+          "dynamicLocale": false,
+          "globalQuestCounterId": "",
+          "id": "65e86c7f40eb7a553a55e805",
+          "index": 0,
+          "oneSessionOnly": false,
+          "parentId": "",
+          "type": "Elimination",
+          "value": 50,
+          "visibilityConditions": []
+        }
+      ],
+      "AvailableForStart": [
+        {
+          "availableAfter": 0,
+          "conditionType": "Quest",
+          "dispersion": 0,
+          "dynamicLocale": false,
+          "globalQuestCounterId": "",
+          "id": "65e9c2174341a11df600bdf7",
+          "index": 0,
+          "parentId": "",
+          "status": [
+            4
+          ],
+          "target": "65e85198e32da31f2b30978e",
+          "visibilityConditions": []
+        }
+      ],
+      "Fail": []
+    },
+    "declinePlayerMessage": "65e851a98f0b5f70ff393d90 declinePlayerMessage",
+    "description": "65e851a98f0b5f70ff393d90 description",
+    "failMessageText": "65e851a98f0b5f70ff393d90 failMessageText",
+    "image": "/files/quest/icon/65f77467dc590c28aa443875.jpg",
+    "instantComplete": false,
+    "isKey": false,
+    "location": "any",
+    "name": "65e851a98f0b5f70ff393d90 name",
+    "note": "65e851a98f0b5f70ff393d90 note",
+    "restartable": false,
+    "rewards": {
+      "Fail": [],
+      "Started": [],
+      "Success": [
+        {
+          "id": "65e85cc875ea99590e6fc9a1",
+          "index": 0,
+          "type": "Experience",
+          "value": "22000"
+        },
+        {
+          "id": "65e9c6f7f44fc40f623cd796",
+          "index": 1,
+          "target": "54cb50c76803fa8b248b4571",
+          "type": "TraderStanding",
+          "value": "0.05"
+        },
+        {
+          "findInRaid": true,
+          "id": "65e9c71a109d5440b03a3f19",
+          "index": 2,
+          "items": [
+            {
+              "_id": "6607343337202496420e44fc",
+              "_tpl": "5449016a4bdc2d6f028b456f",
+              "upd": {
+                "StackObjectsCount": 165000
+              }
+            }
+          ],
+          "target": "6607343337202496420e44fc",
+          "type": "Item",
+          "value": "165000"
+        },
+        {
+          "findInRaid": true,
+          "id": "65e9c758f7a2123f32101392",
+          "index": 3,
+          "items": [
+            {
+              "_id": "6607343337202496420e44fd",
+              "_tpl": "657023b1cfc010a0f50069e5",
+              "upd": {
+                "StackObjectsCount": 3
+              }
+            }
+          ],
+          "target": "6607343337202496420e44fd",
+          "type": "Item",
+          "value": "3"
+        },
+        {
+          "findInRaid": true,
+          "id": "65e9c76e3e1cb842de6227ac",
+          "index": 4,
+          "items": [
+            {
+              "_id": "6607343337202496420e44fe",
+              "_tpl": "55d4887d4bdc2d962f8b4570",
+              "upd": {
+                "StackObjectsCount": 3
+              }
+            }
+          ],
+          "target": "6607343337202496420e44fe",
+          "type": "Item",
+          "value": "3"
+        },
+        {
+          "findInRaid": true,
+          "id": "65e9c8237cd8ac481c662724",
+          "index": 5,
+          "items": [
+            {
+              "_id": "6607343337202496420e44ff",
+              "_tpl": "5fbcc1d9016cce60e8341ab3",
+              "upd": {
+                "FireMode": {
+                  "FireMode": "single"
+                },
+                "StackObjectsCount": 2
+              }
+            },
+            {
+              "_id": "6607343337202496420e4500",
+              "_tpl": "5fbcbd6c187fea44d52eda14",
+              "parentId": "6607343337202496420e44ff",
+              "slotId": "mod_pistol_grip"
+            },
+            {
+              "_id": "6607343337202496420e4501",
+              "_tpl": "55d4887d4bdc2d962f8b4570",
+              "parentId": "6607343337202496420e44ff",
+              "slotId": "mod_magazine"
+            },
+            {
+              "_id": "6607343337202496420e4502",
+              "_tpl": "5fbcc3e4d6fa9c00c571bb58",
+              "parentId": "6607343337202496420e44ff",
+              "slotId": "mod_reciever"
+            },
+            {
+              "_id": "6607343337202496420e4503",
+              "_tpl": "5fbbfacda56d053a3543f799",
+              "parentId": "6607343337202496420e4502",
+              "slotId": "mod_barrel"
+            },
+            {
+              "_id": "6607343337202496420e4504",
+              "_tpl": "5fbc22ccf24b94483f726483",
+              "parentId": "6607343337202496420e4503",
+              "slotId": "mod_muzzle"
+            },
+            {
+              "_id": "6607343337202496420e4505",
+              "_tpl": "5fbcbd10ab884124df0cd563",
+              "parentId": "6607343337202496420e4504",
+              "slotId": "mod_muzzle_000"
+            },
+            {
+              "_id": "6607343337202496420e4506",
+              "_tpl": "5fbc210bf24b94483f726481",
+              "parentId": "6607343337202496420e4503",
+              "slotId": "mod_gas_block"
+            },
+            {
+              "_id": "6607343337202496420e4507",
+              "_tpl": "5fbc226eca32ed67276c155d",
+              "parentId": "6607343337202496420e4502",
+              "slotId": "mod_handguard"
+            },
+            {
+              "_id": "6607343337202496420e4508",
+              "_tpl": "5fc0fa362770a0045c59c677",
+              "parentId": "6607343337202496420e4507",
+              "slotId": "mod_sight_front"
+            },
+            {
+              "_id": "6607343337202496420e4509",
+              "_tpl": "5fc0fa957283c4046c58147e",
+              "parentId": "6607343337202496420e4502",
+              "slotId": "mod_sight_rear"
+            },
+            {
+              "_id": "6607343337202496420e450a",
+              "_tpl": "5fbcc437d724d907e2077d5c",
+              "parentId": "6607343337202496420e44ff",
+              "slotId": "mod_stock"
+            },
+            {
+              "_id": "6607343337202496420e450b",
+              "_tpl": "5fbcc640016cce60e8341acc",
+              "parentId": "6607343337202496420e44ff",
+              "slotId": "mod_charge"
+            }
+          ],
+          "target": "6607343337202496420e44ff",
+          "type": "Item",
+          "value": "2"
+        }
+      ]
+    },
+    "secretQuest": false,
+    "side": "Pmc",
+    "startedMessageText": "65e851a98f0b5f70ff393d90 startedMessageText",
+    "successMessageText": "65e851a98f0b5f70ff393d90 successMessageText",
+    "traderId": "54cb50c76803fa8b248b4571",
+    "type": "Elimination"
   }
 }
