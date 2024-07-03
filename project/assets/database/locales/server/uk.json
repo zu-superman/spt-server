@@ -110,6 +110,7 @@
     "inventory-unable_to_remove_item_no_id_given": "Не вдалося видалити елемент, якщо не надано itemId",
     "inventory-unable_to_sort_inventory_restart_game": "Не вдалося знайти предмет в інвентарі %s Для автоматичного сортування. ПЕРЕЗАПУСТИТЕ ВАШУ ГРУ ДЛЯ УНИКАННЯ ПОШКОДЖЕННЯ ПРОФІЛЮ",
     "inventory-unable_to_toggle_item_not_found": "Неможливо перемикнути елемент інвентарю з id: %s, елемент не знайдено",
+    "launcher-missing_property": "Профіль: %s відсутнє значення для параметра descriptionLocaleKey",
     "release-plugins-loaded-debug-message": "Моди клієнта завантажено",
     "release-server-mods-debug-message": "Моди сервера завантажено",
     "server_running": "Сервер працює, не закривайте під час гри в SPT",
