@@ -5,7 +5,6 @@ import { QuestHelper } from "@spt/helpers/QuestHelper";
 import { RepeatableQuestHelper } from "@spt/helpers/RepeatableQuestHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import {
-    IChangeRequirement,
     IPmcDataRepeatableQuest,
     IRepeatableQuest,
 } from "@spt/models/eft/common/tables/IRepeatableQuests";
@@ -18,6 +17,7 @@ import { HideoutAreas } from "@spt/models/enums/HideoutAreas";
 import { QuestStatus } from "@spt/models/enums/QuestStatus";
 import { SkillTypes } from "@spt/models/enums/SkillTypes";
 import { IQuestConfig, IRepeatableQuestConfig } from "@spt/models/spt/config/IQuestConfig";
+import { IGetRepeatableByIdResult } from "@spt/models/spt/quests/IGetRepeatableByIdResult";
 import { IQuestTypePool } from "@spt/models/spt/repeatable/IQuestTypePool";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { EventOutputHolder } from "@spt/routers/EventOutputHolder";
@@ -535,84 +535,84 @@ export class RepeatableQuestController
 
         const fullProfile = this.profileHelper.getFullProfile(sessionID);
 
-        let repeatableToChange: IPmcDataRepeatableQuest = undefined;
-        let changeRequirement: IChangeRequirement;
+        // Check for existing quest in (daily/weekly/scav arrays)
+        const { quest: questToReplace, repeatableType: repeatablesInProfile }
+            = this.getRepeatableById(changeRequest.qid, pmcData);
 
-        // The trader existing quest is linked to
-        let replacedQuestTraderId: string;
+        // Subtype name of quest - daily/weekly/scav
+        const repeatableTypeLower = repeatablesInProfile.name.toLowerCase();
 
-        // Daily, weekly or scav repeatable type
-        for (const repeatablesInProfile of pmcData.RepeatableQuests)
+        // Save for later standing loss calculation
+        const replacedQuestTraderId = questToReplace.traderId;
+
+        // Update active quests to exclude the quest we're replacing
+        repeatablesInProfile.activeQuests = repeatablesInProfile.activeQuests
+            .filter((quest) => quest._id !== changeRequest.qid);
+
+        // Save for later cost calculation
+        const previousChangeRequirement = this.cloner.clone(repeatablesInProfile.changeRequirement[changeRequest.qid]);
+
+        // Delete the replaced quest change requrement as we're going to replace it
+        delete repeatablesInProfile.changeRequirement[changeRequest.qid];
+
+        // Get config for this repeatable sub-type (daily/weekly/scav)
+        const repeatableConfig = this.questConfig.repeatableQuests
+            .find((config) => config.name === repeatablesInProfile.name,
+            );
+
+        // Generate meta-data for what type/levelrange of quests can be generated for player
+        const allowedQuestTypes = this.generateQuestPool(repeatableConfig, pmcData.Info.Level);
+        const newRepeatableQuest = this.attemptToGenerateRepeatableQuest(pmcData, allowedQuestTypes, repeatableConfig);
+        if (!newRepeatableQuest)
         {
-            // Check for existing quest in (daily/weekly/scav arrays)
-            const questToReplace = repeatablesInProfile.activeQuests
-                .find((repeatable) => repeatable._id === changeRequest.qid);
-            if (!questToReplace)
-            {
-                // Not found, skip to next repeatable sub-type
-                continue;
-            }
+            // Unable to find quest being replaced
+            const message = `Unable to generate repeatable quest of type: ${repeatableTypeLower} to replace trader: ${replacedQuestTraderId} quest ${changeRequest.qid}`;
+            this.logger.error(message);
 
-            // Subtype of quest - daily/weekly/scav
-            const repeatableTypeLower = repeatablesInProfile.name.toLowerCase();
-            // Save for later standing loss calculation
-            replacedQuestTraderId = questToReplace.traderId;
-
-            // Update active quests to exclude the quest we're replacing
-            repeatablesInProfile.activeQuests = repeatablesInProfile.activeQuests
-                .filter((quest) => quest._id !== changeRequest.qid);
-
-            // Save for later cost calculation
-            changeRequirement = this.cloner.clone(repeatablesInProfile.changeRequirement[changeRequest.qid]);
-
-            // Delete replaced quest change requrement
-            delete repeatablesInProfile.changeRequirement[changeRequest.qid];
-            // TODO: somehow we need to reduce the questPool by the currently active quests (for all repeatables)
-
-            // Get config for this repeatable sub-type (daily/weekly/scav)
-            const repeatableConfig = this.questConfig.repeatableQuests
-                .find((config) => config.name === repeatablesInProfile.name,
-                );
-
-            // Generate meta-data for what type levelrange of quests can be generated for player
-            const allowedQuestTypes = this.generateQuestPool(repeatableConfig, pmcData.Info.Level);
-            const newRepeatableQuest = this.attemptToGenerateRepeatableQuest(pmcData, allowedQuestTypes, repeatableConfig);
-            if (newRepeatableQuest)
-            {
-                // Add newly generated quest to daily/weekly/scav type array
-                newRepeatableQuest.side = repeatableConfig.side;
-                repeatablesInProfile.activeQuests.push(newRepeatableQuest);
-
-                // Find quest we're replacing in pmc profile quests array and remove it
-                this.questHelper.findAndRemoveQuestFromArrayIfExists(questToReplace._id, pmcData.Quests);
-
-                // Find quest we're replacing in scav profile quests array and remove it
-                this.questHelper.findAndRemoveQuestFromArrayIfExists(
-                    questToReplace._id,
-                    fullProfile.characters.scav?.Quests ?? [],
-                );
-
-                const isFreeToReplace = this.useFreeRefreshIfAvailable(fullProfile, repeatablesInProfile, repeatableTypeLower);
-                if (!isFreeToReplace)
-                {
-                    // not free, add change requirement cost
-                    repeatablesInProfile.changeRequirement[newRepeatableQuest._id] = {
-                        changeCost: newRepeatableQuest.changeCost,
-                        changeStandingCost: this.randomUtil.getArrayValue([0, 0.01]),
-                    };
-                }
-            }
-
-            // Not sure why we clone but we do
-            repeatableToChange = this.cloner.clone(repeatablesInProfile);
-
-            // Purge inactive repeatables
-            repeatableToChange.inactiveQuests = [];
-
-            break;
+            return this.httpResponse.appendErrorToOutput(output, message);
         }
 
-        if (!repeatableToChange)
+        // Add newly generated quest to daily/weekly/scav type array
+        newRepeatableQuest.side = repeatableConfig.side;
+        repeatablesInProfile.activeQuests.push(newRepeatableQuest);
+
+        // Find quest we're replacing in pmc profile quests array and remove it
+        this.questHelper.findAndRemoveQuestFromArrayIfExists(questToReplace._id, pmcData.Quests);
+
+        // Find quest we're replacing in scav profile quests array and remove it
+        this.questHelper.findAndRemoveQuestFromArrayIfExists(
+            questToReplace._id,
+            fullProfile.characters.scav?.Quests ?? [],
+        );
+
+        // Add new quests replacement cost to profile
+        repeatablesInProfile.changeRequirement[newRepeatableQuest._id] = {
+            changeCost: newRepeatableQuest.changeCost,
+            changeStandingCost: this.randomUtil.getArrayValue([0, 0.01]),
+        };
+
+        // Check if we should charge player for replacing quest
+        const isFreeToReplace = this.useFreeRefreshIfAvailable(fullProfile, repeatablesInProfile, repeatableTypeLower);
+        if (!isFreeToReplace)
+        {
+            // not free, Charge player
+            for (const cost of previousChangeRequirement.changeCost)
+            {
+                this.paymentService.addPaymentToOutput(pmcData, cost.templateId, cost.count, sessionID, output);
+                if (output.warnings.length > 0)
+                {
+                    return output;
+                }
+            }
+        }
+
+        // Clone data before we send it to client
+        const repeatableToChangeClone = this.cloner.clone(repeatablesInProfile);
+
+        // Purge inactive repeatables
+        repeatableToChangeClone.inactiveQuests = [];
+
+        if (!repeatableToChangeClone)
         {
             // Unable to find quest being replaced
             const message = this.localisationService.getText("quest-unable_to_find_repeatable_to_replace");
@@ -621,26 +621,42 @@ export class RepeatableQuestController
             return this.httpResponse.appendErrorToOutput(output, message);
         }
 
-        for (const cost of changeRequirement.changeCost)
-        {
-            this.paymentService.addPaymentToOutput(pmcData, cost.templateId, cost.count, sessionID, output);
-            if (output.warnings.length > 0)
-            {
-                return output;
-            }
-        }
-
         // Reduce standing with trader for not doing their quest
         const traderOfReplacedQuest = pmcData.TradersInfo[replacedQuestTraderId];
-        traderOfReplacedQuest.standing -= changeRequirement.changeStandingCost;
+        traderOfReplacedQuest.standing -= previousChangeRequirement.changeStandingCost;
 
         // Nullguard
         output.profileChanges[sessionID].repeatableQuests ||= [];
 
         // Update client output with new repeatable
-        output.profileChanges[sessionID].repeatableQuests.push(repeatableToChange);
+        output.profileChanges[sessionID].repeatableQuests.push(repeatableToChangeClone);
 
         return output;
+    }
+
+    /**
+     * Find a repeatable (daily/weekly/scav) from a players profile by its id
+     * @param questId Id of quest to find
+     * @param pmcData Profile that contains quests to look through
+     * @returns IGetRepeatableByIdResult
+     */
+    protected getRepeatableById(questId: string, pmcData: IPmcData): IGetRepeatableByIdResult
+    {
+        for (const repeatablesInProfile of pmcData.RepeatableQuests)
+        {
+            // Check for existing quest in (daily/weekly/scav arrays)
+            const questToReplace = repeatablesInProfile.activeQuests
+                .find((repeatable) => repeatable._id === questId);
+            if (!questToReplace)
+            {
+                // Not found, skip to next repeatable sub-type
+                continue;
+            }
+
+            return { quest: questToReplace, repeatableType: repeatablesInProfile };
+        }
+
+        return undefined;
     }
 
     protected attemptToGenerateRepeatableQuest(
