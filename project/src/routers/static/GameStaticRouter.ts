@@ -166,7 +166,7 @@ export class GameStaticRouter extends StaticRouter
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 async (url: string, info: any, sessionID: string, output: string): Promise<INullResponseData> =>
                 {
-                    return this.httpResponse.nullResponse();
+                    return this.gameCallbacks.getSurvey(url, info, sessionID);
                 },
             )
         ]);

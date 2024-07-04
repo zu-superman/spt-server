@@ -163,6 +163,11 @@ export class GameCallbacks implements OnLoad
         return this.httpResponse.noBody({ Version: this.watermark.getInGameVersionLabel() });
     }
 
+    /**
+     * Handle /client/report/send & /client/reports/lobby/send
+     * @returns INullResponseData
+     */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public reportNickname(url: string, info: IUIDRequestData, sessionID: string): INullResponseData
     {
         return this.httpResponse.nullResponse();
@@ -176,5 +181,15 @@ export class GameCallbacks implements OnLoad
     public getRaidTime(url: string, request: IGetRaidTimeRequest, sessionID: string): IGetRaidTimeResponse
     {
         return this.httpResponse.noBody(this.gameController.getRaidTime(sessionID, request));
+    }
+
+    /**
+     * Handle /client/survey
+     * @returns INullResponseData
+     */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    public getSurvey(url: string, request: IEmptyRequestData, sessionID: string): INullResponseData
+    {
+        return this.httpResponse.nullResponse();
     }
 }
