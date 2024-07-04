@@ -52,6 +52,7 @@ export interface IConfig
     UncheckOnShot: boolean
     BotsEnabled: boolean
     BufferZone: IBufferZone
+    Airdrop: IAirdropGlobalSettings
     ArmorMaterials: IArmorMaterials
     ArenaEftTransferSettings: IArenaEftTransferSettings
     LegsOverdamage: number
@@ -464,6 +465,20 @@ export interface IBodyParts
     Body: string
     Feet: string
     Hands: string
+}
+
+export interface IAirdropGlobalSettings
+{
+    ParachuteEndOpenHeight: number
+    ParachuteStartOpenHeight: number
+    PlaneAdditionalDistance: number
+    PlaneAirdropDuration: number
+    PlaneAirdropFlareWait: number
+    PlaneAirdropSmoke: number
+    PlaneMaxFlightHeight: number
+    PlaneMinFlightHeight: number
+    PlaneSpeed: number
+    SmokeActivateHeight: number
 }
 
 export interface IArenaEftTransferSettings
@@ -980,6 +995,7 @@ export interface IRagFair
     balancerAveragePriceCoefficient: number
     delaySinceOfferAdd: number
     uniqueBuyerTimeoutInDays: number
+    userRatingChangeFrequencyMultiplayer: number
     ratingSumForIncrease: number
     ratingIncreaseCount: number
     ratingSumForDecrease: number
@@ -988,12 +1004,21 @@ export interface IRagFair
     maxSumForDecreaseRatingPerOneSale: number
     maxSumForRarity: IMaxSumForRarity
     ChangePriceCoef: number
+    ItemRestrictions: IItemGlobalRestrictions[]
     balancerUserItemSaleCooldownEnabled: boolean
     balancerUserItemSaleCooldown: number
     youSellOfferMaxStorageTimeInHour: number
     yourOfferDidNotSellMaxStorageTimeInHour: number
     isOnlyFoundInRaidAllowed: boolean
     sellInOnePiece: number
+}
+
+export interface IItemGlobalRestrictions
+{
+    MaxFlea: number
+    MaxFleaStacked: number
+    TemplateId: string
+
 }
 
 export interface IMaxActiveOfferCount
@@ -1230,6 +1255,7 @@ export interface ISquadSettings
 
 export interface IInsurance
 {
+    ChangeForReturnItemsInOfflineRaid: number
     MaxStorageTimeInHour: number
     CoefOfSendingMessageTime: number
     CoefOfHavingMarkOfUnknown: number

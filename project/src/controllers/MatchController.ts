@@ -6,12 +6,15 @@ import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { TraderHelper } from "@spt/helpers/TraderHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { Item } from "@spt/models/eft/common/tables/IItem";
+import { IEndLocalRaidRequestData } from "@spt/models/eft/match/IEndLocalRaidRequestData";
 import { IEndOfflineRaidRequestData } from "@spt/models/eft/match/IEndOfflineRaidRequestData";
 import { IGetRaidConfigurationRequestData } from "@spt/models/eft/match/IGetRaidConfigurationRequestData";
 import { IMatchGroupStartGameRequest } from "@spt/models/eft/match/IMatchGroupStartGameRequest";
 import { IMatchGroupStatusRequest } from "@spt/models/eft/match/IMatchGroupStatusRequest";
 import { IMatchGroupStatusResponse } from "@spt/models/eft/match/IMatchGroupStatusResponse";
 import { IProfileStatusResponse } from "@spt/models/eft/match/IProfileStatusResponse";
+import { IStartLocalRaidRequestData } from "@spt/models/eft/match/IStartLocalRaidRequestData";
+import { IStartLocalRaidResponseData } from "@spt/models/eft/match/IStartLocalRaidResponseData";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { MessageType } from "@spt/models/enums/MessageType";
 import { Traders } from "@spt/models/enums/Traders";
@@ -344,5 +347,15 @@ export class MatchController
         this.logger.debug(`Old vs new fence standing: ${pmcData.TradersInfo[fenceId].standing}, ${newFenceStanding}`);
 
         return Number(newFenceStanding.toFixed(2));
+    }
+
+    public startLocalRaid(sessionId: string, request: IStartLocalRaidRequestData): IStartLocalRaidResponseData
+    {
+        throw new Error("Method not implemented.");
+    }
+
+    public endLocalRaid(sessionId: string, info: IEndLocalRaidRequestData): void
+    {
+        throw new Error("Method not implemented.");
     }
 }

@@ -3,6 +3,7 @@ import { MatchController } from "@spt/controllers/MatchController";
 import { IEmptyRequestData } from "@spt/models/eft/common/IEmptyRequestData";
 import { IGetBodyResponseData } from "@spt/models/eft/httpResponse/IGetBodyResponseData";
 import { INullResponseData } from "@spt/models/eft/httpResponse/INullResponseData";
+import { IEndLocalRaidRequestData } from "@spt/models/eft/match/IEndLocalRaidRequestData";
 import { IEndOfflineRaidRequestData } from "@spt/models/eft/match/IEndOfflineRaidRequestData";
 import { IGetRaidConfigurationRequestData } from "@spt/models/eft/match/IGetRaidConfigurationRequestData";
 import { IGroupCharacter } from "@spt/models/eft/match/IGroupCharacter";
@@ -16,6 +17,8 @@ import { IMatchGroupTransferRequest } from "@spt/models/eft/match/IMatchGroupTra
 import { IProfileStatusResponse } from "@spt/models/eft/match/IProfileStatusResponse";
 import { IPutMetricsRequestData } from "@spt/models/eft/match/IPutMetricsRequestData";
 import { IRequestIdRequest } from "@spt/models/eft/match/IRequestIdRequest";
+import { IStartLocalRaidRequestData } from "@spt/models/eft/match/IStartLocalRaidRequestData";
+import { IStartLocalRaidResponseData } from "@spt/models/eft/match/IStartLocalRaidResponseData";
 import { IUpdatePingRequestData } from "@spt/models/eft/match/IUpdatePingRequestData";
 import { DatabaseService } from "@spt/services/DatabaseService";
 import { HttpResponseUtil } from "@spt/utils/HttpResponseUtil";
@@ -208,6 +211,27 @@ export class MatchCallbacks
     ): IGetBodyResponseData<boolean>
     {
         return this.httpResponse.getBody(true);
+    }
+
+    /** Handle client/match/local/start */
+    public startLocalRaid(
+        url: string,
+        info: IStartLocalRaidRequestData,
+        sessionID: string,
+    ): IGetBodyResponseData<IStartLocalRaidResponseData>
+    {
+        return this.httpResponse.getBody(this.matchController.startLocalRaid(sessionID, info));
+    }
+
+    /** Handle client/match/local/end */
+    public endLocalRaid(
+        url: string,
+        info: IEndLocalRaidRequestData,
+        sessionID: string,
+    ): INullResponseData
+    {
+        this.matchController.endLocalRaid(sessionID, info);
+        return this.httpResponse.nullResponse();
     }
 
     /** Handle client/match/offline/end */
