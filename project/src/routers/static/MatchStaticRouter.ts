@@ -8,6 +8,7 @@ import { IGroupCharacter } from "@spt/models/eft/match/IGroupCharacter";
 import { IMatchGroupCurrentResponse } from "@spt/models/eft/match/IMatchGroupCurrentResponse";
 import { IMatchGroupStatusResponse } from "@spt/models/eft/match/IMatchGroupStatusResponse";
 import { IProfileStatusResponse } from "@spt/models/eft/match/IProfileStatusResponse";
+import { IStartLocalRaidResponseData } from "@spt/models/eft/match/IStartLocalRaidResponseData";
 
 @injectable()
 export class MatchStaticRouter extends StaticRouter
@@ -283,6 +284,30 @@ export class MatchStaticRouter extends StaticRouter
                     return this.matchCallbacks.removePlayerFromGroup(url, info, sessionID);
                 },
             ),
+            new RouteAction(
+                "/client/match/local/start",
+                async (
+                    url: string,
+                    info: any,
+                    sessionID: string,
+                    output: string,
+                ): Promise<IGetBodyResponseData<IStartLocalRaidResponseData>> =>
+                {
+                    return this.matchCallbacks.startLocalRaid(url, info, sessionID);
+                },
+            ),
+            new RouteAction(
+                "/client/match/local/end",
+                async (
+                    url: string,
+                    info: any,
+                    sessionID: string,
+                    output: string,
+                ): Promise<INullResponseData> =>
+                {
+                    return this.matchCallbacks.endLocalRaid(url, info, sessionID);
+                },
+            )
         ]);
     }
 }
