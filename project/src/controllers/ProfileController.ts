@@ -145,8 +145,8 @@ export class ProfileController
         pmcData.aid = account.aid;
         pmcData.savage = account.scavId;
         pmcData.sessionId = sessionID;
-        pmcData.Info.Nickname = info.nickname;
-        pmcData.Info.LowerNickname = info.nickname.toLowerCase();
+        pmcData.Info.Nickname = account.username;
+        pmcData.Info.LowerNickname = account.username.toLowerCase();
         pmcData.Info.RegistrationDate = this.timeUtil.getTimestamp();
         pmcData.Info.Voice = this.databaseService.getCustomization()[info.voiceId]._name;
         pmcData.Stats = this.profileHelper.getDefaultCounters();

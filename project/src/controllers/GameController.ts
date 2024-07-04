@@ -496,7 +496,7 @@ export class GameController
      */
     public getGameMode(sessionID: string, info: IGameModeRequestData): any
     {
-        return { gameMode: ESessionMode.REGULAR, backendUrl: this.httpServerHelper.getBackendUrl() };
+        return { gameMode: ESessionMode.PVE, backendUrl: this.httpServerHelper.getBackendUrl() };
     }
 
     /**
