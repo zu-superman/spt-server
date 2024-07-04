@@ -13,11 +13,15 @@ import { ISendReportRequest } from "@spt/models/eft/game/ISendReportRequest";
 import { IServerDetails } from "@spt/models/eft/game/IServerDetails";
 import { IGetBodyResponseData } from "@spt/models/eft/httpResponse/IGetBodyResponseData";
 import { INullResponseData } from "@spt/models/eft/httpResponse/INullResponseData";
+import { HttpResponseUtil } from "@spt/utils/HttpResponseUtil";
 
 @injectable()
 export class GameStaticRouter extends StaticRouter
 {
-    constructor(@inject("GameCallbacks") protected gameCallbacks: GameCallbacks)
+    constructor(
+        @inject("HttpResponseUtil") protected httpResponse: HttpResponseUtil,
+        @inject("GameCallbacks") protected gameCallbacks: GameCallbacks
+    )
     {
         super([
             new RouteAction(
@@ -157,6 +161,14 @@ export class GameStaticRouter extends StaticRouter
                     return this.gameCallbacks.getRaidTime(url, info, sessionID);
                 },
             ),
+            new RouteAction(
+                "/client/survey",
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                async (url: string, info: any, sessionID: string, output: string): Promise<INullResponseData> =>
+                {
+                    return this.httpResponse.nullResponse();
+                },
+            )
         ]);
     }
 }
