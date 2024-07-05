@@ -481,7 +481,7 @@ export class MatchController
      */
     protected isPlayerDead(results: IEndRaidResult): boolean
     {
-        return ["killed", "missinginaction"].includes(results.result.toLowerCase());
+        return ["killed", "missinginaction", "left"].includes(results.result.toLowerCase());
     }
 
     /**
