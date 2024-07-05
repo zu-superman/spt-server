@@ -355,11 +355,12 @@ export class MatchController
 
     public startLocalRaid(sessionId: string, request: IStartLocalRaidRequestData): IStartLocalRaidResponseData
     {
+        // TODO - remove usage of locationController - controller use inside match controller = bad
         const playerProfile = this.profileHelper.getPmcProfile(sessionId);
 
         const result: IStartLocalRaidResponseData = {
-            serverId: "spt",
-            serverSettings: this.databaseService.getLocationServices(),
+            serverId: this.hashUtil.generate(), // TODO - does this need to be more verbose - investigate client?
+            serverSettings: this.databaseService.getLocationServices(), // TODO - is this per map or global?
             profile: { insuredItems: playerProfile.InsuredItems },
             locationLoot: this.locationController.generate(request.location),
         };
@@ -367,8 +368,21 @@ export class MatchController
         return result;
     }
 
-    public endLocalRaid(sessionId: string, info: IEndLocalRaidRequestData): void
+    public endLocalRaid(sessionId: string, request: IEndLocalRaidRequestData): void
     {
-        throw new Error("Method not implemented.");
+        const playerProfile = this.profileHelper.getPmcProfile(sessionId);
+
+        // TODO:
+        // Update profile
+        // Handle insurance
+        // Rep gain/loss?
+        // Quest status?
+        // Counters?
+        // Send PMC message to player if necessary
+        // Limb health
+        // Limb effects
+        // Skills
+        // Inventory
+        // Stats
     }
 }
