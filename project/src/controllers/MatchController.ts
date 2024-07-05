@@ -36,7 +36,9 @@ import { BotGenerationCacheService } from "@spt/services/BotGenerationCacheServi
 import { BotLootCacheService } from "@spt/services/BotLootCacheService";
 import { DatabaseService } from "@spt/services/DatabaseService";
 import { MailSendService } from "@spt/services/MailSendService";
+import { MatchBotDetailsCacheService } from "@spt/services/MatchBotDetailsCacheService";
 import { MatchLocationService } from "@spt/services/MatchLocationService";
+import { PmcChatResponseService } from "@spt/services/PmcChatResponseService";
 import { ProfileSnapshotService } from "@spt/services/ProfileSnapshotService";
 import { HashUtil } from "@spt/utils/HashUtil";
 import { RandomUtil } from "@spt/utils/RandomUtil";
@@ -65,6 +67,8 @@ export class MatchController
         @inject("InRaidHelper") protected inRaidHelper: InRaidHelper,
         @inject("HealthHelper") protected healthHelper: HealthHelper,
         @inject("MatchLocationService") protected matchLocationService: MatchLocationService,
+        @inject("MatchBotDetailsCacheService") protected matchBotDetailsCacheService: MatchBotDetailsCacheService,
+        @inject("PmcChatResponseService") protected pmcChatResponseService: PmcChatResponseService,
         @inject("TraderHelper") protected traderHelper: TraderHelper,
         @inject("BotLootCacheService") protected botLootCacheService: BotLootCacheService,
         @inject("ConfigServer") protected configServer: ConfigServer,
@@ -447,6 +451,27 @@ export class MatchController
 
         // Handle temp, hydration, limb hp/effects
         this.healthHelper.updateProfileHealthPostRaid(pmcProfile, postRaidProfile.Health, sessionId, isDead);
+
+        if (isDead)
+        {
+            this.pmcChatResponseService.sendKillerResponse(
+                sessionId,
+                pmcProfile,
+                postRaidProfile.Stats.Eft.Aggressor,
+            );
+            this.matchBotDetailsCacheService.clearCache();
+
+            this.inRaidHelper.deleteInventory(pmcProfile, sessionId);
+        }
+
+        const victims = postRaidProfile.Stats.Eft.Victims.filter((victim) =>
+            ["pmcbear", "pmcusec"].includes(victim.Role.toLowerCase()),
+        );
+        if (victims?.length > 0)
+        {
+            // Player killed PMCs, send some responses to them
+            this.pmcChatResponseService.sendVictimResponse(sessionId, victims, pmcProfile);
+        }
     }
 
     /**
