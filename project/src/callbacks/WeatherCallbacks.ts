@@ -4,6 +4,7 @@ import { IEmptyRequestData } from "@spt/models/eft/common/IEmptyRequestData";
 import { IGetBodyResponseData } from "@spt/models/eft/httpResponse/IGetBodyResponseData";
 import { IWeatherData } from "@spt/models/eft/weather/IWeatherData";
 import { HttpResponseUtil } from "@spt/utils/HttpResponseUtil";
+import { IGetLocalWeatherResponseData } from "@spt/models/spt/weather/IGetLocalWeatherResponseData";
 
 @injectable()
 export class WeatherCallbacks
@@ -21,5 +22,10 @@ export class WeatherCallbacks
     public getWeather(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<IWeatherData>
     {
         return this.httpResponse.getBody(this.weatherController.generate());
+    }
+
+    public getLocalWeather(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<IGetLocalWeatherResponseData>
+    {
+        return this.httpResponse.getBody(this.weatherController.generateLocal(sessionID));
     }
 }
