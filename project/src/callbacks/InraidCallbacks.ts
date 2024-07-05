@@ -2,7 +2,6 @@ import { inject, injectable } from "tsyringe";
 import { InraidController } from "@spt/controllers/InraidController";
 import { IEmptyRequestData } from "@spt/models/eft/common/IEmptyRequestData";
 import { INullResponseData } from "@spt/models/eft/httpResponse/INullResponseData";
-import { IItemDeliveryRequestData } from "@spt/models/eft/inRaid/IItemDeliveryRequestData";
 import { IRegisterPlayerRequestData } from "@spt/models/eft/inRaid/IRegisterPlayerRequestData";
 import { ISaveProgressRequestData } from "@spt/models/eft/inRaid/ISaveProgressRequestData";
 import { HttpResponseUtil } from "@spt/utils/HttpResponseUtil";
@@ -93,15 +92,6 @@ export class InraidCallbacks
         return this.httpResponse.noBody(this.inraidController.getTraderServices(sessionId, traderId));
     }
 
-    /**
-     * Handle singleplayer/traderServices/itemDelivery
-     */
-    public itemDelivery(url: string, request: IItemDeliveryRequestData, sessionId: string): INullResponseData
-    {
-        this.inraidController.itemDelivery(sessionId, request.traderId, request.items);
-        return this.httpResponse.nullResponse();
-    }
-
     public getTraitorScavHostileChance(url: string, info: IEmptyRequestData, sessionId: string): string
     {
         return this.httpResponse.noBody(this.inraidController.getTraitorScavHostileChance(url, sessionId));
@@ -114,6 +104,6 @@ export class InraidCallbacks
 
     public getBossConvertSettings(url: string, info: IEmptyRequestData, sessionId: string): string
     {
-        return this.httpResponse.noBody(this.inraidController.getBossConvertSettings(url, sessionId))
+        return this.httpResponse.noBody(this.inraidController.getBossConvertSettings(url, sessionId));
     }
 }

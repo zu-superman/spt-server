@@ -45,13 +45,6 @@ export class InraidStaticRouter extends StaticRouter
                 },
             ),
             new RouteAction(
-                "/singleplayer/traderServices/itemDelivery",
-                async (url: string, info: any, sessionID: string, output: string): Promise<INullResponseData> =>
-                {
-                    return this.inraidCallbacks.itemDelivery(url, info, sessionID);
-                },
-            ),
-            new RouteAction(
                 "/singleplayer/scav/traitorscavhostile",
                 async (url: string, info: any, sessionID: string, output: string): Promise<string> =>
                 {

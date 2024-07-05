@@ -35,6 +35,7 @@ import { SaveServer } from "@spt/servers/SaveServer";
 import { BotGenerationCacheService } from "@spt/services/BotGenerationCacheService";
 import { BotLootCacheService } from "@spt/services/BotLootCacheService";
 import { DatabaseService } from "@spt/services/DatabaseService";
+import { LocalisationService } from "@spt/services/LocalisationService";
 import { MailSendService } from "@spt/services/MailSendService";
 import { MatchBotDetailsCacheService } from "@spt/services/MatchBotDetailsCacheService";
 import { MatchLocationService } from "@spt/services/MatchLocationService";
@@ -71,6 +72,7 @@ export class MatchController
         @inject("PmcChatResponseService") protected pmcChatResponseService: PmcChatResponseService,
         @inject("TraderHelper") protected traderHelper: TraderHelper,
         @inject("BotLootCacheService") protected botLootCacheService: BotLootCacheService,
+        @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("ConfigServer") protected configServer: ConfigServer,
         @inject("ProfileSnapshotService") protected profileSnapshotService: ProfileSnapshotService,
         @inject("BotGenerationCacheService") protected botGenerationCacheService: BotGenerationCacheService,
@@ -472,6 +474,50 @@ export class MatchController
             // Player killed PMCs, send some responses to them
             this.pmcChatResponseService.sendVictimResponse(sessionId, victims, pmcProfile);
         }
+
+        // Handle items transferred via BTR to player
+        const btrKey = "BTRTransferStash";
+        const btrContainerAndItems = request.transferItems[btrKey] ?? [];
+        if (btrContainerAndItems.length > 0)
+        {
+            const itemsToSend = btrContainerAndItems.filter((item) => item._id !== btrKey);
+            this.btrItemDelivery(sessionId, Traders.BTR, itemsToSend);
+        }
+    }
+
+    /**
+     * Handle singleplayer/traderServices/itemDelivery
+     */
+    protected btrItemDelivery(sessionId: string, traderId: string, items: Item[]): void
+    {
+        const serverProfile = this.saveServer.getProfile(sessionId);
+        const pmcData = serverProfile.characters.pmc;
+
+        const dialogueTemplates = this.databaseService.getTrader(traderId).dialogue;
+        if (!dialogueTemplates)
+        {
+            this.logger.error(this.localisationService.getText("inraid-unable_to_deliver_item_no_trader_found", traderId));
+
+            return;
+        }
+        const messageId = this.randomUtil.getArrayValue(dialogueTemplates.itemsDelivered);
+        const messageStoreTime = this.timeUtil.getHoursAsSeconds(this.traderConfig.fence.btrDeliveryExpireHours);
+
+        // Remove any items that were returned by the item delivery, but also insured, from the player's insurance list
+        // This is to stop items being duplicated by being returned from both item delivery and insurance
+        const deliveredItemIds = items.map((item) => item._id);
+        pmcData.InsuredItems = pmcData.InsuredItems
+            .filter((insuredItem) => !deliveredItemIds.includes(insuredItem.itemId));
+
+        // Send the items to the player
+        this.mailSendService.sendLocalisedNpcMessageToPlayer(
+            sessionId,
+            this.traderHelper.getTraderById(traderId),
+            MessageType.BTR_ITEMS_DELIVERY,
+            messageId,
+            items,
+            messageStoreTime,
+        );
     }
 
     /**

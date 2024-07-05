@@ -234,7 +234,11 @@ export class MatchCallbacks
     }
 
     /** Handle client/match/offline/end */
-    public endOfflineRaid(url: string, info: IEndOfflineRaidRequestData, sessionID: string): INullResponseData
+    public endOfflineRaid(
+        url: string,
+        info: IEndOfflineRaidRequestData,
+        sessionID: string,
+    ): INullResponseData
     {
         this.matchController.endOfflineRaid(info, sessionID);
         return this.httpResponse.nullResponse();
