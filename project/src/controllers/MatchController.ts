@@ -384,6 +384,9 @@ export class MatchController
             locationLoot: this.locationController.generate(request.location),
         };
 
+        // Clear bot cache ready for a fresh raid
+        this.botGenerationCacheService.clearStoredBots();
+
         return result;
     }
 

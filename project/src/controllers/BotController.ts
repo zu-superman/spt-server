@@ -210,9 +210,6 @@ export class BotController
         sessionId: string,
     ): Promise<IBotBase[]>
     {
-        // Clear bot cache before any work starts
-        this.botGenerationCacheService.clearStoredBots();
-
         const raidSettings = this.applicationContext
             .getLatestValue(ContextVariableType.RAID_CONFIGURATION)
             ?.getValue<IGetRaidConfigurationRequestData>();
