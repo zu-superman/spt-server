@@ -35,6 +35,7 @@ import { SaveServer } from "@spt/servers/SaveServer";
 import { BotGenerationCacheService } from "@spt/services/BotGenerationCacheService";
 import { BotLootCacheService } from "@spt/services/BotLootCacheService";
 import { DatabaseService } from "@spt/services/DatabaseService";
+import { InsuranceService } from "@spt/services/InsuranceService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { MailSendService } from "@spt/services/MailSendService";
 import { MatchBotDetailsCacheService } from "@spt/services/MatchBotDetailsCacheService";
@@ -73,6 +74,7 @@ export class MatchController
         @inject("TraderHelper") protected traderHelper: TraderHelper,
         @inject("BotLootCacheService") protected botLootCacheService: BotLootCacheService,
         @inject("LocalisationService") protected localisationService: LocalisationService,
+        @inject("InsuranceService") protected insuranceService: InsuranceService,
         @inject("ConfigServer") protected configServer: ConfigServer,
         @inject("ProfileSnapshotService") protected profileSnapshotService: ProfileSnapshotService,
         @inject("BotGenerationCacheService") protected botGenerationCacheService: BotGenerationCacheService,
@@ -485,6 +487,25 @@ export class MatchController
         {
             const itemsToSend = btrContainerAndItems.filter((item) => item._id !== btrKey);
             this.btrItemDelivery(sessionId, Traders.BTR, itemsToSend);
+        }
+
+        if (request.lostInsuredItems?.length > 0)
+        {
+            // TODO - refactor code to work
+
+            // Get array of insured items+child that were lost in raid
+            // const gearToStore = this.insuranceService.getGearLostInRaid(
+            //     pmcProfile,
+            //     postRaidRequest,
+            //     preRaidGear,
+            //     sessionId,
+            //     isDead,
+            // );
+
+            // this.insuranceService.storeGearLostInRaidToSendLater(
+            //     sessionId,
+            //     gearToStore,
+            // );
         }
     }
 
