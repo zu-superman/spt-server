@@ -110,7 +110,7 @@ export class DatabaseService
 
     /**
      * Get specific location by its Id
-     * @param locationId Desired trader id
+     * @param locationId Desired location id
      * @returns assets/database/locations/
      */
     public getLocation(locationId: string): ILocation
