@@ -90,13 +90,13 @@ export class LocationController
         }
 
         // Check for a loot multipler adjustment in app context and apply if one is found
-        let locationConfigCopy: ILocationConfig;
+        let locationConfigClone: ILocationConfig;
         const raidAdjustments = this.applicationContext
             .getLatestValue(ContextVariableType.RAID_ADJUSTMENTS)
             ?.getValue<IRaidChanges>();
         if (raidAdjustments)
         {
-            locationConfigCopy = this.cloner.clone(this.locationConfig); // Clone values so they can be used to reset originals later
+            locationConfigClone = this.cloner.clone(this.locationConfig); // Clone values so they can be used to reset originals later
             this.raidTimeAdjustmentService.makeAdjustmentsToMap(raidAdjustments, locationBaseClone);
         }
 
@@ -128,8 +128,8 @@ export class LocationController
         if (raidAdjustments)
         {
             this.logger.debug("Resetting loot multipliers back to their original values");
-            this.locationConfig.staticLootMultiplier = locationConfigCopy.staticLootMultiplier;
-            this.locationConfig.looseLootMultiplier = locationConfigCopy.looseLootMultiplier;
+            this.locationConfig.staticLootMultiplier = locationConfigClone.staticLootMultiplier;
+            this.locationConfig.looseLootMultiplier = locationConfigClone.looseLootMultiplier;
 
             this.applicationContext.clearValues(ContextVariableType.RAID_ADJUSTMENTS);
         }

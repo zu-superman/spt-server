@@ -139,9 +139,8 @@ export class MatchCallbacks
         return this.httpResponse.getBody(true);
     }
 
-    /** @deprecated - not called on raid start/end or game start/exit */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public putMetrics(url: string, info: IPutMetricsRequestData, sessionId: string): INullResponseData
+    public putMetrics(url: string, request: IPutMetricsRequestData, sessionId: string): INullResponseData
     {
         return this.httpResponse.nullResponse();
     }

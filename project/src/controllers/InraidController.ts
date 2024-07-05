@@ -120,7 +120,7 @@ export class InraidController
      * @param offraidData post-raid request data
      * @param sessionID Session id
      */
-    public savePostRaidProgress(offraidData: ISaveProgressRequestData, sessionID: string): void
+    public savePostRaidProgressLegacy(offraidData: ISaveProgressRequestData, sessionID: string): void
     {
         this.logger.debug(`Raid outcome: ${offraidData.exit}`);
 
@@ -159,7 +159,7 @@ export class InraidController
         const serverPmcProfile = serverProfile.characters.pmc;
         const serverScavProfile = serverProfile.characters.scav;
 
-        const isDead = this.isPlayerDead(postRaidRequest.exit);
+        const isDead = true;// this.isPlayerDead(postRaidRequest.exit);
         const preRaidGear = this.inRaidHelper.getPlayerGear(serverPmcProfile.Inventory.items);
 
         serverProfile.inraid.character = "pmc";
@@ -355,7 +355,7 @@ export class InraidController
     {
         const serverPmcProfile = this.profileHelper.getPmcProfile(sessionID);
         const serverScavProfile = this.profileHelper.getScavProfile(sessionID);
-        const isDead = this.isPlayerDead(postRaidRequest.exit);
+        const isDead = true;// this.isPlayerDead(postRaidRequest.exit);
         const preRaidScavCharismaProgress = this.profileHelper.getSkillFromProfile(
             serverScavProfile,
             SkillTypes.CHARISMA,
@@ -535,16 +535,6 @@ export class InraidController
                 counterInPmcProfile.value = scavCounter.value;
             }
         }
-    }
-
-    /**
-     * Is the player dead after a raid - dead is anything other than "survived" / "runner"
-     * @param statusOnExit exit value from offraidData object
-     * @returns true if dead
-     */
-    protected isPlayerDead(statusOnExit: PlayerRaidEndState): boolean
-    {
-        return statusOnExit !== PlayerRaidEndState.SURVIVED && statusOnExit !== PlayerRaidEndState.RUNNER;
     }
 
     /**

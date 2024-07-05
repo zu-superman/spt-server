@@ -5,7 +5,7 @@ import { Item } from "../common/tables/IItem";
 export interface IEndLocalRaidRequestData
 {
     serverId: string
-    result: IEndRaidResult
+    results: IEndRaidResult
     lostInsuredItems: Item[]
     transferItems: Record<string, Item[]>
 }
@@ -13,6 +13,7 @@ export interface IEndLocalRaidRequestData
 export interface IEndRaidResult
 {
     profile: IPmcData
+    result: string
     ExitStatus: ExitStatus
     killerId: string
     killerAid: string

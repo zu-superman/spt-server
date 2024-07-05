@@ -42,11 +42,12 @@ export class InraidCallbacks
      */
     public saveProgress(url: string, info: ISaveProgressRequestData, sessionID: string): INullResponseData
     {
-        this.inraidController.savePostRaidProgress(info, sessionID);
+        this.inraidController.savePostRaidProgressLegacy(info, sessionID);
         return this.httpResponse.nullResponse();
     }
 
     /**
+     * TODO - remove
      * Handle singleplayer/settings/raid/endstate
      * @returns
      */

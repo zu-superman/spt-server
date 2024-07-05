@@ -1,13 +1,17 @@
 import { inject, injectable } from "tsyringe";
 import { ApplicationContext } from "@spt/context/ApplicationContext";
 import { ContextVariableType } from "@spt/context/ContextVariableType";
+import { InraidController } from "@spt/controllers/InraidController";
 import { LocationController } from "@spt/controllers/LocationController";
 import { LootGenerator } from "@spt/generators/LootGenerator";
+import { HealthHelper } from "@spt/helpers/HealthHelper";
+import { InRaidHelper } from "@spt/helpers/InRaidHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { TraderHelper } from "@spt/helpers/TraderHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
+import { Common } from "@spt/models/eft/common/tables/IBotBase";
 import { Item } from "@spt/models/eft/common/tables/IItem";
-import { IEndLocalRaidRequestData } from "@spt/models/eft/match/IEndLocalRaidRequestData";
+import { IEndLocalRaidRequestData, IEndRaidResult } from "@spt/models/eft/match/IEndLocalRaidRequestData";
 import { IEndOfflineRaidRequestData } from "@spt/models/eft/match/IEndOfflineRaidRequestData";
 import { IGetRaidConfigurationRequestData } from "@spt/models/eft/match/IGetRaidConfigurationRequestData";
 import { IMatchGroupStartGameRequest } from "@spt/models/eft/match/IMatchGroupStartGameRequest";
@@ -19,9 +23,11 @@ import { IStartLocalRaidResponseData } from "@spt/models/eft/match/IStartLocalRa
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { MessageType } from "@spt/models/enums/MessageType";
 import { Traders } from "@spt/models/enums/Traders";
+import { IHideoutConfig } from "@spt/models/spt/config/IHideoutConfig";
 import { IInRaidConfig } from "@spt/models/spt/config/IInRaidConfig";
 import { IMatchConfig } from "@spt/models/spt/config/IMatchConfig";
 import { IPmcConfig } from "@spt/models/spt/config/IPmcConfig";
+import { IRagfairConfig } from "@spt/models/spt/config/IRagfairConfig";
 import { ITraderConfig } from "@spt/models/spt/config/ITraderConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
@@ -43,6 +49,8 @@ export class MatchController
     protected inRaidConfig: IInRaidConfig;
     protected traderConfig: ITraderConfig;
     protected pmcConfig: IPmcConfig;
+    protected ragfairConfig: IRagfairConfig;
+    protected hideoutConfig: IHideoutConfig;
 
     constructor(
         @inject("PrimaryLogger") protected logger: ILogger,
@@ -53,6 +61,9 @@ export class MatchController
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
         @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("LocationController") protected locationController: LocationController,
+        @inject("InraidController") protected inRaidController: InraidController,
+        @inject("InRaidHelper") protected inRaidHelper: InRaidHelper,
+        @inject("HealthHelper") protected healthHelper: HealthHelper,
         @inject("MatchLocationService") protected matchLocationService: MatchLocationService,
         @inject("TraderHelper") protected traderHelper: TraderHelper,
         @inject("BotLootCacheService") protected botLootCacheService: BotLootCacheService,
@@ -68,6 +79,8 @@ export class MatchController
         this.inRaidConfig = this.configServer.getConfig(ConfigTypes.IN_RAID);
         this.traderConfig = this.configServer.getConfig(ConfigTypes.TRADER);
         this.pmcConfig = this.configServer.getConfig(ConfigTypes.PMC);
+        this.ragfairConfig = this.configServer.getConfig(ConfigTypes.RAGFAIR);
+        this.hideoutConfig = this.configServer.getConfig(ConfigTypes.HIDEOUT);
     }
 
     public getEnabled(): boolean
@@ -359,7 +372,7 @@ export class MatchController
         const playerProfile = this.profileHelper.getPmcProfile(sessionId);
 
         const result: IStartLocalRaidResponseData = {
-            serverId: this.hashUtil.generate(), // TODO - does this need to be more verbose - investigate client?
+            serverId: `${request.location}.${request.playerSide}.${this.timeUtil.getTimestamp()}`, // TODO - does this need to be more verbose - investigate client?
             serverSettings: this.databaseService.getLocationServices(), // TODO - is this per map or global?
             profile: { insuredItems: playerProfile.InsuredItems },
             locationLoot: this.locationController.generate(request.location),
@@ -370,7 +383,10 @@ export class MatchController
 
     public endLocalRaid(sessionId: string, request: IEndLocalRaidRequestData): void
     {
-        const playerProfile = this.profileHelper.getPmcProfile(sessionId);
+        const fullProfile = this.profileHelper.getFullProfile(sessionId);
+        const pmcProfile = fullProfile.characters.pmc;
+        const scavProfile = fullProfile.characters.scav;
+        const postRaidProfile = request.results.profile!;
 
         // TODO:
         // Update profile
@@ -382,7 +398,101 @@ export class MatchController
         // Limb health
         // Limb effects
         // Skills
-        // Inventory
+        // Inventory - items not lost on death
         // Stats
+        // stats/eft/aggressor - weird values (EFT.IProfileDataContainer.Nickname)
+
+        this.logger.debug(`Raid outcome: ${request.results.result}`);
+
+        // Set flea interval time to out-of-raid value
+        this.ragfairConfig.runIntervalSeconds = this.ragfairConfig.runIntervalValues.outOfRaid;
+        this.hideoutConfig.runIntervalSeconds = this.hideoutConfig.runIntervalValues.outOfRaid;
+
+        // ServerId has various info stored in it, delimited by a period
+        const serverDetails = request.serverId.split(".");
+
+        const locationName = serverDetails[0].toLowerCase();
+        const isPmc = serverDetails[1].toLowerCase() === "pmc";
+        const map = this.databaseService.getLocation(locationName).base;
+        const isDead = this.isPlayerDead(request.results);
+
+        // Update inventory
+        this.inRaidHelper.setInventory(sessionId, pmcProfile, postRaidProfile);
+
+        pmcProfile.Info.Level = postRaidProfile.Info.Level;
+
+        // Add experience points
+        pmcProfile.Info.Experience += postRaidProfile.Stats.Eft.TotalSessionExperience;
+
+        // Profile common/mastering skills
+        pmcProfile.Skills = postRaidProfile.Skills;
+
+        pmcProfile.Stats.Eft = postRaidProfile.Stats.Eft;
+
+        // Must occur after experience is set and stats copied over
+        pmcProfile.Stats.Eft.TotalSessionExperience = 0;
+
+        pmcProfile.Achievements = postRaidProfile.Achievements;
+
+        // Remove skill fatigue values
+        this.resetSkillPointsEarnedDuringRaid(pmcProfile.Skills.Common);
+
+        // Straight copy
+        pmcProfile.TaskConditionCounters = postRaidProfile.TaskConditionCounters;
+
+        pmcProfile.Encyclopedia = postRaidProfile.Encyclopedia;
+
+        // Must occur after encyclopedia updated
+        this.mergePmcAndScavEncyclopedias(pmcProfile, scavProfile);
+
+        // Handle temp, hydration, limb hp/effects
+        this.healthHelper.updateProfileHealthPostRaid(pmcProfile, postRaidProfile.Health, sessionId, isDead);
+    }
+
+    /**
+     * Is the player dead after a raid - dead = anything other than "survived" / "runner"
+     * @param statusOnExit Exit value from offraidData object
+     * @returns true if dead
+     */
+    protected isPlayerDead(results: IEndRaidResult): boolean
+    {
+        return ["killed", "missinginaction"].includes(results.result.toLowerCase());
+    }
+
+    /**
+     * Reset the skill points earned in a raid to 0, ready for next raid
+     * @param commonSkills Profile common skills to update
+     */
+    protected resetSkillPointsEarnedDuringRaid(commonSkills: Common[]): void
+    {
+        for (const skill of commonSkills)
+        {
+            skill.PointsEarnedDuringSession = 0.0;
+        }
+    }
+
+    /**
+     * merge two dictionaries together
+     * Prioritise pair that has true as a value
+     * @param primary main dictionary
+     * @param secondary Secondary dictionary
+     */
+    protected mergePmcAndScavEncyclopedias(primary: IPmcData, secondary: IPmcData): void
+    {
+        function extend(target: { [key: string]: boolean }, source: Record<string, boolean>)
+        {
+            for (const key in source)
+            {
+                if (Object.hasOwn(source, key))
+                {
+                    target[key] = source[key];
+                }
+            }
+            return target;
+        }
+
+        const merged = extend(extend({}, primary.Encyclopedia), secondary.Encyclopedia);
+        primary.Encyclopedia = merged;
+        secondary.Encyclopedia = merged;
     }
 }
