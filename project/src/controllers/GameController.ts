@@ -152,6 +152,16 @@ export class GameController
                 return;
             }
 
+            if (Array.isArray(fullProfile.characters.pmc.WishList))
+            {
+                fullProfile.characters.pmc.WishList = {};
+            }
+
+            if (Array.isArray(fullProfile.characters.scav.WishList))
+            {
+                fullProfile.characters.scav.WishList = {};
+            }
+
             const pmcProfile = fullProfile.characters.pmc;
 
             this.logger.debug(`Started game with sessionId: ${sessionID} ${pmcProfile.Info?.Nickname}`);

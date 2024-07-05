@@ -36,7 +36,7 @@ export interface IBotBase
     CarExtractCounts: Record<string, number>
     CoopExtractCounts: Record<string, number>
     SurvivorClass: SurvivorClass
-    WishList: string[]
+    WishList: Record<string, number>
     moneyTransferLimitData: IMoneyTransferLimits
     /** SPT specific property used during bot generation in raid */
     sptIsPmc?: boolean
