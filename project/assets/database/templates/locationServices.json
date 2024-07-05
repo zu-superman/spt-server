@@ -106,7 +106,7 @@
         }
     },
     "BTRServerSettings": {
-        "ChanceSpawn": 70,
+        "ChanceSpawn": 100,
         "SpawnPeriod": {
             "x": 300,
             "y": 600,
@@ -131,7 +131,7 @@
         "ServerMapBTRSettings": {
             "Develop": {
                 "MapID": "develop",
-                "ChanceSpawn": 70,
+                "ChanceSpawn": 100,
                 "SpawnPeriod": {
                     "x": 300,
                     "y": 600,
@@ -156,10 +156,10 @@
             },
             "TarkovStreets": {
                 "MapID": "TarkovStreets",
-                "ChanceSpawn": 70,
+                "ChanceSpawn": 100,
                 "SpawnPeriod": {
-                    "x": 300,
-                    "y": 600,
+                    "x": 0,
+                    "y": 10,
                     "z": 0
                 },
                 "MoveSpeed": 8,
@@ -181,10 +181,10 @@
             },
             "Woods": {
                 "MapID": "Woods",
-                "ChanceSpawn": 70,
+                "ChanceSpawn": 100,
                 "SpawnPeriod": {
-                    "x": 180,
-                    "y": 360,
+                    "x": 0,
+                    "y": 10,
                     "z": 0
                 },
                 "MoveSpeed": 8,

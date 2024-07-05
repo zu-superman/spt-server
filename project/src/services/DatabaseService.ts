@@ -111,13 +111,13 @@ export class DatabaseService
 
     /**
      * Get specific location by its Id
-     * @param locationId Desired trader id
+     * @param locationId Desired location id
      * @returns assets/database/locations/
      */
     public getLocation(locationId: string): ILocation
     {
         const locations = this.getLocations();
-        const desiredLocation = locations[locationId];
+        const desiredLocation = locations[locationId.toLowerCase()];
         if (!desiredLocation)
         {
             throw new Error(this.localisationService.getText("database-no_location_found_with_id", locationId));

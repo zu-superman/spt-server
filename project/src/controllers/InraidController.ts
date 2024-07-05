@@ -11,17 +11,16 @@ import { TraderHelper } from "@spt/helpers/TraderHelper";
 import { ILocationBase } from "@spt/models/eft/common/ILocationBase";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { BodyPartHealth } from "@spt/models/eft/common/tables/IBotBase";
-import { Item } from "@spt/models/eft/common/tables/IItem";
 import { IRegisterPlayerRequestData } from "@spt/models/eft/inRaid/IRegisterPlayerRequestData";
 import { ISaveProgressRequestData } from "@spt/models/eft/inRaid/ISaveProgressRequestData";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { ItemTpl } from "@spt/models/enums/ItemTpl";
-import { MessageType } from "@spt/models/enums/MessageType";
 import { PlayerRaidEndState } from "@spt/models/enums/PlayerRaidEndState";
 import { QuestStatus } from "@spt/models/enums/QuestStatus";
 import { SkillTypes } from "@spt/models/enums/SkillTypes";
 import { Traders } from "@spt/models/enums/Traders";
 import { IAirdropConfig } from "@spt/models/spt/config/IAirdropConfig";
+import { IBotConfig } from "@spt/models/spt/config/IBotConfig";
 import { IBTRConfig } from "@spt/models/spt/config/IBTRConfig";
 import { IHideoutConfig } from "@spt/models/spt/config/IHideoutConfig";
 import { IInRaidConfig } from "@spt/models/spt/config/IInRaidConfig";
@@ -55,6 +54,7 @@ export class InraidController
     protected locationConfig: ILocationConfig;
     protected ragfairConfig: IRagfairConfig;
     protected hideoutConfig: IHideoutConfig;
+    protected botConfig: IBotConfig;
 
     constructor(
         @inject("PrimaryLogger") protected logger: ILogger,
@@ -86,6 +86,7 @@ export class InraidController
         this.locationConfig = this.configServer.getConfig(ConfigTypes.LOCATION);
         this.ragfairConfig = this.configServer.getConfig(ConfigTypes.RAGFAIR);
         this.hideoutConfig = this.configServer.getConfig(ConfigTypes.HIDEOUT);
+        this.botConfig = this.configServer.getConfig(ConfigTypes.BOT);
     }
 
     /**
@@ -659,40 +660,6 @@ export class InraidController
         return this.traderServicesService.getTraderServices(sessionId, traderId);
     }
 
-    /**
-     * Handle singleplayer/traderServices/itemDelivery
-     */
-    public itemDelivery(sessionId: string, traderId: string, items: Item[]): void
-    {
-        const serverProfile = this.saveServer.getProfile(sessionId);
-        const pmcData = serverProfile.characters.pmc;
-
-        const dialogueTemplates = this.databaseService.getTrader(traderId).dialogue;
-        if (!dialogueTemplates)
-        {
-            this.logger.error(this.localisationService.getText("inraid-unable_to_deliver_item_no_trader_found", traderId));
-
-            return;
-        }
-        const messageId = this.randomUtil.getArrayValue(dialogueTemplates.itemsDelivered);
-        const messageStoreTime = this.timeUtil.getHoursAsSeconds(this.traderConfig.fence.btrDeliveryExpireHours);
-
-        // Remove any items that were returned by the item delivery, but also insured, from the player's insurance list
-        // This is to stop items being duplicated by being returned from both the item delivery, and insurance
-        const deliveredItemIds = items.map((x) => x._id);
-        pmcData.InsuredItems = pmcData.InsuredItems.filter((x) => !deliveredItemIds.includes(x.itemId));
-
-        // Send the items to the player
-        this.mailSendService.sendLocalisedNpcMessageToPlayer(
-            sessionId,
-            this.traderHelper.getTraderById(traderId),
-            MessageType.BTR_ITEMS_DELIVERY,
-            messageId,
-            items,
-            messageStoreTime,
-        );
-    }
-
     public getTraitorScavHostileChance(url: string, sessionID: string): number
     {
         return this.inRaidConfig.playerScavHostileChancePercent;
@@ -701,5 +668,10 @@ export class InraidController
     public getSandboxMaxPatrolValue(url: string, sessionID: string): number
     {
         return this.locationConfig.sandboxMaxPatrolvalue;
+    }
+
+    public getBossConvertSettings(url: string, sessionId: string): string[]
+    {
+        return Object.keys(this.botConfig.assaultToBossConversion.bossesToConvertToWeights);
     }
 }
