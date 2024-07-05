@@ -1,6 +1,7 @@
 import { inject, injectable } from "tsyringe";
 import { ApplicationContext } from "@spt/context/ApplicationContext";
 import { ContextVariableType } from "@spt/context/ContextVariableType";
+import { LocationController } from "@spt/controllers/LocationController";
 import { LootGenerator } from "@spt/generators/LootGenerator";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { TraderHelper } from "@spt/helpers/TraderHelper";
@@ -27,6 +28,7 @@ import { ConfigServer } from "@spt/servers/ConfigServer";
 import { SaveServer } from "@spt/servers/SaveServer";
 import { BotGenerationCacheService } from "@spt/services/BotGenerationCacheService";
 import { BotLootCacheService } from "@spt/services/BotLootCacheService";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { MailSendService } from "@spt/services/MailSendService";
 import { MatchLocationService } from "@spt/services/MatchLocationService";
 import { ProfileSnapshotService } from "@spt/services/ProfileSnapshotService";
@@ -49,6 +51,8 @@ export class MatchController
         @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
+        @inject("LocationController") protected locationController: LocationController,
         @inject("MatchLocationService") protected matchLocationService: MatchLocationService,
         @inject("TraderHelper") protected traderHelper: TraderHelper,
         @inject("BotLootCacheService") protected botLootCacheService: BotLootCacheService,
@@ -351,7 +355,16 @@ export class MatchController
 
     public startLocalRaid(sessionId: string, request: IStartLocalRaidRequestData): IStartLocalRaidResponseData
     {
-        throw new Error("Method not implemented.");
+        const playerProfile = this.profileHelper.getPmcProfile(sessionId);
+
+        const result: IStartLocalRaidResponseData = {
+            serverId: "spt",
+            serverSettings: this.databaseService.getLocationServices(),
+            profile: { insuredItems: playerProfile.InsuredItems },
+            locationLoot: this.locationController.generate(request.location),
+        };
+
+        return result;
     }
 
     public endLocalRaid(sessionId: string, info: IEndLocalRaidRequestData): void
