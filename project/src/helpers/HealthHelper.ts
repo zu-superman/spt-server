@@ -104,7 +104,7 @@ export class HealthHelper
             if (!isDead)
             {
                 // Player alive, not is limb alive
-                fullProfile.vitality.health[bodyPart] = postRaidHealth.BodyParts[bodyPart].Current;
+                fullProfile.vitality.health[bodyPart] = postRaidHealth.BodyParts[bodyPart].Health.Current;
             }
             else
             {
