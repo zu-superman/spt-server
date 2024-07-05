@@ -109,17 +109,21 @@
   "BotLocationModifier": {
     "AccuracySpeed": 1,
     "DistToActivate": 100,
+    "DistToActivatePvE": 100,
     "DistToPersueAxemanCoef": 0.9,
     "DistToSleep": 120,
+    "DistToSleepPvE": 120,
     "GainSight": 1,
     "KhorovodChance": 0,
     "MagnetPower": 15,
     "MarksmanAccuratyCoef": 1,
+    "MaxExfiltrationTime": 900,
+    "MinExfiltrationTime": 600,
     "Scattering": 1,
     "VisibleDistance": 1
   },
   "BotMarksman": 0,
-  "BotMax": 16,
+  "BotMax": 22,
   "BotMaxPlayer": 0,
   "BotMaxPvE": 22,
   "BotMaxTimePlayer": 0,
@@ -140,10 +144,12 @@
   "Enabled": false,
   "EscapeTimeLimit": 25,
   "EscapeTimeLimitCoop": 15,
+  "EscapeTimeLimitPVE": 25,
+  "ForceOnlineRaidInPVE": false,
   "GenerateLocalLootCache": true,
   "GlobalContainerChanceModifier": 1,
-  "GlobalLootChanceModifier": 0.4,
-  "GlobalLootChanceModifierPvE": 1,
+  "GlobalLootChanceModifier": 0.5,
+  "GlobalLootChanceModifierPvE": 0.5,
   "IconX": 318,
   "IconY": 359,
   "Id": "factory4_night",
@@ -3878,47 +3884,75 @@
   "exits": [
     {
       "Chance": 100,
+      "ChancePVE": 100,
+      "Count": 0,
+      "CountPVE": 0,
       "EntryPoints": "Factory",
       "EventAvailable": false,
       "ExfiltrationTime": 10,
+      "ExfiltrationTimePVE": 10,
       "Id": "",
       "MaxTime": 0,
+      "MaxTimePVE": 0,
       "MinTime": 0,
+      "MinTimePVE": 0,
       "Name": "Cellars",
-      "PlayersCount": 0
+      "PlayersCount": 0,
+      "PlayersCountPVE": 0
     },
     {
       "Chance": 100,
+      "ChancePVE": 100,
+      "Count": 0,
+      "CountPVE": 0,
       "EntryPoints": "Factory",
       "EventAvailable": false,
       "ExfiltrationTime": 10,
+      "ExfiltrationTimePVE": 10,
       "Id": "",
       "MaxTime": 0,
+      "MaxTimePVE": 0,
       "MinTime": 0,
+      "MinTimePVE": 0,
       "Name": "Gate 3",
-      "PlayersCount": 0
+      "PlayersCount": 0,
+      "PlayersCountPVE": 0
     },
     {
       "Chance": 100,
+      "ChancePVE": 100,
+      "Count": 0,
+      "CountPVE": 0,
       "EntryPoints": "Factory",
       "EventAvailable": false,
       "ExfiltrationTime": 10,
+      "ExfiltrationTimePVE": 10,
       "Id": "",
       "MaxTime": 0,
+      "MaxTimePVE": 0,
       "MinTime": 0,
+      "MinTimePVE": 0,
       "Name": "Gate 0",
-      "PlayersCount": 0
+      "PlayersCount": 0,
+      "PlayersCountPVE": 0
     },
     {
       "Chance": 100,
+      "ChancePVE": 100,
+      "Count": 0,
+      "CountPVE": 0,
       "EntryPoints": "Factory",
       "EventAvailable": false,
       "ExfiltrationTime": 10,
+      "ExfiltrationTimePVE": 10,
       "Id": "",
       "MaxTime": 0,
+      "MaxTimePVE": 0,
       "MinTime": 0,
+      "MinTimePVE": 0,
       "Name": "Gate m",
-      "PlayersCount": 0
+      "PlayersCount": 0,
+      "PlayersCountPVE": 0
     }
   ],
   "filter_ex": [],
@@ -3935,9 +3969,13 @@
     {
       "BotPreset": "normal",
       "BotSide": "Savage",
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "SpawnPoints": "BotZone",
       "WildSpawnType": "assault",
-      "isPlayers": true,
+      "isPlayers": false,
       "number": 0,
       "slots_max": 4,
       "slots_min": 2,
@@ -3947,6 +3985,10 @@
     {
       "BotPreset": "normal",
       "BotSide": "Savage",
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "SpawnPoints": "BotZone",
       "WildSpawnType": "assault",
       "isPlayers": false,
@@ -3959,9 +4001,13 @@
     {
       "BotPreset": "normal",
       "BotSide": "Savage",
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "SpawnPoints": "BotZone",
       "WildSpawnType": "assault",
-      "isPlayers": true,
+      "isPlayers": false,
       "number": 2,
       "slots_max": 4,
       "slots_min": 2,
@@ -3971,9 +4017,13 @@
     {
       "BotPreset": "hard",
       "BotSide": "Savage",
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "SpawnPoints": "BotZone",
       "WildSpawnType": "assault",
-      "isPlayers": true,
+      "isPlayers": false,
       "number": 3,
       "slots_max": 4,
       "slots_min": 2,
@@ -3983,9 +4033,13 @@
     {
       "BotPreset": "hard",
       "BotSide": "Savage",
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "SpawnPoints": "BotZone",
       "WildSpawnType": "assault",
-      "isPlayers": true,
+      "isPlayers": false,
       "number": 4,
       "slots_max": 4,
       "slots_min": 2,
@@ -3995,9 +4049,13 @@
     {
       "BotPreset": "hard",
       "BotSide": "Savage",
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "SpawnPoints": "BotZone",
       "WildSpawnType": "assault",
-      "isPlayers": true,
+      "isPlayers": false,
       "number": 5,
       "slots_max": 4,
       "slots_min": 3,
@@ -4007,6 +4065,10 @@
     {
       "BotPreset": "hard",
       "BotSide": "Savage",
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "SpawnPoints": "BotZone",
       "WildSpawnType": "assault",
       "isPlayers": false,
@@ -4019,6 +4081,10 @@
     {
       "BotPreset": "hard",
       "BotSide": "Savage",
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "SpawnPoints": "BotZone",
       "WildSpawnType": "assault",
       "isPlayers": false,
