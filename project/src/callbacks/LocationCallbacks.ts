@@ -37,8 +37,8 @@ export class LocationCallbacks
     }
 
     /** Handle client/location/getAirdropLoot */
-    public getAirdropLoot(url: string, info: IEmptyRequestData, sessionID: string): string
+    public getAirdropLoot(url: string, info: IEmptyRequestData, sessionID: string): any
     {
-        return this.httpResponse.noBody(this.locationController.getAirdropLoot());
+        return this.httpResponse.getBody(this.locationController.getAirdropLoot());
     }
 }

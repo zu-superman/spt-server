@@ -23,7 +23,7 @@ export class LocationStaticRouter extends StaticRouter
                 },
             ),
             new RouteAction(
-                "/client/location/getAirdropLoot",
+                "/client/airdrop/loot",
                 async (url: string, info: any, sessionID: string, _output: string): Promise<string> =>
                 {
                     return this.locationCallbacks.getAirdropLoot(url, info, sessionID);
