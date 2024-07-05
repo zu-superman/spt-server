@@ -4,7 +4,6 @@ import { ContextVariableType } from "@spt/context/ContextVariableType";
 import { LocationGenerator } from "@spt/generators/LocationGenerator";
 import { LootGenerator } from "@spt/generators/LootGenerator";
 import { WeightedRandomHelper } from "@spt/helpers/WeightedRandomHelper";
-import { ILocation } from "@spt/models/eft/common/ILocation";
 import { ILocationBase } from "@spt/models/eft/common/ILocationBase";
 import { ILocationsGenerateAllResponse } from "@spt/models/eft/common/ILocationsSourceDestinationBase";
 import { ILooseLoot, SpawnpointTemplate } from "@spt/models/eft/common/ILooseLoot";
@@ -76,10 +75,10 @@ export class LocationController
      * @param name Map name
      * @returns ILocationBase
      */
-    protected generate(name: string): ILocationBase
+    public generate(name: string): ILocationBase
     {
-        const location: ILocation = this.databaseService.getLocation(name);
-        const locationBaseClone: ILocationBase = this.cloner.clone(location.base);
+        const location = this.databaseService.getLocation(name);
+        const locationBaseClone = this.cloner.clone(location.base);
 
         // Update datetime property to now
         locationBaseClone.UnixDateTime = this.timeUtil.getTimestamp();

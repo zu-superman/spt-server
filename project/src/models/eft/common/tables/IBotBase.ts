@@ -22,7 +22,7 @@ export interface IBotBase
     Stats: Stats
     Encyclopedia: Record<string, boolean>
     TaskConditionCounters: Record<string, ITaskConditionCounter>
-    InsuredItems: InsuredItem[]
+    InsuredItems: IInsuredItem[]
     Hideout: Hideout
     Quests: IQuestStatus[]
     TradersInfo: Record<string, TraderInfo>
@@ -365,7 +365,7 @@ export interface BackendCounter
     value: number
 }
 
-export interface InsuredItem
+export interface IInsuredItem
 {
     /** Trader Id item was insured by */
     tid: string

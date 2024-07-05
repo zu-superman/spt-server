@@ -2,7 +2,7 @@ import { inject, injectable } from "tsyringe";
 import { HandbookHelper } from "@spt/helpers/HandbookHelper";
 import { IStaticAmmoDetails } from "@spt/models/eft/common/ILocation";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
-import { InsuredItem } from "@spt/models/eft/common/tables/IBotBase";
+import { IInsuredItem } from "@spt/models/eft/common/tables/IBotBase";
 import { Item, Location, Repairable, Upd } from "@spt/models/eft/common/tables/IItem";
 import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
@@ -905,7 +905,7 @@ export class ItemHelper
     public replaceIDs(
         originalItems: Item[],
         pmcData?: IPmcData,
-        insuredItems?: InsuredItem[],
+        insuredItems?: IInsuredItem[],
         fastPanel?: any,
     ): Item[]
     {
