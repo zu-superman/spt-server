@@ -179,7 +179,7 @@
   "DisabledScavExits": "",
   "EnableCoop": true,
   "Enabled": true,
-  "EscapeTimeLimit": 35,
+  "EscapeTimeLimit": 40,
   "EscapeTimeLimitCoop": 30,
   "EscapeTimeLimitPVE": 29,
   "GenerateLocalLootCache": true,
