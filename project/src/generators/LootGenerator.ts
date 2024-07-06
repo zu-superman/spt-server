@@ -17,6 +17,8 @@ import { LocalisationService } from "@spt/services/LocalisationService";
 import { RagfairLinkedItemService } from "@spt/services/RagfairLinkedItemService";
 import { HashUtil } from "@spt/utils/HashUtil";
 import { RandomUtil } from "@spt/utils/RandomUtil";
+import { AirdropTypeEnum } from "@spt/models/enums/AirdropType";
+import { ItemTpl } from "@spt/models/enums/ItemTpl";
 
 type ItemLimit = { current: number, max: number };
 
@@ -43,9 +45,41 @@ export class LootGenerator
      * @param options parameters to adjust how loot is generated
      * @returns An array of loot items
      */
-    public createRandomLoot(options: LootRequest): LootItem[]
+    public createRandomLoot(options: LootRequest): Item[]
     {
-        const result: LootItem[] = [];
+        const result: Item[] = [];
+        let airdropContainerParentID = "";
+
+        if (options.airdropLoot)
+        {
+            airdropContainerParentID = this.hashUtil.generate();
+            let airdropContainer = {
+                _id: airdropContainerParentID,
+                _tpl: "",
+                upd: {
+                    SpawnedInSession: true,
+                    StackObjectsCount: 1
+                }
+            }
+
+            switch (options.airdropLoot) {
+                case AirdropTypeEnum.MEDICAL:
+                    airdropContainer._tpl = ItemTpl.LOOTCONTAINER_AIRDROP_MEDICAL_CRATE
+                    break;
+                case AirdropTypeEnum.SUPPLY:
+                    airdropContainer._tpl = ItemTpl.LOOTCONTAINER_AIRDROP_SUPPLY_CRATE
+                    break;
+                case AirdropTypeEnum.WEAPON:
+                    airdropContainer._tpl = ItemTpl.LOOTCONTAINER_AIRDROP_WEAPON_CRATE
+                    break;
+                case AirdropTypeEnum.COMMON:
+                default:
+                    airdropContainer._tpl = ItemTpl.LOOTCONTAINER_AIRDROP_COMMON_SUPPLY_CRATE
+                    break;
+            }
+
+            result.push(airdropContainer);
+        }
 
         const itemTypeCounts = this.initItemLimitCounter(options.itemLimits);
 
@@ -86,10 +120,12 @@ export class LootGenerator
                 // Choose one at random + add to results array
                 const chosenSealedContainer = this.randomUtil.getArrayValue(sealedWeaponContainerPool);
                 result.push({
-                    id: this.hashUtil.generate(),
-                    tpl: chosenSealedContainer._id,
-                    isPreset: false,
-                    stackCount: 1,
+                    _id: this.hashUtil.generate(),
+                    _tpl: chosenSealedContainer._id,
+                    upd: {
+                        StackObjectsCount: 1,
+                        SpawnedInSession: true
+                    }
                 });
             }
         }
@@ -185,6 +221,19 @@ export class LootGenerator
             }
         }
 
+        for (const item of result) {
+            if (item._id == airdropContainerParentID)
+            {
+                continue;
+            }
+
+            if (!item.parentId)
+            {
+                item.parentId = airdropContainerParentID;
+                item.slotId = "main"
+            }
+        }
+
         return result;
     }
 
@@ -242,7 +291,7 @@ export class LootGenerator
         items: [string, ITemplateItem][],
         itemTypeCounts: Record<string, { current: number, max: number }>,
         options: LootRequest,
-        result: LootItem[],
+        result: Item[],
     ): boolean
     {
         const randomItem = this.randomUtil.getArrayValue(items)[1];
@@ -259,20 +308,22 @@ export class LootGenerator
             return false;
         }
 
-        const newLootItem: LootItem = {
-            id: this.hashUtil.generate(),
-            tpl: randomItem._id,
-            isPreset: false,
-            stackCount: 1,
+        const newLootItem: Item = {
+            _id: this.hashUtil.generate(),
+            _tpl: randomItem._id,
+            upd: {
+                StackObjectsCount: 1,
+                SpawnedInSession: true
+            }
         };
 
         // Special case - handle items that need a stackcount > 1
         if (randomItem._props.StackMaxSize > 1)
         {
-            newLootItem.stackCount = this.getRandomisedStackCount(randomItem, options);
+            newLootItem.upd.StackObjectsCount = this.getRandomisedStackCount(randomItem, options);
         }
 
-        newLootItem.tpl = randomItem._id;
+        newLootItem._tpl = randomItem._id;
         result.push(newLootItem);
 
         if (itemLimitCount)
@@ -317,7 +368,7 @@ export class LootGenerator
         presetPool: IPreset[],
         itemTypeCounts: Record<string, { current: number, max: number }>,
         itemBlacklist: string[],
-        result: LootItem[],
+        result: Item[],
     ): boolean
     {
         // Choose random preset and get details from item db using encyclopedia value (encyclopedia === tplId)
@@ -367,8 +418,12 @@ export class LootGenerator
             return false;
         }
 
+        const presetAndMods: Item[] = this.itemHelper.replaceIDs(chosenPreset._items);
+        this.itemHelper.remapRootItemId(presetAndMods);
         // Add chosen preset tpl to result array
-        result.push({ tpl: chosenPreset._items[0]._tpl, isPreset: true, stackCount: 1 });
+        presetAndMods.forEach(item => {
+            result.push(item)
+        });
 
         if (itemLimitCount)
         {

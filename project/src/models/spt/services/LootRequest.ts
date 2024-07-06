@@ -1,7 +1,9 @@
 import { MinMax } from "@spt/models/common/MinMax";
+import { AirdropTypeEnum } from "@spt/models/enums/AirdropType";
 
 export interface LootRequest
 {
+    airdropLoot?: AirdropTypeEnum
     weaponPresetCount: MinMax
     armorPresetCount: MinMax
     itemCount: MinMax

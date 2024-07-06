@@ -36,7 +36,7 @@ export class LocationCallbacks
         return this.httpResponse.getBody(this.locationController.get(sessionID, info));
     }
 
-    /** Handle client/location/getAirdropLoot */
+    /** Handle client/airdrop/loot */
     public getAirdropLoot(url: string, info: IEmptyRequestData, sessionID: string): any
     {
         return this.httpResponse.getBody(this.locationController.getAirdropLoot());
