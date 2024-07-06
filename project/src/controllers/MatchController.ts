@@ -3,12 +3,14 @@ import { ApplicationContext } from "@spt/context/ApplicationContext";
 import { ContextVariableType } from "@spt/context/ContextVariableType";
 import { InraidController } from "@spt/controllers/InraidController";
 import { LocationController } from "@spt/controllers/LocationController";
+import { LocationLootGenerator } from "@spt/generators/LocationLootGenerator";
 import { LootGenerator } from "@spt/generators/LootGenerator";
 import { PlayerScavGenerator } from "@spt/generators/PlayerScavGenerator";
 import { HealthHelper } from "@spt/helpers/HealthHelper";
 import { InRaidHelper } from "@spt/helpers/InRaidHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { TraderHelper } from "@spt/helpers/TraderHelper";
+import { ILocationBase } from "@spt/models/eft/common/ILocationBase";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { Common } from "@spt/models/eft/common/tables/IBotBase";
 import { Item } from "@spt/models/eft/common/tables/IItem";
@@ -26,10 +28,12 @@ import { MessageType } from "@spt/models/enums/MessageType";
 import { Traders } from "@spt/models/enums/Traders";
 import { IHideoutConfig } from "@spt/models/spt/config/IHideoutConfig";
 import { IInRaidConfig } from "@spt/models/spt/config/IInRaidConfig";
+import { ILocationConfig } from "@spt/models/spt/config/ILocationConfig";
 import { IMatchConfig } from "@spt/models/spt/config/IMatchConfig";
 import { IPmcConfig } from "@spt/models/spt/config/IPmcConfig";
 import { IRagfairConfig } from "@spt/models/spt/config/IRagfairConfig";
 import { ITraderConfig } from "@spt/models/spt/config/ITraderConfig";
+import { IRaidChanges } from "@spt/models/spt/location/IRaidChanges";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
 import { SaveServer } from "@spt/servers/SaveServer";
@@ -43,6 +47,8 @@ import { MatchBotDetailsCacheService } from "@spt/services/MatchBotDetailsCacheS
 import { MatchLocationService } from "@spt/services/MatchLocationService";
 import { PmcChatResponseService } from "@spt/services/PmcChatResponseService";
 import { ProfileSnapshotService } from "@spt/services/ProfileSnapshotService";
+import { RaidTimeAdjustmentService } from "@spt/services/RaidTimeAdjustmentService";
+import { ICloner } from "@spt/utils/cloners/ICloner";
 import { HashUtil } from "@spt/utils/HashUtil";
 import { RandomUtil } from "@spt/utils/RandomUtil";
 import { TimeUtil } from "@spt/utils/TimeUtil";
@@ -56,6 +62,7 @@ export class MatchController
     protected pmcConfig: IPmcConfig;
     protected ragfairConfig: IRagfairConfig;
     protected hideoutConfig: IHideoutConfig;
+    protected locationConfig: ILocationConfig;
 
     constructor(
         @inject("PrimaryLogger") protected logger: ILogger,
@@ -81,8 +88,11 @@ export class MatchController
         @inject("ProfileSnapshotService") protected profileSnapshotService: ProfileSnapshotService,
         @inject("BotGenerationCacheService") protected botGenerationCacheService: BotGenerationCacheService,
         @inject("MailSendService") protected mailSendService: MailSendService,
+        @inject("RaidTimeAdjustmentService") protected raidTimeAdjustmentService: RaidTimeAdjustmentService,
         @inject("LootGenerator") protected lootGenerator: LootGenerator,
         @inject("ApplicationContext") protected applicationContext: ApplicationContext,
+        @inject("LocationLootGenerator") protected locationLootGenerator: LocationLootGenerator,
+        @inject("PrimaryCloner") protected cloner: ICloner,
     )
     {
         this.matchConfig = this.configServer.getConfig(ConfigTypes.MATCH);
@@ -91,6 +101,7 @@ export class MatchController
         this.pmcConfig = this.configServer.getConfig(ConfigTypes.PMC);
         this.ragfairConfig = this.configServer.getConfig(ConfigTypes.RAGFAIR);
         this.hideoutConfig = this.configServer.getConfig(ConfigTypes.HIDEOUT);
+        this.locationConfig = this.configServer.getConfig(ConfigTypes.LOCATION);
     }
 
     public getEnabled(): boolean
@@ -373,20 +384,87 @@ export class MatchController
 
     public startLocalRaid(sessionId: string, request: IStartLocalRaidRequestData): IStartLocalRaidResponseData
     {
-        // TODO - remove usage of locationController - controller use inside match controller = bad
         const playerProfile = this.profileHelper.getPmcProfile(sessionId);
 
         const result: IStartLocalRaidResponseData = {
             serverId: `${request.location}.${request.playerSide}.${this.timeUtil.getTimestamp()}`, // TODO - does this need to be more verbose - investigate client?
             serverSettings: this.databaseService.getLocationServices(), // TODO - is this per map or global?
             profile: { insuredItems: playerProfile.InsuredItems },
-            locationLoot: this.locationController.generate(request.location), // Move out of controller
+            locationLoot: this.generateLocationAndLoot(request.location),
         };
 
         // Clear bot cache ready for a fresh raid
         this.botGenerationCacheService.clearStoredBots();
 
         return result;
+    }
+
+    /**
+     * Generate a maps base location and loot
+     * @param name Map name
+     * @returns ILocationBase
+     */
+    protected generateLocationAndLoot(name: string): ILocationBase
+    {
+        const location = this.databaseService.getLocation(name);
+        const locationBaseClone = this.cloner.clone(location.base);
+
+        // Update datetime property to now
+        locationBaseClone.UnixDateTime = this.timeUtil.getTimestamp();
+
+        // Don't generate loot for hideout
+        if (name === "hideout")
+        {
+            return locationBaseClone;
+        }
+
+        // Check for a loot multipler adjustment in app context and apply if one is found
+        let locationConfigClone: ILocationConfig;
+        const raidAdjustments = this.applicationContext
+            .getLatestValue(ContextVariableType.RAID_ADJUSTMENTS)
+            ?.getValue<IRaidChanges>();
+        if (raidAdjustments)
+        {
+            locationConfigClone = this.cloner.clone(this.locationConfig); // Clone values so they can be used to reset originals later
+            this.raidTimeAdjustmentService.makeAdjustmentsToMap(raidAdjustments, locationBaseClone);
+        }
+
+        const staticAmmoDist = this.cloner.clone(location.staticAmmo);
+
+        // Create containers and add loot to them
+        const staticLoot = this.locationLootGenerator.generateStaticContainers(locationBaseClone, staticAmmoDist);
+        locationBaseClone.Loot.push(...staticLoot);
+
+        // Add dynamic loot to output loot
+        const dynamicLootDistClone = this.cloner.clone(location.looseLoot);
+        const dynamicSpawnPoints = this.locationLootGenerator.generateDynamicLoot(
+            dynamicLootDistClone,
+            staticAmmoDist,
+            name,
+        );
+
+        for (const spawnPoint of dynamicSpawnPoints)
+        {
+            locationBaseClone.Loot.push(spawnPoint);
+        }
+
+        // Done generating, log results
+        this.logger.success(
+            this.localisationService.getText("location-dynamic_items_spawned_success", dynamicSpawnPoints.length),
+        );
+        this.logger.success(this.localisationService.getText("location-generated_success", name));
+
+        // Reset loot multipliers back to original values
+        if (raidAdjustments)
+        {
+            this.logger.debug("Resetting loot multipliers back to their original values");
+            this.locationConfig.staticLootMultiplier = locationConfigClone.staticLootMultiplier;
+            this.locationConfig.looseLootMultiplier = locationConfigClone.looseLootMultiplier;
+
+            this.applicationContext.clearValues(ContextVariableType.RAID_ADJUSTMENTS);
+        }
+
+        return locationBaseClone;
     }
 
     public endLocalRaid(sessionId: string, request: IEndLocalRaidRequestData): void
