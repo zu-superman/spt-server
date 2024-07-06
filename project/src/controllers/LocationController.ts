@@ -6,7 +6,6 @@ import { ILocationBase } from "@spt/models/eft/common/ILocationBase";
 import { ILocationsGenerateAllResponse } from "@spt/models/eft/common/ILocationsSourceDestinationBase";
 import { ILooseLoot, SpawnpointTemplate } from "@spt/models/eft/common/ILooseLoot";
 import { IGetAirdropLootResponse } from "@spt/models/eft/location/IGetAirdropLootResponse";
-import { IGetLocationRequestData } from "@spt/models/eft/location/IGetLocationRequestData";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { ILocationConfig } from "@spt/models/spt/config/ILocationConfig";
 import { IRaidChanges } from "@spt/models/spt/location/IRaidChanges";
@@ -39,22 +38,6 @@ export class LocationController
     )
     {
         this.locationConfig = this.configServer.getConfig(ConfigTypes.LOCATION);
-    }
-
-    /*  */
-
-    /**
-     * Handle client/location/getLocalloot
-     * Get a location (map) with generated loot data
-     * @param sessionId Player id
-     * @param request Map request to generate
-     * @returns ILocationBase
-     */
-    public get(sessionId: string, request: IGetLocationRequestData): ILocationBase
-    {
-        this.logger.debug(`Generating data for: ${request.locationId}, variant: ${request.variantId}`);
-        const name = request.locationId.toLowerCase().replace(" ", "");
-        return this.generate(name);
     }
 
     /**

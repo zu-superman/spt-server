@@ -380,7 +380,7 @@ export class MatchController
             serverId: `${request.location}.${request.playerSide}.${this.timeUtil.getTimestamp()}`, // TODO - does this need to be more verbose - investigate client?
             serverSettings: this.databaseService.getLocationServices(), // TODO - is this per map or global?
             profile: { insuredItems: playerProfile.InsuredItems },
-            locationLoot: this.locationController.generate(request.location),
+            locationLoot: this.locationController.generate(request.location), // Move out of controller
         };
 
         // Clear bot cache ready for a fresh raid
