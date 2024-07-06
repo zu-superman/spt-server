@@ -228,13 +228,8 @@ export class MatchController
         const parentId = this.hashUtil.generate();
         for (const item of loot)
         {
-            mailableLoot.push({
-                _id: item.id,
-                _tpl: item.tpl,
-                slotId: "main",
-                parentId: parentId,
-                upd: { StackObjectsCount: item.stackCount, SpawnedInSession: true },
-            });
+            item.parentId = parentId;
+            mailableLoot.push(item);
         }
 
         // Send message from fence giving player reward generated above

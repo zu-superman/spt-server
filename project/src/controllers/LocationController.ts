@@ -11,7 +11,7 @@ import { IAirdropLootResult } from "@spt/models/eft/location/IAirdropLootResult"
 import { IGetLocationRequestData } from "@spt/models/eft/location/IGetLocationRequestData";
 import { AirdropTypeEnum } from "@spt/models/enums/AirdropType";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
-import { IAirdropConfig } from "@spt/models/spt/config/IAirdropConfig";
+import { AirdropLoot, IAirdropConfig } from "@spt/models/spt/config/IAirdropConfig";
 import { ILocationConfig } from "@spt/models/spt/config/ILocationConfig";
 import { IRaidChanges } from "@spt/models/spt/location/IRaidChanges";
 import { ILocations } from "@spt/models/spt/server/ILocations";
@@ -171,15 +171,14 @@ export class LocationController
      * Generates it randomly based on config/airdrop.json values
      * @returns Array of LootItem objects
      */
-    public getAirdropLoot(): IAirdropLootResult
+    public getAirdropLoot(): any // TODO: need to fix
     {
         const airdropType = this.chooseAirdropType();
-
         this.logger.debug(`Chose ${airdropType} for airdrop loot`);
 
         const airdropConfig = this.getAirdropLootConfigByType(airdropType);
 
-        return { dropType: airdropType, loot: this.lootGenerator.createRandomLoot(airdropConfig) };
+        return { icon: airdropType, container: this.lootGenerator.createRandomLoot(airdropConfig) };
     }
 
     /**
@@ -200,16 +199,17 @@ export class LocationController
      */
     protected getAirdropLootConfigByType(airdropType: AirdropTypeEnum): LootRequest
     {
-        let lootSettingsByType = this.airdropConfig.loot[airdropType];
+        let lootSettingsByType: AirdropLoot = this.airdropConfig.loot[airdropType];
         if (!lootSettingsByType)
         {
             this.logger.error(
                 this.localisationService.getText("location-unable_to_find_airdrop_drop_config_of_type", airdropType),
             );
-            lootSettingsByType = this.airdropConfig.loot[AirdropTypeEnum.MIXED];
+            lootSettingsByType = this.airdropConfig.loot[AirdropTypeEnum.COMMON];
         }
 
         return {
+            airdropLoot: airdropType,
             weaponPresetCount: lootSettingsByType.weaponPresetCount,
             armorPresetCount: lootSettingsByType.armorPresetCount,
             itemCount: lootSettingsByType.itemCount,
