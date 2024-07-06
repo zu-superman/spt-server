@@ -23,15 +23,15 @@
       "Backpack": 0,
       "Earpiece": 0,
       "Eyewear": 0,
-      "FaceCover": 100,
+      "FaceCover": 0,
       "FirstPrimaryWeapon": 100,
-      "Headwear": 100,
+      "Headwear": 0,
       "Holster": 0,
       "Pockets": 100,
       "Scabbard": 100,
       "SecondPrimaryWeapon": 0,
       "SecuredContainer": 100,
-      "TacticalVest": 100
+      "TacticalVest": 0
     },
     "equipmentMods": {
       "mod_equipment_000": 0,
