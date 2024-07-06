@@ -99,4 +99,14 @@ export class BotGenerationCacheService
     {
         return this.storedBots.has(key) && this.storedBots.get(key).length > 0;
     }
+
+    public getCachedBotCount(key: string): number
+    {
+        return this.storedBots.get(key)?.length ?? 0;
+    }
+
+    public createCacheKey(role: string, difficulty: string): string
+    {
+        return `${role.toLowerCase()}${difficulty.toLowerCase()}`;
+    }
 }
