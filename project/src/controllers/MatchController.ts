@@ -4,6 +4,7 @@ import { ContextVariableType } from "@spt/context/ContextVariableType";
 import { InraidController } from "@spt/controllers/InraidController";
 import { LocationController } from "@spt/controllers/LocationController";
 import { LootGenerator } from "@spt/generators/LootGenerator";
+import { PlayerScavGenerator } from "@spt/generators/PlayerScavGenerator";
 import { HealthHelper } from "@spt/helpers/HealthHelper";
 import { InRaidHelper } from "@spt/helpers/InRaidHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
@@ -71,6 +72,7 @@ export class MatchController
         @inject("MatchLocationService") protected matchLocationService: MatchLocationService,
         @inject("MatchBotDetailsCacheService") protected matchBotDetailsCacheService: MatchBotDetailsCacheService,
         @inject("PmcChatResponseService") protected pmcChatResponseService: PmcChatResponseService,
+        @inject("PlayerScavGenerator") protected playerScavGenerator: PlayerScavGenerator,
         @inject("TraderHelper") protected traderHelper: TraderHelper,
         @inject("BotLootCacheService") protected botLootCacheService: BotLootCacheService,
         @inject("LocalisationService") protected localisationService: LocalisationService,
@@ -419,16 +421,48 @@ export class MatchController
 
         const locationName = serverDetails[0].toLowerCase();
         const isPmc = serverDetails[1].toLowerCase() === "pmc";
-        const map = this.databaseService.getLocation(locationName).base;
+        const mapBase = this.databaseService.getLocation(locationName).base;
         const isDead = this.isPlayerDead(request.results);
 
         if (!isPmc)
         {
-            this.handlePostRaidPlayerScav();
+            this.handlePostRaidPlayerScav(sessionId, pmcProfile, scavProfile, isDead);
 
             return;
         }
 
+        this.handlePostRaidPmc(sessionId, pmcProfile, scavProfile, postRaidProfile, isDead, request);
+    }
+
+    protected handlePostRaidPlayerScav(
+        sessionId: string,
+        pmcProfile: IPmcData,
+        scavProfile: IPmcData,
+        isDead: boolean,
+    ): void
+    {
+        // Scav died, regen scav loadout and set timer
+        if (isDead)
+        {
+            this.playerScavGenerator.generate(sessionId);
+        }
+
+        // Update last played property
+        pmcProfile.Info.LastTimePlayedAsSavage = this.timeUtil.getTimestamp();
+
+        // Force a profile save
+        this.saveServer.saveProfile(sessionId);
+    }
+
+    protected handlePostRaidPmc(
+        sessionId: string,
+        pmcProfile: IPmcData,
+        scavProfile: IPmcData,
+        postRaidProfile: IPmcData,
+        isDead: boolean,
+        request: IEndLocalRaidRequestData,
+    ): void
+    {
         // Update inventory
         this.inRaidHelper.setInventory(sessionId, pmcProfile, postRaidProfile);
 
@@ -509,11 +543,6 @@ export class MatchController
             //     gearToStore,
             // );
         }
-    }
-
-    protected handlePostRaidPlayerScav(): void
-    {
-        // TODO
     }
 
     /**
