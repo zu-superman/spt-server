@@ -68,7 +68,7 @@ import { BotLevelGenerator } from "@spt/generators/BotLevelGenerator";
 import { BotLootGenerator } from "@spt/generators/BotLootGenerator";
 import { BotWeaponGenerator } from "@spt/generators/BotWeaponGenerator";
 import { FenceBaseAssortGenerator } from "@spt/generators/FenceBaseAssortGenerator";
-import { LocationGenerator } from "@spt/generators/LocationGenerator";
+import { LocationLootGenerator } from "@spt/generators/LocationLootGenerator";
 import { LootGenerator } from "@spt/generators/LootGenerator";
 import { PlayerScavGenerator } from "@spt/generators/PlayerScavGenerator";
 import { PMCLootGenerator } from "@spt/generators/PMCLootGenerator";
@@ -537,7 +537,7 @@ export class Container
         depContainer.register<BotWeaponGenerator>("BotWeaponGenerator", BotWeaponGenerator);
         depContainer.register<BotLootGenerator>("BotLootGenerator", BotLootGenerator);
         depContainer.register<BotInventoryGenerator>("BotInventoryGenerator", BotInventoryGenerator);
-        depContainer.register<LocationGenerator>("LocationGenerator", { useClass: LocationGenerator });
+        depContainer.register<LocationLootGenerator>("LocationLootGenerator", { useClass: LocationLootGenerator });
         depContainer.register<PMCLootGenerator>("PMCLootGenerator", PMCLootGenerator, {
             lifecycle: Lifecycle.Singleton,
         });

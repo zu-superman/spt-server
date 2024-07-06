@@ -44,7 +44,7 @@ export interface IContainerGroupCount
 }
 
 @injectable()
-export class LocationGenerator
+export class LocationLootGenerator
 {
     protected locationConfig: ILocationConfig;
 

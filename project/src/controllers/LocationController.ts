@@ -1,7 +1,7 @@
 import { inject, injectable } from "tsyringe";
 import { ApplicationContext } from "@spt/context/ApplicationContext";
 import { ContextVariableType } from "@spt/context/ContextVariableType";
-import { LocationGenerator } from "@spt/generators/LocationGenerator";
+import { LocationLootGenerator } from "@spt/generators/LocationLootGenerator";
 import { ILocationBase } from "@spt/models/eft/common/ILocationBase";
 import { ILocationsGenerateAllResponse } from "@spt/models/eft/common/ILocationsSourceDestinationBase";
 import { ILooseLoot, SpawnpointTemplate } from "@spt/models/eft/common/ILooseLoot";
@@ -26,7 +26,7 @@ export class LocationController
 
     constructor(
         @inject("PrimaryLogger") protected logger: ILogger,
-        @inject("LocationGenerator") protected locationGenerator: LocationGenerator,
+        @inject("LocationLootGenerator") protected locationLootGenerator: LocationLootGenerator,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("RaidTimeAdjustmentService") protected raidTimeAdjustmentService: RaidTimeAdjustmentService,
         @inject("DatabaseService") protected databaseService: DatabaseService,
@@ -73,12 +73,12 @@ export class LocationController
         const staticAmmoDist = this.cloner.clone(location.staticAmmo);
 
         // Create containers and add loot to them
-        const staticLoot = this.locationGenerator.generateStaticContainers(locationBaseClone, staticAmmoDist);
+        const staticLoot = this.locationLootGenerator.generateStaticContainers(locationBaseClone, staticAmmoDist);
         locationBaseClone.Loot.push(...staticLoot);
 
         // Add dynamic loot to output loot
         const dynamicLootDistClone: ILooseLoot = this.cloner.clone(location.looseLoot);
-        const dynamicSpawnPoints: SpawnpointTemplate[] = this.locationGenerator.generateDynamicLoot(
+        const dynamicSpawnPoints: SpawnpointTemplate[] = this.locationLootGenerator.generateDynamicLoot(
             dynamicLootDistClone,
             staticAmmoDist,
             name,
