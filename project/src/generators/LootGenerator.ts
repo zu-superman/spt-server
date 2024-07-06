@@ -8,7 +8,6 @@ import { Item } from "@spt/models/eft/common/tables/IItem";
 import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
 import { ISealedAirdropContainerSettings, RewardDetails } from "@spt/models/spt/config/IInventoryConfig";
-import { LootItem } from "@spt/models/spt/services/LootItem";
 import { LootRequest } from "@spt/models/spt/services/LootRequest";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { DatabaseService } from "@spt/services/DatabaseService";
@@ -17,8 +16,6 @@ import { LocalisationService } from "@spt/services/LocalisationService";
 import { RagfairLinkedItemService } from "@spt/services/RagfairLinkedItemService";
 import { HashUtil } from "@spt/utils/HashUtil";
 import { RandomUtil } from "@spt/utils/RandomUtil";
-import { AirdropTypeEnum } from "@spt/models/enums/AirdropType";
-import { ItemTpl } from "@spt/models/enums/ItemTpl";
 
 type ItemLimit = { current: number, max: number };
 
@@ -48,39 +45,6 @@ export class LootGenerator
     public createRandomLoot(options: LootRequest): Item[]
     {
         const result: Item[] = [];
-        let airdropContainerParentID = "";
-
-        if (options.airdropLoot)
-        {
-            airdropContainerParentID = this.hashUtil.generate();
-            let airdropContainer = {
-                _id: airdropContainerParentID,
-                _tpl: "",
-                upd: {
-                    SpawnedInSession: true,
-                    StackObjectsCount: 1
-                }
-            }
-
-            switch (options.airdropLoot) {
-                case AirdropTypeEnum.MEDICAL:
-                    airdropContainer._tpl = ItemTpl.LOOTCONTAINER_AIRDROP_MEDICAL_CRATE
-                    break;
-                case AirdropTypeEnum.SUPPLY:
-                    airdropContainer._tpl = ItemTpl.LOOTCONTAINER_AIRDROP_SUPPLY_CRATE
-                    break;
-                case AirdropTypeEnum.WEAPON:
-                    airdropContainer._tpl = ItemTpl.LOOTCONTAINER_AIRDROP_WEAPON_CRATE
-                    break;
-                case AirdropTypeEnum.COMMON:
-                default:
-                    airdropContainer._tpl = ItemTpl.LOOTCONTAINER_AIRDROP_COMMON_SUPPLY_CRATE
-                    break;
-            }
-
-            result.push(airdropContainer);
-        }
-
         const itemTypeCounts = this.initItemLimitCounter(options.itemLimits);
 
         const itemsDb = this.databaseService.getItems();
@@ -104,18 +68,18 @@ export class LootGenerator
         }
 
         // Handle sealed weapon containers
-        const desiredWeaponCrateCount = this.randomUtil.getInt(
+        const sealedWeaponCrateCount = this.randomUtil.getInt(
             options.weaponCrateCount.min,
             options.weaponCrateCount.max,
         );
-        if (desiredWeaponCrateCount > 0)
+        if (sealedWeaponCrateCount > 0)
         {
-            // Get list of all sealed containers from db
+            // Get list of all sealed containers from db - they're all the same, just for flavor
             const sealedWeaponContainerPool = Object.values(itemsDb).filter((item) =>
                 item._name.includes("event_container_airdrop"),
             );
 
-            for (let index = 0; index < desiredWeaponCrateCount; index++)
+            for (let index = 0; index < sealedWeaponCrateCount; index++)
             {
                 // Choose one at random + add to results array
                 const chosenSealedContainer = this.randomUtil.getArrayValue(sealedWeaponContainerPool);
@@ -124,8 +88,8 @@ export class LootGenerator
                     _tpl: chosenSealedContainer._id,
                     upd: {
                         StackObjectsCount: 1,
-                        SpawnedInSession: true
-                    }
+                        SpawnedInSession: true,
+                    },
                 });
             }
         }
@@ -139,6 +103,7 @@ export class LootGenerator
                 && options.itemTypeWhitelist.includes(item[1]._parent),
         );
 
+        // Pool has items we could add as loot, proceed
         if (items.length > 0)
         {
             const randomisedItemCount = this.randomUtil.getInt(options.itemCount.min, options.itemCount.max);
@@ -221,19 +186,6 @@ export class LootGenerator
             }
         }
 
-        for (const item of result) {
-            if (item._id == airdropContainerParentID)
-            {
-                continue;
-            }
-
-            if (!item.parentId)
-            {
-                item.parentId = airdropContainerParentID;
-                item.slotId = "main"
-            }
-        }
-
         return result;
     }
 
@@ -313,8 +265,8 @@ export class LootGenerator
             _tpl: randomItem._id,
             upd: {
                 StackObjectsCount: 1,
-                SpawnedInSession: true
-            }
+                SpawnedInSession: true,
+            },
         };
 
         // Special case - handle items that need a stackcount > 1
@@ -421,8 +373,9 @@ export class LootGenerator
         const presetAndMods: Item[] = this.itemHelper.replaceIDs(chosenPreset._items);
         this.itemHelper.remapRootItemId(presetAndMods);
         // Add chosen preset tpl to result array
-        presetAndMods.forEach(item => {
-            result.push(item)
+        presetAndMods.forEach((item) =>
+        {
+            result.push(item);
         });
 
         if (itemLimitCount)

@@ -197,6 +197,7 @@ import { IWebSocketConnectionHandler } from "@spt/servers/ws/IWebSocketConnectio
 import { DefaultSptWebSocketMessageHandler } from "@spt/servers/ws/message/DefaultSptWebSocketMessageHandler";
 import { ISptWebSocketMessageHandler } from "@spt/servers/ws/message/ISptWebSocketMessageHandler";
 import { SptWebSocketConnectionHandler } from "@spt/servers/ws/SptWebSocketConnectionHandler";
+import { AirdropService } from "@spt/services/AirdropService";
 import { BotEquipmentFilterService } from "@spt/services/BotEquipmentFilterService";
 import { BotEquipmentModPoolService } from "@spt/services/BotEquipmentModPoolService";
 import { BotGenerationCacheService } from "@spt/services/BotGenerationCacheService";
@@ -793,6 +794,9 @@ export class Container
         depContainer.register<MapMarkerService>("MapMarkerService", MapMarkerService);
 
         depContainer.register<ProfileActivityService>("ProfileActivityService", ProfileActivityService, {
+            lifecycle: Lifecycle.Singleton,
+        });
+        depContainer.register<AirdropService>("AirdropService", AirdropService, {
             lifecycle: Lifecycle.Singleton,
         });
     }

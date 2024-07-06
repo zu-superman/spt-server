@@ -2,55 +2,42 @@ import { inject, injectable } from "tsyringe";
 import { ApplicationContext } from "@spt/context/ApplicationContext";
 import { ContextVariableType } from "@spt/context/ContextVariableType";
 import { LocationGenerator } from "@spt/generators/LocationGenerator";
-import { LootGenerator } from "@spt/generators/LootGenerator";
-import { WeightedRandomHelper } from "@spt/helpers/WeightedRandomHelper";
 import { ILocationBase } from "@spt/models/eft/common/ILocationBase";
 import { ILocationsGenerateAllResponse } from "@spt/models/eft/common/ILocationsSourceDestinationBase";
 import { ILooseLoot, SpawnpointTemplate } from "@spt/models/eft/common/ILooseLoot";
 import { IGetAirdropLootResponse } from "@spt/models/eft/location/IGetAirdropLootResponse";
 import { IGetLocationRequestData } from "@spt/models/eft/location/IGetLocationRequestData";
-import { AirdropTypeEnum } from "@spt/models/enums/AirdropType";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
-import { AirdropLoot, IAirdropConfig } from "@spt/models/spt/config/IAirdropConfig";
 import { ILocationConfig } from "@spt/models/spt/config/ILocationConfig";
 import { IRaidChanges } from "@spt/models/spt/location/IRaidChanges";
 import { ILocations } from "@spt/models/spt/server/ILocations";
-import { LootRequest } from "@spt/models/spt/services/LootRequest";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
+import { AirdropService } from "@spt/services/AirdropService";
 import { DatabaseService } from "@spt/services/DatabaseService";
-import { ItemFilterService } from "@spt/services/ItemFilterService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { RaidTimeAdjustmentService } from "@spt/services/RaidTimeAdjustmentService";
 import { ICloner } from "@spt/utils/cloners/ICloner";
-import { HashUtil } from "@spt/utils/HashUtil";
-import { RandomUtil } from "@spt/utils/RandomUtil";
 import { TimeUtil } from "@spt/utils/TimeUtil";
 
 @injectable()
 export class LocationController
 {
-    protected airdropConfig: IAirdropConfig;
     protected locationConfig: ILocationConfig;
 
     constructor(
-        @inject("HashUtil") protected hashUtil: HashUtil,
-        @inject("RandomUtil") protected randomUtil: RandomUtil,
-        @inject("WeightedRandomHelper") protected weightedRandomHelper: WeightedRandomHelper,
         @inject("PrimaryLogger") protected logger: ILogger,
         @inject("LocationGenerator") protected locationGenerator: LocationGenerator,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("RaidTimeAdjustmentService") protected raidTimeAdjustmentService: RaidTimeAdjustmentService,
-        @inject("ItemFilterService") protected itemFilterService: ItemFilterService,
-        @inject("LootGenerator") protected lootGenerator: LootGenerator,
         @inject("DatabaseService") protected databaseService: DatabaseService,
+        @inject("AirdropService") protected airdropService: AirdropService,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
         @inject("ConfigServer") protected configServer: ConfigServer,
         @inject("ApplicationContext") protected applicationContext: ApplicationContext,
         @inject("PrimaryCloner") protected cloner: ICloner,
     )
     {
-        this.airdropConfig = this.configServer.getConfig(ConfigTypes.AIRDROP);
         this.locationConfig = this.configServer.getConfig(ConfigTypes.LOCATION);
     }
 
@@ -165,65 +152,8 @@ export class LocationController
         return { locations: locations, paths: locationsFromDb.base.paths };
     }
 
-    /**
-     * Handle client/location/getAirdropLoot
-     * Get loot for an airdrop container
-     * Generates it randomly based on config/airdrop.json values
-     * @returns Array of LootItem objects
-     */
     public getAirdropLoot(): IGetAirdropLootResponse
     {
-        const airdropType = this.chooseAirdropType();
-        this.logger.debug(`Chose ${airdropType} for airdrop loot`);
-
-        const airdropConfig = this.getAirdropLootConfigByType(airdropType);
-
-        return { icon: airdropType, container: this.lootGenerator.createRandomLoot(airdropConfig) };
-    }
-
-    /**
-     * Randomly pick a type of airdrop loot using weighted values from config
-     * @returns airdrop type value
-     */
-    protected chooseAirdropType(): AirdropTypeEnum
-    {
-        const possibleAirdropTypes = this.airdropConfig.airdropTypeWeightings;
-
-        return this.weightedRandomHelper.getWeightedValue(possibleAirdropTypes);
-    }
-
-    /**
-     * Get the configuration for a specific type of airdrop
-     * @param airdropType Type of airdrop to get settings for
-     * @returns LootRequest
-     */
-    protected getAirdropLootConfigByType(airdropType: AirdropTypeEnum): LootRequest
-    {
-        let lootSettingsByType: AirdropLoot = this.airdropConfig.loot[airdropType];
-        if (!lootSettingsByType)
-        {
-            this.logger.error(
-                this.localisationService.getText("location-unable_to_find_airdrop_drop_config_of_type", airdropType),
-            );
-            lootSettingsByType = this.airdropConfig.loot[AirdropTypeEnum.COMMON];
-        }
-
-        return {
-            airdropLoot: airdropType,
-            weaponPresetCount: lootSettingsByType.weaponPresetCount,
-            armorPresetCount: lootSettingsByType.armorPresetCount,
-            itemCount: lootSettingsByType.itemCount,
-            weaponCrateCount: lootSettingsByType.weaponCrateCount,
-            itemBlacklist: [
-                ...lootSettingsByType.itemBlacklist,
-                ...this.itemFilterService.getItemRewardBlacklist(),
-                ...this.itemFilterService.getBossItems(),
-            ],
-            itemTypeWhitelist: lootSettingsByType.itemTypeWhitelist,
-            itemLimits: lootSettingsByType.itemLimits,
-            itemStackLimits: lootSettingsByType.itemStackLimits,
-            armorLevelWhitelist: lootSettingsByType.armorLevelWhitelist,
-            allowBossItems: lootSettingsByType.allowBossItems,
-        };
+        return this.airdropService.generateAirdropLoot();
     }
 }

@@ -87,7 +87,7 @@ export class ProfileController
         if (!pmc?.Info?.Level)
         {
             return {
-                username: profile.info.username,
+                username: profile.info?.username ?? "",
                 nickname: "unknown",
                 side: "unknown",
                 currlvl: 0,
