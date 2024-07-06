@@ -427,6 +427,13 @@ export class MatchController
         const map = this.databaseService.getLocation(locationName).base;
         const isDead = this.isPlayerDead(request.results);
 
+        if (!isPmc)
+        {
+            this.handlePostRaidPlayerScav();
+
+            return;
+        }
+
         // Update inventory
         this.inRaidHelper.setInventory(sessionId, pmcProfile, postRaidProfile);
 
@@ -507,6 +514,11 @@ export class MatchController
             //     gearToStore,
             // );
         }
+    }
+
+    protected handlePostRaidPlayerScav(): void
+    {
+        // TODO
     }
 
     /**
