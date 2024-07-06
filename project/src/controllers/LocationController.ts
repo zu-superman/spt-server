@@ -7,7 +7,7 @@ import { WeightedRandomHelper } from "@spt/helpers/WeightedRandomHelper";
 import { ILocationBase } from "@spt/models/eft/common/ILocationBase";
 import { ILocationsGenerateAllResponse } from "@spt/models/eft/common/ILocationsSourceDestinationBase";
 import { ILooseLoot, SpawnpointTemplate } from "@spt/models/eft/common/ILooseLoot";
-import { IAirdropLootResult } from "@spt/models/eft/location/IAirdropLootResult";
+import { IGetAirdropLootResponse } from "@spt/models/eft/location/IGetAirdropLootResponse";
 import { IGetLocationRequestData } from "@spt/models/eft/location/IGetLocationRequestData";
 import { AirdropTypeEnum } from "@spt/models/enums/AirdropType";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
@@ -171,7 +171,7 @@ export class LocationController
      * Generates it randomly based on config/airdrop.json values
      * @returns Array of LootItem objects
      */
-    public getAirdropLoot(): any // TODO: need to fix
+    public getAirdropLoot(): IGetAirdropLootResponse
     {
         const airdropType = this.chooseAirdropType();
         this.logger.debug(`Chose ${airdropType} for airdrop loot`);

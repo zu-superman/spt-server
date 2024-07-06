@@ -4,6 +4,7 @@ import { IEmptyRequestData } from "@spt/models/eft/common/IEmptyRequestData";
 import { ILocationBase } from "@spt/models/eft/common/ILocationBase";
 import { ILocationsGenerateAllResponse } from "@spt/models/eft/common/ILocationsSourceDestinationBase";
 import { IGetBodyResponseData } from "@spt/models/eft/httpResponse/IGetBodyResponseData";
+import { IGetAirdropLootResponse } from "@spt/models/eft/location/IGetAirdropLootResponse";
 import { IGetLocationRequestData } from "@spt/models/eft/location/IGetLocationRequestData";
 import { HttpResponseUtil } from "@spt/utils/HttpResponseUtil";
 
@@ -37,7 +38,11 @@ export class LocationCallbacks
     }
 
     /** Handle client/airdrop/loot */
-    public getAirdropLoot(url: string, info: IEmptyRequestData, sessionID: string): any
+    public getAirdropLoot(
+        url: string,
+        info: IEmptyRequestData,
+        sessionID: string,
+    ): IGetBodyResponseData<IGetAirdropLootResponse>
     {
         return this.httpResponse.getBody(this.locationController.getAirdropLoot());
     }
