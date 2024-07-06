@@ -214,6 +214,7 @@ import { ItemBaseClassService } from "@spt/services/ItemBaseClassService";
 import { ItemFilterService } from "@spt/services/ItemFilterService";
 import { LocaleService } from "@spt/services/LocaleService";
 import { LocalisationService } from "@spt/services/LocalisationService";
+import { LocationLifecycleService } from "@spt/services/LocationLifecycleService";
 import { MailSendService } from "@spt/services/MailSendService";
 import { MapMarkerService } from "@spt/services/MapMarkerService";
 import { MatchBotDetailsCacheService } from "@spt/services/MatchBotDetailsCacheService";
@@ -797,6 +798,9 @@ export class Container
             lifecycle: Lifecycle.Singleton,
         });
         depContainer.register<AirdropService>("AirdropService", AirdropService, {
+            lifecycle: Lifecycle.Singleton,
+        });
+        depContainer.register<LocationLifecycleService>("LocationLifecycleService", LocationLifecycleService, {
             lifecycle: Lifecycle.Singleton,
         });
     }

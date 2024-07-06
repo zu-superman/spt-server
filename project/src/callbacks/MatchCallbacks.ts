@@ -4,7 +4,6 @@ import { IEmptyRequestData } from "@spt/models/eft/common/IEmptyRequestData";
 import { IGetBodyResponseData } from "@spt/models/eft/httpResponse/IGetBodyResponseData";
 import { INullResponseData } from "@spt/models/eft/httpResponse/INullResponseData";
 import { IEndLocalRaidRequestData } from "@spt/models/eft/match/IEndLocalRaidRequestData";
-import { IEndOfflineRaidRequestData } from "@spt/models/eft/match/IEndOfflineRaidRequestData";
 import { IGetRaidConfigurationRequestData } from "@spt/models/eft/match/IGetRaidConfigurationRequestData";
 import { IGroupCharacter } from "@spt/models/eft/match/IGroupCharacter";
 import { IMatchGroupCurrentResponse } from "@spt/models/eft/match/IMatchGroupCurrentResponse";
@@ -233,17 +232,6 @@ export class MatchCallbacks
         return this.httpResponse.nullResponse();
     }
 
-    /** Handle client/match/offline/end */
-    public endOfflineRaid(
-        url: string,
-        info: IEndOfflineRaidRequestData,
-        sessionID: string,
-    ): INullResponseData
-    {
-        this.matchController.endOfflineRaid(info, sessionID);
-        return this.httpResponse.nullResponse();
-    }
-
     /** Handle client/raid/configuration */
     public getRaidConfiguration(
         url: string,
@@ -251,7 +239,7 @@ export class MatchCallbacks
         sessionID: string,
     ): INullResponseData
     {
-        this.matchController.startOfflineRaid(info, sessionID);
+        this.matchController.configureOfflineRaid(info, sessionID);
         return this.httpResponse.nullResponse();
     }
 

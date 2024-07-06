@@ -232,13 +232,6 @@ export class MatchStaticRouter extends StaticRouter
                 },
             ),
             new RouteAction(
-                "/client/match/offline/end",
-                async (url: string, info: any, sessionID: string, output: string): Promise<INullResponseData> =>
-                {
-                    return this.matchCallbacks.endOfflineRaid(url, info, sessionID);
-                },
-            ),
-            new RouteAction(
                 "/client/putMetrics",
                 async (url: string, info: any, sessionID: string, output: string): Promise<INullResponseData> =>
                 {
@@ -307,7 +300,7 @@ export class MatchStaticRouter extends StaticRouter
                 {
                     return this.matchCallbacks.endLocalRaid(url, info, sessionID);
                 },
-            )
+            ),
         ]);
     }
 }
