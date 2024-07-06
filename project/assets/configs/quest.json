@@ -162,6 +162,13 @@
 			"startTimestamp": 1341615600000,
             "endTimestamp": "",
             "yearly": false
+		},
+		"6658a15615cbb1b2c6014d5b": {
+			"name": "Hustle2",
+			"season": "None",
+			"startTimestamp": 1341615600000,
+            "endTimestamp": "",
+            "yearly": false
 		}
     },
     "repeatableQuests": [
