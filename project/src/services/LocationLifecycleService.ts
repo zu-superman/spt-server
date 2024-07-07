@@ -180,17 +180,8 @@ export class LocationLifecycleService
         const postRaidProfile = request.results.profile!;
 
         // TODO:
-        // Update profile
-        // Handle insurance
         // Rep gain/loss?
         // Quest status?
-        // Counters?
-        // Send PMC message to player if necessary
-        // Limb health
-        // Limb effects
-        // Skills
-        // Inventory - items not lost on death
-        // Stats
         // stats/eft/aggressor - weird values (EFT.IProfileDataContainer.Nickname)
 
         this.logger.debug(`Raid outcome: ${request.results.result}`);
@@ -213,7 +204,8 @@ export class LocationLifecycleService
                 sessionId,
                 pmcProfile,
                 scavProfile,
-                isDead);
+                isDead,
+                request);
 
             return;
         }
@@ -411,6 +403,7 @@ export class LocationLifecycleService
         pmcProfile: IPmcData,
         scavProfile: IPmcData,
         isDead: boolean,
+        request: IEndLocalRaidRequestData,
     ): void
     {
         // Scav died, regen scav loadout and reset timer
@@ -418,6 +411,26 @@ export class LocationLifecycleService
         {
             this.playerScavGenerator.generate(sessionId);
         }
+
+        scavProfile.Info.Level = request.results.profile.Info.Level;
+        scavProfile.Skills = request.results.profile.Skills;
+        scavProfile.Stats.Eft = request.results.profile.Stats.Eft;
+        scavProfile.Encyclopedia = request.results.profile.Encyclopedia;
+        scavProfile.TaskConditionCounters = request.results.profile.TaskConditionCounters;
+        scavProfile.SurvivorClass = request.results.profile.SurvivorClass;
+        // Scavs dont have achievements, but copy anyway
+        scavProfile.Achievements = request.results.profile.Achievements;
+
+        scavProfile.Info.Experience = request.results.profile.Info.Experience;
+
+        // Must occur after experience is set and stats copied over
+        scavProfile.Stats.Eft.TotalSessionExperience = 0;
+
+        // Must occur after encyclopedia updated
+        this.mergePmcAndScavEncyclopedias(scavProfile, pmcProfile);
+
+        // Remove skill fatigue values
+        this.resetSkillPointsEarnedDuringRaid(scavProfile.Skills.Common);
 
         // Update last played property
         pmcProfile.Info.LastTimePlayedAsSavage = this.timeUtil.getTimestamp();
@@ -440,30 +453,23 @@ export class LocationLifecycleService
         this.inRaidHelper.setInventory(sessionId, pmcProfile, postRaidProfile);
 
         pmcProfile.Info.Level = postRaidProfile.Info.Level;
-
-        // Add experience points
-        pmcProfile.Info.Experience += postRaidProfile.Stats.Eft.TotalSessionExperience;
-
-        // Profile common/mastering skills
         pmcProfile.Skills = postRaidProfile.Skills;
-
         pmcProfile.Stats.Eft = postRaidProfile.Stats.Eft;
+        pmcProfile.Encyclopedia = postRaidProfile.Encyclopedia;
+        pmcProfile.TaskConditionCounters = postRaidProfile.TaskConditionCounters;
+        pmcProfile.SurvivorClass = postRaidProfile.SurvivorClass;
+        pmcProfile.Achievements = postRaidProfile.Achievements;
+
+        pmcProfile.Info.Experience = postRaidProfile.Info.Experience;
 
         // Must occur after experience is set and stats copied over
         pmcProfile.Stats.Eft.TotalSessionExperience = 0;
 
-        pmcProfile.Achievements = postRaidProfile.Achievements;
+        // Must occur after encyclopedia updated
+        this.mergePmcAndScavEncyclopedias(pmcProfile, scavProfile);
 
         // Remove skill fatigue values
         this.resetSkillPointsEarnedDuringRaid(pmcProfile.Skills.Common);
-
-        // Straight copy
-        pmcProfile.TaskConditionCounters = postRaidProfile.TaskConditionCounters;
-
-        pmcProfile.Encyclopedia = postRaidProfile.Encyclopedia;
-
-        // Must occur after encyclopedia updated
-        this.mergePmcAndScavEncyclopedias(pmcProfile, scavProfile);
 
         // Handle temp, hydration, limb hp/effects
         this.healthHelper.updateProfileHealthPostRaid(
@@ -479,10 +485,12 @@ export class LocationLifecycleService
                 pmcProfile,
                 postRaidProfile.Stats.Eft.Aggressor,
             );
-            this.matchBotDetailsCacheService.clearCache();
 
             this.inRaidHelper.deleteInventory(pmcProfile, sessionId);
         }
+
+        // Must occur AFTER killer messages have been sent
+        this.matchBotDetailsCacheService.clearCache();
 
         const victims = postRaidProfile.Stats.Eft.Victims.filter((victim) =>
             ["pmcbear", "pmcusec"].includes(victim.Role.toLowerCase()),
@@ -494,13 +502,7 @@ export class LocationLifecycleService
         }
 
         // Handle items transferred via BTR to player
-        const btrKey = "BTRTransferStash";
-        const btrContainerAndItems = request.transferItems[btrKey] ?? [];
-        if (btrContainerAndItems.length > 0)
-        {
-            const itemsToSend = btrContainerAndItems.filter((item) => item._id !== btrKey);
-            this.btrItemDelivery(sessionId, Traders.BTR, itemsToSend);
-        }
+        this.handleBTRItemTransferEvent(sessionId, request);
 
         if (request.lostInsuredItems?.length > 0)
         {
@@ -516,6 +518,56 @@ export class LocationLifecycleService
 
             this.insuranceService.sendInsuredItems(pmcProfile, sessionId, locationName);
         }
+    }
+
+    /**
+     * Check if player used BTR item sending service and send items to player via mail if found
+     * @param sessionId Session id
+     * @param request End raid request
+     */
+    protected handleBTRItemTransferEvent(
+        sessionId: string,
+        request: IEndLocalRaidRequestData): void
+    {
+        const btrKey = "BTRTransferStash";
+        const btrContainerAndItems = request.transferItems[btrKey] ?? [];
+        if (btrContainerAndItems.length > 0)
+        {
+            const itemsToSend = btrContainerAndItems.filter((item) => item._id !== btrKey);
+            this.btrItemDelivery(sessionId, Traders.BTR, itemsToSend);
+        };
+    }
+
+    protected btrItemDelivery(sessionId: string, traderId: string, items: Item[]): void
+    {
+        const serverProfile = this.saveServer.getProfile(sessionId);
+        const pmcData = serverProfile.characters.pmc;
+
+        const dialogueTemplates = this.databaseService.getTrader(traderId).dialogue;
+        if (!dialogueTemplates)
+        {
+            this.logger.error(this.localisationService.getText("inraid-unable_to_deliver_item_no_trader_found", traderId));
+
+            return;
+        }
+        const messageId = this.randomUtil.getArrayValue(dialogueTemplates.itemsDelivered);
+        const messageStoreTime = this.timeUtil.getHoursAsSeconds(this.traderConfig.fence.btrDeliveryExpireHours);
+
+        // Remove any items that were returned by the item delivery, but also insured, from the player's insurance list
+        // This is to stop items being duplicated by being returned from both item delivery and insurance
+        const deliveredItemIds = items.map((item) => item._id);
+        pmcData.InsuredItems = pmcData.InsuredItems
+            .filter((insuredItem) => !deliveredItemIds.includes(insuredItem.itemId));
+
+        // Send the items to the player
+        this.mailSendService.sendLocalisedNpcMessageToPlayer(
+            sessionId,
+            this.traderHelper.getTraderById(traderId),
+            MessageType.BTR_ITEMS_DELIVERY,
+            messageId,
+            items,
+            messageStoreTime,
+        );
     }
 
     /**
@@ -586,41 +638,6 @@ export class LocationLifecycleService
         }
 
         return inventoryItems;
-    }
-
-    /**
-     * Handle singleplayer/traderServices/itemDelivery
-     */
-    protected btrItemDelivery(sessionId: string, traderId: string, items: Item[]): void
-    {
-        const serverProfile = this.saveServer.getProfile(sessionId);
-        const pmcData = serverProfile.characters.pmc;
-
-        const dialogueTemplates = this.databaseService.getTrader(traderId).dialogue;
-        if (!dialogueTemplates)
-        {
-            this.logger.error(this.localisationService.getText("inraid-unable_to_deliver_item_no_trader_found", traderId));
-
-            return;
-        }
-        const messageId = this.randomUtil.getArrayValue(dialogueTemplates.itemsDelivered);
-        const messageStoreTime = this.timeUtil.getHoursAsSeconds(this.traderConfig.fence.btrDeliveryExpireHours);
-
-        // Remove any items that were returned by the item delivery, but also insured, from the player's insurance list
-        // This is to stop items being duplicated by being returned from both item delivery and insurance
-        const deliveredItemIds = items.map((item) => item._id);
-        pmcData.InsuredItems = pmcData.InsuredItems
-            .filter((insuredItem) => !deliveredItemIds.includes(insuredItem.itemId));
-
-        // Send the items to the player
-        this.mailSendService.sendLocalisedNpcMessageToPlayer(
-            sessionId,
-            this.traderHelper.getTraderById(traderId),
-            MessageType.BTR_ITEMS_DELIVERY,
-            messageId,
-            items,
-            messageStoreTime,
-        );
     }
 
     /**

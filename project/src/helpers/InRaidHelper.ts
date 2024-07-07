@@ -116,6 +116,7 @@ export class InRaidHelper
     }
 
     /**
+     * @deprecated
      * Reset the skill points earned in a raid to 0, ready for next raid
      * @param profile Profile to update
      */
