@@ -224,7 +224,8 @@ export class LocationLifecycleService
             scavProfile,
             postRaidProfile,
             isDead,
-            request);
+            request,
+            locationName);
 
         // Handle car extracts
         if (this.extractWasViaCar(request.results.exitName))
@@ -432,6 +433,7 @@ export class LocationLifecycleService
         postRaidProfile: IPmcData,
         isDead: boolean,
         request: IEndLocalRaidRequestData,
+        locationName: string,
     ): void
     {
         // Update inventory
@@ -464,7 +466,11 @@ export class LocationLifecycleService
         this.mergePmcAndScavEncyclopedias(pmcProfile, scavProfile);
 
         // Handle temp, hydration, limb hp/effects
-        this.healthHelper.updateProfileHealthPostRaid(pmcProfile, postRaidProfile.Health, sessionId, isDead);
+        this.healthHelper.updateProfileHealthPostRaid(
+            pmcProfile,
+            postRaidProfile.Health,
+            sessionId,
+            isDead);
 
         if (isDead)
         {
@@ -498,23 +504,88 @@ export class LocationLifecycleService
 
         if (request.lostInsuredItems?.length > 0)
         {
-            // request.lostInsuredItems;
-            // TODO - refactor code to work
+            const mappedItems = this.insuranceService.mapInsuredItemsToTrader(
+                sessionId,
+                request.lostInsuredItems,
+                request.results.profile);
 
-            // Get array of insured items+child that were lost in raid
-            // const gearToStore = this.insuranceService.getGearLostInRaid(
-            //     pmcProfile,
-            //     postRaidRequest,
-            //     preRaidGear,
-            //     sessionId,
-            //     isDead,
-            // );
+            this.insuranceService.storeGearLostInRaidToSendLater(
+                sessionId,
+                mappedItems,
+            );
 
-            // this.insuranceService.storeGearLostInRaidToSendLater(
-            //     sessionId,
-            //     gearToStore,
-            // );
+            this.insuranceService.sendInsuredItems(pmcProfile, sessionId, locationName);
         }
+    }
+
+    /**
+     * Return the equipped items from a players inventory
+     * @param items Players inventory to search through
+     * @returns an array of equipped items
+     */
+    protected getEquippedGear(items: Item[]): Item[]
+    {
+        // Player Slots we care about
+        const inventorySlots = [
+            "FirstPrimaryWeapon",
+            "SecondPrimaryWeapon",
+            "Holster",
+            "Scabbard",
+            "Compass",
+            "Headwear",
+            "Earpiece",
+            "Eyewear",
+            "FaceCover",
+            "ArmBand",
+            "ArmorVest",
+            "TacticalVest",
+            "Backpack",
+            "pocket1",
+            "pocket2",
+            "pocket3",
+            "pocket4",
+            "SpecialSlot1",
+            "SpecialSlot2",
+            "SpecialSlot3",
+        ];
+
+        let inventoryItems: Item[] = [];
+
+        // Get an array of root player items
+        for (const item of items)
+        {
+            if (inventorySlots.includes(item.slotId))
+            {
+                inventoryItems.push(item);
+            }
+        }
+
+        // Loop through these items and get all of their children
+        let newItems = inventoryItems;
+        while (newItems.length > 0)
+        {
+            const foundItems = [];
+
+            for (const item of newItems)
+            {
+                // Find children of this item
+                for (const newItem of items)
+                {
+                    if (newItem.parentId === item._id)
+                    {
+                        foundItems.push(newItem);
+                    }
+                }
+            }
+
+            // Add these new found items to our list of inventory items
+            inventoryItems = [...inventoryItems, ...foundItems];
+
+            // Now find the children of these items
+            newItems = foundItems;
+        }
+
+        return inventoryItems;
     }
 
     /**

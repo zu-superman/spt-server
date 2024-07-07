@@ -467,6 +467,42 @@ export class InsuranceService
     }
 
     /**
+     * For the passed in items, find the trader it was insured against
+     * @param sessionId Session id
+     * @param lostInsuredItems Insured items lost in a raid
+     * @param pmcProfile Player profile
+     * @returns IInsuranceEquipmentPkg array
+     */
+    public mapInsuredItemsToTrader(
+        sessionId: string,
+        lostInsuredItems: Item[],
+        pmcProfile: IPmcData): IInsuranceEquipmentPkg[]
+    {
+        const result: IInsuranceEquipmentPkg[] = [];
+
+        for (const lostItem of lostInsuredItems)
+        {
+            const insuranceDetails = pmcProfile.InsuredItems.find((insuredItem) => insuredItem.itemId == lostItem._id);
+            if (!insuranceDetails)
+            {
+                this.logger.error(`unable to find insurance details for item id: ${lostItem._id} with tpl: ${lostItem._tpl}`);
+
+                continue;
+            }
+
+            // Add insured item + details to return array
+            result.push({
+                sessionID: sessionId,
+                itemToReturnToPlayer: lostItem,
+                pmcData: pmcProfile,
+                traderId: insuranceDetails.tid,
+            });
+        }
+
+        return result;
+    }
+
+    /**
      * Reset slotId property to "hideout" when necessary (used to be in )
      * @param pmcData Players pmcData.Inventory.equipment value
      * @param itemToReturn item we will send to player as insurance return
