@@ -21,7 +21,6 @@ import { Traders } from "@spt/models/enums/Traders";
 import { IHideoutConfig } from "@spt/models/spt/config/IHideoutConfig";
 import { IInRaidConfig } from "@spt/models/spt/config/IInRaidConfig";
 import { ILocationConfig } from "@spt/models/spt/config/ILocationConfig";
-import { IMatchConfig } from "@spt/models/spt/config/IMatchConfig";
 import { IRagfairConfig } from "@spt/models/spt/config/IRagfairConfig";
 import { ITraderConfig } from "@spt/models/spt/config/ITraderConfig";
 import { IRaidChanges } from "@spt/models/spt/location/IRaidChanges";
@@ -38,13 +37,13 @@ import { MatchBotDetailsCacheService } from "@spt/services/MatchBotDetailsCacheS
 import { PmcChatResponseService } from "@spt/services/PmcChatResponseService";
 import { RaidTimeAdjustmentService } from "@spt/services/RaidTimeAdjustmentService";
 import { ICloner } from "@spt/utils/cloners/ICloner";
+import { HashUtil } from "@spt/utils/HashUtil";
 import { RandomUtil } from "@spt/utils/RandomUtil";
 import { TimeUtil } from "@spt/utils/TimeUtil";
 
 @injectable()
 export class LocationLifecycleService
 {
-    protected matchConfig: IMatchConfig;
     protected inRaidConfig: IInRaidConfig;
     protected traderConfig: ITraderConfig;
     protected ragfairConfig: IRagfairConfig;
@@ -53,6 +52,7 @@ export class LocationLifecycleService
 
     constructor(
         @inject("PrimaryLogger") protected logger: ILogger,
+        @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("SaveServer") protected saveServer: SaveServer,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
@@ -77,6 +77,7 @@ export class LocationLifecycleService
         @inject("PrimaryCloner") protected cloner: ICloner,
     )
     {
+        this.inRaidConfig = this.configServer.getConfig(ConfigTypes.IN_RAID);
         this.traderConfig = this.configServer.getConfig(ConfigTypes.TRADER);
         this.ragfairConfig = this.configServer.getConfig(ConfigTypes.RAGFAIR);
         this.hideoutConfig = this.configServer.getConfig(ConfigTypes.HIDEOUT);
@@ -208,12 +209,200 @@ export class LocationLifecycleService
 
         if (!isPmc)
         {
-            this.handlePostRaidPlayerScav(sessionId, pmcProfile, scavProfile, isDead);
+            this.handlePostRaidPlayerScav(
+                sessionId,
+                pmcProfile,
+                scavProfile,
+                isDead);
 
             return;
         }
 
-        this.handlePostRaidPmc(sessionId, pmcProfile, scavProfile, postRaidProfile, isDead, request);
+        this.handlePostRaidPmc(
+            sessionId,
+            pmcProfile,
+            scavProfile,
+            postRaidProfile,
+            isDead,
+            request);
+
+        // Handle car extracts
+        if (this.extractWasViaCar(request.results.exitName))
+        {
+            this.handleCarExtract(request.results.exitName, pmcProfile, sessionId);
+        }
+
+        // Handle coop exit
+        if (request.results.exitName
+          && this.extractTakenWasCoop(request.results.exitName)
+          && this.traderConfig.fence.coopExtractGift.sendGift)
+        {
+            this.handleCoopExtract(sessionId, pmcProfile, request.results.exitName);
+            this.sendCoopTakenFenceMessage(sessionId);
+        }
+    }
+
+    /**
+     * Was extract by car
+     * @param extractName name of extract
+     * @returns True if extract was by car
+     */
+    protected extractWasViaCar(extractName: string): boolean
+    {
+        // exit name is undefined on death
+        if (!extractName)
+        {
+            return false;
+        }
+
+        if (extractName.toLowerCase().includes("v-ex"))
+        {
+            return true;
+        }
+
+        return this.inRaidConfig.carExtracts.includes(extractName.trim());
+    }
+
+    /**
+     * Handle when a player extracts using a car - Add rep to fence
+     * @param extractName name of the extract used
+     * @param pmcData Player profile
+     * @param sessionId Session id
+     */
+    protected handleCarExtract(extractName: string, pmcData: IPmcData, sessionId: string): void
+    {
+        // Ensure key exists for extract
+        if (!(extractName in pmcData.CarExtractCounts))
+        {
+            pmcData.CarExtractCounts[extractName] = 0;
+        }
+
+        // Increment extract count value
+        pmcData.CarExtractCounts[extractName] += 1;
+
+        // Not exact replica of Live behaviour
+        // Simplified for now, no real reason to do the whole (unconfirmed) extra 0.01 standing per day regeneration mechanic
+        const newFenceStanding = this.getFenceStandingAfterExtract(
+            pmcData,
+            this.inRaidConfig.carExtractBaseStandingGain,
+            pmcData.CarExtractCounts[extractName],
+        );
+        const fenceId: string = Traders.FENCE;
+        pmcData.TradersInfo[fenceId].standing = newFenceStanding;
+
+        // Check if new standing has leveled up trader
+        this.traderHelper.lvlUp(fenceId, pmcData);
+        pmcData.TradersInfo[fenceId].loyaltyLevel = Math.max(pmcData.TradersInfo[fenceId].loyaltyLevel, 1);
+
+        this.logger.debug(
+            `Car extract: ${extractName} used, total times taken: ${pmcData.CarExtractCounts[extractName]}`,
+        );
+
+        // Copy updated fence rep values into scav profile to ensure consistency
+        const scavData: IPmcData = this.profileHelper.getScavProfile(sessionId);
+        scavData.TradersInfo[fenceId].standing = pmcData.TradersInfo[fenceId].standing;
+        scavData.TradersInfo[fenceId].loyaltyLevel = pmcData.TradersInfo[fenceId].loyaltyLevel;
+    }
+
+    /**
+     * Handle when a player extracts using a coop extract - add rep to fence
+     * @param sessionId Session/player id
+     * @param pmcData Profile
+     * @param extractName Name of extract taken
+     */
+    protected handleCoopExtract(sessionId: string, pmcData: IPmcData, extractName: string): void
+    {
+        pmcData.CoopExtractCounts ||= {};
+
+        // Ensure key exists for extract
+        if (!(extractName in pmcData.CoopExtractCounts))
+        {
+            pmcData.CoopExtractCounts[extractName] = 0;
+        }
+
+        // Increment extract count value
+        pmcData.CoopExtractCounts[extractName] += 1;
+
+        // Get new fence standing value
+        const newFenceStanding = this.getFenceStandingAfterExtract(
+            pmcData,
+            this.inRaidConfig.coopExtractBaseStandingGain,
+            pmcData.CoopExtractCounts[extractName],
+        );
+        const fenceId: string = Traders.FENCE;
+        pmcData.TradersInfo[fenceId].standing = newFenceStanding;
+
+        // Check if new standing has leveled up trader
+        this.traderHelper.lvlUp(fenceId, pmcData);
+        pmcData.TradersInfo[fenceId].loyaltyLevel = Math.max(pmcData.TradersInfo[fenceId].loyaltyLevel, 1);
+
+        // Copy updated fence rep values into scav profile to ensure consistency
+        const scavData: IPmcData = this.profileHelper.getScavProfile(sessionId);
+        scavData.TradersInfo[fenceId].standing = pmcData.TradersInfo[fenceId].standing;
+        scavData.TradersInfo[fenceId].loyaltyLevel = pmcData.TradersInfo[fenceId].loyaltyLevel;
+    }
+
+    /**
+     * Get the fence rep gain from using a car or coop extract
+     * @param pmcData Profile
+     * @param baseGain amount gained for the first extract
+     * @param extractCount Number of times extract was taken
+     * @returns Fence standing after taking extract
+     */
+    protected getFenceStandingAfterExtract(pmcData: IPmcData, baseGain: number, extractCount: number): number
+    {
+        // Get current standing
+        const fenceId: string = Traders.FENCE;
+        let fenceStanding = Number(pmcData.TradersInfo[fenceId].standing);
+
+        // get standing after taking extract x times, x.xx format, gain from extract can be no smaller than 0.01
+        fenceStanding += Math.max(baseGain / extractCount, 0.01);
+
+        // Ensure fence loyalty level is not above/below the range -7 to 15
+        const newFenceStanding = Math.min(Math.max(fenceStanding, -7), 15);
+        this.logger.debug(`Old vs new fence standing: ${pmcData.TradersInfo[fenceId].standing}, ${newFenceStanding}`);
+
+        return Number(newFenceStanding.toFixed(2));
+    }
+
+    protected sendCoopTakenFenceMessage(sessionId: string): void
+    {
+        // Generate reward for taking coop extract
+        const loot = this.lootGenerator.createRandomLoot(this.traderConfig.fence.coopExtractGift);
+        const mailableLoot: Item[] = [];
+
+        const parentId = this.hashUtil.generate();
+        for (const item of loot)
+        {
+            item.parentId = parentId;
+            mailableLoot.push(item);
+        }
+
+        // Send message from fence giving player reward generated above
+        this.mailSendService.sendLocalisedNpcMessageToPlayer(
+            sessionId,
+            this.traderHelper.getTraderById(Traders.FENCE),
+            MessageType.MESSAGE_WITH_ITEMS,
+            this.randomUtil.getArrayValue(this.traderConfig.fence.coopExtractGift.messageLocaleIds),
+            mailableLoot,
+            this.timeUtil.getHoursAsSeconds(this.traderConfig.fence.coopExtractGift.giftExpiryHours),
+        );
+    }
+
+    /**
+     * Did player take a COOP extract
+     * @param extractName Name of extract player took
+     * @returns True if coop extract
+     */
+    protected extractTakenWasCoop(extractName: string): boolean
+    {
+        // No extract name, not a coop extract
+        if (!extractName)
+        {
+            return false;
+        }
+
+        return this.inRaidConfig.coopExtracts.includes(extractName.trim());
     }
 
     protected handlePostRaidPlayerScav(
@@ -223,7 +412,7 @@ export class LocationLifecycleService
         isDead: boolean,
     ): void
     {
-        // Scav died, regen scav loadout and set timer
+        // Scav died, regen scav loadout and reset timer
         if (isDead)
         {
             this.playerScavGenerator.generate(sessionId);
@@ -309,6 +498,7 @@ export class LocationLifecycleService
 
         if (request.lostInsuredItems?.length > 0)
         {
+            // request.lostInsuredItems;
             // TODO - refactor code to work
 
             // Get array of insured items+child that were lost in raid
