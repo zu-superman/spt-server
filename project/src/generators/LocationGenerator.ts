@@ -649,6 +649,7 @@ export class LocationGenerator
                 continue;
             }
 
+            // 100%, add it to guaranteed
             if (spawnpoint.probability === 1)
             {
                 guaranteedLoosePoints.push(spawnpoint);
@@ -663,7 +664,7 @@ export class LocationGenerator
         let chosenSpawnpoints: Spawnpoint[] = [...guaranteedLoosePoints];
 
         const randomSpawnpointCount = desiredSpawnpointCount - chosenSpawnpoints.length;
-        // only draw random spawn points if needed
+        // Only draw random spawn points if needed
         if (randomSpawnpointCount > 0 && spawnpointArray.length > 0)
         {
             // Add randomly chosen spawn points
@@ -696,6 +697,7 @@ export class LocationGenerator
         const seasonalItemTplBlacklist = this.seasonalEventService.getInactiveSeasonalEventItems();
         for (const spawnPoint of chosenSpawnpoints)
         {
+            // Spawnpoint is invalid, skip it
             if (!spawnPoint.template)
             {
                 this.logger.warning(
@@ -709,14 +711,14 @@ export class LocationGenerator
             spawnPoint.template.Items = spawnPoint.template.Items
                 .filter((item) => !this.itemFilterService.isLootableItemBlacklisted(item._tpl));
 
-            // Ensure no seasonal items are in pool
+            // Ensure no seasonal items are in pool if not in-season
             if (!seasonalEventActive)
             {
                 spawnPoint.template.Items = spawnPoint.template.Items
                     .filter((item) => !seasonalItemTplBlacklist.includes(item._tpl));
             }
 
-            // Has no items, useless
+            // Spawn point has no items after filtering, skip
             if (!spawnPoint.template.Items || spawnPoint.template.Items.length === 0)
             {
                 this.logger.warning(
@@ -726,10 +728,18 @@ export class LocationGenerator
                 continue;
             }
 
+            // Get an array of allowed IDs after above filtering has occured
+            const validItemIds = spawnPoint.template.Items.map((item) => item._id);
+
             // Construct container to hold above filtered items, letting us pick an item for the spot
             const itemArray = new ProbabilityObjectArray<string>(this.mathUtil, this.cloner);
             for (const itemDist of spawnPoint.itemDistribution)
             {
+                if (!validItemIds.includes(itemDist.composedKey.key))
+                {
+                    continue;
+                }
+
                 itemArray.push(new ProbabilityObject(itemDist.composedKey.key, itemDist.relativeProbability));
             }
 
