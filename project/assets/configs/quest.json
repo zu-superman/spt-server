@@ -169,6 +169,13 @@
 			"startTimestamp": 1341615600000,
             "endTimestamp": "",
             "yearly": false
+		},
+		"6672ec2a2b6f3b71be794cc5": {
+			"name": "Key to salvation",
+			"season": "None",
+			"startTimestamp": 1341615600000,
+            "endTimestamp": "",
+            "yearly": false
 		}
     },
     "repeatableQuests": [
