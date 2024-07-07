@@ -483,6 +483,7 @@ export interface Slot
 export interface SlotProps
 {
     filters: SlotFilter[]
+    MaxStackCount?: number
 }
 
 export interface SlotFilter
@@ -505,7 +506,7 @@ export interface StackSlot
     _max_count: number
     _props: StackSlotProps
     _proto: string
-    upd: any
+    upd?: any
 }
 
 export interface StackSlotProps
