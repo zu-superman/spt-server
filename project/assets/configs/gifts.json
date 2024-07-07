@@ -1483,7 +1483,7 @@
                     "slotId": "mod_charge"
                 },
                 {
-                    "_id": "a89275c1b18274ef7432a6d9",
+                    "_id": "a89275c1b18274ef7432a6d4",
                     "_tpl": "5aafa857e5b5b00018480968",
                     "slotId": "main",
                     "upd": {
@@ -1494,13 +1494,13 @@
                 {
                     "_id": "64c171afc69480f5b1030b97",
                     "_tpl": "64b9e2037fdfb81df81e3c25",
-                    "parentId": "a89275c1b18274ef7432a6d9",
+                    "parentId": "a89275c1b18274ef7432a6d4",
                     "slotId": "mod_magazine"
                 },
                 {
                     "_id": "64c171afc69480f5b1030b98",
                     "_tpl": "5aaf8e43e5b5b00015693246",
-                    "parentId": "a89275c1b18274ef7432a6d9",
+                    "parentId": "a89275c1b18274ef7432a6d4",
                     "slotId": "mod_stock"
                 },
                 {
@@ -1512,7 +1512,7 @@
                 {
                     "_id": "64c171afc69480f5b1030b9a",
                     "_tpl": "5aaf9d53e5b5b00015042a52",
-                    "parentId": "a89275c1b18274ef7432a6d9",
+                    "parentId": "a89275c1b18274ef7432a6d4",
                     "slotId": "mod_barrel"
                 },
                 {
@@ -1530,7 +1530,7 @@
                 {
                     "_id": "64c171afc69480f5b1030b9d",
                     "_tpl": "5abcbb20d8ce87001773e258",
-                    "parentId": "a89275c1b18274ef7432a6d9",
+                    "parentId": "a89275c1b18274ef7432a6d4",
                     "slotId": "mod_sight_rear"
                 }
             ],
