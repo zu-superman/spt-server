@@ -8,6 +8,7 @@ import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
 import { EquipmentSlots } from "@spt/models/enums/EquipmentSlots";
 import { ItemTpl } from "@spt/models/enums/ItemTpl";
+import { Money } from "@spt/models/enums/Money";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { DatabaseService } from "@spt/services/DatabaseService";
 import { ItemBaseClassService } from "@spt/services/ItemBaseClassService";
@@ -1915,6 +1916,11 @@ export class ItemHelper
         }
 
         return false;
+    }
+
+    public getMoneyTpls(): string[]
+    {
+        return Object.values(Money);
     }
 }
 

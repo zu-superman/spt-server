@@ -15,7 +15,6 @@ import { ILooseLoot, Spawnpoint, SpawnpointTemplate, SpawnpointsForced } from "@
 import { Item } from "@spt/models/eft/common/tables/IItem";
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
-import { Money } from "@spt/models/enums/Money";
 import { ILocationConfig } from "@spt/models/spt/config/ILocationConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
@@ -424,9 +423,9 @@ export class LocationLootGenerator
             .map((x) => x.itemTpl);
 
         // Draw random loot
-        // Money spawn more than once in container
+        // Allow money to spawn more than once in container
         let failedToFitCount = 0;
-        const locklist = [Money.ROUBLES, Money.DOLLARS, Money.EUROS, Money.GP];
+        const locklist = this.itemHelper.getMoneyTpls();
 
         // Choose items to add to container, factor in weighting + lock money down
         // Filter out items picked that're already in the above `tplsForced` array
