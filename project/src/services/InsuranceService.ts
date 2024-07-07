@@ -229,6 +229,7 @@ export class InsuranceService
     }
 
     /**
+     * @deprecated - Client now handles this
      * Create insurance equipment packages that should be sent to the user. The packages should contain items that have
      * been lost in a raid and should be returned to the player through the insurance system.
      *

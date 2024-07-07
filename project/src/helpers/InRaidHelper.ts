@@ -636,6 +636,7 @@ export class InRaidHelper
     }
 
     /**
+     * @deprecated
      * Return the equipped items from a players inventory
      * @param items Players inventory to search through
      * @returns an array of equipped items
