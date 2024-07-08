@@ -189,7 +189,6 @@ export class BotController
         const multipleBotTypesRequested = info.conditions.length > 1;
         if (multipleBotTypesRequested)
         {
-            this.logger.warning(`${JSON.stringify(info)}`);
             return this.generateMultipleBotsAndCache(info, pmcProfile, sessionId);
         }
 
