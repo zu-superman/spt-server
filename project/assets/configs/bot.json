@@ -46,7 +46,9 @@
         "ravangeZryachiyEvent": 5,
         "sectactPriestEvent": 10,
         "pmcUSEC": 15,
-        "pmcBEAR": 15
+        "pmcBEAR": 15,
+		"peacemaker": 10,
+		"skier": 10
     },
     "bosses": [
         "bossBully",
