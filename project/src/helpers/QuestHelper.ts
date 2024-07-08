@@ -18,6 +18,7 @@ import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { MessageType } from "@spt/models/enums/MessageType";
 import { QuestRewardType } from "@spt/models/enums/QuestRewardType";
 import { QuestStatus } from "@spt/models/enums/QuestStatus";
+import { SeasonalEventType } from "@spt/models/enums/SeasonalEventType";
 import { SkillTypes } from "@spt/models/enums/SkillTypes";
 import { IQuestConfig } from "@spt/models/spt/config/IQuestConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
@@ -27,6 +28,7 @@ import { DatabaseService } from "@spt/services/DatabaseService";
 import { LocaleService } from "@spt/services/LocaleService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { MailSendService } from "@spt/services/MailSendService";
+import { SeasonalEventService } from "@spt/services/SeasonalEventService";
 import { ICloner } from "@spt/utils/cloners/ICloner";
 import { HashUtil } from "@spt/utils/HashUtil";
 import { TimeUtil } from "@spt/utils/TimeUtil";
@@ -50,6 +52,7 @@ export class QuestHelper
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
         @inject("PaymentHelper") protected paymentHelper: PaymentHelper,
         @inject("LocalisationService") protected localisationService: LocalisationService,
+        @inject("SeasonalEventService") protected seasonalEventService: SeasonalEventService,
         @inject("TraderHelper") protected traderHelper: TraderHelper,
         @inject("PresetHelper") protected presetHelper: PresetHelper,
         @inject("MailSendService") protected mailSendService: MailSendService,
@@ -472,17 +475,23 @@ export class QuestHelper
         {
             // Quest is accessible to player when the accepted quest passed into param is started
             // e.g. Quest A passed in, quest B is looped over and has requirement of A to be started, include it
-            const acceptedQuestCondition = quest.conditions.AvailableForStart.find((x) =>
+            const acceptedQuestCondition = quest.conditions.AvailableForStart.find((condition) =>
             {
                 return (
-                    x.conditionType === "Quest"
-                    && x.target?.includes(startedQuestId)
-                    && x.status?.includes(QuestStatus.Started)
+                    condition.conditionType === "Quest"
+                    && condition.target?.includes(startedQuestId)
+                    && condition.status?.includes(QuestStatus.Started)
                 );
             });
 
             // Not found, skip quest
             if (!acceptedQuestCondition)
+            {
+                return false;
+            }
+
+            // Skip locked event quests
+            if (!this.showEventQuestToPlayer(quest._id))
             {
                 return false;
             }
@@ -523,6 +532,46 @@ export class QuestHelper
         });
 
         return this.getQuestsWithOnlyLevelRequirementStartCondition(eligibleQuests);
+    }
+
+    /**
+     * Should a seasonal/event quest be shown to the player
+     * @param questId Quest to check
+     * @returns true = show to player
+     */
+    public showEventQuestToPlayer(questId: string): boolean
+    {
+        const isChristmasEventActive = this.seasonalEventService.christmasEventEnabled();
+        const isHalloweenEventActive = this.seasonalEventService.halloweenEventEnabled();
+
+        // Not christmas + quest is for christmas
+        if (
+            !isChristmasEventActive
+            && this.seasonalEventService.isQuestRelatedToEvent(questId, SeasonalEventType.CHRISTMAS)
+        )
+        {
+            return false;
+        }
+
+        // Not halloween + quest is for halloween
+        if (
+            !isHalloweenEventActive
+            && this.seasonalEventService.isQuestRelatedToEvent(questId, SeasonalEventType.HALLOWEEN)
+        )
+        {
+            return false;
+        }
+
+        // Should non-season event quests be shown to player
+        if (
+            !this.questConfig.showNonSeasonalEventQuests
+            && this.seasonalEventService.isQuestRelatedToEvent(questId, SeasonalEventType.NONE)
+        )
+        {
+            return false;
+        }
+
+        return true;
     }
 
     /**
