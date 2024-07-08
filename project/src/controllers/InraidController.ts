@@ -665,11 +665,6 @@ export class InraidController
         return this.inRaidConfig.playerScavHostileChancePercent;
     }
 
-    public getSandboxMaxPatrolValue(url: string, sessionID: string): number
-    {
-        return this.locationConfig.sandboxMaxPatrolvalue;
-    }
-
     public getBossConvertSettings(url: string, sessionId: string): string[]
     {
         return Object.keys(this.botConfig.assaultToBossConversion.bossesToConvertToWeights);

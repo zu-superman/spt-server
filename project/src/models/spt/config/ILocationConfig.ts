@@ -46,8 +46,6 @@ export interface ILocationConfig extends IBaseConfig
     scavRaidTimeSettings: IScavRaidTimeSettings
     /** Settings to adjust mods for lootable equipment in raid */
     equipmentLootSettings: IEquipmentLootSettings
-    /** Sets the max Patrol Value of the Boxzone on the map Ground Zero */
-    sandboxMaxPatrolvalue: number
 }
 
 export interface IEquipmentLootSettings
