@@ -10,7 +10,7 @@ import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { TraderHelper } from "@spt/helpers/TraderHelper";
 import { ILocationBase } from "@spt/models/eft/common/ILocationBase";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
-import { Common } from "@spt/models/eft/common/tables/IBotBase";
+import { Common, TraderInfo } from "@spt/models/eft/common/tables/IBotBase";
 import { Item } from "@spt/models/eft/common/tables/IItem";
 import { IEndLocalRaidRequestData, IEndRaidResult } from "@spt/models/eft/match/IEndLocalRaidRequestData";
 import { IStartLocalRaidRequestData } from "@spt/models/eft/match/IStartLocalRaidRequestData";
@@ -426,6 +426,17 @@ export class LocationLifecycleService
         // Must occur after experience is set and stats copied over
         scavProfile.Stats.Eft.TotalSessionExperience = 0;
 
+        this.applyTraderStandingAdjustments(scavProfile.TradersInfo, request.results.profile.TradersInfo);
+
+        const fenceId = Traders.FENCE;
+
+        // Clamp fence standing
+        const currentFenceStanding = request.results.profile.TradersInfo[fenceId].standing;
+        pmcProfile.TradersInfo[fenceId].standing = Math.min(Math.max(currentFenceStanding, -7), 15); // Ensure it stays between -7 and 15
+
+        // Copy fence values to PMC
+        pmcProfile.TradersInfo[fenceId] = scavProfile.TradersInfo[fenceId];
+
         // Must occur after encyclopedia updated
         this.mergePmcAndScavEncyclopedias(scavProfile, pmcProfile);
 
@@ -462,8 +473,19 @@ export class LocationLifecycleService
 
         pmcProfile.Info.Experience = postRaidProfile.Info.Experience;
 
+        this.applyTraderStandingAdjustments(pmcProfile.TradersInfo, postRaidProfile.TradersInfo);
+
         // Must occur after experience is set and stats copied over
         pmcProfile.Stats.Eft.TotalSessionExperience = 0;
+
+        const fenceId = Traders.FENCE;
+
+        // Clamp fence standing
+        const currentFenceStanding = postRaidProfile.TradersInfo[fenceId].standing;
+        pmcProfile.TradersInfo[fenceId].standing = Math.min(Math.max(currentFenceStanding, -7), 15); // Ensure it stays between -7 and 15
+
+        // Copy fence values to Scav
+        scavProfile.TradersInfo[fenceId] = pmcProfile.TradersInfo[fenceId];
 
         // Must occur after encyclopedia updated
         this.mergePmcAndScavEncyclopedias(pmcProfile, scavProfile);
@@ -517,6 +539,33 @@ export class LocationLifecycleService
             );
 
             this.insuranceService.sendInsuredItems(pmcProfile, sessionId, locationName);
+        }
+    }
+
+    /**
+     * Adjust server trader settings if they differ from data sent by client
+     * @param tradersServerProfile Server
+     * @param tradersClientProfile Client
+     */
+    protected applyTraderStandingAdjustments(
+        tradersServerProfile: Record<string, TraderInfo>,
+        tradersClientProfile: Record<string, TraderInfo>,
+    ): void
+    {
+        for (const traderId in tradersClientProfile)
+        {
+            const serverProfileTrader = tradersServerProfile[traderId];
+            const clientProfileTrader = tradersClientProfile[traderId];
+            if (!(serverProfileTrader && clientProfileTrader))
+            {
+                continue;
+            }
+
+            if (clientProfileTrader.standing !== serverProfileTrader.standing)
+            {
+                // Difference found, update server profile with values from client profile
+                tradersServerProfile[traderId].standing = clientProfileTrader.standing;
+            }
         }
     }
 
