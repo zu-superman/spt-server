@@ -778,6 +778,32 @@
                 "mod_reciever"
             ]
         },
+		"peacemaker": {
+            "nvgIsActiveChanceDayPercent": 10,
+            "nvgIsActiveChanceNightPercent": 95,
+            "faceShieldIsActiveChancePercent": 100,
+            "lightIsActiveDayChancePercent": 35,
+            "lightIsActiveNightChancePercent": 95,
+            "laserIsActiveChancePercent": 95,
+            "forceStock": true,
+            "weaponModLimits": {
+                "scopeLimit": 1,
+                "lightLaserLimit": 1
+            }
+        },
+		"skier": {
+            "nvgIsActiveChanceDayPercent": 10,
+            "nvgIsActiveChanceNightPercent": 95,
+            "faceShieldIsActiveChancePercent": 100,
+            "lightIsActiveDayChancePercent": 35,
+            "lightIsActiveNightChancePercent": 95,
+            "laserIsActiveChancePercent": 95,
+            "forceStock": true,
+            "weaponModLimits": {
+                "scopeLimit": 1,
+                "lightLaserLimit": 1
+            }
+        },
         "arenafighterevent": {
             "nvgIsActiveChanceDayPercent": 10,
             "nvgIsActiveChanceNightPercent": 95,
