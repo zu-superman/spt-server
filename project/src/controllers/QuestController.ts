@@ -18,7 +18,6 @@ import { IHandoverQuestRequestData } from "@spt/models/eft/quests/IHandoverQuest
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { MessageType } from "@spt/models/enums/MessageType";
 import { QuestStatus } from "@spt/models/enums/QuestStatus";
-import { SeasonalEventType } from "@spt/models/enums/SeasonalEventType";
 import { IQuestConfig } from "@spt/models/spt/config/IQuestConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { EventOutputHolder } from "@spt/routers/EventOutputHolder";
@@ -28,7 +27,6 @@ import { LocaleService } from "@spt/services/LocaleService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { MailSendService } from "@spt/services/MailSendService";
 import { PlayerService } from "@spt/services/PlayerService";
-import { SeasonalEventService } from "@spt/services/SeasonalEventService";
 import { ICloner } from "@spt/utils/cloners/ICloner";
 import { HttpResponseUtil } from "@spt/utils/HttpResponseUtil";
 import { TimeUtil } from "@spt/utils/TimeUtil";
@@ -53,7 +51,6 @@ export class QuestController
         @inject("QuestConditionHelper") protected questConditionHelper: QuestConditionHelper,
         @inject("PlayerService") protected playerService: PlayerService,
         @inject("LocaleService") protected localeService: LocaleService,
-        @inject("SeasonalEventService") protected seasonalEventService: SeasonalEventService,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("ConfigServer") protected configServer: ConfigServer,
         @inject("PrimaryCloner") protected cloner: ICloner,
@@ -92,7 +89,7 @@ export class QuestController
                 continue;
             }
 
-            if (!this.showEventQuestToPlayer(quest._id))
+            if (!this.questHelper.showEventQuestToPlayer(quest._id))
             {
                 continue;
             }
@@ -232,46 +229,6 @@ export class QuestController
         }
 
         // All conditions passed / has no level requirement, valid
-        return true;
-    }
-
-    /**
-     * Should a quest be shown to the player in trader quest screen
-     * @param questId Quest to check
-     * @returns true = show to player
-     */
-    protected showEventQuestToPlayer(questId: string): boolean
-    {
-        const isChristmasEventActive = this.seasonalEventService.christmasEventEnabled();
-        const isHalloweenEventActive = this.seasonalEventService.halloweenEventEnabled();
-
-        // Not christmas + quest is for christmas
-        if (
-            !isChristmasEventActive
-            && this.seasonalEventService.isQuestRelatedToEvent(questId, SeasonalEventType.CHRISTMAS)
-        )
-        {
-            return false;
-        }
-
-        // Not halloween + quest is for halloween
-        if (
-            !isHalloweenEventActive
-            && this.seasonalEventService.isQuestRelatedToEvent(questId, SeasonalEventType.HALLOWEEN)
-        )
-        {
-            return false;
-        }
-
-        // Should non-season event quests be shown to player
-        if (
-            !this.questConfig.showNonSeasonalEventQuests
-            && this.seasonalEventService.isQuestRelatedToEvent(questId, SeasonalEventType.NONE)
-        )
-        {
-            return false;
-        }
-
         return true;
     }
 
