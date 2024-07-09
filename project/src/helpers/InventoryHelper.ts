@@ -907,17 +907,16 @@ export class InventoryHelper
         sessionId: string,
     ): IOwnerInventoryItems
     {
-        let isSameInventory = false;
         const pmcItems = this.profileHelper.getPmcProfile(sessionId).Inventory.items;
-        const scavData = this.profileHelper.getScavProfile(sessionId);
+        const scavProfile = this.profileHelper.getScavProfile(sessionId);
         let fromInventoryItems = pmcItems;
         let fromType = "pmc";
 
         if (request.fromOwner)
         {
-            if (request.fromOwner.id === scavData._id)
+            if (request.fromOwner.id === scavProfile._id)
             {
-                fromInventoryItems = scavData.Inventory.items;
+                fromInventoryItems = scavProfile.Inventory.items;
                 fromType = "scav";
             }
             else if (request.fromOwner.type.toLocaleLowerCase() === "mail")
@@ -935,22 +934,19 @@ export class InventoryHelper
         let toType = "pmc";
 
         // Destination is scav inventory, update values
-        if (request.toOwner?.id === scavData._id)
+        if (request.toOwner?.id === scavProfile._id)
         {
-            toInventoryItems = scavData.Inventory.items;
+            toInventoryItems = scavProfile.Inventory.items;
             toType = "scav";
         }
 
         // From and To types match, same inventory
-        if (fromType === toType)
-        {
-            isSameInventory = true;
-        }
+        const movingToSameInventory = fromType === toType;
 
         return {
             from: fromInventoryItems,
             to: toInventoryItems,
-            sameInventory: isSameInventory,
+            sameInventory: movingToSameInventory,
             isMail: fromType === "mail",
         };
     }
