@@ -15,7 +15,7 @@ import {
     Health as PmcHealth,
     Skills as botSkills,
 } from "@spt/models/eft/common/tables/IBotBase";
-import { Appearance, Health, IBotType, Inventory } from "@spt/models/eft/common/tables/IBotType";
+import { Appearance, BodyPart, Health, IBotType, Inventory } from "@spt/models/eft/common/tables/IBotType";
 import { Item, Upd } from "@spt/models/eft/common/tables/IItem";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { GameEditions } from "@spt/models/enums/GameEditions";
@@ -402,7 +402,9 @@ export class BotGenerator
      */
     protected generateHealth(healthObj: Health, playerScav = false): PmcHealth
     {
-        const bodyParts = playerScav ? healthObj.BodyParts[0] : this.randomUtil.getArrayValue(healthObj.BodyParts);
+        const bodyParts = playerScav
+            ? this.getLowestHpBody(healthObj.BodyParts)
+            : this.randomUtil.getArrayValue(healthObj.BodyParts);
 
         const newHealth: PmcHealth = {
             Hydration: {
@@ -465,6 +467,35 @@ export class BotGenerator
         };
 
         return newHealth;
+    }
+
+    /**
+     * Sum up body parts max hp values, return the bodypart collection with lowest value
+     * @param bodies Body parts to sum up
+     * @returns Lowest hp collection
+     */
+    protected getLowestHpBody(bodies: BodyPart[]): BodyPart | undefined
+    {
+        if (bodies.length === 0)
+        {
+            // Handle empty input
+            return undefined;
+        }
+
+        let result: BodyPart;
+        let currentHighest = 0;
+        for (const bodyParts of bodies)
+        {
+            const hpTotal = Object.values(bodyParts).reduce((acc, curr) => acc + curr.max, 0);
+            if (hpTotal < currentHighest)
+            {
+                // Found collection with lower value that previous, use it
+                currentHighest = hpTotal;
+                result = bodyParts;
+            }
+        }
+
+        return result;
     }
 
     /**
