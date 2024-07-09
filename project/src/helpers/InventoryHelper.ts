@@ -1073,6 +1073,7 @@ export class InventoryHelper
             if (!itemToMove)
             {
                 this.logger.error(this.localisationService.getText("inventory-unable_to_find_item_to_move", itemId));
+                continue;
             }
 
             // Only adjust the values for parent item, not children (their values are already correctly tied to parent)
