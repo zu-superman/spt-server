@@ -432,6 +432,7 @@
         "WAIT_NEW__LOOK_SENSOR": 7.8
       },
       "Mind": {
+		"HOW_WORK_OVER_DEAD_BODY": 2,
         "AGGRESSOR_LOYALTY_BONUS": 0,
         "AI_POWER_COEF": 120,
         "AMBUSH_WHEN_UNDER_FIRE": false,
@@ -1554,6 +1555,7 @@
         "CLOSE_TO_SELECT_RESERV_WAY": 25,
         "CUT_WAY_MAX_0_1": 1,
         "CUT_WAY_MIN_0_1": 0.65,
+		"CAN_LOOK_TO_DEADBODIES": true,
         "DO_RANDOM_DROP_ITEM": true,
         "FRIEND_SEARCH_SEC": 12,
         "LOOK_TIME_BASE": 12,
@@ -2072,7 +2074,10 @@
         "SUSPETION_PLACE_LIFETIME": 7,
         "TALK_DELAY": 15.1,
         "TALK_DELAY_BIG": 25.1,
-        "VISION_DIST_COEF_PEACE": 0.75
+        "VISION_DIST_COEF_PEACE": 0.75,
+		"STAY_AFTER_LOOT_TIME_MIN": 8,
+		"STAY_AFTER_LOOT_TIME_MAX": 15,
+		"SPRINT_BETWEEN_CACHED_POINTS": 100
       },
       "Scattering": {
         "AMPLITUDE_FACTOR": 0.25,
