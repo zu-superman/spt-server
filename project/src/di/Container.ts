@@ -246,7 +246,6 @@ import { RepairService } from "@spt/services/RepairService";
 import { SeasonalEventService } from "@spt/services/SeasonalEventService";
 import { TraderAssortService } from "@spt/services/TraderAssortService";
 import { TraderPurchasePersisterService } from "@spt/services/TraderPurchasePersisterService";
-import { TraderServicesService } from "@spt/services/TraderServicesService";
 import { App } from "@spt/utils/App";
 import { AsyncQueue } from "@spt/utils/AsyncQueue";
 import type { ICloner } from "@spt/utils/cloners/ICloner";
@@ -709,10 +708,6 @@ export class Container
         depContainer.register<TraderAssortService>("TraderAssortService", TraderAssortService, {
             lifecycle: Lifecycle.Singleton,
         });
-        depContainer.register<TraderServicesService>("TraderServicesService", TraderServicesService, {
-            lifecycle: Lifecycle.Singleton,
-        });
-
         depContainer.register<RagfairPriceService>("RagfairPriceService", RagfairPriceService, {
             lifecycle: Lifecycle.Singleton,
         });

@@ -27,7 +27,6 @@ import { IInRaidConfig } from "@spt/models/spt/config/IInRaidConfig";
 import { ILocationConfig } from "@spt/models/spt/config/ILocationConfig";
 import { IRagfairConfig } from "@spt/models/spt/config/IRagfairConfig";
 import { ITraderConfig } from "@spt/models/spt/config/ITraderConfig";
-import { ITraderServiceModel } from "@spt/models/spt/services/ITraderServiceModel";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
 import { SaveServer } from "@spt/servers/SaveServer";
@@ -37,7 +36,6 @@ import { LocalisationService } from "@spt/services/LocalisationService";
 import { MailSendService } from "@spt/services/MailSendService";
 import { MatchBotDetailsCacheService } from "@spt/services/MatchBotDetailsCacheService";
 import { PmcChatResponseService } from "@spt/services/PmcChatResponseService";
-import { TraderServicesService } from "@spt/services/TraderServicesService";
 import { RandomUtil } from "@spt/utils/RandomUtil";
 import { TimeUtil } from "@spt/utils/TimeUtil";
 
@@ -69,7 +67,6 @@ export class InraidController
         @inject("PlayerScavGenerator") protected playerScavGenerator: PlayerScavGenerator,
         @inject("HealthHelper") protected healthHelper: HealthHelper,
         @inject("TraderHelper") protected traderHelper: TraderHelper,
-        @inject("TraderServicesService") protected traderServicesService: TraderServicesService,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("InsuranceService") protected insuranceService: InsuranceService,
         @inject("InRaidHelper") protected inRaidHelper: InRaidHelper,
@@ -649,15 +646,6 @@ export class InraidController
     public getBTRConfig(): IBTRConfig
     {
         return this.btrConfig;
-    }
-
-    /**
-     * Handle singleplayer/traderServices/getTraderServices
-     * @returns Trader services data
-     */
-    public getTraderServices(sessionId: string, traderId: string): ITraderServiceModel[]
-    {
-        return this.traderServicesService.getTraderServices(sessionId, traderId);
     }
 
     public getTraitorScavHostileChance(url: string, sessionID: string): number
