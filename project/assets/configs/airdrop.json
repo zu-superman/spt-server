@@ -1,32 +1,9 @@
 {
-    "airdropChancePercent": {
-        "bigmap": 25,
-        "woods": 25,
-        "lighthouse": 20,
-        "shoreline": 20,
-        "interchange": 20,
-        "reserve": 20,
-        "tarkovStreets": 20,
-        "sandbox": 20
-    },
     "airdropTypeWeightings": {
         "mixed": 5,
         "weaponArmor": 2,
         "foodMedical": 1,
         "barter": 1
-    },
-    "airdropMinStartTimeSeconds": 60,
-    "airdropMaxStartTimeSeconds": 300,
-    "planeMinFlyHeight": 400,
-    "planeMaxFlyHeight": 500,
-    "planeVolume": 0.5,
-    "planeSpeed": 65,
-    "crateFallSpeed": 3,
-    "containerIds": {
-        "mixed": "6223349b3136504a544d1608",
-        "weaponArmor": "6223349b3136504a544d1608",
-        "foodMedical": "6223349b3136504a544d1608",
-        "barter": "6223349b3136504a544d1608"
     },
     "loot": {
         "mixed": {
