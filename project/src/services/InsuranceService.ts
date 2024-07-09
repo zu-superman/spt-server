@@ -63,7 +63,7 @@ export class InsuranceService
      * @param sessionId Player id
      * @returns True if exists
      */
-    public insuranceExists(sessionId: string): boolean
+    public isuranceDictionaryExists(sessionId: string): boolean
     {
         return this.insured[sessionId] !== undefined;
     }
@@ -540,7 +540,7 @@ export class InsuranceService
         const traderId = gear.traderId;
 
         // Ensure insurance array is init
-        if (!this.insuranceExists(sessionId))
+        if (!this.isuranceDictionaryExists(sessionId))
         {
             this.resetInsurance(sessionId);
         }
