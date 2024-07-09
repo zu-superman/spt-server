@@ -64,24 +64,6 @@ export class InraidCallbacks
         return this.httpResponse.noBody(this.inraidController.getInraidConfig().raidMenuSettings);
     }
 
-    /**
-     * Handle singleplayer/airdrop/config
-     * @returns JSON as string
-     */
-    public getAirdropConfig(): string
-    {
-        return this.httpResponse.noBody(this.inraidController.getAirdropConfig());
-    }
-
-    /**
-     * Handle singleplayer/btr/config
-     * @returns JSON as string
-     */
-    public getBTRConfig(): string
-    {
-        return this.httpResponse.noBody(this.inraidController.getBTRConfig());
-    }
-
     public getTraitorScavHostileChance(url: string, info: IEmptyRequestData, sessionId: string): string
     {
         return this.httpResponse.noBody(this.inraidController.getTraitorScavHostileChance(url, sessionId));

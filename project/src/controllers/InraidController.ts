@@ -19,9 +19,7 @@ import { PlayerRaidEndState } from "@spt/models/enums/PlayerRaidEndState";
 import { QuestStatus } from "@spt/models/enums/QuestStatus";
 import { SkillTypes } from "@spt/models/enums/SkillTypes";
 import { Traders } from "@spt/models/enums/Traders";
-import { IAirdropConfig } from "@spt/models/spt/config/IAirdropConfig";
 import { IBotConfig } from "@spt/models/spt/config/IBotConfig";
-import { IBTRConfig } from "@spt/models/spt/config/IBTRConfig";
 import { IHideoutConfig } from "@spt/models/spt/config/IHideoutConfig";
 import { IInRaidConfig } from "@spt/models/spt/config/IInRaidConfig";
 import { ILocationConfig } from "@spt/models/spt/config/ILocationConfig";
@@ -45,8 +43,6 @@ import { TimeUtil } from "@spt/utils/TimeUtil";
 @injectable()
 export class InraidController
 {
-    protected airdropConfig: IAirdropConfig;
-    protected btrConfig: IBTRConfig;
     protected inRaidConfig: IInRaidConfig;
     protected traderConfig: ITraderConfig;
     protected locationConfig: ILocationConfig;
@@ -76,8 +72,6 @@ export class InraidController
         @inject("RandomUtil") protected randomUtil: RandomUtil,
     )
     {
-        this.airdropConfig = this.configServer.getConfig(ConfigTypes.AIRDROP);
-        this.btrConfig = this.configServer.getConfig(ConfigTypes.BTR);
         this.inRaidConfig = this.configServer.getConfig(ConfigTypes.IN_RAID);
         this.traderConfig = this.configServer.getConfig(ConfigTypes.TRADER);
         this.locationConfig = this.configServer.getConfig(ConfigTypes.LOCATION);
@@ -628,24 +622,6 @@ export class InraidController
     public getInraidConfig(): IInRaidConfig
     {
         return this.inRaidConfig;
-    }
-
-    /**
-     * Get airdrop config from configs/airdrop.json
-     * @returns Airdrop config
-     */
-    public getAirdropConfig(): IAirdropConfig
-    {
-        return this.airdropConfig;
-    }
-
-    /**
-     * Get BTR config from configs/btr.json
-     * @returns Airdrop config
-     */
-    public getBTRConfig(): IBTRConfig
-    {
-        return this.btrConfig;
     }
 
     public getTraitorScavHostileChance(url: string, sessionID: string): number

@@ -31,20 +31,6 @@ export class InraidStaticRouter extends StaticRouter
                 },
             ),
             new RouteAction(
-                "/singleplayer/airdrop/config",
-                async (url: string, info: any, sessionID: string, output: string): Promise<string> =>
-                {
-                    return this.inraidCallbacks.getAirdropConfig();
-                },
-            ),
-            new RouteAction(
-                "/singleplayer/btr/config",
-                async (url: string, info: any, sessionID: string, output: string): Promise<string> =>
-                {
-                    return this.inraidCallbacks.getBTRConfig();
-                },
-            ),
-            new RouteAction(
                 "/singleplayer/scav/traitorscavhostile",
                 async (url: string, info: any, sessionID: string, output: string): Promise<string> =>
                 {
