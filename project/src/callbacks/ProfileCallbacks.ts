@@ -169,7 +169,6 @@ export class ProfileCallbacks
         sessionId: string,
     ): IGetBodyResponseData<boolean>
     {
-        
         return this.httpResponse.getBody(this.profileController.setChosenProfileIcon(sessionId, info));
     }
 

@@ -501,8 +501,8 @@ export class ProfileController
         {
             profileToUpdate.Info.SelectedMemberCategory = request.memberCategory;
         }
-        
-        if(request.squadInviteRestriction !== null)
+
+        if (request.squadInviteRestriction !== null)
         {
             profileToUpdate.Info.SquadInviteRestriction = request.squadInviteRestriction;
         }

@@ -206,7 +206,7 @@ export class BotGenerator
         );
         bot.Info.Settings.StandingForKill = botJsonTemplate.experience.standingForKill;
         bot.Info.Voice = this.weightedRandomHelper.getWeightedValue<string>(botJsonTemplate.appearance.voice);
-        bot.Health = this.generateHealth(botJsonTemplate.health, bot.Info.Side === "Savage");
+        bot.Health = this.generateHealth(botJsonTemplate.health, botGenerationDetails.isPlayerScav);
         bot.Skills = this.generateSkills(<any>botJsonTemplate.skills); // TODO: fix bad type, bot jsons store skills in dict, output needs to be array
 
         if (botGenerationDetails.isPmc)
