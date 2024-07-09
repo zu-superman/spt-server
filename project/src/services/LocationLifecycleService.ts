@@ -470,6 +470,7 @@ export class LocationLifecycleService
         pmcProfile.TaskConditionCounters = postRaidProfile.TaskConditionCounters;
         pmcProfile.SurvivorClass = postRaidProfile.SurvivorClass;
         pmcProfile.Achievements = postRaidProfile.Achievements;
+        pmcProfile.Quests = postRaidProfile.Quests;
 
         pmcProfile.Info.Experience = postRaidProfile.Info.Experience;
 
