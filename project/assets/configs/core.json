@@ -28,7 +28,7 @@
                 "giveCommandEnabled": true
             },
 			"commandUseLimits": {
-				"StashRows": 5
+				"StashRows": 15
 			}
         }
     },
