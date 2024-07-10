@@ -84,7 +84,7 @@
   ],
   "BossLocationSpawn": [
     {
-      "BossChance": 0,
+      "BossChance": 4,
       "BossDifficult": "normal",
       "BossEscortAmount": "2,2,3,3,3,4,4,5",
       "BossEscortDifficult": "normal",
