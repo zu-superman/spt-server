@@ -413,6 +413,8 @@ export class RagfairController
     {
         const output = this.eventOutputHolder.getOutput(sessionID);
         const fullProfile = this.saveServer.getProfile(sessionID);
+        const sellAsPack = offerRequest.sellInOnePiece; // a group of items that much be all purchased at once
+        const itemsToListCount = offerRequest.items.length; // Count of root items being sold (no children)
 
         const validationMessage = "";
         if (!this.isValidPlayerOfferRequest(offerRequest, validationMessage))
@@ -434,7 +436,7 @@ export class RagfairController
             sessionID,
             offerRequest.requirements,
             this.ragfairHelper.mergeStackable(itemsInInventoryToList),
-            offerRequest.sellInOnePiece,
+            sellAsPack,
         );
         const rootItem = offer.items[0];
 
@@ -442,26 +444,29 @@ export class RagfairController
         const qualityMultiplier = this.itemHelper.getItemQualityModifierForItems(offer.items, true);
         let averageOfferPrice = this.ragfairPriceService.getFleaPriceForOfferItems(offer.items);
 
-        // Check for and apply item price modifer if it exists
+        // Check for and apply item price modifer if it exists in config
         const itemPriceModifer = this.ragfairConfig.dynamic.itemPriceMultiplier[rootItem._tpl];
         if (itemPriceModifer)
         {
             averageOfferPrice *= itemPriceModifer;
         }
 
-        // Multiply single item price by stack count and quality
-        averageOfferPrice *= rootItem.upd.StackObjectsCount * qualityMultiplier;
+        // Multiply single item price by quality
+        averageOfferPrice *= qualityMultiplier;
 
-        const itemStackCount = offerRequest.sellInOnePiece ? 1 : rootItem.upd.StackObjectsCount;
+        // Define packs as a single count item
+        const itemStackCount = sellAsPack
+            ? 1
+            : itemsToListCount;
 
-        // Get averaged price of a single item being listed
-        const averageSingleItemPrice = offerRequest.sellInOnePiece
-            ? averageOfferPrice / rootItem.upd.StackObjectsCount // Packs are a single offer made of many items
-            : averageOfferPrice / itemStackCount;
+        // Average out price of offer
+        const averageSingleItemPrice = sellAsPack
+            ? averageOfferPrice / itemsToListCount // Packs contains multiple items sold as one
+            : averageOfferPrice / itemStackCount; // Normal offer, single items can be purchased from listing
 
-        // Get averaged price of listing
-        const averagePlayerListedPriceInRub = offerRequest.sellInOnePiece
-            ? playerListedPriceInRub / rootItem.upd.StackObjectsCount
+        // Get averaged price of player listing to use when calculating sell chance
+        const averagePlayerListedPriceInRub = sellAsPack
+            ? playerListedPriceInRub / itemsToListCount
             : playerListedPriceInRub;
 
         // Packs are reduced to the average price of a single item in the pack vs the averaged single price of an item
@@ -660,6 +665,11 @@ export class RagfairController
         const formattedItems: Item[] = items.map((item) =>
         {
             const isChild = items.some((it) => it._id === item.parentId);
+            if (!isChild && !sellInOnePiece)
+            {
+                // Ensure offer with multiple of an item has its stack count reset
+                item.upd.StackObjectsCount = 1;
+            }
 
             return {
                 _id: item._id,
@@ -672,7 +682,10 @@ export class RagfairController
 
         const formattedRequirements: IBarterScheme[] = requirements.map((item) =>
         {
-            return { _tpl: item._tpl, count: item.count, onlyFunctional: item.onlyFunctional };
+            return {
+                _tpl: item._tpl,
+                count: item.count,
+                onlyFunctional: item.onlyFunctional };
         });
 
         return this.ragfairOfferGenerator.createAndAddFleaOffer(
