@@ -891,24 +891,34 @@ export class InventoryController
         else
         {
             const rewardContainerDetails = this.inventoryHelper.getRandomLootContainerRewardDetails(openedItem._tpl);
-            rewards.push(...this.lootGenerator.getRandomLootContainerLoot(rewardContainerDetails));
-
-            if (rewardContainerDetails.foundInRaid)
+            if (!rewardContainerDetails || !rewardContainerDetails.rewardCount)
             {
-                foundInRaid = rewardContainerDetails.foundInRaid;
+                this.logger.error(`Unable to add loot to container: ${openedItem._tpl}, no rewards found`);
+            }
+            else
+            {
+                rewards.push(...this.lootGenerator.getRandomLootContainerLoot(rewardContainerDetails));
+
+                if (rewardContainerDetails.foundInRaid)
+                {
+                    foundInRaid = rewardContainerDetails.foundInRaid;
+                }
             }
         }
 
-        const addItemsRequest: IAddItemsDirectRequest = {
-            itemsWithModsToAdd: rewards,
-            foundInRaid: foundInRaid,
-            callback: undefined,
-            useSortingTable: true,
-        };
-        this.inventoryHelper.addItemsToStash(sessionID, addItemsRequest, pmcData, output);
-        if (output.warnings.length > 0)
+        if (rewards.length > 0)
         {
-            return;
+            const addItemsRequest: IAddItemsDirectRequest = {
+                itemsWithModsToAdd: rewards,
+                foundInRaid: foundInRaid,
+                callback: undefined,
+                useSortingTable: true,
+            };
+            this.inventoryHelper.addItemsToStash(sessionID, addItemsRequest, pmcData, output);
+            if (output.warnings.length > 0)
+            {
+                return;
+            }
         }
 
         // Find and delete opened container item from player inventory
