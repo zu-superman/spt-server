@@ -483,7 +483,7 @@ export class BotGenerator
         }
 
         let result: BodyPart;
-        let currentHighest = 0;
+        let currentHighest = Number.POSITIVE_INFINITY;
         for (const bodyParts of bodies)
         {
             const hpTotal = Object.values(bodyParts).reduce((acc, curr) => acc + curr.max, 0);
