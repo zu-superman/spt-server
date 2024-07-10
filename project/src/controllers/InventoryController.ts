@@ -878,7 +878,7 @@ export class InventoryController
 
         let foundInRaid = openedItem.upd?.SpawnedInSession;
         const rewards: Item[][] = [];
-        if (isSealedWeaponBox)
+        if (isSealedWeaponBox || containerDetailsDb[1]._id === "665829424de4820934746ce6") // Temp fix for unlocked weapon crate hideout craft
         {
             const containerSettings = this.inventoryHelper.getInventoryConfig().sealedAirdropContainer;
             rewards.push(...this.lootGenerator.getSealedWeaponCaseLoot(containerSettings));
