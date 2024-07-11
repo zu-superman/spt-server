@@ -126,11 +126,13 @@ export class MatchController
         return botDifficulty;
     }
 
+    /** Handle client/match/local/start */
     public startLocalRaid(sessionId: string, request: IStartLocalRaidRequestData): IStartLocalRaidResponseData
     {
         return this.locationLifecycleService.startLocalRaid(sessionId, request);
     }
 
+    /** Handle client/match/local/end */
     public endLocalRaid(sessionId: string, request: IEndLocalRaidRequestData): void
     {
         return this.locationLifecycleService.endLocalRaid(sessionId, request);
