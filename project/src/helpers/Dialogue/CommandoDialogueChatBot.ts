@@ -23,7 +23,13 @@ export class CommandoDialogueChatBot extends AbstractDialogueChatBot
         return {
             _id: "sptCommando",
             aid: 1234567,
-            Info: { Level: 1, MemberCategory: MemberCategory.DEVELOPER, Nickname: "Commando", Side: "Usec" },
+            Info: {
+                Level: 1,
+                MemberCategory: MemberCategory.DEVELOPER,
+                SelectedMemberCategory: MemberCategory.DEVELOPER,
+                Nickname: "Commando",
+                Side: "Usec",
+            },
         };
     }
 
