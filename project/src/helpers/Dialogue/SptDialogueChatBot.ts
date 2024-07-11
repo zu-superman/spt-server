@@ -40,6 +40,7 @@ export class SptDialogueChatBot implements IDialogueChatBot
             Info: {
                 Level: 1,
                 MemberCategory: MemberCategory.DEVELOPER,
+                SelectedMemberCategory: MemberCategory.DEVELOPER,
                 Nickname: this.coreConfig.sptFriendNickname,
                 Side: "Usec",
             },

@@ -107,6 +107,7 @@ export class PmcChatResponseService
                 Side: killerDetailsInCache.Info.Side,
                 Level: killerDetailsInCache.Info.Level,
                 MemberCategory: killerDetailsInCache.Info.MemberCategory,
+                SelectedMemberCategory: killerDetailsInCache.Info.SelectedMemberCategory,
             },
         };
 
@@ -288,6 +289,9 @@ export class PmcChatResponseService
             MemberCategory.SHERPA,
             MemberCategory.DEVELOPER,
         ];
+
+        const chosenCategory = this.randomUtil.getArrayValue(categories);
+
         return {
             _id: pmcVictim.Name,
             aid: this.hashUtil.generateAccountId(), // TODO- pass correct value
@@ -295,7 +299,8 @@ export class PmcChatResponseService
                 Nickname: pmcVictim.Name,
                 Level: pmcVictim.Level,
                 Side: pmcVictim.Side,
-                MemberCategory: this.randomUtil.getArrayValue(categories),
+                MemberCategory: chosenCategory,
+                SelectedMemberCategory: chosenCategory,
             },
         };
     }

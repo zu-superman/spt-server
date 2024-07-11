@@ -149,6 +149,7 @@ export class DialogueController
                     Nickname: profile.characters.pmc.Info.Nickname,
                     Side: profile.characters.pmc.Info.Side,
                     MemberCategory: profile.characters.pmc.Info.MemberCategory,
+                    SelectedMemberCategory: profile.characters.pmc.Info.SelectedMemberCategory,
                 },
             });
         }
@@ -249,6 +250,7 @@ export class DialogueController
                         Side: pmcProfile.Info.Side,
                         Level: pmcProfile.Info.Level,
                         MemberCategory: pmcProfile.Info.MemberCategory,
+                        SelectedMemberCategory: pmcProfile.Info.SelectedMemberCategory,
                     },
                 });
             }
