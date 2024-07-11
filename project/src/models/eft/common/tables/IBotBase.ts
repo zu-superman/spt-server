@@ -81,6 +81,7 @@ export interface Info
     GameVersion: string
     AccountType: number
     MemberCategory: MemberCategory
+    SelectedMemberCategory: MemberCategory
     lockedMoveCommands: boolean
     SavageLockTime: number
     LastTimePlayedAsSavage: number
@@ -93,7 +94,6 @@ export interface Info
     BannedUntil: number
     IsStreamerModeAvailable: boolean
     lastCompletedEvent?: LastCompleted
-    SelectedMemberCategory: number
     isMigratedSkills: boolean
 }
 
