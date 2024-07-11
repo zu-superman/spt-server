@@ -1257,7 +1257,14 @@ export class FenceService
             // Find items mod to apply dura changes to
             const modItemToAdjust = armorItemAndMods
                 .find((mod) => mod.slotId!.toLowerCase() === plateSlot._name.toLowerCase());
-            this.itemHelper.addUpdObjectToItem(modItemToAdjust!);
+
+            if (!modItemToAdjust)
+            {
+                this.logger.warning(`Unable to randomise armor items ${armorItemAndMods[0]._tpl} ${plateSlot._name} slot as it cannot be found, skipping`);
+                continue;
+            }
+
+            this.itemHelper.addUpdObjectToItem(modItemToAdjust);
 
             if (!modItemToAdjust?.upd?.Repairable)
             {
