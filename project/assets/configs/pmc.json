@@ -209,7 +209,8 @@
                 "arenaFighter": 0,
                 "arenaFighterEvent": 0,
                 "crazyAssaultEvent": 3,
-                "pmcBot": 5
+                "pmcBot": 5,
+				"pmcBEAR": 2
             },
             "factory4_night": {
                 "bossKilla": 2,
@@ -229,7 +230,8 @@
                 "arenaFighter": 0,
                 "arenaFighterEvent": 0,
                 "crazyAssaultEvent": 3,
-                "pmcBot": 5
+                "pmcBot": 5,
+				"pmcBEAR": 2
             },
             "bigmap": {
                 "bossKilla": 2,
@@ -249,7 +251,8 @@
                 "arenaFighter": 0,
                 "arenaFighterEvent": 0,
                 "crazyAssaultEvent": 3,
-                "pmcBot": 5
+                "pmcBot": 5,
+				"pmcBEAR": 2
             },
             "laboratory": {
                 "bossKilla": 2,
@@ -269,7 +272,8 @@
                 "arenaFighter": 0,
                 "arenaFighterEvent": 0,
                 "crazyAssaultEvent": 3,
-                "pmcBot": 5
+                "pmcBot": 5,
+				"pmcBEAR": 2
             },
             "woods": {
                 "bossKilla": 2,
@@ -290,7 +294,8 @@
                 "arenaFighter": 0,
                 "arenaFighterEvent": 0,
                 "crazyAssaultEvent": 3,
-                "pmcBot": 5
+                "pmcBot": 5,
+				"pmcBEAR": 2
             },
             "interchange": {
                 "bossKilla": 2,
@@ -310,7 +315,8 @@
                 "arenaFighter": 0,
                 "arenaFighterEvent": 0,
                 "crazyAssaultEvent": 3,
-                "pmcBot": 5
+                "pmcBot": 5,
+				"pmcBEAR": 2
             },
             "lighthouse": {
                 "bossKilla": 2,
@@ -330,7 +336,8 @@
                 "arenaFighter": 0,
                 "arenaFighterEvent": 0,
                 "crazyAssaultEvent": 3,
-                "pmcBot": 5
+                "pmcBot": 5,
+				"pmcBEAR": 2
             },
             "rezervbase": {
                 "bossKilla": 2,
@@ -350,7 +357,8 @@
                 "arenaFighter": 0,
                 "arenaFighterEvent": 1,
                 "crazyAssaultEvent": 3,
-                "pmcBot": 5
+                "pmcBot": 5,
+				"pmcBEAR": 2
             },
             "shoreline": {
                 "bossKilla": 2,
@@ -370,7 +378,8 @@
                 "arenaFighter": 0,
                 "arenaFighterEvent": 0,
                 "crazyAssaultEvent": 3,
-                "pmcBot": 5
+                "pmcBot": 5,
+				"pmcBEAR": 2
             },
             "tarkovstreets": {
                 "bossKilla": 2,
@@ -390,7 +399,8 @@
                 "arenaFighter": 2,
                 "arenaFighterEvent": 0,
                 "crazyAssaultEvent": 3,
-                "pmcBot": 5
+                "pmcBot": 5,
+				"pmcBEAR": 2
             },
             "sandbox": {
                 "bossKilla": 2,
@@ -412,7 +422,8 @@
                 "arenaFighter": 0,
                 "arenaFighterEvent": 1,
                 "crazyAssaultEvent": 1,
-                "pmcBot": 7
+                "pmcBot": 7,
+				"pmcBEAR": 2
             },
             "sandbox_high": {
                 "bossKilla": 2,
@@ -434,7 +445,8 @@
                 "arenaFighter": 0,
                 "arenaFighterEvent": 1,
                 "crazyAssaultEvent": 1,
-                "pmcBot": 7
+                "pmcBot": 7,
+				"pmcBEAR": 2
             }
         },
         "pmcusec": {
@@ -456,7 +468,8 @@
                 "arenaFighter": 0,
                 "arenaFighterEvent": 0,
                 "crazyAssaultEvent": 3,
-                "pmcBot": 5
+                "pmcBot": 5,
+				"pmcUSEC": 2
             },
             "factory4_night": {
                 "bossKilla": 2,
@@ -476,7 +489,8 @@
                 "arenaFighter": 0,
                 "arenaFighterEvent": 0,
                 "crazyAssaultEvent": 3,
-                "pmcBot": 5
+                "pmcBot": 5,
+				"pmcUSEC": 2
             },
             "bigmap": {
                 "bossKilla": 0,
@@ -496,7 +510,8 @@
                 "arenaFighter": 0,
                 "arenaFighterEvent": 0,
                 "crazyAssaultEvent": 2,
-                "pmcBot": 6
+                "pmcBot": 6,
+				"pmcUSEC": 2
             },
             "laboratory": {
                 "bossKilla": 2,
@@ -516,7 +531,8 @@
                 "arenaFighter": 0,
                 "arenaFighterEvent": 0,
                 "crazyAssaultEvent": 3,
-                "pmcBot": 5
+                "pmcBot": 5,
+				"pmcUSEC": 2
             },
             "woods": {
                 "bossKilla": 2,
@@ -537,7 +553,8 @@
                 "arenaFighter": 0,
                 "arenaFighterEvent": 0,
                 "crazyAssaultEvent": 3,
-                "pmcBot": 5
+                "pmcBot": 5,
+				"pmcUSEC": 2
             },
             "interchange": {
                 "bossKilla": 2,
@@ -557,7 +574,8 @@
                 "arenaFighter": 0,
                 "arenaFighterEvent": 0,
                 "crazyAssaultEvent": 3,
-                "pmcBot": 5
+                "pmcBot": 5,
+				"pmcUSEC": 2
             },
             "lighthouse": {
                 "bossKilla": 2,
@@ -577,7 +595,8 @@
                 "arenaFighter": 0,
                 "arenaFighterEvent": 0,
                 "crazyAssaultEvent": 3,
-                "pmcBot": 5
+                "pmcBot": 5,
+				"pmcUSEC": 2
             },
             "rezervbase": {
                 "bossKilla": 2,
@@ -597,7 +616,8 @@
                 "arenaFighter": 0,
                 "arenaFighterEvent": 1,
                 "crazyAssaultEvent": 3,
-                "pmcBot": 5
+                "pmcBot": 5,
+				"pmcUSEC": 2
             },
             "shoreline": {
                 "bossKilla": 2,
@@ -617,7 +637,8 @@
                 "arenaFighter": 0,
                 "arenaFighterEvent": 0,
                 "crazyAssaultEvent": 3,
-                "pmcBot": 5
+                "pmcBot": 5,
+				"pmcUSEC": 2
             },
             "tarkovstreets": {
                 "bossKilla": 2,
@@ -637,7 +658,8 @@
                 "arenaFighter": 2,
                 "arenaFighterEvent": 0,
                 "crazyAssaultEvent": 3,
-                "pmcBot": 5
+                "pmcBot": 5,
+				"pmcUSEC": 2
             },
             "sandbox": {
                 "bossKilla": 2,
@@ -659,7 +681,8 @@
                 "arenaFighter": 0,
                 "arenaFighterEvent": 1,
                 "crazyAssaultEvent": 1,
-                "pmcBot": 7
+                "pmcBot": 7,
+				"pmcUSEC": 2
             },
             "sandbox_high": {
                 "bossKilla": 2,
@@ -681,7 +704,8 @@
                 "arenaFighter": 0,
                 "arenaFighterEvent": 1,
                 "crazyAssaultEvent": 1,
-                "pmcBot": 7
+                "pmcBot": 7,
+				"pmcUSEC": 2
             }
         }
     },
