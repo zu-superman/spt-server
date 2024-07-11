@@ -30,7 +30,8 @@
 			"commandUseLimits": {
 				"StashRows": 15
 			}
-        }
+        },
+		"createNewProfileTypesBlacklist": []
     },
 	"customWatermarkLocaleKeys": []
 }

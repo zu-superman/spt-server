@@ -43,10 +43,14 @@ export class LauncherController
 
     public connect(): IConnectResponse
     {
+        // Get all possible profile types + filter out any that are blacklisted
+        const profileKeys = Object.keys(this.databaseService.getProfiles())
+            .filter((key) => !this.coreConfig.features.createNewProfileTypesBlacklist.includes(key));
+
         return {
             backendUrl: this.httpServerHelper.getBackendUrl(),
             name: this.coreConfig.serverName,
-            editions: Object.keys(this.databaseService.getProfiles()),
+            editions: profileKeys,
             profileDescriptions: this.getProfileDescriptions(),
         };
     }
