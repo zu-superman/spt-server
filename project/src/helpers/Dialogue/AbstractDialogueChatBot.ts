@@ -1,4 +1,4 @@
-import { IChatCommand, ICommandoCommand } from "@spt/helpers/Dialogue/Commando/IChatCommand";
+import { IChatCommand } from "@spt/helpers/Dialogue/Commando/IChatCommand";
 import { IDialogueChatBot } from "@spt/helpers/Dialogue/IDialogueChatBot";
 import { ISendMessageRequest } from "@spt/models/eft/dialog/ISendMessageRequest";
 import { IUserDialogInfo } from "@spt/models/eft/profile/ISptProfile";
@@ -10,7 +10,7 @@ export abstract class AbstractDialogueChatBot implements IDialogueChatBot
     public constructor(
         protected logger: ILogger,
         protected mailSendService: MailSendService,
-        protected chatCommands: IChatCommand[] | ICommandoCommand[],
+        protected chatCommands: IChatCommand[],
     )
     {}
 
@@ -18,12 +18,12 @@ export abstract class AbstractDialogueChatBot implements IDialogueChatBot
      * @deprecated As of v3.7.6. Use registerChatCommand.
      */
     // TODO: v3.9.0 - Remove registerCommandoCommand method.
-    public registerCommandoCommand(chatCommand: IChatCommand | ICommandoCommand): void
+    public registerCommandoCommand(chatCommand: IChatCommand): void
     {
         this.registerChatCommand(chatCommand);
     }
 
-    public registerChatCommand(chatCommand: IChatCommand | ICommandoCommand): void
+    public registerChatCommand(chatCommand: IChatCommand): void
     {
         if (this.chatCommands.some((cc) => cc.getCommandPrefix() === chatCommand.getCommandPrefix()))
         {
