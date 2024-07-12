@@ -429,7 +429,9 @@
             "5751a25924597722c463c472": 2,
             "544fb37f4bdc2dee738b4567": 2
         },
-        "shooterbtr": {}
+        "shooterbtr": {},
+		"skier": {},
+		"peacemaker": {}
     },
     "equipment": {
         "assault": {
