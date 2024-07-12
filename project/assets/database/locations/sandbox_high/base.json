@@ -89,7 +89,7 @@
   "DisabledScavExits": "",
   "EnableCoop": true,
   "Enabled": true,
-  "EscapeTimeLimit": 28,
+  "EscapeTimeLimit": 35,
   "EscapeTimeLimitCoop": 30,
   "EscapeTimeLimitPVE": 28,
   "ExitZones": {
