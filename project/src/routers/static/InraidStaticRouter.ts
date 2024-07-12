@@ -10,7 +10,7 @@ export class InraidStaticRouter extends StaticRouter
     {
         super([
             new RouteAction(
-                "/raid/profile/save",
+                "/raid/profile/scavsave",
                 async (url: string, info: any, sessionID: string, output: string): Promise<INullResponseData> =>
                 {
                     return this.inraidCallbacks.saveProgress(url, info, sessionID);

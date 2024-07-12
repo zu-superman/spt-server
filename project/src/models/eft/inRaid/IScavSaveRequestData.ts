@@ -3,11 +3,7 @@ import { ISyncHealthRequestData } from "@spt/models/eft/health/ISyncHealthReques
 import { IInsuredItemsData } from "@spt/models/eft/inRaid/IInsuredItemsData";
 import { PlayerRaidEndState } from "@spt/models/enums/PlayerRaidEndState";
 
-export interface ISaveProgressRequestData
+export interface IScavSaveRequestData
 {
-    exit: PlayerRaidEndState // survived" | "killed" | "left" | "runner" | "missinginaction
     profile: IPostRaidPmcData
-    isPlayerScav: boolean
-    health: ISyncHealthRequestData
-    insurance: IInsuredItemsData[]
 }

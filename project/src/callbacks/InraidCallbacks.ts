@@ -3,7 +3,7 @@ import { InraidController } from "@spt/controllers/InraidController";
 import { IEmptyRequestData } from "@spt/models/eft/common/IEmptyRequestData";
 import { INullResponseData } from "@spt/models/eft/httpResponse/INullResponseData";
 import { IRegisterPlayerRequestData } from "@spt/models/eft/inRaid/IRegisterPlayerRequestData";
-import { ISaveProgressRequestData } from "@spt/models/eft/inRaid/ISaveProgressRequestData";
+import { IScavSaveRequestData } from "@spt/models/eft/inRaid/IScavSaveRequestData";
 import { HttpResponseUtil } from "@spt/utils/HttpResponseUtil";
 
 /**
@@ -39,9 +39,9 @@ export class InraidCallbacks
      * @param sessionID Session id
      * @returns Null http response
      */
-    public saveProgress(url: string, info: ISaveProgressRequestData, sessionID: string): INullResponseData
+    public saveProgress(url: string, info: IScavSaveRequestData, sessionID: string): INullResponseData
     {
-        this.inraidController.savePostRaidProgressLegacy(info, sessionID);
+        this.inraidController.savePostRaidProfileForScav(info, sessionID);
         return this.httpResponse.nullResponse();
     }
 
