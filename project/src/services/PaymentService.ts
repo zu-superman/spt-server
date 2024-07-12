@@ -180,9 +180,22 @@ export class PaymentService
     ): void
     {
         const trader = this.traderHelper.getTrader(request.tid, sessionID);
+        if (!trader)
+        {
+            this.logger.error(`Unable to add currency to profile as trader: ${request.tid} does not exist`);
+
+            return;
+        }
+
         const currencyTpl = this.paymentHelper.getCurrency(trader.currency);
         let calcAmount = this.handbookHelper.fromRUB(this.handbookHelper.inRUB(amountToSend, currencyTpl), currencyTpl);
-        const currencyMaxStackSize = this.itemHelper.getItem(currencyTpl)[1]._props.StackMaxSize!;
+        const currencyMaxStackSize = this.itemHelper.getItem(currencyTpl)[1]._props?.StackMaxSize;
+        if (!currencyMaxStackSize)
+        {
+            this.logger.error(`Unable to add currency: ${currencyTpl} to profile as it lacks a _props property`);
+
+            return;
+        }
         let skipSendingMoneyToStash = false;
 
         for (const item of pmcData.Inventory.items)
