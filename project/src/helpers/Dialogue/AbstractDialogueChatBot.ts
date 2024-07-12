@@ -14,15 +14,6 @@ export abstract class AbstractDialogueChatBot implements IDialogueChatBot
     )
     {}
 
-    /**
-     * @deprecated As of v3.7.6. Use registerChatCommand.
-     */
-    // TODO: v3.9.0 - Remove registerCommandoCommand method.
-    public registerCommandoCommand(chatCommand: IChatCommand): void
-    {
-        this.registerChatCommand(chatCommand);
-    }
-
     public registerChatCommand(chatCommand: IChatCommand): void
     {
         if (this.chatCommands.some((cc) => cc.getCommandPrefix() === chatCommand.getCommandPrefix()))
