@@ -66,7 +66,7 @@ export class InraidStaticRouter extends StaticRouter
                 },
             ),
             new RouteAction(
-                "/singleplayer/BossConvert",
+                "/singleplayer/bossconvert",
                 async (url: string, info: any, sessionID: string, output: string): Promise<string> =>
                 {
                     return this.inraidCallbacks.getBossConvertSettings(url, info, sessionID);

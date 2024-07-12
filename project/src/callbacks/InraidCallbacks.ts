@@ -113,6 +113,6 @@ export class InraidCallbacks
 
     public getBossConvertSettings(url: string, info: IEmptyRequestData, sessionId: string): string
     {
-        return this.httpResponse.noBody(this.inraidController.getBossConvertSettings(url, sessionId))
+        return this.httpResponse.noBody(this.inraidController.getBossConvertSettings(url, sessionId));
     }
 }
