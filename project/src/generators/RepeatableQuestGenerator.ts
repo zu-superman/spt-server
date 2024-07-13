@@ -892,35 +892,40 @@ export class RepeatableQuestGenerator
         // Get template id from config based on side and type of quest
         questClone.templateId = this.questConfig.questTemplateIds[side.toLowerCase()][type.toLowerCase()];
 
+        // Force REF templates to use prapors ID - solves missing text issue
+        const desiredTraderId = (traderId === Traders.REF)
+            ? Traders.PRAPOR
+            : traderId;
+
         questClone.name = questClone.name
             .replace("{traderId}", traderId)
             .replace("{templateId}", questClone.templateId);
         questClone.note = questClone.note
-            .replace("{traderId}", traderId)
+            .replace("{traderId}", desiredTraderId)
             .replace("{templateId}", questClone.templateId);
         questClone.description = questClone.description
-            .replace("{traderId}", traderId)
+            .replace("{traderId}", desiredTraderId)
             .replace("{templateId}", questClone.templateId);
         questClone.successMessageText = questClone.successMessageText
-            .replace("{traderId}", traderId)
+            .replace("{traderId}", desiredTraderId)
             .replace("{templateId}", questClone.templateId);
         questClone.failMessageText = questClone.failMessageText
-            .replace("{traderId}", traderId)
+            .replace("{traderId}", desiredTraderId)
             .replace("{templateId}", questClone.templateId);
         questClone.startedMessageText = questClone.startedMessageText
-            .replace("{traderId}", traderId)
+            .replace("{traderId}", desiredTraderId)
             .replace("{templateId}", questClone.templateId);
         questClone.changeQuestMessageText = questClone.changeQuestMessageText
-            .replace("{traderId}", traderId)
+            .replace("{traderId}", desiredTraderId)
             .replace("{templateId}", questClone.templateId);
         questClone.acceptPlayerMessage = questClone.acceptPlayerMessage
-            .replace("{traderId}", traderId)
+            .replace("{traderId}", desiredTraderId)
             .replace("{templateId}", questClone.templateId);
         questClone.declinePlayerMessage = questClone.declinePlayerMessage
-            .replace("{traderId}", traderId)
+            .replace("{traderId}", desiredTraderId)
             .replace("{templateId}", questClone.templateId);
         questClone.completePlayerMessage = questClone.completePlayerMessage
-            .replace("{traderId}", traderId)
+            .replace("{traderId}", desiredTraderId)
             .replace("{templateId}", questClone.templateId);
 
         return questClone;
