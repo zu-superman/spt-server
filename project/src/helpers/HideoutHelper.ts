@@ -1138,7 +1138,7 @@ export class HideoutHelper
     ): void
     {
         // Get how many coins were crafted and ready to pick up
-        const craftedCoinCount = pmcData.Hideout.Production[HideoutHelper.bitcoinFarm].Products.length;
+        const craftedCoinCount = pmcData.Hideout.Production[HideoutHelper.bitcoinFarm]?.Products?.length ?? 0;
         if (!craftedCoinCount)
         {
             const errorMsg = this.localisationService.getText("hideout-no_bitcoins_to_collect");
