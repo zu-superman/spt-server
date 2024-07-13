@@ -2389,22 +2389,6 @@
         },
         "whitelist": []
       },
-	  "food": {
-        "weights": {
-          "0": 10,
-          "1": 5,
-          "2": 2
-        },
-        "whitelist": []
-      },
-	  "drink": {
-        "weights": {
-          "0": 10,
-          "1": 5,
-          "2": 2
-        },
-        "whitelist": []
-      },
       "grenades": {
         "weights": {
           "0": 1,
