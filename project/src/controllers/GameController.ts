@@ -152,6 +152,15 @@ export class GameController
                 return;
             }
 
+            if (fullProfile.characters.pmc.RagfairInfo)
+            {
+                if (Number.isNaN(fullProfile.characters.pmc.RagfairInfo.rating))
+                {
+                    this.logger.warning(`Profile: ${sessionID} ragfair rating was not a valid number, resetting to 0`);
+                    fullProfile.characters.pmc.RagfairInfo.rating = 0;
+                }
+            }
+
             if (Array.isArray(fullProfile.characters.pmc.WishList))
             {
                 fullProfile.characters.pmc.WishList = {};
