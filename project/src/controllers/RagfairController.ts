@@ -424,6 +424,10 @@ export class RagfairController
         }
 
         const typeOfOffer = this.getOfferType(offerRequest);
+        if (typeOfOffer === FleaOfferType.UNKNOWN)
+        {
+            return this.httpResponse.appendErrorToOutput(output, "Unknown offer type, cannot list item on flea");
+        }
 
         // Find items to be listed on flea from player inventory
         const { items: itemsInInventoryToList, errorMessage: itemsInInventoryError }
