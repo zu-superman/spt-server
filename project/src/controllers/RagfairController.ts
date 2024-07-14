@@ -26,6 +26,7 @@ import { IRemoveOfferRequestData } from "@spt/models/eft/ragfair/IRemoveOfferReq
 import { ISearchRequestData } from "@spt/models/eft/ragfair/ISearchRequestData";
 import { IProcessBuyTradeRequestData } from "@spt/models/eft/trade/IProcessBuyTradeRequestData";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
+import { FleaOfferType } from "@spt/models/enums/FleaOfferType";
 import { MemberCategory } from "@spt/models/enums/MemberCategory";
 import { IRagfairConfig } from "@spt/models/spt/config/IRagfairConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
@@ -422,6 +423,8 @@ export class RagfairController
             return this.httpResponse.appendErrorToOutput(output, validationMessage);
         }
 
+        const typeOfOffer = this.getOfferType(offerRequest);
+
         // Find items to be listed on flea from player inventory
         const { items: itemsInInventoryToList, errorMessage: itemsInInventoryError }
             = this.getItemsToListOnFleaFromInventory(pmcData, offerRequest.items);
@@ -506,6 +509,24 @@ export class RagfairController
         }
 
         return output;
+    }
+
+    protected getOfferType(offerRequest: IAddOfferRequestData): FleaOfferType
+    {
+        if (offerRequest.items.length == 1 && !offerRequest.sellInOnePiece)
+        {
+            return FleaOfferType.SINGLE;
+        }
+        else if (offerRequest.items.length > 1 && !offerRequest.sellInOnePiece)
+        {
+            return FleaOfferType.MULTI;
+        }
+        else if (offerRequest.sellInOnePiece)
+        {
+            return FleaOfferType.PACK;
+        }
+
+        return FleaOfferType.UNKNOWN;
     }
 
     /**
