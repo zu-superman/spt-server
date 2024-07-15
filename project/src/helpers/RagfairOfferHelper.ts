@@ -333,7 +333,8 @@ export class RagfairOfferHelper
 
         for (const offer of profileOffers.values())
         {
-            if (offer.sellResult && offer.sellResult.length > 0 && timestamp >= offer.sellResult[0].sellTime)
+            if (offer.sellResult?.length > 0
+              && timestamp >= offer.sellResult[0].sellTime)
             {
                 // Item sold
                 let totalItemsCount = 1;
@@ -341,7 +342,8 @@ export class RagfairOfferHelper
 
                 if (!offer.sellInOnePiece)
                 {
-                    totalItemsCount = offer.items.reduce((sum: number, item) => sum + item.upd.StackObjectsCount, 0);
+                    // offer.items.reduce((sum, item) => sum + item.upd?.StackObjectsCount ?? 0, 0);
+                    totalItemsCount = this.getTotalStackCountSize([offer.items]);
                     boughtAmount = offer.sellResult[0].amount;
                 }
 
@@ -356,6 +358,28 @@ export class RagfairOfferHelper
         }
 
         return true;
+    }
+
+    /**
+     * Count up all rootitem StackObjectsCount properties of an array of items
+     * @param itemsInInventoryToList items to sum up
+     * @returns Total count
+     */
+    public getTotalStackCountSize(itemsInInventoryToList: Item[][]): number
+    {
+        let total = 0;
+        for (const itemAndChildren of itemsInInventoryToList)
+        {
+            for (const item of itemAndChildren)
+            {
+                if (item.slotId === "hideout")
+                {
+                    total += item.upd?.StackObjectsCount ?? 1;
+                }
+            }
+        }
+
+        return total;
     }
 
     /**
@@ -422,64 +446,23 @@ export class RagfairOfferHelper
     protected completeOffer(sessionID: string, offer: IRagfairOffer, boughtAmount: number): IItemEventRouterResponse
     {
         const itemTpl = offer.items[0]._tpl;
-        let itemsToSend = [];
+        let paymentItemsToSendToPlayer: Item[] = [];
         const offerStackCount = offer.items[0].upd.StackObjectsCount;
 
+        // Pack or ALL items of a multi-offer were bought - remove entire ofer
         if (offer.sellInOnePiece || boughtAmount === offerStackCount)
         {
             this.deleteOfferById(sessionID, offer._id);
         }
         else
         {
-            offer.items[0].upd.StackObjectsCount -= boughtAmount;
-            const rootItems = offer.items.filter((i) => i.parentId === "hideout");
-            rootItems.splice(0, 1);
+            const offerRootItem = offer.items[0];
 
-            let removeCount = boughtAmount;
-            let idsToRemove: string[] = [];
-
-            while (removeCount > 0 && rootItems.length > 0)
-            {
-                const lastItem = rootItems[rootItems.length - 1];
-
-                if (lastItem.upd.StackObjectsCount > removeCount)
-                {
-                    lastItem.upd.StackObjectsCount -= removeCount;
-                    removeCount = 0;
-                }
-                else
-                {
-                    removeCount -= lastItem.upd.StackObjectsCount;
-                    idsToRemove.push(lastItem._id);
-                    rootItems.splice(rootItems.length - 1, 1);
-                }
-            }
-
-            let foundNewItems = true;
-            while (foundNewItems)
-            {
-                foundNewItems = false;
-
-                for (const id of idsToRemove)
-                {
-                    const newIds = offer.items
-                        .filter((i) => !idsToRemove.includes(i._id) && idsToRemove.includes(i.parentId))
-                        .map((i) => i._id);
-                    if (newIds.length > 0)
-                    {
-                        foundNewItems = true;
-                        idsToRemove = [...idsToRemove, ...newIds];
-                    }
-                }
-            }
-
-            if (idsToRemove.length > 0)
-            {
-                offer.items = offer.items.filter((i) => !idsToRemove.includes(i._id));
-            }
+            // Reduce offer root items stack count
+            offerRootItem.upd.StackObjectsCount -= boughtAmount;
         }
 
-        // Assemble the payment item(s)
+        // Assemble payment to send to seller now offer was purchased
         for (const requirement of offer.requirements)
         {
             // Create an item template item
@@ -504,7 +487,7 @@ export class RagfairOfferHelper
                     }
                 }
 
-                itemsToSend = [...itemsToSend, ...outItems];
+                paymentItemsToSendToPlayer = [...paymentItemsToSendToPlayer, ...outItems];
             }
         }
 
@@ -519,7 +502,7 @@ export class RagfairOfferHelper
             this.traderHelper.getTraderById(Traders.RAGMAN),
             MessageType.FLEAMARKET_MESSAGE,
             this.getLocalisedOfferSoldMessage(itemTpl, boughtAmount),
-            itemsToSend,
+            paymentItemsToSendToPlayer,
             this.timeUtil.getHoursAsSeconds(
                 this.questHelper.getMailItemRedeemTimeHoursForProfile(this.profileHelper.getPmcProfile(sessionID))),
             undefined,
