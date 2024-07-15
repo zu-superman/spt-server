@@ -414,8 +414,6 @@ export class RagfairController
     {
         const output = this.eventOutputHolder.getOutput(sessionID);
         const fullProfile = this.saveServer.getProfile(sessionID);
-        const sellAsPack = offerRequest.sellInOnePiece; // a group of items that much be all purchased at once
-        const itemsToListCount = offerRequest.items.length; // Count of root items being sold (no children)
 
         const validationMessage = "";
         if (!this.isValidPlayerOfferRequest(offerRequest, validationMessage))
@@ -429,60 +427,70 @@ export class RagfairController
             return this.httpResponse.appendErrorToOutput(output, "Unknown offer type, cannot list item on flea");
         }
 
+        switch (typeOfOffer)
+        {
+            case FleaOfferType.SINGLE:
+                return this.createSingleOffer(sessionID, offerRequest, fullProfile, output);
+            case FleaOfferType.MULTI:
+                return this.createMultiOffer(sessionID, offerRequest, fullProfile, output);
+            case FleaOfferType.PACK:
+                return this.createPackOffer(sessionID, offerRequest, fullProfile, output);
+        }
+    }
+
+    protected createSingleOffer(
+        sessionID: string,
+        offerRequest: IAddOfferRequestData,
+        fullProfile: ISptProfile,
+        output: IItemEventRouterResponse): IItemEventRouterResponse
+    {
+        const pmcData = fullProfile.characters.pmc;
+        const itemsToListCount = offerRequest.items.length; // Does not count stack size, only items
+
         // Find items to be listed on flea from player inventory
-        const { items: itemsInInventoryToList, errorMessage: itemsInInventoryError }
+        const { items: itemsAndChildrenInInventoryToList, errorMessage: itemsInInventoryError }
             = this.getItemsToListOnFleaFromInventory(pmcData, offerRequest.items);
-        if (!itemsInInventoryToList || itemsInInventoryError)
+        if (!itemsAndChildrenInInventoryToList || itemsInInventoryError)
         {
             this.httpResponse.appendErrorToOutput(output, itemsInInventoryError);
         }
+
+        // Total count of items summed using their stack counts
+        const stackCountTotal = this.ragfairOfferHelper.getTotalStackCountSize(itemsAndChildrenInInventoryToList);
 
         // Checks are done, create the offer
         const playerListedPriceInRub = this.calculateRequirementsPriceInRub(offerRequest.requirements);
         const offer = this.createPlayerOffer(
             sessionID,
             offerRequest.requirements,
-            this.ragfairHelper.mergeStackable(itemsInInventoryToList),
-            sellAsPack,
+            itemsAndChildrenInInventoryToList[0],
+            false,
         );
         const rootItem = offer.items[0];
 
         // Get average of items quality+children
         const qualityMultiplier = this.itemHelper.getItemQualityModifierForItems(offer.items, true);
-        let averageOfferPrice = this.ragfairPriceService.getFleaPriceForOfferItems(offer.items);
+
+        // Average offer price for single item (or whole weapon)
+        let averageOfferPriceSingleItem = this.ragfairPriceService.getFleaPriceForOfferItems(offer.items);
 
         // Check for and apply item price modifer if it exists in config
         const itemPriceModifer = this.ragfairConfig.dynamic.itemPriceMultiplier[rootItem._tpl];
         if (itemPriceModifer)
         {
-            averageOfferPrice *= itemPriceModifer;
+            averageOfferPriceSingleItem *= itemPriceModifer;
         }
 
         // Multiply single item price by quality
-        averageOfferPrice *= qualityMultiplier;
-
-        // Define packs as a single count item
-        const itemStackCount = sellAsPack
-            ? 1
-            : itemsToListCount;
-
-        // Average out price of offer
-        const averageSingleItemPrice = sellAsPack
-            ? averageOfferPrice / itemsToListCount // Packs contains multiple items sold as one
-            : averageOfferPrice / itemStackCount; // Normal offer, single items can be purchased from listing
-
-        // Get averaged price of player listing to use when calculating sell chance
-        const averagePlayerListedPriceInRub = sellAsPack
-            ? playerListedPriceInRub / itemsToListCount
-            : playerListedPriceInRub;
+        averageOfferPriceSingleItem *= qualityMultiplier;
 
         // Packs are reduced to the average price of a single item in the pack vs the averaged single price of an item
         const sellChancePercent = this.ragfairSellHelper.calculateSellChance(
-            averageSingleItemPrice,
-            averagePlayerListedPriceInRub,
+            averageOfferPriceSingleItem,
+            playerListedPriceInRub,
             qualityMultiplier,
         );
-        offer.sellResult = this.ragfairSellHelper.rollForSale(sellChancePercent, itemStackCount);
+        offer.sellResult = this.ragfairSellHelper.rollForSale(sellChancePercent, itemsToListCount);
 
         // Subtract flea market fee from stash
         if (this.ragfairConfig.sell.fees)
@@ -492,7 +500,217 @@ export class RagfairController
                 rootItem,
                 pmcData,
                 playerListedPriceInRub,
-                itemStackCount,
+                stackCountTotal,
+                offerRequest,
+                output,
+            );
+            if (taxFeeChargeFailed)
+            {
+                return output;
+            }
+        }
+
+        // Add offer to players profile + add to client response
+        fullProfile.characters.pmc.RagfairInfo.offers.push(offer);
+        output.profileChanges[sessionID].ragFairOffers.push(offer);
+
+        // Remove items from inventory after creating offer
+        for (const itemToRemove of offerRequest.items)
+        {
+            this.inventoryHelper.removeItem(pmcData, itemToRemove, sessionID, output);
+        }
+
+        return output;
+    }
+
+    protected createMultiOffer(
+        sessionID: string,
+        offerRequest: IAddOfferRequestData,
+        fullProfile: ISptProfile,
+        output: IItemEventRouterResponse): IItemEventRouterResponse
+    {
+        const pmcData = fullProfile.characters.pmc;
+        const itemsToListCount = offerRequest.items.length; // Does not count stack size, only items
+
+        // multi-offers are all the same item,
+        // Get first item and its children and use as template
+        const firstListingAndChidren = this.itemHelper.findAndReturnChildrenAsItems(
+            pmcData.Inventory.items,
+            offerRequest.items[0]);
+
+        // Find items to be listed on flea (+ children) from player inventory
+        const { items: itemsAndChildrenInInventoryToList, errorMessage: itemsInInventoryError }
+            = this.getItemsToListOnFleaFromInventory(pmcData, offerRequest.items);
+        if (!itemsAndChildrenInInventoryToList || itemsInInventoryError)
+        {
+            this.httpResponse.appendErrorToOutput(output, itemsInInventoryError);
+        }
+
+        // Total count of items summed using their stack counts
+        const stackCountTotal = this.ragfairOfferHelper.getTotalStackCountSize(itemsAndChildrenInInventoryToList);
+
+        // When listing identical items on flea, condense separate items into one stack with a merged stack count
+        // e.g. 2 ammo items, stackObjectCount = 3 for each, will result in 1 stack of 6
+        if (!firstListingAndChidren[0].upd)
+        {
+            firstListingAndChidren[0].upd = {};
+        }
+        firstListingAndChidren[0].upd.StackObjectsCount = stackCountTotal;
+
+        // Create flea object
+        const offer = this.createPlayerOffer(
+            sessionID,
+            offerRequest.requirements,
+            firstListingAndChidren,
+            false,
+        );
+
+        // This is the item that will be listed on flea, has merged stackObjectCount
+        const newRootOfferItem = offer.items[0];
+
+        // Average offer price for single item (or whole weapon)
+        let averageOfferPrice = this.ragfairPriceService.getFleaPriceForOfferItems(offer.items);
+
+        // Check for and apply item price modifer if it exists in config
+        const itemPriceModifer = this.ragfairConfig.dynamic.itemPriceMultiplier[newRootOfferItem._tpl];
+        if (itemPriceModifer)
+        {
+            averageOfferPrice *= itemPriceModifer;
+        }
+
+        // Get average of item+children quality
+        const qualityMultiplier = this.itemHelper.getItemQualityModifierForItems(offer.items, true);
+
+        // Multiply single item price by quality
+        averageOfferPrice *= qualityMultiplier;
+
+        // Get price player listed items for in roubles
+        const playerListedPriceInRub = this.calculateRequirementsPriceInRub(offerRequest.requirements);
+
+        // Roll sale chance
+        const sellChancePercent = this.ragfairSellHelper.calculateSellChance(
+            averageOfferPrice,
+            playerListedPriceInRub,
+            qualityMultiplier,
+        );
+
+        // Create array of sell times for items listed
+        offer.sellResult = this.ragfairSellHelper.rollForSale(sellChancePercent, itemsToListCount);
+
+        // Subtract flea market fee from stash
+        if (this.ragfairConfig.sell.fees)
+        {
+            const taxFeeChargeFailed = this.chargePlayerTaxFee(
+                sessionID,
+                newRootOfferItem,
+                pmcData,
+                playerListedPriceInRub,
+                stackCountTotal,
+                offerRequest,
+                output,
+            );
+            if (taxFeeChargeFailed)
+            {
+                return output;
+            }
+        }
+
+        // Add offer to players profile + add to client response
+        fullProfile.characters.pmc.RagfairInfo.offers.push(offer);
+        output.profileChanges[sessionID].ragFairOffers.push(offer);
+
+        // Remove items from inventory after creating offer
+        for (const itemToRemove of offerRequest.items)
+        {
+            this.inventoryHelper.removeItem(pmcData, itemToRemove, sessionID, output);
+        }
+
+        return output;
+    }
+
+    protected createPackOffer(
+        sessionID: string,
+        offerRequest: IAddOfferRequestData,
+        fullProfile: ISptProfile,
+        output: IItemEventRouterResponse): IItemEventRouterResponse
+    {
+        const pmcData = fullProfile.characters.pmc;
+        const itemsToListCount = offerRequest.items.length; // Does not count stack size, only items
+
+        // multi-offers are all the same item,
+        // Get first item and its children and use as template
+        const firstListingAndChidren = this.itemHelper.findAndReturnChildrenAsItems(
+            pmcData.Inventory.items,
+            offerRequest.items[0]);
+
+        // Find items to be listed on flea (+ children) from player inventory
+        const { items: itemsAndChildrenInInventoryToList, errorMessage: itemsInInventoryError }
+            = this.getItemsToListOnFleaFromInventory(pmcData, offerRequest.items);
+        if (!itemsAndChildrenInInventoryToList || itemsInInventoryError)
+        {
+            this.httpResponse.appendErrorToOutput(output, itemsInInventoryError);
+        }
+
+        // Total count of items summed using their stack counts
+        const stackCountTotal = this.ragfairOfferHelper.getTotalStackCountSize(itemsAndChildrenInInventoryToList);
+
+        // When listing identical items on flea, condense separate items into one stack with a merged stack count
+        // e.g. 2 ammo items, stackObjectCount = 3 for each, will result in 1 stack of 6
+        if (!firstListingAndChidren[0].upd)
+        {
+            firstListingAndChidren[0].upd = {};
+        }
+        firstListingAndChidren[0].upd.StackObjectsCount = stackCountTotal;
+
+        // Create flea object
+        const offer = this.createPlayerOffer(
+            sessionID,
+            offerRequest.requirements,
+            firstListingAndChidren,
+            true,
+        );
+
+        // This is the item that will be listed on flea, has merged stackObjectCount
+        const newRootOfferItem = offer.items[0];
+
+        // Single price for an item
+        let singleItemPrice = this.ragfairPriceService.getFleaPriceForItem(firstListingAndChidren[0]._tpl);
+
+        // Check for and apply item price modifer if it exists in config
+        const itemPriceModifer = this.ragfairConfig.dynamic.itemPriceMultiplier[newRootOfferItem._tpl];
+        if (itemPriceModifer)
+        {
+            singleItemPrice *= itemPriceModifer;
+        }
+
+        // Get average of item+children quality
+        const qualityMultiplier = this.itemHelper.getItemQualityModifierForItems(offer.items, true);
+
+        // Multiply single item price by quality
+        singleItemPrice *= qualityMultiplier;
+
+        // Get price player listed items for in roubles
+        const playerListedPriceInRub = this.calculateRequirementsPriceInRub(offerRequest.requirements);
+
+        // Roll sale chance
+        const sellChancePercent = this.ragfairSellHelper.calculateSellChance(
+            singleItemPrice * stackCountTotal,
+            playerListedPriceInRub,
+            qualityMultiplier,
+        );
+
+        // Create array of sell times for items listed + sell all at once as its a pack
+        offer.sellResult = this.ragfairSellHelper.rollForSale(sellChancePercent, itemsToListCount, true);
+
+        // Subtract flea market fee from stash
+        if (this.ragfairConfig.sell.fees)
+        {
+            const taxFeeChargeFailed = this.chargePlayerTaxFee(
+                sessionID,
+                newRootOfferItem,
+                pmcData,
+                playerListedPriceInRub,
+                stackCountTotal,
                 offerRequest,
                 output,
             );
@@ -539,7 +757,7 @@ export class RagfairController
      * @param rootItem Base item being listed (used when client tax cost not found and must be done on server)
      * @param pmcData Player profile
      * @param requirementsPriceInRub Rouble cost player chose for listing (used when client tax cost not found and must be done on server)
-     * @param itemStackCount How many items were listed in player (used when client tax cost not found and must be done on server)
+     * @param itemStackCount How many items were listed by player (used when client tax cost not found and must be done on server)
      * @param offerRequest Add offer request object from client
      * @param output IItemEventRouterResponse
      * @returns True if charging tax to player failed
@@ -645,9 +863,9 @@ export class RagfairController
     protected getItemsToListOnFleaFromInventory(
         pmcData: IPmcData,
         itemIdsFromFleaOfferRequest: string[],
-    ): { items: Item[] | undefined, errorMessage: string | undefined }
+    ): { items: Item[][] | undefined, errorMessage: string | undefined }
     {
-        const itemsToReturn = [];
+        const itemsToReturn: Item[][] = [];
         let errorMessage: string | undefined = undefined;
 
         // Count how many items are being sold and multiply the requested amount accordingly
@@ -665,7 +883,7 @@ export class RagfairController
             }
 
             item = this.itemHelper.fixItemStackCount(item);
-            itemsToReturn.push(...this.itemHelper.findAndReturnChildrenAsItems(pmcData.Inventory.items, itemId));
+            itemsToReturn.push(this.itemHelper.findAndReturnChildrenAsItems(pmcData.Inventory.items, itemId));
         }
 
         if (!itemsToReturn?.length)
@@ -689,12 +907,7 @@ export class RagfairController
         const loyalLevel = 1;
         const formattedItems: Item[] = items.map((item) =>
         {
-            const isChild = items.some((it) => it._id === item.parentId);
-            if (!isChild && !sellInOnePiece)
-            {
-                // Ensure offer with multiple of an item has its stack count reset
-                item.upd.StackObjectsCount = 1;
-            }
+            const isChild = items.some((subItem) => subItem._id === item.parentId);
 
             return {
                 _id: item._id,
