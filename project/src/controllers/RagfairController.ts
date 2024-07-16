@@ -438,6 +438,15 @@ export class RagfairController
         }
     }
 
+    /**
+     * Create a flea offer for a single item - uncludes an item with > 1 sized stack
+     * e.g. 1 ammo stack of 30 cartridges
+     * @param sessionID Session id
+     * @param offerRequest Offer request from client
+     * @param fullProfile Full profile of player
+     * @param output Response to send to client
+     * @returns IItemEventRouterResponse
+     */
     protected createSingleOffer(
         sessionID: string,
         offerRequest: IAddOfferRequestData,
@@ -523,6 +532,16 @@ export class RagfairController
         return output;
     }
 
+    /**
+     * Create a flea offer for multiples of the same item, can be single items or items with multiple in the stack
+     * e.g. 2 ammo stacks of 30 cartridges each
+     * Each item can be purchsed individually
+     * @param sessionID Session id
+     * @param offerRequest Offer request from client
+     * @param fullProfile Full profile of player
+     * @param output Response to send to client
+     * @returns IItemEventRouterResponse
+     */
     protected createMultiOffer(
         sessionID: string,
         offerRequest: IAddOfferRequestData,
@@ -628,6 +647,16 @@ export class RagfairController
         return output;
     }
 
+    /**
+     * Create a flea offer for multiple items, can be single items or items with multiple in the stack
+     * e.g. 2 ammo stacks of 30 cartridges each
+     * The entire package must be purchased in one go
+     * @param sessionID Session id
+     * @param offerRequest Offer request from client
+     * @param fullProfile Full profile of player
+     * @param output Response to send to client
+     * @returns IItemEventRouterResponse
+     */
     protected createPackOffer(
         sessionID: string,
         offerRequest: IAddOfferRequestData,
@@ -733,6 +762,12 @@ export class RagfairController
         return output;
     }
 
+    /**
+     * Given a client request, determine what type of offer is being created
+     * single/multi/pack
+     * @param offerRequest Client request
+     * @returns FleaOfferType
+     */
     protected getOfferType(offerRequest: IAddOfferRequestData): FleaOfferType
     {
         if (offerRequest.items.length == 1 && !offerRequest.sellInOnePiece)
