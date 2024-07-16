@@ -1061,9 +1061,7 @@ export class QuestHelper
                 prod.areaType === Number.parseInt(craftUnlockReward.traderId)
                 && prod.requirements.some((requirement) => requirement.questId === questDetails._id)
                 && prod.requirements.some((x) => x.requiredLevel === craftUnlockReward.loyaltyLevel)
-                && prod.endProduct === craftUnlockReward.items[0]._tpl
-                && prod.count === (craftUnlockReward.items[0].upd?.StackObjectsCount ?? 1),
-        );
+                && prod.endProduct === craftUnlockReward.items[0]._tpl);
 
         // More/less than 1 match, above filtering wasn't strict enough
         if (matchingProductions.length !== 1)
