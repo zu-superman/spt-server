@@ -334,7 +334,7 @@ export class RagfairOfferHelper
         for (const offer of profileOffers.values())
         {
             if (offer.sellResult?.length > 0
-              && timestamp >= offer.sellResult[0].sellTime)
+              && timestamp >= offer.sellResult[0].sellTime) // Checks first item, first is spliced out of array after being processed
             {
                 // Item sold
                 let totalItemsCount = 1;
@@ -353,7 +353,7 @@ export class RagfairOfferHelper
                 );
 
                 this.completeOffer(sessionID, offer, boughtAmount);
-                offer.sellResult.splice(0, 1);
+                offer.sellResult.splice(0, 1); // Remove the sell result object now its been processed
             }
         }
 

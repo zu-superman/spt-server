@@ -499,7 +499,7 @@ export class RagfairController
             playerListedPriceInRub,
             qualityMultiplier,
         );
-        offer.sellResult = this.ragfairSellHelper.rollForSale(sellChancePercent, itemsToListCount);
+        offer.sellResult = this.ragfairSellHelper.rollForSale(sellChancePercent, stackCountTotal);
 
         // Subtract flea market fee from stash
         if (this.ragfairConfig.sell.fees)
@@ -614,7 +614,7 @@ export class RagfairController
         );
 
         // Create array of sell times for items listed
-        offer.sellResult = this.ragfairSellHelper.rollForSale(sellChancePercent, itemsToListCount);
+        offer.sellResult = this.ragfairSellHelper.rollForSale(75, stackCountTotal);
 
         // Subtract flea market fee from stash
         if (this.ragfairConfig.sell.fees)
@@ -729,7 +729,7 @@ export class RagfairController
         );
 
         // Create array of sell times for items listed + sell all at once as its a pack
-        offer.sellResult = this.ragfairSellHelper.rollForSale(sellChancePercent, itemsToListCount, true);
+        offer.sellResult = this.ragfairSellHelper.rollForSale(sellChancePercent, stackCountTotal, true);
 
         // Subtract flea market fee from stash
         if (this.ragfairConfig.sell.fees)
