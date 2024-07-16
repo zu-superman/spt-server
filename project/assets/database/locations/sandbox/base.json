@@ -25,8 +25,14 @@
   "BotImpossible": 0,
   "BotLocationModifier": {
     "AccuracySpeed": 1,
+    "DistToActivate": 260,
+    "DistToActivatePvE": 260,
+    "DistToSleep": 300,
+    "DistToSleepPvE": 300,
     "GainSight": 1,
     "MarksmanAccuratyCoef": 1,
+    "MaxExfiltrationTime": 1500,
+    "MinExfiltrationTime": 1200,
     "Scattering": 1,
     "VisibleDistance": 1
   },
@@ -52,10 +58,9 @@
   "Enabled": true,
   "EscapeTimeLimit": 35,
   "EscapeTimeLimitCoop": 30,
-  "EscapeTimeLimitPVE": 27,
-  "ExitZones": {
-    "$oid": "5c82534488a45046451a2386"
-  },
+  "EscapeTimeLimitPVE": 35,
+  "ExitZones": "5c82534488a45046451a2386",
+  "ForceOnlineRaidInPVE": false,
   "GenerateLocalLootCache": true,
   "GlobalContainerChanceModifier": 1,
   "GlobalLootChanceModifier": 0.72,
@@ -116,8 +121,8 @@
   },
   "OcculsionCullingEnabled": false,
   "OfflineNewSpawn": true,
-  "OfflineOldSpawn": false,
-  "OldSpawn": false,
+  "OfflineOldSpawn": true,
+  "OldSpawn": true,
   "OpenZones": "",
   "PlayersRequestCount": -1,
   "PmcMaxPlayersInGroup": 5,
@@ -5908,172 +5913,94 @@
   "users_summon_seconds": 0,
   "waves": [
     {
-      "BotPreset": "normal",
+      "BotPreset": "easy",
       "BotSide": "Savage",
-      "SpawnPoints": "ZoneSW00",
+      "SpawnMode": [
+        "pve"
+      ],
+      "SpawnPoints": "",
       "WildSpawnType": "assault",
       "isPlayers": false,
       "number": 0,
-      "slots_max": 4,
-      "slots_min": 3,
-      "time_max": 10,
-      "time_min": 1
+      "slots_max": 3,
+      "slots_min": 1,
+      "time_max": -1,
+      "time_min": -1
     },
     {
       "BotPreset": "normal",
       "BotSide": "Savage",
-      "SpawnPoints": "ZoneSandbox",
+      "SpawnMode": [
+        "pve"
+      ],
+      "SpawnPoints": "",
       "WildSpawnType": "assault",
       "isPlayers": false,
       "number": 1,
-      "slots_max": 4,
-      "slots_min": 2,
-      "time_max": 10,
-      "time_min": 1
-    },
-    {
-      "BotPreset": "hard",
-      "BotSide": "Savage",
-      "SpawnPoints": "ZoneSandbox",
-      "WildSpawnType": "assault",
-      "isPlayers": true,
-      "number": 2,
-      "slots_max": 4,
-      "slots_min": 2,
-      "time_max": 30,
-      "time_min": 10
-    },
-    {
-      "BotPreset": "normal",
-      "BotSide": "Savage",
-      "SpawnPoints": "ZoneSandbox",
-      "WildSpawnType": "assault",
-      "isPlayers": true,
-      "number": 3,
-      "slots_max": 4,
-      "slots_min": 2,
-      "time_max": 40,
-      "time_min": 15
-    },
-    {
-      "BotPreset": "hard",
-      "BotSide": "Savage",
-      "SpawnPoints": "ZoneSandSnipeCenter",
-      "WildSpawnType": "marksman",
-      "isPlayers": false,
-      "number": 4,
-      "slots_max": 1,
-      "slots_min": 1,
-      "time_max": 100,
-      "time_min": 1
-    },
-    {
-      "BotPreset": "hard",
-      "BotSide": "Savage",
-      "SpawnPoints": "ZoneSandbox",
-      "WildSpawnType": "assault",
-      "isPlayers": true,
-      "number": 5,
-      "slots_max": 5,
-      "slots_min": 2,
-      "time_max": 60,
-      "time_min": 20
-    },
-    {
-      "BotPreset": "hard",
-      "BotSide": "Savage",
-      "SpawnPoints": "ZoneSandSnipeCenter",
-      "WildSpawnType": "marksman",
-      "isPlayers": false,
-      "number": 6,
-      "slots_max": 1,
-      "slots_min": 1,
-      "time_max": 120,
-      "time_min": 1
-    },
-    {
-      "BotPreset": "normal",
-      "BotSide": "Savage",
-      "SpawnPoints": "ZoneSandbox",
-      "WildSpawnType": "assault",
-      "isPlayers": true,
-      "number": 7,
       "slots_max": 3,
-      "slots_min": 2,
-      "time_max": 90,
-      "time_min": 40
-    },
-    {
-      "BotPreset": "hard",
-      "BotSide": "Savage",
-      "SpawnPoints": "ZoneSandSnipeCenter",
-      "WildSpawnType": "marksman",
-      "isPlayers": false,
-      "number": 8,
-      "slots_max": 1,
       "slots_min": 1,
-      "time_max": 120,
-      "time_min": 1
+      "time_max": -1,
+      "time_min": -1
     },
     {
-      "BotPreset": "hard",
+      "BotPreset": "normal",
       "BotSide": "Savage",
-      "SpawnPoints": "ZoneSandSnipeCenter",
-      "WildSpawnType": "marksman",
+      "SpawnMode": [
+        "pve"
+      ],
+      "SpawnPoints": "",
+      "WildSpawnType": "assault",
+      "isPlayers": false,
+      "number": 2,
+      "slots_max": 3,
+      "slots_min": 0,
+      "time_max": -1,
+      "time_min": -1
+    },
+    {
+      "BotPreset": "easy",
+      "BotSide": "Savage",
+      "SpawnMode": [
+        "pve"
+      ],
+      "SpawnPoints": "",
+      "WildSpawnType": "assault",
       "isPlayers": false,
       "number": 9,
-      "slots_max": 1,
-      "slots_min": 1,
-      "time_max": 120,
-      "time_min": 1
+      "slots_max": 3,
+      "slots_min": 0,
+      "time_max": -1,
+      "time_min": -1
     },
     {
-      "BotPreset": "hard",
+      "BotPreset": "easy",
       "BotSide": "Savage",
-      "SpawnPoints": "ZoneSandbox",
-      "WildSpawnType": "assault",
-      "isPlayers": true,
-      "number": 10,
-      "slots_max": 4,
-      "slots_min": 1,
-      "time_max": 90,
-      "time_min": 30
-    },
-    {
-      "BotPreset": "hard",
-      "BotSide": "Savage",
-      "SpawnPoints": "ZoneSandbox",
-      "WildSpawnType": "assault",
+      "SpawnMode": [
+        "pve"
+      ],
+      "SpawnPoints": "",
+      "WildSpawnType": "marksman",
       "isPlayers": false,
-      "number": 11,
-      "slots_max": 4,
-      "slots_min": 1,
-      "time_max": 100,
-      "time_min": 50
+      "number": 3,
+      "slots_max": 1,
+      "slots_min": 0,
+      "time_max": -1,
+      "time_min": -1
     },
     {
       "BotPreset": "normal",
       "BotSide": "Savage",
-      "SpawnPoints": "ZoneSandbox",
+      "SpawnMode": [
+        "pve"
+      ],
+      "SpawnPoints": "",
       "WildSpawnType": "assault",
       "isPlayers": false,
-      "number": 12,
+      "number": 4,
       "slots_max": 3,
-      "slots_min": 2,
-      "time_max": 110,
-      "time_min": 70
-    },
-    {
-      "BotPreset": "hard",
-      "BotSide": "Savage",
-      "SpawnPoints": "ZoneSandbox",
-      "WildSpawnType": "assault",
-      "isPlayers": true,
-      "number": 13,
-      "slots_max": 4,
-      "slots_min": 2,
-      "time_max": 120,
-      "time_min": 90
+      "slots_min": 0,
+      "time_max": -1,
+      "time_min": -1
     }
   ]
 }

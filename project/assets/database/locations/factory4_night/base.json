@@ -2,7 +2,7 @@
   "AccessKeys": [],
   "Area": 0.9,
   "AveragePlayTime": 15,
-  "AveragePlayerLevel": 15,
+  "AveragePlayerLevel": 1,
   "Banners": [
     {
       "id": "5464e0404bdc2d2a708b4567",
@@ -79,6 +79,7 @@
       "BossPlayer": false,
       "BossZone": "BotZone",
       "IgnoreMaxBots": true,
+      "RandomTimeSpawn": false,
       "SpawnMode": [
         "regular",
         "pve"
@@ -86,7 +87,7 @@
       "Time": -1
     },
     {
-      "BossChance": 2,
+      "BossChance": 10,
       "BossDifficult": "normal",
       "BossEscortAmount": "2",
       "BossEscortDifficult": "normal",
@@ -108,11 +109,11 @@
   "BotImpossible": 0,
   "BotLocationModifier": {
     "AccuracySpeed": 1,
-    "DistToActivate": 100,
-    "DistToActivatePvE": 100,
+    "DistToActivate": 140,
+    "DistToActivatePvE": 140,
     "DistToPersueAxemanCoef": 0.9,
-    "DistToSleep": 120,
-    "DistToSleepPvE": 120,
+    "DistToSleep": 150,
+    "DistToSleepPvE": 150,
     "GainSight": 1,
     "KhorovodChance": 0,
     "MagnetPower": 15,
@@ -123,9 +124,9 @@
     "VisibleDistance": 1
   },
   "BotMarksman": 0,
-  "BotMax": 22,
+  "BotMax": 20,
   "BotMaxPlayer": 0,
-  "BotMaxPvE": 22,
+  "BotMaxPvE": 20,
   "BotMaxTimePlayer": 0,
   "BotNormal": 0,
   "BotSpawnCountStep": 3,
@@ -142,9 +143,9 @@
   "DisabledScavExits": "Cellars,Gate 0",
   "EnableCoop": true,
   "Enabled": false,
-  "EscapeTimeLimit": 25,
+  "EscapeTimeLimit": 20,
   "EscapeTimeLimitCoop": 15,
-  "EscapeTimeLimitPVE": 25,
+  "EscapeTimeLimitPVE": 20,
   "ForceOnlineRaidInPVE": false,
   "GenerateLocalLootCache": true,
   "GlobalContainerChanceModifier": 1,
@@ -175,7 +176,7 @@
       "time": 330
     }
   ],
-  "MaxBotPerZone": 0,
+  "MaxBotPerZone": 4,
   "MaxCoopGroup": 6,
   "MaxDistToFreePoint": 900,
   "MaxPlayers": 6,
@@ -3958,7 +3959,12 @@
   "filter_ex": [],
   "limits": [],
   "matching_min_seconds": 45,
-  "maxItemCountInLocation": [],
+  "maxItemCountInLocation": [
+    {
+      "TemplateId": "54009119af1c881c07000029",
+      "Value": 0
+    }
+  ],
   "sav_summon_seconds": 60,
   "tmp_location_field_remove_me": 0,
   "users_gather_seconds": 0,
@@ -3977,10 +3983,10 @@
       "WildSpawnType": "assault",
       "isPlayers": false,
       "number": 0,
-      "slots_max": 4,
-      "slots_min": 2,
-      "time_max": 50,
-      "time_min": 15
+      "slots_max": 2,
+      "slots_min": 1,
+      "time_max": 100,
+      "time_min": 40
     },
     {
       "BotPreset": "normal",
@@ -3995,11 +4001,11 @@
       "number": 1,
       "slots_max": 4,
       "slots_min": 2,
-      "time_max": 5,
-      "time_min": 0
+      "time_max": -1,
+      "time_min": -1
     },
     {
-      "BotPreset": "normal",
+      "BotPreset": "hard",
       "BotSide": "Savage",
       "SpawnMode": [
         "regular",
@@ -4012,10 +4018,10 @@
       "slots_max": 4,
       "slots_min": 2,
       "time_max": 300,
-      "time_min": 50
+      "time_min": 210
     },
     {
-      "BotPreset": "hard",
+      "BotPreset": "normal",
       "BotSide": "Savage",
       "SpawnMode": [
         "regular",
@@ -4028,10 +4034,10 @@
       "slots_max": 4,
       "slots_min": 2,
       "time_max": 350,
-      "time_min": 160
+      "time_min": 260
     },
     {
-      "BotPreset": "hard",
+      "BotPreset": "normal",
       "BotSide": "Savage",
       "SpawnMode": [
         "regular",
@@ -4073,10 +4079,10 @@
       "WildSpawnType": "assault",
       "isPlayers": false,
       "number": 6,
-      "slots_max": 2,
+      "slots_max": 3,
       "slots_min": 1,
       "time_max": 1500,
-      "time_min": 1400
+      "time_min": 1200
     },
     {
       "BotPreset": "hard",

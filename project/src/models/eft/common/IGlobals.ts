@@ -36,6 +36,7 @@ export interface IConfig
     TradingUnlimitedItems: boolean
     MaxLoyaltyLevelForAll: boolean
     GlobalLootChanceModifier: number
+    GlobalLootChanceModifierPvE: number
     GraphicSettings: IGraphicSettings
     TimeBeforeDeploy: number
     TimeBeforeDeployLocal: number
