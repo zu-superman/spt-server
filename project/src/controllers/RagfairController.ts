@@ -614,7 +614,7 @@ export class RagfairController
         );
 
         // Create array of sell times for items listed
-        offer.sellResult = this.ragfairSellHelper.rollForSale(75, stackCountTotal);
+        offer.sellResult = this.ragfairSellHelper.rollForSale(sellChancePercent, stackCountTotal);
 
         // Subtract flea market fee from stash
         if (this.ragfairConfig.sell.fees)
