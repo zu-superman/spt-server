@@ -119,15 +119,21 @@ export class RagfairSellHelper
                     maximumTime = minimumTime + 5;
                 }
                 // Sell time will be random between min/max
-                sellTime += Math.floor(Math.random() * (maximumTime - minimumTime) + minimumTime);
+                let newSellTime = Math.floor(Math.random() * (maximumTime - minimumTime) + minimumTime);
+                if (newSellTime === 0)
+                {
+                    // Ensure all sales dont occur the same exact time
+                    newSellTime += 1;
+                }
+                sellTime += newSellTime;
 
                 result.push({ sellTime: sellTime, amount: boughtAmount });
 
-                this.logger.debug(`Offer will sell at: ${new Date(sellTime * 1000).toLocaleTimeString("en-US")}`);
+                this.logger.debug(`Offer will sell at: ${new Date(sellTime * 1000).toLocaleTimeString("en-US")}, bought: ${boughtAmount}`);
             }
             else
             {
-                this.logger.debug("Offer will not sell");
+                this.logger.debug(`Offer rolled not to sell, item count: ${boughtAmount}`);
             }
 
             remainingCount -= boughtAmount;
