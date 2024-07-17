@@ -1414,8 +1414,11 @@ export class ItemHelper
         );
         if (!cartridgeTpl)
         {
+            this.logger.debug(`Unable to fill item: ${magazine[0]._id} ${magTemplate._name} with cartrides as none were found.`);
+
             return;
         }
+
         this.fillMagazineWithCartridge(magazine, magTemplate, cartridgeTpl, minSizePercent);
     }
 
@@ -1562,9 +1565,10 @@ export class ItemHelper
 
         if (!ammos && !fallbackCartridgeTpl)
         {
-            this.logger.error(
+            this.logger.debug(
                 `Unable to pick a cartridge for caliber: ${caliber} as staticAmmoDist has no data. No fallback value provided`,
             );
+
             return;
         }
         const ammoArray = new ProbabilityObjectArray<string>(this.mathUtil, this.cloner);
