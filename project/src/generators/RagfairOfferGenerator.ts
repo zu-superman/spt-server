@@ -101,7 +101,7 @@ export class RagfairOfferGenerator
      * @param items Items in the offer
      * @param barterScheme Cost of item (currency or barter)
      * @param loyalLevel Loyalty level needed to buy item
-     * @param sellInOnePiece Set StackObjectsCount to 1
+     * @param isPackOffer Is offer being created flaged as a pack
      * @returns IRagfairOffer
      */
     protected createOffer(
@@ -110,7 +110,7 @@ export class RagfairOfferGenerator
         items: Item[],
         barterScheme: IBarterScheme[],
         loyalLevel: number,
-        sellInOnePiece = false,
+        isPackOffer = false,
     ): IRagfairOffer
     {
         const isTrader = this.ragfairServerHelper.isTrader(userID);
@@ -148,12 +148,9 @@ export class RagfairOfferGenerator
             startTime: time,
             endTime: this.getOfferEndTime(userID, time),
             loyaltyLevel: loyalLevel,
-            sellInOnePiece: sellInOnePiece,
-            priority: false,
+            sellInOnePiece: isPackOffer,
             locked: false,
             unlimitedCount: false,
-            notAvailable: false,
-            CurrentItemCount: itemRootCount,
         };
 
         this.offerCounter++;
@@ -184,9 +181,10 @@ export class RagfairOfferGenerator
             const playerProfile = this.profileHelper.getPmcProfile(userID)!;
             return {
                 id: playerProfile._id,
-                memberType: MemberCategory.DEFAULT,
+                memberType: playerProfile.Info.MemberCategory,
+                selectedMemberCategory: playerProfile.Info.SelectedMemberCategory,
                 nickname: playerProfile.Info.Nickname,
-                rating: playerProfile.RagfairInfo.rating,
+                rating: playerProfile.RagfairInfo.rating ?? 0,
                 isRatingGrowing: playerProfile.RagfairInfo.isRatingGrowing,
                 avatar: undefined,
                 aid: playerProfile.aid,

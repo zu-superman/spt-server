@@ -24,10 +24,6 @@ export interface IRagfairOffer
     /** Rouble price */
     summaryCost: number
     user: IRagfairOfferUser
-    notAvailable: boolean
-    /** TODO - implement this value - not currently used */
-    CurrentItemCount: number
-    priority: boolean
 }
 
 export interface OfferRequirement
@@ -43,6 +39,7 @@ export interface IRagfairOfferUser
     nickname?: string
     rating?: number
     memberType: MemberCategory
+    selectedMemberCategory?: MemberCategory
     avatar?: string
     isRatingGrowing?: boolean
     aid?: number
