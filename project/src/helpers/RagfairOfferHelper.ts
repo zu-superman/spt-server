@@ -370,12 +370,10 @@ export class RagfairOfferHelper
         let total = 0;
         for (const itemAndChildren of itemsInInventoryToList)
         {
-            for (const item of itemAndChildren)
+            // Only count the root items stack count in total
+            const rootItem = itemAndChildren[0];
             {
-                if (item.slotId === "hideout")
-                {
-                    total += item.upd?.StackObjectsCount ?? 1;
-                }
+                total += rootItem.upd?.StackObjectsCount ?? 1;
             }
         }
 
