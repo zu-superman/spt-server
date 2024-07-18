@@ -256,6 +256,12 @@ export class RagfairOfferService
     {
         const pmcId = String(playerOffer.user.id);
         const profile = this.profileHelper.getProfileByPmcId(pmcId);
+        if (!profile)
+        {
+            this.logger.error(`Unable to return flea offer ${playerOffer._id} as the profile: ${pmcId} could not be found`);
+
+            return;
+        }
 
         const offerinProfileIndex = profile.RagfairInfo.offers.findIndex((o) => o._id === playerOffer._id);
         if (offerinProfileIndex === -1)
