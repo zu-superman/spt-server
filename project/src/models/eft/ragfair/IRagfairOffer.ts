@@ -11,19 +11,21 @@ export interface IRagfairOffer
     intId: number
     /** Handbook price */
     itemsCost: number
-    /** Rouble price */
+    /** Rouble price per item */
     requirementsCost: number
     startTime: number
     endTime: number
     sellInOnePiece: boolean
+    /** Rouble price - same as requirementsCost */
+    summaryCost: number
+    user: IRagfairOfferUser
+
+    /** Trader only */
+    unlimitedCount?: boolean
     loyaltyLevel: number
     buyRestrictionMax?: number
     buyRestrictionCurrent?: number
-    locked: boolean
-    unlimitedCount: boolean
-    /** Rouble price */
-    summaryCost: number
-    user: IRagfairOfferUser
+    locked?: boolean
 }
 
 export interface OfferRequirement

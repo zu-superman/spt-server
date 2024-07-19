@@ -123,6 +123,7 @@ export class RagfairOfferGenerator
 
         // Clone to avoid modifying original array
         const itemsClone = this.cloner.clone(items);
+        const itemStackCount = itemsClone[0].upd?.StackObjectsCount ?? 1;
 
         // Hydrate ammo boxes with cartridges + ensure only 1 item is present (ammo box)
         // On offer refresh dont re-add cartridges to ammo box that already has cartridges
@@ -132,8 +133,8 @@ export class RagfairOfferGenerator
             this.itemHelper.addCartridgesToAmmoBox(itemsClone, this.itemHelper.getItem(items[0]._tpl)[1]);
         }
 
-        const itemRootCount = items.filter((item) => item.slotId === "hideout").length;
-        const roublePrice = Math.round(this.convertOfferRequirementsIntoRoubles(offerRequirements));
+        const roubleListingPrice = Math.round(this.convertOfferRequirementsIntoRoubles(offerRequirements));
+        const singleItemListingPrice = isPackOffer ? roubleListingPrice / itemStackCount : roubleListingPrice;
 
         const offer: IRagfairOffer = {
             _id: this.hashUtil.generate(),
@@ -143,14 +144,13 @@ export class RagfairOfferGenerator
             items: itemsClone,
             itemsCost: Math.round(this.handbookHelper.getTemplatePrice(items[0]._tpl)), // Handbook price
             requirements: offerRequirements,
-            requirementsCost: roublePrice,
-            summaryCost: roublePrice,
+            requirementsCost: singleItemListingPrice,
+            summaryCost: roubleListingPrice,
             startTime: time,
             endTime: this.getOfferEndTime(userID, time),
             loyaltyLevel: loyalLevel,
             sellInOnePiece: isPackOffer,
             locked: false,
-            unlimitedCount: false,
         };
 
         this.offerCounter++;
