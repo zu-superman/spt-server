@@ -101,7 +101,7 @@ export class RagfairOfferGenerator
      * @param items Items in the offer
      * @param barterScheme Cost of item (currency or barter)
      * @param loyalLevel Loyalty level needed to buy item
-     * @param sellInOnePiece Set StackObjectsCount to 1
+     * @param isPackOffer Is offer being created flaged as a pack
      * @returns IRagfairOffer
      */
     protected createOffer(
@@ -110,7 +110,7 @@ export class RagfairOfferGenerator
         items: Item[],
         barterScheme: IBarterScheme[],
         loyalLevel: number,
-        sellInOnePiece = false,
+        isPackOffer = false,
     ): IRagfairOffer
     {
         const isTrader = this.ragfairServerHelper.isTrader(userID);
@@ -123,6 +123,7 @@ export class RagfairOfferGenerator
 
         // Clone to avoid modifying original array
         const itemsClone = this.cloner.clone(items);
+        const itemStackCount = itemsClone[0].upd?.StackObjectsCount ?? 1;
 
         // Hydrate ammo boxes with cartridges + ensure only 1 item is present (ammo box)
         // On offer refresh dont re-add cartridges to ammo box that already has cartridges
@@ -132,8 +133,8 @@ export class RagfairOfferGenerator
             this.itemHelper.addCartridgesToAmmoBox(itemsClone, this.itemHelper.getItem(items[0]._tpl)[1]);
         }
 
-        const itemRootCount = items.filter((item) => item.slotId === "hideout").length;
-        const roublePrice = Math.round(this.convertOfferRequirementsIntoRoubles(offerRequirements));
+        const roubleListingPrice = Math.round(this.convertOfferRequirementsIntoRoubles(offerRequirements));
+        const singleItemListingPrice = isPackOffer ? roubleListingPrice / itemStackCount : roubleListingPrice;
 
         const offer: IRagfairOffer = {
             _id: this.hashUtil.generate(),
@@ -143,17 +144,13 @@ export class RagfairOfferGenerator
             items: itemsClone,
             itemsCost: Math.round(this.handbookHelper.getTemplatePrice(items[0]._tpl)), // Handbook price
             requirements: offerRequirements,
-            requirementsCost: roublePrice,
-            summaryCost: roublePrice,
+            requirementsCost: singleItemListingPrice,
+            summaryCost: roubleListingPrice,
             startTime: time,
             endTime: this.getOfferEndTime(userID, time),
             loyaltyLevel: loyalLevel,
-            sellInOnePiece: sellInOnePiece,
-            priority: false,
+            sellInOnePiece: isPackOffer,
             locked: false,
-            unlimitedCount: false,
-            notAvailable: false,
-            CurrentItemCount: itemRootCount,
         };
 
         this.offerCounter++;
@@ -184,9 +181,10 @@ export class RagfairOfferGenerator
             const playerProfile = this.profileHelper.getPmcProfile(userID)!;
             return {
                 id: playerProfile._id,
-                memberType: MemberCategory.DEFAULT,
+                memberType: playerProfile.Info.MemberCategory,
+                selectedMemberCategory: playerProfile.Info.SelectedMemberCategory,
                 nickname: playerProfile.Info.Nickname,
-                rating: playerProfile.RagfairInfo.rating,
+                rating: playerProfile.RagfairInfo.rating ?? 0,
                 isRatingGrowing: playerProfile.RagfairInfo.isRatingGrowing,
                 avatar: undefined,
                 aid: playerProfile.aid,
