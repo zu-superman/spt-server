@@ -551,7 +551,7 @@ export class InventoryHelper
         const dialogs = Object.values(fullProfile.dialogues);
         for (const dialog of dialogs)
         {
-            const messageWithReward = dialog.messages.find((x) => x._id === removeRequest.fromOwner.id);
+            const messageWithReward = dialog.messages.find((message) => message._id === removeRequest.fromOwner.id);
             if (messageWithReward)
             {
                 // Find item + any possible children and remove them from mails items array
@@ -566,8 +566,10 @@ export class InventoryHelper
                     if (indexOfItemToRemove === -1)
                     {
                         this.logger.error(
-                            `Unable to remove item: ${removeRequest.item} from mail: ${removeRequest.fromOwner.id} as item could not be found, restart client immediately to prevent data corruption`,
+                            this.localisationService.getText("inventory-unable_to_remove_item_restart_immediately",
+                                { item: removeRequest.item, mailId: removeRequest.fromOwner.id }),
                         );
+
                         continue;
                     }
                     messageWithReward.items.data.splice(indexOfItemToRemove, 1);

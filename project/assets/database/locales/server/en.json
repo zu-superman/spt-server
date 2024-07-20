@@ -141,6 +141,7 @@
     "inventory-unable_to_inspect_item_not_in_db": "Unable to inspect item: %s as it cannot be found in the items DB",
     "inventory-unable_to_remove_item_id_not_found": "Unable to remove item with Id: {{childId}} from profile: {{profileId}} as it could not be found",
     "inventory-unable_to_remove_item_no_id_given": "Unable to remove item as no itemId supplied",
+    "inventory-unable_to_remove_item_restart_immediately": "Unable to remove item: {{item}} from mail: {{mailId}} as item could not be found, RESTART GAME CLIENT IMMEDIATELY to prevent data corruption",
     "inventory-unable_to_sort_inventory_restart_game": "Unable to find inventory item: %s to auto-sort, YOU MUST RELOAD YOUR GAME IMMEDIATELY TO AVOID CORRUPTING YOUR PROFILE",
     "inventory-unable_to_toggle_item_not_found": "Unable to toggle inventory item with id: %s, item not found",
     "item-durability_value_invalid_use_default": "getRepairableItemQualityValue() weapon tpl: %s durability value is invalid, defaulting to 1",
