@@ -904,7 +904,7 @@ export class QuestController
     {
         const errorMessage = this.localisationService.getText("quest-handover_wrong_item", {
             questId: handoverQuestRequest.qid,
-            handedInTpl: itemHandedOver._tpl,
+            handedInTpl: itemHandedOver?._tpl ?? "UNKNOWN",
             requiredTpl: handoverRequirements.target[0],
         });
         this.logger.error(errorMessage);
