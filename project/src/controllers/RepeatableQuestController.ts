@@ -598,10 +598,12 @@ export class RepeatableQuestController
             // Reduce standing with trader for not doing their quest
             const traderOfReplacedQuest = pmcData.TradersInfo[replacedQuestTraderId];
             traderOfReplacedQuest.standing -= previousChangeRequirement.changeStandingCost;
-            // not free, Charge player
+
+            const charismaBonus = this.profileHelper.getSkillFromProfile(pmcData, SkillTypes.CHARISMA)?.Progress ?? 0;
             for (const cost of previousChangeRequirement.changeCost)
             {
-                cost.count = Math.trunc(cost.count * (1-(Math.trunc((this.profileHelper.getSkillFromProfile(pmcData, SkillTypes.CHARISMA)?.Progress ?? 0)/100)*0.001)) ??1)
+                // Not free, Charge player + appy charisma bonus to cost of replacement
+                cost.count = Math.trunc(cost.count * (1 - (Math.trunc((charismaBonus) / 100) * 0.001)) ?? 1);
                 this.paymentService.addPaymentToOutput(pmcData, cost.templateId, cost.count, sessionID, output);
                 if (output.warnings.length > 0)
                 {
