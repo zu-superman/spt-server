@@ -54,7 +54,7 @@ export class TradeController
         @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
-        @inject("ragfairOfferHelper") protected ragfairOfferHelper: RagfairOfferHelper,
+        @inject("RagfairOfferHelper") protected ragfairOfferHelper: RagfairOfferHelper,
         @inject("TraderHelper") protected traderHelper: TraderHelper,
         @inject("RagfairServer") protected ragfairServer: RagfairServer,
         @inject("HttpResponseUtil") protected httpResponse: HttpResponseUtil,
