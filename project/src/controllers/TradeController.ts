@@ -1,9 +1,9 @@
 import { inject, injectable } from "tsyringe";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
+import { RagfairOfferHelper } from "@spt/helpers/RagfairOfferHelper";
 import { TradeHelper } from "@spt/helpers/TradeHelper";
 import { TraderHelper } from "@spt/helpers/TraderHelper";
-import { RagfairOfferHelper } from "@spt/helpers/RagfairOfferHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { Item } from "@spt/models/eft/common/tables/IItem";
 import { ITraderBase } from "@spt/models/eft/common/tables/ITrader";
@@ -233,28 +233,53 @@ export class TradeController
         {
             return;
         }
-        //resolve when a profile buy another profile's offer
-        const OfferID = fleaOffer._id
-        const OfferOwnerID = fleaOffer.user?.id
-        const OfferBuyCount = requestOffer.count
-        //resolve offer
-        if(this.profileHelper.getFullProfile(OfferOwnerID)!=null){
-            if(this.profileHelper.getFullProfile(OfferOwnerID).characters.pmc.RagfairInfo.offers.length>0){
-                if(this.profileHelper.getFullProfile(OfferOwnerID).characters.pmc.RagfairInfo.offers.some(offer=>offer._id == OfferID)){
-                    this.ragfairOfferHelper.completeOffer(OfferOwnerID, fleaOffer, OfferBuyCount)
-                    return;
-                }
-            }
+
+        // resolve when a profile buy another profile's offer
+        const offerOwnerId = fleaOffer.user?.id;
+        const offerBuyCount = requestOffer.count;
+
+        const isPlayerOffer = this.isPlayerOffer(fleaOffer._id, fleaOffer.user?.id);
+        if (isPlayerOffer)
+        {
+            // Complete selling the offer now its been purchased
+            this.ragfairOfferHelper.completeOffer(offerOwnerId, fleaOffer, offerBuyCount);
+
+            return;
         }
 
-        // Remove/lower stack count of item purchased from flea offer
+        // Remove/lower stack count of item purchased from PMC flea offer
         this.ragfairServer.removeOfferStack(fleaOffer._id, requestOffer.count);
+    }
+
+    /**
+     * Is the provided offerid and ownerid from a player made offer
+     * @param offerId Id of the offer
+     * @param offerOwnerId Owner id
+     * @returns true if offer was made by a player
+     */
+    protected isPlayerOffer(offerId: string, offerOwnerId: string): boolean
+    {
+        // No ownerid, not player offer
+        if (!offerOwnerId)
+        {
+            return false;
+        }
+
+        const offerCreatorProfile = this.profileHelper.getPmcProfile(offerOwnerId);
+        if (!offerCreatorProfile || offerCreatorProfile.RagfairInfo.offers?.length === 0)
+        {
+            // No profile or no offers
+            return false;
+        }
+
+        // Does offer id exist in profile
+        return offerCreatorProfile.RagfairInfo.offers.some((offer) => offer._id == offerId);
     }
 
     /**
      * Does Player have necessary trader loyalty to purchase flea offer
      * @param sellerIsTrader is seller trader
-     * @param fleaOffer FLea offer being bought
+     * @param fleaOffer Flea offer being bought
      * @param pmcData Player profile
      * @returns True if player can buy offer
      */
