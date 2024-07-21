@@ -372,9 +372,7 @@ export class RagfairOfferHelper
         {
             // Only count the root items stack count in total
             const rootItem = itemAndChildren[0];
-            {
-                total += rootItem.upd?.StackObjectsCount ?? 1;
-            }
+            total += rootItem.upd?.StackObjectsCount ?? 1;
         }
 
         return total;
