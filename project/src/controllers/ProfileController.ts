@@ -95,6 +95,8 @@ export class ProfileController
                 prevexp: 0,
                 nextlvl: 0,
                 maxlvl: maxlvl,
+                edition: profile.info?.edition ?? "",
+                profileId: profile.info?.id ?? "",
                 sptData: this.profileHelper.getDefaultSptDataObject(),
             };
         }
@@ -112,6 +114,8 @@ export class ProfileController
                 : this.profileHelper.getExperience(currlvl),
             nextlvl: nextlvl,
             maxlvl: maxlvl,
+            edition: profile.info?.edition ?? "",
+            profileId: profile.info?.id ?? "",
             sptData: profile.spt,
         };
     }
