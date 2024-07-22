@@ -3,7 +3,7 @@ import { MatchController } from "@spt/controllers/MatchController";
 import { IEmptyRequestData } from "@spt/models/eft/common/IEmptyRequestData";
 import { IGetBodyResponseData } from "@spt/models/eft/httpResponse/IGetBodyResponseData";
 import { INullResponseData } from "@spt/models/eft/httpResponse/INullResponseData";
-import { IEndOfflineRaidRequestData } from "@spt/models/eft/match/IEndOfflineRaidRequestData";
+import { IEndLocalRaidRequestData } from "@spt/models/eft/match/IEndLocalRaidRequestData";
 import { IGetRaidConfigurationRequestData } from "@spt/models/eft/match/IGetRaidConfigurationRequestData";
 import { IGroupCharacter } from "@spt/models/eft/match/IGroupCharacter";
 import { IMatchGroupCurrentResponse } from "@spt/models/eft/match/IMatchGroupCurrentResponse";
@@ -16,6 +16,8 @@ import { IMatchGroupTransferRequest } from "@spt/models/eft/match/IMatchGroupTra
 import { IProfileStatusResponse } from "@spt/models/eft/match/IProfileStatusResponse";
 import { IPutMetricsRequestData } from "@spt/models/eft/match/IPutMetricsRequestData";
 import { IRequestIdRequest } from "@spt/models/eft/match/IRequestIdRequest";
+import { IStartLocalRaidRequestData } from "@spt/models/eft/match/IStartLocalRaidRequestData";
+import { IStartLocalRaidResponseData } from "@spt/models/eft/match/IStartLocalRaidResponseData";
 import { IUpdatePingRequestData } from "@spt/models/eft/match/IUpdatePingRequestData";
 import { DatabaseService } from "@spt/services/DatabaseService";
 import { HttpResponseUtil } from "@spt/utils/HttpResponseUtil";
@@ -33,21 +35,18 @@ export class MatchCallbacks
     {}
 
     /** Handle client/match/updatePing */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public updatePing(url: string, info: IUpdatePingRequestData, sessionID: string): INullResponseData
     {
         return this.httpResponse.nullResponse();
     }
 
     // Handle client/match/exit
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public exitMatch(url: string, info: IEmptyRequestData, sessionID: string): INullResponseData
     {
         return this.httpResponse.nullResponse();
     }
 
     /** Handle client/match/group/exit_from_menu */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public exitToMenu(url: string, info: IEmptyRequestData, sessionID: string): INullResponseData
     {
         return this.httpResponse.nullResponse();
@@ -62,20 +61,17 @@ export class MatchCallbacks
         return this.httpResponse.getBody({ squad: [] });
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public startGroupSearch(url: string, info: IEmptyRequestData, sessionID: string): INullResponseData
     {
         return this.httpResponse.nullResponse();
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public stopGroupSearch(url: string, info: IEmptyRequestData, sessionID: string): INullResponseData
     {
         return this.httpResponse.nullResponse();
     }
 
     /** Handle client/match/group/invite/send */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public sendGroupInvite(
         url: string,
         info: IMatchGroupInviteSendRequest,
@@ -86,7 +82,6 @@ export class MatchCallbacks
     }
 
     /** Handle client/match/group/invite/accept */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public acceptGroupInvite(
         url: string,
         info: IRequestIdRequest,
@@ -94,28 +89,24 @@ export class MatchCallbacks
     ): IGetBodyResponseData<IGroupCharacter[]>
     {
         const result = [];
-        // eslint-disable-next-line strict-null-checks/all
         result.push({});
 
         return this.httpResponse.getBody(result);
     }
 
     /** Handle client/match/group/invite/decline */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public declineGroupInvite(url: string, info: IRequestIdRequest, sessionId: string): IGetBodyResponseData<boolean>
     {
         return this.httpResponse.getBody(true);
     }
 
     /** Handle client/match/group/invite/cancel */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public cancelGroupInvite(url: string, info: IRequestIdRequest, sessionID: string): IGetBodyResponseData<boolean>
     {
         return this.httpResponse.getBody(true);
     }
 
     /** Handle client/match/group/transfer */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public transferGroup(
         url: string,
         info: IMatchGroupTransferRequest,
@@ -126,7 +117,6 @@ export class MatchCallbacks
     }
 
     /** Handle client/match/group/invite/cancel-all */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public cancelAllGroupInvite(
         url: string,
         info: IEmptyRequestData,
@@ -136,15 +126,12 @@ export class MatchCallbacks
         return this.httpResponse.getBody(true);
     }
 
-    /** @deprecated - not called on raid start/end or game start/exit */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public putMetrics(url: string, info: IPutMetricsRequestData, sessionId: string): INullResponseData
+    public putMetrics(url: string, request: IPutMetricsRequestData, sessionId: string): INullResponseData
     {
         return this.httpResponse.nullResponse();
     }
 
     // Handle client/match/available
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public serverAvailable(url: string, info: IEmptyRequestData, sessionId: string): IGetBodyResponseData<boolean>
     {
         const output = this.matchController.getEnabled();
@@ -163,7 +150,6 @@ export class MatchCallbacks
     }
 
     /** Handle client/getMetricsConfig */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public getMetrics(url: string, info: any, sessionID: string): IGetBodyResponseData<string>
     {
         return this.httpResponse.getBody(this.jsonUtil.serialize(this.databaseService.getMatch().metrics));
@@ -174,7 +160,6 @@ export class MatchCallbacks
      * Handle client/match/group/status
      * @returns
      */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public getGroupStatus(
         url: string,
         info: IMatchGroupStatusRequest,
@@ -185,7 +170,6 @@ export class MatchCallbacks
     }
 
     /** Handle client/match/group/delete */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public deleteGroup(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<boolean>
     {
         this.matchController.deleteGroup(info);
@@ -193,14 +177,12 @@ export class MatchCallbacks
     }
 
     // Handle client/match/group/leave
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public leaveGroup(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<boolean>
     {
         return this.httpResponse.getBody(true);
     }
 
     /** Handle client/match/group/player/remove */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public removePlayerFromGroup(
         url: string,
         info: IMatchGroupPlayerRemoveRequest,
@@ -210,10 +192,24 @@ export class MatchCallbacks
         return this.httpResponse.getBody(true);
     }
 
-    /** Handle client/match/offline/end */
-    public endOfflineRaid(url: string, info: IEndOfflineRaidRequestData, sessionID: string): INullResponseData
+    /** Handle client/match/local/start */
+    public startLocalRaid(
+        url: string,
+        info: IStartLocalRaidRequestData,
+        sessionID: string,
+    ): IGetBodyResponseData<IStartLocalRaidResponseData>
     {
-        this.matchController.endOfflineRaid(info, sessionID);
+        return this.httpResponse.getBody(this.matchController.startLocalRaid(sessionID, info));
+    }
+
+    /** Handle client/match/local/end */
+    public endLocalRaid(
+        url: string,
+        info: IEndLocalRaidRequestData,
+        sessionID: string,
+    ): INullResponseData
+    {
+        this.matchController.endLocalRaid(sessionID, info);
         return this.httpResponse.nullResponse();
     }
 
@@ -224,7 +220,7 @@ export class MatchCallbacks
         sessionID: string,
     ): INullResponseData
     {
-        this.matchController.startOfflineRaid(info, sessionID);
+        this.matchController.configureOfflineRaid(info, sessionID);
         return this.httpResponse.nullResponse();
     }
 

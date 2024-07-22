@@ -2,9 +2,8 @@ import { inject, injectable } from "tsyringe";
 import { InraidController } from "@spt/controllers/InraidController";
 import { IEmptyRequestData } from "@spt/models/eft/common/IEmptyRequestData";
 import { INullResponseData } from "@spt/models/eft/httpResponse/INullResponseData";
-import { IItemDeliveryRequestData } from "@spt/models/eft/inRaid/IItemDeliveryRequestData";
 import { IRegisterPlayerRequestData } from "@spt/models/eft/inRaid/IRegisterPlayerRequestData";
-import { ISaveProgressRequestData } from "@spt/models/eft/inRaid/ISaveProgressRequestData";
+import { IScavSaveRequestData } from "@spt/models/eft/inRaid/IScavSaveRequestData";
 import { HttpResponseUtil } from "@spt/utils/HttpResponseUtil";
 
 /**
@@ -40,13 +39,14 @@ export class InraidCallbacks
      * @param sessionID Session id
      * @returns Null http response
      */
-    public saveProgress(url: string, info: ISaveProgressRequestData, sessionID: string): INullResponseData
+    public saveProgress(url: string, info: IScavSaveRequestData, sessionID: string): INullResponseData
     {
-        this.inraidController.savePostRaidProgress(info, sessionID);
+        this.inraidController.savePostRaidProfileForScav(info, sessionID);
         return this.httpResponse.nullResponse();
     }
 
     /**
+     * TODO - remove
      * Handle singleplayer/settings/raid/endstate
      * @returns
      */
@@ -64,51 +64,9 @@ export class InraidCallbacks
         return this.httpResponse.noBody(this.inraidController.getInraidConfig().raidMenuSettings);
     }
 
-    /**
-     * Handle singleplayer/airdrop/config
-     * @returns JSON as string
-     */
-    public getAirdropConfig(): string
-    {
-        return this.httpResponse.noBody(this.inraidController.getAirdropConfig());
-    }
-
-    /**
-     * Handle singleplayer/btr/config
-     * @returns JSON as string
-     */
-    public getBTRConfig(): string
-    {
-        return this.httpResponse.noBody(this.inraidController.getBTRConfig());
-    }
-
-    /**
-     * Handle singleplayer/traderServices/getTraderServices
-     */
-    public getTraderServices(url: string, info: IEmptyRequestData, sessionId: string): string
-    {
-        const lastSlashPos = url.lastIndexOf("/");
-        const traderId = url.substring(lastSlashPos + 1);
-        return this.httpResponse.noBody(this.inraidController.getTraderServices(sessionId, traderId));
-    }
-
-    /**
-     * Handle singleplayer/traderServices/itemDelivery
-     */
-    public itemDelivery(url: string, request: IItemDeliveryRequestData, sessionId: string): INullResponseData
-    {
-        this.inraidController.itemDelivery(sessionId, request.traderId, request.items);
-        return this.httpResponse.nullResponse();
-    }
-
     public getTraitorScavHostileChance(url: string, info: IEmptyRequestData, sessionId: string): string
     {
         return this.httpResponse.noBody(this.inraidController.getTraitorScavHostileChance(url, sessionId));
-    }
-
-    public getSandboxMaxPatrolValue(url: string, info: IEmptyRequestData, sessionId: string): string
-    {
-        return this.httpResponse.noBody(this.inraidController.getSandboxMaxPatrolValue(url, sessionId));
     }
 
     public getBossConvertSettings(url: string, info: IEmptyRequestData, sessionId: string): string

@@ -48,7 +48,7 @@
             ]
         },
         "pack": {
-            "chancePercent": 9,
+            "chancePercent": 18,
             "itemCountMin": 4,
             "itemCountMax": 18,
             "itemTypeWhitelist": [

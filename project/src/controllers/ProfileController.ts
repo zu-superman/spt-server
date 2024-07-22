@@ -87,7 +87,7 @@ export class ProfileController
         if (!pmc?.Info?.Level)
         {
             return {
-                username: profile.info.username,
+                username: profile.info?.username ?? "",
                 nickname: "unknown",
                 side: "unknown",
                 currlvl: 0,
@@ -95,6 +95,8 @@ export class ProfileController
                 prevexp: 0,
                 nextlvl: 0,
                 maxlvl: maxlvl,
+                edition: profile.info?.edition ?? "",
+                profileId: profile.info?.id ?? "",
                 sptData: this.profileHelper.getDefaultSptDataObject(),
             };
         }
@@ -112,6 +114,8 @@ export class ProfileController
                 : this.profileHelper.getExperience(currlvl),
             nextlvl: nextlvl,
             maxlvl: maxlvl,
+            edition: profile.info?.edition ?? "",
+            profileId: profile.info?.id ?? "",
             sptData: profile.spt,
         };
     }
@@ -145,8 +149,8 @@ export class ProfileController
         pmcData.aid = account.aid;
         pmcData.savage = account.scavId;
         pmcData.sessionId = sessionID;
-        pmcData.Info.Nickname = info.nickname;
-        pmcData.Info.LowerNickname = info.nickname.toLowerCase();
+        pmcData.Info.Nickname = account.username;
+        pmcData.Info.LowerNickname = account.username.toLowerCase();
         pmcData.Info.RegistrationDate = this.timeUtil.getTimestamp();
         pmcData.Info.Voice = this.databaseService.getCustomization()[info.voiceId]._name;
         pmcData.Stats = this.profileHelper.getDefaultCounters();
@@ -501,8 +505,8 @@ export class ProfileController
         {
             profileToUpdate.Info.SelectedMemberCategory = request.memberCategory;
         }
-        
-        if(request.squadInviteRestriction !== null)
+
+        if (request.squadInviteRestriction !== null)
         {
             profileToUpdate.Info.SquadInviteRestriction = request.squadInviteRestriction;
         }

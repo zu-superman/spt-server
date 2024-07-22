@@ -102,7 +102,6 @@
         "regular",
         "pve"
       ],
-      "Supports": null,
       "Time": 1470,
       "TriggerId": "",
       "TriggerName": ""
@@ -124,7 +123,6 @@
         "regular",
         "pve"
       ],
-      "Supports": null,
       "Time": -1,
       "TriggerId": "autoId_00632_EXFIL",
       "TriggerName": "interactObject"
@@ -146,7 +144,6 @@
         "regular",
         "pve"
       ],
-      "Supports": null,
       "Time": -1,
       "TriggerId": "autoId_00000_D2_LEVER",
       "TriggerName": "interactObject"
@@ -168,7 +165,6 @@
         "regular",
         "pve"
       ],
-      "Supports": null,
       "Time": 3,
       "TriggerId": "raider_simple_patroling",
       "TriggerName": "interactObject"
@@ -181,19 +177,23 @@
   "BotLocationModifier": {
     "AccuracySpeed": 0.6,
     "DistToActivate": 330,
+    "DistToActivatePvE": 330,
     "DistToPersueAxemanCoef": 1.1,
     "DistToSleep": 350,
+    "DistToSleepPvE": 350,
     "GainSight": 1.3,
     "KhorovodChance": 0,
     "MarksmanAccuratyCoef": 1,
+    "MaxExfiltrationTime": 1800,
+    "MinExfiltrationTime": 1200,
     "Scattering": 0.6,
     "VisibleDistance": 1.3
   },
   "BotMarksman": 0,
-  "BotMax": 16,
-  "BotMaxPlayer": 7,
+  "BotMax": 28,
+  "BotMaxPlayer": 0,
   "BotMaxPvE": 28,
-  "BotMaxTimePlayer": 1000,
+  "BotMaxTimePlayer": 0,
   "BotNormal": 50,
   "BotSpawnCountStep": 3,
   "BotSpawnPeriodCheck": 15,
@@ -212,6 +212,7 @@
   "EscapeTimeLimit": 40,
   "EscapeTimeLimitCoop": 30,
   "EscapeTimeLimitPVE": 40,
+  "ForceOnlineRaidInPVE": false,
   "GenerateLocalLootCache": true,
   "GlobalContainerChanceModifier": 1,
   "GlobalLootChanceModifier": 0.4,
@@ -6207,18 +6208,26 @@
     {
       "BotPreset": "normal",
       "BotSide": "Savage",
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "SpawnPoints": "",
       "WildSpawnType": "assault",
       "isPlayers": false,
       "number": 1,
-      "slots_max": 1,
-      "slots_min": 0,
+      "slots_max": 4,
+      "slots_min": 1,
       "time_max": -1,
       "time_min": -1
     },
     {
       "BotPreset": "normal",
       "BotSide": "Savage",
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "SpawnPoints": "",
       "WildSpawnType": "assault",
       "isPlayers": false,
@@ -6231,6 +6240,10 @@
     {
       "BotPreset": "hard",
       "BotSide": "Savage",
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "SpawnPoints": "",
       "WildSpawnType": "assault",
       "isPlayers": false,
@@ -6243,6 +6256,10 @@
     {
       "BotPreset": "normal",
       "BotSide": "Savage",
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "SpawnPoints": "",
       "WildSpawnType": "assault",
       "isPlayers": false,
@@ -6255,9 +6272,13 @@
     {
       "BotPreset": "normal",
       "BotSide": "Savage",
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "SpawnPoints": "",
       "WildSpawnType": "assault",
-      "isPlayers": true,
+      "isPlayers": false,
       "number": 5,
       "slots_max": 4,
       "slots_min": 2,
@@ -6267,9 +6288,13 @@
     {
       "BotPreset": "hard",
       "BotSide": "Savage",
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "SpawnPoints": "",
       "WildSpawnType": "assault",
-      "isPlayers": true,
+      "isPlayers": false,
       "number": 6,
       "slots_max": 4,
       "slots_min": 2,
@@ -6279,6 +6304,10 @@
     {
       "BotPreset": "normal",
       "BotSide": "Savage",
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "SpawnPoints": "",
       "WildSpawnType": "assault",
       "isPlayers": false,
@@ -6291,9 +6320,13 @@
     {
       "BotPreset": "normal",
       "BotSide": "Savage",
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "SpawnPoints": "",
       "WildSpawnType": "assault",
-      "isPlayers": true,
+      "isPlayers": false,
       "number": 8,
       "slots_max": 4,
       "slots_min": 2,
@@ -6303,9 +6336,13 @@
     {
       "BotPreset": "hard",
       "BotSide": "Savage",
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "SpawnPoints": "",
       "WildSpawnType": "assault",
-      "isPlayers": true,
+      "isPlayers": false,
       "number": 9,
       "slots_max": 4,
       "slots_min": 2,
@@ -6315,9 +6352,13 @@
     {
       "BotPreset": "normal",
       "BotSide": "Savage",
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "SpawnPoints": "",
       "WildSpawnType": "assault",
-      "isPlayers": true,
+      "isPlayers": false,
       "number": 10,
       "slots_max": 4,
       "slots_min": 2,
@@ -6327,9 +6368,13 @@
     {
       "BotPreset": "normal",
       "BotSide": "Savage",
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "SpawnPoints": "",
       "WildSpawnType": "assault",
-      "isPlayers": true,
+      "isPlayers": false,
       "number": 11,
       "slots_max": 4,
       "slots_min": 2,
@@ -6339,6 +6384,10 @@
     {
       "BotPreset": "hard",
       "BotSide": "Savage",
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "SpawnPoints": "",
       "WildSpawnType": "assault",
       "isPlayers": false,
@@ -6351,6 +6400,10 @@
     {
       "BotPreset": "normal",
       "BotSide": "Savage",
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "SpawnPoints": "",
       "WildSpawnType": "assault",
       "isPlayers": false,
@@ -6363,6 +6416,10 @@
     {
       "BotPreset": "hard",
       "BotSide": "Savage",
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "SpawnPoints": "",
       "WildSpawnType": "assault",
       "isPlayers": false,
@@ -6375,6 +6432,10 @@
     {
       "BotPreset": "hard",
       "BotSide": "Savage",
+      "SpawnMode": [
+        "regular",
+        "pve"
+      ],
       "SpawnPoints": "",
       "WildSpawnType": "assault",
       "isPlayers": false,

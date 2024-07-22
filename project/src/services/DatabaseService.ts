@@ -4,6 +4,7 @@ import { ILocation } from "@spt/models/eft/common/ILocation";
 import { IAchievement } from "@spt/models/eft/common/tables/IAchievement";
 import { ICustomizationItem } from "@spt/models/eft/common/tables/ICustomizationItem";
 import { IHandbookBase } from "@spt/models/eft/common/tables/IHandbookBase";
+import { ILocationServices } from "@spt/models/eft/common/tables/ILocationServices";
 import { IMatch } from "@spt/models/eft/common/tables/IMatch";
 import { IProfileTemplates } from "@spt/models/eft/common/tables/IProfileTemplate";
 import { IQuest } from "@spt/models/eft/common/tables/IQuest";
@@ -296,5 +297,18 @@ export class DatabaseService
         }
 
         return desiredTrader!;
+    }
+
+    /**
+     * @returns assets/database/locationServices/
+     */
+    public getLocationServices(): ILocationServices
+    {
+        if (!this.databaseServer.getTables().templates!.locationServices)
+        {
+            throw new Error(this.localisationService.getText("database-data_at_path_missing", "assets/database/locationServices"));
+        }
+
+        return this.databaseServer.getTables().templates!.locationServices!;
     }
 }

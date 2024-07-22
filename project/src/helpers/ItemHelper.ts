@@ -2,12 +2,13 @@ import { inject, injectable } from "tsyringe";
 import { HandbookHelper } from "@spt/helpers/HandbookHelper";
 import { IStaticAmmoDetails } from "@spt/models/eft/common/ILocation";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
-import { InsuredItem } from "@spt/models/eft/common/tables/IBotBase";
+import { IInsuredItem } from "@spt/models/eft/common/tables/IBotBase";
 import { Item, Location, Repairable, Upd } from "@spt/models/eft/common/tables/IItem";
 import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
 import { EquipmentSlots } from "@spt/models/enums/EquipmentSlots";
 import { ItemTpl } from "@spt/models/enums/ItemTpl";
+import { Money } from "@spt/models/enums/Money";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { DatabaseService } from "@spt/services/DatabaseService";
 import { ItemBaseClassService } from "@spt/services/ItemBaseClassService";
@@ -905,7 +906,7 @@ export class ItemHelper
     public replaceIDs(
         originalItems: Item[],
         pmcData?: IPmcData,
-        insuredItems?: InsuredItem[],
+        insuredItems?: IInsuredItem[],
         fastPanel?: any,
     ): Item[]
     {
@@ -1920,9 +1921,13 @@ export class ItemHelper
 
         return false;
     }
+
+    public getMoneyTpls(): string[]
+    {
+        return Object.values(Money);
+    }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 namespace ItemHelper
 {
     export interface ItemSize

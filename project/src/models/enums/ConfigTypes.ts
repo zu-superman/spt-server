@@ -26,5 +26,4 @@ export enum ConfigTypes
     SEASONAL_EVENT = "spt-seasonalevents",
     LOST_ON_DEATH = "spt-lostondeath",
     GIFTS = "spt-gifts",
-    BTR = "spt-btr",
 }

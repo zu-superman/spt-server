@@ -3,6 +3,7 @@ import { LocationCallbacks } from "@spt/callbacks/LocationCallbacks";
 import { RouteAction, StaticRouter } from "@spt/di/Router";
 import { ILocationsGenerateAllResponse } from "@spt/models/eft/common/ILocationsSourceDestinationBase";
 import { IGetBodyResponseData } from "@spt/models/eft/httpResponse/IGetBodyResponseData";
+import { IGetAirdropLootResponse } from "@spt/models/eft/location/IGetAirdropLootResponse";
 
 @injectable()
 export class LocationStaticRouter extends StaticRouter
@@ -23,8 +24,13 @@ export class LocationStaticRouter extends StaticRouter
                 },
             ),
             new RouteAction(
-                "/client/location/getAirdropLoot",
-                async (url: string, info: any, sessionID: string, _output: string): Promise<string> =>
+                "/client/airdrop/loot",
+                async (
+                    url: string,
+                    info: any,
+                    sessionID: string,
+                    output: string,
+                ): Promise<IGetBodyResponseData<IGetAirdropLootResponse>> =>
                 {
                     return this.locationCallbacks.getAirdropLoot(url, info, sessionID);
                 },

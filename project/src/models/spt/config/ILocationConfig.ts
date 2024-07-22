@@ -46,8 +46,6 @@ export interface ILocationConfig extends IBaseConfig
     scavRaidTimeSettings: IScavRaidTimeSettings
     /** Settings to adjust mods for lootable equipment in raid */
     equipmentLootSettings: IEquipmentLootSettings
-    /** Sets the max Patrol Value of the Boxzone on the map Ground Zero */
-    sandboxMaxPatrolvalue: number
 }
 
 export interface IEquipmentLootSettings
@@ -92,9 +90,7 @@ export interface LootMultiplier
 {
     bigmap: number
     develop: number
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     factory4_day: number
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     factory4_night: number
     interchange: number
     laboratory: number

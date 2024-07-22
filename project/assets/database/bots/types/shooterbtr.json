@@ -1,19 +1,27 @@
 {
   "appearance": {
     "body": {
-      "5fd22d311add82653b5a704c": 1
+      "5d28ad6986f77429275dba22": 1,
+      "5fd22d311add82653b5a704c": 1,
+      "64a2edba08d26f8d62049c06": 1
     },
     "feet": {
-      "5cde9fb87d6c8b0474535da9": 1
+      "61922589bb2cea6f7a22d964": 1,
+      "637df25a1e688345e1097bd4": 1,
+      "64a2e970a74bb33d140e6dc5": 1
     },
     "hands": {
-      "5fd7901bdd870108a754c0e6": 1
+      "5cc2e68f14c02e28b47de290": 1,
+      "5fd7901bdd870108a754c0e6": 1,
+      "64ac23c449d74fd5ec0a124e": 1
     },
     "head": {
+      "5cde9ff17d6c8b0474535daa": 2,
       "5f68c4c217d579077152a252": 1
     },
     "voice": {
-      "Scav_5": 1
+      "Scav_3": 1,
+      "Scav_5": 2
     }
   },
   "chances": {
@@ -23,31 +31,26 @@
       "Backpack": 0,
       "Earpiece": 0,
       "Eyewear": 0,
-      "FaceCover": 100,
+      "FaceCover": 0,
       "FirstPrimaryWeapon": 100,
-      "Headwear": 100,
+      "Headwear": 0,
       "Holster": 0,
       "Pockets": 100,
-      "Scabbard": 100,
+      "Scabbard": 0,
       "SecondPrimaryWeapon": 0,
       "SecuredContainer": 100,
       "TacticalVest": 100
     },
     "equipmentMods": {
-      "mod_equipment_000": 0,
-      "mod_equipment_001": 0,
-      "mod_equipment_002": 0,
-      "mod_mount": 0,
-      "mod_nvg": 0
+      "back_plate": 100,
+      "front_plate": 100
     },
     "weaponMods": {
-      "mod_mount": 0,
-      "mod_mount_000": 100,
-      "mod_muzzle": 0,
-      "mod_scope": 0,
-      "mod_tactical_001": 0,
-      "mod_tactical_002": 0,
-      "mod_tactical_003": 0
+      "mod_bipod": 0,
+      "mod_handguard": 0,
+      "mod_magazine": 100,
+      "mod_sight_rear": 100,
+      "mod_stock": 100
     }
   },
   "difficulty": {
@@ -2129,7 +2132,8 @@
     "standingForKill": 0
   },
   "firstName": [
-    "Гоша"
+    "Ярик",
+    "Витя"
   ],
   "generation": {
     "items": {
@@ -2294,8 +2298,8 @@
   },
   "inventory": {
     "Ammo": {
-      "Caliber12g": {
-        "560d5e524bdc2d25448b4571": 1
+      "Caliber762x54R": {
+        "5e023d34e8a400319a28ed44": 1
       }
     },
     "equipment": {
@@ -2304,94 +2308,79 @@
       "Backpack": {},
       "Earpiece": {},
       "Eyewear": {},
-      "FaceCover": {
-        "59e7715586f7742ee5789605": 1
-      },
+      "FaceCover": {},
       "FirstPrimaryWeapon": {
-        "56dee2bdd2720bc8328b4567": 1
+        "657857faeff4c850222dff1b": 1
       },
-      "Headwear": {
-        "5ea05cf85ad9772e6624305d": 1
-      },
+      "Headwear": {},
       "Holster": {},
       "Pockets": {
-        "557ffd194bdc2d28148b457f": 1
+        "64cbd95a29b9b4283e216ff5": 1
       },
-      "Scabbard": {
-        "57e26fc7245977162a14b800": 1
-      },
+      "Scabbard": {},
       "SecondPrimaryWeapon": {},
       "SecuredContainer": {
         "5c0a794586f77461c458f892": 1
       },
       "TacticalVest": {
-        "64be7110bf597ba84a0a41ea": 1
+        "544a5caa4bdc2d1a388b4568": 1
       }
     },
     "items": {
       "Backpack": {},
       "Pockets": {},
       "SecuredContainer": {
-        "560d5e524bdc2d25448b4571": 1
+        "5e023d34e8a400319a28ed44": 1
       },
       "SpecialLoot": {},
       "TacticalVest": {
-        "560d5e524bdc2d25448b4571": 1
+        "65785979bec02a3fe82c181e": 5
       }
     },
     "mods": {
-      "56dee2bdd2720bc8328b4567": {
-        "mod_barrel": [
-          "588200cf2459774414733d55"
+      "544a5caa4bdc2d1a388b4568": {
+        "Back_plate": [
+          "656f9fa0498d1b7e3e071d98"
         ],
-        "mod_handguard": [
-          "56deed6ed2720b4c698b4583"
+        "Front_plate": [
+          "656f9fa0498d1b7e3e071d98"
         ],
-        "mod_magazine": [
-          "56deee15d2720bee328b4567"
+        "Groin": [
+          "6570e90b3a5689d85f08db97"
         ],
-        "mod_mount_000": [
-          "55d48ebc4bdc2d8c2f8b456c"
+        "Soft_armor_back": [
+          "6570e87c23c1f638ef0b0ee2"
         ],
-        "mod_stock": [
-          "56083a334bdc2dc8488b4571"
-        ],
-        "patron_in_weapon": [
-          "560d5e524bdc2d25448b4571"
+        "Soft_armor_front": [
+          "6570e83223c1f638ef0b0ede"
         ]
       },
-      "5ea05cf85ad9772e6624305d": {
-        "Helmet_back": [
-          "657ba34b9ba22f103e08139b"
+      "657857faeff4c850222dff1b": {
+        "mod_barrel": [
+          "64639a9aab86f8fd4300146c"
         ],
-        "Helmet_top": [
-          "657ba2eef58ba5a625010798"
+        "mod_magazine": [
+          "65785979bec02a3fe82c181e"
         ],
-        "mod_equipment_000": [
-          "5a16badafcdbcb001865f72d",
-          "5a16b672fcdbcb001912fa83",
-          "5a16b7e1fcdbcb00165aa6c9"
+        "mod_pistolgrip": [
+          "64cbad529f7cf7f75c077fd5"
         ],
-        "mod_equipment_001": [
-          "5a16b9fffcdbcb0176308b34"
+        "mod_sight_rear": [
+          "6492fb8253acae0af00a29b6"
         ],
-        "mod_equipment_002": [
-          "5c0e66e2d174af02a96252f4"
+        "mod_stock": [
+          "6492e3a97df7d749100e29ee"
         ],
-        "mod_mount": [
-          "5a398b75c4a282000a51a266",
-          "5a398ab9c4a282000c5a9842"
-        ],
-        "mod_nvg": [
-          "5ea058e01dbce517f324b3e2",
-          "5c0558060db834001b735271",
-          "5a16b8a9fcdbcb00165aa6ca"
+        "patron_in_weapon": [
+          "5e023d34e8a400319a28ed44"
         ]
       }
     }
   },
   "lastName": [
-    "Ржавый"
+    "Бан",
+    "Бритва",
+    "Нелегальный"
   ],
   "skills": {
     "Common": {}

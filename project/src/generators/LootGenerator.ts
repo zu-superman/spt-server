@@ -8,7 +8,6 @@ import { Item } from "@spt/models/eft/common/tables/IItem";
 import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
 import { ISealedAirdropContainerSettings, RewardDetails } from "@spt/models/spt/config/IInventoryConfig";
-import { LootItem } from "@spt/models/spt/services/LootItem";
 import { LootRequest } from "@spt/models/spt/services/LootRequest";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { DatabaseService } from "@spt/services/DatabaseService";
@@ -43,10 +42,9 @@ export class LootGenerator
      * @param options parameters to adjust how loot is generated
      * @returns An array of loot items
      */
-    public createRandomLoot(options: LootRequest): LootItem[]
+    public createRandomLoot(options: LootRequest): Item[]
     {
-        const result: LootItem[] = [];
-
+        const result: Item[] = [];
         const itemTypeCounts = this.initItemLimitCounter(options.itemLimits);
 
         const itemsDb = this.databaseService.getItems();
@@ -70,26 +68,28 @@ export class LootGenerator
         }
 
         // Handle sealed weapon containers
-        const desiredWeaponCrateCount = this.randomUtil.getInt(
+        const sealedWeaponCrateCount = this.randomUtil.getInt(
             options.weaponCrateCount.min,
             options.weaponCrateCount.max,
         );
-        if (desiredWeaponCrateCount > 0)
+        if (sealedWeaponCrateCount > 0)
         {
-            // Get list of all sealed containers from db
+            // Get list of all sealed containers from db - they're all the same, just for flavor
             const sealedWeaponContainerPool = Object.values(itemsDb).filter((item) =>
                 item._name.includes("event_container_airdrop"),
             );
 
-            for (let index = 0; index < desiredWeaponCrateCount; index++)
+            for (let index = 0; index < sealedWeaponCrateCount; index++)
             {
                 // Choose one at random + add to results array
                 const chosenSealedContainer = this.randomUtil.getArrayValue(sealedWeaponContainerPool);
                 result.push({
-                    id: this.hashUtil.generate(),
-                    tpl: chosenSealedContainer._id,
-                    isPreset: false,
-                    stackCount: 1,
+                    _id: this.hashUtil.generate(),
+                    _tpl: chosenSealedContainer._id,
+                    upd: {
+                        StackObjectsCount: 1,
+                        SpawnedInSession: true,
+                    },
                 });
             }
         }
@@ -103,6 +103,7 @@ export class LootGenerator
                 && options.itemTypeWhitelist.includes(item[1]._parent),
         );
 
+        // Pool has items we could add as loot, proceed
         if (items.length > 0)
         {
             const randomisedItemCount = this.randomUtil.getInt(options.itemCount.min, options.itemCount.max);
@@ -242,7 +243,7 @@ export class LootGenerator
         items: [string, ITemplateItem][],
         itemTypeCounts: Record<string, { current: number, max: number }>,
         options: LootRequest,
-        result: LootItem[],
+        result: Item[],
     ): boolean
     {
         const randomItem = this.randomUtil.getArrayValue(items)[1];
@@ -259,20 +260,22 @@ export class LootGenerator
             return false;
         }
 
-        const newLootItem: LootItem = {
-            id: this.hashUtil.generate(),
-            tpl: randomItem._id,
-            isPreset: false,
-            stackCount: 1,
+        const newLootItem: Item = {
+            _id: this.hashUtil.generate(),
+            _tpl: randomItem._id,
+            upd: {
+                StackObjectsCount: 1,
+                SpawnedInSession: true,
+            },
         };
 
         // Special case - handle items that need a stackcount > 1
         if (randomItem._props.StackMaxSize > 1)
         {
-            newLootItem.stackCount = this.getRandomisedStackCount(randomItem, options);
+            newLootItem.upd.StackObjectsCount = this.getRandomisedStackCount(randomItem, options);
         }
 
-        newLootItem.tpl = randomItem._id;
+        newLootItem._tpl = randomItem._id;
         result.push(newLootItem);
 
         if (itemLimitCount)
@@ -317,7 +320,7 @@ export class LootGenerator
         presetPool: IPreset[],
         itemTypeCounts: Record<string, { current: number, max: number }>,
         itemBlacklist: string[],
-        result: LootItem[],
+        result: Item[],
     ): boolean
     {
         // Choose random preset and get details from item db using encyclopedia value (encyclopedia === tplId)
@@ -367,8 +370,13 @@ export class LootGenerator
             return false;
         }
 
+        const presetAndMods: Item[] = this.itemHelper.replaceIDs(chosenPreset._items);
+        this.itemHelper.remapRootItemId(presetAndMods);
         // Add chosen preset tpl to result array
-        result.push({ tpl: chosenPreset._items[0]._tpl, isPreset: true, stackCount: 1 });
+        presetAndMods.forEach((item) =>
+        {
+            result.push(item);
+        });
 
         if (itemLimitCount)
         {

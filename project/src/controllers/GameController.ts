@@ -161,6 +161,16 @@ export class GameController
                 }
             }
 
+            if (Array.isArray(fullProfile.characters.pmc.WishList))
+            {
+                fullProfile.characters.pmc.WishList = {};
+            }
+
+            if (Array.isArray(fullProfile.characters.scav.WishList))
+            {
+                fullProfile.characters.scav.WishList = {};
+            }
+
             const pmcProfile = fullProfile.characters.pmc;
 
             this.logger.debug(`Started game with sessionId: ${sessionID} ${pmcProfile.Info?.Nickname}`);
@@ -311,7 +321,7 @@ export class GameController
                 continue;
             }
 
-            map.base.BotMax = this.botConfig.maxBotCap[locationKey];
+            map.base.BotMaxPvE = this.botConfig.maxBotCap[locationKey];
 
             // make values no larger than 30 secs
             map.base.BotStart = Math.min(map.base.BotStart, 30);
@@ -505,7 +515,7 @@ export class GameController
      */
     public getGameMode(sessionID: string, info: IGameModeRequestData): any
     {
-        return { gameMode: ESessionMode.REGULAR, backendUrl: this.httpServerHelper.getBackendUrl() };
+        return { gameMode: ESessionMode.PVE, backendUrl: this.httpServerHelper.getBackendUrl() };
     }
 
     /**

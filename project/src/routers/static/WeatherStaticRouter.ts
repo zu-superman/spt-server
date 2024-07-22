@@ -3,6 +3,7 @@ import { WeatherCallbacks } from "@spt/callbacks/WeatherCallbacks";
 import { RouteAction, StaticRouter } from "@spt/di/Router";
 import { IGetBodyResponseData } from "@spt/models/eft/httpResponse/IGetBodyResponseData";
 import { IWeatherData } from "@spt/models/eft/weather/IWeatherData";
+import { IGetLocalWeatherResponseData } from "@spt/models/spt/weather/IGetLocalWeatherResponseData";
 
 @injectable()
 export class WeatherStaticRouter extends StaticRouter
@@ -20,6 +21,19 @@ export class WeatherStaticRouter extends StaticRouter
                 ): Promise<IGetBodyResponseData<IWeatherData>> =>
                 {
                     return this.weatherCallbacks.getWeather(url, info, sessionID);
+                },
+            ),
+
+            new RouteAction(
+                "/client/localGame/weather",
+                async (
+                    url: string,
+                    info: any,
+                    sessionID: string,
+                    _output: string
+                ): Promise<IGetBodyResponseData<IGetLocalWeatherResponseData>> =>
+                {
+                    return this.weatherCallbacks.getLocalWeather(url, info, sessionID);
                 },
             ),
         ]);

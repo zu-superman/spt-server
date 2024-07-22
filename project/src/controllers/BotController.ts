@@ -185,13 +185,11 @@ export class BotController
     {
         const pmcProfile = this.profileHelper.getPmcProfile(sessionId);
 
-        // If there's more than 1 condition, this is the first time client has requested bots
-        // Client sends every bot type it will need in raid
         // Use this opportunity to create and cache bots for later retreval
-        const isFirstGen = info.conditions.length > 1;
-        if (isFirstGen)
+        const multipleBotTypesRequested = info.conditions.length > 1;
+        if (multipleBotTypesRequested)
         {
-            return this.generateBotsFirstTime(info, pmcProfile, sessionId);
+            return this.generateMultipleBotsAndCache(info, pmcProfile, sessionId);
         }
 
         return this.returnSingleBotFromCache(sessionId, info);
@@ -204,25 +202,22 @@ export class BotController
      * @param sessionId Session id
      * @returns
      */
-    public async generateBotsFirstTime(
+    protected async generateMultipleBotsAndCache(
         request: IGenerateBotsRequestData,
         pmcProfile: IPmcData,
         sessionId: string,
     ): Promise<IBotBase[]>
     {
-        // Clear bot cache before any work starts
-        this.botGenerationCacheService.clearStoredBots();
-
         const raidSettings = this.applicationContext
             .getLatestValue(ContextVariableType.RAID_CONFIGURATION)
             ?.getValue<IGetRaidConfigurationRequestData>();
 
         if (raidSettings === undefined)
         {
-            throw new Error(this.localisationService.getText("bot-unable_to_load_raid_settings_from_appcontext"));
+            //   throw new Error(this.localisationService.getText("bot-unable_to_load_raid_settings_from_appcontext"));
         }
         const pmcLevelRangeForMap
-            = this.pmcConfig.locationSpecificPmcLevelOverride[raidSettings.location.toLowerCase()];
+            = this.pmcConfig.locationSpecificPmcLevelOverride[raidSettings?.location.toLowerCase()];
 
         const allPmcsHaveSameNameAsPlayer = this.randomUtil.getChance100(
             this.pmcConfig.allPMCsHavePlayerNameWithRandomPrefixChance,
@@ -324,16 +319,27 @@ export class BotController
             botGenerationDetails.side = this.botHelper.getPmcSideByRole(condition.Role);
         }
 
-        // Loop over and make x bots for this bot wave
-        const cacheKey = `${
-            botGenerationDetails.eventRole ?? botGenerationDetails.role
-        }${botGenerationDetails.botDifficulty}`;
+        // Create a compound key to store bots in cache against
+        const cacheKey = this.botGenerationCacheService.createCacheKey(
+            botGenerationDetails.eventRole ?? botGenerationDetails.role,
+            botGenerationDetails.botDifficulty,
+        );
+
+        // Get number of bots we have in cache
+        const botCacheCount = this.botGenerationCacheService.getCachedBotCount(cacheKey);
         const botPromises: Promise<void>[] = [];
+        if (botCacheCount > botGenerationDetails.botCountToGenerate)
+        {
+            return;
+        }
+
+        // We're below desired count, add bots to cache
         for (let i = 0; i < botGenerationDetails.botCountToGenerate; i++)
         {
             const detailsClone = this.cloner.clone(botGenerationDetails);
             botPromises.push(this.generateSingleBotAndStoreInCache(detailsClone, sessionId, cacheKey));
         }
+
         return Promise.all(botPromises).then(() =>
         {
             this.logger.debug(
@@ -370,7 +376,7 @@ export class BotController
      * @param request Bot generation request object
      * @returns Single IBotBase object
      */
-    public async returnSingleBotFromCache(
+    protected async returnSingleBotFromCache(
         sessionId: string,
         request: IGenerateBotsRequestData,
     ): Promise<IBotBase[]>
@@ -457,10 +463,10 @@ export class BotController
             }
         }
 
-        // Construct cache key
-        const cacheKey = `${
-            botGenerationDetails.eventRole ?? botGenerationDetails.role
-        }${botGenerationDetails.botDifficulty}`;
+        // Create a compound key to store bots in cache against
+        const cacheKey = this.botGenerationCacheService.createCacheKey(
+            botGenerationDetails.eventRole ?? botGenerationDetails.role,
+            botGenerationDetails.botDifficulty);
 
         // Check cache for bot using above key
         if (!this.botGenerationCacheService.cacheHasBotOfRole(cacheKey))

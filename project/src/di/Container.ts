@@ -68,7 +68,7 @@ import { BotLevelGenerator } from "@spt/generators/BotLevelGenerator";
 import { BotLootGenerator } from "@spt/generators/BotLootGenerator";
 import { BotWeaponGenerator } from "@spt/generators/BotWeaponGenerator";
 import { FenceBaseAssortGenerator } from "@spt/generators/FenceBaseAssortGenerator";
-import { LocationGenerator } from "@spt/generators/LocationGenerator";
+import { LocationLootGenerator } from "@spt/generators/LocationLootGenerator";
 import { LootGenerator } from "@spt/generators/LootGenerator";
 import { PlayerScavGenerator } from "@spt/generators/PlayerScavGenerator";
 import { PMCLootGenerator } from "@spt/generators/PMCLootGenerator";
@@ -197,6 +197,7 @@ import { IWebSocketConnectionHandler } from "@spt/servers/ws/IWebSocketConnectio
 import { DefaultSptWebSocketMessageHandler } from "@spt/servers/ws/message/DefaultSptWebSocketMessageHandler";
 import { ISptWebSocketMessageHandler } from "@spt/servers/ws/message/ISptWebSocketMessageHandler";
 import { SptWebSocketConnectionHandler } from "@spt/servers/ws/SptWebSocketConnectionHandler";
+import { AirdropService } from "@spt/services/AirdropService";
 import { BotEquipmentFilterService } from "@spt/services/BotEquipmentFilterService";
 import { BotEquipmentModPoolService } from "@spt/services/BotEquipmentModPoolService";
 import { BotGenerationCacheService } from "@spt/services/BotGenerationCacheService";
@@ -213,6 +214,7 @@ import { ItemBaseClassService } from "@spt/services/ItemBaseClassService";
 import { ItemFilterService } from "@spt/services/ItemFilterService";
 import { LocaleService } from "@spt/services/LocaleService";
 import { LocalisationService } from "@spt/services/LocalisationService";
+import { LocationLifecycleService } from "@spt/services/LocationLifecycleService";
 import { MailSendService } from "@spt/services/MailSendService";
 import { MapMarkerService } from "@spt/services/MapMarkerService";
 import { MatchBotDetailsCacheService } from "@spt/services/MatchBotDetailsCacheService";
@@ -244,7 +246,6 @@ import { RepairService } from "@spt/services/RepairService";
 import { SeasonalEventService } from "@spt/services/SeasonalEventService";
 import { TraderAssortService } from "@spt/services/TraderAssortService";
 import { TraderPurchasePersisterService } from "@spt/services/TraderPurchasePersisterService";
-import { TraderServicesService } from "@spt/services/TraderServicesService";
 import { App } from "@spt/utils/App";
 import { AsyncQueue } from "@spt/utils/AsyncQueue";
 import type { ICloner } from "@spt/utils/cloners/ICloner";
@@ -536,7 +537,7 @@ export class Container
         depContainer.register<BotWeaponGenerator>("BotWeaponGenerator", BotWeaponGenerator);
         depContainer.register<BotLootGenerator>("BotLootGenerator", BotLootGenerator);
         depContainer.register<BotInventoryGenerator>("BotInventoryGenerator", BotInventoryGenerator);
-        depContainer.register<LocationGenerator>("LocationGenerator", { useClass: LocationGenerator });
+        depContainer.register<LocationLootGenerator>("LocationLootGenerator", { useClass: LocationLootGenerator });
         depContainer.register<PMCLootGenerator>("PMCLootGenerator", PMCLootGenerator, {
             lifecycle: Lifecycle.Singleton,
         });
@@ -707,10 +708,6 @@ export class Container
         depContainer.register<TraderAssortService>("TraderAssortService", TraderAssortService, {
             lifecycle: Lifecycle.Singleton,
         });
-        depContainer.register<TraderServicesService>("TraderServicesService", TraderServicesService, {
-            lifecycle: Lifecycle.Singleton,
-        });
-
         depContainer.register<RagfairPriceService>("RagfairPriceService", RagfairPriceService, {
             lifecycle: Lifecycle.Singleton,
         });
@@ -793,6 +790,12 @@ export class Container
         depContainer.register<MapMarkerService>("MapMarkerService", MapMarkerService);
 
         depContainer.register<ProfileActivityService>("ProfileActivityService", ProfileActivityService, {
+            lifecycle: Lifecycle.Singleton,
+        });
+        depContainer.register<AirdropService>("AirdropService", AirdropService, {
+            lifecycle: Lifecycle.Singleton,
+        });
+        depContainer.register<LocationLifecycleService>("LocationLifecycleService", LocationLifecycleService, {
             lifecycle: Lifecycle.Singleton,
         });
     }

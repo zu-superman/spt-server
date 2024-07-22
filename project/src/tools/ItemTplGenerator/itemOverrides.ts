@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 
 /**
  * An object containing item name overrides for use with ItemTplGenerator
@@ -42,6 +41,7 @@ export default {
     "5a29276886f77435ed1b117c": "HDD Wet Job",
     "628393620d8524273e7eb028": "HDD Top Secret",
     "638dfc803083a019d447768e": "HDD Surveillance",
+    "66760b3deb51b08bd40c2b08": "HDD Unused",
     "638e0057ab150a5f56238960": "Housing Journal",
     "6393262086e646067c176aa2": "Medical Record",
     "63989ced706b793c7d60cfef": "Informant Journal",
@@ -73,6 +73,7 @@ export default {
     "5d1340bdd7ad1a0e8d245aab": "GEN M3 FDE",
     "5cbdaf89ae9215000e5b9c94": "6L23 Plum",
     "5e21a3c67e40bd02257a008a": "GEN M3 Banana",
+    "6241c2c2117ad530666a5108": "GEN M3 AIRSOFT",
 
     // Lootable Containers
     "5914944186f774189e5e76c2": "Jacket 204Key",

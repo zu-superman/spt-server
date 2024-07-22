@@ -1,6 +1,7 @@
 import crypto from "node:crypto";
 import fs from "node:fs";
 import crc32 from "buffer-crc32";
+import { mongoid } from "mongoid-js";
 import { inject, injectable } from "tsyringe";
 import { TimeUtil } from "@spt/utils/TimeUtil";
 
@@ -16,11 +17,7 @@ export class HashUtil
      */
     public generate(): string
     {
-        const shasum = crypto.createHash("sha256");
-        const time = Math.random() * this.timeUtil.getTimestamp();
-
-        shasum.update(time.toString());
-        return shasum.digest("hex").substring(0, 24);
+        return mongoid();
     }
 
     public generateMd5ForData(data: string): string

@@ -112,7 +112,7 @@ export class PlayerScavGenerator
         scavData.Quests = existingScavDataClone.Quests ?? [];
         scavData.TaskConditionCounters = existingScavDataClone.TaskConditionCounters ?? {};
         scavData.Notes = existingScavDataClone.Notes ?? { Notes: [] };
-        scavData.WishList = existingScavDataClone.WishList ?? [];
+        scavData.WishList = existingScavDataClone.WishList ?? {};
         scavData.Encyclopedia = pmcDataClone.Encyclopedia ?? {};
 
         // Add additional items to player scav as loot
