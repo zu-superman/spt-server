@@ -172,7 +172,6 @@ export class GameCallbacks implements OnLoad
      * Handle singleplayer/settings/getRaidTime
      * @returns string
      */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public getRaidTime(url: string, request: IGetRaidTimeRequest, sessionID: string): IGetRaidTimeResponse
     {
         return this.httpResponse.noBody(this.gameController.getRaidTime(sessionID, request));

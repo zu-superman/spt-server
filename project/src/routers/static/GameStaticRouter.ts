@@ -151,7 +151,6 @@ export class GameStaticRouter extends StaticRouter
             ),
             new RouteAction(
                 "/singleplayer/settings/getRaidTime",
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 async (url: string, info: any, sessionID: string, output: string): Promise<IGetRaidTimeResponse> =>
                 {
                     return this.gameCallbacks.getRaidTime(url, info, sessionID);
