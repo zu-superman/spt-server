@@ -17,7 +17,8 @@
             "tests/__cache__/*",
             "tests/__coverage__/*",
             "types/*",
-            "user/mods/*"
+            "user/mods/*",
+            "assets/database/*"
         ]
     },
     "linter": {
