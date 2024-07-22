@@ -121,6 +121,10 @@
                 "5696686a4bdc2da3298b456a": {
                     "min": 100,
                     "max": 500
+                },
+                "5d235b4d86f7742e017bc88a": {
+                    "min": 10,
+                    "max": 50
                 }
             },
             "armorLevelWhitelist": [
@@ -194,6 +198,10 @@
                 "59e690b686f7746c9f75e848": {
                     "min": 10,
                     "max": 25
+                },
+                "5d235b4d86f7742e017bc88a": {
+                    "min": 10,
+                    "max": 50
                 }
             },
             "armorLevelWhitelist": [
@@ -276,6 +284,10 @@
                 "5696686a4bdc2da3298b456a": {
                     "min": 100,
                     "max": 500
+                },
+                "5d235b4d86f7742e017bc88a": {
+                    "min": 10,
+                    "max": 50
                 }
             },
             "armorLevelWhitelist": [
@@ -355,6 +367,10 @@
                 "5696686a4bdc2da3298b456a": {
                     "min": 100,
                     "max": 500
+                },
+                "5d235b4d86f7742e017bc88a": {
+                    "min": 10,
+                    "max": 50
                 }
             },
             "armorLevelWhitelist": [
