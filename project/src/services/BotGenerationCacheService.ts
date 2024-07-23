@@ -1,13 +1,12 @@
-import { inject, injectable } from "tsyringe";
 import { BotHelper } from "@spt/helpers/BotHelper";
 import { IBotBase } from "@spt/models/eft/common/tables/IBotBase";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { RandomUtil } from "@spt/utils/RandomUtil";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class BotGenerationCacheService
-{
+export class BotGenerationCacheService {
     protected storedBots: Map<string, IBotBase[]> = new Map();
     protected activeBotsInRaid: IBotBase[] = [];
 
@@ -16,23 +15,17 @@ export class BotGenerationCacheService
         @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("BotHelper") protected botHelper: BotHelper,
-    )
-    {}
+    ) {}
 
     /**
      * Store array of bots in cache, shuffle results before storage
      * @param botsToStore Bots we want to store in the cache
      */
-    public storeBots(key: string, botsToStore: IBotBase[]): void
-    {
-        for (const bot of botsToStore)
-        {
-            if (this.storedBots.has(key))
-            {
+    public storeBots(key: string, botsToStore: IBotBase[]): void {
+        for (const bot of botsToStore) {
+            if (this.storedBots.has(key)) {
                 this.storedBots.get(key).unshift(bot);
-            }
-            else
-            {
+            } else {
                 this.storedBots.set(key, [bot]);
             }
         }
@@ -44,13 +37,10 @@ export class BotGenerationCacheService
      * @param key role to retreive (assault/bossTagilla etc)
      * @returns IBotBase object
      */
-    public getBot(key: string): IBotBase
-    {
-        if (this.storedBots.has(key))
-        {
+    public getBot(key: string): IBotBase {
+        if (this.storedBots.has(key)) {
             const cachedOfType = this.storedBots.get(key);
-            if (cachedOfType.length > 0)
-            {
+            if (cachedOfType.length > 0) {
                 return cachedOfType.pop();
             }
 
@@ -66,8 +56,7 @@ export class BotGenerationCacheService
      * Cache a bot that has been sent to the client in memory for later use post-raid to determine if player killed a traitor scav
      * @param botToStore Bot object to store
      */
-    public storeUsedBot(botToStore: IBotBase): void
-    {
+    public storeUsedBot(botToStore: IBotBase): void {
         this.activeBotsInRaid.push(botToStore);
     }
 
@@ -77,16 +66,14 @@ export class BotGenerationCacheService
      * @param profileId Id of bot to get
      * @returns IBotBase
      */
-    public getUsedBot(profileId: string): IBotBase
-    {
+    public getUsedBot(profileId: string): IBotBase {
         return this.activeBotsInRaid.find((x) => x._id === profileId);
     }
 
     /**
      * Remove all cached bot profiles from memory
      */
-    public clearStoredBots(): void
-    {
+    public clearStoredBots(): void {
         this.storedBots = new Map();
         this.activeBotsInRaid = [];
     }
@@ -95,8 +82,7 @@ export class BotGenerationCacheService
      * Does cache have a bot with requested key
      * @returns false if empty
      */
-    public cacheHasBotOfRole(key: string): boolean
-    {
+    public cacheHasBotOfRole(key: string): boolean {
         return this.storedBots.has(key) && this.storedBots.get(key).length > 0;
     }
 }

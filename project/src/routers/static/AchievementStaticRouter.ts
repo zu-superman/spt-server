@@ -1,15 +1,13 @@
-import { inject, injectable } from "tsyringe";
 import { AchievementCallbacks } from "@spt/callbacks/AchievementCallbacks";
 import { RouteAction, StaticRouter } from "@spt/di/Router";
 import { IGetBodyResponseData } from "@spt/models/eft/httpResponse/IGetBodyResponseData";
 import { ICompletedAchievementsResponse } from "@spt/models/eft/profile/ICompletedAchievementsResponse";
 import { IGetAchievementsResponse } from "@spt/models/eft/profile/IGetAchievementsResponse";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class AchievementStaticRouter extends StaticRouter
-{
-    constructor(@inject("AchievementCallbacks") protected achievementCallbacks: AchievementCallbacks)
-    {
+export class AchievementStaticRouter extends StaticRouter {
+    constructor(@inject("AchievementCallbacks") protected achievementCallbacks: AchievementCallbacks) {
         super([
             new RouteAction(
                 "/client/achievement/list",
@@ -18,8 +16,7 @@ export class AchievementStaticRouter extends StaticRouter
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<IGetAchievementsResponse>> =>
-                {
+                ): Promise<IGetBodyResponseData<IGetAchievementsResponse>> => {
                     return this.achievementCallbacks.getAchievements(url, info, sessionID);
                 },
             ),
@@ -31,8 +28,7 @@ export class AchievementStaticRouter extends StaticRouter
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<ICompletedAchievementsResponse>> =>
-                {
+                ): Promise<IGetBodyResponseData<ICompletedAchievementsResponse>> => {
                     return this.achievementCallbacks.statistic(url, info, sessionID);
                 },
             ),

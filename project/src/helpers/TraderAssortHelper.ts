@@ -1,4 +1,3 @@
-import { inject, injectable } from "tsyringe";
 import { RagfairAssortGenerator } from "@spt/generators/RagfairAssortGenerator";
 import { RagfairOfferGenerator } from "@spt/generators/RagfairOfferGenerator";
 import { AssortHelper } from "@spt/helpers/AssortHelper";
@@ -17,13 +16,13 @@ import { FenceService } from "@spt/services/FenceService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { TraderAssortService } from "@spt/services/TraderAssortService";
 import { TraderPurchasePersisterService } from "@spt/services/TraderPurchasePersisterService";
-import { ICloner } from "@spt/utils/cloners/ICloner";
 import { MathUtil } from "@spt/utils/MathUtil";
 import { TimeUtil } from "@spt/utils/TimeUtil";
+import { ICloner } from "@spt/utils/cloners/ICloner";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class TraderAssortHelper
-{
+export class TraderAssortHelper {
     protected traderConfig: ITraderConfig;
     protected mergedQuestAssorts: Record<string, Record<string, string>> = { started: {}, success: {}, fail: {} };
     protected createdMergedQuestAssorts = false;
@@ -46,8 +45,7 @@ export class TraderAssortHelper
         @inject("FenceService") protected fenceService: FenceService,
         @inject("ConfigServer") protected configServer: ConfigServer,
         @inject("PrimaryCloner") protected cloner: ICloner,
-    )
-    {
+    ) {
         this.traderConfig = this.configServer.getConfig(ConfigTypes.TRADER);
     }
 
@@ -60,11 +58,9 @@ export class TraderAssortHelper
      * @param flea Should assorts player hasn't unlocked be returned - default false
      * @returns a traders' assorts
      */
-    public getAssort(sessionId: string, traderId: string, flea = false): ITraderAssort
-    {
+    public getAssort(sessionId: string, traderId: string, flea = false): ITraderAssort {
         // Special case for getting ragfair items as they're dynamically generated
-        if (traderId === "ragfair")
-        {
+        if (traderId === "ragfair") {
             return this.getRagfairDataAsTraderAssort();
         }
 
@@ -72,14 +68,12 @@ export class TraderAssortHelper
         const fullProfile = this.profileHelper.getFullProfile(sessionId);
         const pmcProfile = fullProfile.characters.pmc;
 
-        if (traderId === Traders.FENCE)
-        {
+        if (traderId === Traders.FENCE) {
             return this.fenceService.getFenceAssorts(pmcProfile);
         }
 
         // Strip assorts player should not see yet
-        if (!flea)
-        {
+        if (!flea) {
             traderClone.assort = this.assortHelper.stripLockedLoyaltyAssort(pmcProfile, traderId, traderClone.assort);
         }
 
@@ -93,12 +87,10 @@ export class TraderAssortHelper
             sessionId,
             traderId,
         );
-        for (const assortId in assortPurchasesfromTrader)
-        {
+        for (const assortId in assortPurchasesfromTrader) {
             // Find assort we want to update current buy count of
             const assortToAdjust = traderClone.assort.items.find((x) => x._id === assortId);
-            if (!assortToAdjust)
-            {
+            if (!assortToAdjust) {
                 this.logger.debug(
                     `Cannot find trader: ${traderClone.base.nickname} assort: ${assortId} to adjust BuyRestrictionCurrent value, skipping`,
                 );
@@ -106,8 +98,7 @@ export class TraderAssortHelper
                 continue;
             }
 
-            if (!assortToAdjust.upd)
-            {
+            if (!assortToAdjust.upd) {
                 this.logger.debug(
                     `Unable to adjust assort ${assortToAdjust._id} item: ${assortToAdjust._tpl} BuyRestrictionCurrent value, assort has an undefined upd object`,
                 );
@@ -119,8 +110,7 @@ export class TraderAssortHelper
         }
 
         // Get rid of quest locked assorts
-        if (!this.createdMergedQuestAssorts)
-        {
+        if (!this.createdMergedQuestAssorts) {
             this.hydrateMergedQuestAssorts();
             this.createdMergedQuestAssorts = true;
         }
@@ -133,14 +123,12 @@ export class TraderAssortHelper
         );
 
         // Filter out root assorts that are blacklisted for this profile
-        if (fullProfile.spt.blacklistedItemTpls?.length > 0)
-        {
+        if (fullProfile.spt.blacklistedItemTpls?.length > 0) {
             this.removeItemsFromAssort(traderClone.assort, fullProfile.spt.blacklistedItemTpls);
         }
 
         // Multiply price if multiplier is other than 1
-        if (this.traderConfig.traderPriceMultipler !== 1)
-        {
+        if (this.traderConfig.traderPriceMultipler !== 1) {
             this.multiplyItemPricesByConfigMultiplier(traderClone.assort);
         }
 
@@ -152,13 +140,10 @@ export class TraderAssortHelper
      * @param assortToFilter Trader assort to modify
      * @param itemsTplsToRemove Item TPLs the assort should not have
      */
-    protected removeItemsFromAssort(assortToFilter: ITraderAssort, itemsTplsToRemove: string[]): void
-    {
-        function isValid(item: Item, blacklist: string[]): boolean
-        {
+    protected removeItemsFromAssort(assortToFilter: ITraderAssort, itemsTplsToRemove: string[]): void {
+        function isValid(item: Item, blacklist: string[]): boolean {
             // Is root item + blacklisted
-            if (item.parentId === "hideout" && blacklist.includes(item._tpl))
-            {
+            if (item.parentId === "hideout" && blacklist.includes(item._tpl)) {
                 // We want it gone
                 return false;
             }
@@ -173,14 +158,11 @@ export class TraderAssortHelper
      * Reset every traders root item `BuyRestrictionCurrent` property to 0
      * @param assortItems Items to adjust
      */
-    protected resetBuyRestrictionCurrentValue(assortItems: Item[]): void
-    {
+    protected resetBuyRestrictionCurrentValue(assortItems: Item[]): void {
         // iterate over root items
-        for (const assort of assortItems.filter((item) => item.slotId === "hideout"))
-        {
+        for (const assort of assortItems.filter((item) => item.slotId === "hideout")) {
             // no value to adjust
-            if (!assort.upd.BuyRestrictionCurrent)
-            {
+            if (!assort.upd.BuyRestrictionCurrent) {
                 continue;
             }
 
@@ -191,25 +173,19 @@ export class TraderAssortHelper
     /**
      * Create a dict of all assort id = quest id mappings used to work out what items should be shown to player based on the quests they've started/completed/failed
      */
-    protected hydrateMergedQuestAssorts(): void
-    {
+    protected hydrateMergedQuestAssorts(): void {
         // Loop every trader
         const traders = this.databaseService.getTraders();
-        for (const traderId in traders)
-        {
+        for (const traderId in traders) {
             // Trader has quest assort data
             const trader = traders[traderId];
-            if (trader.questassort)
-            {
+            if (trader.questassort) {
                 // Started/Success/fail
-                for (const questStatus in trader.questassort)
-                {
+                for (const questStatus in trader.questassort) {
                     // Each assort to quest id record
-                    for (const assortId in trader.questassort[questStatus])
-                    {
+                    for (const assortId in trader.questassort[questStatus]) {
                         // Null guard
-                        if (!this.mergedQuestAssorts[questStatus])
-                        {
+                        if (!this.mergedQuestAssorts[questStatus]) {
                             this.mergedQuestAssorts[questStatus] = {};
                         }
 
@@ -225,8 +201,7 @@ export class TraderAssortHelper
      * Flag trader as needing a flea offer reset to be picked up by flea update() function
      * @param trader trader details to alter
      */
-    public resetExpiredTrader(trader: ITrader): void
-    {
+    public resetExpiredTrader(trader: ITrader): void {
         trader.assort.items = this.getPristineTraderAssorts(trader.base._id);
 
         // Update resupply value to next timestamp
@@ -241,8 +216,7 @@ export class TraderAssortHelper
      * @param traderID Trader to check
      * @returns true they need refreshing
      */
-    public traderAssortsHaveExpired(traderID: string): boolean
-    {
+    public traderAssortsHaveExpired(traderID: string): boolean {
         const time = this.timeUtil.getTimestamp();
         const trader = this.databaseService.getTables().traders![traderID];
 
@@ -253,19 +227,15 @@ export class TraderAssortHelper
      * Iterate over all assorts barter_scheme values, find barters selling for money and multiply by multipler in config
      * @param traderAssort Assorts to multiple price of
      */
-    protected multiplyItemPricesByConfigMultiplier(traderAssort: ITraderAssort): void
-    {
-        if (!this.traderConfig.traderPriceMultipler || this.traderConfig.traderPriceMultipler <= 0)
-        {
+    protected multiplyItemPricesByConfigMultiplier(traderAssort: ITraderAssort): void {
+        if (!this.traderConfig.traderPriceMultipler || this.traderConfig.traderPriceMultipler <= 0) {
             this.traderConfig.traderPriceMultipler = 0.01;
             this.logger.warning(this.localisationService.getText("trader-price_multipler_is_zero_use_default"));
         }
 
-        for (const assortId in traderAssort.barter_scheme)
-        {
+        for (const assortId in traderAssort.barter_scheme) {
             const schemeDetails = traderAssort.barter_scheme[assortId][0];
-            if (schemeDetails.length === 1 && this.paymentHelper.isMoneyTpl(schemeDetails[0]._tpl))
-            {
+            if (schemeDetails.length === 1 && this.paymentHelper.isMoneyTpl(schemeDetails[0]._tpl)) {
                 schemeDetails[0].count = Math.ceil(schemeDetails[0].count * this.traderConfig.traderPriceMultipler);
             }
         }
@@ -276,8 +246,7 @@ export class TraderAssortHelper
      * @param traderId trader id
      * @returns array of Items
      */
-    protected getPristineTraderAssorts(traderId: string): Item[]
-    {
+    protected getPristineTraderAssorts(traderId: string): Item[] {
         return this.cloner.clone(this.traderAssortService.getPristineTraderAssort(traderId).items);
     }
 
@@ -285,8 +254,7 @@ export class TraderAssortHelper
      * Returns generated ragfair offers in a trader assort format
      * @returns Trader assort object
      */
-    protected getRagfairDataAsTraderAssort(): ITraderAssort
-    {
+    protected getRagfairDataAsTraderAssort(): ITraderAssort {
         return {
             items: this.ragfairAssortGenerator.getAssortItems().flat(),
             barter_scheme: {},

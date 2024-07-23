@@ -1,11 +1,9 @@
-export enum ESessionMode
-{
+export enum ESessionMode {
     REGULAR = "regular",
     PVE = "pve",
 }
 
-export interface IGameModeResponse
-{
-    gameMode: ESessionMode
-    backendUrl: string
+export interface IGameModeResponse {
+    gameMode: ESessionMode;
+    backendUrl: string;
 }

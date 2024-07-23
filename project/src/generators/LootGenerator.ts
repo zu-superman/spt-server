@@ -1,4 +1,3 @@
-import { inject, injectable } from "tsyringe";
 import { InventoryHelper } from "@spt/helpers/InventoryHelper";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { PresetHelper } from "@spt/helpers/PresetHelper";
@@ -17,12 +16,12 @@ import { LocalisationService } from "@spt/services/LocalisationService";
 import { RagfairLinkedItemService } from "@spt/services/RagfairLinkedItemService";
 import { HashUtil } from "@spt/utils/HashUtil";
 import { RandomUtil } from "@spt/utils/RandomUtil";
+import { inject, injectable } from "tsyringe";
 
-type ItemLimit = { current: number, max: number };
+type ItemLimit = { current: number; max: number };
 
 @injectable()
-export class LootGenerator
-{
+export class LootGenerator {
     constructor(
         @inject("PrimaryLogger") protected logger: ILogger,
         @inject("HashUtil") protected hashUtil: HashUtil,
@@ -35,16 +34,14 @@ export class LootGenerator
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("RagfairLinkedItemService") protected ragfairLinkedItemService: RagfairLinkedItemService,
         @inject("ItemFilterService") protected itemFilterService: ItemFilterService,
-    )
-    {}
+    ) {}
 
     /**
      * Generate a list of items based on configuration options parameter
      * @param options parameters to adjust how loot is generated
      * @returns An array of loot items
      */
-    public createRandomLoot(options: LootRequest): LootItem[]
-    {
+    public createRandomLoot(options: LootRequest): LootItem[] {
         const result: LootItem[] = [];
 
         const itemTypeCounts = this.initItemLimitCounter(options.itemLimits);
@@ -55,16 +52,13 @@ export class LootGenerator
             ...options.itemBlacklist,
         ]);
 
-        if (options.useRewarditemBlacklist)
-        {
+        if (options.useRewarditemBlacklist) {
             const itemsToAdd = this.itemFilterService.getItemRewardBlacklist();
             itemBlacklist = new Set([...itemBlacklist, ...itemsToAdd]);
         }
 
-        if (!options.allowBossItems)
-        {
-            for (const bossItem of this.itemFilterService.getBossItems())
-            {
+        if (!options.allowBossItems) {
+            for (const bossItem of this.itemFilterService.getBossItems()) {
                 itemBlacklist.add(bossItem);
             }
         }
@@ -74,15 +68,13 @@ export class LootGenerator
             options.weaponCrateCount.min,
             options.weaponCrateCount.max,
         );
-        if (desiredWeaponCrateCount > 0)
-        {
+        if (desiredWeaponCrateCount > 0) {
             // Get list of all sealed containers from db
             const sealedWeaponContainerPool = Object.values(itemsDb).filter((item) =>
                 item._name.includes("event_container_airdrop"),
             );
 
-            for (let index = 0; index < desiredWeaponCrateCount; index++)
-            {
+            for (let index = 0; index < desiredWeaponCrateCount; index++) {
                 // Choose one at random + add to results array
                 const chosenSealedContainer = this.randomUtil.getArrayValue(sealedWeaponContainerPool);
                 result.push({
@@ -97,19 +89,16 @@ export class LootGenerator
         // Get items from items.json that have a type of item + not in global blacklist + basetype is in whitelist
         const items = Object.entries(itemsDb).filter(
             (item) =>
-                !itemBlacklist.has(item[1]._id)
-                && item[1]._type.toLowerCase() === "item"
-                && !item[1]._props.QuestItem
-                && options.itemTypeWhitelist.includes(item[1]._parent),
+                !itemBlacklist.has(item[1]._id) &&
+                item[1]._type.toLowerCase() === "item" &&
+                !item[1]._props.QuestItem &&
+                options.itemTypeWhitelist.includes(item[1]._parent),
         );
 
-        if (items.length > 0)
-        {
+        if (items.length > 0) {
             const randomisedItemCount = this.randomUtil.getInt(options.itemCount.min, options.itemCount.max);
-            for (let index = 0; index < randomisedItemCount; index++)
-            {
-                if (!this.findAndAddRandomItemToLoot(items, itemTypeCounts, options, result))
-                {
+            for (let index = 0; index < randomisedItemCount; index++) {
+                if (!this.findAndAddRandomItemToLoot(items, itemTypeCounts, options, result)) {
                     // Failed to add, reduce index so we get another attempt
                     index--;
                 }
@@ -124,16 +113,13 @@ export class LootGenerator
             options.weaponPresetCount.min,
             options.weaponPresetCount.max,
         );
-        if (randomisedWeaponPresetCount > 0)
-        {
+        if (randomisedWeaponPresetCount > 0) {
             const weaponDefaultPresets = globalDefaultPresets.filter((preset) =>
                 this.itemHelper.isOfBaseclass(preset._encyclopedia, BaseClasses.WEAPON),
             );
 
-            if (weaponDefaultPresets.length > 0)
-            {
-                for (let index = 0; index < randomisedWeaponPresetCount; index++)
-                {
+            if (weaponDefaultPresets.length > 0) {
+                for (let index = 0; index < randomisedWeaponPresetCount; index++) {
                     if (
                         !this.findAndAddRandomPresetToLoot(
                             weaponDefaultPresets,
@@ -141,8 +127,7 @@ export class LootGenerator
                             itemBlacklistArray,
                             result,
                         )
-                    )
-                    {
+                    ) {
                         // Failed to add, reduce index so we get another attempt
                         index--;
                     }
@@ -155,8 +140,7 @@ export class LootGenerator
             options.armorPresetCount.min,
             options.armorPresetCount.max,
         );
-        if (randomisedArmorPresetCount > 0)
-        {
+        if (randomisedArmorPresetCount > 0) {
             const armorDefaultPresets = globalDefaultPresets.filter((preset) =>
                 this.itemHelper.armorItemCanHoldMods(preset._encyclopedia),
             );
@@ -165,10 +149,8 @@ export class LootGenerator
             );
 
             // Add some armors to rewards
-            if (levelFilteredArmorPresets.length > 0)
-            {
-                for (let index = 0; index < randomisedArmorPresetCount; index++)
-                {
+            if (levelFilteredArmorPresets.length > 0) {
+                for (let index = 0; index < randomisedArmorPresetCount; index++) {
                     if (
                         !this.findAndAddRandomPresetToLoot(
                             levelFilteredArmorPresets,
@@ -176,8 +158,7 @@ export class LootGenerator
                             itemBlacklistArray,
                             result,
                         )
-                    )
-                    {
+                    ) {
                         // Failed to add, reduce index so we get another attempt
                         index--;
                     }
@@ -194,14 +175,11 @@ export class LootGenerator
      * @param options Loot request options - armor level etc
      * @returns True if item has desired armor level
      */
-    protected isArmorOfDesiredProtectionLevel(armor: IPreset, options: LootRequest): boolean
-    {
+    protected isArmorOfDesiredProtectionLevel(armor: IPreset, options: LootRequest): boolean {
         const relevantSlots = ["front_plate", "helmet_top", "soft_armor_front"];
-        for (const slotId of relevantSlots)
-        {
+        for (const slotId of relevantSlots) {
             const armorItem = armor._items.find((item) => item?.slotId?.toLowerCase() === slotId);
-            if (!armorItem)
-            {
+            if (!armorItem) {
                 continue;
             }
 
@@ -219,11 +197,9 @@ export class LootGenerator
      * @param limits limits as defined in config
      * @returns record, key: item tplId, value: current/max item count allowed
      */
-    protected initItemLimitCounter(limits: Record<string, number>): Record<string, ItemLimit>
-    {
+    protected initItemLimitCounter(limits: Record<string, number>): Record<string, ItemLimit> {
         const itemTypeCounts: Record<string, ItemLimit> = {};
-        for (const itemTypeId in limits)
-        {
+        for (const itemTypeId in limits) {
             itemTypeCounts[itemTypeId] = { current: 0, max: limits[itemTypeId] };
         }
 
@@ -240,22 +216,19 @@ export class LootGenerator
      */
     protected findAndAddRandomItemToLoot(
         items: [string, ITemplateItem][],
-        itemTypeCounts: Record<string, { current: number, max: number }>,
+        itemTypeCounts: Record<string, { current: number; max: number }>,
         options: LootRequest,
         result: LootItem[],
-    ): boolean
-    {
+    ): boolean {
         const randomItem = this.randomUtil.getArrayValue(items)[1];
 
         const itemLimitCount = itemTypeCounts[randomItem._parent];
-        if (itemLimitCount && itemLimitCount.current > itemLimitCount.max)
-        {
+        if (itemLimitCount && itemLimitCount.current > itemLimitCount.max) {
             return false;
         }
 
         // Skip armors as they need to come from presets
-        if (this.itemHelper.armorItemCanHoldMods(randomItem._id))
-        {
+        if (this.itemHelper.armorItemCanHoldMods(randomItem._id)) {
             return false;
         }
 
@@ -267,16 +240,14 @@ export class LootGenerator
         };
 
         // Special case - handle items that need a stackcount > 1
-        if (randomItem._props.StackMaxSize > 1)
-        {
+        if (randomItem._props.StackMaxSize > 1) {
             newLootItem.stackCount = this.getRandomisedStackCount(randomItem, options);
         }
 
         newLootItem.tpl = randomItem._id;
         result.push(newLootItem);
 
-        if (itemLimitCount)
-        {
+        if (itemLimitCount) {
             // Increment item count as it's in limit array
             itemLimitCount.current++;
         }
@@ -291,13 +262,11 @@ export class LootGenerator
      * @param options loot options
      * @returns stack count
      */
-    protected getRandomisedStackCount(item: ITemplateItem, options: LootRequest): number
-    {
+    protected getRandomisedStackCount(item: ITemplateItem, options: LootRequest): number {
         let min = item._props.StackMinRandom;
         let max = item._props.StackMaxSize;
 
-        if (options.itemStackLimits[item._id])
-        {
+        if (options.itemStackLimits[item._id]) {
             min = options.itemStackLimits[item._id].min;
             max = options.itemStackLimits[item._id].max;
         }
@@ -315,23 +284,20 @@ export class LootGenerator
      */
     protected findAndAddRandomPresetToLoot(
         presetPool: IPreset[],
-        itemTypeCounts: Record<string, { current: number, max: number }>,
+        itemTypeCounts: Record<string, { current: number; max: number }>,
         itemBlacklist: string[],
         result: LootItem[],
-    ): boolean
-    {
+    ): boolean {
         // Choose random preset and get details from item db using encyclopedia value (encyclopedia === tplId)
         const chosenPreset = this.randomUtil.getArrayValue(presetPool);
-        if (!chosenPreset)
-        {
+        if (!chosenPreset) {
             this.logger.warning("Unable to find random preset in given presets, skipping");
 
             return false;
         }
 
         // No `_encyclopedia` property, not possible to reliably get root item tpl
-        if (!chosenPreset?._encyclopedia)
-        {
+        if (!chosenPreset?._encyclopedia) {
             this.logger.debug(`Preset with id: ${chosenPreset?._id} lacks encyclopedia property, skipping`);
 
             return false;
@@ -339,22 +305,19 @@ export class LootGenerator
 
         // Get preset root item db details via its `_encyclopedia` property
         const itemDbDetails = this.itemHelper.getItem(chosenPreset._encyclopedia);
-        if (!itemDbDetails[0])
-        {
+        if (!itemDbDetails[0]) {
             this.logger.debug(`Unable to find preset with tpl: ${chosenPreset._encyclopedia}, skipping`);
 
             return false;
         }
 
         // Skip preset if root item is blacklisted
-        if (itemBlacklist.includes(chosenPreset._items[0]._tpl))
-        {
+        if (itemBlacklist.includes(chosenPreset._items[0]._tpl)) {
             return false;
         }
 
         // Some custom mod items lack a parent property
-        if (!itemDbDetails[1]._parent)
-        {
+        if (!itemDbDetails[1]._parent) {
             this.logger.error(this.localisationService.getText("loot-item_missing_parentid", itemDbDetails[1]?._name));
 
             return false;
@@ -362,16 +325,14 @@ export class LootGenerator
 
         // Check chosen preset hasn't exceeded spawn limit
         const itemLimitCount = itemTypeCounts[itemDbDetails[1]._parent];
-        if (itemLimitCount && itemLimitCount.current > itemLimitCount.max)
-        {
+        if (itemLimitCount && itemLimitCount.current > itemLimitCount.max) {
             return false;
         }
 
         // Add chosen preset tpl to result array
         result.push({ tpl: chosenPreset._items[0]._tpl, isPreset: true, stackCount: 1 });
 
-        if (itemLimitCount)
-        {
+        if (itemLimitCount) {
             // Increment item count as item has been chosen and its inside itemLimitCount dictionary
             itemLimitCount.current++;
         }
@@ -385,8 +346,7 @@ export class LootGenerator
      * @param containerSettings sealed weapon container settings
      * @returns Array of item with children arrays
      */
-    public getSealedWeaponCaseLoot(containerSettings: ISealedAirdropContainerSettings): Item[][]
-    {
+    public getSealedWeaponCaseLoot(containerSettings: ISealedAirdropContainerSettings): Item[][] {
         const itemsToReturn: Item[][] = [];
 
         // Choose a weapon to give to the player (weighted)
@@ -396,8 +356,7 @@ export class LootGenerator
 
         // Get itemDb details of weapon
         const weaponDetailsDb = this.itemHelper.getItem(chosenWeaponTpl);
-        if (!weaponDetailsDb[0])
-        {
+        if (!weaponDetailsDb[0]) {
             this.logger.error(
                 this.localisationService.getText("loot-non_item_picked_as_sealed_weapon_crate_reward", chosenWeaponTpl),
             );
@@ -411,9 +370,10 @@ export class LootGenerator
             : this.randomUtil.getArrayValue(this.presetHelper.getPresets(chosenWeaponTpl));
 
         // No default preset found for weapon, choose a random one
-        if (!chosenWeaponPreset)
-        {
-            this.logger.warning(this.localisationService.getText("loot-default_preset_not_found_using_random", chosenWeaponTpl));
+        if (!chosenWeaponPreset) {
+            this.logger.warning(
+                this.localisationService.getText("loot-default_preset_not_found_using_random", chosenWeaponTpl),
+            );
             chosenWeaponPreset = this.randomUtil.getArrayValue(this.presetHelper.getPresets(chosenWeaponTpl));
         }
 
@@ -445,26 +405,21 @@ export class LootGenerator
     protected getSealedContainerNonWeaponModRewards(
         containerSettings: ISealedAirdropContainerSettings,
         weaponDetailsDb: ITemplateItem,
-    ): Item[][]
-    {
+    ): Item[][] {
         const rewards: Item[][] = [];
 
-        for (const rewardTypeId in containerSettings.rewardTypeLimits)
-        {
+        for (const rewardTypeId in containerSettings.rewardTypeLimits) {
             const settings = containerSettings.rewardTypeLimits[rewardTypeId];
             const rewardCount = this.randomUtil.getInt(settings.min, settings.max);
 
-            if (rewardCount === 0)
-            {
+            if (rewardCount === 0) {
                 continue;
             }
 
             // Edge case - ammo boxes
-            if (rewardTypeId === BaseClasses.AMMO_BOX)
-            {
+            if (rewardTypeId === BaseClasses.AMMO_BOX) {
                 // Get ammoboxes from db
-                const ammoBoxesDetails = containerSettings.ammoBoxWhitelist.map((tpl) =>
-                {
+                const ammoBoxesDetails = containerSettings.ammoBoxWhitelist.map((tpl) => {
                     const itemDetails = this.itemHelper.getItem(tpl);
                     return itemDetails[1];
                 });
@@ -472,15 +427,13 @@ export class LootGenerator
                 // Need to find boxes that matches weapons caliber
                 const weaponCaliber = weaponDetailsDb._props.ammoCaliber;
                 const ammoBoxesMatchingCaliber = ammoBoxesDetails.filter((x) => x._props.ammoCaliber === weaponCaliber);
-                if (ammoBoxesMatchingCaliber.length === 0)
-                {
+                if (ammoBoxesMatchingCaliber.length === 0) {
                     this.logger.debug(`No ammo box with caliber ${weaponCaliber} found, skipping`);
 
                     continue;
                 }
 
-                for (let index = 0; index < rewardCount; index++)
-                {
+                for (let index = 0; index < rewardCount; index++) {
                     const chosenAmmoBox = this.randomUtil.getArrayValue(ammoBoxesMatchingCaliber);
                     const ammoBoxItem: Item[] = [{ _id: this.hashUtil.generate(), _tpl: chosenAmmoBox._id }];
                     this.itemHelper.addCartridgesToAmmoBox(ammoBoxItem, chosenAmmoBox);
@@ -493,22 +446,20 @@ export class LootGenerator
             // Get all items of the desired type + not quest items + not globally blacklisted
             const rewardItemPool = Object.values(this.databaseService.getItems()).filter(
                 (item) =>
-                    item._parent === rewardTypeId
-                    && item._type.toLowerCase() === "item"
-                    && !this.itemFilterService.isItemBlacklisted(item._id)
-                    && !(containerSettings.allowBossItems || this.itemFilterService.isBossItem(item._id))
-                    && !item._props.QuestItem,
+                    item._parent === rewardTypeId &&
+                    item._type.toLowerCase() === "item" &&
+                    !this.itemFilterService.isItemBlacklisted(item._id) &&
+                    !(containerSettings.allowBossItems || this.itemFilterService.isBossItem(item._id)) &&
+                    !item._props.QuestItem,
             );
 
-            if (rewardItemPool.length === 0)
-            {
+            if (rewardItemPool.length === 0) {
                 this.logger.debug(`No items with base type of ${rewardTypeId} found, skipping`);
 
                 continue;
             }
 
-            for (let index = 0; index < rewardCount; index++)
-            {
+            for (let index = 0; index < rewardCount; index++) {
                 // Choose a random item from pool
                 const chosenRewardItem = this.randomUtil.getArrayValue(rewardItemPool);
                 const rewardItem: Item[] = [{ _id: this.hashUtil.generate(), _tpl: chosenRewardItem._id }];
@@ -531,17 +482,14 @@ export class LootGenerator
         containerSettings: ISealedAirdropContainerSettings,
         linkedItemsToWeapon: ITemplateItem[],
         chosenWeaponPreset: IPreset,
-    ): Item[][]
-    {
+    ): Item[][] {
         const modRewards: Item[][] = [];
-        for (const rewardTypeId in containerSettings.weaponModRewardLimits)
-        {
+        for (const rewardTypeId in containerSettings.weaponModRewardLimits) {
             const settings = containerSettings.weaponModRewardLimits[rewardTypeId];
             const rewardCount = this.randomUtil.getInt(settings.min, settings.max);
 
             // Nothing to add, skip reward type
-            if (rewardCount === 0)
-            {
+            if (rewardCount === 0) {
                 continue;
             }
 
@@ -549,8 +497,7 @@ export class LootGenerator
             const relatedItems = linkedItemsToWeapon?.filter(
                 (item) => item._parent === rewardTypeId && !this.itemFilterService.isItemBlacklisted(item._id),
             );
-            if (!relatedItems || relatedItems.length === 0)
-            {
+            if (!relatedItems || relatedItems.length === 0) {
                 this.logger.debug(
                     `No items found to fulfil reward type: ${rewardTypeId} for weapon: ${chosenWeaponPreset._name}, skipping type`,
                 );
@@ -558,8 +505,7 @@ export class LootGenerator
             }
 
             // Find a random item of the desired type and add as reward
-            for (let index = 0; index < rewardCount; index++)
-            {
+            for (let index = 0; index < rewardCount; index++) {
                 const chosenItem = this.randomUtil.drawRandomFromList(relatedItems);
                 const item: Item[] = [{ _id: this.hashUtil.generate(), _tpl: chosenItem[0]._id }];
 
@@ -575,13 +521,11 @@ export class LootGenerator
      * @param rewardContainerDetails
      * @returns Array of item with children arrays
      */
-    public getRandomLootContainerLoot(rewardContainerDetails: RewardDetails): Item[][]
-    {
+    public getRandomLootContainerLoot(rewardContainerDetails: RewardDetails): Item[][] {
         const itemsToReturn: Item[][] = [];
 
         // Get random items and add to newItemRequest
-        for (let index = 0; index < rewardContainerDetails.rewardCount; index++)
-        {
+        for (let index = 0; index < rewardContainerDetails.rewardCount; index++) {
             // Pick random reward from pool, add to request object
             const chosenRewardItemTpl = this.weightedRandomHelper.getWeightedValue<string>(
                 rewardContainerDetails.rewardTplPool,

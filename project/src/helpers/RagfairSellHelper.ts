@@ -1,4 +1,3 @@
-import { inject, injectable } from "tsyringe";
 import { SellResult } from "@spt/models/eft/ragfair/IRagfairOffer";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { IRagfairConfig } from "@spt/models/spt/config/IRagfairConfig";
@@ -7,10 +6,10 @@ import { ConfigServer } from "@spt/servers/ConfigServer";
 import { DatabaseService } from "@spt/services/DatabaseService";
 import { RandomUtil } from "@spt/utils/RandomUtil";
 import { TimeUtil } from "@spt/utils/TimeUtil";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class RagfairSellHelper
-{
+export class RagfairSellHelper {
     protected ragfairConfig: IRagfairConfig;
 
     constructor(
@@ -19,8 +18,7 @@ export class RagfairSellHelper
         @inject("TimeUtil") protected timeUtil: TimeUtil,
         @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("ConfigServer") protected configServer: ConfigServer,
-    )
-    {
+    ) {
         this.ragfairConfig = this.configServer.getConfig(ConfigTypes.RAGFAIR);
     }
 
@@ -35,8 +33,7 @@ export class RagfairSellHelper
         averageOfferPriceRub: number,
         playerListedPriceRub: number,
         qualityMultiplier: number,
-    ): number
-    {
+    ): number {
         const sellConfig = this.ragfairConfig.sell.chance;
 
         // Base sell chance modified by items quality
@@ -47,14 +44,12 @@ export class RagfairSellHelper
         let sellChance = Math.round(baseSellChancePercent * sellModifier * sellModifier ** 3 + 10); // Power of 3
 
         // Adjust sell chance if below config value
-        if (sellChance < sellConfig.minSellChancePercent)
-        {
+        if (sellChance < sellConfig.minSellChancePercent) {
             sellChance = sellConfig.minSellChancePercent;
         }
 
         // Adjust sell chance if above config value
-        if (sellChance > sellConfig.maxSellChancePercent)
-        {
+        if (sellChance > sellConfig.maxSellChancePercent) {
             sellChance = sellConfig.maxSellChancePercent;
         }
 
@@ -68,16 +63,13 @@ export class RagfairSellHelper
      * @param sellInOneGo All items listed get sold at once
      * @returns Array of purchases of item(s) listed
      */
-    public rollForSale(sellChancePercent: number, itemSellCount: number, sellInOneGo = false): SellResult[]
-    {
+    public rollForSale(sellChancePercent: number, itemSellCount: number, sellInOneGo = false): SellResult[] {
         const startTime = this.timeUtil.getTimestamp();
 
         // Get a time in future to stop simulating sell chances at
-        const endTime
-            = startTime
-            + this.timeUtil.getHoursAsSeconds(
-                this.databaseService.getGlobals().config.RagFair.offerDurationTimeInHour,
-            );
+        const endTime =
+            startTime +
+            this.timeUtil.getHoursAsSeconds(this.databaseService.getGlobals().config.RagFair.offerDurationTimeInHour);
 
         let sellTime = startTime;
         let remainingCount = itemSellCount;
@@ -87,8 +79,7 @@ export class RagfairSellHelper
         const effectiveSellChance = Number.isNaN(sellChancePercent)
             ? this.ragfairConfig.sell.chance.base
             : sellChancePercent;
-        if (Number.isNaN(sellChancePercent))
-        {
+        if (Number.isNaN(sellChancePercent)) {
             this.logger.warning(
                 `Sell chance was not a number: ${sellChancePercent}, defaulting to ${this.ragfairConfig.sell.chance.base}%`,
             );
@@ -97,31 +88,24 @@ export class RagfairSellHelper
         this.logger.debug(`Rolling to sell: ${itemSellCount} items (chance: ${effectiveSellChance}%)`);
 
         // No point rolling for a sale on a 0% chance item, exit early
-        if (effectiveSellChance === 0)
-        {
+        if (effectiveSellChance === 0) {
             return result;
         }
 
-        while (remainingCount > 0 && sellTime < endTime)
-        {
-            const boughtAmount = (sellInOneGo)
-                ? remainingCount
-                : this.randomUtil.getInt(1, remainingCount);
-            if (this.randomUtil.getChance100(effectiveSellChance))
-            {
+        while (remainingCount > 0 && sellTime < endTime) {
+            const boughtAmount = sellInOneGo ? remainingCount : this.randomUtil.getInt(1, remainingCount);
+            if (this.randomUtil.getChance100(effectiveSellChance)) {
                 // Passed roll check, item will be sold
                 // Weight time to sell towards selling faster based on how cheap the item sold
                 const weighting = (100 - effectiveSellChance) / 100;
                 let maximumTime = weighting * (this.ragfairConfig.sell.time.max * 60);
                 const minimumTime = this.ragfairConfig.sell.time.min * 60;
-                if (maximumTime < minimumTime)
-                {
+                if (maximumTime < minimumTime) {
                     maximumTime = minimumTime + 5;
                 }
                 // Sell time will be random between min/max
                 let newSellTime = Math.floor(Math.random() * (maximumTime - minimumTime) + minimumTime);
-                if (newSellTime === 0)
-                {
+                if (newSellTime === 0) {
                     // Ensure all sales dont occur the same exact time
                     newSellTime += 1;
                 }
@@ -129,10 +113,10 @@ export class RagfairSellHelper
 
                 result.push({ sellTime: sellTime, amount: boughtAmount });
 
-                this.logger.debug(`Offer will sell at: ${new Date(sellTime * 1000).toLocaleTimeString("en-US")}, bought: ${boughtAmount}`);
-            }
-            else
-            {
+                this.logger.debug(
+                    `Offer will sell at: ${new Date(sellTime * 1000).toLocaleTimeString("en-US")}, bought: ${boughtAmount}`,
+                );
+            } else {
                 this.logger.debug(`Offer rolled not to sell, item count: ${boughtAmount}`);
             }
 

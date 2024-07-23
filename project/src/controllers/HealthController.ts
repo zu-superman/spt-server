@@ -1,4 +1,3 @@
-import { inject, injectable } from "tsyringe";
 import { HealthHelper } from "@spt/helpers/HealthHelper";
 import { InventoryHelper } from "@spt/helpers/InventoryHelper";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
@@ -15,12 +14,12 @@ import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { EventOutputHolder } from "@spt/routers/EventOutputHolder";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { PaymentService } from "@spt/services/PaymentService";
-import { ICloner } from "@spt/utils/cloners/ICloner";
 import { HttpResponseUtil } from "@spt/utils/HttpResponseUtil";
+import { ICloner } from "@spt/utils/cloners/ICloner";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class HealthController
-{
+export class HealthController {
     constructor(
         @inject("PrimaryLogger") protected logger: ILogger,
         @inject("EventOutputHolder") protected eventOutputHolder: EventOutputHolder,
@@ -31,8 +30,7 @@ export class HealthController
         @inject("HttpResponseUtil") protected httpResponse: HttpResponseUtil,
         @inject("HealthHelper") protected healthHelper: HealthHelper,
         @inject("PrimaryCloner") protected cloner: ICloner,
-    )
-    {}
+    ) {}
 
     /**
      * stores in-raid player health
@@ -48,8 +46,7 @@ export class HealthController
         sessionID: string,
         addEffects = true,
         deleteExistingEffects = true,
-    ): void
-    {
+    ): void {
         this.healthHelper.saveVitality(pmcData, info, sessionID, addEffects, deleteExistingEffects);
     }
 
@@ -64,14 +61,12 @@ export class HealthController
         pmcData: IPmcData,
         request: IOffraidHealRequestData,
         sessionID: string,
-    ): IItemEventRouterResponse
-    {
+    ): IItemEventRouterResponse {
         const output = this.eventOutputHolder.getOutput(sessionID);
 
         // Update medkit used (hpresource)
         const healingItemToUse = pmcData.Inventory.items.find((item) => item._id === request.item);
-        if (!healingItemToUse)
-        {
+        if (!healingItemToUse) {
             const errorMessage = this.localisationService.getText(
                 "health-healing_item_not_found",
                 healingItemToUse._id,
@@ -84,20 +79,16 @@ export class HealthController
         // Ensure item has a upd object
         this.itemHelper.addUpdObjectToItem(healingItemToUse);
 
-        if (healingItemToUse.upd.MedKit)
-        {
+        if (healingItemToUse.upd.MedKit) {
             healingItemToUse.upd.MedKit.HpResource -= request.count;
-        }
-        else
-        {
+        } else {
             // Get max healing from db
             const maxhp = this.itemHelper.getItem(healingItemToUse._tpl)[1]._props.MaxHpResource;
             healingItemToUse.upd.MedKit = { HpResource: maxhp - request.count }; // Subtract amout used from max
         }
 
         // Resource in medkit is spent, delete it
-        if (healingItemToUse.upd.MedKit.HpResource <= 0)
-        {
+        if (healingItemToUse.upd.MedKit.HpResource <= 0) {
             this.inventoryHelper.removeItem(pmcData, request.item, sessionID, output);
         }
 
@@ -112,14 +103,12 @@ export class HealthController
      * @param sessionID Session id
      * @returns IItemEventRouterResponse
      */
-    public offraidEat(pmcData: IPmcData, request: IOffraidEatRequestData, sessionID: string): IItemEventRouterResponse
-    {
+    public offraidEat(pmcData: IPmcData, request: IOffraidEatRequestData, sessionID: string): IItemEventRouterResponse {
         const output = this.eventOutputHolder.getOutput(sessionID);
         let resourceLeft = 0;
 
         const itemToConsume = pmcData.Inventory.items.find((item) => item._id === request.item);
-        if (!itemToConsume)
-        {
+        if (!itemToConsume) {
             // Item not found, very bad
             return this.httpResponse.appendErrorToOutput(
                 output,
@@ -128,17 +117,13 @@ export class HealthController
         }
 
         const consumedItemMaxResource = this.itemHelper.getItem(itemToConsume._tpl)[1]._props.MaxResource;
-        if (consumedItemMaxResource > 1)
-        {
+        if (consumedItemMaxResource > 1) {
             // Ensure item has a upd object
             this.itemHelper.addUpdObjectToItem(itemToConsume);
 
-            if (itemToConsume.upd.FoodDrink === undefined)
-            {
+            if (itemToConsume.upd.FoodDrink === undefined) {
                 itemToConsume.upd.FoodDrink = { HpPercent: consumedItemMaxResource - request.count };
-            }
-            else
-            {
+            } else {
                 itemToConsume.upd.FoodDrink.HpPercent -= request.count;
             }
 
@@ -146,8 +131,7 @@ export class HealthController
         }
 
         // Remove item from inventory if resource has dropped below threshold
-        if (consumedItemMaxResource === 1 || resourceLeft < 1)
-        {
+        if (consumedItemMaxResource === 1 || resourceLeft < 1) {
             this.inventoryHelper.removeItem(pmcData, request.item, sessionID, output);
         }
 
@@ -166,8 +150,7 @@ export class HealthController
         pmcData: IPmcData,
         healthTreatmentRequest: IHealthTreatmentRequestData,
         sessionID: string,
-    ): IItemEventRouterResponse
-    {
+    ): IItemEventRouterResponse {
         const output = this.eventOutputHolder.getOutput(sessionID);
         const payMoneyRequest: IProcessBuyTradeRequestData = {
             Action: healthTreatmentRequest.Action,
@@ -180,36 +163,30 @@ export class HealthController
         };
 
         this.paymentService.payMoney(pmcData, payMoneyRequest, sessionID, output);
-        if (output.warnings.length > 0)
-        {
+        if (output.warnings.length > 0) {
             return output;
         }
 
-        for (const bodyPartKey in healthTreatmentRequest.difference.BodyParts)
-        {
+        for (const bodyPartKey in healthTreatmentRequest.difference.BodyParts) {
             // Get body part from request + from pmc profile
             const partRequest: BodyPart = healthTreatmentRequest.difference.BodyParts[bodyPartKey];
             const profilePart = pmcData.Health.BodyParts[bodyPartKey];
 
             // Bodypart healing is chosen when part request hp is above 0
-            if (partRequest.Health > 0)
-            {
+            if (partRequest.Health > 0) {
                 // Heal bodypart
                 profilePart.Health.Current = profilePart.Health.Maximum;
             }
 
             // Check for effects to remove
-            if (partRequest.Effects?.length > 0)
-            {
+            if (partRequest.Effects?.length > 0) {
                 // Found some, loop over them and remove from pmc profile
-                for (const effect of partRequest.Effects)
-                {
+                for (const effect of partRequest.Effects) {
                     delete pmcData.Health.BodyParts[bodyPartKey].Effects[effect];
                 }
 
                 // Remove empty effect object
-                if (Object.keys(pmcData.Health.BodyParts[bodyPartKey].Effects).length === 0)
-                {
+                if (Object.keys(pmcData.Health.BodyParts[bodyPartKey].Effects).length === 0) {
                     delete pmcData.Health.BodyParts[bodyPartKey].Effects;
                 }
             }
@@ -227,8 +204,7 @@ export class HealthController
      * @param info Request data
      * @param sessionID
      */
-    public applyWorkoutChanges(pmcData: IPmcData, info: IWorkoutData, sessionId: string): void
-    {
+    public applyWorkoutChanges(pmcData: IPmcData, info: IWorkoutData, sessionId: string): void {
         // https://dev.sp-tarkov.com/SPT/Server/issues/2674
         // TODO:
         // Health effects (fractures etc) are handled in /player/health/sync.

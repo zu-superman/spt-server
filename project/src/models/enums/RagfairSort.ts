@@ -1,5 +1,4 @@
-export enum RagfairSort
-{
+export enum RagfairSort {
     ID = 0,
     BARTER = 2,
     RATING = 3,

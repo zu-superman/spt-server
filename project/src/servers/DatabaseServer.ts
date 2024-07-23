@@ -1,9 +1,8 @@
-import { injectable } from "tsyringe";
 import { IDatabaseTables } from "@spt/models/spt/server/IDatabaseTables";
+import { injectable } from "tsyringe";
 
 @injectable()
-export class DatabaseServer
-{
+export class DatabaseServer {
     protected tableData: IDatabaseTables = {
         bots: undefined,
         hideout: undefined,
@@ -17,13 +16,11 @@ export class DatabaseServer
         settings: undefined,
     };
 
-    public getTables(): IDatabaseTables
-    {
+    public getTables(): IDatabaseTables {
         return this.tableData;
     }
 
-    public setTables(tableData: IDatabaseTables): void
-    {
+    public setTables(tableData: IDatabaseTables): void {
         this.tableData = tableData;
     }
 }

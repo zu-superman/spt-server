@@ -1,4 +1,3 @@
-export interface IRoute
-{
-    spt: any
+export interface IRoute {
+    spt: any;
 }

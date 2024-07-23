@@ -1,12 +1,10 @@
-export interface IFenceAssortGenerationValues
-{
-    normal: IGenerationAssortValues
-    discount: IGenerationAssortValues
+export interface IFenceAssortGenerationValues {
+    normal: IGenerationAssortValues;
+    discount: IGenerationAssortValues;
 }
 
-export interface IGenerationAssortValues
-{
-    item: number
-    weaponPreset: number
-    equipmentPreset: number
+export interface IGenerationAssortValues {
+    item: number;
+    weaponPreset: number;
+    equipmentPreset: number;
 }

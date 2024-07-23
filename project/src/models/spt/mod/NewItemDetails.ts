@@ -1,7 +1,6 @@
 import { ITemplateItem, Props } from "@spt/models/eft/common/tables/ITemplateItem";
 
-export abstract class NewItemDetailsBase
-{
+export abstract class NewItemDetailsBase {
     /** Price of the item on flea market */
     fleaPriceRoubles: number;
 
@@ -18,8 +17,7 @@ export abstract class NewItemDetailsBase
     locales: Record<string, LocaleDetails>;
 }
 
-export class NewItemFromCloneDetails extends NewItemDetailsBase
-{
+export class NewItemFromCloneDetails extends NewItemDetailsBase {
     /** Id of the item to copy and use as a base */
     itemTplToClone: string;
 
@@ -36,22 +34,18 @@ export class NewItemFromCloneDetails extends NewItemDetailsBase
     newId = "";
 }
 
-export class NewItemDetails extends NewItemDetailsBase
-{
+export class NewItemDetails extends NewItemDetailsBase {
     newItem: ITemplateItem;
 }
 
-export class LocaleDetails
-{
+export class LocaleDetails {
     name: string;
     shortName: string;
     description: string;
 }
 
-export class CreateItemResult
-{
-    constructor()
-    {
+export class CreateItemResult {
+    constructor() {
         this.success = false;
         this.errors = [];
     }

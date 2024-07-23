@@ -1,4 +1,3 @@
-import { inject, injectable } from "tsyringe";
 import { DataCallbacks } from "@spt/callbacks/DataCallbacks";
 import { RouteAction, StaticRouter } from "@spt/di/Router";
 import { IGlobals } from "@spt/models/eft/common/IGlobals";
@@ -10,12 +9,11 @@ import { IHideoutScavCase } from "@spt/models/eft/hideout/IHideoutScavCase";
 import { IHideoutSettingsBase } from "@spt/models/eft/hideout/IHideoutSettingsBase";
 import { IGetBodyResponseData } from "@spt/models/eft/httpResponse/IGetBodyResponseData";
 import { ISettingsBase } from "@spt/models/spt/server/ISettingsBase";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class DataStaticRouter extends StaticRouter
-{
-    constructor(@inject("DataCallbacks") protected dataCallbacks: DataCallbacks)
-    {
+export class DataStaticRouter extends StaticRouter {
+    constructor(@inject("DataCallbacks") protected dataCallbacks: DataCallbacks) {
         super([
             new RouteAction(
                 "/client/settings",
@@ -24,8 +22,7 @@ export class DataStaticRouter extends StaticRouter
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<ISettingsBase>> =>
-                {
+                ): Promise<IGetBodyResponseData<ISettingsBase>> => {
                     return this.dataCallbacks.getSettings(url, info, sessionID);
                 },
             ),
@@ -36,15 +33,13 @@ export class DataStaticRouter extends StaticRouter
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<IGlobals>> =>
-                {
+                ): Promise<IGetBodyResponseData<IGlobals>> => {
                     return this.dataCallbacks.getGlobals(url, info, sessionID);
                 },
             ),
             new RouteAction(
                 "/client/items",
-                async (url: string, info: any, sessionID: string, output: string): Promise<string> =>
-                {
+                async (url: string, info: any, sessionID: string, output: string): Promise<string> => {
                     return this.dataCallbacks.getTemplateItems(url, info, sessionID);
                 },
             ),
@@ -55,8 +50,7 @@ export class DataStaticRouter extends StaticRouter
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<IHandbookBase>> =>
-                {
+                ): Promise<IGetBodyResponseData<IHandbookBase>> => {
                     return this.dataCallbacks.getTemplateHandbook(url, info, sessionID);
                 },
             ),
@@ -67,8 +61,7 @@ export class DataStaticRouter extends StaticRouter
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<Record<string, ICustomizationItem>>> =>
-                {
+                ): Promise<IGetBodyResponseData<Record<string, ICustomizationItem>>> => {
                     return this.dataCallbacks.getTemplateSuits(url, info, sessionID);
                 },
             ),
@@ -79,8 +72,7 @@ export class DataStaticRouter extends StaticRouter
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<string[]>> =>
-                {
+                ): Promise<IGetBodyResponseData<string[]>> => {
                     return this.dataCallbacks.getTemplateCharacter(url, info, sessionID);
                 },
             ),
@@ -91,8 +83,7 @@ export class DataStaticRouter extends StaticRouter
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<IHideoutProduction[]>> =>
-                {
+                ): Promise<IGetBodyResponseData<IHideoutProduction[]>> => {
                     return this.dataCallbacks.gethideoutProduction(url, info, sessionID);
                 },
             ),
@@ -103,8 +94,7 @@ export class DataStaticRouter extends StaticRouter
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<IHideoutSettingsBase>> =>
-                {
+                ): Promise<IGetBodyResponseData<IHideoutSettingsBase>> => {
                     return this.dataCallbacks.getHideoutSettings(url, info, sessionID);
                 },
             ),
@@ -115,8 +105,7 @@ export class DataStaticRouter extends StaticRouter
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<IHideoutArea[]>> =>
-                {
+                ): Promise<IGetBodyResponseData<IHideoutArea[]>> => {
                     return this.dataCallbacks.getHideoutAreas(url, info, sessionID);
                 },
             ),
@@ -127,8 +116,7 @@ export class DataStaticRouter extends StaticRouter
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<IHideoutScavCase[]>> =>
-                {
+                ): Promise<IGetBodyResponseData<IHideoutScavCase[]>> => {
                     return this.dataCallbacks.getHideoutScavcase(url, info, sessionID);
                 },
             ),
@@ -139,15 +127,13 @@ export class DataStaticRouter extends StaticRouter
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<Record<string, string>>> =>
-                {
+                ): Promise<IGetBodyResponseData<Record<string, string>>> => {
                     return this.dataCallbacks.getLocalesLanguages(url, info, sessionID);
                 },
             ),
             new RouteAction(
                 "/client/hideout/qte/list",
-                async (url: string, info: any, sessionID: string, output: string): Promise<string> =>
-                {
+                async (url: string, info: any, sessionID: string, output: string): Promise<string> => {
                     return this.dataCallbacks.getQteList(url, info, sessionID);
                 },
             ),

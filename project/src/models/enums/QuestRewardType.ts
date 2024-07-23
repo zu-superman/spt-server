@@ -1,5 +1,4 @@
-export enum QuestRewardType
-{
+export enum QuestRewardType {
     SKILL = "Skill",
     EXPERIENCE = "Experience",
     TRADER_STANDING = "TraderStanding",

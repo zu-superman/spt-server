@@ -1,4 +1,3 @@
-import { inject, injectable } from "tsyringe";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { TraderHelper } from "@spt/helpers/TraderHelper";
@@ -17,16 +16,16 @@ import { DatabaseService } from "@spt/services/DatabaseService";
 import { ItemFilterService } from "@spt/services/ItemFilterService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { MailSendService } from "@spt/services/MailSendService";
-import { ICloner } from "@spt/utils/cloners/ICloner";
 import { RandomUtil } from "@spt/utils/RandomUtil";
 import { TimeUtil } from "@spt/utils/TimeUtil";
+import { ICloner } from "@spt/utils/cloners/ICloner";
+import { inject, injectable } from "tsyringe";
 
 /**
  * Helper class for common ragfair server actions
  */
 @injectable()
-export class RagfairServerHelper
-{
+export class RagfairServerHelper {
     protected ragfairConfig: IRagfairConfig;
     protected questConfig: IQuestConfig;
     protected static goodsReturnedTemplate = "5bdabfe486f7743e1665df6e 0"; // Your item was not sold
@@ -45,8 +44,7 @@ export class RagfairServerHelper
         @inject("ItemFilterService") protected itemFilterService: ItemFilterService,
         @inject("ConfigServer") protected configServer: ConfigServer,
         @inject("PrimaryCloner") protected cloner: ICloner,
-    )
-    {
+    ) {
         this.ragfairConfig = this.configServer.getConfig(ConfigTypes.RAGFAIR);
         this.questConfig = this.configServer.getConfig(ConfigTypes.QUEST);
     }
@@ -56,56 +54,48 @@ export class RagfairServerHelper
      * @param itemDetails
      * @returns boolean
      */
-    public isItemValidRagfairItem(itemDetails: [boolean, ITemplateItem]): boolean
-    {
+    public isItemValidRagfairItem(itemDetails: [boolean, ITemplateItem]): boolean {
         const blacklistConfig = this.ragfairConfig.dynamic.blacklist;
 
         // Skip invalid items
-        if (!itemDetails[0])
-        {
+        if (!itemDetails[0]) {
             return false;
         }
 
         // Skip blacklisted items
-        if (this.itemFilterService.isItemBlacklisted(itemDetails[1]._id))
-        {
+        if (this.itemFilterService.isItemBlacklisted(itemDetails[1]._id)) {
             return false;
         }
 
         // Skip bsg blacklisted items
-        if (blacklistConfig.enableBsgList && !itemDetails[1]._props.CanSellOnRagfair)
-        {
+        if (blacklistConfig.enableBsgList && !itemDetails[1]._props.CanSellOnRagfair) {
             return false;
         }
 
         // Skip custom blacklisted items
-        if (this.isItemOnCustomFleaBlacklist(itemDetails[1]._id))
-        {
+        if (this.isItemOnCustomFleaBlacklist(itemDetails[1]._id)) {
             return false;
         }
 
         // Skip custom category blacklisted items
         if (
-            blacklistConfig.enableCustomItemCategoryList
-            && this.isItemCategoryOnCustomFleaBlacklist(itemDetails[1]._parent)
-        )
-        {
+            blacklistConfig.enableCustomItemCategoryList &&
+            this.isItemCategoryOnCustomFleaBlacklist(itemDetails[1]._parent)
+        ) {
             return false;
         }
 
         // Skip quest items
-        if (blacklistConfig.enableQuestList && this.itemHelper.isQuestItem(itemDetails[1]._id))
-        {
+        if (blacklistConfig.enableQuestList && this.itemHelper.isQuestItem(itemDetails[1]._id)) {
             return false;
         }
 
         // Don't include damaged ammo packs
         if (
-            this.ragfairConfig.dynamic.blacklist.damagedAmmoPacks
-            && itemDetails[1]._parent === BaseClasses.AMMO_BOX
-            && itemDetails[1]._name.includes("_damaged")
-        )
-        {
+            this.ragfairConfig.dynamic.blacklist.damagedAmmoPacks &&
+            itemDetails[1]._parent === BaseClasses.AMMO_BOX &&
+            itemDetails[1]._name.includes("_damaged")
+        ) {
             return false;
         }
 
@@ -117,10 +107,8 @@ export class RagfairServerHelper
      * @param itemTemplateId Item tpl to check is blacklisted
      * @returns True if its blacklsited
      */
-    protected isItemOnCustomFleaBlacklist(itemTemplateId: string): boolean
-    {
-        if (!this.itemHelper.isValidItem(itemTemplateId))
-        {
+    protected isItemOnCustomFleaBlacklist(itemTemplateId: string): boolean {
+        if (!this.itemHelper.isValidItem(itemTemplateId)) {
             return true;
         }
 
@@ -132,8 +120,7 @@ export class RagfairServerHelper
      * @param parentId Parent Id to check is blacklisted
      * @returns true if blacklisted
      */
-    protected isItemCategoryOnCustomFleaBlacklist(itemParentId: string): boolean
-    {
+    protected isItemCategoryOnCustomFleaBlacklist(itemParentId: string): boolean {
         return this.ragfairConfig.dynamic.blacklist.customItemCategoryList.includes(itemParentId);
     }
 
@@ -142,8 +129,7 @@ export class RagfairServerHelper
      * @param traderId
      * @returns True if id was a trader
      */
-    public isTrader(traderId: string): boolean
-    {
+    public isTrader(traderId: string): boolean {
         return traderId in this.databaseService.getTraders();
     }
 
@@ -152,8 +138,7 @@ export class RagfairServerHelper
      * @param sessionID Player to send items to
      * @param returnedItems Items to send to player
      */
-    public returnItems(sessionID: string, returnedItems: Item[]): void
-    {
+    public returnItems(sessionID: string, returnedItems: Item[]): void {
         this.mailSendService.sendLocalisedNpcMessageToPlayer(
             sessionID,
             this.traderHelper.getTraderById(Traders.RAGMAN),
@@ -166,23 +151,25 @@ export class RagfairServerHelper
         );
     }
 
-    public calculateDynamicStackCount(tplId: string, isWeaponPreset: boolean): number
-    {
+    public calculateDynamicStackCount(tplId: string, isWeaponPreset: boolean): number {
         const config = this.ragfairConfig.dynamic;
 
         // Lookup item details - check if item not found
         const itemDetails = this.itemHelper.getItem(tplId);
-        if (!itemDetails[0])
-        {
-            throw new Error(this.localisationService.getText("ragfair-item_not_in_db_unable_to_generate_dynamic_stack_count", tplId));
+        if (!itemDetails[0]) {
+            throw new Error(
+                this.localisationService.getText(
+                    "ragfair-item_not_in_db_unable_to_generate_dynamic_stack_count",
+                    tplId,
+                ),
+            );
         }
 
         // Item Types to return one of
         if (
-            isWeaponPreset
-            || this.itemHelper.isOfBaseclasses(itemDetails[1]._id, this.ragfairConfig.dynamic.showAsSingleStack)
-        )
-        {
+            isWeaponPreset ||
+            this.itemHelper.isOfBaseclasses(itemDetails[1]._id, this.ragfairConfig.dynamic.showAsSingleStack)
+        ) {
             return 1;
         }
 
@@ -190,8 +177,7 @@ export class RagfairServerHelper
         const maxStackCount = itemDetails[1]._props.StackMaxSize;
 
         // non-stackable - use different values to calculate stack size
-        if (!maxStackCount || maxStackCount === 1)
-        {
+        if (!maxStackCount || maxStackCount === 1) {
             return Math.round(this.randomUtil.getInt(config.nonStackableCount.min, config.nonStackableCount.max));
         }
 
@@ -206,15 +192,12 @@ export class RagfairServerHelper
      * Choose a currency at random with bias
      * @returns currency tpl
      */
-    public getDynamicOfferCurrency(): string
-    {
+    public getDynamicOfferCurrency(): string {
         const currencies = this.ragfairConfig.dynamic.currencies;
         const bias: string[] = [];
 
-        for (const item in currencies)
-        {
-            for (let i = 0; i < currencies[item]; i++)
-            {
+        for (const item in currencies) {
+            for (let i = 0; i < currencies[item]; i++) {
                 bias.push(item);
             }
         }
@@ -227,8 +210,7 @@ export class RagfairServerHelper
      * @param item Preset item
      * @returns Array of weapon and its children
      */
-    public getPresetItems(item: Item): Item[]
-    {
+    public getPresetItems(item: Item): Item[] {
         const preset = this.cloner.clone(this.databaseService.getGlobals().ItemPresets[item._id]._items);
         return this.itemHelper.reparentItemAndChildren(item, preset);
     }
@@ -238,16 +220,11 @@ export class RagfairServerHelper
      * @param item Preset item
      * @returns
      */
-    public getPresetItemsByTpl(item: Item): Item[]
-    {
+    public getPresetItemsByTpl(item: Item): Item[] {
         const presets = [];
-        for (const itemId in this.databaseService.getGlobals().ItemPresets)
-        {
-            if (this.databaseService.getGlobals().ItemPresets[itemId]._items[0]._tpl === item._tpl)
-            {
-                const presetItems = this.cloner.clone(
-                    this.databaseService.getGlobals().ItemPresets[itemId]._items,
-                );
+        for (const itemId in this.databaseService.getGlobals().ItemPresets) {
+            if (this.databaseService.getGlobals().ItemPresets[itemId]._items[0]._tpl === item._tpl) {
+                const presetItems = this.cloner.clone(this.databaseService.getGlobals().ItemPresets[itemId]._items);
                 presets.push(this.itemHelper.reparentItemAndChildren(item, presetItems));
             }
         }

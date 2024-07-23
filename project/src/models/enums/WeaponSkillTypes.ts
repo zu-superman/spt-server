@@ -1,5 +1,4 @@
-export enum WeaponSkillTypes
-{
+export enum WeaponSkillTypes {
     PISTOL = "Pistol",
     REVOLVER = "Revolver",
     SMG = "SMG",

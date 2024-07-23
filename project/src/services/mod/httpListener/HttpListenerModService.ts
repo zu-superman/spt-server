@@ -1,20 +1,17 @@
 import { IncomingMessage, ServerResponse } from "node:http";
-import { DependencyContainer, injectable } from "tsyringe";
 import { IHttpListener } from "@spt/servers/http/IHttpListener";
 import { HttpListenerMod } from "@spt/services/mod/httpListener/HttpListenerMod";
+import { DependencyContainer, injectable } from "tsyringe";
 
 @injectable()
-export class HttpListenerModService
-{
-    constructor(protected container: DependencyContainer)
-    {}
+export class HttpListenerModService {
+    constructor(protected container: DependencyContainer) {}
 
     public registerHttpListener(
         name: string,
         canHandleOverride: (sessionId: string, req: IncomingMessage) => boolean,
         handleOverride: (sessionId: string, req: IncomingMessage, resp: ServerResponse) => void,
-    ): void
-    {
+    ): void {
         this.container.register<IHttpListener>(name, {
             useValue: new HttpListenerMod(canHandleOverride, handleOverride),
         });

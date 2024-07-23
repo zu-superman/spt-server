@@ -47,8 +47,8 @@
         "sectactPriestEvent": 10,
         "pmcUSEC": 15,
         "pmcBEAR": 15,
-		"peacemaker": 10,
-		"skier": 10
+        "peacemaker": 10,
+        "skier": 10
     },
     "bosses": [
         "bossBully",
@@ -277,12 +277,9 @@
     },
     "chanceAssaultScavHasPlayerScavName": 10,
     "secureContainerAmmoStackCount": 20,
-    "botRolesWithDogTags": [
-        "pmcbear",
-        "pmcusec"
-    ],
+    "botRolesWithDogTags": ["pmcbear", "pmcusec"],
     "revenge": {
-        "pmcBot": ["pmcBot","gifter"],
+        "pmcBot": ["pmcBot", "gifter"],
         "arenaFighter": ["pmcBot", "gifter"],
         "arenaFighterEvent": ["pmcBot", "gifter"],
         "bossKnight": ["exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye"],
@@ -430,8 +427,8 @@
             "544fb37f4bdc2dee738b4567": 2
         },
         "shooterbtr": {},
-		"skier": {},
-		"peacemaker": {}
+        "skier": {},
+        "peacemaker": {}
     },
     "equipment": {
         "assault": {
@@ -495,9 +492,7 @@
             "lightIsActiveNightChancePercent": 90,
             "laserIsActiveChancePercent": 85,
             "forceStock": true,
-            "weaponSlotIdsToMakeRequired": [
-                "mod_reciever"
-            ]
+            "weaponSlotIdsToMakeRequired": ["mod_reciever"]
         },
         "bossbully": {
             "nvgIsActiveChanceDayPercent": 10,
@@ -776,11 +771,9 @@
                 "scopeLimit": 1,
                 "lightLaserLimit": 1
             },
-            "weaponSlotIdsToMakeRequired": [
-                "mod_reciever"
-            ]
+            "weaponSlotIdsToMakeRequired": ["mod_reciever"]
         },
-		"peacemaker": {
+        "peacemaker": {
             "nvgIsActiveChanceDayPercent": 10,
             "nvgIsActiveChanceNightPercent": 95,
             "faceShieldIsActiveChancePercent": 100,
@@ -793,7 +786,7 @@
                 "lightLaserLimit": 1
             }
         },
-		"skier": {
+        "skier": {
             "nvgIsActiveChanceDayPercent": 10,
             "nvgIsActiveChanceNightPercent": 95,
             "faceShieldIsActiveChancePercent": 100,
@@ -926,11 +919,7 @@
             "laserIsActiveChancePercent": 85,
             "forceOnlyArmoredRigWhenNoArmor": true,
             "filterPlatesByLevel": true,
-            "weaponSlotIdsToMakeRequired": [
-                "mod_reciever",
-                "mod_stock",
-                "mod_muzzle"
-            ],
+            "weaponSlotIdsToMakeRequired": ["mod_reciever", "mod_stock", "mod_muzzle"],
             "randomisation": [
                 {
                     "levelRange": {
@@ -1148,11 +1137,7 @@
                         "Scabbard": 100,
                         "TacticalVest": 90
                     },
-                    "randomisedArmorSlots": [
-                        "Headwear",
-                        "ArmorVest",
-                        "TacticalVest"
-                    ],
+                    "randomisedArmorSlots": ["Headwear", "ArmorVest", "TacticalVest"],
                     "randomisedWeaponModSlots": [
                         "mod_scope",
                         "mod_scope_000",
@@ -1250,11 +1235,7 @@
                         "SecondPrimaryWeapon": 10,
                         "FaceCover": 50
                     },
-                    "randomisedArmorSlots": [
-                        "Headwear",
-                        "TacticalVest",
-                        "ArmorVest"
-                    ],
+                    "randomisedArmorSlots": ["Headwear", "TacticalVest", "ArmorVest"],
                     "randomisedWeaponModSlots": [
                         "mod_scope",
                         "mod_scope_000",
@@ -1321,11 +1302,7 @@
                         "mod_muzzle_000": 95,
                         "mod_muzzle_001": 95
                     },
-                    "randomisedArmorSlots": [
-                        "Headwear",
-                        "TacticalVest",
-                        "ArmorVest"
-                    ],
+                    "randomisedArmorSlots": ["Headwear", "TacticalVest", "ArmorVest"],
                     "randomisedWeaponModSlots": [
                         "mod_scope",
                         "mod_scope_000",
@@ -1397,30 +1374,15 @@
                             "65392f611406374f82152ba5",
                             "653931da5db71d30ab1d6296"
                         ],
-                        "mod_nvg": [
-                            "5c11046cd174af02a012e42b"
-                        ],
-                        "mod_reciever": [
-                            "5d4405aaa4b9361e6a4e6bd3"
-                        ],
-                        "mod_stock": [
-                            "5cde739cd7f00c0010373bd3"
-                        ],
-                        "mod_rear_sight": [
-                            "5a0ed824fcdbcb0176308b0d"
-                        ],
-                        "mod_front_sight": [
-                            "5a0f096dfcdbcb0176308b15"
-                        ]
+                        "mod_nvg": ["5c11046cd174af02a012e42b"],
+                        "mod_reciever": ["5d4405aaa4b9361e6a4e6bd3"],
+                        "mod_stock": ["5cde739cd7f00c0010373bd3"],
+                        "mod_rear_sight": ["5a0ed824fcdbcb0176308b0d"],
+                        "mod_front_sight": ["5a0f096dfcdbcb0176308b15"]
                     },
                     "cartridge": {
-                        "Caliber23x75": [
-                            "5e85a9f4add9fe03027d9bf1"
-                        ],
-                        "Caliber127x55": [
-                            "5cadf6e5ae921500113bb973",
-                            "5cadf6ddae9215051e1c23b2"
-                        ]
+                        "Caliber23x75": ["5e85a9f4add9fe03027d9bf1"],
+                        "Caliber127x55": ["5cadf6e5ae921500113bb973", "5cadf6ddae9215051e1c23b2"]
                     }
                 }
             ],
@@ -2677,10 +2639,7 @@
             "569668774bdc2da2298b4568": 0,
             "5696686a4bdc2da3298b456a": 0
         },
-        "walletTplPool": [
-            "5783c43d2459774bbe137486",
-            "60b0f6c058e0b0481a09ad11"
-        ]
+        "walletTplPool": ["5783c43d2459774bbe137486", "60b0f6c058e0b0481a09ad11"]
     },
     "currencyStackSize": {
         "default": {
@@ -2705,7 +2664,7 @@
                 "1": 8,
                 "2": 4,
                 "5": 4,
-				"10": 1
+                "10": 1
             }
         },
         "assault": {
@@ -2735,7 +2694,14 @@
             }
         }
     },
-	"lowProfileGasBlockTpls": ["61702f1b67085e45ef140b26", "5dfa3d45dfc58d14537c20b0", "5bb20dcad4351e3bac1212da", "56eabcd4d2720b66698b4574", "6065dc8a132d4d12c81fd8e3", "55d4af3a4bdc2d972f8b456f"],
+    "lowProfileGasBlockTpls": [
+        "61702f1b67085e45ef140b26",
+        "5dfa3d45dfc58d14537c20b0",
+        "5bb20dcad4351e3bac1212da",
+        "56eabcd4d2720b66698b4574",
+        "6065dc8a132d4d12c81fd8e3",
+        "55d4af3a4bdc2d972f8b456f"
+    ],
     "disableLootOnBotTypes": [],
     "assaultToBossConversion": {
         "bossConvertEnabled": false,

@@ -1,24 +1,21 @@
-import { inject, injectable } from "tsyringe";
 import { HideoutCallbacks } from "@spt/callbacks/HideoutCallbacks";
 import { InventoryCallbacks } from "@spt/callbacks/InventoryCallbacks";
 import { HandledRoute, ItemEventRouterDefinition } from "@spt/di/Router";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRouterResponse";
 import { ItemEventActions } from "@spt/models/enums/ItemEventActions";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class InventoryItemEventRouter extends ItemEventRouterDefinition
-{
+export class InventoryItemEventRouter extends ItemEventRouterDefinition {
     constructor(
         @inject("InventoryCallbacks") protected inventoryCallbacks: InventoryCallbacks,
         @inject("HideoutCallbacks") protected hideoutCallbacks: HideoutCallbacks,
-    )
-    {
+    ) {
         super();
     }
 
-    public override getHandledRoutes(): HandledRoute[]
-    {
+    public override getHandledRoutes(): HandledRoute[] {
         return [
             new HandledRoute(ItemEventActions.MOVE, false),
             new HandledRoute(ItemEventActions.REMOVE, false),
@@ -51,10 +48,8 @@ export class InventoryItemEventRouter extends ItemEventRouterDefinition
         body: any,
         sessionID: string,
         output: IItemEventRouterResponse,
-    ): Promise<IItemEventRouterResponse>
-    {
-        switch (url)
-        {
+    ): Promise<IItemEventRouterResponse> {
+        switch (url) {
             case ItemEventActions.MOVE:
                 return this.inventoryCallbacks.moveItem(pmcData, body, sessionID, output);
             case ItemEventActions.REMOVE:

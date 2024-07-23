@@ -1,5 +1,4 @@
-export enum WeatherType
-{
+export enum WeatherType {
     CLEAR_DAY = 0,
     CLEAR_WIND = 1,
     CLEAR_NIGHT = 2,

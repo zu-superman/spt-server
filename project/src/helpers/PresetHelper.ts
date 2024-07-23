@@ -1,13 +1,12 @@
-import { inject, injectable } from "tsyringe";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { IPreset } from "@spt/models/eft/common/IGlobals";
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
 import { DatabaseService } from "@spt/services/DatabaseService";
 import { ICloner } from "@spt/utils/cloners/ICloner";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class PresetHelper
-{
+export class PresetHelper {
     protected lookup: Record<string, string[]> = {};
     protected defaultEquipmentPresets: Record<string, IPreset>;
     protected defaultWeaponPresets: Record<string, IPreset>;
@@ -16,11 +15,9 @@ export class PresetHelper
         @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("PrimaryCloner") protected cloner: ICloner,
-    )
-    {}
+    ) {}
 
-    public hydratePresetStore(input: Record<string, string[]>): void
-    {
+    public hydratePresetStore(input: Record<string, string[]>): void {
         this.lookup = input;
     }
 
@@ -28,8 +25,7 @@ export class PresetHelper
      * Get default weapon and equipment presets
      * @returns Dictionary
      */
-    public getDefaultPresets(): Record<string, IPreset>
-    {
+    public getDefaultPresets(): Record<string, IPreset> {
         const weapons = this.getDefaultWeaponPresets();
         const equipment = this.getDefaultEquipmentPresets();
 
@@ -40,18 +36,15 @@ export class PresetHelper
      * Get default weapon presets
      * @returns Dictionary
      */
-    public getDefaultWeaponPresets(): Record<string, IPreset>
-    {
-        if (!this.defaultWeaponPresets)
-        {
+    public getDefaultWeaponPresets(): Record<string, IPreset> {
+        if (!this.defaultWeaponPresets) {
             this.defaultWeaponPresets = Object.values(this.databaseService.getGlobals().ItemPresets)
                 .filter(
                     (preset) =>
-                        preset._encyclopedia !== undefined
-                        && this.itemHelper.isOfBaseclass(preset._encyclopedia, BaseClasses.WEAPON),
+                        preset._encyclopedia !== undefined &&
+                        this.itemHelper.isOfBaseclass(preset._encyclopedia, BaseClasses.WEAPON),
                 )
-                .reduce((acc, cur) =>
-                {
+                .reduce((acc, cur) => {
                     acc[cur._id] = cur;
                     return acc;
                 }, {});
@@ -64,18 +57,15 @@ export class PresetHelper
      * Get default equipment presets
      * @returns Dictionary
      */
-    public getDefaultEquipmentPresets(): Record<string, IPreset>
-    {
-        if (!this.defaultEquipmentPresets)
-        {
+    public getDefaultEquipmentPresets(): Record<string, IPreset> {
+        if (!this.defaultEquipmentPresets) {
             this.defaultEquipmentPresets = Object.values(this.databaseService.getGlobals().ItemPresets)
                 .filter(
                     (preset) =>
-                        preset._encyclopedia !== undefined
-                        && this.itemHelper.armorItemCanHoldMods(preset._encyclopedia),
+                        preset._encyclopedia !== undefined &&
+                        this.itemHelper.armorItemCanHoldMods(preset._encyclopedia),
                 )
-                .reduce((acc, cur) =>
-                {
+                .reduce((acc, cur) => {
                     acc[cur._id] = cur;
                     return acc;
                 }, {});
@@ -84,8 +74,7 @@ export class PresetHelper
         return this.defaultEquipmentPresets;
     }
 
-    public isPreset(id: string): boolean
-    {
+    public isPreset(id: string): boolean {
         return id in this.databaseService.getGlobals().ItemPresets;
     }
 
@@ -95,38 +84,31 @@ export class PresetHelper
      * @param baseClass The BaseClasses enum to check against
      * @returns True if the preset is of the given base class, false otherwise
      */
-    public isPresetBaseClass(id: string, baseClass: BaseClasses): boolean
-    {
+    public isPresetBaseClass(id: string, baseClass: BaseClasses): boolean {
         return this.isPreset(id) && this.itemHelper.isOfBaseclass(this.getPreset(id)._encyclopedia, baseClass);
     }
 
-    public hasPreset(templateId: string): boolean
-    {
+    public hasPreset(templateId: string): boolean {
         return templateId in this.lookup;
     }
 
-    public getPreset(id: string): IPreset
-    {
+    public getPreset(id: string): IPreset {
         return this.cloner.clone(this.databaseService.getGlobals().ItemPresets[id]);
     }
 
-    public getAllPresets(): IPreset[]
-    {
+    public getAllPresets(): IPreset[] {
         return this.cloner.clone(Object.values(this.databaseService.getGlobals().ItemPresets));
     }
 
-    public getPresets(templateId: string): IPreset[]
-    {
-        if (!this.hasPreset(templateId))
-        {
+    public getPresets(templateId: string): IPreset[] {
+        if (!this.hasPreset(templateId)) {
             return [];
         }
 
         const presets = [];
         const ids = this.lookup[templateId];
 
-        for (const id of ids)
-        {
+        for (const id of ids) {
             presets.push(this.getPreset(id));
         }
 
@@ -138,19 +120,15 @@ export class PresetHelper
      * @param templateId Item id to get preset for
      * @returns Null if no default preset, otherwise IPreset
      */
-    public getDefaultPreset(templateId: string): IPreset | undefined
-    {
-        if (!this.hasPreset(templateId))
-        {
+    public getDefaultPreset(templateId: string): IPreset | undefined {
+        if (!this.hasPreset(templateId)) {
             return undefined;
         }
 
         const allPresets = this.getPresets(templateId);
 
-        for (const preset of allPresets)
-        {
-            if ("_encyclopedia" in preset)
-            {
+        for (const preset of allPresets) {
+            if ("_encyclopedia" in preset) {
                 return preset;
             }
         }
@@ -158,16 +136,12 @@ export class PresetHelper
         return allPresets[0];
     }
 
-    public getBaseItemTpl(presetId: string): string
-    {
-        if (this.isPreset(presetId))
-        {
+    public getBaseItemTpl(presetId: string): string {
+        if (this.isPreset(presetId)) {
             const preset = this.getPreset(presetId);
 
-            for (const item of preset._items)
-            {
-                if (preset._parent === item._id)
-                {
+            for (const item of preset._items) {
+                if (preset._parent === item._id) {
                     return item._tpl;
                 }
             }
@@ -181,8 +155,7 @@ export class PresetHelper
      * @param tpl The item template to get the price of
      * @returns The price of the given item preset, or base item if no preset exists
      */
-    public getDefaultPresetOrItemPrice(tpl: string): number
-    {
+    public getDefaultPresetOrItemPrice(tpl: string): number {
         // Get default preset if it exists
         const defaultPreset = this.getDefaultPreset(tpl);
 

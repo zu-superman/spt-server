@@ -1,5 +1,4 @@
-export enum BackendErrorCodes
-{
+export enum BackendErrorCodes {
     NONE = 0,
     UNKNOWN_ERROR = 200,
     NOT_AUTHORIZED = 201,

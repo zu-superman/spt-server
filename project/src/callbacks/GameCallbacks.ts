@@ -1,4 +1,3 @@
-import { inject, injectable } from "tsyringe";
 import { GameController } from "@spt/controllers/GameController";
 import { OnLoad } from "@spt/di/OnLoad";
 import { IEmptyRequestData } from "@spt/models/eft/common/IEmptyRequestData";
@@ -21,25 +20,22 @@ import { INullResponseData } from "@spt/models/eft/httpResponse/INullResponseDat
 import { SaveServer } from "@spt/servers/SaveServer";
 import { HttpResponseUtil } from "@spt/utils/HttpResponseUtil";
 import { Watermark } from "@spt/utils/Watermark";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class GameCallbacks implements OnLoad
-{
+export class GameCallbacks implements OnLoad {
     constructor(
         @inject("HttpResponseUtil") protected httpResponse: HttpResponseUtil,
         @inject("Watermark") protected watermark: Watermark,
         @inject("SaveServer") protected saveServer: SaveServer,
         @inject("GameController") protected gameController: GameController,
-    )
-    {}
+    ) {}
 
-    public async onLoad(): Promise<void>
-    {
+    public async onLoad(): Promise<void> {
         this.gameController.load();
     }
 
-    public getRoute(): string
-    {
+    public getRoute(): string {
         return "spt-game";
     }
 
@@ -47,8 +43,7 @@ export class GameCallbacks implements OnLoad
      * Handle client/game/version/validate
      * @returns INullResponseData
      */
-    public versionValidate(url: string, info: IVersionValidateRequestData, sessionID: string): INullResponseData
-    {
+    public versionValidate(url: string, info: IVersionValidateRequestData, sessionID: string): INullResponseData {
         return this.httpResponse.nullResponse();
     }
 
@@ -60,8 +55,7 @@ export class GameCallbacks implements OnLoad
         url: string,
         info: IEmptyRequestData,
         sessionID: string,
-    ): IGetBodyResponseData<IGameStartResponse>
-    {
+    ): IGetBodyResponseData<IGameStartResponse> {
         const today = new Date().toUTCString();
         const startTimeStampMS = Date.parse(today);
         this.gameController.gameStart(url, info, sessionID, startTimeStampMS);
@@ -77,8 +71,7 @@ export class GameCallbacks implements OnLoad
         url: string,
         info: IEmptyRequestData,
         sessionID: string,
-    ): IGetBodyResponseData<IGameLogoutResponseData>
-    {
+    ): IGetBodyResponseData<IGameLogoutResponseData> {
         this.saveServer.save();
         return this.httpResponse.getBody({ status: "ok" });
     }
@@ -91,8 +84,7 @@ export class GameCallbacks implements OnLoad
         url: string,
         info: IGameEmptyCrcRequestData,
         sessionID: string,
-    ): IGetBodyResponseData<IGameConfigResponse>
-    {
+    ): IGetBodyResponseData<IGameConfigResponse> {
         return this.httpResponse.getBody(this.gameController.getGameConfig(sessionID));
     }
 
@@ -104,16 +96,14 @@ export class GameCallbacks implements OnLoad
         url: string,
         info: IGameModeRequestData,
         sessionID: string,
-    ): IGetBodyResponseData<IGameModeResponse>
-    {
+    ): IGetBodyResponseData<IGameModeResponse> {
         return this.httpResponse.getBody(this.gameController.getGameMode(sessionID, info));
     }
 
     /**
      * Handle client/server/list
      */
-    public getServer(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<IServerDetails[]>
-    {
+    public getServer(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<IServerDetails[]> {
         return this.httpResponse.getBody(this.gameController.getServer(sessionID));
     }
 
@@ -124,8 +114,7 @@ export class GameCallbacks implements OnLoad
         url: string,
         info: IEmptyRequestData,
         sessionID: string,
-    ): IGetBodyResponseData<ICurrentGroupResponse>
-    {
+    ): IGetBodyResponseData<ICurrentGroupResponse> {
         return this.httpResponse.getBody(this.gameController.getCurrentGroup(sessionID));
     }
 
@@ -136,8 +125,7 @@ export class GameCallbacks implements OnLoad
         url: string,
         info: IEmptyRequestData,
         sessionID: string,
-    ): IGetBodyResponseData<ICheckVersionResponse>
-    {
+    ): IGetBodyResponseData<ICheckVersionResponse> {
         return this.httpResponse.getBody(this.gameController.getValidGameVersion(sessionID));
     }
 
@@ -149,8 +137,7 @@ export class GameCallbacks implements OnLoad
         url: string,
         info: IEmptyRequestData,
         sessionID: string,
-    ): IGetBodyResponseData<IGameKeepAliveResponse>
-    {
+    ): IGetBodyResponseData<IGameKeepAliveResponse> {
         return this.httpResponse.getBody(this.gameController.getKeepAlive(sessionID));
     }
 
@@ -158,13 +145,11 @@ export class GameCallbacks implements OnLoad
      * Handle singleplayer/settings/version
      * @returns string
      */
-    public getVersion(url: string, info: IEmptyRequestData, sessionID: string): string
-    {
+    public getVersion(url: string, info: IEmptyRequestData, sessionID: string): string {
         return this.httpResponse.noBody({ Version: this.watermark.getInGameVersionLabel() });
     }
 
-    public reportNickname(url: string, info: IUIDRequestData, sessionID: string): INullResponseData
-    {
+    public reportNickname(url: string, info: IUIDRequestData, sessionID: string): INullResponseData {
         return this.httpResponse.nullResponse();
     }
 
@@ -172,8 +157,7 @@ export class GameCallbacks implements OnLoad
      * Handle singleplayer/settings/getRaidTime
      * @returns string
      */
-    public getRaidTime(url: string, request: IGetRaidTimeRequest, sessionID: string): IGetRaidTimeResponse
-    {
+    public getRaidTime(url: string, request: IGetRaidTimeRequest, sessionID: string): IGetRaidTimeResponse {
         return this.httpResponse.noBody(this.gameController.getRaidTime(sessionID, request));
     }
 }

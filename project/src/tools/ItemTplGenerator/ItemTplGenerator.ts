@@ -25,7 +25,6 @@
 
 import * as fs from "fs";
 import * as path from "path";
-import { inject, injectAll, injectable } from "tsyringe";
 import { OnLoad } from "@spt/di/OnLoad";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
@@ -36,10 +35,10 @@ import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { DatabaseServer } from "@spt/servers/DatabaseServer";
 import { LocaleService } from "@spt/services/LocaleService";
 import * as itemTplOverrides from "@spt/tools/ItemTplGenerator/itemOverrides";
+import { inject, injectAll, injectable } from "tsyringe";
 
 @injectable()
-export class ItemTplGenerator
-{
+export class ItemTplGenerator {
     private enumDir: string;
     private items: Record<string, ITemplateItem>;
     private itemOverrides: Record<string, string>;
@@ -51,14 +50,11 @@ export class ItemTplGenerator
         @inject("PrimaryLogger") protected logger: ILogger,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @injectAll("OnLoad") protected onLoadComponents: OnLoad[],
-    )
-    {}
+    ) {}
 
-    async run(): Promise<void>
-    {
+    async run(): Promise<void> {
         // Load all of the onload components, this gives us access to most of SPTs injections
-        for (const onLoad of this.onLoadComponents)
-        {
+        for (const onLoad of this.onLoadComponents) {
             await onLoad.onLoad();
         }
 
@@ -90,11 +86,9 @@ export class ItemTplGenerator
      * Return an object containing all items in the game with a generated name
      * @returns An object containing a generated item name to item ID association
      */
-    private generateItemsObject(): Record<string, string>
-    {
+    private generateItemsObject(): Record<string, string> {
         const itemsObject = {};
-        for (const item of Object.values(this.items))
-        {
+        for (const item of Object.values(this.items)) {
             // Skip invalid items (Non-Item types, and shrapnel)
             if (!this.isValidItem(item)) continue;
 
@@ -104,22 +98,18 @@ export class ItemTplGenerator
             const itemSuffix = this.getItemSuffix(item);
 
             // Handle the case where the item starts with the parent category name. Avoids things like 'POCKETS_POCKETS'
-            if (itemParentName == itemName.substring(1, itemParentName.length + 1) && itemPrefix == "")
-            {
+            if (itemParentName == itemName.substring(1, itemParentName.length + 1) && itemPrefix == "") {
                 itemName = itemName.substring(itemParentName.length + 1);
-                if (itemName.length > 0 && itemName.at(0) != "_")
-                {
+                if (itemName.length > 0 && itemName.at(0) != "_") {
                     itemName = `_${itemName}`;
                 }
             }
 
             // Handle the case where the item ends with the parent category name. Avoids things like 'KEY_DORM_ROOM_103_KEY'
-            if (itemParentName === itemName.substring(itemName.length - itemParentName.length))
-            {
+            if (itemParentName === itemName.substring(itemName.length - itemParentName.length)) {
                 itemName = itemName.substring(0, itemName.length - itemParentName.length);
 
-                if (itemName.substring(itemName.length - 1) === "_")
-                {
+                if (itemName.substring(itemName.length - 1) === "_") {
                     itemName = itemName.substring(0, itemName.length - 1);
                 }
             }
@@ -130,21 +120,17 @@ export class ItemTplGenerator
             itemKey = this.sanitizeEnumKey(itemKey);
 
             // If the key already exists, see if we can add a suffix to both this, and the existing conflicting item
-            if (Object.keys(itemsObject).includes(itemKey) || this.collidedEnumKeys.includes(itemKey))
-            {
+            if (Object.keys(itemsObject).includes(itemKey) || this.collidedEnumKeys.includes(itemKey)) {
                 // Keep track, so we can handle 3+ conflicts
                 this.collidedEnumKeys.push(itemKey);
 
                 const itemNameSuffix = this.getItemNameSuffix(item);
-                if (itemNameSuffix)
-                {
+                if (itemNameSuffix) {
                     // Try to update the old key reference if we haven't already
-                    if (itemsObject[itemKey])
-                    {
+                    if (itemsObject[itemKey]) {
                         const oldItemId = itemsObject[itemKey];
                         const oldItemNameSuffix = this.getItemNameSuffix(this.items[oldItemId]);
-                        if (oldItemNameSuffix)
-                        {
+                        if (oldItemNameSuffix) {
                             const oldItemNewKey = this.sanitizeEnumKey(`${itemKey}_${oldItemNameSuffix}`);
                             delete itemsObject[itemKey];
                             itemsObject[oldItemNewKey] = oldItemId;
@@ -154,15 +140,12 @@ export class ItemTplGenerator
                     itemKey = this.sanitizeEnumKey(`${itemKey}_${itemNameSuffix}`);
 
                     // If we still collide, log an error
-                    if (Object.keys(itemsObject).includes(itemKey))
-                    {
+                    if (Object.keys(itemsObject).includes(itemKey)) {
                         this.logger.error(
                             `After rename, itemsObject already contains ${itemKey}  ${itemsObject[itemKey]} => ${item._id}`,
                         );
                     }
-                }
-                else
-                {
+                } else {
                     this.logger.error(
                         `New itemOverride entry required: itemsObject already contains ${itemKey}  ${itemsObject[itemKey]} => ${item._id}`,
                     );
@@ -176,8 +159,7 @@ export class ItemTplGenerator
         // Sort the items object
         const orderedItemsObject = Object.keys(itemsObject)
             .sort()
-            .reduce((obj, key) =>
-            {
+            .reduce((obj, key) => {
                 obj[key] = itemsObject[key];
                 return obj;
             }, {});
@@ -190,13 +172,10 @@ export class ItemTplGenerator
      * @param orderedItemsObject The previously generated object of item name to item ID associations
      * @returns
      */
-    private generateWeaponsObject(): Record<string, string>
-    {
+    private generateWeaponsObject(): Record<string, string> {
         const weaponsObject = {};
-        for (const [itemId, item] of Object.entries(this.items))
-        {
-            if (!this.itemHelper.isOfBaseclass(itemId, BaseClasses.WEAPON))
-            {
+        for (const [itemId, item] of Object.entries(this.items)) {
+            if (!this.itemHelper.isOfBaseclass(itemId, BaseClasses.WEAPON)) {
                 continue;
             }
 
@@ -204,16 +183,14 @@ export class ItemTplGenerator
             let weaponShortName = this.localeService.getLocaleDb()[`${itemId} ShortName`]?.toUpperCase();
 
             // Special case for the weird duplicated grenade launcher
-            if (itemId === "639c3fbbd0446708ee622ee9")
-            {
+            if (itemId === "639c3fbbd0446708ee622ee9") {
                 weaponShortName = "FN40GL_2";
             }
 
             // Include any bracketed suffixes that exist, handles the case of colored gun variants
             const weaponFullName = this.localeService.getLocaleDb()[`${itemId} Name`]?.toUpperCase();
             const itemNameBracketSuffix = weaponFullName.match(/\((.+?)\)$/);
-            if (itemNameBracketSuffix && !weaponShortName.endsWith(itemNameBracketSuffix[1]))
-            {
+            if (itemNameBracketSuffix && !weaponShortName.endsWith(itemNameBracketSuffix[1])) {
                 weaponShortName += `_${itemNameBracketSuffix[1]}`;
             }
 
@@ -225,8 +202,7 @@ export class ItemTplGenerator
                 .replace(/[^a-zA-Z0-9_]/g, "")
                 .toUpperCase();
 
-            if (weaponsObject[weaponName])
-            {
+            if (weaponsObject[weaponName]) {
                 this.logger.error(`Error, weapon ${weaponName} already exists`);
                 continue;
             }
@@ -237,8 +213,7 @@ export class ItemTplGenerator
         // Sort the weapons object
         const orderedWeaponsObject = Object.keys(weaponsObject)
             .sort()
-            .reduce((obj, key) =>
-            {
+            .reduce((obj, key) => {
                 obj[key] = weaponsObject[key];
                 return obj;
             }, {});
@@ -251,60 +226,39 @@ export class ItemTplGenerator
      * @param enumKey The enum key to sanitize
      * @returns The sanitized enum key
      */
-    private sanitizeEnumKey(enumKey: string): string
-    {
+    private sanitizeEnumKey(enumKey: string): string {
         return enumKey
             .toUpperCase()
             .replace(/[^A-Z0-9_]/g, "")
             .replace(/_+/g, "_");
     }
 
-    private getParentName(item: ITemplateItem): string
-    {
-        if (item._props.QuestItem)
-        {
+    private getParentName(item: ITemplateItem): string {
+        if (item._props.QuestItem) {
             return "QUEST";
-        }
-        else if (this.itemHelper.isOfBaseclass(item._id, BaseClasses.BARTER_ITEM))
-        {
+        } else if (this.itemHelper.isOfBaseclass(item._id, BaseClasses.BARTER_ITEM)) {
             return "BARTER";
-        }
-        else if (this.itemHelper.isOfBaseclass(item._id, BaseClasses.THROW_WEAPON))
-        {
+        } else if (this.itemHelper.isOfBaseclass(item._id, BaseClasses.THROW_WEAPON)) {
             return "GRENADE";
-        }
-        else if (this.itemHelper.isOfBaseclass(item._id, BaseClasses.STIMULATOR))
-        {
+        } else if (this.itemHelper.isOfBaseclass(item._id, BaseClasses.STIMULATOR)) {
             return "STIM";
-        }
-        else if (this.itemHelper.isOfBaseclass(item._id, BaseClasses.MAGAZINE))
-        {
+        } else if (this.itemHelper.isOfBaseclass(item._id, BaseClasses.MAGAZINE)) {
             return "MAGAZINE";
-        }
-        else if (this.itemHelper.isOfBaseclass(item._id, BaseClasses.KEY_MECHANICAL))
-        {
+        } else if (this.itemHelper.isOfBaseclass(item._id, BaseClasses.KEY_MECHANICAL)) {
             return "KEY";
-        }
-        else if (this.itemHelper.isOfBaseclass(item._id, BaseClasses.MOB_CONTAINER))
-        {
+        } else if (this.itemHelper.isOfBaseclass(item._id, BaseClasses.MOB_CONTAINER)) {
             return "SECURE";
-        }
-        else if (this.itemHelper.isOfBaseclass(item._id, BaseClasses.SIMPLE_CONTAINER))
-        {
+        } else if (this.itemHelper.isOfBaseclass(item._id, BaseClasses.SIMPLE_CONTAINER)) {
             return "CONTAINER";
-        }
-        else if (this.itemHelper.isOfBaseclass(item._id, BaseClasses.PORTABLE_RANGE_FINDER))
-        {
+        } else if (this.itemHelper.isOfBaseclass(item._id, BaseClasses.PORTABLE_RANGE_FINDER)) {
             return "RANGEFINDER";
         }
         // Why are flares grenade launcher...?
-        else if (item._name.startsWith("weapon_rsp30"))
-        {
+        else if (item._name.startsWith("weapon_rsp30")) {
             return "FLARE";
         }
         // This is a special case for the signal pistol, I'm not adding it as a Grenade Launcher
-        else if (item._id == "620109578d82e67e7911abf2")
-        {
+        else if (item._id == "620109578d82e67e7911abf2") {
             return "SIGNALPISTOL";
         }
 
@@ -312,17 +266,14 @@ export class ItemTplGenerator
         return this.items[parentId]._name.toUpperCase();
     }
 
-    private isValidItem(item: ITemplateItem): boolean
-    {
+    private isValidItem(item: ITemplateItem): boolean {
         const shrapnelId = "5943d9c186f7745a13413ac9";
 
-        if (item._type !== "Item")
-        {
+        if (item._type !== "Item") {
             return false;
         }
 
-        if (item._proto === shrapnelId)
-        {
+        if (item._proto === shrapnelId) {
             return false;
         }
 
@@ -334,74 +285,62 @@ export class ItemTplGenerator
      * @param item The item to generate the prefix for
      * @returns The prefix of the given item
      */
-    private getItemPrefix(item: ITemplateItem): string
-    {
+    private getItemPrefix(item: ITemplateItem): string {
         let prefix = "";
 
         // Prefix ammo with its caliber
-        if (this.itemHelper.isOfBaseclass(item._id, BaseClasses.AMMO))
-        {
+        if (this.itemHelper.isOfBaseclass(item._id, BaseClasses.AMMO)) {
             prefix = this.getAmmoPrefix(item);
         }
         // Prefix ammo boxes with their caliber
-        else if (this.itemHelper.isOfBaseclass(item._id, BaseClasses.AMMO_BOX))
-        {
+        else if (this.itemHelper.isOfBaseclass(item._id, BaseClasses.AMMO_BOX)) {
             prefix = this.getAmmoBoxPrefix(item);
         }
         // Prefix magazines with their caliber
-        else if (this.itemHelper.isOfBaseclass(item._id, BaseClasses.MAGAZINE))
-        {
+        else if (this.itemHelper.isOfBaseclass(item._id, BaseClasses.MAGAZINE)) {
             prefix = this.getMagazinePrefix(item);
         }
 
         // Make sure there's an underscore separator
-        if (prefix.length > 0 && prefix.at(0) != "_")
-        {
+        if (prefix.length > 0 && prefix.at(0) != "_") {
             prefix = `_${prefix}`;
         }
 
         return prefix;
     }
 
-    private getItemSuffix(item: ITemplateItem): string
-    {
+    private getItemSuffix(item: ITemplateItem): string {
         let suffix = "";
 
         // Add mag size for magazines
-        if (this.itemHelper.isOfBaseclass(item._id, BaseClasses.MAGAZINE))
-        {
+        if (this.itemHelper.isOfBaseclass(item._id, BaseClasses.MAGAZINE)) {
             suffix = item._props.Cartridges![0]?._max_count?.toString() + "RND";
         }
         // Add pack size for ammo boxes
-        else if (this.itemHelper.isOfBaseclass(item._id, BaseClasses.AMMO_BOX))
-        {
+        else if (this.itemHelper.isOfBaseclass(item._id, BaseClasses.AMMO_BOX)) {
             suffix = item._props.StackSlots![0]?._max_count.toString() + "RND";
         }
 
         // Add "DAMAGED" for damaged items
-        if (item._name.toLowerCase().includes("damaged"))
-        {
+        if (item._name.toLowerCase().includes("damaged")) {
             suffix += "_DAMAGED";
         }
 
         // Make sure there's an underscore separator
-        if (suffix.length > 0 && suffix.at(0) != "_")
-        {
+        if (suffix.length > 0 && suffix.at(0) != "_") {
             suffix = `_${suffix}`;
         }
 
         return suffix;
     }
 
-    private getAmmoPrefix(item: ITemplateItem): string
-    {
+    private getAmmoPrefix(item: ITemplateItem): string {
         const prefix = item._props.Caliber!.toUpperCase();
 
         return this.cleanCaliber(prefix);
     }
 
-    private cleanCaliber(ammoCaliber: string): string
-    {
+    private cleanCaliber(ammoCaliber: string): string {
         ammoCaliber = ammoCaliber.replace("CALIBER", "");
         ammoCaliber = ammoCaliber.replace("PARA", "");
         ammoCaliber = ammoCaliber.replace("NATO", "");
@@ -412,15 +351,13 @@ export class ItemTplGenerator
         return ammoCaliber;
     }
 
-    private getAmmoBoxPrefix(item: ITemplateItem): string
-    {
+    private getAmmoBoxPrefix(item: ITemplateItem): string {
         const ammoItem = item._props.StackSlots![0]?._props.filters[0].Filter[0];
 
         return this.getAmmoPrefix(this.items[ammoItem]);
     }
 
-    private getMagazinePrefix(item: ITemplateItem): string
-    {
+    private getMagazinePrefix(item: ITemplateItem): string {
         const ammoItem = item._props.Cartridges![0]?._props.filters[0].Filter[0];
 
         return this.getAmmoPrefix(this.items[ammoItem]);
@@ -431,13 +368,11 @@ export class ItemTplGenerator
      * @param item The item to generate the name for
      * @returns The name of the given item
      */
-    private getItemName(item)
-    {
+    private getItemName(item) {
         let itemName;
 
         // Manual item name overrides
-        if (this.itemOverrides[item._id])
-        {
+        if (this.itemOverrides[item._id]) {
             itemName = this.itemOverrides[item._id].toUpperCase();
         }
         // For the listed types, user the item's _name property
@@ -447,35 +382,29 @@ export class ItemTplGenerator
                 BaseClasses.BUILT_IN_INSERTS,
                 BaseClasses.STASH,
             ])
-        )
-        {
+        ) {
             itemName = item._name.toUpperCase();
         }
         // For the listed types, use the short name
         else if (
             this.itemHelper.isOfBaseclasses(item._id, [BaseClasses.AMMO, BaseClasses.AMMO_BOX, BaseClasses.MAGAZINE])
-        )
-        {
+        ) {
             itemName = this.localeService.getLocaleDb()[`${item._id} ShortName`]?.toUpperCase();
         }
         // For everything else, use the full name
-        else
-        {
+        else {
             itemName = this.localeService.getLocaleDb()[`${item._id} Name`]?.toUpperCase();
         }
 
         // Fall back in the event we couldn't find a name
-        if (!itemName)
-        {
+        if (!itemName) {
             itemName = this.localeService.getLocaleDb()[`${item._id} Name`]?.toUpperCase();
         }
-        if (!itemName)
-        {
+        if (!itemName) {
             itemName = item._name.toUpperCase();
         }
 
-        if (!itemName)
-        {
+        if (!itemName) {
             console.log(`Unable to get shortname for ${item._id}`);
             return "";
         }
@@ -486,25 +415,21 @@ export class ItemTplGenerator
         return `_${itemName}`;
     }
 
-    private getItemNameSuffix(item: ITemplateItem): string
-    {
+    private getItemNameSuffix(item: ITemplateItem): string {
         const itemName = this.localeService.getLocaleDb()[`${item._id} Name`];
 
         // Add grid size for lootable containers
-        if (this.itemHelper.isOfBaseclass(item._id, BaseClasses.LOOT_CONTAINER))
-        {
+        if (this.itemHelper.isOfBaseclass(item._id, BaseClasses.LOOT_CONTAINER)) {
             return `${item._props.Grids![0]?._props.cellsH}X${item._props.Grids![0]?._props.cellsV}`;
         }
 
         // Add ammo caliber to conflicting weapons
-        if (this.itemHelper.isOfBaseclass(item._id, BaseClasses.WEAPON))
-        {
+        if (this.itemHelper.isOfBaseclass(item._id, BaseClasses.WEAPON)) {
             const caliber = this.cleanCaliber(item._props.ammoCaliber!.toUpperCase());
 
             // If the item has a bracketed section at the end of its name, include that
             const itemNameBracketSuffix = itemName?.match(/\((.+?)\)$/);
-            if (itemNameBracketSuffix)
-            {
+            if (itemNameBracketSuffix) {
                 return `${caliber}_${itemNameBracketSuffix[1]}`;
             }
 
@@ -512,42 +437,35 @@ export class ItemTplGenerator
         }
 
         // Make sure we have a full name
-        if (!itemName)
-        {
+        if (!itemName) {
             return "";
         }
 
         // If the item has a bracketed section at the end of its name, use that
         const itemNameBracketSuffix = itemName.match(/\((.+?)\)$/);
-        if (itemNameBracketSuffix)
-        {
+        if (itemNameBracketSuffix) {
             return itemNameBracketSuffix[1];
         }
 
         // If the item has a number at the end of its name, use that
         const itemNameNumberSuffix = itemName.match(/#([0-9]+)$/);
-        if (itemNameNumberSuffix)
-        {
+        if (itemNameNumberSuffix) {
             return itemNameNumberSuffix[1];
         }
 
         return "";
     }
 
-    private logEnumValueChanges(data: Record<string, string>, enumName: string, originalEnum: Record<string, string>)
-    {
+    private logEnumValueChanges(data: Record<string, string>, enumName: string, originalEnum: Record<string, string>) {
         // First generate a mapping of the original enum values to names
         const originalEnumValues = {};
-        for (const [key, value] of Object.entries(originalEnum))
-        {
+        for (const [key, value] of Object.entries(originalEnum)) {
             originalEnumValues[value as string] = key;
         }
 
         // Loop through our new data, and find any where the given ID's name doesn't match the original enum
-        for (const [dataKey, dataValue] of Object.entries(data))
-        {
-            if (originalEnumValues[dataValue] && originalEnumValues[dataValue] !== dataKey)
-            {
+        for (const [dataKey, dataValue] of Object.entries(data)) {
+            if (originalEnumValues[dataValue] && originalEnumValues[dataValue] !== dataKey) {
                 this.logger.warning(
                     `Enum ${enumName} key has changed for ${dataValue}, ${originalEnumValues[dataValue]} => ${dataKey}`,
                 );
@@ -555,16 +473,13 @@ export class ItemTplGenerator
         }
     }
 
-    private writeEnumsToFile(outputPath: string, enumEntries: Record<string, Record<string, string>>): void
-    {
+    private writeEnumsToFile(outputPath: string, enumEntries: Record<string, Record<string, string>>): void {
         let enumFileData = "// This is an auto generated file, do not modify. Re-generate with `npm run gen:items`";
 
-        for (const [enumName, data] of Object.entries(enumEntries))
-        {
+        for (const [enumName, data] of Object.entries(enumEntries)) {
             enumFileData += `\nexport enum ${enumName}\n{\n`;
 
-            for (const [key, value] of Object.entries(data))
-            {
+            for (const [key, value] of Object.entries(data)) {
                 enumFileData += `    ${key} = "${value}",\n`;
             }
 

@@ -1,5 +1,4 @@
-export enum RequirementType
-{
+export enum RequirementType {
     AREA = "Area",
     ITEM = "Item",
     TRADER_UNLOCK = "TraderUnlock",

@@ -1,5 +1,3 @@
-import { stringSimilarity } from "string-similarity-js";
-import { inject, injectable } from "tsyringe";
 import { SavedCommand } from "@spt/helpers/Dialogue/Commando/SptCommands/GiveCommand/SavedCommand";
 import { ISptCommand } from "@spt/helpers/Dialogue/Commando/SptCommands/ISptCommand";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
@@ -15,12 +13,13 @@ import { DatabaseService } from "@spt/services/DatabaseService";
 import { ItemFilterService } from "@spt/services/ItemFilterService";
 import { LocaleService } from "@spt/services/LocaleService";
 import { MailSendService } from "@spt/services/MailSendService";
-import { ICloner } from "@spt/utils/cloners/ICloner";
 import { HashUtil } from "@spt/utils/HashUtil";
+import { ICloner } from "@spt/utils/cloners/ICloner";
+import { stringSimilarity } from "string-similarity-js";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class GiveSptCommand implements ISptCommand
-{
+export class GiveSptCommand implements ISptCommand {
     /**
      * Regex to account for all these cases:
      * spt give "item name" 5
@@ -50,23 +49,18 @@ export class GiveSptCommand implements ISptCommand
         @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("ItemFilterService") protected itemFilterService: ItemFilterService,
         @inject("PrimaryCloner") protected cloner: ICloner,
-    )
-    {}
+    ) {}
 
-    public getCommand(): string
-    {
+    public getCommand(): string {
         return "give";
     }
 
-    public getCommandHelp(): string
-    {
+    public getCommandHelp(): string {
         return 'spt give\n========\nSends items to the player through the message system.\n\n\tspt give [template ID] [quantity]\n\t\tEx: spt give 544fb25a4bdc2dfb738b4567 2\n\n\tspt give ["item name"] [quantity]\n\t\tEx: spt give "pack of sugar" 10\n\n\tspt give [locale] ["item name"] [quantity]\n\t\tEx: spt give fr "figurine de chat" 3';
     }
 
-    public performAction(commandHandler: IUserDialogInfo, sessionId: string, request: ISendMessageRequest): string
-    {
-        if (!GiveSptCommand.commandRegex.test(request.text))
-        {
+    public performAction(commandHandler: IUserDialogInfo, sessionId: string, request: ISendMessageRequest): string {
+        if (!GiveSptCommand.commandRegex.test(request.text)) {
             this.mailSendService.sendUserMessageToPlayer(
                 sessionId,
                 commandHandler,
@@ -83,10 +77,8 @@ export class GiveSptCommand implements ISptCommand
         let locale: string;
 
         // This is a reply to a give request previously made pending a reply
-        if (result[1] === undefined)
-        {
-            if (!this.savedCommand.has(sessionId))
-            {
+        if (result[1] === undefined) {
+            if (!this.savedCommand.has(sessionId)) {
                 this.mailSendService.sendUserMessageToPlayer(
                     sessionId,
                     commandHandler,
@@ -95,8 +87,7 @@ export class GiveSptCommand implements ISptCommand
                 return request.dialogId;
             }
             const savedCommand = this.savedCommand.get(sessionId);
-            if (+result[6] > savedCommand.potentialItemNames.length)
-            {
+            if (+result[6] > savedCommand.potentialItemNames.length) {
                 this.mailSendService.sendUserMessageToPlayer(
                     sessionId,
                     commandHandler,
@@ -109,19 +100,15 @@ export class GiveSptCommand implements ISptCommand
             locale = savedCommand.locale;
             isItemName = true;
             this.savedCommand.delete(sessionId);
-        }
-        else
-        {
+        } else {
             // A new give request was entered, we need to ignore the old saved command
-            if (this.savedCommand.has(sessionId))
-            {
+            if (this.savedCommand.has(sessionId)) {
                 this.savedCommand.delete(sessionId);
             }
             isItemName = result[5] !== undefined;
             item = result[5] ? result[5] : result[2];
             quantity = +result[6];
-            if (quantity <= 0)
-            {
+            if (quantity <= 0) {
                 this.mailSendService.sendUserMessageToPlayer(
                     sessionId,
                     commandHandler,
@@ -130,14 +117,10 @@ export class GiveSptCommand implements ISptCommand
                 return request.dialogId;
             }
 
-            if (isItemName)
-            {
-                try
-                {
+            if (isItemName) {
+                try {
                     locale = result[4] ? result[4] : this.localeService.getDesiredGameLocale() ?? "en";
-                }
-                catch (e)
-                {
+                } catch (e) {
                     this.mailSendService.sendUserMessageToPlayer(
                         sessionId,
                         commandHandler,
@@ -147,9 +130,8 @@ export class GiveSptCommand implements ISptCommand
                     locale = "en";
                 }
 
-                const localizedGlobal
-                    = this.databaseService.getLocales().global[locale]
-                    ?? this.databaseService.getLocales().global.en;
+                const localizedGlobal =
+                    this.databaseService.getLocales().global[locale] ?? this.databaseService.getLocales().global.en;
 
                 const closestItemsMatchedByName = this.itemHelper
                     .getItems()
@@ -162,12 +144,9 @@ export class GiveSptCommand implements ISptCommand
                     }))
                     .sort((a1, a2) => a2.match - a1.match);
 
-                if (closestItemsMatchedByName[0].match >= GiveSptCommand.acceptableConfidence)
-                {
+                if (closestItemsMatchedByName[0].match >= GiveSptCommand.acceptableConfidence) {
                     item = closestItemsMatchedByName[0].itemName;
-                }
-                else
-                {
+                } else {
                     let i = 1;
                     const slicedItems = closestItemsMatchedByName.slice(0, 10);
                     // max 10 item names and map them
@@ -192,20 +171,19 @@ export class GiveSptCommand implements ISptCommand
             }
         }
 
-        const localizedGlobal = this.databaseService.getLocales().global[locale]
-          ?? this.databaseService.getLocales().global.en;
+        const localizedGlobal =
+            this.databaseService.getLocales().global[locale] ?? this.databaseService.getLocales().global.en;
         // If item is an item name, we need to search using that item name and the locale which one we want otherwise
         // item is just the tplId.
         const tplId = isItemName
             ? this.itemHelper
-                .getItems()
-                .filter((i) => this.isItemAllowed(i))
-                .find((i) => (localizedGlobal[`${i?._id} Name`]?.toLowerCase() ?? i._props.Name) === item)._id
+                  .getItems()
+                  .filter((i) => this.isItemAllowed(i))
+                  .find((i) => (localizedGlobal[`${i?._id} Name`]?.toLowerCase() ?? i._props.Name) === item)._id
             : item;
 
         const checkedItem = this.itemHelper.getItem(tplId);
-        if (!checkedItem[0])
-        {
+        if (!checkedItem[0]) {
             this.mailSendService.sendUserMessageToPlayer(
                 sessionId,
                 commandHandler,
@@ -216,53 +194,39 @@ export class GiveSptCommand implements ISptCommand
 
         const itemsToSend: Item[] = [];
         const preset = this.presetHelper.getDefaultPreset(checkedItem[1]._id);
-        if (preset && !GiveSptCommand.excludedPresetItems.has(checkedItem[1]._id))
-        {
-            for (let i = 0; i < quantity; i++)
-            {
+        if (preset && !GiveSptCommand.excludedPresetItems.has(checkedItem[1]._id)) {
+            for (let i = 0; i < quantity; i++) {
                 let items = this.cloner.clone(preset._items);
                 items = this.itemHelper.replaceIDs(items);
                 itemsToSend.push(...items);
             }
-        }
-        else if (this.itemHelper.isOfBaseclass(checkedItem[1]._id, BaseClasses.AMMO_BOX))
-        {
-            for (let i = 0; i < quantity; i++)
-            {
+        } else if (this.itemHelper.isOfBaseclass(checkedItem[1]._id, BaseClasses.AMMO_BOX)) {
+            for (let i = 0; i < quantity; i++) {
                 const ammoBoxArray: Item[] = [];
                 ammoBoxArray.push({ _id: this.hashUtil.generate(), _tpl: checkedItem[1]._id });
                 // DO NOT generate the ammo box cartridges, the mail service does it for us! :)
                 // this.itemHelper.addCartridgesToAmmoBox(ammoBoxArray, checkedItem[1]);
                 itemsToSend.push(...ammoBoxArray);
             }
-        }
-        else
-        {
-            if (checkedItem[1]._props.StackMaxSize === 1)
-            {
-                for (let i = 0; i < quantity; i++)
-                {
+        } else {
+            if (checkedItem[1]._props.StackMaxSize === 1) {
+                for (let i = 0; i < quantity; i++) {
                     itemsToSend.push({
                         _id: this.hashUtil.generate(),
                         _tpl: checkedItem[1]._id,
                         upd: this.itemHelper.generateUpdForItem(checkedItem[1]),
                     });
                 }
-            }
-            else
-            {
+            } else {
                 const item: Item = {
                     _id: this.hashUtil.generate(),
                     _tpl: checkedItem[1]._id,
                     upd: this.itemHelper.generateUpdForItem(checkedItem[1]),
                 };
                 item.upd.StackObjectsCount = quantity;
-                try
-                {
+                try {
                     itemsToSend.push(...this.itemHelper.splitStack(item));
-                }
-                catch
-                {
+                } catch {
                     this.mailSendService.sendUserMessageToPlayer(
                         sessionId,
                         commandHandler,
@@ -285,17 +249,16 @@ export class GiveSptCommand implements ISptCommand
      * @param templateItem the template item to check
      * @returns true if its obtainable, false if its not
      */
-    protected isItemAllowed(templateItem: ITemplateItem): boolean
-    {
+    protected isItemAllowed(templateItem: ITemplateItem): boolean {
         return (
-            templateItem._type !== "Node"
-            && !this.itemHelper.isQuestItem(templateItem._id)
-            && !this.itemFilterService.isItemBlacklisted(templateItem._id)
-            && (templateItem._props?.Prefab?.path ?? "") !== ""
-            && !this.itemHelper.isOfBaseclass(templateItem._id, BaseClasses.HIDEOUT_AREA_CONTAINER)
-            && !this.itemHelper.isOfBaseclass(templateItem._id, BaseClasses.LOOT_CONTAINER)
-            && !this.itemHelper.isOfBaseclass(templateItem._id, BaseClasses.RANDOM_LOOT_CONTAINER)
-            && !this.itemHelper.isOfBaseclass(templateItem._id, BaseClasses.MOB_CONTAINER)
+            templateItem._type !== "Node" &&
+            !this.itemHelper.isQuestItem(templateItem._id) &&
+            !this.itemFilterService.isItemBlacklisted(templateItem._id) &&
+            (templateItem._props?.Prefab?.path ?? "") !== "" &&
+            !this.itemHelper.isOfBaseclass(templateItem._id, BaseClasses.HIDEOUT_AREA_CONTAINER) &&
+            !this.itemHelper.isOfBaseclass(templateItem._id, BaseClasses.LOOT_CONTAINER) &&
+            !this.itemHelper.isOfBaseclass(templateItem._id, BaseClasses.RANDOM_LOOT_CONTAINER) &&
+            !this.itemHelper.isOfBaseclass(templateItem._id, BaseClasses.MOB_CONTAINER)
         );
     }
 }

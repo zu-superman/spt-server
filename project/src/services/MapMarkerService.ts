@@ -1,18 +1,14 @@
-import { inject, injectable } from "tsyringe";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { Item } from "@spt/models/eft/common/tables/IItem";
 import { IInventoryCreateMarkerRequestData } from "@spt/models/eft/inventory/IInventoryCreateMarkerRequestData";
 import { IInventoryDeleteMarkerRequestData } from "@spt/models/eft/inventory/IInventoryDeleteMarkerRequestData";
 import { IInventoryEditMarkerRequestData } from "@spt/models/eft/inventory/IInventoryEditMarkerRequestData";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class MapMarkerService
-{
-    constructor(
-        @inject("PrimaryLogger") protected logger: ILogger,
-    )
-    {}
+export class MapMarkerService {
+    constructor(@inject("PrimaryLogger") protected logger: ILogger) {}
 
     /**
      * Add note to a map item in player inventory
@@ -20,11 +16,7 @@ export class MapMarkerService
      * @param request Add marker request
      * @returns Item
      */
-    public createMarkerOnMap(
-        pmcData: IPmcData,
-        request: IInventoryCreateMarkerRequestData,
-    ): Item
-    {
+    public createMarkerOnMap(pmcData: IPmcData, request: IInventoryCreateMarkerRequestData): Item {
         // Get map from inventory
         const mapItem = pmcData.Inventory.items.find((i) => i._id === request.item);
 
@@ -44,17 +36,12 @@ export class MapMarkerService
      * @param request Delete marker request
      * @returns Item
      */
-    public deleteMarkerFromMap(
-        pmcData: IPmcData,
-        request: IInventoryDeleteMarkerRequestData,
-    ): Item
-    {
+    public deleteMarkerFromMap(pmcData: IPmcData, request: IInventoryDeleteMarkerRequestData): Item {
         // Get map from inventory
         const mapItem = pmcData.Inventory.items.find((item) => item._id === request.item);
 
         // remove marker
-        const markers = mapItem.upd.Map.Markers.filter((marker) =>
-        {
+        const markers = mapItem.upd.Map.Markers.filter((marker) => {
             return marker.X !== request.X && marker.Y !== request.Y;
         });
         mapItem.upd.Map.Markers = markers;
@@ -68,11 +55,7 @@ export class MapMarkerService
      * @param request Edit marker request
      * @returns Item
      */
-    public editMarkerOnMap(
-        pmcData: IPmcData,
-        request: IInventoryEditMarkerRequestData,
-    ): Item
-    {
+    public editMarkerOnMap(pmcData: IPmcData, request: IInventoryEditMarkerRequestData): Item {
         // Get map from inventory
         const mapItem = pmcData.Inventory.items.find((item) => item._id === request.item);
 
@@ -89,8 +72,7 @@ export class MapMarkerService
      * @param mapNoteText Marker text to sanitise
      * @returns Sanitised map marker text
      */
-    protected sanitiseMapMarkerText(mapNoteText: string): string
-    {
+    protected sanitiseMapMarkerText(mapNoteText: string): string {
         return mapNoteText.replace(/[^\p{L}\d ]/gu, "");
     }
 }

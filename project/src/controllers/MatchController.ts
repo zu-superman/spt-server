@@ -1,4 +1,3 @@
-import { inject, injectable } from "tsyringe";
 import { ApplicationContext } from "@spt/context/ApplicationContext";
 import { ContextVariableType } from "@spt/context/ContextVariableType";
 import { LootGenerator } from "@spt/generators/LootGenerator";
@@ -30,10 +29,10 @@ import { ProfileSnapshotService } from "@spt/services/ProfileSnapshotService";
 import { HashUtil } from "@spt/utils/HashUtil";
 import { RandomUtil } from "@spt/utils/RandomUtil";
 import { TimeUtil } from "@spt/utils/TimeUtil";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class MatchController
-{
+export class MatchController {
     protected matchConfig: IMatchConfig;
     protected inRaidConfig: IInRaidConfig;
     protected traderConfig: ITraderConfig;
@@ -55,28 +54,24 @@ export class MatchController
         @inject("MailSendService") protected mailSendService: MailSendService,
         @inject("LootGenerator") protected lootGenerator: LootGenerator,
         @inject("ApplicationContext") protected applicationContext: ApplicationContext,
-    )
-    {
+    ) {
         this.matchConfig = this.configServer.getConfig(ConfigTypes.MATCH);
         this.inRaidConfig = this.configServer.getConfig(ConfigTypes.IN_RAID);
         this.traderConfig = this.configServer.getConfig(ConfigTypes.TRADER);
         this.pmcConfig = this.configServer.getConfig(ConfigTypes.PMC);
     }
 
-    public getEnabled(): boolean
-    {
+    public getEnabled(): boolean {
         return this.matchConfig.enabled;
     }
 
     /** Handle client/match/group/delete */
-    public deleteGroup(info: any): void
-    {
+    public deleteGroup(info: any): void {
         this.matchLocationService.deleteGroup(info);
     }
 
     /** Handle match/group/start_game */
-    public joinMatch(info: IMatchGroupStartGameRequest, sessionId: string): IProfileStatusResponse
-    {
+    public joinMatch(info: IMatchGroupStartGameRequest, sessionId: string): IProfileStatusResponse {
         const output: IProfileStatusResponse = { maxPveCountExceeded: false, profiles: [] };
 
         // get list of players joining into the match
@@ -99,8 +94,7 @@ export class MatchController
     }
 
     /** Handle client/match/group/status */
-    public getGroupStatus(info: IMatchGroupStatusRequest): IMatchGroupStatusResponse
-    {
+    public getGroupStatus(info: IMatchGroupStatusRequest): IMatchGroupStatusResponse {
         return { players: [], maxPveCountExceeded: false };
     }
 
@@ -109,16 +103,14 @@ export class MatchController
      * @param request Raid config request
      * @param sessionID Session id
      */
-    public startOfflineRaid(request: IGetRaidConfigurationRequestData, sessionID: string): void
-    {
+    public startOfflineRaid(request: IGetRaidConfigurationRequestData, sessionID: string): void {
         // Store request data for access during bot generation
         this.applicationContext.addValue(ContextVariableType.RAID_CONFIGURATION, request);
 
         // TODO: add code to strip PMC of equipment now they've started the raid
 
         // Set pmcs to difficulty set in pre-raid screen if override in bot config isnt enabled
-        if (!this.pmcConfig.useDifficultyOverride)
-        {
+        if (!this.pmcConfig.useDifficultyOverride) {
             this.pmcConfig.difficulty = this.convertDifficultyDropdownIntoBotDifficulty(
                 request.wavesSettings.botDifficulty,
             );
@@ -134,11 +126,9 @@ export class MatchController
      * @param botDifficulty dropdown difficulty value
      * @returns bot difficulty
      */
-    protected convertDifficultyDropdownIntoBotDifficulty(botDifficulty: string): string
-    {
+    protected convertDifficultyDropdownIntoBotDifficulty(botDifficulty: string): string {
         // Edge case medium - must be altered
-        if (botDifficulty.toLowerCase() === "medium")
-        {
+        if (botDifficulty.toLowerCase() === "medium") {
             return "normal";
         }
 
@@ -146,8 +136,7 @@ export class MatchController
     }
 
     /** Handle client/match/offline/end */
-    public endOfflineRaid(info: IEndOfflineRaidRequestData, sessionId: string): void
-    {
+    public endOfflineRaid(info: IEndOfflineRaidRequestData, sessionId: string): void {
         const pmcData: IPmcData = this.profileHelper.getPmcProfile(sessionId);
         const extractName = info.exitName;
 
@@ -160,13 +149,11 @@ export class MatchController
         // Clear bot loot cache
         this.botLootCacheService.clearCache();
 
-        if (this.extractWasViaCar(extractName))
-        {
+        if (this.extractWasViaCar(extractName)) {
             this.handleCarExtract(extractName, pmcData, sessionId);
         }
 
-        if (extractName && this.extractWasViaCoop(extractName) && this.traderConfig.fence.coopExtractGift.sendGift)
-        {
+        if (extractName && this.extractWasViaCoop(extractName) && this.traderConfig.fence.coopExtractGift.sendGift) {
             this.handleCoopExtract(sessionId, pmcData, extractName);
             this.sendCoopTakenFenceMessage(sessionId);
         }
@@ -177,26 +164,22 @@ export class MatchController
      * @param extractName Name of extract player took
      * @returns True if coop extract
      */
-    protected extractWasViaCoop(extractName: string): boolean
-    {
+    protected extractWasViaCoop(extractName: string): boolean {
         // No extract name, not a coop extract
-        if (!extractName)
-        {
+        if (!extractName) {
             return false;
         }
 
         return this.inRaidConfig.coopExtracts.includes(extractName.trim());
     }
 
-    protected sendCoopTakenFenceMessage(sessionId: string): void
-    {
+    protected sendCoopTakenFenceMessage(sessionId: string): void {
         // Generate reward for taking coop extract
         const loot = this.lootGenerator.createRandomLoot(this.traderConfig.fence.coopExtractGift);
         const mailableLoot: Item[] = [];
 
         const parentId = this.hashUtil.generate();
-        for (const item of loot)
-        {
+        for (const item of loot) {
             mailableLoot.push({
                 _id: item.id,
                 _tpl: item.tpl,
@@ -223,16 +206,13 @@ export class MatchController
      * @param pmcData Profile
      * @param extractName Name of extract taken
      */
-    protected handleCoopExtract(sessionId: string, pmcData: IPmcData, extractName: string): void
-    {
-        if (!pmcData.CoopExtractCounts)
-        {
+    protected handleCoopExtract(sessionId: string, pmcData: IPmcData, extractName: string): void {
+        if (!pmcData.CoopExtractCounts) {
             pmcData.CoopExtractCounts = {};
         }
 
         // Ensure key exists for extract
-        if (!(extractName in pmcData.CoopExtractCounts))
-        {
+        if (!(extractName in pmcData.CoopExtractCounts)) {
             pmcData.CoopExtractCounts[extractName] = 0;
         }
 
@@ -263,16 +243,13 @@ export class MatchController
      * @param extractName name of extract
      * @returns true if car extract
      */
-    protected extractWasViaCar(extractName: string): boolean
-    {
+    protected extractWasViaCar(extractName: string): boolean {
         // exit name is undefined on death
-        if (!extractName)
-        {
+        if (!extractName) {
             return false;
         }
 
-        if (extractName.toLowerCase().includes("v-ex"))
-        {
+        if (extractName.toLowerCase().includes("v-ex")) {
             return true;
         }
 
@@ -285,11 +262,9 @@ export class MatchController
      * @param pmcData Player profile
      * @param sessionId Session id
      */
-    protected handleCarExtract(extractName: string, pmcData: IPmcData, sessionId: string): void
-    {
+    protected handleCarExtract(extractName: string, pmcData: IPmcData, sessionId: string): void {
         // Ensure key exists for extract
-        if (!(extractName in pmcData.CarExtractCounts))
-        {
+        if (!(extractName in pmcData.CarExtractCounts)) {
             pmcData.CarExtractCounts[extractName] = 0;
         }
 
@@ -327,8 +302,7 @@ export class MatchController
      * @param extractCount Number of times extract was taken
      * @returns Fence standing after taking extract
      */
-    protected getFenceStandingAfterExtract(pmcData: IPmcData, baseGain: number, extractCount: number): number
-    {
+    protected getFenceStandingAfterExtract(pmcData: IPmcData, baseGain: number, extractCount: number): number {
         // Get current standing
         const fenceId: string = Traders.FENCE;
         let fenceStanding = Number(pmcData.TradersInfo[fenceId].standing);

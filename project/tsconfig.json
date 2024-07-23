@@ -5,13 +5,6 @@
         "outDir": "obj",
         "declaration": true
     },
-    "include": [
-        "./src/**/*",
-        "./tests/**/*",
-        "./types/**/*",
-        "./user/mods/**/*"
-    ],
-    "exclude": [
-        "./user/mods/**/*"
-    ]
+    "include": ["./src/**/*", "./tests/**/*", "./types/**/*", "./user/mods/**/*"],
+    "exclude": ["./user/mods/**/*"]
 }

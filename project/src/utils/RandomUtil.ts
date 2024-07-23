@@ -1,7 +1,7 @@
-import { inject, injectable } from "tsyringe";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
-import { ICloner } from "@spt/utils/cloners/ICloner";
 import { MathUtil } from "@spt/utils/MathUtil";
+import { ICloner } from "@spt/utils/cloners/ICloner";
+import { inject, injectable } from "tsyringe";
 
 /**
  * Array of ProbabilityObjectArray which allow to randomly draw of the contained objects
@@ -18,22 +18,19 @@ import { MathUtil } from "@spt/utils/MathUtil";
  *   // count the elements which should be distributed according to the relative probabilities
  *   res.filter(x => x==="b").reduce((sum, x) => sum + 1 , 0)
  */
-export class ProbabilityObjectArray<K, V = undefined> extends Array<ProbabilityObject<K, V>>
-{
+export class ProbabilityObjectArray<K, V = undefined> extends Array<ProbabilityObject<K, V>> {
     constructor(
         private mathUtil: MathUtil,
         private cloner: ICloner,
         ...items: ProbabilityObject<K, V>[]
-    )
-    {
+    ) {
         super();
         this.push(...items);
     }
 
     filter(
         callbackfn: (value: ProbabilityObject<K, V>, index: number, array: ProbabilityObject<K, V>[]) => any,
-    ): ProbabilityObjectArray<K, V>
-    {
+    ): ProbabilityObjectArray<K, V> {
         return new ProbabilityObjectArray(this.mathUtil, this.cloner, ...super.filter(callbackfn));
     }
 
@@ -42,8 +39,7 @@ export class ProbabilityObjectArray<K, V = undefined> extends Array<ProbabilityO
      * @param       {array}                         probValues              The relative probability values of which to calculate the normalized cumulative sum
      * @returns     {array}                                                 Cumulative Sum normalized to 1
      */
-    cumulativeProbability(probValues: number[]): number[]
-    {
+    cumulativeProbability(probValues: number[]): number[] {
         const sum = this.mathUtil.arraySum(probValues);
         let probCumsum = this.mathUtil.arrayCumsum(probValues);
         probCumsum = this.mathUtil.arrayProd(probCumsum, 1 / sum);
@@ -54,12 +50,10 @@ export class ProbabilityObjectArray<K, V = undefined> extends Array<ProbabilityO
      * Clone this ProbabilitObjectArray
      * @returns     {ProbabilityObjectArray}                                Deep Copy of this ProbabilityObjectArray
      */
-    clone(): ProbabilityObjectArray<K, V>
-    {
+    clone(): ProbabilityObjectArray<K, V> {
         const clone = this.cloner.clone(this);
         const probabliltyObjects = new ProbabilityObjectArray<K, V>(this.mathUtil, this.cloner);
-        for (const ci of clone)
-        {
+        for (const ci of clone) {
             probabliltyObjects.push(new ProbabilityObject(ci.key, ci.relativeProbability, ci.data));
         }
         return probabliltyObjects;
@@ -71,8 +65,7 @@ export class ProbabilityObjectArray<K, V = undefined> extends Array<ProbabilityO
      * @param       {string}                        key                     The key of the element to drop
      * @returns     {ProbabilityObjectArray}                                ProbabilityObjectArray without the dropped element
      */
-    drop(key: K): ProbabilityObjectArray<K, V>
-    {
+    drop(key: K): ProbabilityObjectArray<K, V> {
         return this.filter((r) => r.key !== key);
     }
 
@@ -81,8 +74,7 @@ export class ProbabilityObjectArray<K, V = undefined> extends Array<ProbabilityO
      * @param       {string}                        key                     The key of the element whose data shall be retrieved
      * @returns     {object}                                                The data object
      */
-    data(key: K): V | undefined
-    {
+    data(key: K): V | undefined {
         return this.filter((r) => r.key === key)[0]?.data;
     }
 
@@ -96,8 +88,7 @@ export class ProbabilityObjectArray<K, V = undefined> extends Array<ProbabilityO
      * @param       {string}                        key                     The key of the element whose relative probability shall be retrieved
      * @return      {number}                                                The relative probability
      */
-    probability(key: K): number
-    {
+    probability(key: K): number {
         return this.filter((r) => r.key === key)[0].relativeProbability;
     }
 
@@ -110,8 +101,7 @@ export class ProbabilityObjectArray<K, V = undefined> extends Array<ProbabilityO
      *
      * @return      {number}                                                the maximum value of all relative probabilities in this ProbabilityObjectArray
      */
-    maxProbability(): number
-    {
+    maxProbability(): number {
         return Math.max(...this.map((x) => x.relativeProbability));
     }
 
@@ -124,8 +114,7 @@ export class ProbabilityObjectArray<K, V = undefined> extends Array<ProbabilityO
      *
      * @return      {number}                                                the minimum value of all relative probabilities in this ProbabilityObjectArray
      */
-    minProbability(): number
-    {
+    minProbability(): number {
         return Math.min(...this.map((x) => x.relativeProbability));
     }
 
@@ -137,16 +126,13 @@ export class ProbabilityObjectArray<K, V = undefined> extends Array<ProbabilityO
      * @param locklist list keys which shall be replaced even if drawing without replacement
      * @returns Array consisting of N random keys for this ProbabilityObjectArray
      */
-    public draw(count = 1, replacement = true, locklist: Array<K> = []): K[]
-    {
-        if (this.length === 0)
-        {
+    public draw(count = 1, replacement = true, locklist: Array<K> = []): K[] {
+        if (this.length === 0) {
             return [];
         }
 
         const { probArray, keyArray } = this.reduce(
-            (acc, x) =>
-            {
+            (acc, x) => {
                 acc.probArray.push(x.relativeProbability);
                 acc.keyArray.push(x.key);
                 return acc;
@@ -156,26 +142,21 @@ export class ProbabilityObjectArray<K, V = undefined> extends Array<ProbabilityO
         let probCumsum = this.cumulativeProbability(probArray);
 
         const drawnKeys: K[] = [];
-        for (let i = 0; i < count; i++)
-        {
+        for (let i = 0; i < count; i++) {
             const rand = Math.random();
             const randomIndex = probCumsum.findIndex((x) => x > rand);
             // We cannot put Math.random() directly in the findIndex because then it draws anew for each of its iteration
-            if (replacement || locklist.includes(keyArray[randomIndex]))
-            {
+            if (replacement || locklist.includes(keyArray[randomIndex])) {
                 // Add random item from possible value into return array
                 drawnKeys.push(keyArray[randomIndex]);
-            }
-            else
-            {
+            } else {
                 // We draw without replacement -> remove the key and its probability from array
                 const key = keyArray.splice(randomIndex, 1)[0];
                 probArray.splice(randomIndex, 1);
                 drawnKeys.push(key);
                 probCumsum = this.cumulativeProbability(probArray);
                 // If we draw without replacement and the ProbabilityObjectArray is exhausted we need to break
-                if (keyArray.length < 1)
-                {
+                if (keyArray.length < 1) {
                     break;
                 }
             }
@@ -189,8 +170,7 @@ export class ProbabilityObjectArray<K, V = undefined> extends Array<ProbabilityO
  * A ProbabilityObject which is use as an element to the ProbabilityObjectArray array
  * It contains a key, the relative probability as well as optional data.
  */
-export class ProbabilityObject<K, V = undefined>
-{
+export class ProbabilityObject<K, V = undefined> {
     key: K;
     relativeProbability: number;
     data?: V;
@@ -200,8 +180,7 @@ export class ProbabilityObject<K, V = undefined>
      * @param       {number}                        relativeProbability         The relative probability of this element
      * @param       {any}                           data                        Optional data attached to the element
      */
-    constructor(key: K, relativeProbability: number, data?: V)
-    {
+    constructor(key: K, relativeProbability: number, data?: V) {
         this.key = key;
         this.relativeProbability = relativeProbability;
         this.data = data;
@@ -209,38 +188,31 @@ export class ProbabilityObject<K, V = undefined>
 }
 
 @injectable()
-export class RandomUtil
-{
+export class RandomUtil {
     constructor(
         @inject("PrimaryCloner") protected cloner: ICloner,
         @inject("PrimaryLogger") protected logger: ILogger,
-    )
-    {}
+    ) {}
 
-    public getInt(min: number, max: number): number
-    {
+    public getInt(min: number, max: number): number {
         const minimum = Math.ceil(min);
         const maximum = Math.floor(max);
         return maximum > minimum ? Math.floor(Math.random() * (maximum - minimum + 1) + minimum) : minimum;
     }
 
-    public getIntEx(max: number): number
-    {
+    public getIntEx(max: number): number {
         return max > 1 ? Math.floor(Math.random() * (max - 2) + 1) : 1;
     }
 
-    public getFloat(min: number, max: number): number
-    {
+    public getFloat(min: number, max: number): number {
         return Math.random() * (max - min) + min;
     }
 
-    public getBool(): boolean
-    {
+    public getBool(): boolean {
         return Math.random() < 0.5;
     }
 
-    public getPercentOfValue(percent: number, number: number, toFixed = 2): number
-    {
+    public getPercentOfValue(percent: number, number: number, toFixed = 2): number {
         return Number.parseFloat(((percent * number) / 100).toFixed(toFixed));
     }
 
@@ -250,8 +222,7 @@ export class RandomUtil
      * @param percentage Percentage to reduce value by
      * @returns Reduced value
      */
-    public reduceValueByPercent(number: number, percentage: number): number
-    {
+    public reduceValueByPercent(number: number, percentage: number): number {
         const reductionAmount = number * (percentage / 100);
         return number - reductionAmount;
     }
@@ -261,29 +232,24 @@ export class RandomUtil
      * @param chancePercent value check needs to be above
      * @returns true if value passes check
      */
-    public getChance100(chancePercent: number): boolean
-    {
+    public getChance100(chancePercent: number): boolean {
         return this.getIntEx(100) <= chancePercent;
     }
 
     // Its better to keep this method separated from getArrayValue so we can use generic inferance on getArrayValue
-    public getStringArrayValue(arr: string[]): string
-    {
+    public getStringArrayValue(arr: string[]): string {
         return arr[this.getInt(0, arr.length - 1)];
     }
 
-    public getArrayValue<T>(arr: T[]): T
-    {
+    public getArrayValue<T>(arr: T[]): T {
         return arr[this.getInt(0, arr.length - 1)];
     }
 
-    public getKey(node: any): string
-    {
+    public getKey(node: any): string {
         return this.getArrayValue(Object.keys(node));
     }
 
-    public getKeyValue(node: { [x: string]: any }): any
-    {
+    public getKeyValue(node: { [x: string]: any }): any {
         return node[this.getKey(node)];
     }
 
@@ -294,24 +260,19 @@ export class RandomUtil
      * @param   {number}    sigma   Standard deviation of the normal distribution
      * @returns {number}            The value drawn
      */
-    public getNormallyDistributedRandomNumber(mean: number, sigma: number, attempt = 0): number
-    {
+    public getNormallyDistributedRandomNumber(mean: number, sigma: number, attempt = 0): number {
         let u = 0;
         let v = 0;
-        while (u === 0)
-        {
+        while (u === 0) {
             u = Math.random(); // Converting [0,1) to (0,1)
         }
-        while (v === 0)
-        {
+        while (v === 0) {
             v = Math.random();
         }
         const w = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
         const valueDrawn = mean + w * sigma;
-        if (valueDrawn < 0)
-        {
-            if (attempt > 100)
-            {
+        if (valueDrawn < 0) {
+            if (attempt > 100) {
                 return this.getFloat(0.01, mean * 2);
             }
 
@@ -328,10 +289,8 @@ export class RandomUtil
      * @param   {integer}   high    Higher bound exclusive
      * @returns {integer}           The random integer in [low, high)
      */
-    public randInt(low: number, high?: number): number
-    {
-        if (high)
-        {
+    public randInt(low: number, high?: number): number {
+        if (high) {
             return low + Math.floor(Math.random() * (high - low));
         }
 
@@ -346,24 +305,18 @@ export class RandomUtil
      * @param   {boolean}   replacement     Draw with or without replacement from the input array(default true)
      * @return  {array}                     Array consisting of N random elements
      */
-    public drawRandomFromList<T>(originalList: Array<T>, count = 1, replacement = true): Array<T>
-    {
+    public drawRandomFromList<T>(originalList: Array<T>, count = 1, replacement = true): Array<T> {
         let list = originalList;
-        if (!replacement)
-        {
+        if (!replacement) {
             list = this.cloner.clone(originalList);
         }
 
         const results: T[] = [];
-        for (let i = 0; i < count; i++)
-        {
+        for (let i = 0; i < count; i++) {
             const randomIndex = this.randInt(list.length);
-            if (replacement)
-            {
+            if (replacement) {
                 results.push(list[randomIndex]);
-            }
-            else
-            {
+            } else {
                 results.push(list.splice(randomIndex, 1)[0]);
             }
         }
@@ -378,15 +331,13 @@ export class RandomUtil
      * @param   {boolean}   replacement     Draw with ot without replacement from the input dict
      * @return  {array}                     Array consisting of N random keys of the dictionary
      */
-    public drawRandomFromDict(dict: any, count = 1, replacement = true): any[]
-    {
+    public drawRandomFromDict(dict: any, count = 1, replacement = true): any[] {
         const keys = Object.keys(dict);
         const randomKeys = this.drawRandomFromList(keys, count, replacement);
         return randomKeys;
     }
 
-    public getBiasedRandomNumber(min: number, max: number, shift: number, n: number): number
-    {
+    public getBiasedRandomNumber(min: number, max: number, shift: number, n: number): number {
         /* To whoever tries to make sense of this, please forgive me - I tried my best at explaining what goes on here.
          * This function generates a random number based on a gaussian distribution with an option to add a bias via shifting.
          *
@@ -400,26 +351,22 @@ export class RandomUtil
          * Here's a place where you can play around with the 'n' and 'shift' values to see how the distribution changes:
          * http://jsfiddle.net/e08cumyx/ */
 
-        if (max < min)
-        {
+        if (max < min) {
             throw {
                 name: "Invalid arguments",
                 message: `Bounded random number generation max is smaller than min (${max} < ${min})`,
             };
         }
 
-        if (n < 1)
-        {
+        if (n < 1) {
             throw { name: "Invalid argument", message: `'n' must be 1 or greater (received ${n})` };
         }
 
-        if (min === max)
-        {
+        if (min === max) {
             return min;
         }
 
-        if (shift > max - min)
-        {
+        if (shift > max - min) {
             /* If a rolled number is out of bounds (due to bias being applied), we simply roll it again.
              * As the shifting increases, the chance of rolling a number within bounds decreases.
              * A shift that is equal to the available range only has a 50% chance of rolling correctly, theoretically halving performance.
@@ -431,20 +378,17 @@ export class RandomUtil
             this.logger.info(`min -> ${min}; max -> ${max}; shift -> ${shift}`);
         }
 
-        const gaussianRandom = (n: number) =>
-        {
+        const gaussianRandom = (n: number) => {
             let rand = 0;
 
-            for (let i = 0; i < n; i += 1)
-            {
+            for (let i = 0; i < n; i += 1) {
                 rand += Math.random();
             }
 
             return rand / n;
         };
 
-        const boundedGaussian = (start: number, end: number, n: number) =>
-        {
+        const boundedGaussian = (start: number, end: number, n: number) => {
             return Math.round(start + gaussianRandom(n) * (end - start + 1));
         };
 
@@ -452,8 +396,7 @@ export class RandomUtil
         const biasedMax = shift < 0 ? max + shift : max;
 
         let num: number;
-        do
-        {
+        do {
             num = boundedGaussian(biasedMin, biasedMax, n);
         } while (num < min || num > max);
 
@@ -465,14 +408,12 @@ export class RandomUtil
      * @param array Array to shuffle
      * @returns Shuffled array
      */
-    public shuffle<T>(array: Array<T>): Array<T>
-    {
+    public shuffle<T>(array: Array<T>): Array<T> {
         let currentIndex = array.length;
         let randomIndex: number;
 
         // While there remain elements to shuffle.
-        while (currentIndex !== 0)
-        {
+        while (currentIndex !== 0) {
             // Pick a remaining element.
             randomIndex = Math.floor(Math.random() * currentIndex);
             currentIndex--;
@@ -491,8 +432,7 @@ export class RandomUtil
      * @example
      * rollForChanceProbability(0.25); // returns true 25% probability
      */
-    public rollForChanceProbability(probabilityChance: number): boolean
-    {
+    public rollForChanceProbability(probabilityChance: number): boolean {
         const maxRoll = 9999;
 
         // Roll a number between 0 and 1

@@ -1,4 +1,3 @@
-import { inject, injectable } from "tsyringe";
 import { HealthController } from "@spt/controllers/HealthController";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
@@ -10,16 +9,15 @@ import { IWorkoutData } from "@spt/models/eft/health/IWorkoutData";
 import { IGetBodyResponseData } from "@spt/models/eft/httpResponse/IGetBodyResponseData";
 import { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRouterResponse";
 import { HttpResponseUtil } from "@spt/utils/HttpResponseUtil";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class HealthCallbacks
-{
+export class HealthCallbacks {
     constructor(
         @inject("HttpResponseUtil") protected httpResponse: HttpResponseUtil,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
         @inject("HealthController") protected healthController: HealthController,
-    )
-    {}
+    ) {}
 
     /**
      * Custom spt server request found in modules/HealthSynchronizer.cs
@@ -28,8 +26,7 @@ export class HealthCallbacks
      * @param sessionID session id
      * @returns empty response, no data sent back to client
      */
-    public syncHealth(url: string, info: ISyncHealthRequestData, sessionID: string): IGetBodyResponseData<string>
-    {
+    public syncHealth(url: string, info: ISyncHealthRequestData, sessionID: string): IGetBodyResponseData<string> {
         this.healthController.saveVitality(this.profileHelper.getPmcProfile(sessionID), info, sessionID);
         return this.httpResponse.emptyResponse();
     }
@@ -41,8 +38,7 @@ export class HealthCallbacks
      * @param sessionID session id
      * @returns empty response, no data sent back to client
      */
-    public handleWorkoutEffects(url: string, info: IWorkoutData, sessionID: string): IGetBodyResponseData<string>
-    {
+    public handleWorkoutEffects(url: string, info: IWorkoutData, sessionID: string): IGetBodyResponseData<string> {
         this.healthController.applyWorkoutChanges(this.profileHelper.getPmcProfile(sessionID), info, sessionID);
         return this.httpResponse.emptyResponse();
     }
@@ -51,8 +47,7 @@ export class HealthCallbacks
      * Handle Eat
      * @returns IItemEventRouterResponse
      */
-    public offraidEat(pmcData: IPmcData, body: IOffraidEatRequestData, sessionID: string): IItemEventRouterResponse
-    {
+    public offraidEat(pmcData: IPmcData, body: IOffraidEatRequestData, sessionID: string): IItemEventRouterResponse {
         return this.healthController.offraidEat(pmcData, body, sessionID);
     }
 
@@ -60,8 +55,7 @@ export class HealthCallbacks
      * Handle Heal
      * @returns IItemEventRouterResponse
      */
-    public offraidHeal(pmcData: IPmcData, body: IOffraidHealRequestData, sessionID: string): IItemEventRouterResponse
-    {
+    public offraidHeal(pmcData: IPmcData, body: IOffraidHealRequestData, sessionID: string): IItemEventRouterResponse {
         return this.healthController.offraidHeal(pmcData, body, sessionID);
     }
 
@@ -73,8 +67,7 @@ export class HealthCallbacks
         pmcData: IPmcData,
         info: IHealthTreatmentRequestData,
         sessionID: string,
-    ): IItemEventRouterResponse
-    {
+    ): IItemEventRouterResponse {
         return this.healthController.healthTreatment(pmcData, info, sessionID);
     }
 }

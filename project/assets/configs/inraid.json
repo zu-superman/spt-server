@@ -13,15 +13,7 @@
     "save": {
         "loot": true
     },
-    "carExtracts": [
-        "Dorms V-Ex",
-        "PP Exfil",
-        "V-Ex_light",
-        "South V-Ex",
-        "E7_car",
-        "Sandbox_VExit",
-        "Shorl_V-Ex"
-    ],
+    "carExtracts": ["Dorms V-Ex", "PP Exfil", "V-Ex_light", "South V-Ex", "E7_car", "Sandbox_VExit", "Shorl_V-Ex"],
     "coopExtracts": [
         "Interchange Cooperation",
         "tunnel_shared",

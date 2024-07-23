@@ -1,4 +1,3 @@
-import { inject, injectable } from "tsyringe";
 import { CustomizationController } from "@spt/controllers/CustomizationController";
 import { IEmptyRequestData } from "@spt/models/eft/common/IEmptyRequestData";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
@@ -10,23 +9,21 @@ import { IGetBodyResponseData } from "@spt/models/eft/httpResponse/IGetBodyRespo
 import { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRouterResponse";
 import { SaveServer } from "@spt/servers/SaveServer";
 import { HttpResponseUtil } from "@spt/utils/HttpResponseUtil";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class CustomizationCallbacks
-{
+export class CustomizationCallbacks {
     constructor(
         @inject("CustomizationController") protected customizationController: CustomizationController,
         @inject("SaveServer") protected saveServer: SaveServer,
         @inject("HttpResponseUtil") protected httpResponse: HttpResponseUtil,
-    )
-    {}
+    ) {}
 
     /**
      * Handle client/trading/customization/storage
      * @returns IGetSuitsResponse
      */
-    public getSuits(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<IGetSuitsResponse>
-    {
+    public getSuits(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<IGetSuitsResponse> {
         const result: IGetSuitsResponse = { _id: sessionID, suites: this.saveServer.getProfile(sessionID).suits };
         return this.httpResponse.getBody(result);
     }
@@ -35,8 +32,7 @@ export class CustomizationCallbacks
      * Handle client/trading/customization
      * @returns ISuit[]
      */
-    public getTraderSuits(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<ISuit[]>
-    {
+    public getTraderSuits(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<ISuit[]> {
         const splittedUrl = url.split("/");
         const traderID = splittedUrl[splittedUrl.length - 2];
 
@@ -50,16 +46,14 @@ export class CustomizationCallbacks
         pmcData: IPmcData,
         body: IWearClothingRequestData,
         sessionID: string,
-    ): IItemEventRouterResponse
-    {
+    ): IItemEventRouterResponse {
         return this.customizationController.wearClothing(pmcData, body, sessionID);
     }
 
     /**
      * Handle CustomizationBuy event
      */
-    public buyClothing(pmcData: IPmcData, body: IBuyClothingRequestData, sessionID: string): IItemEventRouterResponse
-    {
+    public buyClothing(pmcData: IPmcData, body: IBuyClothingRequestData, sessionID: string): IItemEventRouterResponse {
         return this.customizationController.buyClothing(pmcData, body, sessionID);
     }
 }

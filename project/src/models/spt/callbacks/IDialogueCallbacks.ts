@@ -16,37 +16,36 @@ import { IGetBodyResponseData } from "@spt/models/eft/httpResponse/IGetBodyRespo
 import { INullResponseData } from "@spt/models/eft/httpResponse/INullResponseData";
 import { DialogueInfo } from "@spt/models/eft/profile/ISptProfile";
 
-export interface IDialogueCallbacks
-{
+export interface IDialogueCallbacks {
     getFriendList(
         url: string,
         info: IEmptyRequestData,
         sessionID: string,
-    ): IGetBodyResponseData<IGetFriendListDataResponse>
-    getChatServerList(url: string, info: IGetChatServerListRequestData, sessionID: string): IGetBodyResponseData<any[]>
+    ): IGetBodyResponseData<IGetFriendListDataResponse>;
+    getChatServerList(url: string, info: IGetChatServerListRequestData, sessionID: string): IGetBodyResponseData<any[]>;
     getMailDialogList(
         url: string,
         info: IGetMailDialogListRequestData,
         sessionID: string,
-    ): IGetBodyResponseData<DialogueInfo[]>
+    ): IGetBodyResponseData<DialogueInfo[]>;
     getMailDialogView(
         url: string,
         info: IGetMailDialogViewRequestData,
         sessionID: string,
-    ): IGetBodyResponseData<IGetMailDialogViewResponseData>
-    getMailDialogInfo(url: string, info: IGetMailDialogInfoRequestData, sessionID: string): IGetBodyResponseData<any>
-    removeDialog(url: string, info: IRemoveDialogRequestData, sessionID: string): IGetBodyResponseData<any[]>
-    pinDialog(url: string, info: IPinDialogRequestData, sessionID: string): IGetBodyResponseData<any[]>
-    unpinDialog(url: string, info: IPinDialogRequestData, sessionID: string): IGetBodyResponseData<any[]>
-    setRead(url: string, info: ISetDialogReadRequestData, sessionID: string): IGetBodyResponseData<any[]>
+    ): IGetBodyResponseData<IGetMailDialogViewResponseData>;
+    getMailDialogInfo(url: string, info: IGetMailDialogInfoRequestData, sessionID: string): IGetBodyResponseData<any>;
+    removeDialog(url: string, info: IRemoveDialogRequestData, sessionID: string): IGetBodyResponseData<any[]>;
+    pinDialog(url: string, info: IPinDialogRequestData, sessionID: string): IGetBodyResponseData<any[]>;
+    unpinDialog(url: string, info: IPinDialogRequestData, sessionID: string): IGetBodyResponseData<any[]>;
+    setRead(url: string, info: ISetDialogReadRequestData, sessionID: string): IGetBodyResponseData<any[]>;
     getAllAttachments(
         url: string,
         info: IGetAllAttachmentsRequestData,
         sessionID: string,
-    ): IGetBodyResponseData<IGetAllAttachmentsResponse>
-    listOutbox(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<any[]>
-    listInbox(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<any[]>
-    sendFriendRequest(url: string, request: IFriendRequestData, sessionID: string): INullResponseData
-    sendMessage(url: string, request: ISendMessageRequest, sessionID: string): IGetBodyResponseData<number>
-    update(): boolean
+    ): IGetBodyResponseData<IGetAllAttachmentsResponse>;
+    listOutbox(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<any[]>;
+    listInbox(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<any[]>;
+    sendFriendRequest(url: string, request: IFriendRequestData, sessionID: string): INullResponseData;
+    sendMessage(url: string, request: ISendMessageRequest, sessionID: string): IGetBodyResponseData<number>;
+    update(): boolean;
 }

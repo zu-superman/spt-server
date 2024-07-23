@@ -1,29 +1,24 @@
 import "reflect-metadata";
 
-import { container } from "tsyringe";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { HealthController } from "@spt/controllers/HealthController";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { IHealthTreatmentRequestData } from "@spt/models/eft/health/IHealthTreatmentRequestData";
+import { container } from "tsyringe";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-describe("HealthController", () =>
-{
+describe("HealthController", () => {
     let healthController: HealthController; // Using "any" to access private/protected methods without type errors.
 
-    beforeEach(() =>
-    {
+    beforeEach(() => {
         healthController = container.resolve<HealthController>("HealthController");
     });
 
-    afterEach(() =>
-    {
+    afterEach(() => {
         vi.restoreAllMocks();
     });
 
-    describe("healthTreatment", () =>
-    {
-        it("Should Heal Players heavy bleed and heal chest to full hp", () =>
-        {
+    describe("healthTreatment", () => {
+        it("Should Heal Players heavy bleed and heal chest to full hp", () => {
             const maxHealth = 100;
             const pmcData = {
                 Health: {
@@ -77,8 +72,7 @@ describe("HealthController", () =>
             expect(result.profileChanges[sessionId].health.BodyParts.Chest).not.toHaveProperty("Effects");
         });
 
-        it("Should Heal Players heavy bleed and leave limb health at existing value", () =>
-        {
+        it("Should Heal Players heavy bleed and leave limb health at existing value", () => {
             const maxHealth = 100;
             const pmcData = {
                 Health: {
@@ -132,8 +126,7 @@ describe("HealthController", () =>
             expect(result.profileChanges[sessionId].health.BodyParts.Chest).toHaveProperty("Effects");
         });
 
-        it("Should Heal Players heavy bleed and leave limb health at existing value", () =>
-        {
+        it("Should Heal Players heavy bleed and leave limb health at existing value", () => {
             const maxHealth = 100;
             const currentHealth = 50;
             const pmcData = {

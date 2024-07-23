@@ -1,16 +1,14 @@
-import { inject, injectable } from "tsyringe";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { Money } from "@spt/models/enums/Money";
 import { IInventoryConfig } from "@spt/models/spt/config/IInventoryConfig";
 import { ConfigServer } from "@spt/servers/ConfigServer";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class PaymentHelper
-{
+export class PaymentHelper {
     protected inventoryConfig: IInventoryConfig;
 
-    constructor(@inject("ConfigServer") protected configServer: ConfigServer)
-    {
+    constructor(@inject("ConfigServer") protected configServer: ConfigServer) {
         this.inventoryConfig = this.configServer.getConfig(ConfigTypes.INVENTORY);
     }
 
@@ -19,8 +17,7 @@ export class PaymentHelper
      * @param {string} tpl
      * @returns void
      */
-    public isMoneyTpl(tpl: string): boolean
-    {
+    public isMoneyTpl(tpl: string): boolean {
         return [Money.DOLLARS, Money.EUROS, Money.ROUBLES, Money.GP, ...this.inventoryConfig.customMoneyTpls].some(
             (element) => element === tpl,
         );
@@ -31,10 +28,8 @@ export class PaymentHelper
      * @param {string} currency
      * @returns string
      */
-    public getCurrency(currency: string): string
-    {
-        switch (currency)
-        {
+    public getCurrency(currency: string): string {
+        switch (currency) {
             case "EUR":
                 return Money.EUROS;
             case "USD":

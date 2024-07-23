@@ -1,4 +1,3 @@
-import { inject, injectable } from "tsyringe";
 import { HandbookHelper } from "@spt/helpers/HandbookHelper";
 import { InventoryHelper } from "@spt/helpers/InventoryHelper";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
@@ -16,10 +15,10 @@ import { DatabaseService } from "@spt/services/DatabaseService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { HashUtil } from "@spt/utils/HashUtil";
 import { HttpResponseUtil } from "@spt/utils/HttpResponseUtil";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class PaymentService
-{
+export class PaymentService {
     constructor(
         @inject("PrimaryLogger") protected logger: ILogger,
         @inject("HashUtil") protected hashUtil: HashUtil,
@@ -31,8 +30,7 @@ export class PaymentService
         @inject("InventoryHelper") protected inventoryHelper: InventoryHelper,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("PaymentHelper") protected paymentHelper: PaymentHelper,
-    )
-    {}
+    ) {}
 
     /**
      * Take money and insert items into return to server request
@@ -46,8 +44,7 @@ export class PaymentService
         request: IProcessBuyTradeRequestData,
         sessionID: string,
         output: IItemEventRouterResponse,
-    ): void
-    {
+    ): void {
         // May need to convert to trader currency
         const trader = this.traderHelper.getTrader(request.tid, sessionID);
 
@@ -55,14 +52,11 @@ export class PaymentService
         const currencyAmounts: { [key: string]: number } = {};
 
         // Delete barter items and track currencies
-        for (const index in request.scheme_items)
-        {
+        for (const index in request.scheme_items) {
             // Find the corresponding item in the player's inventory.
             const item = pmcData.Inventory.items.find((i) => i._id === request.scheme_items[index].id);
-            if (item !== undefined)
-            {
-                if (!this.paymentHelper.isMoneyTpl(item._tpl))
-                {
+            if (item !== undefined) {
+                if (!this.paymentHelper.isMoneyTpl(item._tpl)) {
                     // If the item is not money, remove it from the inventory.
                     this.inventoryHelper.removeItemByCount(
                         pmcData,
@@ -72,15 +66,11 @@ export class PaymentService
                         output,
                     );
                     request.scheme_items[index].count = 0;
-                }
-                else
-                {
+                } else {
                     // If the item is money, add its count to the currencyAmounts object.
                     currencyAmounts[item._tpl] = (currencyAmounts[item._tpl] || 0) + request.scheme_items[index].count;
                 }
-            }
-            else
-            {
+            } else {
                 // Used by `SptInsure`
                 // Handle differently, `id` is the money type tpl
                 const currencyTpl = request.scheme_items[index].id;
@@ -92,19 +82,16 @@ export class PaymentService
         let totalCurrencyAmount = 0;
 
         // Loop through each type of currency involved in the trade.
-        for (const currencyTpl in currencyAmounts)
-        {
+        for (const currencyTpl in currencyAmounts) {
             const currencyAmount = currencyAmounts[currencyTpl];
             totalCurrencyAmount += currencyAmount;
 
-            if (currencyAmount > 0)
-            {
+            if (currencyAmount > 0) {
                 // Find money stacks in inventory and remove amount needed + update output object to inform client of changes
                 this.addPaymentToOutput(pmcData, currencyTpl, currencyAmount, sessionID, output);
 
                 // If there are warnings, exit early.
-                if (output.warnings.length > 0)
-                {
+                if (output.warnings.length > 0) {
                     return;
                 }
 
@@ -118,8 +105,7 @@ export class PaymentService
         }
 
         // If no currency-based payment is involved, handle it separately
-        if (totalCurrencyAmount === 0)
-        {
+        if (totalCurrencyAmount === 0) {
             this.logger.debug(this.localisationService.getText("payment-zero_price_no_payment"));
 
             // Convert the handbook price to the trader's currency and update the sales sum.
@@ -141,17 +127,14 @@ export class PaymentService
      * @param traderId Id of trader with assort
      * @returns Handbook rouble price of item
      */
-    protected getTraderItemHandbookPriceRouble(traderAssortId: string, traderId: string): number
-    {
+    protected getTraderItemHandbookPriceRouble(traderAssortId: string, traderId: string): number {
         const purchasedAssortItem = this.traderHelper.getTraderAssortItemByAssortId(traderId, traderAssortId);
-        if (!purchasedAssortItem)
-        {
+        if (!purchasedAssortItem) {
             return 1;
         }
 
         const assortItemPriceRouble = this.handbookHelper.getTemplatePrice(purchasedAssortItem._tpl);
-        if (!assortItemPriceRouble)
-        {
+        if (!assortItemPriceRouble) {
             this.logger.debug(
                 `No item price found for ${purchasedAssortItem._tpl} on trader: ${traderId} in assort: ${traderAssortId}`,
             );
@@ -177,11 +160,9 @@ export class PaymentService
         request: IProcessSellTradeRequestData,
         output: IItemEventRouterResponse,
         sessionID: string,
-    ): void
-    {
+    ): void {
         const trader = this.traderHelper.getTrader(request.tid, sessionID);
-        if (!trader)
-        {
+        if (!trader) {
             this.logger.error(`Unable to add currency to profile as trader: ${request.tid} does not exist`);
 
             return;
@@ -190,39 +171,31 @@ export class PaymentService
         const currencyTpl = this.paymentHelper.getCurrency(trader.currency);
         let calcAmount = this.handbookHelper.fromRUB(this.handbookHelper.inRUB(amountToSend, currencyTpl), currencyTpl);
         const currencyMaxStackSize = this.itemHelper.getItem(currencyTpl)[1]._props?.StackMaxSize;
-        if (!currencyMaxStackSize)
-        {
+        if (!currencyMaxStackSize) {
             this.logger.error(`Unable to add currency: ${currencyTpl} to profile as it lacks a _props property`);
 
             return;
         }
         let skipSendingMoneyToStash = false;
 
-        for (const item of pmcData.Inventory.items)
-        {
+        for (const item of pmcData.Inventory.items) {
             // Item is not currency
-            if (item._tpl !== currencyTpl)
-            {
+            if (item._tpl !== currencyTpl) {
                 continue;
             }
 
             // Item is not in the stash
-            if (!this.inventoryHelper.isItemInStash(pmcData, item))
-            {
+            if (!this.inventoryHelper.isItemInStash(pmcData, item)) {
                 continue;
             }
 
             // Found currency item
-            if (item.upd!.StackObjectsCount! < currencyMaxStackSize)
-            {
-                if (item.upd!.StackObjectsCount! + calcAmount > currencyMaxStackSize)
-                {
+            if (item.upd!.StackObjectsCount! < currencyMaxStackSize) {
+                if (item.upd!.StackObjectsCount! + calcAmount > currencyMaxStackSize) {
                     // calculate difference
                     calcAmount -= currencyMaxStackSize - item.upd!.StackObjectsCount!;
                     item.upd!.StackObjectsCount! = currencyMaxStackSize;
-                }
-                else
-                {
+                } else {
                     skipSendingMoneyToStash = true;
                     item.upd!.StackObjectsCount! = item.upd!.StackObjectsCount! + calcAmount;
                 }
@@ -230,8 +203,7 @@ export class PaymentService
                 // Inform client of change to items StackObjectsCount
                 output.profileChanges[sessionID].items.change.push(item);
 
-                if (skipSendingMoneyToStash)
-                {
+                if (skipSendingMoneyToStash) {
                     break;
                 }
             }
@@ -247,8 +219,7 @@ export class PaymentService
         // Ensure money is properly split to follow its max stack size limit
         const rewards = this.itemHelper.splitStackIntoSeparateItems(rootCurrencyReward);
 
-        if (!skipSendingMoneyToStash)
-        {
+        if (!skipSendingMoneyToStash) {
             const addItemToStashRequest: IAddItemsDirectRequest = {
                 itemsWithModsToAdd: rewards,
                 foundInRaid: false,
@@ -279,8 +250,7 @@ export class PaymentService
         amountToPay: number,
         sessionID: string,
         output: IItemEventRouterResponse,
-    ): void
-    {
+    ): void {
         const moneyItemsInInventory = this.getSortedMoneyItemsInInventory(
             pmcData,
             currencyTpl,
@@ -292,8 +262,7 @@ export class PaymentService
         );
 
         // If no money in inventory or amount is not enough we return false
-        if (moneyItemsInInventory.length <= 0 || amountAvailable < amountToPay)
-        {
+        if (moneyItemsInInventory.length <= 0 || amountAvailable < amountToPay) {
             this.logger.error(
                 this.localisationService.getText("payment-not_enough_money_to_complete_transation", {
                     amountToPay: amountToPay,
@@ -310,23 +279,18 @@ export class PaymentService
         }
 
         let leftToPay = amountToPay;
-        for (const profileMoneyItem of moneyItemsInInventory)
-        {
+        for (const profileMoneyItem of moneyItemsInInventory) {
             const itemAmount = profileMoneyItem.upd!.StackObjectsCount!;
-            if (leftToPay >= itemAmount)
-            {
+            if (leftToPay >= itemAmount) {
                 leftToPay -= itemAmount;
                 this.inventoryHelper.removeItem(pmcData, profileMoneyItem._id, sessionID, output);
-            }
-            else
-            {
+            } else {
                 profileMoneyItem.upd!.StackObjectsCount! -= leftToPay;
                 leftToPay = 0;
                 output.profileChanges[sessionID].items.change.push(profileMoneyItem);
             }
 
-            if (leftToPay === 0)
-            {
+            if (leftToPay === 0) {
                 break;
             }
         }
@@ -339,11 +303,9 @@ export class PaymentService
      * @param playerStashId Players stash id
      * @returns Sorting money items
      */
-    protected getSortedMoneyItemsInInventory(pmcData: IPmcData, currencyTpl: string, playerStashId: string): Item[]
-    {
+    protected getSortedMoneyItemsInInventory(pmcData: IPmcData, currencyTpl: string, playerStashId: string): Item[] {
         const moneyItemsInInventory = this.itemHelper.findBarterItems("tpl", pmcData.Inventory.items, currencyTpl);
-        if (moneyItemsInInventory?.length === 0)
-        {
+        if (moneyItemsInInventory?.length === 0) {
             this.logger.debug(`No ${currencyTpl} money items found in inventory`);
         }
 
@@ -362,36 +324,30 @@ export class PaymentService
      * @param playerStashId Players stash id
      * @returns sort order
      */
-    protected prioritiseStashSort(a: Item, b: Item, inventoryItems: Item[], playerStashId: string): number
-    {
+    protected prioritiseStashSort(a: Item, b: Item, inventoryItems: Item[], playerStashId: string): number {
         // a in stash, prioritise
-        if (a.slotId === "hideout" && b.slotId !== "hideout")
-        {
+        if (a.slotId === "hideout" && b.slotId !== "hideout") {
             return -1;
         }
 
         // b in stash, prioritise
-        if (a.slotId !== "hideout" && b.slotId === "hideout")
-        {
+        if (a.slotId !== "hideout" && b.slotId === "hideout") {
             return 1;
         }
 
         // both in containers
-        if (a.slotId === "main" && b.slotId === "main")
-        {
+        if (a.slotId === "main" && b.slotId === "main") {
             // Item is in inventory, not stash, deprioritise
             const aInStash = this.isInStash(a.parentId, inventoryItems, playerStashId);
             const bInStash = this.isInStash(b.parentId, inventoryItems, playerStashId);
 
             // a in stash, prioritise
-            if (aInStash && !bInStash)
-            {
+            if (aInStash && !bInStash) {
                 return -1;
             }
 
             // b in stash, prioritise
-            if (!aInStash && bInStash)
-            {
+            if (!aInStash && bInStash) {
                 return 1;
             }
         }
@@ -407,19 +363,15 @@ export class PaymentService
      * @param playerStashId Players stash id
      * @returns true if its in inventory
      */
-    protected isInStash(itemId: string | undefined, inventoryItems: Item[], playerStashId: string): boolean
-    {
+    protected isInStash(itemId: string | undefined, inventoryItems: Item[], playerStashId: string): boolean {
         const itemParent = inventoryItems.find((x) => x._id === itemId);
 
-        if (itemParent)
-        {
-            if (itemParent.slotId === "hideout")
-            {
+        if (itemParent) {
+            if (itemParent.slotId === "hideout") {
                 return true;
             }
 
-            if (itemParent._id === playerStashId)
-            {
+            if (itemParent._id === playerStashId) {
                 return true;
             }
 

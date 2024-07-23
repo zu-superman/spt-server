@@ -1,4 +1,3 @@
-export interface IMatchGroupTransferRequest
-{
-    aidToChange: string
+export interface IMatchGroupTransferRequest {
+    aidToChange: string;
 }

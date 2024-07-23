@@ -1,4 +1,3 @@
-export interface IUIDRequestData
-{
-    uid: string
+export interface IUIDRequestData {
+    uid: string;
 }

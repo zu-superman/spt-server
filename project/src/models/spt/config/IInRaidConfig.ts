@@ -1,45 +1,42 @@
 import { IBaseConfig } from "@spt/models/spt/config/IBaseConfig";
 
-export interface IInRaidConfig extends IBaseConfig
-{
-    kind: "spt-inraid"
-    MIAOnRaidEnd: boolean
+export interface IInRaidConfig extends IBaseConfig {
+    kind: "spt-inraid";
+    MIAOnRaidEnd: boolean;
     /** Overrides to apply to the pre-raid settings screen */
-    raidMenuSettings: RaidMenuSettings
+    raidMenuSettings: RaidMenuSettings;
     /** What effects should be saved post-raid */
-    save: Save
+    save: Save;
     /** Names of car extracts */
-    carExtracts: string[]
+    carExtracts: string[];
     /** Names of coop extracts */
-    coopExtracts: string[]
+    coopExtracts: string[];
     /** Fence rep gain from a single car extract */
-    carExtractBaseStandingGain: number
+    carExtractBaseStandingGain: number;
     /** Fence rep gain from a single coop extract */
-    coopExtractBaseStandingGain: number
+    coopExtractBaseStandingGain: number;
     /** Fence rep gain when successfully extracting as pscav */
-    scavExtractGain: number
+    scavExtractGain: number;
     /** The likelihood of PMC eliminating a minimum of 2 scavs while you engage them as a pscav. */
-    pmcKillProbabilityForScavGain: number
+    pmcKillProbabilityForScavGain: number;
     /** On death should items in your secure keep their Find in raid status regardless of how you finished the raid */
-    keepFiRSecureContainerOnDeath: boolean
+    keepFiRSecureContainerOnDeath: boolean;
     /** Percentage chance a player scav hot is hostile to the player when scavving */
-    playerScavHostileChancePercent: number
+    playerScavHostileChancePercent: number;
 }
 
-export interface RaidMenuSettings
-{
-    aiAmount: string
-    aiDifficulty: string
-    bossEnabled: boolean
-    scavWars: boolean
-    taggedAndCursed: boolean
-    enablePve: boolean
-    randomWeather: boolean
-    randomTime: boolean
+export interface RaidMenuSettings {
+    aiAmount: string;
+    aiDifficulty: string;
+    bossEnabled: boolean;
+    scavWars: boolean;
+    taggedAndCursed: boolean;
+    enablePve: boolean;
+    randomWeather: boolean;
+    randomTime: boolean;
 }
 
-export interface Save
-{
+export interface Save {
     /** Should loot gained from raid be saved */
-    loot: boolean
+    loot: boolean;
 }

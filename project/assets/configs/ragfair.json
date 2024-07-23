@@ -276,10 +276,7 @@
         },
         "armor": {
             "removeRemovablePlateChance": 40,
-            "plateSlotIdToRemovePool": [
-                "front_plate",
-                "back_plate"
-            ]
+            "plateSlotIdToRemovePool": ["front_plate", "back_plate"]
         },
         "itemPriceMultiplier": {
             "5737292724597765e5728562": 6,
@@ -303,7 +300,7 @@
             "62e910aaf957f2915e0a5e36",
             "5447e1d04bdc2dff2f8b4567",
             "57bef4c42459772e8d35a53b",
-			"55802f4a4bdc2ddb688b4569"
+            "55802f4a4bdc2ddb688b4569"
         ],
         "removeSeasonalItemsWhenNotInEvent": true,
         "blacklist": {
@@ -314,10 +311,7 @@
             "traderItems": false,
             "armorPlate": {
                 "maxProtectionLevel": 4,
-                "ignoreSlots": [
-                    "right_side_plate",
-                    "left_side_plate"
-                ]
+                "ignoreSlots": ["right_side_plate", "left_side_plate"]
             },
             "enableCustomItemCategoryList": false,
             "customItemCategoryList": []

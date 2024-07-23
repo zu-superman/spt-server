@@ -1,4 +1,3 @@
-import { inject, injectable } from "tsyringe";
 import { PlayerScavGenerator } from "@spt/generators/PlayerScavGenerator";
 import { DialogueHelper } from "@spt/helpers/DialogueHelper";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
@@ -31,13 +30,13 @@ import { LocalisationService } from "@spt/services/LocalisationService";
 import { MailSendService } from "@spt/services/MailSendService";
 import { ProfileFixerService } from "@spt/services/ProfileFixerService";
 import { SeasonalEventService } from "@spt/services/SeasonalEventService";
-import { ICloner } from "@spt/utils/cloners/ICloner";
 import { HashUtil } from "@spt/utils/HashUtil";
 import { TimeUtil } from "@spt/utils/TimeUtil";
+import { ICloner } from "@spt/utils/cloners/ICloner";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class ProfileController
-{
+export class ProfileController {
     constructor(
         @inject("PrimaryLogger") protected logger: ILogger,
         @inject("HashUtil") protected hashUtil: HashUtil,
@@ -56,14 +55,12 @@ export class ProfileController
         @inject("DialogueHelper") protected dialogueHelper: DialogueHelper,
         @inject("QuestHelper") protected questHelper: QuestHelper,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
-    )
-    {}
+    ) {}
 
     /**
      * Handle /launcher/profiles
      */
-    public getMiniProfiles(): IMiniProfile[]
-    {
+    public getMiniProfiles(): IMiniProfile[] {
         const allProfiles = Object.keys(this.saveServer.getProfiles());
 
         return allProfiles.map((sessionId) => this.getMiniProfile(sessionId));
@@ -72,11 +69,9 @@ export class ProfileController
     /**
      * Handle launcher/profile/info
      */
-    public getMiniProfile(sessionID: string): IMiniProfile
-    {
+    public getMiniProfile(sessionID: string): IMiniProfile {
         const profile = this.saveServer.getProfile(sessionID);
-        if (!profile || !profile.characters)
-        {
+        if (!profile || !profile.characters) {
             throw new Error(`Unable to find character data for id: ${sessionID}. Profile may be corrupt`);
         }
 
@@ -84,8 +79,7 @@ export class ProfileController
         const maxlvl = this.profileHelper.getMaxLevel();
 
         // Player hasn't completed profile creation process, send defaults
-        if (!pmc?.Info?.Level)
-        {
+        if (!pmc?.Info?.Level) {
             return {
                 username: profile.info.username,
                 nickname: "unknown",
@@ -107,9 +101,7 @@ export class ProfileController
             side: pmc.Info.Side,
             currlvl: pmc.Info.Level,
             currexp: pmc.Info.Experience ?? 0,
-            prevexp: currlvl === 0
-                ? 0
-                : this.profileHelper.getExperience(currlvl),
+            prevexp: currlvl === 0 ? 0 : this.profileHelper.getExperience(currlvl),
             nextlvl: nextlvl,
             maxlvl: maxlvl,
             sptData: profile.spt,
@@ -119,8 +111,7 @@ export class ProfileController
     /**
      * Handle client/game/profile/list
      */
-    public getCompleteProfile(sessionID: string): IPmcData[]
-    {
+    public getCompleteProfile(sessionID: string): IPmcData[] {
         return this.profileHelper.getCompleteProfile(sessionID);
     }
 
@@ -130,11 +121,11 @@ export class ProfileController
      * @param sessionID Player id
      * @returns Profiles _id value
      */
-    public createProfile(info: IProfileCreateRequestData, sessionID: string): string
-    {
+    public createProfile(info: IProfileCreateRequestData, sessionID: string): string {
         const account = this.saveServer.getProfile(sessionID).info;
-        const profileTemplate: ITemplateSide
-            = this.cloner.clone(this.databaseService.getProfiles()[account.edition][info.side.toLowerCase()]);
+        const profileTemplate: ITemplateSide = this.cloner.clone(
+            this.databaseService.getProfiles()[account.edition][info.side.toLowerCase()],
+        );
         const pmcData = profileTemplate.character;
 
         // Delete existing profile
@@ -162,8 +153,7 @@ export class ProfileController
 
         this.updateInventoryEquipmentId(pmcData);
 
-        if (!pmcData.UnlockedInfo)
-        {
+        if (!pmcData.UnlockedInfo) {
             pmcData.UnlockedInfo = { unlockedProductionRecipe: [] };
         }
 
@@ -196,14 +186,12 @@ export class ProfileController
 
         this.saveServer.addProfile(profileDetails);
 
-        if (profileTemplate.trader.setQuestsAvailableForStart)
-        {
+        if (profileTemplate.trader.setQuestsAvailableForStart) {
             this.questHelper.addAllQuestsToProfile(profileDetails.characters.pmc, [QuestStatus.AvailableForStart]);
         }
 
         // Profile is flagged as wanting quests set to ready to hand in and collect rewards
-        if (profileTemplate.trader.setQuestsAvailableForFinish)
-        {
+        if (profileTemplate.trader.setQuestsAvailableForFinish) {
             this.questHelper.addAllQuestsToProfile(profileDetails.characters.pmc, [
                 QuestStatus.AvailableForStart,
                 QuestStatus.Started,
@@ -230,8 +218,7 @@ export class ProfileController
         this.saveServer.saveProfile(sessionID);
 
         // Requires to enable seasonal changes after creating fresh profile
-        if (this.seasonalEventService.isAutomaticEventDetectionEnabled())
-        {
+        if (this.seasonalEventService.isAutomaticEventDetectionEnabled()) {
             this.seasonalEventService.enableSeasonalEvents(sessionID);
         }
 
@@ -242,22 +229,18 @@ export class ProfileController
      * make profiles pmcData.Inventory.equipment unique
      * @param pmcData Profile to update
      */
-    protected updateInventoryEquipmentId(pmcData: IPmcData): void
-    {
+    protected updateInventoryEquipmentId(pmcData: IPmcData): void {
         const oldEquipmentId = pmcData.Inventory.equipment;
         pmcData.Inventory.equipment = this.hashUtil.generate();
 
-        for (const item of pmcData.Inventory.items)
-        {
-            if (item.parentId === oldEquipmentId)
-            {
+        for (const item of pmcData.Inventory.items) {
+            if (item.parentId === oldEquipmentId) {
                 item.parentId = pmcData.Inventory.equipment;
 
                 continue;
             }
 
-            if (item._id === oldEquipmentId)
-            {
+            if (item._id === oldEquipmentId) {
                 item._id = pmcData.Inventory.equipment;
             }
         }
@@ -267,14 +250,10 @@ export class ProfileController
      * Delete a profile
      * @param sessionID Id of profile to delete
      */
-    protected deleteProfileBySessionId(sessionID: string): void
-    {
-        if (sessionID in this.saveServer.getProfiles())
-        {
+    protected deleteProfileBySessionId(sessionID: string): void {
+        if (sessionID in this.saveServer.getProfiles()) {
             this.saveServer.deleteProfileById(sessionID);
-        }
-        else
-        {
+        } else {
             this.logger.warning(
                 this.localisationService.getText("profile-unable_to_find_profile_by_id_cannot_delete", sessionID),
             );
@@ -292,10 +271,8 @@ export class ProfileController
         profileDetails: ISptProfile,
         sessionID: string,
         response: IItemEventRouterResponse,
-    ): void
-    {
-        for (const quest of profileDetails.characters.pmc.Quests)
-        {
+    ): void {
+        for (const quest of profileDetails.characters.pmc.Quests) {
             const questFromDb = this.questHelper.getQuestFromDb(quest.qid, profileDetails.characters.pmc);
 
             // Get messageId of text to send to player as text message in game
@@ -327,10 +304,8 @@ export class ProfileController
      * For each trader reset their state to what a level 1 player would see
      * @param sessionId Session id of profile to reset
      */
-    protected resetAllTradersInProfile(sessionId: string): void
-    {
-        for (const traderId in this.databaseService.getTraders())
-        {
+    protected resetAllTradersInProfile(sessionId: string): void {
+        for (const traderId in this.databaseService.getTraders()) {
             this.traderHelper.resetTrader(sessionId, traderId);
         }
     }
@@ -341,23 +316,19 @@ export class ProfileController
      * @param sessionID
      * @returns IPmcData object
      */
-    public generatePlayerScav(sessionID: string): IPmcData
-    {
+    public generatePlayerScav(sessionID: string): IPmcData {
         return this.playerScavGenerator.generate(sessionID);
     }
 
     /**
      * Handle client/game/profile/nickname/validate
      */
-    public validateNickname(info: IValidateNicknameRequestData, sessionID: string): string
-    {
-        if (info.nickname.length < 3)
-        {
+    public validateNickname(info: IValidateNicknameRequestData, sessionID: string): string {
+        if (info.nickname.length < 3) {
             return "tooshort";
         }
 
-        if (this.profileHelper.isNicknameTaken(info, sessionID))
-        {
+        if (this.profileHelper.isNicknameTaken(info, sessionID)) {
             return "taken";
         }
 
@@ -368,12 +339,10 @@ export class ProfileController
      * Handle client/game/profile/nickname/change event
      * Client allows player to adjust their profile name
      */
-    public changeNickname(info: IProfileChangeNicknameRequestData, sessionID: string): string
-    {
+    public changeNickname(info: IProfileChangeNicknameRequestData, sessionID: string): string {
         const output = this.validateNickname(info, sessionID);
 
-        if (output === "OK")
-        {
+        if (output === "OK") {
             const pmcData = this.profileHelper.getPmcProfile(sessionID);
 
             pmcData.Info.Nickname = info.nickname;
@@ -386,8 +355,7 @@ export class ProfileController
     /**
      * Handle client/game/profile/voice/change event
      */
-    public changeVoice(info: IProfileChangeVoiceRequestData, sessionID: string): void
-    {
+    public changeVoice(info: IProfileChangeVoiceRequestData, sessionID: string): void {
         const pmcData = this.profileHelper.getPmcProfile(sessionID);
         pmcData.Info.Voice = info.voice;
     }
@@ -395,8 +363,7 @@ export class ProfileController
     /**
      * Handle client/game/profile/search
      */
-    public getFriends(info: ISearchFriendRequestData, sessionID: string): ISearchFriendResponse[]
-    {
+    public getFriends(info: ISearchFriendRequestData, sessionID: string): ISearchFriendResponse[] {
         const profile = this.saveServer.getProfile(sessionID);
 
         // return some of the current player info for now
@@ -417,8 +384,7 @@ export class ProfileController
     /**
      * Handle client/profile/status
      */
-    public getProfileStatus(sessionId: string): GetProfileStatusResponseData
-    {
+    public getProfileStatus(sessionId: string): GetProfileStatusResponseData {
         const account = this.saveServer.getProfile(sessionId).info;
         const response: GetProfileStatusResponseData = {
             maxPveCountExceeded: false,
@@ -438,8 +404,7 @@ export class ProfileController
         return response;
     }
 
-    public getOtherProfile(sessionId: string, request: IGetOtherProfileRequest): IGetOtherProfileResponse
-    {
+    public getOtherProfile(sessionId: string, request: IGetOtherProfileRequest): IGetOtherProfileResponse {
         const player = this.profileHelper.getFullProfile(sessionId);
         const playerPmc = player.characters.pmc;
         const playerScav = player.characters.scav;
@@ -489,21 +454,17 @@ export class ProfileController
     /**
      * Handle client/profile/settings
      */
-    public setChosenProfileIcon(sessionId: string, request: IGetProfileSettingsRequest): boolean
-    {
+    public setChosenProfileIcon(sessionId: string, request: IGetProfileSettingsRequest): boolean {
         const profileToUpdate = this.profileHelper.getPmcProfile(sessionId);
-        if (!profileToUpdate)
-        {
+        if (!profileToUpdate) {
             return false;
         }
 
-        if (request.memberCategory !== null)
-        {
+        if (request.memberCategory !== null) {
             profileToUpdate.Info.SelectedMemberCategory = request.memberCategory;
         }
-        
-        if(request.squadInviteRestriction !== null)
-        {
+
+        if (request.squadInviteRestriction !== null) {
             profileToUpdate.Info.SquadInviteRestriction = request.squadInviteRestriction;
         }
 

@@ -1,12 +1,11 @@
-import { inject, injectable } from "tsyringe";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { JsonUtil } from "@spt/utils/JsonUtil";
 import { VFS } from "@spt/utils/VFS";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class ConfigServer
-{
+export class ConfigServer {
     protected configs: Record<string, any> = {};
     protected readonly acceptableFileExtensions: string[] = ["json", "jsonc"];
 
@@ -14,28 +13,23 @@ export class ConfigServer
         @inject("PrimaryLogger") protected logger: ILogger,
         @inject("VFS") protected vfs: VFS,
         @inject("JsonUtil") protected jsonUtil: JsonUtil,
-    )
-    {
+    ) {
         this.initialize();
     }
 
-    public getConfig<T>(configType: ConfigTypes): T
-    {
-        if (!this.configs[configType])
-        {
+    public getConfig<T>(configType: ConfigTypes): T {
+        if (!this.configs[configType]) {
             throw new Error(`Config: ${configType} is undefined. Ensure you have not broken it via editing`);
         }
 
         return this.configs[configType];
     }
 
-    public getConfigByString<T>(configType: string): T
-    {
+    public getConfigByString<T>(configType: string): T {
         return this.configs[configType];
     }
 
-    public initialize(): void
-    {
+    public initialize(): void {
         this.logger.debug("Importing configs...");
 
         // Get all filepaths
@@ -43,10 +37,8 @@ export class ConfigServer
         const files = this.vfs.getFiles(filepath);
 
         // Add file content to result
-        for (const file of files)
-        {
-            if (this.acceptableFileExtensions.includes(this.vfs.getFileExtension(file.toLowerCase())))
-            {
+        for (const file of files) {
+            if (this.acceptableFileExtensions.includes(this.vfs.getFileExtension(file.toLowerCase()))) {
                 const fileName = this.vfs.stripExtension(file);
                 const filePathAndName = `${filepath}${file}`;
                 this.configs[`spt-${fileName}`] = this.jsonUtil.deserializeJsonC<any>(

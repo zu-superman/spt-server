@@ -12,9 +12,9 @@
         "trader": 0.6
     },
     "weaponTreatment": {
-        "critSuccessChance": 0.10,
+        "critSuccessChance": 0.1,
         "critSuccessAmount": 4,
-        "critFailureChance": 0.10,
+        "critFailureChance": 0.1,
         "critFailureAmount": 4,
         "pointGainMultiplier": 0.6
     },
@@ -163,7 +163,7 @@
                 "MalfunctionProtections": {
                     "valuesMinMax": {
                         "min": 0.75,
-                        "max": 0.90
+                        "max": 0.9
                     },
                     "activeDurabilityPercentMinMax": {
                         "min": 75,

@@ -1,4 +1,3 @@
-import { inject, injectable } from "tsyringe";
 import { MinMax } from "@spt/models/common/MinMax";
 import { IRandomisedBotLevelResult } from "@spt/models/eft/bot/IRandomisedBotLevelResult";
 import { IBotBase } from "@spt/models/eft/common/tables/IBotBase";
@@ -6,16 +5,15 @@ import { BotGenerationDetails } from "@spt/models/spt/bots/BotGenerationDetails"
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { DatabaseService } from "@spt/services/DatabaseService";
 import { RandomUtil } from "@spt/utils/RandomUtil";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class BotLevelGenerator
-{
+export class BotLevelGenerator {
     constructor(
         @inject("PrimaryLogger") protected logger: ILogger,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("DatabaseService") protected databaseService: DatabaseService,
-    )
-    {}
+    ) {}
 
     /**
      * Return a randomised bot level and exp value
@@ -28,8 +26,7 @@ export class BotLevelGenerator
         levelDetails: MinMax,
         botGenerationDetails: BotGenerationDetails,
         bot: IBotBase,
-    ): IRandomisedBotLevelResult
-    {
+    ): IRandomisedBotLevelResult {
         const expTable = this.databaseService.getGlobals().config.exp.level.exp_table;
         const highestLevel = this.getHighestRelativeBotLevel(botGenerationDetails, levelDetails, expTable.length);
         const lowestLevel = this.getLowestRelativeBotLevel(botGenerationDetails, levelDetails, expTable.length);
@@ -38,14 +35,12 @@ export class BotLevelGenerator
         let exp = 0;
         const level = this.randomUtil.getInt(lowestLevel, highestLevel);
 
-        for (let i = 0; i < level; i++)
-        {
+        for (let i = 0; i < level; i++) {
             exp += expTable[i].exp;
         }
 
         // Sprinkle in some random exp within the level, unless we are at max level.
-        if (level < expTable.length - 1)
-        {
+        if (level < expTable.length - 1) {
             exp += this.randomUtil.getInt(0, expTable[level].exp - 1);
         }
 
@@ -63,16 +58,14 @@ export class BotLevelGenerator
         botGenerationDetails: BotGenerationDetails,
         levelDetails: MinMax,
         maxLevel: number,
-    ): number
-    {
-        const maxPossibleLevel
-            = botGenerationDetails.isPmc && botGenerationDetails.locationSpecificPmcLevelOverride
+    ): number {
+        const maxPossibleLevel =
+            botGenerationDetails.isPmc && botGenerationDetails.locationSpecificPmcLevelOverride
                 ? Math.min(botGenerationDetails.locationSpecificPmcLevelOverride.max, maxLevel) // Was a PMC and they have a level override
                 : Math.min(levelDetails.max, maxLevel); // Not pmc with override or non-pmc
 
         let level = botGenerationDetails.playerLevel + botGenerationDetails.botRelativeLevelDeltaMax;
-        if (level > maxPossibleLevel)
-        {
+        if (level > maxPossibleLevel) {
             level = maxPossibleLevel;
         }
 
@@ -90,19 +83,17 @@ export class BotLevelGenerator
         botGenerationDetails: BotGenerationDetails,
         levelDetails: MinMax,
         maxlevel: number,
-    ): number
-    {
-        const minPossibleLevel
-            = botGenerationDetails.isPmc && botGenerationDetails.locationSpecificPmcLevelOverride
+    ): number {
+        const minPossibleLevel =
+            botGenerationDetails.isPmc && botGenerationDetails.locationSpecificPmcLevelOverride
                 ? Math.min(
-                    Math.max(levelDetails.min, botGenerationDetails.locationSpecificPmcLevelOverride.min), // Biggest between json min and the botgen min
-                    maxlevel, // Fallback if value above is crazy (default is 79)
-                )
+                      Math.max(levelDetails.min, botGenerationDetails.locationSpecificPmcLevelOverride.min), // Biggest between json min and the botgen min
+                      maxlevel, // Fallback if value above is crazy (default is 79)
+                  )
                 : Math.min(levelDetails.min, maxlevel); // Not pmc with override or non-pmc
 
         let level = botGenerationDetails.playerLevel - botGenerationDetails.botRelativeLevelDeltaMin;
-        if (level < minPossibleLevel)
-        {
+        if (level < minPossibleLevel) {
             level = minPossibleLevel;
         }
 

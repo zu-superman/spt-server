@@ -1,6 +1,6 @@
 import { IncomingMessage, ServerResponse } from "node:http";
-import { injectable } from "tsyringe";
 import { HttpMethods } from "@spt/servers/http/HttpMethods";
+import { injectable } from "tsyringe";
 
 export type HandleFn = (_: string, req: IncomingMessage, resp: ServerResponse) => void;
 
@@ -9,41 +9,32 @@ export type HandleFn = (_: string, req: IncomingMessage, resp: ServerResponse) =
  *  @param basePath The base path
  *  @returns The decorator that create the listener proxy
  */
-export const Listen = (basePath: string) =>
-{
-    return <T extends { new (...args: any[]): any }>(Base: T): T =>
-    {
+export const Listen = (basePath: string) => {
+    return <T extends { new (...args: any[]): any }>(Base: T): T => {
         // Used for the base class to be able to use DI
         injectable()(Base);
-        return class extends Base
-        {
+        return class extends Base {
             // Record of each handler per HTTP method and path
             handlers: Partial<Record<HttpMethods, Record<string, HandleFn>>>;
 
-            constructor(...args: any[])
-            {
+            constructor(...args: any[]) {
                 super(...args);
                 this.handlers = {};
 
                 // Retrieve all handlers
                 const handlersArray = Base.prototype.handlers;
-                if (!handlersArray)
-                {
+                if (!handlersArray) {
                     return;
                 }
 
                 // Add each flagged handler to the Record
-                for (const { handlerName, path, httpMethod } of handlersArray)
-                {
-                    if (!this.handlers[httpMethod])
-                    {
+                for (const { handlerName, path, httpMethod } of handlersArray) {
+                    if (!this.handlers[httpMethod]) {
                         this.handlers[httpMethod] = {};
                     }
 
-                    if (this[handlerName] !== undefined && typeof this[handlerName] === "function")
-                    {
-                        if (!path || path === "")
-                        {
+                    if (this[handlerName] !== undefined && typeof this[handlerName] === "function") {
+                        if (!path || path === "") {
                             this.handlers[httpMethod][`/${basePath}`] = this[handlerName];
                         }
                         this.handlers[httpMethod][`/${basePath}/${path}`] = this[handlerName];
@@ -56,21 +47,18 @@ export const Listen = (basePath: string) =>
 
             // The canHandle method is used to check if the Listener handles a request
             // Based on both the HTTP method and the route
-            canHandle = (_: string, req: IncomingMessage): boolean =>
-            {
+            canHandle = (_: string, req: IncomingMessage): boolean => {
                 const routesHandles = this.handlers[req.method];
 
                 return (
-                    Object.keys(this.handlers).some((meth) => meth === req.method)
-                    && Object.keys(routesHandles).some((route) => new RegExp(route).test(req.url))
+                    Object.keys(this.handlers).some((meth) => meth === req.method) &&
+                    Object.keys(routesHandles).some((route) => new RegExp(route).test(req.url))
                 );
             };
 
             // The actual handle method dispatches the request to the registered handlers
-            handle = (sessionID: string, req: IncomingMessage, resp: ServerResponse): void =>
-            {
-                if (Object.keys(this.handlers).length === 0)
-                {
+            handle = (sessionID: string, req: IncomingMessage, resp: ServerResponse): void => {
+                if (Object.keys(this.handlers).length === 0) {
                     return;
                 }
 
@@ -83,8 +71,7 @@ export const Listen = (basePath: string) =>
 
                 // Filter to select valid routes but only use the first element since it's the most precise
                 const validRoutes = routes.filter((handlerKey) => new RegExp(handlerKey).test(route));
-                if (validRoutes.length > 0)
-                {
+                if (validRoutes.length > 0) {
                     routesHandles[validRoutes[0]](sessionID, req, resp);
                 }
             };
@@ -97,16 +84,12 @@ export const Listen = (basePath: string) =>
  *  @param httpMethod The HTTP method to create the decorator for
  *  @returns The decorator
  */
-const createHttpDecorator = (httpMethod: HttpMethods) =>
-{
+const createHttpDecorator = (httpMethod: HttpMethods) => {
     // The handler path (ignoring the base path)
-    return (path = "") =>
-    {
-        return (target: any, propertyKey: string) =>
-        {
+    return (path = "") => {
+        return (target: any, propertyKey: string) => {
             // If the handlers array has not been initialized yet
-            if (!target.handlers)
-            {
+            if (!target.handlers) {
                 target.handlers = [];
             }
 

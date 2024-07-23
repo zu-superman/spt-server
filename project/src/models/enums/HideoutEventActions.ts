@@ -1,5 +1,4 @@
-export enum HideoutEventActions
-{
+export enum HideoutEventActions {
     HIDEOUT_UPGRADE = "HideoutUpgrade",
     HIDEOUT_UPGRADE_COMPLETE = "HideoutUpgradeComplete",
     HIDEOUT_PUT_ITEMS_IN_AREA_SLOTS = "HideoutPutItemsInAreaSlots",

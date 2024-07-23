@@ -1,4 +1,3 @@
-import { inject, injectable } from "tsyringe";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { ITemplateItem, Props } from "@spt/models/eft/common/tables/ITemplateItem";
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
@@ -12,12 +11,12 @@ import {
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { DatabaseService } from "@spt/services/DatabaseService";
 import { ItemBaseClassService } from "@spt/services/ItemBaseClassService";
-import { ICloner } from "@spt/utils/cloners/ICloner";
 import { HashUtil } from "@spt/utils/HashUtil";
+import { ICloner } from "@spt/utils/cloners/ICloner";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class CustomItemService
-{
+export class CustomItemService {
     constructor(
         @inject("PrimaryLogger") protected logger: ILogger,
         @inject("HashUtil") protected hashUtil: HashUtil,
@@ -25,9 +24,7 @@ export class CustomItemService
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("ItemBaseClassService") protected itemBaseClassService: ItemBaseClassService,
         @inject("PrimaryCloner") protected cloner: ICloner,
-    )
-    {
-    }
+    ) {}
 
     /**
      * Create a new item from a cloned item base
@@ -39,8 +36,7 @@ export class CustomItemService
      * @param newItemDetails Item details for the new item to be created
      * @returns tplId of the new item created
      */
-    public createItemFromClone(newItemDetails: NewItemFromCloneDetails): CreateItemResult
-    {
+    public createItemFromClone(newItemDetails: NewItemFromCloneDetails): CreateItemResult {
         const result = new CreateItemResult();
         const tables = this.databaseService.getTables();
 
@@ -48,8 +44,7 @@ export class CustomItemService
         const newItemId = this.getOrGenerateIdForItem(newItemDetails.newId);
 
         // Fail if itemId already exists
-        if (tables.templates.items[newItemId])
-        {
+        if (tables.templates.items[newItemId]) {
             result.errors.push(`ItemId already exists. ${tables.templates.items[newItemId]._name}`);
             result.success = false;
             result.itemId = newItemId;
@@ -76,8 +71,7 @@ export class CustomItemService
 
         this.itemBaseClassService.hydrateItemBaseClassCache();
 
-        if (this.itemHelper.isOfBaseclass(itemClone._id, BaseClasses.WEAPON))
-        {
+        if (this.itemHelper.isOfBaseclass(itemClone._id, BaseClasses.WEAPON)) {
             this.addToWeaponShelf(newItemId);
         }
 
@@ -96,16 +90,14 @@ export class CustomItemService
      * @param newItemDetails Details on what the item to be created
      * @returns CreateItemResult containing the completed items Id
      */
-    public createItem(newItemDetails: NewItemDetails): CreateItemResult
-    {
+    public createItem(newItemDetails: NewItemDetails): CreateItemResult {
         const result = new CreateItemResult();
         const tables = this.databaseService.getTables();
 
         const newItem = newItemDetails.newItem;
 
         // Fail if itemId already exists
-        if (tables.templates.items[newItem._id])
-        {
+        if (tables.templates.items[newItem._id]) {
             result.errors.push(`ItemId already exists. ${tables.templates.items[newItem._id]._name}`);
             return result;
         }
@@ -120,8 +112,7 @@ export class CustomItemService
 
         this.itemBaseClassService.hydrateItemBaseClassCache();
 
-        if (this.itemHelper.isOfBaseclass(newItem._id, BaseClasses.WEAPON))
-        {
+        if (this.itemHelper.isOfBaseclass(newItem._id, BaseClasses.WEAPON)) {
             this.addToWeaponShelf(newItem._id);
         }
 
@@ -136,8 +127,7 @@ export class CustomItemService
      * @param newId id supplied to code
      * @returns item id
      */
-    protected getOrGenerateIdForItem(newId: string): string
-    {
+    protected getOrGenerateIdForItem(newId: string): string {
         return newId === "" ? this.hashUtil.generate() : newId;
     }
 
@@ -147,10 +137,8 @@ export class CustomItemService
      * @param overrideProperties new properties to apply
      * @param itemClone item to update
      */
-    protected updateBaseItemPropertiesWithOverrides(overrideProperties: Props, itemClone: ITemplateItem): void
-    {
-        for (const propKey in overrideProperties)
-        {
+    protected updateBaseItemPropertiesWithOverrides(overrideProperties: Props, itemClone: ITemplateItem): void {
+        for (const propKey in overrideProperties) {
             itemClone._props[propKey] = overrideProperties[propKey];
         }
     }
@@ -160,8 +148,7 @@ export class CustomItemService
      * @param newItemId id of the item to add to items.json
      * @param itemToAdd Item to add against the new id
      */
-    protected addToItemsDb(newItemId: string, itemToAdd: ITemplateItem): void
-    {
+    protected addToItemsDb(newItemId: string, itemToAdd: ITemplateItem): void {
         this.databaseService.getItems()[newItemId] = itemToAdd;
     }
 
@@ -171,9 +158,10 @@ export class CustomItemService
      * @param parentId parent id of the item being added
      * @param priceRoubles price of the item being added
      */
-    protected addToHandbookDb(newItemId: string, parentId: string, priceRoubles: number): void
-    {
-        this.databaseService.getTemplates().handbook.Items.push({ Id: newItemId, ParentId: parentId, Price: priceRoubles });
+    protected addToHandbookDb(newItemId: string, parentId: string, priceRoubles: number): void {
+        this.databaseService
+            .getTemplates()
+            .handbook.Items.push({ Id: newItemId, ParentId: parentId, Price: priceRoubles });
     }
 
     /**
@@ -187,15 +175,12 @@ export class CustomItemService
      * @param localeDetails key is language, value are the new locale details
      * @param newItemId id of the item being created
      */
-    protected addToLocaleDbs(localeDetails: Record<string, LocaleDetails>, newItemId: string): void
-    {
+    protected addToLocaleDbs(localeDetails: Record<string, LocaleDetails>, newItemId: string): void {
         const languages = this.databaseService.getLocales().languages;
-        for (const shortNameKey in languages)
-        {
+        for (const shortNameKey in languages) {
             // Get locale details passed in, if not provided by caller use first record in newItemDetails.locales
             let newLocaleDetails = localeDetails[shortNameKey];
-            if (!newLocaleDetails)
-            {
+            if (!newLocaleDetails) {
                 newLocaleDetails = localeDetails[Object.keys(localeDetails)[0]];
             }
 
@@ -212,8 +197,7 @@ export class CustomItemService
      * @param newItemId id of the new item
      * @param fleaPriceRoubles Price of the new item
      */
-    protected addToFleaPriceDb(newItemId: string, fleaPriceRoubles: number): void
-    {
+    protected addToFleaPriceDb(newItemId: string, fleaPriceRoubles: number): void {
         this.databaseService.getTemplates().prices[newItemId] = fleaPriceRoubles;
     }
 
@@ -221,15 +205,16 @@ export class CustomItemService
      * Add a weapon to the hideout weapon shelf whitelist
      * @param newItemId Weapon id to add
      */
-    protected addToWeaponShelf(newItemId: string): void
-    {
+    protected addToWeaponShelf(newItemId: string): void {
         // Ids for wall stashes in db
-        const wallStashIds = [ItemTpl.HIDEOUTAREACONTAINER_WEAPONSTAND_STASH_1, ItemTpl.HIDEOUTAREACONTAINER_WEAPONSTAND_STASH_2, ItemTpl.HIDEOUTAREACONTAINER_WEAPONSTAND_STASH_3];
-        for (const wallId of wallStashIds)
-        {
+        const wallStashIds = [
+            ItemTpl.HIDEOUTAREACONTAINER_WEAPONSTAND_STASH_1,
+            ItemTpl.HIDEOUTAREACONTAINER_WEAPONSTAND_STASH_2,
+            ItemTpl.HIDEOUTAREACONTAINER_WEAPONSTAND_STASH_3,
+        ];
+        for (const wallId of wallStashIds) {
             const wall = this.itemHelper.getItem(wallId);
-            if (wall[0])
-            {
+            if (wall[0]) {
                 wall[1]._props.Grids[0]._props.filters[0].Filter.push(newItemId);
             }
         }
@@ -241,11 +226,9 @@ export class CustomItemService
      * @param weaponWeight The weighting for the weapon to be picked vs other weapons
      * @param weaponSlot The slot the weapon should be added to (e.g. FirstPrimaryWeapon/SecondPrimaryWeapon/Holster)
      */
-    public addCustomWeaponToPMCs(weaponTpl: string, weaponWeight: number, weaponSlot: string): void
-    {
+    public addCustomWeaponToPMCs(weaponTpl: string, weaponWeight: number, weaponSlot: string): void {
         const weapon = this.itemHelper.getItem(weaponTpl);
-        if (!weapon[0])
-        {
+        if (!weapon[0]) {
             this.logger.warning(
                 `Unable to add custom weapon ${weaponTpl} to PMCs as it cannot be found in the Item db`,
             );
@@ -256,8 +239,7 @@ export class CustomItemService
 
         // Get all slots weapon has and create a dictionary of them with possible mods that slot into each
         const weaponSlots = weapon[1]._props.Slots;
-        for (const slot of weaponSlots)
-        {
+        for (const slot of weaponSlots) {
             baseWeaponModObject[slot._name] = slot._props.filters[0].Filter;
         }
 

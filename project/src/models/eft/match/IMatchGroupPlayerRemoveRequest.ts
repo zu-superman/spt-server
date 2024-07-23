@@ -1,4 +1,3 @@
-export interface IMatchGroupPlayerRemoveRequest
-{
-    aidToKick: string
+export interface IMatchGroupPlayerRemoveRequest {
+    aidToKick: string;
 }

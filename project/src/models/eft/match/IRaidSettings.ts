@@ -10,41 +10,37 @@ import { TimeFlowType } from "@spt/models/enums/RaidSettings/TimeAndWeather/Time
 import { WindSpeed } from "@spt/models/enums/RaidSettings/TimeAndWeather/WindSpeed";
 import { SideType } from "@spt/models/enums/SideType";
 
-export interface IRaidSettings
-{
-    location: string
-    timeVariant: DateTime
-    raidMode: RaidMode
-    metabolismDisabled: boolean
-    playersSpawnPlace: PlayersSpawnPlace
-    timeAndWeatherSettings: TimeAndWeatherSettings
-    botSettings: BotSettings
-    wavesSettings: WavesSettings
-    side: SideType
+export interface IRaidSettings {
+    location: string;
+    timeVariant: DateTime;
+    raidMode: RaidMode;
+    metabolismDisabled: boolean;
+    playersSpawnPlace: PlayersSpawnPlace;
+    timeAndWeatherSettings: TimeAndWeatherSettings;
+    botSettings: BotSettings;
+    wavesSettings: WavesSettings;
+    side: SideType;
 }
 
-export interface TimeAndWeatherSettings
-{
-    isRandomTime: boolean
-    isRandomWeather: boolean
-    cloudinessType: CloudinessType
-    rainType: RainType
-    fogType: FogType
-    windType: WindSpeed
-    timeFlowType: TimeFlowType
-    hourOfDay: number
+export interface TimeAndWeatherSettings {
+    isRandomTime: boolean;
+    isRandomWeather: boolean;
+    cloudinessType: CloudinessType;
+    rainType: RainType;
+    fogType: FogType;
+    windType: WindSpeed;
+    timeFlowType: TimeFlowType;
+    hourOfDay: number;
 }
 
-export interface BotSettings
-{
-    isScavWars: boolean
-    botAmount: BotAmount
+export interface BotSettings {
+    isScavWars: boolean;
+    botAmount: BotAmount;
 }
 
-export interface WavesSettings
-{
-    botAmount: BotAmount
-    botDifficulty: BotDifficulty
-    isBosses: boolean
-    isTaggedAndCursed: boolean
+export interface WavesSettings {
+    botAmount: BotAmount;
+    botDifficulty: BotDifficulty;
+    isBosses: boolean;
+    isTaggedAndCursed: boolean;
 }

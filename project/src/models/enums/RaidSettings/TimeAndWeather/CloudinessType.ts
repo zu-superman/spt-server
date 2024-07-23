@@ -1,5 +1,4 @@
-export enum CloudinessType
-{
+export enum CloudinessType {
     CLEAR = "Clear",
     PARTLY_CLOUDY = "PartlyCloudy",
     CLOUDY = "Cloudy",

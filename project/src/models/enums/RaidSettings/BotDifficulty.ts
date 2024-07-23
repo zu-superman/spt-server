@@ -1,5 +1,4 @@
-export enum BotDifficulty
-{
+export enum BotDifficulty {
     AS_ONLINE = "AsOnline",
     EASY = "Easy",
     MEDIUM = "Medium",

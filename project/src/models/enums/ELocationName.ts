@@ -1,5 +1,4 @@
-export enum ELocationName
-{
+export enum ELocationName {
     FACTORY_DAY = "factory4_day",
     FACTORY_NIGHT = "factory4_night",
     BIGMAP = "bigmap",

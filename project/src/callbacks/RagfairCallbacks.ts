@@ -1,4 +1,3 @@
-import { inject, injectable } from "tsyringe";
 import { RagfairController } from "@spt/controllers/RagfairController";
 import { OnLoad } from "@spt/di/OnLoad";
 import { OnUpdate } from "@spt/di/OnUpdate";
@@ -24,13 +23,13 @@ import { ConfigServer } from "@spt/servers/ConfigServer";
 import { RagfairServer } from "@spt/servers/RagfairServer";
 import { RagfairTaxService } from "@spt/services/RagfairTaxService";
 import { HttpResponseUtil } from "@spt/utils/HttpResponseUtil";
+import { inject, injectable } from "tsyringe";
 
 /**
  * Handle ragfair related callback events
  */
 @injectable()
-export class RagfairCallbacks implements OnLoad, OnUpdate
-{
+export class RagfairCallbacks implements OnLoad, OnUpdate {
     protected ragfairConfig: IRagfairConfig;
 
     constructor(
@@ -39,25 +38,20 @@ export class RagfairCallbacks implements OnLoad, OnUpdate
         @inject("RagfairController") protected ragfairController: RagfairController,
         @inject("RagfairTaxService") protected ragfairTaxService: RagfairTaxService,
         @inject("ConfigServer") protected configServer: ConfigServer,
-    )
-    {
+    ) {
         this.ragfairConfig = this.configServer.getConfig(ConfigTypes.RAGFAIR);
     }
 
-    public async onLoad(): Promise<void>
-    {
+    public async onLoad(): Promise<void> {
         await this.ragfairServer.load();
     }
 
-    public getRoute(): string
-    {
+    public getRoute(): string {
         return "spt-ragfair";
     }
 
-    public async onUpdate(timeSinceLastRun: number): Promise<boolean>
-    {
-        if (timeSinceLastRun > this.ragfairConfig.runIntervalSeconds)
-        {
+    public async onUpdate(timeSinceLastRun: number): Promise<boolean> {
+        if (timeSinceLastRun > this.ragfairConfig.runIntervalSeconds) {
             // There is a flag inside this class that only makes it run once.
             this.ragfairServer.addPlayerOffers();
 
@@ -76,8 +70,7 @@ export class RagfairCallbacks implements OnLoad, OnUpdate
      * Handle client/ragfair/search
      * Handle client/ragfair/find
      */
-    public search(url: string, info: ISearchRequestData, sessionID: string): IGetBodyResponseData<IGetOffersResult>
-    {
+    public search(url: string, info: ISearchRequestData, sessionID: string): IGetBodyResponseData<IGetOffersResult> {
         return this.httpResponse.getBody(this.ragfairController.getOffers(sessionID, info));
     }
 
@@ -86,26 +79,22 @@ export class RagfairCallbacks implements OnLoad, OnUpdate
         url: string,
         info: IGetMarketPriceRequestData,
         sessionID: string,
-    ): IGetBodyResponseData<IGetItemPriceResult>
-    {
+    ): IGetBodyResponseData<IGetItemPriceResult> {
         return this.httpResponse.getBody(this.ragfairController.getItemMinAvgMaxFleaPriceValues(info));
     }
 
     /** Handle RagFairAddOffer event */
-    public addOffer(pmcData: IPmcData, info: IAddOfferRequestData, sessionID: string): IItemEventRouterResponse
-    {
+    public addOffer(pmcData: IPmcData, info: IAddOfferRequestData, sessionID: string): IItemEventRouterResponse {
         return this.ragfairController.addPlayerOffer(pmcData, info, sessionID);
     }
 
     /** Handle RagFairRemoveOffer event */
-    public removeOffer(pmcData: IPmcData, info: IRemoveOfferRequestData, sessionID: string): IItemEventRouterResponse
-    {
+    public removeOffer(pmcData: IPmcData, info: IRemoveOfferRequestData, sessionID: string): IItemEventRouterResponse {
         return this.ragfairController.removeOffer(info, sessionID);
     }
 
     /** Handle RagFairRenewOffer event */
-    public extendOffer(pmcData: IPmcData, info: IExtendOfferRequestData, sessionID: string): IItemEventRouterResponse
-    {
+    public extendOffer(pmcData: IPmcData, info: IExtendOfferRequestData, sessionID: string): IItemEventRouterResponse {
         return this.ragfairController.extendOffer(info, sessionID);
     }
 
@@ -117,14 +106,12 @@ export class RagfairCallbacks implements OnLoad, OnUpdate
         url: string,
         request: IEmptyRequestData,
         sessionID: string,
-    ): IGetBodyResponseData<Record<string, number>>
-    {
+    ): IGetBodyResponseData<Record<string, number>> {
         return this.httpResponse.getBody(this.ragfairController.getAllFleaPrices());
     }
 
     /** Handle client/reports/ragfair/send */
-    public sendReport(url: string, info: ISendRagfairReportRequestData, sessionID: string): INullResponseData
-    {
+    public sendReport(url: string, info: ISendRagfairReportRequestData, sessionID: string): INullResponseData {
         return this.httpResponse.nullResponse();
     }
 
@@ -132,8 +119,7 @@ export class RagfairCallbacks implements OnLoad, OnUpdate
         url: string,
         request: IStorePlayerOfferTaxAmountRequestData,
         sessionId: string,
-    ): INullResponseData
-    {
+    ): INullResponseData {
         this.ragfairTaxService.storeClientOfferTaxValue(sessionId, request);
         return this.httpResponse.nullResponse();
     }
@@ -143,8 +129,7 @@ export class RagfairCallbacks implements OnLoad, OnUpdate
         url: string,
         request: IGetRagfairOfferByIdRequest,
         sessionID: string,
-    ): IGetBodyResponseData<IRagfairOffer>
-    {
+    ): IGetBodyResponseData<IRagfairOffer> {
         return this.httpResponse.getBody(this.ragfairController.getOfferById(sessionID, request));
     }
 }

@@ -1,4 +1,3 @@
-import { inject, injectable } from "tsyringe";
 import { SavedCommand } from "@spt/helpers/Dialogue/Commando/SptCommands/GiveCommand/SavedCommand";
 import { ISptCommand } from "@spt/helpers/Dialogue/Commando/SptCommands/ISptCommand";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
@@ -12,10 +11,10 @@ import { DatabaseService } from "@spt/services/DatabaseService";
 import { LocaleService } from "@spt/services/LocaleService";
 import { MailSendService } from "@spt/services/MailSendService";
 import { HashUtil } from "@spt/utils/HashUtil";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class TraderSptCommand implements ISptCommand
-{
+export class TraderSptCommand implements ISptCommand {
     /**
      * Regex to account for all these cases:
      * spt trader prapor rep 100
@@ -33,23 +32,18 @@ export class TraderSptCommand implements ISptCommand
         @inject("MailSendService") protected mailSendService: MailSendService,
         @inject("LocaleService") protected localeService: LocaleService,
         @inject("DatabaseService") protected databaseService: DatabaseService,
-    )
-    {}
+    ) {}
 
-    public getCommand(): string
-    {
+    public getCommand(): string {
         return "trader";
     }
 
-    public getCommandHelp(): string
-    {
+    public getCommandHelp(): string {
         return "spt trader\n========\nSets the reputation or money spent to the input quantity through the message system.\n\n\tspt trader [trader] rep [quantity]\n\t\tEx: spt trader prapor rep 2\n\n\tspt trader [trader] spend [quantity]\n\t\tEx: spt trader therapist spend 1000000";
     }
 
-    public performAction(commandHandler: IUserDialogInfo, sessionId: string, request: ISendMessageRequest): string
-    {
-        if (!TraderSptCommand.commandRegex.test(request.text))
-        {
+    public performAction(commandHandler: IUserDialogInfo, sessionId: string, request: ISendMessageRequest): string {
+        if (!TraderSptCommand.commandRegex.test(request.text)) {
             this.mailSendService.sendUserMessageToPlayer(
                 sessionId,
                 commandHandler,
@@ -67,8 +61,7 @@ export class TraderSptCommand implements ISptCommand
         const dbTrader = Object.values(this.databaseService.getTraders()).find(
             (t) => t.base.nickname.toLocaleLowerCase() === trader.toLocaleLowerCase(),
         );
-        if (dbTrader === undefined)
-        {
+        if (dbTrader === undefined) {
             this.mailSendService.sendUserMessageToPlayer(
                 sessionId,
                 commandHandler,
@@ -77,8 +70,7 @@ export class TraderSptCommand implements ISptCommand
             return request.dialogId;
         }
         let profileChangeEventType: ProfileChangeEventType;
-        switch (command)
-        {
+        switch (command) {
             case "rep":
                 profileChangeEventType = ProfileChangeEventType.TRADER_STANDING;
                 break;

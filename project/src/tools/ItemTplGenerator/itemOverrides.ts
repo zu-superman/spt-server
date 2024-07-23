@@ -1,4 +1,3 @@
-
 /**
  * An object containing item name overrides for use with ItemTplGenerator
  */

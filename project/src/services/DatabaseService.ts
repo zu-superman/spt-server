@@ -1,4 +1,3 @@
-import { inject, injectable } from "tsyringe";
 import { IGlobals } from "@spt/models/eft/common/IGlobals";
 import { ILocation } from "@spt/models/eft/common/ILocation";
 import { IAchievement } from "@spt/models/eft/common/tables/IAchievement";
@@ -21,35 +20,30 @@ import { ITemplates } from "@spt/models/spt/templates/ITemplates";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { DatabaseServer } from "@spt/servers/DatabaseServer";
 import { LocalisationService } from "@spt/services/LocalisationService";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class DatabaseService
-{
+export class DatabaseService {
     protected locationConfig: ILocationConfig;
 
     constructor(
         @inject("PrimaryLogger") protected logger: ILogger,
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("LocalisationService") protected localisationService: LocalisationService,
-    )
-    {
-    }
+    ) {}
 
     /**
      * @returns assets/database/
      */
-    public getTables(): IDatabaseTables
-    {
+    public getTables(): IDatabaseTables {
         return this.databaseServer.getTables();
     }
 
     /**
      * @returns assets/database/bots/
      */
-    public getBots(): IBots
-    {
-        if (!this.databaseServer.getTables().bots)
-        {
+    public getBots(): IBots {
+        if (!this.databaseServer.getTables().bots) {
             throw new Error(this.localisationService.getText("database-data_at_path_missing", "assets/database/bots"));
         }
 
@@ -59,11 +53,11 @@ export class DatabaseService
     /**
      * @returns assets/database/globals.json
      */
-    public getGlobals(): IGlobals
-    {
-        if (!this.databaseServer.getTables().globals)
-        {
-            throw new Error(this.localisationService.getText("database-data_at_path_missing", "assets/database/globals.json"));
+    public getGlobals(): IGlobals {
+        if (!this.databaseServer.getTables().globals) {
+            throw new Error(
+                this.localisationService.getText("database-data_at_path_missing", "assets/database/globals.json"),
+            );
         }
 
         return this.databaseServer.getTables().globals!;
@@ -72,11 +66,11 @@ export class DatabaseService
     /**
      * @returns assets/database/hideout/
      */
-    public getHideout(): IHideout
-    {
-        if (!this.databaseServer.getTables().hideout)
-        {
-            throw new Error(this.localisationService.getText("database-data_at_path_missing", "assets/database/hideout"));
+    public getHideout(): IHideout {
+        if (!this.databaseServer.getTables().hideout) {
+            throw new Error(
+                this.localisationService.getText("database-data_at_path_missing", "assets/database/hideout"),
+            );
         }
 
         return this.databaseServer.getTables().hideout!;
@@ -85,11 +79,11 @@ export class DatabaseService
     /**
      * @returns assets/database/locales/
      */
-    public getLocales(): ILocaleBase
-    {
-        if (!this.databaseServer.getTables().locales)
-        {
-            throw new Error(this.localisationService.getText("database-data_at_path_missing", "assets/database/locales"));
+    public getLocales(): ILocaleBase {
+        if (!this.databaseServer.getTables().locales) {
+            throw new Error(
+                this.localisationService.getText("database-data_at_path_missing", "assets/database/locales"),
+            );
         }
 
         return this.databaseServer.getTables().locales!;
@@ -98,11 +92,11 @@ export class DatabaseService
     /**
      * @returns assets/database/locations
      */
-    public getLocations(): ILocations
-    {
-        if (!this.databaseServer.getTables().locales)
-        {
-            throw new Error(this.localisationService.getText("database-data_at_path_missing", "assets/database/locales"));
+    public getLocations(): ILocations {
+        if (!this.databaseServer.getTables().locales) {
+            throw new Error(
+                this.localisationService.getText("database-data_at_path_missing", "assets/database/locales"),
+            );
         }
 
         return this.databaseServer.getTables().locations!;
@@ -113,12 +107,10 @@ export class DatabaseService
      * @param locationId Desired location id
      * @returns assets/database/locations/
      */
-    public getLocation(locationId: string): ILocation
-    {
+    public getLocation(locationId: string): ILocation {
         const locations = this.getLocations();
         const desiredLocation = locations[locationId.toLowerCase()];
-        if (!desiredLocation)
-        {
+        if (!desiredLocation) {
             throw new Error(this.localisationService.getText("database-no_location_found_with_id", locationId));
         }
 
@@ -128,11 +120,11 @@ export class DatabaseService
     /**
      * @returns assets/database/match/
      */
-    public getMatch(): IMatch
-    {
-        if (!this.databaseServer.getTables().locales)
-        {
-            throw new Error(this.localisationService.getText("database-data_at_path_missing", "assets/database/locales"));
+    public getMatch(): IMatch {
+        if (!this.databaseServer.getTables().locales) {
+            throw new Error(
+                this.localisationService.getText("database-data_at_path_missing", "assets/database/locales"),
+            );
         }
 
         return this.databaseServer.getTables().match!;
@@ -141,11 +133,11 @@ export class DatabaseService
     /**
      * @returns assets/database/server.json
      */
-    public getServer(): IServerBase
-    {
-        if (!this.databaseServer.getTables().locales)
-        {
-            throw new Error(this.localisationService.getText("database-data_at_path_missing", "assets/database/server"));
+    public getServer(): IServerBase {
+        if (!this.databaseServer.getTables().locales) {
+            throw new Error(
+                this.localisationService.getText("database-data_at_path_missing", "assets/database/server"),
+            );
         }
 
         return this.databaseServer.getTables().server!;
@@ -154,11 +146,11 @@ export class DatabaseService
     /**
      * @returns assets/database/settings.json
      */
-    public getSettings(): ISettingsBase
-    {
-        if (!this.databaseServer.getTables().locales)
-        {
-            throw new Error(this.localisationService.getText("database-data_at_path_missing", "assets/database/settings"));
+    public getSettings(): ISettingsBase {
+        if (!this.databaseServer.getTables().locales) {
+            throw new Error(
+                this.localisationService.getText("database-data_at_path_missing", "assets/database/settings"),
+            );
         }
 
         return this.databaseServer.getTables().settings!;
@@ -167,11 +159,11 @@ export class DatabaseService
     /**
      * @returns assets/database/templates/
      */
-    public getTemplates(): ITemplates
-    {
-        if (!this.databaseServer.getTables().templates)
-        {
-            throw new Error(this.localisationService.getText("database-data_at_path_missing", "assets/database/templates"));
+    public getTemplates(): ITemplates {
+        if (!this.databaseServer.getTables().templates) {
+            throw new Error(
+                this.localisationService.getText("database-data_at_path_missing", "assets/database/templates"),
+            );
         }
 
         return this.databaseServer.getTables().templates!;
@@ -180,11 +172,14 @@ export class DatabaseService
     /**
      * @returns assets/database/templates/achievements.json
      */
-    public getAchievements(): IAchievement[]
-    {
-        if (!this.databaseServer.getTables().templates!.achievements)
-        {
-            throw new Error(this.localisationService.getText("database-data_at_path_missing", "assets/database/templates/achievements.json"));
+    public getAchievements(): IAchievement[] {
+        if (!this.databaseServer.getTables().templates!.achievements) {
+            throw new Error(
+                this.localisationService.getText(
+                    "database-data_at_path_missing",
+                    "assets/database/templates/achievements.json",
+                ),
+            );
         }
 
         return this.databaseServer.getTables().templates!.achievements!;
@@ -193,11 +188,14 @@ export class DatabaseService
     /**
      * @returns assets/database/templates/customisation.json
      */
-    public getCustomization(): Record<string, ICustomizationItem>
-    {
-        if (!this.databaseServer.getTables().templates!.customization)
-        {
-            throw new Error(this.localisationService.getText("database-data_at_path_missing", "assets/database/templates/customization.json"));
+    public getCustomization(): Record<string, ICustomizationItem> {
+        if (!this.databaseServer.getTables().templates!.customization) {
+            throw new Error(
+                this.localisationService.getText(
+                    "database-data_at_path_missing",
+                    "assets/database/templates/customization.json",
+                ),
+            );
         }
 
         return this.databaseServer.getTables().templates!.customization!;
@@ -206,11 +204,14 @@ export class DatabaseService
     /**
      * @returns assets/database/templates/items.json
      */
-    public getHandbook(): IHandbookBase
-    {
-        if (!this.databaseServer.getTables().templates!.handbook)
-        {
-            throw new Error(this.localisationService.getText("database-data_at_path_missing", "assets/database/templates/handbook.json"));
+    public getHandbook(): IHandbookBase {
+        if (!this.databaseServer.getTables().templates!.handbook) {
+            throw new Error(
+                this.localisationService.getText(
+                    "database-data_at_path_missing",
+                    "assets/database/templates/handbook.json",
+                ),
+            );
         }
 
         return this.databaseServer.getTables().templates!.handbook!;
@@ -219,11 +220,14 @@ export class DatabaseService
     /**
      * @returns assets/database/templates/items.json
      */
-    public getItems(): Record<string, ITemplateItem>
-    {
-        if (!this.databaseServer.getTables().templates!.items)
-        {
-            throw new Error(this.localisationService.getText("database-data_at_path_missing", "assets/database/templates/items.json"));
+    public getItems(): Record<string, ITemplateItem> {
+        if (!this.databaseServer.getTables().templates!.items) {
+            throw new Error(
+                this.localisationService.getText(
+                    "database-data_at_path_missing",
+                    "assets/database/templates/items.json",
+                ),
+            );
         }
 
         return this.databaseServer.getTables().templates!.items!;
@@ -232,11 +236,14 @@ export class DatabaseService
     /**
      * @returns assets/database/templates/prices.json
      */
-    public getPrices(): Record<string, number>
-    {
-        if (!this.databaseServer.getTables().templates!.prices)
-        {
-            throw new Error(this.localisationService.getText("database-data_at_path_missing", "assets/database/templates/prices.json"));
+    public getPrices(): Record<string, number> {
+        if (!this.databaseServer.getTables().templates!.prices) {
+            throw new Error(
+                this.localisationService.getText(
+                    "database-data_at_path_missing",
+                    "assets/database/templates/prices.json",
+                ),
+            );
         }
 
         return this.databaseServer.getTables().templates!.prices!;
@@ -245,11 +252,14 @@ export class DatabaseService
     /**
      * @returns assets/database/templates/profiles.json
      */
-    public getProfiles(): IProfileTemplates
-    {
-        if (!this.databaseServer.getTables().templates!.profiles)
-        {
-            throw new Error(this.localisationService.getText("database-data_at_path_missing", "assets/database/templates/profiles.json"));
+    public getProfiles(): IProfileTemplates {
+        if (!this.databaseServer.getTables().templates!.profiles) {
+            throw new Error(
+                this.localisationService.getText(
+                    "database-data_at_path_missing",
+                    "assets/database/templates/profiles.json",
+                ),
+            );
         }
 
         return this.databaseServer.getTables().templates!.profiles!;
@@ -258,11 +268,14 @@ export class DatabaseService
     /**
      * @returns assets/database/templates/items.json
      */
-    public getQuests(): Record<string, IQuest>
-    {
-        if (!this.databaseServer.getTables().templates!.quests)
-        {
-            throw new Error(this.localisationService.getText("database-data_at_path_missing", "assets/database/templates/quests.json"));
+    public getQuests(): Record<string, IQuest> {
+        if (!this.databaseServer.getTables().templates!.quests) {
+            throw new Error(
+                this.localisationService.getText(
+                    "database-data_at_path_missing",
+                    "assets/database/templates/quests.json",
+                ),
+            );
         }
 
         return this.databaseServer.getTables().templates!.quests!;
@@ -271,11 +284,11 @@ export class DatabaseService
     /**
      * @returns assets/database/traders/
      */
-    public getTraders(): Record<string, ITrader>
-    {
-        if (!this.databaseServer.getTables().traders)
-        {
-            throw new Error(this.localisationService.getText("database-data_at_path_missing", "assets/database/traders"));
+    public getTraders(): Record<string, ITrader> {
+        if (!this.databaseServer.getTables().traders) {
+            throw new Error(
+                this.localisationService.getText("database-data_at_path_missing", "assets/database/traders"),
+            );
         }
 
         return this.databaseServer.getTables().traders!;
@@ -286,12 +299,10 @@ export class DatabaseService
      * @param traderId Desired trader id
      * @returns assets/database/traders/
      */
-    public getTrader(traderId: string): ITrader
-    {
+    public getTrader(traderId: string): ITrader {
         const traders = this.getTraders();
         const desiredTrader = traders[traderId];
-        if (!desiredTrader)
-        {
+        if (!desiredTrader) {
             throw new Error(this.localisationService.getText("database-no_trader_found_with_id", traderId));
         }
 

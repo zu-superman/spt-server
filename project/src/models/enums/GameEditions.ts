@@ -1,5 +1,4 @@
-export enum GameEditions
-{
+export enum GameEditions {
     STANDARD = "standard",
     LEFT_BEHIND = "left_behind",
     PREPARE_FOR_ESCAPE = "prepare_for_escape",

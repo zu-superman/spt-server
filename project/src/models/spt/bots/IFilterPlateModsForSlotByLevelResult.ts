@@ -1,11 +1,9 @@
-export interface IFilterPlateModsForSlotByLevelResult
-{
-    result: Result
-    plateModTpls: string[]
+export interface IFilterPlateModsForSlotByLevelResult {
+    result: Result;
+    plateModTpls: string[];
 }
 
-export enum Result
-{
+export enum Result {
     UNKNOWN_FAILURE = -1,
     SUCCESS = 1,
     NO_DEFAULT_FILTER = 2,

@@ -1,5 +1,4 @@
-export enum TraderServiceType
-{
+export enum TraderServiceType {
     EXUSEC_LOYALTY = "ExUsecLoyalty",
     ZRYACHIY_AID = "ZryachiyAid",
     CULTISTS_AID = "CultistsAid",

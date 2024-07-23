@@ -1,4 +1,3 @@
-import { inject, injectable } from "tsyringe";
 import { DialogueCallbacks } from "@spt/callbacks/DialogueCallbacks";
 import { RouteAction, StaticRouter } from "@spt/di/Router";
 import { IAddUserGroupMailRequest } from "@spt/models/eft/dialog/IAddUserGroupMailRequest";
@@ -13,12 +12,11 @@ import { IRemoveUserGroupMailRequest } from "@spt/models/eft/dialog/IRemoveUserG
 import { IGetBodyResponseData } from "@spt/models/eft/httpResponse/IGetBodyResponseData";
 import { INullResponseData } from "@spt/models/eft/httpResponse/INullResponseData";
 import { DialogueInfo } from "@spt/models/eft/profile/ISptProfile";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class DialogStaticRouter extends StaticRouter
-{
-    constructor(@inject("DialogueCallbacks") protected dialogueCallbacks: DialogueCallbacks)
-    {
+export class DialogStaticRouter extends StaticRouter {
+    constructor(@inject("DialogueCallbacks") protected dialogueCallbacks: DialogueCallbacks) {
         super([
             new RouteAction(
                 "/client/chatServer/list",
@@ -27,8 +25,7 @@ export class DialogStaticRouter extends StaticRouter
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<IChatServer[]>> =>
-                {
+                ): Promise<IGetBodyResponseData<IChatServer[]>> => {
                     return this.dialogueCallbacks.getChatServerList(url, info, sessionID);
                 },
             ),
@@ -39,8 +36,7 @@ export class DialogStaticRouter extends StaticRouter
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<DialogueInfo[]>> =>
-                {
+                ): Promise<IGetBodyResponseData<DialogueInfo[]>> => {
                     return this.dialogueCallbacks.getMailDialogList(url, info, sessionID);
                 },
             ),
@@ -51,8 +47,7 @@ export class DialogStaticRouter extends StaticRouter
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<IGetMailDialogViewResponseData>> =>
-                {
+                ): Promise<IGetBodyResponseData<IGetMailDialogViewResponseData>> => {
                     return this.dialogueCallbacks.getMailDialogView(url, info, sessionID);
                 },
             ),
@@ -63,8 +58,7 @@ export class DialogStaticRouter extends StaticRouter
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<DialogueInfo>> =>
-                {
+                ): Promise<IGetBodyResponseData<DialogueInfo>> => {
                     return this.dialogueCallbacks.getMailDialogInfo(url, info, sessionID);
                 },
             ),
@@ -75,8 +69,7 @@ export class DialogStaticRouter extends StaticRouter
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<any[]>> =>
-                {
+                ): Promise<IGetBodyResponseData<any[]>> => {
                     return this.dialogueCallbacks.removeDialog(url, info, sessionID);
                 },
             ),
@@ -87,8 +80,7 @@ export class DialogStaticRouter extends StaticRouter
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<any[]>> =>
-                {
+                ): Promise<IGetBodyResponseData<any[]>> => {
                     return this.dialogueCallbacks.pinDialog(url, info, sessionID);
                 },
             ),
@@ -99,8 +91,7 @@ export class DialogStaticRouter extends StaticRouter
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<any[]>> =>
-                {
+                ): Promise<IGetBodyResponseData<any[]>> => {
                     return this.dialogueCallbacks.unpinDialog(url, info, sessionID);
                 },
             ),
@@ -111,8 +102,7 @@ export class DialogStaticRouter extends StaticRouter
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<any[]>> =>
-                {
+                ): Promise<IGetBodyResponseData<any[]>> => {
                     return this.dialogueCallbacks.setRead(url, info, sessionID);
                 },
             ),
@@ -123,8 +113,7 @@ export class DialogStaticRouter extends StaticRouter
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<any[]>> =>
-                {
+                ): Promise<IGetBodyResponseData<any[]>> => {
                     return this.dialogueCallbacks.removeMail(url, info, sessionID);
                 },
             ),
@@ -135,8 +124,7 @@ export class DialogStaticRouter extends StaticRouter
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<IGetAllAttachmentsResponse>> =>
-                {
+                ): Promise<IGetBodyResponseData<IGetAllAttachmentsResponse>> => {
                     return this.dialogueCallbacks.getAllAttachments(url, info, sessionID);
                 },
             ),
@@ -147,8 +135,7 @@ export class DialogStaticRouter extends StaticRouter
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<string>> =>
-                {
+                ): Promise<IGetBodyResponseData<string>> => {
                     return this.dialogueCallbacks.sendMessage(url, info, sessionID);
                 },
             ),
@@ -159,8 +146,7 @@ export class DialogStaticRouter extends StaticRouter
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<any[]>> =>
-                {
+                ): Promise<IGetBodyResponseData<any[]>> => {
                     return this.dialogueCallbacks.clearMail(url, info, sessionID);
                 },
             ),
@@ -171,8 +157,7 @@ export class DialogStaticRouter extends StaticRouter
                     info: ICreateGroupMailRequest,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<any[]>> =>
-                {
+                ): Promise<IGetBodyResponseData<any[]>> => {
                     return this.dialogueCallbacks.createGroupMail(url, info, sessionID);
                 },
             ),
@@ -183,8 +168,7 @@ export class DialogStaticRouter extends StaticRouter
                     info: IChangeGroupMailOwnerRequest,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<any[]>> =>
-                {
+                ): Promise<IGetBodyResponseData<any[]>> => {
                     return this.dialogueCallbacks.changeMailGroupOwner(url, info, sessionID);
                 },
             ),
@@ -195,8 +179,7 @@ export class DialogStaticRouter extends StaticRouter
                     info: IAddUserGroupMailRequest,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<any[]>> =>
-                {
+                ): Promise<IGetBodyResponseData<any[]>> => {
                     return this.dialogueCallbacks.addUserToMail(url, info, sessionID);
                 },
             ),
@@ -207,8 +190,7 @@ export class DialogStaticRouter extends StaticRouter
                     info: IRemoveUserGroupMailRequest,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<any[]>> =>
-                {
+                ): Promise<IGetBodyResponseData<any[]>> => {
                     return this.dialogueCallbacks.removeUserFromMail(url, info, sessionID);
                 },
             ),
@@ -219,8 +201,7 @@ export class DialogStaticRouter extends StaticRouter
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<IGetFriendListDataResponse>> =>
-                {
+                ): Promise<IGetBodyResponseData<IGetFriendListDataResponse>> => {
                     return this.dialogueCallbacks.getFriendList(url, info, sessionID);
                 },
             ),
@@ -231,8 +212,7 @@ export class DialogStaticRouter extends StaticRouter
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<any[]>> =>
-                {
+                ): Promise<IGetBodyResponseData<any[]>> => {
                     return this.dialogueCallbacks.listOutbox(url, info, sessionID);
                 },
             ),
@@ -243,8 +223,7 @@ export class DialogStaticRouter extends StaticRouter
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<any[]>> =>
-                {
+                ): Promise<IGetBodyResponseData<any[]>> => {
                     return this.dialogueCallbacks.listInbox(url, info, sessionID);
                 },
             ),
@@ -255,15 +234,13 @@ export class DialogStaticRouter extends StaticRouter
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<IFriendRequestSendResponse>> =>
-                {
+                ): Promise<IGetBodyResponseData<IFriendRequestSendResponse>> => {
                     return this.dialogueCallbacks.sendFriendRequest(url, info, sessionID);
                 },
             ),
             new RouteAction(
                 "/client/friend/request/accept-all",
-                (url: string, info: any, sessionID: string, output: string): any =>
-                {
+                (url: string, info: any, sessionID: string, output: string): any => {
                     return this.dialogueCallbacks.acceptAllFriendRequests(url, info, sessionID);
                 },
             ),
@@ -274,15 +251,13 @@ export class DialogStaticRouter extends StaticRouter
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<boolean>> =>
-                {
+                ): Promise<IGetBodyResponseData<boolean>> => {
                     return this.dialogueCallbacks.acceptFriendRequest(url, info, sessionID);
                 },
             ),
             new RouteAction(
                 "/client/friend/request/decline",
-                (url: string, info: any, sessionID: string, output: string): any =>
-                {
+                (url: string, info: any, sessionID: string, output: string): any => {
                     return this.dialogueCallbacks.declineFriendRequest(url, info, sessionID);
                 },
             ),
@@ -293,29 +268,25 @@ export class DialogStaticRouter extends StaticRouter
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<boolean>> =>
-                {
+                ): Promise<IGetBodyResponseData<boolean>> => {
                     return this.dialogueCallbacks.cancelFriendRequest(url, info, sessionID);
                 },
             ),
             new RouteAction(
                 "/client/friend/delete",
-                async (url: string, info: any, sessionID: string, output: string): Promise<INullResponseData> =>
-                {
+                async (url: string, info: any, sessionID: string, output: string): Promise<INullResponseData> => {
                     return this.dialogueCallbacks.deleteFriend(url, info, sessionID);
                 },
             ),
             new RouteAction(
                 "/client/friend/ignore/set",
-                async (url: string, info: any, sessionID: string, output: string): Promise<INullResponseData> =>
-                {
+                async (url: string, info: any, sessionID: string, output: string): Promise<INullResponseData> => {
                     return this.dialogueCallbacks.ignoreFriend(url, info, sessionID);
                 },
             ),
             new RouteAction(
                 "/client/friend/ignore/remove",
-                async (url: string, info: any, sessionID: string, output: string): Promise<INullResponseData> =>
-                {
+                async (url: string, info: any, sessionID: string, output: string): Promise<INullResponseData> => {
                     return this.dialogueCallbacks.unIgnoreFriend(url, info, sessionID);
                 },
             ),

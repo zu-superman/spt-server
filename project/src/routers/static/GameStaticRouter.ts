@@ -1,4 +1,3 @@
-import { inject, injectable } from "tsyringe";
 import { GameCallbacks } from "@spt/callbacks/GameCallbacks";
 import { RouteAction, StaticRouter } from "@spt/di/Router";
 import { ICheckVersionResponse } from "@spt/models/eft/game/ICheckVersionResponse";
@@ -13,12 +12,11 @@ import { ISendReportRequest } from "@spt/models/eft/game/ISendReportRequest";
 import { IServerDetails } from "@spt/models/eft/game/IServerDetails";
 import { IGetBodyResponseData } from "@spt/models/eft/httpResponse/IGetBodyResponseData";
 import { INullResponseData } from "@spt/models/eft/httpResponse/INullResponseData";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class GameStaticRouter extends StaticRouter
-{
-    constructor(@inject("GameCallbacks") protected gameCallbacks: GameCallbacks)
-    {
+export class GameStaticRouter extends StaticRouter {
+    constructor(@inject("GameCallbacks") protected gameCallbacks: GameCallbacks) {
         super([
             new RouteAction(
                 "/client/game/config",
@@ -27,8 +25,7 @@ export class GameStaticRouter extends StaticRouter
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<IGameConfigResponse>> =>
-                {
+                ): Promise<IGetBodyResponseData<IGameConfigResponse>> => {
                     return this.gameCallbacks.getGameConfig(url, info, sessionID);
                 },
             ),
@@ -39,8 +36,7 @@ export class GameStaticRouter extends StaticRouter
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<IGameModeResponse>> =>
-                {
+                ): Promise<IGetBodyResponseData<IGameModeResponse>> => {
                     return this.gameCallbacks.getGameMode(url, info, sessionID);
                 },
             ),
@@ -51,8 +47,7 @@ export class GameStaticRouter extends StaticRouter
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<IServerDetails[]>> =>
-                {
+                ): Promise<IGetBodyResponseData<IServerDetails[]>> => {
                     return this.gameCallbacks.getServer(url, info, sessionID);
                 },
             ),
@@ -63,15 +58,13 @@ export class GameStaticRouter extends StaticRouter
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<ICurrentGroupResponse>> =>
-                {
+                ): Promise<IGetBodyResponseData<ICurrentGroupResponse>> => {
                     return this.gameCallbacks.getCurrentGroup(url, info, sessionID);
                 },
             ),
             new RouteAction(
                 "/client/game/version/validate",
-                async (url: string, info: any, sessionID: string, output: string): Promise<INullResponseData> =>
-                {
+                async (url: string, info: any, sessionID: string, output: string): Promise<INullResponseData> => {
                     return this.gameCallbacks.versionValidate(url, info, sessionID);
                 },
             ),
@@ -82,8 +75,7 @@ export class GameStaticRouter extends StaticRouter
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<IGameStartResponse>> =>
-                {
+                ): Promise<IGetBodyResponseData<IGameStartResponse>> => {
                     return this.gameCallbacks.gameStart(url, info, sessionID);
                 },
             ),
@@ -94,8 +86,7 @@ export class GameStaticRouter extends StaticRouter
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<IGameLogoutResponseData>> =>
-                {
+                ): Promise<IGetBodyResponseData<IGameLogoutResponseData>> => {
                     return this.gameCallbacks.gameLogout(url, info, sessionID);
                 },
             ),
@@ -106,8 +97,7 @@ export class GameStaticRouter extends StaticRouter
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<ICheckVersionResponse>> =>
-                {
+                ): Promise<IGetBodyResponseData<ICheckVersionResponse>> => {
                     return this.gameCallbacks.validateGameVersion(url, info, sessionID);
                 },
             ),
@@ -118,22 +108,19 @@ export class GameStaticRouter extends StaticRouter
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<IGameKeepAliveResponse>> =>
-                {
+                ): Promise<IGetBodyResponseData<IGameKeepAliveResponse>> => {
                     return this.gameCallbacks.gameKeepalive(url, info, sessionID);
                 },
             ),
             new RouteAction(
                 "/singleplayer/settings/version",
-                async (url: string, info: any, sessionID: string, output: string): Promise<string> =>
-                {
+                async (url: string, info: any, sessionID: string, output: string): Promise<string> => {
                     return this.gameCallbacks.getVersion(url, info, sessionID);
                 },
             ),
             new RouteAction(
                 "/client/reports/lobby/send",
-                async (url: string, info: any, sessionID: string, output: string): Promise<INullResponseData> =>
-                {
+                async (url: string, info: any, sessionID: string, output: string): Promise<INullResponseData> => {
                     return this.gameCallbacks.reportNickname(url, info, sessionID);
                 },
             ),
@@ -144,15 +131,13 @@ export class GameStaticRouter extends StaticRouter
                     info: ISendReportRequest,
                     sessionID: string,
                     output: string,
-                ): Promise<INullResponseData> =>
-                {
+                ): Promise<INullResponseData> => {
                     return this.gameCallbacks.reportNickname(url, info, sessionID);
                 },
             ),
             new RouteAction(
                 "/singleplayer/settings/getRaidTime",
-                async (url: string, info: any, sessionID: string, output: string): Promise<IGetRaidTimeResponse> =>
-                {
+                async (url: string, info: any, sessionID: string, output: string): Promise<IGetRaidTimeResponse> => {
                     return this.gameCallbacks.getRaidTime(url, info, sessionID);
                 },
             ),

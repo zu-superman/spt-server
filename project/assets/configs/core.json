@@ -27,11 +27,11 @@
             "commandoFeatures": {
                 "giveCommandEnabled": true
             },
-			"commandUseLimits": {
-				"StashRows": 15
-			}
+            "commandUseLimits": {
+                "StashRows": 15
+            }
         },
-		"createNewProfileTypesBlacklist": []
+        "createNewProfileTypesBlacklist": []
     },
-	"customWatermarkLocaleKeys": []
+    "customWatermarkLocaleKeys": []
 }

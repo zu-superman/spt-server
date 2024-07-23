@@ -1,21 +1,18 @@
-import { inject, injectable } from "tsyringe";
 import { IClientLogRequest } from "@spt/models/spt/logging/IClientLogRequest";
 import { LogBackgroundColor } from "@spt/models/spt/logging/LogBackgroundColor";
 import { LogLevel } from "@spt/models/spt/logging/LogLevel";
 import { LogTextColor } from "@spt/models/spt/logging/LogTextColor";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class ClientLogController
-{
-    constructor(@inject("PrimaryLogger") protected logger: ILogger)
-    {}
+export class ClientLogController {
+    constructor(@inject("PrimaryLogger") protected logger: ILogger) {}
 
     /**
      * Handle /singleplayer/log
      */
-    public clientLog(logRequest: IClientLogRequest): void
-    {
+    public clientLog(logRequest: IClientLogRequest): void {
         const message = `[${logRequest.Source}] ${logRequest.Message}`;
         const color = logRequest.Color ?? LogTextColor.WHITE;
         const backgroundColor = logRequest.BackgroundColor ?? LogBackgroundColor.DEFAULT;
@@ -23,13 +20,11 @@ export class ClientLogController
         // Allow supporting either string or enum levels
         // Required due to the C# modules serializing enums as their name
         let level = logRequest.Level;
-        if (typeof level === "string")
-        {
+        if (typeof level === "string") {
             level = LogLevel[level.toUpperCase() as keyof typeof LogLevel];
         }
 
-        switch (level)
-        {
+        switch (level) {
             case LogLevel.ERROR:
                 this.logger.error(message);
                 break;

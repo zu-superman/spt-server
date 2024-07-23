@@ -1,5 +1,4 @@
-export enum BonusSkillType
-{
+export enum BonusSkillType {
     PHYSICAL = "Physical",
     COMBAT = "Combat",
     SPECIAL = "Special",

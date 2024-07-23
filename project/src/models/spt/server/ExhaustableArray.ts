@@ -1,23 +1,19 @@
-import { ICloner } from "@spt/utils/cloners/ICloner";
 import { RandomUtil } from "@spt/utils/RandomUtil";
+import { ICloner } from "@spt/utils/cloners/ICloner";
 
-export class ExhaustableArray<T> implements IExhaustableArray<T>
-{
+export class ExhaustableArray<T> implements IExhaustableArray<T> {
     private pool: T[];
 
     constructor(
         private itemPool: T[],
         private randomUtil: RandomUtil,
         private cloner: ICloner,
-    )
-    {
+    ) {
         this.pool = this.cloner.clone(itemPool);
     }
 
-    public getRandomValue(): T | undefined
-    {
-        if (!this.pool?.length)
-        {
+    public getRandomValue(): T | undefined {
+        if (!this.pool?.length) {
             return undefined;
         }
 
@@ -27,10 +23,8 @@ export class ExhaustableArray<T> implements IExhaustableArray<T>
         return toReturn;
     }
 
-    public getFirstValue(): T | undefined
-    {
-        if (!this.pool?.length)
-        {
+    public getFirstValue(): T | undefined {
+        if (!this.pool?.length) {
             return undefined;
         }
 
@@ -39,10 +33,8 @@ export class ExhaustableArray<T> implements IExhaustableArray<T>
         return toReturn;
     }
 
-    public hasValues(): boolean
-    {
-        if (this.pool?.length)
-        {
+    public hasValues(): boolean {
+        if (this.pool?.length) {
             return true;
         }
 
@@ -50,9 +42,8 @@ export class ExhaustableArray<T> implements IExhaustableArray<T>
     }
 }
 
-export interface IExhaustableArray<T>
-{
-    getRandomValue(): T | undefined
-    getFirstValue(): T | undefined
-    hasValues(): boolean
+export interface IExhaustableArray<T> {
+    getRandomValue(): T | undefined;
+    getFirstValue(): T | undefined;
+    hasValues(): boolean;
 }

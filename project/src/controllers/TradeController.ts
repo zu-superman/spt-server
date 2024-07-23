@@ -1,4 +1,3 @@
-import { inject, injectable } from "tsyringe";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { RagfairOfferHelper } from "@spt/helpers/RagfairOfferHelper";
@@ -11,10 +10,7 @@ import { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRo
 import { IRagfairOffer } from "@spt/models/eft/ragfair/IRagfairOffer";
 import { IProcessBaseTradeRequestData } from "@spt/models/eft/trade/IProcessBaseTradeRequestData";
 import { IProcessBuyTradeRequestData } from "@spt/models/eft/trade/IProcessBuyTradeRequestData";
-import {
-    IOfferRequest,
-    IProcessRagfairTradeRequestData,
-} from "@spt/models/eft/trade/IProcessRagfairTradeRequestData";
+import { IOfferRequest, IProcessRagfairTradeRequestData } from "@spt/models/eft/trade/IProcessRagfairTradeRequestData";
 import { IProcessSellTradeRequestData } from "@spt/models/eft/trade/IProcessSellTradeRequestData";
 import { ISellScavItemsToFenceRequestData } from "@spt/models/eft/trade/ISellScavItemsToFenceRequestData";
 import { BackendErrorCodes } from "@spt/models/enums/BackendErrorCodes";
@@ -37,10 +33,10 @@ import { HashUtil } from "@spt/utils/HashUtil";
 import { HttpResponseUtil } from "@spt/utils/HttpResponseUtil";
 import { RandomUtil } from "@spt/utils/RandomUtil";
 import { TimeUtil } from "@spt/utils/TimeUtil";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class TradeController
-{
+export class TradeController {
     protected ragfairConfig: IRagfairConfig;
     protected traderConfig: ITraderConfig;
 
@@ -62,8 +58,7 @@ export class TradeController
         @inject("RagfairPriceService") protected ragfairPriceService: RagfairPriceService,
         @inject("MailSendService") protected mailSendService: MailSendService,
         @inject("ConfigServer") protected configServer: ConfigServer,
-    )
-    {
+    ) {
         this.ragfairConfig = this.configServer.getConfig(ConfigTypes.RAGFAIR);
         this.traderConfig = this.configServer.getConfig(ConfigTypes.TRADER);
     }
@@ -73,13 +68,11 @@ export class TradeController
         pmcData: IPmcData,
         request: IProcessBaseTradeRequestData,
         sessionID: string,
-    ): IItemEventRouterResponse
-    {
+    ): IItemEventRouterResponse {
         const output = this.eventOutputHolder.getOutput(sessionID);
 
         // Buying
-        if (request.type === "buy_from_trader")
-        {
+        if (request.type === "buy_from_trader") {
             const foundInRaid = this.traderConfig.purchasesAreFoundInRaid;
             const buyData = <IProcessBuyTradeRequestData>request;
             this.tradeHelper.buyItem(pmcData, buyData, sessionID, foundInRaid, output);
@@ -88,8 +81,7 @@ export class TradeController
         }
 
         // Selling
-        if (request.type === "sell_to_trader")
-        {
+        if (request.type === "sell_to_trader") {
             const sellData = <IProcessSellTradeRequestData>request;
             this.tradeHelper.sellItem(pmcData, pmcData, sellData, sessionID, output);
 
@@ -107,15 +99,12 @@ export class TradeController
         pmcData: IPmcData,
         request: IProcessRagfairTradeRequestData,
         sessionID: string,
-    ): IItemEventRouterResponse
-    {
+    ): IItemEventRouterResponse {
         const output = this.eventOutputHolder.getOutput(sessionID);
 
-        for (const offer of request.offers)
-        {
+        for (const offer of request.offers) {
             const fleaOffer = this.ragfairServer.getOffer(offer.id);
-            if (!fleaOffer)
-            {
+            if (!fleaOffer) {
                 return this.httpResponse.appendErrorToOutput(
                     output,
                     `Offer with ID ${offer.id} not found`,
@@ -123,8 +112,7 @@ export class TradeController
                 );
             }
 
-            if (offer.count === 0)
-            {
+            if (offer.count === 0) {
                 const errorMessage = this.localisationService.getText(
                     "ragfair-unable_to_purchase_0_count_item",
                     this.itemHelper.getItem(fleaOffer.items[0]._tpl)[1]._name,
@@ -133,18 +121,14 @@ export class TradeController
             }
 
             const sellerIsTrader = fleaOffer.user.memberType === MemberCategory.TRADER;
-            if (sellerIsTrader)
-            {
+            if (sellerIsTrader) {
                 this.buyTraderItemFromRagfair(sessionID, pmcData, fleaOffer, offer, output);
-            }
-            else
-            {
+            } else {
                 this.buyPmcItemFromRagfair(sessionID, pmcData, fleaOffer, offer, output);
             }
 
             // Exit loop early if problem found
-            if (output.warnings.length > 0)
-            {
+            if (output.warnings.length > 0) {
                 return output;
             }
         }
@@ -166,11 +150,9 @@ export class TradeController
         fleaOffer: IRagfairOffer,
         requestOffer: IOfferRequest,
         output: IItemEventRouterResponse,
-    ): void
-    {
+    ): void {
         // Skip buying items when player doesn't have needed loyalty
-        if (this.playerLacksTraderLoyaltyLevelToBuyOffer(fleaOffer, pmcData))
-        {
+        if (this.playerLacksTraderLoyaltyLevelToBuyOffer(fleaOffer, pmcData)) {
             const errorMessage = `Unable to buy item: ${fleaOffer.items[0]._tpl} from trader: ${fleaOffer.user.id} as loyalty level too low, skipping`;
             this.logger.debug(errorMessage);
 
@@ -206,8 +188,7 @@ export class TradeController
         fleaOffer: IRagfairOffer,
         requestOffer: IOfferRequest,
         output: IItemEventRouterResponse,
-    ): void
-    {
+    ): void {
         const buyData: IProcessBuyTradeRequestData = {
             Action: "TradingConfirm",
             type: "buy_from_ragfair",
@@ -226,8 +207,7 @@ export class TradeController
             this.ragfairConfig.dynamic.purchasesAreFoundInRaid,
             output,
         );
-        if (output.warnings.length > 0)
-        {
+        if (output.warnings.length > 0) {
             return;
         }
 
@@ -236,8 +216,7 @@ export class TradeController
         const offerBuyCount = requestOffer.count;
 
         const isPlayerOffer = this.isPlayerOffer(fleaOffer._id, fleaOffer.user?.id);
-        if (isPlayerOffer)
-        {
+        if (isPlayerOffer) {
             // Complete selling the offer now its been purchased
             this.ragfairOfferHelper.completeOffer(offerOwnerId, fleaOffer, offerBuyCount);
 
@@ -254,17 +233,14 @@ export class TradeController
      * @param offerOwnerId Owner id
      * @returns true if offer was made by a player
      */
-    protected isPlayerOffer(offerId: string, offerOwnerId: string): boolean
-    {
+    protected isPlayerOffer(offerId: string, offerOwnerId: string): boolean {
         // No ownerid, not player offer
-        if (!offerOwnerId)
-        {
+        if (!offerOwnerId) {
             return false;
         }
 
         const offerCreatorProfile = this.profileHelper.getPmcProfile(offerOwnerId);
-        if (!offerCreatorProfile || offerCreatorProfile.RagfairInfo.offers?.length === 0)
-        {
+        if (!offerCreatorProfile || offerCreatorProfile.RagfairInfo.offers?.length === 0) {
             // No profile or no offers
             return false;
         }
@@ -280,8 +256,7 @@ export class TradeController
      * @param pmcData Player profile
      * @returns True if player can buy offer
      */
-    protected playerLacksTraderLoyaltyLevelToBuyOffer(fleaOffer: IRagfairOffer, pmcData: IPmcData): boolean
-    {
+    protected playerLacksTraderLoyaltyLevelToBuyOffer(fleaOffer: IRagfairOffer, pmcData: IPmcData): boolean {
         return fleaOffer.loyaltyLevel > pmcData.TradersInfo[fleaOffer.user.id].loyaltyLevel;
     }
 
@@ -290,8 +265,7 @@ export class TradeController
         pmcData: IPmcData,
         request: ISellScavItemsToFenceRequestData,
         sessionId: string,
-    ): IItemEventRouterResponse
-    {
+    ): IItemEventRouterResponse {
         const output = this.eventOutputHolder.getOutput(sessionId);
 
         this.mailMoneyToPlayer(sessionId, request.totalValue, Traders.FENCE);
@@ -305,8 +279,7 @@ export class TradeController
      * @param trader Trader to sell items to
      * @param output IItemEventRouterResponse
      */
-    protected mailMoneyToPlayer(sessionId: string, roublesToSend: number, trader: Traders): void
-    {
+    protected mailMoneyToPlayer(sessionId: string, roublesToSend: number, trader: Traders): void {
         this.logger.debug(`Selling scav items to fence for ${roublesToSend} roubles`);
 
         // Create single currency item with all currency on it
@@ -325,7 +298,7 @@ export class TradeController
             this.traderHelper.getTraderById(trader),
             MessageType.MESSAGE_WITH_ITEMS,
             this.randomUtil.getArrayValue(this.databaseService.getTrader(trader).dialogue.soldItems),
-            curencyReward.flatMap((x) => x),
+            curencyReward.flat(),
             this.timeUtil.getHoursAsSeconds(72),
         );
     }
@@ -343,21 +316,18 @@ export class TradeController
         items: Item[],
         handbookPrices: Record<string, number>,
         traderDetails: ITraderBase,
-    ): number
-    {
+    ): number {
         const itemWithChildren = this.itemHelper.findAndReturnChildrenAsItems(items, parentItemId);
 
         let totalPrice = 0;
-        for (const itemToSell of itemWithChildren)
-        {
+        for (const itemToSell of itemWithChildren) {
             const itemDetails = this.itemHelper.getItem(itemToSell._tpl);
             if (
                 !(
-                    itemDetails[0]
-                    && this.itemHelper.isOfBaseclasses(itemDetails[1]._id, traderDetails.items_buy.category)
+                    itemDetails[0] &&
+                    this.itemHelper.isOfBaseclasses(itemDetails[1]._id, traderDetails.items_buy.category)
                 )
-            )
-            {
+            ) {
                 // Skip if tpl isn't item OR item doesn't fulfil match traders buy categories
                 continue;
             }

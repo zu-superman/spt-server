@@ -1,15 +1,14 @@
-import { inject, injectable } from "tsyringe";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { IItemConfig } from "@spt/models/spt/config/IItemConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
 import { DatabaseServer } from "@spt/servers/DatabaseServer";
 import { ICloner } from "@spt/utils/cloners/ICloner";
+import { inject, injectable } from "tsyringe";
 
 /** Centralise the handling of blacklisting items, uses blacklist found in config/item.json, stores items that should not be used by players / broken items */
 @injectable()
-export class ItemFilterService
-{
+export class ItemFilterService {
     protected itemConfig: IItemConfig;
     protected itemBlacklistCache: Set<string> = new Set<string>();
     protected lootableItemBlacklistCache: Set<string> = new Set<string>();
@@ -19,8 +18,7 @@ export class ItemFilterService
         @inject("PrimaryCloner") protected cloner: ICloner,
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("ConfigServer") protected configServer: ConfigServer,
-    )
-    {
+    ) {
         this.itemConfig = this.configServer.getConfig(ConfigTypes.ITEM);
     }
 
@@ -29,10 +27,8 @@ export class ItemFilterService
      * @param tpl template id
      * @returns true if blacklisted
      */
-    public isItemBlacklisted(tpl: string): boolean
-    {
-        if (this.itemBlacklistCache.size === 0)
-        {
+    public isItemBlacklisted(tpl: string): boolean {
+        if (this.itemBlacklistCache.size === 0) {
             this.itemConfig.blacklist.forEach((item) => this.itemBlacklistCache.add(item));
         }
 
@@ -44,10 +40,8 @@ export class ItemFilterService
      * @param tpl template id
      * @returns true if blacklisted
      */
-    public isLootableItemBlacklisted(tpl: string): boolean
-    {
-        if (this.lootableItemBlacklistCache.size === 0)
-        {
+    public isLootableItemBlacklisted(tpl: string): boolean {
+        if (this.lootableItemBlacklistCache.size === 0) {
             this.itemConfig.lootableItemBlacklist.forEach((item) => this.itemBlacklistCache.add(item));
         }
 
@@ -59,8 +53,7 @@ export class ItemFilterService
      * @param tpl item tpl to check is on blacklist
      * @returns True when blacklisted
      */
-    public isItemRewardBlacklisted(tpl: string): boolean
-    {
+    public isItemRewardBlacklisted(tpl: string): boolean {
         return this.itemConfig.rewardItemBlacklist.includes(tpl);
     }
 
@@ -68,8 +61,7 @@ export class ItemFilterService
      * Get an array of items that should never be given as a reward to player
      * @returns string array of item tpls
      */
-    public getItemRewardBlacklist(): string[]
-    {
+    public getItemRewardBlacklist(): string[] {
         return this.cloner.clone(this.itemConfig.rewardItemBlacklist);
     }
 
@@ -77,8 +69,7 @@ export class ItemFilterService
      * Return every template id blacklisted in config/item.json
      * @returns string array of blacklisted tempalte ids
      */
-    public getBlacklistedItems(): string[]
-    {
+    public getBlacklistedItems(): string[] {
         return this.cloner.clone(this.itemConfig.blacklist);
     }
 
@@ -86,8 +77,7 @@ export class ItemFilterService
      * Return every template id blacklisted in config/item.json/lootableItemBlacklist
      * @returns string array of blacklisted tempalte ids
      */
-    public getBlacklistedLootableItems(): string[]
-    {
+    public getBlacklistedLootableItems(): string[] {
         return this.cloner.clone(this.itemConfig.lootableItemBlacklist);
     }
 
@@ -96,8 +86,7 @@ export class ItemFilterService
      * @param tpl template id
      * @returns true if boss item
      */
-    public isBossItem(tpl: string): boolean
-    {
+    public isBossItem(tpl: string): boolean {
         return this.itemConfig.bossItems.includes(tpl);
     }
 
@@ -105,8 +94,7 @@ export class ItemFilterService
      * Return boss items in config/item.json
      * @returns string array of boss item tempalte ids
      */
-    public getBossItems(): string[]
-    {
+    public getBossItems(): string[] {
         return this.cloner.clone(this.itemConfig.bossItems);
     }
 }

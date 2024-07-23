@@ -1,4 +1,3 @@
-import { inject, injectable } from "tsyringe";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { Item } from "@spt/models/eft/common/tables/IItem";
@@ -8,10 +7,10 @@ import { BonusType } from "@spt/models/enums/BonusType";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { DatabaseService } from "@spt/services/DatabaseService";
 import { RagfairPriceService } from "@spt/services/RagfairPriceService";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class RagfairTaxService
-{
+export class RagfairTaxService {
     protected playerOfferTaxCache: Record<string, IStorePlayerOfferTaxAmountRequestData> = {};
 
     constructor(
@@ -19,21 +18,17 @@ export class RagfairTaxService
         @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("RagfairPriceService") protected ragfairPriceService: RagfairPriceService,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
-    )
-    {}
+    ) {}
 
-    public storeClientOfferTaxValue(sessionId: string, offer: IStorePlayerOfferTaxAmountRequestData): void
-    {
+    public storeClientOfferTaxValue(sessionId: string, offer: IStorePlayerOfferTaxAmountRequestData): void {
         this.playerOfferTaxCache[offer.id] = offer;
     }
 
-    public clearStoredOfferTaxById(offerIdToRemove: string): void
-    {
+    public clearStoredOfferTaxById(offerIdToRemove: string): void {
         delete this.playerOfferTaxCache[offerIdToRemove];
     }
 
-    public getStoredClientOfferTaxValueById(offerIdToGet: string): IStorePlayerOfferTaxAmountRequestData
-    {
+    public getStoredClientOfferTaxValueById(offerIdToGet: string): IStorePlayerOfferTaxAmountRequestData {
         return this.playerOfferTaxCache[offerIdToGet];
     }
 
@@ -53,15 +48,12 @@ export class RagfairTaxService
         requirementsValue: number,
         offerItemCount: number,
         sellInOnePiece: boolean,
-    ): number
-    {
-        if (!requirementsValue)
-        {
+    ): number {
+        if (!requirementsValue) {
             return 0;
         }
 
-        if (!offerItemCount)
-        {
+        if (!offerItemCount) {
             return 0;
         }
 
@@ -77,12 +69,9 @@ export class RagfairTaxService
         let itemPriceMult = Math.log10(itemWorth / requirementsPrice);
         let requirementPriceMult = Math.log10(requirementsPrice / itemWorth);
 
-        if (requirementsPrice >= itemWorth)
-        {
+        if (requirementsPrice >= itemWorth) {
             requirementPriceMult = requirementPriceMult ** 1.08;
-        }
-        else
-        {
+        } else {
             itemPriceMult = itemPriceMult ** 1.08;
         }
 
@@ -92,8 +81,8 @@ export class RagfairTaxService
         const hideoutFleaTaxDiscountBonus = pmcData.Bonuses.find((b) => b.type === BonusType.RAGFAIR_COMMISSION);
         const taxDiscountPercent = hideoutFleaTaxDiscountBonus ? Math.abs(hideoutFleaTaxDiscountBonus!.value ?? 0) : 0;
 
-        const tax
-            = itemWorth * itemTaxMult * itemPriceMult + requirementsPrice * requirementTaxMult * requirementPriceMult;
+        const tax =
+            itemWorth * itemTaxMult * itemPriceMult + requirementsPrice * requirementTaxMult * requirementPriceMult;
         const discountedTax = tax * (1.0 - taxDiscountPercent / 100.0);
         const itemComissionMult = itemTemplate._props.RagFairCommissionModifier
             ? itemTemplate._props.RagFairCommissionModifier
@@ -118,21 +107,16 @@ export class RagfairTaxService
         itemCount: number,
         pmcData: IPmcData,
         isRootItem = true,
-    ): number
-    {
+    ): number {
         let worth = this.ragfairPriceService.getFleaPriceForItem(item._tpl);
 
         // In client, all item slots are traversed and any items contained within have their values added
-        if (isRootItem)
-        {
+        if (isRootItem) {
             // Since we get a flat list of all child items, we only want to recurse from parent item
             const itemChildren = this.itemHelper.findAndReturnChildrenAsItems(pmcData.Inventory.items, item._id);
-            if (itemChildren.length > 1)
-            {
-                for (const child of itemChildren)
-                {
-                    if (child._id === item._id)
-                    {
+            if (itemChildren.length > 1) {
+                for (const child of itemChildren) {
+                    if (child._id === item._id) {
                         continue;
                     }
 
@@ -147,46 +131,39 @@ export class RagfairTaxService
             }
         }
 
-        if ("Dogtag" in item.upd!)
-        {
+        if ("Dogtag" in item.upd!) {
             worth *= item.upd!.Dogtag!.Level;
         }
 
-        if ("Key" in item.upd! && (itemTemplate._props.MaximumNumberOfUsage ?? 0) > 0)
-        {
-            worth
-                = (worth / itemTemplate._props.MaximumNumberOfUsage!)
-                * (itemTemplate._props.MaximumNumberOfUsage! - item.upd!.Key!.NumberOfUsages);
+        if ("Key" in item.upd! && (itemTemplate._props.MaximumNumberOfUsage ?? 0) > 0) {
+            worth =
+                (worth / itemTemplate._props.MaximumNumberOfUsage!) *
+                (itemTemplate._props.MaximumNumberOfUsage! - item.upd!.Key!.NumberOfUsages);
         }
 
-        if ("Resource" in item.upd! && itemTemplate._props.MaxResource! > 0)
-        {
+        if ("Resource" in item.upd! && itemTemplate._props.MaxResource! > 0) {
             worth = worth * 0.1 + ((worth * 0.9) / itemTemplate._props.MaxResource!) * item.upd.Resource!.Value;
         }
 
-        if ("SideEffect" in item.upd! && itemTemplate._props.MaxResource! > 0)
-        {
+        if ("SideEffect" in item.upd! && itemTemplate._props.MaxResource! > 0) {
             worth = worth * 0.1 + ((worth * 0.9) / itemTemplate._props.MaxResource!) * item.upd.SideEffect!.Value;
         }
 
-        if ("MedKit" in item.upd! && itemTemplate._props.MaxHpResource! > 0)
-        {
+        if ("MedKit" in item.upd! && itemTemplate._props.MaxHpResource! > 0) {
             worth = (worth / itemTemplate._props.MaxHpResource!) * item.upd.MedKit!.HpResource;
         }
 
-        if ("FoodDrink" in item.upd! && itemTemplate._props.MaxResource! > 0)
-        {
+        if ("FoodDrink" in item.upd! && itemTemplate._props.MaxResource! > 0) {
             worth = (worth / itemTemplate._props.MaxResource!) * item.upd.FoodDrink!.HpPercent;
         }
 
-        if ("Repairable" in item.upd! && <number > itemTemplate._props.armorClass > 0)
-        {
+        if ("Repairable" in item.upd! && <number>itemTemplate._props.armorClass > 0) {
             const num2 = 0.01 * 0.0 ** item.upd.Repairable!.MaxDurability;
-            worth
-                = worth * (item.upd.Repairable!.MaxDurability / itemTemplate._props.Durability! - num2)
-                - Math.floor(
-                    itemTemplate._props.RepairCost!
-                    * (item.upd.Repairable!.MaxDurability - item.upd.Repairable!.Durability),
+            worth =
+                worth * (item.upd.Repairable!.MaxDurability / itemTemplate._props.Durability! - num2) -
+                Math.floor(
+                    itemTemplate._props.RepairCost! *
+                        (item.upd.Repairable!.MaxDurability - item.upd.Repairable!.Durability),
                 );
         }
 

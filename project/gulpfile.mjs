@@ -37,8 +37,7 @@ const licenseFile = "../LICENSE.md";
 /**
  * Transpile src files into Javascript with SWC
  */
-const compile = async () =>
-{
+const compile = async () => {
     // Compile TypeScript files using SWC
     await exec("npx swc src -d obj", { stdio: "inherit" });
 
@@ -46,29 +45,23 @@ const compile = async () =>
     const srcDir = path.join("obj", "src");
     const destDir = path.join("obj");
 
-    try
-    {
+    try {
         const entities = await fs.readdir(srcDir);
-        for (const entity of entities)
-        {
+        for (const entity of entities) {
             const srcPath = path.join(srcDir, entity);
             const destPath = path.join(destDir, entity);
             await fs.move(srcPath, destPath, { overwrite: true });
         }
         // After moving all contents, remove the now-empty /obj/src directory
         await fs.remove(srcDir);
-    }
-    catch (error)
-    {
+    } catch (error) {
         console.error("An error occurred during the merge operation:", error);
     }
 };
 
 // Packaging
-const fetchPackageImage = async () =>
-{
-    try
-    {
+const fetchPackageImage = async () => {
+    try {
         const output = "./.pkg-cache/v3.5";
         const fetchedPkg = await pkgfetch.need({
             arch: targetArch,
@@ -79,18 +72,14 @@ const fetchPackageImage = async () =>
         console.log(`fetched node binary at ${fetchedPkg}`);
         const builtPkg = fetchedPkg.replace("node", "built");
         await fs.copyFile(fetchedPkg, builtPkg);
-    }
-    catch (e)
-    {
+    } catch (e) {
         console.error(`Error while fetching and patching package image: ${e.message}`);
         console.error(e.stack);
     }
 };
 
-const updateBuildProperties = async () =>
-{
-    if (targetPlatform !== "win32")
-    {
+const updateBuildProperties = async () => {
+    if (targetPlatform !== "win32") {
         // can't modify executable's resource on non-windows build
         return;
     }
@@ -110,12 +99,15 @@ const updateBuildProperties = async () =>
 
     const vi = ResEdit.Resource.VersionInfo.fromEntries(res.entries)[0];
 
-    vi.setStringValues({ lang: 1033, codepage: 1200 }, {
-        ProductName: manifest.author,
-        FileDescription: manifest.description,
-        CompanyName: manifest.name,
-        LegalCopyright: manifest.license,
-    });
+    vi.setStringValues(
+        { lang: 1033, codepage: 1200 },
+        {
+            ProductName: manifest.author,
+            FileDescription: manifest.description,
+            CompanyName: manifest.name,
+            LegalCopyright: manifest.license,
+        },
+    );
     vi.removeStringValue({ lang: 1033, codepage: 1200 }, "OriginalFilename");
     vi.removeStringValue({ lang: 1033, codepage: 1200 }, "InternalName");
     vi.setFileVersion(...manifest.version.split(".").map(Number));
@@ -129,15 +121,14 @@ const updateBuildProperties = async () =>
  * Copy various asset files to the destination directory
  */
 const copyAssets = () =>
-    gulp.src(["assets/**/*.json", "assets/**/*.json5", "assets/**/*.png", "assets/**/*.jpg", "assets/**/*.ico"]).pipe(
-        gulp.dest(dataDir),
-    );
+    gulp
+        .src(["assets/**/*.json", "assets/**/*.json5", "assets/**/*.png", "assets/**/*.jpg", "assets/**/*.ico"])
+        .pipe(gulp.dest(dataDir));
 
 /**
  * Download pnpm executable
  */
-const downloadPnpm = async () =>
-{
+const downloadPnpm = async () => {
     // Please ensure that the @pnpm/exe version in devDependencies is pinned to a specific version. If it's not, the
     // following task will download *all* versions that are compatible with the semver range specified.
     const pnpmVersion = manifest.devDependencies["@pnpm/exe"];
@@ -145,7 +136,9 @@ const downloadPnpm = async () =>
     const npmResult = await exec(`npm view ${pnpmPackageName}@${pnpmVersion} dist.tarball`, { stdout: "pipe" });
     const pnpmLink = npmResult.stdout.trim();
     console.log(`Downloading pnpm binary from ${pnpmLink}`);
-    download(pnpmLink).pipe(decompress({ strip: 1 })).pipe(gulp.dest(path.join(dataDir, "@pnpm", "exe")));
+    download(pnpmLink)
+        .pipe(decompress({ strip: 1 }))
+        .pipe(gulp.dest(path.join(dataDir, "@pnpm", "exe")));
 };
 
 /**
@@ -156,10 +149,8 @@ const copyLicense = () => gulp.src([licenseFile]).pipe(rename("LICENSE-Server.tx
 /**
  * Writes the latest build data to the core.json and build.json configuration files.
  */
-const writeBuildDataToJSON = async () =>
-{
-    try
-    {
+const writeBuildDataToJSON = async () => {
+    try {
         // Fetch the latest Git commit hash
         const gitResult = await exec("git rev-parse HEAD", { stdout: "pipe" });
 
@@ -180,9 +171,7 @@ const writeBuildDataToJSON = async () =>
         buildInfo.buildTime = coreParsed.buildTime;
         buildInfo.sptVersion = coreParsed.sptVersion;
         await fs.writeFile(buildJsonPath, JSON.stringify(buildInfo, null, 4));
-    }
-    catch (error)
-    {
+    } catch (error) {
         throw new Error(`Failed to write commit hash to core.json: ${error.message}`);
     }
 };
@@ -190,8 +179,7 @@ const writeBuildDataToJSON = async () =>
 /**
  * Create a hash file for asset checks
  */
-const createHashFile = async () =>
-{
+const createHashFile = async () => {
     const hashFileDir = path.resolve(dataDir, "checks.dat");
     const assetData = await loadRecursiveAsync("assets/");
     const assetDataString = Buffer.from(JSON.stringify(assetData), "utf-8").toString("base64");
@@ -218,18 +206,13 @@ const cleanCompiled = async () => await fs.rm("./obj", { recursive: true, force:
  * @param {string[]} files
  * @returns {Promise<string[]>}
  */
-const getJSONFiles = async (dir, files = []) =>
-{
+const getJSONFiles = async (dir, files = []) => {
     const fileList = await fs.readdir(dir);
-    for (const file of fileList)
-    {
+    for (const file of fileList) {
         const name = path.resolve(dir, file);
-        if ((await fs.stat(name)).isDirectory())
-        {
+        if ((await fs.stat(name)).isDirectory()) {
             getJSONFiles(name, files);
-        }
-        else if (name.slice(-5) === ".json")
-        {
+        } else if (name.slice(-5) === ".json") {
             files.push(name);
         }
     }
@@ -239,21 +222,16 @@ const getJSONFiles = async (dir, files = []) =>
 /**
  * Goes through every json file in assets and makes sure they're valid json.
  */
-const validateJSONs = async () =>
-{
+const validateJSONs = async () => {
     const assetsPath = path.resolve("assets");
     const jsonFileList = await getJSONFiles(assetsPath);
     let jsonFileInProcess = "";
-    try
-    {
-        for (const jsonFile of jsonFileList)
-        {
+    try {
+        for (const jsonFile of jsonFileList) {
             jsonFileInProcess = jsonFile;
             JSON.parse(await fs.readFile(jsonFile));
         }
-    }
-    catch (error)
-    {
+    } catch (error) {
         throw new Error(`${error.message} | ${jsonFileInProcess}`);
     }
 };
@@ -264,8 +242,7 @@ const validateJSONs = async () =>
  * @param {crypto.BinaryLike} data
  * @returns {string}
  */
-const generateHashForData = (data) =>
-{
+const generateHashForData = (data) => {
     const hashSum = crypto.createHash("sha1");
     hashSum.update(data);
     return hashSum.digest("hex");
@@ -277,21 +254,16 @@ const generateHashForData = (data) =>
  * @param {fs.PathLike} filepath
  * @returns {}
  */
-const loadRecursiveAsync = async (filepath) =>
-{
+const loadRecursiveAsync = async (filepath) => {
     const result = {};
 
     const filesList = await fs.readdir(filepath);
 
-    for (const file of filesList)
-    {
+    for (const file of filesList) {
         const curPath = path.parse(path.join(filepath, file));
-        if ((await fs.stat(path.join(curPath.dir, curPath.base))).isDirectory())
-        {
+        if ((await fs.stat(path.join(curPath.dir, curPath.base))).isDirectory()) {
             result[curPath.name] = loadRecursiveAsync(`${filepath}${file}/`);
-        }
-        else if (curPath.ext === ".json")
-        {
+        } else if (curPath.ext === ".json") {
             result[curPath.name] = generateHashForData(await fs.readFile(`${filepath}${file}`));
         }
     }
@@ -299,8 +271,7 @@ const loadRecursiveAsync = async (filepath) =>
     // set all loadRecursive to be executed asynchronously
     const resEntries = Object.entries(result);
     const resResolved = await Promise.all(resEntries.map((ent) => ent[1]));
-    for (let resIdx = 0; resIdx < resResolved.length; resIdx++)
-    {
+    for (let resIdx = 0; resIdx < resResolved.length; resIdx++) {
         resEntries[resIdx][1] = resResolved[resIdx];
     }
 
@@ -309,8 +280,7 @@ const loadRecursiveAsync = async (filepath) =>
 };
 
 // Main Tasks Generation
-const build = (packagingType) =>
-{
+const build = (packagingType) => {
     const anonPackaging = () => packaging(entries[packagingType]);
     anonPackaging.displayName = `packaging-${packagingType}`;
     const tasks = [
@@ -327,11 +297,9 @@ const build = (packagingType) =>
 };
 
 // Packaging Arguments
-const packaging = async (entry) =>
-{
+const packaging = async (entry) => {
     const target = `${nodeVersion}-${targetPlatform}-${targetArch}`;
-    try
-    {
+    try {
         await pkg.exec([
             entry,
             "--compress",
@@ -344,9 +312,7 @@ const packaging = async (entry) =>
             pkgConfig,
             "--public",
         ]);
-    }
-    catch (error)
-    {
+    } catch (error) {
         console.error(`Error occurred during packaging: ${error}`);
     }
 };
@@ -361,8 +327,7 @@ gulp.task(
     "run:debug",
     async () => await exec("ts-node-dev -r tsconfig-paths/register src/ide/TestEntry.ts", { stdio }),
 );
-gulp.task("run:profiler", async () =>
-{
+gulp.task("run:profiler", async () => {
     await cleanCompiled();
     await compile();
     await exec("node --prof --inspect --trace-warnings obj/ide/TestEntry.js", { stdio });

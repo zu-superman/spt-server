@@ -1,5 +1,4 @@
-export interface IAddUserGroupMailRequest
-{
-    dialogId: string
-    uid: string
+export interface IAddUserGroupMailRequest {
+    dialogId: string;
+    uid: string;
 }

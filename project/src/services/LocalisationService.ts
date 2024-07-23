@@ -1,17 +1,16 @@
 import path from "node:path";
-import { I18n } from "i18n";
-import { inject, injectable } from "tsyringe";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { DatabaseServer } from "@spt/servers/DatabaseServer";
 import { LocaleService } from "@spt/services/LocaleService";
 import { RandomUtil } from "@spt/utils/RandomUtil";
+import { I18n } from "i18n";
+import { inject, injectable } from "tsyringe";
 
 /**
  * Handles translating server text into different langauges
  */
 @injectable()
-export class LocalisationService
-{
+export class LocalisationService {
     protected i18n: I18n;
 
     constructor(
@@ -19,8 +18,7 @@ export class LocalisationService
         @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("LocaleService") protected localeService: LocaleService,
-    )
-    {
+    ) {
         const localeFileDirectory = path.join(
             process.cwd(),
             globalThis.G_RELEASE_CONFIGURATION
@@ -44,8 +42,7 @@ export class LocalisationService
      * @param args optional arguments
      * @returns Localised string
      */
-    public getText(key: string, args?: any): string
-    {
+    public getText(key: string, args?: any): string {
         return args === undefined ? this.i18n.__(key.toLowerCase()) : this.i18n.__(key.toLowerCase(), args);
     }
 
@@ -53,8 +50,7 @@ export class LocalisationService
      * Get all locale keys
      * @returns string array of keys
      */
-    public getKeys(): string[]
-    {
+    public getKeys(): string[] {
         return Object.keys(this.databaseServer.getTables().locales!.server.en);
     }
 
@@ -63,8 +59,7 @@ export class LocalisationService
      * @param partialKey Key to match locale keys on
      * @returns locale text
      */
-    public getRandomTextThatMatchesPartialKey(partialKey: string): string
-    {
+    public getRandomTextThatMatchesPartialKey(partialKey: string): string {
         const filteredKeys = Object.keys(this.databaseServer.getTables().locales!.server.en).filter((x) =>
             x.startsWith(partialKey),
         );

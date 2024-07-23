@@ -1,4 +1,3 @@
-import { inject, injectable } from "tsyringe";
 import { SavedCommand } from "@spt/helpers/Dialogue/Commando/SptCommands/GiveCommand/SavedCommand";
 import { ISptCommand } from "@spt/helpers/Dialogue/Commando/SptCommands/ISptCommand";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
@@ -14,17 +13,17 @@ import { DatabaseServer } from "@spt/servers/DatabaseServer";
 import { LocaleService } from "@spt/services/LocaleService";
 import { MailSendService } from "@spt/services/MailSendService";
 import { HashUtil } from "@spt/utils/HashUtil";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class ProfileSptCommand implements ISptCommand
-{
+export class ProfileSptCommand implements ISptCommand {
     /**
      * Regex to account for all these cases:
      * spt profile level 20
      * spt profile skill metabolism 10
      */
-    private static commandRegex
-        = /^spt profile (?<command>level|skill)((?<=.*skill) (?<skill>[\w]+)){0,1} (?<quantity>(?!0+)[0-9]+)$/;
+    private static commandRegex =
+        /^spt profile (?<command>level|skill)((?<=.*skill) (?<skill>[\w]+)){0,1} (?<quantity>(?!0+)[0-9]+)$/;
 
     protected savedCommand: SavedCommand;
 
@@ -37,23 +36,18 @@ export class ProfileSptCommand implements ISptCommand
         @inject("LocaleService") protected localeService: LocaleService,
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
-    )
-    {}
+    ) {}
 
-    public getCommand(): string
-    {
+    public getCommand(): string {
         return "profile";
     }
 
-    public getCommandHelp(): string
-    {
+    public getCommandHelp(): string {
         return "spt profile\n========\nSets the profile level or skill to the desired level through the message system.\n\n\tspt profile level [desired level]\n\t\tEx: spt profile level 20\n\n\tspt profile skill [skill name] [quantity]\n\t\tEx: spt profile skill metabolism 51";
     }
 
-    public performAction(commandHandler: IUserDialogInfo, sessionId: string, request: ISendMessageRequest): string
-    {
-        if (!ProfileSptCommand.commandRegex.test(request.text))
-        {
+    public performAction(commandHandler: IUserDialogInfo, sessionId: string, request: ISendMessageRequest): string {
+        if (!ProfileSptCommand.commandRegex.test(request.text)) {
             this.mailSendService.sendUserMessageToPlayer(
                 sessionId,
                 commandHandler,
@@ -69,11 +63,9 @@ export class ProfileSptCommand implements ISptCommand
         const quantity: number = +result.groups.quantity;
 
         let event: IProfileChangeEvent;
-        switch (command)
-        {
+        switch (command) {
             case "level":
-                if (quantity < 1 || quantity > this.profileHelper.getMaxLevel())
-                {
+                if (quantity < 1 || quantity > this.profileHelper.getMaxLevel()) {
                     this.mailSendService.sendUserMessageToPlayer(
                         sessionId,
                         commandHandler,
@@ -83,14 +75,12 @@ export class ProfileSptCommand implements ISptCommand
                 }
                 event = this.handleLevelCommand(quantity);
                 break;
-            case "skill":
-            {
+            case "skill": {
                 const enumSkill = Object.values(SkillTypes).find(
                     (t) => t.toLocaleLowerCase() === skill.toLocaleLowerCase(),
                 );
 
-                if (enumSkill === undefined)
-                {
+                if (enumSkill === undefined) {
                     this.mailSendService.sendUserMessageToPlayer(
                         sessionId,
                         commandHandler,
@@ -99,8 +89,7 @@ export class ProfileSptCommand implements ISptCommand
                     return request.dialogId;
                 }
 
-                if (quantity < 0 || quantity > 51)
-                {
+                if (quantity < 0 || quantity > 51) {
                     this.mailSendService.sendUserMessageToPlayer(
                         sessionId,
                         commandHandler,
@@ -138,8 +127,7 @@ export class ProfileSptCommand implements ISptCommand
         return request.dialogId;
     }
 
-    protected handleSkillCommand(skill: string, level: number): IProfileChangeEvent
-    {
+    protected handleSkillCommand(skill: string, level: number): IProfileChangeEvent {
         const event: IProfileChangeEvent = {
             _id: this.hashUtil.generate(),
             Type: ProfileChangeEventType.SKILL_POINTS,
@@ -149,8 +137,7 @@ export class ProfileSptCommand implements ISptCommand
         return event;
     }
 
-    protected handleLevelCommand(level: number): IProfileChangeEvent
-    {
+    protected handleLevelCommand(level: number): IProfileChangeEvent {
         const exp = this.profileHelper.getExperience(level);
         const event: IProfileChangeEvent = {
             _id: this.hashUtil.generate(),

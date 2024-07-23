@@ -1,5 +1,4 @@
-export enum AirdropTypeEnum
-{
+export enum AirdropTypeEnum {
     MIXED = "mixed",
     WEAPONARMOR = "weaponarmor",
     FOODMEDICAL = "foodmedical",
