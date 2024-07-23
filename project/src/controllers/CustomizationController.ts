@@ -48,7 +48,7 @@ export class CustomizationController {
         if (matchingSuits === undefined)
             throw new Error(this.localisationService.getText("customisation-unable_to_get_trader_suits", traderID));
 
-        return matchedSuits!;
+        return matchedSuits;
     }
 
     /**

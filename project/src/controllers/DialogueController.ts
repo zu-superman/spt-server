@@ -36,13 +36,11 @@ export class DialogueController {
         if (!coreConfigs.features?.chatbotFeatures?.commandoEnabled) {
             const sptCommando = this.dialogueChatBots.find(
                 (c) => c.getChatBot()._id.toLocaleLowerCase() === "sptcommando",
-            )!;
+            );
             this.dialogueChatBots.splice(this.dialogueChatBots.indexOf(sptCommando), 1);
         }
         if (!coreConfigs.features?.chatbotFeatures?.sptFriendEnabled) {
-            const sptFriend = this.dialogueChatBots.find(
-                (c) => c.getChatBot()._id.toLocaleLowerCase() === "sptFriend",
-            )!;
+            const sptFriend = this.dialogueChatBots.find((c) => c.getChatBot()._id.toLocaleLowerCase() === "sptFriend");
             this.dialogueChatBots.splice(this.dialogueChatBots.indexOf(sptFriend), 1);
         }
     }
@@ -205,7 +203,7 @@ export class DialogueController {
                     if (!profile.dialogues[request.dialogId].Users) {
                         profile.dialogues[request.dialogId].Users = [];
                     }
-                    profile.dialogues[request.dialogId].Users!.push(chatBot.getChatBot());
+                    profile.dialogues[request.dialogId].Users.push(chatBot.getChatBot());
                 }
             }
         }

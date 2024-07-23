@@ -396,7 +396,7 @@ export class MailSendService {
         let itemsToSendToPlayer: MessageItems = {};
         if ((messageDetails.items?.length ?? 0) > 0) {
             // Find base item that should be the 'primary' + have its parent id be used as the dialogs 'stash' value
-            const parentItem = this.getBaseItemFromRewards(messageDetails.items!);
+            const parentItem = this.getBaseItemFromRewards(messageDetails.items);
             if (!parentItem) {
                 this.localisationService.getText("mailsend-missing_parent", {
                     traderId: messageDetails.trader,
@@ -414,7 +414,7 @@ export class MailSendService {
             itemsToSendToPlayer = { stash: parentItem.parentId, data: [] };
 
             // Ensure Ids are unique and cont collide with items in player inventory later
-            messageDetails.items = this.itemHelper.replaceIDs(messageDetails.items!);
+            messageDetails.items = this.itemHelper.replaceIDs(messageDetails.items);
 
             for (const reward of messageDetails.items) {
                 // Ensure item exists in items db
@@ -444,7 +444,7 @@ export class MailSendService {
                     this.itemHelper.addCartridgesToAmmoBox(boxAndCartridges, itemTemplate);
 
                     // Push box + cartridge children into array
-                    itemsToSendToPlayer.data!.push(...boxAndCartridges);
+                    itemsToSendToPlayer.data.push(...boxAndCartridges);
                 } else {
                     if ("StackSlots" in itemTemplate._props) {
                         this.logger.error(
@@ -453,12 +453,12 @@ export class MailSendService {
                     }
 
                     // Item is sanitised and ready to be pushed into holding array
-                    itemsToSendToPlayer.data!.push(reward);
+                    itemsToSendToPlayer.data.push(reward);
                 }
             }
 
             // Remove empty data property if no rewards
-            if (itemsToSendToPlayer.data!.length === 0) {
+            if (itemsToSendToPlayer.data.length === 0) {
                 delete itemsToSendToPlayer.data;
             }
         }

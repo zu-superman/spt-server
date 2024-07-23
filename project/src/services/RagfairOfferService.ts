@@ -136,8 +136,8 @@ export class RagfairOfferService {
     public removeOfferStack(offerId: string, amount: number): void {
         const offer = this.ragfairOfferHandler.getOfferById(offerId);
         if (offer) {
-            offer.items[0].upd!.StackObjectsCount! -= amount;
-            if (offer.items[0].upd!.StackObjectsCount! <= 0) {
+            offer.items[0].upd.StackObjectsCount -= amount;
+            if (offer.items[0].upd.StackObjectsCount <= 0) {
                 this.processStaleOffer(offer);
             }
         }
@@ -245,10 +245,10 @@ export class RagfairOfferService {
         profile.RagfairInfo.isRatingGrowing = false;
 
         const firstOfferItem = playerOffer.items[0];
-        if (firstOfferItem.upd!.StackObjectsCount! > firstOfferItem.upd!.OriginalStackObjectsCount!) {
-            playerOffer.items[0].upd!.StackObjectsCount = firstOfferItem.upd!.OriginalStackObjectsCount;
+        if (firstOfferItem.upd.StackObjectsCount > firstOfferItem.upd.OriginalStackObjectsCount) {
+            playerOffer.items[0].upd.StackObjectsCount = firstOfferItem.upd.OriginalStackObjectsCount;
         }
-        delete playerOffer.items[0].upd!.OriginalStackObjectsCount;
+        delete playerOffer.items[0].upd.OriginalStackObjectsCount;
         // Remove player offer from flea
         this.ragfairOfferHandler.removeOffer(playerOffer);
 

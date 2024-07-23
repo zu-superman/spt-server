@@ -25,7 +25,7 @@ export class LocaleService {
      * @returns dictionary
      */
     public getLocaleDb(): Record<string, string> {
-        const desiredLocale = this.databaseServer.getTables().locales!.global[this.getDesiredGameLocale()];
+        const desiredLocale = this.databaseServer.getTables().locales.global[this.getDesiredGameLocale()];
         if (desiredLocale) {
             return desiredLocale;
         }
@@ -34,7 +34,7 @@ export class LocaleService {
             `Unable to find desired locale file using locale: ${this.getDesiredGameLocale()} from config/locale.json, falling back to 'en'`,
         );
 
-        return this.databaseServer.getTables().locales!.global.en;
+        return this.databaseServer.getTables().locales.global.en;
     }
 
     /**
@@ -118,7 +118,7 @@ export class LocaleService {
             return "en";
         }
 
-        const locales = this.databaseServer.getTables().locales!;
+        const locales = this.databaseServer.getTables().locales;
         const baseNameCode = platformLocale.baseName?.toLocaleLowerCase();
         if (baseNameCode && locales.global[baseNameCode]) {
             return baseNameCode;

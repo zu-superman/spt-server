@@ -246,7 +246,7 @@ export class TradeController {
         }
 
         // Does offer id exist in profile
-        return offerCreatorProfile.RagfairInfo.offers.some((offer) => offer._id == offerId);
+        return offerCreatorProfile.RagfairInfo.offers.some((offer) => offer._id === offerId);
     }
 
     /**

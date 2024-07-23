@@ -149,13 +149,13 @@ export class TraderHelper {
                 // Force suit ids into profile
                 this.addSuitsToProfile(
                     fullProfile,
-                    clothing!.map((suit) => suit.suiteId),
+                    clothing.map((suit) => suit.suiteId),
                 );
             }
         }
 
         if ((rawProfileTemplate.fleaBlockedDays ?? 0) > 0) {
-            const newBanDateTime = this.timeUtil.getTimeStampFromNowDays(rawProfileTemplate.fleaBlockedDays!);
+            const newBanDateTime = this.timeUtil.getTimeStampFromNowDays(rawProfileTemplate.fleaBlockedDays);
             const existingBan = pmcData.Info.Bans.find((ban) => ban.banType === BanType.RAGFAIR);
             if (existingBan) {
                 existingBan.dateTime = newBanDateTime;
@@ -334,9 +334,9 @@ export class TraderHelper {
                 },
             );
             return undefined;
-        } else {
-            return this.randomUtil.getInt(traderDetails.seconds.min, traderDetails.seconds.max);
         }
+
+        return this.randomUtil.getInt(traderDetails.seconds.min, traderDetails.seconds.max);
     }
 
     public getLoyaltyLevel(traderID: string, pmcData: IPmcData): LoyaltyLevel {
@@ -390,14 +390,14 @@ export class TraderHelper {
             if (
                 profile.traderPurchases[traderId][purchasedItem.itemId].count + purchasedItem.count >
                 this.getAccountTypeAdjustedTraderPurchaseLimit(
-                    itemPurchased.upd!.BuyRestrictionMax!,
+                    itemPurchased.upd.BuyRestrictionMax,
                     profile.characters.pmc.Info.GameVersion,
                 )
             ) {
                 throw new Error(
                     this.localisationService.getText("trader-unable_to_purchase_item_limit_reached", {
                         traderId: traderId,
-                        limit: itemPurchased.upd!.BuyRestrictionMax,
+                        limit: itemPurchased.upd.BuyRestrictionMax,
                     }),
                 );
             }

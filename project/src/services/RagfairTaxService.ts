@@ -64,7 +64,7 @@ export class RagfairTaxService {
         const requirementsPrice = requirementsValue * (sellInOnePiece ? 1 : offerItemCount);
 
         const itemTaxMult = globals.config.RagFair.communityItemTax / 100.0;
-        const requirementTaxMult = globals!.config.RagFair.communityRequirementTax / 100.0;
+        const requirementTaxMult = globals.config.RagFair.communityRequirementTax / 100.0;
 
         let itemPriceMult = Math.log10(itemWorth / requirementsPrice);
         let requirementPriceMult = Math.log10(requirementsPrice / itemWorth);
@@ -79,7 +79,7 @@ export class RagfairTaxService {
         requirementPriceMult = 4 ** requirementPriceMult;
 
         const hideoutFleaTaxDiscountBonus = pmcData.Bonuses.find((b) => b.type === BonusType.RAGFAIR_COMMISSION);
-        const taxDiscountPercent = hideoutFleaTaxDiscountBonus ? Math.abs(hideoutFleaTaxDiscountBonus!.value ?? 0) : 0;
+        const taxDiscountPercent = hideoutFleaTaxDiscountBonus ? Math.abs(hideoutFleaTaxDiscountBonus.value ?? 0) : 0;
 
         const tax =
             itemWorth * itemTaxMult * itemPriceMult + requirementsPrice * requirementTaxMult * requirementPriceMult;
@@ -123,7 +123,7 @@ export class RagfairTaxService {
                     worth += this.calculateItemWorth(
                         child,
                         this.itemHelper.getItem(child._tpl)[1],
-                        child.upd!.StackObjectsCount!,
+                        child.upd.StackObjectsCount,
                         pmcData,
                         false,
                     );
@@ -131,39 +131,39 @@ export class RagfairTaxService {
             }
         }
 
-        if ("Dogtag" in item.upd!) {
-            worth *= item.upd!.Dogtag!.Level;
+        if ("Dogtag" in item.upd) {
+            worth *= item.upd.Dogtag.Level;
         }
 
-        if ("Key" in item.upd! && (itemTemplate._props.MaximumNumberOfUsage ?? 0) > 0) {
+        if ("Key" in item.upd && (itemTemplate._props.MaximumNumberOfUsage ?? 0) > 0) {
             worth =
-                (worth / itemTemplate._props.MaximumNumberOfUsage!) *
-                (itemTemplate._props.MaximumNumberOfUsage! - item.upd!.Key!.NumberOfUsages);
+                (worth / itemTemplate._props.MaximumNumberOfUsage) *
+                (itemTemplate._props.MaximumNumberOfUsage - item.upd.Key.NumberOfUsages);
         }
 
-        if ("Resource" in item.upd! && itemTemplate._props.MaxResource! > 0) {
-            worth = worth * 0.1 + ((worth * 0.9) / itemTemplate._props.MaxResource!) * item.upd.Resource!.Value;
+        if ("Resource" in item.upd && itemTemplate._props.MaxResource > 0) {
+            worth = worth * 0.1 + ((worth * 0.9) / itemTemplate._props.MaxResource) * item.upd.Resource.Value;
         }
 
-        if ("SideEffect" in item.upd! && itemTemplate._props.MaxResource! > 0) {
-            worth = worth * 0.1 + ((worth * 0.9) / itemTemplate._props.MaxResource!) * item.upd.SideEffect!.Value;
+        if ("SideEffect" in item.upd && itemTemplate._props.MaxResource > 0) {
+            worth = worth * 0.1 + ((worth * 0.9) / itemTemplate._props.MaxResource) * item.upd.SideEffect.Value;
         }
 
-        if ("MedKit" in item.upd! && itemTemplate._props.MaxHpResource! > 0) {
-            worth = (worth / itemTemplate._props.MaxHpResource!) * item.upd.MedKit!.HpResource;
+        if ("MedKit" in item.upd && itemTemplate._props.MaxHpResource > 0) {
+            worth = (worth / itemTemplate._props.MaxHpResource) * item.upd.MedKit.HpResource;
         }
 
-        if ("FoodDrink" in item.upd! && itemTemplate._props.MaxResource! > 0) {
-            worth = (worth / itemTemplate._props.MaxResource!) * item.upd.FoodDrink!.HpPercent;
+        if ("FoodDrink" in item.upd && itemTemplate._props.MaxResource > 0) {
+            worth = (worth / itemTemplate._props.MaxResource) * item.upd.FoodDrink.HpPercent;
         }
 
-        if ("Repairable" in item.upd! && <number>itemTemplate._props.armorClass > 0) {
-            const num2 = 0.01 * 0.0 ** item.upd.Repairable!.MaxDurability;
+        if ("Repairable" in item.upd && <number>itemTemplate._props.armorClass > 0) {
+            const num2 = 0.01 * 0.0 ** item.upd.Repairable.MaxDurability;
             worth =
-                worth * (item.upd.Repairable!.MaxDurability / itemTemplate._props.Durability! - num2) -
+                worth * (item.upd.Repairable.MaxDurability / itemTemplate._props.Durability - num2) -
                 Math.floor(
-                    itemTemplate._props.RepairCost! *
-                        (item.upd.Repairable!.MaxDurability - item.upd.Repairable!.Durability),
+                    itemTemplate._props.RepairCost *
+                        (item.upd.Repairable.MaxDurability - item.upd.Repairable.Durability),
                 );
         }
 

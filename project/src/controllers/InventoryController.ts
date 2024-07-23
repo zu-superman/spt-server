@@ -905,7 +905,7 @@ export class InventoryController {
                     this.logger.success(`Item ${mailEvent.entity} is now blacklisted`);
 
                     break;
-                case "HideoutAreaLevel":
+                case "HideoutAreaLevel": {
                     const areaName = mailEvent.entity;
                     const newValue = mailEvent.value;
                     const hideoutAreaCode = HideoutAreas[areaName.toUpperCase()];
@@ -917,6 +917,7 @@ export class InventoryController {
                     }
 
                     break;
+                }
                 default:
                     this.logger.warning(`Unhandled profile reward event: ${mailEvent.Type}`);
 

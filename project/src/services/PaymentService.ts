@@ -190,14 +190,14 @@ export class PaymentService {
             }
 
             // Found currency item
-            if (item.upd!.StackObjectsCount! < currencyMaxStackSize) {
-                if (item.upd!.StackObjectsCount! + calcAmount > currencyMaxStackSize) {
+            if (item.upd.StackObjectsCount < currencyMaxStackSize) {
+                if (item.upd.StackObjectsCount + calcAmount > currencyMaxStackSize) {
                     // calculate difference
-                    calcAmount -= currencyMaxStackSize - item.upd!.StackObjectsCount!;
-                    item.upd!.StackObjectsCount! = currencyMaxStackSize;
+                    calcAmount -= currencyMaxStackSize - item.upd.StackObjectsCount;
+                    item.upd.StackObjectsCount = currencyMaxStackSize;
                 } else {
                     skipSendingMoneyToStash = true;
-                    item.upd!.StackObjectsCount! = item.upd!.StackObjectsCount! + calcAmount;
+                    item.upd.StackObjectsCount = item.upd.StackObjectsCount + calcAmount;
                 }
 
                 // Inform client of change to items StackObjectsCount
@@ -257,7 +257,7 @@ export class PaymentService {
             pmcData.Inventory.stash,
         );
         const amountAvailable = moneyItemsInInventory.reduce(
-            (accumulator, item) => accumulator + item.upd!.StackObjectsCount!,
+            (accumulator, item) => accumulator + item.upd.StackObjectsCount,
             0,
         );
 
@@ -280,12 +280,12 @@ export class PaymentService {
 
         let leftToPay = amountToPay;
         for (const profileMoneyItem of moneyItemsInInventory) {
-            const itemAmount = profileMoneyItem.upd!.StackObjectsCount!;
+            const itemAmount = profileMoneyItem.upd.StackObjectsCount;
             if (leftToPay >= itemAmount) {
                 leftToPay -= itemAmount;
                 this.inventoryHelper.removeItem(pmcData, profileMoneyItem._id, sessionID, output);
             } else {
-                profileMoneyItem.upd!.StackObjectsCount! -= leftToPay;
+                profileMoneyItem.upd.StackObjectsCount -= leftToPay;
                 leftToPay = 0;
                 output.profileChanges[sessionID].items.change.push(profileMoneyItem);
             }

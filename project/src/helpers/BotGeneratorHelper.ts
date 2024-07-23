@@ -88,7 +88,7 @@ export class BotGeneratorHelper {
             itemProperties.MedKit = {
                 HpResource: this.getRandomizedResourceValue(
                     itemTemplate._props.MaxHpResource,
-                    this.botConfig.lootItemResourceRandomization[botRole!]?.meds,
+                    this.botConfig.lootItemResourceRandomization[botRole]?.meds,
                 ),
             };
         }
@@ -97,7 +97,7 @@ export class BotGeneratorHelper {
             itemProperties.FoodDrink = {
                 HpPercent: this.getRandomizedResourceValue(
                     itemTemplate._props.MaxResource,
-                    this.botConfig.lootItemResourceRandomization[botRole!]?.food,
+                    this.botConfig.lootItemResourceRandomization[botRole]?.food,
                 ),
             };
         }
@@ -236,8 +236,8 @@ export class BotGeneratorHelper {
         let maxDurability: number;
         let currentDurability: number;
         if (Number.parseInt(`${itemTemplate._props.armorClass}`) === 0) {
-            maxDurability = itemTemplate._props.MaxDurability!;
-            currentDurability = itemTemplate._props.MaxDurability!;
+            maxDurability = itemTemplate._props.MaxDurability;
+            currentDurability = itemTemplate._props.MaxDurability;
         } else {
             maxDurability = this.durabilityLimitsHelper.getRandomizedMaxArmorDurability(itemTemplate, botRole);
             currentDurability = this.durabilityLimitsHelper.getRandomizedArmorDurability(
@@ -563,14 +563,14 @@ export class BotGeneratorHelper {
 
                 // Open slot found, add item to inventory
                 if (findSlotResult.success) {
-                    const parentItem = itemWithChildren.find((i) => i._id === rootItemId)!;
+                    const parentItem = itemWithChildren.find((i) => i._id === rootItemId);
 
                     // Set items parent to container id
                     parentItem.parentId = container._id;
                     parentItem.slotId = slotGrid._name;
                     parentItem.location = {
-                        x: findSlotResult.x!,
-                        y: findSlotResult.y!,
+                        x: findSlotResult.x,
+                        y: findSlotResult.y,
                         r: findSlotResult.rotation ? 1 : 0,
                     };
 

@@ -81,7 +81,7 @@ export class RepeatableQuestController {
      */
     public getClientRepeatableQuests(sessionID: string): IPmcDataRepeatableQuest[] {
         const returnData: Array<IPmcDataRepeatableQuest> = [];
-        const fullProfile = this.profileHelper.getFullProfile(sessionID)!;
+        const fullProfile = this.profileHelper.getFullProfile(sessionID);
         const pmcData = fullProfile.characters.pmc;
         const currentTime = this.timeUtil.getTimestamp();
 

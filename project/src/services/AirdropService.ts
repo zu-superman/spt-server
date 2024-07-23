@@ -60,7 +60,7 @@ export class AirdropService {
 
         // Reparent loot items to create we added above
         for (const item of crateLoot) {
-            if (item._id == airdropCrateItem._id) {
+            if (item._id === airdropCrateItem._id) {
                 // Crate itself, don't alter
                 continue;
             }

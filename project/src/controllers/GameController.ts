@@ -797,8 +797,8 @@ export class GameController {
      */
     protected validateQuestAssortUnlocksExist(): void {
         const db = this.databaseService.getTables();
-        const traders = db.traders!;
-        const quests = db.templates!.quests;
+        const traders = db.traders;
+        const quests = db.templates.quests;
         for (const traderId of Object.values(Traders)) {
             const traderData = traders[traderId];
             const traderAssorts = traderData?.assort;
@@ -875,7 +875,7 @@ export class GameController {
      * Make non-trigger-spawned raiders spawn earlier + always
      */
     protected adjustLabsRaiderSpawnRate(): void {
-        const labsBase = this.databaseService.getLocations().laboratory!.base;
+        const labsBase = this.databaseService.getLocations().laboratory.base;
 
         // Find spawns with empty string for triggerId/TriggerName
         const nonTriggerLabsBossSpawns = labsBase.BossLocationSpawn.filter(

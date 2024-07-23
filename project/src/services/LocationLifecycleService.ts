@@ -168,7 +168,7 @@ export class LocationLifecycleService {
         const fullProfile = this.profileHelper.getFullProfile(sessionId);
         const pmcProfile = fullProfile.characters.pmc;
         const scavProfile = fullProfile.characters.scav;
-        const postRaidProfile = request.results.profile!;
+        const postRaidProfile = request.results.profile;
 
         // TODO:
         // Rep gain/loss?

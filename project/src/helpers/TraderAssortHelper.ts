@@ -218,7 +218,7 @@ export class TraderAssortHelper {
      */
     public traderAssortsHaveExpired(traderID: string): boolean {
         const time = this.timeUtil.getTimestamp();
-        const trader = this.databaseService.getTables().traders![traderID];
+        const trader = this.databaseService.getTables().traders[traderID];
 
         return trader.base.nextResupply <= time;
     }

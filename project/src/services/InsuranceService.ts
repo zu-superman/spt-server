@@ -142,7 +142,7 @@ export class InsuranceService {
             (bonus) => bonus.type === BonusType.INSURANCE_RETURN_TIME,
         );
         const insuranceReturnTimeBonusPercent =
-            1.0 - (insuranceReturnTimeBonus ? Math.abs(insuranceReturnTimeBonus!.value ?? 0) : 0) / 100;
+            1.0 - (insuranceReturnTimeBonus ? Math.abs(insuranceReturnTimeBonus.value ?? 0) : 0) / 100;
 
         const traderMinReturnAsSeconds = trader.insurance.min_return_hour * TimeUtil.ONE_HOUR_AS_SECONDS;
         const traderMaxReturnAsSeconds = trader.insurance.max_return_hour * TimeUtil.ONE_HOUR_AS_SECONDS;
@@ -214,7 +214,7 @@ export class InsuranceService {
         const result: IInsuranceEquipmentPkg[] = [];
 
         for (const lostItem of lostInsuredItems) {
-            const insuranceDetails = pmcProfile.InsuredItems.find((insuredItem) => insuredItem.itemId == lostItem._id);
+            const insuranceDetails = pmcProfile.InsuredItems.find((insuredItem) => insuredItem.itemId === lostItem._id);
             if (!insuranceDetails) {
                 this.logger.error(
                     `unable to find insurance details for item id: ${lostItem._id} with tpl: ${lostItem._tpl}`,

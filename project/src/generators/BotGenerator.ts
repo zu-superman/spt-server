@@ -642,7 +642,7 @@ export class BotGenerator {
      * @returns item tpl
      */
     protected getDogtagTplByGameVersionAndSide(side: string, gameVersion: string): string {
-        if (side.toLowerCase() == "usec") {
+        if (side.toLowerCase() === "usec") {
             switch (gameVersion) {
                 case GameEditions.EDGE_OF_DARKNESS:
                     return ItemTpl.BARTER_DOGTAG_USEC_EOD;

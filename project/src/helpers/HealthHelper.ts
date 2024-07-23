@@ -35,7 +35,7 @@ export class HealthHelper {
 
         if (!profile.vitality) {
             // Occurs on newly created profiles
-            profile.vitality = { health: undefined!, effects: undefined! };
+            profile.vitality = { health: undefined, effects: undefined };
         }
         profile.vitality.health = {
             Hydration: 0,
@@ -176,7 +176,7 @@ export class HealthHelper {
         const fullProfile = this.saveServer.getProfile(sessionID);
         const profileEffects = fullProfile.vitality.effects;
 
-        this.storeHydrationEnergyTempInProfile(fullProfile, request.Hydration!, request.Energy!, request.Temperature!);
+        this.storeHydrationEnergyTempInProfile(fullProfile, request.Hydration, request.Energy, request.Temperature);
 
         // Process request data into profile
         for (const bodyPart in postRaidBodyParts) {

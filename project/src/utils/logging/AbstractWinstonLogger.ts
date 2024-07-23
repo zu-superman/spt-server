@@ -163,7 +163,7 @@ export abstract class AbstractWinstonLogger implements ILogger {
     }
 
     public async success(data: string | Record<string, unknown>): Promise<void> {
-        const command: ICommand = { uuid: crypto.randomUUID(), cmd: async () => await this.logger.succ!(data) };
+        const command: ICommand = { uuid: crypto.randomUUID(), cmd: async () => await this.logger.succ(data) };
         await this.asyncQueue.waitFor(command);
     }
 

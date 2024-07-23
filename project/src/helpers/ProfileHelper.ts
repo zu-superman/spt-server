@@ -268,7 +268,7 @@ export class ProfileHelper {
         return {
             Eft: {
                 CarriedQuestItems: [],
-                DamageHistory: { LethalDamagePart: "Head", LethalDamage: undefined!, BodyParts: <any>[] },
+                DamageHistory: { LethalDamagePart: "Head", LethalDamage: undefined, BodyParts: <any>[] },
                 DroppedItems: [],
                 ExperienceBonusMult: 0,
                 FoundInRaidItems: [],

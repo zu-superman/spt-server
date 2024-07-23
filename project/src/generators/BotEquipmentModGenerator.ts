@@ -759,7 +759,7 @@ export class BotEquipmentModGenerator {
             }
         }
 
-        if (request.modSlot == "mod_gas_block") {
+        if (request.modSlot === "mod_gas_block") {
             if (request.weaponStats.hasOptic && modPool.length > 1) {
                 // Attempt to limit modpool to low profile gas blocks when weapon has an optic
                 const onlyLowProfileGasBlocks = modPool.filter((tpl) =>
@@ -782,18 +782,18 @@ export class BotEquipmentModGenerator {
         // Pick random mod that's compatible
         const chosenModResult = this.pickWeaponModTplForSlotFromPool(
             modPool,
-            parentSlot!,
+            parentSlot,
             request.modSpawnResult,
             request.weapon,
             request.modSlot,
         );
-        if (chosenModResult.slotBlocked && !parentSlot!._required) {
+        if (chosenModResult.slotBlocked && !parentSlot._required) {
             // Don't bother trying to fit mod, slot is completely blocked
             return undefined;
         }
 
         // Log if mod chosen was incompatible
-        if (chosenModResult.incompatible && parentSlot!._required) {
+        if (chosenModResult.incompatible && parentSlot._required) {
             this.logger.debug(chosenModResult.reason);
             // this.logger.debug(`Weapon: ${weapon.map(x => `${x._tpl} ${x.slotId ?? ""}`).join(",")}`)
         }
@@ -819,7 +819,7 @@ export class BotEquipmentModGenerator {
             return undefined;
         }
 
-        return this.itemHelper.getItem(chosenModResult.chosenTpl!);
+        return this.itemHelper.getItem(chosenModResult.chosenTpl);
     }
 
     /**
@@ -847,7 +847,7 @@ export class BotEquipmentModGenerator {
         const maxBlockedAttempts = Math.round(modPool.length * 0.75); // Roughly 75% of pool size
         let blockedAttemptCount = 0;
         while (exhaustableModPool.hasValues()) {
-            chosenTpl = exhaustableModPool.getRandomValue()!;
+            chosenTpl = exhaustableModPool.getRandomValue();
             if (choiceTypeEnum === ModSpawn.DEFAULT_MOD && modPool.length === 1) {
                 // Default mod wanted and only one choice in pool
                 chosenModResult.found = true;
@@ -1065,7 +1065,7 @@ export class BotEquipmentModGenerator {
         const exhaustableModPool = new ExhaustableArray(allowedItems, this.randomUtil, this.cloner);
         let tmpModTpl = fallbackModTpl;
         while (exhaustableModPool.hasValues()) {
-            tmpModTpl = exhaustableModPool.getRandomValue()!;
+            tmpModTpl = exhaustableModPool.getRandomValue();
             if (!this.botGeneratorHelper.isItemIncompatibleWithCurrentItems(items, tmpModTpl, modSlot).incompatible) {
                 return tmpModTpl;
             }

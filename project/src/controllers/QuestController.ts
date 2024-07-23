@@ -344,7 +344,7 @@ export class QuestController {
         );
 
         const change = {};
-        change[repeatableQuestProfile._id] = repeatableSettings!.changeRequirement[repeatableQuestProfile._id];
+        change[repeatableQuestProfile._id] = repeatableSettings.changeRequirement[repeatableQuestProfile._id];
 
         const repeatableData: IPmcDataRepeatableQuest = {
             id:

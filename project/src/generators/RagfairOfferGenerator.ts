@@ -179,7 +179,7 @@ export class RagfairOfferGenerator {
 
         const isPlayerOffer = this.profileHelper.isPlayer(userID);
         if (isPlayerOffer) {
-            const playerProfile = this.profileHelper.getPmcProfile(userID)!;
+            const playerProfile = this.profileHelper.getPmcProfile(userID);
             return {
                 id: playerProfile._id,
                 memberType: playerProfile.Info.MemberCategory,
@@ -342,7 +342,7 @@ export class RagfairOfferGenerator {
 
         // get assort items from param if they exist, otherwise grab freshly generated assorts
         const assortItemsToProcess: Item[][] = replacingExpiredOffers
-            ? expiredOffers!
+            ? expiredOffers
             : this.ragfairAssortGenerator.getAssortItems();
 
         // Create offers for each item set concurrently

@@ -703,11 +703,13 @@ export class RagfairController {
      * @returns FleaOfferType
      */
     protected getOfferType(offerRequest: IAddOfferRequestData): FleaOfferType {
-        if (offerRequest.items.length == 1 && !offerRequest.sellInOnePiece) {
+        if (offerRequest.items.length === 1 && !offerRequest.sellInOnePiece) {
             return FleaOfferType.SINGLE;
-        } else if (offerRequest.items.length > 1 && !offerRequest.sellInOnePiece) {
+        }
+        if (offerRequest.items.length > 1 && !offerRequest.sellInOnePiece) {
             return FleaOfferType.MULTI;
-        } else if (offerRequest.sellInOnePiece) {
+        }
+        if (offerRequest.sellInOnePiece) {
             return FleaOfferType.PACK;
         }
 

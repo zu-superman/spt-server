@@ -331,7 +331,7 @@ export class RepairService {
             this.addMaxResourceToKitIfMissing(repairKitDetails, repairKitInInventory);
 
             // reduce usages on repairkit used
-            repairKitInInventory.upd!.RepairKit!.Resource -= repairKitReductionAmount;
+            repairKitInInventory.upd.RepairKit.Resource -= repairKitReductionAmount;
 
             output.profileChanges[sessionId].items.change.push(repairKitInInventory);
         }
@@ -425,7 +425,7 @@ export class RepairService {
      * @param repairKitInInventory Repair kit to update
      */
     protected addMaxResourceToKitIfMissing(repairKitDetails: ITemplateItem, repairKitInInventory: Item): void {
-        const maxRepairAmount = repairKitDetails._props.MaxRepairResource!;
+        const maxRepairAmount = repairKitDetails._props.MaxRepairResource;
         if (!repairKitInInventory.upd) {
             this.logger.debug(`Repair kit: ${repairKitInInventory._id} in inventory lacks upd object, adding`);
             repairKitInInventory.upd = { RepairKit: { Resource: maxRepairAmount } };
@@ -480,13 +480,13 @@ export class RepairService {
         const bonusThresholdPercents = itemConfig[bonusRarity][bonusType].activeDurabilityPercentMinMax;
         const bonusThresholdPercent = this.randomUtil.getInt(bonusThresholdPercents.min, bonusThresholdPercents.max);
 
-        item.upd!.Buff = {
+        item.upd.Buff = {
             rarity: bonusRarity,
             buffType: bonusType,
             value: bonusValue,
             thresholdDurability: this.randomUtil.getPercentOfValue(
                 bonusThresholdPercent,
-                item.upd!.Repairable!.Durability,
+                item.upd.Repairable.Durability,
             ),
         };
     }
@@ -545,7 +545,7 @@ export class RepairService {
                 this.localisationService.getText("repair-item_has_no_repair_points", repairDetails.repairedItem._tpl),
             );
         }
-        const durabilityToRestorePercent = repairDetails.repairPoints / template._props.MaxDurability!;
+        const durabilityToRestorePercent = repairDetails.repairPoints / template._props.MaxDurability;
         const durabilityMultiplier = this.getDurabilityMultiplier(
             receivedDurabilityMaxPercent,
             durabilityToRestorePercent,

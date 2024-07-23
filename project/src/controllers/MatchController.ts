@@ -120,6 +120,6 @@ export class MatchController {
 
     /** Handle client/match/local/end */
     public endLocalRaid(sessionId: string, request: IEndLocalRaidRequestData): void {
-        return this.locationLifecycleService.endLocalRaid(sessionId, request);
+        this.locationLifecycleService.endLocalRaid(sessionId, request);
     }
 }

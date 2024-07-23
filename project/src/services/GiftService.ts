@@ -115,7 +115,7 @@ export class GiftService {
             if (giftData.localeTextId) {
                 this.mailSendService.sendLocalisedNpcMessageToPlayer(
                     playerId,
-                    giftData.trader!,
+                    giftData.trader,
                     MessageType.MESSAGE_WITH_ITEMS,
                     giftData.localeTextId,
                     giftData.items,
@@ -124,7 +124,7 @@ export class GiftService {
             } else {
                 this.mailSendService.sendDirectNpcMessageToPlayer(
                     playerId,
-                    giftData.trader!,
+                    giftData.trader,
                     MessageType.MESSAGE_WITH_ITEMS,
                     giftData.messageText,
                     giftData.items,
@@ -136,9 +136,9 @@ export class GiftService {
             // Trader / ragfair
             const details: ISendMessageDetails = {
                 recipientId: playerId,
-                sender: this.getMessageType(giftData)!,
+                sender: this.getMessageType(giftData),
                 senderDetails: {
-                    _id: this.getSenderId(giftData)!,
+                    _id: this.getSenderId(giftData),
                     aid: 1234567, // TODO - pass proper aid value
                     Info: undefined,
                 },
@@ -166,7 +166,7 @@ export class GiftService {
      */
     protected getSenderId(giftData: Gift): string | undefined {
         if (giftData.sender === GiftSenderType.TRADER) {
-            return Traders[giftData.trader!];
+            return Traders[giftData.trader];
         }
 
         if (giftData.sender === GiftSenderType.USER) {

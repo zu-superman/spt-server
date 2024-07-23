@@ -715,14 +715,14 @@ export class RagfairOfferHelper {
     protected isConditionItem(item: Item): boolean {
         // thanks typescript, undefined assertion is not returnable since it
         // tries to return a multitype object
-        return item.upd.MedKit ||
+        return !!(
+            item.upd.MedKit ||
             item.upd.Repairable ||
             item.upd.Resource ||
             item.upd.FoodDrink ||
             item.upd.Key ||
             item.upd.RepairKit
-            ? true
-            : false;
+        );
     }
 
     /**

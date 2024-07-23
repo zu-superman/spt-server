@@ -440,8 +440,8 @@ export class LocationLootGenerator {
 
             this.containerHelper.fillContainerMapWithItem(
                 containerMap,
-                result.x!,
-                result.y!,
+                result.x,
+                result.y,
                 width,
                 height,
                 result.rotation,
@@ -449,7 +449,7 @@ export class LocationLootGenerator {
             const rotation = result.rotation ? 1 : 0;
 
             items[0].slotId = "main";
-            items[0].location = { x: result.x!, y: result.y!, r: rotation };
+            items[0].location = { x: result.x, y: result.y, r: rotation };
 
             // Add loot to container before returning
             for (const item of items) {
@@ -470,8 +470,8 @@ export class LocationLootGenerator {
         const containerTemplate = this.itemHelper.getItem(containerTpl)[1];
 
         // Get height/width
-        const height = containerTemplate._props.Grids![0]._props.cellsV;
-        const width = containerTemplate._props.Grids![0]._props.cellsH;
+        const height = containerTemplate._props.Grids[0]._props.cellsV;
+        const width = containerTemplate._props.Grids[0]._props.cellsH;
 
         // Calcualte 2d array and return
         return Array(height)
@@ -633,7 +633,7 @@ export class LocationLootGenerator {
         if (randomSpawnpointCount > 0 && spawnpointArray.length > 0) {
             // Add randomly chosen spawn points
             for (const si of spawnpointArray.draw(randomSpawnpointCount, false)) {
-                chosenSpawnpoints.push(spawnpointArray.data(si)!);
+                chosenSpawnpoints.push(spawnpointArray.data(si));
             }
         }
 
@@ -842,7 +842,7 @@ export class LocationLootGenerator {
             const stackCount =
                 itemTemplate._props.StackMaxSize === 1
                     ? 1
-                    : this.randomUtil.getInt(itemTemplate._props.StackMinRandom!, itemTemplate._props.StackMaxRandom!);
+                    : this.randomUtil.getInt(itemTemplate._props.StackMinRandom, itemTemplate._props.StackMaxRandom);
 
             itemWithMods.push({
                 _id: this.objectId.generate(),
@@ -931,8 +931,8 @@ export class LocationLootGenerator {
         parentId?: string,
     ): IContainerItem {
         const itemTemplate = this.itemHelper.getItem(chosenTpl)[1];
-        let width = itemTemplate._props.Width!;
-        let height = itemTemplate._props.Height!;
+        let width = itemTemplate._props.Width;
+        let height = itemTemplate._props.Height;
         let items: Item[] = [{ _id: this.objectId.generate(), _tpl: chosenTpl }];
         const rootItem = items[0];
 
@@ -949,7 +949,7 @@ export class LocationLootGenerator {
             const stackCount =
                 itemTemplate._props.StackMaxSize === 1
                     ? 1
-                    : this.randomUtil.getInt(itemTemplate._props.StackMinRandom!, itemTemplate._props.StackMaxRandom!);
+                    : this.randomUtil.getInt(itemTemplate._props.StackMinRandom, itemTemplate._props.StackMaxRandom);
 
             rootItem.upd = { StackObjectsCount: stackCount };
         }
