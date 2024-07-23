@@ -152,15 +152,6 @@ export class GameController
                 return;
             }
 
-            if (fullProfile.characters.pmc.RagfairInfo)
-            {
-                if (Number.isNaN(fullProfile.characters.pmc.RagfairInfo.rating))
-                {
-                    this.logger.warning(`Profile: ${sessionID} ragfair rating was not a valid number, resetting to 0`);
-                    fullProfile.characters.pmc.RagfairInfo.rating = 0;
-                }
-            }
-
             const pmcProfile = fullProfile.characters.pmc;
 
             this.logger.debug(`Started game with sessionId: ${sessionID} ${pmcProfile.Info?.Nickname}`);
