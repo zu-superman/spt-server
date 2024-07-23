@@ -215,6 +215,12 @@ export class QuestController
      */
     protected playerLevelFulfillsQuestRequirement(quest: IQuest, playerLevel: number): boolean
     {
+        if (!quest.conditions)
+        {
+            // No conditions
+            return true;
+        }
+
         const levelConditions = this.questConditionHelper.getLevelConditions(quest.conditions.AvailableForStart);
         if (levelConditions.length)
         {
