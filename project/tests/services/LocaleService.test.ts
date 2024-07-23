@@ -1,26 +1,21 @@
+import type { LocaleService } from "@spt/services/LocaleService";
 import { container } from "tsyringe";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { LocaleService } from "@spt/services/LocaleService";
 
-describe("LocaleService", () =>
-{
+describe("LocaleService", () => {
     // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     let localeService: any; // Using "any" to access private/protected methods without type errors.
 
-    beforeEach(() =>
-    {
+    beforeEach(() => {
         localeService = container.resolve<LocaleService>("LocaleService");
     });
 
-    afterEach(() =>
-    {
+    afterEach(() => {
         vi.restoreAllMocks();
     });
 
-    describe("getLocaleDb", () =>
-    {
-        it("should return 'en' globals data when no desired locale found and display warning'", () =>
-        {
+    describe("getLocaleDb", () => {
+        it("should return 'en' globals data when no desired locale found and display warning'", () => {
             vi.spyOn(localeService, "getDesiredGameLocale").mockReturnValue({
                 undefined,
             });
@@ -34,21 +29,16 @@ describe("LocaleService", () =>
         });
     });
 
-    describe("getDesiredGameLocale", () =>
-    {
-        it("should return gameLocale property from config when value is not 'system''", () =>
-        {
+    describe("getDesiredGameLocale", () => {
+        it("should return gameLocale property from config when value is not 'system''", () => {
             localeService.localeConfig.gameLocale = "test";
 
             expect(localeService.getDesiredGameLocale()).toBe("test");
         });
 
-        it("should return desired value when gameLocale property from config is 'system'", () =>
-        {
+        it("should return desired value when gameLocale property from config is 'system'", () => {
             // Override the get locale so we control what the input is
-            vi.spyOn(localeService, "getPlatformForClientLocale").mockReturnValue(
-                "desiredLocale",
-            );
+            vi.spyOn(localeService, "getPlatformForClientLocale").mockReturnValue("desiredLocale");
 
             localeService.localeConfig.gameLocale = "system";
 
@@ -56,21 +46,16 @@ describe("LocaleService", () =>
         });
     });
 
-    describe("getDesiredServerLocale", () =>
-    {
-        it("should return serverLocale property from config when value is not 'system''", () =>
-        {
+    describe("getDesiredServerLocale", () => {
+        it("should return serverLocale property from config when value is not 'system''", () => {
             localeService.localeConfig.serverLocale = "test";
 
             expect(localeService.getDesiredServerLocale()).toBe("test");
         });
 
-        it("should return desired value when serverLocale property from config is 'system'", () =>
-        {
+        it("should return desired value when serverLocale property from config is 'system'", () => {
             // Override the get locale so we control what the input is
-            vi.spyOn(localeService, "getPlatformForServerLocale").mockReturnValue(
-                "desiredLocale",
-            );
+            vi.spyOn(localeService, "getPlatformForServerLocale").mockReturnValue("desiredLocale");
 
             localeService.localeConfig.serverLocale = "system";
 
@@ -78,14 +63,10 @@ describe("LocaleService", () =>
         });
     });
 
-    describe("getPlatformForServerLocale", () =>
-    {
-        it("should return 'en' when no system locale found and display warning'", () =>
-        {
+    describe("getPlatformForServerLocale", () => {
+        it("should return 'en' when no system locale found and display warning'", () => {
             // Override the get locale so we control what the input is
-            vi.spyOn(localeService, "getPlatformLocale").mockReturnValue(
-                undefined,
-            );
+            vi.spyOn(localeService, "getPlatformLocale").mockReturnValue(undefined);
 
             const warningLogSpy = vi.spyOn(localeService.logger, "warning");
 
@@ -93,12 +74,12 @@ describe("LocaleService", () =>
             expect(warningLogSpy).toHaveBeenCalledTimes(1);
         });
 
-        it("should return 'en' when unsupported system local encountered and display warning'", () =>
-        {
+        it("should return 'en' when unsupported system local encountered and display warning'", () => {
             // Override the get locale so we control what the input is
-            vi.spyOn(localeService, "getPlatformLocale").mockReturnValue(
-                { baseName: "test_locale_that_doesnt_exist", language: "test_language" },
-            );
+            vi.spyOn(localeService, "getPlatformLocale").mockReturnValue({
+                baseName: "test_locale_that_doesnt_exist",
+                language: "test_language",
+            });
 
             const warningLogSpy = vi.spyOn(localeService.logger, "warning");
 
@@ -107,25 +88,19 @@ describe("LocaleService", () =>
         });
     });
 
-    describe("getPlatformForClientLocale", () =>
-    {
-        it("should return 'en' when no platform locale found and display warning'", () =>
-        {
+    describe("getPlatformForClientLocale", () => {
+        it("should return 'en' when no platform locale found and display warning'", () => {
             // Override the get locale so we control what the input is
-            vi.spyOn(localeService, "getPlatformLocale").mockReturnValue(
-                undefined,
-            );
+            vi.spyOn(localeService, "getPlatformLocale").mockReturnValue(undefined);
             const warningLogSpy = vi.spyOn(localeService.logger, "warning");
 
             expect(localeService.getPlatformForClientLocale()).toBe("en");
             expect(warningLogSpy).toHaveBeenCalledTimes(1);
         });
 
-        it("should return 'en' when unsupported platform local encountered and display warning'", () =>
-        {
+        it("should return 'en' when unsupported platform local encountered and display warning'", () => {
             // Override the get locale so we control what the input is
-            localeService.getPlatformLocale = () =>
-            {
+            localeService.getPlatformLocale = () => {
                 return { baseName: "test_locale_that_doesnt_exist", language: "test_language" };
             };
 
@@ -136,97 +111,68 @@ describe("LocaleService", () =>
         });
     });
 
-    describe("ValidateServerLocale", () =>
-    {
-        it("should return 'en' for 'en-US'", () =>
-        {
+    describe("ValidateServerLocale", () => {
+        it("should return 'en' for 'en-US'", () => {
             // Override the get locale so we control what the input is
-            vi.spyOn(localeService, "getPlatformLocale").mockReturnValue(
-                new Intl.Locale("en-US"),
-            );
+            vi.spyOn(localeService, "getPlatformLocale").mockReturnValue(new Intl.Locale("en-US"));
 
             expect(localeService.getPlatformForServerLocale()).toBe("en");
         });
 
-        it("should return 'ko' for 'ko-KR'", () =>
-        {
+        it("should return 'ko' for 'ko-KR'", () => {
             // Override the get locale so we control what the input is
-            vi.spyOn(localeService, "getPlatformLocale").mockReturnValue(
-                new Intl.Locale("ko-KR"),
-            );
+            vi.spyOn(localeService, "getPlatformLocale").mockReturnValue(new Intl.Locale("ko-KR"));
 
             expect(localeService.getPlatformForServerLocale()).toBe("ko");
         });
 
-        it("should return 'pt-pt' for 'pt-PT'", () =>
-        {
+        it("should return 'pt-pt' for 'pt-PT'", () => {
             // Override the get locale so we control what the input is
-            vi.spyOn(localeService, "getPlatformLocale").mockReturnValue(
-                new Intl.Locale("pt-PT"),
-            );
+            vi.spyOn(localeService, "getPlatformLocale").mockReturnValue(new Intl.Locale("pt-PT"));
 
             expect(localeService.getPlatformForServerLocale()).toBe("pt-pt");
         });
 
-        it("should return 'pt-br' for 'pt-BR'", () =>
-        {
+        it("should return 'pt-br' for 'pt-BR'", () => {
             // Override the get locale so we control what the input is
-            vi.spyOn(localeService, "getPlatformLocale").mockReturnValue(
-                new Intl.Locale("pt-BR"),
-            );
+            vi.spyOn(localeService, "getPlatformLocale").mockReturnValue(new Intl.Locale("pt-BR"));
 
             expect(localeService.getPlatformForServerLocale()).toBe("pt-br");
         });
     });
 
-    describe("ValidateClientLocale", () =>
-    {
-        it("should return 'en' for 'en-US'", () =>
-        {
+    describe("ValidateClientLocale", () => {
+        it("should return 'en' for 'en-US'", () => {
             // Override the get locale so we control what the input is
-            vi.spyOn(localeService, "getPlatformLocale").mockReturnValue(
-                new Intl.Locale("en-US"),
-            );
+            vi.spyOn(localeService, "getPlatformLocale").mockReturnValue(new Intl.Locale("en-US"));
 
             expect(localeService.getPlatformForClientLocale()).toBe("en");
         });
 
-        it("should return 'kr' for 'ko-KR'", () =>
-        {
+        it("should return 'kr' for 'ko-KR'", () => {
             // Override the get locale so we control what the input is
-            vi.spyOn(localeService, "getPlatformLocale").mockReturnValue(
-                new Intl.Locale("ko-KR"),
-            );
+            vi.spyOn(localeService, "getPlatformLocale").mockReturnValue(new Intl.Locale("ko-KR"));
 
             expect(localeService.getPlatformForClientLocale()).toBe("kr");
         });
 
-        it("should return 'es-mx' for 'es-MX'", () =>
-        {
+        it("should return 'es-mx' for 'es-MX'", () => {
             // Override the get locale so we control what the input is
-            vi.spyOn(localeService, "getPlatformLocale").mockReturnValue(
-                new Intl.Locale("es-MX"),
-            );
+            vi.spyOn(localeService, "getPlatformLocale").mockReturnValue(new Intl.Locale("es-MX"));
 
             expect(localeService.getPlatformForClientLocale()).toBe("es-mx");
         });
 
-        it("should return 'cz' for 'cs-CZ'", () =>
-        {
+        it("should return 'cz' for 'cs-CZ'", () => {
             // Override the get locale so we control what the input is
-            vi.spyOn(localeService, "getPlatformLocale").mockReturnValue(
-                new Intl.Locale("cs-CZ"),
-            );
+            vi.spyOn(localeService, "getPlatformLocale").mockReturnValue(new Intl.Locale("cs-CZ"));
 
             expect(localeService.getPlatformForClientLocale()).toBe("cz");
         });
 
-        it("should return 'ge' for 'de-DE'", () =>
-        {
+        it("should return 'ge' for 'de-DE'", () => {
             // Override the get locale so we control what the input is
-            vi.spyOn(localeService, "getPlatformLocale").mockReturnValue(
-                new Intl.Locale("de-DE"),
-            );
+            vi.spyOn(localeService, "getPlatformLocale").mockReturnValue(new Intl.Locale("de-DE"));
 
             expect(localeService.getPlatformForClientLocale()).toBe("ge");
         });

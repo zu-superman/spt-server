@@ -1,4 +1,3 @@
-import { inject, injectable } from "tsyringe";
 import { ProfileCallbacks } from "@spt/callbacks/ProfileCallbacks";
 import { RouteAction, StaticRouter } from "@spt/di/Router";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
@@ -8,12 +7,11 @@ import { GetProfileStatusResponseData } from "@spt/models/eft/profile/GetProfile
 import { ICreateProfileResponse } from "@spt/models/eft/profile/ICreateProfileResponse";
 import { IGetOtherProfileResponse } from "@spt/models/eft/profile/IGetOtherProfileResponse";
 import { ISearchFriendResponse } from "@spt/models/eft/profile/ISearchFriendResponse";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class ProfileStaticRouter extends StaticRouter
-{
-    constructor(@inject("ProfileCallbacks") protected profileCallbacks: ProfileCallbacks)
-    {
+export class ProfileStaticRouter extends StaticRouter {
+    constructor(@inject("ProfileCallbacks") protected profileCallbacks: ProfileCallbacks) {
         super([
             new RouteAction(
                 "/client/game/profile/create",
@@ -22,8 +20,7 @@ export class ProfileStaticRouter extends StaticRouter
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<ICreateProfileResponse>> =>
-                {
+                ): Promise<IGetBodyResponseData<ICreateProfileResponse>> => {
                     return this.profileCallbacks.createProfile(url, info, sessionID);
                 },
             ),
@@ -34,8 +31,7 @@ export class ProfileStaticRouter extends StaticRouter
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<IPmcData[]>> =>
-                {
+                ): Promise<IGetBodyResponseData<IPmcData[]>> => {
                     return this.profileCallbacks.getProfileData(url, info, sessionID);
                 },
             ),
@@ -46,15 +42,13 @@ export class ProfileStaticRouter extends StaticRouter
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<IPmcData[]>> =>
-                {
+                ): Promise<IGetBodyResponseData<IPmcData[]>> => {
                     return this.profileCallbacks.regenerateScav(url, info, sessionID);
                 },
             ),
             new RouteAction(
                 "/client/game/profile/voice/change",
-                async (url: string, info: any, sessionID: string, output: string): Promise<INullResponseData> =>
-                {
+                async (url: string, info: any, sessionID: string, output: string): Promise<INullResponseData> => {
                     return this.profileCallbacks.changeVoice(url, info, sessionID);
                 },
             ),
@@ -65,8 +59,7 @@ export class ProfileStaticRouter extends StaticRouter
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<any>> =>
-                {
+                ): Promise<IGetBodyResponseData<any>> => {
                     return this.profileCallbacks.changeNickname(url, info, sessionID);
                 },
             ),
@@ -77,8 +70,7 @@ export class ProfileStaticRouter extends StaticRouter
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<any>> =>
-                {
+                ): Promise<IGetBodyResponseData<any>> => {
                     return this.profileCallbacks.validateNickname(url, info, sessionID);
                 },
             ),
@@ -89,8 +81,7 @@ export class ProfileStaticRouter extends StaticRouter
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<string>> =>
-                {
+                ): Promise<IGetBodyResponseData<string>> => {
                     return this.profileCallbacks.getReservedNickname(url, info, sessionID);
                 },
             ),
@@ -101,8 +92,7 @@ export class ProfileStaticRouter extends StaticRouter
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<GetProfileStatusResponseData>> =>
-                {
+                ): Promise<IGetBodyResponseData<GetProfileStatusResponseData>> => {
                     return this.profileCallbacks.getProfileStatus(url, info, sessionID);
                 },
             ),
@@ -113,8 +103,7 @@ export class ProfileStaticRouter extends StaticRouter
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<IGetOtherProfileResponse>> =>
-                {
+                ): Promise<IGetBodyResponseData<IGetOtherProfileResponse>> => {
                     return this.profileCallbacks.getOtherProfile(url, info, sessionID);
                 },
             ),
@@ -125,8 +114,7 @@ export class ProfileStaticRouter extends StaticRouter
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<boolean>> =>
-                {
+                ): Promise<IGetBodyResponseData<boolean>> => {
                     return this.profileCallbacks.getProfileSettings(url, info, sessionID);
                 },
             ),
@@ -137,22 +125,19 @@ export class ProfileStaticRouter extends StaticRouter
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<ISearchFriendResponse[]>> =>
-                {
+                ): Promise<IGetBodyResponseData<ISearchFriendResponse[]>> => {
                     return this.profileCallbacks.searchFriend(url, info, sessionID);
                 },
             ),
             new RouteAction(
                 "/launcher/profile/info",
-                async (url: string, info: any, sessionID: string, output: string): Promise<string> =>
-                {
+                async (url: string, info: any, sessionID: string, output: string): Promise<string> => {
                     return this.profileCallbacks.getMiniProfile(url, info, sessionID);
                 },
             ),
             new RouteAction(
                 "/launcher/profiles",
-                async (url: string, info: any, sessionID: string, output: string): Promise<string> =>
-                {
+                async (url: string, info: any, sessionID: string, output: string): Promise<string> => {
                     return this.profileCallbacks.getAllMiniProfiles(url, info, sessionID);
                 },
             ),

@@ -1,4 +1,3 @@
-import { inject, injectable } from "tsyringe";
 import { AchievementController } from "@spt/controllers/AchievementController";
 import { ProfileController } from "@spt/controllers/ProfileController";
 import { IEmptyRequestData } from "@spt/models/eft/common/IEmptyRequestData";
@@ -6,16 +5,15 @@ import { IGetBodyResponseData } from "@spt/models/eft/httpResponse/IGetBodyRespo
 import { ICompletedAchievementsResponse } from "@spt/models/eft/profile/ICompletedAchievementsResponse";
 import { IGetAchievementsResponse } from "@spt/models/eft/profile/IGetAchievementsResponse";
 import { HttpResponseUtil } from "@spt/utils/HttpResponseUtil";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class AchievementCallbacks
-{
+export class AchievementCallbacks {
     constructor(
         @inject("AchievementController") protected achievementController: AchievementController,
         @inject("ProfileController") protected profileController: ProfileController,
         @inject("HttpResponseUtil") protected httpResponse: HttpResponseUtil,
-    )
-    {}
+    ) {}
 
     /**
      * Handle client/achievement/list
@@ -24,8 +22,7 @@ export class AchievementCallbacks
         url: string,
         info: IEmptyRequestData,
         sessionID: string,
-    ): IGetBodyResponseData<IGetAchievementsResponse>
-    {
+    ): IGetBodyResponseData<IGetAchievementsResponse> {
         return this.httpResponse.getBody(this.achievementController.getAchievements(sessionID));
     }
 
@@ -36,8 +33,7 @@ export class AchievementCallbacks
         url: string,
         info: IEmptyRequestData,
         sessionID: string,
-    ): IGetBodyResponseData<ICompletedAchievementsResponse>
-    {
+    ): IGetBodyResponseData<ICompletedAchievementsResponse> {
         return this.httpResponse.getBody(this.achievementController.getAchievementStatistics(sessionID));
     }
 }

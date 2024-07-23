@@ -202,11 +202,11 @@
             }
         },
         "chancePlateExistsInArmorPercent": {
-			"3": 95,
-			"4": 75,
-			"5": 25,
-			"6": 10
-		},
+            "3": 95,
+            "4": 75,
+            "5": 25,
+            "6": 10
+        },
         "armorMaxDurabilityPercentMinMax": {
             "current": {
                 "min": 50,

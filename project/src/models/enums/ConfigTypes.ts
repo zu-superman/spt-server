@@ -1,5 +1,4 @@
-export enum ConfigTypes
-{
+export enum ConfigTypes {
     AIRDROP = "spt-airdrop",
     BOT = "spt-bot",
     PMC = "spt-pmc",

@@ -1,4 +1,3 @@
-import { inject, injectable } from "tsyringe";
 import { HideoutController } from "@spt/controllers/HideoutController";
 import { OnUpdate } from "@spt/di/OnUpdate";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
@@ -19,17 +18,16 @@ import { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRo
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { IHideoutConfig } from "@spt/models/spt/config/IHideoutConfig";
 import { ConfigServer } from "@spt/servers/ConfigServer";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class HideoutCallbacks implements OnUpdate
-{
+export class HideoutCallbacks implements OnUpdate {
     protected hideoutConfig: IHideoutConfig;
 
     constructor(
         @inject("HideoutController") protected hideoutController: HideoutController, // TODO: delay needed
         @inject("ConfigServer") protected configServer: ConfigServer,
-    )
-    {
+    ) {
         this.hideoutConfig = this.configServer.getConfig(ConfigTypes.HIDEOUT);
     }
 
@@ -41,8 +39,7 @@ export class HideoutCallbacks implements OnUpdate
         body: IHideoutUpgradeRequestData,
         sessionID: string,
         output: IItemEventRouterResponse,
-    ): IItemEventRouterResponse
-    {
+    ): IItemEventRouterResponse {
         this.hideoutController.startUpgrade(pmcData, body, sessionID, output);
 
         return output;
@@ -56,8 +53,7 @@ export class HideoutCallbacks implements OnUpdate
         body: IHideoutUpgradeCompleteRequestData,
         sessionID: string,
         output: IItemEventRouterResponse,
-    ): IItemEventRouterResponse
-    {
+    ): IItemEventRouterResponse {
         this.hideoutController.upgradeComplete(pmcData, body, sessionID, output);
 
         return output;
@@ -70,8 +66,7 @@ export class HideoutCallbacks implements OnUpdate
         pmcData: IPmcData,
         body: IHideoutPutItemInRequestData,
         sessionID: string,
-    ): IItemEventRouterResponse
-    {
+    ): IItemEventRouterResponse {
         return this.hideoutController.putItemsInAreaSlots(pmcData, body, sessionID);
     }
 
@@ -82,8 +77,7 @@ export class HideoutCallbacks implements OnUpdate
         pmcData: IPmcData,
         body: IHideoutTakeItemOutRequestData,
         sessionID: string,
-    ): IItemEventRouterResponse
-    {
+    ): IItemEventRouterResponse {
         return this.hideoutController.takeItemsFromAreaSlots(pmcData, body, sessionID);
     }
 
@@ -94,8 +88,7 @@ export class HideoutCallbacks implements OnUpdate
         pmcData: IPmcData,
         body: IHideoutToggleAreaRequestData,
         sessionID: string,
-    ): IItemEventRouterResponse
-    {
+    ): IItemEventRouterResponse {
         return this.hideoutController.toggleArea(pmcData, body, sessionID);
     }
 
@@ -106,8 +99,7 @@ export class HideoutCallbacks implements OnUpdate
         pmcData: IPmcData,
         body: IHideoutSingleProductionStartRequestData,
         sessionID: string,
-    ): IItemEventRouterResponse
-    {
+    ): IItemEventRouterResponse {
         return this.hideoutController.singleProductionStart(pmcData, body, sessionID);
     }
 
@@ -118,8 +110,7 @@ export class HideoutCallbacks implements OnUpdate
         pmcData: IPmcData,
         body: IHideoutScavCaseStartRequestData,
         sessionID: string,
-    ): IItemEventRouterResponse
-    {
+    ): IItemEventRouterResponse {
         return this.hideoutController.scavCaseProductionStart(pmcData, body, sessionID);
     }
 
@@ -130,8 +121,7 @@ export class HideoutCallbacks implements OnUpdate
         pmcData: IPmcData,
         body: IHideoutContinuousProductionStartRequestData,
         sessionID: string,
-    ): IItemEventRouterResponse
-    {
+    ): IItemEventRouterResponse {
         return this.hideoutController.continuousProductionStart(pmcData, body, sessionID);
     }
 
@@ -142,8 +132,7 @@ export class HideoutCallbacks implements OnUpdate
         pmcData: IPmcData,
         body: IHideoutTakeProductionRequestData,
         sessionID: string,
-    ): IItemEventRouterResponse
-    {
+    ): IItemEventRouterResponse {
         return this.hideoutController.takeProduction(pmcData, body, sessionID);
     }
 
@@ -155,8 +144,7 @@ export class HideoutCallbacks implements OnUpdate
         request: IHandleQTEEventRequestData,
         sessionId: string,
         output: IItemEventRouterResponse,
-    ): IItemEventRouterResponse
-    {
+    ): IItemEventRouterResponse {
         this.hideoutController.handleQTEEventOutcome(sessionId, pmcData, request, output);
 
         return output;
@@ -170,8 +158,7 @@ export class HideoutCallbacks implements OnUpdate
         request: IRecordShootingRangePoints,
         sessionId: string,
         output: IItemEventRouterResponse,
-    ): IItemEventRouterResponse
-    {
+    ): IItemEventRouterResponse {
         this.hideoutController.recordShootingRangePoints(sessionId, pmcData, request);
 
         return output;
@@ -184,8 +171,7 @@ export class HideoutCallbacks implements OnUpdate
         pmcData: IPmcData,
         request: IHideoutImproveAreaRequestData,
         sessionId: string,
-    ): IItemEventRouterResponse
-    {
+    ): IItemEventRouterResponse {
         return this.hideoutController.improveArea(sessionId, pmcData, request);
     }
 
@@ -196,23 +182,19 @@ export class HideoutCallbacks implements OnUpdate
         pmcData: IPmcData,
         request: IHideoutCancelProductionRequestData,
         sessionId: string,
-    ): IItemEventRouterResponse
-    {
+    ): IItemEventRouterResponse {
         return this.hideoutController.cancelProduction(sessionId, pmcData, request);
     }
 
-    public async onUpdate(timeSinceLastRun: number): Promise<boolean>
-    {
-        if (timeSinceLastRun > this.hideoutConfig.runIntervalSeconds)
-        {
+    public async onUpdate(timeSinceLastRun: number): Promise<boolean> {
+        if (timeSinceLastRun > this.hideoutConfig.runIntervalSeconds) {
             this.hideoutController.update();
             return true;
         }
         return false;
     }
 
-    public getRoute(): string
-    {
+    public getRoute(): string {
         return "spt-hideout";
     }
 }

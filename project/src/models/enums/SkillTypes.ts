@@ -1,5 +1,4 @@
-export enum SkillTypes
-{
+export enum SkillTypes {
     BOT_RELOAD = "BotReload",
     BOT_SOUND = "BotSound",
     HIDEOUT_MANAGEMENT = "HideoutManagement",

@@ -1,5 +1,4 @@
-export enum RainType
-{
+export enum RainType {
     NO_RAIN = "NoRain",
     DRIZZLING = "Drizzling",
     RAIN = "Rain",

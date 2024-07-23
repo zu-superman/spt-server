@@ -1,5 +1,4 @@
-export enum EquipmentSlots
-{
+export enum EquipmentSlots {
     HEADWEAR = "Headwear",
     EARPIECE = "Earpiece",
     FACE_COVER = "FaceCover",

@@ -1,5 +1,4 @@
-export enum GiftSenderType
-{
+export enum GiftSenderType {
     SYSTEM = "System",
     TRADER = "Trader",
     USER = "User",

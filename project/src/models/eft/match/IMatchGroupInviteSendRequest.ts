@@ -1,5 +1,4 @@
-export interface IMatchGroupInviteSendRequest
-{
-    to: string
-    inLobby: boolean
+export interface IMatchGroupInviteSendRequest {
+    to: string;
+    inLobby: boolean;
 }

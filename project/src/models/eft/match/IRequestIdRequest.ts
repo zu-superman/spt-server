@@ -1,4 +1,3 @@
-export interface IRequestIdRequest
-{
-    requestId: string
+export interface IRequestIdRequest {
+    requestId: string;
 }

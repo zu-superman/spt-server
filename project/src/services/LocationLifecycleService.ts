@@ -1,4 +1,3 @@
-import { inject, injectable } from "tsyringe";
 import { ApplicationContext } from "@spt/context/ApplicationContext";
 import { ContextVariableType } from "@spt/context/ContextVariableType";
 import { LocationLootGenerator } from "@spt/generators/LocationLootGenerator";
@@ -36,14 +35,14 @@ import { MailSendService } from "@spt/services/MailSendService";
 import { MatchBotDetailsCacheService } from "@spt/services/MatchBotDetailsCacheService";
 import { PmcChatResponseService } from "@spt/services/PmcChatResponseService";
 import { RaidTimeAdjustmentService } from "@spt/services/RaidTimeAdjustmentService";
-import { ICloner } from "@spt/utils/cloners/ICloner";
 import { HashUtil } from "@spt/utils/HashUtil";
 import { RandomUtil } from "@spt/utils/RandomUtil";
 import { TimeUtil } from "@spt/utils/TimeUtil";
+import { ICloner } from "@spt/utils/cloners/ICloner";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class LocationLifecycleService
-{
+export class LocationLifecycleService {
     protected inRaidConfig: IInRaidConfig;
     protected traderConfig: ITraderConfig;
     protected ragfairConfig: IRagfairConfig;
@@ -75,8 +74,7 @@ export class LocationLifecycleService
         @inject("ApplicationContext") protected applicationContext: ApplicationContext,
         @inject("LocationLootGenerator") protected locationLootGenerator: LocationLootGenerator,
         @inject("PrimaryCloner") protected cloner: ICloner,
-    )
-    {
+    ) {
         this.inRaidConfig = this.configServer.getConfig(ConfigTypes.IN_RAID);
         this.traderConfig = this.configServer.getConfig(ConfigTypes.TRADER);
         this.ragfairConfig = this.configServer.getConfig(ConfigTypes.RAGFAIR);
@@ -84,8 +82,7 @@ export class LocationLifecycleService
         this.locationConfig = this.configServer.getConfig(ConfigTypes.LOCATION);
     }
 
-    public startLocalRaid(sessionId: string, request: IStartLocalRaidRequestData): IStartLocalRaidResponseData
-    {
+    public startLocalRaid(sessionId: string, request: IStartLocalRaidRequestData): IStartLocalRaidResponseData {
         const playerProfile = this.profileHelper.getPmcProfile(sessionId);
 
         const result: IStartLocalRaidResponseData = {
@@ -106,8 +103,7 @@ export class LocationLifecycleService
      * @param name Map name
      * @returns ILocationBase
      */
-    protected generateLocationAndLoot(name: string): ILocationBase
-    {
+    protected generateLocationAndLoot(name: string): ILocationBase {
         const location = this.databaseService.getLocation(name);
         const locationBaseClone = this.cloner.clone(location.base);
 
@@ -115,8 +111,7 @@ export class LocationLifecycleService
         locationBaseClone.UnixDateTime = this.timeUtil.getTimestamp();
 
         // Don't generate loot for hideout
-        if (name === "hideout")
-        {
+        if (name === "hideout") {
             return locationBaseClone;
         }
 
@@ -125,8 +120,7 @@ export class LocationLifecycleService
         const raidAdjustments = this.applicationContext
             .getLatestValue(ContextVariableType.RAID_ADJUSTMENTS)
             ?.getValue<IRaidChanges>();
-        if (raidAdjustments)
-        {
+        if (raidAdjustments) {
             locationConfigClone = this.cloner.clone(this.locationConfig); // Clone values so they can be used to reset originals later
             this.raidTimeAdjustmentService.makeAdjustmentsToMap(raidAdjustments, locationBaseClone);
         }
@@ -145,8 +139,7 @@ export class LocationLifecycleService
             name,
         );
 
-        for (const spawnPoint of dynamicSpawnPoints)
-        {
+        for (const spawnPoint of dynamicSpawnPoints) {
             locationBaseClone.Loot.push(spawnPoint);
         }
 
@@ -157,8 +150,7 @@ export class LocationLifecycleService
         this.logger.success(this.localisationService.getText("location-generated_success", name));
 
         // Reset loot multipliers back to original values
-        if (raidAdjustments)
-        {
+        if (raidAdjustments) {
             this.logger.debug("Resetting loot multipliers back to their original values");
             this.locationConfig.staticLootMultiplier = locationConfigClone.staticLootMultiplier;
             this.locationConfig.looseLootMultiplier = locationConfigClone.looseLootMultiplier;
@@ -169,8 +161,7 @@ export class LocationLifecycleService
         return locationBaseClone;
     }
 
-    public endLocalRaid(sessionId: string, request: IEndLocalRaidRequestData): void
-    {
+    public endLocalRaid(sessionId: string, request: IEndLocalRaidRequestData): void {
         // Clear bot loot cache
         this.botLootCacheService.clearCache();
 
@@ -198,38 +189,25 @@ export class LocationLifecycleService
         const mapBase = this.databaseService.getLocation(locationName).base;
         const isDead = this.isPlayerDead(request.results);
 
-        if (!isPmc)
-        {
-            this.handlePostRaidPlayerScav(
-                sessionId,
-                pmcProfile,
-                scavProfile,
-                isDead,
-                request);
+        if (!isPmc) {
+            this.handlePostRaidPlayerScav(sessionId, pmcProfile, scavProfile, isDead, request);
 
             return;
         }
 
-        this.handlePostRaidPmc(
-            sessionId,
-            pmcProfile,
-            scavProfile,
-            postRaidProfile,
-            isDead,
-            request,
-            locationName);
+        this.handlePostRaidPmc(sessionId, pmcProfile, scavProfile, postRaidProfile, isDead, request, locationName);
 
         // Handle car extracts
-        if (this.extractWasViaCar(request.results.exitName))
-        {
+        if (this.extractWasViaCar(request.results.exitName)) {
             this.handleCarExtract(request.results.exitName, pmcProfile, sessionId);
         }
 
         // Handle coop exit
-        if (request.results.exitName
-          && this.extractTakenWasCoop(request.results.exitName)
-          && this.traderConfig.fence.coopExtractGift.sendGift)
-        {
+        if (
+            request.results.exitName &&
+            this.extractTakenWasCoop(request.results.exitName) &&
+            this.traderConfig.fence.coopExtractGift.sendGift
+        ) {
             this.handleCoopExtract(sessionId, pmcProfile, request.results.exitName);
             this.sendCoopTakenFenceMessage(sessionId);
         }
@@ -240,16 +218,13 @@ export class LocationLifecycleService
      * @param extractName name of extract
      * @returns True if extract was by car
      */
-    protected extractWasViaCar(extractName: string): boolean
-    {
+    protected extractWasViaCar(extractName: string): boolean {
         // exit name is undefined on death
-        if (!extractName)
-        {
+        if (!extractName) {
             return false;
         }
 
-        if (extractName.toLowerCase().includes("v-ex"))
-        {
+        if (extractName.toLowerCase().includes("v-ex")) {
             return true;
         }
 
@@ -262,11 +237,9 @@ export class LocationLifecycleService
      * @param pmcData Player profile
      * @param sessionId Session id
      */
-    protected handleCarExtract(extractName: string, pmcData: IPmcData, sessionId: string): void
-    {
+    protected handleCarExtract(extractName: string, pmcData: IPmcData, sessionId: string): void {
         // Ensure key exists for extract
-        if (!(extractName in pmcData.CarExtractCounts))
-        {
+        if (!(extractName in pmcData.CarExtractCounts)) {
             pmcData.CarExtractCounts[extractName] = 0;
         }
 
@@ -303,13 +276,11 @@ export class LocationLifecycleService
      * @param pmcData Profile
      * @param extractName Name of extract taken
      */
-    protected handleCoopExtract(sessionId: string, pmcData: IPmcData, extractName: string): void
-    {
+    protected handleCoopExtract(sessionId: string, pmcData: IPmcData, extractName: string): void {
         pmcData.CoopExtractCounts ||= {};
 
         // Ensure key exists for extract
-        if (!(extractName in pmcData.CoopExtractCounts))
-        {
+        if (!(extractName in pmcData.CoopExtractCounts)) {
             pmcData.CoopExtractCounts[extractName] = 0;
         }
 
@@ -342,8 +313,7 @@ export class LocationLifecycleService
      * @param extractCount Number of times extract was taken
      * @returns Fence standing after taking extract
      */
-    protected getFenceStandingAfterExtract(pmcData: IPmcData, baseGain: number, extractCount: number): number
-    {
+    protected getFenceStandingAfterExtract(pmcData: IPmcData, baseGain: number, extractCount: number): number {
         // Get current standing
         const fenceId: string = Traders.FENCE;
         let fenceStanding = Number(pmcData.TradersInfo[fenceId].standing);
@@ -358,15 +328,13 @@ export class LocationLifecycleService
         return Number(newFenceStanding.toFixed(2));
     }
 
-    protected sendCoopTakenFenceMessage(sessionId: string): void
-    {
+    protected sendCoopTakenFenceMessage(sessionId: string): void {
         // Generate reward for taking coop extract
         const loot = this.lootGenerator.createRandomLoot(this.traderConfig.fence.coopExtractGift);
         const mailableLoot: Item[] = [];
 
         const parentId = this.hashUtil.generate();
-        for (const item of loot)
-        {
+        for (const item of loot) {
             item.parentId = parentId;
             mailableLoot.push(item);
         }
@@ -387,11 +355,9 @@ export class LocationLifecycleService
      * @param extractName Name of extract player took
      * @returns True if coop extract
      */
-    protected extractTakenWasCoop(extractName: string): boolean
-    {
+    protected extractTakenWasCoop(extractName: string): boolean {
         // No extract name, not a coop extract
-        if (!extractName)
-        {
+        if (!extractName) {
             return false;
         }
 
@@ -404,11 +370,9 @@ export class LocationLifecycleService
         scavProfile: IPmcData,
         isDead: boolean,
         request: IEndLocalRaidRequestData,
-    ): void
-    {
+    ): void {
         // Scav died, regen scav loadout and reset timer
-        if (isDead)
-        {
+        if (isDead) {
             this.playerScavGenerator.generate(sessionId);
         }
 
@@ -458,8 +422,7 @@ export class LocationLifecycleService
         isDead: boolean,
         request: IEndLocalRaidRequestData,
         locationName: string,
-    ): void
-    {
+    ): void {
         // Update inventory
         this.inRaidHelper.setInventory(sessionId, pmcProfile, postRaidProfile);
 
@@ -495,19 +458,10 @@ export class LocationLifecycleService
         this.resetSkillPointsEarnedDuringRaid(pmcProfile.Skills.Common);
 
         // Handle temp, hydration, limb hp/effects
-        this.healthHelper.updateProfileHealthPostRaid(
-            pmcProfile,
-            postRaidProfile.Health,
-            sessionId,
-            isDead);
+        this.healthHelper.updateProfileHealthPostRaid(pmcProfile, postRaidProfile.Health, sessionId, isDead);
 
-        if (isDead)
-        {
-            this.pmcChatResponseService.sendKillerResponse(
-                sessionId,
-                pmcProfile,
-                postRaidProfile.Stats.Eft.Aggressor,
-            );
+        if (isDead) {
+            this.pmcChatResponseService.sendKillerResponse(sessionId, pmcProfile, postRaidProfile.Stats.Eft.Aggressor);
 
             this.inRaidHelper.deleteInventory(pmcProfile, sessionId);
         }
@@ -518,8 +472,7 @@ export class LocationLifecycleService
         const victims = postRaidProfile.Stats.Eft.Victims.filter((victim) =>
             ["pmcbear", "pmcusec"].includes(victim.Role.toLowerCase()),
         );
-        if (victims?.length > 0)
-        {
+        if (victims?.length > 0) {
             // Player killed PMCs, send some responses to them
             this.pmcChatResponseService.sendVictimResponse(sessionId, victims, pmcProfile);
         }
@@ -527,17 +480,14 @@ export class LocationLifecycleService
         // Handle items transferred via BTR to player
         this.handleBTRItemTransferEvent(sessionId, request);
 
-        if (request.lostInsuredItems?.length > 0)
-        {
+        if (request.lostInsuredItems?.length > 0) {
             const mappedItems = this.insuranceService.mapInsuredItemsToTrader(
                 sessionId,
                 request.lostInsuredItems,
-                request.results.profile);
-
-            this.insuranceService.storeGearLostInRaidToSendLater(
-                sessionId,
-                mappedItems,
+                request.results.profile,
             );
+
+            this.insuranceService.storeGearLostInRaidToSendLater(sessionId, mappedItems);
 
             this.insuranceService.sendInsuredItems(pmcProfile, sessionId, locationName);
         }
@@ -551,19 +501,15 @@ export class LocationLifecycleService
     protected applyTraderStandingAdjustments(
         tradersServerProfile: Record<string, TraderInfo>,
         tradersClientProfile: Record<string, TraderInfo>,
-    ): void
-    {
-        for (const traderId in tradersClientProfile)
-        {
+    ): void {
+        for (const traderId in tradersClientProfile) {
             const serverProfileTrader = tradersServerProfile[traderId];
             const clientProfileTrader = tradersClientProfile[traderId];
-            if (!(serverProfileTrader && clientProfileTrader))
-            {
+            if (!(serverProfileTrader && clientProfileTrader)) {
                 continue;
             }
 
-            if (clientProfileTrader.standing !== serverProfileTrader.standing)
-            {
+            if (clientProfileTrader.standing !== serverProfileTrader.standing) {
                 // Difference found, update server profile with values from client profile
                 tradersServerProfile[traderId].standing = clientProfileTrader.standing;
             }
@@ -575,28 +521,24 @@ export class LocationLifecycleService
      * @param sessionId Session id
      * @param request End raid request
      */
-    protected handleBTRItemTransferEvent(
-        sessionId: string,
-        request: IEndLocalRaidRequestData): void
-    {
+    protected handleBTRItemTransferEvent(sessionId: string, request: IEndLocalRaidRequestData): void {
         const btrKey = "BTRTransferStash";
         const btrContainerAndItems = request.transferItems[btrKey] ?? [];
-        if (btrContainerAndItems.length > 0)
-        {
+        if (btrContainerAndItems.length > 0) {
             const itemsToSend = btrContainerAndItems.filter((item) => item._id !== btrKey);
             this.btrItemDelivery(sessionId, Traders.BTR, itemsToSend);
-        };
+        }
     }
 
-    protected btrItemDelivery(sessionId: string, traderId: string, items: Item[]): void
-    {
+    protected btrItemDelivery(sessionId: string, traderId: string, items: Item[]): void {
         const serverProfile = this.saveServer.getProfile(sessionId);
         const pmcData = serverProfile.characters.pmc;
 
         const dialogueTemplates = this.databaseService.getTrader(traderId).dialogue;
-        if (!dialogueTemplates)
-        {
-            this.logger.error(this.localisationService.getText("inraid-unable_to_deliver_item_no_trader_found", traderId));
+        if (!dialogueTemplates) {
+            this.logger.error(
+                this.localisationService.getText("inraid-unable_to_deliver_item_no_trader_found", traderId),
+            );
 
             return;
         }
@@ -606,8 +548,9 @@ export class LocationLifecycleService
         // Remove any items that were returned by the item delivery, but also insured, from the player's insurance list
         // This is to stop items being duplicated by being returned from both item delivery and insurance
         const deliveredItemIds = items.map((item) => item._id);
-        pmcData.InsuredItems = pmcData.InsuredItems
-            .filter((insuredItem) => !deliveredItemIds.includes(insuredItem.itemId));
+        pmcData.InsuredItems = pmcData.InsuredItems.filter(
+            (insuredItem) => !deliveredItemIds.includes(insuredItem.itemId),
+        );
 
         // Send the items to the player
         this.mailSendService.sendLocalisedNpcMessageToPlayer(
@@ -625,8 +568,7 @@ export class LocationLifecycleService
      * @param items Players inventory to search through
      * @returns an array of equipped items
      */
-    protected getEquippedGear(items: Item[]): Item[]
-    {
+    protected getEquippedGear(items: Item[]): Item[] {
         // Player Slots we care about
         const inventorySlots = [
             "FirstPrimaryWeapon",
@@ -654,27 +596,21 @@ export class LocationLifecycleService
         let inventoryItems: Item[] = [];
 
         // Get an array of root player items
-        for (const item of items)
-        {
-            if (inventorySlots.includes(item.slotId))
-            {
+        for (const item of items) {
+            if (inventorySlots.includes(item.slotId)) {
                 inventoryItems.push(item);
             }
         }
 
         // Loop through these items and get all of their children
         let newItems = inventoryItems;
-        while (newItems.length > 0)
-        {
+        while (newItems.length > 0) {
             const foundItems = [];
 
-            for (const item of newItems)
-            {
+            for (const item of newItems) {
                 // Find children of this item
-                for (const newItem of items)
-                {
-                    if (newItem.parentId === item._id)
-                    {
+                for (const newItem of items) {
+                    if (newItem.parentId === item._id) {
                         foundItems.push(newItem);
                     }
                 }
@@ -695,8 +631,7 @@ export class LocationLifecycleService
      * @param statusOnExit Exit value from offraidData object
      * @returns true if dead
      */
-    protected isPlayerDead(results: IEndRaidResult): boolean
-    {
+    protected isPlayerDead(results: IEndRaidResult): boolean {
         return ["killed", "missinginaction", "left"].includes(results.result.toLowerCase());
     }
 
@@ -704,10 +639,8 @@ export class LocationLifecycleService
      * Reset the skill points earned in a raid to 0, ready for next raid
      * @param commonSkills Profile common skills to update
      */
-    protected resetSkillPointsEarnedDuringRaid(commonSkills: Common[]): void
-    {
-        for (const skill of commonSkills)
-        {
+    protected resetSkillPointsEarnedDuringRaid(commonSkills: Common[]): void {
+        for (const skill of commonSkills) {
             skill.PointsEarnedDuringSession = 0.0;
         }
     }
@@ -718,14 +651,10 @@ export class LocationLifecycleService
      * @param primary main dictionary
      * @param secondary Secondary dictionary
      */
-    protected mergePmcAndScavEncyclopedias(primary: IPmcData, secondary: IPmcData): void
-    {
-        function extend(target: { [key: string]: boolean }, source: Record<string, boolean>)
-        {
-            for (const key in source)
-            {
-                if (Object.hasOwn(source, key))
-                {
+    protected mergePmcAndScavEncyclopedias(primary: IPmcData, secondary: IPmcData): void {
+        function extend(target: { [key: string]: boolean }, source: Record<string, boolean>) {
+            for (const key in source) {
+                if (Object.hasOwn(source, key)) {
                     target[key] = source[key];
                 }
             }

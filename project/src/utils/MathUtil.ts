@@ -1,15 +1,13 @@
 import { injectable } from "tsyringe";
 
 @injectable()
-export class MathUtil
-{
+export class MathUtil {
     /**
      * Helper to create the sum of all array elements
      * @param   {array}     values          The array with numbers of which to calculate the sum
      * @return  {number}                    sum(values)
      */
-    public arraySum(values: number[]): number
-    {
+    public arraySum(values: number[]): number {
         // sum with initial value being 0
         return values.reduce((sum, x) => sum + x, 0);
     }
@@ -20,12 +18,10 @@ export class MathUtil
      * @param   {array}     values          The array with numbers of which to calculate the cumulative sum
      * @return  {array}                     cumsum(values)
      */
-    public arrayCumsum(values: number[]): number[]
-    {
+    public arrayCumsum(values: number[]): number[] {
         const cumsumArray: number[] = [];
         let sum = 0;
-        for (let i = 0; i < values.length; i++)
-        {
+        for (let i = 0; i < values.length; i++) {
             sum += values[i];
             cumsumArray[i] = sum;
         }
@@ -37,8 +33,7 @@ export class MathUtil
      * @param   {array}     values          The array of numbers which shall be multiplied by the factor
      * @return  {array}                     array times factor
      */
-    public arrayProd(values: number[], factor: number): number[]
-    {
+    public arrayProd(values: number[], factor: number): number[] {
         return values.map((x) => x * factor);
     }
 
@@ -47,8 +42,7 @@ export class MathUtil
      * @param   {array}     values          The array of numbers to which the summand should be added
      * @return  {array}                     array plus summand
      */
-    public arrayAdd(values: number[], summand: number): number[]
-    {
+    public arrayAdd(values: number[], summand: number): number[] {
         return values.map((x) => x + summand);
     }
 
@@ -67,8 +61,7 @@ export class MathUtil
      * @param   {number}    maxOut          max of outout range
      * @return  {number}                    the result of the mapping
      */
-    public mapToRange(x: number, minIn: number, maxIn: number, minOut: number, maxOut: number): number
-    {
+    public mapToRange(x: number, minIn: number, maxIn: number, minOut: number, maxOut: number): number {
         const deltaIn = maxIn - minIn;
         const deltaOut = maxOut - minOut;
 
@@ -85,22 +78,17 @@ export class MathUtil
      * @param   {array}     y               support points in y (of same length as x)
      * @return  {number}                    y(xp)
      */
-    public interp1(xp: number, x: number[], y: number[]): number | undefined
-    {
-        if (xp > x[x.length - 1])
-        {
+    public interp1(xp: number, x: number[], y: number[]): number | undefined {
+        if (xp > x[x.length - 1]) {
             return y[y.length - 1];
         }
 
-        if (xp < x[0])
-        {
+        if (xp < x[0]) {
             return y[0];
         }
 
-        for (let i = 0; i < x.length - 1; i++)
-        {
-            if (xp >= x[i] && xp <= x[i + 1])
-            {
+        for (let i = 0; i < x.length - 1; i++) {
+            if (xp >= x[i] && xp <= x[i + 1]) {
                 return y[i] + ((xp - x[i]) * (y[i + 1] - y[i])) / (x[i + 1] - x[i]);
             }
         }

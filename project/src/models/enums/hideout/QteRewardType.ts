@@ -1,5 +1,4 @@
-export enum QteRewardType
-{
+export enum QteRewardType {
     SKILL = "Skill",
     HEALTH_EFFECT = "HealthEffect",
     MUSCLE_PAIN = "MusclePain",

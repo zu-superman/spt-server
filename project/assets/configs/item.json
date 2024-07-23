@@ -49,10 +49,7 @@
         "6241c2c2117ad530666a5108",
         "5580239d4bdc2de7118b4583"
     ],
-	"lootableItemBlacklist": [
-        "660bbc47c38b837877075e47",
-        "660bc341c38b837877075e4c"
-	],
+    "lootableItemBlacklist": ["660bbc47c38b837877075e47", "660bc341c38b837877075e4c"],
     "rewardItemBlacklist": [
         "58ac60eb86f77401897560ff",
         "5e997f0b86f7741ac73993e2",
@@ -101,7 +98,7 @@
         "6662e9f37fa79a6d83730fa0",
         "6662ea05f6259762c56f3189",
         "6638a5474e92f038531e210e",
-		"65ddcc9cfa85b9f17d0dfb07"
+        "65ddcc9cfa85b9f17d0dfb07"
     ],
     "bossItems": [
         "6275303a9f372d6ea97f9ec7",

@@ -9,17 +9,16 @@ import { IServerBase } from "@spt/models/spt/server/IServerBase";
 import { ISettingsBase } from "@spt/models/spt/server/ISettingsBase";
 import { ITemplates } from "@spt/models/spt/templates/ITemplates";
 
-export interface IDatabaseTables
-{
-    bots?: IBots
-    hideout?: IHideout
-    locales?: ILocaleBase
-    locations?: ILocations
-    match?: IMatch
-    templates?: ITemplates
-    traders?: Record<string, ITrader>
+export interface IDatabaseTables {
+    bots?: IBots;
+    hideout?: IHideout;
+    locales?: ILocaleBase;
+    locations?: ILocations;
+    match?: IMatch;
+    templates?: ITemplates;
+    traders?: Record<string, ITrader>;
 
-    globals?: IGlobals
-    server?: IServerBase
-    settings?: ISettingsBase
+    globals?: IGlobals;
+    server?: IServerBase;
+    settings?: ISettingsBase;
 }

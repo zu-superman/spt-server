@@ -1,4 +1,3 @@
-export interface IGetOtherProfileRequest
-{
-    accountId: string
+export interface IGetOtherProfileRequest {
+    accountId: string;
 }

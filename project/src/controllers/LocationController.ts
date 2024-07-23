@@ -1,4 +1,3 @@
-import { inject, injectable } from "tsyringe";
 import { ILocationsGenerateAllResponse } from "@spt/models/eft/common/ILocationsSourceDestinationBase";
 import { IGetAirdropLootResponse } from "@spt/models/eft/location/IGetAirdropLootResponse";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
@@ -9,10 +8,10 @@ import { ConfigServer } from "@spt/servers/ConfigServer";
 import { AirdropService } from "@spt/services/AirdropService";
 import { DatabaseService } from "@spt/services/DatabaseService";
 import { ICloner } from "@spt/utils/cloners/ICloner";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class LocationController
-{
+export class LocationController {
     protected locationConfig: ILocationConfig;
 
     constructor(
@@ -21,8 +20,7 @@ export class LocationController
         @inject("AirdropService") protected airdropService: AirdropService,
         @inject("ConfigServer") protected configServer: ConfigServer,
         @inject("PrimaryCloner") protected cloner: ICloner,
-    )
-    {
+    ) {
         this.locationConfig = this.configServer.getConfig(ConfigTypes.LOCATION);
     }
 
@@ -32,15 +30,12 @@ export class LocationController
      * @param sessionId Players Id
      * @returns ILocationsGenerateAllResponse
      */
-    public generateAll(sessionId: string): ILocationsGenerateAllResponse
-    {
+    public generateAll(sessionId: string): ILocationsGenerateAllResponse {
         const locationsFromDb = this.databaseService.getLocations();
         const locations: ILocations = {};
-        for (const mapName in locationsFromDb)
-        {
+        for (const mapName in locationsFromDb) {
             const mapBase = locationsFromDb[mapName]?.base;
-            if (!mapBase)
-            {
+            if (!mapBase) {
                 this.logger.debug(`Map: ${mapName} has no base json file, skipping generation`);
                 continue;
             }
@@ -55,8 +50,7 @@ export class LocationController
     }
 
     /** Handle client/airdrop/loot */
-    public getAirdropLoot(): IGetAirdropLootResponse
-    {
+    public getAirdropLoot(): IGetAirdropLootResponse {
         return this.airdropService.generateAirdropLoot();
     }
 }

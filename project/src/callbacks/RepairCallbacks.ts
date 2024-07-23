@@ -1,15 +1,13 @@
-import { inject, injectable } from "tsyringe";
 import { RepairController } from "@spt/controllers/RepairController";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRouterResponse";
 import { IRepairActionDataRequest } from "@spt/models/eft/repair/IRepairActionDataRequest";
 import { ITraderRepairActionDataRequest } from "@spt/models/eft/repair/ITraderRepairActionDataRequest";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class RepairCallbacks
-{
-    constructor(@inject("RepairController") protected repairController: RepairController)
-    {}
+export class RepairCallbacks {
+    constructor(@inject("RepairController") protected repairController: RepairController) {}
 
     /**
      * Handle TraderRepair event
@@ -23,8 +21,7 @@ export class RepairCallbacks
         pmcData: IPmcData,
         traderRepairRequest: ITraderRepairActionDataRequest,
         sessionID: string,
-    ): IItemEventRouterResponse
-    {
+    ): IItemEventRouterResponse {
         return this.repairController.traderRepair(sessionID, traderRepairRequest, pmcData);
     }
 
@@ -40,8 +37,7 @@ export class RepairCallbacks
         pmcData: IPmcData,
         repairRequest: IRepairActionDataRequest,
         sessionID: string,
-    ): IItemEventRouterResponse
-    {
+    ): IItemEventRouterResponse {
         return this.repairController.repairWithKit(sessionID, repairRequest, pmcData);
     }
 }

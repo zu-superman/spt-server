@@ -1,4 +1,3 @@
-import { inject, injectable } from "tsyringe";
 import { HideoutController } from "@spt/controllers/HideoutController";
 import { RagfairController } from "@spt/controllers/RagfairController";
 import { TraderHelper } from "@spt/helpers/TraderHelper";
@@ -17,13 +16,13 @@ import { ISettingsBase } from "@spt/models/spt/server/ISettingsBase";
 import { DatabaseService } from "@spt/services/DatabaseService";
 import { HttpResponseUtil } from "@spt/utils/HttpResponseUtil";
 import { TimeUtil } from "@spt/utils/TimeUtil";
+import { inject, injectable } from "tsyringe";
 
 /**
  * Handle client requests
  */
 @injectable()
-export class DataCallbacks
-{
+export class DataCallbacks {
     constructor(
         @inject("HttpResponseUtil") protected httpResponse: HttpResponseUtil,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
@@ -31,15 +30,13 @@ export class DataCallbacks
         @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("RagfairController") protected ragfairController: RagfairController,
         @inject("HideoutController") protected hideoutController: HideoutController,
-    )
-    {}
+    ) {}
 
     /**
      * Handle client/settings
      * @returns ISettingsBase
      */
-    public getSettings(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<ISettingsBase>
-    {
+    public getSettings(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<ISettingsBase> {
         return this.httpResponse.getBody(this.databaseService.getSettings());
     }
 
@@ -47,8 +44,7 @@ export class DataCallbacks
      * Handle client/globals
      * @returns IGlobals
      */
-    public getGlobals(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<IGlobals>
-    {
+    public getGlobals(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<IGlobals> {
         const globals = this.databaseService.getGlobals();
         globals.time = Date.now() / 1000;
 
@@ -59,8 +55,7 @@ export class DataCallbacks
      * Handle client/items
      * @returns string
      */
-    public getTemplateItems(url: string, info: IEmptyRequestData, sessionID: string): string
-    {
+    public getTemplateItems(url: string, info: IEmptyRequestData, sessionID: string): string {
         return this.httpResponse.getUnclearedBody(this.databaseService.getItems());
     }
 
@@ -72,8 +67,7 @@ export class DataCallbacks
         url: string,
         info: IEmptyRequestData,
         sessionID: string,
-    ): IGetBodyResponseData<IHandbookBase>
-    {
+    ): IGetBodyResponseData<IHandbookBase> {
         return this.httpResponse.getBody(this.databaseService.getHandbook());
     }
 
@@ -85,8 +79,7 @@ export class DataCallbacks
         url: string,
         info: IEmptyRequestData,
         sessionID: string,
-    ): IGetBodyResponseData<Record<string, ICustomizationItem>>
-    {
+    ): IGetBodyResponseData<Record<string, ICustomizationItem>> {
         return this.httpResponse.getBody(this.databaseService.getTemplates().customization);
     }
 
@@ -98,8 +91,7 @@ export class DataCallbacks
         url: string,
         info: IEmptyRequestData,
         sessionID: string,
-    ): IGetBodyResponseData<string[]>
-    {
+    ): IGetBodyResponseData<string[]> {
         return this.httpResponse.getBody(this.databaseService.getTemplates().character);
     }
 
@@ -111,8 +103,7 @@ export class DataCallbacks
         url: string,
         info: IEmptyRequestData,
         sessionID: string,
-    ): IGetBodyResponseData<IHideoutSettingsBase>
-    {
+    ): IGetBodyResponseData<IHideoutSettingsBase> {
         return this.httpResponse.getBody(this.databaseService.getHideout().settings);
     }
 
@@ -120,8 +111,7 @@ export class DataCallbacks
         url: string,
         info: IEmptyRequestData,
         sessionID: string,
-    ): IGetBodyResponseData<IHideoutArea[]>
-    {
+    ): IGetBodyResponseData<IHideoutArea[]> {
         return this.httpResponse.getBody(this.databaseService.getHideout().areas);
     }
 
@@ -129,8 +119,7 @@ export class DataCallbacks
         url: string,
         info: IEmptyRequestData,
         sessionID: string,
-    ): IGetBodyResponseData<IHideoutProduction[]>
-    {
+    ): IGetBodyResponseData<IHideoutProduction[]> {
         return this.httpResponse.getBody(this.databaseService.getHideout().production);
     }
 
@@ -138,8 +127,7 @@ export class DataCallbacks
         url: string,
         info: IEmptyRequestData,
         sessionID: string,
-    ): IGetBodyResponseData<IHideoutScavCase[]>
-    {
+    ): IGetBodyResponseData<IHideoutScavCase[]> {
         return this.httpResponse.getBody(this.databaseService.getHideout().scavcase);
     }
 
@@ -150,27 +138,23 @@ export class DataCallbacks
         url: string,
         info: IEmptyRequestData,
         sessionID: string,
-    ): IGetBodyResponseData<Record<string, string>>
-    {
+    ): IGetBodyResponseData<Record<string, string>> {
         return this.httpResponse.getBody(this.databaseService.getLocales().languages);
     }
 
     /**
      * Handle client/menu/locale
      */
-    public getLocalesMenu(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<string>
-    {
+    public getLocalesMenu(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<string> {
         const localeId = url.replace("/client/menu/locale/", "");
         const locales = this.databaseService.getLocales();
         let result = locales.menu[localeId];
 
-        if (result === undefined)
-        {
+        if (result === undefined) {
             result = locales.menu.en;
         }
 
-        if (result === undefined)
-            throw new Error(`Unable to determine locale for request with '${localeId}'`);
+        if (result === undefined) throw new Error(`Unable to determine locale for request with '${localeId}'`);
 
         return this.httpResponse.getBody(result);
     }
@@ -178,14 +162,12 @@ export class DataCallbacks
     /**
      * Handle client/locale
      */
-    public getLocalesGlobal(url: string, info: IEmptyRequestData, sessionID: string): string
-    {
+    public getLocalesGlobal(url: string, info: IEmptyRequestData, sessionID: string): string {
         const localeId = url.replace("/client/locale/", "");
         const locales = this.databaseService.getLocales();
         let result = locales.global[localeId];
 
-        if (result === undefined)
-        {
+        if (result === undefined) {
             result = locales.global["en"];
         }
 
@@ -195,8 +177,7 @@ export class DataCallbacks
     /**
      * Handle client/hideout/qte/list
      */
-    public getQteList(url: string, info: IEmptyRequestData, sessionID: string): string
-    {
+    public getQteList(url: string, info: IEmptyRequestData, sessionID: string): string {
         return this.httpResponse.getUnclearedBody(this.hideoutController.getQteList(sessionID));
     }
 
@@ -209,16 +190,14 @@ export class DataCallbacks
         url: string,
         info: IEmptyRequestData,
         sessionID: string,
-    ): IGetBodyResponseData<IGetItemPricesResponse>
-    {
+    ): IGetBodyResponseData<IGetItemPricesResponse> {
         const traderId = url.replace("/client/items/prices/", "");
 
         // All traders share same item prices, unknown how to tell what items are shown for each trader
         // Shown items listed are likely linked to traders items_buy/category array
         const handbookPrices = this.ragfairController.getStaticPrices();
 
-        const response: IGetItemPricesResponse
-        = {
+        const response: IGetItemPricesResponse = {
             supplyNextTime: this.traderHelper.getNextUpdateTimestamp(traderId),
             prices: handbookPrices,
             currencyCourses: {

@@ -1,5 +1,4 @@
-export enum BaseClasses
-{
+export enum BaseClasses {
     WEAPON = "5422acb9af1c889c16000029",
     UBGL = "55818b014bdc2ddc698b456b",
     ARMOR = "5448e54d4bdc2dcc718b4568",

@@ -1,4 +1,3 @@
-import { inject, injectable } from "tsyringe";
 import { MatchController } from "@spt/controllers/MatchController";
 import { IEmptyRequestData } from "@spt/models/eft/common/IEmptyRequestData";
 import { IGetBodyResponseData } from "@spt/models/eft/httpResponse/IGetBodyResponseData";
@@ -22,33 +21,29 @@ import { IUpdatePingRequestData } from "@spt/models/eft/match/IUpdatePingRequest
 import { DatabaseService } from "@spt/services/DatabaseService";
 import { HttpResponseUtil } from "@spt/utils/HttpResponseUtil";
 import { JsonUtil } from "@spt/utils/JsonUtil";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class MatchCallbacks
-{
+export class MatchCallbacks {
     constructor(
         @inject("HttpResponseUtil") protected httpResponse: HttpResponseUtil,
         @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("MatchController") protected matchController: MatchController,
         @inject("DatabaseService") protected databaseService: DatabaseService,
-    )
-    {}
+    ) {}
 
     /** Handle client/match/updatePing */
-    public updatePing(url: string, info: IUpdatePingRequestData, sessionID: string): INullResponseData
-    {
+    public updatePing(url: string, info: IUpdatePingRequestData, sessionID: string): INullResponseData {
         return this.httpResponse.nullResponse();
     }
 
     // Handle client/match/exit
-    public exitMatch(url: string, info: IEmptyRequestData, sessionID: string): INullResponseData
-    {
+    public exitMatch(url: string, info: IEmptyRequestData, sessionID: string): INullResponseData {
         return this.httpResponse.nullResponse();
     }
 
     /** Handle client/match/group/exit_from_menu */
-    public exitToMenu(url: string, info: IEmptyRequestData, sessionID: string): INullResponseData
-    {
+    public exitToMenu(url: string, info: IEmptyRequestData, sessionID: string): INullResponseData {
         return this.httpResponse.nullResponse();
     }
 
@@ -56,18 +51,15 @@ export class MatchCallbacks
         url: string,
         info: IEmptyRequestData,
         sessionID: string,
-    ): IGetBodyResponseData<IMatchGroupCurrentResponse>
-    {
+    ): IGetBodyResponseData<IMatchGroupCurrentResponse> {
         return this.httpResponse.getBody({ squad: [] });
     }
 
-    public startGroupSearch(url: string, info: IEmptyRequestData, sessionID: string): INullResponseData
-    {
+    public startGroupSearch(url: string, info: IEmptyRequestData, sessionID: string): INullResponseData {
         return this.httpResponse.nullResponse();
     }
 
-    public stopGroupSearch(url: string, info: IEmptyRequestData, sessionID: string): INullResponseData
-    {
+    public stopGroupSearch(url: string, info: IEmptyRequestData, sessionID: string): INullResponseData {
         return this.httpResponse.nullResponse();
     }
 
@@ -76,8 +68,7 @@ export class MatchCallbacks
         url: string,
         info: IMatchGroupInviteSendRequest,
         sessionID: string,
-    ): IGetBodyResponseData<string>
-    {
+    ): IGetBodyResponseData<string> {
         return this.httpResponse.getBody("2427943f23698ay9f2863735");
     }
 
@@ -86,8 +77,7 @@ export class MatchCallbacks
         url: string,
         info: IRequestIdRequest,
         sessionId: string,
-    ): IGetBodyResponseData<IGroupCharacter[]>
-    {
+    ): IGetBodyResponseData<IGroupCharacter[]> {
         const result = [];
         result.push({});
 
@@ -95,14 +85,12 @@ export class MatchCallbacks
     }
 
     /** Handle client/match/group/invite/decline */
-    public declineGroupInvite(url: string, info: IRequestIdRequest, sessionId: string): IGetBodyResponseData<boolean>
-    {
+    public declineGroupInvite(url: string, info: IRequestIdRequest, sessionId: string): IGetBodyResponseData<boolean> {
         return this.httpResponse.getBody(true);
     }
 
     /** Handle client/match/group/invite/cancel */
-    public cancelGroupInvite(url: string, info: IRequestIdRequest, sessionID: string): IGetBodyResponseData<boolean>
-    {
+    public cancelGroupInvite(url: string, info: IRequestIdRequest, sessionID: string): IGetBodyResponseData<boolean> {
         return this.httpResponse.getBody(true);
     }
 
@@ -111,8 +99,7 @@ export class MatchCallbacks
         url: string,
         info: IMatchGroupTransferRequest,
         sessionId: string,
-    ): IGetBodyResponseData<boolean>
-    {
+    ): IGetBodyResponseData<boolean> {
         return this.httpResponse.getBody(true);
     }
 
@@ -121,19 +108,16 @@ export class MatchCallbacks
         url: string,
         info: IEmptyRequestData,
         sessionId: string,
-    ): IGetBodyResponseData<boolean>
-    {
+    ): IGetBodyResponseData<boolean> {
         return this.httpResponse.getBody(true);
     }
 
-    public putMetrics(url: string, request: IPutMetricsRequestData, sessionId: string): INullResponseData
-    {
+    public putMetrics(url: string, request: IPutMetricsRequestData, sessionId: string): INullResponseData {
         return this.httpResponse.nullResponse();
     }
 
     // Handle client/match/available
-    public serverAvailable(url: string, info: IEmptyRequestData, sessionId: string): IGetBodyResponseData<boolean>
-    {
+    public serverAvailable(url: string, info: IEmptyRequestData, sessionId: string): IGetBodyResponseData<boolean> {
         const output = this.matchController.getEnabled();
 
         return this.httpResponse.getBody(output);
@@ -144,14 +128,12 @@ export class MatchCallbacks
         url: string,
         info: IMatchGroupStartGameRequest,
         sessionID: string,
-    ): IGetBodyResponseData<IProfileStatusResponse>
-    {
+    ): IGetBodyResponseData<IProfileStatusResponse> {
         return this.httpResponse.getBody(this.matchController.joinMatch(info, sessionID));
     }
 
     /** Handle client/getMetricsConfig */
-    public getMetrics(url: string, info: any, sessionID: string): IGetBodyResponseData<string>
-    {
+    public getMetrics(url: string, info: any, sessionID: string): IGetBodyResponseData<string> {
         return this.httpResponse.getBody(this.jsonUtil.serialize(this.databaseService.getMatch().metrics));
     }
 
@@ -164,21 +146,18 @@ export class MatchCallbacks
         url: string,
         info: IMatchGroupStatusRequest,
         sessionID: string,
-    ): IGetBodyResponseData<IMatchGroupStatusResponse>
-    {
+    ): IGetBodyResponseData<IMatchGroupStatusResponse> {
         return this.httpResponse.getBody(this.matchController.getGroupStatus(info));
     }
 
     /** Handle client/match/group/delete */
-    public deleteGroup(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<boolean>
-    {
+    public deleteGroup(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<boolean> {
         this.matchController.deleteGroup(info);
         return this.httpResponse.getBody(true);
     }
 
     // Handle client/match/group/leave
-    public leaveGroup(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<boolean>
-    {
+    public leaveGroup(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<boolean> {
         return this.httpResponse.getBody(true);
     }
 
@@ -187,8 +166,7 @@ export class MatchCallbacks
         url: string,
         info: IMatchGroupPlayerRemoveRequest,
         sessionID: string,
-    ): IGetBodyResponseData<boolean>
-    {
+    ): IGetBodyResponseData<boolean> {
         return this.httpResponse.getBody(true);
     }
 
@@ -197,18 +175,12 @@ export class MatchCallbacks
         url: string,
         info: IStartLocalRaidRequestData,
         sessionID: string,
-    ): IGetBodyResponseData<IStartLocalRaidResponseData>
-    {
+    ): IGetBodyResponseData<IStartLocalRaidResponseData> {
         return this.httpResponse.getBody(this.matchController.startLocalRaid(sessionID, info));
     }
 
     /** Handle client/match/local/end */
-    public endLocalRaid(
-        url: string,
-        info: IEndLocalRaidRequestData,
-        sessionID: string,
-    ): INullResponseData
-    {
+    public endLocalRaid(url: string, info: IEndLocalRaidRequestData, sessionID: string): INullResponseData {
         this.matchController.endLocalRaid(sessionID, info);
         return this.httpResponse.nullResponse();
     }
@@ -218,8 +190,7 @@ export class MatchCallbacks
         url: string,
         info: IGetRaidConfigurationRequestData,
         sessionID: string,
-    ): INullResponseData
-    {
+    ): INullResponseData {
         this.matchController.configureOfflineRaid(info, sessionID);
         return this.httpResponse.nullResponse();
     }
@@ -229,20 +200,17 @@ export class MatchCallbacks
         url: string,
         info: IGetRaidConfigurationRequestData,
         sessionID: string,
-    ): INullResponseData
-    {
+    ): INullResponseData {
         return this.httpResponse.nullResponse();
     }
 
     /** Handle client/match/group/raid/ready */
-    public raidReady(url: string, info: IEmptyRequestData, sessionId: string): IGetBodyResponseData<boolean>
-    {
+    public raidReady(url: string, info: IEmptyRequestData, sessionId: string): IGetBodyResponseData<boolean> {
         return this.httpResponse.getBody(true);
     }
 
     /** Handle client/match/group/raid/not-ready */
-    public notRaidReady(url: string, info: IEmptyRequestData, sessionId: string): IGetBodyResponseData<boolean>
-    {
+    public notRaidReady(url: string, info: IEmptyRequestData, sessionId: string): IGetBodyResponseData<boolean> {
         return this.httpResponse.getBody(true);
     }
 }

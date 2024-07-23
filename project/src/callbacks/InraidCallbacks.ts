@@ -1,22 +1,20 @@
-import { inject, injectable } from "tsyringe";
 import { InraidController } from "@spt/controllers/InraidController";
 import { IEmptyRequestData } from "@spt/models/eft/common/IEmptyRequestData";
 import { INullResponseData } from "@spt/models/eft/httpResponse/INullResponseData";
 import { IRegisterPlayerRequestData } from "@spt/models/eft/inRaid/IRegisterPlayerRequestData";
 import { IScavSaveRequestData } from "@spt/models/eft/inRaid/IScavSaveRequestData";
 import { HttpResponseUtil } from "@spt/utils/HttpResponseUtil";
+import { inject, injectable } from "tsyringe";
 
 /**
  * Handle client requests
  */
 @injectable()
-export class InraidCallbacks
-{
+export class InraidCallbacks {
     constructor(
         @inject("InraidController") protected inraidController: InraidController,
         @inject("HttpResponseUtil") protected httpResponse: HttpResponseUtil,
-    )
-    {}
+    ) {}
 
     /**
      * Handle client/location/getLocalloot
@@ -26,8 +24,7 @@ export class InraidCallbacks
      * @param sessionID Session id
      * @returns Null http response
      */
-    public registerPlayer(url: string, info: IRegisterPlayerRequestData, sessionID: string): INullResponseData
-    {
+    public registerPlayer(url: string, info: IRegisterPlayerRequestData, sessionID: string): INullResponseData {
         this.inraidController.addPlayer(sessionID, info);
         return this.httpResponse.nullResponse();
     }
@@ -39,8 +36,7 @@ export class InraidCallbacks
      * @param sessionID Session id
      * @returns Null http response
      */
-    public saveProgress(url: string, info: IScavSaveRequestData, sessionID: string): INullResponseData
-    {
+    public saveProgress(url: string, info: IScavSaveRequestData, sessionID: string): INullResponseData {
         this.inraidController.savePostRaidProfileForScav(info, sessionID);
         return this.httpResponse.nullResponse();
     }
@@ -50,8 +46,7 @@ export class InraidCallbacks
      * Handle singleplayer/settings/raid/endstate
      * @returns
      */
-    public getRaidEndState(): string
-    {
+    public getRaidEndState(): string {
         return this.httpResponse.noBody(this.inraidController.getInraidConfig().MIAOnRaidEnd);
     }
 
@@ -59,18 +54,15 @@ export class InraidCallbacks
      * Handle singleplayer/settings/raid/menu
      * @returns JSON as string
      */
-    public getRaidMenuSettings(): string
-    {
+    public getRaidMenuSettings(): string {
         return this.httpResponse.noBody(this.inraidController.getInraidConfig().raidMenuSettings);
     }
 
-    public getTraitorScavHostileChance(url: string, info: IEmptyRequestData, sessionId: string): string
-    {
+    public getTraitorScavHostileChance(url: string, info: IEmptyRequestData, sessionId: string): string {
         return this.httpResponse.noBody(this.inraidController.getTraitorScavHostileChance(url, sessionId));
     }
 
-    public getBossConvertSettings(url: string, info: IEmptyRequestData, sessionId: string): string
-    {
+    public getBossConvertSettings(url: string, info: IEmptyRequestData, sessionId: string): string {
         return this.httpResponse.noBody(this.inraidController.getBossConvertSettings(url, sessionId));
     }
 }

@@ -856,19 +856,10 @@
             "botTypeForLoot": "assault",
             "equipmentBlacklist": {
                 "Headwear": [],
-                "ArmorVest": [
-                    "5df8a2ca86f7740bfe6df777"
-                ],
-                "TacticalVest": [
-                    "572b7adb24597762ae139821"
-                ],
-                "Backpack": [
-                    "56e33634d2720bd8058b456b",
-                    "5ab8ee7786f7742d8f33f0b9"
-                ],
-                "FirstPrimaryWeapon": [
-                    "5a38e6bac4a2826c6e06d79b"
-                ],
+                "ArmorVest": ["5df8a2ca86f7740bfe6df777"],
+                "TacticalVest": ["572b7adb24597762ae139821"],
+                "Backpack": ["56e33634d2720bd8058b456b", "5ab8ee7786f7742d8f33f0b9"],
+                "FirstPrimaryWeapon": ["5a38e6bac4a2826c6e06d79b"],
                 "Holster": [],
                 "Scabbard": []
             },
@@ -955,22 +946,10 @@
             "botTypeForLoot": "assault",
             "equipmentBlacklist": {
                 "Headwear": [],
-                "ArmorVest": [
-                    "59e7635f86f7742cbf2c1095",
-                    "5df8a2ca86f7740bfe6df777"
-                ],
-                "TacticalVest": [
-                    "5fd4c5477a8d854fa0105061",
-                    "572b7adb24597762ae139821"
-                ],
-                "Backpack": [
-                    "56e33680d2720be2748b4576",
-                    "56e33634d2720bd8058b456b",
-                    "5ab8ee7786f7742d8f33f0b9"
-                ],
-                "FirstPrimaryWeapon": [
-                    "5a38e6bac4a2826c6e06d79b"
-                ],
+                "ArmorVest": ["59e7635f86f7742cbf2c1095", "5df8a2ca86f7740bfe6df777"],
+                "TacticalVest": ["5fd4c5477a8d854fa0105061", "572b7adb24597762ae139821"],
+                "Backpack": ["56e33680d2720be2748b4576", "56e33634d2720bd8058b456b", "5ab8ee7786f7742d8f33f0b9"],
+                "FirstPrimaryWeapon": ["5a38e6bac4a2826c6e06d79b"],
                 "Holster": [],
                 "Scabbard": []
             },
@@ -1056,22 +1035,10 @@
             "botTypeForLoot": "assault",
             "equipmentBlacklist": {
                 "Headwear": [],
-                "ArmorVest": [
-                    "59e7635f86f7742cbf2c1095",
-                    "5df8a2ca86f7740bfe6df777"
-                ],
-                "TacticalVest": [
-                    "5fd4c5477a8d854fa0105061",
-                    "572b7adb24597762ae139821"
-                ],
-                "Backpack": [
-                    "56e33680d2720be2748b4576",
-                    "56e33634d2720bd8058b456b",
-                    "5ab8ee7786f7742d8f33f0b9"
-                ],
-                "FirstPrimaryWeapon": [
-                    "5a38e6bac4a2826c6e06d79b"
-                ],
+                "ArmorVest": ["59e7635f86f7742cbf2c1095", "5df8a2ca86f7740bfe6df777"],
+                "TacticalVest": ["5fd4c5477a8d854fa0105061", "572b7adb24597762ae139821"],
+                "Backpack": ["56e33680d2720be2748b4576", "56e33634d2720bd8058b456b", "5ab8ee7786f7742d8f33f0b9"],
+                "FirstPrimaryWeapon": ["5a38e6bac4a2826c6e06d79b"],
                 "Holster": [],
                 "Scabbard": []
             },
@@ -1168,14 +1135,8 @@
                     "5f60e7788adaa7100c3adb49",
                     "5aa2a7e8e5b5b00016327c16"
                 ],
-                "ArmorVest": [
-                    "59e7635f86f7742cbf2c1095",
-                    "5df8a2ca86f7740bfe6df777"
-                ],
-                "TacticalVest": [
-                    "5fd4c5477a8d854fa0105061",
-                    "572b7adb24597762ae139821"
-                ],
+                "ArmorVest": ["59e7635f86f7742cbf2c1095", "5df8a2ca86f7740bfe6df777"],
+                "TacticalVest": ["5fd4c5477a8d854fa0105061", "572b7adb24597762ae139821"],
                 "Backpack": [
                     "56e33680d2720be2748b4576",
                     "56e33634d2720bd8058b456b",
@@ -1183,14 +1144,8 @@
                     "5ab8f04f86f774585f4237d8",
                     "5f5e45cc5021ce62144be7aa"
                 ],
-                "FirstPrimaryWeapon": [
-                    "5a38e6bac4a2826c6e06d79b"
-                ],
-                "Holster": [
-                    "5448bd6b4bdc2dfc2f8b4569",
-                    "579204f224597773d619e051",
-                    "571a12c42459771f627b58a0"
-                ],
+                "FirstPrimaryWeapon": ["5a38e6bac4a2826c6e06d79b"],
+                "Holster": ["5448bd6b4bdc2dfc2f8b4569", "579204f224597773d619e051", "571a12c42459771f627b58a0"],
                 "Scabbard": []
             },
             "modifiers": {

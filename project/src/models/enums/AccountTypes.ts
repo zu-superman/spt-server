@@ -1,4 +1,3 @@
-export enum AccountTypes
-{
+export enum AccountTypes {
     SPT_DEVELOPER = "spt developer",
 }

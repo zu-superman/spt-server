@@ -1,14 +1,12 @@
-import { inject, injectable } from "tsyringe";
 import { DataCallbacks } from "@spt/callbacks/DataCallbacks";
 import { DynamicRouter, RouteAction } from "@spt/di/Router";
 import { IGetItemPricesResponse } from "@spt/models/eft/game/IGetItemPricesResponse";
 import { IGetBodyResponseData } from "@spt/models/eft/httpResponse/IGetBodyResponseData";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class DataDynamicRouter extends DynamicRouter
-{
-    constructor(@inject("DataCallbacks") protected dataCallbacks: DataCallbacks)
-    {
+export class DataDynamicRouter extends DynamicRouter {
+    constructor(@inject("DataCallbacks") protected dataCallbacks: DataCallbacks) {
         super([
             new RouteAction(
                 "/client/menu/locale/",
@@ -17,15 +15,13 @@ export class DataDynamicRouter extends DynamicRouter
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<string>> =>
-                {
+                ): Promise<IGetBodyResponseData<string>> => {
                     return this.dataCallbacks.getLocalesMenu(url, info, sessionID);
                 },
             ),
             new RouteAction(
                 "/client/locale/",
-                async (url: string, info: any, sessionID: string, output: string): Promise<string> =>
-                {
+                async (url: string, info: any, sessionID: string, output: string): Promise<string> => {
                     return this.dataCallbacks.getLocalesGlobal(url, info, sessionID);
                 },
             ),
@@ -36,8 +32,7 @@ export class DataDynamicRouter extends DynamicRouter
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<IGetItemPricesResponse>> =>
-                {
+                ): Promise<IGetBodyResponseData<IGetItemPricesResponse>> => {
                     return this.dataCallbacks.getItemPrices(url, info, sessionID);
                 },
             ),

@@ -1,49 +1,41 @@
 import "reflect-metadata";
 
-import { container } from "tsyringe";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { Item, Repairable } from "@spt/models/eft/common/tables/IItem";
 import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
 import { DatabaseServer } from "@spt/servers/DatabaseServer";
 import { HashUtil } from "@spt/utils/HashUtil";
+import { container } from "tsyringe";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-describe("ItemHelper", () =>
-{
+describe("ItemHelper", () => {
     let itemHelper: ItemHelper;
 
-    beforeEach(() =>
-    {
+    beforeEach(() => {
         itemHelper = container.resolve<ItemHelper>("ItemHelper");
     });
 
-    afterEach(() =>
-    {
+    afterEach(() => {
         vi.restoreAllMocks();
     });
 
-    describe("isValidItem", () =>
-    {
-        it("should return false when item details are not available", () =>
-        {
+    describe("isValidItem", () => {
+        it("should return false when item details are not available", () => {
             const result = itemHelper.isValidItem("non-existent-item");
             expect(result).toBe(false);
         });
 
-        it("should return false when item is a quest item", () =>
-        {
+        it("should return false when item is a quest item", () => {
             const result = itemHelper.isValidItem("590de92486f77423d9312a33"); // "Gold pocket watch on a chain"
             expect(result).toBe(false);
         });
 
-        it("should return false when item is of an invalid base type", () =>
-        {
+        it("should return false when item is of an invalid base type", () => {
             const result = itemHelper.isValidItem("5fc64ea372b0dd78d51159dc", ["5447e1d04bdc2dff2f8b4567"]); // "Cultist knife"
             expect(result).toBe(false);
         });
 
-        it("should return false when item's price is zero", () =>
-        {
+        it("should return false when item's price is zero", () => {
             // Unsure if any item has price of "0", so mock the getItemPrice method to return 0.
             vi.spyOn(itemHelper, "getItemPrice").mockReturnValue(0);
 
@@ -51,57 +43,47 @@ describe("ItemHelper", () =>
             expect(result).toBe(false);
         });
 
-        it("should return false when item is in the blacklist", () =>
-        {
+        it("should return false when item is in the blacklist", () => {
             const result = itemHelper.isValidItem("6087e570b998180e9f76dc24"); // "Superfors DB 2020 Dead Blow Hammer"
             expect(result).toBe(false);
         });
 
-        it("should return true when item is valid", () =>
-        {
+        it("should return true when item is valid", () => {
             const result = itemHelper.isValidItem("5fc64ea372b0dd78d51159dc"); // "Cultist knife"
             expect(result).toBe(true);
         });
     });
 
-    describe("isOfBaseclass", () =>
-    {
-        it("should return true when item has the given base class", () =>
-        {
+    describe("isOfBaseclass", () => {
+        it("should return true when item has the given base class", () => {
             // ID 590c657e86f77412b013051d is a "Grizzly medical kit" of base class "MedKit".
             const result = itemHelper.isOfBaseclass("590c657e86f77412b013051d", "5448f39d4bdc2d0a728b4568");
             expect(result).toBe(true);
         });
 
-        it("should return false when item does not have the given base class", () =>
-        {
+        it("should return false when item does not have the given base class", () => {
             // ID 590c657e86f77412b013051d is a "Grizzly medical kit" not of base class "Knife".
             const result = itemHelper.isOfBaseclass("590c657e86f77412b013051d", "5447e1d04bdc2dff2f8b4567");
             expect(result).toBe(false);
         });
     });
 
-    describe("isOfBaseclasses", () =>
-    {
-        it("should return true when item has the given base class", () =>
-        {
+    describe("isOfBaseclasses", () => {
+        it("should return true when item has the given base class", () => {
             // ID 590c657e86f77412b013051d is a "Grizzly medical kit" of base class "MedKit".
             const result = itemHelper.isOfBaseclasses("590c657e86f77412b013051d", ["5448f39d4bdc2d0a728b4568"]);
             expect(result).toBe(true);
         });
 
-        it("should return false when item does not have the given base class", () =>
-        {
+        it("should return false when item does not have the given base class", () => {
             // ID 590c657e86f77412b013051d is a "Grizzly medical kit" not of base class "Knife".
             const result = itemHelper.isOfBaseclasses("590c657e86f77412b013051d", ["5447e1d04bdc2dff2f8b4567"]);
             expect(result).toBe(false);
         });
     });
 
-    describe("getItemPrice", () =>
-    {
-        it("should return static price when it is greater than or equal to 1", () =>
-        {
+    describe("getItemPrice", () => {
+        it("should return static price when it is greater than or equal to 1", () => {
             const staticPrice = 1;
             const tpl = "590c657e86f77412b013051d";
 
@@ -112,8 +94,7 @@ describe("ItemHelper", () =>
             expect(result).toBe(staticPrice);
         });
 
-        it("should return dynamic price when static price is less than 1", () =>
-        {
+        it("should return dynamic price when static price is less than 1", () => {
             const staticPrice = 0;
             const dynamicPrice = 42069;
             const tpl = "590c657e86f77412b013051d";
@@ -127,8 +108,7 @@ describe("ItemHelper", () =>
             expect(result).toBe(dynamicPrice);
         });
 
-        it("should return 0 when neither handbook nor dynamic price is available", () =>
-        {
+        it("should return 0 when neither handbook nor dynamic price is available", () => {
             const tpl = "590c657e86f77412b013051d";
 
             vi.spyOn(itemHelper, "getStaticItemPrice").mockReturnValue(0);
@@ -141,10 +121,8 @@ describe("ItemHelper", () =>
         });
     });
 
-    describe("getItemMaxPrice", () =>
-    {
-        it("should return static price when it is higher", () =>
-        {
+    describe("getItemMaxPrice", () => {
+        it("should return static price when it is higher", () => {
             const staticPrice = 420;
             const dynamicPrice = 69;
             const tpl = "590c657e86f77412b013051d";
@@ -157,8 +135,7 @@ describe("ItemHelper", () =>
             expect(result).toBe(staticPrice);
         });
 
-        it("should return dynamic price when it is higher", () =>
-        {
+        it("should return dynamic price when it is higher", () => {
             const staticPrice = 69;
             const dynamicPrice = 420;
             const tpl = "590c657e86f77412b013051d";
@@ -171,8 +148,7 @@ describe("ItemHelper", () =>
             expect(result).toBe(dynamicPrice);
         });
 
-        it("should return either when both prices are equal", () =>
-        {
+        it("should return either when both prices are equal", () => {
             const price = 42069;
             const tpl = "590c657e86f77412b013051d";
 
@@ -184,8 +160,7 @@ describe("ItemHelper", () =>
             expect(result).toBe(price);
         });
 
-        it("should return 0 when item does not exist", () =>
-        {
+        it("should return 0 when item does not exist", () => {
             const tpl = "non-existent-item";
 
             const result = itemHelper.getItemMaxPrice(tpl);
@@ -195,10 +170,8 @@ describe("ItemHelper", () =>
         });
     });
 
-    describe("getStaticItemPrice", () =>
-    {
-        it("should return handbook price when it is greater than or equal to 1", () =>
-        {
+    describe("getStaticItemPrice", () => {
+        it("should return handbook price when it is greater than or equal to 1", () => {
             const price = 42069;
             const tpl = "590c657e86f77412b013051d";
 
@@ -210,8 +183,7 @@ describe("ItemHelper", () =>
             expect(result).toBe(price);
         });
 
-        it("should return 0 when handbook price is less than 1", () =>
-        {
+        it("should return 0 when handbook price is less than 1", () => {
             const price = 0;
             const tpl = "590c657e86f77412b013051d"; // "Grizzly medical kit"
 
@@ -224,10 +196,8 @@ describe("ItemHelper", () =>
         });
     });
 
-    describe("getDynamicItemPrice", () =>
-    {
-        it("should return the correct dynamic price when it exists", () =>
-        {
+    describe("getDynamicItemPrice", () => {
+        it("should return the correct dynamic price when it exists", () => {
             const tpl = "590c657e86f77412b013051d"; // "Grizzly medical kit"
 
             const result = itemHelper.getDynamicItemPrice(tpl);
@@ -235,8 +205,7 @@ describe("ItemHelper", () =>
             expect(result).toBeGreaterThanOrEqual(1);
         });
 
-        it("should return 0 when the dynamic price does not exist", () =>
-        {
+        it("should return 0 when the dynamic price does not exist", () => {
             const tpl = "non-existent-item";
 
             const result = itemHelper.getDynamicItemPrice(tpl);
@@ -245,10 +214,8 @@ describe("ItemHelper", () =>
         });
     });
 
-    describe("fixItemStackCount", () =>
-    {
-        it("should set upd.StackObjectsCount to 1 if upd is undefined", () =>
-        {
+    describe("fixItemStackCount", () => {
+        it("should set upd.StackObjectsCount to 1 if upd is undefined", () => {
             const initialItem: Item = { _id: "", _tpl: "" };
             const fixedItem = itemHelper.fixItemStackCount(initialItem);
 
@@ -256,8 +223,7 @@ describe("ItemHelper", () =>
             expect(fixedItem.upd?.StackObjectsCount).toBe(1);
         });
 
-        it("should set upd.StackObjectsCount to 1 if upd.StackObjectsCount is undefined", () =>
-        {
+        it("should set upd.StackObjectsCount to 1 if upd.StackObjectsCount is undefined", () => {
             const initialItem: Item = { _id: "", _tpl: "", upd: {} };
             const fixedItem = itemHelper.fixItemStackCount(initialItem);
 
@@ -265,8 +231,7 @@ describe("ItemHelper", () =>
             expect(fixedItem.upd?.StackObjectsCount).toBe(1);
         });
 
-        it("should not change upd.StackObjectsCount if it is already defined", () =>
-        {
+        it("should not change upd.StackObjectsCount if it is already defined", () => {
             const initialItem: Item = { _id: "", _tpl: "", upd: { StackObjectsCount: 5 } };
             const fixedItem = itemHelper.fixItemStackCount(initialItem);
 
@@ -275,10 +240,8 @@ describe("ItemHelper", () =>
         });
     });
 
-    describe("getItems", () =>
-    {
-        it("should call databaseService.getItems() and jsonUtil.clone() methods", () =>
-        {
+    describe("getItems", () => {
+        it("should call databaseService.getItems() and jsonUtil.clone() methods", () => {
             const databaseServerGetTablesSpy = vi.spyOn((itemHelper as any).databaseService, "getItems");
             const clonerSpy = vi.spyOn((itemHelper as any).cloner, "clone");
 
@@ -288,8 +251,7 @@ describe("ItemHelper", () =>
             expect(clonerSpy).toHaveBeenCalled();
         });
 
-        it("should return a new array, not a reference to the original", () =>
-        {
+        it("should return a new array, not a reference to the original", () => {
             const tables = container.resolve<DatabaseServer>("DatabaseServer").getTables();
             const originalItems = Object.values(tables.templates.items);
 
@@ -303,10 +265,8 @@ describe("ItemHelper", () =>
         });
     });
 
-    describe("getItem", () =>
-    {
-        it("should return true and the item if the tpl exists", () =>
-        {
+    describe("getItem", () => {
+        it("should return true and the item if the tpl exists", () => {
             // ID 590c657e86f77412b013051d is a "Grizzly medical kit".
             const tpl = "590c657e86f77412b013051d";
             const tables = container.resolve<DatabaseServer>("DatabaseServer").getTables();
@@ -318,8 +278,7 @@ describe("ItemHelper", () =>
             expect(returnedItem).toBe(item);
         });
 
-        it("should return false and undefined if the tpl does not exist", () =>
-        {
+        it("should return false and undefined if the tpl does not exist", () => {
             const tpl = "non-existent-item";
 
             const [isValid, returnedItem] = itemHelper.getItem(tpl);
@@ -329,10 +288,8 @@ describe("ItemHelper", () =>
         });
     });
 
-    describe("isItemInDb", () =>
-    {
-        it("should return true if getItem returns true as the first element", () =>
-        {
+    describe("isItemInDb", () => {
+        it("should return true if getItem returns true as the first element", () => {
             const tpl = "590c657e86f77412b013051d"; // "Grizzly medical kit"
 
             const result = itemHelper.isItemInDb(tpl);
@@ -340,8 +297,7 @@ describe("ItemHelper", () =>
             expect(result).toBe(true);
         });
 
-        it("should return false if getItem returns false as the first element", () =>
-        {
+        it("should return false if getItem returns false as the first element", () => {
             const tpl = "non-existent-item";
 
             const result = itemHelper.isItemInDb(tpl);
@@ -349,8 +305,7 @@ describe("ItemHelper", () =>
             expect(result).toBe(false);
         });
 
-        it("should call getItem with the provided tpl", () =>
-        {
+        it("should call getItem with the provided tpl", () => {
             const itemHelperSpy = vi.spyOn(itemHelper, "getItem");
 
             const tpl = "590c657e86f77412b013051d"; // "Grizzly medical kit"
@@ -361,10 +316,8 @@ describe("ItemHelper", () =>
         });
     });
 
-    describe("getItemQualityModifier", () =>
-    {
-        it("should return 1 for an item with no upd", () =>
-        {
+    describe("getItemQualityModifier", () => {
+        it("should return 1 for an item with no upd", () => {
             const itemId = container.resolve<HashUtil>("HashUtil").generate();
             const item: Item = {
                 _id: itemId,
@@ -376,8 +329,7 @@ describe("ItemHelper", () =>
             expect(result).toBe(1);
         });
 
-        it("should return 1 for an item with upd but no relevant fields", () =>
-        {
+        it("should return 1 for an item with upd but no relevant fields", () => {
             const itemId = container.resolve<HashUtil>("HashUtil").generate();
             const item: Item = {
                 _id: itemId,
@@ -390,8 +342,7 @@ describe("ItemHelper", () =>
             expect(result).toBe(1);
         });
 
-        it("should return correct value for a medkit", () =>
-        {
+        it("should return correct value for a medkit", () => {
             const itemId = container.resolve<HashUtil>("HashUtil").generate();
             const item: Item = {
                 _id: itemId,
@@ -408,8 +359,7 @@ describe("ItemHelper", () =>
             expect(result).toBe(0.5);
         });
 
-        it("should return correct value for a repairable helmet", () =>
-        {
+        it("should return correct value for a repairable helmet", () => {
             const itemId = container.resolve<HashUtil>("HashUtil").generate();
             const item: Item = {
                 _id: itemId,
@@ -417,7 +367,8 @@ describe("ItemHelper", () =>
                 upd: { Repairable: { Durability: 19, MaxDurability: 38 } },
             };
 
-            const getRepairableItemQualityValueSpt = vi.spyOn(itemHelper as any, "getRepairableItemQualityValue")
+            const getRepairableItemQualityValueSpt = vi
+                .spyOn(itemHelper as any, "getRepairableItemQualityValue")
                 .mockReturnValue(0.5);
 
             const result = itemHelper.getItemQualityModifier(item);
@@ -426,8 +377,7 @@ describe("ItemHelper", () =>
             expect(result).toBe(0.5);
         });
 
-        it("should return correct value for a reparable weapon", () =>
-        {
+        it("should return correct value for a reparable weapon", () => {
             const itemId = container.resolve<HashUtil>("HashUtil").generate();
             const item: Item = {
                 _id: itemId,
@@ -440,8 +390,7 @@ describe("ItemHelper", () =>
             expect(result).toBeCloseTo(0.447);
         });
 
-        it("should return correct value for a food or drink item", () =>
-        {
+        it("should return correct value for a food or drink item", () => {
             const itemId = container.resolve<HashUtil>("HashUtil").generate();
             const item: Item = {
                 _id: itemId,
@@ -458,8 +407,7 @@ describe("ItemHelper", () =>
             expect(result).toBe(0.5);
         });
 
-        it("should return correct value for a key item", () =>
-        {
+        it("should return correct value for a key item", () => {
             const itemId = container.resolve<HashUtil>("HashUtil").generate();
             const item: Item = {
                 _id: itemId,
@@ -472,8 +420,7 @@ describe("ItemHelper", () =>
             expect(result).toBe(0.5);
         });
 
-        it("should return correct value for a resource item", () =>
-        {
+        it("should return correct value for a resource item", () => {
             const itemId = container.resolve<HashUtil>("HashUtil").generate();
             const item: Item = {
                 _id: itemId,
@@ -491,8 +438,7 @@ describe("ItemHelper", () =>
             expect(result).toBe(0.5);
         });
 
-        it("should return correct value for a repair kit item", () =>
-        {
+        it("should return correct value for a repair kit item", () => {
             const itemId = container.resolve<HashUtil>("HashUtil").generate();
             const item: Item = {
                 _id: itemId,
@@ -505,8 +451,7 @@ describe("ItemHelper", () =>
             expect(result).toBe(0.5);
         });
 
-        it("should return 0.01 for an item with upd but all relevant fields are 0", () =>
-        {
+        it("should return 0.01 for an item with upd but all relevant fields are 0", () => {
             const itemId = container.resolve<HashUtil>("HashUtil").generate();
             const item: Item = {
                 _id: itemId,
@@ -520,10 +465,8 @@ describe("ItemHelper", () =>
         });
     });
 
-    describe("getRepairableItemQualityValue", () =>
-    {
-        it("should return the correct quality value", () =>
-        {
+    describe("getRepairableItemQualityValue", () => {
+        it("should return the correct quality value", () => {
             const weapon = itemHelper.getItem("5a38e6bac4a2826c6e06d79b")[1]; // "TOZ-106 20ga bolt-action shotgun"
             const repairable: Repairable = { Durability: 50, MaxDurability: 100 };
             const item: Item = { _id: "", _tpl: "" };
@@ -534,8 +477,7 @@ describe("ItemHelper", () =>
             expect(result).toBe(Math.sqrt(0.5));
         });
 
-        it("should fall back to using Repairable MaxDurability", () =>
-        {
+        it("should fall back to using Repairable MaxDurability", () => {
             const weapon = itemHelper.getItem("5a38e6bac4a2826c6e06d79b")[1]; // "TOZ-106 20ga bolt-action shotgun"
             weapon._props.MaxDurability = undefined; // Remove the MaxDurability property.
             const repairable: Repairable = {
@@ -550,8 +492,7 @@ describe("ItemHelper", () =>
             expect(result).toBe(Math.sqrt(0.25));
         });
 
-        it("should return 1 if durability value is invalid", () =>
-        {
+        it("should return 1 if durability value is invalid", () => {
             const weapon = itemHelper.getItem("5a38e6bac4a2826c6e06d79b")[1]; // "TOZ-106 20ga bolt-action shotgun"
             weapon._props.MaxDurability = undefined; // Remove the MaxDurability property.
             const repairable: Repairable = {
@@ -561,8 +502,7 @@ describe("ItemHelper", () =>
             const item: Item = { _id: "", _tpl: "" };
 
             // Mock the logger's error method to prevent it from being actually called.
-            const loggerErrorSpy = vi.spyOn((itemHelper as any).logger, "error").mockImplementation(() =>
-            {});
+            const loggerErrorSpy = vi.spyOn((itemHelper as any).logger, "error").mockImplementation(() => {});
 
             // Cast the method to any to allow access to private/protected method.
             const result = (itemHelper as any).getRepairableItemQualityValue(weapon, repairable, item);
@@ -571,8 +511,7 @@ describe("ItemHelper", () =>
             expect(result).toBe(1);
         });
 
-        it("should not divide by zero", () =>
-        {
+        it("should not divide by zero", () => {
             const weapon = itemHelper.getItem("5a38e6bac4a2826c6e06d79b")[1]; // "TOZ-106 20ga bolt-action shotgun"
             weapon._props.MaxDurability = undefined; // Remove the MaxDurability property.
             const repairable: Repairable = {
@@ -587,8 +526,7 @@ describe("ItemHelper", () =>
             expect(result).toBe(1);
         });
 
-        it("should log an error if durability is invalid", () =>
-        {
+        it("should log an error if durability is invalid", () => {
             const weapon = itemHelper.getItem("5a38e6bac4a2826c6e06d79b")[1]; // "TOZ-106 20ga bolt-action shotgun"
             weapon._props.MaxDurability = undefined; // Remove the MaxDurability property.
             const repairable: Repairable = {
@@ -606,53 +544,62 @@ describe("ItemHelper", () =>
         });
     });
 
-    describe("findAndReturnChildrenByItems", () =>
-    {
-        it("should return an array containing only the parent ID when no children are found", () =>
-        {
-            const items: Item[] = [{ _id: "1", _tpl: "", parentId: null }, { _id: "2", _tpl: "", parentId: null }, {
-                _id: "3",
-                _tpl: "",
-                parentId: "2",
-            }];
+    describe("findAndReturnChildrenByItems", () => {
+        it("should return an array containing only the parent ID when no children are found", () => {
+            const items: Item[] = [
+                { _id: "1", _tpl: "", parentId: null },
+                { _id: "2", _tpl: "", parentId: null },
+                {
+                    _id: "3",
+                    _tpl: "",
+                    parentId: "2",
+                },
+            ];
             const result = itemHelper.findAndReturnChildrenByItems(items, "1");
             expect(result).toEqual(["1"]);
         });
 
-        it("should return array of child IDs when single-level children are found", () =>
-        {
-            const items: Item[] = [{ _id: "1", _tpl: "", parentId: null }, { _id: "2", _tpl: "", parentId: "1" }, {
-                _id: "3",
-                _tpl: "",
-                parentId: "1",
-            }];
+        it("should return array of child IDs when single-level children are found", () => {
+            const items: Item[] = [
+                { _id: "1", _tpl: "", parentId: null },
+                { _id: "2", _tpl: "", parentId: "1" },
+                {
+                    _id: "3",
+                    _tpl: "",
+                    parentId: "1",
+                },
+            ];
             const result = itemHelper.findAndReturnChildrenByItems(items, "1");
             expect(result).toEqual(["2", "3", "1"]);
         });
 
-        it("should return array of child IDs when multi-level children are found", () =>
-        {
-            const items: Item[] = [{ _id: "1", _tpl: "", parentId: null }, { _id: "2", _tpl: "", parentId: "1" }, {
-                _id: "3",
-                _tpl: "",
-                parentId: "2",
-            }, { _id: "4", _tpl: "", parentId: "3" }];
+        it("should return array of child IDs when multi-level children are found", () => {
+            const items: Item[] = [
+                { _id: "1", _tpl: "", parentId: null },
+                { _id: "2", _tpl: "", parentId: "1" },
+                {
+                    _id: "3",
+                    _tpl: "",
+                    parentId: "2",
+                },
+                { _id: "4", _tpl: "", parentId: "3" },
+            ];
             const result = itemHelper.findAndReturnChildrenByItems(items, "1");
             expect(result).toEqual(["4", "3", "2", "1"]);
         });
 
-        it("should return an array containing only the parent ID when parent ID does not exist in items", () =>
-        {
-            const items: Item[] = [{ _id: "1", _tpl: "", parentId: null }, { _id: "2", _tpl: "", parentId: "1" }];
+        it("should return an array containing only the parent ID when parent ID does not exist in items", () => {
+            const items: Item[] = [
+                { _id: "1", _tpl: "", parentId: null },
+                { _id: "2", _tpl: "", parentId: "1" },
+            ];
             const result = itemHelper.findAndReturnChildrenByItems(items, "3");
             expect(result).toEqual(["3"]);
         });
     });
 
-    describe("getItemStackSize", () =>
-    {
-        it("should return 1 when item has no existing stack size", () =>
-        {
+    describe("getItemStackSize", () => {
+        it("should return 1 when item has no existing stack size", () => {
             const itemId = container.resolve<HashUtil>("HashUtil").generate();
             const item: Item = {
                 _id: itemId,
@@ -663,8 +610,7 @@ describe("ItemHelper", () =>
             expect(result).toBe(1);
         });
 
-        it("should return 1 when item has no upd property", () =>
-        {
+        it("should return 1 when item has no upd property", () => {
             const itemId = container.resolve<HashUtil>("HashUtil").generate();
             const item: Item = {
                 _id: itemId,
@@ -674,8 +620,7 @@ describe("ItemHelper", () =>
             expect(result).toBe(1);
         });
 
-        it("should return 5 when item has existing stack size of 5", () =>
-        {
+        it("should return 5 when item has existing stack size of 5", () => {
             const itemId = container.resolve<HashUtil>("HashUtil").generate();
             const item: Item = {
                 _id: itemId,
@@ -687,10 +632,8 @@ describe("ItemHelper", () =>
         });
     });
 
-    describe("hasBuyRestrictions", () =>
-    {
-        it("should return true when item has buy restriction current and max properties", () =>
-        {
+    describe("hasBuyRestrictions", () => {
+        it("should return true when item has buy restriction current and max properties", () => {
             const itemId = container.resolve<HashUtil>("HashUtil").generate();
             const item: Item = {
                 _id: itemId,
@@ -701,8 +644,7 @@ describe("ItemHelper", () =>
             expect(result).toBe(true);
         });
 
-        it("should return false when item has no buy restriction current or max properties but does have upd property", () =>
-        {
+        it("should return false when item has no buy restriction current or max properties but does have upd property", () => {
             const itemId = container.resolve<HashUtil>("HashUtil").generate();
             const item: Item = {
                 _id: itemId,
@@ -713,8 +655,7 @@ describe("ItemHelper", () =>
             expect(result).toBe(false);
         });
 
-        it("should return false when item has no buy restriction current, max or upd properties", () =>
-        {
+        it("should return false when item has no buy restriction current, max or upd properties", () => {
             const itemId = container.resolve<HashUtil>("HashUtil").generate();
             const item: Item = {
                 _id: itemId,
@@ -725,36 +666,32 @@ describe("ItemHelper", () =>
         });
     });
 
-    describe("isDogtag", () =>
-    {
-        it("should return true when tpl is a dogtag", () =>
-        {
+    describe("isDogtag", () => {
+        it("should return true when tpl is a dogtag", () => {
             const result = itemHelper.isDogtag("59f32bb586f774757e1e8442"); // "Bear dogtag"
             expect(result).toBe(true);
         });
 
-        it("should return false when tpl is not a dogtag", () =>
-        {
+        it("should return false when tpl is not a dogtag", () => {
             const result = itemHelper.isDogtag("591094e086f7747caa7bb2ef"); // "Body armor repair kit"
             expect(result).toBe(false);
         });
 
-        it("should return false when tpl is invalid", () =>
-        {
+        it("should return false when tpl is invalid", () => {
             const result = itemHelper.isDogtag("invalidTpl");
             expect(result).toBe(false);
         });
     });
 
-    describe("addCartridgesToAmmoBox", () =>
-    {
-        it("should return an array with 1x ammoBox and 1x cartridge item", () =>
-        {
+    describe("addCartridgesToAmmoBox", () => {
+        it("should return an array with 1x ammoBox and 1x cartridge item", () => {
             const itemId = container.resolve<HashUtil>("HashUtil").generate();
-            const ammoBox: Item[] = [{
-                _id: itemId,
-                _tpl: "5c12619186f7743f871c8a32", // "9x39mm SPP gs ammo pack (8 pcs)"
-            }];
+            const ammoBox: Item[] = [
+                {
+                    _id: itemId,
+                    _tpl: "5c12619186f7743f871c8a32", // "9x39mm SPP gs ammo pack (8 pcs)"
+                },
+            ];
 
             const databaseServer = container.resolve<DatabaseServer>("DatabaseServer");
             const ammoBoxDetails = databaseServer.getTables().templates.items["5c12619186f7743f871c8a32"];
@@ -764,13 +701,14 @@ describe("ItemHelper", () =>
             expect(ammoBox[1].upd.StackObjectsCount).toBe(8);
         });
 
-        it("should return an array with 1x ammoBox and 2x cartridge items", () =>
-        {
+        it("should return an array with 1x ammoBox and 2x cartridge items", () => {
             const itemId = container.resolve<HashUtil>("HashUtil").generate();
-            const ammoBox: Item[] = [{
-                _id: itemId,
-                _tpl: "5737292724597765e5728562", // "5.45x39mm BP gs ammo pack (120 pcs)""
-            }];
+            const ammoBox: Item[] = [
+                {
+                    _id: itemId,
+                    _tpl: "5737292724597765e5728562", // "5.45x39mm BP gs ammo pack (120 pcs)""
+                },
+            ];
 
             const databaseServer = container.resolve<DatabaseServer>("DatabaseServer");
             const ammoBoxDetails = databaseServer.getTables().templates.items["5737292724597765e5728562"];
@@ -781,13 +719,14 @@ describe("ItemHelper", () =>
             expect(ammoBox[2].upd.StackObjectsCount).toBe(60);
         });
 
-        it("should keep original ammo box provided", () =>
-        {
+        it("should keep original ammo box provided", () => {
             const itemId = container.resolve<HashUtil>("HashUtil").generate();
-            const ammoBox: Item[] = [{
-                _id: itemId,
-                _tpl: "5737292724597765e5728562", // "5.45x39mm BP gs ammo pack (120 pcs)""
-            }];
+            const ammoBox: Item[] = [
+                {
+                    _id: itemId,
+                    _tpl: "5737292724597765e5728562", // "5.45x39mm BP gs ammo pack (120 pcs)""
+                },
+            ];
 
             const databaseServer = container.resolve<DatabaseServer>("DatabaseServer");
             const ammoBoxDetails = databaseServer.getTables().templates.items["5737292724597765e5728562"];
@@ -796,13 +735,14 @@ describe("ItemHelper", () =>
             expect(ammoBox[0]._tpl).toBe("5737292724597765e5728562");
         });
 
-        it("should return specific cartridge type for the given ammo box provided", () =>
-        {
+        it("should return specific cartridge type for the given ammo box provided", () => {
             const itemId = container.resolve<HashUtil>("HashUtil").generate();
-            const ammoBox: Item[] = [{
-                _id: itemId,
-                _tpl: "5737292724597765e5728562", // "5.45x39mm BP gs ammo pack (120 pcs)""
-            }];
+            const ammoBox: Item[] = [
+                {
+                    _id: itemId,
+                    _tpl: "5737292724597765e5728562", // "5.45x39mm BP gs ammo pack (120 pcs)""
+                },
+            ];
 
             const databaseServer = container.resolve<DatabaseServer>("DatabaseServer");
             const ammoBoxDetails = databaseServer.getTables().templates.items["5737292724597765e5728562"];
@@ -812,48 +752,40 @@ describe("ItemHelper", () =>
         });
     });
 
-    describe("isItemTplStackable", () =>
-    {
-        it("should return true for a stackable item", () =>
-        {
+    describe("isItemTplStackable", () => {
+        it("should return true for a stackable item", () => {
             const result = itemHelper.isItemTplStackable("5449016a4bdc2d6f028b456f"); // Roubles
 
             expect(result).toBe(true);
         });
 
-        it("should return false for an unstackable item", () =>
-        {
+        it("should return false for an unstackable item", () => {
             const result = itemHelper.isItemTplStackable("591094e086f7747caa7bb2ef"); // "Body armor repair kit"
 
             expect(result).toBe(false);
         });
 
-        it("should return undefined for an unknown item", () =>
-        {
+        it("should return undefined for an unknown item", () => {
             const result = itemHelper.isItemTplStackable("fakeTpl");
 
             expect(result).toBe(undefined);
         });
 
-        it("should return undefined for an empty input", () =>
-        {
+        it("should return undefined for an empty input", () => {
             const result = itemHelper.isItemTplStackable("");
 
             expect(result).toBe(undefined);
         });
     });
 
-    describe("getItemName", () =>
-    {
-        it("should return item name for a valid item", () =>
-        {
+    describe("getItemName", () => {
+        it("should return item name for a valid item", () => {
             const result = itemHelper.getItemName("5449016a4bdc2d6f028b456f"); // "Roubles"
 
             expect(result).toBe("Roubles");
         });
 
-        it("should return item short name for a valid item with empty full name", () =>
-        {
+        it("should return item short name for a valid item with empty full name", () => {
             const databaseServer = container.resolve<DatabaseServer>("DatabaseServer");
             databaseServer.getTables().locales.global.en["5449016a4bdc2d6f028b456f Name"] = "";
             const result = itemHelper.getItemName("5449016a4bdc2d6f028b456f"); // "Roubles"
@@ -861,8 +793,7 @@ describe("ItemHelper", () =>
             expect(result).toBe("RUB");
         });
 
-        it("should return item short name for a valid item with undefined full name", () =>
-        {
+        it("should return item short name for a valid item with undefined full name", () => {
             const databaseServer = container.resolve<DatabaseServer>("DatabaseServer");
             databaseServer.getTables().locales.global.en["5449016a4bdc2d6f028b456f Name"] = undefined;
             const result = itemHelper.getItemName("5449016a4bdc2d6f028b456f"); // "Roubles"
@@ -870,32 +801,27 @@ describe("ItemHelper", () =>
             expect(result).toBe("RUB");
         });
 
-        it("should return undefined for invalid item", () =>
-        {
+        it("should return undefined for invalid item", () => {
             const result = itemHelper.getItemName("fake tpl");
 
             expect(result).toBe(undefined);
         });
 
-        it("should return undefined for empty string", () =>
-        {
+        it("should return undefined for empty string", () => {
             const result = itemHelper.getItemName("");
 
             expect(result).toBe(undefined);
         });
 
-        it("should return undefined for undefined", () =>
-        {
+        it("should return undefined for undefined", () => {
             const result = itemHelper.getItemName(undefined);
 
             expect(result).toBe(undefined);
         });
     });
 
-    describe("adoptOrphanedItems", () =>
-    {
-        it("should adopt orphaned items by resetting them as base-level items", () =>
-        {
+    describe("adoptOrphanedItems", () => {
+        it("should adopt orphaned items by resetting them as base-level items", () => {
             const rootId = "root-id";
             const items = [
                 { _id: "first-id", _tpl: "anything1", parentId: "does-not-exist", slotId: "main" },
@@ -919,8 +845,7 @@ describe("ItemHelper", () =>
             expect(orphanedItem.slotId).toBe("hideout");
         });
 
-        it("should not adopt items that are not orphaned", () =>
-        {
+        it("should not adopt items that are not orphaned", () => {
             const rootId = "root-id";
             const items = [
                 { _id: "first-id", _tpl: "anything1", parentId: rootId, slotId: "hideout" },
@@ -936,8 +861,7 @@ describe("ItemHelper", () =>
             expect(adopted).toStrictEqual(items);
         });
 
-        it("should remove location data from adopted items", () =>
-        {
+        it("should remove location data from adopted items", () => {
             const rootId = "root-id";
             const items = [
                 {
@@ -960,10 +884,8 @@ describe("ItemHelper", () =>
         });
     });
 
-    describe("splitStack", () =>
-    {
-        it("should return array of two items when provided item over its natural stack size limit", () =>
-        {
+    describe("splitStack", () => {
+        it("should return array of two items when provided item over its natural stack size limit", () => {
             const stackableItem: Item = {
                 _id: container.resolve<HashUtil>("HashUtil").generate(),
                 _tpl: "59e690b686f7746c9f75e848", // m995
@@ -976,8 +898,7 @@ describe("ItemHelper", () =>
             expect(result.length).toBe(2);
         });
 
-        it("should return same count of items passed in when provided is natural stack size limit", () =>
-        {
+        it("should return same count of items passed in when provided is natural stack size limit", () => {
             const stackableItem: Item = {
                 _id: container.resolve<HashUtil>("HashUtil").generate(),
                 _tpl: "59e690b686f7746c9f75e848", // m995
@@ -990,8 +911,7 @@ describe("ItemHelper", () =>
             expect(itemCount).toBe(80);
         });
 
-        it("should return same item if below max stack size", () =>
-        {
+        it("should return same item if below max stack size", () => {
             const stackableItem: Item = {
                 _id: container.resolve<HashUtil>("HashUtil").generate(),
                 _tpl: "59e690b686f7746c9f75e848", // m995
@@ -1005,8 +925,7 @@ describe("ItemHelper", () =>
             expect(result.length).toBe(1);
         });
 
-        it("should return same item if item has no StackObjectsCount property", () =>
-        {
+        it("should return same item if item has no StackObjectsCount property", () => {
             const stackableItem: Item = {
                 _id: container.resolve<HashUtil>("HashUtil").generate(),
                 _tpl: "59e690b686f7746c9f75e848", // m995
@@ -1016,8 +935,7 @@ describe("ItemHelper", () =>
             expect(result.length).toBe(1);
         });
 
-        it("should return same item if item has no upd object", () =>
-        {
+        it("should return same item if item has no upd object", () => {
             const stackableItem: Item = {
                 _id: container.resolve<HashUtil>("HashUtil").generate(),
                 _tpl: "59e690b686f7746c9f75e848", // m995
@@ -1027,10 +945,8 @@ describe("ItemHelper", () =>
         });
     });
 
-    describe("getRandomCompatibleCaliberTemplateId", () =>
-    {
-        it("should return an item from the passed template's cartridge filter array", () =>
-        {
+    describe("getRandomCompatibleCaliberTemplateId", () => {
+        it("should return an item from the passed template's cartridge filter array", () => {
             const validAmmoItems = [
                 "5735ff5c245977640e39ba7e",
                 "573601b42459776410737435",
@@ -1053,23 +969,20 @@ describe("ItemHelper", () =>
             expect(validAmmoItems).toContain(result);
         });
 
-        it("should return null when passed template has empty cartridge property", () =>
-        {
+        it("should return null when passed template has empty cartridge property", () => {
             const fakeTemplateItem = { _props: { Cartridges: [{}] } };
             const result = itemHelper.getRandomCompatibleCaliberTemplateId(fakeTemplateItem as ITemplateItem);
 
             expect(result).toBe(undefined);
         });
 
-        it("should return null when undefined passed in", () =>
-        {
+        it("should return null when undefined passed in", () => {
             const result = itemHelper.getRandomCompatibleCaliberTemplateId(undefined as ITemplateItem);
 
             expect(result).toBe(undefined);
         });
 
-        it("should log a warning when the template cartridge can not be found", () =>
-        {
+        it("should log a warning when the template cartridge can not be found", () => {
             const mockLoggerWarning = vi.spyOn((itemHelper as any).logger, "warning");
 
             itemHelper.getRandomCompatibleCaliberTemplateId(undefined as ITemplateItem);

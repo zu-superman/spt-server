@@ -1,5 +1,4 @@
-export interface IRemoveFromWishlistRequest
-{
-    Action: string
-    items: string[]
+export interface IRemoveFromWishlistRequest {
+    Action: string;
+    items: string[];
 }

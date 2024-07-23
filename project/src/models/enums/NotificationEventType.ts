@@ -1,5 +1,4 @@
-export enum NotificationEventType
-{
+export enum NotificationEventType {
     ASSORTMENT_UNLOCK_RULE = "AssortmentUnlockRule",
     EXAMINE_ITEMS = "ExamineItems",
     EXAMINE_ALL_ITEMS = "ExamineAllItems",

@@ -1,5 +1,4 @@
-export interface OnLoad
-{
-    onLoad(): Promise<void>
-    getRoute(): string
+export interface OnLoad {
+    onLoad(): Promise<void>;
+    getRoute(): string;
 }

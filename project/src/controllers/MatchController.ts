@@ -1,4 +1,3 @@
-import { inject, injectable } from "tsyringe";
 import { ApplicationContext } from "@spt/context/ApplicationContext";
 import { ContextVariableType } from "@spt/context/ContextVariableType";
 import { IEndLocalRaidRequestData } from "@spt/models/eft/match/IEndLocalRaidRequestData";
@@ -19,10 +18,10 @@ import { LocationLifecycleService } from "@spt/services/LocationLifecycleService
 import { MatchLocationService } from "@spt/services/MatchLocationService";
 import { ProfileSnapshotService } from "@spt/services/ProfileSnapshotService";
 import { ICloner } from "@spt/utils/cloners/ICloner";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class MatchController
-{
+export class MatchController {
     protected matchConfig: IMatchConfig;
     protected pmcConfig: IPmcConfig;
 
@@ -35,26 +34,22 @@ export class MatchController
         @inject("ApplicationContext") protected applicationContext: ApplicationContext,
         @inject("LocationLifecycleService") protected locationLifecycleService: LocationLifecycleService,
         @inject("PrimaryCloner") protected cloner: ICloner,
-    )
-    {
+    ) {
         this.matchConfig = this.configServer.getConfig(ConfigTypes.MATCH);
         this.pmcConfig = this.configServer.getConfig(ConfigTypes.PMC);
     }
 
-    public getEnabled(): boolean
-    {
+    public getEnabled(): boolean {
         return this.matchConfig.enabled;
     }
 
     /** Handle client/match/group/delete */
-    public deleteGroup(info: any): void
-    {
+    public deleteGroup(info: any): void {
         this.matchLocationService.deleteGroup(info);
     }
 
     /** Handle match/group/start_game */
-    public joinMatch(info: IMatchGroupStartGameRequest, sessionId: string): IProfileStatusResponse
-    {
+    public joinMatch(info: IMatchGroupStartGameRequest, sessionId: string): IProfileStatusResponse {
         const output: IProfileStatusResponse = { maxPveCountExceeded: false, profiles: [] };
 
         // get list of players joining into the match
@@ -77,8 +72,7 @@ export class MatchController
     }
 
     /** Handle client/match/group/status */
-    public getGroupStatus(info: IMatchGroupStatusRequest): IMatchGroupStatusResponse
-    {
+    public getGroupStatus(info: IMatchGroupStatusRequest): IMatchGroupStatusResponse {
         return { players: [], maxPveCountExceeded: false };
     }
 
@@ -87,16 +81,14 @@ export class MatchController
      * @param request Raid config request
      * @param sessionID Session id
      */
-    public configureOfflineRaid(request: IGetRaidConfigurationRequestData, sessionID: string): void
-    {
+    public configureOfflineRaid(request: IGetRaidConfigurationRequestData, sessionID: string): void {
         // Store request data for access during bot generation
         this.applicationContext.addValue(ContextVariableType.RAID_CONFIGURATION, request);
 
         // TODO: add code to strip PMC of equipment now they've started the raid
 
         // Set pmcs to difficulty set in pre-raid screen if override in bot config isnt enabled
-        if (!this.pmcConfig.useDifficultyOverride)
-        {
+        if (!this.pmcConfig.useDifficultyOverride) {
             this.pmcConfig.difficulty = this.convertDifficultyDropdownIntoBotDifficulty(
                 request.wavesSettings.botDifficulty,
             );
@@ -112,11 +104,9 @@ export class MatchController
      * @param botDifficulty dropdown difficulty value
      * @returns bot difficulty
      */
-    protected convertDifficultyDropdownIntoBotDifficulty(botDifficulty: string): string
-    {
+    protected convertDifficultyDropdownIntoBotDifficulty(botDifficulty: string): string {
         // Edge case medium - must be altered
-        if (botDifficulty.toLowerCase() === "medium")
-        {
+        if (botDifficulty.toLowerCase() === "medium") {
             return "normal";
         }
 
@@ -124,14 +114,12 @@ export class MatchController
     }
 
     /** Handle client/match/local/start */
-    public startLocalRaid(sessionId: string, request: IStartLocalRaidRequestData): IStartLocalRaidResponseData
-    {
+    public startLocalRaid(sessionId: string, request: IStartLocalRaidRequestData): IStartLocalRaidResponseData {
         return this.locationLifecycleService.startLocalRaid(sessionId, request);
     }
 
     /** Handle client/match/local/end */
-    public endLocalRaid(sessionId: string, request: IEndLocalRaidRequestData): void
-    {
+    public endLocalRaid(sessionId: string, request: IEndLocalRaidRequestData): void {
         return this.locationLifecycleService.endLocalRaid(sessionId, request);
     }
 }

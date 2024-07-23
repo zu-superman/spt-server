@@ -1,18 +1,16 @@
-import { inject, injectable } from "tsyringe";
 import { IRagfairOffer } from "@spt/models/eft/ragfair/IRagfairOffer";
 import { Money } from "@spt/models/enums/Money";
 import { RagfairSort } from "@spt/models/enums/RagfairSort";
 import { DatabaseServer } from "@spt/servers/DatabaseServer";
 import { LocaleService } from "@spt/services/LocaleService";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class RagfairSortHelper
-{
+export class RagfairSortHelper {
     constructor(
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("LocaleService") protected localeService: LocaleService,
-    )
-    {}
+    ) {}
 
     /**
      * Sort a list of ragfair offers by something (id/rating/offer name/price/expiry time)
@@ -21,11 +19,9 @@ export class RagfairSortHelper
      * @param direction Ascending/descending
      * @returns Sorted offers
      */
-    public sortOffers(offers: IRagfairOffer[], type: RagfairSort, direction = 0): IRagfairOffer[]
-    {
+    public sortOffers(offers: IRagfairOffer[], type: RagfairSort, direction = 0): IRagfairOffer[] {
         // Sort results
-        switch (type)
-        {
+        switch (type) {
             case RagfairSort.ID:
                 offers.sort(this.sortOffersByID);
                 break;
@@ -52,34 +48,29 @@ export class RagfairSortHelper
         }
 
         // 0=ASC 1=DESC
-        if (direction === 1)
-        {
+        if (direction === 1) {
             offers.reverse();
         }
 
         return offers;
     }
 
-    protected sortOffersByID(a: IRagfairOffer, b: IRagfairOffer): number
-    {
+    protected sortOffersByID(a: IRagfairOffer, b: IRagfairOffer): number {
         return a.intId - b.intId;
     }
 
-    protected sortOffersByBarter(a: IRagfairOffer, b: IRagfairOffer): number
-    {
+    protected sortOffersByBarter(a: IRagfairOffer, b: IRagfairOffer): number {
         const moneyTpls = Object.values<string>(Money);
         const aIsOnlyMoney = a.requirements.length == 1 && moneyTpls.includes(a.requirements[0]._tpl) ? 1 : 0;
         const bIsOnlyMoney = b.requirements.length == 1 && moneyTpls.includes(b.requirements[0]._tpl) ? 1 : 0;
         return aIsOnlyMoney - bIsOnlyMoney;
     }
 
-    protected sortOffersByRating(a: IRagfairOffer, b: IRagfairOffer): number
-    {
+    protected sortOffersByRating(a: IRagfairOffer, b: IRagfairOffer): number {
         return a.user.rating - b.user.rating;
     }
 
-    protected sortOffersByName(a: IRagfairOffer, b: IRagfairOffer): number
-    {
+    protected sortOffersByName(a: IRagfairOffer, b: IRagfairOffer): number {
         const locale = this.localeService.getLocaleDb();
 
         const tplA = a.items[0]._tpl;
@@ -96,13 +87,11 @@ export class RagfairSortHelper
      * @param b Offer b
      * @returns
      */
-    protected sortOffersByPrice(a: IRagfairOffer, b: IRagfairOffer): number
-    {
+    protected sortOffersByPrice(a: IRagfairOffer, b: IRagfairOffer): number {
         return a.requirementsCost - b.requirementsCost;
     }
 
-    protected sortOffersByExpiry(a: IRagfairOffer, b: IRagfairOffer): number
-    {
+    protected sortOffersByExpiry(a: IRagfairOffer, b: IRagfairOffer): number {
         return a.endTime - b.endTime;
     }
 }

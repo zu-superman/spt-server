@@ -1,4 +1,3 @@
-import { inject, injectable } from "tsyringe";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { NotificationSendHelper } from "@spt/helpers/NotificationSendHelper";
 import { NotifierHelper } from "@spt/helpers/NotifierHelper";
@@ -9,10 +8,10 @@ import { DatabaseServer } from "@spt/servers/DatabaseServer";
 import { SaveServer } from "@spt/servers/SaveServer";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { HashUtil } from "@spt/utils/HashUtil";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class DialogueHelper
-{
+export class DialogueHelper {
     constructor(
         @inject("PrimaryLogger") protected logger: ILogger,
         @inject("HashUtil") protected hashUtil: HashUtil,
@@ -22,16 +21,14 @@ export class DialogueHelper
         @inject("NotificationSendHelper") protected notificationSendHelper: NotificationSendHelper,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
-    )
-    {}
+    ) {}
 
     /**
      * Get the preview contents of the last message in a dialogue.
      * @param dialogue
      * @returns MessagePreview
      */
-    public getMessagePreview(dialogue: Dialogue): MessagePreview
-    {
+    public getMessagePreview(dialogue: Dialogue): MessagePreview {
         // The last message of the dialogue should be shown on the preview.
         const message = dialogue.messages[dialogue.messages.length - 1];
         const result: MessagePreview = {
@@ -41,13 +38,11 @@ export class DialogueHelper
             uid: dialogue._id,
         };
 
-        if (message?.text)
-        {
+        if (message?.text) {
             result.text = message.text;
         }
 
-        if (message?.systemData)
-        {
+        if (message?.systemData) {
             result.systemData = message.systemData;
         }
 
@@ -61,35 +56,28 @@ export class DialogueHelper
      * @param itemId Item being moved to inventory
      * @returns
      */
-    public getMessageItemContents(messageID: string, sessionID: string, itemId: string): Item[]
-    {
+    public getMessageItemContents(messageID: string, sessionID: string, itemId: string): Item[] {
         const dialogueData = this.saveServer.getProfile(sessionID).dialogues;
-        for (const dialogueId in dialogueData)
-        {
+        for (const dialogueId in dialogueData) {
             const message = dialogueData[dialogueId].messages.find((x) => x._id === messageID);
-            if (!message)
-            {
+            if (!message) {
                 continue;
             }
 
-            if (message._id === messageID)
-            {
+            if (message._id === messageID) {
                 const attachmentsNew = this.saveServer.getProfile(sessionID).dialogues[dialogueId].attachmentsNew;
-                if (attachmentsNew > 0)
-                {
+                if (attachmentsNew > 0) {
                     this.saveServer.getProfile(sessionID).dialogues[dialogueId].attachmentsNew = attachmentsNew - 1;
                 }
 
                 // Check reward count when item being moved isn't in reward list
                 // If count is 0, it means after this move occurs the reward array will be empty and all rewards collected
-                if (!message.items.data)
-                {
+                if (!message.items.data) {
                     message.items.data = [];
                 }
 
                 const rewardItemCount = message.items.data?.filter((item) => item._id !== itemId);
-                if (rewardItemCount.length === 0)
-                {
+                if (rewardItemCount.length === 0) {
                     message.rewardCollected = true;
                     message.hasRewards = false;
                 }
@@ -106,11 +94,9 @@ export class DialogueHelper
      * @param sessionId Session/player id
      * @returns Dialog dictionary
      */
-    public getDialogsForProfile(sessionId: string): Record<string, Dialogue>
-    {
+    public getDialogsForProfile(sessionId: string): Record<string, Dialogue> {
         const profile = this.saveServer.getProfile(sessionId);
-        if (!profile.dialogues)
-        {
+        if (!profile.dialogues) {
             profile.dialogues = {};
         }
 

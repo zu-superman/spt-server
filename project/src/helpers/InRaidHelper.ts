@@ -1,4 +1,3 @@
-import { inject, injectable } from "tsyringe";
 import { InventoryHelper } from "@spt/helpers/InventoryHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { Item } from "@spt/models/eft/common/tables/IItem";
@@ -7,10 +6,10 @@ import { ILostOnDeathConfig } from "@spt/models/spt/config/ILostOnDeathConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
 import { ICloner } from "@spt/utils/cloners/ICloner";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class InRaidHelper
-{
+export class InRaidHelper {
     protected lostOnDeathConfig: ILostOnDeathConfig;
 
     constructor(
@@ -18,8 +17,7 @@ export class InRaidHelper
         @inject("InventoryHelper") protected inventoryHelper: InventoryHelper,
         @inject("ConfigServer") protected configServer: ConfigServer,
         @inject("PrimaryCloner") protected cloner: ICloner,
-    )
-    {
+    ) {
         this.lostOnDeathConfig = this.configServer.getConfig(ConfigTypes.LOST_ON_DEATH);
     }
 
@@ -28,10 +26,8 @@ export class InRaidHelper
      * Reset the skill points earned in a raid to 0, ready for next raid
      * @param profile Profile to update
      */
-    protected resetSkillPointsEarnedDuringRaid(profile: IPmcData): void
-    {
-        for (const skill of profile.Skills.Common)
-        {
+    protected resetSkillPointsEarnedDuringRaid(profile: IPmcData): void {
+        for (const skill of profile.Skills.Common) {
             skill.PointsEarnedDuringSession = 0.0;
         }
     }
@@ -45,8 +41,7 @@ export class InRaidHelper
      * @param serverProfile Profile to update
      * @param postRaidProfile Profile returned by client after a raid
      */
-    public setInventory(sessionID: string, serverProfile: IPmcData, postRaidProfile: IPmcData): void
-    {
+    public setInventory(sessionID: string, serverProfile: IPmcData, postRaidProfile: IPmcData): void {
         // Store insurance (as removeItem() removes insurance also)
         const insured = this.cloner.clone(serverProfile.InsuredItems);
 
@@ -67,12 +62,10 @@ export class InRaidHelper
      * @param pmcData Player profile
      * @param sessionId Session id
      */
-    public deleteInventory(pmcData: IPmcData, sessionId: string): void
-    {
+    public deleteInventory(pmcData: IPmcData, sessionId: string): void {
         // Get inventory item ids to remove from players profile
         const itemIdsToDeleteFromProfile = this.getInventoryItemsLostOnDeath(pmcData).map((item) => item._id);
-        for (const itemIdToDelete of itemIdsToDeleteFromProfile)
-        {
+        for (const itemIdToDelete of itemIdsToDeleteFromProfile) {
             // Items inside containers are handled as part of function
             this.inventoryHelper.removeItem(pmcData, itemIdToDelete, sessionId);
         }
@@ -86,29 +79,24 @@ export class InRaidHelper
      * @param pmcProfile Profile to get items from
      * @returns Array of items lost on death
      */
-    protected getInventoryItemsLostOnDeath(pmcProfile: IPmcData): Item[]
-    {
+    protected getInventoryItemsLostOnDeath(pmcProfile: IPmcData): Item[] {
         const inventoryItems = pmcProfile.Inventory.items ?? [];
         const equipmentRootId = pmcProfile?.Inventory?.equipment;
         const questRaidItemContainerId = pmcProfile?.Inventory?.questRaidItems;
 
-        return inventoryItems.filter((item) =>
-        {
+        return inventoryItems.filter((item) => {
             // Keep items flagged as kept after death
-            if (this.isItemKeptAfterDeath(pmcProfile, item))
-            {
+            if (this.isItemKeptAfterDeath(pmcProfile, item)) {
                 return false;
             }
 
             // Remove normal items or quest raid items
-            if (item.parentId === equipmentRootId || item.parentId === questRaidItemContainerId)
-            {
+            if (item.parentId === equipmentRootId || item.parentId === questRaidItemContainerId) {
                 return true;
             }
 
             // Pocket items are lost on death
-            if (item.slotId.startsWith("pocket"))
-            {
+            if (item.slotId.startsWith("pocket")) {
                 return true;
             }
 
@@ -122,24 +110,20 @@ export class InRaidHelper
      * @itemToCheck Item to check should be kept
      * @returns true if item is kept after death
      */
-    protected isItemKeptAfterDeath(pmcData: IPmcData, itemToCheck: Item): boolean
-    {
+    protected isItemKeptAfterDeath(pmcData: IPmcData, itemToCheck: Item): boolean {
         // Use pocket slotId's otherwise it deletes the root pocket item.
         const pocketSlots = ["pocket1", "pocket2", "pocket3", "pocket4"];
 
         // Base inventory items are always kept
-        if (!itemToCheck.parentId)
-        {
+        if (!itemToCheck.parentId) {
             return true;
         }
 
         // Is item equipped on player
-        if (itemToCheck.parentId === pmcData.Inventory.equipment)
-        {
+        if (itemToCheck.parentId === pmcData.Inventory.equipment) {
             // Check slot id against config, true = delete, false = keep, undefined = delete
             const discard: boolean = this.lostOnDeathConfig.equipment[itemToCheck.slotId];
-            if (typeof discard === "boolean" && discard === true)
-            {
+            if (typeof discard === "boolean" && discard === true) {
                 // Lost on death
                 return false;
             }
@@ -148,20 +132,17 @@ export class InRaidHelper
         }
 
         // Should we keep items in pockets on death
-        if (!this.lostOnDeathConfig.equipment.PocketItems && pocketSlots.includes(itemToCheck.slotId))
-        {
+        if (!this.lostOnDeathConfig.equipment.PocketItems && pocketSlots.includes(itemToCheck.slotId)) {
             return true;
         }
 
         // Is quest item + quest item not lost on death
-        if (itemToCheck.parentId === pmcData.Inventory.questRaidItems && !this.lostOnDeathConfig.questItems)
-        {
+        if (itemToCheck.parentId === pmcData.Inventory.questRaidItems && !this.lostOnDeathConfig.questItems) {
             return true;
         }
 
         // special slots are always kept after death
-        if (itemToCheck.slotId?.includes("SpecialSlot") && this.lostOnDeathConfig.specialSlotItems)
-        {
+        if (itemToCheck.slotId?.includes("SpecialSlot") && this.lostOnDeathConfig.specialSlotItems) {
             return true;
         }
 

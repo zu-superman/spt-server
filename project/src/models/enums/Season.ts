@@ -1,5 +1,4 @@
-export enum Season
-{
+export enum Season {
     SUMMER = 0,
     AUTUMN = 1,
     WINTER = 2,

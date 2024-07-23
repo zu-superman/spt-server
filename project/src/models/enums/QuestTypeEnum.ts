@@ -1,5 +1,4 @@
-export enum QuestTypeEnum
-{
+export enum QuestTypeEnum {
     PICKUP = "PickUp",
     ELIMINATION = "Elimination",
     DISCOVER = "Discover",

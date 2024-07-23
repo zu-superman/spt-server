@@ -1,5 +1,4 @@
-export enum MessageType
-{
+export enum MessageType {
     // if this variables are supposed to be strings for the type
     // then the equals value should be the name that should be
     // required by the client instead of an int

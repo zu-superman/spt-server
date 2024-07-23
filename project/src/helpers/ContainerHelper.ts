@@ -1,14 +1,16 @@
 import { injectable } from "tsyringe";
 
-export class FindSlotResult
-{
-    constructor(public success = false, public x?: number, public y?: number, public rotation = false)
-    {}
+export class FindSlotResult {
+    constructor(
+        public success = false,
+        public x?: number,
+        public y?: number,
+        public rotation = false,
+    ) {}
 }
 
 @injectable()
-export class ContainerHelper
-{
+export class ContainerHelper {
     /**
      * Finds a slot for an item in a given 2D container map
      * @param container2D Array of container with slots filled/free
@@ -16,8 +18,7 @@ export class ContainerHelper
      * @param itemHeight Height of item
      * @returns Location to place item in container
      */
-    public findSlotForItem(container2D: number[][], itemWidth: number, itemHeight: number): FindSlotResult
-    {
+    public findSlotForItem(container2D: number[][], itemWidth: number, itemHeight: number): FindSlotResult {
         let rotation = false;
         const minVolume = (itemWidth < itemHeight ? itemWidth : itemHeight) - 1;
         const containerY = container2D.length;
@@ -26,39 +27,32 @@ export class ContainerHelper
         const limitX = containerX - minVolume;
 
         // Every x+y slot taken up in container, exit
-        if (container2D.every((x) => x.every((y) => y === 1)))
-        {
+        if (container2D.every((x) => x.every((y) => y === 1))) {
             return new FindSlotResult(false);
         }
 
         // Down
-        for (let y = 0; y < limitY; y++)
-        {
+        for (let y = 0; y < limitY; y++) {
             // Across
-            if (container2D[y].every((x) => x === 1))
-            {
+            if (container2D[y].every((x) => x === 1)) {
                 // Every item in row is full, skip row
                 continue;
             }
 
-            for (let x = 0; x < limitX; x++)
-            {
+            for (let x = 0; x < limitX; x++) {
                 let foundSlot = this.locateSlot(container2D, containerX, containerY, x, y, itemWidth, itemHeight);
 
                 // Failed to find slot, rotate item and try again
-                if (!foundSlot && itemWidth * itemHeight > 1)
-                {
+                if (!foundSlot && itemWidth * itemHeight > 1) {
                     // Bigger than 1x1
                     foundSlot = this.locateSlot(container2D, containerX, containerY, x, y, itemHeight, itemWidth); // Height/Width swapped
-                    if (foundSlot)
-                    {
+                    if (foundSlot) {
                         // Found a slot for it when rotated
                         rotation = true;
                     }
                 }
 
-                if (!foundSlot)
-                {
+                if (!foundSlot) {
                     // Didn't fit this hole, try again
                     continue;
                 }
@@ -90,36 +84,29 @@ export class ContainerHelper
         y: number,
         itemW: number,
         itemH: number,
-    ): boolean
-    {
+    ): boolean {
         let foundSlot = true;
 
-        for (let itemY = 0; itemY < itemH; itemY++)
-        {
-            if (foundSlot && y + itemH - 1 > containerY - 1)
-            {
+        for (let itemY = 0; itemY < itemH; itemY++) {
+            if (foundSlot && y + itemH - 1 > containerY - 1) {
                 foundSlot = false;
                 break;
             }
 
             // Does item fit x-ways across
-            for (let itemX = 0; itemX < itemW; itemX++)
-            {
-                if (foundSlot && x + itemW - 1 > containerX - 1)
-                {
+            for (let itemX = 0; itemX < itemW; itemX++) {
+                if (foundSlot && x + itemW - 1 > containerX - 1) {
                     foundSlot = false;
                     break;
                 }
 
-                if (container2D[y + itemY][x + itemX] !== 0)
-                {
+                if (container2D[y + itemY][x + itemX] !== 0) {
                     foundSlot = false;
                     break;
                 }
             }
 
-            if (!foundSlot)
-            {
+            if (!foundSlot) {
                 break;
             }
         }
@@ -143,23 +130,17 @@ export class ContainerHelper
         itemW: number,
         itemH: number,
         rotate: boolean,
-    ): void
-    {
+    ): void {
         // Swap height/width if we want to fit it in rotated
         const itemWidth = rotate ? itemH : itemW;
         const itemHeight = rotate ? itemW : itemH;
 
-        for (let tmpY = y; tmpY < y + itemHeight; tmpY++)
-        {
-            for (let tmpX = x; tmpX < x + itemWidth; tmpX++)
-            {
-                if (container2D[tmpY][tmpX] === 0)
-                {
+        for (let tmpY = y; tmpY < y + itemHeight; tmpY++) {
+            for (let tmpX = x; tmpX < x + itemWidth; tmpX++) {
+                if (container2D[tmpY][tmpX] === 0) {
                     // Flag slot as used
                     container2D[tmpY][tmpX] = 1;
-                }
-                else
-                {
+                } else {
                     throw new Error(`Slot at (${x}, ${y}) is already filled. Cannot fit a ${itemW} by ${itemH}`);
                 }
             }

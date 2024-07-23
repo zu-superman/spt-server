@@ -5,11 +5,10 @@ import { IOffraidHealRequestData } from "@spt/models/eft/health/IOffraidHealRequ
 import { ISyncHealthRequestData } from "@spt/models/eft/health/ISyncHealthRequestData";
 import { ISptProfile } from "@spt/models/eft/profile/ISptProfile";
 
-export interface IHealthCallbacks
-{
-    onLoad(sessionID: string): ISptProfile
-    syncHealth(url: string, info: ISyncHealthRequestData, sessionID: string): any
-    offraidEat(pmcData: IPmcData, body: IOffraidEatRequestData, sessionID: string): any
-    offraidHeal(pmcData: IPmcData, body: IOffraidHealRequestData, sessionID: string): any
-    healthTreatment(pmcData: IPmcData, info: IHealthTreatmentRequestData, sessionID: string): any
+export interface IHealthCallbacks {
+    onLoad(sessionID: string): ISptProfile;
+    syncHealth(url: string, info: ISyncHealthRequestData, sessionID: string): any;
+    offraidEat(pmcData: IPmcData, body: IOffraidEatRequestData, sessionID: string): any;
+    offraidHeal(pmcData: IPmcData, body: IOffraidHealRequestData, sessionID: string): any;
+    healthTreatment(pmcData: IPmcData, info: IHealthTreatmentRequestData, sessionID: string): any;
 }

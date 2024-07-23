@@ -1,15 +1,14 @@
-import fixJson from "json-fixer";
-import { stringify, parse } from "json5";
-import { jsonc } from "jsonc";
-import { IParseOptions, IStringifyOptions, Reviver } from "jsonc/lib/interfaces";
-import { inject, injectable } from "tsyringe";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { HashUtil } from "@spt/utils/HashUtil";
 import { VFS } from "@spt/utils/VFS";
+import fixJson from "json-fixer";
+import { parse, stringify } from "json5";
+import { jsonc } from "jsonc";
+import { IParseOptions, IStringifyOptions, Reviver } from "jsonc/lib/interfaces";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class JsonUtil
-{
+export class JsonUtil {
     protected fileHashes?: Map<string, string> = undefined;
     protected jsonCacheExists = false;
     protected jsonCachePath = "./user/cache/jsonCache.json";
@@ -18,8 +17,7 @@ export class JsonUtil
         @inject("VFS") protected vfs: VFS,
         @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("PrimaryLogger") protected logger: ILogger,
-    )
-    {}
+    ) {}
 
     /**
      * From object to string
@@ -27,10 +25,8 @@ export class JsonUtil
      * @param prettify Should output be prettified
      * @returns string
      */
-    public serialize(data: any, prettify = false): string
-    {
-        if (prettify)
-        {
+    public serialize(data: any, prettify = false): string {
+        if (prettify) {
             return JSON.stringify(data, undefined, "\t");
         }
 
@@ -48,8 +44,7 @@ export class JsonUtil
         data: any,
         replacer?: (this: any, key: string, value: any) => any,
         space?: string | number,
-    ): string
-    {
+    ): string {
         return JSON.stringify(data, replacer, space);
     }
 
@@ -64,33 +59,24 @@ export class JsonUtil
         data: any,
         filename?: string | undefined,
         options?: IStringifyOptions | Reviver,
-    ): string | undefined
-    {
-        try
-        {
+    ): string | undefined {
+        try {
             return jsonc.stringify(data, options);
-        }
-        catch (error)
-        {
+        } catch (error) {
             this.logger.error(
                 `unable to stringify jsonC file: ${filename} message: ${error.message}, stack: ${error.stack}`,
             );
         }
     }
 
-    public serializeJson5(data: any, filename?: string | undefined, prettify = false): string | undefined
-    {
-        try
-        {
-            if (prettify)
-            {
+    public serializeJson5(data: any, filename?: string | undefined, prettify = false): string | undefined {
+        try {
+            if (prettify) {
                 return stringify(data, undefined, "\t");
             }
 
             return stringify(data);
-        }
-        catch (error)
-        {
+        } catch (error) {
             this.logger.error(
                 `unable to stringify json5 file: ${filename} message: ${error.message}, stack: ${error.stack}`,
             );
@@ -103,14 +89,10 @@ export class JsonUtil
      * @param filename Name of file being deserialized
      * @returns object
      */
-    public deserialize<T>(jsonString: string, filename = ""): T | undefined
-    {
-        try
-        {
+    public deserialize<T>(jsonString: string, filename = ""): T | undefined {
+        try {
             return JSON.parse(jsonString);
-        }
-        catch (error)
-        {
+        } catch (error) {
             this.logger.error(
                 `unable to parse json file: ${filename} message: ${error.message}, stack: ${error.stack}`,
             );
@@ -124,38 +106,28 @@ export class JsonUtil
      * @param options Parsing options
      * @returns object
      */
-    public deserializeJsonC<T>(jsonString: string, filename = "", options?: IParseOptions): T | undefined
-    {
-        try
-        {
+    public deserializeJsonC<T>(jsonString: string, filename = "", options?: IParseOptions): T | undefined {
+        try {
             return jsonc.parse(jsonString, options);
-        }
-        catch (error)
-        {
+        } catch (error) {
             this.logger.error(
                 `unable to parse jsonC file: ${filename} message: ${error.message}, stack: ${error.stack}`,
             );
         }
     }
 
-    public deserializeJson5<T>(jsonString: string, filename = ""): T | undefined
-    {
-        try
-        {
+    public deserializeJson5<T>(jsonString: string, filename = ""): T | undefined {
+        try {
             return parse(jsonString);
-        }
-        catch (error)
-        {
+        } catch (error) {
             this.logger.error(
                 `unable to parse json file: ${filename} message: ${error.message}, stack: ${error.stack}`,
             );
         }
     }
 
-    public async deserializeWithCacheCheckAsync<T>(jsonString: string, filePath: string): Promise<T | undefined>
-    {
-        return new Promise((resolve) =>
-        {
+    public async deserializeWithCacheCheckAsync<T>(jsonString: string, filePath: string): Promise<T | undefined> {
+        return new Promise((resolve) => {
             resolve(this.deserializeWithCacheCheck<T>(jsonString, filePath));
         });
     }
@@ -167,41 +139,32 @@ export class JsonUtil
      * @param filePath Path to json file being processed
      * @returns Object
      */
-    public deserializeWithCacheCheck<T>(jsonString: string, filePath: string): T | undefined
-    {
+    public deserializeWithCacheCheck<T>(jsonString: string, filePath: string): T | undefined {
         this.ensureJsonCacheExists(this.jsonCachePath);
         this.hydrateJsonCache(this.jsonCachePath);
 
         // Generate hash of string
         const generatedHash = this.hashUtil.generateSha1ForData(jsonString);
 
-        if (!this.fileHashes)
-        {
+        if (!this.fileHashes) {
             throw new Error("Unable to deserialize with Cache, file hashes have not been hydrated yet");
         }
         // Get hash of file and check if missing or hash mismatch
         let savedHash = this.fileHashes[filePath];
-        if (!savedHash || savedHash !== generatedHash)
-        {
-            try
-            {
+        if (!savedHash || savedHash !== generatedHash) {
+            try {
                 const { data, changed } = fixJson(jsonString);
-                if (changed)
-                {
+                if (changed) {
                     // data invalid, return it
                     this.logger.error(`${filePath} - Detected faulty json, please fix your json file using VSCodium`);
-                }
-                else
-                {
+                } else {
                     // data valid, save hash and call function again
                     this.fileHashes[filePath] = generatedHash;
                     this.vfs.writeFile(this.jsonCachePath, this.serialize(this.fileHashes, true));
                     savedHash = generatedHash;
                 }
                 return data as T;
-            }
-            catch (error)
-            {
+            } catch (error) {
                 const errorMessage = `Attempted to parse file: ${filePath}. Error: ${error.message}`;
                 this.logger.error(errorMessage);
                 throw new Error(errorMessage);
@@ -209,8 +172,7 @@ export class JsonUtil
         }
 
         // Doesn't match
-        if (savedHash !== generatedHash)
-        {
+        if (savedHash !== generatedHash) {
             throw new Error(`Catastrophic failure processing file ${filePath}`);
         }
 
@@ -222,12 +184,9 @@ export class JsonUtil
      * Create file if nothing found
      * @param jsonCachePath path to cache
      */
-    protected ensureJsonCacheExists(jsonCachePath: string): void
-    {
-        if (!this.jsonCacheExists)
-        {
-            if (!this.vfs.exists(jsonCachePath))
-            {
+    protected ensureJsonCacheExists(jsonCachePath: string): void {
+        if (!this.jsonCacheExists) {
+            if (!this.vfs.exists(jsonCachePath)) {
                 // Create empty object at path
                 this.vfs.writeFile(jsonCachePath, "{}");
             }
@@ -239,11 +198,9 @@ export class JsonUtil
      * Read contents of json cache and add to class field
      * @param jsonCachePath Path to cache
      */
-    protected hydrateJsonCache(jsonCachePath: string): void
-    {
+    protected hydrateJsonCache(jsonCachePath: string): void {
         // Get all file hashes
-        if (!this.fileHashes)
-        {
+        if (!this.fileHashes) {
             this.fileHashes = this.deserialize(this.vfs.readFile(`${jsonCachePath}`));
         }
     }
@@ -254,8 +211,7 @@ export class JsonUtil
      * @returns Cloned parameter
      * @deprecated Use ICloner implementations, such as RecursiveCloner or StructuredCloner
      */
-    public clone<T>(objectToClone: T): T
-    {
+    public clone<T>(objectToClone: T): T {
         return structuredClone(objectToClone);
     }
 }

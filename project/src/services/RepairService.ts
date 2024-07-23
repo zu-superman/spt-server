@@ -1,4 +1,3 @@
-import { inject, injectable } from "tsyringe";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { RepairHelper } from "@spt/helpers/RepairHelper";
@@ -24,10 +23,10 @@ import { DatabaseService } from "@spt/services/DatabaseService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { PaymentService } from "@spt/services/PaymentService";
 import { RandomUtil } from "@spt/utils/RandomUtil";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class RepairService
-{
+export class RepairService {
     protected repairConfig: IRepairConfig;
     constructor(
         @inject("PrimaryLogger") protected logger: ILogger,
@@ -41,8 +40,7 @@ export class RepairService
         @inject("RepairHelper") protected repairHelper: RepairHelper,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("ConfigServer") protected configServer: ConfigServer,
-    )
-    {
+    ) {
         this.repairConfig = this.configServer.getConfig(ConfigTypes.REPAIR);
     }
 
@@ -59,18 +57,20 @@ export class RepairService
         pmcData: IPmcData,
         repairItemDetails: RepairItem,
         traderId: string,
-    ): RepairDetails
-    {
+    ): RepairDetails {
         const itemToRepair = pmcData.Inventory.items.find((item) => item._id === repairItemDetails._id);
-        if (!itemToRepair)
-        {
-            throw new Error(this.localisationService.getText("repair-unable_to_find_item_in_inventory_cant_repair", repairItemDetails._id));
+        if (!itemToRepair) {
+            throw new Error(
+                this.localisationService.getText(
+                    "repair-unable_to_find_item_in_inventory_cant_repair",
+                    repairItemDetails._id,
+                ),
+            );
         }
 
         const priceCoef = this.traderHelper.getLoyaltyLevel(traderId, pmcData).repair_price_coef;
         const traderRepairDetails = this.traderHelper.getTrader(traderId, sessionID)?.repair;
-        if (!traderRepairDetails)
-        {
+        if (!traderRepairDetails) {
             throw new Error(this.localisationService.getText("repair-unable_to_find_trader_details_by_id", traderId));
         }
         const repairQualityMultiplier = Number(traderRepairDetails.quality);
@@ -92,9 +92,10 @@ export class RepairService
 
         // get repair price
         const itemRepairCost = items[itemToRepair._tpl]._props.RepairCost;
-        if (!itemRepairCost)
-        {
-            throw new Error(this.localisationService.getText("repair-unable_to_find_item_repair_cost", itemToRepair._tpl));
+        if (!itemRepairCost) {
+            throw new Error(
+                this.localisationService.getText("repair-unable_to_find_item_repair_cost", itemToRepair._tpl),
+            );
         }
         const repairCost = Math.round(
             itemRepairCost * repairItemDetails.count * repairRate * this.repairConfig.priceMultiplier,
@@ -128,8 +129,7 @@ export class RepairService
         repairCost: number,
         traderId: string,
         output: IItemEventRouterResponse,
-    ): void
-    {
+    ): void {
         const options: IProcessBuyTradeRequestData = {
             scheme_items: [
                 {
@@ -154,18 +154,15 @@ export class RepairService
      * @param repairDetails details of item repaired, cost/item
      * @param pmcData Profile to add points to
      */
-    public addRepairSkillPoints(sessionId: string, repairDetails: RepairDetails, pmcData: IPmcData): void
-    {
+    public addRepairSkillPoints(sessionId: string, repairDetails: RepairDetails, pmcData: IPmcData): void {
         // Handle kit repair of weapon
         if (
-            repairDetails.repairedByKit
-            && this.itemHelper.isOfBaseclass(repairDetails.repairedItem._tpl, BaseClasses.WEAPON)
-        )
-        {
+            repairDetails.repairedByKit &&
+            this.itemHelper.isOfBaseclass(repairDetails.repairedItem._tpl, BaseClasses.WEAPON)
+        ) {
             const skillPoints = this.getWeaponRepairSkillPoints(repairDetails);
 
-            if (skillPoints > 0)
-            {
+            if (skillPoints > 0) {
                 this.logger.debug(`Added: ${skillPoints} WEAPON_TREATMENT skill`);
                 this.profileHelper.addSkillPointsToPlayer(pmcData, SkillTypes.WEAPON_TREATMENT, skillPoints, true);
             }
@@ -173,16 +170,14 @@ export class RepairService
 
         // Handle kit repair of armor
         if (
-            repairDetails.repairedByKit
-            && this.itemHelper.isOfBaseclasses(repairDetails.repairedItem._tpl, [
+            repairDetails.repairedByKit &&
+            this.itemHelper.isOfBaseclasses(repairDetails.repairedItem._tpl, [
                 BaseClasses.ARMOR_PLATE,
                 BaseClasses.BUILT_IN_INSERTS,
             ])
-        )
-        {
+        ) {
             const itemDetails = this.itemHelper.getItem(repairDetails.repairedItem._tpl);
-            if (!itemDetails[0])
-            {
+            if (!itemDetails[0]) {
                 // No item found
                 this.logger.error(
                     this.localisationService.getText(
@@ -196,12 +191,16 @@ export class RepairService
 
             const isHeavyArmor = itemDetails[1]._props.ArmorType === "Heavy";
             const vestSkillToLevel = isHeavyArmor ? SkillTypes.HEAVY_VESTS : SkillTypes.LIGHT_VESTS;
-            if (!repairDetails.repairPoints)
-            {
-                throw new Error(this.localisationService.getText("repair-item_has_no_repair_points", repairDetails.repairedItem._tpl));
+            if (!repairDetails.repairPoints) {
+                throw new Error(
+                    this.localisationService.getText(
+                        "repair-item_has_no_repair_points",
+                        repairDetails.repairedItem._tpl,
+                    ),
+                );
             }
-            const pointsToAddToVestSkill
-                = repairDetails.repairPoints * this.repairConfig.armorKitSkillPointGainPerRepairPointMultiplier;
+            const pointsToAddToVestSkill =
+                repairDetails.repairPoints * this.repairConfig.armorKitSkillPointGainPerRepairPointMultiplier;
 
             this.logger.debug(`Added: ${pointsToAddToVestSkill} ${vestSkillToLevel} skill`);
             this.profileHelper.addSkillPointsToPlayer(pmcData, vestSkillToLevel, pointsToAddToVestSkill);
@@ -209,17 +208,14 @@ export class RepairService
 
         // Handle giving INT to player - differs if using kit/trader and weapon vs armor
         const intellectGainedFromRepair = this.getIntellectGainedFromRepair(repairDetails);
-        if (intellectGainedFromRepair > 0)
-        {
+        if (intellectGainedFromRepair > 0) {
             this.logger.debug(`Added: ${intellectGainedFromRepair} intellect skill`);
             this.profileHelper.addSkillPointsToPlayer(pmcData, SkillTypes.INTELLECT, intellectGainedFromRepair);
         }
     }
 
-    protected getIntellectGainedFromRepair(repairDetails: RepairDetails): number
-    {
-        if (repairDetails.repairedByKit)
-        {
+    protected getIntellectGainedFromRepair(repairDetails: RepairDetails): number {
+        if (repairDetails.repairedByKit) {
             // Weapons/armor have different multipliers
             const intRepairMultiplier = this.itemHelper.isOfBaseclass(
                 repairDetails.repairedItem._tpl,
@@ -229,9 +225,13 @@ export class RepairService
                 : this.repairConfig.repairKitIntellectGainMultiplier.armor;
 
             // Limit gain to a max value defined in config.maxIntellectGainPerRepair
-            if (!repairDetails.repairPoints)
-            {
-                throw new Error(this.localisationService.getText("repair-item_has_no_repair_points", repairDetails.repairedItem._tpl));
+            if (!repairDetails.repairPoints) {
+                throw new Error(
+                    this.localisationService.getText(
+                        "repair-item_has_no_repair_points",
+                        repairDetails.repairedItem._tpl,
+                    ),
+                );
             }
 
             return Math.min(
@@ -249,8 +249,7 @@ export class RepairService
      * @param repairDetails the repair details to calculate skill points for
      * @returns the number of skill points to reward the user
      */
-    protected getWeaponRepairSkillPoints(repairDetails: RepairDetails): number
-    {
+    protected getWeaponRepairSkillPoints(repairDetails: RepairDetails): number {
         // This formula and associated configs is calculated based on 30 repairs done on live
         // The points always came out 2-aligned, which is why there's a divide/multiply by 2 with ceil calls
         const gainMult = this.repairConfig.weaponTreatment.pointGainMultiplier;
@@ -266,14 +265,12 @@ export class RepairService
 
         // You can both crit fail and succeed at the same time, for fun (Balances out to 0 with default settings)
         // Add a random chance to crit-fail
-        if (Math.random() <= this.repairConfig.weaponTreatment.critFailureChance)
-        {
+        if (Math.random() <= this.repairConfig.weaponTreatment.critFailureChance) {
             skillPoints -= this.repairConfig.weaponTreatment.critFailureAmount;
         }
 
         // Add a random chance to crit-succeed
-        if (Math.random() <= this.repairConfig.weaponTreatment.critSuccessChance)
-        {
+        if (Math.random() <= this.repairConfig.weaponTreatment.critSuccessChance) {
             skillPoints += this.repairConfig.weaponTreatment.critSuccessAmount;
         }
 
@@ -294,12 +291,10 @@ export class RepairService
         repairKits: RepairKitsInfo[],
         itemToRepairId: string,
         output: IItemEventRouterResponse,
-    ): RepairDetails
-    {
+    ): RepairDetails {
         // Find item to repair in inventory
         const itemToRepair = pmcData.Inventory.items.find((x: { _id: string }) => x._id === itemToRepairId);
-        if (itemToRepair === undefined)
-        {
+        if (itemToRepair === undefined) {
             throw new Error(this.localisationService.getText("repair-item_not_found_unable_to_repair", itemToRepairId));
         }
 
@@ -323,12 +318,12 @@ export class RepairService
         );
 
         // Find and use repair kit defined in body
-        for (const repairKit of repairKits)
-        {
+        for (const repairKit of repairKits) {
             const repairKitInInventory = pmcData.Inventory.items.find((item) => item._id === repairKit._id);
-            if (!repairKitInInventory)
-            {
-                throw new Error(this.localisationService.getText("repair-repair_kit_not_found_in_inventory", repairKit._id));
+            if (!repairKitInInventory) {
+                throw new Error(
+                    this.localisationService.getText("repair-repair_kit_not_found_in_inventory", repairKit._id),
+                );
             }
             const repairKitDetails = itemsDb[repairKitInInventory._tpl];
             const repairKitReductionAmount = repairKit.count;
@@ -357,18 +352,16 @@ export class RepairService
      * @param pmcData Player profile
      * @returns Number to divide kit points by
      */
-    protected getKitDivisor(itemToRepairDetails: ITemplateItem, isArmor: boolean, pmcData: IPmcData): number
-    {
+    protected getKitDivisor(itemToRepairDetails: ITemplateItem, isArmor: boolean, pmcData: IPmcData): number {
         const globals = this.databaseService.getGlobals();
         const globalRepairSettings = globals.config.RepairSettings;
 
         const intellectRepairPointsPerLevel = globals.config.SkillsSettings.Intellect.RepairPointsCostReduction;
-        const profileIntellectLevel
-            = this.profileHelper.getSkillFromProfile(pmcData, SkillTypes.INTELLECT)?.Progress ?? 0;
+        const profileIntellectLevel =
+            this.profileHelper.getSkillFromProfile(pmcData, SkillTypes.INTELLECT)?.Progress ?? 0;
         const intellectPointReduction = intellectRepairPointsPerLevel * Math.trunc(profileIntellectLevel / 100);
 
-        if (isArmor)
-        {
+        if (isArmor) {
             const durabilityPointCostArmor = globalRepairSettings.durabilityPointCostArmor;
             const repairArmorBonus = this.getBonusMultiplierValue(BonusType.REPAIR_ARMOR_BONUS, pmcData);
             const armorBonus = 1.0 - (repairArmorBonus - 1.0) - intellectPointReduction;
@@ -395,12 +388,10 @@ export class RepairService
      * @param pmcData Player profile to look in for skill
      * @returns Multiplier value
      */
-    protected getBonusMultiplierValue(skillBonus: BonusType, pmcData: IPmcData): number
-    {
+    protected getBonusMultiplierValue(skillBonus: BonusType, pmcData: IPmcData): number {
         const bonusesMatched = pmcData?.Bonuses?.filter((b) => b.type === skillBonus);
         let value = 1;
-        if (bonusesMatched)
-        {
+        if (bonusesMatched) {
             const summedPercentage = bonusesMatched.map((b) => b.value ?? 0).reduce((v1, v2) => v1 + v2, 0);
             value = 1 + summedPercentage / 100;
         }
@@ -414,15 +405,12 @@ export class RepairService
      * @param applyRandomizeDurabilityLoss Value from repair config
      * @returns True if loss should be applied
      */
-    protected shouldRepairKitApplyDurabilityLoss(pmcData: IPmcData, applyRandomizeDurabilityLoss: boolean): boolean
-    {
+    protected shouldRepairKitApplyDurabilityLoss(pmcData: IPmcData, applyRandomizeDurabilityLoss: boolean): boolean {
         let shouldApplyDurabilityLoss = applyRandomizeDurabilityLoss;
-        if (shouldApplyDurabilityLoss)
-        {
+        if (shouldApplyDurabilityLoss) {
             // Random loss not disabled via config, perform charisma check
             const hasEliteCharisma = this.profileHelper.hasEliteSkillLevel(SkillTypes.CHARISMA, pmcData);
-            if (hasEliteCharisma)
-            {
+            if (hasEliteCharisma) {
                 // 50/50 chance of loss being ignored at elite level
                 shouldApplyDurabilityLoss = this.randomUtil.getChance100(50);
             }
@@ -436,16 +424,13 @@ export class RepairService
      * @param repairKitDetails Repair kit details from db
      * @param repairKitInInventory Repair kit to update
      */
-    protected addMaxResourceToKitIfMissing(repairKitDetails: ITemplateItem, repairKitInInventory: Item): void
-    {
+    protected addMaxResourceToKitIfMissing(repairKitDetails: ITemplateItem, repairKitInInventory: Item): void {
         const maxRepairAmount = repairKitDetails._props.MaxRepairResource!;
-        if (!repairKitInInventory.upd)
-        {
+        if (!repairKitInInventory.upd) {
             this.logger.debug(`Repair kit: ${repairKitInInventory._id} in inventory lacks upd object, adding`);
             repairKitInInventory.upd = { RepairKit: { Resource: maxRepairAmount } };
         }
-        if (!repairKitInInventory.upd.RepairKit?.Resource)
-        {
+        if (!repairKitInInventory.upd.RepairKit?.Resource) {
             repairKitInInventory.upd.RepairKit = { Resource: maxRepairAmount };
         }
     }
@@ -455,16 +440,13 @@ export class RepairService
      * @param repairDetails Repair details of item
      * @param pmcData Player profile
      */
-    public addBuffToItem(repairDetails: RepairDetails, pmcData: IPmcData): void
-    {
+    public addBuffToItem(repairDetails: RepairDetails, pmcData: IPmcData): void {
         // Buffs are repair kit only
-        if (!repairDetails.repairedByKit)
-        {
+        if (!repairDetails.repairedByKit) {
             return;
         }
 
-        if (this.shouldBuffItem(repairDetails, pmcData))
-        {
+        if (this.shouldBuffItem(repairDetails, pmcData)) {
             if (
                 this.itemHelper.isOfBaseclasses(repairDetails.repairedItem._tpl, [
                     BaseClasses.ARMOR,
@@ -472,13 +454,10 @@ export class RepairService
                     BaseClasses.HEADWEAR,
                     BaseClasses.ARMOR_PLATE,
                 ])
-            )
-            {
+            ) {
                 const armorConfig = this.repairConfig.repairKit.armor;
                 this.addBuff(armorConfig, repairDetails.repairedItem);
-            }
-            else if (this.itemHelper.isOfBaseclass(repairDetails.repairedItem._tpl, BaseClasses.WEAPON))
-            {
+            } else if (this.itemHelper.isOfBaseclass(repairDetails.repairedItem._tpl, BaseClasses.WEAPON)) {
                 const weaponConfig = this.repairConfig.repairKit.weapon;
                 this.addBuff(weaponConfig, repairDetails.repairedItem);
             }
@@ -491,8 +470,7 @@ export class RepairService
      * @param itemConfig weapon/armor config
      * @param repairDetails Details for item to repair
      */
-    public addBuff(itemConfig: BonusSettings, item: Item): void
-    {
+    public addBuff(itemConfig: BonusSettings, item: Item): void {
         const bonusRarity = this.weightedRandomHelper.getWeightedValue<string>(itemConfig.rarityWeight);
         const bonusType = this.weightedRandomHelper.getWeightedValue<string>(itemConfig.bonusTypeWeight);
 
@@ -520,56 +498,52 @@ export class RepairService
      * @param pmcData Player profile
      * @returns True if item should have buff applied
      */
-    protected shouldBuffItem(repairDetails: RepairDetails, pmcData: IPmcData): boolean
-    {
+    protected shouldBuffItem(repairDetails: RepairDetails, pmcData: IPmcData): boolean {
         const globals = this.databaseService.getGlobals();
 
         const hasTemplate = this.itemHelper.getItem(repairDetails.repairedItem._tpl);
-        if (!hasTemplate[0])
-        {
+        if (!hasTemplate[0]) {
             return false;
         }
         const template = hasTemplate[1];
 
         // Returns SkillTypes.LIGHT_VESTS/HEAVY_VESTS/WEAPON_TREATMENT
         const itemSkillType = this.getItemSkillType(template);
-        if (!itemSkillType)
-        {
+        if (!itemSkillType) {
             return false;
         }
 
         // Skill < level 10 + repairing weapon
         if (
-            itemSkillType === SkillTypes.WEAPON_TREATMENT
-            && this.profileHelper.getSkillFromProfile(pmcData, SkillTypes.WEAPON_TREATMENT)?.Progress < 1000
-        )
-        {
+            itemSkillType === SkillTypes.WEAPON_TREATMENT &&
+            this.profileHelper.getSkillFromProfile(pmcData, SkillTypes.WEAPON_TREATMENT)?.Progress < 1000
+        ) {
             return false;
         }
 
         // Skill < level 10 + repairing armor
         if (
-            [SkillTypes.LIGHT_VESTS, SkillTypes.HEAVY_VESTS].includes(itemSkillType)
-            && this.profileHelper.getSkillFromProfile(pmcData, itemSkillType)?.Progress < 1000
-        )
-        {
+            [SkillTypes.LIGHT_VESTS, SkillTypes.HEAVY_VESTS].includes(itemSkillType) &&
+            this.profileHelper.getSkillFromProfile(pmcData, itemSkillType)?.Progress < 1000
+        ) {
             return false;
         }
 
-        const commonBuffMinChanceValue
-            = globals.config.SkillsSettings[itemSkillType as string].BuffSettings.CommonBuffMinChanceValue;
-        const commonBuffChanceLevelBonus
-            = globals.config.SkillsSettings[itemSkillType as string].BuffSettings.CommonBuffChanceLevelBonus;
-        const receivedDurabilityMaxPercent
-            = globals.config.SkillsSettings[itemSkillType as string].BuffSettings.ReceivedDurabilityMaxPercent;
+        const commonBuffMinChanceValue =
+            globals.config.SkillsSettings[itemSkillType as string].BuffSettings.CommonBuffMinChanceValue;
+        const commonBuffChanceLevelBonus =
+            globals.config.SkillsSettings[itemSkillType as string].BuffSettings.CommonBuffChanceLevelBonus;
+        const receivedDurabilityMaxPercent =
+            globals.config.SkillsSettings[itemSkillType as string].BuffSettings.ReceivedDurabilityMaxPercent;
 
         const skillLevel = Math.trunc(
             (this.profileHelper.getSkillFromProfile(pmcData, itemSkillType)?.Progress ?? 0) / 100,
         );
 
-        if (!repairDetails.repairPoints)
-        {
-            throw new Error(this.localisationService.getText("repair-item_has_no_repair_points", repairDetails.repairedItem._tpl));
+        if (!repairDetails.repairPoints) {
+            throw new Error(
+                this.localisationService.getText("repair-item_has_no_repair_points", repairDetails.repairedItem._tpl),
+            );
         }
         const durabilityToRestorePercent = repairDetails.repairPoints / template._props.MaxDurability!;
         const durabilityMultiplier = this.getDurabilityMultiplier(
@@ -579,8 +553,7 @@ export class RepairService
 
         const doBuff = commonBuffMinChanceValue + commonBuffChanceLevelBonus * skillLevel * durabilityMultiplier;
 
-        if (Math.random() <= doBuff)
-        {
+        if (Math.random() <= doBuff) {
             return true;
         }
 
@@ -592,8 +565,7 @@ export class RepairService
      * @param itemTemplate Item to check for skill
      * @returns Skill name
      */
-    protected getItemSkillType(itemTemplate: ITemplateItem): SkillTypes | undefined
-    {
+    protected getItemSkillType(itemTemplate: ITemplateItem): SkillTypes | undefined {
         const isArmorRelated = this.itemHelper.isOfBaseclasses(itemTemplate._id, [
             BaseClasses.ARMOR,
             BaseClasses.VEST,
@@ -601,27 +573,22 @@ export class RepairService
             BaseClasses.ARMOR_PLATE,
         ]);
 
-        if (isArmorRelated)
-        {
+        if (isArmorRelated) {
             const armorType = itemTemplate._props.ArmorType;
-            if (armorType === "Light")
-            {
+            if (armorType === "Light") {
                 return SkillTypes.LIGHT_VESTS;
             }
 
-            if (armorType === "Heavy")
-            {
+            if (armorType === "Heavy") {
                 return SkillTypes.HEAVY_VESTS;
             }
         }
 
-        if (this.itemHelper.isOfBaseclass(itemTemplate._id, BaseClasses.WEAPON))
-        {
+        if (this.itemHelper.isOfBaseclass(itemTemplate._id, BaseClasses.WEAPON)) {
             return SkillTypes.WEAPON_TREATMENT;
         }
 
-        if (this.itemHelper.isOfBaseclass(itemTemplate._id, BaseClasses.KNIFE))
-        {
+        if (this.itemHelper.isOfBaseclass(itemTemplate._id, BaseClasses.KNIFE)) {
             return SkillTypes.MELEE;
         }
 
@@ -634,8 +601,7 @@ export class RepairService
      * @param receiveDurabilityPercent current durability percent
      * @returns durability multiplier value
      */
-    protected getDurabilityMultiplier(receiveDurabilityMaxPercent: number, receiveDurabilityPercent: number): number
-    {
+    protected getDurabilityMultiplier(receiveDurabilityMaxPercent: number, receiveDurabilityPercent: number): number {
         // Ensure the max percent is at least 0.01
         const validMaxPercent = Math.max(0.01, receiveDurabilityMaxPercent);
         // Calculate the ratio and constrain it between 0.01 and 1
@@ -643,8 +609,7 @@ export class RepairService
     }
 }
 
-export class RepairDetails
-{
+export class RepairDetails {
     repairCost?: number;
     repairPoints?: number;
     repairedItem: Item;

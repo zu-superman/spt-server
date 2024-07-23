@@ -1,4 +1,3 @@
-import { inject, injectable } from "tsyringe";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { QuestHelper } from "@spt/helpers/QuestHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
@@ -7,18 +6,17 @@ import { QuestStatus } from "@spt/models/enums/QuestStatus";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { DatabaseServer } from "@spt/servers/DatabaseServer";
 import { LocalisationService } from "@spt/services/LocalisationService";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class AssortHelper
-{
+export class AssortHelper {
     constructor(
         @inject("PrimaryLogger") protected logger: ILogger,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("QuestHelper") protected questHelper: QuestHelper,
-    )
-    {}
+    ) {}
 
     /**
      * Remove assorts from a trader that have not been unlocked yet (via player completing corresponding quest)
@@ -34,32 +32,27 @@ export class AssortHelper
         traderAssorts: ITraderAssort,
         mergedQuestAssorts: Record<string, Record<string, string>>,
         flea = false,
-    ): ITraderAssort
-    {
+    ): ITraderAssort {
         let strippedTraderAssorts = traderAssorts;
 
         // Trader assort does not always contain loyal_level_items
-        if (!traderAssorts.loyal_level_items)
-        {
+        if (!traderAssorts.loyal_level_items) {
             this.logger.warning(this.localisationService.getText("assort-missing_loyalty_level_object", traderId));
 
             return traderAssorts;
         }
 
         // Iterate over all assorts, removing items that haven't yet been unlocked by quests (ASSORTMENT_UNLOCK)
-        for (const assortId in traderAssorts.loyal_level_items)
-        {
+        for (const assortId in traderAssorts.loyal_level_items) {
             // Get quest id that unlocks assort + statuses quest can be in to show assort
             const unlockValues = this.getQuestIdAndStatusThatShowAssort(mergedQuestAssorts, assortId);
-            if (!unlockValues)
-            {
+            if (!unlockValues) {
                 continue;
             }
 
             // Remove assort if quest in profile does not have status that unlocks assort
             const questStatusInProfile = this.questHelper.getQuestStatus(pmcProfile, unlockValues.questId);
-            if (!unlockValues.status.includes(questStatusInProfile))
-            {
+            if (!unlockValues.status.includes(questStatusInProfile)) {
                 strippedTraderAssorts = this.removeItemFromAssort(traderAssorts, assortId, flea);
             }
         }
@@ -76,10 +69,8 @@ export class AssortHelper
     protected getQuestIdAndStatusThatShowAssort(
         mergedQuestAssorts: Record<string, Record<string, string>>,
         assortId: string,
-    ): { questId: string, status: QuestStatus[] }
-    {
-        if (assortId in mergedQuestAssorts.started)
-        {
+    ): { questId: string; status: QuestStatus[] } {
+        if (assortId in mergedQuestAssorts.started) {
             // Assort unlocked by starting quest, assort is visible to player when : started or ready to hand in + handed in
             return {
                 questId: mergedQuestAssorts.started[assortId],
@@ -87,13 +78,11 @@ export class AssortHelper
             };
         }
 
-        if (assortId in mergedQuestAssorts.success)
-        {
+        if (assortId in mergedQuestAssorts.success) {
             return { questId: mergedQuestAssorts.success[assortId], status: [QuestStatus.Success] };
         }
 
-        if (assortId in mergedQuestAssorts.fail)
-        {
+        if (assortId in mergedQuestAssorts.fail) {
             return { questId: mergedQuestAssorts.fail[assortId], status: [QuestStatus.Fail] };
         }
 
@@ -107,23 +96,19 @@ export class AssortHelper
      * @param assort traders assorts
      * @returns traders assorts minus locked loyalty assorts
      */
-    public stripLockedLoyaltyAssort(pmcProfile: IPmcData, traderId: string, assort: ITraderAssort): ITraderAssort
-    {
+    public stripLockedLoyaltyAssort(pmcProfile: IPmcData, traderId: string, assort: ITraderAssort): ITraderAssort {
         let strippedAssort = assort;
 
         // Trader assort does not always contain loyal_level_items
-        if (!assort.loyal_level_items)
-        {
+        if (!assort.loyal_level_items) {
             this.logger.warning(this.localisationService.getText("assort-missing_loyalty_level_object", traderId));
 
             return strippedAssort;
         }
 
         // Remove items restricted by loyalty levels above those reached by the player
-        for (const itemId in assort.loyal_level_items)
-        {
-            if (assort.loyal_level_items[itemId] > pmcProfile.TradersInfo[traderId].loyaltyLevel)
-            {
+        for (const itemId in assort.loyal_level_items) {
+            if (assort.loyal_level_items[itemId] > pmcProfile.TradersInfo[traderId].loyaltyLevel) {
                 strippedAssort = this.removeItemFromAssort(assort, itemId);
             }
         }
@@ -137,16 +122,12 @@ export class AssortHelper
      * @param itemID item id to remove from asort
      * @returns Modified assort
      */
-    public removeItemFromAssort(assort: ITraderAssort, itemID: string, flea = false): ITraderAssort
-    {
+    public removeItemFromAssort(assort: ITraderAssort, itemID: string, flea = false): ITraderAssort {
         const idsToRemove = this.itemHelper.findAndReturnChildrenByItems(assort.items, itemID);
 
-        if (assort.barter_scheme[itemID] && flea)
-        {
-            for (const barterSchemes of assort.barter_scheme[itemID])
-            {
-                for (const barterScheme of barterSchemes)
-                {
+        if (assort.barter_scheme[itemID] && flea) {
+            for (const barterSchemes of assort.barter_scheme[itemID]) {
+                for (const barterScheme of barterSchemes) {
                     barterScheme.sptQuestLocked = true;
                 }
             }
@@ -155,12 +136,9 @@ export class AssortHelper
         delete assort.barter_scheme[itemID];
         delete assort.loyal_level_items[itemID];
 
-        for (const i in idsToRemove)
-        {
-            for (const a in assort.items)
-            {
-                if (assort.items[a]._id === idsToRemove[i])
-                {
+        for (const i in idsToRemove) {
+            for (const a in assort.items) {
+                if (assort.items[a]._id === idsToRemove[i]) {
                     assort.items.splice(Number.parseInt(a), 1);
                 }
             }

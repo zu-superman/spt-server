@@ -104,12 +104,7 @@
                     "max": 50
                 }
             },
-            "armorLevelWhitelist": [
-                0,
-                4,
-                5,
-                6
-            ],
+            "armorLevelWhitelist": [0, 4, 5, 6],
             "allowBossItems": false
         },
         "weaponArmor": {
@@ -181,13 +176,7 @@
                     "max": 50
                 }
             },
-            "armorLevelWhitelist": [
-                0,
-                3,
-                4,
-                5,
-                6
-            ],
+            "armorLevelWhitelist": [0, 3, 4, 5, 6],
             "allowBossItems": false
         },
         "foodMedical": {
@@ -267,9 +256,7 @@
                     "max": 50
                 }
             },
-            "armorLevelWhitelist": [
-                0
-            ],
+            "armorLevelWhitelist": [0],
             "allowBossItems": false
         },
         "barter": {
@@ -350,9 +337,7 @@
                     "max": 50
                 }
             },
-            "armorLevelWhitelist": [
-                0
-            ],
+            "armorLevelWhitelist": [0],
             "allowBossItems": false
         }
     }

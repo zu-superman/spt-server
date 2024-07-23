@@ -1,4 +1,3 @@
-import { inject, injectable } from "tsyringe";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { QuestHelper } from "@spt/helpers/QuestHelper";
 import { RepairHelper } from "@spt/helpers/RepairHelper";
@@ -13,10 +12,10 @@ import { EventOutputHolder } from "@spt/routers/EventOutputHolder";
 import { DatabaseService } from "@spt/services/DatabaseService";
 import { PaymentService } from "@spt/services/PaymentService";
 import { RepairService } from "@spt/services/RepairService";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class RepairController
-{
+export class RepairController {
     protected repairConfig: IRepairConfig;
 
     constructor(
@@ -29,8 +28,7 @@ export class RepairController
         @inject("RepairHelper") protected repairHelper: RepairHelper,
         @inject("RepairService") protected repairService: RepairService,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
-    )
-    {}
+    ) {}
 
     /**
      * Handle TraderRepair event
@@ -44,13 +42,11 @@ export class RepairController
         sessionID: string,
         body: ITraderRepairActionDataRequest,
         pmcData: IPmcData,
-    ): IItemEventRouterResponse
-    {
+    ): IItemEventRouterResponse {
         const output = this.eventOutputHolder.getOutput(sessionID);
 
         // find the item to repair
-        for (const repairItem of body.repairItems)
-        {
+        for (const repairItem of body.repairItems) {
             const repairDetails = this.repairService.repairItemByTrader(sessionID, pmcData, repairItem, body.tid);
 
             this.repairService.payForRepair(
@@ -62,8 +58,7 @@ export class RepairController
                 output,
             );
 
-            if (output.warnings.length > 0)
-            {
+            if (output.warnings.length > 0) {
                 return output;
             }
 
@@ -89,8 +84,7 @@ export class RepairController
         sessionID: string,
         body: IRepairActionDataRequest,
         pmcData: IPmcData,
-    ): IItemEventRouterResponse
-    {
+    ): IItemEventRouterResponse {
         const output = this.eventOutputHolder.getOutput(sessionID);
 
         // repair item

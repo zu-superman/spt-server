@@ -1,4 +1,3 @@
-export interface ICloner
-{
-    clone<T>(obj: T): T
+export interface ICloner {
+    clone<T>(obj: T): T;
 }

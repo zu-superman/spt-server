@@ -1,7 +1,5 @@
 import "reflect-metadata";
 
-import { container } from "tsyringe";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { Item } from "@spt/models/eft/common/tables/IItem";
 import { ITraderBase } from "@spt/models/eft/common/tables/ITrader";
@@ -9,25 +7,22 @@ import { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRo
 import { IProcessBuyTradeRequestData } from "@spt/models/eft/trade/IProcessBuyTradeRequestData";
 import { PaymentService } from "@spt/services/PaymentService";
 import { HashUtil } from "@spt/utils/HashUtil";
+import { container } from "tsyringe";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-describe("PaymentService", () =>
-{
+describe("PaymentService", () => {
     let paymentService: any; // Using "any" to access private/protected methods without type errors.
 
-    beforeEach(() =>
-    {
+    beforeEach(() => {
         paymentService = container.resolve<PaymentService>("PaymentService");
     });
 
-    afterEach(() =>
-    {
+    afterEach(() => {
         vi.restoreAllMocks();
     });
 
-    describe("payMoney", () =>
-    {
-        it("should output a currency change when a single non-barter item is purchased from a trader", () =>
-        {
+    describe("payMoney", () => {
+        it("should output a currency change when a single non-barter item is purchased from a trader", () => {
             const hashUtil = container.resolve<HashUtil>("HashUtil");
 
             const traderId = "54cb57776803fa99248b456e"; // Therapist
@@ -76,24 +71,25 @@ describe("PaymentService", () =>
             vi.spyOn((paymentService as any).logger, "debug").mockResolvedValue(undefined);
 
             // Mock the trader helper to return a trader with the currency of Roubles.
-            const getTraderSpy = vi.spyOn((paymentService as any).traderHelper, "getTrader").mockReturnValue(
-                { tid: traderId, currency: "RUB" } as unknown as ITraderBase,
-            );
+            const getTraderSpy = vi
+                .spyOn((paymentService as any).traderHelper, "getTrader")
+                .mockReturnValue({ tid: traderId, currency: "RUB" } as unknown as ITraderBase);
 
             // Mock the addPaymentToOutput method to subtract the item cost from the money stack.
-            const addPaymentToOutputSpy = vi.spyOn(paymentService as any, "addPaymentToOutput").mockImplementation(
-                (
-                    pmcData: IPmcData,
-                    currencyTpl: string,
-                    amountToPay: number,
-                    sessionIdentifier: string,
-                    output: IItemEventRouterResponse,
-                ) =>
-                {
-                    moneyItem.upd.StackObjectsCount -= costAmount;
-                    output.profileChanges[sessionIdentifier].items.change.push(moneyItem);
-                },
-            );
+            const addPaymentToOutputSpy = vi
+                .spyOn(paymentService as any, "addPaymentToOutput")
+                .mockImplementation(
+                    (
+                        pmcData: IPmcData,
+                        currencyTpl: string,
+                        amountToPay: number,
+                        sessionIdentifier: string,
+                        output: IItemEventRouterResponse,
+                    ) => {
+                        moneyItem.upd.StackObjectsCount -= costAmount;
+                        output.profileChanges[sessionIdentifier].items.change.push(moneyItem);
+                    },
+                );
 
             // Mock the traderHelper lvlUp method to return void.
             const lvlUpSpy = vi.spyOn((paymentService as any).traderHelper, "lvlUp").mockResolvedValue(undefined);
@@ -124,10 +120,8 @@ describe("PaymentService", () =>
         });
     });
 
-    describe("isInStash", () =>
-    {
-        it("should return true when item is direct parent of stash", () =>
-        {
+    describe("isInStash", () => {
+        it("should return true when item is direct parent of stash", () => {
             const hashUtil = container.resolve<HashUtil>("HashUtil");
             const stashItem: Item = {
                 _id: "stashid",
@@ -147,8 +141,7 @@ describe("PaymentService", () =>
             expect(result).toBe(true);
         });
 
-        it("should return true when item is indirect parent of inventory", () =>
-        {
+        it("should return true when item is indirect parent of inventory", () => {
             const hashUtil = container.resolve<HashUtil>("HashUtil");
             const stashItem: Item = {
                 _id: "stashId",
@@ -174,8 +167,7 @@ describe("PaymentService", () =>
             expect(result).toBe(true);
         });
 
-        it("should return false when desired item is not in inventory", () =>
-        {
+        it("should return false when desired item is not in inventory", () => {
             const hashUtil = container.resolve<HashUtil>("HashUtil");
             const stashItem: Item = {
                 _id: "stashId",
@@ -195,8 +187,7 @@ describe("PaymentService", () =>
             expect(result).toBe(false);
         });
 
-        it("should return false when player inventory array has no inventory item", () =>
-        {
+        it("should return false when player inventory array has no inventory item", () => {
             const hashUtil = container.resolve<HashUtil>("HashUtil");
             const stashItem: Item = {
                 _id: "stashId",

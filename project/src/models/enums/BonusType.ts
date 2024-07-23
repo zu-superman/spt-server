@@ -1,5 +1,4 @@
-export enum BonusType
-{
+export enum BonusType {
     ENERGY_REGENERATION = "EnergyRegeneration",
     HYDRATION_REGENERATION = "HydrationRegeneration",
     HEALTH_REGENERATION = "HealthRegeneration",

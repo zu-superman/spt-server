@@ -1,5 +1,4 @@
-export interface IChangeGroupMailOwnerRequest
-{
-    dialogId: string
-    uid: string
+export interface IChangeGroupMailOwnerRequest {
+    dialogId: string;
+    uid: string;
 }

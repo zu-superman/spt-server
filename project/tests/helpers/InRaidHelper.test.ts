@@ -1,27 +1,22 @@
 import "reflect-metadata";
-import { container } from "tsyringe";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { InRaidHelper } from "@spt/helpers/InRaidHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
+import { container } from "tsyringe";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-describe("InRaidHelper", () =>
-{
+describe("InRaidHelper", () => {
     let inraidHelper: any;
 
-    beforeEach(() =>
-    {
+    beforeEach(() => {
         inraidHelper = container.resolve<InRaidHelper>("InRaidHelper");
     });
 
-    afterEach(() =>
-    {
+    afterEach(() => {
         vi.restoreAllMocks();
     });
 
-    describe("resetSkillPointsEarnedDuringRaid", () =>
-    {
-        it("should reset PointsEarnedDuringSession for each skill in profile", () =>
-        {
+    describe("resetSkillPointsEarnedDuringRaid", () => {
+        it("should reset PointsEarnedDuringSession for each skill in profile", () => {
             const mockProfile = {
                 Skills: {
                     Common: [
@@ -40,8 +35,7 @@ describe("InRaidHelper", () =>
 
             (inraidHelper as any).resetSkillPointsEarnedDuringRaid(<IPmcData>mockProfile);
 
-            for (const skill of mockProfile.Skills.Common)
-            {
+            for (const skill of mockProfile.Skills.Common) {
                 expect(skill.PointsEarnedDuringSession).toBe(0);
             }
         });

@@ -1,5 +1,4 @@
-export enum HideoutAreas
-{
+export enum HideoutAreas {
     NOTSET = -1,
     VENTS = 0,
     SECURITY = 1,

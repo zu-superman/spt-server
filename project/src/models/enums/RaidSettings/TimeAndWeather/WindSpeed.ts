@@ -1,5 +1,4 @@
-export enum WindSpeed
-{
+export enum WindSpeed {
     LIGHT = "Light",
     MODERATE = "Moderate",
     STRONG = "Strong",

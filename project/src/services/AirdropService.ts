@@ -1,4 +1,3 @@
-import { inject, injectable } from "tsyringe";
 import { LootGenerator } from "@spt/generators/LootGenerator";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { WeightedRandomHelper } from "@spt/helpers/WeightedRandomHelper";
@@ -14,12 +13,12 @@ import { ConfigServer } from "@spt/servers/ConfigServer";
 import { DatabaseService } from "@spt/services/DatabaseService";
 import { ItemFilterService } from "@spt/services/ItemFilterService";
 import { LocalisationService } from "@spt/services/LocalisationService";
-import { ICloner } from "@spt/utils/cloners/ICloner";
 import { HashUtil } from "@spt/utils/HashUtil";
+import { ICloner } from "@spt/utils/cloners/ICloner";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class AirdropService
-{
+export class AirdropService {
     protected airdropConfig: IAirdropConfig;
 
     constructor(
@@ -33,8 +32,7 @@ export class AirdropService
         @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("ConfigServer") protected configServer: ConfigServer,
         @inject("PrimaryCloner") protected cloner: ICloner,
-    )
-    {
+    ) {
         this.airdropConfig = this.configServer.getConfig(ConfigTypes.AIRDROP);
     }
 
@@ -44,8 +42,7 @@ export class AirdropService
      * Generates it randomly based on config/airdrop.json values
      * @returns Array of LootItem objects
      */
-    public generateAirdropLoot(): IGetAirdropLootResponse
-    {
+    public generateAirdropLoot(): IGetAirdropLootResponse {
         const airdropType = this.chooseAirdropType();
         this.logger.debug(`Chose ${airdropType} for airdrop loot`);
 
@@ -62,17 +59,14 @@ export class AirdropService
         crateLoot.unshift(airdropCrateItem);
 
         // Reparent loot items to create we added above
-        for (const item of crateLoot)
-        {
-            if (item._id == airdropCrateItem._id)
-            {
+        for (const item of crateLoot) {
+            if (item._id == airdropCrateItem._id) {
                 // Crate itself, don't alter
                 continue;
             }
 
             // no parentId = root item, make item have create as parent
-            if (!item.parentId)
-            {
+            if (!item.parentId) {
                 item.parentId = airdropCrateItem._id;
                 item.slotId = "main";
             }
@@ -86,8 +80,7 @@ export class AirdropService
      * @param airdropType What tpye of container: weapon/common etc
      * @returns Item
      */
-    protected getAirdropCrateItem(airdropType: AirdropTypeEnum): Item
-    {
+    protected getAirdropCrateItem(airdropType: AirdropTypeEnum): Item {
         const airdropContainer = {
             _id: this.hashUtil.generate(),
             _tpl: "", // picked later
@@ -97,8 +90,7 @@ export class AirdropService
             },
         };
 
-        switch (airdropType)
-        {
+        switch (airdropType) {
             case AirdropTypeEnum.MEDICAL:
                 airdropContainer._tpl = ItemTpl.LOOTCONTAINER_AIRDROP_MEDICAL_CRATE;
                 break;
@@ -121,8 +113,7 @@ export class AirdropService
      * Randomly pick a type of airdrop loot using weighted values from config
      * @returns airdrop type value
      */
-    protected chooseAirdropType(): AirdropTypeEnum
-    {
+    protected chooseAirdropType(): AirdropTypeEnum {
         const possibleAirdropTypes = this.airdropConfig.airdropTypeWeightings;
 
         return this.weightedRandomHelper.getWeightedValue(possibleAirdropTypes);
@@ -133,11 +124,9 @@ export class AirdropService
      * @param airdropType Type of airdrop to get settings for
      * @returns LootRequest
      */
-    protected getAirdropLootConfigByType(airdropType: AirdropTypeEnum): LootRequest
-    {
+    protected getAirdropLootConfigByType(airdropType: AirdropTypeEnum): LootRequest {
         let lootSettingsByType: AirdropLoot = this.airdropConfig.loot[airdropType];
-        if (!lootSettingsByType)
-        {
+        if (!lootSettingsByType) {
             this.logger.error(
                 this.localisationService.getText("location-unable_to_find_airdrop_drop_config_of_type", airdropType),
             );

@@ -1,24 +1,21 @@
-import { inject, injectable } from "tsyringe";
 import { HttpServerHelper } from "@spt/helpers/HttpServerHelper";
 import { Message, MessageContentRagfair } from "@spt/models/eft/profile/ISptProfile";
 import { IWsChatMessageReceived } from "@spt/models/eft/ws/IWsChatMessageReceived";
 import { IWsNotificationEvent } from "@spt/models/eft/ws/IWsNotificationEvent";
 import { IWsRagfairOfferSold } from "@spt/models/eft/ws/IWsRagfairOfferSold";
 import { NotificationEventType } from "@spt/models/enums/NotificationEventType";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class NotifierHelper
-{
+export class NotifierHelper {
     /**
      * The default notification sent when waiting times out.
      */
     protected defaultNotification: IWsNotificationEvent = { type: NotificationEventType.PING, eventId: "ping" };
 
-    constructor(@inject("HttpServerHelper") protected httpServerHelper: HttpServerHelper)
-    {}
+    constructor(@inject("HttpServerHelper") protected httpServerHelper: HttpServerHelper) {}
 
-    public getDefaultNotification(): IWsNotificationEvent
-    {
+    public getDefaultNotification(): IWsNotificationEvent {
         return this.defaultNotification;
     }
 
@@ -31,8 +28,7 @@ export class NotifierHelper
     public createRagfairOfferSoldNotification(
         dialogueMessage: Message,
         ragfairData: MessageContentRagfair,
-    ): IWsRagfairOfferSold
-    {
+    ): IWsRagfairOfferSold {
         return {
             type: NotificationEventType.RAGFAIR_OFFER_SOLD,
             eventId: dialogueMessage._id,
@@ -45,8 +41,7 @@ export class NotifierHelper
      * @param dialogueMessage
      * @returns
      */
-    public createNewMessageNotification(dialogueMessage: Message): IWsChatMessageReceived
-    {
+    public createNewMessageNotification(dialogueMessage: Message): IWsChatMessageReceived {
         return {
             type: NotificationEventType.CHAT_MESSAGE_RECEIVED,
             eventId: dialogueMessage._id,
@@ -55,8 +50,7 @@ export class NotifierHelper
         };
     }
 
-    public getWebSocketServer(sessionID: string): string
-    {
+    public getWebSocketServer(sessionID: string): string {
         return `${this.httpServerHelper.getWebsocketUrl()}/notifierServer/getwebsocket/${sessionID}`;
     }
 }

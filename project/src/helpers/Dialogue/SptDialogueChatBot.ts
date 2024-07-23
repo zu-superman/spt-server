@@ -1,4 +1,3 @@
-import { inject, injectable } from "tsyringe";
 import { IDialogueChatBot } from "@spt/helpers/Dialogue/IDialogueChatBot";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { ISendMessageRequest } from "@spt/models/eft/dialog/ISendMessageRequest";
@@ -13,10 +12,10 @@ import { ConfigServer } from "@spt/servers/ConfigServer";
 import { GiftService } from "@spt/services/GiftService";
 import { MailSendService } from "@spt/services/MailSendService";
 import { RandomUtil } from "@spt/utils/RandomUtil";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class SptDialogueChatBot implements IDialogueChatBot
-{
+export class SptDialogueChatBot implements IDialogueChatBot {
     protected coreConfig: ICoreConfig;
     protected weatherConfig: IWeatherConfig;
 
@@ -26,14 +25,12 @@ export class SptDialogueChatBot implements IDialogueChatBot
         @inject("MailSendService") protected mailSendService: MailSendService,
         @inject("GiftService") protected giftService: GiftService,
         @inject("ConfigServer") protected configServer: ConfigServer,
-    )
-    {
+    ) {
         this.coreConfig = this.configServer.getConfig(ConfigTypes.CORE);
         this.weatherConfig = this.configServer.getConfig(ConfigTypes.WEATHER);
     }
 
-    public getChatBot(): IUserDialogInfo
-    {
+    public getChatBot(): IUserDialogInfo {
         return {
             _id: "sptFriend",
             aid: 1234566,
@@ -52,8 +49,7 @@ export class SptDialogueChatBot implements IDialogueChatBot
      * @param sessionId Session Id
      * @param request send message request
      */
-    public handleMessage(sessionId: string, request: ISendMessageRequest): string
-    {
+    public handleMessage(sessionId: string, request: ISendMessageRequest): string {
         const sender = this.profileHelper.getPmcProfile(sessionId);
 
         const sptFriendUser = this.getChatBot();
@@ -62,8 +58,7 @@ export class SptDialogueChatBot implements IDialogueChatBot
 
         const requestInput = request.text.toLowerCase();
 
-        if (giftSent === GiftSentResult.SUCCESS)
-        {
+        if (giftSent === GiftSentResult.SUCCESS) {
             this.mailSendService.sendUserMessageToPlayer(
                 sessionId,
                 sptFriendUser,
@@ -77,8 +72,7 @@ export class SptDialogueChatBot implements IDialogueChatBot
             return;
         }
 
-        if (giftSent === GiftSentResult.FAILED_GIFT_ALREADY_RECEIVED)
-        {
+        if (giftSent === GiftSentResult.FAILED_GIFT_ALREADY_RECEIVED) {
             this.mailSendService.sendUserMessageToPlayer(
                 sessionId,
                 sptFriendUser,
@@ -88,8 +82,7 @@ export class SptDialogueChatBot implements IDialogueChatBot
             return;
         }
 
-        if (requestInput.includes("love you"))
-        {
+        if (requestInput.includes("love you")) {
             this.mailSendService.sendUserMessageToPlayer(
                 sessionId,
                 sptFriendUser,
@@ -102,8 +95,7 @@ export class SptDialogueChatBot implements IDialogueChatBot
             );
         }
 
-        if (requestInput === "spt")
-        {
+        if (requestInput === "spt") {
             this.mailSendService.sendUserMessageToPlayer(
                 sessionId,
                 sptFriendUser,
@@ -111,8 +103,7 @@ export class SptDialogueChatBot implements IDialogueChatBot
             );
         }
 
-        if (["hello", "hi", "sup", "yo", "hey"].includes(requestInput))
-        {
+        if (["hello", "hi", "sup", "yo", "hey"].includes(requestInput)) {
             this.mailSendService.sendUserMessageToPlayer(
                 sessionId,
                 sptFriendUser,
@@ -131,8 +122,7 @@ export class SptDialogueChatBot implements IDialogueChatBot
             );
         }
 
-        if (requestInput === "nikita")
-        {
+        if (requestInput === "nikita") {
             this.mailSendService.sendUserMessageToPlayer(
                 sessionId,
                 sptFriendUser,
@@ -145,8 +135,7 @@ export class SptDialogueChatBot implements IDialogueChatBot
             );
         }
 
-        if (requestInput === "are you a bot")
-        {
+        if (requestInput === "are you a bot") {
             this.mailSendService.sendUserMessageToPlayer(
                 sessionId,
                 sptFriendUser,
@@ -154,8 +143,7 @@ export class SptDialogueChatBot implements IDialogueChatBot
             );
         }
 
-        if (requestInput === "itsonlysnowalan")
-        {
+        if (requestInput === "itsonlysnowalan") {
             this.weatherConfig.overrideSeason = Season.WINTER;
 
             this.mailSendService.sendUserMessageToPlayer(
@@ -165,24 +153,16 @@ export class SptDialogueChatBot implements IDialogueChatBot
             );
         }
 
-        if (requestInput === "givemespace")
-        {
+        if (requestInput === "givemespace") {
             const stashRowGiftId = "StashRows";
             const maxGiftsToSendCount = this.coreConfig.features.chatbotFeatures.commandUseLimits[stashRowGiftId] ?? 5;
-            if (
-                this.profileHelper.playerHasRecievedMaxNumberOfGift(
-                    sessionId,
-                    stashRowGiftId,
-                    maxGiftsToSendCount))
-            {
+            if (this.profileHelper.playerHasRecievedMaxNumberOfGift(sessionId, stashRowGiftId, maxGiftsToSendCount)) {
                 this.mailSendService.sendUserMessageToPlayer(
                     sessionId,
                     sptFriendUser,
                     "You cannot accept any more of this gift",
                 );
-            }
-            else
-            {
+            } else {
                 this.profileHelper.addStashRowsBonusToProfile(sessionId, 2);
 
                 this.mailSendService.sendUserMessageToPlayer(
@@ -191,11 +171,7 @@ export class SptDialogueChatBot implements IDialogueChatBot
                     this.randomUtil.getArrayValue(["Added 2 rows to stash, please restart your game to see them"]),
                 );
 
-                this.profileHelper.flagGiftReceivedInProfile(
-                    sessionId,
-                    stashRowGiftId,
-                    maxGiftsToSendCount,
-                );
+                this.profileHelper.flagGiftReceivedInProfile(sessionId, stashRowGiftId, maxGiftsToSendCount);
             }
         }
 

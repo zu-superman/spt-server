@@ -1,5 +1,4 @@
-export enum FogType
-{
+export enum FogType {
     NO_FOG = "NoFog",
     FAINT = "Faint",
     FOG = "Fog",

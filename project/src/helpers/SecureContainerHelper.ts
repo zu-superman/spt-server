@@ -1,33 +1,28 @@
-import { inject, injectable } from "tsyringe";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { Item } from "@spt/models/eft/common/tables/IItem";
+import { inject, injectable } from "tsyringe";
 
-export interface OwnerInventoryItems
-{
-    from: Item[]
-    to: Item[]
-    sameInventory: boolean
-    isMail: boolean
+export interface OwnerInventoryItems {
+    from: Item[];
+    to: Item[];
+    sameInventory: boolean;
+    isMail: boolean;
 }
 
 @injectable()
-export class SecureContainerHelper
-{
-    constructor(@inject("ItemHelper") protected itemHelper: ItemHelper)
-    {}
+export class SecureContainerHelper {
+    constructor(@inject("ItemHelper") protected itemHelper: ItemHelper) {}
 
     /**
      * Get an array of the item IDs (NOT tpls) inside a secure container
      * @param items Inventory items to look for secure container in
      * @returns Array of ids
      */
-    public getSecureContainerItems(items: Item[]): string[]
-    {
+    public getSecureContainerItems(items: Item[]): string[] {
         const secureContainer = items.find((x) => x.slotId === "SecuredContainer");
 
         // No container found, drop out
-        if (!secureContainer)
-        {
+        if (!secureContainer) {
             return [];
         }
 

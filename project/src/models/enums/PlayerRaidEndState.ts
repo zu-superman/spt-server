@@ -1,5 +1,4 @@
-export enum PlayerRaidEndState
-{
+export enum PlayerRaidEndState {
     SURVIVED = "survived",
     LEFT = "left",
     RUNNER = "runner",

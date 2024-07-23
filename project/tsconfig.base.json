@@ -11,16 +11,9 @@
         "emitDecoratorMetadata": true,
         "baseUrl": ".",
         "paths": {
-            "@spt/*": [
-                "src/*"
-            ],
-            "@tests/*": [
-                "tests/*"
-            ]
+            "@spt/*": ["src/*"],
+            "@tests/*": ["tests/*"]
         }
     },
-    "include": [
-        "src/*",
-        "src/**/*"
-    ]
+    "include": ["src/*", "src/**/*"]
 }

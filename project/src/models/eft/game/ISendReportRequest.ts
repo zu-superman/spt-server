@@ -1,5 +1,4 @@
-export interface ISendReportRequest
-{
-    type: string
-    uid: string
+export interface ISendReportRequest {
+    type: string;
+    uid: string;
 }

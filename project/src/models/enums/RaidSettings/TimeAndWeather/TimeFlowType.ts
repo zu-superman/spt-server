@@ -1,5 +1,4 @@
-export enum TimeFlowType
-{
+export enum TimeFlowType {
     X0 = "x0",
     X0_14 = "x0_14",
     X0_25 = "x0_25",

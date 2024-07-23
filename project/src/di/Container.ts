@@ -1,4 +1,3 @@
-import { DependencyContainer, Lifecycle } from "tsyringe";
 import { AchievementCallbacks } from "@spt/callbacks/AchievementCallbacks";
 import { BotCallbacks } from "@spt/callbacks/BotCallbacks";
 import { BuildsCallbacks } from "@spt/callbacks/BuildsCallbacks";
@@ -70,18 +69,18 @@ import { BotWeaponGenerator } from "@spt/generators/BotWeaponGenerator";
 import { FenceBaseAssortGenerator } from "@spt/generators/FenceBaseAssortGenerator";
 import { LocationLootGenerator } from "@spt/generators/LocationLootGenerator";
 import { LootGenerator } from "@spt/generators/LootGenerator";
-import { PlayerScavGenerator } from "@spt/generators/PlayerScavGenerator";
 import { PMCLootGenerator } from "@spt/generators/PMCLootGenerator";
+import { PlayerScavGenerator } from "@spt/generators/PlayerScavGenerator";
 import { RagfairAssortGenerator } from "@spt/generators/RagfairAssortGenerator";
 import { RagfairOfferGenerator } from "@spt/generators/RagfairOfferGenerator";
 import { RepeatableQuestGenerator } from "@spt/generators/RepeatableQuestGenerator";
 import { RepeatableQuestRewardGenerator } from "@spt/generators/RepeatableQuestRewardGenerator";
 import { ScavCaseRewardGenerator } from "@spt/generators/ScavCaseRewardGenerator";
+import { WeatherGenerator } from "@spt/generators/WeatherGenerator";
 import { BarrelInventoryMagGen } from "@spt/generators/weapongen/implementations/BarrelInventoryMagGen";
 import { ExternalInventoryMagGen } from "@spt/generators/weapongen/implementations/ExternalInventoryMagGen";
 import { InternalMagazineInventoryMagGen } from "@spt/generators/weapongen/implementations/InternalMagazineInventoryMagGen";
 import { UbglExternalMagGen } from "@spt/generators/weapongen/implementations/UbglExternalMagGen";
-import { WeatherGenerator } from "@spt/generators/WeatherGenerator";
 import { AssortHelper } from "@spt/helpers/AssortHelper";
 import { BotDifficultyHelper } from "@spt/helpers/BotDifficultyHelper";
 import { BotGeneratorHelper } from "@spt/helpers/BotGeneratorHelper";
@@ -133,6 +132,10 @@ import { PostSptModLoader } from "@spt/loaders/PostSptModLoader";
 import { PreSptModLoader } from "@spt/loaders/PreSptModLoader";
 import { IAsyncQueue } from "@spt/models/spt/utils/IAsyncQueue";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
+import { EventOutputHolder } from "@spt/routers/EventOutputHolder";
+import { HttpRouter } from "@spt/routers/HttpRouter";
+import { ImageRouter } from "@spt/routers/ImageRouter";
+import { ItemEventRouter } from "@spt/routers/ItemEventRouter";
 import { BotDynamicRouter } from "@spt/routers/dynamic/BotDynamicRouter";
 import { BundleDynamicRouter } from "@spt/routers/dynamic/BundleDynamicRouter";
 import { CustomizationDynamicRouter } from "@spt/routers/dynamic/CustomizationDynamicRouter";
@@ -142,9 +145,6 @@ import { InraidDynamicRouter } from "@spt/routers/dynamic/InraidDynamicRouter";
 import { LocationDynamicRouter } from "@spt/routers/dynamic/LocationDynamicRouter";
 import { NotifierDynamicRouter } from "@spt/routers/dynamic/NotifierDynamicRouter";
 import { TraderDynamicRouter } from "@spt/routers/dynamic/TraderDynamicRouter";
-import { EventOutputHolder } from "@spt/routers/EventOutputHolder";
-import { HttpRouter } from "@spt/routers/HttpRouter";
-import { ImageRouter } from "@spt/routers/ImageRouter";
 import { CustomizationItemEventRouter } from "@spt/routers/item_events/CustomizationItemEventRouter";
 import { HealthItemEventRouter } from "@spt/routers/item_events/HealthItemEventRouter";
 import { HideoutItemEventRouter } from "@spt/routers/item_events/HideoutItemEventRouter";
@@ -156,7 +156,6 @@ import { RagfairItemEventRouter } from "@spt/routers/item_events/RagfairItemEven
 import { RepairItemEventRouter } from "@spt/routers/item_events/RepairItemEventRouter";
 import { TradeItemEventRouter } from "@spt/routers/item_events/TradeItemEventRouter";
 import { WishlistItemEventRouter } from "@spt/routers/item_events/WishlistItemEventRouter";
-import { ItemEventRouter } from "@spt/routers/ItemEventRouter";
 import { HealthSaveLoadRouter } from "@spt/routers/save_load/HealthSaveLoadRouter";
 import { InraidSaveLoadRouter } from "@spt/routers/save_load/InraidSaveLoadRouter";
 import { InsuranceSaveLoadRouter } from "@spt/routers/save_load/InsuranceSaveLoadRouter";
@@ -188,23 +187,21 @@ import { TraderStaticRouter } from "@spt/routers/static/TraderStaticRouter";
 import { WeatherStaticRouter } from "@spt/routers/static/WeatherStaticRouter";
 import { ConfigServer } from "@spt/servers/ConfigServer";
 import { DatabaseServer } from "@spt/servers/DatabaseServer";
-import { SptHttpListener } from "@spt/servers/http/SptHttpListener";
 import { HttpServer } from "@spt/servers/HttpServer";
 import { RagfairServer } from "@spt/servers/RagfairServer";
 import { SaveServer } from "@spt/servers/SaveServer";
 import { WebSocketServer } from "@spt/servers/WebSocketServer";
+import { SptHttpListener } from "@spt/servers/http/SptHttpListener";
 import { IWebSocketConnectionHandler } from "@spt/servers/ws/IWebSocketConnectionHandler";
+import { SptWebSocketConnectionHandler } from "@spt/servers/ws/SptWebSocketConnectionHandler";
 import { DefaultSptWebSocketMessageHandler } from "@spt/servers/ws/message/DefaultSptWebSocketMessageHandler";
 import { ISptWebSocketMessageHandler } from "@spt/servers/ws/message/ISptWebSocketMessageHandler";
-import { SptWebSocketConnectionHandler } from "@spt/servers/ws/SptWebSocketConnectionHandler";
 import { AirdropService } from "@spt/services/AirdropService";
 import { BotEquipmentFilterService } from "@spt/services/BotEquipmentFilterService";
 import { BotEquipmentModPoolService } from "@spt/services/BotEquipmentModPoolService";
 import { BotGenerationCacheService } from "@spt/services/BotGenerationCacheService";
 import { BotLootCacheService } from "@spt/services/BotLootCacheService";
 import { BotWeaponModLimitService } from "@spt/services/BotWeaponModLimitService";
-import { BundleHashCacheService } from "@spt/services/cache/BundleHashCacheService";
-import { ModHashCacheService } from "@spt/services/cache/ModHashCacheService";
 import { CustomLocationWaveService } from "@spt/services/CustomLocationWaveService";
 import { DatabaseService } from "@spt/services/DatabaseService";
 import { FenceService } from "@spt/services/FenceService";
@@ -219,13 +216,6 @@ import { MailSendService } from "@spt/services/MailSendService";
 import { MapMarkerService } from "@spt/services/MapMarkerService";
 import { MatchBotDetailsCacheService } from "@spt/services/MatchBotDetailsCacheService";
 import { MatchLocationService } from "@spt/services/MatchLocationService";
-import { CustomItemService } from "@spt/services/mod/CustomItemService";
-import { DynamicRouterModService } from "@spt/services/mod/dynamicRouter/DynamicRouterModService";
-import { HttpListenerModService } from "@spt/services/mod/httpListener/HttpListenerModService";
-import { ImageRouteService } from "@spt/services/mod/image/ImageRouteService";
-import { OnLoadModService } from "@spt/services/mod/onLoad/OnLoadModService";
-import { OnUpdateModService } from "@spt/services/mod/onUpdate/OnUpdateModService";
-import { StaticRouterModService } from "@spt/services/mod/staticRouter/StaticRouterModService";
 import { ModCompilerService } from "@spt/services/ModCompilerService";
 import { NotificationService } from "@spt/services/NotificationService";
 import { OpenZoneService } from "@spt/services/OpenZoneService";
@@ -246,12 +236,17 @@ import { RepairService } from "@spt/services/RepairService";
 import { SeasonalEventService } from "@spt/services/SeasonalEventService";
 import { TraderAssortService } from "@spt/services/TraderAssortService";
 import { TraderPurchasePersisterService } from "@spt/services/TraderPurchasePersisterService";
+import { BundleHashCacheService } from "@spt/services/cache/BundleHashCacheService";
+import { ModHashCacheService } from "@spt/services/cache/ModHashCacheService";
+import { CustomItemService } from "@spt/services/mod/CustomItemService";
+import { DynamicRouterModService } from "@spt/services/mod/dynamicRouter/DynamicRouterModService";
+import { HttpListenerModService } from "@spt/services/mod/httpListener/HttpListenerModService";
+import { ImageRouteService } from "@spt/services/mod/image/ImageRouteService";
+import { OnLoadModService } from "@spt/services/mod/onLoad/OnLoadModService";
+import { OnUpdateModService } from "@spt/services/mod/onUpdate/OnUpdateModService";
+import { StaticRouterModService } from "@spt/services/mod/staticRouter/StaticRouterModService";
 import { App } from "@spt/utils/App";
 import { AsyncQueue } from "@spt/utils/AsyncQueue";
-import type { ICloner } from "@spt/utils/cloners/ICloner";
-import { JsonCloner } from "@spt/utils/cloners/JsonCloner";
-import { RecursiveCloner } from "@spt/utils/cloners/RecursiveCloner";
-import { StructuredCloner } from "@spt/utils/cloners/StructuredCloner";
 import { CompareUtil } from "@spt/utils/CompareUtil";
 import { DatabaseImporter } from "@spt/utils/DatabaseImporter";
 import { EncodingUtil } from "@spt/utils/EncodingUtil";
@@ -260,28 +255,30 @@ import { HttpFileUtil } from "@spt/utils/HttpFileUtil";
 import { HttpResponseUtil } from "@spt/utils/HttpResponseUtil";
 import { ImporterUtil } from "@spt/utils/ImporterUtil";
 import { JsonUtil } from "@spt/utils/JsonUtil";
-import { WinstonMainLogger } from "@spt/utils/logging/WinstonMainLogger";
-import { WinstonRequestLogger } from "@spt/utils/logging/WinstonRequestLogger";
 import { MathUtil } from "@spt/utils/MathUtil";
 import { ObjectId } from "@spt/utils/ObjectId";
 import { RandomUtil } from "@spt/utils/RandomUtil";
 import { TimeUtil } from "@spt/utils/TimeUtil";
 import { VFS } from "@spt/utils/VFS";
 import { Watermark, WatermarkLocale } from "@spt/utils/Watermark";
+import type { ICloner } from "@spt/utils/cloners/ICloner";
+import { JsonCloner } from "@spt/utils/cloners/JsonCloner";
+import { RecursiveCloner } from "@spt/utils/cloners/RecursiveCloner";
+import { StructuredCloner } from "@spt/utils/cloners/StructuredCloner";
+import { WinstonMainLogger } from "@spt/utils/logging/WinstonMainLogger";
+import { WinstonRequestLogger } from "@spt/utils/logging/WinstonRequestLogger";
+import { DependencyContainer, Lifecycle } from "tsyringe";
 
 /**
  * Handle the registration of classes to be used by the Dependency Injection code
  */
-export class Container
-{
-    public static registerPostLoadTypes(container: DependencyContainer, childContainer: DependencyContainer): void
-    {
+export class Container {
+    public static registerPostLoadTypes(container: DependencyContainer, childContainer: DependencyContainer): void {
         container.register<SptHttpListener>("SptHttpListener", SptHttpListener, { lifecycle: Lifecycle.Singleton });
         childContainer.registerType("HttpListener", "SptHttpListener");
     }
 
-    public static registerTypes(depContainer: DependencyContainer): void
-    {
+    public static registerTypes(depContainer: DependencyContainer): void {
         depContainer.register("ApplicationContext", ApplicationContext, { lifecycle: Lifecycle.Singleton });
         Container.registerUtils(depContainer);
 
@@ -304,16 +301,20 @@ export class Container
         Container.registerPrimaryDependencies(depContainer);
     }
 
-    public static registerPrimaryDependencies(depContainer: DependencyContainer): void
-    {
-        depContainer.register<ILogger>("PrimaryLogger", { useToken: "WinstonLogger" },
-            { lifecycle: Lifecycle.Singleton });
-        depContainer.register<ICloner>("PrimaryCloner", { useToken: "RecursiveCloner" },
-            { lifecycle: Lifecycle.Singleton });
+    public static registerPrimaryDependencies(depContainer: DependencyContainer): void {
+        depContainer.register<ILogger>(
+            "PrimaryLogger",
+            { useToken: "WinstonLogger" },
+            { lifecycle: Lifecycle.Singleton },
+        );
+        depContainer.register<ICloner>(
+            "PrimaryCloner",
+            { useToken: "RecursiveCloner" },
+            { lifecycle: Lifecycle.Singleton },
+        );
     }
 
-    public static registerListTypes(depContainer: DependencyContainer): void
-    {
+    public static registerListTypes(depContainer: DependencyContainer): void {
         depContainer.register("OnLoadModService", { useValue: new OnLoadModService(depContainer) });
         depContainer.register("HttpListenerModService", { useValue: new HttpListenerModService(depContainer) });
         depContainer.register("OnUpdateModService", { useValue: new OnUpdateModService(depContainer) });
@@ -409,8 +410,7 @@ export class Container
         depContainer.registerType("SptWebSocketMessageHandler", "DefaultSptWebSocketMessageHandler");
     }
 
-    private static registerUtils(depContainer: DependencyContainer): void
-    {
+    private static registerUtils(depContainer: DependencyContainer): void {
         // Utils
         depContainer.register<App>("App", App, { lifecycle: Lifecycle.Singleton });
         depContainer.register<DatabaseImporter>("DatabaseImporter", DatabaseImporter, {
@@ -444,8 +444,7 @@ export class Container
         depContainer.register<ICloner>("RecursiveCloner", RecursiveCloner, { lifecycle: Lifecycle.Singleton });
     }
 
-    private static registerRouters(depContainer: DependencyContainer): void
-    {
+    private static registerRouters(depContainer: DependencyContainer): void {
         // Routers
         depContainer.register<HttpRouter>("HttpRouter", HttpRouter, { lifecycle: Lifecycle.Singleton });
         depContainer.register<ImageRouter>("ImageRouter", ImageRouter);
@@ -530,8 +529,7 @@ export class Container
         depContainer.register<BuildsStaticRouter>("BuildsStaticRouter", { useClass: BuildsStaticRouter });
     }
 
-    private static registerGenerators(depContainer: DependencyContainer): void
-    {
+    private static registerGenerators(depContainer: DependencyContainer): void {
         // Generators
         depContainer.register<BotGenerator>("BotGenerator", BotGenerator);
         depContainer.register<BotWeaponGenerator>("BotWeaponGenerator", BotWeaponGenerator);
@@ -578,8 +576,7 @@ export class Container
         depContainer.registerType("InventoryMagGen", "UbglExternalMagGen");
     }
 
-    private static registerHelpers(depContainer: DependencyContainer): void
-    {
+    private static registerHelpers(depContainer: DependencyContainer): void {
         // Helpers
         depContainer.register<AssortHelper>("AssortHelper", { useClass: AssortHelper });
         depContainer.register<BotHelper>("BotHelper", { useClass: BotHelper });
@@ -642,8 +639,7 @@ export class Container
         });
     }
 
-    private static registerLoaders(depContainer: DependencyContainer): void
-    {
+    private static registerLoaders(depContainer: DependencyContainer): void {
         // Loaders
         depContainer.register<BundleLoader>("BundleLoader", BundleLoader, { lifecycle: Lifecycle.Singleton });
         depContainer.register<PreSptModLoader>("PreSptModLoader", PreSptModLoader, { lifecycle: Lifecycle.Singleton });
@@ -652,8 +648,7 @@ export class Container
         });
     }
 
-    private static registerCallbacks(depContainer: DependencyContainer): void
-    {
+    private static registerCallbacks(depContainer: DependencyContainer): void {
         // Callbacks
         depContainer.register<BotCallbacks>("BotCallbacks", { useClass: BotCallbacks });
         depContainer.register<BundleCallbacks>("BundleCallbacks", { useClass: BundleCallbacks });
@@ -691,8 +686,7 @@ export class Container
         depContainer.register<BuildsCallbacks>("BuildsCallbacks", { useClass: BuildsCallbacks });
     }
 
-    private static registerServices(depContainer: DependencyContainer): void
-    {
+    private static registerServices(depContainer: DependencyContainer): void {
         // Services
         depContainer.register<DatabaseService>("DatabaseService", DatabaseService, { lifecycle: Lifecycle.Singleton });
         depContainer.register<ImageRouteService>("ImageRouteService", ImageRouteService, {
@@ -800,21 +794,27 @@ export class Container
         });
     }
 
-    private static registerServers(depContainer: DependencyContainer): void
-    {
+    private static registerServers(depContainer: DependencyContainer): void {
         // Servers
         depContainer.register<DatabaseServer>("DatabaseServer", DatabaseServer, { lifecycle: Lifecycle.Singleton });
         depContainer.register<HttpServer>("HttpServer", HttpServer, { lifecycle: Lifecycle.Singleton });
         depContainer.register<WebSocketServer>("WebSocketServer", WebSocketServer, { lifecycle: Lifecycle.Singleton });
-        depContainer.register<IWebSocketConnectionHandler>("SptWebSocketConnectionHandler", SptWebSocketConnectionHandler, { lifecycle: Lifecycle.Singleton });
-        depContainer.register<ISptWebSocketMessageHandler>("DefaultSptWebSocketMessageHandler", DefaultSptWebSocketMessageHandler, { lifecycle: Lifecycle.Singleton });
+        depContainer.register<IWebSocketConnectionHandler>(
+            "SptWebSocketConnectionHandler",
+            SptWebSocketConnectionHandler,
+            { lifecycle: Lifecycle.Singleton },
+        );
+        depContainer.register<ISptWebSocketMessageHandler>(
+            "DefaultSptWebSocketMessageHandler",
+            DefaultSptWebSocketMessageHandler,
+            { lifecycle: Lifecycle.Singleton },
+        );
         depContainer.register<RagfairServer>("RagfairServer", RagfairServer);
         depContainer.register<SaveServer>("SaveServer", SaveServer, { lifecycle: Lifecycle.Singleton });
         depContainer.register<ConfigServer>("ConfigServer", ConfigServer, { lifecycle: Lifecycle.Singleton });
     }
 
-    private static registerControllers(depContainer: DependencyContainer): void
-    {
+    private static registerControllers(depContainer: DependencyContainer): void {
         // Controllers
         depContainer.register<BotController>("BotController", { useClass: BotController });
         depContainer.register<ClientLogController>("ClientLogController", { useClass: ClientLogController });

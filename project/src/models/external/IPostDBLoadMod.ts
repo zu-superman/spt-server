@@ -1,6 +1,5 @@
 import type { DependencyContainer } from "tsyringe";
 
-export interface IPostDBLoadMod
-{
-    postDBLoad(container: DependencyContainer): void
+export interface IPostDBLoadMod {
+    postDBLoad(container: DependencyContainer): void;
 }

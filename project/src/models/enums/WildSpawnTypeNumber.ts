@@ -1,5 +1,4 @@
-export enum WildSpawnTypeNumber
-{
+export enum WildSpawnTypeNumber {
     MARKSMAN = 0,
     ASSAULT = 1,
     BOSSTEST = 2,

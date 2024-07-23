@@ -1,24 +1,21 @@
 import "reflect-metadata";
 
-import { format } from "date-fns";
-import { container } from "tsyringe";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { Insurance } from "@spt/models/eft/profile/ISptProfile";
 import { profileInsuranceFixture } from "@tests/__fixture__/profileInsurance.fixture";
+import { format } from "date-fns";
+import { container } from "tsyringe";
 
 type DateInput = number | number[] | { [index: number]: number };
 
-export class ProfileInsuranceFactory
-{
+export class ProfileInsuranceFactory {
     private profileInsuranceFixture: Insurance[];
 
-    constructor()
-    {
+    constructor() {
         this.init();
     }
 
-    public init(): this
-    {
+    public init(): this {
         this.profileInsuranceFixture = JSON.parse(JSON.stringify(profileInsuranceFixture)); // Deep clone.
         return this;
     }
@@ -27,20 +24,15 @@ export class ProfileInsuranceFactory
      * Adjusts the scheduledTime, messageContent.systemData.date, and messageContent.systemData.time, otherwise the
      * dates in the original fixture will likely be expired.
      */
-    public adjustPackageDates(dateInput?: DateInput): this
-    {
-        this.profileInsuranceFixture = this.profileInsuranceFixture.map((insurance, index) =>
-        {
+    public adjustPackageDates(dateInput?: DateInput): this {
+        this.profileInsuranceFixture = this.profileInsuranceFixture.map((insurance, index) => {
             // Default to 1 hour ago.
-            const defaultDate = Math.floor((Date.now() / 1000) - (1 * 60 * 60));
+            const defaultDate = Math.floor(Date.now() / 1000 - 1 * 60 * 60);
 
             let date: number;
-            if (Array.isArray(dateInput) || typeof dateInput === "object")
-            {
+            if (Array.isArray(dateInput) || typeof dateInput === "object") {
                 date = dateInput[index] || defaultDate;
-            }
-            else
-            {
+            } else {
                 date = dateInput || defaultDate;
             }
 
@@ -56,12 +48,10 @@ export class ProfileInsuranceFactory
     /**
      * Removes all attachment items that are currently attached to their parent, leaving the "normal" base items.
      */
-    public removeAttachmentItems(): this
-    {
+    public removeAttachmentItems(): this {
         const itemHelper = container.resolve<ItemHelper>("ItemHelper");
 
-        this.profileInsuranceFixture = this.profileInsuranceFixture.map((insurance) =>
-        {
+        this.profileInsuranceFixture = this.profileInsuranceFixture.map((insurance) => {
             insurance.items = insurance.items.filter((item) => !itemHelper.isAttachmentAttached(item));
             return insurance;
         });
@@ -73,12 +63,10 @@ export class ProfileInsuranceFactory
      * Removes all normal base items leaving only attachment items that are currently attached to their parent.
      * This *will* cause orphaned attachments.
      */
-    public removeRegularItems(): this
-    {
+    public removeRegularItems(): this {
         const itemHelper = container.resolve<ItemHelper>("ItemHelper");
 
-        this.profileInsuranceFixture = this.profileInsuranceFixture.map((insurance) =>
-        {
+        this.profileInsuranceFixture = this.profileInsuranceFixture.map((insurance) => {
             insurance.items = insurance.items.filter((item) => itemHelper.isAttachmentAttached(item));
             return insurance;
         });
@@ -86,8 +74,7 @@ export class ProfileInsuranceFactory
         return this;
     }
 
-    public get(): Insurance[]
-    {
+    public get(): Insurance[] {
         return this.profileInsuranceFixture;
     }
 }

@@ -1,5 +1,4 @@
-export enum LogTextColor
-{
+export enum LogTextColor {
     BLACK = "black",
     RED = "red",
     GREEN = "green",

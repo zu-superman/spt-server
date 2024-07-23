@@ -1,4 +1,3 @@
-import { inject, injectable } from "tsyringe";
 import { IInventoryMagGen } from "@spt/generators/weapongen/IInventoryMagGen";
 import { InventoryMagGen } from "@spt/generators/weapongen/InventoryMagGen";
 import { BotGeneratorHelper } from "@spt/helpers/BotGeneratorHelper";
@@ -10,10 +9,10 @@ import { ItemAddedResult } from "@spt/models/enums/ItemAddedResult";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { RandomUtil } from "@spt/utils/RandomUtil";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class ExternalInventoryMagGen implements IInventoryMagGen
-{
+export class ExternalInventoryMagGen implements IInventoryMagGen {
     constructor(
         @inject("PrimaryLogger") protected logger: ILogger,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
@@ -21,21 +20,17 @@ export class ExternalInventoryMagGen implements IInventoryMagGen
         @inject("BotWeaponGeneratorHelper") protected botWeaponGeneratorHelper: BotWeaponGeneratorHelper,
         @inject("BotGeneratorHelper") protected botGeneratorHelper: BotGeneratorHelper,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
-    )
-    {}
+    ) {}
 
-    getPriority(): number
-    {
+    getPriority(): number {
         return 99;
     }
 
-    canHandleInventoryMagGen(inventoryMagGen: InventoryMagGen): boolean
-    {
+    canHandleInventoryMagGen(inventoryMagGen: InventoryMagGen): boolean {
         return true; // Fallback, if code reaches here it means no other implementation can handle this type of magazine
     }
 
-    process(inventoryMagGen: InventoryMagGen): void
-    {
+    process(inventoryMagGen: InventoryMagGen): void {
         // Cout of attempts to fit a magazine into bot inventory
         let fitAttempts = 0;
 
@@ -48,8 +43,7 @@ export class ExternalInventoryMagGen implements IInventoryMagGen
         const randomizedMagazineCount = Number(
             this.botWeaponGeneratorHelper.getRandomizedMagazineCount(inventoryMagGen.getMagCount()),
         );
-        for (let i = 0; i < randomizedMagazineCount; i++)
-        {
+        for (let i = 0; i < randomizedMagazineCount; i++) {
             const magazineWithAmmo = this.botWeaponGeneratorHelper.createMagazineWithAmmo(
                 magazineTpl,
                 inventoryMagGen.getAmmoTemplate()._id,
@@ -64,18 +58,15 @@ export class ExternalInventoryMagGen implements IInventoryMagGen
                 inventoryMagGen.getPmcInventory(),
             );
 
-            if (fitsIntoInventory === ItemAddedResult.NO_CONTAINERS)
-            {
+            if (fitsIntoInventory === ItemAddedResult.NO_CONTAINERS) {
                 // No containers to fit magazines, stop trying
                 break;
             }
 
             // No space for magazine and we haven't reached desired magazine count
-            if (fitsIntoInventory === ItemAddedResult.NO_SPACE && i < randomizedMagazineCount)
-            {
+            if (fitsIntoInventory === ItemAddedResult.NO_SPACE && i < randomizedMagazineCount) {
                 // Prevent infinite loop by only allowing 5 attempts at fitting a magazine into inventory
-                if (fitAttempts > 5)
-                {
+                if (fitAttempts > 5) {
                     this.logger.debug(
                         `Failed ${fitAttempts} times to add magazine ${magazineTpl} to bot inventory, stopping`,
                     );
@@ -87,8 +78,7 @@ export class ExternalInventoryMagGen implements IInventoryMagGen
                  * so we fallback to default magazine and try again.
                  * Temporary workaround to Killa spawning with no extra mags if he spawns with a drum mag */
 
-                if (magazineTpl === defaultMagazineTpl)
-                {
+                if (magazineTpl === defaultMagazineTpl) {
                     // We were already on default - stop here to prevent infinite looping
                     break;
                 }
@@ -99,8 +89,7 @@ export class ExternalInventoryMagGen implements IInventoryMagGen
                 // Set chosen magazine tpl to the weapons default magazine tpl and try to fit into inventory next loop
                 magazineTpl = defaultMagazineTpl;
                 magTemplate = this.itemHelper.getItem(magazineTpl)[1];
-                if (!magTemplate)
-                {
+                if (!magTemplate) {
                     this.logger.error(
                         this.localisationService.getText("bot-unable_to_find_default_magazine_item", magazineTpl),
                     );
@@ -109,14 +98,12 @@ export class ExternalInventoryMagGen implements IInventoryMagGen
                 }
 
                 // Edge case - some weapons (SKS) have an internal magazine as default, choose random non-internal magazine to add to bot instead
-                if (magTemplate._props.ReloadMagType === "InternalMagazine")
-                {
+                if (magTemplate._props.ReloadMagType === "InternalMagazine") {
                     const result = this.getRandomExternalMagazineForInternalMagazineGun(
                         inventoryMagGen.getWeaponTemplate()._id,
                         attemptedMagBlacklist,
                     );
-                    if (!result?._id)
-                    {
+                    if (!result?._id) {
                         this.logger.debug(
                             `Unable to add additional magazine into bot inventory for weapon: ${weapon._name}, attempted: ${fitAttempts} times`,
                         );
@@ -133,8 +120,7 @@ export class ExternalInventoryMagGen implements IInventoryMagGen
                 i--;
             }
 
-            if (fitsIntoInventory === ItemAddedResult.SUCCESS)
-            {
+            if (fitsIntoInventory === ItemAddedResult.SUCCESS) {
                 // Reset fit counter now it succeeded
                 fitAttempts = 0;
             }
@@ -149,12 +135,10 @@ export class ExternalInventoryMagGen implements IInventoryMagGen
     protected getRandomExternalMagazineForInternalMagazineGun(
         weaponTpl: string,
         magazineBlacklist: string[],
-    ): ITemplateItem | undefined
-    {
+    ): ITemplateItem | undefined {
         // The mag Slot data for the weapon
         const magSlot = this.itemHelper.getItem(weaponTpl)[1]._props.Slots.find((x) => x._name === "mod_magazine");
-        if (!magSlot)
-        {
+        if (!magSlot) {
             return undefined;
         }
 
@@ -162,15 +146,13 @@ export class ExternalInventoryMagGen implements IInventoryMagGen
         const magazinePool = magSlot._props.filters[0].Filter.filter((x) => !magazineBlacklist.includes(x)).map(
             (x) => this.itemHelper.getItem(x)[1],
         );
-        if (!magazinePool)
-        {
+        if (!magazinePool) {
             return undefined;
         }
 
         // Non-internal magazines that fit into the weapon
         const externalMagazineOnlyPool = magazinePool.filter((x) => x._props.ReloadMagType !== "InternalMagazine");
-        if (!externalMagazineOnlyPool || externalMagazineOnlyPool?.length === 0)
-        {
+        if (!externalMagazineOnlyPool || externalMagazineOnlyPool?.length === 0) {
             return undefined;
         }
 

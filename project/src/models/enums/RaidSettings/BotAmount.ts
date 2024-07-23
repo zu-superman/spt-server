@@ -1,5 +1,4 @@
-export enum BotAmount
-{
+export enum BotAmount {
     AS_ONLINE = "AsOnline",
     NO_BOTS = "NoBots",
     LOW = "Low",

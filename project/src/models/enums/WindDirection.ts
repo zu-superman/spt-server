@@ -1,5 +1,4 @@
-export enum WindDirection
-{
+export enum WindDirection {
     EAST = 1,
     NORTH = 2,
     WEST = 3,

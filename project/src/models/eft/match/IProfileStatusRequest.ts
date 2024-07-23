@@ -1,4 +1,3 @@
-export interface IProfileStatusRequest
-{
-    groupId: number
+export interface IProfileStatusRequest {
+    groupId: number;
 }

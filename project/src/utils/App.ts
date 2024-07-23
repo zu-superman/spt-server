@@ -1,5 +1,4 @@
 import os from "node:os";
-import { inject, injectAll, injectable } from "tsyringe";
 import { OnLoad } from "@spt/di/OnLoad";
 import { OnUpdate } from "@spt/di/OnUpdate";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
@@ -10,10 +9,10 @@ import { HttpServer } from "@spt/servers/HttpServer";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { EncodingUtil } from "@spt/utils/EncodingUtil";
 import { TimeUtil } from "@spt/utils/TimeUtil";
+import { inject, injectAll, injectable } from "tsyringe";
 
 @injectable()
-export class App
-{
+export class App {
     protected onUpdateLastRun = {};
     protected coreConfig: ICoreConfig;
 
@@ -26,13 +25,11 @@ export class App
         @inject("HttpServer") protected httpServer: HttpServer,
         @injectAll("OnLoad") protected onLoadComponents: OnLoad[],
         @injectAll("OnUpdate") protected onUpdateComponents: OnUpdate[],
-    )
-    {
+    ) {
         this.coreConfig = this.configServer.getConfig(ConfigTypes.CORE);
     }
 
-    public async load(): Promise<void>
-    {
+    public async load(): Promise<void> {
         // execute onLoad callbacks
         this.logger.info(this.localisationService.getText("executing_startup_callbacks"));
 
@@ -42,61 +39,47 @@ export class App
         this.logger.debug(`PATH: ${this.encodingUtil.toBase64(process.argv[0])}`);
         this.logger.debug(`PATH: ${this.encodingUtil.toBase64(process.execPath)}`);
         this.logger.debug(`Server: ${globalThis.G_SPTVERSION || this.coreConfig.sptVersion}`);
-        if (globalThis.G_BUILDTIME)
-        {
+        if (globalThis.G_BUILDTIME) {
             this.logger.debug(`Date: ${globalThis.G_BUILDTIME}`);
         }
 
-        if (globalThis.G_COMMIT)
-        {
+        if (globalThis.G_COMMIT) {
             this.logger.debug(`Commit: ${globalThis.G_COMMIT}`);
         }
 
-        for (const onLoad of this.onLoadComponents)
-        {
+        for (const onLoad of this.onLoadComponents) {
             await onLoad.onLoad();
         }
 
-        setInterval(() =>
-        {
+        setInterval(() => {
             this.update(this.onUpdateComponents);
         }, 5000);
     }
 
-    protected async update(onUpdateComponents: OnUpdate[]): Promise<void>
-    {
+    protected async update(onUpdateComponents: OnUpdate[]): Promise<void> {
         // If the server has failed to start, skip any update calls
-        if (!this.httpServer.isStarted())
-        {
+        if (!this.httpServer.isStarted()) {
             return;
         }
 
-        for (const updateable of onUpdateComponents)
-        {
+        for (const updateable of onUpdateComponents) {
             let success = false;
             const lastRunTimeTimestamp = this.onUpdateLastRun[updateable.getRoute()] || 0; // 0 on first load so all update() calls occur on first load
             const secondsSinceLastRun = this.timeUtil.getTimestamp() - lastRunTimeTimestamp;
 
-            try
-            {
+            try {
                 success = await updateable.onUpdate(secondsSinceLastRun);
-            }
-            catch (err)
-            {
+            } catch (err) {
                 this.logUpdateException(err, updateable);
             }
 
-            if (success)
-            {
+            if (success) {
                 this.onUpdateLastRun[updateable.getRoute()] = this.timeUtil.getTimestamp();
-            }
-            else
-            {
+            } else {
                 /* temporary for debug */
                 const warnTime = 20 * 60;
 
-                if (success === void 0 && !(secondsSinceLastRun % warnTime))
-                {
+                if (success === void 0 && !(secondsSinceLastRun % warnTime)) {
                     this.logger.debug(
                         this.localisationService.getText("route_onupdate_no_response", updateable.getRoute()),
                     );
@@ -105,15 +88,12 @@ export class App
         }
     }
 
-    protected logUpdateException(err: any, updateable: OnUpdate): void
-    {
+    protected logUpdateException(err: any, updateable: OnUpdate): void {
         this.logger.error(this.localisationService.getText("scheduled_event_failed_to_run", updateable.getRoute()));
-        if (err.message)
-        {
+        if (err.message) {
             this.logger.error(err.message);
         }
-        if (err.stack)
-        {
+        if (err.stack) {
             this.logger.error(err.stack);
         }
     }

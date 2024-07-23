@@ -1,21 +1,20 @@
 import "reflect-metadata";
 
 import path from "node:path";
-import { DependencyContainer, Lifecycle, container } from "tsyringe";
-import type { Environment } from "vitest";
 import { Container } from "@spt/di/Container";
 import { IDatabaseTables } from "@spt/models/spt/server/IDatabaseTables";
 import { DatabaseServer } from "@spt/servers/DatabaseServer";
 import { ImporterUtil } from "@spt/utils/ImporterUtil";
+import { DependencyContainer, Lifecycle, container } from "tsyringe";
+import type { Environment } from "vitest";
 
 // Manually mock the logger.
 import { WinstonLogger } from "@tests/__mocks__/WinstonLogger.mock";
 
-export default <Environment>{
+export default (<Environment>{
     name: "spt-server",
     transformMode: "ssr",
-    async setup()
-    {
+    async setup() {
         // Register all of the dependencies in the container.
         Container.registerTypes(container);
         Container.registerListTypes(container);
@@ -27,11 +26,10 @@ export default <Environment>{
         await importDatabase(container);
 
         return {
-            async teardown()
-            {},
+            async teardown() {},
         };
     },
-};
+});
 
 /**
  * Reads the database JSON files and imports them into memory.
@@ -39,8 +37,7 @@ export default <Environment>{
  * @param container The dependency container.
  * @returns A void promise.
  */
-async function importDatabase(container: DependencyContainer): Promise<void>
-{
+async function importDatabase(container: DependencyContainer): Promise<void> {
     const importerUtil = container.resolve<ImporterUtil>("ImporterUtil");
     const databaseServer = container.resolve<DatabaseServer>("DatabaseServer");
 

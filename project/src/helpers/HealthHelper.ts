@@ -1,4 +1,3 @@
-import { inject, injectable } from "tsyringe";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { BodyPartsHealth, Health } from "@spt/models/eft/common/tables/IBotBase";
 import { ISyncHealthRequestData } from "@spt/models/eft/health/ISyncHealthRequestData";
@@ -8,12 +7,12 @@ import { IHealthConfig } from "@spt/models/spt/config/IHealthConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
 import { SaveServer } from "@spt/servers/SaveServer";
-import { ICloner } from "@spt/utils/cloners/ICloner";
 import { TimeUtil } from "@spt/utils/TimeUtil";
+import { ICloner } from "@spt/utils/cloners/ICloner";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class HealthHelper
-{
+export class HealthHelper {
     protected healthConfig: IHealthConfig;
 
     constructor(
@@ -22,8 +21,7 @@ export class HealthHelper
         @inject("SaveServer") protected saveServer: SaveServer,
         @inject("ConfigServer") protected configServer: ConfigServer,
         @inject("PrimaryCloner") protected cloner: ICloner,
-    )
-    {
+    ) {
         this.healthConfig = this.configServer.getConfig(ConfigTypes.HEALTH);
     }
 
@@ -32,12 +30,10 @@ export class HealthHelper
      * @param sessionID Session Id
      * @returns updated profile
      */
-    public resetVitality(sessionID: string): ISptProfile
-    {
+    public resetVitality(sessionID: string): ISptProfile {
         const profile = this.saveServer.getProfile(sessionID);
 
-        if (!profile.vitality)
-        {
+        if (!profile.vitality) {
             // Occurs on newly created profiles
             profile.vitality = { health: undefined!, effects: undefined! };
         }
@@ -81,35 +77,30 @@ export class HealthHelper
         postRaidHealth: Health,
         sessionID: string,
         isDead: boolean,
-    ): void
-    {
+    ): void {
         const fullProfile = this.saveServer.getProfile(sessionID);
 
         this.storeHydrationEnergyTempInProfile(
             fullProfile,
             postRaidHealth.Hydration.Current,
             postRaidHealth.Energy.Current,
-            postRaidHealth.Temperature.Current);
+            postRaidHealth.Temperature.Current,
+        );
 
         // Store limb effects from post-raid in profile
-        for (const bodyPart in postRaidHealth.BodyParts)
-        {
+        for (const bodyPart in postRaidHealth.BodyParts) {
             // Effects
-            if (postRaidHealth.BodyParts[bodyPart].Effects)
-            {
+            if (postRaidHealth.BodyParts[bodyPart].Effects) {
                 fullProfile.vitality.effects[bodyPart] = postRaidHealth.BodyParts[bodyPart].Effects;
             }
 
             // Limb hp
-            if (!isDead)
-            {
+            if (!isDead) {
                 // Player alive, not is limb alive
                 fullProfile.vitality.health[bodyPart] = postRaidHealth.BodyParts[bodyPart].Health.Current;
-            }
-            else
-            {
-                fullProfile.vitality.health[bodyPart]
-                    = pmcData.Health.BodyParts[bodyPart].Health.Maximum * this.healthConfig.healthMultipliers.death;
+            } else {
+                fullProfile.vitality.health[bodyPart] =
+                    pmcData.Health.BodyParts[bodyPart].Health.Maximum * this.healthConfig.healthMultipliers.death;
             }
         }
 
@@ -129,8 +120,8 @@ export class HealthHelper
         fullProfile: ISptProfile,
         hydration: number,
         energy: number,
-        temprature: number): void
-    {
+        temprature: number,
+    ): void {
         fullProfile.vitality.health.Hydration = hydration;
         fullProfile.vitality.health.Energy = energy;
         fullProfile.vitality.health.Temperature = temprature;
@@ -141,30 +132,22 @@ export class HealthHelper
      * @param postRaidBodyParts Post-raid body part data
      * @param profileData Player profile on server
      */
-    protected transferPostRaidLimbEffectsToProfile(
-        postRaidBodyParts: BodyPartsHealth,
-        profileData: IPmcData,
-    ): void
-    {
+    protected transferPostRaidLimbEffectsToProfile(postRaidBodyParts: BodyPartsHealth, profileData: IPmcData): void {
         // Iterate over each body part
-        for (const bodyPartId in postRaidBodyParts)
-        {
+        for (const bodyPartId in postRaidBodyParts) {
             // Get effects on body part from profile
             const bodyPartEffects = postRaidBodyParts[bodyPartId].Effects;
-            for (const effect in bodyPartEffects)
-            {
+            for (const effect in bodyPartEffects) {
                 const effectDetails = bodyPartEffects[effect];
 
                 // Null guard
-                if (!profileData.Health.BodyParts[bodyPartId].Effects)
-                {
+                if (!profileData.Health.BodyParts[bodyPartId].Effects) {
                     profileData.Health.BodyParts[bodyPartId].Effects = {};
                 }
 
                 // Already exists on server profile, skip
                 const profileBodyPartEffects = profileData.Health.BodyParts[bodyPartId].Effects;
-                if (profileBodyPartEffects[effect])
-                {
+                if (profileBodyPartEffects[effect]) {
                     continue;
                 }
 
@@ -188,42 +171,31 @@ export class HealthHelper
         sessionID: string,
         addEffects = true,
         deleteExistingEffects = true,
-    ): void
-    {
+    ): void {
         const postRaidBodyParts = request.Health; // post raid health settings
         const fullProfile = this.saveServer.getProfile(sessionID);
         const profileEffects = fullProfile.vitality.effects;
 
-        this.storeHydrationEnergyTempInProfile(
-            fullProfile,
-            request.Hydration!,
-            request.Energy!,
-            request.Temperature!);
+        this.storeHydrationEnergyTempInProfile(fullProfile, request.Hydration!, request.Energy!, request.Temperature!);
 
         // Process request data into profile
-        for (const bodyPart in postRaidBodyParts)
-        {
+        for (const bodyPart in postRaidBodyParts) {
             // Transfer effects from request to profile
-            if (postRaidBodyParts[bodyPart].Effects)
-            {
+            if (postRaidBodyParts[bodyPart].Effects) {
                 profileEffects[bodyPart] = postRaidBodyParts[bodyPart].Effects;
             }
 
-            if (request.IsAlive)
-            {
+            if (request.IsAlive) {
                 // Player alive, not is limb alive
                 fullProfile.vitality.health[bodyPart] = postRaidBodyParts[bodyPart].Current;
-            }
-            else
-            {
-                fullProfile.vitality.health[bodyPart]
-                    = pmcData.Health.BodyParts[bodyPart].Health.Maximum * this.healthConfig.healthMultipliers.death;
+            } else {
+                fullProfile.vitality.health[bodyPart] =
+                    pmcData.Health.BodyParts[bodyPart].Health.Maximum * this.healthConfig.healthMultipliers.death;
             }
         }
 
         // Add effects to body parts if enabled
-        if (addEffects)
-        {
+        if (addEffects) {
             this.saveEffects(
                 pmcData,
                 sessionID,
@@ -246,43 +218,34 @@ export class HealthHelper
      * @param pmcData Profile to update
      * @param sessionId Session id
      */
-    protected saveHealth(pmcData: IPmcData, sessionID: string): void
-    {
-        if (!this.healthConfig.save.health)
-        {
+    protected saveHealth(pmcData: IPmcData, sessionID: string): void {
+        if (!this.healthConfig.save.health) {
             return;
         }
 
         const profileHealth = this.saveServer.getProfile(sessionID).vitality.health;
-        for (const healthModifier in profileHealth)
-        {
+        for (const healthModifier in profileHealth) {
             let target = profileHealth[healthModifier];
 
-            if (["Hydration", "Energy", "Temperature"].includes(healthModifier))
-            {
+            if (["Hydration", "Energy", "Temperature"].includes(healthModifier)) {
                 // Set resources
-                if (target > pmcData.Health[healthModifier].Maximum)
-                {
+                if (target > pmcData.Health[healthModifier].Maximum) {
                     target = pmcData.Health[healthModifier].Maximum;
                 }
 
                 pmcData.Health[healthModifier].Current = Math.round(target);
-            }
-            else
-            {
+            } else {
                 // Over max, limit
-                if (target > pmcData.Health.BodyParts[healthModifier].Health.Maximum)
-                {
+                if (target > pmcData.Health.BodyParts[healthModifier].Health.Maximum) {
                     target = pmcData.Health.BodyParts[healthModifier].Health.Maximum;
                 }
 
                 // Part was zeroed out in raid
-                if (target === 0)
-                {
+                if (target === 0) {
                     // Blacked body part
                     target = Math.round(
-                        pmcData.Health.BodyParts[healthModifier].Health.Maximum
-                        * this.healthConfig.healthMultipliers.blacked,
+                        pmcData.Health.BodyParts[healthModifier].Health.Maximum *
+                            this.healthConfig.healthMultipliers.blacked,
                     );
                 }
 
@@ -305,25 +268,19 @@ export class HealthHelper
         sessionId: string,
         bodyPartsWithEffects: Effects,
         deleteExistingEffects = true,
-    ): void
-    {
-        if (!this.healthConfig.save.effects)
-        {
+    ): void {
+        if (!this.healthConfig.save.effects) {
             return;
         }
 
-        for (const bodyPart in bodyPartsWithEffects)
-        {
+        for (const bodyPart in bodyPartsWithEffects) {
             // clear effects from profile bodyPart
-            if (deleteExistingEffects)
-            {
+            if (deleteExistingEffects) {
                 delete pmcData.Health.BodyParts[bodyPart].Effects;
             }
 
-            for (const effectType in bodyPartsWithEffects[bodyPart])
-            {
-                if (typeof effectType !== "string")
-                {
+            for (const effectType in bodyPartsWithEffects[bodyPart]) {
+                if (typeof effectType !== "string") {
                     this.logger.warning(`Effect ${effectType} on body part ${bodyPart} not a string, report this`);
                 }
 
@@ -332,20 +289,16 @@ export class HealthHelper
                 //     ? nodeEffects[bodyPart][effectValue]
                 //     : effectValue;
                 let time = bodyPartsWithEffects[bodyPart][effectType];
-                if (time)
-                {
+                if (time) {
                     // Sometimes the value can be Infinity instead of -1, blame HealthListener.cs in modules
-                    if (time === "Infinity")
-                    {
+                    if (time === "Infinity") {
                         this.logger.warning(
                             `Effect ${effectType} found with value of Infinity, changed to -1, this is an issue with HealthListener.cs`,
                         );
                         time = -1;
                     }
                     this.addEffect(pmcData, bodyPart, effectType, time);
-                }
-                else
-                {
+                } else {
                     this.addEffect(pmcData, bodyPart, effectType);
                 }
             }
@@ -359,29 +312,23 @@ export class HealthHelper
      * @param effectType Effect to add to body part
      * @param duration How long the effect has left in seconds (-1 by default, no duration).
      */
-    protected addEffect(pmcData: IPmcData, effectBodyPart: string, effectType: string, duration = -1): void
-    {
+    protected addEffect(pmcData: IPmcData, effectBodyPart: string, effectType: string, duration = -1): void {
         const profileBodyPart = pmcData.Health.BodyParts[effectBodyPart];
-        if (!profileBodyPart.Effects)
-        {
+        if (!profileBodyPart.Effects) {
             profileBodyPart.Effects = {};
         }
 
         profileBodyPart.Effects[effectType] = { Time: duration };
 
         // Delete empty property to prevent client bugs
-        if (this.isEmpty(profileBodyPart.Effects))
-        {
+        if (this.isEmpty(profileBodyPart.Effects)) {
             delete profileBodyPart.Effects;
         }
     }
 
-    protected isEmpty(map: Record<string, { Time: number }>): boolean
-    {
-        for (const key in map)
-        {
-            if (key in map)
-            {
+    protected isEmpty(map: Record<string, { Time: number }>): boolean {
+        for (const key in map) {
+            if (key in map) {
                 return false;
             }
         }

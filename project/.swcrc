@@ -15,14 +15,10 @@
         "keepClassNames": true,
         "baseUrl": "./",
         "paths": {
-            "@spt/*": [
-                "src/*"
-            ]
+            "@spt/*": ["src/*"]
         }
     },
-    "exclude": [
-        "node_modules/"
-    ],
+    "exclude": ["node_modules/"],
     "module": {
         "type": "commonjs",
         "strict": false,

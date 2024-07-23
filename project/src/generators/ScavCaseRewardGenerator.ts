@@ -1,4 +1,3 @@
-import { inject, injectable } from "tsyringe";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { PresetHelper } from "@spt/helpers/PresetHelper";
 import { Item } from "@spt/models/eft/common/tables/IItem";
@@ -20,13 +19,13 @@ import { RagfairPriceService } from "@spt/services/RagfairPriceService";
 import { SeasonalEventService } from "@spt/services/SeasonalEventService";
 import { HashUtil } from "@spt/utils/HashUtil";
 import { RandomUtil } from "@spt/utils/RandomUtil";
+import { inject, injectable } from "tsyringe";
 
 /**
  * Handle the creation of randomised scav case rewards
  */
 @injectable()
-export class ScavCaseRewardGenerator
-{
+export class ScavCaseRewardGenerator {
     protected scavCaseConfig: IScavCaseConfig;
     protected dbItemsCache: ITemplateItem[];
     protected dbAmmoItemsCache: ITemplateItem[];
@@ -42,8 +41,7 @@ export class ScavCaseRewardGenerator
         @inject("SeasonalEventService") protected seasonalEventService: SeasonalEventService,
         @inject("ItemFilterService") protected itemFilterService: ItemFilterService,
         @inject("ConfigServer") protected configServer: ConfigServer,
-    )
-    {
+    ) {
         this.scavCaseConfig = this.configServer.getConfig(ConfigTypes.SCAVCASE);
     }
 
@@ -52,8 +50,7 @@ export class ScavCaseRewardGenerator
      * @param recipeId recipe of the scav case craft
      * @returns Product array
      */
-    public generate(recipeId: string): Item[][]
-    {
+    public generate(recipeId: string): Item[][] {
         this.cacheDbItems();
 
         // Get scavcase details from hideout/scavcase.json
@@ -90,61 +87,50 @@ export class ScavCaseRewardGenerator
      * Get all db items that are not blacklisted in scavcase config or global blacklist
      * Store in class field
      */
-    protected cacheDbItems(): void
-    {
+    protected cacheDbItems(): void {
         // TODO: pre-loop and get array of valid items, e.g. non-node/non-blacklisted, then loop over those results for below code
 
         // Get an array of seasonal items that should not be shown right now as seasonal event is not active
         const inactiveSeasonalItems = this.seasonalEventService.getInactiveSeasonalEventItems();
-        if (!this.dbItemsCache)
-        {
-            this.dbItemsCache = Object.values(this.databaseService.getItems()).filter((item) =>
-            {
+        if (!this.dbItemsCache) {
+            this.dbItemsCache = Object.values(this.databaseService.getItems()).filter((item) => {
                 // Base "Item" item has no parent, ignore it
-                if (item._parent === "")
-                {
+                if (item._parent === "") {
                     return false;
                 }
 
-                if (item._type === "Node")
-                {
+                if (item._type === "Node") {
                     return false;
                 }
 
-                if (item._props.QuestItem)
-                {
+                if (item._props.QuestItem) {
                     return false;
                 }
 
                 // Skip item if item id is on blacklist
                 if (
-                    item._type !== "Item"
-                    || this.scavCaseConfig.rewardItemBlacklist.includes(item._id)
-                    || this.itemFilterService.isItemBlacklisted(item._id)
-                )
-                {
+                    item._type !== "Item" ||
+                    this.scavCaseConfig.rewardItemBlacklist.includes(item._id) ||
+                    this.itemFilterService.isItemBlacklisted(item._id)
+                ) {
                     return false;
                 }
 
                 // Globally reward-blacklisted
-                if (this.itemFilterService.isItemRewardBlacklisted(item._id))
-                {
+                if (this.itemFilterService.isItemRewardBlacklisted(item._id)) {
                     return false;
                 }
 
-                if (!this.scavCaseConfig.allowBossItemsAsRewards && this.itemFilterService.isBossItem(item._id))
-                {
+                if (!this.scavCaseConfig.allowBossItemsAsRewards && this.itemFilterService.isBossItem(item._id)) {
                     return false;
                 }
 
                 // Skip item if parent id is blacklisted
-                if (this.itemHelper.isOfBaseclasses(item._id, this.scavCaseConfig.rewardItemParentBlacklist))
-                {
+                if (this.itemHelper.isOfBaseclasses(item._id, this.scavCaseConfig.rewardItemParentBlacklist)) {
                     return false;
                 }
 
-                if (inactiveSeasonalItems.includes(item._id))
-                {
+                if (inactiveSeasonalItems.includes(item._id)) {
                     return false;
                 }
 
@@ -152,56 +138,46 @@ export class ScavCaseRewardGenerator
             });
         }
 
-        if (!this.dbAmmoItemsCache)
-        {
-            this.dbAmmoItemsCache = Object.values(this.databaseService.getItems()).filter((item) =>
-            {
+        if (!this.dbAmmoItemsCache) {
+            this.dbAmmoItemsCache = Object.values(this.databaseService.getItems()).filter((item) => {
                 // Base "Item" item has no parent, ignore it
-                if (item._parent === "")
-                {
+                if (item._parent === "") {
                     return false;
                 }
 
-                if (item._type !== "Item")
-                {
+                if (item._type !== "Item") {
                     return false;
                 }
 
                 // Not ammo, skip
-                if (!this.itemHelper.isOfBaseclass(item._id, BaseClasses.AMMO))
-                {
+                if (!this.itemHelper.isOfBaseclass(item._id, BaseClasses.AMMO)) {
                     return false;
                 }
 
                 // Skip item if item id is on blacklist
                 if (
-                    this.scavCaseConfig.rewardItemBlacklist.includes(item._id)
-                    || this.itemFilterService.isItemBlacklisted(item._id)
-                )
-                {
+                    this.scavCaseConfig.rewardItemBlacklist.includes(item._id) ||
+                    this.itemFilterService.isItemBlacklisted(item._id)
+                ) {
                     return false;
                 }
 
                 // Globally reward-blacklisted
-                if (this.itemFilterService.isItemRewardBlacklisted(item._id))
-                {
+                if (this.itemFilterService.isItemRewardBlacklisted(item._id)) {
                     return false;
                 }
 
-                if (!this.scavCaseConfig.allowBossItemsAsRewards && this.itemFilterService.isBossItem(item._id))
-                {
+                if (!this.scavCaseConfig.allowBossItemsAsRewards && this.itemFilterService.isBossItem(item._id)) {
                     return false;
                 }
 
                 // Skip seasonal items
-                if (inactiveSeasonalItems.includes(item._id))
-                {
+                if (inactiveSeasonalItems.includes(item._id)) {
                     return false;
                 }
 
                 // Skip ammo that doesn't stack as high as value in config
-                if (item._props.StackMaxSize < this.scavCaseConfig.ammoRewards.minStackSize)
-                {
+                if (item._props.StackMaxSize < this.scavCaseConfig.ammoRewards.minStackSize) {
                     return false;
                 }
 
@@ -220,35 +196,26 @@ export class ScavCaseRewardGenerator
         items: ITemplateItem[],
         itemFilters: RewardCountAndPriceDetails,
         rarity: string,
-    ): ITemplateItem[]
-    {
+    ): ITemplateItem[] {
         const result: ITemplateItem[] = [];
 
         let rewardWasMoney = false;
         let rewardWasAmmo = false;
         const randomCount = this.randomUtil.getInt(itemFilters.minCount, itemFilters.maxCount);
-        for (let i = 0; i < randomCount; i++)
-        {
-            if (this.rewardShouldBeMoney() && !rewardWasMoney)
-            {
+        for (let i = 0; i < randomCount; i++) {
+            if (this.rewardShouldBeMoney() && !rewardWasMoney) {
                 // Only allow one reward to be money
                 result.push(this.getRandomMoney());
-                if (!this.scavCaseConfig.allowMultipleMoneyRewardsPerRarity)
-                {
+                if (!this.scavCaseConfig.allowMultipleMoneyRewardsPerRarity) {
                     rewardWasMoney = true;
                 }
-            }
-            else if (this.rewardShouldBeAmmo() && !rewardWasAmmo)
-            {
+            } else if (this.rewardShouldBeAmmo() && !rewardWasAmmo) {
                 // Only allow one reward to be ammo
                 result.push(this.getRandomAmmo(rarity));
-                if (!this.scavCaseConfig.allowMultipleAmmoRewardsPerRarity)
-                {
+                if (!this.scavCaseConfig.allowMultipleAmmoRewardsPerRarity) {
                     rewardWasAmmo = true;
                 }
-            }
-            else
-            {
+            } else {
                 result.push(this.randomUtil.getArrayValue(items));
             }
         }
@@ -260,8 +227,7 @@ export class ScavCaseRewardGenerator
      * Choose if money should be a reward based on the moneyRewardChancePercent config chance in scavCaseConfig
      * @returns true if reward should be money
      */
-    protected rewardShouldBeMoney(): boolean
-    {
+    protected rewardShouldBeMoney(): boolean {
         return this.randomUtil.getChance100(this.scavCaseConfig.moneyRewards.moneyRewardChancePercent);
     }
 
@@ -269,16 +235,14 @@ export class ScavCaseRewardGenerator
      * Choose if ammo should be a reward based on the ammoRewardChancePercent config chance in scavCaseConfig
      * @returns true if reward should be ammo
      */
-    protected rewardShouldBeAmmo(): boolean
-    {
+    protected rewardShouldBeAmmo(): boolean {
         return this.randomUtil.getChance100(this.scavCaseConfig.ammoRewards.ammoRewardChancePercent);
     }
 
     /**
      * Choose from rouble/dollar/euro at random
      */
-    protected getRandomMoney(): ITemplateItem
-    {
+    protected getRandomMoney(): ITemplateItem {
         const money: ITemplateItem[] = [];
         const items = this.databaseService.getItems();
         money.push(items[Money.ROUBLES]);
@@ -294,25 +258,21 @@ export class ScavCaseRewardGenerator
      * @param rarity The rarity this ammo reward is for
      * @returns random ammo item from items.json
      */
-    protected getRandomAmmo(rarity: string): ITemplateItem
-    {
-        const possibleAmmoPool = this.dbAmmoItemsCache.filter((ammo) =>
-        {
+    protected getRandomAmmo(rarity: string): ITemplateItem {
+        const possibleAmmoPool = this.dbAmmoItemsCache.filter((ammo) => {
             // Is ammo handbook price between desired range
             const handbookPrice = this.ragfairPriceService.getStaticPriceForItem(ammo._id);
             if (
-                handbookPrice >= this.scavCaseConfig.ammoRewards.ammoRewardValueRangeRub[rarity].min
-                && handbookPrice <= this.scavCaseConfig.ammoRewards.ammoRewardValueRangeRub[rarity].max
-            )
-            {
+                handbookPrice >= this.scavCaseConfig.ammoRewards.ammoRewardValueRangeRub[rarity].min &&
+                handbookPrice <= this.scavCaseConfig.ammoRewards.ammoRewardValueRangeRub[rarity].max
+            ) {
                 return true;
             }
 
             return false;
         });
 
-        if (possibleAmmoPool.length === 0)
-        {
+        if (possibleAmmoPool.length === 0) {
             this.logger.warning("Unable to get a list of ammo that matches desired criteria for scav case reward");
         }
 
@@ -326,28 +286,23 @@ export class ScavCaseRewardGenerator
      * @param rewardItems items to convert
      * @returns Product array
      */
-    protected randomiseContainerItemRewards(rewardItems: ITemplateItem[], rarity: string): Item[][]
-    {
+    protected randomiseContainerItemRewards(rewardItems: ITemplateItem[], rarity: string): Item[][] {
         /** Each array is an item + children */
         const result: Item[][] = [];
-        for (const rewardItemDb of rewardItems)
-        {
+        for (const rewardItemDb of rewardItems) {
             let resultItem: Item[] = [{ _id: this.hashUtil.generate(), _tpl: rewardItemDb._id, upd: undefined }];
             const rootItem = resultItem[0];
 
-            if (this.itemHelper.isOfBaseclass(rewardItemDb._id, BaseClasses.AMMO_BOX))
-            {
+            if (this.itemHelper.isOfBaseclass(rewardItemDb._id, BaseClasses.AMMO_BOX)) {
                 this.itemHelper.addCartridgesToAmmoBox(resultItem, rewardItemDb);
             }
             // Armor or weapon = use default preset from globals.json
             else if (
-                this.itemHelper.armorItemHasRemovableOrSoftInsertSlots(rewardItemDb._id)
-                || this.itemHelper.isOfBaseclass(rewardItemDb._id, BaseClasses.WEAPON)
-            )
-            {
+                this.itemHelper.armorItemHasRemovableOrSoftInsertSlots(rewardItemDb._id) ||
+                this.itemHelper.isOfBaseclass(rewardItemDb._id, BaseClasses.WEAPON)
+            ) {
                 const preset = this.presetHelper.getDefaultPreset(rewardItemDb._id);
-                if (!preset)
-                {
+                if (!preset) {
                     this.logger.warning(`No preset for item: ${rewardItemDb._id} ${rewardItemDb._name}, skipping`);
 
                     continue;
@@ -358,15 +313,12 @@ export class ScavCaseRewardGenerator
                 this.itemHelper.remapRootItemId(presetAndMods);
 
                 resultItem = presetAndMods;
-            }
-            else if (this.itemHelper.isOfBaseclasses(rewardItemDb._id, [BaseClasses.AMMO, BaseClasses.MONEY]))
-            {
+            } else if (this.itemHelper.isOfBaseclasses(rewardItemDb._id, [BaseClasses.AMMO, BaseClasses.MONEY])) {
                 rootItem.upd = { StackObjectsCount: this.getRandomAmountRewardForScavCase(rewardItemDb, rarity) };
             }
 
             // Clean up upd object if it wasn't used
-            if (!rootItem.upd)
-            {
+            if (!rootItem.upd) {
                 delete rootItem.upd;
             }
 
@@ -384,13 +336,10 @@ export class ScavCaseRewardGenerator
     protected getFilteredItemsByPrice(
         dbItems: ITemplateItem[],
         itemFilters: RewardCountAndPriceDetails,
-    ): ITemplateItem[]
-    {
-        return dbItems.filter((item) =>
-        {
+    ): ITemplateItem[] {
+        return dbItems.filter((item) => {
             const handbookPrice = this.ragfairPriceService.getStaticPriceForItem(item._id);
-            if (handbookPrice >= itemFilters.minPriceRub && handbookPrice <= itemFilters.maxPriceRub)
-            {
+            if (handbookPrice >= itemFilters.minPriceRub && handbookPrice <= itemFilters.maxPriceRub) {
                 return true;
             }
         });
@@ -401,14 +350,12 @@ export class ScavCaseRewardGenerator
      * @param scavCaseDetails scavcase.json values
      * @returns ScavCaseRewardCountsAndPrices object
      */
-    protected getScavCaseRewardCountsAndPrices(scavCaseDetails: IHideoutScavCase): ScavCaseRewardCountsAndPrices
-    {
+    protected getScavCaseRewardCountsAndPrices(scavCaseDetails: IHideoutScavCase): ScavCaseRewardCountsAndPrices {
         const rewardTypes = Object.keys(scavCaseDetails.EndProducts) as Array<keyof ScavCaseRewardCountsAndPrices>; // Default is ["Common", "Rare", "Superrare"];
         const result: Partial<ScavCaseRewardCountsAndPrices> = {}; // Make partial object as we're going to add all the data immediately after
 
         // Create reward min/max counts for each type
-        for (const rewardType of rewardTypes)
-        {
+        for (const rewardType of rewardTypes) {
             result[rewardType] = {
                 minCount: scavCaseDetails.EndProducts[rewardType].min,
                 maxCount: scavCaseDetails.EndProducts[rewardType].max,
@@ -426,20 +373,15 @@ export class ScavCaseRewardGenerator
      * @param rarity rarity (common/rare/superrare)
      * @returns value to set stack count to
      */
-    protected getRandomAmountRewardForScavCase(itemToCalculate: ITemplateItem, rarity: string): number
-    {
+    protected getRandomAmountRewardForScavCase(itemToCalculate: ITemplateItem, rarity: string): number {
         let amountToGive = 1;
-        if (itemToCalculate._parent === BaseClasses.AMMO)
-        {
+        if (itemToCalculate._parent === BaseClasses.AMMO) {
             amountToGive = this.randomUtil.getInt(
                 this.scavCaseConfig.ammoRewards.minStackSize,
                 itemToCalculate._props.StackMaxSize,
             );
-        }
-        else if (itemToCalculate._parent === BaseClasses.MONEY)
-        {
-            switch (itemToCalculate._id)
-            {
+        } else if (itemToCalculate._parent === BaseClasses.MONEY) {
+            switch (itemToCalculate._id) {
                 case Money.ROUBLES:
                     amountToGive = this.randomUtil.getInt(
                         this.scavCaseConfig.moneyRewards.rubCount[rarity].min,

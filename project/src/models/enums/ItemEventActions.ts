@@ -1,5 +1,4 @@
-export enum ItemEventActions
-{
+export enum ItemEventActions {
     MOVE = "Move",
     REMOVE = "Remove",
     SPLIT = "Split",

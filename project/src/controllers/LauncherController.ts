@@ -1,4 +1,3 @@
-import { inject, injectable } from "tsyringe";
 import { HttpServerHelper } from "@spt/helpers/HttpServerHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { PreSptModLoader } from "@spt/loaders/PreSptModLoader";
@@ -18,10 +17,10 @@ import { LocalisationService } from "@spt/services/LocalisationService";
 import { HashUtil } from "@spt/utils/HashUtil";
 import { RandomUtil } from "@spt/utils/RandomUtil";
 import { TimeUtil } from "@spt/utils/TimeUtil";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
-export class LauncherController
-{
+export class LauncherController {
     protected coreConfig: ICoreConfig;
 
     constructor(
@@ -36,16 +35,15 @@ export class LauncherController
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("PreSptModLoader") protected preSptModLoader: PreSptModLoader,
         @inject("ConfigServer") protected configServer: ConfigServer,
-    )
-    {
+    ) {
         this.coreConfig = this.configServer.getConfig(ConfigTypes.CORE);
     }
 
-    public connect(): IConnectResponse
-    {
+    public connect(): IConnectResponse {
         // Get all possible profile types + filter out any that are blacklisted
-        const profileKeys = Object.keys(this.databaseService.getProfiles())
-            .filter((key) => !this.coreConfig.features.createNewProfileTypesBlacklist.includes(key));
+        const profileKeys = Object.keys(this.databaseService.getProfiles()).filter(
+            (key) => !this.coreConfig.features.createNewProfileTypesBlacklist.includes(key),
+        );
 
         return {
             backendUrl: this.httpServerHelper.getBackendUrl(),
@@ -59,15 +57,12 @@ export class LauncherController
      * Get descriptive text for each of the profile edtions a player can choose, keyed by profile.json profile type e.g. "Edge Of Darkness"
      * @returns Dictionary of profile types with related descriptive text
      */
-    protected getProfileDescriptions(): Record<string, string>
-    {
+    protected getProfileDescriptions(): Record<string, string> {
         const result = {};
         const dbProfiles = this.databaseService.getProfiles();
-        for (const profileKey in dbProfiles)
-        {
+        for (const profileKey in dbProfiles) {
             const localeKey = dbProfiles[profileKey]?.descriptionLocaleKey;
-            if (!localeKey)
-            {
+            if (!localeKey) {
                 this.logger.warning(this.localisationService.getText("launcher-missing_property", profileKey));
                 continue;
             }
@@ -78,18 +73,14 @@ export class LauncherController
         return result;
     }
 
-    public find(sessionId: string): Info
-    {
+    public find(sessionId: string): Info {
         return this.saveServer.getProfiles()[sessionId]?.info;
     }
 
-    public login(info: ILoginRequestData): string
-    {
-        for (const sessionID in this.saveServer.getProfiles())
-        {
+    public login(info: ILoginRequestData): string {
+        for (const sessionID in this.saveServer.getProfiles()) {
             const account = this.saveServer.getProfile(sessionID).info;
-            if (info.username === account.username)
-            {
+            if (info.username === account.username) {
                 return sessionID;
             }
         }
@@ -97,12 +88,9 @@ export class LauncherController
         return "";
     }
 
-    public register(info: IRegisterData): string
-    {
-        for (const sessionID in this.saveServer.getProfiles())
-        {
-            if (info.username === this.saveServer.getProfile(sessionID).info.username)
-            {
+    public register(info: IRegisterData): string {
+        for (const sessionID in this.saveServer.getProfiles()) {
+            if (info.username === this.saveServer.getProfile(sessionID).info.username) {
                 return "";
             }
         }
@@ -110,8 +98,7 @@ export class LauncherController
         return this.createAccount(info);
     }
 
-    protected createAccount(info: IRegisterData): string
-    {
+    protected createAccount(info: IRegisterData): string {
         const profileId = this.generateProfileId();
         const scavId = this.generateProfileId();
         const newProfileDetails: Info = {
@@ -131,39 +118,33 @@ export class LauncherController
         return profileId;
     }
 
-    protected generateProfileId(): string
-    {
+    protected generateProfileId(): string {
         const timestamp = this.timeUtil.getTimestamp();
 
         return this.formatID(timestamp, timestamp * this.randomUtil.getInt(1, 1000000));
     }
 
-    protected formatID(timeStamp: number, counter: number): string
-    {
+    protected formatID(timeStamp: number, counter: number): string {
         const timeStampStr = timeStamp.toString(16).padStart(8, "0");
         const counterStr = counter.toString(16).padStart(16, "0");
 
         return timeStampStr.toLowerCase() + counterStr.toLowerCase();
     }
 
-    public changeUsername(info: IChangeRequestData): string
-    {
+    public changeUsername(info: IChangeRequestData): string {
         const sessionID = this.login(info);
 
-        if (sessionID)
-        {
+        if (sessionID) {
             this.saveServer.getProfile(sessionID).info.username = info.change;
         }
 
         return sessionID;
     }
 
-    public changePassword(info: IChangeRequestData): string
-    {
+    public changePassword(info: IChangeRequestData): string {
         const sessionID = this.login(info);
 
-        if (sessionID)
-        {
+        if (sessionID) {
             this.saveServer.getProfile(sessionID).info.password = info.change;
         }
 
@@ -175,17 +156,14 @@ export class LauncherController
      * @param info IRegisterData
      * @returns Session id
      */
-    public wipe(info: IRegisterData): string
-    {
-        if (!this.coreConfig.allowProfileWipe)
-        {
+    public wipe(info: IRegisterData): string {
+        if (!this.coreConfig.allowProfileWipe) {
             return;
         }
 
         const sessionID = this.login(info);
 
-        if (sessionID)
-        {
+        if (sessionID) {
             const profile = this.saveServer.getProfile(sessionID);
             profile.info.edition = info.edition;
             profile.info.wipe = true;
@@ -194,8 +172,7 @@ export class LauncherController
         return sessionID;
     }
 
-    public getCompatibleTarkovVersion(): string
-    {
+    public getCompatibleTarkovVersion(): string {
         return this.coreConfig.compatibleTarkovVersion;
     }
 
@@ -203,8 +180,7 @@ export class LauncherController
      * Get the mods the server has currently loaded
      * @returns Dictionary of mod name and mod details
      */
-    public getLoadedServerMods(): Record<string, IPackageJsonData>
-    {
+    public getLoadedServerMods(): Record<string, IPackageJsonData> {
         return this.preSptModLoader.getImportedModDetails();
     }
 
@@ -213,12 +189,10 @@ export class LauncherController
      * @param sessionId Player id
      * @returns Array of mod details
      */
-    public getServerModsProfileUsed(sessionId: string): ModDetails[]
-    {
+    public getServerModsProfileUsed(sessionId: string): ModDetails[] {
         const profile = this.profileHelper.getFullProfile(sessionId);
 
-        if (profile?.spt?.mods)
-        {
+        if (profile?.spt?.mods) {
             return this.preSptModLoader.getProfileModsGroupedByModName(profile?.spt?.mods);
         }
 

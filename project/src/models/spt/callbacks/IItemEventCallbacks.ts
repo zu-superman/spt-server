@@ -2,11 +2,10 @@ import { IGetBodyResponseData } from "@spt/models/eft/httpResponse/IGetBodyRespo
 import { IItemEventRouterRequest } from "@spt/models/eft/itemEvent/IItemEventRouterRequest";
 import { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRouterResponse";
 
-export interface IItemEventCallbacks
-{
+export interface IItemEventCallbacks {
     handleEvents(
         url: string,
         info: IItemEventRouterRequest,
         sessionID: string,
-    ): IGetBodyResponseData<IItemEventRouterResponse>
+    ): IGetBodyResponseData<IItemEventRouterResponse>;
 }

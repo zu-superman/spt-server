@@ -1,4 +1,3 @@
-import { inject, injectable } from "tsyringe";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { WeightedRandomHelper } from "@spt/helpers/WeightedRandomHelper";
 import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
@@ -10,14 +9,14 @@ import { DatabaseService } from "@spt/services/DatabaseService";
 import { ItemFilterService } from "@spt/services/ItemFilterService";
 import { RagfairPriceService } from "@spt/services/RagfairPriceService";
 import { SeasonalEventService } from "@spt/services/SeasonalEventService";
+import { inject, injectable } from "tsyringe";
 
 /**
  * Handle the generation of dynamic PMC loot in pockets and backpacks
  * and the removal of blacklisted items
  */
 @injectable()
-export class PMCLootGenerator
-{
+export class PMCLootGenerator {
     protected pocketLootPool: Record<string, number> = {};
     protected vestLootPool: Record<string, number> = {};
     protected backpackLootPool: Record<string, number> = {};
@@ -31,8 +30,7 @@ export class PMCLootGenerator
         @inject("RagfairPriceService") protected ragfairPriceService: RagfairPriceService,
         @inject("SeasonalEventService") protected seasonalEventService: SeasonalEventService,
         @inject("WeightedRandomHelper") protected weightedRandomHelper: WeightedRandomHelper,
-    )
-    {
+    ) {
         this.pmcConfig = this.configServer.getConfig(ConfigTypes.PMC);
     }
 
@@ -40,15 +38,12 @@ export class PMCLootGenerator
      * Create an array of loot items a PMC can have in their pockets
      * @returns string array of tpls
      */
-    public generatePMCPocketLootPool(botRole: string): Record<string, number>
-    {
+    public generatePMCPocketLootPool(botRole: string): Record<string, number> {
         // Hydrate loot dictionary if empty
-        if (Object.keys(this.pocketLootPool).length === 0)
-        {
+        if (Object.keys(this.pocketLootPool).length === 0) {
             const items = this.databaseService.getItems();
-            const pmcPriceOverrides
-                = this.databaseService.getBots().types[botRole === "pmcBEAR" ? "bear" : "usec"].inventory.items
-                    .Pockets;
+            const pmcPriceOverrides =
+                this.databaseService.getBots().types[botRole === "pmcBEAR" ? "bear" : "usec"].inventory.items.Pockets;
 
             const allowedItemTypes = this.pmcConfig.pocketLoot.whitelist;
             const pmcItemBlacklist = this.pmcConfig.pocketLoot.blacklist;
@@ -59,22 +54,18 @@ export class PMCLootGenerator
 
             const itemsToAdd = Object.values(items).filter(
                 (item) =>
-                    allowedItemTypes.includes(item._parent)
-                    && this.itemHelper.isValidItem(item._id)
-                    && !pmcItemBlacklist.includes(item._id)
-                    && !itemBlacklist.includes(item._id)
-                    && this.itemFitsInto1By2Slot(item),
+                    allowedItemTypes.includes(item._parent) &&
+                    this.itemHelper.isValidItem(item._id) &&
+                    !pmcItemBlacklist.includes(item._id) &&
+                    !itemBlacklist.includes(item._id) &&
+                    this.itemFitsInto1By2Slot(item),
             );
 
-            for (const itemToAdd of itemsToAdd)
-            {
+            for (const itemToAdd of itemsToAdd) {
                 // If pmc has override, use that. Otherwise use flea price
-                if (pmcPriceOverrides[itemToAdd._id])
-                {
+                if (pmcPriceOverrides[itemToAdd._id]) {
                     this.pocketLootPool[itemToAdd._id] = pmcPriceOverrides[itemToAdd._id];
-                }
-                else
-                {
+                } else {
                     // Set price of item as its weight
                     const price = this.ragfairPriceService.getDynamicItemPrice(itemToAdd._id, Money.ROUBLES);
                     this.pocketLootPool[itemToAdd._id] = price;
@@ -82,8 +73,7 @@ export class PMCLootGenerator
             }
 
             const highestPrice = Math.max(...Object.values(this.backpackLootPool));
-            for (const key of Object.keys(this.pocketLootPool))
-            {
+            for (const key of Object.keys(this.pocketLootPool)) {
                 // Invert price so cheapest has a larger weight
                 // Times by highest price so most expensive item has weight of 1
                 this.pocketLootPool[key] = Math.round((1 / this.pocketLootPool[key]) * highestPrice);
@@ -99,14 +89,12 @@ export class PMCLootGenerator
      * Create an array of loot items a PMC can have in their vests
      * @returns string array of tpls
      */
-    public generatePMCVestLootPool(botRole: string): Record<string, number>
-    {
+    public generatePMCVestLootPool(botRole: string): Record<string, number> {
         // Hydrate loot dictionary if empty
-        if (Object.keys(this.vestLootPool).length === 0)
-        {
+        if (Object.keys(this.vestLootPool).length === 0) {
             const items = this.databaseService.getItems();
-            const pmcPriceOverrides
-                = this.databaseService.getBots().types[botRole === "pmcBEAR" ? "bear" : "usec"].inventory.items
+            const pmcPriceOverrides =
+                this.databaseService.getBots().types[botRole === "pmcBEAR" ? "bear" : "usec"].inventory.items
                     .TacticalVest;
 
             const allowedItemTypes = this.pmcConfig.vestLoot.whitelist;
@@ -118,22 +106,18 @@ export class PMCLootGenerator
 
             const itemsToAdd = Object.values(items).filter(
                 (item) =>
-                    allowedItemTypes.includes(item._parent)
-                    && this.itemHelper.isValidItem(item._id)
-                    && !pmcItemBlacklist.includes(item._id)
-                    && !itemBlacklist.includes(item._id)
-                    && this.itemFitsInto2By2Slot(item),
+                    allowedItemTypes.includes(item._parent) &&
+                    this.itemHelper.isValidItem(item._id) &&
+                    !pmcItemBlacklist.includes(item._id) &&
+                    !itemBlacklist.includes(item._id) &&
+                    this.itemFitsInto2By2Slot(item),
             );
 
-            for (const itemToAdd of itemsToAdd)
-            {
+            for (const itemToAdd of itemsToAdd) {
                 // If pmc has override, use that. Otherwise use flea price
-                if (pmcPriceOverrides[itemToAdd._id])
-                {
+                if (pmcPriceOverrides[itemToAdd._id]) {
                     this.vestLootPool[itemToAdd._id] = pmcPriceOverrides[itemToAdd._id];
-                }
-                else
-                {
+                } else {
                     // Set price of item as its weight
                     const price = this.ragfairPriceService.getDynamicItemPrice(itemToAdd._id, Money.ROUBLES);
                     this.vestLootPool[itemToAdd._id] = price;
@@ -141,8 +125,7 @@ export class PMCLootGenerator
             }
 
             const highestPrice = Math.max(...Object.values(this.backpackLootPool));
-            for (const key of Object.keys(this.vestLootPool))
-            {
+            for (const key of Object.keys(this.vestLootPool)) {
                 // Invert price so cheapest has a larger weight
                 // Times by highest price so most expensive item has weight of 1
                 this.vestLootPool[key] = Math.round((1 / this.vestLootPool[key]) * highestPrice);
@@ -160,8 +143,7 @@ export class PMCLootGenerator
      * @param item Item to check size of
      * @returns true if it fits
      */
-    protected itemFitsInto2By2Slot(item: ITemplateItem): boolean
-    {
+    protected itemFitsInto2By2Slot(item: ITemplateItem): boolean {
         return item._props.Width <= 2 && item._props.Height <= 2;
     }
 
@@ -171,10 +153,8 @@ export class PMCLootGenerator
      * @param item Item to check size of
      * @returns true if it fits
      */
-    protected itemFitsInto1By2Slot(item: ITemplateItem): boolean
-    {
-        switch (`${item._props.Width}x${item._props.Height}`)
-        {
+    protected itemFitsInto1By2Slot(item: ITemplateItem): boolean {
+        switch (`${item._props.Width}x${item._props.Height}`) {
             case "1x1":
             case "1x2":
             case "2x1":
@@ -189,15 +169,12 @@ export class PMCLootGenerator
      * Create an array of loot items a PMC can have in their backpack
      * @returns string array of tpls
      */
-    public generatePMCBackpackLootPool(botRole: string): Record<string, number>
-    {
+    public generatePMCBackpackLootPool(botRole: string): Record<string, number> {
         // Hydrate loot dictionary if empty
-        if (Object.keys(this.backpackLootPool).length === 0)
-        {
+        if (Object.keys(this.backpackLootPool).length === 0) {
             const items = this.databaseService.getItems();
-            const pmcPriceOverrides
-                = this.databaseService.getBots().types[botRole === "pmcBEAR" ? "bear" : "usec"].inventory.items
-                    .Backpack;
+            const pmcPriceOverrides =
+                this.databaseService.getBots().types[botRole === "pmcBEAR" ? "bear" : "usec"].inventory.items.Backpack;
 
             const allowedItemTypes = this.pmcConfig.backpackLoot.whitelist;
             const pmcItemBlacklist = this.pmcConfig.backpackLoot.blacklist;
@@ -208,21 +185,17 @@ export class PMCLootGenerator
 
             const itemsToAdd = Object.values(items).filter(
                 (item) =>
-                    allowedItemTypes.includes(item._parent)
-                    && this.itemHelper.isValidItem(item._id)
-                    && !pmcItemBlacklist.includes(item._id)
-                    && !itemBlacklist.includes(item._id),
+                    allowedItemTypes.includes(item._parent) &&
+                    this.itemHelper.isValidItem(item._id) &&
+                    !pmcItemBlacklist.includes(item._id) &&
+                    !itemBlacklist.includes(item._id),
             );
 
-            for (const itemToAdd of itemsToAdd)
-            {
+            for (const itemToAdd of itemsToAdd) {
                 // If pmc has price override, use that. Otherwise use flea price
-                if (pmcPriceOverrides[itemToAdd._id])
-                {
+                if (pmcPriceOverrides[itemToAdd._id]) {
                     this.backpackLootPool[itemToAdd._id] = pmcPriceOverrides[itemToAdd._id];
-                }
-                else
-                {
+                } else {
                     // Set price of item as its weight
                     const price = this.ragfairPriceService.getDynamicItemPrice(itemToAdd._id, Money.ROUBLES);
                     this.backpackLootPool[itemToAdd._id] = price;
@@ -230,8 +203,7 @@ export class PMCLootGenerator
             }
 
             const highestPrice = Math.max(...Object.values(this.backpackLootPool));
-            for (const key of Object.keys(this.backpackLootPool))
-            {
+            for (const key of Object.keys(this.backpackLootPool)) {
                 // Invert price so cheapest has a larger weight
                 // Times by highest price so most expensive item has weight of 1
                 this.backpackLootPool[key] = Math.round((1 / this.backpackLootPool[key]) * highestPrice);
