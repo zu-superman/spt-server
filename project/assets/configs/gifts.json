@@ -2667,7 +2667,7 @@
             "localeTextId": "5a2d28f786f77436023be4a5 0",
             "collectionTimeHours": 72,
             "associatedEvent": "Promo",
-			"maxToSendPlayer": 1
+			"maxToSendPlayer": 50
         },
         "TWITCHNEWYEARS2023": {
             "items": [
