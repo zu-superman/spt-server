@@ -148,7 +148,7 @@ export class RagfairOfferGenerator {
             items: itemsClone,
             itemsCost: Math.round(this.handbookHelper.getTemplatePrice(items[0]._tpl)), // Handbook price
             requirements: offerRequirements,
-            requirementsCost: singleItemListingPrice,
+            requirementsCost: Math.round(singleItemListingPrice),
             summaryCost: roubleListingPrice,
             startTime: time,
             endTime: this.getOfferEndTime(userID, time),
