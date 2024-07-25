@@ -397,13 +397,13 @@ export class BotInventoryGenerator {
 
             // Item has slots, fill them
             if (pickedItemDb._props.Slots?.length > 0 && !settings.generateModsBlacklist?.includes(pickedItemDb._id)) {
-                const items = this.botEquipmentModGenerator.generateModsForEquipment(
+                const childItemsToAdd = this.botEquipmentModGenerator.generateModsForEquipment(
                     [item],
                     id,
                     pickedItemDb,
                     settings,
                 );
-                settings.inventory.items.push(...items);
+                settings.inventory.items.push(...childItemsToAdd);
             } else {
                 // No slots, push root item only
                 settings.inventory.items.push(item);
