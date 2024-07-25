@@ -13,6 +13,7 @@ import { IBotCore } from "@spt/models/eft/common/tables/IBotCore";
 import { Difficulty } from "@spt/models/eft/common/tables/IBotType";
 import { IGetRaidConfigurationRequestData } from "@spt/models/eft/match/IGetRaidConfigurationRequestData";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
+import { SideType } from "@spt/models/enums/SideType";
 import { WildSpawnTypeNumber } from "@spt/models/enums/WildSpawnTypeNumber";
 import { BotGenerationDetails } from "@spt/models/spt/bots/BotGenerationDetails";
 import { IBotConfig } from "@spt/models/spt/config/IBotConfig";
@@ -250,7 +251,7 @@ export class BotController {
     ): BotGenerationDetails {
         return {
             isPmc: generateAsPmc,
-            side: "Savage",
+            side: SideType.SAVAGE,
             role: condition.Role,
             playerLevel: this.getPlayerLevelFromProfile(pmcProfile),
             playerName: pmcProfile.Info.Nickname,
