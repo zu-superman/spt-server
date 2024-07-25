@@ -359,11 +359,11 @@ export class ProfileHelper {
             return false;
         }
 
-        if (!profile.spt.receivedGifts) {
+        if (!profile.spt?.receivedGifts) {
             return false;
         }
 
-        const giftDataFromProfile = profile.spt.receivedGifts.find((x) => x.giftId === giftId);
+        const giftDataFromProfile = profile.spt?.receivedGifts?.find((gift) => gift.giftId === giftId);
         if (!giftDataFromProfile) {
             return false;
         }
