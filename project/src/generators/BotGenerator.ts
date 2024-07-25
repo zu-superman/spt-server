@@ -20,6 +20,7 @@ import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { GameEditions } from "@spt/models/enums/GameEditions";
 import { ItemTpl } from "@spt/models/enums/ItemTpl";
 import { MemberCategory } from "@spt/models/enums/MemberCategory";
+import { SideType } from "@spt/models/enums/SideType";
 import { BotGenerationDetails } from "@spt/models/spt/bots/BotGenerationDetails";
 import { IBotConfig } from "@spt/models/spt/config/IBotConfig";
 import { IPmcConfig } from "@spt/models/spt/config/IPmcConfig";
@@ -75,11 +76,11 @@ export class BotGenerator {
         let bot = this.getCloneOfBotBase();
         bot.Info.Settings.BotDifficulty = difficulty;
         bot.Info.Settings.Role = role;
-        bot.Info.Side = "Savage";
+        bot.Info.Side = SideType.SAVAGE;
 
         const botGenDetails: BotGenerationDetails = {
             isPmc: false,
-            side: "Savage",
+            side: SideType.SAVAGE,
             role: role,
             botRelativeLevelDeltaMax: 0,
             botRelativeLevelDeltaMin: 0,
