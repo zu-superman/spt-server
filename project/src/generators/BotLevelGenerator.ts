@@ -4,6 +4,7 @@ import { IBotBase } from "@spt/models/eft/common/tables/IBotBase";
 import { BotGenerationDetails } from "@spt/models/spt/bots/BotGenerationDetails";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { DatabaseService } from "@spt/services/DatabaseService";
+import { MathUtil } from "@spt/utils/MathUtil";
 import { RandomUtil } from "@spt/utils/RandomUtil";
 import { inject, injectable } from "tsyringe";
 
@@ -13,6 +14,7 @@ export class BotLevelGenerator {
         @inject("PrimaryLogger") protected logger: ILogger,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("DatabaseService") protected databaseService: DatabaseService,
+        @inject("MathUtil") protected mathUtil: MathUtil,
     ) {}
 
     /**
@@ -33,8 +35,7 @@ export class BotLevelGenerator {
 
         // Get random level based on the exp table.
         let exp = 0;
-        const level = this.randomUtil.getInt(lowestLevel, highestLevel);
-
+        const level = this.chooseBotLevel(lowestLevel, highestLevel, 1, 1.15);
         for (let i = 0; i < level; i++) {
             exp += expTable[i].exp;
         }
@@ -45,6 +46,10 @@ export class BotLevelGenerator {
         }
 
         return { level, exp };
+    }
+
+    protected chooseBotLevel(min: number, max: number, shift: number, number: number): number {
+        return this.randomUtil.getBiasedRandomNumber(min, max, shift, number);
     }
 
     /**
