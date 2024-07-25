@@ -183,6 +183,7 @@ export class BotEquipmentModGenerator {
                 continue;
             }
 
+            // Get chosen mods db template and check it fits into slot
             const modTemplate = this.itemHelper.getItem(modTpl);
             if (!this.isModValidForSlot(modTemplate, itemSlotTemplate, modSlotName, parentTemplate, settings.botRole)) {
                 continue;
