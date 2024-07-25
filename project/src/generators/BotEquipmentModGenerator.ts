@@ -101,14 +101,18 @@ export class BotEquipmentModGenerator {
                         botRole: settings.botRole,
                     }),
                 );
+
                 continue;
             }
+
             const modSpawnResult = this.shouldModBeSpawned(
                 itemSlotTemplate,
                 modSlotName.toLowerCase(),
                 settings.spawnChances.equipmentMods,
                 settings.botEquipmentConfig,
             );
+
+            // Rolled to skip mod and it shouldnt be force-spawned
             if (modSpawnResult === ModSpawn.SKIP && !forceSpawn) {
                 continue;
             }
@@ -118,37 +122,41 @@ export class BotEquipmentModGenerator {
                 forceSpawn = true;
             }
 
+            // Get pool of items we can add for this slot
             let modPoolToChooseFrom = compatibleModsPool[modSlotName];
+
+            // Slot can hold armor plates + we are filtering possible items by bot level, handle
             if (
                 settings.botEquipmentConfig.filterPlatesByLevel &&
                 this.itemHelper.isRemovablePlateSlot(modSlotName.toLowerCase())
             ) {
-                const outcome = this.filterPlateModsForSlotByLevel(
+                const plateSlotFilteringOutcome = this.filterPlateModsForSlotByLevel(
                     settings,
                     modSlotName.toLowerCase(),
                     compatibleModsPool[modSlotName],
                     parentTemplate,
                 );
-                if ([Result.UNKNOWN_FAILURE, Result.NO_DEFAULT_FILTER].includes(outcome.result)) {
+                if ([Result.UNKNOWN_FAILURE, Result.NO_DEFAULT_FILTER].includes(plateSlotFilteringOutcome.result)) {
                     this.logger.debug(
                         `Plate slot: ${modSlotName} selection for armor: ${parentTemplate._id} failed: ${
-                            Result[outcome.result]
+                            Result[plateSlotFilteringOutcome.result]
                         }, skipping`,
                     );
 
                     continue;
                 }
 
-                if ([Result.LACKS_PLATE_WEIGHTS].includes(outcome.result)) {
+                if ([Result.LACKS_PLATE_WEIGHTS].includes(plateSlotFilteringOutcome.result)) {
                     this.logger.warning(
                         `Plate slot: ${modSlotName} lacks weights for armor: ${parentTemplate._id}, unable to adjust plate choice, using existing data`,
                     );
                 }
 
-                modPoolToChooseFrom = outcome.plateModTpls;
+                // Replace mod pool with pool of chosen plate items
+                modPoolToChooseFrom = plateSlotFilteringOutcome.plateModTpls;
             }
 
-            // Find random mod and check its compatible
+            // Choose random mod from pool and check its compatibility
             let modTpl: string | undefined;
             let found = false;
             const exhaustableModPool = new ExhaustableArray<string>(modPoolToChooseFrom, this.randomUtil, this.cloner);
@@ -170,9 +178,8 @@ export class BotEquipmentModGenerator {
                 found = !!modTpl;
             }
 
-            // Compatible item not found + not required
+            // Compatible item not found + not required - skip
             if (!(found || itemSlotTemplate._required)) {
-                // Don't add item
                 continue;
             }
 
@@ -185,9 +192,9 @@ export class BotEquipmentModGenerator {
             const modId = this.hashUtil.generate();
             equipment.push(this.createModItem(modId, modTpl, parentId, modSlotName, modTemplate[1], settings.botRole));
 
-            // Does the item being added have possible child mods?
+            // Does item being added exist in mod pool - has its own mod pool
             if (Object.keys(settings.modPool).includes(modTpl)) {
-                // Call self recursively with item being checkced item we just added to bot
+                // Call self again with mod being added as item to add child mods to
                 this.generateModsForEquipment(equipment, modId, modTemplate[1], settings, forceSpawn);
             }
         }
@@ -200,7 +207,7 @@ export class BotEquipmentModGenerator {
      * @param settings Bot equipment generation settings
      * @param modSlot Armor slot being filtered
      * @param existingPlateTplPool Plates tpls to choose from
-     * @param armorItem
+     * @param armorItem The armor items db template
      * @returns Array of plate tpls to choose from
      */
     protected filterPlateModsForSlotByLevel(
