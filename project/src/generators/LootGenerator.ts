@@ -530,6 +530,19 @@ export class LootGenerator {
             const chosenRewardItemTpl = this.weightedRandomHelper.getWeightedValue<string>(
                 rewardContainerDetails.rewardTplPool,
             );
+
+            if (this.presetHelper.hasPreset(chosenRewardItemTpl)) {
+                const preset = this.presetHelper.getDefaultPreset(chosenRewardItemTpl);
+
+                // Ensure preset has unique ids and is cloned so we don't alter the preset data stored in memory
+                const presetAndMods: Item[] = this.itemHelper.replaceIDs(preset._items);
+
+                this.itemHelper.remapRootItemId(presetAndMods);
+                itemsToReturn.push(presetAndMods);
+
+                continue;
+            }
+
             const rewardItem: Item[] = [{ _id: this.hashUtil.generate(), _tpl: chosenRewardItemTpl }];
             itemsToReturn.push(rewardItem);
         }
