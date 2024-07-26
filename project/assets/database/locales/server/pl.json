@@ -141,6 +141,7 @@
     "inventory-unable_to_inspect_item_not_in_db": "Brak możliwości inspekcji przedmiotu: %s ponieważ nie został znaleziony w bazie przedmiotów",
     "inventory-unable_to_remove_item_id_not_found": "Nie można usunąć przedmiotu o id: {{childId}} z profilu: {{profileId}} bo nie można go znaleźć",
     "inventory-unable_to_remove_item_no_id_given": "Nie można usunąć przedmiotu, ponieważ nie podano itemId",
+    "inventory-unable_to_remove_item_restart_immediately": "Nie można usunąć elementu: {{item}} z poczty: {{mailId}} ponieważ element nie został znaleziony, NATYCHMIASTOWO ZRESTARTUJ GRĘ, aby zapobiec uszkodzeniu danych",
     "inventory-unable_to_sort_inventory_restart_game": "Brak możliwości znalezienia elementu ekwipunku: %s do automatycznego sortowania, MUSISZ ZRESTARTOWAĆ GRĘ NATYCHMIAST, ABY UNIKNĄĆ KORUPCJI TWOJEGO PROFILU",
     "inventory-unable_to_toggle_item_not_found": "Nie można przełączyć przedmiotu o ID: %s z ekwipunku, przedmiot nie został znaleziony",
     "item-durability_value_invalid_use_default": "getRepairableItemQualityValue() tpl broni: %s wartość wytrzymałości jest nieprawidłowa, ustawianie na 1",
