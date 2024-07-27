@@ -250,13 +250,18 @@ export class BotGeneratorHelper {
         return { Durability: currentDurability, MaxDurability: maxDurability };
     }
 
+    /**
+     * Perform validation checks on mod tpl against rest of weapon child items
+     * @param weapon all items in weapon
+     * @param tplToCheck Chosen tpl
+     * @param modSlot Slot mod will be placed in
+     * @returns IChooseRandomCompatibleModResult
+     */
     public isWeaponModIncompatibleWithCurrentMods(
-        itemsEquipped: Item[],
+        weapon: Item[],
         tplToCheck: string,
         modSlot: string,
     ): IChooseRandomCompatibleModResult {
-        // TODO: Can probably be optimized to cache itemTemplates as items are added to inventory
-        const equippedItemsDb = itemsEquipped.map((item) => this.itemHelper.getItem(item._tpl)[1]);
         const itemToEquipDb = this.itemHelper.getItem(tplToCheck);
         const itemToEquip = itemToEquipDb[1];
 
@@ -284,19 +289,8 @@ export class BotGeneratorHelper {
             return { incompatible: true, found: false, reason: `item: ${tplToCheck} does not have a _props field` };
         }
 
-        // Check if any of the current weapon mod templates have the incoming item defined as incompatible
-        const blockingItem = equippedItemsDb.find((x) => x._props.ConflictingItems?.includes(tplToCheck));
-        if (blockingItem) {
-            return {
-                incompatible: true,
-                found: false,
-                reason: `Cannot add: ${tplToCheck} ${itemToEquip._name} to slot: ${modSlot}. Blocked by: ${blockingItem._id} ${blockingItem._name}`,
-                slotBlocked: true,
-            };
-        }
-
-        // Check inverse to above, if the incoming item has any existing mods in its conflicting items array
-        const blockingModItem = itemsEquipped.find((item) => itemToEquip._props.ConflictingItems?.includes(item._tpl));
+        // Check for existing weapon mods being incompatable with new item
+        const blockingModItem = weapon.find((item) => itemToEquip._props.ConflictingItems?.includes(item._tpl));
         if (blockingModItem) {
             return {
                 incompatible: true,

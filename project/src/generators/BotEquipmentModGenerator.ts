@@ -847,12 +847,29 @@ export class BotEquipmentModGenerator {
         modSlotName: string,
     ): IChooseRandomCompatibleModResult {
         let chosenTpl: string;
-        const exhaustableModPool = new ExhaustableArray(modPool, this.randomUtil, this.cloner);
+
+        // Filter out incompatable mods from pool
+        let preFilteredModPool = this.getFilteredModPool(modPool, weapon);
+        if (preFilteredModPool.length === 0) {
+            return {
+                incompatible: true,
+                found: false,
+                reason: `Unable to add mod to ${ModSpawn[choiceTypeEnum]} slot: ${modSlotName}. All: ${modPool.length} had conflicts`,
+            };
+        }
+
+        // Filter mod pool to only items that appear in parents allowed list
+        preFilteredModPool = preFilteredModPool.filter((tpl) => parentSlot._props.filters[0].Filter.includes(tpl));
+        if (preFilteredModPool.length === 0) {
+            return { incompatible: true, found: false, reason: "No mods found in parents allowed list" };
+        }
+
+        // Create pool to pick mod item from
+        const exhaustableModPool = new ExhaustableArray(preFilteredModPool, this.randomUtil, this.cloner);
         let chosenModResult: IChooseRandomCompatibleModResult = { incompatible: true, found: false, reason: "unknown" };
-        const modParentFilterList = parentSlot._props.filters[0].Filter;
 
         // How many times can a mod for the slot be blocked before we stop trying
-        const maxBlockedAttempts = Math.round(modPool.length * 0.75); // Roughly 75% of pool size
+        const maxBlockedAttempts = Math.round(modPool.length * 0.75); // 75% of pool size
         let blockedAttemptCount = 0;
         while (exhaustableModPool.hasValues()) {
             chosenTpl = exhaustableModPool.getRandomValue();
@@ -863,13 +880,6 @@ export class BotEquipmentModGenerator {
                 chosenModResult.chosenTpl = chosenTpl;
 
                 break;
-            }
-
-            // Check chosen item is on the allowed list of the parent
-            const isOnModParentFilterList = modParentFilterList.includes(chosenTpl);
-            if (!isOnModParentFilterList) {
-                // Try again
-                continue;
             }
 
             chosenModResult = this.botGeneratorHelper.isWeaponModIncompatibleWithCurrentMods(
@@ -903,6 +913,19 @@ export class BotEquipmentModGenerator {
         }
 
         return chosenModResult;
+    }
+
+    /**
+     * Get a list of mod tpls that are compatible with the current weapon
+     * @param initialModPool
+     * @param weapon
+     * @returns string array of compatible mod tpls with weapon
+     */
+    protected getFilteredModPool(initialModPool: string[], weapon: Item[]): string[] {
+        const equippedItemsDb = weapon.map((item) => this.itemHelper.getItem(item._tpl)[1]);
+        const conflicingItemsList = equippedItemsDb.flatMap((item) => item._props.ConflictingItems);
+
+        return initialModPool.filter((tpl) => !conflicingItemsList.includes(tpl));
     }
 
     /**
