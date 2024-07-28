@@ -351,20 +351,21 @@ export class BotInventoryGenerator {
                     continue;
                 }
 
-                const compatabilityResult = this.botGeneratorHelper.isItemIncompatibleWithCurrentItems(
+                const compatibilityResult = this.botGeneratorHelper.isItemIncompatibleWithCurrentItems(
                     settings.inventory.items,
                     chosenItemTpl,
                     settings.rootEquipmentSlot,
                 );
-                if (compatabilityResult.incompatible) {
+                if (compatibilityResult.incompatible) {
                     // Tried x different items that failed, stop
                     if (attempts > maxAttempts) {
                         return false;
                     }
 
-                    // Remove picked item
+                    // Remove picked item from pool
                     delete settings.rootEquipmentPool[chosenItemTpl];
 
+                    // Increment times tried
                     attempts++;
                 } else {
                     // Success

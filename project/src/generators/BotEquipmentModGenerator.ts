@@ -159,7 +159,7 @@ export class BotEquipmentModGenerator {
             // Choose random mod from pool and check its compatibility
             let modTpl: string | undefined;
             let found = false;
-            const exhaustableModPool = new ExhaustableArray<string>(modPoolToChooseFrom, this.randomUtil, this.cloner);
+            const exhaustableModPool = this.createExhaustableArray(modPoolToChooseFrom);
             while (exhaustableModPool.hasValues()) {
                 modTpl = exhaustableModPool.getRandomValue();
                 if (
@@ -788,7 +788,7 @@ export class BotEquipmentModGenerator {
         }
 
         // Pick random mod that's compatible
-        const chosenModResult = this.pickWeaponModTplForSlotFromPool(
+        const chosenModResult = this.getCompatibleWeaponModTplForSlotFromPool(
             modPool,
             parentSlot,
             request.modSpawnResult,
@@ -803,7 +803,6 @@ export class BotEquipmentModGenerator {
         // Log if mod chosen was incompatible
         if (chosenModResult.incompatible && parentSlot._required) {
             this.logger.debug(chosenModResult.reason);
-            // this.logger.debug(`Weapon: ${weapon.map(x => `${x._tpl} ${x.slotId ?? ""}`).join(",")}`)
         }
 
         // Get random mod to attach from items db for required slots if none found above
@@ -831,7 +830,8 @@ export class BotEquipmentModGenerator {
     }
 
     /**
-     *
+     * Choose a weapon mod tpl for a given slot from a pool of choices
+     * Checks chosen tpl is compatible with all existing weapon items
      * @param modPool Pool of mods that can be picked from
      * @param parentSlot Slot the picked mod will have as a parent
      * @param choiceTypeEnum How should chosen tpl be treated: DEFAULT_MOD/SPAWN/SKIP
@@ -839,16 +839,14 @@ export class BotEquipmentModGenerator {
      * @param modSlotName Name of slot picked mod will be placed into
      * @returns Chosen weapon details
      */
-    protected pickWeaponModTplForSlotFromPool(
+    protected getCompatibleWeaponModTplForSlotFromPool(
         modPool: string[],
         parentSlot: Slot,
         choiceTypeEnum: ModSpawn,
         weapon: Item[],
         modSlotName: string,
     ): IChooseRandomCompatibleModResult {
-        let chosenTpl: string;
-
-        // Filter out incompatable mods from pool
+        // Filter out incompatible mods from pool
         let preFilteredModPool = this.getFilteredModPool(modPool, weapon);
         if (preFilteredModPool.length === 0) {
             return {
@@ -864,17 +862,51 @@ export class BotEquipmentModGenerator {
             return { incompatible: true, found: false, reason: "No mods found in parents allowed list" };
         }
 
-        // Create pool to pick mod item from
-        const exhaustableModPool = new ExhaustableArray(preFilteredModPool, this.randomUtil, this.cloner);
-        let chosenModResult: IChooseRandomCompatibleModResult = { incompatible: true, found: false, reason: "unknown" };
+        return this.getCompatibleModFromPool(preFilteredModPool, choiceTypeEnum, weapon);
+    }
 
-        // How many times can a mod for the slot be blocked before we stop trying
+    /**
+     *
+     * @param modPool Pool of item Tpls to choose from
+     * @param modSpawnType How should the slot choice be handled - forced/normal etc
+     * @param weapon Weapon mods at current time
+     * @param modSlotName Name of mod slot being filled
+     * @returns IChooseRandomCompatibleModResult
+     */
+    protected getCompatibleModFromPool(
+        modPool: string[],
+        modSpawnType: ModSpawn,
+        weapon: Item[],
+    ): IChooseRandomCompatibleModResult {
+        // Create exhaustable pool to pick mod item from
+        const exhaustableModPool = this.createExhaustableArray(modPool);
+
+        // Create default response if no compatible item is found below
+        const chosenModResult: IChooseRandomCompatibleModResult = {
+            incompatible: true,
+            found: false,
+            reason: "unknown",
+        };
+
+        // Limit how many attempts to find a compatible mod can occur before giving up
         const maxBlockedAttempts = Math.round(modPool.length * 0.75); // 75% of pool size
         let blockedAttemptCount = 0;
+        let chosenTpl: string;
         while (exhaustableModPool.hasValues()) {
             chosenTpl = exhaustableModPool.getRandomValue();
-            if (choiceTypeEnum === ModSpawn.DEFAULT_MOD && modPool.length === 1) {
-                // Default mod wanted and only one choice in pool
+            const pickedItemDetails = this.itemHelper.getItem(chosenTpl);
+            if (!pickedItemDetails[0]) {
+                // Not valid item, try again
+                continue;
+            }
+
+            if (!pickedItemDetails[1]._props) {
+                // no props data, try again
+                continue;
+            }
+
+            // Success - Default wanted + only 1 item in pool
+            if (modSpawnType === ModSpawn.DEFAULT_MOD && modPool.length === 1) {
                 chosenModResult.found = true;
                 chosenModResult.incompatible = false;
                 chosenModResult.chosenTpl = chosenTpl;
@@ -882,37 +914,42 @@ export class BotEquipmentModGenerator {
                 break;
             }
 
-            chosenModResult = this.botGeneratorHelper.isWeaponModIncompatibleWithCurrentMods(
-                weapon,
-                chosenTpl,
-                modSlotName,
+            // Check if existing weapon mods are incompatible with chosen item
+            const existingItemBlockingChoice = weapon.find((item) =>
+                pickedItemDetails[1]._props.ConflictingItems?.includes(item._tpl),
             );
-
-            if (chosenModResult.slotBlocked) {
+            if (existingItemBlockingChoice) {
                 // Give max of x attempts of picking a mod if blocked by another
                 if (blockedAttemptCount > maxBlockedAttempts) {
-                    blockedAttemptCount = 0;
+                    blockedAttemptCount = 0; // reset
                     break;
                 }
 
                 blockedAttemptCount++;
 
-                // Try again
+                // Not compatible - Try again
                 continue;
             }
 
-            // Some mod combos will never work, make sure this isnt the case
-            if (!(chosenModResult.incompatible || this.weaponModComboIsIncompatible(weapon, chosenTpl))) {
-                // Success
-                chosenModResult.found = true;
-                chosenModResult.incompatible = false;
-                chosenModResult.chosenTpl = chosenTpl;
-
+            // Edge case- Some mod combos will never work, make sure this isnt the case
+            if (this.weaponModComboIsIncompatible(weapon, chosenTpl)) {
+                chosenModResult.reason = `Chosen weapon mod: ${chosenTpl} can never be compatible with existing weapon mods`;
                 break;
             }
+
+            // Success
+            chosenModResult.found = true;
+            chosenModResult.incompatible = false;
+            chosenModResult.chosenTpl = chosenTpl;
+
+            break;
         }
 
         return chosenModResult;
+    }
+
+    protected createExhaustableArray<T>(itemsToAddToArray: T[]) {
+        return new ExhaustableArray<T>(itemsToAddToArray, this.randomUtil, this.cloner);
     }
 
     /**
@@ -1093,7 +1130,7 @@ export class BotEquipmentModGenerator {
         const allowedItems = parentSlot._props.filters[0].Filter;
 
         // Find mod item that fits slot from sorted mod array
-        const exhaustableModPool = new ExhaustableArray(allowedItems, this.randomUtil, this.cloner);
+        const exhaustableModPool = this.createExhaustableArray(allowedItems);
         let tmpModTpl = fallbackModTpl;
         while (exhaustableModPool.hasValues()) {
             tmpModTpl = exhaustableModPool.getRandomValue();
@@ -1293,10 +1330,10 @@ export class BotEquipmentModGenerator {
         let modSlot = "cartridges";
         const camoraFirstSlot = "camora_000";
         if (modSlot in itemModPool) {
-            exhaustableModPool = new ExhaustableArray(itemModPool[modSlot], this.randomUtil, this.cloner);
+            exhaustableModPool = this.createExhaustableArray(itemModPool[modSlot]);
         } else if (camoraFirstSlot in itemModPool) {
             modSlot = camoraFirstSlot;
-            exhaustableModPool = new ExhaustableArray(this.mergeCamoraPools(itemModPool), this.randomUtil, this.cloner);
+            exhaustableModPool = this.createExhaustableArray(this.mergeCamoraPools(itemModPool));
         } else {
             this.logger.error(this.localisationService.getText("bot-missing_cartridge_slot", cylinderMagTemplate._id));
 

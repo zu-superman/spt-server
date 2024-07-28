@@ -251,58 +251,6 @@ export class BotGeneratorHelper {
     }
 
     /**
-     * Perform validation checks on mod tpl against rest of weapon child items
-     * @param weapon all items in weapon
-     * @param tplToCheck Chosen tpl
-     * @param modSlot Slot mod will be placed in
-     * @returns IChooseRandomCompatibleModResult
-     */
-    public isWeaponModIncompatibleWithCurrentMods(
-        weapon: Item[],
-        tplToCheck: string,
-        modSlot: string,
-    ): IChooseRandomCompatibleModResult {
-        const itemToEquipDb = this.itemHelper.getItem(tplToCheck);
-        const itemToEquip = itemToEquipDb[1];
-
-        if (!itemToEquipDb[0]) {
-            this.logger.warning(
-                this.localisationService.getText("bot-invalid_item_compatibility_check", {
-                    itemTpl: tplToCheck,
-                    slot: modSlot,
-                }),
-            );
-
-            return { incompatible: true, found: false, reason: `item: ${tplToCheck} does not exist in the database` };
-        }
-
-        // No props property
-        if (!itemToEquip._props) {
-            this.logger.warning(
-                this.localisationService.getText("bot-compatibility_check_missing_props", {
-                    id: itemToEquip._id,
-                    name: itemToEquip._name,
-                    slot: modSlot,
-                }),
-            );
-
-            return { incompatible: true, found: false, reason: `item: ${tplToCheck} does not have a _props field` };
-        }
-
-        // Check for existing weapon mods being incompatable with new item
-        const blockingModItem = weapon.find((item) => itemToEquip._props.ConflictingItems?.includes(item._tpl));
-        if (blockingModItem) {
-            return {
-                incompatible: true,
-                found: false,
-                reason: ` Cannot add: ${tplToCheck} to slot: ${modSlot}. Would block existing item: ${blockingModItem._tpl} in slot: ${blockingModItem.slotId}`,
-            };
-        }
-
-        return { incompatible: false, reason: "" };
-    }
-
-    /**
      * Can item be added to another item without conflict
      * @param itemsEquipped Items to check compatibilities with
      * @param tplToCheck Tpl of the item to check for incompatibilities

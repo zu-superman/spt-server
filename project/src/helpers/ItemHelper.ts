@@ -1505,21 +1505,32 @@ export class ItemHelper {
             }
 
             const itemPool = slot._props.filters[0].Filter ?? [];
-            const chosenTpl = this.getCompatibleTplFromArray(itemPool, incompatibleModTpls);
-            if (!chosenTpl) {
+            if (itemPool.length === 0) {
                 this.logger.debug(
-                    `Unable to add mod to item: ${itemToAddTemplate._id} ${itemToAddTemplate._name} slot: ${slot._name} as no compatible tpl could be found in pool of ${itemPool.length}, skipping`,
+                    `Unable to choose a mod for slot: ${slot._name} on item: ${itemToAddTemplate._id} ${itemToAddTemplate._name}, parents' 'Filter' array is empty, skipping`,
                 );
 
                 continue;
             }
 
+            const chosenTpl = this.getCompatibleTplFromArray(itemPool, incompatibleModTpls);
+            if (!chosenTpl) {
+                this.logger.debug(
+                    `Unable to choose a mod for slot: ${slot._name} on item: ${itemToAddTemplate._id} ${itemToAddTemplate._name}, no compatible tpl found in pool of ${itemPool.length}, skipping`,
+                );
+
+                continue;
+            }
+
+            // Create basic item structure ready to add to weapon array
             const modItemToAdd = {
                 _id: this.hashUtil.generate(),
                 _tpl: chosenTpl,
                 parentId: result[0]._id,
                 slotId: slot._name,
             };
+
+            // Add chosen item to weapon array
             result.push(modItemToAdd);
 
             const modItemDbDetails = this.getItem(modItemToAdd._tpl)[1];
