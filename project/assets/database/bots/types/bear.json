@@ -2169,7 +2169,7 @@
   "experience": {
     "aggressorBonus": 0.02,
     "level": {
-      "max": 78,
+      "max": 79,
       "min": 1
     },
     "reward": {
