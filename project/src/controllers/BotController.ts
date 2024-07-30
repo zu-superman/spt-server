@@ -186,7 +186,7 @@ export class BotController {
      * @param request Bot generation request object
      * @param pmcProfile Player profile
      * @param sessionId Session id
-     * @returns
+     * @returns IBotBase[]
      */
     protected async generateMultipleBotsAndCache(
         request: IGenerateBotsRequestData,
@@ -198,10 +198,10 @@ export class BotController {
             ?.getValue<IGetRaidConfigurationRequestData>();
 
         if (raidSettings === undefined) {
-            //   throw new Error(this.localisationService.getText("bot-unable_to_load_raid_settings_from_appcontext"));
+            this.logger.warning(this.localisationService.getText("bot-unable_to_load_raid_settings_from_appcontext"));
         }
-        const pmcLevelRangeForMap =
-            this.pmcConfig.locationSpecificPmcLevelOverride[raidSettings?.location.toLowerCase()];
+
+        const pmcLevelRangeForMap = this.getPmcLevelRangeForMap(raidSettings?.location);
 
         const allPmcsHaveSameNameAsPlayer = this.randomUtil.getChance100(
             this.pmcConfig.allPMCsHavePlayerNameWithRandomPrefixChance,
@@ -221,10 +221,25 @@ export class BotController {
             conditionPromises.push(this.generateWithBotDetails(condition, botGenerationDetails, sessionId));
         }
 
-        await Promise.all(conditionPromises).then((p) => Promise.all(p)).catch((ex) => {
-            this.logger.error(ex);
-        });
+        await Promise.all(conditionPromises)
+            .then((p) => Promise.all(p))
+            .catch((ex) => {
+                this.logger.error(ex);
+            });
         return [];
+    }
+
+    /**
+     * Get min/max level range values for a specific map
+     * @param location Map name e.g. factory4_day
+     * @returns MinMax
+     */
+    protected getPmcLevelRangeForMap(location: string): MinMax {
+        if (!location) {
+            return undefined;
+        }
+
+        return this.pmcConfig.locationSpecificPmcLevelOverride[location.toLowerCase()];
     }
 
     /**
@@ -363,12 +378,12 @@ export class BotController {
             ?.getValue<IGetRaidConfigurationRequestData>();
 
         if (raidSettings === undefined) {
-            throw new Error(this.localisationService.getText("bot-unable_to_load_raid_settings_from_appcontext"));
+            this.logger.warning(this.localisationService.getText("bot-unable_to_load_raid_settings_from_appcontext"));
         }
-        const pmcLevelRangeForMap =
-            this.pmcConfig.locationSpecificPmcLevelOverride[raidSettings.location.toLowerCase()];
 
-        // Create gen request for when cache is empty
+        const pmcLevelRangeForMap = this.getPmcLevelRangeForMap(raidSettings?.location);
+
+        // Create generation request for when cache is empty
         const condition: Condition = {
             Role: requestedBot.Role,
             Limit: 5,
