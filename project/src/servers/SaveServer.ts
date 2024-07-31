@@ -18,6 +18,8 @@ export class SaveServer {
     protected onBeforeSaveCallbacks = {};
     protected saveMd5 = {};
 
+    protected coreConfig: ICoreConfig;
+
     constructor(
         @inject("VFS") protected vfs: VFS,
         @injectAll("SaveLoadRouter") protected saveLoadRouters: SaveLoadRouter[],
@@ -26,7 +28,9 @@ export class SaveServer {
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("PrimaryLogger") protected logger: ILogger,
         @inject("ConfigServer") protected configServer: ConfigServer,
-    ) {}
+    ) {
+        this.coreConfig = this.configServer.getConfig<ICoreConfig>(ConfigTypes.CORE);
+    }
 
     /**
      * Add callback to occur prior to saving profile changes
@@ -194,7 +198,7 @@ export class SaveServer {
         const start = performance.now();
         const jsonProfile = this.jsonUtil.serialize(
             this.profiles[sessionID],
-            !this.configServer.getConfig<ICoreConfig>(ConfigTypes.CORE).features.compressProfile,
+            !this.coreConfig.features.compressProfile,
         );
         const fmd5 = this.hashUtil.generateMd5ForData(jsonProfile);
         if (typeof this.saveMd5[sessionID] !== "string" || this.saveMd5[sessionID] !== fmd5) {
