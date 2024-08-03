@@ -518,4 +518,22 @@ export class ProfileHelper {
     public hasAccessToRepeatableFreeRefreshSystem(pmcProfile: IPmcData): boolean {
         return [GameEditions.EDGE_OF_DARKNESS, GameEditions.UNHEARD].includes(<any>pmcProfile.Info?.GameVersion);
     }
+
+    /**
+     * Find a profiles "Pockets" item and replace its tpl with passed in value
+     * @param pmcProfile Player profile
+     * @param newPocketTpl New tpl to set profiles Pockets to
+     */
+    public replaceProfilePocketTpl(pmcProfile: IPmcData, newPocketTpl: string): void {
+        const pockets = pmcProfile.Inventory.items.find((item) => item.slotId === "Pockets");
+        if (!pockets) {
+            this.logger.error(
+                `unable to replace profile: ${pmcProfile._id} pocket tpl with: ${newPocketTpl} as Pocket item could not be found.`,
+            );
+
+            return;
+        }
+
+        pockets._tpl = newPocketTpl;
+    }
 }
