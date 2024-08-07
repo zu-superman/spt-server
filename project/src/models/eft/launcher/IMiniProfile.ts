@@ -3,6 +3,7 @@ import { Spt } from "../profile/ISptProfile";
 export interface IMiniProfile {
     username: string;
     nickname: string;
+    hasPassword: boolean;
     side: string;
     currlvl: number;
     currexp: number;

@@ -16,7 +16,7 @@ export class LauncherCallbacks {
         @inject("LauncherController") protected launcherController: LauncherController,
         @inject("SaveServer") protected saveServer: SaveServer,
         @inject("Watermark") protected watermark: Watermark,
-    ) {}
+    ) { }
 
     public connect(): string {
         return this.httpResponse.noBody(this.launcherController.connect());

@@ -80,7 +80,7 @@ export class LauncherController {
     public login(info: ILoginRequestData): string {
         for (const sessionID in this.saveServer.getProfiles()) {
             const account = this.saveServer.getProfile(sessionID).info;
-            if (info.username === account.username) {
+            if (info.username === account.username && info.password === account.password) {
                 return sessionID;
             }
         }

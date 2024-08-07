@@ -55,7 +55,7 @@ export class ProfileController {
         @inject("DialogueHelper") protected dialogueHelper: DialogueHelper,
         @inject("QuestHelper") protected questHelper: QuestHelper,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
-    ) {}
+    ) { }
 
     /**
      * Handle /launcher/profiles
@@ -77,38 +77,22 @@ export class ProfileController {
 
         const pmc = profile.characters.pmc;
         const maxlvl = this.profileHelper.getMaxLevel();
-
-        // Player hasn't completed profile creation process, send defaults
-        if (!pmc?.Info?.Level) {
-            return {
-                username: profile.info?.username ?? "",
-                nickname: "unknown",
-                side: "unknown",
-                currlvl: 0,
-                currexp: 0,
-                prevexp: 0,
-                nextlvl: 0,
-                maxlvl: maxlvl,
-                edition: profile.info?.edition ?? "",
-                profileId: profile.info?.id ?? "",
-                sptData: this.profileHelper.getDefaultSptDataObject(),
-            };
-        }
-
-        const currlvl = pmc.Info.Level;
+        const currlvl = pmc?.Info?.Level ?? 0;
         const nextlvl = this.profileHelper.getExperience(currlvl + 1);
+
         return {
-            username: profile.info.username,
-            nickname: pmc.Info.Nickname,
-            side: pmc.Info.Side,
-            currlvl: pmc.Info.Level,
-            currexp: pmc.Info.Experience ?? 0,
+            username: profile.info?.username ?? "",
+            nickname: pmc.Info?.Nickname ?? "unknown",
+            hasPassword: (profile?.info?.password !== ""),
+            side: pmc?.Info?.Side ?? "unknown",
+            currlvl: pmc?.Info?.Level ?? 0,
+            currexp: pmc?.Info?.Experience ?? 0,
             prevexp: currlvl === 0 ? 0 : this.profileHelper.getExperience(currlvl),
             nextlvl: nextlvl,
             maxlvl: maxlvl,
-            edition: profile.info?.edition ?? "",
-            profileId: profile.info?.id ?? "",
-            sptData: profile.spt,
+            edition: profile?.info?.edition ?? "",
+            profileId: profile?.info?.id ?? "",
+            sptData: profile?.spt ?? this.profileHelper.getDefaultSptDataObject(),
         };
     }
 
