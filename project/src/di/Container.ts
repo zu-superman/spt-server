@@ -272,6 +272,7 @@ import { DependencyContainer, Lifecycle } from "tsyringe";
 /**
  * Handle the registration of classes to be used by the Dependency Injection code
  */
+// biome-ignore lint/complexity/noStaticOnlyClass: <explanation>
 export class Container {
     public static registerPostLoadTypes(container: DependencyContainer, childContainer: DependencyContainer): void {
         container.register<SptHttpListener>("SptHttpListener", SptHttpListener, { lifecycle: Lifecycle.Singleton });
