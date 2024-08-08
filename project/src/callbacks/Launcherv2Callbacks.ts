@@ -88,11 +88,11 @@ export class LauncherV2Callbacks {
         })
     }
 
-    public profile(): Error {
+    public profile(): any {
         throw new Error("Method not implemented.");
     }
 
-    public profileMods(): Error {
+    public profileMods(): any {
         throw new Error("Method not implemented.");
     }
 }

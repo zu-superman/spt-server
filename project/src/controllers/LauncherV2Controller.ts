@@ -52,37 +52,23 @@ export class LauncherV2Controller {
      */
     public types(): Record<string, string> {
 
-        const profileRecord: Record<string, string> = {};
-
-        // Get all possible profile types, excluding blacklisted ones
-        const profileKeys = Object.keys(this.databaseService.getProfiles()).filter(
-            (key) => !this.coreConfig.features.createNewProfileTypesBlacklist.includes(key),
-        );
-
-        // Add them to record with description
-        for (const profileKey in profileKeys) {
-            profileRecord[profileKey] = this.getProfileDescription(profileKey);
-        }
-
-        return profileRecord;
-    }
-
-    /**
-     * Returns a string that represents the Profile types description.
-     * - This is also localised.
-     *
-     * @param key Profile Type Name: eg "standard"
-     * @returns Profile Type Description
-     */
-    protected getProfileDescription(key: string): string {
+        const result = {};
         const dbProfiles = this.databaseService.getProfiles();
-        const descKey = dbProfiles[key]?.descriptionLocaleKey;
-        if (!descKey) {
-            this.logger.warning(this.localisationService.getText("launcher-missing_property", key));
-            return "";
+        for (const profileKey in dbProfiles) {
+            if (this.coreConfig.features.createNewProfileTypesBlacklist.includes(profileKey)) {
+                continue;
+            }
+
+            const localeKey = dbProfiles[profileKey]?.descriptionLocaleKey;
+            if (!localeKey) {
+                this.logger.warning(this.localisationService.getText("launcher-missing_property", profileKey));
+                continue;
+            }
+
+            result[profileKey] = this.localisationService.getText(localeKey);
         }
 
-        return this.localisationService.getText(key);
+        return result;
     }
 
     /**

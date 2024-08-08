@@ -20,6 +20,6 @@ export interface ILauncherV2Callbacks {
     compatibleVersion(): ILauncherV2VersionResponse;
     mods(): ILauncherV2ModsResponse;
     profiles(): ILauncherV2ProfilesResponse;
-    profile(): Error
-    profileMods(): Error
+    profile(): any
+    profileMods(): any
 }
