@@ -919,7 +919,7 @@ export class QuestHelper {
                     this.profileHelper.addAchievementToProfile(pmcProfile, reward.target);
                     break;
                 case QuestRewardType.STASH_ROWS:
-                    this.profileHelper.addStashRowsBonusToProfile(sessionId, Number.parseInt(<string>reward.value)); // add specified stash rows from quest reward - requires client restart
+                    this.profileHelper.addStashRowsBonusToProfile(sessionId, Number.parseInt(<string>reward.value)); // Add specified stash rows from quest reward - requires client restart
                     break;
                 case QuestRewardType.PRODUCTIONS_SCHEME:
                     this.findAndAddHideoutProductionIdToProfile(
@@ -929,6 +929,9 @@ export class QuestHelper {
                         sessionId,
                         questResponse,
                     );
+                    break;
+                case QuestRewardType.POCKETS:
+                    this.profileHelper.replaceProfilePocketTpl(pmcProfile, reward.target);
                     break;
                 default:
                     this.logger.error(
