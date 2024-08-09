@@ -420,7 +420,10 @@ export class HideoutHelper {
             this.getTimeElapsedSinceLastServerTick(pmcData, isGeneratorOn);
 
         // Get all fuel consumption bonuses, returns an empty array if none found
-        const profileFuelConsomptionBonusSum = this.profileHelper.getBonusValueFromProfile(pmcData,BonusType.FUEL_CONSUMPTION)
+        const profileFuelConsomptionBonusSum = this.profileHelper.getBonusValueFromProfile(
+            pmcData,
+            BonusType.FUEL_CONSUMPTION,
+        );
 
         // 0 to 1
         const fuelConsumptionBonusMultipler = (profileFuelConsomptionBonusSum + 100) / 100;
@@ -612,72 +615,77 @@ export class HideoutHelper {
         pmcData: IPmcData,
     ): void {
         let filterDrainRate = this.getWaterFilterDrainRate(pmcData);
-        const productionTime = this.getTotalProductionTimeSeconds(HideoutHelper.waterCollector);
+        const craftProductionTime = this.getTotalProductionTimeSeconds(HideoutHelper.waterCollector);
         const secondsSinceServerTick = this.getTimeElapsedSinceLastServerTick(pmcData, isGeneratorOn);
 
         filterDrainRate = this.getTimeAdjustedWaterFilterDrainRate(
             secondsSinceServerTick,
-            productionTime,
+            craftProductionTime,
             production.Progress,
             filterDrainRate,
         );
 
         // Production hasn't completed
         let pointsConsumed = 0;
-        if (production.Progress < productionTime) {
-            // Check all slots that take water filters until we find one with filter in it
-            for (let i = 0; i < waterFilterArea.slots.length; i++) {
-                // No water filter, skip
-                if (!waterFilterArea.slots[i].item) {
-                    continue;
-                }
 
-                const waterFilterItemInSlot = waterFilterArea.slots[i].item[0];
+        // Check progress against the productions craft time (dont use base time as it doesnt include any time bonuses profile has)
+        if (production.Progress > production.ProductionTime) {
+            // Craft is complete nothing to do
+            return;
+        }
 
-                // How many units of filter are left
-                let resourceValue = waterFilterItemInSlot.upd?.Resource
-                    ? waterFilterItemInSlot.upd.Resource.Value
-                    : undefined;
-                if (!resourceValue) {
-                    // Missing, is new filter, add default and subtract usage
-                    resourceValue = 100 - filterDrainRate;
-                    pointsConsumed = filterDrainRate;
-                } else {
-                    pointsConsumed = (waterFilterItemInSlot.upd.Resource.UnitsConsumed || 0) + filterDrainRate;
-                    resourceValue -= filterDrainRate;
-                }
-
-                // Round to get values to 3dp
-                resourceValue = Math.round(resourceValue * 1000) / 1000;
-                pointsConsumed = Math.round(pointsConsumed * 1000) / 1000;
-
-                // Check units consumed for possible increment of hideout mgmt skill point
-                if (pmcData && Math.floor(pointsConsumed / 10) >= 1) {
-                    this.profileHelper.addSkillPointsToPlayer(pmcData, SkillTypes.HIDEOUT_MANAGEMENT, 1);
-                    pointsConsumed -= 10;
-                }
-
-                // Filter has some fuel left in it after our adjustment
-                if (resourceValue > 0) {
-                    const isWaterFilterFoundInRaid = waterFilterItemInSlot.upd.SpawnedInSession ?? false;
-
-                    // Set filters consumed amount
-                    waterFilterItemInSlot.upd = this.getAreaUpdObject(
-                        1,
-                        resourceValue,
-                        pointsConsumed,
-                        isWaterFilterFoundInRaid,
-                    );
-                    this.logger.debug(`Water filter has: ${resourceValue} units left in slot ${i + 1}`);
-
-                    break; // Break here to avoid iterating other filters now w're done
-                }
-
-                // Filter ran out / used up
-                delete waterFilterArea.slots[i].item;
-                // Update remaining resources to be subtracted
-                filterDrainRate = Math.abs(resourceValue);
+        // Check all slots that take water filters until we find one with filter in it
+        for (let i = 0; i < waterFilterArea.slots.length; i++) {
+            // No water filter in slot, skip
+            if (!waterFilterArea.slots[i].item) {
+                continue;
             }
+
+            const waterFilterItemInSlot = waterFilterArea.slots[i].item[0];
+
+            // How many units of filter are left
+            let resourceValue = waterFilterItemInSlot.upd?.Resource
+                ? waterFilterItemInSlot.upd.Resource.Value
+                : undefined;
+            if (!resourceValue) {
+                // Missing, is new filter, add default and subtract usage
+                resourceValue = 100 - filterDrainRate;
+                pointsConsumed = filterDrainRate;
+            } else {
+                pointsConsumed = (waterFilterItemInSlot.upd.Resource.UnitsConsumed || 0) + filterDrainRate;
+                resourceValue -= filterDrainRate;
+            }
+
+            // Round to get values to 3dp
+            resourceValue = Math.round(resourceValue * 1000) / 1000;
+            pointsConsumed = Math.round(pointsConsumed * 1000) / 1000;
+
+            // Check units consumed for possible increment of hideout mgmt skill point
+            if (pmcData && Math.floor(pointsConsumed / 10) >= 1) {
+                this.profileHelper.addSkillPointsToPlayer(pmcData, SkillTypes.HIDEOUT_MANAGEMENT, 1);
+                pointsConsumed -= 10;
+            }
+
+            // Filter has some fuel left in it after our adjustment
+            if (resourceValue > 0) {
+                const isWaterFilterFoundInRaid = waterFilterItemInSlot.upd.SpawnedInSession ?? false;
+
+                // Set filters consumed amount
+                waterFilterItemInSlot.upd = this.getAreaUpdObject(
+                    1,
+                    resourceValue,
+                    pointsConsumed,
+                    isWaterFilterFoundInRaid,
+                );
+                this.logger.debug(`Water filter has: ${resourceValue} units left in slot ${i + 1}`);
+
+                break; // Break here to avoid iterating other filters now w're done
+            }
+
+            // Filter ran out / used up
+            delete waterFilterArea.slots[i].item;
+            // Update remaining resources to be subtracted
+            filterDrainRate = Math.abs(resourceValue);
         }
     }
 
