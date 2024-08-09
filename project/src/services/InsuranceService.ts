@@ -1,4 +1,5 @@
 import { ItemHelper } from "@spt/helpers/ItemHelper";
+import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { TraderHelper } from "@spt/helpers/TraderHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { Item } from "@spt/models/eft/common/tables/IItem";
@@ -35,6 +36,7 @@ export class InsuranceService {
         @inject("TimeUtil") protected timeUtil: TimeUtil,
         @inject("SaveServer") protected saveServer: SaveServer,
         @inject("TraderHelper") protected traderHelper: TraderHelper,
+        @inject("ProfileHelper") protected profileHelper: ProfileHelper,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("MailSendService") protected mailSendService: MailSendService,
         @inject("ConfigServer") protected configServer: ConfigServer,
@@ -138,11 +140,11 @@ export class InsuranceService {
             return this.timeUtil.getTimestamp() + this.insuranceConfig.returnTimeOverrideSeconds;
         }
 
-        const insuranceReturnTimeBonus = pmcData.Bonuses.find(
-            (bonus) => bonus.type === BonusType.INSURANCE_RETURN_TIME,
+        const insuranceReturnTimeBonusSum = this.profileHelper.getBonusValueFromProfile(
+            pmcData,
+            BonusType.INSURANCE_RETURN_TIME,
         );
-        const insuranceReturnTimeBonusPercent =
-            1.0 - (insuranceReturnTimeBonus ? Math.abs(insuranceReturnTimeBonus.value ?? 0) : 0) / 100;
+        const insuranceReturnTimeBonusPercent = 1.0 - (insuranceReturnTimeBonusSum + 100) / 100;
 
         const traderMinReturnAsSeconds = trader.insurance.min_return_hour * TimeUtil.ONE_HOUR_AS_SECONDS;
         const traderMaxReturnAsSeconds = trader.insurance.max_return_hour * TimeUtil.ONE_HOUR_AS_SECONDS;
