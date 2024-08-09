@@ -27127,7 +27127,7 @@
         ]
       }
     ],
-    "MaxBotsAliveOnMap": 36,
+    "MaxBotsAliveOnMap": 50,
     "MaxBotsAliveOnMapPvE": 50,
     "MaxLoyaltyLevelForAll": false,
     "Overheat": {
