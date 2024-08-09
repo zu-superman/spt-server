@@ -509,8 +509,7 @@ export class ProfileHelper {
      */
     public getBonusValueFromProfile(pmcProfile: IPmcData, desiredBonus: BonusType): number {
         const bonuses = pmcProfile.Bonuses.filter((bonus) => bonus.type === desiredBonus);
-        if (!bonuses)
-        {
+        if (bonuses.length === 0) {
             return 0;
         }
 
