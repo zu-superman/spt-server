@@ -419,11 +419,11 @@ export class HideoutHelper {
             this.databaseService.getHideout().settings.generatorFuelFlowRate *
             this.getTimeElapsedSinceLastServerTick(pmcData, isGeneratorOn);
 
-        const profileFuelConsumptionBonus = pmcData.Bonuses.find((bonus) => bonus.type === BonusType.FUEL_CONSUMPTION);
+        // Get all fuel consumption bonuses, returns an empty array if none found
+        const profileFuelConsomptionBonusSum = this.profileHelper.getBonusValueFromProfile(pmcData,BonusType.FUEL_CONSUMPTION)
 
         // 0 to 1
-        const fuelConsumptionBonusMultipler =
-            (profileFuelConsumptionBonus ? Math.abs(profileFuelConsumptionBonus.value) : 0) / 100;
+        const fuelConsumptionBonusMultipler = (profileFuelConsomptionBonusSum + 100) / 100;
 
         // 0 to 1
         const hideoutManagementConsumptionBonusMultipler = this.getHideoutManagementConsumptionBonus(pmcData);
