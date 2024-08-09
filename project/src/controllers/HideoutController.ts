@@ -227,10 +227,11 @@ export class HideoutController {
 
         // Cleanup temporary fuel usage buffs from mopping floor if wall is complete as it would result in too many bonuses
         // TODO: Clean up all buffs from mopping floor.
-        if (profileHideoutArea.type === HideoutAreas.EMERGENCY_WALL && profileHideoutArea.level === 6)
-        {
+        if (profileHideoutArea.type === HideoutAreas.EMERGENCY_WALL && profileHideoutArea.level === 6) {
             // Get everything except specific fuel consumption buffs
-            pmcData.Bonuses = pmcData.Bonuses.filter(bonus => bonus.type !== BonusType.FUEL_CONSUMPTION && bonus.value >= -10 && bonus.value <= 0);
+            pmcData.Bonuses = pmcData.Bonuses.filter(
+                (bonus) => bonus.type !== BonusType.FUEL_CONSUMPTION && bonus.value >= -10 && bonus.value <= 0,
+            );
         }
 
         // Add Skill Points Per Area Upgrade
@@ -954,6 +955,16 @@ export class HideoutController {
         // Continuous crafts have special handling in EventOutputHolder.updateOutputProperties()
         pmcData.Hideout.Production[prodId].sptIsComplete = true;
         pmcData.Hideout.Production[prodId].sptIsContinuous = recipe.continuous;
+
+        // Continious recipies need the craft time refreshed as it gets created once on initial craft and stays the same regardless of what
+        // production.json is set to
+        if (recipe.continuous) {
+            pmcData.Hideout.Production[prodId].ProductionTime = this.hideoutHelper.getAdjustedCraftTimeWithSkills(
+                pmcData,
+                recipe._id,
+                true,
+            );
+        }
 
         // Flag normal (non continious) crafts as complete
         if (!recipe.continuous) {
