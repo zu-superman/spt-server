@@ -1,4 +1,5 @@
 import { ItemHelper } from "@spt/helpers/ItemHelper";
+import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { Item } from "@spt/models/eft/common/tables/IItem";
 import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
@@ -8,7 +9,6 @@ import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { DatabaseService } from "@spt/services/DatabaseService";
 import { RagfairPriceService } from "@spt/services/RagfairPriceService";
 import { inject, injectable } from "tsyringe";
-import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 
 @injectable()
 export class RagfairTaxService {
@@ -80,7 +80,10 @@ export class RagfairTaxService {
         itemPriceMult = 4 ** itemPriceMult;
         requirementPriceMult = 4 ** requirementPriceMult;
 
-        const hideoutFleaTaxDiscountBonusSum = this.profileHelper.getBonusValueFromProfile(pmcData,BonusType.RAGFAIR_COMMISSION);
+        const hideoutFleaTaxDiscountBonusSum = this.profileHelper.getBonusValueFromProfile(
+            pmcData,
+            BonusType.RAGFAIR_COMMISSION,
+        );
         const taxDiscountPercent = (hideoutFleaTaxDiscountBonusSum + 100) / 100.0;
 
         const tax =
@@ -125,7 +128,7 @@ export class RagfairTaxService {
                     worth += this.calculateItemWorth(
                         child,
                         this.itemHelper.getItem(child._tpl)[1],
-                        child.upd!.StackObjectsCount!,
+                        child.upd?.StackObjectsCount ?? 1,
                         pmcData,
                         false,
                     );
