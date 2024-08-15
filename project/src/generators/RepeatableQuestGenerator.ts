@@ -524,7 +524,7 @@ export class RepeatableQuestGenerator {
             let chosenItemIndex = this.randomUtil.randInt(itemSelection.length);
             let found = false;
 
-            for (let i = 0; i < this.maxRandomNumberAttempts; i++) {
+            for (let j = 0; j < this.maxRandomNumberAttempts; j++) {
                 if (usedItemIndexes.has(chosenItemIndex)) {
                     chosenItemIndex = this.randomUtil.randInt(itemSelection.length);
                 } else {
