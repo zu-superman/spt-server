@@ -186,7 +186,13 @@ export class ItemHelper {
     }
 
     /**
-     * Checks if an id is a valid item. Valid meaning that it's an item that be stored in stash
+     * Checks if a tpl is a valid item. Valid meaning that it's an item that be stored in stash
+     * Valid means:
+     *  Not quest item
+     *  'Item' type
+     *  Not on the invalid base types array
+     *  Price above 0 roubles
+     *  Not on item config blacklist
      * @param    {string}  tpl  the template id / tpl
      * @returns                 boolean; true for items that may be in player possession and not quest items
      */

@@ -62,8 +62,7 @@ export class RagfairServerHelper {
             return false;
         }
 
-        // Skip blacklisted items
-        if (this.itemFilterService.isItemBlacklisted(itemDetails[1]._id)) {
+        if (!this.itemHelper.isValidItem(itemDetails[1]._id)) {
             return false;
         }
 
@@ -72,8 +71,10 @@ export class RagfairServerHelper {
             return false;
         }
 
-        // Skip custom blacklisted items
+        // Skip custom blacklisted items and flag as unsellable by players
         if (this.isItemOnCustomFleaBlacklist(itemDetails[1]._id)) {
+            itemDetails[1]._props.CanSellOnRagfair = false;
+
             return false;
         }
 
@@ -108,10 +109,6 @@ export class RagfairServerHelper {
      * @returns True if its blacklsited
      */
     protected isItemOnCustomFleaBlacklist(itemTemplateId: string): boolean {
-        if (!this.itemHelper.isValidItem(itemTemplateId)) {
-            return true;
-        }
-
         return this.ragfairConfig.dynamic.blacklist.custom.includes(itemTemplateId);
     }
 
