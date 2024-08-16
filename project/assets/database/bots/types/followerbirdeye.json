@@ -2823,7 +2823,8 @@
       },
       "55d35ee94bdc2d61338b4568": {
         "mod_gas_block": [
-          "56eabcd4d2720b66698b4574"
+          "56eabcd4d2720b66698b4574",
+		  "63d3ce281fe77d0f2801859e"
         ],
         "mod_muzzle": [
           "5c6d710d2e22165df16b81e7"
