@@ -176,6 +176,7 @@ export class BotWeaponGenerator {
                 botData: { role: botRole, level: botLevel, equipmentRole: botEquipmentRole },
                 modLimits: modLimits,
                 weaponStats: {},
+                conflictingItemTpls: new Set(),
             };
             weaponWithModsArray = this.botEquipmentModGenerator.generateModsForWeapon(
                 sessionId,
