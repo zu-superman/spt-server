@@ -8,6 +8,7 @@ import { BonusType } from "@spt/models/enums/BonusType";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { DatabaseService } from "@spt/services/DatabaseService";
 import { RagfairPriceService } from "@spt/services/RagfairPriceService";
+import { ICloner } from "@spt/utils/cloners/ICloner";
 import { inject, injectable } from "tsyringe";
 
 @injectable()
@@ -20,6 +21,7 @@ export class RagfairTaxService {
         @inject("RagfairPriceService") protected ragfairPriceService: RagfairPriceService,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
+        @inject("PrimaryCloner") protected cloner: ICloner,
     ) {}
 
     public storeClientOfferTaxValue(sessionId: string, offer: IStorePlayerOfferTaxAmountRequestData): void {
@@ -120,15 +122,20 @@ export class RagfairTaxService {
             // Since we get a flat list of all child items, we only want to recurse from parent item
             const itemChildren = this.itemHelper.findAndReturnChildrenAsItems(pmcData.Inventory.items, item._id);
             if (itemChildren.length > 1) {
-                for (const child of itemChildren) {
+                const itemChildrenClone = this.cloner.clone(itemChildren); // Clone is expensive, only run if necessary
+                for (const child of itemChildrenClone) {
                     if (child._id === item._id) {
                         continue;
+                    }
+
+                    if (!child.upd) {
+                        child.upd = {};
                     }
 
                     worth += this.calculateItemWorth(
                         child,
                         this.itemHelper.getItem(child._tpl)[1],
-                        child.upd?.StackObjectsCount ?? 1,
+                        child.upd.StackObjectsCount ?? 1,
                         pmcData,
                         false,
                     );
