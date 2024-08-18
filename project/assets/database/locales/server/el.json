@@ -676,7 +676,7 @@
     "server_start_meme_8": "είναι η morbin ώρα",
     "server_start_meme_9": "Αδερφέ scav; Μα τι κάνεις;",
     "server_start_player_active_botreload_skill": "Ο χαρακτήρας σας έχει την ικανότητα 'BotReload' ενεργή, αυτό θα προκαλέσει την επαναφόρτωση των όπλων σας με αφύσικα γρήγορο ρυθμό, αγνοήστε αυτό το μήνυμα αν αυτό είναι το επιθυμητό σας αποτέλεσμα",
-    "server_start_success": "Να έχετε ένα χαρούμενο παιχνίδι",
+    "server_start_success": "Να έχετε ένα ευχάριστο παιχνίδι",
     "started_webserver_success": "Ξεκίνησε ο διακομιστής ιστού στο %s",
     "trader-missing_durability_threshold_value": "Αδύνατη η εύρεση τιμής ορίου ανθεκτικότητας για τον έμπορο: {{traderId}}, επιστροφή στην αρχική τιμή του: {{value}}",
     "trader-missing_repair_property_using_default": "Στον έμπορο {{traderId}} {{nickname}} λείπει ένα αντικείμενο επισκευής, προσθήκη των προεπιλεγμένων τιμών",
