@@ -3,17 +3,14 @@ import "reflect-metadata";
 import { BotLevelGenerator } from "@spt/generators/BotLevelGenerator";
 import { MinMax } from "@spt/models/common/MinMax";
 import { BotGenerationDetails } from "@spt/models/spt/bots/BotGenerationDetails";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
 import { container } from "tsyringe";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 describe("BotLevelGenerator", () => {
-    let botLevelGenerator: any;
-    let databaseServer: DatabaseServer;
+    let botLevelGenerator: BotLevelGenerator;
 
     beforeEach(() => {
         botLevelGenerator = container.resolve<BotLevelGenerator>("BotLevelGenerator");
-        databaseServer = container.resolve<DatabaseServer>("DatabaseServer");
     });
 
     afterEach(() => {
@@ -42,22 +39,45 @@ describe("BotLevelGenerator", () => {
         });
     });
 
-    describe("chooseBotLevel", () => {
+    describe("getRelativeBotLevelRange", () => {
         it("should return 10 when player level is 5 and delta is 5", () => {
             const levelDetails: MinMax = { min: 5, max: 10 };
+            const botGenDetails: BotGenerationDetails = {
+                isPmc: false,
+                role: "",
+                side: "",
+                botRelativeLevelDeltaMax: 5,
+                botRelativeLevelDeltaMin: 5,
+                playerLevel: 5,
+                botCountToGenerate: 0,
+                botDifficulty: "",
+                isPlayerScav: false,
+            };
 
-            const result = botLevelGenerator.chooseBotLevel(levelDetails.min, levelDetails.max, 1, 1.15);
+            // @ts-expect-error
+            const result = botLevelGenerator.getRelativeBotLevelRange(botGenDetails, levelDetails, 79);
 
-            expect(result).greaterThanOrEqual(5);
-            expect(result).lessThanOrEqual(10);
+            expect(result.max).toBe(10);
         });
 
         it("should return 79 when player level is above possible max (100), desired max is 100 and delta is 5", () => {
             const levelDetails: MinMax = { min: 100, max: 100 };
+            const botGenDetails: BotGenerationDetails = {
+                isPmc: false,
+                role: "",
+                side: "",
+                botRelativeLevelDeltaMax: 5,
+                botRelativeLevelDeltaMin: 5,
+                playerLevel: 100,
+                botCountToGenerate: 0,
+                botDifficulty: "",
+                isPlayerScav: false,
+            };
 
-            const result = botLevelGenerator.chooseBotLevel(levelDetails.min, levelDetails.max, 1, 1.15);
+            // @ts-expect-error
+            const result = botLevelGenerator.getRelativeBotLevelRange(botGenDetails, levelDetails, 79);
 
-            expect(result).toBe(100);
+            expect(result.max).toBe(79);
         });
     });
 });
