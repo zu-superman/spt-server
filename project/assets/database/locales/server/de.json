@@ -141,6 +141,7 @@
     "inventory-unable_to_inspect_item_not_in_db": "Kann Artikel nicht überprüfen: %s da er nicht in der Artikeldatenbank gefunden werden kann",
     "inventory-unable_to_remove_item_id_not_found": "Nicht in der Lage Artikel mit Id: {{childId}} vom Profil: {{profileId}} da er nicht gefunden wurde",
     "inventory-unable_to_remove_item_no_id_given": "Element konnte nicht entfernt werden, da keine itemId angegeben wurde",
+    "inventory-unable_to_remove_item_restart_immediately": "Dieses Element konnte nicht entfernt werden: {{item}} aus der Post: {{mailId}}, da das Element nicht gefunden werden konnte, STARTE DAS SPIEL SOFORT NEU, um Datenbeschädigung zu vermeiden",
     "inventory-unable_to_sort_inventory_restart_game": "Nicht in der Lage Inventarelement zu finden: %s zum Auto-Sortieren, SIE MÜSSEN IHR SPIEL NEU STARTEN UM ZU VERHINDERN DAS PROFIL ZU KORRUMPIEREN",
     "inventory-unable_to_toggle_item_not_found": "Inventar Gegenstand mit der ID %s kann nicht umgeschaltet werden, Gegenstand nicht gefunden",
     "item-durability_value_invalid_use_default": "getRepairableItemQualityValue() Waffe tpl: %s Haltbarkeitswert ist ungültig, wird auf Standardwert 1 zurückgesetzt",
