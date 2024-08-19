@@ -1010,8 +1010,9 @@ export interface IAlpinist {
 }
 
 export interface IRestrictionsInRaid {
+    MaxInLobby: number;
+    MaxInRaid: number;
     TemplateId: string;
-    Value: number;
 }
 
 export interface IFavoriteItemsSettings {
