@@ -88,11 +88,23 @@ export interface ILocationBase {
     maxItemCountInLocation: MaxItemCountInLocation[];
     sav_summon_seconds: number;
     tmp_location_field_remove_me: number;
+    transits: ITransit[];
     users_gather_seconds: number;
     users_spawn_seconds_n: number;
     users_spawn_seconds_n2: number;
     users_summon_seconds: number;
     waves: Wave[];
+}
+
+export interface ITransit {
+    activateAfterSec: string;
+    active: boolean;
+    conditions: string;
+    description: string;
+    id: number;
+    location: string;
+    target: string;
+    time: number;
 }
 
 export interface INonWaveGroupScenario {
@@ -158,6 +170,7 @@ export interface BossSupport {
 
 export interface BotLocationModifier {
     AccuracySpeed: number;
+    AdditionalHostilitySettings: IAdditionalHostilitySettings[];
     DistToActivate: number;
     DistToActivatePvE: number;
     DistToPersueAxemanCoef: number;
@@ -171,6 +184,25 @@ export interface BotLocationModifier {
     VisibleDistance: number;
     MaxExfiltrationTime: number;
     MinExfiltrationTime: number;
+}
+
+export interface IAdditionalHostilitySettings {
+    AlwaysEnemies: string[];
+    AlwaysFriends: string[];
+    BearEnemyChance: number;
+    BearPlayerBehaviour: string;
+    BotRole: string;
+    ChancedEnemies: IChancedEnemy[];
+    Neutral: string[];
+    SavagePlayerBehaviour: string;
+    UsecEnemyChance: number;
+    UsecPlayerBehaviour: string;
+    Warn: string[];
+}
+
+export interface IChancedEnemy {
+    EnemyChance: number;
+    Role: string;
 }
 
 export interface MinMaxBot extends MinMax {
