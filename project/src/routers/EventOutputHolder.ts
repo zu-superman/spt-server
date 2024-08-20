@@ -111,8 +111,8 @@ export class EventOutputHolder {
      * @returns dictionary of hideout improvements
      */
     protected getImprovementsFromProfileAndFlagComplete(pmcData: IPmcData): Record<string, IHideoutImprovement> {
-        for (const improvementKey in pmcData.Hideout.Improvement) {
-            const improvement = pmcData.Hideout.Improvement[improvementKey];
+        for (const improvementKey in pmcData.Hideout.Improvements) {
+            const improvement = pmcData.Hideout.Improvements[improvementKey];
 
             // Skip completed
             if (improvement.completed) {
@@ -124,7 +124,7 @@ export class EventOutputHolder {
             }
         }
 
-        return pmcData.Hideout.Improvement;
+        return pmcData.Hideout.Improvements;
     }
 
     /**
