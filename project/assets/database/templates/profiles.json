@@ -363,6 +363,42 @@
                             "passiveBonusesEnabled": true,
                             "slots": [],
                             "type": 23
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 24
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 25
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 26
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 27
                         }
                     ],
                     "Improvement": {},
@@ -394,6 +430,7 @@
                     "Side": "Bear",
                     "SquadInviteRestriction": false,
                     "HasCoopExtension": false,
+					"HasPveGame": true,
                     "Voice": "__REPLACEME__",
                     "lockedMoveCommands": true
                 },
@@ -3023,6 +3060,42 @@
                             "passiveBonusesEnabled": true,
                             "slots": [],
                             "type": 23
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 24
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 25
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 26
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 27
                         }
                     ],
                     "Improvement": {},
@@ -3054,6 +3127,7 @@
                     "Side": "Usec",
                     "SquadInviteRestriction": false,
                     "HasCoopExtension": false,
+					"HasPveGame": true,
                     "Voice": "__REPLACEME__",
                     "lockedMoveCommands": true
                 },
@@ -5864,6 +5938,42 @@
                             "passiveBonusesEnabled": true,
                             "slots": [],
                             "type": 23
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 24
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 25
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 26
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 27
                         }
                     ],
                     "Improvement": {},
@@ -5895,6 +6005,7 @@
                     "Side": "Bear",
                     "SquadInviteRestriction": false,
                     "HasCoopExtension": false,
+					"HasPveGame": true,
                     "Voice": "__REPLACEME__",
                     "lockedMoveCommands": true
                 },
@@ -9083,6 +9194,42 @@
                             "passiveBonusesEnabled": true,
                             "slots": [],
                             "type": 23
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 24
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 25
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 26
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 27
                         }
                     ],
                     "Improvement": {},
@@ -9114,6 +9261,7 @@
                     "Side": "Usec",
                     "SquadInviteRestriction": false,
                     "HasCoopExtension": false,
+					"HasPveGame": true,
                     "Voice": "__REPLACEME__",
                     "lockedMoveCommands": true
                 },
@@ -12392,6 +12540,42 @@
                             "passiveBonusesEnabled": true,
                             "slots": [],
                             "type": 23
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 24
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 25
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 26
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 27
                         }
                     ],
                     "Improvement": {},
@@ -12423,6 +12607,7 @@
                     "Side": "Bear",
                     "SquadInviteRestriction": false,
                     "HasCoopExtension": false,
+					"HasPveGame": true,
                     "Voice": "__REPLACEME__",
                     "lockedMoveCommands": true
                 },
@@ -16081,6 +16266,42 @@
                             "passiveBonusesEnabled": true,
                             "slots": [],
                             "type": 23
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 24
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 25
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 26
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 27
                         }
                     ],
                     "Improvement": {},
@@ -16112,6 +16333,7 @@
                     "Side": "Usec",
                     "SquadInviteRestriction": false,
                     "HasCoopExtension": false,
+					"HasPveGame": true,
                     "Voice": "__REPLACEME__",
                     "lockedMoveCommands": true
                 },
@@ -19986,6 +20208,24 @@
                             "passiveBonusesEnabled": true,
                             "slots": [],
                             "type": 25
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 26
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 27
                         }
                     ],
                     "Improvement": {},
@@ -20021,6 +20261,7 @@
                     "Side": "Bear",
                     "SquadInviteRestriction": false,
                     "HasCoopExtension": false,
+					"HasPveGame": true,
                     "Voice": "__REPLACEME__",
                     "lockedMoveCommands": true
                 },
@@ -23683,6 +23924,24 @@
                             "passiveBonusesEnabled": true,
                             "slots": [],
                             "type": 25
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 26
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 27
                         }
                     ],
                     "Improvement": {},
@@ -23716,6 +23975,7 @@
                     "Side": "Usec",
                     "SquadInviteRestriction": false,
                     "HasCoopExtension": false,
+					"HasPveGame": true,
                     "Voice": "__REPLACEME__",
                     "lockedMoveCommands": true
                 },
@@ -27543,6 +27803,24 @@
                             "passiveBonusesEnabled": true,
                             "slots": [],
                             "type": 25
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 26
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 27
                         }
                     ],
                     "Improvement": {},
@@ -27578,6 +27856,7 @@
                     "Side": "Bear",
                     "SquadInviteRestriction": false,
                     "HasCoopExtension": false,
+					"HasPveGame": true,
                     "Voice": "__REPLACEME__",
                     "lockedMoveCommands": true
                 },
@@ -31883,6 +32162,24 @@
                             "passiveBonusesEnabled": true,
                             "slots": [],
                             "type": 25
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 26
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 27
                         }
                     ],
                     "Improvement": {},
@@ -31916,6 +32213,7 @@
                     "Side": "Usec",
                     "SquadInviteRestriction": false,
                     "HasCoopExtension": false,
+					"HasPveGame": true,
                     "Voice": "__REPLACEME__",
                     "lockedMoveCommands": true
                 },
@@ -36445,6 +36743,24 @@
                             "passiveBonusesEnabled": true,
                             "slots": [],
                             "type": 25
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 26
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 27
                         }
                     ],
                     "Improvement": {},
@@ -36480,6 +36796,7 @@
                     "Side": "Bear",
                     "SquadInviteRestriction": false,
                     "HasCoopExtension": false,
+					"HasPveGame": true,
                     "Voice": "__REPLACEME__",
                     "lockedMoveCommands": false
                 },
@@ -37397,6 +37714,24 @@
                             "passiveBonusesEnabled": true,
                             "slots": [],
                             "type": 25
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 26
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 27
                         }
                     ],
                     "Improvement": {},
@@ -37430,6 +37765,7 @@
                     "Side": "Usec",
                     "SquadInviteRestriction": false,
                     "HasCoopExtension": false,
+					"HasPveGame": true,
                     "Voice": "__REPLACEME__",
                     "lockedMoveCommands": false
                 },
@@ -40395,6 +40731,7 @@
                     "Side": "Bear",
                     "SquadInviteRestriction": false,
                     "HasCoopExtension": false,
+					"HasPveGame": true,
                     "Voice": "__REPLACEME__",
                     "lockedMoveCommands": true
                 },
@@ -43478,6 +43815,7 @@
                     "Side": "Usec",
                     "SquadInviteRestriction": false,
                     "HasCoopExtension": false,
+					"HasPveGame": true,
                     "Voice": "__REPLACEME__",
                     "lockedMoveCommands": true
                 },
@@ -46545,6 +46883,7 @@
                     "Side": "Bear",
                     "SquadInviteRestriction": false,
                     "HasCoopExtension": false,
+					"HasPveGame": true,
                     "Voice": "__REPLACEME__",
                     "lockedMoveCommands": true
                 },
@@ -49907,6 +50246,7 @@
                     "Side": "Usec",
                     "SquadInviteRestriction": false,
                     "HasCoopExtension": false,
+					"HasPveGame": true,
                     "Voice": "__REPLACEME__",
                     "lockedMoveCommands": true
                 },
@@ -51214,6 +51554,42 @@
                             "passiveBonusesEnabled": true,
                             "slots": [],
                             "type": 23
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 24
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 25
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 26
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 27
                         }
                     ],
                     "Improvement": {},
@@ -51245,6 +51621,7 @@
                     "Side": "Bear",
                     "SquadInviteRestriction": false,
                     "HasCoopExtension": false,
+					"HasPveGame": true,
                     "Voice": "__REPLACEME__",
                     "lockedMoveCommands": true
                 },
@@ -52146,6 +52523,42 @@
                             "passiveBonusesEnabled": true,
                             "slots": [],
                             "type": 23
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 24
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 25
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 26
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 27
                         }
                     ],
                     "Improvement": {},
@@ -52177,6 +52590,7 @@
                     "Side": "Usec",
                     "SquadInviteRestriction": false,
                     "HasCoopExtension": false,
+					"HasPveGame": true,
                     "Voice": "__REPLACEME__",
                     "lockedMoveCommands": true
                 },
