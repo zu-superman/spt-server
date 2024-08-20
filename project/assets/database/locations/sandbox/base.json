@@ -18,13 +18,196 @@
   "AveragePlayTime": 35,
   "AveragePlayerLevel": 20,
   "Banners": [],
-  "BossLocationSpawn": [],
+  "BossLocationSpawn": [
+    {
+      "BossChance": 50,
+      "BossDifficult": "easy",
+      "BossEscortAmount": "0,0,2,2,2,1,1,1,1,1,0",
+      "BossEscortDifficult": "easy",
+      "BossEscortType": "pmcBEAR",
+      "BossName": "pmcBEAR",
+      "BossPlayer": false,
+      "BossZone": "",
+      "IgnoreMaxBots": true,
+      "RandomTimeSpawn": false,
+      "SpawnMode": [
+        "pve"
+      ],
+      "Supports": null,
+      "Time": -1,
+      "TriggerId": "",
+      "TriggerName": ""
+    },
+    {
+      "BossChance": 50,
+      "BossDifficult": "easy",
+      "BossEscortAmount": "0,0,2,2,2,1,1,1,1,1,0",
+      "BossEscortDifficult": "easy",
+      "BossEscortType": "pmcBEAR",
+      "BossName": "pmcBEAR",
+      "BossPlayer": false,
+      "BossZone": "",
+      "IgnoreMaxBots": true,
+      "RandomTimeSpawn": false,
+      "SpawnMode": [
+        "pve"
+      ],
+      "Supports": null,
+      "Time": -1,
+      "TriggerId": "",
+      "TriggerName": ""
+    },
+    {
+      "BossChance": 50,
+      "BossDifficult": "easy",
+      "BossEscortAmount": "0,0,2,2,2,1,1,1,1,1,0",
+      "BossEscortDifficult": "easy",
+      "BossEscortType": "pmcUSEC",
+      "BossName": "pmcUSEC",
+      "BossPlayer": false,
+      "BossZone": "",
+      "IgnoreMaxBots": true,
+      "RandomTimeSpawn": false,
+      "SpawnMode": [
+        "pve"
+      ],
+      "Supports": null,
+      "Time": -1,
+      "TriggerId": "",
+      "TriggerName": ""
+    },
+    {
+      "BossChance": 50,
+      "BossDifficult": "easy",
+      "BossEscortAmount": "0,0,2,2,2,1,1,1,1,1,0",
+      "BossEscortDifficult": "easy",
+      "BossEscortType": "pmcUSEC",
+      "BossName": "pmcUSEC",
+      "BossPlayer": false,
+      "BossZone": "",
+      "IgnoreMaxBots": true,
+      "RandomTimeSpawn": false,
+      "SpawnMode": [
+        "pve"
+      ],
+      "Supports": null,
+      "Time": -1,
+      "TriggerId": "",
+      "TriggerName": ""
+    }
+  ],
   "BotAssault": 100,
   "BotEasy": 100,
   "BotHard": 0,
   "BotImpossible": 0,
   "BotLocationModifier": {
     "AccuracySpeed": 1,
+    "AdditionalHostilitySettings": [
+      {
+        "AlwaysEnemies": [
+          "pmcBot",
+          "exUsec",
+          "bossBully",
+          "bossBoar",
+          "bossTagilla",
+          "bossKilla",
+          "bossKojaniy",
+          "bossSanitar",
+          "bossKolontay",
+          "bossGluhar",
+          "bossKnight"
+        ],
+        "AlwaysFriends": [
+          "bossZryachiy",
+          "followerZryachiy",
+          "peacefullZryachiyEvent",
+          "ravangeZryachiyEvent",
+          "gifter"
+        ],
+        "BearEnemyChance": 35,
+        "BearPlayerBehaviour": "ChancedEnemies",
+        "BotRole": "pmcBEAR",
+        "ChancedEnemies": [
+          {
+            "EnemyChance": 70,
+            "Role": "assault"
+          },
+          {
+            "EnemyChance": 70,
+            "Role": "marksman"
+          },
+          {
+            "EnemyChance": 75,
+            "Role": "pmcUSEC"
+          }
+        ],
+        "Neutral": [
+          "sectantPriest",
+          "sectantWarrior"
+        ],
+        "SavagePlayerBehaviour": "Warn",
+        "UsecEnemyChance": 50,
+        "UsecPlayerBehaviour": "ChancedEnemies",
+        "Warn": [
+          "sectactPriestEvent"
+        ]
+      },
+      {
+        "AlwaysEnemies": [
+          "pmcBot",
+          "bossBully",
+          "bossBoar",
+          "bossTagilla",
+          "bossKilla",
+          "bossKojaniy",
+          "bossSanitar",
+          "bossKolontay",
+          "bossGluhar"
+        ],
+        "AlwaysFriends": [
+          "bossZryachiy",
+          "followerZryachiy",
+          "peacefullZryachiyEvent",
+          "ravangeZryachiyEvent",
+          "gifter"
+        ],
+        "BearEnemyChance": 50,
+        "BearPlayerBehaviour": "ChancedEnemies",
+        "BotRole": "pmcUSEC",
+        "ChancedEnemies": [
+          {
+            "EnemyChance": 70,
+            "Role": "assault"
+          },
+          {
+            "EnemyChance": 70,
+            "Role": "marksman"
+          },
+          {
+            "EnemyChance": 75,
+            "Role": "pmcBEAR"
+          },
+          {
+            "EnemyChance": 15,
+            "Role": "exUsec"
+          },
+          {
+            "EnemyChance": 15,
+            "Role": "bossKnight"
+          }
+        ],
+        "Neutral": [
+          "sectantPriest",
+          "sectantWarrior"
+        ],
+        "SavagePlayerBehaviour": "Warn",
+        "UsecEnemyChance": 35,
+        "UsecPlayerBehaviour": "ChancedEnemies",
+        "Warn": [
+          "sectactPriestEvent"
+        ]
+      }
+    ],
     "DistToActivate": 260,
     "DistToActivatePvE": 260,
     "DistToSleep": 300,
@@ -63,7 +246,7 @@
   "ForceOnlineRaidInPVE": false,
   "GenerateLocalLootCache": true,
   "GlobalContainerChanceModifier": 1,
-  "GlobalLootChanceModifier": 0.72,
+  "GlobalLootChanceModifier": 0.34,
   "GlobalLootChanceModifierPvE": 0.72,
   "IconX": 760,
   "IconY": 740,
@@ -5781,7 +5964,7 @@
       ]
     }
   ],
-  "UnixDateTime": 1707141759,
+  "UnixDateTime": 1621511450,
   "_Id": "653e6760052c01c1c805532f",
   "doors": [],
   "exit_access_time": 35,
@@ -5907,6 +6090,30 @@
   "matching_min_seconds": 60,
   "sav_summon_seconds": 60,
   "tmp_location_field_remove_me": 0,
+  "transits": [
+    {
+      "activateAfterSec": 420,
+      "active": true,
+      "conditions": "SAN_TRANSIT_1_COND",
+      "description": "SAN_TRANSIT_1_DESC",
+      "id": 1,
+      "location": "TarkovStreets",
+      "name": "SAN_TRANSIT_1",
+      "target": "5714dc692459777137212e12",
+      "time": 30
+    },
+    {
+      "activateAfterSec": 420,
+      "active": false,
+      "conditions": "SAN_TRANSIT_2_COND",
+      "description": "SAN_TRANSIT_2_DESC",
+      "id": 2,
+      "location": "laboratory",
+      "name": "SAN_TRANSIT_2",
+      "target": "5b0fc42d86f7744a585f9105",
+      "time": 30
+    }
+  ],
   "users_gather_seconds": 0,
   "users_spawn_seconds_n": 120,
   "users_spawn_seconds_n2": 200,

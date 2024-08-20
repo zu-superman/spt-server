@@ -155,6 +155,8 @@ export interface BossLocationSpawn {
     TriggerId: string;
     TriggerName: string;
     Delay?: number;
+    DependKarma?: boolean;
+    DependKarmaPVE?: boolean;
     ForceSpawn?: boolean;
     IgnoreMaxBots?: boolean;
     Supports?: BossSupport[];
