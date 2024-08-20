@@ -11,6 +11,7 @@
         "bossZryachiy": 5,
         "bossTest": 10,
         "bossKolontay": 5,
+		"bossPartisan": 5,
         "cursedAssault": 50,
         "followerBully": 5,
         "followerGluharAssault": 5,
@@ -61,7 +62,8 @@
         "bossZryachiy",
         "bossBoar",
         "bossBoarSniper",
-        "bossKolontay"
+        "bossKolontay",
+		"bossPartisan"
     ],
     "durability": {
         "default": {
@@ -328,6 +330,7 @@
         "bossknight": {},
         "bosszryachiy": {},
         "bosskolontay": {},
+        "bosspartisan": {},
         "bosstest": {},
         "followerbully": {
             "5448e8d64bdc2dce718b4568": 1,
@@ -731,6 +734,19 @@
         "bosskolontay": {
             "nvgIsActiveChanceDayPercent": 20,
             "nvgIsActiveChanceNightPercent": 85,
+            "faceShieldIsActiveChancePercent": 80,
+            "lightIsActiveDayChancePercent": 25,
+            "lightIsActiveNightChancePercent": 75,
+            "laserIsActiveChancePercent": 75,
+            "forceStock": true,
+            "weaponModLimits": {
+                "scopeLimit": 2,
+                "lightLaserLimit": 1
+            }
+        },
+		"bosspartisan": {
+            "nvgIsActiveChanceDayPercent": 20,
+            "nvgIsActiveChanceNightPercent": 95,
             "faceShieldIsActiveChancePercent": 80,
             "lightIsActiveDayChancePercent": 25,
             "lightIsActiveNightChancePercent": 75,
