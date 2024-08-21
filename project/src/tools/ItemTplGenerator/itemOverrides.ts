@@ -64,6 +64,7 @@ export default {
     "6614230055afee107f05e998": "Unheard phone 2",
     "661421c7c1f2f548c50ee649": "Unheard laptop",
     "661423200d240a5f5d0f679b": "Unheard laptop 2",
+    "66a0f0926fee20fa70036da6": "Quest blood sample nf2024",
 
     // Weapon Parts
     "5d1340b3d7ad1a0b52682ed7": "GEN M3 FDE",
