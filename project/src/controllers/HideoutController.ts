@@ -283,7 +283,13 @@ export class HideoutController {
         this.addUpdateInventoryItemToProfile(pmcData, dbHideoutArea, hideoutStage);
 
         // Dont inform client when upgraded area is hall of fame/cult circle, BSG doesn't inform client upgrade has occurred, will break client if data is sent
-        if (![HideoutAreas.PLACE_OF_FAME, HideoutAreas.CIRCLE_OF_CULTISTS].includes(dbHideoutArea.type)) {
+        if (
+            ![
+                HideoutAreas.PLACE_OF_FAME,
+                HideoutAreas.CIRCLE_OF_CULTISTS,
+                HideoutAreas.EQUIPMENT_PRESETS_STAND,
+            ].includes(dbHideoutArea.type)
+        ) {
             // Inform client of changes
             this.addContainerUpgradeToClientOutput(output, sessionID, dbHideoutArea.type, dbHideoutArea, hideoutStage);
         }
