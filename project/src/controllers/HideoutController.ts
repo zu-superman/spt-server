@@ -401,7 +401,16 @@ export class HideoutController {
 
             // Add item to area.slots
             const destinationLocationIndex = Number(item.slot);
-            const hideoutSlotIndex = hideoutArea.slots.findIndex((x) => x.locationIndex === destinationLocationIndex);
+            const hideoutSlotIndex = hideoutArea.slots.findIndex(
+                (slot) => slot.locationIndex === destinationLocationIndex,
+            );
+            if (hideoutSlotIndex === -1) {
+                this.logger.error(
+                    `Unable to put item: ${item.requestedItem.id} into slot as slot cannot be found for area: ${addItemToHideoutRequest.areaType}, skipping`,
+                );
+                continue;
+            }
+
             hideoutArea.slots[hideoutSlotIndex].item = [
                 {
                     _id: item.inventoryItem._id,
