@@ -40,6 +40,7 @@
       "right_side_plate": 44
     },
     "weaponMods": {
+      "mod_bipod": 0,
       "mod_flashlight": 100,
       "mod_foregrip": 91,
       "mod_magazine": 100,
@@ -56,7 +57,7 @@
       "mod_tactical": 100,
       "mod_tactical_000": 0,
       "mod_tactical_001": 0,
-      "mod_tactical_002": 0
+      "mod_tactical_002": 1
     }
   },
   "difficulty": {
@@ -2233,6 +2234,10 @@
         "5ede474b0c226a66f5402622": 37,
         "5f0c892565703e5c461894e9": 165
       },
+      "Caliber46x30": {
+        "5ba26835d4351e0035628ff5": 1,
+        "64b6979341772715af0f9c39": 3
+      },
       "Caliber762x35": {
         "5fd20ff893a8961fc660a954": 127,
         "619636be6db0f2477964e710": 2878
@@ -2259,7 +2264,8 @@
         "62a61bbf8ec41a51b34758d2": 1
       },
       "FirstPrimaryWeapon": {
-        "5fbcc1d9016cce60e8341ab3": 1
+        "5bd70322209c4d00d7167b8f": 53,
+        "5fbcc1d9016cce60e8341ab3": 916
       },
       "Headwear": {
         "628e4dd1f477aa12234918aa": 1
@@ -2270,7 +2276,8 @@
         "669fa3f88abd2662d80eee77": 2
       },
       "Pockets": {
-        "64cbd95a29b9b4283e216ff5": 1
+        "5af99e9186f7747c447120b8": 1815,
+        "64cbd95a29b9b4283e216ff5": 23
       },
       "Scabbard": {
         "54491bb74bdc2d09088b4567": 1
@@ -2446,27 +2453,36 @@
         "6581998038c79576a2569e11": 17,
         "658199972dc4e60f6d556a2f": 29,
         "6582dbe43a2e5248357dbe9a": 11,
-        "6582dc4b6ba9e979af6b79f4": 7,
-        "6582dc5740562727a654ebb1": 2
+        "6582dc4b6ba9e979af6b79f4": 8,
+        "6582dc5740562727a654ebb1": 2,
+        "660ea4453786cc0af808a1be": 21,
+        "668fe5c5f35310705d02b696": 23
       },
       "SecuredContainer": {
-        "5d6e6911a4b9361bd5780d52": 32521,
-        "5e81f423763d9f754677bf2e": 3066,
-        "5ede474b0c226a66f5402622": 44301,
-        "5efb0cabfb3e451d70735af5": 559,
-        "5f0c892565703e5c461894e9": 32901,
-        "5fd20ff893a8961fc660a954": 3701,
-        "619636be6db0f2477964e710": 87001
+        "58dd3ad986f77403051cba8f": 31,
+        "5a6086ea4f39f99cd479502f": 61,
+        "5a608bf24f39f98ffc77720e": 16,
+        "5ba26835d4351e0035628ff5": 51,
+        "5d6e6911a4b9361bd5780d52": 32851,
+        "5e81f423763d9f754677bf2e": 3085,
+        "5ede474b0c226a66f5402622": 44601,
+        "5efb0cabfb3e451d70735af5": 570,
+        "5f0c892565703e5c461894e9": 33101,
+        "5fd20ff893a8961fc660a954": 3726,
+        "619636be6db0f2477964e710": 87826,
+        "64b6979341772715af0f9c39": 201,
+        "668fe62ac62660a5d8071446": 11
       },
       "SpecialLoot": {},
       "TacticalVest": {
-        "544fb45d4bdc2dee738b4568": 2855,
-        "5c6d46132e221601da357d56": 3607,
-        "5d1340cad7ad1a0b0b249869": 3651,
-        "5ede474b0c226a66f5402622": 887,
-        "5ef3448ab37dfd6af863525c": 1541,
+        "544fb45d4bdc2dee738b4568": 2901,
+        "5ba26586d4351e44f824b340": 423,
+        "5c6d46132e221601da357d56": 3651,
+        "5d1340cad7ad1a0b0b249869": 3675,
+        "5ede474b0c226a66f5402622": 885,
+        "5ef3448ab37dfd6af863525c": 1539,
         "5f0c892565703e5c461894e9": 657,
-        "619256e5f8af2c1a4e1f5d92": 3042
+        "619256e5f8af2c1a4e1f5d92": 3096
       }
     },
     "mods": {
@@ -2515,6 +2531,40 @@
       "5a7893c1c585673f2b5c374d": {
         "mod_scope": [
           "5a33b2c9c4a282000c5a9511"
+        ]
+      },
+      "5ba26acdd4351e003562908e": {
+        "mod_muzzle": [
+          "5ba26ae8d4351e00367f9bdb"
+        ]
+      },
+      "5bd70322209c4d00d7167b8f": {
+        "mod_foregrip": [
+          "59f8a37386f7747af3328f06"
+        ],
+        "mod_magazine": [
+          "5ba26586d4351e44f824b340"
+        ],
+        "mod_muzzle": [
+          "5ba26acdd4351e003562908e"
+        ],
+        "mod_scope": [
+          "558022b54bdc2dac148b458d"
+        ],
+        "mod_sight_front": [
+          "5ba26b01d4351e0085325a51"
+        ],
+        "mod_sight_rear": [
+          "5ba26b17d4351e00367f9bdd"
+        ],
+        "mod_stock": [
+          "5bd704e7209c4d00d7167c31"
+        ],
+        "mod_tactical_000": [
+          "544909bb4bdc2d6f028b4577"
+        ],
+        "mod_tactical_002": [
+          "626becf9582c3e319310b837"
         ]
       },
       "5bfe86a20db834001d23e8f7": {

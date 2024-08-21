@@ -68,7 +68,8 @@
       "right_side_plate": 48
     },
     "weaponMods": {
-      "mod_charge": 18,
+      "mod_bipod": 0,
+      "mod_charge": 19,
       "mod_flashlight": 100,
       "mod_foregrip": 84,
       "mod_launcher": 0,
@@ -3112,6 +3113,9 @@
         "mod_charge": [
           "6130ca3fd92c473c77020dbd",
           "5648ac824bdc2ded0b8b457d"
+        ],
+        "mod_handguard": [
+          "651178336cad06c37c049eb4"
         ],
         "mod_magazine": [
           "57838f9f2459774a150289a0",

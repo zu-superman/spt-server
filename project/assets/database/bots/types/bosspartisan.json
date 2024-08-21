@@ -2464,36 +2464,6 @@
     "BodyParts": [
       {
         "Chest": {
-          "max": 220,
-          "min": 220
-        },
-        "Head": {
-          "max": 80,
-          "min": 80
-        },
-        "LeftArm": {
-          "max": 110,
-          "min": 110
-        },
-        "LeftLeg": {
-          "max": 120,
-          "min": 120
-        },
-        "RightArm": {
-          "max": 110,
-          "min": 110
-        },
-        "RightLeg": {
-          "max": 120,
-          "min": 120
-        },
-        "Stomach": {
-          "max": 190,
-          "min": 190
-        }
-      },
-      {
-        "Chest": {
           "max": 85,
           "min": 85
         },
@@ -2520,6 +2490,36 @@
         "Stomach": {
           "max": 70,
           "min": 70
+        }
+      },
+      {
+        "Chest": {
+          "max": 220,
+          "min": 220
+        },
+        "Head": {
+          "max": 80,
+          "min": 80
+        },
+        "LeftArm": {
+          "max": 110,
+          "min": 110
+        },
+        "LeftLeg": {
+          "max": 120,
+          "min": 120
+        },
+        "RightArm": {
+          "max": 110,
+          "min": 110
+        },
+        "RightLeg": {
+          "max": 120,
+          "min": 120
+        },
+        "Stomach": {
+          "max": 190,
+          "min": 190
         }
       }
     ],

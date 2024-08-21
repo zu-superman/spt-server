@@ -2171,6 +2171,36 @@
           "max": 270,
           "min": 270
         }
+      },
+      {
+        "Chest": {
+          "max": 450,
+          "min": 450
+        },
+        "Head": {
+          "max": 175,
+          "min": 175
+        },
+        "LeftArm": {
+          "max": 190,
+          "min": 190
+        },
+        "LeftLeg": {
+          "max": 190,
+          "min": 190
+        },
+        "RightArm": {
+          "max": 190,
+          "min": 190
+        },
+        "RightLeg": {
+          "max": 190,
+          "min": 190
+        },
+        "Stomach": {
+          "max": 270,
+          "min": 270
+        }
       }
     ],
     "Energy": {

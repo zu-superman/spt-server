@@ -42,7 +42,8 @@
       "mod_equipment": 81
     },
     "weaponMods": {
-      "mod_charge": 19,
+      "mod_bipod": 0,
+      "mod_charge": 20,
       "mod_flashlight": 100,
       "mod_foregrip": 83,
       "mod_launcher": 0,
@@ -2584,9 +2585,10 @@
         "637b6179104668754b72f8f5": 3,
         "637b620db7afa97bfc3d7009": 5,
         "637b6251104668754b72f8f9": 6,
-        "649ec30cb013f04a700e60fb": 505,
-        "64b9cf0ac12b9c38db26923a": 210,
-        "64b9e265c94d0d15c5027e35": 550
+        "649ec30cb013f04a700e60fb": 513,
+        "64b9cf0ac12b9c38db26923a": 216,
+        "64b9e265c94d0d15c5027e35": 552,
+        "66507eabf5ddb0818b085b68": 1
       },
       "SecuredContainer": {
         "54527ac44bdc2d36668b4567": 476,

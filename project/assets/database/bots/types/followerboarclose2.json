@@ -42,7 +42,8 @@
       "mod_equipment": 83
     },
     "weaponMods": {
-      "mod_charge": 18,
+      "mod_bipod": 0,
+      "mod_charge": 19,
       "mod_flashlight": 100,
       "mod_foregrip": 83,
       "mod_launcher": 0,
@@ -2681,6 +2682,9 @@
           "59ccfdba86f7747f2109a587",
           "59c6633186f7740cf0493bb9"
         ],
+        "mod_launcher": [
+          "62e7e7bbe6da9612f743f1e0"
+        ],
         "mod_magazine": [
           "64b9e265c94d0d15c5027e35",
           "564ca99c4bdc2d16268b4589",
@@ -3288,6 +3292,9 @@
           "59e649f986f77411d949b246",
           "59ccfdba86f7747f2109a587"
         ],
+        "mod_launcher": [
+          "62e7e7bbe6da9612f743f1e0"
+        ],
         "mod_magazine": [
           "59d625f086f774661516605d",
           "64b9cf0ac12b9c38db26923a",
@@ -3380,6 +3387,9 @@
         ],
         "mod_gas_block": [
           "59e649f986f77411d949b246"
+        ],
+        "mod_launcher": [
+          "62e7e7bbe6da9612f743f1e0"
         ],
         "mod_magazine": [
           "5a01c29586f77474660c694c",
@@ -3646,6 +3656,9 @@
           "59c6633186f7740cf0493bb9",
           "59ccfdba86f7747f2109a587"
         ],
+        "mod_launcher": [
+          "62e7e7bbe6da9612f743f1e0"
+        ],
         "mod_magazine": [
           "5cbdaf89ae9215000e5b9c94",
           "564ca99c4bdc2d16268b4589",
@@ -3757,6 +3770,9 @@
         "mod_gas_block": [
           "59ccfdba86f7747f2109a587",
           "59c6633186f7740cf0493bb9"
+        ],
+        "mod_launcher": [
+          "62e7e7bbe6da9612f743f1e0"
         ],
         "mod_magazine": [
           "5ac66bea5acfc43b321d4aec",
@@ -4047,6 +4063,9 @@
         "mod_gas_block": [
           "59ccfdba86f7747f2109a587",
           "59c6633186f7740cf0493bb9"
+        ],
+        "mod_launcher": [
+          "62e7e7bbe6da9612f743f1e0"
         ],
         "mod_magazine": [
           "564ca99c4bdc2d16268b4589",
@@ -4529,6 +4548,9 @@
         ],
         "mod_handguard": [
           "649ec127c93611967b034957"
+        ],
+        "mod_launcher": [
+          "62e7e7bbe6da9612f743f1e0"
         ],
         "mod_magazine": [
           "64b9e265c94d0d15c5027e35",
