@@ -1,3 +1,11 @@
+import { MinMax } from "@spt/models/common/MinMax";
+
+export interface IHideoutProductionData {
+    recipes: IHideoutProduction[];
+    scavRecipes: IScavRecipe[];
+    cultistRecipes: ICultistRecipe[];
+}
+
 export interface IHideoutProduction {
     _id: string;
     areaType: number;
@@ -24,3 +32,20 @@ export interface Requirement {
     resource?: number;
     questId?: string;
 }
+
+export type IScavRecipe = {
+    _id: string;
+    requirements: Requirement[];
+    productionTime: number;
+    endProducts: IEndProducts;
+};
+
+export interface IEndProducts {
+    Common: MinMax;
+    Rare: MinMax;
+    Superrare: MinMax;
+}
+
+export type ICultistRecipe = {
+    _id: string;
+};

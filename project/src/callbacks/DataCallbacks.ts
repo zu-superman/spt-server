@@ -7,7 +7,7 @@ import { ICustomizationItem } from "@spt/models/eft/common/tables/ICustomization
 import { IHandbookBase } from "@spt/models/eft/common/tables/IHandbookBase";
 import { IGetItemPricesResponse } from "@spt/models/eft/game/IGetItemPricesResponse";
 import { IHideoutArea } from "@spt/models/eft/hideout/IHideoutArea";
-import { IHideoutProduction } from "@spt/models/eft/hideout/IHideoutProduction";
+import { IHideoutProductionData } from "@spt/models/eft/hideout/IHideoutProduction";
 import { IHideoutScavCase } from "@spt/models/eft/hideout/IHideoutScavCase";
 import { IHideoutSettingsBase } from "@spt/models/eft/hideout/IHideoutSettingsBase";
 import { IGetBodyResponseData } from "@spt/models/eft/httpResponse/IGetBodyResponseData";
@@ -115,11 +115,11 @@ export class DataCallbacks {
         return this.httpResponse.getBody(this.databaseService.getHideout().areas);
     }
 
-    public gethideoutProduction(
+    public getHideoutProduction(
         url: string,
         info: IEmptyRequestData,
         sessionID: string,
-    ): IGetBodyResponseData<IHideoutProduction[]> {
+    ): IGetBodyResponseData<IHideoutProductionData> {
         return this.httpResponse.getBody(this.databaseService.getHideout().production);
     }
 

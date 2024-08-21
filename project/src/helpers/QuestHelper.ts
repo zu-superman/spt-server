@@ -966,7 +966,7 @@ export class QuestHelper {
     ): void {
         // Get hideout crafts and find those that match by areatype/required level/end product tpl - hope for just one match
         const hideoutProductions = this.databaseService.getHideout().production;
-        const matchingProductions = hideoutProductions.filter(
+        const matchingProductions = hideoutProductions.recipes.filter(
             (prod) =>
                 prod.areaType === Number.parseInt(craftUnlockReward.traderId) &&
                 prod.requirements.some((requirement) => requirement.questId === questDetails._id) &&
@@ -1121,7 +1121,7 @@ export class QuestHelper {
     public getMailItemRedeemTimeHoursForProfile(pmcData: IPmcData): number {
         const value = this.questConfig.mailRedeemTimeHours[pmcData.Info.GameVersion];
         if (!value) {
-            return this.questConfig.mailRedeemTimeHours["default"];
+            return this.questConfig.mailRedeemTimeHours.default;
         }
 
         return value;

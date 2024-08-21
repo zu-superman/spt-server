@@ -70,7 +70,7 @@ export class HideoutHelper {
     ): IItemEventRouterResponse {
         const recipe = this.databaseService
             .getHideout()
-            .production.find((production) => production._id === body.recipeId);
+            .production.recipes.find((production) => production._id === body.recipeId);
         if (!recipe) {
             this.logger.error(this.localisationService.getText("hideout-missing_recipe_in_db", body.recipeId));
 
@@ -290,7 +290,7 @@ export class HideoutHelper {
             }
 
             // Other recipes not covered by above
-            const recipe = recipes.find((r) => r._id === prodId);
+            const recipe = recipes.recipes.find((r) => r._id === prodId);
             if (!recipe) {
                 this.logger.error(this.localisationService.getText("hideout-missing_recipe_for_area", prodId));
 
@@ -564,7 +564,9 @@ export class HideoutHelper {
     ): number {
         const globalSkillsDb = this.databaseService.getGlobals().config.SkillsSettings;
 
-        const recipe = this.databaseService.getHideout().production.find((production) => production._id === recipeId);
+        const recipe = this.databaseService
+            .getHideout()
+            .production.recipes.find((production) => production._id === recipeId);
         if (!recipe) {
             this.logger.error(this.localisationService.getText("hideout-missing_recipe_in_db", recipeId));
 
@@ -756,7 +758,10 @@ export class HideoutHelper {
      * @returns seconds to produce item
      */
     protected getTotalProductionTimeSeconds(prodId: string): number {
-        return this.databaseService.getHideout().production.find((prod) => prod._id === prodId)?.productionTime ?? 0;
+        return (
+            this.databaseService.getHideout().production.recipes.find((prod) => prod._id === prodId)?.productionTime ??
+            0
+        );
     }
 
     /**
@@ -835,7 +840,7 @@ export class HideoutHelper {
         const btcProd = pmcData.Hideout.Production[HideoutHelper.bitcoinFarm];
         const bitcoinProdData = this.databaseService
             .getHideout()
-            .production.find((production) => production._id === HideoutHelper.bitcoinProductionId);
+            .production.recipes.find((production) => production._id === HideoutHelper.bitcoinProductionId);
         const coinSlotCount = this.getBTCSlots(pmcData);
 
         // Full on bitcoins, halt progress
@@ -963,7 +968,7 @@ export class HideoutHelper {
     protected getBTCSlots(pmcData: IPmcData): number {
         const bitcoinProductions = this.databaseService
             .getHideout()
-            .production.find((production) => production._id === HideoutHelper.bitcoinFarm);
+            .production.recipes.find((production) => production._id === HideoutHelper.bitcoinFarm);
         const productionSlots = bitcoinProductions?.productionLimitCount || 3; // Default to 3 if none found
         const hasManagementSkillSlots = this.profileHelper.hasEliteSkillLevel(SkillTypes.HIDEOUT_MANAGEMENT, pmcData);
         const managementSlotsCount = this.getEliteSkillAdditionalBitcoinSlotCount() || 2;

@@ -567,11 +567,11 @@ export class HideoutController {
         // Find the recipe of the production
         const recipe = this.databaseService
             .getHideout()
-            .production.find((production) => production._id === body.recipeId);
+            .production.recipes.find((production) => production._id === body.recipeId);
 
         // Find the actual amount of items we need to remove because body can send weird data
         const recipeRequirementsClone = this.cloner.clone(
-            recipe.requirements.filter((i) => i.type === "Item" || i.type === "Tool"),
+            recipe.requirements.filter((r) => r.type === "Item" || r.type === "Tool"),
         );
 
         const output = this.eventOutputHolder.getOutput(sessionID);
@@ -733,7 +733,7 @@ export class HideoutController {
             return output;
         }
 
-        const recipe = hideoutDb.production.find((r) => r._id === request.recipeId);
+        const recipe = hideoutDb.production.recipes.find((r) => r._id === request.recipeId);
         if (recipe) {
             this.handleRecipe(sessionID, recipe, pmcData, request, output);
 

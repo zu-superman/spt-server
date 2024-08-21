@@ -232,7 +232,7 @@ export class GameController {
             return;
         }
 
-        for (const craft of this.databaseService.getHideout().production) {
+        for (const craft of this.databaseService.getHideout().production.recipes) {
             // Only adjust crafts ABOVE the override
             craft.productionTime = Math.min(craft.productionTime, overrideSeconds);
         }
@@ -517,7 +517,11 @@ export class GameController {
     protected setAllDbItemsAsSellableOnFlea(): void {
         const dbItems = Object.values(this.databaseService.getItems());
         for (const item of dbItems) {
-            if (item._type === "Item" && !item._props?.CanSellOnRagfair && !this.ragfairConfig.dynamic.blacklist.custom.includes(item._id)) {
+            if (
+                item._type === "Item" &&
+                !item._props?.CanSellOnRagfair &&
+                !this.ragfairConfig.dynamic.blacklist.custom.includes(item._id)
+            ) {
                 item._props.CanSellOnRagfair = true;
             }
         }
