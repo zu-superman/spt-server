@@ -303,6 +303,13 @@ export class ProfileFixerService {
             this.logger.debug("Updating bitcoin farm area slots to a size of 50 + hideout management skill");
             this.addEmptyObjectsToHideoutAreaSlots(HideoutAreas.BITCOIN_FARM, 50 + extraBtcSlots, pmcProfile);
         }
+
+        const cultistAreaSlots = pmcProfile.Hideout.Areas.find((x) => x.type === HideoutAreas.CIRCLE_OF_CULTISTS).slots
+            .length;
+        if (cultistAreaSlots < 1) {
+            this.logger.debug("Updating cultist area slots to a size of 1");
+            this.addEmptyObjectsToHideoutAreaSlots(HideoutAreas.CIRCLE_OF_CULTISTS, 1, pmcProfile);
+        }
     }
 
     /**

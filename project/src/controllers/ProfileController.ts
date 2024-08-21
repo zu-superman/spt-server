@@ -168,7 +168,6 @@ export class ProfileController {
             undefined,
             pmcData.Inventory.fastPanel,
         );
-        pmcData.Inventory.hideoutAreaStashes = {};
 
         // Create profile
         const profileDetails: ISptProfile = {

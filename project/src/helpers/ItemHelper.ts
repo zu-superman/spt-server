@@ -805,6 +805,7 @@ export class ItemHelper {
     ): Item[] {
         let items = this.cloner.clone(originalItems); // Deep-clone the items to avoid mutation.
         let serialisedInventory = this.jsonUtil.serialize(items);
+        const hideoutAreaStashes = Object.values(pmcData?.Inventory.hideoutAreaStashes ?? {});
 
         for (const item of items) {
             if (pmcData) {
@@ -819,7 +820,8 @@ export class ItemHelper {
                     item._id === pmcData.Inventory.questRaidItems ||
                     item._id === pmcData.Inventory.questStashItems ||
                     item._id === pmcData.Inventory.sortingTable ||
-                    item._id === pmcData.Inventory.stash
+                    item._id === pmcData.Inventory.stash ||
+                    hideoutAreaStashes?.includes(item._id)
                 ) {
                     continue;
                 }
