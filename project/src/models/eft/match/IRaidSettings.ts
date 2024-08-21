@@ -11,15 +11,18 @@ import { WindSpeed } from "@spt/models/enums/RaidSettings/TimeAndWeather/WindSpe
 import { SideType } from "@spt/models/enums/SideType";
 
 export interface IRaidSettings {
+    keyId: string;
     location: string;
+    isLocationTransition: boolean;
     timeVariant: DateTime;
-    raidMode: RaidMode;
     metabolismDisabled: boolean;
-    playersSpawnPlace: PlayersSpawnPlace;
     timeAndWeatherSettings: TimeAndWeatherSettings;
     botSettings: BotSettings;
     wavesSettings: WavesSettings;
     side: SideType;
+    raidMode: RaidMode;
+    playersSpawnPlace: PlayersSpawnPlace;
+    CanShowGroupPreview: boolean;
 }
 
 export interface TimeAndWeatherSettings {

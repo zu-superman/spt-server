@@ -402,7 +402,9 @@
                         }
                     ],
                     "Improvement": {},
-                    "Production": {}
+                    "Production": {},
+					"HideoutCounters": null,
+					"MannequinPoses": ["standing", "boxing", "fingerguns", "fingerguns2", "spreadinghands"]
                 },
                 "Info": {
                     "AccountType": 0,
@@ -2645,6 +2647,7 @@
 					"resetInterval": 86400
 				},
                 "WishList": [],
+				"karmaValue": 0.0,
                 "_id": "__REPLACEME__",
                 "aid": "__REPLACEME__",
                 "savage": "__REPLACEME__"
@@ -3099,7 +3102,9 @@
                         }
                     ],
                     "Improvement": {},
-                    "Production": {}
+                    "Production": {},
+					"HideoutCounters": null,
+					"MannequinPoses": ["standing", "boxing", "fingerguns", "fingerguns2", "spreadinghands"]
                 },
                 "Info": {
                     "AccountType": 0,
@@ -5515,6 +5520,7 @@
 					"resetInterval": 86400
 				},
                 "WishList": [],
+				"karmaValue": 0.0,
                 "_id": "__REPLACEME__",
                 "aid": "__REPLACEME__",
                 "savage": "__REPLACEME__"
@@ -5977,7 +5983,9 @@
                         }
                     ],
                     "Improvement": {},
-                    "Production": {}
+                    "Production": {},
+					"HideoutCounters": null,
+					"MannequinPoses": ["standing", "boxing", "fingerguns", "fingerguns2", "spreadinghands"]
                 },
                 "Info": {
                     "AccountType": 0,
@@ -8754,6 +8762,7 @@
 					"resetInterval": 86400
 				},
                 "WishList": [],
+				"karmaValue": 0.0,
                 "_id": "__REPLACEME__",
                 "aid": "__REPLACEME__",
                 "savage": "__REPLACEME__"
@@ -9233,7 +9242,9 @@
                         }
                     ],
                     "Improvement": {},
-                    "Production": {}
+                    "Production": {},
+					"HideoutCounters": null,
+					"MannequinPoses": ["standing", "boxing", "fingerguns", "fingerguns2", "spreadinghands"]
                 },
                 "Info": {
                     "AccountType": 0,
@@ -12092,6 +12103,7 @@
 					"resetInterval": 86400
 				},
                 "WishList": [],
+				"karmaValue": 0.0,
                 "_id": "__REPLACEME__",
                 "aid": "__REPLACEME__",
                 "savage": "__REPLACEME__"
@@ -12579,7 +12591,9 @@
                         }
                     ],
                     "Improvement": {},
-                    "Production": {}
+                    "Production": {},
+					"HideoutCounters": null,
+					"MannequinPoses": ["standing", "boxing", "fingerguns", "fingerguns2", "spreadinghands"]
                 },
                 "Info": {
                     "AccountType": 0,
@@ -15789,6 +15803,7 @@
 					"resetInterval": 86400
 				},
                 "WishList": [],
+				"karmaValue": 0.0,
                 "_id": "__REPLACEME__",
                 "aid": "__REPLACEME__",
                 "savage": "__REPLACEME__"
@@ -16305,7 +16320,9 @@
                         }
                     ],
                     "Improvement": {},
-                    "Production": {}
+                    "Production": {},
+					"HideoutCounters": null,
+					"MannequinPoses": ["standing", "boxing", "fingerguns", "fingerguns2", "spreadinghands"]
                 },
                 "Info": {
                     "AccountType": 0,
@@ -19683,6 +19700,7 @@
 					"resetInterval": 86400
 				},
                 "WishList": [],
+				"karmaValue": 0.0,
                 "_id": "__REPLACEME__",
                 "aid": "__REPLACEME__",
                 "savage": "__REPLACEME__"
@@ -20230,7 +20248,9 @@
                     ],
                     "Improvement": {},
                     "Production": {},
-                    "Seed": 222222222
+                    "Seed": 222222222,
+					"HideoutCounters": null,
+					"MannequinPoses": ["standing", "boxing", "fingerguns", "fingerguns2", "spreadinghands"]
                 },
                 "Info": {
                     "AccountType": 0,
@@ -23402,6 +23422,7 @@
 					"resetInterval": 86400
 				},
                 "WishList": [],
+				"karmaValue": 0.0,
                 "_id": "__REPLACEME__",
                 "aid": "__REPLACEME__",
                 "savage": "__REPLACEME__"
@@ -23946,7 +23967,9 @@
                     ],
                     "Improvement": {},
                     "Production": {},
-                    "Seed": 111111111
+                    "Seed": 111111111,
+					"HideoutCounters": null,
+					"MannequinPoses": ["standing", "boxing", "fingerguns", "fingerguns2", "spreadinghands"]
                 },
                 "Info": {
                     "AccountType": 0,
@@ -27278,6 +27301,7 @@
 					"resetInterval": 86400
 				},
                 "WishList": [],
+				"karmaValue": 0.0,
                 "_id": "__REPLACEME__",
                 "aid": "__REPLACEME__",
                 "savage": "__REPLACEME__"
@@ -27825,7 +27849,9 @@
                     ],
                     "Improvement": {},
                     "Production": {},
-                    "Seed": 222222222
+                    "Seed": 222222222,
+					"HideoutCounters": null,
+					"MannequinPoses": ["standing", "boxing", "fingerguns", "fingerguns2", "spreadinghands"]
                 },
                 "Info": {
                     "AccountType": 0,
@@ -31638,6 +31664,7 @@
 					"resetInterval": 86400
 				},
                 "WishList": [],
+				"karmaValue": 0.0,
                 "_id": "__REPLACEME__",
                 "aid": "__REPLACEME__",
                 "savage": "__REPLACEME__"
@@ -32184,7 +32211,9 @@
                     ],
                     "Improvement": {},
                     "Production": {},
-                    "Seed": 111111111
+                    "Seed": 111111111,
+					"HideoutCounters": null,
+					"MannequinPoses": ["standing", "boxing", "fingerguns", "fingerguns2", "spreadinghands"]
                 },
                 "Info": {
                     "AccountType": 0,
@@ -36216,6 +36245,7 @@
 					"resetInterval": 86400
 				},
                 "WishList": [],
+				"karmaValue": 0.0,
                 "_id": "__REPLACEME__",
                 "aid": "__REPLACEME__",
                 "savage": "__REPLACEME__"
@@ -36765,7 +36795,9 @@
                     ],
                     "Improvement": {},
                     "Production": {},
-                    "Seed": 222222222
+                    "Seed": 222222222,
+					"HideoutCounters": null,
+					"MannequinPoses": ["standing", "boxing", "fingerguns", "fingerguns2", "spreadinghands"]
                 },
                 "Info": {
                     "AccountType": 0,
@@ -37191,6 +37223,7 @@
 					"resetInterval": 86400
 				},
                 "WishList": [],
+				"karmaValue": 0.0,
                 "_id": "__REPLACEME__",
                 "aid": "__REPLACEME__",
                 "savage": "__REPLACEME__"
@@ -37736,7 +37769,9 @@
                     ],
                     "Improvement": {},
                     "Production": {},
-                    "Seed": 111111111
+                    "Seed": 111111111,
+					"HideoutCounters": null,
+					"MannequinPoses": ["standing", "boxing", "fingerguns", "fingerguns2", "spreadinghands"]
                 },
                 "Info": {
                     "AccountType": 0,
@@ -38160,6 +38195,7 @@
 					"resetInterval": 86400
 				},
                 "WishList": [],
+				"karmaValue": 0.0,
                 "_id": "__REPLACEME__",
                 "aid": "__REPLACEME__",
                 "savage": "__REPLACEME__"
@@ -40720,7 +40756,9 @@
                         }
                     ],
                     "Improvement": {},
-                    "Production": {}
+                    "Production": {},
+					"HideoutCounters": null,
+					"MannequinPoses": ["standing", "boxing", "fingerguns", "fingerguns2", "spreadinghands"]
                 },
                 "Info": {
                     "AccountType": 0,
@@ -40761,6 +40799,7 @@
                         "16": "5d494a295b56502f18c98a08",
                         "24": "63db64cbf9963741dc0d741f",
                         "25": "640b2d867f4185aa520d08ba",
+						"26": "640b2d867f4185aa520d08bb",
                         "27": "66c5bfd48a24042f1006eadc"
                     },
                     "items": [{
@@ -40775,6 +40814,9 @@
                         }, {
                             "_id": "640b2d867f4185aa520d08ba",
                             "_tpl": "64381b6e44b37a080d0245b9"
+                        }, {
+                            "_id": "640b2d867f4185aa520d08bb",
+                            "_tpl": "65e5957613227bb7690ce9f6"
                         }, {
                             "_id": "63db64cbf9963741dc0d741f",
                             "_tpl": "64381b6e44b37a080d0245b9"
@@ -41277,6 +41319,7 @@
 					"resetInterval": 86400
 				},
                 "WishList": [],
+				"karmaValue": 0.0,
                 "_id": "__REPLACEME__",
                 "aid": "__REPLACEME__",
                 "savage": "__REPLACEME__"
@@ -43836,7 +43879,9 @@
                         }
                     ],
                     "Improvement": {},
-                    "Production": {}
+                    "Production": {},
+					"HideoutCounters": null,
+					"MannequinPoses": ["standing", "boxing", "fingerguns", "fingerguns2", "spreadinghands"]
                 },
                 "Info": {
                     "AccountType": 0,
@@ -43877,6 +43922,7 @@
                         "16": "5d494a295b56502f18c98a08",
                         "24": "63db64cbf9963741dc0d741f",
                         "25": "640b2d867f4185aa520d08ba",
+						"26": "640b2d867f4185aa520d08bb",
                         "27": "66c5bfd48a24042f1006eadc"
                     },
                     "items": [{
@@ -43896,6 +43942,9 @@
                         }, {
                             "_id": "640b2d867f4185aa520d08ba",
                             "_tpl": "64381b6e44b37a080d0245b9"
+                        }, {
+                            "_id": "640b2d867f4185aa520d08bb",
+                            "_tpl": "65e5957613227bb7690ce9f6"
                         }, {
                             "_id": "63db64cbf9963741dc0d741f",
                             "_tpl": "64381b6e44b37a080d0245b9"
@@ -44393,6 +44442,7 @@
 					"resetInterval": 86400
 				},
                 "WishList": [],
+				"karmaValue": 0.0,
                 "_id": "__REPLACEME__",
                 "aid": "__REPLACEME__",
                 "savage": "__REPLACEME__"
@@ -46918,7 +46968,9 @@
                         }
                     ],
                     "Improvement": {},
-                    "Production": {}
+                    "Production": {},
+					"HideoutCounters": null,
+					"MannequinPoses": ["standing", "boxing", "fingerguns", "fingerguns2", "spreadinghands"]
                 },
                 "Info": {
                     "AccountType": 0,
@@ -47761,6 +47813,7 @@
 					"resetInterval": 86400
 				},
                 "WishList": [],
+				"karmaValue": 0.0,
                 "_id": "__REPLACEME__",
                 "aid": "__REPLACEME__",
                 "savage": "__REPLACEME__"
@@ -50281,7 +50334,9 @@
                         }
                     ],
                     "Improvement": {},
-                    "Production": {}
+                    "Production": {},
+					"HideoutCounters": null,
+					"MannequinPoses": ["standing", "boxing", "fingerguns", "fingerguns2", "spreadinghands"]
                 },
                 "Info": {
                     "AccountType": 0,
@@ -51124,6 +51179,7 @@
 					"resetInterval": 86400
 				},
                 "WishList": [],
+				"karmaValue": 0.0,
                 "_id": "__REPLACEME__",
                 "aid": "__REPLACEME__",
                 "savage": "__REPLACEME__"
@@ -51657,7 +51713,9 @@
                         }
                     ],
                     "Improvement": {},
-                    "Production": {}
+                    "Production": {},
+					"HideoutCounters": null,
+					"MannequinPoses": ["standing", "boxing", "fingerguns", "fingerguns2", "spreadinghands"]
                 },
                 "Info": {
                     "AccountType": 0,
@@ -52086,6 +52144,7 @@
 					"resetInterval": 86400
 				},
                 "WishList": [],
+				"karmaValue": 0.0,
                 "_id": "__REPLACEME__",
                 "aid": "__REPLACEME__",
                 "savage": "__REPLACEME__"
@@ -52626,7 +52685,9 @@
                         }
                     ],
                     "Improvement": {},
-                    "Production": {}
+                    "Production": {},
+					"HideoutCounters": null,
+					"MannequinPoses": ["standing", "boxing", "fingerguns", "fingerguns2", "spreadinghands"]
                 },
                 "Info": {
                     "AccountType": 0,
@@ -53055,6 +53116,7 @@
 					"resetInterval": 86400
 				},
                 "WishList": [],
+				"karmaValue": 0.0,
                 "_id": "__REPLACEME__",
                 "aid": "__REPLACEME__",
                 "savage": "__REPLACEME__"

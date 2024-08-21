@@ -13,6 +13,7 @@ export interface IBotBase {
     /** SPT property - use to store player id - TODO - move to AID ( account id as guid of choice) */
     sessionId: string;
     savage?: string;
+    karmaValue: number;
     Info: Info;
     Customization: Customization;
     Health: Health;
@@ -339,8 +340,17 @@ export interface Hideout {
     Production: Record<string, Productive>;
     Areas: HideoutArea[];
     Improvements: Record<string, IHideoutImprovement>;
+    HideoutCounters: IHideoutCounters;
     Seed: number;
+    MannequinPoses: string[];
     sptUpdateLastRunTimestamp: number;
+}
+
+export interface IHideoutCounters {
+    fuelCounter: number;
+    airFilterCounter: number;
+    waterFilterCounter: number;
+    craftingTimeCounter: number;
 }
 
 export interface IHideoutImprovement {
