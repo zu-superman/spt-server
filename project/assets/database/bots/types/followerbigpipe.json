@@ -378,14 +378,18 @@
         "COVER_SELF_ALWAYS_IF_DAMAGED": false,
         "DAMAGE_REDUCTION_TIME_SEC": 30,
         "DANGER_POINT_CHOOSE_COEF": 1,
-        "DEFAULT_BEAR_BEHAVIOUR": "Attack",
-        "DEFAULT_SAVAGE_BEHAVIOUR": "Attack",
-        "DEFAULT_USEC_BEHAVIOUR": "Attack",
+        "DEFAULT_BEAR_BEHAVIOUR": "AlwaysEnemies",
+        "DEFAULT_SAVAGE_BEHAVIOUR": "AlwaysEnemies",
+        "DEFAULT_USEC_BEHAVIOUR": "AlwaysEnemies",
         "DIST_TO_ENEMY_YO_CAN_HEAL": 30,
         "DIST_TO_FOUND_SQRT": 400,
         "DIST_TO_STOP_RUN_ENEMY": 15,
         "DOG_FIGHT_IN": 3,
         "DOG_FIGHT_OUT": 6,
+        "ENEMY_BOT_TYPES": [
+          "pmcBEAR",
+          "pmcUSEC"
+        ],
         "ENEMY_LOOK_AT_ME_ANG": 15,
         "FIND_COVER_TO_GET_POSITION_WITH_SHOOT": 2,
         "FRIENDLY_BOT_TYPES": [
@@ -869,14 +873,18 @@
         "COVER_SELF_ALWAYS_IF_DAMAGED": false,
         "DAMAGE_REDUCTION_TIME_SEC": 30,
         "DANGER_POINT_CHOOSE_COEF": 1,
-        "DEFAULT_BEAR_BEHAVIOUR": "Attack",
-        "DEFAULT_SAVAGE_BEHAVIOUR": "Attack",
-        "DEFAULT_USEC_BEHAVIOUR": "Attack",
+        "DEFAULT_BEAR_BEHAVIOUR": "AlwaysEnemies",
+        "DEFAULT_SAVAGE_BEHAVIOUR": "AlwaysEnemies",
+        "DEFAULT_USEC_BEHAVIOUR": "AlwaysEnemies",
         "DIST_TO_ENEMY_YO_CAN_HEAL": 30,
         "DIST_TO_FOUND_SQRT": 400,
         "DIST_TO_STOP_RUN_ENEMY": 15,
         "DOG_FIGHT_IN": 3,
         "DOG_FIGHT_OUT": 6,
+        "ENEMY_BOT_TYPES": [
+          "pmcBEAR",
+          "pmcUSEC"
+        ],
         "ENEMY_LOOK_AT_ME_ANG": 15,
         "FIND_COVER_TO_GET_POSITION_WITH_SHOOT": 2,
         "FRIENDLY_BOT_TYPES": [
@@ -1360,14 +1368,18 @@
         "COVER_SELF_ALWAYS_IF_DAMAGED": false,
         "DAMAGE_REDUCTION_TIME_SEC": 30,
         "DANGER_POINT_CHOOSE_COEF": 1,
-        "DEFAULT_BEAR_BEHAVIOUR": "Attack",
-        "DEFAULT_SAVAGE_BEHAVIOUR": "Attack",
-        "DEFAULT_USEC_BEHAVIOUR": "Attack",
+        "DEFAULT_BEAR_BEHAVIOUR": "AlwaysEnemies",
+        "DEFAULT_SAVAGE_BEHAVIOUR": "AlwaysEnemies",
+        "DEFAULT_USEC_BEHAVIOUR": "AlwaysEnemies",
         "DIST_TO_ENEMY_YO_CAN_HEAL": 30,
         "DIST_TO_FOUND_SQRT": 400,
         "DIST_TO_STOP_RUN_ENEMY": 15,
         "DOG_FIGHT_IN": 3,
         "DOG_FIGHT_OUT": 6,
+        "ENEMY_BOT_TYPES": [
+          "pmcBEAR",
+          "pmcUSEC"
+        ],
         "ENEMY_LOOK_AT_ME_ANG": 15,
         "FIND_COVER_TO_GET_POSITION_WITH_SHOOT": 2,
         "FRIENDLY_BOT_TYPES": [
@@ -1851,14 +1863,18 @@
         "COVER_SELF_ALWAYS_IF_DAMAGED": false,
         "DAMAGE_REDUCTION_TIME_SEC": 30,
         "DANGER_POINT_CHOOSE_COEF": 1,
-        "DEFAULT_BEAR_BEHAVIOUR": "Attack",
-        "DEFAULT_SAVAGE_BEHAVIOUR": "Attack",
-        "DEFAULT_USEC_BEHAVIOUR": "Attack",
+        "DEFAULT_BEAR_BEHAVIOUR": "AlwaysEnemies",
+        "DEFAULT_SAVAGE_BEHAVIOUR": "AlwaysEnemies",
+        "DEFAULT_USEC_BEHAVIOUR": "AlwaysEnemies",
         "DIST_TO_ENEMY_YO_CAN_HEAL": 30,
         "DIST_TO_FOUND_SQRT": 400,
         "DIST_TO_STOP_RUN_ENEMY": 15,
         "DOG_FIGHT_IN": 3,
         "DOG_FIGHT_OUT": 6,
+        "ENEMY_BOT_TYPES": [
+          "pmcBEAR",
+          "pmcUSEC"
+        ],
         "ENEMY_LOOK_AT_ME_ANG": 15,
         "FIND_COVER_TO_GET_POSITION_WITH_SHOOT": 2,
         "FRIENDLY_BOT_TYPES": [
@@ -2207,6 +2223,9 @@
         "5e81f423763d9f754677bf2e": 307,
         "5efb0cabfb3e451d70735af5": 56
       },
+      "Caliber127x33": {
+        "668fe62ac62660a5d8071446": 1
+      },
       "Caliber12g": {
         "5d6e6911a4b9361bd5780d52": 1
       },
@@ -2217,6 +2236,9 @@
       "Caliber762x35": {
         "5fd20ff893a8961fc660a954": 127,
         "619636be6db0f2477964e710": 2878
+      },
+      "Caliber762x51": {
+        "5a6086ea4f39f99cd479502f": 1
       }
     },
     "equipment": {
@@ -2224,8 +2246,10 @@
       "ArmorVest": {},
       "Backpack": {},
       "Earpiece": {
-        "5645bcc04bdc2d363b8b4572": 1121,
-        "628e4e576d783146b124c64d": 1100
+        "5645bcc04bdc2d363b8b4572": 62,
+        "628e4e576d783146b124c64d": 72,
+        "66b5f693acff495a294927e3": 1,
+        "66b5f6985891c84aab75ca76": 2
       },
       "Eyewear": {
         "603409c80ca681766b6a0fb2": 136,
@@ -2241,18 +2265,21 @@
         "628e4dd1f477aa12234918aa": 1
       },
       "Holster": {
-        "5f36a0e5fbf956000b716b65": 1
+        "5f36a0e5fbf956000b716b65": 25,
+        "668fe5a998b5ad715703ddd6": 1,
+        "669fa3f88abd2662d80eee77": 2
       },
       "Pockets": {
-        "5af99e9186f7747c447120b8": 1
+        "64cbd95a29b9b4283e216ff5": 1
       },
       "Scabbard": {
         "54491bb74bdc2d09088b4567": 1
       },
       "SecondPrimaryWeapon": {
-        "5a7828548dc32e5a9c28b516": 901,
-        "5e81ebcd8e146c7080625e15": 185,
-        "6275303a9f372d6ea97f9ec7": 138
+        "5a7828548dc32e5a9c28b516": 105,
+        "5e81ebcd8e146c7080625e15": 22,
+        "6275303a9f372d6ea97f9ec7": 21,
+        "661cec09b2c6356b4d0c7a36": 2
       },
       "SecuredContainer": {
         "5c0a794586f77461c458f892": 1
@@ -2645,6 +2672,90 @@
         ],
         "Right_side_plate": [
           "6557458f83942d705f0c4962"
+        ]
+      },
+      "66012788c752a02bbe05e68e": {
+        "mod_muzzle": [
+          "66012a1d3dff5074ed002e2a"
+        ],
+        "mod_sight_front": [
+          "660126a98f2b23af220b27e7"
+        ]
+      },
+      "66152153a031cbb5570e346f": {
+        "mod_pistolgrip_001": [
+          "6615211ca031cbb5570e346d"
+        ]
+      },
+      "661cec09b2c6356b4d0c7a36": {
+        "mod_barrel": [
+          "66012788c752a02bbe05e68e"
+        ],
+        "mod_handguard": [
+          "661fbe066751ee51930b01f2"
+        ],
+        "mod_magazine": [
+          "660ea4453786cc0af808a1be"
+        ],
+        "mod_pistolgrip_000": [
+          "66152153a031cbb5570e346f"
+        ],
+        "mod_scope": [
+          "57ac965c24597706be5f975c"
+        ],
+        "mod_sight_rear": [
+          "6601265f98a610c1aa0ea637"
+        ],
+        "mod_stock": [
+          "661520fb6f8e1a96340afaa6"
+        ]
+      },
+      "668fe5a998b5ad715703ddd6": {
+        "mod_barrel": [
+          "668fe5f62a0f85eea407cc18"
+        ],
+        "mod_magazine": [
+          "668fe5c5f35310705d02b696"
+        ],
+        "mod_pistolgrip": [
+          "668fe5d42a0f85eea407cc16"
+        ],
+        "mod_reciever": [
+          "668fe60b56984d93550462c6"
+        ]
+      },
+      "668fe5f62a0f85eea407cc18": {
+        "mod_sight_front": [
+          "668fe5ec4315934ba10c6f96"
+        ]
+      },
+      "668fe60b56984d93550462c6": {
+        "mod_sight_rear": [
+          "668fe5e1800f0244f9036e46"
+        ]
+      },
+      "669fa3f88abd2662d80eee77": {
+        "mod_barrel": [
+          "669fa4ba1bd4416eaa09b3c6"
+        ],
+        "mod_magazine": [
+          "668fe5c5f35310705d02b696"
+        ],
+        "mod_pistolgrip": [
+          "66a0da76b6f47fcfeb025e96"
+        ],
+        "mod_reciever": [
+          "669fa5019aa2a422600442f6"
+        ]
+      },
+      "669fa4ba1bd4416eaa09b3c6": {
+        "mod_sight_front": [
+          "668fe5ec4315934ba10c6f96"
+        ]
+      },
+      "669fa5019aa2a422600442f6": {
+        "mod_sight_rear": [
+          "668fe5e1800f0244f9036e46"
         ]
       }
     }

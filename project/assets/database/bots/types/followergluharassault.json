@@ -426,15 +426,18 @@
         "DANGER_EXPIRE_TIME_MAX": 1.2,
         "DANGER_EXPIRE_TIME_MIN": 0.4,
         "DANGER_POINT_CHOOSE_COEF": 1,
-        "DEFAULT_BEAR_BEHAVIOUR": "Attack",
+        "DEFAULT_BEAR_BEHAVIOUR": "AlwaysEnemies",
         "DEFAULT_SAVAGE_BEHAVIOUR": "Warn",
-        "DEFAULT_USEC_BEHAVIOUR": "Attack",
+        "DEFAULT_USEC_BEHAVIOUR": "AlwaysEnemies",
         "DIST_TO_ENEMY_YO_CAN_HEAL": 30,
         "DIST_TO_FOUND_SQRT": 400,
         "DIST_TO_STOP_RUN_ENEMY": 15,
         "DOG_FIGHT_IN": 3,
         "DOG_FIGHT_OUT": 6,
-        "ENEMY_BOT_TYPES": [],
+        "ENEMY_BOT_TYPES": [
+          "pmcBEAR",
+          "pmcUSEC"
+        ],
         "ENEMY_LOOK_AT_ME_ANG": 15,
         "FIND_COVER_TO_GET_POSITION_WITH_SHOOT": 2,
         "FRIENDLY_BOT_TYPES": [],
@@ -944,15 +947,18 @@
         "DANGER_EXPIRE_TIME_MAX": 1.2,
         "DANGER_EXPIRE_TIME_MIN": 0.4,
         "DANGER_POINT_CHOOSE_COEF": 1,
-        "DEFAULT_BEAR_BEHAVIOUR": "Attack",
+        "DEFAULT_BEAR_BEHAVIOUR": "AlwaysEnemies",
         "DEFAULT_SAVAGE_BEHAVIOUR": "Warn",
-        "DEFAULT_USEC_BEHAVIOUR": "Attack",
+        "DEFAULT_USEC_BEHAVIOUR": "AlwaysEnemies",
         "DIST_TO_ENEMY_YO_CAN_HEAL": 30,
         "DIST_TO_FOUND_SQRT": 400,
         "DIST_TO_STOP_RUN_ENEMY": 15,
         "DOG_FIGHT_IN": 3,
         "DOG_FIGHT_OUT": 6,
-        "ENEMY_BOT_TYPES": [],
+        "ENEMY_BOT_TYPES": [
+          "pmcBEAR",
+          "pmcUSEC"
+        ],
         "ENEMY_LOOK_AT_ME_ANG": 15,
         "FIND_COVER_TO_GET_POSITION_WITH_SHOOT": 2,
         "FRIENDLY_BOT_TYPES": [],
@@ -1462,15 +1468,18 @@
         "DANGER_EXPIRE_TIME_MAX": 1.2,
         "DANGER_EXPIRE_TIME_MIN": 0.4,
         "DANGER_POINT_CHOOSE_COEF": 1,
-        "DEFAULT_BEAR_BEHAVIOUR": "Attack",
+        "DEFAULT_BEAR_BEHAVIOUR": "AlwaysEnemies",
         "DEFAULT_SAVAGE_BEHAVIOUR": "Warn",
-        "DEFAULT_USEC_BEHAVIOUR": "Attack",
+        "DEFAULT_USEC_BEHAVIOUR": "AlwaysEnemies",
         "DIST_TO_ENEMY_YO_CAN_HEAL": 30,
         "DIST_TO_FOUND_SQRT": 400,
         "DIST_TO_STOP_RUN_ENEMY": 15,
         "DOG_FIGHT_IN": 3,
         "DOG_FIGHT_OUT": 6,
-        "ENEMY_BOT_TYPES": [],
+        "ENEMY_BOT_TYPES": [
+          "pmcBEAR",
+          "pmcUSEC"
+        ],
         "ENEMY_LOOK_AT_ME_ANG": 15,
         "FIND_COVER_TO_GET_POSITION_WITH_SHOOT": 2,
         "FRIENDLY_BOT_TYPES": [],
@@ -1980,15 +1989,18 @@
         "DANGER_EXPIRE_TIME_MAX": 1.2,
         "DANGER_EXPIRE_TIME_MIN": 0.4,
         "DANGER_POINT_CHOOSE_COEF": 1,
-        "DEFAULT_BEAR_BEHAVIOUR": "Attack",
+        "DEFAULT_BEAR_BEHAVIOUR": "AlwaysEnemies",
         "DEFAULT_SAVAGE_BEHAVIOUR": "Warn",
-        "DEFAULT_USEC_BEHAVIOUR": "Attack",
+        "DEFAULT_USEC_BEHAVIOUR": "AlwaysEnemies",
         "DIST_TO_ENEMY_YO_CAN_HEAL": 30,
         "DIST_TO_FOUND_SQRT": 400,
         "DIST_TO_STOP_RUN_ENEMY": 15,
         "DOG_FIGHT_IN": 3,
         "DOG_FIGHT_OUT": 6,
-        "ENEMY_BOT_TYPES": [],
+        "ENEMY_BOT_TYPES": [
+          "pmcBEAR",
+          "pmcUSEC"
+        ],
         "ENEMY_LOOK_AT_ME_ANG": 15,
         "FIND_COVER_TO_GET_POSITION_WITH_SHOOT": 2,
         "FRIENDLY_BOT_TYPES": [],
@@ -2664,6 +2676,10 @@
         ]
       },
       "57c44b372459772d2b39b8ce": {
+        "mod_handguard": [
+          "651178336cad06c37c049eb4",
+          "6565bb7eb4b12a56eb04b084"
+        ],
         "mod_magazine": [
           "57838f9f2459774a150289a0"
         ],
@@ -2682,8 +2698,7 @@
         ],
         "mod_stock": [
           "57c450252459772d28133253"
-        ],
-		"mod_handguard": ["651178336cad06c37c049eb4", "6565bb7eb4b12a56eb04b084"]
+        ]
       },
       "57c44dd02459772d2e0ae249": {
         "mod_sight_rear": [

@@ -398,7 +398,7 @@
         "COVER_SELF_ALWAYS_IF_DAMAGED": false,
         "DAMAGE_REDUCTION_TIME_SEC": 20,
         "DANGER_POINT_CHOOSE_COEF": 1,
-        "DEFAULT_SAVAGE_BEHAVIOUR": "Attack",
+        "DEFAULT_SAVAGE_BEHAVIOUR": "AlwaysEnemies",
         "DIST_TO_ENEMY_YO_CAN_HEAL": 30,
         "DIST_TO_FOUND_SQRT": 400,
         "DIST_TO_STOP_RUN_ENEMY": 15,
@@ -902,7 +902,7 @@
         "COVER_SELF_ALWAYS_IF_DAMAGED": false,
         "DAMAGE_REDUCTION_TIME_SEC": 20,
         "DANGER_POINT_CHOOSE_COEF": 1,
-        "DEFAULT_SAVAGE_BEHAVIOUR": "Attack",
+        "DEFAULT_SAVAGE_BEHAVIOUR": "AlwaysEnemies",
         "DIST_TO_ENEMY_YO_CAN_HEAL": 30,
         "DIST_TO_FOUND_SQRT": 400,
         "DIST_TO_STOP_RUN_ENEMY": 15,
@@ -1406,7 +1406,7 @@
         "COVER_SELF_ALWAYS_IF_DAMAGED": false,
         "DAMAGE_REDUCTION_TIME_SEC": 20,
         "DANGER_POINT_CHOOSE_COEF": 1,
-        "DEFAULT_SAVAGE_BEHAVIOUR": "Attack",
+        "DEFAULT_SAVAGE_BEHAVIOUR": "AlwaysEnemies",
         "DIST_TO_ENEMY_YO_CAN_HEAL": 30,
         "DIST_TO_FOUND_SQRT": 400,
         "DIST_TO_STOP_RUN_ENEMY": 15,
@@ -1910,7 +1910,7 @@
         "COVER_SELF_ALWAYS_IF_DAMAGED": false,
         "DAMAGE_REDUCTION_TIME_SEC": 20,
         "DANGER_POINT_CHOOSE_COEF": 1,
-        "DEFAULT_SAVAGE_BEHAVIOUR": "Attack",
+        "DEFAULT_SAVAGE_BEHAVIOUR": "AlwaysEnemies",
         "DIST_TO_ENEMY_YO_CAN_HEAL": 30,
         "DIST_TO_FOUND_SQRT": 400,
         "DIST_TO_STOP_RUN_ENEMY": 15,
@@ -2823,6 +2823,10 @@
         ]
       },
       "57c44b372459772d2b39b8ce": {
+        "mod_handguard": [
+          "651178336cad06c37c049eb4",
+          "6565bb7eb4b12a56eb04b084"
+        ],
         "mod_magazine": [
           "57838f9f2459774a150289a0"
         ],
@@ -2840,8 +2844,7 @@
         ],
         "mod_stock": [
           "57c450252459772d28133253"
-        ],
-		"mod_handguard": ["651178336cad06c37c049eb4", "6565bb7eb4b12a56eb04b084"]
+        ]
       },
       "57c44dd02459772d2e0ae249": {
         "mod_sight_rear": [

@@ -393,14 +393,18 @@
         "COVER_SELF_ALWAYS_IF_DAMAGED": false,
         "DAMAGE_REDUCTION_TIME_SEC": 20,
         "DANGER_POINT_CHOOSE_COEF": 1,
-        "DEFAULT_BEAR_BEHAVIOUR": "Attack",
-        "DEFAULT_SAVAGE_BEHAVIOUR": "Attack",
-        "DEFAULT_USEC_BEHAVIOUR": "Attack",
+        "DEFAULT_BEAR_BEHAVIOUR": "AlwaysEnemies",
+        "DEFAULT_SAVAGE_BEHAVIOUR": "AlwaysEnemies",
+        "DEFAULT_USEC_BEHAVIOUR": "AlwaysEnemies",
         "DIST_TO_ENEMY_YO_CAN_HEAL": 30,
         "DIST_TO_FOUND_SQRT": 400,
         "DIST_TO_STOP_RUN_ENEMY": 15,
         "DOG_FIGHT_IN": 3,
         "DOG_FIGHT_OUT": 6,
+        "ENEMY_BOT_TYPES": [
+          "pmcBEAR",
+          "pmcUSEC"
+        ],
         "ENEMY_LOOK_AT_ME_ANG": 15,
         "ENEMY_LOOK_MY_SECTOR_ANG": 60,
         "FIND_COVER_TO_GET_POSITION_WITH_SHOOT": 2,
@@ -891,14 +895,18 @@
         "COVER_SELF_ALWAYS_IF_DAMAGED": false,
         "DAMAGE_REDUCTION_TIME_SEC": 20,
         "DANGER_POINT_CHOOSE_COEF": 1,
-        "DEFAULT_BEAR_BEHAVIOUR": "Attack",
-        "DEFAULT_SAVAGE_BEHAVIOUR": "Attack",
-        "DEFAULT_USEC_BEHAVIOUR": "Attack",
+        "DEFAULT_BEAR_BEHAVIOUR": "AlwaysEnemies",
+        "DEFAULT_SAVAGE_BEHAVIOUR": "AlwaysEnemies",
+        "DEFAULT_USEC_BEHAVIOUR": "AlwaysEnemies",
         "DIST_TO_ENEMY_YO_CAN_HEAL": 30,
         "DIST_TO_FOUND_SQRT": 400,
         "DIST_TO_STOP_RUN_ENEMY": 15,
         "DOG_FIGHT_IN": 3,
         "DOG_FIGHT_OUT": 6,
+        "ENEMY_BOT_TYPES": [
+          "pmcBEAR",
+          "pmcUSEC"
+        ],
         "ENEMY_LOOK_AT_ME_ANG": 15,
         "ENEMY_LOOK_MY_SECTOR_ANG": 60,
         "FIND_COVER_TO_GET_POSITION_WITH_SHOOT": 2,
@@ -1389,14 +1397,18 @@
         "COVER_SELF_ALWAYS_IF_DAMAGED": false,
         "DAMAGE_REDUCTION_TIME_SEC": 20,
         "DANGER_POINT_CHOOSE_COEF": 1,
-        "DEFAULT_BEAR_BEHAVIOUR": "Attack",
-        "DEFAULT_SAVAGE_BEHAVIOUR": "Attack",
-        "DEFAULT_USEC_BEHAVIOUR": "Attack",
+        "DEFAULT_BEAR_BEHAVIOUR": "AlwaysEnemies",
+        "DEFAULT_SAVAGE_BEHAVIOUR": "AlwaysEnemies",
+        "DEFAULT_USEC_BEHAVIOUR": "AlwaysEnemies",
         "DIST_TO_ENEMY_YO_CAN_HEAL": 30,
         "DIST_TO_FOUND_SQRT": 400,
         "DIST_TO_STOP_RUN_ENEMY": 15,
         "DOG_FIGHT_IN": 3,
         "DOG_FIGHT_OUT": 6,
+        "ENEMY_BOT_TYPES": [
+          "pmcBEAR",
+          "pmcUSEC"
+        ],
         "ENEMY_LOOK_AT_ME_ANG": 15,
         "ENEMY_LOOK_MY_SECTOR_ANG": 60,
         "FIND_COVER_TO_GET_POSITION_WITH_SHOOT": 2,
@@ -1887,14 +1899,18 @@
         "COVER_SELF_ALWAYS_IF_DAMAGED": false,
         "DAMAGE_REDUCTION_TIME_SEC": 20,
         "DANGER_POINT_CHOOSE_COEF": 1,
-        "DEFAULT_BEAR_BEHAVIOUR": "Attack",
-        "DEFAULT_SAVAGE_BEHAVIOUR": "Attack",
-        "DEFAULT_USEC_BEHAVIOUR": "Attack",
+        "DEFAULT_BEAR_BEHAVIOUR": "AlwaysEnemies",
+        "DEFAULT_SAVAGE_BEHAVIOUR": "AlwaysEnemies",
+        "DEFAULT_USEC_BEHAVIOUR": "AlwaysEnemies",
         "DIST_TO_ENEMY_YO_CAN_HEAL": 30,
         "DIST_TO_FOUND_SQRT": 400,
         "DIST_TO_STOP_RUN_ENEMY": 15,
         "DOG_FIGHT_IN": 3,
         "DOG_FIGHT_OUT": 6,
+        "ENEMY_BOT_TYPES": [
+          "pmcBEAR",
+          "pmcUSEC"
+        ],
         "ENEMY_LOOK_AT_ME_ANG": 15,
         "ENEMY_LOOK_MY_SECTOR_ANG": 60,
         "FIND_COVER_TO_GET_POSITION_WITH_SHOOT": 2,
@@ -2233,6 +2249,9 @@
   },
   "inventory": {
     "Ammo": {
+      "Caliber127x33": {
+        "668fe62ac62660a5d8071446": 1
+      },
       "Caliber556x45NATO": {
         "54527a984bdc2d4e668b4567": 1791,
         "54527ac44bdc2d36668b4567": 937,
@@ -2269,7 +2288,8 @@
         "5c066ef40db834001966a595": 1519
       },
       "Holster": {
-        "5cadc190ae921500103bb3b6": 1
+        "5cadc190ae921500103bb3b6": 25,
+        "669fa3f88abd2662d80eee77": 1
       },
       "Pockets": {
         "5af99e9186f7747c447120b8": 1
@@ -2770,14 +2790,15 @@
         "5d235b4d86f7742e017bc88a": 390
       },
       "SecuredContainer": {
-        "54527a984bdc2d4e668b4567": 32431,
-        "54527ac44bdc2d36668b4567": 17041,
-        "58dd3ad986f77403051cba8f": 17521,
-        "5a6086ea4f39f99cd479502f": 5866,
-        "5e023e53d4353e3302577c4c": 29446,
-        "5efb0c1bd79ff02a1f5e68d9": 2161,
-        "60194943740c5d77f6705eea": 5476,
-        "64b7bbb74b75259c590fa897": 3663
+        "54527a984bdc2d4e668b4567": 1636,
+        "54527ac44bdc2d36668b4567": 781,
+        "58dd3ad986f77403051cba8f": 841,
+        "5a6086ea4f39f99cd479502f": 196,
+        "5e023e53d4353e3302577c4c": 1561,
+        "5efb0c1bd79ff02a1f5e68d9": 106,
+        "60194943740c5d77f6705eea": 241,
+        "64b7bbb74b75259c590fa897": 176,
+        "668fe62ac62660a5d8071446": 100
       },
       "SpecialLoot": {},
       "TacticalVest": {
@@ -2824,7 +2845,7 @@
       "55d35ee94bdc2d61338b4568": {
         "mod_gas_block": [
           "56eabcd4d2720b66698b4574",
-		  "63d3ce281fe77d0f2801859e"
+          "63d3ce281fe77d0f2801859e"
         ],
         "mod_muzzle": [
           "5c6d710d2e22165df16b81e7"
@@ -3097,6 +3118,30 @@
         ],
         "mod_scope": [
           "618ba27d9008e4636a67f61d"
+        ]
+      },
+      "669fa3f88abd2662d80eee77": {
+        "mod_barrel": [
+          "669fa4ba1bd4416eaa09b3c6"
+        ],
+        "mod_magazine": [
+          "668fe5c5f35310705d02b696"
+        ],
+        "mod_pistolgrip": [
+          "66a0da76b6f47fcfeb025e96"
+        ],
+        "mod_reciever": [
+          "669fa5019aa2a422600442f6"
+        ]
+      },
+      "669fa4ba1bd4416eaa09b3c6": {
+        "mod_sight_front": [
+          "668fe5ec4315934ba10c6f96"
+        ]
+      },
+      "669fa5019aa2a422600442f6": {
+        "mod_sight_rear": [
+          "668fe5e1800f0244f9036e46"
         ]
       }
     }

@@ -380,10 +380,10 @@
         "COVER_SELF_ALWAYS_IF_DAMAGED": false,
         "DAMAGE_REDUCTION_TIME_SEC": 20,
         "DANGER_POINT_CHOOSE_COEF": 1,
-        "DEFAULT_BEAR_BEHAVIOUR": "Ignore",
+        "DEFAULT_BEAR_BEHAVIOUR": "Neutral",
         "DEFAULT_ENEMY_SAVAGE": true,
-        "DEFAULT_SAVAGE_BEHAVIOUR": "Ignore",
-        "DEFAULT_USEC_BEHAVIOUR": "Ignore",
+        "DEFAULT_SAVAGE_BEHAVIOUR": "Neutral",
+        "DEFAULT_USEC_BEHAVIOUR": "Neutral",
         "DIST_TO_ENEMY_YO_CAN_HEAL": 30,
         "DIST_TO_FOUND_SQRT": 400,
         "DIST_TO_STOP_RUN_ENEMY": 15,
@@ -439,8 +439,8 @@
         "TIME_TO_RUN_TO_COVER_CAUSE_SHOOT_SEC": 15,
         "USE_ADD_TO_ENEMY_VALIDATION": true,
         "VALID_REASONS_TO_ADD_ENEMY": [
-          "attackBTR",
-          "serviceBTR"
+          [],
+          []
         ],
         "WARN_BOT_TYPES": [],
         "WILL_PERSUE_AXEMAN": false
@@ -896,10 +896,10 @@
         "COVER_SELF_ALWAYS_IF_DAMAGED": false,
         "DAMAGE_REDUCTION_TIME_SEC": 20,
         "DANGER_POINT_CHOOSE_COEF": 1,
-        "DEFAULT_BEAR_BEHAVIOUR": "Ignore",
+        "DEFAULT_BEAR_BEHAVIOUR": "Neutral",
         "DEFAULT_ENEMY_SAVAGE": true,
-        "DEFAULT_SAVAGE_BEHAVIOUR": "Ignore",
-        "DEFAULT_USEC_BEHAVIOUR": "Ignore",
+        "DEFAULT_SAVAGE_BEHAVIOUR": "Neutral",
+        "DEFAULT_USEC_BEHAVIOUR": "Neutral",
         "DIST_TO_ENEMY_YO_CAN_HEAL": 30,
         "DIST_TO_FOUND_SQRT": 400,
         "DIST_TO_STOP_RUN_ENEMY": 15,
@@ -955,8 +955,8 @@
         "TIME_TO_RUN_TO_COVER_CAUSE_SHOOT_SEC": 15,
         "USE_ADD_TO_ENEMY_VALIDATION": true,
         "VALID_REASONS_TO_ADD_ENEMY": [
-          "attackBTR",
-          "serviceBTR"
+          [],
+          []
         ],
         "WARN_BOT_TYPES": [],
         "WILL_PERSUE_AXEMAN": false
@@ -1412,10 +1412,10 @@
         "COVER_SELF_ALWAYS_IF_DAMAGED": false,
         "DAMAGE_REDUCTION_TIME_SEC": 20,
         "DANGER_POINT_CHOOSE_COEF": 1,
-        "DEFAULT_BEAR_BEHAVIOUR": "Ignore",
+        "DEFAULT_BEAR_BEHAVIOUR": "Neutral",
         "DEFAULT_ENEMY_SAVAGE": true,
-        "DEFAULT_SAVAGE_BEHAVIOUR": "Ignore",
-        "DEFAULT_USEC_BEHAVIOUR": "Ignore",
+        "DEFAULT_SAVAGE_BEHAVIOUR": "Neutral",
+        "DEFAULT_USEC_BEHAVIOUR": "Neutral",
         "DIST_TO_ENEMY_YO_CAN_HEAL": 30,
         "DIST_TO_FOUND_SQRT": 400,
         "DIST_TO_STOP_RUN_ENEMY": 15,
@@ -1471,8 +1471,8 @@
         "TIME_TO_RUN_TO_COVER_CAUSE_SHOOT_SEC": 15,
         "USE_ADD_TO_ENEMY_VALIDATION": true,
         "VALID_REASONS_TO_ADD_ENEMY": [
-          "attackBTR",
-          "serviceBTR"
+          [],
+          []
         ],
         "WARN_BOT_TYPES": [],
         "WILL_PERSUE_AXEMAN": false
@@ -1928,10 +1928,10 @@
         "COVER_SELF_ALWAYS_IF_DAMAGED": false,
         "DAMAGE_REDUCTION_TIME_SEC": 20,
         "DANGER_POINT_CHOOSE_COEF": 1,
-        "DEFAULT_BEAR_BEHAVIOUR": "Ignore",
+        "DEFAULT_BEAR_BEHAVIOUR": "Neutral",
         "DEFAULT_ENEMY_SAVAGE": true,
-        "DEFAULT_SAVAGE_BEHAVIOUR": "Ignore",
-        "DEFAULT_USEC_BEHAVIOUR": "Ignore",
+        "DEFAULT_SAVAGE_BEHAVIOUR": "Neutral",
+        "DEFAULT_USEC_BEHAVIOUR": "Neutral",
         "DIST_TO_ENEMY_YO_CAN_HEAL": 30,
         "DIST_TO_FOUND_SQRT": 400,
         "DIST_TO_STOP_RUN_ENEMY": 15,
