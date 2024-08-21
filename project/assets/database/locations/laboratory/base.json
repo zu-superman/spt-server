@@ -339,6 +339,78 @@
       "Time": -1,
       "TriggerId": "autoId_00632_EXFIL",
       "TriggerName": "interactObject"
+    },
+    {
+      "BossChance": 50,
+      "BossDifficult": "normal",
+      "BossEscortAmount": "0,0,0,0,2,2,2,1,1,1,1,1,0,2,3",
+      "BossEscortDifficult": "normal",
+      "BossEscortType": "pmcUSEC",
+      "BossName": "pmcUSEC",
+      "BossPlayer": false,
+      "BossZone": "BotZoneFloor1",
+      "Delay": 0,
+      "RandomTimeSpawn": false,
+      "SpawnMode": [
+        "pve"
+      ],
+      "Time": -1,
+      "TriggerId": "",
+      "TriggerName": ""
+    },
+    {
+      "BossChance": 50,
+      "BossDifficult": "normal",
+      "BossEscortAmount": "0,0,0,0,2,2,2,1,1,1,1,1,0,2,3",
+      "BossEscortDifficult": "normal",
+      "BossEscortType": "pmcUSEC",
+      "BossName": "pmcUSEC",
+      "BossPlayer": false,
+      "BossZone": "BotZoneFloor2",
+      "Delay": 0,
+      "RandomTimeSpawn": false,
+      "SpawnMode": [
+        "pve"
+      ],
+      "Time": -1,
+      "TriggerId": "",
+      "TriggerName": ""
+    },
+    {
+      "BossChance": 50,
+      "BossDifficult": "normal",
+      "BossEscortAmount": "0,0,0,0,2,2,2,1,1,1,1,1,0,2,3",
+      "BossEscortDifficult": "normal",
+      "BossEscortType": "pmcBEAR",
+      "BossName": "pmcBEAR",
+      "BossPlayer": false,
+      "BossZone": "BotZoneFloor1",
+      "Delay": 0,
+      "RandomTimeSpawn": false,
+      "SpawnMode": [
+        "pve"
+      ],
+      "Time": -1,
+      "TriggerId": "",
+      "TriggerName": ""
+    },
+    {
+      "BossChance": 50,
+      "BossDifficult": "normal",
+      "BossEscortAmount": "0,0,0,0,2,2,2,1,1,1,1,1,0,2,3",
+      "BossEscortDifficult": "normal",
+      "BossEscortType": "pmcBEAR",
+      "BossName": "pmcBEAR",
+      "BossPlayer": false,
+      "BossZone": "BotZoneFloor2",
+      "Delay": 0,
+      "RandomTimeSpawn": false,
+      "SpawnMode": [
+        "pve"
+      ],
+      "Time": -1,
+      "TriggerId": "",
+      "TriggerName": ""
     }
   ],
   "BotAssault": 100,
@@ -347,6 +419,112 @@
   "BotImpossible": 0,
   "BotLocationModifier": {
     "AccuracySpeed": 1,
+    "AdditionalHostilitySettings": [
+      {
+        "AlwaysEnemies": [
+          "pmcBot",
+          "exUsec",
+          "bossBully",
+          "bossBoar",
+          "bossTagilla",
+          "bossKilla",
+          "bossKojaniy",
+          "bossSanitar",
+          "bossKolontay",
+          "bossGluhar",
+          "bossKnight"
+        ],
+        "AlwaysFriends": [
+          "bossZryachiy",
+          "followerZryachiy",
+          "peacefullZryachiyEvent",
+          "ravangeZryachiyEvent",
+          "gifter"
+        ],
+        "BearEnemyChance": 100,
+        "BearPlayerBehaviour": "ChancedEnemies",
+        "BotRole": "pmcBEAR",
+        "ChancedEnemies": [
+          {
+            "EnemyChance": 70,
+            "Role": "assault"
+          },
+          {
+            "EnemyChance": 70,
+            "Role": "marksman"
+          },
+          {
+            "EnemyChance": 75,
+            "Role": "pmcUSEC"
+          }
+        ],
+        "Neutral": [
+          "sectantPriest",
+          "sectantWarrior"
+        ],
+        "SavagePlayerBehaviour": "Warn",
+        "UsecEnemyChance": 100,
+        "UsecPlayerBehaviour": "ChancedEnemies",
+        "Warn": [
+          "sectactPriestEvent"
+        ]
+      },
+      {
+        "AlwaysEnemies": [
+          "pmcBot",
+          "bossBully",
+          "bossBoar",
+          "bossTagilla",
+          "bossKilla",
+          "bossKojaniy",
+          "bossSanitar",
+          "bossKolontay",
+          "bossGluhar"
+        ],
+        "AlwaysFriends": [
+          "bossZryachiy",
+          "followerZryachiy",
+          "peacefullZryachiyEvent",
+          "ravangeZryachiyEvent",
+          "gifter"
+        ],
+        "BearEnemyChance": 100,
+        "BearPlayerBehaviour": "ChancedEnemies",
+        "BotRole": "pmcUSEC",
+        "ChancedEnemies": [
+          {
+            "EnemyChance": 70,
+            "Role": "assault"
+          },
+          {
+            "EnemyChance": 70,
+            "Role": "marksman"
+          },
+          {
+            "EnemyChance": 75,
+            "Role": "pmcBEAR"
+          },
+          {
+            "EnemyChance": 15,
+            "Role": "exUsec"
+          },
+          {
+            "EnemyChance": 15,
+            "Role": "bossKnight"
+          }
+        ],
+        "Neutral": [
+          "sectantPriest",
+          "sectantWarrior"
+        ],
+        "SavagePlayerBehaviour": "Warn",
+        "UsecEnemyChance": 100,
+        "UsecPlayerBehaviour": "ChancedEnemies",
+        "Warn": [
+          "sectactPriestEvent"
+        ]
+      }
+    ],
     "DistToActivate": 140,
     "DistToActivatePvE": 140,
     "DistToPersueAxemanCoef": 1,
@@ -387,7 +565,7 @@
   "ForceOnlineRaidInPVE": false,
   "GenerateLocalLootCache": true,
   "GlobalContainerChanceModifier": 1,
-  "GlobalLootChanceModifier": 0.77,
+  "GlobalLootChanceModifier": 0.33,
   "GlobalLootChanceModifierPvE": 0.77,
   "IconX": 700,
   "IconY": 800,
@@ -5358,6 +5536,19 @@
   ],
   "sav_summon_seconds": 60,
   "tmp_location_field_remove_me": 111,
+  "transits": [
+    {
+      "activateAfterSec": 420,
+      "active": true,
+      "conditions": "LAB_TRANSIT_8_COND",
+      "description": "LAB_TRANSIT_8_DESC",
+      "id": 8,
+      "location": "TarkovStreets",
+      "name": "LAB_TRANSIT_8",
+      "target": "5714dc692459777137212e12",
+      "time": 30
+    }
+  ],
   "users_gather_seconds": 0,
   "users_spawn_seconds_n": 120,
   "users_spawn_seconds_n2": 200,
