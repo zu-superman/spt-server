@@ -96680,6 +96680,434 @@
     "traderId": "54cb57776803fa99248b456e",
     "type": "Discover"
   },
+  "669fa394e0c9f9fafa082897": {
+    "QuestName": "Forklift Certified",
+    "_id": "669fa394e0c9f9fafa082897",
+    "acceptPlayerMessage": "669fa394e0c9f9fafa082897 acceptPlayerMessage",
+    "canShowNotificationsInGame": true,
+    "changeQuestMessageText": "669fa394e0c9f9fafa082897 changeQuestMessageText",
+    "completePlayerMessage": "669fa394e0c9f9fafa082897 completePlayerMessage",
+    "conditions": {
+      "AvailableForFinish": [
+        {
+          "completeInSeconds": 0,
+          "conditionType": "CounterCreator",
+          "counter": {
+            "conditions": [
+              {
+                "conditionType": "VisitPlace",
+                "dynamicLocale": false,
+                "id": "669fb00722810cb06e6542b3",
+                "target": "nf2024_2_1",
+                "value": 1
+              }
+            ],
+            "id": "669faf990f7e21d3eb376c0e"
+          },
+          "doNotResetIfCounterCompleted": false,
+          "dynamicLocale": false,
+          "globalQuestCounterId": "",
+          "id": "669faf99963982aef42a5ba4",
+          "index": 0,
+          "oneSessionOnly": false,
+          "parentId": "",
+          "type": "Discover",
+          "value": 1,
+          "visibilityConditions": []
+        },
+        {
+          "completeInSeconds": 0,
+          "conditionType": "CounterCreator",
+          "counter": {
+            "conditions": [
+              {
+                "conditionType": "VisitPlace",
+                "dynamicLocale": false,
+                "id": "669fb014bceebe6ad7b617a4",
+                "target": "nf2024_2_2",
+                "value": 1
+              }
+            ],
+            "id": "669fafa0b20d227a09025b8d"
+          },
+          "doNotResetIfCounterCompleted": false,
+          "dynamicLocale": false,
+          "globalQuestCounterId": "",
+          "id": "669fafa09a13dcb8bf66e6bd",
+          "index": 1,
+          "oneSessionOnly": false,
+          "parentId": "",
+          "type": "Discover",
+          "value": 1,
+          "visibilityConditions": []
+        },
+        {
+          "completeInSeconds": 0,
+          "conditionType": "CounterCreator",
+          "counter": {
+            "conditions": [
+              {
+                "conditionType": "VisitPlace",
+                "dynamicLocale": false,
+                "id": "669fb01e32031a4784941063",
+                "target": "nf2024_2_3",
+                "value": 1
+              }
+            ],
+            "id": "669fafa1ae2758adc432384c"
+          },
+          "doNotResetIfCounterCompleted": false,
+          "dynamicLocale": false,
+          "globalQuestCounterId": "",
+          "id": "669fafa1d0fe63abcf15fac8",
+          "index": 2,
+          "oneSessionOnly": false,
+          "parentId": "",
+          "type": "Discover",
+          "value": 1,
+          "visibilityConditions": []
+        },
+        {
+          "completeInSeconds": 0,
+          "conditionType": "CounterCreator",
+          "counter": {
+            "conditions": [
+              {
+                "conditionType": "VisitPlace",
+                "dynamicLocale": false,
+                "id": "669fb0239feb65c38307cbf5",
+                "target": "nf2024_2_4",
+                "value": 1
+              }
+            ],
+            "id": "669fafa273b9cbaf9f867c40"
+          },
+          "doNotResetIfCounterCompleted": false,
+          "dynamicLocale": false,
+          "globalQuestCounterId": "",
+          "id": "669fafa2394f7353883ffd8d",
+          "index": 3,
+          "oneSessionOnly": false,
+          "parentId": "",
+          "type": "Discover",
+          "value": 1,
+          "visibilityConditions": []
+        },
+        {
+          "completeInSeconds": 0,
+          "conditionType": "CounterCreator",
+          "counter": {
+            "conditions": [
+              {
+                "conditionType": "VisitPlace",
+                "dynamicLocale": false,
+                "id": "669fb09519d9a1978a630766",
+                "target": "nf2024_2_5",
+                "value": 1
+              }
+            ],
+            "id": "669fafa4fb5d0e769743ff1d"
+          },
+          "doNotResetIfCounterCompleted": false,
+          "dynamicLocale": false,
+          "globalQuestCounterId": "",
+          "id": "669fafa49bf4b277e24f3681",
+          "index": 4,
+          "oneSessionOnly": false,
+          "parentId": "",
+          "type": "Discover",
+          "value": 1,
+          "visibilityConditions": []
+        },
+        {
+          "completeInSeconds": 0,
+          "conditionType": "CounterCreator",
+          "counter": {
+            "conditions": [
+              {
+                "conditionType": "VisitPlace",
+                "dynamicLocale": false,
+                "id": "669fb09a744ee5c99c0c37c5",
+                "target": "nf2024_2_6",
+                "value": 1
+              }
+            ],
+            "id": "669fafa56a8bfcd5cad46a88"
+          },
+          "doNotResetIfCounterCompleted": false,
+          "dynamicLocale": false,
+          "globalQuestCounterId": "",
+          "id": "669fafa5f597899ad6bc55bb",
+          "index": 5,
+          "oneSessionOnly": false,
+          "parentId": "",
+          "type": "Discover",
+          "value": 1,
+          "visibilityConditions": []
+        },
+        {
+          "completeInSeconds": 0,
+          "conditionType": "CounterCreator",
+          "counter": {
+            "conditions": [
+              {
+                "conditionType": "VisitPlace",
+                "dynamicLocale": false,
+                "id": "669fb0a62d01b10d2fe6900d",
+                "target": "nf2024_2_7",
+                "value": 1
+              }
+            ],
+            "id": "669fafa70477fd2c4115c447"
+          },
+          "doNotResetIfCounterCompleted": false,
+          "dynamicLocale": false,
+          "globalQuestCounterId": "",
+          "id": "669fafa76172f63531f6e74d",
+          "index": 6,
+          "oneSessionOnly": false,
+          "parentId": "",
+          "type": "Discover",
+          "value": 1,
+          "visibilityConditions": []
+        },
+        {
+          "completeInSeconds": 0,
+          "conditionType": "CounterCreator",
+          "counter": {
+            "conditions": [
+              {
+                "conditionType": "VisitPlace",
+                "dynamicLocale": false,
+                "id": "669fb0ae55e412e6b9cca010",
+                "target": "nf2024_2_8",
+                "value": 1
+              }
+            ],
+            "id": "669fafa92a79faddf0e75225"
+          },
+          "doNotResetIfCounterCompleted": false,
+          "dynamicLocale": false,
+          "globalQuestCounterId": "",
+          "id": "669fafa9299830ffe78e937d",
+          "index": 7,
+          "oneSessionOnly": false,
+          "parentId": "",
+          "type": "Discover",
+          "value": 1,
+          "visibilityConditions": []
+        },
+        {
+          "completeInSeconds": 0,
+          "conditionType": "CounterCreator",
+          "counter": {
+            "conditions": [
+              {
+                "conditionType": "VisitPlace",
+                "dynamicLocale": false,
+                "id": "66a80f29e490981d6a708732",
+                "target": "nf2024_2_9",
+                "value": 1
+              }
+            ],
+            "id": "66a80f20fe563c900ce99d96"
+          },
+          "doNotResetIfCounterCompleted": false,
+          "dynamicLocale": false,
+          "globalQuestCounterId": "",
+          "id": "66a80f20fe47046136f14c8b",
+          "index": 8,
+          "oneSessionOnly": false,
+          "parentId": "",
+          "type": "Discover",
+          "value": 1,
+          "visibilityConditions": []
+        },
+        {
+          "completeInSeconds": 0,
+          "conditionType": "CounterCreator",
+          "counter": {
+            "conditions": [
+              {
+                "conditionType": "VisitPlace",
+                "dynamicLocale": false,
+                "id": "66bd679ce2ba6300ef763188",
+                "target": "nf2024_2_10",
+                "value": 1
+              }
+            ],
+            "id": "66bd6761bb38a69e714769ab"
+          },
+          "doNotResetIfCounterCompleted": false,
+          "dynamicLocale": false,
+          "globalQuestCounterId": "",
+          "id": "66bd67615936a4753b7345be",
+          "index": 9,
+          "oneSessionOnly": false,
+          "parentId": "",
+          "type": "Discover",
+          "value": 1,
+          "visibilityConditions": []
+        },
+        {
+          "completeInSeconds": 0,
+          "conditionType": "CounterCreator",
+          "counter": {
+            "conditions": [
+              {
+                "conditionType": "VisitPlace",
+                "dynamicLocale": false,
+                "id": "66bd67aa25d24dad850ea9cd",
+                "target": "nf2024_2_11",
+                "value": 1
+              }
+            ],
+            "id": "66bd6765ecfed3d4d335a873"
+          },
+          "doNotResetIfCounterCompleted": false,
+          "dynamicLocale": false,
+          "globalQuestCounterId": "",
+          "id": "66bd6765b9e77d3672edfeee",
+          "index": 10,
+          "oneSessionOnly": false,
+          "parentId": "",
+          "type": "Discover",
+          "value": 1,
+          "visibilityConditions": []
+        },
+        {
+          "completeInSeconds": 0,
+          "conditionType": "CounterCreator",
+          "counter": {
+            "conditions": [
+              {
+                "conditionType": "VisitPlace",
+                "dynamicLocale": false,
+                "id": "66c23325075c9f1090fdefed",
+                "target": "nf2024_2_12",
+                "value": 1
+              }
+            ],
+            "id": "66c2331d1dbda4357a5a9727"
+          },
+          "doNotResetIfCounterCompleted": false,
+          "dynamicLocale": false,
+          "globalQuestCounterId": "",
+          "id": "66c2331d75e8aa67fbf65930",
+          "index": 11,
+          "oneSessionOnly": false,
+          "parentId": "",
+          "type": "Discover",
+          "value": 1,
+          "visibilityConditions": []
+        }
+      ],
+      "AvailableForStart": [
+        {
+          "availableAfter": 0,
+          "conditionType": "Quest",
+          "dispersion": 0,
+          "dynamicLocale": false,
+          "globalQuestCounterId": "",
+          "id": "66aa365c25cb39df626d4a0e",
+          "index": 0,
+          "parentId": "",
+          "status": [
+            4
+          ],
+          "target": "669fa39b91b0a8c9680fc467",
+          "visibilityConditions": []
+        }
+      ],
+      "Fail": []
+    },
+    "declinePlayerMessage": "669fa394e0c9f9fafa082897 declinePlayerMessage",
+    "description": "669fa394e0c9f9fafa082897 description",
+    "failMessageText": "669fa394e0c9f9fafa082897 failMessageText",
+    "image": "/files/quest/icon/66acec0b6592ade562098c4d.png",
+    "instantComplete": false,
+    "isKey": false,
+    "location": "55f2d3fd4bdc2d5f408b4567",
+    "name": "669fa394e0c9f9fafa082897 name",
+    "note": "669fa394e0c9f9fafa082897 note",
+    "restartable": false,
+    "rewards": {
+      "Fail": [],
+      "Started": [],
+      "Success": [
+        {
+          "id": "66aa36c191b0a8c9680fdbc7",
+          "index": 0,
+          "type": "Experience",
+          "value": "10700"
+        },
+        {
+          "id": "66aa36d464ea11e84c065d5d",
+          "index": 1,
+          "target": "5a7c2eca46aef81a7ca2145d",
+          "type": "TraderStanding",
+          "value": "0.02"
+        },
+        {
+          "findInRaid": true,
+          "id": "66aa36ea023055273703d88c",
+          "index": 2,
+          "items": [
+            {
+              "_id": "66c5c40602b21060d0063657",
+              "_tpl": "5449016a4bdc2d6f028b456f",
+              "upd": {
+                "StackObjectsCount": 46000
+              }
+            }
+          ],
+          "target": "66c5c40602b21060d0063657",
+          "type": "Item",
+          "value": "46000"
+        },
+        {
+          "findInRaid": true,
+          "id": "66aa3700fb57cc8a5404ac64",
+          "index": 3,
+          "items": [
+            {
+              "_id": "66c5c40602b21060d0063658",
+              "_tpl": "590c5bbd86f774785762df04",
+              "upd": {
+                "StackObjectsCount": 3
+              }
+            }
+          ],
+          "target": "66c5c40602b21060d0063658",
+          "type": "Item",
+          "value": "3"
+        },
+        {
+          "findInRaid": true,
+          "id": "66aa370ce749756c920d336e",
+          "index": 4,
+          "items": [
+            {
+              "_id": "66c5c40602b21060d0063659",
+              "_tpl": "590a3c0a86f774385a33c450",
+              "upd": {
+                "StackObjectsCount": 3
+              }
+            }
+          ],
+          "target": "66c5c40602b21060d0063659",
+          "type": "Item",
+          "value": "3"
+        }
+      ]
+    },
+    "secretQuest": false,
+    "side": "Pmc",
+    "startedMessageText": "669fa394e0c9f9fafa082897 startedMessageText",
+    "successMessageText": "669fa394e0c9f9fafa082897 successMessageText",
+    "traderId": "5a7c2eca46aef81a7ca2145d",
+    "type": "Exploration"
+  },
   "669fa395c4c5c04798002497": {
     "QuestName": "Unknown quest",
     "_id": "669fa395c4c5c04798002497",
@@ -98715,6 +99143,154 @@
     "side": "Pmc",
     "startedMessageText": "66b38c7bf85b8bf7250f9cb6 startedMessageText",
     "successMessageText": "66b38c7bf85b8bf7250f9cb6 successMessageText",
+    "traderId": "5c0647fdd443bc2504c2d371",
+    "type": "Exploration"
+  },
+  "66b38e144f2ab7cc530c3fe7": {
+    "QuestName": "Unknown quest",
+    "_id": "66b38e144f2ab7cc530c3fe7",
+    "acceptPlayerMessage": "66b38e144f2ab7cc530c3fe7 acceptPlayerMessage",
+    "canShowNotificationsInGame": true,
+    "changeQuestMessageText": "66b38e144f2ab7cc530c3fe7 changeQuestMessageText",
+    "completePlayerMessage": "66b38e144f2ab7cc530c3fe7 completePlayerMessage",
+    "conditions": {
+      "AvailableForFinish": [
+        {
+          "completeInSeconds": 0,
+          "conditionType": "CounterCreator",
+          "counter": {
+            "conditions": [
+              {
+                "conditionType": "VisitPlace",
+                "dynamicLocale": false,
+                "id": "66b38dcdad51502a41705f7e",
+                "target": "Check_mine_zone_factory",
+                "value": 1
+              }
+            ],
+            "id": "66b38e144f2ab7cc530c3fe9"
+          },
+          "doNotResetIfCounterCompleted": false,
+          "dynamicLocale": false,
+          "globalQuestCounterId": "",
+          "id": "66b38e144f2ab7cc530c3fe8",
+          "index": 0,
+          "oneSessionOnly": false,
+          "parentId": "",
+          "type": "Exploration",
+          "value": 1,
+          "visibilityConditions": []
+        },
+        {
+          "completeInSeconds": 0,
+          "conditionType": "CounterCreator",
+          "counter": {
+            "conditions": [
+              {
+                "conditionType": "VisitPlace",
+                "dynamicLocale": false,
+                "id": "66b38df3097ef60221acde97",
+                "target": "Check_mine_zone_custom",
+                "value": 1
+              }
+            ],
+            "id": "66b38e144f2ab7cc530c3feb"
+          },
+          "doNotResetIfCounterCompleted": false,
+          "dynamicLocale": false,
+          "globalQuestCounterId": "",
+          "id": "66b38e144f2ab7cc530c3fea",
+          "index": 1,
+          "oneSessionOnly": false,
+          "parentId": "",
+          "type": "Exploration",
+          "value": 1,
+          "visibilityConditions": []
+        }
+      ],
+      "AvailableForStart": [
+        {
+          "availableAfter": 0,
+          "conditionType": "Quest",
+          "dispersion": 0,
+          "dynamicLocale": false,
+          "globalQuestCounterId": "",
+          "id": "66b3939feb7103408a599272",
+          "index": 0,
+          "parentId": "",
+          "status": [
+            4
+          ],
+          "target": "66b38c7bf85b8bf7250f9cb6",
+          "visibilityConditions": []
+        }
+      ],
+      "Fail": []
+    },
+    "declinePlayerMessage": "66b38e144f2ab7cc530c3fe7 declinePlayerMessage",
+    "description": "66b38e144f2ab7cc530c3fe7 description",
+    "failMessageText": "66b38e144f2ab7cc530c3fe7 failMessageText",
+    "image": "/files/quest/icon/5d66701986f7744a2e70f025.jpg",
+    "instantComplete": false,
+    "isKey": false,
+    "location": "any",
+    "name": "66b38e144f2ab7cc530c3fe7 name",
+    "note": "66b38e144f2ab7cc530c3fe7 note",
+    "restartable": false,
+    "rewards": {
+      "Fail": [],
+      "Started": [],
+      "Success": [
+        {
+          "id": "66b3a4beaa4a19c4f90881d8",
+          "index": 0,
+          "type": "Experience",
+          "value": "5800"
+        },
+        {
+          "id": "66b3a4c834f21cc7fc07648f",
+          "index": 1,
+          "target": "5c0647fdd443bc2504c2d371",
+          "type": "TraderStanding",
+          "value": "0.01"
+        },
+        {
+          "findInRaid": true,
+          "id": "66b3a4dc32bc3e9d7e0d2d64",
+          "index": 2,
+          "items": [
+            {
+              "_id": "66c5c40602b21060d006367b",
+              "_tpl": "5449016a4bdc2d6f028b456f",
+              "upd": {
+                "StackObjectsCount": 32000
+              }
+            }
+          ],
+          "target": "66c5c40602b21060d006367b",
+          "type": "Item",
+          "value": "32000"
+        },
+        {
+          "id": "66bb20b7aa15b97cb803a7de",
+          "index": 3,
+          "items": [
+            {
+              "_id": "66c5c40602b21060d006367c",
+              "_tpl": "666b11055a706400b717cfa5"
+            }
+          ],
+          "loyaltyLevel": 1,
+          "target": "66c5c40602b21060d006367c",
+          "traderId": "5c0647fdd443bc2504c2d371",
+          "type": "AssortmentUnlock"
+        }
+      ]
+    },
+    "secretQuest": false,
+    "side": "Pmc",
+    "startedMessageText": "66b38e144f2ab7cc530c3fe7 startedMessageText",
+    "successMessageText": "66b38e144f2ab7cc530c3fe7 successMessageText",
     "traderId": "5c0647fdd443bc2504c2d371",
     "type": "Exploration"
   }
