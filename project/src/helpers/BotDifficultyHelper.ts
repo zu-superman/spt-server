@@ -97,8 +97,8 @@ export class BotDifficultyHelper {
     protected setDifficultyToHostileToBearAndUsec(difficultySettings: Difficulty): void {
         difficultySettings.Mind.CAN_RECEIVE_PLAYER_REQUESTS_BEAR = false;
         difficultySettings.Mind.CAN_RECEIVE_PLAYER_REQUESTS_USEC = false;
-        difficultySettings.Mind.DEFAULT_USEC_BEHAVIOUR = "Attack";
-        difficultySettings.Mind.DEFAULT_BEAR_BEHAVIOUR = "Attack";
+        difficultySettings.Mind.DEFAULT_USEC_BEHAVIOUR = "AlwaysEnemies";
+        difficultySettings.Mind.DEFAULT_BEAR_BEHAVIOUR = "AlwaysEnemies";
     }
 
     /**
