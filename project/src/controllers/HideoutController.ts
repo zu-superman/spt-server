@@ -1257,10 +1257,19 @@ export class HideoutController {
         request: IHideoutCircleOfCultistProductionStartRequestData,
     ): IItemEventRouterResponse | PromiseLike<IItemEventRouterResponse> {
         // TODO
-        // Find items that have been sacrificed in player inventory
-        // Delete items from inventory
+        // Do we start a craft?
 
-        throw new Error("Method not implemented.");
+        const output = this.eventOutputHolder.getOutput(sessionId);
+
+        // Get root items inside cultist grid and remove them from inventory
+        const inventoryRootItemsInCultistGrid = pmcData.Inventory.items.filter(
+            (item) => item.slotId === "CircleOfCultistsGrid1",
+        );
+        for (const rootItem of inventoryRootItemsInCultistGrid) {
+            this.inventoryHelper.removeItem(pmcData, rootItem._id, sessionId, output);
+        }
+
+        return output;
     }
 
     /**
