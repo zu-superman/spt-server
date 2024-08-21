@@ -1250,6 +1250,10 @@ export class HideoutController {
         pmcData: IPmcData,
         request: IHideoutCircleOfCultistProductionStartRequestData,
     ): IItemEventRouterResponse | PromiseLike<IItemEventRouterResponse> {
+        // TODO
+        // Find items that have been sacrificed in player inventory
+        // Delete items from inventory
+
         throw new Error("Method not implemented.");
     }
 
