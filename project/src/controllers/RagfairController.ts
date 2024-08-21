@@ -220,7 +220,6 @@ export class RagfairController {
 
         for (const offer of offers) {
             offer.intId = ++counter;
-            offer.items[0].parentId = ""; // Without this it causes error: "Item deserialization error: No parent with id hideout found for item x"
         }
     }
 
