@@ -1257,18 +1257,16 @@ export class HideoutController {
         pmcData: IPmcData,
         request: IHideoutCircleOfCultistProductionStartRequestData,
     ): IItemEventRouterResponse | PromiseLike<IItemEventRouterResponse> {
-        // Sparse, just has id, can get it via ItemTpl enum too
+        // Sparse, just has id
         const cultistCraftData = this.databaseService.getHideout().production.cultistRecipes[0];
-
         const sacrificedItems: Item[] = this.getSacrificedItems(pmcData);
 
-        const circleCraftId = ItemTpl.HIDEOUTAREACONTAINER_CIRCLEOFCULTISTS_STASH_1;
-
-        this.hideoutHelper.registerCircleOfCultistProduction(sessionId, pmcData, circleCraftId, sacrificedItems);
+        // Create production in pmc profile
+        this.hideoutHelper.registerCircleOfCultistProduction(sessionId, pmcData, cultistCraftData._id, sacrificedItems);
 
         // What items can be rewarded by completion of craft
         // TODO - how do we use this? maybe this is done in a later event?
-        const cultistStashDbItem = this.itemHelper.getItem(circleCraftId);
+        const cultistStashDbItem = this.itemHelper.getItem(ItemTpl.HIDEOUTAREACONTAINER_CIRCLEOFCULTISTS_STASH_1);
         const rewardItemPool = cultistStashDbItem[1]._props.Grids[0]._props.filters[0].Filter;
 
         const output = this.eventOutputHolder.getOutput(sessionId);
