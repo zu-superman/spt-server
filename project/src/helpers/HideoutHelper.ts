@@ -32,6 +32,7 @@ import { inject, injectable } from "tsyringe";
 @injectable()
 export class HideoutHelper {
     public static bitcoinFarm = "5d5c205bd582a50d042a3c0e";
+    public static cultistCircleCraftId = "66827062405f392b203a44cf";
     public static bitcoinProductionId = "5d5c205bd582a50d042a3c0e";
     public static waterCollector = "5d5589c1f934db045e6c5492";
     public static maxSkillPoint = 5000;
@@ -283,8 +284,11 @@ export class HideoutHelper {
                 craft.Progress = 0;
             }
 
-            // Craft complete, skip processing (Don't skip continious crafts like bitcoin farm)
-            if (craft.Progress >= craft.ProductionTime && prodId !== HideoutHelper.bitcoinFarm) {
+            // Craft complete, skip processing (Don't skip continious crafts like bitcoin farm or cultist circle)
+            if (
+                craft.Progress >= craft.ProductionTime &&
+                ![HideoutHelper.bitcoinFarm, HideoutHelper.cultistCircleCraftId].includes(prodId)
+            ) {
                 continue;
             }
 
@@ -378,18 +382,29 @@ export class HideoutHelper {
         }
     }
 
-    protected updateCultistCircleCraftProgress(pmcData: IPmcData, prodId: string) {
-        // Production is complete, no need to do any calculations
-        if (this.doesProgressMatchProductionTime(pmcData, prodId)) {
+    protected updateCultistCircleCraftProgress(pmcData: IPmcData, prodId: string): void {
+        const production = pmcData.Hideout.Production[prodId];
+
+        // Check if we're already complete, skip
+        if (production.AvailableForFinish) {
             return;
         }
 
-        // Get seconds since last hideout update and now
+        // Get seconds since last hideout update
         const timeElapsedSeconds = this.timeUtil.getTimestamp() - pmcData.Hideout.sptUpdateLastRunTimestamp;
 
-        // Increment progress by time passed
-        const production = pmcData.Hideout.Production[prodId];
-        production.Progress += timeElapsedSeconds;
+        // Increment progress by time passed if progress is less than time needed
+        if (production.Progress < production.ProductionTime) {
+            production.Progress += timeElapsedSeconds;
+
+            return;
+        }
+
+        // Craft is complete, flas as such
+        production.AvailableForFinish = true;
+
+        // Reset progress so its not over production time
+        production.Progress = production.ProductionTime;
     }
 
     /**
