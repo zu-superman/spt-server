@@ -123,8 +123,8 @@ export class HideoutHelper {
         recipeId: string,
         sacrificedItems: Item[],
     ): void {
-        // TODO: hard coded 5 hour craft + no fuel use, where can we get this data
-        const cultistProduction = this.initProduction(recipeId, 18000, false, true);
+        // TODO: hard coded 5 hour (18000) craft + no fuel use, where can we get this data
+        const cultistProduction = this.initProduction(recipeId, 30, false, true);
         cultistProduction.GivenItemsInStart = sacrificedItems;
 
         // Add circle production to profile
@@ -397,9 +397,24 @@ export class HideoutHelper {
         if (production.Progress < production.ProductionTime) {
             production.Progress += timeElapsedSeconds;
 
+            this.logger.warning(`circle craft progress is now ${production.Progress} of ${production.ProductionTime}`);
+
+            // Check if craft is complete
+            if (production.Progress >= production.ProductionTime) {
+                this.flagCultistCircleCraftAsComplete(production);
+                this.logger.warning(`circle craft complete, AvailableForFinish set ot true`);
+            }
+
             return;
         }
 
+        // Craft in complete
+        this.flagCultistCircleCraftAsComplete(production);
+
+        this.logger.warning(`circle craft complete, AvailableForFinish set ot true`);
+    }
+
+    protected flagCultistCircleCraftAsComplete(production: Productive) {
         // Craft is complete, flas as such
         production.AvailableForFinish = true;
 

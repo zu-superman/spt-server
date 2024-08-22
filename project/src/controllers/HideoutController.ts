@@ -14,6 +14,7 @@ import { IHideoutArea, Stage } from "@spt/models/eft/hideout/IHideoutArea";
 import { IHideoutCancelProductionRequestData } from "@spt/models/eft/hideout/IHideoutCancelProductionRequestData";
 import { IHideoutCircleOfCultistProductionStartRequestData } from "@spt/models/eft/hideout/IHideoutCircleOfCultistProductionStartRequestData";
 import { IHideoutContinuousProductionStartRequestData } from "@spt/models/eft/hideout/IHideoutContinuousProductionStartRequestData";
+import { IHideoutDeleteProductionRequestData } from "@spt/models/eft/hideout/IHideoutDeleteProductionRequestData";
 import { IHideoutImproveAreaRequestData } from "@spt/models/eft/hideout/IHideoutImproveAreaRequestData";
 import { IHideoutProduction } from "@spt/models/eft/hideout/IHideoutProduction";
 import { IHideoutPutItemInRequestData } from "@spt/models/eft/hideout/IHideoutPutItemInRequestData";
@@ -1256,7 +1257,7 @@ export class HideoutController {
         sessionId: string,
         pmcData: IPmcData,
         request: IHideoutCircleOfCultistProductionStartRequestData,
-    ): IItemEventRouterResponse | PromiseLike<IItemEventRouterResponse> {
+    ): IItemEventRouterResponse {
         // Sparse, just has id
         const cultistCraftData = this.databaseService.getHideout().production.cultistRecipes[0];
         const sacrificedItems: Item[] = this.getSacrificedItems(pmcData);
@@ -1264,19 +1265,74 @@ export class HideoutController {
         // Create production in pmc profile
         this.hideoutHelper.registerCircleOfCultistProduction(sessionId, pmcData, cultistCraftData._id, sacrificedItems);
 
-        // What items can be rewarded by completion of craft
-        // TODO - how do we use this? maybe this is done in a later event?
-        const cultistStashDbItem = this.itemHelper.getItem(ItemTpl.HIDEOUTAREACONTAINER_CIRCLEOFCULTISTS_STASH_1);
-        const rewardItemPool = cultistStashDbItem[1]._props.Grids[0]._props.filters[0].Filter;
-
         const output = this.eventOutputHolder.getOutput(sessionId);
 
-        // TODO - is this necessary?
-        // Do the items remain in the sacrifice window for duration of craft?
         // Remove sacrified items
-        // for (const rootItem of inventoryRootItemsInCultistGrid) {
-        //     this.inventoryHelper.removeItem(pmcData, rootItem._id, sessionId, output);
-        // }
+        const slotId = "CircleOfCultistsGrid1";
+        for (const item of sacrificedItems) {
+            if (item.slotId === slotId) {
+                this.inventoryHelper.removeItem(pmcData, item._id, sessionId, output);
+            }
+        }
+
+        // What items can be rewarded by completion of craft
+        const cultistStashDbItem = this.itemHelper.getItem(ItemTpl.HIDEOUTAREACONTAINER_CIRCLEOFCULTISTS_STASH_1);
+
+        // TODO: create own reward item pool as this is for items the circle accepts as sacrifice, NOT reward pool
+        const rewardItemPool = cultistStashDbItem[1]._props.Grids[0]._props.filters[0].Filter;
+
+        // TODO, tie this into rouble cost of items sacrificed
+        const randomRewardItemCount = this.randomUtil.getInt(1, 4);
+        this.logger.warning(`cicle craft chose ${randomRewardItemCount} reward count`);
+
+        // Create array of rewards
+        const rewards: Item[][] = [];
+        const cultistCircleStashId = pmcData.Inventory.hideoutAreaStashes[HideoutAreas.CIRCLE_OF_CULTISTS];
+        for (let index = 0; index < randomRewardItemCount; index++) {
+            const itemTpl = this.randomUtil.getArrayValue(rewardItemPool);
+            const rewardItem: Item = {
+                _id: this.hashUtil.generate(),
+                _tpl: itemTpl,
+                parentId: cultistCircleStashId,
+                slotId: slotId,
+                upd: {
+                    StackObjectsCount: 1,
+                    SpawnedInSession: true,
+                },
+            };
+
+            rewards.push([rewardItem]);
+        }
+
+        // Get the container grid for cultist stash area
+        const containerGrid = this.inventoryHelper.getContainerSlotMap(cultistStashDbItem[1]._id);
+        const canAddToContainer = this.inventoryHelper.canPlaceItemsInContainer(
+            this.cloner.clone(containerGrid), // MUST clone grid before passing in as function modifies grid
+            rewards,
+        );
+
+        if (canAddToContainer) {
+            for (const itemToAdd of rewards) {
+                this.logger.warning(`Placing reward: ${itemToAdd[0]._tpl} in circle grid`);
+                this.inventoryHelper.placeItemInContainer(containerGrid, itemToAdd, cultistCircleStashId, slotId);
+
+                // Add item + mods to output and profile inventory
+                output.profileChanges[sessionId].items.new.push(...itemToAdd);
+                pmcData.Inventory.items.push(...itemToAdd);
+            }
+        }
+
+        return output;
+    }
+
+    public hideoutDeleteProductionCommand(
+        sessionId: string,
+        pmcData: IPmcData,
+        request: IHideoutDeleteProductionRequestData,
+    ): IItemEventRouterResponse {
+        const output = this.eventOutputHolder.getOutput(sessionId);
+
+        delete pmcData.Hideout.Production[request.recipeId];
 
         return output;
     }
