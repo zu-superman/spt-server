@@ -384,6 +384,8 @@ export interface Productive {
     sptIsContinuous?: boolean;
     /** Stores a list of tools used in this craft and whether they're FiR, to give back once the craft is done */
     sptRequiredTools?: Item[];
+    // Craft is cultist circle sacrifice
+    sptIsCultistCircle?: boolean;
 }
 
 export interface Production extends Productive {

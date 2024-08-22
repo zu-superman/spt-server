@@ -123,7 +123,7 @@ export class HideoutHelper {
         sacrificedItems: Item[],
     ): void {
         // TODO: hard coded 12 hour craft + no fuel use, where can we get this data
-        const cultistProduction = this.initProduction(recipeId, 43200, false);
+        const cultistProduction = this.initProduction(recipeId, 50, false, true);
         cultistProduction.GivenItemsInStart = sacrificedItems;
 
         // Add circle production to profile
@@ -134,7 +134,12 @@ export class HideoutHelper {
      * This convenience function initializes new Production Object
      * with all the constants.
      */
-    public initProduction(recipeId: string, productionTime: number, needFuelForAllProductionTime: boolean): Production {
+    public initProduction(
+        recipeId: string,
+        productionTime: number,
+        needFuelForAllProductionTime: boolean,
+        isCultistCircle = false,
+    ): Production {
         return {
             Progress: 0,
             inProgress: true,
@@ -147,6 +152,7 @@ export class HideoutHelper {
             NeedFuelForAllProductionTime: needFuelForAllProductionTime, // Used when sending to client
             needFuelForAllProductionTime: needFuelForAllProductionTime, // used when stored in production.json
             SkipTime: 0,
+            sptIsCultistCircle: isCultistCircle,
         };
     }
 
@@ -303,7 +309,14 @@ export class HideoutHelper {
                 continue;
             }
 
-            // Other recipes not covered by above
+            // cultist circle has no recipe, needs special handling
+            if (craft.sptIsCultistCircle) {
+                this.updateCultistCircleCraftProgress(pmcData, prodId);
+
+                return;
+            }
+
+            // Ensure recipe exists before using it in updateProductionProgress()
             const recipe = recipes.recipes.find((r) => r._id === prodId);
             if (!recipe) {
                 this.logger.error(this.localisationService.getText("hideout-missing_recipe_for_area", prodId));
@@ -363,6 +376,20 @@ export class HideoutHelper {
             // If progress is larger than prod time, return ProductionTime, hard cap the vaue
             production.Progress = Math.min(production.Progress, production.ProductionTime);
         }
+    }
+
+    protected updateCultistCircleCraftProgress(pmcData: IPmcData, prodId: string) {
+        // Production is complete, no need to do any calculations
+        if (this.doesProgressMatchProductionTime(pmcData, prodId)) {
+            return;
+        }
+
+        // Get seconds since last hideout update and now
+        const timeElapsedSeconds = this.timeUtil.getTimestamp() - pmcData.Hideout.sptUpdateLastRunTimestamp;
+
+        // Increment progress by time passed
+        const production = pmcData.Hideout.Production[prodId];
+        production.Progress += timeElapsedSeconds;
     }
 
     /**
