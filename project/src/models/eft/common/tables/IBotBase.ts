@@ -368,7 +368,7 @@ export interface Productive {
     SkipTime?: number;
     /** Seconds needed to fully craft */
     ProductionTime?: number;
-    GivenItemsInStart?: string[];
+    GivenItemsInStart?: Item[];
     Interrupted?: boolean;
     Code?: string;
     Decoded?: boolean;

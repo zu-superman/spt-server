@@ -32,6 +32,7 @@ import { BackendErrorCodes } from "@spt/models/enums/BackendErrorCodes";
 import { BonusType } from "@spt/models/enums/BonusType";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { HideoutAreas } from "@spt/models/enums/HideoutAreas";
+import { ItemTpl } from "@spt/models/enums/ItemTpl";
 import { SkillTypes } from "@spt/models/enums/SkillTypes";
 import { IHideoutConfig } from "@spt/models/spt/config/IHideoutConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
@@ -1256,20 +1257,48 @@ export class HideoutController {
         pmcData: IPmcData,
         request: IHideoutCircleOfCultistProductionStartRequestData,
     ): IItemEventRouterResponse | PromiseLike<IItemEventRouterResponse> {
-        // TODO
-        // Do we start a craft?
+        // Sparse, just has id, can get it via ItemTpl enum too
+        const cultistCraftData = this.databaseService.getHideout().production.scavRecipes[0];
+
+        const sacrificedItems: Item[] = this.getSacrificedItems(pmcData);
+
+        const circleCraftId = ItemTpl.HIDEOUTAREACONTAINER_CIRCLEOFCULTISTS_STASH_1;
+
+        this.hideoutHelper.registerCircleOfCultistProduction(sessionId, pmcData, circleCraftId, sacrificedItems);
+
+        // What items can be rewarded by completion of craft
+        // TODO - how do we use this? maybe this is done in a later event?
+        const cultistStashDbItem = this.itemHelper.getItem(circleCraftId);
+        const rewardItemPool = cultistStashDbItem[1]._props.Grids[0]._props.filters[0].Filter;
 
         const output = this.eventOutputHolder.getOutput(sessionId);
 
-        // Get root items inside cultist grid and remove them from inventory
+        // TODO - is this necessary?
+        // Do the items remain in the sacrifice window for duration of craft?
+        // Remove sacrified items
+        // for (const rootItem of inventoryRootItemsInCultistGrid) {
+        //     this.inventoryHelper.removeItem(pmcData, rootItem._id, sessionId, output);
+        // }
+
+        return output;
+    }
+
+    protected getSacrificedItems(pmcData: IPmcData): Item[] {
+        // Get root items that are in the cultist sacrifice window
         const inventoryRootItemsInCultistGrid = pmcData.Inventory.items.filter(
             (item) => item.slotId === "CircleOfCultistsGrid1",
         );
-        for (const rootItem of inventoryRootItemsInCultistGrid) {
-            this.inventoryHelper.removeItem(pmcData, rootItem._id, sessionId, output);
-        }
 
-        return output;
+        // Get rootitem + its children
+        const sacrificedItems: Item[] = [];
+        for (const rootItem of inventoryRootItemsInCultistGrid) {
+            const rootItemWithChildren = this.itemHelper.findAndReturnChildrenAsItems(
+                pmcData.Inventory.items,
+                rootItem._id,
+            );
+            sacrificedItems.push(...rootItemWithChildren);
+        }
+        return sacrificedItems;
     }
 
     /**

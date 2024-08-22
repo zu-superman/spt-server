@@ -116,6 +116,20 @@ export class HideoutHelper {
         pmcData.Hideout.Production[body.recipeId] = production;
     }
 
+    public registerCircleOfCultistProduction(
+        sessionId: string,
+        pmcData: IPmcData,
+        recipeId: string,
+        sacrificedItems: Item[],
+    ): void {
+        // TODO: hard coded 12 hour craft + no fuel use, where can we get this data
+        const cultistProduction = this.initProduction(recipeId, 43200, false);
+        cultistProduction.GivenItemsInStart = sacrificedItems;
+
+        // Add circle production to profile
+        pmcData.Hideout.Production[recipeId] = cultistProduction;
+    }
+
     /**
      * This convenience function initializes new Production Object
      * with all the constants.
