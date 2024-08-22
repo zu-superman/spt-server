@@ -260,6 +260,7 @@ export class BotLootGenerator {
                 );
             }
 
+            const backpackLootRoubleTotal = this.getBackpackRoubleTotalByLevel(botLevel, isPmc);
             this.addLootFromPool(
                 this.botLootCacheService.getLootFromCache(botRole, isPmc, LootCacheType.BACKPACK, botJsonTemplate),
                 [EquipmentSlots.BACKPACK],
@@ -267,7 +268,7 @@ export class BotLootGenerator {
                 botInventory,
                 botRole,
                 botItemLimits,
-                this.pmcConfig.maxBackpackLootTotalRub,
+                backpackLootRoubleTotal,
                 isPmc,
                 containersIdFull,
             );
@@ -318,6 +319,24 @@ export class BotLootGenerator {
                 containersIdFull,
             );
         }
+    }
+
+    /**
+     * Gets the rouble cost total for loot in a bots backpack by the bots levl
+     * Will return 0 for non PMCs
+     * @param botLevel Bots level
+     * @param isPmc Is the bot a PMC
+     * @returns number
+     */
+    protected getBackpackRoubleTotalByLevel(botLevel: number, isPmc: boolean): number {
+        if (isPmc) {
+            const matchingValue = this.pmcConfig.maxBackpackLootTotalRub.find(
+                (minMaxValue) => botLevel >= minMaxValue.min && botLevel <= minMaxValue.max,
+            );
+            return matchingValue.value;
+        }
+
+        return 0;
     }
 
     /**

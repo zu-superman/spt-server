@@ -32,7 +32,7 @@ export interface IPmcConfig extends IBaseConfig {
     bearType: string;
     /** What 'brain' does a PMC use, keyed by map and side (USEC/BEAR) key: map location, value: type for usec/bear */
     pmcType: Record<string, Record<string, Record<string, number>>>;
-    maxBackpackLootTotalRub: number;
+    maxBackpackLootTotalRub: MinMaxLootValue[];
     maxPocketLootTotalRub: number;
     maxVestLootTotalRub: number;
     /** Percentage chance a bot from a wave is converted into a PMC, key = bot wildspawn tpye (assault/exusec), value: min+max chance to be converted */
@@ -59,4 +59,8 @@ export interface PmcTypes {
 export interface SlotLootSettings {
     whitelist: string[];
     blacklist: string[];
+}
+
+export interface MinMaxLootValue extends MinMax {
+    value: number;
 }
