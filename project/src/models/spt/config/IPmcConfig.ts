@@ -30,7 +30,6 @@ export interface IPmcConfig extends IBaseConfig {
     usecType: string;
     /** WildSpawnType enum value BEAR PMCs use */
     bearType: string;
-    chanceSameSideIsHostilePercent: number;
     /** What 'brain' does a PMC use, keyed by map and side (USEC/BEAR) key: map location, value: type for usec/bear */
     pmcType: Record<string, Record<string, Record<string, number>>>;
     maxBackpackLootTotalRub: number;

@@ -43,21 +43,9 @@ export class BotDifficultyHelper {
         const difficultySettings = this.getDifficultySettings(pmcType, difficulty);
 
         const friendlyType = pmcType === "bear" ? bearType : usecType;
-        const enemyType = pmcType === "bear" ? usecType : bearType;
-
-        // Is PMC hostile to other PMC side
-        const hostileToSameSide = this.randomUtil.getChance100(this.pmcConfig.chanceSameSideIsHostilePercent);
 
         // Add all non-PMC types to PMCs enemy list
         this.addBotToEnemyList(difficultySettings, this.pmcConfig.enemyTypes, friendlyType);
-
-        // Add same/opposite side to enemy list
-        const hostilePMCTypes = hostileToSameSide ? [enemyType, friendlyType] : [enemyType];
-        this.addBotToEnemyList(difficultySettings, hostilePMCTypes);
-
-        if (hostileToSameSide) {
-            this.setDifficultyToHostileToBearAndUsec(difficultySettings);
-        }
 
         return difficultySettings;
     }
@@ -87,18 +75,6 @@ export class BotDifficultyHelper {
                 enemyArray.push(botTypeToAdd);
             }
         }
-    }
-
-    /**
-     * Configure difficulty settings to be hostile to USEC and BEAR
-     * Look up value in bot.json/chanceSameSideIsHostilePercent
-     * @param difficultySettings pmc difficulty settings
-     */
-    protected setDifficultyToHostileToBearAndUsec(difficultySettings: Difficulty): void {
-        difficultySettings.Mind.CAN_RECEIVE_PLAYER_REQUESTS_BEAR = false;
-        difficultySettings.Mind.CAN_RECEIVE_PLAYER_REQUESTS_USEC = false;
-        difficultySettings.Mind.DEFAULT_USEC_BEHAVIOUR = "AlwaysEnemies";
-        difficultySettings.Mind.DEFAULT_BEAR_BEHAVIOUR = "AlwaysEnemies";
     }
 
     /**
