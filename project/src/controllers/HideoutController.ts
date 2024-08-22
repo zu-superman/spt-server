@@ -1258,7 +1258,7 @@ export class HideoutController {
         request: IHideoutCircleOfCultistProductionStartRequestData,
     ): IItemEventRouterResponse | PromiseLike<IItemEventRouterResponse> {
         // Sparse, just has id, can get it via ItemTpl enum too
-        const cultistCraftData = this.databaseService.getHideout().production.scavRecipes[0];
+        const cultistCraftData = this.databaseService.getHideout().production.cultistRecipes[0];
 
         const sacrificedItems: Item[] = this.getSacrificedItems(pmcData);
 

@@ -188,7 +188,7 @@ export class EventOutputHolder {
                 // Water collector / Bitcoin etc
                 production.sptIsComplete = false;
                 production.Progress = 0;
-                production.StartTimestamp = this.timeUtil.getTimestamp();
+                production.StartTimestamp = this.timeUtil.getTimestamp().toString();
             } else if (!production?.inProgress) {
                 // Normal completed craft, delete
                 delete productions[productionKey];

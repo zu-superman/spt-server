@@ -122,8 +122,8 @@ export class HideoutHelper {
         recipeId: string,
         sacrificedItems: Item[],
     ): void {
-        // TODO: hard coded 12 hour craft + no fuel use, where can we get this data
-        const cultistProduction = this.initProduction(recipeId, 50, false, true);
+        // TODO: hard coded 5 hour craft + no fuel use, where can we get this data
+        const cultistProduction = this.initProduction(recipeId, 18000, false, true);
         cultistProduction.GivenItemsInStart = sacrificedItems;
 
         // Add circle production to profile
@@ -144,7 +144,7 @@ export class HideoutHelper {
             Progress: 0,
             inProgress: true,
             RecipeId: recipeId,
-            StartTimestamp: this.timeUtil.getTimestamp(),
+            StartTimestamp: this.timeUtil.getTimestamp().toString(),
             ProductionTime: productionTime,
             Products: [],
             GivenItemsInStart: [],
@@ -411,7 +411,7 @@ export class HideoutHelper {
     protected updateScavCaseProductionTimer(pmcData: IPmcData, productionId: string): void {
         const timeElapsed =
             this.timeUtil.getTimestamp() -
-            pmcData.Hideout.Production[productionId].StartTimestamp -
+            Number(pmcData.Hideout.Production[productionId].StartTimestamp) -
             pmcData.Hideout.Production[productionId].Progress;
         pmcData.Hideout.Production[productionId].Progress += timeElapsed;
     }
@@ -947,7 +947,7 @@ export class HideoutHelper {
                 }
             }
 
-            btcProd.StartTimestamp = this.timeUtil.getTimestamp();
+            btcProd.StartTimestamp = this.timeUtil.getTimestamp().toString();
 
             return btcProd;
         }
@@ -1149,7 +1149,9 @@ export class HideoutHelper {
         const coinSlotCount = this.getBTCSlots(pmcData);
         if (pmcData.Hideout.Production[HideoutHelper.bitcoinFarm].Products.length >= coinSlotCount) {
             // Set start to now
-            pmcData.Hideout.Production[HideoutHelper.bitcoinFarm].StartTimestamp = this.timeUtil.getTimestamp();
+            pmcData.Hideout.Production[HideoutHelper.bitcoinFarm].StartTimestamp = this.timeUtil
+                .getTimestamp()
+                .toString();
         }
 
         // Remove crafted coins from production in profile now they've been collected
@@ -1183,7 +1185,7 @@ export class HideoutHelper {
      * @returns true if complete
      */
     protected hideoutImprovementIsComplete(improvement: IHideoutImprovement): boolean {
-        return improvement?.completed ? true : false;
+        return !!improvement?.completed;
     }
 
     /**

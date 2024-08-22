@@ -364,7 +364,7 @@ export interface Productive {
     Progress?: number;
     /** Is craft in some state of being worked on by client (crafting/ready to pick up) */
     inProgress?: boolean;
-    StartTimestamp?: number;
+    StartTimestamp?: string;
     SkipTime?: number;
     /** Seconds needed to fully craft */
     ProductionTime?: number;
