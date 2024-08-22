@@ -438,10 +438,7 @@
         "TIME_TO_FORGOR_ABOUT_ENEMY_SEC": 52,
         "TIME_TO_RUN_TO_COVER_CAUSE_SHOOT_SEC": 15,
         "USE_ADD_TO_ENEMY_VALIDATION": true,
-        "VALID_REASONS_TO_ADD_ENEMY": [
-          [],
-          []
-        ],
+        "VALID_REASONS_TO_ADD_ENEMY": ["attackBTR", "serviceBTR"],
         "WARN_BOT_TYPES": [],
         "WILL_PERSUE_AXEMAN": false
       },
@@ -954,10 +951,7 @@
         "TIME_TO_FORGOR_ABOUT_ENEMY_SEC": 52,
         "TIME_TO_RUN_TO_COVER_CAUSE_SHOOT_SEC": 15,
         "USE_ADD_TO_ENEMY_VALIDATION": true,
-        "VALID_REASONS_TO_ADD_ENEMY": [
-          [],
-          []
-        ],
+        "VALID_REASONS_TO_ADD_ENEMY": ["attackBTR", "serviceBTR"],
         "WARN_BOT_TYPES": [],
         "WILL_PERSUE_AXEMAN": false
       },
@@ -1470,10 +1464,7 @@
         "TIME_TO_FORGOR_ABOUT_ENEMY_SEC": 52,
         "TIME_TO_RUN_TO_COVER_CAUSE_SHOOT_SEC": 15,
         "USE_ADD_TO_ENEMY_VALIDATION": true,
-        "VALID_REASONS_TO_ADD_ENEMY": [
-          [],
-          []
-        ],
+        "VALID_REASONS_TO_ADD_ENEMY": ["attackBTR", "serviceBTR"],
         "WARN_BOT_TYPES": [],
         "WILL_PERSUE_AXEMAN": false
       },
