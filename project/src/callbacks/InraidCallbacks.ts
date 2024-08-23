@@ -42,15 +42,6 @@ export class InraidCallbacks {
     }
 
     /**
-     * TODO - remove
-     * Handle singleplayer/settings/raid/endstate
-     * @returns
-     */
-    public getRaidEndState(): string {
-        return this.httpResponse.noBody(this.inraidController.getInraidConfig().MIAOnRaidEnd);
-    }
-
-    /**
      * Handle singleplayer/settings/raid/menu
      * @returns JSON as string
      */
