@@ -64,7 +64,11 @@ export class InraidController {
     public savePostRaidProfileForScav(offraidData: IScavSaveRequestData, sessionID: string): void {
         const serverScavProfile = this.profileHelper.getScavProfile(sessionID);
 
-        serverScavProfile.Inventory.items = offraidData.profile.Inventory.items;
+        // If equipment match overwrite existing data from update to date raid data for scavenger screen to work correctly.
+        // otherwise Scav inventory will be overwritten and break scav regeneration breaking profile.
+        if (serverScavProfile.Inventory.equipment === offraidData.profile.Inventory.equipment) {
+            serverScavProfile.Inventory.items = offraidData.profile.Inventory.items;
+        }
     }
 
     /**
