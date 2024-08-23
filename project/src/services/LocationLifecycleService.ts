@@ -482,17 +482,7 @@ export class LocationLifecycleService {
         // Handle items transferred via BTR to player
         this.handleBTRItemTransferEvent(sessionId, request);
 
-        if (request.lostInsuredItems?.length > 0) {
-            const mappedItems = this.insuranceService.mapInsuredItemsToTrader(
-                sessionId,
-                request.lostInsuredItems,
-                request.results.profile,
-            );
-
-            this.insuranceService.storeGearLostInRaidToSendLater(sessionId, mappedItems);
-
-            this.insuranceService.sendInsuredItems(pmcProfile, sessionId, locationName);
-        }
+        this.handleInsuredItemLostEvent(sessionId, pmcProfile, request, locationName);
     }
 
     /**
@@ -563,6 +553,25 @@ export class LocationLifecycleService {
             items,
             messageStoreTime,
         );
+    }
+
+    protected handleInsuredItemLostEvent(
+        sessionId: string,
+        preRaidPmcProfile: IPmcData,
+        request: IEndLocalRaidRequestData,
+        locationName: string,
+    ) {
+        if (request.lostInsuredItems?.length > 0) {
+            const mappedItems = this.insuranceService.mapInsuredItemsToTrader(
+                sessionId,
+                request.lostInsuredItems,
+                request.results.profile,
+            );
+
+            this.insuranceService.storeGearLostInRaidToSendLater(sessionId, mappedItems);
+
+            this.insuranceService.sendInsuredItems(preRaidPmcProfile, sessionId, locationName);
+        }
     }
 
     /**
