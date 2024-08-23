@@ -3,15 +3,18 @@ import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { Item } from "@spt/models/eft/common/tables/IItem";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
+import { IInRaidConfig } from "@spt/models/spt/config/IInRaidConfig";
 import { ILostOnDeathConfig } from "@spt/models/spt/config/ILostOnDeathConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { ICloner } from "@spt/utils/cloners/ICloner";
 import { inject, injectable } from "tsyringe";
 
 @injectable()
 export class InRaidHelper {
     protected lostOnDeathConfig: ILostOnDeathConfig;
+    protected inRaidConfig: IInRaidConfig;
 
     constructor(
         @inject("PrimaryLogger") protected logger: ILogger,
@@ -19,8 +22,10 @@ export class InRaidHelper {
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("ConfigServer") protected configServer: ConfigServer,
         @inject("PrimaryCloner") protected cloner: ICloner,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
     ) {
         this.lostOnDeathConfig = this.configServer.getConfig(ConfigTypes.LOST_ON_DEATH);
+        this.inRaidConfig = this.configServer.getConfig(ConfigTypes.IN_RAID);
     }
 
     /**
@@ -43,7 +48,12 @@ export class InRaidHelper {
      * @param serverProfile Profile to update
      * @param postRaidProfile Profile returned by client after a raid
      */
-    public setInventory(sessionID: string, serverProfile: IPmcData, postRaidProfile: IPmcData): void {
+    public setInventory(
+        sessionID: string,
+        serverProfile: IPmcData,
+        postRaidProfile: IPmcData,
+        isSurvived: boolean,
+    ): void {
         // Store insurance (as removeItem() removes insurance also)
         const insured = this.cloner.clone(serverProfile.InsuredItems);
 
@@ -52,10 +62,44 @@ export class InRaidHelper {
         this.inventoryHelper.removeItem(serverProfile, serverProfile.Inventory.questRaidItems, sessionID);
         this.inventoryHelper.removeItem(serverProfile, serverProfile.Inventory.sortingTable, sessionID);
 
+        // Handle Removing of FIR status if did not survive.
+        if (!isSurvived && !this.inRaidConfig.alwaysKeepFoundInRaidonRaidEnd) {
+            this.removeSpawnedInSessionPropertyFromItems(postRaidProfile);
+        }
+
         // Add the new items
         serverProfile.Inventory.items = [...postRaidProfile.Inventory.items, ...serverProfile.Inventory.items];
         serverProfile.Inventory.fastPanel = postRaidProfile.Inventory.fastPanel; // Quick access items bar
         serverProfile.InsuredItems = insured;
+    }
+
+    /**
+     * Iterate over inventory items and remove the property that defines an item as Found in Raid
+     * Only removes property if item had FiR when entering raid
+     * @param postRaidProfile profile to update items for
+     * @returns Updated profile with SpawnedInSession removed
+     */
+    public removeSpawnedInSessionPropertyFromItems(postRaidProfile: IPmcData): IPmcData {
+        const dbItems = this.databaseService.getItems();
+        const itemsToRemovePropertyFrom = postRaidProfile.Inventory.items.filter((item) => {
+            // Has upd object + upd.SpawnedInSession property + not a quest item
+            return (
+                "upd" in item &&
+                "SpawnedInSession" in item.upd &&
+                !dbItems[item._tpl]._props.QuestItem &&
+                !(
+                    this.inRaidConfig.keepFiRSecureContainerOnDeath &&
+                    this.itemHelper.itemIsInsideContainer(item, "SecuredContainer", postRaidProfile.Inventory.items)
+                )
+            );
+        });
+
+        for (const item of itemsToRemovePropertyFrom) {
+            // biome-ignore lint/performance/noDelete: <explanation>
+            delete item.upd.SpawnedInSession;
+        }
+
+        return postRaidProfile;
     }
 
     /**

@@ -188,6 +188,7 @@ export class LocationLifecycleService {
         const isPmc = serverDetails[1].toLowerCase() === "pmc";
         const mapBase = this.databaseService.getLocation(locationName).base;
         const isDead = this.isPlayerDead(request.results);
+        const isSurvived = this.isPlayerSurvived(request.results);
 
         if (!isPmc) {
             this.handlePostRaidPlayerScav(sessionId, pmcProfile, scavProfile, isDead, request);
@@ -195,7 +196,16 @@ export class LocationLifecycleService {
             return;
         }
 
-        this.handlePostRaidPmc(sessionId, pmcProfile, scavProfile, postRaidProfile, isDead, request, locationName);
+        this.handlePostRaidPmc(
+            sessionId,
+            pmcProfile,
+            scavProfile,
+            postRaidProfile,
+            isDead,
+            isSurvived,
+            request,
+            locationName,
+        );
 
         // Handle car extracts
         if (this.extractWasViaCar(request.results.exitName)) {
@@ -420,11 +430,12 @@ export class LocationLifecycleService {
         scavProfile: IPmcData,
         postRaidProfile: IPmcData,
         isDead: boolean,
+        isSurvived: boolean,
         request: IEndLocalRaidRequestData,
         locationName: string,
     ): void {
         // Update inventory
-        this.inRaidHelper.setInventory(sessionId, pmcProfile, postRaidProfile);
+        this.inRaidHelper.setInventory(sessionId, pmcProfile, postRaidProfile, isSurvived);
 
         pmcProfile.Info.Level = postRaidProfile.Info.Level;
         pmcProfile.Skills = postRaidProfile.Skills;
@@ -635,6 +646,15 @@ export class LocationLifecycleService {
         }
 
         return inventoryItems;
+    }
+
+    /**
+     * Checks to see if player survives. run through will return false
+     * @param statusOnExit Exit value from offraidData object
+     * @returns true if Survived
+     */
+    protected isPlayerSurvived(results: IEndRaidResult): boolean {
+        return results.result.toLowerCase() === "survived";
     }
 
     /**
