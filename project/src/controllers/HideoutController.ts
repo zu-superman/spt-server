@@ -282,15 +282,22 @@ export class HideoutController {
         }
 
         // Add/upgrade stash item in player inventory
-        this.addUpdateInventoryItemToProfile(sessionID, pmcData, dbHideoutArea, hideoutStage, output);
+        this.addUpdateInventoryItemToProfile(sessionID, pmcData, dbHideoutArea, hideoutStage);
 
-        // Dont inform client when upgraded area is hall of fame/cult circle, BSG doesn't inform client upgrade has occurred, will break client if data is sent
-        if (![HideoutAreas.PLACE_OF_FAME].includes(dbHideoutArea.type)) {
-            // Inform client of changes
-            this.addContainerUpgradeToClientOutput(output, sessionID, dbHideoutArea.type, dbHideoutArea, hideoutStage);
+        // Edge case, add/update `stand1/stand2/stand3` children
+        if (dbHideoutArea.type === HideoutAreas.EQUIPMENT_PRESETS_STAND) {
+            // Can have multiple 'standx' children depending on upgrade level
+            this.addMissingPresetStandItemsToProfile(sessionID, hideoutStage, pmcData, dbHideoutArea, output);
         }
 
-        // Some areas like gun stand have a child area linked to it, it needs to do the same as above
+        // Dont inform client when upgraded area is hall of fame, BSG doesn't inform client this specifc upgrade has occurred
+        // will break client if sent
+        if (![HideoutAreas.PLACE_OF_FAME].includes(dbHideoutArea.type)) {
+            this.addContainerUpgradeToClientOutput(sessionID, dbHideoutArea.type, dbHideoutArea, hideoutStage, output);
+        }
+
+        //TODO - surround with if check to only run when working with HideoutAreas.WEAPON_STAND
+        // The Gun stand has a child area linked to it, it needs to also be added
         const childDbArea = this.databaseService
             .getHideout()
             .areas.find((area) => area.parentArea === dbHideoutArea._id);
@@ -306,78 +313,75 @@ export class HideoutController {
 
             // Add/upgrade stash item in player inventory
             const childDbAreaStage = childDbArea.stages[profileParentHideoutArea.level];
-            this.addUpdateInventoryItemToProfile(sessionID, pmcData, childDbArea, childDbAreaStage, output);
+            this.addUpdateInventoryItemToProfile(sessionID, pmcData, childDbArea, childDbAreaStage);
 
             // Inform client of the changes
-            this.addContainerUpgradeToClientOutput(output, sessionID, childDbArea.type, childDbArea, childDbAreaStage);
+            this.addContainerUpgradeToClientOutput(sessionID, childDbArea.type, childDbArea, childDbAreaStage, output);
+        }
+    }
+
+    /**
+     * Add stand1/stand2/stand3 inventory items to profile, depending on passed in hideout stage
+     * @param sessionId Session id
+     * @param equipmentPresetStage Current EQUIPMENT_PRESETS_STAND stage data
+     * @param pmcData Player profile
+     * @param equipmentPresetHideoutArea
+     * @param output Response to send back to client
+     */
+    protected addMissingPresetStandItemsToProfile(
+        sessionId: string,
+        equipmentPresetStage: Stage,
+        pmcData: IPmcData,
+        equipmentPresetHideoutArea: IHideoutArea,
+        output: IItemEventRouterResponse,
+    ) {
+        // Each slot is a single Mannequin
+        const slots = this.itemHelper.getItem(equipmentPresetStage.container)[1]._props.Slots;
+        for (const mannequinSlot of slots) {
+            // Chek if we've already added this manniquin
+            const existingMannequin = pmcData.Inventory.items.find(
+                (item) => item.parentId === equipmentPresetHideoutArea._id && item.slotId === mannequinSlot._name,
+            );
+
+            // No child, add it
+            if (!existingMannequin) {
+                const mannequinToAdd = {
+                    _id: this.hashUtil.generate(),
+                    _tpl: ItemTpl.INVENTORY_DEFAULT,
+                    parentId: equipmentPresetHideoutArea._id,
+                    slotId: mannequinSlot._name,
+                };
+                pmcData.Inventory.items.push(mannequinToAdd);
+
+                // Inform client of new item being added to inventory
+                output.profileChanges[sessionId].items.new.push(mannequinToAdd);
+            }
         }
     }
 
     /**
      * Add an inventory item to profile from a hideout area stage data
      * @param pmcData Profile to update
-     * @param dbHideoutData Hideout area from db being upgraded
+     * @param dbHideoutArea Hideout area from db being upgraded
      * @param hideoutStage Stage area upgraded to
      */
     protected addUpdateInventoryItemToProfile(
         sessionId: string,
         pmcData: IPmcData,
-        dbHideoutData: IHideoutArea,
+        dbHideoutArea: IHideoutArea,
         hideoutStage: Stage,
-        output: IItemEventRouterResponse,
     ): void {
-        const existingInventoryItem = pmcData.Inventory.items.find((item) => item._id === dbHideoutData._id);
+        const existingInventoryItem = pmcData.Inventory.items.find((item) => item._id === dbHideoutArea._id);
         if (existingInventoryItem) {
             // Update existing items container tpl to point to new id (tpl)
             existingInventoryItem._tpl = hideoutStage.container;
 
-            // Edge case, update `standx` children
-            if (dbHideoutData.type === HideoutAreas.EQUIPMENT_PRESETS_STAND) {
-                // Can have multiple 'standx' children depending on upgrade level
-                const slots = this.itemHelper.getItem(hideoutStage.container)[1]._props.Slots;
-                for (const slot of slots) {
-                    // Dont add duplicate 'standx' child
-                    const existingChild = pmcData.Inventory.items.find(
-                        (item) => item.parentId === dbHideoutData._id && item.slotId === slot._name,
-                    );
-
-                    // No child, add it
-                    if (!existingChild) {
-                        const itemToAdd = {
-                            _id: this.hashUtil.generate(),
-                            _tpl: ItemTpl.INVENTORY_DEFAULT,
-                            parentId: dbHideoutData._id,
-                            slotId: slot._name,
-                        };
-                        pmcData.Inventory.items.push(itemToAdd);
-                        output.profileChanges[sessionId].items.new.push(itemToAdd);
-                    }
-                }
-            }
-
-            // Update complete
             return;
         }
 
         // Add new item as none exists (don't inform client of newContainerItem, will be done in `profileChanges.changedHideoutStashes`)
-        const newContainerItem = { _id: dbHideoutData._id, _tpl: hideoutStage.container };
+        const newContainerItem = { _id: dbHideoutArea._id, _tpl: hideoutStage.container };
         pmcData.Inventory.items.push(newContainerItem);
-
-        // Edge case, add `standx` children as none exist
-        if (dbHideoutData.type === HideoutAreas.EQUIPMENT_PRESETS_STAND) {
-            // Get all slots we need to add a child for
-            const slots = this.itemHelper.getItem(hideoutStage.container)[1]._props.Slots;
-            for (const slot of slots) {
-                const childItemToAdd = {
-                    _id: this.hashUtil.generate(),
-                    _tpl: ItemTpl.INVENTORY_DEFAULT,
-                    parentId: dbHideoutData._id,
-                    slotId: slot._name,
-                };
-                pmcData.Inventory.items.push(childItemToAdd);
-                output.profileChanges[sessionId].items.new.push(childItemToAdd);
-            }
-        }
     }
 
     /**
@@ -388,16 +392,17 @@ export class HideoutController {
      * @param hideoutStage Hideout area upgraded to this
      */
     protected addContainerUpgradeToClientOutput(
-        output: IItemEventRouterResponse,
         sessionID: string,
         areaType: HideoutAreas,
         hideoutDbData: IHideoutArea,
         hideoutStage: Stage,
+        output: IItemEventRouterResponse,
     ): void {
         if (!output.profileChanges[sessionID].changedHideoutStashes) {
             output.profileChanges[sessionID].changedHideoutStashes = {};
         }
 
+        // Inform client of changes
         output.profileChanges[sessionID].changedHideoutStashes[areaType] = {
             Id: hideoutDbData._id,
             Tpl: hideoutStage.container,
