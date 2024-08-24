@@ -44,23 +44,6 @@ export class LootGenerator {
         const result: Item[] = [];
         const itemTypeCounts = this.initItemLimitCounter(options.itemLimits);
 
-        const itemsDb = this.databaseService.getItems();
-        let itemBlacklist = new Set<string>([
-            ...this.itemFilterService.getBlacklistedItems(),
-            ...options.itemBlacklist,
-        ]);
-
-        if (options.useRewarditemBlacklist) {
-            const itemsToAdd = this.itemFilterService.getItemRewardBlacklist();
-            itemBlacklist = new Set([...itemBlacklist, ...itemsToAdd]);
-        }
-
-        if (!options.allowBossItems) {
-            for (const bossItem of this.itemFilterService.getBossItems()) {
-                itemBlacklist.add(bossItem);
-            }
-        }
-
         // Handle sealed weapon containers
         const sealedWeaponCrateCount = this.randomUtil.getInt(
             options.weaponCrateCount.min,
@@ -68,6 +51,7 @@ export class LootGenerator {
         );
         if (sealedWeaponCrateCount > 0) {
             // Get list of all sealed containers from db - they're all the same, just for flavor
+            const itemsDb = this.itemHelper.getItems();
             const sealedWeaponContainerPool = Object.values(itemsDb).filter((item) =>
                 item._name.includes("event_container_airdrop"),
             );
@@ -87,19 +71,18 @@ export class LootGenerator {
         }
 
         // Get items from items.json that have a type of item + not in global blacklist + basetype is in whitelist
-        const items = Object.entries(itemsDb).filter(
-            (item) =>
-                !itemBlacklist.has(item[1]._id) &&
-                item[1]._type.toLowerCase() === "item" &&
-                !item[1]._props.QuestItem &&
-                options.itemTypeWhitelist.includes(item[1]._parent),
+        const { itemPool, blacklist } = this.getItemRewardPool(
+            options.itemBlacklist,
+            options.itemTypeWhitelist,
+            options.useRewarditemBlacklist,
+            options.allowBossItems,
         );
 
         // Pool has items we could add as loot, proceed
-        if (items.length > 0) {
+        if (itemPool.length > 0) {
             const randomisedItemCount = this.randomUtil.getInt(options.itemCount.min, options.itemCount.max);
             for (let index = 0; index < randomisedItemCount; index++) {
-                if (!this.findAndAddRandomItemToLoot(items, itemTypeCounts, options, result)) {
+                if (!this.findAndAddRandomItemToLoot(itemPool, itemTypeCounts, options, result)) {
                     // Failed to add, reduce index so we get another attempt
                     index--;
                 }
@@ -107,7 +90,7 @@ export class LootGenerator {
         }
 
         const globalDefaultPresets = Object.values(this.presetHelper.getDefaultPresets());
-        const itemBlacklistArray = Array.from(itemBlacklist);
+        const itemBlacklistArray = Array.from(blacklist);
 
         // Filter default presets to just weapons
         const randomisedWeaponPresetCount = this.randomUtil.getInt(
@@ -168,6 +151,37 @@ export class LootGenerator {
         }
 
         return result;
+    }
+
+    protected getItemRewardPool(
+        itemTplBlacklist: string[],
+        itemTypeWhitelist: string[],
+        useRewardItemBlacklist: boolean,
+        allowBossItems: boolean,
+    ): { itemPool: [string, ITemplateItem][]; blacklist: Set<string> } {
+        const itemsDb = this.databaseService.getItems();
+        let itemBlacklist = new Set<string>([...this.itemFilterService.getBlacklistedItems(), ...itemTplBlacklist]);
+
+        if (useRewardItemBlacklist) {
+            const itemsToAdd = this.itemFilterService.getItemRewardBlacklist();
+            itemBlacklist = new Set([...itemBlacklist, ...itemsToAdd]);
+        }
+
+        if (!allowBossItems) {
+            for (const bossItem of this.itemFilterService.getBossItems()) {
+                itemBlacklist.add(bossItem);
+            }
+        }
+
+        const items = Object.entries(itemsDb).filter(
+            (item) =>
+                !itemBlacklist.has(item[1]._id) &&
+                item[1]._type.toLowerCase() === "item" &&
+                !item[1]._props.QuestItem &&
+                itemTypeWhitelist.includes(item[1]._parent),
+        );
+
+        return { itemPool: items, blacklist: itemBlacklist };
     }
 
     /**
@@ -534,9 +548,7 @@ export class LootGenerator {
         // Get random items and add to newItemRequest
         for (let index = 0; index < rewardContainerDetails.rewardCount; index++) {
             // Pick random reward from pool, add to request object
-            const chosenRewardItemTpl = this.weightedRandomHelper.getWeightedValue<string>(
-                rewardContainerDetails.rewardTplPool,
-            );
+            const chosenRewardItemTpl = this.pickRewardItem(rewardContainerDetails);
 
             if (this.presetHelper.hasPreset(chosenRewardItemTpl)) {
                 const preset = this.presetHelper.getDefaultPreset(chosenRewardItemTpl);
@@ -555,5 +567,22 @@ export class LootGenerator {
         }
 
         return itemsToReturn;
+    }
+
+    /**
+     * Pick a reward item based on the reward details data
+     * @param rewardContainerDetails
+     * @returns Single tpl
+     */
+    protected pickRewardItem(rewardContainerDetails: RewardDetails): string {
+        if (rewardContainerDetails.rewardTplPool) {
+            return this.weightedRandomHelper.getWeightedValue<string>(rewardContainerDetails.rewardTplPool);
+        }
+
+        return this.randomUtil.getArrayValue(
+            this.getItemRewardPool([], rewardContainerDetails.rewardTypePool, true, true).itemPool.map(
+                (item) => item[1]._id,
+            ),
+        );
     }
 }
