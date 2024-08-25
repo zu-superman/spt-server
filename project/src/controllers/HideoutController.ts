@@ -10,13 +10,13 @@ import { HideoutArea, ITaskConditionCounter, Product, ScavCase } from "@spt/mode
 import { Item } from "@spt/models/eft/common/tables/IItem";
 import { HideoutUpgradeCompleteRequestData } from "@spt/models/eft/hideout/HideoutUpgradeCompleteRequestData";
 import { IHandleQTEEventRequestData } from "@spt/models/eft/hideout/IHandleQTEEventRequestData";
-import { IHideoutArea, Stage } from "@spt/models/eft/hideout/IHideoutArea";
+import { IHideoutArea, IStageRequirement, Stage } from "@spt/models/eft/hideout/IHideoutArea";
 import { IHideoutCancelProductionRequestData } from "@spt/models/eft/hideout/IHideoutCancelProductionRequestData";
 import { IHideoutCircleOfCultistProductionStartRequestData } from "@spt/models/eft/hideout/IHideoutCircleOfCultistProductionStartRequestData";
 import { IHideoutContinuousProductionStartRequestData } from "@spt/models/eft/hideout/IHideoutContinuousProductionStartRequestData";
 import { IHideoutDeleteProductionRequestData } from "@spt/models/eft/hideout/IHideoutDeleteProductionRequestData";
 import { IHideoutImproveAreaRequestData } from "@spt/models/eft/hideout/IHideoutImproveAreaRequestData";
-import { IHideoutProduction } from "@spt/models/eft/hideout/IHideoutProduction";
+import { IHideoutProduction, Requirement } from "@spt/models/eft/hideout/IHideoutProduction";
 import { IHideoutPutItemInRequestData } from "@spt/models/eft/hideout/IHideoutPutItemInRequestData";
 import { IHideoutScavCaseStartRequestData } from "@spt/models/eft/hideout/IHideoutScavCaseStartRequestData";
 import { IHideoutSingleProductionStartRequestData } from "@spt/models/eft/hideout/IHideoutSingleProductionStartRequestData";
@@ -1321,8 +1321,8 @@ export class HideoutController {
         // What items can be rewarded by completion of craft
         const cultistStashDbItem = this.itemHelper.getItem(ItemTpl.HIDEOUTAREACONTAINER_CIRCLEOFCULTISTS_STASH_1);
 
-        // TODO: create own reward item pool as this is for items the circle accepts as sacrifice, NOT reward pool
-        const rewardItemPool = cultistStashDbItem[1]._props.Grids[0]._props.filters[0].Filter;
+        //const rewardItemPool = cultistStashDbItem[1]._props.Grids[0]._props.filters[0].Filter;
+        const rewardItemPool = this.getCultistCircleRewardPool(sessionId, pmcData);
 
         // TODO, tie this into rouble cost of items sacrificed
         const randomRewardItemCount = this.randomUtil.getInt(1, 4);
@@ -1366,6 +1366,75 @@ export class HideoutController {
         }
 
         return output;
+    }
+
+    /**
+     * Get a pool of tpl IDs of items the player needs to complete hideout crafts/upgrade areas
+     * @param sessionId Session id
+     * @param pmcData Player profile
+     * @returns Array of tpls
+     */
+    protected getCultistCircleRewardPool(sessionId: string, pmcData: IPmcData): string[] {
+        const rewardPool = new Set<string>();
+
+        // What does player need to upgrade hideout areas
+        const dbAreas = this.databaseService.getHideout().areas;
+        for (const area of pmcData.Hideout.Areas) {
+            const currentStageLevel = area.level;
+            const areaType = area.type;
+
+            // Get next stage of area
+            const dbArea = dbAreas.find((area) => area.type === areaType);
+            const nextStageDbData = dbArea.stages[currentStageLevel + 1];
+            if (nextStageDbData) {
+                // Next stage exists, gather up requirements and add to pool
+                const itemRequirements = this.getNonFunctionalItemRequirements(nextStageDbData.requirements);
+                for (const rewardToAdd of itemRequirements) {
+                    rewardPool.add(rewardToAdd.templateId);
+                }
+            }
+        }
+
+        // What does player need to craft items with
+        const playerUnlockedRecipes = pmcData.UnlockedInfo.unlockedProductionRecipe;
+        const allRecipes = this.databaseService.getHideout().production;
+
+        // Get default unlocked recipes + locked recipes they've unlocked
+        const playerAccessibleRecipes = allRecipes.recipes.filter(
+            (recipe) => !recipe.locked || playerUnlockedRecipes.includes(recipe._id),
+        );
+        for (const recipe of playerAccessibleRecipes) {
+            const itemRequirements = this.getNonFunctionalItemRequirements(recipe.requirements);
+            for (const requirement of itemRequirements) {
+                rewardPool.add(requirement.templateId);
+            }
+        }
+
+        // Check for scav case unlock in profile
+        const hasScavCaseAreaUnlocked = pmcData.Hideout.Areas[HideoutAreas.SCAV_CASE]?.level > 0;
+        if (hasScavCaseAreaUnlocked) {
+            // Gather up items used to start scav case crafts
+            const scavCaseCrafts = this.databaseService.getHideout().scavcase;
+            for (const craft of scavCaseCrafts) {
+                // Find the item requirements from each craft
+                const itemRequirements = this.getNonFunctionalItemRequirements(craft.Requirements);
+                for (const requirement of itemRequirements) {
+                    // Add tpl to reward pool
+                    rewardPool.add(requirement.templateId);
+                }
+            }
+        }
+
+        return Array.from(rewardPool);
+    }
+
+    /**
+     * Iterate over passed in hideout requirements and return the Item + nonfunctional requirements
+     * @param requirements Requirements to iterate over
+     * @returns Array of item requirements
+     */
+    protected getNonFunctionalItemRequirements(requirements: IStageRequirement[] | Requirement[]) {
+        return requirements.filter((requirement) => requirement.type === "Item" && !requirement.isFunctional);
     }
 
     public hideoutDeleteProductionCommand(
