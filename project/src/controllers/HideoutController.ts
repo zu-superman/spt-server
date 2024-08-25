@@ -1301,9 +1301,17 @@ export class HideoutController {
         pmcData: IPmcData,
         request: IHideoutCircleOfCultistProductionStartRequestData,
     ): IItemEventRouterResponse {
+        const cultistCircleStashId = pmcData.Inventory.hideoutAreaStashes[HideoutAreas.CIRCLE_OF_CULTISTS];
+
         // Sparse, just has id
         const cultistCraftData = this.databaseService.getHideout().production.cultistRecipes[0];
         const sacrificedItems: Item[] = this.getSacrificedItems(pmcData);
+        const sacrificedItemCostRoubles = sacrificedItems.reduce(
+            (sum, curr) => sum + (this.itemHelper.getItemPrice(curr._tpl) ?? 0),
+            0,
+        );
+        const rewardAmountmultiplier = this.randomUtil.getFloat(0.8, 1.4);
+        const rewardAmountRoubles = sacrificedItemCostRoubles * rewardAmountmultiplier;
 
         // Create production in pmc profile
         this.hideoutHelper.registerCircleOfCultistProduction(sessionId, pmcData, cultistCraftData._id, sacrificedItems);
@@ -1318,24 +1326,19 @@ export class HideoutController {
             }
         }
 
-        // What items can be rewarded by completion of craft
-        const cultistStashDbItem = this.itemHelper.getItem(ItemTpl.HIDEOUTAREACONTAINER_CIRCLEOFCULTISTS_STASH_1);
-
         //const rewardItemPool = cultistStashDbItem[1]._props.Grids[0]._props.filters[0].Filter;
         const rewardItemPool = this.getCultistCircleRewardPool(sessionId, pmcData);
 
-        // TODO, tie this into rouble cost of items sacrificed
-        const randomRewardItemCount = this.randomUtil.getInt(1, 4);
-        this.logger.warning(`cicle craft chose ${randomRewardItemCount} reward count`);
-
-        // Create array of rewards
+        // Prep rewards array (reward can be item with children, hence array of arrays)
         const rewards: Item[][] = [];
-        const cultistCircleStashId = pmcData.Inventory.hideoutAreaStashes[HideoutAreas.CIRCLE_OF_CULTISTS];
-        for (let index = 0; index < randomRewardItemCount; index++) {
-            const itemTpl = this.randomUtil.getArrayValue(rewardItemPool);
+
+        // Pick random rewards until we have exhausted the sacrificed items cost amount
+        let amountRoubles = 0;
+        while (amountRoubles < rewardAmountRoubles && rewardItemPool.length > 0) {
+            const randomItemTplFromPool = this.randomUtil.getArrayValue(rewardItemPool);
             const rewardItem: Item = {
                 _id: this.hashUtil.generate(),
-                _tpl: itemTpl,
+                _tpl: randomItemTplFromPool,
                 parentId: cultistCircleStashId,
                 slotId: slotId,
                 upd: {
@@ -1344,10 +1347,18 @@ export class HideoutController {
                 },
             };
 
+            // Increment price of rewards to give player and add to reward array
+            amountRoubles += this.itemHelper.getItemPrice(randomItemTplFromPool);
             rewards.push([rewardItem]);
         }
+        this.logger.warning(`Circle will reward ${rewards.length} items costing a total of ${amountRoubles} roubles`);
+
+        // TODO, tie this into rouble cost of items sacrificed
+        const randomRewardItemCount = this.randomUtil.getInt(1, 4);
+        this.logger.warning(`cicle craft chose ${randomRewardItemCount} reward count`);
 
         // Get the container grid for cultist stash area
+        const cultistStashDbItem = this.itemHelper.getItem(ItemTpl.HIDEOUTAREACONTAINER_CIRCLEOFCULTISTS_STASH_1);
         const containerGrid = this.inventoryHelper.getContainerSlotMap(cultistStashDbItem[1]._id);
         const canAddToContainer = this.inventoryHelper.canPlaceItemsInContainer(
             this.cloner.clone(containerGrid), // MUST clone grid before passing in as function modifies grid
