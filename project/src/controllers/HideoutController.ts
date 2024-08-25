@@ -56,6 +56,7 @@ import { inject, injectable } from "tsyringe";
 export class HideoutController {
     /** Key used in TaskConditionCounters array */
     protected static nameTaskConditionCountersCrafting = "CounterHoursCrafting";
+    protected static circleOfCultistSlotId = "CircleOfCultistsGrid1";
     protected hideoutConfig: IHideoutConfig;
 
     constructor(
@@ -1321,29 +1322,75 @@ export class HideoutController {
         const output = this.eventOutputHolder.getOutput(sessionId);
 
         // Remove sacrified items
-        const slotId = "CircleOfCultistsGrid1";
         for (const item of sacrificedItems) {
-            if (item.slotId === slotId) {
+            if (item.slotId === HideoutController.circleOfCultistSlotId) {
                 this.inventoryHelper.removeItem(pmcData, item._id, sessionId, output);
             }
         }
 
-        //const rewardItemPool = cultistStashDbItem[1]._props.Grids[0]._props.filters[0].Filter;
         const rewardItemPool = this.getCultistCircleRewardPool(sessionId, pmcData);
         this.logger.warning(`Reward pool item count: ${rewardItemPool.length}`);
+
+        const rewards = this.getRewardsWithinBudget(rewardItemPool, rewardAmountRoubles, cultistCircleStashId);
+
+        // Get the container grid for cultist stash area
+        const cultistStashDbItem = this.itemHelper.getItem(ItemTpl.HIDEOUTAREACONTAINER_CIRCLEOFCULTISTS_STASH_1);
+
+        // Ensure items fit into container
+        const containerGrid = this.inventoryHelper.getContainerSlotMap(cultistStashDbItem[1]._id);
+        const canAddToContainer = this.inventoryHelper.canPlaceItemsInContainer(
+            this.cloner.clone(containerGrid), // MUST clone grid before passing in as function modifies grid
+            rewards,
+        );
+
+        if (canAddToContainer) {
+            for (const itemToAdd of rewards) {
+                this.logger.warning(`Placing reward: ${itemToAdd[0]._tpl} in circle grid`);
+                this.inventoryHelper.placeItemInContainer(
+                    containerGrid,
+                    itemToAdd,
+                    cultistCircleStashId,
+                    HideoutController.circleOfCultistSlotId,
+                );
+
+                // Add item + mods to output and profile inventory
+                output.profileChanges[sessionId].items.new.push(...itemToAdd);
+                pmcData.Inventory.items.push(...itemToAdd);
+            }
+        } else {
+            this.logger.error(
+                `Unable to fit all: ${rewards.length} reward items into sacrifice grid, nothing will be returned`,
+            );
+        }
+
+        return output;
+    }
+
+    /**
+     * Given a pool of items + rouble budget, pick items until the budget is reached
+     * @param rewardItemTplPool Items that can be picekd
+     * @param rewardBudget Rouble budget to reach
+     * @param cultistCircleStashId Id of stash item
+     * @returns Array of items
+     */
+    protected getRewardsWithinBudget(
+        rewardItemTplPool: string[],
+        rewardBudget: number,
+        cultistCircleStashId: string,
+    ): Item[][] {
         // Prep rewards array (reward can be item with children, hence array of arrays)
         const rewards: Item[][] = [];
 
-        // Pick random rewards until we have exhausted the sacrificed items cost amount
-        let amountRoubles = 0;
+        // Pick random rewards until we have exhausted the sacrificed items budget
+        let totalCost = 0;
         let itemsRewardedCount = 0;
-        while (amountRoubles < rewardAmountRoubles && rewardItemPool.length > 0 && itemsRewardedCount < 5) {
-            const randomItemTplFromPool = this.randomUtil.getArrayValue(rewardItemPool);
+        while (totalCost < rewardBudget && rewardItemTplPool.length > 0 && itemsRewardedCount < 5) {
+            const randomItemTplFromPool = this.randomUtil.getArrayValue(rewardItemTplPool);
             const rewardItem: Item = {
                 _id: this.hashUtil.generate(),
                 _tpl: randomItemTplFromPool,
                 parentId: cultistCircleStashId,
-                slotId: slotId,
+                slotId: HideoutController.circleOfCultistSlotId,
                 upd: {
                     StackObjectsCount: 1,
                     SpawnedInSession: true,
@@ -1352,36 +1399,12 @@ export class HideoutController {
 
             // Increment price of rewards to give to player and add to reward array
             itemsRewardedCount++;
-            amountRoubles += this.itemHelper.getItemPrice(randomItemTplFromPool);
+            totalCost += this.itemHelper.getItemPrice(randomItemTplFromPool);
             rewards.push([rewardItem]);
         }
-        this.logger.warning(`Circle will reward ${rewards.length} items costing a total of ${amountRoubles} roubles`);
+        this.logger.warning(`Circle will reward ${itemsRewardedCount} items costing a total of ${totalCost} roubles`);
 
-        // Get the container grid for cultist stash area
-        const cultistStashDbItem = this.itemHelper.getItem(ItemTpl.HIDEOUTAREACONTAINER_CIRCLEOFCULTISTS_STASH_1);
-        const containerGrid = this.inventoryHelper.getContainerSlotMap(cultistStashDbItem[1]._id);
-        const canAddToContainer = this.inventoryHelper.canPlaceItemsInContainer(
-            this.cloner.clone(containerGrid), // MUST clone grid before passing in as function modifies grid
-            rewards,
-        );
-
-        this.logger.warning(`Can fit all items into container: ${canAddToContainer}`);
-        if (canAddToContainer) {
-            for (const itemToAdd of rewards) {
-                this.logger.warning(`Placing reward: ${itemToAdd[0]._tpl} in circle grid`);
-                this.inventoryHelper.placeItemInContainer(containerGrid, itemToAdd, cultistCircleStashId, slotId);
-
-                // Add item + mods to output and profile inventory
-                output.profileChanges[sessionId].items.new.push(...itemToAdd);
-                pmcData.Inventory.items.push(...itemToAdd);
-            }
-        } else {
-            this.logger.error(
-                `Unable to fit all: ${itemsRewardedCount} reward items into sacrifice grid, nothing will be returned`,
-            );
-        }
-
-        return output;
+        return rewards;
     }
 
     /**
