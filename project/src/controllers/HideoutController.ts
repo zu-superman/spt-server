@@ -1330,7 +1330,7 @@ export class HideoutController {
 
         //const rewardItemPool = cultistStashDbItem[1]._props.Grids[0]._props.filters[0].Filter;
         const rewardItemPool = this.getCultistCircleRewardPool(sessionId, pmcData);
-        this.logger.warning(`Reward pool size: ${rewardItemPool.length}`);
+        this.logger.warning(`Reward pool item count: ${rewardItemPool.length}`);
         // Prep rewards array (reward can be item with children, hence array of arrays)
         const rewards: Item[][] = [];
 
@@ -1375,6 +1375,10 @@ export class HideoutController {
                 output.profileChanges[sessionId].items.new.push(...itemToAdd);
                 pmcData.Inventory.items.push(...itemToAdd);
             }
+        } else {
+            this.logger.error(
+                `Unable to fit all: ${itemsRewardedCount} reward items into sacrifice grid, nothing will be returned`,
+            );
         }
 
         return output;
