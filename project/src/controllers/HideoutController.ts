@@ -1353,10 +1353,6 @@ export class HideoutController {
         }
         this.logger.warning(`Circle will reward ${rewards.length} items costing a total of ${amountRoubles} roubles`);
 
-        // TODO, tie this into rouble cost of items sacrificed
-        const randomRewardItemCount = this.randomUtil.getInt(1, 4);
-        this.logger.warning(`cicle craft chose ${randomRewardItemCount} reward count`);
-
         // Get the container grid for cultist stash area
         const cultistStashDbItem = this.itemHelper.getItem(ItemTpl.HIDEOUTAREACONTAINER_CIRCLEOFCULTISTS_STASH_1);
         const containerGrid = this.inventoryHelper.getContainerSlotMap(cultistStashDbItem[1]._id);
