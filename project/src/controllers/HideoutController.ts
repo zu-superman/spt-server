@@ -1310,7 +1310,9 @@ export class HideoutController {
             (sum, curr) => sum + (this.itemHelper.getItemPrice(curr._tpl) ?? 0),
             0,
         );
-        const rewardAmountmultiplier = this.randomUtil.getFloat(0.8, 1.4);
+
+        // TODO - include hideout management skill to bonus
+        const rewardAmountmultiplier = this.randomUtil.getFloat(0.7, 1.4);
         const rewardAmountRoubles = sacrificedItemCostRoubles * rewardAmountmultiplier;
 
         // Create production in pmc profile
@@ -1328,13 +1330,14 @@ export class HideoutController {
 
         //const rewardItemPool = cultistStashDbItem[1]._props.Grids[0]._props.filters[0].Filter;
         const rewardItemPool = this.getCultistCircleRewardPool(sessionId, pmcData);
-
+        this.logger.warning(`Reward pool size: ${rewardItemPool.length}`);
         // Prep rewards array (reward can be item with children, hence array of arrays)
         const rewards: Item[][] = [];
 
         // Pick random rewards until we have exhausted the sacrificed items cost amount
         let amountRoubles = 0;
-        while (amountRoubles < rewardAmountRoubles && rewardItemPool.length > 0) {
+        let itemsRewardedCount = 0;
+        while (amountRoubles < rewardAmountRoubles && rewardItemPool.length > 0 && itemsRewardedCount < 5) {
             const randomItemTplFromPool = this.randomUtil.getArrayValue(rewardItemPool);
             const rewardItem: Item = {
                 _id: this.hashUtil.generate(),
@@ -1347,7 +1350,8 @@ export class HideoutController {
                 },
             };
 
-            // Increment price of rewards to give player and add to reward array
+            // Increment price of rewards to give to player and add to reward array
+            itemsRewardedCount++;
             amountRoubles += this.itemHelper.getItemPrice(randomItemTplFromPool);
             rewards.push([rewardItem]);
         }
@@ -1361,6 +1365,7 @@ export class HideoutController {
             rewards,
         );
 
+        this.logger.warning(`Can fit all items into container: ${canAddToContainer}`);
         if (canAddToContainer) {
             for (const itemToAdd of rewards) {
                 this.logger.warning(`Placing reward: ${itemToAdd[0]._tpl} in circle grid`);
