@@ -1306,6 +1306,13 @@ export class HideoutController {
         return this.circleOfCultistService.startSacrifice(sessionId, pmcData, request);
     }
 
+    /**
+     * Handle HideoutDeleteProductionCommand event
+     * @param sessionId Session id
+     * @param pmcData Player profile
+     * @param request Client request data
+     * @returns IItemEventRouterResponse
+     */
     public hideoutDeleteProductionCommand(
         sessionId: string,
         pmcData: IPmcData,
