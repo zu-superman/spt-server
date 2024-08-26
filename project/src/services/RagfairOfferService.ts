@@ -11,6 +11,7 @@ import { ConfigServer } from "@spt/servers/ConfigServer";
 import { SaveServer } from "@spt/servers/SaveServer";
 import { DatabaseService } from "@spt/services/DatabaseService";
 import { LocalisationService } from "@spt/services/LocalisationService";
+import { HashUtil } from "@spt/utils/HashUtil";
 import { HttpResponseUtil } from "@spt/utils/HttpResponseUtil";
 import { RagfairOfferHolder } from "@spt/utils/RagfairOfferHolder";
 import { TimeUtil } from "@spt/utils/TimeUtil";
@@ -29,6 +30,7 @@ export class RagfairOfferService {
     constructor(
         @inject("PrimaryLogger") protected logger: ILogger,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
+        @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("SaveServer") protected saveServer: SaveServer,
         @inject("RagfairServerHelper") protected ragfairServerHelper: RagfairServerHelper,
@@ -254,6 +256,16 @@ export class RagfairOfferService {
 
         // Send failed offer items to player in mail
         const unstackedItems = this.unstackOfferItems(playerOffer.items);
+
+        // Need to regenerate Ids to ensure returned item(s) have correct parent values
+        const newParentId = this.hashUtil.generate();
+        for (const item of unstackedItems) {
+            // Refresh root items' parentIds
+            if (item.parentId === "hideout") {
+                item.parentId = newParentId;
+            }
+        }
+
         this.ragfairServerHelper.returnItems(profile.sessionId, unstackedItems);
         profile.RagfairInfo.offers.splice(offerinProfileIndex, 1);
     }
