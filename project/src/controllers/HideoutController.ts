@@ -298,8 +298,7 @@ export class HideoutController {
             this.addContainerUpgradeToClientOutput(sessionID, dbHideoutArea.type, dbHideoutArea, hideoutStage, output);
         }
 
-        //TODO - surround with if check to only run when working with HideoutAreas.WEAPON_STAND
-        // The Gun stand has a child area linked to it, it needs to also be added
+        // Some hideout areas (Gun stand) have child areas linked to it
         const childDbArea = this.databaseService
             .getHideout()
             .areas.find((area) => area.parentArea === dbHideoutArea._id);
@@ -347,16 +346,29 @@ export class HideoutController {
 
             // No child, add it
             if (!existingMannequin) {
+                const standId = this.hashUtil.generate();
                 const mannequinToAdd = {
-                    _id: this.hashUtil.generate(),
+                    _id: standId,
                     _tpl: ItemTpl.INVENTORY_DEFAULT,
                     parentId: equipmentPresetHideoutArea._id,
                     slotId: mannequinSlot._name,
                 };
                 pmcData.Inventory.items.push(mannequinToAdd);
 
+                // Add pocket child item
+                const mannequinPocketItemToAdd: Item = {
+                    _id: this.hashUtil.generate(),
+                    _tpl: pmcData.Inventory.items.find(
+                        (item) => item.slotId === "Pockets" && item.parentId === pmcData.Inventory.equipment,
+                    )._tpl, // Same pocket tpl as players profile (unheard get bigger, matching pockets etc)
+                    parentId: standId,
+                    slotId: "Pockets",
+                };
+                pmcData.Inventory.items.push(mannequinPocketItemToAdd);
+
                 // Inform client of new item being added to inventory
                 output.profileChanges[sessionId].items.new.push(mannequinToAdd);
+                output.profileChanges[sessionId].items.new.push(mannequinPocketItemToAdd);
             }
         }
     }
