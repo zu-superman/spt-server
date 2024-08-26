@@ -6,7 +6,7 @@ import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { Item } from "@spt/models/eft/common/tables/IItem";
 import { IStageRequirement } from "@spt/models/eft/hideout/IHideoutArea";
 import { IHideoutCircleOfCultistProductionStartRequestData } from "@spt/models/eft/hideout/IHideoutCircleOfCultistProductionStartRequestData";
-import { Requirement } from "@spt/models/eft/hideout/IHideoutProduction";
+import { IRequirementBase, Requirement } from "@spt/models/eft/hideout/IHideoutProduction";
 import { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRouterResponse";
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
@@ -262,7 +262,7 @@ export class CircleOfCultistService {
             const nextStageDbData = dbArea.stages[currentStageLevel + 1];
             if (nextStageDbData) {
                 // Next stage exists, gather up requirements and add to pool
-                const itemRequirements = this.getNonFunctionalItemRequirements(nextStageDbData.requirements);
+                const itemRequirements = this.getItemRequirements(nextStageDbData.requirements);
                 for (const rewardToAdd of itemRequirements) {
                     rewardPool.add(rewardToAdd.templateId);
                 }
@@ -278,7 +278,7 @@ export class CircleOfCultistService {
             (recipe) => !recipe.locked || playerUnlockedRecipes.includes(recipe._id),
         );
         for (const recipe of playerAccessibleRecipes) {
-            const itemRequirements = this.getNonFunctionalItemRequirements(recipe.requirements);
+            const itemRequirements = this.getItemRequirements(recipe.requirements);
             for (const requirement of itemRequirements) {
                 rewardPool.add(requirement.templateId);
             }
@@ -291,7 +291,7 @@ export class CircleOfCultistService {
             const scavCaseCrafts = this.databaseService.getHideout().scavcase;
             for (const craft of scavCaseCrafts) {
                 // Find the item requirements from each craft
-                const itemRequirements = this.getNonFunctionalItemRequirements(craft.Requirements);
+                const itemRequirements = this.getItemRequirements(craft.Requirements);
                 for (const requirement of itemRequirements) {
                     // Add tpl to reward pool
                     rewardPool.add(requirement.templateId);
@@ -303,11 +303,11 @@ export class CircleOfCultistService {
     }
 
     /**
-     * Iterate over passed in hideout requirements and return the Item + nonfunctional requirements
+     * Iterate over passed in hideout requirements and return the Item
      * @param requirements Requirements to iterate over
      * @returns Array of item requirements
      */
-    protected getNonFunctionalItemRequirements(requirements: IStageRequirement[] | Requirement[]) {
-        return requirements.filter((requirement) => requirement.type === "Item" && !requirement.isFunctional);
+    protected getItemRequirements(requirements: IRequirementBase[]): (IStageRequirement | Requirement)[] {
+        return requirements.filter((requirement) => requirement.type === "Item");
     }
 }

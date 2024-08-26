@@ -1,3 +1,4 @@
+import { inherits } from "util";
 import { MinMax } from "@spt/models/common/MinMax";
 
 export interface IHideoutProductionData {
@@ -21,16 +22,19 @@ export interface IHideoutProduction {
     productionLimitCount: number;
 }
 
-export interface Requirement {
+export interface Requirement extends IRequirementBase {
     templateId?: string;
     count?: number;
     isEncoded?: boolean;
     isFunctional?: boolean;
-    type: string;
     areaType?: number;
     requiredLevel?: number;
     resource?: number;
     questId?: string;
+}
+
+export interface IRequirementBase {
+    type: string;
 }
 
 export type IScavRecipe = {
