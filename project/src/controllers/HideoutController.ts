@@ -294,7 +294,7 @@ export class HideoutController {
 
         // Dont inform client when upgraded area is hall of fame or equipment stand, BSG doesn't inform client this specifc upgrade has occurred
         // will break client if sent
-        if (![HideoutAreas.PLACE_OF_FAME, HideoutAreas.EQUIPMENT_PRESETS_STAND].includes(dbHideoutArea.type)) {
+        if (![HideoutAreas.PLACE_OF_FAME].includes(dbHideoutArea.type)) {
             this.addContainerUpgradeToClientOutput(sessionID, dbHideoutArea.type, dbHideoutArea, hideoutStage, output);
         }
 
@@ -352,6 +352,7 @@ export class HideoutController {
                     _tpl: ItemTpl.INVENTORY_DEFAULT,
                     parentId: equipmentPresetHideoutArea._id,
                     slotId: mannequinSlot._name,
+                    location: null,
                 };
                 pmcData.Inventory.items.push(mannequinToAdd);
 
@@ -363,8 +364,11 @@ export class HideoutController {
                     )._tpl, // Same pocket tpl as players profile (unheard get bigger, matching pockets etc)
                     parentId: standId,
                     slotId: "Pockets",
+                    location: null,
                 };
                 pmcData.Inventory.items.push(mannequinPocketItemToAdd);
+                output.profileChanges[sessionId].items.new.push(mannequinToAdd);
+                output.profileChanges[sessionId].items.new.push(mannequinPocketItemToAdd);
             }
         }
     }
@@ -414,8 +418,8 @@ export class HideoutController {
 
         // Inform client of changes
         output.profileChanges[sessionID].changedHideoutStashes[areaType] = {
-            Id: hideoutDbData._id,
-            Tpl: hideoutStage.container,
+            id: hideoutDbData._id,
+            tpl: hideoutStage.container,
         };
     }
 
