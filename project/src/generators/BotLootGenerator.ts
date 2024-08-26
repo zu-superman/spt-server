@@ -760,14 +760,7 @@ export class BotLootGenerator {
      * @param ammoItem Ammo item to randomise
      */
     protected randomiseAmmoStackSize(isPmc: boolean, itemTemplate: ITemplateItem, ammoItem: Item): void {
-        const randomSize =
-            itemTemplate._props.StackMaxSize === 1
-                ? 1
-                : this.randomUtil.getInt(
-                      itemTemplate._props.StackMinRandom,
-                      Math.min(itemTemplate._props.StackMaxRandom, 60),
-                  );
-
+        const randomSize = this.itemHelper.getRandomisedAmmoStackSize(itemTemplate);
         this.itemHelper.addUpdObjectToItem(ammoItem);
 
         ammoItem.upd.StackObjectsCount = randomSize;

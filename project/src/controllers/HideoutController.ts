@@ -30,6 +30,7 @@ import { IAddItemDirectRequest } from "@spt/models/eft/inventory/IAddItemDirectR
 import { IAddItemsDirectRequest } from "@spt/models/eft/inventory/IAddItemsDirectRequest";
 import { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRouterResponse";
 import { BackendErrorCodes } from "@spt/models/enums/BackendErrorCodes";
+import { BaseClasses } from "@spt/models/enums/BaseClasses";
 import { BonusType } from "@spt/models/enums/BonusType";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { HideoutAreas } from "@spt/models/enums/HideoutAreas";
@@ -874,10 +875,10 @@ export class HideoutController {
         // Reward is weapon/armor preset, handle differently compared to 'normal' items
         const rewardIsPreset = this.presetHelper.hasPreset(recipe.endProduct);
         if (rewardIsPreset) {
-            const preset = this.presetHelper.getDefaultPreset(recipe.endProduct);
+            const defaultPreset = this.presetHelper.getDefaultPreset(recipe.endProduct);
 
             // Ensure preset has unique ids and is cloned so we don't alter the preset data stored in memory
-            const presetAndMods: Item[] = this.itemHelper.replaceIDs(preset._items);
+            const presetAndMods: Item[] = this.itemHelper.replaceIDs(defaultPreset._items);
 
             this.itemHelper.remapRootItemId(presetAndMods);
 
@@ -1384,15 +1385,49 @@ export class HideoutController {
         // Pick random rewards until we have exhausted the sacrificed items budget
         let totalCost = 0;
         let itemsRewardedCount = 0;
+        let failedAttempts = 0;
         while (totalCost < rewardBudget && rewardItemTplPool.length > 0 && itemsRewardedCount < 5) {
+            if (failedAttempts > 5) {
+                this.logger.warning(`Exiting reward generation after ${failedAttempts} failed attempts`);
+
+                break;
+            }
+
+            // Choose a random tpl from pool
             const randomItemTplFromPool = this.randomUtil.getArrayValue(rewardItemTplPool);
+
+            // Is weapon/armor, handle differently
+            if (
+                this.itemHelper.armorItemHasRemovableOrSoftInsertSlots(randomItemTplFromPool) ||
+                this.itemHelper.isOfBaseclass(randomItemTplFromPool, BaseClasses.WEAPON)
+            ) {
+                const defaultPreset = this.presetHelper.getDefaultPreset(randomItemTplFromPool);
+                if (!defaultPreset) {
+                    this.logger.warning(`Reward tpl: ${randomItemTplFromPool} lacks a default preset, skipping reward`);
+                    failedAttempts++;
+
+                    continue;
+                }
+
+                // Ensure preset has unique ids and is cloned so we don't alter the preset data stored in memory
+                const presetAndMods: Item[] = this.itemHelper.replaceIDs(defaultPreset._items);
+
+                this.itemHelper.remapRootItemId(presetAndMods);
+
+                rewards.push(presetAndMods);
+            }
+
+            // Some items can have variable stack size, e.g. ammo
+            const stackSize = this.getRewardStackSize(randomItemTplFromPool);
+
+            // Not a weapon/armor, standard single item
             const rewardItem: Item = {
                 _id: this.hashUtil.generate(),
                 _tpl: randomItemTplFromPool,
                 parentId: cultistCircleStashId,
                 slotId: HideoutController.circleOfCultistSlotId,
                 upd: {
-                    StackObjectsCount: 1,
+                    StackObjectsCount: stackSize,
                     SpawnedInSession: true,
                 },
             };
@@ -1405,6 +1440,15 @@ export class HideoutController {
         this.logger.warning(`Circle will reward ${itemsRewardedCount} items costing a total of ${totalCost} roubles`);
 
         return rewards;
+    }
+
+    protected getRewardStackSize(randomItemTplFromPool: string) {
+        if (this.itemHelper.isOfBaseclass(randomItemTplFromPool, BaseClasses.AMMO)) {
+            const ammoTemplate = this.itemHelper.getItem(randomItemTplFromPool)[1];
+            return this.itemHelper.getRandomisedAmmoStackSize(ammoTemplate);
+        }
+
+        return 1;
     }
 
     /**

@@ -1723,8 +1723,27 @@ export class ItemHelper {
         return false;
     }
 
+    /**
+     * Return all tpls from Money enum
+     * @returns string tpls
+     */
     public getMoneyTpls(): string[] {
         return Object.values(Money);
+    }
+
+    /**
+     * Get a randomsied stack size for the passed in ammo
+     * @param ammoItemTemplate Ammo to get stack size for
+     * @param maxLimit default: Limit to 60 to prevent crazy values when players use stack increase mods
+     * @returns number
+     */
+    public getRandomisedAmmoStackSize(ammoItemTemplate: ITemplateItem, maxLimit = 60): number {
+        return ammoItemTemplate._props.StackMaxSize === 1
+            ? 1
+            : this.randomUtil.getInt(
+                  ammoItemTemplate._props.StackMinRandom,
+                  Math.min(ammoItemTemplate._props.StackMaxRandom, maxLimit),
+              );
     }
 }
 
