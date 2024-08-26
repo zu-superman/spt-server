@@ -1,3 +1,4 @@
+import { MinMax } from "@spt/models/common/MinMax";
 import { IBaseConfig, IRunIntervalValues } from "@spt/models/spt/config/IBaseConfig";
 
 export interface IHideoutConfig extends IBaseConfig {
@@ -12,4 +13,11 @@ export interface IHideoutConfig extends IBaseConfig {
     overrideBuildTimeSeconds: number;
     /** Only process a profiles hideout crafts when it has been active in the last x minutes */
     updateProfileHideoutWhenActiveWithinMinutes: number;
+    cultistCircle: ICultistCircleSettings;
+}
+
+export interface ICultistCircleSettings {
+    maxRewardItemCount: number;
+    maxAttemptsToPickRewardsWithinBudget: number;
+    rewardPriceMultiplerMinMax: MinMax;
 }
