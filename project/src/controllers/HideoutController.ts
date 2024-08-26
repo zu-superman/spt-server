@@ -292,9 +292,9 @@ export class HideoutController {
             this.addMissingPresetStandItemsToProfile(sessionID, hideoutStage, pmcData, dbHideoutArea, output);
         }
 
-        // Dont inform client when upgraded area is hall of fame, BSG doesn't inform client this specifc upgrade has occurred
+        // Dont inform client when upgraded area is hall of fame or equipment stand, BSG doesn't inform client this specifc upgrade has occurred
         // will break client if sent
-        if (![HideoutAreas.PLACE_OF_FAME].includes(dbHideoutArea.type) && ![HideoutAreas.EQUIPMENT_PRESETS_STAND].includes(dbHideoutArea.type)) {
+        if (![HideoutAreas.PLACE_OF_FAME, HideoutAreas.EQUIPMENT_PRESETS_STAND].includes(dbHideoutArea.type)) {
             this.addContainerUpgradeToClientOutput(sessionID, dbHideoutArea.type, dbHideoutArea, hideoutStage, output);
         }
 
