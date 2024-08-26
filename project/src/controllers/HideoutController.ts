@@ -294,7 +294,7 @@ export class HideoutController {
 
         // Dont inform client when upgraded area is hall of fame, BSG doesn't inform client this specifc upgrade has occurred
         // will break client if sent
-        if (![HideoutAreas.PLACE_OF_FAME].includes(dbHideoutArea.type)) {
+        if (![HideoutAreas.PLACE_OF_FAME].includes(dbHideoutArea.type) && ![HideoutAreas.EQUIPMENT_PRESETS_STAND].includes(dbHideoutArea.type)) {
             this.addContainerUpgradeToClientOutput(sessionID, dbHideoutArea.type, dbHideoutArea, hideoutStage, output);
         }
 
@@ -365,10 +365,6 @@ export class HideoutController {
                     slotId: "Pockets",
                 };
                 pmcData.Inventory.items.push(mannequinPocketItemToAdd);
-
-                // Inform client of new item being added to inventory
-                output.profileChanges[sessionId].items.new.push(mannequinToAdd);
-                output.profileChanges[sessionId].items.new.push(mannequinPocketItemToAdd);
             }
         }
     }
