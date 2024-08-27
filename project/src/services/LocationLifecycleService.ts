@@ -472,6 +472,12 @@ export class LocationLifecycleService {
         this.healthHelper.updateProfileHealthPostRaid(pmcProfile, postRaidProfile.Health, sessionId, isDead);
 
         if (isDead) {
+            this.inRaidHelper.removePickupQuestConditions(
+                postRaidProfile.Stats.Eft.CarriedQuestItems,
+                sessionId,
+                pmcProfile,
+            );
+
             this.pmcChatResponseService.sendKillerResponse(sessionId, pmcProfile, postRaidProfile.Stats.Eft.Aggressor);
 
             this.inRaidHelper.deleteInventory(pmcProfile, sessionId);
