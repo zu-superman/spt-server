@@ -136,6 +136,22 @@ export class GameController {
         // offraidData). Since we don't want to clutter the Quests list, we need to remove all completed (failed or
         // successful) repeatable quests. We also have to remove the Counters from the repeatableQuests
         if (sessionID) {
+            const areas = this.databaseService.getHideout().areas;
+            for (const area of areas) {
+                for (const stage of Object.values(area.stages)) {
+                    if (stage.constructionTime > 50) {
+                        stage.constructionTime = 50;
+                    }
+                }
+            }
+            const products = this.databaseService.getHideout().production;
+            for (const craft of products.recipes) {
+                if (craft.productionTime > 50) {
+                    craft.productionTime = 50;
+                }
+            }
+            this.databaseService.getGlobals().config.SavagePlayCooldown = 1;
+
             const fullProfile = this.profileHelper.getFullProfile(sessionID);
             if (fullProfile.info.wipe) {
                 // Don't bother doing any fixes, we're resetting profile
