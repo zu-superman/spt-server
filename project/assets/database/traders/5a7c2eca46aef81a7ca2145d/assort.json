@@ -8920,7 +8920,7 @@
       "parentId": "hideout",
       "slotId": "hideout",
       "upd": {
-        "StackObjectsCount": 11621,
+        "StackObjectsCount": 19918,
         "BuyRestrictionMax": 5,
         "BuyRestrictionCurrent": 0
       }
@@ -9548,6 +9548,48 @@
       }
     },
     {
+      "_id": "66c6f8f6c26ce354960ac283",
+      "_tpl": "66bdc28a0b603c26902b2011",
+      "parentId": "hideout",
+      "slotId": "hideout",
+      "upd": {
+        "UnlimitedCount": true,
+        "StackObjectsCount": 9999999,
+        "BuyRestrictionMax": 2,
+        "BuyRestrictionCurrent": 0
+      }
+    },
+    {
+      "_id": "66c6f8f6c26ce354960ac284",
+      "_tpl": "66bdc2ea8cbd597c9c2f9360",
+      "parentId": "66c6f8f6c26ce354960ac283",
+      "slotId": "Helmet_top"
+    },
+    {
+      "_id": "66c6f8f6c26ce354960ac285",
+      "_tpl": "66bdc2e25f17154509115d1e",
+      "parentId": "66c6f8f6c26ce354960ac283",
+      "slotId": "Helmet_back"
+    },
+    {
+      "_id": "66c6f8f6c26ce354960ac286",
+      "_tpl": "66bdc2d051aa8c345646d03f",
+      "parentId": "66c6f8f6c26ce354960ac283",
+      "slotId": "helmet_eyes"
+    },
+    {
+      "_id": "66c6f8f6c26ce354960ac287",
+      "_tpl": "66bdc2d9408f1e66eb4fd957",
+      "parentId": "66c6f8f6c26ce354960ac283",
+      "slotId": "helmet_jaw"
+    },
+    {
+      "_id": "66c6f8f6c26ce354960ac288",
+      "_tpl": "66bdc2c90b603c26902b2018",
+      "parentId": "66c6f8f6c26ce354960ac283",
+      "slotId": "Helmet_ears"
+    },
+    {
       "_id": "66c6f8f6c26ce354960ac291",
       "_tpl": "5addbf175acfc408fb13965b",
       "parentId": "hideout",
@@ -9572,121 +9614,28 @@
       }
     },
     {
-      "_id": "66c5c40602b21060d00634d1",
-      "_tpl": "66bdc28a0b603c26902b2011",
-      "parentId": "hideout",
-      "slotId": "hideout",
-      "upd": {
-        "StackObjectsCount": 10
-      }
-    },
-    {
-      "_id": "66c49c0f2e6e23eb7b03f235",
-      "_tpl": "66bdc2ea8cbd597c9c2f9360",
-      "parentId": "66c5c40602b21060d00634d1",
-      "slotId": "Helmet_top"
-    },
-    {
-      "_id": "66c49c0f2e6e23eb7b03f236",
-      "_tpl": "66bdc2e25f17154509115d1e",
-      "parentId": "66c5c40602b21060d00634d1",
-      "slotId": "Helmet_back"
-    },
-    {
-      "_id": "66c49c0f2e6e23eb7b03f237",
-      "_tpl": "66bdc2d051aa8c345646d03f",
-      "parentId": "66c5c40602b21060d00634d1",
-      "slotId": "helmet_eyes"
-    },
-    {
-      "_id": "66c49c0f2e6e23eb7b03f238",
-      "_tpl": "66bdc2d9408f1e66eb4fd957",
-      "parentId": "66c5c40602b21060d00634d1",
-      "slotId": "helmet_jaw"
-    },
-    {
-      "_id": "66c49c0f2e6e23eb7b03f239",
-      "_tpl": "66bdc2c90b603c26902b2018",
-      "parentId": "66c5c40602b21060d00634d1",
-      "slotId": "Helmet_ears"
-    },
-    {
-      "_id": "652376e2f6c67195e4061526",
-      "_tpl": "5c1d0f4986f7744bb01837fa",
-      "parentId": "hideout",
-      "slotId": "hideout",
-      "upd": {
-        "StackObjectsCount": 21041,
-        "BuyRestrictionMax": 1
-      }
-    },
-    {
-      "_id": "66c5c40602b21060d006364b",
-      "_tpl": "64637076203536ad5600c990",
-      "parentId": "hideout",
-      "slotId": "hideout",
-      "upd": {
-        "StackObjectsCount": 10,
-        "Repairable": {
-          "Durability": 100,
-          "MaxDurability": 100
-        }
-      }
-    },
-    {
-      "_id": "66c5c40602b21060d006364c",
-      "_tpl": "646371779f5f0ea59a04c204",
-      "parentId": "66c5c40602b21060d006364b",
-      "slotId": "mod_pistolgrip"
-    },
-    {
-      "_id": "66c5c40602b21060d006364d",
-      "_tpl": "646371faf2404ab67905c8e9",
-      "parentId": "66c5c40602b21060d006364b",
-      "slotId": "mod_barrel"
-    },
-    {
-      "_id": "66c5c40602b21060d006364e",
-      "_tpl": "6492efb8cfcf7c89e701abf3",
-      "parentId": "66c5c40602b21060d006364d",
-      "slotId": "mod_muzzle"
-    },
-    {
-      "_id": "66c5c40602b21060d006364f",
-      "_tpl": "646372518610c40fc20204e8",
-      "parentId": "66c5c40602b21060d006364b",
-      "slotId": "mod_magazine"
-    },
-    {
-      "_id": "66c5c40602b21060d0063650",
-      "_tpl": "646371a9f2404ab67905c8e6",
-      "parentId": "66c5c40602b21060d006364b",
-      "slotId": "mod_stock"
-    },
-    {
-      "_id": "66c5c40602b21060d0063651",
-      "_tpl": "6464d870bb2c580352070cc4",
-      "parentId": "66c5c40602b21060d006364b",
-      "slotId": "mod_bipod"
-    },
-    {
-      "_id": "66c5c40602b21060d0063652",
-      "_tpl": "6492fb8253acae0af00a29b6",
-      "parentId": "66c5c40602b21060d006364b",
-      "slotId": "mod_sight_rear"
-    },
-    {
       "_id": "65ba7538bf3fc35a9a0a0347",
       "_tpl": "5ea2a8e200685063ec28c05a",
       "parentId": "hideout",
       "slotId": "hideout",
       "upd": {
-        "StackObjectsCount": 10
+        "StackObjectsCount": 1130000,
+        "BuyRestrictionMax": 90
       }
     },
     {
       "_id": "6492e44bf4287b13040fcceb",
       "_tpl": "6389c7750ef44505c87f5996",
+      "parentId": "hideout",
+      "slotId": "hideout",
+      "upd": {
+        "StackObjectsCount": 100,
+        "BuyRestrictionMax": 1
+      }
+    },
+    {
+      "_id": "63dadb9da895860d3610cbd1",
+      "_tpl": "6389c7f115805221fb410466",
       "parentId": "hideout",
       "slotId": "hideout",
       "upd": {
@@ -9702,16 +9651,6 @@
       "upd": {
         "StackObjectsCount": 10,
         "BuyRestrictionMax": 2
-      }
-    },
-    {
-      "_id": "63dadb9da895860d3610cbd1",
-      "_tpl": "6389c7f115805221fb410466",
-      "parentId": "hideout",
-      "slotId": "hideout",
-      "upd": {
-        "StackObjectsCount": 100,
-        "BuyRestrictionMax": 1
       }
     },
     {
@@ -9753,6 +9692,73 @@
         "StackObjectsCount": 2000000,
         "BuyRestrictionMax": 10
       }
+    },
+    {
+      "_id": "652376e2f6c67195e4061526",
+      "_tpl": "5c1d0f4986f7744bb01837fa",
+      "parentId": "hideout",
+      "slotId": "hideout",
+      "upd": {
+        "StackObjectsCount": 21041,
+        "BuyRestrictionMax": 1
+      }
+    },
+    {
+      "_id": "66c4c8b7db82ad88720dbad1",
+      "_tpl": "64637076203536ad5600c990",
+      "parentId": "hideout",
+      "slotId": "hideout",
+      "upd": {
+        "StackObjectsCount": 1050000,
+        "BuyRestrictionMax": 1,
+        "BuyRestrictionCurrent": 0,
+        "Repairable": {
+          "Durability": 100,
+          "MaxDurability": 100
+        }
+      }
+    },
+    {
+      "_id": "66c4c8b7db82ad88720dbad2",
+      "_tpl": "646371779f5f0ea59a04c204",
+      "parentId": "66c4c8b7db82ad88720dbad1",
+      "slotId": "mod_pistolgrip"
+    },
+    {
+      "_id": "66c4c8b7db82ad88720dbad3",
+      "_tpl": "646371faf2404ab67905c8e9",
+      "parentId": "66c4c8b7db82ad88720dbad1",
+      "slotId": "mod_barrel"
+    },
+    {
+      "_id": "66c4c8b7db82ad88720dbad4",
+      "_tpl": "6492efb8cfcf7c89e701abf3",
+      "parentId": "66c4c8b7db82ad88720dbad3",
+      "slotId": "mod_muzzle"
+    },
+    {
+      "_id": "66c4c8b7db82ad88720dbad5",
+      "_tpl": "646372518610c40fc20204e8",
+      "parentId": "66c4c8b7db82ad88720dbad1",
+      "slotId": "mod_magazine"
+    },
+    {
+      "_id": "66c4c8b7db82ad88720dbad6",
+      "_tpl": "646371a9f2404ab67905c8e6",
+      "parentId": "66c4c8b7db82ad88720dbad1",
+      "slotId": "mod_stock"
+    },
+    {
+      "_id": "66c4c8b7db82ad88720dbad7",
+      "_tpl": "6464d870bb2c580352070cc4",
+      "parentId": "66c4c8b7db82ad88720dbad1",
+      "slotId": "mod_bipod"
+    },
+    {
+      "_id": "66c4c8b7db82ad88720dbad8",
+      "_tpl": "6492fb8253acae0af00a29b6",
+      "parentId": "66c4c8b7db82ad88720dbad1",
+      "slotId": "mod_sight_rear"
     }
   ],
   "barter_scheme": {
@@ -9783,7 +9789,7 @@
     "66c6f8dbc26ce354960ab974": [
       [
         {
-          "count": 28.68,
+          "count": 28.48,
           "_tpl": "569668774bdc2da2298b4568"
         }
       ]
@@ -9791,7 +9797,7 @@
     "66c6f8dbc26ce354960ab977": [
       [
         {
-          "count": 7.16,
+          "count": 7.11,
           "_tpl": "569668774bdc2da2298b4568"
         }
       ]
@@ -9807,7 +9813,7 @@
     "66c6f8dbc26ce354960ab97d": [
       [
         {
-          "count": 13.5,
+          "count": 13.4,
           "_tpl": "569668774bdc2da2298b4568"
         }
       ]
@@ -9815,7 +9821,7 @@
     "66c6f8dbc26ce354960ab980": [
       [
         {
-          "count": 79.43,
+          "count": 78.87,
           "_tpl": "569668774bdc2da2298b4568"
         }
       ]
@@ -9823,7 +9829,7 @@
     "66c6f8dbc26ce354960ab983": [
       [
         {
-          "count": 162.97,
+          "count": 161.82,
           "_tpl": "569668774bdc2da2298b4568"
         }
       ]
@@ -9839,7 +9845,7 @@
     "66c6f8dbc26ce354960ab989": [
       [
         {
-          "count": 80.25,
+          "count": 79.68,
           "_tpl": "569668774bdc2da2298b4568"
         }
       ]
@@ -9847,7 +9853,7 @@
     "66c6f8dbc26ce354960ab98c": [
       [
         {
-          "count": 56.85,
+          "count": 56.45,
           "_tpl": "569668774bdc2da2298b4568"
         }
       ]
@@ -9863,7 +9869,7 @@
     "66c6f8dbc26ce354960ab992": [
       [
         {
-          "count": 9.22,
+          "count": 9.15,
           "_tpl": "569668774bdc2da2298b4568"
         }
       ]
@@ -9871,7 +9877,7 @@
     "66c6f8dbc26ce354960ab995": [
       [
         {
-          "count": 31.94,
+          "count": 31.71,
           "_tpl": "569668774bdc2da2298b4568"
         }
       ]
@@ -9887,7 +9893,7 @@
     "66c6f8dbc26ce354960ab99b": [
       [
         {
-          "count": 100.16,
+          "count": 99.45,
           "_tpl": "569668774bdc2da2298b4568"
         }
       ]
@@ -9895,7 +9901,7 @@
     "66c6f8dbc26ce354960ab99e": [
       [
         {
-          "count": 23.87,
+          "count": 23.7,
           "_tpl": "569668774bdc2da2298b4568"
         }
       ]
@@ -9911,7 +9917,7 @@
     "66c6f8dbc26ce354960ab9a4": [
       [
         {
-          "count": 14.18,
+          "count": 14.08,
           "_tpl": "569668774bdc2da2298b4568"
         }
       ]
@@ -9919,7 +9925,7 @@
     "66c6f8dbc26ce354960ab9a7": [
       [
         {
-          "count": 28.06,
+          "count": 27.86,
           "_tpl": "569668774bdc2da2298b4568"
         }
       ]
@@ -9927,7 +9933,7 @@
     "66c6f8dbc26ce354960ab9aa": [
       [
         {
-          "count": 45.93,
+          "count": 45.61,
           "_tpl": "569668774bdc2da2298b4568"
         }
       ]
@@ -9935,7 +9941,7 @@
     "66c6f8dcc26ce354960ab9ad": [
       [
         {
-          "count": 29.12,
+          "count": 28.92,
           "_tpl": "569668774bdc2da2298b4568"
         }
       ]
@@ -9975,7 +9981,7 @@
     "66c6f8dcc26ce354960ab9bc": [
       [
         {
-          "count": 148.66,
+          "count": 147.61,
           "_tpl": "569668774bdc2da2298b4568"
         }
       ]
@@ -9983,7 +9989,7 @@
     "66c6f8dcc26ce354960ab9bf": [
       [
         {
-          "count": 28.7,
+          "count": 28.5,
           "_tpl": "569668774bdc2da2298b4568"
         }
       ]
@@ -9991,7 +9997,7 @@
     "66c6f8dcc26ce354960ab9c2": [
       [
         {
-          "count": 43.63,
+          "count": 43.32,
           "_tpl": "569668774bdc2da2298b4568"
         }
       ]
@@ -9999,7 +10005,7 @@
     "66c6f8dcc26ce354960ab9c5": [
       [
         {
-          "count": 80.54,
+          "count": 79.97,
           "_tpl": "569668774bdc2da2298b4568"
         }
       ]
@@ -10031,7 +10037,7 @@
     "66c6f8dcc26ce354960ab9d1": [
       [
         {
-          "count": 39.86,
+          "count": 39.58,
           "_tpl": "569668774bdc2da2298b4568"
         }
       ]
@@ -10039,7 +10045,7 @@
     "66c6f8dcc26ce354960ab9d4": [
       [
         {
-          "count": 12.89,
+          "count": 12.8,
           "_tpl": "569668774bdc2da2298b4568"
         }
       ]
@@ -10047,7 +10053,7 @@
     "66c6f8dcc26ce354960ab9d7": [
       [
         {
-          "count": 7.16,
+          "count": 7.11,
           "_tpl": "569668774bdc2da2298b4568"
         }
       ]
@@ -10055,7 +10061,7 @@
     "66c6f8dcc26ce354960ab9da": [
       [
         {
-          "count": 12.28,
+          "count": 12.19,
           "_tpl": "569668774bdc2da2298b4568"
         }
       ]
@@ -10063,7 +10069,7 @@
     "66c6f8dcc26ce354960ab9dd": [
       [
         {
-          "count": 19.86,
+          "count": 19.72,
           "_tpl": "569668774bdc2da2298b4568"
         }
       ]
@@ -10071,7 +10077,7 @@
     "66c6f8dcc26ce354960ab9e0": [
       [
         {
-          "count": 71.25,
+          "count": 70.75,
           "_tpl": "569668774bdc2da2298b4568"
         }
       ]
@@ -10079,7 +10085,7 @@
     "66c6f8dcc26ce354960ab9e3": [
       [
         {
-          "count": 89.3,
+          "count": 88.68,
           "_tpl": "569668774bdc2da2298b4568"
         }
       ]
@@ -10087,7 +10093,7 @@
     "66c6f8dcc26ce354960ab9e6": [
       [
         {
-          "count": 42.3,
+          "count": 42.01,
           "_tpl": "569668774bdc2da2298b4568"
         }
       ]
@@ -10103,7 +10109,7 @@
     "66c6f8dcc26ce354960ab9f3": [
       [
         {
-          "count": 271.37,
+          "count": 269.46,
           "_tpl": "569668774bdc2da2298b4568"
         }
       ]
@@ -10111,7 +10117,7 @@
     "66c6f8ddc26ce354960ab9f6": [
       [
         {
-          "count": 312.45,
+          "count": 310.25,
           "_tpl": "569668774bdc2da2298b4568"
         }
       ]
@@ -10119,7 +10125,7 @@
     "66c6f8ddc26ce354960ab9f9": [
       [
         {
-          "count": 142.69,
+          "count": 141.68,
           "_tpl": "569668774bdc2da2298b4568"
         }
       ]
@@ -10127,7 +10133,7 @@
     "66c6f8ddc26ce354960ab9fc": [
       [
         {
-          "count": 35.84,
+          "count": 35.59,
           "_tpl": "569668774bdc2da2298b4568"
         }
       ]
@@ -10151,7 +10157,7 @@
     "66c6f8ddc26ce354960aba11": [
       [
         {
-          "count": 11.09,
+          "count": 11.01,
           "_tpl": "569668774bdc2da2298b4568"
         }
       ]
@@ -10379,7 +10385,7 @@
     "66c6f8dec26ce354960aba7a": [
       [
         {
-          "count": 22.05,
+          "count": 21.89,
           "_tpl": "569668774bdc2da2298b4568"
         }
       ]
@@ -10403,7 +10409,7 @@
     "66c6f8dec26ce354960aba95": [
       [
         {
-          "count": 13.39,
+          "count": 13.3,
           "_tpl": "569668774bdc2da2298b4568"
         }
       ]
@@ -10647,7 +10653,7 @@
     "66c6f8e0c26ce354960abb29": [
       [
         {
-          "count": 7.14,
+          "count": 7.09,
           "_tpl": "569668774bdc2da2298b4568"
         }
       ]
@@ -10675,7 +10681,7 @@
     "66c6f8e0c26ce354960abb32": [
       [
         {
-          "count": 248.88,
+          "count": 247.13,
           "_tpl": "569668774bdc2da2298b4568"
         }
       ]
@@ -11011,7 +11017,7 @@
     "66c6f8e2c26ce354960abbe3": [
       [
         {
-          "count": 24.89,
+          "count": 24.71,
           "_tpl": "569668774bdc2da2298b4568"
         }
       ]
@@ -11303,7 +11309,7 @@
     "66c6f8e4c26ce354960abc7e": [
       [
         {
-          "count": 29.89,
+          "count": 29.68,
           "_tpl": "569668774bdc2da2298b4568"
         }
       ]
@@ -11399,7 +11405,7 @@
     "66c6f8e4c26ce354960abcaf": [
       [
         {
-          "count": 0.71,
+          "count": 0.7,
           "_tpl": "569668774bdc2da2298b4568"
         }
       ]
@@ -11635,7 +11641,7 @@
     "66c6f8e5c26ce354960abd0c": [
       [
         {
-          "count": 56.37,
+          "count": 55.97,
           "_tpl": "569668774bdc2da2298b4568"
         }
       ]
@@ -14324,6 +14330,14 @@
         }
       ]
     ],
+    "66c6f8f6c26ce354960ac283": [
+      [
+        {
+          "count": 77775,
+          "_tpl": "5449016a4bdc2d6f028b456f"
+        }
+      ]
+    ],
     "66c6f8f6c26ce354960ac291": [
       [
         {
@@ -14340,46 +14354,10 @@
         }
       ]
     ],
-    "66c5c40602b21060d00634d1": [
-      [
-        {
-          "count": 6969,
-          "_tpl": "5449016a4bdc2d6f028b456f"
-        }
-      ]
-    ],
-    "652376e2f6c67195e4061526": [
-      [
-        {
-          "count": 5,
-          "_tpl": "5d03794386f77420415576f5"
-        },
-        {
-          "count": 8,
-          "_tpl": "5e2aee0a86f774755a234b62"
-        },
-        {
-          "count": 2,
-          "_tpl": "5c052fb986f7746b2101e909"
-        },
-        {
-          "count": 1,
-          "_tpl": "61bf7c024770ee6f9c6b8b53"
-        }
-      ]
-    ],
-    "66c5c40602b21060d006364b": [
-      [
-        {
-          "count": 6969,
-          "_tpl": "5449016a4bdc2d6f028b456f"
-        }
-      ]
-    ],
     "65ba7538bf3fc35a9a0a0347": [
       [
         {
-          "count": 6969,
+          "count": 420,
           "_tpl": "5449016a4bdc2d6f028b456f"
         }
       ]
@@ -14404,6 +14382,26 @@
         }
       ]
     ],
+    "63dadb9da895860d3610cbd1": [
+      [
+        {
+          "count": 15,
+          "_tpl": "5d03784a86f774203e7e0c4d"
+        },
+        {
+          "count": 50,
+          "_tpl": "5c06779c86f77426e00dd782"
+        },
+        {
+          "count": 10,
+          "_tpl": "590a3efd86f77437d351a25b"
+        },
+        {
+          "count": 8,
+          "_tpl": "5c052f6886f7746b1e3db148"
+        }
+      ]
+    ],
     "63dadb9da895860d3610cbd9": [
       [
         {
@@ -14425,26 +14423,6 @@
         {
           "count": 16,
           "_tpl": "5c05300686f7746dce784e5d"
-        }
-      ]
-    ],
-    "63dadb9da895860d3610cbd1": [
-      [
-        {
-          "count": 15,
-          "_tpl": "5d03784a86f774203e7e0c4d"
-        },
-        {
-          "count": 50,
-          "_tpl": "5c06779c86f77426e00dd782"
-        },
-        {
-          "count": 10,
-          "_tpl": "590a3efd86f77437d351a25b"
-        },
-        {
-          "count": 8,
-          "_tpl": "5c052f6886f7746b1e3db148"
         }
       ]
     ],
@@ -14477,6 +14455,34 @@
         {
           "count": 12544,
           "_tpl": "5449016a4bdc2d6f028b456f"
+        }
+      ]
+    ],
+    "652376e2f6c67195e4061526": [
+      [
+        {
+          "count": 5,
+          "_tpl": "5d03794386f77420415576f5"
+        },
+        {
+          "count": 8,
+          "_tpl": "5e2aee0a86f774755a234b62"
+        },
+        {
+          "count": 2,
+          "_tpl": "5c052fb986f7746b2101e909"
+        },
+        {
+          "count": 1,
+          "_tpl": "61bf7c024770ee6f9c6b8b53"
+        }
+      ]
+    ],
+    "66c4c8b7db82ad88720dbad1": [
+      [
+        {
+          "count": 1,
+          "_tpl": "6389c8c5dbfd5e4b95197e6b"
         }
       ]
     ]
@@ -15043,16 +15049,15 @@
     "66c6f8f6c26ce354960ac283": 2,
     "66c6f8f6c26ce354960ac291": 2,
     "66c6f8f6c26ce354960ac294": 3,
-    "66c5c40602b21060d00634d1": 2,
-    "652376e2f6c67195e4061526": 4,
-    "66c5c40602b21060d006364b": 4,
     "65ba7538bf3fc35a9a0a0347": 4,
     "6492e44bf4287b13040fcceb": 4,
-    "63dadb9da895860d3610cbd9": 4,
     "63dadb9da895860d3610cbd1": 4,
+    "63dadb9da895860d3610cbd9": 4,
     "64a2e6f09b9ad2b93b0cab9c": 1,
     "64a2e6f09b9ad2b93b0cab9d": 1,
     "64a2e6f09b9ad2b93b0cab9e": 1,
-    "64a2e6f09b9ad2b93b0cab9f": 1
+    "64a2e6f09b9ad2b93b0cab9f": 1,
+    "652376e2f6c67195e4061526": 4,
+    "66c4c8b7db82ad88720dbad1": 4
   }
 }

@@ -975,7 +975,8 @@
       "parentId": "hideout",
       "slotId": "hideout",
       "upd": {
-        "StackObjectsCount": 10
+        "StackObjectsCount": 245000,
+        "BuyRestrictionMax": 1
       }
     }
   ],
@@ -1107,7 +1108,7 @@
     "66c6f932c26ce354960ad49d": [
       [
         {
-          "count": 14330.74,
+          "count": 14229.82,
           "_tpl": "569668774bdc2da2298b4568"
         }
       ]
@@ -1796,8 +1797,16 @@
     "667eac90d135442276096594": [
       [
         {
-          "count": 6969,
-          "_tpl": "5449016a4bdc2d6f028b456f"
+          "count": 10,
+          "_tpl": "59e361e886f774176c10a2a5"
+        },
+        {
+          "count": 5,
+          "_tpl": "62a0a043cf4a99369e2624a5"
+        },
+        {
+          "count": 1,
+          "_tpl": "5c052e6986f7746b207bc3c9"
         }
       ]
     ]
