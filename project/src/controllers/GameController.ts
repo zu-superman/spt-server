@@ -20,6 +20,7 @@ import { IServerDetails } from "@spt/models/eft/game/IServerDetails";
 import { ISptProfile } from "@spt/models/eft/profile/ISptProfile";
 import { BonusType } from "@spt/models/enums/BonusType";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
+import { HideoutAreas } from "@spt/models/enums/HideoutAreas";
 import { SkillTypes } from "@spt/models/enums/SkillTypes";
 import { Traders } from "@spt/models/enums/Traders";
 import { Weapons } from "@spt/models/enums/Weapons";
@@ -158,6 +159,11 @@ export class GameController {
                 return;
             }
 
+            //3.9 migrations
+            if (fullProfile.spt.version.includes("3.9")) {
+                this.migrate39xProfile(fullProfile);
+            }
+
             if (Array.isArray(fullProfile.characters.pmc.WishList)) {
                 fullProfile.characters.pmc.WishList = {};
             }
@@ -169,12 +175,6 @@ export class GameController {
             const pmcProfile = fullProfile.characters.pmc;
 
             this.logger.debug(`Started game with sessionId: ${sessionID} ${pmcProfile.Info?.Nickname}`);
-
-            // Migrate aki object data into spt for 3.9.0 release
-            if ((fullProfile as any).aki) {
-                fullProfile.spt = this.cloner.clone((fullProfile as any).aki);
-                delete (fullProfile as any).aki;
-            }
 
             if (this.coreConfig.fixes.fixProfileBreakingInventoryItemIssues) {
                 this.profileFixerService.fixProfileBreakingInventoryItemIssues(pmcProfile);
@@ -240,6 +240,47 @@ export class GameController {
             if (!this.ragfairConfig.dynamic.blacklist.enableBsgList) {
                 this.setAllDbItemsAsSellableOnFlea();
             }
+        }
+    }
+
+    protected migrate39xProfile(fullProfile: ISptProfile) {
+        // Karma
+        if (typeof fullProfile.characters.pmc.karmaValue === "undefined") {
+            fullProfile.characters.pmc.karmaValue = 0;
+        }
+
+        // Equipment area
+        const equipmentArea = fullProfile.characters.pmc.Hideout.Areas.find(
+            (area) => area.type === HideoutAreas.EQUIPMENT_PRESETS_STAND,
+        );
+        if (!equipmentArea) {
+            fullProfile.characters.pmc.Hideout.Areas.push({
+                active: true,
+                completeTime: 0,
+                constructing: false,
+                lastRecipe: "",
+                level: 0,
+                passiveBonusesEnabled: true,
+                slots: [],
+                type: HideoutAreas.EQUIPMENT_PRESETS_STAND,
+            });
+        }
+
+        // Cultist circle area
+        const circleArea = fullProfile.characters.pmc.Hideout.Areas.find(
+            (area) => area.type === HideoutAreas.CIRCLE_OF_CULTISTS,
+        );
+        if (!circleArea) {
+            fullProfile.characters.pmc.Hideout.Areas.push({
+                active: true,
+                completeTime: 0,
+                constructing: false,
+                lastRecipe: "",
+                level: 0,
+                passiveBonusesEnabled: true,
+                slots: [],
+                type: HideoutAreas.CIRCLE_OF_CULTISTS,
+            });
         }
     }
 
