@@ -400,8 +400,11 @@ export class GameController {
     }
 
     protected adjustLooseLootSpawnProbabilities(): void {
-        const adjustments = this.lootConfig.looseLootSpawnPointAdjustments;
-        for (const [mapId, mapAdjustments] of Object.entries(adjustments)) {
+        if (!this.lootConfig.looseLootSpawnPointAdjustments) {
+            return;
+        }
+
+        for (const [mapId, mapAdjustments] of Object.entries(this.lootConfig.looseLootSpawnPointAdjustments)) {
             const mapLooseLootData = this.databaseService.getLocation(mapId).looseLoot;
             if (!mapLooseLootData) {
                 this.logger.warning(this.localisationService.getText("location-map_has_no_loose_loot_data", mapId));
