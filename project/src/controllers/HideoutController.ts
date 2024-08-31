@@ -1334,6 +1334,7 @@ export class HideoutController {
 
         pmcData.Hideout.Production[request.recipeId] = null;
         output.profileChanges[sessionId].production = null;
+
         return output;
     }
 

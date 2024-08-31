@@ -534,10 +534,12 @@ export class LocationLifecycleService {
     protected handleBTRItemTransferEvent(sessionId: string, request: IEndLocalRaidRequestData): void {
         const btrKey = "BTRTransferStash";
         const btrContainerAndItems = request.transferItems[btrKey] ?? [];
-        if (btrContainerAndItems.length > 0) {
-            const itemsToSend = btrContainerAndItems.filter((item) => item._id !== btrKey);
-            this.btrItemDelivery(sessionId, Traders.BTR, itemsToSend);
+        if (btrContainerAndItems.length === 0) {
+            return;
         }
+
+        const itemsToSend = btrContainerAndItems.filter((item) => item._id !== btrKey);
+        this.btrItemDelivery(sessionId, Traders.BTR, itemsToSend);
     }
 
     protected btrItemDelivery(sessionId: string, traderId: string, items: Item[]): void {
