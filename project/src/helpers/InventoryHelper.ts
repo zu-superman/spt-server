@@ -114,6 +114,11 @@ export class InventoryHelper {
 
         // Get stash layouts ready for use
         const stashFS2D = this.getStashSlotMap(pmcData, sessionId);
+        if (!stashFS2D) {
+            this.logger.error(`Unable to get stash map for players: ${sessionId} stash`);
+
+            return;
+        }
         const sortingTableFS2D = this.getSortingTableSlotMap(pmcData);
 
         // Find empty slot in stash for item being added - adds 'location' + parentid + slotId properties to root item
@@ -208,6 +213,11 @@ export class InventoryHelper {
         const pmcData = this.profileHelper.getPmcProfile(sessionId);
 
         const stashFS2D = this.cloner.clone(this.getStashSlotMap(pmcData, sessionId));
+        if (!stashFS2D) {
+            this.logger.error(`Unable to get stash map for players: ${sessionId} stash`);
+
+            return false;
+        }
         for (const itemWithChildren of itemsWithChildren) {
             if (!this.canPlaceItemInContainer(stashFS2D, itemWithChildren)) {
                 return false;
@@ -717,47 +727,52 @@ export class InventoryHelper {
     }
 
     /**
+     * Get a 2d mapping of a container with what grid slots are filled
      * @param containerH Horizontal size of container
      * @param containerV Vertical size of container
-     * @param itemList
+     * @param itemList Players inventory items
      * @param containerId Id of the container
      * @returns Two-dimensional representation of container
      */
     public getContainerMap(containerH: number, containerV: number, itemList: Item[], containerId: string): number[][] {
-        const container2D: number[][] = this.getBlankContainerMap(containerH, containerV);
+        // Create blank 2d map of container
+        const container2D = this.getBlankContainerMap(containerH, containerV);
+
+        // Get all items in players inventory keyed by their parentId and by ItemId
         const inventoryItemHash = this.getInventoryItemHash(itemList);
+
+        // Get subset of items that belong to the desired container
         const containerItemHash = inventoryItemHash.byParentId[containerId];
 
         if (!containerItemHash) {
-            // No items in the container
+            // No items in container, exit early
             return container2D;
         }
 
+        // Check each item in container
         for (const item of containerItemHash) {
-            if (!("location" in item)) {
+            const itemLocation = item?.location as Location;
+            if (!itemLocation) {
+                // item has no location property
+                this.logger.error(`Unable to find 'location' property on item with id: ${item._id}, skipping`);
+
                 continue;
             }
 
+            // Get x/y size of item
             const tmpSize = this.getSizeByInventoryItemHash(item._tpl, item._id, inventoryItemHash);
             const iW = tmpSize[0]; // x
             const iH = tmpSize[1]; // y
-            const fH =
-                (item.location as Location).r === 1 ||
-                (item.location as Location).r === "Vertical" ||
-                (item.location as Location).rotation === "Vertical"
-                    ? iW
-                    : iH;
-            const fW =
-                (item.location as Location).r === 1 ||
-                (item.location as Location).r === "Vertical" ||
-                (item.location as Location).rotation === "Vertical"
-                    ? iH
-                    : iW;
-            const fillTo = (item.location as Location).x + fW;
+            const fH = this.isVertical(itemLocation) ? iW : iH;
+            const fW = this.isVertical(itemLocation) ? iH : iW;
+
+            // Find the ending x coord of container
+            const fillTo = itemLocation.x + fW;
 
             for (let y = 0; y < fH; y++) {
                 try {
-                    container2D[(item.location as Location).y + y].fill(1, (item.location as Location).x, fillTo);
+                    // Fill the corresponding cells in the container map to show the slot is taken
+                    container2D[itemLocation.y + y].fill(1, itemLocation.x, fillTo);
                 } catch (e) {
                     this.logger.error(
                         this.localisationService.getText("inventory-unable_to_fill_container", {
@@ -770,6 +785,10 @@ export class InventoryHelper {
         }
 
         return container2D;
+    }
+
+    protected isVertical(itemLocation: Location): boolean {
+        return itemLocation.r === 1 || itemLocation.r === "Vertical" || itemLocation.rotation === "Vertical";
     }
 
     protected getInventoryItemHash(inventoryItem: Item[]): InventoryHelper.InventoryItemHash {
