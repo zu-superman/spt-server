@@ -1005,9 +1005,12 @@ export class QuestHelper {
         const hideoutManagementSkill = this.profileHelper.getSkillFromProfile(pmcData, SkillTypes.HIDEOUT_MANAGEMENT);
 
         // 5100 becomes 0.51, add 1 to it, 1.51, multiply the moneyreward bonus by it (e.g. 15 x 51)
-        const hideoutManagementBonusPercent = hideoutManagementSkill ? hideoutManagementSkill.Progress / 100 : 0;
+        // We multiply the money reward bonuses by the hideout management skill multipler, givin the new result
+        const hideoutManagementBonusMultipler = hideoutManagementSkill
+            ? 1 + hideoutManagementSkill.Progress / 10000
+            : 1;
 
-        return moneyRewardBonusPercent + hideoutManagementBonusPercent;
+        return moneyRewardBonusPercent * hideoutManagementBonusMultipler;
     }
 
     /**
