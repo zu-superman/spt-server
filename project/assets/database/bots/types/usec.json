@@ -3050,9 +3050,7 @@
         "628e4e576d783146b124c64d": 3,
         "66b5f68de98be930d701c00e": 3,
         "66b5f693acff495a294927e3": 3,
-        "66b5f6985891c84aab75ca76": 3,
-        "66b5f69ea7f72d197e70bcdb": 3,
-        "66b5f6a28ca68c6461709ed8": 3
+        "66b5f6985891c84aab75ca76": 3
       },
       "Eyewear": {
         "557ff21e4bdc2d89578b4586": 1,
@@ -12253,7 +12251,9 @@
         ],
         "mod_equipment_000": [
           "5e00cfa786f77469dc6e5685",
-          "5e01f31d86f77465cf261343"
+          "5e01f31d86f77465cf261343",
+		  "66b5f69ea7f72d197e70bcdb",
+          "66b5f6a28ca68c6461709ed8"
         ],
         "mod_equipment_001": [
           "5e00cdd986f7747473332240",
@@ -12273,8 +12273,14 @@
         ],
         "mod_equipment_000": [
           "5e00cfa786f77469dc6e5685",
-          "5e01f31d86f77465cf261343"
+		  "5e01f31d86f77465cf261343",
+		  "66b5f69ea7f72d197e70bcdb",
+		  "66b5f6a28ca68c6461709ed8"
         ],
+		"mod_equipment_001": [
+			"5e00cdd986f7747473332240",
+            "5e01f37686f774773c6f6c15"
+		],
         "mod_nvg": [
           "5c0558060db834001b735271",
           "5a16b8a9fcdbcb00165aa6ca"
@@ -15157,6 +15163,33 @@
           "6572fca39a866b80ab07eb65"
         ]
       },
+	  "66b5f65ca7f72d197e70bcd6": {
+		  "mod_nvg": [
+                  "5ea18c84ecf1982c7712d9a2",
+                  "5c0558060db834001b735271",
+                  "5a16b8a9fcdbcb00165aa6ca"
+                ],
+		  "Helmet_top": ["66b61cfae98be930d701c029"],
+		  "Helmet_back": ["66b61ce0c5d72b027748867e"]
+	  },
+	  "66b5f661af44ca0014063c05": {
+		  "mod_nvg": [
+                  "5ea18c84ecf1982c7712d9a2",
+                  "5c0558060db834001b735271",
+                  "5a16b8a9fcdbcb00165aa6ca"
+                ],
+		  "Helmet_top": ["66b61cfae98be930d701c029"],
+		  "Helmet_back": ["66b61ce0c5d72b027748867e"]
+	  },
+	  "66b5f666cad6f002ab7214c2": {
+		  "mod_nvg": [
+                  "5ea18c84ecf1982c7712d9a2",
+                  "5c0558060db834001b735271",
+                  "5a16b8a9fcdbcb00165aa6ca"
+                ],
+		  "Helmet_top": ["66b61cfae98be930d701c029"],
+		  "Helmet_back": ["66b61ce0c5d72b027748867e"]
+	  },
       "61bca7cda0eae612383adf57": {
         "Helmet_back": [
           "657bbcffbbd440df880b2dd5"

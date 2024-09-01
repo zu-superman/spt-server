@@ -348,9 +348,9 @@
         "DELTA_NEXT_ATTEMPT": 10,
         "DELTA_NEXT_ATTEMPT_FROM_COVER": 5,
         "FLASH_GRENADE_TIME_COEF": 0.25,
+        "GRENADE_PRECISION_PORTALS": 0.1,
         "GrenadePerMeter": 0.15,
         "GrenadePrecision": 0.1,
-		"GRENADE_PRECISION_PORTALS": 0.1,
         "MAX_FLASHED_DIST_TO_SHOOT": 10,
         "MAX_FLASHED_DIST_TO_SHOOT_SQRT": 100,
         "MAX_THROW_POWER": 18.7,
@@ -868,9 +868,9 @@
         "DELTA_NEXT_ATTEMPT": 10,
         "DELTA_NEXT_ATTEMPT_FROM_COVER": 5,
         "FLASH_GRENADE_TIME_COEF": 0.25,
+        "GRENADE_PRECISION_PORTALS": 0.1,
         "GrenadePerMeter": 0.15,
         "GrenadePrecision": 0.1,
-		"GRENADE_PRECISION_PORTALS": 0.1,
         "MAX_FLASHED_DIST_TO_SHOOT": 10,
         "MAX_FLASHED_DIST_TO_SHOOT_SQRT": 100,
         "MAX_THROW_POWER": 18.7,
@@ -1385,9 +1385,9 @@
         "DELTA_NEXT_ATTEMPT": 10,
         "DELTA_NEXT_ATTEMPT_FROM_COVER": 5,
         "FLASH_GRENADE_TIME_COEF": 0.25,
+        "GRENADE_PRECISION_PORTALS": 0.1,
         "GrenadePerMeter": 0.15,
         "GrenadePrecision": 0.1,
-		"GRENADE_PRECISION_PORTALS": 0.1,
         "MAX_FLASHED_DIST_TO_SHOOT": 10,
         "MAX_FLASHED_DIST_TO_SHOOT_SQRT": 100,
         "MAX_THROW_POWER": 18.7,
@@ -1902,9 +1902,9 @@
         "DELTA_NEXT_ATTEMPT": 10,
         "DELTA_NEXT_ATTEMPT_FROM_COVER": 5,
         "FLASH_GRENADE_TIME_COEF": 0.25,
+        "GRENADE_PRECISION_PORTALS": 0.1,
         "GrenadePerMeter": 0.15,
         "GrenadePrecision": 0.1,
-		"GRENADE_PRECISION_PORTALS": 0.1,
         "MAX_FLASHED_DIST_TO_SHOOT": 10,
         "MAX_FLASHED_DIST_TO_SHOOT_SQRT": 100,
         "MAX_THROW_POWER": 18.7,
@@ -3065,9 +3065,7 @@
         "628e4e576d783146b124c64d": 3,
         "66b5f68de98be930d701c00e": 3,
         "66b5f693acff495a294927e3": 3,
-        "66b5f6985891c84aab75ca76": 3,
-        "66b5f69ea7f72d197e70bcdb": 3,
-        "66b5f6a28ca68c6461709ed8": 3
+        "66b5f6985891c84aab75ca76": 3
       },
       "Eyewear": {
         "557ff21e4bdc2d89578b4586": 1,
@@ -12268,7 +12266,9 @@
         ],
         "mod_equipment_000": [
           "5e00cfa786f77469dc6e5685",
-          "5e01f31d86f77465cf261343"
+          "5e01f31d86f77465cf261343",
+          "66b5f69ea7f72d197e70bcdb",
+          "66b5f6a28ca68c6461709ed8"
         ],
         "mod_equipment_001": [
           "5e00cdd986f7747473332240",
@@ -12288,7 +12288,13 @@
         ],
         "mod_equipment_000": [
           "5e00cfa786f77469dc6e5685",
-          "5e01f31d86f77465cf261343"
+          "5e01f31d86f77465cf261343",
+          "66b5f69ea7f72d197e70bcdb",
+          "66b5f6a28ca68c6461709ed8"
+        ],
+        "mod_equipment_001": [
+          "5e00cdd986f7747473332240",
+          "5e01f37686f774773c6f6c15"
         ],
         "mod_nvg": [
           "5c0558060db834001b735271",
@@ -18030,6 +18036,45 @@
       "669fa5271bd4416eaa09b3ce": {
         "mod_sight_rear": [
           "668fe5e1800f0244f9036e46"
+        ]
+      },
+      "66b5f65ca7f72d197e70bcd6": {
+        "Helmet_back": [
+          "66b61ce0c5d72b027748867e"
+        ],
+        "Helmet_top": [
+          "66b61cfae98be930d701c029"
+        ],
+        "mod_nvg": [
+          "5ea18c84ecf1982c7712d9a2",
+          "5c0558060db834001b735271",
+          "5a16b8a9fcdbcb00165aa6ca"
+        ]
+      },
+      "66b5f661af44ca0014063c05": {
+        "Helmet_back": [
+          "66b61ce0c5d72b027748867e"
+        ],
+        "Helmet_top": [
+          "66b61cfae98be930d701c029"
+        ],
+        "mod_nvg": [
+          "5ea18c84ecf1982c7712d9a2",
+          "5c0558060db834001b735271",
+          "5a16b8a9fcdbcb00165aa6ca"
+        ]
+      },
+      "66b5f666cad6f002ab7214c2": {
+        "Helmet_back": [
+          "66b61ce0c5d72b027748867e"
+        ],
+        "Helmet_top": [
+          "66b61cfae98be930d701c029"
+        ],
+        "mod_nvg": [
+          "5ea18c84ecf1982c7712d9a2",
+          "5c0558060db834001b735271",
+          "5a16b8a9fcdbcb00165aa6ca"
         ]
       },
       "66b6295178bbc0200425f995": {
