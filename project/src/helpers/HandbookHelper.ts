@@ -1,4 +1,4 @@
-import { Category } from "@spt/models/eft/common/tables/IHandbookBase";
+import { IHandbookCategory } from "@spt/models/eft/common/tables/IHandbookBase";
 import { Item } from "@spt/models/eft/common/tables/IItem";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { Money } from "@spt/models/enums/Money";
@@ -176,7 +176,7 @@ export class HandbookHelper {
         return price ? Math.max(1, Math.round(roubleCurrencyCount / price)) : 0;
     }
 
-    public getCategoryById(handbookId: string): Category {
+    public getCategoryById(handbookId: string): IHandbookCategory {
         return this.databaseService.getHandbook().Categories.find((category) => category.Id === handbookId);
     }
 }

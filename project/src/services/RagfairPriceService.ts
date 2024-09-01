@@ -5,7 +5,7 @@ import { PresetHelper } from "@spt/helpers/PresetHelper";
 import { TraderHelper } from "@spt/helpers/TraderHelper";
 import { MinMax } from "@spt/models/common/MinMax";
 import { IPreset } from "@spt/models/eft/common/IGlobals";
-import { HandbookItem } from "@spt/models/eft/common/tables/IHandbookBase";
+import { IHandbookItem } from "@spt/models/eft/common/tables/IHandbookBase";
 import { Item } from "@spt/models/eft/common/tables/IItem";
 import { IBarterScheme } from "@spt/models/eft/common/tables/ITrader";
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
@@ -327,7 +327,7 @@ export class RagfairPriceService implements OnLoad {
      * @returns Adjusted price of item
      */
     protected adjustUnreasonablePrice(
-        handbookPrices: HandbookItem[],
+        handbookPrices: IHandbookItem[],
         unreasonableItemChange: IUnreasonableModPrices,
         itemTpl: string,
         price: number,
