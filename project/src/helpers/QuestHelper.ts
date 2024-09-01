@@ -578,22 +578,19 @@ export class QuestHelper {
     /**
      * Adjust quest money rewards by passed in multiplier
      * @param quest Quest to multiple money rewards
-     * @param bonusPercent Value to adjust money rewards by
+     * @param bonusPercent Pecent to adjust money rewards by
      * @param questStatus Status of quest to apply money boost to rewards of
      * @returns Updated quest
      */
     public applyMoneyBoost(quest: IQuest, bonusPercent: number, questStatus: QuestStatus): IQuest {
         const rewards: IQuestReward[] = quest.rewards?.[QuestStatus[questStatus]] ?? [];
-        const multipler = bonusPercent / 100 + 1;
-        for (const reward of rewards) {
-            // Skip non-money items
-            if (reward.type !== "Item" || !this.paymentHelper.isMoneyTpl(reward.items[0]._tpl)) {
-                continue;
-            }
-
+        const currencyRewards = rewards.filter(
+            (reward) => reward.type === "Item" && this.paymentHelper.isMoneyTpl(reward.items[0]._tpl),
+        );
+        for (const reward of currencyRewards) {
             // Add % bonus to existing StackObjectsCount
             const rewardItem = reward.items[0];
-            const newCurrencyAmount = Math.floor(rewardItem.upd.StackObjectsCount * multipler);
+            const newCurrencyAmount = Math.floor(rewardItem.upd.StackObjectsCount * (1 + bonusPercent / 100));
             rewardItem.upd.StackObjectsCount = newCurrencyAmount;
             reward.value = newCurrencyAmount;
         }
@@ -879,10 +876,10 @@ export class QuestHelper {
         }
 
         // Check for and apply intel center money bonus if it exists
-        const questMoneyRewardBonusPercent = this.getQuestMoneyRewardBonus(pmcProfile);
-        if (questMoneyRewardBonusPercent > 0) {
+        const questMoneyRewardBonusMultiplier = this.getQuestMoneyRewardBonusMultiplier(pmcProfile);
+        if (questMoneyRewardBonusMultiplier > 0) {
             // Apply additional bonus from hideout skill
-            questDetails = this.applyMoneyBoost(questDetails, questMoneyRewardBonusPercent, state); // money = money + (money * intelCenterBonus / 100)
+            questDetails = this.applyMoneyBoost(questDetails, questMoneyRewardBonusMultiplier, state); // money = money + (money * intelCenterBonus / 100)
         }
 
         // e.g. 'Success' or 'AvailableForFinish'
@@ -997,23 +994,20 @@ export class QuestHelper {
      * @param pmcData player profile
      * @returns bonus as a percent
      */
-    protected getQuestMoneyRewardBonus(pmcData: IPmcData): number {
+    protected getQuestMoneyRewardBonusMultiplier(pmcData: IPmcData): number {
         // Check player has intel center
-        const moneyRewardBonuses = pmcData.Bonuses.filter((x) => x.type === "QuestMoneyReward");
-        if (!moneyRewardBonuses) {
-            return 0;
-        }
+        const moneyRewardBonuses = pmcData.Bonuses.filter((profileBonus) => profileBonus.type === "QuestMoneyReward");
 
-        // Get a total of the quest money rewards
-        let moneyRewardBonus = moneyRewardBonuses.reduce((acc, cur) => acc + cur.value, 0);
+        // Get a total of the quest money reward percent bonuses
+        const moneyRewardBonusPercent = moneyRewardBonuses.reduce((acc, cur) => acc + cur.value, 0);
 
-        // Apply hideout management bonus to money reward (up to 51% bonus)
+        // Calculate hideout management bonus as a percentage (up to 51% bonus)
         const hideoutManagementSkill = this.profileHelper.getSkillFromProfile(pmcData, SkillTypes.HIDEOUT_MANAGEMENT);
-        if (hideoutManagementSkill) {
-            moneyRewardBonus *= 1 + hideoutManagementSkill.Progress / 10000; // 5100 becomes 0.51, add 1 to it, 1.51, multiply the moneyreward bonus by it (e.g. 15 x 51)
-        }
 
-        return moneyRewardBonus;
+        // 5100 becomes 0.51, add 1 to it, 1.51, multiply the moneyreward bonus by it (e.g. 15 x 51)
+        const hideoutManagementBonusPercent = hideoutManagementSkill ? hideoutManagementSkill.Progress / 100 : 0;
+
+        return moneyRewardBonusPercent + hideoutManagementBonusPercent;
     }
 
     /**
