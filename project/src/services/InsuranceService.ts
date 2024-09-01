@@ -324,14 +324,4 @@ export class InsuranceService {
         // Try to use the equipment id from the profile. I'm not sure this is strictly required, but it feels neat.
         return this.saveServer.getProfile(sessionID)?.characters?.pmc?.Inventory?.equipment ?? this.hashUtil.generate();
     }
-
-    /**
-     * Remove lost insurance items from profiles insuredItems array
-     * @param profile Profile to remove from
-     * @param itemsToRemove Items to remove
-     */
-    public removeLostInsuranceFromProfile(profile: IPmcData, itemsToRemove: Item[]) {
-        const itemIdsToRemove = new Set(itemsToRemove.map((item) => item._id));
-        profile.InsuredItems = profile.InsuredItems.filter((insuredItem) => !itemIdsToRemove.has(insuredItem.itemId));
-    }
 }

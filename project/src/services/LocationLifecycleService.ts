@@ -590,8 +590,6 @@ export class LocationLifecycleService {
             this.insuranceService.storeGearLostInRaidToSendLater(sessionId, mappedItems);
 
             this.insuranceService.sendInsuredItems(preRaidPmcProfile, sessionId, locationName);
-
-            this.insuranceService.removeLostInsuranceFromProfile(preRaidPmcProfile, request.lostInsuredItems);
         }
     }
 
