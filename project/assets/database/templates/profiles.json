@@ -47215,6 +47215,42 @@
                             "passiveBonusesEnabled": true,
                             "slots": [],
                             "type": 23
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 24
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 25
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 26
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 27
                         }
                     ],
                     "Improvement": {},
@@ -50580,6 +50616,42 @@
                             "passiveBonusesEnabled": true,
                             "slots": [],
                             "type": 23
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 24
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 25
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 26
+                        }, {
+                            "active": true,
+                            "completeTime": 0,
+                            "constructing": false,
+                            "lastRecipe": "",
+                            "level": 0,
+                            "passiveBonusesEnabled": true,
+                            "slots": [],
+                            "type": 27
                         }
                     ],
                     "Improvement": {},
