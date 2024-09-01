@@ -25,16 +25,20 @@ export interface ITraderBase {
     discount: number;
     discount_end: number;
     gridHeight: number;
-    insurance: Insurance;
+    sell_modifier_for_prohibited_items?: number;
+    insurance: ITraderInsurance;
     items_buy: IItemBuyData;
     items_buy_prohibited: IItemBuyData;
+    isCanTransferItems?: boolean;
+    transferableItems?: IItemBuyData;
+    prohibitedTransferableItems?: IItemBuyData;
     location: string;
-    loyaltyLevels: LoyaltyLevel[];
+    loyaltyLevels: ITraderLoyaltyLevel[];
     medic: boolean;
     name: string;
     nextResupply: number;
     nickname: string;
-    repair: Repair;
+    repair: ITraderRepair;
     sell_category: string[];
     surname: string;
     unlockedByDefault: boolean;
@@ -45,7 +49,7 @@ export interface IItemBuyData {
     id_list: string[];
 }
 
-export interface Insurance {
+export interface ITraderInsurance {
     availability: boolean;
     excluded_category: string[];
     max_return_hour: number;
@@ -54,7 +58,7 @@ export interface Insurance {
     min_return_hour: number;
 }
 
-export interface LoyaltyLevel {
+export interface ITraderLoyaltyLevel {
     buy_price_coef: number;
     exchange_price_coef: number;
     heal_price_coef: number;
@@ -65,13 +69,13 @@ export interface LoyaltyLevel {
     repair_price_coef: number;
 }
 
-export interface Repair {
+export interface ITraderRepair {
     availability: boolean;
     currency: string;
     currency_coefficient: number;
     excluded_category: string[];
     /** Doesn't exist in client object */
-    excluded_id_list: any[];
+    excluded_id_list: string[];
     quality: number;
 }
 

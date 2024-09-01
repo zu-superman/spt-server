@@ -107,9 +107,7 @@
     "excluded_id_list": [],
     "quality": "1"
   },
-  "sell_category": [
-    "5b47574386f77428ca22b33f"
-  ],
+  "sell_category": [],
   "sell_modifier_for_prohibited_items": 0,
   "surname": "Абрамян",
   "transferableItems": {

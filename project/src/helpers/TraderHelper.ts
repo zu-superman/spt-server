@@ -6,7 +6,7 @@ import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { BanType } from "@spt/models/eft/common/tables/IBotBase";
 import { Item } from "@spt/models/eft/common/tables/IItem";
 import { ProfileTraderTemplate } from "@spt/models/eft/common/tables/IProfileTemplate";
-import { ITraderAssort, ITraderBase, LoyaltyLevel } from "@spt/models/eft/common/tables/ITrader";
+import { ITraderAssort, ITraderBase, ITraderLoyaltyLevel } from "@spt/models/eft/common/tables/ITrader";
 import { ISptProfile } from "@spt/models/eft/profile/ISptProfile";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { GameEditions } from "@spt/models/enums/GameEditions";
@@ -339,7 +339,7 @@ export class TraderHelper {
         return this.randomUtil.getInt(traderDetails.seconds.min, traderDetails.seconds.max);
     }
 
-    public getLoyaltyLevel(traderID: string, pmcData: IPmcData): LoyaltyLevel {
+    public getLoyaltyLevel(traderID: string, pmcData: IPmcData): ITraderLoyaltyLevel {
         const traderBase = this.databaseService.getTrader(traderID).base;
         let loyaltyLevel = pmcData.TradersInfo[traderID].loyaltyLevel;
 
