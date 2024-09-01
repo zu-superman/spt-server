@@ -4,10 +4,12 @@ import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { TraderHelper } from "@spt/helpers/TraderHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
-import { HideoutSlot } from "@spt/models/eft/common/tables/IBotBase";
+import { Bonus, HideoutSlot } from "@spt/models/eft/common/tables/IBotBase";
 import { IPmcDataRepeatableQuest, IRepeatableQuest } from "@spt/models/eft/common/tables/IRepeatableQuests";
 import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
+import { StageBonus } from "@spt/models/eft/hideout/IHideoutArea";
 import { IEquipmentBuild, IMagazineBuild, ISptProfile, IWeaponBuild } from "@spt/models/eft/profile/ISptProfile";
+import { BonusType } from "@spt/models/enums/BonusType";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { HideoutAreas } from "@spt/models/enums/HideoutAreas";
 import { ICoreConfig } from "@spt/models/spt/config/ICoreConfig";
@@ -567,5 +569,85 @@ export class ProfileFixerService {
         }
 
         return false;
+    }
+
+    /**
+     * REQUIRED for dev profiles
+     * Iterate over players hideout areas and find what's build, look for missing bonuses those areas give and add them if missing
+     * @param pmcProfile Profile to update
+     */
+    public addMissingHideoutBonusesToProfile(pmcProfile: IPmcData): void {
+        const profileHideoutAreas = pmcProfile.Hideout.Areas;
+        const profileBonuses = pmcProfile.Bonuses;
+        const dbHideoutAreas = this.databaseService.getHideout().areas;
+
+        for (const profileArea of profileHideoutAreas) {
+            const areaType = profileArea.type;
+            const level = profileArea.level;
+
+            if (level === 0) {
+                continue;
+            }
+
+            // Get array of hideout area upgrade levels to check for bonuses
+            // Zero indexed
+            const areaLevelsToCheck: number[] = [];
+            for (let index = 0; index < level + 1; index++) {
+                areaLevelsToCheck.push(index);
+            }
+
+            // Iterate over area levels, check for bonuses, add if needed
+            const dbArea = dbHideoutAreas.find((x) => x.type === areaType);
+            if (!dbArea) {
+                continue;
+            }
+
+            for (const level of areaLevelsToCheck) {
+                // Get areas level bonuses from db
+                const levelBonuses = dbArea.stages[level]?.bonuses;
+                if (!levelBonuses || levelBonuses.length === 0) {
+                    continue;
+                }
+
+                // Iterate over each bonus for the areas level
+                for (const bonus of levelBonuses) {
+                    // Check if profile has bonus
+                    const profileBonus = this.getBonusFromProfile(profileBonuses, bonus);
+                    if (!profileBonus) {
+                        // no bonus, add to profile
+                        this.logger.debug(
+                            `Profile has level ${level} area ${
+                                HideoutAreas[profileArea.type]
+                            } but no bonus found, adding ${bonus.type}`,
+                        );
+                        this.hideoutHelper.applyPlayerUpgradesBonuses(pmcProfile, bonus);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * @param profileBonuses bonuses from profile
+     * @param bonus bonus to find
+     * @returns matching bonus
+     */
+    protected getBonusFromProfile(profileBonuses: Bonus[], bonus: StageBonus): Bonus | undefined {
+        // match by id first, used by "TextBonus" bonuses
+        if (bonus.id) {
+            return profileBonuses.find((x) => x.id === bonus.id);
+        }
+
+        if (bonus.type === BonusType.STASH_SIZE) {
+            return profileBonuses.find((x) => x.type === bonus.type && x.templateId === bonus.templateId);
+        }
+
+        if (bonus.type === BonusType.ADDITIONAL_SLOTS) {
+            return profileBonuses.find(
+                (x) => x.type === bonus.type && x.value === bonus.value && x.visible === bonus.visible,
+            );
+        }
+
+        return profileBonuses.find((x) => x.type === bonus.type && x.value === bonus.value);
     }
 }

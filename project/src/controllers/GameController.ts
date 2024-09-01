@@ -205,6 +205,7 @@ export class GameController {
             this.profileFixerService.checkForAndFixPmcProfileIssues(pmcProfile);
 
             if (pmcProfile.Hideout) {
+                this.profileFixerService.addMissingHideoutBonusesToProfile(pmcProfile);
                 this.hideoutHelper.setHideoutImprovementsToCompleted(pmcProfile);
                 this.hideoutHelper.unlockHideoutWallInProfile(pmcProfile);
             }
