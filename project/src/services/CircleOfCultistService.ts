@@ -219,6 +219,8 @@ export class CircleOfCultistService {
 
                 this.itemHelper.remapRootItemId(presetAndMods);
 
+                itemsRewardedCount++;
+                totalCost += this.itemHelper.getItemPrice(randomItemTplFromPool);
                 rewards.push(presetAndMods);
 
                 continue;
