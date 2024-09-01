@@ -15,6 +15,12 @@
 		"rewardPriceMultiplerMinMax": {
 			"min": 0.7,
 			"max": 1.4
+		},
+		"directRewards": {
+			"66572c82ad599021091c6118": ["5c0e874186f7745dc7616606"],
+			"66572be36a723f7f005a066e": ["5b3b713c5acfc4330140bd8d"],
+			"655c669103999d3c810c025b": ["5fc64ea372b0dd78d51159dc"],
+			"66572cbdad599021091c611a": ["60a7ad2a2198820d95707a2e"]
 		}
 	}
 }

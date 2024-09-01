@@ -97,10 +97,19 @@ export class CircleOfCultistService {
             }
         }
 
-        const rewardItemPool = this.getCultistCircleRewardPool(sessionId, pmcData);
-        this.logger.warning(`Reward pool item count: ${rewardItemPool.length}`);
+        // Player has sacrified a single item that's in directReward dict, return specific reward pool
+        let rewards: Item[][];
+        if (sacrificedItems.length === 1 && this.hideoutConfig.cultistCircle.directRewards[sacrificedItems[0]._tpl]) {
+            rewards = this.getExplicitRewards(
+                this.hideoutConfig.cultistCircle.directRewards[sacrificedItems[0]._tpl],
+                cultistCircleStashId,
+            );
+        } else {
+            const rewardItemPool = this.getCultistCircleRewardPool(sessionId, pmcData);
+            this.logger.warning(`Reward pool item count: ${rewardItemPool.length}`);
 
-        const rewards = this.getRewardsWithinBudget(rewardItemPool, rewardAmountRoubles, cultistCircleStashId);
+            rewards = this.getRewardsWithinBudget(rewardItemPool, rewardAmountRoubles, cultistCircleStashId);
+        }
 
         // Get the container grid for cultist stash area
         const cultistStashDbItem = this.itemHelper.getItem(ItemTpl.HIDEOUTAREACONTAINER_CIRCLEOFCULTISTS_STASH_1);
@@ -164,7 +173,7 @@ export class CircleOfCultistService {
      * @param rewardItemTplPool Items that can be picekd
      * @param rewardBudget Rouble budget to reach
      * @param cultistCircleStashId Id of stash item
-     * @returns Array of items
+     * @returns Array of item arrays
      */
     protected getRewardsWithinBudget(
         rewardItemTplPool: string[],
@@ -236,6 +245,58 @@ export class CircleOfCultistService {
             rewards.push([rewardItem]);
         }
         this.logger.warning(`Circle will reward ${itemsRewardedCount} items costing a total of ${totalCost} roubles`);
+
+        return rewards;
+    }
+
+    /**
+     * Give every item as a reward that's passed in
+     * @param rewardTpls Item tpls to turn into reward items
+     * @param cultistCircleStashId Id of stash item
+     * @returns Array of item arrays
+     */
+    protected getExplicitRewards(rewardTpls: string[], cultistCircleStashId: string): Item[][] {
+        // Prep rewards array (reward can be item with children, hence array of arrays)
+        const rewards: Item[][] = [];
+        for (const rewardTpl of rewardTpls) {
+            if (
+                this.itemHelper.armorItemHasRemovableOrSoftInsertSlots(rewardTpl) ||
+                this.itemHelper.isOfBaseclass(rewardTpl, BaseClasses.WEAPON)
+            ) {
+                const defaultPreset = this.presetHelper.getDefaultPreset(rewardTpl);
+                if (!defaultPreset) {
+                    this.logger.warning(`Reward tpl: ${rewardTpl} lacks a default preset, skipping reward`);
+
+                    continue;
+                }
+
+                // Ensure preset has unique ids and is cloned so we don't alter the preset data stored in memory
+                const presetAndMods: Item[] = this.itemHelper.replaceIDs(defaultPreset._items);
+
+                this.itemHelper.remapRootItemId(presetAndMods);
+
+                rewards.push(presetAndMods);
+
+                continue;
+            }
+
+            // Some items can have variable stack size, e.g. ammo
+            const stackSize = this.getRewardStackSize(rewardTpl);
+
+            // Not a weapon/armor, standard single item
+            const rewardItem: Item = {
+                _id: this.hashUtil.generate(),
+                _tpl: rewardTpl,
+                parentId: cultistCircleStashId,
+                slotId: CircleOfCultistService.circleOfCultistSlotId,
+                upd: {
+                    StackObjectsCount: stackSize,
+                    SpawnedInSession: true,
+                },
+            };
+
+            rewards.push([rewardItem]);
+        }
 
         return rewards;
     }
