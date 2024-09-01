@@ -5,7 +5,7 @@ import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { BanType } from "@spt/models/eft/common/tables/IBotBase";
 import { Item } from "@spt/models/eft/common/tables/IItem";
-import { ProfileTraderTemplate } from "@spt/models/eft/common/tables/IProfileTemplate";
+import { IProfileTraderTemplate } from "@spt/models/eft/common/tables/IProfileTemplate";
 import { ITraderAssort, ITraderBase, ITraderLoyaltyLevel } from "@spt/models/eft/common/tables/ITrader";
 import { ISptProfile } from "@spt/models/eft/profile/ISptProfile";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
@@ -125,7 +125,7 @@ export class TraderHelper {
         }
 
         const pmcData = fullProfile.characters.pmc;
-        const rawProfileTemplate: ProfileTraderTemplate =
+        const rawProfileTemplate: IProfileTraderTemplate =
             profiles[fullProfile.info.edition][pmcData.Info.Side.toLowerCase()].trader;
 
         pmcData.TradersInfo[traderID] = {
@@ -178,7 +178,7 @@ export class TraderHelper {
      * @param rawProfileTemplate Raw profile from profiles.json to look up standing from
      * @returns Standing value
      */
-    protected getStartingStanding(traderId: string, rawProfileTemplate: ProfileTraderTemplate): number {
+    protected getStartingStanding(traderId: string, rawProfileTemplate: IProfileTraderTemplate): number {
         const initialStanding =
             rawProfileTemplate.initialStanding[traderId] ?? rawProfileTemplate.initialStanding.default;
         // Edge case for Lightkeeper, 0 standing means seeing `Make Amends - Buyout` quest
