@@ -211,6 +211,8 @@ export class CircleOfCultistService {
                 this.itemHelper.remapRootItemId(presetAndMods);
 
                 rewards.push(presetAndMods);
+
+                continue;
             }
 
             // Some items can have variable stack size, e.g. ammo
