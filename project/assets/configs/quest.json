@@ -176,6 +176,20 @@
             "startTimestamp": 1341615600000,
             "endTimestamp": "",
             "yearly": false
+        },
+		"668bcccc167d507eb01a268b": {
+            "name": "Import control",
+            "season": "None",
+            "startTimestamp": 1341615600000,
+            "endTimestamp": "",
+            "yearly": false
+        },
+		"66a74c628410476dd65543be": {
+            "name": "Gunsmith: special order",
+            "season": "None",
+            "startTimestamp": 1341615600000,
+            "endTimestamp": "",
+            "yearly": false
         }
     },
     "repeatableQuests": [
