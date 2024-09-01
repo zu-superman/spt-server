@@ -445,7 +445,6 @@ export class LocationLifecycleService {
         pmcProfile.SurvivorClass = postRaidProfile.SurvivorClass;
         pmcProfile.Achievements = postRaidProfile.Achievements;
         pmcProfile.Quests = postRaidProfile.Quests;
-        pmcProfile.InsuredItems = postRaidProfile.InsuredItems;
 
         pmcProfile.Info.Experience = postRaidProfile.Info.Experience;
 
