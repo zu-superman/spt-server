@@ -8298,6 +8298,33 @@
                     },
                     "parentId": "665a06ac85c6ab387e0afba3",
                     "slotId": "main"
+                },
+				{
+                    "_id": "665a06ac84c6bb387e0afba5",
+                    "_tpl": "6694f423909d2322a8073151",
+                    "upd": {
+                        "StackObjectsCount": 1
+                    },
+                    "parentId": "665a06ac85c6ab387e0afba3",
+                    "slotId": "main"
+                },
+				{
+                    "_id": "665a06ac84c6bb387e0afba7",
+                    "_tpl": "6694f418c74d8a180f0f78c0",
+                    "upd": {
+                        "StackObjectsCount": 1
+                    },
+                    "parentId": "665a06ac85c6ab387e0afba3",
+                    "slotId": "main"
+                },
+				{
+                    "_id": "665a06ac84c6bb387e0afba8",
+                    "_tpl": "6694f4101ae1778e310f4f8e",
+                    "upd": {
+                        "StackObjectsCount": 1
+                    },
+                    "parentId": "665a06ac85c6ab387e0afba3",
+                    "slotId": "main"
                 }
             ],
             "sender": "System",
