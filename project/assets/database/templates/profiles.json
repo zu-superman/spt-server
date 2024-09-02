@@ -27961,7 +27961,7 @@
                             "completeTime": 0,
                             "constructing": false,
                             "lastRecipe": "",
-                            "level": 0,
+                            "level": 1,
                             "passiveBonusesEnabled": true,
                             "slots": [
 								{
@@ -32450,7 +32450,7 @@
                             "completeTime": 0,
                             "constructing": false,
                             "lastRecipe": "",
-                            "level": 0,
+                            "level": 1,
                             "passiveBonusesEnabled": true,
 							"slots": [
 							  {
@@ -32500,7 +32500,9 @@
                 "Inventory": {
                     "equipment": "664115f68b8ae858750609b3",
                     "fastPanel": {},
-                    "hideoutAreaStashes": {},
+                    "hideoutAreaStashes": {
+						"27": "66c903b7cbd137db330413a2"
+					},
                     "favoriteItems": [],
                     "items": [{
                             "_id": "664115f68b8ae858750609b3",
@@ -36140,7 +36142,10 @@
                         }, {
                             "_id": "664115f68b8ae85875060b3a",
                             "_tpl": "5963866286f7747bf429b572"
-                        }
+                        }, {
+							"_id": "66c903b7cbd137db330413a2",
+							"_tpl": "66740c3739b9da6ce402ee65"
+						  }
                     ],
                     "questRaidItems": "664115f68b8ae85875060b3a",
                     "questStashItems": "664115f68b8ae85875060b3b",
