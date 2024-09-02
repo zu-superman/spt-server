@@ -287,7 +287,7 @@ export class GameController {
             });
         }
 
-        // Improvemet property changed name
+        // Hideout Improvement property changed name
         if ((fullProfile.characters.pmc.Hideout as any).Improvement) {
             fullProfile.characters.pmc.Hideout.Improvements = (fullProfile.characters.pmc.Hideout as any).Improvement;
             delete (fullProfile.characters.pmc.Hideout as any).Improvement;
