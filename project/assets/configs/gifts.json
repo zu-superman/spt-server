@@ -8287,6 +8287,24 @@
             "collectionTimeHours": 48,
             "associatedEvent": "Promo",
             "maxToSendPlayer": 1
+        },
+		"STREAMERLOOT": {
+            "items": [
+                {
+                    "_id": "665a06ac84c6bb387e0afba2",
+                    "_tpl": "66bc98a01a47be227a5e956e",
+                    "upd": {
+                        "StackObjectsCount": 1
+                    },
+                    "parentId": "665a06ac85c6ab387e0afba3",
+                    "slotId": "main"
+                }
+            ],
+            "sender": "System",
+            "messageText": "Loot is rigged, i swear",
+            "collectionTimeHours": 48,
+            "associatedEvent": "Promo",
+            "maxToSendPlayer": 5
         }
     }
 }
