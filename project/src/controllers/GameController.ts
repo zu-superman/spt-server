@@ -247,6 +247,7 @@ export class GameController {
     protected migrate39xProfile(fullProfile: ISptProfile) {
         // Karma
         if (typeof fullProfile.characters.pmc.karmaValue === "undefined") {
+            this.logger.warning("Migration: Added karma value of 0.2 to profile");
             fullProfile.characters.pmc.karmaValue = 0.2;
         }
 
@@ -255,6 +256,7 @@ export class GameController {
             (area) => area.type === HideoutAreas.EQUIPMENT_PRESETS_STAND,
         );
         if (!equipmentArea) {
+            this.logger.warning("Migration: Added equipment preset stand hideout area to profile, level 0");
             fullProfile.characters.pmc.Hideout.Areas.push({
                 active: true,
                 completeTime: 0,
@@ -272,6 +274,7 @@ export class GameController {
             (area) => area.type === HideoutAreas.CIRCLE_OF_CULTISTS,
         );
         if (!circleArea) {
+            this.logger.warning("Migration: Added cultist circle hideout area to profile, level 0");
             fullProfile.characters.pmc.Hideout.Areas.push({
                 active: true,
                 completeTime: 0,
@@ -282,6 +285,13 @@ export class GameController {
                 slots: [],
                 type: HideoutAreas.CIRCLE_OF_CULTISTS,
             });
+        }
+
+        // Improvemet property changed name
+        if ((fullProfile.characters.pmc.Hideout as any).Improvement) {
+            fullProfile.characters.pmc.Hideout.Improvements = (fullProfile.characters.pmc.Hideout as any).Improvement;
+            delete (fullProfile.characters.pmc.Hideout as any).Improvement;
+            this.logger.warning(`Migration: Moved Hideout Improvement data to new property 'Improvements'`);
         }
     }
 
