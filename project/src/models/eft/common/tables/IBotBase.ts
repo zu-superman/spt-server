@@ -149,6 +149,7 @@ export interface BodyPartHealth {
 }
 
 export interface BodyPartEffectProperties {
+    ExtraData?: any;
     Time: number;
 }
 
