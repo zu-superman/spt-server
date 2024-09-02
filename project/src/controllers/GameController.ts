@@ -247,7 +247,7 @@ export class GameController {
     protected migrate39xProfile(fullProfile: ISptProfile) {
         // Karma
         if (typeof fullProfile.characters.pmc.karmaValue === "undefined") {
-            fullProfile.characters.pmc.karmaValue = 0;
+            fullProfile.characters.pmc.karmaValue = 0.2;
         }
 
         // Equipment area
