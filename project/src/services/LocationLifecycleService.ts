@@ -511,7 +511,7 @@ export class LocationLifecycleService {
      */
     protected processPostRaidQuests(questsToProcess: IQuestStatus[]): IQuestStatus[] {
         for (const quest of questsToProcess) {
-            quest.status = quest.status as QuestStatus;
+            quest.status = Number(QuestStatus[quest.status]);
 
             // Iterate over each status timer key and convert from a string into the enums number value
             for (const statusTimerKey in quest.statusTimers) {
