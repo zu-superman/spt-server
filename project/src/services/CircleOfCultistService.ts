@@ -18,11 +18,12 @@ import { IHideoutConfig } from "@spt/models/spt/config/IHideoutConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { EventOutputHolder } from "@spt/routers/EventOutputHolder";
 import { ConfigServer } from "@spt/servers/ConfigServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
+import { ItemFilterService } from "@spt/services/ItemFilterService";
 import { HashUtil } from "@spt/utils/HashUtil";
 import { RandomUtil } from "@spt/utils/RandomUtil";
 import { ICloner } from "@spt/utils/cloners/ICloner";
 import { inject, injectable } from "tsyringe";
-import { DatabaseService } from "./DatabaseService";
 
 @injectable()
 export class CircleOfCultistService {
@@ -41,6 +42,7 @@ export class CircleOfCultistService {
         @inject("InventoryHelper") protected inventoryHelper: InventoryHelper,
         @inject("HideoutHelper") protected hideoutHelper: HideoutHelper,
         @inject("DatabaseService") protected databaseService: DatabaseService,
+        @inject("ItemFilterService") protected itemFilterService: ItemFilterService,
         @inject("ConfigServer") protected configServer: ConfigServer,
     ) {
         this.hideoutConfig = this.configServer.getConfig(ConfigTypes.HIDEOUT);
@@ -321,14 +323,22 @@ export class CircleOfCultistService {
     /**
      * Get a pool of tpl IDs of items the player needs to complete hideout crafts/upgrade areas
      * @param sessionId Session id
-     * @param pmcData Player profile
+     * @param pmcData Profile of player who will be getting the rewards
      * @returns Array of tpls
      */
     protected getCultistCircleRewardPool(sessionId: string, pmcData: IPmcData): string[] {
         const rewardPool = new Set<string>();
+        const cultistCircleConfig = this.hideoutConfig.cultistCircle;
+        const hideoutDbData = this.databaseService.getHideout();
+
+        // Merge reward item blacklist with cultist circle blacklist from config
+        const itemRewardBlacklist = [
+            ...this.itemFilterService.getItemRewardBlacklist(),
+            ...cultistCircleConfig.rewardItemBlacklist,
+        ];
 
         // What does player need to upgrade hideout areas
-        const dbAreas = this.databaseService.getHideout().areas;
+        const dbAreas = hideoutDbData.areas;
         for (const area of pmcData.Hideout.Areas) {
             const currentStageLevel = area.level;
             const areaType = area.type;
@@ -340,14 +350,18 @@ export class CircleOfCultistService {
                 // Next stage exists, gather up requirements and add to pool
                 const itemRequirements = this.getItemRequirements(nextStageDbData.requirements);
                 for (const rewardToAdd of itemRequirements) {
+                    if (!itemRewardBlacklist.includes(rewardToAdd.templateId)) {
+                        continue;
+                    }
+
                     rewardPool.add(rewardToAdd.templateId);
                 }
             }
         }
 
-        // What does player need to craft items with
+        // What does player need to start crafts with
         const playerUnlockedRecipes = pmcData.UnlockedInfo.unlockedProductionRecipe;
-        const allRecipes = this.databaseService.getHideout().production;
+        const allRecipes = hideoutDbData.production;
 
         // Get default unlocked recipes + locked recipes they've unlocked
         const playerAccessibleRecipes = allRecipes.recipes.filter(
@@ -356,6 +370,10 @@ export class CircleOfCultistService {
         for (const recipe of playerAccessibleRecipes) {
             const itemRequirements = this.getItemRequirements(recipe.requirements);
             for (const requirement of itemRequirements) {
+                if (!itemRewardBlacklist.includes(requirement.templateId)) {
+                    continue;
+                }
+
                 rewardPool.add(requirement.templateId);
             }
         }
@@ -364,14 +382,30 @@ export class CircleOfCultistService {
         const hasScavCaseAreaUnlocked = pmcData.Hideout.Areas[HideoutAreas.SCAV_CASE]?.level > 0;
         if (hasScavCaseAreaUnlocked) {
             // Gather up items used to start scav case crafts
-            const scavCaseCrafts = this.databaseService.getHideout().scavcase;
+            const scavCaseCrafts = hideoutDbData.scavcase;
             for (const craft of scavCaseCrafts) {
                 // Find the item requirements from each craft
                 const itemRequirements = this.getItemRequirements(craft.Requirements);
                 for (const requirement of itemRequirements) {
+                    if (!itemRewardBlacklist.includes(requirement.templateId)) {
+                        continue;
+                    }
+
                     // Add tpl to reward pool
                     rewardPool.add(requirement.templateId);
                 }
+            }
+        }
+
+        // Add custom rewards from config
+        if (cultistCircleConfig.additionalRewardItemPool.length > 0) {
+            for (const additionalReward of cultistCircleConfig.additionalRewardItemPool) {
+                if (!itemRewardBlacklist.includes(additionalReward)) {
+                    continue;
+                }
+
+                // Add tpl to reward pool
+                rewardPool.add(additionalReward);
             }
         }
 

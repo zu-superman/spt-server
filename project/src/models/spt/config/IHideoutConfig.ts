@@ -20,5 +20,10 @@ export interface ICultistCircleSettings {
     maxRewardItemCount: number;
     maxAttemptsToPickRewardsWithinBudget: number;
     rewardPriceMultiplerMinMax: MinMax;
+    /** Specific reward pool when player sacrificed one specific item */
     directRewards: Record<string, string[]>;
+    /** Item tpls to exclude from the reward pool */
+    rewardItemBlacklist: string[];
+    /** Item tpls to include in the reward pool */
+    additionalRewardItemPool: string[];
 }

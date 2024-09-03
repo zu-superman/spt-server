@@ -22,6 +22,8 @@
 			"655c669103999d3c810c025b": ["635267ab3c89e2112001f826"],
 			"66572cbdad599021091c611a": ["60a7ad2a2198820d95707a2e"],
 			"5c0530ee86f774697952d952": ["6389c8c5dbfd5e4b95197e6b"]
-		}
+		},
+		"rewardItemBlacklist": [],
+		"rewardItemAdditionalRewards": []
 	}
 }
