@@ -141,11 +141,9 @@ export class HealthHelper {
                 const effectDetails = bodyPartEffects[effect];
 
                 // Null guard
-                if (!profileData.Health.BodyParts[bodyPartId].Effects) {
-                    profileData.Health.BodyParts[bodyPartId].Effects = {};
-                }
+                profileData.Health.BodyParts[bodyPartId].Effects ||= {};
 
-                // Already exists on server profile, skip
+                // Effect already exists on limb in server profile, skip
                 const profileBodyPartEffects = profileData.Health.BodyParts[bodyPartId].Effects;
                 if (profileBodyPartEffects[effect]) {
                     if (effect === "Exhaustion") {
