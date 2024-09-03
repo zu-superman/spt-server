@@ -9,13 +9,14 @@ import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { TraderHelper } from "@spt/helpers/TraderHelper";
 import { ILocationBase } from "@spt/models/eft/common/ILocationBase";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
-import { Common, TraderInfo } from "@spt/models/eft/common/tables/IBotBase";
+import { Common, IQuestStatus, TraderInfo } from "@spt/models/eft/common/tables/IBotBase";
 import { Item } from "@spt/models/eft/common/tables/IItem";
 import { IEndLocalRaidRequestData, IEndRaidResult } from "@spt/models/eft/match/IEndLocalRaidRequestData";
 import { IStartLocalRaidRequestData } from "@spt/models/eft/match/IStartLocalRaidRequestData";
 import { IStartLocalRaidResponseData } from "@spt/models/eft/match/IStartLocalRaidResponseData";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { MessageType } from "@spt/models/enums/MessageType";
+import { QuestStatus } from "@spt/models/enums/QuestStatus";
 import { Traders } from "@spt/models/enums/Traders";
 import { IHideoutConfig } from "@spt/models/spt/config/IHideoutConfig";
 import { IInRaidConfig } from "@spt/models/spt/config/IInRaidConfig";
@@ -444,7 +445,7 @@ export class LocationLifecycleService {
         pmcProfile.TaskConditionCounters = postRaidProfile.TaskConditionCounters;
         pmcProfile.SurvivorClass = postRaidProfile.SurvivorClass;
         pmcProfile.Achievements = postRaidProfile.Achievements;
-        pmcProfile.Quests = postRaidProfile.Quests;
+        pmcProfile.Quests = this.processPostRaidQuests(postRaidProfile.Quests);
 
         pmcProfile.Info.Experience = postRaidProfile.Info.Experience;
 
@@ -500,6 +501,30 @@ export class LocationLifecycleService {
         this.handleBTRItemTransferEvent(sessionId, request);
 
         this.handleInsuredItemLostEvent(sessionId, pmcProfile, request, locationName);
+    }
+
+    /**
+     * Convert post-raid quests into correct format
+     * @param questsToProcess
+     * @returns IQuestStatus
+     */
+    protected processPostRaidQuests(questsToProcess: IQuestStatus[]): IQuestStatus[] {
+        for (const quest of questsToProcess) {
+            quest.status = quest.status as QuestStatus;
+
+            // Iterate over each status timer key and convert from a string into the enums number value
+            for (const statusTimerKey in quest.statusTimers) {
+                if (Number.isNaN(Number.parseInt(statusTimerKey))) {
+                    // Is a string, convert
+                    quest.statusTimers[QuestStatus[statusTimerKey]] = quest.statusTimers[statusTimerKey];
+
+                    // Delete the old string key/value
+                    quest.statusTimers[statusTimerKey] = undefined;
+                }
+            }
+        }
+
+        return questsToProcess;
     }
 
     /**
