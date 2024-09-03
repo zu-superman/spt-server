@@ -4,10 +4,16 @@ import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { PresetHelper } from "@spt/helpers/PresetHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
+import { HideoutArea } from "@spt/models/eft/common/tables/IBotBase";
 import { Item } from "@spt/models/eft/common/tables/IItem";
 import { IStageRequirement } from "@spt/models/eft/hideout/IHideoutArea";
 import { IHideoutCircleOfCultistProductionStartRequestData } from "@spt/models/eft/hideout/IHideoutCircleOfCultistProductionStartRequestData";
-import { IRequirementBase, Requirement } from "@spt/models/eft/hideout/IHideoutProduction";
+import {
+    IHideoutProduction,
+    IHideoutProductionData,
+    IRequirementBase,
+    Requirement,
+} from "@spt/models/eft/hideout/IHideoutProduction";
 import { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRouterResponse";
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
@@ -20,6 +26,7 @@ import { EventOutputHolder } from "@spt/routers/EventOutputHolder";
 import { ConfigServer } from "@spt/servers/ConfigServer";
 import { DatabaseService } from "@spt/services/DatabaseService";
 import { ItemFilterService } from "@spt/services/ItemFilterService";
+import { SeasonalEventService } from "@spt/services/SeasonalEventService";
 import { HashUtil } from "@spt/utils/HashUtil";
 import { RandomUtil } from "@spt/utils/RandomUtil";
 import { ICloner } from "@spt/utils/cloners/ICloner";
@@ -43,6 +50,7 @@ export class CircleOfCultistService {
         @inject("HideoutHelper") protected hideoutHelper: HideoutHelper,
         @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("ItemFilterService") protected itemFilterService: ItemFilterService,
+        @inject("SeasonalEventService") protected seasonalEventService: SeasonalEventService,
         @inject("ConfigServer") protected configServer: ConfigServer,
     ) {
         this.hideoutConfig = this.configServer.getConfig(ConfigTypes.HIDEOUT);
@@ -339,7 +347,7 @@ export class CircleOfCultistService {
 
         // What does player need to upgrade hideout areas
         const dbAreas = hideoutDbData.areas;
-        for (const area of pmcData.Hideout.Areas) {
+        for (const area of this.getPlayerAccessibleHideoutAreas(pmcData.Hideout.Areas)) {
             const currentStageLevel = area.level;
             const areaType = area.type;
 
@@ -360,14 +368,9 @@ export class CircleOfCultistService {
         }
 
         // What does player need to start crafts with
-        const playerUnlockedRecipes = pmcData.UnlockedInfo.unlockedProductionRecipe;
+        const playerUnlockedRecipes = pmcData.UnlockedInfo?.unlockedProductionRecipe ?? [];
         const allRecipes = hideoutDbData.production;
-
-        // Get default unlocked recipes + locked recipes they've unlocked
-        const playerAccessibleRecipes = allRecipes.recipes.filter(
-            (recipe) => !recipe.locked || playerUnlockedRecipes.includes(recipe._id),
-        );
-        for (const recipe of playerAccessibleRecipes) {
+        for (const recipe of this.getPlayerAccessibleRecipes(playerUnlockedRecipes, allRecipes)) {
             const itemRequirements = this.getItemRequirements(recipe.requirements);
             for (const requirement of itemRequirements) {
                 if (!itemRewardBlacklist.includes(requirement.templateId)) {
@@ -410,6 +413,30 @@ export class CircleOfCultistService {
         }
 
         return Array.from(rewardPool);
+    }
+
+    /**
+     * Get all active hideout areas
+     * @param areas Hideout areas to iterate over
+     * @returns Active area array
+     */
+    protected getPlayerAccessibleHideoutAreas(areas: HideoutArea[]): HideoutArea[] {
+        return areas.filter((area) => {
+            if (area.type === HideoutAreas.CHRISTMAS_TREE && !this.seasonalEventService.christmasEventEnabled()) {
+                // Christmas tree area and not Christmas, skip
+                return false;
+            }
+
+            return true;
+        });
+    }
+
+    protected getPlayerAccessibleRecipes(
+        unlockedRecipes: string[],
+        allRecipes: IHideoutProductionData,
+    ): IHideoutProduction[] {
+        // Get default unlocked recipes + locked recipes they've unlocked
+        return allRecipes.recipes.filter((recipe) => !recipe.locked || unlockedRecipes.includes(recipe._id));
     }
 
     /**
