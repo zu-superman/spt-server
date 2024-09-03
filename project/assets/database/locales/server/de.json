@@ -66,6 +66,7 @@
     "customisation-unable_to_find_suit_with_id": "Anzug mit Angebots-Id nicht gefunden: %s",
     "customisation-unable_to_get_trader_suits": "Kann Anzüge vom Händler nicht abrufen: %s",
     "database-data_at_path_missing": "Die Datenbank konnte keine Daten abrufen von: [%s] Bitte stellen Sie sicher, dass Ihre Konfigurationen gültig sind und die Daten am Standort vorhanden sind",
+    "database-no_location_found_with_id": "Kein Standort mit Id von: %s in der Datenbank gefunden",
     "database-no_trader_found_with_id": "Händler %s konnte nicht in der Datenbank gefunden werden",
     "dialog-chatbot_id_already_exists": "Chat-Bot: %s ist bereits registriert, der Bot kann nicht registriert werden",
     "dialog-missing_item_template": "Element tpl {{tpl}} konnte in der Datenbank nicht gefunden werden, Nachricht vom Typ {{type}} kann nicht gesendet werden. Überspringen",
