@@ -148,6 +148,16 @@ export class HealthHelper {
                 // Already exists on server profile, skip
                 const profileBodyPartEffects = profileData.Health.BodyParts[bodyPartId].Effects;
                 if (profileBodyPartEffects[effect]) {
+                    if (effect === "Exhaustion") {
+                        // Get rid of existing Exhaustion effect
+                        profileBodyPartEffects[effect] = undefined;
+                    }
+
+                    continue;
+                }
+
+                if (effect === "Exhaustion") {
+                    // Do not pass exhaustion to out of raid profile
                     continue;
                 }
 

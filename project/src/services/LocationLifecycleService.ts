@@ -505,6 +505,7 @@ export class LocationLifecycleService {
 
     /**
      * Convert post-raid quests into correct format
+     * Quest status comes back as a string version of the enum `Success`, not the expected value of 1
      * @param questsToProcess
      * @returns IQuestStatus
      */
