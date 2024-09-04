@@ -382,14 +382,9 @@ export class LocationLifecycleService {
         isDead: boolean,
         request: IEndLocalRaidRequestData,
     ): void {
-        // Scav died, regen scav loadout and reset timer
-        if (isDead) {
-            this.playerScavGenerator.generate(sessionId);
-        }
-
         scavProfile.Info.Level = request.results.profile.Info.Level;
         scavProfile.Skills = request.results.profile.Skills;
-        scavProfile.Stats.Eft = request.results.profile.Stats.Eft;
+        scavProfile.Stats = request.results.profile.Stats;
         scavProfile.Encyclopedia = request.results.profile.Encyclopedia;
         scavProfile.TaskConditionCounters = request.results.profile.TaskConditionCounters;
         scavProfile.SurvivorClass = request.results.profile.SurvivorClass;
@@ -417,6 +412,11 @@ export class LocationLifecycleService {
 
         // Remove skill fatigue values
         this.resetSkillPointsEarnedDuringRaid(scavProfile.Skills.Common);
+
+        // Scav died, regen scav loadout and reset timer
+        if (isDead) {
+            this.playerScavGenerator.generate(sessionId);
+        }
 
         // Update last played property
         pmcProfile.Info.LastTimePlayedAsSavage = this.timeUtil.getTimestamp();
