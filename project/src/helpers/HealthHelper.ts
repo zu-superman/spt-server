@@ -134,6 +134,7 @@ export class HealthHelper {
      */
     protected transferPostRaidLimbEffectsToProfile(postRaidBodyParts: BodyPartsHealth, profileData: IPmcData): void {
         // Iterate over each body part
+        const effectsToIgnore = ["Dehydration", "Exhaustion"];
         for (const bodyPartId in postRaidBodyParts) {
             // Get effects on body part from profile
             const bodyPartEffects = postRaidBodyParts[bodyPartId].Effects;
@@ -146,16 +147,16 @@ export class HealthHelper {
                 // Effect already exists on limb in server profile, skip
                 const profileBodyPartEffects = profileData.Health.BodyParts[bodyPartId].Effects;
                 if (profileBodyPartEffects[effect]) {
-                    if (effect === "Exhaustion") {
-                        // Get rid of existing Exhaustion effect
+                    if (effectsToIgnore.includes(effect)) {
+                        // Get rid of certain effects we dont want to persist out of raid
                         profileBodyPartEffects[effect] = undefined;
                     }
 
                     continue;
                 }
 
-                if (effect === "Exhaustion") {
-                    // Do not pass exhaustion to out of raid profile
+                if (effectsToIgnore.includes(effect)) {
+                    // Do not pass some effects to out of raid profile
                     continue;
                 }
 
