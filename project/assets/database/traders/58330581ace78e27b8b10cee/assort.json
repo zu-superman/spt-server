@@ -5603,7 +5603,7 @@
       "parentId": "hideout",
       "slotId": "hideout",
       "upd": {
-        "StackObjectsCount": 19996,
+        "StackObjectsCount": 20000,
         "BuyRestrictionMax": 5,
         "BuyRestrictionCurrent": 0
       }
@@ -5689,7 +5689,7 @@
     "66c6f8b7c26ce354960aaebd": [
       [
         {
-          "count": 119.97,
+          "count": 121.83,
           "_tpl": "5696686a4bdc2da3298b456a"
         }
       ]
@@ -5705,7 +5705,7 @@
     "66c6f8b7c26ce354960aaec3": [
       [
         {
-          "count": 76.54,
+          "count": 77.73,
           "_tpl": "5696686a4bdc2da3298b456a"
         }
       ]
@@ -6017,7 +6017,7 @@
     "66c6f8b9c26ce354960aaf48": [
       [
         {
-          "count": 164,
+          "count": 160,
           "_tpl": "5449016a4bdc2d6f028b456f"
         }
       ]
@@ -6137,7 +6137,7 @@
     "66c6f8bac26ce354960aaf7d": [
       [
         {
-          "count": 245.62,
+          "count": 249.43,
           "_tpl": "5696686a4bdc2da3298b456a"
         }
       ]
@@ -6161,7 +6161,7 @@
     "66c6f8bac26ce354960aaf86": [
       [
         {
-          "count": 61.57,
+          "count": 62.53,
           "_tpl": "5696686a4bdc2da3298b456a"
         }
       ]
@@ -6185,7 +6185,7 @@
     "66c6f8bac26ce354960aaf8f": [
       [
         {
-          "count": 89.97,
+          "count": 91.37,
           "_tpl": "5696686a4bdc2da3298b456a"
         }
       ]
@@ -6193,7 +6193,7 @@
     "66c6f8bac26ce354960aaf92": [
       [
         {
-          "count": 30.39,
+          "count": 31.04,
           "_tpl": "569668774bdc2da2298b4568"
         }
       ]
@@ -6249,7 +6249,7 @@
     "66c6f8bbc26ce354960aafac": [
       [
         {
-          "count": 57.54,
+          "count": 58.43,
           "_tpl": "5696686a4bdc2da3298b456a"
         }
       ]
@@ -7874,7 +7874,7 @@
     "66c6f8c4c26ce354960ab2ac": [
       [
         {
-          "count": 34.07,
+          "count": 34.81,
           "_tpl": "569668774bdc2da2298b4568"
         }
       ]
