@@ -358,7 +358,7 @@ export class CircleOfCultistService {
                 // Next stage exists, gather up requirements and add to pool
                 const itemRequirements = this.getItemRequirements(nextStageDbData.requirements);
                 for (const rewardToAdd of itemRequirements) {
-                    if (!itemRewardBlacklist.includes(rewardToAdd.templateId)) {
+                    if (itemRewardBlacklist.includes(rewardToAdd.templateId)) {
                         continue;
                     }
 
@@ -373,7 +373,7 @@ export class CircleOfCultistService {
         for (const recipe of this.getPlayerAccessibleRecipes(playerUnlockedRecipes, allRecipes)) {
             const itemRequirements = this.getItemRequirements(recipe.requirements);
             for (const requirement of itemRequirements) {
-                if (!itemRewardBlacklist.includes(requirement.templateId)) {
+                if (itemRewardBlacklist.includes(requirement.templateId)) {
                     continue;
                 }
 
@@ -390,7 +390,7 @@ export class CircleOfCultistService {
                 // Find the item requirements from each craft
                 const itemRequirements = this.getItemRequirements(craft.Requirements);
                 for (const requirement of itemRequirements) {
-                    if (!itemRewardBlacklist.includes(requirement.templateId)) {
+                    if (itemRewardBlacklist.includes(requirement.templateId)) {
                         continue;
                     }
 
@@ -403,7 +403,7 @@ export class CircleOfCultistService {
         // Add custom rewards from config
         if (cultistCircleConfig.additionalRewardItemPool.length > 0) {
             for (const additionalReward of cultistCircleConfig.additionalRewardItemPool) {
-                if (!itemRewardBlacklist.includes(additionalReward)) {
+                if (itemRewardBlacklist.includes(additionalReward)) {
                     continue;
                 }
 
