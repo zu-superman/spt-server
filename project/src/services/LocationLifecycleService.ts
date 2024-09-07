@@ -29,6 +29,7 @@ import { ConfigServer } from "@spt/servers/ConfigServer";
 import { SaveServer } from "@spt/servers/SaveServer";
 import { BotGenerationCacheService } from "@spt/services/BotGenerationCacheService";
 import { BotLootCacheService } from "@spt/services/BotLootCacheService";
+import { BotNameService } from "@spt/services/BotNameService";
 import { DatabaseService } from "@spt/services/DatabaseService";
 import { InsuranceService } from "@spt/services/InsuranceService";
 import { LocalisationService } from "@spt/services/LocalisationService";
@@ -71,6 +72,7 @@ export class LocationLifecycleService {
         @inject("BotGenerationCacheService") protected botGenerationCacheService: BotGenerationCacheService,
         @inject("MailSendService") protected mailSendService: MailSendService,
         @inject("RaidTimeAdjustmentService") protected raidTimeAdjustmentService: RaidTimeAdjustmentService,
+        @inject("BotNameService") protected botNameService: BotNameService,
         @inject("LootGenerator") protected lootGenerator: LootGenerator,
         @inject("ApplicationContext") protected applicationContext: ApplicationContext,
         @inject("LocationLootGenerator") protected locationLootGenerator: LocationLootGenerator,
@@ -95,6 +97,7 @@ export class LocationLifecycleService {
 
         // Clear bot cache ready for a fresh raid
         this.botGenerationCacheService.clearStoredBots();
+        this.botNameService.clearNameCache();
 
         return result;
     }

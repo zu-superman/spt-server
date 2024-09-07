@@ -1,6 +1,5 @@
 import { BotInventoryGenerator } from "@spt/generators/BotInventoryGenerator";
 import { BotLevelGenerator } from "@spt/generators/BotLevelGenerator";
-import { BotDifficultyHelper } from "@spt/helpers/BotDifficultyHelper";
 import { BotHelper } from "@spt/helpers/BotHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { WeightedRandomHelper } from "@spt/helpers/WeightedRandomHelper";
@@ -27,9 +26,9 @@ import { IPmcConfig } from "@spt/models/spt/config/IPmcConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
 import { BotEquipmentFilterService } from "@spt/services/BotEquipmentFilterService";
+import { BotNameService } from "@spt/services/BotNameService";
 import { DatabaseService } from "@spt/services/DatabaseService";
 import { ItemFilterService } from "@spt/services/ItemFilterService";
-import { LocalisationService } from "@spt/services/LocalisationService";
 import { SeasonalEventService } from "@spt/services/SeasonalEventService";
 import { HashUtil } from "@spt/utils/HashUtil";
 import { RandomUtil } from "@spt/utils/RandomUtil";
@@ -54,10 +53,9 @@ export class BotGenerator {
         @inject("BotEquipmentFilterService") protected botEquipmentFilterService: BotEquipmentFilterService,
         @inject("WeightedRandomHelper") protected weightedRandomHelper: WeightedRandomHelper,
         @inject("BotHelper") protected botHelper: BotHelper,
-        @inject("BotDifficultyHelper") protected botDifficultyHelper: BotDifficultyHelper,
         @inject("SeasonalEventService") protected seasonalEventService: SeasonalEventService,
-        @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("ItemFilterService") protected itemFilterService: ItemFilterService,
+        @inject("BotNameService") protected botNameService: BotNameService,
         @inject("ConfigServer") protected configServer: ConfigServer,
         @inject("PrimaryCloner") protected cloner: ICloner,
     ) {
@@ -170,7 +168,14 @@ export class BotGenerator {
             );
         }
 
-        bot.Info.Nickname = this.generateBotNickname(botJsonTemplate, botGenerationDetails, botRole, sessionId);
+        bot.Info.Nickname = this.botNameService.generateUniqueBotNickname(
+            botJsonTemplate.firstName,
+            botJsonTemplate.lastName,
+            botGenerationDetails,
+            botRole,
+            ["assault", "pmcusec", "pmcbear"],
+            sessionId,
+        );
 
         if (!this.seasonalEventService.christmasEventEnabled()) {
             // Process all bots EXCEPT gifter, he needs christmas items
@@ -297,62 +302,6 @@ export class BotGenerator {
             // Has fixed hands for this body, set them
             bot.Customization.Hands = matchingBody.hands;
         }
-    }
-
-    /**
-     * Create a bot nickname
-     * @param botJsonTemplate x.json from database
-     * @param botGenerationDetails
-     * @param botRole role of bot e.g. assault
-     * @param sessionId OPTIONAL: profile session id
-     * @returns Nickname for bot
-     */
-    protected generateBotNickname(
-        botJsonTemplate: IBotType,
-        botGenerationDetails: BotGenerationDetails,
-        botRole: string,
-        sessionId?: string,
-    ): string {
-        const isPlayerScav = botGenerationDetails.isPlayerScav;
-
-        let name = `${this.randomUtil.getArrayValue(botJsonTemplate.firstName)} ${
-            this.randomUtil.getArrayValue(botJsonTemplate.lastName) || ""
-        }`;
-        name = name.trim();
-
-        // Simulate bot looking like a player scav with the PMC name in brackets.
-        // E.g. "ScavName (PMCName)"
-        if (this.shouldSimulatePlayerScavName(botRole, isPlayerScav)) {
-            return this.addPlayerScavNameSimulationSuffix(name);
-        }
-
-        if (this.botConfig.showTypeInNickname && !isPlayerScav) {
-            name += ` ${botRole}`;
-        }
-
-        // We want to replace pmc bot names with player name + prefix
-        if (botGenerationDetails.isPmc && botGenerationDetails.allPmcsHaveSameNameAsPlayer) {
-            const prefix = this.localisationService.getRandomTextThatMatchesPartialKey("pmc-name_prefix_");
-            name = `${prefix} ${name}`;
-        }
-
-        return name;
-    }
-
-    protected shouldSimulatePlayerScavName(botRole: string, isPlayerScav: boolean): boolean {
-        return (
-            botRole === "assault" &&
-            this.randomUtil.getChance100(this.botConfig.chanceAssaultScavHasPlayerScavName) &&
-            !isPlayerScav
-        );
-    }
-
-    protected addPlayerScavNameSimulationSuffix(nickname: string): string {
-        const pmcNames = [
-            ...this.databaseService.getBots().types.usec.firstName,
-            ...this.databaseService.getBots().types.bear.firstName,
-        ];
-        return `${nickname} (${this.randomUtil.getArrayValue(pmcNames)})`;
     }
 
     /**

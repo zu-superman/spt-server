@@ -201,6 +201,7 @@ import { BotEquipmentFilterService } from "@spt/services/BotEquipmentFilterServi
 import { BotEquipmentModPoolService } from "@spt/services/BotEquipmentModPoolService";
 import { BotGenerationCacheService } from "@spt/services/BotGenerationCacheService";
 import { BotLootCacheService } from "@spt/services/BotLootCacheService";
+import { BotNameService } from "@spt/services/BotNameService";
 import { BotWeaponModLimitService } from "@spt/services/BotWeaponModLimitService";
 import { CircleOfCultistService } from "@spt/services/CircleOfCultistService";
 import { CustomLocationWaveService } from "@spt/services/CustomLocationWaveService";
@@ -795,6 +796,9 @@ export class Container {
             lifecycle: Lifecycle.Singleton,
         });
         depContainer.register<CircleOfCultistService>("CircleOfCultistService", CircleOfCultistService, {
+            lifecycle: Lifecycle.Singleton,
+        });
+        depContainer.register<BotNameService>("BotNameService", BotNameService, {
             lifecycle: Lifecycle.Singleton,
         });
     }
