@@ -232,21 +232,21 @@
                     "desc": "white beard",
                     "_id": "64b997574a8c8ed8cb019004",
                     "_tpl": "5c1a1e3f2e221602b66cc4c2",
-                    "parentId": "62b997444agc8eb4cb013004",
+                    "parentId": "66dec233ab84eb041703c012",
                     "slotId": "main"
                 },
                 {
                     "desc": "ammo case",
                     "_id": "64b397573a8c8ed8cb019002",
                     "_tpl": "5aafbde786f774389d0cbc0f",
-                    "parentId": "62b997444agc8eb4cb013004",
+                    "parentId": "66dec233ab84eb041703c012",
                     "slotId": "main"
                 },
                 {
                     "desc": "m80",
                     "_id": "64b397573a8c8ed8cb019007",
                     "_tpl": "58dd3ad986f77403051cba8f",
-                    "parentId": "62b997444agc8eb4cb013004",
+                    "parentId": "66dec233ab84eb041703c012",
                     "slotId": "main",
                     "upd": {
                         "StackObjectsCount": 40
@@ -256,7 +256,7 @@
                     "desc": "m80",
                     "_id": "64b397573a8c8ed8cb019008",
                     "_tpl": "58dd3ad986f77403051cba8f",
-                    "parentId": "62b997444agc8eb4cb013004",
+                    "parentId": "66dec233ab84eb041703c012",
                     "slotId": "main",
                     "upd": {
                         "StackObjectsCount": 40
@@ -266,7 +266,7 @@
                     "desc": "m80",
                     "_id": "64b397573a8c8ed8cb019009",
                     "_tpl": "58dd3ad986f77403051cba8f",
-                    "parentId": "62b997444agc8eb4cb013004",
+                    "parentId": "66dec233ab84eb041703c012",
                     "slotId": "main",
                     "upd": {
                         "StackObjectsCount": 40
@@ -276,77 +276,77 @@
                     "desc": "Keycard holder case",
                     "_id": "64b497573b8c8ee8cb019009",
                     "_tpl": "619cbf9e0a7c3a1a2731940a",
-                    "parentId": "62b997444agc8eb4cb013004",
+                    "parentId": "66dec233ab84eb041703c012",
                     "slotId": "main"
                 },
                 {
                     "desc": "RGN hand grenade",
                     "_id": "64b447573b4c8ee8cd019009",
                     "_tpl": "617fd91e5539a84ec44ce155",
-                    "parentId": "62b997444agc8eb4cb013004",
+                    "parentId": "66dec233ab84eb041703c012",
                     "slotId": "main"
                 },
                 {
                     "desc": "RGN hand grenade",
                     "_id": "64b447f73b4cdeg8cd019009",
                     "_tpl": "617fd91e5539a84ec44ce155",
-                    "parentId": "62b997444agc8eb4cb013004",
+                    "parentId": "66dec233ab84eb041703c012",
                     "slotId": "main"
                 },
                 {
                     "desc": "RGN hand grenade",
                     "_id": "64b447f73b4cdeg8cd019003",
                     "_tpl": "617fd91e5539a84ec44ce155",
-                    "parentId": "62b997444agc8eb4cb013004",
+                    "parentId": "66dec233ab84eb041703c012",
                     "slotId": "main"
                 },
                 {
                     "desc": "scar h 20 rnd mag",
                     "_id": "64b4475f3b4c4ee8cdf9009",
                     "_tpl": "618168dc8004cc50514c34fc",
-                    "parentId": "62b997444agc8eb4cb013004",
+                    "parentId": "66dec233ab84eb041703c012",
                     "slotId": "main"
                 },
                 {
                     "desc": "scar h 20 rnd mag",
                     "_id": "54b4475f3b4c4ee8cdf9009",
                     "_tpl": "618168dc8004cc50514c34fc",
-                    "parentId": "62b997444agc8eb4cb013004",
+                    "parentId": "66dec233ab84eb041703c012",
                     "slotId": "main"
                 },
                 {
                     "desc": "scar h 20 rnd mag",
                     "_id": "34b4475f3b4c4ee8cdf9009",
                     "_tpl": "618168dc8004cc50514c34fc",
-                    "parentId": "62b997444agc8eb4cb013004",
+                    "parentId": "66dec233ab84eb041703c012",
                     "slotId": "main"
                 },
                 {
                     "desc": "scar h 20 rnd mag",
                     "_id": "24b4435f3b4c4ee8cdf9009",
                     "_tpl": "618168dc8004cc50514c34fc",
-                    "parentId": "62b997444agc8eb4cb013004",
+                    "parentId": "66dec233ab84eb041703c012",
                     "slotId": "main"
                 },
                 {
                     "desc": "7290 Flash Bang",
                     "_id": "64b4473f3b4c4dd8cdf9009",
                     "_tpl": "619256e5f8af2c1a4e1f5d92",
-                    "parentId": "62b997444agc8eb4cb013004",
+                    "parentId": "66dec233ab84eb041703c012",
                     "slotId": "main"
                 },
                 {
                     "desc": "7290 Flash Bang",
                     "_id": "64b4473f3b4c4dd8cdf9002",
                     "_tpl": "619256e5f8af2c1a4e1f5d92",
-                    "parentId": "62b997444agc8eb4cb013004",
+                    "parentId": "66dec233ab84eb041703c012",
                     "slotId": "main"
                 },
                 {
                     "desc": "7290 Flash Bang",
                     "_id": "64b4473f344c4dd8cdf9002",
                     "_tpl": "619256e5f8af2c1a4e1f5d92",
-                    "parentId": "62b997444agc8eb4cb013004",
+                    "parentId": "66dec233ab84eb041703c012",
                     "slotId": "main"
                 },
                 {
@@ -361,7 +361,7 @@
                             "Folded": false
                         }
                     },
-                    "parentId": "62b997444agc8eb4cb013004",
+                    "parentId": "66dec233ab84eb041703c012",
                     "slotId": "main"
                 },
                 {
