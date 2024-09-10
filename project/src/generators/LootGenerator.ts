@@ -516,7 +516,7 @@ export class LootGenerator {
 
             // Get items that fulfil reward type criteria from items that fit on gun
             const relatedItems = linkedItemsToWeapon?.filter(
-                (item) => item._parent === rewardTypeId && !this.itemFilterService.isItemBlacklisted(item._id),
+                (item) => item?._parent === rewardTypeId && !this.itemFilterService.isItemBlacklisted(item._id),
             );
             if (!relatedItems || relatedItems.length === 0) {
                 this.logger.debug(
