@@ -528,6 +528,19 @@ export class LocationLifecycleService {
             }
         }
 
+        // Find marked as failed quests + flagged as restartable and re-status them as 'failed' so they can be restarted by player
+        const failedQuests = questsToProcess.filter((quest) => quest.status === QuestStatus.MarkedAsFailed);
+        for (const failedQuest of failedQuests) {
+            const dbQuest = this.databaseService.getQuests()[failedQuest.qid];
+            if (!dbQuest) {
+                continue;
+            }
+
+            if (dbQuest.restartable) {
+                failedQuest.status = QuestStatus.Fail;
+            }
+        }
+
         return questsToProcess;
     }
 
