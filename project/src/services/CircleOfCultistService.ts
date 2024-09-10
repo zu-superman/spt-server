@@ -116,8 +116,6 @@ export class CircleOfCultistService {
             );
         } else {
             const rewardItemPool = this.getCultistCircleRewardPool(sessionId, pmcData);
-            this.logger.warning(`Reward pool item count: ${rewardItemPool.length}`);
-
             rewards = this.getRewardsWithinBudget(rewardItemPool, rewardAmountRoubles, cultistCircleStashId);
         }
 
@@ -133,7 +131,6 @@ export class CircleOfCultistService {
 
         if (canAddToContainer) {
             for (const itemToAdd of rewards) {
-                this.logger.warning(`Placing reward: ${itemToAdd[0]._tpl} in circle grid`);
                 this.inventoryHelper.placeItemInContainer(
                     containerGrid,
                     itemToAdd,
@@ -256,7 +253,6 @@ export class CircleOfCultistService {
             totalCost += this.itemHelper.getItemPrice(randomItemTplFromPool);
             rewards.push([rewardItem]);
         }
-        this.logger.warning(`Circle will reward ${itemsRewardedCount} items costing a total of ${totalCost} roubles`);
 
         return rewards;
     }

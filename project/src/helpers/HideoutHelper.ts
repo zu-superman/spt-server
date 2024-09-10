@@ -397,12 +397,9 @@ export class HideoutHelper {
         if (production.Progress < production.ProductionTime) {
             production.Progress += timeElapsedSeconds;
 
-            this.logger.warning(`circle craft progress is now ${production.Progress} of ${production.ProductionTime}`);
-
             // Check if craft is complete
             if (production.Progress >= production.ProductionTime) {
                 this.flagCultistCircleCraftAsComplete(production);
-                this.logger.warning(`circle craft complete, AvailableForFinish set ot true`);
             }
 
             return;
@@ -410,8 +407,6 @@ export class HideoutHelper {
 
         // Craft in complete
         this.flagCultistCircleCraftAsComplete(production);
-
-        this.logger.warning(`circle craft complete, AvailableForFinish set ot true`);
     }
 
     protected flagCultistCircleCraftAsComplete(production: Productive) {
