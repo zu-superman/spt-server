@@ -1268,6 +1268,8 @@ export class HideoutController {
                 improveCompleteTimestamp: timestamp + improvement.improvementTime,
             };
             output.profileChanges[sessionId].improvements[improvement.id] = improvementDetails;
+
+            pmcData.Hideout.Improvements ||= {};
             pmcData.Hideout.Improvements[improvement.id] = improvementDetails;
         }
 
