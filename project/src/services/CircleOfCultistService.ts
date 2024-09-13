@@ -29,6 +29,7 @@ import { ItemFilterService } from "@spt/services/ItemFilterService";
 import { SeasonalEventService } from "@spt/services/SeasonalEventService";
 import { HashUtil } from "@spt/utils/HashUtil";
 import { RandomUtil } from "@spt/utils/RandomUtil";
+import { TimeUtil } from "@spt/utils/TimeUtil";
 import { ICloner } from "@spt/utils/cloners/ICloner";
 import { inject, injectable } from "tsyringe";
 
@@ -39,6 +40,7 @@ export class CircleOfCultistService {
 
     constructor(
         @inject("PrimaryLogger") protected logger: ILogger,
+        @inject("TimeUtil") protected timeUtil: TimeUtil,
         @inject("PrimaryCloner") protected cloner: ICloner,
         @inject("EventOutputHolder") protected eventOutputHolder: EventOutputHolder,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
@@ -96,7 +98,13 @@ export class CircleOfCultistService {
         const rewardAmountRoubles = sacrificedItemCostRoubles * rewardAmountMultiplier;
 
         // Create production in pmc profile
-        this.hideoutHelper.registerCircleOfCultistProduction(sessionId, pmcData, cultistCraftData._id, sacrificedItems);
+        this.registerCircleOfCultistProduction(
+            sessionId,
+            pmcData,
+            cultistCraftData._id,
+            sacrificedItems,
+            rewardAmountRoubles,
+        );
 
         const output = this.eventOutputHolder.getOutput(sessionId);
 
@@ -149,6 +157,48 @@ export class CircleOfCultistService {
         }
 
         return output;
+    }
+
+    protected registerCircleOfCultistProduction(
+        sessionId: string,
+        pmcData: IPmcData,
+        recipeId: string,
+        sacrificedItems: Item[],
+        rewardAmountRoubles: number,
+    ): void {
+        const cultistProduction = this.hideoutHelper.initProduction(
+            recipeId,
+            this.getCircleCraftTime(rewardAmountRoubles),
+            false,
+            true,
+        );
+        cultistProduction.GivenItemsInStart = sacrificedItems;
+
+        // Add circle production to profile
+        pmcData.Hideout.Production[recipeId] = cultistProduction;
+    }
+
+    /**
+     * Get the circle craft time as seconds, value is based on reward item value
+     * @param rewardAmountRoubles Value of rewards in roubles
+     * @returns craft time seconds
+     */
+    protected getCircleCraftTime(rewardAmountRoubles: number): number {
+        // Edge case, check if override exists
+        if (this.hideoutConfig.cultistCircle.craftTimeOverride !== -1) {
+            return this.hideoutConfig.cultistCircle.craftTimeOverride;
+        }
+
+        const thresholds = this.hideoutConfig.cultistCircle.craftTimeThreshholds;
+        const matchingThreshold = thresholds.find(
+            (craftThreshold) => craftThreshold.min <= rewardAmountRoubles && craftThreshold.max >= rewardAmountRoubles,
+        );
+        if (!matchingThreshold) {
+            // No craft time found, default to 12 hours
+            return this.timeUtil.getHoursAsSeconds(12);
+        }
+
+        return matchingThreshold.timeSeconds;
     }
 
     /**
