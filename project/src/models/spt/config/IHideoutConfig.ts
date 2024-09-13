@@ -26,4 +26,5 @@ export interface ICultistCircleSettings {
     rewardItemBlacklist: string[];
     /** Item tpls to include in the reward pool */
     additionalRewardItemPool: string[];
+    currencyRewards: Record<string, MinMax>;
 }

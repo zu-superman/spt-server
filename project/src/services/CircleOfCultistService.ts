@@ -191,13 +191,13 @@ export class CircleOfCultistService {
         const rewards: Item[][] = [];
 
         // Pick random rewards until we have exhausted the sacrificed items budget
-        let totalCost = 0;
-        let itemsRewardedCount = 0;
+        let totalRewardCost = 0;
+        let rewardItemCount = 0;
         let failedAttempts = 0;
         while (
-            totalCost < rewardBudget &&
+            totalRewardCost < rewardBudget &&
             rewardItemTplPool.length > 0 &&
-            itemsRewardedCount < this.hideoutConfig.cultistCircle.maxRewardItemCount
+            rewardItemCount < this.hideoutConfig.cultistCircle.maxRewardItemCount
         ) {
             if (failedAttempts > this.hideoutConfig.cultistCircle.maxAttemptsToPickRewardsWithinBudget) {
                 this.logger.warning(`Exiting reward generation after ${failedAttempts} failed attempts`);
@@ -226,15 +226,18 @@ export class CircleOfCultistService {
 
                 this.itemHelper.remapRootItemId(presetAndMods);
 
-                itemsRewardedCount++;
-                totalCost += this.itemHelper.getItemPrice(randomItemTplFromPool);
+                rewardItemCount++;
+                totalRewardCost += this.itemHelper.getItemPrice(randomItemTplFromPool);
                 rewards.push(presetAndMods);
 
                 continue;
             }
 
-            // Some items can have variable stack size, e.g. ammo
-            const stackSize = this.getRewardStackSize(randomItemTplFromPool);
+            // Some items can have variable stack size, e.g. ammo / currency
+            const stackSize = this.getRewardStackSize(
+                randomItemTplFromPool,
+                rewardBudget / (rewardItemCount === 0 ? 1 : rewardItemCount), // Remaining rouble budget
+            );
 
             // Not a weapon/armor, standard single item
             const rewardItem: Item = {
@@ -292,7 +295,7 @@ export class CircleOfCultistService {
             }
 
             // Some items can have variable stack size, e.g. ammo
-            const stackSize = this.getRewardStackSize(rewardTpl);
+            const stackSize = this.getRewardStackSize(rewardTpl, 20000);
 
             // Not a weapon/armor, standard single item
             const rewardItem: Item = {
@@ -316,12 +319,32 @@ export class CircleOfCultistService {
      * Get the size of a reward items stack
      * 1 for everything except ammo, ammo can be between min stack and max stack
      * @param itemTpl Item chosen
+     * @param rewardPoolRemaining Rouble amount of pool remaining to fill
      * @returns Size of stack
      */
-    protected getRewardStackSize(itemTpl: string) {
+    protected getRewardStackSize(itemTpl: string, rewardPoolRemaining: number) {
         if (this.itemHelper.isOfBaseclass(itemTpl, BaseClasses.AMMO)) {
             const ammoTemplate = this.itemHelper.getItem(itemTpl)[1];
             return this.itemHelper.getRandomisedAmmoStackSize(ammoTemplate);
+        }
+
+        if (this.itemHelper.isOfBaseclass(itemTpl, BaseClasses.MONEY)) {
+            // Get currency-specific values from config
+            const settings = this.hideoutConfig.cultistCircle.currencyRewards[itemTpl];
+
+            // What % of the pool remaining should be rewarded as chosen currency
+            const percentOfPoolToUse = this.randomUtil.getInt(settings.min, settings.max);
+
+            // Rouble amount of pool we want to reward as currency
+            const roubleAmountToFill = this.randomUtil.getPercentOfValue(percentOfPoolToUse, rewardPoolRemaining);
+
+            // Convert currency to roubles
+            const currencyPriceAsRouble = this.itemHelper.getItemPrice(itemTpl);
+
+            // How many items can we fit into chosen pool
+            const itemCountToReward = Math.round(roubleAmountToFill / currencyPriceAsRouble);
+
+            return itemCountToReward ?? 1;
         }
 
         return 1;

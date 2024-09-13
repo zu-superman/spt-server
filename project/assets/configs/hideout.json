@@ -33,6 +33,12 @@
             ]
         },
         "rewardItemBlacklist": [],
-        "additionalRewardItemPool": []
+        "additionalRewardItemPool": [],
+		"currencyRewards": {
+			"5449016a4bdc2d6f028b456f": {"min": 20, "max": 50},
+			"569668774bdc2da2298b4568": {"min": 20, "max": 50},
+			"5696686a4bdc2da3298b456a": {"min": 20, "max": 50},
+			"5d235b4d86f7742e017bc88a": {"min": 20, "max": 40}
+		}
     }
 }
