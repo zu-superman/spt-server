@@ -32,6 +32,9 @@
                 "5e2aedd986f7746d404f3aa4"
             ]
         },
+		"directRewardStackSize": {
+			"exampleTpl": {"min": 1000, "max": 50000}
+		},
         "rewardItemBlacklist": [],
         "additionalRewardItemPool": [],
 		"currencyRewards": {

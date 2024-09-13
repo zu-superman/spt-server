@@ -295,7 +295,7 @@ export class CircleOfCultistService {
             }
 
             // Some items can have variable stack size, e.g. ammo
-            const stackSize = this.getRewardStackSize(rewardTpl, 20000);
+            const stackSize = this.getExplicitRewardStackSize(rewardTpl);
 
             // Not a weapon/armor, standard single item
             const rewardItem: Item = {
@@ -313,6 +313,15 @@ export class CircleOfCultistService {
         }
 
         return rewards;
+    }
+
+    protected getExplicitRewardStackSize(rewardTpl: string) {
+        const settings = this.hideoutConfig.cultistCircle.directRewardStackSize[rewardTpl];
+        if (!settings) {
+            return 1;
+        }
+
+        return this.randomUtil.getInt(settings.min, settings.max);
     }
 
     /**
