@@ -248,9 +248,12 @@ export class CircleOfCultistService {
                 },
             };
 
-            // Increment price of rewards to give to player and add to reward array
-            itemsRewardedCount++;
-            totalCost += this.itemHelper.getItemPrice(randomItemTplFromPool);
+            // Increment price of rewards to give to player + add to reward array
+            rewardItemCount++;
+            const singleItemPrice = this.itemHelper.getItemPrice(randomItemTplFromPool);
+            const itemPrice = singleItemPrice * stackSize;
+            totalRewardCost += itemPrice;
+
             rewards.push([rewardItem]);
         }
 
