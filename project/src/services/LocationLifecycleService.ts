@@ -141,7 +141,7 @@ export class LocationLifecycleService {
         const dynamicSpawnPoints = this.locationLootGenerator.generateDynamicLoot(
             dynamicLootDistClone,
             staticAmmoDist,
-            name,
+            name.toLowerCase(),
         );
 
         for (const spawnPoint of dynamicSpawnPoints) {

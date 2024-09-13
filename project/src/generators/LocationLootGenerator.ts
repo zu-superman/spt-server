@@ -557,11 +557,11 @@ export class LocationLootGenerator {
     }
 
     protected getLooseLootMultiplerForLocation(location: string): number {
-        return this.locationConfig.looseLootMultiplier[location.toLowerCase()];
+        return this.locationConfig.looseLootMultiplier[location];
     }
 
     protected getStaticLootMultiplerForLocation(location: string): number {
-        return this.locationConfig.staticLootMultiplier[location.toLowerCase()];
+        return this.locationConfig.staticLootMultiplier[location];
     }
 
     /**
