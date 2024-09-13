@@ -122,13 +122,42 @@ export class HideoutHelper {
         pmcData: IPmcData,
         recipeId: string,
         sacrificedItems: Item[],
+        rewardAmountRoubles: number,
     ): void {
         // TODO: hard coded 5 hour (18000) craft + no fuel use, where can we get this data
-        const cultistProduction = this.initProduction(recipeId, 30, false, true);
+        const cultistProduction = this.initProduction(
+            recipeId,
+            this.getCircleCraftTime(rewardAmountRoubles),
+            false,
+            true,
+        );
         cultistProduction.GivenItemsInStart = sacrificedItems;
 
         // Add circle production to profile
         pmcData.Hideout.Production[recipeId] = cultistProduction;
+    }
+
+    /**
+     * Get the circle craft time as seconds, value is based on reward item value
+     * @param rewardAmountRoubles Value of rewards in roubles
+     * @returns craft time seconds
+     */
+    protected getCircleCraftTime(rewardAmountRoubles: number): number {
+        // Edge case, check if override exists
+        if (this.hideoutConfig.cultistCircle.craftTimeOverride !== -1) {
+            return this.hideoutConfig.cultistCircle.craftTimeOverride;
+        }
+
+        const thresholds = this.hideoutConfig.cultistCircle.craftTimeThreshholds;
+        const matchingThreshold = thresholds.find(
+            (craftThreshold) => craftThreshold.min <= rewardAmountRoubles && craftThreshold.max >= rewardAmountRoubles,
+        );
+        if (!matchingThreshold) {
+            // No craft time found, default to 12 hours
+            return this.timeUtil.getHoursAsSeconds(12);
+        }
+
+        return matchingThreshold.timeSeconds;
     }
 
     /**

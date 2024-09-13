@@ -20,6 +20,9 @@ export interface ICultistCircleSettings {
     maxRewardItemCount: number;
     maxAttemptsToPickRewardsWithinBudget: number;
     rewardPriceMultiplerMinMax: MinMax;
+    craftTimeThreshholds: CraftTimeThreshhold[];
+    /** -1 means no override */
+    craftTimeOverride: number;
     /** Specific reward pool when player sacrificed one specific item */
     directRewards: Record<string, string[]>;
     directRewardStackSize: Record<string, MinMax>;
@@ -28,4 +31,8 @@ export interface ICultistCircleSettings {
     /** Item tpls to include in the reward pool */
     additionalRewardItemPool: string[];
     currencyRewards: Record<string, MinMax>;
+}
+
+export interface CraftTimeThreshhold extends MinMax {
+    timeSeconds: number;
 }
