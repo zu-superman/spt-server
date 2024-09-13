@@ -85,6 +85,7 @@ export class LocationLifecycleService {
         this.locationConfig = this.configServer.getConfig(ConfigTypes.LOCATION);
     }
 
+    /** Handle client/match/local/start */
     public startLocalRaid(sessionId: string, request: IStartLocalRaidRequestData): IStartLocalRaidResponseData {
         const playerProfile = this.profileHelper.getPmcProfile(sessionId);
 

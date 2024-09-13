@@ -873,13 +873,13 @@ export class LocationLootGenerator {
         } else {
             // Also used by armors to get child mods
             // Get item + children and add into array we return
-            const itemWithChildren = this.itemHelper.findAndReturnChildrenAsItems(
+            let itemWithChildren = this.itemHelper.findAndReturnChildrenAsItems(
                 spawnPoint.template.Items,
                 chosenItem._id,
             );
 
-            // We need to reparent to ensure ids are unique
-            this.reparentItemAndChildren(itemWithChildren);
+            // Ensure all IDs are unique
+            itemWithChildren = this.itemHelper.replaceIDs(itemWithChildren);
 
             itemWithMods.push(...itemWithChildren);
         }
@@ -888,26 +888,6 @@ export class LocationLootGenerator {
         const size = this.itemHelper.getItemSize(itemWithMods, itemWithMods[0]._id);
 
         return { items: itemWithMods, width: size.width, height: size.height };
-    }
-
-    /**
-     * Replace the _id value for base item + all children items parentid value
-     * @param itemWithChildren Item with mods to update
-     * @param newId new id to add on chidren of base item
-     */
-    protected reparentItemAndChildren(itemWithChildren: Item[], newId = this.objectId.generate()): void {
-        // original id on base item
-        const oldId = itemWithChildren[0]._id;
-
-        // Update base item to use new id
-        itemWithChildren[0]._id = newId;
-
-        // Update all parentIds of items attached to base item to use new id
-        for (const item of itemWithChildren) {
-            if (item.parentId === oldId) {
-                item.parentId = newId;
-            }
-        }
     }
 
     /**
@@ -977,7 +957,7 @@ export class LocationLootGenerator {
                 }
             } else {
                 // RSP30 (62178be9d0050232da3485d9/624c0b3340357b5f566e8766/6217726288ed9f0845317459) doesnt have any default presets and kills this code below as it has no chidren to reparent
-                this.logger.debug(`createItem() No preset found for weapon: ${chosenTpl}`);
+                this.logger.debug(`createStaticLootItem() No preset found for weapon: ${chosenTpl}`);
             }
 
             const rootItem = items[0];

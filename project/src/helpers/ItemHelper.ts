@@ -788,6 +788,27 @@ export class ItemHelper {
     }
 
     /**
+     * Replace the _id value for base item + all children that are children of it
+     * REPARENTS ROOT ITEM ID, NOTHING ELSE
+     * @param itemWithChildren Item with mods to update
+     * @param newId new id to add on chidren of base item
+     */
+    public replaceRootItemID(itemWithChildren: Item[], newId = this.objectId.generate()): void {
+        // original id on base item
+        const oldId = itemWithChildren[0]._id;
+
+        // Update base item to use new id
+        itemWithChildren[0]._id = newId;
+
+        // Update all parentIds of items attached to base item to use new id
+        for (const item of itemWithChildren) {
+            if (item.parentId === oldId) {
+                item.parentId = newId;
+            }
+        }
+    }
+
+    /**
      * Regenerate all GUIDs with new IDs, for the exception of special item types (e.g. quest, sorting table, etc.) This
      * function will not mutate the original items array, but will return a new array with new GUIDs.
      *
