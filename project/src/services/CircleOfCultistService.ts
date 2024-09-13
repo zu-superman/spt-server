@@ -20,7 +20,7 @@ import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { HideoutAreas } from "@spt/models/enums/HideoutAreas";
 import { ItemTpl } from "@spt/models/enums/ItemTpl";
 import { SkillTypes } from "@spt/models/enums/SkillTypes";
-import { IHideoutConfig } from "@spt/models/spt/config/IHideoutConfig";
+import { DirectRewardSettings, IHideoutConfig } from "@spt/models/spt/config/IHideoutConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { EventOutputHolder } from "@spt/routers/EventOutputHolder";
 import { ConfigServer } from "@spt/servers/ConfigServer";
@@ -97,6 +97,10 @@ export class CircleOfCultistService {
         // Get the rouble amount we generate rewards with from cost of sacrified items * above multipler
         const rewardAmountRoubles = sacrificedItemCostRoubles * rewardAmountMultiplier;
 
+        // Has player sacrified a single item in directReward dict
+        const directRewardSettings = this.hideoutConfig.cultistCircle.directRewards[sacrificedItems[0]._tpl];
+        const hasSacrificedSingleItemFlaggedInConfig = sacrificedItems.length === 1 && !!directRewardSettings;
+
         // Create production in pmc profile
         this.registerCircleOfCultistProduction(
             sessionId,
@@ -104,6 +108,7 @@ export class CircleOfCultistService {
             cultistCraftData._id,
             sacrificedItems,
             rewardAmountRoubles,
+            directRewardSettings,
         );
 
         const output = this.eventOutputHolder.getOutput(sessionId);
@@ -115,13 +120,9 @@ export class CircleOfCultistService {
             }
         }
 
-        // Player has sacrified a single item that's in directReward dict, return specific reward pool
         let rewards: Item[][];
-        if (sacrificedItems.length === 1 && this.hideoutConfig.cultistCircle.directRewards[sacrificedItems[0]._tpl]) {
-            rewards = this.getExplicitRewards(
-                this.hideoutConfig.cultistCircle.directRewards[sacrificedItems[0]._tpl],
-                cultistCircleStashId,
-            );
+        if (hasSacrificedSingleItemFlaggedInConfig) {
+            rewards = this.getExplicitRewards(directRewardSettings, cultistCircleStashId);
         } else {
             const rewardItemPool = this.getCultistCircleRewardPool(sessionId, pmcData);
             rewards = this.getRewardsWithinBudget(rewardItemPool, rewardAmountRoubles, cultistCircleStashId);
@@ -159,34 +160,57 @@ export class CircleOfCultistService {
         return output;
     }
 
+    /**
+     * Register production inside player profile
+     * @param sessionId Session id
+     * @param pmcData Player profile
+     * @param recipeId Recipe id
+     * @param sacrificedItems Items player sacrificed
+     * @param rewardAmountRoubles Rouble amount to reward player in items with
+     * @param directRewardSettings OPTIONAL: If craft is giving direct rewards
+     */
     protected registerCircleOfCultistProduction(
         sessionId: string,
         pmcData: IPmcData,
         recipeId: string,
         sacrificedItems: Item[],
         rewardAmountRoubles: number,
+        directRewardSettings?: DirectRewardSettings,
     ): void {
+        // Create circle production/craft object to add to player profile
         const cultistProduction = this.hideoutHelper.initProduction(
             recipeId,
-            this.getCircleCraftTime(rewardAmountRoubles),
+            this.getCircleCraftTimeSeconds(rewardAmountRoubles, directRewardSettings),
             false,
             true,
         );
+
+        // Add items player sacrificed
         cultistProduction.GivenItemsInStart = sacrificedItems;
 
-        // Add circle production to profile
+        // Add circle production to profile keyed to recipe id
         pmcData.Hideout.Production[recipeId] = cultistProduction;
     }
 
     /**
      * Get the circle craft time as seconds, value is based on reward item value
+     * OR rewards are direct, then use custom craft time defined in oarameter object
      * @param rewardAmountRoubles Value of rewards in roubles
+     * @param directRewardSettings OPTIONAL: If craft is giving direct rewards
      * @returns craft time seconds
      */
-    protected getCircleCraftTime(rewardAmountRoubles: number): number {
+    protected getCircleCraftTimeSeconds(
+        rewardAmountRoubles: number,
+        directRewardSettings?: DirectRewardSettings,
+    ): number {
         // Edge case, check if override exists
         if (this.hideoutConfig.cultistCircle.craftTimeOverride !== -1) {
             return this.hideoutConfig.cultistCircle.craftTimeOverride;
+        }
+
+        // Craft is rewarding items directly, use custom craft time
+        if (directRewardSettings) {
+            return directRewardSettings.craftTimeSeconds;
         }
 
         const thresholds = this.hideoutConfig.cultistCircle.craftTimeThreshholds;
@@ -198,7 +222,7 @@ export class CircleOfCultistService {
             return this.timeUtil.getHoursAsSeconds(12);
         }
 
-        return matchingThreshold.timeSeconds;
+        return matchingThreshold.craftTimeSeconds;
     }
 
     /**
@@ -319,10 +343,10 @@ export class CircleOfCultistService {
      * @param cultistCircleStashId Id of stash item
      * @returns Array of item arrays
      */
-    protected getExplicitRewards(rewardTpls: string[], cultistCircleStashId: string): Item[][] {
+    protected getExplicitRewards(explicitRewardSettings: DirectRewardSettings, cultistCircleStashId: string): Item[][] {
         // Prep rewards array (reward can be item with children, hence array of arrays)
         const rewards: Item[][] = [];
-        for (const rewardTpl of rewardTpls) {
+        for (const rewardTpl of explicitRewardSettings.rewardTpls) {
             if (
                 this.itemHelper.armorItemHasRemovableOrSoftInsertSlots(rewardTpl) ||
                 this.itemHelper.isOfBaseclass(rewardTpl, BaseClasses.WEAPON)
@@ -345,7 +369,7 @@ export class CircleOfCultistService {
             }
 
             // Some items can have variable stack size, e.g. ammo
-            const stackSize = this.getExplicitRewardStackSize(rewardTpl);
+            const stackSize = this.getExplicitRewardBaseTypeStackSize(rewardTpl);
 
             // Not a weapon/armor, standard single item
             const rewardItem: Item = {
@@ -365,8 +389,21 @@ export class CircleOfCultistService {
         return rewards;
     }
 
-    protected getExplicitRewardStackSize(rewardTpl: string) {
-        const settings = this.hideoutConfig.cultistCircle.directRewardStackSize[rewardTpl];
+    /**
+     * Explicit rewards have thier own stack sizes as they dont use a reward rouble pool
+     * @param rewardTpl Item being rewarded to get stack size of
+     * @returns stack size of item
+     */
+    protected getExplicitRewardBaseTypeStackSize(rewardTpl: string) {
+        const itemDetails = this.itemHelper.getItem(rewardTpl);
+        if (!itemDetails[0]) {
+            this.logger.warning(`${rewardTpl} is not an item, setting stack size to 1`);
+
+            return 1;
+        }
+
+        // Look for parent in dict
+        const settings = this.hideoutConfig.cultistCircle.directRewardStackSize[itemDetails[1]._parent];
         if (!settings) {
             return 1;
         }
@@ -512,6 +549,12 @@ export class CircleOfCultistService {
         });
     }
 
+    /**
+     * Get all recipes the player has access to, includes base + unlocked recipes
+     * @param unlockedRecipes Recipes player has flagged as unlocked
+     * @param allRecipes All recipes
+     * @returns Array of recipes
+     */
     protected getPlayerAccessibleRecipes(
         unlockedRecipes: string[],
         allRecipes: IHideoutProductionData,

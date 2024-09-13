@@ -29,23 +29,23 @@
 		],
 		"craftTimeOverride": 40,
         "directRewards": {
-            "66572c82ad599021091c6118": ["5c0e874186f7745dc7616606"],
-            "66572be36a723f7f005a066e": ["5b3b713c5acfc4330140bd8d"],
-            "655c669103999d3c810c025b": ["635267ab3c89e2112001f826"],
-            "66572cbdad599021091c611a": ["60a7ad2a2198820d95707a2e"],
-            "5c0530ee86f774697952d952": ["6389c8c5dbfd5e4b95197e6b"],
-            "66572b8d80b1cd4b6a67847f": ["5bc9b9ecd4351e3bac122519", "62a09dd4621468534a797ac7"],
-            "5c093ca986f7740a1867ab12": ["5732ee6a24597719ae0c0281"],
-            "665ee77ccf2d642e98220bca": ["5857a8bc2459772bad15db29"],
-            "59faff1d86f7746c51718c9c": [
+            "66572c82ad599021091c6118": {"rewardTpls": ["5c0e874186f7745dc7616606"], "craftTimeSeconds": 100},
+            "66572be36a723f7f005a066e": {"rewardTpls": ["5b3b713c5acfc4330140bd8d"], "craftTimeSeconds": 100},
+            "655c669103999d3c810c025b": {"rewardTpls": ["635267ab3c89e2112001f826"], "craftTimeSeconds": 100},
+            "66572cbdad599021091c611a": {"rewardTpls": ["60a7ad2a2198820d95707a2e"], "craftTimeSeconds": 100},
+            "5c0530ee86f774697952d952": {"rewardTpls": ["6389c8c5dbfd5e4b95197e6b"], "craftTimeSeconds": 100},
+            "66572b8d80b1cd4b6a67847f": {"rewardTpls": ["5bc9b9ecd4351e3bac122519", "62a09dd4621468534a797ac7"], "craftTimeSeconds": 100},
+            "5c093ca986f7740a1867ab12": {"rewardTpls": ["5732ee6a24597719ae0c0281"], "craftTimeSeconds": 100},
+            "665ee77ccf2d642e98220bca": {"rewardTpls": ["5857a8bc2459772bad15db29"], "craftTimeSeconds": 100},
+            "59faff1d86f7746c51718c9c": {"rewardTpls": [
                 "5c12620d86f7743f8b198b72",
                 "5c12620d86f7743f8b198b72",
                 "5e2aedd986f7746d404f3aa4",
                 "5e2aedd986f7746d404f3aa4"
-            ]
+            ], "craftTimeSeconds": 100}
         },
 		"directRewardStackSize": {
-			"exampleTpl": {"min": 1000, "max": 50000}
+			"exampleParentId": {"min": 1000, "max": 50000}
 		},
         "rewardItemBlacklist": [],
         "additionalRewardItemPool": [],

@@ -24,7 +24,7 @@ export interface ICultistCircleSettings {
     /** -1 means no override */
     craftTimeOverride: number;
     /** Specific reward pool when player sacrificed one specific item */
-    directRewards: Record<string, string[]>;
+    directRewards: Record<string, DirectRewardSettings>;
     directRewardStackSize: Record<string, MinMax>;
     /** Item tpls to exclude from the reward pool */
     rewardItemBlacklist: string[];
@@ -34,5 +34,10 @@ export interface ICultistCircleSettings {
 }
 
 export interface CraftTimeThreshhold extends MinMax {
-    timeSeconds: number;
+    craftTimeSeconds: number;
+}
+
+export interface DirectRewardSettings {
+    rewardTpls: string[];
+    craftTimeSeconds: number;
 }
