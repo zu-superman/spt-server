@@ -518,7 +518,7 @@ export class BotGenerator {
      */
     protected setRandomisedGameVersionAndCategory(botInfo: Info): string {
         // Special case
-        if (botInfo.Nickname.toLowerCase() === "nikita") {
+        if (botInfo.Nickname?.toLowerCase() === "nikita") {
             botInfo.GameVersion = GameEditions.UNHEARD;
             botInfo.MemberCategory = MemberCategory.DEVELOPER;
 
