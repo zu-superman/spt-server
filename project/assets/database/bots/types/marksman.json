@@ -1,59 +1,59 @@
 {
   "appearance": {
     "body": {
-      "5fd22d311add82653b5a704c": 1073,
-      "64a2edba08d26f8d62049c06": 1013,
-      "619238266c614e6d15792bca": 1040,
-      "5cde9f337d6c8b0474535da8": 1022,
-      "5e4bb3ee86f77406975c934e": 1076,
-      "5df8a10486f77412672a1e3a": 1035,
-      "618d1af10a5a59657e5f56f3": 1049,
-      "5d28ad6986f77429275dba22": 1004,
-      "5e9da1d086f774054a667134": 1039,
-      "637df28ac22da5bb8d046935": 1031,
-      "5cc2e59214c02e000f16684e": 1075,
-      "5fd1eb3fbe3b7107d66cb645": 1028,
-      "5d28ad7286f7742926686182": 1066
+      "5cde9f337d6c8b0474535da8": 1631,
+      "5fd22d311add82653b5a704c": 1658,
+      "618d1af10a5a59657e5f56f3": 1634,
+      "5cc2e59214c02e000f16684e": 1591,
+      "619238266c614e6d15792bca": 1574,
+      "5e4bb3ee86f77406975c934e": 1629,
+      "5fd1eb3fbe3b7107d66cb645": 1595,
+      "637df28ac22da5bb8d046935": 1627,
+      "5d28ad7286f7742926686182": 1641,
+      "5df8a10486f77412672a1e3a": 1636,
+      "5e9da1d086f774054a667134": 1598,
+      "5d28ad6986f77429275dba22": 1574,
+      "64a2edba08d26f8d62049c06": 1581
     },
     "feet": {
-      "5cc2e5d014c02e15d53d9c03": 249,
-      "5d28af3486f774292364a6e7": 208,
-      "64a2e970a74bb33d140e6dc5": 227,
-      "5cde9fb87d6c8b0474535da9": 237,
-      "6193be546e5968395b260157": 243,
-      "61922589bb2cea6f7a22d964": 235,
-      "5df8a15186f77412640e2e6a": 245,
-      "5f5e41576760b4138443b344": 227,
-      "637df25a1e688345e1097bd4": 237,
-      "5f5e410c6bdad616ad46d60b": 231,
-      "5f5e41366760b4138443b343": 235
+      "6193be546e5968395b260157": 920,
+      "5cc2e5d014c02e15d53d9c03": 877,
+      "5cde9fb87d6c8b0474535da9": 873,
+      "637df25a1e688345e1097bd4": 861,
+      "5f5e41576760b4138443b344": 893,
+      "64a2e970a74bb33d140e6dc5": 914,
+      "61922589bb2cea6f7a22d964": 893,
+      "5df8a15186f77412640e2e6a": 940,
+      "5d28af3486f774292364a6e7": 877,
+      "5f5e41366760b4138443b343": 934,
+      "5f5e410c6bdad616ad46d60b": 868
     },
     "hands": {
-      "5fd7901bdd870108a754c0e6": 171,
-      "64ac23c449d74fd5ec0a124e": 161,
-      "618cf9540a5a59657e5f5677": 170,
-      "5cc2e68f14c02e28b47de290": 673,
-      "5e4bb49586f77406a313ec5a": 192,
-      "5df8eac086f77412640e2ea7": 168,
-      "6197aca964ae5436d76c1f98": 173,
-      "5e9da2dd86f774054e7d0f63": 178,
-      "6391c6205dbbdb3b1b049840": 175,
-      "5fd78fe9e3bfcf6cab4c9f54": 160
+      "5cc2e68f14c02e28b47de290": 618,
+      "5fd7901bdd870108a754c0e6": 161,
+      "6197aca964ae5436d76c1f98": 165,
+      "618cf9540a5a59657e5f5677": 154,
+      "5e4bb49586f77406a313ec5a": 157,
+      "5fd78fe9e3bfcf6cab4c9f54": 157,
+      "6391c6205dbbdb3b1b049840": 152,
+      "5df8eac086f77412640e2ea7": 175,
+      "5e9da2dd86f774054e7d0f63": 164,
+      "64ac23c449d74fd5ec0a124e": 162
     },
     "head": {
-      "5f68c4c217d579077152a252": 12,
-      "5cde9ff17d6c8b0474535daa": 12,
-      "5f68c4a7c174a17c0f4c8945": 8,
-      "5cc2e4d014c02e000d0115f8": 9,
-      "5d28afe786f774292668618d": 12
+      "5f68c4c217d579077152a252": 16,
+      "5f68c4a7c174a17c0f4c8945": 20,
+      "5d28afe786f774292668618d": 17,
+      "5cc2e4d014c02e000d0115f8": 19,
+      "5cde9ff17d6c8b0474535daa": 17
     },
     "voice": {
-      "Scav_2": 22,
-      "Scav_1": 22,
-      "Scav_3": 14,
+      "Scav_4": 14,
+      "Scav_2": 18,
+      "Scav_1": 15,
       "Scav_6": 17,
-      "Scav_4": 17,
-      "Scav_5": 16
+      "Scav_3": 13,
+      "Scav_5": 19
     }
   },
   "experience": {
@@ -120,63 +120,61 @@
   "inventory": {
     "equipment": {
       "Headwear": {
-        "5c066ef40db834001966a595": 3576,
-        "5a16bb52fcdbcb001a3b00dc": 4123,
-        "5bd073c986f7747f627e796c": 457
+        "5a16bb52fcdbcb001a3b00dc": 12403,
+        "5c066ef40db834001966a595": 10983,
+        "5bd073c986f7747f627e796c": 1372
       },
       "Earpiece": {
-        "5b432b965acfc47a8774094e": 1771,
-        "6033fa48ffd42c541047f728": 468
+        "5b432b965acfc47a8774094e": 10564,
+        "6033fa48ffd42c541047f728": 2745
       },
       "FaceCover": {
-        "5b432f3d5acfc4704b4a1dfb": 3505,
-        "572b7f1624597762ae139822": 939
+        "5b432f3d5acfc4704b4a1dfb": 10541,
+        "572b7f1624597762ae139822": 2808
       },
       "ArmorVest": {
-        "5648a7494bdc2d9d488b4583": 12513,
-        "5b44d22286f774172b0c9de8": 2789,
-        "5df8a2ca86f7740bfe6df777": 7015,
-        "64be79e2bf8412471d0d9bcc": 1366
+        "5b44d22286f774172b0c9de8": 4294,
+        "5648a7494bdc2d9d488b4583": 18870,
+        "5df8a2ca86f7740bfe6df777": 10504,
+        "64be79e2bf8412471d0d9bcc": 2209
       },
       "Eyewear": {},
       "ArmBand": {},
       "TacticalVest": {
-        "572b7adb24597762ae139821": 19008,
-        "5929a2a086f7744f4b234d43": 4233,
-        "59e7643b86f7742cbf2c109a": 3703,
-        "5e4abfed86f77406a2713cf7": 4300,
-        "5fd4c60f875c30179f5d04c2": 815,
-        "5d5d8ca986f7742798716522": 762,
-        "5e4abc1f86f774069619fbaa": 541,
-        "5ca20abf86f77418567a43f2": 814,
-        "60a6220e953894617404b00a": 83
+        "572b7adb24597762ae139821": 57716,
+        "59e7643b86f7742cbf2c109a": 11497,
+        "5929a2a086f7744f4b234d43": 12906,
+        "5e4abfed86f77406a2713cf7": 12893,
+        "5fd4c60f875c30179f5d04c2": 2382,
+        "5ca20abf86f77418567a43f2": 2484,
+        "5e4abc1f86f774069619fbaa": 1660,
+        "5d5d8ca986f7742798716522": 2427,
+        "60a6220e953894617404b00a": 220
       },
       "Backpack": {},
       "FirstPrimaryWeapon": {
-        "574d967124597745970e7c94": 3673,
-        "5ae08f0a5acfc408fb1398a1": 8623,
-        "643ea5b23db6f9f57107d9fd": 2057,
-        "5aafa857e5b5b00018480968": 274,
-        "5c501a4d2e221602b412b540": 1194,
-        "55801eed4bdc2d89578b4588": 2678,
-        "5c46fbd72e2216398b5a8c9c": 2922,
-        "5839a40f24597726f856b511": 818,
-        "5644bd2b4bdc2d3b4c8b4572": 2014,
-        "587e02ff24597743df3deaeb": 7325,
-        "5de652c31b7e3716273428be": 1591,
-        "645e0c6b3b381ede770e1cc9": 274,
-        "5bfea6e90db834001b7347f3": 600,
-        "5df8ce05b11454561e39243b": 22,
-        "5f2a9575926fd9352339381f": 52,
-        "5de7bd7bfd6b4e6e2276dc25": 67,
-        "588892092459774ac91d4b11": 62,
-        "57dc2fa62459775949412633": 13
+        "55801eed4bdc2d89578b4588": 8418,
+        "5839a40f24597726f856b511": 2404,
+        "587e02ff24597743df3deaeb": 22363,
+        "643ea5b23db6f9f57107d9fd": 6206,
+        "574d967124597745970e7c94": 10999,
+        "5de652c31b7e3716273428be": 4749,
+        "5c46fbd72e2216398b5a8c9c": 9084,
+        "5644bd2b4bdc2d3b4c8b4572": 6257,
+        "5ae08f0a5acfc408fb1398a1": 26052,
+        "5c501a4d2e221602b412b540": 3566,
+        "5bfea6e90db834001b7347f3": 1737,
+        "5de7bd7bfd6b4e6e2276dc25": 165,
+        "645e0c6b3b381ede770e1cc9": 857,
+        "5f2a9575926fd9352339381f": 171,
+        "5aafa857e5b5b00018480968": 897,
+        "588892092459774ac91d4b11": 185,
+        "5df8ce05b11454561e39243b": 75
       },
       "SecondPrimaryWeapon": {},
       "Holster": {},
       "Scabbard": {
-        "54491bb74bdc2d09088b4567": 4363,
-        "57e26fc7245977162a14b800": 36
+        "54491bb74bdc2d09088b4567": 1
       },
       "Pockets": {
         "557ffd194bdc2d28148b457f": 1
@@ -186,114 +184,191 @@
       }
     },
     "Ammo": {
-      "Caliber762x39": {
-        "64b7af5a8532cf95ee0a0dbd": 4898,
-        "59e4cf5286f7741778269d8a": 4975,
-        "59e4d3d286f774176a36250a": 556,
-        "64b7af734b75259c590fa895": 550,
-        "5656d7c34bdc2d9d198b4587": 19
-      },
       "Caliber762x54R": {
-        "64b8f7968532cf95ee0a0dbf": 23398,
-        "5e023cf8186a883be655e54f": 18791,
-        "64b8f7b5389d7ffd620ccba2": 8847,
-        "64b8f7c241772715af0f9c3d": 8869
-      },
-      "Caliber762x51": {
-        "5e023e53d4353e3302577c4c": 2941,
-        "5e023e6e34d52a55c3304f71": 3420,
-        "5e023e88277cce2b522ff2b1": 144
+        "5e023cf8186a883be655e54f": 57893,
+        "64b8f7b5389d7ffd620ccba2": 27377,
+        "64b8f7968532cf95ee0a0dbf": 72106,
+        "64b8f7c241772715af0f9c3d": 27285,
+        "5887431f2459777e1612938f": 36
       },
       "Caliber545x39": {
-        "56dff4a2d2720bbd668b456a": 1859,
-        "56dff3afd2720bba668b4567": 926,
-        "56dff4ecd2720b5f5a8b4568": 13,
-        "56dff061d2720bb5668b4567": 47
+        "56dff4a2d2720bbd668b456a": 5597,
+        "56dff3afd2720bba668b4567": 2864,
+        "56dff061d2720bb5668b4567": 156,
+        "56dff4ecd2720b5f5a8b4568": 44
+      },
+      "Caliber762x39": {
+        "59e4cf5286f7741778269d8a": 15322,
+        "64b7af5a8532cf95ee0a0dbd": 14721,
+        "64b7af734b75259c590fa895": 1636,
+        "59e4d3d286f774176a36250a": 1625,
+        "5656d7c34bdc2d9d198b4587": 58
       },
       "Caliber366TKM": {
-        "59e655cb86f77411dc52a77b": 1081,
-        "59e6542b86f77411dc52a77a": 510
+        "59e655cb86f77411dc52a77b": 1102,
+        "59e6542b86f77411dc52a77a": 481
+      },
+      "Caliber762x51": {
+        "5e023e53d4353e3302577c4c": 8714,
+        "5e023e6e34d52a55c3304f71": 10445,
+        "5e023e88277cce2b522ff2b1": 419
+      },
+      "Caliber9x19PARA": {
+        "64b7bbb74b75259c590fa897": 53,
+        "5c3df7d588a4501f290594e5": 112
       },
       "Caliber9x39": {
         "6576f96220d53a5b8f3e395e": 1
-      },
-      "Caliber9x19PARA": {
-        "5c3df7d588a4501f290594e5": 48,
-        "64b7bbb74b75259c590fa897": 19
       }
     },
     "mods": {
-      "574d967124597745970e7c94": {
+      "55801eed4bdc2d89578b4588": {
         "mod_stock": [
-          "574dad8024597745964bf05c"
+          "61faa91878830f069b6b7967"
+        ],
+        "mod_scope": [
+          "57c69dd424597774c03b7bbc",
+          "5d0a29fed7ad1a002769ad08"
+        ],
+        "mod_magazine": [
+          "559ba5b34bdc2d1f1a8b4582"
+        ],
+        "patron_in_weapon": [
+          "5e023cf8186a883be655e54f",
+          "64b8f7968532cf95ee0a0dbf",
+          "64b8f7b5389d7ffd620ccba2",
+          "64b8f7c241772715af0f9c3d"
+        ]
+      },
+      "57c69dd424597774c03b7bbc": {
+        "mod_scope": [
+          "57c5ac0824597754771e88a9",
+          "5b3b99475acfc432ff4dcbee",
+          "5b2388675acfc4771e1be0be",
+          "618ba27d9008e4636a67f61d",
+          "617151c1d92c473c770214ab"
+        ]
+      },
+      "5b44d22286f774172b0c9de8": {
+        "Front_plate": [
+          "656f9d5900d62bcd2e02407c"
+        ],
+        "Back_plate": [
+          "656f9d5900d62bcd2e02407c"
+        ],
+        "Soft_armor_front": [
+          "65704de13e7bba58ea0285c8"
+        ],
+        "Soft_armor_back": [
+          "65705c3c14f2ed6d7d0b7738"
+        ],
+        "Soft_armor_left": [
+          "65705c777260e1139e091408"
+        ],
+        "soft_armor_right": [
+          "65705cb314f2ed6d7d0b773c"
+        ],
+        "Collar": [
+          "65705cea4916448ae1050897"
+        ]
+      },
+      "5839a40f24597726f856b511": {
+        "mod_pistol_grip": [
+          "5649ad3f4bdc2df8348b4585"
+        ],
+        "mod_gas_block": [
+          "59d36a0086f7747e673f3946"
+        ],
+        "mod_stock": [
+          "57dc347d245977596754e7a1"
+        ],
+        "mod_mount_000": [
+          "5c82343a2e221644f31c0611",
+          "5c82342f2e221644f31c060e",
+          "576fd4ec2459777f0b518431"
+        ],
+        "mod_magazine": [
+          "55d4837c4bdc2d1d4e8b456c"
+        ],
+        "patron_in_weapon": [
+          "56dff4a2d2720bbd668b456a",
+          "56dff3afd2720bba668b4567",
+          "56dff061d2720bb5668b4567",
+          "56dff4ecd2720b5f5a8b4568"
+        ],
+        "mod_muzzle": [
+          "57ffb0e42459777d047111c5"
+        ]
+      },
+      "59d36a0086f7747e673f3946": {
+        "mod_handguard": [
+          "57dc32dc245977596d4ef3d3"
+        ]
+      },
+      "5c82343a2e221644f31c0611": {
+        "mod_tactical": [
+          "57f3a5ae2459772b0e0bf19e"
+        ]
+      },
+      "587e02ff24597743df3deaeb": {
+        "mod_stock": [
+          "587e0531245977466077a0f7"
         ],
         "mod_barrel": [
-          "634f02331f9f536910079b51"
+          "634eff66517ccc8a960fc735"
         ],
         "mod_reciever": [
-          "634f05ca517ccc8a960fc748"
+          "634f06262e5def262d0b30ca"
+        ],
+        "mod_mount": [
+          "587e08ee245977446b4410cf"
         ],
         "mod_magazine": [
           "587df3a12459772c28142567"
         ],
         "patron_in_weapon": [
-          "64b7af5a8532cf95ee0a0dbd",
           "59e4cf5286f7741778269d8a",
-          "59e4d3d286f774176a36250a",
           "64b7af734b75259c590fa895",
-          "5656d7c34bdc2d9d198b4587"
+          "64b7af5a8532cf95ee0a0dbd",
+          "59e4d3d286f774176a36250a"
         ]
       },
-      "634f02331f9f536910079b51": {
+      "634eff66517ccc8a960fc735": {
         "mod_mount_000": [
-          "634f04d82e5def262d0b30c6"
+          "634f05a21f9f536910079b56"
         ]
       },
-      "634f04d82e5def262d0b30c6": {
+      "634f05a21f9f536910079b56": {
         "mod_gas_block": [
-          "634f02d7517ccc8a960fc744"
+          "634f036a517ccc8a960fc746"
         ]
       },
-      "5ae08f0a5acfc408fb1398a1": {
-        "mod_stock": [
-          "5bfd37c80db834001d23e842",
-          "5ae096d95acfc400185c2c81",
-          "5bbdb870d4351e00367fb67d"
-        ],
-        "mod_barrel": [
-          "5bfd4cbe0db834001b73449f",
-          "5ae09bff5acfc4001562219d"
-        ],
-        "mod_mount": [
-          "5b3f7bf05acfc433000ecf6b"
-        ],
-        "mod_magazine": [
-          "5ae0973a5acfc4001562206c"
-        ],
-        "patron_in_weapon": [
-          "64b8f7968532cf95ee0a0dbf",
-          "64b8f7c241772715af0f9c3d",
-          "64b8f7b5389d7ffd620ccba2",
-          "5e023cf8186a883be655e54f"
-        ]
-      },
-      "5bfd4cbe0db834001b73449f": {
-        "mod_sight_front": [
-          "5ae099875acfc4001714e593"
-        ],
-        "mod_sight_rear": [
-          "5bfd4c980db834001b73449d"
-        ]
-      },
-      "5b3f7bf05acfc433000ecf6b": {
-        "mod_mount": [
-          "5b3f7c005acfc4704b4a1de8",
-          "5d024f5cd7ad1a04a067e91a"
-        ]
-      },
-      "5b3f7c005acfc4704b4a1de8": {
+      "587e08ee245977446b4410cf": {
         "mod_scope": [
-          "5b3f7c1c5acfc40dc5296b1d"
+          "5c82342f2e221644f31c060e",
+          "576fd4ec2459777f0b518431",
+          "57acb6222459771ec34b5cb0",
+          "5cf638cbd7f00c06595bc936",
+          "5c82343a2e221644f31c0611"
+        ]
+      },
+      "5c82342f2e221644f31c060e": {
+        "mod_tactical": [
+          "57f3a5ae2459772b0e0bf19e"
+        ]
+      },
+      "5648a7494bdc2d9d488b4583": {
+        "Soft_armor_front": [
+          "65703d866584602f7d057a8a"
+        ],
+        "Soft_armor_back": [
+          "65703fa06584602f7d057a8e"
+        ],
+        "Soft_armor_left": [
+          "65703fe46a912c8b5c03468b"
+        ],
+        "soft_armor_right": [
+          "657040374e67e8ec7a0d261c"
         ]
       },
       "643ea5b23db6f9f57107d9fd": {
@@ -331,9 +406,430 @@
           "5b3f7c1c5acfc40dc5296b1d"
         ]
       },
+      "5df8a2ca86f7740bfe6df777": {
+        "Soft_armor_front": [
+          "656fd7c32668ef0402028fb9"
+        ],
+        "Soft_armor_back": [
+          "656fd89bf5a9631d4e042575"
+        ]
+      },
+      "574d967124597745970e7c94": {
+        "mod_stock": [
+          "574dad8024597745964bf05c"
+        ],
+        "mod_barrel": [
+          "634f02331f9f536910079b51"
+        ],
+        "mod_reciever": [
+          "634f05ca517ccc8a960fc748"
+        ],
+        "mod_magazine": [
+          "587df3a12459772c28142567"
+        ],
+        "patron_in_weapon": [
+          "64b7af5a8532cf95ee0a0dbd",
+          "59e4d3d286f774176a36250a",
+          "64b7af734b75259c590fa895",
+          "59e4cf5286f7741778269d8a",
+          "5656d7c34bdc2d9d198b4587"
+        ]
+      },
+      "634f02331f9f536910079b51": {
+        "mod_mount_000": [
+          "634f04d82e5def262d0b30c6"
+        ]
+      },
+      "634f04d82e5def262d0b30c6": {
+        "mod_gas_block": [
+          "634f02d7517ccc8a960fc744"
+        ]
+      },
+      "5de652c31b7e3716273428be": {
+        "mod_stock": [
+          "5de655be4a9f347bc92edb88"
+        ],
+        "mod_barrel": [
+          "5de65547883dde217541644b"
+        ],
+        "mod_mount": [
+          "5de6558e9f98ac2bc65950fc"
+        ],
+        "mod_magazine": [
+          "5de653abf76fdc1ce94a5a2a"
+        ]
+      },
+      "5de65547883dde217541644b": {
+        "mod_muzzle": [
+          "5de6556a205ddc616a6bc4f7"
+        ]
+      },
+      "5de6558e9f98ac2bc65950fc": {
+        "mod_scope": [
+          "5dff77c759400025ea5150cf",
+          "57c69dd424597774c03b7bbc",
+          "5b3b6dc75acfc47a8773fb1e"
+        ]
+      },
+      "5dff77c759400025ea5150cf": {
+        "mod_scope": [
+          "5dff772da3651922b360bf91"
+        ]
+      },
+      "5c46fbd72e2216398b5a8c9c": {
+        "mod_pistol_grip": [
+          "5c471be12e221602b66cd9ac"
+        ],
+        "mod_stock": [
+          "5c471b5d2e221602b21d4e14"
+        ],
+        "mod_barrel": [
+          "5c471cb32e221602b177afaa"
+        ],
+        "mod_mount_001": [
+          "5c471c2d2e22164bef5d077f"
+        ],
+        "mod_reciever": [
+          "5c471bd12e221602b4129c3a"
+        ],
+        "mod_mount_000": [
+          "5d0a29ead7ad1a0026013f27",
+          "57acb6222459771ec34b5cb0"
+        ],
+        "mod_magazine": [
+          "5c471c442e221602b542a6f8"
+        ],
+        "mod_mount_002": [
+          "5c82342f2e221644f31c060e"
+        ]
+      },
+      "5c471cb32e221602b177afaa": {
+        "mod_muzzle": [
+          "5c471bfc2e221602b21d4e17"
+        ],
+        "mod_gas_block": [
+          "5c471c842e221615214259b5"
+        ]
+      },
+      "5c471bfc2e221602b21d4e17": {
+        "mod_sight_front": [
+          "5c471ba12e221602b3137d76"
+        ]
+      },
+      "5c471c2d2e22164bef5d077f": {
+        "mod_handguard": [
+          "5c471c6c2e221602b66cd9ae"
+        ],
+        "mod_sight_rear": [
+          "5c471b7e2e2216152006e46c"
+        ]
+      },
+      "5d0a29ead7ad1a0026013f27": {
+        "mod_scope": [
+          "5d0a3a58d7ad1a669c15ca14"
+        ]
+      },
+      "576fd4ec2459777f0b518431": {
+        "mod_tactical": [
+          "57f3a5ae2459772b0e0bf19e"
+        ]
+      },
+      "64be79e2bf8412471d0d9bcc": {
+        "Soft_armor_front": [
+          "6570495b45d573133d0d6adb"
+        ],
+        "Soft_armor_back": [
+          "657049d23425b19bbc0502f0"
+        ]
+      },
+      "5644bd2b4bdc2d3b4c8b4572": {
+        "mod_gas_block": [
+          "59c6633186f7740cf0493bb9"
+        ],
+        "mod_pistol_grip": [
+          "5649ad3f4bdc2df8348b4585"
+        ],
+        "mod_reciever": [
+          "5649af094bdc2df8348b4586"
+        ],
+        "mod_sight_rear": [
+          "5649b0544bdc2d1b2b8b458a"
+        ],
+        "mod_stock": [
+          "5649b1c04bdc2d16268b457c"
+        ],
+        "mod_mount_000": [
+          "5c82343a2e221644f31c0611",
+          "576fd4ec2459777f0b518431",
+          "5c82342f2e221644f31c060e",
+          "5cf638cbd7f00c06595bc936"
+        ],
+        "mod_magazine": [
+          "55d4837c4bdc2d1d4e8b456c"
+        ],
+        "patron_in_weapon": [
+          "56dff4a2d2720bbd668b456a",
+          "56dff3afd2720bba668b4567",
+          "56dff061d2720bb5668b4567"
+        ],
+        "mod_muzzle": [
+          "564caa3d4bdc2d17108b458e"
+        ]
+      },
+      "59c6633186f7740cf0493bb9": {
+        "mod_handguard": [
+          "5648b0744bdc2d363b8b4578"
+        ]
+      },
+      "5ae08f0a5acfc408fb1398a1": {
+        "mod_stock": [
+          "5bfd37c80db834001d23e842",
+          "5ae096d95acfc400185c2c81",
+          "5bbdb870d4351e00367fb67d"
+        ],
+        "mod_barrel": [
+          "5bfd4cbe0db834001b73449f",
+          "5ae09bff5acfc4001562219d"
+        ],
+        "mod_mount": [
+          "5b3f7bf05acfc433000ecf6b"
+        ],
+        "mod_magazine": [
+          "5ae0973a5acfc4001562206c"
+        ],
+        "patron_in_weapon": [
+          "5e023cf8186a883be655e54f",
+          "64b8f7b5389d7ffd620ccba2",
+          "64b8f7c241772715af0f9c3d",
+          "64b8f7968532cf95ee0a0dbf"
+        ]
+      },
+      "5bfd4cbe0db834001b73449f": {
+        "mod_sight_front": [
+          "5ae099875acfc4001714e593"
+        ],
+        "mod_sight_rear": [
+          "5bfd4c980db834001b73449d"
+        ]
+      },
+      "5b3f7bf05acfc433000ecf6b": {
+        "mod_mount": [
+          "5b3f7c005acfc4704b4a1de8",
+          "5d024f5cd7ad1a04a067e91a"
+        ]
+      },
+      "5b3f7c005acfc4704b4a1de8": {
+        "mod_scope": [
+          "5b3f7c1c5acfc40dc5296b1d"
+        ]
+      },
+      "5c501a4d2e221602b412b540": {
+        "mod_gas_block": [
+          "5c5039be2e221602b177c9ff"
+        ],
+        "mod_reciever": [
+          "5c503d0a2e221602b542b7ef"
+        ],
+        "mod_sight_rear": [
+          "5c503b1c2e221602b21d6e9d"
+        ],
+        "mod_stock": [
+          "5c503af12e221602b177ca02",
+          "5f63405df5750b524b45f114"
+        ],
+        "mod_mount": [
+          "5a7c74b3e899ef0014332c29",
+          "5c82342f2e221644f31c060e",
+          "576fd4ec2459777f0b518431",
+          "5cf638cbd7f00c06595bc936",
+          "5c82343a2e221644f31c0611"
+        ],
+        "mod_magazine": [
+          "5c503ac82e221602b21d6e9a"
+        ],
+        "mod_muzzle": [
+          "5f63407e1b231926f2329f15"
+        ]
+      },
+      "5ae09bff5acfc4001562219d": {
+        "mod_muzzle": [
+          "5b86a0e586f7745b600ccb23",
+          "5bc5a35cd4351e450201232f"
+        ],
+        "mod_sight_front": [
+          "5ae099875acfc4001714e593"
+        ],
+        "mod_sight_rear": [
+          "5bc5a372d4351e44f824d17f"
+        ]
+      },
+      "5a16bb52fcdbcb001a3b00dc": {
+        "mod_nvg": [
+          "5a16b8a9fcdbcb00165aa6ca"
+        ]
+      },
+      "5a16b8a9fcdbcb00165aa6ca": {
+        "mod_nvg": [
+          "5c0695860db834001b735461",
+          "5a16b93dfcdbcbcae6687261"
+        ]
+      },
+      "5c0695860db834001b735461": {
+        "mod_nvg": [
+          "5c0696830db834001d23f5da"
+        ]
+      },
+      "5bfea6e90db834001b7347f3": {
+        "mod_stock": [
+          "5bfeb32b0db834001a6694d9"
+        ],
+        "mod_barrel": [
+          "5bfebc320db8340019668d79"
+        ],
+        "mod_mount": [
+          "5bfebc5e0db834001a6694e5"
+        ],
+        "mod_magazine": [
+          "5bfea7ad0db834001c38f1ee",
+          "5bfeaa0f0db834001b734927"
+        ]
+      },
+      "5bfebc320db8340019668d79": {
+        "mod_muzzle": [
+          "5d270b3c8abbc3105335cfb8"
+        ]
+      },
+      "5bfebc5e0db834001a6694e5": {
+        "mod_scope": [
+          "57c5ac0824597754771e88a9",
+          "5b3b99475acfc432ff4dcbee",
+          "5b2388675acfc4771e1be0be",
+          "5a37cb10c4a282329a73b4e7"
+        ]
+      },
+      "5bc5a372d4351e44f824d17f": {
+        "mod_scope": [
+          "609a63b6e2ff132951242d09",
+          "5c0505e00db834001b735073"
+        ]
+      },
+      "5d024f5cd7ad1a04a067e91a": {
+        "mod_scope": [
+          "5dff77c759400025ea5150cf"
+        ]
+      },
       "5c066ef40db834001966a595": {
         "mod_nvg": [
           "5c066e3a0db834001b7353f0"
+        ]
+      },
+      "5d0a29fed7ad1a002769ad08": {
+        "mod_scope": [
+          "5d0a3e8cd7ad1a6f6a3d35bd"
+        ]
+      },
+      "5a16b93dfcdbcbcae6687261": {
+        "mod_nvg": [
+          "57235b6f24597759bf5a30f1"
+        ]
+      },
+      "57acb6222459771ec34b5cb0": {
+        "mod_scope": [
+          "57adff4f24597737f373b6e6",
+          "5c0517910db83400232ffee5",
+          "57aca93d2459771f2c7e26db",
+          "57ac965c24597706be5f975c",
+          "626bb8532c923541184624b4"
+        ]
+      },
+      "5de7bd7bfd6b4e6e2276dc25": {
+        "mod_stock": [
+          "5de910da8b6c4240ba2651b5"
+        ],
+        "mod_foregrip": [
+          "5de8fbad2fbe23140d3ee9c4"
+        ],
+        "mod_charge": [
+          "5de922d4b11454561e39239f"
+        ],
+        "mod_reciever": [
+          "5e0090f7e9dc277128008b93",
+          "5de8e67c4a9f347bc92edbd7"
+        ],
+        "mod_magazine": [
+          "5de8e8dafd6b4e6e2276dc32"
+        ]
+      },
+      "5e0090f7e9dc277128008b93": {
+        "mod_scope": [
+          "5dff77c759400025ea5150cf"
+        ],
+        "mod_mount": [
+          "5de8fc0b205ddc616a6bc51b"
+        ]
+      },
+      "645e0c6b3b381ede770e1cc9": {
+        "mod_stock": [
+          "6452519e3d52156624001fd5"
+        ],
+        "mod_barrel": [
+          "645123013d52156624001fd1"
+        ],
+        "mod_magazine": [
+          "6450ec2e7da7133e5a09ca96"
+        ]
+      },
+      "645123013d52156624001fd1": {
+        "mod_muzzle": [
+          "64527a3a7da7133e5a09ca99"
+        ],
+        "mod_handguard": [
+          "6448f2f6d4928d46d30be3f6"
+        ]
+      },
+      "5cf638cbd7f00c06595bc936": {
+        "mod_tactical": [
+          "5cf639aad7f00c065703d455"
+        ]
+      },
+      "5d0a3a58d7ad1a669c15ca14": {
+        "mod_tactical": [
+          "5d0b5cd3d7ad1a3fe32ad263"
+        ]
+      },
+      "5d0a3e8cd7ad1a6f6a3d35bd": {
+        "mod_tactical": [
+          "5d0b5cd3d7ad1a3fe32ad263"
+        ]
+      },
+      "5f2a9575926fd9352339381f": {
+        "mod_barrel": [
+          "5f2aa46b878ef416f538b567"
+        ],
+        "mod_handguard": [
+          "5f2aa47a200e2c0ee46efa71"
+        ],
+        "mod_mount": [
+          "5f2aa49f9b44de6b1b4e68d4"
+        ],
+        "mod_magazine": [
+          "5b7bef1e5acfc43d82528402"
+        ]
+      },
+      "5f2aa46b878ef416f538b567": {
+        "mod_muzzle": [
+          "5f2aa4464b50c14bcf07acdb"
+        ]
+      },
+      "5f2aa47a200e2c0ee46efa71": {
+        "mod_mount_000": [
+          "5f2aa493cd375f14e15eea72"
+        ]
+      },
+      "5f2aa49f9b44de6b1b4e68d4": {
+        "mod_scope": [
+          "5dff77c759400025ea5150cf",
+          "57c69dd424597774c03b7bbc"
         ]
       },
       "5aafa857e5b5b00018480968": {
@@ -373,446 +869,6 @@
           "5dff77c759400025ea5150cf"
         ]
       },
-      "5dff77c759400025ea5150cf": {
-        "mod_scope": [
-          "5dff772da3651922b360bf91"
-        ]
-      },
-      "5648a7494bdc2d9d488b4583": {
-        "Soft_armor_front": [
-          "65703d866584602f7d057a8a"
-        ],
-        "Soft_armor_back": [
-          "65703fa06584602f7d057a8e"
-        ],
-        "Soft_armor_left": [
-          "65703fe46a912c8b5c03468b"
-        ],
-        "soft_armor_right": [
-          "657040374e67e8ec7a0d261c"
-        ]
-      },
-      "5c501a4d2e221602b412b540": {
-        "mod_gas_block": [
-          "5c5039be2e221602b177c9ff"
-        ],
-        "mod_reciever": [
-          "5c503d0a2e221602b542b7ef"
-        ],
-        "mod_sight_rear": [
-          "5c503b1c2e221602b21d6e9d"
-        ],
-        "mod_stock": [
-          "5c503af12e221602b177ca02",
-          "5f63405df5750b524b45f114"
-        ],
-        "mod_mount": [
-          "5c82342f2e221644f31c060e",
-          "576fd4ec2459777f0b518431",
-          "5a7c74b3e899ef0014332c29",
-          "5cf638cbd7f00c06595bc936",
-          "5c82343a2e221644f31c0611"
-        ],
-        "mod_magazine": [
-          "5c503ac82e221602b21d6e9a"
-        ],
-        "mod_muzzle": [
-          "5f63407e1b231926f2329f15"
-        ]
-      },
-      "55801eed4bdc2d89578b4588": {
-        "mod_stock": [
-          "61faa91878830f069b6b7967"
-        ],
-        "mod_scope": [
-          "5d0a29fed7ad1a002769ad08",
-          "57c69dd424597774c03b7bbc"
-        ],
-        "mod_magazine": [
-          "559ba5b34bdc2d1f1a8b4582"
-        ],
-        "patron_in_weapon": [
-          "5e023cf8186a883be655e54f",
-          "64b8f7c241772715af0f9c3d",
-          "64b8f7b5389d7ffd620ccba2",
-          "64b8f7968532cf95ee0a0dbf"
-        ]
-      },
-      "5d0a29fed7ad1a002769ad08": {
-        "mod_scope": [
-          "5d0a3e8cd7ad1a6f6a3d35bd"
-        ]
-      },
-      "5d0a3e8cd7ad1a6f6a3d35bd": {
-        "mod_tactical": [
-          "5d0b5cd3d7ad1a3fe32ad263"
-        ]
-      },
-      "5c46fbd72e2216398b5a8c9c": {
-        "mod_pistol_grip": [
-          "5c471be12e221602b66cd9ac"
-        ],
-        "mod_stock": [
-          "5c471b5d2e221602b21d4e14"
-        ],
-        "mod_barrel": [
-          "5c471cb32e221602b177afaa"
-        ],
-        "mod_mount_001": [
-          "5c471c2d2e22164bef5d077f"
-        ],
-        "mod_reciever": [
-          "5c471bd12e221602b4129c3a"
-        ],
-        "mod_mount_002": [
-          "5c82342f2e221644f31c060e"
-        ],
-        "mod_magazine": [
-          "5c471c442e221602b542a6f8"
-        ],
-        "mod_mount_000": [
-          "57acb6222459771ec34b5cb0",
-          "5d0a29ead7ad1a0026013f27"
-        ]
-      },
-      "5c471cb32e221602b177afaa": {
-        "mod_muzzle": [
-          "5c471bfc2e221602b21d4e17"
-        ],
-        "mod_gas_block": [
-          "5c471c842e221615214259b5"
-        ]
-      },
-      "5c471bfc2e221602b21d4e17": {
-        "mod_sight_front": [
-          "5c471ba12e221602b3137d76"
-        ]
-      },
-      "5c471c2d2e22164bef5d077f": {
-        "mod_handguard": [
-          "5c471c6c2e221602b66cd9ae"
-        ],
-        "mod_sight_rear": [
-          "5c471b7e2e2216152006e46c"
-        ]
-      },
-      "5b44d22286f774172b0c9de8": {
-        "Front_plate": [
-          "656f9d5900d62bcd2e02407c"
-        ],
-        "Back_plate": [
-          "656f9d5900d62bcd2e02407c"
-        ],
-        "Soft_armor_front": [
-          "65704de13e7bba58ea0285c8"
-        ],
-        "Soft_armor_back": [
-          "65705c3c14f2ed6d7d0b7738"
-        ],
-        "Soft_armor_left": [
-          "65705c777260e1139e091408"
-        ],
-        "soft_armor_right": [
-          "65705cb314f2ed6d7d0b773c"
-        ],
-        "Collar": [
-          "65705cea4916448ae1050897"
-        ]
-      },
-      "5a16bb52fcdbcb001a3b00dc": {
-        "mod_nvg": [
-          "5a16b8a9fcdbcb00165aa6ca"
-        ]
-      },
-      "5a16b8a9fcdbcb00165aa6ca": {
-        "mod_nvg": [
-          "5a16b93dfcdbcbcae6687261",
-          "5c0695860db834001b735461"
-        ]
-      },
-      "5a16b93dfcdbcbcae6687261": {
-        "mod_nvg": [
-          "57235b6f24597759bf5a30f1"
-        ]
-      },
-      "5df8a2ca86f7740bfe6df777": {
-        "Soft_armor_front": [
-          "656fd7c32668ef0402028fb9"
-        ],
-        "Soft_armor_back": [
-          "656fd89bf5a9631d4e042575"
-        ]
-      },
-      "5839a40f24597726f856b511": {
-        "mod_pistol_grip": [
-          "5649ad3f4bdc2df8348b4585"
-        ],
-        "mod_gas_block": [
-          "59d36a0086f7747e673f3946"
-        ],
-        "mod_stock": [
-          "57dc347d245977596754e7a1"
-        ],
-        "mod_mount_000": [
-          "5c82342f2e221644f31c060e",
-          "5c82343a2e221644f31c0611",
-          "576fd4ec2459777f0b518431"
-        ],
-        "mod_magazine": [
-          "55d4837c4bdc2d1d4e8b456c"
-        ],
-        "patron_in_weapon": [
-          "56dff4a2d2720bbd668b456a",
-          "56dff4ecd2720b5f5a8b4568",
-          "56dff3afd2720bba668b4567",
-          "56dff061d2720bb5668b4567"
-        ],
-        "mod_muzzle": [
-          "57ffb0e42459777d047111c5"
-        ]
-      },
-      "59d36a0086f7747e673f3946": {
-        "mod_handguard": [
-          "57dc32dc245977596d4ef3d3",
-          "5a957c3fa2750c00137fa5f7"
-        ]
-      },
-      "5c82342f2e221644f31c060e": {
-        "mod_tactical": [
-          "57f3a5ae2459772b0e0bf19e"
-        ]
-      },
-      "5ae09bff5acfc4001562219d": {
-        "mod_sight_front": [
-          "5ae099875acfc4001714e593"
-        ],
-        "mod_sight_rear": [
-          "5bc5a372d4351e44f824d17f",
-          "5ae099925acfc4001a5fc7b3"
-        ],
-        "mod_muzzle": [
-          "5bc5a35cd4351e450201232f",
-          "5b86a0e586f7745b600ccb23"
-        ]
-      },
-      "5bc5a372d4351e44f824d17f": {
-        "mod_scope": [
-          "5c0505e00db834001b735073",
-          "609a63b6e2ff132951242d09"
-        ]
-      },
-      "64be79e2bf8412471d0d9bcc": {
-        "Soft_armor_front": [
-          "6570495b45d573133d0d6adb"
-        ],
-        "Soft_armor_back": [
-          "657049d23425b19bbc0502f0"
-        ]
-      },
-      "5644bd2b4bdc2d3b4c8b4572": {
-        "mod_gas_block": [
-          "59c6633186f7740cf0493bb9"
-        ],
-        "mod_pistol_grip": [
-          "5649ad3f4bdc2df8348b4585"
-        ],
-        "mod_muzzle": [
-          "564caa3d4bdc2d17108b458e"
-        ],
-        "mod_reciever": [
-          "5649af094bdc2df8348b4586"
-        ],
-        "mod_sight_rear": [
-          "5649b0544bdc2d1b2b8b458a"
-        ],
-        "mod_stock": [
-          "5649b1c04bdc2d16268b457c"
-        ],
-        "mod_mount_000": [
-          "5c82343a2e221644f31c0611",
-          "5c82342f2e221644f31c060e",
-          "576fd4ec2459777f0b518431",
-          "5cf638cbd7f00c06595bc936",
-          "5a7c74b3e899ef0014332c29"
-        ],
-        "mod_magazine": [
-          "55d4837c4bdc2d1d4e8b456c"
-        ],
-        "patron_in_weapon": [
-          "56dff3afd2720bba668b4567",
-          "56dff4a2d2720bbd668b456a",
-          "56dff061d2720bb5668b4567"
-        ]
-      },
-      "59c6633186f7740cf0493bb9": {
-        "mod_handguard": [
-          "5648b0744bdc2d363b8b4578"
-        ]
-      },
-      "5c0695860db834001b735461": {
-        "mod_nvg": [
-          "5c0696830db834001d23f5da"
-        ]
-      },
-      "587e02ff24597743df3deaeb": {
-        "mod_stock": [
-          "587e0531245977466077a0f7"
-        ],
-        "mod_barrel": [
-          "634eff66517ccc8a960fc735"
-        ],
-        "mod_reciever": [
-          "634f06262e5def262d0b30ca"
-        ],
-        "mod_mount": [
-          "587e08ee245977446b4410cf"
-        ],
-        "mod_magazine": [
-          "587df3a12459772c28142567"
-        ],
-        "patron_in_weapon": [
-          "64b7af5a8532cf95ee0a0dbd",
-          "59e4cf5286f7741778269d8a",
-          "64b7af734b75259c590fa895",
-          "59e4d3d286f774176a36250a"
-        ]
-      },
-      "634eff66517ccc8a960fc735": {
-        "mod_mount_000": [
-          "634f05a21f9f536910079b56"
-        ]
-      },
-      "634f05a21f9f536910079b56": {
-        "mod_gas_block": [
-          "634f036a517ccc8a960fc746"
-        ]
-      },
-      "57acb6222459771ec34b5cb0": {
-        "mod_scope": [
-          "5c0517910db83400232ffee5",
-          "57adff4f24597737f373b6e6",
-          "57aca93d2459771f2c7e26db",
-          "57ac965c24597706be5f975c",
-          "626bb8532c923541184624b4"
-        ]
-      },
-      "5de652c31b7e3716273428be": {
-        "mod_stock": [
-          "5de655be4a9f347bc92edb88"
-        ],
-        "mod_barrel": [
-          "5de65547883dde217541644b"
-        ],
-        "mod_mount": [
-          "5de6558e9f98ac2bc65950fc"
-        ],
-        "mod_magazine": [
-          "5de653abf76fdc1ce94a5a2a"
-        ]
-      },
-      "5de65547883dde217541644b": {
-        "mod_muzzle": [
-          "5de6556a205ddc616a6bc4f7"
-        ]
-      },
-      "5de6558e9f98ac2bc65950fc": {
-        "mod_scope": [
-          "5dff77c759400025ea5150cf",
-          "57c69dd424597774c03b7bbc",
-          "5b3b6dc75acfc47a8773fb1e"
-        ]
-      },
-      "587e08ee245977446b4410cf": {
-        "mod_scope": [
-          "576fd4ec2459777f0b518431",
-          "5c82342f2e221644f31c060e",
-          "57acb6222459771ec34b5cb0",
-          "5cf638cbd7f00c06595bc936",
-          "5c82343a2e221644f31c0611"
-        ]
-      },
-      "576fd4ec2459777f0b518431": {
-        "mod_tactical": [
-          "57f3a5ae2459772b0e0bf19e"
-        ]
-      },
-      "5d024f5cd7ad1a04a067e91a": {
-        "mod_scope": [
-          "5dff77c759400025ea5150cf"
-        ]
-      },
-      "5cf638cbd7f00c06595bc936": {
-        "mod_tactical": [
-          "5cf639aad7f00c065703d455"
-        ]
-      },
-      "5d0a29ead7ad1a0026013f27": {
-        "mod_scope": [
-          "5d0a3a58d7ad1a669c15ca14"
-        ]
-      },
-      "645e0c6b3b381ede770e1cc9": {
-        "mod_stock": [
-          "6452519e3d52156624001fd5"
-        ],
-        "mod_barrel": [
-          "645123013d52156624001fd1"
-        ],
-        "mod_magazine": [
-          "6450ec2e7da7133e5a09ca96"
-        ]
-      },
-      "645123013d52156624001fd1": {
-        "mod_muzzle": [
-          "64527a263d52156624001fd7",
-          "64527a3a7da7133e5a09ca99"
-        ],
-        "mod_handguard": [
-          "6448f2f6d4928d46d30be3f6"
-        ]
-      },
-      "57c69dd424597774c03b7bbc": {
-        "mod_scope": [
-          "57c5ac0824597754771e88a9",
-          "5b3b99475acfc432ff4dcbee",
-          "5b2388675acfc4771e1be0be",
-          "618ba27d9008e4636a67f61d"
-        ]
-      },
-      "5d0a3a58d7ad1a669c15ca14": {
-        "mod_tactical": [
-          "5d0b5cd3d7ad1a3fe32ad263"
-        ]
-      },
-      "5c82343a2e221644f31c0611": {
-        "mod_tactical": [
-          "57f3a5ae2459772b0e0bf19e"
-        ]
-      },
-      "5bfea6e90db834001b7347f3": {
-        "mod_stock": [
-          "5bfeb32b0db834001a6694d9"
-        ],
-        "mod_barrel": [
-          "5bfebc320db8340019668d79"
-        ],
-        "mod_mount": [
-          "5bfebc5e0db834001a6694e5"
-        ],
-        "mod_magazine": [
-          "5bfea7ad0db834001c38f1ee",
-          "5bfeaa0f0db834001b734927"
-        ]
-      },
-      "5bfebc5e0db834001a6694e5": {
-        "mod_scope": [
-          "5b2388675acfc4771e1be0be",
-          "57c5ac0824597754771e88a9",
-          "5b3b99475acfc432ff4dcbee",
-          "5a37cb10c4a282329a73b4e7",
-          "618ba27d9008e4636a67f61d"
-        ]
-      },
       "5b3b6dc75acfc47a8773fb1e": {
         "mod_scope": [
           "5b3b6e495acfc4330140bd88"
@@ -823,21 +879,47 @@
           "5b3cbc235acfc4001863ac44"
         ]
       },
+      "588892092459774ac91d4b11": {
+        "mod_barrel": [
+          "5888956924597752983e182d"
+        ],
+        "mod_pistol_grip": [
+          "57c55f172459772d27602381"
+        ],
+        "mod_stock": [
+          "58889d0c2459775bc215d981"
+        ],
+        "mod_scope": [
+          "57c69dd424597774c03b7bbc",
+          "5dff77c759400025ea5150cf"
+        ],
+        "mod_magazine": [
+          "5888988e24597752fe43a6fa"
+        ]
+      },
+      "5888956924597752983e182d": {
+        "mod_muzzle": [
+          "5888996c24597754281f9419"
+        ],
+        "mod_handguard": [
+          "5888976c24597754281f93f5"
+        ]
+      },
       "5df8ce05b11454561e39243b": {
         "mod_charge": [
           "5df8e053bb49d91fb446d6a6"
         ],
         "mod_pistol_grip": [
-          "5c6d7b3d2e221600114c9b7d",
           "602e71bd53a60014f9705bfa",
-          "5fbcbd6c187fea44d52eda14",
           "6193dcd0f8ee7e52e4210a28",
-          "5a339805c4a2826c6e06d73d",
-          "571659bb2459771fb2755a12"
+          "5fbcbd6c187fea44d52eda14",
+          "5c6d7b3d2e221600114c9b7d",
+          "571659bb2459771fb2755a12",
+          "5a339805c4a2826c6e06d73d"
         ],
         "mod_stock": [
-          "5b0800175acfc400153aebd4",
           "5649be884bdc2d79388b4577",
+          "5b0800175acfc400153aebd4",
           "602e3f1254072b51b239f713"
         ],
         "mod_reciever": [
@@ -845,6 +927,16 @@
         ],
         "mod_magazine": [
           "5df8f535bb49d91fb446d6b0"
+        ]
+      },
+      "5649be884bdc2d79388b4577": {
+        "mod_stock_000": [
+          "5beec8c20db834001d2c465c",
+          "5ae30c9a5acfc408fb139a03",
+          "55d4ae6c4bdc2d8b2f8b456e",
+          "628a85ee6b1d481ff772e9d5",
+          "5bfe86df0db834001b734685",
+          "606587d11246154cad35d635"
         ]
       },
       "5df8e4080b92095fd441e594": {
@@ -865,1252 +957,1140 @@
         ],
         "mod_muzzle": [
           "6065c6e7132d4d12c81fd8e1",
-          "5dcbe965e4ed22586443a79d",
-          "615d8eb350224f204c1da1cf"
-        ]
-      },
-      "5f2a9575926fd9352339381f": {
-        "mod_barrel": [
-          "5f2aa46b878ef416f538b567"
-        ],
-        "mod_handguard": [
-          "5f2aa47a200e2c0ee46efa71"
-        ],
-        "mod_mount": [
-          "5f2aa49f9b44de6b1b4e68d4"
-        ],
-        "mod_magazine": [
-          "5b7bef1e5acfc43d82528402"
-        ]
-      },
-      "5f2aa46b878ef416f538b567": {
-        "mod_muzzle": [
-          "5f2aa4464b50c14bcf07acdb"
-        ]
-      },
-      "5f2aa47a200e2c0ee46efa71": {
-        "mod_mount_000": [
-          "5f2aa493cd375f14e15eea72"
-        ]
-      },
-      "5f2aa49f9b44de6b1b4e68d4": {
-        "mod_scope": [
-          "5dff77c759400025ea5150cf",
-          "57c69dd424597774c03b7bbc"
-        ]
-      },
-      "5de7bd7bfd6b4e6e2276dc25": {
-        "mod_stock": [
-          "5de910da8b6c4240ba2651b5"
-        ],
-        "mod_foregrip": [
-          "5de8fbad2fbe23140d3ee9c4"
-        ],
-        "mod_charge": [
-          "5de922d4b11454561e39239f"
-        ],
-        "mod_reciever": [
-          "5e0090f7e9dc277128008b93",
-          "5de8e67c4a9f347bc92edbd7"
-        ],
-        "mod_magazine": [
-          "5de8e8dafd6b4e6e2276dc32"
-        ]
-      },
-      "5e0090f7e9dc277128008b93": {
-        "mod_scope": [
-          "5dff77c759400025ea5150cf"
-        ],
-        "mod_mount": [
-          "5de8fc0b205ddc616a6bc51b"
+          "615d8eb350224f204c1da1cf",
+          "5dcbe965e4ed22586443a79d"
         ]
       },
       "5de8e67c4a9f347bc92edbd7": {
         "mod_scope": [
           "5dff77c759400025ea5150cf",
           "62811f461d5df4475f46a332"
-        ]
-      },
-      "588892092459774ac91d4b11": {
-        "mod_barrel": [
-          "5888956924597752983e182d"
         ],
-        "mod_pistol_grip": [
-          "57c55f172459772d27602381"
-        ],
-        "mod_stock": [
-          "58889d0c2459775bc215d981"
-        ],
-        "mod_scope": [
-          "5dff77c759400025ea5150cf",
-          "57c69dd424597774c03b7bbc"
-        ],
-        "mod_magazine": [
-          "5888988e24597752fe43a6fa"
-        ]
-      },
-      "5888956924597752983e182d": {
-        "mod_muzzle": [
-          "5888996c24597754281f9419"
-        ],
-        "mod_handguard": [
-          "5888976c24597754281f93f5"
-        ]
-      },
-      "5649be884bdc2d79388b4577": {
-        "mod_stock_000": [
-          "628a85ee6b1d481ff772e9d5",
-          "5beec8c20db834001d2c465c",
-          "5ae30c9a5acfc408fb139a03",
-          "5bfe86df0db834001b734685"
-        ]
-      },
-      "5de8fc0b205ddc616a6bc51b": {
-        "mod_tactical": [
-          "5c5952732e2216398b5abda2"
-        ]
-      },
-      "57dc2fa62459775949412633": {
-        "mod_pistol_grip": [
-          "57e3dba62459770f0c32322b"
-        ],
-        "mod_gas_block": [
-          "59d36a0086f7747e673f3946"
-        ],
-        "mod_stock": [
-          "57dc347d245977596754e7a1"
-        ],
-        "mod_magazine": [
-          "55d4837c4bdc2d1d4e8b456c"
-        ],
-        "patron_in_weapon": [
-          "56dff4a2d2720bbd668b456a"
-        ]
-      },
-      "5a957c3fa2750c00137fa5f7": {
-        "mod_scope": [
-          "57aca93d2459771f2c7e26db",
-          "57ac965c24597706be5f975c",
-          "626bb8532c923541184624b4"
+        "mod_mount": [
+          "5de8fc0b205ddc616a6bc51b"
         ]
       },
       "602e3f1254072b51b239f713": {
         "mod_stock_000": [
-          "5beec8c20db834001d2c465c",
-          "55d4ae6c4bdc2d8b2f8b456e",
+          "606587d11246154cad35d635",
           "628a85ee6b1d481ff772e9d5",
-          "5bfe86df0db834001b734685"
+          "55d4ae6c4bdc2d8b2f8b456e",
+          "5beec8c20db834001d2c465c",
+          "5bfe86df0db834001b734685",
+          "5ae30c9a5acfc408fb139a03"
+        ]
+      },
+      "5de8fc0b205ddc616a6bc51b": {
+        "mod_tactical": [
+          "61605d88ffa6e502ac5e7eeb",
+          "5c5952732e2216398b5abda2"
         ]
       },
       "62811f461d5df4475f46a332": {
         "mod_scope": [
           "56ea70acd2720b844b8b4594"
         ]
-      },
-      "5bfebc320db8340019668d79": {
-        "mod_muzzle": [
-          "5d270b3c8abbc3105335cfb8"
-        ]
       }
     },
     "items": {
       "TacticalVest": {
-        "64b7af5a8532cf95ee0a0dbd": 7367,
-        "64b8f7968532cf95ee0a0dbf": 4925,
-        "6422e1ea3c0f06190302161a": 10281,
-        "64b9e2037fdfb81df81e3c25": 1366,
-        "5c503ac82e221602b21d6e9a": 5966,
-        "5e023cf8186a883be655e54f": 5742,
-        "559ba5b34bdc2d1f1a8b4582": 13386,
-        "5c471c442e221602b542a6f8": 14606,
-        "55d4837c4bdc2d1d4e8b456c": 14221,
-        "64b8f7c241772715af0f9c3d": 2423,
-        "64b8f7b5389d7ffd620ccba2": 2508,
-        "5de653abf76fdc1ce94a5a2a": 7951,
-        "59e4cf5286f7741778269d8a": 7499,
-        "59e4d3d286f774176a36250a": 829,
-        "64b7af734b75259c590fa895": 838,
-        "6450ec2e7da7133e5a09ca96": 620,
-        "5bfea7ad0db834001c38f1ee": 2581,
-        "5bfeaa0f0db834001b734927": 199,
-        "5656d7c34bdc2d9d198b4587": 27,
-        "5df8f535bb49d91fb446d6b0": 106,
-        "5b7bef1e5acfc43d82528402": 256,
-        "5de8e8dafd6b4e6e2276dc32": 331,
-        "5888988e24597752fe43a6fa": 306
+        "559ba5b34bdc2d1f1a8b4582": 42086,
+        "55d4837c4bdc2d1d4e8b456c": 43301,
+        "59e4cf5286f7741778269d8a": 22951,
+        "6422e1ea3c0f06190302161a": 31026,
+        "64b7af5a8532cf95ee0a0dbd": 22096,
+        "5de653abf76fdc1ce94a5a2a": 23741,
+        "5c471c442e221602b542a6f8": 45416,
+        "64b7af734b75259c590fa895": 2472,
+        "64b8f7968532cf95ee0a0dbf": 14825,
+        "5c503ac82e221602b21d6e9a": 17826,
+        "59e4d3d286f774176a36250a": 2457,
+        "64b8f7c241772715af0f9c3d": 7477,
+        "5bfea7ad0db834001c38f1ee": 7511,
+        "5e023cf8186a883be655e54f": 17432,
+        "64b8f7b5389d7ffd620ccba2": 7447,
+        "5de8e8dafd6b4e6e2276dc32": 821,
+        "6450ec2e7da7133e5a09ca96": 1891,
+        "5b7bef1e5acfc43d82528402": 851,
+        "64b9e2037fdfb81df81e3c25": 4481,
+        "5bfeaa0f0db834001b734927": 536,
+        "5888988e24597752fe43a6fa": 921,
+        "5656d7c34bdc2d9d198b4587": 84,
+        "5df8f535bb49d91fb446d6b0": 371
       },
       "Pockets": {
-        "62a09d3bcf4a99369e262447": 309,
-        "60b0f6c058e0b0481a09ad11": 304,
-        "5783c43d2459774bbe137486": 337
+        "62a09d3bcf4a99369e262447": 1051,
+        "5783c43d2459774bbe137486": 1049,
+        "60b0f6c058e0b0481a09ad11": 1013
       },
       "Backpack": {},
       "SecuredContainer": {
-        "64b7af5a8532cf95ee0a0dbd": 48971,
-        "64b8f7968532cf95ee0a0dbf": 57721,
-        "5e023e53d4353e3302577c4c": 9981,
-        "5e023e6e34d52a55c3304f71": 11551,
-        "5e023cf8186a883be655e54f": 55521,
-        "64b8f7b5389d7ffd620ccba2": 24781,
-        "56dff4a2d2720bbd668b456a": 18581,
-        "64b8f7c241772715af0f9c3d": 24741,
-        "56dff3afd2720bba668b4567": 9251,
-        "59e655cb86f77411dc52a77b": 10801,
-        "59e4cf5286f7741778269d8a": 49741,
-        "59e4d3d286f774176a36250a": 5551,
-        "64b7af734b75259c590fa895": 5491,
-        "6576f96220d53a5b8f3e395e": 2731,
-        "56dff4ecd2720b5f5a8b4568": 121,
-        "59e6542b86f77411dc52a77a": 5091,
-        "5656d7c34bdc2d9d198b4587": 181,
-        "5c3df7d588a4501f290594e5": 471,
-        "56dff061d2720bb5668b4567": 461,
-        "5e023e88277cce2b522ff2b1": 481,
-        "64b7bbb74b75259c590fa897": 181
+        "5e023cf8186a883be655e54f": 169361,
+        "56dff4a2d2720bbd668b456a": 55961,
+        "59e4cf5286f7741778269d8a": 153211,
+        "64b8f7b5389d7ffd620ccba2": 76021,
+        "64b7af5a8532cf95ee0a0dbd": 147201,
+        "59e655cb86f77411dc52a77b": 33051,
+        "64b8f7968532cf95ee0a0dbf": 176121,
+        "64b7af734b75259c590fa895": 16351,
+        "5e023e53d4353e3302577c4c": 29641,
+        "59e4d3d286f774176a36250a": 16241,
+        "64b8f7c241772715af0f9c3d": 76001,
+        "5e023e6e34d52a55c3304f71": 35201,
+        "59e6542b86f77411dc52a77a": 14421,
+        "64b7bbb74b75259c590fa897": 521,
+        "6576f96220d53a5b8f3e395e": 8561,
+        "56dff3afd2720bba668b4567": 28631,
+        "56dff061d2720bb5668b4567": 1551,
+        "56dff4ecd2720b5f5a8b4568": 431,
+        "5656d7c34bdc2d9d198b4587": 571,
+        "5c3df7d588a4501f290594e5": 1111,
+        "5e023e88277cce2b522ff2b1": 1441,
+        "5887431f2459777e1612938f": 51
       },
       "SpecialLoot": {}
     }
   },
   "firstName": [
-    "Дед",
-    "Генка",
-    "Радик",
-    "Кабан",
-    "Самуил",
-    "Ярик",
-    "Диман",
-    "Вася",
-    "Паша",
-    "Гога",
-    "Арсений",
-    "Федот",
-    "Васян",
-    "Клим",
-    "Корнелий",
-    "Егор",
-    "Заур",
-    "Арчи",
-    "Вадик",
-    "Якун",
-    "Сашок",
-    "Ростислав",
-    "Серега",
-    "Феликс",
-    "Агафон",
-    "Харитон",
-    "Олег",
-    "Матвей",
-    "Паисий",
-    "Лёха",
-    "Вован",
-    "Вовчик",
-    "Виктор",
-    "Арсен",
-    "Анатолий",
-    "Федя",
-    "Радж",
-    "Лаша",
-    "Александр",
-    "Христофор",
-    "Павлик",
-    "Яша",
-    "Фёдор",
-    "Валера",
-    "Гена",
-    "Антон",
-    "Олежа",
-    "Джонни",
-    "Аристарх",
-    "Авксентий",
-    "Сема",
-    "Миха",
-    "Баха",
-    "Созон",
-    "Данила",
-    "Прохор",
-    "Колька",
-    "Мишаня",
-    "Пахомий",
-    "Димон",
-    "Тарас",
-    "Женя",
-    "Севастьян",
-    "Семён",
-    "Иван",
-    "Кирюха",
-    "Жора",
-    "Лёва",
-    "Санька",
-    "Костыль",
-    "Николай",
-    "Мелентий",
-    "Антич",
-    "Петро",
-    "Мартын",
-    "Федосей",
-    "Марат",
-    "Захар",
-    "Мишган",
-    "Тоха",
-    "Колян",
-    "Руся",
-    "Жорес",
-    "Стёпа",
-    "Анфим",
-    "Толя",
-    "Степан",
-    "Мирослав",
-    "Эдуард",
-    "Мэн",
-    "Юлиан",
-    "Тимурка",
-    "Зураб",
-    "Павел",
-    "Дроп",
-    "Борис",
-    "Даня",
-    "Шингис",
-    "Коля",
-    "Кайл",
-    "Петя",
-    "Никанор",
-    "Сёма",
-    "Арни",
-    "Карлуша",
-    "Родион",
-    "Сеня",
-    "Кэл",
-    "Сава",
-    "Игорян",
-    "Порфирий",
-    "Армен",
-    "Дамирка",
-    "Филя",
-    "Витек",
-    "Илюша",
-    "Витян",
-    "Гоги",
-    "Фома",
-    "Стас",
-    "Кондратий",
-    "Донатий",
-    "Жека",
-    "Пуш",
-    "Альвиан",
-    "Парфений",
-    "Спиридон",
-    "Борька",
-    "Марк",
-    "Филат",
-    "Валёк",
-    "Лева",
-    "Митяй",
-    "Протасий",
-    "Петр",
-    "Ашот",
-    "Тимофей",
-    "Сергей",
-    "Ваха",
-    "Аркадий",
-    "Найк",
-    "Макар",
-    "Эдик",
-    "Ботир",
-    "Миша",
-    "Боря",
-    "Ростя",
-    "Стасик",
-    "Фриз",
-    "Алекс",
-    "Трифон",
-    "Мирон",
-    "Тёма",
-    "Сява",
-    "Давид",
-    "Трофим",
-    "Алик",
-    "Гриша",
-    "Ильнур",
-    "Вантуз",
-    "Слава",
-    "Денис",
-    "Кися",
-    "Феоктист",
-    "Никита",
-    "Фима",
-    "Юра",
-    "Святополк",
-    "Дрон",
-    "Виталя",
-    "Афанасий",
-    "Леня",
-    "Гиви",
-    "Платон",
-    "Рустам",
-    "Дэнчик",
-    "Пётр",
-    "Гарик",
-    "Яков",
-    "Юрец",
-    "Вадимка",
-    "Альберт",
-    "Витёк",
-    "Фетч",
-    "Богдан",
-    "Костян",
-    "Савва",
-    "Володарчик",
-    "Киса",
-    "Макс",
-    "Филипп",
-    "Фаддей",
-    "Паштет",
-    "Вано",
-    "Микола",
-    "Юрий",
-    "Андрей",
-    "Влад",
-    "Володя",
-    "Ваня",
-    "Гарри",
-    "Ванька",
-    "Витя",
-    "Сева",
-    "Кот",
-    "Тихон",
-    "Ричи",
-    "Гит",
-    "Никитка",
-    "Моня",
-    "Владик",
-    "Иржан",
-    "Таир",
-    "Герчик",
-    "Сильвестр",
-    "Игорь",
-    "Пров",
-    "Мстислав",
-    "Антоха",
-    "Русик",
-    "Терентий",
-    "Петька",
-    "Тима",
-    "Эльдар",
-    "Глеб",
-    "Эраст",
-    "Серый",
-    "Деня",
-    "Прокопий",
-    "Джек",
-    "Ивасик",
-    "Станислав",
     "Аркаша",
-    "Пахан",
-    "Пафнутий",
-    "Юстин",
-    "Саня",
-    "Андрюха",
-    "Артур",
-    "Валя",
-    "Ромчик",
-    "Нойс",
-    "Шурик",
-    "Михаил",
-    "Санёк",
-    "Илюха",
-    "Офицерский",
-    "Илья",
-    "Степа",
-    "Веня",
-    "Ярослав",
-    "Святослав",
-    "Кирилл",
-    "Шура",
-    "Руслан",
-    "Гурам",
-    "Джонатан",
-    "Митрофан",
-    "Пул",
-    "Толян",
-    "Пантелеймон",
+    "Петр",
+    "Иван",
     "Леха",
-    "Лаг",
-    "Пися",
-    "Гоша",
-    "Рома",
-    "Изя",
-    "Башир",
+    "Арсений",
+    "Порфирий",
+    "Дрон",
+    "Тоха",
+    "Костыль",
+    "Боря",
+    "Серый",
+    "Степан",
+    "Пётр",
+    "Илья",
+    "Паисий",
+    "Дамирка",
+    "Агафон",
+    "Данила",
+    "Ромчик",
+    "Диман",
+    "Моня",
+    "Альвиан",
+    "Созон",
+    "Армен",
     "Рауль",
-    "Леоня",
-    "Лев",
-    "Архипп",
-    "Батыр",
-    "Потап",
+    "Павлик",
+    "Деня",
+    "Паштет",
+    "Лёха",
+    "Санька",
+    "Радик",
+    "Санёк",
+    "Ярослав",
+    "Терентий",
+    "Кэл",
+    "Филипп",
+    "Митрофан",
+    "Трофим",
+    "Васян",
+    "Кондратий",
+    "Федосей",
+    "Ростислав",
+    "Андрюха",
+    "Карлуша",
+    "Сеня",
+    "Арсен",
+    "Вадимка",
+    "Ивасик",
+    "Фриз",
+    "Герчик",
+    "Толя",
+    "Гоги",
+    "Тёма",
+    "Клим",
+    "Прохор",
     "Авдей",
+    "Русик",
+    "Макс",
+    "Леня",
+    "Давид",
+    "Борис",
+    "Стасик",
+    "Анфим",
+    "Женя",
+    "Иржан",
+    "Петро",
+    "Семён",
+    "Юстин",
+    "Пахан",
+    "Дед",
+    "Пантелеймон",
+    "Мэн",
+    "Мелентий",
+    "Тимофей",
+    "Анатолий",
+    "Мартын",
+    "Пул",
+    "Веня",
+    "Шура",
+    "Сава",
+    "Марат",
+    "Степа",
+    "Серега",
+    "Ильнур",
+    "Христофор",
+    "Корнелий",
+    "Вася",
+    "Изя",
+    "Валера",
+    "Димон",
+    "Сергей",
+    "Феликс",
+    "Ашот",
+    "Офицерский",
+    "Станислав",
+    "Кот",
+    "Саня",
+    "Слава",
+    "Витя",
+    "Антич",
+    "Пися",
+    "Юлиан",
+    "Самуил",
+    "Артур",
+    "Егор",
+    "Баха",
+    "Савва",
+    "Лаг",
+    "Сява",
+    "Лаша",
+    "Алик",
+    "Паша",
+    "Гарри",
+    "Игорян",
+    "Фёдор",
+    "Марк",
+    "Родион",
+    "Ботир",
+    "Олег",
+    "Володарчик",
+    "Миша",
+    "Алекс",
+    "Ярик",
+    "Генка",
+    "Валя",
+    "Джонатан",
+    "Антоха",
+    "Захар",
+    "Эльдар",
+    "Вовчик",
+    "Вадик",
+    "Гурам",
+    "Витян",
+    "Жека",
+    "Макар",
+    "Авксентий",
+    "Гена",
+    "Сева",
+    "Глеб",
+    "Ваха",
+    "Арни",
+    "Сильвестр",
+    "Петя",
+    "Петька",
+    "Тимурка",
+    "Игорь",
+    "Миха",
+    "Олежа",
+    "Юрий",
+    "Эдуард",
+    "Аристарх",
+    "Фома",
+    "Потап",
+    "Илюха",
+    "Пров",
+    "Рома",
+    "Протасий",
+    "Мишган",
+    "Костян",
+    "Коля",
+    "Стёпа",
+    "Сашок",
+    "Михаил",
+    "Кайл",
+    "Ваня",
+    "Парфений",
+    "Вано",
+    "Максим",
+    "Альберт",
+    "Жора",
+    "Гоша",
+    "Феоктист",
+    "Витек",
+    "Тарас",
+    "Гога",
+    "Николай",
+    "Колька",
+    "Андрей",
+    "Арчи",
+    "Мстислав",
+    "Александр",
+    "Вован",
+    "Денис",
+    "Фима",
+    "Лёва",
+    "Никанор",
+    "Руся",
+    "Лев",
+    "Леоня",
+    "Якун",
+    "Юра",
+    "Илюша",
+    "Павел",
+    "Архипп",
+    "Никита",
+    "Гарик",
+    "Жорес",
+    "Зураб",
+    "Таир",
+    "Найк",
+    "Аркадий",
+    "Дэнчик",
+    "Яков",
+    "Ванька",
+    "Мирон",
+    "Лева",
+    "Джонни",
+    "Заур",
     "Савелий",
     "Рудик",
-    "Максим",
-    "Саша"
+    "Пафнутий",
+    "Ростя",
+    "Федот",
+    "Спиридон",
+    "Кирюха",
+    "Трифон",
+    "Богдан",
+    "Джек",
+    "Платон",
+    "Никитка",
+    "Тихон",
+    "Матвей",
+    "Колян",
+    "Мишаня",
+    "Виталя",
+    "Антон",
+    "Эраст",
+    "Федя",
+    "Ричи",
+    "Володя",
+    "Микола",
+    "Виктор",
+    "Радж",
+    "Прокопий",
+    "Витёк",
+    "Вантуз",
+    "Киса",
+    "Кися",
+    "Филя",
+    "Толян",
+    "Фетч",
+    "Харитон",
+    "Севастьян",
+    "Тима",
+    "Стас",
+    "Саша",
+    "Дроп",
+    "Святослав",
+    "Башир",
+    "Афанасий",
+    "Владик",
+    "Шурик",
+    "Кирилл",
+    "Гиви",
+    "Пахомий",
+    "Валёк",
+    "Влад",
+    "Кабан",
+    "Пуш",
+    "Гит",
+    "Святополк",
+    "Сема",
+    "Руслан",
+    "Шингис",
+    "Юрец",
+    "Даня",
+    "Эдик",
+    "Сёма",
+    "Фаддей",
+    "Митяй",
+    "Рустам",
+    "Донатий",
+    "Яша",
+    "Мирослав",
+    "Филат",
+    "Борька",
+    "Нойс",
+    "Гриша",
+    "Батыр"
   ],
   "lastName": [
-    "Зевс",
-    "Адыгей",
-    "Фторопласт",
-    "Заднеприводной",
-    "Новгородский",
-    "Белый",
-    "Ботан",
-    "Гашеный",
-    "Чеснок",
-    "Квейк",
-    "Джентельмен",
-    "Зверь",
-    "Кальянщик",
-    "Забор",
-    "Пацан",
-    "Репа",
-    "Свинец",
-    "Карась",
-    "Хипстер",
-    "Гоблин",
-    "Бобик",
-    "Сыч",
-    "Баклаха",
-    "Маргарин",
-    "Золотой",
-    "Блатной",
-    "Молодой",
-    "Студент",
-    "Базай",
-    "Комитов",
-    "Дирол",
-    "Дряхлый",
-    "Баклажан",
-    "Пельмень",
-    "Косой",
-    "Пукан",
-    "Пукеш",
-    "Лещ",
-    "Правильный",
-    "Дробь",
-    "Бубл",
-    "Ихтиандр",
-    "Кремень",
-    "Хорс",
-    "Раколов",
-    "Сатанист",
-    "Неформал",
-    "Пичот",
-    "Гузло",
-    "Подгон",
-    "Сутенер",
-    "Почтальон",
-    "Шушары",
-    "Бугор",
-    "Хук",
-    "Сендвич",
-    "Существо",
-    "Дробаш",
-    "Рэйдж",
-    "Бэдушь",
-    "Дикий",
-    "Микрофон",
-    "Князь",
-    "Пекуш",
-    "Торч",
-    "Прыщь",
-    "Денди",
-    "Лютый",
-    "Наркоман",
-    "Сигаретка",
-    "Молния",
-    "Менеджер",
-    "Зуко",
-    "Сладкий",
-    "Сухогруз",
-    "Мусорской",
-    "Банщик",
-    "Пингвин",
-    "Гусар",
-    "Штопор",
-    "Озверевший",
-    "Плоскостопие",
-    "Трансформатор",
-    "Красавец",
-    "Саратовский",
-    "Могила",
-    "Гефорс",
-    "Пипетка",
-    "Ковальски",
-    "Фуфел",
-    "Романов",
-    "Двухсотый",
-    "Крыса",
-    "Сиська",
-    "Карбит",
-    "Герой",
-    "Волчара",
-    "Овощебаза",
-    "Терминатор",
-    "Дух",
-    "Креатив",
-    "Костыль",
-    "Заяц",
-    "Филолог",
-    "Рыло",
-    "Сикель",
-    "Винторез",
-    "Зайка",
-    "Фарцовщик",
-    "Кастет",
-    "Свирепый",
-    "Горелый",
-    "Сырный",
-    "Тиктокер",
-    "Модельер",
-    "Черный",
-    "Стакан",
-    "Гусь",
-    "Злой",
-    "Нервный",
-    "Пятёра",
-    "Собачник",
-    "Мурманский",
-    "Козий-сыр",
-    "Рыжий",
-    "Слеза",
-    "Вереск",
-    "Робокоп",
-    "Мамин-сын",
-    "Рубинштейн",
-    "Продавец",
-    "Провокация",
-    "Левый",
-    "Инвестор",
-    "Тридемакс",
-    "Контрольный",
-    "Пузо",
-    "Статтеринг",
-    "Сколопендра",
-    "Фотошоп",
-    "Метанол",
-    "Пикатиний",
-    "Монгол",
-    "ВДВ",
-    "Горностай",
-    "Копченый",
-    "Легаш",
-    "Яебу",
-    "Всемогущий",
-    "Сырой",
-    "Программист",
-    "РВСН",
-    "Петух",
-    "Гудинщик",
-    "Рожа",
-    "Генерал",
-    "Месси",
-    "Тамада",
-    "Дипишмот",
-    "Академик",
-    "Работяга",
-    "Упругий",
-    "Вафел",
-    "Морковник",
-    "Питерский",
-    "Вдовец",
-    "Добби",
-    "Кореец",
-    "Бигмак",
-    "Затвор",
-    "Леший",
-    "Штырь",
-    "Чиркаш",
-    "Семёра",
-    "Кучерявый",
-    "Сметана",
-    "Джин",
-    "Люгер",
-    "Бубелэдыс",
-    "Разврат",
-    "Щур",
-    "Жмурик",
-    "Кабачок",
-    "Опасный",
-    "ПХП",
-    "Упырь",
-    "Обман",
-    "Батон",
-    "Спортсмен",
-    "Никулин",
-    "Бетон",
-    "Запасной",
-    "Крокодил",
-    "Калган",
-    "Хитрожопый",
-    "Дристомет",
-    "Ферзь",
-    "Шева",
-    "Почетный",
-    "Богемный",
-    "Американец",
-    "Сгущёнка",
-    "Корешок",
-    "Градус",
-    "Пуэрщик",
-    "Клим",
-    "Торпеда",
-    "Микроб",
-    "Снайпер",
-    "Жиган",
-    "Фрол",
-    "Скворец",
-    "Убивец",
-    "Поехавший",
-    "Очки",
-    "Харон",
-    "Банзай",
-    "Сотона",
-    "Пончелло",
-    "Ебанько",
-    "Фрезер",
-    "Бобёр",
-    "Бобыха",
-    "Викинг",
-    "Колпак",
-    "Чирий",
-    "Потрошитель",
-    "Мрачный",
-    "Тормоз",
-    "Жирный",
-    "Ветка",
-    "Болт",
-    "Бух",
-    "Мятый",
-    "Клей",
-    "Живчик",
-    "Чсвешник",
-    "Айронмэн",
-    "Биолог",
-    "Везунчик",
-    "Овальный",
-    "Умник",
-    "Бригадир",
-    "Брейк",
-    "Панк",
-    "Зожник",
-    "Дотер",
-    "Мероприятие",
-    "Деревня",
-    "Фикус",
-    "Коптёр",
-    "Котофей",
-    "Щуп",
-    "Шпала",
-    "Чебур",
-    "Импортный",
-    "НКВД",
-    "Шайтан",
-    "Тольятти",
-    "Михалыч",
-    "Мочалка",
-    "Подствол",
-    "Этсамое",
-    "Скульптор",
-    "Пиздюли",
-    "Глазастый",
-    "Дудис",
-    "Лялька",
-    "Спартак",
-    "Чеклист",
-    "Нежный",
-    "Женатик",
-    "Табурет",
-    "Милота",
-    "Кастрюля",
-    "Ловелас",
-    "Сапог",
-    "Геленджик",
-    "Джейк",
-    "Мутант",
-    "Майонез",
-    "Тусовщик",
-    "Реаниматор",
-    "Водолаз",
-    "Кепка",
-    "Дырявый",
-    "Повидло",
-    "Танкист",
-    "Травмат",
-    "Слякоть",
-    "Иваныч",
-    "Капец",
-    "Малой",
-    "Крезибамп",
-    "Щупач",
-    "Бубэльбуш",
-    "Мальчик",
-    "Трэш",
-    "Планчик",
-    "Щачло",
-    "Зебра",
-    "Гаджет",
-    "Полтинник",
-    "Шамбамбулиш",
-    "Шнырь",
-    "Саранск",
-    "Два-восемь",
-    "Виолетта",
-    "Суперспецназ",
-    "Мамкин",
-    "Руссиано",
-    "Дубина",
-    "Реилган",
-    "Беспредельщик",
-    "Чучело",
-    "Полторашка",
-    "Снайлер",
-    "Директор",
-    "Секач",
-    "Окурок",
-    "Ебалай",
-    "Кукуруза",
-    "Дерзкий",
-    "Русский",
-    "Ювелир",
-    "Вертолет",
-    "Панини",
-    "Заводской",
-    "Шукупиш",
-    "Пионер",
-    "Генотип",
-    "Фантомас",
-    "Воробей",
-    "Обломов",
-    "Камертон",
-    "Корч",
-    "Хасан",
-    "Грузный",
-    "Угол",
-    "Киба",
-    "Рыбак",
-    "Шашлындос",
-    "Сейсмолог",
-    "Подполковник",
-    "Кривой",
-    "Инстаграмщик",
-    "Динамит",
-    "Самарский",
-    "Собакин",
-    "Бугурт",
-    "Предводитель",
-    "Разрядник",
-    "Ошибка",
-    "Макаронина",
-    "Джойстик",
-    "Бэн",
-    "Котовод",
-    "Непатриот",
-    "Клямпер",
-    "Байзальбоп",
-    "Турникмен",
-    "Сишарп",
-    "Крысолов",
-    "Важный",
-    "Предатель",
-    "Глушитель",
-    "Буйный",
-    "Летёха",
-    "Грустный",
-    "Лысый",
-    "Толич",
-    "Электроник",
-    "Бутират",
-    "Пупсень",
-    "Топорист",
-    "Кабан",
-    "Московский",
-    "Газобетон",
-    "Ижевчанин",
-    "Консольщик",
-    "Крымский",
-    "Самогон",
-    "Грузин",
-    "Резолв",
-    "Абуза",
-    "Штакет",
-    "Слесарь",
-    "Макака",
-    "Мошенник",
-    "Серый",
-    "Конченный",
-    "Стиляга",
-    "Кислый",
-    "Мент",
-    "Воробьянинов",
-    "Охрана",
-    "Поц",
-    "Человек",
-    "Касперидзе",
-    "Повидлыч",
-    "Иуда",
-    "Корчмарь",
-    "Турбо",
-    "Очко",
-    "Свинина",
-    "Копирайтер",
-    "Упитыш",
-    "Псих",
-    "Стамеска",
-    "Сизый",
     "Тихий",
-    "Письменный",
-    "Крутой",
-    "Прикол",
-    "Морфлот",
-    "Фонарь",
-    "Макарыч",
-    "Сумрак",
-    "Чекист",
-    "Пианист",
-    "Подзаборный",
-    "Беленький",
-    "Шапка",
-    "Чегачу",
-    "Мутнорылый",
-    "Москва",
-    "Вантуз",
-    "Бородач",
-    "Боржоми",
-    "Доцент",
-    "СОБР",
-    "Пупкин",
-    "Трудовик",
-    "Задротов",
-    "Калач",
-    "Борода",
-    "Телега",
-    "Чужой",
-    "Конфликтный",
-    "Сепультура",
-    "Бочок",
-    "Ваншот",
-    "Фриц",
-    "Туловище",
-    "Лаванда",
-    "Копатыч",
-    "Резаный",
-    "Лагодром",
-    "Говорун",
-    "Шиза",
-    "Шоурум",
-    "Шашлыки",
-    "Бидон",
-    "Лирик",
-    "БОБР",
-    "Японец",
-    "Леголас",
-    "Купчино",
-    "Саймон",
-    "Небоскрёб",
-    "Печенег",
-    "Качок",
-    "Родненький",
-    "Киберспортсмен",
-    "Якут",
-    "Каша",
-    "Шаман",
-    "Минтай",
-    "Магоги",
-    "Минский",
-    "Питон",
-    "Хозяин",
-    "Рэмба",
-    "Песняр",
-    "Фартовый",
-    "Приезжий",
-    "Мультик",
-    "Передряга",
-    "Вонючка",
-    "Сало",
-    "Робин",
-    "Пентиум",
-    "Субстанс",
-    "Локализатор",
-    "Дракон",
-    "Борзый",
-    "Хлыст",
-    "Дрищ",
-    "Мозголюб",
-    "Перец",
-    "Татарин",
-    "Ключ-на-9",
-    "Дудос",
-    "Знахарь",
-    "Шниппель",
-    "Седло",
-    "Яйчишка",
-    "Слон",
-    "Арбидол",
-    "Ржавый",
-    "Темный",
-    "Ролевик",
-    "Наглый",
-    "Бубеш",
-    "Бараш",
-    "Бешенный",
-    "Вольфенштейн",
-    "Торопыга",
-    "Бокс",
-    "Матчмейкер",
-    "Стреляный",
-    "Покоцаный",
-    "Сухарик",
-    "Шрек",
-    "Коряга",
-    "Грузчик",
-    "Рыхлый",
-    "Череп",
-    "Королла",
-    "Голубок",
-    "Зырь-труба",
-    "Протокол",
-    "Комитный",
-    "Соломон",
-    "Сявка",
-    "Жислый",
-    "Огнестрел",
-    "Шапито",
-    "Вроттердам",
-    "Кафтан",
-    "Таксист",
-    "Меченый",
-    "Кардан",
-    "Братан",
-    "Центровой",
-    "Новогодний",
-    "Десинк",
-    "Пульпит",
-    "Приставка",
-    "Король",
-    "Хрыч",
-    "Липкий",
-    "Торец",
-    "Якубович",
-    "Тайчин",
-    "Арматура",
-    "Шаляпин",
-    "Бибис",
-    "Патриарх",
-    "Кожемяка",
-    "Мавр",
-    "Окунь",
-    "Костолом",
-    "СССР",
-    "Вортекс",
-    "Денжерос",
-    "Пакетик",
-    "Хромой",
-    "Киргиз",
-    "Чингиз",
-    "Драгунов",
-    "Панкреатит",
-    "Чиркан",
-    "Пряха",
-    "Бурят",
-    "Кот",
-    "Балалайка",
-    "Годзилыч",
-    "Свинохаря",
-    "Огрызок",
-    "Разведос",
-    "Потный",
-    "Палач",
-    "Погон",
-    "Шпингалет",
-    "Клещ",
-    "Госдеп",
-    "Молоко",
-    "Отбитый",
-    "Хворостовский",
-    "Вупсень",
-    "Фургон",
-    "Наушник",
-    "Пух",
-    "Вертолёт",
-    "ЧПУ",
-    "Пекарь",
-    "Гондурас",
-    "Суходрищев",
-    "Люканг",
-    "Япончик",
-    "Функция",
-    "Кассир",
-    "Додик",
-    "МЧС",
-    "Сова",
-    "Трехсотый",
-    "Шнек",
-    "Ситуация",
-    "Штирлиц",
-    "Бомж",
-    "Пышный",
-    "Колобок",
-    "Полседьмого",
-    "Билетик",
-    "Шкаф",
-    "Флоу",
-    "Базука",
-    "Хрящ",
-    "Мурзила",
-    "Провинциал",
-    "Дымный",
-    "Румын",
-    "Пипискин",
-    "Незнайка",
-    "Тактический",
-    "Яселька",
-    "Неумеха",
-    "Гук",
-    "Крест",
-    "Ортопед",
-    "Дизайнер",
-    "Барыга",
-    "Херпроссы",
-    "Бухгалтер",
-    "Морпех",
-    "Стример",
-    "Слоупок",
-    "Мистер",
-    "Морисбудиш",
-    "Пятно",
-    "Ресторатор",
-    "Бритва",
-    "Шприц",
-    "Цинк",
-    "Чайковский",
-    "Оператор",
-    "Резинка",
-    "Косяк",
-    "Пернатый",
-    "Веник",
-    "Револьвер",
-    "Арестант",
-    "Морган",
-    "Сынуля",
-    "Упаковщик",
-    "Слепой",
-    "Насвай",
-    "Панцер",
-    "Корж",
-    "Красносельский",
-    "Виртуоз",
-    "Барбарис",
-    "Вертухай",
-    "Мудрый",
-    "Скрипка",
-    "Руки-лопаты",
-    "Секретарь",
-    "Лыжи",
     "Кацман",
-    "Шугаринг",
+    "Бубл",
+    "Пульпит",
     "Баттерс",
-    "Насос",
-    "Русь",
-    "Топор",
-    "Коматоз",
-    "Седой",
-    "Корявый",
-    "Кольщик",
-    "Толстых",
-    "Таракан",
-    "Минералка",
-    "Сиплый",
-    "Внесистемный",
-    "Любитель",
-    "Злыдень",
-    "Влажный",
-    "Сильвестр",
-    "Макаров",
-    "Боров",
-    "Фраер",
-    "Понч",
-    "Бардак",
-    "Легкий",
-    "Петросян",
-    "Хохол",
-    "Сила",
-    "Ессентуки",
-    "Свиноколбас",
-    "Ветчина",
-    "Шуруп",
-    "Вавилон",
-    "Алмазный",
-    "Верстак",
-    "Сопля",
-    "Костоправ",
-    "Шниперсон",
-    "Инструктор",
-    "Бывалый",
-    "Руль",
-    "Тулкит",
-    "Сега",
-    "Ебучий",
-    "Прокурор",
-    "Глыба",
-    "Вейпер",
-    "Аниматор",
-    "Чукча",
-    "Пшеничка",
-    "Леденец",
-    "Малинка",
-    "Мукунзор",
-    "Клоун",
-    "Толстый",
-    "Бутовский",
-    "Синтол",
-    "Клюй",
-    "Кочерга",
-    "Кожаный",
-    "Удмурт",
-    "Иксбокс",
-    "Трехмерный",
-    "Лапа",
-    "Бесовской",
-    "Хантер",
-    "Бстр",
-    "Сладкоежка",
-    "РХБЗ",
-    "Порноатаман",
-    "Бутыль",
-    "Рама",
-    "Перегар",
-    "Суслик",
-    "Неудачник",
-    "Арахис",
-    "Мутный",
-    "Ипотека",
-    "Спартаковский",
-    "Шустрила",
-    "Мышьяк",
+    "Провинциал",
+    "Разведос",
+    "ВДВ",
+    "Таксист",
+    "Креатив",
+    "Псих",
     "Шульц",
-    "Жидкий",
-    "Елдак",
-    "Чебурашка",
-    "Читер",
-    "Паштет",
-    "Фармацевт",
-    "Ненаркоторговец",
-    "Печенька",
-    "Бармалей",
+    "Черный",
+    "Погон",
+    "Банзай",
+    "Неформал",
+    "Лыжи",
+    "Грузчик",
+    "Секретарь",
+    "Рэмба",
+    "Саратовский",
+    "Почтальон",
+    "Хрыч",
+    "Герой",
     "Капелька",
+    "Киба",
+    "Хасан",
+    "Пятёра",
+    "Тусовщик",
+    "Дудис",
+    "Боров",
+    "Легкий",
+    "Шпингалет",
+    "Локализатор",
+    "Снайпер",
+    "Копирайтер",
+    "Горностай",
+    "Херпроссы",
+    "Фантомас",
+    "Зожник",
+    "Джентельмен",
+    "Байзальбоп",
+    "Слякоть",
+    "Разврат",
+    "Виртуоз",
+    "Шнырь",
+    "Зебра",
+    "Фраер",
+    "Заводской",
+    "Чебур",
+    "Алмазный",
+    "Шуруп",
+    "Прокурор",
+    "Гаджет",
+    "Заяц",
+    "Турбо",
+    "Месси",
+    "Король",
+    "Самогон",
+    "Баклаха",
+    "Турникмен",
+    "Шамбамбулиш",
+    "Бараш",
+    "Злыдень",
+    "Кореец",
+    "Матчмейкер",
+    "Американец",
+    "Шприц",
+    "Угол",
+    "Крест",
+    "Новгородский",
+    "Вантуз",
+    "Академик",
+    "Руль",
+    "Шева",
+    "Хромой",
+    "Ловелас",
+    "Ресторатор",
+    "Контрольный",
+    "Пиздюли",
+    "Питерский",
+    "Гук",
+    "Тиктокер",
+    "Костоправ",
+    "Центровой",
+    "Репа",
+    "Шрек",
+    "Мавр",
+    "Модельер",
+    "Новогодний",
+    "Сиська",
+    "Госдеп",
+    "Прикол",
+    "Запасной",
+    "Япончик",
+    "Сепультура",
+    "Рубинштейн",
+    "Тулкит",
+    "Дымный",
+    "Киберспортсмен",
+    "Блатной",
+    "Корявый",
+    "Мутнорылый",
+    "Мутный",
+    "Повидлыч",
+    "Шушары",
+    "Козий-сыр",
+    "Дубина",
+    "Макаров",
+    "Бутират",
+    "Электроник",
+    "Два-восемь",
+    "Крокодил",
+    "Чекист",
+    "Сутенер",
+    "Пекарь",
+    "Мрачный",
+    "Убивец",
+    "Молния",
+    "Ключ-на-9",
+    "Потрошитель",
+    "Пакетик",
+    "Оператор",
+    "Арматура",
+    "Джойстик",
+    "Бубелэдыс",
+    "Вертолёт",
+    "Винторез",
+    "Собачник",
+    "Печенька",
+    "Бобыха",
+    "Комитов",
+    "Якубович",
+    "Огрызок",
+    "Ботан",
+    "Золотой",
     "Глиттершайн",
-    "Шницель",
-    "Мозг",
+    "Боржоми",
+    "Овальный",
+    "Щур",
+    "Дряхлый",
+    "Шашлындос",
+    "Пшеничка",
+    "Корч",
+    "Спартак",
+    "Цинк",
+    "Чингиз",
+    "Жидкий",
+    "Горелый",
+    "Костыль",
+    "Темный",
+    "Инструктор",
+    "Иуда",
+    "Айронмэн",
+    "Рэйдж",
+    "Ветчина",
+    "Дерзкий",
+    "Ипотека",
+    "Якут",
+    "Окунь",
+    "Бобёр",
+    "Лялька",
+    "Сова",
+    "Ветка",
+    "Шапка",
+    "Зверь",
+    "Разрядник",
+    "Нервный",
+    "Резаный",
+    "Люгер",
+    "Верстак",
+    "Сыч",
+    "ПХП",
+    "Глыба",
+    "Гудинщик",
+    "Клоун",
+    "Сильвестр",
+    "Касперидзе",
+    "Ковальски",
+    "Свинина",
+    "Торч",
+    "Малой",
+    "Щупач",
+    "Дробь",
+    "Вортекс",
+    "Почетный",
+    "Хитрожопый",
+    "Чиркан",
+    "Шниппель",
+    "Сатанист",
+    "Трехмерный",
+    "Ебалай",
+    "Человек",
+    "Хрящ",
+    "Геленджик",
+    "Ювелир",
+    "РХБЗ",
+    "Леденец",
+    "Бокс",
+    "Копченый",
+    "Болт",
+    "Бесовской",
+    "Леголас",
+    "Очки",
+    "Вонючка",
+    "Спортсмен",
+    "Пышный",
+    "РВСН",
+    "Паштет",
+    "Секач",
     "Городской",
+    "Капец",
+    "Соломон",
+    "Жирный",
+    "Зырь-труба",
+    "Рама",
+    "Огнестрел",
+    "Приставка",
+    "Ролевик",
+    "Пух",
+    "Беспредельщик",
+    "Лещ",
+    "Майонез",
+    "Окурок",
+    "Абуза",
+    "Кассир",
+    "Белый",
+    "Робин",
+    "Чеклист",
+    "Важный",
+    "Бибис",
+    "Морфлот",
+    "Мерс",
+    "Протокол",
+    "Штирлиц",
+    "Шиза",
+    "Полседьмого",
+    "Фарцовщик",
+    "Дробаш",
+    "Этсамое",
+    "Мент",
+    "Магоги",
+    "Батон",
+    "Годзилыч",
+    "Реаниматор",
+    "Стример",
+    "Качок",
+    "Забор",
+    "Табурет",
+    "Мочалка",
+    "Толстых",
+    "Нежный",
+    "СОБР",
+    "Братан",
+    "Передряга",
+    "Топорист",
+    "Толич",
+    "Борзый",
+    "Перегар",
+    "Базай",
+    "Арбидол",
+    "Всемогущий",
+    "Бочок",
+    "Петросян",
+    "Бывалый",
+    "Дотер",
+    "Вдовец",
+    "Штырь",
+    "Дух",
+    "Красносельский",
+    "Обломов",
+    "Карась",
+    "Грузин",
+    "Яйчишка",
+    "ЧПУ",
+    "МЧС",
+    "Фартовый",
+    "Чирий",
+    "Кардан",
+    "Кафтан",
+    "Скрипка",
+    "Функция",
+    "Биолог",
+    "Руки-лопаты",
+    "Московский",
+    "Фургон",
+    "Бэдушь",
+    "Сотона",
+    "Бурят",
+    "Ебанько",
+    "Бутовский",
+    "Палач",
+    "Фрол",
+    "Фармацевт",
+    "Бубэльбуш",
+    "Газобетон",
+    "Программист",
+    "Лапа",
+    "Пацан",
+    "Спартаковский",
+    "Драгунов",
+    "Мозг",
+    "Дристомет",
+    "Викинг",
+    "Колобок",
+    "Мусорской",
+    "Двухсотый",
+    "Пузо",
+    "Седло",
+    "Неудачник",
+    "Билетик",
+    "Дракон",
+    "Озверевший",
+    "Хворостовский",
+    "Веник",
+    "Мурзила",
+    "Пикатиний",
+    "Вольфенштейн",
+    "Грузный",
+    "Кукуруза",
+    "Рыло",
+    "Женатик",
+    "Крыса",
+    "Микрофон",
+    "Мурманский",
+    "Корешок",
+    "Везунчик",
+    "Бугор",
+    "Кабан",
+    "Письменный",
+    "Семёра",
+    "Бомж",
+    "Опасный",
+    "Знахарь",
+    "Затвор",
+    "Торпеда",
+    "Влажный",
+    "Волчара",
+    "Покоцаный",
+    "Резолв",
+    "Телега",
+    "Богемный",
+    "Пионер",
+    "Стиляга",
+    "Потный",
+    "Купчино",
+    "Могила",
+    "Щуп",
+    "Квейк",
+    "Клямпер",
+    "Заднеприводной",
+    "Топор",
+    "Охрана",
+    "Шнек",
+    "Реилган",
+    "Пичот",
+    "Серый",
+    "Конфликтный",
+    "Рыжий",
+    "Ферзь",
+    "Гефорс",
+    "Шугаринг",
+    "Лютый",
+    "Клей",
+    "Небоскрёб",
+    "Бидон",
+    "Шоурум",
+    "Меченый",
+    "Внесистемный",
+    "Пернатый",
+    "Десинк",
+    "Приезжий",
+    "Директор",
+    "Минский",
+    "Панини",
+    "Кучерявый",
+    "Лысый",
+    "Упругий",
+    "Мутант",
+    "Упырь",
+    "Порноатаман",
+    "Панк",
+    "Мятый",
+    "Буйный",
+    "Терминатор",
+    "Сега",
+    "Вафел",
+    "Перец",
+    "Минералка",
+    "Бобик",
+    "Крымский",
+    "Слеза",
+    "Кривой",
+    "Сявка",
+    "Трансформатор",
+    "Стамеска",
+    "Студент",
+    "Генерал",
+    "Жмурик",
+    "НКВД",
+    "Воробей",
+    "Овощебаза",
+    "Шустрила",
+    "Хлыст",
+    "Флоу",
+    "Задротов",
+    "Макаронина",
+    "Фикус",
+    "Михалыч",
+    "Вертолет",
+    "Наркоман",
+    "Штакет",
+    "Борода",
+    "Ортопед",
+    "Мамкин",
+    "Кремень",
+    "Дикий",
+    "Морисбудиш",
+    "Сендвич",
+    "Скворец",
+    "Тайчин",
+    "Самарский",
+    "Сила",
+    "Гондурас",
+    "Додик",
+    "Грустный",
+    "Бородач",
+    "Сынуля",
+    "Седой",
+    "Брейк",
+    "Жиган",
+    "Подгон",
+    "Лирик",
+    "Инвестор",
+    "СССР",
+    "Каша",
+    "Резинка",
+    "Чиркаш",
+    "Чайковский",
+    "Туловище",
+    "Молодой",
+    "Поц",
+    "Сумрак",
+    "Живчик",
+    "Клим",
+    "Злой",
+    "Толстый",
+    "Корчмарь",
+    "Шницель",
+    "БОБР",
+    "Панцер",
+    "Танкист",
+    "Сметана",
+    "Инстаграмщик",
+    "Пельмень",
+    "Планчик",
+    "Травмат",
+    "Пекуш",
+    "Филолог",
+    "Петух",
+    "Харон",
+    "Собакин",
+    "Гашеный",
+    "Сапог",
+    "Глушитель",
+    "Любитель",
+    "Мальчик",
+    "Базука",
+    "Румын",
+    "Субстанс",
+    "Сизый",
+    "Шайтан",
+    "Мозголюб",
+    "Робокоп",
+    "Джейк",
+    "Бэн",
+    "Предводитель",
+    "Панкреатит",
+    "Патриарх",
+    "Сало",
+    "Ситуация",
+    "Тормоз",
+    "Котовод",
+    "Подствол",
+    "Вейпер",
+    "Ржавый",
+    "Мукунзор",
+    "Сырный",
+    "Руссиано",
+    "Саранск",
+    "Щачло",
+    "Слепой",
+    "Люканг",
+    "Микроб",
+    "Правильный",
+    "Подзаборный",
+    "Гусь",
+    "Доцент",
+    "Статтеринг",
+    "Рыбак",
+    "Дирол",
+    "Денжерос",
+    "Консольщик",
+    "Умник",
+    "Вереск",
+    "Шаман",
+    "Шашлыки",
+    "Москва",
+    "Комитный",
+    "Лагодром",
+    "Кожемяка",
+    "Жислый",
     "Щекотун",
+    "Хантер",
+    "Отбитый",
+    "Наглый",
+    "Фонарь",
+    "Кожаный",
+    "Кольщик",
+    "Саймон",
+    "Говорун",
+    "Лаванда",
+    "Конченный",
+    "Дрищ",
+    "Бетон",
+    "Сопля",
+    "Насос",
+    "Минтай",
+    "Ненаркоторговец",
+    "Виолетта",
+    "Крутой",
+    "Трудовик",
+    "Гузло",
+    "Штопор",
+    "Косяк",
+    "Дизайнер",
+    "Барбарис",
+    "Насвай",
+    "Калган",
+    "Зуко",
+    "Бритва",
+    "Чеснок",
+    "Липкий",
+    "Зайка",
+    "Елдак",
+    "Зевс",
+    "Неумеха",
+    "Таракан",
+    "Крезибамп",
+    "Снайлер",
+    "Пипетка",
+    "Маргарин",
+    "Макарыч",
+    "Вертухай",
+    "Чукча",
+    "Сиплый",
+    "Копатыч",
+    "Водолаз",
+    "Очко",
+    "Импортный",
+    "Кабачок",
+    "Бигмак",
+    "Мультик",
+    "Кислый",
+    "Пряха",
+    "Пуэрщик",
+    "Фуфел",
+    "Кот",
+    "Удмурт",
+    "Аниматор",
+    "Пентиум",
+    "Романов",
+    "Леший",
+    "Кочерга",
+    "Сырой",
+    "Стакан",
+    "Ебучий",
+    "Морковник",
+    "Фторопласт",
+    "Фотошоп",
+    "Адыгей",
+    "Никулин",
     "Фетченый",
-    "Мерс"
+    "Джин",
+    "Динамит",
+    "Иваныч",
+    "Мышьяк",
+    "Генотип",
+    "Японец",
+    "Существо",
+    "Свирепый",
+    "Мошенник",
+    "Печенег",
+    "Сладкий",
+    "Летёха",
+    "Камертон",
+    "Сколопендра",
+    "Револьвер",
+    "Фрезер",
+    "Баклажан",
+    "Упаковщик",
+    "Арестант",
+    "Тактический",
+    "Калач",
+    "Поехавший",
+    "Кастрюля",
+    "Сикель",
+    "Питон",
+    "Родненький",
+    "Песняр",
+    "Карбит",
+    "Яселька",
+    "Мамин-сын",
+    "Ихтиандр",
+    "Денди",
+    "Бутыль",
+    "Метанол",
+    "Незнайка",
+    "Беленький",
+    "Работяга",
+    "Монгол",
+    "Клещ",
+    "Киргиз",
+    "Королла",
+    "Мистер",
+    "Шкаф",
+    "Чучело",
+    "Бармалей",
+    "Торец",
+    "Хук",
+    "Шукупиш",
+    "Морпех",
+    "Чсвешник",
+    "Молоко",
+    "Дырявый",
+    "Воробьянинов",
+    "Подполковник",
+    "Пукан",
+    "Плоскостопие",
+    "Свинец",
+    "Дипишмот",
+    "Прыщь",
+    "Глазастый",
+    "Слесарь",
+    "Шпала",
+    "Наушник",
+    "Яебу",
+    "Пипискин",
+    "Непатриот",
+    "Ессентуки",
+    "Шапито",
+    "Гоблин",
+    "Вроттердам",
+    "Бубеш",
+    "Косой",
+    "Трехсотый",
+    "Синтол",
+    "Тридемакс",
+    "Кепка",
+    "Коматоз",
+    "Сухогруз",
+    "Левый",
+    "Костолом",
+    "Бугурт",
+    "Слоупок",
+    "Сейсмолог",
+    "Череп",
+    "Котофей",
+    "Балалайка",
+    "Морган",
+    "Корж",
+    "Татарин",
+    "Русь",
+    "Чебурашка",
+    "Провокация",
+    "Кальянщик",
+    "Суслик",
+    "Бардак",
+    "Хохол",
+    "Вавилон",
+    "Чегачу",
+    "Князь",
+    "Клюй",
+    "Рыхлый",
+    "Пианист",
+    "Слон",
+    "Ижевчанин",
+    "Торопыга",
+    "Хорс",
+    "Бешенный",
+    "Суходрищев",
+    "Крысолов",
+    "Стреляный",
+    "Милота",
+    "Обман",
+    "Свиноколбас",
+    "Арахис",
+    "Хипстер",
+    "Трэш",
+    "Колпак",
+    "Макака",
+    "Дудос",
+    "Сухарик",
+    "Скульптор",
+    "Менеджер",
+    "Упитыш",
+    "Кастет",
+    "Ваншот",
+    "Тольятти",
+    "Предатель",
+    "Тамада",
+    "Сгущёнка",
+    "Фриц",
+    "Иксбокс",
+    "Добби",
+    "Красавец",
+    "Мероприятие",
+    "Полтинник",
+    "Гусар",
+    "Свинохаря",
+    "Чужой",
+    "Бухгалтер",
+    "Пупкин",
+    "Голубок",
+    "Ошибка",
+    "Пупсень",
+    "Коптёр",
+    "Понч",
+    "Сладкоежка",
+    "Барыга",
+    "Пончелло",
+    "Полторашка",
+    "Деревня",
+    "Бух",
+    "Хозяин",
+    "Сишарп",
+    "Продавец",
+    "Раколов",
+    "Читер",
+    "Рожа",
+    "Сигаретка",
+    "Бстр",
+    "Коряга",
+    "Суперспецназ",
+    "Русский",
+    "Легаш",
+    "Пингвин",
+    "Вупсень",
+    "Повидло",
+    "Градус",
+    "Бригадир",
+    "Мудрый",
+    "Пукеш",
+    "Банщик",
+    "Пятно",
+    "Шаляпин",
+    "Шниперсон",
+    "Малинка"
   ],
   "difficulty": {
     "easy": {
@@ -4007,9 +3987,9 @@
   "chances": {
     "equipment": {
       "Headwear": 23,
-      "Earpiece": 13,
+      "Earpiece": 12,
       "FaceCover": 12,
-      "ArmorVest": 69,
+      "ArmorVest": 68,
       "Eyewear": 0,
       "ArmBand": 0,
       "TacticalVest": 100,
@@ -4023,31 +4003,30 @@
     },
     "weaponMods": {
       "mod_magazine": 100,
-      "mod_mount_001": 0,
-      "mod_muzzle": 20,
-      "mod_sight_rear": 36,
-      "mod_mount_000": 30,
-      "mod_mount": 74,
-      "mod_stock": 100,
-      "mod_pistol_grip": 0,
-      "mod_sight_front": 67,
       "mod_scope": 100,
-      "mod_reciever": 79,
-      "mod_tactical": 40,
+      "mod_sight_rear": 36,
+      "mod_tactical": 39,
+      "mod_muzzle": 20,
       "mod_bipod": 0,
-      "mod_mount_002": 18,
+      "mod_stock": 100,
       "mod_charge": 0,
+      "mod_reciever": 80,
+      "mod_mount_000": 31,
+      "mod_mount": 73,
+      "mod_mount_001": 0,
+      "mod_sight_front": 68,
+      "mod_mount_002": 17,
       "mod_launcher": 0,
-      "mod_foregrip": 43,
+      "mod_pistol_grip": 0,
+      "mod_foregrip": 40,
       "mod_tactical_000": 0,
       "mod_tactical_001": 0,
-      "mod_stock_000": 100,
-      "mod_tactical_002": 0
+      "mod_stock_000": 100
     },
     "equipmentMods": {
-      "mod_nvg": 100,
       "front_plate": 100,
-      "back_plate": 100
+      "back_plate": 100,
+      "mod_nvg": 100
     }
   },
   "generation": {
