@@ -52,6 +52,11 @@ export class FenceBaseAssortGenerator {
                 continue;
             }
 
+            // Skip reward item blacklist
+            if (this.itemFilterService.isItemRewardBlacklisted(rootItemDb._id)) {
+                continue;
+            }
+
             // Invalid
             if (!this.itemHelper.isValidItem(rootItemDb._id)) {
                 continue;
