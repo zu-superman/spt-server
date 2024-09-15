@@ -168,16 +168,8 @@ export class TraderController {
 
     /** Handle client/items/prices/TRADERID */
     public getItemPrices(sessionId: string, traderId: string): IGetItemPricesResponse {
-        const pmcData = this.profileHelper.getPmcProfile(sessionId);
-        const traderDetails = this.traderHelper.getLoyaltyLevel(traderId, pmcData);
-        const traderItemSellMultipler = 1 - traderDetails.buy_price_coef / 100;
-
-        // Clone handbook prices so we can apply the coef multipler to every item
         const handbookPrices = this.ragfairPriceService.getAllStaticPrices();
         const handbookPricesClone = this.cloner.clone(handbookPrices);
-        for (const handbookItemKey in handbookPricesClone) {
-            handbookPricesClone[handbookItemKey] = handbookPricesClone[handbookItemKey] * traderItemSellMultipler;
-        }
 
         return {
             supplyNextTime: this.traderHelper.getNextUpdateTimestamp(traderId),
