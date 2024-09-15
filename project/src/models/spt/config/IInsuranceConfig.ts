@@ -16,5 +16,5 @@ export interface IInsuranceConfig extends IBaseConfig {
     minAttachmentRoublePriceToBeTaken: number;
     // Chance out of 100% no attachments from a parent are taken
     chanceNoAttachmentsTakenPercent: number;
-    isPveInsurance: boolean;
+    simulateItemsBeingTaken: boolean;
 }

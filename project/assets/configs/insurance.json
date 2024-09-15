@@ -9,5 +9,5 @@
     "runIntervalSeconds": 600,
     "minAttachmentRoublePriceToBeTaken": 2000,
     "chanceNoAttachmentsTakenPercent": 10,
-    "isPveInsurance": false
+    "simulateItemsBeingTaken": true
 }

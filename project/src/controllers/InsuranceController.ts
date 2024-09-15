@@ -128,15 +128,15 @@ export class InsuranceController {
 
         // Iterate over each of the insurance packages.
         for (const insured of insuranceDetails) {
-            const isPveInsurance = this.insuranceConfig.isPveInsurance;
-            if (!isPveInsurance) {
-                 // Find items that should be deleted from the insured items.
+            const simulateItemsBeingTaken = this.insuranceConfig.simulateItemsBeingTaken;
+            if (simulateItemsBeingTaken) {
+                // Find items that could be taken by another player off the players body
                 const itemsToDelete = this.findItemsToDelete(rootItemParentID, insured);
 
                 // Actually remove them.
                 this.removeItemsFromInsurance(insured, itemsToDelete);
             }
-            
+
             // Ensure that all items have a valid parent.
             insured.items = this.itemHelper.adoptOrphanedItems(rootItemParentID, insured.items);
 
@@ -659,14 +659,17 @@ export class InsuranceController {
 
     /**
      *  Insure softinserts of Armor that has softinsert slots
+     * Allows armors to come back after being lost correctly
      * @param item Armor item to be insured
      * @param pmcData Player profile
      * @param body Insurance request data
      */
     public insureSoftInserts(item: Item, pmcData: IPmcData, body: IInsureRequestData): void {
         const softInsertIds = this.itemHelper.getSoftInsertSlotIds();
-        const softInsertSlots = pmcData.Inventory.items.filter((x) => x.parentId === item._id && softInsertIds.includes(x.slotId.toLowerCase()));
-        
+        const softInsertSlots = pmcData.Inventory.items.filter(
+            (item) => item.parentId === item._id && softInsertIds.includes(item.slotId.toLowerCase()),
+        );
+
         for (const softInsertSlot of softInsertSlots) {
             this.logger.debug(`SoftInsertSlots: ${softInsertSlot.slotId}`);
             pmcData.InsuredItems.push({ tid: body.tid, itemId: softInsertSlot._id });
