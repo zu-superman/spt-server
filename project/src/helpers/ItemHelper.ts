@@ -1291,13 +1291,13 @@ export class ItemHelper {
      * @param magazineWithChildCartridges Magazine to add child items to
      * @param magTemplate Db template of magazine
      * @param cartridgeTpl Cartridge to add to magazine
-     * @param minSizePercent % the magazine must be filled to
+     * @param minSizeMultiplier % the magazine must be filled to
      */
     public fillMagazineWithCartridge(
         magazineWithChildCartridges: Item[],
         magTemplate: ITemplateItem,
         cartridgeTpl: string,
-        minSizePercent = 0.25,
+        minSizeMultiplier = 0.25,
     ): void {
         // Get cartridge properties and max allowed stack size
         const cartridgeDetails = this.getItem(cartridgeTpl);
@@ -1324,7 +1324,7 @@ export class ItemHelper {
         }
 
         const desiredStackCount = this.randomUtil.getInt(
-            Math.round(minSizePercent * magazineCartridgeMaxCount),
+            Math.round(minSizeMultiplier * magazineCartridgeMaxCount),
             magazineCartridgeMaxCount,
         );
 
