@@ -228,6 +228,10 @@ export class InsuranceService {
                 continue;
             }
 
+            if (this.itemCannotBeLostOnDeath(lostItem, pmcProfile.Inventory.items)) {
+                continue;
+            }
+
             // Add insured item + details to return array
             result.push({
                 sessionID: sessionId,
@@ -238,6 +242,25 @@ export class InsuranceService {
         }
 
         return result;
+    }
+
+    /**
+     * Some items should never be returned in insurance but BSG send them in the request
+     * @param lostItem Item being returned in insurance
+     * @param inventoryItems Player inventory
+     * @returns True if item
+     */
+    protected itemCannotBeLostOnDeath(lostItem: Item, inventoryItems: Item[]): boolean {
+        if (lostItem.slotId?.toLowerCase().startsWith("specialslot")) {
+            return true;
+        }
+
+        // We check secure container items even tho they are omitted from lostInsuredItems, just in case
+        if (this.itemHelper.itemIsInsideContainer(lostItem, "SecuredContainer", inventoryItems)) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

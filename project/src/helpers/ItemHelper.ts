@@ -1229,7 +1229,7 @@ export class ItemHelper {
      */
     public itemIsInsideContainer(itemToCheck: Item, desiredContainerSlotId: string, items: Item[]): boolean {
         // Get items parent
-        const parent = items.find((x) => x._id === itemToCheck.parentId);
+        const parent = items.find((item) => item._id === itemToCheck.parentId);
         if (!parent) {
             // No parent, end of line, not inside container
             return false;

@@ -622,13 +622,18 @@ export class LocationLifecycleService {
         preRaidPmcProfile: IPmcData,
         request: IEndLocalRaidRequestData,
         locationName: string,
-    ) {
+    ): void {
         if (request.lostInsuredItems?.length > 0) {
             const mappedItems = this.insuranceService.mapInsuredItemsToTrader(
                 sessionId,
                 request.lostInsuredItems,
                 request.results.profile,
             );
+
+            // Is possible to have items in lostInsuredItems but removed before reaching mappedItems
+            if (mappedItems.length === 0) {
+                return;
+            }
 
             this.insuranceService.storeGearLostInRaidToSendLater(sessionId, mappedItems);
 
