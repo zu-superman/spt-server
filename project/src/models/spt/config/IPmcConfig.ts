@@ -60,6 +60,7 @@ export interface IHostilitySettings {
     UsecEnemyChance?: number;
     /** Bot roles that are 100% an friendly */
     additionalFriendlyTypes?: string[];
+    savagePlayerBehaviour?: string;
 }
 
 export interface PmcTypes {

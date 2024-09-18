@@ -172,6 +172,11 @@ export class LocationLifecycleService {
             if (typeof configHostilityChanges.UsecEnemyChance !== "undefined") {
                 locationBotHostilityDetails.UsecEnemyChance = configHostilityChanges.UsecEnemyChance;
             }
+
+            // Adjust scav hostility behaviour
+            if (typeof configHostilityChanges.savagePlayerBehaviour !== "undefined") {
+                locationBotHostilityDetails.SavagePlayerBehaviour = configHostilityChanges.savagePlayerBehaviour;
+            }
         }
     }
 
