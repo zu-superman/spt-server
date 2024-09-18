@@ -102,11 +102,39 @@ export class LocationLifecycleService {
         // Apply changes from pmcConfig to bot hostility values
         this.adjustBotHostilitySettings(result.locationLoot);
 
+        this.adjustExtracts(request.playerSide, request.location, result.locationLoot);
+
         // Clear bot cache ready for a fresh raid
         this.botGenerationCacheService.clearStoredBots();
         this.botNameService.clearNameCache();
 
         return result;
+    }
+
+    /**
+     * Replace map exits with scav exits when player is scavving
+     * @param playerSide Playders side (savage/usec/bear)
+     * @param location id of map being loaded
+     * @param locationData Maps locationbase data
+     */
+    protected adjustExtracts(playerSide: string, location: string, locationData: ILocationBase): void {
+        const playerIsScav = playerSide.toLowerCase() === "savage";
+        if (playerIsScav) {
+            // Get relevant extract data for map
+            const mapExtracts = this.databaseService.getLocation(location)?.allExtracts;
+            if (!mapExtracts) {
+                this.logger.warning(`Unable to find map: ${location} extract data, no adjustments made`);
+
+                return;
+            }
+
+            // Find only scav extracts and overwrite existing exits with them
+            const scavExtracts = mapExtracts.filter((extract) => extract.Side.toLowerCase() === "scav");
+            if (scavExtracts.length > 0) {
+                // Scav extracts found, use them
+                locationData.exits = scavExtracts;
+            }
+        }
     }
 
     /**
