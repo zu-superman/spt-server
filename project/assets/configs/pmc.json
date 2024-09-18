@@ -773,43 +773,44 @@
             "max": 0
         }
     },
-    "enemyTypes": [
-        "assault",
-        "marksman",
-        "pmcBot",
-        "bossBully",
-        "bossKilla",
-        "bossKojaniy",
-        "bossGluhar",
-        "bossSanitar",
-        "bossTagilla",
-        "bossKnight",
-        "bossZryachiy",
-        "bossBoar",
-        "bossBoarSniper",
-        "bossKolontay",
-        "bossPartisan",
-        "followerBully",
-        "followerKojaniy",
-        "followerGluharAssault",
-        "followerGluharSecurity",
-        "followerGluharScout",
-        "followerGluharSnipe",
-        "followerSanitar",
-        "followerBirdEye",
-        "followerBigPipe",
-        "followerZryachiy",
-        "followerBoar",
-        "followerBoarClose1",
-        "followerBoarClose2",
-        "followerKolontayAssault",
-        "followerKolontaySecurity",
-        "arenaFighter",
-        "arenaFighterEvent",
-        "crazyAssaultEvent",
-        "sectantWarrior",
-        "sectantPriest"
-    ],
+    "hostilitySettings": {
+        "pmcbear": {
+            "additionalEnemyTypes": [
+                "bossPartizan"
+            ],
+            "ChancedEnemies": [{
+                    "EnemyChance": 100,
+                    "Role": "assault"
+                }, {
+                    "EnemyChance": 100,
+                    "Role": "marksman"
+                }, {
+                    "EnemyChance": 85,
+                    "Role": "pmcUSEC"
+                }
+            ],
+            "BearEnemyChance": 85,
+            "UsecEnemyChance": 100
+        },
+        "pmcbear": {
+            "additionalEnemyTypes": [
+                "bossPartizan"
+            ],
+            "ChancedEnemies": [{
+                    "EnemyChance": 100,
+                    "Role": "assault"
+                }, {
+                    "EnemyChance": 100,
+                    "Role": "marksman"
+                }, {
+                    "EnemyChance": 85,
+                    "Role": "pmcBEAR"
+                }
+            ],
+            "BearEnemyChance": 85,
+            "UsecEnemyChance": 100
+        }
+    },
     "forceHealingItemsIntoSecure": true,
     "addPrefixToSameNamePMCAsPlayerChance": 40,
     "allPMCsHavePlayerNameWithRandomPrefixChance": 1,

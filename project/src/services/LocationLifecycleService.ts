@@ -21,6 +21,7 @@ import { Traders } from "@spt/models/enums/Traders";
 import { IHideoutConfig } from "@spt/models/spt/config/IHideoutConfig";
 import { IInRaidConfig } from "@spt/models/spt/config/IInRaidConfig";
 import { ILocationConfig } from "@spt/models/spt/config/ILocationConfig";
+import { IPmcConfig } from "@spt/models/spt/config/IPmcConfig";
 import { IRagfairConfig } from "@spt/models/spt/config/IRagfairConfig";
 import { ITraderConfig } from "@spt/models/spt/config/ITraderConfig";
 import { IRaidChanges } from "@spt/models/spt/location/IRaidChanges";
@@ -50,6 +51,7 @@ export class LocationLifecycleService {
     protected ragfairConfig: IRagfairConfig;
     protected hideoutConfig: IHideoutConfig;
     protected locationConfig: ILocationConfig;
+    protected pmcConfig: IPmcConfig;
 
     constructor(
         @inject("PrimaryLogger") protected logger: ILogger,
@@ -83,6 +85,7 @@ export class LocationLifecycleService {
         this.ragfairConfig = this.configServer.getConfig(ConfigTypes.RAGFAIR);
         this.hideoutConfig = this.configServer.getConfig(ConfigTypes.HIDEOUT);
         this.locationConfig = this.configServer.getConfig(ConfigTypes.LOCATION);
+        this.pmcConfig = this.configServer.getConfig(ConfigTypes.PMC);
     }
 
     /** Handle client/match/local/start */
@@ -96,6 +99,9 @@ export class LocationLifecycleService {
             locationLoot: this.generateLocationAndLoot(request.location),
         };
 
+        // Apply changes from pmcConfig to bot hostility values
+        this.adjustBotHostilitySettings(result.locationLoot);
+
         // Clear bot cache ready for a fresh raid
         this.botGenerationCacheService.clearStoredBots();
         this.botNameService.clearNameCache();
@@ -104,7 +110,73 @@ export class LocationLifecycleService {
     }
 
     /**
-     * Generate a maps base location and loot
+     * Adjust the bot hostility values prior to entering a raid
+     * @param location map to adjust values of
+     */
+    protected adjustBotHostilitySettings(location: ILocationBase): void {
+        for (const botId in this.pmcConfig.hostilitySettings) {
+            const configHostilityChanges = this.pmcConfig.hostilitySettings[botId];
+            const locationBotHostilityDetails = location.BotLocationModifier.AdditionalHostilitySettings.find(
+                (botSettings) => botSettings.BotRole.toLowerCase() === botId,
+            );
+
+            // No matching bot in config, skip
+            if (!locationBotHostilityDetails) {
+                this.logger.warning(
+                    `No bot: ${botId} hostility values found on: ${location.Id}, can only edit existing. Skipping`,
+                );
+
+                continue;
+            }
+
+            // Add new permanent enemies if they don't already exist
+            if (configHostilityChanges.additionalEnemyTypes) {
+                for (const enemyTypeToAdd of configHostilityChanges.additionalEnemyTypes) {
+                    if (!locationBotHostilityDetails.AlwaysEnemies.includes(enemyTypeToAdd)) {
+                        locationBotHostilityDetails.AlwaysEnemies.push(enemyTypeToAdd);
+                    }
+                }
+            }
+
+            // Add/edit chance settings
+            if (configHostilityChanges.ChancedEnemies) {
+                for (const chanceDetailsToApply of configHostilityChanges.ChancedEnemies) {
+                    const locationBotDetails = locationBotHostilityDetails.ChancedEnemies.find(
+                        (botChance) => botChance.Role === chanceDetailsToApply.Role,
+                    );
+                    if (locationBotDetails) {
+                        // Existing
+                        locationBotDetails.EnemyChance = chanceDetailsToApply.EnemyChance;
+                    } else {
+                        // Add new
+                        locationBotHostilityDetails.ChancedEnemies.push(chanceDetailsToApply);
+                    }
+                }
+            }
+
+            // Add new permanent friends if they don't already exist
+            if (configHostilityChanges.additionalFriendlyTypes) {
+                for (const friendlyTypeToAdd of configHostilityChanges.additionalFriendlyTypes) {
+                    if (!locationBotHostilityDetails.AlwaysFriends.includes(friendlyTypeToAdd)) {
+                        locationBotHostilityDetails.AlwaysFriends.push(friendlyTypeToAdd);
+                    }
+                }
+            }
+
+            // Adjust bear hostility chance
+            if (typeof configHostilityChanges.BearEnemyChance !== "undefined") {
+                locationBotHostilityDetails.BearEnemyChance = configHostilityChanges.BearEnemyChance;
+            }
+
+            // Adjust usec hostility chance
+            if (typeof configHostilityChanges.UsecEnemyChance !== "undefined") {
+                locationBotHostilityDetails.UsecEnemyChance = configHostilityChanges.UsecEnemyChance;
+            }
+        }
+    }
+
+    /**
+     * Generate a maps base location (cloned) and loot
      * @param name Map name
      * @returns ILocationBase
      */
