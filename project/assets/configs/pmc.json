@@ -776,7 +776,7 @@
     "hostilitySettings": {
         "pmcbear": {
             "additionalEnemyTypes": [
-                "bossPartizan"
+                "bossPartisan"
             ],
             "ChancedEnemies": [{
                     "EnemyChance": 100,
@@ -794,7 +794,7 @@
         },
         "pmcbear": {
             "additionalEnemyTypes": [
-                "bossPartizan"
+                "bossPartisan"
             ],
             "ChancedEnemies": [{
                     "EnemyChance": 100,
