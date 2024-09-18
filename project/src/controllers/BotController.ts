@@ -86,15 +86,18 @@ export class BotController {
      * Adjust PMC settings to ensure they engage the correct bot types
      * @param type what bot the server is requesting settings for
      * @param diffLevel difficulty level server requested settings for
+     * @param raidConfig OPTIONAL - applicationContext Data stored at start of raid
      * @param ignoreRaidSettings should raid settings chosen pre-raid be ignored
      * @returns Difficulty object
      */
-    public getBotDifficulty(type: string, diffLevel: string, ignoreRaidSettings = false): Difficulty {
+    public getBotDifficulty(
+        type: string,
+        diffLevel: string,
+        raidConfig?: IGetRaidConfigurationRequestData,
+        ignoreRaidSettings = false,
+    ): Difficulty {
         let difficulty = diffLevel.toLowerCase();
 
-        const raidConfig = this.applicationContext
-            .getLatestValue(ContextVariableType.RAID_CONFIGURATION)
-            ?.getValue<IGetRaidConfigurationRequestData>();
         if (!(raidConfig || ignoreRaidSettings)) {
             this.logger.error(
                 this.localisationService.getText("bot-missing_application_context", "RAID_CONFIGURATION"),
@@ -109,31 +112,8 @@ export class BotController {
                 this.botDifficultyHelper.convertBotDifficultyDropdownToBotDifficulty(botDifficultyDropDownValue);
         }
 
-        let difficultySettings: Difficulty;
-        const lowercasedBotType = type.toLowerCase();
-        switch (lowercasedBotType) {
-            case this.pmcConfig.bearType.toLowerCase():
-                difficultySettings = this.botDifficultyHelper.getPmcDifficultySettings(
-                    "bear",
-                    difficulty,
-                    this.pmcConfig.usecType,
-                    this.pmcConfig.bearType,
-                );
-                break;
-            case this.pmcConfig.usecType.toLowerCase():
-                difficultySettings = this.botDifficultyHelper.getPmcDifficultySettings(
-                    "usec",
-                    difficulty,
-                    this.pmcConfig.usecType,
-                    this.pmcConfig.bearType,
-                );
-                break;
-            default:
-                difficultySettings = this.botDifficultyHelper.getBotDifficultySettings(type, difficulty);
-                break;
-        }
-
-        return difficultySettings;
+        const botDb = this.databaseService.getBots();
+        return this.botDifficultyHelper.getBotDifficultySettings(type, difficulty, botDb);
     }
 
     public getAllBotDifficulties(): Record<string, any> {
@@ -156,7 +136,7 @@ export class BotController {
             const botDifficulties = Object.keys(botDetails.difficulty);
             result[enumType] = {};
             for (const difficulty of botDifficulties) {
-                result[enumType][difficulty] = this.getBotDifficulty(enumType, difficulty, true);
+                result[enumType][difficulty] = this.getBotDifficulty(enumType, difficulty, null, true);
             }
         }
 

@@ -1,6 +1,7 @@
 import { BotHelper } from "@spt/helpers/BotHelper";
 import { Difficulty } from "@spt/models/eft/common/tables/IBotType";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
+import { IBots } from "@spt/models/spt/bots/IBots";
 import { IPmcConfig } from "@spt/models/spt/config/IPmcConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
@@ -27,65 +28,13 @@ export class BotDifficultyHelper {
     }
 
     /**
-     * Get a difficulty object modified to handle fighting other PMCs
-     * @param pmcType 'bear or 'usec'
-     * @param difficulty easy / normal / hard / impossible
-     * @param usecType pmcUSEC
-     * @param bearType pmcBEAR
-     * @returns Difficulty object
-     */
-    public getPmcDifficultySettings(
-        pmcType: "bear" | "usec",
-        difficulty: string,
-        usecType: string,
-        bearType: string,
-    ): Difficulty {
-        const difficultySettings = this.getDifficultySettings(pmcType, difficulty);
-
-        const friendlyType = pmcType === "bear" ? bearType : usecType;
-
-        // Add all non-PMC types to PMCs enemy list
-        this.addBotToEnemyList(difficultySettings, this.pmcConfig.enemyTypes, friendlyType);
-
-        return difficultySettings;
-    }
-
-    /**
-     * Add bot types to ENEMY_BOT_TYPES array
-     * @param difficultySettings Bot settings to alter
-     * @param typesToAdd Bot types to add to enemy list
-     * @param typeBeingEdited Bot type to ignore and not add to enemy list
-     */
-    protected addBotToEnemyList(difficultySettings: Difficulty, typesToAdd: string[], typeBeingEdited?: string): void {
-        const enemyBotTypesKey = "ENEMY_BOT_TYPES";
-
-        // Null guard
-        if (!difficultySettings.Mind[enemyBotTypesKey]) {
-            difficultySettings.Mind[enemyBotTypesKey] = [];
-        }
-
-        const enemyArray = <string[]>difficultySettings.Mind[enemyBotTypesKey];
-        for (const botTypeToAdd of typesToAdd) {
-            if (typeBeingEdited?.toLowerCase() === botTypeToAdd.toLowerCase()) {
-                this.logger.debug(`unable to add enemy ${botTypeToAdd} to its own enemy list, skipping`);
-                continue;
-            }
-
-            if (!enemyArray.includes(botTypeToAdd)) {
-                enemyArray.push(botTypeToAdd);
-            }
-        }
-    }
-
-    /**
      * Get difficulty settings for desired bot type, if not found use assault bot types
      * @param type bot type to retrieve difficulty of
      * @param difficulty difficulty to get settings for (easy/normal etc)
+     * @param botDb bots from database
      * @returns Difficulty object
      */
-    public getBotDifficultySettings(type: string, difficulty: string): Difficulty {
-        const botDb = this.databaseService.getBots();
-
+    public getBotDifficultySettings(type: string, difficulty: string, botDb: IBots): Difficulty {
         const desiredType = type.toLowerCase();
         const bot = botDb.types[desiredType];
         if (!bot) {

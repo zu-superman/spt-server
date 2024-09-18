@@ -207,7 +207,7 @@ export class BotWeaponGenerator {
             weaponItemTemplate._props.Chambers[0]?._props?.filters[0]?.Filter?.includes(ammoTpl)
         ) {
             // Guns have variety of possible Chamber ids, patron_in_weapon/patron_in_weapon_000/patron_in_weapon_001
-            const chamberSlotNames = weaponItemTemplate._props.Chambers.map((x) => x._name);
+            const chamberSlotNames = weaponItemTemplate._props.Chambers.map((chamberSlot) => chamberSlot._name);
             this.addCartridgeToChamber(weaponWithModsArray, ammoTpl, chamberSlotNames);
         }
 
