@@ -55,9 +55,10 @@ export interface IHostilitySettings {
     /** Bot roles that are 100% an enemy */
     additionalEnemyTypes?: string[];
     /** Objects that determine the % chance another bot type is an enemy */
-    ChancedEnemies?: IChancedEnemy[];
-    BearEnemyChance?: number;
-    UsecEnemyChance?: number;
+    chancedEnemies?: IChancedEnemy[];
+    bearEnemyChance?: number;
+    usecEnemyChance?: number;
+    savageEnemyChance?: number;
     /** Bot roles that are 100% an friendly */
     additionalFriendlyTypes?: string[];
     savagePlayerBehaviour?: string;

@@ -778,7 +778,7 @@
             "additionalEnemyTypes": [
                 "bossPartisan"
             ],
-            "ChancedEnemies": [{
+            "chancedEnemies": [{
                     "EnemyChance": 100,
                     "Role": "assault"
                 }, {
@@ -789,8 +789,10 @@
                     "Role": "pmcUSEC"
                 }
             ],
-            "BearEnemyChance": 85,
-            "UsecEnemyChance": 100
+            "bearEnemyChance": 85,
+            "usecEnemyChance": 100,
+			"savageEnemyChance": 95,
+			"savagePlayerBehaviour": "ChancedEnemies"
         },
         "pmcbear": {
             "additionalEnemyTypes": [
@@ -807,8 +809,10 @@
                     "Role": "pmcBEAR"
                 }
             ],
-            "BearEnemyChance": 85,
-            "UsecEnemyChance": 100
+            "bearEnemyChance": 85,
+            "usecEnemyChance": 100,
+			"savageEnemyChance": 95,
+			"savagePlayerBehaviour": "ChancedEnemies"
         }
     },
     "forceHealingItemsIntoSecure": true,

@@ -167,8 +167,8 @@ export class LocationLifecycleService {
             }
 
             // Add/edit chance settings
-            if (configHostilityChanges.ChancedEnemies) {
-                for (const chanceDetailsToApply of configHostilityChanges.ChancedEnemies) {
+            if (configHostilityChanges.chancedEnemies) {
+                for (const chanceDetailsToApply of configHostilityChanges.chancedEnemies) {
                     const locationBotDetails = locationBotHostilityDetails.ChancedEnemies.find(
                         (botChance) => botChance.Role === chanceDetailsToApply.Role,
                     );
@@ -192,13 +192,18 @@ export class LocationLifecycleService {
             }
 
             // Adjust bear hostility chance
-            if (typeof configHostilityChanges.BearEnemyChance !== "undefined") {
-                locationBotHostilityDetails.BearEnemyChance = configHostilityChanges.BearEnemyChance;
+            if (typeof configHostilityChanges.bearEnemyChance !== "undefined") {
+                locationBotHostilityDetails.BearEnemyChance = configHostilityChanges.bearEnemyChance;
             }
 
             // Adjust usec hostility chance
-            if (typeof configHostilityChanges.UsecEnemyChance !== "undefined") {
-                locationBotHostilityDetails.UsecEnemyChance = configHostilityChanges.UsecEnemyChance;
+            if (typeof configHostilityChanges.usecEnemyChance !== "undefined") {
+                locationBotHostilityDetails.UsecEnemyChance = configHostilityChanges.usecEnemyChance;
+            }
+
+            // Adjust usec hostility chance
+            if (typeof configHostilityChanges.savageEnemyChance !== "undefined") {
+                locationBotHostilityDetails.SavageEnemyChance = configHostilityChanges.savageEnemyChance;
             }
 
             // Adjust scav hostility behaviour
