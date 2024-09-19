@@ -191,22 +191,22 @@ export class LocationLifecycleService {
                 }
             }
 
-            // Adjust bear hostility chance
+            // Adjust vs bear hostility chance
             if (typeof configHostilityChanges.bearEnemyChance !== "undefined") {
                 locationBotHostilityDetails.BearEnemyChance = configHostilityChanges.bearEnemyChance;
             }
 
-            // Adjust usec hostility chance
+            // Adjust vs usec hostility chance
             if (typeof configHostilityChanges.usecEnemyChance !== "undefined") {
                 locationBotHostilityDetails.UsecEnemyChance = configHostilityChanges.usecEnemyChance;
             }
 
-            // Adjust usec hostility chance
+            // Adjust vs savage hostility chance
             if (typeof configHostilityChanges.savageEnemyChance !== "undefined") {
                 locationBotHostilityDetails.SavageEnemyChance = configHostilityChanges.savageEnemyChance;
             }
 
-            // Adjust scav hostility behaviour
+            // Adjust vs scav hostility behaviour
             if (typeof configHostilityChanges.savagePlayerBehaviour !== "undefined") {
                 locationBotHostilityDetails.SavagePlayerBehaviour = configHostilityChanges.savagePlayerBehaviour;
             }

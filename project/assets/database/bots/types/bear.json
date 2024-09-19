@@ -535,9 +535,7 @@
         "TIME_TO_FIND_ENEMY": 22,
         "TIME_TO_FORGOR_ABOUT_ENEMY_SEC": 52,
         "TIME_TO_RUN_TO_COVER_CAUSE_SHOOT_SEC": 15,
-        "WARN_BOT_TYPES": [
-          "assault"
-        ]
+        "WARN_BOT_TYPES": []
       },
       "Move": {
         "BASESTART_SLOW_DIST": 1.1,
@@ -1054,9 +1052,7 @@
         "TIME_TO_FIND_ENEMY": 8,
         "TIME_TO_FORGOR_ABOUT_ENEMY_SEC": 180,
         "TIME_TO_RUN_TO_COVER_CAUSE_SHOOT_SEC": 15,
-        "WARN_BOT_TYPES": [
-          "assault"
-        ]
+        "WARN_BOT_TYPES": []
       },
       "Move": {
         "BASESTART_SLOW_DIST": 1.1,
@@ -1571,9 +1567,7 @@
         "TIME_TO_FIND_ENEMY": 8,
         "TIME_TO_FORGOR_ABOUT_ENEMY_SEC": 180,
         "TIME_TO_RUN_TO_COVER_CAUSE_SHOOT_SEC": 15,
-        "WARN_BOT_TYPES": [
-          "assault"
-        ]
+        "WARN_BOT_TYPES": []
       },
       "Move": {
         "BASESTART_SLOW_DIST": 1.1,
@@ -2088,9 +2082,7 @@
         "TIME_TO_FIND_ENEMY": 8,
         "TIME_TO_FORGOR_ABOUT_ENEMY_SEC": 180,
         "TIME_TO_RUN_TO_COVER_CAUSE_SHOOT_SEC": 15,
-        "WARN_BOT_TYPES": [
-          "assault"
-        ]
+        "WARN_BOT_TYPES": []
       },
       "Move": {
         "BASESTART_SLOW_DIST": 1.1,

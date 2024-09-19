@@ -774,9 +774,11 @@
         }
     },
     "hostilitySettings": {
-        "pmcbear": {
+        "pmcusec": {
             "additionalEnemyTypes": [
-                "bossPartisan"
+                "bossPartisan",
+				"peacemaker",
+				"skier"
             ],
             "chancedEnemies": [{
                     "EnemyChance": 100,
@@ -787,18 +789,23 @@
                 }, {
                     "EnemyChance": 85,
                     "Role": "pmcUSEC"
+                }, {
+                    "EnemyChance": 100,
+                    "Role": "pmcBEAR"
                 }
             ],
             "bearEnemyChance": 85,
             "usecEnemyChance": 100,
 			"savageEnemyChance": 95,
-			"savagePlayerBehaviour": "ChancedEnemies"
+			"savagePlayerBehaviour": "AlwaysEnemies"
         },
         "pmcbear": {
             "additionalEnemyTypes": [
-                "bossPartisan"
+                "bossPartisan",
+				"peacemaker",
+				"skier"
             ],
-            "ChancedEnemies": [{
+            "chancedEnemies": [{
                     "EnemyChance": 100,
                     "Role": "assault"
                 }, {
@@ -807,12 +814,15 @@
                 }, {
                     "EnemyChance": 85,
                     "Role": "pmcBEAR"
-                }
+                }, {
+					"EnemyChance": 100,
+					"Role": "pmcUSEC"
+				}
             ],
             "bearEnemyChance": 85,
             "usecEnemyChance": 100,
 			"savageEnemyChance": 95,
-			"savagePlayerBehaviour": "ChancedEnemies"
+			"savagePlayerBehaviour": "AlwaysEnemies"
         }
     },
     "forceHealingItemsIntoSecure": true,
