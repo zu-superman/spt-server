@@ -444,7 +444,8 @@
                     "max": 150
                 }
             },
-            "allowBossItems": false
+            "allowBossItems": false,
+			"useRewarditemBlacklist" true
         },
         "btrDeliveryExpireHours": 240
     },
