@@ -291,8 +291,9 @@ export class HideoutHelper {
             }
 
             if (prodId === HideoutHelper.bitcoinFarm) {
-                pmcData.Hideout.Production[prodId] = this.updateBitcoinFarm(
+                this.updateBitcoinFarm(
                     pmcData,
+                    pmcData.Hideout.Production[prodId],
                     hideoutProperties.btcFarmCGs,
                     hideoutProperties.isGeneratorOn,
                 );
@@ -888,11 +889,15 @@ export class HideoutHelper {
         }
     }
 
-    protected updateBitcoinFarm(pmcData: IPmcData, btcFarmCGs: number, isGeneratorOn: boolean): Production | undefined {
-        const btcProd = pmcData.Hideout.Production[HideoutHelper.bitcoinFarm];
-        const isBtcProd = this.isProduction(btcProd);
+    protected updateBitcoinFarm(
+        pmcData: IPmcData,
+        btcProduction: Productive,
+        btcFarmCGs: number,
+        isGeneratorOn: boolean,
+    ): void {
+        const isBtcProd = this.isProduction(btcProduction);
         if (!isBtcProd) {
-            return undefined;
+            return;
         }
 
         // The wiki has a wrong formula!
@@ -932,17 +937,17 @@ export class HideoutHelper {
         // Needs power to function
         if (!isGeneratorOn) {
             // Return with no changes
-            return btcProd;
+            return;
         }
 
         const coinSlotCount = this.getBTCSlots(pmcData);
 
-        // Full on bitcoins, halt progress
-        if (btcProd.Products.length >= coinSlotCount) {
+        // Full of bitcoins, halt progress
+        if (btcProduction.Products.length >= coinSlotCount) {
             // Set progress to 0
-            btcProd.Progress = 0;
+            btcProduction.Progress = 0;
 
-            return btcProd;
+            return;
         }
 
         const bitcoinProdData = this.databaseService
@@ -957,21 +962,19 @@ export class HideoutHelper {
         // The progress should be adjusted based on the GPU boost rate, but the target is still the base productionTime
         const timeMultiplier = bitcoinProdData.productionTime / adjustedCraftTime;
         const timeElapsedSeconds = this.getTimeElapsedSinceLastServerTick(pmcData, isGeneratorOn);
-        btcProd.Progress += Math.floor(timeElapsedSeconds * timeMultiplier);
+        btcProduction.Progress += Math.floor(timeElapsedSeconds * timeMultiplier);
 
-        while (btcProd.Progress >= bitcoinProdData.productionTime) {
-            if (btcProd.Products.length < coinSlotCount) {
+        while (btcProduction.Progress >= bitcoinProdData.productionTime) {
+            if (btcProduction.Products.length < coinSlotCount) {
                 // Has space to add a coin to production rewards
-                this.addBtcToProduction(btcProd, bitcoinProdData.productionTime);
+                this.addBtcToProduction(btcProduction, bitcoinProdData.productionTime);
             } else {
                 // Filled up bitcoin storage
-                btcProd.Progress = 0;
+                btcProduction.Progress = 0;
             }
         }
 
-        btcProd.StartTimestamp = this.timeUtil.getTimestamp().toString();
-
-        return btcProd;
+        btcProduction.StartTimestamp = this.timeUtil.getTimestamp().toString();
     }
 
     /**
