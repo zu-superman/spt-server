@@ -68,12 +68,13 @@ export class InsuranceService {
     }
 
     /**
-     * Sends stored insured items as message to player
-     * @param pmcData profile to send insured items to
+     * Sends `i will go look for your stuff` trader message +
+     * Store lost insurance items inside profile for later retreval
+     * @param pmcData Profile to send insured items to
      * @param sessionID SessionId of current player
-     * @param mapId Id of the map player died/exited that caused the insurance to be issued on
+     * @param mapId Id of the location player died/exited that caused the insurance to be issued on
      */
-    public sendInsuredItems(pmcData: IPmcData, sessionID: string, mapId: string): void {
+    public startPostRaidInsuranceLostProcess(pmcData: IPmcData, sessionID: string, mapId: string): void {
         // Get insurance items for each trader
         const globals = this.databaseService.getGlobals();
         for (const traderId in this.getInsurance(sessionID)) {
