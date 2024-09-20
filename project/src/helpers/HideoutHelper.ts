@@ -890,25 +890,16 @@ export class HideoutHelper {
 
     protected updateBitcoinFarm(pmcData: IPmcData, btcFarmCGs: number, isGeneratorOn: boolean): Production | undefined {
         const btcProd = pmcData.Hideout.Production[HideoutHelper.bitcoinFarm];
-        const bitcoinProdData = this.databaseService
-            .getHideout()
-            .production.recipes.find((production) => production._id === HideoutHelper.bitcoinProductionId);
-        const coinSlotCount = this.getBTCSlots(pmcData);
-
-        // Full on bitcoins, halt progress
-        if (this.isProduction(btcProd) && btcProd.Products.length >= coinSlotCount) {
-            // Set progress to 0
-            btcProd.Progress = 0;
-
-            return btcProd;
+        const isBtcProd = this.isProduction(btcProd);
+        if (!isBtcProd) {
+            return undefined;
         }
 
-        if (this.isProduction(btcProd)) {
-            // The wiki has a wrong formula!
-            // Do not change unless you validate it with the Client code files!
-            // This formula was found on the client files:
-            // *******************************************************
-            /*
+        // The wiki has a wrong formula!
+        // Do not change unless you validate it with the Client code files!
+        // This formula was found on the client files:
+        // *******************************************************
+        /*
                 public override int InstalledSuppliesCount
              {
               get
@@ -926,44 +917,61 @@ export class HideoutHelper {
                     }
                 }
             */
-            // **********************************************************
-            // At the time of writing this comment, this was GClass1667
-            // To find it in case of weird results, use DNSpy and look for usages on class AreaData
-            // Look for a GClassXXXX that has a method called "InitDetails" and the only parameter is the AreaData
-            // That should be the bitcoin farm production. To validate, try to find the snippet below:
-            /*
+        // **********************************************************
+        // At the time of writing this comment, this was GClass1667
+        // To find it in case of weird results, use DNSpy and look for usages on class AreaData
+        // Look for a GClassXXXX that has a method called "InitDetails" and the only parameter is the AreaData
+        // That should be the bitcoin farm production. To validate, try to find the snippet below:
+        /*
                 protected override void InitDetails(AreaData data)
                 {
                     base.InitDetails(data);
                     this.gclass1678_1.Type = EDetailsType.Farming;
                 }
             */
-            // BSG finally fixed their settings, they now get loaded from the settings and used in the client
-            const adjustedCraftTime =
-                (this.profileHelper.isDeveloperAccount(pmcData.sessionId) ? 40 : bitcoinProdData.productionTime) /
-                (1 + (btcFarmCGs - 1) * this.databaseService.getHideout().settings.gpuBoostRate);
+        // Needs power to function
+        if (!isGeneratorOn) {
+            // Return with no changes
+            return btcProd;
+        }
 
-            // The progress should be adjusted based on the GPU boost rate, but the target is still the base productionTime
-            const timeMultiplier = bitcoinProdData.productionTime / adjustedCraftTime;
-            const timeElapsedSeconds = this.getTimeElapsedSinceLastServerTick(pmcData, isGeneratorOn);
-            btcProd.Progress += Math.floor(timeElapsedSeconds * timeMultiplier);
+        const coinSlotCount = this.getBTCSlots(pmcData);
 
-            while (btcProd.Progress >= bitcoinProdData.productionTime) {
-                if (btcProd.Products.length < coinSlotCount) {
-                    // Has space to add a coin to production
-                    this.addBtcToProduction(btcProd, bitcoinProdData.productionTime);
-                } else {
-                    // Filled up bitcoin storage
-                    btcProd.Progress = 0;
-                }
-            }
-
-            btcProd.StartTimestamp = this.timeUtil.getTimestamp().toString();
+        // Full on bitcoins, halt progress
+        if (btcProd.Products.length >= coinSlotCount) {
+            // Set progress to 0
+            btcProd.Progress = 0;
 
             return btcProd;
         }
 
-        return undefined;
+        const bitcoinProdData = this.databaseService
+            .getHideout()
+            .production.recipes.find((production) => production._id === HideoutHelper.bitcoinProductionId);
+
+        // BSG finally fixed their settings, they now get loaded from the settings and used in the client
+        const adjustedCraftTime =
+            (this.profileHelper.isDeveloperAccount(pmcData.sessionId) ? 40 : bitcoinProdData.productionTime) /
+            (1 + (btcFarmCGs - 1) * this.databaseService.getHideout().settings.gpuBoostRate);
+
+        // The progress should be adjusted based on the GPU boost rate, but the target is still the base productionTime
+        const timeMultiplier = bitcoinProdData.productionTime / adjustedCraftTime;
+        const timeElapsedSeconds = this.getTimeElapsedSinceLastServerTick(pmcData, isGeneratorOn);
+        btcProd.Progress += Math.floor(timeElapsedSeconds * timeMultiplier);
+
+        while (btcProd.Progress >= bitcoinProdData.productionTime) {
+            if (btcProd.Products.length < coinSlotCount) {
+                // Has space to add a coin to production rewards
+                this.addBtcToProduction(btcProd, bitcoinProdData.productionTime);
+            } else {
+                // Filled up bitcoin storage
+                btcProd.Progress = 0;
+            }
+        }
+
+        btcProd.StartTimestamp = this.timeUtil.getTimestamp().toString();
+
+        return btcProd;
     }
 
     /**
