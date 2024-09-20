@@ -129,10 +129,10 @@ export class LocationLifecycleService {
             }
 
             // Find only scav extracts and overwrite existing exits with them
-            const scavExtracts = mapExtracts.filter((extract) => ["scav", "coop"].includes(extract.Side.toLowerCase()));
+            const scavExtracts = mapExtracts.filter((extract) => ["scav"].includes(extract.Side.toLowerCase()));
             if (scavExtracts.length > 0) {
                 // Scav extracts found, use them
-                locationData.exits = scavExtracts;
+                locationData.exits.push(...scavExtracts);
             }
         }
     }
