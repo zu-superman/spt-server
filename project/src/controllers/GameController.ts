@@ -255,6 +255,12 @@ export class GameController {
             fullProfile.characters.pmc.Inventory.favoriteItems = [];
         }
 
+        // Remove wall debuffs
+        const wallAreaDb = this.databaseService
+            .getHideout()
+            .areas.find((area) => area.type === HideoutAreas.EMERGENCY_WALL);
+        this.hideoutHelper.removeHideoutWallBuffsAndDebuffs(wallAreaDb, fullProfile.characters.pmc);
+
         // Equipment area
         const equipmentArea = fullProfile.characters.pmc.Hideout.Areas.find(
             (area) => area.type === HideoutAreas.EQUIPMENT_PRESETS_STAND,

@@ -4,7 +4,7 @@ import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { HideoutArea, IHideoutImprovement, Production, Productive } from "@spt/models/eft/common/tables/IBotBase";
 import { Item, Upd } from "@spt/models/eft/common/tables/IItem";
-import { StageBonus } from "@spt/models/eft/hideout/IHideoutArea";
+import { IHideoutArea, StageBonus } from "@spt/models/eft/hideout/IHideoutArea";
 import { IHideoutContinuousProductionStartRequestData } from "@spt/models/eft/hideout/IHideoutContinuousProductionStartRequestData";
 import { IHideoutProduction } from "@spt/models/eft/hideout/IHideoutProduction";
 import { IHideoutSingleProductionStartRequestData } from "@spt/models/eft/hideout/IHideoutSingleProductionStartRequestData";
@@ -1283,5 +1283,27 @@ export class HideoutHelper {
         }
 
         return result;
+    }
+
+    /**
+     * The wall pollutes a profile with various temp buffs/debuffs,
+     * Remove them all
+     * @param wallAreaDb Hideout area data
+     * @param pmcData Player profile
+     */
+    public removeHideoutWallBuffsAndDebuffs(wallAreaDb: IHideoutArea, pmcData: IPmcData) {
+        // Smush all stage bonuses into one array for easy iteration
+        const wallBonuses = Object.values(wallAreaDb.stages).flatMap((stage) => stage.bonuses);
+
+        // Get all bonus Ids that the wall adds
+        const bonusIdsToRemove: string[] = [];
+        for (const bonus of wallBonuses) {
+            bonusIdsToRemove.push(bonus.id);
+        }
+
+        this.logger.debug(`Removing: ${bonusIdsToRemove.length} bonuses from profile`);
+
+        // Remove the wall bonuses from profile by id
+        pmcData.Bonuses = pmcData.Bonuses.filter((bonus) => !bonusIdsToRemove.includes(bonus.id));
     }
 }

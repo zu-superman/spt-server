@@ -227,15 +227,12 @@ export class HideoutController {
             profileHideoutArea.type === HideoutAreas.WATER_COLLECTOR ||
             profileHideoutArea.type === HideoutAreas.MEDSTATION
         ) {
-            this.checkAndUpgradeWall(pmcData);
+            this.SetWallVisibleIfPrereqsMet(pmcData);
         }
 
-        // Cleanup temporary fuel usage buffs from mopping floor if wall is complete as it would result in too many bonuses
+        // Cleanup temporary buffs/debuffs from wall if complete
         if (profileHideoutArea.type === HideoutAreas.EMERGENCY_WALL && profileHideoutArea.level === 6) {
-            // Get everything except specific fuel consumption buffs
-            pmcData.Bonuses = pmcData.Bonuses.filter(
-                (bonus) => bonus.type !== BonusType.FUEL_CONSUMPTION || (bonus.value >= -10 && bonus.value <= 0),
-            );
+            this.hideoutHelper.removeHideoutWallBuffsAndDebuffs(hideoutData, pmcData);
         }
 
         // Add Skill Points Per Area Upgrade
@@ -250,7 +247,7 @@ export class HideoutController {
      * Upgrade wall status to visible in profile if medstation/water collector are both level 1
      * @param pmcData Player profile
      */
-    protected checkAndUpgradeWall(pmcData: IPmcData): void {
+    protected SetWallVisibleIfPrereqsMet(pmcData: IPmcData): void {
         const medStation = pmcData.Hideout.Areas.find((area) => area.type === HideoutAreas.MEDSTATION);
         const waterCollector = pmcData.Hideout.Areas.find((area) => area.type === HideoutAreas.WATER_COLLECTOR);
         if (medStation?.level >= 1 && waterCollector?.level >= 1) {
