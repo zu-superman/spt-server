@@ -2,6 +2,7 @@ import { ApplicationContext } from "@spt/context/ApplicationContext";
 import { ContextVariableType } from "@spt/context/ContextVariableType";
 import { HideoutHelper } from "@spt/helpers/HideoutHelper";
 import { HttpServerHelper } from "@spt/helpers/HttpServerHelper";
+import { InventoryHelper } from "@spt/helpers/InventoryHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { PreSptModLoader } from "@spt/loaders/PreSptModLoader";
 import { IEmptyRequestData } from "@spt/models/eft/common/IEmptyRequestData";
@@ -68,6 +69,7 @@ export class GameController {
         @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("PreSptModLoader") protected preSptModLoader: PreSptModLoader,
         @inject("HttpServerHelper") protected httpServerHelper: HttpServerHelper,
+        @inject("InventoryHelper") protected inventoryHelper: InventoryHelper,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("HideoutHelper") protected hideoutHelper: HideoutHelper,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
@@ -165,6 +167,9 @@ export class GameController {
 
             //3.9 migrations
             if (fullProfile.spt.version.includes("3.9.") && !fullProfile.spt.migrations["39x"]) {
+                // Check every item has a valid mongoid
+                this.inventoryHelper.validateInventoryUsesMonogoIds(fullProfile.characters.pmc.Inventory.items);
+
                 this.migrate39xProfile(fullProfile);
 
                 // Flag as migrated
