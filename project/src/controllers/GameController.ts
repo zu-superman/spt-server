@@ -159,9 +159,16 @@ export class GameController {
                 return;
             }
 
+            if (typeof fullProfile.spt.migrations === "undefined") {
+                fullProfile.spt.migrations = {};
+            }
+
             //3.9 migrations
-            if (fullProfile.spt.version.includes("3.9")) {
+            if (fullProfile.spt.version.includes("3.9.") && !fullProfile.spt.migrations["39x"]) {
                 this.migrate39xProfile(fullProfile);
+
+                // Flag as migrated
+                fullProfile.spt.migrations["39x"] = this.timeUtil.getTimestamp();
             }
 
             if (Array.isArray(fullProfile.characters.pmc.WishList)) {

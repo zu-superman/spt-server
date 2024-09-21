@@ -195,6 +195,8 @@ export interface Spt {
     blacklistedItemTpls?: string[];
     /** key: daily type */
     freeRepeatableRefreshUsedCount?: Record<string, number>;
+    /** When was a profile migrated, value is timestamp */
+    migrations?: Record<string, number>;
 }
 
 export interface ModDetails {
