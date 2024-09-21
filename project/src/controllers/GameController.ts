@@ -169,6 +169,8 @@ export class GameController {
 
                 // Flag as migrated
                 fullProfile.spt.migrations["39x"] = this.timeUtil.getTimestamp();
+
+                this.logger.success(`Migration of 3.9.x profile: ${fullProfile.info.username} completed successfully`);
             }
 
             if (Array.isArray(fullProfile.characters.pmc.WishList)) {
