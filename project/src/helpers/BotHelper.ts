@@ -92,29 +92,6 @@ export class BotHelper {
         }
     }
 
-    /**
-     * Choose if a bot should become a PMC by checking if bot type is allowed to become a Pmc in botConfig.convertFromChances and doing a random int check
-     * @param botRole the bot role to check if should be a pmc
-     * @returns true if should be a pmc
-     */
-    public shouldBotBePmc(botRole: string): boolean {
-        const botRoleLowered = botRole.toLowerCase();
-
-        // Handle when map waves have these types in the bot type
-        if (this.botRoleIsPmc(botRoleLowered)) {
-            return true;
-        }
-
-        const botConvertMinMax = this.pmcConfig.convertIntoPmcChance[botRoleLowered];
-
-        // no bot type defined in config, default to false
-        if (!botConvertMinMax) {
-            return false;
-        }
-
-        return this.rollChanceToBePmc(botRoleLowered, botConvertMinMax);
-    }
-
     public rollChanceToBePmc(role: string, botConvertMinMax: MinMax): boolean {
         return (
             role.toLowerCase() in this.pmcConfig.convertIntoPmcChance &&

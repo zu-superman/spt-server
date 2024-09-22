@@ -394,7 +394,7 @@ export class BotController {
         }
 
         // Roll chance to be pmc if type is allowed to be one
-        const botConvertRateMinMax = this.pmcConfig.convertIntoPmcChance[requestedBot.Role.toLowerCase()];
+        const botConvertRateMinMax = this.getPmcConversionMinMaxForLocation(requestedBot.Role, raidSettings?.location);
         if (botConvertRateMinMax) {
             // Should bot become PMC
             const convertToPmc = this.botHelper.rollChanceToBePmc(requestedBot.Role, botConvertRateMinMax);
@@ -448,6 +448,15 @@ export class BotController {
         this.botGenerationCacheService.storeUsedBot(desiredBot);
 
         return [desiredBot];
+    }
+
+    protected getPmcConversionMinMaxForLocation(requestedBotRole: string, location: string) {
+        const mapSpecificConversionValues = this.pmcConfig.convertIntoPmcChance[location?.toLowerCase()];
+        if (!mapSpecificConversionValues) {
+            return mapSpecificConversionValues.default;
+        }
+
+        return mapSpecificConversionValues[requestedBotRole?.toLowerCase()];
     }
 
     protected updateBotGenerationDetailsToRandomBoss(
