@@ -1,6 +1,11 @@
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
-import { IHideoutImprovement, Productive, TraderInfo } from "@spt/models/eft/common/tables/IBotBase";
+import {
+    IHideoutImprovement,
+    IMoneyTransferLimits,
+    Productive,
+    TraderInfo,
+} from "@spt/models/eft/common/tables/IBotBase";
 import { ProfileChange, TraderData } from "@spt/models/eft/itemEvent/IItemEventRouterBase";
 import { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRouterResponse";
 import { TimeUtil } from "@spt/utils/TimeUtil";
@@ -79,10 +84,18 @@ export class EventOutputHolder {
         profileChanges.improvements = this.cloner.clone(this.getImprovementsFromProfileAndFlagComplete(pmcData));
         profileChanges.traderRelations = this.constructTraderRelations(pmcData.TradersInfo);
 
+        this.resetMoneyTransferLimit(pmcData.moneyTransferLimitData);
         profileChanges.moneyTransferLimitData = pmcData.moneyTransferLimitData;
 
         // Fixes container craft from water collector not resetting after collection + removed completed normal crafts
         this.cleanUpCompleteCraftsInProfile(pmcData.Hideout.Production);
+    }
+
+    protected resetMoneyTransferLimit(limit: IMoneyTransferLimits) {
+        if (limit.nextResetTime < this.timeUtil.getTimestamp()) {
+            limit.nextResetTime = this.timeUtil.getTimeStampFromNowDays(1);
+            limit.remainingLimit = limit.totalLimit;
+        }
     }
 
     /**
