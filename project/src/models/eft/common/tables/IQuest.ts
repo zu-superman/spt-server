@@ -68,6 +68,7 @@ export interface IQuestCondition {
     isNecessary?: boolean;
     doNotResetIfCounterCompleted?: boolean;
     dogtagLevel?: number;
+    traderId?: string;
     maxDurability?: number;
     minDurability?: number;
     counter?: IQuestConditionCounter;
