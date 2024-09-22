@@ -90,7 +90,8 @@
             "6582dbf0b8d7830efc45016f"
         ],
         "laboratory": ["6398a4cfb5992f573c6562b3", "64e74a44c2b4f829615ec334"],
-        "sandbox": ["6575a6ca8778e96ded05a802", "6582bd252b50c61c565828e2"]
+        "sandbox": ["6575a6ca8778e96ded05a802", "6582bd252b50c61c565828e2"],
+		"factory4_day": ["591093bb86f7747caa7bb2ee"]
     },
     "splitWaveIntoSingleSpawnsSettings": {
         "enabled": true,
