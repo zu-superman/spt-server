@@ -186,9 +186,9 @@ export class GameController {
                 fullProfile.characters.scav.WishList = {};
             }
 
-            const pmcProfile = fullProfile.characters.pmc;
+            this.logger.debug(`Started game with sessionId: ${sessionID} ${fullProfile.info.username}`);
 
-            this.logger.debug(`Started game with sessionId: ${sessionID} ${pmcProfile.Info?.Nickname}`);
+            const pmcProfile = fullProfile.characters.pmc;
 
             if (this.coreConfig.fixes.fixProfileBreakingInventoryItemIssues) {
                 this.profileFixerService.fixProfileBreakingInventoryItemIssues(pmcProfile);
