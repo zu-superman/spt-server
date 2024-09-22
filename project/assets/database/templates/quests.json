@@ -48654,14 +48654,14 @@
           "index": 3,
           "items": [
             {
-              "_id": "6492e44bf4287b13040fcb06",
+              "_id": "66dad0a23a7e40562f06db5d",
               "_tpl": "5c0d668f86f7747ccb7f13b2",
               "upd": {
                 "StackObjectsCount": 100
               }
             }
           ],
-          "target": "6492e44bf4287b13040fcb06",
+          "target": "66dad0a23a7e40562f06db5d",
           "type": "Item",
           "value": "100"
         },
@@ -48671,14 +48671,14 @@
           "index": 4,
           "items": [
             {
-              "_id": "6492e44bf4287b13040fcb07",
+              "_id": "66dad0a23a7e40562f06db5e",
               "_tpl": "57a0e5022459774d1673f889",
               "upd": {
                 "StackObjectsCount": 100
               }
             }
           ],
-          "target": "6492e44bf4287b13040fcb07",
+          "target": "66dad0a23a7e40562f06db5e",
           "type": "Item",
           "value": "100"
         },
@@ -92946,6 +92946,7 @@
             "59e7643b86f7742cbf2c109a",
             "572b7adb24597762ae139821"
           ],
+          "traderId": "5ac3b934156ae10c4430e83c",
           "value": 250,
           "visibilityConditions": []
         }
