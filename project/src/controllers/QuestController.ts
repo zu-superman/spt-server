@@ -248,6 +248,8 @@ export class QuestController {
         // Note that for starting quests, the correct locale field is "description", not "startedMessageText".
         const questFromDb = this.questHelper.getQuestFromDb(acceptedQuest.qid, pmcData);
 
+        this.addTaskConditionCountersToProfile(questFromDb.conditions.AvailableForFinish, pmcData, acceptedQuest.qid);
+
         // Get messageId of text to send to player as text message in game
         const messageId = this.questHelper.getMessageIdForQuestStart(
             questFromDb.startedMessageText,
@@ -279,6 +281,37 @@ export class QuestController {
         );
 
         return acceptQuestResponse;
+    }
+
+    /**
+     *
+     * @param questConditions Conditions to iterate over and possibly add to profile
+     * @param pmcData Profile to add to
+     * @param questId Quest conditions came from
+     */
+    protected addTaskConditionCountersToProfile(
+        questConditions: IQuestCondition[],
+        pmcData: IPmcData,
+        questId: string,
+    ) {
+        for (const condition of questConditions) {
+            if (pmcData.TaskConditionCounters[condition.id]) {
+                this.logger.error(
+                    `Unable to add new task condition counter: ${condition.conditionType} for qeust: ${questId} to profile: ${pmcData.sessionId} as it already exists:`,
+                );
+            }
+
+            switch (condition.conditionType) {
+                case "SellItemToTrader":
+                    pmcData.TaskConditionCounters[condition.id] = {
+                        id: condition.id,
+                        sourceId: questId,
+                        type: condition.conditionType,
+                        value: 0,
+                    };
+                    break;
+            }
+        }
     }
 
     /**
