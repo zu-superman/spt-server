@@ -79,6 +79,8 @@ export class EventOutputHolder {
         profileChanges.improvements = this.cloner.clone(this.getImprovementsFromProfileAndFlagComplete(pmcData));
         profileChanges.traderRelations = this.constructTraderRelations(pmcData.TradersInfo);
 
+        profileChanges.moneyTransferLimitData = pmcData.moneyTransferLimitData;
+
         // Fixes container craft from water collector not resetting after collection + removed completed normal crafts
         this.cleanUpCompleteCraftsInProfile(pmcData.Hideout.Production);
     }

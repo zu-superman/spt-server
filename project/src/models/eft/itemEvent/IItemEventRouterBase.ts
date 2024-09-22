@@ -1,4 +1,4 @@
-import { Health, IQuestStatus, Productive, Skills } from "@spt/models/eft/common/tables/IBotBase";
+import { Health, IMoneyTransferLimits, IQuestStatus, Productive, Skills } from "@spt/models/eft/common/tables/IBotBase";
 import { Item, Upd } from "@spt/models/eft/common/tables/IItem";
 import { IQuest } from "@spt/models/eft/common/tables/IQuest";
 import { IPmcDataRepeatableQuest } from "@spt/models/eft/common/tables/IRepeatableQuests";
@@ -33,6 +33,7 @@ export interface ProfileChange {
     skills: Skills;
     health: Health;
     traderRelations: Record<string, TraderData>;
+    moneyTransferLimitData: IMoneyTransferLimits;
     repeatableQuests?: IPmcDataRepeatableQuest[];
     recipeUnlocked: Record<string, boolean>;
     changedHideoutStashes?: Record<string, IHideoutStashItem>;
