@@ -1141,7 +1141,7 @@ export class InventoryHelper {
 
     public validateInventoryUsesMonogoIds(itemsToValidate: Item[]) {
         for (const item of itemsToValidate) {
-            if (!/^[a-fA-F0-9]{24}$/.test(item._id)) {
+            if (!this.hashUtil.isValidMongoId(item._id)) {
                 throw new Error(
                     `This profile is not compatible with 3.10.0, It contains an item with the ID: ${item._id} that is not compatible. Loading of SPT has been halted, use another profile or create a new one.`,
                 );
