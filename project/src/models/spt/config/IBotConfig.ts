@@ -138,6 +138,7 @@ export interface EquipmentFilters {
     /** Should the stock mod be forced to spawn on bot */
     forceStock?: boolean;
     armorPlateWeighting?: IArmorPlateWeights[];
+    forceRigWhenNoVest?: boolean;
 }
 
 export interface ModLimits {

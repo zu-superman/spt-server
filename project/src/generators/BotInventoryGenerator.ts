@@ -240,7 +240,7 @@ export class BotInventoryGenerator {
             randomisationDetails: randomistionDetails,
         });
 
-        // Bot has no armor vest and flagged to be foreced to wear armored rig in this event
+        // Bot has no armor vest and flagged to be forceed to wear armored rig in this event
         if (botEquipConfig.forceOnlyArmoredRigWhenNoArmor && !hasArmorVest) {
             // Filter rigs down to only those with armor
             this.filterRigsToThoseWithProtection(templateInventory.equipment);
@@ -250,6 +250,11 @@ export class BotInventoryGenerator {
         if (hasArmorVest) {
             // Filter rigs down to only those with armor
             this.filterRigsToThoseWithoutProtection(templateInventory.equipment);
+        }
+
+        // Bot is flagged as always needing a vest
+        if (botEquipConfig.forceRigWhenNoVest && !hasArmorVest) {
+            wornItemChances.equipment.TacticalVest = 100;
         }
 
         this.generateEquipment({
