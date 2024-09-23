@@ -450,10 +450,10 @@ export class BotController {
         return [desiredBot];
     }
 
-    protected getPmcConversionMinMaxForLocation(requestedBotRole: string, location: string) {
+    protected getPmcConversionMinMaxForLocation(requestedBotRole: string, location: string): MinMax {
         const mapSpecificConversionValues = this.pmcConfig.convertIntoPmcChance[location?.toLowerCase()];
         if (!mapSpecificConversionValues) {
-            return this.pmcConfig.convertIntoPmcChance.default;
+            return this.pmcConfig.convertIntoPmcChance.default[requestedBotRole];
         }
 
         return mapSpecificConversionValues[requestedBotRole?.toLowerCase()];
