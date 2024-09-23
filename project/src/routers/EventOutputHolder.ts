@@ -93,7 +93,7 @@ export class EventOutputHolder {
 
     protected resetMoneyTransferLimit(limit: IMoneyTransferLimits) {
         if (limit.nextResetTime < this.timeUtil.getTimestamp()) {
-            limit.nextResetTime = this.timeUtil.getTimeStampFromNowDays(1);
+            limit.nextResetTime += limit.resetInterval;
             limit.remainingLimit = limit.totalLimit;
         }
     }
