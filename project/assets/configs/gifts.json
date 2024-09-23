@@ -8332,6 +8332,24 @@
             "collectionTimeHours": 48,
             "associatedEvent": "Promo",
             "maxToSendPlayer": 5
+        },
+		"500CIGARETTES": {
+            "items": [
+                {
+                    "_id": "66f16f2d223efbd43f0c2e2d",
+                    "_tpl": "5734770f24597738025ee254",
+                    "upd": {
+                        "StackObjectsCount": 1
+                    },
+                    "parentId": "665a06ac85c6ab387e0afba3",
+                    "slotId": "main"
+                }
+            ],
+            "sender": "System",
+            "messageText": "I feel as if i have been standing my entire life and just sat down",
+            "collectionTimeHours": 72,
+            "associatedEvent": "Promo",
+            "maxToSendPlayer": 5
         }
     }
 }
