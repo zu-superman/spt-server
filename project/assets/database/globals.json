@@ -29078,85 +29078,71 @@
       "maxActiveOfferCount": [
         {
           "count": 1,
-          "countForSpecialEditions": 1,
           "from": -10000,
           "to": -10
         },
         {
-          "count": 2,
-          "countForSpecialEditions": 3,
+          "count": 3,
           "from": -10,
           "to": -2
         },
         {
-          "count": 3,
-          "countForSpecialEditions": 4,
+          "count": 4,
           "from": -2,
           "to": 0.2
         },
         {
-          "count": 4,
-          "countForSpecialEditions": 5,
+          "count": 5,
           "from": 0.2,
           "to": 7
         },
         {
-          "count": 5,
-          "countForSpecialEditions": 6,
+          "count": 6,
           "from": 7,
           "to": 30
         },
         {
-          "count": 6,
-          "countForSpecialEditions": 7,
+          "count": 7,
           "from": 30,
           "to": 60
         },
         {
-          "count": 7,
-          "countForSpecialEditions": 8,
+          "count": 8,
           "from": 60,
           "to": 100
         },
         {
-          "count": 7,
-          "countForSpecialEditions": 8,
+          "count": 8,
           "from": 100,
           "to": 150
         },
         {
-          "count": 8,
-          "countForSpecialEditions": 9,
+          "count": 9,
           "from": 150,
           "to": 200
         },
         {
-          "count": 9,
-          "countForSpecialEditions": 10,
+          "count": 10,
           "from": 200,
           "to": 250
         },
         {
-          "count": 10,
-          "countForSpecialEditions": 11,
+          "count": 11,
           "from": 250,
           "to": 500
         },
         {
-          "count": 11,
-          "countForSpecialEditions": 12,
+          "count": 12,
           "from": 500,
           "to": 750
         },
         {
-          "count": 12,
-          "countForSpecialEditions": 13,
+          "count": 13,
           "from": 750,
           "to": 1000
         },
         {
-          "count": 15,
-          "countForSpecialEditions": 16,
+          "count": 16,
           "from": 1000,
           "to": 10000
         }
