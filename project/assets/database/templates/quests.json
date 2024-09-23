@@ -95972,6 +95972,142 @@
     "traderId": "58330581ace78e27b8b10cee",
     "type": "Completion"
   },
+  "666314c5a9290f9e0806cca5": {
+    "QuestName": "Key to the City",
+    "_id": "666314c5a9290f9e0806cca5",
+    "acceptPlayerMessage": "666314c5a9290f9e0806cca5 acceptPlayerMessage",
+    "canShowNotificationsInGame": true,
+    "changeQuestMessageText": "666314c5a9290f9e0806cca5 changeQuestMessageText",
+    "completePlayerMessage": "666314c5a9290f9e0806cca5 completePlayerMessage",
+    "conditions": {
+      "AvailableForFinish": [
+        {
+          "conditionType": "FindItem",
+          "countInRaid": false,
+          "dogtagLevel": 0,
+          "dynamicLocale": false,
+          "globalQuestCounterId": "",
+          "id": "6679884cef969161e3e9d64d",
+          "index": 0,
+          "isEncoded": false,
+          "maxDurability": 100,
+          "minDurability": 0,
+          "onlyFoundInRaid": false,
+          "parentId": "",
+          "target": [
+            "66687bc89111279d600b5062"
+          ],
+          "value": 1,
+          "visibilityConditions": []
+        },
+        {
+          "conditionType": "HandoverItem",
+          "dogtagLevel": 0,
+          "dynamicLocale": false,
+          "globalQuestCounterId": "",
+          "id": "667988545af9f7082798b67d",
+          "index": 1,
+          "isEncoded": false,
+          "maxDurability": 100,
+          "minDurability": 0,
+          "onlyFoundInRaid": false,
+          "parentId": "",
+          "target": [
+            "66687bc89111279d600b5062"
+          ],
+          "value": 1,
+          "visibilityConditions": []
+        }
+      ],
+      "AvailableForStart": [
+        {
+          "availableAfter": 0,
+          "conditionType": "Quest",
+          "dispersion": 0,
+          "dynamicLocale": false,
+          "globalQuestCounterId": "",
+          "id": "667abeaff28dc453b4168497",
+          "index": 0,
+          "parentId": "",
+          "status": [
+            4
+          ],
+          "target": "666314c3acf8442f8b0531a3",
+          "visibilityConditions": []
+        }
+      ],
+      "Fail": []
+    },
+    "declinePlayerMessage": "666314c5a9290f9e0806cca5 declinePlayerMessage",
+    "description": "666314c5a9290f9e0806cca5 description",
+    "failMessageText": "666314c5a9290f9e0806cca5 failMessageText",
+    "image": "/files/quest/icon/6682a77f75d2dfc8330a07e0.png",
+    "instantComplete": false,
+    "isKey": false,
+    "location": "5714dc692459777137212e12",
+    "name": "666314c5a9290f9e0806cca5 name",
+    "note": "666314c5a9290f9e0806cca5 note",
+    "restartable": false,
+    "rewards": {
+      "Fail": [],
+      "Started": [],
+      "Success": [
+        {
+          "id": "667d51cc2388eb5c9e057727",
+          "index": 0,
+          "type": "Experience",
+          "value": "55000"
+        },
+        {
+          "id": "667d51d80d6863e726128cac",
+          "index": 1,
+          "target": "5ac3b934156ae10c4430e83c",
+          "type": "TraderStanding",
+          "value": "0.02"
+        },
+        {
+          "findInRaid": true,
+          "id": "667d51e2037f250605042455",
+          "index": 2,
+          "items": [
+            {
+              "_id": "66f12b0beb416a9a3101e6fb",
+              "_tpl": "5449016a4bdc2d6f028b456f",
+              "upd": {
+                "StackObjectsCount": 145000
+              }
+            }
+          ],
+          "target": "66f12b0beb416a9a3101e6fb",
+          "type": "Item",
+          "value": "145000"
+        },
+        {
+          "findInRaid": true,
+          "id": "667d51eccd4077ffb9082fe5",
+          "index": 3,
+          "items": [
+            {
+              "_id": "66f12b0beb416a9a3101e6fc",
+              "_tpl": "5d1b376e86f774252519444e",
+              "upd": {
+                "StackObjectsCount": 3
+              }
+            }
+          ],
+          "target": "66f12b0beb416a9a3101e6fc",
+          "type": "Item",
+          "value": "3"
+        }
+      ]
+    },
+    "secretQuest": false,
+    "side": "Pmc",
+    "startedMessageText": "666314c5a9290f9e0806cca5 startedMessageText",
+    "successMessageText": "666314c5a9290f9e0806cca5 successMessageText",
+    "traderId": "5ac3b934156ae10c4430e83c",
+    "type": "PickUp"
+  },
   "6672d9def1c88688a707d042": {
     "QuestName": "Establish Contact",
     "_id": "6672d9def1c88688a707d042",
