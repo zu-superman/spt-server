@@ -92,11 +92,8 @@ export class BotHelper {
         }
     }
 
-    public rollChanceToBePmc(role: string, botConvertMinMax: MinMax, location: string): boolean {
-        return (
-            role.toLowerCase() in this.getPmcConversionValuesForLocation(location) &&
-            this.randomUtil.getChance100(this.randomUtil.getInt(botConvertMinMax.min, botConvertMinMax.max))
-        );
+    public rollChanceToBePmc(botConvertMinMax: MinMax): boolean {
+        return this.randomUtil.getChance100(this.randomUtil.getInt(botConvertMinMax.min, botConvertMinMax.max));
     }
 
     protected getPmcConversionValuesForLocation(location: string) {
