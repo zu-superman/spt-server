@@ -397,7 +397,11 @@ export class BotController {
         const botConvertRateMinMax = this.getPmcConversionMinMaxForLocation(requestedBot.Role, raidSettings?.location);
         if (botConvertRateMinMax) {
             // Should bot become PMC
-            const convertToPmc = this.botHelper.rollChanceToBePmc(requestedBot.Role, botConvertRateMinMax);
+            const convertToPmc = this.botHelper.rollChanceToBePmc(
+                requestedBot.Role,
+                botConvertRateMinMax,
+                raidSettings?.location,
+            );
             if (convertToPmc) {
                 botGenerationDetails.isPmc = true;
                 botGenerationDetails.role = this.botHelper.getRandomizedPmcRole();

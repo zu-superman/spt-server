@@ -92,11 +92,20 @@ export class BotHelper {
         }
     }
 
-    public rollChanceToBePmc(role: string, botConvertMinMax: MinMax): boolean {
+    public rollChanceToBePmc(role: string, botConvertMinMax: MinMax, location: string): boolean {
         return (
-            role.toLowerCase() in this.pmcConfig.convertIntoPmcChance &&
+            role.toLowerCase() in this.getPmcConversionValuesForLocation(location) &&
             this.randomUtil.getChance100(this.randomUtil.getInt(botConvertMinMax.min, botConvertMinMax.max))
         );
+    }
+
+    protected getPmcConversionValuesForLocation(location: string) {
+        const result = this.pmcConfig.convertIntoPmcChance[location.toLowerCase()];
+        if (!result) {
+            this.pmcConfig.convertIntoPmcChance.default;
+        }
+
+        return result;
     }
 
     /**
