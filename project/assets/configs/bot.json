@@ -513,6 +513,7 @@
             "lightIsActiveDayChancePercent": 45,
             "lightIsActiveNightChancePercent": 95,
             "laserIsActiveChancePercent": 95,
+            "forceOnlyArmoredRigWhenNoArmor": true,
             "forceStock": true
         },
         "bosskilla": {
@@ -520,6 +521,7 @@
             "lightIsActiveDayChancePercent": 75,
             "lightIsActiveNightChancePercent": 85,
             "laserIsActiveChancePercent": 85,
+            "forceOnlyArmoredRigWhenNoArmor": true,
             "forceStock": true
         },
         "bosskojaniy": {
@@ -554,6 +556,7 @@
             "lightIsActiveDayChancePercent": 25,
             "lightIsActiveNightChancePercent": 75,
             "laserIsActiveChancePercent": 75,
+            "forceOnlyArmoredRigWhenNoArmor": true,
             "forceStock": true
         },
         "bosszryachiy": {
@@ -605,6 +608,7 @@
             "lightIsActiveDayChancePercent": 25,
             "lightIsActiveNightChancePercent": 75,
             "laserIsActiveChancePercent": 75,
+            "forceOnlyArmoredRigWhenNoArmor": true,
             "forceStock": true
         },
         "followergluharassault": {
@@ -656,6 +660,7 @@
             "lightIsActiveDayChancePercent": 25,
             "lightIsActiveNightChancePercent": 75,
             "laserIsActiveChancePercent": 75,
+            "forceOnlyArmoredRigWhenNoArmor": true,
             "forceStock": true,
             "weaponModLimits": {
                 "scopeLimit": 1,
@@ -669,6 +674,7 @@
             "lightIsActiveDayChancePercent": 25,
             "lightIsActiveNightChancePercent": 75,
             "laserIsActiveChancePercent": 75,
+            "forceOnlyArmoredRigWhenNoArmor": true,
             "forceStock": true
         },
         "followerzryachiy": {
@@ -782,6 +788,7 @@
             "lightIsActiveDayChancePercent": 35,
             "lightIsActiveNightChancePercent": 95,
             "laserIsActiveChancePercent": 95,
+            "forceOnlyArmoredRigWhenNoArmor": true,
             "forceStock": true,
             "weaponModLimits": {
                 "scopeLimit": 1,
@@ -822,6 +829,7 @@
             "lightIsActiveDayChancePercent": 35,
             "lightIsActiveNightChancePercent": 95,
             "laserIsActiveChancePercent": 95,
+            "forceOnlyArmoredRigWhenNoArmor": true,
             "forceStock": true,
             "weaponModLimits": {
                 "scopeLimit": 1,
@@ -835,6 +843,7 @@
             "lightIsActiveDayChancePercent": 35,
             "lightIsActiveNightChancePercent": 95,
             "laserIsActiveChancePercent": 95,
+            "forceOnlyArmoredRigWhenNoArmor": true,
             "forceStock": true,
             "weaponModLimits": {
                 "scopeLimit": 1,
