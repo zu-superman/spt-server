@@ -6,7 +6,7 @@ import { PaymentHelper } from "@spt/helpers/PaymentHelper";
 import { PresetHelper } from "@spt/helpers/PresetHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { RagfairServerHelper } from "@spt/helpers/RagfairServerHelper";
-import { Item } from "@spt/models/eft/common/tables/IItem";
+import { IItem } from "@spt/models/eft/common/tables/IItem";
 import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
 import { IBarterScheme } from "@spt/models/eft/common/tables/ITrader";
 import { IRagfairOffer, IRagfairOfferUser, OfferRequirement } from "@spt/models/eft/ragfair/IRagfairOffer";
@@ -80,7 +80,7 @@ export class RagfairOfferGenerator {
     public createAndAddFleaOffer(
         userID: string,
         time: number,
-        items: Item[],
+        items: IItem[],
         barterScheme: IBarterScheme[],
         loyalLevel: number,
         sellInOnePiece = false,
@@ -104,7 +104,7 @@ export class RagfairOfferGenerator {
     protected createOffer(
         userID: string,
         time: number,
-        items: Item[],
+        items: IItem[],
         barterScheme: IBarterScheme[],
         loyalLevel: number,
         isPackOffer = false,
@@ -337,11 +337,11 @@ export class RagfairOfferGenerator {
      * Create multiple offers for items by using a unique list of items we've generated previously
      * @param expiredOffers optional, expired offers to regenerate
      */
-    public async generateDynamicOffers(expiredOffers?: Item[][]): Promise<void> {
+    public async generateDynamicOffers(expiredOffers?: IItem[][]): Promise<void> {
         const replacingExpiredOffers = Boolean(expiredOffers?.length);
 
         // get assort items from param if they exist, otherwise grab freshly generated assorts
-        const assortItemsToProcess: Item[][] = replacingExpiredOffers
+        const assortItemsToProcess: IItem[][] = replacingExpiredOffers
             ? expiredOffers
             : this.ragfairAssortGenerator.getAssortItems();
 
@@ -359,7 +359,7 @@ export class RagfairOfferGenerator {
      * @param config Ragfair dynamic config
      */
     protected async createOffersFromAssort(
-        assortItemWithChildren: Item[],
+        assortItemWithChildren: IItem[],
         isExpiredOffer: boolean,
         config: Dynamic,
     ): Promise<void> {
@@ -406,7 +406,7 @@ export class RagfairOfferGenerator {
      * @returns True if plate removed
      */
     protected removeBannedPlatesFromPreset(
-        presetWithChildren: Item[],
+        presetWithChildren: IItem[],
         plateSettings: IArmorPlateBlacklistSettings,
     ): boolean {
         if (!this.itemHelper.armorItemCanHoldMods(presetWithChildren[0]._tpl)) {
@@ -447,7 +447,7 @@ export class RagfairOfferGenerator {
      * @returns Item array
      */
     protected async createSingleOfferForItem(
-        itemWithChildren: Item[],
+        itemWithChildren: IItem[],
         isPreset: boolean,
         itemDetails: [boolean, ITemplateItem],
     ): Promise<void> {
@@ -562,7 +562,7 @@ export class RagfairOfferGenerator {
             }
 
             const isPreset = this.presetHelper.isPreset(item._id);
-            const items: Item[] = isPreset
+            const items: IItem[] = isPreset
                 ? this.ragfairServerHelper.getPresetItems(item)
                 : [...[item], ...this.itemHelper.findAndReturnChildrenByAssort(item._id, assorts.items)];
 
@@ -595,7 +595,7 @@ export class RagfairOfferGenerator {
      * @param itemWithMods Item and mods, get condition of first item (only first array item is modified)
      * @param itemDetails db details of first item
      */
-    protected randomiseOfferItemUpdProperties(userID: string, itemWithMods: Item[], itemDetails: ITemplateItem): void {
+    protected randomiseOfferItemUpdProperties(userID: string, itemWithMods: IItem[], itemDetails: ITemplateItem): void {
         // Add any missing properties to first item in array
         this.addMissingConditions(itemWithMods[0]);
 
@@ -638,7 +638,7 @@ export class RagfairOfferGenerator {
      */
     protected randomiseItemCondition(
         conditionSettingsId: string,
-        itemWithMods: Item[],
+        itemWithMods: IItem[],
         itemDetails: ITemplateItem,
     ): void {
         const rootItem = itemWithMods[0];
@@ -721,7 +721,7 @@ export class RagfairOfferGenerator {
      * @param currentMultiplier Value to multiply current durability by
      */
     protected randomiseWeaponDurability(
-        item: Item,
+        item: IItem,
         itemDbDetails: ITemplateItem,
         maxMultiplier: number,
         currentMultiplier: number,
@@ -748,7 +748,7 @@ export class RagfairOfferGenerator {
      * @param maxMultiplier Chosen multipler to use for max durability value
      */
     protected randomiseArmorDurabilityValues(
-        armorWithMods: Item[],
+        armorWithMods: IItem[],
         currentMultiplier: number,
         maxMultiplier: number,
     ): void {
@@ -782,7 +782,7 @@ export class RagfairOfferGenerator {
      * HpResource for medical items
      * @param item item to add conditions to
      */
-    protected addMissingConditions(item: Item): void {
+    protected addMissingConditions(item: IItem): void {
         const props = this.itemHelper.getItem(item._tpl)[1]._props;
         const isRepairable = "Durability" in props;
         const isMedkit = "MaxHpResource" in props;
@@ -825,7 +825,7 @@ export class RagfairOfferGenerator {
      * @param offerItems Items for sale in offer
      * @returns Barter scheme
      */
-    protected createBarterBarterScheme(offerItems: Item[]): IBarterScheme[] {
+    protected createBarterBarterScheme(offerItems: IItem[]): IBarterScheme[] {
         // get flea price of item being sold
         const priceOfItemOffer = this.ragfairPriceService.getDynamicOfferPriceForOffer(
             offerItems,
@@ -902,7 +902,7 @@ export class RagfairOfferGenerator {
      * @returns Barter scheme for offer
      */
     protected createCurrencyBarterScheme(
-        offerWithChildren: Item[],
+        offerWithChildren: IItem[],
         isPackOffer: boolean,
         multipler = 1,
     ): IBarterScheme[] {

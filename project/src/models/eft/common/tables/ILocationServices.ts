@@ -6,10 +6,10 @@ export interface ILocationServices {
 }
 
 export interface ITraderServerSettings {
-    TraderServices: TraderServices;
+    TraderServices: ITraderServices;
 }
 
-export interface TraderServices {
+export interface ITraderServices {
     ExUsecLoyalty: ITraderService;
     ZryachiyAid: ITraderService;
     CultistsAid: ITraderService;

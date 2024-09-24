@@ -1,7 +1,7 @@
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { NotificationSendHelper } from "@spt/helpers/NotificationSendHelper";
 import { NotifierHelper } from "@spt/helpers/NotifierHelper";
-import { Item } from "@spt/models/eft/common/tables/IItem";
+import { IItem } from "@spt/models/eft/common/tables/IItem";
 import { Dialogue, MessagePreview } from "@spt/models/eft/profile/ISptProfile";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { DatabaseServer } from "@spt/servers/DatabaseServer";
@@ -56,7 +56,7 @@ export class DialogueHelper {
      * @param itemId Item being moved to inventory
      * @returns
      */
-    public getMessageItemContents(messageID: string, sessionID: string, itemId: string): Item[] {
+    public getMessageItemContents(messageID: string, sessionID: string, itemId: string): IItem[] {
         const dialogueData = this.saveServer.getProfile(sessionID).dialogues;
         for (const dialogueId in dialogueData) {
             const message = dialogueData[dialogueId].messages.find((x) => x._id === messageID);

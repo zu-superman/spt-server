@@ -9,7 +9,7 @@ import { RagfairServerHelper } from "@spt/helpers/RagfairServerHelper";
 import { RagfairSortHelper } from "@spt/helpers/RagfairSortHelper";
 import { TraderHelper } from "@spt/helpers/TraderHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
-import { Item } from "@spt/models/eft/common/tables/IItem";
+import { IItem } from "@spt/models/eft/common/tables/IItem";
 import { ITraderAssort } from "@spt/models/eft/common/tables/ITrader";
 import { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRouterResponse";
 import { ISptProfile, ISystemData } from "@spt/models/eft/profile/ISptProfile";
@@ -334,7 +334,7 @@ export class RagfairOfferHelper {
      * @param itemsInInventoryToList items to sum up
      * @returns Total count
      */
-    public getTotalStackCountSize(itemsInInventoryToList: Item[][]): number {
+    public getTotalStackCountSize(itemsInInventoryToList: IItem[][]): number {
         let total = 0;
         for (const itemAndChildren of itemsInInventoryToList) {
             // Only count the root items stack count in total
@@ -402,7 +402,7 @@ export class RagfairOfferHelper {
      */
     public completeOffer(sessionID: string, offer: IRagfairOffer, boughtAmount: number): IItemEventRouterResponse {
         const itemTpl = offer.items[0]._tpl;
-        let paymentItemsToSendToPlayer: Item[] = [];
+        let paymentItemsToSendToPlayer: IItem[] = [];
         const offerStackCount = offer.items[0].upd.StackObjectsCount;
 
         // Pack or ALL items of a multi-offer were bought - remove entire ofer
@@ -418,7 +418,7 @@ export class RagfairOfferHelper {
         // Assemble payment to send to seller now offer was purchased
         for (const requirement of offer.requirements) {
             // Create an item template item
-            const requestedItem: Item = {
+            const requestedItem: IItem = {
                 _id: this.hashUtil.generate(),
                 _tpl: requirement._tpl,
                 upd: { StackObjectsCount: requirement.count * boughtAmount },
@@ -598,7 +598,7 @@ export class RagfairOfferHelper {
      * @param offer The flea offer
      * @returns True if the given item is functional
      */
-    public isItemFunctional(offerRootItem: Item, offer: IRagfairOffer): boolean {
+    public isItemFunctional(offerRootItem: IItem, offer: IRagfairOffer): boolean {
         // Non-presets are always functional
         if (!this.presetHelper.hasPreset(offerRootItem._tpl)) {
             return true;
@@ -712,7 +712,7 @@ export class RagfairOfferHelper {
      * @param item Item to check
      * @returns True if has condition
      */
-    protected isConditionItem(item: Item): boolean {
+    protected isConditionItem(item: IItem): boolean {
         // thanks typescript, undefined assertion is not returnable since it
         // tries to return a multitype object
         return !!(
@@ -732,7 +732,7 @@ export class RagfairOfferHelper {
      * @param max Desired maximum quality
      * @returns True if in range
      */
-    protected itemQualityInRange(item: Item, min: number, max: number): boolean {
+    protected itemQualityInRange(item: IItem, min: number, max: number): boolean {
         const itemQualityPercentage = 100 * this.itemHelper.getItemQualityModifier(item);
         if (min > 0 && min > itemQualityPercentage) {
             // Item condition too low

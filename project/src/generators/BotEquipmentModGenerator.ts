@@ -8,9 +8,9 @@ import { ProbabilityHelper } from "@spt/helpers/ProbabilityHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { WeightedRandomHelper } from "@spt/helpers/WeightedRandomHelper";
 import { IPreset } from "@spt/models/eft/common/IGlobals";
-import { Mods, ModsChances } from "@spt/models/eft/common/tables/IBotType";
-import { Item } from "@spt/models/eft/common/tables/IItem";
-import { ITemplateItem, Slot } from "@spt/models/eft/common/tables/ITemplateItem";
+import { IMods, IModsChances } from "@spt/models/eft/common/tables/IBotType";
+import { IItem } from "@spt/models/eft/common/tables/IItem";
+import { ISlot, ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { ModSpawn } from "@spt/models/enums/ModSpawn";
@@ -75,12 +75,12 @@ export class BotEquipmentModGenerator {
      * @returns Item + compatible mods as an array
      */
     public generateModsForEquipment(
-        equipment: Item[],
+        equipment: IItem[],
         parentId: string,
         parentTemplate: ITemplateItem,
         settings: IGenerateEquipmentProperties,
         shouldForceSpawn = false,
-    ): Item[] {
+    ): IItem[] {
         let forceSpawn = shouldForceSpawn;
 
         const compatibleModsPool = settings.modPool[parentTemplate._id];
@@ -310,7 +310,7 @@ export class BotEquipmentModGenerator {
      * @param request Data used to generate the weapon
      * @returns Weapon + mods array
      */
-    public generateModsForWeapon(sessionId: string, request: IGenerateWeaponRequest): Item[] {
+    public generateModsForWeapon(sessionId: string, request: IGenerateWeaponRequest): IItem[] {
         const pmcProfile = this.profileHelper.getPmcProfile(sessionId);
 
         // Get pool of mods that fit weapon
@@ -603,7 +603,7 @@ export class BotEquipmentModGenerator {
      * @param modSpawnChances Chance dictionary to update
      */
     protected adjustSlotSpawnChances(
-        modSpawnChances: ModsChances,
+        modSpawnChances: IModsChances,
         modSlotsToAdjust: string[],
         newChancePercent: number,
     ): void {
@@ -710,7 +710,7 @@ export class BotEquipmentModGenerator {
      * @param parentTemplate item template
      * @returns Slot item
      */
-    protected getModItemSlotFromDb(modSlot: string, parentTemplate: ITemplateItem): Slot {
+    protected getModItemSlotFromDb(modSlot: string, parentTemplate: ITemplateItem): ISlot {
         const modSlotLower = modSlot.toLowerCase();
         switch (modSlotLower) {
             case "patron_in_weapon":
@@ -733,9 +733,9 @@ export class BotEquipmentModGenerator {
      * @returns ModSpawn.SPAWN when mod should be spawned, ModSpawn.DEFAULT_MOD when default mod should spawn, ModSpawn.SKIP when mod is skipped
      */
     protected shouldModBeSpawned(
-        itemSlot: Slot,
+        itemSlot: ISlot,
         modSlot: string,
-        modSpawnChances: ModsChances,
+        modSpawnChances: IModsChances,
         botEquipConfig: EquipmentFilters,
     ): ModSpawn {
         const slotRequired = itemSlot._required;
@@ -860,9 +860,9 @@ export class BotEquipmentModGenerator {
     protected getCompatibleWeaponModTplForSlotFromPool(
         request: IModToSpawnRequest,
         modPool: string[],
-        parentSlot: Slot,
+        parentSlot: ISlot,
         choiceTypeEnum: ModSpawn,
-        weapon: Item[],
+        weapon: IItem[],
         modSlotName: string,
     ): IChooseRandomCompatibleModResult {
         // Filter out incompatible mods from pool
@@ -895,7 +895,7 @@ export class BotEquipmentModGenerator {
     protected getCompatibleModFromPool(
         modPool: string[],
         modSpawnType: ModSpawn,
-        weapon: Item[],
+        weapon: IItem[],
     ): IChooseRandomCompatibleModResult {
         // Create exhaustable pool to pick mod item from
         const exhaustableModPool = this.createExhaustableArray(modPool);
@@ -1103,7 +1103,7 @@ export class BotEquipmentModGenerator {
      * @param modTpl Mod to check compatibility with weapon
      * @returns True if incompatible
      */
-    protected weaponModComboIsIncompatible(weapon: Item[], modTpl: string): boolean {
+    protected weaponModComboIsIncompatible(weapon: IItem[], modTpl: string): boolean {
         // STM-9 + AR-15 Lone Star Ion Lite handguard
         if (weapon[0]._tpl === "60339954d62c9b14ed777c06" && modTpl === "5d4405f0a4b9361e6a4e6bd9") {
             return true;
@@ -1129,7 +1129,7 @@ export class BotEquipmentModGenerator {
         modSlot: string,
         modTemplate: ITemplateItem,
         botRole: string,
-    ): Item {
+    ): IItem {
         return {
             _id: modId,
             _tpl: modTpl,
@@ -1158,9 +1158,9 @@ export class BotEquipmentModGenerator {
      */
     protected getRandomModTplFromItemDb(
         fallbackModTpl: string,
-        parentSlot: Slot,
+        parentSlot: ISlot,
         modSlot: string,
-        items: Item[],
+        items: IItem[],
     ): string | undefined {
         // Find compatible mods and make an array of them
         const allowedItems = parentSlot._props.filters[0].Filter;
@@ -1190,7 +1190,7 @@ export class BotEquipmentModGenerator {
      */
     protected isModValidForSlot(
         modToAdd: [boolean, ITemplateItem],
-        slotAddedToTemplate: Slot,
+        slotAddedToTemplate: ISlot,
         modSlot: string,
         parentTemplate: ITemplateItem,
         botRole: string,
@@ -1241,7 +1241,7 @@ export class BotEquipmentModGenerator {
     protected addCompatibleModsForProvidedMod(
         desiredSlotName: string,
         modTemplate: ITemplateItem,
-        modPool: Mods,
+        modPool: IMods,
         botEquipBlacklist: EquipmentFilterDetails,
     ): void {
         const desiredSlotObject = modTemplate._props.Slots?.find((slot) => slot._name.includes(desiredSlotName));
@@ -1339,8 +1339,8 @@ export class BotEquipmentModGenerator {
      * @param cylinderMagTemplate The CylinderMagazine's template
      */
     protected fillCamora(
-        items: Item[],
-        modPool: Mods,
+        items: IItem[],
+        modPool: IMods,
         cylinderMagParentId: string,
         cylinderMagTemplate: ITemplateItem,
     ): void {
@@ -1426,7 +1426,7 @@ export class BotEquipmentModGenerator {
      * @returns Array of scope tpls that have been filtered to just ones allowed for that weapon type
      */
     protected filterSightsByWeaponType(
-        weapon: Item,
+        weapon: IItem,
         scopes: string[],
         botWeaponSightWhitelist: Record<string, string[]>,
     ): string[] {

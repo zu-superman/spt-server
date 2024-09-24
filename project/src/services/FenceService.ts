@@ -3,8 +3,8 @@ import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { PresetHelper } from "@spt/helpers/PresetHelper";
 import { IFenceLevel } from "@spt/models/eft/common/IGlobals";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
-import { Item, Repairable } from "@spt/models/eft/common/tables/IItem";
-import { ITemplateItem, Slot } from "@spt/models/eft/common/tables/ITemplateItem";
+import { IItem, IUpdRepairable } from "@spt/models/eft/common/tables/IItem";
+import { ISlot, ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
 import { IBarterScheme, ITraderAssort } from "@spt/models/eft/common/tables/ITrader";
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
@@ -149,7 +149,7 @@ export class FenceService {
      * @param items the items to add with all its childrens
      * @param mainItem the most parent item of the array
      */
-    public addItemsToFenceAssort(items: Item[], mainItem: Item): void {
+    public addItemsToFenceAssort(items: IItem[], mainItem: IItem): void {
         // HUGE THANKS TO LACYWAY AND LEAVES FOR PROVIDING THIS SOLUTION FOR SPT TO IMPLEMENT!!
         // Copy the item and its children
         let clonedItems = this.cloner.clone(this.itemHelper.findAndReturnChildrenAsItems(items, mainItem._id));
@@ -181,7 +181,7 @@ export class FenceService {
      * @param items the items (with its children) to calculate fence price for
      * @returns the fence price of the item
      */
-    public getItemPrice(itemTpl: string, items: Item[]): number {
+    public getItemPrice(itemTpl: string, items: IItem[]): number {
         return this.itemHelper.isOfBaseclass(itemTpl, BaseClasses.AMMO_BOX)
             ? this.getAmmoBoxPrice(items) * this.traderConfig.fence.itemPriceMult
             : this.handbookHelper.getTemplatePrice(itemTpl) * this.traderConfig.fence.itemPriceMult;
@@ -193,7 +193,7 @@ export class FenceService {
      * @param items the ammo box (and all its children ammo items)
      * @returns the price of the ammo box
      */
-    protected getAmmoBoxPrice(items: Item[]): number {
+    protected getAmmoBoxPrice(items: IItem[]): number {
         let total = 0;
         for (const item of items) {
             if (this.itemHelper.isOfBaseclass(item._tpl, BaseClasses.AMMO)) {
@@ -255,7 +255,7 @@ export class FenceService {
      * @param presetModifier value to multiply preset price by
      */
     protected adjustItemPriceByModifier(
-        item: Item,
+        item: IItem,
         assort: ITraderAssort,
         modifier: number,
         presetModifier: number,
@@ -424,7 +424,7 @@ export class FenceService {
      * @returns IGenerationAssortValues object with adjustments needed to reach desired state
      */
     protected getItemCountsToGenerate(
-        assortItems: Item[],
+        assortItems: IItem[],
         generationValues: IGenerationAssortValues,
     ): IGenerationAssortValues {
         const allRootItems = assortItems.filter((item) => item.slotId === "hideout");
@@ -474,7 +474,7 @@ export class FenceService {
      * @param assort Trader assort to remove item from
      * @param rootItems Pool of root items to pick from to remove
      */
-    protected removeRandomItemFromAssorts(assort: ITraderAssort, rootItems: Item[]): void {
+    protected removeRandomItemFromAssorts(assort: ITraderAssort, rootItems: IItem[]): void {
         const rootItemToAdjust = this.randomUtil.getArrayValue(rootItems);
 
         // Items added by mods may not have a upd object, assume item stack size is 1
@@ -771,10 +771,10 @@ export class FenceService {
      * @returns Matching assort item
      */
     protected getMatchingItem(
-        rootItemBeingAdded: Item,
+        rootItemBeingAdded: IItem,
         itemDbDetails: ITemplateItem,
-        itemsWithChildren: Item[][],
-    ): Item | undefined {
+        itemsWithChildren: IItem[][],
+    ): IItem | undefined {
         // Get matching root items
         const matchingItems = itemsWithChildren
             .filter((itemWithChildren) =>
@@ -828,7 +828,7 @@ export class FenceService {
      * @param itemDbDetails Item we want to add db details
      * @returns True item should be force stacked
      */
-    protected itemShouldBeForceStacked(existingItem: Item, itemDbDetails: ITemplateItem): boolean {
+    protected itemShouldBeForceStacked(existingItem: IItem, itemDbDetails: ITemplateItem): boolean {
         // No existing item in assort
         if (!existingItem) {
             return false;
@@ -855,7 +855,7 @@ export class FenceService {
      */
     protected adjustItemPriceByQuality(
         barterSchemes: Record<string, IBarterScheme[][]>,
-        itemRoot: Item,
+        itemRoot: IItem,
         itemTemplate: ITemplateItem,
     ): void {
         // Healing items
@@ -1033,7 +1033,7 @@ export class FenceService {
      * @param armor Armor item array to add mods into
      * @param itemDbDetails Armor items db template
      */
-    protected randomiseArmorModDurability(armor: Item[], itemDbDetails: ITemplateItem): void {
+    protected randomiseArmorModDurability(armor: IItem[], itemDbDetails: ITemplateItem): void {
         // Armor has no mods, nothing to randomise
         const hasMods = Boolean(itemDbDetails._props.Slots);
         if (!hasMods) {
@@ -1060,7 +1060,7 @@ export class FenceService {
      * @param softInsertSlots Slots of items to randomise
      * @param armorItemAndMods Array of armor + inserts to get items from
      */
-    protected randomiseArmorSoftInsertDurabilities(softInsertSlots: Slot[], armorItemAndMods: Item[]): void {
+    protected randomiseArmorSoftInsertDurabilities(softInsertSlots: ISlot[], armorItemAndMods: IItem[]): void {
         for (const requiredSlot of softInsertSlots) {
             const modItemDbDetails = this.itemHelper.getItem(requiredSlot._props.filters[0].Plate)[1];
             const durabilityValues = this.getRandomisedArmorDurabilityValues(
@@ -1108,7 +1108,7 @@ export class FenceService {
      * @param plateSlots Slots of items to randomise
      * @param armorItemAndMods Array of armor + inserts to get items from
      */
-    protected randomiseArmorInsertsDurabilities(plateSlots: Slot[], armorItemAndMods: Item[]): void {
+    protected randomiseArmorInsertsDurabilities(plateSlots: ISlot[], armorItemAndMods: IItem[]): void {
         for (const plateSlot of plateSlots) {
             const plateTpl = plateSlot._props.filters[0].Plate;
             if (!plateTpl) {
@@ -1198,7 +1198,7 @@ export class FenceService {
      * Remove parts of a weapon prior to being listed on flea
      * @param itemAndMods Weapon to remove parts from
      */
-    protected removeRandomModsOfItem(itemAndMods: Item[]): void {
+    protected removeRandomModsOfItem(itemAndMods: IItem[]): void {
         // Items to be removed from inventory
         const toDelete: string[] = [];
 
@@ -1230,7 +1230,7 @@ export class FenceService {
      * @param itemsBeingDeleted Current list of items on weapon being deleted
      * @returns True if item will be removed
      */
-    protected presetModItemWillBeRemoved(weaponMod: Item, itemsBeingDeleted: string[]): boolean {
+    protected presetModItemWillBeRemoved(weaponMod: IItem, itemsBeingDeleted: string[]): boolean {
         const slotIdsThatCanFail = this.traderConfig.fence.presetSlotsToRemoveChancePercent;
         const removalChance = slotIdsThatCanFail[weaponMod.slotId];
         if (!removalChance) {
@@ -1248,7 +1248,7 @@ export class FenceService {
      * @param itemDetails Item being randomised
      * @param itemToAdjust Item being edited
      */
-    protected randomiseItemUpdProperties(itemDetails: ITemplateItem, itemToAdjust: Item): void {
+    protected randomiseItemUpdProperties(itemDetails: ITemplateItem, itemToAdjust: IItem): void {
         if (!itemDetails._props) {
             this.logger.error(
                 `Item ${itemDetails._name} lacks a _props field, unable to randomise item: ${itemToAdjust._id}`,
@@ -1335,7 +1335,7 @@ export class FenceService {
     protected getRandomisedArmorDurabilityValues(
         itemDetails: ITemplateItem,
         equipmentDurabilityLimits: IItemDurabilityCurrentMax,
-    ): Repairable {
+    ): IUpdRepairable {
         const maxDuraMin = (equipmentDurabilityLimits.max.min / 100) * itemDetails._props.MaxDurability;
         const maxDuraMax = (equipmentDurabilityLimits.max.max / 100) * itemDetails._props.MaxDurability;
         const chosenMaxDurability = this.randomUtil.getInt(maxDuraMin, maxDuraMax);
@@ -1444,7 +1444,7 @@ export class FenceService {
         fenceAssortItem.upd.StackObjectsCount -= buyCount;
     }
 
-    protected deleteOffer(assortId: string, assorts: Item[]): void {
+    protected deleteOffer(assortId: string, assorts: IItem[]): void {
         // Assort could have child items, remove those too
         const itemWithChildrenToRemove = this.itemHelper.findAndReturnChildrenAsItems(assorts, assortId);
         for (const itemToRemove of itemWithChildrenToRemove) {

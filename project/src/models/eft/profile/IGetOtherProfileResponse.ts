@@ -1,5 +1,5 @@
 import { IOverallCounters, ISkills } from "@spt/models/eft/common/tables/IBotBase";
-import { Item } from "@spt/models/eft/common/tables/IItem";
+import { IItem } from "@spt/models/eft/common/tables/IItem";
 
 export interface IGetOtherProfileResponse {
     id: string;
@@ -9,7 +9,7 @@ export interface IGetOtherProfileResponse {
     skills: ISkills;
     equipment: IOtherProfileEquipment;
     achievements: Record<string, number>;
-    favoriteItems: Item[];
+    favoriteItems: IItem[];
     pmcStats: IOtherProfileStats;
     scavStats: IOtherProfileStats;
 }
@@ -33,7 +33,7 @@ export interface IOtherProfileCustomization {
 
 export interface IOtherProfileEquipment {
     Id: string;
-    Items: Item[];
+    Items: IItem[];
 }
 
 export interface IOtherProfileStats {

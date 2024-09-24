@@ -2,7 +2,7 @@ import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { TraderHelper } from "@spt/helpers/TraderHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
-import { Item } from "@spt/models/eft/common/tables/IItem";
+import { IItem } from "@spt/models/eft/common/tables/IItem";
 import { ITraderBase } from "@spt/models/eft/common/tables/ITrader";
 import { BonusType } from "@spt/models/enums/BonusType";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
@@ -24,7 +24,7 @@ import { inject, injectable } from "tsyringe";
 
 @injectable()
 export class InsuranceService {
-    protected insured: Record<string, Record<string, Item[]>> = {};
+    protected insured: Record<string, Record<string, IItem[]>> = {};
     protected insuranceConfig: IInsuranceConfig;
 
     constructor(
@@ -59,7 +59,7 @@ export class InsuranceService {
      * @param sessionId Profile id (session id)
      * @returns Item array
      */
-    public getInsurance(sessionId: string): Record<string, Item[]> {
+    public getInsurance(sessionId: string): Record<string, IItem[]> {
         return this.insured[sessionId];
     }
 
@@ -214,7 +214,7 @@ export class InsuranceService {
      */
     public mapInsuredItemsToTrader(
         sessionId: string,
-        lostInsuredItems: Item[],
+        lostInsuredItems: IItem[],
         pmcProfile: IPmcData,
     ): IInsuranceEquipmentPkg[] {
         const result: IInsuranceEquipmentPkg[] = [];
@@ -251,7 +251,7 @@ export class InsuranceService {
      * @param inventoryItems Player inventory
      * @returns True if item
      */
-    protected itemCannotBeLostOnDeath(lostItem: Item, inventoryItems: Item[]): boolean {
+    protected itemCannotBeLostOnDeath(lostItem: IItem, inventoryItems: IItem[]): boolean {
         if (lostItem.slotId?.toLowerCase().startsWith("specialslot")) {
             return true;
         }
@@ -320,7 +320,7 @@ export class InsuranceService {
      * @param traderId Trader item insured with
      * @param itemToAdd Insured item (with children)
      */
-    public addInsuranceItemToArray(sessionId: string, traderId: string, itemToAdd: Item): void {
+    public addInsuranceItemToArray(sessionId: string, traderId: string, itemToAdd: IItem): void {
         this.insured[sessionId][traderId].push(itemToAdd);
     }
 
@@ -331,7 +331,7 @@ export class InsuranceService {
      * @param traderId Trader item is insured with
      * @returns price in roubles
      */
-    public getRoublePriceToInsureItemWithTrader(pmcData: IPmcData, inventoryItem: Item, traderId: string): number {
+    public getRoublePriceToInsureItemWithTrader(pmcData: IPmcData, inventoryItem: IItem, traderId: string): number {
         const price =
             this.itemHelper.getStaticItemPrice(inventoryItem._tpl) *
             (this.traderHelper.getLoyaltyLevel(traderId, pmcData).insurance_price_coef / 100);

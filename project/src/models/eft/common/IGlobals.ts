@@ -1,5 +1,5 @@
 import { Ixyz } from "@spt/models/eft/common/Ixyz";
-import { Item } from "@spt/models/eft/common/tables/IItem";
+import { IItem } from "@spt/models/eft/common/tables/IItem";
 
 export interface IGlobals {
     time: number;
@@ -539,10 +539,10 @@ export interface IKarmaCalculationSettings {
 }
 
 export interface IArenaEftTransferSettings {
-    ArenaEftTransferSettings: ArenaEftTransferSettings;
+    ArenaEftTransferSettings: IArenaEftTransferSettings;
 }
 
-export interface ArenaEftTransferSettings {
+export interface IArenaEftTransferSettings {
     ArenaManagerReputationTaxMultiplier: number;
     CharismaTaxMultiplier: number;
     CreditPriceTaxMultiplier: number;
@@ -1847,7 +1847,7 @@ export interface IPreset {
     _changeWeaponName: boolean;
     _name: string;
     _parent: string;
-    _items: Item[];
+    _items: IItem[];
     /** Default presets have this property */
     _encyclopedia?: string;
 }

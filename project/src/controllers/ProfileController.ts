@@ -8,7 +8,7 @@ import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { ITemplateSide } from "@spt/models/eft/common/tables/IProfileTemplate";
 import { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRouterResponse";
 import { IMiniProfile } from "@spt/models/eft/launcher/IMiniProfile";
-import { GetProfileStatusResponseData } from "@spt/models/eft/profile/GetProfileStatusResponseData";
+import { IGetProfileStatusResponseData } from "@spt/models/eft/profile/GetProfileStatusResponseData";
 import { IGetOtherProfileRequest } from "@spt/models/eft/profile/IGetOtherProfileRequest";
 import { IGetOtherProfileResponse } from "@spt/models/eft/profile/IGetOtherProfileResponse";
 import { IGetProfileSettingsRequest } from "@spt/models/eft/profile/IGetProfileSettingsRequest";
@@ -386,9 +386,9 @@ export class ProfileController {
     /**
      * Handle client/profile/status
      */
-    public getProfileStatus(sessionId: string): GetProfileStatusResponseData {
+    public getProfileStatus(sessionId: string): IGetProfileStatusResponseData {
         const account = this.saveServer.getProfile(sessionId).info;
-        const response: GetProfileStatusResponseData = {
+        const response: IGetProfileStatusResponseData = {
             maxPveCountExceeded: false,
             profiles: [
                 { profileid: account.scavId, profileToken: undefined, status: "Free", sid: "", ip: "", port: 0 },

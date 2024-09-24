@@ -1,12 +1,12 @@
 import { LootGenerator } from "@spt/generators/LootGenerator";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { WeightedRandomHelper } from "@spt/helpers/WeightedRandomHelper";
-import { Item } from "@spt/models/eft/common/tables/IItem";
+import { IItem } from "@spt/models/eft/common/tables/IItem";
 import { IGetAirdropLootResponse } from "@spt/models/eft/location/IGetAirdropLootResponse";
 import { AirdropTypeEnum } from "@spt/models/enums/AirdropType";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { ItemTpl } from "@spt/models/enums/ItemTpl";
-import { AirdropLoot, IAirdropConfig } from "@spt/models/spt/config/IAirdropConfig";
+import { IAirdropConfig, IAirdropLoot } from "@spt/models/spt/config/IAirdropConfig";
 import { LootRequest } from "@spt/models/spt/services/LootRequest";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
@@ -80,7 +80,7 @@ export class AirdropService {
      * @param airdropType What tpye of container: weapon/common etc
      * @returns Item
      */
-    protected getAirdropCrateItem(airdropType: AirdropTypeEnum): Item {
+    protected getAirdropCrateItem(airdropType: AirdropTypeEnum): IItem {
         const airdropContainer = {
             _id: this.hashUtil.generate(),
             _tpl: "", // picked later
@@ -125,7 +125,7 @@ export class AirdropService {
      * @returns LootRequest
      */
     protected getAirdropLootConfigByType(airdropType: AirdropTypeEnum): LootRequest {
-        let lootSettingsByType: AirdropLoot = this.airdropConfig.loot[airdropType];
+        let lootSettingsByType: IAirdropLoot = this.airdropConfig.loot[airdropType];
         if (!lootSettingsByType) {
             this.logger.error(
                 this.localisationService.getText("location-unable_to_find_airdrop_drop_config_of_type", airdropType),

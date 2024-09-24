@@ -1,11 +1,11 @@
-import { Item } from "@spt/models/eft/common/tables/IItem";
+import { IItem } from "@spt/models/eft/common/tables/IItem";
 import { DogtagExchangeSide } from "@spt/models/enums/DogtagExchangeSide";
 import { MemberCategory } from "@spt/models/enums/MemberCategory";
 
 export interface IRagfairOffer {
-    sellResult?: SellResult[];
+    sellResult?: ISellResult[];
     _id: string;
-    items: Item[];
+    items: IItem[];
     requirements: OfferRequirement[];
     root: string;
     intId: number;
@@ -47,7 +47,7 @@ export interface IRagfairOfferUser {
     aid?: number;
 }
 
-export interface SellResult {
+export interface ISellResult {
     sellTime: number;
     amount: number;
 }

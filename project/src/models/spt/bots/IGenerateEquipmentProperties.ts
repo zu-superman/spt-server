@@ -1,5 +1,5 @@
 import { IInventory as PmcInventory } from "@spt/models/eft/common/tables/IBotBase";
-import { Chances, Mods } from "@spt/models/eft/common/tables/IBotType";
+import { IChances, IMods } from "@spt/models/eft/common/tables/IBotType";
 import { EquipmentFilters, RandomisationDetails } from "@spt/models/spt/config/IBotConfig";
 
 export interface IGenerateEquipmentProperties {
@@ -7,9 +7,9 @@ export interface IGenerateEquipmentProperties {
     rootEquipmentSlot: string;
     /** Equipment pool for root slot being generated */
     rootEquipmentPool: Record<string, number>;
-    modPool: Mods;
+    modPool: IMods;
     /** Dictionary of mod items and their chance to spawn for this bot type */
-    spawnChances: Chances;
+    spawnChances: IChances;
     /** Role being generated for */
     botRole: string;
     /** Level of bot being generated */

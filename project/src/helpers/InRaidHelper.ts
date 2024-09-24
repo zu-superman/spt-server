@@ -2,7 +2,7 @@ import { QuestController } from "@spt/controllers/QuestController";
 import { InventoryHelper } from "@spt/helpers/InventoryHelper";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
-import { Item } from "@spt/models/eft/common/tables/IItem";
+import { IItem } from "@spt/models/eft/common/tables/IItem";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { IInRaidConfig } from "@spt/models/spt/config/IInRaidConfig";
 import { ILostOnDeathConfig } from "@spt/models/spt/config/ILostOnDeathConfig";
@@ -177,7 +177,7 @@ export class InRaidHelper {
      * @param pmcProfile Profile to get items from
      * @returns Array of items lost on death
      */
-    protected getInventoryItemsLostOnDeath(pmcProfile: IPmcData): Item[] {
+    protected getInventoryItemsLostOnDeath(pmcProfile: IPmcData): IItem[] {
         const inventoryItems = pmcProfile.Inventory.items ?? [];
         const equipmentRootId = pmcProfile?.Inventory?.equipment;
         const questRaidItemContainerId = pmcProfile?.Inventory?.questRaidItems;
@@ -208,7 +208,7 @@ export class InRaidHelper {
      * @itemToCheck Item to check should be kept
      * @returns true if item is kept after death
      */
-    protected isItemKeptAfterDeath(pmcData: IPmcData, itemToCheck: Item): boolean {
+    protected isItemKeptAfterDeath(pmcData: IPmcData, itemToCheck: IItem): boolean {
         // Use pocket slotId's otherwise it deletes the root pocket item.
         const pocketSlots = ["pocket1", "pocket2", "pocket3", "pocket4"];
 

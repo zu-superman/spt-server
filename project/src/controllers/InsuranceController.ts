@@ -4,7 +4,7 @@ import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { TraderHelper } from "@spt/helpers/TraderHelper";
 import { WeightedRandomHelper } from "@spt/helpers/WeightedRandomHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
-import { Item } from "@spt/models/eft/common/tables/IItem";
+import { IItem } from "@spt/models/eft/common/tables/IItem";
 import { IGetInsuranceCostRequestData } from "@spt/models/eft/insurance/IGetInsuranceCostRequestData";
 import { IGetInsuranceCostResponseData } from "@spt/models/eft/insurance/IGetInsuranceCostResponseData";
 import { IInsureRequestData } from "@spt/models/eft/insurance/IInsureRequestData";
@@ -232,9 +232,9 @@ export class InsuranceController {
     protected populateParentAttachmentsMap(
         rootItemParentID: string,
         insured: Insurance,
-        itemsMap: Map<string, Item>,
-    ): Map<string, Item[]> {
-        const mainParentToAttachmentsMap = new Map<string, Item[]>();
+        itemsMap: Map<string, IItem>,
+    ): Map<string, IItem[]> {
+        const mainParentToAttachmentsMap = new Map<string, IItem[]>();
         for (const insuredItem of insured.items) {
             // Use the parent ID from the item to get the parent item.
             const parentItem = insured.items.find((item) => item._id === insuredItem.parentId);
@@ -301,14 +301,14 @@ export class InsuranceController {
      * @returns A Map object containing parent item IDs to arrays of their attachment items which are not moddable in-raid.
      */
     protected removeNonModdableAttachments(
-        parentAttachmentsMap: Map<string, Item[]>,
-        itemsMap: Map<string, Item>,
-    ): Map<string, Item[]> {
-        const updatedMap = new Map<string, Item[]>();
+        parentAttachmentsMap: Map<string, IItem[]>,
+        itemsMap: Map<string, IItem>,
+    ): Map<string, IItem[]> {
+        const updatedMap = new Map<string, IItem[]>();
 
         for (const [parentId, attachmentItems] of parentAttachmentsMap) {
             const parentItem = itemsMap.get(parentId);
-            const moddableAttachments: Item[] = [];
+            const moddableAttachments: IItem[] = [];
             for (const attachment of attachmentItems) {
                 // By default, assume the parent of the current attachment is the main-parent included in the map.
                 let attachmentParentItem = parentItem;
@@ -350,7 +350,7 @@ export class InsuranceController {
     protected processRegularItems(
         insured: Insurance,
         toDelete: Set<string>,
-        parentAttachmentsMap: Map<string, Item[]>,
+        parentAttachmentsMap: Map<string, IItem[]>,
     ): void {
         for (const insuredItem of insured.items) {
             // Skip if the item is an attachment. These are handled separately.
@@ -393,8 +393,8 @@ export class InsuranceController {
      * @param toDelete A Set object to keep track of items marked for deletion.
      */
     protected processAttachments(
-        mainParentToAttachmentsMap: Map<string, Item[]>,
-        itemsMap: Map<string, Item>,
+        mainParentToAttachmentsMap: Map<string, IItem[]>,
+        itemsMap: Map<string, IItem>,
         traderId: string,
         toDelete: Set<string>,
     ): void {
@@ -426,7 +426,7 @@ export class InsuranceController {
      * @param toDelete The array that accumulates the IDs of the items to be deleted.
      * @returns void
      */
-    protected processAttachmentByParent(attachments: Item[], traderId: string, toDelete: Set<string>): void {
+    protected processAttachmentByParent(attachments: IItem[], traderId: string, toDelete: Set<string>): void {
         // Create dict of item ids + their flea/handbook price (highest is chosen)
         const weightedAttachmentByPrice = this.weightAttachmentsByPrice(attachments);
 
@@ -454,7 +454,7 @@ export class InsuranceController {
 
     protected logAttachmentsBeingRemoved(
         attachmentIdsToRemove: string[],
-        attachments: Item[],
+        attachments: IItem[],
         attachmentPrices: Record<string, number>,
     ): void {
         let index = 1;
@@ -468,7 +468,7 @@ export class InsuranceController {
         }
     }
 
-    protected weightAttachmentsByPrice(attachments: Item[]): Record<string, number> {
+    protected weightAttachmentsByPrice(attachments: IItem[]): Record<string, number> {
         const result: Record<string, number> = {};
 
         // Get a dictionary of item tpls + their rouble price
@@ -573,7 +573,7 @@ export class InsuranceController {
      * @param insuredItem Optional. The item to roll for. Only used for logging.
      * @returns true if the insured item should be removed from inventory, false otherwise, or undefined on error.
      */
-    protected rollForDelete(traderId: string, insuredItem?: Item): boolean | undefined {
+    protected rollForDelete(traderId: string, insuredItem?: IItem): boolean | undefined {
         const trader = this.traderHelper.getTraderById(traderId);
         if (!trader) {
             return undefined;
@@ -664,11 +664,11 @@ export class InsuranceController {
      * @param pmcData Player profile
      * @param body Insurance request data
      */
-    public insureSoftInserts(item: Item, pmcData: IPmcData, body: IInsureRequestData): void {
+    public insureSoftInserts(item: IItem, pmcData: IPmcData, body: IInsureRequestData): void {
         const softInsertIds = this.itemHelper.getSoftInsertSlotIds();
         const softInsertSlots = pmcData.Inventory.items.filter(
-            (_item) => _item.parentId === item._id && softInsertIds.includes(_item.slotId.toLowerCase())
-        ); 
+            (_item) => _item.parentId === item._id && softInsertIds.includes(_item.slotId.toLowerCase()),
+        );
 
         for (const softInsertSlot of softInsertSlots) {
             this.logger.debug(`SoftInsertSlots: ${softInsertSlot.slotId}`);
@@ -687,7 +687,7 @@ export class InsuranceController {
     public cost(request: IGetInsuranceCostRequestData, sessionID: string): IGetInsuranceCostResponseData {
         const response: IGetInsuranceCostResponseData = {};
         const pmcData = this.profileHelper.getPmcProfile(sessionID);
-        const inventoryItemsHash: Record<string, Item> = {};
+        const inventoryItemsHash: Record<string, IItem> = {};
 
         for (const item of pmcData.Inventory.items) {
             inventoryItemsHash[item._id] = item;
@@ -718,7 +718,7 @@ export class InsuranceController {
 }
 
 // Represents an insurance item that has had it's common locale-name and value added to it.
-interface EnrichedItem extends Item {
+interface EnrichedItem extends IItem {
     name: string;
     dynamicPrice: number;
 }

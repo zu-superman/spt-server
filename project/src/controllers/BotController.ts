@@ -6,11 +6,11 @@ import { BotHelper } from "@spt/helpers/BotHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { WeightedRandomHelper } from "@spt/helpers/WeightedRandomHelper";
 import { MinMax } from "@spt/models/common/MinMax";
-import { Condition, IGenerateBotsRequestData } from "@spt/models/eft/bot/IGenerateBotsRequestData";
+import { ICondition, IGenerateBotsRequestData } from "@spt/models/eft/bot/IGenerateBotsRequestData";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { IBotBase } from "@spt/models/eft/common/tables/IBotBase";
 import { IBotCore } from "@spt/models/eft/common/tables/IBotCore";
-import { Difficulty } from "@spt/models/eft/common/tables/IBotType";
+import { IDifficultyCategories } from "@spt/models/eft/common/tables/IBotType";
 import { IGetRaidConfigurationRequestData } from "@spt/models/eft/match/IGetRaidConfigurationRequestData";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { SideType } from "@spt/models/enums/SideType";
@@ -95,7 +95,7 @@ export class BotController {
         diffLevel: string,
         raidConfig?: IGetRaidConfigurationRequestData,
         ignoreRaidSettings = false,
-    ): Difficulty {
+    ): IDifficultyCategories {
         let difficulty = diffLevel.toLowerCase();
 
         if (!(raidConfig || ignoreRaidSettings)) {
@@ -237,7 +237,7 @@ export class BotController {
      * @returns BotGenerationDetails
      */
     protected getBotGenerationDetailsForWave(
-        condition: Condition,
+        condition: ICondition,
         pmcProfile: IPmcData,
         allPmcsHaveSameNameAsPlayer: boolean,
         raidSettings: IGetRaidConfigurationRequestData,
@@ -277,7 +277,7 @@ export class BotController {
      * @returns A promise for the bots to be done generating
      */
     protected async generateWithBotDetails(
-        condition: Condition,
+        condition: ICondition,
         botGenerationDetails: BotGenerationDetails,
         sessionId: string,
     ): Promise<void> {
@@ -353,7 +353,7 @@ export class BotController {
         const raidSettings = this.getMostRecentRaidSettings();
 
         // Create generation request for when cache is empty
-        const condition: Condition = {
+        const condition: ICondition = {
             Role: requestedBot.Role,
             Limit: 5,
             Difficulty: requestedBot.Difficulty,

@@ -3,7 +3,7 @@ import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { NotificationSendHelper } from "@spt/helpers/NotificationSendHelper";
 import { NotifierHelper } from "@spt/helpers/NotifierHelper";
 import { TraderHelper } from "@spt/helpers/TraderHelper";
-import { Item } from "@spt/models/eft/common/tables/IItem";
+import { IItem } from "@spt/models/eft/common/tables/IItem";
 import {
     Dialogue,
     ISystemData,
@@ -56,7 +56,7 @@ export class MailSendService {
         trader: Traders,
         messageType: MessageType,
         message: string,
-        items: Item[] = [],
+        items: IItem[] = [],
         maxStorageTimeSeconds?: number,
         systemData?: ISystemData,
         ragfair?: MessageContentRagfair,
@@ -111,7 +111,7 @@ export class MailSendService {
         trader: Traders,
         messageType: MessageType,
         messageLocaleId: string,
-        items: Item[] = [],
+        items: IItem[] = [],
         maxStorageTimeSeconds?: number,
         systemData?: ISystemData,
         ragfair?: MessageContentRagfair,
@@ -162,7 +162,7 @@ export class MailSendService {
     public sendSystemMessageToPlayer(
         sessionId: string,
         message: string,
-        items: Item[] = [],
+        items: IItem[] = [],
         maxStorageTimeSeconds?: number,
         profileChangeEvents?: IProfileChangeEvent[],
     ): void {
@@ -195,7 +195,7 @@ export class MailSendService {
     public sendLocalisedSystemMessageToPlayer(
         sessionId: string,
         messageLocaleId: string,
-        items: Item[] = [],
+        items: IItem[] = [],
         profileChangeEvents?: IProfileChangeEvent[],
         maxStorageTimeSeconds?: number,
     ): void {
@@ -230,7 +230,7 @@ export class MailSendService {
         sessionId: string,
         senderDetails: IUserDialogInfo,
         message: string,
-        items: Item[] = [],
+        items: IItem[] = [],
         maxStorageTimeSeconds?: number,
     ): void {
         const details: ISendMessageDetails = {
@@ -440,7 +440,7 @@ export class MailSendService {
 
                 // Boxes can contain sub-items
                 if (this.itemHelper.isOfBaseclass(itemTemplate._id, BaseClasses.AMMO_BOX)) {
-                    const boxAndCartridges: Item[] = [reward];
+                    const boxAndCartridges: IItem[] = [reward];
                     this.itemHelper.addCartridgesToAmmoBox(boxAndCartridges, itemTemplate);
 
                     // Push box + cartridge children into array
@@ -471,7 +471,7 @@ export class MailSendService {
      * @param items Possible items to choose from
      * @returns Chosen 'primary' item
      */
-    protected getBaseItemFromRewards(items: Item[]): Item {
+    protected getBaseItemFromRewards(items: IItem[]): IItem {
         // Only one item in reward, return it
         if (items?.length === 1) {
             return items[0];

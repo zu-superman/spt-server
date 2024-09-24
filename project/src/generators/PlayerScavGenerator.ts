@@ -6,7 +6,7 @@ import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { IBotBase, IBotInfoSettings, ISkills, IStats } from "@spt/models/eft/common/tables/IBotBase";
 import { IBotType } from "@spt/models/eft/common/tables/IBotType";
-import { Item } from "@spt/models/eft/common/tables/IItem";
+import { IItem } from "@spt/models/eft/common/tables/IItem";
 import { AccountTypes } from "@spt/models/enums/AccountTypes";
 import { BonusType } from "@spt/models/enums/BonusType";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
@@ -155,7 +155,7 @@ export class PlayerScavGenerator {
             }
 
             const itemTemplate = itemResult[1];
-            const itemsToAdd: Item[] = [
+            const itemsToAdd: IItem[] = [
                 {
                     _id: this.hashUtil.generate(),
                     _tpl: itemTemplate._id,

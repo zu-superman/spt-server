@@ -6,7 +6,7 @@ import { BotHelper } from "@spt/helpers/BotHelper";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { WeightedRandomHelper } from "@spt/helpers/WeightedRandomHelper";
 import { IInventory as PmcInventory } from "@spt/models/eft/common/tables/IBotBase";
-import { Chances, Equipment, Generation, IBotType, Inventory } from "@spt/models/eft/common/tables/IBotType";
+import { IBotType, IChances, IEquipment, IGeneration, IInventory } from "@spt/models/eft/common/tables/IBotType";
 import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { EquipmentSlots } from "@spt/models/enums/EquipmentSlots";
@@ -138,8 +138,8 @@ export class BotInventoryGenerator {
      * @param chosenGameVersion Game version for bot, only really applies for PMCs
      */
     protected generateAndAddEquipmentToBot(
-        templateInventory: Inventory,
-        wornItemChances: Chances,
+        templateInventory: IInventory,
+        wornItemChances: IChances,
         botRole: string,
         botInventory: PmcInventory,
         botLevel: number,
@@ -275,7 +275,7 @@ export class BotInventoryGenerator {
      * @param templateEquipment Equpiment to filter TacticalVest of
      * @param botRole Role of bot vests are being filtered for
      */
-    protected filterRigsToThoseWithProtection(templateEquipment: Equipment, botRole: string): void {
+    protected filterRigsToThoseWithProtection(templateEquipment: IEquipment, botRole: string): void {
         const tacVestsWithArmor = Object.entries(templateEquipment.TacticalVest).reduce(
             (newVestDictionary, [tplKey]) => {
                 if (this.itemHelper.itemHasSlots(tplKey)) {
@@ -302,7 +302,7 @@ export class BotInventoryGenerator {
      * @param allowEmptyResult Should the function return all rigs when 0 unarmored are found
      */
     protected filterRigsToThoseWithoutProtection(
-        templateEquipment: Equipment,
+        templateEquipment: IEquipment,
         botRole: string,
         allowEmptyResult = true,
     ): void {
@@ -475,13 +475,13 @@ export class BotInventoryGenerator {
      * @param botLevel level of bot having weapon generated
      */
     protected generateAndAddWeaponsToBot(
-        templateInventory: Inventory,
-        equipmentChances: Chances,
+        templateInventory: IInventory,
+        equipmentChances: IChances,
         sessionId: string,
         botInventory: PmcInventory,
         botRole: string,
         isPmc: boolean,
-        itemGenerationLimitsMinMax: Generation,
+        itemGenerationLimitsMinMax: IGeneration,
         botLevel: number,
     ): void {
         const weaponSlotsToFill = this.getDesiredWeaponsForBot(equipmentChances);
@@ -508,7 +508,7 @@ export class BotInventoryGenerator {
      * @param equipmentChances Chances bot has certain equipment
      * @returns What slots bot should have weapons generated for
      */
-    protected getDesiredWeaponsForBot(equipmentChances: Chances): { slot: EquipmentSlots; shouldSpawn: boolean }[] {
+    protected getDesiredWeaponsForBot(equipmentChances: IChances): { slot: EquipmentSlots; shouldSpawn: boolean }[] {
         const shouldSpawnPrimary = this.randomUtil.getChance100(equipmentChances.equipment.FirstPrimaryWeapon);
         return [
             { slot: EquipmentSlots.FIRST_PRIMARY_WEAPON, shouldSpawn: shouldSpawnPrimary },
@@ -541,12 +541,12 @@ export class BotInventoryGenerator {
     protected addWeaponAndMagazinesToInventory(
         sessionId: string,
         weaponSlot: { slot: EquipmentSlots; shouldSpawn: boolean },
-        templateInventory: Inventory,
+        templateInventory: IInventory,
         botInventory: PmcInventory,
-        equipmentChances: Chances,
+        equipmentChances: IChances,
         botRole: string,
         isPmc: boolean,
-        itemGenerationWeights: Generation,
+        itemGenerationWeights: IGeneration,
         botLevel: number,
     ): void {
         const generatedWeapon = this.botWeaponGenerator.generateRandomWeapon(

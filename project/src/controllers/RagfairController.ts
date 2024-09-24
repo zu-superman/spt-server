@@ -10,7 +10,7 @@ import { RagfairSellHelper } from "@spt/helpers/RagfairSellHelper";
 import { RagfairSortHelper } from "@spt/helpers/RagfairSortHelper";
 import { TraderHelper } from "@spt/helpers/TraderHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
-import { Item } from "@spt/models/eft/common/tables/IItem";
+import { IItem } from "@spt/models/eft/common/tables/IItem";
 import { IBarterScheme, ITraderAssort } from "@spt/models/eft/common/tables/ITrader";
 import { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRouterResponse";
 import { ISptProfile } from "@spt/models/eft/profile/ISptProfile";
@@ -728,7 +728,7 @@ export class RagfairController {
      */
     protected chargePlayerTaxFee(
         sessionID: string,
-        rootItem: Item,
+        rootItem: IItem,
         pmcData: IPmcData,
         requirementsPriceInRub: number,
         itemStackCount: number,
@@ -817,8 +817,8 @@ export class RagfairController {
     protected getItemsToListOnFleaFromInventory(
         pmcData: IPmcData,
         itemIdsFromFleaOfferRequest: string[],
-    ): { items: Item[][] | undefined; errorMessage: string | undefined } {
-        const itemsToReturn: Item[][] = [];
+    ): { items: IItem[][] | undefined; errorMessage: string | undefined } {
+        const itemsToReturn: IItem[][] = [];
         let errorMessage: string | undefined = undefined;
 
         // Count how many items are being sold and multiply the requested amount accordingly
@@ -850,11 +850,11 @@ export class RagfairController {
     public createPlayerOffer(
         sessionId: string,
         requirements: Requirement[],
-        items: Item[],
+        items: IItem[],
         sellInOnePiece: boolean,
     ): IRagfairOffer {
         const loyalLevel = 1;
-        const formattedItems: Item[] = items.map((item) => {
+        const formattedItems: IItem[] = items.map((item) => {
             const isChild = items.some((subItem) => subItem._id === item.parentId);
 
             return {

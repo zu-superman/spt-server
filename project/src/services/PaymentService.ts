@@ -4,7 +4,7 @@ import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { PaymentHelper } from "@spt/helpers/PaymentHelper";
 import { TraderHelper } from "@spt/helpers/TraderHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
-import { Item } from "@spt/models/eft/common/tables/IItem";
+import { IItem } from "@spt/models/eft/common/tables/IItem";
 import { IAddItemsDirectRequest } from "@spt/models/eft/inventory/IAddItemsDirectRequest";
 import { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRouterResponse";
 import { IProcessBuyTradeRequestData } from "@spt/models/eft/trade/IProcessBuyTradeRequestData";
@@ -303,7 +303,7 @@ export class PaymentService {
      * @param playerStashId Players stash id
      * @returns Sorting money items
      */
-    protected getSortedMoneyItemsInInventory(pmcData: IPmcData, currencyTpl: string, playerStashId: string): Item[] {
+    protected getSortedMoneyItemsInInventory(pmcData: IPmcData, currencyTpl: string, playerStashId: string): IItem[] {
         const moneyItemsInInventory = this.itemHelper.findBarterItems("tpl", pmcData.Inventory.items, currencyTpl);
         if (moneyItemsInInventory?.length === 0) {
             this.logger.debug(`No ${currencyTpl} money items found in inventory`);
@@ -324,7 +324,7 @@ export class PaymentService {
      * @param playerStashId Players stash id
      * @returns sort order
      */
-    protected prioritiseStashSort(a: Item, b: Item, inventoryItems: Item[], playerStashId: string): number {
+    protected prioritiseStashSort(a: IItem, b: IItem, inventoryItems: IItem[], playerStashId: string): number {
         // a in stash, prioritise
         if (a.slotId === "hideout" && b.slotId !== "hideout") {
             return -1;
@@ -363,7 +363,7 @@ export class PaymentService {
      * @param playerStashId Players stash id
      * @returns true if its in inventory
      */
-    protected isInStash(itemId: string | undefined, inventoryItems: Item[], playerStashId: string): boolean {
+    protected isInStash(itemId: string | undefined, inventoryItems: IItem[], playerStashId: string): boolean {
         const itemParent = inventoryItems.find((x) => x._id === itemId);
 
         if (itemParent) {

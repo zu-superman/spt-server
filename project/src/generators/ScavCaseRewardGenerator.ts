@@ -1,6 +1,6 @@
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { PresetHelper } from "@spt/helpers/PresetHelper";
-import { Item } from "@spt/models/eft/common/tables/IItem";
+import { IItem } from "@spt/models/eft/common/tables/IItem";
 import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
 import { IHideoutScavCase } from "@spt/models/eft/hideout/IHideoutScavCase";
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
@@ -50,7 +50,7 @@ export class ScavCaseRewardGenerator {
      * @param recipeId recipe of the scav case craft
      * @returns Product array
      */
-    public generate(recipeId: string): Item[][] {
+    public generate(recipeId: string): IItem[][] {
         this.cacheDbItems();
 
         // Get scavcase details from hideout/scavcase.json
@@ -286,11 +286,11 @@ export class ScavCaseRewardGenerator {
      * @param rewardItems items to convert
      * @returns Product array
      */
-    protected randomiseContainerItemRewards(rewardItems: ITemplateItem[], rarity: string): Item[][] {
+    protected randomiseContainerItemRewards(rewardItems: ITemplateItem[], rarity: string): IItem[][] {
         /** Each array is an item + children */
-        const result: Item[][] = [];
+        const result: IItem[][] = [];
         for (const rewardItemDb of rewardItems) {
-            let resultItem: Item[] = [{ _id: this.hashUtil.generate(), _tpl: rewardItemDb._id, upd: undefined }];
+            let resultItem: IItem[] = [{ _id: this.hashUtil.generate(), _tpl: rewardItemDb._id, upd: undefined }];
             const rootItem = resultItem[0];
 
             if (this.itemHelper.isOfBaseclass(rewardItemDb._id, BaseClasses.AMMO_BOX)) {
@@ -309,7 +309,7 @@ export class ScavCaseRewardGenerator {
                 }
 
                 // Ensure preset has unique ids and is cloned so we don't alter the preset data stored in memory
-                const presetAndMods: Item[] = this.itemHelper.replaceIDs(preset._items);
+                const presetAndMods: IItem[] = this.itemHelper.replaceIDs(preset._items);
                 this.itemHelper.remapRootItemId(presetAndMods);
 
                 resultItem = presetAndMods;

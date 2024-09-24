@@ -13,8 +13,8 @@ import {
     IHealth as PmcHealth,
     ISkills as botSkills,
 } from "@spt/models/eft/common/tables/IBotBase";
-import { Appearance, BodyPart, Health, IBotType, Inventory } from "@spt/models/eft/common/tables/IBotType";
-import { Item, Upd } from "@spt/models/eft/common/tables/IItem";
+import { IAppearance, IBodyPart, IBotType, IHealth, IInventory } from "@spt/models/eft/common/tables/IBotType";
+import { IItem, IUpd } from "@spt/models/eft/common/tables/IItem";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { GameEditions } from "@spt/models/enums/GameEditions";
 import { ItemTpl } from "@spt/models/enums/ItemTpl";
@@ -253,7 +253,7 @@ export class BotGenerator {
      * Remove items from item.json/lootableItemBlacklist from bots inventory
      * @param botInventory Bot to filter
      */
-    protected removeBlacklistedLootFromBotTemplate(botInventory: Inventory): void {
+    protected removeBlacklistedLootFromBotTemplate(botInventory: IInventory): void {
         const lootContainersToFilter = ["Backpack", "Pockets", "TacticalVest"];
 
         // Remove blacklisted loot from loot containers
@@ -285,7 +285,7 @@ export class BotGenerator {
      */
     protected setBotAppearance(
         bot: IBotBase,
-        appearance: Appearance,
+        appearance: IAppearance,
         botGenerationDetails: BotGenerationDetails,
     ): void {
         bot.Customization.Head = this.weightedRandomHelper.getWeightedValue<string>(appearance.head);
@@ -321,7 +321,7 @@ export class BotGenerator {
      * @param playerScav Is a pscav bot being generated
      * @returns PmcHealth object
      */
-    protected generateHealth(healthObj: Health, playerScav = false): PmcHealth {
+    protected generateHealth(healthObj: IHealth, playerScav = false): PmcHealth {
         const bodyParts = playerScav
             ? this.getLowestHpBody(healthObj.BodyParts)
             : this.randomUtil.getArrayValue(healthObj.BodyParts);
@@ -394,13 +394,13 @@ export class BotGenerator {
      * @param bodies Body parts to sum up
      * @returns Lowest hp collection
      */
-    protected getLowestHpBody(bodies: BodyPart[]): BodyPart | undefined {
+    protected getLowestHpBody(bodies: IBodyPart[]): IBodyPart | undefined {
         if (bodies.length === 0) {
             // Handle empty input
             return undefined;
         }
 
-        let result: BodyPart;
+        let result: IBodyPart;
         let currentHighest = Number.POSITIVE_INFINITY;
         for (const bodyParts of bodies) {
             const hpTotal = Object.values(bodyParts).reduce((acc, curr) => acc + curr.max, 0);
@@ -556,7 +556,7 @@ export class BotGenerator {
      * @returns Bot with dogtag added
      */
     protected addDogtagToBot(bot: IBotBase): void {
-        const dogtagUpd: Upd = {
+        const dogtagUpd: IUpd = {
             SpawnedInSession: true,
             Dogtag: {
                 AccountId: bot.sessionId,
@@ -573,7 +573,7 @@ export class BotGenerator {
             },
         };
 
-        const inventoryItem: Item = {
+        const inventoryItem: IItem = {
             _id: this.hashUtil.generate(),
             _tpl: this.getDogtagTplByGameVersionAndSide(bot.Info.Side, bot.Info.GameVersion),
             parentId: bot.Inventory.equipment,

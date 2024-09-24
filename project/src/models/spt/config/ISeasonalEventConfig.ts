@@ -10,7 +10,7 @@ export interface ISeasonalEventConfig extends IBaseConfig {
     events: ISeasonalEvent[];
     eventBotMapping: Record<string, string>;
     eventBossSpawns: Record<string, Record<string, IBossLocationSpawn[]>>;
-    gifterSettings: GifterSetting[];
+    gifterSettings: IGifterSetting[];
 }
 
 export interface ISeasonalEvent {
@@ -22,7 +22,7 @@ export interface ISeasonalEvent {
     endMonth: number;
 }
 
-export interface GifterSetting {
+export interface IGifterSetting {
     map: string;
     zones: string;
     spawnChance: number;

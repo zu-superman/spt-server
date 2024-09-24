@@ -3,7 +3,7 @@ import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { IBotHideoutArea, IHideoutImprovement, IProduction, IProductive } from "@spt/models/eft/common/tables/IBotBase";
-import { Item, Upd } from "@spt/models/eft/common/tables/IItem";
+import { IItem, IUpd } from "@spt/models/eft/common/tables/IItem";
 import { IHideoutArea, StageBonus } from "@spt/models/eft/hideout/IHideoutArea";
 import { IHideoutContinuousProductionStartRequestData } from "@spt/models/eft/hideout/IHideoutContinuousProductionStartRequestData";
 import { IHideoutProduction } from "@spt/models/eft/hideout/IHideoutProduction";
@@ -829,7 +829,7 @@ export class HideoutHelper {
         resourceValue: number,
         resourceUnitsConsumed: number,
         isFoundInRaid: boolean,
-    ): Upd {
+    ): IUpd {
         return {
             StackObjectsCount: stackCount,
             Resource: { Value: resourceValue, UnitsConsumed: resourceUnitsConsumed },
@@ -1142,7 +1142,7 @@ export class HideoutHelper {
             return;
         }
 
-        const itemsToAdd: Item[][] = [];
+        const itemsToAdd: IItem[][] = [];
         for (let index = 0; index < craftedCoinCount; index++) {
             itemsToAdd.push([
                 {
@@ -1266,7 +1266,7 @@ export class HideoutHelper {
      * @param activeDogtags Active dogtags in place of fame dogtag slots
      * @returns combat bonus
      */
-    protected getDogtagCombatSkillBonusPercent(pmcData: IPmcData, activeDogtags: Item[]): number {
+    protected getDogtagCombatSkillBonusPercent(pmcData: IPmcData, activeDogtags: IItem[]): number {
         // Not own dogtag
         // Side = opposite of player
         let result = 0;

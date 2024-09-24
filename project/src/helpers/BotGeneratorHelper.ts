@@ -5,8 +5,8 @@ import { DurabilityLimitsHelper } from "@spt/helpers/DurabilityLimitsHelper";
 import { InventoryHelper } from "@spt/helpers/InventoryHelper";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { IInventory } from "@spt/models/eft/common/tables/IBotBase";
-import { Item, Repairable, Upd } from "@spt/models/eft/common/tables/IItem";
-import { Grid, ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
+import { IItem, IUpd, IUpdRepairable } from "@spt/models/eft/common/tables/IItem";
+import { IGrid, ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
 import { IGetRaidConfigurationRequestData } from "@spt/models/eft/match/IGetRaidConfigurationRequestData";
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
@@ -49,14 +49,14 @@ export class BotGeneratorHelper {
      * @param botRole Used by weapons to randomize the durability values. Null for non-equipped items
      * @returns Item Upd object with extra properties
      */
-    public generateExtraPropertiesForItem(itemTemplate: ITemplateItem, botRole?: string): { upd?: Upd } {
+    public generateExtraPropertiesForItem(itemTemplate: ITemplateItem, botRole?: string): { upd?: IUpd } {
         // Get raid settings, if no raid, default to day
         const raidSettings = this.applicationContext
             .getLatestValue(ContextVariableType.RAID_CONFIGURATION)
             ?.getValue<IGetRaidConfigurationRequestData>();
         const raidIsNight = raidSettings?.timeVariant === "PAST";
 
-        const itemProperties: Upd = {};
+        const itemProperties: IUpd = {};
 
         if (itemTemplate._props.MaxDurability) {
             if (itemTemplate._props.weapClass) {
@@ -215,7 +215,7 @@ export class BotGeneratorHelper {
      * @param botRole type of bot being generated for
      * @returns Repairable object
      */
-    protected generateWeaponRepairableProperties(itemTemplate: ITemplateItem, botRole?: string): Repairable {
+    protected generateWeaponRepairableProperties(itemTemplate: ITemplateItem, botRole?: string): IUpdRepairable {
         const maxDurability = this.durabilityLimitsHelper.getRandomizedMaxWeaponDurability(itemTemplate, botRole);
         const currentDurability = this.durabilityLimitsHelper.getRandomizedWeaponDurability(
             itemTemplate,
@@ -232,7 +232,7 @@ export class BotGeneratorHelper {
      * @param botRole type of bot being generated for
      * @returns Repairable object
      */
-    protected generateArmorRepairableProperties(itemTemplate: ITemplateItem, botRole?: string): Repairable {
+    protected generateArmorRepairableProperties(itemTemplate: ITemplateItem, botRole?: string): IUpdRepairable {
         let maxDurability: number;
         let currentDurability: number;
         if (Number.parseInt(`${itemTemplate._props.armorClass}`) === 0) {
@@ -258,7 +258,7 @@ export class BotGeneratorHelper {
      * @returns false if no incompatibilities, also has incompatibility reason
      */
     public isItemIncompatibleWithCurrentItems(
-        itemsEquipped: Item[],
+        itemsEquipped: IItem[],
         tplToCheck: string,
         equipmentSlot: string,
     ): IChooseRandomCompatibleModResult {
@@ -411,7 +411,7 @@ export class BotGeneratorHelper {
         equipmentSlots: string[],
         rootItemId: string,
         rootItemTplId: string,
-        itemWithChildren: Item[],
+        itemWithChildren: IItem[],
         inventory: IInventory,
         containersIdFull?: Set<string>,
     ): ItemAddedResult {
@@ -548,7 +548,7 @@ export class BotGeneratorHelper {
      * @param itemTpl Item tpl being placed
      * @returns True if allowed
      */
-    protected itemAllowedInContainer(slotGrid: Grid, itemTpl: string): boolean {
+    protected itemAllowedInContainer(slotGrid: IGrid, itemTpl: string): boolean {
         const propFilters = slotGrid._props.filters;
         const excludedFilter = propFilters[0]?.ExcludedFilter ?? [];
         const filter = propFilters[0]?.Filter ?? [];

@@ -7,8 +7,8 @@ import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { WeightedRandomHelper } from "@spt/helpers/WeightedRandomHelper";
 import { IPreset } from "@spt/models/eft/common/IGlobals";
 import { IInventory as PmcInventory } from "@spt/models/eft/common/tables/IBotBase";
-import { GenerationData, Inventory, ModsChances } from "@spt/models/eft/common/tables/IBotType";
-import { Item } from "@spt/models/eft/common/tables/IItem";
+import { IGenerationData, IInventory, IModsChances } from "@spt/models/eft/common/tables/IBotType";
+import { IItem } from "@spt/models/eft/common/tables/IItem";
 import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { EquipmentSlots } from "@spt/models/enums/EquipmentSlots";
@@ -71,9 +71,9 @@ export class BotWeaponGenerator {
     public generateRandomWeapon(
         sessionId: string,
         equipmentSlot: string,
-        botTemplateInventory: Inventory,
+        botTemplateInventory: IInventory,
         weaponParentId: string,
-        modChances: ModsChances,
+        modChances: IModsChances,
         botRole: string,
         isPmc: boolean,
         botLevel: number,
@@ -98,7 +98,7 @@ export class BotWeaponGenerator {
      * @param botTemplateInventory e.g. assault.json
      * @returns weapon tpl
      */
-    public pickWeightedWeaponTplFromPool(equipmentSlot: string, botTemplateInventory: Inventory): string {
+    public pickWeightedWeaponTplFromPool(equipmentSlot: string, botTemplateInventory: IInventory): string {
         const weaponPool = botTemplateInventory.equipment[equipmentSlot];
         return this.weightedRandomHelper.getWeightedValue<string>(weaponPool);
     }
@@ -118,9 +118,9 @@ export class BotWeaponGenerator {
         sessionId: string,
         weaponTpl: string,
         slotName: string,
-        botTemplateInventory: Inventory,
+        botTemplateInventory: IInventory,
         weaponParentId: string,
-        modChances: ModsChances,
+        modChances: IModsChances,
         botRole: string,
         isPmc: boolean,
         botLevel: number,
@@ -236,7 +236,7 @@ export class BotWeaponGenerator {
      * @param ammoTpl Cartridge to add to weapon
      * @param chamberSlotIds name of slots to create or add ammo to
      */
-    protected addCartridgeToChamber(weaponWithModsArray: Item[], ammoTpl: string, chamberSlotIds: string[]): void {
+    protected addCartridgeToChamber(weaponWithModsArray: IItem[], ammoTpl: string, chamberSlotIds: string[]): void {
         for (const slotId of chamberSlotIds) {
             const existingItemWithSlot = weaponWithModsArray.find((x) => x.slotId === slotId);
             if (!existingItemWithSlot) {
@@ -272,7 +272,7 @@ export class BotWeaponGenerator {
         equipmentSlot: string,
         weaponItemTemplate: ITemplateItem,
         botRole: string,
-    ): Item[] {
+    ): IItem[] {
         return [
             {
                 _id: this.hashUtil.generate(),
@@ -297,7 +297,7 @@ export class BotWeaponGenerator {
         weaponParentId: string,
         itemTemplate: ITemplateItem,
         botRole: string,
-    ): Item[] {
+    ): IItem[] {
         // Invalid weapon generated, fallback to preset
         this.logger.warning(
             this.localisationService.getText(
@@ -340,7 +340,7 @@ export class BotWeaponGenerator {
      * @param botRole role of bot weapon is for
      * @returns true if valid
      */
-    protected isWeaponValid(weaponItemArray: Item[], botRole: string): boolean {
+    protected isWeaponValid(weaponItemArray: IItem[], botRole: string): boolean {
         for (const mod of weaponItemArray) {
             const modTemplate = this.itemHelper.getItem(mod._tpl)[1];
             if (!modTemplate._props.Slots?.length) {
@@ -381,7 +381,7 @@ export class BotWeaponGenerator {
      */
     public addExtraMagazinesToInventory(
         generatedWeaponResult: GenerateWeaponResult,
-        magWeights: GenerationData,
+        magWeights: IGenerationData,
         inventory: PmcInventory,
         botRole: string,
     ): void {
@@ -437,7 +437,7 @@ export class BotWeaponGenerator {
      * @param inventory bot inventory to add grenades to
      */
     protected addUbglGrenadesToBotInventory(
-        weaponMods: Item[],
+        weaponMods: IItem[],
         generatedWeaponResult: GenerateWeaponResult,
         inventory: PmcInventory,
     ): void {
@@ -446,7 +446,7 @@ export class BotWeaponGenerator {
         const ubglDbTemplate = this.itemHelper.getItem(ubglMod._tpl)[1];
 
         // Define min/max of how many grenades bot will have
-        const ubglMinMax: GenerationData = {
+        const ubglMinMax: IGenerationData = {
             weights: { 1: 1, 2: 1 },
             whitelist: {},
         };
@@ -503,7 +503,7 @@ export class BotWeaponGenerator {
      * @returns magazine tpl string
      */
     protected getMagazineTplFromWeaponTemplate(
-        weaponMods: Item[],
+        weaponMods: IItem[],
         weaponTemplate: ITemplateItem,
         botRole: string,
     ): string {
@@ -643,7 +643,7 @@ export class BotWeaponGenerator {
      * @param magazine Magazine item
      * @param cartridgeTpl Cartridge to insert into magazine
      */
-    protected fillExistingMagazines(weaponMods: Item[], magazine: Item, cartridgeTpl: string): void {
+    protected fillExistingMagazines(weaponMods: IItem[], magazine: IItem, cartridgeTpl: string): void {
         const magazineTemplate = this.itemHelper.getItem(magazine._tpl)[1];
         if (!magazineTemplate) {
             this.logger.error(this.localisationService.getText("bot-unable_to_find_magazine_item", magazine._tpl));
@@ -669,7 +669,7 @@ export class BotWeaponGenerator {
      * @param ubglMod UBGL item
      * @param ubglAmmoTpl Grenade ammo tpl
      */
-    protected fillUbgl(weaponMods: Item[], ubglMod: Item, ubglAmmoTpl: string): void {
+    protected fillUbgl(weaponMods: IItem[], ubglMod: IItem, ubglAmmoTpl: string): void {
         weaponMods.push({
             _id: this.hashUtil.generate(),
             _tpl: ubglAmmoTpl,
@@ -688,8 +688,8 @@ export class BotWeaponGenerator {
      * @param magazineTemplate magazines db template
      */
     protected addOrUpdateMagazinesChildWithAmmo(
-        weaponWithMods: Item[],
-        magazine: Item,
+        weaponWithMods: IItem[],
+        magazine: IItem,
         chosenAmmoTpl: string,
         magazineTemplate: ITemplateItem,
     ): void {
@@ -717,7 +717,7 @@ export class BotWeaponGenerator {
      * @param magazineId magazine id to find and add to
      * @param ammoTpl ammo template id to hydate with
      */
-    protected fillCamorasWithAmmo(weaponMods: Item[], magazineId: string, ammoTpl: string): void {
+    protected fillCamorasWithAmmo(weaponMods: IItem[], magazineId: string, ammoTpl: string): void {
         // for CylinderMagazine we exchange the ammo in the "camoras".
         // This might not be necessary since we already filled the camoras with a random whitelisted and compatible ammo type,
         // but I'm not sure whether this is also used elsewhere

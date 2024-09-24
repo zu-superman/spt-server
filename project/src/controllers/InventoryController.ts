@@ -8,7 +8,7 @@ import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { QuestHelper } from "@spt/helpers/QuestHelper";
 import { TraderHelper } from "@spt/helpers/TraderHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
-import { Item } from "@spt/models/eft/common/tables/IItem";
+import { IItem } from "@spt/models/eft/common/tables/IItem";
 import { IAddItemsDirectRequest } from "@spt/models/eft/inventory/IAddItemsDirectRequest";
 import { IInventoryBindRequestData } from "@spt/models/eft/inventory/IInventoryBindRequestData";
 import { IInventoryCreateMarkerRequestData } from "@spt/models/eft/inventory/IInventoryCreateMarkerRequestData";
@@ -803,7 +803,7 @@ export class InventoryController {
         const isSealedWeaponBox = containerDetailsDb[1]._name.includes("event_container_airdrop");
 
         let foundInRaid = openedItem.upd?.SpawnedInSession;
-        const rewards: Item[][] = [];
+        const rewards: IItem[][] = [];
         const unlockedWeaponCrates = [
             "665829424de4820934746ce6",
             "665732e7ac60f009f270d1ef",
@@ -933,14 +933,13 @@ export class InventoryController {
 
         for (const itemId of request.items) {
             // If id already exists in array, we're removing it
-            const indexOfItemAlreadyFavorited = pmcData.Inventory.favoriteItems.findIndex(x => x._id === itemId);
+            const indexOfItemAlreadyFavorited = pmcData.Inventory.favoriteItems.findIndex((x) => x._id === itemId);
             if (indexOfItemAlreadyFavorited > -1) {
                 pmcData.Inventory.favoriteItems.splice(indexOfItemAlreadyFavorited, 1);
             } else {
-                let item = pmcData.Inventory.items.find(i => i._id === itemId);
+                const item = pmcData.Inventory.items.find((i) => i._id === itemId);
 
-                if (item === undefined)
-                {
+                if (item === undefined) {
                     continue;
                 }
 

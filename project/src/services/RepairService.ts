@@ -5,7 +5,7 @@ import { TraderHelper } from "@spt/helpers/TraderHelper";
 import { WeightedRandomHelper } from "@spt/helpers/WeightedRandomHelper";
 import { IArmorType } from "@spt/models/eft/common/IGlobals";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
-import { Item } from "@spt/models/eft/common/tables/IItem";
+import { IItem } from "@spt/models/eft/common/tables/IItem";
 import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
 import { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRouterResponse";
 import { RepairKitsInfo } from "@spt/models/eft/repair/IRepairActionDataRequest";
@@ -424,7 +424,7 @@ export class RepairService {
      * @param repairKitDetails Repair kit details from db
      * @param repairKitInInventory Repair kit to update
      */
-    protected addMaxResourceToKitIfMissing(repairKitDetails: ITemplateItem, repairKitInInventory: Item): void {
+    protected addMaxResourceToKitIfMissing(repairKitDetails: ITemplateItem, repairKitInInventory: IItem): void {
         const maxRepairAmount = repairKitDetails._props.MaxRepairResource;
         if (!repairKitInInventory.upd) {
             this.logger.debug(`Repair kit: ${repairKitInInventory._id} in inventory lacks upd object, adding`);
@@ -470,7 +470,7 @@ export class RepairService {
      * @param itemConfig weapon/armor config
      * @param repairDetails Details for item to repair
      */
-    public addBuff(itemConfig: BonusSettings, item: Item): void {
+    public addBuff(itemConfig: BonusSettings, item: IItem): void {
         const bonusRarity = this.weightedRandomHelper.getWeightedValue<string>(itemConfig.rarityWeight);
         const bonusType = this.weightedRandomHelper.getWeightedValue<string>(itemConfig.bonusTypeWeight);
 
@@ -612,7 +612,7 @@ export class RepairService {
 export class RepairDetails {
     repairCost?: number;
     repairPoints?: number;
-    repairedItem: Item;
+    repairedItem: IItem;
     repairedItemIsArmor: boolean;
     repairAmount: number;
     repairedByKit: boolean;

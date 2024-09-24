@@ -3,7 +3,7 @@ import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { TraderAssortHelper } from "@spt/helpers/TraderAssortHelper";
 import { TraderHelper } from "@spt/helpers/TraderHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
-import { Item } from "@spt/models/eft/common/tables/IItem";
+import { IItem } from "@spt/models/eft/common/tables/IItem";
 import { IAddItemsDirectRequest } from "@spt/models/eft/inventory/IAddItemsDirectRequest";
 import { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRouterResponse";
 import { IProcessBuyTradeRequestData } from "@spt/models/eft/trade/IProcessBuyTradeRequestData";
@@ -70,7 +70,7 @@ export class TradeHelper {
         foundInRaid: boolean,
         output: IItemEventRouterResponse,
     ): void {
-        let offerItems: Item[] = [];
+        let offerItems: IItem[] = [];
         let buyCallback: (buyCount: number) => void;
         if (buyRequestData.tid.toLocaleLowerCase() === "ragfair") {
             buyCallback = (buyCount: number) => {
@@ -188,7 +188,7 @@ export class TradeHelper {
         let itemsToSendRemaining = itemsToSendTotalCount;
 
         // Construct array of items to send to player
-        const itemsToSendToPlayer: Item[][] = [];
+        const itemsToSendToPlayer: IItem[][] = [];
         while (itemsToSendRemaining > 0) {
             const offerClone = this.cloner.clone(offerItems);
             // Handle stackable items that have a max stack size limit
@@ -366,7 +366,7 @@ export class TradeHelper {
         sessionId: string,
         pmcData: IPmcData,
         traderId: string,
-        assortBeingPurchased: Item,
+        assortBeingPurchased: IItem,
         assortId: string,
         count: number,
     ): void {

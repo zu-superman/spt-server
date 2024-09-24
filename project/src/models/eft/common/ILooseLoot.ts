@@ -1,5 +1,5 @@
 import { Ixyz } from "@spt/models/eft/common/Ixyz";
-import { Item } from "@spt/models/eft/common/tables/IItem";
+import { IItem } from "@spt/models/eft/common/tables/IItem";
 
 export interface ILooseLoot {
     spawnpointCount: ISpawnpointCount;
@@ -29,7 +29,7 @@ export interface ISpawnpointTemplate {
     IsGroupPosition: boolean;
     GroupPositions: IGroupPostion[];
     Root: string;
-    Items: Item[];
+    Items: IItem[];
 }
 
 export interface IGroupPostion {

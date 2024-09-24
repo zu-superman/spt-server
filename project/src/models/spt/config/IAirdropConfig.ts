@@ -6,11 +6,11 @@ export interface IAirdropConfig extends IBaseConfig {
     kind: "spt-airdrop";
     airdropTypeWeightings: Record<AirdropTypeEnum, number>;
     /** What rewards will the loot crate contain, keyed by drop type e.g. mixed/weaponArmor/foodMedical/barter */
-    loot: Record<string, AirdropLoot>;
+    loot: Record<string, IAirdropLoot>;
 }
 
 /** Chance map will have an airdrop occur out of 100 - locations not included count as 0% */
-export interface AirdropChancePercent {
+export interface IAirdropChancePercent {
     bigmap: number;
     woods: number;
     lighthouse: number;
@@ -22,7 +22,7 @@ export interface AirdropChancePercent {
 }
 
 /** Loot inside crate */
-export interface AirdropLoot {
+export interface IAirdropLoot {
     /** Min/max of weapons inside crate */
     weaponPresetCount?: MinMax;
     /** Min/max of armors (head/chest/rig) inside crate */

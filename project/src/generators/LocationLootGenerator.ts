@@ -11,7 +11,7 @@ import {
 } from "@spt/models/eft/common/ILocation";
 import { ILocationBase } from "@spt/models/eft/common/ILocationBase";
 import { ILooseLoot, ISpawnpoint, ISpawnpointTemplate, ISpawnpointsForced } from "@spt/models/eft/common/ILooseLoot";
-import { Item } from "@spt/models/eft/common/tables/IItem";
+import { IItem } from "@spt/models/eft/common/tables/IItem";
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { ILocationConfig } from "@spt/models/spt/config/ILocationConfig";
@@ -28,7 +28,7 @@ import { ICloner } from "@spt/utils/cloners/ICloner";
 import { inject, injectable } from "tsyringe";
 
 export interface IContainerItem {
-    items: Item[];
+    items: IItem[];
     width: number;
     height: number;
 }
@@ -835,7 +835,7 @@ export class LocationLootGenerator {
         const itemTemplate = this.itemHelper.getItem(chosenTpl)[1];
 
         // Item array to return
-        const itemWithMods: Item[] = [];
+        const itemWithMods: IItem[] = [];
 
         // Money/Ammo - don't rely on items in spawnPoint.template.Items so we can randomise it ourselves
         if (this.itemHelper.isOfBaseclasses(chosenTpl, [BaseClasses.MONEY, BaseClasses.AMMO])) {
@@ -851,12 +851,12 @@ export class LocationLootGenerator {
             });
         } else if (this.itemHelper.isOfBaseclass(chosenTpl, BaseClasses.AMMO_BOX)) {
             // Fill with cartridges
-            const ammoBoxItem: Item[] = [{ _id: this.objectId.generate(), _tpl: chosenTpl }];
+            const ammoBoxItem: IItem[] = [{ _id: this.objectId.generate(), _tpl: chosenTpl }];
             this.itemHelper.addCartridgesToAmmoBox(ammoBoxItem, itemTemplate);
             itemWithMods.push(...ammoBoxItem);
         } else if (this.itemHelper.isOfBaseclass(chosenTpl, BaseClasses.MAGAZINE)) {
             // Create array with just magazine
-            const magazineItem: Item[] = [{ _id: this.objectId.generate(), _tpl: chosenTpl }];
+            const magazineItem: IItem[] = [{ _id: this.objectId.generate(), _tpl: chosenTpl }];
 
             if (this.randomUtil.getChance100(this.locationConfig.staticMagazineLootHasAmmoChancePercent)) {
                 // Add randomised amount of cartridges
@@ -896,7 +896,7 @@ export class LocationLootGenerator {
      * @param chosenTpl Tpl we want to get item with
      * @returns Item object
      */
-    protected getItemInArray(items: Item[], chosenTpl: string): Item | undefined {
+    protected getItemInArray(items: IItem[], chosenTpl: string): IItem | undefined {
         if (this.itemHelper.isOfBaseclass(chosenTpl, BaseClasses.WEAPON)) {
             return items.find((v) => v._tpl === chosenTpl && v.parentId === undefined);
         }
@@ -913,7 +913,7 @@ export class LocationLootGenerator {
         const itemTemplate = this.itemHelper.getItem(chosenTpl)[1];
         let width = itemTemplate._props.Width;
         let height = itemTemplate._props.Height;
-        let items: Item[] = [{ _id: this.objectId.generate(), _tpl: chosenTpl }];
+        let items: IItem[] = [{ _id: this.objectId.generate(), _tpl: chosenTpl }];
         const rootItem = items[0];
 
         // Use passed in parentId as override for new item
@@ -935,7 +935,7 @@ export class LocationLootGenerator {
         }
         // No spawn point, use default template
         else if (this.itemHelper.isOfBaseclass(chosenTpl, BaseClasses.WEAPON)) {
-            let children: Item[] = [];
+            let children: IItem[] = [];
             const defaultPreset = this.cloner.clone(this.presetHelper.getDefaultPreset(chosenTpl));
             if (defaultPreset?._items) {
                 try {
@@ -1039,7 +1039,7 @@ export class LocationLootGenerator {
         } else if (this.itemHelper.armorItemCanHoldMods(chosenTpl)) {
             const defaultPreset = this.presetHelper.getDefaultPreset(chosenTpl);
             if (defaultPreset) {
-                const presetAndMods: Item[] = this.itemHelper.replaceIDs(defaultPreset._items);
+                const presetAndMods: IItem[] = this.itemHelper.replaceIDs(defaultPreset._items);
                 this.itemHelper.remapRootItemId(presetAndMods);
 
                 // Use original items parentId otherwise item doesnt get added to container correctly

@@ -1,7 +1,7 @@
 import { HandbookHelper } from "@spt/helpers/HandbookHelper";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { PresetHelper } from "@spt/helpers/PresetHelper";
-import { Item } from "@spt/models/eft/common/tables/IItem";
+import { IItem } from "@spt/models/eft/common/tables/IItem";
 import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
 import { IBarterScheme } from "@spt/models/eft/common/tables/ITrader";
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
@@ -83,7 +83,7 @@ export class FenceBaseAssortGenerator {
             }
 
             // Create item object in array
-            const itemWithChildrenToAdd: Item[] = [
+            const itemWithChildrenToAdd: IItem[] = [
                 {
                     _id: this.hashUtil.generate(),
                     _tpl: rootItemDb._id,
@@ -139,7 +139,7 @@ export class FenceBaseAssortGenerator {
             }
 
             // Construct preset + mods
-            const itemAndChildren: Item[] = this.itemHelper.replaceIDs(defaultPreset._items);
+            const itemAndChildren: IItem[] = this.itemHelper.replaceIDs(defaultPreset._items);
 
             // Find root item and add some properties to it
             for (let i = 0; i < itemAndChildren.length; i++) {
@@ -230,7 +230,7 @@ export class FenceBaseAssortGenerator {
      * @param armor Armor item array to add mods into
      * @param itemDbDetails Armor items db template
      */
-    protected addChildrenToArmorModSlots(armor: Item[], itemDbDetails: ITemplateItem): void {
+    protected addChildrenToArmorModSlots(armor: IItem[], itemDbDetails: ITemplateItem): void {
         // Armor has no mods, make no additions
         const hasMods = itemDbDetails._props.Slots.length > 0;
         if (!hasMods) {
@@ -249,7 +249,7 @@ export class FenceBaseAssortGenerator {
                     continue;
                 }
 
-                const mod: Item = {
+                const mod: IItem = {
                     _id: this.hashUtil.generate(),
                     _tpl: plateTpl,
                     parentId: armor[0]._id,

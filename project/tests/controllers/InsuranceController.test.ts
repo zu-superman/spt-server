@@ -1,7 +1,7 @@
 import "reflect-metadata";
 
 import { InsuranceController } from "@spt/controllers/InsuranceController";
-import { Item } from "@spt/models/eft/common/tables/IItem";
+import { IItem } from "@spt/models/eft/common/tables/IItem";
 import { Insurance } from "@spt/models/eft/profile/ISptProfile";
 import { MessageType } from "@spt/models/enums/MessageType";
 import { ProfileInsuranceFactory } from "@tests/__factories__/ProfileInsurance.factory";
@@ -434,7 +434,7 @@ describe("InsuranceController", () => {
 
             // Since no parent attachments exist, the map should be empty.
             const mockPopulateParentAttachmentsMap = vi.fn(() => {
-                return new Map<string, Item[]>();
+                return new Map<string, IItem[]>();
             });
             vi.spyOn(insuranceController, "populateParentAttachmentsMap").mockImplementation(
                 mockPopulateParentAttachmentsMap,

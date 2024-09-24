@@ -8,7 +8,7 @@ import { RagfairServerHelper } from "@spt/helpers/RagfairServerHelper";
 import { TraderHelper } from "@spt/helpers/TraderHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { Common, IQuestStatus } from "@spt/models/eft/common/tables/IBotBase";
-import { Item } from "@spt/models/eft/common/tables/IItem";
+import { IItem } from "@spt/models/eft/common/tables/IItem";
 import { IQuest, IQuestCondition, IQuestReward } from "@spt/models/eft/common/tables/IQuest";
 import { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRouterResponse";
 import { IAcceptQuestRequestData } from "@spt/models/eft/quests/IAcceptQuestRequestData";
@@ -242,11 +242,11 @@ export class QuestHelper {
      * @param questReward Reward item to fix
      * @returns Fixed rewards
      */
-    protected processReward(questReward: IQuestReward): Item[] {
+    protected processReward(questReward: IQuestReward): IItem[] {
         /** item with mods to return */
-        let rewardItems: Item[] = [];
-        let targets: Item[] = [];
-        const mods: Item[] = [];
+        let rewardItems: IItem[] = [];
+        let targets: IItem[] = [];
+        const mods: IItem[] = [];
 
         // Is armor item that may need inserts / plates
         if (questReward.items.length === 1 && this.itemHelper.armorItemCanHoldMods(questReward.items[0]._tpl)) {
@@ -314,12 +314,12 @@ export class QuestHelper {
      * @param originalRewardRootItem Original armor reward item from IQuestReward.items object
      * @param questReward Armor reward from quest
      */
-    protected generateArmorRewardChildSlots(originalRewardRootItem: Item, questReward: IQuestReward): void {
+    protected generateArmorRewardChildSlots(originalRewardRootItem: IItem, questReward: IQuestReward): void {
         // Look for a default preset from globals for armor
         const defaultPreset = this.presetHelper.getDefaultPreset(originalRewardRootItem._tpl);
         if (defaultPreset) {
             // Found preset, use mods to hydrate reward item
-            const presetAndMods: Item[] = this.itemHelper.replaceIDs(defaultPreset._items);
+            const presetAndMods: IItem[] = this.itemHelper.replaceIDs(defaultPreset._items);
             const newRootId = this.itemHelper.remapRootItemId(presetAndMods);
 
             questReward.items = presetAndMods;
@@ -353,7 +353,7 @@ export class QuestHelper {
      * @param status Quest status that holds the items (Started, Success, Fail)
      * @returns array of items with the correct maxStack
      */
-    public getQuestRewardItems(quest: IQuest, status: QuestStatus): Item[] {
+    public getQuestRewardItems(quest: IQuest, status: QuestStatus): IItem[] {
         // Iterate over all rewards with the desired status, flatten out items that have a type of Item
         const questRewards = quest.rewards[QuestStatus[status]].flatMap((reward: IQuestReward) =>
             reward.type === "Item" ? this.processReward(reward) : [],
@@ -645,7 +645,7 @@ export class QuestHelper {
     protected addItemStackSizeChangeIntoEventResponse(
         output: IItemEventRouterResponse,
         sessionId: string,
-        item: Item,
+        item: IItem,
     ): void {
         output.profileChanges[sessionId].items.change.push({
             _id: item._id,
@@ -862,7 +862,7 @@ export class QuestHelper {
         state: QuestStatus,
         sessionId: string,
         questResponse: IItemEventRouterResponse,
-    ): Item[] {
+    ): IItem[] {
         // Repeatable quest base data is always in PMCProfile, `profileData` may be scav profile
         // TODO: consider moving repeatable quest data to profile-agnostic location
         const pmcProfile = this.profileHelper.getPmcProfile(sessionId);

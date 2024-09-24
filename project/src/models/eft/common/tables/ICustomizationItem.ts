@@ -19,14 +19,14 @@ export interface Props {
     Body: string;
     Hands: string;
     Feet: string;
-    Prefab: Prefab;
-    WatchPrefab: Prefab;
+    Prefab: IPrefab;
+    WatchPrefab: IPrefab;
     IntegratedArmorVest: boolean;
     WatchPosition: Ixyz;
     WatchRotation: Ixyz;
 }
 
-export interface Prefab {
+export interface IPrefab {
     path: string;
     rcid: string;
 }

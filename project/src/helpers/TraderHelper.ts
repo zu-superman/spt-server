@@ -4,7 +4,7 @@ import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { BanType } from "@spt/models/eft/common/tables/IBotBase";
-import { Item } from "@spt/models/eft/common/tables/IItem";
+import { IItem } from "@spt/models/eft/common/tables/IItem";
 import { IProfileTraderTemplate } from "@spt/models/eft/common/tables/IProfileTemplate";
 import { ITraderAssort, ITraderBase, ITraderLoyaltyLevel } from "@spt/models/eft/common/tables/ITrader";
 import { ISptProfile } from "@spt/models/eft/profile/ISptProfile";
@@ -90,7 +90,7 @@ export class TraderHelper {
      * @param assortId Id of assort to find
      * @returns Item object
      */
-    public getTraderAssortItemByAssortId(traderId: string, assortId: string): Item | undefined {
+    public getTraderAssortItemByAssortId(traderId: string, assortId: string): IItem | undefined {
         const traderAssorts = this.getTraderAssortsByTraderId(traderId);
         if (!traderAssorts) {
             this.logger.debug(`No assorts on trader: ${traderId} found`);
@@ -362,7 +362,7 @@ export class TraderHelper {
     public addTraderPurchasesToPlayerProfile(
         sessionID: string,
         newPurchaseDetails: { items: { itemId: string; count: number }[]; traderId: string },
-        itemPurchased: Item,
+        itemPurchased: IItem,
     ): void {
         const profile = this.profileHelper.getFullProfile(sessionID);
         const traderId = newPurchaseDetails.traderId;

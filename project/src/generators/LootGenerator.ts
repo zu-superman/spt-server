@@ -3,7 +3,7 @@ import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { PresetHelper } from "@spt/helpers/PresetHelper";
 import { WeightedRandomHelper } from "@spt/helpers/WeightedRandomHelper";
 import { IPreset } from "@spt/models/eft/common/IGlobals";
-import { Item } from "@spt/models/eft/common/tables/IItem";
+import { IItem } from "@spt/models/eft/common/tables/IItem";
 import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
 import { ISealedAirdropContainerSettings, RewardDetails } from "@spt/models/spt/config/IInventoryConfig";
@@ -40,8 +40,8 @@ export class LootGenerator {
      * @param options parameters to adjust how loot is generated
      * @returns An array of loot items
      */
-    public createRandomLoot(options: LootRequest): Item[] {
-        const result: Item[] = [];
+    public createRandomLoot(options: LootRequest): IItem[] {
+        const result: IItem[] = [];
         const itemTypeCounts = this.initItemLimitCounter(options.itemLimits);
 
         // Handle sealed weapon containers
@@ -233,7 +233,7 @@ export class LootGenerator {
         items: [string, ITemplateItem][],
         itemTypeCounts: Record<string, { current: number; max: number }>,
         options: LootRequest,
-        result: Item[],
+        result: IItem[],
     ): boolean {
         const randomItem = this.randomUtil.getArrayValue(items)[1];
 
@@ -247,7 +247,7 @@ export class LootGenerator {
             return false;
         }
 
-        const newLootItem: Item = {
+        const newLootItem: IItem = {
             _id: this.hashUtil.generate(),
             _tpl: randomItem._id,
             upd: {
@@ -303,7 +303,7 @@ export class LootGenerator {
         presetPool: IPreset[],
         itemTypeCounts: Record<string, { current: number; max: number }>,
         itemBlacklist: string[],
-        result: Item[],
+        result: IItem[],
     ): boolean {
         // Choose random preset and get details from item db using encyclopedia value (encyclopedia === tplId)
         const chosenPreset = this.randomUtil.getArrayValue(presetPool);
@@ -346,7 +346,7 @@ export class LootGenerator {
             return false;
         }
 
-        const presetAndMods: Item[] = this.itemHelper.replaceIDs(chosenPreset._items);
+        const presetAndMods: IItem[] = this.itemHelper.replaceIDs(chosenPreset._items);
         this.itemHelper.remapRootItemId(presetAndMods);
         // Add chosen preset tpl to result array
         presetAndMods.forEach((item) => {
@@ -367,8 +367,8 @@ export class LootGenerator {
      * @param containerSettings sealed weapon container settings
      * @returns Array of item with children arrays
      */
-    public getSealedWeaponCaseLoot(containerSettings: ISealedAirdropContainerSettings): Item[][] {
-        const itemsToReturn: Item[][] = [];
+    public getSealedWeaponCaseLoot(containerSettings: ISealedAirdropContainerSettings): IItem[][] {
+        const itemsToReturn: IItem[][] = [];
 
         // Choose a weapon to give to the player (weighted)
         const chosenWeaponTpl = this.weightedRandomHelper.getWeightedValue<string>(
@@ -399,7 +399,7 @@ export class LootGenerator {
         }
 
         // Clean up Ids to ensure they're all unique and prevent collisions
-        const presetAndMods: Item[] = this.itemHelper.replaceIDs(chosenWeaponPreset._items);
+        const presetAndMods: IItem[] = this.itemHelper.replaceIDs(chosenWeaponPreset._items);
         this.itemHelper.remapRootItemId(presetAndMods);
 
         // Add preset to return object
@@ -426,8 +426,8 @@ export class LootGenerator {
     protected getSealedContainerNonWeaponModRewards(
         containerSettings: ISealedAirdropContainerSettings,
         weaponDetailsDb: ITemplateItem,
-    ): Item[][] {
-        const rewards: Item[][] = [];
+    ): IItem[][] {
+        const rewards: IItem[][] = [];
 
         for (const rewardTypeId in containerSettings.rewardTypeLimits) {
             const settings = containerSettings.rewardTypeLimits[rewardTypeId];
@@ -456,7 +456,7 @@ export class LootGenerator {
 
                 for (let index = 0; index < rewardCount; index++) {
                     const chosenAmmoBox = this.randomUtil.getArrayValue(ammoBoxesMatchingCaliber);
-                    const ammoBoxItem: Item[] = [{ _id: this.hashUtil.generate(), _tpl: chosenAmmoBox._id }];
+                    const ammoBoxItem: IItem[] = [{ _id: this.hashUtil.generate(), _tpl: chosenAmmoBox._id }];
                     this.itemHelper.addCartridgesToAmmoBox(ammoBoxItem, chosenAmmoBox);
                     rewards.push(ammoBoxItem);
                 }
@@ -483,7 +483,7 @@ export class LootGenerator {
             for (let index = 0; index < rewardCount; index++) {
                 // Choose a random item from pool
                 const chosenRewardItem = this.randomUtil.getArrayValue(rewardItemPool);
-                const rewardItem: Item[] = [{ _id: this.hashUtil.generate(), _tpl: chosenRewardItem._id }];
+                const rewardItem: IItem[] = [{ _id: this.hashUtil.generate(), _tpl: chosenRewardItem._id }];
 
                 rewards.push(rewardItem);
             }
@@ -503,8 +503,8 @@ export class LootGenerator {
         containerSettings: ISealedAirdropContainerSettings,
         linkedItemsToWeapon: ITemplateItem[],
         chosenWeaponPreset: IPreset,
-    ): Item[][] {
-        const modRewards: Item[][] = [];
+    ): IItem[][] {
+        const modRewards: IItem[][] = [];
         for (const rewardTypeId in containerSettings.weaponModRewardLimits) {
             const settings = containerSettings.weaponModRewardLimits[rewardTypeId];
             const rewardCount = this.randomUtil.getInt(settings.min, settings.max);
@@ -528,7 +528,7 @@ export class LootGenerator {
             // Find a random item of the desired type and add as reward
             for (let index = 0; index < rewardCount; index++) {
                 const chosenItem = this.randomUtil.drawRandomFromList(relatedItems);
-                const item: Item[] = [{ _id: this.hashUtil.generate(), _tpl: chosenItem[0]._id }];
+                const item: IItem[] = [{ _id: this.hashUtil.generate(), _tpl: chosenItem[0]._id }];
 
                 modRewards.push(item);
             }
@@ -542,8 +542,8 @@ export class LootGenerator {
      * @param rewardContainerDetails
      * @returns Array of item with children arrays
      */
-    public getRandomLootContainerLoot(rewardContainerDetails: RewardDetails): Item[][] {
-        const itemsToReturn: Item[][] = [];
+    public getRandomLootContainerLoot(rewardContainerDetails: RewardDetails): IItem[][] {
+        const itemsToReturn: IItem[][] = [];
 
         // Get random items and add to newItemRequest
         for (let index = 0; index < rewardContainerDetails.rewardCount; index++) {
@@ -554,7 +554,7 @@ export class LootGenerator {
                 const preset = this.presetHelper.getDefaultPreset(chosenRewardItemTpl);
 
                 // Ensure preset has unique ids and is cloned so we don't alter the preset data stored in memory
-                const presetAndMods: Item[] = this.itemHelper.replaceIDs(preset._items);
+                const presetAndMods: IItem[] = this.itemHelper.replaceIDs(preset._items);
 
                 this.itemHelper.remapRootItemId(presetAndMods);
                 itemsToReturn.push(presetAndMods);
@@ -562,7 +562,7 @@ export class LootGenerator {
                 continue;
             }
 
-            const rewardItem: Item[] = [{ _id: this.hashUtil.generate(), _tpl: chosenRewardItemTpl }];
+            const rewardItem: IItem[] = [{ _id: this.hashUtil.generate(), _tpl: chosenRewardItemTpl }];
             itemsToReturn.push(rewardItem);
         }
 

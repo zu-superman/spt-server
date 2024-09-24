@@ -6,7 +6,7 @@ import {
     IProductive,
     ITraderInfo,
 } from "@spt/models/eft/common/tables/IBotBase";
-import { ProfileChange, TraderData } from "@spt/models/eft/itemEvent/IItemEventRouterBase";
+import { IProfileChange, TraderData } from "@spt/models/eft/itemEvent/IItemEventRouterBase";
 import { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRouterResponse";
 import { TimeUtil } from "@spt/utils/TimeUtil";
 import { ICloner } from "@spt/utils/cloners/ICloner";
@@ -69,7 +69,7 @@ export class EventOutputHolder {
      */
     public updateOutputProperties(sessionId: string): void {
         const pmcData: IPmcData = this.profileHelper.getPmcProfile(sessionId);
-        const profileChanges: ProfileChange = this.outputStore[sessionId].profileChanges[sessionId];
+        const profileChanges: IProfileChange = this.outputStore[sessionId].profileChanges[sessionId];
 
         profileChanges.experience = pmcData.Info.Experience;
         profileChanges.health = this.cloner.clone(pmcData.Health);

@@ -5,7 +5,7 @@ import { PresetHelper } from "@spt/helpers/PresetHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { IBotHideoutArea } from "@spt/models/eft/common/tables/IBotBase";
-import { Item } from "@spt/models/eft/common/tables/IItem";
+import { IItem } from "@spt/models/eft/common/tables/IItem";
 import { IStageRequirement } from "@spt/models/eft/hideout/IHideoutArea";
 import { IHideoutCircleOfCultistProductionStartRequestData } from "@spt/models/eft/hideout/IHideoutCircleOfCultistProductionStartRequestData";
 import {
@@ -76,7 +76,7 @@ export class CircleOfCultistService {
 
         // Sparse, just has id
         const cultistCraftData = this.databaseService.getHideout().production.cultistRecipes[0];
-        const sacrificedItems: Item[] = this.getSacrificedItems(pmcData);
+        const sacrificedItems: IItem[] = this.getSacrificedItems(pmcData);
         const sacrificedItemCostRoubles = sacrificedItems.reduce(
             (sum, curr) => sum + (this.itemHelper.getItemPrice(curr._tpl) ?? 0),
             0,
@@ -120,7 +120,7 @@ export class CircleOfCultistService {
             }
         }
 
-        let rewards: Item[][];
+        let rewards: IItem[][];
         if (hasSacrificedSingleItemFlaggedInConfig) {
             rewards = this.getExplicitRewards(directRewardSettings, cultistCircleStashId);
         } else {
@@ -173,7 +173,7 @@ export class CircleOfCultistService {
         sessionId: string,
         pmcData: IPmcData,
         recipeId: string,
-        sacrificedItems: Item[],
+        sacrificedItems: IItem[],
         rewardAmountRoubles: number,
         directRewardSettings?: DirectRewardSettings,
     ): void {
@@ -230,14 +230,14 @@ export class CircleOfCultistService {
      * @param pmcData Player profile
      * @returns Array of its from player inventory
      */
-    protected getSacrificedItems(pmcData: IPmcData): Item[] {
+    protected getSacrificedItems(pmcData: IPmcData): IItem[] {
         // Get root items that are in the cultist sacrifice window
         const inventoryRootItemsInCultistGrid = pmcData.Inventory.items.filter(
             (item) => item.slotId === CircleOfCultistService.circleOfCultistSlotId,
         );
 
         // Get rootitem + its children
-        const sacrificedItems: Item[] = [];
+        const sacrificedItems: IItem[] = [];
         for (const rootItem of inventoryRootItemsInCultistGrid) {
             const rootItemWithChildren = this.itemHelper.findAndReturnChildrenAsItems(
                 pmcData.Inventory.items,
@@ -260,9 +260,9 @@ export class CircleOfCultistService {
         rewardItemTplPool: string[],
         rewardBudget: number,
         cultistCircleStashId: string,
-    ): Item[][] {
+    ): IItem[][] {
         // Prep rewards array (reward can be item with children, hence array of arrays)
-        const rewards: Item[][] = [];
+        const rewards: IItem[][] = [];
 
         // Pick random rewards until we have exhausted the sacrificed items budget
         let totalRewardCost = 0;
@@ -296,7 +296,7 @@ export class CircleOfCultistService {
                 }
 
                 // Ensure preset has unique ids and is cloned so we don't alter the preset data stored in memory
-                const presetAndMods: Item[] = this.itemHelper.replaceIDs(defaultPreset._items);
+                const presetAndMods: IItem[] = this.itemHelper.replaceIDs(defaultPreset._items);
 
                 this.itemHelper.remapRootItemId(presetAndMods);
 
@@ -314,7 +314,7 @@ export class CircleOfCultistService {
             );
 
             // Not a weapon/armor, standard single item
-            const rewardItem: Item = {
+            const rewardItem: IItem = {
                 _id: this.hashUtil.generate(),
                 _tpl: randomItemTplFromPool,
                 parentId: cultistCircleStashId,
@@ -343,9 +343,12 @@ export class CircleOfCultistService {
      * @param cultistCircleStashId Id of stash item
      * @returns Array of item arrays
      */
-    protected getExplicitRewards(explicitRewardSettings: DirectRewardSettings, cultistCircleStashId: string): Item[][] {
+    protected getExplicitRewards(
+        explicitRewardSettings: DirectRewardSettings,
+        cultistCircleStashId: string,
+    ): IItem[][] {
         // Prep rewards array (reward can be item with children, hence array of arrays)
-        const rewards: Item[][] = [];
+        const rewards: IItem[][] = [];
         for (const rewardTpl of explicitRewardSettings.rewardTpls) {
             if (
                 this.itemHelper.armorItemHasRemovableOrSoftInsertSlots(rewardTpl) ||
@@ -359,7 +362,7 @@ export class CircleOfCultistService {
                 }
 
                 // Ensure preset has unique ids and is cloned so we don't alter the preset data stored in memory
-                const presetAndMods: Item[] = this.itemHelper.replaceIDs(defaultPreset._items);
+                const presetAndMods: IItem[] = this.itemHelper.replaceIDs(defaultPreset._items);
 
                 this.itemHelper.remapRootItemId(presetAndMods);
 
@@ -372,7 +375,7 @@ export class CircleOfCultistService {
             const stackSize = this.getExplicitRewardBaseTypeStackSize(rewardTpl);
 
             // Not a weapon/armor, standard single item
-            const rewardItem: Item = {
+            const rewardItem: IItem = {
                 _id: this.hashUtil.generate(),
                 _tpl: rewardTpl,
                 parentId: cultistCircleStashId,

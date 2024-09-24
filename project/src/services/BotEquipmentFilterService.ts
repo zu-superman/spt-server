@@ -2,10 +2,10 @@ import { BotHelper } from "@spt/helpers/BotHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import {
     EquipmentChances,
-    Generation,
-    GenerationData,
     IBotType,
-    ModsChances,
+    IGeneration,
+    IGenerationData,
+    IModsChances,
 } from "@spt/models/eft/common/tables/IBotType";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { BotGenerationDetails } from "@spt/models/spt/bots/BotGenerationDetails";
@@ -94,7 +94,7 @@ export class BotEquipmentFilterService {
      */
     protected adjustChances(
         equipmentChanges: Record<string, number>,
-        baseValues: EquipmentChances | ModsChances,
+        baseValues: EquipmentChances | IModsChances,
     ): void {
         if (!equipmentChanges) {
             return;
@@ -111,8 +111,8 @@ export class BotEquipmentFilterService {
      * @param baseBotGeneration dictionary to update
      */
     protected adjustGenerationChances(
-        generationChanges: Record<string, GenerationData>,
-        baseBotGeneration: Generation,
+        generationChanges: Record<string, IGenerationData>,
+        baseBotGeneration: IGeneration,
     ): void {
         if (!generationChanges) {
             return;

@@ -1,7 +1,7 @@
 import { IExit, ILocationBase } from "@spt/models/eft/common/ILocationBase";
 import { IGroupPostion, ILooseLoot } from "@spt/models/eft/common/ILooseLoot";
 import { Ixyz } from "@spt/models/eft/common/Ixyz";
-import { Item } from "@spt/models/eft/common/tables/IItem";
+import { IItem } from "@spt/models/eft/common/tables/IItem";
 
 export interface ILocation {
     /** Map meta-data */
@@ -61,11 +61,11 @@ export interface IStaticPropsBase {
     IsAlwaysSpawn: boolean;
     GroupPositions: IGroupPostion[];
     Root: string;
-    Items: Item[];
+    Items: IItem[];
 }
 
 export interface IStaticWeaponProps extends IStaticPropsBase {
-    Items: Item[];
+    Items: IItem[];
 }
 
 export interface IStaticContainerDetails {

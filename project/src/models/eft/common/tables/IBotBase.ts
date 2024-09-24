@@ -1,4 +1,4 @@
-import { Item, Upd } from "@spt/models/eft/common/tables/IItem";
+import { IItem, IUpd } from "@spt/models/eft/common/tables/IItem";
 import { IPmcDataRepeatableQuest } from "@spt/models/eft/common/tables/IRepeatableQuests";
 import { IRagfairOffer } from "@spt/models/eft/ragfair/IRagfairOffer";
 import { BonusSkillType } from "@spt/models/enums/BonusSkillType";
@@ -159,7 +159,7 @@ export interface ICurrentMax {
 }
 
 export interface IInventory {
-    items: Item[];
+    items: IItem[];
     equipment: string;
     stash: string;
     sortingTable: string;
@@ -168,7 +168,7 @@ export interface IInventory {
     /** Key is hideout area enum numeric as string e.g. "24", value is area _id  */
     hideoutAreaStashes: Record<string, string>;
     fastPanel: Record<string, string>;
-    favoriteItems: Item[];
+    favoriteItems: IItem[];
 }
 
 export interface IBaseJsonSkills {
@@ -369,7 +369,7 @@ export interface IProductive {
     SkipTime?: number;
     /** Seconds needed to fully craft */
     ProductionTime?: number;
-    GivenItemsInStart?: Item[];
+    GivenItemsInStart?: IItem[];
     Interrupted?: boolean;
     Code?: string;
     Decoded?: boolean;
@@ -384,7 +384,7 @@ export interface IProductive {
     /** Is the craft a Continuous, e.g bitcoins/water collector */
     sptIsContinuous?: boolean;
     /** Stores a list of tools used in this craft and whether they're FiR, to give back once the craft is done */
-    sptRequiredTools?: Item[];
+    sptRequiredTools?: IItem[];
     // Craft is cultist circle sacrifice
     sptIsCultistCircle?: boolean;
 }
@@ -402,7 +402,7 @@ export interface IScavCase extends IProductive {
 export interface IProduct {
     _id: string;
     _tpl: string;
-    upd?: Upd;
+    upd?: IUpd;
 }
 
 export interface IBotHideoutArea {
@@ -426,7 +426,7 @@ export interface IHideoutSlot {
 export interface IHideoutItem {
     _id: string;
     _tpl: string;
-    upd?: Upd;
+    upd?: IUpd;
 }
 
 export interface ILastCompleted {
@@ -436,8 +436,6 @@ export interface ILastCompleted {
 export interface INotes {
     Notes: INote[];
 }
-
-export type CarExtractCounts = {};
 
 export enum SurvivorClass {
     UNKNOWN = 0,

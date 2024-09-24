@@ -6,8 +6,8 @@ import { InventoryHelper } from "@spt/helpers/InventoryHelper";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { WeightedRandomHelper } from "@spt/helpers/WeightedRandomHelper";
 import { IInventory as PmcInventory } from "@spt/models/eft/common/tables/IBotBase";
-import { IBotType, Inventory, ModsChances } from "@spt/models/eft/common/tables/IBotType";
-import { Item } from "@spt/models/eft/common/tables/IItem";
+import { IBotType, IInventory, IModsChances } from "@spt/models/eft/common/tables/IBotType";
+import { IItem } from "@spt/models/eft/common/tables/IItem";
 import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
@@ -457,7 +457,7 @@ export class BotLootGenerator {
                 }
 
                 const newRootItemId = this.hashUtil.generate();
-                const itemWithChildrenToAdd: Item[] = [
+                const itemWithChildrenToAdd: IItem[] = [
                     {
                         _id: newRootItemId,
                         _tpl: itemToAddTemplate._id,
@@ -549,8 +549,8 @@ export class BotLootGenerator {
         }
     }
 
-    protected createWalletLoot(walletId: string): Item[][] {
-        const result: Item[][] = [];
+    protected createWalletLoot(walletId: string): IItem[][] {
+        const result: IItem[][] = [];
 
         // Choose how many stacks of currency will be added to wallet
         const itemCount = this.randomUtil.getInt(
@@ -584,7 +584,7 @@ export class BotLootGenerator {
      */
     protected addRequiredChildItemsToParent(
         itemToAddTemplate: ITemplateItem,
-        itemToAddChildrenTo: Item[],
+        itemToAddChildrenTo: IItem[],
         isPmc: boolean,
         botRole: string,
     ): void {
@@ -619,8 +619,8 @@ export class BotLootGenerator {
         sessionId: string,
         botInventory: PmcInventory,
         equipmentSlot: string,
-        templateInventory: Inventory,
-        modChances: ModsChances,
+        templateInventory: IInventory,
+        modChances: IModsChances,
         botRole: string,
         isPmc: boolean,
         botLevel: number,
@@ -739,7 +739,7 @@ export class BotLootGenerator {
      * @param itemTemplate item details from db
      * @param moneyItem Money item to randomise
      */
-    protected randomiseMoneyStackSize(botRole: string, itemTemplate: ITemplateItem, moneyItem: Item): void {
+    protected randomiseMoneyStackSize(botRole: string, itemTemplate: ITemplateItem, moneyItem: IItem): void {
         // Get all currency weights for this bot type
         let currencyWeights = this.botConfig.currencyStackSize[botRole];
         if (!currencyWeights) {
@@ -759,7 +759,7 @@ export class BotLootGenerator {
      * @param itemTemplate item details from db
      * @param ammoItem Ammo item to randomise
      */
-    protected randomiseAmmoStackSize(isPmc: boolean, itemTemplate: ITemplateItem, ammoItem: Item): void {
+    protected randomiseAmmoStackSize(isPmc: boolean, itemTemplate: ITemplateItem, ammoItem: IItem): void {
         const randomSize = this.itemHelper.getRandomisedAmmoStackSize(itemTemplate);
         this.itemHelper.addUpdObjectToItem(ammoItem);
 

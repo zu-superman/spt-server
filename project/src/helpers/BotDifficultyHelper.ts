@@ -1,5 +1,5 @@
 import { BotHelper } from "@spt/helpers/BotHelper";
-import { Difficulty } from "@spt/models/eft/common/tables/IBotType";
+import { IDifficultyCategories } from "@spt/models/eft/common/tables/IBotType";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { IBots } from "@spt/models/spt/bots/IBots";
 import { IPmcConfig } from "@spt/models/spt/config/IPmcConfig";
@@ -34,7 +34,7 @@ export class BotDifficultyHelper {
      * @param botDb bots from database
      * @returns Difficulty object
      */
-    public getBotDifficultySettings(type: string, difficulty: string, botDb: IBots): Difficulty {
+    public getBotDifficultySettings(type: string, difficulty: string, botDb: IBots): IDifficultyCategories {
         const desiredType = type.toLowerCase();
         const bot = botDb.types[desiredType];
         if (!bot) {
@@ -67,7 +67,7 @@ export class BotDifficultyHelper {
      * @param difficulty what difficulty to retrieve
      * @returns Difficulty object
      */
-    protected getDifficultySettings(type: string, difficulty: string): Difficulty {
+    protected getDifficultySettings(type: string, difficulty: string): IDifficultyCategories {
         let difficultySetting =
             this.pmcConfig.difficulty.toLowerCase() === "asonline"
                 ? difficulty

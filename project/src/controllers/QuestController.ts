@@ -6,7 +6,7 @@ import { QuestHelper } from "@spt/helpers/QuestHelper";
 import { TraderHelper } from "@spt/helpers/TraderHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { IQuestStatus } from "@spt/models/eft/common/tables/IBotBase";
-import { Item } from "@spt/models/eft/common/tables/IItem";
+import { IItem } from "@spt/models/eft/common/tables/IItem";
 import { IQuest, IQuestCondition } from "@spt/models/eft/common/tables/IQuest";
 import { IPmcDataRepeatableQuest, IRepeatableQuest } from "@spt/models/eft/common/tables/IRepeatableQuests";
 import { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRouterResponse";
@@ -594,7 +594,7 @@ export class QuestController {
         sessionID: string,
         pmcData: IPmcData,
         completedQuestId: string,
-        questRewards: Item[],
+        questRewards: IItem[],
     ): void {
         const quest = this.questHelper.getQuestFromDb(completedQuestId, pmcData);
 
@@ -855,7 +855,7 @@ export class QuestController {
      */
     protected showQuestItemHandoverMatchError(
         handoverQuestRequest: IHandoverQuestRequestData,
-        itemHandedOver: Item,
+        itemHandedOver: IItem,
         handoverRequirements: IQuestCondition,
         output: IItemEventRouterResponse,
     ): IItemEventRouterResponse {

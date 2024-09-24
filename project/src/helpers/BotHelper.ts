@@ -1,5 +1,5 @@
 import { MinMax } from "@spt/models/common/MinMax";
-import { Difficulty, IBotType } from "@spt/models/eft/common/tables/IBotType";
+import { IBotType, IDifficultyCategories } from "@spt/models/eft/common/tables/IBotType";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { EquipmentFilters, IBotConfig, RandomisationDetails } from "@spt/models/spt/config/IBotConfig";
 import { IPmcConfig } from "@spt/models/spt/config/IPmcConfig";
@@ -55,7 +55,7 @@ export class BotHelper {
      * @param difficultySettings bot settings to alter
      * @param typeToAdd bot type to add to friendly list
      */
-    public addBotToFriendlyList(difficultySettings: Difficulty, typeToAdd: string): void {
+    public addBotToFriendlyList(difficultySettings: IDifficultyCategories, typeToAdd: string): void {
         const friendlyBotTypesKey = "FRIENDLY_BOT_TYPES";
 
         // Null guard
@@ -71,7 +71,7 @@ export class BotHelper {
      * @param difficultySettings bot settings to alter
      * @param typesToAdd bot type to add to revenge list
      */
-    public addBotToRevengeList(difficultySettings: Difficulty, typesToAdd: string[]): void {
+    public addBotToRevengeList(difficultySettings: IDifficultyCategories, typesToAdd: string[]): void {
         const revengePropKey = "REVENGE_BOT_TYPES";
 
         // Nothing to add

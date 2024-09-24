@@ -1,11 +1,11 @@
-import { Mods } from "@spt/models/eft/common/tables/IBotType";
-import { Item } from "@spt/models/eft/common/tables/IItem";
+import { IMods } from "@spt/models/eft/common/tables/IBotType";
+import { IItem } from "@spt/models/eft/common/tables/IItem";
 import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
 
 export class GenerateWeaponResult {
-    weapon: Item[];
+    weapon: IItem[];
     chosenAmmoTpl: string;
     chosenUbglAmmoTpl: string;
-    weaponMods: Mods;
+    weaponMods: IMods;
     weaponTemplate: ITemplateItem;
 }

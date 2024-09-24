@@ -4,7 +4,7 @@ import { GiftSenderType } from "@spt/models/enums/GiftSenderType";
 import { GiftSentResult } from "@spt/models/enums/GiftSentResult";
 import { MessageType } from "@spt/models/enums/MessageType";
 import { Traders } from "@spt/models/enums/Traders";
-import { Gift, IGiftsConfig } from "@spt/models/spt/config/IGiftsConfig";
+import { IGift, IGiftsConfig } from "@spt/models/spt/config/IGiftsConfig";
 import { ISendMessageDetails } from "@spt/models/spt/dialog/ISendMessageDetails";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
@@ -39,7 +39,7 @@ export class GiftService {
         return !!this.giftConfig.gifts[giftId];
     }
 
-    public getGiftById(giftId: string): Gift {
+    public getGiftById(giftId: string): IGift {
         return this.giftConfig.gifts[giftId];
     }
 
@@ -47,7 +47,7 @@ export class GiftService {
      * Get dictionary of all gifts
      * @returns Dict keyed by gift id
      */
-    public getGifts(): Record<string, Gift> {
+    public getGifts(): Record<string, IGift> {
         return this.giftConfig.gifts;
     }
 
@@ -164,7 +164,7 @@ export class GiftService {
      * @param giftData Gift to send player
      * @returns trader/user/system id
      */
-    protected getSenderId(giftData: Gift): string | undefined {
+    protected getSenderId(giftData: IGift): string | undefined {
         if (giftData.sender === GiftSenderType.TRADER) {
             return Traders[giftData.trader];
         }
@@ -179,7 +179,7 @@ export class GiftService {
      * @param giftData Gift to send player
      * @returns MessageType enum value
      */
-    protected getMessageType(giftData: Gift): MessageType | undefined {
+    protected getMessageType(giftData: IGift): MessageType | undefined {
         switch (giftData.sender) {
             case GiftSenderType.SYSTEM:
                 return MessageType.SYSTEM_MESSAGE;

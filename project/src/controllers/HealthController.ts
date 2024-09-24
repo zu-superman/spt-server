@@ -2,7 +2,7 @@ import { HealthHelper } from "@spt/helpers/HealthHelper";
 import { InventoryHelper } from "@spt/helpers/InventoryHelper";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
-import { BodyPart, IHealthTreatmentRequestData } from "@spt/models/eft/health/IHealthTreatmentRequestData";
+import { IBodyPart, IHealthTreatmentRequestData } from "@spt/models/eft/health/IHealthTreatmentRequestData";
 import { IOffraidEatRequestData } from "@spt/models/eft/health/IOffraidEatRequestData";
 import { IOffraidHealRequestData } from "@spt/models/eft/health/IOffraidHealRequestData";
 import { ISyncHealthRequestData } from "@spt/models/eft/health/ISyncHealthRequestData";
@@ -169,7 +169,7 @@ export class HealthController {
 
         for (const bodyPartKey in healthTreatmentRequest.difference.BodyParts) {
             // Get body part from request + from pmc profile
-            const partRequest: BodyPart = healthTreatmentRequest.difference.BodyParts[bodyPartKey];
+            const partRequest: IBodyPart = healthTreatmentRequest.difference.BodyParts[bodyPartKey];
             const profilePart = pmcData.Health.BodyParts[bodyPartKey];
 
             // Bodypart healing is chosen when part request hp is above 0

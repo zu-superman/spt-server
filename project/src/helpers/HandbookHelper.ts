@@ -1,5 +1,5 @@
 import { IHandbookCategory } from "@spt/models/eft/common/tables/IHandbookBase";
-import { Item } from "@spt/models/eft/common/tables/IItem";
+import { IItem } from "@spt/models/eft/common/tables/IItem";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { Money } from "@spt/models/enums/Money";
 import { IItemConfig } from "@spt/models/spt/config/IItemConfig";
@@ -110,7 +110,7 @@ export class HandbookHelper {
         return handbookItem.Price;
     }
 
-    public getTemplatePriceForItems(items: Item[]): number {
+    public getTemplatePriceForItems(items: IItem[]): number {
         let total = 0;
         for (const item of items) {
             total += this.getTemplatePrice(item._tpl);

@@ -1,7 +1,7 @@
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { RagfairServerHelper } from "@spt/helpers/RagfairServerHelper";
-import { Item } from "@spt/models/eft/common/tables/IItem";
+import { IItem } from "@spt/models/eft/common/tables/IItem";
 import { IRagfairOffer } from "@spt/models/eft/ragfair/IRagfairOffer";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { IRagfairConfig } from "@spt/models/spt/config/IRagfairConfig";
@@ -86,8 +86,8 @@ export class RagfairOfferService {
      * Get an array of arrays of expired offer items + children
      * @returns Expired offer assorts
      */
-    public getExpiredOfferAssorts(): Item[][] {
-        const expiredItems: Item[][] = [];
+    public getExpiredOfferAssorts(): IItem[][] {
+        const expiredItems: IItem[][] = [];
 
         for (const expiredOfferId in this.expiredOffers) {
             const expiredOffer = this.expiredOffers[expiredOfferId];
@@ -277,8 +277,8 @@ export class RagfairOfferService {
      * @param items Offer items to unstack
      * @returns Unstacked array of items
      */
-    protected unstackOfferItems(items: Item[]): Item[] {
-        const result: Item[] = [];
+    protected unstackOfferItems(items: IItem[]): IItem[] {
+        const result: IItem[] = [];
         const rootItem = items[0];
         const itemDetails = this.itemHelper.getItem(rootItem._tpl);
         const itemMaxStackSize = itemDetails[1]._props.StackMaxSize ?? 1;

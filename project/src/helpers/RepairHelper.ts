@@ -1,4 +1,4 @@
-import { Item } from "@spt/models/eft/common/tables/IItem";
+import { IItem } from "@spt/models/eft/common/tables/IItem";
 import { ITemplateItem, Props } from "@spt/models/eft/common/tables/ITemplateItem";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { IRepairConfig } from "@spt/models/spt/config/IRepairConfig";
@@ -34,7 +34,7 @@ export class RepairHelper {
      * @param applyMaxDurabilityDegradation should item have max durability reduced
      */
     public updateItemDurability(
-        itemToRepair: Item,
+        itemToRepair: IItem,
         itemToRepairDetails: ITemplateItem,
         isArmor: boolean,
         amountToRepair: number,

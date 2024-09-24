@@ -7,7 +7,7 @@ import { PresetHelper } from "@spt/helpers/PresetHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { IBotHideoutArea, IProduct, IScavCase, ITaskConditionCounter } from "@spt/models/eft/common/tables/IBotBase";
-import { Item } from "@spt/models/eft/common/tables/IItem";
+import { IItem } from "@spt/models/eft/common/tables/IItem";
 import { HideoutUpgradeCompleteRequestData } from "@spt/models/eft/hideout/HideoutUpgradeCompleteRequestData";
 import { IHandleQTEEventRequestData } from "@spt/models/eft/hideout/IHandleQTEEventRequestData";
 import { IHideoutArea, Stage } from "@spt/models/eft/hideout/IHideoutArea";
@@ -353,7 +353,7 @@ export class HideoutController {
                 pmcData.Inventory.items.push(mannequinToAdd);
 
                 // Add pocket child item
-                const mannequinPocketItemToAdd: Item = {
+                const mannequinPocketItemToAdd: IItem = {
                     _id: this.hashUtil.generate(),
                     _tpl: pmcData.Inventory.items.find(
                         (item) => item.slotId === "Pockets" && item.parentId === pmcData.Inventory.equipment,
@@ -878,7 +878,7 @@ export class HideoutController {
         let hoursCrafting = counterHoursCrafting.value;
 
         /** Array of arrays of item + children */
-        let itemAndChildrenToSendToPlayer: Item[][] = [];
+        let itemAndChildrenToSendToPlayer: IItem[][] = [];
 
         // Reward is weapon/armor preset, handle differently compared to 'normal' items
         const rewardIsPreset = this.presetHelper.hasPreset(recipe.endProduct);
@@ -886,7 +886,7 @@ export class HideoutController {
             const defaultPreset = this.presetHelper.getDefaultPreset(recipe.endProduct);
 
             // Ensure preset has unique ids and is cloned so we don't alter the preset data stored in memory
-            const presetAndMods: Item[] = this.itemHelper.replaceIDs(defaultPreset._items);
+            const presetAndMods: IItem[] = this.itemHelper.replaceIDs(defaultPreset._items);
 
             this.itemHelper.remapRootItemId(presetAndMods);
 
@@ -897,7 +897,7 @@ export class HideoutController {
         const rewardIsStackable = this.itemHelper.isItemTplStackable(recipe.endProduct);
         if (rewardIsStackable) {
             // Create root item
-            const rewardToAdd: Item = {
+            const rewardToAdd: IItem = {
                 _id: this.hashUtil.generate(),
                 _tpl: recipe.endProduct,
                 upd: { StackObjectsCount: recipe.count },
@@ -918,7 +918,7 @@ export class HideoutController {
             // Start index at one so we ignore first item in array
             const countOfItemsToReward = recipe.count;
             for (let index = 1; index < countOfItemsToReward; index++) {
-                const itemAndMods: Item[] = this.itemHelper.replaceIDs(itemAndChildrenToSendToPlayer[0]);
+                const itemAndMods: IItem[] = this.itemHelper.replaceIDs(itemAndChildrenToSendToPlayer[0]);
                 itemAndChildrenToSendToPlayer.push(...[itemAndMods]);
             }
         }
@@ -933,7 +933,7 @@ export class HideoutController {
         }
 
         // Build an array of the tools that need to be returned to the player
-        const toolsToSendToPlayer: Item[][] = [];
+        const toolsToSendToPlayer: IItem[][] = [];
         const production = pmcData.Hideout.Production[prodId];
         if (production.sptRequiredTools?.length > 0) {
             for (const tool of production.sptRequiredTools) {

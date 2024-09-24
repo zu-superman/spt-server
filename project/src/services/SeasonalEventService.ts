@@ -3,7 +3,7 @@ import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { IConfig } from "@spt/models/eft/common/IGlobals";
 import { ILocation } from "@spt/models/eft/common/ILocation";
 import { IBossLocationSpawn } from "@spt/models/eft/common/ILocationBase";
-import { Inventory } from "@spt/models/eft/common/tables/IBotType";
+import { IInventory } from "@spt/models/eft/common/tables/IBotType";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { ItemTpl } from "@spt/models/enums/ItemTpl";
 import { Season } from "@spt/models/enums/Season";
@@ -258,7 +258,7 @@ export class SeasonalEventService {
      * @param botInventory Bots inventory to iterate over
      * @param botRole the role of the bot being processed
      */
-    public removeChristmasItemsFromBotInventory(botInventory: Inventory, botRole: string): void {
+    public removeChristmasItemsFromBotInventory(botInventory: IInventory, botRole: string): void {
         const christmasItems = this.getChristmasEventItems();
         const equipmentSlotsToFilter = ["FaceCover", "Headwear", "Backpack", "TacticalVest"];
         const lootContainersToFilter = ["Backpack", "Pockets", "TacticalVest"];

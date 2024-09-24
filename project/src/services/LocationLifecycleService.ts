@@ -10,7 +10,7 @@ import { TraderHelper } from "@spt/helpers/TraderHelper";
 import { ILocationBase } from "@spt/models/eft/common/ILocationBase";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { Common, IQuestStatus, ITraderInfo } from "@spt/models/eft/common/tables/IBotBase";
-import { Item } from "@spt/models/eft/common/tables/IItem";
+import { IItem } from "@spt/models/eft/common/tables/IItem";
 import { IEndLocalRaidRequestData, IEndRaidResult } from "@spt/models/eft/match/IEndLocalRaidRequestData";
 import { IStartLocalRaidRequestData } from "@spt/models/eft/match/IStartLocalRaidRequestData";
 import { IStartLocalRaidResponseData } from "@spt/models/eft/match/IStartLocalRaidResponseData";
@@ -456,7 +456,7 @@ export class LocationLifecycleService {
     protected sendCoopTakenFenceMessage(sessionId: string): void {
         // Generate reward for taking coop extract
         const loot = this.lootGenerator.createRandomLoot(this.traderConfig.fence.coopExtractGift);
-        const mailableLoot: Item[] = [];
+        const mailableLoot: IItem[] = [];
 
         const parentId = this.hashUtil.generate();
         for (const item of loot) {
@@ -694,7 +694,7 @@ export class LocationLifecycleService {
         this.btrItemDelivery(sessionId, Traders.BTR, itemsToSend);
     }
 
-    protected btrItemDelivery(sessionId: string, traderId: string, items: Item[]): void {
+    protected btrItemDelivery(sessionId: string, traderId: string, items: IItem[]): void {
         const serverProfile = this.saveServer.getProfile(sessionId);
         const pmcData = serverProfile.characters.pmc;
 
@@ -756,7 +756,7 @@ export class LocationLifecycleService {
      * @param items Players inventory to search through
      * @returns an array of equipped items
      */
-    protected getEquippedGear(items: Item[]): Item[] {
+    protected getEquippedGear(items: IItem[]): IItem[] {
         // Player Slots we care about
         const inventorySlots = [
             "FirstPrimaryWeapon",
@@ -781,7 +781,7 @@ export class LocationLifecycleService {
             "SpecialSlot3",
         ];
 
-        let inventoryItems: Item[] = [];
+        let inventoryItems: IItem[] = [];
 
         // Get an array of root player items
         for (const item of items) {
