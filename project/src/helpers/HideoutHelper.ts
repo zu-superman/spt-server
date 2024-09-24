@@ -2,7 +2,7 @@ import { InventoryHelper } from "@spt/helpers/InventoryHelper";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
-import { HideoutArea, IHideoutImprovement, Production, Productive } from "@spt/models/eft/common/tables/IBotBase";
+import { IBotHideoutArea, IHideoutImprovement, IProduction, IProductive } from "@spt/models/eft/common/tables/IBotBase";
 import { Item, Upd } from "@spt/models/eft/common/tables/IItem";
 import { IHideoutArea, StageBonus } from "@spt/models/eft/hideout/IHideoutArea";
 import { IHideoutContinuousProductionStartRequestData } from "@spt/models/eft/hideout/IHideoutContinuousProductionStartRequestData";
@@ -126,7 +126,7 @@ export class HideoutHelper {
         productionTime: number,
         needFuelForAllProductionTime: boolean,
         isCultistCircle = false,
-    ): Production {
+    ): IProduction {
         return {
             Progress: 0,
             inProgress: true,
@@ -148,8 +148,8 @@ export class HideoutHelper {
      * @param productive
      * @returns
      */
-    public isProductionType(productive: Productive): productive is Production {
-        return (productive as Production).Progress !== undefined || (productive as Production).RecipeId !== undefined;
+    public isProductionType(productive: IProductive): productive is IProduction {
+        return (productive as IProduction).Progress !== undefined || (productive as IProduction).RecipeId !== undefined;
     }
 
     /**
@@ -231,7 +231,7 @@ export class HideoutHelper {
         return hideoutProperties;
     }
 
-    protected doesWaterCollectorHaveFilter(waterCollector: HideoutArea): boolean {
+    protected doesWaterCollectorHaveFilter(waterCollector: IBotHideoutArea): boolean {
         // Can put filters in from L3
         if (waterCollector.level === 3) {
             // Has filter in at least one slot
@@ -396,7 +396,7 @@ export class HideoutHelper {
         this.flagCultistCircleCraftAsComplete(production);
     }
 
-    protected flagCultistCircleCraftAsComplete(production: Productive) {
+    protected flagCultistCircleCraftAsComplete(production: IProductive) {
         // Craft is complete, flas as such
         production.AvailableForFinish = true;
 
@@ -465,7 +465,7 @@ export class HideoutHelper {
      * @param pmcData Player profile
      * @param isGeneratorOn Is the generator turned on since last update
      */
-    protected updateFuel(generatorArea: HideoutArea, pmcData: IPmcData, isGeneratorOn: boolean): void {
+    protected updateFuel(generatorArea: IBotHideoutArea, pmcData: IPmcData, isGeneratorOn: boolean): void {
         // 1 resource last 14 min 27 sec, 1/14.45/60 = 0.00115
         // 10-10-2021 From wiki, 1 resource last 12 minutes 38 seconds, 1/12.63333/60 = 0.00131
         let fuelUsedSinceLastTick =
@@ -565,7 +565,7 @@ export class HideoutHelper {
     protected updateWaterCollector(
         sessionId: string,
         pmcData: IPmcData,
-        area: HideoutArea,
+        area: IBotHideoutArea,
         hideoutProperties: { btcFarmCGs: number; isGeneratorOn: boolean; waterCollectorHasFilter: boolean },
     ): void {
         // Skip water collector when not level 3 (cant collect until 3)
@@ -670,8 +670,8 @@ export class HideoutHelper {
      * @param pmcData Player profile
      */
     protected updateWaterFilters(
-        waterFilterArea: HideoutArea,
-        production: Production,
+        waterFilterArea: IBotHideoutArea,
+        production: IProduction,
         isGeneratorOn: boolean,
         pmcData: IPmcData,
     ): void {
@@ -837,7 +837,7 @@ export class HideoutHelper {
         };
     }
 
-    protected updateAirFilters(airFilterArea: HideoutArea, pmcData: IPmcData, isGeneratorOn: boolean): void {
+    protected updateAirFilters(airFilterArea: IBotHideoutArea, pmcData: IPmcData, isGeneratorOn: boolean): void {
         // 300 resources last 20 hrs, 300/20/60/60 = 0.00416
         /* 10-10-2021 from WIKI (https://escapefromtarkov.fandom.com/wiki/FP-100_filter_absorber)
             Lasts for 17 hours 38 minutes and 49 seconds (23 hours 31 minutes and 45 seconds with elite hideout management skill),
@@ -891,7 +891,7 @@ export class HideoutHelper {
 
     protected updateBitcoinFarm(
         pmcData: IPmcData,
-        btcProduction: Productive,
+        btcProduction: IProductive,
         btcFarmCGs: number,
         isGeneratorOn: boolean,
     ): void {
@@ -982,7 +982,7 @@ export class HideoutHelper {
      * @param btcProd Bitcoin production object
      * @param coinCraftTimeSeconds Time to craft a bitcoin
      */
-    protected addBtcToProduction(btcProd: Production, coinCraftTimeSeconds: number): void {
+    protected addBtcToProduction(btcProd: IProduction, coinCraftTimeSeconds: number): void {
         btcProd.Products.push({
             _id: this.hashUtil.generate(),
             _tpl: ItemTpl.BARTER_PHYSICAL_BITCOIN,
@@ -1113,8 +1113,8 @@ export class HideoutHelper {
         return productionTime * skillTimeReductionMultipler;
     }
 
-    public isProduction(productive: Productive): productive is Production {
-        return (productive as Production).Progress !== undefined || (productive as Production).RecipeId !== undefined;
+    public isProduction(productive: IProductive): productive is IProduction {
+        return (productive as IProduction).Progress !== undefined || (productive as IProduction).RecipeId !== undefined;
     }
 
     /**

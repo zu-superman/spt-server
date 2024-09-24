@@ -1,7 +1,7 @@
 import { NotificationSendHelper } from "@spt/helpers/NotificationSendHelper";
 import { WeightedRandomHelper } from "@spt/helpers/WeightedRandomHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
-import { Aggressor, Victim } from "@spt/models/eft/common/tables/IBotBase";
+import { IAggressor, IVictim } from "@spt/models/eft/common/tables/IBotBase";
 import { IUserDialogInfo } from "@spt/models/eft/profile/ISptProfile";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { MemberCategory } from "@spt/models/enums/MemberCategory";
@@ -43,7 +43,7 @@ export class PmcChatResponseService {
      * @param pmcVictims Array of bots killed by player
      * @param pmcData Player profile
      */
-    public sendVictimResponse(sessionId: string, pmcVictims: Victim[], pmcData: IPmcData): void {
+    public sendVictimResponse(sessionId: string, pmcVictims: IVictim[], pmcData: IPmcData): void {
         for (const victim of pmcVictims) {
             if (!this.randomUtil.getChance100(this.pmcResponsesConfig.victim.responseChancePercent)) {
                 continue;
@@ -68,7 +68,7 @@ export class PmcChatResponseService {
      * @param pmcData Players profile
      * @param killer The bot who killed the player
      */
-    public sendKillerResponse(sessionId: string, pmcData: IPmcData, killer: Aggressor): void {
+    public sendKillerResponse(sessionId: string, pmcData: IPmcData, killer: IAggressor): void {
         if (!killer) {
             return;
         }
@@ -240,7 +240,7 @@ export class PmcChatResponseService {
      * @param pmcVictims Possible victims to choose from
      * @returns IUserDialogInfo
      */
-    protected chooseRandomVictim(pmcVictims: Victim[]): IUserDialogInfo {
+    protected chooseRandomVictim(pmcVictims: IVictim[]): IUserDialogInfo {
         const randomVictim = this.randomUtil.getArrayValue(pmcVictims);
 
         return this.getVictimDetails(randomVictim);
@@ -251,7 +251,7 @@ export class PmcChatResponseService {
      * @param pmcVictim victim to convert
      * @returns IUserDialogInfo
      */
-    protected getVictimDetails(pmcVictim: Victim): IUserDialogInfo {
+    protected getVictimDetails(pmcVictim: IVictim): IUserDialogInfo {
         const categories = [
             MemberCategory.UNIQUE_ID,
             MemberCategory.DEFAULT,

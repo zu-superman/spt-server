@@ -1,6 +1,6 @@
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
-import { BanType, Common, CounterKeyValue, Stats } from "@spt/models/eft/common/tables/IBotBase";
+import { BanType, Common, ICounterKeyValue, IStats } from "@spt/models/eft/common/tables/IBotBase";
 import { ISptProfile } from "@spt/models/eft/profile/ISptProfile";
 import { IValidateNicknameRequestData } from "@spt/models/eft/profile/IValidateNicknameRequestData";
 import { AccountTypes } from "@spt/models/enums/AccountTypes";
@@ -276,7 +276,7 @@ export class ProfileHelper {
      * Get baseline counter values for a fresh profile
      * @returns Default profile Stats object
      */
-    public getDefaultCounters(): Stats {
+    public getDefaultCounters(): IStats {
         return {
             Eft: {
                 CarriedQuestItems: [],
@@ -388,7 +388,7 @@ export class ProfileHelper {
      * @param counters Counters to search for key
      * @param keyToIncrement Key
      */
-    public incrementStatCounter(counters: CounterKeyValue[], keyToIncrement: string): void {
+    public incrementStatCounter(counters: ICounterKeyValue[], keyToIncrement: string): void {
         const stat = counters.find((x) => x.Key.includes(keyToIncrement));
         if (stat) {
             stat.Value++;

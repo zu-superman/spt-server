@@ -1,5 +1,5 @@
 import { MinMax } from "@spt/models/common/MinMax";
-import { Skills } from "@spt/models/eft/common/tables/IBotBase";
+import { ISkills } from "@spt/models/eft/common/tables/IBotBase";
 
 export interface IBotType {
     appearance: Appearance;
@@ -11,7 +11,7 @@ export interface IBotType {
     health: Health;
     inventory: Inventory;
     lastName: string[];
-    skills: Skills;
+    skills: ISkills;
 }
 
 export interface Appearance {

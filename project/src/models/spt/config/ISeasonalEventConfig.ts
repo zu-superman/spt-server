@@ -1,4 +1,4 @@
-import { BossLocationSpawn } from "@spt/models/eft/common/ILocationBase";
+import { IBossLocationSpawn } from "@spt/models/eft/common/ILocationBase";
 import { SeasonalEventType } from "@spt/models/enums/SeasonalEventType";
 import { IBaseConfig } from "@spt/models/spt/config/IBaseConfig";
 
@@ -9,7 +9,7 @@ export interface ISeasonalEventConfig extends IBaseConfig {
     eventGear: Record<string, Record<string, Record<string, Record<string, number>>>>;
     events: ISeasonalEvent[];
     eventBotMapping: Record<string, string>;
-    eventBossSpawns: Record<string, Record<string, BossLocationSpawn[]>>;
+    eventBossSpawns: Record<string, Record<string, IBossLocationSpawn[]>>;
     gifterSettings: GifterSetting[];
 }
 

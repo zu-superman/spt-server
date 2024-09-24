@@ -1,5 +1,5 @@
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
-import { BodyPartsHealth, Health } from "@spt/models/eft/common/tables/IBotBase";
+import { IBodyPartsHealth, IHealth } from "@spt/models/eft/common/tables/IBotBase";
 import { ISyncHealthRequestData } from "@spt/models/eft/health/ISyncHealthRequestData";
 import { Effects, ISptProfile } from "@spt/models/eft/profile/ISptProfile";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
@@ -74,7 +74,7 @@ export class HealthHelper {
      */
     public updateProfileHealthPostRaid(
         pmcData: IPmcData,
-        postRaidHealth: Health,
+        postRaidHealth: IHealth,
         sessionID: string,
         isDead: boolean,
     ): void {
@@ -132,7 +132,7 @@ export class HealthHelper {
      * @param postRaidBodyParts Post-raid body part data
      * @param profileData Player profile on server
      */
-    protected transferPostRaidLimbEffectsToProfile(postRaidBodyParts: BodyPartsHealth, profileData: IPmcData): void {
+    protected transferPostRaidLimbEffectsToProfile(postRaidBodyParts: IBodyPartsHealth, profileData: IPmcData): void {
         // Iterate over each body part
         const effectsToIgnore = ["Dehydration", "Exhaustion"];
         for (const bodyPartId in postRaidBodyParts) {

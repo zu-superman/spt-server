@@ -5,7 +5,7 @@ import { HandbookHelper } from "@spt/helpers/HandbookHelper";
 import { InventoryHelper } from "@spt/helpers/InventoryHelper";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { WeightedRandomHelper } from "@spt/helpers/WeightedRandomHelper";
-import { Inventory as PmcInventory } from "@spt/models/eft/common/tables/IBotBase";
+import { IInventory as PmcInventory } from "@spt/models/eft/common/tables/IBotBase";
 import { IBotType, Inventory, ModsChances } from "@spt/models/eft/common/tables/IBotType";
 import { Item } from "@spt/models/eft/common/tables/IItem";
 import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";

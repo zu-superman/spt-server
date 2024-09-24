@@ -10,7 +10,7 @@ import {
     IStaticLootDetails,
 } from "@spt/models/eft/common/ILocation";
 import { ILocationBase } from "@spt/models/eft/common/ILocationBase";
-import { ILooseLoot, Spawnpoint, SpawnpointTemplate, SpawnpointsForced } from "@spt/models/eft/common/ILooseLoot";
+import { ILooseLoot, ISpawnpoint, ISpawnpointTemplate, ISpawnpointsForced } from "@spt/models/eft/common/ILooseLoot";
 import { Item } from "@spt/models/eft/common/tables/IItem";
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
@@ -71,9 +71,9 @@ export class LocationLootGenerator {
     public generateStaticContainers(
         locationBase: ILocationBase,
         staticAmmoDist: Record<string, IStaticAmmoDetails[]>,
-    ): SpawnpointTemplate[] {
+    ): ISpawnpointTemplate[] {
         let staticLootItemCount = 0;
-        const result: SpawnpointTemplate[] = [];
+        const result: ISpawnpointTemplate[] = [];
         const locationId = locationBase.Id.toLowerCase();
 
         const mapData = this.databaseService.getLocation(locationId);
@@ -575,9 +575,9 @@ export class LocationLootGenerator {
         dynamicLootDist: ILooseLoot,
         staticAmmoDist: Record<string, IStaticAmmoDetails[]>,
         locationName: string,
-    ): SpawnpointTemplate[] {
-        const loot: SpawnpointTemplate[] = [];
-        const dynamicForcedSpawnPoints: SpawnpointsForced[] = [];
+    ): ISpawnpointTemplate[] {
+        const loot: ISpawnpointTemplate[] = [];
+        const dynamicForcedSpawnPoints: ISpawnpointsForced[] = [];
 
         // Build the list of forced loot from both `spawnpointsForced` and any point marked `IsAlwaysSpawn`
         dynamicForcedSpawnPoints.push(...dynamicLootDist.spawnpointsForced);
@@ -598,10 +598,10 @@ export class LocationLootGenerator {
         );
 
         // Positions not in forced but have 100% chance to spawn
-        const guaranteedLoosePoints: Spawnpoint[] = [];
+        const guaranteedLoosePoints: ISpawnpoint[] = [];
 
         const blacklistedSpawnpoints = this.locationConfig.looseLootBlacklist[locationName];
-        const spawnpointArray = new ProbabilityObjectArray<string, Spawnpoint>(this.mathUtil, this.cloner);
+        const spawnpointArray = new ProbabilityObjectArray<string, ISpawnpoint>(this.mathUtil, this.cloner);
 
         for (const spawnpoint of allDynamicSpawnpoints) {
             // Point is blacklsited, skip
@@ -626,7 +626,7 @@ export class LocationLootGenerator {
 
         // Select a number of spawn points to add loot to
         // Add ALL loose loot with 100% chance to pool
-        let chosenSpawnpoints: Spawnpoint[] = [...guaranteedLoosePoints];
+        let chosenSpawnpoints: ISpawnpoint[] = [...guaranteedLoosePoints];
 
         const randomSpawnpointCount = desiredSpawnpointCount - chosenSpawnpoints.length;
         // Only draw random spawn points if needed
@@ -732,8 +732,8 @@ export class LocationLootGenerator {
      * @param locationName Name of map currently having force loot created for
      */
     protected addForcedLoot(
-        lootLocationTemplates: SpawnpointTemplate[],
-        forcedSpawnPoints: SpawnpointsForced[],
+        lootLocationTemplates: ISpawnpointTemplate[],
+        forcedSpawnPoints: ISpawnpointsForced[],
         locationName: string,
     ): void {
         const lootToForceSingleAmountOnMap = this.locationConfig.forcedLootSingleSpawnById[locationName];
@@ -752,7 +752,7 @@ export class LocationLootGenerator {
                 }
 
                 // Create probability array of all spawn positions for this spawn id
-                const spawnpointArray = new ProbabilityObjectArray<string, SpawnpointsForced>(
+                const spawnpointArray = new ProbabilityObjectArray<string, ISpawnpointsForced>(
                     this.mathUtil,
                     this.cloner,
                 );
@@ -824,7 +824,7 @@ export class LocationLootGenerator {
      */
     protected createDynamicLootItem(
         chosenComposedKey: string,
-        spawnPoint: Spawnpoint,
+        spawnPoint: ISpawnpoint,
         staticAmmoDist: Record<string, IStaticAmmoDetails[]>,
     ): IContainerItem {
         const chosenItem = spawnPoint.template.Items.find((item) => item._id === chosenComposedKey);

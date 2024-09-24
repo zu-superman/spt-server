@@ -8,7 +8,7 @@ import { PreSptModLoader } from "@spt/loaders/PreSptModLoader";
 import { IEmptyRequestData } from "@spt/models/eft/common/IEmptyRequestData";
 import { ILocation } from "@spt/models/eft/common/ILocation";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
-import { BodyPartHealth } from "@spt/models/eft/common/tables/IBotBase";
+import { IBodyPartHealth } from "@spt/models/eft/common/tables/IBotBase";
 import { ICheckVersionResponse } from "@spt/models/eft/game/ICheckVersionResponse";
 import { ICurrentGroupResponse } from "@spt/models/eft/game/ICurrentGroupResponse";
 import { IGameConfigResponse } from "@spt/models/eft/game/IGameConfigResponse";
@@ -669,7 +669,7 @@ export class GameController {
 
             // Check all body parts
             for (const bodyPartKey in pmcProfile.Health.BodyParts) {
-                const bodyPart = pmcProfile.Health.BodyParts[bodyPartKey] as BodyPartHealth;
+                const bodyPart = pmcProfile.Health.BodyParts[bodyPartKey] as IBodyPartHealth;
 
                 // Check part hp
                 if (bodyPart.Health.Current < bodyPart.Health.Maximum) {

@@ -6,7 +6,7 @@ import { PaymentHelper } from "@spt/helpers/PaymentHelper";
 import { PresetHelper } from "@spt/helpers/PresetHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
-import { HideoutArea, ITaskConditionCounter, Product, ScavCase } from "@spt/models/eft/common/tables/IBotBase";
+import { IBotHideoutArea, IProduct, IScavCase, ITaskConditionCounter } from "@spt/models/eft/common/tables/IBotBase";
 import { Item } from "@spt/models/eft/common/tables/IItem";
 import { HideoutUpgradeCompleteRequestData } from "@spt/models/eft/hideout/HideoutUpgradeCompleteRequestData";
 import { IHandleQTEEventRequestData } from "@spt/models/eft/hideout/IHandleQTEEventRequestData";
@@ -270,7 +270,7 @@ export class HideoutController {
         output: IItemEventRouterResponse,
         sessionID: string,
         pmcData: IPmcData,
-        profileParentHideoutArea: HideoutArea,
+        profileParentHideoutArea: IBotHideoutArea,
         dbHideoutArea: IHideoutArea,
         hideoutStage: Stage,
     ): void {
@@ -553,7 +553,7 @@ export class HideoutController {
         pmcData: IPmcData,
         removeResourceRequest: IHideoutTakeItemOutRequestData,
         output: IItemEventRouterResponse,
-        hideoutArea: HideoutArea,
+        hideoutArea: IBotHideoutArea,
     ): IItemEventRouterResponse {
         const slotIndexToRemove = removeResourceRequest.slots[0];
 
@@ -749,7 +749,7 @@ export class HideoutController {
      * @param rewards reward items to add to profile
      * @param recipeId recipe id to save into Production dict
      */
-    protected addScavCaseRewardsToProfile(pmcData: IPmcData, rewards: Product[], recipeId: string): void {
+    protected addScavCaseRewardsToProfile(pmcData: IPmcData, rewards: IProduct[], recipeId: string): void {
         pmcData.Hideout.Production[`ScavCase${recipeId}`] = { Products: rewards };
     }
 
@@ -1085,7 +1085,7 @@ export class HideoutController {
         for (const production of ongoingProductions) {
             if (this.hideoutHelper.isProductionType(production[1])) {
                 // Production or ScavCase
-                if ((production[1] as ScavCase).RecipeId === request.recipeId) {
+                if ((production[1] as IScavCase).RecipeId === request.recipeId) {
                     prodId = production[0]; // Set to objects key
                     break;
                 }

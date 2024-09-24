@@ -4,7 +4,7 @@ import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { TraderHelper } from "@spt/helpers/TraderHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
-import { Bonus, HideoutSlot } from "@spt/models/eft/common/tables/IBotBase";
+import { IBonus, IHideoutSlot } from "@spt/models/eft/common/tables/IBotBase";
 import { IPmcDataRepeatableQuest, IRepeatableQuest } from "@spt/models/eft/common/tables/IRepeatableQuests";
 import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
 import { StageBonus } from "@spt/models/eft/hideout/IHideoutArea";
@@ -328,7 +328,7 @@ export class ProfileFixerService {
         area.slots = this.addObjectsToArray(emptyItemCount, area.slots);
     }
 
-    protected addObjectsToArray(count: number, slots: HideoutSlot[]): HideoutSlot[] {
+    protected addObjectsToArray(count: number, slots: IHideoutSlot[]): IHideoutSlot[] {
         for (let i = 0; i < count; i++) {
             if (!slots.some((x) => x.locationIndex === i)) {
                 slots.push({ locationIndex: i });
@@ -632,7 +632,7 @@ export class ProfileFixerService {
      * @param bonus bonus to find
      * @returns matching bonus
      */
-    protected getBonusFromProfile(profileBonuses: Bonus[], bonus: StageBonus): Bonus | undefined {
+    protected getBonusFromProfile(profileBonuses: IBonus[], bonus: StageBonus): IBonus | undefined {
         // match by id first, used by "TextBonus" bonuses
         if (bonus.id) {
             return profileBonuses.find((x) => x.id === bonus.id);

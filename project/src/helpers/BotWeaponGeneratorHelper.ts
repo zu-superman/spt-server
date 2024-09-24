@@ -1,7 +1,7 @@
 import { BotGeneratorHelper } from "@spt/helpers/BotGeneratorHelper";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { WeightedRandomHelper } from "@spt/helpers/WeightedRandomHelper";
-import { Inventory } from "@spt/models/eft/common/tables/IBotBase";
+import { IInventory } from "@spt/models/eft/common/tables/IBotBase";
 import { GenerationData } from "@spt/models/eft/common/tables/IBotType";
 import { Item } from "@spt/models/eft/common/tables/IItem";
 import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
@@ -103,7 +103,7 @@ export class BotWeaponGeneratorHelper {
     public addAmmoIntoEquipmentSlots(
         ammoTpl: string,
         cartridgeCount: number,
-        inventory: Inventory,
+        inventory: IInventory,
         equipmentSlotsToAddTo: EquipmentSlots[] = [EquipmentSlots.TACTICAL_VEST, EquipmentSlots.POCKETS],
     ): void {
         const ammoItems = this.itemHelper.splitStack({

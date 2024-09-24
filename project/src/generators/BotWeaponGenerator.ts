@@ -6,7 +6,7 @@ import { BotWeaponGeneratorHelper } from "@spt/helpers/BotWeaponGeneratorHelper"
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { WeightedRandomHelper } from "@spt/helpers/WeightedRandomHelper";
 import { IPreset } from "@spt/models/eft/common/IGlobals";
-import { Inventory as PmcInventory } from "@spt/models/eft/common/tables/IBotBase";
+import { IInventory as PmcInventory } from "@spt/models/eft/common/tables/IBotBase";
 import { GenerationData, Inventory, ModsChances } from "@spt/models/eft/common/tables/IBotType";
 import { Item } from "@spt/models/eft/common/tables/IItem";
 import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";

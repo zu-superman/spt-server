@@ -9,9 +9,9 @@ import {
     IBaseJsonSkills,
     IBaseSkill,
     IBotBase,
-    Info,
-    Health as PmcHealth,
-    Skills as botSkills,
+    IInfo,
+    IHealth as PmcHealth,
+    ISkills as botSkills,
 } from "@spt/models/eft/common/tables/IBotBase";
 import { Appearance, BodyPart, Health, IBotType, Inventory } from "@spt/models/eft/common/tables/IBotType";
 import { Item, Upd } from "@spt/models/eft/common/tables/IItem";
@@ -516,7 +516,7 @@ export class BotGenerator {
      * @param botInfo bot info object to update
      * @returns Chosen game version
      */
-    protected setRandomisedGameVersionAndCategory(botInfo: Info): string {
+    protected setRandomisedGameVersionAndCategory(botInfo: IInfo): string {
         // Special case
         if (botInfo.Nickname?.toLowerCase() === "nikita") {
             botInfo.GameVersion = GameEditions.UNHEARD;

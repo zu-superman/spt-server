@@ -3,8 +3,8 @@ import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import {
     IHideoutImprovement,
     IMoneyTransferLimits,
-    Productive,
-    TraderInfo,
+    IProductive,
+    ITraderInfo,
 } from "@spt/models/eft/common/tables/IBotBase";
 import { ProfileChange, TraderData } from "@spt/models/eft/itemEvent/IItemEventRouterBase";
 import { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRouterResponse";
@@ -103,7 +103,7 @@ export class EventOutputHolder {
      * @param traderData server data for traders
      * @returns dict of trader id + TraderData
      */
-    protected constructTraderRelations(traderData: Record<string, TraderInfo>): Record<string, TraderData> {
+    protected constructTraderRelations(traderData: Record<string, ITraderInfo>): Record<string, TraderData> {
         const result: Record<string, TraderData> = {};
 
         for (const traderId in traderData) {
@@ -148,9 +148,9 @@ export class EventOutputHolder {
      * @returns dictionary of hideout productions
      */
     protected getProductionsFromProfileAndFlagComplete(
-        productions: Record<string, Productive>,
+        productions: Record<string, IProductive>,
         sessionId: string,
-    ): Record<string, Productive> | undefined {
+    ): Record<string, IProductive> | undefined {
         for (const productionKey in productions) {
             const production = productions[productionKey];
             if (!production) {
@@ -196,7 +196,7 @@ export class EventOutputHolder {
      * Required as continuous productions don't reset and stay at 100% completion but client thinks it hasn't started
      * @param productions Productions in a profile
      */
-    protected cleanUpCompleteCraftsInProfile(productions: Record<string, Productive>): void {
+    protected cleanUpCompleteCraftsInProfile(productions: Record<string, IProductive>): void {
         for (const productionKey in productions) {
             const production = productions[productionKey];
             if (production?.sptIsComplete && production?.sptIsContinuous) {

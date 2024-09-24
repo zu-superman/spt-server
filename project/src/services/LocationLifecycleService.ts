@@ -9,7 +9,7 @@ import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { TraderHelper } from "@spt/helpers/TraderHelper";
 import { ILocationBase } from "@spt/models/eft/common/ILocationBase";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
-import { Common, IQuestStatus, TraderInfo } from "@spt/models/eft/common/tables/IBotBase";
+import { Common, IQuestStatus, ITraderInfo } from "@spt/models/eft/common/tables/IBotBase";
 import { Item } from "@spt/models/eft/common/tables/IItem";
 import { IEndLocalRaidRequestData, IEndRaidResult } from "@spt/models/eft/match/IEndLocalRaidRequestData";
 import { IStartLocalRaidRequestData } from "@spt/models/eft/match/IStartLocalRaidRequestData";
@@ -661,8 +661,8 @@ export class LocationLifecycleService {
      * @param tradersClientProfile Client
      */
     protected applyTraderStandingAdjustments(
-        tradersServerProfile: Record<string, TraderInfo>,
-        tradersClientProfile: Record<string, TraderInfo>,
+        tradersServerProfile: Record<string, ITraderInfo>,
+        tradersClientProfile: Record<string, ITraderInfo>,
     ): void {
         for (const traderId in tradersClientProfile) {
             const serverProfileTrader = tradersServerProfile[traderId];

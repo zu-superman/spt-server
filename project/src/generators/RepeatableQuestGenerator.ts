@@ -1,8 +1,8 @@
 import { RepeatableQuestRewardGenerator } from "@spt/generators/RepeatableQuestRewardGenerator";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { RepeatableQuestHelper } from "@spt/helpers/RepeatableQuestHelper";
-import { Exit } from "@spt/models/eft/common/ILocationBase";
-import { TraderInfo } from "@spt/models/eft/common/tables/IBotBase";
+import { IExit } from "@spt/models/eft/common/ILocationBase";
+import { ITraderInfo } from "@spt/models/eft/common/tables/IBotBase";
 import { IQuestCondition, IQuestConditionCounterCondition } from "@spt/models/eft/common/tables/IQuest";
 import { IRepeatableQuest } from "@spt/models/eft/common/tables/IRepeatableQuests";
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
@@ -58,7 +58,7 @@ export class RepeatableQuestGenerator {
      */
     public generateRepeatableQuest(
         pmcLevel: number,
-        pmcTraderInfo: Record<string, TraderInfo>,
+        pmcTraderInfo: Record<string, ITraderInfo>,
         questTypePool: IQuestTypePool,
         repeatableConfig: IRepeatableQuestConfig,
     ): IRepeatableQuest {
@@ -748,7 +748,7 @@ export class RepeatableQuestGenerator {
      * @param playerSide Scav/Pmc
      * @returns Array of Exit objects
      */
-    protected getLocationExitsForSide(locationKey: string, playerSide: string): Exit[] {
+    protected getLocationExitsForSide(locationKey: string, playerSide: string): IExit[] {
         const mapExtracts = this.databaseService.getLocation(locationKey.toLocaleLowerCase()).allExtracts;
 
         return mapExtracts.filter((exit) => exit.Side === playerSide);
@@ -816,7 +816,7 @@ export class RepeatableQuestGenerator {
      * @param   {string}        exit                The exit name to generate the condition for
      * @returns {object}                            Exit condition
      */
-    protected generateExplorationExitCondition(exit: Exit): IQuestConditionCounterCondition {
+    protected generateExplorationExitCondition(exit: IExit): IQuestConditionCounterCondition {
         return { conditionType: "ExitName", exitName: exit.Name, id: this.objectId.generate(), dynamicLocale: true };
     }
 

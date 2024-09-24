@@ -6,7 +6,7 @@ import { PresetHelper } from "@spt/helpers/PresetHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { TraderAssortHelper } from "@spt/helpers/TraderAssortHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
-import { Inventory } from "@spt/models/eft/common/tables/IBotBase";
+import { IInventory } from "@spt/models/eft/common/tables/IBotBase";
 import { Item, Location, Upd } from "@spt/models/eft/common/tables/IItem";
 import { IAddItemDirectRequest } from "@spt/models/eft/inventory/IAddItemDirectRequest";
 import { IAddItemsDirectRequest } from "@spt/models/eft/inventory/IAddItemsDirectRequest";
@@ -345,7 +345,7 @@ export class InventoryHelper {
         stashFS2D: number[][],
         sortingTableFS2D: number[][],
         itemWithChildren: Item[],
-        playerInventory: Inventory,
+        playerInventory: IInventory,
         useSortingTable: boolean,
         output: IItemEventRouterResponse,
     ): void {

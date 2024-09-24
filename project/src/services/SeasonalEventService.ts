@@ -2,7 +2,7 @@ import { BotHelper } from "@spt/helpers/BotHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { IConfig } from "@spt/models/eft/common/IGlobals";
 import { ILocation } from "@spt/models/eft/common/ILocation";
-import { BossLocationSpawn } from "@spt/models/eft/common/ILocationBase";
+import { IBossLocationSpawn } from "@spt/models/eft/common/ILocationBase";
 import { Inventory } from "@spt/models/eft/common/tables/IBotType";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { ItemTpl } from "@spt/models/enums/ItemTpl";
@@ -390,7 +390,7 @@ export class SeasonalEventService {
             for (const boss of bossesToAdd) {
                 const locations = this.databaseService.getLocations();
 
-                const mapBosses: BossLocationSpawn[] = locations[mapKey].base.BossLocationSpawn;
+                const mapBosses: IBossLocationSpawn[] = locations[mapKey].base.BossLocationSpawn;
                 if (!mapBosses.some((bossSpawn) => bossSpawn.BossName === boss.BossName)) {
                     locations[mapKey].base.BossLocationSpawn.push(...bossesToAdd);
                 }

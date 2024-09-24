@@ -4,7 +4,7 @@ import { ContainerHelper } from "@spt/helpers/ContainerHelper";
 import { DurabilityLimitsHelper } from "@spt/helpers/DurabilityLimitsHelper";
 import { InventoryHelper } from "@spt/helpers/InventoryHelper";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
-import { Inventory } from "@spt/models/eft/common/tables/IBotBase";
+import { IInventory } from "@spt/models/eft/common/tables/IBotBase";
 import { Item, Repairable, Upd } from "@spt/models/eft/common/tables/IItem";
 import { Grid, ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
 import { IGetRaidConfigurationRequestData } from "@spt/models/eft/match/IGetRaidConfigurationRequestData";
@@ -412,7 +412,7 @@ export class BotGeneratorHelper {
         rootItemId: string,
         rootItemTplId: string,
         itemWithChildren: Item[],
-        inventory: Inventory,
+        inventory: IInventory,
         containersIdFull?: Set<string>,
     ): ItemAddedResult {
         /** Track how many containers are unable to be found */

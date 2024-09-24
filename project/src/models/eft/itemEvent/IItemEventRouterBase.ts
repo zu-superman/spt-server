@@ -1,4 +1,10 @@
-import { Health, IMoneyTransferLimits, IQuestStatus, Productive, Skills } from "@spt/models/eft/common/tables/IBotBase";
+import {
+    IHealth,
+    IMoneyTransferLimits,
+    IProductive,
+    IQuestStatus,
+    ISkills,
+} from "@spt/models/eft/common/tables/IBotBase";
 import { Item, Upd } from "@spt/models/eft/common/tables/IItem";
 import { IQuest } from "@spt/models/eft/common/tables/IQuest";
 import { IPmcDataRepeatableQuest } from "@spt/models/eft/common/tables/IRepeatableQuests";
@@ -27,11 +33,11 @@ export interface ProfileChange {
     weaponBuilds: IWeaponBuildChange[];
     equipmentBuilds: IEquipmentBuildChange[];
     items: ItemChanges;
-    production: Record<string, Productive>;
+    production: Record<string, IProductive>;
     /** Hideout area improvement id */
     improvements: Record<string, Improvement>;
-    skills: Skills;
-    health: Health;
+    skills: ISkills;
+    health: IHealth;
     traderRelations: Record<string, TraderData>;
     moneyTransferLimitData: IMoneyTransferLimits;
     repeatableQuests?: IPmcDataRepeatableQuest[];

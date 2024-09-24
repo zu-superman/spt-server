@@ -1,4 +1,4 @@
-import { Inventory as PmcInventory } from "@spt/models/eft/common/tables/IBotBase";
+import { IInventory as PmcInventory } from "@spt/models/eft/common/tables/IBotBase";
 import { Chances, Mods } from "@spt/models/eft/common/tables/IBotType";
 import { EquipmentFilters, RandomisationDetails } from "@spt/models/spt/config/IBotConfig";
 

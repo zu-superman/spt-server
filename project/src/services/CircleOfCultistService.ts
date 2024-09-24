@@ -4,7 +4,7 @@ import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { PresetHelper } from "@spt/helpers/PresetHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
-import { HideoutArea } from "@spt/models/eft/common/tables/IBotBase";
+import { IBotHideoutArea } from "@spt/models/eft/common/tables/IBotBase";
 import { Item } from "@spt/models/eft/common/tables/IItem";
 import { IStageRequirement } from "@spt/models/eft/hideout/IHideoutArea";
 import { IHideoutCircleOfCultistProductionStartRequestData } from "@spt/models/eft/hideout/IHideoutCircleOfCultistProductionStartRequestData";
@@ -538,7 +538,7 @@ export class CircleOfCultistService {
      * @param areas Hideout areas to iterate over
      * @returns Active area array
      */
-    protected getPlayerAccessibleHideoutAreas(areas: HideoutArea[]): HideoutArea[] {
+    protected getPlayerAccessibleHideoutAreas(areas: IBotHideoutArea[]): IBotHideoutArea[] {
         return areas.filter((area) => {
             if (area.type === HideoutAreas.CHRISTMAS_TREE && !this.seasonalEventService.christmasEventEnabled()) {
                 // Christmas tree area and not Christmas, skip

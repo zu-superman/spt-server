@@ -4,7 +4,7 @@ import { BotHelper } from "@spt/helpers/BotHelper";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
-import { IBotBase, Settings, Skills, Stats } from "@spt/models/eft/common/tables/IBotBase";
+import { IBotBase, IBotInfoSettings, ISkills, IStats } from "@spt/models/eft/common/tables/IBotBase";
 import { IBotType } from "@spt/models/eft/common/tables/IBotType";
 import { Item } from "@spt/models/eft/common/tables/IItem";
 import { AccountTypes } from "@spt/models/enums/AccountTypes";
@@ -89,7 +89,7 @@ export class PlayerScavGenerator {
         scavData.savage = undefined;
         scavData.aid = pmcDataClone.aid;
         scavData.TradersInfo = pmcDataClone.TradersInfo;
-        scavData.Info.Settings = {} as Settings;
+        scavData.Info.Settings = {} as IBotInfoSettings;
         scavData.Info.Bans = [];
         scavData.Info.RegistrationDate = pmcDataClone.Info.RegistrationDate;
         scavData.Info.GameVersion = pmcDataClone.Info.GameVersion;
@@ -262,7 +262,7 @@ export class PlayerScavGenerator {
         }
     }
 
-    protected getScavSkills(scavProfile: IPmcData): Skills {
+    protected getScavSkills(scavProfile: IPmcData): ISkills {
         if (scavProfile.Skills) {
             return scavProfile.Skills;
         }
@@ -270,11 +270,11 @@ export class PlayerScavGenerator {
         return this.getDefaultScavSkills();
     }
 
-    protected getDefaultScavSkills(): Skills {
+    protected getDefaultScavSkills(): ISkills {
         return { Common: [], Mastering: [], Points: 0 };
     }
 
-    protected getScavStats(scavProfile: IPmcData): Stats {
+    protected getScavStats(scavProfile: IPmcData): IStats {
         if (scavProfile.Stats) {
             return scavProfile.Stats;
         }
