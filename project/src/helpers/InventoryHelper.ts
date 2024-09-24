@@ -1148,6 +1148,28 @@ export class InventoryHelper {
             }
         }
     }
+
+    /**
+     * Does the provided item have a root item with the provided id
+     * @param pmcData Profile with items
+     * @param item Item to check
+     * @param rootId Root item id to check for
+     * @returns True when item has rootId, false when not
+     */
+    public doesItemHaveRootId(pmcData: IPmcData, item: IItem, rootId: string) {
+        let currentItem = item;
+        while (currentItem) {
+            // If we've found the equipment root ID, return true
+            if (currentItem._id === rootId) {
+                return true;
+            }
+
+            // Otherwise get the parent item
+            currentItem = pmcData.Inventory.items.find((item) => item._id === currentItem.parentId);
+        }
+
+        return false;
+    }
 }
 
 namespace InventoryHelper {

@@ -194,7 +194,11 @@ export class InRaidHelper {
             }
 
             // Pocket items are lost on death
-            if (item.slotId.startsWith("pocket")) {
+            // Ensure we dont pick up pocket items from manniquins
+            if (
+                item.slotId.startsWith("pocket") &&
+                this.inventoryHelper.doesItemHaveRootId(pmcProfile, item, pmcProfile.Inventory.equipment)
+            ) {
                 return true;
             }
 
