@@ -243,13 +243,13 @@ export class BotInventoryGenerator {
         // Bot has no armor vest and flagged to be forceed to wear armored rig in this event
         if (botEquipConfig.forceOnlyArmoredRigWhenNoArmor && !hasArmorVest) {
             // Filter rigs down to only those with armor
-            this.filterRigsToThoseWithProtection(templateInventory.equipment);
+            this.filterRigsToThoseWithProtection(templateInventory.equipment, botRole);
         }
 
         // Optimisation - Remove armored rigs from pool
         if (hasArmorVest) {
             // Filter rigs down to only those with armor
-            this.filterRigsToThoseWithoutProtection(templateInventory.equipment);
+            this.filterRigsToThoseWithoutProtection(templateInventory.equipment, botRole);
         }
 
         // Bot is flagged as always needing a vest
@@ -273,8 +273,9 @@ export class BotInventoryGenerator {
     /**
      * Remove non-armored rigs from parameter data
      * @param templateEquipment Equpiment to filter TacticalVest of
+     * @param botRole Role of bot vests are being filtered for
      */
-    protected filterRigsToThoseWithProtection(templateEquipment: Equipment): void {
+    protected filterRigsToThoseWithProtection(templateEquipment: Equipment, botRole: string): void {
         const tacVestsWithArmor = Object.entries(templateEquipment.TacticalVest).reduce(
             (newVestDictionary, [tplKey]) => {
                 if (this.itemHelper.itemHasSlots(tplKey)) {
@@ -285,14 +286,26 @@ export class BotInventoryGenerator {
             {},
         );
 
+        if (Object.keys(tacVestsWithArmor).length === 0) {
+            this.logger.debug(`Unable to filter to only armored rigs as bot: ${botRole} has none in pool`);
+
+            return;
+        }
+
         templateEquipment.TacticalVest = tacVestsWithArmor;
     }
 
     /**
      * Remove armored rigs from parameter data
      * @param templateEquipment Equpiment to filter TacticalVest of
+     * @param botRole Role of bot vests are being filtered for
+     * @param allowEmptyResult Should the function return all rigs when 0 unarmored are found
      */
-    protected filterRigsToThoseWithoutProtection(templateEquipment: Equipment): void {
+    protected filterRigsToThoseWithoutProtection(
+        templateEquipment: Equipment,
+        botRole: string,
+        allowEmptyResult = true,
+    ): void {
         const tacVestsWithoutArmor = Object.entries(templateEquipment.TacticalVest).reduce(
             (newVestDictionary, [tplKey]) => {
                 if (!this.itemHelper.itemHasSlots(tplKey)) {
@@ -302,6 +315,12 @@ export class BotInventoryGenerator {
             },
             {},
         );
+
+        if (!allowEmptyResult && Object.keys(tacVestsWithoutArmor).length === 0) {
+            this.logger.debug(`Unable to filter to only unarmored rigs as bot: ${botRole} has none in pool`);
+
+            return;
+        }
 
         templateEquipment.TacticalVest = tacVestsWithoutArmor;
     }
