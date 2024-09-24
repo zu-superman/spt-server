@@ -808,8 +808,8 @@
                     "Role": "pmcBEAR"
                 }
             ],
-            "bearEnemyChance": 85,
-            "usecEnemyChance": 100,
+            "bearEnemyChance": 100,
+            "usecEnemyChance": 85,
 			"savageEnemyChance": 95,
 			"savagePlayerBehaviour": "AlwaysEnemies"
         },
