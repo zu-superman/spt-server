@@ -178,7 +178,7 @@
       "TriggerName": ""
     },
     {
-      "BossChance": 100,
+      "BossChance": 35,
       "BossDifficult": "normal",
       "BossEscortAmount": "4",
       "BossEscortDifficult": "normal",
