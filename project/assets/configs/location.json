@@ -40,7 +40,104 @@
         "town": 1
     },
     "customWaves": {
-        "boss": {},
+        "boss": {
+            "bigmap": [{
+                    "sptId": "usecbigmap",
+                    "BossChance": 50,
+                    "BossDifficult": "normal",
+                    "BossEscortAmount": "0,0,2,2,2,1,1,1,1,1,0,2,3",
+                    "BossEscortDifficult": "normal",
+                    "BossEscortType": "pmcUSEC",
+                    "BossName": "pmcUSEC",
+                    "BossPlayer": false,
+                    "BossZone": "",
+                    "Delay": 0,
+                    "DependKarma": false,
+                    "DependKarmaPVE": false,
+                    "ForceSpawn": false,
+                    "IgnoreMaxBots": true,
+                    "RandomTimeSpawn": false,
+                    "SpawnMode": [
+                        "pve"
+                    ],
+                    "Supports": null,
+                    "Time": -1,
+                    "TriggerId": "",
+                    "TriggerName": ""
+                }, {
+                    "sptId": "bearbigmap",
+                    "BossChance": 50,
+                    "BossDifficult": "normal",
+                    "BossEscortAmount": "0,0,2,2,2,1,1,1,1,1,0,2,3",
+                    "BossEscortDifficult": "normal",
+                    "BossEscortType": "pmcBEAR",
+                    "BossName": "pmcBEAR",
+                    "BossPlayer": false,
+                    "BossZone": "",
+                    "Delay": 0,
+                    "DependKarma": false,
+                    "DependKarmaPVE": false,
+                    "ForceSpawn": false,
+                    "IgnoreMaxBots": true,
+                    "RandomTimeSpawn": false,
+                    "SpawnMode": [
+                        "pve"
+                    ],
+                    "Supports": null,
+                    "Time": -1,
+                    "TriggerId": "",
+                    "TriggerName": ""
+                }
+            ],
+            "woods": [{
+                    "sptId": "usecbigmap",
+                    "BossChance": 50,
+                    "BossDifficult": "normal",
+                    "BossEscortAmount": "0,0,2,2,2,1,1,1,1,1,1,2,3",
+                    "BossEscortDifficult": "normal",
+                    "BossEscortType": "pmcUSEC",
+                    "BossName": "pmcUSEC",
+                    "BossPlayer": false,
+                    "BossZone": "",
+                    "Delay": 0,
+                    "DependKarma": false,
+                    "DependKarmaPVE": false,
+                    "ForceSpawn": false,
+                    "IgnoreMaxBots": true,
+                    "RandomTimeSpawn": false,
+                    "SpawnMode": [
+                        "pve"
+                    ],
+                    "Supports": null,
+                    "Time": -1,
+                    "TriggerId": "",
+                    "TriggerName": ""
+                }, {
+                    "sptId": "bearbigmap",
+                    "BossChance": 50,
+                    "BossDifficult": "normal",
+                    "BossEscortAmount": "0,0,2,2,2,1,1,1,1,1,1,2,3",
+                    "BossEscortDifficult": "normal",
+                    "BossEscortType": "pmcBEAR",
+                    "BossName": "pmcBEAR",
+                    "BossPlayer": false,
+                    "BossZone": "",
+                    "Delay": 0,
+                    "DependKarma": false,
+                    "DependKarmaPVE": false,
+                    "ForceSpawn": false,
+                    "IgnoreMaxBots": true,
+                    "RandomTimeSpawn": false,
+                    "SpawnMode": [
+                        "pve"
+                    ],
+                    "Supports": null,
+                    "Time": -1,
+                    "TriggerId": "",
+                    "TriggerName": ""
+                }
+            ]
+        },
         "normal": {}
     },
     "openZones": {},
@@ -91,7 +188,7 @@
         ],
         "laboratory": ["6398a4cfb5992f573c6562b3", "64e74a44c2b4f829615ec334"],
         "sandbox": ["6575a6ca8778e96ded05a802", "6582bd252b50c61c565828e2"],
-		"factory4_day": ["591093bb86f7747caa7bb2ee"]
+        "factory4_day": ["591093bb86f7747caa7bb2ee"]
     },
     "splitWaveIntoSingleSpawnsSettings": {
         "enabled": true,
@@ -121,22 +218,19 @@
     "addCustomBotWavesToMaps": true,
     "enableBotTypeLimits": true,
     "botTypeLimits": {
-        "tarkovstreets": [
-            {
+        "tarkovstreets": [{
                 "type": "marksman",
                 "min": 2,
                 "max": 4
             }
         ],
-        "woods": [
-            {
+        "woods": [{
                 "type": "marksman",
                 "min": 2,
                 "max": 5
             }
         ],
-        "bigmap": [
-            {
+        "bigmap": [{
                 "type": "marksman",
                 "min": 2,
                 "max": 4
