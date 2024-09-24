@@ -560,6 +560,7 @@ export class LocationLifecycleService {
         pmcProfile.SurvivorClass = postRaidProfile.SurvivorClass;
         pmcProfile.Achievements = postRaidProfile.Achievements;
         pmcProfile.Quests = this.processPostRaidQuests(postRaidProfile.Quests);
+        pmcProfile.WishList = postRaidProfile.WishList;
 
         pmcProfile.Info.Experience = postRaidProfile.Info.Experience;
 
