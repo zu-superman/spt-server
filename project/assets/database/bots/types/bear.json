@@ -491,6 +491,7 @@
         "DOG_FIGHT_IN": 3,
         "DOG_FIGHT_OUT": 6,
         "ENEMY_BOT_TYPES": [],
+        "ENEMY_BY_GROUPS_SAVAGE_PLAYERS": true,
         "ENEMY_LOOK_AT_ME_ANG": 10,
         "FIND_COVER_TO_GET_POSITION_WITH_SHOOT": 2,
         "FOLLOWER_AND_BOSS_WARN_EQUAL_PRIORITY": true,
@@ -1008,6 +1009,7 @@
         "DOG_FIGHT_IN": 2,
         "DOG_FIGHT_OUT": 4,
         "ENEMY_BOT_TYPES": [],
+        "ENEMY_BY_GROUPS_SAVAGE_PLAYERS": true,
         "ENEMY_LOOK_AT_ME_ANG": 45,
         "FIND_COVER_TO_GET_POSITION_WITH_SHOOT": 2,
         "FOLLOWER_AND_BOSS_WARN_EQUAL_PRIORITY": true,
@@ -1523,6 +1525,7 @@
         "DOG_FIGHT_IN": 2,
         "DOG_FIGHT_OUT": 4,
         "ENEMY_BOT_TYPES": [],
+        "ENEMY_BY_GROUPS_SAVAGE_PLAYERS": true,
         "ENEMY_LOOK_AT_ME_ANG": 45,
         "FIND_COVER_TO_GET_POSITION_WITH_SHOOT": 2,
         "FOLLOWER_AND_BOSS_WARN_EQUAL_PRIORITY": true,
@@ -2038,6 +2041,7 @@
         "DOG_FIGHT_IN": 2,
         "DOG_FIGHT_OUT": 4,
         "ENEMY_BOT_TYPES": [],
+        "ENEMY_BY_GROUPS_SAVAGE_PLAYERS": true,
         "ENEMY_LOOK_AT_ME_ANG": 45,
         "FIND_COVER_TO_GET_POSITION_WITH_SHOOT": 2,
         "FOLLOWER_AND_BOSS_WARN_EQUAL_PRIORITY": true,
@@ -3587,6 +3591,11 @@
           "5c0d5ae286f7741e46554302"
         ]
       },
+      "544a38634bdc2d58388b4568": {
+        "mod_muzzle": [
+          "638612b607dfed1ccb7206ba"
+        ]
+      },
       "544a3a774bdc2d3a388b4567": {
         "mod_scope": [
           "58d268fc86f774111273f8c2"
@@ -4479,6 +4488,19 @@
           "5d6e68d1a4b93622fe60e845"
         ]
       },
+      "56ea7293d2720b8d4b8b45ba": {
+        "mod_scope": [
+          "577d128124597739d65d0e56",
+          "58d2664f86f7747fec5834f6",
+          "5a33b2c9c4a282000c5a9511"
+        ]
+      },
+      "56ea8180d2720bf2698b456a": {
+        "mod_muzzle": [
+          "57da93632459771cb65bf83f",
+          "57dbb57e2459774673234890"
+        ]
+      },
       "56ea8d2fd2720b7c698b4570": {
         "mod_sight_front": [
           "5ba26b01d4351e0085325a51",
@@ -4596,6 +4618,11 @@
           "5a3c16fe86f77452b62de32a",
           "5efb0e16aeb21837e749c7ff",
           "5c0d56a986f774449d5de529"
+        ]
+      },
+      "577d128124597739d65d0e56": {
+        "mod_scope": [
+          "577d141e24597739c5255e01"
         ]
       },
       "57838ad32459774a17445cd2": {
@@ -4729,6 +4756,17 @@
         "mod_sight_rear": [
           "57c44e7b2459772d28133248",
           "57838e1b2459774a256959b1"
+        ]
+      },
+      "57c69dd424597774c03b7bbc": {
+        "mod_scope": [
+          "5b2388675acfc4771e1be0be",
+          "5b3b99475acfc432ff4dcbee",
+          "5a37cb10c4a282329a73b4e7",
+          "57c5ac0824597754771e88a9",
+          "618ba27d9008e4636a67f61d",
+          "617151c1d92c473c770214ab",
+          "6567e7681265c8a131069b0f"
         ]
       },
       "57cffd8224597763b03fc609": {
@@ -4880,6 +4918,12 @@
         ],
         "mod_tactical_002": [
           "5a800961159bd4315e3a1657"
+        ]
+      },
+      "58272b842459774abc128d50": {
+        "mod_scope": [
+          "570fd79bd2720bc7458b4583",
+          "570fd6c2d2720bc6458b457f"
         ]
       },
       "583990e32459771419544dd2": {
@@ -5277,6 +5321,13 @@
       "58d2947e86f77447aa070d53": {
         "mod_stock": [
           "58d2912286f7744e27117493"
+        ]
+      },
+      "58d39b0386f77443380bf13c": {
+        "mod_scope": [
+          "61657230d92c473c770213d7",
+          "58d399e486f77442e0016fe7",
+          "5b3116595acfc40019476364"
         ]
       },
       "58d39d3d86f77445bb794ae7": {
@@ -5687,6 +5738,13 @@
       "59d6514b86f774171a068a08": {
         "mod_stock": [
           "5a0c59791526d8dba737bba7"
+        ]
+      },
+      "59db7eed86f77461f8380365": {
+        "mod_scope": [
+          "5c05293e0db83400232fff80",
+          "5c052a900db834001a66acbd",
+          "59db7e1086f77448be30ddf3"
         ]
       },
       "59e0bdb186f774156f04ce82": {
@@ -6162,12 +6220,32 @@
           "5a1eaa87fcdbcb001865f75e"
         ]
       },
+      "5a32aa0cc4a28232996e405f": {
+        "mod_scope": [
+          "5a32aa8bc4a2826c6e06d737"
+        ]
+      },
+      "5a33a8ebc4a282000c5a950d": {
+        "mod_scope": [
+          "58d39d3d86f77445bb794ae7",
+          "616554fe50224f204c1da2aa",
+          "615d8d878004cc50514c3233",
+          "577d128124597739d65d0e56",
+          "58d2664f86f7747fec5834f6",
+          "5a33b2c9c4a282000c5a9511"
+        ]
+      },
       "5a33b2c9c4a282000c5a9511": {
         "mod_scope": [
           "5a32aa8bc4a2826c6e06d737"
         ]
       },
       "5a33b652c4a28232996e407c": {
+        "mod_scope": [
+          "5a32aa8bc4a2826c6e06d737"
+        ]
+      },
+      "5a33bab6c4a28200741e22f8": {
         "mod_scope": [
           "5a32aa8bc4a2826c6e06d737"
         ]
@@ -6251,6 +6329,20 @@
         ],
         "mod_stock": [
           "5a33ca0fc4a282000d72292f"
+        ]
+      },
+      "5a37ca54c4a282000d72296a": {
+        "mod_scope_000": [
+          "5b2388675acfc4771e1be0be",
+          "5b3b99475acfc432ff4dcbee",
+          "5a37cb10c4a282329a73b4e7",
+          "57c5ac0824597754771e88a9",
+          "618ba27d9008e4636a67f61d",
+          "617151c1d92c473c770214ab",
+          "6567e7681265c8a131069b0f"
+        ],
+        "mod_scope_001": [
+          "58d268fc86f774111273f8c2"
         ]
       },
       "5a38e6bac4a2826c6e06d79b": {
@@ -6542,6 +6634,17 @@
           "5c0d56a986f774449d5de529"
         ]
       },
+      "5a7ad4af51dfba0013379717": {
+        "mod_scope": [
+          "57ae0171245977343c27bfcf",
+          "58d39d3d86f77445bb794ae7",
+          "616554fe50224f204c1da2aa",
+          "615d8d878004cc50514c3233",
+          "577d128124597739d65d0e56",
+          "58d2664f86f7747fec5834f6",
+          "5a33b2c9c4a282000c5a9511"
+        ]
+      },
       "5a7ad55551dfba0015068f42": {
         "mod_scope": [
           "57ae0171245977343c27bfcf"
@@ -6585,6 +6688,30 @@
           "5a3c16fe86f77452b62de32a",
           "5efb0e16aeb21837e749c7ff",
           "5c0d56a986f774449d5de529"
+        ]
+      },
+      "5a7b4900e899ef197b331a2a": {
+        "mod_scope": [
+          "57ae0171245977343c27bfcf",
+          "58d39d3d86f77445bb794ae7",
+          "616554fe50224f204c1da2aa",
+          "615d8d878004cc50514c3233",
+          "577d128124597739d65d0e56",
+          "58d2664f86f7747fec5834f6",
+          "5a33b652c4a28232996e407c",
+          "5a33b2c9c4a282000c5a9511"
+        ],
+        "mod_tactical": [
+          "5a800961159bd4315e3a1657",
+          "5cc9c20cd7f00c001336c65d",
+          "5d2369418abbc306c62e0c80",
+          "5b07dd285acfc4001754240d",
+          "56def37dd2720bec348b456a",
+          "5a7b483fe899ef0016170d15",
+          "5a5f1ce64f39f90b401987bc",
+          "560d657b4bdc2da74d8b4572",
+          "6272370ee4013c5d7e31f418",
+          "6272379924e29f06af4d5ecb"
         ]
       },
       "5a7c4850e899ef00150be885": {
@@ -6705,6 +6832,14 @@
         "mod_tactical": [
           "560d657b4bdc2da74d8b4572",
           "5a800961159bd4315e3a1657"
+        ]
+      },
+      "5aa66a9be5b5b0214e506e89": {
+        "mod_scope": [
+          "56ea70acd2720b844b8b4594",
+          "5aa66be6e5b5b0214e506e97",
+          "61714eec290d254f5e6b2ffc",
+          "62850c28da09541f43158cca"
         ]
       },
       "5aa66c72e5b5b00016327c93": {
@@ -7596,6 +7731,11 @@
         ]
       },
       "5ac66d9b5acfc4001633997a": {
+        "615d8f5dd92c473c770212ef": {
+          "mod_muzzle": [
+            "615d8f8567085e45ef1409ca"
+          ]
+        },
         "mod_gas_block": [
           "59c6633186f7740cf0493bb9",
           "59d64ec286f774171d1e0a42",
@@ -8060,7 +8200,8 @@
       },
       "5b2389515acfc4771e1be0c0": {
         "mod_scope_000": [
-          "5b2388675acfc4771e1be0be"
+          "5b2388675acfc4771e1be0be",
+          "5b3b99475acfc432ff4dcbee"
         ],
         "mod_scope_001": [
           "57ae0171245977343c27bfcf"
@@ -8100,9 +8241,32 @@
           "544909bb4bdc2d6f028b4577"
         ]
       },
+      "5b31163c5acfc400153b71cb": {
+        "mod_scope": [
+          "61657230d92c473c770213d7",
+          "58d399e486f77442e0016fe7",
+          "5b3116595acfc40019476364"
+        ]
+      },
       "5b363dea5acfc4771e1c5e7e": {
         "mod_muzzle": [
           "5b363dd25acfc4001a598fd2"
+        ]
+      },
+      "5b3b6dc75acfc47a8773fb1e": {
+        "mod_scope": [
+          "5b3b6e495acfc4330140bd88"
+        ]
+      },
+      "5b3b99265acfc4704b4a1afb": {
+        "mod_scope": [
+          "5b2388675acfc4771e1be0be",
+          "5b3b99475acfc432ff4dcbee",
+          "5a37cb10c4a282329a73b4e7",
+          "57c5ac0824597754771e88a9",
+          "618ba27d9008e4636a67f61d",
+          "617151c1d92c473c770214ab",
+          "6567e7681265c8a131069b0f"
         ]
       },
       "5b3f7bf05acfc433000ecf6b": {
@@ -9537,6 +9701,18 @@
           "5c0d5ae286f7741e46554302"
         ]
       },
+      "5c064c400db834001d23f468": {
+        "mod_scope": [
+          "57ac965c24597706be5f975c",
+          "57aca93d2459771f2c7e26db",
+          "544a3f024bdc2d1d388b4568",
+          "544a3a774bdc2d3a388b4567",
+          "5d2dc3e548f035404a1a4798",
+          "57adff4f24597737f373b6e6",
+          "5c0517910db83400232ffee5",
+          "591c4efa86f7741030027726"
+        ]
+      },
       "5c0672ed0db834001b7353f3": {
         "cartridges": [
           "5efb0da7a29a85116f6ea05f",
@@ -10229,6 +10405,11 @@
           "5fc2369685fd526b824a5713"
         ]
       },
+      "5c0fafb6d174af02a96260ba": {
+        "mod_muzzle": [
+          "638612b607dfed1ccb7206ba"
+        ]
+      },
       "5c17664f2e2216398b5a7e3c": {
         "mod_mount_000": [
           "59e0bed186f774156f04ce84"
@@ -10779,6 +10960,12 @@
           "61659f79d92c473c770213ee"
         ]
       },
+      "5c7d560b2e22160bc12c6139": {
+        "mod_scope": [
+          "61659f79d92c473c770213ee",
+          "5c7d55de2e221644f31bff68"
+        ]
+      },
       "5c7e5f112e221600106f4ede": {
         "mod_muzzle": [
           "5a34fe59c4a282000b1521a2"
@@ -10787,6 +10974,13 @@
       "5c82342f2e221644f31c060e": {
         "mod_tactical": [
           "57f3a5ae2459772b0e0bf19e"
+        ]
+      },
+      "5c86592b2e2216000e69e77c": {
+        "mod_scope": [
+          "56ea70acd2720b844b8b4594",
+          "5aa66be6e5b5b0214e506e97",
+          "61714eec290d254f5e6b2ffc"
         ]
       },
       "5c88f24b2e22160bc12c69a6": {
@@ -11090,7 +11284,15 @@
           "5cadd919ae921500126a77f3"
         ],
         "mod_sight_rear": [
-          "5cadd940ae9215051e1c2316"
+          "5cadd940ae9215051e1c2316",
+          "5cadd954ae921500103bb3c2"
+        ]
+      },
+      "5cadd954ae921500103bb3c2": {
+        "mod_scope": [
+          "577d128124597739d65d0e56",
+          "58d2664f86f7747fec5834f6",
+          "5a33b2c9c4a282000c5a9511"
         ]
       },
       "5cadfbf7ae92152ac412eeef": {
@@ -11698,6 +11900,28 @@
       "5d024f5cd7ad1a04a067e91a": {
         "mod_scope": [
           "570fd79bd2720bc7458b4583"
+        ]
+      },
+      "5d0a29ead7ad1a0026013f27": {
+        "mod_scope": [
+          "5d0a3a58d7ad1a669c15ca14",
+          "5d0a3e8cd7ad1a6f6a3d35bd"
+        ]
+      },
+      "5d0a29fed7ad1a002769ad08": {
+        "mod_scope": [
+          "5d0a3a58d7ad1a669c15ca14",
+          "5d0a3e8cd7ad1a6f6a3d35bd"
+        ]
+      },
+      "5d0a3a58d7ad1a669c15ca14": {
+        "mod_tactical": [
+          "5d0b5cd3d7ad1a3fe32ad263"
+        ]
+      },
+      "5d0a3e8cd7ad1a6f6a3d35bd": {
+        "mod_tactical": [
+          "5d0b5cd3d7ad1a3fe32ad263"
         ]
       },
       "5d120a10d7ad1a4e1026ba85": {
@@ -12608,6 +12832,11 @@
           "558022b54bdc2dac148b458d"
         ]
       },
+      "5dff77c759400025ea5150cf": {
+        "mod_scope": [
+          "5dff772da3651922b360bf91"
+        ]
+      },
       "5dff8db859400025ea5150d4": {
         "mod_scope": [
           "58491f3324597764bc48fa02"
@@ -12713,7 +12942,8 @@
       },
       "5e21ca18e4d47f0da15e77dd": {
         "mod_muzzle": [
-          "5c48a2a42e221602b66d1e07"
+          "5c48a2a42e221602b66d1e07",
+          "5c7e5f112e221600106f4ede"
         ]
       },
       "5e4abb5086f77406975c9342": {
@@ -13279,6 +13509,17 @@
           "5ea2a8e200685063ec28c05a"
         ]
       },
+      "5ef5d994dfbc9f3c660ded95": {
+        "mod_scope": [
+          "57ae0171245977343c27bfcf",
+          "58d39d3d86f77445bb794ae7",
+          "616554fe50224f204c1da2aa",
+          "615d8d878004cc50514c3233",
+          "577d128124597739d65d0e56",
+          "58d2664f86f7747fec5834f6",
+          "5a33b2c9c4a282000c5a9511"
+        ]
+      },
       "5efaf417aeb21837e749c7f2": {
         "mod_foregrip": [
           "5c1cd46f2e22164bef5cfedb"
@@ -13658,6 +13899,11 @@
           "626becf9582c3e319310b837",
           "644a3df63b0b6f03e101e065",
           "646f6322f43d0c5d62063715"
+        ]
+      },
+      "5f6372e2865db925d54f3869": {
+        "mod_muzzle": [
+          "5f6339d53ada5942720e2dc3"
         ]
       },
       "5fb64bc92b1b027b1f50bcf2": {
@@ -14598,6 +14844,11 @@
           "657040374e67e8ec7a0d261c"
         ]
       },
+      "609269c3b0e443224b421cc1": {
+        "mod_muzzle": [
+          "60926df0132d4d12c81fd9df"
+        ]
+      },
       "609a4b4fe2ff132951242d04": {
         "mod_scope": [
           "5c0517910db83400232ffee5",
@@ -14999,6 +15250,12 @@
           "619d36da53b4d42ee724fae4"
         ]
       },
+      "612e0cfc8004cc50514c2d9e": {
+        "mod_muzzle": [
+          "612e0e04568c120fdd294258",
+          "63877c99e785640d436458ea"
+        ]
+      },
       "612e0d3767085e45ef14057f": {
         "mod_muzzle": [
           "612e0e04568c120fdd294258"
@@ -15022,6 +15279,11 @@
           "616442e4faa1272e43152193"
         ]
       },
+      "615d8da4d3a39d50044c10e8": {
+        "mod_scope": [
+          "616442e4faa1272e43152193"
+        ]
+      },
       "615d8dbd290d254f5e6b2ed6": {
         "mod_mount": [
           "615d8da4d3a39d50044c10e8"
@@ -15034,6 +15296,26 @@
         ],
         "mod_sight_rear": [
           "5a6f5d528dc32e00094b97d9"
+        ]
+      },
+      "615d8f5dd92c473c770212ef": {
+        "mod_muzzle": [
+          "615d8f8567085e45ef1409ca"
+        ]
+      },
+      "616554fe50224f204c1da2aa": {
+        "mod_scope": [
+          "61657230d92c473c770213d7",
+          "58d399e486f77442e0016fe7",
+          "5b3116595acfc40019476364",
+          "58d39b0386f77443380bf13c"
+        ]
+      },
+      "616584766ef05c2ce828ef57": {
+        "mod_scope": [
+          "61659f79d92c473c770213ee",
+          "5c7d55de2e221644f31bff68",
+          "5c7d560b2e22160bc12c6139"
         ]
       },
       "6165ac306ef05c2ce828ef74": {
@@ -15209,6 +15491,13 @@
         ],
         "mod_scope_001": [
           "61714b2467085e45ef140b2c"
+        ],
+        "mod_scope_002": [
+          "57ae0171245977343c27bfcf",
+          "61605d88ffa6e502ac5e7eeb",
+          "58d39d3d86f77445bb794ae7",
+          "616554fe50224f204c1da2aa",
+          "615d8d878004cc50514c3233"
         ]
       },
       "6171407e50224f204c1da3c5": {
@@ -15266,10 +15555,12 @@
       },
       "61816734d8e3106d9806c1f3": {
         "mod_stock_001": [
-          "618167528004cc50514c34f9"
+          "618167528004cc50514c34f9",
+          "61825d136ef05c2ce828f1cc"
         ],
         "mod_stock_002": [
-          "618167441cb55961fa0fdc71"
+          "618167441cb55961fa0fdc71",
+          "61825d24d3a39d50044c13af"
         ]
       },
       "618167528004cc50514c34f9": {
@@ -15551,6 +15842,11 @@
         "mod_stock": [
           "61816734d8e3106d9806c1f3",
           "61825d06d92c473c770215de"
+        ]
+      },
+      "618a75c9a3884f56c957ca1b": {
+        "mod_scope": [
+          "618a75f0bd321d49084cd399"
         ]
       },
       "618b9643526131765025ab35": {
@@ -15928,7 +16224,37 @@
       },
       "622b4d7df9cfc87d675d2ded": {
         "mod_scope": [
-          "622efbcb99f4ea1a4d6c9a15"
+          "622efbcb99f4ea1a4d6c9a15",
+          "622efdf8ec80d870d349b4e5"
+        ]
+      },
+      "622efdf8ec80d870d349b4e5": {
+        "mod_scope": [
+          "570fd6c2d2720bc6458b457f",
+          "558022b54bdc2dac148b458d",
+          "58491f3324597764bc48fa02",
+          "584924ec24597768f12ae244",
+          "5b30b0dc5acfc400153b7124",
+          "6165ac8c290d254f5e6b2f6c",
+          "60a23797a37c940de7062d02",
+          "5d2da1e948f035477b1ce2ba",
+          "5c0505e00db834001b735073",
+          "609a63b6e2ff132951242d09",
+          "584984812459776a704a82a6",
+          "59f9d81586f7744c7506ee62",
+          "570fd721d2720bc5458b4596",
+          "57ae0171245977343c27bfcf",
+          "609bab8b455afd752b2e6138",
+          "61605d88ffa6e502ac5e7eeb",
+          "58d39d3d86f77445bb794ae7",
+          "616554fe50224f204c1da2aa",
+          "615d8d878004cc50514c3233",
+          "577d128124597739d65d0e56",
+          "58d2664f86f7747fec5834f6",
+          "61714b2467085e45ef140b2c",
+          "5a33b2c9c4a282000c5a9511",
+          "64785e7c19d732620e045e15",
+          "655f13e0a246670fb0373245"
         ]
       },
       "623063e994fc3f7b302a9696": {
@@ -16250,6 +16576,14 @@
         ],
         "mod_stock_000": [
           "62811f828193841aca4a45c3"
+        ]
+      },
+      "62811f461d5df4475f46a332": {
+        "mod_scope": [
+          "56ea70acd2720b844b8b4594",
+          "5aa66be6e5b5b0214e506e97",
+          "61714eec290d254f5e6b2ffc",
+          "62850c28da09541f43158cca"
         ]
       },
       "62811fbf09427b40ab14e767": {
@@ -16868,11 +17202,77 @@
           "630f2982cdb9e392db0cbcc7"
         ]
       },
+      "62e7c8f91cd3fde4d503d690": {
+        "mod_scope": [
+          "57ac965c24597706be5f975c",
+          "57aca93d2459771f2c7e26db",
+          "544a3f024bdc2d1d388b4568",
+          "544a3a774bdc2d3a388b4567"
+        ],
+        "mod_sight_front": [
+          "5ba26b01d4351e0085325a51",
+          "5dfa3d950dee1b22f862eae0",
+          "5c17804b2e2216152006c02f",
+          "5fb6567747ce63734e3fa1dc",
+          "5bc09a30d4351e00367fb7c8",
+          "5c18b90d2e2216152142466b",
+          "5fc0fa362770a0045c59c677",
+          "5894a73486f77426d259076c"
+        ],
+        "mod_sight_rear": [
+          "61817865d3a39d50044c13a4",
+          "5bb20e49d4351e3bac1212de",
+          "5ba26b17d4351e00367f9bdd",
+          "5dfa3d7ac41b2312ea33362a",
+          "5c1780312e221602b66cc189",
+          "5fb6564947ce63734e3fa1da",
+          "5bc09a18d4351e003562b68e",
+          "5c18b9192e2216398b5a8104",
+          "5fc0fa957283c4046c58147e",
+          "5894a81786f77427140b8347"
+        ]
+      },
       "62ea7c793043d74a0306e19f": {
         "mod_barrel": [
           "62e7c7f3c34ea971710c32fc",
           "630e39c3bd357927e4007c15",
           "6333f05d1bc0e6217a0e9d34"
+        ]
+      },
+      "62ebba1fb658e07ef9082b5a": {
+        "mod_scope": [
+          "57ac965c24597706be5f975c",
+          "57aca93d2459771f2c7e26db",
+          "544a3f024bdc2d1d388b4568",
+          "544a3a774bdc2d3a388b4567",
+          "5d2dc3e548f035404a1a4798"
+        ]
+      },
+      "62ebd290c427473eff0baafb": {
+        "mod_scope": [
+          "57ae0171245977343c27bfcf",
+          "58d39d3d86f77445bb794ae7",
+          "616554fe50224f204c1da2aa",
+          "577d128124597739d65d0e56",
+          "58d2664f86f7747fec5834f6",
+          "5a33b2c9c4a282000c5a9511",
+          "61605d88ffa6e502ac5e7eeb"
+        ],
+        "mod_tactical": [
+          "626becf9582c3e319310b837",
+          "5cc9c20cd7f00c001336c65d",
+          "57d17e212459775a1179a0f5",
+          "6272370ee4013c5d7e31f418",
+          "5d2369418abbc306c62e0c80",
+          "6272379924e29f06af4d5ecb",
+          "5b07dd285acfc4001754240d",
+          "5a7b483fe899ef0016170d15",
+          "56def37dd2720bec348b456a",
+          "5a5f1ce64f39f90b401987bc",
+          "560d657b4bdc2da74d8b4572",
+          "5b3a337e5acfc4704b4a19a0",
+          "5a800961159bd4315e3a1657",
+          "644a3df63b0b6f03e101e065"
         ]
       },
       "63088377b5cd696784087147": {
@@ -17092,6 +17492,13 @@
       "6386300124a1dc425c00577a": {
         "mod_stock": [
           "5a0c59791526d8dba737bba7"
+        ]
+      },
+      "638db77630c4240f9e06f8b6": {
+        "mod_scope": [
+          "57ae0171245977343c27bfcf",
+          "609bab8b455afd752b2e6138",
+          "58d39d3d86f77445bb794ae7"
         ]
       },
       "638de3603a1a4031d8260b8c": {
@@ -17362,6 +17769,11 @@
         ],
         "mod_sight_rear": [
           "5bb20e49d4351e3bac1212de"
+        ]
+      },
+      "63fc449f5bd61c6cf3784a88": {
+        "mod_scope": [
+          "63fc44e2429a8a166c7f61e6"
         ]
       },
       "6410733d5dd49d77bd07847e": {
@@ -18087,6 +18499,54 @@
           "5bb20e49d4351e3bac1212de"
         ]
       },
+      "6529348224cbe3c74a05e5c4": {
+        "mod_stock": [
+          "6529366450dc782999054ba0"
+        ]
+      },
+      "6529366450dc782999054ba0": {
+        "mod_stock_000": [
+          "5fc2369685fd526b824a5713",
+          "606587d11246154cad35d635",
+          "5a9eb32da2750c00171b3f9c",
+          "5bfe86df0db834001b734685",
+          "55d4ae6c4bdc2d8b2f8b456e",
+          "5c87a07c2e2216001219d4a2",
+          "5bb20e70d4351e0035629f8f",
+          "5beec8c20db834001d2c465c",
+          "5fbbaa86f9986c4cff3fe5f6",
+          "5fce16961f152d4312622bc9",
+          "5ae30c9a5acfc408fb139a03",
+          "5d135e83d7ad1a21b83f42d8",
+          "5d135ecbd7ad1a21c176542e",
+          "56eabf3bd2720b75698b4569",
+          "58d2946386f774496974c37e",
+          "58d2946c86f7744e271174b5",
+          "58d2947686f774485c6a1ee5",
+          "58d2947e86f77447aa070d53",
+          "5d44069ca4b9361ebd26fc37",
+          "5d4406a8a4b9361e4f6eb8b7",
+          "5947c73886f7747701588af5",
+          "5c793fde2e221601da358614",
+          "5b39f8db5acfc40016387a1b",
+          "628a85ee6b1d481ff772e9d5",
+          "602e620f9b513876d4338d9a",
+          "6529370c405a5f51dd023db8",
+          "6516e91f609aaf354b34b3e2",
+          "6516e971a3d4c6497930b450"
+        ]
+      },
+      "6567e751a715f85433025998": {
+        "mod_scope": [
+          "5b2388675acfc4771e1be0be",
+          "5b3b99475acfc432ff4dcbee",
+          "5a37cb10c4a282329a73b4e7",
+          "57c5ac0824597754771e88a9",
+          "618ba27d9008e4636a67f61d",
+          "617151c1d92c473c770214ab",
+          "6567e7681265c8a131069b0f"
+        ]
+      },
       "65719f0775149d62ce0a670b": {
         "Helmet_back": [
           "657fa168e9433140ad0baf8e"
@@ -18107,6 +18567,19 @@
         "mod_nvg": [
           "5c0558060db834001b735271",
           "5a16b8a9fcdbcb00165aa6ca"
+        ]
+      },
+      "65f1b1176dbd6c5ba2082eed": {
+        "mod_mount": [
+          "65f1b2a5c14a07890801fc70"
+        ]
+      },
+      "65f1b2a5c14a07890801fc70": {
+        "mod_scope": [
+          "57ac965c24597706be5f975c",
+          "57aca93d2459771f2c7e26db",
+          "544a3f024bdc2d1d388b4568",
+          "544a3a774bdc2d3a388b4567"
         ]
       },
       "65fb023261d5829b2d090755": {
