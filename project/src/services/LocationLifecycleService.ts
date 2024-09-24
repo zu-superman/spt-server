@@ -292,7 +292,7 @@ export class LocationLifecycleService {
 
         this.logger.debug(`Raid outcome: ${request.results.result}`);
 
-        // Set flea interval time to out-of-raid value
+        // Reset flea interval time to out-of-raid value
         this.ragfairConfig.runIntervalSeconds = this.ragfairConfig.runIntervalValues.outOfRaid;
         this.hideoutConfig.runIntervalSeconds = this.hideoutConfig.runIntervalValues.outOfRaid;
 
@@ -304,6 +304,9 @@ export class LocationLifecycleService {
         const mapBase = this.databaseService.getLocation(locationName).base;
         const isDead = this.isPlayerDead(request.results);
         const isSurvived = this.isPlayerSurvived(request.results);
+
+        // Handle items transferred via BTR to player
+        this.handleBTRItemTransferEvent(sessionId, request);
 
         if (!isPmc) {
             this.handlePostRaidPlayerScav(sessionId, pmcProfile, scavProfile, isDead, request);
@@ -612,9 +615,6 @@ export class LocationLifecycleService {
             this.pmcChatResponseService.sendVictimResponse(sessionId, victims, pmcProfile);
         }
 
-        // Handle items transferred via BTR to player
-        this.handleBTRItemTransferEvent(sessionId, request);
-
         this.handleInsuredItemLostEvent(sessionId, pmcProfile, request, locationName);
     }
 
@@ -685,13 +685,13 @@ export class LocationLifecycleService {
      * @param request End raid request
      */
     protected handleBTRItemTransferEvent(sessionId: string, request: IEndLocalRaidRequestData): void {
-        const btrKey = "BTRTransferStash";
-        const btrContainerAndItems = request.transferItems[btrKey] ?? [];
-        if (btrContainerAndItems.length === 0) {
+        let itemsToSend = request.transferItems[Traders.BTR] ?? [];
+        if (itemsToSend.length === 0) {
             return;
         }
 
-        const itemsToSend = btrContainerAndItems.filter((item) => item._id !== btrKey);
+        // Filter out the btr container item from transferred items before delivering
+        itemsToSend = itemsToSend.filter((item) => item._id !== Traders.BTR);
         this.btrItemDelivery(sessionId, Traders.BTR, itemsToSend);
     }
 
