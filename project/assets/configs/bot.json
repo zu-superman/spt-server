@@ -660,7 +660,6 @@
             "lightIsActiveDayChancePercent": 25,
             "lightIsActiveNightChancePercent": 75,
             "laserIsActiveChancePercent": 75,
-            "forceOnlyArmoredRigWhenNoArmor": true,
             "forceStock": true,
             "weaponModLimits": {
                 "scopeLimit": 1,
