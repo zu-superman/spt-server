@@ -53,33 +53,34 @@ export class SptDialogueChatBot implements IDialogueChatBot {
         const sender = this.profileHelper.getPmcProfile(sessionId);
 
         const sptFriendUser = this.getChatBot();
-
-        const giftSent = this.giftService.sendGiftToPlayer(sessionId, request.text);
-
         const requestInput = request.text.toLowerCase();
 
-        if (giftSent === GiftSentResult.SUCCESS) {
-            this.mailSendService.sendUserMessageToPlayer(
-                sessionId,
-                sptFriendUser,
-                this.randomUtil.getArrayValue([
-                    "Hey! you got the right code!",
-                    "A secret code, how exciting!",
-                    "You found a gift code!",
-                ]),
-            );
+        // only check if entered text is gift code when feature enabled
+        if (this.coreConfig.features.chatbotFeatures.sptFriendGiftsEnabled) {
+            const giftSent = this.giftService.sendGiftToPlayer(sessionId, request.text);
+            if (giftSent === GiftSentResult.SUCCESS) {
+                this.mailSendService.sendUserMessageToPlayer(
+                    sessionId,
+                    sptFriendUser,
+                    this.randomUtil.getArrayValue([
+                        "Hey! you got the right code!",
+                        "A secret code, how exciting!",
+                        "You found a gift code!",
+                    ]),
+                );
 
-            return;
-        }
+                return;
+            }
 
-        if (giftSent === GiftSentResult.FAILED_GIFT_ALREADY_RECEIVED) {
-            this.mailSendService.sendUserMessageToPlayer(
-                sessionId,
-                sptFriendUser,
-                this.randomUtil.getArrayValue(["Looks like you already used that code", "You already have that!!"]),
-            );
+            if (giftSent === GiftSentResult.FAILED_GIFT_ALREADY_RECEIVED) {
+                this.mailSendService.sendUserMessageToPlayer(
+                    sessionId,
+                    sptFriendUser,
+                    this.randomUtil.getArrayValue(["Looks like you already used that code", "You already have that!!"]),
+                );
 
-            return;
+                return;
+            }
         }
 
         if (requestInput.includes("love you")) {

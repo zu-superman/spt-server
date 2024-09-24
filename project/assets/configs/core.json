@@ -23,6 +23,7 @@
         "compressProfile": false,
         "chatbotFeatures": {
             "sptFriendEnabled": true,
+			"sptFriendGiftsEnabled": true,
             "commandoEnabled": true,
             "commandoFeatures": {
                 "giveCommandEnabled": true
