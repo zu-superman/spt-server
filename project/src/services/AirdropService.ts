@@ -91,16 +91,18 @@ export class AirdropService {
         };
 
         switch (airdropType) {
-            case AirdropTypeEnum.MEDICAL:
+            case AirdropTypeEnum.FOOD_MEDICAL:
                 airdropContainer._tpl = ItemTpl.LOOTCONTAINER_AIRDROP_MEDICAL_CRATE;
                 break;
             case AirdropTypeEnum.SUPPLY:
                 airdropContainer._tpl = ItemTpl.LOOTCONTAINER_AIRDROP_SUPPLY_CRATE;
                 break;
-            case AirdropTypeEnum.WEAPON:
+            case AirdropTypeEnum.WEAPON_ARMOR:
                 airdropContainer._tpl = ItemTpl.LOOTCONTAINER_AIRDROP_WEAPON_CRATE;
                 break;
             case AirdropTypeEnum.COMMON:
+                airdropContainer._tpl = ItemTpl.LOOTCONTAINER_AIRDROP_COMMON_SUPPLY_CRATE;
+                break;
             default:
                 airdropContainer._tpl = ItemTpl.LOOTCONTAINER_AIRDROP_COMMON_SUPPLY_CRATE;
                 break;
