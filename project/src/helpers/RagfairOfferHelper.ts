@@ -15,13 +15,14 @@ import { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRo
 import { ISptProfile, ISystemData } from "@spt/models/eft/profile/ISptProfile";
 import { IRagfairOffer } from "@spt/models/eft/ragfair/IRagfairOffer";
 import { ISearchRequestData, OfferOwnerType } from "@spt/models/eft/ragfair/ISearchRequestData";
+import { BaseClasses } from "@spt/models/enums/BaseClasses";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { MemberCategory } from "@spt/models/enums/MemberCategory";
 import { MessageType } from "@spt/models/enums/MessageType";
 import { RagfairSort } from "@spt/models/enums/RagfairSort";
 import { Traders } from "@spt/models/enums/Traders";
 import { IQuestConfig } from "@spt/models/spt/config/IQuestConfig";
-import { IRagfairConfig } from "@spt/models/spt/config/IRagfairConfig";
+import { IRagfairConfig, ITieredFlea } from "@spt/models/spt/config/IRagfairConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { EventOutputHolder } from "@spt/routers/EventOutputHolder";
 import { ConfigServer } from "@spt/servers/ConfigServer";
@@ -85,12 +86,14 @@ export class RagfairOfferHelper {
         pmcData: IPmcData,
     ): IRagfairOffer[] {
         const playerIsFleaBanned = this.profileHelper.playerIsFleaBanned(pmcData);
+        const tieredFlea = this.ragfairConfig.tieredFlea;
+        const tieredFleaLimitTypes = Object.keys(tieredFlea.unlocks);
         return this.ragfairOfferService.getOffers().filter((offer) => {
             if (!this.passesSearchFilterCriteria(searchRequest, offer, pmcData)) {
                 return false;
             }
 
-            return this.isDisplayableOffer(
+            const isDisplayable = this.isDisplayableOffer(
                 searchRequest,
                 itemsToAdd,
                 traderAssorts,
@@ -98,7 +101,51 @@ export class RagfairOfferHelper {
                 pmcData,
                 playerIsFleaBanned,
             );
+
+            if (!isDisplayable) {
+                return false;
+            }
+
+            // Not trader offer + tiered flea enabled
+            if (tieredFlea.enabled && offer.user.memberType !== MemberCategory.TRADER) {
+                if (
+                    this.offerIsHiddenFromPlayerTieredFlea(tieredFlea, offer, tieredFleaLimitTypes, pmcData.Info.Level)
+                ) {
+                    return false;
+                }
+            }
+
+            return true;
         });
+    }
+
+    protected offerIsHiddenFromPlayerTieredFlea(
+        tieredFlea: ITieredFlea,
+        offer: IRagfairOffer,
+        tieredFleaLimitTypes: string[],
+        playerLevel: number,
+    ): boolean {
+        if (tieredFlea.ammoTplUnlocks && this.itemHelper.isOfBaseclass(offer.items[0]._tpl, BaseClasses.AMMO)) {
+            const unlockLevel = tieredFlea.ammoTplUnlocks[offer.items[0]._tpl];
+            if (unlockLevel && playerLevel < unlockLevel) {
+                return true;
+            }
+        }
+        // Optimisation - Ensure the item has at least one of the limited base types
+        else if (this.itemHelper.isOfBaseclasses(offer.items[0]._tpl, tieredFleaLimitTypes)) {
+            // Loop over all flea types to find the matching one
+            for (const tieredItemType of tieredFleaLimitTypes) {
+                if (this.itemHelper.isOfBaseclass(offer.items[0]._tpl, tieredItemType)) {
+                    if (playerLevel < tieredFlea.unlocks[tieredItemType]) {
+                        return true;
+                    }
+
+                    break;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -110,9 +157,20 @@ export class RagfairOfferHelper {
     public getOffersThatRequireItem(searchRequest: ISearchRequestData, pmcData: IPmcData): IRagfairOffer[] {
         // Get all offers that requre the desired item and filter out offers from non traders if player below ragifar unlock
         const requiredOffers = this.ragfairRequiredItemsService.getRequiredItemsById(searchRequest.neededSearchId);
+        const tieredFlea = this.ragfairConfig.tieredFlea;
+        const tieredFleaLimitTypes = Object.keys(tieredFlea.unlocks);
+
         return requiredOffers.filter((offer: IRagfairOffer) => {
             if (!this.passesSearchFilterCriteria(searchRequest, offer, pmcData)) {
                 return false;
+            }
+
+            if (tieredFlea.enabled && offer.user.memberType !== MemberCategory.TRADER) {
+                if (
+                    this.offerIsHiddenFromPlayerTieredFlea(tieredFlea, offer, tieredFleaLimitTypes, pmcData.Info.Level)
+                ) {
+                    return false;
+                }
             }
 
             return true;
@@ -136,6 +194,9 @@ export class RagfairOfferHelper {
         const offersMap = new Map<string, IRagfairOffer[]>();
         const offers: IRagfairOffer[] = [];
         const playerIsFleaBanned = this.profileHelper.playerIsFleaBanned(pmcData);
+        const tieredFlea = this.ragfairConfig.tieredFlea;
+        const tieredFleaLimitTypes = Object.keys(tieredFlea.unlocks);
+
         for (const offer of this.ragfairOfferService.getOffers()) {
             if (!this.passesSearchFilterCriteria(searchRequest, offer, pmcData)) {
                 continue;
@@ -158,6 +219,19 @@ export class RagfairOfferHelper {
 
                 if (isTraderOffer && this.traderOfferLockedBehindLoyaltyLevel(offer, pmcData)) {
                     continue;
+                }
+
+                if (tieredFlea.enabled && offer.user.memberType !== MemberCategory.TRADER) {
+                    if (
+                        this.offerIsHiddenFromPlayerTieredFlea(
+                            tieredFlea,
+                            offer,
+                            tieredFleaLimitTypes,
+                            pmcData.Info.Level,
+                        )
+                    ) {
+                        continue;
+                    }
                 }
 
                 const key = offer.items[0]._tpl;
