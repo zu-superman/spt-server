@@ -16,6 +16,7 @@ export interface ITraderServices {
     PlayerTaxi: ITraderService;
     BtrItemsDelivery: ITraderService;
     BtrBotCover: ITraderService;
+    TransitItemsDelivery: ITraderService;
 }
 
 export interface ITraderService {

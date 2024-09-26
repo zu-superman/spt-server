@@ -130,6 +130,8 @@ export class BotController {
 
             const botDetails = botTypesDb[botType];
             if (!botDetails?.difficulty) {
+                this.logger.warning(`Unable to find bot: ${botType} difficulty values`);
+
                 continue;
             }
 

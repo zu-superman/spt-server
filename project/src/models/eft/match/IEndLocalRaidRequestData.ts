@@ -10,7 +10,7 @@ export interface IEndLocalRaidRequestData {
     lostInsuredItems: IItem[];
     /** Items sent via traders to player, keyed to service e.g. BTRTransferStash */
     transferItems: Record<string, IItem[]>;
-    locationTransit: any;
+    locationTransit: ILocationTransit;
 }
 
 export interface IEndRaidResult {
@@ -23,4 +23,22 @@ export interface IEndRaidResult {
     inSession: boolean;
     favorite: boolean;
     playTime: number;
+}
+
+export interface ILocationTransit {
+    hash: string;
+    playersCount: number;
+    ip: string;
+    location: string;
+    profiles: Record<string, ITransitProfile>;
+    transitionRaidId: string;
+    raidMode: string;
+    side: string;
+    dayTime: string;
+}
+
+export interface ITransitProfile {
+    _id: string;
+    keyId: string;
+    isSolo: boolean;
 }

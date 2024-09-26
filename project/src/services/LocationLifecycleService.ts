@@ -97,6 +97,12 @@ export class LocationLifecycleService {
             serverSettings: this.databaseService.getLocationServices(), // TODO - is this per map or global?
             profile: { insuredItems: playerProfile.InsuredItems },
             locationLoot: this.generateLocationAndLoot(request.location),
+            transition: {
+                isLocationTransition: false,
+                transitionRaidId: "66f5750951530ca5ae09876d",
+                transitionCount: 0,
+                visitedLocations: [],
+            },
         };
 
         // Apply changes from pmcConfig to bot hostility values
