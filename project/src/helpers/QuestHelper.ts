@@ -460,6 +460,14 @@ export class QuestHelper {
                 return false;
             }
 
+            if (this.questIsProfileBlacklisted(profile.Info.GameVersion, quest._id)) {
+                return false;
+            }
+
+            if (!this.questIsProfileWhitelisted(profile.Info.GameVersion, quest._id)) {
+                return false;
+            }
+
             const standingRequirements = this.questConditionHelper.getStandingConditions(
                 quest.conditions.AvailableForStart,
             );
@@ -532,16 +540,50 @@ export class QuestHelper {
     public questIsForOtherSide(playerSide: string, questId: string): boolean {
         const isUsec = playerSide.toLowerCase() === "usec";
         if (isUsec && this.questConfig.bearOnlyQuests.includes(questId)) {
-            // player is usec and quest is bear only, skip
+            // Player is usec and quest is bear only, skip
             return true;
         }
 
         if (!isUsec && this.questConfig.usecOnlyQuests.includes(questId)) {
-            // player is bear and quest is usec only, skip
+            // Player is bear and quest is usec only, skip
             return true;
         }
 
         return false;
+    }
+
+    /**
+     * Is the provided quest prevented from being viewed by the provided game version
+     * (Inclusive filter)
+     * @param gameVersion Game version to check against
+     * @param questId Quest id to check
+     * @returns True Quest should not be visible to game version
+     */
+    protected questIsProfileBlacklisted(gameVersion: string, questId: string) {
+        const questBlacklist = this.questConfig.profileBlacklist[gameVersion];
+        if (!questBlacklist) {
+            // Not blacklisted
+            return false;
+        }
+
+        return questBlacklist.includes(questId);
+    }
+
+    /**
+     * Is the provided quest able to be seen by the provided game version
+     * (Exclusive filter)
+     * @param gameVersion Game version to check against
+     * @param questId Quest id to check
+     * @returns True Quest should be visible to game version
+     */
+    protected questIsProfileWhitelisted(gameVersion: string, questId: string) {
+        const questWhitelist = this.questConfig.profileWhitelist[gameVersion];
+        if (!questWhitelist) {
+            // Not on whitelist for this profile
+            return false;
+        }
+
+        return questWhitelist.includes(questId);
     }
 
     /**

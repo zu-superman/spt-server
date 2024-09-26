@@ -15,6 +15,12 @@
         "5e4d4ac186f774264f758336",
         "639136d68ba6894d155e77cf"
     ],
+	"profileBlacklist": {
+		"unheard_edition": ["666314a50aa5c7436c00908a"]
+	},
+	"profileWhitelist": {
+		"edge_of_darkness": ["666314b4d7f171c4c20226c3"]
+	},
     "questTemplateIds": {
         "pmc": {
             "elimination": "616052ea3054fc0e2c24ce6e",
