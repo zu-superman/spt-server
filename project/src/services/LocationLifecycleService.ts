@@ -308,6 +308,8 @@ export class LocationLifecycleService {
         // Handle items transferred via BTR to player
         this.handleBTRItemTransferEvent(sessionId, request);
 
+        this.handleTransitItemTransferEvent(sessionId, request);
+
         if (!isPmc) {
             this.handlePostRaidPlayerScav(sessionId, pmcProfile, scavProfile, isDead, request);
 
@@ -685,13 +687,14 @@ export class LocationLifecycleService {
      * @param request End raid request
      */
     protected handleBTRItemTransferEvent(sessionId: string, request: IEndLocalRaidRequestData): void {
-        let itemsToSend = request.transferItems[Traders.BTR] ?? [];
+        const btrId = `${Traders.BTR}_btr`;
+        let itemsToSend = request.transferItems[btrId] ?? [];
         if (itemsToSend.length === 0) {
             return;
         }
 
         // Filter out the btr container item from transferred items before delivering
-        itemsToSend = itemsToSend.filter((item) => item._id !== Traders.BTR);
+        itemsToSend = itemsToSend.filter((item) => item._id !== btrId);
         this.btrItemDelivery(sessionId, Traders.BTR, itemsToSend);
     }
 
@@ -726,6 +729,18 @@ export class LocationLifecycleService {
             items,
             messageStoreTime,
         );
+    }
+
+    protected handleTransitItemTransferEvent(sessionId: string, request: IEndLocalRaidRequestData) {
+        const id = "TODO_DUMP";
+        const transitRootId = `${id}_transit`;
+        const itemsToSend = request.transferItems[transitRootId] ?? [];
+        if (itemsToSend.length === 0) {
+            this.logger.error("NOT IMPLEMENTED");
+            return;
+        }
+
+        this.logger.error("NOT IMPLEMENTED");
     }
 
     protected handleInsuredItemLostEvent(

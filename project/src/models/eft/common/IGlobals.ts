@@ -11,7 +11,85 @@ export interface IGlobals {
     ItemPresets: Record<string, IPreset>;
 }
 
+export interface IArtilleryShelling {
+    ArtilleryMapsConfigs: Record<string, IArtilleryMapSettings>;
+    ProjectileExplosionParams: IProjectileExplosionParams;
+    MaxCalledShellingCount: number;
+}
+
+export interface IArtilleryMapSettings {
+    PlanedShellingOn: boolean;
+    InitShellingTimer: number;
+    BeforeShellingSignalTime: number;
+    ShellingCount: number;
+    ZonesInShelling: number;
+    NewZonesForEachShelling: boolean;
+    InitCalledShellingTime: number;
+    ShellingZones: IShellingZone[];
+    Brigades: IBrigade[];
+    ArtilleryShellingAirDropSettings: IArtilleryShellingAirDropSettings;
+    PauseBetweenShellings: Ixyz;
+}
+
+export interface IShellingZone {
+    ID: number;
+    PointsInShellings: Ixyz;
+    ShellingRounds: number;
+    ShotCount: number;
+    PauseBetweenRounds: Ixyz;
+    PauseBetweenShots: Ixyz;
+    Center: Ixyz;
+    Rotate: number;
+    GridStep: Ixyz;
+    Points: Ixyz;
+    PointRadius: number;
+    ExplosionDistanceRange: Ixyz;
+    AlarmStages: IAlarmStage[];
+    BeforeShellingSignalTime: number;
+    UsedInPlanedShelling: boolean;
+    UseInCalledShelling: boolean;
+    IsActive: boolean;
+}
+
+export interface IAlarmStage {
+    Value: { x: number; y: number };
+}
+
+export interface IBrigade {
+    ID: number;
+    ArtilleryGuns: IArtilleryGun[];
+}
+
+export interface IArtilleryGun {
+    Position: Ixyz;
+}
+
+export interface IArtilleryShellingAirDropSettings {
+    UseAirDrop: boolean;
+    AirDropTime: number;
+    AirDropPosition: Ixyz;
+    LootTemplateId: string;
+}
+
+export interface IProjectileExplosionParams {
+    Blindness: Ixyz;
+    Contusion: Ixyz;
+    ArmorDistanceDistanceDamage: Ixyz;
+    MinExplosionDistance: number;
+    MaxExplosionDistance: number;
+    FragmentsCount: number;
+    Strength: number;
+    ArmorDamage: number;
+    StaminaBurnRate: number;
+    PenetrationPower: number;
+    DirectionalDamageAngle: number;
+    DirectionalDamageMultiplier: number;
+    FragmentType: string;
+    DeadlyDistance: number;
+}
+
 export interface IConfig {
+    ArtilleryShelling: IArtilleryShelling;
     content: IContent;
     AimPunchMagnitude: number;
     WeaponSkillProgressRate: number;

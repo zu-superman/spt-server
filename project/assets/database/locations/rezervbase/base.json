@@ -1,5 +1,6 @@
 {
   "AccessKeys": [],
+  "AccessKeysPvE": [],
   "AirdropParameters": [
     {
       "AirdropPointDeactivateDistance": 50,
@@ -6438,8 +6439,8 @@
   "tmp_location_field_remove_me": 0,
   "transits": [
     {
-      "activateAfterSec": 420,
-      "active": false,
+      "activateAfterSec": 60,
+      "active": true,
       "conditions": "REZ_TRANSIT_18_COND",
       "description": "REZ_TRANSIT_18_DESC",
       "id": 18,
@@ -6449,8 +6450,8 @@
       "time": 30
     },
     {
-      "activateAfterSec": 420,
-      "active": false,
+      "activateAfterSec": 60,
+      "active": true,
       "conditions": "REZ_TRANSIT_19_COND",
       "description": "REZ_TRANSIT_19_DESC",
       "id": 19,
@@ -6460,7 +6461,7 @@
       "time": 30
     },
     {
-      "activateAfterSec": 420,
+      "activateAfterSec": 60,
       "active": true,
       "conditions": "REZ_TRANSIT_20_COND",
       "description": "REZ_TRANSIT_20_DESC",

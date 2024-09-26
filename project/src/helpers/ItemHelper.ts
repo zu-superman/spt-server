@@ -1770,6 +1770,30 @@ export class ItemHelper {
                   Math.min(ammoItemTemplate._props.StackMaxRandom, maxLimit),
               );
     }
+
+    public getItemBaseType(tpl: string, rootOnly = true) {
+        const result = this.getItem(tpl);
+        if (!result[0]) {
+            // Not an item
+            return undefined;
+        }
+
+        let currentItem = result[1];
+        while (currentItem) {
+            if (currentItem._type === "Node" && !rootOnly) {
+                // Hit first base type
+                return currentItem._id;
+            }
+
+            if (!currentItem._parent) {
+                // No parent, reached root
+                return currentItem._id;
+            }
+
+            // Get parent item and start loop again
+            currentItem = this.getItem(tpl)[1];
+        }
+    }
 }
 
 namespace ItemHelper {

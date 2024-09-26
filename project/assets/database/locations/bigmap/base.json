@@ -1,5 +1,6 @@
 {
   "AccessKeys": [],
+  "AccessKeysPvE": [],
   "AirdropParameters": [
     {
       "AirdropPointDeactivateDistance": 50,
@@ -84,7 +85,7 @@
   ],
   "BossLocationSpawn": [
     {
-      "BossChance": 100,
+      "BossChance": 10,
       "BossDifficult": "normal",
       "BossEscortAmount": "0",
       "BossEscortDifficult": "normal",
@@ -8995,8 +8996,8 @@
   "tmp_location_field_remove_me": 0,
   "transits": [
     {
-      "activateAfterSec": 420,
-      "active": false,
+      "activateAfterSec": 60,
+      "active": true,
       "conditions": "CUS_TRANSIT_9_COND",
       "description": "CUS_TRANSIT_9_DESC",
       "id": 9,
@@ -9006,7 +9007,7 @@
       "time": 30
     },
     {
-      "activateAfterSec": 420,
+      "activateAfterSec": 60,
       "active": true,
       "conditions": "CUS_TRANSIT_10_COND",
       "description": "CUS_TRANSIT_10_DESC",
@@ -9017,8 +9018,8 @@
       "time": 30
     },
     {
-      "activateAfterSec": 420,
-      "active": false,
+      "activateAfterSec": 60,
+      "active": true,
       "conditions": "CUS_TRANSIT_11_COND",
       "description": "CUS_TRANSIT_11_DESC",
       "id": 11,

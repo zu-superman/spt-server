@@ -116,6 +116,10 @@ export class MatchCallbacks {
         return this.httpResponse.nullResponse();
     }
 
+    public eventDisconnect(url: string, request: IPutMetricsRequestData, sessionId: string): INullResponseData {
+        return this.httpResponse.nullResponse();
+    }
+
     // Handle client/match/available
     public serverAvailable(url: string, info: IEmptyRequestData, sessionId: string): IGetBodyResponseData<boolean> {
         const output = this.matchController.getEnabled();

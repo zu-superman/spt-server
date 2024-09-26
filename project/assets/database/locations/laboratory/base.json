@@ -2,6 +2,9 @@
   "AccessKeys": [
     "5c94bbff86f7747ee735c08f"
   ],
+  "AccessKeysPvE": [
+    "5c94bbff86f7747ee735c08f"
+  ],
   "Area": 0,
   "AveragePlayTime": 30,
   "AveragePlayerLevel": 45,
@@ -75,7 +78,7 @@
       "TriggerName": ""
     },
     {
-      "BossChance": 45,
+      "BossChance": 65,
       "BossDifficult": "normal",
       "BossEscortAmount": "1,1,1,1,2,2,2,1,1,1,1,2,2,2,3",
       "BossEscortDifficult": "normal",
@@ -94,7 +97,7 @@
       "TriggerName": "interactObject"
     },
     {
-      "BossChance": 45,
+      "BossChance": 55,
       "BossDifficult": "normal",
       "BossEscortAmount": "1,1,1,1,2,2,2,1,1,1,1,2,2,2,3",
       "BossEscortDifficult": "normal",
@@ -113,7 +116,7 @@
       "TriggerName": "interactObject"
     },
     {
-      "BossChance": 40,
+      "BossChance": 50,
       "BossDifficult": "normal",
       "BossEscortAmount": "1,1,1,1,2,2,2,1,1,1,1,2,2,2,3",
       "BossEscortDifficult": "normal",
@@ -132,7 +135,7 @@
       "TriggerName": "interactObject"
     },
     {
-      "BossChance": 45,
+      "BossChance": 55,
       "BossDifficult": "normal",
       "BossEscortAmount": "1,1,1,1,2,2,2,1,1,1,1,2,2,2,3",
       "BossEscortDifficult": "normal",
@@ -151,7 +154,7 @@
       "TriggerName": "interactObject"
     },
     {
-      "BossChance": 35,
+      "BossChance": 55,
       "BossDifficult": "normal",
       "BossEscortAmount": "1,1,1,1,2,2,2,1,1,1,1,2,2,2,3",
       "BossEscortDifficult": "normal",
@@ -170,7 +173,7 @@
       "TriggerName": "interactObject"
     },
     {
-      "BossChance": 35,
+      "BossChance": 55,
       "BossDifficult": "normal",
       "BossEscortAmount": "1,1,1,1,2,2,2,1,1,1,1,2,2,2,3",
       "BossEscortDifficult": "normal",
@@ -189,7 +192,7 @@
       "TriggerName": "interactObject"
     },
     {
-      "BossChance": 35,
+      "BossChance": 55,
       "BossDifficult": "normal",
       "BossEscortAmount": "1,1,1,1,2,2,2,1,1,1,1,2,2,2,3",
       "BossEscortDifficult": "normal",
@@ -208,7 +211,7 @@
       "TriggerName": "interactObject"
     },
     {
-      "BossChance": 35,
+      "BossChance": 65,
       "BossDifficult": "normal",
       "BossEscortAmount": "1,1,1,1,2,2,2,1,1,1,1,2,2,2,3",
       "BossEscortDifficult": "normal",
@@ -227,7 +230,7 @@
       "TriggerName": "interactObject"
     },
     {
-      "BossChance": 35,
+      "BossChance": 55,
       "BossDifficult": "normal",
       "BossEscortAmount": "1,1,1,1,2,2,2,1,1,1,1,2,2,2,3",
       "BossEscortDifficult": "normal",
@@ -246,7 +249,7 @@
       "TriggerName": "interactObject"
     },
     {
-      "BossChance": 35,
+      "BossChance": 55,
       "BossDifficult": "normal",
       "BossEscortAmount": "1,1,2,2,1,1,2,2,2,2,1,1,2,2,3",
       "BossEscortDifficult": "normal",
@@ -284,7 +287,7 @@
       "TriggerName": "interactObject"
     },
     {
-      "BossChance": 35,
+      "BossChance": 55,
       "BossDifficult": "normal",
       "BossEscortAmount": "1,1,1,1,2,2,2,1,1,1,1,2,2,2,3",
       "BossEscortDifficult": "normal",
@@ -303,7 +306,7 @@
       "TriggerName": "interactObject"
     },
     {
-      "BossChance": 40,
+      "BossChance": 50,
       "BossDifficult": "normal",
       "BossEscortAmount": "1,1,1,1,2,2,2,1,1,1,1,2,2,2,3",
       "BossEscortDifficult": "normal",
@@ -322,7 +325,7 @@
       "TriggerName": "interactObject"
     },
     {
-      "BossChance": 45,
+      "BossChance": 55,
       "BossDifficult": "normal",
       "BossEscortAmount": "1,1,1,1,2,2,2,1,1,1,1,2,2,2,3",
       "BossEscortDifficult": "normal",
@@ -540,10 +543,10 @@
     "VisibleDistance": 1
   },
   "BotMarksman": 0,
-  "BotMax": 14,
-  "BotMaxPlayer": 14,
+  "BotMax": 25,
+  "BotMaxPlayer": 0,
   "BotMaxPvE": 25,
-  "BotMaxTimePlayer": 1000,
+  "BotMaxTimePlayer": 0,
   "BotNormal": 30,
   "BotSpawnCountStep": 3,
   "BotSpawnPeriodCheck": 15,
@@ -552,7 +555,7 @@
   "BotSpawnTimeOnMax": 330,
   "BotSpawnTimeOnMin": 300,
   "BotStart": 10,
-  "BotStartPlayer": 15,
+  "BotStartPlayer": 0,
   "BotStop": 1400,
   "Description": "Laboratory description",
   "DisabledForScav": true,
@@ -5363,7 +5366,7 @@
       ]
     }
   ],
-  "UnixDateTime": 1719536562,
+  "UnixDateTime": 1636383862,
   "_Id": "5b0fc42d86f7744a585f9105",
   "doors": [],
   "exit_access_time": 60,
@@ -5538,7 +5541,7 @@
   "tmp_location_field_remove_me": 111,
   "transits": [
     {
-      "activateAfterSec": 420,
+      "activateAfterSec": 60,
       "active": true,
       "conditions": "LAB_TRANSIT_8_COND",
       "description": "LAB_TRANSIT_8_DESC",

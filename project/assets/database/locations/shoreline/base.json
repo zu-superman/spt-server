@@ -1,5 +1,6 @@
 {
   "AccessKeys": [],
+  "AccessKeysPvE": [],
   "AirdropParameters": [
     {
       "AirdropPointDeactivateDistance": 50,
@@ -9765,8 +9766,8 @@
   "tmp_location_field_remove_me": 0,
   "transits": [
     {
-      "activateAfterSec": 420,
-      "active": false,
+      "activateAfterSec": 60,
+      "active": true,
       "conditions": "SHO_TRANSIT_24_COND",
       "description": "SHO_TRANSIT_24_DESC",
       "id": 24,
@@ -9776,7 +9777,7 @@
       "time": 30
     },
     {
-      "activateAfterSec": 420,
+      "activateAfterSec": 60,
       "active": false,
       "conditions": "SHO_TRANSIT_25_COND",
       "description": "SHO_TRANSIT_25_DESC",

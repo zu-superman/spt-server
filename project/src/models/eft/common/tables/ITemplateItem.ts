@@ -29,6 +29,7 @@ export interface Props {
     ItemSound?: string;
     Prefab?: IPrefab;
     UsePrefab?: IPrefab;
+    airDropTemplateId?: string;
     StackObjectsCount?: number;
     NotShownInSlot?: boolean;
     ExaminedByDefault?: boolean;
@@ -53,6 +54,7 @@ export interface Props {
     ExtraSizeLeft?: number;
     ExtraSizeRight?: number;
     ExtraSizeUp?: number;
+    FlareTypes?: string[];
     ExtraSizeDown?: number;
     ExtraSizeForceAdd?: boolean;
     MergesWithChildren?: boolean;

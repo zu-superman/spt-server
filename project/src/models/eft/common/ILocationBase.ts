@@ -4,6 +4,7 @@ import { ISpawnpointTemplate } from "./ILooseLoot";
 
 export interface ILocationBase {
     AccessKeys: string[];
+    AccessKeysPvE: string[];
     AirdropParameters: IAirdropParameter[];
     Area: number;
     AveragePlayTime: number;

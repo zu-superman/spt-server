@@ -1,5 +1,6 @@
 {
   "AccessKeys": [],
+  "AccessKeysPvE": [],
   "AirdropParameters": [
     {
       "AirdropPointDeactivateDistance": 50,
@@ -66,7 +67,7 @@
       "TriggerName": ""
     },
     {
-      "BossChance": 10,
+      "BossChance": 12,
       "BossDifficult": "normal",
       "BossEscortAmount": "0",
       "BossEscortDifficult": "normal",
@@ -8209,7 +8210,7 @@
   "tmp_location_field_remove_me": 0,
   "transits": [
     {
-      "activateAfterSec": 420,
+      "activateAfterSec": 60,
       "active": true,
       "conditions": "LIG_TRANSIT_21_COND",
       "description": "LIG_TRANSIT_21_DESC",
@@ -8220,8 +8221,8 @@
       "time": 30
     },
     {
-      "activateAfterSec": 420,
-      "active": false,
+      "activateAfterSec": 60,
+      "active": true,
       "conditions": "LIG_TRANSIT_22_COND",
       "description": "LIG_TRANSIT_22_DESC",
       "id": 22,
@@ -8231,8 +8232,8 @@
       "time": 30
     },
     {
-      "activateAfterSec": 420,
-      "active": false,
+      "activateAfterSec": 60,
+      "active": true,
       "conditions": "LIG_TRANSIT_23_COND",
       "description": "LIG_TRANSIT_23_DESC",
       "id": 23,

@@ -4848,5 +4848,77 @@
     "progressBarEnabled": true,
     "side": "Pmc",
     "index": 3050
+  },
+  {
+    "id": "66e2a7e5919bad697104f4b3",
+    "imageUrl": "/files/achievement/ArtShelling_Event.png",
+    "assetPath": "",
+    "rewards": [],
+    "conditions": {
+      "availableForFinish": [
+        {
+          "id": "66e2a74cbe26c77a31e40e21",
+          "index": 0,
+          "dynamicLocale": false,
+          "visibilityConditions": [],
+          "globalQuestCounterId": "",
+          "parentId": "",
+          "value": 1000,
+          "type": "Completion",
+          "oneSessionOnly": false,
+          "completeInSeconds": 0,
+          "doNotResetIfCounterCompleted": false,
+          "isResetOnConditionFailed": false,
+          "isNecessary": false,
+          "counter": {
+            "id": "66e2a74cbbaf5f57e1cdb27f",
+            "conditions": [
+              {
+                "id": "66e2a781d36d94d72926cf04",
+                "dynamicLocale": false,
+                "target": "Savage",
+                "compareMethod": ">=",
+                "value": 100000,
+                "weapon": [
+                  "57e26fc7245977162a14b800"
+                ],
+                "distance": {
+                  "value": 10000,
+                  "compareMethod": ">="
+                },
+                "weaponModsInclusive": [],
+                "weaponModsExclusive": [],
+                "enemyEquipmentInclusive": [],
+                "enemyEquipmentExclusive": [],
+                "weaponCaliber": [],
+                "savageRole": [
+                  "shooterBTR"
+                ],
+                "bodyPart": [],
+                "daytime": {
+                  "from": 0,
+                  "to": 0
+                },
+                "enemyHealthEffects": [],
+                "resetOnSessionEnd": false,
+                "conditionType": "Kills"
+              }
+            ]
+          },
+          "conditionType": "CounterCreator"
+        }
+      ],
+      "fail": []
+    },
+    "instantComplete": false,
+    "showNotificationsInGame": false,
+    "showProgress": false,
+    "prefab": "",
+    "rarity": "Legendary",
+    "hidden": false,
+    "showConditions": false,
+    "progressBarEnabled": false,
+    "side": "All",
+    "index": 9991
   }
 ]

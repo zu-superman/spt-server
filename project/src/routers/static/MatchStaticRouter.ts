@@ -216,6 +216,12 @@ export class MatchStaticRouter extends StaticRouter {
                 },
             ),
             new RouteAction(
+                "/client/analytics/event-disconnect",
+                async (url: string, info: any, sessionID: string, output: string): Promise<INullResponseData> => {
+                    return this.matchCallbacks.eventDisconnect(url, info, sessionID);
+                },
+            ),
+            new RouteAction(
                 "/client/getMetricsConfig",
                 async (
                     url: string,

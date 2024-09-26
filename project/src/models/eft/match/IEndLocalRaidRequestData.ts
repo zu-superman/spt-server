@@ -10,6 +10,7 @@ export interface IEndLocalRaidRequestData {
     lostInsuredItems: IItem[];
     /** Items sent via traders to player, keyed to service e.g. BTRTransferStash */
     transferItems: Record<string, IItem[]>;
+    locationTransit: any;
 }
 
 export interface IEndRaidResult {
