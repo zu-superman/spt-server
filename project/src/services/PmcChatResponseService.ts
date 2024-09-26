@@ -49,6 +49,14 @@ export class PmcChatResponseService {
                 continue;
             }
 
+            if (!victim.Name) {
+                this.logger.warning(
+                    `Victim: ${victim.ProfileId} does not have a nickname, skipping pmc response message send`,
+                );
+
+                continue;
+            }
+
             const victimDetails = this.getVictimDetails(victim);
             const message = this.chooseMessage(true, pmcData);
             if (message) {
