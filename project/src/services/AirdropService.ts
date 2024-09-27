@@ -2,12 +2,13 @@ import { LootGenerator } from "@spt/generators/LootGenerator";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { WeightedRandomHelper } from "@spt/helpers/WeightedRandomHelper";
 import { IItem } from "@spt/models/eft/common/tables/IItem";
+import { IGetAirdropLootRequest } from "@spt/models/eft/location/IGetAirdropLootRequest";
 import { IGetAirdropLootResponse } from "@spt/models/eft/location/IGetAirdropLootResponse";
 import { AirdropTypeEnum } from "@spt/models/enums/AirdropType";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { ItemTpl } from "@spt/models/enums/ItemTpl";
 import { IAirdropConfig, IAirdropLoot } from "@spt/models/spt/config/IAirdropConfig";
-import { LootRequest } from "@spt/models/spt/services/LootRequest";
+import { IAirdropLootRequest, LootRequest } from "@spt/models/spt/services/LootRequest";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
 import { DatabaseService } from "@spt/services/DatabaseService";
@@ -36,21 +37,36 @@ export class AirdropService {
         this.airdropConfig = this.configServer.getConfig(ConfigTypes.AIRDROP);
     }
 
+    public generateCustomAirdropLoot(request: IGetAirdropLootRequest): IGetAirdropLootResponse {
+        const customAirdropInformation = this.airdropConfig.customAirdropMapping[request.containerId];
+        if (!customAirdropInformation) {
+            this.logger.warning(
+                `Unable to find data for custom airdrop ${request.containerId}, returning random airdrop instead`,
+            );
+
+            return this.generateAirdropLoot();
+        }
+
+        return this.generateAirdropLoot(customAirdropInformation);
+    }
+
     /**
      * Handle client/location/getAirdropLoot
      * Get loot for an airdrop container
      * Generates it randomly based on config/airdrop.json values
      * @returns Array of LootItem objects
      */
-    public generateAirdropLoot(): IGetAirdropLootResponse {
-        const airdropType = this.chooseAirdropType();
+    public generateAirdropLoot(forcedAirdropType = null): IGetAirdropLootResponse {
+        const airdropType = forcedAirdropType ? forcedAirdropType : this.chooseAirdropType();
         this.logger.debug(`Chose ${airdropType} for airdrop loot`);
 
         // Common/weapon/etc
         const airdropConfig = this.getAirdropLootConfigByType(airdropType);
 
         // generate loot to put into airdrop crate
-        const crateLoot = this.lootGenerator.createRandomLoot(airdropConfig);
+        const crateLoot = airdropConfig.useForcedLoot
+            ? this.lootGenerator.createForcedLoot(airdropConfig)
+            : this.lootGenerator.createRandomLoot(airdropConfig);
 
         // Create airdrop crate and add to result in first spot
         const airdropCrateItem = this.getAirdropCrateItem(airdropType);
@@ -58,7 +74,7 @@ export class AirdropService {
         // Add crate to front of array
         crateLoot.unshift(airdropCrateItem);
 
-        // Reparent loot items to create we added above
+        // Reparent loot items to crate we added above
         for (const item of crateLoot) {
             if (item._id === airdropCrateItem._id) {
                 // Crate itself, don't alter
@@ -72,7 +88,7 @@ export class AirdropService {
             }
         }
 
-        return { icon: airdropType, container: crateLoot };
+        return { icon: airdropConfig.icon, container: crateLoot };
     }
 
     /**
@@ -103,6 +119,9 @@ export class AirdropService {
             case AirdropTypeEnum.COMMON:
                 airdropContainer._tpl = ItemTpl.LOOTCONTAINER_AIRDROP_COMMON_SUPPLY_CRATE;
                 break;
+            case AirdropTypeEnum.RADAR:
+                airdropContainer._tpl = ItemTpl.LOOTCONTAINER_AIRDROP_TECHNICAL_SUPPLY_CRATE_EVENT_1;
+                break;
             default:
                 airdropContainer._tpl = ItemTpl.LOOTCONTAINER_AIRDROP_COMMON_SUPPLY_CRATE;
                 break;
@@ -126,7 +145,7 @@ export class AirdropService {
      * @param airdropType Type of airdrop to get settings for
      * @returns LootRequest
      */
-    protected getAirdropLootConfigByType(airdropType: AirdropTypeEnum): LootRequest {
+    protected getAirdropLootConfigByType(airdropType: AirdropTypeEnum): IAirdropLootRequest {
         let lootSettingsByType: IAirdropLoot = this.airdropConfig.loot[airdropType];
         if (!lootSettingsByType) {
             this.logger.error(
@@ -136,6 +155,7 @@ export class AirdropService {
         }
 
         return {
+            icon: lootSettingsByType.icon,
             weaponPresetCount: lootSettingsByType.weaponPresetCount,
             armorPresetCount: lootSettingsByType.armorPresetCount,
             itemCount: lootSettingsByType.itemCount,
@@ -150,6 +170,8 @@ export class AirdropService {
             itemStackLimits: lootSettingsByType.itemStackLimits,
             armorLevelWhitelist: lootSettingsByType.armorLevelWhitelist,
             allowBossItems: lootSettingsByType.allowBossItems,
+            useForcedLoot: lootSettingsByType.useForcedLoot,
+            forcedLoot: lootSettingsByType.forcedLoot,
         };
     }
 }

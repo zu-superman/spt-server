@@ -153,6 +153,32 @@ export class LootGenerator {
         return result;
     }
 
+    public createForcedLoot(airdropConfig: LootRequest) {
+        const result: IItem[] = [];
+
+        const forcedItems = Object.keys(airdropConfig.forcedLoot);
+
+        for (const tpl of forcedItems) {
+            const details = airdropConfig.forcedLoot[tpl];
+            const randomisedItemCount = this.randomUtil.getInt(details.min, details.max);
+
+            // Add forced loot item to result
+            const newLootItem: IItem = {
+                _id: this.hashUtil.generate(),
+                _tpl: tpl,
+                upd: {
+                    StackObjectsCount: randomisedItemCount,
+                    SpawnedInSession: true,
+                },
+            };
+
+            const splitResults = this.itemHelper.splitStack(newLootItem);
+            result.push(...splitResults);
+        }
+
+        return result;
+    }
+
     protected getItemRewardPool(
         itemTplBlacklist: string[],
         itemTypeWhitelist: string[],

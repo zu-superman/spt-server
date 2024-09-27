@@ -3,4 +3,5 @@ export enum AirdropTypeEnum {
     SUPPLY = "barter",
     FOOD_MEDICAL = "foodMedical",
     WEAPON_ARMOR = "weaponArmor",
+    RADAR = "radar",
 }
