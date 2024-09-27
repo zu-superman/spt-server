@@ -794,6 +794,9 @@
 				"peacemaker",
 				"skier"
             ],
+			"additionalFriendlyTypes": [
+				"shooterBTR"
+			],
             "chancedEnemies": [{
                     "EnemyChance": 100,
                     "Role": "assault"
@@ -819,6 +822,9 @@
 				"peacemaker",
 				"skier"
             ],
+			"additionalFriendlyTypes": [
+				"shooterBTR"
+			],
             "chancedEnemies": [{
                     "EnemyChance": 100,
                     "Role": "assault"
