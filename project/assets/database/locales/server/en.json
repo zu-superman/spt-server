@@ -53,7 +53,7 @@
     "bot-weapon_contains_invalid_item": "Required slot: '{{modSlot}}' on weapon: {{weaponTpl}} has an invalid item: {{modName}}",
     "bot-weapon_generated_incorrect_using_default": "Weapon %s was generated incorrectly, falling back to weapon preset see error above",
     "bot-weapon_missing_magazine_or_chamber": "Weapon with tpl: {{weaponId}} has no magazine or chamber - {{botRole}}",
-    "bot-weapon_missing_mod_slot": "Slot: {{modSlot}}' does not exist for weapon: {{weaponId}} {{weaponName}} on {{botRole}}",
+    "bot-weapon_missing_mod_slot": "Slot: {{modSlot}} does not exist for weapon: {{weaponId}} {{weaponName}} on {{botRole}}",
     "bot-weapons_required_slot_missing_item": "Required slot '{{modSlot}}' on {{modName}} {{slotId}} was empty on {{botRole}}",
     "build-unable_to_delete_preset": "Unable to delete preset, cannot find %s in weapon, equipment or magazine presets",
     "chat-unable_to_register_command_already_registered": "Unable to register already registered command: %s",
