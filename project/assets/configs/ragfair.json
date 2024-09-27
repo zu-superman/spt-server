@@ -332,7 +332,7 @@
         }
     },
     "tieredFlea": {
-        "enabled": true,
+        "enabled": false,
         "unlocks": {
             "57864a3d24597754843f8721": 35,
             "57864bb7245977548b3b66c2": 35,
