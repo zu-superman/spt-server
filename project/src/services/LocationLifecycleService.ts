@@ -105,6 +105,11 @@ export class LocationLifecycleService {
             },
         };
 
+        // Only has value when transitioning into map from previous one
+        if (request.transition) {
+            result.transition = request.transition;
+        }
+
         // Apply changes from pmcConfig to bot hostility values
         this.adjustBotHostilitySettings(result.locationLoot);
 
