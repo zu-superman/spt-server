@@ -91,4 +91,8 @@ export default {
     "5e81ebcd8e146c7080625e15": "FN40GL 01",
     "639c3fbbd0446708ee622ee9": "FN40GL 02",
     "639af924d0446708ee62294e": "FN40GL 03",
+
+    // Airdrop crates
+    "66da1b49099cf6adcc07a36b": "Airdrop technical supply crate event 1",
+    "66da1b546916142b3b022777": "Airdrop technical supply crate event 2",
 };
