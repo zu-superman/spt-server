@@ -519,7 +519,7 @@
     "type": "PickUp"
   },
   "59674cd986f7744ab26e32f2": {
-    "QuestName": "Shootout picnic",
+    "QuestName": "Shootout Picnic",
     "_id": "59674cd986f7744ab26e32f2",
     "acceptPlayerMessage": "59674cd986f7744ab26e32f2 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -834,7 +834,7 @@
     "type": "Elimination"
   },
   "59674eb386f774539f14813a": {
-    "QuestName": "Delivery from the past",
+    "QuestName": "Delivery From the Past",
     "_id": "59674eb386f774539f14813a",
     "acceptPlayerMessage": "59674eb386f774539f14813a acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -1116,7 +1116,7 @@
     "type": "PickUp"
   },
   "5967530a86f77462ba22226b": {
-    "QuestName": "Bad rep evidence",
+    "QuestName": "Bad Rep Evidence",
     "_id": "5967530a86f77462ba22226b",
     "acceptPlayerMessage": "5967530a86f77462ba22226b acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -1442,7 +1442,7 @@
     "type": "PickUp"
   },
   "59675d6c86f7740a842fc482": {
-    "QuestName": "Ice cream cones",
+    "QuestName": "Ice Cream Cones",
     "_id": "59675d6c86f7740a842fc482",
     "acceptPlayerMessage": "59675d6c86f7740a842fc482 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -1743,7 +1743,7 @@
     "type": "PickUp"
   },
   "59675ea386f77414b32bded2": {
-    "QuestName": "Postman Pat Part 1",
+    "QuestName": "Postman Pat - Part 1",
     "_id": "59675ea386f77414b32bded2",
     "acceptPlayerMessage": "59675ea386f77414b32bded2 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -1954,7 +1954,7 @@
     "type": "PickUp"
   },
   "596760e186f7741e11214d58": {
-    "QuestName": "Postman Pat Part 2",
+    "QuestName": "Postman Pat - Part 2",
     "_id": "596760e186f7741e11214d58",
     "acceptPlayerMessage": "596760e186f7741e11214d58 acceptPlayerMessage",
     "canShowNotificationsInGame": false,
@@ -2068,7 +2068,7 @@
     "type": "PickUp"
   },
   "5967725e86f774601a446662": {
-    "QuestName": "Shaking up teller",
+    "QuestName": "Shaking Up the Teller",
     "_id": "5967725e86f774601a446662",
     "acceptPlayerMessage": "5967725e86f774601a446662 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -2447,7 +2447,7 @@
     "type": "PickUp"
   },
   "59689ee586f7740d1570bbd5": {
-    "QuestName": "Sanitary Standards Part 1",
+    "QuestName": "Sanitary Standards - Part 1",
     "_id": "59689ee586f7740d1570bbd5",
     "acceptPlayerMessage": "59689ee586f7740d1570bbd5 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -2608,7 +2608,7 @@
     "type": "PickUp"
   },
   "59689fbd86f7740d137ebfc4": {
-    "QuestName": "Operation Aquarius Part 1",
+    "QuestName": "Operation Aquarius - Part 1",
     "_id": "59689fbd86f7740d137ebfc4",
     "acceptPlayerMessage": "59689fbd86f7740d137ebfc4 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -2810,7 +2810,7 @@
     "type": "PickUp"
   },
   "5968eb3186f7741dde183a4d": {
-    "QuestName": "Operation Aquarius Part 2",
+    "QuestName": "Operation Aquarius - Part 2",
     "_id": "5968eb3186f7741dde183a4d",
     "acceptPlayerMessage": "5968eb3186f7741dde183a4d acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -3431,7 +3431,7 @@
     "type": "PickUp"
   },
   "596a0e1686f7741ddf17dbee": {
-    "QuestName": "Supply plans",
+    "QuestName": "Supply Plans",
     "_id": "596a0e1686f7741ddf17dbee",
     "acceptPlayerMessage": "596a0e1686f7741ddf17dbee acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -3642,7 +3642,7 @@
     "type": "PickUp"
   },
   "596a101f86f7741ddb481582": {
-    "QuestName": "Kind of sabotage",
+    "QuestName": "Kind of Sabotage",
     "_id": "596a101f86f7741ddb481582",
     "acceptPlayerMessage": "596a101f86f7741ddb481582 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -3758,7 +3758,7 @@
     "type": "PickUp"
   },
   "596a1e6c86f7741ddc2d3206": {
-    "QuestName": "General wares",
+    "QuestName": "General Wares",
     "_id": "596a1e6c86f7741ddc2d3206",
     "acceptPlayerMessage": "596a1e6c86f7741ddc2d3206 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -3929,7 +3929,7 @@
     "type": "Completion"
   },
   "596a204686f774576d4c95de": {
-    "QuestName": "Sanitary Standards Part 2",
+    "QuestName": "Sanitary Standards - Part 2",
     "_id": "596a204686f774576d4c95de",
     "acceptPlayerMessage": "596a204686f774576d4c95de acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -4076,7 +4076,7 @@
     "type": "Completion"
   },
   "596a218586f77420d232807c": {
-    "QuestName": "Car repair",
+    "QuestName": "Car Repair",
     "_id": "596a218586f77420d232807c",
     "acceptPlayerMessage": "596a218586f77420d232807c acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -5152,7 +5152,7 @@
     "type": "Elimination"
   },
   "5979ed3886f77431307dc512": {
-    "QuestName": "Whats on the flash drive",
+    "QuestName": "Whats on the Flash Drive",
     "_id": "5979ed3886f77431307dc512",
     "acceptPlayerMessage": "5979ed3886f77431307dc512 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -5404,7 +5404,7 @@
     "type": "PickUp"
   },
   "5979eee086f774311955e614": {
-    "QuestName": "Golden swag",
+    "QuestName": "Golden Swag",
     "_id": "5979eee086f774311955e614",
     "acceptPlayerMessage": "5979eee086f774311955e614 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -5682,7 +5682,7 @@
     "type": "Completion"
   },
   "5979f8bb86f7743ec214c7a6": {
-    "QuestName": "Polikhim hobo",
+    "QuestName": "Polikhim Hobo",
     "_id": "5979f8bb86f7743ec214c7a6",
     "acceptPlayerMessage": "5979f8bb86f7743ec214c7a6 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -5877,7 +5877,7 @@
     "type": "Elimination"
   },
   "5979f9ba86f7740f6c3fe9f2": {
-    "QuestName": "Chemical Part 1",
+    "QuestName": "Chemical - Part 1",
     "_id": "5979f9ba86f7740f6c3fe9f2",
     "acceptPlayerMessage": "5979f9ba86f7740f6c3fe9f2 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -6099,7 +6099,7 @@
     "type": "PickUp"
   },
   "597a0b2986f77426d66c0633": {
-    "QuestName": "Chemical Part 2",
+    "QuestName": "Chemical - Part 2",
     "_id": "597a0b2986f77426d66c0633",
     "acceptPlayerMessage": "597a0b2986f77426d66c0633 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -6344,7 +6344,7 @@
     "type": "PickUp"
   },
   "597a0e5786f77426d66c0636": {
-    "QuestName": "Chemical Part 3",
+    "QuestName": "Chemical - Part 3",
     "_id": "597a0e5786f77426d66c0636",
     "acceptPlayerMessage": "597a0e5786f77426d66c0636 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -6521,7 +6521,7 @@
     "type": "PickUp"
   },
   "597a0f5686f774273b74f676": {
-    "QuestName": "Chemical Part 4",
+    "QuestName": "Chemical - Part 4",
     "_id": "597a0f5686f774273b74f676",
     "acceptPlayerMessage": "597a0f5686f774273b74f676 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -6772,7 +6772,7 @@
     "type": "PickUp"
   },
   "597a160786f77477531d39d2": {
-    "QuestName": "Out of curiosity",
+    "QuestName": "Out of Curiosity",
     "_id": "597a160786f77477531d39d2",
     "acceptPlayerMessage": "597a160786f77477531d39d2 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -6994,7 +6994,7 @@
     "type": "PickUp"
   },
   "597a171586f77405ba6887d3": {
-    "QuestName": "Big customer",
+    "QuestName": "Big Customer",
     "_id": "597a171586f77405ba6887d3",
     "acceptPlayerMessage": "597a171586f77405ba6887d3 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -7233,7 +7233,7 @@
     "type": "Completion"
   },
   "59c124d686f774189b3c843f": {
-    "QuestName": "BP depot",
+    "QuestName": "BP Depot",
     "_id": "59c124d686f774189b3c843f",
     "acceptPlayerMessage": "59c124d686f774189b3c843f acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -7511,7 +7511,7 @@
     "type": "Discover"
   },
   "59c50a9e86f7745fef66f4ff": {
-    "QuestName": "The Punisher Part 1",
+    "QuestName": "The Punisher - Part 1",
     "_id": "59c50a9e86f7745fef66f4ff",
     "acceptPlayerMessage": "59c50a9e86f7745fef66f4ff acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -7751,7 +7751,7 @@
     "type": "Elimination"
   },
   "59c50c8886f7745fed3193bf": {
-    "QuestName": "The Punisher Part 2",
+    "QuestName": "The Punisher - Part 2",
     "_id": "59c50c8886f7745fed3193bf",
     "acceptPlayerMessage": "59c50c8886f7745fed3193bf acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -8333,7 +8333,7 @@
     "type": "Elimination"
   },
   "59c512ad86f7741f0d09de9b": {
-    "QuestName": "The Punisher Part 3",
+    "QuestName": "The Punisher - Part 3",
     "_id": "59c512ad86f7741f0d09de9b",
     "acceptPlayerMessage": "59c512ad86f7741f0d09de9b acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -8563,7 +8563,7 @@
     "type": "Elimination"
   },
   "59c9392986f7742f6923add2": {
-    "QuestName": "Trust regain",
+    "QuestName": "Trust Regain",
     "_id": "59c9392986f7742f6923add2",
     "acceptPlayerMessage": "59c9392986f7742f6923add2 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -8794,7 +8794,7 @@
     "type": "PickUp"
   },
   "59c93e8e86f7742a406989c4": {
-    "QuestName": "Loyalty buyout",
+    "QuestName": "Loyalty Buyout",
     "_id": "59c93e8e86f7742a406989c4",
     "acceptPlayerMessage": "59c93e8e86f7742a406989c4 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -8871,7 +8871,7 @@
     "type": "Loyalty"
   },
   "59ca1a6286f774509a270942": {
-    "QuestName": "No offence",
+    "QuestName": "No Offence",
     "_id": "59ca1a6286f774509a270942",
     "acceptPlayerMessage": "59ca1a6286f774509a270942 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -8967,7 +8967,7 @@
     "type": "PickUp"
   },
   "59ca264786f77445a80ed044": {
-    "QuestName": "The Punisher Part 4",
+    "QuestName": "The Punisher - Part 4",
     "_id": "59ca264786f77445a80ed044",
     "acceptPlayerMessage": "59ca264786f77445a80ed044 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -9416,7 +9416,7 @@
     "type": "Elimination"
   },
   "59ca29fb86f77445ab465c87": {
-    "QuestName": "The Punisher Part 5",
+    "QuestName": "The Punisher - Part 5",
     "_id": "59ca29fb86f77445ab465c87",
     "acceptPlayerMessage": "59ca29fb86f77445ab465c87 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -9755,7 +9755,7 @@
     "type": "PickUp"
   },
   "59ca2eb686f77445a80ed049": {
-    "QuestName": "The Punisher Part 6",
+    "QuestName": "The Punisher - Part 6",
     "_id": "59ca2eb686f77445a80ed049",
     "acceptPlayerMessage": "59ca2eb686f77445a80ed049 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -9997,7 +9997,7 @@
     "type": "Elimination"
   },
   "5a03153686f77442d90e2171": {
-    "QuestName": "Spa Tour Part 1",
+    "QuestName": "Spa Tour - Part 1",
     "_id": "5a03153686f77442d90e2171",
     "acceptPlayerMessage": "5a03153686f77442d90e2171 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -10324,7 +10324,7 @@
     "type": "Elimination"
   },
   "5a03173786f77451cb427172": {
-    "QuestName": "Spa Tour Part 2",
+    "QuestName": "Spa Tour - Part 2",
     "_id": "5a03173786f77451cb427172",
     "acceptPlayerMessage": "5a03173786f77451cb427172 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -10520,7 +10520,7 @@
     "type": "Exploration"
   },
   "5a0327ba86f77456b9154236": {
-    "QuestName": "Spa Tour Part 3",
+    "QuestName": "Spa Tour - Part 3",
     "_id": "5a0327ba86f77456b9154236",
     "acceptPlayerMessage": "5a0327ba86f77456b9154236 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -10815,7 +10815,7 @@
     "type": "PickUp"
   },
   "5a03296886f774569778596a": {
-    "QuestName": "Spa Tour Part 4",
+    "QuestName": "Spa Tour - Part 4",
     "_id": "5a03296886f774569778596a",
     "acceptPlayerMessage": "5a03296886f774569778596a acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -11024,7 +11024,7 @@
     "type": "Discover"
   },
   "5a0449d586f77474e66227b7": {
-    "QuestName": "Spa Tour Part 5",
+    "QuestName": "Spa Tour - Part 5",
     "_id": "5a0449d586f77474e66227b7",
     "acceptPlayerMessage": "5a0449d586f77474e66227b7 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -12931,7 +12931,7 @@
     "type": "Discover"
   },
   "5a27b9de86f77464e5044585": {
-    "QuestName": "The Cult Part 1",
+    "QuestName": "The Cult - Part 1",
     "_id": "5a27b9de86f77464e5044585",
     "acceptPlayerMessage": "5a27b9de86f77464e5044585 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -13124,7 +13124,7 @@
     "type": "Exploration"
   },
   "5a27ba1c86f77461ea5a3c56": {
-    "QuestName": "The Cult Part 2",
+    "QuestName": "The Cult - Part 2",
     "_id": "5a27ba1c86f77461ea5a3c56",
     "acceptPlayerMessage": "5a27ba1c86f77461ea5a3c56 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -13369,7 +13369,7 @@
     "type": "Exploration"
   },
   "5a27ba9586f7741b543d8e85": {
-    "QuestName": "Spa Tour Part 6",
+    "QuestName": "Spa Tour - Part 6",
     "_id": "5a27ba9586f7741b543d8e85",
     "acceptPlayerMessage": "5a27ba9586f7741b543d8e85 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -13463,7 +13463,7 @@
     "type": "Loyalty"
   },
   "5a27bafb86f7741c73584017": {
-    "QuestName": "Spa Tour Part 7",
+    "QuestName": "Spa Tour - Part 7",
     "_id": "5a27bafb86f7741c73584017",
     "acceptPlayerMessage": "5a27bafb86f7741c73584017 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -13725,7 +13725,7 @@
     "type": "PickUp"
   },
   "5a27bb1e86f7741f27621b7e": {
-    "QuestName": "Cargo X Part 1",
+    "QuestName": "Cargo X - Part 1",
     "_id": "5a27bb1e86f7741f27621b7e",
     "acceptPlayerMessage": "5a27bb1e86f7741f27621b7e acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -13969,7 +13969,7 @@
     "type": "PickUp"
   },
   "5a27bb3d86f77411ea361a21": {
-    "QuestName": "Cargo X Part 2",
+    "QuestName": "Cargo X - Part 2",
     "_id": "5a27bb3d86f77411ea361a21",
     "acceptPlayerMessage": "5a27bb3d86f77411ea361a21 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -14261,7 +14261,7 @@
     "type": "Exploration"
   },
   "5a27bb5986f7741dfb660900": {
-    "QuestName": "Cargo X Part 3",
+    "QuestName": "Cargo X - Part 3",
     "_id": "5a27bb5986f7741dfb660900",
     "acceptPlayerMessage": "5a27bb5986f7741dfb660900 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -14469,7 +14469,7 @@
     "type": "Multi"
   },
   "5a27bb8386f7741c770d2d0a": {
-    "QuestName": "Wet Job Part 1",
+    "QuestName": "Wet Job - Part 1",
     "_id": "5a27bb8386f7741c770d2d0a",
     "acceptPlayerMessage": "5a27bb8386f7741c770d2d0a acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -14704,7 +14704,7 @@
     "type": "Elimination"
   },
   "5a27bbf886f774333a418eeb": {
-    "QuestName": "Wet Job Part 2",
+    "QuestName": "Wet Job - Part 2",
     "_id": "5a27bbf886f774333a418eeb",
     "acceptPlayerMessage": "5a27bbf886f774333a418eeb acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -14925,7 +14925,7 @@
     "type": "Exploration"
   },
   "5a27bc1586f7741f6d40fa2f": {
-    "QuestName": "Wet Job Part 3",
+    "QuestName": "Wet Job - Part 3",
     "_id": "5a27bc1586f7741f6d40fa2f",
     "acceptPlayerMessage": "5a27bc1586f7741f6d40fa2f acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -15188,7 +15188,7 @@
     "type": "Exploration"
   },
   "5a27bc3686f7741c73584026": {
-    "QuestName": "Wet Job Part 4",
+    "QuestName": "Wet Job - Part 4",
     "_id": "5a27bc3686f7741c73584026",
     "acceptPlayerMessage": "5a27bc3686f7741c73584026 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -15390,7 +15390,7 @@
     "type": "PickUp"
   },
   "5a27bc6986f7741c7358402b": {
-    "QuestName": "Wet Job Part 5",
+    "QuestName": "Wet Job - Part 5",
     "_id": "5a27bc6986f7741c7358402b",
     "acceptPlayerMessage": "5a27bc6986f7741c7358402b acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -15625,7 +15625,7 @@
     "type": "PickUp"
   },
   "5a27bc8586f7741b543d8ea4": {
-    "QuestName": "Wet Job Part 6",
+    "QuestName": "Wet Job - Part 6",
     "_id": "5a27bc8586f7741b543d8ea4",
     "acceptPlayerMessage": "5a27bc8586f7741b543d8ea4 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -16114,7 +16114,7 @@
     "type": "Elimination"
   },
   "5a27d2af86f7744e1115b323": {
-    "QuestName": "Friend from the West Part 2",
+    "QuestName": "Friend From the West - Part 2",
     "_id": "5a27d2af86f7744e1115b323",
     "acceptPlayerMessage": "5a27d2af86f7744e1115b323 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -16285,7 +16285,7 @@
     "type": "Merchant"
   },
   "5a68661a86f774500f48afb0": {
-    "QuestName": "Health Care Privacy Part 1",
+    "QuestName": "Health Care Privacy - Part 1",
     "_id": "5a68661a86f774500f48afb0",
     "acceptPlayerMessage": "5a68661a86f774500f48afb0 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -16454,7 +16454,7 @@
     "type": "Discover"
   },
   "5a68663e86f774501078f78a": {
-    "QuestName": "Health Care Privacy Part 2",
+    "QuestName": "Health Care Privacy - Part 2",
     "_id": "5a68663e86f774501078f78a",
     "acceptPlayerMessage": "5a68663e86f774501078f78a acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -16638,7 +16638,7 @@
     "type": "Discover"
   },
   "5a68665c86f774255929b4c7": {
-    "QuestName": "Health Care Privacy Part 3",
+    "QuestName": "Health Care Privacy - Part 3",
     "_id": "5a68665c86f774255929b4c7",
     "acceptPlayerMessage": "5a68665c86f774255929b4c7 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -16879,7 +16879,7 @@
     "type": "Discover"
   },
   "5a68667486f7742607157d28": {
-    "QuestName": "Health Care Privacy Part 4",
+    "QuestName": "Health Care Privacy - Part 4",
     "_id": "5a68667486f7742607157d28",
     "acceptPlayerMessage": "5a68667486f7742607157d28 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -17007,7 +17007,7 @@
     "type": "Skill"
   },
   "5a68669a86f774255929b4d4": {
-    "QuestName": "Health Care Privacy Part 5",
+    "QuestName": "Health Care Privacy - Part 5",
     "_id": "5a68669a86f774255929b4d4",
     "acceptPlayerMessage": "5a68669a86f774255929b4d4 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -17160,7 +17160,7 @@
     "type": "Multi"
   },
   "5ac23c6186f7741247042bad": {
-    "QuestName": "Gunsmith Part 1",
+    "QuestName": "Gunsmith - Part 1",
     "_id": "5ac23c6186f7741247042bad",
     "acceptPlayerMessage": "5ac23c6186f7741247042bad acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -17381,7 +17381,7 @@
     "type": "WeaponAssembly"
   },
   "5ac2426c86f774138762edfe": {
-    "QuestName": "Gunsmith Part 2",
+    "QuestName": "Gunsmith - Part 2",
     "_id": "5ac2426c86f774138762edfe",
     "acceptPlayerMessage": "5ac2426c86f774138762edfe acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -17666,7 +17666,7 @@
     "type": "WeaponAssembly"
   },
   "5ac2428686f77412450b42bf": {
-    "QuestName": "Gunsmith Part 3",
+    "QuestName": "Gunsmith - Part 3",
     "_id": "5ac2428686f77412450b42bf",
     "acceptPlayerMessage": "5ac2428686f77412450b42bf acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -17917,7 +17917,7 @@
     "type": "WeaponAssembly"
   },
   "5ac242ab86f77412464f68b4": {
-    "QuestName": "Gunsmith Part 16",
+    "QuestName": "Gunsmith - Part 16",
     "_id": "5ac242ab86f77412464f68b4",
     "acceptPlayerMessage": "5ac242ab86f77412464f68b4 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -18219,7 +18219,7 @@
     "type": "WeaponAssembly"
   },
   "5ac244c486f77413e12cf945": {
-    "QuestName": "Gunsmith Part 13",
+    "QuestName": "Gunsmith - Part 13",
     "_id": "5ac244c486f77413e12cf945",
     "acceptPlayerMessage": "5ac244c486f77413e12cf945 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -18421,7 +18421,7 @@
     "type": "WeaponAssembly"
   },
   "5ac244eb86f7741356335af1": {
-    "QuestName": "Gunsmith Part 7",
+    "QuestName": "Gunsmith - Part 7",
     "_id": "5ac244eb86f7741356335af1",
     "acceptPlayerMessage": "5ac244eb86f7741356335af1 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -18623,7 +18623,7 @@
     "type": "WeaponAssembly"
   },
   "5ac345dc86f774288030817f": {
-    "QuestName": "Farming Part 1",
+    "QuestName": "Farming - Part 1",
     "_id": "5ac345dc86f774288030817f",
     "acceptPlayerMessage": "5ac345dc86f774288030817f acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -18840,7 +18840,7 @@
     "type": "Completion"
   },
   "5ac3460c86f7742880308185": {
-    "QuestName": "Farming Part 2",
+    "QuestName": "Farming - Part 2",
     "_id": "5ac3460c86f7742880308185",
     "acceptPlayerMessage": "5ac3460c86f7742880308185 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -19119,7 +19119,7 @@
     "type": "PickUp"
   },
   "5ac3462b86f7741d6118b983": {
-    "QuestName": "Farming Part 3",
+    "QuestName": "Farming - Part 3",
     "_id": "5ac3462b86f7741d6118b983",
     "acceptPlayerMessage": "5ac3462b86f7741d6118b983 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -19298,7 +19298,7 @@
     "type": "PickUp"
   },
   "5ac3464c86f7741d651d6877": {
-    "QuestName": "Farming Part 4",
+    "QuestName": "Farming - Part 4",
     "_id": "5ac3464c86f7741d651d6877",
     "acceptPlayerMessage": "5ac3464c86f7741d651d6877 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -19569,7 +19569,7 @@
     "type": "PickUp"
   },
   "5ac3467986f7741d6224abc2": {
-    "QuestName": "Signal Part 1",
+    "QuestName": "Signal - Part 1",
     "_id": "5ac3467986f7741d6224abc2",
     "acceptPlayerMessage": "5ac3467986f7741d6224abc2 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -19778,7 +19778,7 @@
     "type": "Discover"
   },
   "5ac346a886f7744e1b083d67": {
-    "QuestName": "Signal Part 2",
+    "QuestName": "Signal - Part 2",
     "_id": "5ac346a886f7744e1b083d67",
     "acceptPlayerMessage": "5ac346a886f7744e1b083d67 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -20019,7 +20019,7 @@
     "type": "PickUp"
   },
   "5ac346cf86f7741d63233a02": {
-    "QuestName": "Signal Part 3",
+    "QuestName": "Signal - Part 3",
     "_id": "5ac346cf86f7741d63233a02",
     "acceptPlayerMessage": "5ac346cf86f7741d63233a02 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -20331,7 +20331,7 @@
     "type": "Completion"
   },
   "5ac346e886f7741d6118b99b": {
-    "QuestName": "Signal Part 4",
+    "QuestName": "Signal - Part 4",
     "_id": "5ac346e886f7741d6118b99b",
     "acceptPlayerMessage": "5ac346e886f7741d6118b99b acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -20453,7 +20453,7 @@
     "type": "Skill"
   },
   "5ac3475486f7741d6224abd3": {
-    "QuestName": "Bad habit",
+    "QuestName": "Bad Habit",
     "_id": "5ac3475486f7741d6224abd3",
     "acceptPlayerMessage": "5ac3475486f7741d6224abd3 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -21146,7 +21146,7 @@
     "type": "Standing"
   },
   "5ae3267986f7742a413592fe": {
-    "QuestName": "Gunsmith Part 5",
+    "QuestName": "Gunsmith - Part 5",
     "_id": "5ae3267986f7742a413592fe",
     "acceptPlayerMessage": "5ae3267986f7742a413592fe acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -21334,7 +21334,7 @@
     "type": "WeaponAssembly"
   },
   "5ae3270f86f77445ba41d4dd": {
-    "QuestName": "Gunsmith Part 6",
+    "QuestName": "Gunsmith - Part 6",
     "_id": "5ae3270f86f77445ba41d4dd",
     "acceptPlayerMessage": "5ae3270f86f77445ba41d4dd acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -21557,7 +21557,7 @@
     "type": "WeaponAssembly"
   },
   "5ae3277186f7745973054106": {
-    "QuestName": "Gunsmith Part 8",
+    "QuestName": "Gunsmith - Part 8",
     "_id": "5ae3277186f7745973054106",
     "acceptPlayerMessage": "5ae3277186f7745973054106 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -21770,7 +21770,7 @@
     "type": "WeaponAssembly"
   },
   "5ae327c886f7745c7b3f2f3f": {
-    "QuestName": "Gunsmith Part 10",
+    "QuestName": "Gunsmith - Part 10",
     "_id": "5ae327c886f7745c7b3f2f3f",
     "acceptPlayerMessage": "5ae327c886f7745c7b3f2f3f acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -21955,7 +21955,7 @@
     "type": "WeaponAssembly"
   },
   "5ae3280386f7742a41359364": {
-    "QuestName": "Gunsmith Part 15",
+    "QuestName": "Gunsmith - Part 15",
     "_id": "5ae3280386f7742a41359364",
     "acceptPlayerMessage": "5ae3280386f7742a41359364 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -22142,7 +22142,7 @@
     "type": "WeaponAssembly"
   },
   "5ae448a386f7744d3730fff0": {
-    "QuestName": "Only business",
+    "QuestName": "Only Business",
     "_id": "5ae448a386f7744d3730fff0",
     "acceptPlayerMessage": "5ae448a386f7744d3730fff0 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -22408,7 +22408,7 @@
     "type": "Completion"
   },
   "5ae448e586f7744dcf0c2a67": {
-    "QuestName": "Big sale",
+    "QuestName": "Big Sale",
     "_id": "5ae448e586f7744dcf0c2a67",
     "acceptPlayerMessage": "5ae448e586f7744dcf0c2a67 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -22699,7 +22699,7 @@
     "type": "Exploration"
   },
   "5ae448f286f77448d73c0131": {
-    "QuestName": "The Blood of War Part 1",
+    "QuestName": "The Blood of War - Part 1",
     "_id": "5ae448f286f77448d73c0131",
     "acceptPlayerMessage": "5ae448f286f77448d73c0131 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -22924,7 +22924,7 @@
     "type": "Completion"
   },
   "5ae4490786f7744ca822adcc": {
-    "QuestName": "Dressed to kill",
+    "QuestName": "Dressed to Kill",
     "_id": "5ae4490786f7744ca822adcc",
     "acceptPlayerMessage": "5ae4490786f7744ca822adcc acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -23114,7 +23114,7 @@
     "type": "Completion"
   },
   "5ae4493486f7744efa289417": {
-    "QuestName": "Database Part 1",
+    "QuestName": "Database - Part 1",
     "_id": "5ae4493486f7744efa289417",
     "acceptPlayerMessage": "5ae4493486f7744efa289417 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -23405,7 +23405,7 @@
     "type": "Exploration"
   },
   "5ae4493d86f7744b8e15aa8f": {
-    "QuestName": "Database Part 2",
+    "QuestName": "Database - Part 2",
     "_id": "5ae4493d86f7744b8e15aa8f",
     "acceptPlayerMessage": "5ae4493d86f7744b8e15aa8f acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -23561,7 +23561,7 @@
     "type": "Completion"
   },
   "5ae4495086f77443c122bc40": {
-    "QuestName": "Sew it good Part 1",
+    "QuestName": "Sew it Good - Part 1",
     "_id": "5ae4495086f77443c122bc40",
     "acceptPlayerMessage": "5ae4495086f77443c122bc40 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -23863,7 +23863,7 @@
     "type": "PickUp"
   },
   "5ae4495c86f7744e87761355": {
-    "QuestName": "Sew it good Part 2",
+    "QuestName": "Sew it Good - Part 2",
     "_id": "5ae4495c86f7744e87761355",
     "acceptPlayerMessage": "5ae4495c86f7744e87761355 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -24065,7 +24065,7 @@
     "type": "PickUp"
   },
   "5ae4496986f774459e77beb6": {
-    "QuestName": "Sew it good Part 3",
+    "QuestName": "Sew it Good - Part 3",
     "_id": "5ae4496986f774459e77beb6",
     "acceptPlayerMessage": "5ae4496986f774459e77beb6 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -24217,7 +24217,7 @@
     "type": "PickUp"
   },
   "5ae4497b86f7744cf402ed00": {
-    "QuestName": "Sew it good Part 4",
+    "QuestName": "Sew it Good - Part 4",
     "_id": "5ae4497b86f7744cf402ed00",
     "acceptPlayerMessage": "5ae4497b86f7744cf402ed00 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -24462,7 +24462,7 @@
     "type": "PickUp"
   },
   "5ae4498786f7744bde357695": {
-    "QuestName": "The key to success",
+    "QuestName": "The Key to Success",
     "_id": "5ae4498786f7744bde357695",
     "acceptPlayerMessage": "5ae4498786f7744bde357695 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -24658,7 +24658,7 @@
     "type": "PickUp"
   },
   "5ae4499a86f77449783815db": {
-    "QuestName": "Charisma brings success",
+    "QuestName": "Charisma Brings Success",
     "_id": "5ae4499a86f77449783815db",
     "acceptPlayerMessage": "5ae4499a86f77449783815db acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -25526,7 +25526,7 @@
     "type": "PickUp"
   },
   "5b47749f86f7746c5d6a5fd4": {
-    "QuestName": "Gunsmith Part 17",
+    "QuestName": "Gunsmith - Part 17",
     "_id": "5b47749f86f7746c5d6a5fd4",
     "acceptPlayerMessage": "5b47749f86f7746c5d6a5fd4 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -25774,7 +25774,7 @@
     "type": "WeaponAssembly"
   },
   "5b47799d86f7746c5d6a5fd8": {
-    "QuestName": "Gunsmith Part 12",
+    "QuestName": "Gunsmith - Part 12",
     "_id": "5b47799d86f7746c5d6a5fd8",
     "acceptPlayerMessage": "5b47799d86f7746c5d6a5fd8 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -25998,7 +25998,7 @@
     "type": "WeaponAssembly"
   },
   "5b477b6f86f7747290681823": {
-    "QuestName": "Gunsmith Part 18",
+    "QuestName": "Gunsmith - Part 18",
     "_id": "5b477b6f86f7747290681823",
     "acceptPlayerMessage": "5b477b6f86f7747290681823 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -26237,7 +26237,7 @@
     "type": "WeaponAssembly"
   },
   "5b477f7686f7744d1b23c4d2": {
-    "QuestName": "Gunsmith Part 20",
+    "QuestName": "Gunsmith - Part 20",
     "_id": "5b477f7686f7744d1b23c4d2",
     "acceptPlayerMessage": "5b477f7686f7744d1b23c4d2 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -26456,7 +26456,7 @@
     "type": "WeaponAssembly"
   },
   "5b47825886f77468074618d3": {
-    "QuestName": "Gunsmith Part 22",
+    "QuestName": "Gunsmith - Part 22",
     "_id": "5b47825886f77468074618d3",
     "acceptPlayerMessage": "5b47825886f77468074618d3 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -26674,7 +26674,7 @@
     "type": "WeaponAssembly"
   },
   "5b47876e86f7744d1c353205": {
-    "QuestName": "The Blood of War Part 2",
+    "QuestName": "The Blood of War - Part 2",
     "_id": "5b47876e86f7744d1c353205",
     "acceptPlayerMessage": "5b47876e86f7744d1c353205 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -26925,7 +26925,7 @@
     "type": "PickUp"
   },
   "5b47891f86f7744d1b23c571": {
-    "QuestName": "Living high is not a crime",
+    "QuestName": "Living High is Not a Crime - Part 1",
     "_id": "5b47891f86f7744d1b23c571",
     "acceptPlayerMessage": "5b47891f86f7744d1b23c571 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -27236,7 +27236,7 @@
     "type": "PickUp"
   },
   "5b478b1886f7744d1b23c57d": {
-    "QuestName": "Hot delivery",
+    "QuestName": "Hot Delivery",
     "_id": "5b478b1886f7744d1b23c57d",
     "acceptPlayerMessage": "5b478b1886f7744d1b23c57d acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -28234,7 +28234,7 @@
     "type": "PickUp"
   },
   "5b47926a86f7747ccc057c15": {
-    "QuestName": "Informed means armed",
+    "QuestName": "Informed Means Armed",
     "_id": "5b47926a86f7747ccc057c15",
     "acceptPlayerMessage": "5b47926a86f7747ccc057c15 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -28453,7 +28453,7 @@
     "type": "Completion"
   },
   "5b4794cb86f774598100d5d4": {
-    "QuestName": "Lend Lease - Part 1",
+    "QuestName": "Lend-Lease - Part 1",
     "_id": "5b4794cb86f774598100d5d4",
     "acceptPlayerMessage": "5b4794cb86f774598100d5d4 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -29108,7 +29108,7 @@
     "type": "Completion"
   },
   "5bc4776586f774512d07cf05": {
-    "QuestName": "The Tarkov shooter Part 1",
+    "QuestName": "The Tarkov Shooter - Part 1",
     "_id": "5bc4776586f774512d07cf05",
     "acceptPlayerMessage": "5bc4776586f774512d07cf05 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -29510,7 +29510,7 @@
     "type": "Elimination"
   },
   "5bc479e586f7747f376c7da3": {
-    "QuestName": "The Tarkov shooter Part 2",
+    "QuestName": "The Tarkov Shooter - Part 2",
     "_id": "5bc479e586f7747f376c7da3",
     "acceptPlayerMessage": "5bc479e586f7747f376c7da3 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -29756,7 +29756,7 @@
     "type": "Elimination"
   },
   "5bc47dbf86f7741ee74e93b9": {
-    "QuestName": "The Tarkov shooter Part 3",
+    "QuestName": "The Tarkov Shooter - Part 3",
     "_id": "5bc47dbf86f7741ee74e93b9",
     "acceptPlayerMessage": "5bc47dbf86f7741ee74e93b9 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -29974,7 +29974,7 @@
     "type": "Elimination"
   },
   "5bc480a686f7741af0342e29": {
-    "QuestName": "The Tarkov shooter Part 4",
+    "QuestName": "The Tarkov Shooter - Part 4",
     "_id": "5bc480a686f7741af0342e29",
     "acceptPlayerMessage": "5bc480a686f7741af0342e29 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -30173,7 +30173,7 @@
     "type": "Elimination"
   },
   "5bc4826c86f774106d22d88b": {
-    "QuestName": "The Tarkov shooter Part 5",
+    "QuestName": "The Tarkov Shooter - Part 5",
     "_id": "5bc4826c86f774106d22d88b",
     "acceptPlayerMessage": "5bc4826c86f774106d22d88b acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -30366,7 +30366,7 @@
     "type": "Elimination"
   },
   "5bc4836986f7740c0152911c": {
-    "QuestName": "The Tarkov shooter Part 6",
+    "QuestName": "The Tarkov Shooter - Part 6",
     "_id": "5bc4836986f7740c0152911c",
     "acceptPlayerMessage": "5bc4836986f7740c0152911c acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -30553,7 +30553,7 @@
     "type": "Elimination"
   },
   "5bc4856986f77454c317bea7": {
-    "QuestName": "The Tarkov shooter Part 7",
+    "QuestName": "The Tarkov Shooter - Part 7",
     "_id": "5bc4856986f77454c317bea7",
     "acceptPlayerMessage": "5bc4856986f77454c317bea7 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -30816,7 +30816,7 @@
     "type": "Elimination"
   },
   "5bc4893c86f774626f5ebf3e": {
-    "QuestName": "The Tarkov shooter Part 8",
+    "QuestName": "The Tarkov Shooter - Part 8",
     "_id": "5bc4893c86f774626f5ebf3e",
     "acceptPlayerMessage": "5bc4893c86f774626f5ebf3e acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -31493,7 +31493,7 @@
     "type": "Discover"
   },
   "5c0bc91486f7746ab41857a2": {
-    "QuestName": "Silent caliber",
+    "QuestName": "Silent Caliber",
     "_id": "5c0bc91486f7746ab41857a2",
     "acceptPlayerMessage": "5c0bc91486f7746ab41857a2 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -32036,7 +32036,7 @@
     "type": "Elimination"
   },
   "5c0bd94186f7747a727f09b2": {
-    "QuestName": "Test drive - Part 1",
+    "QuestName": "Test Drive - Part 1",
     "_id": "5c0bd94186f7747a727f09b2",
     "acceptPlayerMessage": "5c0bd94186f7747a727f09b2 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -33804,7 +33804,7 @@
     "type": "Completion"
   },
   "5c0be5fc86f774467a116593": {
-    "QuestName": "Private clinic",
+    "QuestName": "Private Clinic",
     "_id": "5c0be5fc86f774467a116593",
     "acceptPlayerMessage": "5c0be5fc86f774467a116593 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -34175,7 +34175,7 @@
     "type": "Skill"
   },
   "5c0d0f1886f77457b8210226": {
-    "QuestName": "Lend lease - Part 2",
+    "QuestName": "Lend-Lease - Part 2",
     "_id": "5c0d0f1886f77457b8210226",
     "acceptPlayerMessage": "5c0d0f1886f77457b8210226 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -34730,7 +34730,7 @@
     "type": "Elimination"
   },
   "5c0d1c4cd0928202a02a6f5c": {
-    "QuestName": "Decontamination service",
+    "QuestName": "Decontamination Service",
     "_id": "5c0d1c4cd0928202a02a6f5c",
     "acceptPlayerMessage": "5c0d1c4cd0928202a02a6f5c acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -34956,7 +34956,7 @@
     "type": "Elimination"
   },
   "5c0d4c12d09282029f539173": {
-    "QuestName": "Peacekeeping mission",
+    "QuestName": "Peacekeeping Mission",
     "_id": "5c0d4c12d09282029f539173",
     "acceptPlayerMessage": "5c0d4c12d09282029f539173 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -35692,7 +35692,7 @@
     "type": "Elimination"
   },
   "5c0d4e61d09282029f53920e": {
-    "QuestName": "The guide",
+    "QuestName": "The Guide",
     "_id": "5c0d4e61d09282029f53920e",
     "acceptPlayerMessage": "5c0d4e61d09282029f53920e acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -36903,7 +36903,7 @@
     "type": "Skill"
   },
   "5c1141f386f77430ff393792": {
-    "QuestName": "Living high is not a crime - Part 2",
+    "QuestName": "Living High is Not a Crime - Part 2",
     "_id": "5c1141f386f77430ff393792",
     "acceptPlayerMessage": "5c1141f386f77430ff393792 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -37519,7 +37519,7 @@
     "type": "Elimination"
   },
   "5c12452c86f7744b83469073": {
-    "QuestName": "Perfect mediator",
+    "QuestName": "Perfect Mediator",
     "_id": "5c12452c86f7744b83469073",
     "acceptPlayerMessage": "5c12452c86f7744b83469073 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -40986,7 +40986,7 @@
     "type": "Completion"
   },
   "5d25aed386f77442734d25d2": {
-    "QuestName": "The survivalist path Unprotected but dangerous",
+    "QuestName": "The Survivalist Path - Unprotected but Dangerous",
     "_id": "5d25aed386f77442734d25d2",
     "acceptPlayerMessage": "5d25aed386f77442734d25d2 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -41389,7 +41389,7 @@
     "type": "Completion"
   },
   "5d25b6be86f77444001e1b89": {
-    "QuestName": "The survivalist path Thrifty",
+    "QuestName": "The Survivalist Path - Thrifty",
     "_id": "5d25b6be86f77444001e1b89",
     "acceptPlayerMessage": "5d25b6be86f77444001e1b89 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -41601,7 +41601,7 @@
     "type": "Completion"
   },
   "5d25bfd086f77442734d3007": {
-    "QuestName": "The survivalist path Zhivchik",
+    "QuestName": "The Survivalist Path - Zhivchik",
     "_id": "5d25bfd086f77442734d3007",
     "acceptPlayerMessage": "5d25bfd086f77442734d3007 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -41813,7 +41813,7 @@
     "type": "Experience"
   },
   "5d25c81b86f77443e625dd71": {
-    "QuestName": "The survivalist path Wounded beast",
+    "QuestName": "The Survivalist Path - Wounded Beast",
     "_id": "5d25c81b86f77443e625dd71",
     "acceptPlayerMessage": "5d25c81b86f77443e625dd71 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -42052,7 +42052,7 @@
     "type": "Completion"
   },
   "5d25cf2686f77443e75488d4": {
-    "QuestName": "The survivalist path Tough guy",
+    "QuestName": "The Survivalist Path - Tough Guy",
     "_id": "5d25cf2686f77443e75488d4",
     "acceptPlayerMessage": "5d25cf2686f77443e75488d4 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -42308,7 +42308,7 @@
     "type": "Completion"
   },
   "5d25d2c186f77443e35162e5": {
-    "QuestName": "The survivalist path Cold blooded",
+    "QuestName": "The Survivalist Path - Cold Blooded",
     "_id": "5d25d2c186f77443e35162e5",
     "acceptPlayerMessage": "5d25d2c186f77443e35162e5 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -42477,7 +42477,7 @@
     "type": "Completion"
   },
   "5d25e29d86f7740a22516326": {
-    "QuestName": "The survivalist path Eagle-owl",
+    "QuestName": "The Survivalist Path - Eagle-Owl",
     "_id": "5d25e29d86f7740a22516326",
     "acceptPlayerMessage": "5d25e29d86f7740a22516326 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -42693,7 +42693,7 @@
     "type": "Completion"
   },
   "5d25e2a986f77409dd5cdf2a": {
-    "QuestName": "The survivalist path Combat medic",
+    "QuestName": "The Survivalist Path - Combat Medic",
     "_id": "5d25e2a986f77409dd5cdf2a",
     "acceptPlayerMessage": "5d25e2a986f77409dd5cdf2a acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -42794,7 +42794,7 @@
     "type": "Completion"
   },
   "5d25e2b486f77409de05bba0": {
-    "QuestName": "Huntsman path Secured perimeter",
+    "QuestName": "The Huntsman Path - Secured Perimeter",
     "_id": "5d25e2b486f77409de05bba0",
     "acceptPlayerMessage": "5d25e2b486f77409de05bba0 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -43021,7 +43021,7 @@
     "type": "Completion"
   },
   "5d25e2c386f77443e7549029": {
-    "QuestName": "Huntsman path The trophy",
+    "QuestName": "The Huntsman Path - Trophy",
     "_id": "5d25e2c386f77443e7549029",
     "acceptPlayerMessage": "5d25e2c386f77443e7549029 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -43265,7 +43265,7 @@
     "type": "Completion"
   },
   "5d25e2cc86f77443e47ae019": {
-    "QuestName": "Huntsman path Forest cleaning",
+    "QuestName": "The Huntsman Path - Forest Cleaning",
     "_id": "5d25e2cc86f77443e47ae019",
     "acceptPlayerMessage": "5d25e2cc86f77443e47ae019 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -43453,7 +43453,7 @@
     "type": "Completion"
   },
   "5d25e2d886f77442734d335e": {
-    "QuestName": "Huntsman path Controller",
+    "QuestName": "The Huntsman Path - Controller",
     "_id": "5d25e2d886f77442734d335e",
     "acceptPlayerMessage": "5d25e2d886f77442734d335e acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -43612,7 +43612,7 @@
     "type": "Completion"
   },
   "5d25e2e286f77444001e2e48": {
-    "QuestName": "Huntsman path Sell-out",
+    "QuestName": "The Huntsman Path - Sellout",
     "_id": "5d25e2e286f77444001e2e48",
     "acceptPlayerMessage": "5d25e2e286f77444001e2e48 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -43959,7 +43959,7 @@
     "type": "Elimination"
   },
   "5d25e2ee86f77443e35162ea": {
-    "QuestName": "Huntsman path Woods keeper",
+    "QuestName": "The Huntsman Path - Woods Keeper",
     "_id": "5d25e2ee86f77443e35162ea",
     "acceptPlayerMessage": "5d25e2ee86f77443e35162ea acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -44449,7 +44449,7 @@
     "type": "Completion"
   },
   "5d25e43786f7740a212217fa": {
-    "QuestName": "Huntsman path Justice",
+    "QuestName": "The Huntsman Path - Justice",
     "_id": "5d25e43786f7740a212217fa",
     "acceptPlayerMessage": "5d25e43786f7740a212217fa acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -44630,7 +44630,7 @@
     "type": "Completion"
   },
   "5d25e44386f77409453bce7b": {
-    "QuestName": "Huntsman path Evil watchman",
+    "QuestName": "The Huntsman Path - Evil Watchman",
     "_id": "5d25e44386f77409453bce7b",
     "acceptPlayerMessage": "5d25e44386f77409453bce7b acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -44807,7 +44807,7 @@
     "type": "Completion"
   },
   "5d25e44f86f77443e625e385": {
-    "QuestName": "Huntsman path Eraser - Part 1",
+    "QuestName": "The Huntsman Path - Eraser - Part 1",
     "_id": "5d25e44f86f77443e625e385",
     "acceptPlayerMessage": "5d25e44f86f77443e625e385 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -44970,7 +44970,7 @@
     "type": "Completion"
   },
   "5d25e45e86f77408251c4bfa": {
-    "QuestName": "Huntsman path Eraser-  Part 2",
+    "QuestName": "The Huntsman Path - Eraser - Part 2",
     "_id": "5d25e45e86f77408251c4bfa",
     "acceptPlayerMessage": "5d25e45e86f77408251c4bfa acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -45379,7 +45379,7 @@
     "type": "Completion"
   },
   "5d25e48186f77443e625e386": {
-    "QuestName": "Courtesy visit",
+    "QuestName": "Courtesy Visit",
     "_id": "5d25e48186f77443e625e386",
     "acceptPlayerMessage": "5d25e48186f77443e625e386 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -45635,7 +45635,7 @@
     "type": "Completion"
   },
   "5d25e48d86f77408251c4bfb": {
-    "QuestName": "Shady business",
+    "QuestName": "Shady Business",
     "_id": "5d25e48d86f77408251c4bfb",
     "acceptPlayerMessage": "5d25e48d86f77408251c4bfb acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -45994,7 +45994,7 @@
     "type": "Completion"
   },
   "5d25e4b786f77408251c4bfc": {
-    "QuestName": "Fishing place",
+    "QuestName": "Fishing Place",
     "_id": "5d25e4b786f77408251c4bfc",
     "acceptPlayerMessage": "5d25e4b786f77408251c4bfc acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -46206,7 +46206,7 @@
     "type": "Completion"
   },
   "5d25e4ca86f77409dd5cdf2c": {
-    "QuestName": "Hunting trip",
+    "QuestName": "Hunting Trip",
     "_id": "5d25e4ca86f77409dd5cdf2c",
     "acceptPlayerMessage": "5d25e4ca86f77409dd5cdf2c acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -46747,7 +46747,7 @@
     "type": "Completion"
   },
   "5d4bec3486f7743cac246665": {
-    "QuestName": "Regulated materials",
+    "QuestName": "Regulated Materials",
     "_id": "5d4bec3486f7743cac246665",
     "acceptPlayerMessage": "5d4bec3486f7743cac246665 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -46986,7 +46986,7 @@
     "type": "PickUp"
   },
   "5d6fb2c086f77449da599c24": {
-    "QuestName": "An apple a day - keeps the doctor away",
+    "QuestName": "An Apple a Day Keeps the Doctor Away",
     "_id": "5d6fb2c086f77449da599c24",
     "acceptPlayerMessage": "5d6fb2c086f77449da599c24 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -47142,7 +47142,7 @@
     "type": "Completion"
   },
   "5dc53acb86f77469c740c893": {
-    "QuestName": "The stylish one",
+    "QuestName": "The Stylish One",
     "_id": "5dc53acb86f77469c740c893",
     "acceptPlayerMessage": "5dc53acb86f77469c740c893 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -48095,7 +48095,7 @@
     "type": "PickUp"
   },
   "5eaaaa7c93afa0558f3b5a1c": {
-    "QuestName": "The survivalist path Junkie",
+    "QuestName": "The Survivalist Path - Junkie",
     "_id": "5eaaaa7c93afa0558f3b5a1c",
     "acceptPlayerMessage": "5eaaaa7c93afa0558f3b5a1c acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -48608,7 +48608,7 @@
     "type": "Discover"
   },
   "5edab4b1218d181e29451435": {
-    "QuestName": "Huntsman path Sadist",
+    "QuestName": "The Huntsman Path - Sadist",
     "_id": "5edab4b1218d181e29451435",
     "acceptPlayerMessage": "5edab4b1218d181e29451435 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -49273,7 +49273,7 @@
     "type": "PickUp"
   },
   "5edabd13218d181e29451442": {
-    "QuestName": "Rigged game",
+    "QuestName": "Rigged Game",
     "_id": "5edabd13218d181e29451442",
     "acceptPlayerMessage": "5edabd13218d181e29451442 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -50431,7 +50431,7 @@
     "type": "PickUp"
   },
   "5edac63b930f5454f51e128b": {
-    "QuestName": "TerraGroup employee",
+    "QuestName": "TerraGroup Employee",
     "_id": "5edac63b930f5454f51e128b",
     "acceptPlayerMessage": "5edac63b930f5454f51e128b acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -50707,7 +50707,7 @@
     "type": "PickUp"
   },
   "5ede55112c95834b583f052a": {
-    "QuestName": "Bunker - Part 1",
+    "QuestName": "The Bunker - Part 1",
     "_id": "5ede55112c95834b583f052a",
     "acceptPlayerMessage": "5ede55112c95834b583f052a acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -51005,7 +51005,7 @@
     "type": "Completion"
   },
   "5ede567cfa6dc072ce15d6e3": {
-    "QuestName": "Bunker - Part 2",
+    "QuestName": "The Bunker - Part 2",
     "_id": "5ede567cfa6dc072ce15d6e3",
     "acceptPlayerMessage": "5ede567cfa6dc072ce15d6e3 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -51382,7 +51382,7 @@
     "type": "Completion"
   },
   "5f04886a3937dc337a6b8238": {
-    "QuestName": "The chemistry closet",
+    "QuestName": "Chemistry Closet",
     "_id": "5f04886a3937dc337a6b8238",
     "acceptPlayerMessage": "5f04886a3937dc337a6b8238 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -52932,7 +52932,7 @@
     "type": "PickUp"
   },
   "60896bca6ee58f38c417d4f2": {
-    "QuestName": "No place for renegades",
+    "QuestName": "No Place for Renegades",
     "_id": "60896bca6ee58f38c417d4f2",
     "acceptPlayerMessage": "60896bca6ee58f38c417d4f2 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -53188,7 +53188,7 @@
     "type": "Elimination"
   },
   "60896e28e4a85c72ef3fa301": {
-    "QuestName": "Disease history",
+    "QuestName": "Disease History",
     "_id": "60896e28e4a85c72ef3fa301",
     "acceptPlayerMessage": "60896e28e4a85c72ef3fa301 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -53418,7 +53418,7 @@
     "type": "Completion"
   },
   "6089732b59b92115597ad789": {
-    "QuestName": "Surplus goods",
+    "QuestName": "Surplus Goods",
     "_id": "6089732b59b92115597ad789",
     "acceptPlayerMessage": "6089732b59b92115597ad789 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -53588,7 +53588,7 @@
     "type": "Exploration"
   },
   "6089736efa70fc097863b8f6": {
-    "QuestName": "Back door",
+    "QuestName": "Back Door",
     "_id": "6089736efa70fc097863b8f6",
     "acceptPlayerMessage": "6089736efa70fc097863b8f6 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -53805,7 +53805,7 @@
     "type": "Completion"
   },
   "6089743983426423753cd58a": {
-    "QuestName": "Safe corridor",
+    "QuestName": "Safe Corridor",
     "_id": "6089743983426423753cd58a",
     "acceptPlayerMessage": "6089743983426423753cd58a acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -53995,7 +53995,7 @@
     "type": "Elimination"
   },
   "608974af4b05530f55550c21": {
-    "QuestName": "Inventory check",
+    "QuestName": "Inventory Check",
     "_id": "608974af4b05530f55550c21",
     "acceptPlayerMessage": "608974af4b05530f55550c21 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -54324,7 +54324,7 @@
     "type": "Exploration"
   },
   "608974d01a66564e74191fc0": {
-    "QuestName": "Fuel matter",
+    "QuestName": "A Fuel Matter",
     "_id": "608974d01a66564e74191fc0",
     "acceptPlayerMessage": "608974d01a66564e74191fc0 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -54510,7 +54510,7 @@
     "type": "Completion"
   },
   "608a768d82e40b3c727fd17d": {
-    "QuestName": "Pest control",
+    "QuestName": "Pest Control",
     "_id": "608a768d82e40b3c727fd17d",
     "acceptPlayerMessage": "608a768d82e40b3c727fd17d acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -54725,7 +54725,7 @@
     "type": "Elimination"
   },
   "60c0c018f7afb4354815096a": {
-    "QuestName": "Huntsman Path- Factory Chief",
+    "QuestName": "The Huntsman Path - Factory Chief",
     "_id": "60c0c018f7afb4354815096a",
     "acceptPlayerMessage": "60c0c018f7afb4354815096a acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -58025,7 +58025,7 @@
     "type": "PickUp"
   },
   "60e71e8ed54b755a3b53eb67": {
-    "QuestName": "Huntsman Path - Relentless",
+    "QuestName": "The Huntsman Path - Relentless",
     "_id": "60e71e8ed54b755a3b53eb67",
     "acceptPlayerMessage": "60e71e8ed54b755a3b53eb67 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -59185,7 +59185,7 @@
     "type": "Loyalty"
   },
   "6179ac7511973d018217d0b9": {
-    "QuestName": "Easy Job Part 1",
+    "QuestName": "Easy Job - Part 1",
     "_id": "6179ac7511973d018217d0b9",
     "acceptPlayerMessage": "6179ac7511973d018217d0b9 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -59456,7 +59456,7 @@
     "type": "Discover"
   },
   "6179acbdc760af5ad2053585": {
-    "QuestName": "Easy Job Part 2",
+    "QuestName": "Easy Job - Part 2",
     "_id": "6179acbdc760af5ad2053585",
     "acceptPlayerMessage": "6179acbdc760af5ad2053585 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -59605,7 +59605,7 @@
     "type": "Elimination"
   },
   "6179ad0a6e9dd54ac275e3f2": {
-    "QuestName": "Huntsman Path Outcasts",
+    "QuestName": "The Huntsman Path - Outcasts",
     "_id": "6179ad0a6e9dd54ac275e3f2",
     "acceptPlayerMessage": "6179ad0a6e9dd54ac275e3f2 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -61911,7 +61911,7 @@
     "type": "Elimination"
   },
   "61958c366726521dd96828ec": {
-    "QuestName": "Cargo X Part 4",
+    "QuestName": "Cargo X - Part 4",
     "_id": "61958c366726521dd96828ec",
     "acceptPlayerMessage": "61958c366726521dd96828ec acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -62063,7 +62063,7 @@
     "type": "Discover"
   },
   "61e6e5e0f5b9633f6719ed95": {
-    "QuestName": "Compensation For Damage - Trust",
+    "QuestName": "Compensation for Damage - Trust",
     "_id": "61e6e5e0f5b9633f6719ed95",
     "canShowNotificationsInGame": true,
     "changeQuestMessageText": "61e6e5e0f5b9633f6719ed95 changeQuestMessageText",
@@ -62150,7 +62150,7 @@
     "type": "PickUp"
   },
   "61e6e60223374d168a4576a6": {
-    "QuestName": "Compensation For Damage - Wager",
+    "QuestName": "Compensation for Damage - Wager",
     "_id": "61e6e60223374d168a4576a6",
     "acceptPlayerMessage": "61e6e60223374d168a4576a6 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -62249,7 +62249,7 @@
     "type": "Elimination"
   },
   "61e6e615eea2935bc018a2c5": {
-    "QuestName": "Compensation For Damage - Barkeep",
+    "QuestName": "Compensation for Damage - Barkeep",
     "_id": "61e6e615eea2935bc018a2c5",
     "acceptPlayerMessage": "61e6e615eea2935bc018a2c5 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -62341,7 +62341,7 @@
     "type": "PickUp"
   },
   "61e6e621bfeab00251576265": {
-    "QuestName": "Compensation For Damage - Collection",
+    "QuestName": "Compensation for Damage - Collection",
     "_id": "61e6e621bfeab00251576265",
     "canShowNotificationsInGame": true,
     "changeQuestMessageText": "61e6e621bfeab00251576265 changeQuestMessageText",
@@ -63511,7 +63511,7 @@
     "type": "PickUp"
   },
   "625d7005a4eb80027c4f2e09": {
-    "QuestName": "Knock - Knock",
+    "QuestName": "Knock-Knock",
     "_id": "625d7005a4eb80027c4f2e09",
     "acceptPlayerMessage": "625d7005a4eb80027c4f2e09 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -64738,7 +64738,7 @@
     "type": "Exploration"
   },
   "626bd75e47ea7f506e5493c5": {
-    "QuestName": "Broadcast Part 1",
+    "QuestName": "Broadcast - Part 1",
     "_id": "626bd75e47ea7f506e5493c5",
     "acceptPlayerMessage": "626bd75e47ea7f506e5493c5 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -65982,7 +65982,7 @@
     "type": "Completion"
   },
   "639135b04ed9512be67647d7": {
-    "QuestName": "Glory to CPSU",
+    "QuestName": "Glory to CPSU - Part 1",
     "_id": "639135b04ed9512be67647d7",
     "acceptPlayerMessage": "639135b04ed9512be67647d7 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -67409,7 +67409,7 @@
     "type": "Completion"
   },
   "639135f286e646067c176a87": {
-    "QuestName": "Revision - Streets Of Tarkov",
+    "QuestName": "Revision - Streets of Tarkov",
     "_id": "639135f286e646067c176a87",
     "acceptPlayerMessage": "639135f286e646067c176a87 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -68008,7 +68008,7 @@
     "type": "Completion"
   },
   "639136df4b15ca31f76bc31f": {
-    "QuestName": "The Huntsman Path Administrator",
+    "QuestName": "The Huntsman Path - Administrator",
     "_id": "639136df4b15ca31f76bc31f",
     "acceptPlayerMessage": "639136df4b15ca31f76bc31f acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -68224,7 +68224,7 @@
     "type": "Completion"
   },
   "639136e84ed9512be67647db": {
-    "QuestName": "CeaseFire",
+    "QuestName": "Cease Fire",
     "_id": "639136e84ed9512be67647db",
     "acceptPlayerMessage": "639136e84ed9512be67647db acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -68402,7 +68402,7 @@
     "type": "Completion"
   },
   "639136f086e646067c176a8b": {
-    "QuestName": "Kings Of The Rooftops",
+    "QuestName": "Kings of the Rooftops",
     "_id": "639136f086e646067c176a8b",
     "acceptPlayerMessage": "639136f086e646067c176a8b acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -68776,7 +68776,7 @@
     "type": "Completion"
   },
   "63913715f8e5dd32bf4e3aaa": {
-    "QuestName": "Broadcast Part 2",
+    "QuestName": "Broadcast - Part 2",
     "_id": "63913715f8e5dd32bf4e3aaa",
     "acceptPlayerMessage": "63913715f8e5dd32bf4e3aaa acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -69221,7 +69221,7 @@
     "type": "Completion"
   },
   "6391d90f4ed9512be67647df": {
-    "QuestName": "Make Amends P1",
+    "QuestName": "Make Amends",
     "_id": "6391d90f4ed9512be67647df",
     "acceptPlayerMessage": "6391d90f4ed9512be67647df acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -72337,7 +72337,7 @@
     "type": "Completion"
   },
   "639872f9decada40426d3447": {
-    "QuestName": "Gunsmith Part 4",
+    "QuestName": "Gunsmith - Part 4",
     "_id": "639872f9decada40426d3447",
     "acceptPlayerMessage": "639872f9decada40426d3447 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -72557,7 +72557,7 @@
     "type": "WeaponAssembly"
   },
   "639872fa9b4fb827b200d8e5": {
-    "QuestName": "Gunsmith Part 9",
+    "QuestName": "Gunsmith - Part 9",
     "_id": "639872fa9b4fb827b200d8e5",
     "acceptPlayerMessage": "639872fa9b4fb827b200d8e5 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -72837,7 +72837,7 @@
     "type": "WeaponAssembly"
   },
   "639872fc93ae507d5858c3a6": {
-    "QuestName": "Gunsmith Part 11",
+    "QuestName": "Gunsmith - Part 11",
     "_id": "639872fc93ae507d5858c3a6",
     "acceptPlayerMessage": "639872fc93ae507d5858c3a6 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -73011,7 +73011,7 @@
     "type": "WeaponAssembly"
   },
   "639872fe8871e1272b10ccf6": {
-    "QuestName": "Gunsmith Part 14",
+    "QuestName": "Gunsmith - Part 14",
     "_id": "639872fe8871e1272b10ccf6",
     "acceptPlayerMessage": "639872fe8871e1272b10ccf6 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -73218,7 +73218,7 @@
     "type": "WeaponAssembly"
   },
   "639873003693c63d86328f25": {
-    "QuestName": "Gunsmith Part 19",
+    "QuestName": "Gunsmith - Part 19",
     "_id": "639873003693c63d86328f25",
     "acceptPlayerMessage": "639873003693c63d86328f25 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -73425,7 +73425,7 @@
     "type": "WeaponAssembly"
   },
   "63987301e11ec11ff5504036": {
-    "QuestName": "Gunsmith Part 21",
+    "QuestName": "Gunsmith - Part 21",
     "_id": "63987301e11ec11ff5504036",
     "acceptPlayerMessage": "63987301e11ec11ff5504036 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -78134,7 +78134,7 @@
     "type": "Elimination"
   },
   "64e7b971f9d6fa49d6769b44": {
-    "QuestName": "Huntsman Path Big Game",
+    "QuestName": "The Huntsman Path - Big Game",
     "_id": "64e7b971f9d6fa49d6769b44",
     "acceptPlayerMessage": "64e7b971f9d6fa49d6769b44 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -78468,7 +78468,7 @@
     "type": "Elimination"
   },
   "64e7b99017ab941a6f7bf9d7": {
-    "QuestName": "Gendarmerie Mall Cop",
+    "QuestName": "Gendarmerie - Mall Cop",
     "_id": "64e7b99017ab941a6f7bf9d7",
     "acceptPlayerMessage": "64e7b99017ab941a6f7bf9d7 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -79105,7 +79105,7 @@
     "type": "Elimination"
   },
   "64e7b9bffd30422ed03dad38": {
-    "QuestName": "Gendarmerie District Patrol",
+    "QuestName": "Gendarmerie - District Patrol",
     "_id": "64e7b9bffd30422ed03dad38",
     "acceptPlayerMessage": "64e7b9bffd30422ed03dad38 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -79442,7 +79442,7 @@
     "type": "Elimination"
   },
   "64ee99639878a0569d6ec8c9": {
-    "QuestName": "Broadcast Part 5",
+    "QuestName": "Broadcast - Part 5",
     "_id": "64ee99639878a0569d6ec8c9",
     "acceptPlayerMessage": "64ee99639878a0569d6ec8c9 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -80081,7 +80081,7 @@
     "type": "Exploration"
   },
   "64f1cc571a5f313cb144bf90": {
-    "QuestName": "Overseas trust Part 1",
+    "QuestName": "Overseas Trust - Part 1",
     "_id": "64f1cc571a5f313cb144bf90",
     "acceptPlayerMessage": "64f1cc571a5f313cb144bf90 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -80429,7 +80429,7 @@
     "type": "Elimination"
   },
   "64f1d6e732bed22c3e0c7423": {
-    "QuestName": "Overseas trust Part 2",
+    "QuestName": "Overseas Trust - Part 2",
     "_id": "64f1d6e732bed22c3e0c7423",
     "acceptPlayerMessage": "64f1d6e732bed22c3e0c7423 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -80726,7 +80726,7 @@
     "type": "Completion"
   },
   "64f5aac4b63b74469b6c14c2": {
-    "QuestName": "Glory To CPSU P2",
+    "QuestName": "Glory to CPSU - Part 2",
     "_id": "64f5aac4b63b74469b6c14c2",
     "acceptPlayerMessage": "64f5aac4b63b74469b6c14c2 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -81405,7 +81405,7 @@
     "type": "Elimination"
   },
   "64f5e20652fc01298e2c61e3": {
-    "QuestName": "Beyond The RedMeat P1",
+    "QuestName": "Beyond the Red Meat - Part 1",
     "_id": "64f5e20652fc01298e2c61e3",
     "acceptPlayerMessage": "64f5e20652fc01298e2c61e3 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -81652,7 +81652,7 @@
     "type": "Completion"
   },
   "64f6aafd67e11a7c6206e0d0": {
-    "QuestName": "Beyond The RedMeat P2",
+    "QuestName": "Beyond the Red Meat - Part 2",
     "_id": "64f6aafd67e11a7c6206e0d0",
     "acceptPlayerMessage": "64f6aafd67e11a7c6206e0d0 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -81917,7 +81917,7 @@
     "type": "Completion"
   },
   "64f731ab83cfca080a361e42": {
-    "QuestName": "Pets Wont Need It P1",
+    "QuestName": "Pets Wont Need It - Part 1",
     "_id": "64f731ab83cfca080a361e42",
     "acceptPlayerMessage": "64f731ab83cfca080a361e42 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -82137,7 +82137,7 @@
     "type": "Exploration"
   },
   "64f83bb69878a0569d6ecfbe": {
-    "QuestName": "Gunsmith Part 23",
+    "QuestName": "Gunsmith - Part 23",
     "_id": "64f83bb69878a0569d6ecfbe",
     "acceptPlayerMessage": "64f83bb69878a0569d6ecfbe acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -82313,7 +82313,7 @@
     "type": "WeaponAssembly"
   },
   "64f83bcdde58fc437700d8fa": {
-    "QuestName": "Gunsmith Part 24",
+    "QuestName": "Gunsmith - Part 24",
     "_id": "64f83bcdde58fc437700d8fa",
     "acceptPlayerMessage": "64f83bcdde58fc437700d8fa acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -82525,7 +82525,7 @@
     "type": "WeaponAssembly"
   },
   "64f83bd983cfca080a362c82": {
-    "QuestName": "Gunsmith Part 25",
+    "QuestName": "Gunsmith - Part 25",
     "_id": "64f83bd983cfca080a362c82",
     "acceptPlayerMessage": "64f83bd983cfca080a362c82 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -82773,7 +82773,7 @@
     "type": "WeaponAssembly"
   },
   "655e427b64d09b4122018228": {
-    "QuestName": "The Punisher - Harvest - Event",
+    "QuestName": "The Punisher Harvest",
     "_id": "655e427b64d09b4122018228",
     "acceptPlayerMessage": "655e427b64d09b4122018228 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -83648,7 +83648,7 @@
     "type": "Discover"
   },
   "657315ddab5a49b71f098853": {
-    "QuestName": "First In Line",
+    "QuestName": "First in Line",
     "_id": "657315ddab5a49b71f098853",
     "acceptPlayerMessage": "657315ddab5a49b71f098853 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -84493,7 +84493,7 @@
     "type": "Exploration"
   },
   "657315e4a6af4ab4b50f3459": {
-    "QuestName": "Saving The Mole",
+    "QuestName": "Saving the Mole",
     "_id": "657315e4a6af4ab4b50f3459",
     "acceptPlayerMessage": "657315e4a6af4ab4b50f3459 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -84731,7 +84731,7 @@
     "type": "PickUp"
   },
   "65733403eefc2c312a759ddb": {
-    "QuestName": "Developers Secrets Part 1",
+    "QuestName": "Developers Secrets - Part 1",
     "_id": "65733403eefc2c312a759ddb",
     "acceptPlayerMessage": "65733403eefc2c312a759ddb acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -84988,7 +84988,7 @@
     "type": "Discover"
   },
   "6573382e557ff128bf3da536": {
-    "QuestName": "Developers Secrets Part 2",
+    "QuestName": "Developers Secrets - Part 2",
     "_id": "6573382e557ff128bf3da536",
     "acceptPlayerMessage": "6573382e557ff128bf3da536 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -85182,7 +85182,7 @@
     "type": "Discover"
   },
   "6573387d0b26ed4fde798de3": {
-    "QuestName": "Pets Wont Need It Part 2",
+    "QuestName": "Pets Wont Need It - Part 2",
     "_id": "6573387d0b26ed4fde798de3",
     "acceptPlayerMessage": "6573387d0b26ed4fde798de3 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -86290,7 +86290,7 @@
     "type": "Elimination"
   },
   "6578eb36e5020875d64645cd": {
-    "QuestName": "Huntsman Path Crooked Cop",
+    "QuestName": "The Huntsman Path - Crooked Cop",
     "_id": "6578eb36e5020875d64645cd",
     "acceptPlayerMessage": "6578eb36e5020875d64645cd acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -87550,7 +87550,7 @@
     "type": "PickUp"
   },
   "66058cb22cee99303f1ba067": {
-    "QuestName": "EasyMoney Part 1",
+    "QuestName": "Easy Money - Part 1",
     "_id": "66058cb22cee99303f1ba067",
     "acceptPlayerMessage": "66058cb22cee99303f1ba067 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -87682,7 +87682,7 @@
     "type": "PickUp"
   },
   "66058cb5ae4719735349b9e8": {
-    "QuestName": "EasyMoney Part 2",
+    "QuestName": "Easy Money - Part 2",
     "_id": "66058cb5ae4719735349b9e8",
     "acceptPlayerMessage": "66058cb5ae4719735349b9e8 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -87836,7 +87836,7 @@
     "type": "PickUp"
   },
   "66058cb7c7f3584787181476": {
-    "QuestName": "Balancing Part 1",
+    "QuestName": "Balancing - Part 1",
     "_id": "66058cb7c7f3584787181476",
     "acceptPlayerMessage": "66058cb7c7f3584787181476 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -88230,7 +88230,7 @@
     "type": "Elimination"
   },
   "66058cb9e8e4f17985230805": {
-    "QuestName": "Balancing Part 2",
+    "QuestName": "Balancing - Part 2",
     "_id": "66058cb9e8e4f17985230805",
     "acceptPlayerMessage": "66058cb9e8e4f17985230805 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -88747,7 +88747,7 @@
     "type": "PickUp"
   },
   "66058cbd9f59e625462acc8e": {
-    "QuestName": "Create A Distraction Part 1",
+    "QuestName": "Create a Distraction - Part 1",
     "_id": "66058cbd9f59e625462acc8e",
     "acceptPlayerMessage": "66058cbd9f59e625462acc8e acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -88969,7 +88969,7 @@
     "type": "Completion"
   },
   "66058cbf2f19c31a5a1337ec": {
-    "QuestName": "Create A Distraction Part 2",
+    "QuestName": "Create a Distraction - Part 2",
     "_id": "66058cbf2f19c31a5a1337ec",
     "acceptPlayerMessage": "66058cbf2f19c31a5a1337ec acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -89301,7 +89301,7 @@
     "type": "Elimination"
   },
   "66058cc1da30b620a34e6e86": {
-    "QuestName": "To Great Heights Part 1",
+    "QuestName": "To Great Heights - Part 1",
     "_id": "66058cc1da30b620a34e6e86",
     "acceptPlayerMessage": "66058cc1da30b620a34e6e86 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -89547,7 +89547,7 @@
     "type": "Completion"
   },
   "66058cc208308761cf390993": {
-    "QuestName": "To Great Heights Part 2",
+    "QuestName": "To Great Heights - Part 2",
     "_id": "66058cc208308761cf390993",
     "acceptPlayerMessage": "66058cc208308761cf390993 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -89795,7 +89795,7 @@
     "type": "Completion"
   },
   "66058cc5bb83da7ba474aba9": {
-    "QuestName": "To Great Heights Part 3",
+    "QuestName": "To Great Heights - Part 3",
     "_id": "66058cc5bb83da7ba474aba9",
     "acceptPlayerMessage": "66058cc5bb83da7ba474aba9 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -90002,7 +90002,7 @@
     "type": "Completion"
   },
   "6613f3007f6666d56807c929": {
-    "QuestName": "Drip Out Part 1",
+    "QuestName": "Drip-Out - Part 1",
     "_id": "6613f3007f6666d56807c929",
     "acceptPlayerMessage": "6613f3007f6666d56807c929 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -90123,7 +90123,7 @@
     "type": "Completion"
   },
   "6613f307fca4f2f386029409": {
-    "QuestName": "Drip Out Part 2",
+    "QuestName": "Drip-Out - Part 2",
     "_id": "6613f307fca4f2f386029409",
     "acceptPlayerMessage": "6613f307fca4f2f386029409 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -97491,7 +97491,7 @@
     "type": "Elimination"
   },
   "668bccf963acb16d63707043": {
-    "QuestName": "Whats your evidence",
+    "QuestName": "Whats Your Evidence",
     "_id": "668bccf963acb16d63707043",
     "acceptPlayerMessage": "668bccf963acb16d63707043 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -99158,7 +99158,7 @@
     "type": "Discover"
   },
   "669fa39b91b0a8c9680fc467": {
-    "QuestName": "BlackSwan",
+    "QuestName": "Black Swan",
     "_id": "669fa39b91b0a8c9680fc467",
     "acceptPlayerMessage": "669fa39b91b0a8c9680fc467 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -100259,7 +100259,7 @@
     "type": "Completion"
   },
   "669fa3a3ad7f1eac2607ed48": {
-    "QuestName": "Health Care Privacy P6",
+    "QuestName": "Health Care Privacy - Part 6",
     "_id": "669fa3a3ad7f1eac2607ed48",
     "acceptPlayerMessage": "669fa3a3ad7f1eac2607ed48 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -100395,7 +100395,7 @@
     "type": "Discover"
   },
   "669fa3a40c828825de06d6a1": {
-    "QuestName": "Test drive part 5",
+    "QuestName": "Test Drive - Part 5",
     "_id": "669fa3a40c828825de06d6a1",
     "acceptPlayerMessage": "669fa3a40c828825de06d6a1 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -104602,7 +104602,7 @@
     "type": "Exploration"
   },
   "66e01ad15a8890455a0d9eea": {
-    "QuestName": "In And Out",
+    "QuestName": "In and Out",
     "_id": "66e01ad15a8890455a0d9eea",
     "acceptPlayerMessage": "66e01ad15a8890455a0d9eea acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -104783,7 +104783,7 @@
     "type": "Exploration"
   },
   "66e01ad6835f78499f049180": {
-    "QuestName": "Ours By Right",
+    "QuestName": "Ours by Right",
     "_id": "66e01ad6835f78499f049180",
     "acceptPlayerMessage": "66e01ad6835f78499f049180 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -105465,7 +105465,7 @@
     "type": "Exploration"
   },
   "66e01ae0c391e4c94903d220": {
-    "QuestName": "Cream Of The Crop",
+    "QuestName": "Cream of the Crop",
     "_id": "66e01ae0c391e4c94903d220",
     "acceptPlayerMessage": "66e01ae0c391e4c94903d220 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -105679,7 +105679,7 @@
     "type": "Exploration"
   },
   "66e01c4c475acf7e0102d296": {
-    "QuestName": "Before The Rain",
+    "QuestName": "Before the Rain",
     "_id": "66e01c4c475acf7e0102d296",
     "acceptPlayerMessage": "66e01c4c475acf7e0102d296 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
