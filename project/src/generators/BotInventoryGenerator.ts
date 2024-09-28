@@ -1,13 +1,17 @@
+import { ApplicationContext } from "@spt/context/ApplicationContext";
+import { ContextVariableType } from "@spt/context/ContextVariableType";
 import { BotEquipmentModGenerator } from "@spt/generators/BotEquipmentModGenerator";
 import { BotLootGenerator } from "@spt/generators/BotLootGenerator";
 import { BotWeaponGenerator } from "@spt/generators/BotWeaponGenerator";
 import { BotGeneratorHelper } from "@spt/helpers/BotGeneratorHelper";
 import { BotHelper } from "@spt/helpers/BotHelper";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
+import { WeatherHelper } from "@spt/helpers/WeatherHelper";
 import { WeightedRandomHelper } from "@spt/helpers/WeightedRandomHelper";
 import { IInventory as PmcInventory } from "@spt/models/eft/common/tables/IBotBase";
 import { IBotType, IChances, IEquipment, IGeneration, IInventory } from "@spt/models/eft/common/tables/IBotType";
 import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
+import { IGetRaidConfigurationRequestData } from "@spt/models/eft/match/IGetRaidConfigurationRequestData";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { EquipmentSlots } from "@spt/models/enums/EquipmentSlots";
 import { GameEditions } from "@spt/models/enums/GameEditions";
@@ -32,12 +36,14 @@ export class BotInventoryGenerator {
         @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("DatabaseService") protected databaseService: DatabaseService,
+        @inject("ApplicationContext") protected applicationContext: ApplicationContext,
         @inject("BotWeaponGenerator") protected botWeaponGenerator: BotWeaponGenerator,
         @inject("BotLootGenerator") protected botLootGenerator: BotLootGenerator,
         @inject("BotGeneratorHelper") protected botGeneratorHelper: BotGeneratorHelper,
         @inject("BotHelper") protected botHelper: BotHelper,
         @inject("WeightedRandomHelper") protected weightedRandomHelper: WeightedRandomHelper,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
+        @inject("WeatherHelper") protected weatherHelper: WeatherHelper,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("BotEquipmentModPoolService") protected botEquipmentModPoolService: BotEquipmentModPoolService,
         @inject("BotEquipmentModGenerator") protected botEquipmentModGenerator: BotEquipmentModGenerator,
@@ -71,6 +77,11 @@ export class BotInventoryGenerator {
         // Generate base inventory with no items
         const botInventory = this.generateInventoryBase();
 
+        // Get generated raid details bot will be spawned in
+        const raidConfig = this.applicationContext
+            .getLatestValue(ContextVariableType.RAID_CONFIGURATION)
+            ?.getValue<IGetRaidConfigurationRequestData>();
+
         this.generateAndAddEquipmentToBot(
             templateInventory,
             wornItemChances,
@@ -78,6 +89,7 @@ export class BotInventoryGenerator {
             botInventory,
             botLevel,
             chosenGameVersion,
+            raidConfig,
         );
 
         // Roll weapon spawns (primary/secondary/holster) and generate a weapon for each roll that passed
@@ -144,6 +156,7 @@ export class BotInventoryGenerator {
         botInventory: PmcInventory,
         botLevel: number,
         chosenGameVersion: string,
+        raidConfig: IGetRaidConfigurationRequestData,
     ): void {
         // These will be handled later
         const excludedSlots: string[] = [
@@ -160,6 +173,26 @@ export class BotInventoryGenerator {
 
         const botEquipConfig = this.botConfig.equipment[this.botGeneratorHelper.getBotEquipmentRole(botRole)];
         const randomistionDetails = this.botHelper.getBotRandomizationDetails(botLevel, botEquipConfig);
+
+        // Apply nighttime changes if its nighttime + there's changes to make
+        if (
+            randomistionDetails?.nighttimeChanges &&
+            raidConfig &&
+            this.weatherHelper.isNightTime(raidConfig.timeVariant)
+        ) {
+            for (const equipmentSlotKey of Object.keys(randomistionDetails.nighttimeChanges.equipmentModsModifiers)) {
+                // Never let mod chance go outside of 0 - 100
+                randomistionDetails.equipmentMods[equipmentSlotKey] = Math.min(
+                    Math.max(
+                        (randomistionDetails.equipmentMods[equipmentSlotKey] ?? 0) +
+                            randomistionDetails.nighttimeChanges.equipmentModsModifiers[equipmentSlotKey],
+                        0,
+                    ),
+                    100,
+                );
+            }
+        }
+
         for (const equipmentSlot in templateInventory.equipment) {
             // Weapons have special generation and will be generated separately; ArmorVest should be generated after TactivalVest
             if (excludedSlots.includes(equipmentSlot)) {

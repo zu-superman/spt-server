@@ -1223,7 +1223,7 @@
                         "mod_equipment_000": 10,
                         "mod_equipment_001": 10,
                         "mod_equipment_002": 5,
-                        "mod_nvg": 15
+                        "mod_nvg": 0
                     },
                     "weaponMods": {
                         "mod_barrel": 50,
@@ -1260,7 +1260,12 @@
                         "mod_tactical_002": 30,
                         "mod_tactical_003": 30,
                         "mod_tactical_2": 15
-                    }
+                    },
+					"nighttimeChanges": {
+						"equipmentModsModifiers": {
+							"mod_nvg": 30
+						}
+					}
                 },
                 {
                     "levelRange": {
@@ -1271,6 +1276,9 @@
                         "SecondPrimaryWeapon": 10,
                         "FaceCover": 50
                     },
+					"equipmentMods": {
+						"mod_nvg": 0
+					},
                     "randomisedArmorSlots": ["Headwear", "TacticalVest", "ArmorVest"],
                     "randomisedWeaponModSlots": [
                         "mod_scope",
@@ -1314,7 +1322,12 @@
                         "mod_tactical_003",
 						"mod_tactical001",
 						"mod_tactical002"
-                    ]
+                    ],
+					"nighttimeChanges": {
+						"equipmentModsModifiers": {
+							"mod_nvg": 50
+						}
+					}
                 },
                 {
                     "levelRange": {
@@ -1332,7 +1345,7 @@
                         "mod_equipment_000": 80,
                         "mod_equipment_001": 75,
                         "mod_equipment_002": 90,
-                        "mod_nvg": 60
+                        "mod_nvg": 5
                     },
                     "weaponMods": {
                         "mod_scope": 95,
@@ -1383,7 +1396,12 @@
                         "mod_tactical_003",
 						"mod_tactical001",
 						"mod_tactical002"
-                    ]
+                    ],
+					"nighttimeChanges": {
+						"equipmentModsModifiers": {
+							"mod_nvg": 90
+						}
+					}
                 }
             ],
             "blacklist": [

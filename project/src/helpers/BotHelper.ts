@@ -131,7 +131,9 @@ export class BotHelper {
             return undefined;
         }
 
-        return botEquipConfig.randomisation.find((x) => botLevel >= x.levelRange.min && botLevel <= x.levelRange.max);
+        return botEquipConfig.randomisation.find(
+            (randDetails) => botLevel >= randDetails.levelRange.min && botLevel <= randDetails.levelRange.max,
+        );
     }
 
     /**
