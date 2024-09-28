@@ -1,4 +1,5 @@
 import { WeatherGenerator } from "@spt/generators/WeatherGenerator";
+import { WeatherHelper } from "@spt/helpers/WeatherHelper";
 import { IWeatherData } from "@spt/models/eft/weather/IWeatherData";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { IWeatherConfig } from "@spt/models/spt/config/IWeatherConfig";
@@ -17,6 +18,7 @@ export class WeatherController {
         @inject("PrimaryLogger") protected logger: ILogger,
         @inject("ConfigServer") protected configServer: ConfigServer,
         @inject("SeasonalEventService") protected seasonalEventService: SeasonalEventService,
+        @inject("WeatherHelper") protected weatherHelper: WeatherHelper,
     ) {
         this.weatherConfig = this.configServer.getConfig(ConfigTypes.WEATHER);
     }
@@ -36,7 +38,7 @@ export class WeatherController {
      * @returns Date object
      */
     public getCurrentInRaidTime(): Date {
-        return this.weatherGenerator.getInRaidTime();
+        return this.weatherHelper.getInRaidTime();
     }
 
     public generateLocal(sesssionID: string): IGetLocalWeatherResponseData {

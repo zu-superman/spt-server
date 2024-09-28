@@ -123,6 +123,7 @@ import { TradeHelper } from "@spt/helpers/TradeHelper";
 import { TraderAssortHelper } from "@spt/helpers/TraderAssortHelper";
 import { TraderHelper } from "@spt/helpers/TraderHelper";
 import { UtilityHelper } from "@spt/helpers/UtilityHelper";
+import { WeatherHelper } from "@spt/helpers/WeatherHelper";
 import { WeightedRandomHelper } from "@spt/helpers/WeightedRandomHelper";
 import { BundleLoader } from "@spt/loaders/BundleLoader";
 import { ModLoadOrder } from "@spt/loaders/ModLoadOrder";
@@ -617,6 +618,7 @@ export class Container {
         depContainer.register<NotificationSendHelper>("NotificationSendHelper", { useClass: NotificationSendHelper });
         depContainer.register<SecureContainerHelper>("SecureContainerHelper", { useClass: SecureContainerHelper });
         depContainer.register<ProbabilityHelper>("ProbabilityHelper", { useClass: ProbabilityHelper });
+        depContainer.register<WeatherHelper>("WeatherHelper", { useClass: WeatherHelper });
         depContainer.register<BotWeaponGeneratorHelper>("BotWeaponGeneratorHelper", {
             useClass: BotWeaponGeneratorHelper,
         });
