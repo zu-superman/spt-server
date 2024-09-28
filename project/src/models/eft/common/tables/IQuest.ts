@@ -18,8 +18,6 @@ export interface IQuest {
     image: string;
     type: QuestTypeEnum;
     isKey: boolean;
-    /** @deprecated - Likely not used, use 'status' instead */
-    questStatus: QuestStatus;
     restartable: boolean;
     instantComplete: boolean;
     secretQuest: boolean;
