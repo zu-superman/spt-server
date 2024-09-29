@@ -79,10 +79,13 @@ export class WeatherGenerator {
      * @returns Randomised weather data
      */
     public generateWeather(): IWeather {
-        const rain = this.getWeightedRain();
+        const clouds = this.getWeightedClouds();
+
+        // Force rain to off if no clouds
+        const rain = clouds <= 2 ? 1 : this.getWeightedRain();
 
         const result: IWeather = {
-            cloud: this.getWeightedClouds(),
+            cloud: clouds,
             wind_speed: this.getWeightedWindSpeed(),
             wind_direction: this.getWeightedWindDirection(),
             wind_gustiness: this.getRandomFloat("windGustiness"),
