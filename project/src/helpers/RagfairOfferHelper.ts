@@ -87,7 +87,7 @@ export class RagfairOfferHelper {
     ): IRagfairOffer[] {
         const playerIsFleaBanned = this.profileHelper.playerIsFleaBanned(pmcData);
         const tieredFlea = this.ragfairConfig.tieredFlea;
-        const tieredFleaLimitTypes = Object.keys(tieredFlea.unlocks);
+        const tieredFleaLimitTypes = Object.keys(tieredFlea.unlocksType);
         return this.ragfairOfferService.getOffers().filter((offer) => {
             if (!this.passesSearchFilterCriteria(searchRequest, offer, pmcData)) {
                 return false;
@@ -125,18 +125,28 @@ export class RagfairOfferHelper {
         tieredFleaLimitTypes: string[],
         playerLevel: number,
     ): boolean {
-        if (tieredFlea.ammoTplUnlocks && this.itemHelper.isOfBaseclass(offer.items[0]._tpl, BaseClasses.AMMO)) {
-            const unlockLevel = tieredFlea.ammoTplUnlocks[offer.items[0]._tpl];
+        const offerItemTpl = offer.items[0]._tpl;
+        if (tieredFlea.ammoTplUnlocks && this.itemHelper.isOfBaseclass(offerItemTpl, BaseClasses.AMMO)) {
+            const unlockLevel = tieredFlea.ammoTplUnlocks[offerItemTpl];
             if (unlockLevel && playerLevel < unlockLevel) {
                 return true;
             }
         }
+
+        // Check for a direct level requirement for the offer item
+        const itemLevelRequirement = tieredFlea.unlocksTpl[offerItemTpl];
+        if (itemLevelRequirement) {
+            if (playerLevel < itemLevelRequirement) {
+                return true;
+            }
+        }
+
         // Optimisation - Ensure the item has at least one of the limited base types
-        else if (this.itemHelper.isOfBaseclasses(offer.items[0]._tpl, tieredFleaLimitTypes)) {
+        if (this.itemHelper.isOfBaseclasses(offerItemTpl, tieredFleaLimitTypes)) {
             // Loop over all flea types to find the matching one
             for (const tieredItemType of tieredFleaLimitTypes) {
-                if (this.itemHelper.isOfBaseclass(offer.items[0]._tpl, tieredItemType)) {
-                    if (playerLevel < tieredFlea.unlocks[tieredItemType]) {
+                if (this.itemHelper.isOfBaseclass(offerItemTpl, tieredItemType)) {
+                    if (playerLevel < tieredFlea.unlocksType[tieredItemType]) {
                         return true;
                     }
 
@@ -158,7 +168,7 @@ export class RagfairOfferHelper {
         // Get all offers that requre the desired item and filter out offers from non traders if player below ragifar unlock
         const requiredOffers = this.ragfairRequiredItemsService.getRequiredItemsById(searchRequest.neededSearchId);
         const tieredFlea = this.ragfairConfig.tieredFlea;
-        const tieredFleaLimitTypes = Object.keys(tieredFlea.unlocks);
+        const tieredFleaLimitTypes = Object.keys(tieredFlea.unlocksType);
 
         return requiredOffers.filter((offer: IRagfairOffer) => {
             if (!this.passesSearchFilterCriteria(searchRequest, offer, pmcData)) {
@@ -195,7 +205,7 @@ export class RagfairOfferHelper {
         const offers: IRagfairOffer[] = [];
         const playerIsFleaBanned = this.profileHelper.playerIsFleaBanned(pmcData);
         const tieredFlea = this.ragfairConfig.tieredFlea;
-        const tieredFleaLimitTypes = Object.keys(tieredFlea.unlocks);
+        const tieredFleaLimitTypes = Object.keys(tieredFlea.unlocksType);
 
         for (const offer of this.ragfairOfferService.getOffers()) {
             if (!this.passesSearchFilterCriteria(searchRequest, offer, pmcData)) {
