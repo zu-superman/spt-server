@@ -294,10 +294,8 @@ export class LocationLifecycleService {
         const fullProfile = this.profileHelper.getFullProfile(sessionId);
         const pmcProfile = fullProfile.characters.pmc;
         const scavProfile = fullProfile.characters.scav;
-        const postRaidProfile = request.results.profile;
 
         // TODO:
-        // Rep gain/loss?
         // Quest status?
         // stats/eft/aggressor - weird values (EFT.IProfileDataContainer.Nickname)
 
@@ -314,13 +312,14 @@ export class LocationLifecycleService {
         const isPmc = serverDetails[1].toLowerCase() === "pmc";
         const mapBase = this.databaseService.getLocation(locationName).base;
         const isDead = this.isPlayerDead(request.results);
+        const isTransfer = this.isMapToMapTransfer(request.results);
         const isSurvived = this.isPlayerSurvived(request.results);
 
-        // Handle items transferred via BTR or transit to player
+        // Handle items transferred via BTR or transit to player mail
         this.handleItemTransferEvent(sessionId, request);
 
         if (!isPmc) {
-            this.handlePostRaidPlayerScav(sessionId, pmcProfile, scavProfile, isDead, request);
+            this.handlePostRaidPlayerScav(sessionId, pmcProfile, scavProfile, isDead, isTransfer, request);
 
             return;
         }
@@ -329,9 +328,9 @@ export class LocationLifecycleService {
             sessionId,
             pmcProfile,
             scavProfile,
-            postRaidProfile,
             isDead,
             isSurvived,
+            isTransfer,
             request,
             locationName,
         );
@@ -508,14 +507,23 @@ export class LocationLifecycleService {
         pmcProfile: IPmcData,
         scavProfile: IPmcData,
         isDead: boolean,
+        isTransfer: boolean,
         request: IEndLocalRaidRequestData,
     ): void {
+        const postRaidProfile = request.results.profile;
+
+        if (isTransfer) {
+            // We want scav inventory to persist into next raid when pscav is moving between maps
+            this.inRaidHelper.setInventory(sessionId, scavProfile, postRaidProfile, true, isTransfer);
+        }
+
         scavProfile.Info.Level = request.results.profile.Info.Level;
         scavProfile.Skills = request.results.profile.Skills;
         scavProfile.Stats = request.results.profile.Stats;
         scavProfile.Encyclopedia = request.results.profile.Encyclopedia;
         scavProfile.TaskConditionCounters = request.results.profile.TaskConditionCounters;
         scavProfile.SurvivorClass = request.results.profile.SurvivorClass;
+
         // Scavs dont have achievements, but copy anyway
         scavProfile.Achievements = request.results.profile.Achievements;
 
@@ -526,9 +534,8 @@ export class LocationLifecycleService {
 
         this.applyTraderStandingAdjustments(scavProfile.TradersInfo, request.results.profile.TradersInfo);
 
-        const fenceId = Traders.FENCE;
-
         // Clamp fence standing
+        const fenceId = Traders.FENCE;
         const currentFenceStanding = request.results.profile.TradersInfo[fenceId].standing;
         pmcProfile.TradersInfo[fenceId].standing = Math.min(Math.max(currentFenceStanding, -7), 15); // Ensure it stays between -7 and 15
 
@@ -553,18 +560,30 @@ export class LocationLifecycleService {
         this.saveServer.saveProfile(sessionId);
     }
 
+    /**
+     *
+     * @param sessionId Player id
+     * @param pmcProfile Pmc profile
+     * @param scavProfile Scav profile
+     * @param isDead Player died/got left behind in raid
+     * @param isSurvived Not same as opposite of `isDead`, specific status
+     * @param request
+     * @param locationName
+     */
     protected handlePostRaidPmc(
         sessionId: string,
         pmcProfile: IPmcData,
         scavProfile: IPmcData,
-        postRaidProfile: IPmcData,
         isDead: boolean,
         isSurvived: boolean,
+        isTransfer: boolean,
         request: IEndLocalRaidRequestData,
         locationName: string,
     ): void {
+        const postRaidProfile = request.results.profile;
+
         // Update inventory
-        this.inRaidHelper.setInventory(sessionId, pmcProfile, postRaidProfile, isSurvived);
+        this.inRaidHelper.setInventory(sessionId, pmcProfile, postRaidProfile, isSurvived, isTransfer);
 
         pmcProfile.Info.Level = postRaidProfile.Info.Level;
         pmcProfile.Skills = postRaidProfile.Skills;
@@ -618,11 +637,11 @@ export class LocationLifecycleService {
         // Must occur AFTER killer messages have been sent
         this.matchBotDetailsCacheService.clearCache();
 
-        const victims = postRaidProfile.Stats.Eft.Victims.filter((victim) =>
-            ["pmcbear", "pmcusec"].includes(victim.Role.toLowerCase()),
+        const victims = postRaidProfile.Stats.Eft.Victims.filter(
+            (victim) => ["pmcbear", "pmcusec"].includes(victim.Role.toLowerCase()), // TODO replace with enum
         );
         if (victims?.length > 0) {
-            // Player killed PMCs, send some responses to them
+            // Player killed PMCs, send some mail responses to them
             this.pmcChatResponseService.sendVictimResponse(sessionId, victims, pmcProfile);
         }
 
@@ -843,11 +862,20 @@ export class LocationLifecycleService {
 
     /**
      * Is the player dead after a raid - dead = anything other than "survived" / "runner"
-     * @param statusOnExit Exit value from offraidData object
+     * @param results Post raid request
      * @returns true if dead
      */
     protected isPlayerDead(results: IEndRaidResult): boolean {
         return ["killed", "missinginaction", "left"].includes(results.result.toLowerCase());
+    }
+
+    /**
+     * Has the player moved from one map to another
+     * @param results Post raid request
+     * @returns True if players transfered
+     */
+    protected isMapToMapTransfer(results: IEndRaidResult) {
+        return results.result.toLowerCase() === "transit";
     }
 
     /**

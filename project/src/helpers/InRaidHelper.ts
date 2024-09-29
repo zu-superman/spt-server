@@ -59,6 +59,7 @@ export class InRaidHelper {
         serverProfile: IPmcData,
         postRaidProfile: IPmcData,
         isSurvived: boolean,
+        isTransfer: boolean,
     ): void {
         // Store insurance (as removeItem() removes insurance also)
         const insured = this.cloner.clone(serverProfile.InsuredItems);
@@ -69,7 +70,7 @@ export class InRaidHelper {
         this.inventoryHelper.removeItem(serverProfile, serverProfile.Inventory.sortingTable, sessionID);
 
         // Handle Removing of FIR status if did not survive.
-        if (!isSurvived && !this.inRaidConfig.alwaysKeepFoundInRaidonRaidEnd) {
+        if (!isSurvived && !isTransfer && !this.inRaidConfig.alwaysKeepFoundInRaidonRaidEnd) {
             this.removeSpawnedInSessionPropertyFromItems(postRaidProfile);
         }
 
