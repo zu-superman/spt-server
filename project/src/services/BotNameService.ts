@@ -60,7 +60,7 @@ export class BotNameService {
         let isUnique = true;
         let attempts = 0;
 
-        while (attempts < 5) {
+        while (attempts <= 5) {
             const isPlayerScav = botGenerationDetails.isPlayerScav;
             const simulateScavName = isPlayerScav ? false : this.shouldSimulatePlayerScavName(botRole);
 
@@ -93,7 +93,11 @@ export class BotNameService {
                     // Not unique
                     if (attempts >= 5) {
                         // 5 attempts to generate a name, pool probably isn't big enough
-                        this.logger.debug(`Failed to find unique name for: ${name} after 5 attempts`);
+                        const genericName = `${botGenerationDetails.side} ${this.randomUtil.getInt(100000, 999999)}`;
+                        this.logger.debug(
+                            `Failed to find unique name for: ${name} after 5 attempts, using: ${genericName}`,
+                        );
+                        return genericName;
                     }
 
                     attempts++;
