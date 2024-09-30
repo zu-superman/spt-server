@@ -771,8 +771,12 @@ export class InventoryHelper {
 
             for (let y = 0; y < fH; y++) {
                 try {
+                    const containerRow = container2D[itemLocation.y + y];
+                    if (!containerRow) {
+                        this.logger.error(`Unable to find container: ${containerId} row line: ${itemLocation.y + y}`);
+                    }
                     // Fill the corresponding cells in the container map to show the slot is taken
-                    container2D[itemLocation.y + y].fill(1, itemLocation.x, fillTo);
+                    containerRow.fill(1, itemLocation.x, fillTo);
                 } catch (e) {
                     this.logger.error(
                         this.localisationService.getText("inventory-unable_to_fill_container", {
