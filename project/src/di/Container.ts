@@ -209,6 +209,7 @@ import { CustomLocationWaveService } from "@spt/services/CustomLocationWaveServi
 import { DatabaseService } from "@spt/services/DatabaseService";
 import { FenceService } from "@spt/services/FenceService";
 import { GiftService } from "@spt/services/GiftService";
+import { InMemoryCacheService } from "@spt/services/InMemoryCacheService";
 import { InsuranceService } from "@spt/services/InsuranceService";
 import { ItemBaseClassService } from "@spt/services/ItemBaseClassService";
 import { ItemFilterService } from "@spt/services/ItemFilterService";
@@ -227,7 +228,6 @@ import { PlayerService } from "@spt/services/PlayerService";
 import { PmcChatResponseService } from "@spt/services/PmcChatResponseService";
 import { ProfileActivityService } from "@spt/services/ProfileActivityService";
 import { ProfileFixerService } from "@spt/services/ProfileFixerService";
-import { ProfileSnapshotService } from "@spt/services/ProfileSnapshotService";
 import { RagfairCategoriesService } from "@spt/services/RagfairCategoriesService";
 import { RagfairLinkedItemService } from "@spt/services/RagfairLinkedItemService";
 import { RagfairOfferService } from "@spt/services/RagfairOfferService";
@@ -744,7 +744,7 @@ export class Container {
         });
         depContainer.register<CustomItemService>("CustomItemService", CustomItemService);
         depContainer.register<BotEquipmentFilterService>("BotEquipmentFilterService", BotEquipmentFilterService);
-        depContainer.register<ProfileSnapshotService>("ProfileSnapshotService", ProfileSnapshotService, {
+        depContainer.register<InMemoryCacheService>("InMemoryCacheService", InMemoryCacheService, {
             lifecycle: Lifecycle.Singleton,
         });
         depContainer.register<ItemFilterService>("ItemFilterService", ItemFilterService, {
