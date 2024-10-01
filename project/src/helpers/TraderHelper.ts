@@ -215,7 +215,16 @@ export class TraderHelper {
      */
     public setTraderUnlockedState(traderId: string, status: boolean, sessionId: string): void {
         const pmcData = this.profileHelper.getPmcProfile(sessionId);
-        pmcData.TradersInfo[traderId].unlocked = status;
+        const profileTraderData = pmcData.TradersInfo[traderId];
+        if (!profileTraderData) {
+            this.logger.error(
+                `Unable to set trader ${traderId} unlocked state to: ${status} as trader cannot be found in profile`,
+            );
+
+            return;
+        }
+
+        profileTraderData.unlocked = status;
     }
 
     /**
