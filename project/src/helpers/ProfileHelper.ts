@@ -14,7 +14,6 @@ import { ConfigServer } from "@spt/servers/ConfigServer";
 import { SaveServer } from "@spt/servers/SaveServer";
 import { DatabaseService } from "@spt/services/DatabaseService";
 import { LocalisationService } from "@spt/services/LocalisationService";
-import { ProfileSnapshotService } from "@spt/services/ProfileSnapshotService";
 import { HashUtil } from "@spt/utils/HashUtil";
 import { TimeUtil } from "@spt/utils/TimeUtil";
 import { Watermark } from "@spt/utils/Watermark";
@@ -33,7 +32,6 @@ export class ProfileHelper {
         @inject("SaveServer") protected saveServer: SaveServer,
         @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
-        @inject("ProfileSnapshotService") protected profileSnapshotService: ProfileSnapshotService,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("ConfigServer") protected configServer: ConfigServer,
         @inject("PrimaryCloner") protected cloner: ICloner,
@@ -85,52 +83,9 @@ export class ProfileHelper {
         // Sanitize any data the client can not receive
         this.sanitizeProfileForClient(fullProfileClone);
 
-        // Edge-case, true post raid
-        if (this.profileSnapshotService.hasProfileSnapshot(sessionId)) {
-            return this.postRaidXpWorkaroundFix(
-                sessionId,
-                fullProfileClone.characters.pmc,
-                fullProfileClone.characters.scav,
-                output,
-            );
-        }
-
         // PMC must be at array index 0, scav at 1
         output.push(fullProfileClone.characters.pmc);
         output.push(fullProfileClone.characters.scav);
-
-        return output;
-    }
-
-    /**
-     * Fix xp doubling on post-raid xp reward screen by sending a 'dummy' profile to the post-raid screen
-     * Server saves the post-raid changes prior to the xp screen getting the profile, this results in the xp screen using
-     * the now updated profile values as a base, meaning it shows x2 xp gained
-     * Instead, clone the post-raid profile (so we dont alter its values), apply the pre-raid xp values to the cloned objects and return
-     * Delete snapshot of pre-raid profile prior to returning profile data
-     * @param sessionId Session id
-     * @param output pmc and scav profiles array
-     * @param pmcProfile post-raid pmc profile
-     * @param scavProfile post-raid scav profile
-     * @returns Updated profile array
-     */
-    protected postRaidXpWorkaroundFix(
-        sessionId: string,
-        clonedPmc: IPmcData,
-        clonedScav: IPmcData,
-        output: IPmcData[],
-    ): IPmcData[] {
-        const profileSnapshot = this.profileSnapshotService.getProfileSnapshot(sessionId);
-        clonedPmc.Info.Level = profileSnapshot.characters.pmc.Info.Level;
-        clonedPmc.Info.Experience = profileSnapshot.characters.pmc.Info.Experience;
-
-        clonedScav.Info.Level = profileSnapshot.characters.scav.Info.Level;
-        clonedScav.Info.Experience = profileSnapshot.characters.scav.Info.Experience;
-
-        this.profileSnapshotService.clearProfileSnapshot(sessionId);
-
-        output.push(clonedPmc);
-        output.push(clonedScav);
 
         return output;
     }

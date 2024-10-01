@@ -16,7 +16,6 @@ import { ConfigServer } from "@spt/servers/ConfigServer";
 import { SaveServer } from "@spt/servers/SaveServer";
 import { LocationLifecycleService } from "@spt/services/LocationLifecycleService";
 import { MatchLocationService } from "@spt/services/MatchLocationService";
-import { ProfileSnapshotService } from "@spt/services/ProfileSnapshotService";
 import { ICloner } from "@spt/utils/cloners/ICloner";
 import { inject, injectable } from "tsyringe";
 
@@ -30,7 +29,6 @@ export class MatchController {
         @inject("SaveServer") protected saveServer: SaveServer,
         @inject("MatchLocationService") protected matchLocationService: MatchLocationService,
         @inject("ConfigServer") protected configServer: ConfigServer,
-        @inject("ProfileSnapshotService") protected profileSnapshotService: ProfileSnapshotService,
         @inject("ApplicationContext") protected applicationContext: ApplicationContext,
         @inject("LocationLifecycleService") protected locationLifecycleService: LocationLifecycleService,
         @inject("PrimaryCloner") protected cloner: ICloner,
@@ -96,7 +94,6 @@ export class MatchController {
 
         // Store the profile as-is for later use on the post-raid exp screen
         const currentProfile = this.saveServer.getProfile(sessionID);
-        this.profileSnapshotService.storeProfileSnapshot(sessionID, currentProfile);
     }
 
     /**
