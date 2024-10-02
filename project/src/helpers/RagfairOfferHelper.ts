@@ -108,28 +108,26 @@ export class RagfairOfferHelper {
 
             // Not trader offer + tiered flea enabled
             if (tieredFlea.enabled && offer.user.memberType !== MemberCategory.TRADER) {
-                if (
-                    this.offerIsHiddenFromPlayerTieredFlea(tieredFlea, offer, tieredFleaLimitTypes, pmcData.Info.Level)
-                ) {
-                    return false;
-                }
+                this.checkAndLockOfferFromPlayerTieredFlea(tieredFlea, offer, tieredFleaLimitTypes, pmcData.Info.Level);
             }
 
             return true;
         });
     }
 
-    protected offerIsHiddenFromPlayerTieredFlea(
+    protected checkAndLockOfferFromPlayerTieredFlea(
         tieredFlea: ITieredFlea,
         offer: IRagfairOffer,
         tieredFleaLimitTypes: string[],
         playerLevel: number,
-    ): boolean {
+    ): void {
         const offerItemTpl = offer.items[0]._tpl;
         if (tieredFlea.ammoTplUnlocks && this.itemHelper.isOfBaseclass(offerItemTpl, BaseClasses.AMMO)) {
             const unlockLevel = tieredFlea.ammoTplUnlocks[offerItemTpl];
             if (unlockLevel && playerLevel < unlockLevel) {
-                return true;
+                offer.locked = true;
+
+                return;
             }
         }
 
@@ -137,7 +135,9 @@ export class RagfairOfferHelper {
         const itemLevelRequirement = tieredFlea.unlocksTpl[offerItemTpl];
         if (itemLevelRequirement) {
             if (playerLevel < itemLevelRequirement) {
-                return true;
+                offer.locked = true;
+
+                return;
             }
         }
 
@@ -147,15 +147,15 @@ export class RagfairOfferHelper {
             for (const tieredItemType of tieredFleaLimitTypes) {
                 if (this.itemHelper.isOfBaseclass(offerItemTpl, tieredItemType)) {
                     if (playerLevel < tieredFlea.unlocksType[tieredItemType]) {
-                        return true;
+                        offer.locked = true;
+
+                        return;
                     }
 
                     break;
                 }
             }
         }
-
-        return false;
     }
 
     /**
@@ -176,11 +176,7 @@ export class RagfairOfferHelper {
             }
 
             if (tieredFlea.enabled && offer.user.memberType !== MemberCategory.TRADER) {
-                if (
-                    this.offerIsHiddenFromPlayerTieredFlea(tieredFlea, offer, tieredFleaLimitTypes, pmcData.Info.Level)
-                ) {
-                    return false;
-                }
+                this.checkAndLockOfferFromPlayerTieredFlea(tieredFlea, offer, tieredFleaLimitTypes, pmcData.Info.Level);
             }
 
             return true;
@@ -232,16 +228,12 @@ export class RagfairOfferHelper {
                 }
 
                 if (tieredFlea.enabled && offer.user.memberType !== MemberCategory.TRADER) {
-                    if (
-                        this.offerIsHiddenFromPlayerTieredFlea(
-                            tieredFlea,
-                            offer,
-                            tieredFleaLimitTypes,
-                            pmcData.Info.Level,
-                        )
-                    ) {
-                        continue;
-                    }
+                    this.checkAndLockOfferFromPlayerTieredFlea(
+                        tieredFlea,
+                        offer,
+                        tieredFleaLimitTypes,
+                        pmcData.Info.Level,
+                    );
                 }
 
                 const key = offer.items[0]._tpl;
