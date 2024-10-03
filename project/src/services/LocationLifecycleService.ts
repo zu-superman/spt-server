@@ -96,7 +96,7 @@ export class LocationLifecycleService {
             serverId: `${request.location}.${request.playerSide}.${this.timeUtil.getTimestamp()}`, // TODO - does this need to be more verbose - investigate client?
             serverSettings: this.databaseService.getLocationServices(), // TODO - is this per map or global?
             profile: { insuredItems: playerProfile.InsuredItems },
-            locationLoot: request.sptSkipLootGeneration ? null : this.generateLocationAndLoot(request.location),
+            locationLoot: this.generateLocationAndLoot(request.location, !request.sptSkipLootGeneration),
             transition: {
                 isLocationTransition: false,
                 transitionRaidId: "66f5750951530ca5ae09876d",
@@ -227,9 +227,10 @@ export class LocationLifecycleService {
     /**
      * Generate a maps base location (cloned) and loot
      * @param name Map name
+     * @param generateLoot OPTIONAL - Should loot be generated for the map before being returned
      * @returns ILocationBase
      */
-    protected generateLocationAndLoot(name: string): ILocationBase {
+    protected generateLocationAndLoot(name: string, generateLoot = true): ILocationBase {
         const location = this.databaseService.getLocation(name);
         const locationBaseClone = this.cloner.clone(location.base);
 
@@ -238,6 +239,11 @@ export class LocationLifecycleService {
 
         // Don't generate loot for hideout
         if (name === "hideout") {
+            return locationBaseClone;
+        }
+
+        // We only need the base data
+        if (!generateLoot) {
             return locationBaseClone;
         }
 
