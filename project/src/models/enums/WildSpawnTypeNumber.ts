@@ -55,6 +55,4 @@ export enum WildSpawnTypeNumber {
     SECTANTPREDVESTNIK = 57,
     SECTANTPRIZRAK = 58,
     SECTANTONI = 59,
-    SPTUSEC = 100,
-    SPTBEAR = 101,
 }
