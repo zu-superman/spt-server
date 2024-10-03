@@ -96,7 +96,7 @@ export class LocationLifecycleService {
             serverId: `${request.location}.${request.playerSide}.${this.timeUtil.getTimestamp()}`, // TODO - does this need to be more verbose - investigate client?
             serverSettings: this.databaseService.getLocationServices(), // TODO - is this per map or global?
             profile: { insuredItems: playerProfile.InsuredItems },
-            locationLoot: this.generateLocationAndLoot(request.location),
+            locationLoot: request.sptSkipLootGeneration ? null : this.generateLocationAndLoot(request.location),
             transition: {
                 isLocationTransition: false,
                 transitionRaidId: "66f5750951530ca5ae09876d",
