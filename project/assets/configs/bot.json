@@ -1394,20 +1394,58 @@
                         "mod_tactical_001",
                         "mod_tactical_002",
                         "mod_tactical_003",
-						"mod_tactical001",
-						"mod_tactical002"
+                        "mod_tactical001",
+                        "mod_tactical002"
                     ],
-					"nighttimeChanges": {
-						"equipmentModsModifiers": {
-							"mod_nvg": 90
-						}
-					}
+                    "nighttimeChanges": {
+                        "equipmentModsModifiers": {
+                            "mod_nvg": 90
+                        }
+                    }
                 }
             ],
             "blacklist": [
                 {
                     "levelRange": {
                         "min": 1,
+                        "max": 66
+                    },
+                    "equipment": {
+                        "mod_magazine": [
+                            "57838f0b2459774a256959b2",
+                            "5aaa5e60e5b5b000140293d6",
+                            "5b1fd4e35acfc40018633c39",
+                            "59e5d83b86f7745aed03d262",
+                            "5b7bef1e5acfc43d82528402",
+                            "617130016c780c1e710c9a24",
+                            "55d4837c4bdc2d1d4e8b456c",
+                            "5c503ac82e221602b21d6e9a",
+                            "6241c2c2117ad530666a5108"
+                        ],
+                        "mod_scope": [
+                            "5a1ead28fcdbcb001912fa9f",
+                            "5a1eaa87fcdbcb001865f75e",
+                            "5d1b5e94d7ad1a2b865a96b0",
+                            "5a7c74b3e899ef0014332c29",
+                            "618b9643526131765025ab35",
+                            "618bab21526131765025ab3f",
+                            "65392f611406374f82152ba5",
+                            "653931da5db71d30ab1d6296"
+                        ],
+                        "mod_nvg": ["5c11046cd174af02a012e42b", "5c110624d174af029e69734c"],
+                        "mod_reciever": ["5d4405aaa4b9361e6a4e6bd3"],
+                        "mod_stock": ["5cde739cd7f00c0010373bd3"],
+                        "mod_rear_sight": ["5a0ed824fcdbcb0176308b0d"],
+                        "mod_front_sight": ["5a0f096dfcdbcb0176308b15"]
+                    },
+                    "cartridge": {
+                        "Caliber23x75": ["5e85a9f4add9fe03027d9bf1"],
+                        "Caliber127x55": ["5cadf6e5ae921500113bb973", "5cadf6ddae9215051e1c23b2"]
+                    }
+                },
+                {
+                    "levelRange": {
+                        "min": 67,
                         "max": 100
                     },
                     "equipment": {
@@ -1432,7 +1470,7 @@
                             "65392f611406374f82152ba5",
                             "653931da5db71d30ab1d6296"
                         ],
-                        "mod_nvg": ["5c11046cd174af02a012e42b"],
+                        "mod_nvg": [],
                         "mod_reciever": ["5d4405aaa4b9361e6a4e6bd3"],
                         "mod_stock": ["5cde739cd7f00c0010373bd3"],
                         "mod_rear_sight": ["5a0ed824fcdbcb0176308b0d"],
