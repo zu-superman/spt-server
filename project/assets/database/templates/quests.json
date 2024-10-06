@@ -82696,6 +82696,7 @@
           "type": "AssortmentUnlock"
         },
         {
+          "availableInGameEditions": [],
           "id": "66b87066e949465471126b26",
           "index": 5,
           "items": [
@@ -92199,23 +92200,37 @@
           "value": "0.02"
         },
         {
-          "id": "6671de23baf4e04a020c7322",
-          "index": 2,
+          "availableInGameEditions": [
+            "eod_tue_edition",
+            "edge_of_darkness"
+          ],
+          "findInRaid": true,
+          "id": "6671de8abaf4e04a020c7323",
+          "index": 3,
           "items": [
             {
-              "_id": "66f57a7012316de30410e29c",
+              "_id": "6702ff22bf40a1f10603c6ed",
               "_tpl": "66507eabf5ddb0818b085b68",
               "upd": {
-                "SpawnedInSession": true,
-                "StackObjectsCount": 1
+                "StackObjectsCount": 6
               }
             }
           ],
-          "loyaltyLevel": 2,
-          "target": "66f57a7012316de30410e29c",
-          "traderId": "7",
-          "type": "ProductionScheme",
-          "unknown": true
+          "notAvailableInGameEditions": [
+            "develop",
+            "unheard_edition",
+            "exhibition",
+            "left_behind",
+            "prepare_for_escape",
+            "press_edition",
+            "standard",
+            "tournament",
+            "tournament_live"
+          ],
+          "target": "6702ff22bf40a1f10603c6ed",
+          "type": "Item",
+          "unknown": true,
+          "value": "6"
         }
       ]
     },
@@ -93357,36 +93372,58 @@
           "value": "0.03"
         },
         {
+          "availableInGameEditions": [
+            "tournament_live",
+            "tournament",
+            "standard",
+            "press_edition",
+            "left_behind",
+            "prepare_for_escape",
+            "exhibition",
+            "edge_of_darkness",
+            "develop"
+          ],
           "findInRaid": false,
           "id": "6682b19d36c4afb83a0ff0d9",
           "index": 4,
           "items": [
             {
-              "_id": "66f57a7012316de30410e29d",
+              "_id": "66f7bc94f94179bfd3109879",
               "_tpl": "569668774bdc2da2298b4568",
               "upd": {
                 "StackObjectsCount": 2000
               }
             }
           ],
-          "target": "66f57a7012316de30410e29d",
+          "target": "66f7bc94f94179bfd3109879",
           "type": "Item",
           "value": "2000"
         },
         {
+          "availableInGameEditions": [
+            "develop",
+            "edge_of_darkness",
+            "exhibition",
+            "left_behind",
+            "prepare_for_escape",
+            "press_edition",
+            "standard",
+            "tournament_live",
+            "tournament"
+          ],
           "findInRaid": true,
           "id": "66797fc869825e8dc200217c",
           "index": 5,
           "items": [
             {
-              "_id": "66f57a7012316de30410e29e",
+              "_id": "66f7bc94f94179bfd310987a",
               "_tpl": "65ddcc9cfa85b9f17d0dfb07",
               "upd": {
                 "StackObjectsCount": 1
               }
             }
           ],
-          "target": "66f57a7012316de30410e29e",
+          "target": "66f7bc94f94179bfd310987a",
           "type": "Item",
           "value": "1"
         }
@@ -94404,6 +94441,13 @@
           "value": "0.01"
         },
         {
+          "availableInGameEditions": [
+            "left_behind",
+            "prepare_for_escape",
+            "press_edition",
+            "standard",
+            "edge_of_darkness"
+          ],
           "id": "6682724b2388eb5c9e059d62",
           "index": 2,
           "target": "65e080be269cbd5c5005e529",
@@ -94546,7 +94590,7 @@
           "value": "0.01"
         },
         {
-          "findInRaid": true,
+          "findInRaid": false,
           "id": "667d3f5e2388eb5c9e057706",
           "index": 2,
           "items": [
@@ -95088,7 +95132,7 @@
           "value": "0.03"
         },
         {
-          "findInRaid": true,
+          "findInRaid": false,
           "id": "667d41c34dbf58fd1e1377b6",
           "index": 2,
           "items": [
@@ -95369,7 +95413,7 @@
           "value": "0.02"
         },
         {
-          "findInRaid": true,
+          "findInRaid": false,
           "id": "667d4bb4f9cc126bda0933d3",
           "index": 2,
           "items": [
@@ -95528,7 +95572,7 @@
           "value": "0.01"
         },
         {
-          "findInRaid": true,
+          "findInRaid": false,
           "id": "667d4e130d6863e726128ca6",
           "index": 2,
           "items": [
@@ -95727,7 +95771,7 @@
           "value": "0.03"
         },
         {
-          "findInRaid": true,
+          "findInRaid": false,
           "id": "667d4fa668f52677e00a06ef",
           "index": 2,
           "items": [
@@ -95863,7 +95907,7 @@
           "value": "0.02"
         },
         {
-          "findInRaid": true,
+          "findInRaid": false,
           "id": "667d4ffc0f4a5e68200e766e",
           "index": 2,
           "items": [
@@ -96056,7 +96100,7 @@
           "value": "0.02"
         },
         {
-          "findInRaid": true,
+          "findInRaid": false,
           "id": "667d50838f391ec6e307ce8f",
           "index": 2,
           "items": [
@@ -96209,7 +96253,7 @@
           "value": "0.02"
         },
         {
-          "findInRaid": true,
+          "findInRaid": false,
           "id": "667d50c12388eb5c9e057724",
           "index": 2,
           "items": [
@@ -96558,7 +96602,7 @@
           "value": "0.02"
         },
         {
-          "findInRaid": true,
+          "findInRaid": false,
           "id": "667d513546773164c205eda5",
           "index": 2,
           "items": [
@@ -96870,7 +96914,7 @@
           "value": "0.02"
         },
         {
-          "findInRaid": true,
+          "findInRaid": false,
           "id": "667d51e2037f250605042455",
           "index": 2,
           "items": [
