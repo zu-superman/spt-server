@@ -44,13 +44,13 @@
             "name": "SUMMER",
             "startDay": "2",
             "startMonth": "6",
-            "endDay": "1",
+            "endDay": "15",
             "endMonth": "10"
         },
         {
             "seasonType": 1,
             "name": "AUTUMN",
-            "startDay": "1",
+            "startDay": "15",
             "startMonth": "10",
             "endDay": "1",
             "endMonth": "11"
