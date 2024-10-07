@@ -8,4 +8,6 @@ export enum ContextVariableType {
     /** When player is loading into map and loot is requested */
     REGISTER_PLAYER_REQUEST = 3,
     RAID_ADJUSTMENTS = 4,
+    /** Data returned from client request object from endLocalRaid() */
+    TRANSIT_INFO = 5,
 }

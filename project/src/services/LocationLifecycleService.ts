@@ -11,7 +11,11 @@ import { ILocationBase } from "@spt/models/eft/common/ILocationBase";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { Common, IQuestStatus, ITraderInfo } from "@spt/models/eft/common/tables/IBotBase";
 import { IItem } from "@spt/models/eft/common/tables/IItem";
-import { IEndLocalRaidRequestData, IEndRaidResult } from "@spt/models/eft/match/IEndLocalRaidRequestData";
+import {
+    IEndLocalRaidRequestData,
+    IEndRaidResult,
+    ILocationTransit,
+} from "@spt/models/eft/match/IEndLocalRaidRequestData";
 import { IStartLocalRaidRequestData } from "@spt/models/eft/match/IStartLocalRaidRequestData";
 import { IStartLocalRaidResponseData } from "@spt/models/eft/match/IStartLocalRaidResponseData";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
@@ -107,7 +111,22 @@ export class LocationLifecycleService {
 
         // Only has value when transitioning into map from previous one
         if (request.transition) {
+            // TODO - why doesnt the second raid after transit have any transition data?
             result.transition = request.transition;
+        }
+
+        // Get data stored at end of previous raid (if any)
+        const transitionData = this.applicationContext
+            .getLatestValue(ContextVariableType.TRANSIT_INFO)
+            ?.getValue<ILocationTransit>();
+        if (transitionData) {
+            result.transition.isLocationTransition = true;
+            result.transition.transitionRaidId = transitionData.transitionRaidId;
+            result.transition.transitionCount += 1;
+            result.transition.visitedLocations.push(transitionData.location); // TODO - check doesnt exist before adding to prevent dupes
+
+            // Complete, clean up
+            this.applicationContext.clearValues(ContextVariableType.TRANSIT_INFO);
         }
 
         // Apply changes from pmcConfig to bot hostility values
@@ -293,6 +312,7 @@ export class LocationLifecycleService {
         return locationBaseClone;
     }
 
+    /** Handle client/match/local/end */
     public endLocalRaid(sessionId: string, request: IEndLocalRaidRequestData): void {
         // Clear bot loot cache
         this.botLootCacheService.clearCache();
@@ -321,8 +341,14 @@ export class LocationLifecycleService {
         const isTransfer = this.isMapToMapTransfer(request.results);
         const isSurvived = this.isPlayerSurvived(request.results);
 
-        // Handle items transferred via BTR or transit to player mail
+        // Handle items transferred via BTR or transit to player mailbox
         this.handleItemTransferEvent(sessionId, request);
+
+        // Player is moving between maps
+        if (isTransfer) {
+            // Store transfer data for later use in `startLocalRaid()` when next raid starts
+            this.applicationContext.addValue(ContextVariableType.TRANSIT_INFO, request.locationTransit);
+        }
 
         if (!isPmc) {
             this.handlePostRaidPlayerScav(sessionId, pmcProfile, scavProfile, isDead, isTransfer, request);
