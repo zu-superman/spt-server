@@ -92,21 +92,42 @@ export class SptHttpListener implements IHttpListener {
     ): void {
         const bodyInfo = this.getBodyInfo(body);
 
-        // Check if this is a debug request, send only raw response without transformation
-        if (req.headers.responsecompressed === "0") {
+        if (this.isDebugRequest(req)) {
+            // Send only raw response without transformation
             this.sendJson(resp, output, sessionID);
-        } else {
-            // Not debug, minority of requests need a serializer to do the job (IMAGE/BUNDLE/NOTIFY)
-            const serialiser = this.serializers.find((x) => x.canHandle(output));
-            if (serialiser) {
-                serialiser.serialize(sessionID, req, resp, bodyInfo);
-            } else {
-                // No serializer can handle the request (majority of requests dont), zlib the output and send response back
-                this.sendZlibJson(resp, output, sessionID);
-            }
+            this.logRequest(req, output);
+
+            return;
         }
 
-        // Log request if enabled
+        // Not debug, minority of requests need a serializer to do the job (IMAGE/BUNDLE/NOTIFY)
+        const serialiser = this.serializers.find((x) => x.canHandle(output));
+        if (serialiser) {
+            serialiser.serialize(sessionID, req, resp, bodyInfo);
+        } else {
+            // No serializer can handle the request (majority of requests dont), zlib the output and send response back
+            this.sendZlibJson(resp, output, sessionID);
+        }
+
+        this.logRequest(req, output);
+    }
+
+    /**
+     * Is request flagged as debug enabled
+     * @param req Incoming request
+     * @returns True if request is flagged as debug
+     */
+    protected isDebugRequest(req: IncomingMessage): boolean {
+        return req.headers.responsecompressed === "0";
+    }
+
+    /**
+     * Log request if enabled
+     * @param req Incoming message request
+     * @param output Output string
+     */
+    protected logRequest(req: IncomingMessage, output: string): void {
+        //
         if (globalThis.G_LOG_REQUESTS) {
             const log = new Response(req.method, output);
             this.requestsLogger.info(`RESPONSE=${this.jsonUtil.serialize(log)}`);
