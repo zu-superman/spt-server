@@ -6,6 +6,7 @@ import { BotWeaponGenerator } from "@spt/generators/BotWeaponGenerator";
 import { BotGeneratorHelper } from "@spt/helpers/BotGeneratorHelper";
 import { BotHelper } from "@spt/helpers/BotHelper";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
+import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { WeatherHelper } from "@spt/helpers/WeatherHelper";
 import { WeightedRandomHelper } from "@spt/helpers/WeightedRandomHelper";
 import { IInventory as PmcInventory } from "@spt/models/eft/common/tables/IBotBase";
@@ -20,6 +21,7 @@ import { IGenerateEquipmentProperties } from "@spt/models/spt/bots/IGenerateEqui
 import { EquipmentFilterDetails, IBotConfig } from "@spt/models/spt/config/IBotConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
+import { BotEquipmentFilterService } from "@spt/services/BotEquipmentFilterService";
 import { BotEquipmentModPoolService } from "@spt/services/BotEquipmentModPoolService";
 import { DatabaseService } from "@spt/services/DatabaseService";
 import { LocalisationService } from "@spt/services/LocalisationService";
@@ -40,11 +42,13 @@ export class BotInventoryGenerator {
         @inject("BotWeaponGenerator") protected botWeaponGenerator: BotWeaponGenerator,
         @inject("BotLootGenerator") protected botLootGenerator: BotLootGenerator,
         @inject("BotGeneratorHelper") protected botGeneratorHelper: BotGeneratorHelper,
+        @inject("ProfileHelper") protected profileHelper: ProfileHelper,
         @inject("BotHelper") protected botHelper: BotHelper,
         @inject("WeightedRandomHelper") protected weightedRandomHelper: WeightedRandomHelper,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("WeatherHelper") protected weatherHelper: WeatherHelper,
         @inject("LocalisationService") protected localisationService: LocalisationService,
+        @inject("BotEquipmentFilterService") protected botEquipmentFilterService: BotEquipmentFilterService,
         @inject("BotEquipmentModPoolService") protected botEquipmentModPoolService: BotEquipmentModPoolService,
         @inject("BotEquipmentModGenerator") protected botEquipmentModGenerator: BotEquipmentModGenerator,
         @inject("ConfigServer") protected configServer: ConfigServer,
@@ -83,6 +87,7 @@ export class BotInventoryGenerator {
             ?.getValue<IGetRaidConfigurationRequestData>();
 
         this.generateAndAddEquipmentToBot(
+            sessionId,
             templateInventory,
             wornItemChances,
             botRole,
@@ -142,6 +147,7 @@ export class BotInventoryGenerator {
 
     /**
      * Add equipment to a bot
+     * @param sessionId Session id
      * @param templateInventory bot/x.json data from db
      * @param wornItemChances Chances items will be added to bot
      * @param botRole Role bot has (assault/pmcBot)
@@ -150,6 +156,7 @@ export class BotInventoryGenerator {
      * @param chosenGameVersion Game version for bot, only really applies for PMCs
      */
     protected generateAndAddEquipmentToBot(
+        sessionId: string,
         templateInventory: IInventory,
         wornItemChances: IChances,
         botRole: string,
@@ -193,8 +200,16 @@ export class BotInventoryGenerator {
             }
         }
 
+        // Get profile of player generating bots, we use their level later on
+        const pmcProfile = this.profileHelper.getPmcProfile(sessionId);
+        const botEquipmentRole = this.botGeneratorHelper.getBotEquipmentRole(botRole);
+
+        // Iterate over all equipment slots of bot, do it in specifc order to reduce conflicts
+        // e.g. ArmorVest should be generated after TactivalVest
+        // or FACE_COVER before HEADWEAR
         for (const equipmentSlot in templateInventory.equipment) {
-            // Weapons have special generation and will be generated separately; ArmorVest should be generated after TactivalVest
+            // Skip some slots as they need to be done in a specific order + with specific parameter values
+            // e.g. Weapons
             if (excludedSlots.includes(equipmentSlot)) {
                 continue;
             }
@@ -204,73 +219,74 @@ export class BotInventoryGenerator {
                 rootEquipmentPool: templateInventory.equipment[equipmentSlot],
                 modPool: templateInventory.mods,
                 spawnChances: wornItemChances,
-                botRole: botRole,
-                botLevel: botLevel,
+                botData: { role: botRole, level: botLevel, equipmentRole: botEquipmentRole },
                 inventory: botInventory,
                 botEquipmentConfig: botEquipConfig,
                 randomisationDetails: randomistionDetails,
+                generatingPlayerLevel: pmcProfile.Info.Level,
             });
         }
 
         // Generate below in specific order
         this.generateEquipment({
             rootEquipmentSlot: EquipmentSlots.POCKETS,
+            // Unheard profiles have unique sized pockets, TODO - handle this somewhere else in a better way
             rootEquipmentPool:
                 chosenGameVersion === GameEditions.UNHEARD
                     ? { [ItemTpl.POCKETS_1X4_TUE]: 1 }
                     : templateInventory.equipment.Pockets,
             modPool: templateInventory.mods,
             spawnChances: wornItemChances,
-            botRole: botRole,
-            botLevel: botLevel,
+            botData: { role: botRole, level: botLevel, equipmentRole: botEquipmentRole },
             inventory: botInventory,
             botEquipmentConfig: botEquipConfig,
             randomisationDetails: randomistionDetails,
             generateModsBlacklist: [ItemTpl.POCKETS_1X4_TUE],
+            generatingPlayerLevel: pmcProfile.Info.Level,
         });
         this.generateEquipment({
             rootEquipmentSlot: EquipmentSlots.FACE_COVER,
             rootEquipmentPool: templateInventory.equipment.FaceCover,
             modPool: templateInventory.mods,
             spawnChances: wornItemChances,
-            botRole: botRole,
-            botLevel: botLevel,
+            botData: { role: botRole, level: botLevel, equipmentRole: botEquipmentRole },
             inventory: botInventory,
             botEquipmentConfig: botEquipConfig,
             randomisationDetails: randomistionDetails,
+            generatingPlayerLevel: pmcProfile.Info.Level,
         });
         this.generateEquipment({
             rootEquipmentSlot: EquipmentSlots.HEADWEAR,
             rootEquipmentPool: templateInventory.equipment.Headwear,
             modPool: templateInventory.mods,
             spawnChances: wornItemChances,
-            botRole: botRole,
-            botLevel: botLevel,
+            botData: { role: botRole, level: botLevel, equipmentRole: botEquipmentRole },
             inventory: botInventory,
             botEquipmentConfig: botEquipConfig,
             randomisationDetails: randomistionDetails,
+            generatingPlayerLevel: pmcProfile.Info.Level,
         });
         this.generateEquipment({
             rootEquipmentSlot: EquipmentSlots.EARPIECE,
             rootEquipmentPool: templateInventory.equipment.Earpiece,
             modPool: templateInventory.mods,
             spawnChances: wornItemChances,
-            botRole: botRole,
-            botLevel: botLevel,
+            botData: { role: botRole, level: botLevel, equipmentRole: botEquipmentRole },
             inventory: botInventory,
             botEquipmentConfig: botEquipConfig,
             randomisationDetails: randomistionDetails,
+            generatingPlayerLevel: pmcProfile.Info.Level,
         });
         const hasArmorVest = this.generateEquipment({
             rootEquipmentSlot: EquipmentSlots.ARMOR_VEST,
             rootEquipmentPool: templateInventory.equipment.ArmorVest,
             modPool: templateInventory.mods,
             spawnChances: wornItemChances,
-            botRole: botRole,
-            botLevel: botLevel,
+            botData: { role: botRole, level: botLevel, equipmentRole: botEquipmentRole },
             inventory: botInventory,
             botEquipmentConfig: botEquipConfig,
             randomisationDetails: randomistionDetails,
+            generatingPlayerLevel: pmcProfile.Info.Level,
         });
 
         // Bot has no armor vest and flagged to be forceed to wear armored rig in this event
@@ -295,11 +311,11 @@ export class BotInventoryGenerator {
             rootEquipmentPool: templateInventory.equipment.TacticalVest,
             modPool: templateInventory.mods,
             spawnChances: wornItemChances,
-            botRole: botRole,
-            botLevel: botLevel,
+            botData: { role: botRole, level: botLevel, equipmentRole: botEquipmentRole },
             inventory: botInventory,
             botEquipmentConfig: botEquipConfig,
             randomisationDetails: randomistionDetails,
+            generatingPlayerLevel: pmcProfile.Info.Level,
         });
     }
 
@@ -360,6 +376,7 @@ export class BotInventoryGenerator {
 
     /**
      * Add a piece of equipment with mods to inventory from the provided pools
+     * @param sessionId Session id
      * @param settings Values to adjust how item is chosen and added to bot
      * @returns true when item added
      */
@@ -381,11 +398,13 @@ export class BotInventoryGenerator {
             return false;
         }
 
+        // Roll dice on equipment item
         const shouldSpawn = this.randomUtil.getChance100(spawnChance);
         if (shouldSpawn && Object.keys(settings.rootEquipmentPool).length) {
             let pickedItemDb: ITemplateItem;
             let found = false;
 
+            // Limit attempts to find a compatible item as its expensive to check them all
             const maxAttempts = Math.round(Object.keys(settings.rootEquipmentPool).length * 0.75); // Roughly 75% of pool size
             let attempts = 0;
             while (!found) {
@@ -398,7 +417,7 @@ export class BotInventoryGenerator {
 
                 if (!dbResult[0]) {
                     this.logger.error(this.localisationService.getText("bot-missing_item_template", chosenItemTpl));
-                    this.logger.info(`EquipmentSlot -> ${settings.rootEquipmentSlot}`);
+                    this.logger.debug(`EquipmentSlot -> ${settings.rootEquipmentSlot}`);
 
                     // remove picked item
                     delete settings.rootEquipmentPool[chosenItemTpl];
@@ -408,6 +427,7 @@ export class BotInventoryGenerator {
                     continue;
                 }
 
+                // Is the chosen item compatible with other items equipped
                 const compatibilityResult = this.botGeneratorHelper.isItemIncompatibleWithCurrentItems(
                     settings.inventory.items,
                     chosenItemTpl,
@@ -438,32 +458,38 @@ export class BotInventoryGenerator {
                 _tpl: pickedItemDb._id,
                 parentId: settings.inventory.equipment,
                 slotId: settings.rootEquipmentSlot,
-                ...this.botGeneratorHelper.generateExtraPropertiesForItem(pickedItemDb, settings.botRole),
+                ...this.botGeneratorHelper.generateExtraPropertiesForItem(pickedItemDb, settings.botData.role),
             };
 
-            // Use dynamic mod pool if enabled in config for this bot
-            const botEquipmentRole = this.botGeneratorHelper.getBotEquipmentRole(settings.botRole);
+            const botEquipBlacklist = this.botEquipmentFilterService.getBotEquipmentBlacklist(
+                settings.botData.equipmentRole,
+                settings.generatingPlayerLevel,
+            );
+
+            // Edge case: Filter the armor items mod pool if bot exists in config dict + config has armor slot
             if (
-                this.botConfig.equipment[botEquipmentRole] &&
+                this.botConfig.equipment[settings.botData.equipmentRole] &&
                 settings.randomisationDetails?.randomisedArmorSlots?.includes(settings.rootEquipmentSlot)
             ) {
+                // Filter out mods from relevant blacklist
                 settings.modPool[pickedItemDb._id] = this.getFilteredDynamicModsForItem(
                     pickedItemDb._id,
-                    this.botConfig.equipment[botEquipmentRole].blacklist,
+                    botEquipBlacklist.equipment,
                 );
             }
 
-            // Item has slots, fill them
+            // Does item have slots for sub-mods to be inserted into
             if (pickedItemDb._props.Slots?.length > 0 && !settings.generateModsBlacklist?.includes(pickedItemDb._id)) {
                 const childItemsToAdd = this.botEquipmentModGenerator.generateModsForEquipment(
                     [item],
                     id,
                     pickedItemDb,
                     settings,
+                    botEquipBlacklist,
                 );
                 settings.inventory.items.push(...childItemsToAdd);
             } else {
-                // No slots, push root item only
+                // No slots, add root item only
                 settings.inventory.items.push(item);
             }
 
@@ -476,17 +502,17 @@ export class BotInventoryGenerator {
     /**
      * Get all possible mods for item and filter down based on equipment blacklist from bot.json config
      * @param itemTpl Item mod pool is being retrieved and filtered
-     * @param equipmentBlacklist blacklist to filter mod pool with
+     * @param equipmentBlacklist Blacklist to filter mod pool with
      * @returns Filtered pool of mods
      */
     protected getFilteredDynamicModsForItem(
         itemTpl: string,
-        equipmentBlacklist: EquipmentFilterDetails[],
+        equipmentBlacklist: Record<string, string[]>,
     ): Record<string, string[]> {
         const modPool = this.botEquipmentModPoolService.getModsForGearSlot(itemTpl);
         for (const modSlot of Object.keys(modPool ?? [])) {
-            const blacklistedMods = equipmentBlacklist[0]?.equipment[modSlot] || [];
-            const filteredMods = modPool[modSlot].filter((x) => !blacklistedMods.includes(x));
+            const blacklistedMods = equipmentBlacklist[modSlot] ?? [];
+            const filteredMods = modPool[modSlot].filter((slotName) => !blacklistedMods.includes(slotName));
 
             if (filteredMods.length > 0) {
                 modPool[modSlot] = filteredMods;
