@@ -2703,8 +2703,8 @@
         }
     },
     "maxBotCap": {
-        "factory4_day": 13,
-        "factory4_night": 13,
+        "factory4_day": 15,
+        "factory4_night": 15,
         "bigmap": 23,
         "woods": 23,
         "shoreline": 23,
