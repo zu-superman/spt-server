@@ -76,8 +76,8 @@ export class SptHttpListener implements IHttpListener {
     }
 
     /**
-     * Send http response to the client
-     * @param sessionID Player id
+     * Send HTTP response back to sender
+     * @param sessionID Player id making request
      * @param req Incoming request
      * @param resp Outgoing response
      * @param body Buffer
@@ -90,27 +90,23 @@ export class SptHttpListener implements IHttpListener {
         body: Buffer,
         output: string,
     ): void {
-        const info = this.getBodyInfo(body);
-        let handled = false;
+        const bodyInfo = this.getBodyInfo(body);
 
-        // Check if this is a debug request, if so just send the raw response without transformation
+        // Check if this is a debug request, send only raw response without transformation
         if (req.headers.responsecompressed === "0") {
             this.sendJson(resp, output, sessionID);
-        }
-
-        // Attempt to use one of our serializers to do the job
-        for (const serializer of this.serializers) {
-            if (serializer.canHandle(output)) {
-                serializer.serialize(sessionID, req, resp, info);
-                handled = true;
-                break;
+        } else {
+            // Not debug, minority of requests need a serializer to do the job (IMAGE/BUNDLE/NOTIFY)
+            const serialiser = this.serializers.find((x) => x.canHandle(output));
+            if (serialiser) {
+                serialiser.serialize(sessionID, req, resp, bodyInfo);
+            } else {
+                // No serializer can handle the request (majority of requests dont), zlib the output and send response back
+                this.sendZlibJson(resp, output, sessionID);
             }
         }
-        // If no serializer can handle the request we zlib the output and send it
-        if (!handled) {
-            this.sendZlibJson(resp, output, sessionID);
-        }
 
+        // Log request if enabled
         if (globalThis.G_LOG_REQUESTS) {
             const log = new Response(req.method, output);
             this.requestsLogger.info(`RESPONSE=${this.jsonUtil.serialize(log)}`);
