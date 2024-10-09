@@ -449,8 +449,6 @@ export class RepeatableQuestGenerator {
         const levelsConfig = repeatableConfig.rewardScaling.levels;
         const roublesConfig = repeatableConfig.rewardScaling.roubles;
 
-        const distinctItemsToRetrieveCount = this.randomUtil.getInt(1, completionConfig.uniqueItemCount);
-
         const quest = this.generateRepeatableTemplate("Completion", traderId, repeatableConfig.side);
 
         // Filter the items.json items to items the player must retrieve to complete quest: shouldn't be a quest item or "non-existant"
@@ -519,6 +517,8 @@ export class RepeatableQuestGenerator {
         let isAmmo = 0;
 
         // Store the indexes of items we are asking player to provide
+        const distinctItemsToRetrieveCount = this.randomUtil.getInt(1, completionConfig.uniqueItemCount);
+        const chosenRequirementItemsTpls = [];
         const usedItemIndexes = new Set();
         for (let i = 0; i < distinctItemsToRetrieveCount; i++) {
             let chosenItemIndex = this.randomUtil.randInt(itemSelection.length);
@@ -573,6 +573,7 @@ export class RepeatableQuestGenerator {
             roublesBudget -= value * itemUnitPrice;
 
             // Push a CompletionCondition with the item and the amount of the item
+            chosenRequirementItemsTpls.push(itemSelected[0]);
             quest.conditions.AvailableForFinish.push(this.generateCompletionAvailableForFinish(itemSelected[0], value));
 
             if (roublesBudget > 0) {
@@ -594,6 +595,7 @@ export class RepeatableQuestGenerator {
             traderId,
             repeatableConfig,
             completionConfig,
+            chosenRequirementItemsTpls,
         );
 
         return quest;
