@@ -77,6 +77,7 @@ export class RepeatableQuestRewardGenerator {
         traderId: string,
         repeatableConfig: IRepeatableQuestConfig,
         questConfig: IBaseQuestConfig,
+        rewardTplBlacklist?: string[],
     ): IQuestRewards {
         // Get vars to configure rewards with
         const rewardParams = this.getQuestRewardValues(repeatableConfig.rewardScaling, difficulty, pmcLevel);
@@ -126,7 +127,15 @@ export class RepeatableQuestRewardGenerator {
             }
         }
 
-        const inBudgetRewardItemPool = this.chooseRewardItemsWithinBudget(repeatableConfig, itemRewardBudget, traderId);
+        let inBudgetRewardItemPool = this.chooseRewardItemsWithinBudget(repeatableConfig, itemRewardBudget, traderId);
+        if (rewardTplBlacklist) {
+            // Filter reward pool of items from blacklist, only use if there's at least 1 item remaining
+            const filteredRewardItemPool = inBudgetRewardItemPool.filter((x) => !rewardTplBlacklist.includes(x._id));
+            if (filteredRewardItemPool.length > 0) {
+                inBudgetRewardItemPool = filteredRewardItemPool;
+            }
+        }
+
         this.logger.debug(
             `Generating daily quest for: ${traderId} with budget: ${itemRewardBudget} totalling: ${rewardParams.rewardNumItems} items`,
         );
