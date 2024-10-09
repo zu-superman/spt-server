@@ -634,13 +634,7 @@ export class FenceService {
         const itemTypeLimitCounts = this.initItemLimitCounter(this.traderConfig.fence.itemTypeLimits);
 
         if (itemCounts.item > 0) {
-            const itemResult = this.addItemAssorts(
-                itemCounts.item,
-                result,
-                baseFenceAssortClone,
-                itemTypeLimitCounts,
-                loyaltyLevel,
-            );
+            this.addItemAssorts(itemCounts.item, result, baseFenceAssortClone, itemTypeLimitCounts, loyaltyLevel);
         }
 
         if (itemCounts.weaponPreset > 0 || itemCounts.equipmentPreset > 0) {
