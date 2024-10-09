@@ -15,6 +15,7 @@ export interface IRagfairOffer {
     requirementsCost: number;
     startTime: number;
     endTime: number;
+    /** True when offer is sold as pack */
     sellInOnePiece: boolean;
     /** Rouble price - same as requirementsCost */
     summaryCost: number;

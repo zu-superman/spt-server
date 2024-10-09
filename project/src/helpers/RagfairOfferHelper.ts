@@ -204,6 +204,11 @@ export class RagfairOfferHelper {
         const tieredFleaLimitTypes = Object.keys(tieredFlea.unlocksType);
 
         for (const offer of this.ragfairOfferService.getOffers()) {
+            // Dont show pack offers
+            if (offer.sellInOnePiece) {
+                continue;
+            }
+
             if (!this.passesSearchFilterCriteria(searchRequest, offer, pmcData)) {
                 continue;
             }
