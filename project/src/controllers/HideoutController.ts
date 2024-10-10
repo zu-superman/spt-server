@@ -348,7 +348,6 @@ export class HideoutController {
                     _tpl: ItemTpl.INVENTORY_DEFAULT,
                     parentId: equipmentPresetHideoutArea._id,
                     slotId: mannequinSlot._name,
-                    location: null,
                 };
                 pmcData.Inventory.items.push(mannequinToAdd);
 
@@ -360,7 +359,6 @@ export class HideoutController {
                     )._tpl, // Same pocket tpl as players profile (unheard get bigger, matching pockets etc)
                     parentId: standId,
                     slotId: "Pockets",
-                    location: null,
                 };
                 pmcData.Inventory.items.push(mannequinPocketItemToAdd);
                 output.profileChanges[sessionId].items.new.push(mannequinToAdd);

@@ -41050,7 +41050,7 @@
                         "16": "5d494a295b56502f18c98a08",
                         "24": "63db64cbf9963741dc0d741f",
                         "25": "640b2d867f4185aa520d08ba",
-						"26": "640b2d867f4185aa520d08bb",
+						"26": "65e5bb1713227bb7690cea0a",
                         "27": "66c5bfd48a24042f1006eadc"
                     },
                     "items": [{
@@ -41066,13 +41066,18 @@
                             "_id": "640b2d867f4185aa520d08ba",
                             "_tpl": "64381b6e44b37a080d0245b9"
                         }, {
-                            "_id": "640b2d867f4185aa520d08bb",
+                            "_id": "65e5bb1713227bb7690cea0a",
                             "_tpl": "65e5957613227bb7690ce9f6"
                         }, {
 							"_id": "66c8f2c0584b8fef8201d0e8",
 							"_tpl": "55d7217a4bdc2d86028b456d",
-							"parentId": "640b2d867f4185aa520d08bb",
+							"parentId": "65e5bb1713227bb7690cea0a",
 							"slotId": "Stand1"
+						}, {
+							"_id": "66f499ba4b0ffac20007a0fb",
+							"_tpl": "627a4e6b255f7527fb05a0f6",
+							"parentId": "66c8f2c0584b8fef8201d0e8",
+							"slotId": "Pockets"
 						}, {
                             "_id": "63db64cbf9963741dc0d741f",
                             "_tpl": "64381b6e44b37a080d0245b9"
