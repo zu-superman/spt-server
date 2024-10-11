@@ -4,7 +4,7 @@ import { WeightedRandomHelper } from "@spt/helpers/WeightedRandomHelper";
 import { IItem } from "@spt/models/eft/common/tables/IItem";
 import { IGetAirdropLootRequest } from "@spt/models/eft/location/IGetAirdropLootRequest";
 import { IGetAirdropLootResponse } from "@spt/models/eft/location/IGetAirdropLootResponse";
-import { AirdropTypeEnum } from "@spt/models/enums/AirdropType";
+import { AirdropTypeEnum, SptAirdropTypeEnum } from "@spt/models/enums/AirdropType";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { ItemTpl } from "@spt/models/enums/ItemTpl";
 import { IAirdropConfig, IAirdropLoot } from "@spt/models/spt/config/IAirdropConfig";
@@ -88,7 +88,7 @@ export class AirdropService {
             }
         }
 
-        return { icon: AirdropTypeEnum.COMMON, container: crateLoot };
+        return { icon: airdropConfig.icon, container: crateLoot };
     }
 
     /**
@@ -96,7 +96,7 @@ export class AirdropService {
      * @param airdropType What tpye of container: weapon/common etc
      * @returns Item
      */
-    protected getAirdropCrateItem(airdropType: AirdropTypeEnum): IItem {
+    protected getAirdropCrateItem(airdropType: SptAirdropTypeEnum): IItem {
         const airdropContainer = {
             _id: this.hashUtil.generate(),
             _tpl: "", // picked later
@@ -107,19 +107,19 @@ export class AirdropService {
         };
 
         switch (airdropType) {
-            case AirdropTypeEnum.FOOD_MEDICAL:
+            case SptAirdropTypeEnum.FOOD_MEDICAL:
                 airdropContainer._tpl = ItemTpl.LOOTCONTAINER_AIRDROP_MEDICAL_CRATE;
                 break;
-            case AirdropTypeEnum.SUPPLY:
+            case SptAirdropTypeEnum.SUPPLY:
                 airdropContainer._tpl = ItemTpl.LOOTCONTAINER_AIRDROP_SUPPLY_CRATE;
                 break;
-            case AirdropTypeEnum.WEAPON_ARMOR:
+            case SptAirdropTypeEnum.WEAPON_ARMOR:
                 airdropContainer._tpl = ItemTpl.LOOTCONTAINER_AIRDROP_WEAPON_CRATE;
                 break;
-            case AirdropTypeEnum.COMMON:
+            case SptAirdropTypeEnum.COMMON:
                 airdropContainer._tpl = ItemTpl.LOOTCONTAINER_AIRDROP_COMMON_SUPPLY_CRATE;
                 break;
-            case AirdropTypeEnum.RADAR:
+            case SptAirdropTypeEnum.RADAR:
                 airdropContainer._tpl = ItemTpl.LOOTCONTAINER_AIRDROP_TECHNICAL_SUPPLY_CRATE_EVENT_1;
                 break;
             default:
@@ -134,7 +134,7 @@ export class AirdropService {
      * Randomly pick a type of airdrop loot using weighted values from config
      * @returns airdrop type value
      */
-    protected chooseAirdropType(): AirdropTypeEnum {
+    protected chooseAirdropType(): SptAirdropTypeEnum {
         const possibleAirdropTypes = this.airdropConfig.airdropTypeWeightings;
 
         return this.weightedRandomHelper.getWeightedValue(possibleAirdropTypes);
@@ -151,6 +151,8 @@ export class AirdropService {
             this.logger.error(
                 this.localisationService.getText("location-unable_to_find_airdrop_drop_config_of_type", airdropType),
             );
+
+            // Default to common
             lootSettingsByType = this.airdropConfig.loot[AirdropTypeEnum.COMMON];
         }
 

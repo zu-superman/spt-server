@@ -1,7 +1,7 @@
 {
     "airdropTypeWeightings": {
         "mixed": 5,
-        "weaponArmor": 2,
+        "weaponArmor": 4,
         "foodMedical": 1,
         "barter": 1,
 		"radar": 0
