@@ -88,7 +88,7 @@ export class AirdropService {
             }
         }
 
-        return { icon: airdropConfig.icon, container: crateLoot };
+        return { icon: AirdropTypeEnum.COMMON, container: crateLoot };
     }
 
     /**
