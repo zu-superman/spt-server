@@ -508,15 +508,19 @@ export class ProfileHelper {
      * @param newPocketTpl New tpl to set profiles Pockets to
      */
     public replaceProfilePocketTpl(pmcProfile: IPmcData, newPocketTpl: string): void {
-        const pockets = pmcProfile.Inventory.items.find((item) => item.slotId === "Pockets");
-        if (!pockets) {
+        // Find all pockets in profile, may be multiple as they could have equipment stand
+        // (1 pocket for each upgrade level of equipment stand)
+        const pockets = pmcProfile.Inventory.items.filter((item) => item.slotId === "Pockets");
+        if (pockets.length === 0) {
             this.logger.error(
-                `unable to replace profile: ${pmcProfile._id} pocket tpl with: ${newPocketTpl} as Pocket item could not be found.`,
+                `Unable to replace profile: ${pmcProfile._id} pocket tpl with: ${newPocketTpl} as Pocket item could not be found.`,
             );
 
             return;
         }
 
-        pockets._tpl = newPocketTpl;
+        for (const pocket of pockets) {
+            pocket._tpl = newPocketTpl;
+        }
     }
 }

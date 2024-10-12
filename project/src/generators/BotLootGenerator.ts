@@ -495,7 +495,7 @@ export class BotLootGenerator {
                         }
                     }
                 }
-                // Some items (ammBox/ammo) need extra changes
+                // Some items (ammoBox/ammo) need extra changes
                 this.addRequiredChildItemsToParent(itemToAddTemplate, itemWithChildrenToAdd, isPmc, botRole);
 
                 // Attempt to add item to container(s)
