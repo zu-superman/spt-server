@@ -365,14 +365,24 @@ export class SeasonalEventService {
         }
     }
 
+    /**
+     * Force zryachiy to always have a melee weapon
+     */
     protected adjustZryachiyMeleeChance(): void {
         this.databaseService.getBots().types.bosszryachiy.chances.equipment.Scabbard = 100;
     }
 
+    /**
+     * Enable the halloween zryachiy summon event
+     */
     protected enableHalloweenSummonEvent(): void {
         this.databaseService.getGlobals().config.EventSettings.EventActive = true;
     }
 
+    /**
+     * Add event bosses to maps
+     * @param eventType Seasonal event, e.g. HALLOWEEN/CHRISTMAS
+     */
     protected addEventBossesToMaps(eventType: SeasonalEventType): void {
         const botsToAddPerMap = this.seasonalEventConfig.eventBossSpawns[eventType.toLowerCase()];
         if (!botsToAddPerMap) {
@@ -484,6 +494,9 @@ export class SeasonalEventService {
         }
     }
 
+    /**
+     * Add pumpkin loot boxes to scavs
+     */
     protected addPumpkinsToScavBackpacks(): void {
         this.databaseService.getBots().types.assault.inventory.items.Backpack[
             ItemTpl.RANDOMLOOTCONTAINER_PUMPKIN_RAND_LOOT_CONTAINER
@@ -562,6 +575,9 @@ export class SeasonalEventService {
         return this.seasonalEventConfig.eventBotMapping[eventBotRole];
     }
 
+    /**
+     * Force the weather to be snow
+     */
     public enableSnow(): void {
         this.weatherConfig.overrideSeason = Season.WINTER;
     }
