@@ -1161,12 +1161,24 @@ export class HideoutController {
         // Skill changes are done in
         // /client/hideout/workout (applyWorkoutChanges).
 
-        pmcData.Health.Energy.Current -= 50;
+        const qteDb = this.databaseService.getHideout().qte;
+        const relevantQte = qteDb.find((qte) => qte.id === request.id);
+        for (const outcome of request.results) {
+            if (outcome) {
+                // Success
+                pmcData.Health.Energy.Current -= relevantQte.results.SingleSuccessEffect.energy;
+                pmcData.Health.Hydration.Current -= relevantQte.results.SingleSuccessEffect.hydration;
+            } else {
+                // Failed
+                pmcData.Health.Energy.Current -= relevantQte.results.SingleFailEffect.energy;
+                pmcData.Health.Hydration.Current -= relevantQte.results.SingleFailEffect.hydration;
+            }
+        }
+
         if (pmcData.Health.Energy.Current < 1) {
             pmcData.Health.Energy.Current = 1;
         }
 
-        pmcData.Health.Hydration.Current -= 50;
         if (pmcData.Health.Hydration.Current < 1) {
             pmcData.Health.Hydration.Current = 1;
         }
