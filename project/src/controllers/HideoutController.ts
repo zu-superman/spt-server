@@ -1166,14 +1166,19 @@ export class HideoutController {
         for (const outcome of request.results) {
             if (outcome) {
                 // Success
-                pmcData.Health.Energy.Current -= relevantQte.results.SingleSuccessEffect.energy;
-                pmcData.Health.Hydration.Current -= relevantQte.results.SingleSuccessEffect.hydration;
+                pmcData.Health.Energy.Current += relevantQte.results.singleSuccessEffect.energy;
+                pmcData.Health.Hydration.Current += relevantQte.results.singleSuccessEffect.hydration;
             } else {
                 // Failed
-                pmcData.Health.Energy.Current -= relevantQte.results.SingleFailEffect.energy;
-                pmcData.Health.Hydration.Current -= relevantQte.results.SingleFailEffect.hydration;
+                pmcData.Health.Energy.Current += relevantQte.results.singleFailEffect.energy;
+                pmcData.Health.Hydration.Current += relevantQte.results.singleFailEffect.hydration;
             }
         }
+
+        const hasMildPain = !!pmcData.Health.BodyParts.Chest.Effects?.MildMusclePain;
+
+        // Should never happen
+        const hasSeverePain = !!pmcData.Health.BodyParts.Chest.Effects?.SevereMusclePain;
 
         if (pmcData.Health.Energy.Current < 1) {
             pmcData.Health.Energy.Current = 1;
@@ -1181,6 +1186,24 @@ export class HideoutController {
 
         if (pmcData.Health.Hydration.Current < 1) {
             pmcData.Health.Hydration.Current = 1;
+        }
+
+        // Has no muscle pain at all, add mild
+        if (!hasMildPain && !hasSeverePain) {
+            // nullguard
+            pmcData.Health.BodyParts.Chest.Effects ||= {};
+            pmcData.Health.BodyParts.Chest.Effects.MildMusclePain = {
+                Time: relevantQte.results.finishEffect.rewardsRange[0].time, // TODO - remove hard coded access, get value properly
+            };
+        }
+
+        if (hasMildPain) {
+            // Already has mild pain, remove mild and add severe
+            delete pmcData.Health.BodyParts.Chest.Effects.MildMusclePain;
+
+            pmcData.Health.BodyParts.Chest.Effects.SevereMusclePain = {
+                Time: relevantQte.results.finishEffect.rewardsRange[0].time,
+            };
         }
     }
 
