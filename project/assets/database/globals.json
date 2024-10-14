@@ -31655,7 +31655,268 @@
     },
     "RagFair": {
       "ChangePriceCoef": 1,
-      "ItemRestrictions": [],
+      "ItemRestrictions": [
+        {
+          "MaxFlea": 5,
+          "MaxFleaStacked": 5,
+          "TemplateId": "5c0530ee86f774697952d952"
+        },
+        {
+          "MaxFlea": 5,
+          "MaxFleaStacked": 5,
+          "TemplateId": "57347ca924597744596b4e71"
+        },
+        {
+          "MaxFlea": 1,
+          "MaxFleaStacked": 1,
+          "TemplateId": "5c164d2286f774194c5e69fa"
+        },
+        {
+          "MaxFlea": 5,
+          "MaxFleaStacked": 5,
+          "TemplateId": "5c94bbff86f7747ee735c08f"
+        },
+        {
+          "MaxFlea": 1,
+          "MaxFleaStacked": 1,
+          "TemplateId": "5795f317245977243854e041"
+        },
+        {
+          "MaxFlea": 5,
+          "MaxFleaStacked": 5,
+          "TemplateId": "57864a3d24597754843f8721"
+        },
+        {
+          "MaxFlea": 5,
+          "MaxFleaStacked": 5,
+          "TemplateId": "5c052e6986f7746b207bc3c9"
+        },
+        {
+          "MaxFlea": 5,
+          "MaxFleaStacked": 5,
+          "TemplateId": "5c12613b86f7743bbe2c3f76"
+        },
+        {
+          "MaxFlea": 1,
+          "MaxFleaStacked": 1,
+          "TemplateId": "6389c8c5dbfd5e4b95197e6b"
+        },
+        {
+          "MaxFlea": 1,
+          "MaxFleaStacked": 1,
+          "TemplateId": "5bffdd7e0db834001b734a1a"
+        },
+        {
+          "MaxFlea": 1,
+          "MaxFleaStacked": 1,
+          "TemplateId": "5c0126f40db834002a125382"
+        },
+        {
+          "MaxFlea": 1,
+          "MaxFleaStacked": 1,
+          "TemplateId": "601948682627df266209af05"
+        },
+        {
+          "MaxFlea": 5,
+          "MaxFleaStacked": 5,
+          "TemplateId": "5d1b376e86f774252519444e"
+        },
+        {
+          "MaxFlea": 5,
+          "MaxFleaStacked": 5,
+          "TemplateId": "61bf7c024770ee6f9c6b8b53"
+        },
+        {
+          "MaxFlea": 5,
+          "MaxFleaStacked": 5,
+          "TemplateId": "62a0a16d0b9d3c46de5b6e97"
+        },
+        {
+          "MaxFlea": 1,
+          "MaxFleaStacked": 1,
+          "TemplateId": "5448ba0b4bdc2d02308b456c"
+        },
+        {
+          "MaxFlea": 1,
+          "MaxFleaStacked": 1,
+          "TemplateId": "63a3a93f8a56922e82001f5d"
+        },
+        {
+          "MaxFlea": 1,
+          "MaxFleaStacked": 1,
+          "TemplateId": "5a0eb6ac86f7743124037a28"
+        },
+        {
+          "MaxFlea": 1,
+          "MaxFleaStacked": 1,
+          "TemplateId": "63a397d3af870e651d58e65b"
+        },
+        {
+          "MaxFlea": 1,
+          "MaxFleaStacked": 1,
+          "TemplateId": "62987c658081af308d7558c6"
+        },
+        {
+          "MaxFlea": 1,
+          "MaxFleaStacked": 1,
+          "TemplateId": "63a39fc0af870e651d58e6ae"
+        },
+        {
+          "MaxFlea": 1,
+          "MaxFleaStacked": 1,
+          "TemplateId": "5780cf7f2459777de4559322"
+        },
+        {
+          "MaxFlea": 1,
+          "MaxFleaStacked": 1,
+          "TemplateId": "5e42c71586f7747f245e1343"
+        },
+        {
+          "MaxFlea": 1,
+          "MaxFleaStacked": 1,
+          "TemplateId": "5ad5d7d286f77450166e0a89"
+        },
+        {
+          "MaxFlea": 1,
+          "MaxFleaStacked": 1,
+          "TemplateId": "5addaffe86f77470b455f900"
+        },
+        {
+          "MaxFlea": 1,
+          "MaxFleaStacked": 1,
+          "TemplateId": "5a13ef7e86f7741290491063"
+        },
+        {
+          "MaxFlea": 1,
+          "MaxFleaStacked": 1,
+          "TemplateId": "5a0eed4386f77405112912aa"
+        },
+        {
+          "MaxFlea": 1,
+          "MaxFleaStacked": 1,
+          "TemplateId": "64ccc25f95763a1ae376e447"
+        },
+        {
+          "MaxFlea": 1,
+          "MaxFleaStacked": 1,
+          "TemplateId": "62987dfc402c7f69bf010923"
+        },
+        {
+          "MaxFlea": 1,
+          "MaxFleaStacked": 1,
+          "TemplateId": "5d80c60f86f77440373c4ece"
+        },
+        {
+          "MaxFlea": 1,
+          "MaxFleaStacked": 1,
+          "TemplateId": "5d80c62a86f7744036212b3f"
+        },
+        {
+          "MaxFlea": 1,
+          "MaxFleaStacked": 1,
+          "TemplateId": "5ede7a8229445733cb4c18e2"
+        },
+        {
+          "MaxFlea": 1,
+          "MaxFleaStacked": 1,
+          "TemplateId": "5d80c6c586f77440351beef1"
+        },
+        {
+          "MaxFlea": 5,
+          "MaxFleaStacked": 5,
+          "TemplateId": "5e2aee0a86f774755a234b62"
+        },
+        {
+          "MaxFlea": 5,
+          "MaxFleaStacked": 5,
+          "TemplateId": "5c052fb986f7746b2101e909"
+        },
+        {
+          "MaxFlea": 5,
+          "MaxFleaStacked": 5,
+          "TemplateId": "5c05308086f7746b2101e90b"
+        },
+        {
+          "MaxFlea": 5,
+          "MaxFleaStacked": 5,
+          "TemplateId": "5c052f6886f7746b1e3db148"
+        },
+        {
+          "MaxFlea": 5,
+          "MaxFleaStacked": 5,
+          "TemplateId": "5d03794386f77420415576f5"
+        },
+        {
+          "MaxFlea": 5,
+          "MaxFleaStacked": 5,
+          "TemplateId": "5e2aedd986f7746d404f3aa4"
+        },
+        {
+          "MaxFlea": 5,
+          "MaxFleaStacked": 5,
+          "TemplateId": "5c12620d86f7743f8b198b72"
+        },
+        {
+          "MaxFlea": 5,
+          "MaxFleaStacked": 5,
+          "TemplateId": "5d0379a886f77420407aa271"
+        },
+        {
+          "MaxFlea": 5,
+          "MaxFleaStacked": 5,
+          "TemplateId": "619cbfccbedcde2f5b3f7bdd"
+        },
+        {
+          "MaxFlea": 5,
+          "MaxFleaStacked": 5,
+          "TemplateId": "619cbfeb6b8a1b37a54eebfa"
+        },
+        {
+          "MaxFlea": 5,
+          "MaxFleaStacked": 5,
+          "TemplateId": "60391afc25aff57af81f7085"
+        },
+        {
+          "MaxFlea": 5,
+          "MaxFleaStacked": 5,
+          "TemplateId": "5af0534a86f7743b6f354284"
+        },
+        {
+          "MaxFlea": 5,
+          "MaxFleaStacked": 5,
+          "TemplateId": "5c05300686f7746dce784e5d"
+        },
+        {
+          "MaxFlea": 5,
+          "MaxFleaStacked": 5,
+          "TemplateId": "59faf7ca86f7740dbe19f6c2"
+        },
+        {
+          "MaxFlea": 5,
+          "MaxFleaStacked": 5,
+          "TemplateId": "5d0376a486f7747d8050965c"
+        },
+        {
+          "MaxFlea": 5,
+          "MaxFleaStacked": 5,
+          "TemplateId": "5d0377ce86f774186372f689"
+        },
+        {
+          "MaxFlea": 5,
+          "MaxFleaStacked": 5,
+          "TemplateId": "5d03784a86f774203e7e0c4d"
+        },
+        {
+          "MaxFlea": 5,
+          "MaxFleaStacked": 5,
+          "TemplateId": "5d03775b86f774203e7e0c4b"
+        },
+        {
+          "MaxFlea": 5,
+          "MaxFleaStacked": 5,
+          "TemplateId": "5d0378d486f77420421a5ff4"
+        }
+      ],
       "balancerAveragePriceCoefficient": 10,
       "balancerMinPriceCount": 3,
       "balancerRemovePriceCoefficient": 5,

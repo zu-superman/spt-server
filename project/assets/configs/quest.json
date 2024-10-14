@@ -203,7 +203,14 @@
             "startTimestamp": 1341615600000,
             "endTimestamp": "",
             "yearly": false
-        }
+        },
+		"66e3e2ee2136472d220bcb36": {
+			"name": "Night of The Cult",
+            "season": "None",
+            "startTimestamp": 1341615600000,
+            "endTimestamp": "",
+            "yearly": false
+		}
     },
     "repeatableQuests": [
         {
