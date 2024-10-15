@@ -310,7 +310,7 @@ export class RagfairController {
      */
     public getItemMinAvgMaxFleaPriceValues(
         getPriceRequest: IGetMarketPriceRequestData,
-        ignoreTraderOffers = false,
+        ignoreTraderOffers = true,
     ): IGetItemPriceResult {
         // Get all items of tpl
         const offers = this.ragfairOfferService.getOffersOfType(getPriceRequest.templateId);
