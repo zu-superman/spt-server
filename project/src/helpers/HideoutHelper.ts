@@ -125,7 +125,6 @@ export class HideoutHelper {
         recipeId: string,
         productionTime: number,
         needFuelForAllProductionTime: boolean,
-        isCultistCircle = false,
     ): IProduction {
         return {
             Progress: 0,
@@ -139,7 +138,6 @@ export class HideoutHelper {
             NeedFuelForAllProductionTime: needFuelForAllProductionTime, // Used when sending to client
             needFuelForAllProductionTime: needFuelForAllProductionTime, // used when stored in production.json
             SkipTime: 0,
-            sptIsCultistCircle: isCultistCircle,
         };
     }
 

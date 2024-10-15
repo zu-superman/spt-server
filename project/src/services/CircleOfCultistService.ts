@@ -182,8 +182,10 @@ export class CircleOfCultistService {
             recipeId,
             this.getCircleCraftTimeSeconds(rewardAmountRoubles, directRewardSettings),
             false,
-            true,
         );
+
+        // Flag as cultist circle for code to pick up later
+        cultistProduction.sptIsCultistCircle = true;
 
         // Add items player sacrificed
         cultistProduction.GivenItemsInStart = sacrificedItems;
