@@ -284,12 +284,14 @@ export class HideoutHelper {
                 continue;
             }
 
+            // Water collector
             if (prodId === HideoutHelper.waterCollector) {
                 this.updateWaterCollectorProductionTimer(pmcData, prodId, hideoutProperties);
 
                 continue;
             }
 
+            // Bitcoin farm handling
             if (prodId === HideoutHelper.bitcoinFarm) {
                 this.updateBitcoinFarm(
                     pmcData,
@@ -297,14 +299,15 @@ export class HideoutHelper {
                     hideoutProperties.btcFarmCGs,
                     hideoutProperties.isGeneratorOn,
                 );
+
                 continue;
             }
 
-            // cultist circle has no recipe, needs special handling
+            // Cultist circle has no recipe, needs special handling
             if (craft.sptIsCultistCircle) {
                 this.updateCultistCircleCraftProgress(pmcData, prodId);
 
-                return;
+                continue;
             }
 
             // Ensure recipe exists before using it in updateProductionProgress()
