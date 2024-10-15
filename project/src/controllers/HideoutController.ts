@@ -748,7 +748,7 @@ export class HideoutController {
      * @param recipeId recipe id to save into Production dict
      */
     protected addScavCaseRewardsToProfile(pmcData: IPmcData, rewards: IProduct[], recipeId: string): void {
-        pmcData.Hideout.Production[`ScavCase${recipeId}`] = { Products: rewards };
+        pmcData.Hideout.Production[`ScavCase${recipeId}`] = { Products: rewards, RecipeId: recipeId };
     }
 
     /**

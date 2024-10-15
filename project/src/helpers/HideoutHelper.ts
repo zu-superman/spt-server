@@ -253,7 +253,7 @@ export class HideoutHelper {
     ): void {
         const recipes = this.databaseService.getHideout().production;
 
-        // Check each production
+        // Check each production and handle edge cases if necessary
         for (const prodId in pmcData.Hideout.Production) {
             const craft = pmcData.Hideout.Production[prodId];
             if (!craft) {
@@ -270,29 +270,26 @@ export class HideoutHelper {
                 craft.Progress = 0;
             }
 
-            // Craft complete, skip processing (Don't skip continious crafts like bitcoin farm or cultist circle)
-            if (
-                craft.Progress >= craft.ProductionTime &&
-                ![HideoutHelper.bitcoinFarm, HideoutHelper.cultistCircleCraftId].includes(prodId)
-            ) {
+            // Skip processing (Don't skip continious crafts like bitcoin farm or cultist circle)
+            if (this.isCraftComplete(craft)) {
                 continue;
             }
 
-            if (craft.sptIsScavCase) {
+            // Special handling required
+            if (this.isCraftOfType(craft, HideoutAreas.SCAV_CASE)) {
                 this.updateScavCaseProductionTimer(pmcData, prodId);
 
                 continue;
             }
 
-            // Water collector
-            if (prodId === HideoutHelper.waterCollector) {
+            if (this.isCraftOfType(craft, HideoutAreas.WATER_COLLECTOR)) {
                 this.updateWaterCollectorProductionTimer(pmcData, prodId, hideoutProperties);
 
                 continue;
             }
 
-            // Bitcoin farm handling
-            if (prodId === HideoutHelper.bitcoinFarm) {
+            // Continious craft
+            if (this.isCraftOfType(craft, HideoutAreas.BITCOIN_FARM)) {
                 this.updateBitcoinFarm(
                     pmcData,
                     pmcData.Hideout.Production[prodId],
@@ -303,8 +300,8 @@ export class HideoutHelper {
                 continue;
             }
 
-            // Cultist circle has no recipe, needs special handling
-            if (craft.sptIsCultistCircle) {
+            // No recipe, needs special handling
+            if (this.isCraftOfType(craft, HideoutAreas.CIRCLE_OF_CULTISTS)) {
                 this.updateCultistCircleCraftProgress(pmcData, prodId);
 
                 continue;
@@ -320,6 +317,45 @@ export class HideoutHelper {
 
             this.updateProductionProgress(pmcData, prodId, recipe, hideoutProperties);
         }
+    }
+
+    /**
+     * Is a craft from a particular hideout area
+     * @param craft Craft to check
+     * @param hideoutType Type to check craft against
+     * @returns True it is from that area
+     */
+    protected isCraftOfType(craft: IProduction, hideoutType: HideoutAreas) {
+        switch (hideoutType) {
+            case HideoutAreas.WATER_COLLECTOR:
+                return craft.RecipeId === HideoutHelper.waterCollector;
+            case HideoutAreas.BITCOIN_FARM:
+                return craft.RecipeId === HideoutHelper.bitcoinFarm;
+            case HideoutAreas.SCAV_CASE:
+                return craft.sptIsScavCase;
+            case HideoutAreas.CIRCLE_OF_CULTISTS:
+                return craft.sptIsCultistCircle;
+
+            default:
+                this.logger.error(
+                    `Unhandled hideout area: ${hideoutType}, assuming craft: ${craft.RecipeId} is not of this type`,
+                );
+                return false;
+        }
+    }
+
+    /**
+     * Has the craft completed
+     * Ignores bitcoin farm/cultist circle as they're continuous crafts
+     * @param craft Craft to check
+
+     * @returns True when craft is compelte
+     */
+    protected isCraftComplete(craft: IProduction) {
+        return (
+            craft.Progress >= craft.ProductionTime &&
+            ![HideoutHelper.bitcoinFarm, HideoutHelper.cultistCircleCraftId].includes(craft.RecipeId)
+        );
     }
 
     /**
