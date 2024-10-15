@@ -304,10 +304,14 @@ export class RagfairController {
 
     /**
      * Called when creating an offer on flea, fills values in top right corner
-     * @param getPriceRequest
+     * @param getPriceRequest Client request object
+     * @param ignoreTraderOffers Should trader offers be ignored in the calcualtion
      * @returns min/avg/max values for an item based on flea offers available
      */
-    public getItemMinAvgMaxFleaPriceValues(getPriceRequest: IGetMarketPriceRequestData): IGetItemPriceResult {
+    public getItemMinAvgMaxFleaPriceValues(
+        getPriceRequest: IGetMarketPriceRequestData,
+        ignoreTraderOffers = false,
+    ): IGetItemPriceResult {
         // Get all items of tpl
         const offers = this.ragfairOfferService.getOffersOfType(getPriceRequest.templateId);
 
@@ -323,6 +327,10 @@ export class RagfairController {
                 offers.reduce((sum, offer) => {
                     // Exclude barter items, they tend to have outrageous equivalent prices
                     if (offer.requirements.some((req) => !this.paymentHelper.isMoneyTpl(req._tpl))) {
+                        return sum;
+                    }
+
+                    if (ignoreTraderOffers && offer.user.memberType === MemberCategory.TRADER) {
                         return sum;
                     }
 
@@ -438,7 +446,8 @@ export class RagfairController {
         const qualityMultiplier = this.itemHelper.getItemQualityModifierForItems(offer.items, true);
 
         // Average offer price for single item (or whole weapon)
-        let averageOfferPriceSingleItem = this.ragfairPriceService.getFleaPriceForOfferItems(offer.items);
+        const averages = this.getItemMinAvgMaxFleaPriceValues({ templateId: offer.items[0]._tpl });
+        let averageOfferPriceSingleItem = averages.avg;
 
         // Check for and apply item price modifer if it exists in config
         const itemPriceModifer = this.ragfairConfig.dynamic.itemPriceMultiplier[rootItem._tpl];
@@ -535,7 +544,8 @@ export class RagfairController {
         const newRootOfferItem = offer.items[0];
 
         // Average offer price for single item (or whole weapon)
-        let averageOfferPrice = this.ragfairPriceService.getFleaPriceForOfferItems(offer.items);
+        const averages = this.getItemMinAvgMaxFleaPriceValues({ templateId: offer.items[0]._tpl });
+        let averageOfferPrice = averages.avg;
 
         // Check for and apply item price modifer if it exists in config
         const itemPriceModifer = this.ragfairConfig.dynamic.itemPriceMultiplier[newRootOfferItem._tpl];
@@ -640,7 +650,8 @@ export class RagfairController {
         const newRootOfferItem = offer.items[0];
 
         // Single price for an item
-        let singleItemPrice = this.ragfairPriceService.getFleaPriceForItem(firstListingAndChidren[0]._tpl);
+        const averages = this.getItemMinAvgMaxFleaPriceValues({ templateId: firstListingAndChidren[0]._tpl });
+        let singleItemPrice = averages.avg;
 
         // Check for and apply item price modifer if it exists in config
         const itemPriceModifer = this.ragfairConfig.dynamic.itemPriceMultiplier[newRootOfferItem._tpl];
