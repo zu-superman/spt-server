@@ -1202,6 +1202,8 @@ export class HideoutController {
             pmcData.Health.BodyParts.Chest.Effects.MildMusclePain = {
                 Time: finishEffect.rewardsRange[0].time, // TODO - remove hard coded access, get value properly
             };
+
+            return;
         }
 
         if (hasMildPain) {
