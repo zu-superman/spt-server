@@ -1193,8 +1193,6 @@ export class HideoutController {
      */
     protected handleMusclePain(pmcData: IPmcData, finishEffect: IQteResult): void {
         const hasMildPain = !!pmcData.Health.BodyParts.Chest.Effects?.MildMusclePain;
-
-        // Should never happen
         const hasSeverePain = !!pmcData.Health.BodyParts.Chest.Effects?.SevereMusclePain;
 
         // Has no muscle pain at all, add mild
