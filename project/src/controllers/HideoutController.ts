@@ -24,7 +24,7 @@ import { IHideoutTakeItemOutRequestData } from "@spt/models/eft/hideout/IHideout
 import { IHideoutTakeProductionRequestData } from "@spt/models/eft/hideout/IHideoutTakeProductionRequestData";
 import { IHideoutToggleAreaRequestData } from "@spt/models/eft/hideout/IHideoutToggleAreaRequestData";
 import { IHideoutUpgradeRequestData } from "@spt/models/eft/hideout/IHideoutUpgradeRequestData";
-import { IQteData } from "@spt/models/eft/hideout/IQteData";
+import { IQteData, IQteResult } from "@spt/models/eft/hideout/IQteData";
 import { IRecordShootingRangePoints } from "@spt/models/eft/hideout/IRecordShootingRangePoints";
 import { IAddItemDirectRequest } from "@spt/models/eft/inventory/IAddItemDirectRequest";
 import { IAddItemsDirectRequest } from "@spt/models/eft/inventory/IAddItemsDirectRequest";
@@ -1175,11 +1175,6 @@ export class HideoutController {
             }
         }
 
-        const hasMildPain = !!pmcData.Health.BodyParts.Chest.Effects?.MildMusclePain;
-
-        // Should never happen
-        const hasSeverePain = !!pmcData.Health.BodyParts.Chest.Effects?.SevereMusclePain;
-
         if (pmcData.Health.Energy.Current < 1) {
             pmcData.Health.Energy.Current = 1;
         }
@@ -1188,12 +1183,26 @@ export class HideoutController {
             pmcData.Health.Hydration.Current = 1;
         }
 
+        this.handleMusclePain(pmcData, relevantQte.results.finishEffect);
+    }
+
+    /**
+     * Apply mild/severe muscle pain after gym use
+     * @param pmcData Profile to apply effect to
+     * @param finishEffect Effect data to apply after completing QTE gym event
+     */
+    protected handleMusclePain(pmcData: IPmcData, finishEffect: IQteResult): void {
+        const hasMildPain = !!pmcData.Health.BodyParts.Chest.Effects?.MildMusclePain;
+
+        // Should never happen
+        const hasSeverePain = !!pmcData.Health.BodyParts.Chest.Effects?.SevereMusclePain;
+
         // Has no muscle pain at all, add mild
         if (!hasMildPain && !hasSeverePain) {
             // nullguard
             pmcData.Health.BodyParts.Chest.Effects ||= {};
             pmcData.Health.BodyParts.Chest.Effects.MildMusclePain = {
-                Time: relevantQte.results.finishEffect.rewardsRange[0].time, // TODO - remove hard coded access, get value properly
+                Time: finishEffect.rewardsRange[0].time, // TODO - remove hard coded access, get value properly
             };
         }
 
@@ -1202,7 +1211,7 @@ export class HideoutController {
             delete pmcData.Health.BodyParts.Chest.Effects.MildMusclePain;
 
             pmcData.Health.BodyParts.Chest.Effects.SevereMusclePain = {
-                Time: relevantQte.results.finishEffect.rewardsRange[0].time,
+                Time: finishEffect.rewardsRange[0].time,
             };
         }
     }
