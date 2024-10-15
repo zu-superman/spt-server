@@ -665,7 +665,6 @@ export class GameController {
 
                 // Look for effects
                 if (Object.keys(bodyPart.Effects ?? {}).length > 0) {
-                    // Decrement effect time value by difference between current time and time health was last updated
                     for (const effectKey in bodyPart.Effects) {
                         // remove effects below 1, .e.g. bleeds at -1
                         if (bodyPart.Effects[effectKey].Time < 1) {
@@ -677,6 +676,7 @@ export class GameController {
                             continue;
                         }
 
+                        // Decrement effect time value by difference between current time and time health was last updated
                         bodyPart.Effects[effectKey].Time -= diffSeconds;
                         if (bodyPart.Effects[effectKey].Time < 1) {
                             // effect time was sub 1, set floor it can be
@@ -685,7 +685,10 @@ export class GameController {
                     }
                 }
             }
+
+            // Update both values as they've both been updated
             pmcProfile.Health.UpdateTime = currentTimeStamp;
+            pmcProfile.Health.sptEffectCheckTime = currentTimeStamp;
         }
     }
 
@@ -906,6 +909,11 @@ export class GameController {
         const playerName = pmcProfile.Info.Nickname;
         if (playerName) {
             const bots = this.databaseService.getBots().types;
+
+            // Official names can only be 15 chars in length
+            if (playerName.length > 15) {
+                return;
+            }
 
             if (bots.bear) {
                 bots.bear.firstName.push(playerName);
