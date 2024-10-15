@@ -565,7 +565,7 @@ export class RagfairOfferHelper {
         // Used to replace tokens in sold message sent to player
         const tplVars: ISystemData = {
             soldItem: globalLocales[`${itemTpl} Name`] || itemTpl,
-            buyerNickname: this.botHelper.getPmcNicknameOfMaxLength(this.hashUtil.generate(), 50),
+            buyerNickname: this.botHelper.getPmcNicknameOfMaxLength(this.hashUtil.generate(), 15),
             itemCount: boughtAmount,
         };
 
