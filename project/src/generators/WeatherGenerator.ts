@@ -46,9 +46,10 @@ export class WeatherGenerator {
         data.time = this.getBsgFormattedInRaidTime();
         data.acceleration = this.weatherConfig.acceleration;
 
-        data.season = this.weatherConfig.overrideSeason
-            ? this.weatherConfig.overrideSeason
-            : this.seasonalEventService.getActiveWeatherSeason();
+        data.season =
+            this.weatherConfig.overrideSeason !== null
+                ? this.weatherConfig.overrideSeason
+                : this.seasonalEventService.getActiveWeatherSeason();
 
         return data;
     }
