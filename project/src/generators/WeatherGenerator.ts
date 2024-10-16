@@ -79,7 +79,7 @@ export class WeatherGenerator {
      * Return randomised Weather data with help of config/weather.json
      * @returns Randomised weather data
      */
-    public generateWeather(): IWeather {
+    public generateWeather(timestamp?: number): IWeather {
         const clouds = this.getWeightedClouds();
 
         // Force rain to off if no clouds
@@ -93,14 +93,14 @@ export class WeatherGenerator {
             rain: rain,
             rain_intensity: rain > 1 ? this.getRandomFloat("rainIntensity") : 0,
             fog: this.getWeightedFog(),
-            temp: this.getRandomFloat("temp"),
+            temp: this.getRandomFloat("temp"), // TODO - lower value at night / take into account season
             pressure: this.getRandomFloat("pressure"),
             time: "",
             date: "",
-            timestamp: 0,
+            timestamp: 0, // Added below
         };
 
-        this.setCurrentDateTime(result);
+        this.setCurrentDateTime(result, timestamp);
 
         return result;
     }
@@ -108,16 +108,17 @@ export class WeatherGenerator {
     /**
      * Set IWeather date/time/timestamp values to now
      * @param weather Object to update
+     * @param timestamp OPTIONAL, define timestamp used
      */
-    protected setCurrentDateTime(weather: IWeather): void {
-        const currentDate = this.weatherHelper.getInRaidTime();
-        const normalTime = this.getBSGFormattedTime(currentDate);
-        const formattedDate = this.timeUtil.formatDate(currentDate);
-        const datetime = `${formattedDate} ${normalTime}`;
+    protected setCurrentDateTime(weather: IWeather, timestamp?: number): void {
+        const inRaidTime = this.weatherHelper.getInRaidTime(timestamp);
+        const normalTime = this.getBSGFormattedTime(inRaidTime);
+        const formattedDate = this.timeUtil.formatDate(inRaidTime);
+        const datetimeBsgFormat = `${formattedDate} ${normalTime}`;
 
-        weather.timestamp = Math.floor(currentDate.getTime() / 1000); // matches weather.date
+        weather.timestamp = Math.floor(timestamp ? timestamp : inRaidTime.getTime() / 1000); // matches weather.date
         weather.date = formattedDate; // matches weather.timestamp
-        weather.time = datetime; // matches weather.timestamp
+        weather.time = datetimeBsgFormat; // matches weather.timestamp
     }
 
     protected getWeightedWindDirection(): WindDirection {

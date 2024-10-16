@@ -235,6 +235,7 @@ import { RagfairPriceService } from "@spt/services/RagfairPriceService";
 import { RagfairRequiredItemsService } from "@spt/services/RagfairRequiredItemsService";
 import { RagfairTaxService } from "@spt/services/RagfairTaxService";
 import { RaidTimeAdjustmentService } from "@spt/services/RaidTimeAdjustmentService";
+import { RaidWeatherService } from "@spt/services/RaidWeatherService";
 import { RepairService } from "@spt/services/RepairService";
 import { SeasonalEventService } from "@spt/services/SeasonalEventService";
 import { TraderAssortService } from "@spt/services/TraderAssortService";
@@ -801,6 +802,9 @@ export class Container {
             lifecycle: Lifecycle.Singleton,
         });
         depContainer.register<BotNameService>("BotNameService", BotNameService, {
+            lifecycle: Lifecycle.Singleton,
+        });
+        depContainer.register<RaidWeatherService>("RaidWeatherService", RaidWeatherService, {
             lifecycle: Lifecycle.Singleton,
         });
     }

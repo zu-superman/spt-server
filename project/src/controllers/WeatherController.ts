@@ -1,11 +1,12 @@
 import { WeatherGenerator } from "@spt/generators/WeatherGenerator";
 import { WeatherHelper } from "@spt/helpers/WeatherHelper";
-import { IWeatherData } from "@spt/models/eft/weather/IWeatherData";
+import { IWeather, IWeatherData } from "@spt/models/eft/weather/IWeatherData";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { IWeatherConfig } from "@spt/models/spt/config/IWeatherConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { IGetLocalWeatherResponseData } from "@spt/models/spt/weather/IGetLocalWeatherResponseData";
 import { ConfigServer } from "@spt/servers/ConfigServer";
+import { RaidWeatherService } from "@spt/services/RaidWeatherService";
 import { SeasonalEventService } from "@spt/services/SeasonalEventService";
 import { inject, injectable } from "tsyringe";
 
@@ -18,6 +19,7 @@ export class WeatherController {
         @inject("PrimaryLogger") protected logger: ILogger,
         @inject("ConfigServer") protected configServer: ConfigServer,
         @inject("SeasonalEventService") protected seasonalEventService: SeasonalEventService,
+        @inject("RaidWeatherService") protected raidWeatherService: RaidWeatherService,
         @inject("WeatherHelper") protected weatherHelper: WeatherHelper,
     ) {
         this.weatherConfig = this.configServer.getConfig(ConfigTypes.WEATHER);
@@ -41,6 +43,7 @@ export class WeatherController {
         return this.weatherHelper.getInRaidTime();
     }
 
+    /** Handle client/localGame/weather */
     public generateLocal(sesssionId: string): IGetLocalWeatherResponseData {
         const result: IGetLocalWeatherResponseData = {
             season:
@@ -50,7 +53,7 @@ export class WeatherController {
             weather: [],
         };
 
-        result.weather.push(this.weatherGenerator.generateWeather());
+        result.weather.push(...this.raidWeatherService.getUpcomingWeather());
 
         return result;
     }

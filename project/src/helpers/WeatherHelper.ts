@@ -23,12 +23,16 @@ export class WeatherHelper {
      * @param currentDate (new Date())
      * @returns Date object of current in-raid time
      */
-    public getInRaidTime(): Date {
+    public getInRaidTime(timestamp?: number): Date {
         // tarkov time = (real time * 7 % 24 hr) + 3 hour
-        const russiaOffset = this.timeUtil.getHoursAsSeconds(3) * 1000;
+        const russiaOffsetMilliseconds = this.timeUtil.getHoursAsSeconds(2) * 1000;
+        const twentyFourHoursMilliseconds = this.timeUtil.getHoursAsSeconds(24) * 1000;
+        const currentTimestampMilliSeconds = timestamp ? timestamp : new Date().getTime();
+
         return new Date(
-            (russiaOffset + new Date().getTime() * this.weatherConfig.acceleration) %
-                (this.timeUtil.getHoursAsSeconds(24) * 1000),
+            ((russiaOffsetMilliseconds + currentTimestampMilliSeconds * this.weatherConfig.acceleration) %
+                twentyFourHoursMilliseconds) +
+                this.timeUtil.getStartOfDayTimestamp(timestamp),
         );
     }
 
@@ -40,7 +44,7 @@ export class WeatherHelper {
     public isNightTime(timeVariant: DateTime) {
         const time = this.getInRaidTime();
 
-        // We get left side value, if player chose right side, set ahead 12 hrs
+        // getInRaidTime() provides left side value, if player chose right side, set ahead 12 hrs
         if (timeVariant === "PAST") {
             time.setHours(time.getHours() + 12);
         }
