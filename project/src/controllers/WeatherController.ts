@@ -41,9 +41,12 @@ export class WeatherController {
         return this.weatherHelper.getInRaidTime();
     }
 
-    public generateLocal(sesssionID: string): IGetLocalWeatherResponseData {
+    public generateLocal(sesssionId: string): IGetLocalWeatherResponseData {
         const result: IGetLocalWeatherResponseData = {
-            season: this.seasonalEventService.getActiveWeatherSeason(),
+            season:
+                this.weatherConfig.overrideSeason !== null
+                    ? this.weatherConfig.overrideSeason
+                    : this.seasonalEventService.getActiveWeatherSeason(),
             weather: [],
         };
 
