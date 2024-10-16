@@ -131,7 +131,6 @@ export interface IHealth {
     BodyParts: IBodyPartsHealth;
     UpdateTime: number;
     Immortal?: boolean;
-    sptEffectCheckTime: number;
 }
 
 export interface IBodyPartsHealth {

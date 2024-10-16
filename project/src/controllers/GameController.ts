@@ -688,7 +688,6 @@ export class GameController {
 
             // Update both values as they've both been updated
             pmcProfile.Health.UpdateTime = currentTimeStamp;
-            pmcProfile.Health.sptEffectCheckTime = currentTimeStamp;
         }
     }
 
