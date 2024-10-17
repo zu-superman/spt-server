@@ -30,7 +30,7 @@ export interface IWeatherValues {
     rain: WeatherSettings<number>;
     rainIntensity: MinMax;
     fog: WeatherSettings<string>;
-    temp: MinMax;
+    temp: Record<Season, MinMax>;
     pressure: MinMax;
     /** Length of each weather period */
     timePeriod: WeatherSettings<number>;

@@ -30,7 +30,7 @@ export class WeatherController {
         let result: IWeatherData = { acceleration: 0, time: "", date: "", weather: undefined, season: 1 }; // defaults, hydrated below
 
         result = this.weatherGenerator.calculateGameTime(result);
-        result.weather = this.weatherGenerator.generateWeather();
+        result.weather = this.weatherGenerator.generateWeather(result.season);
 
         return result;
     }
@@ -46,10 +46,7 @@ export class WeatherController {
     /** Handle client/localGame/weather */
     public generateLocal(sesssionId: string): IGetLocalWeatherResponseData {
         const result: IGetLocalWeatherResponseData = {
-            season:
-                this.weatherConfig.overrideSeason !== null
-                    ? this.weatherConfig.overrideSeason
-                    : this.seasonalEventService.getActiveWeatherSeason(),
+            season: this.seasonalEventService.getActiveWeatherSeason(),
             weather: [],
         };
 

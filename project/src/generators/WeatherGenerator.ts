@@ -3,6 +3,7 @@ import { WeatherHelper } from "@spt/helpers/WeatherHelper";
 import { WeightedRandomHelper } from "@spt/helpers/WeightedRandomHelper";
 import { IWeather, IWeatherData } from "@spt/models/eft/weather/IWeatherData";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
+import { Season } from "@spt/models/enums/Season";
 import { WindDirection } from "@spt/models/enums/WindDirection";
 import { IWeatherConfig } from "@spt/models/spt/config/IWeatherConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
@@ -46,10 +47,7 @@ export class WeatherGenerator {
         data.time = this.getBsgFormattedInRaidTime();
         data.acceleration = this.weatherConfig.acceleration;
 
-        data.season =
-            this.weatherConfig.overrideSeason !== null
-                ? this.weatherConfig.overrideSeason
-                : this.seasonalEventService.getActiveWeatherSeason();
+        data.season = this.seasonalEventService.getActiveWeatherSeason();
 
         return data;
     }
@@ -79,7 +77,7 @@ export class WeatherGenerator {
      * Return randomised Weather data with help of config/weather.json
      * @returns Randomised weather data
      */
-    public generateWeather(timestamp?: number): IWeather {
+    public generateWeather(currentSeason: Season, timestamp?: number): IWeather {
         const clouds = this.getWeightedClouds();
 
         // Force rain to off if no clouds
@@ -93,7 +91,7 @@ export class WeatherGenerator {
             rain: rain,
             rain_intensity: rain > 1 ? this.getRandomFloat("rainIntensity") : 0,
             fog: this.getWeightedFog(),
-            temp: this.getRandomFloat("temp"), // TODO - lower value at night / take into account season
+            temp: 0, // TODO - lower value at night / take into account season
             pressure: this.getRandomFloat("pressure"),
             time: "",
             date: "",
@@ -102,7 +100,15 @@ export class WeatherGenerator {
 
         this.setCurrentDateTime(result, timestamp);
 
+        result.temp = this.getRaidTemperature(currentSeason, result.time);
+
         return result;
+    }
+
+    protected getRaidTemperature(currentSeason: Season, currentTimeBsgFormatted: string): number {
+        // TODO, take into account time of day
+        const minMax = this.weatherConfig.weather.temp[currentSeason];
+        return Number.parseFloat(this.randomUtil.getFloat(minMax.min, minMax.max).toPrecision(2));
     }
 
     /**

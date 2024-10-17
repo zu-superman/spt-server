@@ -232,6 +232,10 @@ export class SeasonalEventService {
     }
 
     public getActiveWeatherSeason(): Season {
+        if (this.weatherConfig.overrideSeason !== null) {
+            return this.weatherConfig.overrideSeason;
+        }
+
         const currentDate = new Date();
         for (const seasonRange of this.weatherConfig.seasonDates) {
             // Figure out start and end dates to get range of season
