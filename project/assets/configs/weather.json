@@ -1,6 +1,7 @@
 {
     "acceleration": 7,
     "weather": {
+		"generateWeatherAmountHours": 24,
         "clouds": {
             "values": [-1.5, -1, 0, 0.5, 1, 1.5],
             "weights": [60, 50, 15, 5, 4, 3]
@@ -36,7 +37,11 @@
         "pressure": {
             "min": 760,
             "max": 764
-        }
+        },
+		"timePeriod": {
+			"values": [15, 30],
+            "weights": [1, 2]
+		}
     },
     "seasonDates": [
         {

@@ -138,4 +138,26 @@ export class TimeUtil {
             (60 - now.getMinutes()) * 60 * 1000 - now.getSeconds() * 1000 - now.getMilliseconds();
         return (now.getTime() + millisecondsUntilNextHour) / 1000;
     }
+
+    /**
+     * Returns the current days timestamp at 00:00
+     * e.g. current time: 13th march 14:22 will return 13th march 00:00
+     * @returns Timestamp
+     */
+    public getTodaysMidnightTimestamp(): number {
+        const now = new Date();
+        let hours = now.getHours();
+        const minutes = now.getMinutes();
+
+        // If minutes greater than 0, subtract 1 hour to get last full hour
+        if (minutes > 0) {
+            hours--;
+        }
+
+        // Create a new Date object with the last full hour, 0 minutes, and 0 seconds
+        const lastFullHour = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, 0, 0);
+
+        // Return above as timestamp
+        return lastFullHour.getTime();
+    }
 }
