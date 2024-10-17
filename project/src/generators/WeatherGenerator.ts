@@ -106,19 +106,21 @@ export class WeatherGenerator {
         return result;
     }
 
+    /**
+     * Choose a temprature for the raid based on time of day and current season
+     * @param currentSeason What season tarkov is currently in
+     * @param inRaidTimestamp What time is the raid running at
+     * @returns Timestamp
+     */
     protected getRaidTemperature(currentSeason: Season, inRaidTimestamp: number): number {
         // Convert timestamp to date so we can get current hour and check if its day or night
         const currentRaidTime = new Date(inRaidTimestamp);
         const seasonDayNightTempValues = this.weatherConfig.weather.temp[currentSeason];
-        const minMax = this.isNightTime(currentRaidTime.getHours())
+        const minMax = this.weatherHelper.isHourAtNightTime(currentRaidTime.getHours())
             ? seasonDayNightTempValues.night
             : seasonDayNightTempValues.day;
 
         return Number.parseFloat(this.randomUtil.getFloat(minMax.min, minMax.max).toPrecision(2));
-    }
-
-    protected isNightTime(currentHour: number) {
-        return currentHour > 21 && currentHour <= 5;
     }
 
     /**

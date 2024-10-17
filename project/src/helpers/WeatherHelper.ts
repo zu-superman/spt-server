@@ -52,4 +52,8 @@ export class WeatherHelper {
         // Night if after 9pm or before 5am
         return time.getHours() > 21 || time.getHours() < 5;
     }
+
+    public isHourAtNightTime(currentHour: number) {
+        return currentHour > 21 && currentHour <= 5;
+    }
 }
