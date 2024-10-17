@@ -1,7 +1,7 @@
 {
     "acceleration": 7,
     "weather": {
-		"generateWeatherAmountHours": 24,
+        "generateWeatherAmountHours": 24,
         "clouds": {
             "values": [-1, 0, 0.5, 1, 1.5],
             "weights": [100, 15, 5, 4, 3]
@@ -31,78 +31,102 @@
             "weights": [25, 8, 5, 5, 1]
         },
         "temp": {
-			"0": {
-				"min": 17,
-				"max": 32
-			},
+            "0": {
+                "day": {
+                    "min": 17,
+                    "max": 32
+                },
+                "night": {
+                    "min": 14,
+                    "max": 24
+                }
+            },
 			"1": {
-				"min": 7,
-				"max": 15
-			},
+                "day": {
+                    "min": 7,
+                    "max": 15
+                },
+                "night": {
+                    "min": 2,
+                    "max": 12
+                }
+            },
 			"2": {
-				"min": -10,
-				"max": 5
-			},
+                "day": {
+                    "min": -10,
+                    "max": 5
+                },
+                "night": {
+                    "min": -20,
+                    "max": 0
+                }
+            },
 			"3": {
-				"min": 1,
-				"max": 15
-			},
+                "day": {
+                    "min": 1,
+                    "max": 15
+                },
+                "night": {
+                    "min": -10,
+                    "max": 5
+                }
+            },
 			"4": {
-				"min": 0,
-				"max": 24
-			}
+                "day": {
+                    "min": 0,
+                    "max": 24
+                },
+                "night": {
+                    "min": -10,
+                    "max": 8
+                }
+            }
         },
         "pressure": {
             "min": 760,
             "max": 780
         },
-		"timePeriod": {
-			"values": [15, 30],
+        "timePeriod": {
+            "values": [15, 30],
             "weights": [1, 2]
-		}
+        }
     },
-    "seasonDates": [
-        {
+    "seasonDates": [{
             "seasonType": 0,
             "name": "SUMMER",
             "startDay": "2",
             "startMonth": "6",
             "endDay": "15",
             "endMonth": "10"
-        },
-        {
+        }, {
             "seasonType": 1,
             "name": "AUTUMN",
             "startDay": "15",
             "startMonth": "10",
             "endDay": "1",
             "endMonth": "11"
-        },
-        {
+        }, {
             "seasonType": 2,
             "name": "WINTER_END",
             "startDay": "1",
             "startMonth": "11",
             "endDay": "31",
             "endMonth": "12"
-        },
-        {
+        }, {
             "seasonType": 2,
             "name": "WINTER_START",
             "startDay": "1",
             "startMonth": "1",
             "endDay": "24",
             "endMonth": "3"
-        },
-        {
+        }, {
             "seasonType": 3,
             "name": "SPRING",
             "startDay": "25",
             "startMonth": "3",
             "endDay": "2",
             "endMonth": "6"
-        },
-        {
+        }, {
             "seasonType": 4,
             "name": "STORM",
             "startDay": "24",

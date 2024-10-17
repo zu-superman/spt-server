@@ -96,19 +96,29 @@ export class WeatherGenerator {
             time: "",
             date: "",
             timestamp: 0, // Added below
+            sptInRaidTimestamp: 0, // Added below
         };
 
         this.setCurrentDateTime(result, timestamp);
 
-        result.temp = this.getRaidTemperature(currentSeason, result.time);
+        result.temp = this.getRaidTemperature(currentSeason, result.sptInRaidTimestamp);
 
         return result;
     }
 
-    protected getRaidTemperature(currentSeason: Season, currentTimeBsgFormatted: string): number {
-        // TODO, take into account time of day
-        const minMax = this.weatherConfig.weather.temp[currentSeason];
+    protected getRaidTemperature(currentSeason: Season, inRaidTimestamp: number): number {
+        // Convert timestamp to date so we can get current hour and check if its day or night
+        const currentRaidTime = new Date(inRaidTimestamp);
+        const seasonDayNightTempValues = this.weatherConfig.weather.temp[currentSeason];
+        const minMax = this.isNightTime(currentRaidTime.getHours())
+            ? seasonDayNightTempValues.night
+            : seasonDayNightTempValues.day;
+
         return Number.parseFloat(this.randomUtil.getFloat(minMax.min, minMax.max).toPrecision(2));
+    }
+
+    protected isNightTime(currentHour: number) {
+        return currentHour > 21 && currentHour <= 5;
     }
 
     /**
@@ -125,6 +135,7 @@ export class WeatherGenerator {
         weather.timestamp = Math.floor(timestamp ? timestamp : inRaidTime.getTime() / 1000); // matches weather.date
         weather.date = formattedDate; // matches weather.timestamp
         weather.time = datetimeBsgFormat; // matches weather.timestamp
+        weather.sptInRaidTimestamp = inRaidTime.getTime();
     }
 
     protected getWeightedWindDirection(): WindDirection {
