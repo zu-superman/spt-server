@@ -19,6 +19,7 @@ import {
 import { IStartLocalRaidRequestData } from "@spt/models/eft/match/IStartLocalRaidRequestData";
 import { IStartLocalRaidResponseData } from "@spt/models/eft/match/IStartLocalRaidResponseData";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
+import { ExitStatus } from "@spt/models/enums/ExitStatis";
 import { MessageType } from "@spt/models/enums/MessageType";
 import { QuestStatus } from "@spt/models/enums/QuestStatus";
 import { Traders } from "@spt/models/enums/Traders";
@@ -566,13 +567,17 @@ export class LocationLifecycleService {
 
         this.applyTraderStandingAdjustments(scavProfile.TradersInfo, request.results.profile.TradersInfo);
 
-        // Clamp fence standing
-        const fenceId = Traders.FENCE;
-        const currentFenceStanding = request.results.profile.TradersInfo[fenceId].standing;
-        pmcProfile.TradersInfo[fenceId].standing = Math.min(Math.max(currentFenceStanding, -7), 15); // Ensure it stays between -7 and 15
+        // Clamp fence standing within -7 to 15 range
+        const currentFenceStanding = request.results.profile.TradersInfo[Traders.FENCE].standing;
+        scavProfile.TradersInfo[Traders.FENCE].standing = Math.min(Math.max(currentFenceStanding, -7), 15);
 
-        // Copy fence values to PMC
-        pmcProfile.TradersInfo[fenceId] = scavProfile.TradersInfo[fenceId];
+        // Successful extract as scav, give some rep
+        if (request.results.ExitStatus === ExitStatus.SURVIVED) {
+            scavProfile.TradersInfo[Traders.FENCE].standing += this.inRaidConfig.scavExtractStandingGain;
+        }
+
+        // Copy scav fence values to PMC profile
+        pmcProfile.TradersInfo[Traders.FENCE] = scavProfile.TradersInfo[Traders.FENCE];
 
         // Must occur after encyclopedia updated
         this.mergePmcAndScavEncyclopedias(scavProfile, pmcProfile);
