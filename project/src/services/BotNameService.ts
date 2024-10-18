@@ -1,4 +1,6 @@
+import { BotHelper } from "@spt/helpers/BotHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
+import { IBotType } from "@spt/models/eft/common/tables/IBotType";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { BotGenerationDetails } from "@spt/models/spt/bots/BotGenerationDetails";
 import { IBotConfig } from "@spt/models/spt/config/IBotConfig";
@@ -21,6 +23,7 @@ export class BotNameService {
         @inject("PrimaryLogger") protected logger: ILogger,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
+        @inject("BotHelper") protected botHelper: BotHelper,
         @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("ConfigServer") protected configServer: ConfigServer,
@@ -41,8 +44,7 @@ export class BotNameService {
 
     /**
      * Create a unique bot nickname
-     * @param firstNames FIRST names to choose from
-     * @param lastNames OPTIONAL: Names to choose from
+     * @param botJsonTemplate bot JSON data from db
      * @param botGenerationDetails
      * @param botRole role of bot e.g. assault
      * @param uniqueRoles Lowercase roles to always make unique
@@ -50,22 +52,24 @@ export class BotNameService {
      * @returns Nickname for bot
      */
     public generateUniqueBotNickname(
-        firstNames: string[],
-        lastNames: string[],
+        botJsonTemplate: IBotType,
         botGenerationDetails: BotGenerationDetails,
         botRole: string,
         uniqueRoles?: string[],
-        sessionId?: string,
     ): string {
+        const isPmc = botGenerationDetails.isPmc;
+        const isPlayerScav = botGenerationDetails.isPlayerScav;
+        const simulateScavName = isPlayerScav ? false : this.shouldSimulatePlayerScavName(botRole);
+        const showTypeInNickname = this.botConfig.showTypeInNickname && !isPlayerScav;
+        const roleShouldBeUnique = uniqueRoles.includes(botRole.toLowerCase());
+
         let isUnique = true;
         let attempts = 0;
-
         while (attempts <= 5) {
-            const isPlayerScav = botGenerationDetails.isPlayerScav;
-            const simulateScavName = isPlayerScav ? false : this.shouldSimulatePlayerScavName(botRole);
-
-            // Get basic name with no whitespace trimmed off sides
-            let name = `${this.randomUtil.getArrayValue(firstNames)} ${this.randomUtil.getArrayValue(lastNames) || ""}`;
+            // Get bot name with leading/trailing whitespace removed
+            let name = isPmc // Explicit handling of PMCs, all other bots will get "first_name last_name"
+                ? this.botHelper.getPmcNicknameOfMaxLength(this.botConfig.botNameLengthLimit, botGenerationDetails.side)
+                : `${this.randomUtil.getArrayValue(botJsonTemplate.firstName)} ${this.randomUtil.getArrayValue(botJsonTemplate.lastName) || ""}`;
             name = name.trim();
 
             // Simulate bot looking like a player scav with the PMC name in brackets.
@@ -75,7 +79,7 @@ export class BotNameService {
             }
 
             // Config is set to add role to end of bot name
-            if (this.botConfig.showTypeInNickname && !isPlayerScav) {
+            if (showTypeInNickname) {
                 name += ` ${botRole}`;
             }
 
@@ -86,7 +90,7 @@ export class BotNameService {
             }
 
             // Is this a role that must be unique
-            if (uniqueRoles.includes(botRole.toLowerCase())) {
+            if (roleShouldBeUnique) {
                 // Check name in cache
                 isUnique = !this.usedNameCache.has(name);
                 if (!isUnique) {

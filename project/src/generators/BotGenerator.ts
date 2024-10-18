@@ -152,7 +152,7 @@ export class BotGenerator {
         botJsonTemplate: IBotType,
         botGenerationDetails: BotGenerationDetails,
     ): IBotBase {
-        const botRole = botGenerationDetails.role.toLowerCase();
+        const botRoleLowercase = botGenerationDetails.role.toLowerCase();
         const botLevel = this.botLevelGenerator.generateBotLevel(
             botJsonTemplate.experience.level,
             botGenerationDetails,
@@ -169,12 +169,10 @@ export class BotGenerator {
         }
 
         bot.Info.Nickname = this.botNameService.generateUniqueBotNickname(
-            botJsonTemplate.firstName,
-            botJsonTemplate.lastName,
+            botJsonTemplate,
             botGenerationDetails,
-            botRole,
-            ["assault", "pmcusec", "pmcbear"],
-            sessionId,
+            botRoleLowercase,
+            this.botConfig.botRolesThatMustHaveUniqueName,
         );
 
         if (!this.seasonalEventService.christmasEventEnabled()) {
@@ -213,18 +211,19 @@ export class BotGenerator {
             }
         }
 
+        // Add drip
         this.setBotAppearance(bot, botJsonTemplate.appearance, botGenerationDetails);
 
         bot.Inventory = this.botInventoryGenerator.generateInventory(
             sessionId,
             botJsonTemplate,
-            botRole,
+            botRoleLowercase,
             botGenerationDetails.isPmc,
             botLevel.level,
             bot.Info.GameVersion,
         );
 
-        if (this.botConfig.botRolesWithDogTags.includes(botRole)) {
+        if (this.botConfig.botRolesWithDogTags.includes(botRoleLowercase)) {
             this.addDogtagToBot(bot);
         }
 

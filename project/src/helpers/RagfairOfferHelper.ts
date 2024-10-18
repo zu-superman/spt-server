@@ -21,6 +21,7 @@ import { MemberCategory } from "@spt/models/enums/MemberCategory";
 import { MessageType } from "@spt/models/enums/MessageType";
 import { RagfairSort } from "@spt/models/enums/RagfairSort";
 import { Traders } from "@spt/models/enums/Traders";
+import { IBotConfig } from "@spt/models/spt/config/IBotConfig";
 import { IQuestConfig } from "@spt/models/spt/config/IQuestConfig";
 import { IRagfairConfig, ITieredFlea } from "@spt/models/spt/config/IRagfairConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
@@ -42,6 +43,7 @@ export class RagfairOfferHelper {
     protected static goodSoldTemplate = "5bdabfb886f7743e152e867e 0"; // Your {soldItem} {itemCount} items were bought by {buyerNickname}.
     protected ragfairConfig: IRagfairConfig;
     protected questConfig: IQuestConfig;
+    protected botConfig: IBotConfig;
 
     constructor(
         @inject("PrimaryLogger") protected logger: ILogger,
@@ -69,6 +71,7 @@ export class RagfairOfferHelper {
     ) {
         this.ragfairConfig = this.configServer.getConfig(ConfigTypes.RAGFAIR);
         this.questConfig = this.configServer.getConfig(ConfigTypes.QUEST);
+        this.botConfig = this.configServer.getConfig(ConfigTypes.BOT);
     }
 
     /**
@@ -565,7 +568,7 @@ export class RagfairOfferHelper {
         // Used to replace tokens in sold message sent to player
         const tplVars: ISystemData = {
             soldItem: globalLocales[`${itemTpl} Name`] || itemTpl,
-            buyerNickname: this.botHelper.getPmcNicknameOfMaxLength(this.hashUtil.generate(), 15),
+            buyerNickname: this.botHelper.getPmcNicknameOfMaxLength(this.botConfig.botNameLengthLimit),
             itemCount: boughtAmount,
         };
 

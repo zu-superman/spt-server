@@ -910,7 +910,7 @@ export class GameController {
             const bots = this.databaseService.getBots().types;
 
             // Official names can only be 15 chars in length
-            if (playerName.length > 15) {
+            if (playerName.length > this.botConfig.botNameLengthLimit) {
                 return;
             }
 

@@ -7,6 +7,7 @@ import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
 import { DatabaseService } from "@spt/services/DatabaseService";
 import { RandomUtil } from "@spt/utils/RandomUtil";
+import { max } from "date-fns";
 import { inject, injectable } from "tsyringe";
 
 @injectable()
@@ -168,10 +169,24 @@ export class BotHelper {
         return this.randomUtil.getChance100(this.pmcConfig.isUsec) ? "Usec" : "Bear";
     }
 
-    public getPmcNicknameOfMaxLength(userId: string, maxLength: number): string {
-        // recurivse if name is longer than max characters allowed (15 characters)
-        const randomType = this.randomUtil.getInt(0, 1) === 0 ? "usec" : "bear";
-        const name = this.randomUtil.getStringArrayValue(this.databaseService.getBots().types[randomType].firstName);
-        return name.length > maxLength ? this.getPmcNicknameOfMaxLength(userId, maxLength) : name;
+    /**
+     * Get a name from a PMC that fits the desired length
+     * @param maxLength Max length of name, inclusive
+     * @param side OPTIONAL - what side PMC to get name from (usec/bear)
+     * @returns name of PMC
+     */
+    public getPmcNicknameOfMaxLength(maxLength: number, side?: string): string {
+        const randomType = side ? side : this.randomUtil.getInt(0, 1) === 0 ? "usec" : "bear";
+        const allNames = this.databaseService.getBots().types[randomType].firstName;
+        const filteredNames = allNames.filter((name) => name.length <= maxLength);
+        if (filteredNames.length === 0) {
+            this.logger.warning(
+                `Unable to filter: ${randomType} PMC names to only those under: ${maxLength}, none found that match that criteria, selecting from entire name pool instead`,
+            );
+
+            return this.randomUtil.getStringArrayValue(allNames);
+        }
+
+        return this.randomUtil.getStringArrayValue(filteredNames);
     }
 }

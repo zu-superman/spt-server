@@ -14,6 +14,7 @@ import { BaseClasses } from "@spt/models/enums/BaseClasses";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { MemberCategory } from "@spt/models/enums/MemberCategory";
 import { Money } from "@spt/models/enums/Money";
+import { IBotConfig } from "@spt/models/spt/config/IBotConfig";
 import {
     Condition,
     Dynamic,
@@ -37,6 +38,7 @@ import { inject, injectable } from "tsyringe";
 @injectable()
 export class RagfairOfferGenerator {
     protected ragfairConfig: IRagfairConfig;
+    protected botConfig: IBotConfig;
     protected allowedFleaPriceItemsForBarter: { tpl: string; price: number }[];
 
     /** Internal counter to ensure each offer created has a unique value for its intId property */
@@ -65,6 +67,7 @@ export class RagfairOfferGenerator {
         @inject("PrimaryCloner") protected cloner: ICloner,
     ) {
         this.ragfairConfig = this.configServer.getConfig(ConfigTypes.RAGFAIR);
+        this.botConfig = this.configServer.getConfig(ConfigTypes.BOT);
     }
 
     /**
@@ -192,11 +195,11 @@ export class RagfairOfferGenerator {
             };
         }
 
-        // Regular old fake pmc offer
+        // Fake pmc offer
         return {
             id: userID,
             memberType: MemberCategory.DEFAULT,
-            nickname: this.botHelper.getPmcNicknameOfMaxLength(userID, 50),
+            nickname: this.botHelper.getPmcNicknameOfMaxLength(this.botConfig.botNameLengthLimit),
             rating: this.randomUtil.getFloat(
                 this.ragfairConfig.dynamic.rating.min,
                 this.ragfairConfig.dynamic.rating.max,

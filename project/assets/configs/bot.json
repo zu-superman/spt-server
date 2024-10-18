@@ -2835,5 +2835,7 @@
                 "max": 100
             }
         }
-    }
+    },
+	"botNameLengthLimit": 19,
+	"botRolesThatMustHaveUniqueName": ["assault", "pmcusec", "pmcbear"]
 }
