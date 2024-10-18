@@ -177,7 +177,7 @@ export class BotHelper {
      */
     public getPmcNicknameOfMaxLength(maxLength: number, side?: string): string {
         const randomType = side ? side : this.randomUtil.getInt(0, 1) === 0 ? "usec" : "bear";
-        const allNames = this.databaseService.getBots().types[randomType].firstName;
+        const allNames = this.databaseService.getBots().types[randomType.toLowerCase()].firstName;
         const filteredNames = allNames.filter((name) => name.length <= maxLength);
         if (filteredNames.length === 0) {
             this.logger.warning(
