@@ -75,6 +75,8 @@ export class WeatherGenerator {
 
     /**
      * Return randomised Weather data with help of config/weather.json
+     * @param currentSeason the currently active season
+     * @param timestamp OPTIONAL what timestamp to generate the weather data at, defaults to now when not supplied
      * @returns Randomised weather data
      */
     public generateWeather(currentSeason: Season, timestamp?: number): IWeather {
