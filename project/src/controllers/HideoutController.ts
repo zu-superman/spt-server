@@ -8,7 +8,6 @@ import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { IBotHideoutArea, IProduct, IScavCase, ITaskConditionCounter } from "@spt/models/eft/common/tables/IBotBase";
 import { IItem } from "@spt/models/eft/common/tables/IItem";
-import { HideoutUpgradeCompleteRequestData } from "@spt/models/eft/hideout/HideoutUpgradeCompleteRequestData";
 import { IHandleQTEEventRequestData } from "@spt/models/eft/hideout/IHandleQTEEventRequestData";
 import { IHideoutArea, Stage } from "@spt/models/eft/hideout/IHideoutArea";
 import { IHideoutCancelProductionRequestData } from "@spt/models/eft/hideout/IHideoutCancelProductionRequestData";
@@ -23,6 +22,7 @@ import { IHideoutSingleProductionStartRequestData } from "@spt/models/eft/hideou
 import { IHideoutTakeItemOutRequestData } from "@spt/models/eft/hideout/IHideoutTakeItemOutRequestData";
 import { IHideoutTakeProductionRequestData } from "@spt/models/eft/hideout/IHideoutTakeProductionRequestData";
 import { IHideoutToggleAreaRequestData } from "@spt/models/eft/hideout/IHideoutToggleAreaRequestData";
+import { IHideoutUpgradeCompleteRequestData } from "@spt/models/eft/hideout/IHideoutUpgradeCompleteRequestData";
 import { IHideoutUpgradeRequestData } from "@spt/models/eft/hideout/IHideoutUpgradeRequestData";
 import { IQteData, IQteResult } from "@spt/models/eft/hideout/IQteData";
 import { IRecordShootingRangePoints } from "@spt/models/eft/hideout/IRecordShootingRangePoints";
@@ -171,7 +171,7 @@ export class HideoutController {
      */
     public upgradeComplete(
         pmcData: IPmcData,
-        request: HideoutUpgradeCompleteRequestData,
+        request: IHideoutUpgradeCompleteRequestData,
         sessionID: string,
         output: IItemEventRouterResponse,
     ): void {

@@ -12,8 +12,8 @@ import { IItem } from "@spt/models/eft/common/tables/IItem";
 import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { EquipmentSlots } from "@spt/models/enums/EquipmentSlots";
-import { GenerateWeaponResult } from "@spt/models/spt/bots/GenerateWeaponResult";
 import { IGenerateWeaponRequest } from "@spt/models/spt/bots/IGenerateWeaponRequest";
+import { IGenerateWeaponResult } from "@spt/models/spt/bots/IGenerateWeaponResult";
 import { IBotConfig } from "@spt/models/spt/config/IBotConfig";
 import { IPmcConfig } from "@spt/models/spt/config/IPmcConfig";
 import { IRepairConfig } from "@spt/models/spt/config/IRepairConfig";
@@ -77,7 +77,7 @@ export class BotWeaponGenerator {
         botRole: string,
         isPmc: boolean,
         botLevel: number,
-    ): GenerateWeaponResult {
+    ): IGenerateWeaponResult {
         const weaponTpl = this.pickWeightedWeaponTplFromPool(equipmentSlot, botTemplateInventory);
         return this.generateWeaponByTpl(
             sessionId,
@@ -124,7 +124,7 @@ export class BotWeaponGenerator {
         botRole: string,
         isPmc: boolean,
         botLevel: number,
-    ): GenerateWeaponResult {
+    ): IGenerateWeaponResult {
         const modPool = botTemplateInventory.mods;
         const weaponItemTemplate = this.itemHelper.getItem(weaponTpl)[1];
 
@@ -380,7 +380,7 @@ export class BotWeaponGenerator {
      * @param botRole The bot type we're getting generating extra mags for
      */
     public addExtraMagazinesToInventory(
-        generatedWeaponResult: GenerateWeaponResult,
+        generatedWeaponResult: IGenerateWeaponResult,
         magWeights: IGenerationData,
         inventory: PmcInventory,
         botRole: string,
@@ -438,7 +438,7 @@ export class BotWeaponGenerator {
      */
     protected addUbglGrenadesToBotInventory(
         weaponMods: IItem[],
-        generatedWeaponResult: GenerateWeaponResult,
+        generatedWeaponResult: IGenerateWeaponResult,
         inventory: PmcInventory,
     ): void {
         // Find ubgl mod item + get details of it from db
