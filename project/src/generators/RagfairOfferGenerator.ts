@@ -19,8 +19,10 @@ import {
     Condition,
     Dynamic,
     IArmorPlateBlacklistSettings,
+    IBarterDetails,
     IRagfairConfig,
 } from "@spt/models/spt/config/IRagfairConfig";
+import { ITplWithFleaPrice } from "@spt/models/spt/ragfair/ITplWithFleaPrice";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
 import { SaveServer } from "@spt/servers/SaveServer";
@@ -502,7 +504,7 @@ export class RagfairOfferGenerator {
         } else if (isBarterOffer) {
             // Apply randomised properties
             this.randomiseOfferItemUpdProperties(randomUserId, itemWithChildren, itemDetails[1]);
-            barterScheme = this.createBarterBarterScheme(itemWithChildren);
+            barterScheme = this.createBarterBarterScheme(itemWithChildren, this.ragfairConfig.dynamic.barter);
         } else {
             // Apply randomised properties
             this.randomiseOfferItemUpdProperties(randomUserId, itemWithChildren, itemDetails[1]);
@@ -826,50 +828,49 @@ export class RagfairOfferGenerator {
     /**
      * Create a barter-based barter scheme, if not possible, fall back to making barter scheme currency based
      * @param offerItems Items for sale in offer
+     * @param barterConfig Barter config from ragfairConfig.dynamic.barter
      * @returns Barter scheme
      */
-    protected createBarterBarterScheme(offerItems: IItem[]): IBarterScheme[] {
-        // get flea price of item being sold
-        const priceOfItemOffer = this.ragfairPriceService.getDynamicOfferPriceForOffer(
+    protected createBarterBarterScheme(offerItems: IItem[], barterConfig: IBarterDetails): IBarterScheme[] {
+        // Get flea price of item being sold
+        const priceOfOfferItem = this.ragfairPriceService.getDynamicOfferPriceForOffer(
             offerItems,
             Money.ROUBLES,
             false,
         );
 
         // Dont make items under a designated rouble value into barter offers
-        if (priceOfItemOffer < this.ragfairConfig.dynamic.barter.minRoubleCostToBecomeBarter) {
+        if (priceOfOfferItem < barterConfig.minRoubleCostToBecomeBarter) {
             return this.createCurrencyBarterScheme(offerItems, false);
         }
 
         // Get a randomised number of barter items to list offer for
-        const barterItemCount = this.randomUtil.getInt(
-            this.ragfairConfig.dynamic.barter.itemCountMin,
-            this.ragfairConfig.dynamic.barter.itemCountMax,
-        );
+        const barterItemCount = this.randomUtil.getInt(barterConfig.itemCountMin, barterConfig.itemCountMax);
 
         // Get desired cost of individual item offer will be listed for e.g. offer = 15k, item count = 3, desired item cost = 5k
-        const desiredItemCost = Math.round(priceOfItemOffer / barterItemCount);
+        const desiredItemCostRouble = Math.round(priceOfOfferItem / barterItemCount);
 
-        // Amount to go above/below when looking for an item (Wiggle cost of item a little)
-        const offerCostVariance = (desiredItemCost * this.ragfairConfig.dynamic.barter.priceRangeVariancePercent) / 100;
+        // Rouble amount to go above/below when looking for an item (Wiggle cost of item a little)
+        const offerCostVarianceRoubles = (desiredItemCostRouble * barterConfig.priceRangeVariancePercent) / 100;
 
-        const fleaPrices = this.getFleaPricesAsArray();
+        // Dict of items and their flea price (cached on first use)
+        const itemFleaPrices = this.getFleaPricesAsArray();
 
         // Filter possible barters to items that match the price range + not itself
-        const filtered = fleaPrices.filter(
-            (x) =>
-                x.price >= desiredItemCost - offerCostVariance &&
-                x.price <= desiredItemCost + offerCostVariance &&
-                x.tpl !== offerItems[0]._tpl,
+        const itemsInsidePriceBounds = itemFleaPrices.filter(
+            (itemAndPrice) =>
+                itemAndPrice.price >= desiredItemCostRouble - offerCostVarianceRoubles &&
+                itemAndPrice.price <= desiredItemCostRouble + offerCostVarianceRoubles &&
+                itemAndPrice.tpl !== offerItems[0]._tpl, // Don't allow the item being sold to be chosen
         );
 
         // No items on flea have a matching price, fall back to currency
-        if (filtered.length === 0) {
+        if (itemsInsidePriceBounds.length === 0) {
             return this.createCurrencyBarterScheme(offerItems, false);
         }
 
         // Choose random item from price-filtered flea items
-        const randomItem = this.randomUtil.getArrayValue(filtered);
+        const randomItem = this.randomUtil.getArrayValue(itemsInsidePriceBounds);
 
         return [{ count: barterItemCount, _tpl: randomItem.tpl }];
     }
@@ -878,7 +879,7 @@ export class RagfairOfferGenerator {
      * Get an array of flea prices + item tpl, cached in generator class inside `allowedFleaPriceItemsForBarter`
      * @returns array with tpl/price values
      */
-    protected getFleaPricesAsArray(): { tpl: string; price: number }[] {
+    protected getFleaPricesAsArray(): ITplWithFleaPrice[] {
         // Generate if needed
         if (!this.allowedFleaPriceItemsForBarter) {
             const fleaPrices = this.databaseService.getPrices();
