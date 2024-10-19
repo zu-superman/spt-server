@@ -193,8 +193,8 @@
                 "max": 0
             },
             "itemCount": {
-                "min": 17,
-                "max": 35
+                "min": 25,
+                "max": 45
             },
             "weaponCrateCount": {
                 "min": 0,
