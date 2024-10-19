@@ -2,12 +2,13 @@ import { InventoryHelper } from "@spt/helpers/InventoryHelper";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { PresetHelper } from "@spt/helpers/PresetHelper";
 import { WeightedRandomHelper } from "@spt/helpers/WeightedRandomHelper";
+import { MinMax } from "@spt/models/common/MinMax";
 import { IPreset } from "@spt/models/eft/common/IGlobals";
 import { IItem } from "@spt/models/eft/common/tables/IItem";
 import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
 import { ISealedAirdropContainerSettings, RewardDetails } from "@spt/models/spt/config/IInventoryConfig";
-import { LootRequest } from "@spt/models/spt/services/LootRequest";
+import { ILootRequest } from "@spt/models/spt/services/ILootRequest";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { DatabaseService } from "@spt/services/DatabaseService";
 import { ItemFilterService } from "@spt/services/ItemFilterService";
@@ -40,7 +41,7 @@ export class LootGenerator {
      * @param options parameters to adjust how loot is generated
      * @returns An array of loot items
      */
-    public createRandomLoot(options: LootRequest): IItem[] {
+    public createRandomLoot(options: ILootRequest): IItem[] {
         const result: IItem[] = [];
         const itemTypeCounts = this.initItemLimitCounter(options.itemLimits);
 
@@ -74,7 +75,7 @@ export class LootGenerator {
         const { itemPool, blacklist } = this.getItemRewardPool(
             options.itemBlacklist,
             options.itemTypeWhitelist,
-            options.useRewarditemBlacklist,
+            options.useRewardItemBlacklist,
             options.allowBossItems,
         );
 
@@ -153,13 +154,19 @@ export class LootGenerator {
         return result;
     }
 
-    public createForcedLoot(airdropConfig: LootRequest) {
+    /**
+     * Generate An array of items
+     * TODO - handle weapon presets/ammo packs
+     * @param forcedLootDict Dictionary of item tpls with minmax values
+     * @returns Array of IItem
+     */
+    public createForcedLoot(forcedLootDict: Record<string, MinMax>): IItem[] {
         const result: IItem[] = [];
 
-        const forcedItems = Object.keys(airdropConfig.forcedLoot);
+        const forcedItems = Object.keys(forcedLootDict);
 
         for (const tpl of forcedItems) {
-            const details = airdropConfig.forcedLoot[tpl];
+            const details = forcedLootDict[tpl];
             const randomisedItemCount = this.randomUtil.getInt(details.min, details.max);
 
             // Add forced loot item to result
@@ -179,6 +186,14 @@ export class LootGenerator {
         return result;
     }
 
+    /**
+     * Get pool of items from item db that fit passed in param criteria
+     * @param itemTplBlacklist Prevent these items
+     * @param itemTypeWhitelist Only allow these items
+     * @param useRewardItemBlacklist Should item.json reward item config be used
+     * @param allowBossItems Should boss items be allowed in result
+     * @returns results of filtering + blacklist used
+     */
     protected getItemRewardPool(
         itemTplBlacklist: string[],
         itemTypeWhitelist: string[],
@@ -216,7 +231,7 @@ export class LootGenerator {
      * @param options Loot request options - armor level etc
      * @returns True if item has desired armor level
      */
-    protected isArmorOfDesiredProtectionLevel(armor: IPreset, options: LootRequest): boolean {
+    protected isArmorOfDesiredProtectionLevel(armor: IPreset, options: ILootRequest): boolean {
         const relevantSlots = ["front_plate", "helmet_top", "soft_armor_front"];
         for (const slotId of relevantSlots) {
             const armorItem = armor._items.find((item) => item?.slotId?.toLowerCase() === slotId);
@@ -258,7 +273,7 @@ export class LootGenerator {
     protected findAndAddRandomItemToLoot(
         items: [string, ITemplateItem][],
         itemTypeCounts: Record<string, { current: number; max: number }>,
-        options: LootRequest,
+        options: ILootRequest,
         result: IItem[],
     ): boolean {
         const randomItem = this.randomUtil.getArrayValue(items)[1];
@@ -305,7 +320,7 @@ export class LootGenerator {
      * @param options loot options
      * @returns stack count
      */
-    protected getRandomisedStackCount(item: ITemplateItem, options: LootRequest): number {
+    protected getRandomisedStackCount(item: ITemplateItem, options: ILootRequest): number {
         let min = item._props.StackMinRandom;
         let max = item._props.StackMaxSize;
 

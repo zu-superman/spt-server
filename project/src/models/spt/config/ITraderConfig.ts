@@ -1,6 +1,6 @@
 import { MinMax } from "@spt/models/common/MinMax";
 import { IBaseConfig } from "@spt/models/spt/config/IBaseConfig";
-import { LootRequest } from "@spt/models/spt/services/LootRequest";
+import { ILootRequest } from "@spt/models/spt/services/ILootRequest";
 
 export interface ITraderConfig extends IBaseConfig {
     kind: "spt-trader";
@@ -57,7 +57,7 @@ export interface IItemDurabilityCurrentMax {
     max: MinMax;
 }
 
-export interface CoopExtractReward extends LootRequest {
+export interface CoopExtractReward extends ILootRequest {
     sendGift: boolean;
     messageLocaleIds: string[];
     giftExpiryHours: number;

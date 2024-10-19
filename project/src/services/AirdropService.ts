@@ -8,7 +8,7 @@ import { AirdropTypeEnum, SptAirdropTypeEnum } from "@spt/models/enums/AirdropTy
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { ItemTpl } from "@spt/models/enums/ItemTpl";
 import { IAirdropConfig, IAirdropLoot } from "@spt/models/spt/config/IAirdropConfig";
-import { IAirdropLootRequest, LootRequest } from "@spt/models/spt/services/LootRequest";
+import { IAirdropLootRequest, ILootRequest } from "@spt/models/spt/services/ILootRequest";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
 import { DatabaseService } from "@spt/services/DatabaseService";
@@ -54,18 +54,19 @@ export class AirdropService {
      * Handle client/location/getAirdropLoot
      * Get loot for an airdrop container
      * Generates it randomly based on config/airdrop.json values
+     * @param forcedAirdropType OPTIONAL - Desired airdrop type, randomised when not provided
      * @returns Array of LootItem objects
      */
     public generateAirdropLoot(forcedAirdropType = null): IGetAirdropLootResponse {
         const airdropType = forcedAirdropType ? forcedAirdropType : this.chooseAirdropType();
-        this.logger.debug(`Chose ${airdropType} for airdrop loot`);
+        this.logger.debug(`Chose: ${airdropType} for airdrop loot`);
 
         // Common/weapon/etc
         const airdropConfig = this.getAirdropLootConfigByType(airdropType);
 
         // generate loot to put into airdrop crate
         const crateLoot = airdropConfig.useForcedLoot
-            ? this.lootGenerator.createForcedLoot(airdropConfig)
+            ? this.lootGenerator.createForcedLoot(airdropConfig.forcedLoot)
             : this.lootGenerator.createRandomLoot(airdropConfig);
 
         // Create airdrop crate and add to result in first spot
