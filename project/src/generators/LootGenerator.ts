@@ -7,7 +7,7 @@ import { IPreset } from "@spt/models/eft/common/IGlobals";
 import { IItem } from "@spt/models/eft/common/tables/IItem";
 import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
-import { ISealedAirdropContainerSettings, RewardDetails } from "@spt/models/spt/config/IInventoryConfig";
+import { IRewardDetails, ISealedAirdropContainerSettings } from "@spt/models/spt/config/IInventoryConfig";
 import { ILootRequest } from "@spt/models/spt/services/ILootRequest";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { DatabaseService } from "@spt/services/DatabaseService";
@@ -583,7 +583,7 @@ export class LootGenerator {
      * @param rewardContainerDetails
      * @returns Array of item with children arrays
      */
-    public getRandomLootContainerLoot(rewardContainerDetails: RewardDetails): IItem[][] {
+    public getRandomLootContainerLoot(rewardContainerDetails: IRewardDetails): IItem[][] {
         const itemsToReturn: IItem[][] = [];
 
         // Get random items and add to newItemRequest
@@ -615,7 +615,7 @@ export class LootGenerator {
      * @param rewardContainerDetails
      * @returns Single tpl
      */
-    protected pickRewardItem(rewardContainerDetails: RewardDetails): string {
+    protected pickRewardItem(rewardContainerDetails: IRewardDetails): string {
         if (rewardContainerDetails.rewardTplPool) {
             return this.weightedRandomHelper.getWeightedValue<string>(rewardContainerDetails.rewardTplPool);
         }

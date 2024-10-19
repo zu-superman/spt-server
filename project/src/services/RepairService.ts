@@ -8,15 +8,15 @@ import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { IItem } from "@spt/models/eft/common/tables/IItem";
 import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
 import { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRouterResponse";
-import { RepairKitsInfo } from "@spt/models/eft/repair/IRepairActionDataRequest";
-import { RepairItem } from "@spt/models/eft/repair/ITraderRepairActionDataRequest";
+import { IRepairKitsInfo } from "@spt/models/eft/repair/IRepairActionDataRequest";
+import { IRepairItem } from "@spt/models/eft/repair/ITraderRepairActionDataRequest";
 import { IProcessBuyTradeRequestData } from "@spt/models/eft/trade/IProcessBuyTradeRequestData";
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
 import { BonusType } from "@spt/models/enums/BonusType";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { Money } from "@spt/models/enums/Money";
 import { SkillTypes } from "@spt/models/enums/SkillTypes";
-import { BonusSettings, IRepairConfig } from "@spt/models/spt/config/IRepairConfig";
+import { IBonusSettings, IRepairConfig } from "@spt/models/spt/config/IRepairConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
 import { DatabaseService } from "@spt/services/DatabaseService";
@@ -55,7 +55,7 @@ export class RepairService {
     public repairItemByTrader(
         sessionID: string,
         pmcData: IPmcData,
-        repairItemDetails: RepairItem,
+        repairItemDetails: IRepairItem,
         traderId: string,
     ): RepairDetails {
         const itemToRepair = pmcData.Inventory.items.find((item) => item._id === repairItemDetails._id);
@@ -288,7 +288,7 @@ export class RepairService {
     public repairItemByKit(
         sessionId: string,
         pmcData: IPmcData,
-        repairKits: RepairKitsInfo[],
+        repairKits: IRepairKitsInfo[],
         itemToRepairId: string,
         output: IItemEventRouterResponse,
     ): RepairDetails {
@@ -470,7 +470,7 @@ export class RepairService {
      * @param itemConfig weapon/armor config
      * @param repairDetails Details for item to repair
      */
-    public addBuff(itemConfig: BonusSettings, item: IItem): void {
+    public addBuff(itemConfig: IBonusSettings, item: IItem): void {
         const bonusRarity = this.weightedRandomHelper.getWeightedValue<string>(itemConfig.rarityWeight);
         const bonusType = this.weightedRandomHelper.getWeightedValue<string>(itemConfig.bonusTypeWeight);
 

@@ -11,8 +11,8 @@ import { IHideoutCircleOfCultistProductionStartRequestData } from "@spt/models/e
 import {
     IHideoutProduction,
     IHideoutProductionData,
+    IRequirement,
     IRequirementBase,
-    Requirement,
 } from "@spt/models/eft/hideout/IHideoutProduction";
 import { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRouterResponse";
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
@@ -20,7 +20,7 @@ import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { HideoutAreas } from "@spt/models/enums/HideoutAreas";
 import { ItemTpl } from "@spt/models/enums/ItemTpl";
 import { SkillTypes } from "@spt/models/enums/SkillTypes";
-import { DirectRewardSettings, IHideoutConfig } from "@spt/models/spt/config/IHideoutConfig";
+import { IDirectRewardSettings, IHideoutConfig } from "@spt/models/spt/config/IHideoutConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { EventOutputHolder } from "@spt/routers/EventOutputHolder";
 import { ConfigServer } from "@spt/servers/ConfigServer";
@@ -175,7 +175,7 @@ export class CircleOfCultistService {
         recipeId: string,
         sacrificedItems: IItem[],
         rewardAmountRoubles: number,
-        directRewardSettings?: DirectRewardSettings,
+        directRewardSettings?: IDirectRewardSettings,
     ): void {
         // Create circle production/craft object to add to player profile
         const cultistProduction = this.hideoutHelper.initProduction(
@@ -203,7 +203,7 @@ export class CircleOfCultistService {
      */
     protected getCircleCraftTimeSeconds(
         rewardAmountRoubles: number,
-        directRewardSettings?: DirectRewardSettings,
+        directRewardSettings?: IDirectRewardSettings,
     ): number {
         // Edge case, check if override exists
         if (this.hideoutConfig.cultistCircle.craftTimeOverride !== -1) {
@@ -346,7 +346,7 @@ export class CircleOfCultistService {
      * @returns Array of item arrays
      */
     protected getExplicitRewards(
-        explicitRewardSettings: DirectRewardSettings,
+        explicitRewardSettings: IDirectRewardSettings,
         cultistCircleStashId: string,
     ): IItem[][] {
         // Prep rewards array (reward can be item with children, hence array of arrays)
@@ -573,7 +573,7 @@ export class CircleOfCultistService {
      * @param requirements Requirements to iterate over
      * @returns Array of item requirements
      */
-    protected getItemRequirements(requirements: IRequirementBase[]): (IStageRequirement | Requirement)[] {
+    protected getItemRequirements(requirements: IRequirementBase[]): (IStageRequirement | IRequirement)[] {
         return requirements.filter((requirement) => requirement.type === "Item");
     }
 }

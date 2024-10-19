@@ -20,7 +20,7 @@ import { BackendErrorCodes } from "@spt/models/enums/BackendErrorCodes";
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
 import { BonusType } from "@spt/models/enums/BonusType";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
-import { IInventoryConfig, RewardDetails } from "@spt/models/spt/config/IInventoryConfig";
+import { IInventoryConfig, IRewardDetails } from "@spt/models/spt/config/IInventoryConfig";
 import { IOwnerInventoryItems } from "@spt/models/spt/inventory/IOwnerInventoryItems";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
@@ -1105,7 +1105,7 @@ export class InventoryHelper {
      * @param itemTpl Container being opened
      * @returns Reward details
      */
-    public getRandomLootContainerRewardDetails(itemTpl: string): RewardDetails {
+    public getRandomLootContainerRewardDetails(itemTpl: string): IRewardDetails {
         return this.inventoryConfig.randomLootContainers[itemTpl];
     }
 

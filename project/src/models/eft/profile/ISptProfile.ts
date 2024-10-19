@@ -7,22 +7,22 @@ import { IProfileChangeEvent } from "@spt/models/spt/dialog/ISendMessageDetails"
 
 export interface ISptProfile {
     info: Info;
-    characters: Characters;
+    characters: ICharacters;
     /** Clothing purchases */
     suits: string[];
     userbuilds: IUserBuilds;
-    dialogues: Record<string, Dialogue>;
-    spt: Spt;
-    vitality: Vitality;
-    inraid: Inraid;
-    insurance: Insurance[];
+    dialogues: Record<string, IDialogue>;
+    spt: ISpt;
+    vitality: IVitality;
+    inraid: IInraid;
+    insurance: IInsurance[];
     /** Assort purchases made by player since last trader refresh */
-    traderPurchases?: Record<string, Record<string, TraderPurchaseData>>;
+    traderPurchases?: Record<string, Record<string, ITraderPurchaseData>>;
     /** Achievements earned by player */
     achievements: Record<string, number>;
 }
 
-export class TraderPurchaseData {
+export class ITraderPurchaseData {
     count: number;
     purchaseTimestamp: number;
 }
@@ -38,7 +38,7 @@ export interface Info {
     edition: string;
 }
 
-export interface Characters {
+export interface ICharacters {
     pmc: IPmcData;
     scav: IPmcData;
 }
@@ -86,13 +86,13 @@ export interface IDefaultEquipmentPreset extends IUserBuild {
     type: string;
 }
 
-export interface Dialogue {
+export interface IDialogue {
     attachmentsNew: number;
     new: number;
     type: MessageType;
     Users?: IUserDialogInfo[];
     pinned: boolean;
-    messages: Message[];
+    messages: IMessage[];
     _id: string;
 }
 
@@ -111,17 +111,17 @@ export interface IUserDialogDetails {
 }
 
 // @Cleanup: Maybe the same as Dialogue?
-export interface DialogueInfo {
+export interface IDialogueInfo {
     attachmentsNew: number;
     new: number;
     _id: string;
     type: MessageType;
     pinned: boolean;
     Users?: IUserDialogInfo[];
-    message: MessagePreview;
+    message: IMessagePreview;
 }
 
-export interface Message {
+export interface IMessage {
     _id: string;
     uid: string;
     type: MessageType;
@@ -133,7 +133,7 @@ export interface Message {
     replyTo?: IReplyTo;
     hasRewards?: boolean;
     rewardCollected: boolean;
-    items?: MessageItems;
+    items?: IMessageItems;
     maxStorageTime?: number;
     systemData?: ISystemData;
     profileChangeEvents?: IProfileChangeEvent[];
@@ -147,7 +147,7 @@ export interface IReplyTo {
     text?: string;
 }
 
-export interface MessagePreview {
+export interface IMessagePreview {
     uid: string;
     type: MessageType;
     dt: number;
@@ -156,7 +156,7 @@ export interface MessagePreview {
     systemData?: ISystemData;
 }
 
-export interface MessageItems {
+export interface IMessageItems {
     stash?: string;
     data?: IItem[];
 }
@@ -179,18 +179,13 @@ export interface IUpdatableChatMember {
     Banned: boolean;
 }
 
-export interface DateTime {
-    date: string;
-    time: string;
-}
-
-export interface Spt {
+export interface ISpt {
     /** What version of SPT was this profile made with */
     version: string;
     /** What mods has this profile loaded at any point in time */
-    mods?: ModDetails[];
+    mods?: IModDetails[];
     /** What gifts has this profile received and how many */
-    receivedGifts?: ReceivedGift[];
+    receivedGifts?: IReceivedGift[];
     /** item TPLs blacklisted from being sold on flea for this profile */
     blacklistedItemTpls?: string[];
     /** key: daily type */
@@ -199,7 +194,7 @@ export interface Spt {
     migrations?: Record<string, number>;
 }
 
-export interface ModDetails {
+export interface IModDetails {
     name: string;
     version: string;
     author: string;
@@ -207,18 +202,18 @@ export interface ModDetails {
     url: string;
 }
 
-export interface ReceivedGift {
+export interface IReceivedGift {
     giftId: string;
     timestampLastAccepted: number;
     current: number;
 }
 
-export interface Vitality {
-    health: Health;
-    effects: Effects;
+export interface IVitality {
+    health: IHealth;
+    effects: IEffects;
 }
 
-export interface Health {
+export interface IHealth {
     Hydration: number;
     Energy: number;
     Temperature: number;
@@ -231,44 +226,44 @@ export interface Health {
     RightLeg: number;
 }
 
-export interface Effects {
-    Head: Head;
-    Chest: Chest;
-    Stomach: Stomach;
-    LeftArm: LeftArm;
-    RightArm: RightArm;
-    LeftLeg: LeftLeg;
-    RightLeg: RightLeg;
+export interface IEffects {
+    Head: IHead;
+    Chest: IChest;
+    Stomach: IStomach;
+    LeftArm: ILeftArm;
+    RightArm: IRightArm;
+    LeftLeg: ILeftLeg;
+    RightLeg: IRightLeg;
 }
 
-export type Head = {};
+export type IHead = {};
 
-export type Chest = {};
+export type IChest = {};
 
-export type Stomach = {};
+export type IStomach = {};
 
-export interface LeftArm {
+export interface ILeftArm {
     Fracture?: number;
 }
 
-export interface RightArm {
+export interface IRightArm {
     Fracture?: number;
 }
 
-export interface LeftLeg {
+export interface ILeftLeg {
     Fracture?: number;
 }
 
-export interface RightLeg {
+export interface IRightLeg {
     Fracture?: number;
 }
 
-export interface Inraid {
+export interface IInraid {
     location: string;
     character: string;
 }
 
-export interface Insurance {
+export interface IInsurance {
     scheduledTime: number;
     traderId: string;
     maxStorageTime: number;
@@ -278,7 +273,7 @@ export interface Insurance {
     items: IItem[];
 }
 
-export interface MessageContentRagfair {
+export interface IMessageContentRagfair {
     offerId: string;
     count: number;
     handbookId: string;

@@ -6,7 +6,7 @@ import { IBotDurability } from "@spt/models/spt/config/IBotDurability";
 export interface IBotConfig extends IBaseConfig {
     kind: "spt-bot";
     /** How many variants of each bot should be generated on raid start */
-    presetBatch: PresetBatch;
+    presetBatch: IPresetBatch;
     /** Bot roles that should not have PMC types (pmcBEAR/pmcUSEC) added as enemies to */
     botsToNotAddPMCsAsEnemiesTo: string[];
     /** What bot types should be classified as bosses */
@@ -58,7 +58,7 @@ export interface IAssaultToBossConversion {
 }
 
 /** Number of bots to generate and store in cache on raid start per bot type */
-export interface PresetBatch {
+export interface IPresetBatch {
     assault: number;
     bossBully: number;
     bossGluhar: number;
@@ -109,7 +109,7 @@ export interface IWalletLootSettings {
 
 export interface EquipmentFilters {
     /** Limits for mod types per weapon .e.g. scopes */
-    weaponModLimits: ModLimits;
+    weaponModLimits: IModLimits;
     /** Whitelist for weapon sight types allowed per gun */
     weaponSightWhitelist: Record<string, string[]>;
     /** Chance face shield is down/active */
@@ -130,29 +130,29 @@ export interface EquipmentFilters {
     /** What additional slot ids should be seen as required when choosing a mod to add to a weapon */
     weaponSlotIdsToMakeRequired?: string[];
     /** Adjust weighting/chances of items on bot by level of bot */
-    randomisation: RandomisationDetails[];
+    randomisation: IRandomisationDetails[];
     /** Blacklist equipment by level of bot */
-    blacklist: EquipmentFilterDetails[];
+    blacklist: IEquipmentFilterDetails[];
     /** Whitelist equipment by level of bot */
-    whitelist: EquipmentFilterDetails[];
+    whitelist: IEquipmentFilterDetails[];
     /** Adjust equipment/ammo */
-    weightingAdjustmentsByBotLevel: WeightingAdjustmentDetails[];
+    weightingAdjustmentsByBotLevel: IWeightingAdjustmentDetails[];
     /** Same as weightingAdjustments but based on player level instead of bot level */
-    weightingAdjustmentsByPlayerLevel?: WeightingAdjustmentDetails[];
+    weightingAdjustmentsByPlayerLevel?: IWeightingAdjustmentDetails[];
     /** Should the stock mod be forced to spawn on bot */
     forceStock?: boolean;
     armorPlateWeighting?: IArmorPlateWeights[];
     forceRigWhenNoVest?: boolean;
 }
 
-export interface ModLimits {
+export interface IModLimits {
     /** How many scopes are allowed on a weapon - hard coded to work with OPTIC_SCOPE, ASSAULT_SCOPE, COLLIMATOR, COMPACT_COLLIMATOR */
     scopeLimit?: number;
     /** How many lasers or lights are allowed on a weapon - hard coded to work with TACTICAL_COMBO, and FLASHLIGHT */
     lightLaserLimit?: number;
 }
 
-export interface RandomisationDetails {
+export interface IRandomisationDetails {
     /** Between what levels do these randomisation setting apply to */
     levelRange: MinMax;
     generation?: Record<string, IGenerationData>;
@@ -175,7 +175,7 @@ export interface INighttimeChanges {
     //weaponModsModifiers: Record<string, number>; //TODO
 }
 
-export interface EquipmentFilterDetails {
+export interface IEquipmentFilterDetails {
     /** Between what levels do these equipment filter setting apply to */
     levelRange: MinMax;
     /** Key: mod slot name e.g. mod_magazine, value: item tpls */
@@ -184,7 +184,7 @@ export interface EquipmentFilterDetails {
     cartridge: Record<string, string[]>;
 }
 
-export interface WeightingAdjustmentDetails {
+export interface IWeightingAdjustmentDetails {
     /** Between what levels do these weight settings apply to */
     levelRange: MinMax;
     /** Key: ammo type e.g. Caliber556x45NATO, value: item tpl + weight */

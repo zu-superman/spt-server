@@ -2,7 +2,7 @@ import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { NotificationSendHelper } from "@spt/helpers/NotificationSendHelper";
 import { NotifierHelper } from "@spt/helpers/NotifierHelper";
 import { IItem } from "@spt/models/eft/common/tables/IItem";
-import { Dialogue, MessagePreview } from "@spt/models/eft/profile/ISptProfile";
+import { IDialogue, IMessagePreview } from "@spt/models/eft/profile/ISptProfile";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { DatabaseServer } from "@spt/servers/DatabaseServer";
 import { SaveServer } from "@spt/servers/SaveServer";
@@ -28,10 +28,10 @@ export class DialogueHelper {
      * @param dialogue
      * @returns MessagePreview
      */
-    public getMessagePreview(dialogue: Dialogue): MessagePreview {
+    public getMessagePreview(dialogue: IDialogue): IMessagePreview {
         // The last message of the dialogue should be shown on the preview.
         const message = dialogue.messages[dialogue.messages.length - 1];
-        const result: MessagePreview = {
+        const result: IMessagePreview = {
             dt: message?.dt,
             type: message?.type,
             templateId: message?.templateId,
@@ -94,7 +94,7 @@ export class DialogueHelper {
      * @param sessionId Session/player id
      * @returns Dialog dictionary
      */
-    public getDialogsForProfile(sessionId: string): Record<string, Dialogue> {
+    public getDialogsForProfile(sessionId: string): Record<string, IDialogue> {
         const profile = this.saveServer.getProfile(sessionId);
         if (!profile.dialogues) {
             profile.dialogues = {};

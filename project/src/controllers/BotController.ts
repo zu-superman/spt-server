@@ -15,7 +15,7 @@ import { IGetRaidConfigurationRequestData } from "@spt/models/eft/match/IGetRaid
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { SideType } from "@spt/models/enums/SideType";
 import { WildSpawnTypeNumber } from "@spt/models/enums/WildSpawnTypeNumber";
-import { BotGenerationDetails } from "@spt/models/spt/bots/BotGenerationDetails";
+import { IBotGenerationDetails } from "@spt/models/spt/bots/BotGenerationDetails";
 import { IBotConfig } from "@spt/models/spt/config/IBotConfig";
 import { IPmcConfig } from "@spt/models/spt/config/IPmcConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
@@ -245,7 +245,7 @@ export class BotController {
         raidSettings: IGetRaidConfigurationRequestData,
         botCountToGenerate: number,
         generateAsPmc: boolean,
-    ): BotGenerationDetails {
+    ): IBotGenerationDetails {
         return {
             isPmc: generateAsPmc,
             side: generateAsPmc ? this.botHelper.getPmcSideByRole(condition.Role) : SideType.SAVAGE,
@@ -280,7 +280,7 @@ export class BotController {
      */
     protected async generateWithBotDetails(
         condition: ICondition,
-        botGenerationDetails: BotGenerationDetails,
+        botGenerationDetails: IBotGenerationDetails,
         sessionId: string,
     ): Promise<void> {
         const isEventBot = condition.Role.toLowerCase().includes("event");
@@ -328,7 +328,7 @@ export class BotController {
      * @returns A promise for the bot to be stored
      */
     protected async generateSingleBotAndStoreInCache(
-        botGenerationDetails: BotGenerationDetails,
+        botGenerationDetails: IBotGenerationDetails,
         sessionId: string,
         cacheKey: string,
     ): Promise<void> {
@@ -450,7 +450,7 @@ export class BotController {
     }
 
     protected updateBotGenerationDetailsToRandomBoss(
-        botGenerationDetails: BotGenerationDetails,
+        botGenerationDetails: IBotGenerationDetails,
         possibleBossTypeWeights: Record<string, number>,
     ): void {
         // Seems Actual bosses have the same Brain issues like PMC gaining Boss Brains We cant use all bosses

@@ -9,7 +9,7 @@ import { IGetInsuranceCostRequestData } from "@spt/models/eft/insurance/IGetInsu
 import { IGetInsuranceCostResponseData } from "@spt/models/eft/insurance/IGetInsuranceCostResponseData";
 import { IInsureRequestData } from "@spt/models/eft/insurance/IInsureRequestData";
 import { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRouterResponse";
-import { Insurance } from "@spt/models/eft/profile/ISptProfile";
+import { IInsurance } from "@spt/models/eft/profile/ISptProfile";
 import { IProcessBuyTradeRequestData } from "@spt/models/eft/trade/IProcessBuyTradeRequestData";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { Money } from "@spt/models/enums/Money";
@@ -97,7 +97,7 @@ export class InsuranceController {
      * @param time The time to check ready status against. Current time by default.
      * @returns All insured items that are ready to be processed.
      */
-    protected filterInsuredItems(sessionID: string, time?: number): Insurance[] {
+    protected filterInsuredItems(sessionID: string, time?: number): IInsurance[] {
         // Use the current time by default.
         const insuranceTime = time || this.timeUtil.getTimestamp();
 
@@ -116,7 +116,7 @@ export class InsuranceController {
      * @param sessionID The session ID that should receive the processed items.
      * @returns void
      */
-    protected processInsuredItems(insuranceDetails: Insurance[], sessionID: string): void {
+    protected processInsuredItems(insuranceDetails: IInsurance[], sessionID: string): void {
         this.logger.debug(
             `Processing ${insuranceDetails.length} insurance packages, which includes a total of ${this.countAllInsuranceItems(
                 insuranceDetails,
@@ -153,7 +153,7 @@ export class InsuranceController {
      * @param insurance
      * @returns
      */
-    protected countAllInsuranceItems(insurance: Insurance[]): number {
+    protected countAllInsuranceItems(insurance: IInsurance[]): number {
         return this.mathUtil.arraySum(insurance.map((ins) => ins.items.length));
     }
 
@@ -164,7 +164,7 @@ export class InsuranceController {
      * @param index The array index of the insurance package to remove.
      * @returns void
      */
-    protected removeInsurancePackageFromProfile(sessionID: string, insPackage: Insurance): void {
+    protected removeInsurancePackageFromProfile(sessionID: string, insPackage: IInsurance): void {
         const profile = this.saveServer.getProfile(sessionID);
         profile.insurance = profile.insurance.filter(
             (insurance) =>
@@ -184,7 +184,7 @@ export class InsuranceController {
      * @param insured - The insurance object containing the items to evaluate for deletion.
      * @returns A Set containing the IDs of items that should be deleted.
      */
-    protected findItemsToDelete(rootItemParentID: string, insured: Insurance): Set<string> {
+    protected findItemsToDelete(rootItemParentID: string, insured: IInsurance): Set<string> {
         const toDelete = new Set<string>();
 
         // Populate a Map object of items for quick lookup by their ID and use it to populate a Map of main-parent items
@@ -231,7 +231,7 @@ export class InsuranceController {
      */
     protected populateParentAttachmentsMap(
         rootItemParentID: string,
-        insured: Insurance,
+        insured: IInsurance,
         itemsMap: Map<string, IItem>,
     ): Map<string, IItem[]> {
         const mainParentToAttachmentsMap = new Map<string, IItem[]>();
@@ -348,7 +348,7 @@ export class InsuranceController {
      * @returns void
      */
     protected processRegularItems(
-        insured: Insurance,
+        insured: IInsurance,
         toDelete: Set<string>,
         parentAttachmentsMap: Map<string, IItem[]>,
     ): void {
@@ -518,7 +518,7 @@ export class InsuranceController {
      * @param toDelete The items that should be deleted.
      * @returns void
      */
-    protected removeItemsFromInsurance(insured: Insurance, toDelete: Set<string>): void {
+    protected removeItemsFromInsurance(insured: IInsurance, toDelete: Set<string>): void {
         insured.items = insured.items.filter((item) => !toDelete.has(item._id));
     }
 
@@ -529,7 +529,7 @@ export class InsuranceController {
      * @param insurance The context of insurance to use.
      * @returns void
      */
-    protected sendMail(sessionID: string, insurance: Insurance): void {
+    protected sendMail(sessionID: string, insurance: IInsurance): void {
         const labsId = "laboratory";
         // After all of the item filtering that we've done, if there are no items remaining, the insurance has
         // successfully "failed" to return anything and an appropriate message should be sent to the player.
@@ -715,10 +715,4 @@ export class InsuranceController {
 
         return response;
     }
-}
-
-// Represents an insurance item that has had it's common locale-name and value added to it.
-interface EnrichedItem extends IItem {
-    name: string;
-    dynamicPrice: number;
 }

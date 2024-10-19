@@ -4,24 +4,24 @@ import { ILootRequest } from "@spt/models/spt/services/ILootRequest";
 
 export interface ITraderConfig extends IBaseConfig {
     kind: "spt-trader";
-    updateTime: UpdateTime[];
+    updateTime: IUpdateTime[];
     purchasesAreFoundInRaid: boolean;
     /** Should trader reset times be set based on server start time (false = bsg time - on the hour) */
     tradersResetFromServerStart: boolean;
     updateTimeDefault: number;
     traderPriceMultipler: number;
-    fence: FenceConfig;
-    moddedTraders: ModdedTraders;
+    fence: IFenceConfig;
+    moddedTraders: IModdedTraders;
 }
 
-export interface UpdateTime {
+export interface IUpdateTime {
     traderId: string;
     /** Seconds between trader resets */
     seconds: MinMax;
 }
 
-export interface FenceConfig {
-    discountOptions: DiscountOptions;
+export interface IFenceConfig {
+    discountOptions: IDiscountOptions;
     partialRefreshTimeSeconds: number;
     partialRefreshChangePercent: number;
     assortSize: number;
@@ -48,7 +48,7 @@ export interface FenceConfig {
     /** Max pen value allowed to be listed on flea - affects ammo + ammo boxes */
     ammoMaxPenLimit: number;
     blacklist: string[];
-    coopExtractGift: CoopExtractReward;
+    coopExtractGift: ICoopExtractReward;
     btrDeliveryExpireHours: number;
 }
 
@@ -57,13 +57,13 @@ export interface IItemDurabilityCurrentMax {
     max: MinMax;
 }
 
-export interface CoopExtractReward extends ILootRequest {
+export interface ICoopExtractReward extends ILootRequest {
     sendGift: boolean;
     messageLocaleIds: string[];
     giftExpiryHours: number;
 }
 
-export interface DiscountOptions {
+export interface IDiscountOptions {
     assortSize: number;
     itemPriceMult: number;
     presetPriceMult: number;
@@ -72,7 +72,7 @@ export interface DiscountOptions {
 }
 
 /** Custom trader data needed client side for things such as the clothing service */
-export interface ModdedTraders {
+export interface IModdedTraders {
     /** Trader Ids to enable the clothing service for */
     clothingService: string[];
 }

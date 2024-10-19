@@ -13,7 +13,7 @@ import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { ItemAddedResult } from "@spt/models/enums/ItemAddedResult";
 import { MemberCategory } from "@spt/models/enums/MemberCategory";
 import { Traders } from "@spt/models/enums/Traders";
-import { IPlayerScavConfig, KarmaLevel } from "@spt/models/spt/config/IPlayerScavConfig";
+import { IKarmaLevel, IPlayerScavConfig } from "@spt/models/spt/config/IPlayerScavConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
 import { SaveServer } from "@spt/servers/SaveServer";
@@ -229,7 +229,7 @@ export class PlayerScavGenerator {
      * @param karmaSettings Values to modify the bot template with
      * @param baseBotNode bot template to modify according to karama level settings
      */
-    protected adjustBotTemplateWithKarmaSpecificSettings(karmaSettings: KarmaLevel, baseBotNode: IBotType): void {
+    protected adjustBotTemplateWithKarmaSpecificSettings(karmaSettings: IKarmaLevel, baseBotNode: IBotType): void {
         // Adjust equipment chance values
         for (const equipmentKey in karmaSettings.modifiers.equipment) {
             if (karmaSettings.modifiers.equipment[equipmentKey] === 0) {

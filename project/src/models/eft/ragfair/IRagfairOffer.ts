@@ -6,7 +6,7 @@ export interface IRagfairOffer {
     sellResult?: ISellResult[];
     _id: string;
     items: IItem[];
-    requirements: OfferRequirement[];
+    requirements: IOfferRequirement[];
     root: string;
     intId: number;
     /** Handbook price */
@@ -29,7 +29,7 @@ export interface IRagfairOffer {
     locked?: boolean;
 }
 
-export interface OfferRequirement {
+export interface IOfferRequirement {
     _tpl: string;
     count: number;
     onlyFunctional: boolean;

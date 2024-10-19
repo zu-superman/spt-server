@@ -7,7 +7,7 @@ import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { IBonus, IHideoutSlot } from "@spt/models/eft/common/tables/IBotBase";
 import { IPmcDataRepeatableQuest, IRepeatableQuest } from "@spt/models/eft/common/tables/IRepeatableQuests";
 import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
-import { StageBonus } from "@spt/models/eft/hideout/IHideoutArea";
+import { IStageBonus } from "@spt/models/eft/hideout/IHideoutArea";
 import { IEquipmentBuild, IMagazineBuild, ISptProfile, IWeaponBuild } from "@spt/models/eft/profile/ISptProfile";
 import { BonusType } from "@spt/models/enums/BonusType";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
@@ -632,7 +632,7 @@ export class ProfileFixerService {
      * @param bonus bonus to find
      * @returns matching bonus
      */
-    protected getBonusFromProfile(profileBonuses: IBonus[], bonus: StageBonus): IBonus | undefined {
+    protected getBonusFromProfile(profileBonuses: IBonus[], bonus: IStageBonus): IBonus | undefined {
         // match by id first, used by "TextBonus" bonuses
         if (bonus.id) {
             return profileBonuses.find((x) => x.id === bonus.id);

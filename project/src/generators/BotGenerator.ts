@@ -20,7 +20,7 @@ import { GameEditions } from "@spt/models/enums/GameEditions";
 import { ItemTpl } from "@spt/models/enums/ItemTpl";
 import { MemberCategory } from "@spt/models/enums/MemberCategory";
 import { SideType } from "@spt/models/enums/SideType";
-import { BotGenerationDetails } from "@spt/models/spt/bots/BotGenerationDetails";
+import { IBotGenerationDetails } from "@spt/models/spt/bots/BotGenerationDetails";
 import { IBotConfig } from "@spt/models/spt/config/IBotConfig";
 import { IPmcConfig } from "@spt/models/spt/config/IPmcConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
@@ -76,7 +76,7 @@ export class BotGenerator {
         bot.Info.Settings.Role = role;
         bot.Info.Side = SideType.SAVAGE;
 
-        const botGenDetails: BotGenerationDetails = {
+        const botGenDetails: IBotGenerationDetails = {
             isPmc: false,
             side: SideType.SAVAGE,
             role: role,
@@ -98,7 +98,7 @@ export class BotGenerator {
      * @param botGenerationDetails details on how to generate bots
      * @returns constructed bot
      */
-    public prepareAndGenerateBot(sessionId: string, botGenerationDetails: BotGenerationDetails): IBotBase {
+    public prepareAndGenerateBot(sessionId: string, botGenerationDetails: IBotGenerationDetails): IBotBase {
         const preparedBotBase = this.getPreparedBotBase(
             botGenerationDetails.eventRole ?? botGenerationDetails.role, // Use eventRole if provided,
             botGenerationDetails.side,
@@ -150,7 +150,7 @@ export class BotGenerator {
         sessionId: string,
         bot: IBotBase,
         botJsonTemplate: IBotType,
-        botGenerationDetails: BotGenerationDetails,
+        botGenerationDetails: IBotGenerationDetails,
     ): IBotBase {
         const botRoleLowercase = botGenerationDetails.role.toLowerCase();
         const botLevel = this.botLevelGenerator.generateBotLevel(
@@ -285,7 +285,7 @@ export class BotGenerator {
     protected setBotAppearance(
         bot: IBotBase,
         appearance: IAppearance,
-        botGenerationDetails: BotGenerationDetails,
+        botGenerationDetails: IBotGenerationDetails,
     ): void {
         bot.Customization.Head = this.weightedRandomHelper.getWeightedValue<string>(appearance.head);
         bot.Customization.Body = this.weightedRandomHelper.getWeightedValue<string>(appearance.body);

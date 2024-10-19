@@ -9,7 +9,7 @@ import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { IBotHideoutArea, IProduct, IScavCase, ITaskConditionCounter } from "@spt/models/eft/common/tables/IBotBase";
 import { IItem } from "@spt/models/eft/common/tables/IItem";
 import { IHandleQTEEventRequestData } from "@spt/models/eft/hideout/IHandleQTEEventRequestData";
-import { IHideoutArea, Stage } from "@spt/models/eft/hideout/IHideoutArea";
+import { IHideoutArea, IStage } from "@spt/models/eft/hideout/IHideoutArea";
 import { IHideoutCancelProductionRequestData } from "@spt/models/eft/hideout/IHideoutCancelProductionRequestData";
 import { IHideoutCircleOfCultistProductionStartRequestData } from "@spt/models/eft/hideout/IHideoutCircleOfCultistProductionStartRequestData";
 import { IHideoutContinuousProductionStartRequestData } from "@spt/models/eft/hideout/IHideoutContinuousProductionStartRequestData";
@@ -272,7 +272,7 @@ export class HideoutController {
         pmcData: IPmcData,
         profileParentHideoutArea: IBotHideoutArea,
         dbHideoutArea: IHideoutArea,
-        hideoutStage: Stage,
+        hideoutStage: IStage,
     ): void {
         // Add key/value to `hideoutAreaStashes` dictionary - used to link hideout area to inventory stash by its id
         if (!pmcData.Inventory.hideoutAreaStashes[dbHideoutArea.type]) {
@@ -327,7 +327,7 @@ export class HideoutController {
      */
     protected addMissingPresetStandItemsToProfile(
         sessionId: string,
-        equipmentPresetStage: Stage,
+        equipmentPresetStage: IStage,
         pmcData: IPmcData,
         equipmentPresetHideoutArea: IHideoutArea,
         output: IItemEventRouterResponse,
@@ -377,7 +377,7 @@ export class HideoutController {
         sessionId: string,
         pmcData: IPmcData,
         dbHideoutArea: IHideoutArea,
-        hideoutStage: Stage,
+        hideoutStage: IStage,
     ): void {
         const existingInventoryItem = pmcData.Inventory.items.find((item) => item._id === dbHideoutArea._id);
         if (existingInventoryItem) {
@@ -403,7 +403,7 @@ export class HideoutController {
         sessionID: string,
         areaType: HideoutAreas,
         hideoutDbData: IHideoutArea,
-        hideoutStage: Stage,
+        hideoutStage: IStage,
         output: IItemEventRouterResponse,
     ): void {
         if (!output.profileChanges[sessionID].changedHideoutStashes) {

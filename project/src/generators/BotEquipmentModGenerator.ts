@@ -22,7 +22,7 @@ import {
 import { IGenerateEquipmentProperties } from "@spt/models/spt/bots/IGenerateEquipmentProperties";
 import { IGenerateWeaponRequest } from "@spt/models/spt/bots/IGenerateWeaponRequest";
 import { IModToSpawnRequest } from "@spt/models/spt/bots/IModToSpawnRequest";
-import { EquipmentFilterDetails, EquipmentFilters, IBotConfig } from "@spt/models/spt/config/IBotConfig";
+import { EquipmentFilters, IBotConfig, IEquipmentFilterDetails } from "@spt/models/spt/config/IBotConfig";
 import { ExhaustableArray } from "@spt/models/spt/server/ExhaustableArray";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
@@ -80,7 +80,7 @@ export class BotEquipmentModGenerator {
         parentId: string,
         parentTemplate: ITemplateItem,
         settings: IGenerateEquipmentProperties,
-        specificBlacklist: EquipmentFilterDetails,
+        specificBlacklist: IEquipmentFilterDetails,
         shouldForceSpawn = false,
     ): IItem[] {
         let forceSpawn = shouldForceSpawn;
@@ -1272,7 +1272,7 @@ export class BotEquipmentModGenerator {
         desiredSlotName: string,
         modTemplate: ITemplateItem,
         modPool: IMods,
-        botEquipBlacklist: EquipmentFilterDetails,
+        botEquipBlacklist: IEquipmentFilterDetails,
     ): void {
         const desiredSlotObject = modTemplate._props.Slots?.find((slot) => slot._name.includes(desiredSlotName));
         if (desiredSlotObject) {
@@ -1309,7 +1309,7 @@ export class BotEquipmentModGenerator {
     protected getDynamicModPool(
         parentItemId: string,
         modSlot: string,
-        botEquipBlacklist: EquipmentFilterDetails,
+        botEquipBlacklist: IEquipmentFilterDetails,
     ): string[] {
         const modsFromDynamicPool = this.cloner.clone(
             this.botEquipmentModPoolService.getCompatibleModsForWeaponSlot(parentItemId, modSlot),
@@ -1335,7 +1335,7 @@ export class BotEquipmentModGenerator {
      */
     protected filterModsByBlacklist(
         allowedMods: string[],
-        botEquipBlacklist: EquipmentFilterDetails,
+        botEquipBlacklist: IEquipmentFilterDetails,
         modSlot: string,
     ): string[] {
         // No blacklist, nothing to filter out

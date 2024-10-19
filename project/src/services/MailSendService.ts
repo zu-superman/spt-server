@@ -5,12 +5,12 @@ import { NotifierHelper } from "@spt/helpers/NotifierHelper";
 import { TraderHelper } from "@spt/helpers/TraderHelper";
 import { IItem } from "@spt/models/eft/common/tables/IItem";
 import {
-    Dialogue,
+    IDialogue,
+    IMessage,
+    IMessageContentRagfair,
+    IMessageItems,
     ISystemData,
     IUserDialogInfo,
-    Message,
-    MessageContentRagfair,
-    MessageItems,
 } from "@spt/models/eft/profile/ISptProfile";
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
 import { MessageType } from "@spt/models/enums/MessageType";
@@ -59,7 +59,7 @@ export class MailSendService {
         items: IItem[] = [],
         maxStorageTimeSeconds?: number,
         systemData?: ISystemData,
-        ragfair?: MessageContentRagfair,
+        ragfair?: IMessageContentRagfair,
     ): void {
         if (!trader) {
             this.logger.error(
@@ -114,7 +114,7 @@ export class MailSendService {
         items: IItem[] = [],
         maxStorageTimeSeconds?: number,
         systemData?: ISystemData,
-        ragfair?: MessageContentRagfair,
+        ragfair?: IMessageContentRagfair,
     ): void {
         if (!trader) {
             this.logger.error(
@@ -334,8 +334,8 @@ export class MailSendService {
      * @param messageDetails Various details on what the message must contain/do
      * @returns Message
      */
-    protected createDialogMessage(dialogId: string, messageDetails: ISendMessageDetails): Message {
-        const message: Message = {
+    protected createDialogMessage(dialogId: string, messageDetails: ISendMessageDetails): IMessage {
+        const message: IMessage = {
             _id: this.hashUtil.generate(),
             uid: dialogId, // must match the dialog id
             type: messageDetails.sender, // Same enum is used for defining dialog type + message type, thanks bsg
@@ -369,8 +369,8 @@ export class MailSendService {
      * @param maxStorageTimeSeconds total time items are stored in mail before being deleted
      */
     protected addRewardItemsToMessage(
-        message: Message,
-        itemsToSendToPlayer: MessageItems | undefined,
+        message: IMessage,
+        itemsToSendToPlayer: IMessageItems | undefined,
         maxStorageTimeSeconds: number | undefined,
     ): void {
         if ((itemsToSendToPlayer?.data?.length ?? 0) > 0) {
@@ -390,10 +390,10 @@ export class MailSendService {
     protected processItemsBeforeAddingToMail(
         dialogType: MessageType,
         messageDetails: ISendMessageDetails,
-    ): MessageItems {
+    ): IMessageItems {
         const items = this.databaseService.getItems();
 
-        let itemsToSendToPlayer: MessageItems = {};
+        let itemsToSendToPlayer: IMessageItems = {};
         if ((messageDetails.items?.length ?? 0) > 0) {
             // Find base item that should be the 'primary' + have its parent id be used as the dialogs 'stash' value
             const parentItem = this.getBaseItemFromRewards(messageDetails.items);
@@ -500,7 +500,7 @@ export class MailSendService {
      * @param messageDetails Data on what message should do
      * @returns Relevant Dialogue
      */
-    protected getDialog(messageDetails: ISendMessageDetails): Dialogue {
+    protected getDialog(messageDetails: ISendMessageDetails): IDialogue {
         const dialogsInProfile = this.dialogueHelper.getDialogsForProfile(messageDetails.recipientId);
         const senderId = this.getMessageSenderIdByType(messageDetails);
         if (!senderId) {

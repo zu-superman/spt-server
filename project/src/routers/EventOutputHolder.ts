@@ -6,7 +6,7 @@ import {
     IProductive,
     ITraderInfo,
 } from "@spt/models/eft/common/tables/IBotBase";
-import { IProfileChange, TraderData } from "@spt/models/eft/itemEvent/IItemEventRouterBase";
+import { IProfileChange, ITraderData } from "@spt/models/eft/itemEvent/IItemEventRouterBase";
 import { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRouterResponse";
 import { TimeUtil } from "@spt/utils/TimeUtil";
 import { ICloner } from "@spt/utils/cloners/ICloner";
@@ -103,8 +103,8 @@ export class EventOutputHolder {
      * @param traderData server data for traders
      * @returns dict of trader id + TraderData
      */
-    protected constructTraderRelations(traderData: Record<string, ITraderInfo>): Record<string, TraderData> {
-        const result: Record<string, TraderData> = {};
+    protected constructTraderRelations(traderData: Record<string, ITraderInfo>): Record<string, ITraderData> {
+        const result: Record<string, ITraderData> = {};
 
         for (const traderId in traderData) {
             const baseData = traderData[traderId];

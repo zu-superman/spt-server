@@ -17,7 +17,7 @@ import { IProfileChangeVoiceRequestData } from "@spt/models/eft/profile/IProfile
 import { IProfileCreateRequestData } from "@spt/models/eft/profile/IProfileCreateRequestData";
 import { ISearchFriendRequestData } from "@spt/models/eft/profile/ISearchFriendRequestData";
 import { ISearchFriendResponse } from "@spt/models/eft/profile/ISearchFriendResponse";
-import { ISptProfile, Inraid, Vitality } from "@spt/models/eft/profile/ISptProfile";
+import { IInraid, ISptProfile, IVitality } from "@spt/models/eft/profile/ISptProfile";
 import { IValidateNicknameRequestData } from "@spt/models/eft/profile/IValidateNicknameRequestData";
 import { ItemTpl } from "@spt/models/enums/ItemTpl";
 import { MessageType } from "@spt/models/enums/MessageType";
@@ -177,8 +177,8 @@ export class ProfileController {
             userbuilds: profileTemplate.userbuilds,
             dialogues: profileTemplate.dialogues,
             spt: this.profileHelper.getDefaultSptDataObject(),
-            vitality: {} as Vitality,
-            inraid: {} as Inraid,
+            vitality: {} as IVitality,
+            inraid: {} as IInraid,
             insurance: [],
             traderPurchases: {},
             achievements: {},

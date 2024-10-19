@@ -9,7 +9,7 @@ import { RagfairServerHelper } from "@spt/helpers/RagfairServerHelper";
 import { IItem } from "@spt/models/eft/common/tables/IItem";
 import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
 import { IBarterScheme } from "@spt/models/eft/common/tables/ITrader";
-import { IRagfairOffer, IRagfairOfferUser, OfferRequirement } from "@spt/models/eft/ragfair/IRagfairOffer";
+import { IOfferRequirement, IRagfairOffer, IRagfairOfferUser } from "@spt/models/eft/ragfair/IRagfairOffer";
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { MemberCategory } from "@spt/models/enums/MemberCategory";
@@ -17,9 +17,9 @@ import { Money } from "@spt/models/enums/Money";
 import { IBotConfig } from "@spt/models/spt/config/IBotConfig";
 import {
     Condition,
-    Dynamic,
     IArmorPlateBlacklistSettings,
     IBarterDetails,
+    IDynamic,
     IRagfairConfig,
 } from "@spt/models/spt/config/IRagfairConfig";
 import { ITplWithFleaPrice } from "@spt/models/spt/ragfair/ITplWithFleaPrice";
@@ -117,7 +117,7 @@ export class RagfairOfferGenerator {
         const isTrader = this.ragfairServerHelper.isTrader(userID);
 
         const offerRequirements = barterScheme.map((barter) => {
-            const offerRequirement: OfferRequirement = {
+            const offerRequirement: IOfferRequirement = {
                 _tpl: barter._tpl,
                 count: +barter.count.toFixed(2),
                 onlyFunctional: barter.onlyFunctional ?? false,
@@ -217,7 +217,7 @@ export class RagfairOfferGenerator {
      * @param offerRequirements barter requirements for offer
      * @returns rouble cost of offer
      */
-    protected convertOfferRequirementsIntoRoubles(offerRequirements: OfferRequirement[]): number {
+    protected convertOfferRequirementsIntoRoubles(offerRequirements: IOfferRequirement[]): number {
         let roublePrice = 0;
         for (const requirement of offerRequirements) {
             roublePrice += this.paymentHelper.isMoneyTpl(requirement._tpl)
@@ -366,7 +366,7 @@ export class RagfairOfferGenerator {
     protected async createOffersFromAssort(
         assortItemWithChildren: IItem[],
         isExpiredOffer: boolean,
-        config: Dynamic,
+        config: IDynamic,
     ): Promise<void> {
         const itemDetails = this.itemHelper.getItem(assortItemWithChildren[0]._tpl);
         const isPreset = this.presetHelper.isPreset(assortItemWithChildren[0].upd.sptPresetId);

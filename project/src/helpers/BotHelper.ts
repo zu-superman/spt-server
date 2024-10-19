@@ -1,7 +1,7 @@
 import { MinMax } from "@spt/models/common/MinMax";
 import { IBotType, IDifficultyCategories } from "@spt/models/eft/common/tables/IBotType";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
-import { EquipmentFilters, IBotConfig, RandomisationDetails } from "@spt/models/spt/config/IBotConfig";
+import { EquipmentFilters, IBotConfig, IRandomisationDetails } from "@spt/models/spt/config/IBotConfig";
 import { IPmcConfig } from "@spt/models/spt/config/IPmcConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
@@ -126,7 +126,7 @@ export class BotHelper {
     public getBotRandomizationDetails(
         botLevel: number,
         botEquipConfig: EquipmentFilters,
-    ): RandomisationDetails | undefined {
+    ): IRandomisationDetails | undefined {
         // No randomisation details found, skip
         if (!botEquipConfig || Object.keys(botEquipConfig).length === 0 || !botEquipConfig.randomisation) {
             return undefined;

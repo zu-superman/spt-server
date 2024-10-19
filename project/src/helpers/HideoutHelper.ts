@@ -4,7 +4,7 @@ import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { IBotHideoutArea, IHideoutImprovement, IProduction, IProductive } from "@spt/models/eft/common/tables/IBotBase";
 import { IItem, IUpd } from "@spt/models/eft/common/tables/IItem";
-import { IHideoutArea, StageBonus } from "@spt/models/eft/hideout/IHideoutArea";
+import { IHideoutArea, IStageBonus } from "@spt/models/eft/hideout/IHideoutArea";
 import { IHideoutContinuousProductionStartRequestData } from "@spt/models/eft/hideout/IHideoutContinuousProductionStartRequestData";
 import { IHideoutProduction } from "@spt/models/eft/hideout/IHideoutProduction";
 import { IHideoutSingleProductionStartRequestData } from "@spt/models/eft/hideout/IHideoutSingleProductionStartRequestData";
@@ -155,7 +155,7 @@ export class HideoutHelper {
      * @param pmcData Profile to add bonus to
      * @param bonus Bonus to add to profile
      */
-    public applyPlayerUpgradesBonuses(pmcData: IPmcData, bonus: StageBonus): void {
+    public applyPlayerUpgradesBonuses(pmcData: IPmcData, bonus: IStageBonus): void {
         // Handle additional changes some bonuses need before being added
         switch (bonus.type) {
             case BonusType.STASH_SIZE: {

@@ -3,9 +3,9 @@ import { IBaseConfig } from "@spt/models/spt/config/IBaseConfig";
 export interface IInRaidConfig extends IBaseConfig {
     kind: "spt-inraid";
     /** Overrides to apply to the pre-raid settings screen */
-    raidMenuSettings: RaidMenuSettings;
+    raidMenuSettings: IRaidMenuSettings;
     /** What effects should be saved post-raid */
-    save: Save;
+    save: ISave;
     /** Names of car extracts */
     carExtracts: string[];
     /** Names of coop extracts */
@@ -26,7 +26,7 @@ export interface IInRaidConfig extends IBaseConfig {
     playerScavHostileChancePercent: number;
 }
 
-export interface RaidMenuSettings {
+export interface IRaidMenuSettings {
     aiAmount: string;
     aiDifficulty: string;
     bossEnabled: boolean;
@@ -37,7 +37,7 @@ export interface RaidMenuSettings {
     randomTime: boolean;
 }
 
-export interface Save {
+export interface ISave {
     /** Should loot gained from raid be saved */
     loot: boolean;
 }

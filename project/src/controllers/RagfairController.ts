@@ -14,7 +14,7 @@ import { IItem } from "@spt/models/eft/common/tables/IItem";
 import { IBarterScheme, ITraderAssort } from "@spt/models/eft/common/tables/ITrader";
 import { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRouterResponse";
 import { ISptProfile } from "@spt/models/eft/profile/ISptProfile";
-import { IAddOfferRequestData, Requirement } from "@spt/models/eft/ragfair/IAddOfferRequestData";
+import { IAddOfferRequestData, IRequirement } from "@spt/models/eft/ragfair/IAddOfferRequestData";
 import { IExtendOfferRequestData } from "@spt/models/eft/ragfair/IExtendOfferRequestData";
 import { IGetItemPriceResult } from "@spt/models/eft/ragfair/IGetItemPriceResult";
 import { IGetMarketPriceRequestData } from "@spt/models/eft/ragfair/IGetMarketPriceRequestData";
@@ -803,7 +803,7 @@ export class RagfairController {
      * @param requirements
      * @returns Rouble price
      */
-    protected calculateRequirementsPriceInRub(requirements: Requirement[]): number {
+    protected calculateRequirementsPriceInRub(requirements: IRequirement[]): number {
         let requirementsPriceInRub = 0;
         for (const item of requirements) {
             const requestedItemTpl = item._tpl;
@@ -860,7 +860,7 @@ export class RagfairController {
 
     public createPlayerOffer(
         sessionId: string,
-        requirements: Requirement[],
+        requirements: IRequirement[],
         items: IItem[],
         sellInOnePiece: boolean,
     ): IRagfairOffer {

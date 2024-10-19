@@ -1,7 +1,7 @@
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { IBodyPartsHealth, IHealth } from "@spt/models/eft/common/tables/IBotBase";
 import { ISyncHealthRequestData } from "@spt/models/eft/health/ISyncHealthRequestData";
-import { Effects, ISptProfile } from "@spt/models/eft/profile/ISptProfile";
+import { IEffects, ISptProfile } from "@spt/models/eft/profile/ISptProfile";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { IHealthConfig } from "@spt/models/spt/config/IHealthConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
@@ -275,7 +275,7 @@ export class HealthHelper {
     protected saveEffects(
         pmcData: IPmcData,
         sessionId: string,
-        bodyPartsWithEffects: Effects,
+        bodyPartsWithEffects: IEffects,
         deleteExistingEffects = true,
     ): void {
         if (!this.healthConfig.save.effects) {
