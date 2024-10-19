@@ -256,6 +256,12 @@ export class PaymentService {
             currencyTpl,
             pmcData.Inventory.stash,
         );
+
+        //Ensure all money items found have a upd
+        for (const moneyStack of moneyItemsInInventory) {
+            moneyStack.upd ??= { StackObjectsCount: 1 };
+        }
+
         const amountAvailable = moneyItemsInInventory.reduce(
             (accumulator, item) => accumulator + item.upd.StackObjectsCount,
             0,
