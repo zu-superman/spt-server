@@ -95,7 +95,10 @@ export class GameController {
      */
     public gameStart(_url: string, _info: IEmptyRequestData, sessionID: string, startTimeStampMS: number): void {
         // Store client start time in app context
-        this.applicationContext.addValue(ContextVariableType.CLIENT_START_TIMESTAMP, startTimeStampMS);
+        this.applicationContext.addValue(
+            ContextVariableType.CLIENT_START_TIMESTAMP,
+            `${sessionID}_${startTimeStampMS}`,
+        );
 
         this.profileActivityService.setActivityTimestamp(sessionID);
 
