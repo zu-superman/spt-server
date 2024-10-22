@@ -368,11 +368,11 @@ export class RagfairOfferGenerator {
         isExpiredOffer: boolean,
         config: IDynamic,
     ): Promise<void> {
-        const itemDetails = this.itemHelper.getItem(assortItemWithChildren[0]._tpl);
+        const itemToSellDetails = this.itemHelper.getItem(assortItemWithChildren[0]._tpl);
         const isPreset = this.presetHelper.isPreset(assortItemWithChildren[0].upd.sptPresetId);
 
         // Only perform checks on newly generated items, skip expired items being refreshed
-        if (!(isExpiredOffer || this.ragfairServerHelper.isItemValidRagfairItem(itemDetails))) {
+        if (!(isExpiredOffer || this.ragfairServerHelper.isItemValidRagfairItem(itemToSellDetails))) {
             return;
         }
 
@@ -398,7 +398,9 @@ export class RagfairOfferGenerator {
             delete clonedAssort[0].parentId;
             delete clonedAssort[0].slotId;
 
-            assortSingleOfferProcesses.push(this.createSingleOfferForItem(clonedAssort, isPreset, itemDetails));
+            assortSingleOfferProcesses.push(
+                this.createSingleOfferForItem(this.hashUtil.generate(), clonedAssort, isPreset, itemToSellDetails[1]),
+            );
         }
 
         await Promise.all(assortSingleOfferProcesses);
@@ -446,15 +448,17 @@ export class RagfairOfferGenerator {
 
     /**
      * Create one flea offer for a specific item
+     * @param sellerId Id of seller
      * @param itemWithChildren Item to create offer for
      * @param isPreset Is item a weapon preset
-     * @param itemDetails raw db item details
+     * @param itemToSellDetails Raw db item details
      * @returns Item array
      */
     protected async createSingleOfferForItem(
+        sellerId: string,
         itemWithChildren: IItem[],
         isPreset: boolean,
-        itemDetails: [boolean, ITemplateItem],
+        itemToSellDetails: ITemplateItem,
     ): Promise<void> {
         // Set stack size to random value
         itemWithChildren[0].upd.StackObjectsCount = this.ragfairServerHelper.calculateDynamicStackCount(
@@ -471,8 +475,6 @@ export class RagfairOfferGenerator {
                 itemWithChildren[0]._tpl,
                 this.ragfairConfig.dynamic.pack.itemTypeWhitelist,
             );
-
-        const randomUserId = this.hashUtil.generate();
 
         // Remove removable plates if % check passes
         if (this.itemHelper.armorItemCanHoldMods(itemWithChildren[0]._tpl)) {
@@ -503,19 +505,19 @@ export class RagfairOfferGenerator {
             barterScheme = this.createCurrencyBarterScheme(itemWithChildren, isPackOffer, stackSize);
         } else if (isBarterOffer) {
             // Apply randomised properties
-            this.randomiseOfferItemUpdProperties(randomUserId, itemWithChildren, itemDetails[1]);
+            this.randomiseOfferItemUpdProperties(sellerId, itemWithChildren, itemToSellDetails);
             barterScheme = this.createBarterBarterScheme(itemWithChildren, this.ragfairConfig.dynamic.barter);
             if (this.ragfairConfig.dynamic.barter.makeSingleStackOnly) {
                 itemWithChildren[0].upd.StackObjectsCount = 1;
             }
         } else {
             // Apply randomised properties
-            this.randomiseOfferItemUpdProperties(randomUserId, itemWithChildren, itemDetails[1]);
+            this.randomiseOfferItemUpdProperties(sellerId, itemWithChildren, itemToSellDetails);
             barterScheme = this.createCurrencyBarterScheme(itemWithChildren, isPackOffer);
         }
 
         const offer = this.createAndAddFleaOffer(
-            randomUserId,
+            sellerId,
             this.timeUtil.getTimestamp(),
             itemWithChildren,
             barterScheme,
