@@ -80,10 +80,6 @@ export class PostDbLoadService {
 
         this.adjustLocationBotValues();
 
-        if (this.locationConfig.fixEmptyBotWavesSettings.enabled) {
-            this.fixBrokenOfflineMapWaves();
-        }
-
         if (this.locationConfig.rogueLighthouseSpawnTimeSettings.enabled) {
             this.fixRoguesSpawningInstantlyOnLighthouse();
         }
@@ -278,37 +274,6 @@ export class PostDbLoadService {
 
             // make values no larger than 30 secs
             map.base.BotStart = Math.min(map.base.BotStart, 30);
-        }
-    }
-
-    /**
-     * Waves with an identical min/max values spawn nothing, the number of bots that spawn is the difference between min and max
-     */
-    protected fixBrokenOfflineMapWaves(): void {
-        const locations = this.databaseService.getLocations();
-        for (const locationKey in locations) {
-            // Skip ignored maps
-            if (this.locationConfig.fixEmptyBotWavesSettings.ignoreMaps.includes(locationKey)) {
-                continue;
-            }
-
-            // Loop over all of the locations waves and look for waves with identical min and max slots
-            const location: ILocation = locations[locationKey];
-            if (!location.base) {
-                this.logger.warning(
-                    this.localisationService.getText("location-unable_to_fix_broken_waves_missing_base", locationKey),
-                );
-                continue;
-            }
-
-            for (const wave of location.base.waves ?? []) {
-                if (wave.slots_max - wave.slots_min === 0) {
-                    this.logger.debug(
-                        `Fixed ${wave.WildSpawnType} Spawn: ${locationKey} wave: ${wave.number} of type: ${wave.WildSpawnType} in zone: ${wave.SpawnPoints} with Max Slots of ${wave.slots_max}`,
-                    );
-                    wave.slots_max++;
-                }
-            }
         }
     }
 

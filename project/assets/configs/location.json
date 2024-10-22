@@ -255,12 +255,8 @@
         "waveSizeThreshold": 4
     },
     "rogueLighthouseSpawnTimeSettings": {
-        "enabled": true,
+        "enabled": false,
         "waitTimeSeconds": 120
-    },
-    "fixEmptyBotWavesSettings": {
-        "enabled": true,
-        "ignoreMaps": ["base", "develop", "hideout", "privatearea", "suburbs", "terminal", "town"]
     },
     "fitLootIntoContainerAttempts": 3,
     "addOpenZonesToAllMaps": true,
