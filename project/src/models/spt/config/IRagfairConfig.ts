@@ -97,6 +97,8 @@ export interface IBarterDetails {
     priceRangeVariancePercent: number;
     /** Min rouble price for an offer to be considered for turning into a barter */
     minRoubleCostToBecomeBarter: number;
+    /** Should barter offers only single stack */
+    makeSingleStackOnly: boolean;
     /** Item Tpls to never be turned into a barter */
     itemTypeBlacklist: string[];
 }

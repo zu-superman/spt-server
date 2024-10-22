@@ -505,6 +505,9 @@ export class RagfairOfferGenerator {
             // Apply randomised properties
             this.randomiseOfferItemUpdProperties(randomUserId, itemWithChildren, itemDetails[1]);
             barterScheme = this.createBarterBarterScheme(itemWithChildren, this.ragfairConfig.dynamic.barter);
+            if (this.ragfairConfig.dynamic.barter.makeSingleStackOnly) {
+                itemWithChildren[0].upd.StackObjectsCount = 1;
+            }
         } else {
             // Apply randomised properties
             this.randomiseOfferItemUpdProperties(randomUserId, itemWithChildren, itemDetails[1]);

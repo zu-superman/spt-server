@@ -39,6 +39,7 @@
             "itemCountMax": 3,
             "priceRangeVariancePercent": 15,
             "minRoubleCostToBecomeBarter": 20000,
+			"makeSingleStackOnly": true,
             "itemTypeBlacklist": [
                 "55802f4a4bdc2ddb688b4569",
                 "55802f3e4bdc2de7118b4584",
