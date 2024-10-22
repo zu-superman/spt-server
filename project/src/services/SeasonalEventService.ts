@@ -197,13 +197,12 @@ export class SeasonalEventService {
 
     /**
      * Handle seasonal events
-     * @param sessionId Players id
      */
-    public enableSeasonalEvents(sessionId: string): void {
+    public enableSeasonalEvents(): void {
         if (this.currentlyActiveEvents) {
             const globalConfig = this.databaseService.getGlobals().config;
             for (const event of this.currentlyActiveEvents) {
-                this.updateGlobalEvents(sessionId, globalConfig, event);
+                this.updateGlobalEvents(globalConfig, event);
             }
         }
     }
@@ -325,11 +324,10 @@ export class SeasonalEventService {
 
     /**
      * Make adjusted to server code based on the name of the event passed in
-     * @param sessionId Player id
      * @param globalConfig globals.json
      * @param eventName Name of the event to enable. e.g. Christmas
      */
-    protected updateGlobalEvents(sessionId: string, globalConfig: IConfig, eventType: SeasonalEventType): void {
+    protected updateGlobalEvents(globalConfig: IConfig, eventType: SeasonalEventType): void {
         this.logger.success(`${eventType} event is active`);
 
         switch (eventType.toLowerCase()) {
@@ -352,11 +350,9 @@ export class SeasonalEventService {
                 this.addGifterBotToMaps();
                 this.addLootItemsToGifterDropItemsList();
                 this.enableDancingTree();
-                this.giveGift(sessionId, "Christmas2022");
                 this.enableSnow();
                 break;
             case SeasonalEventType.NEW_YEARS.toLowerCase():
-                this.giveGift(sessionId, "NewYear2023");
                 this.enableSnow();
                 break;
             case SeasonalEventType.SNOW.toLowerCase():
@@ -366,6 +362,22 @@ export class SeasonalEventService {
                 // Likely a mod event
                 this.addEventGearToBots(eventType);
                 break;
+        }
+    }
+
+    public givePlayerSeasonalGifts(sessionId: string): void {
+        if (this.currentlyActiveEvents) {
+            const globalConfig = this.databaseService.getGlobals().config;
+            for (const event of this.currentlyActiveEvents) {
+                switch (event.toLowerCase()) {
+                    case SeasonalEventType.CHRISTMAS.toLowerCase():
+                        this.giveGift(sessionId, "Christmas2022");
+                        break;
+                    case SeasonalEventType.NEW_YEARS.toLowerCase():
+                        this.giveGift(sessionId, "NewYear2023");
+                        break;
+                }
+            }
         }
     }
 

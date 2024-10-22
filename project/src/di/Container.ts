@@ -226,6 +226,7 @@ import { OpenZoneService } from "@spt/services/OpenZoneService";
 import { PaymentService } from "@spt/services/PaymentService";
 import { PlayerService } from "@spt/services/PlayerService";
 import { PmcChatResponseService } from "@spt/services/PmcChatResponseService";
+import { PostDbLoadService } from "@spt/services/PostDbLoadService";
 import { ProfileActivityService } from "@spt/services/ProfileActivityService";
 import { ProfileFixerService } from "@spt/services/ProfileFixerService";
 import { RagfairCategoriesService } from "@spt/services/RagfairCategoriesService";
@@ -805,6 +806,9 @@ export class Container {
             lifecycle: Lifecycle.Singleton,
         });
         depContainer.register<RaidWeatherService>("RaidWeatherService", RaidWeatherService, {
+            lifecycle: Lifecycle.Singleton,
+        });
+        depContainer.register<PostDbLoadService>("PostDbLoadService", PostDbLoadService, {
             lifecycle: Lifecycle.Singleton,
         });
     }

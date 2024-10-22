@@ -219,11 +219,6 @@ export class ProfileController {
         this.saveServer.getProfile(sessionID).info.wipe = false;
         this.saveServer.saveProfile(sessionID);
 
-        // Requires to enable seasonal changes after creating fresh profile
-        if (this.seasonalEventService.isAutomaticEventDetectionEnabled()) {
-            this.seasonalEventService.enableSeasonalEvents(sessionID);
-        }
-
         return pmcData._id;
     }
 
