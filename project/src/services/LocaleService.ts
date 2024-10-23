@@ -96,6 +96,11 @@ export class LocaleService {
             // Chek if base language (e.g. CN / EN / DE) exists
             const languageCode = platformLocale.language.toLocaleLowerCase();
             if (this.localeConfig.serverSupportedLocales.includes(languageCode)) {
+                if (baseNameCode === "zh") {
+                    // Handle edge case of zh
+                    return "zh-cn";
+                }
+
                 return languageCode;
             }
 
