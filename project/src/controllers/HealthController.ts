@@ -2,10 +2,10 @@ import { HealthHelper } from "@spt/helpers/HealthHelper";
 import { InventoryHelper } from "@spt/helpers/InventoryHelper";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
+import { IBodyPartHealth } from "@spt/models/eft/common/tables/IBotBase";
 import { IBodyPart, IHealthTreatmentRequestData } from "@spt/models/eft/health/IHealthTreatmentRequestData";
 import { IOffraidEatRequestData } from "@spt/models/eft/health/IOffraidEatRequestData";
 import { IOffraidHealRequestData } from "@spt/models/eft/health/IOffraidHealRequestData";
-import { ISyncHealthRequestData } from "@spt/models/eft/health/ISyncHealthRequestData";
 import { IWorkoutData } from "@spt/models/eft/health/IWorkoutData";
 import { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRouterResponse";
 import { IProcessBuyTradeRequestData } from "@spt/models/eft/trade/IProcessBuyTradeRequestData";
@@ -31,24 +31,6 @@ export class HealthController {
         @inject("HealthHelper") protected healthHelper: HealthHelper,
         @inject("PrimaryCloner") protected cloner: ICloner,
     ) {}
-
-    /**
-     * stores in-raid player health
-     * @param pmcData Player profile
-     * @param info Request data
-     * @param sessionID Player id
-     * @param addEffects Should effects found be added or removed from profile
-     * @param deleteExistingEffects Should all prior effects be removed before apply new ones
-     */
-    public saveVitality(
-        pmcData: IPmcData,
-        info: ISyncHealthRequestData,
-        sessionID: string,
-        addEffects = true,
-        deleteExistingEffects = true,
-    ): void {
-        this.healthHelper.saveVitality(pmcData, info, sessionID, addEffects, deleteExistingEffects);
-    }
 
     /**
      * When healing in menu
