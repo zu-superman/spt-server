@@ -74,6 +74,46 @@ export class HealthController {
             this.inventoryHelper.removeItem(pmcData, request.item, sessionID, output);
         }
 
+        const healingItemDbDetails = this.itemHelper.getItem(healingItemToUse._tpl);
+
+        const healItemEffectDetails = healingItemDbDetails[1]._props.effects_damage;
+        const bodyPartToHeal: IBodyPartHealth = pmcData.Health.BodyParts[request.part];
+        if (!bodyPartToHeal) {
+            this.logger.warning(`Tried to heal a non-existent body part: ${request.part}`);
+
+            return output;
+        }
+
+        // Adjust body part hp value
+        bodyPartToHeal.Health.Current += request.count;
+
+        // Ensure we've not healed beyond the limbs max hp
+        if (bodyPartToHeal.Health.Current > bodyPartToHeal.Health.Maximum) {
+            bodyPartToHeal.Health.Current = bodyPartToHeal.Health.Maximum;
+        }
+
+        // Check if healing item removes negative effects
+        const itemRemovesEffects = Object.keys(healingItemDbDetails[1]._props.effects_damage).length > 0;
+        if (itemRemovesEffects) {
+            // Check body parts effects against what the healing item can remove
+            const effectsOnBodyPart = Object.keys(bodyPartToHeal.Effects);
+            if (!effectsOnBodyPart) {
+                this.logger.warning(`Tried to remove effects from body part: ${request.part} without effects`);
+
+                return output;
+            }
+
+            for (const effectKey of effectsOnBodyPart) {
+                const matchingEffectFromHealingItem = healItemEffectDetails[effectKey];
+                if (!matchingEffectFromHealingItem) {
+                    // Healing item doesnt have matching effect, it doesnt remove the effect
+                    continue;
+                }
+
+                delete bodyPartToHeal.Effects[effectKey];
+            }
+        }
+
         return output;
     }
 
