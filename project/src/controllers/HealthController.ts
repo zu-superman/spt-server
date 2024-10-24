@@ -2,7 +2,7 @@ import { HealthHelper } from "@spt/helpers/HealthHelper";
 import { InventoryHelper } from "@spt/helpers/InventoryHelper";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
-import { IBodyPartHealth } from "@spt/models/eft/common/tables/IBotBase";
+import { IBodyPartHealth, ICurrentMax } from "@spt/models/eft/common/tables/IBotBase";
 import { IBodyPart, IHealthTreatmentRequestData } from "@spt/models/eft/health/IHealthTreatmentRequestData";
 import { IOffraidEatRequestData } from "@spt/models/eft/health/IOffraidEatRequestData";
 import { IOffraidHealRequestData } from "@spt/models/eft/health/IOffraidHealRequestData";
@@ -164,7 +164,49 @@ export class HealthController {
             this.inventoryHelper.removeItem(pmcData, request.item, sessionID, output);
         }
 
+        // Check what effect eating item has and handle
+        const foodItemDbDetails = this.itemHelper.getItem(itemToConsume._tpl);
+        const foodItemEffectDetails = foodItemDbDetails[1]._props.effects_health;
+        const foodIsSingleUse = foodItemDbDetails[1]._props.MaxResource === 1;
+
+        for (const effectKey of Object.keys(foodItemEffectDetails)) {
+            const consumptionDetails = foodItemEffectDetails[effectKey];
+            switch (effectKey) {
+                case "Hydration":
+                    applyEdibleEffect(pmcData.Health.Hydration, consumptionDetails);
+                    break;
+                case "Energy":
+                    applyEdibleEffect(pmcData.Health.Energy, consumptionDetails);
+                    break;
+
+                default:
+                    this.logger.warning(`Unhandled effect after consuming: ${itemToConsume._tpl}, ${effectKey}`);
+                    break;
+            }
+        }
+
         return output;
+
+        function applyEdibleEffect(bodyValue: ICurrentMax, consumptionDetails: Record<string, number>) {
+            if (foodIsSingleUse) {
+                // Apply whole value from passed in parameter
+                bodyValue.Current += consumptionDetails.value;
+            } else {
+                bodyValue.Current += request.count;
+            }
+
+            // Ensure current never goes over max
+            if (bodyValue.Current > bodyValue.Maximum) {
+                bodyValue.Current = bodyValue.Maximum;
+
+                return;
+            }
+
+            // Same as above but for the lower bound
+            if (bodyValue.Current < 0) {
+                bodyValue.Current = 0;
+            }
+        }
     }
 
     /**
