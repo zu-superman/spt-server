@@ -67,6 +67,8 @@ export class HealthController {
             // Get max healing from db
             const maxhp = this.itemHelper.getItem(healingItemToUse._tpl)[1]._props.MaxHpResource;
             healingItemToUse.upd.MedKit = { HpResource: maxhp - request.count }; // Subtract amout used from max
+            // request.count appears to take into account healing effects removed, e.g. bleeds
+            // Salewa heals limb for 20 and fixes light bleed = (20+45 = 65)
         }
 
         // Resource in medkit is spent, delete it
@@ -84,13 +86,8 @@ export class HealthController {
             return output;
         }
 
-        // Adjust body part hp value
-        bodyPartToHeal.Health.Current += request.count;
-
-        // Ensure we've not healed beyond the limbs max hp
-        if (bodyPartToHeal.Health.Current > bodyPartToHeal.Health.Maximum) {
-            bodyPartToHeal.Health.Current = bodyPartToHeal.Health.Maximum;
-        }
+        // Get inital heal amount
+        let amountToHealLimb = request.count;
 
         // Check if healing item removes negative effects
         const itemRemovesEffects = Object.keys(healingItemDbDetails[1]._props.effects_damage).length > 0;
@@ -110,8 +107,18 @@ export class HealthController {
                     continue;
                 }
 
+                // Adjust limb heal amount based on if its fixing an effect (request.count is TOTAL cost of hp resource on heal item, NOT amount to heal limb)
+                amountToHealLimb -= matchingEffectFromHealingItem.cost ?? 0;
                 delete bodyPartToHeal.Effects[effectKey];
             }
+        }
+
+        // Adjust body part hp value
+        bodyPartToHeal.Health.Current += amountToHealLimb;
+
+        // Ensure we've not healed beyond the limbs max hp
+        if (bodyPartToHeal.Health.Current > bodyPartToHeal.Health.Maximum) {
+            bodyPartToHeal.Health.Current = bodyPartToHeal.Health.Maximum;
         }
 
         return output;
