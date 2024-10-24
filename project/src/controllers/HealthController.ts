@@ -93,12 +93,12 @@ export class HealthController {
         const itemRemovesEffects = Object.keys(healingItemDbDetails[1]._props.effects_damage).length > 0;
         if (itemRemovesEffects) {
             // Check body parts effects against what the healing item can remove
-            const effectsOnBodyPart = Object.keys(bodyPartToHeal.Effects);
-            if (!effectsOnBodyPart) {
+            if (!bodyPartToHeal.Effects) {
                 this.logger.warning(`Tried to remove effects from body part: ${request.part} without effects`);
 
                 return output;
             }
+            const effectsOnBodyPart = Object.keys(bodyPartToHeal.Effects);
 
             for (const effectKey of effectsOnBodyPart) {
                 const matchingEffectFromHealingItem = healItemEffectDetails[effectKey];
