@@ -6,6 +6,7 @@ import { PlayerScavGenerator } from "@spt/generators/PlayerScavGenerator";
 import { HealthHelper } from "@spt/helpers/HealthHelper";
 import { InRaidHelper } from "@spt/helpers/InRaidHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
+import { QuestHelper } from "@spt/helpers/QuestHelper";
 import { TraderHelper } from "@spt/helpers/TraderHelper";
 import { ILocationBase } from "@spt/models/eft/common/ILocationBase";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
@@ -68,6 +69,7 @@ export class LocationLifecycleService {
         @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("InRaidHelper") protected inRaidHelper: InRaidHelper,
         @inject("HealthHelper") protected healthHelper: HealthHelper,
+        @inject("QuestHelper") protected questHelper: QuestHelper,
         @inject("MatchBotDetailsCacheService") protected matchBotDetailsCacheService: MatchBotDetailsCacheService,
         @inject("PmcChatResponseService") protected pmcChatResponseService: PmcChatResponseService,
         @inject("PlayerScavGenerator") protected playerScavGenerator: PlayerScavGenerator,
@@ -618,6 +620,7 @@ export class LocationLifecycleService {
         locationName: string,
     ): void {
         const postRaidProfile = request.results.profile;
+        const preRaidProfileQuestDataClone = this.cloner.clone(pmcProfile.Quests);
 
         // Update inventory
         this.inRaidHelper.setInventory(sessionId, pmcProfile, postRaidProfile, isSurvived, isTransfer);
@@ -629,14 +632,18 @@ export class LocationLifecycleService {
         pmcProfile.TaskConditionCounters = postRaidProfile.TaskConditionCounters;
         pmcProfile.SurvivorClass = postRaidProfile.SurvivorClass;
         pmcProfile.Achievements = postRaidProfile.Achievements;
-        pmcProfile.Quests = this.processPostRaidQuests(postRaidProfile.Quests);
+        pmcProfile.Quests = this.processPostRaidQuests(postRaidProfile.Quests, pmcProfile.Quests);
+
+        // Handle edge case - must occur AFTER processPostRaidQuests()
+        this.lightkeeperQuestWorkaround(sessionId, postRaidProfile.Quests, preRaidProfileQuestDataClone, pmcProfile);
+
         pmcProfile.WishList = postRaidProfile.WishList;
 
         pmcProfile.Info.Experience = postRaidProfile.Info.Experience;
 
         this.applyTraderStandingAdjustments(pmcProfile.TradersInfo, postRaidProfile.TradersInfo);
 
-        // Must occur after experience is set and stats copied over
+        // Must occur AFTER experience is set and stats copied over
         pmcProfile.Stats.Eft.TotalSessionExperience = 0;
 
         const fenceId = Traders.FENCE;
@@ -686,12 +693,52 @@ export class LocationLifecycleService {
     }
 
     /**
+     * In 0.15 Lightkeeper quests do not give rewards in PvE, this issue also occurs in spt
+     * We check for newly completed Lk quests and run them through the servers `CompleteQuest` process
+     * This rewards players with items + craft unlocks + new trader assorts
+     * @param sessionId Session id
+     * @param postRaidQuests Quest statuses post-raid
+     * @param preRaidQuests Quest statuses pre-raid
+     * @param pmcProfile Players profile
+     */
+    protected lightkeeperQuestWorkaround(
+        sessionId: string,
+        postRaidQuests: IQuestStatus[],
+        preRaidQuests: IQuestStatus[],
+        pmcProfile: IPmcData,
+    ): void {
+        // LK quests that were not completed before raid but now are
+        const newlyCompletedLightkeeperQuests = postRaidQuests.filter(
+            (postRaidQuest) =>
+                postRaidQuest.status === QuestStatus.Success &&
+                preRaidQuests.find(
+                    (preRaidQuest) =>
+                        preRaidQuest.qid === postRaidQuest.qid && preRaidQuest.status !== QuestStatus.Success,
+                ) &&
+                this.databaseService.getQuests()[postRaidQuest.qid].traderId === Traders.LIGHTHOUSEKEEPER,
+        );
+
+        // Run server complete quest process to ensure player gets rewards
+        for (const questToComplete of newlyCompletedLightkeeperQuests) {
+            this.questHelper.completeQuest(
+                pmcProfile,
+                { Action: "CompleteQuest", qid: questToComplete.qid, removeExcessItems: false },
+                sessionId,
+            );
+        }
+    }
+
+    /**
      * Convert post-raid quests into correct format
      * Quest status comes back as a string version of the enum `Success`, not the expected value of 1
-     * @param questsToProcess
+     * @param questsToProcess quests data from client
+     * @param preRaidQuestStatuses quest data from before raid
      * @returns IQuestStatus
      */
-    protected processPostRaidQuests(questsToProcess: IQuestStatus[]): IQuestStatus[] {
+    protected processPostRaidQuests(
+        questsToProcess: IQuestStatus[],
+        preRaidQuestStatuses: IQuestStatus[],
+    ): IQuestStatus[] {
         for (const quest of questsToProcess) {
             quest.status = Number(QuestStatus[quest.status]);
 

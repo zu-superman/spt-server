@@ -12,6 +12,7 @@ import { IItem } from "@spt/models/eft/common/tables/IItem";
 import { IQuest, IQuestCondition, IQuestReward } from "@spt/models/eft/common/tables/IQuest";
 import { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRouterResponse";
 import { IAcceptQuestRequestData } from "@spt/models/eft/quests/IAcceptQuestRequestData";
+import { ICompleteQuestRequestData } from "@spt/models/eft/quests/ICompleteQuestRequestData";
 import { IFailQuestRequestData } from "@spt/models/eft/quests/IFailQuestRequestData";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { MessageType } from "@spt/models/enums/MessageType";
@@ -27,6 +28,7 @@ import { DatabaseService } from "@spt/services/DatabaseService";
 import { LocaleService } from "@spt/services/LocaleService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { MailSendService } from "@spt/services/MailSendService";
+import { PlayerService } from "@spt/services/PlayerService";
 import { SeasonalEventService } from "@spt/services/SeasonalEventService";
 import { HashUtil } from "@spt/utils/HashUtil";
 import { TimeUtil } from "@spt/utils/TimeUtil";
@@ -55,6 +57,7 @@ export class QuestHelper {
         @inject("TraderHelper") protected traderHelper: TraderHelper,
         @inject("PresetHelper") protected presetHelper: PresetHelper,
         @inject("MailSendService") protected mailSendService: MailSendService,
+        @inject("PlayerService") protected playerService: PlayerService,
         @inject("ConfigServer") protected configServer: ConfigServer,
         @inject("PrimaryCloner") protected cloner: ICloner,
     ) {
@@ -1165,5 +1168,409 @@ export class QuestHelper {
         }
 
         return value;
+    }
+
+    public completeQuest(
+        pmcData: IPmcData,
+        body: ICompleteQuestRequestData,
+        sessionID: string,
+    ): IItemEventRouterResponse {
+        const completeQuestResponse = this.eventOutputHolder.getOutput(sessionID);
+
+        const completedQuest = this.getQuestFromDb(body.qid, pmcData);
+        const preCompleteProfileQuests = this.cloner.clone(pmcData.Quests);
+
+        const completedQuestId = body.qid;
+        const clientQuestsClone = this.cloner.clone(this.getClientQuests(sessionID)); // Must be gathered prior to applyQuestReward() & failQuests()
+
+        const newQuestState = QuestStatus.Success;
+        this.updateQuestState(pmcData, newQuestState, completedQuestId);
+        const questRewards = this.applyQuestReward(pmcData, body.qid, newQuestState, sessionID, completeQuestResponse);
+
+        // Check for linked failed + unrestartable quests (only get quests not already failed
+        const questsToFail = this.getQuestsFromProfileFailedByCompletingQuest(completedQuestId, pmcData);
+        if (questsToFail?.length > 0) {
+            this.failQuests(sessionID, pmcData, questsToFail, completeQuestResponse);
+        }
+
+        // Show modal on player screen
+        this.sendSuccessDialogMessageOnQuestComplete(sessionID, pmcData, completedQuestId, questRewards);
+
+        // Add diff of quests before completion vs after for client response
+        const questDelta = this.getDeltaQuests(clientQuestsClone, this.getClientQuests(sessionID));
+
+        // Check newly available + failed quests for timegates and add them to profile
+        this.addTimeLockedQuestsToProfile(pmcData, [...questDelta], body.qid);
+
+        // Inform client of quest changes
+        completeQuestResponse.profileChanges[sessionID].quests.push(...questDelta);
+
+        // Check if it's a repeatable quest. If so, remove from Quests
+        for (const currentRepeatable of pmcData.RepeatableQuests) {
+            const repeatableQuest = currentRepeatable.activeQuests.find(
+                (activeRepeatable) => activeRepeatable._id === completedQuestId,
+            );
+            if (repeatableQuest) {
+                // Need to remove redundant scav quest object as its no longer necessary, is tracked in pmc profile
+                if (repeatableQuest.side === "Scav") {
+                    this.removeQuestFromScavProfile(sessionID, repeatableQuest._id);
+                }
+            }
+        }
+
+        // Hydrate client response questsStatus array with data
+        const questStatusChanges = this.getQuestsWithDifferentStatuses(preCompleteProfileQuests, pmcData.Quests);
+        if (questStatusChanges) {
+            completeQuestResponse.profileChanges[sessionID].questsStatus.push(...questStatusChanges);
+        }
+
+        // Recalculate level in event player leveled up
+        pmcData.Info.Level = this.playerService.calculateLevel(pmcData);
+
+        return completeQuestResponse;
+    }
+
+    /**
+     * Handle client/quest/list
+     * Get all quests visible to player
+     * Exclude quests with incomplete preconditions (level/loyalty)
+     * @param sessionID session id
+     * @returns array of IQuest
+     */
+    public getClientQuests(sessionID: string): IQuest[] {
+        const questsToShowPlayer: IQuest[] = [];
+        const allQuests = this.getQuestsFromDb();
+        const profile: IPmcData = this.profileHelper.getPmcProfile(sessionID);
+
+        for (const quest of allQuests) {
+            // Player already accepted the quest, show it regardless of status
+            const questInProfile = profile.Quests.find((x) => x.qid === quest._id);
+            if (questInProfile) {
+                quest.sptStatus = questInProfile.status;
+                questsToShowPlayer.push(quest);
+                continue;
+            }
+
+            // Filter out bear quests for usec and vice versa
+            if (this.questIsForOtherSide(profile.Info.Side, quest._id)) {
+                continue;
+            }
+
+            if (!this.showEventQuestToPlayer(quest._id)) {
+                continue;
+            }
+
+            // Don't add quests that have a level higher than the user's
+            if (!this.playerLevelFulfillsQuestRequirement(quest, profile.Info.Level)) {
+                continue;
+            }
+
+            // Player can use trader mods then remove them, leaving quests behind
+            const trader = profile.TradersInfo[quest.traderId];
+            if (!trader) {
+                this.logger.debug(
+                    `Unable to show quest: ${quest.QuestName} as its for a trader: ${quest.traderId} that no longer exists.`,
+                );
+
+                continue;
+            }
+
+            const questRequirements = this.questConditionHelper.getQuestConditions(quest.conditions.AvailableForStart);
+            const loyaltyRequirements = this.questConditionHelper.getLoyaltyConditions(
+                quest.conditions.AvailableForStart,
+            );
+            const standingRequirements = this.questConditionHelper.getStandingConditions(
+                quest.conditions.AvailableForStart,
+            );
+
+            // Quest has no conditions, standing or loyalty conditions, add to visible quest list
+            if (
+                questRequirements.length === 0 &&
+                loyaltyRequirements.length === 0 &&
+                standingRequirements.length === 0
+            ) {
+                quest.sptStatus = QuestStatus.AvailableForStart;
+                questsToShowPlayer.push(quest);
+                continue;
+            }
+
+            // Check the status of each quest condition, if any are not completed
+            // then this quest should not be visible
+            let haveCompletedPreviousQuest = true;
+            for (const conditionToFulfil of questRequirements) {
+                // If the previous quest isn't in the user profile, it hasn't been completed or started
+                const prerequisiteQuest = profile.Quests.find((profileQuest) =>
+                    conditionToFulfil.target.includes(profileQuest.qid),
+                );
+                if (!prerequisiteQuest) {
+                    haveCompletedPreviousQuest = false;
+                    break;
+                }
+
+                // Prereq does not have its status requirement fulfilled
+                // Some bsg status ids are strings, MUST convert to number before doing includes check
+                if (!conditionToFulfil.status.map((status) => Number(status)).includes(prerequisiteQuest.status)) {
+                    haveCompletedPreviousQuest = false;
+                    break;
+                }
+
+                // Has a wait timer
+                if (conditionToFulfil.availableAfter > 0) {
+                    // Compare current time to unlock time for previous quest
+                    const previousQuestCompleteTime = prerequisiteQuest.statusTimers[prerequisiteQuest.status];
+                    const unlockTime = previousQuestCompleteTime + conditionToFulfil.availableAfter;
+                    if (unlockTime > this.timeUtil.getTimestamp()) {
+                        this.logger.debug(
+                            `Quest ${quest.QuestName} is locked for another ${
+                                unlockTime - this.timeUtil.getTimestamp()
+                            } seconds`,
+                        );
+                    }
+                }
+            }
+
+            // Previous quest not completed, skip
+            if (!haveCompletedPreviousQuest) {
+                continue;
+            }
+
+            let passesLoyaltyRequirements = true;
+            for (const condition of loyaltyRequirements) {
+                if (!this.traderLoyaltyLevelRequirementCheck(condition, profile)) {
+                    passesLoyaltyRequirements = false;
+                    break;
+                }
+            }
+
+            let passesStandingRequirements = true;
+            for (const condition of standingRequirements) {
+                if (!this.traderStandingRequirementCheck(condition, profile)) {
+                    passesStandingRequirements = false;
+                    break;
+                }
+            }
+
+            if (haveCompletedPreviousQuest && passesLoyaltyRequirements && passesStandingRequirements) {
+                quest.sptStatus = QuestStatus.AvailableForStart;
+                questsToShowPlayer.push(quest);
+            }
+        }
+
+        return questsToShowPlayer;
+    }
+
+    /**
+     * Return a list of quests that would fail when supplied quest is completed
+     * @param completedQuestId quest completed id
+     * @returns array of IQuest objects
+     */
+    protected getQuestsFromProfileFailedByCompletingQuest(completedQuestId: string, pmcProfile: IPmcData): IQuest[] {
+        const questsInDb = this.getQuestsFromDb();
+        return questsInDb.filter((quest) => {
+            // No fail conditions, skip
+            if (!quest.conditions.Fail || quest.conditions.Fail.length === 0) {
+                return false;
+            }
+
+            // Quest already failed in profile, skip
+            if (
+                pmcProfile.Quests.some(
+                    (profileQuest) => profileQuest.qid === quest._id && profileQuest.status === QuestStatus.Fail,
+                )
+            ) {
+                return false;
+            }
+
+            return quest.conditions.Fail.some((condition) => condition.target?.includes(completedQuestId));
+        });
+    }
+
+    /**
+     * Fail the provided quests
+     * Update quest in profile, otherwise add fresh quest object with failed status
+     * @param sessionID session id
+     * @param pmcData player profile
+     * @param questsToFail quests to fail
+     * @param output Client output
+     */
+    protected failQuests(
+        sessionID: string,
+        pmcData: IPmcData,
+        questsToFail: IQuest[],
+        output: IItemEventRouterResponse,
+    ): void {
+        for (const questToFail of questsToFail) {
+            // Skip failing a quest that has a fail status of something other than success
+            if (questToFail.conditions.Fail?.some((x) => x.status?.some((status) => status !== QuestStatus.Success))) {
+                continue;
+            }
+
+            const isActiveQuestInPlayerProfile = pmcData.Quests.find((quest) => quest.qid === questToFail._id);
+            if (isActiveQuestInPlayerProfile) {
+                if (isActiveQuestInPlayerProfile.status !== QuestStatus.Fail) {
+                    const failBody: IFailQuestRequestData = {
+                        Action: "QuestFail",
+                        qid: questToFail._id,
+                        removeExcessItems: true,
+                    };
+                    this.failQuest(pmcData, failBody, sessionID, output);
+                }
+            } else {
+                // Failing an entirely new quest that doesnt exist in profile
+                const statusTimers = {};
+                statusTimers[QuestStatus.Fail] = this.timeUtil.getTimestamp();
+                const questData: IQuestStatus = {
+                    qid: questToFail._id,
+                    startTime: this.timeUtil.getTimestamp(),
+                    statusTimers: statusTimers,
+                    status: QuestStatus.Fail,
+                };
+                pmcData.Quests.push(questData);
+            }
+        }
+    }
+
+    /**
+     * Send a popup to player on successful completion of a quest
+     * @param sessionID session id
+     * @param pmcData Player profile
+     * @param completedQuestId Completed quest id
+     * @param questRewards Rewards given to player
+     */
+    protected sendSuccessDialogMessageOnQuestComplete(
+        sessionID: string,
+        pmcData: IPmcData,
+        completedQuestId: string,
+        questRewards: IItem[],
+    ): void {
+        const quest = this.getQuestFromDb(completedQuestId, pmcData);
+
+        this.mailSendService.sendLocalisedNpcMessageToPlayer(
+            sessionID,
+            this.traderHelper.getTraderById(quest.traderId),
+            MessageType.QUEST_SUCCESS,
+            quest.successMessageText,
+            questRewards,
+            this.timeUtil.getHoursAsSeconds(this.getMailItemRedeemTimeHoursForProfile(pmcData)),
+        );
+    }
+
+    /**
+     * Look for newly available quests after completing a quest with a requirement to wait x minutes (time-locked) before being available and add data to profile
+     * @param pmcData Player profile to update
+     * @param quests Quests to look for wait conditions in
+     * @param completedQuestId Quest just completed
+     */
+    protected addTimeLockedQuestsToProfile(pmcData: IPmcData, quests: IQuest[], completedQuestId: string): void {
+        // Iterate over quests, look for quests with right criteria
+        for (const quest of quests) {
+            // If quest has prereq of completed quest + availableAfter value > 0 (quest has wait time)
+            const nextQuestWaitCondition = quest.conditions.AvailableForStart.find(
+                (x) => x.target?.includes(completedQuestId) && x.availableAfter > 0,
+            );
+            if (nextQuestWaitCondition) {
+                // Now + wait time
+                const availableAfterTimestamp = this.timeUtil.getTimestamp() + nextQuestWaitCondition.availableAfter;
+
+                // Update quest in profile with status of AvailableAfter
+                const existingQuestInProfile = pmcData.Quests.find((x) => x.qid === quest._id);
+                if (existingQuestInProfile) {
+                    existingQuestInProfile.availableAfter = availableAfterTimestamp;
+                    existingQuestInProfile.status = QuestStatus.AvailableAfter;
+                    existingQuestInProfile.startTime = 0;
+                    existingQuestInProfile.statusTimers = {};
+
+                    continue;
+                }
+
+                pmcData.Quests.push({
+                    qid: quest._id,
+                    startTime: 0,
+                    status: QuestStatus.AvailableAfter,
+                    statusTimers: {
+                        9: this.timeUtil.getTimestamp(),
+                    },
+                    availableAfter: availableAfterTimestamp,
+                });
+            }
+        }
+    }
+
+    /**
+     * Remove a quest entirely from a profile
+     * @param sessionId Player id
+     * @param questIdToRemove Qid of quest to remove
+     */
+    protected removeQuestFromScavProfile(sessionId: string, questIdToRemove: string): void {
+        const fullProfile = this.profileHelper.getFullProfile(sessionId);
+        const repeatableInScavProfile = fullProfile.characters.scav.Quests?.find((x) => x.qid === questIdToRemove);
+        if (!repeatableInScavProfile) {
+            this.logger.warning(
+                this.localisationService.getText("quest-unable_to_remove_scav_quest_from_profile", {
+                    scavQuestId: questIdToRemove,
+                    profileId: sessionId,
+                }),
+            );
+
+            return;
+        }
+
+        fullProfile.characters.scav.Quests.splice(
+            fullProfile.characters.scav.Quests.indexOf(repeatableInScavProfile),
+            1,
+        );
+    }
+
+    /**
+     * Return quests that have different statuses
+     * @param preQuestStatusus Quests before
+     * @param postQuestStatuses Quests after
+     * @returns QuestStatusChange array
+     */
+    protected getQuestsWithDifferentStatuses(
+        preQuestStatusus: IQuestStatus[],
+        postQuestStatuses: IQuestStatus[],
+    ): IQuestStatus[] | undefined {
+        const result: IQuestStatus[] = [];
+
+        for (const quest of postQuestStatuses) {
+            // Add quest if status differs or quest not found
+            const preQuest = preQuestStatusus.find((x) => x.qid === quest.qid);
+            if (!preQuest || preQuest.status !== quest.status) {
+                result.push(quest);
+            }
+        }
+
+        if (result.length === 0) {
+            return undefined;
+        }
+
+        return result;
+    }
+
+    /**
+     * Does a provided quest have a level requirement equal to or below defined level
+     * @param quest Quest to check
+     * @param playerLevel level of player to test against quest
+     * @returns true if quest can be seen/accepted by player of defined level
+     */
+    protected playerLevelFulfillsQuestRequirement(quest: IQuest, playerLevel: number): boolean {
+        if (!quest.conditions) {
+            // No conditions
+            return true;
+        }
+
+        const levelConditions = this.questConditionHelper.getLevelConditions(quest.conditions.AvailableForStart);
+        if (levelConditions.length) {
+            for (const levelCondition of levelConditions) {
+                if (!this.doesPlayerLevelFulfilCondition(playerLevel, levelCondition)) {
+                    // Not valid, exit out
+                    return false;
+                }
+            }
+        }
+
+        // All conditions passed / has no level requirement, valid
+        return true;
     }
 }
