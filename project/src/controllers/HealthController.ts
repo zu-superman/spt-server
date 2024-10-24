@@ -81,7 +81,7 @@ export class HealthController {
         const healItemEffectDetails = healingItemDbDetails[1]._props.effects_damage;
         const bodyPartToHeal: IBodyPartHealth = pmcData.Health.BodyParts[request.part];
         if (!bodyPartToHeal) {
-            this.logger.warning(`Tried to heal a non-existent body part: ${request.part}`);
+            this.logger.warning(`Player: ${sessionID} Tried to heal a non-existent body part: ${request.part}`);
 
             return output;
         }
@@ -91,16 +91,11 @@ export class HealthController {
 
         // Check if healing item removes negative effects
         const itemRemovesEffects = Object.keys(healingItemDbDetails[1]._props.effects_damage).length > 0;
-        if (itemRemovesEffects) {
-            // Check body parts effects against what the healing item can remove
-            if (!bodyPartToHeal.Effects) {
-                this.logger.warning(`Tried to remove effects from body part: ${request.part} without effects`);
-
-                return output;
-            }
+        if (itemRemovesEffects && bodyPartToHeal.Effects) {
+            // Can remove effects and limb has effects to remove
             const effectsOnBodyPart = Object.keys(bodyPartToHeal.Effects);
-
             for (const effectKey of effectsOnBodyPart) {
+                // Check if healing item removes the effect on limb
                 const matchingEffectFromHealingItem = healItemEffectDetails[effectKey];
                 if (!matchingEffectFromHealingItem) {
                     // Healing item doesnt have matching effect, it doesnt remove the effect
