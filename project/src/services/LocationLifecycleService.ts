@@ -632,7 +632,7 @@ export class LocationLifecycleService {
         pmcProfile.TaskConditionCounters = postRaidProfile.TaskConditionCounters;
         pmcProfile.SurvivorClass = postRaidProfile.SurvivorClass;
         pmcProfile.Achievements = postRaidProfile.Achievements;
-        pmcProfile.Quests = this.processPostRaidQuests(postRaidProfile.Quests, pmcProfile.Quests);
+        pmcProfile.Quests = this.processPostRaidQuests(postRaidProfile.Quests);
 
         // Handle edge case - must occur AFTER processPostRaidQuests()
         this.lightkeeperQuestWorkaround(sessionId, postRaidProfile.Quests, preRaidProfileQuestDataClone, pmcProfile);
@@ -735,10 +735,7 @@ export class LocationLifecycleService {
      * @param preRaidQuestStatuses quest data from before raid
      * @returns IQuestStatus
      */
-    protected processPostRaidQuests(
-        questsToProcess: IQuestStatus[],
-        preRaidQuestStatuses: IQuestStatus[],
-    ): IQuestStatus[] {
+    protected processPostRaidQuests(questsToProcess: IQuestStatus[]): IQuestStatus[] {
         for (const quest of questsToProcess) {
             quest.status = Number(QuestStatus[quest.status]);
 
