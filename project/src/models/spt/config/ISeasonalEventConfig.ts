@@ -14,6 +14,7 @@ export interface ISeasonalEventConfig extends IBaseConfig {
 }
 
 export interface ISeasonalEvent {
+    enabled: boolean;
     name: string;
     type: SeasonalEventType;
     startDay: number;

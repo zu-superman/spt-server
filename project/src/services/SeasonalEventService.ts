@@ -196,7 +196,7 @@ export class SeasonalEventService {
     }
 
     /**
-     * Handle seasonal events
+     * Handle activating seasonal events
      */
     public enableSeasonalEvents(): void {
         if (this.currentlyActiveEvents) {
@@ -207,6 +207,9 @@ export class SeasonalEventService {
         }
     }
 
+    /**
+     * Store active events inside class array property `currentlyActiveEvents` + set class properties: christmasEventActive/halloweenEventActive
+     */
     protected cacheActiveEvents(): void {
         const currentDate = new Date();
         const seasonalEvents = this.getEventDetails();
@@ -217,6 +220,9 @@ export class SeasonalEventService {
 
             // Current date is between start/end dates
             if (currentDate >= eventStartDate && currentDate <= eventEndDate) {
+                if (!event.enabled) {
+                    continue;
+                }
                 this.currentlyActiveEvents.push(SeasonalEventType[event.type]);
 
                 if (SeasonalEventType[event.type] === SeasonalEventType.CHRISTMAS) {
@@ -230,6 +236,10 @@ export class SeasonalEventService {
         }
     }
 
+    /**
+     * Get the currently active weather season e.g. SUMMER/AUTUMN/WINTER
+     * @returns Season enum value
+     */
     public getActiveWeatherSeason(): Season {
         if (this.weatherConfig.overrideSeason !== null) {
             return this.weatherConfig.overrideSeason;
