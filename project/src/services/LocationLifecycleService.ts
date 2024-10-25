@@ -715,7 +715,7 @@ export class LocationLifecycleService {
                     (preRaidQuest) =>
                         preRaidQuest.qid === postRaidQuest.qid && preRaidQuest.status !== QuestStatus.Success,
                 ) &&
-                this.databaseService.getQuests()[postRaidQuest.qid].traderId === Traders.LIGHTHOUSEKEEPER,
+                this.databaseService.getQuests()[postRaidQuest.qid]?.traderId === Traders.LIGHTHOUSEKEEPER,
         );
 
         // Run server complete quest process to ensure player gets rewards
