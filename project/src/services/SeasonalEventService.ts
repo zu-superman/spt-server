@@ -360,13 +360,8 @@ export class SeasonalEventService {
                 this.addGifterBotToMaps();
                 this.addLootItemsToGifterDropItemsList();
                 this.enableDancingTree();
-                this.enableSnow();
                 break;
             case SeasonalEventType.NEW_YEARS.toLowerCase():
-                this.enableSnow();
-                break;
-            case SeasonalEventType.SNOW.toLowerCase():
-                this.enableSnow();
                 break;
             default:
                 // Likely a mod event

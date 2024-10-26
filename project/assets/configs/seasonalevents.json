@@ -714,15 +714,6 @@
             "startMonth": "1",
             "endDay": "7",
             "endMonth": "1"
-        },
-        {
-			"enabled": true,
-            "name": "snow",
-            "type": "SNOW",
-            "startDay": "8",
-            "startMonth": "1",
-            "endDay": "12",
-            "endMonth": "2"
         }
     ]
 }
