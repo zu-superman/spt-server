@@ -88,6 +88,11 @@
                 "max": 0.96
             }
         },
+		"ignoreQualityPriceVarianceBlacklist": [
+			"59e3577886f774176a362503",
+			"5d02797c86f774203f38e30a",
+			"5ab8e79e86f7742d8b372e78"
+		],
         "showDefaultPresetsOnly": true,
         "endTimeSeconds": {
             "min": 360,

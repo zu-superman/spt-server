@@ -55,6 +55,8 @@ export interface IDynamic {
     priceRanges: IPriceRanges;
     /** Should default presets to listed only or should non-standard presets found in globals.json be listed too */
     showDefaultPresetsOnly: boolean;
+    /** Tpls that should not use the variable price system when their quality is < 100% (lower dura/uses = lower price) */
+    ignoreQualityPriceVarianceBlacklist: string[];
     endTimeSeconds: MinMax;
     /** Settings to control the durability range of item items listed on flea */
     condition: Condition;

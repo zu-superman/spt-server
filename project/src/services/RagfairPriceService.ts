@@ -278,8 +278,8 @@ export class RagfairPriceService implements OnLoad {
             price *= multiplier;
         }
 
-        // The quality of the item affects the price.
-        if (item) {
+        // The quality of the item affects the price + not on the ignore list
+        if (item && !this.ragfairConfig.dynamic.ignoreQualityPriceVarianceBlacklist.includes(itemTemplateId)) {
             const qualityModifier = this.itemHelper.getItemQualityModifier(item);
             price *= qualityModifier;
         }
