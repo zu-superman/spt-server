@@ -714,6 +714,15 @@
             "startMonth": "1",
             "endDay": "7",
             "endMonth": "1"
-        }
+        },
+        {
+			"enabled": true,
+            "name": "April fools",
+            "type": "APRIL_FOOLS",
+            "startDay": "1",
+            "startMonth": "4",
+            "endDay": "2",
+            "endMonth": "4"
+		}
     ]
 }

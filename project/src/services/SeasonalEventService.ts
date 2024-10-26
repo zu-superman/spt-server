@@ -363,6 +363,16 @@ export class SeasonalEventService {
                 break;
             case SeasonalEventType.NEW_YEARS.toLowerCase():
                 break;
+            case SeasonalEventType.APRIL_FOOLS.toLowerCase():
+                this.addGifterBotToMaps();
+                this.addLootItemsToGifterDropItemsList();
+                this.addEventGearToBots(SeasonalEventType.HALLOWEEN);
+                this.addEventGearToBots(SeasonalEventType.CHRISTMAS);
+                this.addEventBossesToMaps(SeasonalEventType.HALLOWEEN);
+                this.enableHalloweenSummonEvent();
+                this.addPumpkinsToScavBackpacks();
+                this.enableSnow();
+                break;
             default:
                 // Likely a mod event
                 this.addEventGearToBots(eventType);
