@@ -631,7 +631,27 @@
                     "TriggerId": "SummonComplete",
                     "TriggerName": "botEvent"
                 }
-            ]
+            ],
+			"laboratory": [
+				{
+				  "BossChance": 100,
+				  "BossDifficult": "normal",
+				  "BossEscortAmount": "0",
+				  "BossEscortDifficult": "normal",
+				  "BossEscortType": "followerBully",
+				  "BossName": "bossTagilla",
+				  "BossPlayer": false,
+				  "BossZone": "BotZoneFloor1,BotZoneFloor2,BotZoneBasement",
+				  "IgnoreMaxBots": true,
+				  "RandomTimeSpawn": false,
+				  "SpawnMode": [
+					"regular",
+					"pve"
+				  ],
+				  "Supports": null,
+				  "Time": -1
+				}
+			]
         },
         "christmas": {}
     },
