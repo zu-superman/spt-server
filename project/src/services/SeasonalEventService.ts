@@ -31,7 +31,7 @@ export class SeasonalEventService {
     protected christmasEventActive?: boolean = undefined;
 
     /** All events active at this point in time */
-    protected currentlyActiveEvents: SeasonalEventType[] = [];
+    protected currentlyActiveEvents: ISeasonalEvent[] = [];
 
     constructor(
         @inject("PrimaryLogger") protected logger: ILogger,
@@ -223,7 +223,7 @@ export class SeasonalEventService {
                 if (!event.enabled) {
                     continue;
                 }
-                this.currentlyActiveEvents.push(SeasonalEventType[event.type]);
+                this.currentlyActiveEvents.push(event);
 
                 if (SeasonalEventType[event.type] === SeasonalEventType.CHRISTMAS) {
                     this.christmasEventActive = true;
@@ -337,28 +337,33 @@ export class SeasonalEventService {
      * @param globalConfig globals.json
      * @param eventName Name of the event to enable. e.g. Christmas
      */
-    protected updateGlobalEvents(globalConfig: IConfig, eventType: SeasonalEventType): void {
-        this.logger.success(`${eventType} event is active`);
+    protected updateGlobalEvents(globalConfig: IConfig, event: ISeasonalEvent): void {
+        this.logger.success(`event: ${event.type} is active`);
 
-        switch (eventType.toLowerCase()) {
+        switch (event.type.toLowerCase()) {
             case SeasonalEventType.HALLOWEEN.toLowerCase():
                 globalConfig.EventType = globalConfig.EventType.filter((x) => x !== "None");
                 globalConfig.EventType.push("Halloween");
                 globalConfig.EventType.push("HalloweenIllumination");
                 globalConfig.Health.ProfileHealthSettings.DefaultStimulatorBuff = "Buffs_Halloween";
-                this.addEventGearToBots(eventType);
+                this.addEventGearToBots(event.type);
                 this.adjustZryachiyMeleeChance();
-                this.enableHalloweenSummonEvent();
-                this.addEventBossesToMaps(eventType);
+                if (event.settings?.enableSummoning) {
+                    this.enableHalloweenSummonEvent();
+                    this.addEventBossesToMaps(event.type);
+                }
                 this.addPumpkinsToScavBackpacks();
-                this.adjustTraderIcons(eventType);
+                this.adjustTraderIcons(event.type);
                 break;
             case SeasonalEventType.CHRISTMAS.toLowerCase():
                 globalConfig.EventType = globalConfig.EventType.filter((x) => x !== "None");
                 globalConfig.EventType.push("Christmas");
-                this.addEventGearToBots(eventType);
-                this.addGifterBotToMaps();
-                this.addLootItemsToGifterDropItemsList();
+                this.addEventGearToBots(event.type);
+                if (event.settings?.enableSanta) {
+                    this.addGifterBotToMaps();
+                    this.addLootItemsToGifterDropItemsList();
+                }
+
                 this.enableDancingTree();
                 break;
             case SeasonalEventType.NEW_YEARS.toLowerCase():
@@ -375,7 +380,7 @@ export class SeasonalEventService {
                 break;
             default:
                 // Likely a mod event
-                this.addEventGearToBots(eventType);
+                this.addEventGearToBots(event.type);
                 break;
         }
     }
@@ -384,7 +389,7 @@ export class SeasonalEventService {
         if (this.currentlyActiveEvents) {
             const globalConfig = this.databaseService.getGlobals().config;
             for (const event of this.currentlyActiveEvents) {
-                switch (event.toLowerCase()) {
+                switch (event.type.toLowerCase()) {
                     case SeasonalEventType.CHRISTMAS.toLowerCase():
                         this.giveGift(sessionId, "Christmas2022");
                         break;

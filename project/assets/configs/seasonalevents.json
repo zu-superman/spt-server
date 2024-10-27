@@ -695,7 +695,10 @@
             "startDay": "24",
             "startMonth": "10",
             "endDay": "4",
-            "endMonth": "11"
+            "endMonth": "11",
+			"settings": {
+				"enableSummoning": true
+			}
         },
         {
 			"enabled": true,
@@ -704,7 +707,10 @@
             "startDay": "7",
             "startMonth": "12",
             "endDay": "31",
-            "endMonth": "12"
+            "endMonth": "12",
+			"settings": {
+				"enableSanta": true
+			}
         },
         {
 			"enabled": true,

@@ -21,6 +21,7 @@ export interface ISeasonalEvent {
     startMonth: number;
     endDay: number;
     endMonth: number;
+    settings?: Record<string, boolean>;
 }
 
 export interface IGifterSetting {
