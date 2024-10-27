@@ -639,12 +639,12 @@
         {
             "map": "bigmap",
             "zones": "ZoneDormitory,ZoneGasStation,ZoneScavBase",
-            "spawnChance": 75
+            "spawnChance": 85
         },
         {
             "map": "factory4_day",
             "zones": "BotZone",
-            "spawnChance": 30
+            "spawnChance": 50
         },
         {
             "map": "laboratory",
