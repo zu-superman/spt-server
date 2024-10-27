@@ -380,7 +380,7 @@ export class SeasonalEventService {
                 break;
             default:
                 // Likely a mod event
-                this.addEventGearToBots(event.type);
+                this.handleModEvent(event);
                 break;
         }
     }
@@ -588,6 +588,10 @@ export class SeasonalEventService {
                 RandomTimeSpawn: false,
             });
         }
+    }
+
+    protected handleModEvent(event: ISeasonalEvent) {
+        this.addEventGearToBots(event.type);
     }
 
     /**
