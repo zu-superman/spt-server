@@ -538,7 +538,7 @@ export class InsuranceController {
         if (this.IsMapLabsAndInsuranceDisabled(insurance)) {
             // Trader has labs-specific messages
             // Wipe out returnable items
-            this.handleLabsInsuranceMessaging(traderDialogMessages, insurance);
+            this.handleLabsInsurance(traderDialogMessages, insurance);
         } else if (insurance.items.length === 0) {
             // Not labs and no items to return
             const insuranceFailedTemplates = traderDialogMessages.insuranceFailed;
@@ -564,18 +564,20 @@ export class InsuranceController {
         );
     }
 
-    protected handleLabsInsuranceMessaging(
-        traderDialogMessages: Record<string, string[]>,
-        insurance: IInsurance,
-    ): void {
-        if (traderDialogMessages.insuranceFailedLabs?.length > 0) {
-            // Change message template id to a labs-specific one
-            const insuranceFailedLabTemplates = traderDialogMessages.insuranceFailedLabs;
-            insurance.messageTemplateId = this.randomUtil.getArrayValue(insuranceFailedLabTemplates);
+    /**
+     * Update IInsurance object with new messageTemplateId and wipe out items array data
+     */
+    protected handleLabsInsurance(traderDialogMessages: Record<string, string[]>, insurance: IInsurance): void {
+        // Use labs specific messages if available, otherwise use default
+        const responseMesageIds =
+            traderDialogMessages.insuranceFailedLabs?.length > 0
+                ? traderDialogMessages.insuranceFailedLabs
+                : traderDialogMessages.insuranceFailed;
 
-            // Remove all insured items taken into labs
-            insurance.items = [];
-        }
+        insurance.messageTemplateId = this.randomUtil.getArrayValue(responseMesageIds);
+
+        // Remove all insured items taken into labs
+        insurance.items = [];
     }
 
     /**
