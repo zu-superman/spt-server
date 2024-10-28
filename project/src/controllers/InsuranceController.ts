@@ -530,16 +530,12 @@ export class InsuranceController {
      * @returns void
      */
     protected sendMail(sessionID: string, insurance: IInsurance): void {
-        const labsId = "laboratory";
         // After all of the item filtering that we've done, if there are no items remaining, the insurance has
         // successfully "failed" to return anything and an appropriate message should be sent to the player.
         const traderDialogMessages = this.databaseService.getTrader(insurance.traderId).dialogue;
 
         // Map is labs + insurance is disabled in base.json
-        if (
-            insurance.systemData?.location?.toLowerCase() === labsId &&
-            !this.databaseService.getLocation(labsId).base.Insurance
-        ) {
+        if (this.IsMapLabsAndInsuranceDisabled(insurance)) {
             // Trader has labs-specific messages
             // Wipe out returnable items
             if (traderDialogMessages.insuranceFailedLabs?.length > 0) {
@@ -562,6 +558,14 @@ export class InsuranceController {
             insurance.items,
             insurance.maxStorageTime,
             insurance.systemData,
+        );
+    }
+
+    protected IsMapLabsAndInsuranceDisabled(insurance: IInsurance) {
+        const labsId = "laboratory";
+        return (
+            insurance.systemData?.location?.toLowerCase() === labsId &&
+            !this.databaseService.getLocation(labsId).base.Insurance
         );
     }
 
