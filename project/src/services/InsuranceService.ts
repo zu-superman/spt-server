@@ -114,7 +114,7 @@ export class InsuranceService {
             this.saveServer.getProfile(sessionID).insurance.push({
                 scheduledTime: this.getInsuranceReturnTimestamp(pmcData, traderBase),
                 traderId: traderId,
-                maxStorageTime: this.timeUtil.getHoursAsSeconds(traderBase.insurance.max_storage_time),
+                maxStorageTime: this.getMaxInsuranceStorageTime(traderBase),
                 systemData: systemData,
                 messageType: MessageType.INSURANCE_RETURN,
                 messageTemplateId: this.randomUtil.getArrayValue(dialogueTemplates.insuranceFound),
@@ -189,6 +189,15 @@ export class InsuranceService {
         for (const [traderId, items] of Object.entries(insuranceData)) {
             this.insured[sessionID][traderId] = this.itemHelper.adoptOrphanedItems(rootID, items);
         }
+    }
+
+    protected getMaxInsuranceStorageTime(traderBase: ITraderBase): number {
+        if (this.insuranceConfig.storageTimeOverrideSeconds > 0) {
+            // Override exists, use instead of traders value
+            return this.insuranceConfig.storageTimeOverrideSeconds;
+        }
+
+        return this.timeUtil.getHoursAsSeconds(traderBase.insurance.max_storage_time);
     }
 
     /**
