@@ -537,5 +537,6 @@
             "mod_mount": 5,
             "mod_equipment": 5
         }
-    }
+    },
+	"minReserveRaiderSpawnChance": 72
 }

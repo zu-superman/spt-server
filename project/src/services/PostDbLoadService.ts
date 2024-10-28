@@ -58,6 +58,8 @@ export class PostDbLoadService {
 
         this.addCustomLooseLootPositions();
 
+        this.adjustMinReserveRaiderSpawnChance();
+
         if (this.coreConfig.fixes.fixShotgunDispersion) {
             this.fixShotgunDispersions();
         }
@@ -104,6 +106,19 @@ export class PostDbLoadService {
         // Flea bsg blacklist is off
         if (!this.ragfairConfig.dynamic.blacklist.enableBsgList) {
             this.setAllDbItemsAsSellableOnFlea();
+        }
+    }
+
+    protected adjustMinReserveRaiderSpawnChance(): void {
+        if (this.locationConfig.minReserveRaiderSpawnChance === -1) {
+            return;
+        }
+
+        const reserveBase = this.databaseService.getLocation("rezervbase").base;
+        for (const raiderSpawn of reserveBase.BossLocationSpawn.filter((x) => x.BossName === "pmcBot")) {
+            if (raiderSpawn.BossChance < this.locationConfig.minReserveRaiderSpawnChance) {
+                raiderSpawn.BossChance = this.locationConfig.minReserveRaiderSpawnChance;
+            }
         }
     }
 

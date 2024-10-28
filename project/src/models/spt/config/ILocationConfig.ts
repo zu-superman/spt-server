@@ -43,6 +43,8 @@ export interface ILocationConfig extends IBaseConfig {
     scavRaidTimeSettings: IScavRaidTimeSettings;
     /** Settings to adjust mods for lootable equipment in raid */
     equipmentLootSettings: IEquipmentLootSettings;
+    /** min percentage to set raider spawns at, -1 makes no changes */
+    minReserveRaiderSpawnChance: number;
 }
 
 export interface IEquipmentLootSettings {
