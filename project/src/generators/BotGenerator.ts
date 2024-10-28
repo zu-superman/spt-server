@@ -1,5 +1,6 @@
 import { BotInventoryGenerator } from "@spt/generators/BotInventoryGenerator";
 import { BotLevelGenerator } from "@spt/generators/BotLevelGenerator";
+import { BotGeneratorHelper } from "@spt/helpers/BotGeneratorHelper";
 import { BotHelper } from "@spt/helpers/BotHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { WeightedRandomHelper } from "@spt/helpers/WeightedRandomHelper";
@@ -53,6 +54,7 @@ export class BotGenerator {
         @inject("BotEquipmentFilterService") protected botEquipmentFilterService: BotEquipmentFilterService,
         @inject("WeightedRandomHelper") protected weightedRandomHelper: WeightedRandomHelper,
         @inject("BotHelper") protected botHelper: BotHelper,
+        @inject("BotGeneratorHelper") protected botGeneratorHelper: BotGeneratorHelper,
         @inject("SeasonalEventService") protected seasonalEventService: SeasonalEventService,
         @inject("ItemFilterService") protected itemFilterService: ItemFilterService,
         @inject("BotNameService") protected botNameService: BotNameService,
@@ -214,6 +216,9 @@ export class BotGenerator {
         // Add drip
         this.setBotAppearance(bot, botJsonTemplate.appearance, botGenerationDetails);
 
+        // Filter out blacklisted gear from the base template
+        this.filterBlacklistedGear(botJsonTemplate, botGenerationDetails);
+
         bot.Inventory = this.botInventoryGenerator.generateInventory(
             sessionId,
             botJsonTemplate,
@@ -239,6 +244,33 @@ export class BotGenerator {
         }
 
         return bot;
+    }
+
+    /**
+     * Set weighting of flagged equipment to 0
+     * @param botJsonTemplate Bot data to adjust
+     * @param botGenerationDetails Generation details of bot
+     */
+    protected filterBlacklistedGear(botJsonTemplate: IBotType, botGenerationDetails: IBotGenerationDetails): void {
+        const blacklist = this.botEquipmentFilterService.getBotEquipmentBlacklist(
+            this.botGeneratorHelper.getBotEquipmentRole(botGenerationDetails.role),
+            botGenerationDetails.playerLevel,
+        );
+
+        if (!blacklist?.gear) {
+            // Nothing to filter by
+            return;
+        }
+
+        for (const equipmentKey of Object.keys(blacklist?.gear)) {
+            const equipmentTpls: Record<string, number> = botJsonTemplate.inventory.equipment[equipmentKey];
+
+            const blacklistedTpls = blacklist?.gear[equipmentKey];
+            for (const tpl of blacklistedTpls) {
+                // Set weighting to 0, will never be picked
+                equipmentTpls[tpl] = 0;
+            }
+        }
     }
 
     protected addAdditionalPocketLootWeightsForUnheardBot(botJsonTemplate: IBotType): void {

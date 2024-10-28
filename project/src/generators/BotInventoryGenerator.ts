@@ -419,7 +419,7 @@ export class BotInventoryGenerator {
                     this.logger.error(this.localisationService.getText("bot-missing_item_template", chosenItemTpl));
                     this.logger.debug(`EquipmentSlot -> ${settings.rootEquipmentSlot}`);
 
-                    // remove picked item
+                    // Remove picked item
                     delete settings.rootEquipmentPool[chosenItemTpl];
 
                     attempts++;
