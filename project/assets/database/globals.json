@@ -31554,7 +31554,7 @@
         ]
       }
     ],
-    "MaxBotsAliveOnMap": 50,
+    "MaxBotsAliveOnMap": 36,
     "MaxBotsAliveOnMapPvE": 50,
     "MaxLoyaltyLevelForAll": false,
     "MountingSettings": {
