@@ -376,6 +376,7 @@ export class SeasonalEventService {
                 this.addEventBossesToMaps(SeasonalEventType.HALLOWEEN);
                 this.enableHalloweenSummonEvent();
                 this.addPumpkinsToScavBackpacks();
+                this.renameBitcoin();
                 this.enableSnow();
                 break;
             default:
@@ -537,6 +538,12 @@ export class SeasonalEventService {
         this.databaseService.getBots().types.assault.inventory.items.Backpack[
             ItemTpl.RANDOMLOOTCONTAINER_PUMPKIN_RAND_LOOT_CONTAINER
         ] = 400;
+    }
+
+    protected renameBitcoin(): void {
+        const enLocale = this.databaseService.getLocales().global.en;
+        enLocale[`${ItemTpl.BARTER_PHYSICAL_BITCOIN} Name`] = "Physical SPT Coin";
+        enLocale[`${ItemTpl.BARTER_PHYSICAL_BITCOIN} ShortName`] = "0.2SPT";
     }
 
     /**
