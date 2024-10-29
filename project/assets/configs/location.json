@@ -538,5 +538,8 @@
             "mod_equipment": 5
         }
     },
-	"minReserveRaiderSpawnChance": 72
+	"reserveRaiderSpawnChanceOverrides": {
+		"nonTriggered": 80,
+		"triggered": 90
+	}
 }

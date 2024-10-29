@@ -44,7 +44,12 @@ export interface ILocationConfig extends IBaseConfig {
     /** Settings to adjust mods for lootable equipment in raid */
     equipmentLootSettings: IEquipmentLootSettings;
     /** min percentage to set raider spawns at, -1 makes no changes */
-    minReserveRaiderSpawnChance: number;
+    reserveRaiderSpawnChanceOverrides: IReserveRaiderSpawnChanceOverrides;
+}
+
+export interface IReserveRaiderSpawnChanceOverrides {
+    nonTriggered: number;
+    triggered: number;
 }
 
 export interface IEquipmentLootSettings {

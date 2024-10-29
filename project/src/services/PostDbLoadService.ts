@@ -1,5 +1,6 @@
 import { ILocation } from "@spt/models/eft/common/ILocation";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
+import { ELocationName } from "@spt/models/enums/ELocationName";
 import { Traders } from "@spt/models/enums/Traders";
 import { Weapons } from "@spt/models/enums/Weapons";
 import { IBotConfig } from "@spt/models/spt/config/IBotConfig";
@@ -110,14 +111,23 @@ export class PostDbLoadService {
     }
 
     protected adjustMinReserveRaiderSpawnChance(): void {
-        if (this.locationConfig.minReserveRaiderSpawnChance === -1) {
-            return;
-        }
+        // Get reserve base.json
+        const reserveBase = this.databaseService.getLocation(ELocationName.RESERVE).base;
 
-        const reserveBase = this.databaseService.getLocation("rezervbase").base;
-        for (const raiderSpawn of reserveBase.BossLocationSpawn.filter((x) => x.BossName === "pmcBot")) {
-            if (raiderSpawn.BossChance < this.locationConfig.minReserveRaiderSpawnChance) {
-                raiderSpawn.BossChance = this.locationConfig.minReserveRaiderSpawnChance;
+        // Raiders are bosses, get only those from boss spawn array
+        for (const raiderSpawn of reserveBase.BossLocationSpawn.filter((boss) => boss.BossName === "pmcBot")) {
+            const isTriggered = raiderSpawn.TriggerId.length > 0; // Empty string if not triggered
+            const newSpawnChance = isTriggered
+                ? this.locationConfig.reserveRaiderSpawnChanceOverrides.triggered
+                : this.locationConfig.reserveRaiderSpawnChanceOverrides.nonTriggered;
+
+            if (newSpawnChance === -1) {
+                continue;
+            }
+
+            if (raiderSpawn.BossChance < newSpawnChance) {
+                // Desired chance is bigger than existing, override it
+                raiderSpawn.BossChance = newSpawnChance;
             }
         }
     }
