@@ -293,8 +293,10 @@ export interface IWave {
     slots_min: number;
     time_max: number;
     time_min: number;
+    /** OPTIONAL - Needs to be unique - Used by custom wave service to ensure same wave isnt added multiple times */
     sptId?: string;
     ChanceGroup?: number;
+    /** 'pve' and/or 'regular' */
     SpawnMode: string[];
 }
 
