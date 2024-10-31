@@ -78,6 +78,7 @@ export interface ILocationBase {
     EscapeTimeLimit: number;
     EscapeTimeLimitCoop: number;
     EscapeTimeLimitPVE: number;
+    Events: ILocationEvents;
     exit_access_time: number;
     ForceOnlineRaidInPVE: boolean;
     exit_count: number;
@@ -101,6 +102,7 @@ export interface ILocationBase {
 export interface ITransit {
     activateAfterSec: string;
     active: boolean;
+    name: string;
     conditions: string;
     description: string;
     id: number;
@@ -298,6 +300,33 @@ export interface IWave {
     ChanceGroup?: number;
     /** 'pve' and/or 'regular' */
     SpawnMode: string[];
+}
+
+export interface ILocationEvents {
+    Halloween2024: IHalloween2024;
+}
+
+export interface IHalloween2024 {
+    CrowdAttackBlockRadius: number;
+    CrowdAttackSpawnParams: CrowdAttackSpawnParam[];
+    CrowdCooldownPerPlayerSec: number;
+    CrowdsLimit: number;
+    InfectedLookCoeff: number;
+    MaxCrowdAttackSpawnLimit: number;
+    MinInfectionPercentage: number;
+    MinSpawnDistToPlayer: number;
+    TargetPointSearchRadiusLimit: number;
+    ZombieCallDeltaRadius: number;
+    ZombieCallPeriodSec: number;
+    ZombieCallRadiusLimit: number;
+    ZombieMultiplier: number;
+    InfectionPercentage: number;
+}
+
+export interface CrowdAttackSpawnParam {
+    Difficulty: string;
+    Role: string;
+    Weight: number;
 }
 
 export enum WildSpawnType {
