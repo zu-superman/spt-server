@@ -8,6 +8,7 @@ import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { IItem } from "@spt/models/eft/common/tables/IItem";
 import { IQuest, IQuestCondition } from "@spt/models/eft/common/tables/IQuest";
 import { IPmcDataRepeatableQuest, IRepeatableQuest } from "@spt/models/eft/common/tables/IRepeatableQuests";
+import { IPinItemRequest } from "@spt/models/eft/inventory/IPinItemRequest";
 import { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRouterResponse";
 import { IAcceptQuestRequestData } from "@spt/models/eft/quests/IAcceptQuestRequestData";
 import { ICompleteQuestRequestData } from "@spt/models/eft/quests/ICompleteQuestRequestData";
@@ -521,5 +522,21 @@ export class QuestController {
         this.questHelper.failQuest(pmcData, request, sessionID, output);
 
         return output;
+    }
+
+    /**
+     * Handle /client/game/profile/items/moving - PinLock
+     * @param pmcData
+     * @param request
+     * @param sessionID
+     * @param output
+     */
+    public pin(
+        pmcData: IPmcData,
+        request: IPinItemRequest,
+        sessionID: string,
+        output: IItemEventRouterResponse,
+    ): IItemEventRouterResponse {
+        throw new Error("Method not implemented.");
     }
 }

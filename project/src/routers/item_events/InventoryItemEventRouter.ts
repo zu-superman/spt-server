@@ -94,6 +94,8 @@ export class InventoryItemEventRouter extends ItemEventRouterDefinition {
                 return this.inventoryCallbacks.setFavoriteItem(pmcData, body, sessionID, output);
             case ItemEventActions.QUEST_FAIL:
                 return this.inventoryCallbacks.failQuest(pmcData, body, sessionID, output);
+            case ItemEventActions.PIN:
+                return this.inventoryCallbacks.pin(pmcData, body, sessionID, output);
             default:
                 throw new Error(`Unhandled event ${url} request: ${JSON.stringify(body)}`);
         }

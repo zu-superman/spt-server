@@ -18,6 +18,7 @@ import { IInventoryTagRequestData } from "@spt/models/eft/inventory/IInventoryTa
 import { IInventoryToggleRequestData } from "@spt/models/eft/inventory/IInventoryToggleRequestData";
 import { IInventoryTransferRequestData } from "@spt/models/eft/inventory/IInventoryTransferRequestData";
 import { IOpenRandomLootContainerRequestData } from "@spt/models/eft/inventory/IOpenRandomLootContainerRequestData";
+import { IPinItemRequest } from "@spt/models/eft/inventory/IPinItemRequest";
 import { IRedeemProfileRequestData } from "@spt/models/eft/inventory/IRedeemProfileRequestData";
 import { ISetFavoriteItems } from "@spt/models/eft/inventory/ISetFavoriteItems";
 import { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRouterResponse";
@@ -235,5 +236,14 @@ export class InventoryCallbacks {
         output: IItemEventRouterResponse,
     ): IItemEventRouterResponse {
         return this.questController.failQuest(pmcData, request, sessionID, output);
+    }
+
+    public pin(
+        pmcData: IPmcData,
+        request: IPinItemRequest,
+        sessionID: string,
+        output: IItemEventRouterResponse,
+    ): IItemEventRouterResponse {
+        return this.questController.pin(pmcData, request, sessionID, output);
     }
 }
