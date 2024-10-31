@@ -2,7 +2,7 @@ import { BotHelper } from "@spt/helpers/BotHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { IConfig } from "@spt/models/eft/common/IGlobals";
 import { ILocation } from "@spt/models/eft/common/ILocation";
-import { IBossLocationSpawn } from "@spt/models/eft/common/ILocationBase";
+import { IBossLocationSpawn, IWave } from "@spt/models/eft/common/ILocationBase";
 import { IInventory } from "@spt/models/eft/common/tables/IBotType";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { ItemTpl } from "@spt/models/enums/ItemTpl";
@@ -352,6 +352,10 @@ export class SeasonalEventService {
                     this.enableHalloweenSummonEvent();
                     this.addEventBossesToMaps(event.type);
                 }
+                if (event.settings?.enableZombies) {
+                    this.enableHalloweenZombiesEvent();
+                    this.addEventWavesToMaps("halloweenZombies");
+                }
                 this.addPumpkinsToScavBackpacks();
                 this.adjustTraderIcons(event.type);
                 break;
@@ -416,18 +420,45 @@ export class SeasonalEventService {
         this.databaseService.getGlobals().config.EventSettings.EventActive = true;
     }
 
+    protected enableHalloweenZombiesEvent(): void {
+        // TODO - expand to be more dynamic
+        // TODO - add zombies waves to maps
+        this.databaseService.getLocations().laboratory.base.Events.Halloween2024.InfectionPercentage = 100;
+        this.databaseService.getLocations().factory4_day.base.Events.Halloween2024.InfectionPercentage = 50;
+    }
+
+    protected addEventWavesToMaps(eventType: string): void {
+        const wavesToAddByMap = this.seasonalEventConfig.eventWaves[eventType.toLowerCase()];
+
+        if (!wavesToAddByMap) {
+            this.logger.warning(`Unable to add: ${eventType} waves, eventWaves is missing`);
+            return;
+        }
+        const mapKeys = Object.keys(wavesToAddByMap) ?? [];
+        const locations = this.databaseService.getLocations();
+        for (const mapKey of mapKeys) {
+            const wavesToAdd = mapKeys[mapKey];
+            if (!wavesToAdd) {
+                this.logger.warning(`Unable to add: ${eventType} wave to: ${mapKey}`);
+                continue;
+            }
+
+            locations[mapKey].base.BossLocationSpawn.push(...wavesToAdd);
+        }
+    }
+
     /**
      * Add event bosses to maps
      * @param eventType Seasonal event, e.g. HALLOWEEN/CHRISTMAS
      */
-    protected addEventBossesToMaps(eventType: SeasonalEventType): void {
+    protected addEventBossesToMaps(eventType: string): void {
         const botsToAddPerMap = this.seasonalEventConfig.eventBossSpawns[eventType.toLowerCase()];
         if (!botsToAddPerMap) {
             this.logger.warning(`Unable to add: ${eventType} bosses, eventBossSpawns is missing`);
             return;
         }
         const mapKeys = Object.keys(botsToAddPerMap) ?? [];
-
+        const locations = this.databaseService.getLocations();
         for (const mapKey of mapKeys) {
             const bossesToAdd = botsToAddPerMap[mapKey];
             if (!bossesToAdd) {
@@ -435,8 +466,6 @@ export class SeasonalEventService {
                 continue;
             }
             for (const boss of bossesToAdd) {
-                const locations = this.databaseService.getLocations();
-
                 const mapBosses: IBossLocationSpawn[] = locations[mapKey].base.BossLocationSpawn;
                 if (!mapBosses.some((bossSpawn) => bossSpawn.BossName === boss.BossName)) {
                     locations[mapKey].base.BossLocationSpawn.push(...bossesToAdd);

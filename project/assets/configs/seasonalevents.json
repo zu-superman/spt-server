@@ -238,6 +238,595 @@
         "arenaFighterEvent": "arenaFighterEvent",
         "crazyAssaultEvent": "crazyAssaultEvent"
     },
+	"eventWaves": {
+		"halloweenzombies": {
+			"laboratory": [
+				{
+                        "BossChance": 10000,
+                        "BossDifficult": "easy",
+                        "BossEscortAmount": "0",
+                        "BossEscortDifficult": "normal",
+                        "BossEscortType": "infectedLaborant",
+                        "BossName": "infectedLaborant",
+                        "BossPlayer": false,
+                        "BossZone": "BotZoneFloor1,BotZoneFloor2,BotZoneBasement",
+                        "Delay": 0,
+                        "IgnoreMaxBots": false,
+                        "RandomTimeSpawn": false,
+                        "SpawnMode": ["regular", "pve"],
+                        "Supports": null,
+                        "Time": 9999,
+                        "TriggerId": "InfectedSpawn10",
+                        "TriggerName": "botEvent"
+                    }, {
+                        "BossChance": 10000,
+                        "BossDifficult": "hard",
+                        "BossEscortAmount": "0",
+                        "BossEscortDifficult": "normal",
+                        "BossEscortType": "infectedLaborant",
+                        "BossName": "infectedPmc",
+                        "BossPlayer": false,
+                        "BossZone": "BotZoneFloor1,BotZoneFloor2,BotZoneBasement",
+                        "Delay": 0,
+                        "IgnoreMaxBots": false,
+                        "RandomTimeSpawn": false,
+                        "SpawnMode": ["regular", "pve"],
+                        "Supports": null,
+                        "Time": 9999,
+                        "TriggerId": "InfectedSpawn10",
+                        "TriggerName": "botEvent"
+                    }, {
+                        "BossChance": 10000,
+                        "BossDifficult": "hard",
+                        "BossEscortAmount": "0",
+                        "BossEscortDifficult": "normal",
+                        "BossEscortType": "infectedLaborant",
+                        "BossName": "infectedPmc",
+                        "BossPlayer": false,
+                        "BossZone": "BotZoneFloor1,BotZoneFloor2,BotZoneBasement",
+                        "Delay": 0,
+                        "IgnoreMaxBots": false,
+                        "RandomTimeSpawn": false,
+                        "SpawnMode": [],
+                        "Supports": null,
+                        "Time": 9999,
+                        "TriggerId": "InfectedSpawn10",
+                        "TriggerName": "botEvent"
+                    }, {
+                        "BossChance": 10000,
+                        "BossDifficult": "normal",
+                        "BossEscortAmount": "0",
+                        "BossEscortDifficult": "normal",
+                        "BossEscortType": "infectedLaborant",
+                        "BossName": "infectedLaborant",
+                        "BossPlayer": false,
+                        "BossZone": "BotZoneFloor1,BotZoneFloor2,BotZoneBasement",
+                        "Delay": 0,
+                        "IgnoreMaxBots": false,
+                        "RandomTimeSpawn": false,
+                        "SpawnMode": ["regular", "pve"],
+                        "Supports": null,
+                        "Time": 9999,
+                        "TriggerId": "InfectedSpawn10",
+                        "TriggerName": "botEvent"
+                    }, {
+                        "BossChance": 10000,
+                        "BossDifficult": "normal",
+                        "BossEscortAmount": "0",
+                        "BossEscortDifficult": "normal",
+                        "BossEscortType": "infectedLaborant",
+                        "BossName": "infectedLaborant",
+                        "BossPlayer": false,
+                        "BossZone": "BotZoneFloor1,BotZoneFloor2,BotZoneBasement",
+                        "Delay": 0,
+                        "IgnoreMaxBots": false,
+                        "RandomTimeSpawn": false,
+                        "SpawnMode": [],
+                        "Supports": null,
+                        "Time": 9999,
+                        "TriggerId": "InfectedSpawn10",
+                        "TriggerName": "botEvent"
+                    }, {
+                        "BossChance": 10000,
+                        "BossDifficult": "normal",
+                        "BossEscortAmount": "0",
+                        "BossEscortDifficult": "normal",
+                        "BossEscortType": "infectedLaborant",
+                        "BossName": "infectedLaborant",
+                        "BossPlayer": false,
+                        "BossZone": "BotZoneFloor1,BotZoneFloor2,BotZoneBasement",
+                        "Delay": 0,
+                        "IgnoreMaxBots": false,
+                        "RandomTimeSpawn": false,
+                        "SpawnMode": [],
+                        "Supports": null,
+                        "Time": 9999,
+                        "TriggerId": "InfectedSpawn10",
+                        "TriggerName": "botEvent"
+                    }, {
+                        "BossChance": 10000,
+                        "BossDifficult": "normal",
+                        "BossEscortAmount": "0",
+                        "BossEscortDifficult": "normal",
+                        "BossEscortType": "infectedLaborant",
+                        "BossName": "infectedLaborant",
+                        "BossPlayer": false,
+                        "BossZone": "BotZoneFloor1,BotZoneFloor2,BotZoneBasement",
+                        "Delay": 0,
+                        "IgnoreMaxBots": false,
+                        "RandomTimeSpawn": false,
+                        "SpawnMode": ["regular", "pve"],
+                        "Supports": null,
+                        "Time": 9999,
+                        "TriggerId": "InfectedSpawn10",
+                        "TriggerName": "botEvent"
+                    }, {
+                        "BossChance": 10000,
+                        "BossDifficult": "normal",
+                        "BossEscortAmount": "0",
+                        "BossEscortDifficult": "normal",
+                        "BossEscortType": "infectedLaborant",
+                        "BossName": "infectedLaborant",
+                        "BossPlayer": false,
+                        "BossZone": "BotZoneFloor1,BotZoneFloor2,BotZoneBasement",
+                        "Delay": 0,
+                        "IgnoreMaxBots": false,
+                        "RandomTimeSpawn": false,
+                        "SpawnMode": ["regular", "pve"],
+                        "Supports": null,
+                        "Time": 9999,
+                        "TriggerId": "InfectedSpawn10",
+                        "TriggerName": "botEvent"
+                    }, {
+                        "BossChance": 10000,
+                        "BossDifficult": "normal",
+                        "BossEscortAmount": "0",
+                        "BossEscortDifficult": "normal",
+                        "BossEscortType": "infectedLaborant",
+                        "BossName": "infectedLaborant",
+                        "BossPlayer": false,
+                        "BossZone": "BotZoneFloor1,BotZoneFloor2,BotZoneBasement",
+                        "Delay": 0,
+                        "IgnoreMaxBots": false,
+                        "RandomTimeSpawn": false,
+                        "SpawnMode": ["regular", "pve"],
+                        "Supports": [{
+                                "BossEscortType": "infectedLaborant",
+                                "BossEscortDifficult": ["easy"],
+                                "BossEscortAmount": "1"
+                            }, {
+                                "BossEscortType": "infectedPmc",
+                                "BossEscortDifficult": ["hard"],
+                                "BossEscortAmount": "1"
+                            }
+                        ],
+                        "Time": 9999,
+                        "TriggerId": "InfectedSpawn20",
+                        "TriggerName": "botEvent"
+                    }, {
+                        "BossChance": 10000,
+                        "BossDifficult": "hard",
+                        "BossEscortAmount": "0",
+                        "BossEscortDifficult": "normal",
+                        "BossEscortType": "infectedLaborant",
+                        "BossName": "infectedPmc",
+                        "BossPlayer": false,
+                        "BossZone": "BotZoneFloor1,BotZoneFloor2,BotZoneBasement",
+                        "Delay": 0,
+                        "IgnoreMaxBots": false,
+                        "RandomTimeSpawn": false,
+                        "SpawnMode": ["regular", "pve"],
+                        "Supports": [{
+                                "BossEscortType": "infectedPmc",
+                                "BossEscortDifficult": ["easy"],
+                                "BossEscortAmount": "1"
+                            }, {
+                                "BossEscortType": "infectedLaborant",
+                                "BossEscortDifficult": ["normal"],
+                                "BossEscortAmount": "1"
+                            }, {
+                                "BossEscortType": "infectedPmc",
+                                "BossEscortDifficult": ["hard"],
+                                "BossEscortAmount": "1"
+                            }
+                        ],
+                        "Time": 9999,
+                        "TriggerId": "InfectedSpawn30",
+                        "TriggerName": "botEvent"
+                    }, {
+                        "BossChance": 10000,
+                        "BossDifficult": "normal",
+                        "BossEscortAmount": "0",
+                        "BossEscortDifficult": "normal",
+                        "BossEscortType": "infectedLaborant",
+                        "BossName": "infectedPmc",
+                        "BossPlayer": false,
+                        "BossZone": "BotZoneFloor1,BotZoneFloor2,BotZoneBasement",
+                        "Delay": 0,
+                        "IgnoreMaxBots": false,
+                        "RandomTimeSpawn": false,
+                        "SpawnMode": ["regular", "pve"],
+                        "Supports": [{
+                                "BossEscortType": "infectedLaborant",
+                                "BossEscortDifficult": ["easy"],
+                                "BossEscortAmount": "1"
+                            }
+                        ],
+                        "Time": 9999,
+                        "TriggerId": "InfectedSpawn40",
+                        "TriggerName": "botEvent"
+                    }, {
+                        "BossChance": 10000,
+                        "BossDifficult": "normal",
+                        "BossEscortAmount": "0",
+                        "BossEscortDifficult": "normal",
+                        "BossEscortType": "infectedLaborant",
+                        "BossName": "infectedPmc",
+                        "BossPlayer": false,
+                        "BossZone": "BotZoneFloor1,BotZoneFloor2,BotZoneBasement",
+                        "Delay": 0,
+                        "IgnoreMaxBots": false,
+                        "RandomTimeSpawn": false,
+                        "SpawnMode": ["regular", "pve"],
+                        "Supports": [{
+                                "BossEscortType": "infectedLaborant",
+                                "BossEscortDifficult": ["normal"],
+                                "BossEscortAmount": "1"
+                            }
+                        ],
+                        "Time": 9999,
+                        "TriggerId": "InfectedSpawn50",
+                        "TriggerName": "botEvent"
+                    }, {
+                        "BossChance": 10000,
+                        "BossDifficult": "normal",
+                        "BossEscortAmount": "0",
+                        "BossEscortDifficult": "normal",
+                        "BossEscortType": "infectedLaborant",
+                        "BossName": "infectedPmc",
+                        "BossPlayer": false,
+                        "BossZone": "BotZoneFloor1,BotZoneFloor2,BotZoneBasement",
+                        "Delay": 0,
+                        "IgnoreMaxBots": false,
+                        "RandomTimeSpawn": false,
+                        "SpawnMode": ["regular", "pve"],
+                        "Supports": [{
+                                "BossEscortType": "infectedLaborant",
+                                "BossEscortDifficult": ["normal"],
+                                "BossEscortAmount": "1"
+                            }
+                        ],
+                        "Time": 9999,
+                        "TriggerId": "InfectedSpawn60",
+                        "TriggerName": "botEvent"
+                    }, {
+                        "BossChance": 10000,
+                        "BossDifficult": "hard",
+                        "BossEscortAmount": "0",
+                        "BossEscortDifficult": "normal",
+                        "BossEscortType": "infectedLaborant",
+                        "BossName": "infectedPmc",
+                        "BossPlayer": false,
+                        "BossZone": "BotZoneFloor1,BotZoneFloor2,BotZoneBasement",
+                        "Delay": 0,
+                        "IgnoreMaxBots": false,
+                        "RandomTimeSpawn": false,
+                        "SpawnMode": ["regular", "pve"],
+                        "Supports": [{
+                                "BossEscortType": "infectedLaborant",
+                                "BossEscortDifficult": ["normal"],
+                                "BossEscortAmount": "1"
+                            }
+                        ],
+                        "Time": 9999,
+                        "TriggerId": "InfectedSpawn70",
+                        "TriggerName": "botEvent"
+                    }, {
+                        "BossChance": 10000,
+                        "BossDifficult": "hard",
+                        "BossEscortAmount": "0",
+                        "BossEscortDifficult": "normal",
+                        "BossEscortType": "infectedLaborant",
+                        "BossName": "infectedPmc",
+                        "BossPlayer": false,
+                        "BossZone": "BotZoneFloor1,BotZoneFloor2,BotZoneBasement",
+                        "Delay": 0,
+                        "IgnoreMaxBots": false,
+                        "RandomTimeSpawn": false,
+                        "SpawnMode": ["regular", "pve"],
+                        "Supports": [{
+                                "BossEscortType": "infectedLaborant",
+                                "BossEscortDifficult": ["normal"],
+                                "BossEscortAmount": "1"
+                            }
+                        ],
+                        "Time": 9999,
+                        "TriggerId": "InfectedSpawn80",
+                        "TriggerName": "botEvent"
+                    }, {
+                        "BossChance": 10000,
+                        "BossDifficult": "hard",
+                        "BossEscortAmount": "0",
+                        "BossEscortDifficult": "normal",
+                        "BossEscortType": "infectedLaborant",
+                        "BossName": "infectedPmc",
+                        "BossPlayer": false,
+                        "BossZone": "BotZoneFloor1,BotZoneFloor2,BotZoneBasement",
+                        "Delay": 0,
+                        "IgnoreMaxBots": false,
+                        "RandomTimeSpawn": false,
+                        "SpawnMode": ["regular", "pve"],
+                        "Supports": [{
+                                "BossEscortType": "infectedLaborant",
+                                "BossEscortDifficult": ["normal"],
+                                "BossEscortAmount": "1"
+                            }
+                        ],
+                        "Time": 9999,
+                        "TriggerId": "InfectedSpawn90",
+                        "TriggerName": "botEvent"
+                    }, {
+                        "BossChance": 10000,
+                        "BossDifficult": "hard",
+                        "BossEscortAmount": "0",
+                        "BossEscortDifficult": "normal",
+                        "BossEscortType": "infectedLaborant",
+                        "BossName": "infectedPmc",
+                        "BossPlayer": false,
+                        "BossZone": "BotZoneFloor1,BotZoneFloor2,BotZoneBasement",
+                        "Delay": 0,
+                        "IgnoreMaxBots": false,
+                        "RandomTimeSpawn": false,
+                        "SpawnMode": ["regular", "pve"],
+                        "Supports": [{
+                                "BossEscortType": "infectedLaborant",
+                                "BossEscortDifficult": ["normal"],
+                                "BossEscortAmount": "1"
+                            }
+                        ],
+                        "Time": 9999,
+                        "TriggerId": "InfectedSpawn100",
+                        "TriggerName": "botEvent"
+                    }, {
+                        "BossChance": 10000,
+                        "BossDifficult": "easy",
+                        "BossEscortAmount": "0",
+                        "BossEscortDifficult": "normal",
+                        "BossEscortType": "infectedLaborant",
+                        "BossName": "infectedLaborant",
+                        "BossPlayer": false,
+                        "BossZone": "BotZoneFloor1,BotZoneFloor2,BotZoneBasement",
+                        "Delay": 0,
+                        "IgnoreMaxBots": false,
+                        "RandomTimeSpawn": false,
+                        "SpawnMode": ["regular", "pve"],
+                        "Supports": null,
+                        "Time": 960,
+                        "TriggerId": "",
+                        "TriggerName": ""
+                    }, {
+                        "BossChance": 10000,
+                        "BossDifficult": "hard",
+                        "BossEscortAmount": "0",
+                        "BossEscortDifficult": "normal",
+                        "BossEscortType": "infectedLaborant",
+                        "BossName": "infectedPmc",
+                        "BossPlayer": false,
+                        "BossZone": "BotZoneFloor1,BotZoneFloor2,BotZoneBasement",
+                        "Delay": 0,
+                        "IgnoreMaxBots": false,
+                        "RandomTimeSpawn": false,
+                        "SpawnMode": ["regular", "pve"],
+                        "Supports": null,
+                        "Time": 960,
+                        "TriggerId": "",
+                        "TriggerName": ""
+                    }, {
+                        "BossChance": 10000,
+                        "BossDifficult": "hard",
+                        "BossEscortAmount": "0",
+                        "BossEscortDifficult": "normal",
+                        "BossEscortType": "infectedLaborant",
+                        "BossName": "infectedPmc",
+                        "BossPlayer": false,
+                        "BossZone": "BotZoneFloor1,BotZoneFloor2,BotZoneBasement",
+                        "Delay": 0,
+                        "IgnoreMaxBots": false,
+                        "RandomTimeSpawn": false,
+                        "SpawnMode": [],
+                        "Supports": null,
+                        "Time": 960,
+                        "TriggerId": "",
+                        "TriggerName": ""
+                    }, {
+                        "BossChance": 10000,
+                        "BossDifficult": "normal",
+                        "BossEscortAmount": "0",
+                        "BossEscortDifficult": "normal",
+                        "BossEscortType": "infectedLaborant",
+                        "BossName": "infectedLaborant",
+                        "BossPlayer": false,
+                        "BossZone": "BotZoneFloor1,BotZoneFloor2,BotZoneBasement",
+                        "Delay": 0,
+                        "IgnoreMaxBots": false,
+                        "RandomTimeSpawn": false,
+                        "SpawnMode": ["regular", "pve"],
+                        "Supports": null,
+                        "Time": 960,
+                        "TriggerId": "",
+                        "TriggerName": ""
+                    }, {
+                        "BossChance": 10000,
+                        "BossDifficult": "normal",
+                        "BossEscortAmount": "0",
+                        "BossEscortDifficult": "normal",
+                        "BossEscortType": "infectedLaborant",
+                        "BossName": "infectedLaborant",
+                        "BossPlayer": false,
+                        "BossZone": "BotZoneFloor1,BotZoneFloor2,BotZoneBasement",
+                        "Delay": 0,
+                        "IgnoreMaxBots": false,
+                        "RandomTimeSpawn": false,
+                        "SpawnMode": [],
+                        "Supports": null,
+                        "Time": 960,
+                        "TriggerId": "",
+                        "TriggerName": ""
+                    }, {
+                        "BossChance": 10000,
+                        "BossDifficult": "normal",
+                        "BossEscortAmount": "0",
+                        "BossEscortDifficult": "normal",
+                        "BossEscortType": "infectedLaborant",
+                        "BossName": "infectedLaborant",
+                        "BossPlayer": false,
+                        "BossZone": "BotZoneFloor1,BotZoneFloor2,BotZoneBasement",
+                        "Delay": 0,
+                        "IgnoreMaxBots": false,
+                        "RandomTimeSpawn": false,
+                        "SpawnMode": [],
+                        "Supports": null,
+                        "Time": 960,
+                        "TriggerId": "",
+                        "TriggerName": ""
+                    }, {
+                        "BossChance": 10000,
+                        "BossDifficult": "normal",
+                        "BossEscortAmount": "0",
+                        "BossEscortDifficult": "normal",
+                        "BossEscortType": "infectedLaborant",
+                        "BossName": "infectedLaborant",
+                        "BossPlayer": false,
+                        "BossZone": "BotZoneFloor1,BotZoneFloor2,BotZoneBasement",
+                        "Delay": 0,
+                        "IgnoreMaxBots": false,
+                        "RandomTimeSpawn": false,
+                        "SpawnMode": ["regular", "pve"],
+                        "Supports": null,
+                        "Time": 960,
+                        "TriggerId": "",
+                        "TriggerName": ""
+                    }, {
+                        "BossChance": 10000,
+                        "BossDifficult": "normal",
+                        "BossEscortAmount": "0",
+                        "BossEscortDifficult": "normal",
+                        "BossEscortType": "infectedLaborant",
+                        "BossName": "infectedLaborant",
+                        "BossPlayer": false,
+                        "BossZone": "BotZoneFloor1,BotZoneFloor2,BotZoneBasement",
+                        "Delay": 0,
+                        "IgnoreMaxBots": false,
+                        "RandomTimeSpawn": false,
+                        "SpawnMode": ["regular", "pve"],
+                        "Supports": null,
+                        "Time": 960,
+                        "TriggerId": "",
+                        "TriggerName": ""
+                    }, {
+                        "BossChance": 10000,
+                        "BossDifficult": "normal",
+                        "BossEscortAmount": "0",
+                        "BossEscortDifficult": "normal",
+                        "BossEscortType": "infectedLaborant",
+                        "BossName": "infectedLaborant",
+                        "BossPlayer": false,
+                        "BossZone": "BotZoneFloor1,BotZoneFloor2,BotZoneBasement",
+                        "Delay": 0,
+                        "IgnoreMaxBots": false,
+                        "RandomTimeSpawn": false,
+                        "SpawnMode": ["regular", "pve"],
+                        "Supports": [{
+                                "BossEscortType": "infectedLaborant",
+                                "BossEscortDifficult": ["easy"],
+                                "BossEscortAmount": "1"
+                            }, {
+                                "BossEscortType": "infectedPmc",
+                                "BossEscortDifficult": ["hard"],
+                                "BossEscortAmount": "1"
+                            }
+                        ],
+                        "Time": 960,
+                        "TriggerId": "",
+                        "TriggerName": ""
+                    }, {
+                        "BossChance": 10000,
+                        "BossDifficult": "hard",
+                        "BossEscortAmount": "0",
+                        "BossEscortDifficult": "normal",
+                        "BossEscortType": "infectedLaborant",
+                        "BossName": "infectedPmc",
+                        "BossPlayer": false,
+                        "BossZone": "BotZoneFloor1,BotZoneFloor2,BotZoneBasement",
+                        "Delay": 0,
+                        "IgnoreMaxBots": false,
+                        "RandomTimeSpawn": false,
+                        "SpawnMode": ["regular", "pve"],
+                        "Supports": [{
+                                "BossEscortType": "infectedPmc",
+                                "BossEscortDifficult": ["easy"],
+                                "BossEscortAmount": "1"
+                            }, {
+                                "BossEscortType": "infectedLaborant",
+                                "BossEscortDifficult": ["normal"],
+                                "BossEscortAmount": "1"
+                            }, {
+                                "BossEscortType": "infectedPmc",
+                                "BossEscortDifficult": ["hard"],
+                                "BossEscortAmount": "1"
+                            }
+                        ],
+                        "Time": 960,
+                        "TriggerId": "",
+                        "TriggerName": ""
+                    }, {
+                        "BossChance": 10000,
+                        "BossDifficult": "normal",
+                        "BossEscortAmount": "0",
+                        "BossEscortDifficult": "normal",
+                        "BossEscortType": "infectedLaborant",
+                        "BossName": "infectedPmc",
+                        "BossPlayer": false,
+                        "BossZone": "BotZoneFloor1,BotZoneFloor2,BotZoneBasement",
+                        "Delay": 0,
+                        "IgnoreMaxBots": false,
+                        "RandomTimeSpawn": false,
+                        "SpawnMode": ["regular", "pve"],
+                        "Supports": [{
+                                "BossEscortType": "infectedLaborant",
+                                "BossEscortDifficult": ["easy"],
+                                "BossEscortAmount": "1"
+                            }
+                        ],
+                        "Time": 960,
+                        "TriggerId": "",
+                        "TriggerName": ""
+                    }, {
+                        "BossChance": 10000,
+                        "BossDifficult": "normal",
+                        "BossEscortAmount": "0",
+                        "BossEscortDifficult": "normal",
+                        "BossEscortType": "infectedLaborant",
+                        "BossName": "infectedPmc",
+                        "BossPlayer": false,
+                        "BossZone": "BotZoneFloor1,BotZoneFloor2,BotZoneBasement",
+                        "Delay": 0,
+                        "IgnoreMaxBots": false,
+                        "RandomTimeSpawn": false,
+                        "SpawnMode": ["regular", "pve"],
+                        "Supports": [{
+                                "BossEscortType": "infectedLaborant",
+                                "BossEscortDifficult": ["normal"],
+                                "BossEscortAmount": "1"
+                            }
+                        ],
+                        "Time": 960,
+                        "TriggerId": "",
+                        "TriggerName": ""
+                    }
+			]
+		}
+	},
     "eventBossSpawns": {
         "halloween": {
             "bigmap": [
@@ -717,7 +1306,8 @@
             "endDay": "4",
             "endMonth": "11",
 			"settings": {
-				"enableSummoning": true
+				"enableSummoning": false,
+				"enableZombies": true
 			}
         },
         {
