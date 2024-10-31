@@ -97,6 +97,9 @@ export interface IBarterScheme {
 
 export interface ISuit {
     _id: string;
+    externalObtain: boolean;
+    internalObtain: boolean;
+    isHiddenInPVE: boolean;
     tid: string;
     suiteId: string;
     isActive: boolean;
@@ -104,12 +107,14 @@ export interface ISuit {
 }
 
 export interface ISuitRequirements {
+    achievementRequirements: string[];
     loyaltyLevel: number;
     profileLevel: number;
     standing: number;
     skillRequirements: string[];
     questRequirements: string[];
     itemRequirements: ItemRequirement[];
+    requiredTid: string;
 }
 
 export interface ItemRequirement {
