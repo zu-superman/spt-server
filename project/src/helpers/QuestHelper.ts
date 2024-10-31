@@ -961,7 +961,7 @@ export class QuestHelper {
                     // Handled by getQuestRewardItems() below
                     break;
                 case QuestRewardType.ASSORTMENT_UNLOCK:
-                    // Handled elsewhere, TODO: find and say here
+                    // Handled by getAssort(), locked assorts are stripped out by `assortHelper.stripLockedLoyaltyAssort()` before being sent to player
                     break;
                 case QuestRewardType.ACHIEVEMENT:
                     this.profileHelper.addAchievementToProfile(pmcProfile, reward.target);
