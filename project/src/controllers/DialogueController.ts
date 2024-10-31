@@ -35,12 +35,14 @@ export class DialogueController {
         // if give command is disabled or commando commands are disabled
         if (!coreConfigs.features?.chatbotFeatures?.commandoEnabled) {
             const sptCommando = this.dialogueChatBots.find(
-                (c) => c.getChatBot()._id.toLocaleLowerCase() === "sptcommando",
+                (c) => c.getChatBot()._id.toLocaleLowerCase() === coreConfigs.features?.chatbotFeatures.ids.commando,
             );
             this.dialogueChatBots.splice(this.dialogueChatBots.indexOf(sptCommando), 1);
         }
         if (!coreConfigs.features?.chatbotFeatures?.sptFriendEnabled) {
-            const sptFriend = this.dialogueChatBots.find((c) => c.getChatBot()._id.toLocaleLowerCase() === "sptFriend");
+            const sptFriend = this.dialogueChatBots.find(
+                (c) => c.getChatBot()._id.toLocaleLowerCase() === coreConfigs.features?.chatbotFeatures.ids.spt,
+            );
             this.dialogueChatBots.splice(this.dialogueChatBots.indexOf(sptFriend), 1);
         }
     }

@@ -30,7 +30,11 @@
             },
             "commandUseLimits": {
                 "StashRows": 15
-            }
+            },
+			"ids": {
+				"commando": "6723fd51c5924c57ce0ca01e",
+				"spt": "6723fd51c5924c57ce0ca01f"
+			}
         },
         "createNewProfileTypesBlacklist": []
     },
