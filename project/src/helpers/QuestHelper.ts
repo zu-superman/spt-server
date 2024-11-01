@@ -1038,7 +1038,8 @@ export class QuestHelper {
         const matchingProductions = hideoutProductions.recipes.filter(
             (prod) =>
                 prod.areaType === Number.parseInt(craftUnlockReward.traderId) &&
-                prod.requirements.some((requirement) => requirement.questId === questDetails._id) &&
+                //prod.requirements.some((requirement) => requirement.questId === questDetails._id) && // BSG dont store the quest id in requirement any more!
+                prod.requirements.some((requirement) => requirement.type === "QuestComplete") &&
                 prod.requirements.some((x) => x.requiredLevel === craftUnlockReward.loyaltyLevel) &&
                 prod.endProduct === craftUnlockReward.items[0]._tpl,
         );

@@ -20,6 +20,7 @@ export interface IHideoutProduction {
     continuous: boolean;
     count: number;
     productionLimitCount: number;
+    isCodeProduction: boolean;
 }
 
 export interface IRequirement extends IRequirementBase {
