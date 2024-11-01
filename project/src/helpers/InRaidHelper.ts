@@ -66,8 +66,6 @@ export class InRaidHelper {
 
         // Remove possible equipped items from before the raid
         this.inventoryHelper.removeItem(serverProfile, serverProfile.Inventory.equipment, sessionID);
-        this.inventoryHelper.removeItem(serverProfile, serverProfile.Inventory.questRaidItems, sessionID);
-        this.inventoryHelper.removeItem(serverProfile, serverProfile.Inventory.sortingTable, sessionID);
 
         // Get all items that have a parent of `serverProfile.Inventory.equipment` (All items player had on them at end of raid)
         const postRaidInventoryItems = this.itemHelper.findAndReturnChildrenAsItems(
@@ -95,6 +93,7 @@ export class InRaidHelper {
             this.itemHelper.removeSpawnedInSessionPropertyFromItems(itemsToRemovePropertyFrom);
         }
 
+        // Add items from client profile into server profile
         for (const item of postRaidInventoryItems) {
             // Try to find index of item to determine if we should add or replace
             const existingItemIndex = serverProfile.Inventory.items.findIndex(
