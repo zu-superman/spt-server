@@ -1794,6 +1794,16 @@ export class ItemHelper {
             currentItem = this.getItem(tpl)[1];
         }
     }
+
+    /**
+     * Remove FiR status from passed in items
+     * @param items Items to update FiR status of
+     */
+    public removeSpawnedInSessionPropertyFromItems(items: IItem[]): void {
+        for (const item of items) {
+            delete item.upd.SpawnedInSession;
+        }
+    }
 }
 
 namespace ItemHelper {

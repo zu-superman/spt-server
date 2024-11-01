@@ -61,7 +61,7 @@ export class InRaidHelper {
         isSurvived: boolean,
         isTransfer: boolean,
     ): void {
-        // Store insurance (as removeItem() removes insurance also)
+        // Store insurance (as removeItem() removes insured items)
         const insured = this.cloner.clone(serverProfile.InsuredItems);
 
         // Remove possible equipped items from before the raid
@@ -69,44 +69,48 @@ export class InRaidHelper {
         this.inventoryHelper.removeItem(serverProfile, serverProfile.Inventory.questRaidItems, sessionID);
         this.inventoryHelper.removeItem(serverProfile, serverProfile.Inventory.sortingTable, sessionID);
 
-        // Handle Removing of FIR status if did not survive.
+        // Get all items that have a parent of `serverProfile.Inventory.equipment` (All items player had on them at end of raid)
+        const postRaidInventoryItems = this.itemHelper.findAndReturnChildrenAsItems(
+            postRaidProfile.Inventory.items,
+            postRaidProfile.Inventory.equipment,
+        );
+
+        // Handle Removing of FIR status if player did not survive + not transferring
+        // Do after above filtering code to reduce work done
         if (!isSurvived && !isTransfer && !this.inRaidConfig.alwaysKeepFoundInRaidonRaidEnd) {
-            this.removeSpawnedInSessionPropertyFromItems(postRaidProfile);
+            const dbItems = this.databaseService.getItems();
+
+            const itemsToRemovePropertyFrom = postRaidProfile.Inventory.items.filter((item) => {
+                // Has upd object + upd.SpawnedInSession property + not a quest item
+                return (
+                    item.upd?.SpawnedInSession &&
+                    !dbItems[item._tpl]._props.QuestItem &&
+                    !(
+                        this.inRaidConfig.keepFiRSecureContainerOnDeath &&
+                        this.itemHelper.itemIsInsideContainer(item, "SecuredContainer", postRaidProfile.Inventory.items)
+                    )
+                );
+            });
+
+            this.itemHelper.removeSpawnedInSessionPropertyFromItems(itemsToRemovePropertyFrom);
         }
 
-        // Add the new items
-        serverProfile.Inventory.items = [...postRaidProfile.Inventory.items, ...serverProfile.Inventory.items];
+        for (const item of postRaidInventoryItems) {
+            // Try to find index of item to determine if we should add or replace
+            const existingItemIndex = serverProfile.Inventory.items.findIndex(
+                (inventoryItem) => inventoryItem._id === item._id,
+            );
+            if (existingItemIndex === -1) {
+                // Not found, add
+                serverProfile.Inventory.items.push(item);
+            } else {
+                // Replace item with one from client
+                postRaidProfile.Inventory.items.splice(existingItemIndex, 1, item);
+            }
+        }
+
         serverProfile.Inventory.fastPanel = postRaidProfile.Inventory.fastPanel; // Quick access items bar
         serverProfile.InsuredItems = insured;
-    }
-
-    /**
-     * Iterate over inventory items and remove the property that defines an item as Found in Raid
-     * Only removes property if item had FiR when entering raid
-     * @param postRaidProfile profile to update items for
-     * @returns Updated profile with SpawnedInSession removed
-     */
-    public removeSpawnedInSessionPropertyFromItems(postRaidProfile: IPmcData): IPmcData {
-        const dbItems = this.databaseService.getItems();
-        const itemsToRemovePropertyFrom = postRaidProfile.Inventory.items.filter((item) => {
-            // Has upd object + upd.SpawnedInSession property + not a quest item
-            return (
-                "upd" in item &&
-                "SpawnedInSession" in item.upd &&
-                !dbItems[item._tpl]._props.QuestItem &&
-                !(
-                    this.inRaidConfig.keepFiRSecureContainerOnDeath &&
-                    this.itemHelper.itemIsInsideContainer(item, "SecuredContainer", postRaidProfile.Inventory.items)
-                )
-            );
-        });
-
-        for (const item of itemsToRemovePropertyFrom) {
-            // biome-ignore lint/performance/noDelete: <explanation>
-            delete item.upd.SpawnedInSession;
-        }
-
-        return postRaidProfile;
     }
 
     /**

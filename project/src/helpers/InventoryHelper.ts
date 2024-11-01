@@ -450,33 +450,43 @@ export class InventoryHelper {
         }
 
         // Get children of item, they get deleted too
-        const itemToRemoveWithChildren = this.itemHelper.findAndReturnChildrenByItems(profile.Inventory.items, itemId);
+        const itemAndChildrenToRemove = this.itemHelper.findAndReturnChildrenAsItems(profile.Inventory.items, itemId);
+        if (itemAndChildrenToRemove.length === 0) {
+            this.logger.debug(
+                this.localisationService.getText("inventory-unable_to_remove_item_id_not_found", {
+                    childId: itemId,
+                    profileId: profile._id,
+                }),
+            );
+
+            return;
+        }
         const inventoryItems = profile.Inventory.items;
         const insuredItems = profile.InsuredItems;
 
-        // We have output object, inform client of item deletion
+        // We have output object, inform client of root item deletion, not children
         if (output) {
             output.profileChanges[sessionID].items.del.push({ _id: itemId });
         }
 
-        for (const childId of itemToRemoveWithChildren) {
+        for (const item of itemAndChildrenToRemove) {
             // We expect that each inventory item and each insured item has unique "_id", respective "itemId".
             // Therefore we want to use a NON-Greedy function and escape the iteration as soon as we find requested item.
-            const inventoryIndex = inventoryItems.findIndex((item) => item._id === childId);
+            const inventoryIndex = inventoryItems.findIndex((inventoryItem) => inventoryItem._id === item._id);
             if (inventoryIndex !== -1) {
                 inventoryItems.splice(inventoryIndex, 1);
             } else {
                 this.logger.warning(
                     this.localisationService.getText("inventory-unable_to_remove_item_id_not_found", {
-                        childId: childId,
+                        childId: item._id,
                         profileId: profile._id,
                     }),
                 );
             }
 
-            const insuredIndex = insuredItems.findIndex((item) => item.itemId === childId);
-            if (insuredIndex !== -1) {
-                insuredItems.splice(insuredIndex, 1);
+            const insuredItemIndex = insuredItems.findIndex((insuredItem) => insuredItem.itemId === item._id);
+            if (insuredItemIndex !== -1) {
+                insuredItems.splice(insuredItemIndex, 1);
             }
         }
     }
