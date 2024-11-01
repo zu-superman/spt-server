@@ -81,8 +81,8 @@
       "BossZone": "BotZone",
       "IgnoreMaxBots": true,
       "SpawnMode": [
-        "regular",
-        "pve"
+        "pve",
+        "regular"
       ],
       "Supports": null,
       "Time": -1,
@@ -100,8 +100,8 @@
       "BossZone": "BotZone",
       "IgnoreMaxBots": true,
       "SpawnMode": [
-        "regular",
-        "pve"
+        "pve",
+        "regular"
       ],
       "Supports": null,
       "Time": -1,
@@ -452,6 +452,7 @@
   "MinPlayers": 5,
   "Name": "Factory",
   "NewSpawn": false,
+  "NewSpawnForPlayers": false,
   "NonWaveGroupScenario": {
     "Chance": 50,
     "Enabled": true,

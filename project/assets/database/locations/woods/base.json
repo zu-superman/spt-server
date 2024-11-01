@@ -616,6 +616,7 @@
   "MinPlayers": 10,
   "Name": "Woods",
   "NewSpawn": true,
+  "NewSpawnForPlayers": true,
   "NonWaveGroupScenario": {
     "Chance": 50,
     "Enabled": true,

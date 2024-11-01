@@ -322,9 +322,7 @@
       "ZombieMultiplier": 5
     }
   },
-  "ExitZones": {
-    "$oid": "5c82534488a45046451a2386"
-  },
+  "ExitZones": "5c82534488a45046451a2386",
   "ForceOnlineRaidInPVE": false,
   "GenerateLocalLootCache": true,
   "GlobalContainerChanceModifier": 1,
@@ -378,6 +376,7 @@
   "MinPlayers": 9,
   "Name": "Sandbox",
   "NewSpawn": true,
+  "NewSpawnForPlayers": true,
   "NonWaveGroupScenario": {
     "Chance": 50,
     "Enabled": true,

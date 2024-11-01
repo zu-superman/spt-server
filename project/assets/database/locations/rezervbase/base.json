@@ -56,8 +56,8 @@
       "IgnoreMaxBots": true,
       "RandomTimeSpawn": false,
       "SpawnMode": [
-        "regular",
-        "pve"
+        "pve",
+        "regular"
       ],
       "Supports": [
         {
@@ -100,8 +100,8 @@
       "IgnoreMaxBots": true,
       "RandomTimeSpawn": false,
       "SpawnMode": [
-        "regular",
-        "pve"
+        "pve",
+        "regular"
       ],
       "Supports": null,
       "Time": 1470,
@@ -122,8 +122,8 @@
       "IgnoreMaxBots": true,
       "RandomTimeSpawn": false,
       "SpawnMode": [
-        "regular",
-        "pve"
+        "pve",
+        "regular"
       ],
       "Supports": null,
       "Time": -1,
@@ -144,8 +144,8 @@
       "IgnoreMaxBots": true,
       "RandomTimeSpawn": false,
       "SpawnMode": [
-        "regular",
-        "pve"
+        "pve",
+        "regular"
       ],
       "Supports": null,
       "Time": -1,
@@ -166,8 +166,8 @@
       "IgnoreMaxBots": true,
       "RandomTimeSpawn": false,
       "SpawnMode": [
-        "regular",
-        "pve"
+        "pve",
+        "regular"
       ],
       "Supports": null,
       "Time": 3,
@@ -581,6 +581,7 @@
   "MinPlayers": 9,
   "Name": "ReserveBase",
   "NewSpawn": false,
+  "NewSpawnForPlayers": false,
   "NonWaveGroupScenario": {
     "Chance": 50,
     "Enabled": false,

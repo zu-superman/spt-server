@@ -672,6 +672,7 @@
   "MinPlayers": 10,
   "Name": "Customs",
   "NewSpawn": true,
+  "NewSpawnForPlayers": true,
   "NonWaveGroupScenario": {
     "Chance": 50,
     "Enabled": true,

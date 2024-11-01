@@ -771,6 +771,7 @@
   "MinPlayers": 10,
   "Name": "Lighthouse",
   "NewSpawn": true,
+  "NewSpawnForPlayers": true,
   "NonWaveGroupScenario": {
     "Chance": 50,
     "Enabled": true,
@@ -5046,7 +5047,7 @@
       "Infiltration": "",
       "Position": {
         "x": 31.8899841,
-        "y": 4.798651,
+        "y": 4.7986509999999996,
         "z": -451.1
       },
       "Rotation": 26.8442173,
@@ -6145,7 +6146,7 @@
       "Infiltration": "",
       "Position": {
         "x": 12.9400024,
-        "y": 4.798651,
+        "y": 4.7986509999999996,
         "z": -447.53
       },
       "Rotation": 26.8442173,

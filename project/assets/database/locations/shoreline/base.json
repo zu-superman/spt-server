@@ -80,8 +80,8 @@
       "IgnoreMaxBots": true,
       "RandomTimeSpawn": false,
       "SpawnMode": [
-        "regular",
-        "pve"
+        "pve",
+        "regular"
       ],
       "Supports": null,
       "Time": -1,
@@ -91,7 +91,7 @@
     {
       "BossChance": 25,
       "BossDifficult": "normal",
-      "BossEscortAmount": "2",
+      "BossEscortAmount": "0",
       "BossEscortDifficult": "normal",
       "BossEscortType": "exUsec",
       "BossName": "bossKnight",
@@ -102,10 +102,10 @@
       "DependKarmaPVE": false,
       "ForceSpawn": false,
       "IgnoreMaxBots": true,
-      "RandomTimeSpawn": true,
+      "RandomTimeSpawn": false,
       "SpawnMode": [
-        "regular",
-        "pve"
+        "pve",
+        "regular"
       ],
       "Supports": [
         {
@@ -150,8 +150,8 @@
       "IgnoreMaxBots": true,
       "RandomTimeSpawn": false,
       "SpawnMode": [
-        "regular",
-        "pve"
+        "pve",
+        "regular"
       ],
       "Supports": null,
       "Time": -1,
@@ -174,8 +174,8 @@
       "IgnoreMaxBots": true,
       "RandomTimeSpawn": false,
       "SpawnMode": [
-        "regular",
-        "pve"
+        "pve",
+        "regular"
       ],
       "Supports": null,
       "Time": -1,
@@ -671,6 +671,7 @@
   "MinPlayers": 10,
   "Name": "Shoreline",
   "NewSpawn": true,
+  "NewSpawnForPlayers": true,
   "NonWaveGroupScenario": {
     "Chance": 50,
     "Enabled": true,

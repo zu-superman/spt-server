@@ -448,6 +448,7 @@
   "MinPlayers": 7,
   "Name": "Factory",
   "NewSpawn": false,
+  "NewSpawnForPlayers": false,
   "NonWaveGroupScenario": {
     "Chance": 50,
     "Enabled": true,
