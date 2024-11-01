@@ -28,8 +28,8 @@ export interface ISeasonalEvent {
 export interface IZombieSettings {
     enabled: boolean;
     mapInfectionAmount: Record<string, number>;
-    disableBosses: Record<string, boolean>;
-    disableWaves: Record<string, boolean>;
+    disableBosses: string[];
+    disableWaves: string[];
 }
 
 export interface IGifterSetting {

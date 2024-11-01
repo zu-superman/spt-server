@@ -350,7 +350,7 @@ export class SeasonalEventService {
                 this.adjustZryachiyMeleeChance();
                 if (event.settings?.enableSummoning) {
                     this.enableHalloweenSummonEvent();
-                    this.addEventBossesToMaps(event.type);
+                    this.addEventBossesToMaps("halloweensummon");
                 }
                 if (event.settings?.zombieSettings?.enabled) {
                     this.configureZombies(event.settings?.zombieSettings);
@@ -384,6 +384,13 @@ export class SeasonalEventService {
             default:
                 // Likely a mod event
                 this.handleModEvent(event);
+                if (event.settings?.enableSummoning) {
+                    this.enableHalloweenSummonEvent();
+                    this.addEventBossesToMaps("halloweensummon");
+                }
+                if (event.settings?.zombieSettings?.enabled) {
+                    this.configureZombies(event.settings?.zombieSettings);
+                }
                 break;
         }
     }
@@ -424,15 +431,15 @@ export class SeasonalEventService {
                 zombieSettings.mapInfectionAmount[locationKey];
         }
 
-        for (const locationKey in zombieSettings.disableBosses) {
-            this.databaseService.getLocation(locationKey).base.BossLocationSpawn = [];
+        for (const locationId of zombieSettings.disableBosses) {
+            this.databaseService.getLocation(locationId).base.BossLocationSpawn = [];
         }
 
-        for (const locationKey in zombieSettings.disableWaves) {
-            this.databaseService.getLocation(locationKey).base.waves = [];
+        for (const locationId of zombieSettings.disableWaves) {
+            this.databaseService.getLocation(locationId).base.waves = [];
         }
 
-        this.addEventWavesToMaps("halloweenZombies");
+        this.addEventBossesToMaps("halloweenzombies");
     }
 
     protected addEventWavesToMaps(eventType: string): void {
