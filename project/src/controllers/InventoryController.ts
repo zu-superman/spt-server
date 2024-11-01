@@ -27,6 +27,7 @@ import { IInventoryTagRequestData } from "@spt/models/eft/inventory/IInventoryTa
 import { IInventoryToggleRequestData } from "@spt/models/eft/inventory/IInventoryToggleRequestData";
 import { IInventoryTransferRequestData } from "@spt/models/eft/inventory/IInventoryTransferRequestData";
 import { IOpenRandomLootContainerRequestData } from "@spt/models/eft/inventory/IOpenRandomLootContainerRequestData";
+import { IPinOrLockItemRequest } from "@spt/models/eft/inventory/IPinOrLockItemRequest";
 import { IRedeemProfileRequestData } from "@spt/models/eft/inventory/IRedeemProfileRequestData";
 import { ISetFavoriteItems } from "@spt/models/eft/inventory/ISetFavoriteItems";
 import { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRouterResponse";
@@ -946,5 +947,31 @@ export class InventoryController {
                 pmcData.Inventory.favoriteItems.push(item);
             }
         }
+    }
+
+    /**
+     * Handle /client/game/profile/items/moving - PinLock
+     * Requires no response to client, only server change
+     * @param pmcData Players profile
+     * @param request Pin/Lock request data
+     * @param sessionID Session id
+     * @param output data to send back to client
+     */
+    public pinOrLock(
+        pmcData: IPmcData,
+        request: IPinOrLockItemRequest,
+        sessionID: string,
+        output: IItemEventRouterResponse,
+    ): IItemEventRouterResponse {
+        const itemToAdjust = pmcData.Inventory.items.find((item) => item._id === request.Item);
+        if (!itemToAdjust) {
+            this.logger.error(`Unable find item: ${request.Item} to: ${request.State} on player ${sessionID} to: `);
+            return output;
+        }
+
+        itemToAdjust.upd ||= {};
+        itemToAdjust.upd.PinLockState = request.State;
+
+        return output;
     }
 }
