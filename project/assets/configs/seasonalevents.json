@@ -1306,6 +1306,7 @@
             "endMonth": "11",
 			"settings": {
 				"enableSummoning": false,
+				"removeEntryRequirement": ["laboratory"],
 				"zombieSettings": {
 					"enabled": true,
 					"mapInfectionAmount": {
@@ -1346,7 +1347,20 @@
             "startDay": "1",
             "startMonth": "4",
             "endDay": "2",
-            "endMonth": "4"
+            "endMonth": "4",
+			"setting": {
+				"removeEntryRequirement": ["laboratory"],
+				"zombieSettings": {
+					"enabled": true,
+					"mapInfectionAmount": {
+						"laboratory": 100
+					},
+					"disableBosses": [
+						"laboratory"
+					],
+					"disableWaves": []
+				}
+			}
 		}
     ]
 }

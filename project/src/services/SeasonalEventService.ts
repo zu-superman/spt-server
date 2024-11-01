@@ -355,6 +355,9 @@ export class SeasonalEventService {
                 if (event.settings?.zombieSettings?.enabled) {
                     this.configureZombies(event.settings?.zombieSettings);
                 }
+                if (event.settings.removeEntryRequirement) {
+                    this.removeEntryRequirement(event.settings.removeEntryRequirement);
+                }
                 this.addPumpkinsToScavBackpacks();
                 this.adjustTraderIcons(event.type);
                 break;
@@ -392,6 +395,14 @@ export class SeasonalEventService {
                     this.configureZombies(event.settings?.zombieSettings);
                 }
                 break;
+        }
+    }
+
+    protected removeEntryRequirement(locationIds: string[]) {
+        for (const locationId of locationIds) {
+            const location = this.databaseService.getLocation(locationId);
+            location.base.AccessKeys = [];
+            location.base.AccessKeysPvE = [];
         }
     }
 
