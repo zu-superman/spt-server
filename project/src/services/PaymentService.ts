@@ -47,6 +47,7 @@ export class PaymentService {
     ): void {
         // May need to convert to trader currency
         const trader = this.traderHelper.getTrader(request.tid, sessionID);
+        const payToTrader = this.traderHelper.traderEnumHasValue(request.tid);
 
         // Track the amounts of each type of currency involved in the trade.
         const currencyAmounts: { [key: string]: number } = {};
@@ -95,21 +96,21 @@ export class PaymentService {
                     return;
                 }
 
-                // Convert the amount to the trader's currency and update the sales sum.
-                const costOfPurchaseInCurrency = this.handbookHelper.fromRUB(
-                    this.handbookHelper.inRUB(currencyAmount, currencyTpl),
-                    this.paymentHelper.getCurrency(trader.currency),
-                );
+                if (payToTrader) {
+                    // Convert the amount to the trader's currency and update the sales sum.
+                    const costOfPurchaseInCurrency = this.handbookHelper.fromRUB(
+                        this.handbookHelper.inRUB(currencyAmount, currencyTpl),
+                        this.paymentHelper.getCurrency(trader.currency),
+                    );
 
-                // Only update traders
-                if (this.traderHelper.traderEnumHasValue(request.tid)) {
+                    // Only update traders
                     pmcData.TradersInfo[request.tid].salesSum += costOfPurchaseInCurrency;
                 }
             }
         }
 
         // If no currency-based payment is involved, handle it separately
-        if (totalCurrencyAmount === 0) {
+        if (totalCurrencyAmount === 0 && payToTrader) {
             this.logger.debug(this.localisationService.getText("payment-zero_price_no_payment"));
 
             // Convert the handbook price to the trader's currency and update the sales sum.
@@ -117,10 +118,11 @@ export class PaymentService {
                 this.getTraderItemHandbookPriceRouble(request.item_id, request.tid),
                 this.paymentHelper.getCurrency(trader.currency),
             );
+
             pmcData.TradersInfo[request.tid].salesSum += costOfPurchaseInCurrency;
         }
 
-        if (this.traderHelper.traderEnumHasValue(request.tid)) {
+        if (payToTrader) {
             this.traderHelper.lvlUp(request.tid, pmcData);
         }
 
