@@ -102,7 +102,7 @@ export class PaymentService {
                 );
 
                 // Only update traders
-                if (this.traderHelper.traderEnumHasKey(request.tid)) {
+                if (this.traderHelper.traderEnumHasValue(request.tid)) {
                     pmcData.TradersInfo[request.tid].salesSum += costOfPurchaseInCurrency;
                 }
             }
@@ -120,7 +120,7 @@ export class PaymentService {
             pmcData.TradersInfo[request.tid].salesSum += costOfPurchaseInCurrency;
         }
 
-        if (this.traderHelper.traderEnumHasKey(request.tid)) {
+        if (this.traderHelper.traderEnumHasValue(request.tid)) {
             this.traderHelper.lvlUp(request.tid, pmcData);
         }
 
