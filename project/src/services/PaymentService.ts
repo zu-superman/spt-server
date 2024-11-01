@@ -100,7 +100,11 @@ export class PaymentService {
                     this.handbookHelper.inRUB(currencyAmount, currencyTpl),
                     this.paymentHelper.getCurrency(trader.currency),
                 );
-                pmcData.TradersInfo[request.tid].salesSum += costOfPurchaseInCurrency;
+
+                // Only update traders
+                if (this.traderHelper.traderEnumHasKey(request.tid)) {
+                    pmcData.TradersInfo[request.tid].salesSum += costOfPurchaseInCurrency;
+                }
             }
         }
 
@@ -116,7 +120,9 @@ export class PaymentService {
             pmcData.TradersInfo[request.tid].salesSum += costOfPurchaseInCurrency;
         }
 
-        this.traderHelper.lvlUp(request.tid, pmcData);
+        if (this.traderHelper.traderEnumHasKey(request.tid)) {
+            this.traderHelper.lvlUp(request.tid, pmcData);
+        }
 
         this.logger.debug("Item(s) taken. Status OK.");
     }

@@ -52,7 +52,13 @@ export class TraderHelper {
      * @param sessionID Players id
      * @returns Trader base
      */
-    public getTrader(traderID: string, sessionID: string): ITraderBase | undefined {
+    public getTrader(traderID: string, sessionID: string): ITraderBase | any {
+        if (traderID === "ragfair") {
+            return {
+                currency: "RUB",
+            };
+        }
+
         const pmcData = this.profileHelper.getPmcProfile(sessionID);
         if (!pmcData) {
             throw new error(this.localisationService.getText("trader-unable_to_find_profile_with_id", sessionID));
