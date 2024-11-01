@@ -8206,7 +8206,55 @@
       "slotId": "Groin"
     },
     {
-      "_id": "648a275aa937dd374c0d7399",
+      "_id": "67234f8d8aa4acc26b029cfb",
+      "_tpl": "67069cbbb29a2cd33803338c",
+      "parentId": "hideout",
+      "slotId": "hideout",
+      "upd": {
+        "UnlimitedCount": true,
+        "StackObjectsCount": 9999999,
+        "BuyRestrictionMax": 5,
+        "BuyRestrictionCurrent": 0
+      }
+    },
+    {
+      "_id": "67234f8d8aa4acc26b029cfe",
+      "_tpl": "67069cf1af4890b09f0006e8",
+      "parentId": "hideout",
+      "slotId": "hideout",
+      "upd": {
+        "UnlimitedCount": true,
+        "StackObjectsCount": 9999999,
+        "BuyRestrictionMax": 5,
+        "BuyRestrictionCurrent": 0
+      }
+    },
+    {
+      "_id": "67234f8d8aa4acc26b029d01",
+      "_tpl": "67069d02ad91f3a63c0bc2b0",
+      "parentId": "hideout",
+      "slotId": "hideout",
+      "upd": {
+        "UnlimitedCount": true,
+        "StackObjectsCount": 9999999,
+        "BuyRestrictionMax": 5,
+        "BuyRestrictionCurrent": 0
+      }
+    },
+    {
+      "_id": "67234f8d8aa4acc26b029d04",
+      "_tpl": "67069c8cee8138ed2f05ad34",
+      "parentId": "hideout",
+      "slotId": "hideout",
+      "upd": {
+        "UnlimitedCount": true,
+        "StackObjectsCount": 9999999,
+        "BuyRestrictionMax": 5,
+        "BuyRestrictionCurrent": 0
+      }
+    },
+    {
+      "_id": "672461dc250db22ded1010ce",
       "_tpl": "5e85a9f4add9fe03027d9bf1",
       "parentId": "hideout",
       "slotId": "hideout",
@@ -11563,7 +11611,39 @@
         }
       ]
     ],
-    "648a275aa937dd374c0d7399": [
+    "67234f8d8aa4acc26b029cfb": [
+      [
+        {
+          "count": 1879,
+          "_tpl": "5449016a4bdc2d6f028b456f"
+        }
+      ]
+    ],
+    "67234f8d8aa4acc26b029cfe": [
+      [
+        {
+          "count": 1366,
+          "_tpl": "5449016a4bdc2d6f028b456f"
+        }
+      ]
+    ],
+    "67234f8d8aa4acc26b029d01": [
+      [
+        {
+          "count": 1342,
+          "_tpl": "5449016a4bdc2d6f028b456f"
+        }
+      ]
+    ],
+    "67234f8d8aa4acc26b029d04": [
+      [
+        {
+          "count": 1910,
+          "_tpl": "5449016a4bdc2d6f028b456f"
+        }
+      ]
+    ],
+    "672461dc250db22ded1010ce": [
       [
         {
           "count": 2618,
@@ -11982,6 +12062,10 @@
     "66e8031cea847a407f0e71d4": 3,
     "66e8031cea847a407f0e71de": 4,
     "66f53bb3ee2455f8ee0cd425": 4,
-    "648a275aa937dd374c0d7399": 3
+    "67234f8d8aa4acc26b029cfb": 4,
+    "67234f8d8aa4acc26b029cfe": 4,
+    "67234f8d8aa4acc26b029d01": 4,
+    "67234f8d8aa4acc26b029d04": 4,
+    "672461dc250db22ded1010ce": 3
   }
 }
