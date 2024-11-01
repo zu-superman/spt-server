@@ -240,6 +240,17 @@ export class GameController {
             delete (fullProfile.characters.pmc.Hideout as any).Improvement;
             this.logger.warning(`Migration: Moved Hideout Improvement data to new property 'Improvements'`);
         }
+
+        //Remove spt friend / commando from dialogues as they need to be remade using mongo_ids
+        const commando = fullProfile.dialogues.sptCommando;
+        if (commando) {
+            delete fullProfile.dialogues.sptCommando;
+        }
+
+        const sptFriend = fullProfile.dialogues.friend;
+        if (sptFriend) {
+            delete fullProfile.dialogues.sptFriend;
+        }
     }
 
     /**
