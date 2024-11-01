@@ -442,8 +442,8 @@ export class SeasonalEventService {
                 this.logger.warning(`Unable to add: ${eventType} wave to: ${mapKey}`);
                 continue;
             }
-
-            locations[mapKey].base.BossLocationSpawn.push(...wavesToAdd);
+            locations[mapKey].base.waves = [];
+            locations[mapKey].base.waves.push(...wavesToAdd);
         }
     }
 
