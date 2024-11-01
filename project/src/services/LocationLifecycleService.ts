@@ -201,6 +201,7 @@ export class LocationLifecycleService {
 
             // Add/edit chance settings
             if (configHostilityChanges.chancedEnemies) {
+                locationBotHostilityDetails.ChancedEnemies ||= [];
                 for (const chanceDetailsToApply of configHostilityChanges.chancedEnemies) {
                     const locationBotDetails = locationBotHostilityDetails.ChancedEnemies.find(
                         (botChance) => botChance.Role === chanceDetailsToApply.Role,
@@ -217,6 +218,7 @@ export class LocationLifecycleService {
 
             // Add new permanent friends if they don't already exist
             if (configHostilityChanges.additionalFriendlyTypes) {
+                locationBotHostilityDetails.AlwaysFriends ||= [];
                 for (const friendlyTypeToAdd of configHostilityChanges.additionalFriendlyTypes) {
                     if (!locationBotHostilityDetails.AlwaysFriends.includes(friendlyTypeToAdd)) {
                         locationBotHostilityDetails.AlwaysFriends.push(friendlyTypeToAdd);
