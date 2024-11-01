@@ -33,7 +33,8 @@
       "max": 20
     },
     "standingForKill": 0,
-    "aggressorBonus": 0
+    "aggressorBonus": 0,
+	"useSimpleAnimator": true
   },
   "health": {
     "Hydration": {

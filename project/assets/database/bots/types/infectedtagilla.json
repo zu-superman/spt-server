@@ -28,7 +28,8 @@
       "max": 2450
     },
     "standingForKill": -0.2,
-    "aggressorBonus": 0.05
+    "aggressorBonus": 0.05,
+	"useSimpleAnimator": true
   },
   "health": {
     "Hydration": {

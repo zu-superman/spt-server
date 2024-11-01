@@ -201,6 +201,7 @@ export class BotGenerator {
             botJsonTemplate.experience.reward.max,
         );
         bot.Info.Settings.StandingForKill = botJsonTemplate.experience.standingForKill;
+        bot.Info.Settings.UseSimpleAnimator = botJsonTemplate.experience.useSimpleAnimator ?? false;
         bot.Info.Voice = this.weightedRandomHelper.getWeightedValue<string>(botJsonTemplate.appearance.voice);
         bot.Health = this.generateHealth(botJsonTemplate.health, botGenerationDetails.isPlayerScav);
         bot.Skills = this.generateSkills(<any>botJsonTemplate.skills); // TODO: fix bad type, bot jsons store skills in dict, output needs to be array

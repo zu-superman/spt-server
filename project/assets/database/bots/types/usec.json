@@ -4544,6 +4544,9 @@
         "mod_mount_000": [
           "5947db3f86f77447880cf76f"
         ],
+		"mod_mount_001": [
+          "6710cea62bb09af72f0e6bf8"
+        ],
         "mod_muzzle": [
           "58272d7f2459774f6311ddfd",
           "59fb137a86f7740adb646af1",
@@ -4567,6 +4570,35 @@
           "57616ca52459773c69055192"
         ]
       },
+	  "6710cea62bb09af72f0e6bf8": {
+		  "mod_tactical_001": ["5a800961159bd4315e3a1657",
+                  "57fd23e32459772d0805bcf1",
+                  "544909bb4bdc2d6f028b4577",
+                  "5c06595c0db834001a66af6c",
+                  "5cc9c20cd7f00c001336c65d",
+                  "5d2369418abbc306c62e0c80",
+                  "5b07dd285acfc4001754240d"
+			],
+			"mod_tactical_002": ["5a800961159bd4315e3a1657",
+                  "57fd23e32459772d0805bcf1",
+                  "544909bb4bdc2d6f028b4577",
+                  "5c06595c0db834001a66af6c",
+                  "5cc9c20cd7f00c001336c65d",
+                  "5d2369418abbc306c62e0c80",
+                  "5b07dd285acfc4001754240d",
+                  "56def37dd2720bec348b456a"
+		],
+		"mod_tactical_000": [
+		"5a800961159bd4315e3a1657",
+                  "57fd23e32459772d0805bcf1",
+                  "544909bb4bdc2d6f028b4577",
+                  "5c06595c0db834001a66af6c",
+                  "5cc9c20cd7f00c001336c65d",
+                  "5d2369418abbc306c62e0c80",
+                  "5b07dd285acfc4001754240d"
+		],
+		"mod_tactical_003": ["57d17c5e2459775a5c57d17d"]
+	  },
 	  "58272b842459774abc128d50": {
         "mod_scope": ["570fd79bd2720bc7458b4583", "570fd6c2d2720bc6458b457f"]
     },
@@ -12492,7 +12524,8 @@
         ],
         "mod_mount_003": [
           "5df35eb2b11454561e3923e2"
-        ]
+        ],
+		"mod_bipod": ["5888961624597754281f93f3"]
       },
       "5df35e59c41b2312ea3334d5": {
         "mod_handguard": [
@@ -13920,6 +13953,16 @@
           "57fd23e32459772d0805bcf1"
         ]
       },
+	  "5fbc227aa56d053a3543f79e": {
+		  "mod_mount_000": ["5a9d6d00a2750c5c985b5305"],
+		  "mod_mount_001": ["5a9d6d00a2750c5c985b5305"],
+		  "mod_sight_front": ["5ba26b01d4351e0085325a51"],
+		  "mod_foregrip": ["615d8fd3290d254f5e6b2edc",
+                  "5fc0f9b5d724d907e2077d82",
+                  "5fc0f9cbd6fa9c00c571bb90"
+				  ],
+		  "mod_mount_002": ["67112695fe5c8bf33f02476d"]
+	  },
       "5fc22d7c187fea44d52eda44": {
         "mod_magazine": [
           "5fc23426900b1d5091531e15"

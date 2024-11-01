@@ -5280,79 +5280,7 @@
         "improvements": []
       },
       "1": {
-        "requirements": [
-          {
-            "areaType": 22,
-            "requiredLevel": 6,
-            "type": "Area"
-          },
-          {
-            "areaType": 15,
-            "requiredLevel": 2,
-            "type": "Area"
-          },
-          {
-            "traderId": "5ac3b934156ae10c4430e83c",
-            "loyaltyLevel": 2,
-            "type": "TraderLoyalty"
-          },
-          {
-            "templateId": "544fb5454bdc2df8738b456a",
-            "count": 1,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          },
-          {
-            "templateId": "5e2af47786f7746d404f3aaa",
-            "count": 10,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          },
-          {
-            "templateId": "61bf83814088ec1a363d7097",
-            "count": 1,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          },
-          {
-            "templateId": "590a3cd386f77436f20848cb",
-            "count": 8,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          },
-          {
-            "templateId": "57347c5b245977448d35f6e1",
-            "count": 15,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          },
-          {
-            "templateId": "62a0a098de7ac8199358053b",
-            "count": 1,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          },
-          {
-            "templateId": "59e35de086f7741778269d84",
-            "count": 1,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          },
-          {
-            "templateId": "5449016a4bdc2d6f028b456f",
-            "count": 300000,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          }
-        ],
+        "requirements": [],
         "bonuses": [
           {
             "id": "6698e6d817b8f677b3077ef0",
@@ -5365,7 +5293,7 @@
           }
         ],
         "slots": 0,
-        "constructionTime": 21600.0,
+        "constructionTime": 33.0,
         "description": "",
         "container": "65e5957613227bb7690ce9f6",
         "autoUpgrade": false,
@@ -5373,74 +5301,7 @@
         "improvements": []
       },
       "2": {
-        "requirements": [
-          {
-            "areaType": 16,
-            "requiredLevel": 1,
-            "type": "Area"
-          },
-          {
-            "traderId": "5ac3b934156ae10c4430e83c",
-            "loyaltyLevel": 3,
-            "type": "TraderLoyalty"
-          },
-          {
-            "templateId": "590c311186f77424d1667482",
-            "count": 1,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          },
-          {
-            "templateId": "5e2af4d286f7746d4159f07a",
-            "count": 10,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          },
-          {
-            "templateId": "590a3cd386f77436f20848cb",
-            "count": 12,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          },
-          {
-            "templateId": "590c31c586f774245e3141b2",
-            "count": 8,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          },
-          {
-            "templateId": "590c35a486f774273531c822",
-            "count": 3,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          },
-          {
-            "templateId": "57347c1124597737fb1379e3",
-            "count": 5,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          },
-          {
-            "templateId": "59e35de086f7741778269d84",
-            "count": 1,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          },
-          {
-            "templateId": "5449016a4bdc2d6f028b456f",
-            "count": 800000,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          }
-        ],
+        "requirements": [],
         "bonuses": [
           {
             "id": "6698e72c17b8f677b3077ef1",
@@ -5453,7 +5314,7 @@
           }
         ],
         "slots": 0,
-        "constructionTime": 43200.0,
+        "constructionTime": 33.0,
         "description": "",
         "container": "65e597266017f07a3204b775",
         "autoUpgrade": false,
@@ -5461,74 +5322,7 @@
         "improvements": []
       },
       "3": {
-        "requirements": [
-          {
-            "areaType": 16,
-            "requiredLevel": 2,
-            "type": "Area"
-          },
-          {
-            "traderId": "5ac3b934156ae10c4430e83c",
-            "loyaltyLevel": 4,
-            "type": "TraderLoyalty"
-          },
-          {
-            "templateId": "60391afc25aff57af81f7085",
-            "count": 1,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          },
-          {
-            "templateId": "62a0a0bb621468534a797ad5",
-            "count": 1,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          },
-          {
-            "templateId": "590a3cd386f77436f20848cb",
-            "count": 15,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          },
-          {
-            "templateId": "5e2af29386f7746d4159f077",
-            "count": 5,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          },
-          {
-            "templateId": "61bf7b6302b3924be92fa8c3",
-            "count": 15,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          },
-          {
-            "templateId": "5e2af41e86f774755a234b67",
-            "count": 10,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          },
-          {
-            "templateId": "591094e086f7747caa7bb2ef",
-            "count": 1,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          },
-          {
-            "templateId": "5449016a4bdc2d6f028b456f",
-            "count": 1200000,
-            "isFunctional": false,
-            "isEncoded": false,
-            "type": "Item"
-          }
-        ],
+        "requirements": [],
         "bonuses": [
           {
             "id": "6698e73c0ab2cbb83904ee2a",
@@ -5541,7 +5335,7 @@
           }
         ],
         "slots": 0,
-        "constructionTime": 86400.0,
+        "constructionTime": 33.0,
         "description": "",
         "container": "65e5972a13227bb7690cea07",
         "autoUpgrade": false,
