@@ -10,7 +10,7 @@ import { Season } from "@spt/models/enums/Season";
 import { SeasonalEventType } from "@spt/models/enums/SeasonalEventType";
 import { IHttpConfig } from "@spt/models/spt/config/IHttpConfig";
 import { IQuestConfig } from "@spt/models/spt/config/IQuestConfig";
-import { ISeasonalEvent, ISeasonalEventConfig } from "@spt/models/spt/config/ISeasonalEventConfig";
+import { ISeasonalEvent, ISeasonalEventConfig, IZombieSettings } from "@spt/models/spt/config/ISeasonalEventConfig";
 import { IWeatherConfig } from "@spt/models/spt/config/IWeatherConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
@@ -352,9 +352,8 @@ export class SeasonalEventService {
                     this.enableHalloweenSummonEvent();
                     this.addEventBossesToMaps(event.type);
                 }
-                if (event.settings?.enableZombies) {
-                    this.enableHalloweenZombiesEvent();
-                    this.addEventWavesToMaps("halloweenZombies");
+                if (event.settings?.zombieSettings?.enabled) {
+                    this.configureZombies(event.settings?.zombieSettings);
                 }
                 this.addPumpkinsToScavBackpacks();
                 this.adjustTraderIcons(event.type);
@@ -367,7 +366,6 @@ export class SeasonalEventService {
                     this.addGifterBotToMaps();
                     this.addLootItemsToGifterDropItemsList();
                 }
-
                 this.enableDancingTree();
                 break;
             case SeasonalEventType.NEW_YEARS.toLowerCase():
@@ -420,11 +418,21 @@ export class SeasonalEventService {
         this.databaseService.getGlobals().config.EventSettings.EventActive = true;
     }
 
-    protected enableHalloweenZombiesEvent(): void {
-        // TODO - expand to be more dynamic
-        // TODO - add zombies waves to maps
-        this.databaseService.getLocations().laboratory.base.Events.Halloween2024.InfectionPercentage = 100;
-        this.databaseService.getLocations().factory4_day.base.Events.Halloween2024.InfectionPercentage = 50;
+    protected configureZombies(zombieSettings: IZombieSettings) {
+        for (const locationKey in zombieSettings.mapInfectionAmount) {
+            this.databaseService.getLocation(locationKey).base.Events.Halloween2024.InfectionPercentage =
+                zombieSettings.mapInfectionAmount[locationKey];
+        }
+
+        for (const locationKey in zombieSettings.disableBosses) {
+            this.databaseService.getLocation(locationKey).base.BossLocationSpawn = [];
+        }
+
+        for (const locationKey in zombieSettings.disableWaves) {
+            this.databaseService.getLocation(locationKey).base.waves = [];
+        }
+
+        this.addEventWavesToMaps("halloweenZombies");
     }
 
     protected addEventWavesToMaps(eventType: string): void {

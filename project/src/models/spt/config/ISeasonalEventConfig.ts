@@ -22,7 +22,14 @@ export interface ISeasonalEvent {
     startMonth: number;
     endDay: number;
     endMonth: number;
-    settings?: Record<string, boolean>;
+    settings?: Record<string, any>;
+}
+
+export interface IZombieSettings {
+    enabled: boolean;
+    mapInfectionAmount: Record<string, number>;
+    disableBosses: Record<string, boolean>;
+    disableWaves: Record<string, boolean>;
 }
 
 export interface IGifterSetting {

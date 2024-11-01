@@ -1307,7 +1307,18 @@
             "endMonth": "11",
 			"settings": {
 				"enableSummoning": false,
-				"enableZombies": true
+				"zombieSettings": {
+					"enabled": true,
+					"mapInfectionAmount": {
+						"laboratory": 100
+					},
+					"disableBosses": {
+						"laboratory": true
+					},
+					"disableWaves": {
+						"laboratory": true
+					}
+				}
 			}
         },
         {
