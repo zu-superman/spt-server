@@ -13,7 +13,9 @@
       "5d5f8ba486f77431254e7fd2": 1
     },
     "voice": {
-      "BossTagilla": 1
+      "Zombie_Generic": 6,
+      "Zombie_Fast": 3,
+      "Zombie_Medium": 1
     }
   },
   "experience": {
@@ -121,12 +123,7 @@
         "609e860ebd219504d8507525": 40337
       },
       "Backpack": {},
-      "FirstPrimaryWeapon": {
-        "583990e32459771419544dd2": 33349,
-        "606dae0ab0e443224b421bb7": 5825,
-        "576165642459773c7a400233": 5853,
-        "5beed0f50db834001c062b12": 7117
-      },
+      "FirstPrimaryWeapon": {},
       "SecondPrimaryWeapon": {},
       "Holster": {},
       "Scabbard": {
@@ -688,7 +685,7 @@
     }
   },
   "firstName": [
-    "Тагилла"
+    "???"
   ],
   "lastName": [],
   "difficulty": {
@@ -2735,7 +2732,7 @@
       "ArmBand": 0,
       "TacticalVest": 100,
       "Backpack": 0,
-      "FirstPrimaryWeapon": 100,
+      "FirstPrimaryWeapon": 0,
       "SecondPrimaryWeapon": 0,
       "Holster": 0,
       "Scabbard": 100,
