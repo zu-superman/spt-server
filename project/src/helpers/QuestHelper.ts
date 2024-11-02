@@ -1050,15 +1050,9 @@ export class QuestHelper {
 
         // More/less than single match, above filtering wasn't strict enough
         if (matchingProductions.length !== 1) {
-            // Multiple match were found, last ditch attempt to match by questid (value we add manually to production.json via `gen:productionquests` command)
-            matchingProductions = craftingRecipes.filter(
-                (prod) =>
-                    prod.areaType === desiredHideoutAreaType &&
-                    prod.requirements.some((requirement) => requirement.questId === questDetails._id) &&
-                    prod.requirements.some(
-                        (requirement) => requirement.requiredLevel === craftUnlockReward.loyaltyLevel,
-                    ) &&
-                    prod.endProduct === craftUnlockReward.items[0]._tpl,
+            // Multiple matches were found, last ditch attempt to match by questid (value we add manually to production.json via `gen:productionquests` command)
+            matchingProductions = matchingProductions.filter((prod) =>
+                prod.requirements.some((requirement) => requirement.questId === questDetails._id),
             );
 
             if (matchingProductions.length !== 1) {
