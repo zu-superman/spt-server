@@ -1,20 +1,20 @@
 {
   "containersGroups": {
     "tool&others_crate_outdoors": {
-      "minContainers": 19,
-      "maxContainers": 20
+      "minContainers": 21,
+      "maxContainers": 22
     },
     "weapon_crate_closed": {
-      "minContainers": 10,
-      "maxContainers": 12
+      "minContainers": 20,
+      "maxContainers": 25
     },
     "weapon_crate_outdoors": {
       "minContainers": 25,
       "maxContainers": 27
     },
     "outdoors_bags": {
-      "minContainers": 23,
-      "maxContainers": 25
+      "minContainers": 26,
+      "maxContainers": 28
     }
   },
   "containers": {
@@ -378,6 +378,9 @@
     "container_Laboratory_DesignStuff_00028": {
       "groupId": "outdoors_bags"
     },
+    "Lootable_00011": {
+      "groupId": ""
+    },
     "container_Laboratory_DesignStuff_00015": {
       "groupId": "outdoors_bags"
     },
@@ -392,6 +395,39 @@
     },
     "container_Laboratory_DesignStuff_00044": {
       "groupId": "outdoors_bags"
+    },
+    "container_Laboratory_DesignStuff_00291": {
+      "groupId": "outdoors_bags"
+    },
+    "container_Laboratory_DesignStuff_00284": {
+      "groupId": "outdoors_bags"
+    },
+    "container_Laboratory_DesignStuff_00289": {
+      "groupId": "outdoors_bags"
+    },
+    "container_Laboratory_DesignStuff_00283": {
+      "groupId": "outdoors_bags"
+    },
+    "container_Laboratory_DesignStuff_00287": {
+      "groupId": "outdoors_bags"
+    },
+    "container_Laboratory_DesignStuff_00288": {
+      "groupId": "outdoors_bags"
+    },
+    "container_Laboratory_DesignStuff_00286": {
+      "groupId": "outdoors_bags"
+    },
+    "container_Laboratory_DesignStuff_00290": {
+      "groupId": "outdoors_bags"
+    },
+    "container_Laboratory_DesignStuff_00281": {
+      "groupId": "tool&others_crate_outdoors"
+    },
+    "container_Laboratory_DesignStuff_00285": {
+      "groupId": "tool&others_crate_outdoors"
+    },
+    "container_Laboratory_DesignStuff_00280": {
+      "groupId": "tool&others_crate_outdoors"
     },
     "container_Laboratory_DesignStuff_00118": {
       "groupId": "weapon_crate_closed"
@@ -424,6 +460,21 @@
       "groupId": ""
     },
     "container_Laboratory_DesignStuff_00109": {
+      "groupId": "weapon_crate_closed"
+    },
+    "container_Laboratory_DesignStuff_00295": {
+      "groupId": "weapon_crate_closed"
+    },
+    "container_Laboratory_DesignStuff_00292": {
+      "groupId": "weapon_crate_closed"
+    },
+    "container_Laboratory_DesignStuff_00294": {
+      "groupId": "weapon_crate_closed"
+    },
+    "container_Laboratory_DesignStuff_00293": {
+      "groupId": "weapon_crate_closed"
+    },
+    "container_Laboratory_DesignStuff_00301": {
       "groupId": "weapon_crate_closed"
     },
     "container_Laboratory_DesignStuff_00236": {
@@ -489,6 +540,9 @@
     "container_Laboratory_DesignStuff_00265": {
       "groupId": "tool&others_crate_outdoors"
     },
+    "container_Laboratory_Medical_corridor_floor_1_00001": {
+      "groupId": ""
+    },
     "container_Laboratory_DesignStuff_00239": {
       "groupId": "tool&others_crate_outdoors"
     },
@@ -533,6 +587,9 @@
     },
     "container_Laboratory_DesignStuff_00272": {
       "groupId": "tool&others_crate_outdoors"
+    },
+    "container_ProfileEditor_00002": {
+      "groupId": ""
     },
     "container_Laboratory_DesignStuff_00276": {
       "groupId": ""
@@ -616,6 +673,9 @@
       "groupId": ""
     },
     "container_Laboratory_DesignStuff_00178": {
+      "groupId": ""
+    },
+    "Lootable_00065": {
       "groupId": ""
     },
     "container_Laboratory_DesignStuff_00156": {
@@ -887,6 +947,33 @@
     },
     "container_Laboratory_DesignStuff_00195": {
       "groupId": "weapon_crate_outdoors"
+    },
+    "container_Laboratory_Medical_corridor_floor_1_00000": {
+      "groupId": ""
+    },
+    "container_Laboratory_DesignStuff_00282": {
+      "groupId": "weapon_crate_outdoors"
+    },
+    "container_Laboratory_DesignStuff_00297": {
+      "groupId": "weapon_crate_closed"
+    },
+    "container_Laboratory_DesignStuff_00299": {
+      "groupId": "weapon_crate_closed"
+    },
+    "container_Laboratory_DesignStuff_00303": {
+      "groupId": "weapon_crate_closed"
+    },
+    "container_Laboratory_DesignStuff_00298": {
+      "groupId": "weapon_crate_closed"
+    },
+    "container_Laboratory_DesignStuff_00302": {
+      "groupId": "weapon_crate_closed"
+    },
+    "container_Laboratory_DesignStuff_00300": {
+      "groupId": "weapon_crate_closed"
+    },
+    "container_Laboratory_DesignStuff_00296": {
+      "groupId": "weapon_crate_closed"
     }
   }
 }
