@@ -64,7 +64,7 @@ export class InRaidHelper {
         // Store insurance (as removeItem() removes insured items)
         const insured = this.cloner.clone(serverProfile.InsuredItems);
 
-        // Remove possible equipped items from before the raid
+        // Remove equipped items from before the raid
         this.inventoryHelper.removeItem(serverProfile, serverProfile.Inventory.equipment, sessionID);
 
         // Get all items that have a parent of `serverProfile.Inventory.equipment` (All items player had on them at end of raid)
@@ -73,43 +73,71 @@ export class InRaidHelper {
             postRaidProfile.Inventory.equipment,
         );
 
+        // Get all items that have a parent of `serverProfile.Inventory.questRaidItems` (Quest items player had on them at end of raid)
+        const postRaidQuestItems = this.itemHelper.findAndReturnChildrenAsItems(
+            postRaidProfile.Inventory.items,
+            postRaidProfile.Inventory.questRaidItems,
+        );
+
         // Handle Removing of FIR status if player did not survive + not transferring
         // Do after above filtering code to reduce work done
         if (!isSurvived && !isTransfer && !this.inRaidConfig.alwaysKeepFoundInRaidonRaidEnd) {
-            const dbItems = this.databaseService.getItems();
-
-            const itemsToRemovePropertyFrom = postRaidProfile.Inventory.items.filter((item) => {
-                // Has upd object + upd.SpawnedInSession property + not a quest item
-                return (
-                    item.upd?.SpawnedInSession &&
-                    !dbItems[item._tpl]._props.QuestItem &&
-                    !(
-                        this.inRaidConfig.keepFiRSecureContainerOnDeath &&
-                        this.itemHelper.itemIsInsideContainer(item, "SecuredContainer", postRaidProfile.Inventory.items)
-                    )
-                );
-            });
-
-            this.itemHelper.removeSpawnedInSessionPropertyFromItems(itemsToRemovePropertyFrom);
+            this.removeFiRStatusFromCertainItems(postRaidProfile.Inventory.items);
         }
 
         // Add items from client profile into server profile
-        for (const item of postRaidInventoryItems) {
-            // Try to find index of item to determine if we should add or replace
-            const existingItemIndex = serverProfile.Inventory.items.findIndex(
-                (inventoryItem) => inventoryItem._id === item._id,
-            );
-            if (existingItemIndex === -1) {
-                // Not found, add
-                serverProfile.Inventory.items.push(item);
-            } else {
-                // Replace item with one from client
-                postRaidProfile.Inventory.items.splice(existingItemIndex, 1, item);
-            }
-        }
+        this.addItemsToInventory(postRaidInventoryItems, serverProfile.Inventory.items);
+
+        // Add quest items from client profile into server profile
+        this.addItemsToInventory(postRaidQuestItems, serverProfile.Inventory.items);
 
         serverProfile.Inventory.fastPanel = postRaidProfile.Inventory.fastPanel; // Quick access items bar
         serverProfile.InsuredItems = insured;
+    }
+
+    /**
+     * Remove FiR status from items
+     * @param items Items to process
+     */
+    protected removeFiRStatusFromCertainItems(items: IItem[]): void {
+        const dbItems = this.databaseService.getItems();
+
+        const itemsToRemovePropertyFrom = items.filter((item) => {
+            // Has upd object + upd.SpawnedInSession property + not a quest item
+            return (
+                item.upd?.SpawnedInSession &&
+                !dbItems[item._tpl]._props.QuestItem &&
+                !(
+                    this.inRaidConfig.keepFiRSecureContainerOnDeath &&
+                    this.itemHelper.itemIsInsideContainer(item, "SecuredContainer", items)
+                )
+            );
+        });
+
+        for (const item of itemsToRemovePropertyFrom) {
+            delete item.upd.SpawnedInSession;
+        }
+    }
+
+    /**
+     * Add items from one parameter into another
+     * @param itemsToAdd Items we want to add
+     * @param serverInventoryItems Location to add items to
+     */
+    protected addItemsToInventory(itemsToAdd: IItem[], serverInventoryItems: IItem[]): void {
+        for (const itemToAdd of itemsToAdd) {
+            // Try to find index of item to determine if we should add or replace
+            const existingItemIndex = serverInventoryItems.findIndex(
+                (inventoryItem) => inventoryItem._id === itemToAdd._id,
+            );
+            if (existingItemIndex === -1) {
+                // Not found, add
+                serverInventoryItems.push(itemToAdd);
+            } else {
+                // Replace item with one from client
+                serverInventoryItems.splice(existingItemIndex, 1, itemToAdd);
+            }
+        }
     }
 
     /**
