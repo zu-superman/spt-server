@@ -241,15 +241,13 @@ export class GameController {
             this.logger.warning(`Migration: Moved Hideout Improvement data to new property 'Improvements'`);
         }
 
-        //Remove spt friend / commando from dialogues as they need to be remade using mongo_ids
-        const commando = fullProfile.dialogues.sptCommando;
-        if (commando) {
-            delete fullProfile.dialogues.sptCommando;
-        }
-
-        const sptFriend = fullProfile.dialogues.friend;
-        if (sptFriend) {
-            delete fullProfile.dialogues.sptFriend;
+        // Remove invalid dialogs (MUST be a valid mongo id)
+        // 100% removes commando + spyFriend
+        for (const dialogKey in fullProfile.dialogues) {
+            const isValidKey = this.hashUtil.isValidMongoId(dialogKey);
+            if (!isValidKey) {
+                delete fullProfile.dialogues[dialogKey];
+            }
         }
     }
 
