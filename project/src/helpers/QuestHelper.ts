@@ -1034,26 +1034,43 @@ export class QuestHelper {
         response: IItemEventRouterResponse,
     ): void {
         // Get hideout crafts and find those that match by areatype/required level/end product tpl - hope for just one match
-        const hideoutProductions = this.databaseService.getHideout().production;
-        const matchingProductions = hideoutProductions.recipes.filter(
+        const craftingRecipes = this.databaseService.getHideout().production.recipes;
+
+        // Area that will be used to craft unlocked item
+        const desiredHideoutAreaType = Number.parseInt(craftUnlockReward.traderId);
+
+        let matchingProductions = craftingRecipes.filter(
             (prod) =>
-                prod.areaType === Number.parseInt(craftUnlockReward.traderId) &&
+                prod.areaType === desiredHideoutAreaType &&
                 //prod.requirements.some((requirement) => requirement.questId === questDetails._id) && // BSG dont store the quest id in requirement any more!
                 prod.requirements.some((requirement) => requirement.type === "QuestComplete") &&
-                prod.requirements.some((x) => x.requiredLevel === craftUnlockReward.loyaltyLevel) &&
+                prod.requirements.some((requirement) => requirement.requiredLevel === craftUnlockReward.loyaltyLevel) &&
                 prod.endProduct === craftUnlockReward.items[0]._tpl,
         );
 
-        // More/less than 1 match, above filtering wasn't strict enough
+        // More/less than single match, above filtering wasn't strict enough
         if (matchingProductions.length !== 1) {
-            this.logger.error(
-                this.localisationService.getText("quest-unable_to_find_matching_hideout_production", {
-                    questName: questDetails.QuestName,
-                    matchCount: matchingProductions.length,
-                }),
+            // Multiple match were found, last ditch attempt to match by questid (value we add manually to production.json via `gen:productionquests` command)
+            matchingProductions = craftingRecipes.filter(
+                (prod) =>
+                    prod.areaType === desiredHideoutAreaType &&
+                    prod.requirements.some((requirement) => requirement.questId === questDetails._id) &&
+                    prod.requirements.some(
+                        (requirement) => requirement.requiredLevel === craftUnlockReward.loyaltyLevel,
+                    ) &&
+                    prod.endProduct === craftUnlockReward.items[0]._tpl,
             );
 
-            return;
+            if (matchingProductions.length !== 1) {
+                this.logger.error(
+                    this.localisationService.getText("quest-unable_to_find_matching_hideout_production", {
+                        questName: questDetails.QuestName,
+                        matchCount: matchingProductions.length,
+                    }),
+                );
+
+                return;
+            }
         }
 
         // Add above match to pmc profile + client response
