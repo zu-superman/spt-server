@@ -450,7 +450,7 @@ export class SeasonalEventService {
             this.databaseService.getLocation(locationId).base.waves = [];
         }
 
-        this.addEventBossesToMaps("halloweenzombies");
+        this.addEventBossesToMaps("halloweenzombies", zombieSettings.mapInfectionAmount);
     }
 
     protected addEventWavesToMaps(eventType: string): void {
@@ -476,8 +476,9 @@ export class SeasonalEventService {
     /**
      * Add event bosses to maps
      * @param eventType Seasonal event, e.g. HALLOWEEN/CHRISTMAS
+     * @param mapWhitelist Check if map should have bosses added
      */
-    protected addEventBossesToMaps(eventType: string): void {
+    protected addEventBossesToMaps(eventType: string, mapWhitelist?: Record<string, number>): void {
         const botsToAddPerMap = this.seasonalEventConfig.eventBossSpawns[eventType.toLowerCase()];
         if (!botsToAddPerMap) {
             this.logger.warning(`Unable to add: ${eventType} bosses, eventBossSpawns is missing`);
@@ -491,6 +492,11 @@ export class SeasonalEventService {
                 this.logger.warning(`Unable to add: ${eventType} bosses to: ${mapKey}`);
                 continue;
             }
+
+            if (mapWhitelist && (mapWhitelist[mapKey] ?? 0) === 0) {
+                continue;
+            }
+
             for (const boss of bossesToAdd) {
                 const mapBosses: IBossLocationSpawn[] = locations[mapKey].base.BossLocationSpawn;
                 if (!mapBosses.some((bossSpawn) => bossSpawn.BossName === boss.BossName)) {
