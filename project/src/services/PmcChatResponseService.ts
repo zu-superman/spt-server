@@ -199,7 +199,7 @@ export class PmcChatResponseService {
      * @param isVictim Was responder a victim of player
      * @returns true = should be stripped
      */
-    appendSuffixToMessageEnd(isVictim: boolean): boolean {
+    protected appendSuffixToMessageEnd(isVictim: boolean): boolean {
         const chance = isVictim
             ? this.pmcResponsesConfig.victim.appendBroToMessageEndChancePercent
             : this.pmcResponsesConfig.killer.appendBroToMessageEndChancePercent;
@@ -275,8 +275,8 @@ export class PmcChatResponseService {
         const chosenCategory = this.randomUtil.getArrayValue(categories);
 
         return {
-            _id: pmcVictim.Name,
-            aid: this.hashUtil.generateAccountId(), // TODO- pass correct value
+            _id: pmcVictim.ProfileId,
+            aid: Number.parseInt(pmcVictim.AccountId),
             Info: {
                 Nickname: pmcVictim.Name,
                 Level: pmcVictim.Level,
