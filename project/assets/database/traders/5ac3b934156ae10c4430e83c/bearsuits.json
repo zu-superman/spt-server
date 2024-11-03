@@ -13,6 +13,7 @@
       "standing": 0,
       "skillRequirements": [],
       "questRequirements": [],
+      "achievementRequirements": [],
       "itemRequirements": [
         {
           "count": 1800000,
@@ -37,6 +38,7 @@
       "standing": 0,
       "skillRequirements": [],
       "questRequirements": [],
+      "achievementRequirements": [],
       "itemRequirements": [
         {
           "count": 25000,
@@ -61,6 +63,7 @@
       "standing": 0,
       "skillRequirements": [],
       "questRequirements": [],
+      "achievementRequirements": [],
       "itemRequirements": [
         {
           "count": 500000,
@@ -85,6 +88,7 @@
       "standing": 0,
       "skillRequirements": [],
       "questRequirements": [],
+      "achievementRequirements": [],
       "itemRequirements": [
         {
           "count": 230000,
@@ -109,6 +113,7 @@
       "standing": 0,
       "skillRequirements": [],
       "questRequirements": [],
+      "achievementRequirements": [],
       "itemRequirements": [
         {
           "count": 800000,
@@ -133,6 +138,7 @@
       "standing": 0,
       "skillRequirements": [],
       "questRequirements": [],
+      "achievementRequirements": [],
       "itemRequirements": [
         {
           "count": 790000,
@@ -157,6 +163,7 @@
       "standing": 0,
       "skillRequirements": [],
       "questRequirements": [],
+      "achievementRequirements": [],
       "itemRequirements": [
         {
           "count": 30000,
@@ -181,6 +188,7 @@
       "standing": 0,
       "skillRequirements": [],
       "questRequirements": [],
+      "achievementRequirements": [],
       "itemRequirements": [
         {
           "count": 1240000,
@@ -205,6 +213,7 @@
       "standing": 0,
       "skillRequirements": [],
       "questRequirements": [],
+      "achievementRequirements": [],
       "itemRequirements": [
         {
           "count": 200000,
@@ -229,6 +238,7 @@
       "standing": 0,
       "skillRequirements": [],
       "questRequirements": [],
+      "achievementRequirements": [],
       "itemRequirements": [
         {
           "count": 2800000,
@@ -253,6 +263,7 @@
       "standing": 0,
       "skillRequirements": [],
       "questRequirements": [],
+      "achievementRequirements": [],
       "itemRequirements": [
         {
           "count": 4500000,
@@ -277,6 +288,7 @@
       "standing": 0,
       "skillRequirements": [],
       "questRequirements": [],
+      "achievementRequirements": [],
       "itemRequirements": [
         {
           "count": 2800000,
@@ -301,6 +313,7 @@
       "standing": 0,
       "skillRequirements": [],
       "questRequirements": [],
+      "achievementRequirements": [],
       "itemRequirements": [
         {
           "count": 3500000,
@@ -320,18 +333,18 @@
     "externalObtain": false,
     "internalObtain": true,
     "requirements": {
-      "loyaltyLevel": 3,
-      "profileLevel": 48,
+      "loyaltyLevel": 0,
+      "profileLevel": 0,
       "standing": 0,
       "skillRequirements": [],
-      "questRequirements": [
-        "5dc53acb86f77469c740c893"
+      "questRequirements": [],
+      "achievementRequirements": [
+        "6514143d59647d2cb3213c93"
       ],
       "itemRequirements": [
         {
           "count": 4000000,
-          "_tpl": "5449016a4bdc2d6f028b456f",
-          "onlyFunctional": true
+          "_tpl": "5449016a4bdc2d6f028b456f"
         }
       ],
       "requiredTid": "5ac3b934156ae10c4430e83c"
@@ -353,6 +366,7 @@
       "questRequirements": [
         "5e381b0286f77420e3417a74"
       ],
+      "achievementRequirements": [],
       "itemRequirements": [
         {
           "count": 3000000,
@@ -379,6 +393,7 @@
       "questRequirements": [
         "5e4d4ac186f774264f758336"
       ],
+      "achievementRequirements": [],
       "itemRequirements": [
         {
           "count": 2800000,
@@ -403,6 +418,7 @@
       "standing": 0,
       "skillRequirements": [],
       "questRequirements": [],
+      "achievementRequirements": [],
       "itemRequirements": [
         {
           "count": 155000,
@@ -427,6 +443,7 @@
       "standing": 0,
       "skillRequirements": [],
       "questRequirements": [],
+      "achievementRequirements": [],
       "itemRequirements": [
         {
           "count": 720000,
@@ -451,6 +468,7 @@
       "standing": 0,
       "skillRequirements": [],
       "questRequirements": [],
+      "achievementRequirements": [],
       "itemRequirements": [
         {
           "count": 330000,
@@ -475,6 +493,7 @@
       "standing": 0,
       "skillRequirements": [],
       "questRequirements": [],
+      "achievementRequirements": [],
       "itemRequirements": [
         {
           "count": 650000,
@@ -499,6 +518,7 @@
       "standing": 0,
       "skillRequirements": [],
       "questRequirements": [],
+      "achievementRequirements": [],
       "itemRequirements": [
         {
           "count": 1200000,
@@ -523,6 +543,7 @@
       "standing": 0,
       "skillRequirements": [],
       "questRequirements": [],
+      "achievementRequirements": [],
       "itemRequirements": [
         {
           "count": 1400000,
@@ -547,6 +568,7 @@
       "standing": 0,
       "skillRequirements": [],
       "questRequirements": [],
+      "achievementRequirements": [],
       "itemRequirements": [
         {
           "count": 350000,
@@ -571,6 +593,7 @@
       "standing": 0,
       "skillRequirements": [],
       "questRequirements": [],
+      "achievementRequirements": [],
       "itemRequirements": [
         {
           "count": 500000,
@@ -595,6 +618,7 @@
       "standing": 0,
       "skillRequirements": [],
       "questRequirements": [],
+      "achievementRequirements": [],
       "itemRequirements": [
         {
           "count": 180000,
@@ -619,6 +643,7 @@
       "standing": 0,
       "skillRequirements": [],
       "questRequirements": [],
+      "achievementRequirements": [],
       "itemRequirements": [
         {
           "count": 180000,
@@ -645,6 +670,7 @@
       "questRequirements": [
         "6613f307fca4f2f386029409"
       ],
+      "achievementRequirements": [],
       "itemRequirements": [
         {
           "count": 1100000,
@@ -669,6 +695,7 @@
       "standing": 0,
       "skillRequirements": [],
       "questRequirements": [],
+      "achievementRequirements": [],
       "itemRequirements": [
         {
           "count": 180000,
@@ -695,6 +722,7 @@
       "questRequirements": [
         "64f1d6e732bed22c3e0c7423"
       ],
+      "achievementRequirements": [],
       "itemRequirements": [],
       "requiredTid": "5ac3b934156ae10c4430e83c"
     }
@@ -713,6 +741,7 @@
       "standing": 0,
       "skillRequirements": [],
       "questRequirements": [],
+      "achievementRequirements": [],
       "itemRequirements": [
         {
           "count": 400000,
@@ -737,6 +766,7 @@
       "standing": 0,
       "skillRequirements": [],
       "questRequirements": [],
+      "achievementRequirements": [],
       "itemRequirements": [
         {
           "count": 280000,
@@ -761,6 +791,7 @@
       "standing": 0,
       "skillRequirements": [],
       "questRequirements": [],
+      "achievementRequirements": [],
       "itemRequirements": [
         {
           "count": 2450000,
@@ -787,6 +818,7 @@
       "questRequirements": [
         "6613f307fca4f2f386029409"
       ],
+      "achievementRequirements": [],
       "itemRequirements": [
         {
           "count": 700000,
@@ -813,6 +845,7 @@
       "questRequirements": [
         "6613f3007f6666d56807c929"
       ],
+      "achievementRequirements": [],
       "itemRequirements": [
         {
           "count": 600000,
@@ -839,6 +872,7 @@
       "questRequirements": [
         "6613f3007f6666d56807c929"
       ],
+      "achievementRequirements": [],
       "itemRequirements": [
         {
           "count": 400000,
@@ -863,6 +897,7 @@
       "standing": 0,
       "skillRequirements": [],
       "questRequirements": [],
+      "achievementRequirements": [],
       "itemRequirements": [
         {
           "count": 4,
@@ -887,6 +922,7 @@
       "standing": 0,
       "skillRequirements": [],
       "questRequirements": [],
+      "achievementRequirements": [],
       "itemRequirements": [
         {
           "count": 5500000,
@@ -911,6 +947,7 @@
       "standing": 0,
       "skillRequirements": [],
       "questRequirements": [],
+      "achievementRequirements": [],
       "itemRequirements": [
         {
           "count": 6,
@@ -935,6 +972,7 @@
       "standing": 0,
       "skillRequirements": [],
       "questRequirements": [],
+      "achievementRequirements": [],
       "itemRequirements": [],
       "requiredTid": "5ac3b934156ae10c4430e83c"
     }
@@ -953,6 +991,7 @@
       "standing": 0,
       "skillRequirements": [],
       "questRequirements": [],
+      "achievementRequirements": [],
       "itemRequirements": [],
       "requiredTid": "5ac3b934156ae10c4430e83c"
     }
@@ -971,6 +1010,7 @@
       "standing": 0,
       "skillRequirements": [],
       "questRequirements": [],
+      "achievementRequirements": [],
       "itemRequirements": [
         {
           "count": 900000,
@@ -995,6 +1035,7 @@
       "standing": 0,
       "skillRequirements": [],
       "questRequirements": [],
+      "achievementRequirements": [],
       "itemRequirements": [
         {
           "count": 10,
@@ -1019,6 +1060,7 @@
       "standing": 0,
       "skillRequirements": [],
       "questRequirements": [],
+      "achievementRequirements": [],
       "itemRequirements": [
         {
           "count": 4,
@@ -1043,6 +1085,7 @@
       "standing": 0,
       "skillRequirements": [],
       "questRequirements": [],
+      "achievementRequirements": [],
       "itemRequirements": [
         {
           "count": 6,
@@ -1067,6 +1110,7 @@
       "standing": 0,
       "skillRequirements": [],
       "questRequirements": [],
+      "achievementRequirements": [],
       "itemRequirements": [
         {
           "count": 10,
@@ -1091,6 +1135,7 @@
       "standing": 0,
       "skillRequirements": [],
       "questRequirements": [],
+      "achievementRequirements": [],
       "itemRequirements": [
         {
           "count": 800000,
@@ -1114,6 +1159,7 @@
       "standing": 0,
       "skillRequirements": [],
       "questRequirements": [],
+      "achievementRequirements": [],
       "itemRequirements": [
         {
           "count": 600000,
