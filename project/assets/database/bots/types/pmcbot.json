@@ -2057,7 +2057,8 @@
       "max": 275,
       "min": 275
     },
-    "standingForKill": 0
+    "standingForKill": 0,
+    "useSimpleAnimator": false
   },
   "firstName": [
     "Гюрза",

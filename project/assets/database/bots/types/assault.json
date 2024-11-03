@@ -2109,7 +2109,8 @@
       "max": -1,
       "min": -1
     },
-    "standingForKill": -0.04
+    "standingForKill": -0.05,
+    "useSimpleAnimator": false
   },
   "firstName": [
     "Агафон",
@@ -2661,9 +2662,10 @@
         "5e023e88277cce2b522ff2b1": 193
       },
       "Caliber762x54R": {
-        "64b8f7968532cf95ee0a0dbf": 86,
-        "64b8f7b5389d7ffd620ccba2": 61,
-        "64b8f7c241772715af0f9c3d": 66
+        "5887431f2459777e1612938f": 1,
+        "64b8f7968532cf95ee0a0dbf": 7,
+        "64b8f7b5389d7ffd620ccba2": 9,
+        "64b8f7c241772715af0f9c3d": 5
       },
       "Caliber9x18PM": {
         "573718ba2459775a75491131": 499,
@@ -2711,15 +2713,17 @@
         "64be79e2bf8412471d0d9bcc": 967
       },
       "Backpack": {
-        "544a5cde4bdc2d39388b456b": 5721,
-        "56e335e4d2720b6c058b456d": 2132,
-        "56e33634d2720bd8058b456b": 5671,
-        "56e33680d2720be2748b4576": 5508,
-        "59e763f286f7742ee57895da": 808,
-        "5f5e45cc5021ce62144be7aa": 1728,
-        "60a2828e8689911a226117f9": 398,
-        "656ddcf0f02d7bcea90bf395": 1121,
-        "66b5f247af44ca0014063c02": 1783
+        "544a5cde4bdc2d39388b456b": 71,
+        "56e335e4d2720b6c058b456d": 33,
+        "56e33634d2720bd8058b456b": 91,
+        "56e33680d2720be2748b4576": 86,
+        "59e763f286f7742ee57895da": 9,
+        "5ab8ee7786f7742d8f33f0b9": 11,
+        "5ab8f04f86f774585f4237d8": 9,
+        "5f5e45cc5021ce62144be7aa": 34,
+        "60a2828e8689911a226117f9": 2,
+        "656ddcf0f02d7bcea90bf395": 17,
+        "66b5f247af44ca0014063c02": 23
       },
       "Earpiece": {},
       "Eyewear": {
@@ -6776,6 +6780,20 @@
       "5e87071478f43e51ca2de5e1": {
         "mod_sight_front": [
           "5e8708d4ae379e67d22e0102"
+        ]
+      },
+      "5ea03f7400685063ec28bfa8": {
+        "mod_barrel": [
+          "5ea02bb600685063ec28bfa1"
+        ],
+        "mod_magazine": [
+          "5ea034eb5aad6446a939737b"
+        ],
+        "mod_reciever": [
+          "5ea03e5009aa976f2e7a514b"
+        ],
+        "mod_stock": [
+          "5ea03e9400685063ec28bfa4"
         ]
       },
       "5ea05cf85ad9772e6624305d": {
