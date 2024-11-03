@@ -1,35 +1,35 @@
 {
   "appearance": {
     "body": {
-      "670d1a053460753f070bb9b3": 5,
-      "670d1a5cd2d5ce45140289c3": 5,
-      "670d1a4d6f8cc0145f0a0744": 1,
-      "670d1a396f8cc0145f0a0742": 6,
-      "670d1a2be002387b8802950e": 4,
-      "670d1a81b7a8f34fce080717": 5,
-      "670d1a6f3460753f070bc0d9": 6,
-      "670d1a92d2d5ce4514028b90": 2,
-      "670d1a13e002387b8802950c": 2
+      "670d1a396f8cc0145f0a0742": 37,
+      "670d1a92d2d5ce4514028b90": 20,
+      "670d1a13e002387b8802950c": 27,
+      "670d1a053460753f070bb9b3": 32,
+      "670d1a2be002387b8802950e": 23,
+      "670d1a5cd2d5ce45140289c3": 29,
+      "670d1a6f3460753f070bc0d9": 37,
+      "670d1a4d6f8cc0145f0a0744": 29,
+      "670d1a81b7a8f34fce080717": 39
     },
     "feet": {
-      "670fb78d5ce1f9ca3b04b6c6": 8,
-      "670fb7d425772b9ffb0c7f3a": 4,
-      "670fb7bd2e9d3564120e91c7": 8,
-      "670fb7a4e6040a23520aa5d0": 5
+      "670fb7d425772b9ffb0c7f3a": 3,
+      "670fb7bd2e9d3564120e91c7": 2,
+      "670fb78d5ce1f9ca3b04b6c6": 2,
+      "670fb7a4e6040a23520aa5d0": 1
     },
     "hands": {
       "5cc2e68f14c02e28b47de290": 1
     },
     "head": {
-      "670d18b5032591157e0c353e": 9,
-      "670d18a3b7a8f34fce07fda9": 5,
-      "670d18746f8cc0145f0a0314": 8,
-      "670d18827ca0004a2a022603": 3,
-      "670d1892d2d5ce4514027e8a": 10
+      "670d18746f8cc0145f0a0314": 7,
+      "670d18827ca0004a2a022603": 11,
+      "670d18b5032591157e0c353e": 11,
+      "670d18a3b7a8f34fce07fda9": 11,
+      "670d1892d2d5ce4514027e8a": 11
     },
     "voice": {
-      "Zombie_Generic": 3,
-      "Zombie_Fast": 2,
+      "Zombie_Generic": 13,
+      "Zombie_Fast": 11,
       "Zombie_Medium": 1
     }
   },
@@ -44,7 +44,7 @@
     },
     "standingForKill": 0,
     "aggressorBonus": 0,
-	"useSimpleAnimator": true
+    "useSimpleAnimator": true
   },
   "health": {
     "Hydration": {
@@ -92,36 +92,6 @@
       },
       {
         "Head": {
-          "min": 80,
-          "max": 80
-        },
-        "Chest": {
-          "min": 350,
-          "max": 350
-        },
-        "Stomach": {
-          "min": 300,
-          "max": 300
-        },
-        "LeftArm": {
-          "min": 120,
-          "max": 120
-        },
-        "RightArm": {
-          "min": 120,
-          "max": 120
-        },
-        "LeftLeg": {
-          "min": 120,
-          "max": 120
-        },
-        "RightLeg": {
-          "min": 120,
-          "max": 120
-        }
-      },
-      {
-        "Head": {
           "min": 70,
           "max": 70
         },
@@ -149,6 +119,36 @@
           "min": 70,
           "max": 70
         }
+      },
+      {
+        "Head": {
+          "min": 80,
+          "max": 80
+        },
+        "Chest": {
+          "min": 350,
+          "max": 350
+        },
+        "Stomach": {
+          "min": 300,
+          "max": 300
+        },
+        "LeftArm": {
+          "min": 120,
+          "max": 120
+        },
+        "RightArm": {
+          "min": 120,
+          "max": 120
+        },
+        "LeftLeg": {
+          "min": 120,
+          "max": 120
+        },
+        "RightLeg": {
+          "min": 120,
+          "max": 120
+        }
       }
     ]
   },
@@ -168,13 +168,16 @@
       "FirstPrimaryWeapon": {},
       "SecondPrimaryWeapon": {},
       "Holster": {
-        "579204f224597773d619e051": 11,
-        "571a12c42459771f627b58a0": 1
+        "579204f224597773d619e051": 180,
+        "576a581d2459771e7b1bc4f1": 64,
+        "5448bd6b4bdc2dfc2f8b4569": 11,
+        "571a12c42459771f627b58a0": 18
       },
       "Scabbard": {
-        "670ad7f1ad195290cd00da7a": 31,
-        "5bead2e00db834001c062938": 2,
-        "601948682627df266209af05": 3
+        "670ad7f1ad195290cd00da7a": 218,
+        "5c012ffc0db834001d23f03f": 24,
+        "5bead2e00db834001c062938": 20,
+        "601948682627df266209af05": 11
       },
       "Pockets": {
         "557ffd194bdc2d28148b457f": 1
@@ -185,11 +188,19 @@
     },
     "Ammo": {
       "Caliber9x18PM": {
-        "573719762459775a626ccbc1": 1
+        "573719762459775a626ccbc1": 180,
+        "5737207f24597760ff7b25f2": 8,
+        "57371f8d24597761006c6a81": 2,
+        "573718ba2459775a75491131": 1
+      },
+      "Caliber9x19PARA": {
+        "58864a4f2459770fcc257101": 31,
+        "5efb0e16aeb21837e749c7ff": 1
       },
       "Caliber762x25TT": {
-        "5736026a245977644601dc61": 2,
-        "5735fdcd2459776445391d61": 1
+        "5735fdcd2459776445391d61": 10,
+        "573603c924597764442bd9cb": 3,
+        "5736026a245977644601dc61": 5
       }
     },
     "mods": {
@@ -212,6 +223,34 @@
           "63c6adcfb4ba094317063742"
         ]
       },
+      "576a581d2459771e7b1bc4f1": {
+        "mod_pistol_grip": [
+          "576a63cd2459771e796e0e11"
+        ],
+        "mod_magazine": [
+          "671d8617a3e45c1f5908278c"
+        ],
+        "patron_in_weapon": [
+          "58864a4f2459770fcc257101",
+          "5efb0e16aeb21837e749c7ff"
+        ]
+      },
+      "5448bd6b4bdc2dfc2f8b4569": {
+        "mod_reciever": [
+          "6374a822e629013b9c0645c8"
+        ],
+        "mod_pistolgrip": [
+          "6374a7e7417239a7bf00f042"
+        ],
+        "mod_magazine": [
+          "670e8eab8c1bb0e5a7075acf"
+        ],
+        "patron_in_weapon": [
+          "5737207f24597760ff7b25f2",
+          "57371f8d24597761006c6a81",
+          "573718ba2459775a75491131"
+        ]
+      },
       "571a12c42459771f627b58a0": {
         "mod_barrel": [
           "571a26d524597720680fbe8a"
@@ -223,8 +262,9 @@
           "671d85439ae8365d69117ba6"
         ],
         "patron_in_weapon": [
-          "5736026a245977644601dc61",
-          "5735fdcd2459776445391d61"
+          "5735fdcd2459776445391d61",
+          "573603c924597764442bd9cb",
+          "5736026a245977644601dc61"
         ]
       }
     },
@@ -2318,7 +2358,8 @@
     "weaponMods": {
       "mod_magazine": 100,
       "mod_muzzle": 0,
-      "mod_sight_rear": 66,
+      "mod_sight_rear": 81,
+      "mod_mount": 0,
       "mod_tactical": 0
     },
     "equipmentMods": {}

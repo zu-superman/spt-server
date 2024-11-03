@@ -1,26 +1,26 @@
 {
   "appearance": {
     "body": {
-      "671654d56ccf4799d007d4b9": 1,
-      "671654b5f68df05790043128": 2
+      "671654b5f68df05790043128": 3,
+      "671654d56ccf4799d007d4b9": 1
     },
     "feet": {
-      "670d18f87ca0004a2a022606": 1,
-      "670d18e2e002387b88029112": 1,
-      "670d1907b7a8f34fce07fdab": 3
+      "670d18f87ca0004a2a022606": 4,
+      "670d18e2e002387b88029112": 2,
+      "670d1907b7a8f34fce07fdab": 5
     },
     "hands": {
       "5cc2e68f14c02e28b47de290": 1
     },
     "head": {
+      "670d176bb7a8f34fce07fd9d": 1,
       "670d17df032591157e0c3538": 3,
-      "670d176bb7a8f34fce07fd9d": 3,
-      "670d17f9d2d5ce4514027e83": 8
+      "670d17f9d2d5ce4514027e83": 3
     },
     "voice": {
       "Zombie_Medium": 1,
-      "Zombie_Fast": 8,
-      "Zombie_Generic": 10
+      "Zombie_Generic": 7,
+      "Zombie_Fast": 5
     }
   },
   "experience": {
@@ -34,7 +34,7 @@
     },
     "standingForKill": 0,
     "aggressorBonus": 0,
-	"useSimpleAnimator": true
+    "useSimpleAnimator": true
   },
   "health": {
     "Hydration": {
@@ -50,36 +50,6 @@
       "max": 40
     },
     "BodyParts": [
-      {
-        "Head": {
-          "min": 100,
-          "max": 100
-        },
-        "Chest": {
-          "min": 350,
-          "max": 350
-        },
-        "Stomach": {
-          "min": 300,
-          "max": 300
-        },
-        "LeftArm": {
-          "min": 150,
-          "max": 150
-        },
-        "RightArm": {
-          "min": 150,
-          "max": 150
-        },
-        "LeftLeg": {
-          "min": 150,
-          "max": 150
-        },
-        "RightLeg": {
-          "min": 150,
-          "max": 150
-        }
-      },
       {
         "Head": {
           "min": 70,
@@ -108,6 +78,36 @@
         "RightLeg": {
           "min": 70,
           "max": 70
+        }
+      },
+      {
+        "Head": {
+          "min": 100,
+          "max": 100
+        },
+        "Chest": {
+          "min": 350,
+          "max": 350
+        },
+        "Stomach": {
+          "min": 300,
+          "max": 300
+        },
+        "LeftArm": {
+          "min": 150,
+          "max": 150
+        },
+        "RightArm": {
+          "min": 150,
+          "max": 150
+        },
+        "LeftLeg": {
+          "min": 150,
+          "max": 150
+        },
+        "RightLeg": {
+          "min": 150,
+          "max": 150
         }
       },
       {
@@ -161,11 +161,11 @@
         "579204f224597773d619e051": 1
       },
       "Scabbard": {
-        "670ad7f1ad195290cd00da7a": 38,
-        "5c012ffc0db834001d23f03f": 5,
-        "5c07df7f0db834001b73588a": 5,
-        "601948682627df266209af05": 2,
-        "5bead2e00db834001c062938": 1
+        "670ad7f1ad195290cd00da7a": 88,
+        "5c012ffc0db834001d23f03f": 16,
+        "5c07df7f0db834001b73588a": 10,
+        "5bead2e00db834001c062938": 1,
+        "601948682627df266209af05": 6
       },
       "Pockets": {
         "557ffd194bdc2d28148b457f": 1
@@ -2286,7 +2286,7 @@
     "weaponMods": {
       "mod_magazine": 100,
       "mod_muzzle": 0,
-      "mod_sight_rear": 82
+      "mod_sight_rear": 74
     },
     "equipmentMods": {}
   },

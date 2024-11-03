@@ -1,26 +1,26 @@
 {
   "appearance": {
     "body": {
+      "670d19ab42245e21c30eed24": 5,
       "670d1989186ee334e70ee8cd": 8,
-      "670d19ab42245e21c30eed24": 3,
-      "670d1999d57ec3c3e20e81da": 6
+      "670d1999d57ec3c3e20e81da": 9
     },
     "feet": {
-      "670d18e2e002387b88029112": 1,
-      "670d1907b7a8f34fce07fdab": 1,
-      "670d18f87ca0004a2a022606": 2
+      "670d1907b7a8f34fce07fdab": 3,
+      "670d18f87ca0004a2a022606": 2,
+      "670d18e2e002387b88029112": 7
     },
     "hands": {
       "5cc2e68f14c02e28b47de290": 1
     },
     "head": {
-      "670d125b7ca0004a2a021eae": 1,
-      "670d1749d57ec3c3e20e81a6": 6
+      "670d1749d57ec3c3e20e81a6": 2,
+      "670d125b7ca0004a2a021eae": 1
     },
     "voice": {
-      "Zombie_Generic": 6,
-      "Zombie_Fast": 3,
-      "Zombie_Medium": 1
+      "Zombie_Generic": 3,
+      "Zombie_Medium": 2,
+      "Zombie_Fast": 5
     }
   },
   "experience": {
@@ -34,7 +34,7 @@
     },
     "standingForKill": 0,
     "aggressorBonus": 0,
-	"useSimpleAnimator": true
+    "useSimpleAnimator": true
   },
   "health": {
     "Hydration": {
@@ -161,10 +161,11 @@
         "579204f224597773d619e051": 1
       },
       "Scabbard": {
-        "670ad7f1ad195290cd00da7a": 33,
-        "601948682627df266209af05": 2,
-        "5c012ffc0db834001d23f03f": 3,
-        "5c07df7f0db834001b73588a": 1
+        "670ad7f1ad195290cd00da7a": 108,
+        "5c07df7f0db834001b73588a": 4,
+        "5bead2e00db834001c062938": 2,
+        "5c012ffc0db834001d23f03f": 7,
+        "601948682627df266209af05": 3
       },
       "Pockets": {
         "557ffd194bdc2d28148b457f": 1
@@ -2285,7 +2286,7 @@
     "weaponMods": {
       "mod_magazine": 100,
       "mod_muzzle": 0,
-      "mod_sight_rear": 79
+      "mod_sight_rear": 75
     },
     "equipmentMods": {}
   },
