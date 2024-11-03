@@ -30,7 +30,7 @@ export class InraidCallbacks {
     }
 
     /**
-     * Handle raid/profile/save
+     * Handle raid/profile/scavsave
      * @param url
      * @param info Save progress request
      * @param sessionID Session id
