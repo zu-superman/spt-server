@@ -11,6 +11,7 @@ import { IPmcChatResponse } from "@spt/models/spt/config/IPmChatResponse";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
 import { GiftService } from "@spt/services/GiftService";
+import { LocaleService } from "@spt/services/LocaleService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { MatchBotDetailsCacheService } from "@spt/services/MatchBotDetailsCacheService";
 import { HashUtil } from "@spt/utils/HashUtil";
@@ -29,6 +30,7 @@ export class PmcChatResponseService {
         @inject("NotificationSendHelper") protected notificationSendHelper: NotificationSendHelper,
         @inject("MatchBotDetailsCacheService") protected matchBotDetailsCacheService: MatchBotDetailsCacheService,
         @inject("LocalisationService") protected localisationService: LocalisationService,
+        @inject("LocaleService") protected localeService: LocaleService,
         @inject("GiftService") protected giftService: GiftService,
         @inject("WeightedRandomHelper") protected weightedRandomHelper: WeightedRandomHelper,
         @inject("ConfigServer") protected configServer: ConfigServer,
@@ -58,7 +60,7 @@ export class PmcChatResponseService {
             }
 
             const victimDetails = this.getVictimDetails(victim);
-            const message = this.chooseMessage(true, pmcData);
+            const message = this.chooseMessage(true, pmcData, victim);
             if (message) {
                 this.notificationSendHelper.sendMessageToPlayer(
                     sessionId,
@@ -120,9 +122,10 @@ export class PmcChatResponseService {
      * Choose a localised message to send the player (different if sender was killed or killed player)
      * @param isVictim Is the message coming from a bot killed by the player
      * @param pmcData Player profile
+     * @param victimData OPTIMAL - details of the pmc killed
      * @returns Message from PMC to player
      */
-    protected chooseMessage(isVictim: boolean, pmcData: IPmcData): string | undefined {
+    protected chooseMessage(isVictim: boolean, pmcData: IPmcData, victimData?: IVictim): string | undefined {
         // Positive/negative etc
         const responseType = this.chooseResponseType(isVictim);
 
@@ -139,9 +142,10 @@ export class PmcChatResponseService {
             playerName: pmcData.Info.Nickname,
             playerLevel: pmcData.Info.Level,
             playerSide: pmcData.Info.Side,
+            victimDeathLocation: victimData ? this.getLocationName(victimData.Location) : "",
         });
 
-        // Give the player a gift code if they were killed adn response is 'pity'.
+        // Give the player a gift code if they were killed and response is 'pity'.
         if (responseType === "pity") {
             const giftKeys = this.giftService.getGiftIds();
             const randomGiftKey = this.randomUtil.getStringArrayValue(giftKeys);
@@ -166,6 +170,16 @@ export class PmcChatResponseService {
         }
 
         return responseText;
+    }
+
+    /**
+     * use map key to get a localised location name
+     * e.g. factory4_day becomes "Factory"
+     * @param locationKey location key to localise
+     * @returns Localised location name
+     */
+    protected getLocationName(locationKey: string) {
+        return this.localeService.getLocaleDb()[locationKey] ?? locationKey;
     }
 
     /**
