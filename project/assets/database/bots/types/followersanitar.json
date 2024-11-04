@@ -2099,7 +2099,8 @@
       "max": 350,
       "min": 350
     },
-    "standingForKill": -0.05
+    "standingForKill": -0.05,
+    "useSimpleAnimator": false
   },
   "firstName": [
     "Проктолог",

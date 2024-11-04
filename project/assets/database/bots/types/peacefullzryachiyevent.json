@@ -1999,7 +1999,8 @@
       "max": -1,
       "min": -1
     },
-    "standingForKill": 0
+    "standingForKill": 0,
+    "useSimpleAnimator": false
   },
   "firstName": [
     "Кирюха"
