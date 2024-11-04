@@ -406,6 +406,7 @@ export class BotEquipmentModGenerator {
             const modToSpawnRequest: IModToSpawnRequest = {
                 modSlot: modSlot,
                 isRandomisableSlot: isRandomisableSlot,
+                randomisationSettings: randomisationSettings,
                 botWeaponSightWhitelist: botWeaponSightWhitelist,
                 botEquipBlacklist: botEquipBlacklist,
                 itemModPool: compatibleModsPool,
@@ -834,6 +835,16 @@ export class BotEquipmentModGenerator {
             }
         }
 
+        // Check if weapon has min magazine size limit
+        if (
+            request.modSlot === "mod_magazine" &&
+            request.isRandomisableSlot &&
+            request.randomisationSettings.minimumMagazineSize &&
+            request.randomisationSettings.minimumMagazineSize[request.weapon[0]._tpl]
+        ) {
+            modPool = this.getFilterdMagazinePoolByCapacity(request, modPool);
+        }
+
         // Pick random mod that's compatible
         const chosenModResult = this.getCompatibleWeaponModTplForSlotFromPool(
             request,
@@ -875,6 +886,29 @@ export class BotEquipmentModGenerator {
         }
 
         return this.itemHelper.getItem(chosenModResult.chosenTpl);
+    }
+
+    /**
+     * Given the passed in array of magaizne tpls, look up the min size set in config and return only those that have that size or larger
+     * @param modSpawnRequest Request data
+     * @param modPool Pool of magazine tpls to filter
+     * @returns Filtered pool of magazine tpls
+     */
+    protected getFilterdMagazinePoolByCapacity(modSpawnRequest: IModToSpawnRequest, modPool: string[]): string[] {
+        const weaponTpl = modSpawnRequest.weapon[0]._tpl;
+        const minMagazineSize = modSpawnRequest.randomisationSettings.minimumMagazineSize[weaponTpl];
+        const desiredMagazineTpls = modPool.filter((magTpl) => {
+            const magazineDb = this.itemHelper.getItem(magTpl)[1];
+            return magazineDb._props && magazineDb._props.Cartridges[0]._max_count >= minMagazineSize;
+        });
+
+        if (desiredMagazineTpls.length === 0) {
+            this.logger.warning(`Magazine size filter for ${weaponTpl} was too strict, ignoring filter`);
+
+            return modPool;
+        }
+
+        return desiredMagazineTpls;
     }
 
     /**
