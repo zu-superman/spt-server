@@ -64,8 +64,11 @@ export class InRaidHelper {
         // Store insurance (as removeItem() removes insured items)
         const insured = this.cloner.clone(serverProfile.InsuredItems);
 
-        // Remove equipped items from before the raid
+        // Remove equipment and loot items stored on player from server profile in preparation for data from client being added
         this.inventoryHelper.removeItem(serverProfile, serverProfile.Inventory.equipment, sessionID);
+
+        // Remove quest items stored on player from server profile in preparation for data from client being added
+        this.inventoryHelper.removeItem(serverProfile, serverProfile.Inventory.questRaidItems, sessionID);
 
         // Get all items that have a parent of `serverProfile.Inventory.equipment` (All items player had on them at end of raid)
         const postRaidInventoryItems = this.itemHelper.findAndReturnChildrenAsItems(
