@@ -438,7 +438,9 @@ export class SeasonalEventService {
 
     protected configureZombies(zombieSettings: IZombieSettings) {
         for (const locationKey in zombieSettings.mapInfectionAmount) {
-            this.databaseService.getLocation(locationKey).base.Events.Halloween2024.InfectionPercentage =
+            this.databaseService.getLocation(locationKey.toLowerCase()).base.Events.Halloween2024.InfectionPercentage =
+                zombieSettings.mapInfectionAmount[locationKey];
+            this.databaseService.getGlobals().LocationInfection[locationKey] =
                 zombieSettings.mapInfectionAmount[locationKey];
         }
 
