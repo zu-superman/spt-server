@@ -7740,9 +7740,9 @@
 			"enabled": true,
             "name": "halloween",
             "type": "HALLOWEEN",
-            "startDay": "24",
+            "startDay": "28",
             "startMonth": "10",
-            "endDay": "4",
+            "endDay": "9",
             "endMonth": "11",
 			"settings": {
 				"enableSummoning": false,
