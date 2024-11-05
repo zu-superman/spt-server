@@ -48,18 +48,20 @@ export class HandbookHelper {
     public hydrateLookup(): void {
         const handbook = this.databaseService.getHandbook();
         // Add handbook overrides found in items.json config into db
-        for (const itemTpl in this.itemConfig.handbookPriceOverride) {
-            let itemToUpdate = handbook.Items.find((item) => item.Id === itemTpl);
+        for (const itemTplKey of Object.keys(this.itemConfig.handbookPriceOverride)) {
+            const data = this.itemConfig.handbookPriceOverride[itemTplKey];
+
+            let itemToUpdate = handbook.Items.find((item) => item.Id === itemTplKey);
             if (!itemToUpdate) {
                 handbook.Items.push({
-                    Id: itemTpl,
-                    ParentId: this.databaseService.getItems()[itemTpl]._parent,
-                    Price: this.itemConfig.handbookPriceOverride[itemTpl],
+                    Id: itemTplKey,
+                    ParentId: data.parentId,
+                    Price: data.price,
                 });
-                itemToUpdate = handbook.Items.find((item) => item.Id === itemTpl);
+                itemToUpdate = handbook.Items.find((item) => item.Id === itemTplKey);
             }
 
-            itemToUpdate.Price = this.itemConfig.handbookPriceOverride[itemTpl];
+            itemToUpdate.Price = data.price;
         }
 
         const handbookDbClone = this.cloner.clone(handbook);
