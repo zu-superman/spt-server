@@ -54,10 +54,10 @@ export enum PinLockState {
 }
 
 export interface IUpdBuff {
-    rarity: string;
-    buffType: string;
-    value: number;
-    thresholdDurability?: number;
+    Rarity: string;
+    BuffType: string;
+    Value: number;
+    ThresholdDurability?: number;
 }
 
 export interface IUpdTogglable {

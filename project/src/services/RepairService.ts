@@ -481,12 +481,11 @@ export class RepairService {
         const bonusThresholdPercent = this.randomUtil.getInt(bonusThresholdPercents.min, bonusThresholdPercents.max);
 
         item.upd.Buff = {
-            rarity: bonusRarity,
-            buffType: bonusType,
-            value: bonusValue,
-            thresholdDurability: this.randomUtil.getPercentOfValue(
-                bonusThresholdPercent,
-                item.upd.Repairable.Durability,
+            Rarity: bonusRarity,
+            BuffType: bonusType,
+            Value: bonusValue,
+            ThresholdDurability: Number(
+                this.randomUtil.getPercentOfValue(bonusThresholdPercent, item.upd.Repairable.Durability, 2).toFixed(2),
             ),
         };
     }
