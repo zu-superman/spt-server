@@ -210,6 +210,13 @@
             "startTimestamp": 1341615600000,
             "endTimestamp": "",
             "yearly": false
+		},
+		"670404a2ea1caa8f2e0be106": {
+			"name": "Don’t Believe Your Eyes",
+            "season": "halloween",
+            "startTimestamp": 1341615600000,
+            "endTimestamp": "",
+            "yearly": true
 		}
     },
     "repeatableQuests": [
