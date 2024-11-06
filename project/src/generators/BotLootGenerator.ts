@@ -390,18 +390,6 @@ export class BotLootGenerator {
     }
 
     /**
-     * Get a biased random number
-     * @param min Smallest size
-     * @param max Biggest size
-     * @param nValue Value to bias choice
-     * @returns Chosen number
-     */
-    protected getRandomisedCount(min: number, max: number, nValue: number): number {
-        const range = max - min;
-        return this.randomUtil.getBiasedRandomNumber(min, max, range, nValue);
-    }
-
-    /**
      * Take random items from a pool and add to an inventory until totalItemCount or totalValueLimit or space limit is reached
      * @param pool Pool of items to pick from with weight
      * @param equipmentSlots What equipment slot will the loot items be added to
