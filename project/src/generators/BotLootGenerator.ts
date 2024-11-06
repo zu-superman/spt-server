@@ -509,9 +509,9 @@ export class BotLootGenerator {
                     fitItemIntoContainerAttempts++;
                     if (fitItemIntoContainerAttempts >= 4) {
                         this.logger.debug(
-                            `Failed to place item ${i} of ${totalItemCount} items into ${botRole} containers: ${equipmentSlots.join(
+                            `Failed placing item: ${i} of: ${totalItemCount} items into: ${botRole} containers: ${equipmentSlots.join(
                                 ",",
-                            )}. Tried ${fitItemIntoContainerAttempts} times, reason: ${
+                            )}. Tried: ${fitItemIntoContainerAttempts} times, reason: ${
                                 ItemAddedResult[itemAddedResult]
                             }, skipping`,
                         );
