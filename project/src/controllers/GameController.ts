@@ -246,8 +246,21 @@ export class GameController {
         for (const dialogKey in fullProfile.dialogues) {
             const isValidKey = this.hashUtil.isValidMongoId(dialogKey);
             if (!isValidKey) {
+                this.logger.warning(`Migration: deleting: ${dialogKey} dialog`);
                 delete fullProfile.dialogues[dialogKey];
             }
+        }
+
+        // Remove PMC 'ragfair' from trader list
+        if (fullProfile.characters.pmc.TradersInfo.ragfair) {
+            this.logger.warning("Migration: deleting: ragfair traderinfo object from PMC");
+            delete fullProfile.characters.pmc.TradersInfo.ragfair;
+        }
+
+        // Remove SCAV 'ragfair' from trader list
+        if (fullProfile.characters.scav.TradersInfo.ragfair) {
+            this.logger.warning("Migration: deleting: ragfair traderinfo object from PMC");
+            delete fullProfile.characters.scav.TradersInfo.ragfair;
         }
     }
 
