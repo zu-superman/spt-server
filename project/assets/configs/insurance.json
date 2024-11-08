@@ -8,7 +8,7 @@
     "returnTimeOverrideSeconds": 0,
 	"storageTimeOverrideSeconds": 0,
     "runIntervalSeconds": 600,
-    "minAttachmentRoublePriceToBeTaken": 2000,
+    "minAttachmentRoublePriceToBeTaken": 15000,
     "chanceNoAttachmentsTakenPercent": 10,
     "simulateItemsBeingTaken": true
 }
