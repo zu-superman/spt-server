@@ -83,17 +83,17 @@ export class WeatherGenerator {
         const clouds = this.getWeightedClouds();
 
         // Force rain to off if no clouds
-        const rain = clouds <= 2 ? 1 : this.getWeightedRain();
+        const rain = clouds <= 0.6 ? 0 : this.getWeightedRain();
 
         const result: IWeather = {
             cloud: clouds,
             wind_speed: this.getWeightedWindSpeed(),
             wind_direction: this.getWeightedWindDirection(),
-            wind_gustiness: this.getRandomFloat("windGustiness"),
+            wind_gustiness: this.getRandomFloat("windGustiness", 2),
             rain: rain,
             rain_intensity: rain > 1 ? this.getRandomFloat("rainIntensity") : 0,
             fog: this.getWeightedFog(),
-            temp: 0, // TODO - lower value at night / take into account season
+            temp: 0,
             pressure: this.getRandomFloat("pressure"),
             time: "",
             date: "",
@@ -177,11 +177,11 @@ export class WeatherGenerator {
         ).item;
     }
 
-    protected getRandomFloat(node: string): number {
+    protected getRandomFloat(node: string, precision = 3): number {
         return Number.parseFloat(
             this.randomUtil
                 .getFloat(this.weatherConfig.weather[node].min, this.weatherConfig.weather[node].max)
-                .toPrecision(3),
+                .toPrecision(precision),
         );
     }
 }
