@@ -2,13 +2,15 @@ import { BotHelper } from "@spt/helpers/BotHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { IConfig } from "@spt/models/eft/common/IGlobals";
 import { ILocation } from "@spt/models/eft/common/ILocation";
-import { IBossLocationSpawn, IWave } from "@spt/models/eft/common/ILocationBase";
+import { IAdditionalHostilitySettings, IBossLocationSpawn, IWave } from "@spt/models/eft/common/ILocationBase";
 import { IInventory } from "@spt/models/eft/common/tables/IBotType";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { ItemTpl } from "@spt/models/enums/ItemTpl";
 import { Season } from "@spt/models/enums/Season";
 import { SeasonalEventType } from "@spt/models/enums/SeasonalEventType";
 import { IHttpConfig } from "@spt/models/spt/config/IHttpConfig";
+import { ILocationConfig } from "@spt/models/spt/config/ILocationConfig";
+import { IHostilitySettings } from "@spt/models/spt/config/IPmcConfig";
 import { IQuestConfig } from "@spt/models/spt/config/IQuestConfig";
 import { ISeasonalEvent, ISeasonalEventConfig, IZombieSettings } from "@spt/models/spt/config/ISeasonalEventConfig";
 import { IWeatherConfig } from "@spt/models/spt/config/IWeatherConfig";
@@ -26,6 +28,7 @@ export class SeasonalEventService {
     protected questConfig: IQuestConfig;
     protected httpConfig: IHttpConfig;
     protected weatherConfig: IWeatherConfig;
+    protected locationConfig: ILocationConfig;
 
     protected halloweenEventActive?: boolean = undefined;
     protected christmasEventActive?: boolean = undefined;
@@ -47,6 +50,7 @@ export class SeasonalEventService {
         this.questConfig = this.configServer.getConfig(ConfigTypes.QUEST);
         this.httpConfig = this.configServer.getConfig(ConfigTypes.HTTP);
         this.weatherConfig = this.configServer.getConfig(ConfigTypes.WEATHER);
+        this.locationConfig = this.configServer.getConfig(ConfigTypes.LOCATION);
 
         this.cacheActiveEvents();
     }
@@ -358,6 +362,9 @@ export class SeasonalEventService {
                 if (event.settings.removeEntryRequirement) {
                     this.removeEntryRequirement(event.settings.removeEntryRequirement);
                 }
+                if (event.settings.replaceBotHostility) {
+                    this.replaceBotHostility(this.seasonalEventConfig.hostilitySettingsForEvent.zombies);
+                }
                 this.addPumpkinsToScavBackpacks();
                 this.adjustTraderIcons(event.type);
                 break;
@@ -395,6 +402,30 @@ export class SeasonalEventService {
                     this.configureZombies(event.settings?.zombieSettings);
                 }
                 break;
+        }
+    }
+
+    protected replaceBotHostility(hostilitySettings: Record<string, IAdditionalHostilitySettings[]>) {
+        const locations = this.databaseService.getLocations();
+        const ignoreList = this.locationConfig.nonMaps;
+        const useDefault = hostilitySettings.default;
+
+        for (const locationKey in locations) {
+            if (ignoreList.includes(locationKey)) {
+                continue;
+            }
+
+            const location: ILocation = locations[locationKey];
+            if (!location?.base?.BotLocationModifier?.AdditionalHostilitySettings) {
+                continue;
+            }
+
+            const newHostilitySettings = useDefault ? hostilitySettings.default : hostilitySettings[locationKey];
+            if (!newHostilitySettings) {
+                continue;
+            }
+
+            location.base.BotLocationModifier.AdditionalHostilitySettings = hostilitySettings.default;
         }
     }
 

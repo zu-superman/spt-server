@@ -1,4 +1,4 @@
-import { IBossLocationSpawn, IWave } from "@spt/models/eft/common/ILocationBase";
+import { IAdditionalHostilitySettings, IBossLocationSpawn, IWave } from "@spt/models/eft/common/ILocationBase";
 import { SeasonalEventType } from "@spt/models/enums/SeasonalEventType";
 import { IBaseConfig } from "@spt/models/spt/config/IBaseConfig";
 
@@ -12,6 +12,8 @@ export interface ISeasonalEventConfig extends IBaseConfig {
     eventBossSpawns: Record<string, Record<string, IBossLocationSpawn[]>>;
     eventWaves: Record<string, Record<string, IWave[]>>;
     gifterSettings: IGifterSetting[];
+    /** key = event, second key = map name */
+    hostilitySettingsForEvent: Record<string, Record<string, IAdditionalHostilitySettings[]>>;
 }
 
 export interface ISeasonalEvent {
