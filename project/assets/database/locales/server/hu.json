@@ -46,6 +46,7 @@
     "bot-unable_to_generate_item_pool_no_items": "Nem sikerült generálni egy %s típusu tárgykészletet mivel nem voltak tárgyak átadva, ez a készlet átugrásra kerül",
     "bot-unable_to_get_bot_difficulty_fallback_to_assault": "Bot nem található: {{botType}} nehézség {{difficulty}}, assault nehézségi szint lesz használva",
     "bot-unable_to_get_bot_fallback_to_assault": "Hiányzó Bot: %s JSON, Visszaállítas az Assault Bot tipusra",
+    "bot-unable_to_load_raid_settings_from_appcontext": "Nem sikerült betölteni a raid beállításokat az ApplicationContext-ből",
     "bot-weapon_contains_invalid_item": "Szükséges hely: '{{modSlot}}' a fegyveren: {{weaponTpl}}} érvénytelen elemmel rendelkezik: {{modName}}",
     "bot-weapon_generated_incorrect_using_default": "A fegyver %s hibásan lett generálva, visszaáll az előre beállított fegyverre. Lásd a fenti hibaüzenetet",
     "bot-weapon_missing_magazine_or_chamber": "Fegyver tpl: {{weaponId}} nincs tár vagy kamra - {{botRole}}",
